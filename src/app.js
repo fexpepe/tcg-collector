@@ -1,6 +1,6 @@
 (function () {
   const shared = window.TCGShared;
-  const { addOptions, detailUrl, unique, normalize, escapeHtml, escapeAttribute, speciesName, debounce } = shared;
+  const { addOptions, detailUrl, unique, normalize, escapeHtml, escapeAttribute, speciesName, debounce, t, tn, localizedImg } = shared;
 
   let cards = [];
   let cardsById = new Map();
@@ -41,7 +41,7 @@
       init();
     })
     .catch((error) => {
-      elements.empty.textContent = `Não foi possível carregar o catálogo: ${error.message}`;
+      elements.empty.textContent = t("error.catalog", { message: error.message });
       elements.empty.hidden = false;
     });
 
@@ -62,7 +62,7 @@
 
     const generations = unique(cards.map((card) => card.generation).filter(Boolean))
       .sort((a, b) => Number(a) - Number(b));
-    const options = [{ value: "", label: "Todas" }]
+    const options = [{ value: "", label: t("chip.allGenerations") }]
       .concat(generations.map((value) => ({ value: String(value), label: `Gen ${toRoman(value)}` })));
 
     elements.generationChips.innerHTML = "";
@@ -126,7 +126,7 @@
     pager.render(items, createViewItem, { resetCount });
 
     elements.empty.hidden = items.length > 0;
-    elements.resultCount.textContent = `${items.length} resultado${items.length === 1 ? "" : "s"}`;
+    elements.resultCount.textContent = tn("results.count", items.length);
     elements.ownedCount.textContent = owned.size;
     elements.totalCount.textContent = cards.length;
     elements.completionRate.textContent = cards.length ? `${Math.round((owned.size / cards.length) * 100)}%` : "0%";
@@ -203,7 +203,7 @@
     article.className = "pokedex-card";
     const image = item.image
       ? `<img loading="lazy" src="${escapeAttribute(item.image)}" alt="${escapeAttribute(item.name)}">`
-      : `<span class="image-placeholder">Sem imagem</span>`;
+      : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;
     const progress = item.totalCount ? Math.round((item.ownedCount / item.totalCount) * 100) : 0;
 
     article.innerHTML = `
@@ -212,14 +212,14 @@
         <div class="pokedex-image">${image}</div>
         <div class="pokedex-info">
           <h3>${escapeHtml(item.name)}</h3>
-          <p>Geração ${escapeHtml(item.generation || "-")}</p>
+          <p>${escapeHtml(t("card.generation", { g: item.generation || "-" }))}</p>
         </div>
-        <div class="progress-bar" aria-label="Progresso de ${escapeAttribute(item.name)}">
+        <div class="progress-bar" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
           <span style="width: ${progress}%"></span>
         </div>
         <div class="set-footer">
           <strong>${progress}%</strong>
-          <span>${item.ownedCount}/${item.totalCount} cartas</span>
+          <span>${escapeHtml(t("count.ofCards", { o: item.ownedCount, t: item.totalCount }))}</span>
         </div>
       </a>
     `;
@@ -237,15 +237,15 @@
       <div class="group-card-header">
         <div>
           <h3>${escapeHtml(item.name)}</h3>
-          <p>${item.totalCount} carta${item.totalCount === 1 ? "" : "s"} · ${item.ownedCount} marcada${item.ownedCount === 1 ? "" : "s"}</p>
+          <p>${escapeHtml(`${tn("count.cards", item.totalCount)} · ${tn("count.marked", item.ownedCount)}`)}</p>
         </div>
         <span class="tag">${progress}%</span>
       </div>
-      <div class="progress-bar" aria-label="Progresso de ${escapeAttribute(item.name)}">
+      <div class="progress-bar" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
         <span style="width: ${progress}%"></span>
       </div>
       <div class="mini-card-list">${item.cards.map(createMiniCard).join("")}</div>
-      <a class="details-link" href="${escapeAttribute(detailUrl(type, item.name))}">Ver cartas</a>
+      <a class="details-link" href="${escapeAttribute(detailUrl(type, item.name))}">${escapeHtml(t("card.viewCards"))}</a>
     `;
 
     return article;
@@ -257,10 +257,10 @@
     article.dataset.href = detailUrl("set", item.name);
     const progress = item.totalCount ? Math.round((item.ownedCount / item.totalCount) * 100) : 0;
     const logo = item.logo
-      ? `<img class="set-logo" loading="lazy" src="${escapeAttribute(item.logo)}" alt="${escapeAttribute(item.name)}">`
+      ? localizedImg(item.logo, { alt: item.name, className: "set-logo", loading: "lazy" })
       : `<span class="set-logo-placeholder">${escapeHtml(item.name)}</span>`;
     const symbol = item.symbol
-      ? `<img class="set-symbol" loading="lazy" src="${escapeAttribute(item.symbol)}" alt="">`
+      ? localizedImg(item.symbol, { className: "set-symbol", loading: "lazy" })
       : "";
 
     article.innerHTML = `
@@ -274,18 +274,18 @@
           <span class="tag">${escapeHtml(item.languageLabel)}</span>
         </div>
         <div class="set-meta">
-          <span>${item.officialTotal || item.totalCount} cartas oficiais</span>
-          <span>${item.totalCount} no catálogo local</span>
-          <span>${item.ownedCount} marcadas</span>
+          <span>${escapeHtml(t("set.officialCards", { n: item.officialTotal || item.totalCount }))}</span>
+          <span>${escapeHtml(t("set.inLocalCatalog", { n: item.totalCount }))}</span>
+          <span>${escapeHtml(t("set.marked", { n: item.ownedCount }))}</span>
         </div>
-        <div class="progress-bar" aria-label="Progresso de ${escapeAttribute(item.name)}">
+        <div class="progress-bar" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
           <span style="width: ${progress}%"></span>
         </div>
         <div class="set-footer">
           <strong>${progress}%</strong>
           <span>${item.ownedCount}/${item.totalCount}</span>
         </div>
-        <a class="details-link" href="${escapeAttribute(detailUrl("set", item.name))}">Ver set</a>
+        <a class="details-link" href="${escapeAttribute(detailUrl("set", item.name))}">${escapeHtml(t("card.viewSet"))}</a>
       </div>
     `;
 
@@ -302,7 +302,7 @@
           <span>${escapeHtml(card.number)} · ${escapeHtml(card.set)} · ${escapeHtml(card.language.toUpperCase())}</span>
         </div>
         <button class="owned-toggle compact" data-card-id="${escapeAttribute(card.id)}" aria-pressed="${isOwned}">
-          ${isOwned ? (total > 1 ? `Tenho ×${total}` : "Tenho") : "Falta"}
+          ${escapeHtml(isOwned ? (total > 1 ? t("card.haveTimes", { n: total }) : t("card.have")) : t("card.missing"))}
         </button>
       </div>
     `;

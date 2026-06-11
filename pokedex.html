@@ -3,19 +3,20 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Pokédex - TCG Collector</title>
+    <title data-i18n="title.pokedex">Pokédex - TCG Collector</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <header class="app-header">
       <div>
-        <p class="eyebrow">Local-first MVP</p>
+        <p class="eyebrow" data-i18n="header.tagline">Local-first MVP</p>
         <h1>Pokédex</h1>
       </div>
       <div class="header-actions">
-        <button id="exportButton" class="secondary">Exportar</button>
+        <select id="languageSwitcher" class="lang-select"></select>
+        <button id="exportButton" class="secondary" data-i18n="header.export">Exportar</button>
         <label class="secondary file-button">
-          Importar
+          <span data-i18n="header.import">Importar</span>
           <input id="importInput" type="file" accept="application/json">
         </label>
       </div>
@@ -23,64 +24,64 @@
 
     <main>
       <nav class="page-nav" aria-label="Páginas">
-        <a href="index.html">Início</a>
-        <a class="active" href="pokedex.html">Pokédex</a>
-        <a href="sets.html">Sets</a>
-        <a href="artists.html">Artistas</a>
+        <a href="index.html" data-i18n="nav.home">Início</a>
+        <a class="active" href="pokedex.html" data-i18n="nav.pokedex">Pokédex</a>
+        <a href="sets.html" data-i18n="nav.sets">Sets</a>
+        <a href="artists.html" data-i18n="nav.artists">Artistas</a>
       </nav>
 
       <section class="stats-grid" aria-label="Resumo da coleção">
         <article>
           <span id="ownedCount">0</span>
-          <p>cartas marcadas</p>
+          <p data-i18n="stats.owned">cartas marcadas</p>
         </article>
         <article>
           <span id="totalCount">0</span>
-          <p>cartas no catálogo</p>
+          <p data-i18n="stats.total">cartas no catálogo</p>
         </article>
         <article>
           <span id="completionRate">0%</span>
-          <p>progresso</p>
+          <p data-i18n="stats.progress">progresso</p>
         </article>
       </section>
 
       <section class="toolbar pokedex-toolbar" aria-label="Filtros">
         <div class="search-box">
-          <label for="searchInput">Busca</label>
-          <input id="searchInput" type="search" placeholder="Nome ou número da Pokédex...">
+          <label for="searchInput" data-i18n="toolbar.search">Busca</label>
+          <input id="searchInput" type="search" data-i18n-placeholder="search.placeholder.pokedex" placeholder="Nome ou número da Pokédex...">
         </div>
         <div id="generationChips" class="chip-filter" role="group" aria-label="Geração"></div>
         <div class="toolbar-selects">
           <div>
-            <label for="setFilter">Set</label>
+            <label for="setFilter" data-i18n="toolbar.set">Set</label>
             <select id="setFilter">
-              <option value="">Todos</option>
+              <option value="" data-i18n="filter.all.m">Todos</option>
             </select>
           </div>
           <div>
-            <label for="languageFilter">Idioma</label>
+            <label for="languageFilter" data-i18n="toolbar.language">Idioma</label>
             <select id="languageFilter">
-              <option value="">Todos</option>
+              <option value="" data-i18n="filter.all.m">Todos</option>
             </select>
           </div>
           <div>
-            <label for="ownedFilter">Coleção</label>
+            <label for="ownedFilter" data-i18n="toolbar.collection">Coleção</label>
             <select id="ownedFilter">
-              <option value="all">Todas</option>
-              <option value="owned">Tenho</option>
-              <option value="missing">Faltando</option>
+              <option value="all" data-i18n="filter.all.f">Todas</option>
+              <option value="owned" data-i18n="filter.owned">Tenho</option>
+              <option value="missing" data-i18n="filter.missing">Faltando</option>
             </select>
           </div>
         </div>
       </section>
 
       <section class="results-header">
-        <h2>Pokémon</h2>
+        <h2 data-i18n="results.heading.pokedex">Pokémon</h2>
         <p id="resultCount">0 resultados</p>
       </section>
 
       <section id="cardGrid" class="card-grid" data-view="pokedex" aria-live="polite"></section>
-      <p id="emptyState" class="empty-state" hidden>Nenhuma carta encontrada com esses filtros.</p>
+      <p id="emptyState" class="empty-state" data-i18n="empty.pokedex" hidden>Nenhuma carta encontrada com esses filtros.</p>
     </main>
 
     <script src="data/cards.js"></script>

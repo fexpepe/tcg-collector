@@ -136,6 +136,369 @@
     return createIdStore("tcg-collector-favorites-v1");
   }
 
+  // ---------------------------------------------------------------------------
+  // Idioma do site: controla os textos da interface e o idioma das imagens das
+  // cartas (assets da TCGdex levam o idioma na URL; se a imagem não existir no
+  // idioma escolhido, um onerror volta para a URL original do catálogo).
+  // ---------------------------------------------------------------------------
+  const UI_LANGUAGES = [
+    { code: "pt", label: "Português (BR)", htmlLang: "pt-BR", locale: "pt-BR" },
+    { code: "en", label: "English", htmlLang: "en", locale: "en-US" }
+  ];
+  const languageStorageKey = "tcg-collector-ui-lang-v1";
+  const currentLanguage = (function () {
+    const saved = localStorage.getItem(languageStorageKey);
+    return UI_LANGUAGES.some((entry) => entry.code === saved) ? saved : "pt";
+  })();
+  const currentLanguageMeta = UI_LANGUAGES.find((entry) => entry.code === currentLanguage);
+
+  const MESSAGES = {
+    pt: {
+      "lang.aria": "Idioma do site",
+      "nav.home": "Início",
+      "nav.pokedex": "Pokédex",
+      "nav.sets": "Sets",
+      "nav.artists": "Artistas",
+      "header.tagline": "Local-first MVP",
+      "header.export": "Exportar",
+      "header.import": "Importar",
+      "title.home": "TCG Collector — sua coleção de Pokémon TCG, grátis",
+      "title.pokedex": "Pokédex - TCG Collector",
+      "title.sets": "Sets - TCG Collector",
+      "title.artists": "Artistas - TCG Collector",
+      "title.detail": "Detalhe - TCG Collector",
+      "stats.owned": "cartas marcadas",
+      "stats.total": "cartas no catálogo",
+      "stats.progress": "progresso",
+      "stats.pageTotal": "cartas nessa página",
+      "toolbar.search": "Busca",
+      "toolbar.set": "Set",
+      "toolbar.language": "Idioma",
+      "toolbar.collection": "Coleção",
+      "filter.all.f": "Todas",
+      "filter.all.m": "Todos",
+      "filter.owned": "Tenho",
+      "filter.missing": "Faltando",
+      "search.placeholder.pokedex": "Nome ou número da Pokédex...",
+      "search.placeholder.sets": "Set, carta, artista, número...",
+      "search.placeholder.artists": "Artista, carta, set, número...",
+      "search.placeholder.detail": "Carta, set, artista, número...",
+      "results.heading.pokedex": "Pokémon",
+      "results.heading.sets": "Sets",
+      "results.heading.artists": "Artistas",
+      "results.heading.detail": "Cartas",
+      "results.count.one": "{n} resultado",
+      "results.count.other": "{n} resultados",
+      "empty.pokedex": "Nenhuma carta encontrada com esses filtros.",
+      "empty.sets": "Nenhum set encontrado com esses filtros.",
+      "empty.artists": "Nenhum artista encontrado com esses filtros.",
+      "empty.detail": "Nenhuma carta encontrada nessa página.",
+      "pager.more.one": "Mostrar mais ({n} restante)",
+      "pager.more.other": "Mostrar mais ({n} restantes)",
+      "chip.allGenerations": "Todas",
+      "card.generation": "Geração {g}",
+      "count.cards.one": "{n} carta",
+      "count.cards.other": "{n} cartas",
+      "count.marked.one": "{n} marcada",
+      "count.marked.other": "{n} marcadas",
+      "count.ofCards": "{o}/{t} cartas",
+      "set.officialCards": "{n} cartas oficiais",
+      "set.inLocalCatalog": "{n} no catálogo local",
+      "set.marked": "{n} marcadas",
+      "card.viewCards": "Ver cartas",
+      "card.viewSet": "Ver set",
+      "card.have": "Tenho",
+      "card.haveTimes": "Tenho ×{n}",
+      "card.missing": "Falta",
+      "card.inCollection": "Tenho na coleção",
+      "card.inCollectionTimes": "Tenho na coleção (×{n})",
+      "card.markOwned": "Marcar como tenho",
+      "card.noImage": "Sem imagem",
+      "card.unknownArtist": "Artista desconhecido",
+      "card.zoom": "Ampliar {name}",
+      "progress.aria": "Progresso de {name}",
+      "qty.aria": "Quantidade de {variant}",
+      "qty.addAria": "Adicionar uma {variant}",
+      "qty.removeAria": "Remover uma {variant}",
+      "modal.details": "Detalhes da carta",
+      "modal.rarity": "Raridade",
+      "modal.artist": "Artista",
+      "modal.set": "Set",
+      "modal.cardId": "ID da carta",
+      "modal.close": "Fechar",
+      "detail.loading": "Carregando",
+      "detail.label": "Detalhe",
+      "detail.label.pokemon": "Pokédex",
+      "detail.label.set": "Set",
+      "detail.label.artist": "Artista",
+      "hero.cardsInCatalog.one": "{n} carta no catálogo local",
+      "hero.cardsInCatalog.other": "{n} cartas no catálogo local",
+      "favorite.add": "♡ Favoritar Pokémon",
+      "favorite.active": "♥ Pokémon favoritado",
+      "forms.toggle.one": "Ver a {n} forma desse Pokémon",
+      "forms.toggle.other": "Ver as {n} formas desse Pokémon",
+      "error.catalog": "Não foi possível carregar o catálogo: {message}",
+      "error.cards": "Não foi possível carregar as cartas: {message}",
+      "error.import": "Não foi possível importar esse arquivo de coleção.",
+      "type.normal": "Normal",
+      "type.fire": "Fogo",
+      "type.water": "Água",
+      "type.electric": "Elétrico",
+      "type.grass": "Planta",
+      "type.ice": "Gelo",
+      "type.fighting": "Lutador",
+      "type.poison": "Veneno",
+      "type.ground": "Terra",
+      "type.flying": "Voador",
+      "type.psychic": "Psíquico",
+      "type.bug": "Inseto",
+      "type.rock": "Pedra",
+      "type.ghost": "Fantasma",
+      "type.dragon": "Dragão",
+      "type.dark": "Sombrio",
+      "type.steel": "Aço",
+      "type.fairy": "Fada",
+      "home.eyebrow": "Grátis · sem conta · local-first",
+      "home.title": "Sua coleção de Pokémon TCG, <span class=\"accent\">organizada</span>.",
+      "home.sub": "Acompanhe cada carta por variante e quantidade — Holo, Reverse, 1st Edition — navegando por Pokédex, sets e artistas. Tudo direto no navegador: seus dados não saem daqui.",
+      "home.ctaPokedex": "Abrir a Pokédex",
+      "home.ctaSets": "Explorar sets",
+      "home.note": "Sem cadastro, sem plano pago. Exporte e importe sua coleção em JSON quando quiser.",
+      "home.cta": "Começar",
+      "home.stats.pokemon": "Pokémon",
+      "home.stats.cards": "cartas",
+      "home.stats.sets": "sets",
+      "home.stats.artists": "artistas",
+      "home.features.title": "Feito para quem coleciona de verdade",
+      "home.feature1.title": "Variantes e quantidades",
+      "home.feature1.body": "Não é só \"tenho ou não tenho\": registre Holo ×2, Reverse ×1, 1st Edition ×1 — cada cópia conta.",
+      "home.feature2.title": "Três jeitos de navegar",
+      "home.feature2.body": "Pokédex com filtro por geração, sets com progresso de conclusão e cartas agrupadas por artista.",
+      "home.feature3.title": "Seus dados são seus",
+      "home.feature3.body": "A coleção fica no seu navegador, sem conta e sem nuvem obrigatória. Backup em JSON com um clique.",
+      "home.feature4.title": "Grátis e open source",
+      "home.feature4.body": "Sem anúncios, sem recursos travados, sem plano \"pro\". O código é aberto no GitHub.",
+      "home.how.title": "Como funciona",
+      "home.step1.title": "Explore",
+      "home.step1.body": "Busque por nome, número da Pokédex, set, artista ou raridade.",
+      "home.step2.title": "Marque",
+      "home.step2.body": "Registre cada variante que você tem, com a quantidade exata.",
+      "home.step3.title": "Complete",
+      "home.step3.body": "Acompanhe o progresso por Pokémon, por set e por artista.",
+      "home.footer.line1": "Grátis e open source — <a href=\"https://github.com/fexpepe/tcg-collector\">código no GitHub</a>",
+      "home.footer.line2": "Dados de cartas por <a href=\"https://tcgdex.dev\">TCGdex</a> · informações de Pokémon pela <a href=\"https://pokeapi.co\">PokéAPI</a>. Pokémon e Pokémon TCG são marcas de Nintendo / Creatures / GAME FREAK; este projeto não tem afiliação."
+    },
+    en: {
+      "lang.aria": "Site language",
+      "nav.home": "Home",
+      "nav.pokedex": "Pokédex",
+      "nav.sets": "Sets",
+      "nav.artists": "Artists",
+      "header.tagline": "Local-first MVP",
+      "header.export": "Export",
+      "header.import": "Import",
+      "title.home": "TCG Collector — your Pokémon TCG collection, free",
+      "title.pokedex": "Pokédex - TCG Collector",
+      "title.sets": "Sets - TCG Collector",
+      "title.artists": "Artists - TCG Collector",
+      "title.detail": "Detail - TCG Collector",
+      "stats.owned": "cards owned",
+      "stats.total": "cards in catalog",
+      "stats.progress": "progress",
+      "stats.pageTotal": "cards on this page",
+      "toolbar.search": "Search",
+      "toolbar.set": "Set",
+      "toolbar.language": "Language",
+      "toolbar.collection": "Collection",
+      "filter.all.f": "All",
+      "filter.all.m": "All",
+      "filter.owned": "Owned",
+      "filter.missing": "Missing",
+      "search.placeholder.pokedex": "Name or Pokédex number...",
+      "search.placeholder.sets": "Set, card, artist, number...",
+      "search.placeholder.artists": "Artist, card, set, number...",
+      "search.placeholder.detail": "Card, set, artist, number...",
+      "results.heading.pokedex": "Pokémon",
+      "results.heading.sets": "Sets",
+      "results.heading.artists": "Artists",
+      "results.heading.detail": "Cards",
+      "results.count.one": "{n} result",
+      "results.count.other": "{n} results",
+      "empty.pokedex": "No cards match these filters.",
+      "empty.sets": "No sets match these filters.",
+      "empty.artists": "No artists match these filters.",
+      "empty.detail": "No cards found on this page.",
+      "pager.more.one": "Show more ({n} left)",
+      "pager.more.other": "Show more ({n} left)",
+      "chip.allGenerations": "All",
+      "card.generation": "Generation {g}",
+      "count.cards.one": "{n} card",
+      "count.cards.other": "{n} cards",
+      "count.marked.one": "{n} owned",
+      "count.marked.other": "{n} owned",
+      "count.ofCards": "{o}/{t} cards",
+      "set.officialCards": "{n} official cards",
+      "set.inLocalCatalog": "{n} in local catalog",
+      "set.marked": "{n} owned",
+      "card.viewCards": "View cards",
+      "card.viewSet": "View set",
+      "card.have": "Owned",
+      "card.haveTimes": "Owned ×{n}",
+      "card.missing": "Missing",
+      "card.inCollection": "In my collection",
+      "card.inCollectionTimes": "In my collection (×{n})",
+      "card.markOwned": "Mark as owned",
+      "card.noImage": "No image",
+      "card.unknownArtist": "Unknown artist",
+      "card.zoom": "Zoom into {name}",
+      "progress.aria": "Progress for {name}",
+      "qty.aria": "{variant} quantity",
+      "qty.addAria": "Add one {variant}",
+      "qty.removeAria": "Remove one {variant}",
+      "modal.details": "Card details",
+      "modal.rarity": "Rarity",
+      "modal.artist": "Artist",
+      "modal.set": "Set",
+      "modal.cardId": "Card ID",
+      "modal.close": "Close",
+      "detail.loading": "Loading",
+      "detail.label": "Detail",
+      "detail.label.pokemon": "Pokédex",
+      "detail.label.set": "Set",
+      "detail.label.artist": "Artist",
+      "hero.cardsInCatalog.one": "{n} card in local catalog",
+      "hero.cardsInCatalog.other": "{n} cards in local catalog",
+      "favorite.add": "♡ Favorite this Pokémon",
+      "favorite.active": "♥ Favorited",
+      "forms.toggle.one": "See this Pokémon's {n} form",
+      "forms.toggle.other": "See this Pokémon's {n} forms",
+      "error.catalog": "Could not load the catalog: {message}",
+      "error.cards": "Could not load the cards: {message}",
+      "error.import": "Could not import this collection file.",
+      "type.normal": "Normal",
+      "type.fire": "Fire",
+      "type.water": "Water",
+      "type.electric": "Electric",
+      "type.grass": "Grass",
+      "type.ice": "Ice",
+      "type.fighting": "Fighting",
+      "type.poison": "Poison",
+      "type.ground": "Ground",
+      "type.flying": "Flying",
+      "type.psychic": "Psychic",
+      "type.bug": "Bug",
+      "type.rock": "Rock",
+      "type.ghost": "Ghost",
+      "type.dragon": "Dragon",
+      "type.dark": "Dark",
+      "type.steel": "Steel",
+      "type.fairy": "Fairy",
+      "home.eyebrow": "Free · no account · local-first",
+      "home.title": "Your Pokémon TCG collection, <span class=\"accent\">organized</span>.",
+      "home.sub": "Track every card by variant and quantity — Holo, Reverse, 1st Edition — browsing by Pokédex, sets and artists. All in your browser: your data never leaves it.",
+      "home.ctaPokedex": "Open the Pokédex",
+      "home.ctaSets": "Browse sets",
+      "home.note": "No sign-up, no paid plan. Export and import your collection as JSON anytime.",
+      "home.cta": "Get started",
+      "home.stats.pokemon": "Pokémon",
+      "home.stats.cards": "cards",
+      "home.stats.sets": "sets",
+      "home.stats.artists": "artists",
+      "home.features.title": "Built for real collectors",
+      "home.feature1.title": "Variants and quantities",
+      "home.feature1.body": "It's not just \"have it or not\": log Holo ×2, Reverse ×1, 1st Edition ×1 — every copy counts.",
+      "home.feature2.title": "Three ways to browse",
+      "home.feature2.body": "Pokédex with generation filters, sets with completion progress, and cards grouped by artist.",
+      "home.feature3.title": "Your data is yours",
+      "home.feature3.body": "Your collection lives in your browser — no account, no mandatory cloud. One-click JSON backup.",
+      "home.feature4.title": "Free and open source",
+      "home.feature4.body": "No ads, no locked features, no \"pro\" plan. The code is open on GitHub.",
+      "home.how.title": "How it works",
+      "home.step1.title": "Browse",
+      "home.step1.body": "Search by name, Pokédex number, set, artist or rarity.",
+      "home.step2.title": "Track",
+      "home.step2.body": "Log every variant you own, with exact quantities.",
+      "home.step3.title": "Complete",
+      "home.step3.body": "Track progress per Pokémon, per set and per artist.",
+      "home.footer.line1": "Free and open source — <a href=\"https://github.com/fexpepe/tcg-collector\">code on GitHub</a>",
+      "home.footer.line2": "Card data by <a href=\"https://tcgdex.dev\">TCGdex</a> · Pokémon info from <a href=\"https://pokeapi.co\">PokéAPI</a>. Pokémon and Pokémon TCG are trademarks of Nintendo / Creatures / GAME FREAK; this project is not affiliated."
+    }
+  };
+
+  function t(key, vars) {
+    const table = MESSAGES[currentLanguage] || MESSAGES.pt;
+    let text = table[key] != null ? table[key] : MESSAGES.pt[key];
+    if (text == null) return key;
+    if (vars) {
+      Object.entries(vars).forEach(([name, value]) => {
+        text = text.split(`{${name}}`).join(value);
+      });
+    }
+    return text;
+  }
+
+  function tn(key, n, vars) {
+    return t(`${key}.${n === 1 ? "one" : "other"}`, Object.assign({ n }, vars));
+  }
+
+  function getLanguage() {
+    return currentLanguage;
+  }
+
+  function getLocale() {
+    return currentLanguageMeta.locale;
+  }
+
+  function applyTranslations(root) {
+    const scope = root || document;
+    document.documentElement.lang = currentLanguageMeta.htmlLang;
+    scope.querySelectorAll("[data-i18n]").forEach((element) => {
+      element.textContent = t(element.dataset.i18n);
+    });
+    scope.querySelectorAll("[data-i18n-html]").forEach((element) => {
+      element.innerHTML = t(element.dataset.i18nHtml);
+    });
+    scope.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
+      element.placeholder = t(element.dataset.i18nPlaceholder);
+    });
+  }
+
+  function initLanguageSwitcher() {
+    const select = document.getElementById("languageSwitcher");
+    if (!select) return;
+    UI_LANGUAGES.forEach(({ code, label }) => {
+      const option = document.createElement("option");
+      option.value = code;
+      option.textContent = label;
+      select.appendChild(option);
+    });
+    select.value = currentLanguage;
+    select.setAttribute("aria-label", t("lang.aria"));
+    select.addEventListener("change", () => {
+      localStorage.setItem(languageStorageKey, select.value);
+      window.location.reload();
+    });
+  }
+
+  function localizeAssetUrl(url) {
+    if (!url) return url;
+    return url.replace(/(assets\.tcgdex\.net\/)[a-z-]+(\/)/, `$1${currentLanguage}$2`);
+  }
+
+  // <img> com a URL localizada e fallback para a URL original do catálogo
+  // caso o asset não exista no idioma escolhido.
+  function localizedImg(url, options) {
+    if (!url) return "";
+    const { alt = "", className = "", loading = "" } = options || {};
+    const localized = localizeAssetUrl(url);
+    const classAttr = className ? ` class="${escapeAttribute(className)}"` : "";
+    const loadingAttr = loading ? ` loading="${loading}"` : "";
+    const fallback = localized !== url
+      ? ` onerror="this.onerror=null;this.src='${escapeAttribute(url)}'"`
+      : "";
+    return `<img${classAttr}${loadingAttr} src="${escapeAttribute(localized)}" alt="${escapeAttribute(alt)}"${fallback}>`;
+  }
+
   // Busca tipos e formas de um Pokémon na PokéAPI (por dexId), com cache em localStorage.
   // Degrada silenciosamente se a rede falhar — chamador deve tratar { types: [], forms: [] }.
   async function fetchPokemonMeta(dexId) {
@@ -199,9 +562,9 @@
       modal.innerHTML = `
         <div class="card-preview-backdrop" data-preview-close></div>
         <section class="card-preview-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(activeCard.name)}">
-          <button class="preview-close" data-preview-close aria-label="Fechar">×</button>
+          <button class="preview-close" data-preview-close aria-label="${escapeAttribute(t("modal.close"))}">×</button>
           <div class="preview-image-wrap">
-            <img src="${escapeAttribute(activeCard.image)}" alt="${escapeAttribute(activeCard.name)}">
+            ${localizedImg(activeCard.image, { alt: activeCard.name })}
           </div>
           <div class="preview-content">
             <div>
@@ -210,17 +573,17 @@
               <p class="preview-subtitle">${escapeHtml(activeCard.number)} · ${escapeHtml(activeCard.language.toUpperCase())}</p>
             </div>
             <div class="preview-details">
-              <h3>Card Details</h3>
+              <h3>${escapeHtml(t("modal.details"))}</h3>
               <dl>
-                <div><dt>Rarity</dt><dd>${escapeHtml(activeCard.rarity || "-")}</dd></div>
-                <div><dt>Artist</dt><dd>${escapeHtml(activeCard.artist || "Artista desconhecido")}</dd></div>
-                <div><dt>Set</dt><dd>${escapeHtml(activeCard.set || "-")}</dd></div>
-                <div><dt>Card ID</dt><dd>${escapeHtml(activeCard.id)}</dd></div>
+                <div><dt>${escapeHtml(t("modal.rarity"))}</dt><dd>${escapeHtml(activeCard.rarity || "-")}</dd></div>
+                <div><dt>${escapeHtml(t("modal.artist"))}</dt><dd>${escapeHtml(activeCard.artist || t("card.unknownArtist"))}</dd></div>
+                <div><dt>${escapeHtml(t("modal.set"))}</dt><dd>${escapeHtml(activeCard.set || "-")}</dd></div>
+                <div><dt>${escapeHtml(t("modal.cardId"))}</dt><dd>${escapeHtml(activeCard.id)}</dd></div>
               </dl>
             </div>
             <div class="variant-quantities">${variantQuantityRows(activeCard, store)}</div>
             <button class="owned-toggle preview-owned" data-card-id="${escapeAttribute(activeCard.id)}" aria-pressed="${isOwned}">
-              ${isOwned ? "Tenho na coleção" : "Marcar como tenho"}
+              ${isOwned ? t("card.inCollection") : t("card.markOwned")}
             </button>
           </div>
         </section>
@@ -267,10 +630,10 @@
       return `
         <div class="variant-row${quantity > 0 ? " owned" : ""}">
           <span class="variant-row-name">${escapeHtml(variant)}</span>
-          <div class="qty-stepper" aria-label="Quantidade de ${escapeAttribute(variant)}">
-            <button type="button" data-qty-action="dec" data-qty-card-id="${escapeAttribute(card.id)}" data-qty-variant="${escapeAttribute(variant)}" aria-label="Remover uma ${escapeAttribute(variant)}" ${quantity === 0 ? "disabled" : ""}>−</button>
+          <div class="qty-stepper" aria-label="${escapeAttribute(t("qty.aria", { variant }))}">
+            <button type="button" data-qty-action="dec" data-qty-card-id="${escapeAttribute(card.id)}" data-qty-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("qty.removeAria", { variant }))}" ${quantity === 0 ? "disabled" : ""}>−</button>
             <span class="qty-value">${quantity}</span>
-            <button type="button" data-qty-action="inc" data-qty-card-id="${escapeAttribute(card.id)}" data-qty-variant="${escapeAttribute(variant)}" aria-label="Adicionar uma ${escapeAttribute(variant)}">+</button>
+            <button type="button" data-qty-action="inc" data-qty-card-id="${escapeAttribute(card.id)}" data-qty-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("qty.addAria", { variant }))}">+</button>
           </div>
         </div>
       `;
@@ -313,7 +676,7 @@
         store.replace(parseImportedCollection(payload, cardsById));
         onChange();
       } catch (error) {
-        alert("Não foi possível importar esse arquivo de coleção.");
+        alert(t("error.import"));
       } finally {
         event.target.value = "";
       }
@@ -435,7 +798,7 @@
       const remaining = items.length - renderedCount;
       if (remaining <= 0) return;
 
-      button.textContent = `Mostrar mais (${remaining} restante${remaining === 1 ? "" : "s"})`;
+      button.textContent = tn("pager.more", remaining);
       grid.after(sentinel, button);
       if (observer) observer.observe(sentinel);
     }
@@ -507,6 +870,13 @@
     fetchPokemonMeta,
     createCardPreview,
     bindCollectionTransfer,
+    t,
+    tn,
+    getLanguage,
+    getLocale,
+    applyTranslations,
+    localizeAssetUrl,
+    localizedImg,
     loadCatalog,
     fetchSetChunks,
     setIdForCard,
@@ -520,4 +890,7 @@
     escapeAttribute,
     speciesName
   };
+
+  applyTranslations();
+  initLanguageSwitcher();
 })();

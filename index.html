@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TCG Collector — sua coleção de Pokémon TCG, grátis</title>
+    <title data-i18n="title.home">TCG Collector — sua coleção de Pokémon TCG, grátis</title>
     <meta name="description" content="Acompanhe sua coleção de Pokémon TCG por variante e quantidade. Grátis, sem conta — seus dados ficam no seu navegador.">
     <link rel="stylesheet" href="styles.css">
   </head>
@@ -11,28 +11,29 @@
     <header class="home-header">
       <a class="home-brand" href="index.html">TCG Collector</a>
       <nav class="home-nav" aria-label="Páginas">
-        <a href="pokedex.html">Pokédex</a>
-        <a href="sets.html">Sets</a>
-        <a href="artists.html">Artistas</a>
-        <a class="button-link" href="pokedex.html">Começar</a>
+        <a href="pokedex.html" data-i18n="nav.pokedex">Pokédex</a>
+        <a href="sets.html" data-i18n="nav.sets">Sets</a>
+        <a href="artists.html" data-i18n="nav.artists">Artistas</a>
+        <select id="languageSwitcher" class="lang-select"></select>
+        <a class="button-link" href="pokedex.html" data-i18n="home.cta">Começar</a>
       </nav>
     </header>
 
     <main class="home-main">
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">Grátis · sem conta · local-first</p>
-          <h1>Sua coleção de Pokémon TCG, <span class="accent">organizada</span>.</h1>
-          <p class="hero-sub">
+          <p class="eyebrow" data-i18n="home.eyebrow">Grátis · sem conta · local-first</p>
+          <h1 data-i18n-html="home.title">Sua coleção de Pokémon TCG, <span class="accent">organizada</span>.</h1>
+          <p class="hero-sub" data-i18n="home.sub">
             Acompanhe cada carta por variante e quantidade — Holo, Reverse, 1st Edition —
             navegando por Pokédex, sets e artistas. Tudo direto no navegador:
             seus dados não saem daqui.
           </p>
           <div class="hero-actions">
-            <a class="cta" href="pokedex.html">Abrir a Pokédex</a>
-            <a class="cta secondary-cta" href="sets.html">Explorar sets</a>
+            <a class="cta" href="pokedex.html" data-i18n="home.ctaPokedex">Abrir a Pokédex</a>
+            <a class="cta secondary-cta" href="sets.html" data-i18n="home.ctaSets">Explorar sets</a>
           </div>
-          <p class="hero-note">Sem cadastro, sem plano pago. Exporte e importe sua coleção em JSON quando quiser.</p>
+          <p class="hero-note" data-i18n="home.note">Sem cadastro, sem plano pago. Exporte e importe sua coleção em JSON quando quiser.</p>
         </div>
         <div class="hero-cards" aria-hidden="true">
           <img src="https://assets.tcgdex.net/en/base/base1/2/high.png" alt="" loading="lazy">
@@ -44,75 +45,76 @@
       <section class="stats-grid home-stats" aria-label="Números do catálogo">
         <article>
           <span id="statPokemon">–</span>
-          <p>Pokémon</p>
+          <p data-i18n="home.stats.pokemon">Pokémon</p>
         </article>
         <article>
           <span id="statCards">–</span>
-          <p>cartas</p>
+          <p data-i18n="home.stats.cards">cartas</p>
         </article>
         <article>
           <span id="statSets">–</span>
-          <p>sets</p>
+          <p data-i18n="home.stats.sets">sets</p>
         </article>
         <article>
           <span id="statArtists">–</span>
-          <p>artistas</p>
+          <p data-i18n="home.stats.artists">artistas</p>
         </article>
       </section>
 
       <section class="home-features">
-        <h2>Feito para quem coleciona de verdade</h2>
+        <h2 data-i18n="home.features.title">Feito para quem coleciona de verdade</h2>
         <div class="feature-grid">
           <article>
-            <h3>Variantes e quantidades</h3>
-            <p>Não é só "tenho ou não tenho": registre Holo ×2, Reverse ×1, 1st Edition ×1 — cada cópia conta.</p>
+            <h3 data-i18n="home.feature1.title">Variantes e quantidades</h3>
+            <p data-i18n="home.feature1.body">Não é só "tenho ou não tenho": registre Holo ×2, Reverse ×1, 1st Edition ×1 — cada cópia conta.</p>
           </article>
           <article>
-            <h3>Três jeitos de navegar</h3>
-            <p>Pokédex com filtro por geração, sets com progresso de conclusão e cartas agrupadas por artista.</p>
+            <h3 data-i18n="home.feature2.title">Três jeitos de navegar</h3>
+            <p data-i18n="home.feature2.body">Pokédex com filtro por geração, sets com progresso de conclusão e cartas agrupadas por artista.</p>
           </article>
           <article>
-            <h3>Seus dados são seus</h3>
-            <p>A coleção fica no seu navegador, sem conta e sem nuvem obrigatória. Backup em JSON com um clique.</p>
+            <h3 data-i18n="home.feature3.title">Seus dados são seus</h3>
+            <p data-i18n="home.feature3.body">A coleção fica no seu navegador, sem conta e sem nuvem obrigatória. Backup em JSON com um clique.</p>
           </article>
           <article>
-            <h3>Grátis e open source</h3>
-            <p>Sem anúncios, sem recursos travados, sem plano "pro". O código é aberto no GitHub.</p>
+            <h3 data-i18n="home.feature4.title">Grátis e open source</h3>
+            <p data-i18n="home.feature4.body">Sem anúncios, sem recursos travados, sem plano "pro". O código é aberto no GitHub.</p>
           </article>
         </div>
       </section>
 
       <section class="home-steps">
-        <h2>Como funciona</h2>
+        <h2 data-i18n="home.how.title">Como funciona</h2>
         <ol class="steps">
           <li>
             <span>1</span>
-            <h3>Explore</h3>
-            <p>Busque por nome, número da Pokédex, set, artista ou raridade.</p>
+            <h3 data-i18n="home.step1.title">Explore</h3>
+            <p data-i18n="home.step1.body">Busque por nome, número da Pokédex, set, artista ou raridade.</p>
           </li>
           <li>
             <span>2</span>
-            <h3>Marque</h3>
-            <p>Registre cada variante que você tem, com a quantidade exata.</p>
+            <h3 data-i18n="home.step2.title">Marque</h3>
+            <p data-i18n="home.step2.body">Registre cada variante que você tem, com a quantidade exata.</p>
           </li>
           <li>
             <span>3</span>
-            <h3>Complete</h3>
-            <p>Acompanhe o progresso por Pokémon, por set e por artista.</p>
+            <h3 data-i18n="home.step3.title">Complete</h3>
+            <p data-i18n="home.step3.body">Acompanhe o progresso por Pokémon, por set e por artista.</p>
           </li>
         </ol>
       </section>
     </main>
 
     <footer class="home-footer">
-      <p>Grátis e open source — <a href="https://github.com/fexpepe/tcg-collector">código no GitHub</a></p>
-      <p>
+      <p data-i18n-html="home.footer.line1">Grátis e open source — <a href="https://github.com/fexpepe/tcg-collector">código no GitHub</a></p>
+      <p data-i18n-html="home.footer.line2">
         Dados de cartas por <a href="https://tcgdex.dev">TCGdex</a> · informações de Pokémon pela <a href="https://pokeapi.co">PokéAPI</a>.
         Pokémon e Pokémon TCG são marcas de Nintendo / Creatures / GAME FREAK; este projeto não tem afiliação.
       </p>
     </footer>
 
     <script src="data/cards.js"></script>
+    <script src="src/shared.js"></script>
     <script src="src/home.js"></script>
   </body>
 </html>

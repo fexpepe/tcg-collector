@@ -1,6 +1,6 @@
 (function () {
   const shared = window.TCGShared;
-  const { addOptions, unique, normalize, escapeHtml, escapeAttribute, speciesName, debounce } = shared;
+  const { addOptions, unique, normalize, escapeHtml, escapeAttribute, speciesName, debounce, t, tn, localizedImg } = shared;
 
   let cards = [];
   let cardsById = new Map();
@@ -8,25 +8,25 @@
   const owned = shared.createCollectionStore();
   const favorites = shared.createFavoritesStore();
 
-  const TYPE_META = {
-    normal: { label: "Normal", color: "#9fa19f" },
-    fire: { label: "Fogo", color: "#e62829" },
-    water: { label: "Água", color: "#2980ef" },
-    electric: { label: "Elétrico", color: "#fac000" },
-    grass: { label: "Planta", color: "#3fa129" },
-    ice: { label: "Gelo", color: "#3dcef3" },
-    fighting: { label: "Lutador", color: "#ff8000" },
-    poison: { label: "Veneno", color: "#9141cb" },
-    ground: { label: "Terra", color: "#915121" },
-    flying: { label: "Voador", color: "#81b9ef" },
-    psychic: { label: "Psíquico", color: "#ef4179" },
-    bug: { label: "Inseto", color: "#91a119" },
-    rock: { label: "Pedra", color: "#afa981" },
-    ghost: { label: "Fantasma", color: "#704170" },
-    dragon: { label: "Dragão", color: "#5060e1" },
-    dark: { label: "Sombrio", color: "#50413f" },
-    steel: { label: "Aço", color: "#60a1b8" },
-    fairy: { label: "Fada", color: "#ef70ef" }
+  const TYPE_COLORS = {
+    normal: "#9fa19f",
+    fire: "#e62829",
+    water: "#2980ef",
+    electric: "#fac000",
+    grass: "#3fa129",
+    ice: "#3dcef3",
+    fighting: "#ff8000",
+    poison: "#9141cb",
+    ground: "#915121",
+    flying: "#81b9ef",
+    psychic: "#ef4179",
+    bug: "#91a119",
+    rock: "#afa981",
+    ghost: "#704170",
+    dragon: "#5060e1",
+    dark: "#50413f",
+    steel: "#60a1b8",
+    fairy: "#ef70ef"
   };
 
   const REGION_BY_GENERATION = {
@@ -89,13 +89,13 @@
       init();
     })
     .catch((error) => {
-      elements.empty.textContent = `Não foi possível carregar as cartas: ${error.message}`;
+      elements.empty.textContent = t("error.cards", { message: error.message });
       elements.empty.hidden = false;
     });
 
   function init() {
     elements.type.textContent = typeLabel(detailType);
-    elements.title.textContent = detailName || "Detalhe";
+    elements.title.textContent = detailName || t("detail.label");
     renderHero();
     hydrateFilters();
     bindEvents();
@@ -152,16 +152,16 @@
 
     if (detailType === "set") {
       const logo = sample.setLogo
-        ? `<img class="set-logo" src="${escapeAttribute(sample.setLogo)}" alt="${escapeAttribute(sample.set)}">`
+        ? localizedImg(sample.setLogo, { alt: sample.set, className: "set-logo" })
         : `<strong>${escapeHtml(sample.set)}</strong>`;
       const symbol = sample.setSymbol
-        ? `<img class="set-symbol" src="${escapeAttribute(sample.setSymbol)}" alt="">`
+        ? localizedImg(sample.setSymbol, { className: "set-symbol" })
         : "";
       elements.hero.innerHTML = `
         <div class="set-art detail-set-art">${logo}${symbol}</div>
         <div>
           <h2>${escapeHtml(sample.set)}</h2>
-          <p>${sample.setTotal || pageCards.length} cartas oficiais · ${pageCards.length} no catálogo local</p>
+          <p>${escapeHtml(`${t("set.officialCards", { n: sample.setTotal || pageCards.length })} · ${t("set.inLocalCatalog", { n: pageCards.length })}`)}</p>
         </div>
       `;
       elements.hero.hidden = false;
@@ -176,7 +176,7 @@
   function renderPokemonHero(sample) {
     const dexId = sample.dexId || "";
     const region = REGION_BY_GENERATION[Number(sample.generation)] || "";
-    const generationLabel = sample.generation ? `Geração ${toRoman(sample.generation)}` : "";
+    const generationLabel = sample.generation ? t("card.generation", { g: toRoman(sample.generation) }) : "";
     const isFavorite = favorites.has(String(dexId));
     const pokemonImage = sample.pokemonImage
       ? `<img class="pokemon-hero-image" src="${escapeAttribute(sample.pokemonImage)}" alt="${escapeAttribute(detailName)}">`
@@ -199,7 +199,7 @@
           <button class="forms-toggle" data-forms-toggle aria-expanded="false" hidden></button>
         </div>
         <div class="forms-list" data-forms-list hidden></div>
-        <p class="pokemon-hero-count">${pageCards.length} carta${pageCards.length === 1 ? "" : "s"} no catálogo local</p>
+        <p class="pokemon-hero-count">${escapeHtml(tn("hero.cardsInCatalog", pageCards.length))}</p>
       </div>
     `;
     elements.hero.hidden = false;
@@ -241,7 +241,7 @@
     const formsToggle = elements.hero.querySelector("[data-forms-toggle]");
     const formsList = elements.hero.querySelector("[data-forms-list]");
     if (formsToggle && formsList && meta.forms.length) {
-      formsToggle.textContent = `Ver as ${meta.forms.length} forma${meta.forms.length === 1 ? "" : "s"} desse Pokémon`;
+      formsToggle.textContent = tn("forms.toggle", meta.forms.length);
       formsToggle.hidden = false;
       formsList.innerHTML = meta.forms
         .map((form) => `<span class="form-chip">${escapeHtml(formatFormName(form, detailName))}</span>`)
@@ -250,12 +250,14 @@
   }
 
   function favoriteLabel(isFavorite) {
-    return isFavorite ? "♥ Pokémon favoritado" : "♡ Favoritar Pokémon";
+    return isFavorite ? t("favorite.active") : t("favorite.add");
   }
 
   function typeBadge(slug) {
-    const meta = TYPE_META[slug] || { label: slug, color: "#6b7280" };
-    return `<span class="type-badge" style="--type-color: ${meta.color}">${escapeHtml(meta.label)}</span>`;
+    const color = TYPE_COLORS[slug] || "#6b7280";
+    const translated = t(`type.${slug}`);
+    const label = translated === `type.${slug}` ? slug : translated;
+    return `<span class="type-badge" style="--type-color: ${color}">${escapeHtml(label)}</span>`;
   }
 
   function formatFormName(varietyName, species) {
@@ -322,7 +324,7 @@
     pager.render(visibleCards, createCard, { resetCount });
 
     elements.empty.hidden = visibleCards.length > 0;
-    elements.resultCount.textContent = `${visibleCards.length} resultado${visibleCards.length === 1 ? "" : "s"}`;
+    elements.resultCount.textContent = tn("results.count", visibleCards.length);
     elements.ownedCount.textContent = ownedInPage;
     elements.totalCount.textContent = pageCards.length;
     elements.completionRate.textContent = pageCards.length ? `${Math.round((ownedInPage / pageCards.length) * 100)}%` : "0%";
@@ -359,8 +361,11 @@
     const total = owned.totalForCard(card.id);
     const isOwned = total > 0;
     const image = card.image
-      ? `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" aria-label="Ampliar ${escapeAttribute(card.name)}"><img loading="lazy" src="${escapeAttribute(card.image)}" alt="${escapeAttribute(card.name)}"></button>`
-      : `<span class="image-placeholder">Sem imagem</span>`;
+      ? `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${localizedImg(card.image, { alt: card.name, loading: "lazy" })}</button>`
+      : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;
+    const ownedLabel = isOwned
+      ? (total > 1 ? t("card.inCollectionTimes", { n: total }) : t("card.inCollection"))
+      : t("card.markOwned");
 
     article.innerHTML = `
       <div class="card-image">${image}</div>
@@ -372,11 +377,11 @@
         <div class="meta">
           ${escapeHtml(card.set)}<br>
           ${escapeHtml(card.number)} · ${escapeHtml(card.rarity)}<br>
-          ${escapeHtml(card.artist || "Artista desconhecido")}
+          ${escapeHtml(card.artist || t("card.unknownArtist"))}
         </div>
         <div class="variant-quantities">${shared.variantQuantityRows(card, owned)}</div>
         <button class="owned-toggle" data-card-id="${escapeAttribute(card.id)}" aria-pressed="${isOwned}">
-          ${isOwned ? `Tenho na coleção${total > 1 ? ` (×${total})` : ""}` : "Marcar como tenho"}
+          ${escapeHtml(ownedLabel)}
         </button>
       </div>
     `;
@@ -385,11 +390,8 @@
   }
 
   function typeLabel(type) {
-    const labels = {
-      pokemon: "Pokédex",
-      set: "Set",
-      artist: "Artista"
-    };
-    return labels[type] || "Detalhe";
+    const key = `detail.label.${type}`;
+    const translated = t(key);
+    return translated === key ? t("detail.label") : translated;
   }
 })();
