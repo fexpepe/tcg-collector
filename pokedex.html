@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sets - TCG Collector MVP</title>
+    <title>Pokédex - TCG Collector</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <header class="app-header">
       <div>
         <p class="eyebrow">Local-first MVP</p>
-        <h1>Sets</h1>
+        <h1>Pokédex</h1>
       </div>
       <div class="header-actions">
         <button id="exportButton" class="secondary">Exportar</button>
@@ -24,8 +24,8 @@
     <main>
       <nav class="page-nav" aria-label="Páginas">
         <a href="index.html">Início</a>
-        <a href="pokedex.html">Pokédex</a>
-        <a class="active" href="sets.html">Sets</a>
+        <a class="active" href="pokedex.html">Pokédex</a>
+        <a href="sets.html">Sets</a>
         <a href="artists.html">Artistas</a>
       </nav>
 
@@ -44,40 +44,43 @@
         </article>
       </section>
 
-      <section class="toolbar" aria-label="Filtros">
+      <section class="toolbar pokedex-toolbar" aria-label="Filtros">
         <div class="search-box">
           <label for="searchInput">Busca</label>
-          <input id="searchInput" type="search" placeholder="Set, carta, artista, número...">
+          <input id="searchInput" type="search" placeholder="Nome ou número da Pokédex...">
         </div>
-        <div>
-          <label for="setFilter">Set</label>
-          <select id="setFilter">
-            <option value="">Todos</option>
-          </select>
-        </div>
-        <div>
-          <label for="languageFilter">Idioma</label>
-          <select id="languageFilter">
-            <option value="">Todos</option>
-          </select>
-        </div>
-        <div>
-          <label for="ownedFilter">Coleção</label>
-          <select id="ownedFilter">
-            <option value="all">Todas</option>
-            <option value="owned">Tenho</option>
-            <option value="missing">Faltando</option>
-          </select>
+        <div id="generationChips" class="chip-filter" role="group" aria-label="Geração"></div>
+        <div class="toolbar-selects">
+          <div>
+            <label for="setFilter">Set</label>
+            <select id="setFilter">
+              <option value="">Todos</option>
+            </select>
+          </div>
+          <div>
+            <label for="languageFilter">Idioma</label>
+            <select id="languageFilter">
+              <option value="">Todos</option>
+            </select>
+          </div>
+          <div>
+            <label for="ownedFilter">Coleção</label>
+            <select id="ownedFilter">
+              <option value="all">Todas</option>
+              <option value="owned">Tenho</option>
+              <option value="missing">Faltando</option>
+            </select>
+          </div>
         </div>
       </section>
 
       <section class="results-header">
-        <h2>Sets</h2>
+        <h2>Pokémon</h2>
         <p id="resultCount">0 resultados</p>
       </section>
 
-      <section id="cardGrid" class="group-grid" data-view="sets" aria-live="polite"></section>
-      <p id="emptyState" class="empty-state" hidden>Nenhum set encontrado com esses filtros.</p>
+      <section id="cardGrid" class="card-grid" data-view="pokedex" aria-live="polite"></section>
+      <p id="emptyState" class="empty-state" hidden>Nenhuma carta encontrada com esses filtros.</p>
     </main>
 
     <script src="data/cards.js"></script>

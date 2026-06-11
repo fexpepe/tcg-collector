@@ -4,7 +4,9 @@ MVP local-first para testar a arquitetura de um colecionador de Pokémon TCG sem
 
 ## Como abrir
 
-Abra `index.html` no navegador. A coleção é salva no `localStorage` do próprio navegador.
+Online: https://fexpepe.github.io/tcg-collector/
+
+Local: abra `index.html` no navegador (home) ou `pokedex.html` (direto no app). A coleção é salva no `localStorage` do próprio navegador. Para servir via HTTP (necessário para o modo manifest e para a PokéAPI em algumas configurações): `npx http-server -p 4173 .`
 
 ## O que já faz
 
