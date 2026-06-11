@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Artistas - TCG Collector MVP</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Local-first MVP</p>
+        <h1>Artistas</h1>
+      </div>
+      <div class="header-actions">
+        <button id="exportButton" class="secondary">Exportar</button>
+        <label class="secondary file-button">
+          Importar
+          <input id="importInput" type="file" accept="application/json">
+        </label>
+      </div>
+    </header>
+
+    <main>
+      <nav class="page-nav" aria-label="Páginas">
+        <a href="index.html">Pokédex</a>
+        <a href="sets.html">Sets</a>
+        <a class="active" href="artists.html">Artistas</a>
+      </nav>
+
+      <section class="stats-grid" aria-label="Resumo da coleção">
+        <article>
+          <span id="ownedCount">0</span>
+          <p>cartas marcadas</p>
+        </article>
+        <article>
+          <span id="totalCount">0</span>
+          <p>cartas no catálogo</p>
+        </article>
+        <article>
+          <span id="completionRate">0%</span>
+          <p>progresso</p>
+        </article>
+      </section>
+
+      <section class="toolbar" aria-label="Filtros">
+        <div class="search-box">
+          <label for="searchInput">Busca</label>
+          <input id="searchInput" type="search" placeholder="Artista, carta, set, número...">
+        </div>
+        <div>
+          <label for="setFilter">Set</label>
+          <select id="setFilter">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div>
+          <label for="languageFilter">Idioma</label>
+          <select id="languageFilter">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div>
+          <label for="ownedFilter">Coleção</label>
+          <select id="ownedFilter">
+            <option value="all">Todas</option>
+            <option value="owned">Tenho</option>
+            <option value="missing">Faltando</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="results-header">
+        <h2>Artistas</h2>
+        <p id="resultCount">0 resultados</p>
+      </section>
+
+      <section id="cardGrid" class="group-grid" data-view="artists" aria-live="polite"></section>
+      <p id="emptyState" class="empty-state" hidden>Nenhum artista encontrado com esses filtros.</p>
+    </main>
+
+    <script src="data/cards.js"></script>
+    <script src="data/indexes.js"></script>
+    <script src="src/shared.js"></script>
+    <script src="src/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+# Cache do sync da TCGdex (regenerável com node scripts/sync-tcgdex.mjs)
+data/.cache/
+
+# Artefatos gerados pelo sync (regeneráveis; o app usa data/cards.js por padrão)
+data/*.generated.js
+data/sets/
+
+# Configuração local do Claude Code
+.claude/settings.local.json
+
+# Lixo de SO/editor
+Thumbs.db
+.DS_Store

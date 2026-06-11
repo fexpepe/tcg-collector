@@ -1,0 +1,72 @@
+# TCG Collector MVP
+
+MVP local-first para testar a arquitetura de um colecionador de Pokémon TCG sem backend obrigatório.
+
+## Como abrir
+
+Abra `index.html` no navegador. A coleção é salva no `localStorage` do próprio navegador.
+
+## O que já faz
+
+- lista cartas de um catálogo local;
+- busca por nome, set, artista, raridade, idioma, número e variante;
+- filtra por set, idioma e status da coleção;
+- rastreia a coleção por variante e quantidade (ex.: Holo ×2, Reverse ×1), com steppers na página de detalhe e no preview da carta;
+- botão rápido "tenho" marca a primeira variante (ou limpa a carta toda);
+- mostra progresso básico (cartas distintas com ao menos uma variante);
+- exporta/importa a coleção em JSON (formato v2 por variante; importa também o formato v1 antigo);
+- na Pokédex, filtra por geração com chips clicáveis (estilo binderbuilder);
+- na página de um Pokémon, mostra tipos, região, geração, botão de favoritar e as formas alternativas.
+
+Tipos e formas vêm da [PokéAPI](https://pokeapi.co/) em runtime (por `dexId`), com cache no `localStorage`; região e geração são derivadas localmente. Sem rede, a página ainda mostra região, geração e favoritar — só os tipos/formas ficam ausentes. Favoritos ficam no `localStorage` (chave `tcg-collector-favorites-v1`), separados das cartas marcadas.
+
+## Como atualizar dados depois
+
+O app usa `data/cards.js` por padrão para funcionar direto via arquivo local. Para gerar um catálogo a partir da TCGdex:
+
+```bash
+node scripts/sync-tcgdex.mjs pt                  # catálogo completo em pt
+node scripts/sync-tcgdex.mjs en --sets base1     # apenas sets específicos
+node scripts/sync-tcgdex.mjs pt --force          # ignora o cache e baixa tudo de novo
+node scripts/sync-tcgdex.mjs pt --concurrency 4  # menos requisições paralelas (padrão: 8)
+```
+
+O script baixa com requisições paralelas, refaz tentativas com backoff em erros de rede/429/5xx e guarda cada set em `data/.cache/<idioma>/`. Se a execução for interrompida, basta rodar de novo: os sets já baixados vêm do cache e só o que falta é buscado. Cartas que a API não encontra (404) são puladas com aviso, sem abortar o sync.
+
+O sync gera três saídas:
+
+- `data/cards.generated.js` — catálogo completo num arquivo só (funciona via `file://`);
+- `data/indexes.generated.js` — agrupamentos prontos de Pokédex, sets e artistas;
+- `data/manifest.generated.js` + `data/sets/<idioma>/<setId>.json` — catálogo dividido por set, carregado sob demanda via `fetch`.
+
+Para usar o catálogo completo num arquivo só, troque em todas as páginas:
+
+```html
+<script src="data/cards.js"></script>
+<script src="data/indexes.js"></script>
+```
+
+por:
+
+```html
+<script src="data/cards.generated.js"></script>
+<script src="data/indexes.generated.js"></script>
+```
+
+Para o modo dividido por set (recomendado para catálogos grandes), use:
+
+```html
+<script src="data/manifest.generated.js"></script>
+<script src="data/indexes.generated.js"></script>
+```
+
+Nesse modo as páginas de listagem baixam os chunks em paralelo e a página de detalhe baixa apenas os sets que contêm as cartas exibidas. Como usa `fetch`, precisa ser servido via HTTP (ex.: `npx http-server -p 4173 .`) em vez de aberto direto como arquivo.
+
+A coleção fica no `localStorage` em `tcg-collector-collection-v2` (`cardId -> { variante: quantidade }`). Coleções no formato antigo (`tcg-collector-owned-v1`, lista de ids) são migradas automaticamente na primeira visita — cada carta vira a primeira variante com quantidade 1 — e a chave antiga é mantida como backup.
+
+## Próximos passos recomendados
+
+- trocar o catálogo de exemplo pelo catálogo gerado;
+- adicionar IndexedDB se a coleção crescer muito;
+- gerar índice de busca com MiniSearch/FlexSearch;
+- adicionar sync automático com GitHub Actions quando o app for para host.
