@@ -264,28 +264,34 @@
     return article;
   }
 
+  // Cápsula compacta e clicável (estilo Pokédex): abre a página do grupo com
+  // as cartas filtradas — sem listar todas as cartas aqui dentro.
   function createGroupCard(item) {
-    const article = document.createElement("article");
-    article.className = "group-card";
+    const link = document.createElement("a");
+    link.className = "group-card";
     const type = view === "artists" ? "artist" : view === "trainers" ? "trainer" : view;
+    link.href = detailUrl(type, item.name);
     const progress = item.totalCount ? Math.round((item.ownedCount / item.totalCount) * 100) : 0;
+    const art = item.image
+      ? localizedImg(item.image, { alt: item.name, loading: "lazy" })
+      : `<span class="group-card-initial">${escapeHtml(item.name.charAt(0).toUpperCase())}</span>`;
 
-    article.innerHTML = `
-      <div class="group-card-header">
-        <div>
-          <h3>${escapeHtml(item.name)}</h3>
-          <p>${escapeHtml(`${tn("count.cards", item.totalCount)} · ${tn("count.marked", item.ownedCount)}`)}</p>
+    link.innerHTML = `
+      <div class="group-card-art">${art}</div>
+      <div class="group-card-body">
+        <h3>${escapeHtml(item.name)}</h3>
+        <p>${escapeHtml(`${tn("count.cards", item.totalCount)} · ${tn("count.marked", item.ownedCount)}`)}</p>
+        <div class="progress-bar" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
+          <span style="width: ${progress}%"></span>
         </div>
-        <span class="tag">${progress}%</span>
+        <div class="set-footer">
+          <strong>${progress}%</strong>
+          <span>${item.ownedCount}/${item.totalCount}</span>
+        </div>
       </div>
-      <div class="progress-bar" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
-        <span style="width: ${progress}%"></span>
-      </div>
-      <div class="mini-card-list">${item.cards.map(createMiniCard).join("")}</div>
-      <a class="details-link" href="${escapeAttribute(detailUrl(type, item.name))}">${escapeHtml(t("card.viewCards"))}</a>
     `;
 
-    return article;
+    return link;
   }
 
   function createSetCard(item) {
@@ -333,22 +339,6 @@
     return article;
   }
 
-  function createMiniCard(card) {
-    const total = owned.totalForCard(card.id);
-    const isOwned = total > 0;
-    return `
-      <div class="mini-card">
-        <div>
-          <strong>${escapeHtml(card.name)}</strong>
-          <span>${escapeHtml(card.number)} · ${escapeHtml(card.set)} · ${escapeHtml(card.language.toUpperCase())}</span>
-        </div>
-        <button class="owned-toggle compact" data-card-id="${escapeAttribute(card.id)}" aria-pressed="${isOwned}">
-          ${escapeHtml(isOwned ? (total > 1 ? t("card.haveTimes", { n: total }) : t("card.have")) : t("card.missing"))}
-        </button>
-      </div>
-    `;
-  }
-
   function buildIndexes(sourceCards) {
     return {
       pokedex: groupToIndex(sourceCards.filter((card) => card.dexId), (card) => card.pokemonName || speciesName(card.name)),
@@ -378,7 +368,8 @@
       name: group.name,
       cards: sortedCards,
       totalCount: sortedCards.length,
-      ownedCount: sortedCards.filter((card) => owned.has(card.id)).length
+      ownedCount: sortedCards.filter((card) => owned.has(card.id)).length,
+      image: (sortedCards.find((card) => card.image) || {}).image || ""
     };
   }
 
