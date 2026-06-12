@@ -20,6 +20,7 @@ Local: abra `index.html` no navegador (home) ou `pokedex.html` (direto no app). 
 - exporta/importa a coleção em JSON (formato v2 por variante; importa também o formato v1 antigo);
 - seletor de idioma no topo (Português/English) que traduz a interface do site;
 - cada carta mostra uma bandeirinha do seu idioma (Inglês, Japonês, Chinês, Português-BR) e a imagem no idioma da própria carta;
+- a página Sets tem um filtro mestre por origem — Internacional (inglês e demais ocidentais), Japonês e Chinês;
 - na Pokédex, filtra por geração (chips), por região/local (Kanto, Johto…) e por tipo (Fogo, Voador…);
 - na página de um Pokémon, mostra tipos, região, geração, botão de favoritar e as formas alternativas.
 

@@ -1779,3 +1779,8 @@ a.progress-row:hover {
   align-items: center;
   gap: 7px;
 }
+
+/* Filtro mestre (origem dos sets) */
+.master-filter {
+  margin-bottom: 18px;
+}

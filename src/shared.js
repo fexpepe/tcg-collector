@@ -211,6 +211,9 @@
       "cardLang.ja": "Japonês",
       "cardLang.zh": "Chinês",
       "cardLang.pt": "Português (BR)",
+      "setRegion.international": "Internacional",
+      "setRegion.japanese": "Japonês",
+      "setRegion.chinese": "Chinês",
       "toolbar.set": "Set",
       "toolbar.language": "Idioma",
       "toolbar.collection": "Coleção",
@@ -384,6 +387,9 @@
       "cardLang.ja": "Japanese",
       "cardLang.zh": "Chinese",
       "cardLang.pt": "Brazilian Portuguese",
+      "setRegion.international": "International",
+      "setRegion.japanese": "Japanese",
+      "setRegion.chinese": "Chinese",
       "toolbar.set": "Set",
       "toolbar.language": "Language",
       "toolbar.collection": "Collection",
@@ -646,6 +652,15 @@
     if (code.startsWith("zh")) return "zh";
     if (code.startsWith("en")) return "en";
     return code;
+  }
+
+  // Origem de lançamento da carta: japonês, chinês ou internacional (inglês e
+  // demais idiomas ocidentais, que compartilham os mesmos sets).
+  function cardLanguageRegion(language) {
+    const code = normalizeCardLanguage(language);
+    if (code === "ja") return "japanese";
+    if (code === "zh") return "chinese";
+    return "international";
   }
 
   function cardFlag(language) {
@@ -1178,6 +1193,7 @@
     regionForGeneration,
     typesForDex,
     cardFlag,
+    cardLanguageRegion,
     localizeAssetUrl,
     localizedImg,
     loadCatalog,

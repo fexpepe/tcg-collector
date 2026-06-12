@@ -12,6 +12,7 @@
     empty: document.getElementById("emptyState"),
     search: document.getElementById("searchInput"),
     generationChips: document.getElementById("generationChips"),
+    setRegionChips: document.getElementById("setRegionChips"),
     regionFilter: document.getElementById("regionFilter"),
     typeFilter: document.getElementById("typeFilter"),
     setFilter: document.getElementById("setFilter"),
@@ -27,6 +28,7 @@
   const view = elements.grid.dataset.view || "pokedex";
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
   let selectedGeneration = "";
+  let selectedLangRegion = "international";
 
   const preview = shared.createCardPreview({
     getCard: (cardId) => cardsById.get(cardId),
@@ -123,6 +125,18 @@
         if (!chip) return;
         selectedGeneration = chip.dataset.generation;
         Array.from(elements.generationChips.children).forEach((node) => {
+          node.setAttribute("aria-pressed", node === chip ? "true" : "false");
+        });
+        applyFilters();
+      });
+    }
+
+    if (elements.setRegionChips) {
+      elements.setRegionChips.addEventListener("click", (event) => {
+        const chip = event.target.closest("[data-lang-region]");
+        if (!chip) return;
+        selectedLangRegion = chip.dataset.langRegion;
+        Array.from(elements.setRegionChips.children).forEach((node) => {
           node.setAttribute("aria-pressed", node === chip ? "true" : "false");
         });
         applyFilters();
@@ -226,12 +240,13 @@
       const matchesGeneration = !generationValue || String(card.generation) === generationValue;
       const matchesRegion = !regionValue || shared.regionForGeneration(card.generation) === regionValue;
       const matchesType = !typeValue || shared.typesForDex(card.dexId).includes(typeValue);
+      const matchesLangRegion = !elements.setRegionChips || shared.cardLanguageRegion(card.language) === selectedLangRegion;
       const matchesSet = !setValue || card.set === setValue;
       const matchesLanguage = !languageValue || card.language === languageValue;
       const isOwned = owned.has(card.id);
       const matchesOwned = ownedValue === "all" || (ownedValue === "owned" && isOwned) || (ownedValue === "missing" && !isOwned);
 
-      return matchesQuery && matchesGeneration && matchesRegion && matchesType && matchesSet && matchesLanguage && matchesOwned;
+      return matchesQuery && matchesGeneration && matchesRegion && matchesType && matchesLangRegion && matchesSet && matchesLanguage && matchesOwned;
     });
   }
 
