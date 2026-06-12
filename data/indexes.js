@@ -47,19 +47,35 @@ window.TCG_INDEXES = {
       ]
     }
   ],
+  "trainers": [
+    {
+      "name": "Bird Keeper",
+      "cardIds": [
+        "swsh3-159"
+      ]
+    },
+    {
+      "name": "Energy Removal",
+      "cardIds": [
+        "base1-92"
+      ]
+    }
+  ],
   "sets": [
     {
       "name": "Base Set",
       "cardIds": [
         "base1-15",
         "base1-2",
-        "base1-4"
+        "base1-4",
+        "base1-92"
       ]
     },
     {
       "name": "Darkness Ablaze",
       "cardIds": [
-        "swsh3-136"
+        "swsh3-136",
+        "swsh3-159"
       ]
     },
     {
@@ -107,6 +123,18 @@ window.TCG_INDEXES = {
       "cardIds": [
         "SV9-001-ja",
         "SV9-010-zh"
+      ]
+    },
+    {
+      "name": "Hideki Ishikawa",
+      "cardIds": [
+        "swsh3-159"
+      ]
+    },
+    {
+      "name": "Keiji Kinebuchi",
+      "cardIds": [
+        "base1-92"
       ]
     },
     {

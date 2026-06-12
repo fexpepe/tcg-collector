@@ -22,7 +22,8 @@ Local: abra `index.html` no navegador (home) ou `pokedex.html` (direto no app). 
 - cada carta mostra uma bandeirinha do seu idioma (Inglês, Japonês, Chinês, Português-BR) e a imagem no idioma da própria carta;
 - a página Sets tem um filtro mestre por origem — Internacional (inglês e demais ocidentais), Japonês e Chinês — e mostra a data de lançamento de cada set no canto da imagem;
 - na Pokédex, filtra por geração (chips), por região/local (Kanto, Johto…) e por tipo (Fogo, Voador…);
-- na página de um Pokémon, mostra tipos, região, geração, botão de favoritar e as formas alternativas.
+- na página de um Pokémon, mostra tipos, região, geração, botão de favoritar e as formas alternativas;
+- aba **Treinadores** (no menu Pokémon) agrupando as cartas de Treinador por nome, com filtro por origem (Internacional/Japonês/Chinês).
 
 Tipos e formas (na página de um Pokémon) vêm da [PokéAPI](https://pokeapi.co/) em runtime (por `dexId`), com cache no `localStorage`; região e geração são derivadas localmente. O filtro de tipo da Pokédex usa um mapa estático `data/pokemon-types.js` (dexId → tipos), gerado por `node scripts/sync-pokemon-types.mjs` a partir do endpoint `/type` da PokéAPI. Sem rede, a página ainda mostra região, geração e favoritar — só os tipos/formas ficam ausentes. Favoritos ficam no `localStorage` (chave `tcg-collector-favorites-v1`), separados das cartas marcadas.
 

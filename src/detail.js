@@ -89,7 +89,9 @@
     }
 
     const indexes = window.TCG_INDEXES;
-    const groups = detailType === "artist" ? indexes?.artists : indexes?.pokedex;
+    const groups = detailType === "artist" ? indexes?.artists
+      : detailType === "trainer" ? indexes?.trainers
+      : indexes?.pokedex;
     const group = (groups || []).find((candidate) => candidate.name === detailName);
     if (!group) {
       return shared.fetchSetChunks(manifest.sets);
@@ -111,6 +113,10 @@
 
     if (detailType === "pokemon") {
       return cards.filter((card) => (card.pokemonName || speciesName(card.name)) === detailName);
+    }
+
+    if (detailType === "trainer") {
+      return cards.filter((card) => card.category === "Trainer" && card.name === detailName);
     }
 
     return [];

@@ -92,6 +92,8 @@ function buildIndexes(sourceCards) {
     // Pokédex só com cartas que são Pokémon (têm dexId) — exclui Treinador/
     // Energia/Item — agrupadas pelo nome canônico.
     pokedex: groupToIndex(sourceCards.filter((card) => card.dexId), (card) => card.pokemonName),
+    // Treinadores agrupados por nome (Supporter/Item/Stadium/Tool).
+    trainers: groupToIndex(sourceCards.filter((card) => card.category === "Trainer"), (card) => card.name),
     sets: groupToIndex(sourceCards, (card) => card.set),
     artists: groupToIndex(sourceCards, (card) => card.artist || "Artista desconhecido")
   };

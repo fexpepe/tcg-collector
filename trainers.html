@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="title.trainers">Treinadores - TCG Collector</title>
+    <meta name="description" content="Cartas de Treinador de Pokémon TCG (Apoiador, Item, Estádio, Ferramenta) agrupadas por nome, com progresso de coleção.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">TCG&nbsp;Collector</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page="trainers"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+          <button id="exportButton" class="secondary" data-i18n="header.export">Exportar</button>
+          <label class="secondary file-button">
+            <span data-i18n="header.import">Importar</span>
+            <input id="importInput" type="file" accept="application/json">
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-head">
+        <p class="eyebrow" data-i18n="header.tagline">Local-first MVP</p>
+        <h1 data-i18n="nav.trainers">Treinadores</h1>
+      </div>
+
+      <div id="setRegionChips" class="chip-filter master-filter" role="group" aria-label="Origem das cartas">
+        <button type="button" class="chip" data-lang-region="international" aria-pressed="true" data-i18n="setRegion.international">Internacional</button>
+        <button type="button" class="chip" data-lang-region="japanese" aria-pressed="false" data-i18n="setRegion.japanese">Japonês</button>
+        <button type="button" class="chip" data-lang-region="chinese" aria-pressed="false" data-i18n="setRegion.chinese">Chinês</button>
+      </div>
+
+      <section class="stats-grid" aria-label="Resumo da coleção">
+        <article>
+          <span id="ownedCount">0</span>
+          <p data-i18n="stats.owned">cartas marcadas</p>
+        </article>
+        <article>
+          <span id="totalCount">0</span>
+          <p data-i18n="stats.total">cartas no catálogo</p>
+        </article>
+        <article>
+          <span id="completionRate">0%</span>
+          <p data-i18n="stats.progress">progresso</p>
+        </article>
+      </section>
+
+      <section class="toolbar" aria-label="Filtros">
+        <div class="search-box">
+          <label for="searchInput" data-i18n="toolbar.search">Busca</label>
+          <input id="searchInput" type="search" data-i18n-placeholder="search.placeholder.trainers" placeholder="Treinador, set, número...">
+        </div>
+      </section>
+
+      <section class="results-header">
+        <h2 data-i18n="results.heading.trainers">Treinadores</h2>
+        <p id="resultCount">0 resultados</p>
+      </section>
+
+      <section id="cardGrid" class="group-grid" data-view="trainers" aria-live="polite"></section>
+      <p id="emptyState" class="empty-state" data-i18n="empty.trainers" hidden>Nenhum treinador encontrado com esses filtros.</p>
+    </main>
+
+    <script src="data/cards.js"></script>
+    <script src="data/indexes.js"></script>
+    <script src="src/shared.js"></script>
+    <script src="src/app.js"></script>
+  </body>
+</html>

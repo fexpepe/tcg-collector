@@ -173,6 +173,10 @@
       return indexedGroupsToItems(indexes.artists, visibleIds, toGroupItem);
     }
 
+    if (view === "trainers") {
+      return indexedGroupsToItems(indexes.trainers, visibleIds, toGroupItem);
+    }
+
     return indexedGroupsToItems(indexes.pokedex, visibleIds, toPokedexItem);
   }
 
@@ -263,7 +267,7 @@
   function createGroupCard(item) {
     const article = document.createElement("article");
     article.className = "group-card";
-    const type = view === "artists" ? "artist" : view;
+    const type = view === "artists" ? "artist" : view === "trainers" ? "trainer" : view;
     const progress = item.totalCount ? Math.round((item.ownedCount / item.totalCount) * 100) : 0;
 
     article.innerHTML = `
@@ -347,7 +351,8 @@
 
   function buildIndexes(sourceCards) {
     return {
-      pokedex: groupToIndex(sourceCards, (card) => card.pokemonName || speciesName(card.name)),
+      pokedex: groupToIndex(sourceCards.filter((card) => card.dexId), (card) => card.pokemonName || speciesName(card.name)),
+      trainers: groupToIndex(sourceCards.filter((card) => card.category === "Trainer"), (card) => card.name),
       sets: groupToIndex(sourceCards, (card) => card.set),
       artists: groupToIndex(sourceCards, (card) => card.artist || "Artista desconhecido")
     };

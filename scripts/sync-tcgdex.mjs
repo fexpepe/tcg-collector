@@ -190,6 +190,7 @@ function toAppCard(card, fallbackLanguage, fullSet) {
     id: fallbackLanguage === "en" ? card.id : `${card.id}-${fallbackLanguage}`,
     name: card.name || card.id,
     pokemonName: speciesName(card.name || card.id),
+    category: card.category || "",
     dexId: Array.isArray(card.dexId) ? card.dexId[0] : "",
     generation: generationFromDexId(Array.isArray(card.dexId) ? card.dexId[0] : ""),
     pokemonImage: pokemonImageUrl(Array.isArray(card.dexId) ? card.dexId[0] : ""),

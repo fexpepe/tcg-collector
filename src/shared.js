@@ -221,6 +221,7 @@
       "nav.pokedex": "Pokédex",
       "nav.sets": "Sets",
       "nav.artists": "Artistas",
+      "nav.trainers": "Treinadores",
       "header.tagline": "Local-first MVP",
       "header.export": "Exportar",
       "header.import": "Importar",
@@ -228,6 +229,7 @@
       "title.pokedex": "Pokédex - TCG Collector",
       "title.sets": "Sets - TCG Collector",
       "title.artists": "Artistas - TCG Collector",
+      "title.trainers": "Treinadores - TCG Collector",
       "title.detail": "Detalhe - TCG Collector",
       "nav.collection": "Coleção",
       "title.collection": "Coleção - TCG Collector",
@@ -282,16 +284,19 @@
       "search.placeholder.pokedex": "Nome ou número da Pokédex...",
       "search.placeholder.sets": "Set, carta, artista, número...",
       "search.placeholder.artists": "Artista, carta, set, número...",
+      "search.placeholder.trainers": "Treinador, set, número...",
       "search.placeholder.detail": "Carta, set, artista, número...",
       "results.heading.pokedex": "Pokémon",
       "results.heading.sets": "Sets",
       "results.heading.artists": "Artistas",
+      "results.heading.trainers": "Treinadores",
       "results.heading.detail": "Cartas",
       "results.count.one": "{n} resultado",
       "results.count.other": "{n} resultados",
       "empty.pokedex": "Nenhuma carta encontrada com esses filtros.",
       "empty.sets": "Nenhum set encontrado com esses filtros.",
       "empty.artists": "Nenhum artista encontrado com esses filtros.",
+      "empty.trainers": "Nenhum treinador encontrado com esses filtros.",
       "empty.detail": "Nenhuma carta encontrada nessa página.",
       "pager.more.one": "Mostrar mais ({n} restante)",
       "pager.more.other": "Mostrar mais ({n} restantes)",
@@ -339,6 +344,7 @@
       "detail.label.pokemon": "Pokédex",
       "detail.label.set": "Set",
       "detail.label.artist": "Artista",
+      "detail.label.trainer": "Treinador",
       "hero.cardsInCatalog.one": "{n} carta no catálogo local",
       "hero.cardsInCatalog.other": "{n} cartas no catálogo local",
       "favorite.add": "♡ Favoritar Pokémon",
@@ -405,6 +411,7 @@
       "nav.pokedex": "Pokédex",
       "nav.sets": "Sets",
       "nav.artists": "Artists",
+      "nav.trainers": "Trainers",
       "header.tagline": "Local-first MVP",
       "header.export": "Export",
       "header.import": "Import",
@@ -412,6 +419,7 @@
       "title.pokedex": "Pokédex - TCG Collector",
       "title.sets": "Sets - TCG Collector",
       "title.artists": "Artists - TCG Collector",
+      "title.trainers": "Trainers - TCG Collector",
       "title.detail": "Detail - TCG Collector",
       "nav.collection": "Collection",
       "title.collection": "Collection - TCG Collector",
@@ -466,16 +474,19 @@
       "search.placeholder.pokedex": "Name or Pokédex number...",
       "search.placeholder.sets": "Set, card, artist, number...",
       "search.placeholder.artists": "Artist, card, set, number...",
+      "search.placeholder.trainers": "Trainer, set, number...",
       "search.placeholder.detail": "Card, set, artist, number...",
       "results.heading.pokedex": "Pokémon",
       "results.heading.sets": "Sets",
       "results.heading.artists": "Artists",
+      "results.heading.trainers": "Trainers",
       "results.heading.detail": "Cards",
       "results.count.one": "{n} result",
       "results.count.other": "{n} results",
       "empty.pokedex": "No cards match these filters.",
       "empty.sets": "No sets match these filters.",
       "empty.artists": "No artists match these filters.",
+      "empty.trainers": "No trainers match these filters.",
       "empty.detail": "No cards found on this page.",
       "pager.more.one": "Show more ({n} left)",
       "pager.more.other": "Show more ({n} left)",
@@ -523,6 +534,7 @@
       "detail.label.pokemon": "Pokédex",
       "detail.label.set": "Set",
       "detail.label.artist": "Artist",
+      "detail.label.trainer": "Trainer",
       "hero.cardsInCatalog.one": "{n} card in local catalog",
       "hero.cardsInCatalog.other": "{n} cards in local catalog",
       "favorite.add": "♡ Favorite this Pokémon",
@@ -631,9 +643,9 @@
     let active = nav.dataset.activePage;
     if (active === "detail") {
       const type = new URLSearchParams(window.location.search).get("type");
-      active = type === "set" ? "sets" : type === "artist" ? "artists" : "pokedex";
+      active = type === "set" ? "sets" : type === "artist" ? "artists" : type === "trainer" ? "trainers" : "pokedex";
     }
-    const groupActive = ["pokedex", "sets", "artists"].includes(active);
+    const groupActive = ["pokedex", "trainers", "sets", "artists"].includes(active);
 
     const link = (href, key, page) => `<a href="${href}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
 
@@ -645,6 +657,7 @@
         </button>
         <div class="nav-dropdown" hidden>
           ${link("pokedex.html", "nav.pokedex", "pokedex")}
+          ${link("trainers.html", "nav.trainers", "trainers")}
           ${link("sets.html", "nav.sets", "sets")}
           ${link("artists.html", "nav.artists", "artists")}
         </div>
