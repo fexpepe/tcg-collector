@@ -91,7 +91,7 @@
     const myCards = ownedCards();
     addOptions(elements.pokemonFilter, unique(myCards.map((card) => card.pokemonName || speciesName(card.name))));
     addOptions(elements.setFilter, unique(myCards.map((card) => card.set)));
-    addOptions(elements.languageFilter, unique(myCards.map((card) => card.language)));
+    addOptions(elements.languageFilter, unique(myCards.map((card) => card.language)), (value) => shared.cardLanguageLabel(value));
     addOptions(elements.rarityFilter, unique(myCards.map((card) => card.rarity)));
   }
 

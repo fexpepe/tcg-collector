@@ -962,6 +962,10 @@ input::placeholder {
   color: var(--muted);
 }
 
+.empty-state a {
+  color: var(--accent);
+}
+
 .card-preview-modal {
   position: fixed;
   inset: 0;
@@ -1095,11 +1099,18 @@ input::placeholder {
 }
 
 @media (max-width: 860px) {
+  /* Em telas pequenas o header empilha 3 linhas; deixa de ser sticky para
+     não roubar espaço vertical permanente. */
+  .app-header {
+    position: static;
+  }
+
   .app-header-inner {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 10px;
+    gap: 8px;
+    padding: 10px 0;
   }
 
   .app-header-inner .brand {

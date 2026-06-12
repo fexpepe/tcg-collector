@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title data-i18n="title.collection">Coleção - TCG Collector</title>
+    <meta name="description" content="Sua coleção de Pokémon TCG: progresso por Pokémon, artista, set e idioma, com todas as cartas marcadas.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -51,7 +53,7 @@
           <div id="sortChips" class="chip-filter"></div>
         </div>
         <div id="groupList" class="progress-row-list"></div>
-        <p id="groupsEmpty" class="empty-state" data-i18n="empty.collection" hidden>Nenhuma carta da sua coleção com esses filtros. Explore a Pokédex e marque o que você tem.</p>
+        <p id="groupsEmpty" class="empty-state" data-i18n-html="empty.collection" hidden>Nenhuma carta da sua coleção com esses filtros. <a href="pokedex.html">Explore a Pokédex</a> e marque o que você tem.</p>
       </section>
 
       <div id="cardsView" hidden>
@@ -107,7 +109,7 @@
         </section>
 
         <section id="cardGrid" class="card-grid" aria-live="polite"></section>
-        <p id="emptyState" class="empty-state" data-i18n="empty.collection" hidden>Nenhuma carta da sua coleção com esses filtros. Explore a Pokédex e marque o que você tem.</p>
+        <p id="emptyState" class="empty-state" data-i18n-html="empty.collection" hidden>Nenhuma carta da sua coleção com esses filtros. <a href="pokedex.html">Explore a Pokédex</a> e marque o que você tem.</p>
       </div>
     </main>
 

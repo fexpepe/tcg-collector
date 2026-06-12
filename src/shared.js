@@ -178,7 +178,7 @@
       "stats.setsCovered": "sets representados",
       "toolbar.pokemon": "Pokémon",
       "toolbar.rarity": "Raridade",
-      "empty.collection": "Nenhuma carta da sua coleção com esses filtros. Explore a Pokédex e marque o que você tem.",
+      "empty.collection": "Nenhuma carta da sua coleção com esses filtros. <a href=\"pokedex.html\">Explore a Pokédex</a> e marque o que você tem.",
       "collection.subtitle": "Pokémon, artistas, sets e idiomas que você está colecionando.",
       "collection.tab.pokemon": "Pokémon",
       "collection.tab.artists": "Artistas",
@@ -354,7 +354,7 @@
       "stats.setsCovered": "sets covered",
       "toolbar.pokemon": "Pokémon",
       "toolbar.rarity": "Rarity",
-      "empty.collection": "No cards from your collection match these filters. Browse the Pokédex and mark what you own.",
+      "empty.collection": "No cards from your collection match these filters. <a href=\"pokedex.html\">Browse the Pokédex</a> and mark what you own.",
       "collection.subtitle": "Pokémon, artists, sets and languages you are actively collecting.",
       "collection.tab.pokemon": "Pokémon",
       "collection.tab.artists": "Artists",
@@ -663,10 +663,15 @@
     return "international";
   }
 
-  function cardFlag(language) {
+  function cardLanguageLabel(language) {
     const code = normalizeCardLanguage(language);
     const translated = t(`cardLang.${code}`);
-    const label = translated === `cardLang.${code}` ? String(language || "").toUpperCase() : translated;
+    return translated === `cardLang.${code}` ? String(language || "").toUpperCase() : translated;
+  }
+
+  function cardFlag(language) {
+    const code = normalizeCardLanguage(language);
+    const label = cardLanguageLabel(language);
     const svg = CARD_FLAG_SVGS[code];
     if (!svg) {
       return `<span class="card-flag card-flag-text" title="${escapeAttribute(label)}">${escapeHtml(String(language || "").toUpperCase())}</span>`;
@@ -730,6 +735,7 @@
 
   function createCardPreview({ getCard, store, onOwnedChange }) {
     let activeCard = null;
+    let openerElement = null;
 
     document.addEventListener("click", handleClick);
     document.addEventListener("keydown", (event) => {
@@ -782,7 +788,30 @@
         </section>
       `;
 
+      // Focus trap: guarda quem abriu (só na primeira abertura, não nos
+      // re-renders após toggle), foca o fechar e prende o Tab dentro do modal.
+      if (!document.body.classList.contains("preview-open")) {
+        openerElement = document.activeElement;
+      }
       document.body.classList.add("preview-open");
+
+      const closeButton = modal.querySelector(".preview-close");
+      if (closeButton) closeButton.focus();
+
+      modal.onkeydown = (event) => {
+        if (event.key !== "Tab") return;
+        const focusables = Array.from(modal.querySelectorAll("button, a[href], input, select")).filter((el) => !el.disabled);
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          last.focus();
+          event.preventDefault();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          first.focus();
+          event.preventDefault();
+        }
+      };
     }
 
     function close() {
@@ -790,6 +819,10 @@
       if (modal) modal.remove();
       activeCard = null;
       document.body.classList.remove("preview-open");
+      if (openerElement && document.contains(openerElement)) {
+        openerElement.focus();
+      }
+      openerElement = null;
     }
 
     function handleClick(event) {
@@ -1107,6 +1140,17 @@
     return Array.from(new Set(values.filter(Boolean))).sort((a, b) => String(a).localeCompare(String(b)));
   }
 
+  // Compara números de carta ("4/102", "199/165", "TG12/TG30") numericamente
+  // pelo primeiro inteiro — localeCompare ordenaria "10" antes de "4".
+  function compareCardNumbers(a, b) {
+    const numA = parseInt(String(a).match(/\d+/), 10);
+    const numB = parseInt(String(b).match(/\d+/), 10);
+    if (!Number.isNaN(numA) && !Number.isNaN(numB) && numA !== numB) {
+      return numA - numB;
+    }
+    return String(a).localeCompare(String(b));
+  }
+
   function normalize(value) {
     return String(value || "")
       .normalize("NFD")
@@ -1193,6 +1237,7 @@
     regionForGeneration,
     typesForDex,
     cardFlag,
+    cardLanguageLabel,
     cardLanguageRegion,
     localizeAssetUrl,
     localizedImg,
@@ -1204,6 +1249,7 @@
     addOptions,
     detailUrl,
     unique,
+    compareCardNumbers,
     normalize,
     escapeHtml,
     escapeAttribute,

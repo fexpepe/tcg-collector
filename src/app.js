@@ -13,7 +13,6 @@
     search: document.getElementById("searchInput"),
     generationChips: document.getElementById("generationChips"),
     setRegionChips: document.getElementById("setRegionChips"),
-    regionFilter: document.getElementById("regionFilter"),
     typeFilter: document.getElementById("typeFilter"),
     setFilter: document.getElementById("setFilter"),
     languageFilter: document.getElementById("languageFilter"),
@@ -58,27 +57,8 @@
   function hydrateFilters() {
     if (elements.setFilter) addOptions(elements.setFilter, unique(cards.map((card) => card.set)));
     if (elements.languageFilter) addOptions(elements.languageFilter, unique(cards.map((card) => card.language)));
-    hydrateRegionFilter();
     hydrateTypeFilter();
     buildGenerationChips();
-  }
-
-  function hydrateRegionFilter() {
-    if (!elements.regionFilter) return;
-    const regions = unique(cards.map((card) => shared.regionForGeneration(card.generation)))
-      .map((region) => ({ region, gen: regionGeneration(region) }))
-      .sort((a, b) => a.gen - b.gen);
-    regions.forEach(({ region }) => {
-      const option = document.createElement("option");
-      option.value = region;
-      option.textContent = region;
-      elements.regionFilter.appendChild(option);
-    });
-  }
-
-  function regionGeneration(region) {
-    const entry = Object.entries(shared.REGION_BY_GENERATION).find(([, name]) => name === region);
-    return entry ? Number(entry[0]) : 99;
   }
 
   function hydrateTypeFilter() {
@@ -98,7 +78,10 @@
     const generations = unique(cards.map((card) => card.generation).filter(Boolean))
       .sort((a, b) => Number(a) - Number(b));
     const options = [{ value: "", label: t("chip.allGenerations") }]
-      .concat(generations.map((value) => ({ value: String(value), label: `Gen ${toRoman(value)}` })));
+      .concat(generations.map((value) => {
+        const region = shared.regionForGeneration(value);
+        return { value: String(value), label: region ? `Gen ${toRoman(value)} · ${region}` : `Gen ${toRoman(value)}` };
+      }));
 
     elements.generationChips.innerHTML = "";
     options.forEach((option) => {
@@ -115,7 +98,7 @@
   function bindEvents() {
     const applyFilters = () => render({ resetCount: true });
     elements.search.addEventListener("input", debounce(applyFilters, 200));
-    [elements.regionFilter, elements.typeFilter, elements.setFilter, elements.languageFilter, elements.ownedFilter].filter(Boolean).forEach((element) => {
+    [elements.typeFilter, elements.setFilter, elements.languageFilter, elements.ownedFilter].filter(Boolean).forEach((element) => {
       element.addEventListener("input", applyFilters);
     });
 
@@ -219,7 +202,6 @@
   function filterCards() {
     const query = normalize(elements.search.value);
     const generationValue = selectedGeneration;
-    const regionValue = elements.regionFilter ? elements.regionFilter.value : "";
     const typeValue = elements.typeFilter ? elements.typeFilter.value : "";
     const setValue = elements.setFilter ? elements.setFilter.value : "";
     const languageValue = elements.languageFilter ? elements.languageFilter.value : "";
@@ -238,7 +220,6 @@
         ...(card.variants || [])
       ].join(" ")).includes(query);
       const matchesGeneration = !generationValue || String(card.generation) === generationValue;
-      const matchesRegion = !regionValue || shared.regionForGeneration(card.generation) === regionValue;
       const matchesType = !typeValue || shared.typesForDex(card.dexId).includes(typeValue);
       const matchesLangRegion = !elements.setRegionChips || shared.cardLanguageRegion(card.language) === selectedLangRegion;
       const matchesSet = !setValue || card.set === setValue;
@@ -246,7 +227,7 @@
       const isOwned = owned.has(card.id);
       const matchesOwned = ownedValue === "all" || (ownedValue === "owned" && isOwned) || (ownedValue === "missing" && !isOwned);
 
-      return matchesQuery && matchesGeneration && matchesRegion && matchesType && matchesLangRegion && matchesSet && matchesLanguage && matchesOwned;
+      return matchesQuery && matchesGeneration && matchesType && matchesLangRegion && matchesSet && matchesLanguage && matchesOwned;
     });
   }
 
@@ -397,7 +378,7 @@
   }
 
   function toSetItem(group) {
-    const sortedCards = group.cards.slice().sort((a, b) => a.number.localeCompare(b.number));
+    const sortedCards = group.cards.slice().sort((a, b) => shared.compareCardNumbers(a.number, b.number));
     const sample = sortedCards[0] || {};
     return {
       type: "set",
@@ -414,7 +395,7 @@
   }
 
   function toPokedexItem(group) {
-    const sortedCards = group.cards.slice().sort((a, b) => a.set.localeCompare(b.set) || a.number.localeCompare(b.number));
+    const sortedCards = group.cards.slice().sort((a, b) => a.set.localeCompare(b.set) || shared.compareCardNumbers(a.number, b.number));
     const sample = sortedCards.slice().sort((a, b) => (a.dexId || 9999) - (b.dexId || 9999))[0] || {};
     return {
       type: "pokedex",
