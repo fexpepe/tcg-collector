@@ -52,8 +52,8 @@
   }
 
   function hydrateFilters() {
-    addOptions(elements.setFilter, unique(cards.map((card) => card.set)));
-    addOptions(elements.languageFilter, unique(cards.map((card) => card.language)));
+    if (elements.setFilter) addOptions(elements.setFilter, unique(cards.map((card) => card.set)));
+    if (elements.languageFilter) addOptions(elements.languageFilter, unique(cards.map((card) => card.language)));
     buildGenerationChips();
   }
 
@@ -172,9 +172,9 @@
   function filterCards() {
     const query = normalize(elements.search.value);
     const generationValue = selectedGeneration;
-    const setValue = elements.setFilter.value;
-    const languageValue = elements.languageFilter.value;
-    const ownedValue = elements.ownedFilter.value;
+    const setValue = elements.setFilter ? elements.setFilter.value : "";
+    const languageValue = elements.languageFilter ? elements.languageFilter.value : "";
+    const ownedValue = elements.ownedFilter ? elements.ownedFilter.value : "all";
 
     return cards.filter((card) => {
       const matchesQuery = !query || normalize([
