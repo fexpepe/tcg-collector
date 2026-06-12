@@ -14,6 +14,7 @@ Local: abra `index.html` no navegador (home) ou `pokedex.html` (direto no app). 
 - busca por nome, set, artista, raridade, idioma, número e variante;
 - filtra por set, idioma e status da coleção;
 - rastreia a coleção por variante e quantidade (ex.: Holo ×2, Reverse ×1), com steppers na página de detalhe e no preview da carta;
+- página Coleção com todas as cartas marcadas e filtros por Pokémon, set, idioma e raridade;
 - botão rápido "tenho" marca a primeira variante (ou limpa a carta toda);
 - mostra progresso básico (cartas distintas com ao menos uma variante);
 - exporta/importa a coleção em JSON (formato v2 por variante; importa também o formato v1 antigo);
@@ -69,7 +70,9 @@ A coleção fica no `localStorage` em `tcg-collector-collection-v2` (`cardId -> 
 
 ## Próximos passos recomendados
 
-- trocar o catálogo de exemplo pelo catálogo gerado;
+- **Binders**: criar fichários 2x2 e 3x3, nas categorias Owned e Wanted, com slots preenchidos arrastando/escolhendo cartas do catálogo;
+- **Portfolio**: valor estimado da coleção usando os preços da TCGdex (Cardmarket EUR / TCGplayer USD, por variante), com possibilidade de portfolios separados e uma visão agregada;
+- trocar o catálogo de exemplo pelo catálogo gerado (o sync precisará capturar o campo `pricing` para o Portfolio);
 - adicionar IndexedDB se a coleção crescer muito;
 - gerar índice de busca com MiniSearch/FlexSearch;
 - adicionar sync automático com GitHub Actions quando o app for para host.

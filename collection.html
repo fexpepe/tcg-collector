@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title data-i18n="title.detail">Detalhe - TCG Collector</title>
+    <title data-i18n="title.collection">Coleção - TCG Collector</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <header class="app-header">
       <div>
-        <p id="detailType" class="eyebrow" data-i18n="detail.label">Detalhe</p>
-        <h1 id="detailTitle" data-i18n="detail.loading">Carregando</h1>
+        <p class="eyebrow" data-i18n="header.tagline">Local-first MVP</p>
+        <h1 data-i18n="nav.collection">Coleção</h1>
       </div>
       <div class="header-actions">
         <select id="languageSwitcher" class="lang-select"></select>
@@ -28,23 +28,21 @@
         <a href="pokedex.html" data-i18n="nav.pokedex">Pokédex</a>
         <a href="sets.html" data-i18n="nav.sets">Sets</a>
         <a href="artists.html" data-i18n="nav.artists">Artistas</a>
-        <a href="collection.html" data-i18n="nav.collection">Coleção</a>
+        <a class="active" href="collection.html" data-i18n="nav.collection">Coleção</a>
       </nav>
-
-      <section id="detailHero" class="detail-hero" hidden></section>
 
       <section class="stats-grid" aria-label="Resumo da coleção">
         <article>
-          <span id="ownedCount">0</span>
-          <p data-i18n="stats.owned">cartas marcadas</p>
+          <span id="distinctCount">0</span>
+          <p data-i18n="stats.distinct">cartas distintas</p>
         </article>
         <article>
-          <span id="totalCount">0</span>
-          <p data-i18n="stats.pageTotal">cartas nessa página</p>
+          <span id="copiesCount">0</span>
+          <p data-i18n="stats.copies">cópias no total</p>
         </article>
         <article>
-          <span id="completionRate">0%</span>
-          <p data-i18n="stats.progress">progresso</p>
+          <span id="setsCount">0</span>
+          <p data-i18n="stats.setsCovered">sets representados</p>
         </article>
       </section>
 
@@ -52,6 +50,12 @@
         <div class="search-box">
           <label for="searchInput" data-i18n="toolbar.search">Busca</label>
           <input id="searchInput" type="search" data-i18n-placeholder="search.placeholder.detail" placeholder="Carta, set, artista, número...">
+        </div>
+        <div>
+          <label for="pokemonFilter" data-i18n="toolbar.pokemon">Pokémon</label>
+          <select id="pokemonFilter">
+            <option value="" data-i18n="filter.all.m">Todos</option>
+          </select>
         </div>
         <div>
           <label for="setFilter" data-i18n="toolbar.set">Set</label>
@@ -66,11 +70,9 @@
           </select>
         </div>
         <div>
-          <label for="ownedFilter" data-i18n="toolbar.collection">Coleção</label>
-          <select id="ownedFilter">
-            <option value="all" data-i18n="filter.all.f">Todas</option>
-            <option value="owned" data-i18n="filter.owned">Tenho</option>
-            <option value="missing" data-i18n="filter.missing">Faltando</option>
+          <label for="rarityFilter" data-i18n="toolbar.rarity">Raridade</label>
+          <select id="rarityFilter">
+            <option value="" data-i18n="filter.all.f">Todas</option>
           </select>
         </div>
       </section>
@@ -80,13 +82,13 @@
         <p id="resultCount">0 resultados</p>
       </section>
 
-      <section id="detailGrid" class="card-grid" aria-live="polite"></section>
-      <p id="emptyState" class="empty-state" data-i18n="empty.detail" hidden>Nenhuma carta encontrada nessa página.</p>
+      <section id="cardGrid" class="card-grid" aria-live="polite"></section>
+      <p id="emptyState" class="empty-state" data-i18n="empty.collection" hidden>Nenhuma carta da sua coleção com esses filtros. Explore a Pokédex e marque o que você tem.</p>
     </main>
 
     <script src="data/cards.js"></script>
     <script src="data/indexes.js"></script>
     <script src="src/shared.js"></script>
-    <script src="src/detail.js"></script>
+    <script src="src/collection.js"></script>
   </body>
 </html>

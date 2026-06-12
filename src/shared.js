@@ -98,6 +98,9 @@
         return (collection[cardId] && collection[cardId][variant]) || 0;
       },
       totalForCard,
+      totalQuantity() {
+        return Object.keys(collection).reduce((sum, cardId) => sum + totalForCard(cardId), 0);
+      },
       add(cardId, variant, delta) {
         const entry = collection[cardId] || {};
         const quantity = Math.max(0, (entry[variant] || 0) + delta);
@@ -167,6 +170,14 @@
       "title.sets": "Sets - TCG Collector",
       "title.artists": "Artistas - TCG Collector",
       "title.detail": "Detalhe - TCG Collector",
+      "nav.collection": "Coleção",
+      "title.collection": "Coleção - TCG Collector",
+      "stats.distinct": "cartas distintas",
+      "stats.copies": "cópias no total",
+      "stats.setsCovered": "sets representados",
+      "toolbar.pokemon": "Pokémon",
+      "toolbar.rarity": "Raridade",
+      "empty.collection": "Nenhuma carta da sua coleção com esses filtros. Explore a Pokédex e marque o que você tem.",
       "stats.owned": "cartas marcadas",
       "stats.total": "cartas no catálogo",
       "stats.progress": "progresso",
@@ -302,6 +313,14 @@
       "title.sets": "Sets - TCG Collector",
       "title.artists": "Artists - TCG Collector",
       "title.detail": "Detail - TCG Collector",
+      "nav.collection": "Collection",
+      "title.collection": "Collection - TCG Collector",
+      "stats.distinct": "distinct cards",
+      "stats.copies": "total copies",
+      "stats.setsCovered": "sets covered",
+      "toolbar.pokemon": "Pokémon",
+      "toolbar.rarity": "Rarity",
+      "empty.collection": "No cards from your collection match these filters. Browse the Pokédex and mark what you own.",
       "stats.owned": "cards owned",
       "stats.total": "cards in catalog",
       "stats.progress": "progress",
@@ -640,6 +659,42 @@
     }).join("");
   }
 
+  // Card completo (imagem com zoom, meta, steppers por variante e botão de
+  // posse). Usado pelas páginas de detalhe e de coleção.
+  function cardElement(card, store) {
+    const article = document.createElement("article");
+    article.className = "card";
+    const total = store.totalForCard(card.id);
+    const isOwned = total > 0;
+    const image = card.image
+      ? `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${localizedImg(card.image, { alt: card.name, loading: "lazy" })}</button>`
+      : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;
+    const ownedLabel = isOwned
+      ? (total > 1 ? t("card.inCollectionTimes", { n: total }) : t("card.inCollection"))
+      : t("card.markOwned");
+
+    article.innerHTML = `
+      <div class="card-image">${image}</div>
+      <div class="card-body">
+        <div class="card-title-row">
+          <h3>${escapeHtml(card.name)}</h3>
+          <span class="tag">${escapeHtml(card.language.toUpperCase())}</span>
+        </div>
+        <div class="meta">
+          ${escapeHtml(card.set)}<br>
+          ${escapeHtml(card.number)} · ${escapeHtml(card.rarity)}<br>
+          ${escapeHtml(card.artist || t("card.unknownArtist"))}
+        </div>
+        <div class="variant-quantities">${variantQuantityRows(card, store)}</div>
+        <button class="owned-toggle" data-card-id="${escapeAttribute(card.id)}" aria-pressed="${isOwned}">
+          ${escapeHtml(ownedLabel)}
+        </button>
+      </div>
+    `;
+
+    return article;
+  }
+
   // Trata cliques nos steppers de variante. Retorna true se o evento foi consumido.
   function handleQuantityClick(event, store) {
     const button = event.target.closest("[data-qty-action]");
@@ -866,6 +921,7 @@
     createFavoritesStore,
     defaultVariant,
     variantQuantityRows,
+    cardElement,
     handleQuantityClick,
     fetchPokemonMeta,
     createCardPreview,

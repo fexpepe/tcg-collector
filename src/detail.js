@@ -356,37 +356,7 @@
   }
 
   function createCard(card) {
-    const article = document.createElement("article");
-    article.className = "card";
-    const total = owned.totalForCard(card.id);
-    const isOwned = total > 0;
-    const image = card.image
-      ? `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${localizedImg(card.image, { alt: card.name, loading: "lazy" })}</button>`
-      : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;
-    const ownedLabel = isOwned
-      ? (total > 1 ? t("card.inCollectionTimes", { n: total }) : t("card.inCollection"))
-      : t("card.markOwned");
-
-    article.innerHTML = `
-      <div class="card-image">${image}</div>
-      <div class="card-body">
-        <div class="card-title-row">
-          <h3>${escapeHtml(card.name)}</h3>
-          <span class="tag">${escapeHtml(card.language.toUpperCase())}</span>
-        </div>
-        <div class="meta">
-          ${escapeHtml(card.set)}<br>
-          ${escapeHtml(card.number)} · ${escapeHtml(card.rarity)}<br>
-          ${escapeHtml(card.artist || t("card.unknownArtist"))}
-        </div>
-        <div class="variant-quantities">${shared.variantQuantityRows(card, owned)}</div>
-        <button class="owned-toggle" data-card-id="${escapeAttribute(card.id)}" aria-pressed="${isOwned}">
-          ${escapeHtml(ownedLabel)}
-        </button>
-      </div>
-    `;
-
-    return article;
+    return shared.cardElement(card, owned);
   }
 
   function typeLabel(type) {
