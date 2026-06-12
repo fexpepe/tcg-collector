@@ -183,7 +183,7 @@
     const visibleIds = new Set(visibleCards.map((card) => card.id));
 
     if (view === "sets") {
-      return indexedGroupsToItems(indexes.sets, visibleIds, toSetItem);
+      return indexedGroupsToItems(indexes.sets, visibleIds, toSetItem, sortByReleaseDesc);
     }
 
     if (view === "artists") {
@@ -193,7 +193,7 @@
     return indexedGroupsToItems(indexes.pokedex, visibleIds, toPokedexItem);
   }
 
-  function indexedGroupsToItems(indexGroups, visibleIds, mapper) {
+  function indexedGroupsToItems(indexGroups, visibleIds, mapper, sortFn) {
     return (indexGroups || [])
       .map((group) => ({
         name: group.name,
@@ -201,7 +201,7 @@
       }))
       .filter((group) => group.cards.length > 0)
       .map(mapper)
-      .sort(sortByName);
+      .sort(sortFn || sortByName);
   }
 
   function createViewItem(item) {
@@ -432,6 +432,17 @@
   }
 
   function sortByName(a, b) {
+    return a.name.localeCompare(b.name);
+  }
+
+  // Sets do mais recente para o mais antigo (releaseDate em ISO ordena
+  // cronologicamente como string); sets sem data vão para o fim.
+  function sortByReleaseDesc(a, b) {
+    if (a.releaseDate && b.releaseDate) {
+      return b.releaseDate.localeCompare(a.releaseDate) || a.name.localeCompare(b.name);
+    }
+    if (a.releaseDate) return -1;
+    if (b.releaseDate) return 1;
     return a.name.localeCompare(b.name);
   }
 
