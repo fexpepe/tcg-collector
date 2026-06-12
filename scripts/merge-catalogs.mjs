@@ -33,7 +33,9 @@ for (const lang of langs) {
 }
 
 // Nome canônico de espécie por dexId. Base: PokéAPI (todos os 1025, sempre
-// latino); o catálogo en sobrescreve quando existe (nomes no padrão TCG).
+// latino); o catálogo en só entra como fallback para dexIds fora da lista —
+// nomes de carta ("M Absol", "Arcanine BREAK", "Iono's Bellibolt") não podem
+// sobrescrever o nome da espécie.
 const speciesByDex = new Map();
 try {
   const raw = await readFile(new URL("pokemon-names.js", dataDir), "utf8");
@@ -44,7 +46,8 @@ try {
 }
 for (const chunk of chunksByLang.en || []) {
   for (const card of chunk.cards) {
-    if (card.dexId && card.pokemonName) speciesByDex.set(Number(card.dexId), card.pokemonName);
+    const dexId = Number(card.dexId);
+    if (dexId && card.pokemonName && !speciesByDex.has(dexId)) speciesByDex.set(dexId, card.pokemonName);
   }
 }
 
@@ -89,14 +92,29 @@ console.log(`Espécies canônicas conhecidas: ${speciesByDex.size}`);
 
 function buildIndexes(sourceCards) {
   return {
-    // Pokédex só com cartas que são Pokémon (têm dexId) — exclui Treinador/
-    // Energia/Item — agrupadas pelo nome canônico.
-    pokedex: groupToIndex(sourceCards.filter((card) => card.dexId), (card) => card.pokemonName),
+    pokedex: buildPokedexIndex(sourceCards),
     // Treinadores agrupados por nome (Supporter/Item/Stadium/Tool).
     trainers: groupToIndex(sourceCards.filter((card) => card.category === "Trainer"), (card) => card.name),
     sets: groupToIndex(sourceCards, (card) => card.set),
     artists: groupToIndex(sourceCards, (card) => card.artist || "Artista desconhecido")
   };
+}
+
+// Pokédex nacional completa: uma entrada por espécie (dexId 1..1025), em ordem
+// de número e mesmo sem carta no catálogo. Só cartas com dexId entram como
+// cardIds — Treinador/Energia/Item ficam de fora.
+function buildPokedexIndex(sourceCards) {
+  const byDex = new Map();
+  for (const [dexId, name] of speciesByDex) byDex.set(dexId, { dexId, name, cardIds: [] });
+  for (const card of sourceCards) {
+    const dexId = Number(card.dexId);
+    if (!dexId) continue;
+    if (!byDex.has(dexId)) byDex.set(dexId, { dexId, name: card.pokemonName, cardIds: [] });
+    byDex.get(dexId).cardIds.push(card.id);
+  }
+  return Array.from(byDex.values())
+    .sort((a, b) => a.dexId - b.dexId)
+    .map((entry) => ({ ...entry, cardIds: entry.cardIds.sort((a, b) => a.localeCompare(b)) }));
 }
 
 function groupToIndex(sourceCards, getKey) {

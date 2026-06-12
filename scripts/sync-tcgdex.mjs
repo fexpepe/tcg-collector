@@ -227,10 +227,24 @@ function normalizeVariantName(name) {
 
 function buildIndexes(sourceCards) {
   return {
-    pokedex: groupToIndex(sourceCards, (card) => card.pokemonName || speciesName(card.name)),
+    // Só cartas de Pokémon (têm dexId), agrupadas por número nacional; o
+    // merge-catalogs refaz este índice com as 1025 espécies canônicas.
+    pokedex: pokedexIndex(sourceCards),
+    trainers: groupToIndex(sourceCards.filter((card) => card.category === "Trainer"), (card) => card.name),
     sets: groupToIndex(sourceCards, (card) => card.set),
     artists: groupToIndex(sourceCards, (card) => card.artist || "Artista desconhecido")
   };
+}
+
+function pokedexIndex(sourceCards) {
+  const byDex = new Map();
+  for (const card of sourceCards) {
+    const dexId = Number(card.dexId);
+    if (!dexId) continue;
+    if (!byDex.has(dexId)) byDex.set(dexId, { dexId, name: card.pokemonName || speciesName(card.name), cardIds: [] });
+    byDex.get(dexId).cardIds.push(card.id);
+  }
+  return Array.from(byDex.values()).sort((a, b) => a.dexId - b.dexId);
 }
 
 function speciesName(name) {

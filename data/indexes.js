@@ -1,18 +1,22 @@
 window.TCG_INDEXES = {
   "pokedex": [
     {
-      "name": "Blastoise",
+      "dexId": 3,
+      "name": "Venusaur",
       "cardIds": [
-        "base1-2"
+        "base1-15"
       ]
     },
     {
-      "name": "Caterpie",
+      "dexId": 4,
+      "name": "Charmander",
       "cardIds": [
-        "SV9-001-ja"
+        "pt-sv3pt5-6",
+        "sv3pt5-6"
       ]
     },
     {
+      "dexId": 6,
       "name": "Charizard",
       "cardIds": [
         "base1-4",
@@ -22,28 +26,31 @@ window.TCG_INDEXES = {
       ]
     },
     {
-      "name": "Charmander",
+      "dexId": 9,
+      "name": "Blastoise",
       "cardIds": [
-        "pt-sv3pt5-6",
-        "sv3pt5-6"
+        "base1-2"
       ]
     },
     {
+      "dexId": 10,
+      "name": "Caterpie",
+      "cardIds": [
+        "SV9-001-ja"
+      ]
+    },
+    {
+      "dexId": 25,
       "name": "Pikachu",
       "cardIds": [
         "xy12-35"
       ]
     },
     {
+      "dexId": 906,
       "name": "Sprigatito",
       "cardIds": [
         "SV9-010-zh"
-      ]
-    },
-    {
-      "name": "Venusaur",
-      "cardIds": [
-        "base1-15"
       ]
     }
   ],

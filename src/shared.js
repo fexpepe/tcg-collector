@@ -271,7 +271,8 @@
       "cardLang.ja": "Japonês",
       "cardLang.zh": "Chinês",
       "cardLang.pt": "Português (BR)",
-      "setRegion.international": "Internacional",
+      "setRegion.english": "Inglês",
+      "setRegion.portuguese": "Português",
       "setRegion.japanese": "Japonês",
       "setRegion.chinese": "Chinês",
       "toolbar.set": "Set",
@@ -461,7 +462,8 @@
       "cardLang.ja": "Japanese",
       "cardLang.zh": "Chinese",
       "cardLang.pt": "Brazilian Portuguese",
-      "setRegion.international": "International",
+      "setRegion.english": "English",
+      "setRegion.portuguese": "Portuguese",
       "setRegion.japanese": "Japanese",
       "setRegion.chinese": "Chinese",
       "toolbar.set": "Set",
@@ -747,7 +749,8 @@
     const code = normalizeCardLanguage(language);
     if (code === "ja") return "japanese";
     if (code === "zh") return "chinese";
-    return "international";
+    if (code === "pt") return "portuguese";
+    return "english";
   }
 
   function cardLanguageLabel(language) {

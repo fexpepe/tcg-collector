@@ -27,7 +27,7 @@
   const view = elements.grid.dataset.view || "pokedex";
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
   let selectedGeneration = "";
-  let selectedLangRegion = "international";
+  let selectedLangRegion = "english";
 
   const preview = shared.createCardPreview({
     getCard: (cardId) => cardsById.get(cardId),
@@ -63,7 +63,9 @@
 
   function hydrateTypeFilter() {
     if (!elements.typeFilter) return;
-    const present = new Set(cards.flatMap((card) => shared.typesForDex(card.dexId)));
+    const present = view === "pokedex" && window.TCG_POKEMON_NAMES
+      ? new Set(Object.values(window.TCG_POKEMON_TYPES || {}).flat())
+      : new Set(cards.flatMap((card) => shared.typesForDex(card.dexId)));
     shared.POKEMON_TYPES.filter((type) => present.has(type)).forEach((type) => {
       const option = document.createElement("option");
       option.value = type;
@@ -75,8 +77,10 @@
   function buildGenerationChips() {
     if (!elements.generationChips) return;
 
-    const generations = unique(cards.map((card) => card.generation).filter(Boolean))
-      .sort((a, b) => Number(a) - Number(b));
+    // Na Pokédex completa as 9 gerações sempre existem, com ou sem carta.
+    const generations = view === "pokedex" && window.TCG_POKEMON_NAMES
+      ? [1, 2, 3, 4, 5, 6, 7, 8, 9]
+      : unique(cards.map((card) => card.generation).filter(Boolean)).sort((a, b) => Number(a) - Number(b));
     const options = [{ value: "", label: t("chip.allGenerations") }]
       .concat(generations.map((value) => {
         const region = shared.regionForGeneration(value);
@@ -177,7 +181,52 @@
       return indexedGroupsToItems(indexes.trainers, visibleIds, toGroupItem);
     }
 
-    return indexedGroupsToItems(indexes.pokedex, visibleIds, toPokedexItem);
+    return pokedexViewItems(visibleIds);
+  }
+
+  // Pokédex nacional completa: uma entrada por espécie em ordem de número,
+  // mesmo sem carta no catálogo (aí com 0/0). TCG_POKEMON_NAMES garante as
+  // 1025 espécies e o nome canônico; índices antigos sem dexId herdam o da
+  // primeira carta do grupo.
+  function pokedexEntries() {
+    const byDex = new Map();
+
+    (indexes.pokedex || []).forEach((group) => {
+      const firstCard = cardsById.get((group.cardIds || [])[0]) || {};
+      const dexId = Number(group.dexId) || Number(firstCard.dexId) || 0;
+      if (!dexId) return;
+      const entry = byDex.get(dexId) || { dexId, name: group.name, cardIds: [] };
+      entry.cardIds = entry.cardIds.concat(group.cardIds || []);
+      byDex.set(dexId, entry);
+    });
+
+    Object.entries(window.TCG_POKEMON_NAMES || {}).forEach(([id, name]) => {
+      const dexId = Number(id);
+      const entry = byDex.get(dexId);
+      if (entry) entry.name = name;
+      else byDex.set(dexId, { dexId, name, cardIds: [] });
+    });
+
+    return Array.from(byDex.values()).sort((a, b) => a.dexId - b.dexId);
+  }
+
+  // Espécie aparece se os filtros de espécie (geração/tipo) batem e, havendo
+  // busca, se o nome/número bate ou se alguma carta visível dela bate.
+  function pokedexViewItems(visibleIds) {
+    const query = normalize(elements.search.value);
+    const typeValue = elements.typeFilter ? elements.typeFilter.value : "";
+
+    return pokedexEntries()
+      .map((entry) => ({
+        ...entry,
+        cards: entry.cardIds.map((id) => cardsById.get(id)).filter((card) => card && visibleIds.has(card.id))
+      }))
+      .filter((entry) => {
+        if (selectedGeneration && String(generationFromDexId(entry.dexId)) !== selectedGeneration) return false;
+        if (typeValue && !shared.typesForDex(entry.dexId).includes(typeValue)) return false;
+        return !query || normalize(`${entry.name} ${entry.dexId}`).includes(query) || entry.cards.length > 0;
+      })
+      .map(toPokedexItem);
   }
 
   function indexedGroupsToItems(indexGroups, visibleIds, mapper, sortFn) {
@@ -341,11 +390,25 @@
 
   function buildIndexes(sourceCards) {
     return {
-      pokedex: groupToIndex(sourceCards.filter((card) => card.dexId), (card) => card.pokemonName || speciesName(card.name)),
+      pokedex: pokedexIndexFromCards(sourceCards),
       trainers: groupToIndex(sourceCards.filter((card) => card.category === "Trainer"), (card) => card.name),
       sets: groupToIndex(sourceCards, (card) => card.set),
       artists: groupToIndex(sourceCards, (card) => card.artist || "Artista desconhecido")
     };
+  }
+
+  // Espécies agrupadas por dexId (não por nome): nomes de carta variam
+  // ("M Absol", "Pikachu VMAX"), o número nacional não.
+  function pokedexIndexFromCards(sourceCards) {
+    const byDex = new Map();
+    sourceCards.forEach((card) => {
+      const dexId = Number(card.dexId);
+      if (!dexId) return;
+      const entry = byDex.get(dexId) || { dexId, name: card.pokemonName || speciesName(card.name), cardIds: [] };
+      entry.cardIds.push(card.id);
+      byDex.set(dexId, entry);
+    });
+    return Array.from(byDex.values()).sort((a, b) => a.dexId - b.dexId);
   }
 
   function groupToIndex(sourceCards, getKey) {
@@ -392,20 +455,39 @@
 
   function toPokedexItem(group) {
     const sortedCards = group.cards.slice().sort((a, b) => a.set.localeCompare(b.set) || shared.compareCardNumbers(a.number, b.number));
-    const sample = sortedCards.slice().sort((a, b) => (a.dexId || 9999) - (b.dexId || 9999))[0] || {};
+    const sample = sortedCards[0] || {};
+    const dexId = group.dexId || sample.dexId || "";
     return {
       type: "pokedex",
       name: group.name,
       cards: sortedCards,
       totalCount: sortedCards.length,
       ownedCount: sortedCards.filter((card) => owned.has(card.id)).length,
-      dexId: sample.dexId || "",
-      generation: sample.generation || "",
-      image: sample.pokemonImage || "",
+      dexId,
+      generation: sample.generation || generationFromDexId(dexId),
+      image: sample.pokemonImage || pokemonImageUrl(dexId),
       sets: unique(sortedCards.map((card) => card.set)).slice(0, 3),
       artists: unique(sortedCards.map((card) => card.artist)).slice(0, 3),
       variants: unique(sortedCards.flatMap((card) => card.variants || [])).slice(0, 8)
     };
+  }
+
+  function pokemonImageUrl(dexId) {
+    return dexId ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexId}.png` : "";
+  }
+
+  function generationFromDexId(dexId) {
+    const id = Number(dexId);
+    if (!id) return "";
+    if (id <= 151) return 1;
+    if (id <= 251) return 2;
+    if (id <= 386) return 3;
+    if (id <= 493) return 4;
+    if (id <= 649) return 5;
+    if (id <= 721) return 6;
+    if (id <= 809) return 7;
+    if (id <= 905) return 8;
+    return 9;
   }
 
   function sortByName(a, b) {
