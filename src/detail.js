@@ -77,7 +77,7 @@
   const preview = shared.createCardPreview({
     getCard: (cardId) => cardsById.get(cardId),
     store: owned,
-    onOwnedChange: () => render()
+    onOwnedChange: () => refreshOwnership()
   });
 
   resolveCards()
@@ -297,7 +297,7 @@
       }
 
       if (shared.handleOwnedTileClick(event, owned)) {
-        render();
+        refreshOwnership();
       }
     });
 
@@ -312,12 +312,23 @@
 
   function render({ resetCount = false } = {}) {
     const visibleCards = filterCards();
-    const ownedInPage = pageCards.filter((card) => owned.has(card.id)).length;
     const tiles = shared.cardVariantPairs(visibleCards);
     pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned), { resetCount });
 
     elements.empty.hidden = tiles.length > 0;
     elements.resultCount.textContent = tn("results.count", tiles.length);
+    updateHeaderStats();
+  }
+
+  // Atualiza tiles e contadores no DOM existente, sem reconstruir a grade
+  // (reconstruir faria todas as imagens piscarem).
+  function refreshOwnership() {
+    elements.grid.querySelectorAll(".card-tile").forEach((tile) => shared.refreshTileOwnership(tile, owned));
+    updateHeaderStats();
+  }
+
+  function updateHeaderStats() {
+    const ownedInPage = pageCards.filter((card) => owned.has(card.id)).length;
     elements.ownedCount.textContent = ownedInPage;
     elements.totalCount.textContent = pageCards.length;
     elements.completionRate.textContent = pageCards.length ? `${Math.round((ownedInPage / pageCards.length) * 100)}%` : "0%";

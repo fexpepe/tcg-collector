@@ -66,7 +66,7 @@
   const preview = shared.createCardPreview({
     getCard: (cardId) => cardsById.get(cardId),
     store: owned,
-    onOwnedChange: () => render()
+    onOwnedChange: () => refreshOwnershipCards()
   });
 
   shared.loadCatalog()
@@ -130,7 +130,7 @@
       }
 
       if (shared.handleOwnedTileClick(event, owned)) {
-        render();
+        refreshOwnershipCards();
       }
     });
 
@@ -158,14 +158,38 @@
   // --- Aba de cartas (grade com filtros) ---
 
   function renderCards({ resetCount = false } = {}) {
-    const visibleCards = filterCards();
-    const tiles = shared.cardVariantPairs(visibleCards)
-      .filter(({ card, variant }) => owned.getQuantity(card.id, variant) > 0);
+    const tiles = ownedTilePairs();
     pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned), { resetCount });
+    updateCardsStats(tiles.length);
+  }
 
+  function ownedTilePairs() {
+    return shared.cardVariantPairs(filterCards())
+      .filter(({ card, variant }) => owned.getQuantity(card.id, variant) > 0);
+  }
+
+  // Atualiza tiles e contadores no DOM existente, sem reconstruir a grade
+  // (reconstruir faria todas as imagens piscarem). Tiles zerados saem da vista.
+  function refreshOwnershipCards() {
+    if (activeTab !== "cards") {
+      render();
+      return;
+    }
+    elements.grid.querySelectorAll(".card-tile").forEach((tile) => {
+      const quantity = owned.getQuantity(tile.dataset.tileCardId, tile.dataset.tileVariant);
+      if (quantity > 0) {
+        shared.refreshTileOwnership(tile, owned);
+      } else {
+        tile.remove();
+      }
+    });
+    updateCardsStats(ownedTilePairs().length);
+  }
+
+  function updateCardsStats(tileCount) {
     const myCards = ownedCards();
-    elements.empty.hidden = tiles.length > 0;
-    elements.resultCount.textContent = tn("results.count", tiles.length);
+    elements.empty.hidden = tileCount > 0;
+    elements.resultCount.textContent = tn("results.count", tileCount);
     elements.distinctCount.textContent = myCards.length;
     elements.copiesCount.textContent = owned.totalQuantity();
     elements.setsCount.textContent = unique(myCards.map((card) => card.set)).length;

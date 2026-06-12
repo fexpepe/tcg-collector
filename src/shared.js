@@ -726,6 +726,8 @@
     const isOwned = quantity > 0;
     const article = document.createElement("article");
     article.className = `card-tile${isOwned ? " owned" : ""}`;
+    article.dataset.tileCardId = card.id;
+    article.dataset.tileVariant = variant;
     const image = card.image
       ? `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${localizedImg(card.image, { alt: card.name, loading: "lazy" })}</button>`
       : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;
@@ -750,6 +752,24 @@
     `;
 
     return article;
+  }
+
+  // Atualiza o estado de posse de um tile no DOM existente, sem recriar a
+  // imagem — evita o "piscar" de recarregar a grade inteira.
+  function refreshTileOwnership(tile, store) {
+    const cardId = tile.dataset.tileCardId;
+    const variant = tile.dataset.tileVariant;
+    if (!cardId) return;
+    const quantity = store.getQuantity(cardId, variant);
+    const isOwned = quantity > 0;
+    tile.classList.toggle("owned", isOwned);
+
+    const button = tile.querySelector(".tile-own");
+    if (!button) return;
+    button.classList.toggle("active", isOwned);
+    button.setAttribute("aria-pressed", String(isOwned));
+    button.setAttribute("aria-label", isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant }));
+    button.innerHTML = `${isOwned ? TILE_ICONS.check : TILE_ICONS.plus}${quantity > 1 ? `<span class="tile-qty">×${quantity}</span>` : ""}`;
   }
 
   // Trata o clique no botão +/✓ de um tile. Retorna true se consumiu o evento.
@@ -990,6 +1010,7 @@
     variantQuantityRows,
     cardVariantPairs,
     variantTile,
+    refreshTileOwnership,
     handleOwnedTileClick,
     handleQuantityClick,
     fetchPokemonMeta,
