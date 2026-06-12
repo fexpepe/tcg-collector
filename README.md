@@ -23,7 +23,9 @@ Local: abra `index.html` no navegador (home) ou `pokedex.html` (direto no app). 
 - a página Sets tem um filtro mestre por origem — Inglês, Português, Japonês e Chinês — e mostra a data de lançamento de cada set no canto da imagem;
 - na Pokédex, filtra por geração (chips), por região/local (Kanto, Johto…) e por tipo (Fogo, Voador…);
 - na página de um Pokémon, mostra tipos, região, geração, botão de favoritar e as formas alternativas;
-- aba **Treinadores** (no menu Pokémon) agrupando as cartas de Treinador por nome, com filtro por origem (Internacional/Japonês/Chinês).
+- aba **Treinadores** (no menu Pokémon) agrupando as cartas de Treinador por nome, com filtro por origem (Internacional/Japonês/Chinês);
+- lista **"Eu quero"** (wishlist) por variante: o botão de coração nos tiles marca/desmarca o desejo, a página `wishlist.html` reúne tudo com filtros (Pokémon/set/idioma), e marcar uma carta como "tenho" a move da wishlist para a coleção ("comprei!"). A wishlist fica no `localStorage` (`tcg-collector-wishlist-v1`, `cardId -> [variantes]`) e entra junto no export/import JSON;
+- **preço BR manual + Portfólio**: no preview da carta, cada variante tem campos de preço em R$ por condição (M/NM/SP/MP/HP/D) e links para conferir o valor na LigaPokémon, LigaBRA e MYP (nenhum tem API pública — o registro é manual, com a fonte e a data guardadas em `tcg-collector-prices-v1` para o futuro preenchimento automático via worker). A página `portfolio.html` soma o valor da coleção (condições sem preço próprio são estimadas do NM: SP 85%, MP 70%, HP 50%, D 30%), conta as cópias precificadas, calcula o custo da wishlist e lista as cartas mais valiosas. Os preços entram no export/import JSON.
 
 Tipos e formas (na página de um Pokémon) vêm da [PokéAPI](https://pokeapi.co/) em runtime (por `dexId`), com cache no `localStorage`; região e geração são derivadas localmente. O filtro de tipo da Pokédex usa um mapa estático `data/pokemon-types.js` (dexId → tipos), gerado por `node scripts/sync-pokemon-types.mjs` a partir do endpoint `/type` da PokéAPI. Sem rede, a página ainda mostra região, geração e favoritar — só os tipos/formas ficam ausentes. Favoritos ficam no `localStorage` (chave `tcg-collector-favorites-v1`), separados das cartas marcadas.
 
@@ -77,8 +79,10 @@ O site publicado usa o **catálogo completo da TCGdex** em quatro idiomas (en, j
 
 ## Próximos passos recomendados
 
-- **Binders**: criar fichários 2x2 e 3x3, nas categorias Owned e Wanted, com slots preenchidos arrastando/escolhendo cartas do catálogo;
-- **Portfolio**: valor estimado da coleção usando os preços da TCGdex (Cardmarket EUR / TCGplayer USD, por variante), com possibilidade de portfolios separados e uma visão agregada (o sync precisará capturar o campo `pricing`);
+- **Binders**: criar fichários 2x2 e 3x3, nas categorias Owned e Wanted (reaproveitando a wishlist), com slots preenchidos arrastando/escolhendo cartas do catálogo;
+- **Prioridade na wishlist**: estender `tcg-collector-wishlist-v1` para guardar prioridade por variante e ordenar a página Quero por "mais quero";
+- **Preços TCGdex**: capturar o campo `pricing` (Cardmarket EUR / TCGplayer USD, por variante) num artefato separado dos chunks (preço muda toda semana; o cache de sets não), convertendo para R$ via API de câmbio como fallback de quem não registrou preço manual;
+- **Worker de preços BR**: serviço opcional (Cloudflare Worker) que busca o preço médio por condição na LigaBRA/LigaPokémon e preenche os mesmos campos de `tcg-collector-prices-v1` (fonte registrada, valor sempre editável). MYP fica só como deep link — tem proteção anti-bot;
 - adicionar IndexedDB se a coleção crescer muito;
 - gerar índice de busca com MiniSearch/FlexSearch;
 - adicionar sync automático com GitHub Actions quando o app for para host.

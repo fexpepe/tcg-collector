@@ -47,6 +47,10 @@
   const CARD_CONDITIONS = ["M", "NM", "SP", "MP", "HP", "D"];
   const DEFAULT_CONDITION = "NM";
 
+  // Desconto padrão sobre o preço NM quando a condição não tem preço próprio
+  // (aproximação usual do mercado; o valor exato sempre pode ser digitado).
+  const CONDITION_MULTIPLIERS = { M: 1, NM: 1, SP: 0.85, MP: 0.7, HP: 0.5, D: 0.3 };
+
   // Coleção v3: cardId -> variante -> condição -> quantidade. Cada cópia é
   // distinguida por condição (para o futuro cálculo de valor do portfólio).
   // Migra do v2 (cardId -> variante -> quantidade; cópias viram NM) e do v1.
@@ -250,6 +254,65 @@
     };
   }
 
+  // Preços BR por carta/variante: cardId -> variante -> { prices: { NM: 12.5 },
+  // source: "manual", updatedAt: ISO }. Valores em R$. A fonte fica registrada
+  // para o futuro preenchimento automático (worker LigaBRA/Liga) — que grava
+  // nos mesmos campos e continua editável.
+  function createPriceStore() {
+    const storageKey = "tcg-collector-prices-v1";
+    let prices = readObject(storageKey) || {};
+
+    function save() {
+      localStorage.setItem(storageKey, JSON.stringify(prices));
+    }
+    function entryOf(cardId, variant) {
+      return (prices[cardId] && prices[cardId][variant]) || null;
+    }
+
+    return {
+      entry: entryOf,
+      getPrice(cardId, variant, condition) {
+        const entry = entryOf(cardId, variant);
+        return (entry && entry.prices && entry.prices[condition]) || 0;
+      },
+      // Valor de uma cópia: preço exato da condição se existir, senão estima a
+      // partir do NM com o desconto padrão. { value, estimated }.
+      valueFor(cardId, variant, condition) {
+        const entry = entryOf(cardId, variant);
+        if (!entry || !entry.prices) return { value: 0, estimated: false };
+        const exact = entry.prices[condition];
+        if (exact > 0) return { value: exact, estimated: false };
+        const nm = entry.prices[DEFAULT_CONDITION];
+        if (nm > 0) return { value: nm * (CONDITION_MULTIPLIERS[condition] || 1), estimated: true };
+        return { value: 0, estimated: false };
+      },
+      setPrice(cardId, variant, condition, value, source) {
+        const amount = Number(value);
+        const card = prices[cardId] || (prices[cardId] = {});
+        const entry = card[variant] || (card[variant] = { prices: {}, source: source || "manual", updatedAt: "" });
+        if (amount > 0) {
+          entry.prices[condition] = Math.round(amount * 100) / 100;
+        } else {
+          delete entry.prices[condition];
+        }
+        entry.source = source || "manual";
+        entry.updatedAt = new Date().toISOString().slice(0, 10);
+        if (!Object.keys(entry.prices).length) {
+          delete card[variant];
+          if (!Object.keys(card).length) delete prices[cardId];
+        }
+        save();
+      },
+      replace(next) {
+        prices = next && typeof next === "object" && !Array.isArray(next) ? next : {};
+        save();
+      },
+      toObject() {
+        return prices;
+      }
+    };
+  }
+
   // ---------------------------------------------------------------------------
   // Idioma do site: controla os textos da interface e o idioma das imagens das
   // cartas (assets da TCGdex levam o idioma na URL; se a imagem não existir no
@@ -309,6 +372,39 @@
       "tile.addAria": "Adicionar {variant} à coleção",
       "tile.removeAria": "Remover {variant} da coleção",
       "tile.binder": "Adicionar a um binder (em breve)",
+      "tile.want": "Quero essa carta",
+      "tile.wanted": "Está na lista de desejos",
+      "tile.wantAria": "Adicionar {variant} à lista de desejos",
+      "tile.unwantAria": "Remover {variant} da lista de desejos",
+      "nav.wishlist": "Quero",
+      "title.wishlist": "Quero - TCG Collector",
+      "wishlist.subtitle": "As cartas que você marcou como \"eu quero\". Marque uma como tenho para movê-la pra coleção.",
+      "wishlist.stats.distinct": "cartas na lista",
+      "wishlist.stats.sets": "sets desejados",
+      "wishlist.results": "Cartas que eu quero",
+      "wishlist.markOwned": "Comprei!",
+      "empty.wishlist": "Sua lista de desejos está vazia. <a href=\"pokedex.html\">Explore a Pokédex</a> e toque no ♡ das cartas que você quer.",
+      "empty.wishlistFiltered": "Nenhuma carta da sua lista de desejos com esses filtros.",
+      "price.rowLabel": "Preço BR (R$)",
+      "price.updatedAt": "atualizado em {date}",
+      "price.inputAria": "Preço em reais de {variant} {condition}",
+      "price.checkAt": "Conferir preço:",
+      "nav.portfolio": "Portfólio",
+      "title.portfolio": "Portfólio - TCG Collector",
+      "portfolio.subtitle": "Valor estimado da sua coleção em reais, a partir dos preços que você registrou nas cartas.",
+      "portfolio.total": "valor da coleção",
+      "portfolio.pricedCopies": "cópias precificadas",
+      "portfolio.wishlistTotal": "custo da wishlist",
+      "portfolio.topCards": "Cartas mais valiosas",
+      "portfolio.col.card": "Carta",
+      "portfolio.col.variant": "Variante",
+      "portfolio.col.condition": "Cond.",
+      "portfolio.col.qty": "Qtd.",
+      "portfolio.col.unit": "Unitário",
+      "portfolio.col.total": "Total",
+      "portfolio.estimated": "estimado pelo NM",
+      "portfolio.empty": "Nenhuma carta com preço ainda. Abra uma carta da sua <a href=\"collection.html\">coleção</a>, confira o valor nos sites (Liga, LigaBRA, MYP) e registre no campo \"Preço BR\".",
+      "portfolio.note": "Valores em R$ registrados manualmente por você. Condições sem preço próprio são estimadas a partir do NM (SP 85%, MP 70%, HP 50%, D 30%).",
       "sort.label": "Ordenar por:",
       "sort.dex": "Nº Dex",
       "sort.name": "Nome",
@@ -526,6 +622,39 @@
       "tile.addAria": "Add {variant} to collection",
       "tile.removeAria": "Remove {variant} from collection",
       "tile.binder": "Add to a binder (coming soon)",
+      "tile.want": "Want this card",
+      "tile.wanted": "On your wishlist",
+      "tile.wantAria": "Add {variant} to wishlist",
+      "tile.unwantAria": "Remove {variant} from wishlist",
+      "nav.wishlist": "Want",
+      "title.wishlist": "Want - TCG Collector",
+      "wishlist.subtitle": "The cards you marked as \"want\". Mark one as owned to move it into your collection.",
+      "wishlist.stats.distinct": "cards on the list",
+      "wishlist.stats.sets": "sets wanted",
+      "wishlist.results": "Cards I want",
+      "wishlist.markOwned": "Got it!",
+      "empty.wishlist": "Your wishlist is empty. <a href=\"pokedex.html\">Browse the Pokédex</a> and tap the ♡ on cards you want.",
+      "empty.wishlistFiltered": "No cards from your wishlist match these filters.",
+      "price.rowLabel": "BR price (R$)",
+      "price.updatedAt": "updated {date}",
+      "price.inputAria": "Price in BRL for {variant} {condition}",
+      "price.checkAt": "Check price:",
+      "nav.portfolio": "Portfolio",
+      "title.portfolio": "Portfolio - TCG Collector",
+      "portfolio.subtitle": "Estimated value of your collection in BRL, from the prices you registered on cards.",
+      "portfolio.total": "collection value",
+      "portfolio.pricedCopies": "priced copies",
+      "portfolio.wishlistTotal": "wishlist cost",
+      "portfolio.topCards": "Most valuable cards",
+      "portfolio.col.card": "Card",
+      "portfolio.col.variant": "Variant",
+      "portfolio.col.condition": "Cond.",
+      "portfolio.col.qty": "Qty",
+      "portfolio.col.unit": "Unit",
+      "portfolio.col.total": "Total",
+      "portfolio.estimated": "estimated from NM",
+      "portfolio.empty": "No priced cards yet. Open a card from your <a href=\"collection.html\">collection</a>, check its value on the BR marketplaces and register it in the \"BR price\" field.",
+      "portfolio.note": "BRL values registered manually by you. Conditions without their own price are estimated from NM (SP 85%, MP 70%, HP 50%, D 30%).",
       "sort.label": "Sort by:",
       "sort.dex": "Dex #",
       "sort.name": "Name",
@@ -770,6 +899,8 @@
         </div>
       </div>
       ${link("collection.html", "nav.collection", "collection")}
+      ${link("wishlist.html", "nav.wishlist", "wishlist")}
+      ${link("portfolio.html", "nav.portfolio", "portfolio")}
     `;
 
     const toggle = nav.querySelector(".nav-group-toggle");
@@ -928,11 +1059,22 @@
     }
   }
 
-  function createCardPreview({ getCard, store, onOwnedChange }) {
+  function createCardPreview({ getCard, store, onOwnedChange, prices }) {
     let activeCard = null;
     let openerElement = null;
 
     document.addEventListener("click", handleClick);
+    // Salva o preço BR digitado ao sair do campo (change = blur ou Enter).
+    // Aceita vírgula ou ponto como decimal ("12,50", "12.50", "1.250,00").
+    document.addEventListener("change", (event) => {
+      const input = event.target.closest("#cardPreviewModal input[data-price-card-id]");
+      if (!input || !prices) return;
+      const text = String(input.value).trim();
+      const amount = Number(text.includes(",") ? text.replace(/\./g, "").replace(",", ".") : text) || 0;
+      prices.setPrice(input.dataset.priceCardId, input.dataset.priceVariant, input.dataset.priceCondition, amount, "manual");
+      const saved = prices.getPrice(input.dataset.priceCardId, input.dataset.priceVariant, input.dataset.priceCondition);
+      input.value = saved > 0 ? String(saved).replace(".", ",") : "";
+    });
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         close();
@@ -975,7 +1117,8 @@
                 <div><dt>${escapeHtml(t("modal.cardId"))}</dt><dd>${escapeHtml(activeCard.id)}</dd></div>
               </dl>
             </div>
-            <div class="variant-quantities">${variantQuantityRows(activeCard, store)}</div>
+            <div class="variant-quantities">${variantQuantityRows(activeCard, store, prices)}</div>
+            ${prices ? brMarketplaceLinks(activeCard) : ""}
             <button class="owned-toggle preview-owned" data-card-id="${escapeAttribute(activeCard.id)}" aria-pressed="${isOwned}">
               ${isOwned ? t("card.inCollection") : t("card.markOwned")}
             </button>
@@ -1046,7 +1189,7 @@
       const modal = document.getElementById("cardPreviewModal");
       if (!modal || !activeCard) return;
       const wrap = modal.querySelector(".variant-quantities");
-      if (wrap) wrap.innerHTML = variantQuantityRows(activeCard, store);
+      if (wrap) wrap.innerHTML = variantQuantityRows(activeCard, store, prices);
       const ownedButton = modal.querySelector(".preview-owned");
       if (ownedButton) {
         const isOwned = store.has(activeCard.id);
@@ -1058,9 +1201,54 @@
     return { open, close };
   }
 
+  // Busca da carta nos marketplaces brasileiros (não têm API pública; o link
+  // abre a busca pra conferir o preço e digitar no campo manual).
+  const BR_MARKETPLACES = [
+    { key: "liga", label: "LigaPokémon", url: (q) => `https://www.ligapokemon.com.br/?view=cards/search&card=${q}` },
+    { key: "ligabra", label: "LigaBRA", url: (q) => `https://ligabra.com/filter-products/${q}` },
+    { key: "myp", label: "MYP", url: (q) => `https://mypcards.com/pokemon?ProdutoSearch%5Bquery%5D=${q}` }
+  ];
+
+  function brMarketplaceLinks(card) {
+    const query = encodeURIComponent(card.name);
+    const links = BR_MARKETPLACES
+      .map(({ key, label, url }) => `<a class="br-link br-link-${key}" href="${escapeAttribute(url(query))}" target="_blank" rel="noopener">${escapeHtml(label)}</a>`)
+      .join("");
+    return `<div class="br-links"><span class="br-links-label">${escapeHtml(t("price.checkAt"))}</span>${links}</div>`;
+  }
+
+  // Grade de preços BR por condição de uma variante (inputs editáveis).
+  function variantPriceRow(card, variant, prices) {
+    const entry = prices.entry(card.id, variant);
+    const cells = CARD_CONDITIONS.map((condition) => {
+      const value = prices.getPrice(card.id, variant, condition);
+      const display = value > 0 ? String(value).replace(".", ",") : "";
+      return `
+        <label class="price-cell">
+          <span>${condition}</span>
+          <input type="text" inputmode="decimal" placeholder="–" value="${escapeAttribute(display)}"
+            data-price-card-id="${escapeAttribute(card.id)}" data-price-variant="${escapeAttribute(variant)}" data-price-condition="${condition}"
+            aria-label="${escapeAttribute(t("price.inputAria", { variant, condition: t(`condition.${condition}`) }))}">
+        </label>
+      `;
+    }).join("");
+    const updated = entry && entry.updatedAt
+      ? `<span class="price-updated">${escapeHtml(t("price.updatedAt", { date: entry.updatedAt }))}</span>`
+      : "";
+    return `
+      <div class="price-row">
+        <div class="price-row-head">
+          <span class="price-row-label">${escapeHtml(t("price.rowLabel"))}</span>
+          ${updated}
+        </div>
+        <div class="price-cells">${cells}</div>
+      </div>
+    `;
+  }
+
   // Por variante: nome + total e um stepper por condição (M, NM, SP, MP, HP, D).
   // Cada cópia fica distinguida por condição para o cálculo futuro do portfólio.
-  function variantQuantityRows(card, store) {
+  function variantQuantityRows(card, store, prices) {
     const variants = card.variants && card.variants.length ? card.variants : [defaultVariant(card)];
     return variants.map((variant) => {
       const total = store.variantTotal(card.id, variant);
@@ -1085,6 +1273,7 @@
             ${total > 0 ? `<span class="variant-total">×${total}</span>` : ""}
           </div>
           <div class="condition-grid">${conditions}</div>
+          ${prices ? variantPriceRow(card, variant, prices) : ""}
         </div>
       `;
     }).join("");
@@ -1224,7 +1413,7 @@
     return true;
   }
 
-  function bindCollectionTransfer({ exportButton, importInput, store, cards, onChange }) {
+  function bindCollectionTransfer({ exportButton, importInput, store, wishlist, prices, cards, onChange }) {
     const cardsById = new Map(cards.map((card) => [card.id, card]));
 
     exportButton.addEventListener("click", () => {
@@ -1233,6 +1422,8 @@
         exportedAt: new Date().toISOString(),
         collection: store.toObject()
       };
+      if (wishlist) payload.wishlist = wishlist.toObject();
+      if (prices) payload.prices = prices.toObject();
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -1249,6 +1440,8 @@
       try {
         const payload = JSON.parse(await file.text());
         store.replace(parseImportedCollection(payload, cardsById));
+        if (wishlist) wishlist.replace(parseImportedWishlist(payload, cardsById));
+        if (prices) prices.replace(parseImportedPrices(payload, cardsById));
         onChange();
       } catch (error) {
         alert(t("error.import"));
@@ -1256,6 +1449,48 @@
         event.target.value = "";
       }
     });
+  }
+
+  // Preços BR do backup: mantém só valores numéricos positivos de cartas conhecidas.
+  function parseImportedPrices(payload, cardsById) {
+    const source = payload && payload.prices;
+    if (!source || typeof source !== "object" || Array.isArray(source)) return {};
+    const result = {};
+    Object.entries(source).forEach(([cardId, variants]) => {
+      if (!cardsById.has(cardId) || !variants || typeof variants !== "object") return;
+      Object.entries(variants).forEach(([variant, entry]) => {
+        if (!entry || typeof entry !== "object" || !entry.prices) return;
+        const clean = {};
+        Object.entries(entry.prices).forEach(([condition, value]) => {
+          const amount = Number(value);
+          if (amount > 0 && CARD_CONDITIONS.includes(condition)) clean[condition] = Math.round(amount * 100) / 100;
+        });
+        if (Object.keys(clean).length) {
+          result[cardId] = result[cardId] || {};
+          result[cardId][variant] = {
+            prices: clean,
+            source: typeof entry.source === "string" ? entry.source : "manual",
+            updatedAt: typeof entry.updatedAt === "string" ? entry.updatedAt : ""
+          };
+        }
+      });
+    });
+    return result;
+  }
+
+  // Lista de desejos do backup: cardId -> [variantes válidas da carta].
+  function parseImportedWishlist(payload, cardsById) {
+    const source = payload && payload.wishlist;
+    if (!source || typeof source !== "object" || Array.isArray(source)) return {};
+    const wishlist = {};
+    Object.entries(source).forEach(([cardId, variants]) => {
+      const card = cardsById.get(cardId);
+      if (!card || !Array.isArray(variants)) return;
+      const known = card.variants && card.variants.length ? card.variants : [defaultVariant(card)];
+      const list = variants.filter((variant) => known.includes(variant));
+      if (list.length) wishlist[cardId] = list;
+    });
+    return wishlist;
   }
 
   function parseImportedCollection(payload, cardsById) {
@@ -1495,13 +1730,19 @@
   window.TCGShared = {
     createCollectionStore,
     createFavoritesStore,
+    createWishlistStore,
+    createPriceStore,
+    brMarketplaceLinks,
     defaultVariant,
     CARD_CONDITIONS,
+    CONDITION_MULTIPLIERS,
+    DEFAULT_CONDITION,
     variantQuantityRows,
     cardVariantPairs,
     variantTile,
     refreshTileOwnership,
     handleOwnedTileClick,
+    handleWantTileClick,
     handleQuantityClick,
     fetchPokemonMeta,
     createCardPreview,

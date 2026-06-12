@@ -1419,10 +1419,6 @@ input::placeholder {
   transform: rotate(9deg) translateX(-20px) translateY(8px);
 }
 
-.home-stats {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
 .home-features h2,
 .home-steps h2 {
   font-size: 24px;
@@ -1677,10 +1673,6 @@ input::placeholder {
 
   .hero-cards img {
     width: clamp(96px, 24vw, 130px);
-  }
-
-  .home-stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1940,6 +1932,182 @@ a.progress-row:hover {
   border-color: var(--accent);
   background: var(--accent-soft);
   color: var(--accent);
+}
+
+/* Preço BR por condição (no preview da carta) */
+.price-row {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+}
+
+.price-row-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.price-row-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.price-updated {
+  font-size: 11px;
+  color: var(--subtle);
+}
+
+.price-cells {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
+  gap: 6px;
+}
+
+.price-cell {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 6px;
+  border-radius: 6px;
+  background: #0f1218;
+}
+
+.price-cell span {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--subtle);
+}
+
+.price-cell input {
+  width: 100%;
+  min-width: 0;
+  min-height: 26px;
+  padding: 0 4px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text);
+  font-size: 12.5px;
+  text-align: right;
+}
+
+.price-cell input:focus {
+  border-color: var(--accent-dark);
+  background: var(--panel-strong);
+  outline: none;
+}
+
+/* Links para conferir preço nos marketplaces BR */
+.br-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.br-links-label {
+  font-size: 12px;
+  color: var(--subtle);
+}
+
+.br-link {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.br-link:hover {
+  color: var(--accent);
+  border-color: var(--accent-dark);
+}
+
+/* Portfólio: tabela de cartas mais valiosas */
+.portfolio-table-wrap {
+  overflow-x: auto;
+}
+
+.portfolio-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.portfolio-table th,
+.portfolio-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+.portfolio-table th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--subtle);
+  background: var(--surface);
+}
+
+.portfolio-table tr:last-child td {
+  border-bottom: none;
+}
+
+.portfolio-table .num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.portfolio-table a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.portfolio-table a:hover {
+  color: var(--accent);
+}
+
+.price-estimated {
+  color: var(--gold);
+  cursor: help;
+}
+
+.portfolio-note {
+  margin: 14px 0 0;
+  color: var(--subtle);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.tile-want:hover:not(:disabled) {
+  border-color: #f0719a;
+  color: #f0719a;
+}
+
+.tile-want.active {
+  border-color: #f0719a;
+  background: rgba(240, 113, 154, 0.14);
+  color: #f0719a;
+}
+
+.card-tile.wanted {
+  border-color: rgba(240, 113, 154, 0.5);
+  box-shadow: 0 0 0 1px rgba(240, 113, 154, 0.22), var(--shadow);
+}
+
+.card-tile.owned.wanted {
+  border-color: rgba(57, 199, 155, 0.55);
+  box-shadow: 0 0 0 1px rgba(57, 199, 155, 0.25), var(--shadow);
 }
 
 .tile-qty {

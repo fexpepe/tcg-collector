@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="title.wishlist">Quero - TCG Collector</title>
+    <meta name="description" content="Sua lista de desejos de Pokémon TCG: as cartas que você quer, por variante, com filtros por Pokémon, set e idioma.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">TCG&nbsp;Collector</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page="wishlist"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+          <button id="exportButton" class="secondary" data-i18n="header.export">Exportar</button>
+          <label class="secondary file-button">
+            <span data-i18n="header.import">Importar</span>
+            <input id="importInput" type="file" accept="application/json">
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-head">
+        <p class="eyebrow" data-i18n="header.tagline">Local-first MVP</p>
+        <h1 data-i18n="nav.wishlist">Quero</h1>
+      </div>
+
+      <p class="collection-subtitle" data-i18n="wishlist.subtitle">As cartas que você marcou como "eu quero". Marque uma como tenho para movê-la pra coleção.</p>
+
+      <section class="stats-grid" aria-label="Resumo da lista de desejos">
+        <article>
+          <span id="distinctCount">0</span>
+          <p data-i18n="wishlist.stats.distinct">cartas na lista</p>
+        </article>
+        <article>
+          <span id="setsCount">0</span>
+          <p data-i18n="wishlist.stats.sets">sets desejados</p>
+        </article>
+      </section>
+
+      <section class="toolbar" aria-label="Filtros">
+        <div class="search-box">
+          <label for="searchInput" data-i18n="toolbar.search">Busca</label>
+          <input id="searchInput" type="search" data-i18n-placeholder="search.placeholder.detail" placeholder="Carta, set, artista, número...">
+        </div>
+        <div>
+          <label for="pokemonFilter" data-i18n="toolbar.pokemon">Pokémon</label>
+          <select id="pokemonFilter">
+            <option value="" data-i18n="filter.all.m">Todos</option>
+          </select>
+        </div>
+        <div>
+          <label for="setFilter" data-i18n="toolbar.set">Set</label>
+          <select id="setFilter">
+            <option value="" data-i18n="filter.all.m">Todos</option>
+          </select>
+        </div>
+        <div>
+          <label for="languageFilter" data-i18n="toolbar.language">Idioma</label>
+          <select id="languageFilter">
+            <option value="" data-i18n="filter.all.m">Todos</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="results-header">
+        <h2 data-i18n="wishlist.results">Cartas que eu quero</h2>
+        <p id="resultCount">0 resultados</p>
+      </section>
+
+      <section id="cardGrid" class="card-grid" aria-live="polite"></section>
+      <p id="emptyState" class="empty-state" data-i18n-html="empty.wishlist" hidden>Sua lista de desejos está vazia. <a href="pokedex.html">Explore a Pokédex</a> e toque no ♡ das cartas que você quer.</p>
+    </main>
+
+    <script src="data/cards.js"></script>
+    <script src="data/indexes.js"></script>
+    <script src="src/shared.js"></script>
+    <script src="src/wishlist.js"></script>
+  </body>
+</html>

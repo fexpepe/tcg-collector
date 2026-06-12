@@ -7,6 +7,8 @@
   let pageCards = [];
   const owned = shared.createCollectionStore();
   const favorites = shared.createFavoritesStore();
+  const wishlist = shared.createWishlistStore();
+  const prices = shared.createPriceStore();
 
   const TYPE_COLORS = shared.TYPE_COLORS;
   const REGION_BY_GENERATION = shared.REGION_BY_GENERATION;
@@ -49,6 +51,7 @@
   const preview = shared.createCardPreview({
     getCard: (cardId) => cardsById.get(cardId),
     store: owned,
+    prices,
     onOwnedChange: () => refreshOwnership()
   });
 
@@ -310,7 +313,12 @@
         return;
       }
 
-      if (shared.handleOwnedTileClick(event, owned)) {
+      if (shared.handleWantTileClick(event, wishlist)) {
+        refreshOwnership();
+        return;
+      }
+
+      if (shared.handleOwnedTileClick(event, owned, wishlist)) {
         refreshOwnership();
       }
     });
@@ -319,6 +327,8 @@
       exportButton: elements.exportButton,
       importInput: elements.importInput,
       store: owned,
+      wishlist,
+      prices,
       cards,
       onChange: () => render()
     });
@@ -327,7 +337,7 @@
   function render({ resetCount = false } = {}) {
     const visibleCards = filterCards();
     const tiles = shared.cardVariantPairs(visibleCards);
-    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned), { resetCount });
+    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist), { resetCount });
 
     elements.empty.hidden = tiles.length > 0;
     elements.resultCount.textContent = tn("results.count", tiles.length);
@@ -337,7 +347,7 @@
   // Atualiza tiles e contadores no DOM existente, sem reconstruir a grade
   // (reconstruir faria todas as imagens piscarem).
   function refreshOwnership() {
-    elements.grid.querySelectorAll(".card-tile").forEach((tile) => shared.refreshTileOwnership(tile, owned));
+    elements.grid.querySelectorAll(".card-tile").forEach((tile) => shared.refreshTileOwnership(tile, owned, wishlist));
     updateHeaderStats();
   }
 

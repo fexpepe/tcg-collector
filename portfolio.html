@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="title.portfolio">Portfólio - TCG Collector</title>
+    <meta name="description" content="Valor estimado da sua coleção de Pokémon TCG em reais, calculado a partir dos preços registrados por carta, variante e condição.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">TCG&nbsp;Collector</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page="portfolio"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+          <button id="exportButton" class="secondary" data-i18n="header.export">Exportar</button>
+          <label class="secondary file-button">
+            <span data-i18n="header.import">Importar</span>
+            <input id="importInput" type="file" accept="application/json">
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-head">
+        <p class="eyebrow" data-i18n="header.tagline">Local-first MVP</p>
+        <h1 data-i18n="nav.portfolio">Portfólio</h1>
+      </div>
+
+      <p class="collection-subtitle" data-i18n="portfolio.subtitle">Valor estimado da sua coleção em reais, a partir dos preços que você registrou nas cartas.</p>
+
+      <section class="stats-grid" aria-label="Resumo do portfólio">
+        <article>
+          <span id="totalValue">R$ 0,00</span>
+          <p data-i18n="portfolio.total">valor da coleção</p>
+        </article>
+        <article>
+          <span id="pricedCopies">0/0</span>
+          <p data-i18n="portfolio.pricedCopies">cópias precificadas</p>
+        </article>
+        <article>
+          <span id="wishlistValue">R$ 0,00</span>
+          <p data-i18n="portfolio.wishlistTotal">custo da wishlist</p>
+        </article>
+      </section>
+
+      <section class="results-header">
+        <h2 data-i18n="portfolio.topCards">Cartas mais valiosas</h2>
+      </section>
+
+      <section id="topCards" class="portfolio-table-wrap" aria-live="polite"></section>
+      <p id="emptyState" class="empty-state" data-i18n-html="portfolio.empty" hidden>Nenhuma carta com preço ainda. Abra uma carta da sua <a href="collection.html">coleção</a>, confira o valor nos sites (Liga, LigaBRA, MYP) e registre no campo "Preço BR".</p>
+      <p class="portfolio-note" data-i18n="portfolio.note">Valores em R$ registrados manualmente por você. Condições sem preço próprio são estimadas a partir do NM (SP 85%, MP 70%, HP 50%, D 30%).</p>
+    </main>
+
+    <script src="data/cards.js"></script>
+    <script src="data/indexes.js"></script>
+    <script src="src/shared.js"></script>
+    <script src="src/portfolio.js"></script>
+  </body>
+</html>

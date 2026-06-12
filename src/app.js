@@ -6,6 +6,8 @@
   let cardsById = new Map();
   let indexes = null;
   const owned = shared.createCollectionStore();
+  const wishlist = shared.createWishlistStore();
+  const prices = shared.createPriceStore();
 
   const elements = {
     grid: document.getElementById("cardGrid"),
@@ -32,6 +34,7 @@
   const preview = shared.createCardPreview({
     getCard: (cardId) => cardsById.get(cardId),
     store: owned,
+    prices,
     onOwnedChange: () => render()
   });
 
@@ -149,6 +152,8 @@
       exportButton: elements.exportButton,
       importInput: elements.importInput,
       store: owned,
+      wishlist,
+      prices,
       cards,
       onChange: () => render()
     });

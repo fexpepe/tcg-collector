@@ -5,6 +5,8 @@
   let cards = [];
   let cardsById = new Map();
   const owned = shared.createCollectionStore();
+  const wishlist = shared.createWishlistStore();
+  const prices = shared.createPriceStore();
 
   let activeTab = "pokemon";
   let sortMode = "dex";
@@ -66,6 +68,7 @@
   const preview = shared.createCardPreview({
     getCard: (cardId) => cardsById.get(cardId),
     store: owned,
+    prices,
     onOwnedChange: () => refreshOwnershipCards()
   });
 
@@ -129,7 +132,12 @@
         return;
       }
 
-      if (shared.handleOwnedTileClick(event, owned)) {
+      if (shared.handleWantTileClick(event, wishlist)) {
+        refreshOwnershipCards();
+        return;
+      }
+
+      if (shared.handleOwnedTileClick(event, owned, wishlist)) {
         refreshOwnershipCards();
       }
     });
@@ -138,6 +146,8 @@
       exportButton: elements.exportButton,
       importInput: elements.importInput,
       store: owned,
+      wishlist,
+      prices,
       cards,
       onChange: () => render()
     });
@@ -159,7 +169,7 @@
 
   function renderCards({ resetCount = false } = {}) {
     const tiles = ownedTilePairs();
-    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned), { resetCount });
+    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist), { resetCount });
     updateCardsStats(tiles.length);
   }
 
@@ -178,7 +188,7 @@
     elements.grid.querySelectorAll(".card-tile").forEach((tile) => {
       const quantity = owned.variantTotal(tile.dataset.tileCardId, tile.dataset.tileVariant);
       if (quantity > 0) {
-        shared.refreshTileOwnership(tile, owned);
+        shared.refreshTileOwnership(tile, owned, wishlist);
       } else {
         tile.remove();
       }
