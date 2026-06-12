@@ -8,28 +8,25 @@
   </head>
   <body>
     <header class="app-header">
-      <div>
-        <p class="eyebrow" data-i18n="header.tagline">Local-first MVP</p>
-        <h1 data-i18n="nav.sets">Sets</h1>
-      </div>
-      <div class="header-actions">
-        <select id="languageSwitcher" class="lang-select"></select>
-        <button id="exportButton" class="secondary" data-i18n="header.export">Exportar</button>
-        <label class="secondary file-button">
-          <span data-i18n="header.import">Importar</span>
-          <input id="importInput" type="file" accept="application/json">
-        </label>
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">TCG&nbsp;Collector</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page="sets"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+          <button id="exportButton" class="secondary" data-i18n="header.export">Exportar</button>
+          <label class="secondary file-button">
+            <span data-i18n="header.import">Importar</span>
+            <input id="importInput" type="file" accept="application/json">
+          </label>
+        </div>
       </div>
     </header>
 
     <main>
-      <nav class="page-nav" aria-label="Páginas" data-active-page="sets">
-        <a href="index.html" data-i18n="nav.home">Início</a>
-        <a href="pokedex.html" data-i18n="nav.pokedex">Pokédex</a>
-        <a class="active" href="sets.html" data-i18n="nav.sets">Sets</a>
-        <a href="artists.html" data-i18n="nav.artists">Artistas</a>
-        <a href="collection.html" data-i18n="nav.collection">Coleção</a>
-      </nav>
+      <div class="page-head">
+        <p class="eyebrow" data-i18n="header.tagline">Local-first MVP</p>
+        <h1 data-i18n="nav.sets">Sets</h1>
+      </div>
 
       <section class="stats-grid" aria-label="Resumo da coleção">
         <article>
