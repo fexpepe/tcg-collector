@@ -43,8 +43,10 @@ jobs:
           node scripts/sync-tcgdex.mjs zh-tw
           node scripts/sync-tcgdex.mjs pt
 
-      - name: Atualiza mapa de tipos de Pokémon
-        run: node scripts/sync-pokemon-types.mjs
+      - name: Atualiza mapas de tipos e nomes de Pokémon
+        run: |
+          node scripts/sync-pokemon-types.mjs
+          node scripts/sync-pokemon-names.mjs
 
       - name: Mescla catálogos num manifest unificado
         run: node scripts/merge-catalogs.mjs en ja zh-tw pt

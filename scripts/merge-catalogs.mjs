@@ -32,13 +32,19 @@ for (const lang of langs) {
   }
 }
 
-// Nome canônico de espécie por dexId, tirado do catálogo en.
+// Nome canônico de espécie por dexId. Base: PokéAPI (todos os 1025, sempre
+// latino); o catálogo en sobrescreve quando existe (nomes no padrão TCG).
 const speciesByDex = new Map();
+try {
+  const raw = await readFile(new URL("pokemon-names.js", dataDir), "utf8");
+  const map = JSON.parse(raw.replace(/^window\.TCG_POKEMON_NAMES = /, "").replace(/;\s*$/, ""));
+  for (const [dexId, name] of Object.entries(map)) speciesByDex.set(Number(dexId), name);
+} catch {
+  console.warn("Aviso: data/pokemon-names.js ausente; rode sync-pokemon-names.mjs.");
+}
 for (const chunk of chunksByLang.en || []) {
   for (const card of chunk.cards) {
-    if (card.dexId && card.pokemonName && !speciesByDex.has(card.dexId)) {
-      speciesByDex.set(card.dexId, card.pokemonName);
-    }
+    if (card.dexId && card.pokemonName) speciesByDex.set(Number(card.dexId), card.pokemonName);
   }
 }
 
@@ -49,7 +55,7 @@ for (const lang of langs) {
   for (const chunk of chunksByLang[lang] || []) {
     let changed = false;
     for (const card of chunk.cards) {
-      const canonical = card.dexId ? speciesByDex.get(card.dexId) : null;
+      const canonical = card.dexId ? speciesByDex.get(Number(card.dexId)) : null;
       if (canonical && card.pokemonName !== canonical) {
         card.pokemonName = canonical;
         changed = true;
@@ -83,17 +89,12 @@ console.log(`Espécies canônicas conhecidas: ${speciesByDex.size}`);
 
 function buildIndexes(sourceCards) {
   return {
-    pokedex: groupToIndex(sourceCards, (card) => card.pokemonName || speciesName(card.name)),
+    // Pokédex só com cartas que são Pokémon (têm dexId) — exclui Treinador/
+    // Energia/Item — agrupadas pelo nome canônico.
+    pokedex: groupToIndex(sourceCards.filter((card) => card.dexId), (card) => card.pokemonName),
     sets: groupToIndex(sourceCards, (card) => card.set),
     artists: groupToIndex(sourceCards, (card) => card.artist || "Artista desconhecido")
   };
-}
-
-function speciesName(name) {
-  return String(name || "")
-    .replace(/\b(VMAX|VSTAR|ex|EX|GX|V-UNION|V)\b/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
 }
 
 function groupToIndex(sourceCards, getKey) {
