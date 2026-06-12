@@ -59,18 +59,12 @@
           </select>
         </div>
         <div>
-          <label for="languageFilter" data-i18n="toolbar.language">Idioma</label>
-          <select id="languageFilter">
-            <option value="" data-i18n="filter.all.m">Todos</option>
-          </select>
+          <label data-i18n="toolbar.language">Idioma</label>
+          <div id="languageChips" class="segmented" role="group" aria-label="Idioma"></div>
         </div>
         <div>
-          <label for="ownedFilter" data-i18n="toolbar.collection">Coleção</label>
-          <select id="ownedFilter">
-            <option value="all" data-i18n="filter.all.f">Todas</option>
-            <option value="owned" data-i18n="filter.owned">Tenho</option>
-            <option value="missing" data-i18n="filter.missing">Faltando</option>
-          </select>
+          <label data-i18n="toolbar.collection">Coleção</label>
+          <div id="ownedChips" class="segmented" role="group" aria-label="Coleção"></div>
         </div>
       </section>
 

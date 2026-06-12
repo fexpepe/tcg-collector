@@ -32,8 +32,8 @@
     empty: document.getElementById("emptyState"),
     search: document.getElementById("searchInput"),
     setFilter: document.getElementById("setFilter"),
-    languageFilter: document.getElementById("languageFilter"),
-    ownedFilter: document.getElementById("ownedFilter"),
+    languageChips: document.getElementById("languageChips"),
+    ownedChips: document.getElementById("ownedChips"),
     ownedCount: document.getElementById("ownedCount"),
     totalCount: document.getElementById("totalCount"),
     completionRate: document.getElementById("completionRate"),
@@ -43,6 +43,8 @@
   };
 
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
+  let selectedLanguage = "";
+  let selectedOwned = "all";
 
   const preview = shared.createCardPreview({
     getCard: (cardId) => cardsById.get(cardId),
@@ -255,15 +257,51 @@
 
   function hydrateFilters() {
     addOptions(elements.setFilter, unique(pageCards.map((card) => card.set)));
-    addOptions(elements.languageFilter, unique(pageCards.map((card) => card.language)));
+
+    const languages = unique(pageCards.map((card) => card.language)).sort();
+    renderSegmented(elements.languageChips, [{ value: "", label: t("filter.all.m") }]
+      .concat(languages.map((language) => ({ value: language, label: language.toUpperCase() }))), selectedLanguage);
+
+    renderSegmented(elements.ownedChips, [
+      { value: "all", label: t("filter.all.f") },
+      { value: "owned", label: t("filter.owned") },
+      { value: "missing", label: t("filter.missing") }
+    ], selectedOwned);
+  }
+
+  function renderSegmented(container, options, selectedValue) {
+    if (!container) return;
+    container.innerHTML = "";
+    options.forEach((option) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "segmented-option";
+      button.dataset.value = option.value;
+      button.textContent = option.label;
+      button.setAttribute("aria-pressed", String(option.value === selectedValue));
+      container.appendChild(button);
+    });
+  }
+
+  function bindSegmented(container, onSelect) {
+    if (!container) return;
+    container.addEventListener("click", (event) => {
+      const button = event.target.closest(".segmented-option");
+      if (!button) return;
+      onSelect(button.dataset.value);
+      Array.from(container.children).forEach((node) => {
+        node.setAttribute("aria-pressed", String(node === button));
+      });
+      render({ resetCount: true });
+    });
   }
 
   function bindEvents() {
     const applyFilters = () => render({ resetCount: true });
     elements.search.addEventListener("input", debounce(applyFilters, 200));
-    [elements.setFilter, elements.languageFilter, elements.ownedFilter].forEach((element) => {
-      element.addEventListener("input", applyFilters);
-    });
+    elements.setFilter.addEventListener("input", applyFilters);
+    bindSegmented(elements.languageChips, (value) => { selectedLanguage = value; });
+    bindSegmented(elements.ownedChips, (value) => { selectedOwned = value; });
 
     elements.grid.addEventListener("click", (event) => {
       const imageButton = event.target.closest("[data-preview-card-id]");
@@ -313,8 +351,8 @@
   function filterCards() {
     const query = normalize(elements.search.value);
     const setValue = elements.setFilter.value;
-    const languageValue = elements.languageFilter.value;
-    const ownedValue = elements.ownedFilter.value;
+    const languageValue = selectedLanguage;
+    const ownedValue = selectedOwned;
 
     return pageCards.filter((card) => {
       const matchesQuery = !query || normalize([
