@@ -1102,16 +1102,17 @@ input::placeholder {
 .card-preview-panel {
   position: relative;
   width: min(960px, calc(100vw - 32px));
-  max-height: min(780px, calc(100vh - 32px));
+  max-height: calc(100vh - 32px);
   background: #111722;
   border: 1px solid #2b3443;
   border-radius: 18px;
   box-shadow: 0 28px 80px rgba(0, 0, 0, 0.58);
   display: grid;
   grid-template-columns: minmax(260px, 400px) 1fr;
-  gap: 34px;
-  padding: 28px;
-  overflow: auto;
+  grid-template-rows: minmax(0, 1fr);
+  gap: 28px;
+  padding: 24px;
+  overflow: hidden;
 }
 
 .preview-close {
@@ -1137,29 +1138,34 @@ input::placeholder {
 .preview-image-wrap {
   display: grid;
   align-items: start;
+  min-height: 0;
 }
 
 .preview-image-wrap img {
   width: auto;
   max-width: 100%;
   margin: 0 auto;
-  max-height: calc(100vh - 96px);
+  max-height: 100%;
   border-radius: 4.8% / 3.4%;
   filter: drop-shadow(0 20px 34px rgba(0, 0, 0, 0.42));
 }
 
+/* Só a coluna de detalhes rola quando o conteúdo passa da altura do painel —
+   a imagem e a moldura do modal ficam sempre inteiras na tela. */
 .preview-content {
   min-width: 0;
+  min-height: 0;
   display: grid;
   align-content: start;
-  gap: 20px;
+  gap: 14px;
   padding-right: 12px;
+  overflow-y: auto;
 }
 
 .preview-content h2 {
-  margin: 0 40px 8px 0;
-  font-size: clamp(28px, 4vw, 42px);
-  line-height: 1.02;
+  margin: 0 40px 6px 0;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.05;
 }
 
 .preview-subtitle {
@@ -1176,9 +1182,9 @@ input::placeholder {
 
 .preview-details h3 {
   margin: 0;
-  padding: 16px;
+  padding: 11px 16px;
   border-bottom: 1px solid var(--line);
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .preview-details dl {
@@ -1189,8 +1195,9 @@ input::placeholder {
   display: grid;
   grid-template-columns: 120px 1fr;
   gap: 16px;
-  padding: 13px 16px;
+  padding: 8px 16px;
   border-bottom: 1px solid var(--line);
+  font-size: 13.5px;
 }
 
 .preview-details div:last-child {
@@ -1211,9 +1218,9 @@ input::placeholder {
 }
 
 .preview-owned {
-  min-height: 52px;
+  min-height: 46px;
   border-radius: 999px;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 @media (max-width: 860px) {
@@ -1272,13 +1279,20 @@ input::placeholder {
     padding: 14px;
   }
 
+  /* Empilhado (imagem em cima), volta a rolar o painel inteiro. */
   .card-preview-panel {
     width: calc(100vw - 20px);
     max-height: calc(100vh - 20px);
     grid-template-columns: 1fr;
+    grid-template-rows: none;
     gap: 18px;
     padding: 18px;
     border-radius: 14px;
+    overflow: auto;
+  }
+
+  .preview-content {
+    overflow-y: visible;
   }
 
   .preview-image-wrap img {
@@ -1843,6 +1857,11 @@ a.progress-row:hover {
 
 .card-tile .image-open img {
   border-radius: 4.8% / 3.4%;
+  /* Proporção padrão de carta: reserva o espaço antes da imagem carregar,
+     evitando o layout "pular" enquanto a grade baixa as miniaturas. */
+  width: 100%;
+  aspect-ratio: 245 / 337;
+  object-fit: contain;
 }
 
 .tile-info {

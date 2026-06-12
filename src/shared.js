@@ -1010,17 +1010,31 @@
     return url.replace(/(assets\.tcgdex\.net\/)[a-z-]+(\/)/, `$1${currentLanguage}$2`);
   }
 
-  // <img> com a URL localizada e fallback para a URL original do catálogo
-  // caso o asset não exista no idioma escolhido.
+  // Variante de qualidade/formato de um asset da TCGdex. Cartas aceitam
+  // qualidade ("low" ≈17KB / "high" ≈68KB em webp; o high.png tem ~970KB) e
+  // logos/símbolos aceitam só o formato. URLs de outros domínios passam direto.
+  function tcgdexAssetUrl(url, quality) {
+    if (!url || !url.includes("assets.tcgdex.net")) return url;
+    return url.replace(/(?:\/(low|high))?\.(png|webp|jpg)$/, (match, currentQuality) => {
+      const finalQuality = quality || currentQuality;
+      return `${finalQuality ? `/${finalQuality}` : ""}.webp`;
+    });
+  }
+
+  // <img> dos assets do catálogo. Para URLs da TCGdex usa webp (muito menor
+  // que o png) com onerror de volta para a URL original caso a variante não
+  // exista; `thumb: true` baixa a qualidade "low" (para grades de cartas).
   // Cada carta/set já tem a imagem no seu próprio idioma (indicado pela
   // bandeira), então a imagem é renderizada como veio do catálogo — sem trocar
   // o idioma da URL pelo idioma da interface.
   function localizedImg(url, options) {
     if (!url) return "";
-    const { alt = "", className = "", loading = "" } = options || {};
+    const { alt = "", className = "", loading = "", thumb = false } = options || {};
     const classAttr = className ? ` class="${escapeAttribute(className)}"` : "";
     const loadingAttr = loading ? ` loading="${loading}"` : "";
-    return `<img${classAttr}${loadingAttr} src="${escapeAttribute(url)}" alt="${escapeAttribute(alt)}">`;
+    const src = tcgdexAssetUrl(url, thumb ? "low" : "");
+    const fallbackAttr = src !== url ? ` onerror="this.onerror=null;this.src='${escapeAttribute(url)}'"` : "";
+    return `<img${classAttr}${loadingAttr} decoding="async" src="${escapeAttribute(src)}" alt="${escapeAttribute(alt)}"${fallbackAttr}>`;
   }
 
   // Busca tipos e formas de um Pokémon na PokéAPI (por dexId), com cache em localStorage.
@@ -1209,8 +1223,20 @@
     { key: "myp", label: "MYP", url: (q) => `https://mypcards.com/pokemon?ProdutoSearch%5Bquery%5D=${q}` }
   ];
 
+  // "Charizard (4/102)" — o formato Nome (número/total) é como Liga e MYP
+  // nomeiam os produtos, então a busca cai direto na carta certa em vez de
+  // listar todas as cartas do Pokémon.
+  function cardSearchQuery(card) {
+    const number = String(card.number || "").trim();
+    const total = String(card.setTotal || "").trim();
+    if (!number) return card.name;
+    // Alguns catálogos já trazem o número como "4/102" — não duplica o total.
+    if (number.includes("/") || !total) return `${card.name} (${number})`;
+    return `${card.name} (${number}/${total})`;
+  }
+
   function brMarketplaceLinks(card) {
-    const query = encodeURIComponent(card.name);
+    const query = encodeURIComponent(cardSearchQuery(card));
     const links = BR_MARKETPLACES
       .map(({ key, label, url }) => `<a class="br-link br-link-${key}" href="${escapeAttribute(url(query))}" target="_blank" rel="noopener">${escapeHtml(label)}</a>`)
       .join("");
@@ -1317,7 +1343,7 @@
     article.dataset.tileCardId = card.id;
     article.dataset.tileVariant = variant;
     const image = card.image
-      ? `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${localizedImg(card.image, { alt: card.name, loading: "lazy" })}</button>`
+      ? `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${localizedImg(card.image, { alt: card.name, loading: "lazy", thumb: true })}</button>`
       : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;
     const ownAria = isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant });
     const qtyBadge = quantity > 1 ? `<span class="tile-qty">×${quantity}</span>` : "";
