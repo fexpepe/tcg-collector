@@ -1323,3 +1323,138 @@ input::placeholder {
   padding: 0 10px;
 }
 
+
+/* Coleção: abas e visão de progresso por grupo */
+.collection-subtitle {
+  color: var(--muted);
+  margin: -6px 0 16px;
+}
+
+.collection-tabs {
+  margin-bottom: 18px;
+}
+
+.group-summary {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.group-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.summary-pct {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.sort-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.sort-row .chip {
+  min-height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.progress-row-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
+}
+
+.progress-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow);
+  transition: border-color 120ms ease, transform 120ms ease;
+}
+
+a.progress-row:hover {
+  border-color: #414a58;
+  transform: translateY(-2px);
+}
+
+.progress-row-art {
+  width: 52px;
+  height: 52px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: #11141b;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.progress-row-art img {
+  max-width: 48px;
+  max-height: 48px;
+  object-fit: contain;
+}
+
+.progress-row-initial {
+  font-weight: 800;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.progress-row-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.progress-row-title {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+
+.progress-row-title strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dex-tag {
+  color: var(--subtle);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.row-count {
+  margin-left: auto;
+  flex: none;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.progress-row-meta {
+  margin: 7px 0 0;
+  color: var(--subtle);
+  font-size: 12px;
+}
