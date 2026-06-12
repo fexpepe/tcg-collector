@@ -8,18 +8,25 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body class="home">
-    <header class="home-header">
-      <a class="home-brand" href="index.html">TCG Collector</a>
-      <nav class="home-nav" aria-label="Páginas">
-        <a href="pokedex.html" data-i18n="nav.pokedex">Pokédex</a>
-        <a href="sets.html" data-i18n="nav.sets">Sets</a>
-        <a href="artists.html" data-i18n="nav.artists">Artistas</a>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow" data-i18n="header.tagline">Local-first MVP</p>
+        <h1>TCG Collector</h1>
+      </div>
+      <div class="header-actions">
         <select id="languageSwitcher" class="lang-select"></select>
         <a class="button-link" href="pokedex.html" data-i18n="home.cta">Começar</a>
-      </nav>
+      </div>
     </header>
 
     <main class="home-main">
+      <nav class="page-nav" aria-label="Páginas">
+        <a class="active" href="index.html" data-i18n="nav.home">Início</a>
+        <a href="pokedex.html" data-i18n="nav.pokedex">Pokédex</a>
+        <a href="sets.html" data-i18n="nav.sets">Sets</a>
+        <a href="artists.html" data-i18n="nav.artists">Artistas</a>
+      </nav>
+
       <section class="hero">
         <div class="hero-copy">
           <p class="eyebrow" data-i18n="home.eyebrow">Grátis · sem conta · local-first</p>
