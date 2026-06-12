@@ -11,8 +11,16 @@
     if (element) element.textContent = value.toLocaleString(locale);
   }
 
-  setStat("statPokemon", distinct((card) => card.pokemonName || card.name));
-  setStat("statCards", cards.length);
-  setStat("statSets", distinct((card) => card.set));
-  setStat("statArtists", distinct((card) => card.artist));
+  if (cards.length) {
+    setStat("statPokemon", distinct((card) => card.pokemonName || card.name));
+    setStat("statCards", cards.length);
+    setStat("statSets", distinct((card) => card.set));
+    setStat("statArtists", distinct((card) => card.artist));
+  } else if (window.TCG_MANIFEST && window.TCG_INDEXES) {
+    // Modo manifest: estatísticas vêm dos índices, sem baixar o catálogo.
+    setStat("statPokemon", window.TCG_INDEXES.pokedex.length);
+    setStat("statCards", window.TCG_MANIFEST.sets.reduce((sum, set) => sum + (set.count || 0), 0));
+    setStat("statSets", window.TCG_INDEXES.sets.length);
+    setStat("statArtists", window.TCG_INDEXES.artists.length);
+  }
 })();

@@ -1,0 +1,72 @@
+name: Build e deploy (catálogo TCGdex)
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # toda segunda às 06:00 UTC — atualiza o catálogo com sets novos
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # O cache incremental do sync (payloads brutos por set) faz os deploys
+      # de push levarem minutos em vez de refazer toda a TCGdex.
+      - name: Restaura cache da TCGdex
+        uses: actions/cache@v4
+        with:
+          path: data/.cache
+          key: tcgdex-cache-${{ github.run_id }}
+          restore-keys: tcgdex-cache-
+
+      - name: Sincroniza catálogos (en, ja, zh-tw, pt)
+        run: |
+          node scripts/sync-tcgdex.mjs en
+          node scripts/sync-tcgdex.mjs ja
+          node scripts/sync-tcgdex.mjs zh-tw
+          node scripts/sync-tcgdex.mjs pt
+
+      - name: Atualiza mapa de tipos de Pokémon
+        run: node scripts/sync-pokemon-types.mjs
+
+      - name: Mescla catálogos num manifest unificado
+        run: node scripts/merge-catalogs.mjs en ja zh-tw pt
+
+      - name: Ativa modo manifest nas páginas
+        run: |
+          sed -i 's|data/cards\.js|data/manifest.generated.js|g; s|data/indexes\.js|data/indexes.generated.js|g' \
+            index.html pokedex.html sets.html artists.html collection.html detail.html
+
+      - name: Remove arquivos que não vão para o site
+        run: rm -rf .git .github .claude data/.cache data/cards.generated.js scripts
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

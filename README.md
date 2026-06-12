@@ -70,11 +70,14 @@ Nesse modo as páginas de listagem baixam os chunks em paralelo e a página de d
 
 A coleção fica no `localStorage` em `tcg-collector-collection-v2` (`cardId -> { variante: quantidade }`). Coleções no formato antigo (`tcg-collector-owned-v1`, lista de ids) são migradas automaticamente na primeira visita — cada carta vira a primeira variante com quantidade 1 — e a chave antiga é mantida como backup.
 
+## Deploy e catálogo em produção
+
+O site publicado usa o **catálogo completo da TCGdex** em quatro idiomas (en, ja, zh-tw, pt). O workflow [.github/workflows/deploy.yml](.github/workflows/deploy.yml) roda a cada push e toda segunda-feira: sincroniza os catálogos (com cache incremental entre execuções), mescla tudo com `scripts/merge-catalogs.mjs` (ids com sufixo de idioma; espécies canonizadas via dexId usando o catálogo en), troca as páginas para o modo manifest (chunks por set carregados via fetch) e publica no GitHub Pages via artifact — nada de dados gerados vai para o git. Localmente o app continua usando o catálogo de exemplo (`data/cards.js`).
+
 ## Próximos passos recomendados
 
 - **Binders**: criar fichários 2x2 e 3x3, nas categorias Owned e Wanted, com slots preenchidos arrastando/escolhendo cartas do catálogo;
-- **Portfolio**: valor estimado da coleção usando os preços da TCGdex (Cardmarket EUR / TCGplayer USD, por variante), com possibilidade de portfolios separados e uma visão agregada;
-- trocar o catálogo de exemplo pelo catálogo gerado (o sync precisará capturar o campo `pricing` para o Portfolio);
+- **Portfolio**: valor estimado da coleção usando os preços da TCGdex (Cardmarket EUR / TCGplayer USD, por variante), com possibilidade de portfolios separados e uma visão agregada (o sync precisará capturar o campo `pricing`);
 - adicionar IndexedDB se a coleção crescer muito;
 - gerar índice de busca com MiniSearch/FlexSearch;
 - adicionar sync automático com GitHub Actions quando o app for para host.

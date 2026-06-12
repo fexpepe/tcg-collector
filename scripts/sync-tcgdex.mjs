@@ -176,7 +176,9 @@ function toAppCard(card, fallbackLanguage, fullSet) {
     .map(([name]) => normalizeVariantName(name));
 
   return {
-    id: card.id,
+    // Ids da TCGdex repetem entre idiomas (sv03.5-199 existe em en e pt);
+    // o inglês fica com o id canônico e os demais ganham sufixo de idioma.
+    id: fallbackLanguage === "en" ? card.id : `${card.id}-${fallbackLanguage}`,
     name: card.name || card.id,
     pokemonName: speciesName(card.name || card.id),
     dexId: Array.isArray(card.dexId) ? card.dexId[0] : "",

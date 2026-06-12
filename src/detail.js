@@ -84,8 +84,8 @@
     }
 
     if (detailType === "set") {
-      const entry = manifest.sets.find((set) => set.name === detailName);
-      return entry ? shared.fetchSetChunks([entry]) : [];
+      const entries = manifest.sets.filter((set) => set.name === detailName);
+      return entries.length ? shared.fetchSetChunks(entries) : [];
     }
 
     const indexes = window.TCG_INDEXES;
