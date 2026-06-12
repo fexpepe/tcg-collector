@@ -61,11 +61,14 @@ await mkdir(chunksDir, { recursive: true });
 
 const cards = [];
 const manifestSets = [];
+const seenSetIds = new Set();
 for (const [index, set] of sets.entries()) {
-  if (!set.id) continue;
+  if (!set.id || seenSetIds.has(set.id)) continue;
+  seenSetIds.add(set.id);
   const label = `[${index + 1}/${sets.length}] ${set.id}`;
   const entry = await loadSetCards(set.id, label);
   const setCards = entry.cards.map((rawCard) => toAppCard(rawCard, language, entry.set));
+  if (!setCards.length) continue; // sets sem cartas na TCGdex (comuns em ja/zh antigos)
   cards.push(...setCards);
 
   await writeFile(new URL(`${set.id}.json`, chunksDir), JSON.stringify(setCards), "utf8");
@@ -107,12 +110,13 @@ async function loadSetCards(setId, label) {
     }
   }
 
-  const fullSet = await fetchJson(`${baseUrl}/sets/${setId}`);
+  // encodeURIComponent: ids como "SM1+" quebrariam a URL sem escape
+  const fullSet = await fetchJson(`${baseUrl}/sets/${encodeURIComponent(setId)}`);
   const briefs = fullSet.cards || [];
 
   const fetchedCards = await mapLimit(briefs, concurrency, async (brief) => {
     try {
-      return await fetchJson(`${baseUrl}/cards/${brief.id}`);
+      return await fetchJson(`${baseUrl}/cards/${encodeURIComponent(brief.id)}`);
     } catch (error) {
       if (error.status === 404) {
         stats.skippedCards++;
@@ -124,6 +128,11 @@ async function loadSetCards(setId, label) {
   });
 
   const entry = { set: fullSet, cards: fetchedCards.filter(Boolean) };
+  if (!entry.cards.length) {
+    // não cacheia sets vazios: se a TCGdex completar o set depois, pegamos
+    console.warn(`${label} — set sem cartas na TCGdex, pulando`);
+    return entry;
+  }
   await writeFile(cacheFile, JSON.stringify(entry), "utf8");
   stats.fetched++;
   console.log(`${label} — ${entry.cards.length} cartas baixadas`);

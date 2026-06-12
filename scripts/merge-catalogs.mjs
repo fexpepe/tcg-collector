@@ -27,6 +27,7 @@ for (const lang of langs) {
   chunksByLang[lang] = [];
   for (const file of files) {
     const cards = JSON.parse(await readFile(new URL(file, dir), "utf8"));
+    if (!cards.length) continue;
     chunksByLang[lang].push({ file, setId: file.replace(/\.json$/, ""), cards });
   }
 }
