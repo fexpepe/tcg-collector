@@ -192,6 +192,9 @@
       "collection.summary.sets.other": "{o} / {t} cartas marcadas em {n} sets",
       "collection.summary.languages.one": "{o} / {t} cartas marcadas em {n} idioma",
       "collection.summary.languages.other": "{o} / {t} cartas marcadas em {n} idiomas",
+      "tile.addAria": "Adicionar {variant} à coleção",
+      "tile.removeAria": "Remover {variant} da coleção",
+      "tile.binder": "Adicionar a um binder (em breve)",
       "sort.label": "Ordenar por:",
       "sort.dex": "Nº Dex",
       "sort.name": "Nome",
@@ -353,6 +356,9 @@
       "collection.summary.sets.other": "{o} / {t} cards collected across {n} sets",
       "collection.summary.languages.one": "{o} / {t} cards collected across {n} language",
       "collection.summary.languages.other": "{o} / {t} cards collected across {n} languages",
+      "tile.addAria": "Add {variant} to collection",
+      "tile.removeAria": "Remove {variant} from collection",
+      "tile.binder": "Add to a binder (coming soon)",
       "sort.label": "Sort by:",
       "sort.dex": "Dex #",
       "sort.name": "Name",
@@ -695,40 +701,65 @@
     }).join("");
   }
 
-  // Card completo (imagem com zoom, meta, steppers por variante e botão de
-  // posse). Usado pelas páginas de detalhe e de coleção.
-  function cardElement(card, store) {
+  // Expande as cartas em pares carta×variante — cada par vira um tile na grade.
+  function cardVariantPairs(sourceCards) {
+    return sourceCards.flatMap((card) => {
+      const variants = card.variants && card.variants.length ? card.variants : [defaultVariant(card)];
+      return variants.map((variant) => ({ card, variant }));
+    });
+  }
+
+  const TILE_ICONS = {
+    binder: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+    plus: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+    check: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>'
+  };
+
+  function variantSlug(variant) {
+    return normalize(variant).replace(/\s+/g, "-");
+  }
+
+  // Tile minimalista (imagem em destaque + nome, variante, set·número e ações).
+  // Um tile por variante; quantidades além de 1 são ajustadas no preview da carta.
+  function variantTile(card, variant, store) {
+    const quantity = store.getQuantity(card.id, variant);
+    const isOwned = quantity > 0;
     const article = document.createElement("article");
-    article.className = "card";
-    const total = store.totalForCard(card.id);
-    const isOwned = total > 0;
+    article.className = `card-tile${isOwned ? " owned" : ""}`;
     const image = card.image
       ? `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${localizedImg(card.image, { alt: card.name, loading: "lazy" })}</button>`
       : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;
-    const ownedLabel = isOwned
-      ? (total > 1 ? t("card.inCollectionTimes", { n: total }) : t("card.inCollection"))
-      : t("card.markOwned");
+    const ownAria = isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant });
+    const qtyBadge = quantity > 1 ? `<span class="tile-qty">×${quantity}</span>` : "";
 
     article.innerHTML = `
       <div class="card-image">${image}</div>
-      <div class="card-body">
-        <div class="card-title-row">
-          <h3>${escapeHtml(card.name)}</h3>
-          <span class="tag">${escapeHtml(card.language.toUpperCase())}</span>
+      <div class="tile-info">
+        <h3>${escapeHtml(card.name)}</h3>
+        <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${escapeHtml(variant)}</p>
+        <div class="tile-bottom">
+          <p class="tile-set">${escapeHtml(card.set)} · ${escapeHtml(card.number)}</p>
+          <div class="tile-actions">
+            <button type="button" class="tile-btn" disabled title="${escapeAttribute(t("tile.binder"))}" aria-label="${escapeAttribute(t("tile.binder"))}">${TILE_ICONS.binder}</button>
+            <button type="button" class="tile-btn tile-own${isOwned ? " active" : ""}" data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}" aria-pressed="${isOwned}" aria-label="${escapeAttribute(ownAria)}">
+              ${isOwned ? TILE_ICONS.check : TILE_ICONS.plus}${qtyBadge}
+            </button>
+          </div>
         </div>
-        <div class="meta">
-          ${escapeHtml(card.set)}<br>
-          ${escapeHtml(card.number)} · ${escapeHtml(card.rarity)}<br>
-          ${escapeHtml(card.artist || t("card.unknownArtist"))}
-        </div>
-        <div class="variant-quantities">${variantQuantityRows(card, store)}</div>
-        <button class="owned-toggle" data-card-id="${escapeAttribute(card.id)}" aria-pressed="${isOwned}">
-          ${escapeHtml(ownedLabel)}
-        </button>
       </div>
     `;
 
     return article;
+  }
+
+  // Trata o clique no botão +/✓ de um tile. Retorna true se consumiu o evento.
+  function handleOwnedTileClick(event, store) {
+    const button = event.target.closest("[data-own-card-id]");
+    if (!button) return false;
+    const { ownCardId, ownVariant } = button.dataset;
+    const quantity = store.getQuantity(ownCardId, ownVariant);
+    store.add(ownCardId, ownVariant, quantity > 0 ? -quantity : 1);
+    return true;
   }
 
   // Trata cliques nos steppers de variante. Retorna true se o evento foi consumido.
@@ -957,7 +988,9 @@
     createFavoritesStore,
     defaultVariant,
     variantQuantityRows,
-    cardElement,
+    cardVariantPairs,
+    variantTile,
+    handleOwnedTileClick,
     handleQuantityClick,
     fetchPokemonMeta,
     createCardPreview,

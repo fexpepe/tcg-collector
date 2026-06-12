@@ -296,17 +296,9 @@
         return;
       }
 
-      if (shared.handleQuantityClick(event, owned)) {
+      if (shared.handleOwnedTileClick(event, owned)) {
         render();
-        return;
       }
-
-      const button = event.target.closest("[data-card-id]");
-      if (!button) return;
-      const card = cardsById.get(button.dataset.cardId);
-      if (!card) return;
-      owned.toggle(card);
-      render();
     });
 
     shared.bindCollectionTransfer({
@@ -321,10 +313,11 @@
   function render({ resetCount = false } = {}) {
     const visibleCards = filterCards();
     const ownedInPage = pageCards.filter((card) => owned.has(card.id)).length;
-    pager.render(visibleCards, createCard, { resetCount });
+    const tiles = shared.cardVariantPairs(visibleCards);
+    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned), { resetCount });
 
-    elements.empty.hidden = visibleCards.length > 0;
-    elements.resultCount.textContent = tn("results.count", visibleCards.length);
+    elements.empty.hidden = tiles.length > 0;
+    elements.resultCount.textContent = tn("results.count", tiles.length);
     elements.ownedCount.textContent = ownedInPage;
     elements.totalCount.textContent = pageCards.length;
     elements.completionRate.textContent = pageCards.length ? `${Math.round((ownedInPage / pageCards.length) * 100)}%` : "0%";
@@ -355,9 +348,6 @@
     });
   }
 
-  function createCard(card) {
-    return shared.cardElement(card, owned);
-  }
 
   function typeLabel(type) {
     const key = `detail.label.${type}`;

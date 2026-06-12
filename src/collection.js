@@ -129,17 +129,9 @@
         return;
       }
 
-      if (shared.handleQuantityClick(event, owned)) {
+      if (shared.handleOwnedTileClick(event, owned)) {
         render();
-        return;
       }
-
-      const button = event.target.closest("[data-card-id]");
-      if (!button) return;
-      const card = cardsById.get(button.dataset.cardId);
-      if (!card) return;
-      owned.toggle(card);
-      render();
     });
 
     shared.bindCollectionTransfer({
@@ -167,11 +159,13 @@
 
   function renderCards({ resetCount = false } = {}) {
     const visibleCards = filterCards();
-    pager.render(visibleCards, (card) => shared.cardElement(card, owned), { resetCount });
+    const tiles = shared.cardVariantPairs(visibleCards)
+      .filter(({ card, variant }) => owned.getQuantity(card.id, variant) > 0);
+    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned), { resetCount });
 
     const myCards = ownedCards();
-    elements.empty.hidden = visibleCards.length > 0;
-    elements.resultCount.textContent = tn("results.count", visibleCards.length);
+    elements.empty.hidden = tiles.length > 0;
+    elements.resultCount.textContent = tn("results.count", tiles.length);
     elements.distinctCount.textContent = myCards.length;
     elements.copiesCount.textContent = owned.totalQuantity();
     elements.setsCount.textContent = unique(myCards.map((card) => card.set)).length;

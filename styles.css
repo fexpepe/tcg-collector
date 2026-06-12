@@ -1458,3 +1458,130 @@ a.progress-row:hover {
   color: var(--subtle);
   font-size: 12px;
 }
+
+/* Tile minimalista de carta (imagem em destaque, estilo binderbuilder) */
+.card-tile {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.card-tile.owned {
+  border-color: rgba(57, 199, 155, 0.55);
+  box-shadow: 0 0 0 1px rgba(57, 199, 155, 0.25), var(--shadow);
+}
+
+.card-tile .card-image {
+  padding: 8px 8px 0;
+  background: transparent;
+  aspect-ratio: auto;
+}
+
+.card-tile .image-open img {
+  border-radius: 6px;
+}
+
+.tile-info {
+  padding: 10px 12px 12px;
+}
+
+.tile-info h3 {
+  margin: 0 0 2px;
+  font-size: 15px;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tile-variant {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #7aa2ff;
+}
+
+.variant-holo,
+.variant-holofoil {
+  color: #c084fc;
+}
+
+.variant-reverse {
+  color: #f0b84b;
+}
+
+.variant-1st-edition {
+  color: #fbbf24;
+}
+
+.variant-unlimited {
+  color: #9ba4b3;
+}
+
+.tile-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.tile-set {
+  margin: 0;
+  color: var(--subtle);
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tile-actions {
+  display: flex;
+  gap: 6px;
+  flex: none;
+}
+
+.tile-btn {
+  position: relative;
+  width: 34px;
+  min-height: 34px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tile-btn:hover:not(:disabled) {
+  border-color: var(--accent-dark);
+  color: var(--text);
+}
+
+.tile-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.tile-own.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tile-qty {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  background: var(--accent);
+  color: #0a0c10;
+  font-size: 10px;
+  font-weight: 800;
+  border-radius: 999px;
+  padding: 2px 5px;
+  line-height: 1;
+}
