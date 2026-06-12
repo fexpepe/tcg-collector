@@ -13,7 +13,7 @@ Local: abra `index.html` no navegador (home) ou `pokedex.html` (direto no app). 
 - lista cartas de um catálogo local;
 - busca por nome, set, artista, raridade, idioma, número e variante;
 - filtra por set, idioma e status da coleção;
-- rastreia a coleção por variante e quantidade (ex.: Holo ×2, Reverse ×1) — cada variante é um tile na grade, com botão +/✓ para marcar e steppers de quantidade no preview da carta;
+- rastreia a coleção por variante **e condição** (escala LigaPokémon: M, NM, SP, MP, HP, D) — ao marcar entra como NM por padrão, e o preview da carta tem um stepper por condição; cada cópia fica distinguida por condição (base para o cálculo futuro do valor do portfólio);
 - página Coleção com todas as cartas marcadas e filtros por Pokémon, set, idioma e raridade;
 - botão rápido "tenho" marca a primeira variante (ou limpa a carta toda);
 - mostra progresso básico (cartas distintas com ao menos uma variante);

@@ -165,7 +165,7 @@
 
   function ownedTilePairs() {
     return shared.cardVariantPairs(filterCards())
-      .filter(({ card, variant }) => owned.getQuantity(card.id, variant) > 0);
+      .filter(({ card, variant }) => owned.variantTotal(card.id, variant) > 0);
   }
 
   // Atualiza tiles e contadores no DOM existente, sem reconstruir a grade
@@ -176,7 +176,7 @@
       return;
     }
     elements.grid.querySelectorAll(".card-tile").forEach((tile) => {
-      const quantity = owned.getQuantity(tile.dataset.tileCardId, tile.dataset.tileVariant);
+      const quantity = owned.variantTotal(tile.dataset.tileCardId, tile.dataset.tileVariant);
       if (quantity > 0) {
         shared.refreshTileOwnership(tile, owned);
       } else {

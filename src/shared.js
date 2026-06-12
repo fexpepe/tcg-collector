@@ -43,11 +43,17 @@
     return (card && card.variants && card.variants[0]) || "Normal";
   }
 
-  // Coleção v2: cardId -> { variante: quantidade }. O formato v1 (lista de ids)
-  // é migrado uma única vez via migrateLegacy, depois que o catálogo carrega.
+  // Condições no padrão LigaPokémon (melhor -> pior). NM é o default ao adicionar.
+  const CARD_CONDITIONS = ["M", "NM", "SP", "MP", "HP", "D"];
+  const DEFAULT_CONDITION = "NM";
+
+  // Coleção v3: cardId -> variante -> condição -> quantidade. Cada cópia é
+  // distinguida por condição (para o futuro cálculo de valor do portfólio).
+  // Migra do v2 (cardId -> variante -> quantidade; cópias viram NM) e do v1.
   function createCollectionStore() {
-    const storageKey = "tcg-collector-collection-v2";
-    const legacyKey = "tcg-collector-owned-v1";
+    const storageKey = "tcg-collector-collection-v3";
+    const v2Key = "tcg-collector-collection-v2";
+    const v1Key = "tcg-collector-owned-v1";
     let collection = load();
     let initialized = collection !== null;
     if (!initialized) collection = {};
@@ -66,25 +72,52 @@
       initialized = true;
     }
 
+    function variantTotal(cardId, variant) {
+      const conditions = collection[cardId] && collection[cardId][variant];
+      if (!conditions) return 0;
+      return Object.values(conditions).reduce((sum, qty) => sum + qty, 0);
+    }
+
     function totalForCard(cardId) {
       const entry = collection[cardId];
       if (!entry) return 0;
-      return Object.values(entry).reduce((sum, qty) => sum + qty, 0);
+      return Object.keys(entry).reduce((sum, variant) => sum + variantTotal(cardId, variant), 0);
+    }
+
+    function cleanup(cardId, variant) {
+      const entry = collection[cardId];
+      if (!entry) return;
+      if (entry[variant] && Object.keys(entry[variant]).length === 0) delete entry[variant];
+      if (Object.keys(entry).length === 0) delete collection[cardId];
     }
 
     return {
+      // Migra v2/v1 para v3 uma única vez (cópias antigas entram como NM).
       migrateLegacy(getDefaultVariant) {
         if (initialized) return;
-        let legacyIds = [];
-        try {
-          legacyIds = JSON.parse(localStorage.getItem(legacyKey) || "[]");
-        } catch (error) {
-          legacyIds = [];
-        }
-        if (Array.isArray(legacyIds)) {
-          legacyIds.forEach((cardId) => {
-            collection[cardId] = { [getDefaultVariant(cardId)]: 1 };
+        const v2 = readObject(v2Key);
+        if (v2) {
+          Object.entries(v2).forEach(([cardId, variants]) => {
+            Object.entries(variants).forEach(([variant, qty]) => {
+              const quantity = Math.floor(Number(qty));
+              if (quantity > 0) {
+                collection[cardId] = collection[cardId] || {};
+                collection[cardId][variant] = { [DEFAULT_CONDITION]: quantity };
+              }
+            });
           });
+        } else {
+          let legacyIds = [];
+          try {
+            legacyIds = JSON.parse(localStorage.getItem(v1Key) || "[]");
+          } catch (error) {
+            legacyIds = [];
+          }
+          if (Array.isArray(legacyIds)) {
+            legacyIds.forEach((cardId) => {
+              collection[cardId] = { [getDefaultVariant(cardId)]: { [DEFAULT_CONDITION]: 1 } };
+            });
+          }
         }
         save();
       },
@@ -94,26 +127,42 @@
       get size() {
         return Object.keys(collection).filter((cardId) => totalForCard(cardId) > 0).length;
       },
-      getQuantity(cardId, variant) {
-        return (collection[cardId] && collection[cardId][variant]) || 0;
+      getQuantity(cardId, variant, condition) {
+        return (collection[cardId] && collection[cardId][variant] && collection[cardId][variant][condition]) || 0;
       },
+      variantTotal,
       totalForCard,
       totalQuantity() {
         return Object.keys(collection).reduce((sum, cardId) => sum + totalForCard(cardId), 0);
       },
-      add(cardId, variant, delta) {
-        const entry = collection[cardId] || {};
-        const quantity = Math.max(0, (entry[variant] || 0) + delta);
+      // Detalhamento por condição de uma variante: [{ condition, quantity }].
+      conditionBreakdown(cardId, variant) {
+        const conditions = (collection[cardId] && collection[cardId][variant]) || {};
+        return CARD_CONDITIONS
+          .filter((condition) => conditions[condition] > 0)
+          .map((condition) => ({ condition, quantity: conditions[condition] }));
+      },
+      add(cardId, variant, condition, delta) {
+        const entry = collection[cardId] || (collection[cardId] = {});
+        const conditions = entry[variant] || (entry[variant] = {});
+        const quantity = Math.max(0, (conditions[condition] || 0) + delta);
         if (quantity > 0) {
-          entry[variant] = quantity;
-          collection[cardId] = entry;
+          conditions[condition] = quantity;
         } else {
-          delete entry[variant];
-          if (Object.keys(entry).length === 0) {
-            delete collection[cardId];
-          } else {
-            collection[cardId] = entry;
-          }
+          delete conditions[condition];
+        }
+        cleanup(cardId, variant);
+        save();
+      },
+      // Liga/desliga a variante inteira a partir do tile: adiciona 1 NM se vazia,
+      // ou remove todas as condições daquela variante.
+      toggleVariant(cardId, variant) {
+        if (variantTotal(cardId, variant) > 0) {
+          if (collection[cardId]) delete collection[cardId][variant];
+          cleanup(cardId, variant);
+        } else {
+          collection[cardId] = collection[cardId] || {};
+          collection[cardId][variant] = { [DEFAULT_CONDITION]: 1 };
         }
         save();
       },
@@ -121,7 +170,7 @@
         if (this.has(card.id)) {
           delete collection[card.id];
         } else {
-          collection[card.id] = { [defaultVariant(card)]: 1 };
+          collection[card.id] = { [defaultVariant(card)]: { [DEFAULT_CONDITION]: 1 } };
         }
         save();
       },
@@ -133,6 +182,15 @@
         return collection;
       }
     };
+  }
+
+  function readObject(key) {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(key) || "null");
+      return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : null;
+    } catch (error) {
+      return null;
+    }
   }
 
   function createFavoritesStore() {
@@ -262,6 +320,14 @@
       "qty.aria": "Quantidade de {variant}",
       "qty.addAria": "Adicionar uma {variant}",
       "qty.removeAria": "Remover uma {variant}",
+      "qty.addCondAria": "Adicionar uma {variant} {condition}",
+      "qty.removeCondAria": "Remover uma {variant} {condition}",
+      "condition.M": "Mint (perfeita)",
+      "condition.NM": "Near Mint (quase perfeita)",
+      "condition.SP": "Slightly Played (pouco jogada)",
+      "condition.MP": "Moderately Played (jogada)",
+      "condition.HP": "Heavily Played (muito jogada)",
+      "condition.D": "Damaged (danificada)",
       "modal.details": "Detalhes da carta",
       "modal.rarity": "Raridade",
       "modal.artist": "Artista",
@@ -438,6 +504,14 @@
       "qty.aria": "{variant} quantity",
       "qty.addAria": "Add one {variant}",
       "qty.removeAria": "Remove one {variant}",
+      "qty.addCondAria": "Add one {condition} {variant}",
+      "qty.removeCondAria": "Remove one {condition} {variant}",
+      "condition.M": "Mint",
+      "condition.NM": "Near Mint",
+      "condition.SP": "Slightly Played",
+      "condition.MP": "Moderately Played",
+      "condition.HP": "Heavily Played",
+      "condition.D": "Damaged",
       "modal.details": "Card details",
       "modal.rarity": "Rarity",
       "modal.artist": "Artist",
@@ -831,9 +905,11 @@
         return;
       }
 
+      // Stepper de condição: atualiza só a seção de quantidades (não recria a
+      // imagem grande, evitando o flicker a cada clique).
       if (event.target.closest("#cardPreviewModal") && handleQuantityClick(event, store)) {
         onOwnedChange();
-        if (activeCard) open(activeCard.id);
+        refreshQuantities();
         return;
       }
 
@@ -841,29 +917,63 @@
       if (modalToggle) {
         store.toggle(getCard(modalToggle.dataset.cardId) || { id: modalToggle.dataset.cardId });
         onOwnedChange();
-        if (activeCard) open(activeCard.id);
+        refreshQuantities();
+      }
+    }
+
+    function refreshQuantities() {
+      const modal = document.getElementById("cardPreviewModal");
+      if (!modal || !activeCard) return;
+      const wrap = modal.querySelector(".variant-quantities");
+      if (wrap) wrap.innerHTML = variantQuantityRows(activeCard, store);
+      const ownedButton = modal.querySelector(".preview-owned");
+      if (ownedButton) {
+        const isOwned = store.has(activeCard.id);
+        ownedButton.setAttribute("aria-pressed", String(isOwned));
+        ownedButton.textContent = isOwned ? t("card.inCollection") : t("card.markOwned");
       }
     }
 
     return { open, close };
   }
 
-  // Linhas de quantidade por variante (stepper − qtd +) para uma carta.
+  // Por variante: nome + total e um stepper por condição (M, NM, SP, MP, HP, D).
+  // Cada cópia fica distinguida por condição para o cálculo futuro do portfólio.
   function variantQuantityRows(card, store) {
     const variants = card.variants && card.variants.length ? card.variants : [defaultVariant(card)];
     return variants.map((variant) => {
-      const quantity = store.getQuantity(card.id, variant);
-      return `
-        <div class="variant-row${quantity > 0 ? " owned" : ""}">
-          <span class="variant-row-name">${escapeHtml(variant)}</span>
-          <div class="qty-stepper" aria-label="${escapeAttribute(t("qty.aria", { variant }))}">
-            <button type="button" data-qty-action="dec" data-qty-card-id="${escapeAttribute(card.id)}" data-qty-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("qty.removeAria", { variant }))}" ${quantity === 0 ? "disabled" : ""}>−</button>
-            <span class="qty-value">${quantity}</span>
-            <button type="button" data-qty-action="inc" data-qty-card-id="${escapeAttribute(card.id)}" data-qty-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("qty.addAria", { variant }))}">+</button>
+      const total = store.variantTotal(card.id, variant);
+      const conditions = CARD_CONDITIONS.map((condition) => {
+        const quantity = store.getQuantity(card.id, variant, condition);
+        const conditionName = t(`condition.${condition}`);
+        return `
+          <div class="condition-stepper${quantity > 0 ? " owned" : ""}">
+            <span class="condition-label" title="${escapeAttribute(conditionName)}">${condition}</span>
+            <div class="qty-stepper" aria-label="${escapeAttribute(conditionName)}">
+              <button type="button" data-qty-action="dec" data-qty-card-id="${escapeAttribute(card.id)}" data-qty-variant="${escapeAttribute(variant)}" data-qty-condition="${condition}" aria-label="${escapeAttribute(t("qty.removeCondAria", { variant, condition: conditionName }))}" ${quantity === 0 ? "disabled" : ""}>−</button>
+              <span class="qty-value">${quantity}</span>
+              <button type="button" data-qty-action="inc" data-qty-card-id="${escapeAttribute(card.id)}" data-qty-variant="${escapeAttribute(variant)}" data-qty-condition="${condition}" aria-label="${escapeAttribute(t("qty.addCondAria", { variant, condition: conditionName }))}">+</button>
+            </div>
           </div>
+        `;
+      }).join("");
+      return `
+        <div class="variant-conditions${total > 0 ? " owned" : ""}">
+          <div class="variant-conditions-head">
+            <span class="variant-row-name variant-${escapeAttribute(variantSlug(variant))}">${escapeHtml(variant)}</span>
+            ${total > 0 ? `<span class="variant-total">×${total}</span>` : ""}
+          </div>
+          <div class="condition-grid">${conditions}</div>
         </div>
       `;
     }).join("");
+  }
+
+  // Resumo curto das condições de uma variante ("NM ×2 · M ×1") para o tile.
+  function conditionSummary(store, cardId, variant) {
+    return store.conditionBreakdown(cardId, variant)
+      .map(({ condition, quantity }) => `${condition} ×${quantity}`)
+      .join(" · ");
   }
 
   // Expande as cartas em pares carta×variante — cada par vira um tile na grade.
@@ -887,7 +997,7 @@
   // Tile minimalista (imagem em destaque + nome, variante, set·número e ações).
   // Um tile por variante; quantidades além de 1 são ajustadas no preview da carta.
   function variantTile(card, variant, store) {
-    const quantity = store.getQuantity(card.id, variant);
+    const quantity = store.variantTotal(card.id, variant);
     const isOwned = quantity > 0;
     const article = document.createElement("article");
     article.className = `card-tile${isOwned ? " owned" : ""}`;
@@ -898,6 +1008,7 @@
       : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;
     const ownAria = isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant });
     const qtyBadge = quantity > 1 ? `<span class="tile-qty">×${quantity}</span>` : "";
+    const summary = conditionSummary(store, card.id, variant);
 
     article.innerHTML = `
       <div class="card-image">${image}</div>
@@ -913,6 +1024,7 @@
             </button>
           </div>
         </div>
+        <p class="tile-conditions" data-tile-conditions>${escapeHtml(summary)}</p>
       </div>
     `;
 
@@ -925,7 +1037,7 @@
     const cardId = tile.dataset.tileCardId;
     const variant = tile.dataset.tileVariant;
     if (!cardId) return;
-    const quantity = store.getQuantity(cardId, variant);
+    const quantity = store.variantTotal(cardId, variant);
     const isOwned = quantity > 0;
     tile.classList.toggle("owned", isOwned);
 
@@ -935,24 +1047,25 @@
     button.setAttribute("aria-pressed", String(isOwned));
     button.setAttribute("aria-label", isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant }));
     button.innerHTML = `${isOwned ? TILE_ICONS.check : TILE_ICONS.plus}${quantity > 1 ? `<span class="tile-qty">×${quantity}</span>` : ""}`;
+
+    const summaryEl = tile.querySelector("[data-tile-conditions]");
+    if (summaryEl) summaryEl.textContent = conditionSummary(store, cardId, variant);
   }
 
-  // Trata o clique no botão +/✓ de um tile. Retorna true se consumiu o evento.
+  // Trata o clique no botão +/✓ de um tile (liga/desliga a variante; default NM).
   function handleOwnedTileClick(event, store) {
     const button = event.target.closest("[data-own-card-id]");
     if (!button) return false;
-    const { ownCardId, ownVariant } = button.dataset;
-    const quantity = store.getQuantity(ownCardId, ownVariant);
-    store.add(ownCardId, ownVariant, quantity > 0 ? -quantity : 1);
+    store.toggleVariant(button.dataset.ownCardId, button.dataset.ownVariant);
     return true;
   }
 
-  // Trata cliques nos steppers de variante. Retorna true se o evento foi consumido.
+  // Trata cliques nos steppers de condição. Retorna true se o evento foi consumido.
   function handleQuantityClick(event, store) {
     const button = event.target.closest("[data-qty-action]");
     if (!button || button.disabled) return false;
     const delta = button.dataset.qtyAction === "inc" ? 1 : -1;
-    store.add(button.dataset.qtyCardId, button.dataset.qtyVariant, delta);
+    store.add(button.dataset.qtyCardId, button.dataset.qtyVariant, button.dataset.qtyCondition || DEFAULT_CONDITION, delta);
     return true;
   }
 
@@ -961,7 +1074,7 @@
 
     exportButton.addEventListener("click", () => {
       const payload = {
-        version: 2,
+        version: 3,
         exportedAt: new Date().toISOString(),
         collection: store.toObject()
       };
@@ -991,12 +1104,12 @@
   }
 
   function parseImportedCollection(payload, cardsById) {
-    // Formato v1: lista de ids -> 1ª variante com quantidade 1.
+    // Formato v1: lista de ids -> 1ª variante, NM ×1.
     if (Array.isArray(payload.ownedCardIds)) {
       const collection = {};
       payload.ownedCardIds.forEach((cardId) => {
         if (cardsById.has(cardId)) {
-          collection[cardId] = { [defaultVariant(cardsById.get(cardId))]: 1 };
+          collection[cardId] = { [defaultVariant(cardsById.get(cardId))]: { [DEFAULT_CONDITION]: 1 } };
         }
       });
       return collection;
@@ -1006,13 +1119,25 @@
       throw new Error("Arquivo sem collection ou ownedCardIds.");
     }
 
+    const isV3 = payload.version >= 3;
     const collection = {};
     Object.entries(payload.collection).forEach(([cardId, variants]) => {
       if (!cardsById.has(cardId) || !variants || typeof variants !== "object") return;
       const entry = {};
-      Object.entries(variants).forEach(([variant, quantity]) => {
-        const parsed = Math.floor(Number(quantity));
-        if (parsed > 0) entry[variant] = parsed;
+      Object.entries(variants).forEach(([variant, value]) => {
+        if (isV3 && value && typeof value === "object") {
+          // v3: variante -> condição -> quantidade
+          const conditions = {};
+          Object.entries(value).forEach(([condition, quantity]) => {
+            const parsed = Math.floor(Number(quantity));
+            if (parsed > 0 && CARD_CONDITIONS.includes(condition)) conditions[condition] = parsed;
+          });
+          if (Object.keys(conditions).length) entry[variant] = conditions;
+        } else {
+          // v2: variante -> quantidade (vira NM)
+          const parsed = Math.floor(Number(value));
+          if (parsed > 0) entry[variant] = { [DEFAULT_CONDITION]: parsed };
+        }
       });
       if (Object.keys(entry).length) collection[cardId] = entry;
     });
@@ -1216,6 +1341,7 @@
     createCollectionStore,
     createFavoritesStore,
     defaultVariant,
+    CARD_CONDITIONS,
     variantQuantityRows,
     cardVariantPairs,
     variantTile,
