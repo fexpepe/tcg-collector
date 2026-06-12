@@ -636,6 +636,24 @@ input::placeholder {
   position: relative;
 }
 
+.set-release {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(13, 14, 18, 0.78);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  backdrop-filter: blur(4px);
+  white-space: nowrap;
+}
+
 .set-logo {
   max-width: 88%;
   max-height: 96px;

@@ -314,9 +314,13 @@
     const symbol = item.symbol
       ? localizedImg(item.symbol, { className: "set-symbol", loading: "lazy" })
       : "";
+    const releaseBadge = item.releaseDate
+      ? `<span class="set-release" title="${escapeAttribute(formatReleaseDate(item.releaseDate, "long"))}">${escapeHtml(formatReleaseDate(item.releaseDate))}</span>`
+      : "";
 
     article.innerHTML = `
       <div class="set-art">
+        ${releaseBadge}
         ${logo}
         ${symbol}
       </div>
@@ -404,6 +408,7 @@
       officialTotal: sample.setTotal || sortedCards.length,
       logo: sample.setLogo || "",
       symbol: sample.setSymbol || "",
+      releaseDate: sample.setReleaseDate || "",
       languageLabel: unique(sortedCards.map((card) => card.language.toUpperCase())).join("/")
     };
   }
@@ -433,5 +438,15 @@
   function toRoman(value) {
     const numerals = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
     return numerals[Number(value)] || String(value);
+  }
+
+  // Data de lançamento do set: badge compacto (mês/ano) e tooltip completo.
+  function formatReleaseDate(value, style) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return value;
+    const options = style === "long"
+      ? { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }
+      : { month: "short", year: "numeric", timeZone: "UTC" };
+    return date.toLocaleDateString(shared.getLocale(), options);
   }
 })();
