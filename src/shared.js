@@ -325,7 +325,9 @@
       "home.step3.title": "Complete",
       "home.step3.body": "Acompanhe o progresso por Pokémon, por set e por artista.",
       "home.footer.line1": "Grátis e open source — <a href=\"https://github.com/fexpepe/tcg-collector\">código no GitHub</a>",
-      "home.footer.line2": "Dados de cartas por <a href=\"https://tcgdex.dev\">TCGdex</a> · informações de Pokémon pela <a href=\"https://pokeapi.co\">PokéAPI</a>. Pokémon e Pokémon TCG são marcas de Nintendo / Creatures / GAME FREAK; este projeto não tem afiliação."
+      "home.footer.line2": "Dados de cartas por <a href=\"https://tcgdex.dev\">TCGdex</a> · informações de Pokémon pela <a href=\"https://pokeapi.co\">PokéAPI</a>. Pokémon e Pokémon TCG são marcas de Nintendo / Creatures / GAME FREAK; este projeto não tem afiliação.",
+      "footer.rights": "© {year} TCG Collector · Projeto open source, sem afiliação com Nintendo, Game Freak, Creatures, Niantic ou The Pokémon Company. Pokémon e Pokémon TCG são marcas registradas dos respectivos titulares.",
+      "footer.credits": "Código no <a href=\"https://github.com/fexpepe/tcg-collector\">GitHub</a> · cartas por <a href=\"https://tcgdex.dev\">TCGdex</a> · Pokémon pela <a href=\"https://pokeapi.co\">PokéAPI</a>."
     },
     en: {
       "lang.aria": "Site language",
@@ -496,7 +498,9 @@
       "home.step3.title": "Complete",
       "home.step3.body": "Track progress per Pokémon, per set and per artist.",
       "home.footer.line1": "Free and open source — <a href=\"https://github.com/fexpepe/tcg-collector\">code on GitHub</a>",
-      "home.footer.line2": "Card data by <a href=\"https://tcgdex.dev\">TCGdex</a> · Pokémon info from <a href=\"https://pokeapi.co\">PokéAPI</a>. Pokémon and Pokémon TCG are trademarks of Nintendo / Creatures / GAME FREAK; this project is not affiliated."
+      "home.footer.line2": "Card data by <a href=\"https://tcgdex.dev\">TCGdex</a> · Pokémon info from <a href=\"https://pokeapi.co\">PokéAPI</a>. Pokémon and Pokémon TCG are trademarks of Nintendo / Creatures / GAME FREAK; this project is not affiliated.",
+      "footer.rights": "© {year} TCG Collector · Open-source project, not affiliated with Nintendo, Game Freak, Creatures, Niantic or The Pokémon Company. Pokémon and Pokémon TCG are trademarks of their respective owners.",
+      "footer.credits": "Code on <a href=\"https://github.com/fexpepe/tcg-collector\">GitHub</a> · cards by <a href=\"https://tcgdex.dev\">TCGdex</a> · Pokémon from <a href=\"https://pokeapi.co\">PokéAPI</a>."
     }
   };
 
@@ -593,6 +597,20 @@
         close();
       }
     });
+  }
+
+  // Rodapé global (em todas as páginas): direitos/aviso de marcas + créditos.
+  function initSiteFooter() {
+    if (document.querySelector(".site-footer")) return;
+    const footer = document.createElement("footer");
+    footer.className = "site-footer";
+    footer.innerHTML = `
+      <div class="site-footer-inner">
+        <p>${escapeHtml(t("footer.rights", { year: new Date().getFullYear() }))}</p>
+        <p>${t("footer.credits")}</p>
+      </div>
+    `;
+    document.body.appendChild(footer);
   }
 
   function initLanguageSwitcher() {
@@ -1179,4 +1197,5 @@
   applyTranslations();
   initLanguageSwitcher();
   initPageNav();
+  initSiteFooter();
 })();
