@@ -435,19 +435,25 @@ input::placeholder {
   height: 100%;
 }
 
+/* Recorte do contorno da carta: raio proporcional aos cantos reais
+   (≈4.8% x 3.4% numa carta 63x88mm) e leve zoom com overflow hidden para
+   esconder a borda branca dos scans da API. */
 .image-open {
   border: 0;
-  border-radius: 7px;
+  border-radius: 4.8% / 3.4%;
   background: transparent;
   cursor: zoom-in;
   padding: 0;
   display: block;
+  overflow: hidden;
 }
 
 .image-open img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  border-radius: 4.8% / 3.4%;
+  transform: scale(1.013);
 }
 
 .image-placeholder {
@@ -1023,10 +1029,11 @@ input::placeholder {
 }
 
 .preview-image-wrap img {
-  width: 100%;
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
   max-height: calc(100vh - 96px);
-  object-fit: contain;
-  border-radius: 16px;
+  border-radius: 4.8% / 3.4%;
   filter: drop-shadow(0 20px 34px rgba(0, 0, 0, 0.42));
 }
 
@@ -1283,7 +1290,7 @@ input::placeholder {
 
 .hero-cards img {
   width: clamp(120px, 13vw, 160px);
-  border-radius: 9px;
+  border-radius: 4.8% / 3.4%;
   box-shadow: var(--shadow);
 }
 
@@ -1592,7 +1599,7 @@ a.progress-row:hover {
 }
 
 .card-tile .image-open img {
-  border-radius: 6px;
+  border-radius: 4.8% / 3.4%;
 }
 
 .tile-info {
