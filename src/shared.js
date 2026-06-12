@@ -207,6 +207,10 @@
       "toolbar.search": "Busca",
       "toolbar.region": "Local",
       "toolbar.type": "Tipo",
+      "cardLang.en": "Inglês",
+      "cardLang.ja": "Japonês",
+      "cardLang.zh": "Chinês",
+      "cardLang.pt": "Português (BR)",
       "toolbar.set": "Set",
       "toolbar.language": "Idioma",
       "toolbar.collection": "Coleção",
@@ -374,6 +378,10 @@
       "toolbar.search": "Search",
       "toolbar.region": "Region",
       "toolbar.type": "Type",
+      "cardLang.en": "English",
+      "cardLang.ja": "Japanese",
+      "cardLang.zh": "Chinese",
+      "cardLang.pt": "Brazilian Portuguese",
       "toolbar.set": "Set",
       "toolbar.language": "Language",
       "toolbar.collection": "Collection",
@@ -604,6 +612,35 @@
     });
   }
 
+  // Bandeiras SVG inline por idioma da carta (renderizam em qualquer SO, ao
+  // contrário de emoji de bandeira no Windows).
+  const CARD_FLAG_SVGS = {
+    en: '<svg viewBox="0 0 20 14"><rect width="20" height="14" fill="#b22234"/><g fill="#fff"><rect y="2" width="20" height="2"/><rect y="6" width="20" height="2"/><rect y="10" width="20" height="2"/></g><rect width="9" height="8" fill="#3c3b6e"/><g fill="#fff"><circle cx="2" cy="2" r=".7"/><circle cx="4.5" cy="2" r=".7"/><circle cx="7" cy="2" r=".7"/><circle cx="3.2" cy="4" r=".7"/><circle cx="5.7" cy="4" r=".7"/><circle cx="2" cy="6" r=".7"/><circle cx="4.5" cy="6" r=".7"/><circle cx="7" cy="6" r=".7"/></g></svg>',
+    ja: '<svg viewBox="0 0 20 14"><rect width="20" height="14" fill="#fff"/><circle cx="10" cy="7" r="4" fill="#bc002d"/></svg>',
+    zh: '<svg viewBox="0 0 20 14"><rect width="20" height="14" fill="#de2910"/><polygon points="10,3 10.94,5.71 13.8,5.76 11.52,7.49 12.35,10.24 10,8.6 7.65,10.24 8.48,7.49 6.2,5.76 9.06,5.71" fill="#ffde00"/></svg>',
+    pt: '<svg viewBox="0 0 20 14"><rect width="20" height="14" fill="#009b3a"/><polygon points="10,1.6 18.4,7 10,12.4 1.6,7" fill="#fedf00"/><circle cx="10" cy="7" r="2.6" fill="#002776"/></svg>'
+  };
+
+  function normalizeCardLanguage(language) {
+    const code = String(language || "").toLowerCase();
+    if (code.startsWith("pt")) return "pt";
+    if (code.startsWith("ja") || code === "jp") return "ja";
+    if (code.startsWith("zh")) return "zh";
+    if (code.startsWith("en")) return "en";
+    return code;
+  }
+
+  function cardFlag(language) {
+    const code = normalizeCardLanguage(language);
+    const translated = t(`cardLang.${code}`);
+    const label = translated === `cardLang.${code}` ? String(language || "").toUpperCase() : translated;
+    const svg = CARD_FLAG_SVGS[code];
+    if (!svg) {
+      return `<span class="card-flag card-flag-text" title="${escapeAttribute(label)}">${escapeHtml(String(language || "").toUpperCase())}</span>`;
+    }
+    return `<span class="card-flag" title="${escapeAttribute(label)}" role="img" aria-label="${escapeAttribute(label)}">${svg}</span>`;
+  }
+
   function localizeAssetUrl(url) {
     if (!url) return url;
     return url.replace(/(assets\.tcgdex\.net\/)[a-z-]+(\/)/, `$1${currentLanguage}$2`);
@@ -611,16 +648,15 @@
 
   // <img> com a URL localizada e fallback para a URL original do catálogo
   // caso o asset não exista no idioma escolhido.
+  // Cada carta/set já tem a imagem no seu próprio idioma (indicado pela
+  // bandeira), então a imagem é renderizada como veio do catálogo — sem trocar
+  // o idioma da URL pelo idioma da interface.
   function localizedImg(url, options) {
     if (!url) return "";
     const { alt = "", className = "", loading = "" } = options || {};
-    const localized = localizeAssetUrl(url);
     const classAttr = className ? ` class="${escapeAttribute(className)}"` : "";
     const loadingAttr = loading ? ` loading="${loading}"` : "";
-    const fallback = localized !== url
-      ? ` onerror="this.onerror=null;this.src='${escapeAttribute(url)}'"`
-      : "";
-    return `<img${classAttr}${loadingAttr} src="${escapeAttribute(localized)}" alt="${escapeAttribute(alt)}"${fallback}>`;
+    return `<img${classAttr}${loadingAttr} src="${escapeAttribute(url)}" alt="${escapeAttribute(alt)}">`;
   }
 
   // Busca tipos e formas de um Pokémon na PokéAPI (por dexId), com cache em localStorage.
@@ -694,7 +730,7 @@
             <div>
               <p class="eyebrow">${escapeHtml(activeCard.set)}</p>
               <h2>${escapeHtml(activeCard.name)}</h2>
-              <p class="preview-subtitle">${escapeHtml(activeCard.number)} · ${escapeHtml(activeCard.language.toUpperCase())}</p>
+              <p class="preview-subtitle">${cardFlag(activeCard.language)}<span>${escapeHtml(activeCard.number)} · ${escapeHtml(activeCard.language.toUpperCase())}</span></p>
             </div>
             <div class="preview-details">
               <h3>${escapeHtml(t("modal.details"))}</h3>
@@ -803,7 +839,7 @@
         <h3>${escapeHtml(card.name)}</h3>
         <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${escapeHtml(variant)}</p>
         <div class="tile-bottom">
-          <p class="tile-set">${escapeHtml(card.set)} · ${escapeHtml(card.number)}</p>
+          <p class="tile-set">${cardFlag(card.language)}<span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
           <div class="tile-actions">
             <button type="button" class="tile-btn" disabled title="${escapeAttribute(t("tile.binder"))}" aria-label="${escapeAttribute(t("tile.binder"))}">${TILE_ICONS.binder}</button>
             <button type="button" class="tile-btn tile-own${isOwned ? " active" : ""}" data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}" aria-pressed="${isOwned}" aria-label="${escapeAttribute(ownAria)}">
@@ -1035,7 +1071,7 @@
   }
 
   function unique(values) {
-    return Array.from(new Set(values.filter(Boolean))).sort((a, b) => a.localeCompare(b));
+    return Array.from(new Set(values.filter(Boolean))).sort((a, b) => String(a).localeCompare(String(b)));
   }
 
   function normalize(value) {
@@ -1123,6 +1159,7 @@
     typeLabel,
     regionForGeneration,
     typesForDex,
+    cardFlag,
     localizeAssetUrl,
     localizedImg,
     loadCatalog,

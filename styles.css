@@ -1712,3 +1712,50 @@ a.progress-row:hover {
 .page-nav .nav-dropdown a:hover {
   color: var(--text);
 }
+
+/* Bandeira de idioma da carta */
+.card-flag {
+  display: inline-flex;
+  width: 20px;
+  height: 14px;
+  flex: none;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+  vertical-align: middle;
+}
+
+.card-flag svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.card-flag-text {
+  width: auto;
+  padding: 0 5px;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--muted);
+  background: var(--panel-strong);
+  align-items: center;
+}
+
+.tile-set {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.tile-set > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preview-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}

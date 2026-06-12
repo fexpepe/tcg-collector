@@ -18,7 +18,8 @@ Local: abra `index.html` no navegador (home) ou `pokedex.html` (direto no app). 
 - botão rápido "tenho" marca a primeira variante (ou limpa a carta toda);
 - mostra progresso básico (cartas distintas com ao menos uma variante);
 - exporta/importa a coleção em JSON (formato v2 por variante; importa também o formato v1 antigo);
-- seletor de idioma no topo (Português/English) que traduz a interface e troca o idioma das imagens das cartas — se a imagem não existir no idioma escolhido, cai de volta para a original automaticamente;
+- seletor de idioma no topo (Português/English) que traduz a interface do site;
+- cada carta mostra uma bandeirinha do seu idioma (Inglês, Japonês, Chinês, Português-BR) e a imagem no idioma da própria carta;
 - na Pokédex, filtra por geração (chips), por região/local (Kanto, Johto…) e por tipo (Fogo, Voador…);
 - na página de um Pokémon, mostra tipos, região, geração, botão de favoritar e as formas alternativas.
 
