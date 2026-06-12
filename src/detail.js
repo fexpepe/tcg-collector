@@ -8,38 +8,8 @@
   const owned = shared.createCollectionStore();
   const favorites = shared.createFavoritesStore();
 
-  const TYPE_COLORS = {
-    normal: "#9fa19f",
-    fire: "#e62829",
-    water: "#2980ef",
-    electric: "#fac000",
-    grass: "#3fa129",
-    ice: "#3dcef3",
-    fighting: "#ff8000",
-    poison: "#9141cb",
-    ground: "#915121",
-    flying: "#81b9ef",
-    psychic: "#ef4179",
-    bug: "#91a119",
-    rock: "#afa981",
-    ghost: "#704170",
-    dragon: "#5060e1",
-    dark: "#50413f",
-    steel: "#60a1b8",
-    fairy: "#ef70ef"
-  };
-
-  const REGION_BY_GENERATION = {
-    1: "Kanto",
-    2: "Johto",
-    3: "Hoenn",
-    4: "Sinnoh",
-    5: "Unova",
-    6: "Kalos",
-    7: "Alola",
-    8: "Galar",
-    9: "Paldea"
-  };
+  const TYPE_COLORS = shared.TYPE_COLORS;
+  const REGION_BY_GENERATION = shared.REGION_BY_GENERATION;
 
   const FORM_WORDS = {
     mega: "Mega",

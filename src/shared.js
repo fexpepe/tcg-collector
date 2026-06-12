@@ -205,6 +205,8 @@
       "stats.progress": "progresso",
       "stats.pageTotal": "cartas nessa página",
       "toolbar.search": "Busca",
+      "toolbar.region": "Local",
+      "toolbar.type": "Tipo",
       "toolbar.set": "Set",
       "toolbar.language": "Idioma",
       "toolbar.collection": "Coleção",
@@ -370,6 +372,8 @@
       "stats.progress": "progress",
       "stats.pageTotal": "cards on this page",
       "toolbar.search": "Search",
+      "toolbar.region": "Region",
+      "toolbar.type": "Type",
       "toolbar.set": "Set",
       "toolbar.language": "Language",
       "toolbar.collection": "Collection",
@@ -1062,6 +1066,39 @@
       .trim();
   }
 
+  // Tipos de Pokémon (slugs em inglês, na ordem canônica) e cores associadas.
+  const POKEMON_TYPES = [
+    "normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison",
+    "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"
+  ];
+
+  const TYPE_COLORS = {
+    normal: "#9fa19f", fire: "#e62829", water: "#2980ef", electric: "#fac000",
+    grass: "#3fa129", ice: "#3dcef3", fighting: "#ff8000", poison: "#9141cb",
+    ground: "#915121", flying: "#81b9ef", psychic: "#ef4179", bug: "#91a119",
+    rock: "#afa981", ghost: "#704170", dragon: "#5060e1", dark: "#50413f",
+    steel: "#60a1b8", fairy: "#ef70ef"
+  };
+
+  const REGION_BY_GENERATION = {
+    1: "Kanto", 2: "Johto", 3: "Hoenn", 4: "Sinnoh", 5: "Unova",
+    6: "Kalos", 7: "Alola", 8: "Galar", 9: "Paldea"
+  };
+
+  function typeLabel(slug) {
+    const translated = t(`type.${slug}`);
+    return translated === `type.${slug}` ? slug : translated;
+  }
+
+  function regionForGeneration(generation) {
+    return REGION_BY_GENERATION[Number(generation)] || "";
+  }
+
+  function typesForDex(dexId) {
+    const map = window.TCG_POKEMON_TYPES || {};
+    return map[dexId] || [];
+  }
+
   window.TCGShared = {
     createCollectionStore,
     createFavoritesStore,
@@ -1080,6 +1117,12 @@
     getLanguage,
     getLocale,
     applyTranslations,
+    POKEMON_TYPES,
+    TYPE_COLORS,
+    REGION_BY_GENERATION,
+    typeLabel,
+    regionForGeneration,
+    typesForDex,
     localizeAssetUrl,
     localizedImg,
     loadCatalog,

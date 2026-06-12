@@ -49,6 +49,20 @@
           <input id="searchInput" type="search" data-i18n-placeholder="search.placeholder.pokedex" placeholder="Nome ou número da Pokédex...">
         </div>
         <div id="generationChips" class="chip-filter" role="group" aria-label="Geração"></div>
+        <div class="toolbar-selects">
+          <div>
+            <label for="regionFilter" data-i18n="toolbar.region">Local</label>
+            <select id="regionFilter">
+              <option value="" data-i18n="filter.all.m">Todos</option>
+            </select>
+          </div>
+          <div>
+            <label for="typeFilter" data-i18n="toolbar.type">Tipo</label>
+            <select id="typeFilter">
+              <option value="" data-i18n="filter.all.m">Todos</option>
+            </select>
+          </div>
+        </div>
       </section>
 
       <section class="results-header">
@@ -62,6 +76,7 @@
 
     <script src="data/cards.js"></script>
     <script src="data/indexes.js"></script>
+    <script src="data/pokemon-types.js"></script>
     <script src="src/shared.js"></script>
     <script src="src/app.js"></script>
   </body>

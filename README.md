@@ -19,10 +19,10 @@ Local: abra `index.html` no navegador (home) ou `pokedex.html` (direto no app). 
 - mostra progresso básico (cartas distintas com ao menos uma variante);
 - exporta/importa a coleção em JSON (formato v2 por variante; importa também o formato v1 antigo);
 - seletor de idioma no topo (Português/English) que traduz a interface e troca o idioma das imagens das cartas — se a imagem não existir no idioma escolhido, cai de volta para a original automaticamente;
-- na Pokédex, filtra por geração com chips clicáveis (estilo binderbuilder);
+- na Pokédex, filtra por geração (chips), por região/local (Kanto, Johto…) e por tipo (Fogo, Voador…);
 - na página de um Pokémon, mostra tipos, região, geração, botão de favoritar e as formas alternativas.
 
-Tipos e formas vêm da [PokéAPI](https://pokeapi.co/) em runtime (por `dexId`), com cache no `localStorage`; região e geração são derivadas localmente. Sem rede, a página ainda mostra região, geração e favoritar — só os tipos/formas ficam ausentes. Favoritos ficam no `localStorage` (chave `tcg-collector-favorites-v1`), separados das cartas marcadas.
+Tipos e formas (na página de um Pokémon) vêm da [PokéAPI](https://pokeapi.co/) em runtime (por `dexId`), com cache no `localStorage`; região e geração são derivadas localmente. O filtro de tipo da Pokédex usa um mapa estático `data/pokemon-types.js` (dexId → tipos), gerado por `node scripts/sync-pokemon-types.mjs` a partir do endpoint `/type` da PokéAPI. Sem rede, a página ainda mostra região, geração e favoritar — só os tipos/formas ficam ausentes. Favoritos ficam no `localStorage` (chave `tcg-collector-favorites-v1`), separados das cartas marcadas.
 
 ## Como atualizar dados depois
 

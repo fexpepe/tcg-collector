@@ -12,6 +12,8 @@
     empty: document.getElementById("emptyState"),
     search: document.getElementById("searchInput"),
     generationChips: document.getElementById("generationChips"),
+    regionFilter: document.getElementById("regionFilter"),
+    typeFilter: document.getElementById("typeFilter"),
     setFilter: document.getElementById("setFilter"),
     languageFilter: document.getElementById("languageFilter"),
     ownedFilter: document.getElementById("ownedFilter"),
@@ -54,7 +56,38 @@
   function hydrateFilters() {
     if (elements.setFilter) addOptions(elements.setFilter, unique(cards.map((card) => card.set)));
     if (elements.languageFilter) addOptions(elements.languageFilter, unique(cards.map((card) => card.language)));
+    hydrateRegionFilter();
+    hydrateTypeFilter();
     buildGenerationChips();
+  }
+
+  function hydrateRegionFilter() {
+    if (!elements.regionFilter) return;
+    const regions = unique(cards.map((card) => shared.regionForGeneration(card.generation)))
+      .map((region) => ({ region, gen: regionGeneration(region) }))
+      .sort((a, b) => a.gen - b.gen);
+    regions.forEach(({ region }) => {
+      const option = document.createElement("option");
+      option.value = region;
+      option.textContent = region;
+      elements.regionFilter.appendChild(option);
+    });
+  }
+
+  function regionGeneration(region) {
+    const entry = Object.entries(shared.REGION_BY_GENERATION).find(([, name]) => name === region);
+    return entry ? Number(entry[0]) : 99;
+  }
+
+  function hydrateTypeFilter() {
+    if (!elements.typeFilter) return;
+    const present = new Set(cards.flatMap((card) => shared.typesForDex(card.dexId)));
+    shared.POKEMON_TYPES.filter((type) => present.has(type)).forEach((type) => {
+      const option = document.createElement("option");
+      option.value = type;
+      option.textContent = shared.typeLabel(type);
+      elements.typeFilter.appendChild(option);
+    });
   }
 
   function buildGenerationChips() {
@@ -80,7 +113,7 @@
   function bindEvents() {
     const applyFilters = () => render({ resetCount: true });
     elements.search.addEventListener("input", debounce(applyFilters, 200));
-    [elements.setFilter, elements.languageFilter, elements.ownedFilter].filter(Boolean).forEach((element) => {
+    [elements.regionFilter, elements.typeFilter, elements.setFilter, elements.languageFilter, elements.ownedFilter].filter(Boolean).forEach((element) => {
       element.addEventListener("input", applyFilters);
     });
 
@@ -172,6 +205,8 @@
   function filterCards() {
     const query = normalize(elements.search.value);
     const generationValue = selectedGeneration;
+    const regionValue = elements.regionFilter ? elements.regionFilter.value : "";
+    const typeValue = elements.typeFilter ? elements.typeFilter.value : "";
     const setValue = elements.setFilter ? elements.setFilter.value : "";
     const languageValue = elements.languageFilter ? elements.languageFilter.value : "";
     const ownedValue = elements.ownedFilter ? elements.ownedFilter.value : "all";
@@ -189,12 +224,14 @@
         ...(card.variants || [])
       ].join(" ")).includes(query);
       const matchesGeneration = !generationValue || String(card.generation) === generationValue;
+      const matchesRegion = !regionValue || shared.regionForGeneration(card.generation) === regionValue;
+      const matchesType = !typeValue || shared.typesForDex(card.dexId).includes(typeValue);
       const matchesSet = !setValue || card.set === setValue;
       const matchesLanguage = !languageValue || card.language === languageValue;
       const isOwned = owned.has(card.id);
       const matchesOwned = ownedValue === "all" || (ownedValue === "owned" && isOwned) || (ownedValue === "missing" && !isOwned);
 
-      return matchesQuery && matchesGeneration && matchesSet && matchesLanguage && matchesOwned;
+      return matchesQuery && matchesGeneration && matchesRegion && matchesType && matchesSet && matchesLanguage && matchesOwned;
     });
   }
 
