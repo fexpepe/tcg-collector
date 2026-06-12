@@ -197,6 +197,59 @@
     return createIdStore("tcg-collector-favorites-v1");
   }
 
+  // Lista "Eu quero": cardId -> [variantes desejadas]. Sem condição nem
+  // quantidade — é só uma lista de desejos por variante, guardada à parte da
+  // coleção. Quando a carta passa a ser possuída, ela sai daqui ("comprei!").
+  function createWishlistStore() {
+    const storageKey = "tcg-collector-wishlist-v1";
+    let wishlist = readObject(storageKey) || {};
+
+    function save() {
+      localStorage.setItem(storageKey, JSON.stringify(wishlist));
+    }
+    function variantsOf(cardId) {
+      const list = wishlist[cardId];
+      return Array.isArray(list) ? list : [];
+    }
+    function setVariants(cardId, list) {
+      if (list.length) wishlist[cardId] = list;
+      else delete wishlist[cardId];
+    }
+
+    return {
+      has(cardId, variant) {
+        return variantsOf(cardId).includes(variant);
+      },
+      hasCard(cardId) {
+        return variantsOf(cardId).length > 0;
+      },
+      variants: variantsOf,
+      get size() {
+        return Object.keys(wishlist).filter((id) => variantsOf(id).length > 0).length;
+      },
+      toggle(cardId, variant) {
+        const list = variantsOf(cardId).slice();
+        const idx = list.indexOf(variant);
+        if (idx >= 0) list.splice(idx, 1);
+        else list.push(variant);
+        setVariants(cardId, list);
+        save();
+        return list.includes(variant);
+      },
+      remove(cardId, variant) {
+        setVariants(cardId, variantsOf(cardId).filter((entry) => entry !== variant));
+        save();
+      },
+      replace(next) {
+        wishlist = next && typeof next === "object" && !Array.isArray(next) ? next : {};
+        save();
+      },
+      toObject() {
+        return wishlist;
+      }
+    };
+  }
+
   // ---------------------------------------------------------------------------
   // Idioma do site: controla os textos da interface e o idioma das imagens das
   // cartas (assets da TCGdex levam o idioma na URL; se a imagem não existir no
@@ -373,9 +426,9 @@
       "type.dark": "Sombrio",
       "type.steel": "Aço",
       "type.fairy": "Fada",
-      "home.eyebrow": "Grátis · sem conta · local-first",
+      "home.eyebrow": "Grátis · open source · em português",
       "home.title": "Sua coleção de Pokémon TCG, <span class=\"accent\">organizada</span>.",
-      "home.sub": "Acompanhe cada carta por variante e quantidade — Holo, Reverse, 1st Edition — navegando por Pokédex, sets e artistas. Tudo direto no navegador: seus dados não saem daqui.",
+      "home.sub": "Uma alternativa brasileira e de código aberto aos rastreadores pagos. Acompanhe cada carta por variante e quantidade — Holo, Reverse, 1st Edition — navegando por Pokédex, sets e artistas. Tudo direto no navegador: seus dados não saem daqui.",
       "home.ctaPokedex": "Abrir a Pokédex",
       "home.ctaSets": "Explorar sets",
       "home.note": "Sem cadastro, sem plano pago. Exporte e importe sua coleção em JSON quando quiser.",
@@ -400,6 +453,32 @@
       "home.step2.body": "Registre cada variante que você tem, com a quantidade exata.",
       "home.step3.title": "Complete",
       "home.step3.body": "Acompanhe o progresso por Pokémon, por set e por artista.",
+      "home.why.title": "Por que esse app existe",
+      "home.why.lead": "Colecionar carta de Pokémon no Brasil é caro o bastante sem precisar pagar assinatura pra anotar o que você já tem. Este projeto nasceu como um backlog local, online e em português — pra registrar cartas, montar coleções e criar listas de \"eu quero\", sem entregar seus dados pra ninguém.",
+      "home.why.pill1.title": "Local e seu",
+      "home.why.pill1.body": "A coleção fica no seu navegador. Exporte em JSON quando quiser e leve pra onde for. O código é aberto, dá pra auditar.",
+      "home.why.pill2.title": "Em português, com preços daqui",
+      "home.why.pill2.body": "Catálogo PT-BR, condições na escala usada no Brasil e valores em R$, além de USD e EUR — para você saber quanto a coleção vale na sua realidade.",
+      "home.why.pill3.title": "Grátis de verdade",
+      "home.why.pill3.body": "Sem anúncio, sem recurso travado, sem plano \"pro\". No futuro, só o salvar na nuvem poderá ser um extra pago opcional — porque servidor custa. Todo o resto continua livre.",
+      "home.roadmap.title": "Roadmap aberto",
+      "home.roadmap.sub": "Em construção, à vista de todos. Sugira e acompanhe no GitHub.",
+      "home.roadmap.item1.title": "Listas \"Eu quero\"",
+      "home.roadmap.item1.body": "Wishlist por variante e prioridade, com atalho \"comprei!\" que move pra coleção.",
+      "home.roadmap.item2.title": "Binders 2×2 e 3×3",
+      "home.roadmap.item2.body": "Fichários visuais de \"tenho\" e \"quero\", com exportar como imagem pra compartilhar.",
+      "home.roadmap.item3.title": "Portfólio em R$",
+      "home.roadmap.item3.body": "Valor estimado da coleção em R$, USD e EUR, com preço manual e cartas mais valiosas.",
+      "home.roadmap.item4.title": "Nuvem opcional",
+      "home.roadmap.item4.body": "Backup e sincronização entre dispositivos — opcional e pago, sem travar nada do app grátis.",
+      "home.roadmap.link": "Acompanhe no GitHub →",
+      "home.support.title": "Gostou? Me paga um café ☕",
+      "home.support.body": "Esse projeto é mantido por uma pessoa só, nas horas livres. Se ele te ajudou, um cafezinho ajuda a manter o site no ar e a continuar melhorando. Apoiar é 100% opcional — o app é e vai continuar grátis.",
+      "home.support.pix": "Copiar chave Pix",
+      "home.support.pixDone": "Chave Pix copiada!",
+      "home.support.kofi": "Ko-fi · café internacional",
+      "home.support.star": "⭐ Dar uma estrela no GitHub",
+      "home.support.note": "Prefere ajudar de graça? Uma estrela no GitHub e compartilhar com quem coleciona já faz diferença.",
       "home.footer.line1": "Grátis e open source — <a href=\"https://github.com/fexpepe/tcg-collector\">código no GitHub</a>",
       "home.footer.line2": "Dados de cartas por <a href=\"https://tcgdex.dev\">TCGdex</a> · informações de Pokémon pela <a href=\"https://pokeapi.co\">PokéAPI</a>. Pokémon e Pokémon TCG são marcas de Nintendo / Creatures / GAME FREAK; este projeto não tem afiliação.",
       "footer.rights": "© {year} TCG Collector · Projeto open source, sem afiliação com Nintendo, Game Freak, Creatures, Niantic ou The Pokémon Company. Pokémon e Pokémon TCG são marcas registradas dos respectivos titulares.",
@@ -564,9 +643,9 @@
       "type.dark": "Dark",
       "type.steel": "Steel",
       "type.fairy": "Fairy",
-      "home.eyebrow": "Free · no account · local-first",
+      "home.eyebrow": "Free · open source · multilingual",
       "home.title": "Your Pokémon TCG collection, <span class=\"accent\">organized</span>.",
-      "home.sub": "Track every card by variant and quantity — Holo, Reverse, 1st Edition — browsing by Pokédex, sets and artists. All in your browser: your data never leaves it.",
+      "home.sub": "A free, open-source alternative to paid trackers. Track every card by variant and quantity — Holo, Reverse, 1st Edition — browsing by Pokédex, sets and artists. All in your browser: your data never leaves it.",
       "home.ctaPokedex": "Open the Pokédex",
       "home.ctaSets": "Browse sets",
       "home.note": "No sign-up, no paid plan. Export and import your collection as JSON anytime.",
@@ -591,6 +670,32 @@
       "home.step2.body": "Log every variant you own, with exact quantities.",
       "home.step3.title": "Complete",
       "home.step3.body": "Track progress per Pokémon, per set and per artist.",
+      "home.why.title": "Why this app exists",
+      "home.why.lead": "Collecting Pokémon cards is expensive enough without paying a subscription just to log what you own. This project started as a local, online backlog — to register cards, build collections and create \"want\" lists, without handing your data to anyone.",
+      "home.why.pill1.title": "Local and yours",
+      "home.why.pill1.body": "Your collection lives in your browser. Export it as JSON anytime and take it anywhere. The code is open — audit it yourself.",
+      "home.why.pill2.title": "Localized prices",
+      "home.why.pill2.body": "Multilingual catalog, condition scales, and values in BRL, USD and EUR — so you know what your collection is worth in your own market.",
+      "home.why.pill3.title": "Genuinely free",
+      "home.why.pill3.body": "No ads, no locked features, no \"pro\" plan. Down the road, only optional cloud saving may be a paid extra — because servers cost money. Everything else stays free.",
+      "home.roadmap.title": "Open roadmap",
+      "home.roadmap.sub": "Built in the open. Suggest and follow along on GitHub.",
+      "home.roadmap.item1.title": "\"Want\" lists",
+      "home.roadmap.item1.body": "Wishlist by variant and priority, with a \"got it!\" shortcut that moves a card into your collection.",
+      "home.roadmap.item2.title": "2×2 and 3×3 binders",
+      "home.roadmap.item2.body": "Visual binders for owned and wanted cards, with export-as-image to share.",
+      "home.roadmap.item3.title": "Portfolio value",
+      "home.roadmap.item3.body": "Estimated collection value in BRL, USD and EUR, with manual pricing and your most valuable cards.",
+      "home.roadmap.item4.title": "Optional cloud",
+      "home.roadmap.item4.body": "Backup and sync across devices — optional and paid, never locking anything in the free app.",
+      "home.roadmap.link": "Follow on GitHub →",
+      "home.support.title": "Like it? Buy me a coffee ☕",
+      "home.support.body": "This project is maintained by one person, in spare time. If it helped you, a coffee helps keep the site online and improving. Supporting is 100% optional — the app is and will stay free.",
+      "home.support.pix": "Copy Pix key",
+      "home.support.pixDone": "Pix key copied!",
+      "home.support.kofi": "Ko-fi · international coffee",
+      "home.support.star": "⭐ Star it on GitHub",
+      "home.support.note": "Rather help for free? A GitHub star and sharing with fellow collectors already goes a long way.",
       "home.footer.line1": "Free and open source — <a href=\"https://github.com/fexpepe/tcg-collector\">code on GitHub</a>",
       "home.footer.line2": "Card data by <a href=\"https://tcgdex.dev\">TCGdex</a> · Pokémon info from <a href=\"https://pokeapi.co\">PokéAPI</a>. Pokémon and Pokémon TCG are trademarks of Nintendo / Creatures / GAME FREAK; this project is not affiliated.",
       "footer.rights": "© {year} TCG Collector · Open-source project, not affiliated with Nintendo, Game Freak, Creatures, Niantic or The Pokémon Company. Pokémon and Pokémon TCG are trademarks of their respective owners.",
@@ -1003,7 +1108,9 @@
   const TILE_ICONS = {
     binder: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
     plus: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
-    check: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>'
+    check: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
+    heart: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
+    heartFilled: '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>'
   };
 
   function variantSlug(variant) {
@@ -1012,11 +1119,12 @@
 
   // Tile minimalista (imagem em destaque + nome, variante, set·número e ações).
   // Um tile por variante; quantidades além de 1 são ajustadas no preview da carta.
-  function variantTile(card, variant, store) {
+  function variantTile(card, variant, store, wishlist) {
     const quantity = store.variantTotal(card.id, variant);
     const isOwned = quantity > 0;
+    const isWanted = wishlist ? wishlist.has(card.id, variant) : false;
     const article = document.createElement("article");
-    article.className = `card-tile${isOwned ? " owned" : ""}`;
+    article.className = `card-tile${isOwned ? " owned" : ""}${isWanted ? " wanted" : ""}`;
     article.dataset.tileCardId = card.id;
     article.dataset.tileVariant = variant;
     const image = card.image
@@ -1025,6 +1133,9 @@
     const ownAria = isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant });
     const qtyBadge = quantity > 1 ? `<span class="tile-qty">×${quantity}</span>` : "";
     const summary = conditionSummary(store, card.id, variant);
+    const wantButton = wishlist
+      ? `<button type="button" class="tile-btn tile-want${isWanted ? " active" : ""}" data-want-card-id="${escapeAttribute(card.id)}" data-want-variant="${escapeAttribute(variant)}" aria-pressed="${isWanted}" aria-label="${escapeAttribute(isWanted ? t("tile.unwantAria", { variant }) : t("tile.wantAria", { variant }))}" title="${escapeAttribute(isWanted ? t("tile.wanted") : t("tile.want"))}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}</button>`
+      : `<button type="button" class="tile-btn" disabled title="${escapeAttribute(t("tile.binder"))}" aria-label="${escapeAttribute(t("tile.binder"))}">${TILE_ICONS.binder}</button>`;
 
     article.innerHTML = `
       <div class="card-image">${image}</div>
@@ -1034,7 +1145,7 @@
         <div class="tile-bottom">
           <p class="tile-set">${cardFlag(card.language)}<span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
           <div class="tile-actions">
-            <button type="button" class="tile-btn" disabled title="${escapeAttribute(t("tile.binder"))}" aria-label="${escapeAttribute(t("tile.binder"))}">${TILE_ICONS.binder}</button>
+            ${wantButton}
             <button type="button" class="tile-btn tile-own${isOwned ? " active" : ""}" data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}" aria-pressed="${isOwned}" aria-label="${escapeAttribute(ownAria)}">
               ${isOwned ? TILE_ICONS.check : TILE_ICONS.plus}${qtyBadge}
             </button>
@@ -1049,7 +1160,7 @@
 
   // Atualiza o estado de posse de um tile no DOM existente, sem recriar a
   // imagem — evita o "piscar" de recarregar a grade inteira.
-  function refreshTileOwnership(tile, store) {
+  function refreshTileOwnership(tile, store, wishlist) {
     const cardId = tile.dataset.tileCardId;
     const variant = tile.dataset.tileVariant;
     if (!cardId) return;
@@ -1058,21 +1169,49 @@
     tile.classList.toggle("owned", isOwned);
 
     const button = tile.querySelector(".tile-own");
-    if (!button) return;
-    button.classList.toggle("active", isOwned);
-    button.setAttribute("aria-pressed", String(isOwned));
-    button.setAttribute("aria-label", isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant }));
-    button.innerHTML = `${isOwned ? TILE_ICONS.check : TILE_ICONS.plus}${quantity > 1 ? `<span class="tile-qty">×${quantity}</span>` : ""}`;
+    if (button) {
+      button.classList.toggle("active", isOwned);
+      button.setAttribute("aria-pressed", String(isOwned));
+      button.setAttribute("aria-label", isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant }));
+      button.innerHTML = `${isOwned ? TILE_ICONS.check : TILE_ICONS.plus}${quantity > 1 ? `<span class="tile-qty">×${quantity}</span>` : ""}`;
+    }
+
+    if (wishlist) {
+      const isWanted = wishlist.has(cardId, variant);
+      tile.classList.toggle("wanted", isWanted);
+      const wantButton = tile.querySelector(".tile-want");
+      if (wantButton) {
+        wantButton.classList.toggle("active", isWanted);
+        wantButton.setAttribute("aria-pressed", String(isWanted));
+        wantButton.setAttribute("aria-label", isWanted ? t("tile.unwantAria", { variant }) : t("tile.wantAria", { variant }));
+        wantButton.setAttribute("title", isWanted ? t("tile.wanted") : t("tile.want"));
+        wantButton.innerHTML = isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart;
+      }
+    }
 
     const summaryEl = tile.querySelector("[data-tile-conditions]");
     if (summaryEl) summaryEl.textContent = conditionSummary(store, cardId, variant);
   }
 
   // Trata o clique no botão +/✓ de um tile (liga/desliga a variante; default NM).
-  function handleOwnedTileClick(event, store) {
+  // Com wishlist, ao passar a ter a carta ela sai da lista de desejos ("comprei!").
+  function handleOwnedTileClick(event, store, wishlist) {
     const button = event.target.closest("[data-own-card-id]");
     if (!button) return false;
-    store.toggleVariant(button.dataset.ownCardId, button.dataset.ownVariant);
+    const cardId = button.dataset.ownCardId;
+    const variant = button.dataset.ownVariant;
+    store.toggleVariant(cardId, variant);
+    if (wishlist && store.variantTotal(cardId, variant) > 0) {
+      wishlist.remove(cardId, variant);
+    }
+    return true;
+  }
+
+  // Trata o clique no botão de coração de um tile (liga/desliga "Eu quero").
+  function handleWantTileClick(event, wishlist) {
+    const button = event.target.closest("[data-want-card-id]");
+    if (!button || !wishlist) return false;
+    wishlist.toggle(button.dataset.wantCardId, button.dataset.wantVariant);
     return true;
   }
 
