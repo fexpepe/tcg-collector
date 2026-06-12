@@ -158,6 +158,7 @@
   const MESSAGES = {
     pt: {
       "lang.aria": "Idioma do site",
+      "nav.pokemon": "Pokémon",
       "nav.home": "Início",
       "nav.pokedex": "Pokédex",
       "nav.sets": "Sets",
@@ -322,6 +323,7 @@
     },
     en: {
       "lang.aria": "Site language",
+      "nav.pokemon": "Pokémon",
       "nav.home": "Home",
       "nav.pokedex": "Pokédex",
       "nav.sets": "Sets",
@@ -521,6 +523,63 @@
     });
     scope.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
       element.placeholder = t(element.dataset.i18nPlaceholder);
+    });
+  }
+
+  // Constrói a navegação das páginas: Início | Pokémon ▾ (Pokédex, Sets,
+  // Artistas) | Coleção. O HTML só informa a página ativa via data-active-page.
+  function initPageNav() {
+    const nav = document.querySelector(".page-nav[data-active-page]");
+    if (!nav) return;
+
+    let active = nav.dataset.activePage;
+    if (active === "detail") {
+      const type = new URLSearchParams(window.location.search).get("type");
+      active = type === "set" ? "sets" : type === "artist" ? "artists" : "pokedex";
+    }
+    const groupActive = ["pokedex", "sets", "artists"].includes(active);
+
+    const link = (href, key, page) => `<a href="${href}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
+
+    nav.innerHTML = `
+      ${link("index.html", "nav.home", "home")}
+      <div class="nav-group">
+        <button type="button" class="nav-group-toggle${groupActive ? " active" : ""}" aria-expanded="false" aria-haspopup="true">
+          ${escapeHtml(t("nav.pokemon"))}<span class="nav-caret" aria-hidden="true">▾</span>
+        </button>
+        <div class="nav-dropdown" hidden>
+          ${link("pokedex.html", "nav.pokedex", "pokedex")}
+          ${link("sets.html", "nav.sets", "sets")}
+          ${link("artists.html", "nav.artists", "artists")}
+        </div>
+      </div>
+      ${link("collection.html", "nav.collection", "collection")}
+    `;
+
+    const toggle = nav.querySelector(".nav-group-toggle");
+    const dropdown = nav.querySelector(".nav-dropdown");
+
+    function close() {
+      dropdown.hidden = true;
+      toggle.setAttribute("aria-expanded", "false");
+    }
+
+    toggle.addEventListener("click", () => {
+      const willOpen = dropdown.hidden;
+      dropdown.hidden = !willOpen;
+      toggle.setAttribute("aria-expanded", String(willOpen));
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!dropdown.hidden && !event.target.closest(".nav-group")) {
+        close();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !dropdown.hidden) {
+        close();
+      }
     });
   }
 
@@ -1039,4 +1098,5 @@
 
   applyTranslations();
   initLanguageSwitcher();
+  initPageNav();
 })();

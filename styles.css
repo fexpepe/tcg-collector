@@ -1585,3 +1585,68 @@ a.progress-row:hover {
   padding: 2px 5px;
   line-height: 1;
 }
+
+/* Submenu Pokémon na navegação */
+.nav-group {
+  position: relative;
+}
+
+.nav-group-toggle {
+  min-height: 36px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 14px;
+  font-weight: 800;
+}
+
+.nav-group-toggle:hover {
+  color: var(--text);
+}
+
+.nav-group-toggle.active {
+  background: var(--panel-strong);
+  border-color: var(--line);
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.nav-caret {
+  font-size: 10px;
+  line-height: 1;
+}
+
+.nav-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 170px;
+  background: var(--panel-strong);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 6px;
+  display: grid;
+  gap: 2px;
+  z-index: 20;
+  box-shadow: var(--shadow);
+}
+
+.nav-dropdown[hidden] {
+  display: none;
+}
+
+.page-nav .nav-dropdown a {
+  justify-content: flex-start;
+}
+
+.page-nav .nav-dropdown a.active {
+  background: var(--panel);
+}
+
+.page-nav .nav-dropdown a:hover {
+  color: var(--text);
+}
