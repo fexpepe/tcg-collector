@@ -191,9 +191,9 @@ function toAppCard(card, fallbackLanguage, fullSet) {
     name: card.name || card.id,
     pokemonName: speciesName(card.name || card.id),
     category: card.category || "",
-    dexId: Array.isArray(card.dexId) ? card.dexId[0] : "",
-    generation: generationFromDexId(Array.isArray(card.dexId) ? card.dexId[0] : ""),
-    pokemonImage: pokemonImageUrl(Array.isArray(card.dexId) ? card.dexId[0] : ""),
+    dexId: primaryDexId(card),
+    generation: generationFromDexId(primaryDexId(card)),
+    pokemonImage: pokemonImageUrl(primaryDexId(card)),
     number: card.localId || "",
     set: card.set?.name || card.set?.id || "",
     setId: card.set?.id || fullSet?.id || "",
@@ -252,6 +252,13 @@ function speciesName(name) {
     .replace(/\b(VMAX|VSTAR|ex|EX|GX|V-UNION|V)\b/g, "")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+// Número nacional da espécie. A TCGdex às vezes traz formas como fração
+// (Rayquaza ☆ japonês = 384.1); a espécie é a parte inteira.
+function primaryDexId(card) {
+  if (!Array.isArray(card.dexId)) return "";
+  return Math.trunc(Number(card.dexId[0])) || "";
 }
 
 function pokemonImageUrl(dexId) {

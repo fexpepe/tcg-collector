@@ -46,9 +46,15 @@ try {
 }
 for (const chunk of chunksByLang.en || []) {
   for (const card of chunk.cards) {
-    const dexId = Number(card.dexId);
+    const dexId = speciesDexId(card);
     if (dexId && card.pokemonName && !speciesByDex.has(dexId)) speciesByDex.set(dexId, card.pokemonName);
   }
+}
+
+// Número nacional da espécie; dexIds fracionários de forma (Rayquaza ☆ = 384.1)
+// pertencem à espécie da parte inteira.
+function speciesDexId(card) {
+  return Math.trunc(Number(card.dexId)) || 0;
 }
 
 const allCards = [];
@@ -58,7 +64,7 @@ for (const lang of langs) {
   for (const chunk of chunksByLang[lang] || []) {
     let changed = false;
     for (const card of chunk.cards) {
-      const canonical = card.dexId ? speciesByDex.get(Number(card.dexId)) : null;
+      const canonical = speciesByDex.get(speciesDexId(card));
       if (canonical && card.pokemonName !== canonical) {
         card.pokemonName = canonical;
         changed = true;
@@ -107,7 +113,7 @@ function buildPokedexIndex(sourceCards) {
   const byDex = new Map();
   for (const [dexId, name] of speciesByDex) byDex.set(dexId, { dexId, name, cardIds: [] });
   for (const card of sourceCards) {
-    const dexId = Number(card.dexId);
+    const dexId = speciesDexId(card);
     if (!dexId) continue;
     if (!byDex.has(dexId)) byDex.set(dexId, { dexId, name: card.pokemonName, cardIds: [] });
     byDex.get(dexId).cardIds.push(card.id);
