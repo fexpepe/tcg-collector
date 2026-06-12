@@ -193,7 +193,7 @@
 
     (indexes.pokedex || []).forEach((group) => {
       const firstCard = cardsById.get((group.cardIds || [])[0]) || {};
-      const dexId = Number(group.dexId) || Number(firstCard.dexId) || 0;
+      const dexId = Math.trunc(Number(group.dexId)) || Math.trunc(Number(firstCard.dexId)) || 0;
       if (!dexId) return;
       const entry = byDex.get(dexId) || { dexId, name: group.name, cardIds: [] };
       entry.cardIds = entry.cardIds.concat(group.cardIds || []);
@@ -321,14 +321,15 @@
     const type = view === "artists" ? "artist" : view === "trainers" ? "trainer" : view;
     link.href = detailUrl(type, item.name);
     const progress = item.totalCount ? Math.round((item.ownedCount / item.totalCount) * 100) : 0;
-    const art = item.image
-      ? localizedImg(item.image, { alt: item.name, loading: "lazy" })
-      : `<span class="group-card-initial">${escapeHtml(item.name.charAt(0).toUpperCase())}</span>`;
 
+    // Sem imagem de carta na cápsula (deixaria a lista pesada): só a inicial.
+    // As cartas aparecem ao abrir a página do grupo.
     link.innerHTML = `
-      <div class="group-card-art">${art}</div>
       <div class="group-card-body">
-        <h3>${escapeHtml(item.name)}</h3>
+        <div class="group-card-head">
+          <span class="group-card-initial">${escapeHtml(item.name.charAt(0).toUpperCase())}</span>
+          <h3>${escapeHtml(item.name)}</h3>
+        </div>
         <p>${escapeHtml(`${tn("count.cards", item.totalCount)} · ${tn("count.marked", item.ownedCount)}`)}</p>
         <div class="progress-bar" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
           <span style="width: ${progress}%"></span>
@@ -402,7 +403,7 @@
   function pokedexIndexFromCards(sourceCards) {
     const byDex = new Map();
     sourceCards.forEach((card) => {
-      const dexId = Number(card.dexId);
+      const dexId = Math.trunc(Number(card.dexId));
       if (!dexId) return;
       const entry = byDex.get(dexId) || { dexId, name: card.pokemonName || speciesName(card.name), cardIds: [] };
       entry.cardIds.push(card.id);
@@ -431,8 +432,7 @@
       name: group.name,
       cards: sortedCards,
       totalCount: sortedCards.length,
-      ownedCount: sortedCards.filter((card) => owned.has(card.id)).length,
-      image: (sortedCards.find((card) => card.image) || {}).image || ""
+      ownedCount: sortedCards.filter((card) => owned.has(card.id)).length
     };
   }
 
