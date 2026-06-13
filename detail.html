@@ -73,6 +73,16 @@
           <label data-i18n="toolbar.collection">Coleção</label>
           <div id="ownedChips" class="segmented" role="group" aria-label="Coleção"></div>
         </div>
+        <div class="sort-select">
+          <label for="sortSelect" data-i18n="sort.label">Ordenar:</label>
+          <select id="sortSelect">
+            <option value="release" data-i18n="sort.releaseDate">Lançamento</option>
+            <option value="value-desc" data-i18n="sort.valueDesc">Valor (maior → menor)</option>
+            <option value="value-asc" data-i18n="sort.valueAsc">Valor (menor → maior)</option>
+            <option value="num-desc" data-i18n="sort.numDesc">Nº da carta (maior → menor)</option>
+            <option value="num-asc" data-i18n="sort.numAsc">Nº da carta (menor → maior)</option>
+          </select>
+        </div>
         <div id="rarityFilter" class="rarity-filter" hidden>
           <label data-i18n="toolbar.rarity">Raridade</label>
           <div id="rarityChips" class="chip-filter" role="group" aria-label="Raridade"></div>

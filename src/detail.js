@@ -38,6 +38,7 @@
     ownedChips: document.getElementById("ownedChips"),
     rarityFilter: document.getElementById("rarityFilter"),
     rarityChips: document.getElementById("rarityChips"),
+    sortSelect: document.getElementById("sortSelect"),
     ownedCount: document.getElementById("ownedCount"),
     totalCount: document.getElementById("totalCount"),
     completionRate: document.getElementById("completionRate"),
@@ -49,7 +50,36 @@
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
   let selectedLanguage = "";
   let selectedOwned = "all";
+  let selectedSort = "release";
   const selectedRarities = new Set(); // multi-seleção; vazio = todas
+
+  // Ordena os pares carta×variante conforme o select de ordenação. Diferente
+  // dos outros filtros: não esconde nada, só reordena a grade.
+  function sortTiles(pairs) {
+    const priceOf = (p) => prices.valueFor(p.card.id, p.variant, shared.DEFAULT_CONDITION).value || 0;
+    const byNum = (a, b) => shared.compareCardNumbers(a.card.number, b.card.number);
+    if (selectedSort === "num-asc") {
+      pairs.sort(byNum);
+    } else if (selectedSort === "num-desc") {
+      pairs.sort((a, b) => byNum(b, a));
+    } else if (selectedSort === "value-desc") {
+      pairs.sort((a, b) => priceOf(b) - priceOf(a));
+    } else if (selectedSort === "value-asc") {
+      // Cartas sem preço registrado vão para o fim (não na frente como "0").
+      pairs.sort((a, b) => {
+        const pa = priceOf(a);
+        const pb = priceOf(b);
+        if (!pa && !pb) return 0;
+        if (!pa) return 1;
+        if (!pb) return -1;
+        return pa - pb;
+      });
+    } else {
+      // release: mais recente primeiro (data ISO ordena como string).
+      pairs.sort((a, b) => String(b.card.setReleaseDate || "").localeCompare(String(a.card.setReleaseDate || "")));
+    }
+    return pairs;
+  }
 
   // Buckets de raridade (na ordem dos chips). Mapeiam o vocabulário da TCGdex
   // — em vários idiomas (en/pt; ja e zh usam os termos em inglês) — para os
@@ -364,6 +394,13 @@
     bindSegmented(elements.languageChips, (value) => { selectedLanguage = value; });
     bindSegmented(elements.ownedChips, (value) => { selectedOwned = value; });
 
+    if (elements.sortSelect) {
+      elements.sortSelect.addEventListener("change", () => {
+        selectedSort = elements.sortSelect.value;
+        render({ resetCount: true });
+      });
+    }
+
     if (elements.rarityChips) {
       elements.rarityChips.addEventListener("click", (event) => {
         const chip = event.target.closest("[data-rarity]");
@@ -407,8 +444,8 @@
 
   function render({ resetCount = false } = {}) {
     const visibleCards = filterCards();
-    const tiles = shared.cardVariantPairs(visibleCards);
-    // Cartas sem imagem vão para o fim (sort estável preserva a ordem dentro de cada grupo).
+    const tiles = sortTiles(shared.cardVariantPairs(visibleCards));
+    // Cartas sem imagem vão para o fim (sort estável preserva a ordem da ordenação escolhida).
     tiles.sort((a, b) => Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card)));
     pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist), { resetCount });
 

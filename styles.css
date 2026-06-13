@@ -274,6 +274,13 @@ button,
   gap: 8px;
 }
 
+/* Ordenação: empurrada pro canto direito da barra de filtros. */
+.toolbar > .sort-select {
+  flex: 0 0 auto;
+  min-width: 0;
+  margin-left: auto;
+}
+
 /* Filtro de raridade: ocupa a linha inteira do toolbar (abaixo dos demais). */
 .toolbar > .rarity-filter {
   flex: 1 1 100%;
