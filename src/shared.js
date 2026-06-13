@@ -1021,19 +1021,64 @@
     });
   }
 
+  // Avança o <img> para a próxima URL da cadeia de fallback quando a atual
+  // falha (webp → png do mesmo host → fonte alternativa de outro host).
+  const TCGImg = {
+    fallback(img) {
+      const list = (img.getAttribute("data-img-fallbacks") || "").split("|").filter(Boolean);
+      const next = list.shift();
+      if (!next) {
+        img.onerror = null;
+        img.removeAttribute("data-img-fallbacks");
+        return;
+      }
+      if (list.length) img.setAttribute("data-img-fallbacks", list.join("|"));
+      else img.removeAttribute("data-img-fallbacks");
+      img.src = next;
+    }
+  };
+  window.TCGImg = TCGImg;
+
+  // setId da pokemontcg.io a partir do da TCGdex: minúsculo, com os sets
+  // duplos da era SV mapeados (TCGdex "sv03.5" → pokemontcg "sv3pt5").
+  function pokemontcgSetId(setId) {
+    if (!setId) return "";
+    return String(setId).toLowerCase()
+      .replace(/^sv0*(\d+)\.(\d+)$/, "sv$1pt$2")
+      .replace(/^sv0+(\d+)$/, "sv$1");
+  }
+
+  // URL da carta na pokemontcg.io (fallback para cartas EN durante um outage
+  // da TCGdex). Só vale para cartas EN com número puramente numérico; sets/
+  // numerações que não batem simplesmente não geram fallback.
+  function pokemontcgImageUrl(card, hires) {
+    if (!card || card.language !== "en") return "";
+    const setId = pokemontcgSetId(card.setId);
+    const number = String(card.number || "").split("/")[0].replace(/^0+/, "");
+    if (!setId || !number || !/^\d+$/.test(number)) return "";
+    return `https://images.pokemontcg.io/${setId}/${number}${hires ? "_hires" : ""}.png`;
+  }
+
   // <img> dos assets do catálogo. Para URLs da TCGdex usa webp (muito menor
-  // que o png) com onerror de volta para a URL original caso a variante não
-  // exista; `thumb: true` baixa a qualidade "low" (para grades de cartas).
+  // que o png), com cadeia de fallback no onerror: se a variante webp não
+  // existir cai no png do mesmo host, e `fallback` permite uma fonte de outro
+  // host (ex.: pokemontcg.io) caso a TCGdex inteira esteja fora do ar.
+  // `thumb: true` baixa a qualidade "low" (para grades de cartas).
   // Cada carta/set já tem a imagem no seu próprio idioma (indicado pela
   // bandeira), então a imagem é renderizada como veio do catálogo — sem trocar
   // o idioma da URL pelo idioma da interface.
   function localizedImg(url, options) {
     if (!url) return "";
-    const { alt = "", className = "", loading = "", thumb = false } = options || {};
+    const { alt = "", className = "", loading = "", thumb = false, fallback = "" } = options || {};
     const classAttr = className ? ` class="${escapeAttribute(className)}"` : "";
     const loadingAttr = loading ? ` loading="${loading}"` : "";
     const src = tcgdexAssetUrl(url, thumb ? "low" : "");
-    const fallbackAttr = src !== url ? ` onerror="this.onerror=null;this.src='${escapeAttribute(url)}'"` : "";
+    const chain = [];
+    if (src !== url) chain.push(url); // webp -> png original (mesmo host)
+    (Array.isArray(fallback) ? fallback : [fallback]).forEach((entry) => { if (entry) chain.push(entry); });
+    const fallbackAttr = chain.length
+      ? ` data-img-fallbacks="${escapeAttribute(chain.join("|"))}" onerror="window.TCGImg&&TCGImg.fallback(this)"`
+      : "";
     return `<img${classAttr}${loadingAttr} decoding="async" src="${escapeAttribute(src)}" alt="${escapeAttribute(alt)}"${fallbackAttr}>`;
   }
 
@@ -1114,7 +1159,7 @@
         <section class="card-preview-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(activeCard.name)}">
           <button class="preview-close" data-preview-close aria-label="${escapeAttribute(t("modal.close"))}">×</button>
           <div class="preview-image-wrap">
-            ${localizedImg(activeCard.image, { alt: activeCard.name })}
+            ${localizedImg(activeCard.image, { alt: activeCard.name, fallback: pokemontcgImageUrl(activeCard, true) })}
           </div>
           <div class="preview-content">
             <div>
@@ -1343,7 +1388,7 @@
     article.dataset.tileCardId = card.id;
     article.dataset.tileVariant = variant;
     const image = card.image
-      ? `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${localizedImg(card.image, { alt: card.name, loading: "lazy", thumb: true })}</button>`
+      ? `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${localizedImg(card.image, { alt: card.name, loading: "lazy", thumb: true, fallback: pokemontcgImageUrl(card, false) })}</button>`
       : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;
     const ownAria = isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant });
     const qtyBadge = quantity > 1 ? `<span class="tile-qty">×${quantity}</span>` : "";
@@ -1789,6 +1834,7 @@
     cardLanguageRegion,
     localizeAssetUrl,
     localizedImg,
+    pokemontcgImageUrl,
     loadCatalog,
     fetchSetChunks,
     setIdForCard,
@@ -1808,4 +1854,12 @@
   initLanguageSwitcher();
   initPageNav();
   initSiteFooter();
+
+  // Service worker: cacheia as imagens já vistas para sobreviverem a um outage
+  // do CDN. Caminho relativo funciona tanto na raiz local quanto sob /tcg-collector/.
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(() => { /* SW é só otimização: ignora falha */ });
+    });
+  }
 })();
