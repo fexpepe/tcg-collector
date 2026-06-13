@@ -172,6 +172,9 @@ main {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  align-items: end;
+  padding: 16px;
+  margin-bottom: 22px;
 }
 
 button,
@@ -232,12 +235,6 @@ button,
   margin: 8px 0 0;
   color: var(--muted);
   font-size: 13px;
-}
-
-.toolbar {
-  align-items: end;
-  padding: 16px;
-  margin-bottom: 22px;
 }
 
 .toolbar > div {
@@ -451,10 +448,12 @@ input::placeholder {
 }
 
 .pokedex-image img {
-  max-width: 100%;
-  max-height: 145px;
+  /* Sprite nativo de 96px: renderiza ampliado e nítido (pixel art), sem borrar. */
+  width: 120px;
+  height: 120px;
   object-fit: contain;
-  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.28));
+  image-rendering: pixelated;
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.3));
 }
 
 .pokedex-info {

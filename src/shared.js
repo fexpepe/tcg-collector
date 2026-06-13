@@ -1339,12 +1339,16 @@
   }
 
   // Texto pesquisável de uma carta (nome, espécie, número, código, set, artista,
-  // raridade, idioma e variantes), normalizado.
+  // raridade, idioma e variantes), normalizado. Memoizado na própria carta — a
+  // busca varre o catálogo inteiro (ex.: Sets/Artistas) a cada tecla, então
+  // construir o texto uma vez só evita refazer ~48k normalizações por busca.
   function cardSearchHaystack(card) {
-    return normalize([
+    if (card._haystack) return card._haystack;
+    card._haystack = normalize([
       card.name, card.pokemonName, card.dexId, card.number, cardCode(card),
       card.set, card.artist, card.rarity, card.language, ...(card.variants || [])
     ].join(" "));
+    return card._haystack;
   }
 
   // Busca tolerante: separa a query em termos e exige que TODOS estejam no
@@ -1608,9 +1612,10 @@
   function parseImportedPrices(payload, cardsById) {
     const source = payload && payload.prices;
     if (!source || typeof source !== "object" || Array.isArray(source)) return {};
+    const acceptAll = cardsById.size === 0; // sem catálogo: aceita como vem
     const result = {};
     Object.entries(source).forEach(([cardId, variants]) => {
-      if (!cardsById.has(cardId) || !variants || typeof variants !== "object") return;
+      if ((!acceptAll && !cardsById.has(cardId)) || !variants || typeof variants !== "object") return;
       Object.entries(variants).forEach(([variant, entry]) => {
         if (!entry || typeof entry !== "object" || !entry.prices) return;
         const clean = {};
@@ -1635,23 +1640,28 @@
   function parseImportedWishlist(payload, cardsById) {
     const source = payload && payload.wishlist;
     if (!source || typeof source !== "object" || Array.isArray(source)) return {};
+    const acceptAll = cardsById.size === 0; // sem catálogo: aceita como vem
     const wishlist = {};
     Object.entries(source).forEach(([cardId, variants]) => {
       const card = cardsById.get(cardId);
-      if (!card || !Array.isArray(variants)) return;
-      const known = card.variants && card.variants.length ? card.variants : [defaultVariant(card)];
-      const list = variants.filter((variant) => known.includes(variant));
+      if ((!card && !acceptAll) || !Array.isArray(variants)) return;
+      const known = card && card.variants && card.variants.length ? card.variants : null;
+      const list = known ? variants.filter((variant) => known.includes(variant)) : variants.filter(Boolean);
       if (list.length) wishlist[cardId] = list;
     });
     return wishlist;
   }
 
   function parseImportedCollection(payload, cardsById) {
+    // Sem catálogo carregado (ex.: página Pokédex, que roda só com índices) não
+    // dá para validar contra o catálogo — aceita os ids do backup como vêm.
+    const acceptAll = cardsById.size === 0;
+
     // Formato v1: lista de ids -> 1ª variante, NM ×1.
     if (Array.isArray(payload.ownedCardIds)) {
       const collection = {};
       payload.ownedCardIds.forEach((cardId) => {
-        if (cardsById.has(cardId)) {
+        if (acceptAll || cardsById.has(cardId)) {
           collection[cardId] = { [defaultVariant(cardsById.get(cardId))]: { [DEFAULT_CONDITION]: 1 } };
         }
       });
@@ -1665,7 +1675,7 @@
     const isV3 = payload.version >= 3;
     const collection = {};
     Object.entries(payload.collection).forEach(([cardId, variants]) => {
-      if (!cardsById.has(cardId) || !variants || typeof variants !== "object") return;
+      if ((!acceptAll && !cardsById.has(cardId)) || !variants || typeof variants !== "object") return;
       const entry = {};
       Object.entries(variants).forEach(([variant, value]) => {
         if (isV3 && value && typeof value === "object") {
@@ -1701,15 +1711,36 @@
     return { cards: [], indexes: null, manifest: null };
   }
 
-  async function fetchSetChunks(entries) {
-    const chunks = await Promise.all(entries.map(async (entry) => {
-      const response = await fetch(entry.file);
-      if (!response.ok) {
-        throw new Error(`Falha ao carregar ${entry.file}: ${response.status}`);
+  // Catálogo só com índices (sem baixar os chunks de carta). A Pokédex roda
+  // com isto — espécies, contadores e progresso saem dos índices + coleção,
+  // sem o custo de baixar dezenas de MB de cartas. No modo local o
+  // window.TCG_CARDS (amostra pequena) já está presente e é reaproveitado.
+  function loadIndexesOnly() {
+    return {
+      cards: Array.isArray(window.TCG_CARDS) ? window.TCG_CARDS : [],
+      indexes: window.TCG_INDEXES || null,
+      manifest: window.TCG_MANIFEST || null
+    };
+  }
+
+  // Baixa os chunks de set com concorrência limitada (não 400+ fetches de uma
+  // vez): o navegador serializa em ~6 por host de qualquer forma, e o limite
+  // evita estourar memória/conexões em catálogos grandes.
+  async function fetchSetChunks(entries, concurrency = 8) {
+    const list = entries.slice();
+    const chunks = [];
+    async function worker() {
+      while (list.length) {
+        const entry = list.shift();
+        const response = await fetch(entry.file);
+        if (!response.ok) {
+          throw new Error(`Falha ao carregar ${entry.file}: ${response.status}`);
+        }
+        chunks.push(...(await response.json()));
       }
-      return response.json();
-    }));
-    return chunks.flat();
+    }
+    await Promise.all(Array.from({ length: Math.min(concurrency, list.length) }, worker));
+    return chunks;
   }
 
   function setIdForCard(cardId, setIds) {
@@ -1922,6 +1953,7 @@
     cardLabel,
     matchesCardQuery,
     loadCatalog,
+    loadIndexesOnly,
     fetchSetChunks,
     setIdForCard,
     createPager,

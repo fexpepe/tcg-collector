@@ -5,6 +5,7 @@
   let cards = [];
   let cardsById = new Map();
   let indexes = null;
+  let totalCatalogCount = 0;
   const owned = shared.createCollectionStore();
   const wishlist = shared.createWishlistStore();
   const prices = shared.createPriceStore();
@@ -38,11 +39,19 @@
     onOwnedChange: () => render()
   });
 
-  shared.loadCatalog()
+  // A Pokédex roda só com índices (não baixa os chunks de carta); as outras
+  // visões (sets/artistas/treinadores) precisam dos dados das cartas.
+  const catalogPromise = view === "pokedex"
+    ? Promise.resolve(shared.loadIndexesOnly())
+    : shared.loadCatalog();
+
+  catalogPromise
     .then((catalog) => {
       cards = catalog.cards;
       cardsById = new Map(cards.map((card) => [card.id, card]));
       indexes = catalog.indexes || buildIndexes(cards);
+      totalCatalogCount = cards.length
+        || (catalog.manifest ? catalog.manifest.sets.reduce((sum, set) => sum + (set.count || 0), 0) : 0);
       owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
       init();
     })
@@ -137,15 +146,7 @@
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) {
         preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant);
-        return;
       }
-
-      const button = event.target.closest("[data-card-id]");
-      if (!button) return;
-      const card = cardsById.get(button.dataset.cardId);
-      if (!card) return;
-      owned.toggle(card);
-      render();
     });
 
     shared.bindCollectionTransfer({
@@ -160,15 +161,18 @@
   }
 
   function render({ resetCount = false } = {}) {
-    const visibleCards = filterCards();
-    const items = getViewItems(visibleCards);
+    // Pokédex não filtra cartas (roda por espécie via índices); as outras
+    // visões partem das cartas visíveis após os filtros.
+    const items = view === "pokedex" ? pokedexViewItems() : getViewItems(filterCards());
     pager.render(items, createViewItem, { resetCount });
 
     elements.empty.hidden = items.length > 0;
     elements.resultCount.textContent = tn("results.count", items.length);
-    elements.ownedCount.textContent = owned.size;
-    elements.totalCount.textContent = cards.length;
-    elements.completionRate.textContent = cards.length ? `${Math.round((owned.size / cards.length) * 100)}%` : "0%";
+    if (elements.ownedCount) elements.ownedCount.textContent = owned.size;
+    if (elements.totalCount) elements.totalCount.textContent = totalCatalogCount;
+    if (elements.completionRate) {
+      elements.completionRate.textContent = totalCatalogCount ? `${Math.round((owned.size / totalCatalogCount) * 100)}%` : "0%";
+    }
   }
 
   function getViewItems(visibleCards) {
@@ -186,19 +190,17 @@
       return indexedGroupsToItems(indexes.trainers, visibleIds, toGroupItem);
     }
 
-    return pokedexViewItems(visibleIds);
+    return pokedexViewItems();
   }
 
-  // Pokédex nacional completa: uma entrada por espécie em ordem de número,
-  // mesmo sem carta no catálogo (aí com 0/0). TCG_POKEMON_NAMES garante as
-  // 1025 espécies e o nome canônico; índices antigos sem dexId herdam o da
-  // primeira carta do grupo.
+  // Pokédex nacional completa: uma entrada por espécie em ordem de número.
+  // TCG_POKEMON_NAMES garante as 1025 espécies e o nome canônico; os cardIds
+  // por espécie vêm do índice (sem precisar das cartas em si).
   function pokedexEntries() {
     const byDex = new Map();
 
     (indexes.pokedex || []).forEach((group) => {
-      const firstCard = cardsById.get((group.cardIds || [])[0]) || {};
-      const dexId = Math.trunc(Number(group.dexId)) || Math.trunc(Number(firstCard.dexId)) || 0;
+      const dexId = Math.trunc(Number(group.dexId)) || 0;
       if (!dexId) return;
       const entry = byDex.get(dexId) || { dexId, name: group.name, cardIds: [] };
       entry.cardIds = entry.cardIds.concat(group.cardIds || []);
@@ -215,21 +217,18 @@
     return Array.from(byDex.values()).sort((a, b) => a.dexId - b.dexId);
   }
 
-  // Espécie aparece se os filtros de espécie (geração/tipo) batem e, havendo
-  // busca, se o nome/número bate ou se alguma carta visível dela bate.
-  function pokedexViewItems(visibleIds) {
+  // Espécie aparece se os filtros (geração/tipo) batem e, havendo busca, se o
+  // nome ou o número da Pokédex bate. Tudo derivado do dexId + índice — não
+  // depende de ter as cartas carregadas.
+  function pokedexViewItems() {
     const query = normalize(elements.search.value);
     const typeValue = elements.typeFilter ? elements.typeFilter.value : "";
 
     return pokedexEntries()
-      .map((entry) => ({
-        ...entry,
-        cards: entry.cardIds.map((id) => cardsById.get(id)).filter((card) => card && visibleIds.has(card.id))
-      }))
       .filter((entry) => {
         if (selectedGeneration && String(generationFromDexId(entry.dexId)) !== selectedGeneration) return false;
         if (typeValue && !shared.typesForDex(entry.dexId).includes(typeValue)) return false;
-        return !query || normalize(`${entry.name} ${entry.dexId}`).includes(query) || entry.cards.length > 0;
+        return !query || normalize(`${entry.name} ${entry.dexId}`).includes(query);
       })
       .map(toPokedexItem);
   }
@@ -449,27 +448,22 @@
     };
   }
 
-  function toPokedexItem(group) {
-    const sortedCards = group.cards.slice().sort((a, b) => a.set.localeCompare(b.set) || shared.compareCardNumbers(a.number, b.number));
-    const sample = sortedCards[0] || {};
-    const dexId = group.dexId || sample.dexId || "";
+  function toPokedexItem(entry) {
     return {
       type: "pokedex",
-      name: group.name,
-      cards: sortedCards,
-      totalCount: sortedCards.length,
-      ownedCount: sortedCards.filter((card) => owned.has(card.id)).length,
-      dexId,
-      generation: sample.generation || generationFromDexId(dexId),
-      image: sample.pokemonImage || pokemonImageUrl(dexId),
-      sets: unique(sortedCards.map((card) => card.set)).slice(0, 3),
-      artists: unique(sortedCards.map((card) => card.artist)).slice(0, 3),
-      variants: unique(sortedCards.flatMap((card) => card.variants || [])).slice(0, 8)
+      name: entry.name,
+      dexId: entry.dexId,
+      totalCount: entry.cardIds.length,
+      ownedCount: entry.cardIds.filter((id) => owned.has(id)).length,
+      generation: generationFromDexId(entry.dexId),
+      image: pokemonImageUrl(entry.dexId)
     };
   }
 
+  // Sprite pequeno (~1KB) para o grid da Pokédex — a arte grande (~145KB) só é
+  // usada no hero da página do Pokémon. Renderizado com image-rendering crisp.
   function pokemonImageUrl(dexId) {
-    return dexId ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexId}.png` : "";
+    return dexId ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${dexId}.png` : "";
   }
 
   function generationFromDexId(dexId) {

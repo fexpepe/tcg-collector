@@ -76,7 +76,7 @@ Para o modo dividido por set (recomendado para catálogos grandes), use:
 <script src="data/indexes.generated.js"></script>
 ```
 
-Nesse modo as páginas de listagem baixam os chunks em paralelo e a página de detalhe baixa apenas os sets que contêm as cartas exibidas. Como usa `fetch`, precisa ser servido via HTTP (ex.: `npx http-server -p 4173 .`) em vez de aberto direto como arquivo.
+Nesse modo as páginas de listagem (Sets/Artistas/Treinadores) baixam os chunks com concorrência limitada e a página de detalhe baixa apenas os sets que contêm as cartas exibidas. A **Pokédex não baixa cartas**: roda só com os índices (`TCG_INDEXES`) + a coleção no `localStorage` — espécies, progresso e contadores saem dos `cardIds` por espécie, evitando baixar o catálogo inteiro só pra listar Pokémon. O grid da Pokédex usa o sprite pequeno (~1KB) da PokéAPI; a arte grande só aparece no hero da página do Pokémon. Como usa `fetch`, precisa ser servido via HTTP (ex.: `npx http-server -p 4173 .`) em vez de aberto direto como arquivo.
 
 A coleção fica no `localStorage` em `tcg-collector-collection-v2` (`cardId -> { variante: quantidade }`). Coleções no formato antigo (`tcg-collector-owned-v1`, lista de ids) são migradas automaticamente na primeira visita — cada carta vira a primeira variante com quantidade 1 — e a chave antiga é mantida como backup.
 
