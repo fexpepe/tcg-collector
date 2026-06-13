@@ -432,6 +432,13 @@
       "filter.owned": "Tenho",
       "filter.missing": "Faltando",
       "filter.wanted": "Quero",
+      "rarity.base": "Comuns e raras",
+      "rarity.base.title": "Comum, Incomum, Rara, Double Rare",
+      "rarity.discontinued": "Descontinuadas",
+      "rarity.discontinued.title": "Holo Rare, Rainbow/Hyper Rare, Secret Rare e outras antigas",
+      "rarity.ultra": "Ultra Rare",
+      "rarity.illustration": "Illustration Rare",
+      "rarity.special": "Special Illustration",
       "search.placeholder.pokedex": "Nome ou número da Pokédex...",
       "search.placeholder.sets": "Set, carta, artista, número...",
       "search.placeholder.artists": "Artista, carta, set, número...",
@@ -683,6 +690,13 @@
       "filter.owned": "Owned",
       "filter.missing": "Missing",
       "filter.wanted": "Want",
+      "rarity.base": "Common & Rare",
+      "rarity.base.title": "Common, Uncommon, Rare, Double Rare",
+      "rarity.discontinued": "Discontinued",
+      "rarity.discontinued.title": "Holo Rare, Rainbow/Hyper Rare, Secret Rare and other older rarities",
+      "rarity.ultra": "Ultra Rare",
+      "rarity.illustration": "Illustration Rare",
+      "rarity.special": "Special Illustration",
       "search.placeholder.pokedex": "Name or Pokédex number...",
       "search.placeholder.sets": "Set, card, artist, number...",
       "search.placeholder.artists": "Artist, card, set, number...",
@@ -1041,10 +1055,14 @@
   };
   window.TCGImg = TCGImg;
 
-  // setId da pokemontcg.io a partir do da TCGdex: minúsculo, com os sets
-  // duplos da era SV mapeados (TCGdex "sv03.5" → pokemontcg "sv3pt5").
+  // setId da pokemontcg.io a partir do da TCGdex. Primeiro consulta o de-para
+  // versionado (data/set-id-map.js, gerado por scripts/build-set-id-map.mjs),
+  // que cobre os casos onde os ids divergem (promos, McDonald's, sets novos);
+  // se não houver entrada, aplica a regra geral (minúsculo + sets duplos SV).
   function pokemontcgSetId(setId) {
     if (!setId) return "";
+    const map = window.TCG_SET_ID_MAP || {};
+    if (map[setId]) return map[setId];
     return String(setId).toLowerCase()
       .replace(/^sv0*(\d+)\.(\d+)$/, "sv$1pt$2")
       .replace(/^sv0+(\d+)$/, "sv$1");
@@ -1059,6 +1077,20 @@
     const number = String(card.number || "").split("/")[0].replace(/^0+/, "");
     if (!setId || !number || !/^\d+$/.test(number)) return "";
     return `https://images.pokemontcg.io/${setId}/${number}${hires ? "_hires" : ""}.png`;
+  }
+
+  // Tem alguma imagem exibível? (asset da TCGdex ou fallback EN do pokemontcg.io).
+  // Usado para jogar as cartas sem imagem para o fim das grades.
+  function cardHasImage(card) {
+    return Boolean(card && (card.image || pokemontcgImageUrl(card, false)));
+  }
+
+  // Imagem primária de uma carta: o asset da TCGdex se existir, senão a da
+  // pokemontcg.io (cartas EN). Retorna { url, fallback } para o localizedImg.
+  function cardImageSources(card, hires) {
+    const ptcg = pokemontcgImageUrl(card, hires);
+    const url = card.image || ptcg;
+    return { url, fallback: card.image ? ptcg : "" };
   }
 
   // <img> dos assets do catálogo. Para URLs da TCGdex usa webp (muito menor
@@ -1164,7 +1196,12 @@
         <section class="card-preview-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(activeCard.name)}">
           <button class="preview-close" data-preview-close aria-label="${escapeAttribute(t("modal.close"))}">×</button>
           <div class="preview-image-wrap">
-            ${localizedImg(activeCard.image, { alt: activeCard.name, fallback: pokemontcgImageUrl(activeCard, true) })}
+            ${(function () {
+              const img = cardImageSources(activeCard, true);
+              return img.url
+                ? localizedImg(img.url, { alt: activeCard.name, fallback: img.fallback })
+                : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;
+            })()}
           </div>
           <div class="preview-content">
             <div>
@@ -1431,8 +1468,9 @@
     article.className = `card-tile${isOwned ? " owned" : ""}${isWanted ? " wanted" : ""}`;
     article.dataset.tileCardId = card.id;
     article.dataset.tileVariant = variant;
-    const image = card.image
-      ? `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${localizedImg(card.image, { alt: card.name, loading: "lazy", thumb: true, fallback: pokemontcgImageUrl(card, false) })}</button>`
+    const img = cardImageSources(card, false);
+    const image = img.url
+      ? `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${localizedImg(img.url, { alt: card.name, loading: "lazy", thumb: true, fallback: img.fallback })}</button>`
       : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;
     const ownAria = isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant });
     const qtyBadge = quantity > 1 ? `<span class="tile-qty">×${quantity}</span>` : "";
@@ -1879,6 +1917,7 @@
     localizeAssetUrl,
     localizedImg,
     pokemontcgImageUrl,
+    cardHasImage,
     cardCode,
     cardLabel,
     matchesCardQuery,

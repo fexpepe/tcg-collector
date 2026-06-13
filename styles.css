@@ -277,6 +277,11 @@ button,
   gap: 8px;
 }
 
+/* Filtro de raridade: ocupa a linha inteira do toolbar (abaixo dos demais). */
+.toolbar > .rarity-filter {
+  flex: 1 1 100%;
+}
+
 .chip {
   min-height: 38px;
   padding: 0 16px;
@@ -408,6 +413,16 @@ input::placeholder {
 .pokedex-card:hover {
   border-color: #414a58;
   transform: translateY(-2px);
+}
+
+/* Já tenho ao menos uma carta desse Pokémon: contorno dourado. */
+.pokedex-card.owned {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold), var(--shadow);
+}
+
+.pokedex-card.owned:hover {
+  border-color: var(--gold);
 }
 
 .pokedex-link {

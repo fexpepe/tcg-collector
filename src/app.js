@@ -280,7 +280,9 @@
 
   function createPokedexCard(item) {
     const article = document.createElement("article");
-    article.className = "pokedex-card";
+    // Contorno dourado quando já há ao menos uma carta desse Pokémon na coleção
+    // (feedback rápido pra quem está completando a Pokédex).
+    article.className = `pokedex-card${item.ownedCount > 0 ? " owned" : ""}`;
     const image = item.image
       ? `<img loading="lazy" src="${escapeAttribute(item.image)}" alt="${escapeAttribute(item.name)}">`
       : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;

@@ -175,7 +175,9 @@
 
   function ownedTilePairs() {
     return shared.cardVariantPairs(filterCards())
-      .filter(({ card, variant }) => owned.variantTotal(card.id, variant) > 0);
+      .filter(({ card, variant }) => owned.variantTotal(card.id, variant) > 0)
+      // Cartas sem imagem por último (sort estável preserva a ordem restante).
+      .sort((a, b) => Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card)));
   }
 
   // Atualiza tiles e contadores no DOM existente, sem reconstruir a grade

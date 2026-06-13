@@ -36,6 +36,8 @@
     setFilter: document.getElementById("setFilter"),
     languageChips: document.getElementById("languageChips"),
     ownedChips: document.getElementById("ownedChips"),
+    rarityFilter: document.getElementById("rarityFilter"),
+    rarityChips: document.getElementById("rarityChips"),
     ownedCount: document.getElementById("ownedCount"),
     totalCount: document.getElementById("totalCount"),
     completionRate: document.getElementById("completionRate"),
@@ -47,6 +49,24 @@
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
   let selectedLanguage = "";
   let selectedOwned = "all";
+  const selectedRarities = new Set(); // multi-seleção; vazio = todas
+
+  // Buckets de raridade (na ordem dos chips). Mapeiam o vocabulário da TCGdex
+  // para os grupos que o colecionador reconhece. "base" é o catch-all: raridades
+  // não listadas caem nele para nenhuma carta sumir do filtro.
+  const RARITY_BUCKET_ORDER = ["base", "discontinued", "ultra", "illustration", "special"];
+
+  function rarityBucket(rarity) {
+    const r = normalize(rarity);
+    if (r === "special illustration rare") return "special";
+    if (r === "illustration rare") return "illustration";
+    if (r === "ultra rare") return "ultra";
+    if (r.startsWith("rare holo") || [
+      "rainbow rare", "hyper rare", "secret rare", "amazing rare",
+      "radiant rare", "shiny rare", "shiny ultra rare", "legend", "ace spec rare", "prime"
+    ].includes(r)) return "discontinued";
+    return "base"; // common, uncommon, rare, double rare, none e demais
+  }
 
   const preview = shared.createCardPreview({
     getCard: (cardId) => cardsById.get(cardId),
@@ -271,6 +291,34 @@
       { value: "missing", label: t("filter.missing") },
       { value: "wanted", label: t("filter.wanted") }
     ], selectedOwned);
+
+    renderRarityChips();
+  }
+
+  // Chips de raridade (multi-seleção). Mostra só os buckets presentes nesta
+  // página e esconde o filtro inteiro se houver menos de 2 (nada a filtrar).
+  function renderRarityChips() {
+    if (!elements.rarityChips || !elements.rarityFilter) return;
+    const present = new Set(pageCards.map((card) => rarityBucket(card.rarity)));
+    const buckets = RARITY_BUCKET_ORDER.filter((key) => present.has(key));
+    elements.rarityFilter.hidden = buckets.length < 2;
+    if (buckets.length < 2) {
+      selectedRarities.clear();
+      elements.rarityChips.innerHTML = "";
+      return;
+    }
+    elements.rarityChips.innerHTML = "";
+    buckets.forEach((key) => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "chip";
+      chip.dataset.rarity = key;
+      chip.textContent = t(`rarity.${key}`);
+      const title = t(`rarity.${key}.title`);
+      if (title !== `rarity.${key}.title`) chip.title = title;
+      chip.setAttribute("aria-pressed", String(selectedRarities.has(key)));
+      elements.rarityChips.appendChild(chip);
+    });
   }
 
   function renderSegmented(container, options, selectedValue) {
@@ -307,6 +355,18 @@
     bindSegmented(elements.languageChips, (value) => { selectedLanguage = value; });
     bindSegmented(elements.ownedChips, (value) => { selectedOwned = value; });
 
+    if (elements.rarityChips) {
+      elements.rarityChips.addEventListener("click", (event) => {
+        const chip = event.target.closest("[data-rarity]");
+        if (!chip) return;
+        const key = chip.dataset.rarity;
+        if (selectedRarities.has(key)) selectedRarities.delete(key);
+        else selectedRarities.add(key);
+        chip.setAttribute("aria-pressed", String(selectedRarities.has(key)));
+        render({ resetCount: true });
+      });
+    }
+
     elements.grid.addEventListener("click", (event) => {
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) {
@@ -338,6 +398,8 @@
   function render({ resetCount = false } = {}) {
     const visibleCards = filterCards();
     const tiles = shared.cardVariantPairs(visibleCards);
+    // Cartas sem imagem vão para o fim (sort estável preserva a ordem dentro de cada grupo).
+    tiles.sort((a, b) => Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card)));
     pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist), { resetCount });
 
     elements.empty.hidden = tiles.length > 0;
@@ -373,8 +435,9 @@
         || (ownedValue === "owned" && isOwned)
         || (ownedValue === "missing" && !isOwned)
         || (ownedValue === "wanted" && wishlist.hasCard(card.id));
+      const matchesRarity = selectedRarities.size === 0 || selectedRarities.has(rarityBucket(card.rarity));
 
-      return matchesQuery && matchesSet && matchesLanguage && matchesOwned;
+      return matchesQuery && matchesSet && matchesLanguage && matchesOwned && matchesRarity;
     });
   }
 

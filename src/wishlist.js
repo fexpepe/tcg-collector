@@ -92,7 +92,9 @@
   // Pares carta×variante que estão na lista de desejos e batem nos filtros.
   function wantedPairs() {
     return shared.cardVariantPairs(filterCards())
-      .filter(({ card, variant }) => wishlist.has(card.id, variant));
+      .filter(({ card, variant }) => wishlist.has(card.id, variant))
+      // Cartas sem imagem por último (sort estável preserva a ordem restante).
+      .sort((a, b) => Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card)));
   }
 
   function render({ resetCount = false } = {}) {
