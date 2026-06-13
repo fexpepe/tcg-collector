@@ -11,7 +11,7 @@ window.TCG_INDEXES = {
       "dexId": 4,
       "name": "Charmander",
       "cardIds": [
-        "pt-sv3pt5-6",
+        "sv3pt5-6-pt",
         "sv3pt5-6"
       ]
     },
@@ -88,7 +88,7 @@ window.TCG_INDEXES = {
     {
       "name": "Escarlate e Violeta 151",
       "cardIds": [
-        "pt-sv3pt5-6",
+        "sv3pt5-6-pt",
         "sv03.5-199-pt"
       ]
     },
@@ -160,7 +160,7 @@ window.TCG_INDEXES = {
     {
       "name": "Miki Tanaka",
       "cardIds": [
-        "pt-sv3pt5-6",
+        "sv3pt5-6-pt",
         "sv3pt5-6"
       ]
     },

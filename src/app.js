@@ -30,7 +30,12 @@
   const view = elements.grid.dataset.view || "pokedex";
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
   let selectedGeneration = "";
-  let selectedLangRegion = "english";
+  // Região padrão segue a preferência de idioma de carta; sem preferência ("all")
+  // mantém o comportamento antigo (Inglês). Com preferência, os chips de região
+  // somem (o seletor global de idioma passa a governar) — ver init().
+  let selectedLangRegion = shared.getCardLang() !== "all"
+    ? shared.cardLanguageRegion(shared.getCardLang())
+    : "english";
 
   const preview = shared.createCardPreview({
     getCard: (cardId) => cardsById.get(cardId),
@@ -39,11 +44,15 @@
     onOwnedChange: () => render()
   });
 
+  const cardLang = shared.getCardLang();
+  const langMatch = (value) => cardLang === "all" || value === cardLang;
+
   // A Pokédex roda só com índices (não baixa os chunks de carta); as outras
-  // visões (sets/artistas/treinadores) precisam dos dados das cartas.
+  // visões (sets/artistas/treinadores) baixam só os chunks do idioma escolhido
+  // (corta o download quando há preferência de idioma de carta).
   const catalogPromise = view === "pokedex"
     ? Promise.resolve(shared.loadIndexesOnly())
-    : shared.loadCatalog();
+    : shared.loadCatalog(cardLang);
 
   catalogPromise
     .then((catalog) => {
@@ -51,7 +60,8 @@
       cardsById = new Map(cards.map((card) => [card.id, card]));
       indexes = catalog.indexes || buildIndexes(cards);
       totalCatalogCount = cards.length
-        || (catalog.manifest ? catalog.manifest.sets.reduce((sum, set) => sum + (set.count || 0), 0) : 0);
+        ? cards.filter((card) => langMatch(card.language)).length
+        : (catalog.manifest ? catalog.manifest.sets.filter((set) => langMatch(set.language)).reduce((sum, set) => sum + (set.count || 0), 0) : 0);
       owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
       init();
     })
@@ -61,6 +71,11 @@
     });
 
   function init() {
+    // Com preferência de idioma de carta, o filtro de região vira redundante
+    // (só aquele idioma é carregado) — esconde pra não conflitar.
+    if (elements.setRegionChips && shared.getCardLang() !== "all") {
+      elements.setRegionChips.hidden = true;
+    }
     hydrateFilters();
     bindEvents();
     render();
@@ -449,12 +464,14 @@
   }
 
   function toPokedexItem(entry) {
+    // Conta só as cartas do idioma escolhido (idioma vem do sufixo do id).
+    const ids = entry.cardIds.filter((id) => langMatch(shared.cardLanguageFromId(id)));
     return {
       type: "pokedex",
       name: entry.name,
       dexId: entry.dexId,
-      totalCount: entry.cardIds.length,
-      ownedCount: entry.cardIds.filter((id) => owned.has(id)).length,
+      totalCount: ids.length,
+      ownedCount: ids.filter((id) => owned.has(id)).length,
       generation: generationFromDexId(entry.dexId),
       image: pokemonImageUrl(entry.dexId)
     };

@@ -40,39 +40,30 @@ todo o resto continua livre.
   baixa o catálogo) e usa sprite pequeno (~1KB) no grid.
 - **SEO/perf**: `sitemap.xml`, `robots.txt`, preconnect, `fetchSetChunks` com concorrência
   limitada.
+- **Preferência de idioma de carta** (`tcg-collector-card-lang-v1`): seletor global no
+  header (Todas / PT / EN / JA / ZH-TW), separado do idioma da interface. É o eixo padrão
+  das listas e do progresso (Pokédex conta só o idioma escolhido, via sufixo do id) e faz
+  Sets/Artistas/Treinadores baixarem só os chunks daquele idioma (download menor). Detalhe/
+  Coleção/Quero já abrem filtrados por ele; os chips de região da página Sets somem quando
+  há preferência (o seletor global passa a governar).
 
 ---
 
 ## 🔜 Próximos passos (em ordem de prioridade)
 
-### 1. Preferência de idioma de carta — ALTÍSSIMO impacto
-**Problema:** o catálogo mistura 4 idiomas (en/ja/zh-tw/pt) em tudo. O seletor pt/en só
-troca a interface, não quais cartas aparecem. Resultado: ruído visual (mesma carta repetida
-em 4 línguas) e "progresso" sempre ~0% (é `tenho ÷ 48.058` de todas as línguas; completar
-uma espécie exigiria ter as 4 versões).
-
-**Proposta:** preferência global de idioma de carta ("PT-BR", "Internacional/EN", "Todos")
-no `localStorage`, aplicada como padrão nas listas e **nos contadores de progresso**. Vira
-"você tem 312/1025 em PT-BR" — útil de verdade. Destrava os itens 2 e 3.
-
-### 2. Sets/Artistas/Treinadores sem baixar o catálogo — alto
-Hoje ainda baixam as ~48k cartas (a busca casa campos de carta, então não dá index-only de
-graça como a Pokédex). Fechar isso = **enriquecer os índices no build** (`merge-catalogs.mjs`):
-guardar por set logo/símbolo/data/total e um texto de busca por grupo. Com o item 1, dá pra
-baixar só os chunks do idioma escolhido.
-
-### 3. Ajustes de UX da página Sets — médio
-- Sets abre filtrado em "Inglês" por padrão (`selectedLangRegion = "english"` em `app.js`) —
-  deveria seguir a preferência de idioma (item 1) ou começar em "Todos".
-- Realce de "completo" (100%) nos cards de set/artista, como o dourado da Pokédex.
-
-### 4. Plugar Pix e Ko-fi reais na home — trivial
+### 1. Plugar Pix e Ko-fi reais na home — trivial
 Em `index.html`, seção de apoio: trocar `data-pix="SUA-CHAVE-PIX-AQUI"` pela chave Pix real
 e o `href` do Ko-fi (`https://ko-fi.com/fexpepe`) pelo link real. Marcados com `<!-- TODO -->`.
 
-### 5. Binders 2×2 / 3×3 — recurso-assinatura (do plano original)
+### 2. Binders 2×2 / 3×3 — recurso-assinatura (do plano original)
 Fichários visuais de "tenho" e "quero" (slots preenchidos por clique), com exportar como
 imagem pra compartilhar. O botão placeholder já existe nos tiles.
+
+### 3. Polimento — médio/baixo
+- Realce de "completo" (100%) nos cards de set/artista, como o dourado da Pokédex.
+- Coleção/Quero ainda baixam o catálogo inteiro (`loadCatalog`) só pra mostrar o subconjunto
+  possuído — dá pra baixar só os sets das cartas marcadas (como a página de detalhe faz).
+- Sets com idioma "Todas" ainda abre na região "Inglês" — poderia começar em "Todas".
 
 ---
 

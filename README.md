@@ -18,7 +18,7 @@ Local: abra `index.html` no navegador (home) ou `pokedex.html` (direto no app). 
 - botão rápido "tenho" marca a primeira variante (ou limpa a carta toda);
 - mostra progresso básico (cartas distintas com ao menos uma variante);
 - exporta/importa a coleção em JSON (formato v2 por variante; importa também o formato v1 antigo);
-- seletor de idioma no topo (Português/English) que traduz a interface do site;
+- dois seletores no topo: **idioma do site** (Português/English, traduz a interface) e **idioma das cartas** (Todas / PT-BR / Inglês / Japonês / Chinês Tradicional). O idioma das cartas (`tcg-collector-card-lang-v1`) é o eixo padrão das listas e do **progresso** — quem escolhe PT-BR vê e conta só PT-BR (em vez do ruído das 4 línguas misturadas), e as páginas Sets/Artistas/Treinadores baixam só os chunks daquele idioma (download bem menor);
 - cada carta mostra uma bandeirinha do seu idioma (Inglês, Japonês, Chinês (Tradicional), Português-BR) e a imagem no idioma da própria carta;
 - a página Sets tem um filtro mestre por origem — Inglês, Português, Japonês e Chinês (Tradicional) — e mostra a data de lançamento de cada set no canto da imagem;
 - na Pokédex, filtra por geração (chips), por região/local (Kanto, Johto…) e por tipo (Fogo, Voador…);

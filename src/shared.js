@@ -329,9 +329,40 @@
   })();
   const currentLanguageMeta = UI_LANGUAGES.find((entry) => entry.code === currentLanguage);
 
+  // Idioma das CARTAS (separado do idioma da interface). "all" = todas; ou um
+  // código de idioma de carta (pt/en/ja/zh-tw). É o eixo padrão das listas e do
+  // progresso — quem coleciona em PT vê e conta só PT, sem o ruído das 4 línguas.
+  const CARD_LANGUAGES = ["pt", "en", "ja", "zh-tw"];
+  const cardLangStorageKey = "tcg-collector-card-lang-v1";
+  const currentCardLang = (function () {
+    const saved = localStorage.getItem(cardLangStorageKey);
+    return saved === "all" || CARD_LANGUAGES.includes(saved) ? saved : "all";
+  })();
+
+  function getCardLang() {
+    return currentCardLang;
+  }
+
+  // Idioma de uma carta a partir do id (en não tem sufixo; demais terminam em
+  // -pt / -ja / -zh-tw — o -zh do catálogo de exemplo também conta como zh-tw).
+  // Usado onde só há ids (Pokédex roda só com índices, sem as cartas).
+  function cardLanguageFromId(id) {
+    const value = String(id || "");
+    if (value.endsWith("-pt")) return "pt";
+    if (value.endsWith("-ja")) return "ja";
+    if (value.endsWith("-zh-tw") || value.endsWith("-zh")) return "zh-tw";
+    return "en";
+  }
+
+  function matchesCardLang(language) {
+    return currentCardLang === "all" || language === currentCardLang;
+  }
+
   const MESSAGES = {
     pt: {
       "lang.aria": "Idioma do site",
+      "cardLang.aria": "Idioma das cartas",
+      "cardLang.all": "Todas as línguas",
       "nav.pokemon": "Pokémon",
       "nav.home": "Início",
       "nav.pokedex": "Pokédex",
@@ -595,6 +626,8 @@
     },
     en: {
       "lang.aria": "Site language",
+      "cardLang.aria": "Card language",
+      "cardLang.all": "All languages",
       "nav.pokemon": "Pokémon",
       "nav.home": "Home",
       "nav.pokedex": "Pokédex",
@@ -985,6 +1018,34 @@
       localStorage.setItem(languageStorageKey, select.value);
       window.location.reload();
     });
+  }
+
+  // Seletor global de idioma das cartas, ao lado do seletor de idioma do site.
+  // Não aparece na home (não tem listas). Trocar recarrega a página (o idioma é
+  // o eixo padrão das listas, do progresso e de quais chunks são baixados).
+  function initCardLangSwitcher() {
+    if (document.body.classList.contains("home")) return;
+    const uiSelect = document.getElementById("languageSwitcher");
+    if (!uiSelect || document.getElementById("cardLangSwitcher")) return;
+    const select = document.createElement("select");
+    select.id = "cardLangSwitcher";
+    select.className = "lang-select";
+    select.title = t("cardLang.aria");
+    select.setAttribute("aria-label", t("cardLang.aria"));
+    const options = [{ value: "all", label: t("cardLang.all") }]
+      .concat(CARD_LANGUAGES.map((code) => ({ value: code, label: cardLanguageLabel(code) })));
+    options.forEach(({ value, label }) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = label;
+      select.appendChild(option);
+    });
+    select.value = currentCardLang;
+    select.addEventListener("change", () => {
+      localStorage.setItem(cardLangStorageKey, select.value);
+      window.location.reload();
+    });
+    uiSelect.insertAdjacentElement("afterend", select);
   }
 
   // Bandeiras SVG inline por idioma da carta (renderizam em qualquer SO, ao
@@ -1707,14 +1768,22 @@
     return collection;
   }
 
-  async function loadCatalog() {
+  // `cardLang` opcional ("all" ou um idioma): no modo manifest baixa só os
+  // chunks daquele idioma (corta o download — ex.: PT ~14k em vez de 48k);
+  // no modo local filtra a amostra já carregada.
+  async function loadCatalog(cardLang) {
+    const lang = cardLang || "all";
+    const matches = (value) => lang === "all" || value === lang;
+
     if (Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length) {
-      return { cards: window.TCG_CARDS, indexes: window.TCG_INDEXES || null, manifest: window.TCG_MANIFEST || null };
+      const cards = window.TCG_CARDS.filter((card) => matches(card.language));
+      return { cards, indexes: window.TCG_INDEXES || null, manifest: window.TCG_MANIFEST || null };
     }
 
     const manifest = window.TCG_MANIFEST;
     if (manifest && Array.isArray(manifest.sets)) {
-      const cards = await fetchSetChunks(manifest.sets);
+      const sets = manifest.sets.filter((set) => matches(set.language));
+      const cards = await fetchSetChunks(sets);
       return { cards, indexes: window.TCG_INDEXES || null, manifest };
     }
 
@@ -1945,6 +2014,9 @@
     tn,
     getLanguage,
     getLocale,
+    getCardLang,
+    cardLanguageFromId,
+    matchesCardLang,
     applyTranslations,
     POKEMON_TYPES,
     TYPE_COLORS,
@@ -1980,6 +2052,7 @@
 
   applyTranslations();
   initLanguageSwitcher();
+  initCardLangSwitcher();
   initPageNav();
   initSiteFooter();
 

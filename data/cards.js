@@ -120,7 +120,7 @@ window.TCG_CARDS = [
     variants: ["Normal", "Reverse"]
   },
   {
-    id: "pt-sv3pt5-6",
+    id: "sv3pt5-6-pt",
     name: "Charmander",
     pokemonName: "Charmander",
     dexId: 4,

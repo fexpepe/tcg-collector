@@ -314,6 +314,12 @@
   function hydrateFilters() {
     addOptions(elements.setFilter, unique(pageCards.map((card) => card.set)));
 
+    // Idioma de carta preferido vira o filtro padrão (se houver cartas dele aqui).
+    const pref = shared.getCardLang();
+    if (pref !== "all" && pageCards.some((card) => card.language === pref)) {
+      selectedLanguage = pref;
+    }
+
     const languages = unique(pageCards.map((card) => card.language)).sort();
     renderSegmented(elements.languageChips, [{ value: "", label: t("filter.all.m") }]
       .concat(languages.map((language) => ({ value: language, label: language.toUpperCase() }))), selectedLanguage);

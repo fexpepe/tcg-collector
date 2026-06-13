@@ -95,7 +95,17 @@
     addOptions(elements.pokemonFilter, unique(myCards.map((card) => card.pokemonName || speciesName(card.name))));
     addOptions(elements.setFilter, unique(myCards.map((card) => card.set)));
     addOptions(elements.languageFilter, unique(myCards.map((card) => card.language)), (value) => shared.cardLanguageLabel(value));
+    applyCardLangDefault(elements.languageFilter);
     addOptions(elements.rarityFilter, unique(myCards.map((card) => card.rarity)));
+  }
+
+  // Aplica o idioma de carta preferido como valor inicial do filtro de idioma,
+  // se esse idioma estiver entre as opções (senão fica em "Todos").
+  function applyCardLangDefault(select) {
+    const pref = shared.getCardLang();
+    if (pref !== "all" && Array.from(select.options).some((option) => option.value === pref)) {
+      select.value = pref;
+    }
   }
 
   function bindEvents() {

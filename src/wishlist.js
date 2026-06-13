@@ -55,6 +55,10 @@
     addOptions(elements.pokemonFilter, unique(myCards.map((card) => card.pokemonName || speciesName(card.name))));
     addOptions(elements.setFilter, unique(myCards.map((card) => card.set)));
     addOptions(elements.languageFilter, unique(myCards.map((card) => card.language)), (value) => shared.cardLanguageLabel(value));
+    const pref = shared.getCardLang();
+    if (pref !== "all" && Array.from(elements.languageFilter.options).some((option) => option.value === pref)) {
+      elements.languageFilter.value = pref;
+    }
   }
 
   function bindEvents() {
