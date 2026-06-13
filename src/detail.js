@@ -52,20 +52,23 @@
   const selectedRarities = new Set(); // multi-seleção; vazio = todas
 
   // Buckets de raridade (na ordem dos chips). Mapeiam o vocabulário da TCGdex
-  // para os grupos que o colecionador reconhece. "base" é o catch-all: raridades
-  // não listadas caem nele para nenhuma carta sumir do filtro.
+  // — em vários idiomas (en/pt; ja e zh usam os termos em inglês) — para os
+  // grupos que o colecionador reconhece. A lógica é "base é um conjunto fechado
+  // de comuns; tudo que é especial e não é ultra/illustration/special vai para
+  // Descontinuadas (Holo, Secreta, Hiper/Rainbow, Shiny, ACE SPEC, Full Art…)".
   const RARITY_BUCKET_ORDER = ["base", "discontinued", "ultra", "illustration", "special"];
+  const RARITY_BASE = new Set(["", "common", "uncommon", "rare", "double rare", "none", "comum", "incomum", "rara", "rara dupla"]);
+  const RARITY_SPECIAL = new Set(["special illustration rare", "ilustracao rara especial"]);
+  const RARITY_ILLUSTRATION = new Set(["illustration rare", "ilustracao rara"]);
+  const RARITY_ULTRA = new Set(["ultra rare", "ultra rara"]);
 
   function rarityBucket(rarity) {
     const r = normalize(rarity);
-    if (r === "special illustration rare") return "special";
-    if (r === "illustration rare") return "illustration";
-    if (r === "ultra rare") return "ultra";
-    if (r.startsWith("rare holo") || [
-      "rainbow rare", "hyper rare", "secret rare", "amazing rare",
-      "radiant rare", "shiny rare", "shiny ultra rare", "legend", "ace spec rare", "prime"
-    ].includes(r)) return "discontinued";
-    return "base"; // common, uncommon, rare, double rare, none e demais
+    if (RARITY_BASE.has(r)) return "base";
+    if (RARITY_SPECIAL.has(r)) return "special";
+    if (RARITY_ILLUSTRATION.has(r)) return "illustration";
+    if (RARITY_ULTRA.has(r)) return "ultra";
+    return "discontinued";
   }
 
   const preview = shared.createCardPreview({
@@ -307,17 +310,23 @@
       elements.rarityChips.innerHTML = "";
       return;
     }
-    elements.rarityChips.innerHTML = "";
-    buckets.forEach((key) => {
+    const makeChip = (key, label, title) => {
       const chip = document.createElement("button");
       chip.type = "button";
       chip.className = "chip";
       chip.dataset.rarity = key;
-      chip.textContent = t(`rarity.${key}`);
+      chip.textContent = label;
+      if (title) chip.title = title;
+      // "Todas" (key vazio) fica ativo quando nenhum bucket está selecionado.
+      const pressed = key === "" ? selectedRarities.size === 0 : selectedRarities.has(key);
+      chip.setAttribute("aria-pressed", String(pressed));
+      return chip;
+    };
+    elements.rarityChips.innerHTML = "";
+    elements.rarityChips.appendChild(makeChip("", t("filter.all.f")));
+    buckets.forEach((key) => {
       const title = t(`rarity.${key}.title`);
-      if (title !== `rarity.${key}.title`) chip.title = title;
-      chip.setAttribute("aria-pressed", String(selectedRarities.has(key)));
-      elements.rarityChips.appendChild(chip);
+      elements.rarityChips.appendChild(makeChip(key, t(`rarity.${key}`), title !== `rarity.${key}.title` ? title : ""));
     });
   }
 
@@ -360,9 +369,10 @@
         const chip = event.target.closest("[data-rarity]");
         if (!chip) return;
         const key = chip.dataset.rarity;
-        if (selectedRarities.has(key)) selectedRarities.delete(key);
+        if (key === "") selectedRarities.clear(); // "Todas" reseta
+        else if (selectedRarities.has(key)) selectedRarities.delete(key);
         else selectedRarities.add(key);
-        chip.setAttribute("aria-pressed", String(selectedRarities.has(key)));
+        renderRarityChips(); // repinta os estados (inclui o "Todas")
         render({ resetCount: true });
       });
     }
