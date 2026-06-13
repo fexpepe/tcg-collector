@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Fundo full-bleed para ícone maskable (Android recorta em círculo/squircle). -->
+  <rect width="512" height="512" fill="#0d0e12"/>
+  <!-- Pokébola centralizada, dentro da safe zone (raio 168 < 205). -->
+  <g transform="translate(256 256)">
+    <circle r="168" fill="#39c79b"/>
+    <path d="M-168 0a168 168 0 0 0 336 0z" fill="#181b22"/>
+    <rect x="-168" y="-18" width="336" height="36" fill="#0d0e12"/>
+    <circle r="54" fill="#0d0e12"/>
+    <circle r="30" fill="#f3f5f7"/>
+  </g>
+</svg>
