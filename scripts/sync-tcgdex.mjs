@@ -7,9 +7,14 @@ const { values: options, positionals } = parseArgs({
     sets: { type: "string", default: "" },
     force: { type: "boolean", default: false },
     concurrency: { type: "string", default: "8" },
+    "include-digital": { type: "boolean", default: false },
     help: { type: "boolean", default: false }
   }
 });
+
+// Séries digital-only que NÃO são TCG físico — ficam de fora da importação.
+// Pokémon TCG Pocket (tcgp) é um jogo de celular; suas cartas não existem em papel.
+const DIGITAL_SERIES = ["tcgp"];
 
 if (options.help) {
   console.log(`Uso: node scripts/sync-tcgdex.mjs [idioma] [opções]
@@ -18,9 +23,11 @@ if (options.help) {
   --sets a,b,c       Sincroniza apenas os sets informados (ids da TCGdex, ex: base1,swsh3)
   --force            Ignora o cache e baixa tudo de novo
   --concurrency N    Requisições paralelas por set (padrão: 8)
+  --include-digital  Inclui séries digital-only (Pokémon TCG Pocket); por padrão são puladas
 
-O progresso fica em data/.cache/<idioma>/<setId>.json; rodadas seguintes
-reaproveitam os sets já baixados e só buscam o que falta.`);
+Por padrão só entram TCGs físicos: a série Pokémon TCG Pocket (digital) é
+excluída. O progresso fica em data/.cache/<idioma>/<setId>.json; rodadas
+seguintes reaproveitam os sets já baixados e só buscam o que falta.`);
   process.exit(0);
 }
 
@@ -39,9 +46,20 @@ const startedAt = Date.now();
 const stats = { fromCache: 0, fetched: 0, skippedCards: 0 };
 
 const allSets = await fetchJson(`${baseUrl}/sets`);
-const sets = setFilter.length
+
+// Ids dos sets digital-only (Pokémon TCG Pocket etc.), buscados pela série,
+// para deixá-los de fora — a menos que --include-digital seja passado.
+const digitalSetIds = options["include-digital"] ? new Set() : await fetchDigitalSetIds();
+
+const requested = setFilter.length
   ? allSets.filter((set) => setFilter.includes(set.id))
   : allSets;
+const sets = requested.filter((set) => !digitalSetIds.has(set.id));
+
+const skippedDigital = requested.length - sets.length;
+if (skippedDigital > 0) {
+  console.log(`Ignorando ${skippedDigital} set(s) digital-only (Pokémon TCG Pocket) — use --include-digital para incluir.`);
+}
 
 if (setFilter.length) {
   const known = new Set(allSets.map((set) => set.id));
@@ -53,6 +71,21 @@ if (setFilter.length) {
     console.error("Nenhum set válido para sincronizar.");
     process.exit(1);
   }
+}
+
+// Busca os ids de sets das séries digital-only. Se a série não existir no
+// idioma, ignora silenciosamente (ela pode não ter localização).
+async function fetchDigitalSetIds() {
+  const ids = new Set();
+  for (const serieId of DIGITAL_SERIES) {
+    try {
+      const serie = await fetchJson(`${baseUrl}/series/${serieId}`);
+      (serie.sets || []).forEach((set) => set.id && ids.add(set.id));
+    } catch (error) {
+      // série ausente nesse idioma: ok
+    }
+  }
+  return ids;
 }
 
 await mkdir(cacheDir, { recursive: true });

@@ -268,7 +268,8 @@
     renderSegmented(elements.ownedChips, [
       { value: "all", label: t("filter.all.f") },
       { value: "owned", label: t("filter.owned") },
-      { value: "missing", label: t("filter.missing") }
+      { value: "missing", label: t("filter.missing") },
+      { value: "wanted", label: t("filter.wanted") }
     ], selectedOwned);
   }
 
@@ -309,7 +310,7 @@
     elements.grid.addEventListener("click", (event) => {
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) {
-        preview.open(imageButton.dataset.previewCardId);
+        preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant);
         return;
       }
 
@@ -359,25 +360,19 @@
   }
 
   function filterCards() {
-    const query = normalize(elements.search.value);
     const setValue = elements.setFilter.value;
     const languageValue = selectedLanguage;
     const ownedValue = selectedOwned;
 
     return pageCards.filter((card) => {
-      const matchesQuery = !query || normalize([
-        card.name,
-        card.number,
-        card.set,
-        card.artist,
-        card.rarity,
-        card.language,
-        ...(card.variants || [])
-      ].join(" ")).includes(query);
+      const matchesQuery = shared.matchesCardQuery(card, elements.search.value);
       const matchesSet = !setValue || card.set === setValue;
       const matchesLanguage = !languageValue || card.language === languageValue;
       const isOwned = owned.has(card.id);
-      const matchesOwned = ownedValue === "all" || (ownedValue === "owned" && isOwned) || (ownedValue === "missing" && !isOwned);
+      const matchesOwned = ownedValue === "all"
+        || (ownedValue === "owned" && isOwned)
+        || (ownedValue === "missing" && !isOwned)
+        || (ownedValue === "wanted" && wishlist.hasCard(card.id));
 
       return matchesQuery && matchesSet && matchesLanguage && matchesOwned;
     });

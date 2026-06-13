@@ -128,7 +128,7 @@
     elements.grid.addEventListener("click", (event) => {
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) {
-        preview.open(imageButton.dataset.previewCardId);
+        preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant);
         return;
       }
 
@@ -206,24 +206,13 @@
   }
 
   function filterCards() {
-    const query = normalize(elements.search.value);
     const pokemonValue = elements.pokemonFilter.value;
     const setValue = elements.setFilter.value;
     const languageValue = elements.languageFilter.value;
     const rarityValue = elements.rarityFilter.value;
 
     return ownedCards().filter((card) => {
-      const matchesQuery = !query || normalize([
-        card.name,
-        card.pokemonName,
-        card.dexId,
-        card.number,
-        card.set,
-        card.artist,
-        card.rarity,
-        card.language,
-        ...(card.variants || [])
-      ].join(" ")).includes(query);
+      const matchesQuery = shared.matchesCardQuery(card, elements.search.value);
       const matchesPokemon = !pokemonValue || (card.pokemonName || speciesName(card.name)) === pokemonValue;
       const matchesSet = !setValue || card.set === setValue;
       const matchesLanguage = !languageValue || card.language === languageValue;

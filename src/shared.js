@@ -431,6 +431,7 @@
       "filter.all.m": "Todos",
       "filter.owned": "Tenho",
       "filter.missing": "Faltando",
+      "filter.wanted": "Quero",
       "search.placeholder.pokedex": "Nome ou número da Pokédex...",
       "search.placeholder.sets": "Set, carta, artista, número...",
       "search.placeholder.artists": "Artista, carta, set, número...",
@@ -681,6 +682,7 @@
       "filter.all.m": "All",
       "filter.owned": "Owned",
       "filter.missing": "Missing",
+      "filter.wanted": "Want",
       "search.placeholder.pokedex": "Name or Pokédex number...",
       "search.placeholder.sets": "Set, card, artist, number...",
       "search.placeholder.artists": "Artist, card, set, number...",
@@ -1120,6 +1122,7 @@
 
   function createCardPreview({ getCard, store, onOwnedChange, prices }) {
     let activeCard = null;
+    let activeVariant = null;
     let openerElement = null;
 
     document.addEventListener("click", handleClick);
@@ -1140,9 +1143,11 @@
       }
     });
 
-    function open(cardId) {
+    function open(cardId, variant) {
       activeCard = getCard(cardId);
       if (!activeCard) return;
+      const variants = activeCard.variants && activeCard.variants.length ? activeCard.variants : [defaultVariant(activeCard)];
+      activeVariant = variant && variants.includes(variant) ? variant : null;
 
       let modal = document.getElementById("cardPreviewModal");
       if (!modal) {
@@ -1152,7 +1157,7 @@
         document.body.appendChild(modal);
       }
 
-      const isOwned = store.has(activeCard.id);
+      const isOwned = activeVariant ? store.variantTotal(activeCard.id, activeVariant) > 0 : store.has(activeCard.id);
 
       modal.innerHTML = `
         <div class="card-preview-backdrop" data-preview-close></div>
@@ -1164,7 +1169,7 @@
           <div class="preview-content">
             <div>
               <p class="eyebrow">${escapeHtml(activeCard.set)}</p>
-              <h2>${escapeHtml(activeCard.name)}</h2>
+              <h2>${escapeHtml(cardLabel(activeCard))}</h2>
               <p class="preview-subtitle">${cardFlag(activeCard.language)}<span>${escapeHtml(activeCard.number)} · ${escapeHtml(activeCard.language.toUpperCase())}</span></p>
             </div>
             <div class="preview-details">
@@ -1176,9 +1181,9 @@
                 <div><dt>${escapeHtml(t("modal.cardId"))}</dt><dd>${escapeHtml(activeCard.id)}</dd></div>
               </dl>
             </div>
-            <div class="variant-quantities">${variantQuantityRows(activeCard, store, prices)}</div>
+            <div class="variant-quantities">${variantQuantityRows(activeCard, store, prices, activeVariant)}</div>
             ${prices ? brMarketplaceLinks(activeCard) : ""}
-            <button class="owned-toggle preview-owned" data-card-id="${escapeAttribute(activeCard.id)}" aria-pressed="${isOwned}">
+            <button class="owned-toggle preview-owned" data-card-id="${escapeAttribute(activeCard.id)}"${activeVariant ? ` data-variant="${escapeAttribute(activeVariant)}"` : ""} aria-pressed="${isOwned}">
               ${isOwned ? t("card.inCollection") : t("card.markOwned")}
             </button>
           </div>
@@ -1238,7 +1243,13 @@
 
       const modalToggle = event.target.closest("#cardPreviewModal [data-card-id]");
       if (modalToggle) {
-        store.toggle(getCard(modalToggle.dataset.cardId) || { id: modalToggle.dataset.cardId });
+        // Quando o preview foi aberto de um tile de variante específica, o
+        // botão liga/desliga só aquela variante; senão a carta inteira.
+        if (modalToggle.dataset.variant) {
+          store.toggleVariant(modalToggle.dataset.cardId, modalToggle.dataset.variant);
+        } else {
+          store.toggle(getCard(modalToggle.dataset.cardId) || { id: modalToggle.dataset.cardId });
+        }
         onOwnedChange();
         refreshQuantities();
       }
@@ -1248,10 +1259,10 @@
       const modal = document.getElementById("cardPreviewModal");
       if (!modal || !activeCard) return;
       const wrap = modal.querySelector(".variant-quantities");
-      if (wrap) wrap.innerHTML = variantQuantityRows(activeCard, store, prices);
+      if (wrap) wrap.innerHTML = variantQuantityRows(activeCard, store, prices, activeVariant);
       const ownedButton = modal.querySelector(".preview-owned");
       if (ownedButton) {
-        const isOwned = store.has(activeCard.id);
+        const isOwned = activeVariant ? store.variantTotal(activeCard.id, activeVariant) > 0 : store.has(activeCard.id);
         ownedButton.setAttribute("aria-pressed", String(isOwned));
         ownedButton.textContent = isOwned ? t("card.inCollection") : t("card.markOwned");
       }
@@ -1268,16 +1279,46 @@
     { key: "myp", label: "MYP", url: (q) => `https://mypcards.com/pokemon?ProdutoSearch%5Bquery%5D=${q}` }
   ];
 
-  // "Charizard (4/102)" — o formato Nome (número/total) é como Liga e MYP
-  // nomeiam os produtos, então a busca cai direto na carta certa em vez de
-  // listar todas as cartas do Pokémon.
-  function cardSearchQuery(card) {
+  // Código da carta: "4/102" (número/total do set). Alguns catálogos já trazem
+  // o número como "4/102"; nesse caso não duplica o total.
+  function cardCode(card) {
     const number = String(card.number || "").trim();
+    if (!number) return "";
     const total = String(card.setTotal || "").trim();
-    if (!number) return card.name;
-    // Alguns catálogos já trazem o número como "4/102" — não duplica o total.
-    if (number.includes("/") || !total) return `${card.name} (${number})`;
-    return `${card.name} (${number}/${total})`;
+    if (number.includes("/") || !total) return number;
+    return `${number}/${total}`;
+  }
+
+  // Nome exibido com o código: "Charizard (4/102)". Diferencia cartas com o
+  // mesmo nome e é o formato Nome (número/total) que Liga e MYP usam nos títulos
+  // dos produtos, então a busca nesses sites cai direto na carta certa.
+  function cardLabel(card) {
+    const code = cardCode(card);
+    return code ? `${card.name} (${code})` : card.name;
+  }
+
+  function cardSearchQuery(card) {
+    return cardLabel(card);
+  }
+
+  // Texto pesquisável de uma carta (nome, espécie, número, código, set, artista,
+  // raridade, idioma e variantes), normalizado.
+  function cardSearchHaystack(card) {
+    return normalize([
+      card.name, card.pokemonName, card.dexId, card.number, cardCode(card),
+      card.set, card.artist, card.rarity, card.language, ...(card.variants || [])
+    ].join(" "));
+  }
+
+  // Busca tolerante: separa a query em termos e exige que TODOS estejam no
+  // texto da carta. Assim funciona por nome ("bulbasaur"), por código ("95/165"
+  // ou só "95") e por nome + código ("bulbasaur 95/165"). Parênteses são
+  // ignorados, então colar "Bulbasaur (95/165)" também casa.
+  function matchesCardQuery(card, rawQuery) {
+    const query = normalize(rawQuery || "").replace(/[()]/g, " ").trim();
+    if (!query) return true;
+    const haystack = cardSearchHaystack(card);
+    return query.split(/\s+/).every((term) => haystack.includes(term));
   }
 
   function brMarketplaceLinks(card) {
@@ -1319,8 +1360,11 @@
 
   // Por variante: nome + total e um stepper por condição (M, NM, SP, MP, HP, D).
   // Cada cópia fica distinguida por condição para o cálculo futuro do portfólio.
-  function variantQuantityRows(card, store, prices) {
-    const variants = card.variants && card.variants.length ? card.variants : [defaultVariant(card)];
+  // Se `only` for informado, renderiza apenas aquela variante (o preview é
+  // aberto a partir de um tile específico carta×variante, não da carta inteira).
+  function variantQuantityRows(card, store, prices, only) {
+    const all = card.variants && card.variants.length ? card.variants : [defaultVariant(card)];
+    const variants = only && all.includes(only) ? [only] : all;
     return variants.map((variant) => {
       const total = store.variantTotal(card.id, variant);
       const conditions = CARD_CONDITIONS.map((condition) => {
@@ -1388,7 +1432,7 @@
     article.dataset.tileCardId = card.id;
     article.dataset.tileVariant = variant;
     const image = card.image
-      ? `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${localizedImg(card.image, { alt: card.name, loading: "lazy", thumb: true, fallback: pokemontcgImageUrl(card, false) })}</button>`
+      ? `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${localizedImg(card.image, { alt: card.name, loading: "lazy", thumb: true, fallback: pokemontcgImageUrl(card, false) })}</button>`
       : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;
     const ownAria = isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant });
     const qtyBadge = quantity > 1 ? `<span class="tile-qty">×${quantity}</span>` : "";
@@ -1400,7 +1444,7 @@
     article.innerHTML = `
       <div class="card-image">${image}</div>
       <div class="tile-info">
-        <h3>${escapeHtml(card.name)}</h3>
+        <h3>${escapeHtml(cardLabel(card))}</h3>
         <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${escapeHtml(variant)}</p>
         <div class="tile-bottom">
           <p class="tile-set">${cardFlag(card.language)}<span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
@@ -1835,6 +1879,9 @@
     localizeAssetUrl,
     localizedImg,
     pokemontcgImageUrl,
+    cardCode,
+    cardLabel,
+    matchesCardQuery,
     loadCatalog,
     fetchSetChunks,
     setIdForCard,

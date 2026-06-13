@@ -40,9 +40,10 @@ node scripts/sync-tcgdex.mjs pt                  # catálogo completo em pt
 node scripts/sync-tcgdex.mjs en --sets base1     # apenas sets específicos
 node scripts/sync-tcgdex.mjs pt --force          # ignora o cache e baixa tudo de novo
 node scripts/sync-tcgdex.mjs pt --concurrency 4  # menos requisições paralelas (padrão: 8)
+node scripts/sync-tcgdex.mjs pt --include-digital # inclui Pokémon TCG Pocket (digital)
 ```
 
-O script baixa com requisições paralelas, refaz tentativas com backoff em erros de rede/429/5xx e guarda cada set em `data/.cache/<idioma>/`. Se a execução for interrompida, basta rodar de novo: os sets já baixados vêm do cache e só o que falta é buscado. Cartas que a API não encontra (404) são puladas com aviso, sem abortar o sync.
+Só entram **TCGs físicos**: a série Pokémon TCG Pocket (`tcgp`, jogo digital de celular) é detectada pela API e excluída por padrão — use `--include-digital` para trazê-la. O script baixa com requisições paralelas, refaz tentativas com backoff em erros de rede/429/5xx e guarda cada set em `data/.cache/<idioma>/`. Se a execução for interrompida, basta rodar de novo: os sets já baixados vêm do cache e só o que falta é buscado. Cartas que a API não encontra (404) são puladas com aviso, sem abortar o sync.
 
 O sync gera três saídas:
 

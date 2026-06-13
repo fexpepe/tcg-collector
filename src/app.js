@@ -136,7 +136,7 @@
     elements.grid.addEventListener("click", (event) => {
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) {
-        preview.open(imageButton.dataset.previewCardId);
+        preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant);
         return;
       }
 
@@ -258,7 +258,6 @@
   }
 
   function filterCards() {
-    const query = normalize(elements.search.value);
     const generationValue = selectedGeneration;
     const typeValue = elements.typeFilter ? elements.typeFilter.value : "";
     const setValue = elements.setFilter ? elements.setFilter.value : "";
@@ -266,17 +265,7 @@
     const ownedValue = elements.ownedFilter ? elements.ownedFilter.value : "all";
 
     return cards.filter((card) => {
-      const matchesQuery = !query || normalize([
-        card.name,
-        card.pokemonName,
-        card.dexId,
-        card.number,
-        card.set,
-        card.artist,
-        card.rarity,
-        card.language,
-        ...(card.variants || [])
-      ].join(" ")).includes(query);
+      const matchesQuery = shared.matchesCardQuery(card, elements.search.value);
       const matchesGeneration = !generationValue || String(card.generation) === generationValue;
       const matchesType = !typeValue || shared.typesForDex(card.dexId).includes(typeValue);
       const matchesLangRegion = !elements.setRegionChips || shared.cardLanguageRegion(card.language) === selectedLangRegion;
