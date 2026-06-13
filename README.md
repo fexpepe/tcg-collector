@@ -19,11 +19,11 @@ Local: abra `index.html` no navegador (home) ou `pokedex.html` (direto no app). 
 - mostra progresso básico (cartas distintas com ao menos uma variante);
 - exporta/importa a coleção em JSON (formato v2 por variante; importa também o formato v1 antigo);
 - seletor de idioma no topo (Português/English) que traduz a interface do site;
-- cada carta mostra uma bandeirinha do seu idioma (Inglês, Japonês, Chinês, Português-BR) e a imagem no idioma da própria carta;
-- a página Sets tem um filtro mestre por origem — Inglês, Português, Japonês e Chinês — e mostra a data de lançamento de cada set no canto da imagem;
+- cada carta mostra uma bandeirinha do seu idioma (Inglês, Japonês, Chinês (Tradicional), Português-BR) e a imagem no idioma da própria carta;
+- a página Sets tem um filtro mestre por origem — Inglês, Português, Japonês e Chinês (Tradicional) — e mostra a data de lançamento de cada set no canto da imagem;
 - na Pokédex, filtra por geração (chips), por região/local (Kanto, Johto…) e por tipo (Fogo, Voador…);
 - na página de um Pokémon, mostra tipos, região, geração, botão de favoritar e as formas alternativas;
-- aba **Treinadores** (no menu Pokémon) agrupando as cartas de Treinador por nome, com filtro por origem (Internacional/Japonês/Chinês);
+- aba **Treinadores** (no menu Pokémon) agrupando as cartas de Treinador por nome, com filtro por origem (Internacional/Japonês/Chinês (Tradicional));
 - lista **"Eu quero"** (wishlist) por variante: o botão de coração nos tiles marca/desmarca o desejo, a página `wishlist.html` reúne tudo com filtros (Pokémon/set/idioma), e marcar uma carta como "tenho" a move da wishlist para a coleção ("comprei!"). A wishlist fica no `localStorage` (`tcg-collector-wishlist-v1`, `cardId -> [variantes]`) e entra junto no export/import JSON;
 - **preço BR manual + Portfólio**: no preview da carta, cada variante tem campos de preço em R$ por condição (M/NM/SP/MP/HP/D) e links para conferir o valor na LigaPokémon, LigaBRA e MYP (nenhum tem API pública — o registro é manual, com a fonte e a data guardadas em `tcg-collector-prices-v1` para o futuro preenchimento automático via worker). A página `portfolio.html` soma o valor da coleção (condições sem preço próprio são estimadas do NM: SP 85%, MP 70%, HP 50%, D 30%), conta as cópias precificadas, calcula o custo da wishlist e lista as cartas mais valiosas. Os preços entram no export/import JSON.
 
@@ -75,7 +75,7 @@ A coleção fica no `localStorage` em `tcg-collector-collection-v2` (`cardId -> 
 
 ## Deploy e catálogo em produção
 
-O site publicado usa o **catálogo completo da TCGdex** em quatro idiomas (en, ja, zh-tw, pt). O workflow [.github/workflows/deploy.yml](.github/workflows/deploy.yml) roda a cada push e toda segunda-feira: sincroniza os catálogos (com cache incremental entre execuções), mescla tudo com `scripts/merge-catalogs.mjs` (ids com sufixo de idioma; espécies canonizadas via dexId usando o catálogo en), troca as páginas para o modo manifest (chunks por set carregados via fetch) e publica no GitHub Pages via artifact — nada de dados gerados vai para o git. Localmente o app continua usando o catálogo de exemplo (`data/cards.js`).
+O site publicado usa o **catálogo completo da TCGdex** em quatro idiomas (en, ja, zh-tw, pt). O chinês é o **tradicional** (zh-tw, produto de Taiwan/Hong Kong): o catálogo simplificado (zh-cn, produto da China continental — o que mais se compra no Brasil) ainda é um esqueleto na TCGdex (8 sets com cartas, **nenhuma imagem**, nomes emprestados do tradicional), então não vale a troca por ora; reavaliar quando a TCGdex populá-lo. O workflow [.github/workflows/deploy.yml](.github/workflows/deploy.yml) roda a cada push e toda segunda-feira: sincroniza os catálogos (com cache incremental entre execuções), mescla tudo com `scripts/merge-catalogs.mjs` (ids com sufixo de idioma; espécies canonizadas via dexId usando o catálogo en), troca as páginas para o modo manifest (chunks por set carregados via fetch) e publica no GitHub Pages via artifact — nada de dados gerados vai para o git. Localmente o app continua usando o catálogo de exemplo (`data/cards.js`).
 
 ## Próximos passos recomendados
 
@@ -83,6 +83,7 @@ O site publicado usa o **catálogo completo da TCGdex** em quatro idiomas (en, j
 - **Prioridade na wishlist**: estender `tcg-collector-wishlist-v1` para guardar prioridade por variante e ordenar a página Quero por "mais quero";
 - **Preços TCGdex**: capturar o campo `pricing` (Cardmarket EUR / TCGplayer USD, por variante) num artefato separado dos chunks (preço muda toda semana; o cache de sets não), convertendo para R$ via API de câmbio como fallback de quem não registrou preço manual;
 - **Worker de preços BR**: serviço opcional (Cloudflare Worker) que busca o preço médio por condição na LigaBRA/LigaPokémon e preenche os mesmos campos de `tcg-collector-prices-v1` (fonte registrada, valor sempre editável). MYP fica só como deep link — tem proteção anti-bot;
+- **Chinês simplificado (zh-cn)**: adicionar ao deploy quando a TCGdex tiver o catálogo com imagens (hoje só 8 sets sem imagem) — é uma linha no sync + merge;
 - adicionar IndexedDB se a coleção crescer muito;
 - gerar índice de busca com MiniSearch/FlexSearch;
 - adicionar sync automático com GitHub Actions quando o app for para host.
