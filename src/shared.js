@@ -448,6 +448,52 @@
       "portfolio.estimated": "estimado pelo NM",
       "portfolio.empty": "Nenhuma carta com preço ainda. Abra uma carta da sua <a href=\"collection.html\">coleção</a>, confira o valor nos sites (Liga, LigaBRA, MYP) e registre no campo \"Preço BR\".",
       "portfolio.note": "Valores em R$ registrados manualmente por você. Condições sem preço próprio são estimadas a partir do NM (SP 85%, MP 70%, HP 50%, D 30%).",
+      "nav.binders": "Binders",
+      "nav.bindersCollection": "Coleção",
+      "nav.bindersSale": "Venda",
+      "title.bindersCollection": "Binders da coleção - TCG Collector",
+      "title.bindersSale": "Binders de venda - TCG Collector",
+      "binders.collection.heading": "Binders da coleção",
+      "binders.sale.heading": "Binders de venda",
+      "binders.collection.subtitle": "Monte fichários visuais das suas cartas, no estilo 2×2 ou 3×3, e exporte como imagem para compartilhar.",
+      "binders.sale.subtitle": "Monte vitrines das cartas que você está vendendo: foto sua, preço, condição e observação por carta. As fotos ficam só no seu navegador.",
+      "binders.new": "Novo binder",
+      "binders.namePlaceholder": "Nome do binder",
+      "binders.create": "Criar",
+      "binders.cancel": "Cancelar",
+      "binders.empty": "Você ainda não criou nenhum binder. Crie o primeiro acima.",
+      "binders.grid": "Formato",
+      "binders.grid.2x2": "2×2",
+      "binders.grid.3x3": "3×3",
+      "binders.rename": "Renomear",
+      "binders.delete": "Excluir",
+      "binders.deleteConfirm": "Excluir este binder e as fotos dele? Esta ação não pode ser desfeita.",
+      "binders.exportImage": "Exportar como imagem",
+      "binders.exportTainted": "Não foi possível exportar (uma imagem do catálogo bloqueou o canvas). Tente um binder só com fotos suas.",
+      "binders.slotEmpty": "Adicionar",
+      "binders.cardsCount": "{n} carta(s)",
+      "binders.saleTotal": "Total da vitrine",
+      "binders.editor.title": "Editar slot",
+      "binders.editor.tabCatalog": "Do catálogo",
+      "binders.editor.tabFree": "Slot livre",
+      "binders.editor.search": "Buscar por nome, número (4/102)...",
+      "binders.editor.loadingCatalog": "Carregando catálogo…",
+      "binders.editor.noResults": "Nenhuma carta encontrada.",
+      "binders.editor.label": "Rótulo da carta",
+      "binders.editor.labelPlaceholder": "Ex.: Charizard japonês promo",
+      "binders.editor.photo": "Foto da carta",
+      "binders.editor.photoAdd": "Enviar foto",
+      "binders.editor.photoChange": "Trocar foto",
+      "binders.editor.photoRemove": "Remover foto",
+      "binders.editor.photoHint": "A foto fica só no seu navegador (IndexedDB) — não é enviada para nenhum servidor.",
+      "binders.editor.price": "Preço (R$)",
+      "binders.editor.condition": "Condição",
+      "binders.editor.note": "Observação",
+      "binders.editor.notePlaceholder": "Ex.: vinco leve no canto",
+      "binders.editor.save": "Salvar",
+      "binders.editor.clear": "Esvaziar slot",
+      "binders.photoLimit": "Limite de {n} fotos atingido. Remova alguma para enviar outra.",
+      "binders.photoError": "Não foi possível processar a imagem. Tente outra foto.",
       "sort.label": "Ordenar:",
       "sort.dex": "Nº Dex",
       "sort.name": "Nome",
@@ -730,6 +776,52 @@
       "portfolio.estimated": "estimated from NM",
       "portfolio.empty": "No priced cards yet. Open a card from your <a href=\"collection.html\">collection</a>, check its value on the BR marketplaces and register it in the \"BR price\" field.",
       "portfolio.note": "BRL values registered manually by you. Conditions without their own price are estimated from NM (SP 85%, MP 70%, HP 50%, D 30%).",
+      "nav.binders": "Binders",
+      "nav.bindersCollection": "Collection",
+      "nav.bindersSale": "For sale",
+      "title.bindersCollection": "Collection binders - TCG Collector",
+      "title.bindersSale": "Sale binders - TCG Collector",
+      "binders.collection.heading": "Collection binders",
+      "binders.sale.heading": "Sale binders",
+      "binders.collection.subtitle": "Build visual 2×2 or 3×3 binders of your cards and export them as an image to share.",
+      "binders.sale.subtitle": "Build showcases of the cards you're selling: your own photo, price, condition and a note per card. Photos stay only in your browser.",
+      "binders.new": "New binder",
+      "binders.namePlaceholder": "Binder name",
+      "binders.create": "Create",
+      "binders.cancel": "Cancel",
+      "binders.empty": "You haven't created any binders yet. Create your first one above.",
+      "binders.grid": "Layout",
+      "binders.grid.2x2": "2×2",
+      "binders.grid.3x3": "3×3",
+      "binders.rename": "Rename",
+      "binders.delete": "Delete",
+      "binders.deleteConfirm": "Delete this binder and its photos? This can't be undone.",
+      "binders.exportImage": "Export as image",
+      "binders.exportTainted": "Couldn't export (a catalog image tainted the canvas). Try a binder with only your own photos.",
+      "binders.slotEmpty": "Add",
+      "binders.cardsCount": "{n} card(s)",
+      "binders.saleTotal": "Showcase total",
+      "binders.editor.title": "Edit slot",
+      "binders.editor.tabCatalog": "From catalog",
+      "binders.editor.tabFree": "Free slot",
+      "binders.editor.search": "Search by name, number (4/102)...",
+      "binders.editor.loadingCatalog": "Loading catalog…",
+      "binders.editor.noResults": "No cards found.",
+      "binders.editor.label": "Card label",
+      "binders.editor.labelPlaceholder": "e.g. Japanese Charizard promo",
+      "binders.editor.photo": "Card photo",
+      "binders.editor.photoAdd": "Upload photo",
+      "binders.editor.photoChange": "Change photo",
+      "binders.editor.photoRemove": "Remove photo",
+      "binders.editor.photoHint": "The photo stays only in your browser (IndexedDB) — it is never uploaded to any server.",
+      "binders.editor.price": "Price (R$)",
+      "binders.editor.condition": "Condition",
+      "binders.editor.note": "Note",
+      "binders.editor.notePlaceholder": "e.g. light corner crease",
+      "binders.editor.save": "Save",
+      "binders.editor.clear": "Empty slot",
+      "binders.photoLimit": "Photo limit of {n} reached. Remove one to upload another.",
+      "binders.photoError": "Couldn't process the image. Try another photo.",
       "sort.label": "Sort:",
       "sort.dex": "Dex #",
       "sort.name": "Name",
@@ -974,52 +1066,62 @@
       const type = new URLSearchParams(window.location.search).get("type");
       active = type === "set" ? "sets" : type === "artist" ? "artists" : type === "trainer" ? "trainers" : "pokedex";
     }
-    const groupActive = ["pokedex", "trainers", "sets", "artists"].includes(active);
+    const pokemonActive = ["pokedex", "trainers", "sets", "artists"].includes(active);
+    const bindersActive = ["binders-collection", "binders-sale"].includes(active);
 
     const link = (href, key, page) => `<a href="${href}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
+    const group = (key, isActive, links) => `
+      <div class="nav-group">
+        <button type="button" class="nav-group-toggle${isActive ? " active" : ""}" aria-expanded="false" aria-haspopup="true">
+          ${escapeHtml(t(key))}<span class="nav-caret" aria-hidden="true">▾</span>
+        </button>
+        <div class="nav-dropdown" hidden>${links}</div>
+      </div>`;
 
     nav.innerHTML = `
       ${link("index.html", "nav.home", "home")}
-      <div class="nav-group">
-        <button type="button" class="nav-group-toggle${groupActive ? " active" : ""}" aria-expanded="false" aria-haspopup="true">
-          ${escapeHtml(t("nav.pokemon"))}<span class="nav-caret" aria-hidden="true">▾</span>
-        </button>
-        <div class="nav-dropdown" hidden>
+      ${group("nav.pokemon", pokemonActive, `
           ${link("pokedex.html", "nav.pokedex", "pokedex")}
           ${link("trainers.html", "nav.trainers", "trainers")}
           ${link("sets.html", "nav.sets", "sets")}
-          ${link("artists.html", "nav.artists", "artists")}
-        </div>
-      </div>
+          ${link("artists.html", "nav.artists", "artists")}`)}
       ${link("collection.html", "nav.collection", "collection")}
       ${link("wishlist.html", "nav.wishlist", "wishlist")}
+      ${group("nav.binders", bindersActive, `
+          ${link("binders-collection.html", "nav.bindersCollection", "binders-collection")}
+          ${link("binders-sale.html", "nav.bindersSale", "binders-sale")}`)}
       ${link("portfolio.html", "nav.portfolio", "portfolio")}
     `;
 
-    const toggle = nav.querySelector(".nav-group-toggle");
-    const dropdown = nav.querySelector(".nav-dropdown");
+    const groups = Array.from(nav.querySelectorAll(".nav-group")).map((groupEl) => ({
+      el: groupEl,
+      toggle: groupEl.querySelector(".nav-group-toggle"),
+      dropdown: groupEl.querySelector(".nav-dropdown")
+    }));
 
-    function close() {
-      dropdown.hidden = true;
-      toggle.setAttribute("aria-expanded", "false");
+    function closeAll(except) {
+      groups.forEach(({ toggle, dropdown }) => {
+        if (dropdown === except) return;
+        dropdown.hidden = true;
+        toggle.setAttribute("aria-expanded", "false");
+      });
     }
 
-    toggle.addEventListener("click", () => {
-      const willOpen = dropdown.hidden;
-      dropdown.hidden = !willOpen;
-      toggle.setAttribute("aria-expanded", String(willOpen));
+    groups.forEach(({ toggle, dropdown }) => {
+      toggle.addEventListener("click", () => {
+        const willOpen = dropdown.hidden;
+        closeAll(dropdown);
+        dropdown.hidden = !willOpen;
+        toggle.setAttribute("aria-expanded", String(willOpen));
+      });
     });
 
     document.addEventListener("click", (event) => {
-      if (!dropdown.hidden && !event.target.closest(".nav-group")) {
-        close();
-      }
+      if (!event.target.closest(".nav-group")) closeAll();
     });
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && !dropdown.hidden) {
-        close();
-      }
+      if (event.key === "Escape") closeAll();
     });
   }
 
@@ -1210,7 +1312,6 @@
       const list = (img.getAttribute("data-img-fallbacks") || "").split("|").filter(Boolean);
       const next = list.shift();
       if (!next) {
-        img.onerror = null;
         img.removeAttribute("data-img-fallbacks");
         return;
       }
@@ -1220,6 +1321,16 @@
     }
   };
   window.TCGImg = TCGImg;
+
+  // Delegação em fase de captura: eventos "error" de <img> não borbulham, mas
+  // são capturáveis. Dispara a cadeia de fallback sem onerror inline (que a CSP
+  // script-src 'self' bloquearia).
+  document.addEventListener("error", (event) => {
+    const img = event.target;
+    if (img && img.tagName === "IMG" && img.hasAttribute("data-img-fallbacks")) {
+      TCGImg.fallback(img);
+    }
+  }, true);
 
   // setId da pokemontcg.io a partir do da TCGdex. Primeiro consulta o de-para
   // versionado (data/set-id-map.js, gerado por scripts/build-set-id-map.mjs),
@@ -1290,7 +1401,7 @@
     if (src !== url) chain.push(url); // webp -> png original (mesmo host)
     (Array.isArray(fallback) ? fallback : [fallback]).forEach((entry) => { if (entry) chain.push(entry); });
     const fallbackAttr = chain.length
-      ? ` data-img-fallbacks="${escapeAttribute(chain.join("|"))}" onerror="window.TCGImg&&TCGImg.fallback(this)"`
+      ? ` data-img-fallbacks="${escapeAttribute(chain.join("|"))}"`
       : "";
     return `<img${classAttr}${loadingAttr} decoding="async" src="${escapeAttribute(src)}" alt="${escapeAttribute(alt)}"${fallbackAttr}>`;
   }
@@ -2400,6 +2511,7 @@
     cardLanguageRegion,
     localizeAssetUrl,
     localizedImg,
+    cardImageSources,
     pokemontcgImageUrl,
     cardHasImage,
     cardCode,

@@ -40,6 +40,12 @@ todo o resto continua livre.
   baixa o catálogo) e usa sprite pequeno (~1KB) no grid.
 - **SEO/perf**: `sitemap.xml`, `robots.txt`, preconnect, `fetchSetChunks` com concorrência
   limitada.
+- **Binders (Coleção e Venda)** (`tcg-collector-binders-v1`): duas páginas separadas
+  (`binders-collection.html` / `binders-sale.html`), fichários 2×2/3×3/4×4 montados por
+  clique no slot (carta do catálogo **ou** slot livre com foto+rótulo). O binder de Venda
+  guarda preço/condição/nota por carta (estilo cardgrid) e ambos exportam a grade **como
+  imagem** (canvas → PNG) pra postar/compartilhar. Fotos do usuário ficam **100% locais**
+  no navegador (IndexedDB, comprimidas em WebP, com teto de fotos) — nunca sobem a servidor.
 - **Preferência de idioma de carta** (`tcg-collector-card-lang-v1`): seletor global no
   header (Todas / PT / EN / JA / ZH-TW), separado do idioma da interface. É o eixo padrão
   das listas e do progresso (Pokédex conta só o idioma escolhido, via sufixo do id) e faz
@@ -55,9 +61,11 @@ todo o resto continua livre.
 Em `index.html`, seção de apoio: trocar `data-pix="SUA-CHAVE-PIX-AQUI"` pela chave Pix real
 e o `href` do Ko-fi (`https://ko-fi.com/fexpepe`) pelo link real. Marcados com `<!-- TODO -->`.
 
-### 2. Binders 2×2 / 3×3 — recurso-assinatura (do plano original)
-Fichários visuais de "tenho" e "quero" (slots preenchidos por clique), com exportar como
-imagem pra compartilhar. O botão placeholder já existe nos tiles.
+### 2. Polimento dos binders — médio/baixo
+- Ligar o botão "Adicionar a um binder" dos tiles (hoje placeholder "em breve") a um
+  seletor de binder, pra mandar a carta direto da listagem pro fichário.
+- Arrastar pra reordenar slots; múltiplas páginas por binder.
+- Incluir as fotos dos binders no export/import (hoje o JSON não leva o IndexedDB).
 
 ### 3. Polimento — médio/baixo
 - Realce de "completo" (100%) nos cards de set/artista, como o dourado da Pokédex.
