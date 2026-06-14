@@ -234,6 +234,8 @@ function toAppCard(card, fallbackLanguage, fullSet) {
     setSymbol: imageUrl(card.set?.symbol || fullSet?.symbol),
     setTotal: card.set?.cardCount?.official || fullSet?.cardCount?.official || fullSet?.cardCount?.total || "",
     setReleaseDate: card.set?.releaseDate || fullSet?.releaseDate || "",
+    setSerieId: card.set?.serie?.id || fullSet?.serie?.id || "",
+    setSerieName: card.set?.serie?.name || fullSet?.serie?.name || "",
     artist: card.illustrator || "",
     rarity: card.rarity || "",
     language: fallbackLanguage,

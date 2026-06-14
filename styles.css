@@ -829,6 +829,55 @@ input::placeholder {
   padding: 16px;
 }
 
+/* Cabeçalho de série na grade de Sets: ocupa a linha inteira, acima dos sets
+   daquela coleção. Clicável → página da série. */
+.set-series-head {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0 2px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--text);
+}
+
+.set-series-head:first-child {
+  margin-top: 0;
+}
+
+.set-series-name {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.set-series-head:hover .set-series-name {
+  color: var(--accent);
+}
+
+.set-series-count {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--subtle);
+  white-space: nowrap;
+}
+
+/* Voltar pra lista completa de sets (página de uma série). */
+.serie-back {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.serie-back:hover {
+  color: var(--accent);
+}
+
 .set-card {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -1851,22 +1900,34 @@ input::placeholder {
 
 /* Pílula de idioma das cartas: bandeira + select (estilo do seletor de moeda
    do Collectr). O select por dentro fica sem borda/fundo próprios. */
-.lang-pill {
+/* Seletor de idioma de carta: dropdown customizado, colapsado só com a
+   bandeira (estilo Collectr, mas simplificado). */
+.lang-dd {
+  position: relative;
+}
+
+.lang-dd-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 5px;
   height: 42px;
-  padding: 0 6px 0 12px;
+  padding: 0 8px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--panel);
+  color: var(--text);
 }
 
-.lang-pill:hover {
+.lang-dd-toggle:hover {
   border-color: var(--accent-dark);
 }
 
-.lang-pill .card-flag {
+.lang-dd-caret {
+  font-size: 11px;
+  color: var(--subtle);
+}
+
+.lang-dd .card-flag {
   flex: none;
 }
 
@@ -1878,13 +1939,40 @@ input::placeholder {
   border-radius: 0;
 }
 
-.lang-select.bare {
-  height: auto;
-  min-height: 0;
-  padding: 0 2px 0 0;
-  border: 0;
-  background: transparent;
-  border-radius: 0;
+.lang-dd-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  min-width: 150px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--panel-strong);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+
+.lang-dd-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.lang-dd-option:hover {
+  background: var(--panel);
+  color: var(--text);
+}
+
+.lang-dd-option.active {
+  color: var(--accent);
 }
 
 /* Controles do header como pílulas arredondadas (Exportar/Importar). */
@@ -2253,7 +2341,7 @@ a.progress-row:hover {
 
 .market-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 8px;
 }
 
@@ -2261,7 +2349,7 @@ a.progress-row:hover {
   background: var(--accent-soft);
   border: 1px solid rgba(57, 199, 155, 0.18);
   border-radius: 10px;
-  padding: 9px 11px;
+  padding: 10px 13px;
 }
 
 .market-card-cur {
@@ -2276,7 +2364,7 @@ a.progress-row:hover {
 .market-cells {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 6px;
+  gap: 4px;
 }
 
 .market-cell {
@@ -2294,7 +2382,7 @@ a.progress-row:hover {
 }
 
 .market-cell strong {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--text);
   white-space: nowrap;

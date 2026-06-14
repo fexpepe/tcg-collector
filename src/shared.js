@@ -420,6 +420,8 @@
       "price.updatedAt": "atualizado em {date}",
       "price.inputAria": "Preço em reais de {variant} {condition}",
       "price.checkAt": "Conferir preço:",
+      "price.checkBr": "Mercado brasileiro:",
+      "price.checkUs": "Mercado EUA:",
       "market.title": "Cotação de mercado",
       "market.nonfoil": "Não-foil",
       "market.foil": "Foil",
@@ -695,6 +697,8 @@
       "price.updatedAt": "updated {date}",
       "price.inputAria": "Price in BRL for {variant} {condition}",
       "price.checkAt": "Check price:",
+      "price.checkBr": "Brazil market:",
+      "price.checkUs": "US market:",
       "market.title": "Market quote",
       "market.nonfoil": "Non-foil",
       "market.foil": "Foil",
@@ -1023,62 +1027,59 @@
     document.body.appendChild(footer);
   }
 
+  // Dropdown de bandeira reutilizável: colapsado mostra só a bandeira do item
+  // atual; aberto, lista bandeira + sigla (o <select> nativo não estiliza bem
+  // no dark e não mostra bandeira). `items`: [{ value, flag, sigla }].
+  function createFlagDropdown({ id, current, items, ariaLabel, onSelect }) {
+    const dd = document.createElement("div");
+    dd.className = "lang-dd";
+    dd.id = id;
+    const currentItem = items.find((item) => item.value === current) || items[0];
+    dd.innerHTML = `
+      <button type="button" class="lang-dd-toggle" aria-haspopup="listbox" aria-expanded="false" aria-label="${escapeAttribute(ariaLabel)}" title="${escapeAttribute(ariaLabel)}">
+        ${currentItem.flag}
+        <span class="lang-dd-caret" aria-hidden="true">▾</span>
+      </button>
+      <ul class="lang-dd-menu" role="listbox" hidden>
+        ${items.map((item) => `<li role="option" data-value="${escapeAttribute(item.value)}" aria-selected="${item.value === current}" class="lang-dd-option${item.value === current ? " active" : ""}">${item.flag}<span>${escapeHtml(item.sigla)}</span></li>`).join("")}
+      </ul>
+    `;
+    const toggle = dd.querySelector(".lang-dd-toggle");
+    const menu = dd.querySelector(".lang-dd-menu");
+    const close = () => { menu.hidden = true; toggle.setAttribute("aria-expanded", "false"); };
+    toggle.addEventListener("click", () => {
+      const willOpen = menu.hidden;
+      menu.hidden = !willOpen;
+      toggle.setAttribute("aria-expanded", String(willOpen));
+    });
+    menu.addEventListener("click", (event) => {
+      const option = event.target.closest("[data-value]");
+      if (option) onSelect(option.dataset.value);
+    });
+    document.addEventListener("click", (event) => {
+      if (!menu.hidden && !event.target.closest(`#${id}`)) close();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !menu.hidden) close();
+    });
+    return dd;
+  }
+
+  // Idioma do SITE: dropdown de bandeira (só bandeira colapsado; bandeira+sigla
+  // no menu) no lugar do <select> nativo.
   function initLanguageSwitcher() {
     const select = document.getElementById("languageSwitcher");
     if (!select) return;
-    UI_LANGUAGES.forEach(({ code, label }) => {
-      const option = document.createElement("option");
-      option.value = code;
-      option.textContent = label;
-      select.appendChild(option);
+    const SITE_SIGLA = { pt: "PT-BR", en: "EN" };
+    const items = UI_LANGUAGES.map(({ code }) => ({ value: code, flag: cardFlag(code), sigla: SITE_SIGLA[code] || code.toUpperCase() }));
+    const dd = createFlagDropdown({
+      id: "siteLangDd",
+      current: currentLanguage,
+      items,
+      ariaLabel: t("lang.aria"),
+      onSelect: (value) => { localStorage.setItem(languageStorageKey, value); window.location.reload(); }
     });
-    select.value = currentLanguage;
-    select.setAttribute("aria-label", t("lang.aria"));
-    select.addEventListener("change", () => {
-      localStorage.setItem(languageStorageKey, select.value);
-      window.location.reload();
-    });
-  }
-
-  // Seletor global de idioma das cartas, ao lado do seletor de idioma do site.
-  // Não aparece na home (não tem listas). Trocar recarrega a página (o idioma é
-  // o eixo padrão das listas, do progresso e de quais chunks são baixados).
-  const GLOBE_SVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg>';
-
-  function initCardLangSwitcher() {
-    if (document.body.classList.contains("home")) return;
-    const uiSelect = document.getElementById("languageSwitcher");
-    if (!uiSelect || document.getElementById("cardLangSwitcher")) return;
-
-    // Pílula com a bandeira do idioma atual + select (estilo do seletor de
-    // moeda do Collectr). "Todas" mostra um globo.
-    const pill = document.createElement("div");
-    pill.className = "lang-pill";
-    pill.title = t("cardLang.aria");
-    pill.innerHTML = currentCardLang === "all"
-      ? `<span class="card-flag card-flag-globe">${GLOBE_SVG}</span>`
-      : cardFlag(currentCardLang);
-
-    const select = document.createElement("select");
-    select.id = "cardLangSwitcher";
-    select.className = "lang-select bare";
-    select.setAttribute("aria-label", t("cardLang.aria"));
-    const options = [{ value: "all", label: t("cardLang.all") }]
-      .concat(CARD_LANGUAGES.map((code) => ({ value: code, label: cardLanguageLabel(code) })));
-    options.forEach(({ value, label }) => {
-      const option = document.createElement("option");
-      option.value = value;
-      option.textContent = label;
-      select.appendChild(option);
-    });
-    select.value = currentCardLang;
-    select.addEventListener("change", () => {
-      localStorage.setItem(cardLangStorageKey, select.value);
-      window.location.reload();
-    });
-
-    pill.appendChild(select);
-    uiSelect.insertAdjacentElement("afterend", pill);
+    select.replaceWith(dd);
   }
 
   // Bandeiras SVG inline por idioma da carta (renderizam em qualquer SO, ao
@@ -1559,6 +1560,15 @@
     { key: "myp", label: "MYP", url: (q) => `https://mypcards.com/pokemon?ProdutoSearch%5Bquery%5D=${q}` }
   ];
 
+  // Mercado internacional/EUA. TCGdex não tem página de carta linkável (é a
+  // própria fonte da "Cotação de mercado" acima), então uso PriceCharting
+  // (vendas reais) no lugar.
+  const US_MARKETPLACES = [
+    { key: "ebay", label: "eBay", url: (q) => `https://www.ebay.com/sch/i.html?_nkw=${q}` },
+    { key: "tcgplayer", label: "TCGplayer", url: (q) => `https://www.tcgplayer.com/search/pokemon/product?productLineName=pokemon&q=${q}` },
+    { key: "pricecharting", label: "PriceCharting", url: (q) => `https://www.pricecharting.com/search-products?type=prices&q=${q}` }
+  ];
+
   // Código da carta: "4/102" (número/total do set). Alguns catálogos já trazem
   // o número como "4/102"; nesse caso não duplica o total.
   function cardCode(card) {
@@ -1605,12 +1615,20 @@
     return query.split(/\s+/).every((term) => haystack.includes(term));
   }
 
-  function brMarketplaceLinks(card) {
-    const query = encodeURIComponent(cardSearchQuery(card));
-    const links = BR_MARKETPLACES
+  function marketplaceRow(labelKey, list, query) {
+    const links = list
       .map(({ key, label, url }) => `<a class="br-link br-link-${key}" href="${escapeAttribute(url(query))}" target="_blank" rel="noopener">${escapeHtml(label)}</a>`)
       .join("");
-    return `<div class="br-links"><span class="br-links-label">${escapeHtml(t("price.checkAt"))}</span>${links}</div>`;
+    return `<div class="br-links"><span class="br-links-label">${escapeHtml(t(labelKey))}</span>${links}</div>`;
+  }
+
+  function brMarketplaceLinks(card) {
+    // Brasil usa "Nome (núm/total)" (como Liga/MYP nomeiam); EUA usa
+    // "pokemon Nome núm/total" (melhor pra eBay/TCGplayer/PriceCharting).
+    const brQuery = encodeURIComponent(cardSearchQuery(card));
+    const usQuery = encodeURIComponent(`pokemon ${card.name} ${cardCode(card)}`.trim());
+    return marketplaceRow("price.checkBr", BR_MARKETPLACES, brQuery)
+      + marketplaceRow("price.checkUs", US_MARKETPLACES, usQuery);
   }
 
   // Grade de preços BR por condição de uma variante (inputs editáveis).
@@ -2223,7 +2241,6 @@
 
   applyTranslations();
   initLanguageSwitcher();
-  initCardLangSwitcher();
   initPageNav();
   initSiteFooter();
 

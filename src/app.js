@@ -28,6 +28,8 @@
     importInput: document.getElementById("importInput")
   };
   const view = elements.grid.dataset.view || "pokedex";
+  // Página de Sets filtrada por uma série específica (?serie=id).
+  const serieParam = new URLSearchParams(window.location.search).get("serie") || "";
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
   let selectedGeneration = "";
   // Região padrão segue a preferência de idioma de carta; sem preferência ("all")
@@ -76,9 +78,27 @@
     if (elements.setRegionChips && shared.getCardLang() !== "all") {
       elements.setRegionChips.hidden = true;
     }
+    if (view === "sets" && serieParam) applySerieTitle();
     hydrateFilters();
     bindEvents();
     render();
+  }
+
+  // Na página de uma série, troca o título "Sets" pelo nome da série e põe um
+  // link de volta pra lista completa.
+  function applySerieTitle() {
+    const head = document.querySelector(".page-head");
+    const h1 = head && head.querySelector("h1");
+    if (!h1) return;
+    h1.removeAttribute("data-i18n");
+    h1.textContent = serieDisplayName(serieParam);
+    if (!head.querySelector(".serie-back")) {
+      const back = document.createElement("a");
+      back.className = "serie-back";
+      back.href = "sets.html";
+      back.textContent = `← ${t("nav.sets")}`;
+      head.insertBefore(back, h1);
+    }
   }
 
   function hydrateFilters() {
@@ -181,8 +201,10 @@
     const items = view === "pokedex" ? pokedexViewItems() : getViewItems(filterCards());
     pager.render(items, createViewItem, { resetCount });
 
-    elements.empty.hidden = items.length > 0;
-    elements.resultCount.textContent = tn("results.count", items.length);
+    // Cabeçalhos de série não contam como resultado.
+    const realCount = items.filter((item) => item.type !== "series-head").length;
+    elements.empty.hidden = realCount > 0;
+    elements.resultCount.textContent = tn("results.count", realCount);
     if (elements.ownedCount) elements.ownedCount.textContent = owned.size;
     if (elements.totalCount) elements.totalCount.textContent = totalCatalogCount;
     if (elements.completionRate) {
@@ -194,7 +216,11 @@
     const visibleIds = new Set(visibleCards.map((card) => card.id));
 
     if (view === "sets") {
-      return indexedGroupsToItems(indexes.sets, visibleIds, toSetItem, sortByReleaseDesc);
+      const setItems = indexedGroupsToItems(indexes.sets, visibleIds, toSetItem);
+      // Página de uma série (?serie=id): só os sets dela, sem cabeçalhos.
+      if (serieParam) return setItems.filter((set) => set.serieId === serieParam).sort(sortByReleaseDesc);
+      // Página de Sets: agrupada por série (coleção).
+      return groupSetsBySeries(setItems);
     }
 
     if (view === "artists") {
@@ -260,6 +286,10 @@
   }
 
   function createViewItem(item) {
+    if (item.type === "series-head") {
+      return createSeriesHead(item);
+    }
+
     if (item.type === "pokedex") {
       return createPokedexCard(item);
     }
@@ -269,6 +299,16 @@
     }
 
     return createGroupCard(item);
+  }
+
+  // Cabeçalho de série na grade de Sets (ocupa a linha toda); clicável → abre a
+  // página daquela série (sets.html?serie=id).
+  function createSeriesHead(item) {
+    const link = document.createElement("a");
+    link.className = "set-series-head";
+    link.href = `sets.html?serie=${encodeURIComponent(item.serieId)}`;
+    link.innerHTML = `<span class="set-series-name">${escapeHtml(item.name)}</span><span class="set-series-count">${item.count} sets →</span>`;
+    return link;
   }
 
   function filterCards() {
@@ -449,6 +489,7 @@
   function toSetItem(group) {
     const sortedCards = group.cards.slice().sort((a, b) => shared.compareCardNumbers(a.number, b.number));
     const sample = sortedCards[0] || {};
+    const serieId = sample.setSerieId || deriveSerieId(sample.setId);
     return {
       type: "set",
       name: group.name,
@@ -459,8 +500,57 @@
       logo: sample.setLogo || "",
       symbol: sample.setSymbol || "",
       releaseDate: sample.setReleaseDate || "",
+      serieId,
+      serieName: sample.setSerieName || serieDisplayName(serieId),
       languageLabel: unique(sortedCards.map((card) => card.language.toUpperCase())).join("/")
     };
+  }
+
+  // Séries (coleções) da TCGdex. Usado para agrupar a página de Sets e como
+  // fallback quando a carta ainda não traz a série (catálogo antigo/amostra):
+  // deriva pelo prefixo do setId.
+  const SERIES_DEFS = [
+    ["base", "Base"], ["gym", "Gym"], ["neo", "Neo"], ["lc", "Legendary Collection"],
+    ["ecard", "E-Card"], ["ex", "EX"], ["pop", "POP"], ["tk", "Trainer Kits"],
+    ["dp", "Diamond & Pearl"], ["pl", "Platinum"], ["hgss", "HeartGold & SoulSilver"],
+    ["col", "Call of Legends"], ["bw", "Black & White"], ["xy", "XY"], ["sm", "Sun & Moon"],
+    ["swsh", "Sword & Shield"], ["sv", "Scarlet & Violet"], ["me", "Mega Evolution"],
+    ["mc", "McDonald's Collection"], ["tcgp", "Pokémon TCG Pocket"]
+  ];
+  const SERIES_BY_PREFIX = SERIES_DEFS.slice().sort((a, b) => b[0].length - a[0].length);
+
+  function deriveSerieId(setId) {
+    const id = String(setId || "").toLowerCase();
+    const hit = SERIES_BY_PREFIX.find(([prefix]) => id.startsWith(prefix));
+    return hit ? hit[0] : "misc";
+  }
+
+  function serieDisplayName(id) {
+    const hit = SERIES_DEFS.find(([prefix]) => prefix === id);
+    return hit ? hit[1] : (id === "misc" ? "Outros" : String(id).toUpperCase());
+  }
+
+  // Agrupa os sets por série, em itens achatados [cabeçalho, ...sets, ...] para
+  // o pager. Séries em ordem do set mais recente; sets por lançamento desc.
+  function groupSetsBySeries(setItems) {
+    const bySerie = new Map();
+    setItems.forEach((set) => {
+      const key = set.serieId || "misc";
+      if (!bySerie.has(key)) bySerie.set(key, { serieId: key, serieName: set.serieName, sets: [] });
+      bySerie.get(key).sets.push(set);
+    });
+    const groups = Array.from(bySerie.values()).map((group) => {
+      group.sets.sort(sortByReleaseDesc);
+      group.newest = group.sets[0] ? group.sets[0].releaseDate || "" : "";
+      return group;
+    }).sort((a, b) => (b.newest || "").localeCompare(a.newest || ""));
+
+    const items = [];
+    groups.forEach((group) => {
+      items.push({ type: "series-head", name: group.serieName || serieDisplayName(group.serieId), serieId: group.serieId, count: group.sets.length });
+      group.sets.forEach((set) => items.push(set));
+    });
+    return items;
   }
 
   function toPokedexItem(entry) {
