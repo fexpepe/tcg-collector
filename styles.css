@@ -2962,6 +2962,17 @@ a.progress-row:hover {
   gap: 6px;
   font-size: 0.85rem;
 }
+.binder-slot-filled {
+  cursor: grab;
+}
+.binder-slot-dragging {
+  opacity: 0.4;
+  cursor: grabbing;
+}
+.binder-slot-dragover {
+  outline: 2px dashed var(--accent);
+  outline-offset: -2px;
+}
 .binder-slot-plus {
   font-size: 1.8rem;
   line-height: 1;

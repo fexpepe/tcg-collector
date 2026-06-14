@@ -195,6 +195,19 @@
     save();
   }
 
+  // Arrastar e soltar: troca o conteúdo dos slots. Se o destino estiver vazio,
+  // vira uma simples movimentação (a origem fica vazia).
+  function moveSlot(binder, from, to) {
+    if (from === to) return;
+    const slots = binder.slots;
+    if (from < 0 || to < 0 || from >= slots.length || to >= slots.length) return;
+    const tmp = slots[to];
+    slots[to] = slots[from];
+    slots[from] = tmp;
+    binder.updatedAt = Date.now();
+    save();
+  }
+
   // ---------------------------------------------------------------------------
   // Catálogo (carregado sob demanda — só ao abrir o editor e buscar).
   // ---------------------------------------------------------------------------
@@ -318,7 +331,7 @@
     const caption = title
       ? `<span class="binder-slot-caption">${escapeHtml(title)}</span>`
       : "";
-    return `<button type="button" class="binder-slot binder-slot-filled" data-slot-index="${index}">
+    return `<button type="button" class="binder-slot binder-slot-filled" data-slot-index="${index}" draggable="true">
       <span class="binder-slot-media">${media}</span>
       ${caption}
       ${priceTag}
@@ -810,6 +823,60 @@
       const binder = getBinder(gridSelect.closest("[data-binder-id]").dataset.binderId);
       if (binder) { setGrid(binder, gridSelect.value); render(); }
     }
+  });
+
+  // Arrastar e soltar entre slots do MESMO binder (desktop). Mover para um slot
+  // vazio reposiciona; soltar sobre um slot cheio troca os dois.
+  let dragSrc = null;
+  function slotAt(event) {
+    const slot = event.target.closest(".binder-slot[data-slot-index]");
+    if (!slot) return null;
+    const article = slot.closest("[data-binder-id]");
+    if (!article) return null;
+    return { slot, binderId: article.dataset.binderId, index: Number(slot.dataset.slotIndex) };
+  }
+  function clearDragOver() {
+    elements.list.querySelectorAll(".binder-slot-dragover").forEach((el) => el.classList.remove("binder-slot-dragover"));
+  }
+
+  elements.list.addEventListener("dragstart", (event) => {
+    const filled = event.target.closest(".binder-slot-filled[data-slot-index]");
+    if (!filled) return;
+    const article = filled.closest("[data-binder-id]");
+    dragSrc = { binderId: article.dataset.binderId, index: Number(filled.dataset.slotIndex) };
+    event.dataTransfer.effectAllowed = "move";
+    try { event.dataTransfer.setData("text/plain", String(dragSrc.index)); } catch (error) { /* ignora */ }
+    filled.classList.add("binder-slot-dragging");
+  });
+
+  elements.list.addEventListener("dragend", () => {
+    elements.list.querySelectorAll(".binder-slot-dragging").forEach((el) => el.classList.remove("binder-slot-dragging"));
+    clearDragOver();
+    dragSrc = null;
+  });
+
+  elements.list.addEventListener("dragover", (event) => {
+    if (!dragSrc) return;
+    const target = slotAt(event);
+    if (!target || target.binderId !== dragSrc.binderId) return;
+    event.preventDefault(); // habilita o drop
+    event.dataTransfer.dropEffect = "move";
+    if (!target.slot.classList.contains("binder-slot-dragover")) {
+      clearDragOver();
+      if (target.index !== dragSrc.index) target.slot.classList.add("binder-slot-dragover");
+    }
+  });
+
+  elements.list.addEventListener("drop", (event) => {
+    if (!dragSrc) return;
+    const target = slotAt(event);
+    if (!target || target.binderId !== dragSrc.binderId) return;
+    event.preventDefault();
+    const binder = getBinder(dragSrc.binderId);
+    const from = dragSrc.index;
+    dragSrc = null;
+    clearDragOver();
+    if (binder && from !== target.index) { moveSlot(binder, from, target.index); render(); }
   });
 
   // Renomear / subtítulo: salva ao sair do campo (sem re-render, pra não perder foco).
