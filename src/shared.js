@@ -1566,21 +1566,53 @@
   }
 
   // Busca da carta nos marketplaces brasileiros (não têm API pública; o link
-  // abre a busca pra conferir o preço e digitar no campo manual).
+  // abre a busca pra conferir o preço e digitar no campo manual). Cada um tem
+  // sua própria formatação de número (ver as helpers de query abaixo).
+  const enc = (s) => encodeURIComponent(s);
   const BR_MARKETPLACES = [
-    { key: "liga", label: "LigaPokémon", url: (q) => `https://www.ligapokemon.com.br/?view=cards/search&card=${q}` },
-    { key: "ligabra", label: "LigaBRA", url: (q) => `https://ligabra.com/filter-products/${q}` },
-    { key: "myp", label: "MYP", url: (q) => `https://mypcards.com/pokemon?ProdutoSearch%5Bquery%5D=${q}` }
+    { key: "liga", label: "LigaPokémon", url: (card) => `https://www.ligapokemon.com.br/?view=cards/search&card=${enc(paddedCardQuery(card, true))}` },
+    { key: "ligabra", label: "LigaBRA", url: (card) => `https://ligabra.com/filter-products/${enc(cardSearchQuery(card))}` },
+    { key: "myp", label: "MYP", url: (card) => `https://mypcards.com/pokemon?ProdutoSearch%5Bquery%5D=${enc(paddedCardQuery(card, false))}` }
   ];
 
   // Mercado internacional/EUA. TCGdex não tem página de carta linkável (é a
   // própria fonte da "Cotação de mercado" acima), então uso PriceCharting
   // (vendas reais) no lugar.
   const US_MARKETPLACES = [
-    { key: "ebay", label: "eBay", url: (q) => `https://www.ebay.com/sch/i.html?_nkw=${q}` },
-    { key: "tcgplayer", label: "TCGplayer", url: (q) => `https://www.tcgplayer.com/search/pokemon/product?productLineName=pokemon&q=${q}` },
-    { key: "pricecharting", label: "PriceCharting", url: (q) => `https://www.pricecharting.com/search-products?type=prices&q=${q}` }
+    { key: "ebay", label: "eBay", url: (card) => `https://www.ebay.com/sch/i.html?_nkw=${enc(usSearchText(card))}` },
+    { key: "tcgplayer", label: "TCGplayer", url: (card) => `https://www.tcgplayer.com/search/pokemon/product?productLineName=pokemon&q=${enc(usSearchText(card))}` },
+    { key: "pricecharting", label: "PriceCharting", url: (card) => `https://www.pricecharting.com/search-products?type=prices&q=${enc(usSearchText(card))}` }
   ];
+
+  function usSearchText(card) {
+    return `pokemon ${card.name} ${cardCode(card)}`.trim();
+  }
+
+  // Separa número e total ("4/102" -> {4,102}; ou number "4" + setTotal "102").
+  function splitNumberTotal(card) {
+    const raw = String(card.number || "").trim();
+    let num = raw;
+    let total = String(card.setTotal || "").trim();
+    if (raw.includes("/")) {
+      const parts = raw.split("/");
+      num = parts[0].trim();
+      if (!total) total = (parts[1] || "").trim();
+    }
+    return { num, total };
+  }
+
+  // "Nome (001/048)" pra Liga (padTotal=true) e "Nome (001/48)" pro MYP
+  // (padTotal=false): esses sites zeram à esquerda o número (e a Liga o total).
+  // Largura mínima 3 dígitos (ou a do total). Números não-numéricos ficam como vêm.
+  function paddedCardQuery(card, padTotal) {
+    const { num, total } = splitNumberTotal(card);
+    if (!num) return card.name;
+    if (!total) return `${card.name} (${num})`;
+    const width = Math.max(3, total.length);
+    const numPadded = /^\d+$/.test(num) ? num.padStart(width, "0") : num;
+    const totalOut = padTotal && /^\d+$/.test(total) ? total.padStart(width, "0") : total;
+    return `${card.name} (${numPadded}/${totalOut})`;
+  }
 
   // Código da carta: "4/102" (número/total do set). Alguns catálogos já trazem
   // o número como "4/102"; nesse caso não duplica o total.
@@ -1630,21 +1662,17 @@
 
   // Uma linha do grid: rótulo na 1ª coluna, chips na 2ª (os chips alinham entre
   // as linhas porque a coluna do rótulo tem a largura do maior rótulo).
-  function marketplaceRow(labelKey, list, query) {
+  function marketplaceRow(labelKey, list, card) {
     const links = list
-      .map(({ key, label, url }) => `<a class="br-link br-link-${key}" href="${escapeAttribute(url(query))}" target="_blank" rel="noopener">${escapeHtml(label)}</a>`)
+      .map(({ key, label, url }) => `<a class="br-link br-link-${key}" href="${escapeAttribute(url(card))}" target="_blank" rel="noopener">${escapeHtml(label)}</a>`)
       .join("");
     return `<span class="br-links-label">${escapeHtml(t(labelKey))}</span><div class="br-links-chips">${links}</div>`;
   }
 
   function brMarketplaceLinks(card) {
-    // Brasil usa "Nome (núm/total)" (como Liga/MYP nomeiam); EUA usa
-    // "pokemon Nome núm/total" (melhor pra eBay/TCGplayer/PriceCharting).
-    const brQuery = encodeURIComponent(cardSearchQuery(card));
-    const usQuery = encodeURIComponent(`pokemon ${card.name} ${cardCode(card)}`.trim());
     return `<div class="market-links">`
-      + marketplaceRow("price.checkBr", BR_MARKETPLACES, brQuery)
-      + marketplaceRow("price.checkUs", US_MARKETPLACES, usQuery)
+      + marketplaceRow("price.checkBr", BR_MARKETPLACES, card)
+      + marketplaceRow("price.checkUs", US_MARKETPLACES, card)
       + `</div>`;
   }
 
