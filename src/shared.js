@@ -407,6 +407,7 @@
       "tile.wanted": "Está na lista de desejos",
       "tile.wantAria": "Adicionar {variant} à lista de desejos",
       "tile.unwantAria": "Remover {variant} da lista de desejos",
+      "nav.menu": "Abrir menu",
       "nav.wishlist": "Quero",
       "title.wishlist": "Quero - TCG Collector",
       "wishlist.subtitle": "As cartas que você marcou como \"eu quero\". Marque uma como tenho para movê-la pra coleção.",
@@ -688,6 +689,7 @@
       "tile.wanted": "On your wishlist",
       "tile.wantAria": "Add {variant} to wishlist",
       "tile.unwantAria": "Remove {variant} from wishlist",
+      "nav.menu": "Open menu",
       "nav.wishlist": "Want",
       "title.wishlist": "Want - TCG Collector",
       "wishlist.subtitle": "The cards you marked as \"want\". Mark one as owned to move it into your collection.",
@@ -1018,6 +1020,57 @@
       if (event.key === "Escape" && !dropdown.hidden) {
         close();
       }
+    });
+  }
+
+  // Menu hambúrguer no mobile: agrupa a navegação e as ações num drawer
+  // suspenso, aberto pelo botão de 3 tracinhos no canto direito do header.
+  function initMobileMenu() {
+    const inner = document.querySelector(".app-header-inner");
+    if (!inner || inner.querySelector(".menu-toggle")) return;
+    const nav = inner.querySelector(".page-nav");
+    const actions = inner.querySelector(".header-actions");
+    if (!nav && !actions) return;
+
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "menu-toggle";
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", t("nav.menu"));
+    toggle.innerHTML = '<span class="menu-toggle-bars" aria-hidden="true"></span>';
+
+    // display:contents no drawer mantém o grid do header intacto no desktop;
+    // no mobile o CSS o transforma num painel suspenso.
+    const drawer = document.createElement("div");
+    drawer.className = "nav-drawer";
+    if (nav) drawer.appendChild(nav);
+    if (actions) drawer.appendChild(actions);
+
+    const brand = inner.querySelector(".brand");
+    if (brand && brand.nextSibling) inner.insertBefore(toggle, brand.nextSibling);
+    else inner.appendChild(toggle);
+    inner.appendChild(drawer);
+
+    function close() {
+      inner.classList.remove("menu-open");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+
+    toggle.addEventListener("click", () => {
+      const open = !inner.classList.contains("menu-open");
+      inner.classList.toggle("menu-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+    });
+
+    // Fecha ao tocar num link de navegação ou ao clicar fora do header.
+    drawer.addEventListener("click", (event) => {
+      if (event.target.closest(".page-nav a")) close();
+    });
+    document.addEventListener("click", (event) => {
+      if (inner.classList.contains("menu-open") && !event.target.closest(".app-header-inner")) close();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") close();
     });
   }
 
@@ -2351,6 +2404,7 @@
   applyTranslations();
   initLanguageSwitcher();
   initPageNav();
+  initMobileMenu();
   initSiteFooter();
 
   // Service worker: cacheia as imagens já vistas para sobreviverem a um outage
