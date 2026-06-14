@@ -605,6 +605,7 @@
       "modal.wanted": "Na wishlist",
       "detail.loading": "Carregando",
       "detail.label": "Detalhe",
+      "detail.scopeCollection": "Sua coleção",
       "detail.label.pokemon": "Pokédex",
       "detail.label.set": "Set",
       "detail.label.artist": "Artista",
@@ -940,6 +941,7 @@
       "modal.wanted": "On wishlist",
       "detail.loading": "Loading",
       "detail.label": "Detail",
+      "detail.scopeCollection": "Your collection",
       "detail.label.pokemon": "Pokédex",
       "detail.label.set": "Set",
       "detail.label.artist": "Artist",
@@ -1077,8 +1079,13 @@
 
     let active = nav.dataset.activePage;
     if (active === "detail") {
-      const type = new URLSearchParams(window.location.search).get("type");
-      active = type === "set" ? "sets" : type === "artist" ? "artists" : type === "trainer" ? "trainers" : "pokedex";
+      const sp = new URLSearchParams(window.location.search);
+      if (sp.get("scope") === "collection") {
+        active = "collection";
+      } else {
+        const type = sp.get("type");
+        active = type === "set" ? "sets" : type === "artist" ? "artists" : type === "trainer" ? "trainers" : "pokedex";
+      }
     }
     const pokemonActive = ["pokedex", "trainers", "sets", "artists"].includes(active);
     const collectionActive = ["collection", "wishlist"].includes(active);
@@ -2490,8 +2497,9 @@
     });
   }
 
-  function detailUrl(type, name) {
+  function detailUrl(type, name, scope) {
     const params = new URLSearchParams({ type, name });
+    if (scope) params.set("scope", scope);
     return `detail.html?${params.toString()}`;
   }
 

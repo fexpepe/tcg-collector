@@ -319,7 +319,7 @@
     `;
 
     if (tab.detailType) {
-      return `<a class="progress-row" href="${escapeAttribute(detailUrl(tab.detailType, group.name))}">${body}</a>`;
+      return `<a class="progress-row" href="${escapeAttribute(detailUrl(tab.detailType, group.name, "collection"))}">${body}</a>`;
     }
     return `<div class="progress-row">${body}</div>`;
   }

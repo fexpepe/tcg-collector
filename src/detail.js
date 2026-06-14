@@ -25,6 +25,9 @@
   const params = new URLSearchParams(window.location.search);
   const detailType = params.get("type") || "";
   const detailName = params.get("name") || "";
+  // scope=collection: versão "dentro da sua coleção" (cartas que você não tem
+  // aparecem em preto e branco; o resto da página funciona igual ao catálogo).
+  const collectionScope = params.get("scope") === "collection";
 
   const elements = {
     type: document.getElementById("detailType"),
@@ -123,8 +126,11 @@
     });
 
   function init() {
-    elements.type.textContent = typeLabel(detailType);
+    elements.type.textContent = collectionScope
+      ? `${t("detail.scopeCollection")} · ${typeLabel(detailType)}`
+      : typeLabel(detailType);
     elements.title.textContent = detailName || t("detail.label");
+    if (collectionScope) elements.grid.classList.add("scope-collection");
     renderHero();
     // Com hero (Pokémon/set), os stats ficam ao lado dele (duas cápsulas).
     if (!elements.hero.hidden) {

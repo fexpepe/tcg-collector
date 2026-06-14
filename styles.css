@@ -2287,6 +2287,13 @@ a.progress-row:hover {
   box-shadow: 0 0 0 1px rgba(57, 199, 155, 0.25), var(--shadow);
 }
 
+/* Visão "Sua coleção": cartas que você não tem ficam em preto e branco; as
+   que você tem ficam coloridas. Só a imagem é dessaturada (botões intactos). */
+.card-grid.scope-collection .card-tile:not(.owned) .card-image {
+  filter: grayscale(1);
+  opacity: 0.68;
+}
+
 .card-tile .card-image {
   padding: 8px 8px 0;
   background: transparent;
