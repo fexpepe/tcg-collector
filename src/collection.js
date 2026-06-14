@@ -69,6 +69,7 @@
     getCard: (cardId) => cardsById.get(cardId),
     store: owned,
     prices,
+    wishlist,
     onOwnedChange: () => refreshOwnershipCards()
   });
 

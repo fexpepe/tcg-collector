@@ -545,6 +545,10 @@
       "modal.set": "Set",
       "modal.cardId": "ID da carta",
       "modal.close": "Fechar",
+      "modal.share": "Compartilhar",
+      "modal.shareCopied": "Link copiado!",
+      "modal.want": "Desejo",
+      "modal.wanted": "Na wishlist",
       "detail.loading": "Carregando",
       "detail.label": "Detalhe",
       "detail.label.pokemon": "Pokédex",
@@ -822,6 +826,10 @@
       "modal.set": "Set",
       "modal.cardId": "Card ID",
       "modal.close": "Close",
+      "modal.share": "Share",
+      "modal.shareCopied": "Link copied!",
+      "modal.want": "Wishlist",
+      "modal.wanted": "On wishlist",
       "detail.loading": "Loading",
       "detail.label": "Detail",
       "detail.label.pokemon": "Pokédex",
@@ -1405,7 +1413,7 @@
     }
   }
 
-  function createCardPreview({ getCard, store, onOwnedChange, prices }) {
+  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist }) {
     let activeCard = null;
     let activeVariant = null;
     let openerElement = null;
@@ -1443,6 +1451,8 @@
       }
 
       const isOwned = activeVariant ? store.variantTotal(activeCard.id, activeVariant) > 0 : store.has(activeCard.id);
+      const wantVariant = activeVariant || defaultVariant(activeCard);
+      const isWanted = wishlist ? wishlist.has(activeCard.id, wantVariant) : false;
 
       modal.innerHTML = `
         <div class="card-preview-backdrop" data-preview-close></div>
@@ -1462,6 +1472,15 @@
               <h2>${escapeHtml(cardLabel(activeCard))}</h2>
               <p class="preview-subtitle">${cardFlag(activeCard.language)}<span>${escapeHtml(activeCard.number)} · ${escapeHtml(activeCard.language.toUpperCase())}</span></p>
             </div>
+            <div class="preview-actions">
+              <div class="preview-actions-row">
+                <button type="button" class="secondary preview-share" data-preview-share>${TILE_ICONS.share}<span>${escapeHtml(t("modal.share"))}</span></button>
+                ${wishlist ? `<button type="button" class="secondary preview-want${isWanted ? " active" : ""}" data-preview-want aria-pressed="${isWanted}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}<span>${escapeHtml(isWanted ? t("modal.wanted") : t("modal.want"))}</span></button>` : ""}
+              </div>
+              <button class="owned-toggle preview-owned" data-card-id="${escapeAttribute(activeCard.id)}"${activeVariant ? ` data-variant="${escapeAttribute(activeVariant)}"` : ""} aria-pressed="${isOwned}">
+                ${isOwned ? t("card.inCollection") : t("card.markOwned")}
+              </button>
+            </div>
             <div class="preview-details">
               <h3>${escapeHtml(t("modal.details"))}</h3>
               <dl>
@@ -1474,9 +1493,6 @@
             <div class="variant-quantities">${variantQuantityRows(activeCard, store, prices, activeVariant)}</div>
             <section class="market-quote" data-market-quote><p class="market-loading">${escapeHtml(t("market.loading"))}</p></section>
             ${prices ? brMarketplaceLinks(activeCard) : ""}
-            <button class="owned-toggle preview-owned" data-card-id="${escapeAttribute(activeCard.id)}"${activeVariant ? ` data-variant="${escapeAttribute(activeVariant)}"` : ""} aria-pressed="${isOwned}">
-              ${isOwned ? t("card.inCollection") : t("card.markOwned")}
-            </button>
           </div>
         </section>
       `;
@@ -1527,6 +1543,19 @@
         return;
       }
 
+      if (event.target.closest("[data-preview-share]")) {
+        shareCard();
+        return;
+      }
+
+      if (event.target.closest("[data-preview-want]") && wishlist && activeCard) {
+        const variant = activeVariant || defaultVariant(activeCard);
+        wishlist.toggle(activeCard.id, variant);
+        refreshWishlistButton();
+        onOwnedChange();
+        return;
+      }
+
       // Stepper de condição: atualiza só a seção de quantidades (não recria a
       // imagem grande, evitando o flicker a cada clique).
       if (event.target.closest("#cardPreviewModal") && handleQuantityClick(event, store)) {
@@ -1559,6 +1588,40 @@
         const isOwned = activeVariant ? store.variantTotal(activeCard.id, activeVariant) > 0 : store.has(activeCard.id);
         ownedButton.setAttribute("aria-pressed", String(isOwned));
         ownedButton.textContent = isOwned ? t("card.inCollection") : t("card.markOwned");
+      }
+    }
+
+    function refreshWishlistButton() {
+      const modal = document.getElementById("cardPreviewModal");
+      if (!modal || !activeCard || !wishlist) return;
+      const button = modal.querySelector(".preview-want");
+      if (!button) return;
+      const variant = activeVariant || defaultVariant(activeCard);
+      const isWanted = wishlist.has(activeCard.id, variant);
+      button.classList.toggle("active", isWanted);
+      button.setAttribute("aria-pressed", String(isWanted));
+      button.innerHTML = `${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}<span>${escapeHtml(isWanted ? t("modal.wanted") : t("modal.want"))}</span>`;
+    }
+
+    // Compartilha a carta: usa o menu nativo (navigator.share) no celular e,
+    // sem suporte, copia o link pra área de transferência com feedback rápido.
+    function shareCard() {
+      if (!activeCard) return;
+      const label = cardLabel(activeCard);
+      const text = `${label} · ${activeCard.set} ${activeCard.number}`;
+      const url = location.href;
+      if (navigator.share) {
+        navigator.share({ title: label, text, url }).catch(() => {});
+        return;
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(`${text} — ${url}`).then(() => {
+          const span = document.querySelector("#cardPreviewModal .preview-share span");
+          if (!span) return;
+          const original = span.textContent;
+          span.textContent = t("modal.shareCopied");
+          setTimeout(() => { span.textContent = original; }, 1600);
+        }).catch(() => {});
       }
     }
 
@@ -1761,7 +1824,8 @@
     plus: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
     check: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
     heart: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
-    heartFilled: '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>'
+    heartFilled: '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
+    share: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>'
   };
 
   function variantSlug(variant) {
