@@ -37,22 +37,24 @@
         <h1 id="detailTitle" data-i18n="detail.loading">Carregando</h1>
       </div>
 
-      <section id="detailHero" class="detail-hero" hidden></section>
+      <div class="detail-summary">
+        <section id="detailHero" class="detail-hero" hidden></section>
 
-      <section class="stats-grid" aria-label="Resumo da coleção">
-        <article>
-          <span id="ownedCount">0</span>
-          <p data-i18n="stats.owned">cartas marcadas</p>
-        </article>
-        <article>
-          <span id="totalCount">0</span>
-          <p data-i18n="stats.pageTotal">cartas nessa página</p>
-        </article>
-        <article>
-          <span id="completionRate">0%</span>
-          <p data-i18n="stats.progress">progresso</p>
-        </article>
-      </section>
+        <section class="stats-grid detail-stats" aria-label="Resumo da coleção">
+          <article>
+            <span id="ownedCount">0</span>
+            <p data-i18n="stats.owned">cartas marcadas</p>
+          </article>
+          <article>
+            <span id="totalCount">0</span>
+            <p data-i18n="stats.pageTotal">cartas nessa página</p>
+          </article>
+          <article>
+            <span id="completionRate">0%</span>
+            <p data-i18n="stats.progress">progresso</p>
+          </article>
+        </section>
+      </div>
 
       <section class="toolbar" aria-label="Filtros">
         <div class="search-box">

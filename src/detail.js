@@ -125,6 +125,11 @@
     elements.type.textContent = typeLabel(detailType);
     elements.title.textContent = detailName || t("detail.label");
     renderHero();
+    // Com hero (Pokémon/set), os stats ficam ao lado dele (duas cápsulas).
+    if (!elements.hero.hidden) {
+      const summary = document.querySelector(".detail-summary");
+      if (summary) summary.classList.add("has-hero");
+    }
     hydrateFilters();
     bindEvents();
     render();

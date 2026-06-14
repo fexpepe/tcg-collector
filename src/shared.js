@@ -513,6 +513,7 @@
       "card.inCollectionTimes": "Tenho na coleção (×{n})",
       "card.markOwned": "Marcar como tenho",
       "card.noImage": "Sem imagem",
+      "card.noImageFound": "Imagem não Encontrada",
       "card.unknownArtist": "Artista desconhecido",
       "card.zoom": "Ampliar {name}",
       "progress.aria": "Progresso de {name}",
@@ -778,6 +779,7 @@
       "card.inCollectionTimes": "In my collection (×{n})",
       "card.markOwned": "Mark as owned",
       "card.noImage": "No image",
+      "card.noImageFound": "Image Not Found",
       "card.unknownArtist": "Unknown artist",
       "card.zoom": "Zoom into {name}",
       "progress.aria": "Progress for {name}",
@@ -1023,14 +1025,25 @@
   // Seletor global de idioma das cartas, ao lado do seletor de idioma do site.
   // Não aparece na home (não tem listas). Trocar recarrega a página (o idioma é
   // o eixo padrão das listas, do progresso e de quais chunks são baixados).
+  const GLOBE_SVG = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg>';
+
   function initCardLangSwitcher() {
     if (document.body.classList.contains("home")) return;
     const uiSelect = document.getElementById("languageSwitcher");
     if (!uiSelect || document.getElementById("cardLangSwitcher")) return;
+
+    // Pílula com a bandeira do idioma atual + select (estilo do seletor de
+    // moeda do Collectr). "Todas" mostra um globo.
+    const pill = document.createElement("div");
+    pill.className = "lang-pill";
+    pill.title = t("cardLang.aria");
+    pill.innerHTML = currentCardLang === "all"
+      ? `<span class="card-flag card-flag-globe">${GLOBE_SVG}</span>`
+      : cardFlag(currentCardLang);
+
     const select = document.createElement("select");
     select.id = "cardLangSwitcher";
-    select.className = "lang-select";
-    select.title = t("cardLang.aria");
+    select.className = "lang-select bare";
     select.setAttribute("aria-label", t("cardLang.aria"));
     const options = [{ value: "all", label: t("cardLang.all") }]
       .concat(CARD_LANGUAGES.map((code) => ({ value: code, label: cardLanguageLabel(code) })));
@@ -1045,7 +1058,9 @@
       localStorage.setItem(cardLangStorageKey, select.value);
       window.location.reload();
     });
-    uiSelect.insertAdjacentElement("afterend", select);
+
+    pill.appendChild(select);
+    uiSelect.insertAdjacentElement("afterend", pill);
   }
 
   // Bandeiras SVG inline por idioma da carta (renderizam em qualquer SO, ao
@@ -1164,6 +1179,19 @@
     return { url, fallback: card.image ? ptcg : "" };
   }
 
+  // Verso de carta para quando NENHUMA API tem imagem (ex.: promos, McDonald's,
+  // sets novos). Mantém a estrutura/tamanho de uma carta e avisa "Imagem não
+  // Encontrada" no topo. Motivo pokébola próprio do app (o verso oficial é
+  // protegido). Essas cartas ficam por último na grade (cardHasImage = false).
+  const CARD_BACK_BALL = '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#e6e9ee"/><path d="M5 50a45 45 0 0 1 90 0z" fill="#d23b3b"/><rect x="5" y="46" width="90" height="8" fill="#10203f"/><circle cx="50" cy="50" r="15" fill="#10203f"/><circle cx="50" cy="50" r="8.5" fill="#fff"/><circle cx="50" cy="50" r="4" fill="#10203f"/></svg>';
+
+  function cardBackPlaceholder() {
+    return `<div class="card-back" role="img" aria-label="${escapeAttribute(t("card.noImageFound"))}">`
+      + `<span class="card-back-label">${escapeHtml(t("card.noImageFound"))}</span>`
+      + `<span class="card-back-art">${CARD_BACK_BALL}</span>`
+      + `</div>`;
+  }
+
   // <img> dos assets do catálogo. Para URLs da TCGdex usa webp (muito menor
   // que o png), com cadeia de fallback no onerror: se a variante webp não
   // existir cai no png do mesmo host, e `fallback` permite uma fonte de outro
@@ -1271,7 +1299,7 @@
               const img = cardImageSources(activeCard, true);
               return img.url
                 ? localizedImg(img.url, { alt: activeCard.name, fallback: img.fallback })
-                : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;
+                : cardBackPlaceholder();
             })()}
           </div>
           <div class="preview-content">
@@ -1544,9 +1572,10 @@
     article.dataset.tileCardId = card.id;
     article.dataset.tileVariant = variant;
     const img = cardImageSources(card, false);
-    const image = img.url
-      ? `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${localizedImg(img.url, { alt: card.name, loading: "lazy", thumb: true, fallback: img.fallback })}</button>`
-      : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;
+    const imageInner = img.url
+      ? localizedImg(img.url, { alt: card.name, loading: "lazy", thumb: true, fallback: img.fallback })
+      : cardBackPlaceholder();
+    const image = `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${imageInner}</button>`;
     const ownAria = isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant });
     const qtyBadge = quantity > 1 ? `<span class="tile-qty">×${quantity}</span>` : "";
     const summary = conditionSummary(store, card.id, variant);
@@ -1558,15 +1587,13 @@
       <div class="card-image">${image}</div>
       <div class="tile-info">
         <h3>${escapeHtml(cardLabel(card))}</h3>
-        <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${escapeHtml(variant)}</p>
-        <div class="tile-bottom">
-          <p class="tile-set">${cardFlag(card.language)}<span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
-          <div class="tile-actions">
-            ${wantButton}
-            <button type="button" class="tile-btn tile-own${isOwned ? " active" : ""}" data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}" aria-pressed="${isOwned}" aria-label="${escapeAttribute(ownAria)}">
-              ${isOwned ? TILE_ICONS.check : TILE_ICONS.plus}${qtyBadge}
-            </button>
-          </div>
+        <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${cardFlag(card.language)}<span>${escapeHtml(variant)}</span></p>
+        <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
+        <div class="tile-actions">
+          ${wantButton}
+          <button type="button" class="tile-btn tile-own${isOwned ? " active" : ""}" data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}" aria-pressed="${isOwned}" aria-label="${escapeAttribute(ownAria)}">
+            ${isOwned ? TILE_ICONS.check : TILE_ICONS.plus}${qtyBadge}
+          </button>
         </div>
         <p class="tile-conditions" data-tile-conditions>${escapeHtml(summary)}</p>
       </div>

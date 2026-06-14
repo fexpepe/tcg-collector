@@ -527,6 +527,48 @@ input::placeholder {
   font-weight: 800;
 }
 
+/* Verso de carta para quando nenhuma API tem a imagem. Mantém a proporção de
+   carta (não quebra o layout) e avisa no topo. */
+.card-back {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 245 / 337;
+  display: grid;
+  place-items: center;
+  border-radius: 4.8% / 3.4%;
+  background:
+    radial-gradient(circle at 50% 60%, rgba(255, 255, 255, 0.06), transparent 55%),
+    linear-gradient(160deg, #2a3a6b, #16213f 55%, #0e1730);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.card-back-art {
+  width: 46%;
+  max-width: 110px;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
+}
+
+.card-back-art svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.card-back-label {
+  position: absolute;
+  top: 7%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
 .card-body {
   padding: 14px;
 }
@@ -864,6 +906,25 @@ input::placeholder {
   font-size: 16px;
 }
 
+/* Resumo da página de detalhe: hero do Pokémon/set + stats lado a lado (duas
+   cápsulas) pra economizar espaço vertical. Sem hero (artista/treinador), os
+   stats voltam a ocupar a largura toda. */
+.detail-summary {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.detail-summary.has-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(200px, 260px);
+  align-items: stretch;
+}
+
+.detail-summary.has-hero .detail-stats {
+  grid-template-columns: 1fr;
+}
+
 .detail-hero {
   display: grid;
   grid-template-columns: minmax(220px, 320px) 1fr;
@@ -873,8 +934,23 @@ input::placeholder {
   border: 1px solid var(--line);
   border-radius: 8px;
   box-shadow: var(--shadow);
-  margin-bottom: 18px;
   padding: 16px;
+}
+
+/* Dentro do resumo, hero e stats não levam a margem inferior própria. */
+.detail-summary .detail-hero,
+.detail-summary .detail-stats {
+  margin-bottom: 0;
+}
+
+@media (max-width: 760px) {
+  /* No mobile empilha e os stats voltam a 3 colunas. */
+  .detail-summary.has-hero {
+    grid-template-columns: 1fr;
+  }
+  .detail-summary.has-hero .detail-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .detail-hero h2 {
@@ -1734,7 +1810,53 @@ input::placeholder {
   width: auto;
   min-width: 0;
   height: 42px;
-  padding: 0 10px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: var(--panel);
+}
+
+/* Pílula de idioma das cartas: bandeira + select (estilo do seletor de moeda
+   do Collectr). O select por dentro fica sem borda/fundo próprios. */
+.lang-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 42px;
+  padding: 0 6px 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+}
+
+.lang-pill:hover {
+  border-color: var(--accent-dark);
+}
+
+.lang-pill .card-flag {
+  flex: none;
+}
+
+.card-flag-globe {
+  width: 16px;
+  height: 16px;
+  background: transparent;
+  color: var(--muted);
+  border-radius: 0;
+}
+
+.lang-select.bare {
+  height: auto;
+  min-height: 0;
+  padding: 0 2px 0 0;
+  border: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+/* Controles do header como pílulas arredondadas (Exportar/Importar). */
+.app-header-inner .header-actions > button,
+.app-header-inner .header-actions > .file-button {
+  border-radius: 999px;
 }
 
 
@@ -1917,6 +2039,9 @@ a.progress-row:hover {
 }
 
 .tile-variant {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin: 0 0 8px;
   font-size: 13px;
   font-weight: 700;
@@ -1940,15 +2065,8 @@ a.progress-row:hover {
   color: #9ba4b3;
 }
 
-.tile-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
 .tile-set {
-  margin: 0;
+  margin: 0 0 10px;
   color: var(--subtle);
   font-size: 12px;
   overflow: hidden;
@@ -1956,10 +2074,11 @@ a.progress-row:hover {
   white-space: nowrap;
 }
 
+/* Ações da carta (querer / coleção) sozinhas na própria linha, à direita. */
 .tile-actions {
   display: flex;
   gap: 6px;
-  flex: none;
+  justify-content: flex-end;
 }
 
 .tile-btn {
