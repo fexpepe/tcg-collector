@@ -420,6 +420,15 @@
       "price.updatedAt": "atualizado em {date}",
       "price.inputAria": "Preço em reais de {variant} {condition}",
       "price.checkAt": "Conferir preço:",
+      "market.title": "Cotação de mercado",
+      "market.nonfoil": "Não-foil",
+      "market.foil": "Foil",
+      "market.min": "MÍN",
+      "market.median": "MEDIANA",
+      "market.max": "MÁX",
+      "market.updated": "atualizado em {date}",
+      "market.source": "Fonte: TCGdex (Cardmarket / TCGplayer). R$ convertido pelo câmbio do dia.",
+      "market.loading": "Carregando cotação…",
       "nav.portfolio": "Portfólio",
       "title.portfolio": "Portfólio - TCG Collector",
       "portfolio.subtitle": "Valor estimado da sua coleção em reais, a partir dos preços que você registrou nas cartas.",
@@ -686,6 +695,15 @@
       "price.updatedAt": "updated {date}",
       "price.inputAria": "Price in BRL for {variant} {condition}",
       "price.checkAt": "Check price:",
+      "market.title": "Market quote",
+      "market.nonfoil": "Non-foil",
+      "market.foil": "Foil",
+      "market.min": "MIN",
+      "market.median": "MEDIAN",
+      "market.max": "MAX",
+      "market.updated": "updated {date}",
+      "market.source": "Source: TCGdex (Cardmarket / TCGplayer). BRL converted at today's rate.",
+      "market.loading": "Loading quote…",
       "nav.portfolio": "Portfolio",
       "title.portfolio": "Portfolio - TCG Collector",
       "portfolio.subtitle": "Estimated value of your collection in BRL, from the prices you registered on cards.",
@@ -1251,6 +1269,128 @@
     }
   }
 
+  // --- Cotação de mercado (preços internacionais da TCGdex, ao vivo) ----------
+  // Referência da carta na API da TCGdex: id sem o sufixo de idioma + o idioma.
+  function tcgdexCardRef(card) {
+    return {
+      lang: card.language || "en",
+      id: String(card.id || "").replace(/-(pt|ja|zh-tw|zh)$/, "")
+    };
+  }
+
+  // Preço da carta direto da API da TCGdex (atualizado diariamente), com cache
+  // de 24h no localStorage. Retorna o objeto `pricing` ou null.
+  async function fetchCardPricing(card) {
+    const ref = tcgdexCardRef(card);
+    const cacheKey = `tcg-pricing-${ref.lang}-${ref.id}`;
+    try {
+      const cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
+      if (cached && Date.now() - cached.t < 86400000) return cached.p;
+    } catch (error) { /* cache inválido */ }
+    try {
+      const response = await fetch(`https://api.tcgdex.net/v2/${ref.lang}/cards/${encodeURIComponent(ref.id)}`);
+      if (!response.ok) return null;
+      const json = await response.json();
+      const pricing = json && json.pricing ? json.pricing : null;
+      try { localStorage.setItem(cacheKey, JSON.stringify({ t: Date.now(), p: pricing })); } catch (e) { /* cheio */ }
+      return pricing;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  // Câmbio USD/EUR -> BRL (AwesomeAPI, sem chave), cache diário. { USD, EUR }.
+  async function fetchFxRatesBRL() {
+    const cacheKey = "tcg-fx-brl-v1";
+    try {
+      const cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
+      if (cached && Date.now() - cached.t < 86400000) return cached.r;
+    } catch (error) { /* ignora */ }
+    try {
+      const response = await fetch("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL");
+      if (!response.ok) return null;
+      const json = await response.json();
+      const rates = { USD: Number(json.USDBRL && json.USDBRL.bid) || 0, EUR: Number(json.EURBRL && json.EURBRL.bid) || 0 };
+      try { localStorage.setItem(cacheKey, JSON.stringify({ t: Date.now(), r: rates })); } catch (e) { /* ignora */ }
+      return rates;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  // Estrutura o `pricing` da TCGdex em não-foil/foil com {min, med, max} por
+  // moeda. USD vem do TCGplayer (low/market/high); EUR do Cardmarket (low/avg;
+  // Cardmarket não tem "máx", então fica vazio).
+  function marketQuoteData(pricing) {
+    const cm = pricing.cardmarket || {};
+    const tp = pricing.tcgplayer || {};
+    const num = (v) => (typeof v === "number" && v > 0 ? v : null);
+    const tpVariant = (keys) => keys.map((k) => tp[k]).find(Boolean) || null;
+    const usdFrom = (v) => (v ? { min: num(v.lowPrice), med: num(v.marketPrice) || num(v.midPrice), max: num(v.highPrice) } : null);
+    const eurFrom = (low, avg) => (num(low) || num(avg) ? { min: num(low), med: num(avg), max: null } : null);
+    const has = (q) => q && (q.min || q.med || q.max);
+    const nonfoil = { usd: usdFrom(tpVariant(["normal"])), eur: eurFrom(cm.low, cm.avg) };
+    const foil = {
+      usd: usdFrom(tpVariant(["holofoil", "reverse-holofoil", "reverseHolofoil", "1stEditionHolofoil"])),
+      eur: eurFrom(cm["low-holo"], cm["avg-holo"])
+    };
+    return {
+      nonfoil: has(nonfoil.usd) || has(nonfoil.eur) ? nonfoil : null,
+      foil: has(foil.usd) || has(foil.eur) ? foil : null,
+      updated: String(cm.updated || tp.updated || "").slice(0, 10)
+    };
+  }
+
+  function fmtMoney(currency, value) {
+    if (!value) return "—";
+    const n = value.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return currency === "BRL" ? `R$ ${n}` : currency === "USD" ? `US$ ${n}` : `€ ${n}`;
+  }
+
+  function marketCurrencyCard(currency, q) {
+    const cell = (label, key) => `<div class="market-cell${key === "med" ? " med" : ""}"><span>${label}</span><strong>${fmtMoney(currency, q[key])}</strong></div>`;
+    return `<div class="market-card"><span class="market-card-cur">${currency}</span><div class="market-cells">${cell(t("market.min"), "min")}${cell(t("market.median"), "med")}${cell(t("market.max"), "max")}</div></div>`;
+  }
+
+  function marketFinishRow(label, finish, fx) {
+    if (!finish) return "";
+    const usd = finish.usd;
+    const eur = finish.eur;
+    const conv = (q, rate) => (q && rate ? { min: q.min && q.min * rate, med: q.med && q.med * rate, max: q.max && q.max * rate } : null);
+    const brl = (usd && fx && fx.USD) ? conv(usd, fx.USD) : (eur && fx && fx.EUR ? conv(eur, fx.EUR) : null);
+    const cards = [
+      brl ? marketCurrencyCard("BRL", brl) : "",
+      usd ? marketCurrencyCard("USD", usd) : "",
+      eur ? marketCurrencyCard("EUR", eur) : ""
+    ].join("");
+    return `<div class="market-finish"><span class="market-finish-label">${escapeHtml(label)}</span><div class="market-cards">${cards}</div></div>`;
+  }
+
+  function marketQuoteHtml(pricing, fx) {
+    const data = marketQuoteData(pricing);
+    if (!data.nonfoil && !data.foil) return "";
+    const updated = data.updated ? `<span class="market-updated">${escapeHtml(t("market.updated", { date: data.updated }))}</span>` : "";
+    return `<div class="market-quote-head"><h3>${escapeHtml(t("market.title"))}</h3>${updated}</div>`
+      + marketFinishRow(t("market.nonfoil"), data.nonfoil, fx)
+      + marketFinishRow(t("market.foil"), data.foil, fx)
+      + `<p class="market-source">${escapeHtml(t("market.source"))}</p>`;
+  }
+
+  // Busca cotação + câmbio e preenche a seção no modal (some se não houver).
+  async function fillMarketQuote(card) {
+    const section = document.querySelector("#cardPreviewModal [data-market-quote]");
+    if (!section) return;
+    const [pricing, fx] = await Promise.all([fetchCardPricing(card), fetchFxRatesBRL()]);
+    if (!section.isConnected) return;
+    const html = pricing ? marketQuoteHtml(pricing, fx) : "";
+    if (html) {
+      section.innerHTML = html;
+      section.hidden = false;
+    } else {
+      section.hidden = true;
+    }
+  }
+
   function createCardPreview({ getCard, store, onOwnedChange, prices }) {
     let activeCard = null;
     let activeVariant = null;
@@ -1318,6 +1458,7 @@
               </dl>
             </div>
             <div class="variant-quantities">${variantQuantityRows(activeCard, store, prices, activeVariant)}</div>
+            <section class="market-quote" data-market-quote><p class="market-loading">${escapeHtml(t("market.loading"))}</p></section>
             ${prices ? brMarketplaceLinks(activeCard) : ""}
             <button class="owned-toggle preview-owned" data-card-id="${escapeAttribute(activeCard.id)}"${activeVariant ? ` data-variant="${escapeAttribute(activeVariant)}"` : ""} aria-pressed="${isOwned}">
               ${isOwned ? t("card.inCollection") : t("card.markOwned")}
@@ -1350,6 +1491,9 @@
           event.preventDefault();
         }
       };
+
+      // Cotação de mercado (TCGdex ao vivo + câmbio): carrega assíncrono.
+      fillMarketQuote(activeCard);
     }
 
     function close() {

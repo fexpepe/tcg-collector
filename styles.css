@@ -246,6 +246,40 @@ button,
   flex: 2 1 280px;
 }
 
+/* Busca isolada no topo do corpo da página (estilo "Find a Product" do
+   Collectr): barra larga com ícone, acima do título. */
+.page-search {
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.page-search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--subtle);
+  pointer-events: none;
+}
+
+.page-search input {
+  width: 100%;
+  height: 52px;
+  padding: 0 16px 0 44px;
+  border-radius: 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  font-size: 15px;
+  box-shadow: var(--shadow);
+}
+
+.page-search input:focus {
+  border-color: var(--accent-dark);
+  outline: none;
+}
+
 .pokedex-toolbar {
   flex-direction: column;
   align-items: stretch;
@@ -2178,6 +2212,105 @@ a.progress-row:hover {
 }
 
 /* Links para conferir preço nos marketplaces BR */
+/* Cotação de mercado (preview) — cards por moeda com MÍN/MEDIANA/MÁX. */
+.market-quote-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 4px 0 8px;
+}
+
+.market-quote-head h3 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.market-updated {
+  font-size: 11px;
+  color: var(--subtle);
+}
+
+.market-loading {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--subtle);
+}
+
+.market-finish + .market-finish {
+  margin-top: 10px;
+}
+
+.market-finish-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-bottom: 6px;
+}
+
+.market-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.market-card {
+  background: var(--accent-soft);
+  border: 1px solid rgba(57, 199, 155, 0.18);
+  border-radius: 10px;
+  padding: 9px 11px;
+}
+
+.market-card-cur {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+.market-cells {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.market-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.market-cell span {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: var(--subtle);
+}
+
+.market-cell strong {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.market-cell.med strong {
+  color: var(--accent);
+}
+
+.market-source {
+  margin: 8px 0 0;
+  font-size: 11px;
+  color: var(--subtle);
+  line-height: 1.5;
+}
+
 .br-links {
   display: flex;
   align-items: center;
