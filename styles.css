@@ -2399,17 +2399,25 @@ a.progress-row:hover {
   line-height: 1.5;
 }
 
-.br-links {
-  display: flex;
+/* Mercado BR / EUA: grade rótulo | chips para os chips alinharem entre as
+   linhas (a coluna do rótulo tem a largura do maior rótulo). */
+.market-links {
+  display: grid;
+  grid-template-columns: max-content 1fr;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
+  gap: 8px 12px;
   margin-top: 10px;
 }
 
 .br-links-label {
   font-size: 12px;
   color: var(--subtle);
+}
+
+.br-links-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .br-link {

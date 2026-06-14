@@ -1628,11 +1628,13 @@
     return query.split(/\s+/).every((term) => haystack.includes(term));
   }
 
+  // Uma linha do grid: rótulo na 1ª coluna, chips na 2ª (os chips alinham entre
+  // as linhas porque a coluna do rótulo tem a largura do maior rótulo).
   function marketplaceRow(labelKey, list, query) {
     const links = list
       .map(({ key, label, url }) => `<a class="br-link br-link-${key}" href="${escapeAttribute(url(query))}" target="_blank" rel="noopener">${escapeHtml(label)}</a>`)
       .join("");
-    return `<div class="br-links"><span class="br-links-label">${escapeHtml(t(labelKey))}</span>${links}</div>`;
+    return `<span class="br-links-label">${escapeHtml(t(labelKey))}</span><div class="br-links-chips">${links}</div>`;
   }
 
   function brMarketplaceLinks(card) {
@@ -1640,8 +1642,10 @@
     // "pokemon Nome núm/total" (melhor pra eBay/TCGplayer/PriceCharting).
     const brQuery = encodeURIComponent(cardSearchQuery(card));
     const usQuery = encodeURIComponent(`pokemon ${card.name} ${cardCode(card)}`.trim());
-    return marketplaceRow("price.checkBr", BR_MARKETPLACES, brQuery)
-      + marketplaceRow("price.checkUs", US_MARKETPLACES, usQuery);
+    return `<div class="market-links">`
+      + marketplaceRow("price.checkBr", BR_MARKETPLACES, brQuery)
+      + marketplaceRow("price.checkUs", US_MARKETPLACES, usQuery)
+      + `</div>`;
   }
 
   // Grade de preços BR por condição de uma variante (inputs editáveis).
