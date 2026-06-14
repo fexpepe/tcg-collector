@@ -1401,6 +1401,33 @@ input::placeholder {
   overflow-wrap: anywhere;
 }
 
+/* Ações da carta: linha com Compartilhar + Desejo e, abaixo, Marcar como
+   tenho ocupando a largura inteira. */
+.preview-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.preview-actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.preview-share,
+.preview-want {
+  gap: 8px;
+  min-height: 46px;
+  border-radius: 999px;
+  font-size: 15px;
+}
+
+.preview-want.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .preview-owned {
   min-height: 46px;
   border-radius: 999px;
