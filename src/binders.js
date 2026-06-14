@@ -212,6 +212,30 @@
     return catalogPromise;
   }
 
+  // Fontes do usuário ("Coleção" e "Desejo"): conjuntos de cardId lidos do
+  // localStorage a cada abertura do editor, usados para filtrar o catálogo.
+  let collectionIds = new Set();
+  let wishlistIds = new Set();
+  function refreshUserSources() {
+    try {
+      const coll = shared.createCollectionStore().toObject();
+      collectionIds = new Set(Object.keys(coll).filter((id) => {
+        const variants = coll[id] || {};
+        return Object.keys(variants).some((v) => Object.values(variants[v] || {}).some((q) => q > 0));
+      }));
+    } catch (error) { collectionIds = new Set(); }
+    try {
+      const wish = shared.createWishlistStore().toObject();
+      wishlistIds = new Set(Object.keys(wish).filter((id) => Array.isArray(wish[id]) && wish[id].length));
+    } catch (error) { wishlistIds = new Set(); }
+  }
+  // Lista-base de cartas para a aba de busca atual.
+  function baseListForTab() {
+    if (editing && editing.tab === "collection") return allCards.filter((card) => collectionIds.has(card.id));
+    if (editing && editing.tab === "wishlist") return allCards.filter((card) => wishlistIds.has(card.id));
+    return allCards;
+  }
+
   // ---------------------------------------------------------------------------
   // Render da lista de binders
   // ---------------------------------------------------------------------------
@@ -325,6 +349,7 @@
       originalPhotoId: existing ? existing.photoId || null : null,
       tab: draft.cardId || !draft.label ? "catalog" : "free"
     };
+    refreshUserSources();
     renderEditor();
     ensureCatalog().then(() => {
       if (editing) renderSearchResults("");
@@ -345,6 +370,7 @@
   function renderEditor() {
     if (!editing) return;
     const { draft, tab } = editing;
+    const searchTab = tab === "catalog" || tab === "collection" || tab === "wishlist";
     const modal = editorModal();
     const conditionOptions = CARD_CONDITIONS.map((c) =>
       `<option value="${c}"${c === (draft.condition || DEFAULT_CONDITION) ? " selected" : ""}>${escapeHtml(c)} — ${escapeHtml(t(`condition.${c}`))}</option>`
@@ -375,10 +401,12 @@
           <h2>${escapeHtml(t("binders.editor.title"))}</h2>
           <div class="binder-editor-tabs" role="tablist">
             <button type="button" class="chip${tab === "catalog" ? " active" : ""}" data-edit-tab="catalog" aria-pressed="${tab === "catalog"}">${escapeHtml(t("binders.editor.tabCatalog"))}</button>
+            <button type="button" class="chip${tab === "collection" ? " active" : ""}" data-edit-tab="collection" aria-pressed="${tab === "collection"}">${escapeHtml(t("binders.editor.tabCollection"))}</button>
+            <button type="button" class="chip${tab === "wishlist" ? " active" : ""}" data-edit-tab="wishlist" aria-pressed="${tab === "wishlist"}">${escapeHtml(t("binders.editor.tabWishlist"))}</button>
             <button type="button" class="chip${tab === "free" ? " active" : ""}" data-edit-tab="free" aria-pressed="${tab === "free"}">${escapeHtml(t("binders.editor.tabFree"))}</button>
           </div>
 
-          <div class="binder-editor-tabpanel"${tab === "catalog" ? "" : " hidden"}>
+          <div class="binder-editor-tabpanel"${searchTab ? "" : " hidden"}>
             <input type="search" class="binder-editor-search" data-edit-search placeholder="${escapeAttribute(t("binders.editor.search"))}" value="">
             <div class="binder-editor-results" data-edit-results>
               <p class="binder-editor-hint">${escapeHtml(t("binders.editor.loadingCatalog"))}</p>
@@ -420,7 +448,7 @@
       photoURL(img.dataset.photoId).then((url) => { if (url) img.src = url; });
     });
     const search = modal.querySelector("[data-edit-search]");
-    if (search && tab === "catalog") search.focus();
+    if (search && searchTab) search.focus();
   }
 
   function renderSearchResults(query) {
@@ -430,13 +458,23 @@
     const container = modal.querySelector("[data-edit-results]");
     if (!container) return;
     const term = String(query || "").trim();
-    if (!term) {
+    const pool = baseListForTab();
+    let matches;
+    if (term) {
+      matches = pool.filter((card) => matchesCardQuery(card, term)).slice(0, 48);
+    } else if (editing.tab === "catalog") {
+      // Catálogo tem ~48k cartas: só busca sob demanda (não lista tudo).
       container.innerHTML = `<p class="binder-editor-hint">${escapeHtml(t("binders.editor.search"))}</p>`;
       return;
+    } else {
+      // Coleção/Desejo: já mostra as cartas do usuário sem precisar digitar.
+      matches = pool.slice(0, 48);
     }
-    const matches = allCards.filter((card) => matchesCardQuery(card, term)).slice(0, 48);
     if (!matches.length) {
-      container.innerHTML = `<p class="binder-editor-hint">${escapeHtml(t("binders.editor.noResults"))}</p>`;
+      const emptyKey = !term && editing.tab === "collection" ? "binders.editor.emptyCollection"
+        : !term && editing.tab === "wishlist" ? "binders.editor.emptyWishlist"
+        : "binders.editor.noResults";
+      container.innerHTML = `<p class="binder-editor-hint">${escapeHtml(t(emptyKey))}</p>`;
       return;
     }
     container.innerHTML = matches.map((card) => {
@@ -802,7 +840,7 @@
       return;
     }
     const tabBtn = event.target.closest("[data-edit-tab]");
-    if (tabBtn) { editing.tab = tabBtn.dataset.editTab; renderEditor(); if (editing.tab === "catalog") renderSearchResults(document.querySelector("#binderEditor [data-edit-search]") ? document.querySelector("#binderEditor [data-edit-search]").value : ""); return; }
+    if (tabBtn) { editing.tab = tabBtn.dataset.editTab; renderEditor(); if (editing.tab !== "free") renderSearchResults(""); return; }
     const result = event.target.closest("[data-result-id]");
     if (result) { selectCard(result.dataset.resultId); return; }
   });

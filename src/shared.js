@@ -381,6 +381,7 @@
       "title.trainers": "Treinadores - TCG Collector",
       "title.detail": "Detalhe - TCG Collector",
       "nav.collection": "Coleção",
+      "nav.collectionMine": "Minha coleção",
       "title.collection": "Coleção - TCG Collector",
       "stats.distinct": "cartas distintas",
       "stats.copies": "cópias no total",
@@ -477,10 +478,14 @@
       "binders.saleTotal": "Total da vitrine",
       "binders.editor.title": "Editar slot",
       "binders.editor.tabCatalog": "Do catálogo",
+      "binders.editor.tabCollection": "Da coleção",
+      "binders.editor.tabWishlist": "Do desejo",
       "binders.editor.tabFree": "Slot livre",
       "binders.editor.search": "Buscar por nome, número (4/102)...",
       "binders.editor.loadingCatalog": "Carregando catálogo…",
       "binders.editor.noResults": "Nenhuma carta encontrada.",
+      "binders.editor.emptyCollection": "Sua coleção está vazia. Marque cartas como suas primeiro.",
+      "binders.editor.emptyWishlist": "Sua lista de desejos está vazia.",
       "binders.editor.label": "Rótulo da carta",
       "binders.editor.labelPlaceholder": "Ex.: Charizard japonês promo",
       "binders.editor.photo": "Foto da carta",
@@ -711,6 +716,7 @@
       "title.trainers": "Trainers - TCG Collector",
       "title.detail": "Detail - TCG Collector",
       "nav.collection": "Collection",
+      "nav.collectionMine": "My collection",
       "title.collection": "Collection - TCG Collector",
       "stats.distinct": "distinct cards",
       "stats.copies": "total copies",
@@ -807,10 +813,14 @@
       "binders.saleTotal": "Showcase total",
       "binders.editor.title": "Edit slot",
       "binders.editor.tabCatalog": "From catalog",
+      "binders.editor.tabCollection": "From collection",
+      "binders.editor.tabWishlist": "From wishlist",
       "binders.editor.tabFree": "Free slot",
       "binders.editor.search": "Search by name, number (4/102)...",
       "binders.editor.loadingCatalog": "Loading catalog…",
       "binders.editor.noResults": "No cards found.",
+      "binders.editor.emptyCollection": "Your collection is empty. Mark cards as owned first.",
+      "binders.editor.emptyWishlist": "Your wishlist is empty.",
       "binders.editor.label": "Card label",
       "binders.editor.labelPlaceholder": "e.g. Japanese Charizard promo",
       "binders.editor.photo": "Card photo",
@@ -1071,6 +1081,7 @@
       active = type === "set" ? "sets" : type === "artist" ? "artists" : type === "trainer" ? "trainers" : "pokedex";
     }
     const pokemonActive = ["pokedex", "trainers", "sets", "artists"].includes(active);
+    const collectionActive = ["collection", "wishlist"].includes(active);
     const bindersActive = ["binders-collection", "binders-sale"].includes(active);
 
     const link = (href, key, page) => `<a href="${href}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
@@ -1089,8 +1100,9 @@
           ${link("trainers.html", "nav.trainers", "trainers")}
           ${link("sets.html", "nav.sets", "sets")}
           ${link("artists.html", "nav.artists", "artists")}`)}
-      ${link("collection.html", "nav.collection", "collection")}
-      ${link("wishlist.html", "nav.wishlist", "wishlist")}
+      ${group("nav.collection", collectionActive, `
+          ${link("collection.html", "nav.collectionMine", "collection")}
+          ${link("wishlist.html", "nav.wishlist", "wishlist")}`)}
       ${group("nav.binders", bindersActive, `
           ${link("binders-collection.html", "nav.bindersCollection", "binders-collection")}
           ${link("binders-sale.html", "nav.bindersSale", "binders-sale")}`)}
