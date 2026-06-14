@@ -371,6 +371,8 @@
       "nav.trainers": "Treinadores",
       "header.tagline": "Local-first MVP",
       "header.export": "Exportar",
+      "export.json": "Backup (.json)",
+      "export.csv": "Planilha (.csv)",
       "header.import": "Importar",
       "title.home": "TCG Collector — sua coleção de Pokémon TCG, grátis",
       "title.pokedex": "Pokédex - TCG Collector",
@@ -699,6 +701,8 @@
       "nav.trainers": "Trainers",
       "header.tagline": "Local-first MVP",
       "header.export": "Export",
+      "export.json": "Backup (.json)",
+      "export.csv": "Spreadsheet (.csv)",
       "header.import": "Import",
       "title.home": "TCG Collector — your Pokémon TCG collection, free",
       "title.pokedex": "Pokédex - TCG Collector",
@@ -1863,6 +1867,42 @@
     return cardLabel(card);
   }
 
+  // Escapa um campo para CSV: usa ; como separador (amigável ao Excel pt-BR) e
+  // protege valores com ; aspas ou quebra de linha.
+  function csvCell(value) {
+    const s = value == null ? "" : String(value);
+    return /[";\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+
+  // Monta o CSV do inventário: uma linha por carta/variante/condição com a
+  // quantidade e o preço BR (quando houver). Preço com vírgula decimal pra
+  // abrir certinho no Excel brasileiro.
+  function buildCollectionCsv(store, prices, cardsById) {
+    const collection = store.toObject();
+    const priceData = prices ? prices.toObject() : {};
+    const headers = ["ID", "Nome", "Código", "Set", "Número", "Raridade", "Idioma", "Variante", "Condição", "Quantidade", "Preço BR (R$)"];
+    const rows = [headers];
+    Object.keys(collection).sort().forEach((cardId) => {
+      const card = cardsById.get(cardId) || { id: cardId };
+      const variants = collection[cardId] || {};
+      Object.keys(variants).forEach((variant) => {
+        const conditions = variants[variant] || {};
+        Object.keys(conditions).forEach((condition) => {
+          const qty = conditions[condition];
+          if (!(qty > 0)) return;
+          const entry = priceData[cardId] && priceData[cardId][variant];
+          const priceVal = entry && entry.prices && entry.prices[condition];
+          const price = priceVal > 0 ? String(priceVal).replace(".", ",") : "";
+          rows.push([
+            cardId, card.name || "", cardCode(card), card.set || "", card.number || "",
+            card.rarity || "", card.language || "", variant, condition, qty, price
+          ]);
+        });
+      });
+    });
+    return rows.map((row) => row.map(csvCell).join(";")).join("\r\n");
+  }
+
   // Texto pesquisável de uma carta (nome, espécie, número, código, set, artista,
   // raridade, idioma e variantes), normalizado. Memoizado na própria carta — a
   // busca varre o catálogo inteiro (ex.: Sets/Artistas) a cada tecla, então
@@ -2106,7 +2146,18 @@
   function bindCollectionTransfer({ exportButton, importInput, store, wishlist, prices, cards, onChange }) {
     const cardsById = new Map(cards.map((card) => [card.id, card]));
 
-    exportButton.addEventListener("click", () => {
+    function downloadFile(content, filename, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Backup completo (JSON): coleção + lista de desejos + preços, re-importável.
+    function exportJson() {
       const payload = {
         version: 3,
         exportedAt: new Date().toISOString(),
@@ -2114,13 +2165,49 @@
       };
       if (wishlist) payload.wishlist = wishlist.toObject();
       if (prices) payload.prices = prices.toObject();
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "tcg-collection.json";
-      link.click();
-      URL.revokeObjectURL(url);
+      downloadFile(JSON.stringify(payload, null, 2), "tcg-collection.json", "application/json");
+    }
+
+    // Planilha (CSV): inventário legível em Excel/Sheets, uma linha por
+    // carta/variante/condição. Não é re-importável (use o JSON para backup).
+    function exportCsv() {
+      const csv = buildCollectionCsv(store, prices, cardsById);
+      downloadFile("﻿" + csv, "tcg-collection.csv", "text/csv;charset=utf-8");
+    }
+
+    // Transforma o botão "Exportar" num menu com os dois formatos, sem precisar
+    // de markup extra em cada página (o botão já existe em todos os headers).
+    const dd = document.createElement("div");
+    dd.className = "lang-dd export-dd";
+    exportButton.replaceWith(dd);
+    dd.appendChild(exportButton);
+    exportButton.setAttribute("aria-haspopup", "menu");
+    exportButton.setAttribute("aria-expanded", "false");
+    const menu = document.createElement("ul");
+    menu.className = "lang-dd-menu";
+    menu.setAttribute("role", "menu");
+    menu.hidden = true;
+    menu.innerHTML =
+      `<li role="menuitem" data-fmt="json" class="lang-dd-option">${escapeHtml(t("export.json"))}</li>` +
+      `<li role="menuitem" data-fmt="csv" class="lang-dd-option">${escapeHtml(t("export.csv"))}</li>`;
+    dd.appendChild(menu);
+    const closeMenu = () => { menu.hidden = true; exportButton.setAttribute("aria-expanded", "false"); };
+    exportButton.addEventListener("click", () => {
+      const willOpen = menu.hidden;
+      menu.hidden = !willOpen;
+      exportButton.setAttribute("aria-expanded", String(willOpen));
+    });
+    menu.addEventListener("click", (event) => {
+      const item = event.target.closest("[data-fmt]");
+      if (!item) return;
+      if (item.dataset.fmt === "csv") exportCsv(); else exportJson();
+      closeMenu();
+    });
+    document.addEventListener("click", (event) => {
+      if (!menu.hidden && !event.target.closest(".export-dd")) closeMenu();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !menu.hidden) closeMenu();
     });
 
     importInput.addEventListener("change", async (event) => {

@@ -2126,8 +2126,14 @@ input::placeholder {
 
 /* Controles do header como pílulas arredondadas (Exportar/Importar). */
 .app-header-inner .header-actions > button,
-.app-header-inner .header-actions > .file-button {
+.app-header-inner .header-actions > .file-button,
+.app-header-inner .header-actions > .export-dd > button {
   border-radius: 999px;
+}
+
+/* Itens do menu de exportar são texto puro (sem bandeira), alinhados à esquerda. */
+.export-dd .lang-dd-menu {
+  min-width: 170px;
 }
 
 
