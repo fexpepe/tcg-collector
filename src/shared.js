@@ -1322,7 +1322,7 @@
   // Estrutura o `pricing` da TCGdex em não-foil/foil com {min, med, max} por
   // moeda. USD vem do TCGplayer (low/market/high); EUR do Cardmarket (low/avg;
   // Cardmarket não tem "máx", então fica vazio).
-  function marketQuoteData(pricing) {
+  function marketQuoteData(pricing, card) {
     const cm = pricing.cardmarket || {};
     const tp = pricing.tcgplayer || {};
     const num = (v) => (typeof v === "number" && v > 0 ? v : null);
@@ -1330,14 +1330,27 @@
     const usdFrom = (v) => (v ? { min: num(v.lowPrice), med: num(v.marketPrice) || num(v.midPrice), max: num(v.highPrice) } : null);
     const eurFrom = (low, avg) => (num(low) || num(avg) ? { min: num(low), med: num(avg), max: null } : null);
     const has = (q) => q && (q.min || q.med || q.max);
-    const nonfoil = { usd: usdFrom(tpVariant(["normal"])), eur: eurFrom(cm.low, cm.avg) };
-    const foil = {
+
+    // Só mostra os acabamentos que a carta REALMENTE tem (pelas variantes). O
+    // Cardmarket reporta um preço único por carta: os campos -holo são o foil;
+    // a "base" é o não-foil quando há os dois, mas numa carta só-foil a base é
+    // o próprio preço do foil (e não deve virar uma seção "não-foil" fantasma).
+    const variants = card && card.variants && card.variants.length ? card.variants : ["Normal"];
+    const isFoil = (v) => /holo|revers/i.test(v);
+    const hasFoil = variants.some(isFoil);
+    const hasNonFoil = variants.some((v) => !isFoil(v));
+
+    const cmBase = eurFrom(cm.low, cm.avg);
+    const cmHolo = eurFrom(cm["low-holo"], cm["avg-holo"]);
+    const nonfoil = hasNonFoil ? { usd: usdFrom(tpVariant(["normal"])), eur: cmBase } : null;
+    const foil = hasFoil ? {
       usd: usdFrom(tpVariant(["holofoil", "reverse-holofoil", "reverseHolofoil", "1stEditionHolofoil"])),
-      eur: eurFrom(cm["low-holo"], cm["avg-holo"])
-    };
+      eur: cmHolo || (hasNonFoil ? null : cmBase)
+    } : null;
+
     return {
-      nonfoil: has(nonfoil.usd) || has(nonfoil.eur) ? nonfoil : null,
-      foil: has(foil.usd) || has(foil.eur) ? foil : null,
+      nonfoil: nonfoil && (has(nonfoil.usd) || has(nonfoil.eur)) ? nonfoil : null,
+      foil: foil && (has(foil.usd) || has(foil.eur)) ? foil : null,
       updated: String(cm.updated || tp.updated || "").slice(0, 10)
     };
   }
@@ -1367,8 +1380,8 @@
     return `<div class="market-finish"><span class="market-finish-label">${escapeHtml(label)}</span><div class="market-cards">${cards}</div></div>`;
   }
 
-  function marketQuoteHtml(pricing, fx) {
-    const data = marketQuoteData(pricing);
+  function marketQuoteHtml(pricing, fx, card) {
+    const data = marketQuoteData(pricing, card);
     if (!data.nonfoil && !data.foil) return "";
     const updated = data.updated ? `<span class="market-updated">${escapeHtml(t("market.updated", { date: data.updated }))}</span>` : "";
     return `<div class="market-quote-head"><h3>${escapeHtml(t("market.title"))}</h3>${updated}</div>`
@@ -1383,7 +1396,7 @@
     if (!section) return;
     const [pricing, fx] = await Promise.all([fetchCardPricing(card), fetchFxRatesBRL()]);
     if (!section.isConnected) return;
-    const html = pricing ? marketQuoteHtml(pricing, fx) : "";
+    const html = pricing ? marketQuoteHtml(pricing, fx, card) : "";
     if (html) {
       section.innerHTML = html;
       section.hidden = false;
