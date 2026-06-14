@@ -1249,10 +1249,11 @@ input::placeholder {
 }
 
 @media (max-width: 860px) {
-  /* Em telas pequenas o header empilha 3 linhas; deixa de ser sticky para
-     não roubar espaço vertical permanente. */
+  /* Header empilha em colunas no mobile, mas permanece fixo no topo
+     enquanto o usuário rola as listas. */
   .app-header {
-    position: static;
+    position: sticky;
+    top: 0;
   }
 
   .app-header-inner {
@@ -1264,18 +1265,18 @@ input::placeholder {
   }
 
   .app-header-inner .brand {
-    text-align: center;
+    text-align: right;
   }
 
   .app-header-inner .page-nav {
     order: 2;
     width: 100%;
-    justify-content: center;
+    justify-content: flex-end;
   }
 
   .app-header-inner .header-actions {
     order: 3;
-    justify-content: center;
+    justify-content: flex-end;
   }
 }
 
