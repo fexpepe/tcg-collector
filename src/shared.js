@@ -2016,8 +2016,19 @@
       const file = event.target.files[0];
       if (!file) return;
 
+      // Limite de tamanho: um backup real tem alguns MB no máximo; acima disso
+      // recusa antes de ler/parsear (evita travar a aba com um arquivo enorme).
+      if (file.size > 20 * 1024 * 1024) {
+        alert(t("error.import"));
+        event.target.value = "";
+        return;
+      }
+
       try {
         const payload = JSON.parse(await file.text());
+        if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+          throw new Error("Backup inválido: raiz não é um objeto.");
+        }
         store.replace(parseImportedCollection(payload, cardsById));
         if (wishlist) wishlist.replace(parseImportedWishlist(payload, cardsById));
         if (prices) prices.replace(parseImportedPrices(payload, cardsById));
@@ -2030,6 +2041,13 @@
     });
   }
 
+  // Chaves perigosas num backup importado: bloqueia prototype pollution ao usar
+  // o cardId/variante (vindos de arquivo não confiável) como chave de objeto.
+  const UNSAFE_KEYS = new Set(["__proto__", "prototype", "constructor"]);
+  function isUnsafeKey(key) {
+    return UNSAFE_KEYS.has(key);
+  }
+
   // Preços BR do backup: mantém só valores numéricos positivos de cartas conhecidas.
   function parseImportedPrices(payload, cardsById) {
     const source = payload && payload.prices;
@@ -2037,9 +2055,9 @@
     const acceptAll = cardsById.size === 0; // sem catálogo: aceita como vem
     const result = {};
     Object.entries(source).forEach(([cardId, variants]) => {
-      if ((!acceptAll && !cardsById.has(cardId)) || !variants || typeof variants !== "object") return;
+      if (isUnsafeKey(cardId) || (!acceptAll && !cardsById.has(cardId)) || !variants || typeof variants !== "object") return;
       Object.entries(variants).forEach(([variant, entry]) => {
-        if (!entry || typeof entry !== "object" || !entry.prices) return;
+        if (isUnsafeKey(variant) || !entry || typeof entry !== "object" || !entry.prices) return;
         const clean = {};
         Object.entries(entry.prices).forEach(([condition, value]) => {
           const amount = Number(value);
@@ -2065,6 +2083,7 @@
     const acceptAll = cardsById.size === 0; // sem catálogo: aceita como vem
     const wishlist = {};
     Object.entries(source).forEach(([cardId, variants]) => {
+      if (isUnsafeKey(cardId)) return;
       const card = cardsById.get(cardId);
       if ((!card && !acceptAll) || !Array.isArray(variants)) return;
       const known = card && card.variants && card.variants.length ? card.variants : null;
@@ -2083,7 +2102,7 @@
     if (Array.isArray(payload.ownedCardIds)) {
       const collection = {};
       payload.ownedCardIds.forEach((cardId) => {
-        if (acceptAll || cardsById.has(cardId)) {
+        if (!isUnsafeKey(cardId) && (acceptAll || cardsById.has(cardId))) {
           collection[cardId] = { [defaultVariant(cardsById.get(cardId))]: { [DEFAULT_CONDITION]: 1 } };
         }
       });
@@ -2097,9 +2116,10 @@
     const isV3 = payload.version >= 3;
     const collection = {};
     Object.entries(payload.collection).forEach(([cardId, variants]) => {
-      if ((!acceptAll && !cardsById.has(cardId)) || !variants || typeof variants !== "object") return;
+      if (isUnsafeKey(cardId) || (!acceptAll && !cardsById.has(cardId)) || !variants || typeof variants !== "object") return;
       const entry = {};
       Object.entries(variants).forEach(([variant, value]) => {
+        if (isUnsafeKey(variant)) return;
         if (isV3 && value && typeof value === "object") {
           // v3: variante -> condição -> quantidade
           const conditions = {};
