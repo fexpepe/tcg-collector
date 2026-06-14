@@ -86,7 +86,7 @@ O site publicado usa o **catálogo completo da TCGdex** em quatro idiomas (en, j
 
 ## Próximos passos recomendados
 
-- **Binders**: criar fichários 2x2 e 3x3, nas categorias Owned e Wanted (reaproveitando a wishlist), com slots preenchidos arrastando/escolhendo cartas do catálogo;
+- **Binders** (já implementado): duas páginas — `binders-collection.html` (Coleção) e `binders-sale.html` (Venda) — com fichários 2×2/3×3/4×4 montados por clique no slot (carta do catálogo ou slot livre com foto). O binder de Venda tem preço/condição/nota por carta e exporta a grade como imagem (estilo cardgrid). Fotos do usuário ficam 100% locais no IndexedDB (`tcg-collector-binders-v1` guarda só os metadados/slots). Próximo: ligar o botão "Adicionar a um binder" dos tiles e incluir as fotos no export/import;
 - **Prioridade na wishlist**: estender `tcg-collector-wishlist-v1` para guardar prioridade por variante e ordenar a página Quero por "mais quero";
 - **Preços TCGdex**: capturar o campo `pricing` (Cardmarket EUR / TCGplayer USD, por variante) num artefato separado dos chunks (preço muda toda semana; o cache de sets não), convertendo para R$ via API de câmbio como fallback de quem não registrou preço manual;
 - **Worker de preços BR**: serviço opcional (Cloudflare Worker) que busca o preço médio por condição na LigaBRA/LigaPokémon e preenche os mesmos campos de `tcg-collector-prices-v1` (fonte registrada, valor sempre editável). MYP fica só como deep link — tem proteção anti-bot;

@@ -54,7 +54,8 @@ jobs:
       - name: Ativa modo manifest nas páginas
         run: |
           sed -i 's|data/cards\.js|data/manifest.generated.js|g; s|data/indexes\.js|data/indexes.generated.js|g' \
-            index.html pokedex.html sets.html artists.html trainers.html collection.html wishlist.html portfolio.html detail.html
+            index.html pokedex.html sets.html artists.html trainers.html collection.html wishlist.html portfolio.html detail.html \
+            binders-collection.html binders-sale.html
 
       - name: Remove arquivos que não vão para o site
         run: rm -rf .git .github .claude data/.cache data/cards.generated.js scripts
