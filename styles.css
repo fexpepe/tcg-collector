@@ -1467,13 +1467,19 @@ input::placeholder {
   }
 
   .card-preview-modal {
-    padding: 14px;
+    /* Alinha ao topo e respeita a safe-area, pra barra do navegador/notch
+       não cobrir o topo da carta. */
+    align-items: start;
+    padding: calc(14px + env(safe-area-inset-top, 0px)) 14px calc(14px + env(safe-area-inset-bottom, 0px));
   }
 
   /* Empilhado (imagem em cima), volta a rolar o painel inteiro. */
   .card-preview-panel {
     width: calc(100vw - 20px);
-    max-height: calc(100vh - 20px);
+    /* dvh = altura real visível no mobile (desconta a barra do navegador);
+       vh fica como fallback para browsers antigos. */
+    max-height: calc(100vh - 28px);
+    max-height: calc(100dvh - 28px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
     grid-template-columns: 1fr;
     grid-template-rows: none;
     gap: 18px;
@@ -1490,7 +1496,7 @@ input::placeholder {
      para continuar acessível enquanto o usuário desce até os detalhes. */
   .preview-close {
     position: fixed;
-    top: 20px;
+    top: calc(14px + env(safe-area-inset-top, 0px));
     right: 20px;
     z-index: 60;
     width: 44px;
