@@ -328,12 +328,8 @@
     const priceTag = isSale && Number(slot.price)
       ? `<span class="binder-slot-price">R$ ${escapeHtml(fmtPrice(slot.price))}${slot.condition ? ` · ${escapeHtml(slot.condition)}` : ""}</span>`
       : "";
-    const caption = title
-      ? `<span class="binder-slot-caption">${escapeHtml(title)}</span>`
-      : "";
-    return `<button type="button" class="binder-slot binder-slot-filled" data-slot-index="${index}" draggable="true">
+    return `<button type="button" class="binder-slot binder-slot-filled" data-slot-index="${index}" draggable="true" title="${escapeAttribute(title)}">
       <span class="binder-slot-media">${media}</span>
-      ${caption}
       ${priceTag}
     </button>`;
   }
@@ -434,7 +430,7 @@
 
           ${draft.cardId || (!draft.cardId && draft.label) ? `<p class="binder-editor-selected">${escapeHtml(draft.cardId ? cardLabelFromSlot(draft) : (draft.label || ""))}</p>` : ""}
 
-          <div class="binder-editor-photo-row">
+          ${tab === "collection" ? "" : `<div class="binder-editor-photo-row">
             <span class="binder-editor-photo-wrap">${photoState}</span>
             <div class="binder-editor-photo-actions">
               <label class="secondary file-button">
@@ -444,7 +440,7 @@
               ${draft.photoId ? `<button type="button" class="secondary" data-edit-photo-remove>${escapeHtml(t("binders.editor.photoRemove"))}</button>` : ""}
               <p class="binder-editor-hint">${escapeHtml(t("binders.editor.photoHint"))}</p>
             </div>
-          </div>
+          </div>`}
 
           ${saleFields}
 
