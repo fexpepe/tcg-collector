@@ -2177,7 +2177,13 @@
   }
 
   function bindCollectionTransfer({ exportButton, importInput, store, wishlist, prices, cards, onChange }) {
-    const cardsById = new Map(cards.map((card) => [card.id, card]));
+    // `cards` pode ser um array ou uma função que devolve o array atual (para
+    // páginas que carregam o catálogo sob demanda, como os binders). Resolve na
+    // hora do uso para refletir o catálogo já carregado.
+    function cardsById() {
+      const list = typeof cards === "function" ? (cards() || []) : (cards || []);
+      return new Map(list.map((card) => [card.id, card]));
+    }
 
     function downloadFile(content, filename, type) {
       const blob = new Blob([content], { type });
@@ -2204,7 +2210,7 @@
     // Planilha (CSV): inventário legível em Excel/Sheets, uma linha por
     // carta/variante/condição. Não é re-importável (use o JSON para backup).
     function exportCsv() {
-      const csv = buildCollectionCsv(store, prices, cardsById);
+      const csv = buildCollectionCsv(store, prices, cardsById());
       downloadFile("﻿" + csv, "tcg-collection.csv", "text/csv;charset=utf-8");
     }
 
@@ -2260,9 +2266,10 @@
         if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
           throw new Error("Backup inválido: raiz não é um objeto.");
         }
-        store.replace(parseImportedCollection(payload, cardsById));
-        if (wishlist) wishlist.replace(parseImportedWishlist(payload, cardsById));
-        if (prices) prices.replace(parseImportedPrices(payload, cardsById));
+        const byId = cardsById();
+        store.replace(parseImportedCollection(payload, byId));
+        if (wishlist) wishlist.replace(parseImportedWishlist(payload, byId));
+        if (prices) prices.replace(parseImportedPrices(payload, byId));
         onChange();
       } catch (error) {
         alert(t("error.import"));
