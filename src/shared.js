@@ -435,6 +435,12 @@
   // (em R$) se houver; senão a referência de mercado da TCGdex (window.TCG_PRICING,
   // por id, em USD do TCGplayer / EUR do Cardmarket), convertida. `estimated` =
   // veio de referência ou de estimativa por condição. Retorna value 0 se nada.
+  // ID base da carta sem o sufixo de idioma (-pt/-ja/-zh-tw/-zh), para buscar
+  // o preço de referência internacional quando a versão localizada não tem.
+  function basePricingId(cardId) {
+    return String(cardId || "").replace(/-(pt|ja|zh-tw|zh)$/, "");
+  }
+
   function cardValue(card, variant, prices, condition) {
     const cur = currentCurrency;
     const cardId = card && card.id;
@@ -446,7 +452,11 @@
         if (v != null) return { value: v, currency: cur, source: "manual", estimated: manual.estimated };
       }
     }
-    const ref = cardId && window.TCG_PRICING && window.TCG_PRICING[cardId];
+    // Referência de mercado (USD/EUR → moeda atual). Cartas localizadas (-pt,
+    // -ja, -zh-tw) sem preço próprio reaproveitam o preço da carta base — é a
+    // mesma "conversão do preço americano/europeu" que vale para as brasileiras.
+    const table = window.TCG_PRICING;
+    const ref = cardId && table && (table[cardId] || table[basePricingId(cardId)]);
     if (ref) {
       if (ref.u > 0) { const v = convertMoney(ref.u, "USD", cur); if (v != null) return { value: v, currency: cur, source: "ref", estimated: true }; }
       if (ref.e > 0) { const v = convertMoney(ref.e, "EUR", cur); if (v != null) return { value: v, currency: cur, source: "ref", estimated: true }; }
