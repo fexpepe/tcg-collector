@@ -22,9 +22,10 @@
   const GRIDS = {
     "2x2": { cols: 2, rows: 2 },
     "3x3": { cols: 3, rows: 3 },
-    "4x4": { cols: 4, rows: 4 }
+    "4x4": { cols: 4, rows: 4 },
+    "5x5": { cols: 5, rows: 5 }
   };
-  const GRID_ORDER = ["2x2", "3x3", "4x4"];
+  const GRID_ORDER = ["2x2", "3x3", "4x4", "5x5"];
   const DEFAULT_GRID = "3x3";
   const MAX_PHOTOS = 150;       // teto de fotos no IndexedDB (limite pedido)
   const PHOTO_MAX_DIM = 900;    // redimensiona o lado maior antes de guardar
