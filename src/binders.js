@@ -638,7 +638,7 @@
 
           ${draft.cardId || (!draft.cardId && draft.label) ? `<p class="binder-editor-selected">${escapeHtml(draft.cardId ? cardLabelFromSlot(draft) : (draft.label || ""))}</p>` : ""}
 
-          ${tab === "collection" ? "" : `<div class="binder-editor-photo-row">
+          ${(isSale || tab === "free") ? `<div class="binder-editor-photo-row">
             <span class="binder-editor-photo-wrap">${photoState}</span>
             <div class="binder-editor-photo-actions">
               <label class="secondary file-button">
@@ -648,7 +648,7 @@
               ${draft.photoId ? `<button type="button" class="secondary" data-edit-photo-remove>${escapeHtml(t("binders.editor.photoRemove"))}</button>` : ""}
               <p class="binder-editor-hint">${escapeHtml(t("binders.editor.photoHint"))}</p>
             </div>
-          </div>`}
+          </div>` : ""}
 
           ${saleFields}
 

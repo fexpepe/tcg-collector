@@ -3281,7 +3281,7 @@ a.progress-row:hover {
 /* Editor de slot (modal reaproveita .card-preview-modal/.card-preview-panel) */
 .binder-editor-panel {
   display: block;
-  width: min(560px, 100%);
+  width: min(840px, 100%);
   max-height: calc(100vh - 56px);
   overflow: auto;
   background: var(--panel);
@@ -3326,11 +3326,11 @@ a.progress-row:hover {
 }
 .binder-editor-results {
   margin-top: 12px;
-  max-height: 280px;
+  max-height: 440px;
   overflow: auto;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 10px;
 }
 .binder-result {
   flex-direction: column;
@@ -3354,7 +3354,7 @@ a.progress-row:hover {
   object-fit: cover;
 }
 .binder-result-label {
-  font-size: 0.66rem;
+  font-size: 0.74rem;
   font-weight: 600;
   line-height: 1.2;
   color: var(--muted);
