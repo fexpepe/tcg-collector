@@ -184,6 +184,11 @@
   function currentPage(binder) { return Math.min(pageState.get(binder.id) || 0, pageCount(binder) - 1); }
   function setCurrentPage(binder, idx) { pageState.set(binder.id, Math.max(0, Math.min(idx, pageCount(binder) - 1))); }
 
+  // Aba ativa de cada binder (Cartas | Resumo | Editar | Imprimir).
+  const tabState = new Map();
+  function currentTab(binder) { return tabState.get(binder.id) || "cards"; }
+  function setTab(binder, tab) { tabState.set(binder.id, tab); }
+
   function createBinder(name, grid) {
     const binder = {
       id: uid("b_"),
@@ -394,6 +399,30 @@
 
     const stats = binderStats(binder);
     const colorStyle = binder.color ? ` style="--binder-color:${escapeAttribute(binder.color)}"` : "";
+    const tab = currentTab(binder);
+    const TABS = [["cards", "binders.tab.cards"], ["summary", "binders.tab.summary"], ["edit", "binders.tab.edit"], ["print", "binders.tab.print"]];
+    const tabbar = `<div class="binder-tabbar" role="tablist">${TABS.map(([k, key]) =>
+      `<button type="button" class="binder-tab${tab === k ? " active" : ""}" data-binder-tab-btn="${k}" role="tab" aria-selected="${tab === k}">${escapeHtml(t(key))}</button>`
+    ).join("")}</div>`;
+    const panel = (k, inner) => `<div class="binder-tabpanel" data-binder-tab="${k}"${tab === k ? "" : " hidden"}>${inner}</div>`;
+
+    const cardsPanel = panel("cards", `
+      <div class="binder-cards-toolbar">${pageControls}
+        <button type="button" class="secondary binder-export-img" data-binder-export>${escapeHtml(t("binders.exportImage"))}</button>
+      </div>
+      <div class="binder-grid" style="--cols:${g.cols}">${slots}</div>`);
+
+    const summaryPanel = panel("summary", `
+      <div class="binder-summary">
+        ${statCell(stats.pages, t("binders.stat.pages"))}
+        ${statCell(stats.cards, t("binders.stat.cards"))}
+        ${statCell(stats.owned, t("binders.stat.owned"), "is-owned")}
+        ${statCell(stats.missing, t("binders.stat.missing"), "is-missing")}
+        <div class="binder-progress">
+          <div class="binder-progress-head"><span>${escapeHtml(t("binders.stat.progress"))}</span><strong>${stats.pct}%</strong></div>
+          <div class="progress-bar"><span style="width:${stats.pct}%"></span></div>
+        </div>
+      </div>`);
 
     return `
       <article class="binder${binder.color ? " has-color" : ""}" data-binder-id="${escapeAttribute(binder.id)}"${colorStyle}>
@@ -405,28 +434,12 @@
               data-binder-subtitle placeholder="${escapeAttribute(t("binders.editor.notePlaceholder"))}" aria-label="contato">` : ""}
             ${meta}
           </div>
-          <div class="binder-actions">
-            <label class="binder-grid-label">${escapeHtml(t("binders.grid"))}
-              <select data-binder-grid>${gridOptionsHtml(binder.grid)}</select>
-            </label>
-            ${pageControls}
-            <button type="button" class="secondary" data-binder-settings aria-expanded="false">${escapeHtml(t("binders.settings"))}</button>
-            <button type="button" class="secondary" data-binder-export>${escapeHtml(t("binders.exportImage"))}</button>
-            <button type="button" class="secondary binder-delete" data-binder-delete>${escapeHtml(t("binders.delete"))}</button>
-          </div>
+          ${tabbar}
         </header>
-        <div class="binder-summary">
-          ${statCell(stats.pages, t("binders.stat.pages"))}
-          ${statCell(stats.cards, t("binders.stat.cards"))}
-          ${statCell(stats.owned, t("binders.stat.owned"), "is-owned")}
-          ${statCell(stats.missing, t("binders.stat.missing"), "is-missing")}
-          <div class="binder-progress">
-            <div class="binder-progress-head"><span>${escapeHtml(t("binders.stat.progress"))}</span><strong>${stats.pct}%</strong></div>
-            <div class="progress-bar"><span style="width:${stats.pct}%"></span></div>
-          </div>
-        </div>
-        ${binderSettingsHtml(binder)}
-        <div class="binder-grid" style="--cols:${g.cols}">${slots}</div>
+        ${cardsPanel}
+        ${summaryPanel}
+        ${panel("edit", binderEditPanelHtml(binder))}
+        ${panel("print", binderPrintPanelHtml(binder))}
       </article>`;
   }
 
@@ -434,20 +447,15 @@
     return `<div class="binder-stat${cls ? " " + cls : ""}"><strong>${escapeHtml(String(value))}</strong><span>${escapeHtml(label)}</span></div>`;
   }
 
-  // Painel de configurações (recolhível): detalhes, marcar tudo e imprimir.
-  function binderSettingsHtml(binder) {
-    const printOpts = [
-      ["images", "binders.print.optImages"], ["price", "binders.print.optPrice"],
-      ["set", "binders.print.optSet"], ["variant", "binders.print.optVariant"],
-      ["owned", "binders.print.optOwned"]
-    ].map(([key, k]) =>
-      `<label class="binder-print-opt"><input type="checkbox" data-print-opt="${key}" checked> ${escapeHtml(t(k))}</label>`
-    ).join("");
-
+  // Aba "Editar": formato, detalhes, marcar tudo e excluir o binder.
+  function binderEditPanelHtml(binder) {
     return `
-      <div class="binder-settings" hidden>
+      <div class="binder-settings">
         <div class="binder-settings-section">
           <h4>${escapeHtml(t("binders.settings.details"))}</h4>
+          <label class="binder-field">${escapeHtml(t("binders.grid"))}
+            <select data-binder-grid>${gridOptionsHtml(binder.grid)}</select>
+          </label>
           <label class="binder-field">${escapeHtml(t("binders.settings.description"))}
             <input type="text" data-set-description value="${escapeAttribute(binder.description || "")}" placeholder="${escapeAttribute(t("binders.settings.descriptionPlaceholder"))}">
           </label>
@@ -468,6 +476,24 @@
             <button type="button" class="secondary" data-mark-all="missing">${escapeHtml(t("binders.settings.markMissing"))}</button>
           </div>
         </div>
+        <div class="binder-settings-section">
+          <h4>${escapeHtml(t("binders.settings.danger"))}</h4>
+          <button type="button" class="secondary binder-delete" data-binder-delete>${escapeHtml(t("binders.delete"))}</button>
+        </div>
+      </div>`;
+  }
+
+  // Aba "Imprimir": layout + opções + botão imprimir.
+  function binderPrintPanelHtml(binder) {
+    const printOpts = [
+      ["images", "binders.print.optImages"], ["price", "binders.print.optPrice"],
+      ["set", "binders.print.optSet"], ["variant", "binders.print.optVariant"],
+      ["owned", "binders.print.optOwned"]
+    ].map(([key, k]) =>
+      `<label class="binder-print-opt"><input type="checkbox" data-print-opt="${key}" checked> ${escapeHtml(t(k))}</label>`
+    ).join("");
+    return `
+      <div class="binder-settings">
         <div class="binder-settings-section">
           <h4>${escapeHtml(t("binders.print.title"))}</h4>
           <div class="binder-print-layouts">
@@ -500,8 +526,18 @@
     const priceTag = isSale && Number(slot.price)
       ? `<span class="binder-slot-price">R$ ${escapeHtml(fmtPrice(slot.price))}${slot.condition ? ` · ${escapeHtml(slot.condition)}` : ""}</span>`
       : "";
-    return `<button type="button" class="binder-slot binder-slot-filled" data-slot-index="${index}" draggable="true" title="${escapeAttribute(title)}">
+
+    // Posse (só binder de coleção, só cartas do catálogo): colorida se você tem,
+    // preto e branco se não tem. No hover, botão para marcar tenho/não tenho.
+    const ownable = !isSale && !!slot.cardId;
+    const owned = ownable ? ownedStore.has(slot.cardId) : true;
+    const ownBtn = ownable
+      ? `<span class="binder-slot-own${owned ? " owned" : ""}" role="button" tabindex="0" data-slot-own="${index}" aria-pressed="${owned}" aria-label="${escapeAttribute(owned ? t("binders.slot.markMissing") : t("binders.slot.markOwned"))}">${owned ? "✓ " + escapeHtml(t("binders.slot.ownedShort")) : "+ " + escapeHtml(t("binders.slot.markOwned"))}</span>`
+      : "";
+
+    return `<button type="button" class="binder-slot binder-slot-filled${ownable && !owned ? " not-owned" : ""}" data-slot-index="${index}" draggable="true" title="${escapeAttribute(title)}">
       <span class="binder-slot-media">${media}</span>
+      ${ownBtn}
       ${priceTag}
     </button>`;
   }
@@ -528,7 +564,7 @@
       index,
       draft,
       originalPhotoId: existing ? existing.photoId || null : null,
-      tab: draft.cardId || !draft.label ? "catalog" : "free"
+      tab: (draft.label && !draft.cardId) ? "free" : "collection"
     };
     refreshUserSources();
     renderEditor();
@@ -581,9 +617,9 @@
         <div class="binder-editor-body">
           <h2>${escapeHtml(t("binders.editor.title"))}</h2>
           <div class="binder-editor-tabs" role="tablist">
-            <button type="button" class="chip${tab === "catalog" ? " active" : ""}" data-edit-tab="catalog" aria-pressed="${tab === "catalog"}">${escapeHtml(t("binders.editor.tabCatalog"))}</button>
             <button type="button" class="chip${tab === "collection" ? " active" : ""}" data-edit-tab="collection" aria-pressed="${tab === "collection"}">${escapeHtml(t("binders.editor.tabCollection"))}</button>
             <button type="button" class="chip${tab === "wishlist" ? " active" : ""}" data-edit-tab="wishlist" aria-pressed="${tab === "wishlist"}">${escapeHtml(t("binders.editor.tabWishlist"))}</button>
+            <button type="button" class="chip${tab === "catalog" ? " active" : ""}" data-edit-tab="catalog" aria-pressed="${tab === "catalog"}">${escapeHtml(t("binders.editor.tabCatalog"))}</button>
             <button type="button" class="chip${tab === "free" ? " active" : ""}" data-edit-tab="free" aria-pressed="${tab === "free"}">${escapeHtml(t("binders.editor.tabFree"))}</button>
           </div>
 
@@ -1089,6 +1125,28 @@
 
   // Delegação na lista de binders
   elements.list.addEventListener("click", (event) => {
+    // Marcar tenho/não tenho (no hover do slot): tem precedência sobre abrir o
+    // editor. Marcar como não tenho coloca a carta na lista de desejo.
+    const ownToggle = event.target.closest("[data-slot-own]");
+    if (ownToggle) {
+      event.stopPropagation();
+      const binder = getBinder(ownToggle.closest("[data-binder-id]").dataset.binderId);
+      const slot = binder && binder.slots[Number(ownToggle.dataset.slotOwn)];
+      if (slot && slot.cardId) {
+        const variant = slot.variant || DEFAULT_CONDITION;
+        const had = ownedStore.variantTotal(slot.cardId, variant) > 0;
+        ownedStore.toggleVariant(slot.cardId, variant);
+        if (had) {
+          // passou a NÃO ter → entra na lista de desejo (se ainda não estiver).
+          if (!wishlistStore.has(slot.cardId, variant)) wishlistStore.toggle(slot.cardId, variant);
+        } else {
+          // passou a ter → sai da lista de desejo.
+          wishlistStore.remove(slot.cardId, variant);
+        }
+        render();
+      }
+      return;
+    }
     const slotBtn = event.target.closest("[data-slot-index]");
     if (slotBtn) {
       const article = slotBtn.closest("[data-binder-id]");
@@ -1120,15 +1178,11 @@
       if (binder && confirm(t("binders.page.removeConfirm"))) { removePage(binder, currentPage(binder)); render(); }
       return;
     }
-    // Abre/fecha o painel de configurações.
-    const settingsBtn = event.target.closest("[data-binder-settings]");
-    if (settingsBtn) {
-      const panel = settingsBtn.closest("[data-binder-id]").querySelector(".binder-settings");
-      if (panel) {
-        const open = panel.hidden;
-        panel.hidden = !open;
-        settingsBtn.setAttribute("aria-expanded", String(open));
-      }
+    // Troca de aba (Cartas | Resumo | Editar | Imprimir).
+    const tabBtn = event.target.closest("[data-binder-tab-btn]");
+    if (tabBtn) {
+      const binder = getBinder(tabBtn.closest("[data-binder-id]").dataset.binderId);
+      if (binder) { setTab(binder, tabBtn.dataset.binderTabBtn); render(); }
       return;
     }
     // Salva detalhes (descrição, nº de páginas, cor).

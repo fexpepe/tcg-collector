@@ -2929,6 +2929,37 @@ a.progress-row:hover {
   flex-wrap: wrap;
   margin-bottom: 16px;
 }
+
+/* Abas do binder (Cartas | Resumo | Editar | Imprimir). */
+.binder-tabbar {
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+.binder-tab {
+  padding: 8px 14px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+.binder-tab:hover { color: var(--text); }
+.binder-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.binder-cards-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.binder-export-img { margin-left: auto; }
 .binder-titles {
   display: flex;
   flex-direction: column;
@@ -3084,7 +3115,8 @@ a.progress-row:hover {
   margin-bottom: 10px;
 }
 .binder-field input[type="text"],
-.binder-field input[type="number"] {
+.binder-field input[type="number"],
+.binder-field select {
   min-height: 38px;
   padding: 0 10px;
   border-radius: 7px;
@@ -3151,6 +3183,40 @@ a.progress-row:hover {
 }
 .binder-slot-filled {
   cursor: grab;
+}
+/* Carta do binder que você não tem: preto e branco até marcar como tenho. */
+.binder-slot.not-owned .binder-slot-media {
+  filter: grayscale(1);
+  opacity: 0.62;
+}
+/* Botão "Tenho / Marcar como tenho" — aparece ao passar o mouse no slot. */
+.binder-slot-own {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  transform: translateX(-50%);
+  z-index: 3;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(13, 14, 18, 0.92);
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+.binder-slot:hover .binder-slot-own,
+.binder-slot:focus-within .binder-slot-own {
+  opacity: 1;
+  pointer-events: auto;
+}
+.binder-slot-own.owned {
+  color: var(--accent);
+  border-color: var(--accent-dark);
 }
 .binder-slot-dragging {
   opacity: 0.4;

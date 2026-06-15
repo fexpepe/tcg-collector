@@ -8,7 +8,7 @@
   const wishlist = shared.createWishlistStore();
   const prices = shared.createPriceStore();
 
-  let activeTab = "pokemon";
+  let activeTab = "cards";
   let sortMode = "dex";
 
   const GROUP_TABS = {
