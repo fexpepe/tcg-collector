@@ -207,6 +207,19 @@
       },
       toObject() {
         return collection;
+      },
+      // Ids referenciados (v3, ou legados v2/v1) sem disparar a migração. Usado
+      // para a carga direcionada de catálogo antes de ter o catálogo em mãos.
+      knownCardIds() {
+        if (Object.keys(collection).length) return Object.keys(collection);
+        const v2 = readObject(v2Key);
+        if (v2) return Object.keys(v2);
+        try {
+          const v1 = JSON.parse(localStorage.getItem(v1Key) || "[]");
+          return Array.isArray(v1) ? v1 : [];
+        } catch (error) {
+          return [];
+        }
       }
     };
   }
@@ -2556,6 +2569,27 @@
     return { cards: [], indexes: null, manifest: null };
   }
 
+  // Carga direcionada: baixa apenas os chunks dos sets que contêm os cardIds
+  // informados (em vez do catálogo inteiro). Usada pela Coleção — que só precisa
+  // das cartas que você tem. No modo local (amostra em window.TCG_CARDS) ou sem
+  // manifest, cai no loadCatalog normal.
+  async function loadCatalogForCardIds(cardIds) {
+    if (Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length) {
+      return loadCatalog();
+    }
+    const manifest = window.TCG_MANIFEST;
+    if (!manifest || !Array.isArray(manifest.sets)) return loadCatalog();
+    const setIds = manifest.sets.map((set) => set.id);
+    const needed = new Set();
+    (cardIds || []).forEach((id) => {
+      const setId = setIdForCard(id, setIds);
+      if (setId) needed.add(setId);
+    });
+    const sets = manifest.sets.filter((set) => needed.has(set.id));
+    const cards = await fetchSetChunks(sets);
+    return { cards, indexes: window.TCG_INDEXES || null, manifest };
+  }
+
   // Catálogo só com índices (sem baixar os chunks de carta). A Pokédex roda
   // com isto — espécies, contadores e progresso saem dos índices + coleção,
   // sem o custo de baixar dezenas de MB de cartas. No modo local o
@@ -2810,6 +2844,7 @@
     cardLabel,
     matchesCardQuery,
     loadCatalog,
+    loadCatalogForCardIds,
     loadIndexesOnly,
     fetchSetChunks,
     setIdForCard,

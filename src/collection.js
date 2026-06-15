@@ -4,9 +4,17 @@
 
   let cards = [];
   let cardsById = new Map();
+  let indexes = null;
   const owned = shared.createCollectionStore();
   const wishlist = shared.createWishlistStore();
   const prices = shared.createPriceStore();
+
+  // Modo manifest (produção): em vez de baixar o catálogo inteiro só para mostrar
+  // o que você tem, baixa apenas os sets das suas cartas e tira os totais de
+  // progresso dos índices (que já vêm carregados). No modo local (amostra em
+  // window.TCG_CARDS) o catálogo é pequeno — mantém o caminho normal.
+  const manifestMode = !(Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length)
+    && !!(window.TCG_MANIFEST && window.TCG_INDEXES && window.TCG_INDEXES.pokemonTotals);
 
   let activeTab = "cards";
   let sortMode = "dex";
@@ -73,9 +81,16 @@
     onOwnedChange: () => refreshOwnershipCards()
   });
 
-  shared.loadCatalog()
+  // Em modo manifest baixa só os sets das cartas que você tem; senão o catálogo
+  // normal (amostra local / fallback).
+  const catalogPromise = manifestMode
+    ? shared.loadCatalogForCardIds(owned.knownCardIds())
+    : shared.loadCatalog();
+
+  catalogPromise
     .then((catalog) => {
       cards = catalog.cards;
+      indexes = catalog.indexes;
       cardsById = new Map(cards.map((card) => [card.id, card]));
       owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
       hydrateFilters();
@@ -159,8 +174,11 @@
       store: owned,
       wishlist,
       prices,
-      cards,
-      onChange: () => render()
+      cards: () => cards, // resolve na hora (catálogo carregado sob demanda)
+      // Em modo manifest a importação pode trazer cartas de sets ainda não
+      // baixados; recarrega para a carga direcionada rodar com os novos ids.
+      // (replace() agenda a escrita; o pagehide do reload faz o flush.)
+      onChange: () => { if (manifestMode) window.location.reload(); else render(); }
     });
   }
 
@@ -257,21 +275,52 @@
     elements.groupsEmpty.hidden = groups.length > 0;
   }
 
-  function buildGroups(tab) {
+  // Totais por grupo (denominador do progresso), no catálogo inteiro. Em modo
+  // manifest saem dos índices (sem baixar o catálogo); senão contam o catálogo
+  // carregado. As chaves batem com tab.getKey de cada aba.
+  function totalsForTab() {
     const map = new Map();
+    if (manifestMode && indexes) {
+      if (activeTab === "sets") {
+        (indexes.sets || []).forEach((g) => map.set(g.name, g.cardIds.length));
+      } else if (activeTab === "artists") {
+        (indexes.artists || []).forEach((g) => map.set(g.name, g.cardIds.length));
+      } else if (activeTab === "pokemon") {
+        Object.entries(indexes.pokemonTotals || {}).forEach(([name, n]) => map.set(name, n));
+      } else if (activeTab === "languages") {
+        // O índice de sets é a partição canônica (cada carta em 1 set): conta o
+        // idioma pelo sufixo do id. Bate com card.language.toUpperCase().
+        (indexes.sets || []).forEach((g) => g.cardIds.forEach((id) => {
+          const lang = shared.cardLanguageFromId(id).toUpperCase();
+          map.set(lang, (map.get(lang) || 0) + 1);
+        }));
+      }
+      return map;
+    }
     cards.forEach((card) => {
-      const key = tab.getKey(card) || "—";
-      if (!map.has(key)) {
-        map.set(key, { name: key, totalCount: 0, ownedCount: 0, sample: card });
-      }
-      const group = map.get(key);
-      group.totalCount++;
-      if (owned.has(card.id)) {
-        group.ownedCount++;
-        if (!group.ownedSample) group.ownedSample = card;
-      }
+      const key = GROUP_TABS[activeTab].getKey(card) || "—";
+      map.set(key, (map.get(key) || 0) + 1);
     });
-    return Array.from(map.values()).filter((group) => group.ownedCount > 0);
+    return map;
+  }
+
+  function buildGroups(tab) {
+    const totals = totalsForTab();
+    // Agrupa as cartas que você tem (já são só dos sets carregados em modo
+    // manifest); o total vem de `totals` (catálogo inteiro).
+    const map = new Map();
+    ownedCards().forEach((card) => {
+      const key = tab.getKey(card) || "—";
+      let group = map.get(key);
+      if (!group) {
+        group = { name: key, totalCount: totals.get(key) || 0, ownedCount: 0, sample: card };
+        map.set(key, group);
+      }
+      group.ownedCount++;
+    });
+    // Defensivo: nunca deixa o total abaixo do que você tem.
+    map.forEach((group) => { if (group.totalCount < group.ownedCount) group.totalCount = group.ownedCount; });
+    return Array.from(map.values());
   }
 
   function sortGroups(groups) {
