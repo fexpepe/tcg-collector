@@ -1,0 +1,9 @@
+# Cabeçalhos de segurança (lidos pelo Cloudflare Pages). A CSP já vai no <meta>
+# de cada página; aqui reforçamos o resto. HTTPS é automático no Cloudflare.
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin

@@ -19,6 +19,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
     steps:
       # Actions pinadas por SHA (supply chain); o comentário marca a versão.
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -63,6 +65,18 @@ jobs:
       - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: .
+
+      # Deploy para o Cloudflare Pages. Só roda quando o secret CLOUDFLARE_API_TOKEN
+      # está configurado — assim o build não quebra enquanto a migração não está pronta.
+      # wrangler (oficial da Cloudflare) é baixado via npx, fixado no major v3.
+      - name: Deploy para Cloudflare Pages
+        if: ${{ env.CF_API_TOKEN != '' }}
+        run: |
+          npx --yes wrangler@3 pages project create tcg-collector --production-branch=main 2>/dev/null || true
+          npx --yes wrangler@3 pages deploy . --project-name=tcg-collector --branch=main
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
   deploy:
     needs: build
