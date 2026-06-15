@@ -458,6 +458,8 @@
     const table = window.TCG_PRICING;
     const ref = cardId && table && (table[cardId] || table[basePricingId(cardId)]);
     if (ref) {
+      // Preço BR (MYP) tem prioridade sobre a referência internacional.
+      if (ref.b && ref.b.md > 0) { const v = convertMoney(ref.b.md, "BRL", cur); if (v != null) return { value: v, currency: cur, source: "myp", estimated: true }; }
       if (ref.u > 0) { const v = convertMoney(ref.u, "USD", cur); if (v != null) return { value: v, currency: cur, source: "ref", estimated: true }; }
       if (ref.e > 0) { const v = convertMoney(ref.e, "EUR", cur); if (v != null) return { value: v, currency: cur, source: "ref", estimated: true }; }
     }
@@ -548,8 +550,12 @@
       "market.min": "MÍN",
       "market.median": "MEDIANA",
       "market.max": "MÁX",
+      "market.us": "EUA · TCGplayer",
+      "market.eu": "Europa · Cardmarket",
+      "market.br": "Brasil",
+      "market.brSource": "MYP",
       "market.updated": "atualizado em {date}",
-      "market.source": "Fonte: TCGdex (Cardmarket / TCGplayer). R$ convertido pelo câmbio do dia.",
+      "market.source": "Fontes: TCGdex (TCGplayer/EUA e Cardmarket/Europa) e MYP (Brasil). Valores convertidos para a moeda escolhida pelo câmbio do dia.",
       "market.loading": "Carregando cotação…",
       "nav.portfolio": "Portfólio",
       "title.portfolio": "Portfólio - TCG Collector",
@@ -968,8 +974,12 @@
       "market.min": "MIN",
       "market.median": "MEDIAN",
       "market.max": "MAX",
+      "market.us": "USA · TCGplayer",
+      "market.eu": "Europe · Cardmarket",
+      "market.br": "Brazil",
+      "market.brSource": "MYP",
       "market.updated": "updated {date}",
-      "market.source": "Source: TCGdex (Cardmarket / TCGplayer). BRL converted at today's rate.",
+      "market.source": "Sources: TCGdex (TCGplayer/USA and Cardmarket/Europe) and MYP (Brazil). Converted to the chosen currency at today's rate.",
       "market.loading": "Loading quote…",
       "nav.portfolio": "Portfolio",
       "title.portfolio": "Portfolio - TCG Collector",
@@ -1854,32 +1864,66 @@
     return currency === "BRL" ? `R$ ${n}` : currency === "USD" ? `US$ ${n}` : `€ ${n}`;
   }
 
-  function marketCurrencyCard(currency, q) {
-    const cell = (label, key) => `<div class="market-cell${key === "med" ? " med" : ""}"><span>${label}</span><strong>${fmtMoney(currency, q[key])}</strong></div>`;
-    return `<div class="market-card"><span class="market-card-cur">${currency}</span><div class="market-cells">${cell(t("market.min"), "min")}${cell(t("market.median"), "med")}${cell(t("market.max"), "max")}</div></div>`;
+  // Converte um valor (em USD/EUR/BRL) para a moeda escolhida no site, usando o
+  // câmbio {USD, EUR} (BRL por unidade) buscado junto com a cotação.
+  function toChosenCurrency(value, srcCur, fx) {
+    if (!value) return null;
+    const cur = currentCurrency;
+    if (srcCur === cur) return value;
+    if (!fx) return null;
+    const brl = srcCur === "BRL" ? value : srcCur === "USD" ? value * (fx.USD || 0) : value * (fx.EUR || 0);
+    if (!brl) return null;
+    if (cur === "BRL") return brl;
+    const rate = cur === "USD" ? fx.USD : fx.EUR;
+    return rate ? brl / rate : null;
   }
 
+  // Um "card" de fonte (EUA / Europa / Brasil) com MÍN/MEDIANA/MÁX já na moeda
+  // escolhida no site. `source` é o rótulo (ex.: "EUA · TCGplayer").
+  function marketSourceCard(source, q) {
+    const cur = currentCurrency;
+    const cell = (label, key) => `<div class="market-cell${key === "med" ? " med" : ""}"><span>${label}</span><strong>${fmtMoney(cur, q[key])}</strong></div>`;
+    return `<div class="market-card"><span class="market-card-cur">${escapeHtml(source)}</span><div class="market-cells">${cell(t("market.min"), "min")}${cell(t("market.median"), "med")}${cell(t("market.max"), "max")}</div></div>`;
+  }
+
+  // Linha de um acabamento (não-foil/foil): EUA (TCGplayer/USD) e Europa
+  // (Cardmarket/EUR) são mercados distintos, então ficam em 2 cards — ambos
+  // convertidos para a moeda escolhida. (BR vem do MYP, à parte.)
   function marketFinishRow(label, finish, fx) {
     if (!finish) return "";
-    const usd = finish.usd;
-    const eur = finish.eur;
-    const conv = (q, rate) => (q && rate ? { min: q.min && q.min * rate, med: q.med && q.med * rate, max: q.max && q.max * rate } : null);
-    const brl = (usd && fx && fx.USD) ? conv(usd, fx.USD) : (eur && fx && fx.EUR ? conv(eur, fx.EUR) : null);
+    const has = (q) => q && (q.min || q.med || q.max);
+    const conv = (q, src) => (q ? { min: toChosenCurrency(q.min, src, fx), med: toChosenCurrency(q.med, src, fx), max: toChosenCurrency(q.max, src, fx) } : null);
+    const us = conv(finish.usd, "USD");
+    const eu = conv(finish.eur, "EUR");
     const cards = [
-      brl ? marketCurrencyCard("BRL", brl) : "",
-      usd ? marketCurrencyCard("USD", usd) : "",
-      eur ? marketCurrencyCard("EUR", eur) : ""
+      has(us) ? marketSourceCard(t("market.us"), us) : "",
+      has(eu) ? marketSourceCard(t("market.eu"), eu) : ""
     ].join("");
+    if (!cards) return "";
     return `<div class="market-finish"><span class="market-finish-label">${escapeHtml(label)}</span><div class="market-cards">${cards}</div></div>`;
   }
 
+  // Bloco "Brasil (MYP)" a partir do preço BR salvo no catálogo (TCG_PRICING.b =
+  // { mn, md, mx } em BRL, vindo do sync do MYP). Vazio se não houver.
+  function marketBrRow(card, fx) {
+    const table = window.TCG_PRICING;
+    if (!table) return "";
+    const ref = (card && card.id && (table[card.id] || table[basePricingId(card.id)])) || null;
+    const b = ref && ref.b;
+    if (!b || !(b.mn || b.md || b.mx)) return "";
+    const q = { min: toChosenCurrency(b.mn, "BRL", fx), med: toChosenCurrency(b.md, "BRL", fx), max: toChosenCurrency(b.mx, "BRL", fx) };
+    return `<div class="market-finish"><span class="market-finish-label">${escapeHtml(t("market.br"))}</span><div class="market-cards">${marketSourceCard(t("market.brSource"), q)}</div></div>`;
+  }
+
   function marketQuoteHtml(pricing, fx, card) {
-    const data = marketQuoteData(pricing, card);
-    if (!data.nonfoil && !data.foil) return "";
+    const data = pricing ? marketQuoteData(pricing, card) : { nonfoil: null, foil: null, updated: "" };
+    const tcgdex = marketFinishRow(t("market.nonfoil"), data.nonfoil, fx) + marketFinishRow(t("market.foil"), data.foil, fx);
+    const br = marketBrRow(card, fx);
+    if (!tcgdex && !br) return "";
     const updated = data.updated ? `<span class="market-updated">${escapeHtml(t("market.updated", { date: data.updated }))}</span>` : "";
     return `<div class="market-quote-head"><h3>${escapeHtml(t("market.title"))}</h3>${updated}</div>`
-      + marketFinishRow(t("market.nonfoil"), data.nonfoil, fx)
-      + marketFinishRow(t("market.foil"), data.foil, fx)
+      + tcgdex
+      + br
       + `<p class="market-source">${escapeHtml(t("market.source"))}</p>`;
   }
 
@@ -1889,7 +1933,7 @@
     if (!section) return;
     const [pricing, fx] = await Promise.all([fetchCardPricing(card), fetchFxRatesBRL()]);
     if (!section.isConnected) return;
-    const html = pricing ? marketQuoteHtml(pricing, fx, card) : "";
+    const html = marketQuoteHtml(pricing, fx, card);
     if (html) {
       section.innerHTML = html;
       section.hidden = false;
