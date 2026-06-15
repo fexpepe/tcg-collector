@@ -2844,6 +2844,10 @@ a.progress-row:hover {
   align-items: center;
   gap: 7px;
 }
+.preview-year {
+  font-weight: 700;
+  color: var(--muted);
+}
 
 /* Filtro mestre (origem dos sets) */
 .master-filter {
