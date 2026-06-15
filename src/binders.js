@@ -19,6 +19,12 @@
   const mode = root.dataset.binderMode === "sale" ? "sale" : "collection";
   const isSale = mode === "sale";
 
+  // Stores da coleção/desejo/preços: usados pelo resumo (Tenho/Faltando),
+  // pelo "marcar tudo" e pela busca por coleção/desejo no editor.
+  const ownedStore = shared.createCollectionStore();
+  const wishlistStore = shared.createWishlistStore();
+  const pricesStore = shared.createPriceStore();
+
   const GRIDS = {
     "2x2": { cols: 2, rows: 2 },
     "3x3": { cols: 3, rows: 3 },
@@ -183,6 +189,8 @@
       id: uid("b_"),
       name: name || t("binders.new"),
       subtitle: "",
+      description: "",
+      color: "",
       grid: GRIDS[grid] ? grid : DEFAULT_GRID,
       pages: 1,
       slots: Array(slotCount(grid)).fill(null),
@@ -235,6 +243,49 @@
     save();
   }
 
+  // Define o número de páginas direto (campo na configuração). Encolher apaga
+  // as páginas finais e as fotos das cartas delas.
+  function setPages(binder, n) {
+    n = Math.max(1, Math.min(200, Math.floor(Number(n)) || 1));
+    const per = slotCount(binder.grid);
+    const newTotal = per * n;
+    if (Array.isArray(binder.slots) && binder.slots.length > newTotal) {
+      binder.slots.slice(newTotal).forEach((slot) => { if (slot && slot.photoId) deletePhoto(slot.photoId); });
+    }
+    binder.pages = n;
+    normalizeSlots(binder);
+    setCurrentPage(binder, currentPage(binder));
+    binder.updatedAt = Date.now();
+    save();
+  }
+
+  // Marca todas as cartas do binder (slots com cardId) como tendo/não tendo na
+  // coleção. Slots de foto/rótulo livre são ignorados (não têm carta vinculada).
+  function markAll(binder, owned) {
+    (binder.slots || []).forEach((slot) => {
+      if (!slot || !slot.cardId) return;
+      const variant = slot.variant || DEFAULT_CONDITION;
+      const has = ownedStore.variantTotal(slot.cardId, variant) > 0;
+      if (owned && !has) ownedStore.toggleVariant(slot.cardId, variant);
+      else if (!owned && has) ownedStore.toggleVariant(slot.cardId, variant);
+    });
+  }
+
+  // Resumo do binder: páginas, cartas (slots com cartas do catálogo), quantas
+  // você tem e quantas faltam, com o percentual de progresso.
+  function binderStats(binder) {
+    const cardSlots = (binder.slots || []).filter((slot) => slot && slot.cardId);
+    const cards = cardSlots.length;
+    const owned = cardSlots.filter((slot) => ownedStore.has(slot.cardId)).length;
+    return {
+      pages: pageCount(binder),
+      cards,
+      owned,
+      missing: cards - owned,
+      pct: cards ? Math.round((owned / cards) * 100) : 0
+    };
+  }
+
   // Arrastar e soltar: troca o conteúdo dos slots. Se o destino estiver vazio,
   // vira uma simples movimentação (a origem fica vazia).
   function moveSlot(binder, from, to) {
@@ -271,14 +322,14 @@
   let wishlistIds = new Set();
   function refreshUserSources() {
     try {
-      const coll = shared.createCollectionStore().toObject();
+      const coll = ownedStore.toObject();
       collectionIds = new Set(Object.keys(coll).filter((id) => {
         const variants = coll[id] || {};
         return Object.keys(variants).some((v) => Object.values(variants[v] || {}).some((q) => q > 0));
       }));
     } catch (error) { collectionIds = new Set(); }
     try {
-      const wish = shared.createWishlistStore().toObject();
+      const wish = wishlistStore.toObject();
       wishlistIds = new Set(Object.keys(wish).filter((id) => Array.isArray(wish[id]) && wish[id].length));
     } catch (error) { wishlistIds = new Set(); }
   }
@@ -341,8 +392,11 @@
       <button type="button" class="secondary binder-page-add" data-page-add>+ ${escapeHtml(t("binders.page.add"))}</button>
       ${pages > 1 ? `<button type="button" class="secondary binder-page-remove" data-page-remove aria-label="${escapeAttribute(t("binders.page.remove"))}">${escapeHtml(t("binders.page.remove"))}</button>` : ""}`;
 
+    const stats = binderStats(binder);
+    const colorStyle = binder.color ? ` style="--binder-color:${escapeAttribute(binder.color)}"` : "";
+
     return `
-      <article class="binder" data-binder-id="${escapeAttribute(binder.id)}">
+      <article class="binder${binder.color ? " has-color" : ""}" data-binder-id="${escapeAttribute(binder.id)}"${colorStyle}>
         <header class="binder-head">
           <div class="binder-titles">
             <input class="binder-name-input" type="text" value="${escapeAttribute(binder.name)}"
@@ -356,12 +410,75 @@
               <select data-binder-grid>${gridOptionsHtml(binder.grid)}</select>
             </label>
             ${pageControls}
+            <button type="button" class="secondary" data-binder-settings aria-expanded="false">${escapeHtml(t("binders.settings"))}</button>
             <button type="button" class="secondary" data-binder-export>${escapeHtml(t("binders.exportImage"))}</button>
             <button type="button" class="secondary binder-delete" data-binder-delete>${escapeHtml(t("binders.delete"))}</button>
           </div>
         </header>
+        <div class="binder-summary">
+          ${statCell(stats.pages, t("binders.stat.pages"))}
+          ${statCell(stats.cards, t("binders.stat.cards"))}
+          ${statCell(stats.owned, t("binders.stat.owned"), "is-owned")}
+          ${statCell(stats.missing, t("binders.stat.missing"), "is-missing")}
+          <div class="binder-progress">
+            <div class="binder-progress-head"><span>${escapeHtml(t("binders.stat.progress"))}</span><strong>${stats.pct}%</strong></div>
+            <div class="progress-bar"><span style="width:${stats.pct}%"></span></div>
+          </div>
+        </div>
+        ${binderSettingsHtml(binder)}
         <div class="binder-grid" style="--cols:${g.cols}">${slots}</div>
       </article>`;
+  }
+
+  function statCell(value, label, cls) {
+    return `<div class="binder-stat${cls ? " " + cls : ""}"><strong>${escapeHtml(String(value))}</strong><span>${escapeHtml(label)}</span></div>`;
+  }
+
+  // Painel de configurações (recolhível): detalhes, marcar tudo e imprimir.
+  function binderSettingsHtml(binder) {
+    const printOpts = [
+      ["images", "binders.print.optImages"], ["price", "binders.print.optPrice"],
+      ["set", "binders.print.optSet"], ["variant", "binders.print.optVariant"],
+      ["owned", "binders.print.optOwned"]
+    ].map(([key, k]) =>
+      `<label class="binder-print-opt"><input type="checkbox" data-print-opt="${key}" checked> ${escapeHtml(t(k))}</label>`
+    ).join("");
+
+    return `
+      <div class="binder-settings" hidden>
+        <div class="binder-settings-section">
+          <h4>${escapeHtml(t("binders.settings.details"))}</h4>
+          <label class="binder-field">${escapeHtml(t("binders.settings.description"))}
+            <input type="text" data-set-description value="${escapeAttribute(binder.description || "")}" placeholder="${escapeAttribute(t("binders.settings.descriptionPlaceholder"))}">
+          </label>
+          <div class="binder-field-row">
+            <label class="binder-field binder-field-narrow">${escapeHtml(t("binders.settings.pages"))}
+              <input type="number" min="1" max="200" data-set-pages value="${pageCount(binder)}">
+            </label>
+            <label class="binder-field binder-field-narrow">${escapeHtml(t("binders.settings.color"))}
+              <input type="color" data-set-color value="${escapeAttribute(binder.color || "#39c79b")}">
+            </label>
+            <button type="button" class="secondary" data-settings-save>${escapeHtml(t("binders.settings.save"))}</button>
+          </div>
+        </div>
+        <div class="binder-settings-section">
+          <h4>${escapeHtml(t("binders.settings.whole"))}</h4>
+          <div class="binder-field-row">
+            <button type="button" class="secondary" data-mark-all="owned">${escapeHtml(t("binders.settings.markOwned"))}</button>
+            <button type="button" class="secondary" data-mark-all="missing">${escapeHtml(t("binders.settings.markMissing"))}</button>
+          </div>
+        </div>
+        <div class="binder-settings-section">
+          <h4>${escapeHtml(t("binders.print.title"))}</h4>
+          <div class="binder-print-layouts">
+            <label class="binder-print-opt"><input type="radio" name="print-layout-${escapeAttribute(binder.id)}" data-print-layout value="grid" checked> ${escapeHtml(t("binders.print.grid"))}</label>
+            <label class="binder-print-opt"><input type="radio" name="print-layout-${escapeAttribute(binder.id)}" data-print-layout value="pictures"> ${escapeHtml(t("binders.print.pictures"))}</label>
+            <label class="binder-print-opt"><input type="radio" name="print-layout-${escapeAttribute(binder.id)}" data-print-layout value="checklist"> ${escapeHtml(t("binders.print.checklist"))}</label>
+          </div>
+          <div class="binder-print-opts">${printOpts}</div>
+          <button type="button" class="secondary" data-binder-print>${escapeHtml(t("binders.print.go"))}</button>
+        </div>
+      </div>`;
   }
 
   function slotHtml(slot, index) {
@@ -830,6 +947,127 @@
   }
 
   // ---------------------------------------------------------------------------
+  // Imprimir binder: abre uma janela pronta para impressão (3 layouts).
+  // ---------------------------------------------------------------------------
+  function slotPhotoDataUrl(photoId) {
+    return getPhotoBlob(photoId).then((blob) => {
+      if (!blob) return "";
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => resolve("");
+        reader.readAsDataURL(blob);
+      });
+    }).catch(() => "");
+  }
+
+  async function resolveSlotForPrint(slot) {
+    if (!slot) return null;
+    const item = { name: "", code: "", set: "", variant: "", owned: false, price: 0, img: "" };
+    if (slot.cardId) {
+      const card = cardsById.get(slot.cardId);
+      item.name = slot.name || (card ? card.name : "");
+      item.code = slot.code || (card ? cardCode(card) : "");
+      item.set = card ? card.set : "";
+      item.variant = slot.variant || "";
+      item.owned = ownedStore.has(slot.cardId);
+      const pv = pricesStore.valueFor(slot.cardId, slot.variant || DEFAULT_CONDITION, DEFAULT_CONDITION);
+      item.price = pv && pv.value ? pv.value : 0;
+      item.img = slot.image || (card ? cardImageSources(card).url : "");
+    } else if (slot.label) {
+      item.name = slot.label;
+    }
+    if (slot.photoId) item.img = await slotPhotoDataUrl(slot.photoId);
+    return item;
+  }
+
+  async function printBinder(binder, layout, opts, button) {
+    const label = button ? button.textContent : "";
+    if (button) { button.disabled = true; button.textContent = "…"; }
+    const esc = escapeHtml;
+    try {
+      await ensureCatalog();
+      const g = GRIDS[binder.grid] || GRIDS[DEFAULT_GRID];
+      const per = slotCount(binder.grid);
+      let body = "";
+
+      if (layout === "grid") {
+        for (let p = 0; p < pageCount(binder); p++) {
+          const resolved = await Promise.all(binder.slots.slice(p * per, p * per + per).map(resolveSlotForPrint));
+          const cells = resolved.map((item) => {
+            if (!item) return `<div class="cell empty"></div>`;
+            const img = opts.images && item.img ? `<img src="${item.img}" alt="">` : "";
+            const lines = [`<div class="nm">${esc(item.name)}${item.code ? ` <span class="cd">${esc(item.code)}</span>` : ""}</div>`];
+            if (opts.set && item.set) lines.push(`<div class="sm">${esc(item.set)}</div>`);
+            if (opts.variant && item.variant) lines.push(`<div class="sm">${esc(item.variant)}</div>`);
+            if (opts.price && item.price) lines.push(`<div class="sm">R$ ${esc(fmtPrice(item.price))}</div>`);
+            if (opts.owned) lines.push(`<div class="ow ${item.owned ? "y" : "n"}">${item.owned ? "✓" : "✗"}</div>`);
+            return `<div class="cell">${img}<div class="meta">${lines.join("")}</div></div>`;
+          }).join("");
+          body += `<section class="page" style="--cols:${g.cols}">${cells}</section>`;
+        }
+      } else {
+        const all = (await Promise.all(binder.slots.map(resolveSlotForPrint))).filter(Boolean);
+        if (layout === "pictures") {
+          body = `<div class="plist">${all.map((item) => {
+            const img = opts.images && item.img ? `<img src="${item.img}" alt="">` : "";
+            const sub = [];
+            if (opts.set && item.set) sub.push(esc(item.set));
+            if (opts.variant && item.variant) sub.push(esc(item.variant));
+            if (opts.price && item.price) sub.push("R$ " + esc(fmtPrice(item.price)));
+            if (opts.owned) sub.push(item.owned ? t("binders.print.ownedYes") : t("binders.print.ownedNo"));
+            return `<div class="prow">${img}<div><strong>${esc(item.name)}</strong>${item.code ? ` <span class="cd">${esc(item.code)}</span>` : ""}<div class="sm">${sub.join(" · ")}</div></div></div>`;
+          }).join("")}</div>`;
+        } else { // checklist
+          const cols = [];
+          if (opts.owned) cols.push({ h: "✓", get: (i) => i.owned ? "✓" : "" });
+          cols.push({ h: t("binders.print.colName"), get: (i) => esc(i.name) });
+          cols.push({ h: t("binders.print.colCode"), get: (i) => esc(i.code) });
+          if (opts.set) cols.push({ h: t("binders.print.colSet"), get: (i) => esc(i.set) });
+          if (opts.variant) cols.push({ h: t("binders.print.colVariant"), get: (i) => esc(i.variant) });
+          if (opts.price) cols.push({ h: t("binders.print.colPrice"), get: (i) => i.price ? "R$ " + esc(fmtPrice(i.price)) : "" });
+          const head = `<tr>${cols.map((c) => `<th>${esc(c.h)}</th>`).join("")}</tr>`;
+          const rows = all.map((item) => `<tr>${cols.map((c) => `<td>${c.get(item)}</td>`).join("")}</tr>`).join("");
+          body = `<table class="checklist">${head}${rows}</table>`;
+        }
+      }
+
+      const styles = `
+        * { box-sizing: border-box; }
+        body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color: #111; margin: 16px; }
+        h1 { font-size: 20px; margin: 0 0 4px; }
+        .desc { color: #555; margin: 0 0 16px; }
+        .page { display: grid; grid-template-columns: repeat(var(--cols,3), 1fr); gap: 8px; margin-bottom: 16px; ${opts.images ? "" : ""} }
+        .cell { border: 1px solid #ddd; border-radius: 6px; padding: 6px; text-align: center; min-height: 60px; }
+        .cell.empty { border-style: dashed; }
+        .cell img { width: 100%; height: auto; border-radius: 4px; }
+        .meta { font-size: 11px; }
+        .nm { font-weight: 700; } .cd { color: #777; font-weight: 400; }
+        .sm { color: #555; font-size: 10px; }
+        .ow.y { color: #1a8a5a; font-weight: 700; } .ow.n { color: #b33; }
+        .plist .prow { display: flex; gap: 10px; align-items: center; border-bottom: 1px solid #eee; padding: 6px 0; }
+        .plist img { width: 48px; height: auto; border-radius: 4px; }
+        .checklist { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .checklist th, .checklist td { border: 1px solid #ddd; padding: 4px 8px; text-align: left; }
+        .checklist th { background: #f3f3f3; }
+        @media print { ${opts.onePagePerPrint !== false && layout === "grid" ? ".page { break-after: page; }" : ""} }
+      `;
+      const html = `<!doctype html><html><head><meta charset="utf-8"><title>${esc(binder.name || "Binder")}</title><style>${styles}</style></head><body><h1>${esc(binder.name || "")}</h1>${binder.description ? `<p class="desc">${esc(binder.description)}</p>` : ""}${body}</body></html>`;
+
+      const win = window.open("", "_blank");
+      if (!win) { alert(t("binders.print.blocked")); return; }
+      win.document.open();
+      win.document.write(html);
+      win.document.close();
+      win.onload = () => setTimeout(() => { win.focus(); win.print(); }, 300);
+    } catch (error) {
+      alert(t("binders.print.error"));
+    } finally {
+      if (button) { button.disabled = false; button.textContent = label; }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
   // Eventos
   // ---------------------------------------------------------------------------
   if (elements.gridSelect) elements.gridSelect.innerHTML = gridOptionsHtml(DEFAULT_GRID);
@@ -880,6 +1118,55 @@
     if (pageRemove) {
       const binder = getBinder(pageRemove.closest("[data-binder-id]").dataset.binderId);
       if (binder && confirm(t("binders.page.removeConfirm"))) { removePage(binder, currentPage(binder)); render(); }
+      return;
+    }
+    // Abre/fecha o painel de configurações.
+    const settingsBtn = event.target.closest("[data-binder-settings]");
+    if (settingsBtn) {
+      const panel = settingsBtn.closest("[data-binder-id]").querySelector(".binder-settings");
+      if (panel) {
+        const open = panel.hidden;
+        panel.hidden = !open;
+        settingsBtn.setAttribute("aria-expanded", String(open));
+      }
+      return;
+    }
+    // Salva detalhes (descrição, nº de páginas, cor).
+    const saveBtn = event.target.closest("[data-settings-save]");
+    if (saveBtn) {
+      const article = saveBtn.closest("[data-binder-id]");
+      const binder = getBinder(article.dataset.binderId);
+      if (binder) {
+        const desc = article.querySelector("[data-set-description]");
+        const pagesInput = article.querySelector("[data-set-pages]");
+        const colorInput = article.querySelector("[data-set-color]");
+        if (desc) binder.description = desc.value.trim();
+        if (colorInput) binder.color = colorInput.value;
+        if (pagesInput) setPages(binder, pagesInput.value);
+        binder.updatedAt = Date.now();
+        save();
+        render();
+      }
+      return;
+    }
+    // Marcar todas / nenhuma como tenho.
+    const markBtn = event.target.closest("[data-mark-all]");
+    if (markBtn) {
+      const binder = getBinder(markBtn.closest("[data-binder-id]").dataset.binderId);
+      if (binder) { markAll(binder, markBtn.dataset.markAll === "owned"); render(); }
+      return;
+    }
+    // Imprimir binder.
+    const printBtn = event.target.closest("[data-binder-print]");
+    if (printBtn) {
+      const article = printBtn.closest("[data-binder-id]");
+      const binder = getBinder(article.dataset.binderId);
+      if (binder) {
+        const layoutEl = article.querySelector("[data-print-layout]:checked");
+        const opts = {};
+        article.querySelectorAll("[data-print-opt]").forEach((cb) => { opts[cb.dataset.printOpt] = cb.checked; });
+        printBinder(binder, layoutEl ? layoutEl.value : "grid", opts, printBtn);
+      }
       return;
     }
     const exportBtn = event.target.closest("[data-binder-export]");
