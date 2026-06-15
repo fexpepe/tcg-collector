@@ -3,6 +3,11 @@ name: Build e deploy (Cloudflare Pages)
 on:
   push:
     # main -> produção; qualquer outra branch -> preview (URL própria).
+    # Mudanças só de documentação não disparam build/deploy.
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+      - "LICENSE"
   schedule:
     # toda segunda às 06:00 UTC — atualiza o catálogo com sets novos (na main).
     - cron: "0 6 * * 1"
