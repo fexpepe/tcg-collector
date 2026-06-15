@@ -62,6 +62,11 @@
   const PHOTO_STORE = "binderPhotos";
   let dbPromise = null;
   const urlCache = new Map();
+  // IndexedDB pode faltar (modo privado em alguns navegadores). Detecta cedo
+  // para esconder os controles de foto em vez de falhar no upload.
+  const PHOTOS_ENABLED = (() => {
+    try { return typeof indexedDB !== "undefined" && !!indexedDB; } catch (error) { return false; }
+  })();
 
   function openDB() {
     if (dbPromise) return dbPromise;
@@ -70,6 +75,7 @@
       try {
         req = indexedDB.open(DB_NAME, DB_VERSION);
       } catch (error) {
+        dbPromise = null; // não envenena: permite nova tentativa depois
         reject(error);
         return;
       }
@@ -78,7 +84,7 @@
         if (!db.objectStoreNames.contains(PHOTO_STORE)) db.createObjectStore(PHOTO_STORE);
       };
       req.onsuccess = () => resolve(req.result);
-      req.onerror = () => reject(req.error);
+      req.onerror = () => { dbPromise = null; reject(req.error); };
     });
     return dbPromise;
   }
@@ -120,6 +126,12 @@
       return url;
     }).catch(() => "");
   }
+  // Revoga todos os object URLs ao sair da página (evita acúmulo de Blobs em
+  // memória em sessões longas com muitas fotos).
+  window.addEventListener("pagehide", () => {
+    urlCache.forEach((url) => URL.revokeObjectURL(url));
+    urlCache.clear();
+  });
 
   // Redimensiona/comprime a foto enviada para WebP antes de guardar.
   function compressImage(file) {
@@ -168,10 +180,28 @@
   delete data.collection;
   delete data.sale;
   data.binders.forEach((b) => { if (b.type !== "sale") b.type = "collection"; });
-  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+  function save() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch (error) {
+      // QuotaExceededError: avisa em vez de perder dados em silêncio.
+      alert(t("binders.storageFull"));
+    }
+  }
   save(); // persiste a migração para o novo formato unificado
   function list() { return data.binders; }
   function getBinder(id) { return list().find((b) => b.id === id); }
+  // Acha o binder dono de um elemento de evento (delegação). Null-safe: devolve
+  // null se não houver [data-binder-id] acima do elemento.
+  function eventBinder(el) {
+    const article = el && el.closest("[data-binder-id]");
+    return article ? getBinder(article.dataset.binderId) : null;
+  }
+  // Apaga as fotos (IndexedDB) de um conjunto de slots — usado ao encolher
+  // grade/páginas e ao remover binder/página (evita blobs órfãos).
+  function deleteSlotsPhotos(slots) {
+    (slots || []).forEach((slot) => { if (slot && slot.photoId) deletePhoto(slot.photoId); });
+  }
 
   // Um binder tem N páginas, cada uma com slotCount(grid) slots. Os slots ficam
   // num único array achatado (length = pages × slotCount), indexado globalmente.
@@ -221,7 +251,7 @@
   function removeBinder(id) {
     const binder = getBinder(id);
     if (!binder) return;
-    (binder.slots || []).forEach((slot) => { if (slot && slot.photoId) deletePhoto(slot.photoId); });
+    deleteSlotsPhotos(binder.slots);
     data.binders = list().filter((b) => b.id !== id);
     pageState.delete(id);
     save();
@@ -250,7 +280,7 @@
     const newTotal = slotCount(grid) * pageCount(binder);
     // Ao encolher, apaga as fotos dos slots que serão descartados (sem órfãos).
     if (Array.isArray(binder.slots) && binder.slots.length > newTotal) {
-      binder.slots.slice(newTotal).forEach((slot) => { if (slot && slot.photoId) deletePhoto(slot.photoId); });
+      deleteSlotsPhotos(binder.slots.slice(newTotal));
     }
     binder.grid = grid;
     normalizeSlots(binder);
@@ -272,7 +302,7 @@
     if (pageCount(binder) <= 1) return;
     const per = slotCount(binder.grid);
     const start = pageIdx * per;
-    binder.slots.slice(start, start + per).forEach((slot) => { if (slot && slot.photoId) deletePhoto(slot.photoId); });
+    deleteSlotsPhotos(binder.slots.slice(start, start + per));
     binder.slots.splice(start, per);
     binder.pages = pageCount(binder) - 1;
     setCurrentPage(binder, Math.min(pageIdx, pageCount(binder) - 1));
@@ -287,7 +317,7 @@
     const per = slotCount(binder.grid);
     const newTotal = per * n;
     if (Array.isArray(binder.slots) && binder.slots.length > newTotal) {
-      binder.slots.slice(newTotal).forEach((slot) => { if (slot && slot.photoId) deletePhoto(slot.photoId); });
+      deleteSlotsPhotos(binder.slots.slice(newTotal));
     }
     binder.pages = n;
     normalizeSlots(binder);
@@ -739,7 +769,7 @@
 
           ${draft.cardId || (!draft.cardId && draft.label) ? `<p class="binder-editor-selected">${escapeHtml(draft.cardId ? cardLabelFromSlot(draft) : (draft.label || ""))}</p>` : ""}
 
-          ${(isSale || tab === "free") ? `<div class="binder-editor-photo-row">
+          ${(PHOTOS_ENABLED && (isSale || tab === "free")) ? `<div class="binder-editor-photo-row">
             <span class="binder-editor-photo-wrap">${photoState}</span>
             <div class="binder-editor-photo-actions">
               <label class="secondary file-button">
@@ -891,6 +921,10 @@
 
     // Seleção múltipla (abas de carta): preenche os slots a partir do clicado.
     if (editing.tab !== "free" && editing.picks && editing.picks.length) {
+      // Descarta foto pendente desta sessão (as cartas escolhidas a substituem).
+      if (editing.draft.photoId && editing.draft.photoId !== editing.originalPhotoId) {
+        deletePhoto(editing.draft.photoId);
+      }
       placeCardsFromIndex(binder, editing.index, editing.picks);
       editing = null;
       if (modal) modal.remove();
@@ -1225,7 +1259,7 @@
           const resolved = await Promise.all(binder.slots.slice(p * per, p * per + per).map(resolveSlotForPrint));
           const cells = resolved.map((item) => {
             if (!item) return `<div class="card empty"></div>`;
-            if (item.img) return `<div class="card"><img src="${item.img}" alt=""></div>`;
+            if (item.img) return `<div class="card"><img src="${escapeAttribute(item.img)}" alt=""></div>`;
             return `<div class="card"><span class="freelbl">${esc(item.name)}</span></div>`;
           }).join("");
           body += `<section class="sheet"><div class="rgrid">${cells}</div></section>`;
@@ -1246,7 +1280,7 @@
           const resolved = await Promise.all(binder.slots.slice(p * per, p * per + per).map(resolveSlotForPrint));
           const cells = resolved.map((item) => {
             if (!item) return `<div class="cell empty"></div>`;
-            const img = opts.images && item.img ? `<img src="${item.img}" alt="">` : "";
+            const img = opts.images && item.img ? `<img src="${escapeAttribute(item.img)}" alt="">` : "";
             const lines = [`<div class="nm">${esc(item.name)}${item.code ? ` <span class="cd">${esc(item.code)}</span>` : ""}</div>`];
             if (opts.set && item.set) lines.push(`<div class="sm">${esc(item.set)}</div>`);
             if (opts.variant && item.variant) lines.push(`<div class="sm">${esc(item.variant)}</div>`);
@@ -1260,7 +1294,7 @@
         const all = (await Promise.all(binder.slots.map(resolveSlotForPrint))).filter(Boolean);
         if (layout === "pictures") {
           body = `<div class="plist">${all.map((item) => {
-            const img = opts.images && item.img ? `<img src="${item.img}" alt="">` : "";
+            const img = opts.images && item.img ? `<img src="${escapeAttribute(item.img)}" alt="">` : "";
             const sub = [];
             if (opts.set && item.set) sub.push(esc(item.set));
             if (opts.variant && item.variant) sub.push(esc(item.variant));
@@ -1300,7 +1334,7 @@
         .checklist { width: 100%; border-collapse: collapse; font-size: 12px; }
         .checklist th, .checklist td { border: 1px solid #ddd; padding: 4px 8px; text-align: left; }
         .checklist th { background: #f3f3f3; }
-        @media print { ${opts.onePagePerPrint !== false && layout === "grid" && !realGrid ? ".page { break-after: page; }" : ""} }
+        @media print { ${layout === "grid" && !realGrid ? ".page { break-after: page; }" : ""} }
         ${extraStyles}
       `;
       const header = showHeader
@@ -1385,7 +1419,7 @@
     const ownToggle = event.target.closest("[data-slot-own]");
     if (ownToggle) {
       event.stopPropagation();
-      const binder = getBinder(ownToggle.closest("[data-binder-id]").dataset.binderId);
+      const binder = eventBinder(ownToggle);
       const slot = binder && binder.slots[Number(ownToggle.dataset.slotOwn)];
       if (slot && slot.cardId) {
         const variant = slot.variant || DEFAULT_CONDITION;
@@ -1411,32 +1445,32 @@
     // Navegação de páginas
     const pagePrev = event.target.closest("[data-page-prev]");
     if (pagePrev) {
-      const binder = getBinder(pagePrev.closest("[data-binder-id]").dataset.binderId);
+      const binder = eventBinder(pagePrev);
       if (binder) { setCurrentPage(binder, currentPage(binder) - 1); render(); }
       return;
     }
     const pageNext = event.target.closest("[data-page-next]");
     if (pageNext) {
-      const binder = getBinder(pageNext.closest("[data-binder-id]").dataset.binderId);
+      const binder = eventBinder(pageNext);
       if (binder) { setCurrentPage(binder, currentPage(binder) + 1); render(); }
       return;
     }
     const pageAdd = event.target.closest("[data-page-add]");
     if (pageAdd) {
-      const binder = getBinder(pageAdd.closest("[data-binder-id]").dataset.binderId);
+      const binder = eventBinder(pageAdd);
       if (binder) { addPage(binder); render(); }
       return;
     }
     const pageRemove = event.target.closest("[data-page-remove]");
     if (pageRemove) {
-      const binder = getBinder(pageRemove.closest("[data-binder-id]").dataset.binderId);
+      const binder = eventBinder(pageRemove);
       if (binder && confirm(t("binders.page.removeConfirm"))) { removePage(binder, currentPage(binder)); render(); }
       return;
     }
     // Troca de aba (Cartas | Resumo | Editar | Imprimir).
     const tabBtn = event.target.closest("[data-binder-tab-btn]");
     if (tabBtn) {
-      const binder = getBinder(tabBtn.closest("[data-binder-id]").dataset.binderId);
+      const binder = eventBinder(tabBtn);
       if (binder) { setTab(binder, tabBtn.dataset.binderTabBtn); render(); }
       return;
     }
@@ -1461,7 +1495,7 @@
     // Marcar todas / nenhuma como tenho.
     const markBtn = event.target.closest("[data-mark-all]");
     if (markBtn) {
-      const binder = getBinder(markBtn.closest("[data-binder-id]").dataset.binderId);
+      const binder = eventBinder(markBtn);
       if (binder) { markAll(binder, markBtn.dataset.markAll === "owned"); render(); }
       return;
     }
@@ -1495,7 +1529,7 @@
   elements.list.addEventListener("change", (event) => {
     const gridSelect = event.target.closest("[data-binder-grid]");
     if (gridSelect) {
-      const binder = getBinder(gridSelect.closest("[data-binder-id]").dataset.binderId);
+      const binder = eventBinder(gridSelect);
       if (binder) { setGrid(binder, gridSelect.value); render(); }
     }
   });
@@ -1558,13 +1592,13 @@
   elements.list.addEventListener("blur", (event) => {
     const renameInput = event.target.closest("[data-binder-rename]");
     if (renameInput) {
-      const binder = getBinder(renameInput.closest("[data-binder-id]").dataset.binderId);
+      const binder = eventBinder(renameInput);
       if (binder) { binder.name = renameInput.value.trim() || t("binders.new"); binder.updatedAt = Date.now(); save(); }
       return;
     }
     const subtitleInput = event.target.closest("[data-binder-subtitle]");
     if (subtitleInput) {
-      const binder = getBinder(subtitleInput.closest("[data-binder-id]").dataset.binderId);
+      const binder = eventBinder(subtitleInput);
       if (binder) { binder.subtitle = subtitleInput.value.trim(); binder.updatedAt = Date.now(); save(); }
     }
   }, true);

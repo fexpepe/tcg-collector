@@ -1,6 +1,6 @@
 (function () {
   const shared = window.TCGShared;
-  const { addOptions, detailUrl, unique, normalize, escapeHtml, escapeAttribute, speciesName, debounce, t, tn, localizedImg } = shared;
+  const { addOptions, detailUrl, unique, normalize, escapeHtml, escapeAttribute, speciesName, debounce, t, tn, localizedImg, toRoman } = shared;
 
   let cards = [];
   let cardsById = new Map();
@@ -238,7 +238,11 @@
   // Pokédex nacional completa: uma entrada por espécie em ordem de número.
   // TCG_POKEMON_NAMES garante as 1025 espécies e o nome canônico; os cardIds
   // por espécie vêm do índice (sem precisar das cartas em si).
+  // Invariante após o init (depende só de indexes.pokedex + TCG_POKEMON_NAMES):
+  // memoiza para não reconstruir o Map+sort de ~1000 espécies a cada tecla.
+  let pokedexEntriesCache = null;
   function pokedexEntries() {
+    if (pokedexEntriesCache) return pokedexEntriesCache;
     const byDex = new Map();
 
     (indexes.pokedex || []).forEach((group) => {
@@ -256,7 +260,8 @@
       else byDex.set(dexId, { dexId, name, cardIds: [] });
     });
 
-    return Array.from(byDex.values()).sort((a, b) => a.dexId - b.dexId);
+    pokedexEntriesCache = Array.from(byDex.values()).sort((a, b) => a.dexId - b.dexId);
+    return pokedexEntriesCache;
   }
 
   // Espécie aparece se os filtros (geração/tipo) batem e, havendo busca, se o
@@ -603,10 +608,6 @@
     return a.name.localeCompare(b.name);
   }
 
-  function toRoman(value) {
-    const numerals = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
-    return numerals[Number(value)] || String(value);
-  }
 
   // Data de lançamento do set: badge compacto (mês/ano) e tooltip completo.
   function formatReleaseDate(value, style) {

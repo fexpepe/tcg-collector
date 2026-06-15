@@ -1,6 +1,6 @@
 (function () {
   const shared = window.TCGShared;
-  const { addOptions, unique, normalize, escapeHtml, escapeAttribute, speciesName, debounce, t, tn, localizedImg } = shared;
+  const { addOptions, unique, normalize, escapeHtml, escapeAttribute, speciesName, debounce, t, tn, localizedImg, toRoman } = shared;
 
   let cards = [];
   let cardsById = new Map();
@@ -349,10 +349,6 @@
       .join(" ");
   }
 
-  function toRoman(value) {
-    const numerals = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
-    return numerals[Number(value)] || String(value);
-  }
 
   function hydrateFilters() {
     addOptions(elements.setFilter, unique(pageCards.map((card) => card.set)));
