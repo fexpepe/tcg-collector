@@ -331,14 +331,14 @@
       ? `<span class="binder-meta">${escapeHtml(t("binders.saleTotal"))}: R$ ${escapeHtml(fmtPrice(saleTotal))}</span>`
       : `<span class="binder-meta">${escapeHtml(t("binders.cardsCount", { n: filled.length }))}</span>`;
 
-    const pageNav = `
-      <div class="binder-pagenav">
+    const pageControls = `
+      <span class="binder-pagenav">
         <button type="button" class="secondary binder-page-btn" data-page-prev aria-label="${escapeAttribute(t("binders.page.prev"))}"${page <= 0 ? " disabled" : ""}>‹</button>
         <span class="binder-page-indicator">${escapeHtml(t("binders.page.indicator", { n: page + 1, total: pages }))}</span>
         <button type="button" class="secondary binder-page-btn" data-page-next aria-label="${escapeAttribute(t("binders.page.next"))}"${page >= pages - 1 ? " disabled" : ""}>›</button>
-        <button type="button" class="secondary binder-page-add" data-page-add>+ ${escapeHtml(t("binders.page.add"))}</button>
-        ${pages > 1 ? `<button type="button" class="secondary binder-page-remove" data-page-remove aria-label="${escapeAttribute(t("binders.page.remove"))}">${escapeHtml(t("binders.page.remove"))}</button>` : ""}
-      </div>`;
+      </span>
+      <button type="button" class="secondary binder-page-add" data-page-add>+ ${escapeHtml(t("binders.page.add"))}</button>
+      ${pages > 1 ? `<button type="button" class="secondary binder-page-remove" data-page-remove aria-label="${escapeAttribute(t("binders.page.remove"))}">${escapeHtml(t("binders.page.remove"))}</button>` : ""}`;
 
     return `
       <article class="binder" data-binder-id="${escapeAttribute(binder.id)}">
@@ -354,11 +354,11 @@
             <label class="binder-grid-label">${escapeHtml(t("binders.grid"))}
               <select data-binder-grid>${gridOptionsHtml(binder.grid)}</select>
             </label>
+            ${pageControls}
             <button type="button" class="secondary" data-binder-export>${escapeHtml(t("binders.exportImage"))}</button>
             <button type="button" class="secondary binder-delete" data-binder-delete>${escapeHtml(t("binders.delete"))}</button>
           </div>
         </header>
-        ${pageNav}
         <div class="binder-grid" style="--cols:${g.cols}">${slots}</div>
       </article>`;
   }

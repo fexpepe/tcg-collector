@@ -2944,28 +2944,24 @@ a.progress-row:hover {
   border-color: rgba(231, 121, 111, 0.25) !important;
 }
 
-/* Navegação de páginas do binder (‹ Página X de Y › + Nova página). */
+/* Navegação de páginas do binder (‹ Página X de Y › + Nova página), na mesma
+   linha das demais ações do binder (Layout / Exportar / Excluir). */
 .binder-pagenav {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
+  gap: 6px;
 }
 .binder-page-indicator {
   font-size: 0.85rem;
   font-weight: 700;
   color: var(--muted);
-  min-width: 120px;
   text-align: center;
+  white-space: nowrap;
 }
 .binder-page-btn {
   min-width: 38px;
   font-size: 1.1rem;
   line-height: 1;
-}
-.binder-page-add {
-  margin-left: auto;
 }
 .binder-page-remove {
   color: #e7796f !important;
