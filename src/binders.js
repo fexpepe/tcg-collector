@@ -1586,6 +1586,19 @@
     if (event.key === "Escape" && editing) closeEditor();
   });
 
+  // Botão "Salvar binder": os dados já são salvos automaticamente, mas isto dá
+  // a confirmação explícita de que está tudo registrado.
+  const saveBtn = document.getElementById("binderSaveBtn");
+  if (saveBtn) {
+    saveBtn.addEventListener("click", () => {
+      save();
+      const original = t("binders.save");
+      saveBtn.textContent = t("binders.saved");
+      saveBtn.disabled = true;
+      setTimeout(() => { saveBtn.textContent = original; saveBtn.disabled = false; }, 1500);
+    });
+  }
+
   // Exportar/Importar coleção: disponível no header de todas as páginas. Opera
   // sobre a coleção/desejo/preços (não sobre os binders). O JSON funciona na
   // hora; o catálogo é carregado em segundo plano para o CSV ter os nomes.
