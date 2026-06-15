@@ -1,13 +1,12 @@
-// Binders: fichários visuais de cartas, em duas categorias (páginas separadas):
-//  - Coleção: mostrar as cartas que você tem, no estilo 2×2/3×3/4×4.
-//  - Venda: vitrine das cartas à venda (foto sua + preço + condição + nota),
-//    com exportar como imagem para postar em grupos — inspirado no cardgrid.
-// Um único motor, configurado pelo atributo data-binder-mode da <main>.
-// Sem inline handlers (CSP script-src 'self'): tudo via addEventListener.
+// Binders: fichários visuais de cartas. Página única (binders.html) com:
+//  - Galeria: criar binders e listá-los (grid/lista); clicar abre um binder.
+//  - Detalhe (?id=): um binder aberto, com abas Cartas/Resumo/Editar/Imprimir.
+// Cada binder tem um tipo: "collection" (cartas que você tem) ou "sale"
+// (vitrine com foto/preço/condição). Sem inline handlers (CSP script-src 'self').
 (function () {
   const shared = window.TCGShared;
   if (!shared) return;
-  const root = document.querySelector("[data-binder-mode]");
+  const root = document.getElementById("binderGallery");
   if (!root) return;
 
   const {
@@ -16,8 +15,12 @@
     CARD_CONDITIONS, DEFAULT_CONDITION, debounce
   } = shared;
 
-  const mode = root.dataset.binderMode === "sale" ? "sale" : "collection";
-  const isSale = mode === "sale";
+  // Tipo do binder agora é por-binder ("collection" | "sale"). `isSale` é
+  // ajustado conforme o binder em foco (detalhe/editor/exportar/imprimir).
+  function isSaleBinder(binder) { return !!binder && binder.type === "sale"; }
+  let isSale = false;
+  // ?id= abre um binder específico (modo detalhe); sem id mostra a galeria.
+  const openId = new URLSearchParams(window.location.search).get("id");
 
   // Stores da coleção/desejo/preços: usados pelo resumo (Tenho/Faltando),
   // pelo "marcar tudo" e pela busca por coleção/desejo no editor.
@@ -155,10 +158,19 @@
     return {};
   }
   const data = readData();
-  if (!Array.isArray(data.collection)) data.collection = [];
-  if (!Array.isArray(data.sale)) data.sale = [];
+  // Migração: junta os antigos arrays collection/sale num único `binders`,
+  // marcando o tipo de cada um.
+  if (!Array.isArray(data.binders)) {
+    data.binders = [];
+    if (Array.isArray(data.collection)) data.collection.forEach((b) => { b.type = b.type || "collection"; data.binders.push(b); });
+    if (Array.isArray(data.sale)) data.sale.forEach((b) => { b.type = b.type || "sale"; data.binders.push(b); });
+  }
+  delete data.collection;
+  delete data.sale;
+  data.binders.forEach((b) => { if (b.type !== "sale") b.type = "collection"; });
   function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
-  function list() { return data[mode]; }
+  save(); // persiste a migração para o novo formato unificado
+  function list() { return data.binders; }
   function getBinder(id) { return list().find((b) => b.id === id); }
 
   // Um binder tem N páginas, cada uma com slotCount(grid) slots. Os slots ficam
@@ -189,10 +201,11 @@
   function currentTab(binder) { return tabState.get(binder.id) || "cards"; }
   function setTab(binder, tab) { tabState.set(binder.id, tab); }
 
-  function createBinder(name, grid) {
+  function createBinder(name, grid, type) {
     const binder = {
       id: uid("b_"),
       name: name || t("binders.new"),
+      type: type === "sale" ? "sale" : "collection",
       subtitle: "",
       description: "",
       color: "",
@@ -209,8 +222,27 @@
     const binder = getBinder(id);
     if (!binder) return;
     (binder.slots || []).forEach((slot) => { if (slot && slot.photoId) deletePhoto(slot.photoId); });
-    data[mode] = list().filter((b) => b.id !== id);
+    data.binders = list().filter((b) => b.id !== id);
     pageState.delete(id);
+    save();
+  }
+  // Duplica um binder (copia as fotos no IndexedDB para não compartilhar blobs).
+  async function duplicateBinder(id) {
+    const src = getBinder(id);
+    if (!src) return;
+    const copy = JSON.parse(JSON.stringify(src));
+    copy.id = uid("b_");
+    copy.name = `${src.name} ${t("binders.copySuffix")}`;
+    copy.updatedAt = Date.now();
+    for (const slot of copy.slots) {
+      if (slot && slot.photoId) {
+        try {
+          const blob = await getPhotoBlob(slot.photoId);
+          slot.photoId = blob ? await putPhotoBlob(blob) : null;
+        } catch (error) { slot.photoId = null; }
+      }
+    }
+    list().unshift(copy);
     save();
   }
   function setGrid(binder, grid) {
@@ -349,12 +381,22 @@
   // Render da lista de binders
   // ---------------------------------------------------------------------------
   const elements = {
-    list: document.getElementById("binderList"),
+    gallery: document.getElementById("binderGallery"),
+    galleryGrid: document.getElementById("binderList"),
+    detail: document.getElementById("binderDetail"),
+    list: document.getElementById("binderDetailBody"), // container do binder aberto
     empty: document.getElementById("binderEmpty"),
     nameInput: document.getElementById("binderName"),
+    typeSelect: document.getElementById("binderType"),
     gridSelect: document.getElementById("binderGrid"),
-    createButton: document.getElementById("binderCreate")
+    sortSelect: document.getElementById("binderSort"),
+    createButton: document.getElementById("binderCreate"),
+    viewToggle: document.querySelector(".binder-view-toggle")
   };
+
+  // Visualização (grid/lista) e ordenação da galeria — preferência guardada.
+  let galleryView = localStorage.getItem("tcg-collector-binder-view") === "list" ? "list" : "grid";
+  let gallerySort = localStorage.getItem("tcg-collector-binder-sort") || "newest";
 
   function gridOptionsHtml(selected) {
     return GRID_ORDER.map((key) =>
@@ -362,11 +404,69 @@
     ).join("");
   }
 
+  // Dispatcher: com ?id válido mostra o binder aberto; senão, a galeria.
   function render() {
-    const binders = list();
+    const binder = openId ? getBinder(openId) : null;
+    if (binder) renderDetail(binder);
+    else renderGallery();
+  }
+
+  // --- Galeria de binders (criar + lista/grid) ---
+  function sortedBinders() {
+    const arr = list().slice();
+    if (gallerySort === "name") arr.sort((a, b) => String(a.name).localeCompare(String(b.name)));
+    else if (gallerySort === "cards") arr.sort((a, b) => binderStats(b).cards - binderStats(a).cards);
+    else arr.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)); // newest
+    return arr;
+  }
+
+  function galleryCardHtml(binder) {
+    const stats = binderStats(binder);
+    const colorStyle = binder.color ? ` style="--binder-color:${escapeAttribute(binder.color)}"` : "";
+    const cover = (binder.slots || []).find((s) => s && (s.image || s.photoId));
+    let coverHtml = `<span class="binder-card-cover-empty">${escapeHtml((binder.name || "?").charAt(0).toUpperCase())}</span>`;
+    if (cover) {
+      if (cover.photoId) coverHtml = `<img class="binder-card-cover-img" data-photo-id="${escapeAttribute(cover.photoId)}" alt="">`;
+      else if (cover.image) coverHtml = localizedImg(cover.image, { className: "binder-card-cover-img", alt: "", fallback: cover.fallback || "", loading: "lazy" });
+    }
+    const typeTag = `<span class="binder-card-type">${escapeHtml(t(isSaleBinder(binder) ? "binders.type.sale" : "binders.type.collection"))}</span>`;
+    return `
+      <article class="binder-card${binder.color ? " has-color" : ""}" data-open-id="${escapeAttribute(binder.id)}"${colorStyle}>
+        <div class="binder-card-cover">${coverHtml}</div>
+        <div class="binder-card-body">
+          <div class="binder-card-titlerow"><strong class="binder-card-name">${escapeHtml(binder.name)}</strong>${typeTag}</div>
+          <div class="binder-card-meta"><span>${escapeHtml(t("binders.ownedOf", { o: stats.owned, t: stats.cards }))}</span><span>${stats.pct}%</span></div>
+          <div class="progress-bar"><span style="width:${stats.pct}%"></span></div>
+        </div>
+        <div class="binder-card-acts">
+          <button type="button" class="binder-card-act" data-open-id="${escapeAttribute(binder.id)}" aria-label="${escapeAttribute(t("binders.open"))}" title="${escapeAttribute(t("binders.open"))}">✎</button>
+          <button type="button" class="binder-card-act" data-duplicate-id="${escapeAttribute(binder.id)}" aria-label="${escapeAttribute(t("binders.duplicate"))}" title="${escapeAttribute(t("binders.duplicate"))}">⧉</button>
+          <button type="button" class="binder-card-act danger" data-delete-id="${escapeAttribute(binder.id)}" aria-label="${escapeAttribute(t("binders.delete"))}" title="${escapeAttribute(t("binders.delete"))}">🗑</button>
+        </div>
+      </article>`;
+  }
+
+  function renderGallery() {
+    elements.detail.hidden = true;
+    elements.gallery.hidden = false;
+    const binders = sortedBinders();
     elements.empty.hidden = binders.length > 0;
-    elements.list.innerHTML = binders.map(binderHtml).join("");
-    // Preenche as fotos (IndexedDB é assíncrono).
+    elements.galleryGrid.className = `binder-gallery ${galleryView === "list" ? "is-list" : "is-grid"}`;
+    elements.galleryGrid.innerHTML = binders.map(galleryCardHtml).join("");
+    elements.galleryGrid.querySelectorAll("img[data-photo-id]").forEach((img) => {
+      photoURL(img.dataset.photoId).then((url) => { if (url) img.src = url; });
+    });
+    if (elements.viewToggle) {
+      elements.viewToggle.querySelectorAll("[data-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === galleryView)));
+    }
+  }
+
+  // --- Detalhe de um binder aberto ---
+  function renderDetail(binder) {
+    isSale = isSaleBinder(binder);
+    elements.gallery.hidden = true;
+    elements.detail.hidden = false;
+    elements.list.innerHTML = binderHtml(binder);
     elements.list.querySelectorAll("img[data-photo-id]").forEach((img) => {
       photoURL(img.dataset.photoId).then((url) => { if (url) img.src = url; });
     });
@@ -861,6 +961,7 @@
   async function exportBinder(binderId, button) {
     const binder = getBinder(binderId);
     if (!binder) return;
+    isSale = isSaleBinder(binder);
     const g = GRIDS[binder.grid] || GRIDS[DEFAULT_GRID];
     const label = button ? button.textContent : "";
     if (button) { button.disabled = true; button.textContent = "…"; }
@@ -1018,6 +1119,7 @@
   }
 
   async function printBinder(binder, layout, opts, button) {
+    isSale = isSaleBinder(binder);
     const label = button ? button.textContent : "";
     if (button) { button.disabled = true; button.textContent = "…"; }
     const esc = escapeHtml;
@@ -1145,19 +1247,56 @@
   // Eventos
   // ---------------------------------------------------------------------------
   if (elements.gridSelect) elements.gridSelect.innerHTML = gridOptionsHtml(DEFAULT_GRID);
+  if (elements.typeSelect) {
+    elements.typeSelect.innerHTML = `<option value="collection">${escapeHtml(t("binders.type.collection"))}</option><option value="sale">${escapeHtml(t("binders.type.sale"))}</option>`;
+  }
+  if (elements.sortSelect) {
+    elements.sortSelect.innerHTML = [["newest", "binders.sort.newest"], ["name", "binders.sort.name"], ["cards", "binders.sort.cards"]]
+      .map(([v, k]) => `<option value="${v}"${v === gallerySort ? " selected" : ""}>${escapeHtml(t(k))}</option>`).join("");
+  }
 
   if (elements.createButton) {
     elements.createButton.addEventListener("click", () => {
       const name = (elements.nameInput.value || "").trim() || t("binders.new");
       const grid = elements.gridSelect.value || DEFAULT_GRID;
-      createBinder(name, grid);
+      const type = elements.typeSelect ? elements.typeSelect.value : "collection";
+      const binder = createBinder(name, grid, type);
       elements.nameInput.value = "";
-      render();
+      // Abre o binder recém-criado direto.
+      window.location.href = `binders.html?id=${encodeURIComponent(binder.id)}`;
     });
   }
   if (elements.nameInput) {
     elements.nameInput.addEventListener("keydown", (event) => {
       if (event.key === "Enter") elements.createButton.click();
+    });
+  }
+
+  // Galeria: abrir / duplicar / excluir + alternar visualização e ordenação.
+  if (elements.galleryGrid) {
+    elements.galleryGrid.addEventListener("click", (event) => {
+      const dup = event.target.closest("[data-duplicate-id]");
+      if (dup) { event.stopPropagation(); duplicateBinder(dup.dataset.duplicateId).then(render); return; }
+      const del = event.target.closest("[data-delete-id]");
+      if (del) { event.stopPropagation(); if (confirm(t("binders.deleteConfirm"))) { removeBinder(del.dataset.deleteId); render(); } return; }
+      const open = event.target.closest("[data-open-id]");
+      if (open) { window.location.href = `binders.html?id=${encodeURIComponent(open.dataset.openId)}`; }
+    });
+  }
+  if (elements.viewToggle) {
+    elements.viewToggle.addEventListener("click", (event) => {
+      const btn = event.target.closest("[data-view]");
+      if (!btn) return;
+      galleryView = btn.dataset.view === "list" ? "list" : "grid";
+      localStorage.setItem("tcg-collector-binder-view", galleryView);
+      renderGallery();
+    });
+  }
+  if (elements.sortSelect) {
+    elements.sortSelect.addEventListener("change", () => {
+      gallerySort = elements.sortSelect.value;
+      localStorage.setItem("tcg-collector-binder-sort", gallerySort);
+      renderGallery();
     });
   }
 
@@ -1270,7 +1409,7 @@
     if (deleteBtn) {
       if (confirm(t("binders.deleteConfirm"))) {
         removeBinder(deleteBtn.closest("[data-binder-id]").dataset.binderId);
-        render();
+        window.location.href = "binders.html"; // volta para a galeria
       }
     }
   });

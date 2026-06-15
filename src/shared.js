@@ -456,12 +456,27 @@
       "nav.binders": "Binders",
       "nav.bindersCollection": "Coleção",
       "nav.bindersSale": "Venda",
+      "title.binders": "Binders - TCG Collector",
       "title.bindersCollection": "Binders da coleção - TCG Collector",
       "title.bindersSale": "Binders de venda - TCG Collector",
+      "binders.heading": "Binders",
+      "binders.subtitle": "Monte fichários visuais das suas cartas, organize em páginas e exporte como imagem ou PDF.",
       "binders.collection.heading": "Binders da coleção",
       "binders.sale.heading": "Binders de venda",
       "binders.collection.subtitle": "Monte fichários visuais das suas cartas, no estilo 2×2 ou 3×3, e exporte como imagem para compartilhar.",
       "binders.sale.subtitle": "Monte vitrines das cartas que você está vendendo: foto sua, preço, condição e observação por carta. As fotos ficam só no seu navegador.",
+      "binders.type": "Tipo",
+      "binders.type.collection": "Coleção",
+      "binders.type.sale": "Venda",
+      "binders.sort": "Ordenar",
+      "binders.sort.newest": "Mais recentes",
+      "binders.sort.name": "Nome",
+      "binders.sort.cards": "Mais cartas",
+      "binders.back": "Binders",
+      "binders.open": "Abrir",
+      "binders.duplicate": "Duplicar",
+      "binders.copySuffix": "(cópia)",
+      "binders.ownedOf": "{o}/{t} na coleção",
       "binders.new": "Novo binder",
       "binders.namePlaceholder": "Nome do binder",
       "binders.create": "Criar",
@@ -849,12 +864,27 @@
       "nav.binders": "Binders",
       "nav.bindersCollection": "Collection",
       "nav.bindersSale": "For sale",
+      "title.binders": "Binders - TCG Collector",
       "title.bindersCollection": "Collection binders - TCG Collector",
       "title.bindersSale": "Sale binders - TCG Collector",
+      "binders.heading": "Binders",
+      "binders.subtitle": "Build visual binders of your cards, organize them in pages and export as image or PDF.",
       "binders.collection.heading": "Collection binders",
       "binders.sale.heading": "Sale binders",
       "binders.collection.subtitle": "Build visual 2×2 or 3×3 binders of your cards and export them as an image to share.",
       "binders.sale.subtitle": "Build showcases of the cards you're selling: your own photo, price, condition and a note per card. Photos stay only in your browser.",
+      "binders.type": "Type",
+      "binders.type.collection": "Collection",
+      "binders.type.sale": "For sale",
+      "binders.sort": "Sort",
+      "binders.sort.newest": "Newest",
+      "binders.sort.name": "Name",
+      "binders.sort.cards": "Most cards",
+      "binders.back": "Binders",
+      "binders.open": "Open",
+      "binders.duplicate": "Duplicate",
+      "binders.copySuffix": "(copy)",
+      "binders.ownedOf": "{o}/{t} owned",
       "binders.new": "New binder",
       "binders.namePlaceholder": "Binder name",
       "binders.create": "Create",
@@ -1202,7 +1232,7 @@
       }
     }
     const pokemonActive = ["pokedex", "trainers", "sets", "artists"].includes(active);
-    const collectionActive = ["collection", "wishlist", "binders-collection", "binders-sale"].includes(active);
+    const collectionActive = ["collection", "wishlist", "binders"].includes(active);
 
     const link = (href, key, page) => `<a href="${href}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
     const group = (key, isActive, links) => `
@@ -1222,8 +1252,7 @@
           ${link("artists.html", "nav.artists", "artists")}`)}
       ${group("nav.collection", collectionActive, `
           ${link("collection.html", "nav.collectionMine", "collection")}
-          ${link("binders-collection.html", "nav.binderCollection", "binders-collection")}
-          ${link("binders-sale.html", "nav.binderSale", "binders-sale")}
+          ${link("binders.html", "nav.binders", "binders")}
           ${link("wishlist.html", "nav.wishlist", "wishlist")}`)}
       ${link("portfolio.html", "nav.portfolio", "portfolio")}
     `;
