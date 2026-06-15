@@ -1023,65 +1023,79 @@
     const label = button ? button.textContent : "";
     if (button) { button.disabled = true; button.textContent = "…"; }
 
-    const CARD_W = 260;
-    const CARD_H = 364;
-    const GAP = 18;
-    const PAD = 28;
-    const headerH = 84;
-    const footerH = 30;
-    const width = PAD * 2 + g.cols * CARD_W + (g.cols - 1) * GAP;
-    const height = PAD + headerH + g.rows * CARD_H + (g.rows - 1) * GAP + footerH + PAD;
+    // A4 retrato, fundo branco (economiza tinta), cartas em tamanho real
+    // (63×88mm) — reduzidas só se a grade não couber no A4. Preto e branco das
+    // cartas que você não tem é preservado no export.
+    const PPM = 8; // px por mm (~203 dpi)
+    const A4W = 210, A4H = 297, MARGIN = 6, CWmm = 63, CHmm = 88, GAPmm = 3;
+    const fnt = (mm, w) => `${w || 400} ${Math.round(mm * PPM)}px system-ui, -apple-system, Segoe UI, Roboto, sans-serif`;
+    const headerMM = binder.name ? 11 : 0;
+    const availW = A4W - MARGIN * 2;
+    const availH = A4H - MARGIN * 2 - headerMM;
+    const gridWmm = g.cols * CWmm + (g.cols - 1) * GAPmm;
+    const gridHmm = g.rows * CHmm + (g.rows - 1) * GAPmm;
+    const fit = Math.min(1, availW / gridWmm, availH / gridHmm);
+    const CARD_W = CWmm * fit * PPM, CARD_H = CHmm * fit * PPM, GAP = GAPmm * fit * PPM;
+    const radius = 3 * fit * PPM;
+
+    const width = Math.round(A4W * PPM);
+    const height = Math.round(A4H * PPM);
+    const gridW = g.cols * CARD_W + (g.cols - 1) * GAP;
+    const gridH = g.rows * CARD_H + (g.rows - 1) * GAP;
+    const startX = (width - gridW) / 2;
+    const topArea = (MARGIN + headerMM) * PPM;
+    const startY = topArea + ((height - topArea - MARGIN * PPM) - gridH) / 2;
 
     const canvas = document.createElement("canvas");
     canvas.width = width;
     canvas.height = height;
     const ctx = canvas.getContext("2d");
 
-    // Fundo
-    ctx.fillStyle = "#0d0e12";
+    // Fundo branco
+    ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, width, height);
 
-    // Cabeçalho
-    ctx.fillStyle = "#f4f5f7";
-    ctx.font = "700 34px system-ui, -apple-system, Segoe UI, Roboto, sans-serif";
-    ctx.textBaseline = "top";
-    ctx.fillText(binder.name || "", PAD, PAD, width - PAD * 2);
-    if (binder.subtitle) {
-      ctx.fillStyle = "#aab1bd";
-      ctx.font = "400 20px system-ui, -apple-system, Segoe UI, Roboto, sans-serif";
-      ctx.fillText(binder.subtitle, PAD, PAD + 44, width - PAD * 2);
+    // Título (texto escuro, pouca tinta)
+    if (binder.name) {
+      ctx.fillStyle = "#111111";
+      ctx.font = fnt(6.5, 700);
+      ctx.textBaseline = "top";
+      ctx.fillText(binder.name, MARGIN * PPM, MARGIN * PPM, width - MARGIN * 2 * PPM);
     }
 
     // Exporta a página atual do binder.
     const exportOffset = currentPage(binder) * slotCount(binder.grid);
-    const gridTop = PAD + headerH;
+    const lineW = Math.max(1, 0.3 * PPM);
     for (let i = 0; i < g.cols * g.rows; i++) {
       const col = i % g.cols;
       const row = Math.floor(i / g.cols);
-      const x = PAD + col * (CARD_W + GAP);
-      const y = gridTop + row * (CARD_H + GAP);
+      const x = startX + col * (CARD_W + GAP);
+      const y = startY + row * (CARD_H + GAP);
       const slot = binder.slots[exportOffset + i];
 
-      ctx.save();
-      roundRect(ctx, x, y, CARD_W, CARD_H, 12);
-      ctx.fillStyle = "#171a21";
-      ctx.fill();
-      ctx.clip();
-
       if (slot) {
+        ctx.save();
+        roundRect(ctx, x, y, CARD_W, CARD_H, radius);
+        ctx.fillStyle = "#ffffff";
+        ctx.fill();
+        ctx.clip();
+
+        // Preto e branco para cartas (de coleção) que você não tem.
+        const grayscale = !isSale && !!slot.cardId && !ownedStore.has(slot.cardId);
         let img = null;
         if (slot.photoId) {
-          const url = await photoURL(slot.photoId);
-          img = await loadImage(url, false);
+          img = await loadImage(await photoURL(slot.photoId), false);
         } else if (slot.image) {
           img = await loadImage(slot.image, true);
           if (!img && slot.fallback) img = await loadImage(slot.fallback, true);
         }
         if (img) {
+          if (grayscale) ctx.filter = "grayscale(1)";
           drawCover(ctx, img, x, y, CARD_W, CARD_H);
+          ctx.filter = "none";
         } else {
-          ctx.fillStyle = "#aab1bd";
-          ctx.font = "600 18px system-ui, sans-serif";
+          ctx.fillStyle = "#555555";
+          ctx.font = fnt(3.2, 600);
           ctx.textBaseline = "middle";
           ctx.textAlign = "center";
           const text = slot.cardId ? cardLabelFromSlot(slot) : (slot.label || "");
@@ -1089,34 +1103,41 @@
           ctx.textAlign = "left";
           ctx.textBaseline = "top";
         }
-        // Faixa de preço (venda) / legenda
+        // Faixa de preço (venda) — fundo claro, texto escuro.
         if (isSale && Number(slot.price)) {
-          const barH = 44;
-          ctx.fillStyle = "rgba(10,12,18,0.82)";
+          const barH = 5 * PPM * fit;
+          ctx.fillStyle = "rgba(255,255,255,0.92)";
           ctx.fillRect(x, y + CARD_H - barH, CARD_W, barH);
-          ctx.fillStyle = "#ffd45e";
-          ctx.font = "700 22px system-ui, sans-serif";
+          ctx.fillStyle = "#111111";
+          ctx.font = fnt(3, 700);
           ctx.textBaseline = "middle";
-          const priceText = `R$ ${fmtPrice(slot.price)}${slot.condition ? `  ${slot.condition}` : ""}`;
-          ctx.fillText(priceText, x + 12, y + CARD_H - barH / 2, CARD_W - 24);
+          ctx.fillText(`R$ ${fmtPrice(slot.price)}${slot.condition ? `  ${slot.condition}` : ""}`, x + 8, y + CARD_H - barH / 2, CARD_W - 16);
           ctx.textBaseline = "top";
         }
-      } else {
         ctx.restore();
+        // Contorno leve da carta.
         ctx.save();
-        ctx.strokeStyle = "#2a2f3a";
-        ctx.lineWidth = 2;
-        ctx.setLineDash([8, 8]);
-        roundRect(ctx, x + 1, y + 1, CARD_W - 2, CARD_H - 2, 12);
+        roundRect(ctx, x, y, CARD_W, CARD_H, radius);
+        ctx.strokeStyle = "#cccccc";
+        ctx.lineWidth = lineW;
         ctx.stroke();
+        ctx.restore();
+      } else {
+        ctx.save();
+        roundRect(ctx, x + 1, y + 1, CARD_W - 2, CARD_H - 2, radius);
+        ctx.strokeStyle = "#dddddd";
+        ctx.lineWidth = lineW;
+        ctx.setLineDash([8, 8]);
+        ctx.stroke();
+        ctx.restore();
       }
-      ctx.restore();
     }
 
-    // Rodapé / marca
-    ctx.fillStyle = "#6b7280";
-    ctx.font = "400 16px system-ui, sans-serif";
-    ctx.fillText("TCG Collector", PAD, height - PAD - 4);
+    // Rodapé / marca (cinza claro)
+    ctx.fillStyle = "#999999";
+    ctx.font = fnt(2.6, 400);
+    ctx.textBaseline = "alphabetic";
+    ctx.fillText("TCG Collector", MARGIN * PPM, height - MARGIN * PPM);
 
     const finish = () => { if (button) { button.disabled = false; button.textContent = label; } };
     try {
