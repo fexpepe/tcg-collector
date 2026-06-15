@@ -3081,14 +3081,16 @@ a.progress-row:hover {
   color: var(--accent);
   border-bottom-color: var(--accent);
 }
-.binder-cards-toolbar {
+.binder-tabpanel { margin-bottom: 16px; }
+/* Controles do Resumo: navegação de páginas à esquerda, exportar à direita. */
+.binder-resumo-controls {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 12px;
+  margin-top: 14px;
 }
-.binder-export-img { margin-left: auto; }
 .binder-titles {
   display: flex;
   flex-direction: column;
@@ -3322,15 +3324,15 @@ a.progress-row:hover {
 .binder-slot-own {
   position: absolute;
   left: 50%;
-  bottom: 8px;
+  bottom: 10px;
   transform: translateX(-50%);
   z-index: 3;
-  padding: 5px 12px;
+  padding: 8px 16px;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: rgba(13, 14, 18, 0.92);
   color: var(--text);
-  font-size: 11px;
+  font-size: 13.5px;
   font-weight: 700;
   white-space: nowrap;
   cursor: pointer;

@@ -198,7 +198,7 @@
 
   // Aba ativa de cada binder (Cartas | Resumo | Editar | Imprimir).
   const tabState = new Map();
-  function currentTab(binder) { return tabState.get(binder.id) || "cards"; }
+  function currentTab(binder) { return tabState.get(binder.id) || "summary"; }
   function setTab(binder, tab) { tabState.set(binder.id, tab); }
 
   function createBinder(name, grid, type) {
@@ -500,17 +500,13 @@
     const stats = binderStats(binder);
     const colorStyle = binder.color ? ` style="--binder-color:${escapeAttribute(binder.color)}"` : "";
     const tab = currentTab(binder);
-    const TABS = [["cards", "binders.tab.cards"], ["summary", "binders.tab.summary"], ["edit", "binders.tab.edit"], ["print", "binders.tab.print"]];
+    // Sem aba "Cartas": a grade fica sempre visível embaixo; as abas só trocam
+    // o conteúdo do cabeçalho. Resumo é o cabeçalho principal (padrão).
+    const TABS = [["summary", "binders.tab.summary"], ["edit", "binders.tab.edit"], ["print", "binders.tab.print"]];
     const tabbar = `<div class="binder-tabbar" role="tablist">${TABS.map(([k, key]) =>
       `<button type="button" class="binder-tab${tab === k ? " active" : ""}" data-binder-tab-btn="${k}" role="tab" aria-selected="${tab === k}">${escapeHtml(t(key))}</button>`
     ).join("")}</div>`;
     const panel = (k, inner) => `<div class="binder-tabpanel" data-binder-tab="${k}"${tab === k ? "" : " hidden"}>${inner}</div>`;
-
-    const cardsPanel = panel("cards", `
-      <div class="binder-cards-toolbar">${pageControls}
-        <button type="button" class="secondary binder-export-img" data-binder-export>${escapeHtml(t("binders.exportImage"))}</button>
-      </div>
-      <div class="binder-grid" style="--cols:${g.cols}">${slots}</div>`);
 
     const summaryPanel = panel("summary", `
       <div class="binder-summary">
@@ -522,6 +518,10 @@
           <div class="binder-progress-head"><span>${escapeHtml(t("binders.stat.progress"))}</span><strong>${stats.pct}%</strong></div>
           <div class="progress-bar"><span style="width:${stats.pct}%"></span></div>
         </div>
+      </div>
+      <div class="binder-resumo-controls">
+        <div class="binder-pagenav">${pageControls}</div>
+        <button type="button" class="secondary binder-export-img" data-binder-export>${escapeHtml(t("binders.exportImage"))}</button>
       </div>`);
 
     return `
@@ -536,10 +536,10 @@
           </div>
           ${tabbar}
         </header>
-        ${cardsPanel}
         ${summaryPanel}
         ${panel("edit", binderEditPanelHtml(binder))}
         ${panel("print", binderPrintPanelHtml(binder))}
+        <div class="binder-grid" style="--cols:${g.cols}">${slots}</div>
       </article>`;
   }
 
