@@ -217,7 +217,7 @@ function toAppCard(card, fallbackLanguage, fullSet) {
     .filter(([, enabled]) => enabled)
     .map(([name]) => normalizeVariantName(name));
 
-  return {
+  const appCard = {
     // Ids da TCGdex repetem entre idiomas (sv03.5-199 existe em en e pt);
     // o inglês fica com o id canônico e os demais ganham sufixo de idioma.
     id: fallbackLanguage === "en" ? card.id : `${card.id}-${fallbackLanguage}`,
@@ -240,8 +240,36 @@ function toAppCard(card, fallbackLanguage, fullSet) {
     rarity: card.rarity || "",
     language: fallbackLanguage,
     image: imageUrl(card.image, "high"),
-    variants
+    variants,
+    // Preço de referência compacto (TCGdex já trouxe o card completo): { u, e }.
+    // O merge move isto para data/pricing.generated.js e remove daqui.
+    price: compactPrice(card.pricing)
   };
+  if (!appCard.price) delete appCard.price;
+  return appCard;
+}
+
+// Um valor representativo por moeda do `pricing` da TCGdex: USD do TCGplayer
+// (market/mid da 1ª variante com preço), EUR do Cardmarket (avg/trend/low).
+function compactPrice(pricing) {
+  if (!pricing || typeof pricing !== "object") return null;
+  const tp = pricing.tcgplayer || {};
+  const cm = pricing.cardmarket || {};
+  const pick = (obj, keys) => {
+    for (const k of keys) { const v = obj && obj[k]; if (typeof v === "number" && v > 0) return v; }
+    return 0;
+  };
+  let usd = 0;
+  for (const key of ["normal", "holofoil", "reverseHolofoil", "reverse-holofoil", "1stEditionHolofoil", "1stEdition"]) {
+    const v = tp[key];
+    if (v && typeof v === "object") { usd = pick(v, ["marketPrice", "midPrice", "lowPrice"]); if (usd) break; }
+  }
+  const eur = pick(cm, ["avg", "trendPrice", "avg-holo", "low", "low-holo"]);
+  if (!usd && !eur) return null;
+  const out = {};
+  if (usd) out.u = Math.round(usd * 100) / 100;
+  if (eur) out.e = Math.round(eur * 100) / 100;
+  return out;
 }
 
 function imageUrl(baseImageUrl, quality = "") {

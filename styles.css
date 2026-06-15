@@ -3590,3 +3590,70 @@ a.progress-row:hover {
     width: 100%;
   }
 }
+
+/* ===== Valores: moeda, preço no tile, total geral ========================== */
+/* Badge de moeda no dropdown de bandeira (R$/US$/€). */
+.lang-dd-cur {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 16px;
+  padding: 0 4px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--text);
+  background: var(--panel-strong);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  line-height: 1;
+}
+
+/* Preço na carta (tile). */
+.tile-price {
+  margin: 2px 0 0;
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: var(--gold);
+}
+.tile-price-ref {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+/* Total geral em destaque no portfólio. */
+.stat-grand strong,
+.stat-grand span {
+  color: var(--accent);
+}
+
+/* Valores no topo do detalhe (set/artista/pokémon). */
+.detail-values {
+  margin-top: 12px;
+}
+
+/* Coração na carta do binder que você não tem (igual aos tiles). */
+.binder-slot-want {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(10, 12, 18, 0.72);
+  color: #fff;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+.binder-slot:hover .binder-slot-want,
+.binder-slot-want.wanted {
+  opacity: 1;
+}
+.binder-slot-want.wanted {
+  color: #ff5d73;
+}
