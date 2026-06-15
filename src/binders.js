@@ -344,12 +344,24 @@
     const cardSlots = (binder.slots || []).filter((slot) => slot && slot.cardId);
     const cards = cardSlots.length;
     const owned = cardSlots.filter((slot) => ownedStore.has(slot.cardId)).length;
+    // Valor (na moeda escolhida): total, já gasto (cartas que tenho) e a comprar.
+    let valueTotal = 0;
+    let valueOwned = 0;
+    cardSlots.forEach((slot) => {
+      const v = shared.cardValue({ id: slot.cardId }, slot.variant || DEFAULT_CONDITION, pricesStore).value;
+      if (!v) return;
+      valueTotal += v;
+      if (ownedStore.has(slot.cardId)) valueOwned += v;
+    });
     return {
       pages: pageCount(binder),
       cards,
       owned,
       missing: cards - owned,
-      pct: cards ? Math.round((owned / cards) * 100) : 0
+      pct: cards ? Math.round((owned / cards) * 100) : 0,
+      valueTotal,
+      valueOwned,
+      valueToBuy: Math.max(0, valueTotal - valueOwned)
     };
   }
 
@@ -538,12 +550,16 @@
     ).join("")}</div>`;
     const panel = (k, inner) => `<div class="binder-tabpanel" data-binder-tab="${k}"${tab === k ? "" : " hidden"}>${inner}</div>`;
 
+    const money = (v) => (v > 0 ? shared.formatMoney(shared.getCurrency(), v) : "—");
     const summaryPanel = panel("summary", `
       <div class="binder-summary">
         ${statCell(stats.pages, t("binders.stat.pages"))}
         ${statCell(stats.cards, t("binders.stat.cards"))}
         ${statCell(stats.owned, t("binders.stat.owned"), "is-owned")}
         ${statCell(stats.missing, t("binders.stat.missing"), "is-missing")}
+        ${statCell(money(stats.valueTotal), t("value.total"))}
+        ${statCell(money(stats.valueOwned), t("value.owned"), "is-owned")}
+        ${statCell(money(stats.valueToBuy), t("value.toBuy"), "is-missing")}
         <div class="binder-progress">
           <div class="binder-progress-head"><span>${escapeHtml(t("binders.stat.progress"))}</span><strong>${stats.pct}%</strong></div>
           <div class="progress-bar"><span style="width:${stats.pct}%"></span></div>
@@ -665,11 +681,24 @@
       ? `<span class="binder-slot-own${owned ? " owned" : ""}" role="button" tabindex="0" data-slot-own="${index}" aria-pressed="${owned}" aria-label="${escapeAttribute(owned ? t("binders.slot.markMissing") : t("binders.slot.markOwned"))}">${owned ? "✓ " + escapeHtml(t("binders.slot.ownedShort")) : "+ " + escapeHtml(t("binders.slot.markOwned"))}</span>`
       : "";
 
+    // Coração na carta que você não tem: adiciona/remove da lista de desejo
+    // direto do binder (igual aos tiles normais).
+    const variant = slot.variant || DEFAULT_CONDITION;
+    const wanted = ownable ? wishlistStore.has(slot.cardId, variant) : false;
+    const wantBtn = (ownable && !owned)
+      ? `<span class="binder-slot-want${wanted ? " wanted" : ""}" role="button" tabindex="0" data-slot-want="${index}" aria-pressed="${wanted}" aria-label="${escapeAttribute(wanted ? t("tile.unwantAria", { variant }) : t("tile.wantAria", { variant }))}" title="${escapeAttribute(wanted ? t("tile.wanted") : t("tile.want"))}">${heartSvg(wanted)}</span>`
+      : "";
+
     return `<button type="button" class="binder-slot binder-slot-filled${ownable && !owned ? " not-owned" : ""}" data-slot-index="${index}" draggable="true" title="${escapeAttribute(title)}">
       <span class="binder-slot-media">${media}</span>
       ${ownBtn}
+      ${wantBtn}
       ${priceTag}
     </button>`;
+  }
+
+  function heartSvg(filled) {
+    return `<svg viewBox="0 0 24 24" width="15" height="15" fill="${filled ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>`;
   }
 
   function cardLabelFromSlot(slot) {
@@ -1436,6 +1465,18 @@
       }
       return;
     }
+    // Coração: adiciona/remove da lista de desejo, sem mexer na posse.
+    const wantToggle = event.target.closest("[data-slot-want]");
+    if (wantToggle) {
+      event.stopPropagation();
+      const binder = eventBinder(wantToggle);
+      const slot = binder && binder.slots[Number(wantToggle.dataset.slotWant)];
+      if (slot && slot.cardId) {
+        wishlistStore.toggle(slot.cardId, slot.variant || DEFAULT_CONDITION);
+        render();
+      }
+      return;
+    }
     const slotBtn = event.target.closest("[data-slot-index]");
     if (slotBtn) {
       const article = slotBtn.closest("[data-binder-id]");
@@ -1673,4 +1714,6 @@
   }
 
   render();
+  // Com o câmbio carregado, re-renderiza para preencher os valores em moeda.
+  shared.loadFxRates().then(() => render());
 })();

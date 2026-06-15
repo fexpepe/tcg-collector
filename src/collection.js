@@ -37,12 +37,6 @@
       detailType: "set",
       defaultSort: "name",
       sorts: ["name", "progress"]
-    },
-    languages: {
-      getKey: (card) => card.language.toUpperCase(),
-      detailType: null,
-      defaultSort: "name",
-      sorts: ["name", "progress"]
     }
   };
 
@@ -87,8 +81,8 @@
     ? shared.loadCatalogForCardIds(owned.knownCardIds())
     : shared.loadCatalog();
 
-  catalogPromise
-    .then((catalog) => {
+  Promise.all([catalogPromise, shared.loadFxRates()])
+    .then(([catalog]) => {
       cards = catalog.cards;
       indexes = catalog.indexes;
       cardsById = new Map(cards.map((card) => [card.id, card]));
@@ -198,7 +192,7 @@
 
   function renderCards({ resetCount = false } = {}) {
     const tiles = ownedTilePairs();
-    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist), { resetCount });
+    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices), { resetCount });
     updateCardsStats(tiles.length);
   }
 
@@ -287,13 +281,6 @@
         (indexes.artists || []).forEach((g) => map.set(g.name, g.cardIds.length));
       } else if (activeTab === "pokemon") {
         Object.entries(indexes.pokemonTotals || {}).forEach(([name, n]) => map.set(name, n));
-      } else if (activeTab === "languages") {
-        // O índice de sets é a partição canônica (cada carta em 1 set): conta o
-        // idioma pelo sufixo do id. Bate com card.language.toUpperCase().
-        (indexes.sets || []).forEach((g) => g.cardIds.forEach((id) => {
-          const lang = shared.cardLanguageFromId(id).toUpperCase();
-          map.set(lang, (map.get(lang) || 0) + 1);
-        }));
       }
       return map;
     }

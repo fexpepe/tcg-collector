@@ -45,6 +45,10 @@
     ownedCount: document.getElementById("ownedCount"),
     totalCount: document.getElementById("totalCount"),
     completionRate: document.getElementById("completionRate"),
+    detailValues: document.getElementById("detailValues"),
+    valueTotal: document.getElementById("valueTotal"),
+    valueOwned: document.getElementById("valueOwned"),
+    valueToBuy: document.getElementById("valueToBuy"),
     resultCount: document.getElementById("resultCount"),
     exportButton: document.getElementById("exportButton"),
     importInput: document.getElementById("importInput")
@@ -125,8 +129,8 @@
     onOwnedChange: () => refreshOwnership()
   });
 
-  resolveCards()
-    .then((resolvedCards) => {
+  Promise.all([resolveCards(), shared.loadFxRates()])
+    .then(([resolvedCards]) => {
       cards = resolvedCards;
       cardsById = new Map(cards.map((card) => [card.id, card]));
       owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
@@ -492,7 +496,7 @@
     const tiles = sortTiles(shared.cardVariantPairs(visibleCards));
     // Cartas sem imagem vão para o fim (sort estável preserva a ordem da ordenação escolhida).
     tiles.sort((a, b) => Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card)));
-    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist), { resetCount });
+    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices), { resetCount });
 
     elements.empty.hidden = tiles.length > 0;
     elements.resultCount.textContent = tn("results.count", tiles.length);
@@ -511,6 +515,27 @@
     elements.ownedCount.textContent = ownedInPage;
     elements.totalCount.textContent = pageCards.length;
     elements.completionRate.textContent = pageCards.length ? `${Math.round((ownedInPage / pageCards.length) * 100)}%` : "0%";
+    updateValueStats();
+  }
+
+  // Valor total da página (set/artista/pokémon), o já gasto (cartas que tenho) e
+  // o que falta (a comprar). Um valor representativo por carta (variante padrão).
+  function updateValueStats() {
+    if (!elements.detailValues) return;
+    let total = 0;
+    let ownedValue = 0;
+    pageCards.forEach((card) => {
+      const v = shared.cardValue(card, shared.defaultVariant(card), prices).value;
+      if (!v) return;
+      total += v;
+      if (owned.has(card.id)) ownedValue += v;
+    });
+    if (total <= 0) { elements.detailValues.hidden = true; return; }
+    const cur = shared.getCurrency();
+    elements.detailValues.hidden = false;
+    elements.valueTotal.textContent = shared.formatMoney(cur, total);
+    elements.valueOwned.textContent = shared.formatMoney(cur, ownedValue);
+    elements.valueToBuy.textContent = shared.formatMoney(cur, Math.max(0, total - ownedValue));
   }
 
   function filterCards() {

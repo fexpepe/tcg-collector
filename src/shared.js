@@ -398,6 +398,62 @@
     return currentCardLang === "all" || language === currentCardLang;
   }
 
+  // Moeda de exibição dos valores (global, ao lado da bandeira de idioma).
+  const CURRENCIES = ["BRL", "USD", "EUR"];
+  const currencyStorageKey = "tcg-collector-currency-v1";
+  const currentCurrency = (function () {
+    const saved = localStorage.getItem(currencyStorageKey);
+    return CURRENCIES.includes(saved) ? saved : "BRL";
+  })();
+  function getCurrency() {
+    return currentCurrency;
+  }
+
+  // Câmbio USD/EUR -> BRL em memória (lido do cache; atualizado por loadFxRates).
+  let fxRates = (function () {
+    try {
+      const cached = JSON.parse(localStorage.getItem("tcg-fx-brl-v1") || "null");
+      return cached && cached.r ? cached.r : null;
+    } catch (error) { return null; }
+  })();
+  function loadFxRates() {
+    return fetchFxRatesBRL().then((rates) => { if (rates) fxRates = rates; return fxRates; }).catch(() => fxRates);
+  }
+  // Converte um valor entre BRL/USD/EUR. Sem as taxas (1ª visita) devolve null
+  // quando a conversão exige câmbio (BRL->BRL sempre funciona).
+  function convertMoney(value, from, to) {
+    const v = Number(value);
+    if (!v) return 0;
+    if (from === to) return v;
+    const toBRL = from === "BRL" ? v : (fxRates && fxRates[from] ? v * fxRates[from] : null);
+    if (toBRL == null) return null;
+    if (to === "BRL") return toBRL;
+    return (fxRates && fxRates[to]) ? toBRL / fxRates[to] : null;
+  }
+
+  // Valor de UMA cópia da carta/variante na moeda escolhida. Fonte: preço manual
+  // (em R$) se houver; senão a referência de mercado da TCGdex (window.TCG_PRICING,
+  // por id, em USD do TCGplayer / EUR do Cardmarket), convertida. `estimated` =
+  // veio de referência ou de estimativa por condição. Retorna value 0 se nada.
+  function cardValue(card, variant, prices, condition) {
+    const cur = currentCurrency;
+    const cardId = card && card.id;
+    const cond = condition || DEFAULT_CONDITION;
+    if (prices && cardId) {
+      const manual = prices.valueFor(cardId, variant, cond);
+      if (manual.value > 0) {
+        const v = convertMoney(manual.value, "BRL", cur);
+        if (v != null) return { value: v, currency: cur, source: "manual", estimated: manual.estimated };
+      }
+    }
+    const ref = cardId && window.TCG_PRICING && window.TCG_PRICING[cardId];
+    if (ref) {
+      if (ref.u > 0) { const v = convertMoney(ref.u, "USD", cur); if (v != null) return { value: v, currency: cur, source: "ref", estimated: true }; }
+      if (ref.e > 0) { const v = convertMoney(ref.e, "EUR", cur); if (v != null) return { value: v, currency: cur, source: "ref", estimated: true }; }
+    }
+    return { value: 0, currency: cur, source: null, estimated: false };
+  }
+
   const MESSAGES = {
     pt: {
       "lang.aria": "Idioma do site",
@@ -463,6 +519,14 @@
       "empty.wishlist": "Sua lista de desejos está vazia. <a href=\"pokedex.html\">Explore a Pokédex</a> e toque no ♡ das cartas que você quer.",
       "empty.wishlistFiltered": "Nenhuma carta da sua lista de desejos com esses filtros.",
       "price.rowLabel": "Preço BR (R$)",
+      "currency.aria": "Moeda dos valores",
+      "price.refTitle": "Valor de referência (TCGdex), convertido",
+      "price.manualTitle": "Preço que você cadastrou",
+      "value.total": "Valor total",
+      "value.owned": "Já gasto (tenho)",
+      "value.toBuy": "Falta (a comprar)",
+      "portfolio.bindersValue": "valor dos binders",
+      "portfolio.grandTotal": "total (coleção + binders)",
       "price.updatedAt": "atualizado em {date}",
       "price.inputAria": "Preço em reais de {variant} {condition}",
       "price.checkAt": "Conferir preço:",
@@ -875,6 +939,14 @@
       "empty.wishlist": "Your wishlist is empty. <a href=\"pokedex.html\">Browse the Pokédex</a> and tap the ♡ on cards you want.",
       "empty.wishlistFiltered": "No cards from your wishlist match these filters.",
       "price.rowLabel": "BR price (R$)",
+      "currency.aria": "Display currency",
+      "price.refTitle": "Reference value (TCGdex), converted",
+      "price.manualTitle": "Price you set",
+      "value.total": "Total value",
+      "value.owned": "Owned value",
+      "value.toBuy": "Left to buy",
+      "portfolio.bindersValue": "binders value",
+      "portfolio.grandTotal": "total (collection + binders)",
       "price.updatedAt": "updated {date}",
       "price.inputAria": "Price in BRL for {variant} {condition}",
       "price.checkAt": "Check price:",
@@ -1459,6 +1531,26 @@
       onSelect: (value) => { localStorage.setItem(languageStorageKey, value); window.location.reload(); }
     });
     select.replaceWith(dd);
+  }
+
+  // Moeda dos valores: dropdown (R$/US$/€) ao lado da bandeira de idioma.
+  function initCurrencySwitcher() {
+    const actions = document.querySelector(".header-actions");
+    if (!actions || document.getElementById("currencyDd")) return;
+    const badge = (sym) => `<span class="lang-dd-cur" aria-hidden="true">${sym}</span>`;
+    const items = [
+      { value: "BRL", flag: badge("R$"), sigla: "BRL" },
+      { value: "USD", flag: badge("US$"), sigla: "USD" },
+      { value: "EUR", flag: badge("€"), sigla: "EUR" }
+    ];
+    const dd = createFlagDropdown({
+      id: "currencyDd",
+      current: currentCurrency,
+      items,
+      ariaLabel: t("currency.aria"),
+      onSelect: (value) => { localStorage.setItem(currencyStorageKey, value); window.location.reload(); }
+    });
+    actions.insertBefore(dd, actions.firstChild);
   }
 
   // Bandeiras SVG inline por idioma da carta (renderizam em qualquer SO, ao
@@ -2245,7 +2337,18 @@
 
   // Tile minimalista (imagem em destaque + nome, variante, set·número e ações).
   // Um tile por variante; quantidades além de 1 são ajustadas no preview da carta.
-  function variantTile(card, variant, store, wishlist) {
+  // Snippet de preço do tile na moeda escolhida (vazio se sem valor). `≈` quando
+  // vem da referência TCGdex ou de estimativa por condição.
+  function tilePriceHtml(card, variant, prices) {
+    const val = cardValue(card, variant, prices);
+    if (!val.value) return "";
+    const cls = val.source === "ref" ? "tile-price tile-price-ref" : "tile-price";
+    const prefix = val.estimated ? "≈ " : "";
+    const title = val.source === "ref" ? t("price.refTitle") : t("price.manualTitle");
+    return `<p class="${cls}" title="${escapeAttribute(title)}">${escapeHtml(prefix + fmtMoney(val.currency, val.value))}</p>`;
+  }
+
+  function variantTile(card, variant, store, wishlist, prices) {
     const quantity = store.variantTotal(card.id, variant);
     const isOwned = quantity > 0;
     const isWanted = wishlist ? wishlist.has(card.id, variant) : false;
@@ -2271,6 +2374,7 @@
         <h3>${escapeHtml(cardLabel(card))}</h3>
         <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${cardFlag(card.language)}<span>${escapeHtml(variant)}</span></p>
         <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
+        ${tilePriceHtml(card, variant, prices)}
         <div class="tile-actions">
           ${wantButton}
           <button type="button" class="tile-btn tile-own${isOwned ? " active" : ""}" data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}" aria-pressed="${isOwned}" aria-label="${escapeAttribute(ownAria)}">
@@ -2827,6 +2931,11 @@
     getLanguage,
     getLocale,
     getCardLang,
+    getCurrency,
+    loadFxRates,
+    convertMoney,
+    cardValue,
+    formatMoney: fmtMoney,
     cardLanguageFromId,
     matchesCardLang,
     applyTranslations,
@@ -2866,6 +2975,7 @@
 
   applyTranslations();
   initLanguageSwitcher();
+  initCurrencySwitcher();
   initPageNav();
   initMobileMenu();
   initSiteFooter();

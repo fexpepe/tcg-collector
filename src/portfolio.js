@@ -12,14 +12,16 @@
     totalValue: document.getElementById("totalValue"),
     pricedCopies: document.getElementById("pricedCopies"),
     wishlistValue: document.getElementById("wishlistValue"),
+    bindersValue: document.getElementById("bindersValue"),
+    grandTotal: document.getElementById("grandTotal"),
     topCards: document.getElementById("topCards"),
     empty: document.getElementById("emptyState"),
     exportButton: document.getElementById("exportButton"),
     importInput: document.getElementById("importInput")
   };
 
-  shared.loadCatalog()
-    .then((catalog) => {
+  Promise.all([shared.loadCatalog(), shared.loadFxRates()])
+    .then(([catalog]) => {
       cards = catalog.cards;
       cardsById = new Map(cards.map((card) => [card.id, card]));
       owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
@@ -43,12 +45,14 @@
     });
   }
 
-  function formatBRL(value) {
-    return value.toLocaleString(getLocale(), { style: "currency", currency: "BRL" });
+  // Tudo na moeda escolhida no header. O valor de cada carta sai do preço manual
+  // (convertido) ou, na falta, da referência TCGdex (também convertida).
+  function money(value) {
+    return value > 0 ? shared.formatMoney(shared.getCurrency(), value) : shared.formatMoney(shared.getCurrency(), 0);
   }
 
   // Cada linha é um lote carta×variante×condição da coleção, com valor unitário
-  // vindo do preço registrado (ou estimado a partir do NM).
+  // do preço registrado (ou referência TCGdex), na moeda escolhida.
   function collectionLines() {
     const lines = [];
     let totalCopies = 0;
@@ -57,9 +61,9 @@
       variants.forEach((variant) => {
         owned.conditionBreakdown(card.id, variant).forEach(({ condition, quantity }) => {
           totalCopies += quantity;
-          const { value, estimated } = prices.valueFor(card.id, variant, condition);
-          if (value > 0) {
-            lines.push({ card, variant, condition, quantity, unit: value, total: value * quantity, estimated });
+          const val = shared.cardValue(card, variant, prices, condition);
+          if (val.value > 0) {
+            lines.push({ card, variant, condition, quantity, unit: val.value, total: val.value * quantity, estimated: val.estimated });
           }
         });
       });
@@ -71,9 +75,22 @@
     let total = 0;
     cards.forEach((card) => {
       wishlist.variants(card.id).forEach((variant) => {
-        total += prices.valueFor(card.id, variant, shared.DEFAULT_CONDITION).value;
+        total += shared.cardValue(card, variant, prices).value;
       });
     });
+    return total;
+  }
+
+  // Valor de todos os binders (slots com carta do catálogo), na moeda escolhida.
+  function bindersTotal() {
+    let total = 0;
+    try {
+      const data = JSON.parse(localStorage.getItem("tcg-collector-binders-v1") || "null");
+      const binders = data && Array.isArray(data.binders) ? data.binders : [];
+      binders.forEach((binder) => (binder.slots || []).forEach((slot) => {
+        if (slot && slot.cardId) total += shared.cardValue({ id: slot.cardId }, slot.variant || shared.DEFAULT_CONDITION, prices).value;
+      }));
+    } catch (error) { /* sem binders */ }
     return total;
   }
 
@@ -82,9 +99,12 @@
     const total = lines.reduce((sum, line) => sum + line.total, 0);
     const pricedCount = lines.reduce((sum, line) => sum + line.quantity, 0);
 
-    elements.totalValue.textContent = formatBRL(total);
+    const binders = bindersTotal();
+    elements.totalValue.textContent = money(total);
     elements.pricedCopies.textContent = `${pricedCount}/${totalCopies}`;
-    elements.wishlistValue.textContent = formatBRL(wishlistTotal());
+    elements.wishlistValue.textContent = money(wishlistTotal());
+    if (elements.bindersValue) elements.bindersValue.textContent = money(binders);
+    if (elements.grandTotal) elements.grandTotal.textContent = money(total + binders);
 
     lines.sort((a, b) => b.total - a.total);
     const top = lines.slice(0, 15);
@@ -97,7 +117,7 @@
 
     const rows = top.map((line) => {
       const name = `${line.card.name} · ${line.card.set} ${line.card.number}`;
-      const unit = `${formatBRL(line.unit)}${line.estimated ? ` <span class="price-estimated" title="${escapeAttribute(t("portfolio.estimated"))}">≈</span>` : ""}`;
+      const unit = `${money(line.unit)}${line.estimated ? ` <span class="price-estimated" title="${escapeAttribute(t("portfolio.estimated"))}">≈</span>` : ""}`;
       const href = detailUrl("set", line.card.set);
       return `
         <tr>
@@ -106,7 +126,7 @@
           <td>${escapeHtml(line.condition)}</td>
           <td class="num">${line.quantity}</td>
           <td class="num">${unit}</td>
-          <td class="num"><strong>${formatBRL(line.total)}</strong></td>
+          <td class="num"><strong>${money(line.total)}</strong></td>
         </tr>
       `;
     }).join("");

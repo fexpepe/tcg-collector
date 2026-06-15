@@ -59,6 +59,9 @@ function speciesDexId(card) {
 
 const allCards = [];
 const manifestSets = [];
+// Referência de preço por cardId (TCGdex), extraída para um artefato separado e
+// removida dos chunks (mantém os chunks leves). { id: { u: USD, e: EUR } }.
+const pricing = {};
 
 for (const lang of langs) {
   for (const chunk of chunksByLang[lang] || []) {
@@ -67,6 +70,11 @@ for (const lang of langs) {
       const canonical = speciesByDex.get(speciesDexId(card));
       if (canonical && card.pokemonName !== canonical) {
         card.pokemonName = canonical;
+        changed = true;
+      }
+      if (card.price) {
+        pricing[card.id] = card.price;
+        delete card.price;
         changed = true;
       }
     }
@@ -92,8 +100,10 @@ const manifest = {
 
 await writeFile(new URL("indexes.generated.js", dataDir), `window.TCG_INDEXES = ${JSON.stringify(buildIndexes(allCards))};\n`, "utf8");
 await writeFile(new URL("manifest.generated.js", dataDir), `window.TCG_MANIFEST = ${JSON.stringify(manifest)};\n`, "utf8");
+await writeFile(new URL("pricing.generated.js", dataDir), `window.TCG_PRICING = ${JSON.stringify(pricing)};\n`, "utf8");
 
 console.log(`Mesclados: ${allCards.length} cartas, ${manifestSets.length} sets (${langs.join(", ")})`);
+console.log(`Preços de referência: ${Object.keys(pricing).length} cartas`);
 console.log(`Espécies canônicas conhecidas: ${speciesByDex.size}`);
 
 function buildIndexes(sourceCards) {

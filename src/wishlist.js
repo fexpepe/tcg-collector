@@ -23,6 +23,7 @@
     languageFilter: document.getElementById("languageFilter"),
     distinctCount: document.getElementById("distinctCount"),
     setsCount: document.getElementById("setsCount"),
+    wishlistValue: document.getElementById("wishlistValue"),
     resultCount: document.getElementById("resultCount"),
     exportButton: document.getElementById("exportButton"),
     importInput: document.getElementById("importInput")
@@ -42,8 +43,8 @@
     ? shared.loadCatalogForCardIds([...new Set([...wishlist.knownCardIds(), ...owned.knownCardIds()])])
     : shared.loadCatalog();
 
-  catalogPromise
-    .then((catalog) => {
+  Promise.all([catalogPromise, shared.loadFxRates()])
+    .then(([catalog]) => {
       cards = catalog.cards;
       cardsById = new Map(cards.map((card) => [card.id, card]));
       owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
@@ -116,7 +117,7 @@
 
   function render({ resetCount = false } = {}) {
     const tiles = wantedPairs();
-    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist), { resetCount });
+    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices), { resetCount });
     updateStats(tiles.length);
   }
 
@@ -144,6 +145,15 @@
     elements.resultCount.textContent = tn("results.count", tileCount);
     elements.distinctCount.textContent = myCards.length;
     elements.setsCount.textContent = unique(myCards.map((card) => card.set)).length;
+    if (elements.wishlistValue) {
+      let total = 0;
+      myCards.forEach((card) => {
+        wishlist.variants(card.id).forEach((variant) => {
+          total += shared.cardValue(card, variant, prices).value;
+        });
+      });
+      elements.wishlistValue.textContent = total > 0 ? shared.formatMoney(shared.getCurrency(), total) : "—";
+    }
   }
 
   function filterCards() {
