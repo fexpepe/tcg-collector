@@ -2944,6 +2944,35 @@ a.progress-row:hover {
   border-color: rgba(231, 121, 111, 0.25) !important;
 }
 
+/* Navegação de páginas do binder (‹ Página X de Y › + Nova página). */
+.binder-pagenav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.binder-page-indicator {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--muted);
+  min-width: 120px;
+  text-align: center;
+}
+.binder-page-btn {
+  min-width: 38px;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.binder-page-add {
+  margin-left: auto;
+}
+.binder-page-remove {
+  color: #e7796f !important;
+  background: rgba(231, 121, 111, 0.12) !important;
+  border-color: rgba(231, 121, 111, 0.25) !important;
+}
+
 .binder-grid {
   display: grid;
   grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));

@@ -153,8 +153,18 @@
   function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
   function list() { return data[mode]; }
   function getBinder(id) { return list().find((b) => b.id === id); }
+
+  // Um binder tem N páginas, cada uma com slotCount(grid) slots. Os slots ficam
+  // num único array achatado (length = pages × slotCount), indexado globalmente.
+  function pageCount(binder) { return Math.max(1, binder.pages || 1); }
   function normalizeSlots(binder) {
-    const n = slotCount(binder.grid);
+    if (!GRIDS[binder.grid]) binder.grid = DEFAULT_GRID;
+    const per = slotCount(binder.grid);
+    if (!Number.isInteger(binder.pages) || binder.pages < 1) {
+      // Migração de binders antigos (sem páginas): deriva das slots existentes.
+      binder.pages = Math.max(1, Math.ceil((Array.isArray(binder.slots) ? binder.slots.length : 0) / per) || 1);
+    }
+    const n = per * binder.pages;
     if (!Array.isArray(binder.slots)) binder.slots = [];
     if (binder.slots.length < n) binder.slots = binder.slots.concat(Array(n - binder.slots.length).fill(null));
     else if (binder.slots.length > n) binder.slots = binder.slots.slice(0, n);
@@ -162,12 +172,18 @@
   }
   list().forEach(normalizeSlots);
 
+  // Página atual de cada binder (em memória; não precisa persistir).
+  const pageState = new Map();
+  function currentPage(binder) { return Math.min(pageState.get(binder.id) || 0, pageCount(binder) - 1); }
+  function setCurrentPage(binder, idx) { pageState.set(binder.id, Math.max(0, Math.min(idx, pageCount(binder) - 1))); }
+
   function createBinder(name, grid) {
     const binder = {
       id: uid("b_"),
       name: name || t("binders.new"),
       subtitle: "",
       grid: GRIDS[grid] ? grid : DEFAULT_GRID,
+      pages: 1,
       slots: Array(slotCount(grid)).fill(null),
       updatedAt: Date.now()
     };
@@ -180,17 +196,40 @@
     if (!binder) return;
     (binder.slots || []).forEach((slot) => { if (slot && slot.photoId) deletePhoto(slot.photoId); });
     data[mode] = list().filter((b) => b.id !== id);
+    pageState.delete(id);
     save();
   }
   function setGrid(binder, grid) {
     if (!GRIDS[grid]) return;
-    const n = slotCount(grid);
+    const newTotal = slotCount(grid) * pageCount(binder);
     // Ao encolher, apaga as fotos dos slots que serão descartados (sem órfãos).
-    if (Array.isArray(binder.slots) && binder.slots.length > n) {
-      binder.slots.slice(n).forEach((slot) => { if (slot && slot.photoId) deletePhoto(slot.photoId); });
+    if (Array.isArray(binder.slots) && binder.slots.length > newTotal) {
+      binder.slots.slice(newTotal).forEach((slot) => { if (slot && slot.photoId) deletePhoto(slot.photoId); });
     }
     binder.grid = grid;
     normalizeSlots(binder);
+    setCurrentPage(binder, currentPage(binder));
+    binder.updatedAt = Date.now();
+    save();
+  }
+
+  // Adiciona uma página em branco no fim e pula para ela.
+  function addPage(binder) {
+    binder.pages = pageCount(binder) + 1;
+    normalizeSlots(binder);
+    setCurrentPage(binder, binder.pages - 1);
+    binder.updatedAt = Date.now();
+    save();
+  }
+  // Remove a página informada (e as fotos das cartas dela). Mantém ao menos uma.
+  function removePage(binder, pageIdx) {
+    if (pageCount(binder) <= 1) return;
+    const per = slotCount(binder.grid);
+    const start = pageIdx * per;
+    binder.slots.slice(start, start + per).forEach((slot) => { if (slot && slot.photoId) deletePhoto(slot.photoId); });
+    binder.slots.splice(start, per);
+    binder.pages = pageCount(binder) - 1;
+    setCurrentPage(binder, Math.min(pageIdx, pageCount(binder) - 1));
     binder.updatedAt = Date.now();
     save();
   }
@@ -278,14 +317,28 @@
 
   function binderHtml(binder) {
     const g = GRIDS[binder.grid] || GRIDS[DEFAULT_GRID];
+    const per = slotCount(binder.grid);
+    const pages = pageCount(binder);
+    const page = currentPage(binder);
+    const start = page * per;
     const filled = (binder.slots || []).filter(Boolean);
-    const slots = (binder.slots || []).map((slot, index) => slotHtml(slot, index)).join("");
+    const slots = (binder.slots || []).slice(start, start + per)
+      .map((slot, i) => slotHtml(slot, start + i)).join("");
     const saleTotal = isSale
       ? filled.reduce((sum, slot) => sum + (Number(slot.price) || 0), 0)
       : 0;
     const meta = isSale && saleTotal > 0
       ? `<span class="binder-meta">${escapeHtml(t("binders.saleTotal"))}: R$ ${escapeHtml(fmtPrice(saleTotal))}</span>`
       : `<span class="binder-meta">${escapeHtml(t("binders.cardsCount", { n: filled.length }))}</span>`;
+
+    const pageNav = `
+      <div class="binder-pagenav">
+        <button type="button" class="secondary binder-page-btn" data-page-prev aria-label="${escapeAttribute(t("binders.page.prev"))}"${page <= 0 ? " disabled" : ""}>‹</button>
+        <span class="binder-page-indicator">${escapeHtml(t("binders.page.indicator", { n: page + 1, total: pages }))}</span>
+        <button type="button" class="secondary binder-page-btn" data-page-next aria-label="${escapeAttribute(t("binders.page.next"))}"${page >= pages - 1 ? " disabled" : ""}>›</button>
+        <button type="button" class="secondary binder-page-add" data-page-add>+ ${escapeHtml(t("binders.page.add"))}</button>
+        ${pages > 1 ? `<button type="button" class="secondary binder-page-remove" data-page-remove aria-label="${escapeAttribute(t("binders.page.remove"))}">${escapeHtml(t("binders.page.remove"))}</button>` : ""}
+      </div>`;
 
     return `
       <article class="binder" data-binder-id="${escapeAttribute(binder.id)}">
@@ -305,6 +358,7 @@
             <button type="button" class="secondary binder-delete" data-binder-delete>${escapeHtml(t("binders.delete"))}</button>
           </div>
         </header>
+        ${pageNav}
         <div class="binder-grid" style="--cols:${g.cols}">${slots}</div>
       </article>`;
   }
@@ -686,13 +740,15 @@
       ctx.fillText(binder.subtitle, PAD, PAD + 44, width - PAD * 2);
     }
 
+    // Exporta a página atual do binder.
+    const exportOffset = currentPage(binder) * slotCount(binder.grid);
     const gridTop = PAD + headerH;
     for (let i = 0; i < g.cols * g.rows; i++) {
       const col = i % g.cols;
       const row = Math.floor(i / g.cols);
       const x = PAD + col * (CARD_W + GAP);
       const y = gridTop + row * (CARD_H + GAP);
-      const slot = binder.slots[i];
+      const slot = binder.slots[exportOffset + i];
 
       ctx.save();
       roundRect(ctx, x, y, CARD_W, CARD_H, 12);
@@ -757,7 +813,8 @@
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = `${(binder.name || "binder").replace(/[^\w-]+/g, "_").slice(0, 40)}.png`;
+        const pageSuffix = pageCount(binder) > 1 ? `_p${currentPage(binder) + 1}` : "";
+        link.download = `${(binder.name || "binder").replace(/[^\w-]+/g, "_").slice(0, 40)}${pageSuffix}.png`;
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -797,6 +854,31 @@
     if (slotBtn) {
       const article = slotBtn.closest("[data-binder-id]");
       openEditor(article.dataset.binderId, Number(slotBtn.dataset.slotIndex));
+      return;
+    }
+    // Navegação de páginas
+    const pagePrev = event.target.closest("[data-page-prev]");
+    if (pagePrev) {
+      const binder = getBinder(pagePrev.closest("[data-binder-id]").dataset.binderId);
+      if (binder) { setCurrentPage(binder, currentPage(binder) - 1); render(); }
+      return;
+    }
+    const pageNext = event.target.closest("[data-page-next]");
+    if (pageNext) {
+      const binder = getBinder(pageNext.closest("[data-binder-id]").dataset.binderId);
+      if (binder) { setCurrentPage(binder, currentPage(binder) + 1); render(); }
+      return;
+    }
+    const pageAdd = event.target.closest("[data-page-add]");
+    if (pageAdd) {
+      const binder = getBinder(pageAdd.closest("[data-binder-id]").dataset.binderId);
+      if (binder) { addPage(binder); render(); }
+      return;
+    }
+    const pageRemove = event.target.closest("[data-page-remove]");
+    if (pageRemove) {
+      const binder = getBinder(pageRemove.closest("[data-binder-id]").dataset.binderId);
+      if (binder && confirm(t("binders.page.removeConfirm"))) { removePage(binder, currentPage(binder)); render(); }
       return;
     }
     const exportBtn = event.target.closest("[data-binder-export]");
