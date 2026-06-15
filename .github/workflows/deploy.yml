@@ -1,23 +1,23 @@
-name: Build e deploy (catálogo TCGdex)
+name: Build e deploy (Cloudflare Pages)
 
 on:
   push:
-    branches: [main]
+    # main -> produção; qualquer outra branch -> preview (URL própria).
   schedule:
-    # toda segunda às 06:00 UTC — atualiza o catálogo com sets novos
+    # toda segunda às 06:00 UTC — atualiza o catálogo com sets novos (na main).
     - cron: "0 6 * * 1"
   workflow_dispatch:
 
-# Permissão padrão mínima para todos os jobs; só o deploy pede o que precisa a mais.
 permissions:
   contents: read
 
+# Uma execução por branch (um push novo na mesma branch cancela o anterior).
 concurrency:
-  group: pages
+  group: deploy-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
     env:
       CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -30,7 +30,7 @@ jobs:
           node-version: 20
 
       # O cache incremental do sync (payloads brutos por set) faz os deploys
-      # de push levarem minutos em vez de refazer toda a TCGdex.
+      # levarem minutos em vez de refazer toda a TCGdex.
       - name: Restaura cache da TCGdex
         uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
@@ -62,32 +62,13 @@ jobs:
       - name: Remove arquivos que não vão para o site
         run: rm -rf .git .github .claude data/.cache data/cards.generated.js scripts
 
-      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
-        with:
-          path: .
-
-      # Deploy para o Cloudflare Pages. Só roda quando o secret CLOUDFLARE_API_TOKEN
-      # está configurado — assim o build não quebra enquanto a migração não está pronta.
-      # wrangler (oficial da Cloudflare) é baixado via npx, fixado no major v3.
+      # Deploy no Cloudflare Pages. main = produção; outras branches = preview
+      # (URL única <hash>.tcg-collector.pages.dev). Pulado se o secret faltar.
       - name: Deploy para Cloudflare Pages
         if: ${{ env.CF_API_TOKEN != '' }}
         run: |
           npx --yes wrangler@3 pages project create tcg-collector --production-branch=main 2>/dev/null || true
-          npx --yes wrangler@3 pages deploy . --project-name=tcg-collector --branch=main
+          npx --yes wrangler@3 pages deploy . --project-name=tcg-collector --branch="${{ github.ref_name }}"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    # Privilégios elevados ficam só no job que publica no Pages.
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5

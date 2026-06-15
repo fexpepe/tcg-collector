@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://fexpepe.github.io/tcg-collector/</loc></url>
-  <url><loc>https://fexpepe.github.io/tcg-collector/pokedex.html</loc></url>
-  <url><loc>https://fexpepe.github.io/tcg-collector/sets.html</loc></url>
-  <url><loc>https://fexpepe.github.io/tcg-collector/artists.html</loc></url>
-  <url><loc>https://fexpepe.github.io/tcg-collector/trainers.html</loc></url>
-  <url><loc>https://fexpepe.github.io/tcg-collector/collection.html</loc></url>
-  <url><loc>https://fexpepe.github.io/tcg-collector/wishlist.html</loc></url>
-  <url><loc>https://fexpepe.github.io/tcg-collector/portfolio.html</loc></url>
-  <url><loc>https://fexpepe.github.io/tcg-collector/binders.html</loc></url>
+  <url><loc>https://tcg-collector.pages.dev/</loc></url>
+  <url><loc>https://tcg-collector.pages.dev/pokedex</loc></url>
+  <url><loc>https://tcg-collector.pages.dev/sets</loc></url>
+  <url><loc>https://tcg-collector.pages.dev/artists</loc></url>
+  <url><loc>https://tcg-collector.pages.dev/trainers</loc></url>
+  <url><loc>https://tcg-collector.pages.dev/collection</loc></url>
+  <url><loc>https://tcg-collector.pages.dev/wishlist</loc></url>
+  <url><loc>https://tcg-collector.pages.dev/portfolio</loc></url>
+  <url><loc>https://tcg-collector.pages.dev/binders</loc></url>
 </urlset>
