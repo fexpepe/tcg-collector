@@ -486,9 +486,9 @@
   // Aba "Imprimir": layout + opções + botão imprimir.
   function binderPrintPanelHtml(binder) {
     const printOpts = [
-      ["images", "binders.print.optImages"], ["price", "binders.print.optPrice"],
-      ["set", "binders.print.optSet"], ["variant", "binders.print.optVariant"],
-      ["owned", "binders.print.optOwned"]
+      ["realSize", "binders.print.optRealSize"], ["images", "binders.print.optImages"],
+      ["price", "binders.print.optPrice"], ["set", "binders.print.optSet"],
+      ["variant", "binders.print.optVariant"], ["owned", "binders.print.optOwned"]
     ].map(([key, k]) =>
       `<label class="binder-print-opt"><input type="checkbox" data-print-opt="${key}" checked> ${escapeHtml(t(k))}</label>`
     ).join("");
@@ -1026,8 +1026,42 @@
       const g = GRIDS[binder.grid] || GRIDS[DEFAULT_GRID];
       const per = slotCount(binder.grid);
       let body = "";
+      let extraStyles = "";
+      let showHeader = true;
+      // Grade em "tamanho real": A4 retrato com cartas a 63×88mm (tamanho real
+      // de carta), uma página de binder por folha. Salvar como PDF no diálogo
+      // de impressão dá o tamanho exato. Grades grandes (4×4/5×5) que não cabem
+      // no A4 são reduzidas proporcionalmente para caber.
+      const realGrid = layout === "grid" && opts.realSize !== false;
 
-      if (layout === "grid") {
+      if (realGrid) {
+        showHeader = false;
+        const CW = 63, CH = 88, GAP = 2, PW = 198, PH = 285; // mm (A4 menos margem 6mm)
+        const gw = g.cols * CW + (g.cols - 1) * GAP;
+        const gh = g.rows * CH + (g.rows - 1) * GAP;
+        const s = Math.min(1, PW / gw, PH / gh);
+        const cw = (CW * s).toFixed(2), ch = (CH * s).toFixed(2), gp = (GAP * s).toFixed(2);
+        for (let p = 0; p < pageCount(binder); p++) {
+          const resolved = await Promise.all(binder.slots.slice(p * per, p * per + per).map(resolveSlotForPrint));
+          const cells = resolved.map((item) => {
+            if (!item) return `<div class="card empty"></div>`;
+            if (item.img) return `<div class="card"><img src="${item.img}" alt=""></div>`;
+            return `<div class="card"><span class="freelbl">${esc(item.name)}</span></div>`;
+          }).join("");
+          body += `<section class="sheet"><div class="rgrid">${cells}</div></section>`;
+        }
+        extraStyles = `
+          @page { size: A4 portrait; margin: 6mm; }
+          html, body { margin: 0; }
+          .sheet { display: flex; align-items: center; justify-content: center; break-after: page; }
+          .sheet:last-child { break-after: auto; }
+          .rgrid { display: grid; grid-template-columns: repeat(${g.cols}, ${cw}mm); grid-auto-rows: ${ch}mm; gap: ${gp}mm; }
+          .rgrid .card { width: ${cw}mm; height: ${ch}mm; overflow: hidden; border-radius: 2.5mm; }
+          .rgrid .card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+          .rgrid .card.empty { border: 0.3mm dashed #bbb; }
+          .rgrid .freelbl { display: flex; align-items: center; justify-content: center; height: 100%; font-size: 9pt; text-align: center; padding: 2mm; color: #333; }
+        `;
+      } else if (layout === "grid") {
         for (let p = 0; p < pageCount(binder); p++) {
           const resolved = await Promise.all(binder.slots.slice(p * per, p * per + per).map(resolveSlotForPrint));
           const cells = resolved.map((item) => {
@@ -1086,9 +1120,13 @@
         .checklist { width: 100%; border-collapse: collapse; font-size: 12px; }
         .checklist th, .checklist td { border: 1px solid #ddd; padding: 4px 8px; text-align: left; }
         .checklist th { background: #f3f3f3; }
-        @media print { ${opts.onePagePerPrint !== false && layout === "grid" ? ".page { break-after: page; }" : ""} }
+        @media print { ${opts.onePagePerPrint !== false && layout === "grid" && !realGrid ? ".page { break-after: page; }" : ""} }
+        ${extraStyles}
       `;
-      const html = `<!doctype html><html><head><meta charset="utf-8"><title>${esc(binder.name || "Binder")}</title><style>${styles}</style></head><body><h1>${esc(binder.name || "")}</h1>${binder.description ? `<p class="desc">${esc(binder.description)}</p>` : ""}${body}</body></html>`;
+      const header = showHeader
+        ? `<h1>${esc(binder.name || "")}</h1>${binder.description ? `<p class="desc">${esc(binder.description)}</p>` : ""}`
+        : "";
+      const html = `<!doctype html><html><head><meta charset="utf-8"><title>${esc(binder.name || "Binder")}</title><style>${styles}</style></head><body>${header}${body}</body></html>`;
 
       const win = window.open("", "_blank");
       if (!win) { alert(t("binders.print.blocked")); return; }
