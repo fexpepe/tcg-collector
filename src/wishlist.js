@@ -8,6 +8,12 @@
   const wishlist = shared.createWishlistStore();
   const prices = shared.createPriceStore();
 
+  // Modo manifest (produção): baixa só os sets das cartas que aparecem aqui em
+  // vez do catálogo inteiro. A página mostra só as desejadas, mas a carga inclui
+  // também as possuídas para a migração legada v1→v3 ter os objetos das cartas.
+  const manifestMode = !(Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length)
+    && !!window.TCG_MANIFEST;
+
   const elements = {
     grid: document.getElementById("cardGrid"),
     empty: document.getElementById("emptyState"),
@@ -32,7 +38,11 @@
     onOwnedChange: () => refresh()
   });
 
-  shared.loadCatalog()
+  const catalogPromise = manifestMode
+    ? shared.loadCatalogForCardIds([...new Set([...wishlist.knownCardIds(), ...owned.knownCardIds()])])
+    : shared.loadCatalog();
+
+  catalogPromise
     .then((catalog) => {
       cards = catalog.cards;
       cardsById = new Map(cards.map((card) => [card.id, card]));
@@ -89,8 +99,10 @@
       store: owned,
       wishlist,
       prices,
-      cards,
-      onChange: () => render()
+      cards: () => cards, // resolve na hora (catálogo carregado sob demanda)
+      // Em modo manifest a importação pode trazer cartas de sets ainda não
+      // baixados; recarrega para a carga direcionada rodar com os novos ids.
+      onChange: () => { if (manifestMode) window.location.reload(); else render(); }
     });
   }
 

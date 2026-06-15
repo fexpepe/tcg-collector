@@ -286,6 +286,10 @@
       },
       toObject() {
         return wishlist;
+      },
+      // Ids desejados (para a carga direcionada de catálogo).
+      knownCardIds() {
+        return Object.keys(wishlist);
       }
     };
   }
