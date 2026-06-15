@@ -365,7 +365,7 @@
 
     const languages = unique(pageCards.map((card) => card.language)).sort();
     renderSegmented(elements.languageChips, [{ value: "", label: t("filter.all.m") }]
-      .concat(languages.map((language) => ({ value: language, label: language.toUpperCase() }))), selectedLanguage);
+      .concat(languages.map((language) => ({ value: language, label: shared.cardLangSigla(language) }))), selectedLanguage);
 
     renderSegmented(elements.ownedChips, [
       { value: "all", label: t("filter.all.f") },

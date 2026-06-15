@@ -508,7 +508,7 @@
       releaseDate: sample.setReleaseDate || "",
       serieId,
       serieName: sample.setSerieName || serieDisplayName(serieId),
-      languageLabel: unique(sortedCards.map((card) => card.language.toUpperCase())).join("/")
+      languageLabel: unique(sortedCards.map((card) => shared.cardLangSigla(card.language))).join("/")
     };
   }
 

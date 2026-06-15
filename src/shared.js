@@ -1584,7 +1584,15 @@
   function cardLanguageLabel(language) {
     const code = normalizeCardLanguage(language);
     const translated = t(`cardLang.${code}`);
-    return translated === `cardLang.${code}` ? String(language || "").toUpperCase() : translated;
+    return translated === `cardLang.${code}` ? cardLangSigla(language) : translated;
+  }
+
+  // Sigla curta de exibição do idioma. "ja" é o código interno (TCGdex/IDs),
+  // mas mostramos "JP" para o usuário. Padroniza o rótulo curto em todo o site.
+  const LANG_SIGLA = { ja: "JP", zh: "ZH", pt: "PT", en: "EN" };
+  function cardLangSigla(language) {
+    const code = normalizeCardLanguage(language);
+    return LANG_SIGLA[code] || String(language || "").toUpperCase();
   }
 
   function cardFlag(language) {
@@ -1592,7 +1600,7 @@
     const label = cardLanguageLabel(language);
     const svg = CARD_FLAG_SVGS[code];
     if (!svg) {
-      return `<span class="card-flag card-flag-text" title="${escapeAttribute(label)}">${escapeHtml(String(language || "").toUpperCase())}</span>`;
+      return `<span class="card-flag card-flag-text" title="${escapeAttribute(label)}">${escapeHtml(cardLangSigla(language))}</span>`;
     }
     return `<span class="card-flag" title="${escapeAttribute(label)}" role="img" aria-label="${escapeAttribute(label)}">${svg}</span>`;
   }
@@ -1937,7 +1945,7 @@
             <div>
               <p class="eyebrow">${escapeHtml(activeCard.set)}</p>
               <h2>${escapeHtml(cardLabel(activeCard))}</h2>
-              <p class="preview-subtitle">${cardFlag(activeCard.language)}<span>${escapeHtml(activeCard.number)} · ${escapeHtml(activeCard.language.toUpperCase())}</span></p>
+              <p class="preview-subtitle">${cardFlag(activeCard.language)}<span>${escapeHtml(activeCard.number)} · ${escapeHtml(cardLangSigla(activeCard.language))}</span></p>
             </div>
             <div class="preview-actions">
               <div class="preview-actions-row">
@@ -2948,6 +2956,7 @@
     typesForDex,
     cardFlag,
     cardLanguageLabel,
+    cardLangSigla,
     cardLanguageRegion,
     localizedImg,
     cardImageSources,
