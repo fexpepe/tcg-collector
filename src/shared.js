@@ -1,4 +1,27 @@
 (function () {
+  // Escrita coalescida no localStorage: várias mutações em sequência (ex.: vários
+  // cliques no stepper +/−) viram UM único JSON.stringify + setItem, agendado para
+  // o fim do task. Sempre faz flush no pagehide/aba oculta para não perder dado se
+  // a página for fechada antes do timer disparar.
+  const pendingWrites = new Map(); // storageKey -> () => string
+  let writeScheduled = false;
+  function flushWrites() {
+    writeScheduled = false;
+    pendingWrites.forEach((getString, key) => {
+      try { localStorage.setItem(key, getString()); } catch (error) { /* quota cheia: ignora */ }
+    });
+    pendingWrites.clear();
+  }
+  function scheduleWrite(key, getString) {
+    pendingWrites.set(key, getString);
+    if (!writeScheduled) {
+      writeScheduled = true;
+      setTimeout(flushWrites, 250);
+    }
+  }
+  window.addEventListener("pagehide", flushWrites);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushWrites(); });
+
   function createIdStore(storageKey) {
     let ids = load();
 
@@ -11,7 +34,7 @@
     }
 
     function save() {
-      localStorage.setItem(storageKey, JSON.stringify(Array.from(ids)));
+      scheduleWrite(storageKey, () => JSON.stringify(Array.from(ids)));
     }
 
     return {
@@ -72,8 +95,8 @@
     }
 
     function save() {
-      localStorage.setItem(storageKey, JSON.stringify(collection));
       initialized = true;
+      scheduleWrite(storageKey, () => JSON.stringify(collection));
     }
 
     function variantTotal(cardId, variant) {
@@ -209,7 +232,7 @@
     let wishlist = readObject(storageKey) || {};
 
     function save() {
-      localStorage.setItem(storageKey, JSON.stringify(wishlist));
+      scheduleWrite(storageKey, () => JSON.stringify(wishlist));
     }
     function variantsOf(cardId) {
       const list = wishlist[cardId];
@@ -263,7 +286,7 @@
     let prices = readObject(storageKey) || {};
 
     function save() {
-      localStorage.setItem(storageKey, JSON.stringify(prices));
+      scheduleWrite(storageKey, () => JSON.stringify(prices));
     }
     function entryOf(cardId, variant) {
       return (prices[cardId] && prices[cardId][variant]) || null;
@@ -572,6 +595,7 @@
       "binders.editor.clear": "Esvaziar slot",
       "binders.photoLimit": "Limite de {n} fotos atingido. Remova alguma para enviar outra.",
       "binders.photoError": "Não foi possível processar a imagem. Tente outra foto.",
+      "binders.storageFull": "Armazenamento cheio: não foi possível salvar. Apague alguns binders ou fotos e tente de novo.",
       "sort.label": "Ordenar:",
       "sort.dex": "Nº Dex",
       "sort.name": "Nome",
@@ -983,6 +1007,7 @@
       "binders.editor.clear": "Empty slot",
       "binders.photoLimit": "Photo limit of {n} reached. Remove one to upload another.",
       "binders.photoError": "Couldn't process the image. Try another photo.",
+      "binders.storageFull": "Storage is full: couldn't save. Delete some binders or photos and try again.",
       "sort.label": "Sort:",
       "sort.dex": "Dex #",
       "sort.name": "Name",
@@ -1213,6 +1238,10 @@
     scope.querySelectorAll("[data-i18n]").forEach((element) => {
       element.textContent = t(element.dataset.i18n);
     });
+    // ATENÇÃO (segurança): data-i18n-html injeta HTML sem escape. Só use com
+    // chaves cujo valor é HTML CONSTANTE e confiável (ex.: textos com <a>). Nunca
+    // passe dado de usuário/catálogo por aqui — para texto dinâmico use data-i18n
+    // (textContent) ou interpole via escapeHtml antes.
     scope.querySelectorAll("[data-i18n-html]").forEach((element) => {
       element.innerHTML = t(element.dataset.i18nHtml);
     });
@@ -1457,11 +1486,6 @@
       return `<span class="card-flag card-flag-text" title="${escapeAttribute(label)}">${escapeHtml(String(language || "").toUpperCase())}</span>`;
     }
     return `<span class="card-flag" title="${escapeAttribute(label)}" role="img" aria-label="${escapeAttribute(label)}">${svg}</span>`;
-  }
-
-  function localizeAssetUrl(url) {
-    if (!url) return url;
-    return url.replace(/(assets\.tcgdex\.net\/)[a-z-]+(\/)/, `$1${currentLanguage}$2`);
   }
 
   // Variante de qualidade/formato de um asset da TCGdex. Cartas aceitam
@@ -2728,6 +2752,13 @@
     return REGION_BY_GENERATION[Number(generation)] || "";
   }
 
+  // Numeral romano de 0–9 (gerações Pokémon). Fora desse intervalo devolve o
+  // próprio número como texto.
+  function toRoman(value) {
+    const numerals = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
+    return numerals[Number(value)] || String(value);
+  }
+
   function typesForDex(dexId) {
     const map = window.TCG_POKEMON_TYPES || {};
     return map[dexId] || [];
@@ -2766,11 +2797,11 @@
     REGION_BY_GENERATION,
     typeLabel,
     regionForGeneration,
+    toRoman,
     typesForDex,
     cardFlag,
     cardLanguageLabel,
     cardLanguageRegion,
-    localizeAssetUrl,
     localizedImg,
     cardImageSources,
     pokemontcgImageUrl,
