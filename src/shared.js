@@ -382,6 +382,8 @@
       "title.detail": "Detalhe - TCG Collector",
       "nav.collection": "Coleção",
       "nav.collectionMine": "Minha coleção",
+      "nav.binderCollection": "Binders · Coleção",
+      "nav.binderSale": "Binders · Venda",
       "title.collection": "Coleção - TCG Collector",
       "stats.distinct": "cartas distintas",
       "stats.copies": "cópias no total",
@@ -648,6 +650,10 @@
       "detail.loading": "Carregando",
       "detail.label": "Detalhe",
       "detail.scopeCollection": "Sua coleção",
+      "detail.navAria": "Navegação entre Pokémon",
+      "detail.back": "← Voltar",
+      "detail.prevPokemon": "‹ Anterior",
+      "detail.nextPokemon": "Próximo ›",
       "detail.label.pokemon": "Pokédex",
       "detail.label.set": "Set",
       "detail.label.artist": "Artista",
@@ -760,6 +766,8 @@
       "title.detail": "Detail - TCG Collector",
       "nav.collection": "Collection",
       "nav.collectionMine": "My collection",
+      "nav.binderCollection": "Binders · Collection",
+      "nav.binderSale": "Binders · Sale",
       "title.collection": "Collection - TCG Collector",
       "stats.distinct": "distinct cards",
       "stats.copies": "total copies",
@@ -1026,6 +1034,10 @@
       "detail.loading": "Loading",
       "detail.label": "Detail",
       "detail.scopeCollection": "Your collection",
+      "detail.navAria": "Pokémon navigation",
+      "detail.back": "← Back",
+      "detail.prevPokemon": "‹ Previous",
+      "detail.nextPokemon": "Next ›",
       "detail.label.pokemon": "Pokédex",
       "detail.label.set": "Set",
       "detail.label.artist": "Artist",
@@ -1172,8 +1184,7 @@
       }
     }
     const pokemonActive = ["pokedex", "trainers", "sets", "artists"].includes(active);
-    const collectionActive = ["collection", "wishlist"].includes(active);
-    const bindersActive = ["binders-collection", "binders-sale"].includes(active);
+    const collectionActive = ["collection", "wishlist", "binders-collection", "binders-sale"].includes(active);
 
     const link = (href, key, page) => `<a href="${href}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
     const group = (key, isActive, links) => `
@@ -1193,10 +1204,9 @@
           ${link("artists.html", "nav.artists", "artists")}`)}
       ${group("nav.collection", collectionActive, `
           ${link("collection.html", "nav.collectionMine", "collection")}
+          ${link("binders-collection.html", "nav.binderCollection", "binders-collection")}
+          ${link("binders-sale.html", "nav.binderSale", "binders-sale")}
           ${link("wishlist.html", "nav.wishlist", "wishlist")}`)}
-      ${group("nav.binders", bindersActive, `
-          ${link("binders-collection.html", "nav.bindersCollection", "binders-collection")}
-          ${link("binders-sale.html", "nav.bindersSale", "binders-sale")}`)}
       ${link("portfolio.html", "nav.portfolio", "portfolio")}
     `;
 

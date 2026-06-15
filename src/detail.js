@@ -95,12 +95,25 @@
   const RARITY_ILLUSTRATION = new Set(["illustration rare", "ilustracao rara"]);
   const RARITY_ULTRA = new Set(["ultra rare", "ultra rara"]);
 
-  function rarityBucket(rarity) {
-    const r = normalize(rarity);
-    if (RARITY_BASE.has(r)) return "base";
+  // Carta "secreta": número acima do total oficial do set (full art, SAR, SR,
+  // hiper/rainbow...). Em sets japoneses essas cartas frequentemente vêm sem
+  // raridade ("None"/""), então sem isto cairiam em "Comuns e raras".
+  function isSecretCard(card) {
+    const num = parseInt(String(card.number || "").replace(/\D/g, ""), 10);
+    const total = parseInt(String(card.setTotal || "").replace(/\D/g, ""), 10);
+    return Number.isFinite(num) && Number.isFinite(total) && total > 0 && num > total;
+  }
+
+  function rarityBucket(card) {
+    const r = normalize(card.rarity);
     if (RARITY_SPECIAL.has(r)) return "special";
     if (RARITY_ILLUSTRATION.has(r)) return "illustration";
     if (RARITY_ULTRA.has(r)) return "ultra";
+    if (RARITY_BASE.has(r)) {
+      // Sem raridade + número acima do total = secreta/full art → "Outras".
+      if ((r === "" || r === "none") && isSecretCard(card)) return "discontinued";
+      return "base";
+    }
     return "discontinued";
   }
 
@@ -219,6 +232,24 @@
     }
   }
 
+  // Navegação na página do Pokémon: voltar (Pokédex/Coleção) + Pokémon anterior
+  // e próximo na ordem da Pokédex (dexId ±1). Preserva o modo coleção.
+  function pokemonNavHtml(dexId) {
+    const names = window.TCG_POKEMON_NAMES || {};
+    const dex = Number(dexId);
+    const scope = collectionScope ? "collection" : undefined;
+    const backHref = collectionScope ? "collection.html" : "pokedex.html";
+    const step = (d, label) => {
+      const nm = names[d];
+      if (!nm) return `<span class="pokemon-hero-navbtn disabled" aria-disabled="true">${escapeHtml(label)}</span>`;
+      return `<a class="pokemon-hero-navbtn" href="${escapeAttribute(shared.detailUrl("pokemon", nm, scope))}" title="${escapeAttribute(nm)}">${escapeHtml(label)}</a>`;
+    };
+    return `<nav class="pokemon-hero-nav" aria-label="${escapeAttribute(t("detail.navAria"))}">
+      <a class="pokemon-hero-navbtn" href="${backHref}">${escapeHtml(t("detail.back"))}</a>
+      ${Number.isFinite(dex) ? step(dex - 1, t("detail.prevPokemon")) + step(dex + 1, t("detail.nextPokemon")) : ""}
+    </nav>`;
+  }
+
   function renderPokemonHero(sample) {
     const dexId = sample.dexId || "";
     const region = REGION_BY_GENERATION[Number(sample.generation)] || "";
@@ -229,7 +260,7 @@
       : "";
 
     elements.hero.innerHTML = `
-      <div class="pokemon-hero-art">${pokemonImage}</div>
+      <div class="pokemon-hero-art">${pokemonNavHtml(dexId)}${pokemonImage}</div>
       <div class="pokemon-hero-info">
         <h2 class="pokemon-hero-title">
           <span class="dex-num">#${String(dexId || "?").padStart(4, "0")}</span>
@@ -350,7 +381,7 @@
   // página e esconde o filtro inteiro se houver menos de 2 (nada a filtrar).
   function renderRarityChips() {
     if (!elements.rarityChips || !elements.rarityFilter) return;
-    const present = new Set(pageCards.map((card) => rarityBucket(card.rarity)));
+    const present = new Set(pageCards.map((card) => rarityBucket(card)));
     const buckets = RARITY_BUCKET_ORDER.filter((key) => present.has(key));
     elements.rarityFilter.hidden = buckets.length < 2;
     if (buckets.length < 2) {
@@ -500,7 +531,7 @@
         || (ownedValue === "owned" && isOwned)
         || (ownedValue === "missing" && !isOwned)
         || (ownedValue === "wanted" && wishlist.hasCard(card.id));
-      const matchesRarity = selectedRarities.size === 0 || selectedRarities.has(rarityBucket(card.rarity));
+      const matchesRarity = selectedRarities.size === 0 || selectedRarities.has(rarityBucket(card));
 
       return matchesQuery && matchesSet && matchesLanguage && matchesOwned && matchesRarity;
     });

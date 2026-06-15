@@ -346,6 +346,15 @@ button,
   color: var(--text);
 }
 
+/* Chips de geração: menores para caberem numa linha só no desktop; quebram
+   alinhados (mesmo gap) quando escalam pro celular. */
+#generationChips { gap: 6px; }
+#generationChips .chip {
+  min-height: 32px;
+  padding: 0 11px;
+  font-size: 12.5px;
+}
+
 .chip[aria-pressed="true"] {
   background: var(--accent);
   border-color: var(--accent);
@@ -1068,8 +1077,41 @@ input::placeholder {
   background:
     radial-gradient(circle at 50% 28%, rgba(57, 199, 155, 0.16), transparent 48%),
     #11141b;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 8px;
+}
+
+/* Navegação acima da foto: Voltar · Anterior · Próximo. */
+.pokemon-hero-nav {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.pokemon-hero-navbtn {
+  flex: 1 1 auto;
+  text-align: center;
+  padding: 6px 10px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.pokemon-hero-navbtn:hover {
+  border-color: var(--accent-dark);
+  color: var(--text);
+}
+.pokemon-hero-navbtn.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+.pokemon-hero-art .pokemon-hero-image {
+  margin: auto;
 }
 
 .pokemon-hero-image {
