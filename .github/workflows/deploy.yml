@@ -11,6 +11,11 @@ on:
 permissions:
   contents: read
 
+# Opta as actions JS para o Node 24 (o runner vai forçar isso a partir de
+# 16/09/2026); evita o aviso de deprecação do Node 20.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 # Uma execução por branch (um push novo na mesma branch cancela o anterior).
 concurrency:
   group: deploy-${{ github.ref }}
