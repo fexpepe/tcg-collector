@@ -663,6 +663,7 @@
       binderId,
       index,
       draft,
+      picks: [], // cartas selecionadas (em ordem de clique) para preencher slots
       originalPhotoId: existing ? existing.photoId || null : null,
       tab: (draft.label && !draft.cardId) ? "free" : "collection"
     };
@@ -756,6 +757,7 @@
             <button type="button" class="primary" data-edit-save>${escapeHtml(t("binders.editor.save"))}</button>
             <button type="button" class="secondary" data-edit-clear>${escapeHtml(t("binders.editor.clear"))}</button>
             <button type="button" class="secondary" data-edit-close>${escapeHtml(t("binders.cancel"))}</button>
+            <span class="binder-pick-info" data-pick-info></span>
           </div>
         </div>
       </div>`;
@@ -797,31 +799,76 @@
     container.innerHTML = matches.map((card) => {
       const sources = cardImageSources(card);
       const thumb = localizedImg(sources.url, { className: "binder-result-thumb", alt: "", fallback: sources.fallback, loading: "lazy", thumb: true });
-      return `<button type="button" class="binder-result" data-result-id="${escapeAttribute(card.id)}">
-        <span class="binder-result-media">${thumb}</span>
+      const pickIdx = editing.picks ? editing.picks.indexOf(card.id) : -1;
+      const sel = pickIdx >= 0;
+      return `<button type="button" class="binder-result${sel ? " selected" : ""}" data-result-id="${escapeAttribute(card.id)}" aria-pressed="${sel}">
+        <span class="binder-result-media">${thumb}${sel ? `<span class="binder-result-badge">${pickIdx + 1}</span>` : ""}</span>
         <span class="binder-result-label">${escapeHtml(cardLabel(card))}</span>
       </button>`;
     }).join("");
   }
 
+  // Seleção múltipla: clicar liga/desliga a carta na lista de escolhidas (na
+  // ordem dos cliques). "Adicionar" preenche os slots a partir do clicado.
   function selectCard(cardId) {
-    if (!editing) return;
-    const card = cardsById.get(cardId);
-    if (!card) return;
-    const sources = cardImageSources(card);
-    Object.assign(editing.draft, {
-      cardId: card.id,
-      variant: defaultVariant(card),
-      name: card.name,
-      code: cardCode(card),
-      image: sources.url,
-      fallback: sources.fallback || "",
-      label: ""
+    if (!editing || !cardsById.get(cardId)) return;
+    const i = editing.picks.indexOf(cardId);
+    if (i >= 0) editing.picks.splice(i, 1);
+    else editing.picks.push(cardId);
+    refreshResultBadges(); // atualiza no lugar (sem recriar/recarregar imagens)
+    updatePickCount();
+  }
+
+  // Atualiza marca de seleção e numeração dos resultados sem reconstruir o DOM.
+  function refreshResultBadges() {
+    const modal = document.getElementById("binderEditor");
+    if (!modal || !editing) return;
+    modal.querySelectorAll(".binder-result").forEach((el) => {
+      const pickIdx = editing.picks.indexOf(el.dataset.resultId);
+      const sel = pickIdx >= 0;
+      el.classList.toggle("selected", sel);
+      el.setAttribute("aria-pressed", String(sel));
+      const media = el.querySelector(".binder-result-media");
+      let badge = el.querySelector(".binder-result-badge");
+      if (sel) {
+        if (!badge && media) { badge = document.createElement("span"); badge.className = "binder-result-badge"; media.appendChild(badge); }
+        if (badge) badge.textContent = String(pickIdx + 1);
+      } else if (badge) {
+        badge.remove();
+      }
     });
-    renderEditor();
-    const search = document.querySelector("#binderEditor [data-edit-search]");
-    if (search) { search.value = ""; }
-    renderSearchResults("");
+  }
+
+  function updatePickCount() {
+    const modal = document.getElementById("binderEditor");
+    if (!modal || !editing) return;
+    const n = editing.picks.length;
+    const btn = modal.querySelector("[data-edit-save]");
+    if (btn) btn.textContent = n > 1 ? `${t("binders.editor.save")} (${n})` : t("binders.editor.save");
+    const info = modal.querySelector("[data-pick-info]");
+    if (info) info.textContent = n ? t("binders.editor.selectedCount", { n }) : "";
+  }
+
+  // Preenche os slots a partir de startIndex com as cartas (cria páginas se
+  // passar do fim). Mostra a página do primeiro slot ao terminar.
+  function placeCardsFromIndex(binder, startIndex, cardIds) {
+    let idx = startIndex;
+    cardIds.forEach((cardId) => {
+      const card = cardsById.get(cardId);
+      if (!card) return;
+      while (idx >= binder.slots.length) addPage(binder);
+      const old = binder.slots[idx];
+      if (old && old.photoId) deletePhoto(old.photoId);
+      const sources = cardImageSources(card);
+      binder.slots[idx] = {
+        cardId: card.id, variant: defaultVariant(card), name: card.name,
+        code: cardCode(card), image: sources.url, fallback: sources.fallback || "", label: ""
+      };
+      idx++;
+    });
+    setCurrentPage(binder, Math.floor(startIndex / slotCount(binder.grid)));
+    binder.updatedAt = Date.now();
+    save();
   }
 
   function closeEditor() {
@@ -841,6 +888,16 @@
     if (!binder) { closeEditor(); return; }
     const draft = editing.draft;
     const modal = document.getElementById("binderEditor");
+
+    // Seleção múltipla (abas de carta): preenche os slots a partir do clicado.
+    if (editing.tab !== "free" && editing.picks && editing.picks.length) {
+      placeCardsFromIndex(binder, editing.index, editing.picks);
+      editing = null;
+      if (modal) modal.remove();
+      document.body.classList.remove("preview-open");
+      render();
+      return;
+    }
 
     if (editing.tab === "free") {
       const labelInput = modal && modal.querySelector("[data-edit-label]");
