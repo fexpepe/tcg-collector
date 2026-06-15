@@ -102,8 +102,30 @@ function buildIndexes(sourceCards) {
     // Treinadores agrupados por nome (Supporter/Item/Stadium/Tool).
     trainers: groupToIndex(sourceCards.filter((card) => card.category === "Trainer"), (card) => card.name),
     sets: groupToIndex(sourceCards, (card) => card.set),
-    artists: groupToIndex(sourceCards, (card) => card.artist || "Artista desconhecido")
+    artists: groupToIndex(sourceCards, (card) => card.artist || "Artista desconhecido"),
+    // Totais (só contagem) por chave da aba "Pokémon" da Coleção, que agrupa por
+    // pokemonName OU speciesName(name) — logo inclui Treinador/Energia/Item, que
+    // ficam de fora do índice pokedex. A Coleção usa isto para os denominadores
+    // de progresso sem precisar baixar o catálogo inteiro.
+    pokemonTotals: countByKey(sourceCards, (card) => card.pokemonName || speciesNameKey(card.name))
   };
+}
+
+// Replica shared.js#speciesName: a chave precisa ser idêntica à do front.
+function speciesNameKey(name) {
+  return String(name || "")
+    .replace(/\b(VMAX|VSTAR|ex|EX|GX|V-UNION|V)\b/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function countByKey(sourceCards, getKey) {
+  const counts = {};
+  for (const card of sourceCards) {
+    const key = getKey(card) || "—";
+    counts[key] = (counts[key] || 0) + 1;
+  }
+  return counts;
 }
 
 // Pokédex nacional completa: uma entrada por espécie (dexId 1..1025), em ordem

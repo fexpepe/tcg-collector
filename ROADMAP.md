@@ -69,8 +69,9 @@ e o `href` do Ko-fi (`https://ko-fi.com/fexpepe`) pelo link real. Marcados com `
 
 ### 3. Polimento — médio/baixo
 - Realce de "completo" (100%) nos cards de set/artista, como o dourado da Pokédex.
-- Coleção/Quero ainda baixam o catálogo inteiro (`loadCatalog`) só pra mostrar o subconjunto
-  possuído — dá pra baixar só os sets das cartas marcadas (como a página de detalhe faz).
+- A **Quero** (wishlist) ainda baixa o catálogo inteiro (`loadCatalog`) só pra mostrar o
+  subconjunto desejado — dá pra baixar só os sets das cartas marcadas (a **Coleção** já faz
+  isso via `loadCatalogForCardIds` + totais dos índices; o mesmo padrão serve pra Quero).
 - Sets com idioma "Todas" ainda abre na região "Inglês" — poderia começar em "Todas".
 
 ---
