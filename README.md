@@ -4,7 +4,7 @@ MVP local-first para testar a arquitetura de um colecionador de Pokémon TCG sem
 
 ## Como abrir
 
-Online: https://fexpepe.github.io/tcg-collector/
+Online: https://tcg-collector.pages.dev/
 
 Local: abra `index.html` no navegador (home) ou `pokedex.html` (direto no app). A coleção é salva no `localStorage` do próprio navegador. Para servir via HTTP (necessário para o modo manifest e para a PokéAPI em algumas configurações): `npx http-server -p 4173 .`
 
@@ -82,7 +82,7 @@ A coleção fica no `localStorage` em `tcg-collector-collection-v2` (`cardId -> 
 
 ## Deploy e catálogo em produção
 
-O site publicado usa o **catálogo completo da TCGdex** em quatro idiomas (en, ja, zh-tw, pt). O chinês é o **tradicional** (zh-tw, produto de Taiwan/Hong Kong): o catálogo simplificado (zh-cn, produto da China continental — o que mais se compra no Brasil) ainda é um esqueleto na TCGdex (8 sets com cartas, **nenhuma imagem**, nomes emprestados do tradicional), então não vale a troca por ora; reavaliar quando a TCGdex populá-lo. O workflow [.github/workflows/deploy.yml](.github/workflows/deploy.yml) roda a cada push e toda segunda-feira: sincroniza os catálogos (com cache incremental entre execuções), mescla tudo com `scripts/merge-catalogs.mjs` (ids com sufixo de idioma; espécies canonizadas via dexId usando o catálogo en), troca as páginas para o modo manifest (chunks por set carregados via fetch) e publica no GitHub Pages via artifact — nada de dados gerados vai para o git. Localmente o app continua usando o catálogo de exemplo (`data/cards.js`).
+O site publicado usa o **catálogo completo da TCGdex** em quatro idiomas (en, ja, zh-tw, pt). O chinês é o **tradicional** (zh-tw, produto de Taiwan/Hong Kong): o catálogo simplificado (zh-cn, produto da China continental — o que mais se compra no Brasil) ainda é um esqueleto na TCGdex (8 sets com cartas, **nenhuma imagem**, nomes emprestados do tradicional), então não vale a troca por ora; reavaliar quando a TCGdex populá-lo. O workflow [.github/workflows/deploy.yml](.github/workflows/deploy.yml) roda a cada push e toda segunda-feira: sincroniza os catálogos (com cache incremental entre execuções), mescla tudo com `scripts/merge-catalogs.mjs` (ids com sufixo de idioma; espécies canonizadas via dexId usando o catálogo en), troca as páginas para o modo manifest (chunks por set carregados via fetch) e publica no Cloudflare Pages via `wrangler` (deploy por branch: `main` = produção, outras branches = preview) — nada de dados gerados vai para o git. Localmente o app continua usando o catálogo de exemplo (`data/cards.js`).
 
 ## Próximos passos recomendados
 
