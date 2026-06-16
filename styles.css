@@ -83,6 +83,8 @@ select {
 .app-header-inner .header-actions {
   justify-self: end;
   align-items: center;
+  flex-wrap: nowrap;
+  gap: 10px;
 }
 
 /* Todos os controles do header com a mesma altura (42px). O .file-button é
