@@ -482,6 +482,11 @@
       "export.json": "Backup (.json)",
       "export.csv": "Planilha (.csv)",
       "header.import": "Importar",
+      "auth.signIn": "Entrar",
+      "auth.signOut": "Sair",
+      "auth.emailPrompt": "Seu e-mail para entrar (enviamos um link de acesso):",
+      "auth.linkSent": "Link de acesso enviado! Confira seu e-mail (e o spam).",
+      "auth.error": "Não foi possível enviar o link. Tente de novo.",
       "title.home": "TCG Collector — sua coleção de Pokémon TCG, grátis",
       "title.pokedex": "Pokédex - TCG Collector",
       "title.sets": "Sets - TCG Collector",
@@ -906,6 +911,11 @@
       "export.json": "Backup (.json)",
       "export.csv": "Spreadsheet (.csv)",
       "header.import": "Import",
+      "auth.signIn": "Sign in",
+      "auth.signOut": "Sign out",
+      "auth.emailPrompt": "Your email to sign in (we'll send a magic link):",
+      "auth.linkSent": "Magic link sent! Check your email (and spam).",
+      "auth.error": "Couldn't send the link. Please try again.",
       "title.home": "TCG Collector — your Pokémon TCG collection, free",
       "title.pokedex": "Pokédex - TCG Collector",
       "title.sets": "Sets - TCG Collector",
@@ -3039,12 +3049,247 @@
     speciesName
   };
 
+  // ===========================================================================
+  // Login + sync na nuvem (Supabase), OPCIONAL. Sem SDK (CSP script-src 'self'):
+  // tudo via fetch nos endpoints Auth (GoTrue) e REST (PostgREST). A URL e a
+  // anon key são públicas (a segurança é a RLS por usuário). Local-first segue
+  // sendo o padrão: sem login, nada muda.
+  // ===========================================================================
+  const SUPABASE_URL = "https://dlnalopazitfdgnmdguu.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL";
+  const AUTH_ENABLED = /^https:\/\/[a-z0-9]+\.supabase\.co$/.test(SUPABASE_URL) && !!SUPABASE_KEY;
+  const SESSION_KEY = "tcg-supabase-session-v1";
+  // Stores sincronizados (binders ficam de fora por ora: têm fotos no IndexedDB,
+  // que não sobem pra nuvem).
+  const SYNC_KEYS = {
+    collection: "tcg-collector-collection-v3",
+    wishlist: "tcg-collector-wishlist-v1",
+    prices: "tcg-collector-prices-v1"
+  };
+
+  function authHeaders(token) {
+    const h = { apikey: SUPABASE_KEY, "Content-Type": "application/json" };
+    if (token) h.Authorization = `Bearer ${token}`;
+    return h;
+  }
+  function getSession() { try { return JSON.parse(localStorage.getItem(SESSION_KEY) || "null"); } catch (e) { return null; } }
+  function setSession(s) { if (s) localStorage.setItem(SESSION_KEY, JSON.stringify(s)); else localStorage.removeItem(SESSION_KEY); }
+
+  async function sendMagicLink(email) {
+    const redirect = window.location.origin + window.location.pathname;
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/otp?redirect_to=${encodeURIComponent(redirect)}`, {
+      method: "POST", headers: authHeaders(), body: JSON.stringify({ email, create_user: true })
+    });
+    return res.ok;
+  }
+  async function fetchAuthUser(token) {
+    try { const r = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: authHeaders(token) }); return r.ok ? r.json() : null; } catch (e) { return null; }
+  }
+  async function refreshSession() {
+    const s = getSession();
+    if (!s || !s.refresh_token) return null;
+    try {
+      const r = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
+        method: "POST", headers: authHeaders(), body: JSON.stringify({ refresh_token: s.refresh_token })
+      });
+      if (!r.ok) { setSession(null); return null; }
+      const j = await r.json();
+      const ns = { access_token: j.access_token, refresh_token: j.refresh_token, user: j.user, ts: Date.now() };
+      setSession(ns);
+      return ns;
+    } catch (e) { return s; }
+  }
+  async function authSignOut() {
+    const s = getSession();
+    if (s) { try { await fetch(`${SUPABASE_URL}/auth/v1/logout`, { method: "POST", headers: authHeaders(s.access_token) }); } catch (e) { /* ignora */ } }
+    setSession(null);
+    window.location.reload();
+  }
+  // Volta do e-mail: tokens vêm no hash (#access_token=...&refresh_token=...).
+  async function consumeAuthRedirect() {
+    if (!window.location.hash || window.location.hash.indexOf("access_token") < 0) return null;
+    const p = new URLSearchParams(window.location.hash.slice(1));
+    const access_token = p.get("access_token");
+    const refresh_token = p.get("refresh_token");
+    history.replaceState(null, "", window.location.pathname + window.location.search);
+    if (!access_token) return null;
+    const user = await fetchAuthUser(access_token);
+    if (!user) return null;
+    const s = { access_token, refresh_token, user, ts: Date.now() };
+    setSession(s);
+    return s;
+  }
+
+  // --- Sync (merge sem perder dados) ---
+  function localSnapshot() {
+    const out = {};
+    Object.entries(SYNC_KEYS).forEach(([k, key]) => {
+      try { const v = JSON.parse(localStorage.getItem(key) || "null"); if (v) out[k] = v; } catch (e) { /* ignora */ }
+    });
+    return out;
+  }
+  function writeSnapshot(data) {
+    if (!data) return;
+    Object.entries(SYNC_KEYS).forEach(([k, key]) => { if (data[k] != null) localStorage.setItem(key, JSON.stringify(data[k])); });
+  }
+  function mergeCollection(a, b) {
+    const out = JSON.parse(JSON.stringify(a || {}));
+    Object.entries(b || {}).forEach(([cardId, variants]) => {
+      out[cardId] = out[cardId] || {};
+      Object.entries(variants || {}).forEach(([variant, conds]) => {
+        out[cardId][variant] = out[cardId][variant] || {};
+        Object.entries(conds || {}).forEach(([cond, qty]) => {
+          out[cardId][variant][cond] = Math.max(Number(out[cardId][variant][cond]) || 0, Number(qty) || 0);
+        });
+      });
+    });
+    return out;
+  }
+  function mergeWishlist(a, b) {
+    const out = JSON.parse(JSON.stringify(a || {}));
+    Object.entries(b || {}).forEach(([cardId, list]) => {
+      const set = new Set([].concat(out[cardId] || [], Array.isArray(list) ? list : []));
+      if (set.size) out[cardId] = Array.from(set);
+    });
+    return out;
+  }
+  function mergePrices(a, b) {
+    const out = JSON.parse(JSON.stringify(a || {}));
+    Object.entries(b || {}).forEach(([cardId, variants]) => {
+      out[cardId] = out[cardId] || {};
+      Object.entries(variants || {}).forEach(([variant, entry]) => {
+        const cur = out[cardId][variant];
+        // Mantém o registro com updatedAt mais recente.
+        if (!cur || String(entry && entry.updatedAt) > String(cur.updatedAt)) out[cardId][variant] = entry;
+      });
+    });
+    return out;
+  }
+  function mergeData(localD, remoteD) {
+    const a = localD || {}, b = remoteD || {};
+    return {
+      collection: mergeCollection(a.collection, b.collection),
+      wishlist: mergeWishlist(a.wishlist, b.wishlist),
+      prices: mergePrices(a.prices, b.prices)
+    };
+  }
+  async function pullRemote(token, uid) {
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?user_id=eq.${uid}&select=data`, { headers: authHeaders(token) });
+      if (!r.ok) return null;
+      const rows = await r.json();
+      return rows && rows[0] ? rows[0].data : {};
+    } catch (e) { return null; }
+  }
+  async function pushRemote(token, uid, data, keepalive) {
+    try {
+      await fetch(`${SUPABASE_URL}/rest/v1/collections?on_conflict=user_id`, {
+        method: "POST",
+        headers: Object.assign(authHeaders(token), { Prefer: "resolution=merge-duplicates,return=minimal" }),
+        body: JSON.stringify({ user_id: uid, data, updated_at: new Date().toISOString() }),
+        keepalive: !!keepalive
+      });
+    } catch (e) { /* ignora; tenta de novo no próximo ciclo */ }
+  }
+
+  let lastPushed = "";
+  function startSyncLoop(session) {
+    const push = (keepalive) => {
+      const snap = localSnapshot();
+      const json = JSON.stringify(snap);
+      if (json === lastPushed) return;
+      lastPushed = json;
+      pushRemote(session.access_token, session.user.id, snap, keepalive);
+    };
+    setInterval(() => push(false), 20000);
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") push(true); });
+    window.addEventListener("pagehide", () => push(true));
+  }
+
+  function initAuth() {
+    if (!AUTH_ENABLED) return;
+    const actions = document.querySelector(".header-actions");
+    if (!actions) return;
+
+    const slot = document.createElement("div");
+    slot.className = "auth-slot";
+    actions.appendChild(slot);
+
+    function renderLoggedOut() {
+      slot.innerHTML = `<button type="button" class="secondary auth-btn" data-auth-login>${escapeHtml(t("auth.signIn"))}</button>`;
+    }
+    function renderLoggedIn(session) {
+      const email = (session.user && session.user.email) || "conta";
+      slot.innerHTML = `<div class="lang-dd auth-dd" id="authDd">
+        <button type="button" class="lang-dd-toggle auth-btn" aria-haspopup="menu" aria-expanded="false" title="${escapeAttribute(email)}">${escapeHtml(email.split("@")[0])}<span class="lang-dd-caret" aria-hidden="true">▾</span></button>
+        <ul class="lang-dd-menu" role="menu" hidden>
+          <li class="lang-dd-option auth-email">${escapeHtml(email)}</li>
+          <li class="lang-dd-option" role="menuitem" data-auth-logout>${escapeHtml(t("auth.signOut"))}</li>
+        </ul>
+      </div>`;
+      const dd = slot.querySelector("#authDd");
+      const toggle = dd.querySelector(".lang-dd-toggle");
+      const menu = dd.querySelector(".lang-dd-menu");
+      toggle.addEventListener("click", () => { const open = menu.hidden; menu.hidden = !open; toggle.setAttribute("aria-expanded", String(open)); });
+      document.addEventListener("click", (e) => { if (!menu.hidden && !e.target.closest("#authDd")) menu.hidden = true; });
+    }
+
+    slot.addEventListener("click", async (event) => {
+      if (event.target.closest("[data-auth-login]")) {
+        const email = window.prompt(t("auth.emailPrompt"));
+        if (!email || !email.includes("@")) return;
+        const btn = slot.querySelector("[data-auth-login]");
+        if (btn) { btn.disabled = true; btn.textContent = "…"; }
+        const ok = await sendMagicLink(email.trim());
+        window.alert(ok ? t("auth.linkSent") : t("auth.error"));
+        if (btn) { btn.disabled = false; btn.textContent = t("auth.signIn"); }
+        return;
+      }
+      if (event.target.closest("[data-auth-logout]")) { authSignOut(); }
+    });
+
+    (async function boot() {
+      // 1) Acabou de voltar do e-mail? Cria sessão, sincroniza e recarrega.
+      const fresh = await consumeAuthRedirect();
+      if (fresh) {
+        renderLoggedIn(fresh);
+        const remote = await pullRemote(fresh.access_token, fresh.user.id);
+        const merged = mergeData(localSnapshot(), remote);
+        writeSnapshot(merged);
+        await pushRemote(fresh.access_token, fresh.user.id, merged);
+        window.location.reload();
+        return;
+      }
+      // 2) Sessão existente: renova, puxa o remoto e mescla (recarrega se mudou).
+      let session = getSession();
+      if (!session) { renderLoggedOut(); return; }
+      session = await refreshSession() || session;
+      if (!getSession()) { renderLoggedOut(); return; }
+      renderLoggedIn(session);
+      const remote = await pullRemote(session.access_token, session.user.id);
+      if (remote) {
+        const before = JSON.stringify(localSnapshot());
+        const merged = mergeData(localSnapshot(), remote);
+        const after = JSON.stringify(merged);
+        if (after !== before) {
+          writeSnapshot(merged);
+          await pushRemote(session.access_token, session.user.id, merged);
+          window.location.reload();
+          return;
+        }
+        lastPushed = before;
+      }
+      startSyncLoop(session);
+    })();
+  }
+
   applyTranslations();
   initLanguageSwitcher();
   initCurrencySwitcher();
   initPageNav();
   initMobileMenu();
   initSiteFooter();
+  initAuth();
 
   // Service worker: cacheia as imagens já vistas para sobreviverem a um outage
   // do CDN. Caminho relativo funciona tanto na raiz local quanto sob /tcg-collector/.

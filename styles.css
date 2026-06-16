@@ -2097,6 +2097,13 @@ input::placeholder {
   position: relative;
 }
 
+/* Login (opcional) no header */
+.auth-slot { display: inline-flex; align-items: center; }
+.auth-btn { min-height: 42px; }
+.auth-dd .lang-dd-toggle { gap: 6px; padding: 0 12px; font-weight: 700; }
+.auth-email { color: var(--subtle); font-size: 12px; cursor: default; }
+.auth-email:hover { background: transparent; color: var(--subtle); }
+
 .lang-dd-toggle {
   display: inline-flex;
   align-items: center;
