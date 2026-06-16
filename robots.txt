@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://fexpepe.github.io/tcg-collector/sitemap.xml
+Sitemap: https://tcg-collector.pages.dev/sitemap.xml
