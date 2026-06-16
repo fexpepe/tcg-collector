@@ -3220,15 +3220,16 @@
     }
     function renderLoggedIn(session) {
       const email = (session.user && session.user.email) || "conta";
+      const initial = (email.trim().charAt(0) || "?").toUpperCase();
       slot.innerHTML = `<div class="lang-dd auth-dd" id="authDd">
-        <button type="button" class="lang-dd-toggle auth-btn" aria-haspopup="menu" aria-expanded="false" title="${escapeAttribute(email)}">${escapeHtml(email.split("@")[0])}<span class="lang-dd-caret" aria-hidden="true">▾</span></button>
-        <ul class="lang-dd-menu" role="menu" hidden>
+        <button type="button" class="auth-avatar" aria-haspopup="menu" aria-expanded="false" aria-label="${escapeAttribute(email)}" title="${escapeAttribute(email)}">${escapeHtml(initial)}</button>
+        <ul class="lang-dd-menu auth-menu" role="menu" hidden>
           <li class="lang-dd-option auth-email">${escapeHtml(email)}</li>
           <li class="lang-dd-option" role="menuitem" data-auth-logout>${escapeHtml(t("auth.signOut"))}</li>
         </ul>
       </div>`;
       const dd = slot.querySelector("#authDd");
-      const toggle = dd.querySelector(".lang-dd-toggle");
+      const toggle = dd.querySelector(".auth-avatar");
       const menu = dd.querySelector(".lang-dd-menu");
       toggle.addEventListener("click", () => { const open = menu.hidden; menu.hidden = !open; toggle.setAttribute("aria-expanded", String(open)); });
       document.addEventListener("click", (e) => { if (!menu.hidden && !e.target.closest("#authDd")) menu.hidden = true; });
