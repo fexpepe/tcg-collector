@@ -466,6 +466,16 @@
     return { value: 0, currency: cur, source: null, estimated: false };
   }
 
+  // Soma o valor (variante padrão, NM) de uma lista de cartas, na moeda atual.
+  function sumCardsValue(cards, prices) {
+    let total = 0;
+    (cards || []).forEach((card) => {
+      const v = cardValue(card, defaultVariant(card), prices, DEFAULT_CONDITION);
+      if (v && v.value) total += v.value;
+    });
+    return { value: total, currency: currentCurrency };
+  }
+
   const MESSAGES = {
     pt: {
       "lang.aria": "Idioma do site",
@@ -487,6 +497,10 @@
       "auth.emailPrompt": "Seu e-mail para entrar (enviamos um link de acesso):",
       "auth.linkSent": "Link de acesso enviado! Confira seu e-mail (e o spam).",
       "auth.error": "Não foi possível enviar o link. Tente de novo.",
+      "auth.account": "Conta",
+      "auth.exportJson": "Exportar backup (.json)",
+      "auth.exportCsv": "Exportar planilha (.csv)",
+      "auth.import": "Importar backup",
       "title.home": "TCG Collector — sua coleção de Pokémon TCG, grátis",
       "title.pokedex": "Pokédex - TCG Collector",
       "title.sets": "Sets - TCG Collector",
@@ -616,6 +630,7 @@
       "binders.grid.5x5": "5×5",
       "binders.page.add": "Nova página",
       "binders.page.indicator": "Página {n} de {total}",
+      "binders.page.indicatorRange": "Páginas {a}–{b} de {total}",
       "binders.page.prev": "Página anterior",
       "binders.page.next": "Próxima página",
       "binders.page.remove": "Remover página",
@@ -764,6 +779,8 @@
       "count.marked.other": "{n} marcadas",
       "count.ofCards": "{o}/{t} cartas",
       "set.officialCards": "{n} cartas oficiais",
+      "set.value": "≈ {v} no total",
+      "set.valueTitle": "Soma estimada do valor de todas as cartas do set (preço de referência, na moeda escolhida).",
       "set.inLocalCatalog": "{n} no catálogo local",
       "set.marked": "{n} marcadas",
       "card.viewCards": "Ver cartas",
@@ -916,6 +933,10 @@
       "auth.emailPrompt": "Your email to sign in (we'll send a magic link):",
       "auth.linkSent": "Magic link sent! Check your email (and spam).",
       "auth.error": "Couldn't send the link. Please try again.",
+      "auth.account": "Account",
+      "auth.exportJson": "Export backup (.json)",
+      "auth.exportCsv": "Export spreadsheet (.csv)",
+      "auth.import": "Import backup",
       "title.home": "TCG Collector — your Pokémon TCG collection, free",
       "title.pokedex": "Pokédex - TCG Collector",
       "title.sets": "Sets - TCG Collector",
@@ -1045,6 +1066,7 @@
       "binders.grid.5x5": "5×5",
       "binders.page.add": "New page",
       "binders.page.indicator": "Page {n} of {total}",
+      "binders.page.indicatorRange": "Pages {a}–{b} of {total}",
       "binders.page.prev": "Previous page",
       "binders.page.next": "Next page",
       "binders.page.remove": "Remove page",
@@ -1193,6 +1215,8 @@
       "count.marked.other": "{n} owned",
       "count.ofCards": "{o}/{t} cards",
       "set.officialCards": "{n} official cards",
+      "set.value": "≈ {v} total",
+      "set.valueTitle": "Estimated sum of all cards in the set (reference price, in the chosen currency).",
       "set.inLocalCatalog": "{n} in local catalog",
       "set.marked": "{n} owned",
       "card.viewCards": "View cards",
@@ -2530,6 +2554,9 @@
   }
 
   function bindCollectionTransfer({ exportButton, importInput, store, wishlist, prices, cards, onChange }) {
+    // Export/import agora vivem no menu da conta (initAuth), em todas as páginas.
+    // Se os botões de header não existem mais, não há nada para ligar aqui.
+    if (!exportButton || !importInput) return;
     // `cards` pode ser um array ou uma função que devolve o array atual (para
     // páginas que carregam o catálogo sob demanda, como os binders). Resolve na
     // hora do uso para refletir o catálogo já carregado.
@@ -3008,6 +3035,8 @@
     getCardLang,
     getCurrency,
     loadFxRates,
+    sumCardsValue,
+    formatMoney: fmtMoney,
     convertMoney,
     cardValue,
     formatMoney: fmtMoney,
@@ -3064,7 +3093,8 @@
   const SYNC_KEYS = {
     collection: "tcg-collector-collection-v3",
     wishlist: "tcg-collector-wishlist-v1",
-    prices: "tcg-collector-prices-v1"
+    prices: "tcg-collector-prices-v1",
+    binders: "tcg-collector-binders-v1"
   };
 
   function authHeaders(token) {
@@ -3165,12 +3195,26 @@
     });
     return out;
   }
+  // Binders ({ binders: [...] }): une por id, mantendo o de updatedAt mais novo.
+  // (As fotos ficam só no IndexedDB local; só a estrutura/cartas sincroniza.)
+  function mergeBinders(a, b) {
+    const al = (a && Array.isArray(a.binders)) ? a.binders : [];
+    const bl = (b && Array.isArray(b.binders)) ? b.binders : [];
+    const byId = new Map();
+    al.concat(bl).forEach((bind) => {
+      if (!bind || !bind.id) return;
+      const prev = byId.get(bind.id);
+      if (!prev || (Number(bind.updatedAt) || 0) > (Number(prev.updatedAt) || 0)) byId.set(bind.id, bind);
+    });
+    return { binders: Array.from(byId.values()) };
+  }
   function mergeData(localD, remoteD) {
     const a = localD || {}, b = remoteD || {};
     return {
       collection: mergeCollection(a.collection, b.collection),
       wishlist: mergeWishlist(a.wishlist, b.wishlist),
-      prices: mergePrices(a.prices, b.prices)
+      prices: mergePrices(a.prices, b.prices),
+      binders: mergeBinders(a.binders, b.binders)
     };
   }
   async function pullRemote(token, uid) {
@@ -3215,8 +3259,71 @@
     slot.className = "auth-slot";
     actions.appendChild(slot);
 
+    // --- Export/Import (agora vivem no menu da conta) ---
+    function dl(content, filename, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = filename; a.click();
+      URL.revokeObjectURL(url);
+    }
+    function backupObject() {
+      const payload = {
+        version: 3, exportedAt: new Date().toISOString(),
+        collection: createCollectionStore().toObject(),
+        wishlist: createWishlistStore().toObject(),
+        prices: createPriceStore().toObject()
+      };
+      try { const b = JSON.parse(localStorage.getItem(SYNC_KEYS.binders) || "null"); if (b) payload.binders = b; } catch (e) { /* ignora */ }
+      return payload;
+    }
+    function exportJson() { dl(JSON.stringify(backupObject(), null, 2), "tcg-collection.json", "application/json"); }
+    async function exportCsv() {
+      let byId = new Map();
+      try { const cat = await loadCatalog(); byId = new Map((cat.cards || []).map((c) => [c.id, c])); } catch (e) { /* CSV sem nomes */ }
+      dl("﻿" + buildCollectionCsv(createCollectionStore(), createPriceStore(), byId), "tcg-collection.csv", "text/csv;charset=utf-8");
+    }
+    async function importJson(file) {
+      if (!file) return;
+      if (file.size > 20 * 1024 * 1024) { alert(t("error.import")); return; }
+      try {
+        const payload = JSON.parse(await file.text());
+        if (!payload || typeof payload !== "object" || Array.isArray(payload)) throw new Error("invalid");
+        const byId = new Map();
+        createCollectionStore().replace(parseImportedCollection(payload, byId));
+        createWishlistStore().replace(parseImportedWishlist(payload, byId));
+        createPriceStore().replace(parseImportedPrices(payload, byId));
+        if (payload.binders && typeof payload.binders === "object") localStorage.setItem(SYNC_KEYS.binders, JSON.stringify(payload.binders));
+        window.location.reload();
+      } catch (e) { alert(t("error.import")); }
+    }
+
+    // Itens de dados (export/import), comuns ao menu logado e deslogado.
+    const dataItems = `<li class="auth-sep" aria-hidden="true"></li>
+      <li class="lang-dd-option" role="menuitem" data-export-json>${escapeHtml(t("auth.exportJson"))}</li>
+      <li class="lang-dd-option" role="menuitem" data-export-csv>${escapeHtml(t("auth.exportCsv"))}</li>
+      <li class="lang-dd-option" role="menuitem" data-import>${escapeHtml(t("auth.import"))}</li>`;
+    const fileInput = `<input type="file" accept="application/json" data-import-input hidden>`;
+
+    function wireDropdown() {
+      const dd = slot.querySelector("#authDd");
+      if (!dd) return;
+      const toggle = dd.querySelector("[aria-haspopup]");
+      const menu = dd.querySelector(".lang-dd-menu");
+      toggle.addEventListener("click", () => { const open = menu.hidden; menu.hidden = !open; toggle.setAttribute("aria-expanded", String(open)); });
+      document.addEventListener("click", (e) => { if (!menu.hidden && !e.target.closest("#authDd")) menu.hidden = true; });
+    }
+
     function renderLoggedOut() {
-      slot.innerHTML = `<button type="button" class="secondary auth-btn" data-auth-login>${escapeHtml(t("auth.signIn"))}</button>`;
+      slot.innerHTML = `<div class="lang-dd auth-dd" id="authDd">
+        <button type="button" class="secondary auth-acct" aria-haspopup="menu" aria-expanded="false">${escapeHtml(t("auth.account"))}<span class="lang-dd-caret" aria-hidden="true">▾</span></button>
+        <ul class="lang-dd-menu auth-menu" role="menu" hidden>
+          <li class="lang-dd-option" role="menuitem" data-auth-login>${escapeHtml(t("auth.signIn"))}</li>
+          ${dataItems}
+        </ul>
+        ${fileInput}
+      </div>`;
+      wireDropdown();
     }
     function renderLoggedIn(session) {
       const email = (session.user && session.user.email) || "conta";
@@ -3225,28 +3332,31 @@
         <button type="button" class="auth-avatar" aria-haspopup="menu" aria-expanded="false" aria-label="${escapeAttribute(email)}" title="${escapeAttribute(email)}">${escapeHtml(initial)}</button>
         <ul class="lang-dd-menu auth-menu" role="menu" hidden>
           <li class="lang-dd-option auth-email">${escapeHtml(email)}</li>
+          ${dataItems}
+          <li class="auth-sep" aria-hidden="true"></li>
           <li class="lang-dd-option" role="menuitem" data-auth-logout>${escapeHtml(t("auth.signOut"))}</li>
         </ul>
+        ${fileInput}
       </div>`;
-      const dd = slot.querySelector("#authDd");
-      const toggle = dd.querySelector(".auth-avatar");
-      const menu = dd.querySelector(".lang-dd-menu");
-      toggle.addEventListener("click", () => { const open = menu.hidden; menu.hidden = !open; toggle.setAttribute("aria-expanded", String(open)); });
-      document.addEventListener("click", (e) => { if (!menu.hidden && !e.target.closest("#authDd")) menu.hidden = true; });
+      wireDropdown();
     }
 
     slot.addEventListener("click", async (event) => {
       if (event.target.closest("[data-auth-login]")) {
         const email = window.prompt(t("auth.emailPrompt"));
         if (!email || !email.includes("@")) return;
-        const btn = slot.querySelector("[data-auth-login]");
-        if (btn) { btn.disabled = true; btn.textContent = "…"; }
         const ok = await sendMagicLink(email.trim());
         window.alert(ok ? t("auth.linkSent") : t("auth.error"));
-        if (btn) { btn.disabled = false; btn.textContent = t("auth.signIn"); }
         return;
       }
+      if (event.target.closest("[data-export-json]")) { exportJson(); return; }
+      if (event.target.closest("[data-export-csv]")) { exportCsv(); return; }
+      if (event.target.closest("[data-import]")) { const inp = slot.querySelector("[data-import-input]"); if (inp) inp.click(); return; }
       if (event.target.closest("[data-auth-logout]")) { authSignOut(); }
+    });
+    slot.addEventListener("change", (event) => {
+      const inp = event.target.closest("[data-import-input]");
+      if (inp && inp.files && inp.files[0]) { importJson(inp.files[0]); inp.value = ""; }
     });
 
     (async function boot() {

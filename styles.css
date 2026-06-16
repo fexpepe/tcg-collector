@@ -1,5 +1,7 @@
 :root {
   color-scheme: dark;
+  /* Largura do conteúdo (header, main, footer) — mais largo, estilo Collectr. */
+  --content-w: min(1440px, calc(100% - 40px));
   --bg: #0d0e12;
   --surface: #13151b;
   --panel: #181b22;
@@ -62,7 +64,7 @@ select {
 }
 
 .app-header-inner {
-  width: min(1280px, calc(100% - 32px));
+  width: var(--content-w);
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -146,7 +148,7 @@ h1 {
 }
 
 main {
-  width: min(1280px, calc(100% - 32px));
+  width: var(--content-w);
   margin: 22px auto 48px;
 }
 
@@ -1726,7 +1728,7 @@ input::placeholder {
 }
 
 .home-main {
-  width: min(1280px, calc(100% - 32px));
+  width: var(--content-w);
   margin: 22px auto 0;
   flex: 1;
 }
@@ -2041,7 +2043,7 @@ input::placeholder {
 }
 
 .site-footer-inner {
-  width: min(1280px, calc(100% - 32px));
+  width: var(--content-w);
   margin: 0 auto;
   padding: 22px 0 34px;
   text-align: center;
@@ -2122,9 +2124,13 @@ input::placeholder {
   padding: 0;
 }
 .auth-avatar:hover { filter: brightness(1.08); }
-.auth-menu { min-width: 200px; }
+.auth-menu { min-width: 200px; right: 0; left: auto; }
 .auth-email { color: var(--subtle); font-size: 12px; cursor: default; word-break: break-all; }
 .auth-email:hover { background: transparent; color: var(--subtle); }
+/* Deslogado: botão "Conta ▾" abre o mesmo menu (entrar + exportar/importar). */
+.auth-acct { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; }
+.auth-sep { height: 1px; margin: 4px 0; padding: 0; background: var(--line); list-style: none; }
+.auth-sep:hover { background: var(--line); }
 
 .lang-dd-toggle {
   display: inline-flex;
@@ -3324,6 +3330,32 @@ a.progress-row:hover {
   display: grid;
   grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
   gap: 12px;
+}
+/* Visão "fichário aberto": duas páginas empilhadas com cartas menores. */
+.binder-grid.is-spread {
+  max-width: calc(var(--cols, 3) * 128px);
+  margin: 0 auto;
+  gap: 10px;
+}
+/* Marcação da quebra entre as duas páginas do par. */
+.binder-page-divider {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0;
+  color: var(--subtle);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.binder-page-divider::before,
+.binder-page-divider::after {
+  content: "";
+  flex: 1;
+  height: 0;
+  border-top: 1px dashed var(--line);
 }
 .binder-slot {
   position: relative;

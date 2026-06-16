@@ -57,8 +57,10 @@
     ? Promise.resolve(shared.loadIndexesOnly())
     : shared.loadCatalog(cardLang);
 
-  catalogPromise
-    .then((catalog) => {
+  // Na página de Sets, carrega o câmbio junto (pro valor total do set já sair
+  // convertido na moeda escolhida).
+  Promise.all([catalogPromise, view === "sets" ? shared.loadFxRates() : Promise.resolve()])
+    .then(([catalog]) => {
       cards = catalog.cards;
       cardsById = new Map(cards.map((card) => [card.id, card]));
       indexes = catalog.indexes || buildIndexes(cards);
@@ -430,6 +432,7 @@
           <span>${escapeHtml(t("set.officialCards", { n: item.officialTotal || item.totalCount }))}</span>
           <span>${escapeHtml(t("set.inLocalCatalog", { n: item.totalCount }))}</span>
           <span>${escapeHtml(t("set.marked", { n: item.ownedCount }))}</span>
+          ${item.value > 0 ? `<span class="set-value" title="${escapeAttribute(t("set.valueTitle"))}">${escapeHtml(t("set.value", { v: shared.formatMoney(shared.getCurrency(), item.value) }))}</span>` : ""}
         </div>
         <div class="progress-bar" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
           <span style="width: ${progress}%"></span>
@@ -503,6 +506,7 @@
       totalCount: sortedCards.length,
       ownedCount: sortedCards.filter((card) => owned.has(card.id)).length,
       officialTotal: sample.setTotal || sortedCards.length,
+      value: shared.sumCardsValue(sortedCards, prices).value,
       logo: sample.setLogo || "",
       symbol: sample.setSymbol || "",
       releaseDate: sample.setReleaseDate || "",

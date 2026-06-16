@@ -519,10 +519,18 @@
     const per = slotCount(binder.grid);
     const pages = pageCount(binder);
     const page = currentPage(binder);
-    const start = page * per;
+    // Mostra um "par de páginas" (como um fichário aberto): a página da esquerda
+    // (sempre o índice par) e a seguinte, separadas por uma marcação no meio.
+    const spreadStart = page - (page % 2);
+    const hasSecond = spreadStart + 1 < pages;
     const filled = (binder.slots || []).filter(Boolean);
-    const slots = (binder.slots || []).slice(start, start + per)
-      .map((slot, i) => slotHtml(slot, start + i)).join("");
+    const pageSlots = (p) => {
+      const s = p * per;
+      return (binder.slots || []).slice(s, s + per).map((slot, i) => slotHtml(slot, s + i)).join("");
+    };
+    const dividerLabel = escapeHtml(t("binders.page.indicator", { n: spreadStart + 2, total: pages }));
+    const slots = pageSlots(spreadStart)
+      + (hasSecond ? `<div class="binder-page-divider" aria-hidden="true"><span>${dividerLabel}</span></div>` + pageSlots(spreadStart + 1) : "");
     const saleTotal = isSale
       ? filled.reduce((sum, slot) => sum + (Number(slot.price) || 0), 0)
       : 0;
@@ -530,11 +538,14 @@
       ? `<span class="binder-meta">${escapeHtml(t("binders.saleTotal"))}: R$ ${escapeHtml(fmtPrice(saleTotal))}</span>`
       : `<span class="binder-meta">${escapeHtml(t("binders.cardsCount", { n: filled.length }))}</span>`;
 
+    const indicatorText = hasSecond
+      ? t("binders.page.indicatorRange", { a: spreadStart + 1, b: spreadStart + 2, total: pages })
+      : t("binders.page.indicator", { n: spreadStart + 1, total: pages });
     const pageControls = `
       <span class="binder-pagenav">
-        <button type="button" class="secondary binder-page-btn" data-page-prev aria-label="${escapeAttribute(t("binders.page.prev"))}"${page <= 0 ? " disabled" : ""}>‹</button>
-        <span class="binder-page-indicator">${escapeHtml(t("binders.page.indicator", { n: page + 1, total: pages }))}</span>
-        <button type="button" class="secondary binder-page-btn" data-page-next aria-label="${escapeAttribute(t("binders.page.next"))}"${page >= pages - 1 ? " disabled" : ""}>›</button>
+        <button type="button" class="secondary binder-page-btn" data-page-prev aria-label="${escapeAttribute(t("binders.page.prev"))}"${spreadStart <= 0 ? " disabled" : ""}>‹</button>
+        <span class="binder-page-indicator">${escapeHtml(indicatorText)}</span>
+        <button type="button" class="secondary binder-page-btn" data-page-next aria-label="${escapeAttribute(t("binders.page.next"))}"${spreadStart + 2 >= pages ? " disabled" : ""}>›</button>
       </span>
       <button type="button" class="secondary binder-page-add" data-page-add>+ ${escapeHtml(t("binders.page.add"))}</button>
       ${pages > 1 ? `<button type="button" class="secondary binder-page-remove" data-page-remove aria-label="${escapeAttribute(t("binders.page.remove"))}">${escapeHtml(t("binders.page.remove"))}</button>` : ""}`;
@@ -585,7 +596,7 @@
         ${summaryPanel}
         ${panel("edit", binderEditPanelHtml(binder))}
         ${panel("print", binderPrintPanelHtml(binder))}
-        <div class="binder-grid" style="--cols:${g.cols}">${slots}</div>
+        <div class="binder-grid is-spread" style="--cols:${g.cols}">${slots}</div>
       </article>`;
   }
 
@@ -1487,13 +1498,14 @@
     const pagePrev = event.target.closest("[data-page-prev]");
     if (pagePrev) {
       const binder = eventBinder(pagePrev);
-      if (binder) { setCurrentPage(binder, currentPage(binder) - 1); render(); }
+      // Navega por pares de páginas (o par começa sempre num índice par).
+      if (binder) { const p = currentPage(binder); setCurrentPage(binder, (p - (p % 2)) - 2); render(); }
       return;
     }
     const pageNext = event.target.closest("[data-page-next]");
     if (pageNext) {
       const binder = eventBinder(pageNext);
-      if (binder) { setCurrentPage(binder, currentPage(binder) + 1); render(); }
+      if (binder) { const p = currentPage(binder); setCurrentPage(binder, (p - (p % 2)) + 2); render(); }
       return;
     }
     const pageAdd = event.target.closest("[data-page-add]");
