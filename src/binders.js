@@ -819,8 +819,9 @@
       picks: [], // cartas selecionadas (em ordem de clique) para preencher slots
       originalPhotoId: existing ? existing.photoId || null : null,
       // Slot de template abre direto no catálogo, já com o nome buscado.
-      tab: isTemplate ? "catalog" : ((draft.label && !draft.cardId) ? "free" : "collection"),
-      query: isTemplate ? (existing.query || existing.name || "") : ""
+      tab: isTemplate ? "catalog" : "collection",
+      query: isTemplate ? (existing.query || existing.name || "") : "",
+      sort: "release"
     };
     refreshUserSources();
     renderEditor();
@@ -862,9 +863,13 @@
         </label>
       </div>` : "";
 
-    const photoState = draft.photoId
-      ? `<img class="binder-editor-photo" data-photo-id="${escapeAttribute(draft.photoId)}" alt="">`
-      : "";
+    const SORTS = [
+      ["release", "sort.releaseDate"], ["value-desc", "sort.valueDesc"],
+      ["value-asc", "sort.valueAsc"], ["num-desc", "sort.numDesc"], ["num-asc", "sort.numAsc"]
+    ];
+    const sortOptions = SORTS.map(([v, k]) =>
+      `<option value="${v}"${v === (editing.sort || "release") ? " selected" : ""}>${escapeHtml(t(k))}</option>`
+    ).join("");
 
     modal.innerHTML = `
       <div class="card-preview-backdrop" data-edit-close></div>
@@ -876,35 +881,21 @@
             <button type="button" class="chip${tab === "collection" ? " active" : ""}" data-edit-tab="collection" aria-pressed="${tab === "collection"}">${escapeHtml(t("binders.editor.tabCollection"))}</button>
             <button type="button" class="chip${tab === "wishlist" ? " active" : ""}" data-edit-tab="wishlist" aria-pressed="${tab === "wishlist"}">${escapeHtml(t("binders.editor.tabWishlist"))}</button>
             <button type="button" class="chip${tab === "catalog" ? " active" : ""}" data-edit-tab="catalog" aria-pressed="${tab === "catalog"}">${escapeHtml(t("binders.editor.tabCatalog"))}</button>
-            <button type="button" class="chip${tab === "free" ? " active" : ""}" data-edit-tab="free" aria-pressed="${tab === "free"}">${escapeHtml(t("binders.editor.tabFree"))}</button>
           </div>
 
           <div class="binder-editor-tabpanel"${searchTab ? "" : " hidden"}>
-            <input type="search" class="binder-editor-search" data-edit-search placeholder="${escapeAttribute(t("binders.editor.search"))}" value="${escapeAttribute(editing.query || "")}">
+            <div class="binder-editor-searchbar">
+              <input type="search" class="binder-editor-search" data-edit-search placeholder="${escapeAttribute(t("binders.editor.search"))}" value="${escapeAttribute(editing.query || "")}">
+              <label class="binder-editor-sort"><span>${escapeHtml(t("sort.label"))}</span>
+                <select data-edit-sort>${sortOptions}</select>
+              </label>
+            </div>
             <div class="binder-editor-results" data-edit-results>
               <p class="binder-editor-hint">${escapeHtml(t("binders.editor.loadingCatalog"))}</p>
             </div>
           </div>
 
-          <div class="binder-editor-tabpanel"${tab === "free" ? "" : " hidden"}>
-            <label class="binder-editor-field">${escapeHtml(t("binders.editor.label"))}
-              <input type="text" data-edit-label value="${escapeAttribute(draft.cardId ? "" : (draft.label || ""))}" placeholder="${escapeAttribute(t("binders.editor.labelPlaceholder"))}">
-            </label>
-          </div>
-
-          ${draft.cardId || (!draft.cardId && draft.label) ? `<p class="binder-editor-selected">${escapeHtml(draft.cardId ? cardLabelFromSlot(draft) : (draft.label || ""))}</p>` : ""}
-
-          ${(PHOTOS_ENABLED && (isSale || tab === "free")) ? `<div class="binder-editor-photo-row">
-            <span class="binder-editor-photo-wrap">${photoState}</span>
-            <div class="binder-editor-photo-actions">
-              <label class="secondary file-button">
-                <span>${escapeHtml(draft.photoId ? t("binders.editor.photoChange") : t("binders.editor.photoAdd"))}</span>
-                <input type="file" accept="image/*" data-edit-photo>
-              </label>
-              ${draft.photoId ? `<button type="button" class="secondary" data-edit-photo-remove>${escapeHtml(t("binders.editor.photoRemove"))}</button>` : ""}
-              <p class="binder-editor-hint">${escapeHtml(t("binders.editor.photoHint"))}</p>
-            </div>
-          </div>` : ""}
+          ${draft.cardId ? `<p class="binder-editor-selected">${escapeHtml(cardLabelFromSlot(draft))}</p>` : ""}
 
           ${saleFields}
 
@@ -925,6 +916,26 @@
     if (search && searchTab) search.focus();
   }
 
+  // Ordena os resultados da busca como na página de set: lançamento, valor ou
+  // número da carta. Cartas sem preço vão para o fim no "valor crescente".
+  function sortEditorMatches(matches) {
+    const s = (editing && editing.sort) || "release";
+    const priceOf = (card) => shared.cardValue(card, defaultVariant(card), pricesStore).value || 0;
+    const byNum = (a, b) => shared.compareCardNumbers(a.number, b.number);
+    if (s === "num-asc") matches.sort(byNum);
+    else if (s === "num-desc") matches.sort((a, b) => byNum(b, a));
+    else if (s === "value-desc") matches.sort((a, b) => priceOf(b) - priceOf(a));
+    else if (s === "value-asc") matches.sort((a, b) => {
+      const pa = priceOf(a), pb = priceOf(b);
+      if (!pa && !pb) return 0;
+      if (!pa) return 1;
+      if (!pb) return -1;
+      return pa - pb;
+    });
+    else matches.sort((a, b) => String(b.setReleaseDate || "").localeCompare(String(a.setReleaseDate || "")));
+    return matches;
+  }
+
   function renderSearchResults(query) {
     if (!editing) return;
     const modal = document.getElementById("binderEditor");
@@ -935,15 +946,18 @@
     const pool = baseListForTab();
     let matches;
     if (term) {
-      matches = pool.filter((card) => matchesCardQuery(card, term)).slice(0, 48);
+      matches = pool.filter((card) => matchesCardQuery(card, term));
     } else if (editing.tab === "catalog") {
       // Catálogo tem ~48k cartas: só busca sob demanda (não lista tudo).
       container.innerHTML = `<p class="binder-editor-hint">${escapeHtml(t("binders.editor.search"))}</p>`;
       return;
     } else {
       // Coleção/Desejo: já mostra as cartas do usuário sem precisar digitar.
-      matches = pool.slice(0, 48);
+      matches = pool.slice();
     }
+    // Ordena conforme o seletor (igual à página de set) e limita a 48 resultados.
+    sortEditorMatches(matches);
+    matches = matches.slice(0, 48);
     if (!matches.length) {
       const emptyKey = !term && editing.tab === "collection" ? "binders.editor.emptyCollection"
         : !term && editing.tab === "wishlist" ? "binders.editor.emptyWishlist"
@@ -1782,6 +1796,8 @@
 
   document.addEventListener("change", (event) => {
     if (!editing) return;
+    const sortSel = event.target.closest("[data-edit-sort]");
+    if (sortSel) { editing.sort = sortSel.value; renderSearchResults(editing.query || ""); return; }
     const photoInput = event.target.closest("[data-edit-photo]");
     if (photoInput && photoInput.files && photoInput.files[0]) {
       handlePhotoUpload(photoInput.files[0]);

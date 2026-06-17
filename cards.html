@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com; connect-src 'self' https://api.tcgdex.net https://pokeapi.co https://economia.awesomeapi.com.br https://*.supabase.co; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="title.cards">Todas as cartas - TCG Collector</title>
+    <meta name="description" content="Busque em todo o catálogo de cartas de Pokémon TCG — internacionais, japonesas e chinesas — com filtros de set, idioma e raridade.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://assets.tcgdex.net">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#0d0e12">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TCG Collector">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">TCG&nbsp;Collector</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page="cards"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-search">
+        <svg class="page-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+        <input id="searchInput" type="search" data-i18n-placeholder="search.placeholder.cards" placeholder="Carta, Pokémon, set, artista, número...">
+      </section>
+
+      <div class="page-head">
+        <h1 data-i18n="nav.allCards">Todas as cartas</h1>
+      </div>
+
+      <p class="collection-subtitle" data-i18n="cards.subtitle">Busque em todo o catálogo de cartas, com os filtros de sempre.</p>
+
+      <section class="toolbar" aria-label="Filtros">
+        <div>
+          <label for="setFilter" data-i18n="toolbar.set">Set</label>
+          <select id="setFilter">
+            <option value="" data-i18n="filter.all.m">Todos</option>
+          </select>
+        </div>
+        <div>
+          <label for="languageFilter" data-i18n="toolbar.language">Idioma</label>
+          <select id="languageFilter">
+            <option value="" data-i18n="filter.all.m">Todos</option>
+          </select>
+        </div>
+        <div>
+          <label for="rarityFilter" data-i18n="toolbar.rarity">Raridade</label>
+          <select id="rarityFilter">
+            <option value="" data-i18n="filter.all.f">Todas</option>
+          </select>
+        </div>
+      </section>
+
+      <p id="cardsIntro" class="empty-state" data-i18n-html="cards.intro">Use a busca ou os filtros acima para encontrar qualquer carta do catálogo.</p>
+
+      <section id="resultsHeader" class="results-header" hidden>
+        <h2 data-i18n="results.heading.cards">Cartas</h2>
+        <p id="resultCount">0 resultados</p>
+      </section>
+
+      <section id="cardGrid" class="card-grid" aria-live="polite"></section>
+      <p id="emptyState" class="empty-state" data-i18n="empty.pokedex" hidden>Nenhuma carta encontrada com esses filtros.</p>
+    </main>
+
+    <script src="data/cards.js"></script>
+    <script src="data/indexes.js"></script>
+    <script src="data/set-id-map.js"></script>
+    <script src="data/pricing.js"></script>
+    <script src="src/shared.js"></script>
+    <script src="src/cards.js"></script>
+  </body>
+</html>

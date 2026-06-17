@@ -482,6 +482,8 @@
       "cardLang.aria": "Idioma das cartas",
       "cardLang.all": "Todas as línguas",
       "nav.pokemon": "Pokémon",
+      "nav.explore": "Explorar",
+      "nav.allCards": "Todas as cartas",
       "nav.home": "Início",
       "nav.pokedex": "Pokédex",
       "nav.sets": "Sets",
@@ -512,6 +514,11 @@
       "nav.binderCollection": "Binders · Coleção",
       "nav.binderSale": "Binders · Venda",
       "title.collection": "Coleção - TCG Collector",
+      "title.cards": "Todas as cartas - TCG Collector",
+      "cards.subtitle": "Busque em todo o catálogo de cartas, com os filtros de sempre.",
+      "cards.intro": "Use a busca ou os filtros acima para encontrar qualquer carta do catálogo. Em breve: cartas <strong>em alta</strong> no site.",
+      "search.placeholder.cards": "Carta, Pokémon, set, artista, número...",
+      "results.heading.cards": "Cartas",
       "stats.distinct": "cartas distintas",
       "stats.copies": "cópias no total",
       "stats.setsCovered": "sets representados",
@@ -920,6 +927,8 @@
       "cardLang.aria": "Card language",
       "cardLang.all": "All languages",
       "nav.pokemon": "Pokémon",
+      "nav.explore": "Explore",
+      "nav.allCards": "All cards",
       "nav.home": "Home",
       "nav.pokedex": "Pokédex",
       "nav.sets": "Sets",
@@ -950,6 +959,11 @@
       "nav.binderCollection": "Binders · Collection",
       "nav.binderSale": "Binders · Sale",
       "title.collection": "Collection - TCG Collector",
+      "title.cards": "All cards - TCG Collector",
+      "cards.subtitle": "Search the entire card catalog, with the usual filters.",
+      "cards.intro": "Use the search or the filters above to find any card in the catalog. Coming soon: <strong>trending</strong> cards on the site.",
+      "search.placeholder.cards": "Card, Pokémon, set, artist, number...",
+      "results.heading.cards": "Cards",
       "stats.distinct": "distinct cards",
       "stats.copies": "total copies",
       "stats.setsCovered": "sets covered",
@@ -1413,7 +1427,7 @@
         active = type === "set" ? "sets" : type === "artist" ? "artists" : type === "trainer" ? "trainers" : "pokedex";
       }
     }
-    const pokemonActive = ["pokedex", "trainers", "sets", "artists"].includes(active);
+    const exploreActive = ["pokedex", "trainers", "sets", "artists", "cards"].includes(active);
     const collectionActive = ["collection", "wishlist", "binders"].includes(active);
 
     const link = (href, key, page) => `<a href="${href}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
@@ -1427,11 +1441,12 @@
 
     nav.innerHTML = `
       ${link("index.html", "nav.home", "home")}
-      ${group("nav.pokemon", pokemonActive, `
-          ${link("pokedex.html", "nav.pokedex", "pokedex")}
+      ${group("nav.explore", exploreActive, `
+          ${link("pokedex.html", "nav.pokemon", "pokedex")}
           ${link("trainers.html", "nav.trainers", "trainers")}
           ${link("sets.html", "nav.sets", "sets")}
-          ${link("artists.html", "nav.artists", "artists")}`)}
+          ${link("artists.html", "nav.artists", "artists")}
+          ${link("cards.html", "nav.allCards", "cards")}`)}
       ${group("nav.collection", collectionActive, `
           ${link("collection.html", "nav.collectionMine", "collection")}
           ${link("binders.html", "nav.binders", "binders")}

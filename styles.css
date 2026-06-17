@@ -3564,7 +3564,8 @@ a.progress-row:hover {
 .binder-editor-search,
 .binder-editor-field input,
 .binder-editor-sale input,
-.binder-editor-sale select {
+.binder-editor-sale select,
+.binder-editor-sort select {
   width: 100%;
   min-height: 42px;
   padding: 0 12px;
@@ -3573,6 +3574,26 @@ a.progress-row:hover {
   background: var(--surface);
   color: var(--text);
 }
+/* Busca + ordenação lado a lado no editor de slot. */
+.binder-editor-searchbar {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.binder-editor-searchbar .binder-editor-search { flex: 1 1 220px; }
+.binder-editor-sort {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+.binder-editor-sort > span {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--subtle);
+}
+.binder-editor-sort select { min-width: 190px; }
 .binder-editor-field,
 .binder-editor-sale label {
   display: flex;
