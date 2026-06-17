@@ -1952,35 +1952,9 @@ input::placeholder {
   transform: rotate(9deg) translateX(-20px) translateY(8px);
 }
 
-.home-features h2,
 .home-steps h2 {
   font-size: 24px;
   margin: 44px 0 18px;
-}
-
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 14px;
-}
-
-.feature-grid article {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 18px;
-}
-
-.feature-grid h3 {
-  margin: 0 0 8px;
-  font-size: 16px;
-}
-
-.feature-grid p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.55;
 }
 
 .steps {
@@ -2023,96 +1997,6 @@ input::placeholder {
   line-height: 1.55;
 }
 
-/* Home: manifesto "por que existe" */
-.home-why h2 {
-  font-size: 24px;
-  margin: 44px 0 10px;
-}
-
-.home-why-lead {
-  color: var(--muted);
-  font-size: 16px;
-  line-height: 1.65;
-  max-width: 70ch;
-  margin: 0 0 18px;
-}
-
-.why-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 14px;
-}
-
-.why-grid article {
-  background: var(--accent-soft);
-  border: 1px solid rgba(57, 199, 155, 0.22);
-  border-radius: 10px;
-  padding: 18px;
-}
-
-.why-grid h3 {
-  margin: 0 0 8px;
-  font-size: 16px;
-  color: var(--accent);
-}
-
-.why-grid p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.55;
-}
-
-/* Home: roadmap aberto */
-.home-roadmap h2 {
-  font-size: 24px;
-  margin: 44px 0 6px;
-}
-
-.home-roadmap-sub {
-  color: var(--subtle);
-  font-size: 14px;
-  margin: 0 0 18px;
-}
-
-.roadmap-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
-}
-
-.roadmap-grid article {
-  position: relative;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--gold);
-  border-radius: 10px;
-  padding: 16px 18px;
-}
-
-.roadmap-grid h3 {
-  margin: 0 0 6px;
-  font-size: 15px;
-}
-
-.roadmap-grid p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 13.5px;
-  line-height: 1.5;
-}
-
-.roadmap-link {
-  display: inline-block;
-  margin-top: 16px;
-  color: var(--accent);
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.roadmap-link:hover {
-  text-decoration: underline;
-}
 
 /* Home: apoie o projeto (café / Pix / GitHub) */
 .home-support {

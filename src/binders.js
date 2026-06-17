@@ -80,7 +80,7 @@
         // Símbolos de gênero não casam na busca do catálogo; usa o nome-base.
         query: name.replace(/[♀♂]/g, "").trim(),
         dexId: dex,
-        image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${dex}.png`,
+        image: shared.spriteUrl(dex),
         label: ""
       };
     });

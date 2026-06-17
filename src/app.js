@@ -566,7 +566,7 @@
   // Sprite pequeno (~1KB) para o grid da Pokédex — a arte grande (~145KB) só é
   // usada no hero da página do Pokémon. Renderizado com image-rendering crisp.
   function pokemonImageUrl(dexId) {
-    return dexId ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${dexId}.png` : "";
+    return shared.spriteUrl(dexId);
   }
 
   function generationFromDexId(dexId) {

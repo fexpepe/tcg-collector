@@ -394,6 +394,12 @@
     return "en";
   }
 
+  // Sprite pixel (~1KB) do Pokémon pela PokéAPI (liberado no CSP img-src). Usado
+  // na Pokédex, nos placeholders de template e na navegação anterior/próximo.
+  function spriteUrl(dexId) {
+    return dexId ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${dexId}.png` : "";
+  }
+
   function matchesCardLang(language) {
     return currentCardLang === "all" || language === currentCardLang;
   }
@@ -2062,6 +2068,7 @@
     cardValue,
     formatMoney: fmtMoney,
     cardLanguageFromId,
+    spriteUrl,
     matchesCardLang,
     applyTranslations,
     POKEMON_TYPES,

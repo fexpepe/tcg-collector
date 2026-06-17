@@ -265,7 +265,7 @@
     const nm = names[d];
     if (!nm) return `<span class="pokemon-step pokemon-step-empty" aria-hidden="true"></span>`;
     const scope = collectionScope ? "collection" : undefined;
-    const sprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${d}.png`;
+    const sprite = shared.spriteUrl(d);
     return `<a class="pokemon-step pokemon-step-${dir}" href="${escapeAttribute(shared.detailUrl("pokemon", nm, scope))}" title="${escapeAttribute(nm)}">
       <img class="pokemon-step-sprite" src="${escapeAttribute(sprite)}" alt="" loading="lazy">
       <span class="pokemon-step-text">
