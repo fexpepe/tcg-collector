@@ -2735,6 +2735,83 @@ a.progress-row:hover {
   line-height: 1.6;
 }
 
+/* Gráfico de progressão do portfólio */
+.pf-chart {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow);
+}
+.pf-chart-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.pf-series { display: flex; flex-wrap: wrap; gap: 6px; }
+.pf-series-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pf-series-chip .pf-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--pf-color);
+  flex: none;
+  opacity: 0.45;
+}
+.pf-series-chip.active {
+  color: var(--text);
+  border-color: var(--pf-color);
+  background: color-mix(in srgb, var(--pf-color) 14%, transparent);
+}
+.pf-series-chip.active .pf-dot { opacity: 1; }
+.pf-ranges {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.pf-range-btn {
+  min-height: 32px;
+  min-width: 42px;
+  padding: 0 10px;
+  border: none;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pf-range-btn.active { background: var(--accent-soft); color: var(--accent); }
+.pf-chart-body { width: 100%; }
+.pf-svg { width: 100%; height: auto; display: block; }
+.pf-line { fill: none; stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; }
+.pf-grid { stroke: var(--line); stroke-width: 1; opacity: 0.5; }
+.pf-axis { fill: var(--subtle); font-size: 11px; }
+.pf-chart-empty {
+  margin: 0;
+  padding: 40px 12px;
+  text-align: center;
+  color: var(--subtle);
+  font-size: 14px;
+}
+
 .tile-want:hover:not(:disabled) {
   border-color: #f0719a;
   color: #f0719a;

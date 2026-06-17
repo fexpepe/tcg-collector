@@ -34,6 +34,14 @@
 
       <p class="collection-subtitle" data-i18n="portfolio.subtitle">Valor estimado da sua coleção em reais, a partir dos preços que você registrou nas cartas.</p>
 
+      <section id="portfolioChart" class="pf-chart" aria-label="Progressão do portfólio" hidden>
+        <div class="pf-chart-controls">
+          <div id="pfSeries" class="pf-series" role="group" aria-label="Séries"></div>
+          <div id="pfRanges" class="pf-ranges" role="group" aria-label="Período"></div>
+        </div>
+        <div id="pfChartBody" class="pf-chart-body"></div>
+      </section>
+
       <section class="stats-grid" aria-label="Resumo do portfólio">
         <article>
           <span id="totalValue">R$ 0,00</span>

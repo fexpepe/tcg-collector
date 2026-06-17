@@ -85,11 +85,14 @@
     const pricedCount = lines.reduce((sum, line) => sum + line.quantity, 0);
 
     const binders = bindersTotal();
+    const wish = wishlistTotal();
     elements.totalValue.textContent = money(total);
     elements.pricedCopies.textContent = `${pricedCount}/${totalCopies}`;
-    elements.wishlistValue.textContent = money(wishlistTotal());
+    elements.wishlistValue.textContent = money(wish);
     if (elements.bindersValue) elements.bindersValue.textContent = money(binders);
     if (elements.grandTotal) elements.grandTotal.textContent = money(total + binders);
+
+    updateChart(total, binders, wish);
 
     lines.sort((a, b) => b.total - a.total);
     const top = lines.slice(0, 15);
@@ -131,5 +134,116 @@
         <tbody>${rows}</tbody>
       </table>
     `;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Gráfico de progressão — snapshot diário (em BRL, moeda canônica) + SVG.
+  // Não dá pra reconstruir o passado (não guardamos histórico de preços), então
+  // a série começa hoje e cresce a cada visita/dia.
+  // ---------------------------------------------------------------------------
+  const HISTORY_KEY = "tcg-portfolio-history-v1";
+  const SERIES = {
+    combined: { color: "#34d399", get: (p) => (p.c || 0) + (p.b || 0) },
+    collection: { color: "#2dd4bf", get: (p) => p.c || 0 },
+    binders: { color: "#a78bfa", get: (p) => p.b || 0 },
+    wishlist: { color: "#f5a524", get: (p) => p.w || 0 }
+  };
+  const SERIES_ORDER = ["combined", "collection", "binders", "wishlist"];
+  const RANGES = [["1d", 1], ["7d", 7], ["1m", 30], ["3m", 90], ["6m", 180], ["max", 1e9]];
+  let activeSeries = new Set(["combined"]);
+  let activeRange = "1m";
+  let controlsBound = false;
+
+  const toBRL = (v) => { const r = shared.convertMoney(v, shared.getCurrency(), "BRL"); return r == null ? v : Math.round(r * 100) / 100; };
+  const fromBRL = (v) => { const r = shared.convertMoney(v, "BRL", shared.getCurrency()); return r == null ? v : r; };
+  function loadHistory() {
+    try { const a = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]"); return Array.isArray(a) ? a : []; } catch (e) { return []; }
+  }
+  // Grava (ou substitui) o ponto de hoje. Valores em BRL pra não derreter com câmbio.
+  function recordSnapshot(collection, binders, wishlist) {
+    const hist = loadHistory();
+    const d = new Date().toISOString().slice(0, 10);
+    const point = { d, c: toBRL(collection), b: toBRL(binders), w: toBRL(wishlist) };
+    if (hist.length && hist[hist.length - 1].d === d) hist[hist.length - 1] = point;
+    else hist.push(point);
+    if (hist.length > 800) hist.splice(0, hist.length - 800);
+    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(hist)); } catch (e) { /* storage cheio: ignora */ }
+    return hist;
+  }
+
+  function updateChart(collection, binders, wishlist) {
+    const section = document.getElementById("portfolioChart");
+    if (!section) return;
+    section.hidden = false;
+    const hist = recordSnapshot(collection, binders, wishlist);
+    if (!controlsBound) { bindControls(); controlsBound = true; }
+    renderControls();
+    renderChart(hist);
+  }
+
+  // Listeners uma vez só (senão empilham a cada renderControls e o toggle dispara
+  // múltiplas vezes). Delegação no container; o innerHTML pode ser recriado à vontade.
+  function bindControls() {
+    const seriesEl = document.getElementById("pfSeries");
+    const rangeEl = document.getElementById("pfRanges");
+    if (seriesEl) seriesEl.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-series]"); if (!b) return;
+      const k = b.dataset.series;
+      if (activeSeries.has(k)) { if (activeSeries.size > 1) activeSeries.delete(k); } else activeSeries.add(k);
+      renderControls(); renderChart(loadHistory());
+    });
+    if (rangeEl) rangeEl.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-range]"); if (!b) return;
+      activeRange = b.dataset.range;
+      renderControls(); renderChart(loadHistory());
+    });
+  }
+
+  function renderControls() {
+    const seriesEl = document.getElementById("pfSeries");
+    const rangeEl = document.getElementById("pfRanges");
+    if (seriesEl) seriesEl.innerHTML = SERIES_ORDER.map((k) =>
+      `<button type="button" class="pf-series-chip${activeSeries.has(k) ? " active" : ""}" data-series="${k}" style="--pf-color:${SERIES[k].color}">
+         <span class="pf-dot"></span>${escapeHtml(t(`portfolio.series.${k}`))}
+       </button>`).join("");
+    if (rangeEl) rangeEl.innerHTML = RANGES.map(([k]) =>
+      `<button type="button" class="pf-range-btn${k === activeRange ? " active" : ""}" data-range="${k}">${escapeHtml(t(`portfolio.range.${k}`))}</button>`).join("");
+  }
+
+  function renderChart(history) {
+    const body = document.getElementById("pfChartBody");
+    if (!body) return;
+    const days = (RANGES.find((r) => r[0] === activeRange) || ["1m", 30])[1];
+    const cutoff = Date.now() - days * 86400000;
+    const pts = days >= 1e9 ? history.slice() : history.filter((p) => new Date(p.d + "T00:00:00").getTime() >= cutoff);
+    if (pts.length < 2) {
+      body.innerHTML = `<p class="pf-chart-empty">${escapeHtml(t("portfolio.chart.startsToday"))}</p>`;
+      return;
+    }
+    const active = SERIES_ORDER.filter((k) => activeSeries.has(k));
+    const W = 820, H = 240, PL = 6, PR = 6, PT = 12, PB = 20;
+    let yMin = Infinity, yMax = -Infinity;
+    pts.forEach((p) => active.forEach((k) => { const v = fromBRL(SERIES[k].get(p)); if (v < yMin) yMin = v; if (v > yMax) yMax = v; }));
+    if (!isFinite(yMin)) { yMin = 0; yMax = 1; }
+    if (yMin === yMax) { yMin -= 1; yMax += 1; }
+    const padY = (yMax - yMin) * 0.12; yMin -= padY; yMax += padY;
+    const plotW = W - PL - PR, plotH = H - PT - PB;
+    const X = (i) => PL + (pts.length === 1 ? plotW / 2 : (i / (pts.length - 1)) * plotW);
+    const Y = (v) => PT + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
+    const loc = getLocale();
+    let grid = "";
+    for (let g = 0; g <= 3; g++) {
+      const v = yMin + (g / 3) * (yMax - yMin), y = Y(v);
+      grid += `<line class="pf-grid" x1="${PL}" y1="${y.toFixed(1)}" x2="${W - PR}" y2="${y.toFixed(1)}"/>`;
+      grid += `<text class="pf-axis" x="${PL + 2}" y="${(y - 4).toFixed(1)}">${escapeHtml(Math.round(v).toLocaleString(loc))}</text>`;
+    }
+    let lines = "";
+    active.forEach((k) => {
+      const path = pts.map((p, i) => `${X(i).toFixed(1)},${Y(fromBRL(SERIES[k].get(p))).toFixed(1)}`).join(" ");
+      const lastV = Y(fromBRL(SERIES[k].get(pts[pts.length - 1])));
+      lines += `<polyline class="pf-line" points="${path}" stroke="${SERIES[k].color}"/>`;
+      lines += `<circle cx="${X(pts.length - 1).toFixed(1)}" cy="${lastV.toFixed(1)}" r="3.5" fill="${SERIES[k].color}"/>`;
+    });
+    body.innerHTML = `<svg viewBox="0 0 ${W} ${H}" class="pf-svg" role="img" aria-label="${escapeAttribute(t("portfolio.chart.title"))}">${grid}${lines}</svg>`;
   }
 })();
