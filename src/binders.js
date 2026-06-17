@@ -1876,6 +1876,28 @@
       : `<span class="binder-slot-free">${escapeHtml(title || "—")}</span>`;
     return `<div class="binder-slot binder-slot-filled" title="${escapeAttribute(title)}">${media}</div>`;
   }
+  // Mesmo layout do "fichário aberto" editável: páginas em pares lado a lado
+  // (ou uma centralizada), pra qualquer formato. Aqui mostra todos os pares.
+  function sharedSpreadsHtml(binder) {
+    const g = GRIDS[binder.grid] || GRIDS[DEFAULT_GRID];
+    const per = slotCount(binder.grid);
+    const pages = Math.max(1, binder.pages || Math.ceil((binder.slots || []).length / per));
+    const pageBlock = (p) => {
+      const s = p * per;
+      const cells = (binder.slots || []).slice(s, s + per).map(sharedSlotHtml).join("");
+      return `<div class="binder-page">
+        <div class="binder-page-cap">${escapeHtml(t("binders.page.indicator", { n: p + 1, total: pages }))}</div>
+        <div class="binder-grid" style="--cols:${g.cols}">${cells}</div>
+      </div>`;
+    };
+    let out = "";
+    for (let p = 0; p < pages; p += 2) {
+      out += (p + 1 < pages)
+        ? `<div class="binder-spread">${pageBlock(p)}<div class="binder-spread-divider" aria-hidden="true"></div>${pageBlock(p + 1)}</div>`
+        : `<div class="binder-spread is-single">${pageBlock(p)}</div>`;
+    }
+    return out;
+  }
   async function renderSharedView(id) {
     elements.gallery.hidden = true;
     elements.detail.hidden = false;
@@ -1889,7 +1911,6 @@
       return;
     }
     const binder = share.data;
-    const g = GRIDS[binder.grid] || GRIDS[DEFAULT_GRID];
     const filled = binder.slots.filter((s) => s && !s.template).length;
     elements.list.innerHTML = `
       <div class="binder-shared-banner">
@@ -1899,6 +1920,6 @@
         </div>
         <a class="primary" href="binders.html">${escapeHtml(t("binders.shared.cta"))}</a>
       </div>
-      <div class="binder-grid" style="--cols:${g.cols}">${binder.slots.map(sharedSlotHtml).join("")}</div>`;
+      ${sharedSpreadsHtml(binder)}`;
   }
 })();
