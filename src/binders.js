@@ -20,7 +20,9 @@
   function isSaleBinder(binder) { return !!binder && binder.type === "sale"; }
   let isSale = false;
   // ?id= abre um binder específico (modo detalhe); sem id mostra a galeria.
+  // ?s= abre um binder compartilhado (somente leitura, vindo da nuvem).
   const openId = new URLSearchParams(window.location.search).get("id");
+  const shareId = new URLSearchParams(window.location.search).get("s");
 
   // Stores da coleção/desejo/preços: usados pelo resumo (Tenho/Faltando),
   // pelo "marcar tudo" e pela busca por coleção/desejo no editor.
@@ -1828,7 +1830,75 @@
     });
   }
 
-  render();
-  // Com o câmbio carregado, re-renderiza para preencher os valores em moeda.
-  shared.loadFxRates().then(() => render());
+  // Botão "Compartilhar": publica o binder aberto na nuvem e copia o link.
+  const shareBtn = document.getElementById("binderShareBtn");
+  if (shareBtn) {
+    shareBtn.addEventListener("click", async () => {
+      const binder = openId ? getBinder(openId) : null;
+      if (!binder) return;
+      const original = t("binders.share");
+      shareBtn.disabled = true; shareBtn.textContent = t("binders.share.creating");
+      const res = await shared.createShare("binder", binder.name, binder);
+      shareBtn.disabled = false;
+      if (res && res.id) {
+        const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}binders.html?s=${res.id}`;
+        try { await navigator.clipboard.writeText(link); shareBtn.textContent = t("binders.share.copied"); }
+        catch (e) { window.prompt(t("binders.share.copyManual"), link); shareBtn.textContent = original; }
+      } else {
+        alert(res && res.error === "auth" ? t("binders.share.needLogin") : t("binders.share.error"));
+        shareBtn.textContent = original;
+      }
+      setTimeout(() => { shareBtn.textContent = original; }, 2500);
+    });
+  }
+
+  if (shareId) {
+    renderSharedView(shareId);
+  } else {
+    if (shareBtn) shareBtn.hidden = !openId; // só faz sentido com um binder aberto
+    render();
+    // Com o câmbio carregado, re-renderiza para preencher os valores em moeda.
+    shared.loadFxRates().then(() => render());
+  }
+
+  // --- Binder compartilhado (somente leitura, vindo da nuvem) ---
+  function sharedSlotHtml(slot) {
+    if (!slot) return `<div class="binder-slot binder-slot-empty" aria-hidden="true"></div>`;
+    if (slot.template) {
+      return `<div class="binder-slot binder-slot-template">
+        <img class="binder-slot-sprite" src="${escapeAttribute(slot.image || "")}" alt="" loading="lazy">
+        <span class="binder-slot-tplname">${escapeHtml(slot.name || "")}</span>
+      </div>`;
+    }
+    const title = slot.cardId ? cardLabelFromSlot(slot) : (slot.label || "");
+    const media = slot.image
+      ? localizedImg(slot.image, { className: "binder-slot-img", alt: title, fallback: slot.fallback || "", loading: "lazy" })
+      : `<span class="binder-slot-free">${escapeHtml(title || "—")}</span>`;
+    return `<div class="binder-slot binder-slot-filled" title="${escapeAttribute(title)}">${media}</div>`;
+  }
+  async function renderSharedView(id) {
+    elements.gallery.hidden = true;
+    elements.detail.hidden = false;
+    if (shareBtn) shareBtn.hidden = true;
+    const saveBtn = document.getElementById("binderSaveBtn");
+    if (saveBtn) saveBtn.hidden = true;
+    elements.list.innerHTML = `<p class="empty-state">${escapeHtml(t("binders.shared.loading"))}</p>`;
+    const share = await shared.fetchShare(id);
+    if (!share || share.kind !== "binder" || !share.data || !Array.isArray(share.data.slots)) {
+      elements.list.innerHTML = `<p class="empty-state">${escapeHtml(t("binders.shared.notFound"))}</p>`;
+      return;
+    }
+    const binder = share.data;
+    const g = GRIDS[binder.grid] || GRIDS[DEFAULT_GRID];
+    const filled = binder.slots.filter((s) => s && !s.template).length;
+    elements.list.innerHTML = `
+      <div class="binder-shared-banner">
+        <div class="binder-shared-info">
+          <strong>${escapeHtml(binder.name || share.title || "Binder")}</strong>
+          <span>${escapeHtml(t("binders.shared.banner", { n: filled }))}</span>
+        </div>
+        <a class="primary" href="binders.html">${escapeHtml(t("binders.shared.cta"))}</a>
+      </div>
+      <div class="binder-grid" style="--cols:${g.cols}">${binder.slots.map(sharedSlotHtml).join("")}</div>`;
+  }
 })();

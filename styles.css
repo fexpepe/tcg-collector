@@ -3156,6 +3156,23 @@ a.progress-row:hover {
   gap: 12px;
   margin-bottom: 16px;
 }
+/* Banner do binder compartilhado (somente leitura) + CTA pro visitante. */
+.binder-shared-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  background: var(--accent-soft);
+  border: 1px solid rgba(57, 199, 155, 0.25);
+  border-radius: 10px;
+}
+.binder-shared-info { display: flex; flex-direction: column; gap: 2px; }
+.binder-shared-info strong { font-size: 16px; }
+.binder-shared-info span { color: var(--muted); font-size: 13px; }
+.binder-shared-banner .primary { text-decoration: none; }
 .binder-back {
   display: inline-flex;
   align-items: center;

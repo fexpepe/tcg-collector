@@ -2065,6 +2065,8 @@
     sumCardsValue,
     formatMoney: fmtMoney,
     convertMoney,
+    createShare,
+    fetchShare,
     cardValue,
     formatMoney: fmtMoney,
     cardLanguageFromId,
@@ -2271,6 +2273,34 @@
         keepalive: !!keepalive
       });
     } catch (e) { /* ignora; tenta de novo no próximo ciclo */ }
+  }
+
+  // --- Compartilhamento por link público (tabela `shares`) ---
+  // Escrita exige login (RLS: auth.uid() = user_id); leitura é pública pelo id.
+  async function createShare(kind, title, data) {
+    let s = getSession();
+    if (!s) return { error: "auth" };
+    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
+    const body = JSON.stringify({ kind, title: title || null, data });
+    const post = (tok) => fetch(`${SUPABASE_URL}/rest/v1/shares`, {
+      method: "POST", body,
+      headers: Object.assign(authHeaders(tok), { Prefer: "return=representation" })
+    });
+    try {
+      let r = await post(s.access_token);
+      if (r.status === 401) { const ns = await refreshSession(); if (ns) r = await post(ns.access_token); }
+      if (!r.ok) return { error: "http" };
+      const rows = await r.json();
+      return rows && rows[0] && rows[0].id ? { id: rows[0].id } : { error: "empty" };
+    } catch (e) { return { error: "net" }; }
+  }
+  async function fetchShare(id) {
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/shares?id=eq.${encodeURIComponent(id)}&select=kind,title,data,created_at`, { headers: authHeaders() });
+      if (!r.ok) return null;
+      const rows = await r.json();
+      return rows && rows[0] ? rows[0] : null;
+    } catch (e) { return null; }
   }
 
   let lastPushed = "";
