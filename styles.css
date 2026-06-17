@@ -2923,7 +2923,7 @@ a.progress-row:hover {
   position: absolute;
   top: calc(100% + 10px);
   left: 0;
-  min-width: 170px;
+  min-width: 190px;
   background: var(--panel-strong);
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -2940,6 +2940,7 @@ a.progress-row:hover {
 
 .page-nav .nav-dropdown a {
   justify-content: flex-start;
+  white-space: nowrap;
 }
 
 .page-nav .nav-dropdown a.active {

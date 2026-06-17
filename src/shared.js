@@ -551,11 +551,11 @@
     nav.innerHTML = `
       ${link("index.html", "nav.home", "home")}
       ${group("nav.explore", exploreActive, `
+          ${link("cards.html", "nav.allCards", "cards")}
           ${link("pokedex.html", "nav.pokemon", "pokedex")}
           ${link("trainers.html", "nav.trainers", "trainers")}
           ${link("sets.html", "nav.sets", "sets")}
-          ${link("artists.html", "nav.artists", "artists")}
-          ${link("cards.html", "nav.allCards", "cards")}`)}
+          ${link("artists.html", "nav.artists", "artists")}`)}
       ${group("nav.collection", collectionActive, `
           ${link("collection.html", "nav.collectionMine", "collection")}
           ${link("binders.html", "nav.binders", "binders")}
