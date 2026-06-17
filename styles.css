@@ -89,10 +89,8 @@ select {
   gap: 10px;
 }
 
-/* Todos os controles do header com a mesma altura (42px). O .file-button é
-   um <label>, então zera a margin-bottom herdada da regra global de labels. */
+/* Todos os controles do header com a mesma altura (42px). */
 .app-header-inner .header-actions > button,
-.app-header-inner .header-actions > .file-button,
 .app-header-inner .lang-select {
   height: 42px;
   min-height: 42px;
@@ -191,8 +189,7 @@ main {
   margin-bottom: 22px;
 }
 
-button,
-.file-button {
+button {
   min-height: 42px;
   border: 0;
   border-radius: 7px;
@@ -212,10 +209,6 @@ button,
 
 .secondary:hover {
   background: rgba(57, 199, 155, 0.2);
-}
-
-.file-button input {
-  display: none;
 }
 
 .stats-grid {
@@ -336,10 +329,6 @@ button,
   margin-left: auto;
 }
 
-/* Filtro de raridade: ocupa a linha inteira do toolbar (abaixo dos demais). */
-.toolbar > .rarity-filter {
-  flex: 1 1 100%;
-}
 
 /* Barra de filtros da página de cartas: cada item com sua largura natural (a
    Coleção não corta mais), Ordenar + Visualização ancorados à direita e a
@@ -2240,7 +2229,6 @@ input::placeholder {
 
 /* Login (opcional) no header */
 .auth-slot { display: inline-flex; align-items: center; }
-.auth-btn { min-height: 42px; }
 /* Logado: círculo de perfil com a inicial; abre o menu (e-mail + Sair). */
 .auth-avatar {
   width: 38px;
@@ -2338,18 +2326,10 @@ input::placeholder {
   color: var(--accent);
 }
 
-/* Controles do header como pílulas arredondadas (Exportar/Importar). */
-.app-header-inner .header-actions > button,
-.app-header-inner .header-actions > .file-button,
-.app-header-inner .header-actions > .export-dd > button {
+/* Controles do header como pílulas arredondadas. */
+.app-header-inner .header-actions > button {
   border-radius: 999px;
 }
-
-/* Itens do menu de exportar são texto puro (sem bandeira), alinhados à esquerda. */
-.export-dd .lang-dd-menu {
-  min-width: 170px;
-}
-
 
 /* Coleção: abas e visão de progresso por grupo */
 .collection-subtitle {
@@ -3869,33 +3849,6 @@ a.progress-row:hover {
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--accent);
-}
-.binder-editor-photo-row {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--line);
-}
-.binder-editor-photo-wrap {
-  flex: 0 0 90px;
-}
-.binder-editor-photo {
-  width: 90px;
-  border-radius: 8px;
-  border: 1px solid var(--line);
-}
-.binder-editor-photo-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  flex: 1 1 auto;
-}
-.binder-editor-photo-actions .file-button,
-.binder-editor-photo-actions .secondary {
-  align-self: flex-start;
-  min-height: 38px;
 }
 .binder-editor-sale {
   display: grid;

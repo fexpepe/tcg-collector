@@ -15,9 +15,7 @@
     bindersValue: document.getElementById("bindersValue"),
     grandTotal: document.getElementById("grandTotal"),
     topCards: document.getElementById("topCards"),
-    empty: document.getElementById("emptyState"),
-    exportButton: document.getElementById("exportButton"),
-    importInput: document.getElementById("importInput")
+    empty: document.getElementById("emptyState")
   };
 
   Promise.all([shared.loadCatalog(), shared.loadFxRates()])
@@ -25,25 +23,12 @@
       cards = catalog.cards;
       cardsById = new Map(cards.map((card) => [card.id, card]));
       owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
-      bindEvents();
       render();
     })
     .catch((error) => {
       elements.empty.textContent = t("error.catalog", { message: error.message });
       elements.empty.hidden = false;
     });
-
-  function bindEvents() {
-    shared.bindCollectionTransfer({
-      exportButton: elements.exportButton,
-      importInput: elements.importInput,
-      store: owned,
-      wishlist,
-      prices,
-      cards,
-      onChange: () => render()
-    });
-  }
 
   // Tudo na moeda escolhida no header. O valor de cada carta sai do preço manual
   // (convertido) ou, na falta, da referência TCGdex (também convertida).

@@ -49,9 +49,7 @@
     valueTotal: document.getElementById("valueTotal"),
     valueOwned: document.getElementById("valueOwned"),
     valueToBuy: document.getElementById("valueToBuy"),
-    resultCount: document.getElementById("resultCount"),
-    exportButton: document.getElementById("exportButton"),
-    importInput: document.getElementById("importInput")
+    resultCount: document.getElementById("resultCount")
   };
 
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
@@ -498,16 +496,6 @@
       if (shared.handleOwnedTileClick(event, owned, wishlist)) {
         refreshOwnership();
       }
-    });
-
-    shared.bindCollectionTransfer({
-      exportButton: elements.exportButton,
-      importInput: elements.importInput,
-      store: owned,
-      wishlist,
-      prices,
-      cards,
-      onChange: () => render()
     });
   }
 

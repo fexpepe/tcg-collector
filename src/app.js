@@ -23,9 +23,7 @@
     ownedCount: document.getElementById("ownedCount"),
     totalCount: document.getElementById("totalCount"),
     completionRate: document.getElementById("completionRate"),
-    resultCount: document.getElementById("resultCount"),
-    exportButton: document.getElementById("exportButton"),
-    importInput: document.getElementById("importInput")
+    resultCount: document.getElementById("resultCount")
   };
   const view = elements.grid.dataset.view || "pokedex";
   // Página de Sets filtrada por uma série específica (?serie=id).
@@ -185,16 +183,6 @@
       if (imageButton) {
         preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant);
       }
-    });
-
-    shared.bindCollectionTransfer({
-      exportButton: elements.exportButton,
-      importInput: elements.importInput,
-      store: owned,
-      wishlist,
-      prices,
-      cards,
-      onChange: () => render()
     });
   }
 

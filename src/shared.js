@@ -490,10 +490,6 @@
       "nav.artists": "Artistas",
       "nav.trainers": "Treinadores",
       "header.tagline": "Local-first MVP",
-      "header.export": "Exportar",
-      "export.json": "Backup (.json)",
-      "export.csv": "Planilha (.csv)",
-      "header.import": "Importar",
       "auth.signIn": "Entrar",
       "auth.signOut": "Sair",
       "auth.emailPrompt": "Seu e-mail para entrar (enviamos um link de acesso):",
@@ -702,20 +698,12 @@
       "binders.editor.tabCatalog": "Do catálogo",
       "binders.editor.tabCollection": "Da coleção",
       "binders.editor.tabWishlist": "Da lista de desejo",
-      "binders.editor.tabFree": "Slot livre",
       "binders.editor.search": "Buscar por nome, número (4/102)...",
       "binders.editor.loadingCatalog": "Carregando catálogo…",
       "binders.editor.noResults": "Nenhuma carta encontrada.",
       "binders.editor.selectedCount": "{n} selecionada(s) — preenchem os slots em ordem",
       "binders.editor.emptyCollection": "Sua coleção está vazia. Marque cartas como suas primeiro.",
       "binders.editor.emptyWishlist": "Sua lista de desejos está vazia.",
-      "binders.editor.label": "Rótulo da carta",
-      "binders.editor.labelPlaceholder": "Ex.: Charizard japonês promo",
-      "binders.editor.photo": "Foto da carta",
-      "binders.editor.photoAdd": "Enviar foto",
-      "binders.editor.photoChange": "Trocar foto",
-      "binders.editor.photoRemove": "Remover foto",
-      "binders.editor.photoHint": "A foto fica só no seu navegador (IndexedDB) — não é enviada para nenhum servidor.",
       "binders.editor.price": "Preço (R$)",
       "binders.editor.condition": "Condição",
       "binders.editor.note": "Observação",
@@ -793,6 +781,8 @@
       "count.ofCards": "{o}/{t} cartas",
       "set.totalCardsLabel": "Total de cartas:",
       "set.totalValueLabel": "Valor total:",
+      "set.officialCards": "{n} cartas oficiais",
+      "set.inLocalCatalog": "{n} no catálogo local",
       "set.value": "≈ {v} no total",
       "set.valueTitle": "Soma estimada do valor de todas as cartas do set (preço de referência, na moeda escolhida).",
       "card.viewCards": "Ver cartas",
@@ -938,10 +928,6 @@
       "nav.artists": "Artists",
       "nav.trainers": "Trainers",
       "header.tagline": "Local-first MVP",
-      "header.export": "Export",
-      "export.json": "Backup (.json)",
-      "export.csv": "Spreadsheet (.csv)",
-      "header.import": "Import",
       "auth.signIn": "Sign in",
       "auth.signOut": "Sign out",
       "auth.emailPrompt": "Your email to sign in (we'll send a magic link):",
@@ -1150,20 +1136,12 @@
       "binders.editor.tabCatalog": "From catalog",
       "binders.editor.tabCollection": "From collection",
       "binders.editor.tabWishlist": "From wishlist",
-      "binders.editor.tabFree": "Free slot",
       "binders.editor.search": "Search by name, number (4/102)...",
       "binders.editor.loadingCatalog": "Loading catalog…",
       "binders.editor.noResults": "No cards found.",
       "binders.editor.selectedCount": "{n} selected — fill slots in order",
       "binders.editor.emptyCollection": "Your collection is empty. Mark cards as owned first.",
       "binders.editor.emptyWishlist": "Your wishlist is empty.",
-      "binders.editor.label": "Card label",
-      "binders.editor.labelPlaceholder": "e.g. Japanese Charizard promo",
-      "binders.editor.photo": "Card photo",
-      "binders.editor.photoAdd": "Upload photo",
-      "binders.editor.photoChange": "Change photo",
-      "binders.editor.photoRemove": "Remove photo",
-      "binders.editor.photoHint": "The photo stays only in your browser (IndexedDB) — it is never uploaded to any server.",
       "binders.editor.price": "Price (R$)",
       "binders.editor.condition": "Condition",
       "binders.editor.note": "Note",
@@ -1241,6 +1219,8 @@
       "count.ofCards": "{o}/{t} cards",
       "set.totalCardsLabel": "Total Cards:",
       "set.totalValueLabel": "Total Value:",
+      "set.officialCards": "{n} official cards",
+      "set.inLocalCatalog": "{n} in local catalog",
       "set.value": "≈ {v} total",
       "set.valueTitle": "Estimated sum of all cards in the set (reference price, in the chosen currency).",
       "card.viewCards": "View cards",
@@ -2578,112 +2558,6 @@
     return true;
   }
 
-  function bindCollectionTransfer({ exportButton, importInput, store, wishlist, prices, cards, onChange }) {
-    // Export/import agora vivem no menu da conta (initAuth), em todas as páginas.
-    // Se os botões de header não existem mais, não há nada para ligar aqui.
-    if (!exportButton || !importInput) return;
-    // `cards` pode ser um array ou uma função que devolve o array atual (para
-    // páginas que carregam o catálogo sob demanda, como os binders). Resolve na
-    // hora do uso para refletir o catálogo já carregado.
-    function cardsById() {
-      const list = typeof cards === "function" ? (cards() || []) : (cards || []);
-      return new Map(list.map((card) => [card.id, card]));
-    }
-
-    function downloadFile(content, filename, type) {
-      const blob = new Blob([content], { type });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = filename;
-      link.click();
-      URL.revokeObjectURL(url);
-    }
-
-    // Backup completo (JSON): coleção + lista de desejos + preços, re-importável.
-    function exportJson() {
-      const payload = {
-        version: 3,
-        exportedAt: new Date().toISOString(),
-        collection: store.toObject()
-      };
-      if (wishlist) payload.wishlist = wishlist.toObject();
-      if (prices) payload.prices = prices.toObject();
-      downloadFile(JSON.stringify(payload, null, 2), "tcg-collection.json", "application/json");
-    }
-
-    // Planilha (CSV): inventário legível em Excel/Sheets, uma linha por
-    // carta/variante/condição. Não é re-importável (use o JSON para backup).
-    function exportCsv() {
-      const csv = buildCollectionCsv(store, prices, cardsById());
-      downloadFile("﻿" + csv, "tcg-collection.csv", "text/csv;charset=utf-8");
-    }
-
-    // Transforma o botão "Exportar" num menu com os dois formatos, sem precisar
-    // de markup extra em cada página (o botão já existe em todos os headers).
-    const dd = document.createElement("div");
-    dd.className = "lang-dd export-dd";
-    exportButton.replaceWith(dd);
-    dd.appendChild(exportButton);
-    exportButton.setAttribute("aria-haspopup", "menu");
-    exportButton.setAttribute("aria-expanded", "false");
-    const menu = document.createElement("ul");
-    menu.className = "lang-dd-menu";
-    menu.setAttribute("role", "menu");
-    menu.hidden = true;
-    menu.innerHTML =
-      `<li role="menuitem" data-fmt="json" class="lang-dd-option">${escapeHtml(t("export.json"))}</li>` +
-      `<li role="menuitem" data-fmt="csv" class="lang-dd-option">${escapeHtml(t("export.csv"))}</li>`;
-    dd.appendChild(menu);
-    const closeMenu = () => { menu.hidden = true; exportButton.setAttribute("aria-expanded", "false"); };
-    exportButton.addEventListener("click", () => {
-      const willOpen = menu.hidden;
-      menu.hidden = !willOpen;
-      exportButton.setAttribute("aria-expanded", String(willOpen));
-    });
-    menu.addEventListener("click", (event) => {
-      const item = event.target.closest("[data-fmt]");
-      if (!item) return;
-      if (item.dataset.fmt === "csv") exportCsv(); else exportJson();
-      closeMenu();
-    });
-    document.addEventListener("click", (event) => {
-      if (!menu.hidden && !event.target.closest(".export-dd")) closeMenu();
-    });
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && !menu.hidden) closeMenu();
-    });
-
-    importInput.addEventListener("change", async (event) => {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      // Limite de tamanho: um backup real tem alguns MB no máximo; acima disso
-      // recusa antes de ler/parsear (evita travar a aba com um arquivo enorme).
-      if (file.size > 20 * 1024 * 1024) {
-        alert(t("error.import"));
-        event.target.value = "";
-        return;
-      }
-
-      try {
-        const payload = JSON.parse(await file.text());
-        if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
-          throw new Error("Backup inválido: raiz não é um objeto.");
-        }
-        const byId = cardsById();
-        store.replace(parseImportedCollection(payload, byId));
-        if (wishlist) wishlist.replace(parseImportedWishlist(payload, byId));
-        if (prices) prices.replace(parseImportedPrices(payload, byId));
-        onChange();
-      } catch (error) {
-        alert(t("error.import"));
-      } finally {
-        event.target.value = "";
-      }
-    });
-  }
-
   // Chaves perigosas num backup importado: bloqueia prototype pollution ao usar
   // o cardId/variante (vindos de arquivo não confiável) como chave de objeto.
   const UNSAFE_KEYS = new Set(["__proto__", "prototype", "constructor"]);
@@ -3052,7 +2926,6 @@
     handleQuantityClick,
     fetchPokemonMeta,
     createCardPreview,
-    bindCollectionTransfer,
     t,
     tn,
     getLanguage,

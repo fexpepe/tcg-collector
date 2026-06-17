@@ -1828,24 +1828,6 @@
     });
   }
 
-  // Exportar/Importar coleção: disponível no header de todas as páginas. Opera
-  // sobre a coleção/desejo/preços (não sobre os binders). O JSON funciona na
-  // hora; o catálogo é carregado em segundo plano para o CSV ter os nomes.
-  const exportButton = document.getElementById("exportButton");
-  const importInput = document.getElementById("importInput");
-  if (exportButton && importInput) {
-    shared.bindCollectionTransfer({
-      exportButton,
-      importInput,
-      store: shared.createCollectionStore(),
-      wishlist: shared.createWishlistStore(),
-      prices: shared.createPriceStore(),
-      cards: () => allCards,
-      onChange: () => {}
-    });
-    ensureCatalog();
-  }
-
   render();
   // Com o câmbio carregado, re-renderiza para preencher os valores em moeda.
   shared.loadFxRates().then(() => render());

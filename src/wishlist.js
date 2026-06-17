@@ -24,9 +24,7 @@
     distinctCount: document.getElementById("distinctCount"),
     setsCount: document.getElementById("setsCount"),
     wishlistValue: document.getElementById("wishlistValue"),
-    resultCount: document.getElementById("resultCount"),
-    exportButton: document.getElementById("exportButton"),
-    importInput: document.getElementById("importInput")
+    resultCount: document.getElementById("resultCount")
   };
 
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
@@ -92,18 +90,6 @@
       if (shared.handleWantTileClick(event, wishlist) || shared.handleOwnedTileClick(event, owned, wishlist)) {
         refresh();
       }
-    });
-
-    shared.bindCollectionTransfer({
-      exportButton: elements.exportButton,
-      importInput: elements.importInput,
-      store: owned,
-      wishlist,
-      prices,
-      cards: () => cards, // resolve na hora (catálogo carregado sob demanda)
-      // Em modo manifest a importação pode trazer cartas de sets ainda não
-      // baixados; recarrega para a carga direcionada rodar com os novos ids.
-      onChange: () => { if (manifestMode) window.location.reload(); else render(); }
     });
   }
 
