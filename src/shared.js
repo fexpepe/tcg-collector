@@ -756,12 +756,13 @@
       "filter.missing": "Faltando",
       "filter.wanted": "Lista de Desejo",
       "rarity.base": "Comuns e raras",
-      "rarity.base.title": "Comum, Incomum, Rara, Double Rare",
-      "rarity.discontinued": "Outras",
-      "rarity.discontinued.title": "Holo Rare, Rainbow/Hyper Rare, Secret Rare e outras antigas",
-      "rarity.ultra": "Ultra Rare",
-      "rarity.illustration": "Illustration Rare",
-      "rarity.special": "Special Illustration",
+      "rarity.base.title": "Comum, Incomum e Rara",
+      "rarity.special": "Especiais",
+      "rarity.special.title": "As melhores cartas: Double Rare (ex), Ultra Rare, Illustration Rare, SAR, Full Art, Holo, Secreta/Rainbow/Hyper, Shiny e antigas raras",
+      "search.title": "Procurar:",
+      "toolbar.view": "Visualização",
+      "view.grid": "Grade",
+      "view.list": "Lista",
       "search.placeholder.pokedex": "Nome ou número da Pokédex...",
       "search.placeholder.sets": "Set, carta, artista, número...",
       "search.placeholder.artists": "Artista, carta, set, número...",
@@ -1201,12 +1202,13 @@
       "filter.missing": "Missing",
       "filter.wanted": "Wishlist",
       "rarity.base": "Common & Rare",
-      "rarity.base.title": "Common, Uncommon, Rare, Double Rare",
-      "rarity.discontinued": "Other",
-      "rarity.discontinued.title": "Holo Rare, Rainbow/Hyper Rare, Secret Rare and other older rarities",
-      "rarity.ultra": "Ultra Rare",
-      "rarity.illustration": "Illustration Rare",
-      "rarity.special": "Special Illustration",
+      "rarity.base.title": "Common, Uncommon and Rare",
+      "rarity.special": "Specials",
+      "rarity.special.title": "The best cards: Double Rare (ex), Ultra Rare, Illustration Rare, SAR, Full Art, Holo, Secret/Rainbow/Hyper, Shiny and old chase rarities",
+      "search.title": "Search:",
+      "toolbar.view": "View",
+      "view.grid": "Grid",
+      "view.list": "List",
       "search.placeholder.pokedex": "Name or Pokédex number...",
       "search.placeholder.sets": "Set, card, artist, number...",
       "search.placeholder.artists": "Artist, card, set, number...",
@@ -3413,9 +3415,22 @@
     })();
   }
 
+  // Título "Procurar:" acima do campo de busca (presente em todas as páginas).
+  function initSearchLabel() {
+    const section = document.querySelector(".page-search");
+    if (!section) return;
+    const prev = section.previousElementSibling;
+    if (prev && prev.classList.contains("page-search-label")) return;
+    const label = document.createElement("div");
+    label.className = "page-search-label";
+    label.textContent = t("search.title");
+    section.parentNode.insertBefore(label, section);
+  }
+
   applyTranslations();
   initLanguageSwitcher();
   initCurrencySwitcher();
+  initSearchLabel();
   initPageNav();
   initMobileMenu();
   initSiteFooter();

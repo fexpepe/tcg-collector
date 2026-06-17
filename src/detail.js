@@ -36,9 +36,9 @@
     grid: document.getElementById("detailGrid"),
     empty: document.getElementById("emptyState"),
     search: document.getElementById("searchInput"),
-    setFilter: document.getElementById("setFilter"),
-    languageChips: document.getElementById("languageChips"),
+    languageFilter: document.getElementById("languageFilter"),
     ownedChips: document.getElementById("ownedChips"),
+    viewToggle: document.getElementById("viewToggle"),
     rarityFilter: document.getElementById("rarityFilter"),
     rarityChips: document.getElementById("rarityChips"),
     sortSelect: document.getElementById("sortSelect"),
@@ -58,6 +58,7 @@
   let selectedLanguage = "";
   let selectedOwned = "all";
   let selectedSort = "release";
+  let gridView = localStorage.getItem("tcg-detail-view") === "list" ? "list" : "grid";
   const selectedRarities = new Set(); // multi-seleção; vazio = todas
 
   // Ordena os pares carta×variante conforme o select de ordenação. Diferente
@@ -88,16 +89,13 @@
     return pairs;
   }
 
-  // Buckets de raridade (na ordem dos chips). Mapeiam o vocabulário da TCGdex
-  // — em vários idiomas (en/pt; ja e zh usam os termos em inglês) — para os
-  // grupos que o colecionador reconhece. A lógica é "base é um conjunto fechado
-  // de comuns; tudo que é especial e não é ultra/illustration/special vai para
-  // Descontinuadas (Holo, Secreta, Hiper/Rainbow, Shiny, ACE SPEC, Full Art…)".
-  const RARITY_BUCKET_ORDER = ["base", "discontinued", "ultra", "illustration", "special"];
-  const RARITY_BASE = new Set(["", "common", "uncommon", "rare", "double rare", "none", "comum", "incomum", "rara", "rara dupla"]);
-  const RARITY_SPECIAL = new Set(["special illustration rare", "ilustracao rara especial"]);
-  const RARITY_ILLUSTRATION = new Set(["illustration rare", "ilustracao rara"]);
-  const RARITY_ULTRA = new Set(["ultra rare", "ultra rara"]);
+  // Dois buckets só: "Comuns e raras" (o miolo do set) e "Especiais" — que
+  // condensa as melhores cartas do Pokémon/busca: Double Rare (ex), Ultra Rare,
+  // Illustration Rare, Special Illustration Rare (SAR), Full Art, Holo,
+  // Secreta/Rainbow/Hyper, Shiny, ACE SPEC e as antigas raras que valem muito.
+  // Tudo que não está no conjunto fechado de "base" cai em "special".
+  const RARITY_BUCKET_ORDER = ["base", "special"];
+  const RARITY_BASE = new Set(["", "common", "uncommon", "rare", "none", "comum", "incomum", "rara"]);
 
   // Carta "secreta": número acima do total oficial do set (full art, SAR, SR,
   // hiper/rainbow...). Em sets japoneses essas cartas frequentemente vêm sem
@@ -110,15 +108,12 @@
 
   function rarityBucket(card) {
     const r = normalize(card.rarity);
-    if (RARITY_SPECIAL.has(r)) return "special";
-    if (RARITY_ILLUSTRATION.has(r)) return "illustration";
-    if (RARITY_ULTRA.has(r)) return "ultra";
     if (RARITY_BASE.has(r)) {
-      // Sem raridade + número acima do total = secreta/full art → "Outras".
-      if ((r === "" || r === "none") && isSecretCard(card)) return "discontinued";
+      // Sem raridade + número acima do total = secreta/full art → Especiais.
+      if ((r === "" || r === "none") && isSecretCard(card)) return "special";
       return "base";
     }
-    return "discontinued";
+    return "special";
   }
 
   const preview = shared.createCardPreview({
@@ -149,14 +144,29 @@
     elements.title.textContent = detailName || t("detail.label");
     if (collectionScope) elements.grid.classList.add("scope-collection");
     renderHero();
-    // Com hero (Pokémon/set), os stats ficam ao lado dele (duas cápsulas).
+    // Com hero (Pokémon/set): a coluna da direita passa a ser os valores (R$) e
+    // os stats de cartas/progresso entram, compactos, dentro do próprio hero —
+    // assim some a faixa de valores embaixo e ganha-se espaço de tela.
     if (!elements.hero.hidden) {
       const summary = document.querySelector(".detail-summary");
       if (summary) summary.classList.add("has-hero");
+      const stats = document.querySelector(".detail-stats");
+      if (stats) elements.hero.appendChild(stats);
     }
     hydrateFilters();
     bindEvents();
+    applyGridView();
     render();
+  }
+
+  // Alterna a grade entre grade (cards) e lista (linhas), guardando a preferência.
+  function applyGridView() {
+    if (elements.grid) elements.grid.classList.toggle("is-list", gridView === "list");
+    if (elements.viewToggle) {
+      elements.viewToggle.querySelectorAll("[data-grid-view]").forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.gridView === gridView));
+      });
+    }
   }
 
   // No modo manifest, baixa apenas os chunks de set necessários para esta página.
@@ -355,17 +365,14 @@
 
 
   function hydrateFilters() {
-    addOptions(elements.setFilter, unique(pageCards.map((card) => card.set)));
-
+    // Idioma: lista suspensa (igual à Coleção), em vez de botões por língua.
+    addOptions(elements.languageFilter, unique(pageCards.map((card) => card.language)), (value) => shared.cardLanguageLabel(value));
     // Idioma de carta preferido vira o filtro padrão (se houver cartas dele aqui).
     const pref = shared.getCardLang();
-    if (pref !== "all" && pageCards.some((card) => card.language === pref)) {
-      selectedLanguage = pref;
+    if (pref !== "all" && Array.from(elements.languageFilter.options).some((option) => option.value === pref)) {
+      elements.languageFilter.value = pref;
     }
-
-    const languages = unique(pageCards.map((card) => card.language)).sort();
-    renderSegmented(elements.languageChips, [{ value: "", label: t("filter.all.m") }]
-      .concat(languages.map((language) => ({ value: language, label: shared.cardLangSigla(language) }))), selectedLanguage);
+    selectedLanguage = elements.languageFilter.value;
 
     renderSegmented(elements.ownedChips, [
       { value: "all", label: t("filter.all.f") },
@@ -439,9 +446,18 @@
   function bindEvents() {
     const applyFilters = () => render({ resetCount: true });
     elements.search.addEventListener("input", debounce(applyFilters, 200));
-    elements.setFilter.addEventListener("input", applyFilters);
-    bindSegmented(elements.languageChips, (value) => { selectedLanguage = value; });
+    elements.languageFilter.addEventListener("input", () => { selectedLanguage = elements.languageFilter.value; applyFilters(); });
     bindSegmented(elements.ownedChips, (value) => { selectedOwned = value; });
+
+    if (elements.viewToggle) {
+      elements.viewToggle.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-grid-view]");
+        if (!button) return;
+        gridView = button.dataset.gridView === "list" ? "list" : "grid";
+        localStorage.setItem("tcg-detail-view", gridView);
+        applyGridView();
+      });
+    }
 
     if (elements.sortSelect) {
       elements.sortSelect.addEventListener("change", () => {
@@ -539,13 +555,11 @@
   }
 
   function filterCards() {
-    const setValue = elements.setFilter.value;
     const languageValue = selectedLanguage;
     const ownedValue = selectedOwned;
 
     return pageCards.filter((card) => {
       const matchesQuery = shared.matchesCardQuery(card, elements.search.value);
-      const matchesSet = !setValue || card.set === setValue;
       const matchesLanguage = !languageValue || card.language === languageValue;
       const isOwned = owned.has(card.id);
       const matchesOwned = ownedValue === "all"
@@ -554,7 +568,7 @@
         || (ownedValue === "wanted" && wishlist.hasCard(card.id));
       const matchesRarity = selectedRarities.size === 0 || selectedRarities.has(rarityBucket(card));
 
-      return matchesQuery && matchesSet && matchesLanguage && matchesOwned && matchesRarity;
+      return matchesQuery && matchesLanguage && matchesOwned && matchesRarity;
     });
   }
 

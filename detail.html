@@ -72,20 +72,16 @@
         </section>
       </div>
 
-      <section class="toolbar" aria-label="Filtros">
-        <div>
-          <label for="setFilter" data-i18n="toolbar.set">Set</label>
-          <select id="setFilter">
-            <option value="" data-i18n="filter.all.m">Todos</option>
-          </select>
-        </div>
-        <div>
-          <label data-i18n="toolbar.language">Idioma</label>
-          <div id="languageChips" class="segmented" role="group" aria-label="Idioma"></div>
-        </div>
+      <section class="toolbar detail-toolbar" aria-label="Filtros">
         <div>
           <label data-i18n="toolbar.collection">Coleção</label>
           <div id="ownedChips" class="segmented" role="group" aria-label="Coleção"></div>
+        </div>
+        <div>
+          <label for="languageFilter" data-i18n="toolbar.language">Idioma</label>
+          <select id="languageFilter">
+            <option value="" data-i18n="filter.all.m">Todos</option>
+          </select>
         </div>
         <div class="sort-select">
           <label for="sortSelect" data-i18n="sort.label">Ordenar:</label>
@@ -96,6 +92,13 @@
             <option value="num-desc" data-i18n="sort.numDesc">Nº da carta (maior → menor)</option>
             <option value="num-asc" data-i18n="sort.numAsc">Nº da carta (menor → maior)</option>
           </select>
+        </div>
+        <div class="view-toggle-field">
+          <label data-i18n="toolbar.view">Visualização</label>
+          <div id="viewToggle" class="view-toggle" role="group" aria-label="Visualização">
+            <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" aria-label="Grade" title="Grade">▦</button>
+            <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" aria-label="Lista" title="Lista">≣</button>
+          </div>
         </div>
         <div id="rarityFilter" class="rarity-filter" hidden>
           <label data-i18n="toolbar.rarity">Raridade</label>
