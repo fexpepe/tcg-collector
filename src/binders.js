@@ -722,16 +722,22 @@
       `<label class="binder-print-opt"><input type="checkbox" data-print-opt="${key}" checked> ${escapeHtml(t(k))}</label>`
     ).join("");
     return `
-      <div class="binder-settings">
-        <div class="binder-settings-section">
+      <div class="binder-settings binder-print-settings">
+        <div class="binder-settings-section binder-print">
           <h4>${escapeHtml(t("binders.print.title"))}</h4>
-          <div class="binder-print-layouts">
-            <label class="binder-print-opt"><input type="radio" name="print-layout-${escapeAttribute(binder.id)}" data-print-layout value="grid" checked> ${escapeHtml(t("binders.print.grid"))}</label>
-            <label class="binder-print-opt"><input type="radio" name="print-layout-${escapeAttribute(binder.id)}" data-print-layout value="pictures"> ${escapeHtml(t("binders.print.pictures"))}</label>
-            <label class="binder-print-opt"><input type="radio" name="print-layout-${escapeAttribute(binder.id)}" data-print-layout value="checklist"> ${escapeHtml(t("binders.print.checklist"))}</label>
+          <div class="binder-print-row">
+            <span class="binder-print-label">${escapeHtml(t("binders.print.formatLabel"))}</span>
+            <div class="binder-print-layouts">
+              <label class="binder-print-opt"><input type="radio" name="print-layout-${escapeAttribute(binder.id)}" data-print-layout value="grid" checked> ${escapeHtml(t("binders.print.grid"))}</label>
+              <label class="binder-print-opt"><input type="radio" name="print-layout-${escapeAttribute(binder.id)}" data-print-layout value="pictures"> ${escapeHtml(t("binders.print.pictures"))}</label>
+              <label class="binder-print-opt"><input type="radio" name="print-layout-${escapeAttribute(binder.id)}" data-print-layout value="checklist"> ${escapeHtml(t("binders.print.checklist"))}</label>
+            </div>
           </div>
-          <div class="binder-print-opts">${printOpts}</div>
-          <button type="button" class="secondary" data-binder-print>${escapeHtml(t("binders.print.go"))}</button>
+          <div class="binder-print-row">
+            <span class="binder-print-label">${escapeHtml(t("binders.print.includeLabel"))}</span>
+            <div class="binder-print-opts">${printOpts}</div>
+          </div>
+          <button type="button" class="primary binder-print-go" data-binder-print>${escapeHtml(t("binders.print.go"))}</button>
         </div>
       </div>`;
   }
