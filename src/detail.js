@@ -39,8 +39,8 @@
     languageFilter: document.getElementById("languageFilter"),
     ownedChips: document.getElementById("ownedChips"),
     viewToggle: document.getElementById("viewToggle"),
+    rarityField: document.getElementById("rarityField"),
     rarityFilter: document.getElementById("rarityFilter"),
-    rarityChips: document.getElementById("rarityChips"),
     sortSelect: document.getElementById("sortSelect"),
     ownedCount: document.getElementById("ownedCount"),
     totalCount: document.getElementById("totalCount"),
@@ -59,7 +59,7 @@
   let selectedOwned = "all";
   let selectedSort = "value-desc";
   let gridView = localStorage.getItem("tcg-detail-view") === "list" ? "list" : "grid";
-  const selectedRarities = new Set(); // multi-seleção; vazio = todas
+  let selectedRarity = ""; // "" = todas; senão "base" | "special"
 
   // Ordena os pares carta×variante conforme o select de ordenação. Diferente
   // dos outros filtros: não esconde nada, só reordena a grade.
@@ -401,39 +401,29 @@
       { value: "wanted", label: t("filter.wanted") }
     ], selectedOwned);
 
-    renderRarityChips();
+    renderRarityFilter();
   }
 
-  // Chips de raridade (multi-seleção). Mostra só os buckets presentes nesta
-  // página e esconde o filtro inteiro se houver menos de 2 (nada a filtrar).
-  function renderRarityChips() {
-    if (!elements.rarityChips || !elements.rarityFilter) return;
+  // Raridade como lista suspensa (Todas / Comuns e raras / Especiais). Mostra só
+  // os grupos presentes nesta página e esconde o filtro se houver menos de 2.
+  function renderRarityFilter() {
+    if (!elements.rarityFilter || !elements.rarityField) return;
     const present = new Set(pageCards.map((card) => rarityBucket(card)));
     const buckets = RARITY_BUCKET_ORDER.filter((key) => present.has(key));
-    elements.rarityFilter.hidden = buckets.length < 2;
     if (buckets.length < 2) {
-      selectedRarities.clear();
-      elements.rarityChips.innerHTML = "";
+      elements.rarityField.hidden = true;
+      selectedRarity = "";
       return;
     }
-    const makeChip = (key, label, title) => {
-      const chip = document.createElement("button");
-      chip.type = "button";
-      chip.className = "chip";
-      chip.dataset.rarity = key;
-      chip.textContent = label;
-      if (title) chip.title = title;
-      // "Todas" (key vazio) fica ativo quando nenhum bucket está selecionado.
-      const pressed = key === "" ? selectedRarities.size === 0 : selectedRarities.has(key);
-      chip.setAttribute("aria-pressed", String(pressed));
-      return chip;
-    };
-    elements.rarityChips.innerHTML = "";
-    elements.rarityChips.appendChild(makeChip("", t("filter.all.f")));
-    buckets.forEach((key) => {
-      const title = t(`rarity.${key}.title`);
-      elements.rarityChips.appendChild(makeChip(key, t(`rarity.${key}`), title !== `rarity.${key}.title` ? title : ""));
-    });
+    elements.rarityField.hidden = false;
+    elements.rarityFilter.innerHTML = `<option value="">${escapeHtml(t("filter.all.f"))}</option>`
+      + buckets.map((key) => {
+          const title = t(`rarity.${key}.title`);
+          const titleAttr = title !== `rarity.${key}.title` ? ` title="${escapeAttribute(title)}"` : "";
+          return `<option value="${key}"${titleAttr}>${escapeHtml(t(`rarity.${key}`))}</option>`;
+        }).join("");
+    if (!buckets.includes(selectedRarity)) selectedRarity = "";
+    elements.rarityFilter.value = selectedRarity;
   }
 
   function renderSegmented(container, options, selectedValue) {
@@ -486,15 +476,9 @@
       });
     }
 
-    if (elements.rarityChips) {
-      elements.rarityChips.addEventListener("click", (event) => {
-        const chip = event.target.closest("[data-rarity]");
-        if (!chip) return;
-        const key = chip.dataset.rarity;
-        if (key === "") selectedRarities.clear(); // "Todas" reseta
-        else if (selectedRarities.has(key)) selectedRarities.delete(key);
-        else selectedRarities.add(key);
-        renderRarityChips(); // repinta os estados (inclui o "Todas")
+    if (elements.rarityFilter) {
+      elements.rarityFilter.addEventListener("input", () => {
+        selectedRarity = elements.rarityFilter.value;
         render({ resetCount: true });
       });
     }
@@ -586,7 +570,7 @@
         || (ownedValue === "owned" && isOwned)
         || (ownedValue === "missing" && !isOwned)
         || (ownedValue === "wanted" && wishlist.hasCard(card.id));
-      const matchesRarity = selectedRarities.size === 0 || selectedRarities.has(rarityBucket(card));
+      const matchesRarity = !selectedRarity || rarityBucket(card) === selectedRarity;
 
       return matchesQuery && matchesLanguage && matchesOwned && matchesRarity;
     });

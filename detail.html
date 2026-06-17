@@ -84,6 +84,12 @@
             <option value="" data-i18n="filter.all.m">Todos</option>
           </select>
         </div>
+        <div id="rarityField" hidden>
+          <label for="rarityFilter" data-i18n="toolbar.rarity">Raridade</label>
+          <select id="rarityFilter">
+            <option value="" data-i18n="filter.all.f">Todas</option>
+          </select>
+        </div>
         <div class="sort-select">
           <label for="sortSelect" data-i18n="sort.label">Ordenar:</label>
           <select id="sortSelect">
@@ -100,10 +106,6 @@
             <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" aria-label="Grade" title="Grade">▦</button>
             <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" aria-label="Lista" title="Lista">≣</button>
           </div>
-        </div>
-        <div id="rarityFilter" class="rarity-filter" hidden>
-          <label data-i18n="toolbar.rarity">Raridade</label>
-          <div id="rarityChips" class="chip-filter" role="group" aria-label="Raridade"></div>
         </div>
       </section>
 
