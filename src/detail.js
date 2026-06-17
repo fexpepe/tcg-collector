@@ -57,14 +57,16 @@
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
   let selectedLanguage = "";
   let selectedOwned = "all";
-  let selectedSort = "release";
+  let selectedSort = "value-desc";
   let gridView = localStorage.getItem("tcg-detail-view") === "list" ? "list" : "grid";
   const selectedRarities = new Set(); // multi-seleção; vazio = todas
 
   // Ordena os pares carta×variante conforme o select de ordenação. Diferente
   // dos outros filtros: não esconde nada, só reordena a grade.
   function sortTiles(pairs) {
-    const priceOf = (p) => prices.valueFor(p.card.id, p.variant, shared.DEFAULT_CONDITION).value || 0;
+    // Mesmo valor exibido no tile (preço manual ou, na falta, referência de
+    // mercado), para a ordenação por preço bater com o que se vê.
+    const priceOf = (p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0;
     const byNum = (a, b) => shared.compareCardNumbers(a.card.number, b.card.number);
     if (selectedSort === "num-asc") {
       pairs.sort(byNum);
@@ -153,10 +155,22 @@
       const stats = document.querySelector(".detail-stats");
       if (stats) elements.hero.appendChild(stats);
     }
+    initBackLink();
     hydrateFilters();
+    if (elements.sortSelect) elements.sortSelect.value = selectedSort; // padrão: maior preço
     bindEvents();
     applyGridView();
     render();
+  }
+
+  // "Voltar" no cabeçalho aponta para a listagem de origem (ou Coleção no modo
+  // coleção): Pokédex / Sets / Artistas / Treinadores.
+  function initBackLink() {
+    const back = document.getElementById("detailBack");
+    if (!back) return;
+    if (collectionScope) { back.href = "collection.html"; return; }
+    const map = { pokemon: "pokedex.html", set: "sets.html", artist: "artists.html", trainer: "trainers.html" };
+    back.href = map[detailType] || "pokedex.html";
   }
 
   // Alterna a grade entre grade (cards) e lista (linhas), guardando a preferência.
@@ -246,22 +260,25 @@
     }
   }
 
-  // Navegação na página do Pokémon: voltar (Pokédex/Coleção) + Pokémon anterior
-  // e próximo na ordem da Pokédex (dexId ±1). Preserva o modo coleção.
-  function pokemonNavHtml(dexId) {
+  // Navegação Pokémon anterior/próximo (dexId ±1) como cartões com sprite, nº e
+  // nome — abaixo da imagem do hero. Preserva o modo coleção.
+  function pokemonStepCard(d, dir) {
     const names = window.TCG_POKEMON_NAMES || {};
-    const dex = Number(dexId);
+    const nm = names[d];
+    if (!nm) return `<span class="pokemon-step pokemon-step-empty" aria-hidden="true"></span>`;
     const scope = collectionScope ? "collection" : undefined;
-    const backHref = collectionScope ? "collection.html" : "pokedex.html";
-    const step = (d, label) => {
-      const nm = names[d];
-      if (!nm) return `<span class="pokemon-hero-navbtn disabled" aria-disabled="true">${escapeHtml(label)}</span>`;
-      return `<a class="pokemon-hero-navbtn" href="${escapeAttribute(shared.detailUrl("pokemon", nm, scope))}" title="${escapeAttribute(nm)}">${escapeHtml(label)}</a>`;
-    };
-    return `<nav class="pokemon-hero-nav" aria-label="${escapeAttribute(t("detail.navAria"))}">
-      <a class="pokemon-hero-navbtn" href="${backHref}">${escapeHtml(t("detail.back"))}</a>
-      ${Number.isFinite(dex) ? step(dex - 1, t("detail.prevPokemon")) + step(dex + 1, t("detail.nextPokemon")) : ""}
-    </nav>`;
+    const sprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${d}.png`;
+    return `<a class="pokemon-step pokemon-step-${dir}" href="${escapeAttribute(shared.detailUrl("pokemon", nm, scope))}" title="${escapeAttribute(nm)}">
+      <img class="pokemon-step-sprite" src="${escapeAttribute(sprite)}" alt="" loading="lazy">
+      <span class="pokemon-step-text">
+        <span class="pokemon-step-num">#${d}</span>
+        <span class="pokemon-step-name">${escapeHtml(nm)}</span>
+      </span>
+    </a>`;
+  }
+  function pokemonStepsHtml(dex) {
+    if (!Number.isFinite(dex)) return "";
+    return `<nav class="pokemon-hero-steps" aria-label="${escapeAttribute(t("detail.navAria"))}">${pokemonStepCard(dex - 1, "prev")}${pokemonStepCard(dex + 1, "next")}</nav>`;
   }
 
   function renderPokemonHero(sample) {
@@ -274,7 +291,10 @@
       : "";
 
     elements.hero.innerHTML = `
-      <div class="pokemon-hero-art">${pokemonNavHtml(dexId)}${pokemonImage}</div>
+      <div class="pokemon-hero-left">
+        <div class="pokemon-hero-art">${pokemonImage}</div>
+        ${pokemonStepsHtml(Number(dexId))}
+      </div>
       <div class="pokemon-hero-info">
         <h2 class="pokemon-hero-title">
           <span class="dex-num">#${String(dexId || "?").padStart(4, "0")}</span>

@@ -1193,31 +1193,61 @@ input::placeholder {
   gap: 8px;
 }
 
-/* Navegação acima da foto: Voltar · Anterior · Próximo. */
-.pokemon-hero-nav {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.pokemon-hero-navbtn {
-  flex: 1 1 auto;
-  text-align: center;
-  padding: 6px 10px;
-  border-radius: 7px;
-  border: 1px solid var(--line);
-  background: var(--panel);
+/* "Voltar" no topo do cabeçalho, acima do eyebrow/nome. */
+.detail-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
   color: var(--muted);
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 700;
   text-decoration: none;
-  white-space: nowrap;
 }
-.pokemon-hero-navbtn:hover {
-  border-color: var(--accent-dark);
+.detail-back-link:hover { color: var(--text); }
+
+/* Coluna esquerda do hero: imagem + cartões de Pokémon anterior/próximo. */
+.pokemon-hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-self: stretch;
+}
+.pokemon-hero-left .pokemon-hero-art { flex: 1; }
+
+/* Cartões anterior/próximo (sprite + nº + nome), espelhados. */
+.pokemon-hero-steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.pokemon-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 54px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--panel);
   color: var(--text);
+  text-decoration: none;
 }
-.pokemon-hero-navbtn.disabled {
-  opacity: 0.4;
+.pokemon-step:hover { border-color: var(--accent-dark); }
+.pokemon-step-next { flex-direction: row-reverse; text-align: right; }
+.pokemon-step-sprite { width: 40px; height: 40px; flex: none; object-fit: contain; }
+.pokemon-step-text { display: flex; flex-direction: column; min-width: 0; }
+.pokemon-step-num { font-size: 11px; font-weight: 700; color: var(--subtle); }
+.pokemon-step-name {
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pokemon-step-empty {
+  border-color: transparent;
+  background: transparent;
   pointer-events: none;
 }
 .pokemon-hero-art .pokemon-hero-image {
