@@ -429,10 +429,8 @@
           <span class="tag">${escapeHtml(item.languageLabel)}</span>
         </div>
         <div class="set-meta">
-          <span>${escapeHtml(t("set.officialCards", { n: item.officialTotal || item.totalCount }))}</span>
-          <span>${escapeHtml(t("set.inLocalCatalog", { n: item.totalCount }))}</span>
-          <span>${escapeHtml(t("set.marked", { n: item.ownedCount }))}</span>
-          ${item.value > 0 ? `<span class="set-value" title="${escapeAttribute(t("set.valueTitle"))}">${escapeHtml(t("set.value", { v: shared.formatMoney(shared.getCurrency(), item.value) }))}</span>` : ""}
+          <span class="set-pill"><span class="set-pill-label">${escapeHtml(t("set.totalCardsLabel"))}</span> <strong>${escapeHtml(String(item.totalCount))}</strong></span>
+          ${item.value > 0 ? `<span class="set-pill" title="${escapeAttribute(t("set.valueTitle"))}"><span class="set-pill-label">${escapeHtml(t("set.totalValueLabel"))}</span> <strong class="set-value">${escapeHtml(shared.formatMoney(shared.getCurrency(), item.value))}</strong></span>` : ""}
         </div>
         <div class="progress-bar" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
           <span style="width: ${progress}%"></span>

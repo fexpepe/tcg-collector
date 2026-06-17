@@ -36,6 +36,60 @@
   };
   const GRID_ORDER = ["2x2", "3x3", "4x4", "5x5"];
   const DEFAULT_GRID = "3x3";
+
+  // Pokédex Nacional #1–151 (Kanto). Os nomes não são traduzidos em PT-BR, então
+  // a mesma lista serve para os dois idiomas. Usados como "placeholders" no
+  // template: cada slot mostra o Pokémon e, ao clicar, abre o catálogo já
+  // filtrado por aquele nome.
+  const POKEDEX_151 = [
+    "Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard",
+    "Squirtle", "Wartortle", "Blastoise", "Caterpie", "Metapod", "Butterfree",
+    "Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto", "Pidgeot", "Rattata",
+    "Raticate", "Spearow", "Fearow", "Ekans", "Arbok", "Pikachu", "Raichu",
+    "Sandshrew", "Sandslash", "Nidoran♀", "Nidorina", "Nidoqueen", "Nidoran♂",
+    "Nidorino", "Nidoking", "Clefairy", "Clefable", "Vulpix", "Ninetales",
+    "Jigglypuff", "Wigglytuff", "Zubat", "Golbat", "Oddish", "Gloom", "Vileplume",
+    "Paras", "Parasect", "Venonat", "Venomoth", "Diglett", "Dugtrio", "Meowth",
+    "Persian", "Psyduck", "Golduck", "Mankey", "Primeape", "Growlithe", "Arcanine",
+    "Poliwag", "Poliwhirl", "Poliwrath", "Abra", "Kadabra", "Alakazam", "Machop",
+    "Machoke", "Machamp", "Bellsprout", "Weepinbell", "Victreebel", "Tentacool",
+    "Tentacruel", "Geodude", "Graveler", "Golem", "Ponyta", "Rapidash", "Slowpoke",
+    "Slowbro", "Magnemite", "Magneton", "Farfetch'd", "Doduo", "Dodrio", "Seel",
+    "Dewgong", "Grimer", "Muk", "Shellder", "Cloyster", "Gastly", "Haunter",
+    "Gengar", "Onix", "Drowzee", "Hypno", "Krabby", "Kingler", "Voltorb",
+    "Electrode", "Exeggcute", "Exeggutor", "Cubone", "Marowak", "Hitmonlee",
+    "Hitmonchan", "Lickitung", "Koffing", "Weezing", "Rhyhorn", "Rhydon",
+    "Chansey", "Tangela", "Kangaskhan", "Horsea", "Seadra", "Goldeen", "Seaking",
+    "Staryu", "Starmie", "Mr. Mime", "Scyther", "Jynx", "Electabuzz", "Magmar",
+    "Pinsir", "Tauros", "Magikarp", "Gyarados", "Lapras", "Ditto", "Eevee",
+    "Vaporeon", "Jolteon", "Flareon", "Porygon", "Omanyte", "Omastar", "Kabuto",
+    "Kabutops", "Aerodactyl", "Snorlax", "Articuno", "Zapdos", "Moltres",
+    "Dratini", "Dragonair", "Dragonite", "Mewtwo", "Mew"
+  ];
+
+  // Monta os slots-placeholder de um template a partir de uma lista de nomes.
+  function templateSlotsFromNames(names, grid) {
+    const per = slotCount(grid);
+    const pages = Math.max(1, Math.ceil(names.length / per));
+    const slots = new Array(pages * per).fill(null);
+    names.forEach((name, i) => {
+      const dex = i + 1;
+      slots[i] = {
+        template: true,
+        name,
+        // Símbolos de gênero não casam na busca do catálogo; usa o nome-base.
+        query: name.replace(/[♀♂]/g, "").trim(),
+        dexId: dex,
+        image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${dex}.png`,
+        label: ""
+      };
+    });
+    return { slots, pages };
+  }
+
+  const TEMPLATES = {
+    pokedex151: { labelKey: "binders.template.151", build: (grid) => templateSlotsFromNames(POKEDEX_151, grid) }
+  };
   const MAX_PHOTOS = 150;       // teto de fotos no IndexedDB (limite pedido)
   const PHOTO_MAX_DIM = 900;    // redimensiona o lado maior antes de guardar
   const PHOTO_QUALITY = 0.82;   // WebP
@@ -248,6 +302,16 @@
     save();
     return binder;
   }
+  // Preenche um binder recém-criado com os placeholders de um template.
+  function applyTemplate(binder, templateId) {
+    const tpl = TEMPLATES[templateId];
+    if (!tpl) return;
+    const { slots, pages } = tpl.build(binder.grid);
+    binder.slots = slots;
+    binder.pages = pages;
+    binder.updatedAt = Date.now();
+    save();
+  }
   function removeBinder(id) {
     const binder = getBinder(id);
     if (!binder) return;
@@ -430,6 +494,7 @@
     empty: document.getElementById("binderEmpty"),
     nameInput: document.getElementById("binderName"),
     typeSelect: document.getElementById("binderType"),
+    templateSelect: document.getElementById("binderTemplate"),
     gridSelect: document.getElementById("binderGrid"),
     sortSelect: document.getElementById("binderSort"),
     createButton: document.getElementById("binderCreate"),
@@ -523,14 +588,21 @@
     // (sempre o índice par) e a seguinte, separadas por uma marcação no meio.
     const spreadStart = page - (page % 2);
     const hasSecond = spreadStart + 1 < pages;
-    const filled = (binder.slots || []).filter(Boolean);
+    // "filled" = cartas reais; placeholders de template não contam.
+    const filled = (binder.slots || []).filter((s) => s && !s.template);
     const pageSlots = (p) => {
       const s = p * per;
       return (binder.slots || []).slice(s, s + per).map((slot, i) => slotHtml(slot, s + i)).join("");
     };
-    const dividerLabel = escapeHtml(t("binders.page.indicator", { n: spreadStart + 2, total: pages }));
-    const slots = pageSlots(spreadStart)
-      + (hasSecond ? `<div class="binder-page-divider" aria-hidden="true"><span>${dividerLabel}</span></div>` + pageSlots(spreadStart + 1) : "");
+    // Cada página é uma grade própria (cols×rows). No "fichário aberto" elas
+    // ficam lado a lado; sozinha, ocupa a largura toda (cartas maiores).
+    const pageBlock = (p) => `<div class="binder-page">
+      <div class="binder-page-cap">${escapeHtml(t("binders.page.indicator", { n: p + 1, total: pages }))}</div>
+      <div class="binder-grid" style="--cols:${g.cols}">${pageSlots(p)}</div>
+    </div>`;
+    const spread = hasSecond
+      ? `<div class="binder-spread">${pageBlock(spreadStart)}<div class="binder-spread-divider" aria-hidden="true"></div>${pageBlock(spreadStart + 1)}</div>`
+      : `<div class="binder-spread is-single">${pageBlock(spreadStart)}</div>`;
     const saleTotal = isSale
       ? filled.reduce((sum, slot) => sum + (Number(slot.price) || 0), 0)
       : 0;
@@ -596,7 +668,7 @@
         ${summaryPanel}
         ${panel("edit", binderEditPanelHtml(binder))}
         ${panel("print", binderPrintPanelHtml(binder))}
-        <div class="binder-grid is-spread" style="--cols:${g.cols}">${slots}</div>
+        ${spread}
       </article>`;
   }
 
@@ -671,6 +743,16 @@
         <span>${escapeHtml(t("binders.slotEmpty"))}</span>
       </button>`;
     }
+    // Placeholder de template: mostra o Pokémon (sprite + nome). Clicar abre o
+    // editor já no catálogo, filtrado por esse nome, para escolher a carta.
+    if (slot.template) {
+      const num = slot.dexId ? String(slot.dexId).padStart(3, "0") : "";
+      return `<button type="button" class="binder-slot binder-slot-template" data-slot-index="${index}" title="${escapeAttribute(slot.name)}">
+        ${num ? `<span class="binder-slot-tplnum">Nº ${escapeHtml(num)}</span>` : ""}
+        <img class="binder-slot-sprite" src="${escapeAttribute(slot.image)}" alt="" loading="lazy">
+        <span class="binder-slot-tplname">${escapeHtml(slot.name)}</span>
+      </button>`;
+    }
     const title = slot.cardId ? cardLabelFromSlot(slot) : (slot.label || "");
     let media;
     if (slot.photoId) {
@@ -729,18 +811,21 @@
       cardId: null, variant: "", name: "", code: "", image: "", fallback: "",
       photoId: null, price: 0, condition: DEFAULT_CONDITION, note: ""
     };
+    const isTemplate = !!(existing && existing.template);
     editing = {
       binderId,
       index,
       draft,
       picks: [], // cartas selecionadas (em ordem de clique) para preencher slots
       originalPhotoId: existing ? existing.photoId || null : null,
-      tab: (draft.label && !draft.cardId) ? "free" : "collection"
+      // Slot de template abre direto no catálogo, já com o nome buscado.
+      tab: isTemplate ? "catalog" : ((draft.label && !draft.cardId) ? "free" : "collection"),
+      query: isTemplate ? (existing.query || existing.name || "") : ""
     };
     refreshUserSources();
     renderEditor();
     ensureCatalog().then(() => {
-      if (editing) renderSearchResults("");
+      if (editing) renderSearchResults(editing.query || "");
     });
   }
 
@@ -795,7 +880,7 @@
           </div>
 
           <div class="binder-editor-tabpanel"${searchTab ? "" : " hidden"}>
-            <input type="search" class="binder-editor-search" data-edit-search placeholder="${escapeAttribute(t("binders.editor.search"))}" value="">
+            <input type="search" class="binder-editor-search" data-edit-search placeholder="${escapeAttribute(t("binders.editor.search"))}" value="${escapeAttribute(editing.query || "")}">
             <div class="binder-editor-results" data-edit-results>
               <p class="binder-editor-hint">${escapeHtml(t("binders.editor.loadingCatalog"))}</p>
             </div>
@@ -871,9 +956,16 @@
       const thumb = localizedImg(sources.url, { className: "binder-result-thumb", alt: "", fallback: sources.fallback, loading: "lazy", thumb: true });
       const pickIdx = editing.picks ? editing.picks.indexOf(card.id) : -1;
       const sel = pickIdx >= 0;
+      // Bandeira (nacionalidade) + valor de referência da carta, na moeda atual.
+      const flagHtml = shared.cardFlag(card.language);
+      const val = shared.cardValue(card, defaultVariant(card), pricesStore);
+      const priceHtml = val && val.value
+        ? `<span class="binder-result-price">${escapeHtml((val.estimated ? "≈ " : "") + shared.formatMoney(val.currency, val.value))}</span>`
+        : `<span class="binder-result-price binder-result-price-none">—</span>`;
       return `<button type="button" class="binder-result${sel ? " selected" : ""}" data-result-id="${escapeAttribute(card.id)}" aria-pressed="${sel}">
-        <span class="binder-result-media">${thumb}${sel ? `<span class="binder-result-badge">${pickIdx + 1}</span>` : ""}</span>
+        <span class="binder-result-media">${thumb}${sel ? `<span class="binder-result-badge">${pickIdx + 1}</span>` : ""}<span class="binder-result-flag">${flagHtml}</span></span>
         <span class="binder-result-label">${escapeHtml(cardLabel(card))}</span>
+        <span class="binder-result-meta">${priceHtml}</span>
       </button>`;
     }).join("");
   }
@@ -1402,6 +1494,11 @@
   if (elements.typeSelect) {
     elements.typeSelect.innerHTML = `<option value="collection">${escapeHtml(t("binders.type.collection"))}</option><option value="sale">${escapeHtml(t("binders.type.sale"))}</option>`;
   }
+  if (elements.templateSelect) {
+    elements.templateSelect.innerHTML =
+      `<option value="">${escapeHtml(t("binders.template.none"))}</option>` +
+      Object.entries(TEMPLATES).map(([k, v]) => `<option value="${k}">${escapeHtml(t(v.labelKey))}</option>`).join("");
+  }
   if (elements.sortSelect) {
     elements.sortSelect.innerHTML = [["newest", "binders.sort.newest"], ["name", "binders.sort.name"], ["cards", "binders.sort.cards"]]
       .map(([v, k]) => `<option value="${v}"${v === gallerySort ? " selected" : ""}>${escapeHtml(t(k))}</option>`).join("");
@@ -1413,6 +1510,8 @@
       const grid = elements.gridSelect.value || DEFAULT_GRID;
       const type = elements.typeSelect ? elements.typeSelect.value : "collection";
       const binder = createBinder(name, grid, type);
+      const template = elements.templateSelect ? elements.templateSelect.value : "";
+      if (template) applyTemplate(binder, template);
       elements.nameInput.value = "";
       // Abre o binder recém-criado direto.
       window.location.href = `binders.html?id=${encodeURIComponent(binder.id)}`;
@@ -1669,7 +1768,7 @@
       return;
     }
     const tabBtn = event.target.closest("[data-edit-tab]");
-    if (tabBtn) { editing.tab = tabBtn.dataset.editTab; renderEditor(); if (editing.tab !== "free") renderSearchResults(""); return; }
+    if (tabBtn) { editing.tab = tabBtn.dataset.editTab; renderEditor(); if (editing.tab !== "free") renderSearchResults(editing.query || ""); return; }
     const result = event.target.closest("[data-result-id]");
     if (result) { selectCard(result.dataset.resultId); return; }
   });
@@ -1678,7 +1777,7 @@
   document.addEventListener("input", (event) => {
     if (!editing) return;
     const search = event.target.closest("[data-edit-search]");
-    if (search) onSearchInput(search.value);
+    if (search) { editing.query = search.value; onSearchInput(search.value); }
   });
 
   document.addEventListener("change", (event) => {
