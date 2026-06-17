@@ -2143,19 +2143,28 @@
   async function fetchAuthUser(token) {
     try { const r = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: authHeaders(token) }); return r.ok ? r.json() : null; } catch (e) { return null; }
   }
-  async function refreshSession() {
-    const s = getSession();
-    if (!s || !s.refresh_token) return null;
-    try {
-      const r = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
-        method: "POST", headers: authHeaders(), body: JSON.stringify({ refresh_token: s.refresh_token })
-      });
-      if (!r.ok) { setSession(null); return null; }
-      const j = await r.json();
-      const ns = { access_token: j.access_token, refresh_token: j.refresh_token, user: j.user, ts: Date.now() };
-      setSession(ns);
-      return ns;
-    } catch (e) { return s; }
+  // Single-flight: o refresh_token do Supabase é de uso único (rotaciona). Se dois
+  // refresh disparassem juntos (loop de 20s + visibilitychange), o segundo
+  // receberia invalid_grant e deslogaria o usuário. Aqui um refresh em andamento
+  // é compartilhado.
+  let refreshInFlight = null;
+  function refreshSession() {
+    if (refreshInFlight) return refreshInFlight;
+    refreshInFlight = (async () => {
+      const s = getSession();
+      if (!s || !s.refresh_token) return null;
+      try {
+        const r = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
+          method: "POST", headers: authHeaders(), body: JSON.stringify({ refresh_token: s.refresh_token })
+        });
+        if (!r.ok) { setSession(null); return null; }
+        const j = await r.json();
+        const ns = { access_token: j.access_token, refresh_token: j.refresh_token, user: j.user, ts: Date.now() };
+        setSession(ns);
+        return ns;
+      } catch (e) { return s; } // erro de rede: mantém a sessão, tenta de novo depois
+    })();
+    return refreshInFlight.finally(() => { refreshInFlight = null; });
   }
   async function authSignOut() {
     const s = getSession();
@@ -2265,17 +2274,26 @@
   }
 
   let lastPushed = "";
-  function startSyncLoop(session) {
-    const push = (keepalive) => {
-      const snap = localSnapshot();
-      const json = JSON.stringify(snap);
-      if (json === lastPushed) return;
-      lastPushed = json;
-      pushRemote(session.access_token, session.user.id, snap, keepalive);
-    };
-    setInterval(() => push(false), 20000);
-    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") push(true); });
-    window.addEventListener("pagehide", () => push(true));
+  // Lê a sessão na hora de cada push (pega o token renovado) e renova de forma
+  // preguiçosa antes de expirar (token do Supabase dura ~1h) — sem isso o sync
+  // morre silenciosamente depois de uma hora.
+  async function syncPush(keepalive) {
+    let s = getSession();
+    if (!s) return;
+    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) {
+      s = (await refreshSession()) || getSession();
+      if (!s) return;
+    }
+    const snap = localSnapshot();
+    const json = JSON.stringify(snap);
+    if (json === lastPushed) return;
+    lastPushed = json;
+    pushRemote(s.access_token, s.user.id, snap, keepalive);
+  }
+  function startSyncLoop() {
+    setInterval(() => syncPush(false), 20000);
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") syncPush(true); });
+    window.addEventListener("pagehide", () => syncPush(true));
   }
 
   function initAuth() {
@@ -2418,7 +2436,7 @@
         }
         lastPushed = before;
       }
-      startSyncLoop(session);
+      startSyncLoop();
     })();
   }
 
