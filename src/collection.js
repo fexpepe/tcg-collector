@@ -73,26 +73,34 @@
     onOwnedChange: () => refreshOwnershipCards()
   });
 
-  // Em modo manifest baixa só os sets das cartas que você tem; senão o catálogo
-  // normal (amostra local / fallback).
-  const catalogPromise = manifestMode
-    ? shared.loadCatalogForCardIds(owned.knownCardIds())
-    : shared.loadCatalog();
+  // ?s=<id>: visualização pública (somente leitura) de uma coleção compartilhada.
+  // Os dados vêm desnormalizados no share, então não precisa carregar o catálogo.
+  const shareId = new URLSearchParams(window.location.search).get("s");
 
-  Promise.all([catalogPromise, shared.loadFxRates()])
-    .then(([catalog]) => {
-      cards = catalog.cards;
-      indexes = catalog.indexes;
-      cardsById = new Map(cards.map((card) => [card.id, card]));
-      owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
-      hydrateFilters();
-      bindEvents();
-      render();
-    })
-    .catch((error) => {
-      elements.groupsEmpty.textContent = t("error.catalog", { message: error.message });
-      elements.groupsEmpty.hidden = false;
-    });
+  if (shareId) {
+    shared.loadFxRates().then(() => renderSharedCollection(shareId));
+  } else {
+    // Em modo manifest baixa só os sets das cartas que você tem; senão o catálogo
+    // normal (amostra local / fallback).
+    const catalogPromise = manifestMode
+      ? shared.loadCatalogForCardIds(owned.knownCardIds())
+      : shared.loadCatalog();
+    Promise.all([catalogPromise, shared.loadFxRates()])
+      .then(([catalog]) => {
+        cards = catalog.cards;
+        indexes = catalog.indexes;
+        cardsById = new Map(cards.map((card) => [card.id, card]));
+        owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
+        hydrateFilters();
+        bindEvents();
+        bindShareButton();
+        render();
+      })
+      .catch((error) => {
+        elements.groupsEmpty.textContent = t("error.catalog", { message: error.message });
+        elements.groupsEmpty.hidden = false;
+      });
+  }
 
   function ownedCards() {
     return cards.filter((card) => owned.has(card.id));
@@ -359,5 +367,92 @@
   function formatPct(value) {
     if (!value) return 0;
     return value >= 10 ? Math.round(value) : Math.round(value * 10) / 10;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Compartilhar coleção por link público (mesma tabela `shares`).
+  // ---------------------------------------------------------------------------
+  const fromBRL = (v) => { const r = shared.convertMoney(v, "BRL", shared.getCurrency()); return r == null ? v : r; };
+
+  // Desnormaliza as cartas que você tem num snapshot leve (nome, set, imagem,
+  // valor em BRL) — o viewer renderiza sem precisar do catálogo.
+  function buildShareData() {
+    const items = [];
+    shared.cardVariantPairs(ownedCards()).forEach(({ card, variant }) => {
+      const qty = owned.variantTotal(card.id, variant);
+      if (qty <= 0) return;
+      const src = shared.cardImageSources(card);
+      const unit = shared.cardValue(card, variant, prices).value || 0;
+      const vbrl = shared.convertMoney(unit, shared.getCurrency(), "BRL");
+      items.push({
+        id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language,
+        v: variant, q: qty, vbrl: vbrl == null ? 0 : Math.round(vbrl * 100) / 100,
+        img: src.url, fb: src.fallback || ""
+      });
+    });
+    items.sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q));
+    return { items };
+  }
+
+  function bindShareButton() {
+    const btn = document.getElementById("collectionShareBtn");
+    if (!btn) return;
+    btn.hidden = ownedCards().length === 0;
+    btn.addEventListener("click", async () => {
+      const original = t("collection.share");
+      btn.disabled = true; btn.textContent = t("collection.share.creating");
+      const res = await shared.createShare("collection", null, buildShareData());
+      btn.disabled = false;
+      if (res && res.id) {
+        const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection.html?s=${res.id}`;
+        try { await navigator.clipboard.writeText(link); btn.textContent = t("collection.share.copied"); }
+        catch (e) { window.prompt(t("collection.share.copyManual"), link); btn.textContent = original; }
+      } else {
+        alert(res && res.error === "auth" ? t("collection.share.needLogin") : t("collection.share.error"));
+        btn.textContent = original;
+      }
+      setTimeout(() => { btn.textContent = original; }, 2500);
+    });
+  }
+
+  function sharedTile(it) {
+    const img = shared.localizedImg(it.img, { alt: it.n, fallback: it.fb, loading: "lazy", thumb: true });
+    const val = fromBRL(it.vbrl || 0);
+    const flag = shared.cardFlag(it.lang);
+    return `<article class="card-tile shared-tile">
+      <div class="card-image"><span class="image-open">${img}</span></div>
+      <div class="tile-info">
+        <h3>${escapeHtml(it.n)}</h3>
+        <p class="tile-set"><span>${escapeHtml(it.s)} · ${escapeHtml(it.num)}</span></p>
+        <p class="tile-variant">${flag}<span>${escapeHtml(it.v)}${it.q > 1 ? ` ×${it.q}` : ""}</span></p>
+        ${val > 0 ? `<p class="tile-price">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>` : ""}
+      </div>
+    </article>`;
+  }
+
+  async function renderSharedCollection(id) {
+    // Esconde toda a UI normal da coleção; mostra só o container compartilhado.
+    ["page-search", "collection-subtitle"].forEach((c) => { const el = document.querySelector("." + c); if (el) el.hidden = true; });
+    [elements.tabs, elements.groupsView, elements.cardsView, document.getElementById("collectionShareBtn")].forEach((el) => { if (el) el.hidden = true; });
+    const sv = document.getElementById("sharedCollection");
+    if (!sv) return;
+    sv.hidden = false;
+    sv.innerHTML = `<p class="empty-state">${escapeHtml(t("collection.shared.loading"))}</p>`;
+    const share = await shared.fetchShare(id);
+    if (!share || share.kind !== "collection" || !share.data || !Array.isArray(share.data.items)) {
+      sv.innerHTML = `<p class="empty-state">${escapeHtml(t("collection.shared.notFound"))}</p>`;
+      return;
+    }
+    const items = share.data.items;
+    const total = items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
+    sv.innerHTML = `
+      <div class="binder-shared-banner">
+        <div class="binder-shared-info">
+          <strong>${escapeHtml(share.title || t("collection.shared.title"))}</strong>
+          <span>${escapeHtml(tn("collection.shared.banner", items.length))} · ${escapeHtml(shared.formatMoney(shared.getCurrency(), total))}</span>
+        </div>
+        <a class="primary" href="collection.html">${escapeHtml(t("collection.shared.cta"))}</a>
+      </div>
+      <div class="card-grid">${items.map(sharedTile).join("")}</div>`;
   }
 })();

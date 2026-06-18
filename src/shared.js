@@ -2124,7 +2124,8 @@
     collection: "tcg-collector-collection-v3",
     wishlist: "tcg-collector-wishlist-v1",
     prices: "tcg-collector-prices-v1",
-    binders: "tcg-collector-binders-v1"
+    binders: "tcg-collector-binders-v1",
+    history: "tcg-portfolio-history-v1"
   };
 
   function authHeaders(token) {
@@ -2247,13 +2248,23 @@
     });
     return { binders: Array.from(byId.values()) };
   }
+  // Histórico do portfólio ([{ d, c, b, w }]): une por dia; em conflito o local
+  // vence (foi recém-calculado a partir da coleção já mesclada). Teto de 800 dias.
+  function mergeHistory(a, b) {
+    const byDate = new Map();
+    (Array.isArray(b) ? b : []).forEach((p) => { if (p && p.d) byDate.set(p.d, p); });
+    (Array.isArray(a) ? a : []).forEach((p) => { if (p && p.d) byDate.set(p.d, p); });
+    const out = Array.from(byDate.values()).sort((x, y) => String(x.d).localeCompare(String(y.d)));
+    return out.length > 800 ? out.slice(out.length - 800) : out;
+  }
   function mergeData(localD, remoteD) {
     const a = localD || {}, b = remoteD || {};
     return {
       collection: mergeCollection(a.collection, b.collection),
       wishlist: mergeWishlist(a.wishlist, b.wishlist),
       prices: mergePrices(a.prices, b.prices),
-      binders: mergeBinders(a.binders, b.binders)
+      binders: mergeBinders(a.binders, b.binders),
+      history: mergeHistory(a.history, b.history)
     };
   }
   async function pullRemote(token, uid) {
