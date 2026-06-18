@@ -319,6 +319,9 @@
     if (!binder) return;
     deleteSlotsPhotos(binder.slots);
     data.binders = list().filter((b) => b.id !== id);
+    // Tombstone pra exclusão propagar na sincronização (senão volta de outro device).
+    data.deleted = data.deleted || {};
+    data.deleted[id] = Date.now();
     pageState.delete(id);
     save();
   }

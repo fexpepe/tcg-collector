@@ -2245,13 +2245,25 @@
   function mergeBinders(a, b) {
     const al = (a && Array.isArray(a.binders)) ? a.binders : [];
     const bl = (b && Array.isArray(b.binders)) ? b.binders : [];
+    // Tombstones de exclusão (id -> deletedAt). A exclusão mais nova vence; uma
+    // edição com updatedAt > deletedAt "revive" o binder (deleção não propaga
+    // sobre uma edição posterior). Resolve "binder apagado volta de outro device".
+    const deleted = {};
+    [a, b].forEach((side) => {
+      const d = side && side.deleted;
+      if (d && typeof d === "object") Object.keys(d).forEach((id) => {
+        const ts = Number(d[id]) || 0;
+        if (ts > (deleted[id] || 0)) deleted[id] = ts;
+      });
+    });
     const byId = new Map();
     al.concat(bl).forEach((bind) => {
       if (!bind || !bind.id) return;
       const prev = byId.get(bind.id);
       if (!prev || (Number(bind.updatedAt) || 0) > (Number(prev.updatedAt) || 0)) byId.set(bind.id, bind);
     });
-    return { binders: Array.from(byId.values()) };
+    const binders = Array.from(byId.values()).filter((bind) => (deleted[bind.id] || 0) < (Number(bind.updatedAt) || 0));
+    return { binders, deleted };
   }
   // Histórico do portfólio ([{ d, c, b, w }]): une por dia; em conflito o local
   // vence (foi recém-calculado a partir da coleção já mesclada). Teto de 800 dias.
@@ -2272,23 +2284,36 @@
       history: mergeHistory(a.history, b.history)
     };
   }
+  // Observabilidade do sync: registra o resultado de cada pull/push (no console
+  // e em localStorage) para a UI mostrar e o dev diagnosticar em produção.
+  const SYNC_STATUS_KEY = "tcg-sync-status";
+  function recordSync(op, ok, detail) {
+    const status = { ts: Date.now(), op, ok: !!ok };
+    if (!ok) { status.detail = String(detail || ""); console.warn(`[sync] ${op} falhou:`, detail); }
+    try { localStorage.setItem(SYNC_STATUS_KEY, JSON.stringify(status)); } catch (e) { /* ignora */ }
+  }
+  function getSyncStatus() {
+    try { return JSON.parse(localStorage.getItem(SYNC_STATUS_KEY) || "null"); } catch (e) { return null; }
+  }
   async function pullRemote(token, uid) {
     try {
       const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?user_id=eq.${uid}&select=data`, { headers: authHeaders(token) });
-      if (!r.ok) return null;
+      if (!r.ok) { recordSync("pull", false, `HTTP ${r.status}`); return null; }
       const rows = await r.json();
+      recordSync("pull", true);
       return rows && rows[0] ? rows[0].data : {};
-    } catch (e) { return null; }
+    } catch (e) { recordSync("pull", false, e && e.message); return null; }
   }
   async function pushRemote(token, uid, data, keepalive) {
     try {
-      await fetch(`${SUPABASE_URL}/rest/v1/collections?on_conflict=user_id`, {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?on_conflict=user_id`, {
         method: "POST",
         headers: Object.assign(authHeaders(token), { Prefer: "resolution=merge-duplicates,return=minimal" }),
         body: JSON.stringify({ user_id: uid, data, updated_at: new Date().toISOString() }),
         keepalive: !!keepalive
       });
-    } catch (e) { /* ignora; tenta de novo no próximo ciclo */ }
+      recordSync("push", r.ok, r.ok ? "" : `HTTP ${r.status}`);
+    } catch (e) { recordSync("push", false, e && e.message); /* tenta de novo no próximo ciclo */ }
   }
 
   // --- Compartilhamento por link público (tabela `shares`) ---
@@ -2433,7 +2458,7 @@
       if (!dd) return;
       const toggle = dd.querySelector("[aria-haspopup]");
       const menu = dd.querySelector(".lang-dd-menu");
-      toggle.addEventListener("click", () => { const open = menu.hidden; menu.hidden = !open; toggle.setAttribute("aria-expanded", String(open)); });
+      toggle.addEventListener("click", () => { const open = menu.hidden; if (open) refreshSyncStatus(); menu.hidden = !open; toggle.setAttribute("aria-expanded", String(open)); });
       document.addEventListener("click", (e) => { if (!menu.hidden && !e.target.closest("#authDd")) menu.hidden = true; });
     }
 
@@ -2455,6 +2480,7 @@
         <button type="button" class="auth-avatar" aria-haspopup="menu" aria-expanded="false" aria-label="${escapeAttribute(email)}" title="${escapeAttribute(email)}">${escapeHtml(initial)}</button>
         <ul class="lang-dd-menu auth-menu" role="menu" hidden>
           <li class="lang-dd-option auth-email">${escapeHtml(email)}</li>
+          <li class="auth-sync" data-auth-sync></li>
           ${dataItems}
           <li class="auth-sep" aria-hidden="true"></li>
           <li class="lang-dd-option" role="menuitem" data-auth-logout>${escapeHtml(t("auth.signOut"))}</li>
@@ -2462,6 +2488,16 @@
         ${fileInput}
       </div>`;
       wireDropdown();
+      refreshSyncStatus();
+    }
+    // Mostra o estado da última sincronização (lido na hora de abrir o menu).
+    function refreshSyncStatus() {
+      const el = slot.querySelector("[data-auth-sync]");
+      if (!el) return;
+      const s = getSyncStatus();
+      if (!s) { el.textContent = t("auth.syncIdle"); el.className = "auth-sync"; return; }
+      el.textContent = s.ok ? t("auth.syncOk") : t("auth.syncFail");
+      el.className = "auth-sync " + (s.ok ? "ok" : "fail");
     }
 
     slot.addEventListener("click", async (event) => {

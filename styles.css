@@ -2170,6 +2170,9 @@ input::placeholder {
 .login-foot a:hover { text-decoration: underline; }
 .auth-danger { color: #f87171; }
 .auth-danger:hover { background: rgba(248, 113, 113, 0.12); color: #fca5a5; }
+.auth-sync { padding: 2px 14px 6px; font-size: 11px; color: var(--subtle); cursor: default; }
+.auth-sync.ok { color: var(--accent); }
+.auth-sync.fail { color: #f87171; }
 /* Páginas legais (privacidade): texto legível, largura confortável. */
 .legal { max-width: 70ch; }
 .legal section { margin-bottom: 8px; }
