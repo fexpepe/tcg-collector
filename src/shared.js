@@ -81,11 +81,17 @@
   // Migra do v2 (cardId -> variante -> quantidade; cópias viram NM) e do v1.
   function createCollectionStore() {
     const storageKey = "tcg-collector-collection-v3";
+    const metaKey = "tcg-collector-collection-meta-v1";
     const v2Key = "tcg-collector-collection-v2";
     const v1Key = "tcg-collector-owned-v1";
     let collection = load();
     let initialized = collection !== null;
     if (!initialized) collection = {};
+    // Timestamps por carta para o sync resolver exclusões (LWW + tombstone):
+    // mod[id] = última vez que a carta passou a existir/foi editada; del[id] =
+    // última vez que foi removida. Sem isso, o merge "máximo" ressuscitava cartas
+    // apagadas em outro dispositivo. Ver mergeCollection.
+    let meta = normalizeMeta(readObject(metaKey));
 
     function load() {
       try {
@@ -94,6 +100,17 @@
       } catch (error) {
         return null;
       }
+    }
+
+    function persistMeta() {
+      scheduleWrite(metaKey, () => JSON.stringify(meta));
+    }
+    // Carimba o estado atual da carta: presente -> mod=agora; ausente -> del=agora.
+    function stamp(cardId) {
+      const now = Date.now();
+      if (totalForCard(cardId) > 0) { meta.mod[cardId] = now; delete meta.del[cardId]; }
+      else { meta.del[cardId] = now; delete meta.mod[cardId]; }
+      persistMeta();
     }
 
     function save() {
@@ -148,6 +165,9 @@
             });
           }
         }
+        const now = Date.now();
+        Object.keys(collection).forEach((id) => { meta.mod[id] = now; });
+        persistMeta();
         save();
       },
       has(cardId) {
@@ -181,6 +201,7 @@
           delete conditions[condition];
         }
         cleanup(cardId, variant);
+        stamp(cardId);
         save();
       },
       // Liga/desliga a variante inteira a partir do tile: adiciona 1 NM se vazia,
@@ -193,6 +214,7 @@
           collection[cardId] = collection[cardId] || {};
           collection[cardId][variant] = { [DEFAULT_CONDITION]: 1 };
         }
+        stamp(cardId);
         save();
       },
       toggle(card) {
@@ -201,10 +223,17 @@
         } else {
           collection[card.id] = { [defaultVariant(card)]: { [DEFAULT_CONDITION]: 1 } };
         }
+        stamp(card.id);
         save();
       },
       replace(newCollection) {
-        collection = newCollection;
+        collection = newCollection && typeof newCollection === "object" ? newCollection : {};
+        // Importação/restauração: tudo que veio passa a existir "agora" (zera
+        // tombstones antigos pra não reapagar o que o usuário acabou de importar).
+        const now = Date.now();
+        meta = { mod: {}, del: {} };
+        Object.keys(collection).forEach((id) => { meta.mod[id] = now; });
+        persistMeta();
         save();
       },
       toObject() {
@@ -235,6 +264,15 @@
     }
   }
 
+  // Meta de sync ({ mod: {id: ts}, del: {id: ts} }): garante o formato.
+  function normalizeMeta(raw) {
+    const m = raw && typeof raw === "object" ? raw : {};
+    return {
+      mod: m.mod && typeof m.mod === "object" && !Array.isArray(m.mod) ? m.mod : {},
+      del: m.del && typeof m.del === "object" && !Array.isArray(m.del) ? m.del : {}
+    };
+  }
+
   function createFavoritesStore() {
     return createIdStore("tcg-collector-favorites-v1");
   }
@@ -244,10 +282,22 @@
   // coleção. Quando a carta passa a ser possuída, ela sai daqui ("comprei!").
   function createWishlistStore() {
     const storageKey = "tcg-collector-wishlist-v1";
+    const metaKey = "tcg-collector-wishlist-meta-v1";
     let wishlist = readObject(storageKey) || {};
+    // Mesma meta de sync da coleção (mod/del por carta) — ver mergeWishlist.
+    let meta = normalizeMeta(readObject(metaKey));
 
     function save() {
       scheduleWrite(storageKey, () => JSON.stringify(wishlist));
+    }
+    function persistMeta() {
+      scheduleWrite(metaKey, () => JSON.stringify(meta));
+    }
+    function stamp(cardId) {
+      const now = Date.now();
+      if (variantsOf(cardId).length > 0) { meta.mod[cardId] = now; delete meta.del[cardId]; }
+      else { meta.del[cardId] = now; delete meta.mod[cardId]; }
+      persistMeta();
     }
     function variantsOf(cardId) {
       const list = wishlist[cardId];
@@ -275,15 +325,21 @@
         if (idx >= 0) list.splice(idx, 1);
         else list.push(variant);
         setVariants(cardId, list);
+        stamp(cardId);
         save();
         return list.includes(variant);
       },
       remove(cardId, variant) {
         setVariants(cardId, variantsOf(cardId).filter((entry) => entry !== variant));
+        stamp(cardId);
         save();
       },
       replace(next) {
         wishlist = next && typeof next === "object" && !Array.isArray(next) ? next : {};
+        const now = Date.now();
+        meta = { mod: {}, del: {} };
+        Object.keys(wishlist).forEach((id) => { meta.mod[id] = now; });
+        persistMeta();
         save();
       },
       toObject() {
@@ -2127,7 +2183,9 @@
   // que não sobem pra nuvem).
   const SYNC_KEYS = {
     collection: "tcg-collector-collection-v3",
+    collectionMeta: "tcg-collector-collection-meta-v1",
     wishlist: "tcg-collector-wishlist-v1",
+    wishlistMeta: "tcg-collector-wishlist-meta-v1",
     prices: "tcg-collector-prices-v1",
     binders: "tcg-collector-binders-v1",
     history: "tcg-portfolio-history-v1"
@@ -2207,26 +2265,70 @@
     if (!data) return;
     Object.entries(SYNC_KEYS).forEach(([k, key]) => { if (data[k] != null) localStorage.setItem(key, JSON.stringify(data[k])); });
   }
-  function mergeCollection(a, b) {
-    const out = JSON.parse(JSON.stringify(a || {}));
-    Object.entries(b || {}).forEach(([cardId, variants]) => {
-      out[cardId] = out[cardId] || {};
-      Object.entries(variants || {}).forEach(([variant, conds]) => {
-        out[cardId][variant] = out[cardId][variant] || {};
-        Object.entries(conds || {}).forEach(([cond, qty]) => {
-          out[cardId][variant][cond] = Math.max(Number(out[cardId][variant][cond]) || 0, Number(qty) || 0);
-        });
-      });
-    });
+  // LWW-element-set por carta: para cada id, compara o "presente mais novo"
+  // (mod) com o "apagado mais novo" (del); se a exclusão for mais recente que a
+  // última edição, a carta fica de fora (e o tombstone é mantido pra propagar).
+  // Uma edição com mod > del "revive". Cartas legadas sem timestamp contam como
+  // mod=0 (sobrevivem até serem apagadas explicitamente em algum dispositivo).
+  const TOMBSTONE_TTL_MS = 365 * 24 * 60 * 60 * 1000; // 1 ano
+  const TOMBSTONE_MAX = 4000;
+  function pruneTombstones(del) {
+    const cutoff = Date.now() - TOMBSTONE_TTL_MS;
+    let ids = Object.keys(del).filter((id) => (Number(del[id]) || 0) >= cutoff);
+    if (ids.length > TOMBSTONE_MAX) {
+      ids = ids.sort((x, y) => (Number(del[y]) || 0) - (Number(del[x]) || 0)).slice(0, TOMBSTONE_MAX);
+    }
+    const out = {};
+    ids.forEach((id) => { out[id] = Number(del[id]) || 0; });
     return out;
   }
-  function mergeWishlist(a, b) {
-    const out = JSON.parse(JSON.stringify(a || {}));
-    Object.entries(b || {}).forEach(([cardId, list]) => {
-      const set = new Set([].concat(out[cardId] || [], Array.isArray(list) ? list : []));
-      if (set.size) out[cardId] = Array.from(set);
+  // Decide, por carta, se ela vive (e com qual mod-ts) ou morre. presentTs só
+  // conta para lados que de fato têm a carta. Retorna { live, mod } ou null.
+  function resolveCard(aHas, aMod, bHas, bMod, aDel, bDel) {
+    const presentTs = Math.max(aHas ? aMod : 0, bHas ? bMod : 0);
+    const delTs = Math.max(aDel, bDel);
+    if (delTs > 0 && delTs > presentTs) return null; // exclusão vence
+    return { live: true, mod: presentTs };
+  }
+  function mergeCollection(aCol, aMeta, bCol, bMeta) {
+    aCol = aCol || {}; bCol = bCol || {};
+    aMeta = normalizeMeta(aMeta); bMeta = normalizeMeta(bMeta);
+    const ids = new Set([].concat(Object.keys(aCol), Object.keys(bCol), Object.keys(aMeta.del), Object.keys(bMeta.del)));
+    const collection = {}; const mod = {}; const del = {};
+    ids.forEach((id) => {
+      const aHas = !!aCol[id], bHas = !!bCol[id];
+      const r = resolveCard(aHas, Number(aMeta.mod[id]) || 0, bHas, Number(bMeta.mod[id]) || 0, Number(aMeta.del[id]) || 0, Number(bMeta.del[id]) || 0);
+      if (!r) { del[id] = Math.max(Number(aMeta.del[id]) || 0, Number(bMeta.del[id]) || 0); return; }
+      let entry;
+      if (aHas && bHas) {
+        entry = JSON.parse(JSON.stringify(aCol[id]));
+        Object.entries(bCol[id]).forEach(([variant, conds]) => {
+          entry[variant] = entry[variant] || {};
+          Object.entries(conds || {}).forEach(([cond, qty]) => {
+            entry[variant][cond] = Math.max(Number(entry[variant][cond]) || 0, Number(qty) || 0);
+          });
+        });
+      } else {
+        entry = JSON.parse(JSON.stringify(aHas ? aCol[id] : bCol[id]));
+      }
+      if (entry && Object.keys(entry).length) { collection[id] = entry; if (r.mod > 0) mod[id] = r.mod; }
     });
-    return out;
+    return { collection, meta: { mod, del: pruneTombstones(del) } };
+  }
+  function mergeWishlist(aW, aMeta, bW, bMeta) {
+    aW = aW || {}; bW = bW || {};
+    aMeta = normalizeMeta(aMeta); bMeta = normalizeMeta(bMeta);
+    const ids = new Set([].concat(Object.keys(aW), Object.keys(bW), Object.keys(aMeta.del), Object.keys(bMeta.del)));
+    const wishlist = {}; const mod = {}; const del = {};
+    ids.forEach((id) => {
+      const aList = Array.isArray(aW[id]) ? aW[id] : [];
+      const bList = Array.isArray(bW[id]) ? bW[id] : [];
+      const r = resolveCard(!!aList.length, Number(aMeta.mod[id]) || 0, !!bList.length, Number(bMeta.mod[id]) || 0, Number(aMeta.del[id]) || 0, Number(bMeta.del[id]) || 0);
+      if (!r) { del[id] = Math.max(Number(aMeta.del[id]) || 0, Number(bMeta.del[id]) || 0); return; }
+      const set = new Set([].concat(aList, bList));
+      if (set.size) { wishlist[id] = Array.from(set); if (r.mod > 0) mod[id] = r.mod; }
+    });
+    return { wishlist, meta: { mod, del: pruneTombstones(del) } };
   }
   function mergePrices(a, b) {
     const out = JSON.parse(JSON.stringify(a || {}));
@@ -2276,9 +2378,13 @@
   }
   function mergeData(localD, remoteD) {
     const a = localD || {}, b = remoteD || {};
+    const col = mergeCollection(a.collection, a.collectionMeta, b.collection, b.collectionMeta);
+    const wl = mergeWishlist(a.wishlist, a.wishlistMeta, b.wishlist, b.wishlistMeta);
     return {
-      collection: mergeCollection(a.collection, b.collection),
-      wishlist: mergeWishlist(a.wishlist, b.wishlist),
+      collection: col.collection,
+      collectionMeta: col.meta,
+      wishlist: wl.wishlist,
+      wishlistMeta: wl.meta,
       prices: mergePrices(a.prices, b.prices),
       binders: mergeBinders(a.binders, b.binders),
       history: mergeHistory(a.history, b.history)
