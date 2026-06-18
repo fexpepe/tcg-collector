@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com; connect-src 'self' https://api.tcgdex.net https://pokeapi.co https://economia.awesomeapi.com.br https://*.supabase.co; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="login.title">Entrar - TCG Collector</title>
+    <meta name="description" content="Entre no TCG Collector com um link mágico por e-mail — sem senha — para sincronizar sua coleção entre dispositivos.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#0d0e12">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TCG Collector">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="login-body">
+    <header class="app-header">
+      <div class="app-header-inner login-header-inner">
+        <a class="brand" href="index.html">TCG&nbsp;Collector</a>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main class="login-page">
+      <div class="login-card">
+        <div class="login-logo">TCG&nbsp;COLLECTR</div>
+        <p class="login-tagline" data-i18n="login.tagline">Colecione · Sincronize · Grátis</p>
+
+        <h1 data-i18n="login.heading">Entrar</h1>
+        <p class="login-sub" data-i18n="login.sub">Sincronize sua coleção entre dispositivos. Grátis e sem senha.</p>
+
+        <form id="loginForm" class="login-form">
+          <label class="login-field">
+            <span data-i18n="login.emailLabel">E-mail</span>
+            <input id="loginEmail" type="email" required autocomplete="email" inputmode="email" data-i18n-placeholder="login.emailPlaceholder" placeholder="voce@email.com">
+          </label>
+          <button type="submit" class="primary login-submit" data-i18n="login.submit">Enviar link de acesso</button>
+        </form>
+
+        <p id="loginMsg" class="login-msg" role="status" hidden></p>
+
+        <p class="login-how" data-i18n="login.how">Enviamos um link mágico pro seu e-mail (sem senha). Clique nele para entrar — vale por alguns minutos. Confira o spam, se não chegar.</p>
+
+        <div class="login-foot">
+          <a href="index.html" data-i18n="login.back">← Voltar ao site</a>
+          <span aria-hidden="true">·</span>
+          <a href="privacy.html" data-i18n="footer.privacy">Privacidade</a>
+        </div>
+      </div>
+    </main>
+
+    <script src="src/i18n.js"></script>
+    <script src="src/shared.js"></script>
+    <script src="src/login.js"></script>
+  </body>
+</html>

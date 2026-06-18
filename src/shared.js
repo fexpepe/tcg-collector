@@ -2068,6 +2068,8 @@
     sumCardsValue,
     formatMoney: fmtMoney,
     convertMoney,
+    sendMagicLink,
+    getSession,
     createShare,
     fetchShare,
     cardValue,
@@ -2464,10 +2466,9 @@
 
     slot.addEventListener("click", async (event) => {
       if (event.target.closest("[data-auth-login]")) {
-        const email = window.prompt(t("auth.emailPrompt"));
-        if (!email || !email.includes("@")) return;
-        const ok = await sendMagicLink(email.trim());
-        window.alert(ok ? t("auth.linkSent") : t("auth.error"));
+        // Página de login dedicada; guarda de onde veio pra voltar depois.
+        try { localStorage.setItem("tcg-login-return", window.location.pathname); } catch (e) { /* ignora */ }
+        window.location.href = "login.html";
         return;
       }
       if (event.target.closest("[data-export-json]")) { exportJson(); return; }

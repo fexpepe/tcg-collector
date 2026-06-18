@@ -2134,6 +2134,40 @@ input::placeholder {
 }
 .auth-avatar:hover { filter: brightness(1.08); }
 .auth-menu { min-width: 200px; right: 0; left: auto; }
+/* Página de login dedicada: esconde o dropdown de conta (redundante aqui). */
+.login-body .auth-slot { display: none; }
+.login-header-inner { justify-content: space-between; }
+.login-page { display: flex; justify-content: center; padding: 32px 20px 60px; }
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 30px 28px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+.login-logo { font-size: 22px; font-weight: 800; letter-spacing: 0.14em; }
+.login-tagline {
+  color: var(--subtle);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin: 6px 0 26px;
+}
+.login-card h1 { font-size: 24px; margin: 0 0 6px; }
+.login-sub { color: var(--muted); margin: 0 0 22px; line-height: 1.5; }
+.login-form { display: flex; flex-direction: column; gap: 10px; text-align: left; }
+.login-field span { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
+.login-submit { width: 100%; min-height: 46px; }
+.login-msg { margin: 16px 0 0; font-size: 14px; line-height: 1.5; }
+.login-msg.ok { color: var(--accent); }
+.login-msg.err { color: #f87171; }
+.login-how { color: var(--subtle); font-size: 12.5px; line-height: 1.65; margin: 18px 0 0; }
+.login-foot { margin-top: 22px; font-size: 13px; color: var(--subtle); }
+.login-foot a { color: var(--accent); text-decoration: none; }
+.login-foot a:hover { text-decoration: underline; }
 .auth-danger { color: #f87171; }
 .auth-danger:hover { background: rgba(248, 113, 113, 0.12); color: #fca5a5; }
 /* Páginas legais (privacidade): texto legível, largura confortável. */
