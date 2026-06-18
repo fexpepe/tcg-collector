@@ -2133,7 +2133,11 @@ input::placeholder {
   padding: 0;
 }
 .auth-avatar:hover { filter: brightness(1.08); }
-.auth-menu { min-width: 200px; right: 0; left: auto; }
+.auth-menu { right: 0; left: auto; }
+/* Mais específico que .lang-dd-menu (que define min-width:150) pra valer. */
+.lang-dd-menu.auth-menu { min-width: 220px; }
+/* Itens do menu de conta numa linha só (sem quebrar "Exportar backup (.json)" etc.). */
+.auth-menu .lang-dd-option { white-space: nowrap; }
 /* Página de login dedicada: esconde o dropdown de conta (redundante aqui). */
 .login-body .auth-slot { display: none; }
 .login-header-inner { justify-content: space-between; }
