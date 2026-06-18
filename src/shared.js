@@ -2557,7 +2557,7 @@
       try { if (window.indexedDB) indexedDB.deleteDatabase("tcg-collector"); } catch (e) { /* fotos de binder */ }
       window.location.replace(window.location.pathname);
     }
-    const fileInput = `<input type="file" accept="application/json" data-import-input hidden>`;
+    const fileInput = `<input type="file" accept="application/json" data-import-input hidden aria-label="${escapeAttribute(t("auth.import"))}">`;
 
     function wireDropdown() {
       const dd = slot.querySelector("#authDd");
@@ -2660,14 +2660,21 @@
   }
 
   // Título "Procurar:" acima do campo de busca (presente em todas as páginas).
+  // É um <label> de verdade ligado ao campo (a11y: leitor de tela anuncia o
+  // rótulo, e clicar nele foca a busca) — antes era só uma <div> decorativa.
   function initSearchLabel() {
     const section = document.querySelector(".page-search");
     if (!section) return;
     const prev = section.previousElementSibling;
     if (prev && prev.classList.contains("page-search-label")) return;
-    const label = document.createElement("div");
+    const input = section.querySelector('input[type="search"], input[type="text"], input:not([type])');
+    const label = document.createElement(input ? "label" : "div");
     label.className = "page-search-label";
     label.textContent = t("search.title");
+    if (input) {
+      if (!input.id) input.id = "pageSearchInput";
+      label.setAttribute("for", input.id);
+    }
     section.parentNode.insertBefore(label, section);
   }
 
