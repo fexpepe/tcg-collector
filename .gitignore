@@ -11,3 +11,6 @@ data/sets/
 # Lixo de SO/editor
 Thumbs.db
 .DS_Store
+
+# MCP local (config de ferramenta, nao versionar)
+.mcp.json
