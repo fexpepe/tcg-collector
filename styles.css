@@ -249,10 +249,6 @@ button {
   flex: 1;
 }
 
-.search-box {
-  flex: 2 1 280px;
-}
-
 /* Busca isolada no topo do corpo da página (estilo "Find a Product" do
    Collectr): barra larga com ícone, acima do título. */
 .page-search-label {
@@ -670,14 +666,6 @@ input::placeholder {
   padding: 14px;
 }
 
-.card-title-row {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
 .card h3 {
   margin: 0;
   font-size: 18px;
@@ -818,13 +806,6 @@ input::placeholder {
   background: #2c3540;
   color: var(--accent);
   border: 1px solid rgba(57, 199, 155, 0.28);
-}
-
-.owned-toggle.compact {
-  width: auto;
-  min-height: 34px;
-  padding: 0 10px;
-  font-size: 13px;
 }
 
 .details-link {
@@ -1392,35 +1373,6 @@ input::placeholder {
   display: block;
   height: 100%;
   background: var(--accent);
-}
-
-.mini-card {
-  min-height: 48px;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  background: #12151c;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 8px;
-}
-
-.mini-card strong,
-.mini-card span {
-  display: block;
-}
-
-.mini-card strong {
-  font-size: 14px;
-  line-height: 1.2;
-}
-
-.mini-card span {
-  margin-top: 3px;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.25;
 }
 
 .grid-sentinel {
@@ -2213,14 +2165,6 @@ input::placeholder {
 
 .lang-dd .card-flag {
   flex: none;
-}
-
-.card-flag-globe {
-  width: 16px;
-  height: 16px;
-  background: transparent;
-  color: var(--muted);
-  border-radius: 0;
 }
 
 .lang-dd-menu {
@@ -3077,12 +3021,6 @@ a.progress-row:hover {
   padding: 0 10px;
 }
 
-.binder-list {
-  display: flex;
-  flex-direction: column;
-  gap: 26px;
-}
-
 /* --- Galeria de binders (criar + lista/grid, clicar abre o binder) --- */
 .binder-gallery-controls {
   display: flex;
@@ -3317,16 +3255,6 @@ a.progress-row:hover {
   font-size: 0.82rem;
   color: var(--subtle);
   padding: 0 6px;
-}
-.binder-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: end;
-}
-.binder-actions .secondary {
-  min-height: 38px;
-  font-size: 0.85rem;
 }
 .binder-delete {
   color: #e7796f !important;
@@ -3673,21 +3601,6 @@ a.progress-row:hover {
   color: var(--muted);
   line-height: 1.15;
 }
-.binder-slot-caption {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  padding: 6px 8px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: #f3f5f7;
-  background: linear-gradient(to bottom, rgba(8, 10, 14, 0.82), rgba(8, 10, 14, 0));
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left;
-}
 .binder-slot-price {
   position: absolute;
   left: 0;
@@ -3727,7 +3640,6 @@ a.progress-row:hover {
   border-color: rgba(57, 199, 155, 0.3);
 }
 .binder-editor-search,
-.binder-editor-field input,
 .binder-editor-sale input,
 .binder-editor-sale select,
 .binder-editor-sort select {
@@ -3759,7 +3671,6 @@ a.progress-row:hover {
   color: var(--subtle);
 }
 .binder-editor-sort select { min-width: 190px; }
-.binder-editor-field,
 .binder-editor-sale label {
   display: flex;
   flex-direction: column;
@@ -3901,9 +3812,6 @@ a.progress-row:hover {
 @media (max-width: 560px) {
   .binder-editor-sale {
     grid-template-columns: 1fr;
-  }
-  .binder-actions {
-    width: 100%;
   }
 }
 
