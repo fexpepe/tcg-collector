@@ -2134,6 +2134,14 @@ input::placeholder {
 }
 .auth-avatar:hover { filter: brightness(1.08); }
 .auth-menu { min-width: 200px; right: 0; left: auto; }
+.auth-danger { color: #f87171; }
+.auth-danger:hover { background: rgba(248, 113, 113, 0.12); color: #fca5a5; }
+/* Páginas legais (privacidade): texto legível, largura confortável. */
+.legal { max-width: 70ch; }
+.legal section { margin-bottom: 8px; }
+.legal h2 { font-size: 18px; margin: 22px 0 8px; }
+.legal p { color: var(--muted); line-height: 1.7; margin: 0 0 10px; }
+.legal a { color: var(--accent); }
 .auth-email { color: var(--subtle); font-size: 12px; cursor: default; word-break: break-all; }
 .auth-email:hover { background: transparent; color: var(--subtle); }
 /* Deslogado: botão "Conta ▾" abre o mesmo menu (entrar + exportar/importar). */

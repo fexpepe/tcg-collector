@@ -5,8 +5,10 @@
   // a página for fechada antes do timer disparar.
   const pendingWrites = new Map(); // storageKey -> () => string
   let writeScheduled = false;
+  let dataWiped = false; // após "apagar dados": não regrava nada (nem no pagehide)
   function flushWrites() {
     writeScheduled = false;
+    if (dataWiped) { pendingWrites.clear(); return; }
     pendingWrites.forEach((getString, key) => {
       try { localStorage.setItem(key, getString()); } catch (error) { /* quota cheia: ignora */ }
     });
@@ -659,6 +661,7 @@
     footer.className = "site-footer";
     footer.innerHTML = `
       <div class="site-footer-inner">
+        <p><a href="privacy.html">${escapeHtml(t("footer.privacy"))}</a></p>
         <p>${escapeHtml(t("footer.rights", { year: new Date().getFullYear() }))}</p>
         <p>${t("footer.credits")}</p>
       </div>
@@ -2313,6 +2316,19 @@
       return rows && rows[0] ? rows[0] : null;
     } catch (e) { return null; }
   }
+  // Apaga a conta na nuvem (RPC `delete_account` com security definer: remove
+  // collections + shares + o usuário do auth). Retorna true se deu certo.
+  async function deleteAccount() {
+    let s = getSession();
+    if (!s) return true;
+    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/delete_account`, {
+        method: "POST", headers: authHeaders(s.access_token), body: "{}"
+      });
+      return r.ok;
+    } catch (e) { return false; }
+  }
 
   let lastPushed = "";
   // Lê a sessão na hora de cada push (pega o token renovado) e renova de forma
@@ -2389,7 +2405,25 @@
     const dataItems = `<li class="auth-sep" aria-hidden="true"></li>
       <li class="lang-dd-option" role="menuitem" data-export-json>${escapeHtml(t("auth.exportJson"))}</li>
       <li class="lang-dd-option" role="menuitem" data-export-csv>${escapeHtml(t("auth.exportCsv"))}</li>
-      <li class="lang-dd-option" role="menuitem" data-import>${escapeHtml(t("auth.import"))}</li>`;
+      <li class="lang-dd-option" role="menuitem" data-import>${escapeHtml(t("auth.import"))}</li>
+      <li class="auth-sep" aria-hidden="true"></li>
+      <li class="lang-dd-option auth-danger" role="menuitem" data-delete-account>${escapeHtml(t("auth.deleteData"))}</li>`;
+
+    // Apaga conta+nuvem (logado) ou só os dados locais (deslogado), e zera tudo.
+    async function deleteAccountFlow() {
+      const session = getSession();
+      if (!window.confirm(session ? t("auth.deleteConfirmAccount") : t("auth.deleteConfirmLocal"))) return;
+      if (session) {
+        const ok = await deleteAccount();
+        if (!ok) { window.alert(t("auth.deleteError")); return; }
+      }
+      // Bloqueia qualquer regravação pendente (stores em memória / flush no pagehide).
+      dataWiped = true;
+      pendingWrites.clear();
+      try { Object.keys(localStorage).filter((k) => /^tcg-/.test(k)).forEach((k) => localStorage.removeItem(k)); } catch (e) { /* ignora */ }
+      try { if (window.indexedDB) indexedDB.deleteDatabase("tcg-collector"); } catch (e) { /* fotos de binder */ }
+      window.location.replace(window.location.pathname);
+    }
     const fileInput = `<input type="file" accept="application/json" data-import-input hidden>`;
 
     function wireDropdown() {
@@ -2439,6 +2473,7 @@
       if (event.target.closest("[data-export-json]")) { exportJson(); return; }
       if (event.target.closest("[data-export-csv]")) { exportCsv(); return; }
       if (event.target.closest("[data-import]")) { const inp = slot.querySelector("[data-import-input]"); if (inp) inp.click(); return; }
+      if (event.target.closest("[data-delete-account]")) { deleteAccountFlow(); return; }
       if (event.target.closest("[data-auth-logout]")) { authSignOut(); }
     });
     slot.addEventListener("change", (event) => {
