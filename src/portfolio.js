@@ -48,7 +48,7 @@
           totalCopies += quantity;
           const val = shared.cardValue(card, variant, prices, condition);
           if (val.value > 0) {
-            lines.push({ card, variant, condition, quantity, unit: val.value, total: val.value * quantity, estimated: val.estimated });
+            lines.push({ card, variant, condition, quantity, unit: val.value, total: val.value * quantity, estimated: val.estimated, source: val.source });
           }
         });
       });
@@ -105,7 +105,10 @@
 
     const rows = top.map((line) => {
       const name = `${line.card.name} · ${line.card.set} ${line.card.number}`;
-      const unit = `${money(line.unit)}${line.estimated ? ` <span class="price-estimated" title="${escapeAttribute(t("portfolio.estimated"))}">≈</span>` : ""}`;
+      const estTitle = line.source === "ref" ? t("portfolio.estRef")
+        : line.source === "myp" ? t("portfolio.estMyp")
+        : t("portfolio.estimated");
+      const unit = `${money(line.unit)}${line.estimated ? ` <span class="price-estimated" title="${escapeAttribute(estTitle)}">≈</span>` : ""}`;
       const href = detailUrl("set", line.card.set);
       return `
         <tr>

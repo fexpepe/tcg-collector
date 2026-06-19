@@ -60,6 +60,14 @@ jobs:
           node scripts/sync-pokemon-types.mjs
           node scripts/sync-pokemon-names.mjs
 
+      # Preços de mercado BR (MYP). NO-OP enquanto o secret MYP_API_TOKEN nao
+      # existir — o script sai com sucesso e o merge segue só com a referencia
+      # internacional. Quando o token chegar, o BR passa a ter prioridade no valor.
+      - name: Sincroniza preços BR (MYP)
+        env:
+          MYP_API_TOKEN: ${{ secrets.MYP_API_TOKEN }}
+        run: node scripts/sync-myp.mjs pokemon
+
       - name: Mescla catálogos num manifest unificado
         run: node scripts/merge-catalogs.mjs en ja zh-tw pt
 

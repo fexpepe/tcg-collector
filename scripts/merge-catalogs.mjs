@@ -92,6 +92,19 @@ for (const lang of langs) {
   }
 }
 
+// Preços de mercado BR (MYP), se o sync rodou com token (data/myp-prices.
+// generated.json). Grava em pricing[id].b = { mn, md, mx }; o front prioriza
+// isto sobre a referência internacional (shared.js#cardValue) e mostra o
+// tooltip "Referência de mercado BR (MYP)". Sem o arquivo (token ausente) é
+// no-op — o build segue só com a referência internacional.
+//
+// O JOIN entre a entrada do MYP e o cardId do catálogo é o ponto a calibrar
+// quando o token chegar: a forma exata de editionCode/cardCode só se confirma
+// com um retorno real (ver scripts/sync-myp.mjs). Hoje casa por nome
+// normalizado + número da carta, registrando nos logs quantas casaram para
+// validar/ajustar o join na primeira execução real.
+await applyMypPrices(pricing, allCards);
+
 const manifest = {
   languages: langs,
   generatedAt: new Date().toISOString(),
@@ -105,6 +118,52 @@ await writeFile(new URL("pricing.generated.js", dataDir), `window.TCG_PRICING = 
 console.log(`Mesclados: ${allCards.length} cartas, ${manifestSets.length} sets (${langs.join(", ")})`);
 console.log(`Preços de referência: ${Object.keys(pricing).length} cartas`);
 console.log(`Espécies canônicas conhecidas: ${speciesByDex.size}`);
+
+// Lê data/myp-prices.generated.json (se existir) e aplica os preços BR em
+// pricing[id].b. Defensivo: ausência do arquivo = no-op silencioso.
+async function applyMypPrices(priceTable, sourceCards) {
+  let entries;
+  try {
+    entries = JSON.parse(await readFile(new URL("myp-prices.generated.json", dataDir), "utf8"));
+  } catch {
+    return; // sem token / sem arquivo — segue só com referência internacional
+  }
+  if (!Array.isArray(entries) || !entries.length) return;
+
+  // Índice das entradas MYP por nome normalizado + número. Calibrar este join
+  // (e o normalize() do sync-myp) quando houver retorno real da API.
+  const byKey = new Map();
+  for (const e of entries) {
+    const num = mypNumber(e.cardCode);
+    const name = normName(e.nameEn) || normName(e.namePt);
+    if (name && num) byKey.set(`${name}#${num}`, e);
+  }
+
+  let applied = 0;
+  for (const card of sourceCards) {
+    const e = byKey.get(`${normName(card.name)}#${mypNumber(card.number)}`);
+    if (!e) continue;
+    const mn = num(e.min), md = num(e.avg) || num(e.min), mx = num(e.max);
+    if (!md) continue;
+    const ref = priceTable[card.id] || (priceTable[card.id] = {});
+    ref.b = { mn: mn || md, md, mx: mx || md };
+    applied++;
+  }
+  console.log(`Preços BR (MYP): ${entries.length} entradas, ${applied} casadas com o catálogo`);
+}
+
+function normName(s) {
+  return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+}
+// Número da carta (parte antes da barra, sem zeros à esquerda): "012/198" -> "12".
+function mypNumber(s) {
+  const m = String(s || "").match(/(\d+)/);
+  return m ? String(Number(m[1])) : "";
+}
+function num(v) {
+  const n = Number(String(v == null ? "" : v).replace(",", "."));
+  return Number.isFinite(n) && n > 0 ? Math.round(n * 100) / 100 : 0;
+}
 
 function buildIndexes(sourceCards) {
   return {
