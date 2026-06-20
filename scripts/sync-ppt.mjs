@@ -44,7 +44,10 @@ if (!TOKEN) { console.warn("PPT_API_TOKEN não definido — pulando sync da PPT 
 
 let creditsUsed = 0;
 let lastCall = 0;
-const MIN_GAP = 1200; // ms entre chamadas (~50/min, abaixo do limite de 60/min da PPT)
+// O rate limit da PPT é PONDERADO por cartas (~ceil(cartas/10) "minute calls",
+// teto 60/min). Uma página de 100 cartas custa ~10, então ~6 chamadas/min é o
+// teto -> ~10s entre chamadas. Sem isso, ~7 paginas ja estouram (429).
+const MIN_GAP = 10500;
 async function ppt(path, retries = 3) {
   const gap = MIN_GAP - (Date.now() - lastCall);
   if (gap > 0) await new Promise((r) => setTimeout(r, gap));
@@ -181,6 +184,11 @@ async function run() {
     targets = ages.sort((a, b) => a[1] - b[1]).map((x) => x[0]);
   }
 
+  // Teto de tempo por run: com ~10s/chamada, o orçamento de créditos sozinho
+  // deixaria o build longo demais. O que não couber agora entra nos próximos
+  // deploys (rotação dos mais antigos primeiro + cache). 0 = sem teto.
+  const TIME_CAP_MS = (Number(val("--max-minutes")) || 6) * 60 * 1000;
+  const startedAt = Date.now();
   const out = {};
   let fetched = 0, cacheHits = 0;
   for (const setId of targets) {
@@ -190,8 +198,11 @@ async function run() {
     const fresh = cached && Date.now() - (cached.t || 0) < REFRESH_DAYS * 864e5;
     // Fresco (e não é dry-run): usa o cache, não gasta crédito.
     if (fresh && !DRY) { Object.assign(out, cached.entries); cacheHits++; continue; }
-    // Sem orçamento: mantém o que já tem em cache (cobertura não regride).
-    if (creditsUsed >= BUDGET) { if (cached) { Object.assign(out, cached.entries); cacheHits++; } continue; }
+    // Sem orçamento OU sem tempo: mantém o que já tem em cache (não regride).
+    if (creditsUsed >= BUDGET || (TIME_CAP_MS && Date.now() - startedAt > TIME_CAP_MS)) {
+      if (cached) { Object.assign(out, cached.entries); cacheHits++; }
+      continue;
+    }
     try {
       const entries = await syncSet(setId, pptId);
       if (entries) { Object.assign(out, entries); fetched++; if (!DRY) await writeFile(cacheFileOf(setId), JSON.stringify({ t: Date.now(), entries }), "utf8"); }
