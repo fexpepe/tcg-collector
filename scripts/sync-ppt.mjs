@@ -83,10 +83,24 @@ async function ourChunk(setId) {
 
 // Mapa setId(nosso) -> pptSetId, a partir do /sets da PPT (cacheado 7 dias).
 const SETMAP_VERSION = 4; // bump invalida o cache do mapa de sets
+const DISC_VERSION = 2;   // bump descarta o cache de descobertas (positivo+negativo)
 const discoveredFile = () => new URL("discovered.json", cacheDir);
-// Sets descobertos via cartas (ver discoverSetId) — { CODE: numericId }.
-async function loadDiscovered() { try { return JSON.parse(await readFile(discoveredFile(), "utf8")); } catch { return {}; } }
-async function saveDiscovered(obj) { try { await writeFile(discoveredFile(), JSON.stringify(obj), "utf8"); } catch { /* ignora */ } }
+// Sets descobertos via cartas (ver discoverSetId) — { CODE: numericId|null }.
+async function loadDiscovered() { try { const c = JSON.parse(await readFile(discoveredFile(), "utf8")); return c.v === DISC_VERSION ? (c.e || {}) : {}; } catch { return {}; } }
+async function saveDiscovered(obj) { try { await writeFile(discoveredFile(), JSON.stringify({ v: DISC_VERSION, e: obj }), "utf8"); } catch { /* ignora */ } }
+
+// Nome do Pokémon em INGLÊS por dexId (data/pokemon-names.js, gerado antes do
+// sync-ppt). O chunk pré-merge tem pokemonName em japonês, que não casa na
+// busca da PPT (catálogo inglês) — por isso a descoberta usa este mapa.
+let _names = null;
+async function pokemonNames() {
+  if (_names) return _names;
+  try {
+    const raw = await readFile(new URL("pokemon-names.js", dataDir), "utf8");
+    _names = JSON.parse(raw.replace(/^window\.TCG_POKEMON_NAMES = /, "").replace(/;\s*$/, ""));
+  } catch { _names = {}; }
+  return _names;
+}
 
 async function setMap() {
   await mkdir(cacheDir, { recursive: true });
@@ -125,10 +139,11 @@ async function setMap() {
 async function discoverSetId(ourSetId) {
   const chunk = await ourChunk(ourSetId);
   if (!chunk || !chunk.length) return null;
+  const names = await pokemonNames();
   const code = ourSetId.toUpperCase();
   const tried = new Set();
   for (const card of chunk) {
-    const q = card.pokemonName;
+    const q = names[card.dexId] || card.pokemonName; // INGLÊS (chunk pré-merge é JP)
     if (!q || tried.has(q)) continue;
     tried.add(q);
     if (tried.size > 2) break; // teto de buscas (custo); 2 basta p/ set que existe
