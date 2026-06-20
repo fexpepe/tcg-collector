@@ -3505,14 +3505,27 @@ a.progress-row:hover {
   filter: grayscale(1);
   opacity: 0.62;
 }
-/* Botão "Tenho / Marcar como tenho" — aparece ao passar o mouse no slot. */
-.binder-slot-own {
+/* Ações no rodapé do slot (Tenho + Info) — aparecem ao passar o mouse. */
+.binder-slot-actions {
   position: absolute;
   left: 50%;
   bottom: 10px;
   transform: translateX(-50%);
   z-index: 3;
-  padding: 8px 16px;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+.binder-slot:hover .binder-slot-actions,
+.binder-slot:focus-within .binder-slot-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+.binder-slot-own,
+.binder-slot-info {
+  padding: 8px 14px;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: rgba(13, 14, 18, 0.92);
@@ -3521,18 +3534,17 @@ a.progress-row:hover {
   font-weight: 700;
   white-space: nowrap;
   cursor: pointer;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 120ms ease;
-}
-.binder-slot:hover .binder-slot-own,
-.binder-slot:focus-within .binder-slot-own {
-  opacity: 1;
-  pointer-events: auto;
 }
 .binder-slot-own.owned {
   color: var(--accent);
   border-color: var(--accent-dark);
+}
+/* Bandeira do idioma da carta — canto superior esquerdo do slot. */
+.binder-slot-flag {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 3;
 }
 .binder-slot-dragging {
   opacity: 0.4;

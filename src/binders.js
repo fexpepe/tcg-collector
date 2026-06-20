@@ -466,6 +466,16 @@
   let catalogPromise = null;
   let cardsById = new Map();
   let allCards = [];
+
+  // Preview da carta — o MESMO modal do Explorar, aberto pelo botão "info" do
+  // slot, pra ver as infos da carta direto do binder.
+  const cardPreview = shared.createCardPreview({
+    getCard: (cardId) => cardsById.get(cardId),
+    store: ownedStore,
+    prices: pricesStore,
+    wishlist: wishlistStore,
+    onOwnedChange: () => render()
+  });
   function ensureCatalog() {
     if (!catalogPromise) {
       catalogPromise = loadCatalog().then((catalog) => {
@@ -806,9 +816,19 @@
       ? `<span class="binder-slot-want${wanted ? " wanted" : ""}" role="button" tabindex="0" data-slot-want="${index}" aria-pressed="${wanted}" aria-label="${escapeAttribute(wanted ? t("tile.unwantAria", { variant }) : t("tile.wantAria", { variant }))}" title="${escapeAttribute(wanted ? t("tile.wanted") : t("tile.want"))}">${heartSvg(wanted)}</span>`
       : "";
 
+    // Bandeira do idioma da carta (canto) e botão "info" (abre o preview da
+    // carta, igual ao Explorar) — só para slots com carta do catálogo.
+    const flagHtml = slot.cardId
+      ? `<span class="binder-slot-flag">${shared.cardFlag(shared.cardLanguageFromId(slot.cardId))}</span>`
+      : "";
+    const infoBtn = slot.cardId
+      ? `<span class="binder-slot-info" role="button" tabindex="0" data-slot-info="${index}" aria-label="${escapeAttribute(t("binders.slot.info"))}">${escapeHtml(t("binders.slot.info"))}</span>`
+      : "";
+
     return `<button type="button" class="binder-slot binder-slot-filled${ownable && !owned ? " not-owned" : ""}" data-slot-index="${index}" draggable="true" title="${escapeAttribute(title)}">
       <span class="binder-slot-media">${media}</span>
-      ${ownBtn}
+      ${flagHtml}
+      <span class="binder-slot-actions">${ownBtn}${infoBtn}</span>
       ${wantBtn}
       ${priceTag}
     </button>`;
@@ -1639,6 +1659,18 @@
       if (slot && slot.cardId) {
         wishlistStore.toggle(slot.cardId, slot.variant || DEFAULT_CONDITION);
         render();
+      }
+      return;
+    }
+    // "Info": abre o preview da carta (mesmo modal do Explorar). Precede o
+    // editor; garante o catálogo carregado antes de abrir.
+    const infoBtn = event.target.closest("[data-slot-info]");
+    if (infoBtn) {
+      event.stopPropagation();
+      const binder = eventBinder(infoBtn);
+      const slot = binder && binder.slots[Number(infoBtn.dataset.slotInfo)];
+      if (slot && slot.cardId) {
+        ensureCatalog().then(() => cardPreview.open(slot.cardId, slot.variant || DEFAULT_CONDITION));
       }
       return;
     }
