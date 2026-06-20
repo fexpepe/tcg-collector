@@ -89,6 +89,19 @@
     return { slots, pages };
   }
 
+  // Info de template de um slot (nome do Pokémon, busca, dexId). Aceita tanto um
+  // slot placeholder (template:true) quanto um slot já preenchido que carregou a
+  // info em `tpl`. Usada pra restaurar o placeholder quando a carta é removida.
+  function slotTemplateInfo(slot) {
+    if (!slot) return null;
+    if (slot.template) return { name: slot.name, query: slot.query, dexId: slot.dexId };
+    return slot.tpl || null;
+  }
+  // Recria o slot-placeholder de template a partir da info carregada (ou null).
+  function templatePlaceholder(tpl) {
+    return tpl ? { template: true, name: tpl.name, query: tpl.query, dexId: tpl.dexId, image: shared.spriteUrl(tpl.dexId), label: "" } : null;
+  }
+
   const TEMPLATES = {
     pokedex151: { labelKey: "binders.template.151", build: (grid) => templateSlotsFromNames(POKEDEX_151, grid) }
   };
@@ -1060,11 +1073,12 @@
       while (idx >= binder.slots.length) addPage(binder);
       const old = binder.slots[idx];
       if (old && old.photoId) deletePhoto(old.photoId);
+      const tpl = slotTemplateInfo(old); // preserva o Pokémon do slot de template
       const sources = cardImageSources(card);
-      binder.slots[idx] = {
+      binder.slots[idx] = Object.assign({
         cardId: card.id, variant: defaultVariant(card), name: card.name,
         code: cardCode(card), image: sources.url, fallback: sources.fallback || "", label: ""
-      };
+      }, tpl ? { tpl } : {});
       idx++;
     });
     setCurrentPage(binder, Math.floor(startIndex / slotCount(binder.grid)));
@@ -1131,7 +1145,8 @@
     if (editing.originalPhotoId && editing.originalPhotoId !== draft.photoId) {
       deletePhoto(editing.originalPhotoId);
     }
-    binder.slots[editing.index] = hasContent ? draft : null;
+    // Sem conteúdo: se era slot de template, volta pro placeholder do Pokémon.
+    binder.slots[editing.index] = hasContent ? draft : templatePlaceholder(slotTemplateInfo(draft));
     binder.updatedAt = Date.now();
     save();
     editing = null;
@@ -1146,7 +1161,8 @@
     if (binder) {
       const existing = binder.slots[editing.index];
       if (existing && existing.photoId) deletePhoto(existing.photoId);
-      binder.slots[editing.index] = null;
+      // Slot de template volta a ser o placeholder do Pokémon (não some).
+      binder.slots[editing.index] = templatePlaceholder(slotTemplateInfo(existing));
       binder.updatedAt = Date.now();
       save();
     }
