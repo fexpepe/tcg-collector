@@ -82,27 +82,63 @@ async function ourChunk(setId) {
 }
 
 // Mapa setId(nosso) -> pptSetId, a partir do /sets da PPT (cacheado 7 dias).
+const SETMAP_VERSION = 4; // bump invalida o cache do mapa de sets
+const discoveredFile = () => new URL("discovered.json", cacheDir);
+// Sets descobertos via cartas (ver discoverSetId) — { CODE: numericId }.
+async function loadDiscovered() { try { return JSON.parse(await readFile(discoveredFile(), "utf8")); } catch { return {}; } }
+async function saveDiscovered(obj) { try { await writeFile(discoveredFile(), JSON.stringify(obj), "utf8"); } catch { /* ignora */ } }
+
 async function setMap() {
   await mkdir(cacheDir, { recursive: true });
   const cacheFile = new URL("sets.json", cacheDir);
-  const VERSION = 3; // bump invalida o cache (códigos agora normalizados em MAIÚSCULA)
+  // TTL curto (2 dias): a PPT adiciona sets novos ao longo do tempo (ex.: o M3
+  // entrou semanas depois do lançamento); refrescar o mapa cedo faz o set novo
+  // ser pego em ~2 dias em vez de 7.
+  let map = null;
   try {
     const c = JSON.parse(await readFile(cacheFile, "utf8"));
-    if (c.v === VERSION && Date.now() - c.t < 7 * 864e5) return new Map(c.m);
+    if (c.v === SETMAP_VERSION && Date.now() - c.t < 2 * 864e5) map = new Map(c.m);
   } catch { /* sem cache */ }
-  const map = new Map();
-  let offset = 0;
-  // /sets não consome créditos de carta; pagina até acabar. Chave em MAIÚSCULA
-  // porque a PPT mistura caixa ("m1L: Mega Brave" vs nosso setId "M1L").
-  for (let page = 0; page < 50; page++) {
-    const j = await ppt(`/sets?language=japanese&limit=100&offset=${offset}`);
-    const arr = j.data || [];
-    for (const s of arr) { const code = setCodeFromName(s.name); const id = s.tcgPlayerNumericId; if (code && id != null) { const k = code.toUpperCase(); if (!map.has(k)) map.set(k, id); } }
-    if (!(j.metadata && j.metadata.hasMore)) break;
-    offset += arr.length || 100;
+  if (!map) {
+    map = new Map();
+    let offset = 0;
+    // /sets não consome créditos de carta; pagina até acabar. Chave em MAIÚSCULA
+    // porque a PPT mistura caixa ("m1L: Mega Brave" vs nosso setId "M1L").
+    for (let page = 0; page < 50; page++) {
+      const j = await ppt(`/sets?language=japanese&limit=100&offset=${offset}`);
+      const arr = j.data || [];
+      for (const s of arr) { const code = setCodeFromName(s.name); const id = s.tcgPlayerNumericId; if (code && id != null) { const k = code.toUpperCase(); if (!map.has(k)) map.set(k, id); } }
+      if (!(j.metadata && j.metadata.hasMore)) break;
+      offset += arr.length || 100;
+    }
+    await writeFile(cacheFile, JSON.stringify({ v: SETMAP_VERSION, t: Date.now(), m: [...map] }), "utf8");
   }
-  await writeFile(cacheFile, JSON.stringify({ v: VERSION, t: Date.now(), m: [...map] }), "utf8");
+  // Sets que existem nas cartas mas faltam no /sets (ex.: M3) entram aqui.
+  const disc = await loadDiscovered();
+  for (const [code, id] of Object.entries(disc)) if (id != null && !map.has(code)) map.set(code, id);
   return map;
+}
+
+// Descobre o numericId de um set que não está no /sets (a PPT às vezes só lista
+// o set semanas depois das cartas aparecerem). Busca cartas pelo pokemonName
+// (inglês) do nosso chunk e casa o código do setName. Custa alguns créditos.
+async function discoverSetId(ourSetId) {
+  const chunk = await ourChunk(ourSetId);
+  if (!chunk || !chunk.length) return null;
+  const code = ourSetId.toUpperCase();
+  const tried = new Set();
+  for (const card of chunk) {
+    const q = card.pokemonName;
+    if (!q || tried.has(q)) continue;
+    tried.add(q);
+    if (tried.size > 2) break; // teto de buscas (custo); 2 basta p/ set que existe
+    try {
+      const j = await ppt(`/cards?search=${encodeURIComponent(q)}&language=japanese&limit=30`);
+      const hit = (j.data || []).find((c) => { const cc = setCodeFromName(c.setName); return cc && cc.toUpperCase() === code; });
+      if (hit && hit.setId != null) return hit.setId;
+    } catch { /* tenta o próximo nome */ }
+  }
+  return null;
 }
 
 // Extrai o melhor valor unitário (USD) e a imagem de um card da PPT.
@@ -189,11 +225,22 @@ async function run() {
   // deploys (rotação dos mais antigos primeiro + cache). 0 = sem teto.
   const TIME_CAP_MS = (Number(val("--max-minutes")) || 6) * 60 * 1000;
   const startedAt = Date.now();
+  const discovered = await loadDiscovered();
+  let discDirty = false;
   const out = {};
   let fetched = 0, cacheHits = 0;
   for (const setId of targets) {
-    const pptId = map.get(setId.toUpperCase());
-    if (!pptId) { console.log(`  ${setId}: sem equivalente na PPT (pulado)`); continue; }
+    const code = setId.toUpperCase();
+    let pptId = map.get(code);
+    // Set não listado no /sets (ex.: M3): descobre pelas cartas. Cache negativo
+    // (`code in discovered`, valor null) evita re-tentar sets que de fato não
+    // existem na PPT (E*/PCG*/neo*...). Gasta crédito, então só com orçamento/tempo.
+    if (pptId == null && !(code in discovered) && creditsUsed < BUDGET && !(TIME_CAP_MS && Date.now() - startedAt > TIME_CAP_MS)) {
+      const found = await discoverSetId(setId);
+      if (!DRY) { discovered[code] = found; discDirty = true; }
+      if (found != null) { pptId = found; map.set(code, found); console.log(`  ${setId}: descoberto via cartas (ppt ${found})`); }
+    }
+    if (pptId == null) { console.log(`  ${setId}: sem equivalente na PPT (pulado)`); continue; }
     const cached = await readCache(setId);
     const fresh = cached && Date.now() - (cached.t || 0) < REFRESH_DAYS * 864e5;
     // Fresco (e não é dry-run): usa o cache, não gasta crédito.
@@ -210,6 +257,7 @@ async function run() {
     } catch (e) { console.log(`  ${setId}: erro ${e.message}`); if (cached) Object.assign(out, cached.entries); }
   }
 
+  if (discDirty) await saveDiscovered(discovered);
   console.log(`\nSets: ${fetched} buscados, ${cacheHits} do cache | cartas: ${Object.keys(out).length} | créditos: ${creditsUsed}/${BUDGET}`);
   if (DRY) { console.log("[dry-run] nada gravado. Amostra:", JSON.stringify(Object.fromEntries(Object.entries(out).slice(0, 5)), null, 1)); return; }
   // Artefato montado a partir de TODOS os sets em cache (cobertura completa).
