@@ -823,21 +823,35 @@
       photoId: null, price: 0, condition: DEFAULT_CONDITION, note: ""
     };
     const isTemplate = !!(existing && existing.template);
+    // Slot já preenchido (tem carta, não é template): também abre no catálogo já
+    // buscando — pelo nome da carta, refinado pro nome do Pokémon quando o
+    // catálogo carrega (ver abaixo) — pra trocar/editar sem redigitar.
+    const isFilled = !!(existing && existing.cardId && !existing.template);
     editing = {
       binderId,
       index,
       draft,
       picks: [], // cartas selecionadas (em ordem de clique) para preencher slots
       originalPhotoId: existing ? existing.photoId || null : null,
-      // Slot de template abre direto no catálogo, já com o nome buscado.
-      tab: isTemplate ? "catalog" : "collection",
-      query: isTemplate ? (existing.query || existing.name || "") : "",
+      tab: (isTemplate || isFilled) ? "catalog" : "collection",
+      query: isTemplate ? (existing.query || existing.name || "") : (isFilled ? (existing.name || "") : ""),
       sort: "release"
     };
     refreshUserSources();
     renderEditor();
     ensureCatalog().then(() => {
-      if (editing) renderSearchResults(editing.query || "");
+      if (!editing) return;
+      // Slot preenchido: busca pelo NOME DO POKÉMON da carta (mais amplo que o
+      // nome da carta, ex.: "Charizard" em vez de "Mega Charizard X ex").
+      if (isFilled && existing.cardId) {
+        const card = cardsById.get(existing.cardId);
+        if (card && card.pokemonName && card.pokemonName !== editing.query) {
+          editing.query = card.pokemonName;
+          const input = document.querySelector("#binderEditor [data-edit-search]");
+          if (input) input.value = editing.query;
+        }
+      }
+      renderSearchResults(editing.query || "");
     });
   }
 
