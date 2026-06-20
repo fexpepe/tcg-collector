@@ -73,18 +73,19 @@ async function ourChunk(setId) {
 async function setMap() {
   await mkdir(cacheDir, { recursive: true });
   const cacheFile = new URL("sets.json", cacheDir);
-  const VERSION = 2; // bump invalida o cache (mudou de hex id -> tcgPlayerNumericId)
+  const VERSION = 3; // bump invalida o cache (códigos agora normalizados em MAIÚSCULA)
   try {
     const c = JSON.parse(await readFile(cacheFile, "utf8"));
     if (c.v === VERSION && Date.now() - c.t < 7 * 864e5) return new Map(c.m);
   } catch { /* sem cache */ }
   const map = new Map();
   let offset = 0;
-  // /sets não consome créditos de carta; pagina até acabar.
+  // /sets não consome créditos de carta; pagina até acabar. Chave em MAIÚSCULA
+  // porque a PPT mistura caixa ("m1L: Mega Brave" vs nosso setId "M1L").
   for (let page = 0; page < 50; page++) {
     const j = await ppt(`/sets?language=japanese&limit=100&offset=${offset}`);
     const arr = j.data || [];
-    for (const s of arr) { const code = setCodeFromName(s.name); const id = s.tcgPlayerNumericId; if (code && id != null && !map.has(code)) map.set(code, id); }
+    for (const s of arr) { const code = setCodeFromName(s.name); const id = s.tcgPlayerNumericId; if (code && id != null) { const k = code.toUpperCase(); if (!map.has(k)) map.set(k, id); } }
     if (!(j.metadata && j.metadata.hasMore)) break;
     offset += arr.length || 100;
   }
@@ -174,7 +175,7 @@ async function run() {
   const out = {};
   let fetched = 0, cacheHits = 0;
   for (const setId of targets) {
-    const pptId = map.get(setId);
+    const pptId = map.get(setId.toUpperCase());
     if (!pptId) { console.log(`  ${setId}: sem equivalente na PPT (pulado)`); continue; }
     const cached = await readCache(setId);
     const fresh = cached && Date.now() - (cached.t || 0) < REFRESH_DAYS * 864e5;
