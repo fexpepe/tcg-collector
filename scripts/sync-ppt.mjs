@@ -43,8 +43,17 @@ const OUT = new URL("ppt-prices.generated.json", dataDir);
 if (!TOKEN) { console.warn("PPT_API_TOKEN não definido — pulando sync da PPT (no-op)."); process.exit(0); }
 
 let creditsUsed = 0;
-async function ppt(path) {
+let lastCall = 0;
+const MIN_GAP = 1200; // ms entre chamadas (~50/min, abaixo do limite de 60/min da PPT)
+async function ppt(path, retries = 3) {
+  const gap = MIN_GAP - (Date.now() - lastCall);
+  if (gap > 0) await new Promise((r) => setTimeout(r, gap));
+  lastCall = Date.now();
   const res = await fetch(`${BASE}${path}`, { headers: { Authorization: `Bearer ${TOKEN}` } });
+  if (res.status === 429 && retries > 0) {
+    await new Promise((r) => setTimeout(r, 8000)); // backoff e tenta de novo
+    return ppt(path, retries - 1);
+  }
   const json = await res.json().catch(() => null);
   if (!res.ok || (json && json.error)) throw new Error(`PPT ${res.status}: ${(json && (json.error || json.message)) || res.statusText}`);
   const c = json.metadata && json.metadata.apiCallsConsumed && json.metadata.apiCallsConsumed.total;

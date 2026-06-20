@@ -39,10 +39,13 @@ jobs:
         with:
           node-version: 20
 
-      # O cache incremental do sync (payloads brutos por set) faz os deploys
-      # levarem minutos em vez de refazer toda a TCGdex.
-      - name: Restaura cache da TCGdex
-        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+      # O cache incremental do sync (payloads brutos da TCGdex + preços por set
+      # da PPT) faz os deploys levarem minutos em vez de refazer tudo. Restore e
+      # save SÃO SEPARADOS de proposito: o save roda ANTES da limpeza que apaga
+      # data/.cache (com o actions/cache combinado, o save automatico rodava no
+      # POST, depois do rm, e salvava vazio — o cache nunca persistia).
+      - name: Restaura cache (TCGdex + PPT)
+        uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
           path: data/.cache
           key: tcgdex-cache-${{ github.run_id }}
@@ -79,6 +82,13 @@ jobs:
 
       - name: Mescla catálogos num manifest unificado
         run: node scripts/merge-catalogs.mjs en ja zh-tw pt
+
+      # Salva o cache AGORA (data/.cache ainda existe; a limpeza apaga depois).
+      - name: Salva cache (TCGdex + PPT)
+        uses: actions/cache/save@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: data/.cache
+          key: tcgdex-cache-${{ github.run_id }}
 
       - name: Ativa modo manifest nas páginas
         run: |
