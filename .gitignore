@@ -3,7 +3,13 @@ data/.cache/
 
 # Artefatos gerados pelo sync (regeneráveis; o app usa data/cards.js por padrão)
 data/*.generated.js
+data/*.generated.json
 data/sets/
+
+# Key local da PokemonPriceTracker (só pra teste local; NUNCA versionar)
+.ppt.key
+# Saídas temporárias dos probes/dry-runs da PPT
+ppt-*.txt
 
 # Configuração local do Claude Code
 .claude/settings.local.json

@@ -62,6 +62,11 @@ const manifestSets = [];
 // Referência de preço por cardId (TCGdex), extraída para um artefato separado e
 // removida dos chunks (mantém os chunks leves). { id: { u: USD, e: EUR } }.
 const pricing = {};
+// Preços/imagens da PPT (JP), se o sync rodou (data/ppt-prices.generated.json):
+// { cardId: { u: USD, img: url, g?: {p9,p10} } }. Preenche imagem faltante no
+// chunk e dá um preço JP melhor que o do Cardmarket da TCGdex. No-op sem o arquivo.
+let pptData = {};
+try { pptData = JSON.parse(await readFile(new URL("ppt-prices.generated.json", dataDir), "utf8")); } catch { /* sem PPT */ }
 
 for (const lang of langs) {
   for (const chunk of chunksByLang[lang] || []) {
@@ -77,6 +82,9 @@ for (const lang of langs) {
         delete card.price;
         changed = true;
       }
+      // Imagem da PPT (TCGplayer CDN) onde a TCGdex não tem (ex.: era Mega JP).
+      const pp = pptData[card.id];
+      if (pp && pp.img && !card.image) { card.image = pp.img; changed = true; }
     }
     if (changed) {
       await writeFile(new URL(`sets/${lang}/${chunk.file}`, dataDir), JSON.stringify(chunk.cards), "utf8");
@@ -104,6 +112,19 @@ for (const lang of langs) {
 // normalizado + número da carta, registrando nos logs quantas casaram para
 // validar/ajustar o join na primeira execução real.
 await applyMypPrices(pricing, allCards);
+
+// Preço/graded da PPT por cima: a TCGdex dá preço-lixo (Cardmarket EUR) pras
+// cartas JP; o `u` da PPT é o mercado real do TCGplayer JP, então sobrescreve.
+// O front (shared.js#cardValue) prioriza `u` sobre `e`, então isso já conserta
+// o valor JP. Graded (PSA 9/10) vai em `g` pra exibição no card.
+let pptApplied = 0;
+for (const [id, p] of Object.entries(pptData)) {
+  if (!p) continue;
+  const ref = pricing[id] || (pricing[id] = {});
+  if (p.u > 0) { ref.u = p.u; pptApplied++; }
+  if (p.g) ref.g = p.g;
+}
+if (Object.keys(pptData).length) console.log(`Preços PPT aplicados: ${pptApplied} (de ${Object.keys(pptData).length} no artefato)`);
 
 const manifest = {
   languages: langs,

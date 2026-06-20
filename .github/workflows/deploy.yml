@@ -68,6 +68,15 @@ jobs:
           MYP_API_TOKEN: ${{ secrets.MYP_API_TOKEN }}
         run: node scripts/sync-myp.mjs pokemon
 
+      # Preços/imagens JP da PokemonPriceTracker, onde a TCGdex falha (preço-lixo
+      # do Cardmarket e imagens faltando, ex.: era Mega). NO-OP sem o secret.
+      # Incremental: cacheia por set em data/.cache/ppt (preservado entre runs) e
+      # respeita um orçamento de créditos/run pra nunca estourar o limite do plano.
+      - name: Sincroniza preços/imagens JP (PPT)
+        env:
+          PPT_API_TOKEN: ${{ secrets.PPT_API_TOKEN }}
+        run: node scripts/sync-ppt.mjs --budget 8000
+
       - name: Mescla catálogos num manifest unificado
         run: node scripts/merge-catalogs.mjs en ja zh-tw pt
 

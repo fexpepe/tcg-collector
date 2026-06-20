@@ -14,9 +14,10 @@ const DATA_CACHE = "tcg-data-v1";
 const CACHES = [SHELL_CACHE, IMAGE_CACHE, DATA_CACHE];
 
 const IMAGE_HOSTS = new Set([
-  "assets.tcgdex.net",        // cartas e logos do catálogo
-  "images.pokemontcg.io",     // fallback de cartas EN
-  "raw.githubusercontent.com" // artes da PokéAPI (Pokédex)
+  "assets.tcgdex.net",            // cartas e logos do catálogo
+  "images.pokemontcg.io",         // fallback de cartas EN
+  "raw.githubusercontent.com",    // artes da PokéAPI (Pokédex)
+  "tcgplayer-cdn.tcgplayer.com"   // imagens JP da PPT (onde a TCGdex não tem)
 ]);
 
 // Esqueleto do app: arquivos que existem tanto local quanto em produção
