@@ -8,7 +8,7 @@
 //    da rede quando online (assim um deploy novo é sempre pego, sem o app ficar
 //    preso numa versão velha) e caem no cache quando offline — fazendo o app
 //    abrir e a coleção já vista funcionar sem internet (PWA instalável).
-const SHELL_CACHE = "tcg-shell-v8";
+const SHELL_CACHE = "tcg-shell-v9";
 const IMAGE_CACHE = "tcg-images-v1";
 const DATA_CACHE = "tcg-data-v1";
 const CACHES = [SHELL_CACHE, IMAGE_CACHE, DATA_CACHE];
@@ -28,7 +28,7 @@ const SHELL_ASSETS = [
   "trainers.html", "collection.html", "wishlist.html", "portfolio.html",
   "detail.html", "binders.html", "cards.html", "privacy.html", "terms.html", "login.html",
   "styles.css", "favicon.svg", "icon.svg", "manifest.json",
-  "src/i18n.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js",
+  "src/theme.js", "src/i18n.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js",
   "src/home.js", "src/wishlist.js", "src/portfolio.js", "src/binders.js",
   "src/cards.js", "src/login.js"
 ];

@@ -15,6 +15,27 @@
   --accent-soft: rgba(57, 199, 155, 0.13);
   --gold: #f0b84b;
   --shadow: 0 18px 45px rgba(0, 0, 0, 0.32);
+  --header-bg: rgba(13, 14, 18, 0.92);
+}
+
+/* Tema claro: sobrescreve as variáveis. Aplicado via data-theme no <html>
+   (theme.js no <head> evita o flash; o toggle vive no shared.js). */
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --panel: #ffffff;
+  --panel-strong: #eef1f6;
+  --text: #1b1f27;
+  --muted: #5a6473;
+  --subtle: #828c9b;
+  --line: #e2e6ed;
+  --accent: #1f9d77;
+  --accent-dark: #15795b;
+  --accent-soft: rgba(31, 157, 119, 0.12);
+  --gold: #b07d10;
+  --shadow: 0 16px 40px rgba(20, 28, 40, 0.12);
+  --header-bg: rgba(255, 255, 255, 0.9);
 }
 
 * {
@@ -54,7 +75,7 @@ select {
 }
 
 .app-header {
-  background: rgba(13, 14, 18, 0.92);
+  background: var(--header-bg);
   border-bottom: 1px solid var(--line);
   color: var(--text);
   position: sticky;
@@ -412,7 +433,7 @@ select {
   height: 42px;
   border: 1px solid var(--line);
   border-radius: 7px;
-  background: #101219;
+  background: var(--surface);
   color: var(--text);
   padding: 0 12px;
 }
@@ -582,7 +603,7 @@ input::placeholder {
 
 .card-image {
   aspect-ratio: 2.5 / 3.5;
-  background: #11141b;
+  background: var(--panel-strong);
   display: grid;
   place-items: center;
   padding: 10px;
@@ -698,7 +719,7 @@ input::placeholder {
 .variant-conditions {
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #12151c;
+  background: var(--panel-strong);
   padding: 9px 10px;
 }
 
@@ -1416,7 +1437,7 @@ input::placeholder {
   position: relative;
   width: min(960px, calc(100vw - 32px));
   max-height: calc(100vh - 32px);
-  background: #111722;
+  background: var(--surface);
   border: 1px solid #2b3443;
   border-radius: 18px;
   box-shadow: 0 28px 80px rgba(0, 0, 0, 0.58);
@@ -1449,7 +1470,7 @@ input::placeholder {
 
 .preview-close:hover {
   color: var(--text);
-  background: #1b2230;
+  background: var(--panel-strong);
 }
 
 .preview-image-wrap {
@@ -1494,7 +1515,7 @@ input::placeholder {
   border: 1px solid var(--line);
   border-radius: 12px;
   overflow: hidden;
-  background: #121923;
+  background: var(--panel-strong);
 }
 
 .preview-details h3 {
@@ -2238,6 +2259,27 @@ input::placeholder {
   border-color: var(--accent-dark);
 }
 
+/* Botão de tema (claro/escuro) ao lado do perfil. */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 120ms ease, color 120ms ease;
+}
+.theme-toggle:hover {
+  border-color: var(--accent-dark);
+  color: var(--accent);
+}
+.theme-toggle svg { width: 18px; height: 18px; }
+
 .lang-dd-caret {
   font-size: 11px;
   color: var(--subtle);
@@ -2376,7 +2418,7 @@ a.progress-row:hover {
   flex: none;
   display: grid;
   place-items: center;
-  background: #11141b;
+  background: var(--panel-strong);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -3173,7 +3215,7 @@ a.progress-row:hover {
 .binder-card-cover {
   position: relative;
   aspect-ratio: 16 / 10;
-  background: #11141b;
+  background: var(--panel-strong);
   overflow: hidden;
 }
 .binder-card-cover-img { width: 100%; height: 100%; object-fit: cover; object-position: center 28%; }
