@@ -12,7 +12,9 @@
   --line: #2d333f;
   --accent: #39c79b;
   --accent-dark: #239872;
-  --accent-soft: rgba(57, 199, 155, 0.13);
+  --accent-rgb: 57, 199, 155;
+  --accent-soft: rgba(var(--accent-rgb), 0.13);
+  --on-accent: #0a0c10; /* texto sobre o accent (escuro no verde) */
   --gold: #f0b84b;
   --shadow: 0 18px 45px rgba(0, 0, 0, 0.32);
   --header-bg: rgba(13, 14, 18, 0.92);
@@ -30,9 +32,12 @@
   --muted: #5a6473;
   --subtle: #828c9b;
   --line: #e2e6ed;
-  --accent: #1f9d77;
-  --accent-dark: #15795b;
-  --accent-soft: rgba(31, 157, 119, 0.12);
+  /* No tema claro o accent vira VERMELHO (e tints dele via --accent-rgb). */
+  --accent: #e23030;
+  --accent-dark: #b81e1e;
+  --accent-rgb: 226, 48, 48;
+  --accent-soft: rgba(var(--accent-rgb), 0.1);
+  --on-accent: #ffffff; /* texto branco sobre o vermelho */
   --gold: #b07d10;
   --shadow: 0 16px 40px rgba(20, 28, 40, 0.12);
   --header-bg: rgba(255, 255, 255, 0.9);
@@ -54,7 +59,7 @@ body {
   display: flex;
   flex-direction: column;
   background:
-    linear-gradient(180deg, rgba(57, 199, 155, 0.08), transparent 240px),
+    linear-gradient(180deg, rgba(var(--accent-rgb), 0.08), transparent 240px),
     var(--bg);
   color: var(--text);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -225,11 +230,11 @@ button {
 .secondary {
   background: var(--accent-soft);
   color: var(--accent);
-  border: 1px solid rgba(57, 199, 155, 0.2);
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
 }
 
 .secondary:hover {
-  background: rgba(57, 199, 155, 0.2);
+  background: rgba(var(--accent-rgb), 0.2);
 }
 
 .stats-grid {
@@ -383,7 +388,7 @@ button {
 .chip[aria-pressed="true"] {
   background: var(--accent);
   border-color: var(--accent);
-  color: #0a0c10;
+  color: var(--on-accent);
 }
 
 /* Toggle segmentado (Todos | EN | JA...): trilho único com a opção ativa
@@ -416,7 +421,7 @@ button {
 
 .segmented-option[aria-pressed="true"] {
   background: var(--accent);
-  color: #0a0c10;
+  color: var(--on-accent);
 }
 
 label {
@@ -724,7 +729,7 @@ input::placeholder {
 }
 
 .variant-conditions.owned {
-  border-color: rgba(57, 199, 155, 0.45);
+  border-color: rgba(var(--accent-rgb), 0.45);
 }
 
 .variant-conditions-head {
@@ -765,7 +770,7 @@ input::placeholder {
 }
 
 .condition-stepper.owned {
-  border-color: rgba(57, 199, 155, 0.4);
+  border-color: rgba(var(--accent-rgb), 0.4);
 }
 
 .condition-label {
@@ -816,7 +821,7 @@ input::placeholder {
 .owned-toggle {
   width: 100%;
   background: var(--accent);
-  color: #06110d;
+  color: var(--on-accent);
 }
 
 .owned-toggle:hover {
@@ -826,7 +831,7 @@ input::placeholder {
 .owned-toggle[aria-pressed="true"] {
   background: #2c3540;
   color: var(--accent);
-  border: 1px solid rgba(57, 199, 155, 0.28);
+  border: 1px solid rgba(var(--accent-rgb), 0.28);
 }
 
 .details-link {
@@ -1176,7 +1181,7 @@ input::placeholder {
   min-height: 160px;
   border-radius: 10px;
   background:
-    radial-gradient(circle at 50% 28%, rgba(57, 199, 155, 0.16), transparent 48%),
+    radial-gradient(circle at 50% 28%, rgba(var(--accent-rgb), 0.16), transparent 48%),
     #11141b;
   display: flex;
   flex-direction: column;
@@ -1816,14 +1821,14 @@ input::placeholder {
   padding: 0 18px;
   border-radius: 7px;
   background: var(--accent);
-  color: #0a0c10;
+  color: var(--on-accent);
   font-weight: 700;
   text-decoration: none;
 }
 
 .button-link:hover {
   background: var(--accent-dark);
-  color: #0a0c10;
+  color: var(--on-accent);
 }
 
 .home-main {
@@ -1872,7 +1877,7 @@ input::placeholder {
   padding: 0 22px;
   border-radius: 9px;
   background: var(--accent);
-  color: #0a0c10;
+  color: var(--on-accent);
   font-weight: 800;
   text-decoration: none;
 }
@@ -1884,11 +1889,11 @@ input::placeholder {
 .secondary-cta {
   background: var(--accent-soft);
   color: var(--accent);
-  border: 1px solid rgba(57, 199, 155, 0.25);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
 }
 
 .secondary-cta:hover {
-  background: rgba(57, 199, 155, 0.2);
+  background: rgba(var(--accent-rgb), 0.2);
   color: var(--accent);
 }
 
@@ -2030,7 +2035,7 @@ input::placeholder {
 
 .support-card {
   background: linear-gradient(135deg, var(--accent-soft), rgba(240, 184, 75, 0.1));
-  border: 1px solid rgba(57, 199, 155, 0.25);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
   border-radius: 14px;
   padding: 28px 24px;
   text-align: center;
@@ -2175,7 +2180,7 @@ input::placeholder {
   border-radius: 50%;
   border: 1px solid var(--line);
   background: var(--accent);
-  color: #0a0c10;
+  color: var(--on-accent);
   font-weight: 800;
   font-size: 15px;
   line-height: 1;
@@ -2484,8 +2489,8 @@ a.progress-row:hover {
 }
 
 .card-tile.owned {
-  border-color: rgba(57, 199, 155, 0.55);
-  box-shadow: 0 0 0 1px rgba(57, 199, 155, 0.25), var(--shadow);
+  border-color: rgba(var(--accent-rgb), 0.55);
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.25), var(--shadow);
 }
 
 /* Visão "Sua coleção": cartas que você não tem ficam em preto e branco; as
@@ -2710,7 +2715,7 @@ a.progress-row:hover {
 
 .market-card {
   background: var(--accent-soft);
-  border: 1px solid rgba(57, 199, 155, 0.18);
+  border: 1px solid rgba(var(--accent-rgb), 0.18);
   border-radius: 10px;
   padding: 10px 13px;
 }
@@ -2952,8 +2957,8 @@ a.progress-row:hover {
 }
 
 .card-tile.owned.wanted {
-  border-color: rgba(57, 199, 155, 0.55);
-  box-shadow: 0 0 0 1px rgba(57, 199, 155, 0.25), var(--shadow);
+  border-color: rgba(var(--accent-rgb), 0.55);
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.25), var(--shadow);
 }
 
 .tile-qty {
@@ -2961,7 +2966,7 @@ a.progress-row:hover {
   top: -7px;
   right: -7px;
   background: var(--accent);
-  color: #0a0c10;
+  color: var(--on-accent);
   font-size: 10px;
   font-weight: 800;
   border-radius: 999px;
@@ -3107,7 +3112,7 @@ a.progress-row:hover {
 /* ===== Binders (Coleção / Venda) ============================================ */
 .primary {
   background: var(--accent);
-  color: #0a0c10;
+  color: var(--on-accent);
 }
 .primary:hover {
   background: var(--accent-dark);
@@ -3285,7 +3290,7 @@ a.progress-row:hover {
   padding: 14px 16px;
   margin-bottom: 16px;
   background: var(--accent-soft);
-  border: 1px solid rgba(57, 199, 155, 0.25);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
   border-radius: 10px;
 }
 .binder-shared-info { display: flex; flex-direction: column; gap: 2px; }
@@ -3779,7 +3784,7 @@ a.progress-row:hover {
 .binder-editor-tabs .chip.active {
   background: var(--accent-soft);
   color: var(--accent);
-  border-color: rgba(57, 199, 155, 0.3);
+  border-color: rgba(var(--accent-rgb), 0.3);
 }
 .binder-editor-search,
 .binder-editor-sale input,
@@ -3859,7 +3864,7 @@ a.progress-row:hover {
   padding: 0 5px;
   border-radius: 999px;
   background: var(--accent);
-  color: #0a0c10;
+  color: var(--on-accent);
   font-size: 11px;
   font-weight: 800;
   display: flex;
