@@ -1961,9 +1961,16 @@ input::placeholder {
   margin: 8px auto 0;
   color: var(--muted);
 }
+.home-sources-label {
+  margin: 24px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--subtle);
+}
 .home-sources-grid {
   list-style: none;
-  margin: 22px 0 0;
+  margin: 12px 0 0;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
