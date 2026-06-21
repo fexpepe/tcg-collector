@@ -2004,6 +2004,34 @@ input::placeholder {
   margin-top: 40px;
 }
 
+/* Banner de loja parceira (imagem + link do próprio site). */
+.partner-ad {
+  display: block;
+  width: var(--content-w);
+  max-width: 100%;
+  margin: 32px auto 0;
+  padding: 0 16px;
+  text-align: center;
+  text-decoration: none;
+}
+.partner-ad-top { margin: 16px auto 8px; }
+.partner-ad-label {
+  display: block;
+  font-size: 10.5px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-bottom: 6px;
+}
+.partner-ad img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  display: block;
+  margin: 0 auto;
+}
+
 .site-footer-inner {
   width: var(--content-w);
   margin: 0 auto;

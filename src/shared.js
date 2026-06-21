@@ -711,6 +711,41 @@
   }
 
   // Rodapé global (em todas as páginas): direitos/aviso de marcas + créditos.
+  // Banner de parceria (loja): imagem + link servidos do PRÓPRIO site — sem
+  // scripts ou rastreio de terceiros, então NÃO muda o CSP nem a privacidade.
+  // Configure o parceiro aqui; com enabled:false (ou sem imagem/link) nada é
+  // exibido. A imagem deve ser hospedada no repo (ex.: "partners/loja.png") pra
+  // continuar valendo o img-src 'self' do CSP.
+  const PARTNER_AD = {
+    enabled: false,
+    position: "bottom",   // "bottom" (acima do rodapé) ou "top" (abaixo do header)
+    image: "",            // ex.: "partners/minha-loja.png"
+    href: "",             // ex.: "https://loja-parceira.com"
+    alt: ""               // ex.: "Loja Parceira — cartas Pokémon"
+  };
+  function initPartnerBanner(config) {
+    const ad = config || PARTNER_AD;
+    if (!ad.enabled || !ad.image || !ad.href) return;
+    if (document.querySelector(".partner-ad")) return;
+    const a = document.createElement("a");
+    a.className = "partner-ad partner-ad-" + (ad.position === "top" ? "top" : "bottom");
+    a.href = ad.href;
+    a.target = "_blank";
+    a.rel = "sponsored noopener"; // sponsored: sinaliza link patrocinado (SEO/honestidade)
+    a.setAttribute("aria-label", ad.alt || t("ad.label"));
+    a.innerHTML = `<span class="partner-ad-label">${escapeHtml(t("ad.label"))}</span>`
+      + `<img src="${escapeAttribute(ad.image)}" alt="${escapeAttribute(ad.alt || "")}" loading="lazy">`;
+    if (ad.position === "top") {
+      const header = document.querySelector(".app-header");
+      if (header) header.parentNode.insertBefore(a, header.nextSibling);
+      else document.body.insertBefore(a, document.body.firstChild);
+    } else {
+      const footer = document.querySelector(".site-footer");
+      if (footer) footer.parentNode.insertBefore(a, footer);
+      else document.body.appendChild(a);
+    }
+  }
+
   function initSiteFooter() {
     if (document.querySelector(".site-footer")) return;
     const footer = document.createElement("footer");
@@ -2687,6 +2722,7 @@
   initPageNav();
   initMobileMenu();
   initSiteFooter();
+  initPartnerBanner();
   initAuth();
 
   // Service worker: cacheia as imagens já vistas para sobreviverem a um outage
