@@ -717,7 +717,7 @@
     footer.className = "site-footer";
     footer.innerHTML = `
       <div class="site-footer-inner">
-        <p><a href="privacy.html">${escapeHtml(t("footer.privacy"))}</a></p>
+        <p><a href="privacy.html">${escapeHtml(t("footer.privacy"))}</a> · <a href="terms.html">${escapeHtml(t("footer.terms"))}</a></p>
         <p>${escapeHtml(t("footer.rights", { year: new Date().getFullYear() }))}</p>
         <p>${t("footer.credits")}</p>
       </div>
