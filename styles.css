@@ -2521,6 +2521,17 @@ a.progress-row:hover {
   object-fit: contain;
 }
 
+/* Hover: escurece ~20% a imagem da carta pra destacar os botões/badges que
+   aparecem ao passar o mouse. O filtro vai no <img> interno pra compor com o
+   grayscale das cartas não-tidas (coleção) em vez de substituí-lo. */
+.card-tile .card-image img {
+  transition: filter 140ms ease;
+}
+.card-tile:hover .card-image img,
+.card-tile:focus-within .card-image img {
+  filter: brightness(0.8);
+}
+
 .tile-info {
   padding: 10px 12px 12px;
 }
@@ -3720,6 +3731,13 @@ a.progress-row:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: filter 140ms ease;
+}
+/* Hover: mesmo escurecimento ~20% das demais cartas, pra realçar Tenho/Info/
+   bandeira. No <img> pra compor com o grayscale dos slots não-tidos. */
+.binder-slot:hover .binder-slot-img,
+.binder-slot:focus-within .binder-slot-img {
+  filter: brightness(0.8);
 }
 .binder-slot-free {
   padding: 10px;
