@@ -3,7 +3,7 @@
   <rect width="512" height="512" fill="#0d0e12"/>
   <!-- Pokébola centralizada, dentro da safe zone (raio 168 < 205). -->
   <g transform="translate(256 256)">
-    <circle r="168" fill="#39c79b"/>
+    <circle r="168" fill="#facc15"/>
     <path d="M-168 0a168 168 0 0 0 336 0z" fill="#181b22"/>
     <rect x="-168" y="-18" width="336" height="36" fill="#0d0e12"/>
     <circle r="54" fill="#0d0e12"/>
