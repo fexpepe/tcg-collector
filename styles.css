@@ -2163,6 +2163,14 @@ input::placeholder {
   color: var(--subtle);
 }
 
+/* Sigla da moeda (BRL/USD/EUR) ao lado do símbolo no toggle da HUD. */
+.lang-dd-toggle-sigla {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--text);
+}
+
 .lang-dd .card-flag {
   flex: none;
 }

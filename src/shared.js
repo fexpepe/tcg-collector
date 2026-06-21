@@ -728,7 +728,7 @@
   // Dropdown de bandeira reutilizável: colapsado mostra só a bandeira do item
   // atual; aberto, lista bandeira + sigla (o <select> nativo não estiliza bem
   // no dark e não mostra bandeira). `items`: [{ value, flag, sigla }].
-  function createFlagDropdown({ id, current, items, ariaLabel, onSelect }) {
+  function createFlagDropdown({ id, current, items, ariaLabel, onSelect, siglaInToggle }) {
     const dd = document.createElement("div");
     dd.className = "lang-dd";
     dd.id = id;
@@ -736,6 +736,7 @@
     dd.innerHTML = `
       <button type="button" class="lang-dd-toggle" aria-haspopup="listbox" aria-expanded="false" aria-label="${escapeAttribute(ariaLabel)}" title="${escapeAttribute(ariaLabel)}">
         ${currentItem.flag}
+        ${siglaInToggle ? `<span class="lang-dd-toggle-sigla">${escapeHtml(currentItem.sigla)}</span>` : ""}
         <span class="lang-dd-caret" aria-hidden="true">▾</span>
       </button>
       <ul class="lang-dd-menu" role="listbox" hidden>
@@ -795,6 +796,7 @@
       current: currentCurrency,
       items,
       ariaLabel: t("currency.aria"),
+      siglaInToggle: true, // mostra a sigla (BRL/USD/EUR) ao lado do símbolo na HUD
       onSelect: (value) => { localStorage.setItem(currencyStorageKey, value); window.location.reload(); }
     });
     actions.insertBefore(dd, actions.firstChild);
