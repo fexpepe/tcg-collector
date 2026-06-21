@@ -3680,12 +3680,20 @@ a.progress-row:hover {
   color: var(--accent);
   border-color: var(--accent-dark);
 }
-/* Bandeira do idioma da carta — canto superior esquerdo do slot. */
+/* Bandeira do idioma da carta — canto superior esquerdo do slot. Igual às
+   ações (Tenho/Info): só aparece ao passar o mouse (ou foco por teclado). */
 .binder-slot-flag {
   position: absolute;
   top: 8px;
   left: 8px;
   z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+.binder-slot:hover .binder-slot-flag,
+.binder-slot:focus-within .binder-slot-flag {
+  opacity: 1;
 }
 .binder-slot-dragging {
   opacity: 0.4;
