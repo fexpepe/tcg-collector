@@ -459,7 +459,7 @@ window.TCG_MESSAGES = {
       "home.sources.brazil": "Mercado Brasil",
       "home.sources.ebay": "Vendas e graded",
       "home.sources.foot": "Catálogo e imagens: TCGdex · PokéAPI. Câmbio do dia: AwesomeAPI.",
-      "home.support.title": "Gostou? Me paga uma coxinha 🍗",
+      "home.support.title": "Gostou? Me paga uma coxinha",
       "home.support.body": "Esse projeto é mantido por uma pessoa só, nas horas livres. Se ele te ajudou, uma coxinha ajuda a manter o site no ar e a continuar melhorando. Apoiar é 100% opcional — o app é e vai continuar grátis.",
       "home.support.pix": "Copiar chave Pix",
       "home.support.pixDone": "Chave Pix copiada!",

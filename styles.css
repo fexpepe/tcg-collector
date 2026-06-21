@@ -559,7 +559,7 @@ input::placeholder {
 .pokedex-number {
   width: fit-content;
   border-radius: 999px;
-  background: #242a35;
+  background: var(--panel-strong);
   color: var(--muted);
   padding: 4px 9px;
   font-size: 12px;
@@ -702,7 +702,7 @@ input::placeholder {
   flex: 0 0 auto;
   border-radius: 999px;
   padding: 4px 8px;
-  background: #242a35;
+  background: var(--panel-strong);
   color: var(--muted);
   font-size: 12px;
   font-weight: 800;
@@ -766,7 +766,7 @@ input::placeholder {
   padding: 3px 4px 3px 8px;
   border: 1px solid transparent;
   border-radius: 6px;
-  background: #0f1218;
+  background: var(--panel-strong);
 }
 
 .condition-stepper.owned {
@@ -838,7 +838,7 @@ input::placeholder {
   min-height: 38px;
   margin-top: 12px;
   border-radius: 7px;
-  background: #242a35;
+  background: var(--panel-strong);
   color: var(--text);
   display: inline-flex;
   align-items: center;
@@ -985,7 +985,7 @@ input::placeholder {
   z-index: 1;
   padding: 3px 8px;
   border-radius: 999px;
-  background: rgba(13, 14, 18, 0.78);
+  background: var(--panel-strong);
   border: 1px solid var(--line);
   color: var(--muted);
   font-size: 11px;
@@ -1390,7 +1390,7 @@ input::placeholder {
 .progress-bar {
   height: 8px;
   border-radius: 999px;
-  background: #242a35;
+  background: var(--panel-strong);
   overflow: hidden;
   margin-bottom: 14px;
 }
@@ -2639,7 +2639,7 @@ a.progress-row:hover {
   gap: 5px;
   padding: 3px 6px;
   border-radius: 6px;
-  background: #0f1218;
+  background: var(--panel-strong);
 }
 
 .price-cell span {
@@ -3241,7 +3241,7 @@ a.progress-row:hover {
   width: 30px; height: 30px;
   border-radius: 7px;
   border: 1px solid var(--line);
-  background: rgba(13, 14, 18, 0.85);
+  background: var(--panel-strong);
   color: var(--text);
   cursor: pointer;
   font-size: 0.85rem;
