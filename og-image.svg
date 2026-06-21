@@ -8,9 +8,9 @@
   <rect width="1200" height="630" fill="url(#bg)"/>
   <rect width="1200" height="8" fill="#34d399"/>
   <text x="90" y="150" fill="#34d399" font-size="30" font-weight="700" letter-spacing="4">POKÉMON TCG</text>
-  <text x="88" y="250" fill="#f3f5f9" font-size="96" font-weight="800">TCG Collector</text>
+  <text x="88" y="250" fill="#f3f5f9" font-size="96" font-weight="800">Sleevu</text>
   <text x="90" y="332" fill="#c4c9d4" font-size="40">Sua coleção de Pokémon TCG, organizada.</text>
   <text x="90" y="392" fill="#8b93a3" font-size="31">Por variante e quantidade · Pokédex, sets, binders e portfólio.</text>
   <text x="90" y="492" fill="#34d399" font-size="32" font-weight="700">Grátis · sem conta · pra sempre</text>
-  <text x="90" y="556" fill="#6b7280" font-size="28">tcg-collector.pages.dev</text>
+  <text x="90" y="556" fill="#6b7280" font-size="28">sleevu.app</text>
 </svg>

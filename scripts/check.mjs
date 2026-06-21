@@ -1,4 +1,4 @@
-// Smoke test estático do TCG Collector — roda rápido, sem dependências.
+// Smoke test estático do Sleevu — roda rápido, sem dependências.
 //   node scripts/check.mjs
 //
 // Pega a classe de bug que mais nos mordeu: chave i18n usada mas inexistente,

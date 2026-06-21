@@ -1378,7 +1378,7 @@
     ctx.fillStyle = "#999999";
     ctx.font = fnt(2.6, 400);
     ctx.textBaseline = "alphabetic";
-    ctx.fillText("TCG Collector", MARGIN * PPM, height - MARGIN * PPM);
+    ctx.fillText("Sleevu", MARGIN * PPM, height - MARGIN * PPM);
 
     const finish = () => { if (button) { button.disabled = false; button.textContent = label; } };
     try {

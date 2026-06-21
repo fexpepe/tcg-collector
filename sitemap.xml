@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://tcg-collector.pages.dev/</loc></url>
-  <url><loc>https://tcg-collector.pages.dev/cards</loc></url>
-  <url><loc>https://tcg-collector.pages.dev/pokedex</loc></url>
-  <url><loc>https://tcg-collector.pages.dev/sets</loc></url>
-  <url><loc>https://tcg-collector.pages.dev/artists</loc></url>
-  <url><loc>https://tcg-collector.pages.dev/trainers</loc></url>
-  <url><loc>https://tcg-collector.pages.dev/collection</loc></url>
-  <url><loc>https://tcg-collector.pages.dev/wishlist</loc></url>
-  <url><loc>https://tcg-collector.pages.dev/portfolio</loc></url>
-  <url><loc>https://tcg-collector.pages.dev/binders</loc></url>
-  <url><loc>https://tcg-collector.pages.dev/privacy</loc></url>
-  <url><loc>https://tcg-collector.pages.dev/terms</loc></url>
+  <url><loc>https://sleevu.app/</loc></url>
+  <url><loc>https://sleevu.app/cards</loc></url>
+  <url><loc>https://sleevu.app/pokedex</loc></url>
+  <url><loc>https://sleevu.app/sets</loc></url>
+  <url><loc>https://sleevu.app/artists</loc></url>
+  <url><loc>https://sleevu.app/trainers</loc></url>
+  <url><loc>https://sleevu.app/collection</loc></url>
+  <url><loc>https://sleevu.app/wishlist</loc></url>
+  <url><loc>https://sleevu.app/portfolio</loc></url>
+  <url><loc>https://sleevu.app/binders</loc></url>
+  <url><loc>https://sleevu.app/privacy</loc></url>
+  <url><loc>https://sleevu.app/terms</loc></url>
 </urlset>

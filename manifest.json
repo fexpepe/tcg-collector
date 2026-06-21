@@ -1,6 +1,6 @@
 {
-  "name": "TCG Collector",
-  "short_name": "TCG Collector",
+  "name": "Sleevu",
+  "short_name": "Sleevu",
   "description": "Sua coleção de Pokémon TCG — grátis, local-first, em português, com valores localizados.",
   "lang": "pt-BR",
   "start_url": "./",

@@ -1,10 +1,10 @@
-# TCG Collector MVP
+# Sleevu MVP
 
 MVP local-first para testar a arquitetura de um colecionador de Pokémon TCG sem backend obrigatório.
 
 ## Como abrir
 
-Online: https://tcg-collector.pages.dev/
+Online: https://sleevu.app/
 
 Local: abra `index.html` no navegador (home) ou `pokedex.html` (direto no app). A coleção é salva no `localStorage` do próprio navegador. Para servir via HTTP (necessário para o modo manifest e para a PokéAPI em algumas configurações): `npx http-server -p 4173 .`
 

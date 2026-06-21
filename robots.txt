@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tcg-collector.pages.dev/sitemap.xml
+Sitemap: https://sleevu.app/sitemap.xml

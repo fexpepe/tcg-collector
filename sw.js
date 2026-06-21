@@ -1,4 +1,4 @@
-// Service worker do TCG Collector. Duas responsabilidades:
+// Service worker do Sleevu. Duas responsabilidades:
 //
 // 1. Imagens (cache-first): toda imagem de carta já vista fica no Cache Storage
 //    e sobrevive a um outage do CDN (a TCGdex é um servidor comunitário que às

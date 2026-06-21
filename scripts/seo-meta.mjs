@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const BASE = "https://tcg-collector.pages.dev/";
+const BASE = "https://sleevu.app/";
 const OG_IMAGE = BASE + "og-image.svg";
 // Paginas que nao devem ser indexadas (conteudo dinamico ou de fluxo).
 const NOINDEX = new Set(["detail.html", "login.html"]);
@@ -37,7 +37,7 @@ for (const file of files) {
   const titleM = html.match(/<title[^>]*>([^<]*)<\/title>/i);
   const descM = html.match(/<meta name="description" content="([^"]*)">/i);
   if (!descM) { console.log(`  - ${file}: sem <meta description>, pulado`); continue; }
-  const title = titleM ? titleM[1].trim() : "TCG Collector";
+  const title = titleM ? titleM[1].trim() : "Sleevu";
   const desc = descM[1];
   const url = cleanUrl(file);
 
@@ -47,7 +47,7 @@ for (const file of files) {
   } else {
     block = [
       `    <link rel="canonical" href="${url}">`,
-      `    <meta property="og:site_name" content="TCG Collector">`,
+      `    <meta property="og:site_name" content="Sleevu">`,
       `    <meta property="og:type" content="website">`,
       `    <meta property="og:url" content="${url}">`,
       `    <meta property="og:title" content="${attr(title)}">`,
