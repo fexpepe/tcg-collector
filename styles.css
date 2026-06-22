@@ -151,6 +151,20 @@ select {
   color: var(--accent);
 }
 
+/* Logo no header (wordmark "Sleevu"). A imagem é branca, então funciona no header
+   escuro; no tema claro vira preto (brightness(0)) pra contrastar. */
+.brand-logo {
+  display: block;
+  height: 24px;
+  width: auto;
+}
+[data-theme="light"] .brand-logo {
+  filter: brightness(0);
+}
+.brand:hover .brand-logo {
+  opacity: 0.85;
+}
+
 .page-head {
   margin-bottom: 20px;
 }
