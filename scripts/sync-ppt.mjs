@@ -74,11 +74,55 @@ function numOf(s) { const m = String(s || "").match(/(\d+)/); return m ? Number(
 
 // Nosso chunk JP do set: tenta local (gerado no build); senão produção (pra
 // dry-run local funcionar sem rodar o sync-tcgdex antes).
-async function ourChunk(setId) {
-  const local = new URL(`sets/ja/${setId}.json`, dataDir);
+async function ourChunk(setId, lang = "ja") {
+  const local = new URL(`sets/${lang}/${setId}.json`, dataDir);
   try { if (existsSync(local)) return JSON.parse(await readFile(local, "utf8")); } catch { /* segue pra prod */ }
-  try { const r = await fetch(`${PROD}/data/sets/ja/${setId}.json`); if (r.ok) return r.json(); } catch { /* nada */ }
+  try { const r = await fetch(`${PROD}/data/sets/${lang}/${setId}.json`); if (r.ok) return r.json(); } catch { /* nada */ }
   return null;
+}
+
+// Graded EN: mapa curado nosso setId -> id PPT (tcgPlayerNumericId, EN). Só sets
+// de alto valor (onde graded importa); evita match fuzzy de nome (preço errado é
+// pior que ausente). Os preços EN base vêm da TCGdex; aqui só pegamos o graded.
+const EN_GRADED_SETS = {
+  base1: 604, base2: 635, base3: 630, base4: 605, base5: 1373,
+  gym1: 1441, gym2: 1440,
+  neo1: 1396, neo2: 1434, neo3: 1389, neo4: 1444,
+  ecard1: 1375, ecard2: 1397, ecard3: 1372,
+  sma: 2594 // Hidden Fates Shiny Vault
+};
+
+// Busca graded EN de um set curado e casa por número com o nosso chunk EN.
+// Retorna { cardId: { g } } (só graded — não mexe no preço/imagem EN da TCGdex).
+async function syncGradedEN(ourSetId, pptNumericId) {
+  const chunk = await ourChunk(ourSetId, "en");
+  if (!chunk || !chunk.length) return null;
+  const byNum = new Map();
+  for (const card of chunk) { const n = numOf(String(card.id).replace(`${ourSetId}-`, "")); if (n != null) byNum.set(n, card.id); }
+  const arr = [];
+  for (let page = 0, offset = 0; page < 30; page++) {
+    const j = await ppt(`/cards?setId=${pptNumericId}&language=english&limit=100&offset=${offset}&includeEbay=true&days=90`);
+    const batch = j.data || [];
+    arr.push(...batch);
+    if (!(j.metadata && j.metadata.hasMore) || !batch.length) break;
+    offset += batch.length;
+  }
+  // A PPT tem várias entradas no mesmo número (erros, staff, reverse...). Por
+  // carta nossa, fica a impressão com MAIS vendas graded — a "principal" líquida,
+  // não a variante de erro (que costuma vir sem graded).
+  const best = {};
+  for (const c of arr) {
+    const ourId = byNum.get(numOf(c.cardNumber));
+    if (!ourId) continue;
+    const g = pickGraded(c);
+    if (!g) continue;
+    const score = ((g["10"] && g["10"].n) || 0) + ((g["9"] && g["9"].n) || 0);
+    if (!best[ourId] || score > best[ourId].score) best[ourId] = { g, score };
+  }
+  const entries = {};
+  for (const [id, b] of Object.entries(best)) entries[id] = { g: b.g };
+  console.log(`  [EN graded] ${ourSetId} (ppt ${pptNumericId}): ${Object.keys(entries).length}/${arr.length} com graded`);
+  return entries;
 }
 
 // Mapa setId(nosso) -> pptSetId, a partir do /sets da PPT (cacheado 7 dias).
@@ -262,6 +306,25 @@ async function run() {
   let discDirty = false;
   const out = {};
   let fetched = 0, cacheHits = 0;
+
+  // Graded EN (curado) primeiro: sets de alto valor onde graded importa (base set
+  // etc.). Cacheia/rotaciona igual aos JP (chave "en-<setId>", janela REFRESH_DAYS).
+  if (GRADED) {
+    let enF = 0, enH = 0;
+    for (const [ourSetId, pptNumericId] of Object.entries(EN_GRADED_SETS)) {
+      const ck = `en-${ourSetId}`;
+      const cached = await readCache(ck);
+      if (cached && Date.now() - (cached.t || 0) < REFRESH_DAYS * 864e5 && !DRY) { Object.assign(out, cached.entries); enH++; continue; }
+      if (creditsUsed >= BUDGET || (TIME_CAP_MS && Date.now() - startedAt > TIME_CAP_MS)) { if (cached) { Object.assign(out, cached.entries); enH++; } continue; }
+      try {
+        const entries = await syncGradedEN(ourSetId, pptNumericId);
+        if (entries) { Object.assign(out, entries); enF++; if (!DRY) await writeFile(cacheFileOf(ck), JSON.stringify({ t: Date.now(), entries }), "utf8"); }
+        else if (cached) Object.assign(out, cached.entries);
+      } catch (e) { console.log(`  [EN graded] ${ourSetId}: erro ${e.message}`); if (cached) Object.assign(out, cached.entries); }
+    }
+    console.log(`Graded EN: ${enF} buscados, ${enH} do cache`);
+  }
+
   for (const setId of targets) {
     const code = setId.toUpperCase();
     let pptId = map.get(code);
