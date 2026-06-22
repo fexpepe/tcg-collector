@@ -1919,10 +1919,18 @@
     return collection;
   }
 
+  // Espera o catálogo do jogo (window.TCG_*) terminar de carregar. O game.js
+  // injeta os scripts em runtime e resolve window.SLEEVU.catalogReady — sem isto
+  // os globais ainda não existem. Fallback p/ páginas sem game.js (ex.: login).
+  function awaitCatalog() {
+    return (window.SLEEVU && window.SLEEVU.catalogReady) || Promise.resolve();
+  }
+
   // `cardLang` opcional ("all" ou um idioma): no modo manifest baixa só os
   // chunks daquele idioma (corta o download — ex.: PT ~14k em vez de 48k);
   // no modo local filtra a amostra já carregada.
   async function loadCatalog(cardLang) {
+    await awaitCatalog();
     const lang = cardLang || "all";
     const matches = (value) => lang === "all" || value === lang;
 
@@ -1946,6 +1954,7 @@
   // das cartas que você tem. No modo local (amostra em window.TCG_CARDS) ou sem
   // manifest, cai no loadCatalog normal.
   async function loadCatalogForCardIds(cardIds) {
+    await awaitCatalog();
     if (Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length) {
       return loadCatalog();
     }
@@ -1966,7 +1975,8 @@
   // com isto — espécies, contadores e progresso saem dos índices + coleção,
   // sem o custo de baixar dezenas de MB de cartas. No modo local o
   // window.TCG_CARDS (amostra pequena) já está presente e é reaproveitado.
-  function loadIndexesOnly() {
+  async function loadIndexesOnly() {
+    await awaitCatalog();
     return {
       cards: Array.isArray(window.TCG_CARDS) ? window.TCG_CARDS : [],
       indexes: window.TCG_INDEXES || null,
@@ -2227,6 +2237,7 @@
     cardCode,
     cardLabel,
     matchesCardQuery,
+    awaitCatalog,
     loadCatalog,
     loadCatalogForCardIds,
     loadIndexesOnly,

@@ -183,6 +183,7 @@
 
   // No modo manifest, baixa apenas os chunks de set necessários para esta página.
   async function resolveCards() {
+    await shared.awaitCatalog();
     if (Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length) {
       return window.TCG_CARDS;
     }

@@ -11,8 +11,9 @@
   // Modo manifest (produção): baixa só os sets das cartas que aparecem aqui em
   // vez do catálogo inteiro. A página mostra só as desejadas, mas a carga inclui
   // também as possuídas para a migração legada v1→v3 ter os objetos das cartas.
-  const manifestMode = !(Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length)
-    && !!window.TCG_MANIFEST;
+  // Calculado após o catálogo carregar (window.TCG_* só existem depois do
+  // window.SLEEVU.catalogReady — o game.js injeta os scripts em runtime).
+  let manifestMode = false;
 
   const elements = {
     grid: document.getElementById("cardGrid"),
@@ -37,11 +38,14 @@
     onOwnedChange: () => refresh()
   });
 
-  const catalogPromise = manifestMode
-    ? shared.loadCatalogForCardIds([...new Set([...wishlist.knownCardIds(), ...owned.knownCardIds()])])
-    : shared.loadCatalog();
-
-  Promise.all([catalogPromise, shared.loadFxRates()])
+  shared.awaitCatalog().then(() => {
+    manifestMode = !(Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length)
+      && !!window.TCG_MANIFEST;
+    const catalogPromise = manifestMode
+      ? shared.loadCatalogForCardIds([...new Set([...wishlist.knownCardIds(), ...owned.knownCardIds()])])
+      : shared.loadCatalog();
+    return Promise.all([catalogPromise, shared.loadFxRates()]);
+  })
     .then(([catalog]) => {
       cards = catalog.cards;
       cardsById = new Map(cards.map((card) => [card.id, card]));

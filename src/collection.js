@@ -13,8 +13,9 @@
   // o que você tem, baixa apenas os sets das suas cartas e tira os totais de
   // progresso dos índices (que já vêm carregados). No modo local (amostra em
   // window.TCG_CARDS) o catálogo é pequeno — mantém o caminho normal.
-  const manifestMode = !(Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length)
-    && !!(window.TCG_MANIFEST && window.TCG_INDEXES && window.TCG_INDEXES.pokemonTotals);
+  // Calculado após o catálogo carregar (window.TCG_* só existem depois do
+  // window.SLEEVU.catalogReady — o game.js injeta os scripts em runtime).
+  let manifestMode = false;
 
   let activeTab = "cards";
   let sortMode = "dex";
@@ -80,12 +81,16 @@
   if (shareId) {
     shared.loadFxRates().then(() => renderSharedCollection(shareId));
   } else {
-    // Em modo manifest baixa só os sets das cartas que você tem; senão o catálogo
-    // normal (amostra local / fallback).
-    const catalogPromise = manifestMode
-      ? shared.loadCatalogForCardIds(owned.knownCardIds())
-      : shared.loadCatalog();
-    Promise.all([catalogPromise, shared.loadFxRates()])
+    // window.TCG_* só existem após o catálogo carregar; só então dá pra decidir
+    // o manifestMode e qual carga fazer (sets das cartas que você tem vs catálogo).
+    shared.awaitCatalog().then(() => {
+      manifestMode = !(Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length)
+        && !!(window.TCG_MANIFEST && window.TCG_INDEXES && window.TCG_INDEXES.pokemonTotals);
+      const catalogPromise = manifestMode
+        ? shared.loadCatalogForCardIds(owned.knownCardIds())
+        : shared.loadCatalog();
+      return Promise.all([catalogPromise, shared.loadFxRates()]);
+    })
       .then(([catalog]) => {
         cards = catalog.cards;
         indexes = catalog.indexes;
