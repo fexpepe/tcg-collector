@@ -2282,8 +2282,67 @@
     if (token) h.Authorization = `Bearer ${token}`;
     return h;
   }
-  function getSession() { try { return JSON.parse(localStorage.getItem(SESSION_KEY) || "null"); } catch (e) { return null; } }
-  function setSession(s) { if (s) localStorage.setItem(SESSION_KEY, JSON.stringify(s)); else localStorage.removeItem(SESSION_KEY); }
+  // Conta única entre subdomínios (poke./lorcana./apex): a sessão fica num cookie
+  // de domínio .sleevu.app, lido por qualquer subdomínio. Fora de *.sleevu.app
+  // (localhost, *.pages.dev) cai no localStorage — um cookie .sleevu.app nem
+  // setaria ali. O cookie NÃO é HttpOnly (o cliente roda em JS, como a localStorage
+  // de hoje), mas é Secure + SameSite=Lax e o CSP 'self' limita XSS; exposição
+  // igual à atual. Guardamos só o essencial (user enxuto p/ id+email) pra caber
+  // bem abaixo do teto de 4KB do cookie.
+  const COOKIE_NAME = "sleevu_session";
+  const COOKIE_MAX_AGE = 60 * 24 * 3600; // ~60 dias; renovado a cada setSession
+  function sharedCookieDomain() {
+    return /(^|\.)sleevu\.app$/i.test(location.hostname) ? ".sleevu.app" : null;
+  }
+  function readCookie(name) {
+    const m = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+  function writeSessionCookie(value, domain) {
+    let c = COOKIE_NAME + "=" + encodeURIComponent(value)
+      + "; Path=/; Max-Age=" + COOKIE_MAX_AGE + "; SameSite=Lax; Secure";
+    if (domain) c += "; Domain=" + domain;
+    document.cookie = c;
+  }
+  function clearSessionCookie(domain) {
+    let c = COOKIE_NAME + "=; Path=/; Max-Age=0; SameSite=Lax; Secure";
+    if (domain) c += "; Domain=" + domain;
+    document.cookie = c;
+  }
+  function readLocalSession() {
+    try { return JSON.parse(localStorage.getItem(SESSION_KEY) || "null"); } catch (e) { return null; }
+  }
+  function getSession() {
+    if (sharedCookieDomain()) {
+      const raw = readCookie(COOKIE_NAME);
+      if (raw) { try { return JSON.parse(raw); } catch (e) { /* cookie corrompido */ } }
+      return readLocalSession(); // migração: usuário já logado tinha no localStorage
+    }
+    return readLocalSession();
+  }
+  function setSession(s) {
+    const domain = sharedCookieDomain();
+    if (s) {
+      // Enxuga o user (só id+email são usados) pra o cookie caber com folga.
+      const trimmed = {
+        access_token: s.access_token,
+        refresh_token: s.refresh_token,
+        user: s.user ? { id: s.user.id, email: s.user.email } : s.user,
+        ts: s.ts || Date.now()
+      };
+      if (domain) {
+        writeSessionCookie(JSON.stringify(trimmed), domain);
+        // Só descarta o localStorage legado se o cookie REALMENTE pegou — senão
+        // um usuário já logado correria risco de cair (cookie = fonte única).
+        if (readCookie(COOKIE_NAME)) { try { localStorage.removeItem(SESSION_KEY); } catch (e) { /* ignora */ } }
+      } else {
+        try { localStorage.setItem(SESSION_KEY, JSON.stringify(trimmed)); } catch (e) { /* ignora */ }
+      }
+    } else {
+      if (domain) clearSessionCookie(domain);
+      try { localStorage.removeItem(SESSION_KEY); } catch (e) { /* ignora */ }
+    }
+  }
 
   async function sendMagicLink(email) {
     const redirect = window.location.origin + window.location.pathname;
