@@ -20,6 +20,9 @@
     // Registrado, mas sem catálogo ainda: cai na página "em breve" (soon.html).
     // Quando o catálogo existir, troca comingSoon por dataDir: "data/lorcana/".
     lorcana: { slug: "lorcana", name: "Lorcana", comingSoon: true }
+    // Lorcana tem catálogo (data/lorcana/, via scripts/sync-lorcana.mjs); falta a
+    // adaptação do frontend (home/nav/labels game-aware) p/ trocar comingSoon por
+    // dataDir: "data/lorcana/" e ir live.
   };
 
   function detectGame() {

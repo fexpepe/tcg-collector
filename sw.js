@@ -8,7 +8,7 @@
 //    da rede quando online (assim um deploy novo é sempre pego, sem o app ficar
 //    preso numa versão velha) e caem no cache quando offline — fazendo o app
 //    abrir e a coleção já vista funcionar sem internet (PWA instalável).
-const SHELL_CACHE = "tcg-shell-v11";
+const SHELL_CACHE = "tcg-shell-v12";
 const IMAGE_CACHE = "tcg-images-v1";
 const DATA_CACHE = "tcg-data-v1";
 const CACHES = [SHELL_CACHE, IMAGE_CACHE, DATA_CACHE];
@@ -17,7 +17,8 @@ const IMAGE_HOSTS = new Set([
   "assets.tcgdex.net",            // cartas e logos do catálogo
   "images.pokemontcg.io",         // fallback de cartas EN
   "raw.githubusercontent.com",    // artes da PokéAPI (Pokédex)
-  "tcgplayer-cdn.tcgplayer.com"   // imagens JP da PPT (onde a TCGdex não tem)
+  "tcgplayer-cdn.tcgplayer.com",  // imagens JP da PPT (onde a TCGdex não tem)
+  "cards.lorcast.io"              // imagens de cartas do Lorcana (Lorcast)
 ]);
 
 // Esqueleto do app: arquivos que existem tanto local quanto em produção

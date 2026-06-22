@@ -4,6 +4,7 @@ data/.cache/
 # Artefatos gerados pelo sync (regeneráveis; o app usa data/cards.js por padrão)
 data/*.generated.js
 data/*.generated.json
+data/lorcana/*.generated.js
 data/sets/
 
 # Key local da PokemonPriceTracker (só pra teste local; NUNCA versionar)
