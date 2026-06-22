@@ -1442,7 +1442,17 @@
       const modal = document.getElementById("cardPreviewModal");
       if (!modal || !activeCard) return;
       const wrap = modal.querySelector(".variant-quantities");
-      if (wrap) wrap.innerHTML = variantQuantityRows(activeCard, store, prices, activeVariant);
+      if (wrap) {
+        // Preserva quais variantes estavam expandidas (o <details> recriado volta
+        // fechado por padrão; sem isto, cada +/- colapsaria o editor).
+        const openNames = new Set([...wrap.querySelectorAll(".variant-conditions[open]")]
+          .map((d) => d.querySelector(".variant-row-name") && d.querySelector(".variant-row-name").textContent));
+        wrap.innerHTML = variantQuantityRows(activeCard, store, prices, activeVariant);
+        wrap.querySelectorAll(".variant-conditions").forEach((d) => {
+          const nm = d.querySelector(".variant-row-name");
+          if (nm && openNames.has(nm.textContent)) d.open = true;
+        });
+      }
       const ownedButton = modal.querySelector(".preview-owned");
       if (ownedButton) {
         const isOwned = activeVariant ? store.variantTotal(activeCard.id, activeVariant) > 0 : store.has(activeCard.id);
@@ -1687,15 +1697,22 @@
           </div>
         `;
       }).join("");
+      // Colapsado por padrão (<details>): a linha-resumo já mostra o que você tem
+      // ("NM ×2 · M ×1"); expandir revela os steppers por condição + o Preço BR.
+      // Economiza muito espaço vertical no preview.
+      const breakdown = total > 0 ? conditionSummary(store, card.id, variant) : "";
       return `
-        <div class="variant-conditions${total > 0 ? " owned" : ""}">
-          <div class="variant-conditions-head">
+        <details class="variant-conditions${total > 0 ? " owned" : ""}">
+          <summary class="variant-conditions-head">
             <span class="variant-row-name variant-${escapeAttribute(variantSlug(variant))}">${escapeHtml(variant)}</span>
-            ${total > 0 ? `<span class="variant-total">×${total}</span>` : ""}
-          </div>
+            ${breakdown
+              ? `<span class="variant-breakdown">${escapeHtml(breakdown)}</span>`
+              : `<span class="variant-breakdown variant-breakdown-empty">${escapeHtml(t("variant.manage"))}</span>`}
+            <span class="variant-chevron" aria-hidden="true">▾</span>
+          </summary>
           <div class="condition-grid">${conditions}</div>
           ${prices ? variantPriceRow(card, variant, prices) : ""}
-        </div>
+        </details>
       `;
     }).join("");
   }

@@ -737,21 +737,42 @@ input::placeholder {
   border-color: rgba(var(--accent-rgb), 0.45);
 }
 
+/* Cabeçalho da variante = <summary> clicável do <details>. Sem o marcador
+   nativo; o chevron gira ao abrir. Colapsado por padrão. */
 .variant-conditions-head {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 8px;
-  margin-bottom: 8px;
+  cursor: pointer;
+  list-style: none;
 }
+.variant-conditions-head::-webkit-details-marker { display: none; }
+.variant-conditions[open] > .variant-conditions-head { margin-bottom: 8px; }
 
 .variant-row-name {
   font-weight: 700;
   font-size: 13px;
   color: var(--muted);
+  margin-right: auto;
 }
+.variant-conditions-head:hover .variant-row-name { color: var(--text); }
+
+.variant-breakdown {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.variant-breakdown-empty { color: var(--subtle); font-weight: 600; }
+
+.variant-chevron {
+  color: var(--subtle);
+  font-size: 11px;
+  transition: transform 120ms ease;
+}
+.variant-conditions[open] .variant-chevron { transform: rotate(180deg); }
 
 .variant-total {
-  margin-left: auto;
   color: var(--accent);
   font-weight: 800;
   font-size: 13px;
