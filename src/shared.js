@@ -2589,9 +2589,14 @@
   function getSyncStatus() {
     try { return JSON.parse(localStorage.getItem(SYNC_STATUS_KEY) || "null"); } catch (e) { return null; }
   }
+  // Jogo atual (multi-TCG): a coleção na nuvem é por (user_id, game), então
+  // Pokémon e Lorcana não colidem na mesma conta. Fora de *.sleevu.app cai em
+  // "pokemon" (default do backend).
+  function currentGame() { return (window.SLEEVU && window.SLEEVU.game) || "pokemon"; }
+
   async function pullRemote(token, uid) {
     try {
-      const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?user_id=eq.${uid}&select=data`, { headers: authHeaders(token) });
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?user_id=eq.${uid}&game=eq.${currentGame()}&select=data`, { headers: authHeaders(token) });
       if (!r.ok) { recordSync("pull", false, `HTTP ${r.status}`); return null; }
       const rows = await r.json();
       recordSync("pull", true);
@@ -2600,10 +2605,10 @@
   }
   async function pushRemote(token, uid, data, keepalive) {
     try {
-      const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?on_conflict=user_id`, {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?on_conflict=user_id,game`, {
         method: "POST",
         headers: Object.assign(authHeaders(token), { Prefer: "resolution=merge-duplicates,return=minimal" }),
-        body: JSON.stringify({ user_id: uid, data, updated_at: new Date().toISOString() }),
+        body: JSON.stringify({ user_id: uid, game: currentGame(), data, updated_at: new Date().toISOString() }),
         keepalive: !!keepalive
       });
       recordSync("push", r.ok, r.ok ? "" : `HTTP ${r.status}`);
@@ -2616,7 +2621,7 @@
     let s = getSession();
     if (!s) return { error: "auth" };
     if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
-    const body = JSON.stringify({ kind, title: title || null, data });
+    const body = JSON.stringify({ kind, game: currentGame(), title: title || null, data });
     const post = (tok) => fetch(`${SUPABASE_URL}/rest/v1/shares`, {
       method: "POST", body,
       headers: Object.assign(authHeaders(tok), { Prefer: "return=representation" })
