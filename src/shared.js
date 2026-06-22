@@ -1217,16 +1217,42 @@
     return `<div class="market-finish"><span class="market-finish-label">${escapeHtml(t("market.br"))}</span><div class="market-cards">${marketSourceCard(t("market.brSource"), q)}</div></div>`;
   }
 
+  // Graded (eBay por nota PSA), do catálogo (TCG_PRICING.g). Mostra PSA 10 e 9
+  // com Mercado (smart) + Recente (7d) + Mediana (90d), em USD convertido.
+  function gradedCardHtml(grade, g, fx) {
+    const cur = currentCurrency;
+    const cell = (label, v, cls) => v ? `<div class="market-cell${cls ? " " + cls : ""}"><span>${label}</span><strong>${fmtMoney(cur, toChosenCurrency(v, "USD", fx))}</strong></div>` : "";
+    const cells = cell(t("graded.smart"), g.s, "med") + cell(t("graded.recent"), g.r) + cell(t("graded.median"), g.m);
+    const trend = g.t === 1 ? ' <span class="graded-trend up" aria-hidden="true">▲</span>' : g.t === -1 ? ' <span class="graded-trend down" aria-hidden="true">▼</span>' : "";
+    const sales = g.n ? ` · ${tn("graded.sales", g.n)}` : "";
+    return `<div class="market-card graded-card"><span class="market-card-cur">PSA ${grade}${trend}${sales}</span><div class="market-cells">${cells}</div></div>`;
+  }
+  function gradedHtml(card, fx) {
+    const table = window.TCG_PRICING;
+    if (!table) return "";
+    const ref = (card && card.id && (table[card.id] || table[basePricingId(card.id)])) || null;
+    const g = ref && ref.g;
+    if (!g) return "";
+    const cards = ["10", "9"].map((grade) => g[grade] ? gradedCardHtml(grade, g[grade], fx) : "").join("");
+    if (!cards) return "";
+    return `<div class="market-finish graded-finish"><span class="market-finish-label">${escapeHtml(t("graded.label"))}</span><div class="market-cards">${cards}</div></div>`;
+  }
+
   function marketQuoteHtml(pricing, fx, card) {
     const data = pricing ? marketQuoteData(pricing, card) : { nonfoil: null, foil: null, updated: "" };
     const tcgdex = marketFinishRow(t("market.nonfoil"), data.nonfoil, fx) + marketFinishRow(t("market.foil"), data.foil, fx);
     const br = marketBrRow(card, fx);
-    if (!tcgdex && !br) return "";
+    const graded = gradedHtml(card, fx);
+    if (!tcgdex && !br && !graded) return "";
     const updated = data.updated ? `<span class="market-updated">${escapeHtml(t("market.updated", { date: data.updated }))}</span>` : "";
+    const srcMarket = (tcgdex || br) ? `<p class="market-source">${escapeHtml(t("market.source"))}</p>` : "";
+    const srcGraded = graded ? `<p class="market-source">${escapeHtml(t("graded.source"))}</p>` : "";
     return `<div class="market-quote-head"><h3>${escapeHtml(t("market.title"))}</h3>${updated}</div>`
       + tcgdex
       + br
-      + `<p class="market-source">${escapeHtml(t("market.source"))}</p>`;
+      + srcMarket
+      + graded
+      + srcGraded;
   }
 
   // Busca cotação + câmbio e preenche a seção no modal (some se não houver).

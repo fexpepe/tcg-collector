@@ -2844,6 +2844,16 @@ a.progress-row:hover {
   color: var(--accent);
 }
 
+/* Graded (PSA): mesma estrutura da cotação, com tom neutro pra diferenciar do
+   preço raw, e seta de tendência colorida. */
+.graded-finish { margin-top: 12px; }
+.graded-card {
+  background: var(--panel-strong);
+  border-color: var(--line);
+}
+.graded-trend.up { color: #15a06f; }
+.graded-trend.down { color: #d4574e; }
+
 .market-source {
   margin: 8px 0 0;
   font-size: 11px;

@@ -163,15 +163,33 @@ function pickPrice(c) {
   if (v) for (const variant of Object.values(v)) for (const cond of Object.values(variant)) if (cond && cond.price > 0) return cond.price;
   return 0;
 }
+// Graded (eBay, por nota PSA). Por nota guarda: s = preço "mercado" (smartMarket
+// ponderado, com fallback mediana/7d), r = recente 7 dias, m = mediana 90 dias,
+// n = nº de vendas (90d), t = tendência (1 alta / -1 baixa). Tudo USD; o front
+// converte. Só PSA 9 e 10 (as notas que movem o mercado).
 function pickGraded(c) {
   const byGrade = c.ebay && c.ebay.salesByGrade;
   if (!byGrade) return null;
-  const g = {};
-  const pick = (node) => node && node.smartMarketPrice && node.smartMarketPrice.price > 0 ? Math.round(node.smartMarketPrice.price * 100) / 100
-    : node && node.medianPrice > 0 ? node.medianPrice : 0;
-  const p9 = pick(byGrade.psa9), p10 = pick(byGrade.psa10);
-  if (p9) g.p9 = p9; if (p10) g.p10 = p10;
-  return Object.keys(g).length ? g : null;
+  const r2 = (x) => Math.round(x * 100) / 100;
+  const one = (node) => {
+    if (!node || !node.count) return null;
+    const smart = node.smartMarketPrice && node.smartMarketPrice.price > 0 ? node.smartMarketPrice.price : 0;
+    const med = node.medianPrice > 0 ? node.medianPrice : 0;
+    const r7 = node.marketPrice7Day > 0 ? node.marketPrice7Day : 0;
+    const s = smart || med || r7;
+    if (!s) return null;
+    const g = { s: r2(s) };
+    if (r7 && Math.round(r7) !== Math.round(s)) g.r = r2(r7);
+    if (med && Math.round(med) !== Math.round(s)) g.m = r2(med);
+    if (node.count) g.n = node.count;
+    if (node.marketTrend === "up") g.t = 1; else if (node.marketTrend === "down") g.t = -1;
+    return g;
+  };
+  const out = {};
+  const p10 = one(byGrade.psa10), p9 = one(byGrade.psa9);
+  if (p10) out["10"] = p10;
+  if (p9) out["9"] = p9;
+  return Object.keys(out).length ? out : null;
 }
 
 // Busca um set na PPT e casa cada card com o nosso cardId pelo número.
