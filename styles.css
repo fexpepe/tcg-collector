@@ -1983,6 +1983,71 @@ input::placeholder {
 
 /* Home: apoie o projeto (café / Pix / GitHub) */
 /* Seção "marketplaces/fontes" da home — credibilidade dos preços. */
+/* "Escolha seu jogo": grid dos TCGs do Sleevu (Pokémon ativo, Lorcana em breve).
+   Tiles tipográficos (sem logos oficiais — marca registrada + CSP). */
+.home-games {
+  margin-top: 44px;
+  text-align: center;
+}
+.home-games-lead {
+  max-width: 640px;
+  margin: 8px auto 0;
+  color: var(--muted);
+}
+.home-games-grid {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+.game-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  width: 264px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  text-align: left;
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color 120ms ease, transform 120ms ease;
+}
+.game-tile:hover {
+  border-color: var(--accent-dark);
+  transform: translateY(-2px);
+}
+.game-tile strong { font-size: 18px; }
+.game-tile-desc { font-size: 13px; color: var(--muted); }
+.game-badge {
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+/* Verde fixo pra "disponível" (convenção universal) — independente do accent do
+   tema, que é amarelo no escuro e vermelho no claro, e ficaria igual ao dourado
+   de "em breve" / com semântica ruim. */
+.game-badge.available {
+  background: rgba(31, 157, 119, 0.16);
+  color: #15a06f;
+}
+[data-theme="light"] .game-badge.available {
+  color: #0f7a52;
+}
+.game-badge.soon {
+  background: rgba(176, 125, 16, 0.16);
+  color: var(--gold);
+}
+.game-tile.is-soon strong { color: var(--muted); }
+
 .home-sources {
   margin-top: 44px;
   text-align: center;
