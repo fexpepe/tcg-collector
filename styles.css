@@ -2045,6 +2045,14 @@ input::placeholder {
 }
 .game-tile strong { font-size: 18px; }
 .game-tile-desc { font-size: 13px; color: var(--muted); }
+/* Logo do jogo (quando o arquivo existe em assets/games/). Sem logo, fica o
+   nome em texto. Revelado pelo home.js ao carregar (começa hidden). */
+.game-logo {
+  max-width: 170px;
+  max-height: 46px;
+  object-fit: contain;
+  align-self: flex-start;
+}
 .game-badge {
   padding: 3px 9px;
   border-radius: 999px;

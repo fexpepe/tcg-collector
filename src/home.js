@@ -1,4 +1,20 @@
 (function () {
+  // Logo dos jogos (seção "Mais de um jogo"): o <img> começa hidden. Se o arquivo
+  // existir e carregar, mostra o logo e esconde o nome em texto (o logo já diz o
+  // nome). Se faltar/falhar, fica o fallback de texto — sem ícone de imagem
+  // quebrada. (Inline onerror não dá: CSP script-src 'self'.)
+  document.querySelectorAll(".game-logo").forEach((img) => {
+    const reveal = () => {
+      if (img.naturalWidth > 0) {
+        img.hidden = false;
+        const name = img.parentElement && img.parentElement.querySelector(".game-name");
+        if (name) name.hidden = true;
+      }
+    };
+    img.addEventListener("load", reveal);
+    if (img.complete) reveal();
+  });
+
   // Apoio: copiar a chave Pix para a área de transferência com feedback no botão.
   const t = window.TCGShared ? window.TCGShared.t : (key) => key;
   const pixButton = document.getElementById("pixButton");
