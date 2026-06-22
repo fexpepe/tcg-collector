@@ -6,19 +6,19 @@ o nome em texto some. Sem os arquivos, fica o nome em texto (fallback) — sem e
 
 ## Arquivos esperados (nome exato)
 
-- `pokemon.svg` — logo do Pokémon TCG
-- `lorcana.svg` — logo do Disney Lorcana
+- `pokemon.png` — logo do Pokémon TCG
+- `lorcana.png` — logo do Disney Lorcana
+
+(SVG também serve; se usar SVG, troque a extensão no `src` do `index.html`.)
 
 ## Recomendações
 
-- **Formato:** SVG (ideal — vetor, nítido, leve). PNG com fundo transparente serve.
-- **Fundo transparente.**
-- **Legível nos dois temas** (claro e escuro): o card é claro no tema claro e
-  escuro no tema escuro. Logos coloridos (ex.: Pokémon) funcionam nos dois; logos
-  só-escuros podem sumir no tema escuro. Se necessário, mande versões que
-  contrastem, ou um logo com contorno/área clara.
-- **Proporção:** algo em torno de paisagem; o CSS limita a `max-height: 46px` e
-  `max-width: 170px` (`object-fit: contain`), então não precisa de tamanho exato.
+- **Formato:** PNG com **fundo transparente** (os logos oficiais são raster). SVG
+  também serve.
+- **Contraste:** o CSS já põe um **chip branco** atrás do logo, então logos com
+  texto escuro (ex.: o roxo do Lorcana) ficam legíveis nos dois temas.
+- **Proporção:** paisagem; o CSS usa `height: 64px` + `object-fit: contain`, então
+  não precisa de tamanho exato.
 
 ## Trocar o caminho/nome
 
