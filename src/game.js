@@ -16,9 +16,9 @@
   // Registro central de jogos. Por ora só Pokémon; Lorcana entra quando houver
   // catálogo (data/lorcana/...). dataDir do Pokémon = raiz de hoje (não move nada).
   var GAMES = {
+    // Apex (sleevu.app): HUB do ecossistema — não é um jogo, não tem catálogo.
+    hub: { slug: "hub", name: "Sleevu", isHub: true },
     pokemon: { slug: "pokemon", name: "Pokémon", dataDir: "data/" },
-    // Registrado, mas sem catálogo ainda: cai na página "em breve" (soon.html).
-    // Quando o catálogo existir, troca comingSoon por dataDir: "data/lorcana/".
     lorcana: { slug: "lorcana", name: "Lorcana", dataDir: "data/lorcana/" }
   };
 
@@ -26,12 +26,12 @@
     var host = (location.hostname || "").toLowerCase();
     if (host.indexOf("lorcana.") === 0) return "lorcana";
     if (host.indexOf("poke.") === 0) return "pokemon";
-    // Em localhost/preview dá pra forçar o jogo por query (?game=lorcana).
+    // Em localhost/preview dá pra forçar o jogo por query (?game=pokemon).
     try {
       var q = new URLSearchParams(location.search).get("game");
       if (q && GAMES[q]) return q;
     } catch (e) { /* sem URLSearchParams: ignora */ }
-    return "pokemon"; // apex, poke. e dev caem no padrão
+    return "hub"; // apex (sleevu.app/www) e dev = HUB do ecossistema
   }
 
   var game = detectGame();
@@ -74,7 +74,8 @@
   var resolveReady;
   var catalogReady = new Promise(function (res) { resolveReady = res; });
   function loadNext(i) {
-    if (i >= list.length) { resolveReady(); return; }
+    // Hub não tem catálogo (sem dataDir): resolve na hora, sem injetar nada.
+    if (!cfg.dataDir || i >= list.length) { resolveReady(); return; }
     var file = FILE[list[i]];
     if (!file) { loadNext(i + 1); return; }
     var s = document.createElement("script");

@@ -18,6 +18,30 @@
     empty: document.getElementById("emptyState")
   };
 
+  // No HUB (apex) não há catálogo próprio: mostra atalhos pro portfólio de cada
+  // jogo. O portfólio SOMADO de todos os TCGs é o próximo passo (precisa carregar
+  // os dois catálogos + as coleções por jogo da nuvem).
+  if ((window.SLEEVU && window.SLEEVU.game) === "hub") {
+    const prod = /(^|\.)sleevu\.app$/i.test(location.hostname);
+    const pfUrl = (g) => prod
+      ? (g === "pokemon" ? "https://poke.sleevu.app/portfolio.html" : "https://lorcana.sleevu.app/portfolio.html")
+      : "portfolio.html?game=" + g;
+    const tile = (href, name, badge) => `<li><a class="game-tile" href="${escapeAttribute(href)}">`
+      + `<span class="game-badge available">${escapeHtml(badge)}</span>`
+      + `<strong class="game-name">${escapeHtml(name)}</strong>`
+      + `<span class="game-tile-desc">${escapeHtml(t("portfolio.hubGameLink"))}</span></a></li>`;
+    const main = document.querySelector("main");
+    if (main) {
+      main.innerHTML = `<div class="page-head"><h1>${escapeHtml(t("nav.portfolio"))}</h1></div>`
+        + `<section class="home-games"><h2>${escapeHtml(t("portfolio.hubTitle"))}</h2>`
+        + `<ul class="home-games-grid">`
+        + tile(pfUrl("pokemon"), "Pokémon TCG", t("home.games.available"))
+        + tile(pfUrl("lorcana"), "Disney Lorcana", t("home.games.available"))
+        + `</ul><p class="portfolio-note">${escapeHtml(t("portfolio.hubNote"))}</p></section>`;
+    }
+    return;
+  }
+
   Promise.all([shared.loadCatalog(), shared.loadFxRates()])
     .then(([catalog]) => {
       cards = catalog.cards;

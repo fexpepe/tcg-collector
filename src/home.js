@@ -18,10 +18,25 @@
   // Apoio: copiar a chave Pix para a área de transferência com feedback no botão.
   const t = window.TCGShared ? window.TCGShared.t : (key) => key;
 
-  // Hero game-aware: no HTML o CTA primário abre a Pokédex e o fundo são cartas
-  // de Pokémon. Fora do Pokémon, o CTA vai pro catálogo e as cartas viram as do
-  // jogo atual (pegas do catálogo quando carrega).
-  if (((window.SLEEVU && window.SLEEVU.game) || "pokemon") !== "pokemon") {
+  // Hero game-aware. No HTML o hero é do Pokémon (Pokédex + cartas de Pokémon).
+  const game = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
+  if (game === "hub") {
+    // Apex/HUB: hero do ecossistema; o CTA rola pros jogos. Sem cartas/CTA de set.
+    const h1 = document.querySelector(".hero h1");
+    if (h1) h1.innerHTML = t("home.hubTitle");
+    const sub = document.querySelector(".hero-sub");
+    if (sub) sub.textContent = t("home.hubSub");
+    const cta = document.querySelector(".hero-actions .cta:not(.secondary-cta)");
+    if (cta) { cta.setAttribute("href", "#games"); cta.textContent = t("home.hubCta"); }
+    const sec = document.querySelector(".hero-actions .secondary-cta");
+    if (sec) sec.remove();
+    document.querySelectorAll(".hero-cards img").forEach((i) => i.remove());
+    const games = document.querySelector(".home-games");
+    if (games) games.id = "games";
+    // No hub, o tile do Pokémon vai pro subdomínio (em dev, ?game=pokemon).
+    const pokeTile = document.querySelector('.home-games .game-tile[href="pokedex.html"]');
+    if (pokeTile) pokeTile.setAttribute("href", /(^|\.)sleevu\.app$/i.test(location.hostname) ? "https://poke.sleevu.app/" : "index.html?game=pokemon");
+  } else if (game !== "pokemon") {
     const cta = document.querySelector(".hero-actions .cta:not(.secondary-cta)");
     if (cta) { cta.setAttribute("href", "cards.html"); cta.textContent = t("home.ctaCards"); }
     const heroImgs = [...document.querySelectorAll(".hero-cards img")];

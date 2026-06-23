@@ -610,7 +610,7 @@
     const exploreActive = ["pokedex", "trainers", "sets", "artists", "cards"].includes(active);
     const collectionActive = ["collection", "wishlist", "binders"].includes(active);
 
-    const link = (href, key, page) => `<a href="${href}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
+    const link = (href, key, page) => `<a href="${escapeAttribute(href)}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
     const group = (key, isActive, links) => `
       <div class="nav-group">
         <button type="button" class="nav-group-toggle${isActive ? " active" : ""}" aria-expanded="false" aria-haspopup="true">
@@ -619,20 +619,44 @@
         <div class="nav-dropdown" hidden>${links}</div>
       </div>`;
 
-    nav.innerHTML = `
-      ${link("index.html", "nav.home", "home")}
-      ${group("nav.explore", exploreActive, `
-          ${link("cards.html", "nav.allCards", "cards")}
-          ${currentGame() === "pokemon" ? link("pokedex.html", "nav.pokemon", "pokedex") : ""}
-          ${currentGame() === "pokemon" ? link("trainers.html", "nav.trainers", "trainers") : ""}
-          ${link("sets.html", "nav.sets", "sets")}
-          ${link("artists.html", "nav.artists", "artists")}`)}
-      ${group("nav.collection", collectionActive, `
-          ${link("collection.html", "nav.collectionMine", "collection")}
-          ${link("binders.html", "nav.binders", "binders")}
-          ${link("wishlist.html", "nav.wishlist", "wishlist")}`)}
-      ${link("portfolio.html", "nav.portfolio", "portfolio")}
-    `;
+    // Home de cada destino: em produção vai pro subdomínio; em dev (mesma origem)
+    // usa ?game=. O HUB é o apex (sleevu.app). Logo/brand sempre volta pro hub.
+    const gameHomeUrl = (g) => {
+      if (/(^|\.)sleevu\.app$/i.test(location.hostname)) {
+        return g === "pokemon" ? "https://poke.sleevu.app/" : g === "lorcana" ? "https://lorcana.sleevu.app/" : "https://sleevu.app/";
+      }
+      return g === "hub" ? "index.html" : "index.html?game=" + g;
+    };
+    const apexUrl = gameHomeUrl("hub");
+    const brand = document.querySelector(".brand");
+    if (brand) brand.setAttribute("href", apexUrl);
+
+    if (currentGame() === "hub") {
+      // Apex/HUB do ecossistema: Explorar (jogos) + Portfólio somado.
+      nav.innerHTML = `
+        ${link(apexUrl, "nav.hub", "home")}
+        ${group("nav.explore", false, `
+            ${link(gameHomeUrl("pokemon"), "nav.gamePokemon", "_")}
+            ${link(gameHomeUrl("lorcana"), "nav.gameLorcana", "_")}`)}
+        ${link("portfolio.html", "nav.portfolio", "portfolio")}
+      `;
+    } else {
+      // Jogo (poke./lorcana.): HUB volta pro apex; logo idem. Resto relativo.
+      nav.innerHTML = `
+        ${link(apexUrl, "nav.hub", "home")}
+        ${group("nav.explore", exploreActive, `
+            ${link("cards.html", "nav.allCards", "cards")}
+            ${currentGame() === "pokemon" ? link("pokedex.html", "nav.pokemon", "pokedex") : ""}
+            ${currentGame() === "pokemon" ? link("trainers.html", "nav.trainers", "trainers") : ""}
+            ${link("sets.html", "nav.sets", "sets")}
+            ${link("artists.html", "nav.artists", "artists")}`)}
+        ${group("nav.collection", collectionActive, `
+            ${link("collection.html", "nav.collectionMine", "collection")}
+            ${link("binders.html", "nav.binders", "binders")}
+            ${link("wishlist.html", "nav.wishlist", "wishlist")}`)}
+        ${link("portfolio.html", "nav.portfolio", "portfolio")}
+      `;
+    }
 
     const groups = Array.from(nav.querySelectorAll(".nav-group")).map((groupEl) => ({
       el: groupEl,
@@ -776,8 +800,7 @@
       const saved = localStorage.getItem(THEME_KEY);
       if (saved === "light" || saved === "dark") return saved;
     } catch (e) { /* ignora */ }
-    // Sem preferência salva: Lorcana abre no claro (dia); o resto no escuro.
-    return (window.SLEEVU && window.SLEEVU.game === "lorcana") ? "light" : "dark";
+    return "light"; // padrão claro (dia) em todo o ecossistema
   }
   function applyTheme(theme) {
     const root = document.documentElement;

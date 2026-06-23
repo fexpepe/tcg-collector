@@ -6,9 +6,9 @@
 (function () {
   try {
     var saved = localStorage.getItem("tcg-collector-theme-v1");
-    var host = (location.hostname || "").toLowerCase();
-    var lorcana = host.indexOf("lorcana.") === 0 || /[?&]game=lorcana(?:&|$)/.test(location.search);
-    var theme = (saved === "light" || saved === "dark") ? saved : (lorcana ? "light" : "dark");
+    // Padrão CLARO (dia) em todo o ecossistema (hub/poke/lorcana). Preferência
+    // salva pelo usuário sempre vence.
+    var theme = (saved === "light" || saved === "dark") ? saved : "light";
     if (theme === "light") {
       document.documentElement.setAttribute("data-theme", "light");
     }
