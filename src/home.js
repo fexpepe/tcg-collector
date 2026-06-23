@@ -22,6 +22,10 @@
   const game = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
   if (game === "hub") {
     // Apex/HUB: hero do ecossistema; o CTA rola pros jogos. Sem cartas/CTA de set.
+    document.body.classList.add("is-hub");
+    // "Como funciona" é orientado à coleção de Pokémon — não cabe no apex.
+    const steps = document.querySelector(".home-steps");
+    if (steps) steps.remove();
     const h1 = document.querySelector(".hero h1");
     if (h1) h1.innerHTML = t("home.hubTitle");
     const sub = document.querySelector(".hero-sub");

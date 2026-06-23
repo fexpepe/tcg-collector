@@ -2093,6 +2093,10 @@ input::placeholder {
   padding: 10px 14px;
   box-sizing: border-box;
 }
+/* No apex/HUB os logos dos jogos são o destaque: 100% maiores. */
+.is-hub .game-logo {
+  height: 128px;
+}
 .game-badge {
   padding: 3px 9px;
   border-radius: 999px;
