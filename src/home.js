@@ -17,6 +17,24 @@
 
   // Apoio: copiar a chave Pix para a área de transferência com feedback no botão.
   const t = window.TCGShared ? window.TCGShared.t : (key) => key;
+
+  // Hero game-aware: no HTML o CTA primário abre a Pokédex e o fundo são cartas
+  // de Pokémon. Fora do Pokémon, o CTA vai pro catálogo e as cartas viram as do
+  // jogo atual (pegas do catálogo quando carrega).
+  if (((window.SLEEVU && window.SLEEVU.game) || "pokemon") !== "pokemon") {
+    const cta = document.querySelector(".hero-actions .cta:not(.secondary-cta)");
+    if (cta) { cta.setAttribute("href", "cards.html"); cta.textContent = t("home.ctaCards"); }
+    const heroImgs = [...document.querySelectorAll(".hero-cards img")];
+    const ready = window.SLEEVU && window.SLEEVU.catalogReady;
+    if (heroImgs.length && ready) {
+      ready.then(() => {
+        const withImg = (window.TCG_CARDS || []).filter((c) => c && c.image);
+        if (!withImg.length) { heroImgs.forEach((i) => i.remove()); return; }
+        const picks = [withImg[0], withImg[Math.floor(withImg.length / 2)], withImg[withImg.length - 1]];
+        heroImgs.forEach((img, i) => { if (picks[i]) img.src = picks[i].image; else img.remove(); });
+      });
+    }
+  }
   const pixButton = document.getElementById("pixButton");
   if (pixButton) {
     const defaultLabel = pixButton.textContent;

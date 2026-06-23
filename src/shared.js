@@ -546,6 +546,11 @@
     const table = MESSAGES[currentLanguage] || MESSAGES.pt;
     let text = table[key] != null ? table[key] : MESSAGES.pt[key];
     if (text == null) return key;
+    // Multi-TCG: {game} vira o nome do jogo atual (Pokémon / Lorcana), pra uma
+    // mesma chave servir todos os jogos (ex.: "Sua coleção de {game}").
+    if (text.indexOf("{game}") >= 0) {
+      text = text.split("{game}").join((window.SLEEVU && window.SLEEVU.name) || "Pokémon");
+    }
     if (vars) {
       Object.entries(vars).forEach(([name, value]) => {
         text = text.split(`{${name}}`).join(value);
@@ -616,8 +621,8 @@
       ${link("index.html", "nav.home", "home")}
       ${group("nav.explore", exploreActive, `
           ${link("cards.html", "nav.allCards", "cards")}
-          ${link("pokedex.html", "nav.pokemon", "pokedex")}
-          ${link("trainers.html", "nav.trainers", "trainers")}
+          ${currentGame() === "pokemon" ? link("pokedex.html", "nav.pokemon", "pokedex") : ""}
+          ${currentGame() === "pokemon" ? link("trainers.html", "nav.trainers", "trainers") : ""}
           ${link("sets.html", "nav.sets", "sets")}
           ${link("artists.html", "nav.artists", "artists")}`)}
       ${group("nav.collection", collectionActive, `
