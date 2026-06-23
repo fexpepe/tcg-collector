@@ -18,26 +18,70 @@
     empty: document.getElementById("emptyState")
   };
 
-  // No HUB (apex) não há catálogo próprio: mostra atalhos pro portfólio de cada
-  // jogo. O portfólio SOMADO de todos os TCGs é o próximo passo (precisa carregar
-  // os dois catálogos + as coleções por jogo da nuvem).
+  // No HUB (apex) não há catálogo próprio. O portfólio COMBINADO soma os jogos a
+  // partir do resumo que cada jogo grava num cookie .sleevu.app
+  // (writePortfolioCookie): total por jogo + linha de valor, sem iframe nem
+  // cross-origin. Jogo sem cookie ainda não teve o portfólio aberto -> atalho.
   if ((window.SLEEVU && window.SLEEVU.game) === "hub") {
     const prod = /(^|\.)sleevu\.app$/i.test(location.hostname);
     const pfUrl = (g) => prod
       ? (g === "pokemon" ? "https://poke.sleevu.app/portfolio.html" : "https://lorcana.sleevu.app/portfolio.html")
       : "portfolio.html?game=" + g;
-    const tile = (href, name, badge) => `<li><a class="game-tile" href="${escapeAttribute(href)}">`
-      + `<span class="game-badge available">${escapeHtml(badge)}</span>`
-      + `<strong class="game-name">${escapeHtml(name)}</strong>`
-      + `<span class="game-tile-desc">${escapeHtml(t("portfolio.hubGameLink"))}</span></a></li>`;
+    const readPf = (g) => {
+      const m = document.cookie.match(new RegExp("(?:^|; )sleevu_pf_" + g + "=([^;]*)"));
+      if (!m) return null;
+      try { return JSON.parse(decodeURIComponent(m[1])); } catch (e) { return null; }
+    };
+    const fromBRL = (v) => { const r = shared.convertMoney(v, "BRL", shared.getCurrency()); return r == null ? v : r; };
+    const COLORS = { pokemon: "#d9a300", lorcana: "#3f3d96" };
+    const games = [
+      { g: "pokemon", name: "Pokémon TCG", data: readPf("pokemon") },
+      { g: "lorcana", name: "Disney Lorcana", data: readPf("lorcana") }
+    ];
+    games.forEach((x) => {
+      x.color = COLORS[x.g];
+      x.total = x.data ? fromBRL((x.data.c || 0) + (x.data.b || 0)) : null;
+      x.pts = ((x.data && x.data.h) || []).map((p) => [p[0], fromBRL(p[1])]);
+    });
+    const combined = games.reduce((s, x) => s + (x.total || 0), 0);
+
+    // Gráfico: uma linha por jogo (valor coleção+binders no tempo, moeda do header).
+    const hubChart = () => {
+      const withPts = games.filter((x) => x.pts && x.pts.length >= 2);
+      if (!withPts.length) return "";
+      const dates = Array.from(new Set([].concat.apply([], withPts.map((x) => x.pts.map((p) => p[0]))))).sort();
+      if (dates.length < 2) return "";
+      const allV = [].concat.apply([1], withPts.map((x) => x.pts.map((p) => p[1])));
+      const maxV = Math.max.apply(null, allV);
+      const W = 720, H = 200, P = 10;
+      const X = (d) => P + (dates.indexOf(d) / (dates.length - 1)) * (W - 2 * P);
+      const Y = (v) => H - P - (v / maxV) * (H - 2 * P);
+      const lines = withPts.map((x) => {
+        const pts = x.pts.map((p) => X(p[0]).toFixed(1) + "," + Y(p[1]).toFixed(1)).join(" ");
+        return `<polyline points="${pts}" fill="none" stroke="${x.color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+      }).join("");
+      const legend = withPts.map((x) => `<span class="pf-hub-leg"><span class="pf-hub-dot" style="background:${x.color}"></span>${escapeHtml(x.name)}</span>`).join("");
+      return `<div class="pf-hub-chart"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${escapeAttribute(t("portfolio.hubChart"))}">${lines}</svg><div class="pf-hub-legend">${legend}</div></div>`;
+    };
+
+    const card = (x) => {
+      const body = x.data
+        ? `<span class="pf-hub-card-val">${money(x.total)}</span>`
+        : `<span class="game-tile-desc">${escapeHtml(t("portfolio.hubVisit"))}</span>`;
+      return `<li><a class="game-tile pf-hub-card" href="${escapeAttribute(pfUrl(x.g))}">`
+        + `<span class="pf-hub-card-head"><span class="pf-hub-dot" style="background:${x.color}"></span>`
+        + `<strong class="game-name">${escapeHtml(x.name)}</strong></span>${body}</a></li>`;
+    };
+
     const main = document.querySelector("main");
     if (main) {
       main.innerHTML = `<div class="page-head"><h1>${escapeHtml(t("nav.portfolio"))}</h1></div>`
-        + `<section class="home-games"><h2>${escapeHtml(t("portfolio.hubTitle"))}</h2>`
-        + `<ul class="home-games-grid">`
-        + tile(pfUrl("pokemon"), "Pokémon TCG", t("home.games.available"))
-        + tile(pfUrl("lorcana"), "Disney Lorcana", t("home.games.available"))
-        + `</ul><p class="portfolio-note">${escapeHtml(t("portfolio.hubNote"))}</p></section>`;
+        + `<section class="pf-hub">`
+        + `<div class="pf-hub-total"><span>${escapeHtml(t("portfolio.hubCombined"))}</span><strong>${money(combined)}</strong></div>`
+        + `<ul class="home-games-grid pf-hub-games">${games.map(card).join("")}</ul>`
+        + hubChart()
+        + `<p class="portfolio-note">${escapeHtml(t("portfolio.hubNote"))}</p>`
+        + `</section>`;
     }
     return;
   }
@@ -203,9 +247,26 @@
     if (!section) return;
     section.hidden = false;
     const hist = recordSnapshot(collection, binders, wishlist);
+    writePortfolioCookie(hist);
     if (!controlsBound) { bindControls(); controlsBound = true; }
     renderControls();
     renderChart(hist);
+  }
+
+  // Espelha o resumo do portfólio deste jogo num cookie de domínio .sleevu.app,
+  // pro HUB (apex) somar todos os jogos sem precisar de iframe/cross-origin.
+  // Valores em BRL (canônico); histórico compacto (combinado c+b, últimos pontos).
+  function writePortfolioCookie(hist) {
+    const g = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
+    if (g === "hub") return;
+    const last = hist[hist.length - 1] || {};
+    const h = hist.slice(-50).map((p) => [p.d, Math.round(((p.c || 0) + (p.b || 0)) * 100) / 100]);
+    const payload = { c: last.c || 0, b: last.b || 0, w: last.w || 0, ts: Date.now(), h: h };
+    try {
+      let c = "sleevu_pf_" + g + "=" + encodeURIComponent(JSON.stringify(payload)) + "; Path=/; Max-Age=" + (180 * 24 * 3600) + "; SameSite=Lax";
+      if (/(^|\.)sleevu\.app$/i.test(location.hostname)) c += "; Secure; Domain=.sleevu.app";
+      document.cookie = c;
+    } catch (e) { /* ignora */ }
   }
 
   // Listeners uma vez só (senão empilham a cada renderControls e o toggle dispara

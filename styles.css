@@ -3026,6 +3026,34 @@ a.progress-row:hover {
   line-height: 1.6;
 }
 
+/* Portfólio combinado do HUB (apex) */
+.pf-hub-total {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px 22px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  margin-bottom: 18px;
+}
+.pf-hub-total span { color: var(--muted); font-size: 13px; }
+.pf-hub-total strong { font-size: 34px; font-weight: 700; letter-spacing: -0.5px; }
+.pf-hub-games { margin-bottom: 18px; }
+.pf-hub-card { gap: 8px; }
+.pf-hub-card-head { display: flex; align-items: center; gap: 9px; }
+.pf-hub-card-val { font-size: 22px; font-weight: 700; }
+.pf-hub-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; display: inline-block; }
+.pf-hub-chart {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px 18px 12px;
+}
+.pf-hub-chart svg { width: 100%; height: 200px; display: block; }
+.pf-hub-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; }
+.pf-hub-leg { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); }
+
 /* Gráfico de progressão do portfólio */
 .pf-chart {
   background: var(--panel);
