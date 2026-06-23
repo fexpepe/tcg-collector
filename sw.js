@@ -8,7 +8,7 @@
 //    da rede quando online (assim um deploy novo é sempre pego, sem o app ficar
 //    preso numa versão velha) e caem no cache quando offline — fazendo o app
 //    abrir e a coleção já vista funcionar sem internet (PWA instalável).
-const SHELL_CACHE = "tcg-shell-v12";
+const SHELL_CACHE = "tcg-shell-v13";
 const IMAGE_CACHE = "tcg-images-v1";
 const DATA_CACHE = "tcg-data-v1";
 const CACHES = [SHELL_CACHE, IMAGE_CACHE, DATA_CACHE];
@@ -81,16 +81,21 @@ async function cacheFirst(url) {
   const cache = await caches.open(IMAGE_CACHE);
   const cached = await cache.match(url.href);
   if (cached) return cached;
-  try {
-    const response = await fetch(url.href, { mode: "cors", credentials: "omit" });
-    if (response && response.ok) {
-      cache.put(url.href, response.clone());
-      trim(IMAGE_CACHE, MAX_IMAGES);
-    }
-    return response;
-  } catch (error) {
-    return cached || Response.error();
+  // cors dá resposta não-opaca (cacheável sem padding de cota) — funciona com
+  // hosts que enviam CORS (TCGdex etc.). Hosts SEM CORS (ex.: cards.lorcast.io do
+  // Lorcana) rejeitam o fetch cors; aí cai no no-cors (resposta opaca: ainda
+  // exibe no <img> e cacheia, só com padding de cota). Sem isto, a imagem quebrava.
+  for (const mode of ["cors", "no-cors"]) {
+    try {
+      const response = await fetch(url.href, { mode, credentials: "omit" });
+      if (response && (response.ok || response.type === "opaque")) {
+        cache.put(url.href, response.clone());
+        trim(IMAGE_CACHE, MAX_IMAGES);
+        return response;
+      }
+    } catch (error) { /* tenta o próximo modo */ }
   }
+  return cached || Response.error();
 }
 
 // App shell e dados: rede primeiro (sempre fresco quando online), cache como
