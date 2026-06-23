@@ -1507,23 +1507,37 @@
   // abre a busca pra conferir o preço e digitar no campo manual). Cada um tem
   // sua própria formatação de número (ver as helpers de query abaixo).
   const enc = (s) => encodeURIComponent(s);
-  const BR_MARKETPLACES = [
-    { key: "liga", label: "LigaPokémon", url: (card) => `https://www.ligapokemon.com.br/?view=cards/search&card=${enc(paddedCardQuery(card, true))}` },
-    { key: "ligabra", label: "LigaBRA", url: (card) => `https://ligabra.com/filter-products/${enc(cardSearchQuery(card))}` },
-    { key: "myp", label: "MYP", url: (card) => `https://mypcards.com/pokemon?ProdutoSearch%5Bquery%5D=${enc(paddedCardQuery(card, false))}` }
-  ];
+  // Marketplaces por jogo (a rede "Liga" tem um site por TCG — ligapokemon /
+  // ligalorcana — mesma plataforma de busca). No Lorcana só a LigaLorcana (BR);
+  // LigaBRA/MYP são focados em Pokémon.
+  function brMarketplaces() {
+    if (currentGame() === "lorcana") {
+      return [
+        { key: "liga", label: "LigaLorcana", url: (card) => `https://www.ligalorcana.com.br/?view=cards/search&card=${enc(paddedCardQuery(card, true))}` }
+      ];
+    }
+    return [
+      { key: "liga", label: "LigaPokémon", url: (card) => `https://www.ligapokemon.com.br/?view=cards/search&card=${enc(paddedCardQuery(card, true))}` },
+      { key: "ligabra", label: "LigaBRA", url: (card) => `https://ligabra.com/filter-products/${enc(cardSearchQuery(card))}` },
+      { key: "myp", label: "MYP", url: (card) => `https://mypcards.com/pokemon?ProdutoSearch%5Bquery%5D=${enc(paddedCardQuery(card, false))}` }
+    ];
+  }
 
-  // Mercado internacional/EUA. TCGdex não tem página de carta linkável (é a
-  // própria fonte da "Cotação de mercado" acima), então uso PriceCharting
-  // (vendas reais) no lugar.
-  const US_MARKETPLACES = [
-    { key: "ebay", label: "eBay", url: (card) => `https://www.ebay.com/sch/i.html?_nkw=${enc(usSearchText(card))}` },
-    { key: "tcgplayer", label: "TCGplayer", url: (card) => `https://www.tcgplayer.com/search/pokemon/product?productLineName=pokemon&q=${enc(usSearchText(card))}` },
-    { key: "pricecharting", label: "PriceCharting", url: (card) => `https://www.pricecharting.com/search-products?type=prices&q=${enc(usSearchText(card))}` }
-  ];
+  // Mercado internacional/EUA — funciona pros dois jogos (eBay/TCGplayer/
+  // PriceCharting têm Lorcana). A linha do TCGplayer e o texto de busca seguem o
+  // jogo atual.
+  function usMarketplaces() {
+    const line = currentGame() === "lorcana" ? "lorcana" : "pokemon";
+    return [
+      { key: "ebay", label: "eBay", url: (card) => `https://www.ebay.com/sch/i.html?_nkw=${enc(usSearchText(card))}` },
+      { key: "tcgplayer", label: "TCGplayer", url: (card) => `https://www.tcgplayer.com/search/${line}/product?productLineName=${line}&q=${enc(usSearchText(card))}` },
+      { key: "pricecharting", label: "PriceCharting", url: (card) => `https://www.pricecharting.com/search-products?type=prices&q=${enc(usSearchText(card))}` }
+    ];
+  }
 
   function usSearchText(card) {
-    return `pokemon ${card.name} ${cardCode(card)}`.trim();
+    const prefix = currentGame() === "lorcana" ? "lorcana" : "pokemon";
+    return `${prefix} ${card.name} ${cardCode(card)}`.trim();
   }
 
   // Separa número e total ("4/102" -> {4,102}; ou number "4" + setTotal "102").
@@ -1645,8 +1659,8 @@
 
   function brMarketplaceLinks(card) {
     return `<div class="market-links">`
-      + marketplaceRow("price.checkBr", BR_MARKETPLACES, card)
-      + marketplaceRow("price.checkUs", US_MARKETPLACES, card)
+      + marketplaceRow("price.checkBr", brMarketplaces(), card)
+      + marketplaceRow("price.checkUs", usMarketplaces(), card)
       + `</div>`;
   }
 
