@@ -44,6 +44,17 @@
   --header-bg: rgba(255, 255, 255, 0.9);
 }
 
+/* Lorcana: paleta da marca (indigo + âmbar) no lugar do accent do Pokémon
+   (amarelo no escuro / vermelho no claro), nos dois temas. html[data-game] tem
+   especificidade maior que :root e [data-theme], então vence. */
+html[data-game="lorcana"] {
+  --accent: #272557;            /* indigo Lorcana (primário) */
+  --accent-dark: #1a1942;       /* hover/borda */
+  --accent-rgb: 39, 37, 87;
+  --accent-soft: rgba(var(--accent-rgb), 0.12);
+  --gold: #e0992f;              /* âmbar Lorcana (destaques) */
+}
+
 * {
   box-sizing: border-box;
 }
