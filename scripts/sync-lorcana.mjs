@@ -52,11 +52,18 @@ async function run() {
       if ((c.lang || "en") !== "en") continue;
       const img = c.image_uris && c.image_uris.digital;
       const id = `${s.code}-${c.collector_number}`;
-      // Enchanted/Iconic (cartas-chave) são SÓ foil: têm usd_foil, não usd. Usa
-      // usd quando existe, senão usd_foil (senão a carta mais cara fica sem preço).
+      const r2 = (x) => Math.round(x * 100) / 100;
+      // Enchanted/Iconic são alt-art SÓ foil (não têm versão Normal). As demais
+      // têm Normal + Foil. Preço por acabamento: u = usd (normal), uf = usd_foil.
       const pr = c.prices || {};
-      const usd = Number(pr.usd) > 0 ? Number(pr.usd) : (Number(pr.usd_foil) > 0 ? Number(pr.usd_foil) : 0);
-      if (usd > 0) pricing[id] = { u: Math.round(usd * 100) / 100 };
+      const usd = Number(pr.usd) > 0 ? r2(Number(pr.usd)) : 0;
+      const usdFoil = Number(pr.usd_foil) > 0 ? r2(Number(pr.usd_foil)) : 0;
+      const foilOnly = /enchanted|iconic/i.test(c.rarity || "");
+      const p = {};
+      if (usd) p.u = usd;
+      if (usdFoil) p.uf = usdFoil;
+      if (!p.u && p.uf) p.u = p.uf; // fallback p/ a referência única (ex.: só-foil)
+      if (Object.keys(p).length) pricing[id] = p;
       cards.push({
         id,
         name: cardName(c),
@@ -69,7 +76,7 @@ async function run() {
         artist: (c.illustrators && c.illustrators[0]) || "",
         language: "en",
         image: img ? (img.large || img.normal || img.small) : null,
-        variants: ["Normal", "Foil"],
+        variants: foilOnly ? ["Foil"] : ["Normal", "Foil"],
         // extras do Lorcana (pra detalhe/busca futura; pequenos):
         ink: c.ink || (Array.isArray(c.inks) ? c.inks.join("/") : null) || null,
         cost: c.cost != null ? c.cost : null,

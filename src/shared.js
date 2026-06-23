@@ -524,7 +524,9 @@
     if (ref) {
       // Preço BR (MYP) tem prioridade sobre a referência internacional.
       if (ref.b && ref.b.md > 0) { const v = convertMoney(ref.b.md, "BRL", cur); if (v != null) return { value: v, currency: cur, source: "myp", estimated: true }; }
-      if (ref.u > 0) { const v = convertMoney(ref.u, "USD", cur); if (v != null) return { value: v, currency: cur, source: "ref", estimated: true }; }
+      // Acabamento: Foil tem preço próprio (ex.: Lorcana ref.uf); senão o normal.
+      const usd = /foil/i.test(variant || "") && ref.uf > 0 ? ref.uf : ref.u;
+      if (usd > 0) { const v = convertMoney(usd, "USD", cur); if (v != null) return { value: v, currency: cur, source: "ref", estimated: true }; }
       if (ref.e > 0) { const v = convertMoney(ref.e, "EUR", cur); if (v != null) return { value: v, currency: cur, source: "ref", estimated: true }; }
     }
     return { value: 0, currency: cur, source: null, estimated: false };
@@ -1248,7 +1250,30 @@
     return `<div class="market-finish graded-finish"><span class="market-finish-label">${escapeHtml(t("graded.label"))}</span><div class="market-cards">${cards}</div></div>`;
   }
 
+  // Cotação do Lorcana: o preço vem da Lorcast (mercado TCGplayer) — só market
+  // por acabamento (não tem MÍN/MEDIANA/MÁX nem Cardmarket). u = não-foil, uf =
+  // foil; mostra só os acabamentos que a carta tem (Enchanted/Iconic = só foil).
+  function lorcanaMarketHtml(card, fx) {
+    const table = window.TCG_PRICING;
+    const ref = (table && card && card.id && table[card.id]) || null;
+    if (!ref) return "";
+    const cur = currentCurrency;
+    const vars = card.variants || [];
+    const cell = (label, usd) => usd > 0 ? `<div class="market-cell"><span>${escapeHtml(label)}</span><strong>${fmtMoney(cur, toChosenCurrency(usd, "USD", fx))}</strong></div>` : "";
+    const cells = (vars.indexOf("Normal") >= 0 ? cell(t("market.nonfoil"), ref.u) : "")
+      + (vars.indexOf("Foil") >= 0 ? cell(t("market.foil"), ref.uf > 0 ? ref.uf : ref.u) : "");
+    if (!cells) return "";
+    return `<div class="market-finish"><span class="market-finish-label">${escapeHtml(t("market.us"))}</span>`
+      + `<div class="market-cards"><div class="market-card"><span class="market-card-cur">TCGplayer</span><div class="market-cells">${cells}</div></div></div></div>`;
+  }
+
   function marketQuoteHtml(pricing, fx, card) {
+    if (currentGame() === "lorcana") {
+      const lor = lorcanaMarketHtml(card, fx);
+      if (!lor) return "";
+      return `<div class="market-quote-head"><h3>${escapeHtml(t("market.title"))}</h3></div>`
+        + lor + `<p class="market-source">${escapeHtml(t("market.lorcanaSource"))}</p>`;
+    }
     const data = pricing ? marketQuoteData(pricing, card) : { nonfoil: null, foil: null, updated: "" };
     const tcgdex = marketFinishRow(t("market.nonfoil"), data.nonfoil, fx) + marketFinishRow(t("market.foil"), data.foil, fx);
     const br = marketBrRow(card, fx);
