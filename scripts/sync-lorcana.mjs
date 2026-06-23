@@ -82,6 +82,12 @@ async function run() {
   cards.sort((a, b) => a.setId.localeCompare(b.setId) || (Number(a.number) || 0) - (Number(b.number) || 0));
   console.log(`Total: ${cards.length} cartas.`);
 
+  // Capa do set: a Lorcast não tem logo de set, então usamos a arte da 1ª carta
+  // de cada set (a página de Sets mostra isso no lugar do logo).
+  const coverBySet = {};
+  for (const c of cards) { if (c.image && !coverBySet[c.setId]) coverBySet[c.setId] = c.image; }
+  for (const c of cards) { c.setLogo = coverBySet[c.setId] || ""; }
+
   // Índices (sets, artists) no formato { name, cardIds } — o frontend usa nas
   // páginas Sets e Artistas. (Sem pokedex/trainers: não existem no Lorcana.)
   const groupBy = (keyFn) => {
