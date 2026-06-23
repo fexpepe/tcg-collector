@@ -52,7 +52,11 @@ async function run() {
       if ((c.lang || "en") !== "en") continue;
       const img = c.image_uris && c.image_uris.digital;
       const id = `${s.code}-${c.collector_number}`;
-      if (c.prices && c.prices.usd && Number(c.prices.usd) > 0) pricing[id] = { u: Math.round(Number(c.prices.usd) * 100) / 100 };
+      // Enchanted/Iconic (cartas-chave) são SÓ foil: têm usd_foil, não usd. Usa
+      // usd quando existe, senão usd_foil (senão a carta mais cara fica sem preço).
+      const pr = c.prices || {};
+      const usd = Number(pr.usd) > 0 ? Number(pr.usd) : (Number(pr.usd_foil) > 0 ? Number(pr.usd_foil) : 0);
+      if (usd > 0) pricing[id] = { u: Math.round(usd * 100) / 100 };
       cards.push({
         id,
         name: cardName(c),
