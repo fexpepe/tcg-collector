@@ -77,11 +77,20 @@
     const myCards = wantedCards();
     addOptions(elements.pokemonFilter, unique(myCards.map((card) => card.pokemonName || speciesName(card.name))));
     addOptions(elements.setFilter, unique(myCards.map((card) => card.set)));
-    addOptions(elements.languageFilter, unique(myCards.map((card) => card.language)), (value) => shared.cardLanguageLabel(value));
+    addOptions(elements.languageFilter, unique(myCards.map((card) => card.language)), (value) => {
+      const emoji = shared.cardFlagEmoji(value);
+      return (emoji ? emoji + " " : "") + shared.cardLanguageLabel(value);
+    });
     const pref = shared.getCardLang();
     if (pref !== "all" && Array.from(elements.languageFilter.options).some((option) => option.value === pref)) {
       elements.languageFilter.value = pref;
     }
+  }
+
+  // 1º filtro: Pokémon (espécie) / Personagens (Lorcana), conforme o jogo.
+  function updatePokemonFilterLabel() {
+    const label = document.querySelector('label[for="pokemonFilter"]');
+    if (label) label.textContent = gameFilter === "lorcana" ? t("toolbar.characters") : t("toolbar.pokemon");
   }
 
   function bindEvents() {
@@ -125,6 +134,7 @@
   }
 
   function render({ resetCount = false } = {}) {
+    updatePokemonFilterLabel();
     const tiles = wantedPairs();
     pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices), { resetCount });
     updateStats(tiles.length);

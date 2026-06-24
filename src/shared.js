@@ -965,6 +965,13 @@
     pt: '<svg viewBox="0 0 20 14"><rect width="20" height="14" fill="#009b3a"/><polygon points="10,1.6 18.4,7 10,12.4 1.6,7" fill="#fedf00"/><circle cx="10" cy="7" r="2.6" fill="#002776"/></svg>'
   };
 
+  // Emoji da bandeira (pra usar em <option>, que não aceita SVG/HTML). Casa com
+  // os flags SVG: en=EUA, ja=Japão, zh=China, pt=Brasil.
+  const CARD_FLAG_EMOJI = { en: "🇺🇸", ja: "🇯🇵", zh: "🇨🇳", pt: "🇧🇷" };
+  function cardFlagEmoji(language) {
+    return CARD_FLAG_EMOJI[normalizeCardLanguage(language)] || "";
+  }
+
   function normalizeCardLanguage(language) {
     const code = String(language || "").toLowerCase();
     if (code.startsWith("pt")) return "pt";
@@ -2572,6 +2579,7 @@
     toRoman,
     typesForDex,
     cardFlag,
+    cardFlagEmoji,
     cardLanguageLabel,
     cardLangSigla,
     cardLanguageRegion,

@@ -145,9 +145,22 @@
     const myCards = ownedCards();
     addOptions(elements.pokemonFilter, unique(myCards.map((card) => card.pokemonName || speciesName(card.name))));
     addOptions(elements.setFilter, unique(myCards.map((card) => card.set)));
-    addOptions(elements.languageFilter, unique(myCards.map((card) => card.language)), (value) => shared.cardLanguageLabel(value));
+    addOptions(elements.languageFilter, unique(myCards.map((card) => card.language)), (value) => langOptionLabel(value));
     applyCardLangDefault(elements.languageFilter);
     addOptions(elements.rarityFilter, unique(myCards.map((card) => card.rarity)));
+  }
+
+  // Rótulo do filtro de idioma com a bandeirinha (emoji) antes do nome.
+  function langOptionLabel(value) {
+    const emoji = shared.cardFlagEmoji(value);
+    return (emoji ? emoji + " " : "") + shared.cardLanguageLabel(value);
+  }
+
+  // O 1º filtro agrupa por espécie (Pokémon) / personagem (Lorcana): o rótulo
+  // acompanha o jogo selecionado.
+  function updatePokemonFilterLabel() {
+    const label = document.querySelector('label[for="pokemonFilter"]');
+    if (label) label.textContent = gameFilter === "lorcana" ? t("toolbar.characters") : t("toolbar.pokemon");
   }
 
   // Aplica o idioma de carta preferido como valor inicial do filtro de idioma,
@@ -220,6 +233,7 @@
     elements.cardsView.hidden = !isCardsTab;
 
     renderDashboard();
+    updatePokemonFilterLabel();
     if (isCardsTab) {
       renderCards(options || {});
     } else {
