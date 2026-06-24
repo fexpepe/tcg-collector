@@ -161,7 +161,7 @@ select {
 
 .brand {
   font-weight: 800;
-  font-size: 17px;
+  font-size: 34px;
   color: var(--text);
   text-decoration: none;
   white-space: nowrap;
