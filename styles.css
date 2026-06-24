@@ -2433,8 +2433,12 @@ a.hub-tile:hover {
 .login-foot { margin-top: 22px; font-size: 13px; color: var(--subtle); }
 .login-foot a { color: var(--accent); text-decoration: none; }
 .login-foot a:hover { text-decoration: underline; }
-.auth-danger { color: #f87171; }
-.auth-danger:hover { background: rgba(248, 113, 113, 0.12); color: #fca5a5; }
+/* Ação destrutiva: fundo avermelhado fixo pra destacar (apagar conta/dados). A
+   especificidade dupla vence o .lang-dd-option (que define a cor padrão). */
+.lang-dd-option.auth-danger { color: #d8443c; background: rgba(226, 48, 48, 0.1); }
+.lang-dd-option.auth-danger:hover { background: rgba(226, 48, 48, 0.18); color: #c5362f; }
+[data-theme="dark"] .lang-dd-option.auth-danger { color: #f87171; background: rgba(248, 113, 113, 0.12); }
+[data-theme="dark"] .lang-dd-option.auth-danger:hover { background: rgba(248, 113, 113, 0.2); color: #fca5a5; }
 .auth-sync { padding: 2px 14px 6px; font-size: 11px; color: var(--subtle); cursor: default; }
 .auth-sync.ok { color: var(--accent); }
 .auth-sync.fail { color: #f87171; }
