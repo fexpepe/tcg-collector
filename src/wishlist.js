@@ -4,18 +4,20 @@
 
   let cards = [];
   let cardsById = new Map();
-  const owned = shared.createCollectionStore();
-  const wishlist = shared.createWishlistStore();
-  const prices = shared.createPriceStore();
+  let gameFilter = "all"; // all | pokemon | lorcana
 
-  // Modo manifest (produção): baixa só os sets das cartas que aparecem aqui em
-  // vez do catálogo inteiro. A página mostra só as desejadas, mas a carga inclui
-  // também as possuídas para a migração legada v1→v3 ter os objetos das cartas.
-  // Calculado após o catálogo carregar (window.TCG_* só existem depois do
-  // window.SLEEVU.catalogReady — o game.js injeta os scripts em runtime).
-  let manifestMode = false;
+  // Wishlist UNIFICADA: stores por jogo + facades que despacham por jogo (cardGameMap).
+  const ownedByGame = { pokemon: shared.createCollectionStore("pokemon"), lorcana: shared.createCollectionStore("lorcana") };
+  const wishlistByGame = { pokemon: shared.createWishlistStore("pokemon"), lorcana: shared.createWishlistStore("lorcana") };
+  const pricesByGame = { pokemon: shared.createPriceStore("pokemon"), lorcana: shared.createPriceStore("lorcana") };
+  const cardGameMap = new Map();
+  const gameOf = (id) => cardGameMap.get(id) || "pokemon";
+  const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
+  const wishlist = shared.mergedWishlistStore(wishlistByGame, gameOf);
+  const prices = shared.mergedPriceStore(pricesByGame, gameOf);
 
   const elements = {
+    gameFilter: document.getElementById("gameFilter"),
     grid: document.getElementById("cardGrid"),
     empty: document.getElementById("emptyState"),
     search: document.getElementById("searchInput"),
@@ -38,18 +40,19 @@
     onOwnedChange: () => refresh()
   });
 
-  shared.awaitCatalog().then(() => {
-    manifestMode = !(Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length)
-      && !!window.TCG_MANIFEST;
-    const catalogPromise = manifestMode
-      ? shared.loadCatalogForCardIds([...new Set([...wishlist.knownCardIds(), ...owned.knownCardIds()])])
-      : shared.loadCatalog();
-    return Promise.all([catalogPromise, shared.loadFxRates()]);
-  })
+  // Wishlist unificada: carrega as desejadas (+ as possuídas, pra migração e pro
+  // indicador "tenho") dos DOIS jogos, marcando card.game.
+  const idsFor = (g) => [...new Set([...wishlistByGame[g].knownCardIds(), ...ownedByGame[g].knownCardIds()])];
+  Promise.all([
+    shared.loadOwnedAcrossGames({ pokemon: idsFor("pokemon"), lorcana: idsFor("lorcana") }),
+    shared.loadFxRates()
+  ])
     .then(([catalog]) => {
       cards = catalog.cards;
+      cards.forEach((card) => cardGameMap.set(card.id, card.game));
       cardsById = new Map(cards.map((card) => [card.id, card]));
-      owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
+      Object.keys(ownedByGame).forEach((g) =>
+        ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
       hydrateFilters();
       bindEvents();
       render();
@@ -59,9 +62,13 @@
       elements.empty.hidden = false;
     });
 
+  function inGameFilter(card) {
+    return gameFilter === "all" || card.game === gameFilter;
+  }
+
   // Cartas com pelo menos uma variante na lista de desejos.
   function wantedCards() {
-    return cards.filter((card) => wishlist.hasCard(card.id));
+    return cards.filter((card) => inGameFilter(card) && wishlist.hasCard(card.id));
   }
 
   function hydrateFilters() {
@@ -76,6 +83,16 @@
   }
 
   function bindEvents() {
+    elements.gameFilter.addEventListener("click", (event) => {
+      const chip = event.target.closest("[data-game-filter]");
+      if (!chip || chip.dataset.gameFilter === gameFilter) return;
+      gameFilter = chip.dataset.gameFilter;
+      Array.from(elements.gameFilter.children).forEach((node) => {
+        node.setAttribute("aria-pressed", node === chip ? "true" : "false");
+      });
+      render({ resetCount: true });
+    });
+
     const applyFilters = () => render({ resetCount: true });
     elements.search.addEventListener("input", debounce(applyFilters, 200));
     [elements.pokemonFilter, elements.setFilter, elements.languageFilter].forEach((element) => {
