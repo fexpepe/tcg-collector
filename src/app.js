@@ -406,11 +406,13 @@
       : "";
 
     article.innerHTML = `
-      <div class="set-art">
-        ${releaseBadge}
-        ${logo}
-        ${symbol}
-      </div>
+      <a class="set-art-link" href="${escapeAttribute(detailUrl("set", item.name))}" aria-label="${escapeAttribute(item.name)}">
+        <div class="set-art">
+          ${releaseBadge}
+          ${logo}
+          ${symbol}
+        </div>
+      </a>
       <div class="set-body">
         <div class="set-title-row">
           <h3>${escapeHtml(item.name)}</h3>

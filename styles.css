@@ -1026,6 +1026,12 @@ input::placeholder {
   transform: translateY(-2px);
 }
 
+.set-art-link {
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .set-art {
   min-height: 154px;
   background:
