@@ -248,8 +248,14 @@
         return;
       }
 
-      if (shared.handleOwnedTileClick(event, owned, wishlist)) {
+      // Quick-add: o "+" soma +1 a cada clique e pisca "✓ Adicionada!" por 2s,
+      // pra cadastrar várias cópias sem abrir o card (igual ao Explorar). Pra
+      // remover, é no preview da carta (clique na imagem).
+      const addButton = shared.handleAddTileClick(event, owned, wishlist);
+      if (addButton) {
         refreshOwnershipCards();
+        renderDashboard();
+        shared.flashTileAdded(addButton, owned);
       }
     });
   }
@@ -358,7 +364,7 @@
 
   function renderCards({ resetCount = false } = {}) {
     const tiles = ownedTilePairs();
-    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices), { resetCount });
+    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true }), { resetCount });
     updateCardsStats(tiles.length);
   }
 
@@ -403,7 +409,7 @@
     elements.grid.querySelectorAll(".card-tile").forEach((tile) => {
       const quantity = owned.variantTotal(tile.dataset.tileCardId, tile.dataset.tileVariant);
       if (quantity > 0) {
-        shared.refreshTileOwnership(tile, owned, wishlist);
+        shared.refreshTileOwnership(tile, owned, wishlist, { addMode: true });
       } else {
         tile.remove();
       }

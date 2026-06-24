@@ -494,8 +494,12 @@
         return;
       }
 
-      if (shared.handleOwnedTileClick(event, owned, wishlist)) {
+      // Quick-add: cada clique no "+" soma +1 e pisca "✓ Adicionada!" por 2s
+      // (igual ao Explorar). Remover é no preview da carta.
+      const addButton = shared.handleAddTileClick(event, owned, wishlist);
+      if (addButton) {
         refreshOwnership();
+        shared.flashTileAdded(addButton, owned);
       }
     });
   }
@@ -505,7 +509,7 @@
     const tiles = sortTiles(shared.cardVariantPairs(visibleCards));
     // Cartas sem imagem vão para o fim (sort estável preserva a ordem da ordenação escolhida).
     tiles.sort((a, b) => Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card)));
-    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices), { resetCount });
+    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true }), { resetCount });
 
     elements.empty.hidden = tiles.length > 0;
     elements.resultCount.textContent = tn("results.count", tiles.length);
@@ -515,7 +519,7 @@
   // Atualiza tiles e contadores no DOM existente, sem reconstruir a grade
   // (reconstruir faria todas as imagens piscarem).
   function refreshOwnership() {
-    elements.grid.querySelectorAll(".card-tile").forEach((tile) => shared.refreshTileOwnership(tile, owned, wishlist));
+    elements.grid.querySelectorAll(".card-tile").forEach((tile) => shared.refreshTileOwnership(tile, owned, wishlist, { addMode: true }));
     updateHeaderStats();
   }
 
