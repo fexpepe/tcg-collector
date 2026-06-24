@@ -1,12 +1,7 @@
 (function () {
-  // HUB: grade de jogos do Sleevu. Site único — cada tile leva aos SETS daquele
-  // jogo com ?game=, que ENTRA na sessão daquele jogo (lida pelas próximas páginas).
-  function setsUrl(game) {
-    return "sets.html?game=" + game;
-  }
-  document.querySelectorAll(".hub-tile[data-game]").forEach(function (tile) {
-    tile.setAttribute("href", setsUrl(tile.dataset.game));
-  });
+  // HUB: grade de jogos do Sleevu. Os hrefs dos tiles (sets.html?game=...) ficam
+  // direto no HTML — assim NÃO dependem deste JS (um hub.js velho em cache não
+  // consegue reescrever pra link antigo). Aqui só revelamos o logo de cada jogo.
 
   // Revela o logo do jogo quando o arquivo existe (assets/games/). Se faltar ou
   // falhar, fica o nome em texto — sem ícone de imagem quebrada. (Inline onerror
