@@ -68,6 +68,10 @@ const pricing = {};
 let pptData = {};
 try { pptData = JSON.parse(await readFile(new URL("ppt-prices.generated.json", dataDir), "utf8")); } catch { /* sem PPT */ }
 
+// Imagem EN por cardId (preenchida no loop), pra usar de fallback nas cartas
+// localizadas sem imagem própria (ex.: MEP PT sem arte na TCGdex).
+const enImageById = new Map();
+
 // Cartas que a PPT tem e a TCGdex NÃO (add-on-miss): secret rares/promos que a
 // fonte do catálogo não traz. Injetamos no chunk do set+idioma certo (dedupe por
 // id), e o resto do merge (preço/índices) trata como qualquer carta.
@@ -109,6 +113,9 @@ for (const lang of langs) {
       // Imagem da PPT (TCGplayer CDN) onde a TCGdex não tem (ex.: era Mega JP).
       const pp = pptData[card.id];
       if (pp && pp.img && !card.image) { card.image = pp.img; changed = true; }
+      // Coleta as imagens EN (já com o fill da PPT) por id, pra usar como fallback
+      // nas cartas localizadas (PT/JA/ZH) que não têm imagem própria.
+      if (lang === "en" && card.image) enImageById.set(card.id, card.image);
     }
     if (changed) {
       await writeFile(new URL(`sets/${lang}/${chunk.file}`, dataDir), JSON.stringify(chunk.cards), "utf8");
@@ -123,6 +130,26 @@ for (const lang of langs) {
     });
   }
 }
+
+// Fallback de imagem por idioma: carta localizada (PT/JA/ZH) sem imagem própria
+// herda a imagem da MESMA carta em EN (mesmo id TCGdex, ex.: "mep-12-pt" ->
+// "mep-12"). Texto/nome/bandeira seguem no idioma da carta — só a imagem é EN.
+// Roda DEPOIS do loop (enImageById já completo, com o fill da PPT). Os objetos
+// são os mesmos de allCards, então a alteração entra no catálogo unificado.
+let imgFallbacks = 0;
+for (const lang of langs) {
+  if (lang === "en") continue;
+  for (const chunk of chunksByLang[lang] || []) {
+    let changed = false;
+    for (const card of chunk.cards) {
+      if (card.image) continue;
+      const enImg = enImageById.get(String(card.id).replace(/-(pt|ja|zh-tw)$/, ""));
+      if (enImg) { card.image = enImg; imgFallbacks++; changed = true; }
+    }
+    if (changed) await writeFile(new URL(`sets/${lang}/${chunk.file}`, dataDir), JSON.stringify(chunk.cards), "utf8");
+  }
+}
+if (imgFallbacks) console.log(`Imagem EN herdada por cartas localizadas sem imagem própria: ${imgFallbacks}`);
 
 // Preços de mercado BR (MYP), se o sync rodou com token (data/myp-prices.
 // generated.json). Grava em pricing[id].b = { mn, md, mx }; o front prioriza
