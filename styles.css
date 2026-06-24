@@ -3328,7 +3328,8 @@ a.progress-row:hover {
 }
 
 .page-nav .nav-dropdown a {
-  justify-content: flex-start;
+  justify-content: flex-end;
+  text-align: right;
   white-space: nowrap;
 }
 
@@ -3353,6 +3354,7 @@ a.progress-row:hover {
   font-weight: 700;
   color: var(--accent-dark);
   text-decoration: none;
+  text-align: right;
   background: var(--panel);
 }
 .nav-mega-all:hover { color: var(--accent); }
@@ -3370,9 +3372,11 @@ a.progress-row:hover {
   font-weight: 800;
   letter-spacing: -0.2px;
   color: var(--text);
+  text-align: right;
 }
 .page-nav .nav-mega-col a {
-  justify-content: flex-start;
+  justify-content: flex-end;
+  text-align: right;
   white-space: nowrap;
   font-size: 14px;
   padding-top: 6px;
