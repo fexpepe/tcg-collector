@@ -3065,6 +3065,66 @@
       } catch (e) { alert(t("error.import")); }
     }
 
+    // Importa o CSV exportado pelo Dex (dextcg.com). Formato: UTF-16, separado
+    // por ";", colunas Type;Category;Locale;Series;Set;Id;Name;Variant;Rarity;
+    // Quantity;Price. Os IDs são TCGdex (iguais aos do Sleevu), então é só casar
+    // id+variante e gravar na coleção do Pokémon. Idempotente (re-importar dá o
+    // mesmo resultado): cada (id, variante) fica com a quantidade do CSV.
+    function mapDexVariant(v) {
+      const s = String(v || "").toLowerCase().trim();
+      if (!s || s === "normal") return "Normal";
+      if (s.indexOf("1st edition") >= 0) return "1st Edition";
+      if (s.indexOf("reverse") >= 0) return "Reverse";
+      if (s.indexOf("holo") >= 0) return "Holo";
+      return "Normal"; // promos diversos → carta base (Normal)
+    }
+    async function importDexCsv(file) {
+      if (!file) return;
+      if (file.size > 20 * 1024 * 1024) { alert(t("error.import")); return; }
+      try {
+        const buf = await file.arrayBuffer();
+        const b = new Uint8Array(buf);
+        let text;
+        if (b[0] === 0xFF && b[1] === 0xFE) text = new TextDecoder("utf-16le").decode(buf);
+        else if (b[0] === 0xFE && b[1] === 0xFF) text = new TextDecoder("utf-16be").decode(buf);
+        else text = new TextDecoder("utf-8").decode(buf);
+        text = text.replace(/^﻿/, "");
+        const lines = text.split(/\r?\n/).filter((l) => l.trim());
+        if (lines.length < 2) { alert(t("dex.empty")); return; }
+        const header = lines[0].split(";").map((s) => s.trim().toLowerCase());
+        const iType = header.indexOf("type"), iId = header.indexOf("id");
+        const iVar = header.indexOf("variant"), iQty = header.indexOf("quantity");
+        if (iId < 0 || iQty < 0) { alert(t("dex.badFormat")); return; }
+        const agg = {}; // id -> variante -> qty
+        let copies = 0;
+        lines.slice(1).forEach((line) => {
+          const r = line.split(";");
+          if (iType >= 0 && String(r[iType] || "").trim().toLowerCase() !== "collection") return;
+          const id = String(r[iId] || "").trim();
+          const qty = parseInt(String(r[iQty] || "0").trim(), 10) || 0;
+          if (!id || qty <= 0) return;
+          const variant = mapDexVariant(r[iVar]);
+          agg[id] = agg[id] || {};
+          agg[id][variant] = (agg[id][variant] || 0) + qty;
+        });
+        const ids = Object.keys(agg);
+        if (!ids.length) { alert(t("dex.empty")); return; }
+        // Dex é Pokémon: grava na coleção do jogo pokemon.
+        const store = createCollectionStore("pokemon");
+        ids.forEach((id) => {
+          Object.keys(agg[id]).forEach((variant) => {
+            const target = agg[id][variant];
+            const cur = store.getQuantity(id, variant, DEFAULT_CONDITION);
+            store.add(id, variant, DEFAULT_CONDITION, target - cur); // seta = target
+            copies += target;
+          });
+        });
+        flushWrites(); // garante a persistência antes de navegar
+        alert(t("dex.done", { cards: ids.length, copies }));
+        window.location.href = "collection.html?game=pokemon";
+      } catch (e) { alert(t("error.import")); }
+    }
+
     // Instalar como app (PWA): só aparece quando dá pra instalar.
     const installItem = `<li class="lang-dd-option auth-install" role="menuitem" data-pwa-install hidden>${escapeHtml(t("pwa.install"))}</li>`;
     function updateInstallItem() {
@@ -3091,11 +3151,12 @@
     // Apoiar (lugar do "assine" dos concorrentes — aqui é grátis, só doação).
     const supportItem = `<li class="auth-sep" aria-hidden="true"></li>
       <a class="lang-dd-option auth-link auth-support" role="menuitem" href="https://ko-fi.com/fernandopepe" target="_blank" rel="noopener">${escapeHtml(t("auth.support"))}</a>`;
-    // Dados (export/import).
+    // Dados (export/import + importar do Dex).
     const dataItems = `<li class="auth-sep" aria-hidden="true"></li>
       <li class="lang-dd-option" role="menuitem" data-export-json>${escapeHtml(t("auth.exportJson"))}</li>
       <li class="lang-dd-option" role="menuitem" data-export-csv>${escapeHtml(t("auth.exportCsv"))}</li>
-      <li class="lang-dd-option" role="menuitem" data-import>${escapeHtml(t("auth.import"))}</li>`;
+      <li class="lang-dd-option" role="menuitem" data-import>${escapeHtml(t("auth.import"))}</li>
+      <li class="lang-dd-option" role="menuitem" data-import-dex>${escapeHtml(t("dex.import"))}</li>`;
     // Sobre (privacidade/termos).
     const aboutItems = `<li class="auth-sep" aria-hidden="true"></li>
       <a class="lang-dd-option auth-link" role="menuitem" href="privacy.html">${escapeHtml(t("footer.privacy"))}</a>
@@ -3119,7 +3180,8 @@
       try { if (window.indexedDB) indexedDB.deleteDatabase("tcg-collector"); } catch (e) { /* fotos de binder */ }
       window.location.replace(window.location.pathname);
     }
-    const fileInput = `<input type="file" accept="application/json" data-import-input hidden aria-label="${escapeAttribute(t("auth.import"))}">`;
+    const fileInput = `<input type="file" accept="application/json" data-import-input hidden aria-label="${escapeAttribute(t("auth.import"))}">
+      <input type="file" accept=".csv,text/csv" data-import-dex-input hidden aria-label="${escapeAttribute(t("dex.import"))}">`;
 
     function wireDropdown() {
       const dd = slot.querySelector("#authDd");
@@ -3191,12 +3253,15 @@
       if (event.target.closest("[data-export-json]")) { exportJson(); return; }
       if (event.target.closest("[data-export-csv]")) { exportCsv(); return; }
       if (event.target.closest("[data-import]")) { const inp = slot.querySelector("[data-import-input]"); if (inp) inp.click(); return; }
+      if (event.target.closest("[data-import-dex]")) { const inp = slot.querySelector("[data-import-dex-input]"); if (inp) inp.click(); return; }
       if (event.target.closest("[data-delete-account]")) { deleteAccountFlow(); return; }
       if (event.target.closest("[data-auth-logout]")) { authSignOut(); }
     });
     slot.addEventListener("change", (event) => {
       const inp = event.target.closest("[data-import-input]");
-      if (inp && inp.files && inp.files[0]) { importJson(inp.files[0]); inp.value = ""; }
+      if (inp && inp.files && inp.files[0]) { importJson(inp.files[0]); inp.value = ""; return; }
+      const dexInp = event.target.closest("[data-import-dex-input]");
+      if (dexInp && dexInp.files && dexInp.files[0]) { importDexCsv(dexInp.files[0]); dexInp.value = ""; }
     });
 
     (async function boot() {
