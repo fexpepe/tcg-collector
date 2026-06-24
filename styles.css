@@ -55,13 +55,9 @@ html[data-game="lorcana"] {
   --gold: #e0992f;              /* âmbar Lorcana (destaques) */
 }
 
-/* Header com leve cor por jogo (no tema claro) pra diferenciar onde você está:
-   creme no Pokémon, indigo claro no Lorcana, neutro no hub. */
-[data-theme="light"][data-game="pokemon"] { --header-bg: rgba(255, 246, 214, 0.95); }
-[data-theme="light"][data-game="lorcana"] { --header-bg: rgba(230, 230, 247, 0.95); }
-/* Uma faixa fina do accent do jogo embaixo do header reforça a diferença. */
-[data-game="pokemon"] .app-header,
-[data-game="lorcana"] .app-header { border-bottom: 2px solid var(--accent); }
+/* Site unificado: o header é PADRÃO e FIXO em todas as páginas (mesmo fundo e
+   mesma borda neutra), independente do jogo da sessão — sem trocar de cor ao
+   entrar na coleção vindo do Pokémon ou do Lorcana. */
 
 * {
   box-sizing: border-box;
