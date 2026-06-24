@@ -3326,7 +3326,7 @@ a.progress-row:hover {
 
 /* Mega-menu do "Explorar": atalho pra grade + uma coluna por jogo. */
 .nav-dropdown.nav-mega {
-  min-width: 360px;
+  min-width: 230px;
   gap: 6px;
 }
 .nav-mega-all {
@@ -3340,21 +3340,28 @@ a.progress-row:hover {
   background: var(--panel);
 }
 .nav-mega-all:hover { color: var(--accent); }
+/* Vertical: jogos empilhados (não em colunas). */
 .nav-mega-cols {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px 10px;
+  grid-template-columns: 1fr;
+  gap: 8px;
 }
-.nav-mega-col { display: grid; gap: 2px; align-content: start; }
+.nav-mega-col { display: grid; gap: 1px; align-content: start; }
+/* Nome do jogo em destaque (maior), submenu menor — fontes invertidas. */
 .nav-mega-head {
-  padding: 6px 10px 3px;
-  font-size: 11px;
+  padding: 6px 10px 2px;
+  font-size: 15px;
   font-weight: 800;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
-  color: var(--muted);
+  letter-spacing: -0.2px;
+  color: var(--text);
 }
-.page-nav .nav-mega-col a { justify-content: flex-start; white-space: nowrap; }
+.page-nav .nav-mega-col a {
+  justify-content: flex-start;
+  white-space: nowrap;
+  font-size: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
 
 /* Bandeira de idioma da carta */
 .card-flag {
