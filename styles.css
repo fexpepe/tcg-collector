@@ -4008,6 +4008,8 @@ a.progress-row:hover {
   gap: 6px;
   font-size: 0.85rem;
 }
+/* No tema claro, o slot vazio ganha um cinza claro pra destacar do branco. */
+[data-theme="light"] .binder-slot-empty { background: #e3e6eb; }
 .binder-slot-filled {
   cursor: grab;
 }
