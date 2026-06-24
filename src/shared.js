@@ -3043,12 +3043,25 @@
       } catch (e) { alert(t("error.import")); }
     }
 
-    // Itens de dados (export/import), comuns ao menu logado e deslogado.
+    // Atalhos de navegação (relativos — site único).
+    const navItems = `<li class="auth-sep" aria-hidden="true"></li>
+      <a class="lang-dd-option auth-link" role="menuitem" href="collection.html">${escapeHtml(t("nav.collection"))}</a>
+      <a class="lang-dd-option auth-link" role="menuitem" href="portfolio.html?game=hub">${escapeHtml(t("nav.portfolio"))}</a>
+      <a class="lang-dd-option auth-link" role="menuitem" href="hub.html">${escapeHtml(t("nav.explore"))}</a>`;
+    // Apoiar (lugar do "assine" dos concorrentes — aqui é grátis, só doação).
+    const supportItem = `<li class="auth-sep" aria-hidden="true"></li>
+      <a class="lang-dd-option auth-link auth-support" role="menuitem" href="https://ko-fi.com/fernandopepe" target="_blank" rel="noopener">${escapeHtml(t("auth.support"))}</a>`;
+    // Dados (export/import).
     const dataItems = `<li class="auth-sep" aria-hidden="true"></li>
       <li class="lang-dd-option" role="menuitem" data-export-json>${escapeHtml(t("auth.exportJson"))}</li>
       <li class="lang-dd-option" role="menuitem" data-export-csv>${escapeHtml(t("auth.exportCsv"))}</li>
-      <li class="lang-dd-option" role="menuitem" data-import>${escapeHtml(t("auth.import"))}</li>
-      <li class="auth-sep" aria-hidden="true"></li>
+      <li class="lang-dd-option" role="menuitem" data-import>${escapeHtml(t("auth.import"))}</li>`;
+    // Sobre (privacidade/termos).
+    const aboutItems = `<li class="auth-sep" aria-hidden="true"></li>
+      <a class="lang-dd-option auth-link" role="menuitem" href="privacy.html">${escapeHtml(t("footer.privacy"))}</a>
+      <a class="lang-dd-option auth-link" role="menuitem" href="terms.html">${escapeHtml(t("footer.terms"))}</a>`;
+    // Apagar dados (zona de perigo).
+    const deleteItem = `<li class="auth-sep" aria-hidden="true"></li>
       <li class="lang-dd-option auth-danger" role="menuitem" data-delete-account>${escapeHtml(t("auth.deleteData"))}</li>`;
 
     // Apaga conta+nuvem (logado) ou só os dados locais (deslogado), e zera tudo.
@@ -3082,7 +3095,11 @@
         <button type="button" class="secondary auth-acct" aria-haspopup="menu" aria-expanded="false">${escapeHtml(t("auth.account"))}<span class="lang-dd-caret" aria-hidden="true">▾</span></button>
         <ul class="lang-dd-menu auth-menu" role="menu" hidden>
           <li class="lang-dd-option" role="menuitem" data-auth-login>${escapeHtml(t("auth.signIn"))}</li>
+          ${navItems}
+          ${supportItem}
           ${dataItems}
+          ${aboutItems}
+          ${deleteItem}
         </ul>
         ${fileInput}
       </div>`;
@@ -3096,7 +3113,11 @@
         <ul class="lang-dd-menu auth-menu" role="menu" hidden>
           <li class="lang-dd-option auth-email">${escapeHtml(email)}</li>
           <li class="auth-sync" data-auth-sync></li>
+          ${navItems}
+          ${supportItem}
           ${dataItems}
+          ${aboutItems}
+          ${deleteItem}
           <li class="auth-sep" aria-hidden="true"></li>
           <li class="lang-dd-option" role="menuitem" data-auth-logout>${escapeHtml(t("auth.signOut"))}</li>
         </ul>

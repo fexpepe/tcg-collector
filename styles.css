@@ -2450,6 +2450,11 @@ a.hub-tile:hover {
 .auth-acct { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; }
 .auth-sep { height: 1px; margin: 4px 0; padding: 0; background: var(--line); list-style: none; }
 .auth-sep:hover { background: var(--line); }
+/* Links (atalhos/sobre/apoiar) como opções do menu de conta. */
+.auth-menu a.auth-link { text-decoration: none; color: var(--muted); }
+.auth-menu a.auth-link:hover { background: var(--panel); color: var(--text); }
+.auth-menu a.auth-support { color: var(--accent); }
+.auth-menu a.auth-support:hover { color: var(--accent); }
 
 .lang-dd-toggle {
   display: inline-flex;
