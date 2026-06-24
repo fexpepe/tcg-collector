@@ -628,22 +628,23 @@
       return g === "hub" ? "index.html" : "index.html?game=" + g;
     };
     const apexUrl = gameHomeUrl("hub");
+    // Página HUB (grade de jogos): mora no apex. De um subdomínio, cruza pra lá.
+    const hubUrl = /(^|\.)sleevu\.app$/i.test(location.hostname) ? "https://sleevu.app/hub.html" : "hub.html";
     const brand = document.querySelector(".brand");
     if (brand) brand.setAttribute("href", apexUrl);
 
     if (currentGame() === "hub") {
-      // Apex/HUB do ecossistema: Explorar (jogos) + Portfólio somado.
+      // Apex/Início: HUB (grade de jogos) + Portfólio somado.
       nav.innerHTML = `
         ${link(apexUrl, "nav.hub", "home")}
-        ${group("nav.explore", false, `
-            ${link(gameHomeUrl("pokemon"), "nav.gamePokemon", "_")}
-            ${link(gameHomeUrl("lorcana"), "nav.gameLorcana", "_")}`)}
+        ${link(hubUrl, "nav.gamesHub", "hub")}
         ${link("portfolio.html", "nav.portfolio", "portfolio")}
       `;
     } else {
-      // Jogo (poke./lorcana.): HUB volta pro apex; logo idem. Resto relativo.
+      // Jogo (poke./lorcana.): Início e HUB voltam pro apex; resto relativo.
       nav.innerHTML = `
         ${link(apexUrl, "nav.hub", "home")}
+        ${link(hubUrl, "nav.gamesHub", "hub")}
         ${group("nav.explore", exploreActive, `
             ${link("cards.html", "nav.allCards", "cards")}
             ${currentGame() === "pokemon" ? link("pokedex.html", "nav.pokemon", "pokedex") : ""}

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io; connect-src 'self' https://api.tcgdex.net https://pokeapi.co https://economia.awesomeapi.com.br https://*.supabase.co; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="title.hub">HUB — escolha um jogo · Sleevu</title>
+    <meta name="description" content="O HUB do Sleevu: escolha um jogo de cartas — Pokémon, Lorcana e mais — pra ver os sets, montar a coleção e acompanhar preços.">
+    <link rel="canonical" href="https://sleevu.app/hub">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sleevu.app/hub">
+    <meta property="og:title" content="HUB — escolha um jogo · Sleevu">
+    <meta property="og:description" content="O HUB do Sleevu: escolha um jogo de cartas — Pokémon, Lorcana e mais — pra ver os sets, montar a coleção e acompanhar preços.">
+    <meta property="og:image" content="https://sleevu.app/og-image.svg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HUB — escolha um jogo · Sleevu">
+    <meta name="twitter:description" content="O HUB do Sleevu: escolha um jogo de cartas — Pokémon, Lorcana e mais — pra ver os sets, montar a coleção e acompanhar preços.">
+    <meta name="twitter:image" content="https://sleevu.app/og-image.svg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#0d0e12">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <script src="src/game.js" data-catalog=""></script>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">Sleevu</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page="hub"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-head">
+        <h1 data-i18n="hub.heading">Escolha um jogo</h1>
+        <p class="page-head-sub" data-i18n="hub.sub">Todas as suas coleções de TCG no Sleevu. Escolha um jogo pra ver os sets, montar a coleção e acompanhar preços — grátis e local-first.</p>
+      </div>
+
+      <section class="hub">
+        <ul class="hub-grid">
+          <li>
+            <a class="hub-tile" data-game="pokemon" href="sets.html">
+              <span class="hub-logo-box">
+                <img class="hub-logo" src="assets/games/pokemon.png" alt="Pokémon TCG" decoding="async" hidden>
+                <span class="hub-logo-text">Pokémon TCG</span>
+              </span>
+              <span class="hub-tile-foot">
+                <span class="game-badge available" data-i18n="home.games.available">Disponível</span>
+                <span class="hub-tile-go" data-i18n="hub.seeSets">Ver sets →</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="hub-tile" data-game="lorcana" href="sets.html">
+              <span class="hub-logo-box">
+                <img class="hub-logo" src="assets/games/lorcana.webp" alt="Disney Lorcana" decoding="async" hidden>
+                <span class="hub-logo-text">Disney Lorcana</span>
+              </span>
+              <span class="hub-tile-foot">
+                <span class="game-badge available" data-i18n="home.games.available">Disponível</span>
+                <span class="hub-tile-go" data-i18n="hub.seeSets">Ver sets →</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <div class="hub-tile is-soon" aria-disabled="true">
+              <span class="hub-logo-box">
+                <span class="hub-logo-text" data-i18n="hub.moreSoon">Mais jogos em breve</span>
+              </span>
+              <span class="hub-tile-foot">
+                <span class="game-badge soon" data-i18n="home.games.soon">Em breve</span>
+              </span>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/shared.js"></script>
+    <script defer src="src/hub.js"></script>
+  </body>
+</html>

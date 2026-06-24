@@ -2117,6 +2117,58 @@ input::placeholder {
 }
 .game-tile.is-soon strong { color: var(--muted); }
 
+/* Página HUB: grade de jogos (estilo Collectr) — escolha um jogo pra ver os sets. */
+.hub { max-width: 1140px; margin: 0 auto; }
+.page-head-sub { max-width: 680px; margin: 6px 0 0; color: var(--muted); }
+.hub-grid {
+  list-style: none;
+  margin: 26px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+.hub-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+}
+a.hub-tile:hover {
+  border-color: var(--accent-dark);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+.hub-logo-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 128px;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+.hub-logo { max-width: 100%; max-height: 100%; object-fit: contain; }
+.hub-logo-text { font-size: 19px; font-weight: 800; color: #4b4b4b; text-align: center; }
+.hub-tile-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.hub-tile-go { font-size: 13px; color: var(--muted); }
+.hub-tile.is-soon { opacity: 0.65; }
+.hub-tile.is-soon .hub-logo-box { background: var(--bg); }
+.hub-tile.is-soon .hub-logo-text { color: var(--muted); }
+
 .home-sources {
   margin-top: 44px;
   text-align: center;

@@ -27,7 +27,7 @@
     const sub = document.querySelector(".hero-sub");
     if (sub) sub.textContent = t("home.hubSub");
     const cta = document.querySelector(".hero-actions .cta:not(.secondary-cta)");
-    if (cta) { cta.setAttribute("href", "#games"); cta.textContent = t("home.hubCta"); }
+    if (cta) { cta.setAttribute("href", "hub.html"); cta.textContent = t("home.hubCta"); }
     const sec = document.querySelector(".hero-actions .secondary-cta");
     if (sec) sec.remove();
     document.querySelectorAll(".hero-cards img").forEach((i) => i.remove());
