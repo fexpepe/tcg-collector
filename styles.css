@@ -2455,6 +2455,9 @@ a.hub-tile:hover {
 .auth-menu a.auth-link:hover { background: var(--panel); color: var(--text); }
 .auth-menu a.auth-support { color: var(--accent); }
 .auth-menu a.auth-support:hover { color: var(--accent); }
+/* Instalar app (PWA): CTA em destaque no topo do menu. */
+.auth-install { color: var(--accent); font-weight: 800; }
+.auth-install:hover { color: var(--accent); }
 
 .lang-dd-toggle {
   display: inline-flex;

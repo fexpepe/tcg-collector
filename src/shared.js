@@ -63,6 +63,28 @@
     } catch (e) { /* storage bloqueado: ignora */ }
   })();
 
+  // ── PWA (instalar na tela inicial) ────────────────────────────────────────
+  // Captura o prompt de instalação cedo (Android/desktop disparam beforeinstall-
+  // prompt). Guardamos pra um botão próprio no menu de conta. iOS não tem o
+  // evento — lá mostramos a dica de "Compartilhar → Adicionar à Tela de Início".
+  let deferredInstallPrompt = null;
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    document.dispatchEvent(new CustomEvent("sleevu:installable"));
+  });
+  window.addEventListener("appinstalled", () => {
+    deferredInstallPrompt = null;
+    document.dispatchEvent(new CustomEvent("sleevu:installable"));
+  });
+  function isIOSDevice() { return /iphone|ipad|ipod/i.test(navigator.userAgent || ""); }
+  function isStandalonePWA() {
+    return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+  }
+  // Mostra o botão quando dá pra instalar: tem o prompt (Android/desktop) ou é
+  // iOS (dica manual) — e o app ainda não está instalado/aberto em standalone.
+  function canInstallPWA() { return !isStandalonePWA() && (!!deferredInstallPrompt || isIOSDevice()); }
+
   function createIdStore(storageKey) {
     let ids = load();
 
@@ -3043,6 +3065,24 @@
       } catch (e) { alert(t("error.import")); }
     }
 
+    // Instalar como app (PWA): só aparece quando dá pra instalar.
+    const installItem = `<li class="lang-dd-option auth-install" role="menuitem" data-pwa-install hidden>${escapeHtml(t("pwa.install"))}</li>`;
+    function updateInstallItem() {
+      const el = slot.querySelector("[data-pwa-install]");
+      if (el) el.hidden = !canInstallPWA();
+    }
+    async function pwaInstall() {
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        try { await deferredInstallPrompt.userChoice; } catch (e) { /* ignora */ }
+        deferredInstallPrompt = null;
+        updateInstallItem();
+      } else if (isIOSDevice()) {
+        window.alert(t("pwa.iosHint"));
+      }
+    }
+    document.addEventListener("sleevu:installable", updateInstallItem);
+
     // Atalhos de navegação (relativos — site único).
     const navItems = `<li class="auth-sep" aria-hidden="true"></li>
       <a class="lang-dd-option auth-link" role="menuitem" href="collection.html">${escapeHtml(t("nav.collection"))}</a>
@@ -3094,6 +3134,7 @@
       slot.innerHTML = `<div class="lang-dd auth-dd" id="authDd">
         <button type="button" class="secondary auth-acct" aria-haspopup="menu" aria-expanded="false">${escapeHtml(t("auth.account"))}<span class="lang-dd-caret" aria-hidden="true">▾</span></button>
         <ul class="lang-dd-menu auth-menu" role="menu" hidden>
+          ${installItem}
           <li class="lang-dd-option" role="menuitem" data-auth-login>${escapeHtml(t("auth.signIn"))}</li>
           ${navItems}
           ${supportItem}
@@ -3104,6 +3145,7 @@
         ${fileInput}
       </div>`;
       wireDropdown();
+      updateInstallItem();
     }
     function renderLoggedIn(session) {
       const email = (session.user && session.user.email) || "conta";
@@ -3113,6 +3155,7 @@
         <ul class="lang-dd-menu auth-menu" role="menu" hidden>
           <li class="lang-dd-option auth-email">${escapeHtml(email)}</li>
           <li class="auth-sync" data-auth-sync></li>
+          ${installItem}
           ${navItems}
           ${supportItem}
           ${dataItems}
@@ -3124,6 +3167,7 @@
         ${fileInput}
       </div>`;
       wireDropdown();
+      updateInstallItem();
       refreshSyncStatus();
     }
     // Mostra o estado da última sincronização (lido na hora de abrir o menu).
@@ -3143,6 +3187,7 @@
         window.location.href = "login.html";
         return;
       }
+      if (event.target.closest("[data-pwa-install]")) { pwaInstall(); return; }
       if (event.target.closest("[data-export-json]")) { exportJson(); return; }
       if (event.target.closest("[data-export-csv]")) { exportCsv(); return; }
       if (event.target.closest("[data-import]")) { const inp = slot.querySelector("[data-import-input]"); if (inp) inp.click(); return; }
