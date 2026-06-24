@@ -1,3 +1,9 @@
+/* `hidden` sempre esconde: elementos com display flex/grid (ex.: a barra de
+   filtro e o dashboard) têm especificidade maior que o [hidden] do navegador,
+   então sem isto ficavam visíveis mesmo com hidden=true (ex.: na view de
+   coleção compartilhada). */
+[hidden] { display: none !important; }
+
 :root {
   color-scheme: dark;
   /* Largura do conteúdo (header, main, footer) — mais largo, estilo Collectr. */
@@ -3596,7 +3602,7 @@ a.progress-row:hover {
 .dash-stat-val { font-size: 24px; font-weight: 800; letter-spacing: -0.3px; }
 .dash-stat-label { font-size: 12px; color: var(--muted); }
 .dash-top-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.dash-top-list a { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+.dash-top-list a, .dash-top-list .dash-top-row { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
 .dash-top-thumb { width: 30px; flex: none; }
 .dash-top-thumb img { width: 100%; border-radius: 3px; display: block; }
 .dash-top-info { display: flex; flex-direction: column; min-width: 0; flex: 1; }

@@ -493,7 +493,7 @@
       const vbrl = shared.convertMoney(unit, shared.getCurrency(), "BRL");
       items.push({
         id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language,
-        v: variant, q: qty, vbrl: vbrl == null ? 0 : Math.round(vbrl * 100) / 100,
+        g: card.game, v: variant, q: qty, vbrl: vbrl == null ? 0 : Math.round(vbrl * 100) / 100,
         img: src.url, fb: src.fallback || ""
       });
     });
@@ -560,6 +560,58 @@
         </div>
         <a class="primary" href="collection.html">${escapeHtml(t("collection.shared.cta"))}</a>
       </div>
+      ${sharedDashboardHtml(items, total)}
       <div class="card-grid">${items.map(sharedTile).join("")}</div>`;
+  }
+
+  // Mesmo dashboard da coleção, porém a partir dos itens desnormalizados do share
+  // (sem catálogo). Distribuição por jogo só aparece se o share trouxe `g`
+  // (shares antigos não têm — degrada sem quebrar).
+  function sharedDashboardHtml(items, total) {
+    const copies = items.reduce((s, it) => s + (it.q || 1), 0);
+    const distinct = new Set(items.map((it) => it.id)).size;
+    const sets = new Set(items.map((it) => it.s)).size;
+
+    const top = items.slice()
+      .map((it) => ({ it, unit: fromBRL(it.vbrl || 0) }))
+      .filter((x) => x.unit > 0)
+      .sort((a, b) => b.unit - a.unit)
+      .slice(0, 3)
+      .map(({ it, unit }) => {
+        const thumb = shared.localizedImg(it.img, { alt: "", fallback: it.fb, loading: "lazy", thumb: true });
+        return `<li><div class="dash-top-row"><span class="dash-top-thumb">${thumb}</span>
+          <span class="dash-top-info"><strong>${escapeHtml(it.n)}</strong><span class="dash-top-set">${escapeHtml(it.s)}</span></span>
+          <span class="dash-top-val">${escapeHtml(shared.formatMoney(shared.getCurrency(), unit))}</span></div></li>`;
+      }).join("");
+
+    const seen = new Set();
+    const byGame = {};
+    items.forEach((it) => { if (it.g && !seen.has(it.id)) { seen.add(it.id); byGame[it.g] = (byGame[it.g] || 0) + 1; } });
+    const distOrder = [
+      { game: "pokemon", label: t("filter.gamePokemon"), color: "#d9a300" },
+      { game: "lorcana", label: t("filter.gameLorcana"), color: "#3f3d96" }
+    ].filter((g) => byGame[g.game]);
+    const max = Math.max(1, ...distOrder.map((g) => byGame[g.game]));
+    const distHtml = distOrder.length
+      ? distOrder.map((g) => `<div class="dash-dist-row">
+          <span class="dash-dist-label">${escapeHtml(g.label)}</span>
+          <span class="dash-dist-track"><span class="dash-dist-fill" style="width:${Math.round((byGame[g.game] / max) * 100)}%;background:${g.color}"></span></span>
+          <span class="dash-dist-n">${byGame[g.game]}</span>
+        </div>`).join("")
+      : "";
+
+    return `<section class="collection-dashboard">
+      <article class="dash-card dash-stats">
+        <div><span class="dash-stat-val">${copies}</span><span class="dash-stat-label">${escapeHtml(t("stats.copies"))}</span></div>
+        <div><span class="dash-stat-val">${distinct}</span><span class="dash-stat-label">${escapeHtml(t("stats.distinct"))}</span></div>
+        <div><span class="dash-stat-val">${sets}</span><span class="dash-stat-label">${escapeHtml(t("stats.setsCovered"))}</span></div>
+        <div><span class="dash-stat-val">${escapeHtml(total > 0 ? shared.formatMoney(shared.getCurrency(), total) : "—")}</span><span class="dash-stat-label">${escapeHtml(t("dash.value"))}</span></div>
+      </article>
+      <article class="dash-card dash-top">
+        <h3>${escapeHtml(t("dash.topTitle"))}</h3>
+        <ol class="dash-top-list">${top || `<li class="dash-empty">—</li>`}</ol>
+      </article>
+      ${distHtml ? `<article class="dash-card dash-dist"><h3>${escapeHtml(t("dash.distTitle"))}</h3><div class="dash-dist-bars">${distHtml}</div></article>` : ""}
+    </section>`;
   }
 })();
