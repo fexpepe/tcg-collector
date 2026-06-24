@@ -33,9 +33,7 @@
     document.querySelectorAll(".hero-cards img").forEach((i) => i.remove());
     const games = document.querySelector(".home-games");
     if (games) games.id = "games";
-    // O tile do Pokémon vai pro subdomínio do jogo (em dev, ?game=pokemon).
-    const pokeTile = document.querySelector('.home-games .game-tile[href="pokedex.html"]');
-    if (pokeTile) pokeTile.setAttribute("href", /(^|\.)sleevu\.app$/i.test(location.hostname) ? "https://poke.sleevu.app/" : "index.html?game=pokemon");
+    // Os tiles já apontam pra sets.html?game= no HTML (entram na sessão do jogo).
   }
   const pixButton = document.getElementById("pixButton");
   if (pixButton) {

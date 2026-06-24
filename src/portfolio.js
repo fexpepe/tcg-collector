@@ -23,10 +23,9 @@
   // (writePortfolioCookie): total por jogo + linha de valor, sem iframe nem
   // cross-origin. Jogo sem cookie ainda não teve o portfólio aberto -> atalho.
   if ((window.SLEEVU && window.SLEEVU.game) === "hub") {
-    const prod = /(^|\.)sleevu\.app$/i.test(location.hostname);
-    const pfUrl = (g) => prod
-      ? (g === "pokemon" ? "https://poke.sleevu.app/portfolio.html" : "https://lorcana.sleevu.app/portfolio.html")
-      : "portfolio.html?game=" + g;
+    // Site único: o portfólio de cada jogo é a mesma página com ?game= (entra na
+    // sessão daquele jogo). O combinado lê o resumo que cada jogo grava em cookie.
+    const pfUrl = (g) => "portfolio.html?game=" + g;
     const readPf = (g) => {
       const m = document.cookie.match(new RegExp("(?:^|; )sleevu_pf_" + g + "=([^;]*)"));
       if (!m) return null;
@@ -212,7 +211,7 @@
   // Não dá pra reconstruir o passado (não guardamos histórico de preços), então
   // a série começa hoje e cresce a cada visita/dia.
   // ---------------------------------------------------------------------------
-  const HISTORY_KEY = "tcg-portfolio-history-v1";
+  const HISTORY_KEY = shared.gameKey("history-v1");
   const SERIES = {
     combined: { color: "#34d399", get: (p) => (p.c || 0) + (p.b || 0) },
     collection: { color: "#2dd4bf", get: (p) => p.c || 0 },

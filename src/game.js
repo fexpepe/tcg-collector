@@ -1,37 +1,54 @@
-// Fundação multi-jogo (Fase 0). Script SÍNCRONO no <head>, antes de tudo (o CSP
-// 'self' impede inline). Decide qual TCG este subdomínio serve e carrega o
-// catálogo correto:
+// Fundação multi-jogo. Script SÍNCRONO no <head>, antes de tudo (o CSP 'self'
+// impede inline). Site ÚNICO (sleevu.app): o jogo é uma SESSÃO do site, não um
+// subdomínio. Quem escolhe um jogo no HUB grava a escolha; as páginas de jogo
+// leem essa sessão. Ordem de decisão:
 //
-//   poke.sleevu.app  | sleevu.app | localhost  -> "pokemon" (default)
-//   lorcana.sleevu.app                          -> "lorcana"
-//   localhost + ?game=<slug>                    -> override pra testar
+//   Início (/) e HUB (hub.html)        -> "hub" (sem jogo, sem catálogo)
+//   ?game=<slug> (deep-link / troca)   -> usa e GRAVA a sessão
+//   sessão guardada (localStorage)     -> último jogo escolhido
+//   página de jogo sem sessão          -> "pokemon" (padrão)
 //
-// O catálogo é injetado por aqui (em vez de <script src="data/..."> fixo no HTML)
-// porque o MESMO HTML é servido nos 3 subdomínios — então o caminho dos dados
-// precisa sair do `dataDir` do jogo em runtime. Cada <script> da página declara
-// o que precisa em data-catalog="cards,indexes,...". Os consumidores (shared.js
-// loadCatalog/loadIndexesOnly) esperam window.SLEEVU.catalogReady antes de ler
-// os globais window.TCG_*.
+// O catálogo é injetado por aqui (em vez de <script src="data/..."> fixo) porque
+// o MESMO HTML serve todos os jogos — o caminho dos dados sai do `dataDir` do
+// jogo em runtime. Cada <script> declara o que precisa em data-catalog=
+// "cards,indexes,...". Consumidores (shared.js) esperam window.SLEEVU.catalogReady.
 (function () {
-  // Registro central de jogos. Por ora só Pokémon; Lorcana entra quando houver
-  // catálogo (data/lorcana/...). dataDir do Pokémon = raiz de hoje (não move nada).
+  // Registro central de jogos. dataDir do Pokémon = raiz de hoje (não move nada).
   var GAMES = {
-    // Apex (sleevu.app): HUB do ecossistema — não é um jogo, não tem catálogo.
+    // Início/HUB: não é um jogo — não tem catálogo nem dados próprios.
     hub: { slug: "hub", name: "Sleevu", isHub: true },
     pokemon: { slug: "pokemon", name: "Pokémon", dataDir: "data/" },
     lorcana: { slug: "lorcana", name: "Lorcana", dataDir: "data/lorcana/" }
   };
 
+  var GAME_KEY = "tcg-collector-game-v1"; // sessão: jogo escolhido por último
+  function readSession() {
+    try { var g = localStorage.getItem(GAME_KEY); return (g && GAMES[g] && !GAMES[g].isHub) ? g : null; } catch (e) { return null; }
+  }
+  function writeSession(g) {
+    try { localStorage.setItem(GAME_KEY, g); } catch (e) { /* storage bloqueado: ignora */ }
+  }
+  // Páginas neutras (sem jogo): a Início e o HUB. Cobre URL limpa do Cloudflare
+  // (/, /index, /hub) e o .html.
+  function isNeutralPage() {
+    var p = (location.pathname || "").replace(/\/+$/, "");
+    return p === "" || /\/(index|hub)(\.html)?$/i.test(p);
+  }
+
   function detectGame() {
-    var host = (location.hostname || "").toLowerCase();
-    if (host.indexOf("lorcana.") === 0) return "lorcana";
-    if (host.indexOf("poke.") === 0) return "pokemon";
-    // Em localhost/preview dá pra forçar o jogo por query (?game=pokemon).
-    try {
-      var q = new URLSearchParams(location.search).get("game");
-      if (q && GAMES[q]) return q;
-    } catch (e) { /* sem URLSearchParams: ignora */ }
-    return "hub"; // apex (sleevu.app/www) e dev = HUB do ecossistema
+    var q = null;
+    try { q = new URLSearchParams(location.search).get("game"); } catch (e) { /* ignora */ }
+    if (isNeutralPage()) {
+      // Início/HUB são sempre o hub; mas se vier ?game= (de um link), já grava a
+      // sessão pra próxima navegação entrar no jogo certo.
+      if (q && GAMES[q] && !GAMES[q].isHub) writeSession(q);
+      return "hub";
+    }
+    if (q === "hub") return "hub";                              // portfólio combinado
+    if (q && GAMES[q] && !GAMES[q].isHub) { writeSession(q); return q; } // troca/deep-link
+    var s = readSession();
+    if (s) return s;                                            // sessão atual
+    return "pokemon";                                           // padrão
   }
 
   var game = detectGame();

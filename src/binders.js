@@ -230,7 +230,7 @@
   // ---------------------------------------------------------------------------
   // Store dos binders (localStorage). { collection: [...], sale: [...] }
   // ---------------------------------------------------------------------------
-  const STORAGE_KEY = "tcg-collector-binders-v1";
+  const STORAGE_KEY = shared.gameKey("binders-v1");
   function readData() {
     try {
       const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");

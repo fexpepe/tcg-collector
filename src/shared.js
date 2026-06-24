@@ -24,6 +24,42 @@
   window.addEventListener("pagehide", flushWrites);
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushWrites(); });
 
+  // ── Dados POR JOGO ─────────────────────────────────────────────────────────
+  // Site único (sleevu.app): Pokémon e Lorcana dividem o MESMO localStorage, então
+  // coleção/wishlist/preços/binders/histórico de cada jogo precisam de prefixo do
+  // jogo. Prefs GLOBAIS (tema, idioma, moeda, câmbio, sessão de login) NÃO usam.
+  function currentGameSlug() {
+    const g = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
+    return g === "hub" ? "pokemon" : g; // hub não tem dados próprios
+  }
+  function gameKey(base) {
+    return "tcg-collector-" + currentGameSlug() + "-" + base;
+  }
+
+  // Migração one-time: dados antigos (sem prefixo de jogo, de quando o app rodava
+  // só Pokémon nesta origem) passam pro namespace do Pokémon, sem apagar o
+  // original. Roda uma vez por navegador.
+  (function migrateLegacyGameKeys() {
+    try {
+      if (localStorage.getItem("tcg-collector-ns-migrated-v1")) return;
+      [
+        ["tcg-collector-collection-v3",      "tcg-collector-pokemon-collection-v3"],
+        ["tcg-collector-collection-meta-v1", "tcg-collector-pokemon-collection-meta-v1"],
+        ["tcg-collector-collection-v2",      "tcg-collector-pokemon-collection-v2"],
+        ["tcg-collector-owned-v1",           "tcg-collector-pokemon-owned-v1"],
+        ["tcg-collector-wishlist-v1",        "tcg-collector-pokemon-wishlist-v1"],
+        ["tcg-collector-wishlist-meta-v1",   "tcg-collector-pokemon-wishlist-meta-v1"],
+        ["tcg-collector-prices-v1",          "tcg-collector-pokemon-prices-v1"],
+        ["tcg-collector-binders-v1",         "tcg-collector-pokemon-binders-v1"],
+        ["tcg-portfolio-history-v1",         "tcg-collector-pokemon-history-v1"]
+      ].forEach((pair) => {
+        const old = localStorage.getItem(pair[0]);
+        if (old != null && localStorage.getItem(pair[1]) == null) localStorage.setItem(pair[1], old);
+      });
+      localStorage.setItem("tcg-collector-ns-migrated-v1", "1");
+    } catch (e) { /* storage bloqueado: ignora */ }
+  })();
+
   function createIdStore(storageKey) {
     let ids = load();
 
@@ -80,10 +116,10 @@
   // distinguida por condição (para o futuro cálculo de valor do portfólio).
   // Migra do v2 (cardId -> variante -> quantidade; cópias viram NM) e do v1.
   function createCollectionStore() {
-    const storageKey = "tcg-collector-collection-v3";
-    const metaKey = "tcg-collector-collection-meta-v1";
-    const v2Key = "tcg-collector-collection-v2";
-    const v1Key = "tcg-collector-owned-v1";
+    const storageKey = gameKey("collection-v3");
+    const metaKey = gameKey("collection-meta-v1");
+    const v2Key = gameKey("collection-v2");
+    const v1Key = gameKey("owned-v1");
     let collection = load();
     let initialized = collection !== null;
     if (!initialized) collection = {};
@@ -281,8 +317,8 @@
   // quantidade — é só uma lista de desejos por variante, guardada à parte da
   // coleção. Quando a carta passa a ser possuída, ela sai daqui ("comprei!").
   function createWishlistStore() {
-    const storageKey = "tcg-collector-wishlist-v1";
-    const metaKey = "tcg-collector-wishlist-meta-v1";
+    const storageKey = gameKey("wishlist-v1");
+    const metaKey = gameKey("wishlist-meta-v1");
     let wishlist = readObject(storageKey) || {};
     // Mesma meta de sync da coleção (mod/del por carta) — ver mergeWishlist.
     let meta = normalizeMeta(readObject(metaKey));
@@ -357,7 +393,7 @@
   // para o futuro preenchimento automático (worker LigaBRA/Liga) — que grava
   // nos mesmos campos e continua editável.
   function createPriceStore() {
-    const storageKey = "tcg-collector-prices-v1";
+    const storageKey = gameKey("prices-v1");
     let prices = readObject(storageKey) || {};
 
     function save() {
@@ -619,29 +655,22 @@
         <div class="nav-dropdown" hidden>${links}</div>
       </div>`;
 
-    // Home de cada destino: em produção vai pro subdomínio; em dev (mesma origem)
-    // usa ?game=. O HUB é o apex (sleevu.app). Logo/brand sempre volta pro hub.
-    const gameHomeUrl = (g) => {
-      if (/(^|\.)sleevu\.app$/i.test(location.hostname)) {
-        return g === "pokemon" ? "https://poke.sleevu.app/" : g === "lorcana" ? "https://lorcana.sleevu.app/" : "https://sleevu.app/";
-      }
-      return g === "hub" ? "index.html" : "index.html?game=" + g;
-    };
-    const apexUrl = gameHomeUrl("hub");
-    // Página HUB (grade de jogos): mora no apex. De um subdomínio, cruza pra lá.
-    const hubUrl = /(^|\.)sleevu\.app$/i.test(location.hostname) ? "https://sleevu.app/hub.html" : "hub.html";
+    // Site único (sleevu.app): tudo é relativo. Início = a Home (landing do hub),
+    // HUB = a grade de jogos. O jogo é a sessão do site, não o domínio.
+    const apexUrl = "index.html";
+    const hubUrl = "hub.html";
     const brand = document.querySelector(".brand");
     if (brand) brand.setAttribute("href", apexUrl);
 
     if (currentGame() === "hub") {
-      // Apex/Início: HUB (grade de jogos) + Portfólio somado.
+      // Início/HUB: grade de jogos + Portfólio combinado (?game=hub).
       nav.innerHTML = `
         ${link(apexUrl, "nav.hub", "home")}
         ${link(hubUrl, "nav.gamesHub", "hub")}
-        ${link("portfolio.html", "nav.portfolio", "portfolio")}
+        ${link("portfolio.html?game=hub", "nav.portfolio", "portfolio")}
       `;
     } else {
-      // Jogo (poke./lorcana.): Início e HUB voltam pro apex; resto relativo.
+      // Dentro de um jogo: Início e HUB voltam pras páginas neutras; resto relativo.
       nav.innerHTML = `
         ${link(apexUrl, "nav.hub", "home")}
         ${link(hubUrl, "nav.gamesHub", "hub")}
@@ -2364,6 +2393,7 @@
     cardVariantPairs,
     variantTile,
     refreshTileOwnership,
+    gameKey,
     handleOwnedTileClick,
     handleAddTileClick,
     flashTileAdded,
@@ -2440,13 +2470,13 @@
   // Stores sincronizados (binders ficam de fora por ora: têm fotos no IndexedDB,
   // que não sobem pra nuvem).
   const SYNC_KEYS = {
-    collection: "tcg-collector-collection-v3",
-    collectionMeta: "tcg-collector-collection-meta-v1",
-    wishlist: "tcg-collector-wishlist-v1",
-    wishlistMeta: "tcg-collector-wishlist-meta-v1",
-    prices: "tcg-collector-prices-v1",
-    binders: "tcg-collector-binders-v1",
-    history: "tcg-portfolio-history-v1"
+    collection: gameKey("collection-v3"),
+    collectionMeta: gameKey("collection-meta-v1"),
+    wishlist: gameKey("wishlist-v1"),
+    wishlistMeta: gameKey("wishlist-meta-v1"),
+    prices: gameKey("prices-v1"),
+    binders: gameKey("binders-v1"),
+    history: gameKey("history-v1")
   };
 
   function authHeaders(token) {
