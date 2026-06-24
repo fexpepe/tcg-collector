@@ -1,26 +1,10 @@
 (function () {
-  // Logo dos jogos (seção "Mais de um jogo"): o <img> começa hidden. Se o arquivo
-  // existir e carregar, mostra o logo e esconde o nome em texto (o logo já diz o
-  // nome). Se faltar/falhar, fica o fallback de texto — sem ícone de imagem
-  // quebrada. (Inline onerror não dá: CSP script-src 'self'.)
-  document.querySelectorAll(".game-logo").forEach((img) => {
-    const reveal = () => {
-      if (img.naturalWidth > 0) {
-        img.hidden = false;
-        const name = img.parentElement && img.parentElement.querySelector(".game-name");
-        if (name) name.hidden = true;
-      }
-    };
-    img.addEventListener("load", reveal);
-    if (img.complete) reveal();
-  });
-
   // Apoio: copiar a chave Pix para a área de transferência com feedback no botão.
   const t = window.TCGShared ? window.TCGShared.t : (key) => key;
 
-  // Home única do site ("tudo no mesmo site", estilo Collectr/Cardmarket): a Início
-  // é SEMPRE o landing do HUB (hero do ecossistema + escolha de jogos), não importa
-  // por qual jogo/subdomínio a página foi servida. Não há mais "home do Pokémon".
+  // Home única do site (estilo Collectr/Cardmarket): a Início é SEMPRE o landing
+  // do ecossistema. O hero leva pra grade de jogos (Explorar); a escolha de jogos
+  // fica no mega-menu "Explorar", não mais numa seção na home.
   {
     const h1 = document.querySelector(".hero h1");
     if (h1) h1.innerHTML = t("home.hubTitle");
@@ -31,9 +15,6 @@
     const sec = document.querySelector(".hero-actions .secondary-cta");
     if (sec) sec.remove();
     document.querySelectorAll(".hero-cards img").forEach((i) => i.remove());
-    const games = document.querySelector(".home-games");
-    if (games) games.id = "games";
-    // Os tiles já apontam pra sets.html?game= no HTML (entram na sessão do jogo).
   }
   const pixButton = document.getElementById("pixButton");
   if (pixButton) {
