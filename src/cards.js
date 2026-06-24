@@ -76,7 +76,10 @@
         return;
       }
       if (shared.handleWantTileClick(event, wishlist)) { refreshOwnership(); return; }
-      if (shared.handleOwnedTileClick(event, owned, wishlist)) { refreshOwnership(); }
+      // Na busca, o "+" soma +1 a cada clique e pisca "✓ Adicionada!" por 2s,
+      // pra cadastrar várias cópias da mesma carta sem abrir o card.
+      const addButton = shared.handleAddTileClick(event, owned, wishlist);
+      if (addButton) { refreshOwnership(); shared.flashTileAdded(addButton, owned); }
     });
   }
 
@@ -115,7 +118,7 @@
       return;
     }
     const tiles = tilePairs();
-    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices), options || {});
+    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true }), options || {});
     elements.empty.hidden = tiles.length > 0;
     elements.resultCount.textContent = tn("results.count", tiles.length);
   }
@@ -123,7 +126,7 @@
   // Atualiza posse/desejo dos tiles no DOM existente, sem reconstruir a grade.
   function refreshOwnership() {
     elements.grid.querySelectorAll(".card-tile").forEach((tile) => {
-      shared.refreshTileOwnership(tile, owned, wishlist);
+      shared.refreshTileOwnership(tile, owned, wishlist, { addMode: true });
     });
   }
 })();

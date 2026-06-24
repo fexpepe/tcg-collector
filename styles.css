@@ -2754,6 +2754,23 @@ a.progress-row:hover {
   color: var(--accent);
 }
 
+/* Feedback de "Adicionada!" no quick-add da busca: ✓ preenchido + pop. */
+.tile-own.added {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+  animation: tile-added-pop 0.26s ease;
+}
+.tile-own.added .tile-qty {
+  background: var(--on-accent);
+  color: var(--accent);
+}
+@keyframes tile-added-pop {
+  0% { transform: scale(0.82); }
+  55% { transform: scale(1.14); }
+  100% { transform: scale(1); }
+}
+
 /* Preço BR por condição (no preview da carta) */
 .price-row {
   margin-top: 8px;

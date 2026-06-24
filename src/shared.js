@@ -1834,7 +1834,10 @@
     return `<p class="${cls}" title="${escapeAttribute(title)}">${escapeHtml(prefix + fmtMoney(val.currency, val.value))}</p>`;
   }
 
-  function variantTile(card, variant, store, wishlist, prices) {
+  function variantTile(card, variant, store, wishlist, prices, opts) {
+    // addMode (página de busca): o botão sempre é "+" e cada clique soma +1 (com
+    // feedback de ✓ por 2s). Fora dele, o botão alterna posse (liga/desliga).
+    const addMode = !!(opts && opts.addMode);
     const quantity = store.variantTotal(card.id, variant);
     const isOwned = quantity > 0;
     const isWanted = wishlist ? wishlist.has(card.id, variant) : false;
@@ -1847,8 +1850,14 @@
       ? localizedImg(img.url, { alt: card.name, loading: "lazy", thumb: true, fallback: img.fallback })
       : cardBackPlaceholder();
     const image = `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${imageInner}</button>`;
-    const ownAria = isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant });
-    const qtyBadge = quantity > 1 ? `<span class="tile-qty">×${quantity}</span>` : "";
+    const ownAria = addMode
+      ? (isOwned ? t("tile.addAnotherAria", { variant }) : t("tile.addAria", { variant }))
+      : (isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant }));
+    // No addMode, mostra a contagem assim que tem 1 (o botão é sempre "+", então
+    // o badge é o sinal de posse); fora dele, só destaca quando há mais de uma.
+    const qtyBadge = quantity > (addMode ? 0 : 1) ? `<span class="tile-qty">×${quantity}</span>` : "";
+    const ownIcon = addMode ? TILE_ICONS.plus : (isOwned ? TILE_ICONS.check : TILE_ICONS.plus);
+    const ownActive = !addMode && isOwned ? " active" : "";
     const summary = conditionSummary(store, card.id, variant);
     const wantButton = wishlist
       ? `<button type="button" class="tile-btn tile-want${isWanted ? " active" : ""}" data-want-card-id="${escapeAttribute(card.id)}" data-want-variant="${escapeAttribute(variant)}" aria-pressed="${isWanted}" aria-label="${escapeAttribute(isWanted ? t("tile.unwantAria", { variant }) : t("tile.wantAria", { variant }))}" title="${escapeAttribute(isWanted ? t("tile.wanted") : t("tile.want"))}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}</button>`
@@ -1863,8 +1872,8 @@
         ${tilePriceHtml(card, variant, prices)}
         <div class="tile-actions">
           ${wantButton}
-          <button type="button" class="tile-btn tile-own${isOwned ? " active" : ""}" data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}" aria-pressed="${isOwned}" aria-label="${escapeAttribute(ownAria)}">
-            ${isOwned ? TILE_ICONS.check : TILE_ICONS.plus}${qtyBadge}
+          <button type="button" class="tile-btn tile-own${ownActive}" data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}" aria-pressed="${!addMode && isOwned}" aria-label="${escapeAttribute(ownAria)}">
+            ${ownIcon}${qtyBadge}
           </button>
         </div>
         <p class="tile-conditions" data-tile-conditions>${escapeHtml(summary)}</p>
@@ -1876,7 +1885,8 @@
 
   // Atualiza o estado de posse de um tile no DOM existente, sem recriar a
   // imagem — evita o "piscar" de recarregar a grade inteira.
-  function refreshTileOwnership(tile, store, wishlist) {
+  function refreshTileOwnership(tile, store, wishlist, opts) {
+    const addMode = !!(opts && opts.addMode);
     const cardId = tile.dataset.tileCardId;
     const variant = tile.dataset.tileVariant;
     if (!cardId) return;
@@ -1885,11 +1895,20 @@
     tile.classList.toggle("owned", isOwned);
 
     const button = tile.querySelector(".tile-own");
-    if (button) {
-      button.classList.toggle("active", isOwned);
-      button.setAttribute("aria-pressed", String(isOwned));
-      button.setAttribute("aria-label", isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant }));
-      button.innerHTML = `${isOwned ? TILE_ICONS.check : TILE_ICONS.plus}${quantity > 1 ? `<span class="tile-qty">×${quantity}</span>` : ""}`;
+    // Em addMode, não toca num botão em pleno feedback de "✓ Adicionada!" (a flag
+    // .added é removida pelo próprio timer do flash, que então restaura o "+").
+    if (button && !(addMode && button.classList.contains("added"))) {
+      if (addMode) {
+        button.classList.remove("active");
+        button.setAttribute("aria-pressed", "false");
+        button.setAttribute("aria-label", isOwned ? t("tile.addAnotherAria", { variant }) : t("tile.addAria", { variant }));
+        button.innerHTML = `${TILE_ICONS.plus}${quantity > 0 ? `<span class="tile-qty">×${quantity}</span>` : ""}`;
+      } else {
+        button.classList.toggle("active", isOwned);
+        button.setAttribute("aria-pressed", String(isOwned));
+        button.setAttribute("aria-label", isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant }));
+        button.innerHTML = `${isOwned ? TILE_ICONS.check : TILE_ICONS.plus}${quantity > 1 ? `<span class="tile-qty">×${quantity}</span>` : ""}`;
+      }
     }
 
     if (wishlist) {
@@ -1921,6 +1940,37 @@
       wishlist.remove(cardId, variant);
     }
     return true;
+  }
+
+  // Quick-add (página de busca): cada clique soma +1 NM da variante (nunca
+  // remove — a remoção é na coleção/no preview). Retorna o botão clicado pra
+  // dar o feedback visual, ou null se o clique não foi num botão de posse.
+  function handleAddTileClick(event, store, wishlist) {
+    const button = event.target.closest("[data-own-card-id]");
+    if (!button) return null;
+    const cardId = button.dataset.ownCardId;
+    const variant = button.dataset.ownVariant;
+    store.add(cardId, variant, DEFAULT_CONDITION, 1);
+    if (wishlist && store.variantTotal(cardId, variant) > 0) wishlist.remove(cardId, variant);
+    return button;
+  }
+
+  // Pisca o botão em "✓ Adicionada!" por 2s e depois volta ao "+", deixando o
+  // badge ×N atualizado — assim dá pra clicar de novo e somar mais uma cópia.
+  function flashTileAdded(button, store) {
+    const variant = button.dataset.ownVariant;
+    const qty = store.variantTotal(button.dataset.ownCardId, variant);
+    const badge = qty > 0 ? `<span class="tile-qty">×${qty}</span>` : "";
+    button.classList.add("added");
+    button.setAttribute("title", t("tile.added"));
+    button.innerHTML = `${TILE_ICONS.check}${badge}`;
+    clearTimeout(button._flashTimer);
+    button._flashTimer = window.setTimeout(() => {
+      button.classList.remove("added");
+      button.removeAttribute("title");
+      const now = store.variantTotal(button.dataset.ownCardId, variant);
+      button.innerHTML = `${TILE_ICONS.plus}${now > 0 ? `<span class="tile-qty">×${now}</span>` : ""}`;
+    }, 2000);
   }
 
   // Trata o clique no botão de coração de um tile (liga/desliga "Eu quero").
@@ -2314,6 +2364,8 @@
     variantTile,
     refreshTileOwnership,
     handleOwnedTileClick,
+    handleAddTileClick,
+    flashTileAdded,
     handleWantTileClick,
     handleQuantityClick,
     fetchPokemonMeta,
