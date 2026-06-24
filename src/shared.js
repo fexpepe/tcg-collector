@@ -2484,13 +2484,14 @@
     if (token) h.Authorization = `Bearer ${token}`;
     return h;
   }
-  // Conta única entre subdomínios (poke./lorcana./apex): a sessão fica num cookie
-  // de domínio .sleevu.app, lido por qualquer subdomínio. Fora de *.sleevu.app
-  // (localhost, *.pages.dev) cai no localStorage — um cookie .sleevu.app nem
-  // setaria ali. O cookie NÃO é HttpOnly (o cliente roda em JS, como a localStorage
-  // de hoje), mas é Secure + SameSite=Lax e o CSP 'self' limita XSS; exposição
-  // igual à atual. Guardamos só o essencial (user enxuto p/ id+email) pra caber
-  // bem abaixo do teto de 4KB do cookie.
+  // Sessão de login num cookie (em vez de só localStorage). O domínio fica em
+  // .sleevu.app — hoje o site é único (sleevu.app), mas escopar no domínio-pai é
+  // inócuo e evita ter que re-logar caso uma área sob *.sleevu.app volte a existir.
+  // Fora de *.sleevu.app (localhost, *.pages.dev) cai no localStorage — um cookie
+  // .sleevu.app nem setaria ali. O cookie NÃO é HttpOnly (o cliente roda em JS,
+  // como a localStorage de hoje), mas é Secure + SameSite=Lax e o CSP 'self' limita
+  // XSS. Guardamos só o essencial (user enxuto p/ id+email) pra caber bem abaixo
+  // do teto de 4KB do cookie.
   const COOKIE_NAME = "sleevu_session";
   const COOKIE_MAX_AGE = 60 * 24 * 3600; // ~60 dias; renovado a cada setSession
   function sharedCookieDomain() {
@@ -2749,8 +2750,8 @@
     try { return JSON.parse(localStorage.getItem(SYNC_STATUS_KEY) || "null"); } catch (e) { return null; }
   }
   // Jogo atual (multi-TCG): a coleção na nuvem é por (user_id, game), então
-  // Pokémon e Lorcana não colidem na mesma conta. Fora de *.sleevu.app cai em
-  // "pokemon" (default do backend).
+  // Pokémon e Lorcana não colidem na mesma conta. O jogo vem da sessão do site
+  // (game.js); sem ele, "pokemon" (default do backend).
   function currentGame() { return (window.SLEEVU && window.SLEEVU.game) || "pokemon"; }
 
   async function pullRemote(token, uid) {

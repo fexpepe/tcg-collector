@@ -55,17 +55,6 @@
   var cfg = GAMES[game] || GAMES.pokemon;
   document.documentElement.setAttribute("data-game", cfg.slug);
 
-  // Jogo registrado mas ainda sem catálogo: manda pra página "em breve" — a não
-  // ser que já esteja nela (senão dá loop). Vale pra qualquer rota do subdomínio
-  // (o Cloudflare serve URL limpa, então a página pode chegar como /soon).
-  if (cfg.comingSoon) {
-    var page = location.pathname.replace(/\/+$/, "").split("/").pop();
-    if (page !== "soon" && page !== "soon.html") {
-      location.replace("soon.html" + location.search); // preserva ?game= em dev
-      return;
-    }
-  }
-
   // Modo manifest (produção): o deploy flipa esta flag pra true (sed em game.js).
   // No modo manifest, cards/indexes/pricing viram os arquivos .generated mesclados.
   var MANIFEST = false; /* SLEEVU_MANIFEST */

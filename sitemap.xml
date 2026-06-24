@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://sleevu.app/</loc></url>
+  <url><loc>https://sleevu.app/hub</loc></url>
   <url><loc>https://sleevu.app/cards</loc></url>
   <url><loc>https://sleevu.app/pokedex</loc></url>
   <url><loc>https://sleevu.app/sets</loc></url>
