@@ -63,6 +63,23 @@
         <button type="button" id="collectionShareBtn" class="secondary collection-share-btn" data-i18n="collection.share" hidden>Compartilhar coleção</button>
       </div>
 
+      <section id="collectionDashboard" class="collection-dashboard" aria-label="Resumo da coleção" hidden>
+        <article class="dash-card dash-stats">
+          <div><span class="dash-stat-val" id="dashCopies">0</span><span class="dash-stat-label" data-i18n="stats.copies">cópias no total</span></div>
+          <div><span class="dash-stat-val" id="dashDistinct">0</span><span class="dash-stat-label" data-i18n="stats.distinct">cartas distintas</span></div>
+          <div><span class="dash-stat-val" id="dashSets">0</span><span class="dash-stat-label" data-i18n="stats.setsCovered">sets representados</span></div>
+          <div><span class="dash-stat-val" id="dashValue">—</span><span class="dash-stat-label" data-i18n="dash.value">valor de mercado</span></div>
+        </article>
+        <article class="dash-card dash-top">
+          <h3 data-i18n="dash.topTitle">Mais valiosas</h3>
+          <ol id="dashTopList" class="dash-top-list"></ol>
+        </article>
+        <article class="dash-card dash-dist">
+          <h3 data-i18n="dash.distTitle">Distribuição por jogo</h3>
+          <div id="dashDist" class="dash-dist-bars"></div>
+        </article>
+      </section>
+
       <div id="sharedCollection" hidden></div>
 
       <div id="collectionTabs" class="chip-filter collection-tabs" role="group" aria-label="Visões da coleção">
@@ -89,21 +106,6 @@
       </section>
 
       <div id="cardsView" hidden>
-        <section class="stats-grid" aria-label="Resumo da coleção">
-          <article>
-            <span id="distinctCount">0</span>
-            <p data-i18n="stats.distinct">cartas distintas</p>
-          </article>
-          <article>
-            <span id="copiesCount">0</span>
-            <p data-i18n="stats.copies">cópias no total</p>
-          </article>
-          <article>
-            <span id="setsCount">0</span>
-            <p data-i18n="stats.setsCovered">sets representados</p>
-          </article>
-        </section>
-
         <section class="toolbar" aria-label="Filtros">
           <div>
             <label for="pokemonFilter" data-i18n="toolbar.pokemon">Pokémon</label>

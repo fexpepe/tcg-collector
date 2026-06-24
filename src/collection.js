@@ -61,10 +61,14 @@
     setFilter: document.getElementById("setFilter"),
     languageFilter: document.getElementById("languageFilter"),
     rarityFilter: document.getElementById("rarityFilter"),
-    distinctCount: document.getElementById("distinctCount"),
-    copiesCount: document.getElementById("copiesCount"),
-    setsCount: document.getElementById("setsCount"),
-    resultCount: document.getElementById("resultCount")
+    resultCount: document.getElementById("resultCount"),
+    dashboard: document.getElementById("collectionDashboard"),
+    dashCopies: document.getElementById("dashCopies"),
+    dashDistinct: document.getElementById("dashDistinct"),
+    dashSets: document.getElementById("dashSets"),
+    dashValue: document.getElementById("dashValue"),
+    dashTopList: document.getElementById("dashTopList"),
+    dashDist: document.getElementById("dashDist")
   };
 
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
@@ -215,11 +219,75 @@
     elements.groupsView.hidden = isCardsTab;
     elements.cardsView.hidden = !isCardsTab;
 
+    renderDashboard();
     if (isCardsTab) {
       renderCards(options || {});
     } else {
       renderGroups();
     }
+  }
+
+  // Dashboard de resumo no topo (estilo "perfil"): stats + mais valiosas +
+  // distribuição por jogo. Reflete o filtro de jogo atual.
+  function renderDashboard() {
+    if (!elements.dashboard) return;
+    elements.dashboard.hidden = false;
+    const myCards = ownedCards();
+
+    // Stats
+    let copies = 0;
+    myCards.forEach((card) => { copies += owned.totalForCard(card.id); });
+    elements.dashCopies.textContent = copies;
+    elements.dashDistinct.textContent = myCards.length;
+    elements.dashSets.textContent = unique(myCards.map((card) => card.set)).length;
+    const value = ownedMarketValue(myCards);
+    elements.dashValue.textContent = value > 0 ? shared.formatMoney(shared.getCurrency(), value) : "—";
+
+    // Mais valiosas (top 3 por valor unitário)
+    const top = myCards.map((card) => {
+      const variant = (card.variants || []).find((v) => owned.variantTotal(card.id, v) > 0) || shared.defaultVariant(card);
+      return { card, variant, val: shared.cardValue(card, variant, prices).value || 0 };
+    }).filter((x) => x.val > 0).sort((a, b) => b.val - a.val).slice(0, 3);
+    elements.dashTopList.innerHTML = top.length
+      ? top.map(({ card, val }) => {
+          const src = shared.cardImageSources(card);
+          const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
+          return `<li><a href="${escapeAttribute(detailUrl("set", card.set))}"><span class="dash-top-thumb">${thumb}</span>
+            <span class="dash-top-info"><strong>${escapeHtml(card.name)}</strong><span class="dash-top-set">${escapeHtml(card.set)}</span></span>
+            <span class="dash-top-val">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</span></a></li>`;
+        }).join("")
+      : `<li class="dash-empty">${escapeHtml(t("dash.empty"))}</li>`;
+
+    // Distribuição por jogo (Pokémon × Lorcana), entre as cartas filtradas.
+    const byGame = {};
+    myCards.forEach((card) => { byGame[card.game] = (byGame[card.game] || 0) + 1; });
+    const order = [
+      { game: "pokemon", label: t("filter.gamePokemon"), color: "#d9a300" },
+      { game: "lorcana", label: t("filter.gameLorcana"), color: "#3f3d96" }
+    ].filter((g) => byGame[g.game]);
+    const max = Math.max(1, ...order.map((g) => byGame[g.game]));
+    elements.dashDist.innerHTML = order.length
+      ? order.map((g) => `<div class="dash-dist-row">
+          <span class="dash-dist-label">${escapeHtml(g.label)}</span>
+          <span class="dash-dist-track"><span class="dash-dist-fill" style="width:${Math.round((byGame[g.game] / max) * 100)}%;background:${g.color}"></span></span>
+          <span class="dash-dist-n">${byGame[g.game]}</span>
+        </div>`).join("")
+      : `<p class="dash-empty">${escapeHtml(t("dash.empty"))}</p>`;
+  }
+
+  // Valor de mercado das cartas que você tem (na moeda atual): soma cada cópia
+  // pela condição que ela tem.
+  function ownedMarketValue(myCards) {
+    let total = 0;
+    myCards.forEach((card) => {
+      (card.variants || [shared.defaultVariant(card)]).forEach((variant) => {
+        owned.conditionBreakdown(card.id, variant).forEach(({ condition, quantity }) => {
+          const v = shared.cardValue(card, variant, prices, condition).value;
+          if (v) total += v * quantity;
+        });
+      });
+    });
+    return total;
   }
 
   // --- Aba de cartas (grade com filtros) ---
@@ -256,12 +324,8 @@
   }
 
   function updateCardsStats(tileCount) {
-    const myCards = ownedCards();
     elements.empty.hidden = tileCount > 0;
     elements.resultCount.textContent = tn("results.count", tileCount);
-    elements.distinctCount.textContent = myCards.length;
-    elements.copiesCount.textContent = owned.totalQuantity();
-    elements.setsCount.textContent = unique(myCards.map((card) => card.set)).length;
   }
 
   function filterCards() {
@@ -475,8 +539,8 @@
 
   async function renderSharedCollection(id) {
     // Esconde toda a UI normal da coleção; mostra só o container compartilhado.
-    ["page-search", "collection-subtitle", "collection-toolbar"].forEach((c) => { const el = document.querySelector("." + c); if (el) el.hidden = true; });
-    [elements.tabs, elements.groupsView, elements.cardsView, document.getElementById("collectionShareBtn")].forEach((el) => { if (el) el.hidden = true; });
+    ["page-search", "collection-subtitle", "collection-toolbar", "collection-dashboard"].forEach((c) => { const el = document.querySelector("." + c); if (el) el.hidden = true; });
+    [elements.tabs, elements.groupsView, elements.cardsView, elements.dashboard, document.getElementById("collectionShareBtn")].forEach((el) => { if (el) el.hidden = true; });
     const sv = document.getElementById("sharedCollection");
     if (!sv) return;
     sv.hidden = false;

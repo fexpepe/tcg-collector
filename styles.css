@@ -3577,6 +3577,40 @@ a.progress-row:hover {
   margin-bottom: 16px;
 }
 .binder-detail-actions { display: flex; align-items: center; gap: 10px; }
+/* Dashboard de resumo no topo da coleção: stats + mais valiosas + distribuição. */
+.collection-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+  margin: 0 0 18px;
+}
+.dash-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+.dash-card h3 { margin: 0 0 12px; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
+.dash-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; align-content: center; }
+.dash-stats > div { display: flex; flex-direction: column; gap: 2px; }
+.dash-stat-val { font-size: 24px; font-weight: 800; letter-spacing: -0.3px; }
+.dash-stat-label { font-size: 12px; color: var(--muted); }
+.dash-top-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.dash-top-list a { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+.dash-top-thumb { width: 30px; flex: none; }
+.dash-top-thumb img { width: 100%; border-radius: 3px; display: block; }
+.dash-top-info { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.dash-top-info strong { font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dash-top-set { font-size: 11.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dash-top-val { font-weight: 700; font-size: 13px; white-space: nowrap; }
+.dash-dist-bars { display: grid; gap: 10px; }
+.dash-dist-row { display: grid; grid-template-columns: 64px 1fr auto; align-items: center; gap: 10px; }
+.dash-dist-label { font-size: 12.5px; color: var(--muted); }
+.dash-dist-track { height: 10px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.dash-dist-fill { display: block; height: 100%; border-radius: 999px; }
+.dash-dist-n { font-weight: 700; font-size: 13px; }
+.dash-empty { color: var(--muted); font-size: 13px; }
+
 /* Barra: filtro de jogo (Todos/Pokémon/Lorcana) + botão de compartilhar. */
 .collection-toolbar {
   display: flex;
