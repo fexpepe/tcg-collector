@@ -5,17 +5,19 @@
   let cards = [];
   let cardsById = new Map();
   let indexes = null;
-  const owned = shared.createCollectionStore();
-  const wishlist = shared.createWishlistStore();
-  const prices = shared.createPriceStore();
+  let gameFilter = "all"; // all | pokemon | lorcana
 
-  // Modo manifest (produção): em vez de baixar o catálogo inteiro só para mostrar
-  // o que você tem, baixa apenas os sets das suas cartas e tira os totais de
-  // progresso dos índices (que já vêm carregados). No modo local (amostra em
-  // window.TCG_CARDS) o catálogo é pequeno — mantém o caminho normal.
-  // Calculado após o catálogo carregar (window.TCG_* só existem depois do
-  // window.SLEEVU.catalogReady — o game.js injeta os scripts em runtime).
-  let manifestMode = false;
+  // Coleção UNIFICADA: stores por jogo + facades que despacham por jogo (resolvido
+  // pelo cardGameMap, populado quando o catálogo carrega). Assim variantTile/
+  // preview/handlers funcionam sem saber que há vários jogos.
+  const ownedByGame = { pokemon: shared.createCollectionStore("pokemon"), lorcana: shared.createCollectionStore("lorcana") };
+  const wishlistByGame = { pokemon: shared.createWishlistStore("pokemon"), lorcana: shared.createWishlistStore("lorcana") };
+  const pricesByGame = { pokemon: shared.createPriceStore("pokemon"), lorcana: shared.createPriceStore("lorcana") };
+  const cardGameMap = new Map();
+  const gameOf = (id) => cardGameMap.get(id) || "pokemon";
+  const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
+  const wishlist = shared.mergedWishlistStore(wishlistByGame, gameOf);
+  const prices = shared.mergedPriceStore(pricesByGame, gameOf);
 
   let activeTab = "cards";
   let sortMode = "dex";
@@ -42,6 +44,7 @@
   };
 
   const elements = {
+    gameFilter: document.getElementById("gameFilter"),
     tabs: document.getElementById("collectionTabs"),
     groupsView: document.getElementById("groupsView"),
     groupSummaryText: document.getElementById("groupSummaryText"),
@@ -81,21 +84,22 @@
   if (shareId) {
     shared.loadFxRates().then(() => renderSharedCollection(shareId));
   } else {
-    // window.TCG_* só existem após o catálogo carregar; só então dá pra decidir
-    // o manifestMode e qual carga fazer (sets das cartas que você tem vs catálogo).
-    shared.awaitCatalog().then(() => {
-      manifestMode = !(Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length)
-        && !!(window.TCG_MANIFEST && window.TCG_INDEXES && window.TCG_INDEXES.pokemonTotals);
-      const catalogPromise = manifestMode
-        ? shared.loadCatalogForCardIds(owned.knownCardIds())
-        : shared.loadCatalog();
-      return Promise.all([catalogPromise, shared.loadFxRates()]);
-    })
+    // Coleção unificada: carrega as cartas que você tem dos DOIS jogos (cada uma
+    // marcada com card.game) e mescla. Cada jogo lê só os seus ids.
+    Promise.all([
+      shared.loadOwnedAcrossGames({
+        pokemon: ownedByGame.pokemon.knownCardIds(),
+        lorcana: ownedByGame.lorcana.knownCardIds()
+      }),
+      shared.loadFxRates()
+    ])
       .then(([catalog]) => {
         cards = catalog.cards;
-        indexes = catalog.indexes;
+        cards.forEach((card) => cardGameMap.set(card.id, card.game));
+        indexes = mergeIndexes(catalog.indexesByGame);
         cardsById = new Map(cards.map((card) => [card.id, card]));
-        owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
+        Object.keys(ownedByGame).forEach((g) =>
+          ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
         hydrateFilters();
         bindEvents();
         bindShareButton();
@@ -107,8 +111,28 @@
       });
   }
 
+  // Une os índices dos jogos (cada entrada marcada com .game) p/ os totais de
+  // progresso das abas de grupo respeitarem o filtro de jogo.
+  function mergeIndexes(byGame) {
+    const sets = [];
+    const artists = [];
+    let pokemonTotals = {};
+    Object.keys(byGame || {}).forEach((g) => {
+      const idx = byGame[g];
+      if (!idx) return;
+      (idx.sets || []).forEach((s) => sets.push(Object.assign({ game: g }, s)));
+      (idx.artists || []).forEach((a) => artists.push(Object.assign({ game: g }, a)));
+      if (idx.pokemonTotals) pokemonTotals = Object.assign(pokemonTotals, idx.pokemonTotals);
+    });
+    return { sets, artists, pokemonTotals };
+  }
+
+  function inGameFilter(card) {
+    return gameFilter === "all" || card.game === gameFilter;
+  }
+
   function ownedCards() {
-    return cards.filter((card) => owned.has(card.id));
+    return cards.filter((card) => inGameFilter(card) && owned.has(card.id));
   }
 
   function hydrateFilters() {
@@ -130,6 +154,16 @@
   }
 
   function bindEvents() {
+    elements.gameFilter.addEventListener("click", (event) => {
+      const chip = event.target.closest("[data-game-filter]");
+      if (!chip || chip.dataset.gameFilter === gameFilter) return;
+      gameFilter = chip.dataset.gameFilter;
+      Array.from(elements.gameFilter.children).forEach((node) => {
+        node.setAttribute("aria-pressed", node === chip ? "true" : "false");
+      });
+      render({ resetCount: true });
+    });
+
     elements.tabs.addEventListener("click", (event) => {
       const chip = event.target.closest("[data-tab]");
       if (!chip || chip.dataset.tab === activeTab) return;
@@ -267,22 +301,24 @@
     elements.groupsEmpty.hidden = groups.length > 0;
   }
 
-  // Totais por grupo (denominador do progresso), no catálogo inteiro. Em modo
-  // manifest saem dos índices (sem baixar o catálogo); senão contam o catálogo
-  // carregado. As chaves batem com tab.getKey de cada aba.
+  // Totais por grupo (denominador do progresso), no catálogo inteiro. Saem dos
+  // índices mesclados (cada entrada marcada com .game, respeitando o filtro de
+  // jogo). Sem índices, conta as cartas carregadas. Chaves = tab.getKey.
   function totalsForTab() {
     const map = new Map();
-    if (manifestMode && indexes) {
+    const matchGame = (g) => gameFilter === "all" || g === gameFilter;
+    const hasIndex = indexes && ((indexes.sets && indexes.sets.length) || Object.keys(indexes.pokemonTotals || {}).length || (indexes.artists && indexes.artists.length));
+    if (hasIndex) {
       if (activeTab === "sets") {
-        (indexes.sets || []).forEach((g) => map.set(g.name, g.cardIds.length));
+        (indexes.sets || []).forEach((g) => { if (matchGame(g.game)) map.set(g.name, (map.get(g.name) || 0) + g.cardIds.length); });
       } else if (activeTab === "artists") {
-        (indexes.artists || []).forEach((g) => map.set(g.name, g.cardIds.length));
+        (indexes.artists || []).forEach((g) => { if (matchGame(g.game)) map.set(g.name, (map.get(g.name) || 0) + g.cardIds.length); });
       } else if (activeTab === "pokemon") {
-        Object.entries(indexes.pokemonTotals || {}).forEach(([name, n]) => map.set(name, n));
+        if (matchGame("pokemon")) Object.entries(indexes.pokemonTotals || {}).forEach(([name, n]) => map.set(name, n));
       }
       return map;
     }
-    cards.forEach((card) => {
+    cards.filter(inGameFilter).forEach((card) => {
       const key = GROUP_TABS[activeTab].getKey(card) || "—";
       map.set(key, (map.get(key) || 0) + 1);
     });
@@ -437,7 +473,7 @@
 
   async function renderSharedCollection(id) {
     // Esconde toda a UI normal da coleção; mostra só o container compartilhado.
-    ["page-search", "collection-subtitle"].forEach((c) => { const el = document.querySelector("." + c); if (el) el.hidden = true; });
+    ["page-search", "collection-subtitle", "collection-toolbar"].forEach((c) => { const el = document.querySelector("." + c); if (el) el.hidden = true; });
     [elements.tabs, elements.groupsView, elements.cardsView, document.getElementById("collectionShareBtn")].forEach((el) => { if (el) el.hidden = true; });
     const sv = document.getElementById("sharedCollection");
     if (!sv) return;

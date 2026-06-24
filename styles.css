@@ -3581,7 +3581,17 @@ a.progress-row:hover {
   margin-bottom: 16px;
 }
 .binder-detail-actions { display: flex; align-items: center; gap: 10px; }
-.collection-share-btn { margin: 0 0 16px; }
+/* Barra: filtro de jogo (Todos/Pokémon/Lorcana) + botão de compartilhar. */
+.collection-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 0 16px;
+}
+.game-filter { margin: 0; }
+.collection-share-btn { margin: 0; }
 /* Banner do binder compartilhado (somente leitura) + CTA pro visitante. */
 .binder-shared-banner {
   display: flex;

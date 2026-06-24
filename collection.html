@@ -54,7 +54,14 @@
 
       <p class="collection-subtitle" data-i18n="collection.subtitle">Pokémon, artistas, sets e idiomas que você está colecionando.</p>
 
-      <button type="button" id="collectionShareBtn" class="secondary collection-share-btn" data-i18n="collection.share" hidden>Compartilhar coleção</button>
+      <div class="collection-toolbar">
+        <div id="gameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
+          <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
+          <button type="button" class="chip" data-game-filter="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
+          <button type="button" class="chip" data-game-filter="lorcana" aria-pressed="false" data-i18n="filter.gameLorcana">Lorcana</button>
+        </div>
+        <button type="button" id="collectionShareBtn" class="secondary collection-share-btn" data-i18n="collection.share" hidden>Compartilhar coleção</button>
+      </div>
 
       <div id="sharedCollection" hidden></div>
 

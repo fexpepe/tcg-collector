@@ -32,8 +32,11 @@
     const g = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
     return g === "hub" ? "pokemon" : g; // hub não tem dados próprios
   }
-  function gameKey(base) {
-    return "tcg-collector-" + currentGameSlug() + "-" + base;
+  // `game` opcional: por padrão usa o jogo da sessão. As páginas unificadas
+  // (Coleção/Wishlist/Binders) passam o jogo explícito pra ler os dois.
+  function gameKey(base, game) {
+    const g = game || currentGameSlug();
+    return "tcg-collector-" + (g === "hub" ? "pokemon" : g) + "-" + base;
   }
 
   // Migração one-time: dados antigos (sem prefixo de jogo, de quando o app rodava
@@ -115,11 +118,11 @@
   // Coleção v3: cardId -> variante -> condição -> quantidade. Cada cópia é
   // distinguida por condição (para o futuro cálculo de valor do portfólio).
   // Migra do v2 (cardId -> variante -> quantidade; cópias viram NM) e do v1.
-  function createCollectionStore() {
-    const storageKey = gameKey("collection-v3");
-    const metaKey = gameKey("collection-meta-v1");
-    const v2Key = gameKey("collection-v2");
-    const v1Key = gameKey("owned-v1");
+  function createCollectionStore(game) {
+    const storageKey = gameKey("collection-v3", game);
+    const metaKey = gameKey("collection-meta-v1", game);
+    const v2Key = gameKey("collection-v2", game);
+    const v1Key = gameKey("owned-v1", game);
     let collection = load();
     let initialized = collection !== null;
     if (!initialized) collection = {};
@@ -316,9 +319,9 @@
   // Lista "Eu quero": cardId -> [variantes desejadas]. Sem condição nem
   // quantidade — é só uma lista de desejos por variante, guardada à parte da
   // coleção. Quando a carta passa a ser possuída, ela sai daqui ("comprei!").
-  function createWishlistStore() {
-    const storageKey = gameKey("wishlist-v1");
-    const metaKey = gameKey("wishlist-meta-v1");
+  function createWishlistStore(game) {
+    const storageKey = gameKey("wishlist-v1", game);
+    const metaKey = gameKey("wishlist-meta-v1", game);
     let wishlist = readObject(storageKey) || {};
     // Mesma meta de sync da coleção (mod/del por carta) — ver mergeWishlist.
     let meta = normalizeMeta(readObject(metaKey));
@@ -392,8 +395,8 @@
   // source: "manual", updatedAt: ISO }. Valores em R$. A fonte fica registrada
   // para o futuro preenchimento automático (worker LigaBRA/Liga) — que grava
   // nos mesmos campos e continua editável.
-  function createPriceStore() {
-    const storageKey = gameKey("prices-v1");
+  function createPriceStore(game) {
+    const storageKey = gameKey("prices-v1", game);
     let prices = readObject(storageKey) || {};
 
     function save() {
@@ -2196,6 +2199,120 @@
     };
   }
 
+  // ── Carga MULTI-JOGO (Coleção/Wishlist/Binders unificadas) ─────────────────
+  // O catálogo é single-game: game.js carrega só o jogo da sessão nos globals
+  // window.TCG_*. Pra ver os dois jogos numa página só, carregamos o catálogo de
+  // CADA jogo (das cartas que você tem), marcando card.game, e unimos as tabelas
+  // de preço de referência (os cardIds não colidem entre jogos).
+  const DATA_GAMES = [
+    { game: "pokemon", dataDir: "data/" },
+    { game: "lorcana", dataDir: "data/lorcana/" }
+  ];
+
+  function injectScript(src) {
+    return new Promise((resolve) => {
+      const s = document.createElement("script");
+      s.src = src;
+      s.async = false;
+      s.onload = () => resolve(true);
+      s.onerror = () => resolve(false);
+      (document.head || document.documentElement).appendChild(s);
+    });
+  }
+
+  // Carrega o catálogo das cartas que você tem de UM jogo. Se for o jogo da
+  // sessão, os globals já estão prontos — reaproveita. Senão, injeta os dados do
+  // outro jogo em globals temporários, lê, e restaura os da sessão no fim.
+  async function loadGameOwned(game, dataDir, ownedIds) {
+    if ((window.SLEEVU && window.SLEEVU.game) === game) {
+      const r = await loadCatalogForCardIds(ownedIds);
+      return { cards: r.cards, indexes: r.indexes, pricing: window.TCG_PRICING || null };
+    }
+    const saved = {
+      cards: window.TCG_CARDS, indexes: window.TCG_INDEXES, manifest: window.TCG_MANIFEST,
+      pricing: window.TCG_PRICING, setIdMap: window.TCG_SET_ID_MAP
+    };
+    window.TCG_CARDS = window.TCG_INDEXES = window.TCG_MANIFEST = window.TCG_PRICING = undefined;
+    const manifestMode = !!(window.SLEEVU && window.SLEEVU.manifest);
+    const files = manifestMode
+      ? ["manifest.generated.js", "indexes.generated.js", "pricing.generated.js", "set-id-map.js"]
+      : ["cards.js", "indexes.js", "pricing.js", "set-id-map.js"];
+    for (const f of files) await injectScript(dataDir + f);
+    let r, pricing;
+    try {
+      r = await loadCatalogForCardIds(ownedIds);
+      pricing = window.TCG_PRICING || null;
+    } finally {
+      window.TCG_CARDS = saved.cards; window.TCG_INDEXES = saved.indexes;
+      window.TCG_MANIFEST = saved.manifest; window.TCG_PRICING = saved.pricing;
+      window.TCG_SET_ID_MAP = saved.setIdMap;
+    }
+    return { cards: r.cards, indexes: r.indexes, pricing };
+  }
+
+  // Une os catálogos (cartas que você tem) dos jogos com dados. Cada carta ganha
+  // card.game; window.TCG_PRICING vira a UNIÃO das tabelas (pra cardValue achar a
+  // referência de qualquer jogo). `idsByGame[game]` = ids a carregar daquele jogo.
+  async function loadOwnedAcrossGames(idsByGame) {
+    await awaitCatalog(); // garante os globals do jogo da sessão antes de salvar/restaurar
+    const cards = [];
+    const indexesByGame = {};
+    const mergedPricing = {};
+    for (const { game, dataDir } of DATA_GAMES) {
+      const r = await loadGameOwned(game, dataDir, (idsByGame && idsByGame[game]) || []);
+      (r.cards || []).forEach((c) => { c.game = game; cards.push(c); });
+      indexesByGame[game] = r.indexes || null;
+      if (r.pricing) Object.assign(mergedPricing, r.pricing);
+    }
+    window.TCG_PRICING = mergedPricing;
+    return { cards, indexesByGame };
+  }
+
+  // Facade que despacha cada método por jogo (resolvido por gameOf(cardId));
+  // agregados (size/totalQuantity/...) somam os jogos. Deixa Coleção/Wishlist/
+  // Binders usarem variantTile/preview/handlers sem saber que há vários jogos.
+  function mergedCollectionStore(byGame, gameOf) {
+    const list = () => Object.keys(byGame).map((g) => byGame[g]);
+    const pick = (id) => byGame[gameOf(id)] || list()[0];
+    return {
+      has: (id) => pick(id).has(id),
+      variantTotal: (id, v) => pick(id).variantTotal(id, v),
+      totalForCard: (id) => pick(id).totalForCard(id),
+      getQuantity: (id, v, c) => pick(id).getQuantity(id, v, c),
+      conditionBreakdown: (id, v) => pick(id).conditionBreakdown(id, v),
+      add: (id, v, c, d) => pick(id).add(id, v, c, d),
+      toggleVariant: (id, v) => pick(id).toggleVariant(id, v),
+      toggle: (card) => pick(card.id).toggle(card),
+      toObject: () => { const o = {}; list().forEach((s) => Object.assign(o, s.toObject())); return o; },
+      totalQuantity: () => list().reduce((sum, s) => sum + s.totalQuantity(), 0),
+      get size() { return list().reduce((sum, s) => sum + s.size, 0); }
+    };
+  }
+
+  function mergedWishlistStore(byGame, gameOf) {
+    const list = () => Object.keys(byGame).map((g) => byGame[g]);
+    const pick = (id) => byGame[gameOf(id)] || list()[0];
+    return {
+      has: (id, v) => pick(id).has(id, v),
+      hasCard: (id) => pick(id).hasCard(id),
+      toggle: (id, v) => pick(id).toggle(id, v),
+      remove: (id, v) => pick(id).remove(id, v),
+      variants: (id) => pick(id).variants(id),
+      get size() { return list().reduce((sum, s) => sum + s.size, 0); }
+    };
+  }
+
+  function mergedPriceStore(byGame, gameOf) {
+    const list = () => Object.keys(byGame).map((g) => byGame[g]);
+    const pick = (id) => byGame[gameOf(id)] || list()[0];
+    return {
+      valueFor: (id, v, c) => pick(id).valueFor(id, v, c),
+      getPrice: (id, v, c) => pick(id).getPrice(id, v, c),
+      setPrice: (id, v, c, val, src) => pick(id).setPrice(id, v, c, val, src),
+      entry: (id, v) => pick(id).entry(id, v)
+    };
+  }
+
   // Baixa os chunks de set com concorrência limitada (não 400+ fetches de uma
   // vez): o navegador serializa em ~6 por host de qualquer forma, e o limite
   // evita estourar memória/conexões em catálogos grandes.
@@ -2455,6 +2572,10 @@
     awaitCatalog,
     loadCatalog,
     loadCatalogForCardIds,
+    loadOwnedAcrossGames,
+    mergedCollectionStore,
+    mergedWishlistStore,
+    mergedPriceStore,
     loadIndexesOnly,
     fetchSetChunks,
     setIdForCard,
