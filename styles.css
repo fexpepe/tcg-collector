@@ -1767,7 +1767,8 @@ input::placeholder {
 
   .app-header-inner .page-nav > a,
   .app-header-inner .nav-group-toggle {
-    justify-content: flex-start;
+    justify-content: flex-end;
+    text-align: right;
     width: 100%;
   }
 
