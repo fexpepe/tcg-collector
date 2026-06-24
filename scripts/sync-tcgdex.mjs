@@ -129,15 +129,38 @@ console.log(`Gerados índices em ${indexesOutFile.pathname}`);
 console.log(`Gerados manifest e ${manifestSets.length} chunks de set em data/sets/${language}/`);
 console.log(`Sets: ${stats.fetched} baixados, ${stats.fromCache} do cache · cartas puladas: ${stats.skippedCards} · ${seconds}s`);
 
+// Decide se um set cacheado deve ser re-baixado: sets recentes (a TCGdex ainda
+// preenche) ou que parecem incompletos (menos cartas que o total oficial) e
+// ainda não são velhos demais. Sets antigos e completos ficam no cache.
+function shouldRefreshCache(cached) {
+  const set = cached && cached.set;
+  if (!set) return true;
+  const release = set.releaseDate ? new Date(set.releaseDate).getTime() : NaN;
+  const ageDays = Number.isNaN(release) ? Infinity : (Date.now() - release) / 86400000;
+  if (ageDays < 0) return true;                    // pré-lançamento: sempre tenta
+  if (ageDays <= 180) return true;                 // recente: TCGdex ainda completa
+  const official = set.cardCount && set.cardCount.official;
+  const have = Array.isArray(cached.cards) ? cached.cards.length : 0;
+  if (official && have < official && ageDays <= 730) return true; // incompleto e novo-ish
+  return false;
+}
+
 async function loadSetCards(setId, label) {
   const cacheFile = new URL(`${setId}.json`, cacheDir);
 
   if (!options.force) {
     try {
       const cached = JSON.parse(await readFile(cacheFile, "utf8"));
-      stats.fromCache++;
-      console.log(`${label} — ${cached.cards.length} cartas (cache)`);
-      return cached;
+      // A TCGdex COMPLETA os sets aos poucos (secret rares/promos entram semanas
+      // depois do lançamento). Sem isto, um set baixado cedo ficaria incompleto
+      // pra sempre. Então re-baixa sets recentes/incompletos; os antigos e
+      // completos seguem do cache (rápido).
+      if (!shouldRefreshCache(cached)) {
+        stats.fromCache++;
+        console.log(`${label} — ${cached.cards.length} cartas (cache)`);
+        return cached;
+      }
+      console.log(`${label} — cache desatualizado (recente/incompleto), re-baixando`);
     } catch {
       // sem cache ou cache corrompido: baixa de novo
     }
