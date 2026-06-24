@@ -643,7 +643,7 @@
         active = type === "set" ? "sets" : type === "artist" ? "artists" : type === "trainer" ? "trainers" : "pokedex";
       }
     }
-    const exploreActive = ["pokedex", "trainers", "sets", "artists", "cards"].includes(active);
+    const exploreActive = ["pokedex", "trainers", "sets", "artists", "cards", "hub"].includes(active);
     const collectionActive = ["collection", "wishlist", "binders"].includes(active);
 
     const link = (href, key, page) => `<a href="${escapeAttribute(href)}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
@@ -655,38 +655,51 @@
         <div class="nav-dropdown" hidden>${links}</div>
       </div>`;
 
-    // Site único (sleevu.app): tudo é relativo. Início = a Home (landing do hub),
-    // HUB = a grade de jogos. O jogo é a sessão do site, não o domínio.
+    // Site único (sleevu.app): tudo é relativo. Menu ÚNICO e idêntico em todas as
+    // páginas (sem ramo hub-vs-jogo). O jogo é a sessão do site; os links de
+    // Explorar carregam ?game= pra ENTRAR no jogo escolhido.
     const apexUrl = "index.html";
-    const hubUrl = "hub.html";
     const brand = document.querySelector(".brand");
     if (brand) brand.setAttribute("href", apexUrl);
 
-    if (currentGame() === "hub") {
-      // Início/HUB: grade de jogos + Portfólio combinado (?game=hub).
-      nav.innerHTML = `
-        ${link(apexUrl, "nav.hub", "home")}
-        ${link(hubUrl, "nav.gamesHub", "hub")}
-        ${link("portfolio.html?game=hub", "nav.portfolio", "portfolio")}
-      `;
-    } else {
-      // Dentro de um jogo: Início e HUB voltam pras páginas neutras; resto relativo.
-      nav.innerHTML = `
-        ${link(apexUrl, "nav.hub", "home")}
-        ${link(hubUrl, "nav.gamesHub", "hub")}
-        ${group("nav.explore", exploreActive, `
-            ${link("cards.html", "nav.allCards", "cards")}
-            ${currentGame() === "pokemon" ? link("pokedex.html", "nav.pokemon", "pokedex") : ""}
-            ${currentGame() === "pokemon" ? link("trainers.html", "nav.trainers", "trainers") : ""}
-            ${link("sets.html", "nav.sets", "sets")}
-            ${link("artists.html", "nav.artists", "artists")}`)}
-        ${group("nav.collection", collectionActive, `
-            ${link("collection.html", "nav.collectionMine", "collection")}
-            ${link("binders.html", "nav.binders", "binders")}
-            ${link("wishlist.html", "nav.wishlist", "wishlist")}`)}
-        ${link("portfolio.html", "nav.portfolio", "portfolio")}
-      `;
-    }
+    // "Explorar" = mega-menu com uma coluna por jogo + atalho pra grade de jogos.
+    // Substitui o antigo item "HUB" e o antigo dropdown "Explorar" por jogo.
+    const exploreLink = (href, key) => `<a href="${escapeAttribute(href)}">${escapeHtml(t(key))}</a>`;
+    const exploreMega = `
+      <div class="nav-group">
+        <button type="button" class="nav-group-toggle${exploreActive ? " active" : ""}" aria-expanded="false" aria-haspopup="true">
+          ${escapeHtml(t("nav.explore"))}<span class="nav-caret" aria-hidden="true">▾</span>
+        </button>
+        <div class="nav-dropdown nav-mega" hidden>
+          <a class="nav-mega-all" href="hub.html">${escapeHtml(t("nav.exploreAll"))}</a>
+          <div class="nav-mega-cols">
+            <div class="nav-mega-col">
+              <span class="nav-mega-head">${escapeHtml(t("nav.gamePokemon"))}</span>
+              ${exploreLink("cards.html?game=pokemon", "nav.allCards")}
+              ${exploreLink("sets.html?game=pokemon", "nav.sets")}
+              ${exploreLink("pokedex.html?game=pokemon", "nav.pokedex")}
+              ${exploreLink("trainers.html?game=pokemon", "nav.trainers")}
+              ${exploreLink("artists.html?game=pokemon", "nav.artists")}
+            </div>
+            <div class="nav-mega-col">
+              <span class="nav-mega-head">${escapeHtml(t("nav.gameLorcana"))}</span>
+              ${exploreLink("cards.html?game=lorcana", "nav.allCards")}
+              ${exploreLink("sets.html?game=lorcana", "nav.sets")}
+              ${exploreLink("artists.html?game=lorcana", "nav.artists")}
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    nav.innerHTML = `
+      ${link(apexUrl, "nav.home", "home")}
+      ${exploreMega}
+      ${group("nav.collection", collectionActive, `
+          ${link("collection.html", "nav.collectionMine", "collection")}
+          ${link("binders.html", "nav.binders", "binders")}
+          ${link("wishlist.html", "nav.wishlist", "wishlist")}`)}
+      ${link("portfolio.html?game=hub", "nav.portfolio", "portfolio")}
+    `;
 
     const groups = Array.from(nav.querySelectorAll(".nav-group")).map((groupEl) => ({
       el: groupEl,
