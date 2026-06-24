@@ -690,10 +690,12 @@
 
     return `<section class="collection-dashboard">
       <article class="dash-card dash-stats">
-        <div><span class="dash-stat-val">${copies}</span><span class="dash-stat-label">${escapeHtml(t("stats.copies"))}</span></div>
-        <div><span class="dash-stat-val">${distinct}</span><span class="dash-stat-label">${escapeHtml(t("stats.distinct"))}</span></div>
-        <div><span class="dash-stat-val">${sets}</span><span class="dash-stat-label">${escapeHtml(t("stats.setsCovered"))}</span></div>
-        <div><span class="dash-stat-val">${escapeHtml(total > 0 ? shared.formatMoney(shared.getCurrency(), total) : "—")}</span><span class="dash-stat-label">${escapeHtml(t("dash.value"))}</span></div>
+        <div class="dash-stats-counts">
+          <div><span class="dash-stat-val">${copies}</span><span class="dash-stat-label">${escapeHtml(t("stats.copies"))}</span></div>
+          <div><span class="dash-stat-val">${distinct}</span><span class="dash-stat-label">${escapeHtml(t("stats.distinct"))}</span></div>
+          <div><span class="dash-stat-val">${sets}</span><span class="dash-stat-label">${escapeHtml(t("stats.setsCovered"))}</span></div>
+        </div>
+        <div class="dash-stat-money"><span class="dash-stat-val">${escapeHtml(total > 0 ? shared.formatMoney(shared.getCurrency(), total) : "—")}</span><span class="dash-stat-label">${escapeHtml(t("dash.value"))}</span></div>
       </article>
       <article class="dash-card dash-top">
         <h3>${escapeHtml(t("dash.topTitle"))}</h3>

@@ -3598,10 +3598,13 @@ a.progress-row:hover {
 /* Dashboard de resumo no topo da coleção: stats + mais valiosas + distribuição. */
 .collection-dashboard {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  /* Stats e "mais valiosas" mais largas; as distribuições mais estreitas. */
+  grid-template-columns: 1.5fr 1.3fr 0.85fr 0.85fr;
   gap: 14px;
   margin: 0 0 18px;
 }
+@media (max-width: 1080px) { .collection-dashboard { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .collection-dashboard { grid-template-columns: 1fr; } }
 .dash-card {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -3609,10 +3612,14 @@ a.progress-row:hover {
   padding: 16px 18px;
 }
 .dash-card h3 { margin: 0 0 12px; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
-.dash-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; align-content: center; }
-.dash-stats > div { display: flex; flex-direction: column; gap: 2px; }
+.dash-stats { display: flex; flex-direction: column; gap: 14px; justify-content: center; }
+.dash-stats-counts { display: flex; flex-wrap: wrap; gap: 12px 22px; }
+.dash-stats-counts > div { display: flex; flex-direction: column; gap: 2px; }
 .dash-stat-val { font-size: 24px; font-weight: 800; letter-spacing: -0.3px; }
 .dash-stat-label { font-size: 12px; color: var(--muted); }
+/* Valor de mercado: linha própria embaixo, número grande sem quebrar. */
+.dash-stat-money { display: flex; flex-direction: column; gap: 2px; padding-top: 12px; border-top: 1px solid var(--line); }
+.dash-stat-money .dash-stat-val { font-size: 30px; letter-spacing: -0.5px; white-space: nowrap; }
 .dash-top-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .dash-top-list a, .dash-top-list .dash-top-row { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
 .dash-top-thumb { width: 30px; flex: none; }
