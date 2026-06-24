@@ -22,6 +22,11 @@
   let activeTab = "cards";
   let sortMode = "dex";
 
+  // Aba "Cartas": ordenação + grade/lista (preferências guardadas).
+  const CARDS_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "release"];
+  let cardsSort = CARDS_SORTS.includes(localStorage.getItem("tcg-collection-sort")) ? localStorage.getItem("tcg-collection-sort") : "value-desc";
+  let cardsView = localStorage.getItem("tcg-collection-view") === "list" ? "list" : "grid";
+
   const GROUP_TABS = {
     pokemon: {
       getKey: (card) => card.pokemonName || speciesName(card.name),
@@ -61,6 +66,8 @@
     setFilter: document.getElementById("setFilter"),
     languageFilter: document.getElementById("languageFilter"),
     rarityFilter: document.getElementById("rarityFilter"),
+    cardsSortSelect: document.getElementById("cardsSortSelect"),
+    cardsViewToggle: document.getElementById("cardsViewToggle"),
     resultCount: document.getElementById("resultCount"),
     dashboard: document.getElementById("collectionDashboard"),
     dashCopies: document.getElementById("dashCopies"),
@@ -174,6 +181,25 @@
   }
 
   function bindEvents() {
+    if (elements.cardsSortSelect) {
+      elements.cardsSortSelect.value = cardsSort;
+      elements.cardsSortSelect.addEventListener("change", () => {
+        cardsSort = elements.cardsSortSelect.value;
+        localStorage.setItem("tcg-collection-sort", cardsSort);
+        render({ resetCount: true });
+      });
+    }
+    if (elements.cardsViewToggle) {
+      applyCardsView();
+      elements.cardsViewToggle.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-grid-view]");
+        if (!button) return;
+        cardsView = button.dataset.gridView === "list" ? "list" : "grid";
+        localStorage.setItem("tcg-collection-view", cardsView);
+        applyCardsView();
+      });
+    }
+
     elements.gameFilter.addEventListener("click", (event) => {
       const chip = event.target.closest("[data-game-filter]");
       if (!chip || chip.dataset.gameFilter === gameFilter) return;
@@ -337,10 +363,34 @@
   }
 
   function ownedTilePairs() {
-    return shared.cardVariantPairs(filterCards())
-      .filter(({ card, variant }) => owned.variantTotal(card.id, variant) > 0)
-      // Cartas sem imagem por último (sort estável preserva a ordem restante).
-      .sort((a, b) => Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card)));
+    const pairs = shared.cardVariantPairs(filterCards())
+      .filter(({ card, variant }) => owned.variantTotal(card.id, variant) > 0);
+    return sortTiles(pairs);
+  }
+
+  // Ordena os pares carta×variante conforme o seletor (mesma lógica do detalhe).
+  function sortTiles(pairs) {
+    const priceOf = (p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0;
+    const byNum = (a, b) => shared.compareCardNumbers(a.card.number, b.card.number);
+    if (cardsSort === "num-asc") pairs.sort(byNum);
+    else if (cardsSort === "num-desc") pairs.sort((a, b) => byNum(b, a));
+    else if (cardsSort === "value-desc") pairs.sort((a, b) => priceOf(b) - priceOf(a));
+    else if (cardsSort === "value-asc") pairs.sort((a, b) => {
+      const pa = priceOf(a), pb = priceOf(b);
+      if (!pa && !pb) return 0; if (!pa) return 1; if (!pb) return -1; return pa - pb;
+    });
+    else pairs.sort((a, b) => String(b.card.setReleaseDate || "").localeCompare(String(a.card.setReleaseDate || "")));
+    return pairs;
+  }
+
+  // Alterna grade/lista (mesma classe .is-list do detalhe) e reflete nos botões.
+  function applyCardsView() {
+    if (elements.grid) elements.grid.classList.toggle("is-list", cardsView === "list");
+    if (elements.cardsViewToggle) {
+      elements.cardsViewToggle.querySelectorAll("[data-grid-view]").forEach((b) => {
+        b.setAttribute("aria-pressed", String(b.dataset.gridView === cardsView));
+      });
+    }
   }
 
   // Atualiza tiles e contadores no DOM existente, sem reconstruir a grade
