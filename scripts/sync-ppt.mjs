@@ -39,6 +39,7 @@ const ONLY_SETS = (val("--set") || "").split(",").map((s) => s.trim()).filter(Bo
 const dataDir = new URL("../data/", import.meta.url);
 const cacheDir = new URL("../data/.cache/ppt/", import.meta.url);
 const OUT = new URL("ppt-prices.generated.json", dataDir);
+const NEWOUT = new URL("ppt-newcards.generated.json", dataDir);
 
 if (!TOKEN) { console.warn("PPT_API_TOKEN não definido — pulando sync da PPT (no-op)."); process.exit(0); }
 
@@ -77,7 +78,13 @@ function numOf(s) { const m = String(s || "").match(/(\d+)/); return m ? Number(
 async function ourChunk(setId, lang = "ja") {
   const local = new URL(`sets/${lang}/${setId}.json`, dataDir);
   try { if (existsSync(local)) return JSON.parse(await readFile(local, "utf8")); } catch { /* segue pra prod */ }
-  try { const r = await fetch(`${PROD}/data/sets/${lang}/${setId}.json`); if (r.ok) return r.json(); } catch { /* nada */ }
+  // O Cloudflare devolve 200 + HTML (fallback de SPA) pra path inexistente, então
+  // r.ok não basta: checa que o corpo é um array JSON antes de parsear (senão
+  // o JSON.parse de "<!doctype..." estouraria e derrubaria o run).
+  try {
+    const r = await fetch(`${PROD}/data/sets/${lang}/${setId}.json`);
+    if (r.ok) { const t = await r.text(); if (t.trim().startsWith("[")) return JSON.parse(t); }
+  } catch { /* nada */ }
   return null;
 }
 
@@ -91,6 +98,47 @@ const EN_GRADED_SETS = {
   ecard1: 1375, ecard2: 1397, ecard3: 1372,
   sma: 2594 // Hidden Fates Shiny Vault
 };
+
+// Sets EN onde a PPT PREENCHE imagem+preço (a TCGdex não tem arte): nosso setId
+// -> id PPT (tcgPlayerNumericId). Diferente do graded (que só pega `g`): aqui é
+// fill completo (img/u) + add-on-miss. Ex.: MEP Black Star Promos (TCGdex: 0 arte).
+const EN_FILL_SETS = {
+  mep: 24451 // ME: Mega Evolution Promo (52 cartas, todas sem arte na TCGdex)
+};
+
+// Nome limpo da carta PPT: tira o sufixo de número e tags ("Snorlax - 077/071"
+// -> "Snorlax"; "Meganium - 001 [Staff]" -> "Meganium").
+function cleanName(name) {
+  let s = String(name || "").replace(/\s*\[[^\]]*\]/g, ""); // tira [Staff] etc.
+  // Tudo antes de "<traço> <número>" (qualquer traço: -, –, —; qualquer espaço).
+  const m = s.match(/^(.*?)[\s ]*[-–—][\s ]*\d/);
+  if (m) s = m[1];
+  return s.trim();
+}
+// Espécie (mesma lógica do sync-tcgdex), pra casar no mapa de nomes.
+function speciesOf(name) {
+  return String(name || "").replace(/\b(VMAX|VSTAR|ex|EX|GX|V-UNION|V)\b/g, "").replace(/\s+/g, " ").trim();
+}
+// Variantes da carta sintetizada a partir do "printing" principal da PPT.
+function variantsOf(c) {
+  const p = String((c.prices && c.prices.primaryPrinting) || "").toLowerCase();
+  if (p.includes("reverse")) return ["Reverse"];
+  if (p.includes("holo")) return ["Holo"];
+  return ["Normal"];
+}
+function genOf(dexId) {
+  const id = Number(dexId); if (!id) return "";
+  const caps = [151, 251, 386, 493, 649, 721, 809, 905];
+  return caps.findIndex((c) => id <= c) + 1 || 9;
+}
+// Mapa reverso espécie(EN, minúsculo) -> dexId, a partir de pokemon-names.js.
+let _revNames = null;
+async function revNames() {
+  if (_revNames) return _revNames;
+  const m = await pokemonNames(); _revNames = {};
+  for (const [dex, name] of Object.entries(m)) _revNames[String(name).toLowerCase()] = Number(dex);
+  return _revNames;
+}
 
 // Busca graded EN de um set curado e casa por número com o nosso chunk EN.
 // Retorna { cardId: { g } } (só graded — não mexe no preço/imagem EN da TCGdex).
@@ -237,36 +285,81 @@ function pickGraded(c) {
 }
 
 // Busca um set na PPT e casa cada card com o nosso cardId pelo número.
-// Retorna { cardId: { u, img, g? } } ou null se não houver chunk nosso.
-async function syncSet(ourSetId, pptSetId) {
-  const chunk = await ourChunk(ourSetId);
+// `lang`: "japanese" (default) ou "english". Retorna { entries, newCards }:
+//  - entries: { cardId: { u, img, g? } } — ENRIQUECE cartas que já temos;
+//  - newCards: cartas que a PPT tem e a TCGdex NÃO (add-on-miss), sintetizadas
+//    a partir de uma carta-irmã do chunk (campos do set) + nome/num/img/preço.
+// Retorna null se não houver chunk nosso desse set.
+const MAX_NEW_PER_SET = 30; // teto defensivo contra lixo/erros da PPT num set
+async function syncSet(ourSetId, pptSetId, lang = "japanese") {
+  const ourLang = lang === "english" ? "en" : "ja";
+  const chunk = await ourChunk(ourSetId, ourLang);
   if (!chunk || !chunk.length) { console.log(`  ${ourSetId}: sem chunk nosso (pulado)`); return null; }
   const byNum = new Map();
-  for (const card of chunk) { const n = numOf(String(card.id).replace(`${ourSetId}-`, "").replace(/-ja$/, "")); if (n != null) byNum.set(n, card.id); }
+  for (const card of chunk) {
+    const n = numOf(String(card.id).replace(`${ourSetId}-`, "").replace(/-(ja|zh|pt)$/, ""));
+    if (n != null) byNum.set(n, card.id);
+  }
+  const sib = chunk[0]; // carta-irmã: campos do set (logo/símbolo/data/série).
+  const rev = await revNames();
 
   const inc = GRADED ? "&includeEbay=true&days=90" : "";
-  // Pagina o set inteiro (limit máx = 100; fetchAllInSet sozinho corta no limit).
   const arr = [];
   for (let page = 0, offset = 0; page < 30; page++) {
-    const j = await ppt(`/cards?setId=${pptSetId}&language=japanese&limit=100&offset=${offset}${inc}`);
+    const j = await ppt(`/cards?setId=${pptSetId}&language=${lang}&limit=100&offset=${offset}${inc}`);
     const batch = j.data || [];
     arr.push(...batch);
     if (!(j.metadata && j.metadata.hasMore) || !batch.length) break;
     offset += batch.length;
   }
   const entries = {};
+  const misses = new Map(); // num -> melhor candidato (com imagem)
   for (const c of arr) {
-    const ourId = byNum.get(numOf(c.cardNumber));
-    if (!ourId) continue;
+    const num = numOf(c.cardNumber);
     const u = pickPrice(c), img = c.imageCdnUrl400 || c.imageCdnUrl200 || c.imageUrl || null;
-    const e = {};
-    if (u > 0) e.u = Math.round(u * 100) / 100;
-    if (img) e.img = img;
-    if (GRADED) { const g = pickGraded(c); if (g) e.g = g; }
-    if (Object.keys(e).length) entries[ourId] = e;
+    const ourId = byNum.get(num);
+    if (ourId) {
+      const e = {};
+      if (u > 0) e.u = Math.round(u * 100) / 100;
+      if (img) e.img = img;
+      if (GRADED) { const g = pickGraded(c); if (g) e.g = g; }
+      if (Object.keys(e).length) entries[ourId] = e;
+    } else if (num != null && img) {
+      // Add-on-miss: número que não existe no nosso chunk + tem imagem. Por número,
+      // fica o de MAIOR preço (a impressão "principal", não a de erro/staff).
+      const prev = misses.get(num);
+      if (!prev || (u || 0) > (prev._u || 0)) misses.set(num, { c, _u: u || 0, img });
+    }
   }
-  console.log(`  ${ourSetId} (ppt ${pptSetId}): ${Object.keys(entries).length}/${arr.length} casadas`);
-  return entries;
+
+  const newCards = [];
+  for (const [num, m] of misses) {
+    if (newCards.length >= MAX_NEW_PER_SET) break;
+    const name = cleanName(m.c.name);
+    if (!name) continue;
+    const id = ourLang === "en" ? `${ourSetId}-${num}` : `${ourSetId}-${num}-${ourLang}`;
+    const dexId = rev[speciesOf(name).toLowerCase()] || "";
+    const card = {
+      id, name, pokemonName: dexId ? null : speciesOf(name),
+      category: "", dexId, generation: genOf(dexId),
+      pokemonImage: dexId ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexId}.png` : "",
+      number: String(num),
+      set: (sib && sib.set) || setCodeFromName(m.c.setName) || ourSetId,
+      setId: ourSetId,
+      setLogo: (sib && sib.setLogo) || "", setSymbol: (sib && sib.setSymbol) || "",
+      setTotal: (sib && sib.setTotal) || "", setReleaseDate: (sib && sib.setReleaseDate) || "",
+      setSerieId: (sib && sib.setSerieId) || "", setSerieName: (sib && sib.setSerieName) || "",
+      artist: "", rarity: "", language: ourLang,
+      image: m.img, variants: variantsOf(m.c),
+      _new: true
+    };
+    if (card.pokemonName == null) card.pokemonName = ""; // o merge canoniza por dexId
+    if (m._u > 0) card.price = { u: Math.round(m._u * 100) / 100 };
+    newCards.push(card);
+  }
+
+  console.log(`  ${ourSetId} (ppt ${pptSetId}, ${lang}): ${Object.keys(entries).length} casadas, ${newCards.length} novas (add-on-miss)`);
+  return { entries, newCards };
 }
 
 const REFRESH_DAYS = 7; // re-busca um set se o cache dele tiver mais que isso
@@ -305,7 +398,29 @@ async function run() {
   const discovered = await loadDiscovered();
   let discDirty = false;
   const out = {};
+  const newCardsAll = []; // cartas que a PPT tem e a TCGdex não (add-on-miss)
   let fetched = 0, cacheHits = 0;
+
+  // Sets EN de fill (MEP etc.): imagem+preço pras cartas que a TCGdex tem sem
+  // arte, + add-on-miss. Cacheia igual (chave "enfill-<setId>").
+  for (const [ourSetId, pptId] of Object.entries(EN_FILL_SETS)) {
+    const ck = `enfill-${ourSetId}`;
+    const cached = await readCache(ck);
+    if (cached && Date.now() - (cached.t || 0) < REFRESH_DAYS * 864e5 && !DRY) {
+      Object.assign(out, cached.entries || {}); newCardsAll.push(...(cached.newCards || [])); continue;
+    }
+    if (creditsUsed >= BUDGET || (TIME_CAP_MS && Date.now() - startedAt > TIME_CAP_MS)) {
+      if (cached) { Object.assign(out, cached.entries || {}); newCardsAll.push(...(cached.newCards || [])); }
+      continue;
+    }
+    try {
+      const r = await syncSet(ourSetId, pptId, "english");
+      if (r) {
+        Object.assign(out, r.entries); newCardsAll.push(...r.newCards);
+        if (!DRY) await writeFile(cacheFileOf(ck), JSON.stringify({ t: Date.now(), entries: r.entries, newCards: r.newCards }), "utf8");
+      } else if (cached) { Object.assign(out, cached.entries || {}); newCardsAll.push(...(cached.newCards || [])); }
+    } catch (e) { console.log(`  [EN fill] ${ourSetId}: erro ${e.message}`); if (cached) { Object.assign(out, cached.entries || {}); newCardsAll.push(...(cached.newCards || [])); } }
+  }
 
   // Graded EN (curado) primeiro: sets de alto valor onde graded importa (base set
   // etc.). Cacheia/rotaciona igual aos JP (chave "en-<setId>", janela REFRESH_DAYS).
@@ -339,26 +454,38 @@ async function run() {
     if (pptId == null) { console.log(`  ${setId}: sem equivalente na PPT (pulado)`); continue; }
     const cached = await readCache(setId);
     const fresh = cached && Date.now() - (cached.t || 0) < REFRESH_DAYS * 864e5;
+    const restoreCache = (c) => { Object.assign(out, c.entries || {}); newCardsAll.push(...(c.newCards || [])); };
     // Fresco (e não é dry-run): usa o cache, não gasta crédito.
-    if (fresh && !DRY) { Object.assign(out, cached.entries); cacheHits++; continue; }
+    if (fresh && !DRY) { restoreCache(cached); cacheHits++; continue; }
     // Sem orçamento OU sem tempo: mantém o que já tem em cache (não regride).
     if (creditsUsed >= BUDGET || (TIME_CAP_MS && Date.now() - startedAt > TIME_CAP_MS)) {
-      if (cached) { Object.assign(out, cached.entries); cacheHits++; }
+      if (cached) { restoreCache(cached); cacheHits++; }
       continue;
     }
     try {
-      const entries = await syncSet(setId, pptId);
-      if (entries) { Object.assign(out, entries); fetched++; if (!DRY) await writeFile(cacheFileOf(setId), JSON.stringify({ t: Date.now(), entries }), "utf8"); }
-      else if (cached) Object.assign(out, cached.entries);
-    } catch (e) { console.log(`  ${setId}: erro ${e.message}`); if (cached) Object.assign(out, cached.entries); }
+      const r = await syncSet(setId, pptId);
+      if (r) {
+        Object.assign(out, r.entries); newCardsAll.push(...r.newCards); fetched++;
+        if (!DRY) await writeFile(cacheFileOf(setId), JSON.stringify({ t: Date.now(), entries: r.entries, newCards: r.newCards }), "utf8");
+      } else if (cached) restoreCache(cached);
+    } catch (e) { console.log(`  ${setId}: erro ${e.message}`); if (cached) restoreCache(cached); }
   }
 
   if (discDirty) await saveDiscovered(discovered);
-  console.log(`\nSets: ${fetched} buscados, ${cacheHits} do cache | cartas: ${Object.keys(out).length} | créditos: ${creditsUsed}/${BUDGET}`);
-  if (DRY) { console.log("[dry-run] nada gravado. Amostra:", JSON.stringify(Object.fromEntries(Object.entries(out).slice(0, 5)), null, 1)); return; }
-  // Artefato montado a partir de TODOS os sets em cache (cobertura completa).
+  // Dedupe das cartas novas por id (sets podem repetir entre runs/cache).
+  const newById = new Map();
+  for (const c of newCardsAll) if (c && c.id && !newById.has(c.id)) newById.set(c.id, c);
+  const newCards = [...newById.values()];
+  console.log(`\nSets: ${fetched} buscados, ${cacheHits} do cache | enriquecidas: ${Object.keys(out).length} | novas: ${newCards.length} | créditos: ${creditsUsed}/${BUDGET}`);
+  if (DRY) {
+    console.log("[dry-run] nada gravado. Amostra enriquecidas:", JSON.stringify(Object.fromEntries(Object.entries(out).slice(0, 3)), null, 1));
+    console.log("[dry-run] Amostra novas:", JSON.stringify(newCards.slice(0, 3).map((c) => ({ id: c.id, name: c.name, num: c.number, set: c.set, img: !!c.image, price: c.price })), null, 1));
+    return;
+  }
+  // Artefatos montados a partir de TODOS os sets em cache (cobertura completa).
   await writeFile(OUT, JSON.stringify(out), "utf8");
-  console.log(`Gravado ${Object.keys(out).length} cartas em data/ppt-prices.generated.json`);
+  await writeFile(NEWOUT, JSON.stringify(newCards), "utf8");
+  console.log(`Gravado ${Object.keys(out).length} cartas (enriquecidas) e ${newCards.length} novas (add-on-miss).`);
 }
 
 // --- INSPECT: descobre qual id de set o /cards?fetchAllInSet aceita ---

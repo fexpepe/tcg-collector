@@ -68,9 +68,33 @@ const pricing = {};
 let pptData = {};
 try { pptData = JSON.parse(await readFile(new URL("ppt-prices.generated.json", dataDir), "utf8")); } catch { /* sem PPT */ }
 
+// Cartas que a PPT tem e a TCGdex NÃO (add-on-miss): secret rares/promos que a
+// fonte do catálogo não traz. Injetamos no chunk do set+idioma certo (dedupe por
+// id), e o resto do merge (preço/índices) trata como qualquer carta.
+// { "<lang>/<setId>": [card, ...] }
+let pptNewCards = [];
+try { pptNewCards = JSON.parse(await readFile(new URL("ppt-newcards.generated.json", dataDir), "utf8")); } catch { /* sem novas */ }
+const newBySet = {};
+for (const c of Array.isArray(pptNewCards) ? pptNewCards : []) {
+  if (!c || !c.id || !c.language || !c.setId) continue;
+  (newBySet[`${c.language}/${c.setId}`] = newBySet[`${c.language}/${c.setId}`] || []).push(c);
+}
+let injectedNew = 0;
+
 for (const lang of langs) {
   for (const chunk of chunksByLang[lang] || []) {
     let changed = false;
+    // Injeta as cartas novas da PPT deste set+idioma (dedupe por id) antes do
+    // processamento, pra entrarem no preço/índices/chunk como qualquer outra.
+    const news = newBySet[`${lang}/${chunk.setId}`];
+    if (news && news.length) {
+      const have = new Set(chunk.cards.map((c) => c.id));
+      for (const nc of news) {
+        if (have.has(nc.id)) continue;
+        const { _new, ...card } = nc; // remove a flag interna
+        chunk.cards.push(card); have.add(nc.id); injectedNew++; changed = true;
+      }
+    }
     for (const card of chunk.cards) {
       const canonical = speciesByDex.get(speciesDexId(card));
       if (canonical && card.pokemonName !== canonical) {
@@ -136,6 +160,7 @@ await writeFile(new URL("indexes.generated.js", dataDir), `window.TCG_INDEXES = 
 await writeFile(new URL("manifest.generated.js", dataDir), `window.TCG_MANIFEST = ${JSON.stringify(manifest)};\n`, "utf8");
 await writeFile(new URL("pricing.generated.js", dataDir), `window.TCG_PRICING = ${JSON.stringify(pricing)};\n`, "utf8");
 
+if (pptNewCards.length) console.log(`Cartas novas da PPT (add-on-miss) injetadas: ${injectedNew}/${pptNewCards.length}`);
 console.log(`Mesclados: ${allCards.length} cartas, ${manifestSets.length} sets (${langs.join(", ")})`);
 console.log(`Preços de referência: ${Object.keys(pricing).length} cartas`);
 console.log(`Espécies canônicas conhecidas: ${speciesByDex.size}`);
