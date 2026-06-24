@@ -68,7 +68,8 @@
     dashSets: document.getElementById("dashSets"),
     dashValue: document.getElementById("dashValue"),
     dashTopList: document.getElementById("dashTopList"),
-    dashDist: document.getElementById("dashDist")
+    dashDist: document.getElementById("dashDist"),
+    dashRegion: document.getElementById("dashRegion")
   };
 
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
@@ -275,18 +276,41 @@
     // Distribuição por jogo (Pokémon × Lorcana), entre as cartas filtradas.
     const byGame = {};
     myCards.forEach((card) => { byGame[card.game] = (byGame[card.game] || 0) + 1; });
-    const order = [
-      { game: "pokemon", label: t("filter.gamePokemon"), color: "#d9a300" },
-      { game: "lorcana", label: t("filter.gameLorcana"), color: "#3f3d96" }
-    ].filter((g) => byGame[g.game]);
-    const max = Math.max(1, ...order.map((g) => byGame[g.game]));
-    elements.dashDist.innerHTML = order.length
-      ? order.map((g) => `<div class="dash-dist-row">
-          <span class="dash-dist-label">${escapeHtml(g.label)}</span>
-          <span class="dash-dist-track"><span class="dash-dist-fill" style="width:${Math.round((byGame[g.game] / max) * 100)}%;background:${g.color}"></span></span>
-          <span class="dash-dist-n">${byGame[g.game]}</span>
-        </div>`).join("")
-      : `<p class="dash-empty">${escapeHtml(t("dash.empty"))}</p>`;
+    elements.dashDist.innerHTML = distBarsHtml([
+      { label: t("filter.gamePokemon"), n: byGame.pokemon || 0, color: "#d9a300" },
+      { label: t("filter.gameLorcana"), n: byGame.lorcana || 0, color: "#3f3d96" }
+    ]);
+
+    // Distribuição por região/idioma das cartas (com bandeirinha).
+    const byRegion = {};
+    myCards.forEach((card) => { const r = shared.cardLanguageRegion(card.language); byRegion[r] = (byRegion[r] || 0) + 1; });
+    const regions = [
+      { region: "english", lang: "en", color: "#2aa3df" },
+      { region: "japanese", lang: "ja", color: "#d23b4e" },
+      { region: "portuguese", lang: "pt", color: "#1f9d77" },
+      { region: "chinese", lang: "zh", color: "#e0992f" }
+    ];
+    if (elements.dashRegion) {
+      // Flag SVG (renderiza em qualquer SO; emoji de bandeira falha no Windows) +
+      // nome curto da região.
+      elements.dashRegion.innerHTML = distBarsHtml(regions.map((r) => ({
+        label: `${shared.cardFlag(r.lang)}<span>${escapeHtml(t("setRegion." + r.region).replace(/\s*\(.*/, ""))}</span>`,
+        n: byRegion[r.region] || 0, color: r.color
+      })));
+    }
+  }
+
+  // Barras horizontais de distribuição: [{label, n, color}]. `label` pode ter HTML
+  // confiável (flag SVG); textos vêm do i18n (sem HTML do usuário). Zeradas saem.
+  function distBarsHtml(rows) {
+    const shown = rows.filter((r) => r.n > 0);
+    if (!shown.length) return `<p class="dash-empty">${escapeHtml(t("dash.empty"))}</p>`;
+    const max = Math.max(1, ...shown.map((r) => r.n));
+    return shown.map((r) => `<div class="dash-dist-row">
+        <span class="dash-dist-label">${r.label}</span>
+        <span class="dash-dist-track"><span class="dash-dist-fill" style="width:${Math.round((r.n / max) * 100)}%;background:${r.color}"></span></span>
+        <span class="dash-dist-n">${r.n}</span>
+      </div>`).join("");
   }
 
   // Valor de mercado das cartas que você tem (na moeda atual): soma cada cópia

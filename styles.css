@@ -3618,8 +3618,9 @@ a.progress-row:hover {
 .dash-top-set { font-size: 11.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dash-top-val { font-weight: 700; font-size: 13px; white-space: nowrap; }
 .dash-dist-bars { display: grid; gap: 10px; }
-.dash-dist-row { display: grid; grid-template-columns: 64px 1fr auto; align-items: center; gap: 10px; }
-.dash-dist-label { font-size: 12.5px; color: var(--muted); }
+.dash-dist-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; }
+.dash-dist-label { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 12.5px; color: var(--muted); }
+.dash-dist-label .card-flag { flex: none; }
 .dash-dist-track { height: 10px; border-radius: 999px; background: var(--line); overflow: hidden; }
 .dash-dist-fill { display: block; height: 100%; border-radius: 999px; }
 .dash-dist-n { font-weight: 700; font-size: 13px; }
