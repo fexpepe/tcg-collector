@@ -1794,6 +1794,22 @@ input::placeholder {
     padding: 0;
     margin: 0;
   }
+
+  /* Submenus flutuantes do drawer (moeda, idioma, Conta): no mobile os toggles
+     ficam à esquerda e o menu (.lang-dd-menu { right: 0 }) abria para fora da
+     tela à esquerda. O wrapper ocupa a largura toda para o menu ancorar na
+     borda DIREITA do drawer (visível), com a largura limitada à viewport. O
+     toggle (pill) continua pequeno e à esquerda. */
+  .app-header-inner .header-actions .lang-dd,
+  .app-header-inner .header-actions .auth-slot,
+  .app-header-inner .header-actions .auth-slot .lang-dd {
+    width: 100%;
+  }
+  .app-header-inner .header-actions .lang-dd-menu {
+    right: 0;
+    left: auto;
+    max-width: calc(100vw - 40px);
+  }
 }
 
 @media (max-width: 720px) {
