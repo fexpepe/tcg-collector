@@ -3193,21 +3193,9 @@
     }
 
     function renderLoggedOut() {
-      slot.innerHTML = `<div class="lang-dd auth-dd" id="authDd">
-        <button type="button" class="secondary auth-acct" aria-haspopup="menu" aria-expanded="false">${escapeHtml(t("auth.account"))}<span class="lang-dd-caret" aria-hidden="true">▾</span></button>
-        <ul class="lang-dd-menu auth-menu" role="menu" hidden>
-          ${installItem}
-          <li class="lang-dd-option" role="menuitem" data-auth-login>${escapeHtml(t("auth.signIn"))}</li>
-          ${navItems}
-          ${supportItem}
-          ${dataItems}
-          ${aboutItems}
-          ${deleteItem}
-        </ul>
-        ${fileInput}
-      </div>`;
-      wireDropdown();
-      updateInstallItem();
+      // Deslogado: só o botão "Entrar" (vai direto pro login). Sem submenu —
+      // o menu de conta só existe quando há sessão.
+      slot.innerHTML = `<button type="button" class="secondary auth-acct auth-signin" data-auth-login>${escapeHtml(t("auth.signIn"))}</button>`;
     }
     function renderLoggedIn(session) {
       const email = (session.user && session.user.email) || "conta";
