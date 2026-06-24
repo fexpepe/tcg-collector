@@ -43,6 +43,9 @@
   // Wishlist unificada: carrega as desejadas (+ as possuídas, pra migração e pro
   // indicador "tenho") dos DOIS jogos, marcando card.game.
   const idsFor = (g) => [...new Set([...wishlistByGame[g].knownCardIds(), ...ownedByGame[g].knownCardIds()])];
+  // Liga os controles JÁ (filtro/busca) — não dependem do catálogo; assim os
+  // botões nunca ficam "mortos" se o carregamento demorar/falhar.
+  bindEvents();
   Promise.all([
     shared.loadOwnedAcrossGames({ pokemon: idsFor("pokemon"), lorcana: idsFor("lorcana") }),
     shared.loadFxRates()
@@ -54,7 +57,6 @@
       Object.keys(ownedByGame).forEach((g) =>
         ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
       hydrateFilters();
-      bindEvents();
       render();
     })
     .catch((error) => {

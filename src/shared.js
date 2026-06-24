@@ -2262,7 +2262,11 @@
     const mergedPricing = {};
     for (const { game, dataDir } of DATA_GAMES) {
       const ids = idsByGame ? (idsByGame[game] || []) : null; // null = catálogo inteiro
-      const r = await loadGameCatalog(game, dataDir, ids);
+      // Resiliência: um jogo falhar (soluço de rede num chunk) não pode derrubar a
+      // página toda — cai vazio só pra aquele jogo e segue.
+      let r;
+      try { r = await loadGameCatalog(game, dataDir, ids); }
+      catch (e) { r = { cards: [], indexes: null, pricing: null }; }
       (r.cards || []).forEach((c) => { c.game = game; cards.push(c); });
       indexesByGame[game] = r.indexes || null;
       if (r.pricing) Object.assign(mergedPricing, r.pricing);

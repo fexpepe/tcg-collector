@@ -86,6 +86,9 @@
   } else {
     // Coleção unificada: carrega as cartas que você tem dos DOIS jogos (cada uma
     // marcada com card.game) e mescla. Cada jogo lê só os seus ids.
+    // Liga os controles JÁ (filtro de jogo, abas, busca) — independem do catálogo.
+    // Assim os botões nunca ficam "mortos" se o carregamento demorar/falhar.
+    bindEvents();
     Promise.all([
       shared.loadOwnedAcrossGames({
         pokemon: ownedByGame.pokemon.knownCardIds(),
@@ -101,7 +104,6 @@
         Object.keys(ownedByGame).forEach((g) =>
           ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
         hydrateFilters();
-        bindEvents();
         bindShareButton();
         render();
       })
