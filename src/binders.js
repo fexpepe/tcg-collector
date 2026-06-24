@@ -24,11 +24,19 @@
   const openId = new URLSearchParams(window.location.search).get("id");
   const shareId = new URLSearchParams(window.location.search).get("s");
 
-  // Stores da coleção/desejo/preços: usados pelo resumo (Tenho/Faltando),
-  // pelo "marcar tudo" e pela busca por coleção/desejo no editor.
-  const ownedStore = shared.createCollectionStore();
-  const wishlistStore = shared.createWishlistStore();
-  const pricesStore = shared.createPriceStore();
+  // Binders UNIFICADOS (uma página, todos os jogos): um binder pode ter cartas de
+  // qualquer jogo. As stores de coleção/desejo/preços (resumo Tenho/Faltando,
+  // "marcar tudo", busca) viram facades que despacham por jogo (cardGameMap,
+  // populado quando o catálogo dos dois jogos carrega).
+  const ownedByGame = { pokemon: shared.createCollectionStore("pokemon"), lorcana: shared.createCollectionStore("lorcana") };
+  const wishlistByGame = { pokemon: shared.createWishlistStore("pokemon"), lorcana: shared.createWishlistStore("lorcana") };
+  const pricesByGame = { pokemon: shared.createPriceStore("pokemon"), lorcana: shared.createPriceStore("lorcana") };
+  const cardGameMap = new Map();
+  const gameOf = (id) => cardGameMap.get(id) || "pokemon";
+  const ownedStore = shared.mergedCollectionStore(ownedByGame, gameOf);
+  const wishlistStore = shared.mergedWishlistStore(wishlistByGame, gameOf);
+  const pricesStore = shared.mergedPriceStore(pricesByGame, gameOf);
+  let editorGameFilter = "all"; // filtro do seletor de cartas (ALL/Pokémon/Lorcana)
 
   const GRIDS = {
     "2x2": { cols: 2, rows: 2 },
@@ -230,13 +238,32 @@
   // ---------------------------------------------------------------------------
   // Store dos binders (localStorage). { collection: [...], sale: [...] }
   // ---------------------------------------------------------------------------
-  const STORAGE_KEY = shared.gameKey("binders-v1");
+  // Binders são GLOBAIS (cross-game) — uma lista só pra todos os jogos. Migra
+  // one-time as listas per-game (e a legada sem prefixo) pra cá.
+  const STORAGE_KEY = "tcg-collector-binders-all-v1";
+  function readBinderList(key) {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(key) || "null");
+      if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return [];
+      const out = [];
+      if (Array.isArray(parsed.binders)) out.push(...parsed.binders);
+      if (Array.isArray(parsed.collection)) parsed.collection.forEach((b) => { b.type = b.type || "collection"; out.push(b); });
+      if (Array.isArray(parsed.sale)) parsed.sale.forEach((b) => { b.type = b.type || "sale"; out.push(b); });
+      return out;
+    } catch (error) { return []; }
+  }
   function readData() {
     try {
       const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
       if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) return parsed;
     } catch (error) { /* ignora */ }
-    return {};
+    // Primeira vez no formato global: junta o que houver dos namespaces antigos.
+    const merged = [];
+    const seen = new Set();
+    ["tcg-collector-pokemon-binders-v1", "tcg-collector-lorcana-binders-v1", "tcg-collector-binders-v1"].forEach((k) => {
+      readBinderList(k).forEach((b) => { if (b && b.id && !seen.has(b.id)) { seen.add(b.id); merged.push(b); } });
+    });
+    return { binders: merged };
   }
   const data = readData();
   // Migração: junta os antigos arrays collection/sale num único `binders`,
@@ -478,9 +505,11 @@
   });
   function ensureCatalog() {
     if (!catalogPromise) {
-      catalogPromise = loadCatalog().then((catalog) => {
+      // Binder cross-game: catálogo INTEIRO dos dois jogos (cada carta com .game).
+      catalogPromise = shared.loadAllGamesCatalog().then((catalog) => {
         allCards = catalog.cards || [];
         cardsById = new Map(allCards.map((card) => [card.id, card]));
+        allCards.forEach((card) => cardGameMap.set(card.id, card.game));
         return allCards;
       });
     }
@@ -506,9 +535,10 @@
   }
   // Lista-base de cartas para a aba de busca atual.
   function baseListForTab() {
-    if (editing && editing.tab === "collection") return allCards.filter((card) => collectionIds.has(card.id));
-    if (editing && editing.tab === "wishlist") return allCards.filter((card) => wishlistIds.has(card.id));
-    return allCards;
+    const byGame = (card) => editorGameFilter === "all" || card.game === editorGameFilter;
+    if (editing && editing.tab === "collection") return allCards.filter((card) => byGame(card) && collectionIds.has(card.id));
+    if (editing && editing.tab === "wishlist") return allCards.filter((card) => byGame(card) && wishlistIds.has(card.id));
+    return allCards.filter(byGame);
   }
 
   // ---------------------------------------------------------------------------
@@ -942,6 +972,11 @@
           </div>
 
           <div class="binder-editor-tabpanel"${searchTab ? "" : " hidden"}>
+            <div class="chip-filter game-filter binder-editor-gamefilter" role="group" aria-label="Jogo">
+              <button type="button" class="chip${editorGameFilter === "all" ? " active" : ""}" data-edit-game="all" aria-pressed="${editorGameFilter === "all"}">${escapeHtml(t("filter.gameAll"))}</button>
+              <button type="button" class="chip${editorGameFilter === "pokemon" ? " active" : ""}" data-edit-game="pokemon" aria-pressed="${editorGameFilter === "pokemon"}">${escapeHtml(t("filter.gamePokemon"))}</button>
+              <button type="button" class="chip${editorGameFilter === "lorcana" ? " active" : ""}" data-edit-game="lorcana" aria-pressed="${editorGameFilter === "lorcana"}">${escapeHtml(t("filter.gameLorcana"))}</button>
+            </div>
             <div class="binder-editor-searchbar">
               <input type="search" class="binder-editor-search" data-edit-search placeholder="${escapeAttribute(t("binders.editor.search"))}" value="${escapeAttribute(editing.query || "")}">
               <label class="binder-editor-sort"><span>${escapeHtml(t("sort.label"))}</span>
@@ -1856,6 +1891,17 @@
     }
     const tabBtn = event.target.closest("[data-edit-tab]");
     if (tabBtn) { editing.tab = tabBtn.dataset.editTab; renderEditor(); if (editing.tab !== "free") renderSearchResults(editing.query || ""); return; }
+    const gameBtn = event.target.closest("[data-edit-game]");
+    if (gameBtn) {
+      editorGameFilter = gameBtn.dataset.editGame;
+      gameBtn.parentElement.querySelectorAll("[data-edit-game]").forEach((b) => {
+        const on = b === gameBtn;
+        b.classList.toggle("active", on);
+        b.setAttribute("aria-pressed", String(on));
+      });
+      renderSearchResults(editing.query || "");
+      return;
+    }
     const result = event.target.closest("[data-result-id]");
     if (result) { selectCard(result.dataset.resultId); return; }
   });

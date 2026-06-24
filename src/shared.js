@@ -2223,9 +2223,12 @@
   // Carrega o catálogo das cartas que você tem de UM jogo. Se for o jogo da
   // sessão, os globals já estão prontos — reaproveita. Senão, injeta os dados do
   // outro jogo em globals temporários, lê, e restaura os da sessão no fim.
-  async function loadGameOwned(game, dataDir, ownedIds) {
+  // `ids`: array de cardIds a carregar (carga direcionada) — ou null pro catálogo
+  // INTEIRO daquele jogo (usado pelo seletor do Binder).
+  async function loadGameCatalog(game, dataDir, ids) {
+    const run = () => (ids == null ? loadCatalog() : loadCatalogForCardIds(ids));
     if ((window.SLEEVU && window.SLEEVU.game) === game) {
-      const r = await loadCatalogForCardIds(ownedIds);
+      const r = await run();
       return { cards: r.cards, indexes: r.indexes, pricing: window.TCG_PRICING || null };
     }
     const saved = {
@@ -2240,7 +2243,7 @@
     for (const f of files) await injectScript(dataDir + f);
     let r, pricing;
     try {
-      r = await loadCatalogForCardIds(ownedIds);
+      r = await run();
       pricing = window.TCG_PRICING || null;
     } finally {
       window.TCG_CARDS = saved.cards; window.TCG_INDEXES = saved.indexes;
@@ -2250,16 +2253,16 @@
     return { cards: r.cards, indexes: r.indexes, pricing };
   }
 
-  // Une os catálogos (cartas que você tem) dos jogos com dados. Cada carta ganha
-  // card.game; window.TCG_PRICING vira a UNIÃO das tabelas (pra cardValue achar a
-  // referência de qualquer jogo). `idsByGame[game]` = ids a carregar daquele jogo.
-  async function loadOwnedAcrossGames(idsByGame) {
+  // Une catálogos dos jogos, cada carta marcada com card.game; window.TCG_PRICING
+  // vira a UNIÃO das tabelas (pra cardValue achar a referência de qualquer jogo).
+  async function loadAcrossGames(idsByGame) {
     await awaitCatalog(); // garante os globals do jogo da sessão antes de salvar/restaurar
     const cards = [];
     const indexesByGame = {};
     const mergedPricing = {};
     for (const { game, dataDir } of DATA_GAMES) {
-      const r = await loadGameOwned(game, dataDir, (idsByGame && idsByGame[game]) || []);
+      const ids = idsByGame ? (idsByGame[game] || []) : null; // null = catálogo inteiro
+      const r = await loadGameCatalog(game, dataDir, ids);
       (r.cards || []).forEach((c) => { c.game = game; cards.push(c); });
       indexesByGame[game] = r.indexes || null;
       if (r.pricing) Object.assign(mergedPricing, r.pricing);
@@ -2267,6 +2270,11 @@
     window.TCG_PRICING = mergedPricing;
     return { cards, indexesByGame };
   }
+
+  // Só as cartas que você tem (Coleção/Wishlist): carga direcionada por jogo.
+  function loadOwnedAcrossGames(idsByGame) { return loadAcrossGames(idsByGame || {}); }
+  // Catálogo INTEIRO dos dois jogos (seletor do Binder).
+  function loadAllGamesCatalog() { return loadAcrossGames(null); }
 
   // Facade que despacha cada método por jogo (resolvido por gameOf(cardId));
   // agregados (size/totalQuantity/...) somam os jogos. Deixa Coleção/Wishlist/
@@ -2298,6 +2306,7 @@
       toggle: (id, v) => pick(id).toggle(id, v),
       remove: (id, v) => pick(id).remove(id, v),
       variants: (id) => pick(id).variants(id),
+      toObject: () => { const o = {}; list().forEach((s) => Object.assign(o, s.toObject())); return o; },
       get size() { return list().reduce((sum, s) => sum + s.size, 0); }
     };
   }
@@ -2573,6 +2582,7 @@
     loadCatalog,
     loadCatalogForCardIds,
     loadOwnedAcrossGames,
+    loadAllGamesCatalog,
     mergedCollectionStore,
     mergedWishlistStore,
     mergedPriceStore,
@@ -2609,7 +2619,7 @@
     wishlist: gameKey("wishlist-v1"),
     wishlistMeta: gameKey("wishlist-meta-v1"),
     prices: gameKey("prices-v1"),
-    binders: gameKey("binders-v1"),
+    binders: "tcg-collector-binders-all-v1", // binders são globais (cross-game)
     history: gameKey("history-v1")
   };
 

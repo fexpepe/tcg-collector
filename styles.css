@@ -3591,6 +3591,7 @@ a.progress-row:hover {
   margin: 0 0 16px;
 }
 .game-filter { margin: 0; }
+.binder-editor-gamefilter { margin: 0 0 10px; }
 .collection-share-btn { margin: 0; }
 /* Banner do binder compartilhado (somente leitura) + CTA pro visitante. */
 .binder-shared-banner {
