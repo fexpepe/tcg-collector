@@ -35,6 +35,42 @@ function cardName(c) {
   return v ? `${c.name} - ${v}` : c.name;
 }
 
+// Logo do set: a Lorcast NÃO serve logo/capa de set. O MushuReport (wiki
+// MediaWiki da comunidade Lorcana) tem todos como "<Nome do Set> logo.png".
+// Baixamos o thumb (500px, via iiurlwidth) e hospedamos LOCAL em
+// data/lorcana/set-logos/<code>.png (mesmo padrão dos dados do Pokémon: baixa no
+// build, serve do próprio site). Retorna o caminho relativo ao site, ou null se
+// o set não tiver logo no wiki (promos/sets novos) — aí o chamador cai pra arte
+// da 1ª carta. Nunca derruba o sync (try/catch -> null).
+const LOGOS_DIR = new URL("set-logos/", OUT);
+const WIKI_API = "https://wiki.mushureport.com/api.php";
+async function fetchSetLogo(setName, code) {
+  try {
+    const u = new URL(WIKI_API);
+    u.search = new URLSearchParams({
+      action: "query", titles: `File:${setName} logo.png`,
+      prop: "imageinfo", iiprop: "url", iiurlwidth: "500", format: "json"
+    }).toString();
+    const r = await fetch(u, { headers: { "User-Agent": UA } });
+    if (!r.ok) return null;
+    const j = await r.json();
+    const pg = Object.values((j.query && j.query.pages) || {})[0];
+    const ii = pg && pg.imageinfo && pg.imageinfo[0];
+    const thumb = ii && (ii.thumburl || ii.url);
+    if (!thumb) return null; // página inexistente = set sem logo no wiki
+    const img = await fetch(thumb, { headers: { "User-Agent": UA } });
+    if (!img.ok) return null;
+    const buf = Buffer.from(await img.arrayBuffer());
+    if (buf.length < 200 || buf.slice(1, 4).toString() !== "PNG") return null; // não é PNG
+    await mkdir(LOGOS_DIR, { recursive: true });
+    await writeFile(new URL(`${code}.png`, LOGOS_DIR), buf);
+    return `data/lorcana/set-logos/${code}.png`;
+  } catch (e) {
+    console.warn(`  logo ${code} (${setName}): ${e.message}`);
+    return null;
+  }
+}
+
 async function run() {
   console.log("Lorcana: buscando sets…");
   const sets = listOf(await api("/sets"));
@@ -89,11 +125,21 @@ async function run() {
   cards.sort((a, b) => a.setId.localeCompare(b.setId) || (Number(a.number) || 0) - (Number(b.number) || 0));
   console.log(`Total: ${cards.length} cartas.`);
 
-  // Capa do set: a Lorcast não tem logo de set, então usamos a arte da 1ª carta
-  // de cada set (a página de Sets mostra isso no lugar do logo).
+  // Logo de set: baixa do MushuReport pra cada set (hospeda local). Sets sem
+  // logo no wiki (promos/novos) caem pra arte da 1ª carta.
+  console.log("Lorcana: baixando logos de set (MushuReport)…");
+  const logoBySet = {};
+  for (const s of sets) {
+    const path = await fetchSetLogo(s.name, s.code);
+    if (path) { logoBySet[s.code] = path; console.log(`  ${s.code} ${s.name}: logo ✓`); }
+    else console.log(`  ${s.code} ${s.name}: sem logo no wiki (usa arte da carta)`);
+    await sleep(120);
+  }
+
+  // setLogo: logo de verdade quando existe; senão, arte da 1ª carta do set.
   const coverBySet = {};
   for (const c of cards) { if (c.image && !coverBySet[c.setId]) coverBySet[c.setId] = c.image; }
-  for (const c of cards) { c.setLogo = coverBySet[c.setId] || ""; }
+  for (const c of cards) { c.setLogo = logoBySet[c.setId] || coverBySet[c.setId] || ""; }
 
   // Índices (sets, artists) no formato { name, cardIds } — o frontend usa nas
   // páginas Sets e Artistas. (Sem pokedex/trainers: não existem no Lorcana.)
