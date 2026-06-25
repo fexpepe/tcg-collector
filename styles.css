@@ -563,6 +563,15 @@ input::placeholder {
   transition: transform 120ms ease, border-color 120ms ease;
 }
 
+/* Tema claro: o card branco (--panel) some no fundo quase branco da página
+   (--bg #f4f6f9) com a borda clara (--line). Um cinza sutil no fundo + borda
+   mais escura deixam cada slot visível. (Vem antes de :hover/.owned pra que
+   eles ainda sobreponham a cor da borda.) */
+[data-theme="light"] .pokedex-card {
+  background: #eef1f6;
+  border-color: #d0d7e0;
+}
+
 .pokedex-card:hover {
   border-color: #414a58;
   transform: translateY(-2px);
