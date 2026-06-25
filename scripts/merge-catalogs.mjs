@@ -85,6 +85,14 @@ for (const c of Array.isArray(pptNewCards) ? pptNewCards : []) {
 }
 let injectedNew = 0;
 
+// Logo de Black Star Promo: todo set "* Black Star Promos" (SVP, MEP, SWSHP,
+// XYP… qualquer era) usa o MESMO selo universal — a estrela preta com "PROMO".
+// A TCGdex tem logo de era pra alguns e NADA pra outros (svp/mep vêm vazios);
+// padronizamos TODOS com esse selo universal (servido pela própria TCGdex, já
+// host de imagem liberado) como thumb do set. Override aqui no merge porque roda
+// todo build — imune ao cache por-set do sync-tcgdex.
+const BLACK_STAR_PROMO_LOGO = "https://assets.tcgdex.net/univ/swsh/swshp/symbol.png";
+
 for (const lang of langs) {
   for (const chunk of chunksByLang[lang] || []) {
     let changed = false;
@@ -109,6 +117,10 @@ for (const lang of langs) {
         pricing[card.id] = card.price;
         delete card.price;
         changed = true;
+      }
+      // Black Star Promo: força o selo universal como logo do set (todas as eras).
+      if (/black star promo/i.test(card.set || "") && card.setLogo !== BLACK_STAR_PROMO_LOGO) {
+        card.setLogo = BLACK_STAR_PROMO_LOGO; changed = true;
       }
       // Imagem da PPT (TCGplayer CDN) onde a TCGdex não tem (ex.: era Mega JP).
       const pp = pptData[card.id];
