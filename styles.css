@@ -1773,9 +1773,13 @@ input::placeholder {
     margin-top: 4px;
   }
 
-  /* Mega-menu no drawer: largura total e colunas empilhadas. */
+  /* Mega-menu no drawer: largura total e colunas empilhadas. No mobile os itens
+     ficam à DIREITA (igual ao menu principal do drawer); à esquerda é só no
+     desktop. */
   .app-header-inner .nav-dropdown.nav-mega { min-width: 0; width: 100%; }
   .app-header-inner .nav-mega-cols { grid-template-columns: 1fr; }
+  .app-header-inner .nav-mega-head { text-align: right; }
+  .app-header-inner .page-nav .nav-mega a { justify-content: flex-end; text-align: right; }
 
   .app-header-inner .header-actions {
     flex-direction: column;
@@ -3345,7 +3349,7 @@ a.progress-row:hover {
   font-weight: 700;
   color: var(--accent-dark);
   text-decoration: none;
-  text-align: right;
+  text-align: left;
   background: var(--panel);
 }
 .nav-mega-all:hover { color: var(--accent); }
@@ -3363,15 +3367,22 @@ a.progress-row:hover {
   font-weight: 800;
   letter-spacing: -0.2px;
   color: var(--text);
-  text-align: right;
+  text-align: left;
 }
 .page-nav .nav-mega-col a {
-  justify-content: flex-end;
-  text-align: right;
+  justify-content: flex-start;
+  text-align: left;
   white-space: nowrap;
   font-size: 14px;
   padding-top: 6px;
   padding-bottom: 6px;
+}
+/* Desktop: o mega-menu do "Explorar" alinha à ESQUERDA (mesma especificidade
+   de `.page-nav .nav-dropdown a`, que alinha à direita, mas vem depois → vence).
+   Cobre o "Ver todos os jogos" e os links de cada jogo. */
+.page-nav .nav-mega a {
+  justify-content: flex-start;
+  text-align: left;
 }
 
 /* Bandeira de idioma da carta */
