@@ -118,27 +118,31 @@ const EN_GRADED_SETS = {
 //  - Modernos de alto valor: a TCGdex às vezes só dá o PISO do Cardmarket (EUR),
 //    baixo demais pras alt-art/chase (ex.: Brilliant Stars TG08 = €0,11). A PPT
 //    sobrepõe com o preço de mercado do TCGplayer (USD).
+// ATENÇÃO ao setId nosso (TCGdex): a era SV usa ZERO-PADDING e ".5" (sv01, sv03.5,
+// sv04.5, swsh12.5), NÃO "sv1"/"sv4pt5"/"swsh12pt5". Keys erradas = chunk não casa
+// e o fill é silenciosamente pulado. Confirmadas contra o manifest de produção.
 const EN_FILL_SETS = {
-  mep: [24451],              // ME: Mega Evolution Promo (52 cartas, 0 arte na TCGdex)
-  swsh7: [2848],             // Evolving Skies
-  swsh8: [2906],             // Fusion Strike
-  swsh9: [2948, 3020],       // Brilliant Stars (+ Trainer Gallery)
-  swsh10: [3040, 3068],      // Astral Radiance (+ Trainer Gallery)
-  swsh11: [3118, 3172],      // Lost Origin (+ Trainer Gallery)
-  swsh12: [3170, 17674],     // Silver Tempest (+ Trainer Gallery)
-  swsh12pt5: [17688, 17689], // Crown Zenith (+ Galarian Gallery)
-  swsh45: [2754],            // Shining Fates
-  cel25: [2867],             // Celebrations
-  sv1: [22873],              // Scarlet & Violet Base
-  sv3: [23228],              // Obsidian Flames
-  sv4pt5: [23353],           // Paldean Fates
-  sv5: [23381],              // Temporal Forces
-  sv6: [23473],              // Twilight Masquerade
-  sv6pt5: [23529],           // Shrouded Fable
-  sv7: [23537],              // Stellar Crown
-  sv8: [23651],              // Surging Sparks
-  sv8pt5: [23821],           // Prismatic Evolutions
-  sv9: [24073]               // Journey Together
+  mep: [24451],               // MEP Black Star Promos (era Mega: 0 arte na TCGdex)
+  swsh7: [2848],              // Evolving Skies
+  swsh8: [2906],              // Fusion Strike
+  swsh9: [2948, 3020],        // Brilliant Stars (+ Trainer Gallery)
+  swsh10: [3040, 3068],       // Astral Radiance (+ Trainer Gallery)
+  swsh11: [3118, 3172],       // Lost Origin (+ Trainer Gallery)
+  swsh12: [3170, 17674],      // Silver Tempest (+ Trainer Gallery)
+  "swsh12.5": [17688, 17689], // Crown Zenith (+ Galarian Gallery)
+  "swsh4.5": [2754],          // Shining Fates
+  cel25: [2867],              // Celebrations
+  sv01: [22873],              // Scarlet & Violet base
+  sv03: [23228],              // Obsidian Flames
+  "sv03.5": [23237],          // 151
+  "sv04.5": [23353],          // Paldean Fates
+  sv05: [23381],              // Temporal Forces
+  sv06: [23473],              // Twilight Masquerade
+  "sv06.5": [23529],          // Shrouded Fable
+  sv07: [23537],              // Stellar Crown
+  sv08: [23651],              // Surging Sparks
+  "sv08.5": [23821],          // Prismatic Evolutions
+  sv09: [24073]               // Journey Together
 };
 
 // Nome limpo da carta PPT: tira o sufixo de número e tags ("Snorlax - 077/071"
