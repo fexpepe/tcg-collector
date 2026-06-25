@@ -335,6 +335,12 @@
     elements.folderSections.addEventListener("click", (event) => {
       const section = event.target.closest("[data-folder-id]");
       const fid = section && section.dataset.folderId;
+      const moveTile = event.target.closest("[data-tile-move]");
+      if (moveTile) {
+        const tile = moveTile.closest(".card-tile");
+        if (tile && section) moveCardInFolder(section, tile.dataset.tileCardId, Number(moveTile.dataset.tileMove));
+        return;
+      }
       if (event.target.closest("[data-folder-collapse]")) { if (fid) { folders.toggleCollapse(fid); renderCards(); } return; }
       const moveBtn = event.target.closest("[data-folder-move]");
       if (moveBtn) { if (fid) { folders.move(fid, Number(moveBtn.dataset.folderMove)); renderCards(); } return; }
@@ -559,8 +565,27 @@
       const sel = folder ? `[data-folder-id="${folder.id}"]` : ".folder-none";
       const grid = elements.folderSections.querySelector(`${sel} .card-grid`);
       if (!grid) return;
-      pairs.forEach((pair) => { const node = makeTile(pair); node.draggable = true; grid.appendChild(node); });
+      pairs.forEach((pair) => { const node = makeTile(pair); node.draggable = true; node.appendChild(reorderControl()); grid.appendChild(node); });
     });
+  }
+
+  // Controle ‹ › por carta pra reordenar no TOUCH (o arraste é só desktop). Move
+  // a carta uma posição pra trás/frente dentro da pasta. Nas pontas, no-op.
+  function reorderControl() {
+    const c = document.createElement("div");
+    c.className = "tile-reorder";
+    c.innerHTML = `<button type="button" class="tile-reorder-btn" data-tile-move="-1" aria-label="${escapeAttribute(t("folders.moveBack"))}" title="${escapeAttribute(t("folders.moveBack"))}">‹</button>`
+      + `<button type="button" class="tile-reorder-btn" data-tile-move="1" aria-label="${escapeAttribute(t("folders.moveFwd"))}" title="${escapeAttribute(t("folders.moveFwd"))}">›</button>`;
+    return c;
+  }
+
+  function moveCardInFolder(section, cardId, dir) {
+    const ids = sectionCardIds(section);
+    const i = ids.indexOf(cardId), j = i + dir;
+    if (i < 0 || j < 0 || j >= ids.length) return;
+    const tmp = ids[i]; ids[i] = ids[j]; ids[j] = tmp;
+    folders.setOrder(section.dataset.folderId || "__none__", ids);
+    render();
   }
 
   // Jogos de cada pasta (de TODAS as cartas que você tem, sem o filtro de jogo):
@@ -952,6 +977,7 @@
     if (!folder) return;
     const data = buildShareData((card) => folders.folderOf(card.id) === folderId);
     if (!data.items.length) { alert(t("folders.shareEmpty")); return; }
+    data.scope = "folder"; // marca como pasta (a view ?s= mostra rótulo + "salvar")
     if (btn) btn.disabled = true;
     const res = await shared.createShare("collection", folder.name || t("folders.untitled"), data);
     if (btn) btn.disabled = false;
@@ -1015,6 +1041,7 @@
     }
     const allItems = share.data.items;
     const bannerTotal = allItems.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
+    const isFolder = share.data.scope === "folder"; // compartilhamento de UMA pasta
 
     // Filtro de jogo (Todos/Pokémon/Lorcana) — igual à página da coleção. Só
     // aparece quando o share tem MAIS DE UM jogo, pra quem está vendo conseguir
@@ -1032,12 +1059,32 @@
     sv.innerHTML = `
       <div class="binder-shared-banner">
         <div class="binder-shared-info">
+          ${isFolder ? `<span class="shared-kind">${escapeHtml(t("folders.shared.label"))}</span>` : ""}
           <strong>${escapeHtml(share.title || t("collection.shared.title"))}</strong>
           <span>${escapeHtml(tn("collection.shared.banner", allItems.length))} · ${escapeHtml(shared.formatMoney(shared.getCurrency(), bannerTotal))}</span>
         </div>
+        ${isFolder ? `<button type="button" class="primary" id="sharedSaveBtn">${escapeHtml(t("folders.shared.save"))}</button>` : ""}
       </div>
       ${filterHtml}
       <div id="sharedBody"></div>`;
+
+    // "Salvar na minha coleção": importa a pasta — cria uma pasta com o mesmo
+    // nome, marca as cartas como suas e atribui a ela. Local (sem login).
+    if (isFolder) {
+      const saveBtn = document.getElementById("sharedSaveBtn");
+      if (saveBtn) saveBtn.addEventListener("click", () => {
+        const name = share.title || t("folders.untitled");
+        if (!window.confirm(t("folders.shared.saveConfirm", { n: allItems.length, name }))) return;
+        const f = folders.create(name);
+        allItems.forEach((it) => {
+          const store = ownedByGame[it.g] || ownedByGame.pokemon;
+          if (store) store.add(it.id, it.v, shared.DEFAULT_CONDITION, it.q || 1);
+          folders.assign(it.id, f.id);
+        });
+        alert(t("folders.shared.saved"));
+        window.location.href = "collection.html"; // abre a coleção da pessoa
+      });
+    }
 
     // (Re)desenha dashboard + grade conforme o filtro de jogo ativo.
     function paintShared() {

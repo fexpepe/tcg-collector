@@ -548,6 +548,9 @@ input::placeholder {
 }
 .folder-tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--tag, var(--muted)); }
 
+/* Rótulo "Pasta compartilhada" no banner do ?s= de uma pasta. */
+.shared-kind { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px; color: var(--accent); margin-bottom: 2px; }
+
 .folder-actions { margin-left: auto; display: flex; align-items: center; gap: 2px; }
 .folder-act {
   display: inline-flex; align-items: center; justify-content: center;
@@ -560,7 +563,19 @@ input::placeholder {
 .folder-empty { color: var(--subtle); font-size: 13px; padding: 14px 4px; margin: 0; }
 
 /* Tiles arrastáveis (modo pastas) */
+.folder-section .card-tile { position: relative; }
 .folder-section .card-tile[draggable="true"] { cursor: grab; }
+
+/* Reordenar no touch: ‹ › por carta (move uma posição na pasta). */
+.tile-reorder { position: absolute; top: 6px; left: 6px; z-index: 3; display: flex; gap: 3px; }
+.tile-reorder-btn {
+  width: 28px; height: 28px; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line); background: var(--panel); color: var(--text);
+  border-radius: 7px; cursor: pointer; font-size: 17px; line-height: 1;
+  box-shadow: var(--shadow); opacity: 0.92;
+}
+.tile-reorder-btn:hover { border-color: var(--accent); color: var(--accent); opacity: 1; }
 
 /* Seletor de pasta no preview da carta */
 .preview-folder-row {
