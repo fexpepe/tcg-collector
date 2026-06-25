@@ -3715,26 +3715,32 @@ a.progress-row:hover {
   display: grid;
   /* Stats e "mais valiosas" mais largas; o carrossel de distribuições ocupa o
      resto (mostra ~2 cards por vez, seta revela os demais). */
-  grid-template-columns: 1.5fr 1.3fr 1.7fr;
+  /* minmax(0,…fr): trava as proporções pelo espaço, NÃO pelo conteúdo — senão o
+     valor (R$ …) muda de largura entre Todos/Pokémon/Lorcana e desloca tudo. */
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr) minmax(0, 1.4fr);
   gap: 14px;
   margin: 0 0 18px;
 }
-@media (max-width: 1080px) { .collection-dashboard { grid-template-columns: 1fr 1fr; } .dash-carousel { grid-column: 1 / -1; } }
-@media (max-width: 560px) { .collection-dashboard { grid-template-columns: 1fr; } }
+@media (max-width: 1080px) { .collection-dashboard { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .dash-carousel { grid-column: 1 / -1; } }
+@media (max-width: 560px) { .collection-dashboard { grid-template-columns: minmax(0, 1fr); } }
 
 /* Carrossel das distribuições (por jogo / região / pasta / …): cada card tem a
-   MESMA largura (~metade do carrossel = 2 visíveis), e a seta rola pra ver mais. */
-.dash-carousel { position: relative; min-width: 0; }
+   MESMA largura (~metade do carrossel = 2 visíveis) e a MESMA altura dos cards
+   fixos (o track estica na altura do grid). A seta rola pra ver mais. */
+.dash-carousel { position: relative; min-width: 0; display: flex; }
 .dash-carousel-track {
+  flex: 1 1 auto;
+  min-width: 0;
   display: flex;
-  gap: 14px;
+  gap: 12px;
   overflow-x: auto;
   scrollbar-width: none; /* Firefox */
 }
 .dash-carousel-track::-webkit-scrollbar { display: none; }
 .dash-carousel .dash-card {
-  flex: 0 0 calc(50% - 7px);
+  flex: 0 0 calc(50% - 6px);
   min-width: 0;
+  padding: 14px 15px; /* um pouco mais compacto que os fixos */
 }
 .dash-carousel-arrow {
   position: absolute;
