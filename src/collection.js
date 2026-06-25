@@ -621,7 +621,7 @@
     const val = fromBRL(it.vbrl || 0);
     const flag = shared.cardFlag(it.lang);
     return `<article class="card-tile shared-tile">
-      <div class="card-image"><span class="image-open">${img}</span></div>
+      <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(it.id)}" data-preview-variant="${escapeAttribute(it.v)}" aria-label="${escapeAttribute(t("card.zoom", { name: it.n }))}">${img}</button></div>
       <div class="tile-info">
         <h3>${escapeHtml(it.n)}</h3>
         <p class="tile-set"><span>${escapeHtml(it.s)} · ${escapeHtml(it.num)}</span></p>
@@ -655,6 +655,21 @@
       </div>
       ${sharedDashboardHtml(items, total)}
       <div class="card-grid">${items.map(sharedTile).join("")}</div>`;
+
+    // Clicar na carta abre o preview (mesmo modal da coleção). O share é
+    // desnormalizado, então carregamos as cartas DESSE share (por id, por jogo)
+    // pra o preview ter o detalhe completo (raridade, artista, mercado…). Os
+    // controles de posse/desejo agem na coleção de QUEM está vendo.
+    sv.addEventListener("click", (event) => {
+      const btn = event.target.closest("[data-preview-card-id]");
+      if (btn) preview.open(btn.dataset.previewCardId, btn.dataset.previewVariant);
+    });
+    const idsByGame = {};
+    items.forEach((it) => { const g = it.g || "pokemon"; (idsByGame[g] = idsByGame[g] || []).push(it.id); });
+    try {
+      const catalog = await shared.loadOwnedAcrossGames(idsByGame);
+      (catalog.cards || []).forEach((card) => { cardsById.set(card.id, card); cardGameMap.set(card.id, card.game); });
+    } catch (e) { /* sem catálogo: tiles seguem, só o preview não abre */ }
   }
 
   // Mesmo dashboard da coleção, porém a partir dos itens desnormalizados do share
