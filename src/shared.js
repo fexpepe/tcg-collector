@@ -1366,7 +1366,9 @@
   }
 
   function marketQuoteHtml(pricing, fx, card) {
-    if (currentGame() === "lorcana") {
+    // Formato segue o jogo da CARTA, não a sessão: carta Lorcana mostra a cotação
+    // Lorcana (LigaLorcana etc.) mesmo numa sessão Pokémon, e vice-versa.
+    if ((card.game || currentGame()) === "lorcana") {
       const lor = lorcanaMarketHtml(card, fx);
       if (!lor) return "";
       return `<div class="market-quote-head"><h3>${escapeHtml(t("market.title"))}</h3></div>`
@@ -1638,8 +1640,8 @@
   // Marketplaces por jogo (a rede "Liga" tem um site por TCG — ligapokemon /
   // ligalorcana — mesma plataforma de busca). No Lorcana só a LigaLorcana (BR);
   // LigaBRA/MYP são focados em Pokémon.
-  function brMarketplaces() {
-    if (currentGame() === "lorcana") {
+  function brMarketplaces(game) {
+    if (game === "lorcana") {
       // A LigaLorcana titula/busca as cartas como "Nome (Raridade)" — ex.: "You've
       // Got a Friend in Me (Enchanted)", "Hades - Looking for a Deal (Iconic)" —
       // e não por número. O card.name já inclui a versão.
@@ -1658,17 +1660,17 @@
   // Mercado internacional/EUA — funciona pros dois jogos (eBay/TCGplayer/
   // PriceCharting têm Lorcana). A linha do TCGplayer e o texto de busca seguem o
   // jogo atual.
-  function usMarketplaces() {
-    const line = currentGame() === "lorcana" ? "lorcana" : "pokemon";
+  function usMarketplaces(game) {
+    const line = game === "lorcana" ? "lorcana" : "pokemon";
     return [
-      { key: "ebay", label: "eBay", url: (card) => `https://www.ebay.com/sch/i.html?_nkw=${enc(usSearchText(card))}` },
-      { key: "tcgplayer", label: "TCGplayer", url: (card) => `https://www.tcgplayer.com/search/${line}/product?productLineName=${line}&q=${enc(usSearchText(card))}` },
-      { key: "pricecharting", label: "PriceCharting", url: (card) => `https://www.pricecharting.com/search-products?type=prices&q=${enc(usSearchText(card))}` }
+      { key: "ebay", label: "eBay", url: (card) => `https://www.ebay.com/sch/i.html?_nkw=${enc(usSearchText(card, game))}` },
+      { key: "tcgplayer", label: "TCGplayer", url: (card) => `https://www.tcgplayer.com/search/${line}/product?productLineName=${line}&q=${enc(usSearchText(card, game))}` },
+      { key: "pricecharting", label: "PriceCharting", url: (card) => `https://www.pricecharting.com/search-products?type=prices&q=${enc(usSearchText(card, game))}` }
     ];
   }
 
-  function usSearchText(card) {
-    const prefix = currentGame() === "lorcana" ? "lorcana" : "pokemon";
+  function usSearchText(card, game) {
+    const prefix = game === "lorcana" ? "lorcana" : "pokemon";
     return `${prefix} ${card.name} ${cardCode(card)}`.trim();
   }
 
@@ -1790,9 +1792,13 @@
   }
 
   function brMarketplaceLinks(card) {
+    // O jogo vem da PRÓPRIA carta (card.game), não da sessão: uma carta Pokémon
+    // mostra LigaPokémon mesmo numa sessão Lorcana, e vice-versa. Fallback pra
+    // sessão só pra cartas sem tag (catálogos antigos).
+    const game = card.game || currentGame();
     return `<div class="market-links">`
-      + marketplaceRow("price.checkBr", brMarketplaces(), card)
-      + marketplaceRow("price.checkUs", usMarketplaces(), card)
+      + marketplaceRow("price.checkBr", brMarketplaces(game), card)
+      + marketplaceRow("price.checkUs", usMarketplaces(game), card)
       + `</div>`;
   }
 

@@ -50,20 +50,10 @@
   --header-bg: rgba(255, 255, 255, 0.9);
 }
 
-/* Lorcana: paleta da marca (indigo + âmbar) no lugar do accent do Pokémon
-   (amarelo no escuro / vermelho no claro), nos dois temas. html[data-game] tem
-   especificidade maior que :root e [data-theme], então vence. */
-html[data-game="lorcana"] {
-  --accent: #272557;            /* indigo Lorcana (primário) */
-  --accent-dark: #1a1942;       /* hover/borda */
-  --accent-rgb: 39, 37, 87;
-  --accent-soft: rgba(var(--accent-rgb), 0.12);
-  --gold: #e0992f;              /* âmbar Lorcana (destaques) */
-}
-
-/* Site unificado: o header é PADRÃO e FIXO em todas as páginas (mesmo fundo e
-   mesma borda neutra), independente do jogo da sessão — sem trocar de cor ao
-   entrar na coleção vindo do Pokémon ou do Lorcana. */
+/* Site unificado: a paleta (accent/fundo/header) é FIXA em todas as páginas,
+   independente do jogo da sessão — sem tingir de indigo no Lorcana nem de
+   vermelho no Pokémon. O jogo só muda os DADOS (cartas, lojas), nunca a cor.
+   (`html[data-game]` continua sendo setado pelo game.js, mas não estiliza nada.) */
 
 * {
   box-sizing: border-box;
