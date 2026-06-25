@@ -165,7 +165,8 @@ if (imgFallbacks) console.log(`Imagem EN herdada por cartas localizadas sem imag
 await applyMypPrices(pricing, allCards);
 
 // Preço/graded da PPT por cima: a TCGdex dá preço-lixo (Cardmarket EUR) pras
-// cartas JP; o `u` da PPT é o mercado real do TCGplayer JP, então sobrescreve.
+// cartas JP e pra várias EN (só o piso do Cardmarket, sem TCGplayer); o `u` da
+// PPT é o mercado real do TCGplayer (JP + sets EN de alto valor), e sobrescreve.
 // O front (shared.js#cardValue) prioriza `u` sobre `e`, então isso já conserta
 // o valor JP. Graded (PSA 9/10) vai em `g` pra exibição no card.
 let pptApplied = 0;

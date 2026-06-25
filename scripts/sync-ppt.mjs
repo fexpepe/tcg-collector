@@ -72,6 +72,15 @@ function setCodeFromName(name) {
 }
 // "349/190" -> 349 (inteiro, pra casar com o número do nosso card id).
 function numOf(s) { const m = String(s || "").match(/(\d+)/); return m ? Number(m[1]) : null; }
+// Chave de número PRESERVANDO o prefixo alfabético: "TG08/TG30" -> "tg8",
+// "077/071" -> "77", "199" -> "199", "GG05" -> "gg5". Crucial pros sets que a
+// TCGdex junta a Trainer/Galarian Gallery no chunk principal: o "TG08" não pode
+// colidir com o regular "8" (numOf daria 8 pros dois → preço trocado).
+function normNum(s) {
+  const t = String(s || "").split("/")[0].trim().toLowerCase();
+  const m = t.match(/^([a-z]*)0*(\d+)([a-z]*)$/);
+  return m ? m[1] + m[2] + m[3] : t;
+}
 
 // Nosso chunk JP do set: tenta local (gerado no build); senão produção (pra
 // dry-run local funcionar sem rodar o sync-tcgdex antes).
@@ -99,11 +108,37 @@ const EN_GRADED_SETS = {
   sma: 2594 // Hidden Fates Shiny Vault
 };
 
-// Sets EN onde a PPT PREENCHE imagem+preço (a TCGdex não tem arte): nosso setId
-// -> id PPT (tcgPlayerNumericId). Diferente do graded (que só pega `g`): aqui é
-// fill completo (img/u) + add-on-miss. Ex.: MEP Black Star Promos (TCGdex: 0 arte).
+// Sets EN onde a PPT PREENCHE/SOBREPÕE preço (+ imagem faltante + add-on-miss):
+// nosso setId -> id(s) PPT (tcgPlayerNumericId). Diferente do graded (só `g`):
+// aqui é fill de img/preço de mercado (TCGplayer USD). Valor = array porque a
+// TCGdex junta Trainer/Galarian Gallery no chunk principal, mas na PPT são sets
+// separados — então buscamos os dois ids e casamos por número normalizado.
+// Dois motivos pra estar aqui:
+//  - MEP: a TCGdex não tem arte nenhuma (img + add-on-miss).
+//  - Modernos de alto valor: a TCGdex às vezes só dá o PISO do Cardmarket (EUR),
+//    baixo demais pras alt-art/chase (ex.: Brilliant Stars TG08 = €0,11). A PPT
+//    sobrepõe com o preço de mercado do TCGplayer (USD).
 const EN_FILL_SETS = {
-  mep: 24451 // ME: Mega Evolution Promo (52 cartas, todas sem arte na TCGdex)
+  mep: [24451],              // ME: Mega Evolution Promo (52 cartas, 0 arte na TCGdex)
+  swsh7: [2848],             // Evolving Skies
+  swsh8: [2906],             // Fusion Strike
+  swsh9: [2948, 3020],       // Brilliant Stars (+ Trainer Gallery)
+  swsh10: [3040, 3068],      // Astral Radiance (+ Trainer Gallery)
+  swsh11: [3118, 3172],      // Lost Origin (+ Trainer Gallery)
+  swsh12: [3170, 17674],     // Silver Tempest (+ Trainer Gallery)
+  swsh12pt5: [17688, 17689], // Crown Zenith (+ Galarian Gallery)
+  swsh45: [2754],            // Shining Fates
+  cel25: [2867],             // Celebrations
+  sv1: [22873],              // Scarlet & Violet Base
+  sv3: [23228],              // Obsidian Flames
+  sv4pt5: [23353],           // Paldean Fates
+  sv5: [23381],              // Temporal Forces
+  sv6: [23473],              // Twilight Masquerade
+  sv6pt5: [23529],           // Shrouded Fable
+  sv7: [23537],              // Stellar Crown
+  sv8: [23651],              // Surging Sparks
+  sv8pt5: [23821],           // Prismatic Evolutions
+  sv9: [24073]               // Journey Together
 };
 
 // Nome limpo da carta PPT: tira o sufixo de número e tags ("Snorlax - 077/071"
@@ -291,52 +326,58 @@ function pickGraded(c) {
 //    a partir de uma carta-irmã do chunk (campos do set) + nome/num/img/preço.
 // Retorna null se não houver chunk nosso desse set.
 const MAX_NEW_PER_SET = 30; // teto defensivo contra lixo/erros da PPT num set
-async function syncSet(ourSetId, pptSetId, lang = "japanese") {
+async function syncSet(ourSetId, pptSetId, lang = "japanese", withGraded = GRADED) {
   const ourLang = lang === "english" ? "en" : "ja";
   const chunk = await ourChunk(ourSetId, ourLang);
   if (!chunk || !chunk.length) { console.log(`  ${ourSetId}: sem chunk nosso (pulado)`); return null; }
   const byNum = new Map();
   for (const card of chunk) {
-    const n = numOf(String(card.id).replace(`${ourSetId}-`, "").replace(/-(ja|zh|pt)$/, ""));
-    if (n != null) byNum.set(n, card.id);
+    const local = String(card.id).replace(`${ourSetId}-`, "").replace(/-(ja|zh|pt)$/, "");
+    const k = normNum(local);
+    if (k) byNum.set(k, card.id);
   }
   const sib = chunk[0]; // carta-irmã: campos do set (logo/símbolo/data/série).
   const rev = await revNames();
 
-  const inc = GRADED ? "&includeEbay=true&days=90" : "";
+  const inc = withGraded ? "&includeEbay=true&days=90" : "";
+  const pptIds = Array.isArray(pptSetId) ? pptSetId : [pptSetId];
   const arr = [];
-  for (let page = 0, offset = 0; page < 30; page++) {
-    const j = await ppt(`/cards?setId=${pptSetId}&language=${lang}&limit=100&offset=${offset}${inc}`);
-    const batch = j.data || [];
-    arr.push(...batch);
-    if (!(j.metadata && j.metadata.hasMore) || !batch.length) break;
-    offset += batch.length;
+  for (const pid of pptIds) {
+    for (let page = 0, offset = 0; page < 30; page++) {
+      const j = await ppt(`/cards?setId=${pid}&language=${lang}&limit=100&offset=${offset}${inc}`);
+      const batch = j.data || [];
+      arr.push(...batch);
+      if (!(j.metadata && j.metadata.hasMore) || !batch.length) break;
+      offset += batch.length;
+    }
   }
   const entries = {};
-  const misses = new Map(); // num -> melhor candidato (com imagem)
+  const misses = new Map(); // chave(normNum) -> melhor candidato (com imagem)
   for (const c of arr) {
-    const num = numOf(c.cardNumber);
+    const rawNum = String(c.cardNumber || "").split("/")[0].trim(); // "TG08", "077", "199"
+    const key = normNum(rawNum);
     const u = pickPrice(c), img = c.imageCdnUrl400 || c.imageCdnUrl200 || c.imageUrl || null;
-    const ourId = byNum.get(num);
+    const ourId = key ? byNum.get(key) : null;
     if (ourId) {
       const e = {};
       if (u > 0) e.u = Math.round(u * 100) / 100;
       if (img) e.img = img;
-      if (GRADED) { const g = pickGraded(c); if (g) e.g = g; }
+      if (withGraded) { const g = pickGraded(c); if (g) e.g = g; }
       if (Object.keys(e).length) entries[ourId] = e;
-    } else if (num != null && img) {
+    } else if (key && img) {
       // Add-on-miss: número que não existe no nosso chunk + tem imagem. Por número,
       // fica o de MAIOR preço (a impressão "principal", não a de erro/staff).
-      const prev = misses.get(num);
-      if (!prev || (u || 0) > (prev._u || 0)) misses.set(num, { c, _u: u || 0, img });
+      const prev = misses.get(key);
+      if (!prev || (u || 0) > (prev._u || 0)) misses.set(key, { c, _u: u || 0, img, rawNum });
     }
   }
 
   const newCards = [];
-  for (const [num, m] of misses) {
+  for (const [, m] of misses) {
     if (newCards.length >= MAX_NEW_PER_SET) break;
     const name = cleanName(m.c.name);
     if (!name) continue;
+    const num = m.rawNum;
     const id = ourLang === "en" ? `${ourSetId}-${num}` : `${ourSetId}-${num}-${ourLang}`;
     const dexId = rev[speciesOf(name).toLowerCase()] || "";
     const card = {
@@ -358,7 +399,7 @@ async function syncSet(ourSetId, pptSetId, lang = "japanese") {
     newCards.push(card);
   }
 
-  console.log(`  ${ourSetId} (ppt ${pptSetId}, ${lang}): ${Object.keys(entries).length} casadas, ${newCards.length} novas (add-on-miss)`);
+  console.log(`  ${ourSetId} (ppt ${pptIds.join("+")}, ${lang}): ${Object.keys(entries).length} casadas, ${newCards.length} novas (add-on-miss)`);
   return { entries, newCards };
 }
 
@@ -401,9 +442,13 @@ async function run() {
   const newCardsAll = []; // cartas que a PPT tem e a TCGdex não (add-on-miss)
   let fetched = 0, cacheHits = 0;
 
-  // Sets EN de fill (MEP etc.): imagem+preço pras cartas que a TCGdex tem sem
-  // arte, + add-on-miss. Cacheia igual (chave "enfill-<setId>").
-  for (const [ourSetId, pptId] of Object.entries(EN_FILL_SETS)) {
+  // Sets EN de fill (MEP + modernos de alto valor): sobrepõe preço de mercado
+  // (TCGplayer USD) + imagem faltante + add-on-miss. Sem graded (withGraded=false)
+  // pra não dobrar o custo de crédito. Cacheia igual (chave "enfill-<setId>").
+  const enFillTargets = ONLY_SETS.length
+    ? Object.entries(EN_FILL_SETS).filter(([id]) => ONLY_SETS.includes(id))
+    : Object.entries(EN_FILL_SETS);
+  for (const [ourSetId, pptId] of enFillTargets) {
     const ck = `enfill-${ourSetId}`;
     const cached = await readCache(ck);
     if (cached && Date.now() - (cached.t || 0) < REFRESH_DAYS * 864e5 && !DRY) {
@@ -414,7 +459,7 @@ async function run() {
       continue;
     }
     try {
-      const r = await syncSet(ourSetId, pptId, "english");
+      const r = await syncSet(ourSetId, pptId, "english", false);
       if (r) {
         Object.assign(out, r.entries); newCardsAll.push(...r.newCards);
         if (!DRY) await writeFile(cacheFileOf(ck), JSON.stringify({ t: Date.now(), entries: r.entries, newCards: r.newCards }), "utf8");
