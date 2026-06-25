@@ -652,7 +652,6 @@
           <strong>${escapeHtml(share.title || t("collection.shared.title"))}</strong>
           <span>${escapeHtml(tn("collection.shared.banner", items.length))} · ${escapeHtml(shared.formatMoney(shared.getCurrency(), total))}</span>
         </div>
-        <a class="primary" href="collection.html">${escapeHtml(t("collection.shared.cta"))}</a>
       </div>
       ${sharedDashboardHtml(items, total)}
       <div class="card-grid">${items.map(sharedTile).join("")}</div>`;
