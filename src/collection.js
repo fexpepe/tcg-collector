@@ -542,16 +542,50 @@
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(pair);
     });
-    const sections = folders.list().map((f) => ({ folder: f, pairs: applyFolderOrder(f.id, groups.get(f.id) || []) }));
+    // Jogos de cada pasta (de TODAS as cartas, ignorando o filtro) = a TAG.
+    // Pastas que não contêm o jogo filtrado somem (pokemon → some lorcana-only;
+    // vazias mostram sempre, pra você poder enchê-las).
+    const folderGames = computeFolderGames();
+    const visible = folders.list().filter((f) => {
+      if (gameFilter === "all") return true;
+      const gs = folderGames.get(f.id);
+      return !gs || gs.size === 0 || gs.has(gameFilter);
+    });
+    const sections = visible.map((f) => ({ folder: f, games: folderGames.get(f.id), pairs: applyFolderOrder(f.id, groups.get(f.id) || []) }));
     const noneTiles = applyFolderOrder("__none__", groups.get("__none__") || []);
-    if (noneTiles.length) sections.push({ folder: null, pairs: noneTiles });
-    elements.folderSections.innerHTML = sections.map(({ folder, pairs }) => folderSectionHtml(folder, pairs)).join("");
+    if (noneTiles.length) sections.push({ folder: null, games: null, pairs: noneTiles });
+    elements.folderSections.innerHTML = sections.map(({ folder, pairs, games }) => folderSectionHtml(folder, pairs, games)).join("");
     sections.forEach(({ folder, pairs }) => {
       const sel = folder ? `[data-folder-id="${folder.id}"]` : ".folder-none";
       const grid = elements.folderSections.querySelector(`${sel} .card-grid`);
       if (!grid) return;
       pairs.forEach((pair) => { const node = makeTile(pair); node.draggable = true; grid.appendChild(node); });
     });
+  }
+
+  // Jogos de cada pasta (de TODAS as cartas que você tem, sem o filtro de jogo):
+  // folderId -> Set<game>. Define a tag (1 jogo = aquele jogo; 2 = misto).
+  function computeFolderGames() {
+    const map = new Map();
+    cards.forEach((card) => {
+      if (!owned.has(card.id)) return;
+      const fid = folders.folderOf(card.id);
+      if (!fid) return;
+      if (!map.has(fid)) map.set(fid, new Set());
+      map.get(fid).add(card.game);
+    });
+    return map;
+  }
+
+  // Chip da tag da pasta: Pokémon / Lorcana / Misto (vazia = sem chip). Cor no
+  // pontinho (gold/indigo/cinza). Nome é texto fixo do i18n.
+  function folderTagHtml(games) {
+    if (!games || games.size === 0) return "";
+    let label, color;
+    if (games.size > 1) { label = t("folders.tag.mixed"); color = "#8a93a3"; }
+    else if (games.has("lorcana")) { label = t("filter.gameLorcana"); color = "#3f3d96"; }
+    else { label = t("filter.gamePokemon"); color = "#d9a300"; }
+    return `<span class="folder-tag" style="--tag:${color}">${escapeHtml(label)}</span>`;
   }
 
   // Reordena os pares de um bucket pela ordem manual (se houver). Cards fora da
@@ -585,7 +619,7 @@
     return total;
   }
 
-  function folderSectionHtml(folder, pairs) {
+  function folderSectionHtml(folder, pairs, games) {
     const isNone = !folder;
     const collapsed = !isNone && folder.collapsed;
     const value = folderValue(pairs);
@@ -607,6 +641,7 @@
       <header class="folder-head">
         <button type="button" class="folder-collapse" data-folder-collapse aria-expanded="${!collapsed}" aria-label="${escapeAttribute(t("folders.toggle"))}">▾</button>
         ${nameHtml}
+        ${isNone ? "" : folderTagHtml(games)}
         <span class="folder-meta">${escapeHtml(meta)}</span>
         ${actions}
       </header>
