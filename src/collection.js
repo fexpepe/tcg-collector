@@ -344,13 +344,14 @@
   }
 
   function render(options) {
-    const isCardsTab = activeTab === "cards";
-    elements.groupsView.hidden = isCardsTab;
-    elements.cardsView.hidden = !isCardsTab;
+    // "Cartas" (grade plana) e "Pastas" (seções) usam a MESMA toolbar de filtros.
+    const isCardsLike = activeTab === "cards" || activeTab === "folders";
+    elements.groupsView.hidden = isCardsLike;
+    elements.cardsView.hidden = !isCardsLike;
 
     renderDashboard();
     updatePokemonFilterLabel();
-    if (isCardsTab) {
+    if (isCardsLike) {
       renderCards(options || {});
     } else {
       renderGroups();
@@ -473,10 +474,11 @@
   function renderCards({ resetCount = false } = {}) {
     const tiles = ownedTilePairs();
     updateCardsStats(tiles.length);
-    const useFolders = folders.any();
-    // Modo plano (sem pastas): grade única com pager, como sempre.
+    // "Cartas" = sempre grade plana (sem divisões); "Pastas" = seções por pasta.
+    const useFolders = activeTab === "folders";
     elements.grid.hidden = useFolders;
     elements.folderSections.hidden = !useFolders;
+    if (elements.newFolderBtn) elements.newFolderBtn.hidden = !useFolders;
     if (!useFolders) {
       elements.folderSections.innerHTML = "";
       pager.render(tiles, makeTile, { resetCount });
