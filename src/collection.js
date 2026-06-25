@@ -27,11 +27,12 @@
   const folders = createFolderStore();
   function createFolderStore() {
     const KEY = "tcg-collector-collection-folders-v1";
-    let data = { folders: [], assign: {} };
+    let data = { folders: [], assign: {}, order: {} };
     try {
       const raw = JSON.parse(localStorage.getItem(KEY) || "null");
       if (raw && Array.isArray(raw.folders) && raw.assign && typeof raw.assign === "object") data = raw;
     } catch (e) { /* corrompido: começa vazio */ }
+    if (!data.order || typeof data.order !== "object") data.order = {}; // ordem manual por bucket (folderId|"__none__")
     const save = () => { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { /* quota: ignora */ } };
     const uid = () => "f_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
     const byId = (id) => data.folders.find((f) => f.id === id) || null;
@@ -44,6 +45,7 @@
       remove(id) {
         data.folders = data.folders.filter((f) => f.id !== id);
         Object.keys(data.assign).forEach((cid) => { if (data.assign[cid] === id) delete data.assign[cid]; });
+        delete data.order[id];
         save();
       },
       toggleCollapse(id) { const f = byId(id); if (f) { f.collapsed = !f.collapsed; save(); } },
@@ -54,9 +56,14 @@
       },
       assign(cardId, folderId) {
         if (folderId && byId(folderId)) data.assign[cardId] = folderId; else delete data.assign[cardId];
+        // Tira da ordem manual de qualquer bucket (vai ser anexada no novo).
+        Object.keys(data.order).forEach((b) => { data.order[b] = (data.order[b] || []).filter((id) => id !== cardId); });
         save();
       },
-      folderOf(cardId) { const id = data.assign[cardId]; return id && byId(id) ? id : null; }
+      folderOf(cardId) { const id = data.assign[cardId]; return id && byId(id) ? id : null; },
+      // Ordem manual por bucket (folderId ou "__none__"): lista de cardIds.
+      orderOf(bucket) { return (data.order[bucket] || []).slice(); },
+      setOrder(bucket, ids) { data.order[bucket] = ids.slice(); save(); }
     };
   }
 
@@ -535,8 +542,8 @@
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(pair);
     });
-    const sections = folders.list().map((f) => ({ folder: f, pairs: groups.get(f.id) || [] }));
-    const noneTiles = groups.get("__none__") || [];
+    const sections = folders.list().map((f) => ({ folder: f, pairs: applyFolderOrder(f.id, groups.get(f.id) || []) }));
+    const noneTiles = applyFolderOrder("__none__", groups.get("__none__") || []);
     if (noneTiles.length) sections.push({ folder: null, pairs: noneTiles });
     elements.folderSections.innerHTML = sections.map(({ folder, pairs }) => folderSectionHtml(folder, pairs)).join("");
     sections.forEach(({ folder, pairs }) => {
@@ -545,6 +552,28 @@
       if (!grid) return;
       pairs.forEach((pair) => { const node = makeTile(pair); node.draggable = true; grid.appendChild(node); });
     });
+  }
+
+  // Reordena os pares de um bucket pela ordem manual (se houver). Cards fora da
+  // ordem vão pro fim, preservando a ordenação do seletor (cardsSort). Estável.
+  function applyFolderOrder(bucket, pairs) {
+    const ord = folders.orderOf(bucket);
+    if (!ord.length) return pairs;
+    const idx = new Map(ord.map((id, i) => [id, i]));
+    const rank = (id) => (idx.has(id) ? idx.get(id) : ord.length + 1);
+    return pairs.map((p, i) => [p, i])
+      .sort((a, b) => (rank(a[0].card.id) - rank(b[0].card.id)) || (a[1] - b[1]))
+      .map((x) => x[0]);
+  }
+
+  // cardIds únicos de uma seção, na ordem visual atual (multi-variante dedupado).
+  function sectionCardIds(section) {
+    const seen = new Set(); const ids = [];
+    section.querySelectorAll(".card-tile").forEach((tile) => {
+      const id = tile.dataset.tileCardId;
+      if (id && !seen.has(id)) { seen.add(id); ids.push(id); }
+    });
+    return ids;
   }
 
   function folderValue(pairs) {
@@ -585,9 +614,11 @@
     </section>`;
   }
 
-  // Arrastar uma carta de uma seção pra outra (desktop, HTML5 DnD): solta numa
-  // seção → atribui à pasta dela ("" = Sem pasta → remove da pasta). Touch usa
-  // o seletor de pasta no preview.
+  // Arrastar uma carta (desktop, HTML5 DnD):
+  //  - soltar numa seção DIFERENTE → muda de pasta (reatribui);
+  //  - soltar dentro da MESMA seção, em cima de outra carta → REORDENA (ordem
+  //    manual da pasta; metade direita do alvo = solta depois dele).
+  // Touch usa o seletor de pasta no preview (reordenar é desktop).
   function bindFolderDrag() {
     const sections = elements.folderSections;
     let draggingId = null;
@@ -617,9 +648,31 @@
       const cardId = draggingId || (event.dataTransfer && event.dataTransfer.getData("text/plain"));
       if (!section || !cardId) return;
       event.preventDefault();
-      folders.assign(cardId, section.dataset.folderId || null);
+      const targetBucket = section.dataset.folderId || "__none__";
+      const sourceBucket = folders.folderOf(cardId) || "__none__";
+      if (targetBucket === sourceBucket) {
+        // Mesma pasta → reordenar. Posição = antes do tile-alvo (ou depois, se
+        // soltar na metade direita); fora de um tile = vai pro fim.
+        const targetTile = event.target.closest(".card-tile");
+        if (!targetTile || targetTile.dataset.tileCardId !== cardId) {
+          const ids = sectionCardIds(section);
+          let beforeId = targetTile ? targetTile.dataset.tileCardId : null;
+          if (beforeId) {
+            const rect = targetTile.getBoundingClientRect();
+            if (event.clientX > rect.left + rect.width / 2) beforeId = ids[ids.indexOf(beforeId) + 1] || null;
+          }
+          const arr = ids.filter((id) => id !== cardId);
+          const at = beforeId ? arr.indexOf(beforeId) : arr.length;
+          arr.splice(at < 0 ? arr.length : at, 0, cardId);
+          folders.setOrder(targetBucket, arr);
+          render();
+        }
+      } else {
+        // Pasta diferente → reatribui ("" = Sem pasta → remove da pasta).
+        folders.assign(cardId, section.dataset.folderId || null);
+        render();
+      }
       draggingId = null;
-      render();
     });
   }
 
