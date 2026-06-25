@@ -644,28 +644,61 @@
       sv.innerHTML = `<p class="empty-state">${escapeHtml(t("collection.shared.notFound"))}</p>`;
       return;
     }
-    const items = share.data.items;
-    const total = items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
+    const allItems = share.data.items;
+    const bannerTotal = allItems.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
+
+    // Filtro de jogo (Todos/Pokémon/Lorcana) — igual à página da coleção. Só
+    // aparece quando o share tem MAIS DE UM jogo, pra quem está vendo conseguir
+    // separar as coleções. O dashboard e a grade reagem ao filtro.
+    const gamesPresent = [...new Set(allItems.map((it) => it.g).filter(Boolean))];
+    let sharedFilter = "all";
+    const filterHtml = gamesPresent.length > 1
+      ? `<div class="collection-toolbar"><div id="sharedGameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
+          <button type="button" class="chip" data-game-filter="all" aria-pressed="true">${escapeHtml(t("filter.gameAll"))}</button>
+          <button type="button" class="chip" data-game-filter="pokemon" aria-pressed="false">${escapeHtml(t("filter.gamePokemon"))}</button>
+          <button type="button" class="chip" data-game-filter="lorcana" aria-pressed="false">${escapeHtml(t("filter.gameLorcana"))}</button>
+        </div></div>`
+      : "";
+
     sv.innerHTML = `
       <div class="binder-shared-banner">
         <div class="binder-shared-info">
           <strong>${escapeHtml(share.title || t("collection.shared.title"))}</strong>
-          <span>${escapeHtml(tn("collection.shared.banner", items.length))} · ${escapeHtml(shared.formatMoney(shared.getCurrency(), total))}</span>
+          <span>${escapeHtml(tn("collection.shared.banner", allItems.length))} · ${escapeHtml(shared.formatMoney(shared.getCurrency(), bannerTotal))}</span>
         </div>
       </div>
-      ${sharedDashboardHtml(items, total)}
-      <div class="card-grid">${items.map(sharedTile).join("")}</div>`;
+      ${filterHtml}
+      <div id="sharedBody"></div>`;
+
+    // (Re)desenha dashboard + grade conforme o filtro de jogo ativo.
+    function paintShared() {
+      const items = sharedFilter === "all" ? allItems : allItems.filter((it) => (it.g || "pokemon") === sharedFilter);
+      const total = items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
+      document.getElementById("sharedBody").innerHTML =
+        `${sharedDashboardHtml(items, total)}<div class="card-grid">${items.map(sharedTile).join("")}</div>`;
+    }
+    paintShared();
+
+    const filterEl = document.getElementById("sharedGameFilter");
+    if (filterEl) filterEl.addEventListener("click", (event) => {
+      const chip = event.target.closest("[data-game-filter]");
+      if (!chip || chip.dataset.gameFilter === sharedFilter) return;
+      sharedFilter = chip.dataset.gameFilter;
+      Array.from(filterEl.children).forEach((node) => node.setAttribute("aria-pressed", node === chip ? "true" : "false"));
+      paintShared();
+    });
 
     // Clicar na carta abre o preview (mesmo modal da coleção). O share é
     // desnormalizado, então carregamos as cartas DESSE share (por id, por jogo)
     // pra o preview ter o detalhe completo (raridade, artista, mercado…). Os
-    // controles de posse/desejo agem na coleção de QUEM está vendo.
+    // controles de posse/desejo agem na coleção de QUEM está vendo. (Delegado em
+    // sv, então segue funcionando após o paintShared recriar a grade.)
     sv.addEventListener("click", (event) => {
       const btn = event.target.closest("[data-preview-card-id]");
       if (btn) preview.open(btn.dataset.previewCardId, btn.dataset.previewVariant);
     });
     const idsByGame = {};
-    items.forEach((it) => { const g = it.g || "pokemon"; (idsByGame[g] = idsByGame[g] || []).push(it.id); });
+    allItems.forEach((it) => { const g = it.g || "pokemon"; (idsByGame[g] = idsByGame[g] || []).push(it.id); });
     try {
       const catalog = await shared.loadOwnedAcrossGames(idsByGame);
       (catalog.cards || []).forEach((card) => { cardsById.set(card.id, card); cardGameMap.set(card.id, card.game); });
