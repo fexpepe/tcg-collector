@@ -121,8 +121,14 @@
     dashDist: document.getElementById("dashDist"),
     dashRegion: document.getElementById("dashRegion"),
     dashFoldersCard: document.getElementById("dashFoldersCard"),
-    dashFolders: document.getElementById("dashFolders")
+    dashFolders: document.getElementById("dashFolders"),
+    dashCarouselTrack: document.getElementById("dashCarouselTrack"),
+    dashCarouselPrev: document.getElementById("dashCarouselPrev"),
+    dashCarouselNext: document.getElementById("dashCarouselNext")
   };
+
+  // Atualiza as setas do carrossel da dashboard (definido em initCarousel).
+  let updateCarousel = function () {};
 
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
 
@@ -341,6 +347,34 @@
     });
 
     bindFolderDrag();
+    initCarousel();
+  }
+
+  // Carrossel das distribuições: setas rolam o track por ~1 card; as setas
+  // somem nas pontas (e quando não há overflow, ex.: sem pasta = 2 cards = sem
+  // rolagem). updateCarousel é chamado também ao fim de cada renderDashboard.
+  function initCarousel() {
+    const track = elements.dashCarouselTrack;
+    if (!track) return;
+    const step = () => { const card = track.querySelector(".dash-card:not([hidden])"); return card ? card.offsetWidth + 14 : 220; };
+    // Rola por ~1 card (scrollLeft direto, salto instantâneo). Evita
+    // scroll-behavior:smooth/scrollBy({behavior:"smooth"}) de propósito: o
+    // headless do preview os ignora (vira no-op) e o salto direto funciona igual
+    // em todo lugar.
+    const scrollCards = (delta) => {
+      track.scrollLeft = Math.max(0, Math.min(track.scrollLeft + delta, track.scrollWidth - track.clientWidth));
+      updateCarousel();
+    };
+    if (elements.dashCarouselNext) elements.dashCarouselNext.addEventListener("click", () => scrollCards(step()));
+    if (elements.dashCarouselPrev) elements.dashCarouselPrev.addEventListener("click", () => scrollCards(-step()));
+    updateCarousel = function () {
+      const maxScroll = track.scrollWidth - track.clientWidth - 2;
+      if (elements.dashCarouselPrev) elements.dashCarouselPrev.hidden = track.scrollLeft <= 2;
+      if (elements.dashCarouselNext) elements.dashCarouselNext.hidden = maxScroll <= 0 || track.scrollLeft >= maxScroll;
+    };
+    track.addEventListener("scroll", updateCarousel);
+    window.addEventListener("resize", updateCarousel);
+    updateCarousel();
   }
 
   function render(options) {
@@ -430,6 +464,9 @@
         elements.dashFoldersCard.hidden = true;
       }
     }
+
+    // Recalcula as setas do carrossel (o card "Por pasta" pode ter entrado/saído).
+    updateCarousel();
   }
 
   // Barras horizontais de distribuição: [{label, n, color}]. `label` pode ter HTML

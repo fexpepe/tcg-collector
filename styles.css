@@ -551,9 +551,6 @@ input::placeholder {
 /* Tiles arrastáveis (modo pastas) */
 .folder-section .card-tile[draggable="true"] { cursor: grab; }
 
-/* Card "Por pasta" do dashboard ocupa a linha toda (fica abaixo dos 4) */
-#dashFoldersCard { grid-column: 1 / -1; }
-
 /* Seletor de pasta no preview da carta */
 .preview-folder-row {
   display: flex; align-items: center; gap: 8px;
@@ -3716,13 +3713,49 @@ a.progress-row:hover {
 /* Dashboard de resumo no topo da coleção: stats + mais valiosas + distribuição. */
 .collection-dashboard {
   display: grid;
-  /* Stats e "mais valiosas" mais largas; as distribuições mais estreitas. */
-  grid-template-columns: 1.5fr 1.3fr 0.85fr 0.85fr;
+  /* Stats e "mais valiosas" mais largas; o carrossel de distribuições ocupa o
+     resto (mostra ~2 cards por vez, seta revela os demais). */
+  grid-template-columns: 1.5fr 1.3fr 1.7fr;
   gap: 14px;
   margin: 0 0 18px;
 }
-@media (max-width: 1080px) { .collection-dashboard { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 1080px) { .collection-dashboard { grid-template-columns: 1fr 1fr; } .dash-carousel { grid-column: 1 / -1; } }
 @media (max-width: 560px) { .collection-dashboard { grid-template-columns: 1fr; } }
+
+/* Carrossel das distribuições (por jogo / região / pasta / …): cada card tem a
+   MESMA largura (~metade do carrossel = 2 visíveis), e a seta rola pra ver mais. */
+.dash-carousel { position: relative; min-width: 0; }
+.dash-carousel-track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+}
+.dash-carousel-track::-webkit-scrollbar { display: none; }
+.dash-carousel .dash-card {
+  flex: 0 0 calc(50% - 7px);
+  min-width: 0;
+}
+.dash-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 50%;
+  font-size: 18px; line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  z-index: 2;
+}
+.dash-carousel-arrow:hover { border-color: var(--accent); color: var(--accent); }
+.dash-carousel-next { right: -8px; }
+.dash-carousel-prev { left: -8px; }
+.dash-carousel-arrow[hidden] { display: none; }
+@media (max-width: 560px) { .dash-carousel .dash-card { flex-basis: calc(100% - 0px); } }
 .dash-card {
   background: var(--panel);
   border: 1px solid var(--line);

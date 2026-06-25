@@ -76,18 +76,24 @@
           <h3 data-i18n="dash.topTitle">Mais valiosas</h3>
           <ol id="dashTopList" class="dash-top-list"></ol>
         </article>
-        <article class="dash-card dash-dist">
-          <h3 data-i18n="dash.distTitle">Distribuição por jogo</h3>
-          <div id="dashDist" class="dash-dist-bars"></div>
-        </article>
-        <article class="dash-card dash-dist">
-          <h3 data-i18n="dash.regionTitle">Distribuição por região</h3>
-          <div id="dashRegion" class="dash-dist-bars"></div>
-        </article>
-        <article class="dash-card dash-dist" id="dashFoldersCard" hidden>
-          <h3 data-i18n="dash.byFolder">Por pasta</h3>
-          <div id="dashFolders" class="dash-dist-bars"></div>
-        </article>
+        <div class="dash-carousel" id="dashCarousel">
+          <div class="dash-carousel-track" id="dashCarouselTrack">
+            <article class="dash-card dash-dist">
+              <h3 data-i18n="dash.distTitle">Distribuição por jogo</h3>
+              <div id="dashDist" class="dash-dist-bars"></div>
+            </article>
+            <article class="dash-card dash-dist">
+              <h3 data-i18n="dash.regionTitle">Distribuição por região</h3>
+              <div id="dashRegion" class="dash-dist-bars"></div>
+            </article>
+            <article class="dash-card dash-dist" id="dashFoldersCard" hidden>
+              <h3 data-i18n="dash.byFolder">Por pasta</h3>
+              <div id="dashFolders" class="dash-dist-bars"></div>
+            </article>
+          </div>
+          <button type="button" class="dash-carousel-arrow dash-carousel-prev" id="dashCarouselPrev" aria-label="Anterior" hidden>‹</button>
+          <button type="button" class="dash-carousel-arrow dash-carousel-next" id="dashCarouselNext" aria-label="Mais">›</button>
+        </div>
       </section>
 
       <div id="sharedCollection" hidden></div>
