@@ -33,7 +33,8 @@
       if (raw && Array.isArray(raw.folders) && raw.assign && typeof raw.assign === "object") data = raw;
     } catch (e) { /* corrompido: começa vazio */ }
     if (!data.order || typeof data.order !== "object") data.order = {}; // ordem manual por bucket (folderId|"__none__")
-    const save = () => { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { /* quota: ignora */ } };
+    // Carimbo pra sincronização (LWW do bloco todo): toda mudança atualiza o ts.
+    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { /* quota: ignora */ } };
     const uid = () => "f_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
     const byId = (id) => data.folders.find((f) => f.id === id) || null;
     return {

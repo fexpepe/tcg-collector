@@ -2670,6 +2670,7 @@
     wishlistMeta: gameKey("wishlist-meta-v1"),
     prices: gameKey("prices-v1"),
     binders: "tcg-collector-binders-all-v1", // binders são globais (cross-game)
+    folders: "tcg-collector-collection-folders-v1", // pastas da coleção (globais)
     history: gameKey("history-v1")
   };
 
@@ -2909,6 +2910,15 @@
     const binders = Array.from(byId.values()).filter((bind) => (deleted[bind.id] || 0) < (Number(bind.updatedAt) || 0));
     return { binders, deleted };
   }
+  // Pastas da coleção ({ folders, assign, order, updatedAt }): LWW do BLOCO todo
+  // pelo updatedAt (carimbado a cada mudança). É uma organização pessoal, quase
+  // sempre editada num device por vez — o último a salvar vence. (Edição
+  // concorrente nos dois ao mesmo tempo: a sincronizada por último ganha.)
+  function mergeFolders(a, b) {
+    if (!a) return b || null;
+    if (!b) return a;
+    return ((Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0)) ? b : a;
+  }
   // Histórico do portfólio ([{ d, c, b, w }]): une por dia; em conflito o local
   // vence (foi recém-calculado a partir da coleção já mesclada). Teto de 800 dias.
   function mergeHistory(a, b) {
@@ -2929,6 +2939,7 @@
       wishlistMeta: wl.meta,
       prices: mergePrices(a.prices, b.prices),
       binders: mergeBinders(a.binders, b.binders),
+      folders: mergeFolders(a.folders, b.folders),
       history: mergeHistory(a.history, b.history)
     };
   }
@@ -3058,6 +3069,7 @@
         prices: createPriceStore().toObject()
       };
       try { const b = JSON.parse(localStorage.getItem(SYNC_KEYS.binders) || "null"); if (b) payload.binders = b; } catch (e) { /* ignora */ }
+      try { const f = JSON.parse(localStorage.getItem(SYNC_KEYS.folders) || "null"); if (f) payload.folders = f; } catch (e) { /* ignora */ }
       return payload;
     }
     function exportJson() { dl(JSON.stringify(backupObject(), null, 2), "tcg-collection.json", "application/json"); }
@@ -3077,6 +3089,7 @@
         createWishlistStore().replace(parseImportedWishlist(payload, byId));
         createPriceStore().replace(parseImportedPrices(payload, byId));
         if (payload.binders && typeof payload.binders === "object") localStorage.setItem(SYNC_KEYS.binders, JSON.stringify(payload.binders));
+        if (payload.folders && typeof payload.folders === "object") localStorage.setItem(SYNC_KEYS.folders, JSON.stringify(payload.folders));
         window.location.reload();
       } catch (e) { alert(t("error.import")); }
     }
