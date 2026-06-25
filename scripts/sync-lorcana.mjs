@@ -71,6 +71,33 @@ async function fetchSetLogo(setName, code) {
   }
 }
 
+// Logo genérico da Lorcana (MushuReport: File:Lorcana.png) — fallback pros sets
+// SEM logo próprio no wiki (Promo Set, Challenge, coleções especiais), no lugar
+// da arte de uma carta aleatória. Salvo em set-logos/_lorcana.png. Retorna o
+// caminho relativo, ou null (aí cai pra arte da carta).
+async function fetchBrandLogo() {
+  try {
+    const u = new URL(WIKI_API);
+    u.search = new URLSearchParams({
+      action: "query", titles: "File:Lorcana.png", prop: "imageinfo", iiprop: "url", format: "json"
+    }).toString();
+    const r = await fetch(u, { headers: { "User-Agent": UA } });
+    if (!r.ok) return null;
+    const j = await r.json();
+    const pg = Object.values((j.query && j.query.pages) || {})[0];
+    const ii = pg && pg.imageinfo && pg.imageinfo[0];
+    const src = ii && ii.url;
+    if (!src) return null;
+    const img = await fetch(src, { headers: { "User-Agent": UA } });
+    if (!img.ok) return null;
+    const buf = Buffer.from(await img.arrayBuffer());
+    if (buf.length < 200 || buf.slice(1, 4).toString() !== "PNG") return null;
+    await mkdir(LOGOS_DIR, { recursive: true });
+    await writeFile(new URL("_lorcana.png", LOGOS_DIR), buf);
+    return "data/lorcana/set-logos/_lorcana.png";
+  } catch (e) { console.warn(`  brand logo: ${e.message}`); return null; }
+}
+
 async function run() {
   console.log("Lorcana: buscando sets…");
   const sets = listOf(await api("/sets"));
@@ -128,18 +155,21 @@ async function run() {
   // Logo de set: baixa do MushuReport pra cada set (hospeda local). Sets sem
   // logo no wiki (promos/novos) caem pra arte da 1ª carta.
   console.log("Lorcana: baixando logos de set (MushuReport)…");
+  const brandLogo = await fetchBrandLogo();
+  console.log(brandLogo ? "  logo genérico da Lorcana ✓ (fallback dos promos)" : "  logo genérico indisponível (fallback = arte da carta)");
   const logoBySet = {};
   for (const s of sets) {
     const path = await fetchSetLogo(s.name, s.code);
     if (path) { logoBySet[s.code] = path; console.log(`  ${s.code} ${s.name}: logo ✓`); }
-    else console.log(`  ${s.code} ${s.name}: sem logo no wiki (usa arte da carta)`);
+    else console.log(`  ${s.code} ${s.name}: sem logo próprio (usa o logo da Lorcana)`);
     await sleep(120);
   }
 
-  // setLogo: logo de verdade quando existe; senão, arte da 1ª carta do set.
+  // setLogo: logo próprio do set quando existe; senão o logo genérico da Lorcana
+  // (promos/challenge); e só em último caso a arte da 1ª carta do set.
   const coverBySet = {};
   for (const c of cards) { if (c.image && !coverBySet[c.setId]) coverBySet[c.setId] = c.image; }
-  for (const c of cards) { c.setLogo = logoBySet[c.setId] || coverBySet[c.setId] || ""; }
+  for (const c of cards) { c.setLogo = logoBySet[c.setId] || brandLogo || coverBySet[c.setId] || ""; }
 
   // Índices (sets, artists) no formato { name, cardIds } — o frontend usa nas
   // páginas Sets e Artistas. (Sem pokedex/trainers: não existem no Lorcana.)
