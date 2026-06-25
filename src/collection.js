@@ -390,7 +390,24 @@
     updateCarousel();
   }
 
+  // Aba "Pokémon"/"Personagens" (agrupa por espécie/personagem) segue o filtro de
+  // jogo: vira "Personagens" no Lorcana e SOME no "Todos" (misturar espécies de
+  // Pokémon com personagens de Lorcana não faz sentido). Se a aba ativa sumir,
+  // volta pra "Cartas".
+  function syncGameTabs() {
+    const tab = elements.tabs.querySelector('[data-tab="pokemon"]');
+    if (!tab) return;
+    const hide = gameFilter === "all";
+    tab.hidden = hide;
+    if (!hide) tab.textContent = gameFilter === "lorcana" ? t("toolbar.characters") : t("toolbar.pokemon");
+    if (hide && activeTab === "pokemon") {
+      activeTab = "cards";
+      Array.from(elements.tabs.children).forEach((n) => n.setAttribute("aria-pressed", n.dataset.tab === "cards" ? "true" : "false"));
+    }
+  }
+
   function render(options) {
+    syncGameTabs();
     // "Cartas" (grade plana) e "Pastas" (seções) usam a MESMA toolbar de filtros.
     const isCardsLike = activeTab === "cards" || activeTab === "folders";
     elements.groupsView.hidden = isCardsLike;
@@ -565,7 +582,13 @@
       const sel = folder ? `[data-folder-id="${folder.id}"]` : ".folder-none";
       const grid = elements.folderSections.querySelector(`${sel} .card-grid`);
       if (!grid) return;
-      pairs.forEach((pair) => { const node = makeTile(pair); node.draggable = true; node.appendChild(reorderControl()); grid.appendChild(node); });
+      pairs.forEach((pair) => {
+        const node = makeTile(pair);
+        node.draggable = true;
+        // Setas ‹ › sobre a imagem (bordas, centralizadas; só no hover no desktop).
+        (node.querySelector(".card-image") || node).appendChild(reorderControl());
+        grid.appendChild(node);
+      });
     });
   }
 

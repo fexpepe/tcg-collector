@@ -563,19 +563,32 @@ input::placeholder {
 .folder-empty { color: var(--subtle); font-size: 13px; padding: 14px 4px; margin: 0; }
 
 /* Tiles arrastáveis (modo pastas) */
-.folder-section .card-tile { position: relative; }
 .folder-section .card-tile[draggable="true"] { cursor: grab; }
 
-/* Reordenar no touch: ‹ › por carta (move uma posição na pasta). */
-.tile-reorder { position: absolute; top: 6px; left: 6px; z-index: 3; display: flex; gap: 3px; }
+/* Reordenar: setas ‹ › sobre a imagem, nas bordas esquerda/direita e
+   centralizadas na vertical. No desktop só aparecem no hover da carta; no touch
+   (sem hover) ficam sempre visíveis — é lá que o arraste não funciona. */
+.folder-section .card-image { position: relative; }
+.tile-reorder {
+  position: absolute; inset: 0; z-index: 3;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5px;
+  pointer-events: none; /* só os botões captam clique; a imagem segue clicável */
+}
+.folder-section .card-grid.is-list .tile-reorder { display: none; } /* lista: imagem pequena */
 .tile-reorder-btn {
-  width: 28px; height: 28px; padding: 0;
+  pointer-events: auto;
+  width: 30px; height: 30px; padding: 0;
   display: flex; align-items: center; justify-content: center;
   border: 1px solid var(--line); background: var(--panel); color: var(--text);
-  border-radius: 7px; cursor: pointer; font-size: 17px; line-height: 1;
-  box-shadow: var(--shadow); opacity: 0.92;
+  border-radius: 50%; cursor: pointer; font-size: 17px; line-height: 1;
+  box-shadow: var(--shadow);
 }
-.tile-reorder-btn:hover { border-color: var(--accent); color: var(--accent); opacity: 1; }
+.tile-reorder-btn:hover { border-color: var(--accent); color: var(--accent); }
+@media (hover: hover) {
+  .tile-reorder { opacity: 0; transition: opacity 120ms ease; }
+  .folder-section .card-tile:hover .tile-reorder { opacity: 1; }
+}
 
 /* Seletor de pasta no preview da carta */
 .preview-folder-row {
