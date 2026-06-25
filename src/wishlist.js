@@ -6,6 +6,12 @@
   let cardsById = new Map();
   let gameFilter = "all"; // all | pokemon | lorcana
 
+  // Ordenação + grade/lista (paridade com a Coleção), persistidas em chaves
+  // próprias da wishlist.
+  const CARDS_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "release"];
+  let cardsSort = CARDS_SORTS.includes(localStorage.getItem("tcg-wishlist-sort")) ? localStorage.getItem("tcg-wishlist-sort") : "value-desc";
+  let cardsView = localStorage.getItem("tcg-wishlist-view") === "list" ? "list" : "grid";
+
   // Wishlist UNIFICADA: stores por jogo + facades que despacham por jogo (cardGameMap).
   const ownedByGame = { pokemon: shared.createCollectionStore("pokemon"), lorcana: shared.createCollectionStore("lorcana") };
   const wishlistByGame = { pokemon: shared.createWishlistStore("pokemon"), lorcana: shared.createWishlistStore("lorcana") };
@@ -24,6 +30,8 @@
     pokemonFilter: document.getElementById("pokemonFilter"),
     setFilter: document.getElementById("setFilter"),
     languageFilter: document.getElementById("languageFilter"),
+    cardsSortSelect: document.getElementById("cardsSortSelect"),
+    cardsViewToggle: document.getElementById("cardsViewToggle"),
     distinctCount: document.getElementById("distinctCount"),
     setsCount: document.getElementById("setsCount"),
     wishlistValue: document.getElementById("wishlistValue"),
@@ -94,6 +102,25 @@
   }
 
   function bindEvents() {
+    if (elements.cardsSortSelect) {
+      elements.cardsSortSelect.value = cardsSort;
+      elements.cardsSortSelect.addEventListener("change", () => {
+        cardsSort = elements.cardsSortSelect.value;
+        localStorage.setItem("tcg-wishlist-sort", cardsSort);
+        render({ resetCount: true });
+      });
+    }
+    if (elements.cardsViewToggle) {
+      applyCardsView();
+      elements.cardsViewToggle.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-grid-view]");
+        if (!button) return;
+        cardsView = button.dataset.gridView === "list" ? "list" : "grid";
+        localStorage.setItem("tcg-wishlist-view", cardsView);
+        applyCardsView();
+      });
+    }
+
     elements.gameFilter.addEventListener("click", (event) => {
       const chip = event.target.closest("[data-game-filter]");
       if (!chip || chip.dataset.gameFilter === gameFilter) return;
@@ -126,11 +153,37 @@
   }
 
   // Pares carta×variante que estão na lista de desejos e batem nos filtros.
+  // Critério primário: carta com imagem antes; secundário: a ordenação escolhida.
   function wantedPairs() {
+    const cmp = sortComparator();
     return shared.cardVariantPairs(filterCards())
       .filter(({ card, variant }) => wishlist.has(card.id, variant))
-      // Cartas sem imagem por último (sort estável preserva a ordem restante).
-      .sort((a, b) => Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card)));
+      .sort((a, b) =>
+        (Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card))) || cmp(a, b));
+  }
+
+  // Comparador do seletor de ordenação (mesma lógica da Coleção/Explorar).
+  function sortComparator() {
+    const priceOf = (p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0;
+    const byNum = (a, b) => shared.compareCardNumbers(a.card.number, b.card.number);
+    if (cardsSort === "num-asc") return byNum;
+    if (cardsSort === "num-desc") return (a, b) => byNum(b, a);
+    if (cardsSort === "value-asc") return (a, b) => {
+      const pa = priceOf(a), pb = priceOf(b);
+      if (!pa && !pb) return 0; if (!pa) return 1; if (!pb) return -1; return pa - pb;
+    };
+    if (cardsSort === "release") return (a, b) => String(b.card.setReleaseDate || "").localeCompare(String(a.card.setReleaseDate || ""));
+    return (a, b) => priceOf(b) - priceOf(a); // value-desc (padrão)
+  }
+
+  // Alterna grade/lista (mesma classe .is-list) e reflete nos botões.
+  function applyCardsView() {
+    if (elements.grid) elements.grid.classList.toggle("is-list", cardsView === "list");
+    if (elements.cardsViewToggle) {
+      elements.cardsViewToggle.querySelectorAll("[data-grid-view]").forEach((b) => {
+        b.setAttribute("aria-pressed", String(b.dataset.gridView === cardsView));
+      });
+    }
   }
 
   function render({ resetCount = false } = {}) {
