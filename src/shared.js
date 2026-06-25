@@ -1405,7 +1405,7 @@
     }
   }
 
-  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist }) {
+  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders }) {
     let activeCard = null;
     let activeVariant = null;
     let openerElement = null;
@@ -1414,6 +1414,11 @@
     // Salva o preço BR digitado ao sair do campo (change = blur ou Enter).
     // Aceita vírgula ou ponto como decimal ("12,50", "12.50", "1.250,00").
     document.addEventListener("change", (event) => {
+      const folderSelect = event.target.closest("#cardPreviewModal [data-preview-folder]");
+      if (folderSelect && folders && activeCard) {
+        folders.onChange(activeCard.id, folderSelect.value || null);
+        return;
+      }
       const input = event.target.closest("#cardPreviewModal input[data-price-card-id]");
       if (!input || !prices) return;
       const text = String(input.value).trim();
@@ -1475,6 +1480,11 @@
               <button class="owned-toggle preview-owned" data-card-id="${escapeAttribute(activeCard.id)}"${activeVariant ? ` data-variant="${escapeAttribute(activeVariant)}"` : ""} aria-pressed="${isOwned}">
                 ${isOwned ? t("card.inCollection") : t("card.markOwned")}
               </button>
+              ${(folders && folders.list().length) ? `<label class="preview-folder-row"><span>${escapeHtml(t("folders.assign"))}</span>
+                <select class="preview-folder" data-preview-folder>
+                  <option value="">${escapeHtml(t("folders.none"))}</option>
+                  ${folders.list().map((f) => `<option value="${escapeAttribute(f.id)}"${folders.currentOf(activeCard.id) === f.id ? " selected" : ""}>${escapeHtml(f.name || t("folders.untitled"))}</option>`).join("")}
+                </select></label>` : ""}
             </div>
             <div class="preview-details">
               <h3>${escapeHtml(t("modal.details"))}</h3>

@@ -494,6 +494,77 @@ input::placeholder {
   margin-bottom: 0;
 }
 
+/* --- Pastas na coleção (seções colapsáveis) --- */
+.new-folder-btn { padding: 7px 14px; font-size: 13px; white-space: nowrap; }
+.results-header h2 { margin-right: auto; }
+
+#folderSections { display: flex; flex-direction: column; gap: 18px; }
+
+.folder-section {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  padding: 12px 14px 14px;
+}
+.folder-section.dragover { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.folder-section.folder-none { background: transparent; }
+
+.folder-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.folder-collapse {
+  border: 0; background: transparent; color: var(--text);
+  cursor: pointer; font-size: 14px; line-height: 1;
+  padding: 2px 4px; border-radius: 6px;
+  transition: transform 120ms ease;
+}
+.folder-section.is-collapsed .folder-collapse { transform: rotate(-90deg); }
+.folder-section.is-collapsed .card-grid { display: none; }
+
+.folder-name { font-size: 16px; font-weight: 800; }
+.folder-name-input {
+  font-size: 16px; font-weight: 800;
+  border: 1px solid transparent; background: transparent; color: var(--text);
+  border-radius: 7px; padding: 3px 7px; min-width: 120px; max-width: 280px;
+}
+.folder-name-input:hover { border-color: var(--line); }
+.folder-name-input:focus { outline: none; border-color: var(--accent); background: var(--surface); }
+
+.folder-meta { font-size: 12.5px; color: var(--subtle); font-weight: 700; white-space: nowrap; }
+
+.folder-actions { margin-left: auto; display: flex; align-items: center; gap: 2px; }
+.folder-act {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border: 0; background: transparent; color: var(--subtle);
+  border-radius: 8px; cursor: pointer; font-size: 14px; line-height: 1;
+}
+.folder-act:hover { background: var(--accent-soft); color: var(--accent); }
+.folder-act-danger:hover { background: rgba(226, 48, 48, 0.12); color: #d8443c; }
+
+.folder-empty { color: var(--subtle); font-size: 13px; padding: 14px 4px; margin: 0; }
+
+/* Tiles arrastáveis (modo pastas) */
+.folder-section .card-tile[draggable="true"] { cursor: grab; }
+
+/* Card "Por pasta" do dashboard ocupa a linha toda (fica abaixo dos 4) */
+#dashFoldersCard { grid-column: 1 / -1; }
+
+/* Seletor de pasta no preview da carta */
+.preview-folder-row {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--subtle); font-weight: 700; margin-top: 8px;
+}
+.preview-folder {
+  flex: 1; min-width: 0; font: inherit;
+  padding: 7px 10px; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--text);
+}
+
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));

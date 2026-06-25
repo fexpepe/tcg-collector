@@ -19,6 +19,47 @@
   const wishlist = shared.mergedWishlistStore(wishlistByGame, gameOf);
   const prices = shared.mergedPriceStore(pricesByGame, gameOf);
 
+  // Pastas: organização leve (seções colapsáveis) DENTRO da coleção. GLOBAL
+  // cross-game (uma pasta pode misturar Pokémon e Lorcana). Exclusivo: cada carta
+  // fica em no máximo 1 pasta; o resto cai em "Sem pasta". Local-only por ora
+  // (não sincroniza entre dispositivos). Escreve direto no localStorage — são
+  // ações pontuais do usuário, sem necessidade de coalescer.
+  const folders = createFolderStore();
+  function createFolderStore() {
+    const KEY = "tcg-collector-collection-folders-v1";
+    let data = { folders: [], assign: {} };
+    try {
+      const raw = JSON.parse(localStorage.getItem(KEY) || "null");
+      if (raw && Array.isArray(raw.folders) && raw.assign && typeof raw.assign === "object") data = raw;
+    } catch (e) { /* corrompido: começa vazio */ }
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { /* quota: ignora */ } };
+    const uid = () => "f_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    const byId = (id) => data.folders.find((f) => f.id === id) || null;
+    return {
+      list: () => data.folders.slice(),
+      any: () => data.folders.length > 0,
+      get: byId,
+      create(name) { const f = { id: uid(), name: name || "", collapsed: false }; data.folders.push(f); save(); return f; },
+      rename(id, name) { const f = byId(id); if (f) { f.name = name; save(); } },
+      remove(id) {
+        data.folders = data.folders.filter((f) => f.id !== id);
+        Object.keys(data.assign).forEach((cid) => { if (data.assign[cid] === id) delete data.assign[cid]; });
+        save();
+      },
+      toggleCollapse(id) { const f = byId(id); if (f) { f.collapsed = !f.collapsed; save(); } },
+      move(id, dir) { // -1 sobe, +1 desce
+        const i = data.folders.findIndex((f) => f.id === id), j = i + dir;
+        if (i < 0 || j < 0 || j >= data.folders.length) return;
+        const [f] = data.folders.splice(i, 1); data.folders.splice(j, 0, f); save();
+      },
+      assign(cardId, folderId) {
+        if (folderId && byId(folderId)) data.assign[cardId] = folderId; else delete data.assign[cardId];
+        save();
+      },
+      folderOf(cardId) { const id = data.assign[cardId]; return id && byId(id) ? id : null; }
+    };
+  }
+
   let activeTab = "cards";
   let sortMode = "dex";
 
@@ -60,6 +101,8 @@
     groupsEmpty: document.getElementById("groupsEmpty"),
     cardsView: document.getElementById("cardsView"),
     grid: document.getElementById("cardGrid"),
+    folderSections: document.getElementById("folderSections"),
+    newFolderBtn: document.getElementById("newFolderBtn"),
     empty: document.getElementById("emptyState"),
     search: document.getElementById("searchInput"),
     pokemonFilter: document.getElementById("pokemonFilter"),
@@ -76,7 +119,9 @@
     dashValue: document.getElementById("dashValue"),
     dashTopList: document.getElementById("dashTopList"),
     dashDist: document.getElementById("dashDist"),
-    dashRegion: document.getElementById("dashRegion")
+    dashRegion: document.getElementById("dashRegion"),
+    dashFoldersCard: document.getElementById("dashFoldersCard"),
+    dashFolders: document.getElementById("dashFolders")
   };
 
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
@@ -86,7 +131,13 @@
     store: owned,
     prices,
     wishlist,
-    onOwnedChange: () => refreshOwnershipCards()
+    onOwnedChange: () => refreshOwnershipCards(),
+    // Seletor de pasta dentro do preview (atribui a carta a uma pasta).
+    folders: {
+      list: () => folders.list(),
+      currentOf: (cardId) => folders.folderOf(cardId),
+      onChange: (cardId, folderId) => { folders.assign(cardId, folderId); renderDashboard(); renderCards(); }
+    }
   });
 
   // ?s=<id>: visualização pública (somente leitura) de uma coleção compartilhada.
@@ -236,18 +287,17 @@
       element.addEventListener("input", applyFilters);
     });
 
-    elements.grid.addEventListener("click", (event) => {
+    // Cliques nos tiles: vale pra grade plana (#cardGrid) E pras seções de pasta.
+    const handleTileClick = (event) => {
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) {
         preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant);
         return;
       }
-
       if (shared.handleWantTileClick(event, wishlist)) {
         refreshOwnershipCards();
         return;
       }
-
       // Quick-add: o "+" soma +1 a cada clique e pisca "✓ Adicionada!" por 2s,
       // pra cadastrar várias cópias sem abrir o card (igual ao Explorar). Pra
       // remover, é no preview da carta (clique na imagem).
@@ -257,7 +307,40 @@
         renderDashboard();
         shared.flashTileAdded(addButton, owned);
       }
+    };
+    elements.grid.addEventListener("click", handleTileClick);
+    elements.folderSections.addEventListener("click", handleTileClick);
+
+    // --- Pastas: criar / colapsar / renomear / mover / excluir / compartilhar ---
+    if (elements.newFolderBtn) elements.newFolderBtn.addEventListener("click", () => {
+      const f = folders.create("");
+      render();
+      const input = elements.folderSections.querySelector(`[data-folder-id="${f.id}"] [data-folder-rename]`);
+      if (input) input.focus();
     });
+
+    elements.folderSections.addEventListener("click", (event) => {
+      const section = event.target.closest("[data-folder-id]");
+      const fid = section && section.dataset.folderId;
+      if (event.target.closest("[data-folder-collapse]")) { if (fid) { folders.toggleCollapse(fid); renderCards(); } return; }
+      const moveBtn = event.target.closest("[data-folder-move]");
+      if (moveBtn) { if (fid) { folders.move(fid, Number(moveBtn.dataset.folderMove)); renderCards(); } return; }
+      if (event.target.closest("[data-folder-delete]")) { if (fid && window.confirm(t("folders.deleteConfirm"))) { folders.remove(fid); render(); } return; }
+      if (event.target.closest("[data-folder-share]")) { if (fid) shareFolder(fid, event.target.closest("[data-folder-share]")); return; }
+    });
+
+    // Renomear: salva ao sair do campo (blur) ou Enter; atualiza o dashboard.
+    elements.folderSections.addEventListener("change", (event) => {
+      const input = event.target.closest("[data-folder-rename]");
+      if (!input) return;
+      const section = input.closest("[data-folder-id]");
+      if (section) { folders.rename(section.dataset.folderId, input.value.trim()); renderDashboard(); }
+    });
+    elements.folderSections.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && event.target.closest("[data-folder-rename]")) event.target.blur();
+    });
+
+    bindFolderDrag();
   }
 
   function render(options) {
@@ -330,6 +413,22 @@
         n: byRegion[r.region] || 0, color: r.color
       })));
     }
+
+    // Distribuição por pasta (só quando há pastas): cartas distintas por pasta +
+    // "Sem pasta". Nome da pasta é do usuário → ESCAPAR (distBarsHtml não escapa).
+    if (elements.dashFoldersCard && elements.dashFolders) {
+      if (folders.any()) {
+        const byFolder = {};
+        myCards.forEach((card) => { const k = folders.folderOf(card.id) || "__none__"; byFolder[k] = (byFolder[k] || 0) + 1; });
+        const palette = ["#d9a300", "#3f3d96", "#2aa3df", "#d23b4e", "#1f9d77", "#e0992f", "#9b59b6", "#16a085"];
+        const rows = folders.list().map((f, i) => ({ label: `<span>${escapeHtml(f.name || t("folders.untitled"))}</span>`, n: byFolder[f.id] || 0, color: palette[i % palette.length] }));
+        if (byFolder.__none__) rows.push({ label: `<span>${escapeHtml(t("folders.none"))}</span>`, n: byFolder.__none__, color: "#8a93a3" });
+        elements.dashFolders.innerHTML = distBarsHtml(rows);
+        elements.dashFoldersCard.hidden = false;
+      } else {
+        elements.dashFoldersCard.hidden = true;
+      }
+    }
   }
 
   // Barras horizontais de distribuição: [{label, n, color}]. `label` pode ter HTML
@@ -362,10 +461,127 @@
 
   // --- Aba de cartas (grade com filtros) ---
 
+  // Mesmo ícone de compartilhar dos tiles (shared.TILE_ICONS.share).
+  const SHARE_ICON = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>';
+
+  // variantTile devolve um NÓ do DOM (não string) — usado tanto no pager (flat)
+  // quanto via appendChild nas seções de pasta.
+  function makeTile({ card, variant }) {
+    return shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true });
+  }
+
   function renderCards({ resetCount = false } = {}) {
     const tiles = ownedTilePairs();
-    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true }), { resetCount });
     updateCardsStats(tiles.length);
+    const useFolders = folders.any();
+    // Modo plano (sem pastas): grade única com pager, como sempre.
+    elements.grid.hidden = useFolders;
+    elements.folderSections.hidden = !useFolders;
+    if (!useFolders) {
+      elements.folderSections.innerHTML = "";
+      pager.render(tiles, makeTile, { resetCount });
+      return;
+    }
+    renderFolderSections(tiles);
+  }
+
+  // Agrupa os pares carta×variante por pasta (folderOf por cardId) e renderiza
+  // uma seção por pasta (na ordem do usuário) + "Sem pasta" (só se tiver cartas).
+  // A estrutura (headers + grades vazias) vai por innerHTML; os tiles (que são
+  // NÓS) entram por appendChild em cada grade.
+  function renderFolderSections(tiles) {
+    const groups = new Map();
+    tiles.forEach((pair) => {
+      const key = folders.folderOf(pair.card.id) || "__none__";
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(pair);
+    });
+    const sections = folders.list().map((f) => ({ folder: f, pairs: groups.get(f.id) || [] }));
+    const noneTiles = groups.get("__none__") || [];
+    if (noneTiles.length) sections.push({ folder: null, pairs: noneTiles });
+    elements.folderSections.innerHTML = sections.map(({ folder, pairs }) => folderSectionHtml(folder, pairs)).join("");
+    sections.forEach(({ folder, pairs }) => {
+      const sel = folder ? `[data-folder-id="${folder.id}"]` : ".folder-none";
+      const grid = elements.folderSections.querySelector(`${sel} .card-grid`);
+      if (!grid) return;
+      pairs.forEach((pair) => { const node = makeTile(pair); node.draggable = true; grid.appendChild(node); });
+    });
+  }
+
+  function folderValue(pairs) {
+    let total = 0;
+    pairs.forEach((p) => {
+      const v = shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0;
+      total += v * owned.variantTotal(p.card.id, p.variant);
+    });
+    return total;
+  }
+
+  function folderSectionHtml(folder, pairs) {
+    const isNone = !folder;
+    const collapsed = !isNone && folder.collapsed;
+    const value = folderValue(pairs);
+    const meta = `${pairs.length}${value > 0 ? " · " + shared.formatMoney(shared.getCurrency(), value) : ""}`;
+    const listCls = cardsView === "list" ? " is-list" : "";
+    // Grade vai VAZIA (os tiles entram por appendChild); só o aviso de pasta vazia
+    // fica inline.
+    const tilesHtml = pairs.length ? "" : `<p class="folder-empty">${escapeHtml(t("folders.empty"))}</p>`;
+    const nameHtml = isNone
+      ? `<span class="folder-name">${escapeHtml(t("folders.none"))}</span>`
+      : `<input class="folder-name-input" data-folder-rename type="text" value="${escapeAttribute(folder.name)}" placeholder="${escapeAttribute(t("folders.untitled"))}" aria-label="${escapeAttribute(t("folders.rename"))}">`;
+    const actions = isNone ? "" : `<span class="folder-actions">
+        <button type="button" class="folder-act" data-folder-share title="${escapeAttribute(t("folders.share"))}" aria-label="${escapeAttribute(t("folders.share"))}">${SHARE_ICON}</button>
+        <button type="button" class="folder-act" data-folder-move="-1" title="${escapeAttribute(t("folders.moveUp"))}" aria-label="${escapeAttribute(t("folders.moveUp"))}">↑</button>
+        <button type="button" class="folder-act" data-folder-move="1" title="${escapeAttribute(t("folders.moveDown"))}" aria-label="${escapeAttribute(t("folders.moveDown"))}">↓</button>
+        <button type="button" class="folder-act folder-act-danger" data-folder-delete title="${escapeAttribute(t("folders.delete"))}" aria-label="${escapeAttribute(t("folders.delete"))}">✕</button>
+      </span>`;
+    return `<section class="folder-section${collapsed ? " is-collapsed" : ""}${isNone ? " folder-none" : ""}" data-folder-id="${escapeAttribute(isNone ? "" : folder.id)}">
+      <header class="folder-head">
+        <button type="button" class="folder-collapse" data-folder-collapse aria-expanded="${!collapsed}" aria-label="${escapeAttribute(t("folders.toggle"))}">▾</button>
+        ${nameHtml}
+        <span class="folder-meta">${escapeHtml(meta)}</span>
+        ${actions}
+      </header>
+      <div class="card-grid${listCls}">${tilesHtml}</div>
+    </section>`;
+  }
+
+  // Arrastar uma carta de uma seção pra outra (desktop, HTML5 DnD): solta numa
+  // seção → atribui à pasta dela ("" = Sem pasta → remove da pasta). Touch usa
+  // o seletor de pasta no preview.
+  function bindFolderDrag() {
+    const sections = elements.folderSections;
+    let draggingId = null;
+    sections.addEventListener("dragstart", (event) => {
+      const tile = event.target.closest(".card-tile");
+      if (!tile) return;
+      draggingId = tile.dataset.tileCardId;
+      event.dataTransfer.effectAllowed = "move";
+      try { event.dataTransfer.setData("text/plain", draggingId); } catch (e) { /* alguns browsers exigem o try */ }
+      sections.classList.add("folder-dragging");
+    });
+    sections.addEventListener("dragend", () => {
+      draggingId = null;
+      sections.classList.remove("folder-dragging");
+      sections.querySelectorAll(".folder-section.dragover").forEach((s) => s.classList.remove("dragover"));
+    });
+    sections.addEventListener("dragover", (event) => {
+      const section = event.target.closest(".folder-section");
+      if (!section || draggingId == null) return;
+      event.preventDefault();
+      event.dataTransfer.dropEffect = "move";
+      sections.querySelectorAll(".folder-section.dragover").forEach((s) => { if (s !== section) s.classList.remove("dragover"); });
+      section.classList.add("dragover");
+    });
+    sections.addEventListener("drop", (event) => {
+      const section = event.target.closest(".folder-section");
+      const cardId = draggingId || (event.dataTransfer && event.dataTransfer.getData("text/plain"));
+      if (!section || !cardId) return;
+      event.preventDefault();
+      folders.assign(cardId, section.dataset.folderId || null);
+      draggingId = null;
+      render();
+    });
   }
 
   function ownedTilePairs() {
@@ -392,6 +608,8 @@
   // Alterna grade/lista (mesma classe .is-list do detalhe) e reflete nos botões.
   function applyCardsView() {
     if (elements.grid) elements.grid.classList.toggle("is-list", cardsView === "list");
+    // Em modo pastas, cada seção tem sua própria grade.
+    if (elements.folderSections) elements.folderSections.querySelectorAll(".card-grid").forEach((g) => g.classList.toggle("is-list", cardsView === "list"));
     if (elements.cardsViewToggle) {
       elements.cardsViewToggle.querySelectorAll("[data-grid-view]").forEach((b) => {
         b.setAttribute("aria-pressed", String(b.dataset.gridView === cardsView));
@@ -406,7 +624,9 @@
       render();
       return;
     }
-    elements.grid.querySelectorAll(".card-tile").forEach((tile) => {
+    // Atualiza in-place os tiles visíveis (grade plana OU seções de pasta), sem
+    // reconstruir — preserva o flash do quick-add e não pisca as imagens.
+    elements.cardsView.querySelectorAll(".card-tile").forEach((tile) => {
       const quantity = owned.variantTotal(tile.dataset.tileCardId, tile.dataset.tileVariant);
       if (quantity > 0) {
         shared.refreshTileOwnership(tile, owned, wishlist, { addMode: true });
@@ -577,9 +797,12 @@
 
   // Desnormaliza as cartas que você tem num snapshot leve (nome, set, imagem,
   // valor em BRL) — o viewer renderiza sem precisar do catálogo.
-  function buildShareData() {
+  // `accept(card)` opcional: filtra as cartas (ex.: só as de uma pasta). Sem ele,
+  // monta a coleção inteira (respeitando o filtro de jogo, como sempre).
+  function buildShareData(accept) {
     const items = [];
-    shared.cardVariantPairs(ownedCards()).forEach(({ card, variant }) => {
+    const src0 = accept ? ownedCards().filter(accept) : ownedCards();
+    shared.cardVariantPairs(src0).forEach(({ card, variant }) => {
       const qty = owned.variantTotal(card.id, variant);
       if (qty <= 0) return;
       const src = shared.cardImageSources(card);
@@ -593,6 +816,25 @@
     });
     items.sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q));
     return { items };
+  }
+
+  // Compartilha SÓ as cartas de uma pasta (nome da pasta vira o título do share).
+  // Reaproveita o mesmo fluxo do botão da coleção inteira (createShare + copiar).
+  async function shareFolder(folderId, btn) {
+    const folder = folders.get(folderId);
+    if (!folder) return;
+    const data = buildShareData((card) => folders.folderOf(card.id) === folderId);
+    if (!data.items.length) { alert(t("folders.shareEmpty")); return; }
+    if (btn) btn.disabled = true;
+    const res = await shared.createShare("collection", folder.name || t("folders.untitled"), data);
+    if (btn) btn.disabled = false;
+    if (res && res.id) {
+      const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection.html?s=${res.id}`;
+      try { await navigator.clipboard.writeText(link); alert(t("collection.share.copied")); }
+      catch (e) { window.prompt(t("collection.share.copyManual"), link); }
+    } else {
+      alert(res && res.error === "auth" ? t("collection.share.needLogin") : t("collection.share.error"));
+    }
   }
 
   function bindShareButton() {

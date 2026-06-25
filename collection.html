@@ -84,6 +84,10 @@
           <h3 data-i18n="dash.regionTitle">Distribuição por região</h3>
           <div id="dashRegion" class="dash-dist-bars"></div>
         </article>
+        <article class="dash-card dash-dist" id="dashFoldersCard" hidden>
+          <h3 data-i18n="dash.byFolder">Por pasta</h3>
+          <div id="dashFolders" class="dash-dist-bars"></div>
+        </article>
       </section>
 
       <div id="sharedCollection" hidden></div>
@@ -158,9 +162,11 @@
 
         <section class="results-header">
           <h2 data-i18n="results.heading.detail">Cartas</h2>
+          <button type="button" id="newFolderBtn" class="secondary new-folder-btn" data-i18n="folders.new">Nova pasta</button>
           <p id="resultCount">0 resultados</p>
         </section>
 
+        <div id="folderSections"></div>
         <section id="cardGrid" class="card-grid" aria-live="polite"></section>
         <p id="emptyState" class="empty-state" data-i18n-html="empty.collection" hidden>Nenhuma carta da sua coleção com esses filtros. <a href="pokedex.html">Explore a Pokédex</a> e marque o que você tem.</p>
       </div>
