@@ -193,7 +193,7 @@
     pager.render(items, createViewItem, { resetCount });
 
     // Cabeçalhos de série não contam como resultado.
-    const realCount = items.filter((item) => item.type !== "series-head").length;
+    const realCount = items.filter((item) => item.type !== "series-head" && item.type !== "category-head").length;
     elements.empty.hidden = realCount > 0;
     elements.resultCount.textContent = tn("results.count", realCount);
     if (elements.ownedCount) elements.ownedCount.textContent = owned.size;
@@ -210,6 +210,8 @@
       const setItems = indexedGroupsToItems(indexes.sets, visibleIds, toSetItem);
       // Página de uma série (?serie=id): só os sets dela, sem cabeçalhos.
       if (serieParam) return setItems.filter((set) => set.serieId === serieParam).sort(sortByReleaseDesc);
+      // Lorcana não tem séries: separa em 2 categorias (Principais + Promos).
+      if ((window.SLEEVU && window.SLEEVU.game) === "lorcana") return groupLorcanaSets(setItems);
       // Página de Sets: agrupada por série (coleção).
       return groupSetsBySeries(setItems);
     }
@@ -286,6 +288,10 @@
       return createSeriesHead(item);
     }
 
+    if (item.type === "category-head") {
+      return createCategoryHead(item);
+    }
+
     if (item.type === "pokedex") {
       return createPokedexCard(item);
     }
@@ -305,6 +311,15 @@
     link.href = `sets.html?serie=${encodeURIComponent(item.serieId)}`;
     link.innerHTML = `<span class="set-series-name">${escapeHtml(item.name)}</span><span class="set-series-count">${item.count} sets →</span>`;
     return link;
+  }
+
+  // Cabeçalho de categoria (Lorcana: Principais/Promos). Igual ao de série, mas
+  // sem link/seta — é só um rótulo de seção, não navega pra lugar nenhum.
+  function createCategoryHead(item) {
+    const head = document.createElement("div");
+    head.className = "set-series-head set-category-head";
+    head.innerHTML = `<span class="set-series-name">${escapeHtml(item.name)}</span><span class="set-series-count">${item.count} sets</span>`;
+    return head;
   }
 
   function filterCards() {
@@ -490,6 +505,7 @@
     return {
       type: "set",
       name: group.name,
+      setId: sample.setId || "",
       cards: sortedCards,
       totalCount: sortedCards.length,
       ownedCount: sortedCards.filter((card) => owned.has(card.id)).length,
@@ -548,6 +564,25 @@
       items.push({ type: "series-head", name: group.serieName || serieDisplayName(group.serieId), serieId: group.serieId, count: group.sets.length });
       group.sets.forEach((set) => items.push(set));
     });
+    return items;
+  }
+
+  // Lorcana: 2 categorias, com cabeçalho simples (sem página de série). "Promos"
+  // = sets de código não-numérico (P1/P2/P3 promo, cp/C2 challenge, D23/DIS
+  // coleções de evento); os sets principais têm código numérico (1..12).
+  function groupLorcanaSets(setItems) {
+    const isPromo = (set) => !/^\d+$/.test(String(set.setId || "").trim());
+    const main = setItems.filter((set) => !isPromo(set)).sort(sortByReleaseDesc);
+    const promos = setItems.filter(isPromo).sort(sortByReleaseDesc);
+    const items = [];
+    if (main.length) {
+      items.push({ type: "category-head", name: t("sets.category.main"), count: main.length });
+      main.forEach((set) => items.push(set));
+    }
+    if (promos.length) {
+      items.push({ type: "category-head", name: t("sets.category.promos"), count: promos.length });
+      promos.forEach((set) => items.push(set));
+    }
     return items;
   }
 
