@@ -101,6 +101,7 @@
       <div id="collectionTabs" class="chip-filter collection-tabs" role="group" aria-label="Visões da coleção">
         <button type="button" class="chip" data-tab="cards" aria-pressed="true" data-i18n="collection.tab.cards">Cartas</button>
         <button type="button" class="chip" data-tab="folders" aria-pressed="false" data-i18n="collection.tab.folders">Pastas</button>
+        <button type="button" class="chip" data-tab="sales" aria-pressed="false" data-i18n="collection.tab.sales">Vendas</button>
         <button type="button" class="chip" data-tab="pokemon" aria-pressed="false" data-i18n="collection.tab.pokemon">Pokémon</button>
         <button type="button" class="chip" data-tab="artists" aria-pressed="false" data-i18n="collection.tab.artists">Artistas</button>
         <button type="button" class="chip" data-tab="sets" aria-pressed="false" data-i18n="collection.tab.sets">Sets</button>
@@ -176,6 +177,17 @@
         <div id="folderSections"></div>
         <section id="cardGrid" class="card-grid" aria-live="polite"></section>
         <p id="emptyState" class="empty-state" data-i18n-html="empty.collection" hidden>Nenhuma carta da sua coleção com esses filtros. <a href="pokedex.html">Explore a Pokédex</a> e marque o que você tem.</p>
+      </div>
+
+      <div id="salesView" hidden>
+        <section class="sales-toolbar">
+          <button type="button" id="salesAddBtn" class="secondary" data-i18n="sales.add">Adicionar cartas</button>
+          <button type="button" id="salesShareBtn" class="secondary" data-i18n="sales.share">Compartilhar vendas</button>
+          <button type="button" id="salesExportBtn" class="secondary" data-i18n="sales.export">Exportar imagem</button>
+        </section>
+        <p id="salesHint" class="collection-subtitle" data-i18n="sales.hint">Toque numa carta pra ver a cotação de mercado e te ajudar a precificar. Deixe o preço vazio pra tirar da venda.</p>
+        <section id="salesGrid" class="card-grid"></section>
+        <p id="salesEmpty" class="empty-state" data-i18n-html="sales.empty" hidden>Nenhuma carta à venda. Use <strong>Adicionar cartas</strong> ou abra uma carta e toque em “Pôr à venda”.</p>
       </div>
     </main>
 

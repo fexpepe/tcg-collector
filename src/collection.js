@@ -68,6 +68,41 @@
     };
   }
 
+  // Vendas: cartas que você quer vender, cada uma com um PREÇO DE VENDA (à parte
+  // do valor de mercado — não mexe no portfólio). Global cross-game, por
+  // cardId|variant. Local + sync (igual pastas; carimba updatedAt p/ merge LWW).
+  const sales = createSalesStore();
+  function createSalesStore() {
+    const KEY = "tcg-collector-collection-sales-v1";
+    let data = { sales: {}, order: [], updatedAt: 0 };
+    try {
+      const raw = JSON.parse(localStorage.getItem(KEY) || "null");
+      if (raw && raw.sales && typeof raw.sales === "object") data = raw;
+    } catch (e) { /* corrompido: começa vazio */ }
+    if (!Array.isArray(data.order)) data.order = [];
+    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { /* quota: ignora */ } };
+    const keyOf = (cardId, variant) => `${cardId}|${variant}`;
+    return {
+      has: (cardId, variant) => !!data.sales[keyOf(cardId, variant)],
+      priceOf: (cardId, variant) => { const e = data.sales[keyOf(cardId, variant)]; return e ? (Number(e.price) || 0) : 0; },
+      any: () => Object.keys(data.sales).length > 0,
+      // Itens na ordem do usuário (só os que ainda existem).
+      list: () => data.order.filter((k) => data.sales[k]).map((k) => {
+        const i = k.indexOf("|"); return { key: k, cardId: k.slice(0, i), variant: k.slice(i + 1), price: Number(data.sales[k].price) || 0 };
+      }),
+      add(cardId, variant) { const k = keyOf(cardId, variant); if (!data.sales[k]) { data.sales[k] = { price: 0 }; data.order.push(k); save(); } },
+      setPrice(cardId, variant, price) {
+        const k = keyOf(cardId, variant), p = Number(price) || 0;
+        // Preço vazio/0 numa carta JÁ na venda = tira da venda; senão atualiza/insere.
+        if (p <= 0 && data.sales[k]) { delete data.sales[k]; data.order = data.order.filter((x) => x !== k); }
+        else if (p > 0) { if (!data.sales[k]) data.order.push(k); data.sales[k] = { price: Math.round(p * 100) / 100 }; }
+        save();
+      },
+      remove(cardId, variant) { const k = keyOf(cardId, variant); if (data.sales[k]) { delete data.sales[k]; data.order = data.order.filter((x) => x !== k); save(); } },
+      reorder(orderKeys) { data.order = orderKeys.slice(); save(); }
+    };
+  }
+
   let activeTab = "cards";
   let sortMode = "dex";
 
@@ -111,6 +146,12 @@
     grid: document.getElementById("cardGrid"),
     folderSections: document.getElementById("folderSections"),
     newFolderBtn: document.getElementById("newFolderBtn"),
+    salesView: document.getElementById("salesView"),
+    salesGrid: document.getElementById("salesGrid"),
+    salesEmpty: document.getElementById("salesEmpty"),
+    salesAddBtn: document.getElementById("salesAddBtn"),
+    salesShareBtn: document.getElementById("salesShareBtn"),
+    salesExportBtn: document.getElementById("salesExportBtn"),
     empty: document.getElementById("emptyState"),
     search: document.getElementById("searchInput"),
     pokemonFilter: document.getElementById("pokemonFilter"),
@@ -151,6 +192,11 @@
       list: () => folders.list(),
       currentOf: (cardId) => folders.folderOf(cardId),
       onChange: (cardId, folderId) => { folders.assign(cardId, folderId); renderDashboard(); renderCards(); }
+    },
+    // Campo "Vender por R$" no preview (põe/tira a carta da aba Vendas).
+    sale: {
+      priceOf: (cardId, variant) => sales.priceOf(cardId, variant),
+      onChange: (cardId, variant, price) => { sales.setPrice(cardId, variant, price); if (activeTab === "sales") renderSales(); }
     }
   });
 
@@ -360,8 +406,66 @@
       if (event.key === "Enter" && event.target.closest("[data-folder-rename]")) event.target.blur();
     });
 
+    // --- Vendas ---
+    elements.salesGrid.addEventListener("click", handleTileClick); // abrir preview na imagem
+    elements.salesGrid.addEventListener("click", (event) => {
+      const rm = event.target.closest("[data-sale-remove]");
+      if (!rm) return;
+      const tile = rm.closest(".sale-tile");
+      if (tile) { sales.remove(tile.dataset.saleCard, tile.dataset.saleVariant); renderSales(); }
+    });
+    elements.salesGrid.addEventListener("change", (event) => {
+      const input = event.target.closest("[data-sale-price]");
+      if (!input) return;
+      const tile = input.closest(".sale-tile");
+      if (!tile) return;
+      const text = String(input.value).trim();
+      const amount = Number(text.includes(",") ? text.replace(/\./g, "").replace(",", ".") : text) || 0;
+      sales.setPrice(tile.dataset.saleCard, tile.dataset.saleVariant, amount);
+      if (amount <= 0) { renderSales(); } // tirou da venda → some o tile
+      else { const priced = sales.list().some((i) => i.price > 0); if (elements.salesShareBtn) elements.salesShareBtn.disabled = !priced; if (elements.salesExportBtn) elements.salesExportBtn.disabled = !priced; }
+    });
+    if (elements.salesAddBtn) elements.salesAddBtn.addEventListener("click", openSalesPicker);
+    if (elements.salesShareBtn) elements.salesShareBtn.addEventListener("click", () => shareSales(elements.salesShareBtn));
+    if (elements.salesExportBtn) elements.salesExportBtn.addEventListener("click", () => exportSalesImage(elements.salesExportBtn));
+
     bindFolderDrag();
     initCarousel();
+  }
+
+  // Picker pra adicionar várias cartas à venda de uma vez: busca + grade das
+  // cartas que você TEM e que ainda não estão na venda; tocar adiciona (preço 0,
+  // pra preencher no grid). Respeita o filtro de jogo.
+  function openSalesPicker() {
+    let modal = document.getElementById("salesPickerModal");
+    if (!modal) { modal = document.createElement("div"); modal.id = "salesPickerModal"; modal.className = "sales-picker-modal"; document.body.appendChild(modal); }
+    const renderList = (query) => {
+      const pairs = shared.cardVariantPairs(ownedCards())
+        .filter(({ card, variant }) => owned.variantTotal(card.id, variant) > 0 && !sales.has(card.id, variant))
+        .filter(({ card }) => !query.trim() || shared.matchesCardQuery(card, query))
+        .slice(0, 150);
+      const html = pairs.map(({ card, variant }) => {
+        const src = shared.cardImageSources(card);
+        const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
+        return `<button type="button" class="sales-pick" data-pick-card="${escapeAttribute(card.id)}" data-pick-variant="${escapeAttribute(variant)}">${img}<span class="sales-pick-name">${escapeHtml(card.name)}</span><span class="sales-pick-var">${escapeHtml(variant)}</span></button>`;
+      }).join("") || `<p class="empty-state">${escapeHtml(t("sales.pickerEmpty"))}</p>`;
+      modal.querySelector(".sales-picker-results").innerHTML = html;
+    };
+    modal.innerHTML = `<div class="sales-picker-backdrop" data-sales-picker-close></div>
+      <section class="sales-picker-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("sales.add"))}">
+        <header class="sales-picker-head"><strong>${escapeHtml(t("sales.add"))}</strong>
+          <button type="button" class="preview-close" data-sales-picker-close aria-label="${escapeAttribute(t("modal.close"))}">×</button></header>
+        <input type="search" class="sales-picker-search" placeholder="${escapeAttribute(t("search.placeholder.cards"))}">
+        <div class="sales-picker-results"></div>
+      </section>`;
+    document.body.classList.add("preview-open");
+    renderList("");
+    modal.querySelector(".sales-picker-search").addEventListener("input", debounce((e) => renderList(e.target.value), 200));
+    modal.addEventListener("click", (event) => {
+      if (event.target.closest("[data-sales-picker-close]")) { modal.remove(); document.body.classList.remove("preview-open"); renderSales(); return; }
+      const pick = event.target.closest("[data-pick-card]");
+      if (pick) { sales.add(pick.dataset.pickCard, pick.dataset.pickVariant); pick.classList.add("is-added"); pick.disabled = true; }
+    });
   }
 
   // Carrossel das distribuições: setas rolam o track por ~1 card; as setas
@@ -411,12 +515,16 @@
     syncGameTabs();
     // "Cartas" (grade plana) e "Pastas" (seções) usam a MESMA toolbar de filtros.
     const isCardsLike = activeTab === "cards" || activeTab === "folders";
-    elements.groupsView.hidden = isCardsLike;
+    const isSales = activeTab === "sales";
+    elements.groupsView.hidden = isCardsLike || isSales;
     elements.cardsView.hidden = !isCardsLike;
+    if (elements.salesView) elements.salesView.hidden = !isSales;
 
     renderDashboard();
     updatePokemonFilterLabel();
-    if (isCardsLike) {
+    if (isSales) {
+      renderSales();
+    } else if (isCardsLike) {
       renderCards(options || {});
     } else {
       renderGroups();
@@ -526,6 +634,43 @@
       });
     });
     return total;
+  }
+
+  // --- Aba de Vendas (cartas à venda, com preço de venda) ---
+
+  // Símbolo da moeda atual (R$/$/€…) extraído do formatMoney.
+  function currencySymbol() {
+    return shared.formatMoney(shared.getCurrency(), 0).replace(/[\d.,\s ]/g, "") || shared.getCurrency();
+  }
+
+  function renderSales() {
+    const items = sales.list()
+      .map((it) => ({ it, card: cardsById.get(it.cardId) }))
+      .filter((x) => x.card && inGameFilter(x.card));
+    elements.salesEmpty.hidden = items.length > 0;
+    const sym = currencySymbol();
+    elements.salesGrid.innerHTML = items.map(({ it, card }) => saleTileHtml(card, it.variant, it.price, sym)).join("");
+    const hasPriced = items.some((x) => x.it.price > 0);
+    if (elements.salesShareBtn) elements.salesShareBtn.disabled = !hasPriced;
+    if (elements.salesExportBtn) elements.salesExportBtn.disabled = !hasPriced;
+  }
+
+  // Tile de venda: imagem (→ preview) + campo de preço editável + ✕ remover.
+  function saleTileHtml(card, variant, price, sym) {
+    const src = shared.cardImageSources(card);
+    const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
+    const priceStr = price > 0 ? String(price).replace(".", ",") : "";
+    return `<article class="card-tile sale-tile" data-sale-card="${escapeAttribute(card.id)}" data-sale-variant="${escapeAttribute(variant)}">
+      <div class="card-image">
+        <button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button>
+        <button type="button" class="sale-remove" data-sale-remove title="${escapeAttribute(t("sales.remove"))}" aria-label="${escapeAttribute(t("sales.remove"))}">✕</button>
+      </div>
+      <div class="tile-info">
+        <h3>${escapeHtml(card.name)}</h3>
+        <p class="tile-variant">${shared.cardFlag(card.language)}<span>${escapeHtml(variant)}</span></p>
+        <label class="sale-price-field"><span class="sale-cur">${escapeHtml(sym)}</span><input type="text" inputmode="decimal" class="sale-price" data-sale-price value="${escapeAttribute(priceStr)}" placeholder="0,00"></label>
+      </div>
+    </article>`;
   }
 
   // --- Aba de cartas (grade com filtros) ---
@@ -1014,6 +1159,114 @@
     }
   }
 
+  // Itens das cartas à venda pro share — cada um leva o preço de venda (sp) e a
+  // moeda (cur) na hora do compartilhamento.
+  function buildSaleShareData() {
+    const cur = shared.getCurrency();
+    const items = [];
+    sales.list().forEach(({ cardId, variant, price }) => {
+      if (price <= 0) return;
+      const card = cardsById.get(cardId);
+      if (!card) return;
+      const src = shared.cardImageSources(card);
+      items.push({
+        id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language,
+        g: card.game, v: variant, q: 1, sp: price, cur, img: src.url, fb: src.fallback || ""
+      });
+    });
+    return { items, scope: "sale", cur };
+  }
+
+  async function shareSales(btn) {
+    const data = buildSaleShareData();
+    if (!data.items.length) { alert(t("sales.shareEmpty")); return; }
+    if (btn) btn.disabled = true;
+    const res = await shared.createShare("collection", t("sales.shared.label"), data);
+    if (btn) btn.disabled = false;
+    if (res && res.id) {
+      const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection.html?s=${res.id}`;
+      try { await navigator.clipboard.writeText(link); alert(t("collection.share.copied")); }
+      catch (e) { window.prompt(t("collection.share.copyManual"), link); }
+    } else {
+      alert(res && res.error === "auth" ? t("collection.share.needLogin") : t("collection.share.error"));
+    }
+  }
+
+  // Gera a imagem (PNG) das cartas à venda + preços, pra mandar nos grupos.
+  // Canvas puro (CSP-safe, sem lib), adaptado do export dos binders.
+  async function exportSalesImage(button) {
+    const sym = currencySymbol();
+    const list = sales.list()
+      .map((it) => ({ it, card: cardsById.get(it.cardId) }))
+      .filter((x) => x.card && x.it.price > 0 && inGameFilter(x.card));
+    if (!list.length) { alert(t("sales.shareEmpty")); return; }
+    const label = button ? button.textContent : "";
+    if (button) { button.disabled = true; button.textContent = "…"; }
+
+    const cols = list.length <= 4 ? list.length : (list.length <= 12 ? 4 : 5);
+    const rows = Math.ceil(list.length / cols);
+    const CARD_W = 280, CARD_H = Math.round(CARD_W * 1.396), GAP = 18, MARGIN = 32, TITLE_H = 56, FOOTER_H = 38, RADIUS = 14;
+    const width = MARGIN * 2 + cols * CARD_W + (cols - 1) * GAP;
+    const height = MARGIN + TITLE_H + rows * CARD_H + (rows - 1) * GAP + FOOTER_H + MARGIN;
+    const canvas = document.createElement("canvas");
+    canvas.width = width; canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    const FONT = "system-ui, -apple-system, Segoe UI, Roboto, sans-serif";
+    ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, width, height);
+    ctx.fillStyle = "#111111"; ctx.font = `800 30px ${FONT}`; ctx.textBaseline = "top";
+    ctx.fillText(t("sales.shared.label"), MARGIN, MARGIN);
+
+    // Cache-buster: o tile/preview pode ter carregado a MESMA imagem SEM
+    // crossOrigin, poluindo o cache — e aí a carga com crossOrigin reusa a versão
+    // poluída e "taint"a o canvas. Uma query nova força um fetch CORS limpo.
+    const bust = (u) => u ? u + (u.indexOf("?") >= 0 ? "&" : "?") + "sx=1" : u;
+    const loadImage = (url, cross) => new Promise((res) => {
+      if (!url) return res(null);
+      const im = new Image(); if (cross) im.crossOrigin = "anonymous";
+      im.onload = () => res(im); im.onerror = () => res(null); im.src = url;
+    });
+    const drawCover = (img, x, y, w, h) => {
+      const ir = img.width / img.height, rr = w / h; let sw, sh, sx, sy;
+      if (ir > rr) { sh = img.height; sw = sh * rr; sx = (img.width - sw) / 2; sy = 0; }
+      else { sw = img.width; sh = sw / rr; sx = 0; sy = (img.height - sh) / 2; }
+      ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+    };
+    const roundRect = (x, y, w, h, r) => { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); };
+
+    for (let i = 0; i < list.length; i++) {
+      const { it, card } = list[i];
+      const x = MARGIN + (i % cols) * (CARD_W + GAP);
+      const y = MARGIN + TITLE_H + Math.floor(i / cols) * (CARD_H + GAP);
+      ctx.save();
+      roundRect(x, y, CARD_W, CARD_H, RADIUS); ctx.fillStyle = "#eceff3"; ctx.fill(); ctx.clip();
+      const src = shared.cardImageSources(card);
+      let img = await loadImage(bust(src.url), true);
+      if (!img && src.fallback) img = await loadImage(bust(src.fallback), true);
+      if (img) drawCover(img, x, y, CARD_W, CARD_H);
+      const barH = 48;
+      ctx.fillStyle = "rgba(12,14,18,0.86)"; ctx.fillRect(x, y + CARD_H - barH, CARD_W, barH);
+      ctx.fillStyle = "#ffd264"; ctx.font = `800 25px ${FONT}`; ctx.textBaseline = "middle";
+      ctx.fillText(`${sym} ${it.price.toFixed(2).replace(".", ",")}`, x + 12, y + CARD_H - barH / 2 + 1, CARD_W - 24);
+      ctx.textBaseline = "top"; ctx.restore();
+      ctx.save(); roundRect(x, y, CARD_W, CARD_H, RADIUS); ctx.strokeStyle = "#d0d7e0"; ctx.lineWidth = 1.5; ctx.stroke(); ctx.restore();
+    }
+    ctx.fillStyle = "#9aa3b0"; ctx.font = `600 18px ${FONT}`; ctx.textBaseline = "alphabetic";
+    ctx.fillText("Sleevu · sleevu.app", MARGIN, height - MARGIN + 4);
+
+    const finish = () => { if (button) { button.disabled = false; button.textContent = label; } };
+    try {
+      canvas.toBlob((blob) => {
+        if (!blob) { alert(t("sales.exportTainted")); finish(); return; }
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = "vendas-sleevu.png";
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        finish();
+      }, "image/png");
+    } catch (e) { alert(t("sales.exportTainted")); finish(); }
+  }
+
   function bindShareButton() {
     const btn = document.getElementById("collectionShareBtn");
     if (!btn) return;
@@ -1037,15 +1290,22 @@
 
   function sharedTile(it) {
     const img = shared.localizedImg(it.img, { alt: it.n, fallback: it.fb, loading: "lazy", thumb: true });
-    const val = fromBRL(it.vbrl || 0);
     const flag = shared.cardFlag(it.lang);
+    // Venda: mostra o PREÇO DE VENDA (sp) na moeda do vendedor. Senão, valor de mercado.
+    let priceHtml = "";
+    if (it.sp != null && it.sp > 0) {
+      priceHtml = `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(it.cur || "BRL", it.sp))}</p>`;
+    } else {
+      const val = fromBRL(it.vbrl || 0);
+      if (val > 0) priceHtml = `<p class="tile-price">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>`;
+    }
     return `<article class="card-tile shared-tile">
       <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(it.id)}" data-preview-variant="${escapeAttribute(it.v)}" aria-label="${escapeAttribute(t("card.zoom", { name: it.n }))}">${img}</button></div>
       <div class="tile-info">
         <h3>${escapeHtml(it.n)}</h3>
         <p class="tile-set"><span>${escapeHtml(it.s)} · ${escapeHtml(it.num)}</span></p>
         <p class="tile-variant">${flag}<span>${escapeHtml(it.v)}${it.q > 1 ? ` ×${it.q}` : ""}</span></p>
-        ${val > 0 ? `<p class="tile-price">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>` : ""}
+        ${priceHtml}
       </div>
     </article>`;
   }
@@ -1053,7 +1313,7 @@
   async function renderSharedCollection(id) {
     // Esconde toda a UI normal da coleção; mostra só o container compartilhado.
     ["page-search", "collection-subtitle", "collection-toolbar", "collection-dashboard"].forEach((c) => { const el = document.querySelector("." + c); if (el) el.hidden = true; });
-    [elements.tabs, elements.groupsView, elements.cardsView, elements.dashboard, document.getElementById("collectionShareBtn")].forEach((el) => { if (el) el.hidden = true; });
+    [elements.tabs, elements.groupsView, elements.cardsView, elements.salesView, elements.dashboard, document.getElementById("collectionShareBtn")].forEach((el) => { if (el) el.hidden = true; });
     const sv = document.getElementById("sharedCollection");
     if (!sv) return;
     sv.hidden = false;
@@ -1064,8 +1324,15 @@
       return;
     }
     const allItems = share.data.items;
-    const bannerTotal = allItems.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
     const isFolder = share.data.scope === "folder"; // compartilhamento de UMA pasta
+    const isSale = share.data.scope === "sale";      // lista de vendas
+    const saleCur = share.data.cur || "BRL";
+    // Total: venda soma os preços de venda (sp) na moeda do vendedor; senão valor de mercado.
+    const bannerTotal = isSale
+      ? allItems.reduce((s, it) => s + (Number(it.sp) || 0) * (it.q || 1), 0)
+      : allItems.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
+    const bannerMoney = isSale ? shared.formatMoney(saleCur, bannerTotal) : shared.formatMoney(shared.getCurrency(), bannerTotal);
+    const kindLabel = isSale ? t("sales.shared.label") : (isFolder ? t("folders.shared.label") : "");
 
     // Filtro de jogo (Todos/Pokémon/Lorcana) — igual à página da coleção. Só
     // aparece quando o share tem MAIS DE UM jogo, pra quem está vendo conseguir
@@ -1083,9 +1350,9 @@
     sv.innerHTML = `
       <div class="binder-shared-banner">
         <div class="binder-shared-info">
-          ${isFolder ? `<span class="shared-kind">${escapeHtml(t("folders.shared.label"))}</span>` : ""}
+          ${kindLabel ? `<span class="shared-kind">${escapeHtml(kindLabel)}</span>` : ""}
           <strong>${escapeHtml(share.title || t("collection.shared.title"))}</strong>
-          <span>${escapeHtml(tn("collection.shared.banner", allItems.length))} · ${escapeHtml(shared.formatMoney(shared.getCurrency(), bannerTotal))}</span>
+          <span>${escapeHtml(tn("collection.shared.banner", allItems.length))} · ${escapeHtml(bannerMoney)}</span>
         </div>
         ${isFolder ? `<button type="button" class="primary" id="sharedSaveBtn">${escapeHtml(t("folders.shared.save"))}</button>` : ""}
       </div>
@@ -1110,12 +1377,14 @@
       });
     }
 
-    // (Re)desenha dashboard + grade conforme o filtro de jogo ativo.
+    // (Re)desenha dashboard + grade conforme o filtro de jogo ativo. Venda não
+    // tem dashboard (é só a lista de cartas + preços).
     function paintShared() {
       const items = sharedFilter === "all" ? allItems : allItems.filter((it) => (it.g || "pokemon") === sharedFilter);
       const total = items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
+      const dash = isSale ? "" : sharedDashboardHtml(items, total);
       document.getElementById("sharedBody").innerHTML =
-        `${sharedDashboardHtml(items, total)}<div class="card-grid">${items.map(sharedTile).join("")}</div>`;
+        `${dash}<div class="card-grid">${items.map(sharedTile).join("")}</div>`;
     }
     paintShared();
 

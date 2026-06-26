@@ -1405,7 +1405,11 @@
     }
   }
 
-  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders }) {
+  // Símbolo da moeda atual (R$/$/€…) — pro campo "Vender por".
+  function saleCurrencySymbol() {
+    return fmtMoney(getCurrency(), 0).replace(/[\d.,\s ]/g, "") || getCurrency();
+  }
+  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders, sale }) {
     let activeCard = null;
     let activeVariant = null;
     let openerElement = null;
@@ -1414,6 +1418,13 @@
     // Salva o preço BR digitado ao sair do campo (change = blur ou Enter).
     // Aceita vírgula ou ponto como decimal ("12,50", "12.50", "1.250,00").
     document.addEventListener("change", (event) => {
+      const saleInput = event.target.closest("#cardPreviewModal [data-preview-sale]");
+      if (saleInput && sale && activeCard) {
+        const text = String(saleInput.value).trim();
+        const amount = Number(text.includes(",") ? text.replace(/\./g, "").replace(",", ".") : text) || 0;
+        sale.onChange(activeCard.id, activeVariant || defaultVariant(activeCard), amount);
+        return;
+      }
       const folderSelect = event.target.closest("#cardPreviewModal [data-preview-folder]");
       if (folderSelect && folders && activeCard) {
         folders.onChange(activeCard.id, folderSelect.value || null);
@@ -1485,6 +1496,8 @@
                   <option value="">${escapeHtml(t("folders.none"))}</option>
                   ${folders.list().map((f) => `<option value="${escapeAttribute(f.id)}"${folders.currentOf(activeCard.id) === f.id ? " selected" : ""}>${escapeHtml(f.name || t("folders.untitled"))}</option>`).join("")}
                 </select></label>` : ""}
+              ${sale ? `<label class="preview-sale-row"><span>${escapeHtml(t("sales.sell"))}</span><span class="preview-sale-cur">${escapeHtml(saleCurrencySymbol())}</span>
+                <input type="text" inputmode="decimal" class="preview-sale-price" data-preview-sale value="${escapeAttribute((function () { const p = sale.priceOf(activeCard.id, activeVariant || defaultVariant(activeCard)); return p > 0 ? String(p).replace(".", ",") : ""; })())}" placeholder="0,00"></label>` : ""}
             </div>
             <div class="preview-details">
               <h3>${escapeHtml(t("modal.details"))}</h3>
@@ -2671,6 +2684,7 @@
     prices: gameKey("prices-v1"),
     binders: "tcg-collector-binders-all-v1", // binders são globais (cross-game)
     folders: "tcg-collector-collection-folders-v1", // pastas da coleção (globais)
+    sales: "tcg-collector-collection-sales-v1", // cartas à venda (globais)
     history: gameKey("history-v1")
   };
 
@@ -2919,6 +2933,12 @@
     if (!b) return a;
     return ((Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0)) ? b : a;
   }
+  // Vendas ({ sales, order, updatedAt }): mesmo LWW do bloco que as pastas.
+  function mergeSales(a, b) {
+    if (!a) return b || null;
+    if (!b) return a;
+    return ((Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0)) ? b : a;
+  }
   // Histórico do portfólio ([{ d, c, b, w }]): une por dia; em conflito o local
   // vence (foi recém-calculado a partir da coleção já mesclada). Teto de 800 dias.
   function mergeHistory(a, b) {
@@ -2940,6 +2960,7 @@
       prices: mergePrices(a.prices, b.prices),
       binders: mergeBinders(a.binders, b.binders),
       folders: mergeFolders(a.folders, b.folders),
+      sales: mergeSales(a.sales, b.sales),
       history: mergeHistory(a.history, b.history)
     };
   }
@@ -3070,6 +3091,7 @@
       };
       try { const b = JSON.parse(localStorage.getItem(SYNC_KEYS.binders) || "null"); if (b) payload.binders = b; } catch (e) { /* ignora */ }
       try { const f = JSON.parse(localStorage.getItem(SYNC_KEYS.folders) || "null"); if (f) payload.folders = f; } catch (e) { /* ignora */ }
+      try { const sa = JSON.parse(localStorage.getItem(SYNC_KEYS.sales) || "null"); if (sa) payload.sales = sa; } catch (e) { /* ignora */ }
       return payload;
     }
     function exportJson() { dl(JSON.stringify(backupObject(), null, 2), "tcg-collection.json", "application/json"); }
@@ -3090,6 +3112,7 @@
         createPriceStore().replace(parseImportedPrices(payload, byId));
         if (payload.binders && typeof payload.binders === "object") localStorage.setItem(SYNC_KEYS.binders, JSON.stringify(payload.binders));
         if (payload.folders && typeof payload.folders === "object") localStorage.setItem(SYNC_KEYS.folders, JSON.stringify(payload.folders));
+        if (payload.sales && typeof payload.sales === "object") localStorage.setItem(SYNC_KEYS.sales, JSON.stringify(payload.sales));
         window.location.reload();
       } catch (e) { alert(t("error.import")); }
     }
