@@ -618,21 +618,28 @@ input::placeholder {
 @media (hover: none) { .sale-tile .sale-remove { opacity: 1; } }
 .sale-tile .sale-remove:hover { color: #d8443c; border-color: #d8443c; }
 
-.sale-fields { display: flex; align-items: stretch; gap: 6px; margin-top: 6px; }
+/* Grade de Vendas: cartas um pouco menores que a coleção. */
+#salesGrid { grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 12px; }
+/* Campo de preço e select de condição com a MESMA altura fixa (box-sizing
+   border-box): o <select> não estica com align-items:stretch, então fixamos os
+   dois pra ficarem alinhados. */
+.sale-fields { display: flex; gap: 6px; margin-top: 6px; }
 .sale-price-field {
   flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px;
-  border: 1px solid var(--line); border-radius: 9px; background: var(--surface); padding: 4px 10px;
+  height: 36px; box-sizing: border-box;
+  border: 1px solid var(--line); border-radius: 9px; background: var(--surface); padding: 0 10px;
 }
 .sale-price-field:focus-within { border-color: var(--accent); }
 .sale-cur { font-weight: 800; color: var(--subtle); font-size: 14px; flex: none; }
-.sale-price { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--text); font: inherit; font-weight: 800; font-size: 16px; padding: 2px 0; }
+.sale-price { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--text); font: inherit; font-weight: 800; font-size: 15px; padding: 0; }
 .sale-price:focus { outline: none; }
 /* Condição (M/NM/SP…) ao lado do preço. width:auto vence o select{width:100%}
    global, senão o select engole a linha e espreme o campo de preço. */
 .sale-cond {
-  flex: none; width: auto; font: inherit; font-weight: 800; font-size: 14px; color: var(--text);
+  flex: none; width: auto; height: 36px; box-sizing: border-box;
+  font: inherit; font-weight: 800; font-size: 14px; color: var(--text);
   border: 1px solid var(--line); border-radius: 9px; background: var(--surface);
-  padding: 4px 6px; cursor: pointer;
+  padding: 0 6px; cursor: pointer;
 }
 .sale-cond:focus { outline: none; border-color: var(--accent); }
 /* Badge de condição nas listas de venda compartilhadas */

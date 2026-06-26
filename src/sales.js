@@ -48,7 +48,9 @@
       list: () => data.order.filter((k) => data.sales[k]).map((k) => {
         const i = k.indexOf("|"); return { key: k, cardId: k.slice(0, i), variant: k.slice(i + 1), price: Number(data.sales[k].price) || 0, cond: data.sales[k].cond || "NM" };
       }),
-      add(cardId, variant) { const k = keyOf(cardId, variant); if (!data.sales[k]) { data.sales[k] = { price: 0, cond: "NM" }; data.order.push(k); save(); } },
+      // Ao adicionar, já pré-preenche o preço de venda com o valor de mercado
+      // (TCGplayer) — o usuário sobrescreve digitando. 0 se não houver cotação.
+      add(cardId, variant, initialPrice) { const k = keyOf(cardId, variant); if (!data.sales[k]) { const p = Number(initialPrice) || 0; data.sales[k] = { price: p > 0 ? Math.round(p * 100) / 100 : 0, cond: "NM" }; data.order.push(k); save(); } },
       setPrice(cardId, variant, price) {
         const k = keyOf(cardId, variant), p = Number(price) || 0, cond = (data.sales[k] && data.sales[k].cond) || "NM";
         // Preço vazio/0 numa carta JÁ na venda = tira da venda; senão atualiza/insere (preservando a condição).
@@ -91,7 +93,8 @@
 
   // Símbolo da moeda atual (R$/$/€…) extraído do formatMoney.
   function currencySymbol() {
-    return shared.formatMoney(shared.getCurrency(), 0).replace(/[\d.,\s ]/g, "") || shared.getCurrency();
+    // Usa um valor != 0: formatMoney(cur, 0) devolve "—", e o símbolo sairia "—".
+    return shared.formatMoney(shared.getCurrency(), 1).replace(/[\d.,\s ]/g, "") || shared.getCurrency();
   }
 
   function distBarsHtml(rows) {
@@ -267,7 +270,7 @@
       if (pick) {
         const id = pick.dataset.pickCard, v = pick.dataset.pickVariant;
         if (sales.has(id, v)) { sales.remove(id, v); pick.classList.remove("is-added"); }
-        else { sales.add(id, v); pick.classList.add("is-added"); }
+        else { sales.add(id, v, priceOf(cardsById.get(id), v)); pick.classList.add("is-added"); }
         updateCount();
       }
     });
