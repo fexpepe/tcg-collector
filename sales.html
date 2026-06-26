@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io; connect-src 'self' https://api.tcgdex.net https://pokeapi.co https://economia.awesomeapi.com.br https://*.supabase.co; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="title.sales">Vendas e Trocas - Sleevu</title>
+    <meta name="description" content="Monte sua lista de cartas à venda ou troca, com preço e condição, e compartilhe com seus grupos.">
+    <link rel="canonical" href="https://sleevu.app/sales">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sleevu.app/sales">
+    <meta property="og:title" content="Vendas e Trocas - Sleevu">
+    <meta property="og:description" content="Monte sua lista de cartas à venda ou troca, com preço e condição, e compartilhe com seus grupos.">
+    <meta property="og:image" content="https://sleevu.app/og-image.svg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Vendas e Trocas - Sleevu">
+    <meta name="twitter:description" content="Monte sua lista de cartas à venda ou troca, com preço e condição, e compartilhe com seus grupos.">
+    <meta name="twitter:image" content="https://sleevu.app/og-image.svg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://assets.tcgdex.net">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#0d0e12">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <script src="src/game.js" data-catalog="cards,indexes,set-id-map,pricing"></script>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">Sleevu</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page="sales"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-head">
+        <h1 data-i18n="nav.sales">Vendas e Trocas</h1>
+      </div>
+
+      <p class="collection-subtitle" data-i18n="sales.pageSubtitle">Monte sua lista de cartas à venda ou troca, com preço e condição, e mande pros grupos.</p>
+
+      <div class="collection-toolbar">
+        <div id="gameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
+          <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
+          <button type="button" class="chip" data-game-filter="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
+          <button type="button" class="chip" data-game-filter="lorcana" aria-pressed="false" data-i18n="filter.gameLorcana">Lorcana</button>
+        </div>
+      </div>
+
+      <section id="salesDashboard" class="collection-dashboard" aria-label="Resumo das vendas" hidden>
+        <article class="dash-card dash-stats">
+          <div class="dash-stats-counts">
+            <div><span class="dash-stat-val" id="salesDashCount">0</span><span class="dash-stat-label" data-i18n="sales.dash.count">cartas à venda</span></div>
+          </div>
+          <div class="dash-stat-money"><span class="dash-stat-val" id="salesDashValue">—</span><span class="dash-stat-label" data-i18n="sales.dash.value">valor da lista</span></div>
+        </article>
+        <article class="dash-card dash-top">
+          <h3 data-i18n="sales.dash.top">Mais caras</h3>
+          <ol id="salesDashTop" class="dash-top-list"></ol>
+        </article>
+        <article class="dash-card dash-dist">
+          <h3 data-i18n="dash.distTitle">Distribuição por jogo</h3>
+          <div id="salesDashDist" class="dash-dist-bars"></div>
+        </article>
+      </section>
+
+      <div id="salesView">
+        <section class="sales-toolbar">
+          <button type="button" id="salesAddBtn" class="secondary" data-i18n="sales.add">Adicionar cartas</button>
+          <button type="button" id="salesShareBtn" class="secondary" data-i18n="sales.share">Compartilhar vendas</button>
+          <button type="button" id="salesExportBtn" class="secondary" data-i18n="sales.export">Exportar imagem</button>
+        </section>
+        <p id="salesHint" class="collection-subtitle" data-i18n="sales.hint">Toque numa carta pra ver a cotação de mercado e te ajudar a precificar. Deixe o preço vazio pra tirar da venda.</p>
+        <section id="salesGrid" class="card-grid"></section>
+        <p id="salesEmpty" class="empty-state" data-i18n-html="sales.empty" hidden>Nenhuma carta à venda. Use <strong>Adicionar cartas</strong> ou abra uma carta e toque em “Pôr à venda”.</p>
+      </div>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/shared.js"></script>
+    <script defer src="src/sales.js"></script>
+  </body>
+</html>

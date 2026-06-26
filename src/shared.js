@@ -669,7 +669,7 @@
       }
     }
     const exploreActive = ["pokedex", "trainers", "sets", "artists", "cards", "hub"].includes(active);
-    const collectionActive = ["collection", "wishlist", "binders"].includes(active);
+    const collectionActive = ["collection", "wishlist", "binders", "sales"].includes(active);
 
     const link = (href, key, page) => `<a href="${escapeAttribute(href)}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
     const group = (key, isActive, links) => `
@@ -722,7 +722,8 @@
       ${group("nav.collection", collectionActive, `
           ${link("collection.html", "nav.collectionMine", "collection")}
           ${link("binders.html", "nav.binders", "binders")}
-          ${link("wishlist.html", "nav.wishlist", "wishlist")}`)}
+          ${link("wishlist.html", "nav.wishlist", "wishlist")}
+          ${link("sales.html", "nav.sales", "sales")}`)}
       ${link("portfolio.html?game=hub", "nav.portfolio", "portfolio")}
     `;
 

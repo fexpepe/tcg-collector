@@ -3584,7 +3584,9 @@ a.progress-row:hover {
   justify-content: flex-start;
   text-align: left;
   white-space: nowrap;
-  font-size: 14px;
+  /* Sublinks 10% menores que o padrão: realça a diferença pro nome do jogo
+     (.nav-mega-head, 15px/800) que é a categoria-mãe. */
+  font-size: 12.6px;
   padding-top: 6px;
   padding-bottom: 6px;
 }
