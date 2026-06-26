@@ -636,24 +636,44 @@ input::placeholder {
 .tile-price.sale-price-tag { color: var(--gold); font-weight: 800; }
 
 /* Picker de adicionar cartas à venda */
-.sales-picker-modal { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; }
+.sales-picker-modal { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; padding: 16px; }
 .sales-picker-backdrop { position: absolute; inset: 0; background: rgba(8, 10, 14, 0.55); }
 .sales-picker-panel {
-  position: relative; z-index: 1; width: min(680px, 92vw); max-height: 86vh;
+  position: relative; z-index: 1; width: min(720px, 96vw); max-height: 88vh;
   display: flex; flex-direction: column; gap: 12px;
   background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
   box-shadow: var(--shadow); padding: 16px;
 }
 .sales-picker-head { display: flex; align-items: center; justify-content: space-between; }
+.sales-picker-head .preview-close { position: static; box-shadow: none; }
 .sales-picker-head strong { font-size: 17px; }
-.sales-picker-search { font: inherit; padding: 9px 12px; border-radius: 9px; border: 1px solid var(--line); background: var(--panel); color: var(--text); }
-.sales-picker-results { overflow-y: auto; display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
-.sales-pick { display: flex; flex-direction: column; gap: 3px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); padding: 6px; cursor: pointer; text-align: left; color: var(--text); }
-.sales-pick img { width: 100%; border-radius: 6px; aspect-ratio: 63 / 88; object-fit: cover; }
-.sales-pick-name { font-size: 11px; font-weight: 700; line-height: 1.2; }
-.sales-pick-var { font-size: 10px; color: var(--subtle); }
+.sales-picker-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.sales-picker-search { flex: 1; min-width: 160px; font: inherit; padding: 9px 12px; border-radius: 9px; border: 1px solid var(--line); background: var(--panel); color: var(--text); }
+/* align-content:start + min-height:0 = linhas no tamanho do conteúdo e rolagem
+   funcional; a imagem vai num WRAPPER com aspect-ratio (não no <button>, que
+   colapsava e deixava a imagem transbordar/encavalar). */
+.sales-picker-results {
+  flex: 1 1 auto; min-height: 0; overflow-y: auto;
+  display: grid; gap: 10px; align-content: start;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+}
+/* Tile é um <div> (não <button>): o button colapsava a altura do filho com
+   aspect-ratio. Block + a imagem num wrapper com aspect-ratio = tamanho certo. */
+.sales-pick {
+  display: block;
+  border: 1px solid var(--line); border-radius: 12px; background: var(--panel);
+  padding: 7px; cursor: pointer; text-align: center; color: var(--text);
+}
+.sales-pick-img { position: relative; display: block; width: 100%; aspect-ratio: 63 / 88; border-radius: 7px; overflow: hidden; margin-bottom: 5px; }
+.sales-pick-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.sales-pick-check { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(var(--accent-rgb), 0.55); color: #fff; font-size: 30px; font-weight: 900; }
+.sales-pick.is-added { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.sales-pick.is-added .sales-pick-check { display: flex; }
+.sales-pick-name { display: block; font-size: 11px; font-weight: 700; line-height: 1.2; }
+.sales-pick-var { display: flex; justify-content: center; align-items: center; gap: 4px; margin-top: 3px; font-size: 10px; color: var(--subtle); }
 .sales-pick:hover { border-color: var(--accent); }
-.sales-pick.is-added { opacity: 0.5; border-color: var(--accent); }
+.sales-picker-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
+.sales-picker-count { font-size: 13px; font-weight: 700; color: var(--subtle); }
 
 .card-grid {
   display: grid;

@@ -433,21 +433,30 @@
     initCarousel();
   }
 
-  // Picker pra adicionar várias cartas à venda de uma vez: busca + grade das
-  // cartas que você TEM e que ainda não estão na venda; tocar adiciona (preço 0,
-  // pra preencher no grid). Respeita o filtro de jogo.
+  // Picker pra adicionar/tirar cartas da venda em lote: filtro de jogo + busca +
+  // grade das cartas que você TEM. Tocar alterna (✓ = está na venda). O rodapé
+  // mostra quantas estão na venda; ao fechar, a aba Vendas reflete. Tudo persiste
+  // na hora (cada toque grava na store).
   function openSalesPicker() {
     let modal = document.getElementById("salesPickerModal");
     if (!modal) { modal = document.createElement("div"); modal.id = "salesPickerModal"; modal.className = "sales-picker-modal"; document.body.appendChild(modal); }
-    const renderList = (query) => {
-      const pairs = shared.cardVariantPairs(ownedCards())
-        .filter(({ card, variant }) => owned.variantTotal(card.id, variant) > 0 && !sales.has(card.id, variant))
-        .filter(({ card }) => !query.trim() || shared.matchesCardQuery(card, query))
-        .slice(0, 150);
+    let pickGame = gameFilter; // começa no filtro atual da coleção; dá pra trocar
+    const updateCount = () => { const el = modal.querySelector(".sales-picker-count"); if (el) el.textContent = t("sales.pickerCount", { n: sales.list().length }); };
+    const renderList = () => {
+      const q = modal.querySelector(".sales-picker-search").value;
+      const base = cards.filter((c) => owned.has(c.id) && (pickGame === "all" || c.game === pickGame));
+      const pairs = shared.cardVariantPairs(base)
+        .filter(({ card, variant }) => owned.variantTotal(card.id, variant) > 0)
+        .filter(({ card }) => !q.trim() || shared.matchesCardQuery(card, q))
+        .slice(0, 200);
       const html = pairs.map(({ card, variant }) => {
         const src = shared.cardImageSources(card);
         const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
-        return `<button type="button" class="sales-pick" data-pick-card="${escapeAttribute(card.id)}" data-pick-variant="${escapeAttribute(variant)}">${img}<span class="sales-pick-name">${escapeHtml(card.name)}</span><span class="sales-pick-var">${escapeHtml(variant)}</span></button>`;
+        return `<div class="sales-pick${sales.has(card.id, variant) ? " is-added" : ""}" role="button" tabindex="0" data-pick-card="${escapeAttribute(card.id)}" data-pick-variant="${escapeAttribute(variant)}">
+          <span class="sales-pick-img">${img}<span class="sales-pick-check">✓</span></span>
+          <span class="sales-pick-name">${escapeHtml(card.name)}</span>
+          <span class="sales-pick-var">${shared.cardFlag(card.language)}<span>${escapeHtml(variant)}</span></span>
+        </div>`;
       }).join("") || `<p class="empty-state">${escapeHtml(t("sales.pickerEmpty"))}</p>`;
       modal.querySelector(".sales-picker-results").innerHTML = html;
     };
@@ -455,16 +464,38 @@
       <section class="sales-picker-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("sales.add"))}">
         <header class="sales-picker-head"><strong>${escapeHtml(t("sales.add"))}</strong>
           <button type="button" class="preview-close" data-sales-picker-close aria-label="${escapeAttribute(t("modal.close"))}">×</button></header>
-        <input type="search" class="sales-picker-search" placeholder="${escapeAttribute(t("search.placeholder.cards"))}">
+        <div class="sales-picker-controls">
+          <div class="chip-filter game-filter" id="salesPickerGame" role="group" aria-label="Jogo">
+            <button type="button" class="chip" data-pick-game="all" aria-pressed="${pickGame === "all"}">${escapeHtml(t("filter.gameAll"))}</button>
+            <button type="button" class="chip" data-pick-game="pokemon" aria-pressed="${pickGame === "pokemon"}">${escapeHtml(t("filter.gamePokemon"))}</button>
+            <button type="button" class="chip" data-pick-game="lorcana" aria-pressed="${pickGame === "lorcana"}">${escapeHtml(t("filter.gameLorcana"))}</button>
+          </div>
+          <input type="search" class="sales-picker-search" placeholder="${escapeAttribute(t("search.placeholder.cards"))}">
+        </div>
         <div class="sales-picker-results"></div>
+        <footer class="sales-picker-foot">
+          <span class="sales-picker-count"></span>
+          <button type="button" class="primary" data-sales-picker-close>${escapeHtml(t("sales.pickerDone"))}</button>
+        </footer>
       </section>`;
     document.body.classList.add("preview-open");
-    renderList("");
-    modal.querySelector(".sales-picker-search").addEventListener("input", debounce((e) => renderList(e.target.value), 200));
+    renderList(); updateCount();
+    modal.querySelector(".sales-picker-search").addEventListener("input", debounce(renderList, 200));
     modal.addEventListener("click", (event) => {
       if (event.target.closest("[data-sales-picker-close]")) { modal.remove(); document.body.classList.remove("preview-open"); renderSales(); return; }
+      const gameChip = event.target.closest("[data-pick-game]");
+      if (gameChip) {
+        pickGame = gameChip.dataset.pickGame;
+        modal.querySelectorAll("#salesPickerGame .chip").forEach((c) => c.setAttribute("aria-pressed", String(c === gameChip)));
+        renderList(); return;
+      }
       const pick = event.target.closest("[data-pick-card]");
-      if (pick) { sales.add(pick.dataset.pickCard, pick.dataset.pickVariant); pick.classList.add("is-added"); pick.disabled = true; }
+      if (pick) {
+        const id = pick.dataset.pickCard, v = pick.dataset.pickVariant;
+        if (sales.has(id, v)) { sales.remove(id, v); pick.classList.remove("is-added"); }
+        else { sales.add(id, v); pick.classList.add("is-added"); }
+        updateCount();
+      }
     });
   }
 
