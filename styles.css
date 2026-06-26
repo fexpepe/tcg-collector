@@ -1701,17 +1701,18 @@ input::placeholder {
   height: 40px;
   min-height: 40px;
   border-radius: 50%;
-  border: 1px solid #2b3443;
-  background: rgba(17, 23, 34, 0.82);
+  border: 1px solid var(--line);
+  background: var(--panel);
   color: var(--text);
+  box-shadow: var(--shadow);
   font-size: 28px;
   line-height: 1;
   padding: 0;
 }
 
 .preview-close:hover {
-  color: var(--text);
-  background: var(--panel-strong);
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 .preview-image-wrap {
