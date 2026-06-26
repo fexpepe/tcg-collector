@@ -656,7 +656,7 @@ input::placeholder {
   box-shadow: var(--shadow); padding: 16px;
 }
 .sales-picker-head { display: flex; align-items: center; justify-content: space-between; }
-.sales-picker-head .preview-close { position: static; box-shadow: none; }
+.sales-picker-head .preview-close { position: relative; box-shadow: none; }
 .sales-picker-head strong { font-size: 17px; }
 .sales-picker-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .sales-picker-search { flex: 1; min-width: 160px; font: inherit; padding: 9px 12px; border-radius: 9px; border: 1px solid var(--line); background: var(--panel); color: var(--text); }
@@ -1726,25 +1726,43 @@ input::placeholder {
   top: 14px;
   right: 16px;
   z-index: 2;
-  display: grid;
-  place-items: center;
   width: 40px;
   height: 40px;
+  min-width: 40px;
   min-height: 40px;
+  flex: none;          /* nunca encolhe num container flex (ex.: header do picker) */
+  aspect-ratio: 1;     /* trava o círculo, aconteça o que acontecer */
   border-radius: 50%;
   border: 1px solid var(--line);
   background: var(--panel);
   color: var(--text);
   box-shadow: var(--shadow);
-  font-size: 28px;
-  line-height: 1;
+  font-size: 0;        /* esconde o glifo "×" do HTML; o X é desenhado abaixo */
   padding: 0;
+  cursor: pointer;
 }
 
 .preview-close:hover {
   color: var(--accent);
   border-color: var(--accent);
 }
+
+/* X desenhado em CSS (2 traços iguais): centralizado e simétrico, sem depender
+   da métrica do glifo "×" (que renderiza alto/estreito e deixava o botão com
+   cara de oval). Vale pro fechar de todos os modais (.preview-close e .ts-close). */
+.preview-close::before, .preview-close::after,
+.ts-close::before, .ts-close::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 15px;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+}
+.preview-close::before, .ts-close::before { transform: translate(-50%, -50%) rotate(45deg); }
+.preview-close::after, .ts-close::after { transform: translate(-50%, -50%) rotate(-45deg); }
 
 .preview-image-wrap {
   display: grid;
@@ -2722,9 +2740,9 @@ a.hub-tile:hover {
   box-shadow: var(--shadow); padding: 24px;
 }
 .ts-close {
-  position: absolute; top: 14px; right: 16px; width: 36px; height: 36px; min-height: 36px;
-  display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--line);
-  background: var(--panel); color: var(--text); font-size: 24px; line-height: 1; cursor: pointer;
+  position: absolute; top: 14px; right: 16px; width: 36px; height: 36px; min-width: 36px; min-height: 36px;
+  flex: none; aspect-ratio: 1; border-radius: 50%; border: 1px solid var(--line);
+  background: var(--panel); color: var(--text); font-size: 0; cursor: pointer;
 }
 .ts-close:hover { color: var(--accent); border-color: var(--accent); }
 .ts-panel h2 { margin: 0 8px 10px 0; font-size: 22px; }
