@@ -189,13 +189,24 @@
     let modal = document.getElementById("salesPickerModal");
     if (!modal) { modal = document.createElement("div"); modal.id = "salesPickerModal"; modal.className = "sales-picker-modal"; document.body.appendChild(modal); }
     let pickGame = gameFilter; // começa no filtro atual; dá pra trocar
+    let pickRarity = "";          // filtro de raridade (vazio = todas)
+    let pickSort = "value-desc";  // ordenação (mesma lógica da aba Cartas)
     const updateCount = () => { const el = modal.querySelector(".sales-picker-count"); if (el) el.textContent = t("sales.pickerCount", { n: sales.list().length }); };
+    const priceOf = (card, variant) => shared.cardValue(card, variant, prices, shared.DEFAULT_CONDITION).value || 0;
+    const sortPairs = (pairs) => {
+      if (pickSort === "num-asc") return pairs.sort((a, b) => shared.compareCardNumbers(a.card.number, b.card.number));
+      if (pickSort === "num-desc") return pairs.sort((a, b) => shared.compareCardNumbers(b.card.number, a.card.number));
+      if (pickSort === "release") return pairs.sort((a, b) => String(b.card.setReleaseDate || "").localeCompare(String(a.card.setReleaseDate || "")));
+      if (pickSort === "value-asc") return pairs.sort((a, b) => { const pa = priceOf(a.card, a.variant), pb = priceOf(b.card, b.variant); if (!pa && !pb) return 0; if (!pa) return 1; if (!pb) return -1; return pa - pb; });
+      return pairs.sort((a, b) => priceOf(b.card, b.variant) - priceOf(a.card, a.variant)); // value-desc (padrão)
+    };
     const renderList = () => {
       const q = modal.querySelector(".sales-picker-search").value;
       const base = cards.filter((c) => owned.has(c.id) && (pickGame === "all" || c.game === pickGame));
-      const pairs = shared.cardVariantPairs(base)
+      const pairs = sortPairs(shared.cardVariantPairs(base)
         .filter(({ card, variant }) => owned.variantTotal(card.id, variant) > 0)
-        .filter(({ card }) => !q.trim() || shared.matchesCardQuery(card, q))
+        .filter(({ card }) => !pickRarity || card.rarity === pickRarity)
+        .filter(({ card }) => !q.trim() || shared.matchesCardQuery(card, q)))
         .slice(0, 200);
       const html = pairs.map(({ card, variant }) => {
         const src = shared.cardImageSources(card);
@@ -208,6 +219,11 @@
       }).join("") || `<p class="empty-state">${escapeHtml(t("sales.pickerEmpty"))}</p>`;
       modal.querySelector(".sales-picker-results").innerHTML = html;
     };
+    const ownedPool = cards.filter((c) => owned.has(c.id));
+    const rarityOpts = `<option value="">${escapeHtml(t("filter.all.f"))}</option>`
+      + unique(ownedPool.map((c) => c.rarity).filter(Boolean)).sort().map((r) => `<option value="${escapeAttribute(r)}">${escapeHtml(r)}</option>`).join("");
+    const sortOpts = [["value-desc", "sort.valueDesc"], ["value-asc", "sort.valueAsc"], ["num-asc", "sort.numAsc"], ["num-desc", "sort.numDesc"], ["release", "sort.releaseDate"]]
+      .map(([v, k]) => `<option value="${v}"${v === pickSort ? " selected" : ""}>${escapeHtml(t(k))}</option>`).join("");
     modal.innerHTML = `<div class="sales-picker-backdrop" data-sales-picker-close></div>
       <section class="sales-picker-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("sales.add"))}">
         <header class="sales-picker-head"><strong>${escapeHtml(t("sales.add"))}</strong>
@@ -219,6 +235,10 @@
             <button type="button" class="chip" data-pick-game="lorcana" aria-pressed="${pickGame === "lorcana"}">${escapeHtml(t("filter.gameLorcana"))}</button>
           </div>
           <input type="search" class="sales-picker-search" placeholder="${escapeAttribute(t("search.placeholder.cards"))}">
+          <label class="sales-picker-field"><span>${escapeHtml(t("toolbar.rarity"))}</span>
+            <select class="sales-picker-select" id="salesPickerRarity">${rarityOpts}</select></label>
+          <label class="sales-picker-field"><span>${escapeHtml(t("sort.label"))}</span>
+            <select class="sales-picker-select" id="salesPickerSort">${sortOpts}</select></label>
         </div>
         <div class="sales-picker-results"></div>
         <footer class="sales-picker-foot">
@@ -229,6 +249,12 @@
     document.body.classList.add("preview-open");
     renderList(); updateCount();
     modal.querySelector(".sales-picker-search").addEventListener("input", debounce(renderList, 200));
+    modal.addEventListener("change", (event) => {
+      const rar = event.target.closest("#salesPickerRarity");
+      if (rar) { pickRarity = rar.value; renderList(); return; }
+      const srt = event.target.closest("#salesPickerSort");
+      if (srt) { pickSort = srt.value; renderList(); }
+    });
     modal.addEventListener("click", (event) => {
       if (event.target.closest("[data-sales-picker-close]")) { modal.remove(); document.body.classList.remove("preview-open"); render(); return; }
       const gameChip = event.target.closest("[data-pick-game]");

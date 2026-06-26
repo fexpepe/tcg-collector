@@ -658,8 +658,13 @@ input::placeholder {
 .sales-picker-head { display: flex; align-items: center; justify-content: space-between; }
 .sales-picker-head .preview-close { position: relative; box-shadow: none; }
 .sales-picker-head strong { font-size: 17px; }
-.sales-picker-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.sales-picker-controls { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: flex-end; }
 .sales-picker-search { flex: 1; min-width: 160px; font: inherit; padding: 9px 12px; border-radius: 9px; border: 1px solid var(--line); background: var(--panel); color: var(--text); }
+/* Campos Raridade/Ordenar: rótulo em cima do select (width:auto vence o
+   select{width:100%} global, que senão estouraria a linha). */
+.sales-picker-field { display: flex; flex-direction: column; gap: 3px; font-size: 11px; font-weight: 700; color: var(--subtle); }
+.sales-picker-select { width: auto; font: inherit; font-weight: 600; font-size: 13px; color: var(--text); padding: 8px 9px; border-radius: 9px; border: 1px solid var(--line); background: var(--panel); cursor: pointer; }
+.sales-picker-select:focus { outline: none; border-color: var(--accent); }
 /* align-content:start + min-height:0 = linhas no tamanho do conteúdo e rolagem
    funcional; a imagem vai num WRAPPER com aspect-ratio (não no <button>, que
    colapsava e deixava a imagem transbordar/encavalar). */
