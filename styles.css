@@ -4284,8 +4284,9 @@ a.progress-row:hover {
   padding: 8px 14px;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: rgba(13, 14, 18, 0.92);
+  background: var(--panel);
   color: var(--text);
+  box-shadow: var(--shadow);
   font-size: 13.5px;
   font-weight: 700;
   white-space: nowrap;
@@ -4651,8 +4652,10 @@ a.progress-row:hover {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: rgba(10, 12, 18, 0.72);
-  color: #fff;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  box-shadow: var(--shadow);
   cursor: pointer;
   opacity: 0;
   transition: opacity 0.12s ease;
