@@ -145,6 +145,14 @@ const EN_FILL_SETS = {
   sv09: [24073]               // Journey Together
 };
 
+// Sets JP que a TCGdex AINDA NÃO tem (set INTEIRO faltando) e que importamos
+// direto da PPT: imagem + preço + número/nome. Diferente do fill acima, aqui NÃO
+// há chunk irmão da TCGdex — então o sync sintetiza as cartas do zero e o
+// merge-catalogs cria um chunk novo pra esses setIds (ja). Quando a TCGdex
+// finalmente cadastrar o set, é só tirar daqui (a TCGdex tem metadata melhor).
+// O code tem que casar com o prefixo do setName da PPT (ex.: "M5: ..." -> M5).
+const JP_IMPORT_SETS = ["M5", "MBG"];
+
 // Nome limpo da carta PPT: tira o sufixo de número e tags ("Snorlax - 077/071"
 // -> "Snorlax"; "Meganium - 001 [Staff]" -> "Meganium").
 function cleanName(name) {
@@ -407,6 +415,60 @@ async function syncSet(ourSetId, pptSetId, lang = "japanese", withGraded = GRADE
   return { entries, newCards };
 }
 
+// Importa um set JP INTEIRO da PPT (a TCGdex não tem o set). Sem chunk irmão: os
+// campos do set saem da própria PPT (nome do set pelo setName; total pelo
+// "NNN/TTT"). Cada carta vira um _new (id "<CODE>-<num>-ja") que o merge injeta
+// num chunk novo. Mantém só a impressão de MAIOR preço por número (não a de erro).
+async function importJpSet(code, pptSetId) {
+  const rev = await revNames();
+  const pptIds = Array.isArray(pptSetId) ? pptSetId : [pptSetId];
+  const arr = [];
+  for (const pid of pptIds) {
+    for (let page = 0, offset = 0; page < 30; page++) {
+      const j = await ppt(`/cards?setId=${pid}&language=japanese&limit=100&offset=${offset}`);
+      const batch = j.data || [];
+      arr.push(...batch);
+      if (!(j.metadata && j.metadata.hasMore) || !batch.length) break;
+      offset += batch.length;
+    }
+  }
+  // Nome do set e total, a partir das cartas (a PPT não tem endpoint de logo/símbolo).
+  const setNameRaw = (arr.find((c) => c.setName) || {}).setName || code;
+  const setName = setNameRaw.replace(/^[A-Za-z0-9.]+\s*[:：]\s*/, "").trim() || setNameRaw;
+  const withDen = arr.find((c) => String(c.cardNumber || "").includes("/"));
+  const setTotal = withDen ? String(withDen.cardNumber).split("/")[1].trim() : "";
+  const best = new Map(); // normNum -> melhor candidato (maior preço, com imagem)
+  for (const c of arr) {
+    const rawNum = String(c.cardNumber || "").split("/")[0].trim();
+    const key = normNum(rawNum);
+    const img = c.imageCdnUrl400 || c.imageCdnUrl200 || c.imageUrl || null;
+    if (!key || !img) continue;
+    const u = pickPrice(c);
+    const prev = best.get(key);
+    if (!prev || (u || 0) > (prev._u || 0)) best.set(key, { c, _u: u || 0, img, rawNum });
+  }
+  const newCards = [];
+  for (const [, m] of best) {
+    const name = cleanName(m.c.name);
+    if (!name) continue;
+    const num = m.rawNum;
+    const dexId = rev[speciesOf(name).toLowerCase()] || "";
+    const card = {
+      id: `${code}-${num}-ja`, name, pokemonName: dexId ? "" : speciesOf(name),
+      category: "", dexId, generation: genOf(dexId),
+      pokemonImage: dexId ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexId}.png` : "",
+      number: String(num), set: setName, setId: code,
+      setLogo: "", setSymbol: "", setTotal, setReleaseDate: "",
+      setSerieId: "", setSerieName: "", artist: "", rarity: "", language: "ja",
+      image: m.img, variants: variantsOf(m.c), _new: true
+    };
+    if (m._u > 0) card.price = { u: Math.round(m._u * 100) / 100 };
+    newCards.push(card);
+  }
+  console.log(`  [JP import] ${code} (ppt ${pptIds.join("+")}): ${newCards.length} cartas (set "${setName}", total ${setTotal || "?"})`);
+  return newCards;
+}
+
 const REFRESH_DAYS = 7; // re-busca um set se o cache dele tiver mais que isso
 
 async function run() {
@@ -518,6 +580,30 @@ async function run() {
         if (!DRY) await writeFile(cacheFileOf(setId), JSON.stringify({ t: Date.now(), entries: r.entries, newCards: r.newCards }), "utf8");
       } else if (cached) restoreCache(cached);
     } catch (e) { console.log(`  ${setId}: erro ${e.message}`); if (cached) restoreCache(cached); }
+  }
+
+  // Importação de sets JP inteiros que a TCGdex ainda não tem (M5, MBG…). O
+  // pptId vem do /sets (grátis); se a PPT ainda não listar o set, loga e segue
+  // (é o "probe": no próximo run que a PPT tiver, importa). Cacheia por code.
+  for (const code of JP_IMPORT_SETS) {
+    const ck = `jpimport-${code}`;
+    const cached = await readCache(ck);
+    if (cached && Date.now() - (cached.t || 0) < REFRESH_DAYS * 864e5 && !DRY) { newCardsAll.push(...(cached.newCards || [])); continue; }
+    const pptId = map.get(code.toUpperCase());
+    if (pptId == null) {
+      console.log(`  [JP import] ${code}: a PPT ainda não lista esse set (pulado)`);
+      if (cached) newCardsAll.push(...(cached.newCards || []));
+      continue;
+    }
+    if (creditsUsed >= BUDGET || (TIME_CAP_MS && Date.now() - startedAt > TIME_CAP_MS)) {
+      if (cached) newCardsAll.push(...(cached.newCards || []));
+      continue;
+    }
+    try {
+      const nc = await importJpSet(code, pptId);
+      newCardsAll.push(...nc); fetched++;
+      if (!DRY) await writeFile(cacheFileOf(ck), JSON.stringify({ t: Date.now(), newCards: nc }), "utf8");
+    } catch (e) { console.log(`  [JP import] ${code}: erro ${e.message}`); if (cached) newCardsAll.push(...(cached.newCards || [])); }
   }
 
   if (discDirty) await saveDiscovered(discovered);

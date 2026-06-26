@@ -84,6 +84,9 @@ for (const c of Array.isArray(pptNewCards) ? pptNewCards : []) {
   (newBySet[`${c.language}/${c.setId}`] = newBySet[`${c.language}/${c.setId}`] || []).push(c);
 }
 let injectedNew = 0;
+// Sets que TÊM chunk (existem na TCGdex): marcados no loop. O que sobrar em
+// newBySet sem chunk = set só-PPT (M5/MBG…), tratado depois do loop.
+const consumedSets = new Set();
 
 // Logo de Black Star Promo: todo set "* Black Star Promos" (SVP, MEP, SWSHP,
 // XYP… qualquer era) usa o MESMO selo universal — a estrela preta com "PROMO".
@@ -96,6 +99,7 @@ const BLACK_STAR_PROMO_LOGO = "https://assets.tcgdex.net/univ/swsh/swshp/symbol.
 for (const lang of langs) {
   for (const chunk of chunksByLang[lang] || []) {
     let changed = false;
+    consumedSets.add(`${lang}/${chunk.setId}`);
     // Injeta as cartas novas da PPT deste set+idioma (dedupe por id) antes do
     // processamento, pra entrarem no preço/índices/chunk como qualquer outra.
     const news = newBySet[`${lang}/${chunk.setId}`];
@@ -141,6 +145,36 @@ for (const lang of langs) {
       file: `data/sets/${lang}/${chunk.file}`
     });
   }
+}
+
+// Sets que SÓ existem na PPT (a TCGdex ainda não tem chunk): cria um chunk novo
+// do zero a partir das cartas sintetizadas (importJpSet). Defensivo — um erro
+// aqui não pode derrubar o build do catálogo inteiro. Add-on-miss normal nunca
+// cai aqui (sempre tem chunk); só os JP_IMPORT_SETS (M5/MBG…) chegam órfãos.
+for (const [key, news] of Object.entries(newBySet)) {
+  if (consumedSets.has(key) || !news || !news.length) continue;
+  try {
+    const slash = key.indexOf("/");
+    const lang = key.slice(0, slash), setId = key.slice(slash + 1);
+    if (!langs.includes(lang)) continue;
+    const cards = [];
+    const have = new Set();
+    for (const nc of news) {
+      if (!nc || !nc.id || have.has(nc.id)) continue;
+      const { _new, ...card } = nc;
+      if (card.price) { pricing[card.id] = card.price; delete card.price; }
+      const canonical = speciesByDex.get(speciesDexId(card));
+      if (canonical) card.pokemonName = canonical;
+      cards.push(card); have.add(nc.id);
+    }
+    if (!cards.length) continue;
+    const file = `${setId}.json`;
+    await writeFile(new URL(`sets/${lang}/${file}`, dataDir), JSON.stringify(cards), "utf8");
+    allCards.push(...cards);
+    manifestSets.push({ id: setId, name: cards[0].set || setId, count: cards.length, language: lang, file: `data/sets/${lang}/${file}` });
+    injectedNew += cards.length;
+    console.log(`  [merge] set só-PPT criado: ${lang}/${setId} "${cards[0].set || setId}" (${cards.length} cartas)`);
+  } catch (e) { console.warn(`  [merge] falha criando set só-PPT ${key}: ${e.message}`); }
 }
 
 // Fallback de imagem por idioma: carta localizada (PT/JA/ZH) sem imagem própria
