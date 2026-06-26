@@ -220,7 +220,20 @@
     addOptions(elements.setFilter, unique(myCards.map((card) => card.set)));
     addOptions(elements.languageFilter, unique(myCards.map((card) => card.language)), (value) => langOptionLabel(value));
     applyCardLangDefault(elements.languageFilter);
-    addOptions(elements.rarityFilter, unique(myCards.map((card) => card.rarity)));
+    refreshRarityFilter();
+  }
+
+  // Raridade segue o filtro de jogo: só Pokémon, só Lorcana, ou todas no "Todos".
+  // ownedCards() já respeita o gameFilter. Mantém a opção "Todas" (1ª) e preserva
+  // a seleção atual se ela ainda existir no novo conjunto.
+  function refreshRarityFilter() {
+    const select = elements.rarityFilter;
+    if (!select) return;
+    const prev = select.value;
+    while (select.options.length > 1) select.remove(1); // tira tudo menos "Todas"
+    const rarities = unique(ownedCards().map((card) => card.rarity).filter(Boolean)).sort();
+    addOptions(select, rarities);
+    select.value = rarities.includes(prev) ? prev : "";
   }
 
   // Rótulo do filtro de idioma com a bandeirinha (emoji) antes do nome.
@@ -272,6 +285,7 @@
       Array.from(elements.gameFilter.children).forEach((node) => {
         node.setAttribute("aria-pressed", node === chip ? "true" : "false");
       });
+      refreshRarityFilter(); // raridades do jogo escolhido (todas no "Todos")
       render({ resetCount: true });
     });
 
