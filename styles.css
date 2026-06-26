@@ -618,14 +618,25 @@ input::placeholder {
 @media (hover: none) { .sale-tile .sale-remove { opacity: 1; } }
 .sale-tile .sale-remove:hover { color: #d8443c; border-color: #d8443c; }
 
+.sale-fields { display: flex; align-items: stretch; gap: 6px; margin-top: 6px; }
 .sale-price-field {
-  display: flex; align-items: center; gap: 6px; margin-top: 6px;
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px;
   border: 1px solid var(--line); border-radius: 9px; background: var(--surface); padding: 4px 10px;
 }
 .sale-price-field:focus-within { border-color: var(--accent); }
 .sale-cur { font-weight: 800; color: var(--subtle); font-size: 14px; flex: none; }
 .sale-price { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--text); font: inherit; font-weight: 800; font-size: 16px; padding: 2px 0; }
 .sale-price:focus { outline: none; }
+/* Condição (M/NM/SP…) ao lado do preço. width:auto vence o select{width:100%}
+   global, senão o select engole a linha e espreme o campo de preço. */
+.sale-cond {
+  flex: none; width: auto; font: inherit; font-weight: 800; font-size: 14px; color: var(--text);
+  border: 1px solid var(--line); border-radius: 9px; background: var(--surface);
+  padding: 4px 6px; cursor: pointer;
+}
+.sale-cond:focus { outline: none; border-color: var(--accent); }
+/* Badge de condição nas listas de venda compartilhadas */
+.cond-badge { margin-left: 6px; padding: 1px 6px; border-radius: 6px; background: var(--line); color: var(--text); font-size: 11px; font-weight: 800; }
 
 /* Campo "Vender por" no preview */
 .preview-sale-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13px; color: var(--subtle); font-weight: 700; }

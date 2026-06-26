@@ -85,19 +85,21 @@
     return {
       has: (cardId, variant) => !!data.sales[keyOf(cardId, variant)],
       priceOf: (cardId, variant) => { const e = data.sales[keyOf(cardId, variant)]; return e ? (Number(e.price) || 0) : 0; },
+      condOf: (cardId, variant) => { const e = data.sales[keyOf(cardId, variant)]; return (e && e.cond) || "NM"; },
       any: () => Object.keys(data.sales).length > 0,
       // Itens na ordem do usuário (só os que ainda existem).
       list: () => data.order.filter((k) => data.sales[k]).map((k) => {
-        const i = k.indexOf("|"); return { key: k, cardId: k.slice(0, i), variant: k.slice(i + 1), price: Number(data.sales[k].price) || 0 };
+        const i = k.indexOf("|"); return { key: k, cardId: k.slice(0, i), variant: k.slice(i + 1), price: Number(data.sales[k].price) || 0, cond: data.sales[k].cond || "NM" };
       }),
-      add(cardId, variant) { const k = keyOf(cardId, variant); if (!data.sales[k]) { data.sales[k] = { price: 0 }; data.order.push(k); save(); } },
+      add(cardId, variant) { const k = keyOf(cardId, variant); if (!data.sales[k]) { data.sales[k] = { price: 0, cond: "NM" }; data.order.push(k); save(); } },
       setPrice(cardId, variant, price) {
-        const k = keyOf(cardId, variant), p = Number(price) || 0;
-        // Preço vazio/0 numa carta JÁ na venda = tira da venda; senão atualiza/insere.
+        const k = keyOf(cardId, variant), p = Number(price) || 0, cond = (data.sales[k] && data.sales[k].cond) || "NM";
+        // Preço vazio/0 numa carta JÁ na venda = tira da venda; senão atualiza/insere (preservando a condição).
         if (p <= 0 && data.sales[k]) { delete data.sales[k]; data.order = data.order.filter((x) => x !== k); }
-        else if (p > 0) { if (!data.sales[k]) data.order.push(k); data.sales[k] = { price: Math.round(p * 100) / 100 }; }
+        else if (p > 0) { if (!data.sales[k]) data.order.push(k); data.sales[k] = { price: Math.round(p * 100) / 100, cond }; }
         save();
       },
+      setCond(cardId, variant, cond) { const k = keyOf(cardId, variant); if (data.sales[k]) { data.sales[k].cond = cond; save(); } },
       remove(cardId, variant) { const k = keyOf(cardId, variant); if (data.sales[k]) { delete data.sales[k]; data.order = data.order.filter((x) => x !== k); save(); } },
       reorder(orderKeys) { data.order = orderKeys.slice(); save(); }
     };
@@ -415,6 +417,12 @@
       if (tile) { sales.remove(tile.dataset.saleCard, tile.dataset.saleVariant); renderSales(); }
     });
     elements.salesGrid.addEventListener("change", (event) => {
+      const condSel = event.target.closest("[data-sale-cond]");
+      if (condSel) {
+        const tile = condSel.closest(".sale-tile");
+        if (tile) sales.setCond(tile.dataset.saleCard, tile.dataset.saleVariant, condSel.value);
+        return;
+      }
       const input = event.target.closest("[data-sale-price]");
       if (!input) return;
       const tile = input.closest(".sale-tile");
@@ -680,17 +688,19 @@
       .filter((x) => x.card && inGameFilter(x.card));
     elements.salesEmpty.hidden = items.length > 0;
     const sym = currencySymbol();
-    elements.salesGrid.innerHTML = items.map(({ it, card }) => saleTileHtml(card, it.variant, it.price, sym)).join("");
+    elements.salesGrid.innerHTML = items.map(({ it, card }) => saleTileHtml(card, it.variant, it.price, sym, it.cond)).join("");
     const hasPriced = items.some((x) => x.it.price > 0);
     if (elements.salesShareBtn) elements.salesShareBtn.disabled = !hasPriced;
     if (elements.salesExportBtn) elements.salesExportBtn.disabled = !hasPriced;
   }
 
-  // Tile de venda: imagem (→ preview) + campo de preço editável + ✕ remover.
-  function saleTileHtml(card, variant, price, sym) {
+  // Tile de venda: imagem (→ preview) + campo de preço editável + condição + ✕ remover.
+  function saleTileHtml(card, variant, price, sym, cond) {
     const src = shared.cardImageSources(card);
     const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
     const priceStr = price > 0 ? String(price).replace(".", ",") : "";
+    const current = cond || "NM";
+    const condOpts = shared.CARD_CONDITIONS.map((c) => `<option value="${c}"${c === current ? " selected" : ""}>${c}</option>`).join("");
     return `<article class="card-tile sale-tile" data-sale-card="${escapeAttribute(card.id)}" data-sale-variant="${escapeAttribute(variant)}">
       <div class="card-image">
         <button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button>
@@ -699,7 +709,10 @@
       <div class="tile-info">
         <h3>${escapeHtml(card.name)}</h3>
         <p class="tile-variant">${shared.cardFlag(card.language)}<span>${escapeHtml(variant)}</span></p>
-        <label class="sale-price-field"><span class="sale-cur">${escapeHtml(sym)}</span><input type="text" inputmode="decimal" class="sale-price" data-sale-price value="${escapeAttribute(priceStr)}" placeholder="0,00"></label>
+        <div class="sale-fields">
+          <label class="sale-price-field"><span class="sale-cur">${escapeHtml(sym)}</span><input type="text" inputmode="decimal" class="sale-price" data-sale-price value="${escapeAttribute(priceStr)}" placeholder="0,00"></label>
+          <select class="sale-cond" data-sale-cond aria-label="${escapeAttribute(t("sales.condition"))}" title="${escapeAttribute(t("sales.condition"))}">${condOpts}</select>
+        </div>
       </div>
     </article>`;
   }
@@ -1195,14 +1208,14 @@
   function buildSaleShareData() {
     const cur = shared.getCurrency();
     const items = [];
-    sales.list().forEach(({ cardId, variant, price }) => {
+    sales.list().forEach(({ cardId, variant, price, cond }) => {
       if (price <= 0) return;
       const card = cardsById.get(cardId);
       if (!card) return;
       const src = shared.cardImageSources(card);
       items.push({
         id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language,
-        g: card.game, v: variant, q: 1, sp: price, cur, img: src.url, fb: src.fallback || ""
+        g: card.game, v: variant, q: 1, sp: price, cond: cond || "NM", cur, img: src.url, fb: src.fallback || ""
       });
     });
     return { items, scope: "sale", cur };
@@ -1237,8 +1250,10 @@
     const cols = list.length <= 4 ? list.length : (list.length <= 12 ? 4 : 5);
     const rows = Math.ceil(list.length / cols);
     const CARD_W = 280, CARD_H = Math.round(CARD_W * 1.396), GAP = 18, MARGIN = 32, TITLE_H = 56, FOOTER_H = 38, RADIUS = 14;
+    // Banda do preço FORA da carta (abaixo): a arte fica 100% visível pro comprador.
+    const BAND_H = 52, CELL_H = CARD_H + BAND_H;
     const width = MARGIN * 2 + cols * CARD_W + (cols - 1) * GAP;
-    const height = MARGIN + TITLE_H + rows * CARD_H + (rows - 1) * GAP + FOOTER_H + MARGIN;
+    const height = MARGIN + TITLE_H + rows * CELL_H + (rows - 1) * GAP + FOOTER_H + MARGIN;
     const canvas = document.createElement("canvas");
     canvas.width = width; canvas.height = height;
     const ctx = canvas.getContext("2d");
@@ -1267,19 +1282,27 @@
     for (let i = 0; i < list.length; i++) {
       const { it, card } = list[i];
       const x = MARGIN + (i % cols) * (CARD_W + GAP);
-      const y = MARGIN + TITLE_H + Math.floor(i / cols) * (CARD_H + GAP);
+      const y = MARGIN + TITLE_H + Math.floor(i / cols) * (CELL_H + GAP);
+      // Carta (arte inteira, sem barra por cima)
       ctx.save();
       roundRect(x, y, CARD_W, CARD_H, RADIUS); ctx.fillStyle = "#eceff3"; ctx.fill(); ctx.clip();
       const src = shared.cardImageSources(card);
       let img = await loadImage(bust(src.url), true);
       if (!img && src.fallback) img = await loadImage(bust(src.fallback), true);
       if (img) drawCover(img, x, y, CARD_W, CARD_H);
-      const barH = 48;
-      ctx.fillStyle = "rgba(12,14,18,0.86)"; ctx.fillRect(x, y + CARD_H - barH, CARD_W, barH);
-      ctx.fillStyle = "#ffd264"; ctx.font = `800 25px ${FONT}`; ctx.textBaseline = "middle";
-      ctx.fillText(`${sym} ${it.price.toFixed(2).replace(".", ",")}`, x + 12, y + CARD_H - barH / 2 + 1, CARD_W - 24);
-      ctx.textBaseline = "top"; ctx.restore();
+      ctx.restore();
       ctx.save(); roundRect(x, y, CARD_W, CARD_H, RADIUS); ctx.strokeStyle = "#d0d7e0"; ctx.lineWidth = 1.5; ctx.stroke(); ctx.restore();
+      // Banda abaixo: preço (esquerda) + chip de condição (direita)
+      const by = y + CARD_H;
+      const cond = it.cond || "NM";
+      ctx.font = `800 17px ${FONT}`;
+      const chipW = Math.round(ctx.measureText(cond).width) + 20, chipH = 30, chipX = x + CARD_W - chipW, chipY = by + 12;
+      roundRect(chipX, chipY, chipW, chipH, 9); ctx.fillStyle = "#e7ebf1"; ctx.fill();
+      ctx.fillStyle = "#3a4250"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText(cond, chipX + chipW / 2, chipY + chipH / 2 + 1);
+      ctx.fillStyle = "#111111"; ctx.font = `800 26px ${FONT}`; ctx.textAlign = "left";
+      ctx.fillText(`${sym} ${it.price.toFixed(2).replace(".", ",")}`, x + 2, by + 27, CARD_W - chipW - 12);
+      ctx.textAlign = "left"; ctx.textBaseline = "top";
     }
     ctx.fillStyle = "#9aa3b0"; ctx.font = `600 18px ${FONT}`; ctx.textBaseline = "alphabetic";
     ctx.fillText("Sleevu · sleevu.app", MARGIN, height - MARGIN + 4);
@@ -1335,7 +1358,7 @@
       <div class="tile-info">
         <h3>${escapeHtml(it.n)}</h3>
         <p class="tile-set"><span>${escapeHtml(it.s)} · ${escapeHtml(it.num)}</span></p>
-        <p class="tile-variant">${flag}<span>${escapeHtml(it.v)}${it.q > 1 ? ` ×${it.q}` : ""}</span></p>
+        <p class="tile-variant">${flag}<span>${escapeHtml(it.v)}${it.q > 1 ? ` ×${it.q}` : ""}</span>${it.sp > 0 && it.cond ? `<span class="cond-badge">${escapeHtml(it.cond)}</span>` : ""}</p>
         ${priceHtml}
       </div>
     </article>`;
