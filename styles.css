@@ -2561,6 +2561,16 @@ a.hub-tile:hover {
   color: var(--accent);
 }
 
+/* Linha de links do rodapé (About / FAQ / Help / Privacidade / Termos) */
+.site-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 18px;
+  margin: 0 0 14px;
+}
+.site-footer-links a { font-weight: 700; }
+
 @media (max-width: 760px) {
   .hero {
     grid-template-columns: 1fr;
@@ -2670,6 +2680,60 @@ a.hub-tile:hover {
 .legal h2 { font-size: 18px; margin: 22px 0 8px; }
 .legal p { color: var(--muted); line-height: 1.7; margin: 0 0 10px; }
 .legal a { color: var(--accent); }
+.legal ul { color: var(--muted); line-height: 1.7; margin: 0 0 10px; padding-left: 20px; }
+
+/* FAQ: cada pergunta é um <details> que expande a resposta. */
+.faq-list { max-width: 80ch; }
+.faq-item { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); margin: 0 0 10px; overflow: hidden; }
+.faq-item > summary {
+  list-style: none; cursor: pointer; padding: 14px 16px; font-weight: 700; color: var(--text);
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.faq-item > summary::-webkit-details-marker { display: none; }
+.faq-item > summary::after { content: "+"; color: var(--subtle); font-size: 20px; font-weight: 800; line-height: 1; flex: none; }
+.faq-item[open] > summary::after { content: "−"; }
+.faq-item > summary:hover { color: var(--accent); }
+.faq-item > div { padding: 0 16px 14px; }
+.faq-item > div p { margin: 0; }
+
+/* Ajuda: índice lateral (sticky) + conteúdo em seções. */
+.help-layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 28px; align-items: start; }
+.help-nav { position: sticky; top: 16px; display: flex; flex-direction: column; gap: 2px; }
+.help-nav a {
+  padding: 7px 10px; border-radius: 8px; color: var(--muted); text-decoration: none;
+  font-size: 13.5px; font-weight: 600; border-left: 2px solid transparent;
+}
+.help-nav a:hover { color: var(--text); background: var(--panel); }
+.help-content section { scroll-margin-top: 16px; padding-bottom: 6px; }
+.help-content section + section { border-top: 1px solid var(--line); padding-top: 10px; margin-top: 6px; }
+.help-content h2 { font-size: 19px; }
+@media (max-width: 760px) {
+  .help-layout { grid-template-columns: 1fr; gap: 14px; }
+  .help-nav { position: static; flex-flow: row wrap; gap: 6px; }
+  .help-nav a { border: 1px solid var(--line); border-left: 1px solid var(--line); font-size: 12.5px; }
+}
+
+/* Modal de Troubleshooting */
+.ts-modal { position: fixed; inset: 0; z-index: 70; display: flex; align-items: center; justify-content: center; padding: 16px; }
+.ts-backdrop { position: absolute; inset: 0; background: rgba(8, 10, 14, 0.55); }
+.ts-panel {
+  position: relative; z-index: 1; width: min(560px, 96vw); max-height: 90vh; overflow-y: auto;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+  box-shadow: var(--shadow); padding: 24px;
+}
+.ts-close {
+  position: absolute; top: 14px; right: 16px; width: 36px; height: 36px; min-height: 36px;
+  display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--line);
+  background: var(--panel); color: var(--text); font-size: 24px; line-height: 1; cursor: pointer;
+}
+.ts-close:hover { color: var(--accent); border-color: var(--accent); }
+.ts-panel h2 { margin: 0 8px 10px 0; font-size: 22px; }
+.ts-intro { color: var(--muted); margin: 0 0 18px; line-height: 1.6; }
+.ts-hint { color: var(--subtle); font-style: italic; margin: 0 0 8px; line-height: 1.55; }
+.ts-action { width: 100%; justify-content: center; margin: 0 0 18px; }
+.ts-note { color: var(--subtle); font-size: 13px; margin: -10px 0 16px; }
+.ts-contact { color: var(--subtle); font-size: 13px; margin: 4px 0 0; border-top: 1px solid var(--line); padding-top: 14px; }
+.ts-contact a { color: var(--accent); }
 .auth-email { color: var(--subtle); font-size: 12px; cursor: default; word-break: break-all; }
 .auth-email:hover { background: transparent; color: var(--subtle); }
 /* Deslogado: botão "Conta ▾" abre o mesmo menu (entrar + exportar/importar). */

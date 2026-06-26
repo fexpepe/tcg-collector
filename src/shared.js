@@ -852,7 +852,13 @@
     footer.className = "site-footer";
     footer.innerHTML = `
       <div class="site-footer-inner">
-        <p><a href="privacy.html">${escapeHtml(t("footer.privacy"))}</a> · <a href="terms.html">${escapeHtml(t("footer.terms"))}</a></p>
+        <nav class="site-footer-links" aria-label="${escapeAttribute(t("footer.linksLabel"))}">
+          <a href="about.html">${escapeHtml(t("footer.about"))}</a>
+          <a href="faq.html">${escapeHtml(t("footer.faq"))}</a>
+          <a href="help.html">${escapeHtml(t("footer.help"))}</a>
+          <a href="privacy.html">${escapeHtml(t("footer.privacy"))}</a>
+          <a href="terms.html">${escapeHtml(t("footer.terms"))}</a>
+        </nav>
         <p>${escapeHtml(t("footer.rights", { year: new Date().getFullYear() }))}</p>
         <p>${t("footer.credits")}</p>
       </div>
@@ -3068,6 +3074,79 @@
     window.addEventListener("pagehide", () => syncPush(true));
   }
 
+  // --- Troubleshooting (suporte): versão + limpar cache + forçar sync ---
+  // Versão do app pro suporte saber o que o usuário está rodando. Bump junto com
+  // o SHELL_CACHE do sw.js quando sair algo relevante.
+  const APP_VERSION = "1.0.0";
+
+  // Limpa SÓ os caches do app (Service Worker: código/catálogo/imagens) e
+  // desregistra o SW — a coleção no localStorage fica intacta. Resolve "código
+  // velho preso" / glitches sem perder dados. Recarrega no fim pra reinstalar.
+  async function clearDataCache() {
+    if (!window.confirm(t("ts.clearConfirm"))) return;
+    try {
+      if (window.caches) { const keys = await caches.keys(); await Promise.all(keys.map((k) => caches.delete(k))); }
+      if (navigator.serviceWorker) { const regs = await navigator.serviceWorker.getRegistrations(); await Promise.all(regs.map((r) => r.unregister())); }
+    } catch (e) { /* best-effort: recarrega de qualquer jeito */ }
+    window.location.reload();
+  }
+
+  // Puxa a versão mais recente da nuvem e mescla (mesmo fluxo do boot). Precisa
+  // estar logado. Recarrega no fim pra refletir.
+  async function forceSync(btn) {
+    let session = getSession();
+    if (!session) { window.alert(t("ts.syncNeedsLogin")); return; }
+    const label = btn ? btn.textContent : "";
+    if (btn) { btn.disabled = true; btn.textContent = "…"; }
+    const fail = (msg) => { if (btn) { btn.disabled = false; btn.textContent = label; } window.alert(msg); };
+    session = (await refreshSession()) || session;
+    if (!getSession()) { fail(t("ts.syncNeedsLogin")); return; }
+    const remote = await pullRemote(session.access_token, session.user.id);
+    if (remote == null) { fail(t("ts.syncError")); return; }
+    const merged = mergeData(localSnapshot(), remote);
+    writeSnapshot(merged);
+    await pushRemote(session.access_token, session.user.id, merged);
+    window.location.reload();
+  }
+
+  // Modal de Troubleshooting (aberto pelo menu da conta e por qualquer
+  // [data-open-troubleshoot], ex.: a página de Ajuda).
+  function openTroubleshooting() {
+    let modal = document.getElementById("troubleshootModal");
+    if (!modal) { modal = document.createElement("div"); modal.id = "troubleshootModal"; modal.className = "ts-modal"; document.body.appendChild(modal); }
+    const loggedIn = !!getSession();
+    modal.innerHTML = `
+      <div class="ts-backdrop" data-ts-close></div>
+      <section class="ts-panel" role="dialog" aria-modal="true" aria-labelledby="tsTitle">
+        <button type="button" class="ts-close" data-ts-close aria-label="${escapeAttribute(t("modal.close"))}">×</button>
+        <h2 id="tsTitle">${escapeHtml(t("ts.title"))}</h2>
+        <p class="ts-intro">${escapeHtml(t("ts.intro", { version: APP_VERSION }))}</p>
+        <p class="ts-hint">${escapeHtml(t("ts.cacheHint"))}</p>
+        <button type="button" class="secondary ts-action" data-ts-clear>${escapeHtml(t("ts.clearCache"))}</button>
+        <p class="ts-hint">${escapeHtml(t("ts.syncHint"))}</p>
+        <button type="button" class="secondary ts-action" data-ts-sync${loggedIn ? "" : " disabled"}>${escapeHtml(t("ts.forceSync"))}</button>
+        ${loggedIn ? "" : `<p class="ts-note">${escapeHtml(t("ts.syncNeedsLogin"))}</p>`}
+        <p class="ts-contact">${escapeHtml(t("ts.contact"))}
+          <a href="mailto:contato@sleevu.app">contato@sleevu.app</a></p>
+      </section>`;
+    document.body.classList.add("preview-open");
+    const close = () => { modal.remove(); document.body.classList.remove("preview-open"); };
+    modal.addEventListener("click", (event) => {
+      if (event.target.closest("[data-ts-close]")) { close(); return; }
+      if (event.target.closest("[data-ts-clear]")) { clearDataCache(); return; }
+      if (event.target.closest("[data-ts-sync]")) { forceSync(event.target.closest("[data-ts-sync]")); return; }
+    });
+    document.addEventListener("keydown", function esc(e) { if (e.key === "Escape") { close(); document.removeEventListener("keydown", esc); } });
+  }
+
+  // Qualquer link/botão com [data-open-troubleshoot] abre o modal (ex.: Ajuda).
+  function initTroubleshootTriggers() {
+    document.addEventListener("click", (event) => {
+      const trigger = event.target.closest("[data-open-troubleshoot]");
+      if (trigger) { event.preventDefault(); openTroubleshooting(); }
+    });
+  }
+
   function initAuth() {
     if (!AUTH_ENABLED) return;
     const actions = document.querySelector(".header-actions");
@@ -3212,8 +3291,10 @@
       <li class="lang-dd-option" role="menuitem" data-export-csv>${escapeHtml(t("auth.exportCsv"))}</li>
       <li class="lang-dd-option" role="menuitem" data-import>${escapeHtml(t("auth.import"))}</li>
       <li class="lang-dd-option" role="menuitem" data-import-dex>${escapeHtml(t("dex.import"))}</li>`;
-    // Sobre (privacidade/termos).
+    // Sobre (ajuda + troubleshooting + privacidade/termos).
     const aboutItems = `<li class="auth-sep" aria-hidden="true"></li>
+      <a class="lang-dd-option auth-link" role="menuitem" href="help.html">${escapeHtml(t("footer.help"))}</a>
+      <li class="lang-dd-option" role="menuitem" data-troubleshoot>${escapeHtml(t("ts.title"))}</li>
       <a class="lang-dd-option auth-link" role="menuitem" href="privacy.html">${escapeHtml(t("footer.privacy"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="terms.html">${escapeHtml(t("footer.terms"))}</a>`;
     // Apagar dados (zona de perigo).
@@ -3297,6 +3378,7 @@
       if (event.target.closest("[data-export-csv]")) { exportCsv(); return; }
       if (event.target.closest("[data-import]")) { const inp = slot.querySelector("[data-import-input]"); if (inp) inp.click(); return; }
       if (event.target.closest("[data-import-dex]")) { const inp = slot.querySelector("[data-import-dex-input]"); if (inp) inp.click(); return; }
+      if (event.target.closest("[data-troubleshoot]")) { openTroubleshooting(); return; }
       if (event.target.closest("[data-delete-account]")) { deleteAccountFlow(); return; }
       if (event.target.closest("[data-auth-logout]")) { authSignOut(); }
     });
@@ -3370,6 +3452,7 @@
   initSiteFooter();
   initPartnerBanner();
   initThemeToggle();
+  initTroubleshootTriggers();
   initAuth();
 
   // Service worker: cacheia as imagens já vistas para sobreviverem a um outage

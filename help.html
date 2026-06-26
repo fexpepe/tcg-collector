@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io; connect-src 'self' https://api.tcgdex.net https://pokeapi.co https://economia.awesomeapi.com.br https://*.supabase.co; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="help.title">Ajuda e tutoriais - Sleevu</title>
+    <meta name="description" content="Como usar o Sleevu: tutoriais de coleção, pastas, binders, vendas, sincronização e mais.">
+    <link rel="canonical" href="https://sleevu.app/help">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sleevu.app/help">
+    <meta property="og:title" content="Ajuda e tutoriais - Sleevu">
+    <meta property="og:description" content="Como usar o Sleevu: tutoriais de coleção, pastas, binders, vendas, sincronização e mais.">
+    <meta property="og:image" content="https://sleevu.app/og-image.svg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ajuda e tutoriais - Sleevu">
+    <meta name="twitter:description" content="Como usar o Sleevu: tutoriais de coleção, pastas, binders, vendas, sincronização e mais.">
+    <meta name="twitter:image" content="https://sleevu.app/og-image.svg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#0d0e12">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <script src="src/game.js"></script>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">Sleevu</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page="help"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-head">
+        <h1 data-i18n="help.heading">Ajuda e tutoriais</h1>
+      </div>
+      <p class="collection-subtitle" data-i18n="help.intro">Guias rápidos pra você aproveitar o Sleevu ao máximo. Clique num tópico pra ir direto.</p>
+
+      <div class="help-layout">
+        <nav class="help-nav" aria-label="Tópicos">
+          <a href="#help-start" data-i18n="help.s.start.t">Primeiros passos</a>
+          <a href="#help-collection" data-i18n="help.s.collection.t">Montando sua coleção</a>
+          <a href="#help-variants" data-i18n="help.s.variants.t">Variantes e condição</a>
+          <a href="#help-folders" data-i18n="help.s.folders.t">Pastas</a>
+          <a href="#help-wishlist" data-i18n="help.s.wishlist.t">Wishlist</a>
+          <a href="#help-binders" data-i18n="help.s.binders.t">Binders</a>
+          <a href="#help-sales" data-i18n="help.s.sales.t">Vendas e Trocas</a>
+          <a href="#help-sync" data-i18n="help.s.sync.t">Sincronizar entre aparelhos</a>
+          <a href="#help-data" data-i18n="help.s.data.t">Importar e exportar</a>
+          <a href="#help-pwa" data-i18n="help.s.pwa.t">Instalar como app</a>
+          <a href="#help-trouble" data-i18n="help.s.trouble.t">Resolução de problemas</a>
+        </nav>
+
+        <div class="help-content legal">
+          <section id="help-start" data-i18n-html="help.s.start"></section>
+          <section id="help-collection" data-i18n-html="help.s.collection"></section>
+          <section id="help-variants" data-i18n-html="help.s.variants"></section>
+          <section id="help-folders" data-i18n-html="help.s.folders"></section>
+          <section id="help-wishlist" data-i18n-html="help.s.wishlist"></section>
+          <section id="help-binders" data-i18n-html="help.s.binders"></section>
+          <section id="help-sales" data-i18n-html="help.s.sales"></section>
+          <section id="help-sync" data-i18n-html="help.s.sync"></section>
+          <section id="help-data" data-i18n-html="help.s.data"></section>
+          <section id="help-pwa" data-i18n-html="help.s.pwa"></section>
+          <section id="help-trouble">
+            <div data-i18n-html="help.s.trouble"></div>
+            <button type="button" class="secondary" data-open-troubleshoot data-i18n="ts.title">Troubleshooting</button>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/shared.js"></script>
+  </body>
+</html>
