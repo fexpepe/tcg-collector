@@ -2928,16 +2928,18 @@
   // pelo updatedAt (carimbado a cada mudança). É uma organização pessoal, quase
   // sempre editada num device por vez — o último a salvar vence. (Edição
   // concorrente nos dois ao mesmo tempo: a sincronizada por último ganha.)
+  // LWW do bloco pelo updatedAt. Ambos ausentes → undefined (NÃO null): o
+  // JSON.stringify OMITE undefined, então `merged` bate com o localSnapshot (que
+  // também omite a chave) e o boot não entra em loop de reload. (null seria
+  // mantido no JSON e nunca gravado pelo writeSnapshot → diff eterno = F5 infinito.)
   function mergeFolders(a, b) {
-    if (!a) return b || null;
-    if (!b) return a;
-    return ((Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0)) ? b : a;
+    if (a && b) return ((Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0)) ? b : a;
+    return a || b || undefined;
   }
   // Vendas ({ sales, order, updatedAt }): mesmo LWW do bloco que as pastas.
   function mergeSales(a, b) {
-    if (!a) return b || null;
-    if (!b) return a;
-    return ((Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0)) ? b : a;
+    if (a && b) return ((Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0)) ? b : a;
+    return a || b || undefined;
   }
   // Histórico do portfólio ([{ d, c, b, w }]): une por dia; em conflito o local
   // vence (foi recém-calculado a partir da coleção já mesclada). Teto de 800 dias.
