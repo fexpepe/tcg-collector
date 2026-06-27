@@ -3596,11 +3596,17 @@
     function renderLoggedIn(session) {
       const email = (session.user && session.user.email) || "conta";
       const initial = (email.trim().charAt(0) || "?").toUpperCase();
+      // Atalho pro próprio perfil público (só quando público + @ válido).
+      const prof = getProfile();
+      const profileItem = (prof.isPublic && prof.handle && prof.handle.length >= 3)
+        ? `<a class="lang-dd-option auth-link" role="menuitem" href="collection.html?u=${encodeURIComponent(prof.handle)}" target="_blank" rel="noopener">${escapeHtml(t("auth.myProfile"))}</a>`
+        : "";
       slot.innerHTML = `<div class="lang-dd auth-dd" id="authDd">
         <button type="button" class="auth-avatar" aria-haspopup="menu" aria-expanded="false" aria-label="${escapeAttribute(email)}" title="${escapeAttribute(email)}">${escapeHtml(initial)}</button>
         <ul class="lang-dd-menu auth-menu" role="menu" hidden>
           <li class="lang-dd-option auth-email">${escapeHtml(email)}</li>
           <li class="auth-sync" data-auth-sync></li>
+          ${profileItem}
           ${installItem}
           ${navItems}
           ${supportItem}
