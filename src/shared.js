@@ -1113,18 +1113,43 @@
   }
 
   // Avança o <img> para a próxima URL da cadeia de fallback quando a atual
-  // falha (webp → png do mesmo host → fonte alternativa de outro host).
+  // falha (webp → png do mesmo host → fonte alternativa de outro host). Quando a
+  // cadeia esgota, RE-TENTA a cadeia inteira após um backoff: abrir uma coleção
+  // grande dispara muitas imagens de uma vez e algumas falham por rate-limit /
+  // limite de conexões — o retry dispensa o "ficar dando F5". Para no fim com o
+  // placeholder cinza (sem ícone de imagem quebrada).
+  const IMG_MAX_RETRIES = 4;
   const TCGImg = {
     fallback(img) {
+      // Guarda o estado original na 1ª falha, p/ reiniciar a cadeia no retry.
+      if (!img.hasAttribute("data-img-orig")) {
+        img.setAttribute("data-img-orig", img.getAttribute("src") || "");
+        img.setAttribute("data-img-orig-fb", img.getAttribute("data-img-fallbacks") || "");
+      }
       const list = (img.getAttribute("data-img-fallbacks") || "").split("|").filter(Boolean);
       const next = list.shift();
-      if (!next) {
-        img.removeAttribute("data-img-fallbacks");
+      if (next) {
+        if (list.length) img.setAttribute("data-img-fallbacks", list.join("|"));
+        else img.removeAttribute("data-img-fallbacks");
+        img.src = next;
         return;
       }
-      if (list.length) img.setAttribute("data-img-fallbacks", list.join("|"));
-      else img.removeAttribute("data-img-fallbacks");
-      img.src = next;
+      // Cadeia esgotada: reagenda a cadeia inteira (backoff + jitter p/ não
+      // saturar todas as imagens ao mesmo tempo de novo).
+      img.removeAttribute("data-img-fallbacks");
+      const tries = +img.getAttribute("data-img-retries") || 0;
+      if (tries >= IMG_MAX_RETRIES) return; // desiste: fica o placeholder cinza
+      img.setAttribute("data-img-retries", String(tries + 1));
+      const orig = img.getAttribute("data-img-orig") || "";
+      const origFb = img.getAttribute("data-img-orig-fb") || "";
+      if (!orig) return;
+      const delay = 1000 * (tries + 1) + Math.random() * 1500;
+      setTimeout(() => {
+        if (!img.isConnected || img.classList.contains("is-loaded")) return; // já apareceu/saiu da tela
+        if (origFb) img.setAttribute("data-img-fallbacks", origFb);
+        // Cache-buster força um fetch novo (a mesma URL não re-dispara load).
+        img.src = orig + (orig.indexOf("?") >= 0 ? "&" : "?") + "_r=" + (tries + 1);
+      }, delay);
     }
   };
   window.TCGImg = TCGImg;
@@ -1134,7 +1159,8 @@
   // script-src 'self' bloquearia).
   document.addEventListener("error", (event) => {
     const img = event.target;
-    if (img && img.tagName === "IMG" && img.hasAttribute("data-img-fallbacks")) {
+    // data-card-img: continua elegível mesmo depois da cadeia esgotar (p/ o retry).
+    if (img && img.tagName === "IMG" && (img.hasAttribute("data-img-fallbacks") || img.hasAttribute("data-card-img"))) {
       TCGImg.fallback(img);
     }
   }, true);
@@ -1216,7 +1242,7 @@
     const fallbackAttr = chain.length
       ? ` data-img-fallbacks="${escapeAttribute(chain.join("|"))}"`
       : "";
-    return `<img${classAttr}${loadingAttr} decoding="async" src="${escapeAttribute(src)}" alt="${escapeAttribute(alt)}"${fallbackAttr}>`;
+    return `<img${classAttr}${loadingAttr} decoding="async" data-card-img src="${escapeAttribute(src)}" alt="${escapeAttribute(alt)}"${fallbackAttr}>`;
   }
 
   // Busca tipos e formas de um Pokémon na PokéAPI (por dexId), com cache em localStorage.
