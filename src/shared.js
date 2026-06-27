@@ -3443,11 +3443,28 @@
     section.parentNode.insertBefore(label, section);
   }
 
+  // Prefixa o título (H1) das páginas de explorar (Sets, Pokédex, Artistas,
+  // Treinadores, Todas as cartas) com o nome do jogo que está sendo visto
+  // (Pokémon/Lorcana), pra não confundir. Usa data-game + ::before (CSS), que
+  // sobrevive ao re-translate do data-i18n (que reescreve só o textContent).
+  function initPageGameTitle() {
+    const nav = document.querySelector(".page-nav[data-active-page]");
+    if (!nav) return;
+    const GAME_TITLE_PAGES = ["pokedex", "sets", "artists", "trainers", "cards"];
+    if (!GAME_TITLE_PAGES.includes(nav.dataset.activePage)) return;
+    const game = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
+    const name = window.SLEEVU && window.SLEEVU.name;
+    if (game === "hub" || !name) return;
+    const h1 = document.querySelector(".page-head h1") || document.querySelector("main h1");
+    if (h1) h1.dataset.game = name;
+  }
+
   applyTranslations();
   initLanguageSwitcher();
   initCurrencySwitcher();
   initSearchLabel();
   initPageNav();
+  initPageGameTitle();
   initMobileMenu();
   initSiteFooter();
   initPartnerBanner();

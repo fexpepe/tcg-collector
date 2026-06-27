@@ -179,6 +179,13 @@ select {
 .page-head {
   margin-bottom: 20px;
 }
+/* Prefixo do jogo no título das páginas de explorar (ex.: "Pokémon Sets"): nome
+   do jogo em tom mais suave na frente do título, pra dar contexto sem confundir. */
+.page-head h1[data-game]::before {
+  content: attr(data-game) " ";
+  color: var(--subtle);
+  font-weight: 700;
+}
 
 .eyebrow {
   margin: 0 0 6px;
