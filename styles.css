@@ -3369,31 +3369,32 @@ a.progress-row:hover {
 
 /* Mercado BR / EUA: grade rótulo | chips para os chips alinharem entre as
    linhas (a coluna do rótulo tem a largura do maior rótulo). */
+/* Seção de marketplaces ~10% maior (fontes, padding e gaps). */
 .market-links {
   display: grid;
   grid-template-columns: max-content 1fr;
   align-items: center;
-  gap: 8px 12px;
-  margin-top: 10px;
+  gap: 9px 13px;
+  margin-top: 11px;
 }
 
 .br-links-label {
-  font-size: 12px;
+  font-size: 13.2px;
   color: var(--subtle);
 }
 
 .br-links-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 9px;
 }
 
 .br-link {
-  font-size: 12px;
+  font-size: 13.2px;
   font-weight: 700;
   color: var(--muted);
   text-decoration: none;
-  padding: 4px 10px;
+  padding: 4.4px 11px;
   border: 1px solid var(--line);
   border-radius: 999px;
 }
