@@ -3177,14 +3177,24 @@ a.progress-row:hover {
   aspect-ratio: auto;
 }
 
+/* Placeholder: caixa CINZA no formato da carta enquanto a imagem carrega (ou se
+   ela falhar). A imagem aparece por cima com um fade — nada de fundo de carta nem
+   ícone de imagem quebrada. Falha = a imagem (opacity 0) some e fica só o cinza. */
+.card-tile .image-open {
+  aspect-ratio: 245 / 337;
+  background: var(--panel-strong);
+  border-radius: 4.8% / 3.4%;
+}
 .card-tile .image-open img {
   border-radius: 4.8% / 3.4%;
-  /* Proporção padrão de carta: reserva o espaço antes da imagem carregar,
-     evitando o layout "pular" enquanto a grade baixa as miniaturas. */
   width: 100%;
+  height: 100%;
   aspect-ratio: 245 / 337;
   object-fit: contain;
+  opacity: 0;
+  transition: opacity .3s ease;
 }
+.card-tile .image-open img.is-loaded { opacity: 1; }
 
 /* Hover: escurece ~20% a imagem da carta pra destacar os botões/badges que
    aparecem ao passar o mouse. O filtro vai no <img> interno pra compor com o

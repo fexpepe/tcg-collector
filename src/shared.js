@@ -1138,6 +1138,12 @@
       TCGImg.fallback(img);
     }
   }, true);
+  // Fade-in das imagens de carta: aparecem por cima do placeholder cinza conforme
+  // carregam (em vez de tudo de uma vez / piscar). "load" não borbulha → captura.
+  document.addEventListener("load", (event) => {
+    const img = event.target;
+    if (img && img.tagName === "IMG") img.classList.add("is-loaded");
+  }, true);
 
   // setId da pokemontcg.io a partir do da TCGdex. Primeiro consulta o de-para
   // versionado (data/set-id-map.js, gerado por scripts/build-set-id-map.mjs),
