@@ -1,4 +1,5 @@
-# Perfil público com URL bonita: /users/<handle> serve a coleção em modo leitura
-# (collection.html lê ?u=<handle>). 200 = rewrite (a URL /users/<handle> continua
-# na barra). Lido pelo Cloudflare Pages.
-/users/:handle    /collection.html?u=:handle    200
+# Perfil público: /users/<handle> leva à coleção em modo leitura (collection.html
+# lê ?u=<handle>). Aponta pra URL LIMPA /collection (sem .html) — o "clean URL" do
+# Cloudflare Pages redireciona /collection.html → /collection DESCARTANDO a query,
+# então o destino precisa já ser limpo. 302 (redirect) preserva a ?u=. Lido pelo CF.
+/users/:handle    /collection?u=:handle    302

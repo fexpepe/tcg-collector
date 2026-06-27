@@ -3599,7 +3599,7 @@
       // Atalho pro próprio perfil público (só quando público + @ válido).
       const prof = getProfile();
       const profileItem = (prof.isPublic && prof.handle && prof.handle.length >= 3)
-        ? `<a class="lang-dd-option auth-link" role="menuitem" href="collection.html?u=${encodeURIComponent(prof.handle)}" target="_blank" rel="noopener">${escapeHtml(t("auth.myProfile"))}</a>`
+        ? `<a class="lang-dd-option auth-link" role="menuitem" href="/users/${encodeURIComponent(prof.handle)}" target="_blank" rel="noopener">${escapeHtml(t("auth.myProfile"))}</a>`
         : "";
       slot.innerHTML = `<div class="lang-dd auth-dd" id="authDd">
         <button type="button" class="auth-avatar" aria-haspopup="menu" aria-expanded="false" aria-label="${escapeAttribute(email)}" title="${escapeAttribute(email)}">${escapeHtml(initial)}</button>
