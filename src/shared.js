@@ -2691,6 +2691,7 @@
     binders: "tcg-collector-binders-all-v1", // binders são globais (cross-game)
     folders: "tcg-collector-collection-folders-v1", // pastas da coleção (globais)
     sales: "tcg-collector-collection-sales-v1", // cartas à venda (globais)
+    favorites: "tcg-collector-favorites-v1", // Pokémon favoritados (globais)
     history: gameKey("history-v1")
   };
 
@@ -2956,6 +2957,16 @@
     const out = Array.from(byDate.values()).sort((x, y) => String(x.d).localeCompare(String(y.d)));
     return out.length > 800 ? out.slice(out.length - 800) : out;
   }
+  // Favoritos (lista de ids): UNIÃO — favoritou em qualquer aparelho, fica
+  // favoritado. Mantém a ordem do LOCAL primeiro: quando o remoto não traz nada
+  // novo, o resultado é IDÊNTICO ao local (não dispara reload à toa). Ausente nos
+  // dois → undefined (o JSON omite, evitando diff eterno).
+  function mergeFavorites(a, b) {
+    const arrA = Array.isArray(a) ? a : null;
+    const arrB = Array.isArray(b) ? b : null;
+    if (!arrA && !arrB) return undefined;
+    return Array.from(new Set([...(arrA || []), ...(arrB || [])]));
+  }
   function mergeData(localD, remoteD) {
     const a = localD || {}, b = remoteD || {};
     const col = mergeCollection(a.collection, a.collectionMeta, b.collection, b.collectionMeta);
@@ -2969,6 +2980,7 @@
       binders: mergeBinders(a.binders, b.binders),
       folders: mergeFolders(a.folders, b.folders),
       sales: mergeSales(a.sales, b.sales),
+      favorites: mergeFavorites(a.favorites, b.favorites),
       history: mergeHistory(a.history, b.history)
     };
   }
@@ -3173,6 +3185,7 @@
       try { const b = JSON.parse(localStorage.getItem(SYNC_KEYS.binders) || "null"); if (b) payload.binders = b; } catch (e) { /* ignora */ }
       try { const f = JSON.parse(localStorage.getItem(SYNC_KEYS.folders) || "null"); if (f) payload.folders = f; } catch (e) { /* ignora */ }
       try { const sa = JSON.parse(localStorage.getItem(SYNC_KEYS.sales) || "null"); if (sa) payload.sales = sa; } catch (e) { /* ignora */ }
+      try { const fav = JSON.parse(localStorage.getItem(SYNC_KEYS.favorites) || "null"); if (Array.isArray(fav)) payload.favorites = fav; } catch (e) { /* ignora */ }
       return payload;
     }
     function exportJson() { dl(JSON.stringify(backupObject(), null, 2), "tcg-collection.json", "application/json"); }
@@ -3194,6 +3207,7 @@
         if (payload.binders && typeof payload.binders === "object") localStorage.setItem(SYNC_KEYS.binders, JSON.stringify(payload.binders));
         if (payload.folders && typeof payload.folders === "object") localStorage.setItem(SYNC_KEYS.folders, JSON.stringify(payload.folders));
         if (payload.sales && typeof payload.sales === "object") localStorage.setItem(SYNC_KEYS.sales, JSON.stringify(payload.sales));
+        if (Array.isArray(payload.favorites)) localStorage.setItem(SYNC_KEYS.favorites, JSON.stringify(payload.favorites));
         window.location.reload();
       } catch (e) { alert(t("error.import")); }
     }
