@@ -1672,12 +1672,11 @@
   // LigaBRA/MYP são focados em Pokémon.
   function brMarketplaces(game) {
     if (game === "lorcana") {
-      // A LigaLorcana titula/busca as cartas como "Nome (Raridade)" — ex.: "You've
-      // Got a Friend in Me (Enchanted)", "Hades - Looking for a Deal (Iconic)" —
-      // e não por número. O card.name já inclui a versão.
-      const ligaQuery = (card) => card.rarity ? `${card.name} (${card.rarity})` : card.name;
+      // Busca SÓ pelo nome (que já inclui a versão, ex.: "Hades - Looking for a
+      // Deal"). A raridade entre parênteses — "(Legendary)", "(Enchanted)" — fazia
+      // a busca da LigaLorcana não retornar nada; sem ela casa certo.
       return [
-        { key: "liga", label: "LigaLorcana", url: (card) => `https://www.ligalorcana.com.br/?view=cards/search&card=${enc(ligaQuery(card))}` }
+        { key: "liga", label: "LigaLorcana", url: (card) => `https://www.ligalorcana.com.br/?view=cards/search&card=${enc(card.name)}` }
       ];
     }
     return [
