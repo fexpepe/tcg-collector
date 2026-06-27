@@ -964,6 +964,39 @@
   function normalizeHandle(raw) {
     return String(raw || "").toLowerCase().replace(/[^a-z0-9_]/g, "").slice(0, 24);
   }
+  // Usuário logado (enxuto) pra páginas que só precisam de email/id. null = deslogado.
+  function currentUser() {
+    const s = getSession();
+    return s && s.user ? { email: s.user.email || "", id: s.user.id } : null;
+  }
+  // Contagem rápida da coleção (cópias + cartas distintas) SEM o catálogo: lê o
+  // localStorage cru dos dois jogos. {cardId:{variant:qty}}. Usado no perfil/hub.
+  function collectionCounts() {
+    let copies = 0, distinct = 0;
+    ["pokemon", "lorcana"].forEach((g) => {
+      try {
+        const raw = JSON.parse(localStorage.getItem(gameKey("collection-v3", g)) || "{}");
+        Object.keys(raw).forEach((cardId) => {
+          const total = Object.values(raw[cardId] || {}).reduce((s, q) => s + (Number(q) || 0), 0);
+          if (total > 0) { distinct += 1; copies += total; }
+        });
+      } catch (e) { /* ignora */ }
+    });
+    return { copies, distinct };
+  }
+  // Valor total do portfólio (coleção+binders) somando os jogos, lido do cookie
+  // sleevu_pf_<game> (escrito pelo Portfólio) — sem catálogo. Na moeda atual.
+  function portfolioValueTotal() {
+    let brl = 0; let has = false;
+    ["pokemon", "lorcana"].forEach((g) => {
+      const m = document.cookie.match(new RegExp("(?:^|; )sleevu_pf_" + g + "=([^;]*)"));
+      if (!m) return;
+      try { const d = JSON.parse(decodeURIComponent(m[1])); brl += (d.c || 0) + (d.b || 0); has = true; } catch (e) { /* ignora */ }
+    });
+    if (!has) return null;
+    const v = convertMoney(brl, "BRL", getCurrency());
+    return v == null ? brl : v;
+  }
 
   // Dropdown de bandeira reutilizável: colapsado mostra só a bandeira do item
   // atual; aberto, lista bandeira + sigla (o <select> nativo não estiliza bem
@@ -2720,6 +2753,9 @@
     getProfile,
     setProfile,
     normalizeHandle,
+    currentUser,
+    collectionCounts,
+    portfolioValueTotal,
     pushProfile,
     pullProfile,
     handleAvailable,
@@ -3628,11 +3664,8 @@
     function renderLoggedIn(session) {
       const email = (session.user && session.user.email) || "conta";
       const initial = (email.trim().charAt(0) || "?").toUpperCase();
-      // Atalho pro próprio perfil público (só quando público + @ válido).
-      const prof = getProfile();
-      const profileItem = (prof.isPublic && prof.handle && prof.handle.length >= 3)
-        ? `<a class="lang-dd-option auth-link" role="menuitem" href="/users/${encodeURIComponent(prof.handle)}" target="_blank" rel="noopener">${escapeHtml(t("auth.myProfile"))}</a>`
-        : "";
+      // Atalho pro hub de perfil do dono (profile.html). De lá se vê o perfil público.
+      const profileItem = `<a class="lang-dd-option auth-link" role="menuitem" href="profile.html">${escapeHtml(t("profile.heading"))}</a>`;
       slot.innerHTML = `<div class="lang-dd auth-dd" id="authDd">
         <button type="button" class="auth-avatar" aria-haspopup="menu" aria-expanded="false" aria-label="${escapeAttribute(email)}" title="${escapeAttribute(email)}">${escapeHtml(initial)}</button>
         <ul class="lang-dd-menu auth-menu" role="menu" hidden>
