@@ -451,8 +451,17 @@
       ctx.save();
       roundRect(x, y, CARD_W, CARD_H, RADIUS); ctx.fillStyle = "#eceff3"; ctx.fill(); ctx.clip();
       const src = shared.cardImageSources(card);
-      let img = await loadImage(bust(src.url), true);
-      if (!img && src.fallback) img = await loadImage(bust(src.fallback), true);
+      // Lorcana: cards.lorcast.io NÃO manda CORS → o crossOrigin falhava e caía no
+      // fallback (que é uma URL de Pokémon!). Roteia pela wsrv.nl (proxy com CORS)
+      // e NÃO usa o fallback de Pokémon. Pokémon segue direto pela tcgdex (tem CORS).
+      const lor = card.game === "lorcana";
+      let img;
+      if (lor) {
+        img = await loadImage(`https://wsrv.nl/?url=${encodeURIComponent(src.url)}&output=webp`, true);
+      } else {
+        img = await loadImage(bust(src.url), true);
+        if (!img && src.fallback) img = await loadImage(bust(src.fallback), true);
+      }
       if (img) drawCover(img, x, y, CARD_W, CARD_H);
       ctx.restore();
       ctx.save(); roundRect(x, y, CARD_W, CARD_H, RADIUS); ctx.strokeStyle = "#d0d7e0"; ctx.lineWidth = 1.5; ctx.stroke(); ctx.restore();

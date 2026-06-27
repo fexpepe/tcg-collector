@@ -2052,7 +2052,9 @@ input::placeholder {
   .app-header-inner .nav-dropdown.nav-mega { min-width: 0; width: 100%; }
   .app-header-inner .nav-mega-cols { grid-template-columns: 1fr; }
   .app-header-inner .nav-mega-head { text-align: right; }
-  .app-header-inner .page-nav .nav-mega a { justify-content: flex-end; text-align: right; }
+  /* No drawer mobile TODO dropdown (Explorar e Coleção) fica à direita, igual ao
+     menu principal; à esquerda é só no desktop. */
+  .app-header-inner .page-nav .nav-dropdown a { justify-content: flex-end; text-align: right; }
 
   .app-header-inner .header-actions {
     flex-direction: column;
@@ -3661,8 +3663,8 @@ a.progress-row:hover {
 }
 
 .page-nav .nav-dropdown a {
-  justify-content: flex-end;
-  text-align: right;
+  justify-content: flex-start;
+  text-align: left;
   white-space: nowrap;
 }
 
