@@ -79,6 +79,18 @@
           <button type="button" id="salesAddBtn" class="secondary" data-i18n="sales.add">Adicionar cartas</button>
           <button type="button" id="salesShareBtn" class="secondary" data-i18n="sales.share">Compartilhar vendas</button>
           <button type="button" id="salesExportBtn" class="secondary" data-i18n="sales.export">Exportar imagem</button>
+          <div class="sort-select sales-sort-row">
+            <label for="salesSortSelect" data-i18n="sort.label">Ordenar:</label>
+            <select id="salesSortSelect">
+              <option value="value-desc" data-i18n="sort.valueDesc">Valor (maior → menor)</option>
+              <option value="value-asc" data-i18n="sort.valueAsc">Valor (menor → maior)</option>
+              <option value="num-asc" data-i18n="sort.numAsc">Nº da carta (menor → maior)</option>
+              <option value="num-desc" data-i18n="sort.numDesc">Nº da carta (maior → menor)</option>
+              <option value="release" data-i18n="sort.releaseDate">Lançamento</option>
+              <option value="added-desc" data-i18n="sort.addedDesc">Adição (última → primeira)</option>
+              <option value="added-asc" data-i18n="sort.addedAsc">Adição (primeira → última)</option>
+            </select>
+          </div>
         </section>
         <p id="salesHint" class="collection-subtitle" data-i18n="sales.hint">Toque numa carta pra ver a cotação de mercado e te ajudar a precificar. Deixe o preço vazio pra tirar da venda.</p>
         <section id="salesGrid" class="card-grid"></section>

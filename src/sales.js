@@ -101,6 +101,7 @@
     salesAddBtn: document.getElementById("salesAddBtn"),
     salesShareBtn: document.getElementById("salesShareBtn"),
     salesExportBtn: document.getElementById("salesExportBtn"),
+    salesSort: document.getElementById("salesSortSelect"),
     dashboard: document.getElementById("salesDashboard"),
     dashValue: document.getElementById("salesDashValue"),
     dashCount: document.getElementById("salesDashCount"),
@@ -140,11 +141,31 @@
       </div>`).join("");
   }
 
-  // Itens à venda (já resolvidos pra carta) respeitando o filtro de jogo.
+  // Ordenação da lista de vendas (mesmas opções da Coleção). Persistida.
+  const SALES_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "release", "added-desc", "added-asc"];
+  let salesSort = SALES_SORTS.includes(localStorage.getItem("tcg-sales-sort")) ? localStorage.getItem("tcg-sales-sort") : "added-asc";
+
+  // Ordena itens [{it, card}]. "Valor" = preço de VENDA; "Adição" = ordem em que
+  // entraram na lista de vendas (sales.list = data.order).
+  function sortSaleItems(arr) {
+    const rankOf = new Map(sales.list().map((x, i) => [x.key, i]));
+    const rank = (x) => { const r = rankOf.get(x.it.key); return r == null ? Infinity : r; };
+    const a = arr.slice();
+    if (salesSort === "num-asc") a.sort((x, y) => shared.compareCardNumbers(x.card.number, y.card.number));
+    else if (salesSort === "num-desc") a.sort((x, y) => shared.compareCardNumbers(y.card.number, x.card.number));
+    else if (salesSort === "release") a.sort((x, y) => String(y.card.setReleaseDate || "").localeCompare(String(x.card.setReleaseDate || "")));
+    else if (salesSort === "value-desc") a.sort((x, y) => y.it.price - x.it.price);
+    else if (salesSort === "value-asc") a.sort((x, y) => { const px = x.it.price, py = y.it.price; if (!px && !py) return 0; if (!px) return 1; if (!py) return -1; return px - py; });
+    else if (salesSort === "added-desc") a.sort((x, y) => rank(y) - rank(x));
+    else a.sort((x, y) => rank(x) - rank(y)); // added-asc (padrão)
+    return a;
+  }
+
+  // Itens à venda (já resolvidos pra carta) respeitando o filtro de jogo + ordenação.
   function saleItems() {
-    return sales.list()
+    return sortSaleItems(sales.list()
       .map((it) => ({ it, card: cardsById.get(it.cardId) }))
-      .filter((x) => x.card && inGameFilter(x.card));
+      .filter((x) => x.card && inGameFilter(x.card)));
   }
 
   function render() {
@@ -326,16 +347,16 @@
   // collection.html, então o link aponta pra lá.
   function buildSaleShareData() {
     const cur = shared.getCurrency();
-    const items = [];
-    sales.list().forEach(({ cardId, variant, price, cond }) => {
-      if (price <= 0) return;
-      const card = cardsById.get(cardId);
-      if (!card) return;
+    // Compartilha todas as cartas precificadas, NA ORDEM do seletor de ordenação.
+    const sorted = sortSaleItems(sales.list()
+      .map((it) => ({ it, card: cardsById.get(it.cardId) }))
+      .filter((x) => x.card && x.it.price > 0));
+    const items = sorted.map(({ it, card }) => {
       const src = shared.cardImageSources(card);
-      items.push({
+      return {
         id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language,
-        g: card.game, v: variant, q: 1, sp: price, cond: cond || "NM", cur, img: src.url, fb: src.fallback || ""
-      });
+        g: card.game, v: it.variant, q: 1, sp: it.price, cond: it.cond || "NM", cur, img: src.url, fb: src.fallback || ""
+      };
     });
     return { items, scope: "sale", cur };
   }
@@ -474,6 +495,14 @@
     if (elements.salesAddBtn) elements.salesAddBtn.addEventListener("click", openSalesPicker);
     if (elements.salesShareBtn) elements.salesShareBtn.addEventListener("click", () => shareSales(elements.salesShareBtn));
     if (elements.salesExportBtn) elements.salesExportBtn.addEventListener("click", () => exportSalesImage(elements.salesExportBtn));
+    if (elements.salesSort) {
+      elements.salesSort.value = salesSort;
+      elements.salesSort.addEventListener("change", () => {
+        salesSort = elements.salesSort.value;
+        localStorage.setItem("tcg-sales-sort", salesSort);
+        render();
+      });
+    }
   }
 
   // Boot: liga os controles já (independem do catálogo) e carrega as cartas que
