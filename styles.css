@@ -50,10 +50,29 @@
   --header-bg: rgba(255, 255, 255, 0.9);
 }
 
-/* Site unificado: a paleta (accent/fundo/header) é FIXA em todas as páginas,
-   independente do jogo da sessão — sem tingir de indigo no Lorcana nem de
-   vermelho no Pokémon. O jogo só muda os DADOS (cartas, lojas), nunca a cor.
-   (`html[data-game]` continua sendo setado pelo game.js, mas não estiliza nada.) */
+/* Accent por CONTEXTO DE JOGO (data-game-accent no <html>, setado em runtime):
+   - Pokémon: usa o accent base do tema (vermelho no claro / amarelo no escuro);
+   - Lorcana: roxo;
+   - "all" (Início, Portfólio, Coleção/Vendas no filtro Todos): neutro (quase-preto
+     no claro / claro no escuro).
+   As regras com [data-theme="light"] têm especificidade maior e vencem no claro;
+   a sem tema cobre o escuro (padrão). */
+[data-game-accent="lorcana"] {
+  --accent: #a78bfa; --accent-dark: #8b5cf6; --accent-rgb: 167, 139, 250;
+  --accent-soft: rgba(167, 139, 250, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="lorcana"] {
+  --accent: #6d28d9; --accent-dark: #5b21b6; --accent-rgb: 109, 40, 217;
+  --accent-soft: rgba(109, 40, 217, 0.1); --on-accent: #ffffff;
+}
+[data-game-accent="all"] {
+  --accent: #e3e7ee; --accent-dark: #c3c9d4; --accent-rgb: 227, 231, 238;
+  --accent-soft: rgba(227, 231, 238, 0.12); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="all"] {
+  --accent: #1b1f27; --accent-dark: #0d0e12; --accent-rgb: 27, 31, 39;
+  --accent-soft: rgba(27, 31, 39, 0.08); --on-accent: #ffffff;
+}
 
 * {
   box-sizing: border-box;

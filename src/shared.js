@@ -2621,6 +2621,7 @@
     sumCardsValue,
     formatMoney: fmtMoney,
     convertMoney,
+    applyGameAccent,
     sendMagicLink,
     getSession,
     createShare,
@@ -3483,12 +3484,28 @@
     if (h1) h1.dataset.game = name;
   }
 
+  // Accent por contexto de jogo: vermelho (Pokémon), roxo (Lorcana), neutro (all).
+  // Marca data-game-accent no <html>; o CSS troca --accent + tints. As páginas
+  // unificadas (Coleção/Vendas) chamam applyGameAccent(filtro) ao trocar o jogo.
+  function applyGameAccent(value) {
+    document.documentElement.dataset.gameAccent = (value === "pokemon" || value === "lorcana") ? value : "all";
+  }
+  function initGameAccent() {
+    const nav = document.querySelector(".page-nav[data-active-page]");
+    const active = nav ? nav.dataset.activePage : "";
+    // Páginas de um jogo só (explorar + detalhe da carta): seguem o jogo da sessão.
+    const GAME_PAGES = ["pokedex", "sets", "artists", "trainers", "cards", "detail"];
+    const g = (window.SLEEVU && window.SLEEVU.game) || "";
+    applyGameAccent(GAME_PAGES.includes(active) ? g : "all");
+  }
+
   applyTranslations();
   initLanguageSwitcher();
   initCurrencySwitcher();
   initSearchLabel();
   initPageNav();
   initPageGameTitle();
+  initGameAccent();
   initMobileMenu();
   initSiteFooter();
   initPartnerBanner();

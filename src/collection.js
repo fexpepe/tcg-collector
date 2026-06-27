@@ -426,6 +426,7 @@
   }
 
   function render(options) {
+    shared.applyGameAccent(gameFilter); // accent vermelho/roxo/neutro conforme o jogo
     syncGameTabs();
     // "Cartas" (grade plana) e "Pastas" (seções) usam a MESMA toolbar de filtros.
     const isCardsLike = activeTab === "cards" || activeTab === "folders";

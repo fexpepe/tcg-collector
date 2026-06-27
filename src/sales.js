@@ -171,6 +171,7 @@
   }
 
   function render() {
+    shared.applyGameAccent(gameFilter); // accent vermelho/roxo/neutro conforme o jogo
     renderDashboard();
     renderSales();
   }
