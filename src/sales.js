@@ -37,29 +37,60 @@
       if (raw && raw.sales && typeof raw.sales === "object") data = raw;
     } catch (e) { /* corrompido: começa vazio */ }
     if (!Array.isArray(data.order)) data.order = [];
+    // Cada CÓPIA é um item próprio (cardId|variant|idx) com seu preço e condição —
+    // assim dá pra vender 3 da mesma carta com condições diferentes (1 NM, 2 D).
+    const keyOf = (cardId, variant, idx) => `${cardId}|${variant}|${idx}`;
+    // Migra o formato antigo ("cardId|variant" -> {price,cond}) pra cópia idx 0.
+    (function migrate() {
+      let changed = false;
+      Object.keys(data.sales).forEach((k) => {
+        const e = data.sales[k];
+        if (!e || e.cardId != null) return; // já no formato novo
+        const i = k.indexOf("|");
+        if (i < 0) { delete data.sales[k]; changed = true; return; }
+        const cardId = k.slice(0, i), variant = k.slice(i + 1);
+        const nk = keyOf(cardId, variant, 0);
+        data.sales[nk] = { cardId, variant, idx: 0, price: Number(e.price) || 0, cond: e.cond || "NM" };
+        if (nk !== k) { delete data.sales[k]; data.order = data.order.map((x) => (x === k ? nk : x)); }
+        changed = true;
+      });
+      if (changed) localStorage.setItem(KEY, JSON.stringify(data)); // persiste sem bumpar updatedAt
+    })();
     const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { /* quota: ignora */ } };
-    const keyOf = (cardId, variant) => `${cardId}|${variant}`;
     return {
-      has: (cardId, variant) => !!data.sales[keyOf(cardId, variant)],
-      priceOf: (cardId, variant) => { const e = data.sales[keyOf(cardId, variant)]; return e ? (Number(e.price) || 0) : 0; },
-      condOf: (cardId, variant) => { const e = data.sales[keyOf(cardId, variant)]; return (e && e.cond) || "NM"; },
+      has: (cardId, variant, idx) => !!data.sales[keyOf(cardId, variant, idx)],
+      priceOf: (cardId, variant, idx) => { const e = data.sales[keyOf(cardId, variant, idx)]; return e ? (Number(e.price) || 0) : 0; },
+      condOf: (cardId, variant, idx) => { const e = data.sales[keyOf(cardId, variant, idx)]; return (e && e.cond) || "NM"; },
+      // Quantas cópias deste card+variant já estão na venda.
+      countOf: (cardId, variant) => data.order.reduce((n, k) => { const e = data.sales[k]; return n + (e && e.cardId === cardId && e.variant === variant ? 1 : 0); }, 0),
       any: () => Object.keys(data.sales).length > 0,
       // Itens na ordem do usuário (só os que ainda existem).
       list: () => data.order.filter((k) => data.sales[k]).map((k) => {
-        const i = k.indexOf("|"); return { key: k, cardId: k.slice(0, i), variant: k.slice(i + 1), price: Number(data.sales[k].price) || 0, cond: data.sales[k].cond || "NM" };
+        const e = data.sales[k];
+        return { key: k, cardId: e.cardId, variant: e.variant, idx: e.idx, price: Number(e.price) || 0, cond: e.cond || "NM" };
       }),
       // Ao adicionar, já pré-preenche o preço de venda com o valor de mercado
       // (TCGplayer) — o usuário sobrescreve digitando. 0 se não houver cotação.
-      add(cardId, variant, initialPrice) { const k = keyOf(cardId, variant); if (!data.sales[k]) { const p = Number(initialPrice) || 0; data.sales[k] = { price: p > 0 ? Math.round(p * 100) / 100 : 0, cond: "NM" }; data.order.push(k); save(); } },
-      setPrice(cardId, variant, price) {
-        const k = keyOf(cardId, variant), p = Number(price) || 0, cond = (data.sales[k] && data.sales[k].cond) || "NM";
-        // Preço vazio/0 numa carta JÁ na venda = tira da venda; senão atualiza/insere (preservando a condição).
-        if (p <= 0 && data.sales[k]) { delete data.sales[k]; data.order = data.order.filter((x) => x !== k); }
-        else if (p > 0) { if (!data.sales[k]) data.order.push(k); data.sales[k] = { price: Math.round(p * 100) / 100, cond }; }
+      add(cardId, variant, idx, initialPrice, initialCond) {
+        const k = keyOf(cardId, variant, idx);
+        if (!data.sales[k]) {
+          const p = Number(initialPrice) || 0;
+          data.sales[k] = { cardId, variant, idx, price: p > 0 ? Math.round(p * 100) / 100 : 0, cond: initialCond || "NM" };
+          data.order.push(k); save();
+        }
+      },
+      setPrice(cardId, variant, idx, price) {
+        const k = keyOf(cardId, variant, idx), p = Number(price) || 0, e = data.sales[k];
+        // Preço vazio/0 numa cópia JÁ na venda = tira da venda; senão atualiza/insere.
+        if (p <= 0 && e) { delete data.sales[k]; data.order = data.order.filter((x) => x !== k); }
+        else if (p > 0) {
+          if (!e) { data.sales[k] = { cardId, variant, idx, price: Math.round(p * 100) / 100, cond: "NM" }; data.order.push(k); }
+          else { e.price = Math.round(p * 100) / 100; }
+        }
         save();
       },
-      setCond(cardId, variant, cond) { const k = keyOf(cardId, variant); if (data.sales[k]) { data.sales[k].cond = cond; save(); } },
-      remove(cardId, variant) { const k = keyOf(cardId, variant); if (data.sales[k]) { delete data.sales[k]; data.order = data.order.filter((x) => x !== k); save(); } }
+      setCond(cardId, variant, idx, cond) { const e = data.sales[keyOf(cardId, variant, idx)]; if (e) { e.cond = cond; save(); } },
+      remove(cardId, variant, idx) { const k = keyOf(cardId, variant, idx); if (data.sales[k]) { delete data.sales[k]; data.order = data.order.filter((x) => x !== k); save(); } }
     };
   }
 
@@ -82,10 +113,11 @@
     store: owned,
     prices,
     wishlist,
-    // Campo "Vender por R$" no preview (põe/tira a carta da lista de vendas).
+    // Campo "Vender por R$" no preview: mexe na 1ª cópia (idx 0). A gestão de
+    // várias cópias com condições diferentes é no picker + na grade de vendas.
     sale: {
-      priceOf: (cardId, variant) => sales.priceOf(cardId, variant),
-      onChange: (cardId, variant, price) => { sales.setPrice(cardId, variant, price); render(); }
+      priceOf: (cardId, variant) => sales.priceOf(cardId, variant, 0),
+      onChange: (cardId, variant, price) => { sales.setPrice(cardId, variant, 0, price); render(); }
     }
   });
 
@@ -155,20 +187,21 @@
     const items = saleItems();
     elements.salesEmpty.hidden = items.length > 0;
     const sym = currencySymbol();
-    elements.grid.innerHTML = items.map(({ it, card }) => saleTileHtml(card, it.variant, it.price, sym, it.cond)).join("");
+    elements.grid.innerHTML = items.map(({ it, card }) => saleTileHtml(card, it.variant, it.idx, it.price, sym, it.cond)).join("");
     const hasPriced = items.some((x) => x.it.price > 0);
     if (elements.salesShareBtn) elements.salesShareBtn.disabled = !hasPriced;
     if (elements.salesExportBtn) elements.salesExportBtn.disabled = !hasPriced;
   }
 
   // Tile de venda: imagem (→ preview) + campo de preço editável + condição + ✕ remover.
-  function saleTileHtml(card, variant, price, sym, cond) {
+  // idx = índice da cópia (várias cópias da mesma carta podem estar à venda).
+  function saleTileHtml(card, variant, idx, price, sym, cond) {
     const src = shared.cardImageSources(card);
     const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
     const priceStr = price > 0 ? String(price).replace(".", ",") : "";
     const current = cond || "NM";
     const condOpts = shared.CARD_CONDITIONS.map((c) => `<option value="${c}"${c === current ? " selected" : ""}>${c}</option>`).join("");
-    return `<article class="card-tile sale-tile" data-sale-card="${escapeAttribute(card.id)}" data-sale-variant="${escapeAttribute(variant)}">
+    return `<article class="card-tile sale-tile" data-sale-card="${escapeAttribute(card.id)}" data-sale-variant="${escapeAttribute(variant)}" data-sale-idx="${idx}">
       <div class="card-image">
         <button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button>
         <button type="button" class="sale-remove" data-sale-remove title="${escapeAttribute(t("sales.remove"))}" aria-label="${escapeAttribute(t("sales.remove"))}">✕</button>
@@ -196,6 +229,15 @@
     let pickSort = "value-desc";  // ordenação (mesma lógica da aba Cartas)
     const updateCount = () => { const el = modal.querySelector(".sales-picker-count"); if (el) el.textContent = t("sales.pickerCount", { n: sales.list().length }); };
     const priceOf = (card, variant) => shared.cardValue(card, variant, prices, shared.DEFAULT_CONDITION).value || 0;
+    // Condições de cada cópia que você tem desse card+variant (ex.: [NM, D, D]),
+    // pra pré-preencher a condição da venda. Completa com NM se faltar.
+    const copyConds = (cardId, variant) => {
+      const total = owned.variantTotal(cardId, variant);
+      const conds = [];
+      owned.conditionBreakdown(cardId, variant).forEach(({ condition, quantity }) => { for (let i = 0; i < quantity; i++) conds.push(condition); });
+      while (conds.length < total) conds.push("NM");
+      return conds.slice(0, total);
+    };
     const sortPairs = (pairs) => {
       if (pickSort === "num-asc") return pairs.sort((a, b) => shared.compareCardNumbers(a.card.number, b.card.number));
       if (pickSort === "num-desc") return pairs.sort((a, b) => shared.compareCardNumbers(b.card.number, a.card.number));
@@ -211,14 +253,17 @@
         .filter(({ card }) => !pickRarity || card.rarity === pickRarity)
         .filter(({ card }) => !q.trim() || shared.matchesCardQuery(card, q)))
         .slice(0, 200);
-      const html = pairs.map(({ card, variant }) => {
+      // Cada CÓPIA que você tem vira um tile (1 carta ×3 = 3 tiles), com a condição
+      // que ela tem na coleção — assim dá pra vender cada uma separada.
+      const html = pairs.flatMap(({ card, variant }) => {
         const src = shared.cardImageSources(card);
         const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
-        return `<div class="sales-pick${sales.has(card.id, variant) ? " is-added" : ""}" role="button" tabindex="0" data-pick-card="${escapeAttribute(card.id)}" data-pick-variant="${escapeAttribute(variant)}">
-          <span class="sales-pick-img">${img}<span class="sales-pick-check">✓</span></span>
-          <span class="sales-pick-name">${escapeHtml(card.name)}</span>
-          <span class="sales-pick-var">${shared.cardFlag(card.language)}<span>${escapeHtml(variant)}</span></span>
-        </div>`;
+        return copyConds(card.id, variant).map((cond, idx) =>
+          `<div class="sales-pick${sales.has(card.id, variant, idx) ? " is-added" : ""}" role="button" tabindex="0" data-pick-card="${escapeAttribute(card.id)}" data-pick-variant="${escapeAttribute(variant)}" data-pick-idx="${idx}" data-pick-cond="${escapeAttribute(cond)}">
+            <span class="sales-pick-img">${img}<span class="sales-pick-check">✓</span></span>
+            <span class="sales-pick-name">${escapeHtml(card.name)}</span>
+            <span class="sales-pick-var">${shared.cardFlag(card.language)}<span>${escapeHtml(variant)}</span><span class="sales-pick-cond">${escapeHtml(cond)}</span></span>
+          </div>`);
       }).join("") || `<p class="empty-state">${escapeHtml(t("sales.pickerEmpty"))}</p>`;
       modal.querySelector(".sales-picker-results").innerHTML = html;
     };
@@ -268,9 +313,9 @@
       }
       const pick = event.target.closest("[data-pick-card]");
       if (pick) {
-        const id = pick.dataset.pickCard, v = pick.dataset.pickVariant;
-        if (sales.has(id, v)) { sales.remove(id, v); pick.classList.remove("is-added"); }
-        else { sales.add(id, v, priceOf(cardsById.get(id), v)); pick.classList.add("is-added"); }
+        const id = pick.dataset.pickCard, v = pick.dataset.pickVariant, idx = Number(pick.dataset.pickIdx) || 0;
+        if (sales.has(id, v, idx)) { sales.remove(id, v, idx); pick.classList.remove("is-added"); }
+        else { sales.add(id, v, idx, priceOf(cardsById.get(id), v), pick.dataset.pickCond || "NM"); pick.classList.add("is-added"); }
         updateCount();
       }
     });
@@ -410,23 +455,20 @@
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) { preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant); return; }
       const rm = event.target.closest("[data-sale-remove]");
-      if (rm) { const tile = rm.closest(".sale-tile"); if (tile) { sales.remove(tile.dataset.saleCard, tile.dataset.saleVariant); render(); } }
+      if (rm) { const tile = rm.closest(".sale-tile"); if (tile) { sales.remove(tile.dataset.saleCard, tile.dataset.saleVariant, Number(tile.dataset.saleIdx) || 0); render(); } }
     });
-    // Editar preço / condição inline
+    // Editar preço / condição inline (por cópia, via data-sale-idx)
     elements.grid.addEventListener("change", (event) => {
+      const tile = event.target.closest(".sale-tile");
+      if (!tile) return;
+      const id = tile.dataset.saleCard, v = tile.dataset.saleVariant, idx = Number(tile.dataset.saleIdx) || 0;
       const condSel = event.target.closest("[data-sale-cond]");
-      if (condSel) {
-        const tile = condSel.closest(".sale-tile");
-        if (tile) sales.setCond(tile.dataset.saleCard, tile.dataset.saleVariant, condSel.value);
-        return;
-      }
+      if (condSel) { sales.setCond(id, v, idx, condSel.value); return; }
       const input = event.target.closest("[data-sale-price]");
       if (!input) return;
-      const tile = input.closest(".sale-tile");
-      if (!tile) return;
       const text = String(input.value).trim();
       const amount = Number(text.includes(",") ? text.replace(/\./g, "").replace(",", ".") : text) || 0;
-      sales.setPrice(tile.dataset.saleCard, tile.dataset.saleVariant, amount);
+      sales.setPrice(id, v, idx, amount);
       render(); // o tile pode sumir (preço 0) e o dashboard muda
     });
     if (elements.salesAddBtn) elements.salesAddBtn.addEventListener("click", openSalesPicker);

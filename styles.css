@@ -712,6 +712,8 @@ input::placeholder {
 .sales-pick.is-added .sales-pick-check { display: flex; }
 .sales-pick-name { display: block; font-size: 11px; font-weight: 700; line-height: 1.2; }
 .sales-pick-var { display: flex; justify-content: center; align-items: center; gap: 4px; margin-top: 3px; font-size: 10px; color: var(--subtle); }
+/* Condição da cópia no picker (cada cópia que você tem vira um tile). */
+.sales-pick-cond { padding: 0 5px; border-radius: 5px; background: var(--line); color: var(--text); font-weight: 800; font-size: 9.5px; }
 .sales-pick:hover { border-color: var(--accent); }
 .sales-picker-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
 .sales-picker-count { font-size: 13px; font-weight: 700; color: var(--subtle); }
