@@ -72,7 +72,7 @@
   let sortMode = "dex";
 
   // Aba "Cartas": ordenação + grade/lista (preferências guardadas).
-  const CARDS_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "release"];
+  const CARDS_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "release", "added-desc", "added-asc"];
   let cardsSort = CARDS_SORTS.includes(localStorage.getItem("tcg-collection-sort")) ? localStorage.getItem("tcg-collection-sort") : "value-desc";
   let cardsView = localStorage.getItem("tcg-collection-view") === "list" ? "list" : "grid";
 
@@ -791,6 +791,14 @@
       const pa = priceOf(a), pb = priceOf(b);
       if (!pa && !pb) return 0; if (!pa) return 1; if (!pb) return -1; return pa - pb;
     });
+    else if (cardsSort === "added-asc" || cardsSort === "added-desc") {
+      // Ordem de adição na coleção = ordem de inserção das chaves no objeto
+      // (preservada em JS/JSON). asc = primeira→última; desc = última→primeira.
+      const order = Object.keys(owned.toObject());
+      const rankOf = new Map(order.map((id, i) => [id, i]));
+      const rank = (p) => { const r = rankOf.get(p.card.id); return r == null ? Infinity : r; };
+      pairs.sort((a, b) => cardsSort === "added-asc" ? rank(a) - rank(b) : rank(b) - rank(a));
+    }
     else pairs.sort((a, b) => String(b.card.setReleaseDate || "").localeCompare(String(a.card.setReleaseDate || "")));
     return pairs;
   }
