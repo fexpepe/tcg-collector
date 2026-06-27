@@ -1,5 +1,7 @@
-# Perfil público: /users/<handle> leva à coleção em modo leitura (collection.html
-# lê ?u=<handle>). Aponta pra URL LIMPA /collection (sem .html) — o "clean URL" do
-# Cloudflare Pages redireciona /collection.html → /collection DESCARTANDO a query,
-# então o destino precisa já ser limpo. 302 (redirect) preserva a ?u=. Lido pelo CF.
-/users/:handle    /collection?u=:handle    302
+# Perfil público: /users/<handle> SERVE a coleção em modo leitura (URL bonita
+# continua na barra). 200 = rewrite (sem redirect, sem perder o caminho). O cliente
+# (collection.js) lê o handle de location.pathname. Destino LIMPO /collection (sem
+# .html, que dispararia o clean-URL redirect). collection.html tem <base href="/">
+# pra os assets resolverem na raiz. NÃO usamos placeholder na query: o CF Pages não
+# substitui :handle dentro da query string (só no caminho).
+/users/*    /collection    200

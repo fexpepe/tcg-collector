@@ -158,7 +158,9 @@
   // Os dados vêm desnormalizados no share, então não precisa carregar o catálogo.
   const collParams = new URLSearchParams(window.location.search);
   const shareId = collParams.get("s");
-  const profileHandle = collParams.get("u"); // perfil público: /users/<handle>
+  // Perfil público: o handle vem do caminho /users/<handle> (servido aqui via
+  // _redirects 200) ou, como fallback, de ?u=<handle> (links diretos).
+  const profileHandle = (location.pathname.match(/\/users\/([a-z0-9_]{1,24})/i) || [])[1] || collParams.get("u");
 
   if (shareId) {
     shared.loadFxRates().then(() => renderSharedCollection(shareId));
