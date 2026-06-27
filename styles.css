@@ -637,7 +637,11 @@ input::placeholder {
 .sale-tile .sale-remove:hover { color: #d8443c; border-color: #d8443c; }
 
 /* Grade de Vendas: cartas um pouco menores que a coleção. */
-#salesGrid { grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 12px; }
+/* Grade de Vendas: 6 colunas (tiles maiores = mais espaço pro preço). */
+#salesGrid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 1000px) { #salesGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 680px) { #salesGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 460px) { #salesGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 /* Campo de preço e select de condição com a MESMA altura fixa (box-sizing
    border-box): o <select> não estica com align-items:stretch, então fixamos os
    dois pra ficarem alinhados. */

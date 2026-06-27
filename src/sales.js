@@ -439,8 +439,15 @@
       roundRect(chipX, chipY, chipW, chipH, 9); ctx.fillStyle = "#e7ebf1"; ctx.fill();
       ctx.fillStyle = "#3a4250"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
       ctx.fillText(cond, chipX + chipW / 2, chipY + chipH / 2 + 1);
-      ctx.fillStyle = "#111111"; ctx.font = `800 26px ${FONT}`; ctx.textAlign = "left";
-      ctx.fillText(`${sym} ${it.price.toFixed(2).replace(".", ",")}`, x + 2, by + 27, CARD_W - chipW - 12);
+      // Preço: encolhe a FONTE (não espreme) até o valor inteiro caber no espaço
+      // que sobra ao lado do chip de condição — assim valores grandes nunca cortam.
+      const priceText = `${sym} ${it.price.toFixed(2).replace(".", ",")}`;
+      const priceMaxW = CARD_W - chipW - 12;
+      let pfs = 26;
+      ctx.font = `800 ${pfs}px ${FONT}`;
+      while (pfs > 14 && ctx.measureText(priceText).width > priceMaxW) { pfs -= 1; ctx.font = `800 ${pfs}px ${FONT}`; }
+      ctx.fillStyle = "#111111"; ctx.textAlign = "left";
+      ctx.fillText(priceText, x + 2, by + 27, priceMaxW);
       ctx.textAlign = "left"; ctx.textBaseline = "top";
     }
     ctx.fillStyle = "#9aa3b0"; ctx.font = `600 18px ${FONT}`; ctx.textBaseline = "alphabetic";
