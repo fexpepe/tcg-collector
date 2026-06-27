@@ -695,7 +695,7 @@
       ? `<span class="folder-name">${escapeHtml(t("folders.none"))}</span>`
       : `<input class="folder-name-input" data-folder-rename type="text" value="${escapeAttribute(folder.name)}" placeholder="${escapeAttribute(t("folders.untitled"))}" aria-label="${escapeAttribute(t("folders.rename"))}">`;
     const actions = isNone ? "" : `<span class="folder-actions">
-        <button type="button" class="folder-act" data-folder-share title="${escapeAttribute(t("folders.share"))}" aria-label="${escapeAttribute(t("folders.share"))}">${SHARE_ICON}</button>
+        <button type="button" class="folder-act folder-share-btn" data-folder-share title="${escapeAttribute(t("folders.share"))}" aria-label="${escapeAttribute(t("folders.share"))}">${SHARE_ICON}<span>${escapeHtml(t("folders.shareBtn"))}</span></button>
         <button type="button" class="folder-act" data-folder-move="-1" title="${escapeAttribute(t("folders.moveUp"))}" aria-label="${escapeAttribute(t("folders.moveUp"))}">↑</button>
         <button type="button" class="folder-act" data-folder-move="1" title="${escapeAttribute(t("folders.moveDown"))}" aria-label="${escapeAttribute(t("folders.moveDown"))}">↓</button>
         <button type="button" class="folder-act folder-act-danger" data-folder-delete title="${escapeAttribute(t("folders.delete"))}" aria-label="${escapeAttribute(t("folders.delete"))}">✕</button>
