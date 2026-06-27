@@ -2688,6 +2688,12 @@
     getProfile,
     setProfile,
     normalizeHandle,
+    pushProfile,
+    pullProfile,
+    handleAvailable,
+    fetchPublicProfile,
+    pushPublicProfile,
+    deletePublicProfile,
     sendMagicLink,
     getSession,
     createShare,
@@ -3126,6 +3132,104 @@
       return rows && rows[0] ? rows[0] : null;
     } catch (e) { return null; }
   }
+  // --- Perfil na nuvem (tabelas `profiles` + `public_profiles`) ---
+  // Sobe o perfil (handle/nome/visibilidade). Exige login. 409 = @ já em uso.
+  async function pushProfile() {
+    let s = getSession();
+    if (!s) return { error: "auth" };
+    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
+    if (!s) return { error: "auth" };
+    const p = getProfile();
+    if (!p.handle) return { error: "no-handle" };
+    const body = JSON.stringify({
+      user_id: s.user.id, handle: p.handle, display_name: p.displayName || null,
+      is_public: !!p.isPublic, show_values: !!p.showValues,
+      updated_at: new Date(p.updatedAt || Date.now()).toISOString()
+    });
+    const post = (tok) => fetch(`${SUPABASE_URL}/rest/v1/profiles?on_conflict=user_id`, {
+      method: "POST", body,
+      headers: Object.assign(authHeaders(tok), { Prefer: "resolution=merge-duplicates,return=minimal" })
+    });
+    try {
+      let r = await post(s.access_token);
+      if (r.status === 401) { const ns = await refreshSession(); if (ns) r = await post(ns.access_token); }
+      if (r.status === 409) return { error: "taken" };
+      return r.ok ? { ok: true } : { error: "http", status: r.status };
+    } catch (e) { return { error: "net" }; }
+  }
+  // Puxa o próprio perfil da nuvem e mescla no local (LWW por updated_at). Boot.
+  async function pullProfile() {
+    const s = getSession();
+    if (!s) return;
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/profiles?user_id=eq.${s.user.id}&select=handle,display_name,is_public,show_values,updated_at`, { headers: authHeaders(s.access_token) });
+      if (!r.ok) return;
+      const rows = await r.json();
+      const remote = rows && rows[0];
+      if (!remote) return;
+      const rt = Date.parse(remote.updated_at) || 0;
+      if (rt > (getProfile().updatedAt || 0)) {
+        setProfile({ handle: remote.handle || "", displayName: remote.display_name || "", isPublic: !!remote.is_public, showValues: !!remote.show_values });
+        const merged = getProfile(); merged.updatedAt = rt; // mantém o ts remoto p/ LWW
+        try { localStorage.setItem(PROFILE_KEY, JSON.stringify(merged)); } catch (e) { /* ignora */ }
+      }
+    } catch (e) { /* ignora */ }
+  }
+  // @ disponível? (rpc security definer; ignora o próprio @). true/false | null=erro.
+  async function handleAvailable(handle) {
+    const s = getSession();
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/handle_available`, {
+        method: "POST", headers: authHeaders(s && s.access_token), body: JSON.stringify({ p_handle: handle })
+      });
+      if (!r.ok) return null;
+      return await r.json();
+    } catch (e) { return null; }
+  }
+  // Lê um perfil público pelo handle (anon). {handle,display_name,show_values,data}|null.
+  async function fetchPublicProfile(handle) {
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/public_profiles?handle=eq.${encodeURIComponent(handle)}&select=handle,display_name,show_values,data,updated_at`, { headers: authHeaders() });
+      if (!r.ok) return null;
+      const rows = await r.json();
+      return rows && rows[0] ? rows[0] : null;
+    } catch (e) { return null; }
+  }
+  // Publica/atualiza o payload curado (coleção + vendas). Exige login + handle.
+  async function pushPublicProfile(data) {
+    let s = getSession();
+    if (!s) return { error: "auth" };
+    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
+    if (!s) return { error: "auth" };
+    const p = getProfile();
+    if (!p.handle) return { error: "no-handle" };
+    const body = JSON.stringify({
+      user_id: s.user.id, handle: p.handle, display_name: p.displayName || null,
+      show_values: !!p.showValues, data: data || {}, updated_at: new Date().toISOString()
+    });
+    const post = (tok) => fetch(`${SUPABASE_URL}/rest/v1/public_profiles?on_conflict=user_id`, {
+      method: "POST", body,
+      headers: Object.assign(authHeaders(tok), { Prefer: "resolution=merge-duplicates,return=minimal" })
+    });
+    try {
+      let r = await post(s.access_token);
+      if (r.status === 401) { const ns = await refreshSession(); if (ns) r = await post(ns.access_token); }
+      return r.ok ? { ok: true } : { error: "http", status: r.status };
+    } catch (e) { return { error: "net" }; }
+  }
+  // Remove o perfil público (quando o usuário volta a privado).
+  async function deletePublicProfile() {
+    let s = getSession();
+    if (!s) return;
+    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
+    if (!s) return;
+    try {
+      await fetch(`${SUPABASE_URL}/rest/v1/public_profiles?user_id=eq.${s.user.id}`, {
+        method: "DELETE", headers: authHeaders(s.access_token)
+      });
+    } catch (e) { /* ignora */ }
+  }
+
   // Apaga a conta na nuvem (RPC `delete_account` com security definer: remove
   // collections + shares + o usuário do auth). Retorna true se deu certo.
   async function deleteAccount() {
@@ -3490,6 +3594,7 @@
         const merged = mergeData(localSnapshot(), remote);
         writeSnapshot(merged);
         await pushRemote(fresh.access_token, fresh.user.id, merged);
+        await pullProfile();
         window.location.reload();
         return;
       }
@@ -3512,6 +3617,7 @@
         }
         lastPushed = before;
       }
+      pullProfile(); // sincroniza o perfil (handle/visibilidade) sem bloquear
       startSyncLoop();
     })();
   }

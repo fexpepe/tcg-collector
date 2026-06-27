@@ -35,15 +35,39 @@
       if (ready) urlInput.value = "https://sleevu.app/users/" + p.handle;
     }
 
-    nameInput.addEventListener("input", () => { shared.setProfile({ displayName: nameInput.value }); refreshProfile(); });
+    // Status do @ (disponível / em uso / salvo) + sincroniza o perfil na nuvem.
+    const handleStatus = document.getElementById("handleStatus");
+    function setStatus(key, kind) {
+      if (!handleStatus) return;
+      handleStatus.textContent = key ? shared.t(key) : "";
+      handleStatus.className = "setting-field-status" + (kind ? " is-" + kind : "");
+    }
+    let profT;
+    function scheduleSync() { clearTimeout(profT); profT = setTimeout(runSync, 600); }
+    async function runSync() {
+      const h = shared.getProfile().handle;
+      if (!h) { setStatus("", ""); return; }
+      if (h.length < 3) { setStatus("settings.handleShort", "warn"); return; }
+      setStatus("settings.handleChecking", "");
+      const avail = await shared.handleAvailable(h);
+      if (avail === false) { setStatus("settings.handleTaken", "bad"); return; }
+      const res = await shared.pushProfile();
+      if (res && res.ok) { setStatus("settings.handleSaved", "good"); }
+      else if (res && res.error === "taken") { setStatus("settings.handleTaken", "bad"); }
+      else if (res && res.error === "auth") { setStatus("settings.handleLogin", "warn"); }
+      else { setStatus(avail === true ? "settings.handleAvailable" : "", avail === true ? "good" : ""); }
+    }
+
+    nameInput.addEventListener("input", () => { shared.setProfile({ displayName: nameInput.value }); refreshProfile(); scheduleSync(); });
     handleInput.addEventListener("input", () => {
       const norm = shared.normalizeHandle(handleInput.value);
       if (handleInput.value !== norm) handleInput.value = norm; // descarta caracteres inválidos
       shared.setProfile({ handle: norm });
       refreshProfile();
+      scheduleSync();
     });
-    publicToggle.addEventListener("click", () => { shared.setProfile({ isPublic: !shared.getProfile().isPublic }); refreshProfile(); });
-    showValuesToggle.addEventListener("click", () => { shared.setProfile({ showValues: !shared.getProfile().showValues }); refreshProfile(); });
+    publicToggle.addEventListener("click", () => { shared.setProfile({ isPublic: !shared.getProfile().isPublic }); refreshProfile(); scheduleSync(); });
+    showValuesToggle.addEventListener("click", () => { shared.setProfile({ showValues: !shared.getProfile().showValues }); refreshProfile(); scheduleSync(); });
     if (urlCopy) urlCopy.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(urlInput.value);
