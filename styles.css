@@ -655,6 +655,10 @@ input::placeholder {
 .sale-cur { font-weight: 800; color: var(--subtle); font-size: 14px; flex: none; }
 .sale-price { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--text); font: inherit; font-weight: 800; font-size: 15px; padding: 0; }
 .sale-price:focus { outline: none; }
+/* Preço automático (do TCGplayer, ainda não revisado) = laranja; ao digitar vira
+   preto (cor padrão). Só na grade de Vendas — não vai pro share/foto. */
+.sale-price.is-auto { color: #e8820c; }
+.sale-price-field.is-auto .sale-cur { color: #e8820c; }
 /* Condição (M/NM/SP…) ao lado do preço. width:auto vence o select{width:100%}
    global, senão o select engole a linha e espreme o campo de preço. */
 .sale-cond {

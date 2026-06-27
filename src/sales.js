@@ -65,27 +65,29 @@
       countOf: (cardId, variant) => data.order.reduce((n, k) => { const e = data.sales[k]; return n + (e && e.cardId === cardId && e.variant === variant ? 1 : 0); }, 0),
       any: () => Object.keys(data.sales).length > 0,
       // Itens na ordem do usuário (só os que ainda existem).
+      // `auto`: o preço veio do valor de mercado (TCGplayer) e NÃO foi editado à mão
+      // — usado pra colorir (laranja = automático, preto = revisado pelo usuário).
       list: () => data.order.filter((k) => data.sales[k]).map((k) => {
         const e = data.sales[k];
-        return { key: k, cardId: e.cardId, variant: e.variant, idx: e.idx, price: Number(e.price) || 0, cond: e.cond || "NM" };
+        return { key: k, cardId: e.cardId, variant: e.variant, idx: e.idx, price: Number(e.price) || 0, cond: e.cond || "NM", auto: !!e.auto };
       }),
       // Ao adicionar, já pré-preenche o preço de venda com o valor de mercado
-      // (TCGplayer) — o usuário sobrescreve digitando. 0 se não houver cotação.
+      // (TCGplayer) — fica `auto` até o usuário digitar. 0 se não houver cotação.
       add(cardId, variant, idx, initialPrice, initialCond) {
         const k = keyOf(cardId, variant, idx);
         if (!data.sales[k]) {
           const p = Number(initialPrice) || 0;
-          data.sales[k] = { cardId, variant, idx, price: p > 0 ? Math.round(p * 100) / 100 : 0, cond: initialCond || "NM" };
+          data.sales[k] = { cardId, variant, idx, price: p > 0 ? Math.round(p * 100) / 100 : 0, cond: initialCond || "NM", auto: true };
           data.order.push(k); save();
         }
       },
       setPrice(cardId, variant, idx, price) {
         const k = keyOf(cardId, variant, idx), p = Number(price) || 0, e = data.sales[k];
-        // Preço vazio/0 numa cópia JÁ na venda = tira da venda; senão atualiza/insere.
+        // Editar o preço à mão = não é mais automático (auto: false).
         if (p <= 0 && e) { delete data.sales[k]; data.order = data.order.filter((x) => x !== k); }
         else if (p > 0) {
-          if (!e) { data.sales[k] = { cardId, variant, idx, price: Math.round(p * 100) / 100, cond: "NM" }; data.order.push(k); }
-          else { e.price = Math.round(p * 100) / 100; }
+          if (!e) { data.sales[k] = { cardId, variant, idx, price: Math.round(p * 100) / 100, cond: "NM", auto: false }; data.order.push(k); }
+          else { e.price = Math.round(p * 100) / 100; e.auto = false; }
         }
         save();
       },
@@ -208,7 +210,7 @@
     const items = saleItems();
     elements.salesEmpty.hidden = items.length > 0;
     const sym = currencySymbol();
-    elements.grid.innerHTML = items.map(({ it, card }) => saleTileHtml(card, it.variant, it.idx, it.price, sym, it.cond)).join("");
+    elements.grid.innerHTML = items.map(({ it, card }) => saleTileHtml(card, it.variant, it.idx, it.price, sym, it.cond, it.auto)).join("");
     const hasPriced = items.some((x) => x.it.price > 0);
     if (elements.salesShareBtn) elements.salesShareBtn.disabled = !hasPriced;
     if (elements.salesExportBtn) elements.salesExportBtn.disabled = !hasPriced;
@@ -216,12 +218,14 @@
 
   // Tile de venda: imagem (→ preview) + campo de preço editável + condição + ✕ remover.
   // idx = índice da cópia (várias cópias da mesma carta podem estar à venda).
-  function saleTileHtml(card, variant, idx, price, sym, cond) {
+  function saleTileHtml(card, variant, idx, price, sym, cond, auto) {
     const src = shared.cardImageSources(card);
     const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
     const priceStr = price > 0 ? String(price).replace(".", ",") : "";
     const current = cond || "NM";
     const condOpts = shared.CARD_CONDITIONS.map((c) => `<option value="${c}"${c === current ? " selected" : ""}>${c}</option>`).join("");
+    // Preço automático (TCGplayer, não editado) = laranja; revisado à mão = preto.
+    const autoCls = auto && price > 0 ? " is-auto" : "";
     return `<article class="card-tile sale-tile" data-sale-card="${escapeAttribute(card.id)}" data-sale-variant="${escapeAttribute(variant)}" data-sale-idx="${idx}">
       <div class="card-image">
         <button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button>
@@ -231,7 +235,7 @@
         <h3>${escapeHtml(card.name)}</h3>
         <p class="tile-variant">${shared.cardFlag(card.language)}<span>${escapeHtml(variant)}</span></p>
         <div class="sale-fields">
-          <label class="sale-price-field"><span class="sale-cur">${escapeHtml(sym)}</span><input type="text" inputmode="decimal" class="sale-price" data-sale-price value="${escapeAttribute(priceStr)}" placeholder="0,00"></label>
+          <label class="sale-price-field${autoCls}"><span class="sale-cur">${escapeHtml(sym)}</span><input type="text" inputmode="decimal" class="sale-price${autoCls}" data-sale-price value="${escapeAttribute(priceStr)}" placeholder="0,00"></label>
           <select class="sale-cond" data-sale-cond aria-label="${escapeAttribute(t("sales.condition"))}" title="${escapeAttribute(t("sales.condition"))}">${condOpts}</select>
         </div>
       </div>
