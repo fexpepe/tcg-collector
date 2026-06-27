@@ -714,6 +714,10 @@ input::placeholder {
 .sales-pick-check { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(var(--accent-rgb), 0.55); color: #fff; font-size: 30px; font-weight: 900; }
 .sales-pick.is-added { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 .sales-pick.is-added .sales-pick-check { display: flex; }
+/* Parcial: só algumas cópias à venda (borda accent, sem o overlay cheio). */
+.sales-pick.is-partial { border-color: var(--accent); }
+/* Quantidade que você tem (×N) no canto da imagem. */
+.sales-pick-qty { position: absolute; top: 4px; right: 4px; padding: 1px 6px; border-radius: 7px; background: rgba(13, 14, 18, 0.82); color: #fff; font-size: 11px; font-weight: 800; }
 .sales-pick-name { display: block; font-size: 11px; font-weight: 700; line-height: 1.2; }
 .sales-pick-var { display: flex; justify-content: center; align-items: center; gap: 4px; margin-top: 3px; font-size: 10px; color: var(--subtle); }
 /* Condição da cópia no picker (cada cópia que você tem vira um tile). */

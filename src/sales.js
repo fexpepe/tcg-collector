@@ -274,17 +274,22 @@
         .filter(({ card }) => !pickRarity || card.rarity === pickRarity)
         .filter(({ card }) => !q.trim() || shared.matchesCardQuery(card, q)))
         .slice(0, 200);
-      // Cada CÓPIA que você tem vira um tile (1 carta ×3 = 3 tiles), com a condição
-      // que ela tem na coleção — assim dá pra vender cada uma separada.
-      const html = pairs.flatMap(({ card, variant }) => {
+      // 1 tile por carta+variante, com a quantidade que você tem (×N). Tocar
+      // adiciona TODAS as cópias de uma vez (cada uma vira um item separado na
+      // venda, com a condição que ela tem na coleção). Tocar de novo tira todas.
+      const html = pairs.map(({ card, variant }) => {
         const src = shared.cardImageSources(card);
         const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
-        return copyConds(card.id, variant).map((cond, idx) =>
-          `<div class="sales-pick${sales.has(card.id, variant, idx) ? " is-added" : ""}" role="button" tabindex="0" data-pick-card="${escapeAttribute(card.id)}" data-pick-variant="${escapeAttribute(variant)}" data-pick-idx="${idx}" data-pick-cond="${escapeAttribute(cond)}">
-            <span class="sales-pick-img">${img}<span class="sales-pick-check">✓</span></span>
-            <span class="sales-pick-name">${escapeHtml(card.name)}</span>
-            <span class="sales-pick-var">${shared.cardFlag(card.language)}<span>${escapeHtml(variant)}</span><span class="sales-pick-cond">${escapeHtml(cond)}</span></span>
-          </div>`);
+        const total = copyConds(card.id, variant).length;
+        const added = sales.countOf(card.id, variant);
+        const cls = added >= total ? " is-added" : (added > 0 ? " is-partial" : "");
+        const qty = total > 1 ? `<span class="sales-pick-qty">×${total}</span>` : "";
+        const count = added > 0 ? `<span class="sales-pick-cond">${added}/${total}</span>` : "";
+        return `<div class="sales-pick${cls}" role="button" tabindex="0" data-pick-card="${escapeAttribute(card.id)}" data-pick-variant="${escapeAttribute(variant)}">
+          <span class="sales-pick-img">${img}<span class="sales-pick-check">✓</span>${qty}</span>
+          <span class="sales-pick-name">${escapeHtml(card.name)}</span>
+          <span class="sales-pick-var">${shared.cardFlag(card.language)}<span>${escapeHtml(variant)}</span>${count}</span>
+        </div>`;
       }).join("") || `<p class="empty-state">${escapeHtml(t("sales.pickerEmpty"))}</p>`;
       modal.querySelector(".sales-picker-results").innerHTML = html;
     };
@@ -334,9 +339,25 @@
       }
       const pick = event.target.closest("[data-pick-card]");
       if (pick) {
-        const id = pick.dataset.pickCard, v = pick.dataset.pickVariant, idx = Number(pick.dataset.pickIdx) || 0;
-        if (sales.has(id, v, idx)) { sales.remove(id, v, idx); pick.classList.remove("is-added"); }
-        else { sales.add(id, v, idx, priceOf(cardsById.get(id), v), pick.dataset.pickCond || "NM"); pick.classList.add("is-added"); }
+        const id = pick.dataset.pickCard, v = pick.dataset.pickVariant;
+        const conds = copyConds(id, v), total = conds.length;
+        if (sales.countOf(id, v) >= total) {
+          // todas já à venda → tira todas
+          for (let i = 0; i < total; i++) sales.remove(id, v, i);
+        } else {
+          // adiciona TODAS as cópias que faltam, cada uma com sua condição + preço de mercado
+          const mkt = priceOf(cardsById.get(id), v);
+          conds.forEach((cond, i) => { if (!sales.has(id, v, i)) sales.add(id, v, i, mkt, cond); });
+        }
+        // atualiza o tile no lugar (sem re-render, pra não perder a rolagem)
+        const added = sales.countOf(id, v);
+        pick.classList.toggle("is-added", added >= total);
+        pick.classList.toggle("is-partial", added > 0 && added < total);
+        let countEl = pick.querySelector(".sales-pick-cond");
+        if (added > 0) {
+          if (!countEl) { countEl = document.createElement("span"); countEl.className = "sales-pick-cond"; pick.querySelector(".sales-pick-var").appendChild(countEl); }
+          countEl.textContent = `${added}/${total}`;
+        } else if (countEl) { countEl.remove(); }
         updateCount();
       }
     });
