@@ -42,6 +42,17 @@
 
           <div class="setting-row">
             <div class="setting-info">
+              <strong data-i18n="settings.theme">Tema</strong>
+              <span data-i18n="settings.themeDesc">Claro (dia) ou escuro (noite).</span>
+            </div>
+            <select id="settingTheme" class="setting-select" aria-label="Tema">
+              <option value="light" data-i18n="settings.themeLight">Claro</option>
+              <option value="dark" data-i18n="settings.themeDark">Escuro</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-info">
               <strong data-i18n="settings.gameColors">Cores por jogo</strong>
               <span data-i18n="settings.gameColorsDesc">Pinta o site de vermelho no Pokémon e de roxo no Lorcana, conforme a página ou o filtro. Desligue pra deixar tudo neutro.</span>
               <div class="setting-preview" aria-hidden="true">
@@ -51,6 +62,45 @@
               </div>
             </div>
             <button type="button" class="setting-switch" id="gameColorsToggle" role="switch" aria-checked="true" aria-label="Cores por jogo"><span class="setting-switch-knob"></span></button>
+          </div>
+        </section>
+
+        <section class="settings-group" aria-labelledby="settingsLang">
+          <h2 id="settingsLang" data-i18n="settings.langCurrency">Idioma e moeda</h2>
+
+          <div class="setting-row">
+            <div class="setting-info">
+              <strong data-i18n="settings.language">Idioma</strong>
+              <span data-i18n="settings.languageDesc">Idioma do site.</span>
+            </div>
+            <select id="settingLang" class="setting-select" aria-label="Idioma">
+              <option value="pt">Português (BR)</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-info">
+              <strong data-i18n="settings.currency">Moeda</strong>
+              <span data-i18n="settings.currencyDesc">Moeda dos preços e do portfólio.</span>
+            </div>
+            <select id="settingCurrency" class="setting-select" aria-label="Moeda">
+              <option value="BRL">R$ BRL</option>
+              <option value="USD">US$ USD</option>
+              <option value="EUR">€ EUR</option>
+            </select>
+          </div>
+        </section>
+
+        <section class="settings-group" aria-labelledby="settingsPrivacy">
+          <h2 id="settingsPrivacy" data-i18n="settings.privacy">Privacidade</h2>
+
+          <div class="setting-row">
+            <div class="setting-info">
+              <strong data-i18n="settings.sensitive">Modo sensível</strong>
+              <span data-i18n="settings.sensitiveDesc">Borra os valores de portfólio e coleção, pra dar print ou compartilhar a tela sem revelar quanto sua coleção vale.</span>
+            </div>
+            <button type="button" class="setting-switch" id="sensitiveToggle" role="switch" aria-checked="false" aria-label="Modo sensível"><span class="setting-switch-knob"></span></button>
           </div>
         </section>
       </div>

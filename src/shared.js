@@ -903,13 +903,44 @@
       btn.title = t("theme.toggle");
     };
     render();
-    btn.addEventListener("click", () => {
-      const next = getTheme() === "light" ? "dark" : "light";
-      try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* ignora */ }
-      applyTheme(next);
-      render();
-    });
+    document.addEventListener("sleevu:theme", render); // sincroniza com a tela de Configurações
+    btn.addEventListener("click", () => setTheme(getTheme() === "light" ? "dark" : "light"));
     actions.appendChild(btn);
+  }
+  // Troca o tema (claro/escuro) e avisa quem reflete o estado (botão do topo +
+  // a tela de Configurações). Usado pelo toggle do topo e pelo seletor de Settings.
+  function setTheme(theme) {
+    const v = theme === "light" ? "light" : "dark";
+    try { localStorage.setItem(THEME_KEY, v); } catch (e) { /* ignora */ }
+    applyTheme(v);
+    document.dispatchEvent(new CustomEvent("sleevu:theme"));
+  }
+  // Idioma e moeda recarregam (re-renderizam tudo); os setters abaixo são usados
+  // tanto pelos dropdowns do topo quanto pela tela de Configurações.
+  function getLanguage() { return currentLanguage; }
+  function setLanguage(code) {
+    try { localStorage.setItem(languageStorageKey, code); } catch (e) { /* ignora */ }
+    window.location.reload();
+  }
+  function setCurrency(code) {
+    try { localStorage.setItem(currencyStorageKey, code); } catch (e) { /* ignora */ }
+    window.location.reload();
+  }
+
+  // --- Modo sensível: esconde (borra) valores de portfólio/coleção pra dar print
+  // sem revelar quanto a coleção vale. Pref local; marca data-sensitive no <html>;
+  // o CSS borra os totais. Ligado/desligado na tela de Configurações.
+  const SENSITIVE_PREF = "tcg-collector-pref-sensitive";
+  function sensitiveEnabled() {
+    try { return localStorage.getItem(SENSITIVE_PREF) === "on"; } catch (e) { return false; }
+  }
+  function applySensitive() {
+    if (sensitiveEnabled()) document.documentElement.setAttribute("data-sensitive", "on");
+    else document.documentElement.removeAttribute("data-sensitive");
+  }
+  function setSensitive(on) {
+    try { localStorage.setItem(SENSITIVE_PREF, on ? "on" : "off"); } catch (e) { /* ignora */ }
+    applySensitive();
   }
 
   // Dropdown de bandeira reutilizável: colapsado mostra só a bandeira do item
@@ -2625,6 +2656,13 @@
     applyGameAccent,
     gameColorsEnabled,
     setGameColors,
+    getTheme,
+    setTheme,
+    getLanguage,
+    setLanguage,
+    setCurrency,
+    sensitiveEnabled,
+    setSensitive,
     sendMagicLink,
     getSession,
     createShare,
@@ -3520,6 +3558,7 @@
   initPageNav();
   initPageGameTitle();
   initGameAccent();
+  applySensitive();
   initMobileMenu();
   initSiteFooter();
   initPartnerBanner();
