@@ -1136,8 +1136,8 @@
       <div class="binder-shared-banner">
         <div class="binder-shared-info">
           ${kindLabel ? `<span class="shared-kind">${escapeHtml(kindLabel)}</span>` : ""}
-          ${profileNav ? `<span class="shared-kind">@${escapeHtml(profileNav.handle)}</span>` : ""}
-          <strong>${escapeHtml(share.title || t("collection.shared.title"))}</strong>
+          ${profileNav && !profileNav.identityInDash ? `<span class="shared-kind">@${escapeHtml(profileNav.handle)}</span>` : ""}
+          ${profileNav && profileNav.identityInDash ? "" : `<strong>${escapeHtml(share.title || t("collection.shared.title"))}</strong>`}
           <span>${escapeHtml(tn("collection.shared.banner", allItems.length))} · ${escapeHtml(bannerMoney)}</span>
         </div>
         ${profileNav && profileNav.label
@@ -1170,7 +1170,7 @@
     function paintShared() {
       const items = sharedFilter === "all" ? allItems : allItems.filter((it) => (it.g || "pokemon") === sharedFilter);
       const total = items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
-      const dash = isSale ? "" : sharedDashboardHtml(items, total);
+      const dash = isSale ? "" : sharedDashboardHtml(items, total, profileNav);
       document.getElementById("sharedBody").innerHTML =
         `${dash}<div class="card-grid">${items.map(sharedTile).join("")}</div>`;
     }
@@ -1229,10 +1229,11 @@
     function show() {
       if (mode === "sale") {
         const share = { kind: "collection", title: name, data: { items: sale.items, scope: "sale", cur: sale.cur || "BRL" } };
-        renderSharedCollection(share, { handle: prof.handle, label: t("profile.viewCollection"), onNav: () => { mode = "collection"; show(); } });
+        renderSharedCollection(share, { handle: prof.handle, name, label: t("profile.viewCollection"), onNav: () => { mode = "collection"; show(); } });
       } else {
         const share = { kind: "collection", title: name, data: { items: col.items } };
-        renderSharedCollection(share, { handle: prof.handle, label: hasSales ? t("profile.viewSales") : "", onNav: hasSales ? () => { mode = "sale"; show(); } : null });
+        // identityInDash: o nome+@ vão no card de stats (não no banner), evitando repetir.
+        renderSharedCollection(share, { handle: prof.handle, name, identityInDash: true, label: hasSales ? t("profile.viewSales") : "", onNav: hasSales ? () => { mode = "sale"; show(); } : null });
       }
     }
     show();
@@ -1241,7 +1242,7 @@
   // Mesmo dashboard da coleção, porém a partir dos itens desnormalizados do share
   // (sem catálogo). Distribuição por jogo só aparece se o share trouxe `g`
   // (shares antigos não têm — degrada sem quebrar).
-  function sharedDashboardHtml(items, total) {
+  function sharedDashboardHtml(items, total, profileNav) {
     const copies = items.reduce((s, it) => s + (it.q || 1), 0);
     const distinct = new Set(items.map((it) => it.id)).size;
     const sets = new Set(items.map((it) => it.s)).size;
@@ -1274,8 +1275,15 @@
         </div>`).join("")
       : "";
 
+    const profHead = (profileNav && profileNav.name)
+      ? `<div class="dash-profile">
+          <strong class="dash-profile-name">${escapeHtml(profileNav.name)}</strong>
+          <span class="dash-profile-handle">@${escapeHtml(profileNav.handle)}</span>
+        </div>`
+      : "";
     return `<section class="collection-dashboard">
       <article class="dash-card dash-stats">
+        ${profHead}
         <div class="dash-stats-counts">
           <div><span class="dash-stat-val">${copies}</span><span class="dash-stat-label">${escapeHtml(t("stats.copies"))}</span></div>
           <div><span class="dash-stat-val">${distinct}</span><span class="dash-stat-label">${escapeHtml(t("stats.distinct"))}</span></div>
