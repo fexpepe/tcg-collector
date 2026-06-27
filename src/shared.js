@@ -2694,6 +2694,7 @@
     fetchPublicProfile,
     pushPublicProfile,
     deletePublicProfile,
+    publishProfile,
     sendMagicLink,
     getSession,
     createShare,
@@ -3228,6 +3229,69 @@
         method: "DELETE", headers: authHeaders(s.access_token)
       });
     } catch (e) { /* ignora */ }
+  }
+
+  // Lê a lista de vendas direto do localStorage (global), pra montar o payload
+  // público sem depender da store da página de Vendas.
+  function readSalesList() {
+    try {
+      const data = JSON.parse(localStorage.getItem(SYNC_KEYS.sales) || "{}");
+      const map = data.sales || {};
+      const order = Array.isArray(data.order) ? data.order : Object.keys(map);
+      return order.filter((k) => map[k]).map((k) => {
+        const e = map[k];
+        return { cardId: e.cardId, variant: e.variant, price: Number(e.price) || 0, cond: e.cond || "NM" };
+      });
+    } catch (e) { return []; }
+  }
+  // Monta o payload CURADO do perfil público: coleção (valor de mercado só se
+  // showValues) + lista de vendas. Auto-contido (embute detalhe da carta), igual
+  // ao share. `cards`=catálogo, `owned`=store da página, `prices`=preços.
+  function buildPublicPayload(cards, owned, prices, showValues, currency) {
+    const cur = currency || "BRL";
+    const colItems = [];
+    cardVariantPairs((cards || []).filter((c) => owned.has(c.id))).forEach(({ card, variant }) => {
+      const qty = owned.variantTotal(card.id, variant);
+      if (qty <= 0) return;
+      const src = cardImageSources(card);
+      let vbrl = 0;
+      if (showValues) {
+        const unit = cardValue(card, variant, prices).value || 0;
+        const c = convertMoney(unit, cur, "BRL");
+        vbrl = c == null ? 0 : Math.round(c * 100) / 100;
+      }
+      colItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, v: variant, q: qty, vbrl, img: src.url, fb: src.fallback || "" });
+    });
+    colItems.sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q));
+    const byId = new Map((cards || []).map((c) => [c.id, c]));
+    const saleItems = [];
+    readSalesList().forEach((it) => {
+      const card = byId.get(it.cardId);
+      if (!card) return;
+      const src = cardImageSources(card);
+      saleItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, v: it.variant, q: 1, sp: it.price, cond: it.cond || "NM", cur, img: src.url, fb: src.fallback || "" });
+    });
+    return { collection: { items: colItems }, sales: { items: saleItems, cur, scope: "sale" }, showValues: !!showValues };
+  }
+  // Publica/atualiza (ou apaga) o perfil público conforme is_public. Debounced e
+  // só re-envia se o payload mudou. Chamado pelas páginas (coleção/vendas).
+  let lastPublished = null;
+  let publishT = null;
+  function publishProfile(cards, owned, prices) {
+    clearTimeout(publishT);
+    publishT = setTimeout(async () => {
+      const p = getProfile();
+      if (!getSession() || !p.handle || p.handle.length < 3) return;
+      if (!p.isPublic) {
+        if (lastPublished !== "DELETED") { lastPublished = "DELETED"; await deletePublicProfile(); }
+        return;
+      }
+      const payload = buildPublicPayload(cards, owned, prices, p.showValues, getCurrency());
+      const json = JSON.stringify({ h: p.handle, n: p.displayName, sv: p.showValues, d: payload });
+      if (json === lastPublished) return;
+      lastPublished = json;
+      await pushPublicProfile(payload);
+    }, 1500);
   }
 
   // Apaga a conta na nuvem (RPC `delete_account` com security definer: remove

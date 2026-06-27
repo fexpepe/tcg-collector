@@ -156,10 +156,14 @@
 
   // ?s=<id>: visualização pública (somente leitura) de uma coleção compartilhada.
   // Os dados vêm desnormalizados no share, então não precisa carregar o catálogo.
-  const shareId = new URLSearchParams(window.location.search).get("s");
+  const collParams = new URLSearchParams(window.location.search);
+  const shareId = collParams.get("s");
+  const profileHandle = collParams.get("u"); // perfil público: /users/<handle>
 
   if (shareId) {
     shared.loadFxRates().then(() => renderSharedCollection(shareId));
+  } else if (profileHandle) {
+    shared.loadFxRates().then(() => renderPublicProfile(profileHandle));
   } else {
     // Coleção unificada: carrega as cartas que você tem dos DOIS jogos (cada uma
     // marcada com card.game) e mescla. Cada jogo lê só os seus ids.
@@ -183,6 +187,7 @@
         hydrateFilters();
         bindShareButton();
         render();
+        shared.publishProfile(cards, owned, prices); // publica o perfil público se for o caso
       })
       .catch((error) => {
         elements.groupsEmpty.textContent = t("error.catalog", { message: error.message });
@@ -1084,15 +1089,21 @@
     </article>`;
   }
 
-  async function renderSharedCollection(id) {
-    // Esconde toda a UI normal da coleção; mostra só o container compartilhado.
+  // Prepara o container de leitura (esconde a UI normal da coleção).
+  function prepareSharedView() {
     ["page-search", "collection-subtitle", "collection-toolbar", "collection-dashboard"].forEach((c) => { const el = document.querySelector("." + c); if (el) el.hidden = true; });
     [elements.tabs, elements.groupsView, elements.cardsView, elements.dashboard, document.getElementById("collectionShareBtn")].forEach((el) => { if (el) el.hidden = true; });
     const sv = document.getElementById("sharedCollection");
+    if (sv) { sv.hidden = false; sv.innerHTML = `<p class="empty-state">${escapeHtml(t("collection.shared.loading"))}</p>`; }
+    return sv;
+  }
+
+  // `id` pode ser o id do share (?s=) OU um objeto share já montado (perfil
+  // público). `profileNav` injeta o cabeçalho @handle + o link Coleção↔Vendas.
+  async function renderSharedCollection(id, profileNav) {
+    const sv = prepareSharedView();
     if (!sv) return;
-    sv.hidden = false;
-    sv.innerHTML = `<p class="empty-state">${escapeHtml(t("collection.shared.loading"))}</p>`;
-    const share = await shared.fetchShare(id);
+    const share = typeof id === "string" ? await shared.fetchShare(id) : id;
     if (!share || share.kind !== "collection" || !share.data || !Array.isArray(share.data.items)) {
       sv.innerHTML = `<p class="empty-state">${escapeHtml(t("collection.shared.notFound"))}</p>`;
       return;
@@ -1125,10 +1136,13 @@
       <div class="binder-shared-banner">
         <div class="binder-shared-info">
           ${kindLabel ? `<span class="shared-kind">${escapeHtml(kindLabel)}</span>` : ""}
+          ${profileNav ? `<span class="shared-kind">@${escapeHtml(profileNav.handle)}</span>` : ""}
           <strong>${escapeHtml(share.title || t("collection.shared.title"))}</strong>
           <span>${escapeHtml(tn("collection.shared.banner", allItems.length))} · ${escapeHtml(bannerMoney)}</span>
         </div>
-        ${isFolder ? `<button type="button" class="primary" id="sharedSaveBtn">${escapeHtml(t("folders.shared.save"))}</button>` : ""}
+        ${profileNav && profileNav.label
+          ? `<button type="button" class="secondary" data-profile-nav>${escapeHtml(profileNav.label)}</button>`
+          : (isFolder ? `<button type="button" class="primary" id="sharedSaveBtn">${escapeHtml(t("folders.shared.save"))}</button>` : "")}
       </div>
       ${filterHtml}
       <div id="sharedBody"></div>`;
@@ -1176,16 +1190,52 @@
     // pra o preview ter o detalhe completo (raridade, artista, mercado…). Os
     // controles de posse/desejo agem na coleção de QUEM está vendo. (Delegado em
     // sv, então segue funcionando após o paintShared recriar a grade.)
-    sv.addEventListener("click", (event) => {
-      const btn = event.target.closest("[data-preview-card-id]");
-      if (btn) preview.open(btn.dataset.previewCardId, btn.dataset.previewVariant);
-    });
+    // Delegação ligada UMA vez no container (sobrevive aos re-renders do corpo).
+    if (!sv.dataset.previewBound) {
+      sv.dataset.previewBound = "1";
+      sv.addEventListener("click", (event) => {
+        const nav = event.target.closest("[data-profile-nav]");
+        if (nav && sv._profileNav) { sv._profileNav(); return; }
+        const btn = event.target.closest("[data-preview-card-id]");
+        if (btn) preview.open(btn.dataset.previewCardId, btn.dataset.previewVariant);
+      });
+    }
+    sv._profileNav = profileNav && profileNav.onNav ? profileNav.onNav : null;
     const idsByGame = {};
     allItems.forEach((it) => { const g = it.g || "pokemon"; (idsByGame[g] = idsByGame[g] || []).push(it.id); });
     try {
       const catalog = await shared.loadOwnedAcrossGames(idsByGame);
       (catalog.cards || []).forEach((card) => { cardsById.set(card.id, card); cardGameMap.set(card.id, card.game); });
     } catch (e) { /* sem catálogo: tiles seguem, só o preview não abre */ }
+  }
+
+  // Perfil público (/users/<handle> → ?u=). Lê o payload curado e mostra a
+  // Coleção, com um link pra alternar pra Vendas e Trocas (e voltar). Reusa toda
+  // a renderização de leitura (renderSharedCollection) com um cabeçalho @handle.
+  async function renderPublicProfile(handle) {
+    const sv = prepareSharedView();
+    if (!sv) return;
+    const prof = await shared.fetchPublicProfile(handle);
+    if (!prof || !prof.data) {
+      sv.innerHTML = `<p class="empty-state">${escapeHtml(t("profile.notFound"))}</p>`;
+      return;
+    }
+    const name = prof.display_name || ("@" + prof.handle);
+    document.title = name + " · Sleevu";
+    const col = (prof.data.collection && Array.isArray(prof.data.collection.items)) ? prof.data.collection : { items: [] };
+    const sale = (prof.data.sales && Array.isArray(prof.data.sales.items)) ? prof.data.sales : { items: [], cur: "BRL" };
+    const hasSales = sale.items.length > 0;
+    let mode = "collection";
+    function show() {
+      if (mode === "sale") {
+        const share = { kind: "collection", title: name, data: { items: sale.items, scope: "sale", cur: sale.cur || "BRL" } };
+        renderSharedCollection(share, { handle: prof.handle, label: t("profile.viewCollection"), onNav: () => { mode = "collection"; show(); } });
+      } else {
+        const share = { kind: "collection", title: name, data: { items: col.items } };
+        renderSharedCollection(share, { handle: prof.handle, label: hasSales ? t("profile.viewSales") : "", onNav: hasSales ? () => { mode = "sale"; show(); } : null });
+      }
+    }
+    show();
   }
 
   // Mesmo dashboard da coleção, porém a partir dos itens desnormalizados do share

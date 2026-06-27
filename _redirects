@@ -1,0 +1,4 @@
+# Perfil público com URL bonita: /users/<handle> serve a coleção em modo leitura
+# (collection.html lê ?u=<handle>). 200 = rewrite (a URL /users/<handle> continua
+# na barra). Lido pelo Cloudflare Pages.
+/users/:handle    /collection.html?u=:handle    200

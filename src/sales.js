@@ -564,6 +564,7 @@
       Object.keys(ownedByGame).forEach((g) =>
         ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
       render();
+      shared.publishProfile(cards, owned, prices); // republica o perfil público (vendas atualizadas)
     })
     .catch((error) => {
       if (elements.salesEmpty) { elements.salesEmpty.textContent = t("error.catalog", { message: error.message }); elements.salesEmpty.hidden = false; }
