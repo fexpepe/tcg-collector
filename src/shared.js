@@ -85,7 +85,7 @@
   // iOS (dica manual) — e o app ainda não está instalado/aberto em standalone.
   function canInstallPWA() { return !isStandalonePWA() && (!!deferredInstallPrompt || isIOSDevice()); }
 
-  function createIdStore(storageKey) {
+  function createIdStore(storageKey, metaKey) {
     let ids = load();
 
     function load() {
@@ -98,6 +98,9 @@
 
     function save() {
       scheduleWrite(storageKey, () => JSON.stringify(Array.from(ids)));
+      // Carimba o updatedAt (meta) pra o sync resolver por LWW — assim
+      // desfavoritar também propaga (e não só somar, como na união).
+      if (metaKey) scheduleWrite(metaKey, () => JSON.stringify({ updatedAt: Date.now() }));
     }
 
     return {
@@ -335,7 +338,7 @@
   }
 
   function createFavoritesStore() {
-    return createIdStore("tcg-collector-favorites-v1");
+    return createIdStore("tcg-collector-favorites-v1", "tcg-collector-favorites-meta-v1");
   }
 
   // Lista "Eu quero": cardId -> [variantes desejadas]. Sem condição nem
@@ -2692,6 +2695,7 @@
     folders: "tcg-collector-collection-folders-v1", // pastas da coleção (globais)
     sales: "tcg-collector-collection-sales-v1", // cartas à venda (globais)
     favorites: "tcg-collector-favorites-v1", // Pokémon favoritados (globais)
+    favoritesMeta: "tcg-collector-favorites-meta-v1", // updatedAt p/ LWW dos favoritos
     history: gameKey("history-v1")
   };
 
@@ -2957,20 +2961,26 @@
     const out = Array.from(byDate.values()).sort((x, y) => String(x.d).localeCompare(String(y.d)));
     return out.length > 800 ? out.slice(out.length - 800) : out;
   }
-  // Favoritos (lista de ids): UNIÃO — favoritou em qualquer aparelho, fica
-  // favoritado. Mantém a ordem do LOCAL primeiro: quando o remoto não traz nada
-  // novo, o resultado é IDÊNTICO ao local (não dispara reload à toa). Ausente nos
-  // dois → undefined (o JSON omite, evitando diff eterno).
-  function mergeFavorites(a, b) {
+  // Favoritos (lista de ids): LWW pelo updatedAt do meta — o lado com a mudança
+  // MAIS RECENTE vence inteiro, então desfavoritar TAMBÉM propaga. Empate (ex.:
+  // dados antigos sem timestamp, ts=0) → UNIÃO, pra nunca perder favorito na
+  // migração. Mantém a ordem do local quando ele vence (não dispara reload à toa);
+  // ausente nos dois → undefined (o JSON omite, evitando diff eterno).
+  function mergeFavorites(a, aMeta, b, bMeta) {
     const arrA = Array.isArray(a) ? a : null;
     const arrB = Array.isArray(b) ? b : null;
-    if (!arrA && !arrB) return undefined;
-    return Array.from(new Set([...(arrA || []), ...(arrB || [])]));
+    if (!arrA && !arrB) return { favorites: undefined, meta: undefined };
+    const tsA = (aMeta && Number(aMeta.updatedAt)) || 0;
+    const tsB = (bMeta && Number(bMeta.updatedAt)) || 0;
+    if (tsA > tsB) return { favorites: arrA || [], meta: aMeta };
+    if (tsB > tsA) return { favorites: arrB || [], meta: bMeta };
+    return { favorites: Array.from(new Set([...(arrA || []), ...(arrB || [])])), meta: aMeta || bMeta };
   }
   function mergeData(localD, remoteD) {
     const a = localD || {}, b = remoteD || {};
     const col = mergeCollection(a.collection, a.collectionMeta, b.collection, b.collectionMeta);
     const wl = mergeWishlist(a.wishlist, a.wishlistMeta, b.wishlist, b.wishlistMeta);
+    const fav = mergeFavorites(a.favorites, a.favoritesMeta, b.favorites, b.favoritesMeta);
     return {
       collection: col.collection,
       collectionMeta: col.meta,
@@ -2980,7 +2990,8 @@
       binders: mergeBinders(a.binders, b.binders),
       folders: mergeFolders(a.folders, b.folders),
       sales: mergeSales(a.sales, b.sales),
-      favorites: mergeFavorites(a.favorites, b.favorites),
+      favorites: fav.favorites,
+      favoritesMeta: fav.meta,
       history: mergeHistory(a.history, b.history)
     };
   }

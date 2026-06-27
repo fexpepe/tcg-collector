@@ -215,25 +215,29 @@
   }
 
   function hydrateFilters() {
-    const myCards = ownedCards();
-    addOptions(elements.pokemonFilter, unique(myCards.map((card) => card.pokemonName || speciesName(card.name))));
-    addOptions(elements.setFilter, unique(myCards.map((card) => card.set)));
-    addOptions(elements.languageFilter, unique(myCards.map((card) => card.language)), (value) => langOptionLabel(value));
+    refreshFilters();
     applyCardLangDefault(elements.languageFilter);
-    refreshRarityFilter();
   }
 
-  // Raridade segue o filtro de jogo: só Pokémon, só Lorcana, ou todas no "Todos".
-  // ownedCards() já respeita o gameFilter. Mantém a opção "Todas" (1ª) e preserva
+  // Reconstrói um <select> de filtro mantendo a 1ª opção ("Todos") e preservando
   // a seleção atual se ela ainda existir no novo conjunto.
-  function refreshRarityFilter() {
-    const select = elements.rarityFilter;
+  function fillFilter(select, values, formatLabel) {
     if (!select) return;
     const prev = select.value;
-    while (select.options.length > 1) select.remove(1); // tira tudo menos "Todas"
-    const rarities = unique(ownedCards().map((card) => card.rarity).filter(Boolean)).sort();
-    addOptions(select, rarities);
-    select.value = rarities.includes(prev) ? prev : "";
+    while (select.options.length > 1) select.remove(1); // tira tudo menos "Todos/Todas"
+    addOptions(select, values, formatLabel);
+    select.value = values.includes(prev) ? prev : "";
+  }
+
+  // Os filtros (Pokémon, Set, Idioma, Raridade) seguem o filtro de jogo: só
+  // Pokémon, só Lorcana, ou os dois no "Todos". ownedCards() já respeita o
+  // gameFilter, então é só reconstruir a partir dele ao trocar de jogo.
+  function refreshFilters() {
+    const myCards = ownedCards();
+    fillFilter(elements.pokemonFilter, unique(myCards.map((card) => card.pokemonName || speciesName(card.name))));
+    fillFilter(elements.setFilter, unique(myCards.map((card) => card.set)));
+    fillFilter(elements.languageFilter, unique(myCards.map((card) => card.language)), (value) => langOptionLabel(value));
+    fillFilter(elements.rarityFilter, unique(myCards.map((card) => card.rarity).filter(Boolean)).sort());
   }
 
   // Rótulo do filtro de idioma com a bandeirinha (emoji) antes do nome.
@@ -285,7 +289,7 @@
       Array.from(elements.gameFilter.children).forEach((node) => {
         node.setAttribute("aria-pressed", node === chip ? "true" : "false");
       });
-      refreshRarityFilter(); // raridades do jogo escolhido (todas no "Todos")
+      refreshFilters(); // Pokémon/Set/Idioma/Raridade do jogo escolhido (todos no "Todos")
       render({ resetCount: true });
     });
 
