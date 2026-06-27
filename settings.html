@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io; connect-src 'self' https://api.tcgdex.net https://pokeapi.co https://economia.awesomeapi.com.br https://*.supabase.co; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="settings.title">Configurações - Sleevu</title>
+    <meta name="description" content="Configurações do Sleevu: aparência, cores por jogo e preferências da conta.">
+    <link rel="canonical" href="https://sleevu.app/settings">
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#0d0e12">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <script src="src/game.js"></script>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">Sleevu</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page="settings"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-head">
+        <h1 data-i18n="settings.heading">Configurações</h1>
+      </div>
+      <p class="collection-subtitle" data-i18n="settings.subtitle">Preferências do site. Ficam neste aparelho.</p>
+
+      <div id="settingsRoot" class="settings">
+        <section class="settings-group" aria-labelledby="settingsAppearance">
+          <h2 id="settingsAppearance" data-i18n="settings.appearance">Aparência</h2>
+
+          <div class="setting-row">
+            <div class="setting-info">
+              <strong data-i18n="settings.gameColors">Cores por jogo</strong>
+              <span data-i18n="settings.gameColorsDesc">Pinta o site de vermelho no Pokémon e de roxo no Lorcana, conforme a página ou o filtro. Desligue pra deixar tudo neutro.</span>
+              <div class="setting-preview" aria-hidden="true">
+                <span class="setting-swatch sw-pokemon">Pokémon</span>
+                <span class="setting-swatch sw-lorcana">Lorcana</span>
+                <span class="setting-swatch sw-neutral" data-i18n="filter.gameAll">Todos</span>
+              </div>
+            </div>
+            <button type="button" class="setting-switch" id="gameColorsToggle" role="switch" aria-checked="true" aria-label="Cores por jogo"><span class="setting-switch-knob"></span></button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/shared.js"></script>
+    <script defer src="src/settings.js"></script>
+  </body>
+</html>

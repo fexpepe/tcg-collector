@@ -859,6 +859,7 @@
           <a href="about.html">${escapeHtml(t("footer.about"))}</a>
           <a href="faq.html">${escapeHtml(t("footer.faq"))}</a>
           <a href="help.html">${escapeHtml(t("footer.help"))}</a>
+          <a href="settings.html">${escapeHtml(t("footer.settings"))}</a>
           <a href="privacy.html">${escapeHtml(t("footer.privacy"))}</a>
           <a href="terms.html">${escapeHtml(t("footer.terms"))}</a>
         </nav>
@@ -2622,6 +2623,8 @@
     formatMoney: fmtMoney,
     convertMoney,
     applyGameAccent,
+    gameColorsEnabled,
+    setGameColors,
     sendMagicLink,
     getSession,
     createShare,
@@ -3318,6 +3321,7 @@
       <li class="lang-dd-option" role="menuitem" data-import-dex>${escapeHtml(t("dex.import"))}</li>`;
     // Sobre (ajuda + troubleshooting + privacidade/termos).
     const aboutItems = `<li class="auth-sep" aria-hidden="true"></li>
+      <a class="lang-dd-option auth-link" role="menuitem" href="settings.html">${escapeHtml(t("footer.settings"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="help.html">${escapeHtml(t("footer.help"))}</a>
       <li class="lang-dd-option" role="menuitem" data-troubleshoot>${escapeHtml(t("ts.title"))}</li>
       <a class="lang-dd-option auth-link" role="menuitem" href="privacy.html">${escapeHtml(t("footer.privacy"))}</a>
@@ -3487,8 +3491,18 @@
   // Accent por contexto de jogo: vermelho (Pokémon), roxo (Lorcana), neutro (all).
   // Marca data-game-accent no <html>; o CSS troca --accent + tints. As páginas
   // unificadas (Coleção/Vendas) chamam applyGameAccent(filtro) ao trocar o jogo.
+  // Pode ser DESLIGADO nas Configurações (pref local) — aí fica sempre neutro.
+  const GAME_COLORS_PREF = "tcg-collector-pref-game-colors";
+  function gameColorsEnabled() {
+    try { return localStorage.getItem(GAME_COLORS_PREF) !== "off"; } catch (e) { return true; }
+  }
   function applyGameAccent(value) {
-    document.documentElement.dataset.gameAccent = (value === "pokemon" || value === "lorcana") ? value : "all";
+    const v = gameColorsEnabled() && (value === "pokemon" || value === "lorcana") ? value : "all";
+    document.documentElement.dataset.gameAccent = v;
+  }
+  function setGameColors(on) {
+    try { localStorage.setItem(GAME_COLORS_PREF, on ? "on" : "off"); } catch (e) { /* ignora */ }
+    initGameAccent(); // re-aplica o accent da página atual respeitando a pref
   }
   function initGameAccent() {
     const nav = document.querySelector(".page-nav[data-active-page]");
