@@ -2854,6 +2854,30 @@ a.hub-tile:hover {
   border: 1px solid var(--line); background: var(--panel-strong); color: var(--text);
   font-size: 14px; cursor: pointer;
 }
+/* Campos de perfil (nome + @handle + URL) */
+.setting-row-stack { flex-direction: column; align-items: stretch; gap: 8px; }
+.setting-field-label { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 15px; }
+.setting-count { font-size: 12px; color: var(--subtle); font-variant-numeric: tabular-nums; }
+.setting-input {
+  width: 100%; padding: 11px 13px; border-radius: 10px; border: 1px solid var(--line);
+  background: var(--panel-strong); color: var(--text); font-size: 15px;
+}
+.setting-input:focus-visible { outline: none; border-color: var(--accent); }
+.setting-input[readonly] { color: var(--muted); cursor: default; }
+.setting-handle { display: flex; align-items: center; gap: 0; }
+.setting-handle-at {
+  flex: none; padding: 11px 6px 11px 13px; border: 1px solid var(--line); border-right: 0;
+  border-radius: 10px 0 0 10px; background: var(--panel-strong); color: var(--subtle); font-size: 15px;
+}
+.setting-handle .setting-input { border-radius: 0 10px 10px 0; padding-left: 4px; }
+.setting-field-hint { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.setting-url { display: flex; gap: 8px; align-items: stretch; }
+.setting-url .setting-input { flex: 1; min-width: 0; }
+.setting-copy {
+  flex: none; width: 44px; border-radius: 10px; border: 1px solid var(--line);
+  background: var(--panel-strong); color: var(--text); cursor: pointer; font-size: 16px;
+}
+.setting-copy:hover { border-color: var(--accent); color: var(--accent); }
 
 /* Modo sensível: borra os totais de valor (portfólio/coleção/vendas) pra dar
    print sem revelar quanto vale. Mira os totais por id + a classe .sensitive-value. */

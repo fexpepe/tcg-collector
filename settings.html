@@ -37,6 +37,46 @@
       <p class="collection-subtitle" data-i18n="settings.subtitle">Preferências do site. Ficam neste aparelho.</p>
 
       <div id="settingsRoot" class="settings">
+        <section class="settings-group" aria-labelledby="settingsProfile">
+          <h2 id="settingsProfile" data-i18n="settings.profile">Perfil</h2>
+
+          <div class="setting-row setting-row-stack">
+            <span class="setting-field-label"><strong data-i18n="settings.displayName">Nome de exibição</strong><span class="setting-count" id="nameCount">0/24</span></span>
+            <input type="text" id="profileName" class="setting-input" maxlength="24" placeholder="Fernando" autocomplete="off" aria-label="Nome de exibição">
+          </div>
+
+          <div class="setting-row setting-row-stack">
+            <span class="setting-field-label"><strong data-i18n="settings.handle">Seu @</strong><span class="setting-count" id="handleCount">0/24</span></span>
+            <span class="setting-handle"><span class="setting-handle-at" aria-hidden="true">@</span><input type="text" id="profileHandle" class="setting-input" maxlength="24" placeholder="fexpepe" autocomplete="off" spellcheck="false" aria-label="Seu @"></span>
+            <span class="setting-field-hint" data-i18n="settings.handleHint">Letras minúsculas, números e _. Vira o link do seu perfil.</span>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-info">
+              <strong data-i18n="settings.publicProfile">Perfil público</strong>
+              <span data-i18n="settings.publicProfileDesc">Deixa sua coleção visível num link público. Desligado, só você vê.</span>
+            </div>
+            <button type="button" class="setting-switch" id="publicToggle" role="switch" aria-checked="false" aria-label="Perfil público"><span class="setting-switch-knob"></span></button>
+          </div>
+
+          <div class="setting-row" id="showValuesRow" hidden>
+            <div class="setting-info">
+              <strong data-i18n="settings.showValues">Mostrar valores no perfil</strong>
+              <span data-i18n="settings.showValuesDesc">Exibe quanto a coleção vale no seu perfil público.</span>
+            </div>
+            <button type="button" class="setting-switch" id="showValuesToggle" role="switch" aria-checked="false" aria-label="Mostrar valores no perfil"><span class="setting-switch-knob"></span></button>
+          </div>
+
+          <div class="setting-row setting-row-stack" id="profileUrlRow" hidden>
+            <span class="setting-field-label"><strong data-i18n="settings.profileUrl">Link do seu perfil</strong></span>
+            <div class="setting-url">
+              <input type="text" id="profileUrl" class="setting-input" readonly aria-label="Link do seu perfil">
+              <button type="button" class="setting-copy" id="profileUrlCopy" data-i18n-title="settings.copy" title="Copiar" aria-label="Copiar">⧉</button>
+            </div>
+            <span class="setting-field-hint" data-i18n="settings.profileUrlSoon">O perfil público entra no ar em breve — seu @ já fica reservado.</span>
+          </div>
+        </section>
+
         <section class="settings-group" aria-labelledby="settingsAppearance">
           <h2 id="settingsAppearance" data-i18n="settings.appearance">Aparência</h2>
 

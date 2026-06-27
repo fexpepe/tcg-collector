@@ -653,6 +653,9 @@
     scope.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
       element.placeholder = t(element.dataset.i18nPlaceholder);
     });
+    scope.querySelectorAll("[data-i18n-title]").forEach((element) => {
+      element.setAttribute("title", t(element.dataset.i18nTitle));
+    });
   }
 
   // Constrói a navegação das páginas: Início | Pokémon ▾ (Pokédex, Sets,
@@ -941,6 +944,25 @@
   function setSensitive(on) {
     try { localStorage.setItem(SENSITIVE_PREF, on ? "on" : "off"); } catch (e) { /* ignora */ }
     applySensitive();
+  }
+
+  // --- Perfil (nome de exibição + @handle + visibilidade). Por ora LOCAL; o
+  // backend (unicidade do @ + leitura pública da coleção) entra na etapa 2.
+  // updatedAt já carimbado pra futuro sync LWW.
+  const PROFILE_KEY = "tcg-collector-profile-v1";
+  const PROFILE_DEFAULTS = { displayName: "", handle: "", isPublic: false, showValues: false };
+  function getProfile() {
+    try { return Object.assign({}, PROFILE_DEFAULTS, JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}")); }
+    catch (e) { return Object.assign({}, PROFILE_DEFAULTS); }
+  }
+  function setProfile(patch) {
+    const next = Object.assign(getProfile(), patch, { updatedAt: Date.now() });
+    try { localStorage.setItem(PROFILE_KEY, JSON.stringify(next)); } catch (e) { /* ignora */ }
+    return next;
+  }
+  // @ válido: minúsculas, números e _ (vira slug de URL). Máx. 24.
+  function normalizeHandle(raw) {
+    return String(raw || "").toLowerCase().replace(/[^a-z0-9_]/g, "").slice(0, 24);
   }
 
   // Dropdown de bandeira reutilizável: colapsado mostra só a bandeira do item
@@ -2663,6 +2685,9 @@
     setCurrency,
     sensitiveEnabled,
     setSensitive,
+    getProfile,
+    setProfile,
+    normalizeHandle,
     sendMagicLink,
     getSession,
     createShare,
