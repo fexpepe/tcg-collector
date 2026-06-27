@@ -7,3 +7,11 @@
   X-Frame-Options: DENY
   Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
   Cross-Origin-Opener-Policy: same-origin
+
+# App shell sem versão na URL (src/*.js e styles.css): revalida sempre em vez de
+# ficar 4h preso numa versão antiga após um deploy. ETag → 304 barato quando não
+# mudou; 200 fresco quando muda. (O HTML já é dinâmico; as imagens seguem cacheadas.)
+/src/*
+  Cache-Control: no-cache
+/styles.css
+  Cache-Control: no-cache

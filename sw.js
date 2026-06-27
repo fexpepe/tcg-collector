@@ -8,7 +8,7 @@
 //    da rede quando online (assim um deploy novo é sempre pego, sem o app ficar
 //    preso numa versão velha) e caem no cache quando offline — fazendo o app
 //    abrir e a coleção já vista funcionar sem internet (PWA instalável).
-const SHELL_CACHE = "tcg-shell-v42";
+const SHELL_CACHE = "tcg-shell-v43";
 const IMAGE_CACHE = "tcg-images-v1";
 const DATA_CACHE = "tcg-data-v1";
 const CACHES = [SHELL_CACHE, IMAGE_CACHE, DATA_CACHE];
@@ -41,8 +41,10 @@ const MAX_DATA = 600;
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(SHELL_CACHE);
-    // allSettled: um arquivo ausente não derruba a instalação inteira.
-    await Promise.allSettled(SHELL_ASSETS.map((asset) => cache.add(asset)));
+    // allSettled: um arquivo ausente não derruba a instalação inteira. cache:reload
+    // fura o cache HTTP do navegador, pra a instalação pegar a versão FRESCA do
+    // deploy (e não uma cópia de 4h presa no cache).
+    await Promise.allSettled(SHELL_ASSETS.map((asset) => cache.add(new Request(asset, { cache: "reload" }))));
     self.skipWaiting();
   })());
 });
@@ -102,8 +104,12 @@ async function cacheFirst(url) {
 // rede de segurança offline.
 async function networkFirst(request, url) {
   const cacheName = url.pathname.includes("/data/") ? DATA_CACHE : SHELL_CACHE;
+  // Recursos do app (CSS/JS/dados) têm cache HTTP de 4h e URL sem versão; ao
+  // navegar, o navegador serviria a cópia velha. cache:"no-cache" força revalidar
+  // (ETag → 304 barato, ou 200 fresco no deploy). HTML (navigate) já vem dinâmico.
+  const init = request.mode === "navigate" ? undefined : { cache: "no-cache" };
   try {
-    const response = await fetch(request);
+    const response = await fetch(request, init);
     if (response && response.ok) {
       const cache = await caches.open(cacheName);
       cache.put(request, response.clone());
