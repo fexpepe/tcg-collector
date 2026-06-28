@@ -1002,6 +1002,18 @@
       });
     } catch (e) { /* analytics nunca quebra a página */ }
   }
+  // Cloudflare Web Analytics: agregado e cookieless (tráfego/origem/países/web vitals).
+  // Pages não injeta sozinho, então plugamos o beacon aqui. SÓ em produção
+  // (sleevu.app) pra não contar localhost/preview. CSP já libera o host.
+  function injectCfBeacon() {
+    if (!/(^|\.)sleevu\.app$/i.test(location.hostname)) return;
+    if (document.querySelector("script[data-cf-beacon]")) return;
+    const s = document.createElement("script");
+    s.defer = true;
+    s.src = "https://static.cloudflareinsights.com/beacon.min.js";
+    s.setAttribute("data-cf-beacon", '{"token":"bbd254728c214168ab583464d013e2a7"}');
+    document.head.appendChild(s);
+  }
   // Números agregados (tráfego + produto). Só retorna p/ admin (gate no servidor);
   // senão null. Usado pela página /admin.
   async function analyticsSummary(days) {
@@ -3880,7 +3892,8 @@
   initPageGameTitle();
   initGameAccent();
   applySensitive();
-  logPageview(); // analytics anônimo (1 pageview por carregamento)
+  logPageview(); // analytics anônimo first-party (1 pageview por carregamento)
+  injectCfBeacon(); // Cloudflare Web Analytics (só em produção)
   initMobileMenu();
   initSiteFooter();
   initPartnerBanner();
