@@ -971,6 +971,52 @@
     if (!(p.isPublic && p.handle && p.handle.length >= 3)) return null;
     return "https://sleevu.app/users/" + p.handle + (tab === "sales" ? "?t=sales" : "");
   }
+
+  // --- Analytics first-party: ANÔNIMO e agregado (sem cookie de rastreio, sem
+  // terceiro). Loga 1 pageview por carregamento na tabela `events`; o id anônimo é
+  // um uuid first-party no localStorage só p/ contar visitante único (DAU/MAU). ---
+  function anonId() {
+    try {
+      let id = localStorage.getItem("sleevu-anon-v1");
+      if (!id) {
+        id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+          : (Date.now().toString(36) + Math.random().toString(36).slice(2));
+        localStorage.setItem("sleevu-anon-v1", id);
+      }
+      return id;
+    } catch (e) { return null; }
+  }
+  // Página normalizada (1º segmento, sem .html/query/handle) — sem PII.
+  function analyticsPath() {
+    const seg = location.pathname.replace(/^\/+|\/+$/g, "").split("/")[0].replace(/\.html$/, "");
+    return seg || "home";
+  }
+  function logPageview() {
+    if (!AUTH_ENABLED) return;
+    try {
+      fetch(`${SUPABASE_URL}/rest/v1/events`, {
+        method: "POST",
+        headers: Object.assign(authHeaders(), { Prefer: "return=minimal" }),
+        body: JSON.stringify({ name: "pageview", path: analyticsPath(), anon: anonId(), game: currentGame() }),
+        keepalive: true
+      });
+    } catch (e) { /* analytics nunca quebra a página */ }
+  }
+  // Números agregados (tráfego + produto). Só retorna p/ admin (gate no servidor);
+  // senão null. Usado pela página /admin.
+  async function analyticsSummary(days) {
+    let s = getSession();
+    if (!s) return null;
+    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
+    if (!s) return null;
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/analytics_summary`, {
+        method: "POST", headers: authHeaders(s.access_token), body: JSON.stringify({ days: days || 30 })
+      });
+      if (!r.ok) return null;
+      return await r.json();
+    } catch (e) { return null; }
+  }
   // Usuário logado (enxuto) pra páginas que só precisam de email/id. null = deslogado.
   function currentUser() {
     const s = getSession();
@@ -2764,6 +2810,7 @@
     collectionCounts,
     portfolioValueTotal,
     publicProfileUrl,
+    analyticsSummary,
     pushProfile,
     pullProfile,
     handleAvailable,
@@ -3833,6 +3880,7 @@
   initPageGameTitle();
   initGameAccent();
   applySensitive();
+  logPageview(); // analytics anônimo (1 pageview por carregamento)
   initMobileMenu();
   initSiteFooter();
   initPartnerBanner();
