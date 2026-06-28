@@ -41,8 +41,10 @@
       list: () => data.folders.slice(),
       any: () => data.folders.length > 0,
       get: byId,
-      create(name) { const f = { id: uid(), name: name || "", collapsed: false }; data.folders.push(f); save(); return f; },
+      create(name) { const f = { id: uid(), name: name || "", collapsed: false, cover: null, stars: 0 }; data.folders.push(f); save(); return f; },
       rename(id, name) { const f = byId(id); if (f) { f.name = name; save(); } },
+      setCover(id, cardId) { const f = byId(id); if (f) { f.cover = cardId || null; save(); } },
+      setStars(id, n) { const f = byId(id); if (f) { f.stars = Math.max(0, Math.min(3, n | 0)); save(); } },
       remove(id) {
         data.folders = data.folders.filter((f) => f.id !== id);
         Object.keys(data.assign).forEach((cid) => { if (data.assign[cid] === id) delete data.assign[cid]; });
@@ -328,6 +330,17 @@
 
     // Cliques nos tiles: vale pra grade plana (#cardGrid) E pras seções de pasta.
     const handleTileClick = (event) => {
+      // Modo "trocar capa": clicar numa carta da coleção a define como capa.
+      if (coverPickId) {
+        const sec = event.target.closest("[data-folder-id]");
+        const tile = event.target.closest(".card-tile");
+        if (sec && tile && sec.dataset.folderId === coverPickId) {
+          folders.setCover(coverPickId, tile.dataset.tileCardId);
+          coverPickId = null;
+          renderCards();
+          return;
+        }
+      }
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) {
         preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant);
@@ -367,7 +380,21 @@
         if (tile && section) moveCardInFolder(section, tile.dataset.tileCardId, Number(moveTile.dataset.tileMove));
         return;
       }
-      if (event.target.closest("[data-folder-collapse]")) { if (fid) { folders.toggleCollapse(fid); renderCards(); } return; }
+      const starBtn = event.target.closest("[data-folder-star]");
+      if (starBtn) {
+        if (fid) {
+          const n = Number(starBtn.dataset.folderStar);
+          const cur = (folders.get(fid) || {}).stars || 0;
+          folders.setStars(fid, n === cur ? n - 1 : n); // clicar a estrela atual zera (toggle)
+          renderCards();
+        }
+        return;
+      }
+      if (event.target.closest("[data-folder-cover]")) {
+        if (fid) { coverPickId = coverPickId === fid ? null : fid; renderCards(); }
+        return;
+      }
+      if (event.target.closest("[data-folder-collapse]")) { if (fid) { folders.toggleCollapse(fid); coverPickId = null; renderCards(); } return; }
       const moveBtn = event.target.closest("[data-folder-move]");
       if (moveBtn) { if (fid) { folders.move(fid, Number(moveBtn.dataset.folderMove)); renderCards(); } return; }
       if (event.target.closest("[data-folder-delete]")) { if (fid && window.confirm(t("folders.deleteConfirm"))) { folders.remove(fid); render(); } return; }
@@ -558,6 +585,9 @@
 
   // Mesmo ícone de compartilhar dos tiles (shared.TILE_ICONS.share).
   const SHARE_ICON = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>';
+  const COVER_ICON = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 15l5-4 4 3 3-2 6 5"/><circle cx="9" cy="9" r="1.4"/></svg>';
+  // Coleção em "modo trocar capa": clicar numa carta da seção a define como capa.
+  let coverPickId = null;
 
   // variantTile devolve um NÓ do DOM (não string) — usado tanto no pager (flat)
   // quanto via appendChild nas seções de pasta.
@@ -694,32 +724,80 @@
     return total;
   }
 
+  // Carta da CAPA da coleção: a escolhida (folder.cover) se ainda existir na pasta;
+  // senão a mais valiosa (capa automática). null se a pasta está vazia.
+  function folderCoverCard(folder, pairs) {
+    if (folder.cover) { const p = pairs.find((x) => x.card.id === folder.cover); if (p) return p.card; }
+    let best = null, bestV = -1;
+    pairs.forEach((p) => {
+      const v = shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0;
+      if (v > bestV) { bestV = v; best = p.card; }
+    });
+    return best;
+  }
+
+  // Estrelas de preferência (0–3), clicáveis. data-stars no container, data-star no botão.
+  function starsHtml(n) {
+    let h = "";
+    for (let i = 1; i <= 3; i++) h += `<button type="button" class="coll-star${i <= n ? " on" : ""}" data-folder-star="${i}" aria-label="${i}">★</button>`;
+    return `<span class="coll-stars" data-folder-stars title="${escapeAttribute(t("folders.starsHint"))}">${h}</span>`;
+  }
+
   function folderSectionHtml(folder, pairs, games) {
     const isNone = !folder;
     const collapsed = !isNone && folder.collapsed;
     const value = folderValue(pairs);
     const meta = `${pairs.length}${value > 0 ? " · " + shared.formatMoney(shared.getCurrency(), value) : ""}`;
     const listCls = cardsView === "list" ? " is-list" : "";
-    // Grade vai VAZIA (os tiles entram por appendChild); só o aviso de pasta vazia
-    // fica inline.
+
+    // MINIMIZADA → card de coleção (vitrine): capa + nome + meta + estrelas.
+    if (collapsed) {
+      const cover = folderCoverCard(folder, pairs);
+      const coverImg = cover
+        ? shared.localizedImg(shared.cardImageSources(cover).url, { alt: "", fallback: shared.cardImageSources(cover).fallback, loading: "lazy", thumb: true })
+        : `<span class="coll-card-empty">${escapeHtml(t("folders.empty"))}</span>`;
+      return `<section class="folder-section is-collapsed coll-card" data-folder-id="${escapeAttribute(folder.id)}">
+        <button type="button" class="coll-card-cover" data-folder-collapse aria-label="${escapeAttribute(t("folders.toggle"))}">${coverImg}</button>
+        <div class="coll-card-body">
+          <div class="coll-card-titleline">
+            <strong class="coll-card-name">${escapeHtml(folder.name || t("folders.untitled"))}</strong>
+            ${folderTagHtml(games)}
+          </div>
+          <span class="coll-card-meta">${escapeHtml(meta)}</span>
+          <div class="coll-card-foot">
+            ${starsHtml(folder.stars || 0)}
+            <span class="coll-card-acts">
+              <button type="button" class="folder-act" data-folder-move="-1" title="${escapeAttribute(t("folders.moveUp"))}" aria-label="${escapeAttribute(t("folders.moveUp"))}">↑</button>
+              <button type="button" class="folder-act" data-folder-move="1" title="${escapeAttribute(t("folders.moveDown"))}" aria-label="${escapeAttribute(t("folders.moveDown"))}">↓</button>
+              <button type="button" class="folder-act folder-share-btn" data-folder-share title="${escapeAttribute(t("folders.share"))}" aria-label="${escapeAttribute(t("folders.share"))}">${SHARE_ICON}</button>
+              <button type="button" class="folder-act folder-act-danger" data-folder-delete title="${escapeAttribute(t("folders.delete"))}" aria-label="${escapeAttribute(t("folders.delete"))}">✕</button>
+            </span>
+          </div>
+        </div>
+      </section>`;
+    }
+
+    // ABERTA → como antes (cabeçalho + grade), agora com estrelas + "trocar capa".
     const tilesHtml = pairs.length ? "" : `<p class="folder-empty">${escapeHtml(t("folders.empty"))}</p>`;
     const nameHtml = isNone
       ? `<span class="folder-name">${escapeHtml(t("folders.none"))}</span>`
       : `<input class="folder-name-input" data-folder-rename type="text" value="${escapeAttribute(folder.name)}" placeholder="${escapeAttribute(t("folders.untitled"))}" aria-label="${escapeAttribute(t("folders.rename"))}">`;
     const actions = isNone ? "" : `<span class="folder-actions">
+        ${starsHtml(folder.stars || 0)}
+        ${pairs.length ? `<button type="button" class="folder-act" data-folder-cover title="${escapeAttribute(t("folders.cover"))}" aria-label="${escapeAttribute(t("folders.cover"))}">${COVER_ICON}<span>${escapeHtml(t("folders.cover"))}</span></button>` : ""}
         <button type="button" class="folder-act folder-share-btn" data-folder-share title="${escapeAttribute(t("folders.share"))}" aria-label="${escapeAttribute(t("folders.share"))}">${SHARE_ICON}<span>${escapeHtml(t("folders.shareBtn"))}</span></button>
-        <button type="button" class="folder-act" data-folder-move="-1" title="${escapeAttribute(t("folders.moveUp"))}" aria-label="${escapeAttribute(t("folders.moveUp"))}">↑</button>
-        <button type="button" class="folder-act" data-folder-move="1" title="${escapeAttribute(t("folders.moveDown"))}" aria-label="${escapeAttribute(t("folders.moveDown"))}">↓</button>
         <button type="button" class="folder-act folder-act-danger" data-folder-delete title="${escapeAttribute(t("folders.delete"))}" aria-label="${escapeAttribute(t("folders.delete"))}">✕</button>
       </span>`;
-    return `<section class="folder-section${collapsed ? " is-collapsed" : ""}${isNone ? " folder-none" : ""}" data-folder-id="${escapeAttribute(isNone ? "" : folder.id)}">
+    const pickHint = (!isNone && coverPickId === folder.id) ? `<p class="coll-cover-hint">${escapeHtml(t("folders.coverPick"))}</p>` : "";
+    return `<section class="folder-section${isNone ? " folder-none" : ""}${(!isNone && coverPickId === folder.id) ? " is-cover-pick" : ""}" data-folder-id="${escapeAttribute(isNone ? "" : folder.id)}">
       <header class="folder-head">
-        <button type="button" class="folder-collapse" data-folder-collapse aria-expanded="${!collapsed}" aria-label="${escapeAttribute(t("folders.toggle"))}">▾</button>
+        <button type="button" class="folder-collapse" data-folder-collapse aria-expanded="true" aria-label="${escapeAttribute(t("folders.toggle"))}">▾</button>
         ${nameHtml}
         ${isNone ? "" : folderTagHtml(games)}
         <span class="folder-meta">${escapeHtml(meta)}</span>
         ${actions}
       </header>
+      ${pickHint}
       <div class="card-grid${listCls}">${tilesHtml}</div>
     </section>`;
   }
