@@ -4182,9 +4182,11 @@ a.progress-row:hover {
 .dash-card h3 { margin: 0 0 12px; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
 .dash-stats { display: flex; flex-direction: column; gap: 14px; justify-content: center; }
 /* Cabeçalho do perfil público no card de stats: nome + @ */
-.dash-profile { display: flex; flex-direction: column; gap: 1px; padding-bottom: 12px; margin-bottom: 2px; border-bottom: 1px solid var(--line); }
-.dash-profile-name { font-size: 20px; font-weight: 800; letter-spacing: -0.3px; line-height: 1.15; }
-.dash-profile-handle { font-size: 13px; font-weight: 700; color: var(--accent); }
+.dash-profile { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-bottom: 14px; margin-bottom: 2px; border-bottom: 1px solid var(--line); }
+.dash-profile-id { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.dash-profile-name { font-size: 27px; font-weight: 800; letter-spacing: -0.4px; line-height: 1.12; }
+.dash-profile-handle { font-size: 14px; font-weight: 700; color: var(--accent); }
+.dash-profile-nav { flex: none; white-space: nowrap; }
 .dash-stats-counts { display: flex; flex-wrap: wrap; gap: 12px 22px; }
 .dash-stats-counts > div { display: flex; flex-direction: column; gap: 2px; }
 .dash-stat-val { font-size: 24px; font-weight: 800; letter-spacing: -0.3px; }

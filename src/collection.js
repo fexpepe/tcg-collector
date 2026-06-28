@@ -1143,20 +1143,21 @@
         </div></div>`
       : "";
 
-    sv.innerHTML = `
+    // Perfil (aba Coleção): SEM banner — o cabeçalho (nome/@/botão Vendas) vai pro
+    // card de stats. Demais casos (vendas do perfil, pasta, share normal) usam banner.
+    const banner = (profileNav && profileNav.identityInDash) ? "" : `
       <div class="binder-shared-banner">
         <div class="binder-shared-info">
           ${kindLabel ? `<span class="shared-kind">${escapeHtml(kindLabel)}</span>` : ""}
-          ${profileNav && !profileNav.identityInDash ? `<span class="shared-kind">@${escapeHtml(profileNav.handle)}</span>` : ""}
-          ${profileNav && profileNav.identityInDash ? "" : `<strong>${escapeHtml(share.title || t("collection.shared.title"))}</strong>`}
+          ${profileNav ? `<span class="shared-kind">@${escapeHtml(profileNav.handle)}</span>` : ""}
+          ${profileNav ? "" : `<strong>${escapeHtml(share.title || t("collection.shared.title"))}</strong>`}
           <span>${escapeHtml(tn("collection.shared.banner", allItems.length))} · ${escapeHtml(bannerMoney)}</span>
         </div>
         ${profileNav && profileNav.label
           ? `<button type="button" class="secondary" data-profile-nav>${escapeHtml(profileNav.label)}</button>`
           : (isFolder ? `<button type="button" class="primary" id="sharedSaveBtn">${escapeHtml(t("folders.shared.save"))}</button>` : "")}
-      </div>
-      ${filterHtml}
-      <div id="sharedBody"></div>`;
+      </div>`;
+    sv.innerHTML = `${banner}${filterHtml}<div id="sharedBody"></div>`;
 
     // "Salvar na minha coleção": importa a pasta — cria uma pasta com o mesmo
     // nome, marca as cartas como suas e atribui a ela. Local (sem login).
@@ -1289,8 +1290,11 @@
 
     const profHead = (profileNav && profileNav.name)
       ? `<div class="dash-profile">
-          <strong class="dash-profile-name">${escapeHtml(profileNav.name)}</strong>
-          <span class="dash-profile-handle">@${escapeHtml(profileNav.handle)}</span>
+          <div class="dash-profile-id">
+            <strong class="dash-profile-name">${escapeHtml(profileNav.name)}</strong>
+            <span class="dash-profile-handle">@${escapeHtml(profileNav.handle)}</span>
+          </div>
+          ${profileNav.label ? `<button type="button" class="secondary dash-profile-nav" data-profile-nav>${escapeHtml(profileNav.label)}</button>` : ""}
         </div>`
       : "";
     return `<section class="collection-dashboard">
