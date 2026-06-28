@@ -759,11 +759,11 @@
       return `<section class="folder-section is-collapsed coll-card" data-folder-id="${escapeAttribute(folder.id)}">
         <button type="button" class="coll-card-cover" data-folder-collapse aria-label="${escapeAttribute(t("folders.toggle"))}">${coverImg}</button>
         <div class="coll-card-body">
-          <div class="coll-card-titleline">
-            <strong class="coll-card-name">${escapeHtml(folder.name || t("folders.untitled"))}</strong>
+          <strong class="coll-card-name">${escapeHtml(folder.name || t("folders.untitled"))}</strong>
+          <div class="coll-card-meta-row">
+            <span class="coll-card-meta">${escapeHtml(meta)}</span>
             ${folderTagHtml(games)}
           </div>
-          <span class="coll-card-meta">${escapeHtml(meta)}</span>
           <div class="coll-card-foot">
             ${starsHtml(folder.stars || 0)}
             <span class="coll-card-acts">
@@ -781,7 +781,7 @@
     const tilesHtml = pairs.length ? "" : `<p class="folder-empty">${escapeHtml(t("folders.empty"))}</p>`;
     const nameHtml = isNone
       ? `<span class="folder-name">${escapeHtml(t("folders.none"))}</span>`
-      : `<input class="folder-name-input" data-folder-rename type="text" value="${escapeAttribute(folder.name)}" placeholder="${escapeAttribute(t("folders.untitled"))}" aria-label="${escapeAttribute(t("folders.rename"))}">`;
+      : `<input class="folder-name-input" data-folder-rename type="text" maxlength="24" value="${escapeAttribute(folder.name)}" placeholder="${escapeAttribute(t("folders.untitled"))}" aria-label="${escapeAttribute(t("folders.rename"))}">`;
     const actions = isNone ? "" : `<span class="folder-actions">
         ${starsHtml(folder.stars || 0)}
         ${pairs.length ? `<button type="button" class="folder-act" data-folder-cover title="${escapeAttribute(t("folders.cover"))}" aria-label="${escapeAttribute(t("folders.cover"))}">${COVER_ICON}<span>${escapeHtml(t("folders.cover"))}</span></button>` : ""}
