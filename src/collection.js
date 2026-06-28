@@ -113,6 +113,8 @@
     grid: document.getElementById("cardGrid"),
     folderSections: document.getElementById("folderSections"),
     newFolderBtn: document.getElementById("newFolderBtn"),
+    heading: document.querySelector(".results-header h2"),
+    dashProfile: document.getElementById("dashProfile"),
     empty: document.getElementById("emptyState"),
     search: document.getElementById("searchInput"),
     pokemonFilter: document.getElementById("pokemonFilter"),
@@ -464,8 +466,12 @@
     syncGameTabs();
     // "Cartas" (grade plana) e "Pastas" (seções) usam a MESMA toolbar de filtros.
     const isCardsLike = activeTab === "cards" || activeTab === "folders";
+    const isFolders = activeTab === "folders";
     elements.groupsView.hidden = isCardsLike;
     elements.cardsView.hidden = !isCardsLike;
+    // Título e "Nova coleção" mudam conforme a aba (Cartas vs Coleções).
+    if (elements.heading) elements.heading.textContent = t(isFolders ? "collection.heading.folders" : "collection.heading.cards");
+    if (elements.newFolderBtn) elements.newFolderBtn.hidden = !isFolders;
 
     renderDashboard();
     updatePokemonFilterLabel();
@@ -481,6 +487,17 @@
   function renderDashboard() {
     if (!elements.dashboard) return;
     elements.dashboard.hidden = false;
+    // Na aba "Minhas Coleções", o dashboard mostra a identidade (nome + @) no topo
+    // — espelha o perfil público (é a sua vitrine pessoal).
+    if (elements.dashProfile) {
+      const p = shared.getProfile ? shared.getProfile() : {};
+      const nm = (p.displayName || "").trim();
+      const showId = activeTab === "folders" && (nm || p.handle);
+      elements.dashProfile.hidden = !showId;
+      elements.dashProfile.innerHTML = showId
+        ? `<div class="dash-profile-id"><strong class="dash-profile-name">${escapeHtml(nm || ("@" + p.handle))}</strong>${p.handle ? `<span class="dash-profile-handle">@${escapeHtml(p.handle)}</span>` : ""}</div>`
+        : "";
+    }
     const myCards = ownedCards();
 
     // Stats
@@ -586,6 +603,7 @@
   // Mesmo ícone de compartilhar dos tiles (shared.TILE_ICONS.share).
   const SHARE_ICON = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>';
   const COVER_ICON = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 15l5-4 4 3 3-2 6 5"/><circle cx="9" cy="9" r="1.4"/></svg>';
+  const TRASH_ICON = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>';
   // Coleção em "modo trocar capa": clicar numa carta da seção a define como capa.
   let coverPickId = null;
 
@@ -786,7 +804,7 @@
         ${starsHtml(folder.stars || 0)}
         ${pairs.length ? `<button type="button" class="folder-act folder-cover-btn" data-folder-cover title="${escapeAttribute(t("folders.cover"))}" aria-label="${escapeAttribute(t("folders.cover"))}">${COVER_ICON}<span>${escapeHtml(t("folders.cover"))}</span></button>` : ""}
         <button type="button" class="folder-act folder-share-btn" data-folder-share title="${escapeAttribute(t("folders.share"))}" aria-label="${escapeAttribute(t("folders.share"))}">${SHARE_ICON}<span>${escapeHtml(t("folders.shareBtn"))}</span></button>
-        <button type="button" class="folder-act folder-act-danger" data-folder-delete title="${escapeAttribute(t("folders.delete"))}" aria-label="${escapeAttribute(t("folders.delete"))}">✕</button>
+        <button type="button" class="folder-act folder-act-danger folder-del-btn" data-folder-delete title="${escapeAttribute(t("folders.deleteBtn"))}" aria-label="${escapeAttribute(t("folders.deleteBtn"))}">${TRASH_ICON}<span>${escapeHtml(t("folders.deleteBtn"))}</span></button>
       </span>`;
     const pickHint = (!isNone && coverPickId === folder.id) ? `<p class="coll-cover-hint">${escapeHtml(t("folders.coverPick"))}</p>` : "";
     return `<section class="folder-section${isNone ? " folder-none" : ""}${(!isNone && coverPickId === folder.id) ? " is-cover-pick" : ""}" data-folder-id="${escapeAttribute(isNone ? "" : folder.id)}">

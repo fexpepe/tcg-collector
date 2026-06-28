@@ -641,9 +641,12 @@ input::placeholder {
 /* "Trocar capa": pill com rótulo (largura automática), igual o compartilhar, pra
    o texto não vazar do botão de 30px e encavalar nos vizinhos. */
 .folder-cover-btn { width: auto; gap: 5px; padding: 0 11px; font-size: 12.5px; font-weight: 700; }
+/* "Deletar coleção": pill com rótulo (deixa óbvio o que faz), em tom de perigo. */
+.folder-del-btn { width: auto; gap: 5px; padding: 0 11px; font-size: 12.5px; font-weight: 700; color: #d8443c; background: rgba(226, 48, 48, 0.1); }
+.folder-del-btn:hover { background: #d8443c; color: #fff; }
 @media (max-width: 560px) {
-  .folder-share-btn span, .folder-cover-btn span { display: none; }
-  .folder-share-btn, .folder-cover-btn { width: 30px; padding: 0; }
+  .folder-share-btn span, .folder-cover-btn span, .folder-del-btn span { display: none; }
+  .folder-share-btn, .folder-cover-btn, .folder-del-btn { width: 30px; padding: 0; }
 }
 
 .folder-empty { color: var(--subtle); font-size: 13px; padding: 14px 4px; margin: 0; }
