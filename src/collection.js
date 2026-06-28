@@ -1054,6 +1054,15 @@
     btn.hidden = ownedCards().length === 0;
     btn.addEventListener("click", async () => {
       const original = t("collection.share");
+      // Perfil público: compartilha o link VIVO (sempre atualizado) em vez de um
+      // snapshot. Sem perfil público, cai no snapshot de sempre.
+      const live = shared.publicProfileUrl();
+      if (live) {
+        try { await navigator.clipboard.writeText(live); btn.textContent = t("collection.share.copiedLive"); }
+        catch (e) { window.prompt(t("collection.share.copyManual"), live); }
+        setTimeout(() => { btn.textContent = original; }, 2500);
+        return;
+      }
       btn.disabled = true; btn.textContent = t("collection.share.creating");
       const res = await shared.createShare("collection", null, buildShareData());
       btn.disabled = false;
@@ -1227,7 +1236,8 @@
     const col = (prof.data.collection && Array.isArray(prof.data.collection.items)) ? prof.data.collection : { items: [] };
     const sale = (prof.data.sales && Array.isArray(prof.data.sales.items)) ? prof.data.sales : { items: [], cur: "BRL" };
     const hasSales = sale.items.length > 0;
-    let mode = "collection";
+    // ?t=sales abre direto na aba Vendas (link vivo de "compartilhar vendas").
+    let mode = (hasSales && collParams.get("t") === "sales") ? "sale" : "collection";
     function show() {
       if (mode === "sale") {
         const share = { kind: "collection", title: name, data: { items: sale.items, scope: "sale", cur: sale.cur || "BRL" } };

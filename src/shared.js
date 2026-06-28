@@ -964,6 +964,13 @@
   function normalizeHandle(raw) {
     return String(raw || "").toLowerCase().replace(/[^a-z0-9_]/g, "").slice(0, 24);
   }
+  // Link VIVO do perfil público (sempre atualizado) se o usuário é público + tem
+  // @; senão null (cai no snapshot). tab="sales" abre direto na aba Vendas.
+  function publicProfileUrl(tab) {
+    const p = getProfile();
+    if (!(p.isPublic && p.handle && p.handle.length >= 3)) return null;
+    return "https://sleevu.app/users/" + p.handle + (tab === "sales" ? "?t=sales" : "");
+  }
   // Usuário logado (enxuto) pra páginas que só precisam de email/id. null = deslogado.
   function currentUser() {
     const s = getSession();
@@ -2756,6 +2763,7 @@
     currentUser,
     collectionCounts,
     portfolioValueTotal,
+    publicProfileUrl,
     pushProfile,
     pullProfile,
     handleAvailable,

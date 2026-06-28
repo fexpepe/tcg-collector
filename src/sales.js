@@ -388,6 +388,13 @@
   }
 
   async function shareSales(btn) {
+    // Perfil público: link VIVO da aba Vendas (sempre atualizado) no lugar do snapshot.
+    const live = shared.publicProfileUrl("sales");
+    if (live) {
+      try { await navigator.clipboard.writeText(live); alert(t("collection.share.copiedLive")); }
+      catch (e) { window.prompt(t("collection.share.copyManual"), live); }
+      return;
+    }
     const data = buildSaleShareData();
     if (!data.items.length) { alert(t("sales.shareEmpty")); return; }
     if (btn) btn.disabled = true;
