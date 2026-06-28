@@ -3379,9 +3379,16 @@
       });
     } catch (e) { return []; }
   }
+  // Lê as Coleções (pastas) do localStorage global, p/ a vitrine do perfil público.
+  function readFoldersData() {
+    try {
+      const d = JSON.parse(localStorage.getItem(SYNC_KEYS.folders) || "{}");
+      return { folders: Array.isArray(d.folders) ? d.folders : [], assign: (d.assign && typeof d.assign === "object") ? d.assign : {} };
+    } catch (e) { return { folders: [], assign: {} }; }
+  }
   // Monta o payload CURADO do perfil público: coleção (valor de mercado só se
-  // showValues) + lista de vendas. Auto-contido (embute detalhe da carta), igual
-  // ao share. `cards`=catálogo, `owned`=store da página, `prices`=preços.
+  // showValues) + lista de vendas + as Coleções (vitrine). Auto-contido (embute
+  // detalhe da carta). `cards`=catálogo, `owned`=store da página, `prices`=preços.
   function buildPublicPayload(cards, owned, prices, showValues, currency) {
     const cur = currency || "BRL";
     const colItems = [];
@@ -3406,7 +3413,16 @@
       const src = cardImageSources(card);
       saleItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, v: it.variant, q: 1, sp: it.price, cond: it.cond || "NM", cur, img: src.url, fb: src.fallback || "" });
     });
-    return { collection: { items: colItems }, sales: { items: saleItems, cur, scope: "sale" }, showValues: !!showValues };
+    // Coleções (vitrine): marca cada carta com a sua coleção (f) e lista as
+    // coleções que têm cartas (nome/estrelas/capa), na ordem do dono.
+    const fdata = readFoldersData();
+    colItems.forEach((it) => { const fid = fdata.assign[it.id]; if (fid) it.f = fid; });
+    const used = new Set(colItems.map((it) => it.f).filter(Boolean));
+    const pubFolders = fdata.folders
+      .filter((f) => used.has(f.id))
+      .map((f) => ({ id: f.id, name: f.name || "", stars: f.stars || 0, cover: f.cover || null }));
+
+    return { collection: { items: colItems }, sales: { items: saleItems, cur, scope: "sale" }, folders: pubFolders, showValues: !!showValues };
   }
   // Publica/atualiza (ou apaga) o perfil público conforme is_public. Debounced e
   // só re-envia se o payload mudou. Chamado pelas páginas (coleção/vendas).

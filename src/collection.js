@@ -1235,7 +1235,7 @@
           ? `<button type="button" class="secondary" data-profile-nav>${escapeHtml(profileNav.label)}</button>`
           : (isFolder ? `<button type="button" class="primary" id="sharedSaveBtn">${escapeHtml(t("folders.shared.save"))}</button>` : "")}
       </div>`;
-    sv.innerHTML = `${banner}${filterHtml}<div id="sharedBody"></div>`;
+    sv.innerHTML = `${(profileNav && profileNav.tabsHtml) || ""}${banner}${filterHtml}<div id="sharedBody"></div>`;
 
     // "Salvar na minha coleção": importa a pasta — cria uma pasta com o mesmo
     // nome, marca as cartas como suas e atribui a ela. Local (sem login).
@@ -1315,17 +1315,75 @@
     const col = (prof.data.collection && Array.isArray(prof.data.collection.items)) ? prof.data.collection : { items: [] };
     const sale = (prof.data.sales && Array.isArray(prof.data.sales.items)) ? prof.data.sales : { items: [], cur: "BRL" };
     const hasSales = sale.items.length > 0;
-    // ?t=sales abre direto na aba Vendas (link vivo de "compartilhar vendas").
+    // Coleções (vitrine): ordenadas por estrelas (preferência) desc.
+    const collFolders = (Array.isArray(prof.data.folders) ? prof.data.folders : [])
+      .filter((f) => col.items.some((it) => it.f === f.id))
+      .sort((a, b) => (b.stars || 0) - (a.stars || 0));
+    const hasFolders = collFolders.length > 0;
     let mode = (hasSales && collParams.get("t") === "sales") ? "sale" : "collection";
+    let openId = null; // coleção aberta dentro da vitrine
+
+    function tabsHtml() {
+      const tab = (m, label, on) => on ? `<button type="button" class="prof-tab${mode === m ? " is-active" : ""}" data-profile-tab="${m}">${escapeHtml(label)}</button>` : "";
+      return `<div class="prof-tabs">
+        ${tab("collection", t("nav.collection"), true)}
+        ${tab("vitrine", t("collection.tab.folders"), hasFolders)}
+        ${tab("sale", t("nav.sales"), hasSales)}
+      </div>`;
+    }
+
+    // Card de coleção (somente leitura) da vitrine: capa + nome + meta + estrelas.
+    function vitrineCard(f) {
+      const items = col.items.filter((it) => it.f === f.id);
+      const copies = items.reduce((s, it) => s + (it.q || 1), 0);
+      const val = items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
+      const metaTxt = `${copies}${val > 0 ? " · " + shared.formatMoney(shared.getCurrency(), val) : ""}`;
+      let cover = f.cover ? items.find((it) => it.id === f.cover) : null;
+      if (!cover) cover = items.slice().sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q))[0];
+      const coverImg = cover
+        ? shared.localizedImg(cover.img, { alt: "", fallback: cover.fb, loading: "lazy", thumb: true })
+        : `<span class="coll-card-empty">—</span>`;
+      let stars = ""; for (let i = 1; i <= 3; i++) stars += `<span class="coll-star${i <= (f.stars || 0) ? " on" : ""}">★</span>`;
+      return `<button type="button" class="coll-card coll-card-ro" data-vitrine-open="${escapeAttribute(f.id)}">
+        <span class="coll-card-cover">${coverImg}</span>
+        <span class="coll-card-body">
+          <strong class="coll-card-name">${escapeHtml(f.name || t("folders.untitled"))}</strong>
+          <span class="coll-card-meta">${escapeHtml(metaTxt)}</span>
+          <span class="coll-stars">${stars}</span>
+        </span>
+      </button>`;
+    }
+
     function show() {
+      if (mode === "vitrine") {
+        if (openId) {
+          const f = collFolders.find((x) => x.id === openId);
+          const items = col.items.filter((it) => it.f === openId);
+          const share = { kind: "collection", title: (f && f.name) || t("folders.untitled"), data: { items } };
+          renderSharedCollection(share, { handle: prof.handle, name, tabsHtml: tabsHtml(), label: t("profile.viewCollections"), onNav: () => { openId = null; show(); } });
+        } else {
+          sv.innerHTML = `${tabsHtml()}<div class="coll-vitrine">${collFolders.map(vitrineCard).join("")}</div>`;
+        }
+        return;
+      }
       if (mode === "sale") {
         const share = { kind: "collection", title: name, data: { items: sale.items, scope: "sale", cur: sale.cur || "BRL" } };
-        renderSharedCollection(share, { handle: prof.handle, name, label: t("profile.viewCollection"), onNav: () => { mode = "collection"; show(); } });
+        renderSharedCollection(share, { handle: prof.handle, name, tabsHtml: tabsHtml() });
       } else {
         const share = { kind: "collection", title: name, data: { items: col.items } };
-        // identityInDash: o nome+@ vão no card de stats (não no banner), evitando repetir.
-        renderSharedCollection(share, { handle: prof.handle, name, identityInDash: true, label: hasSales ? t("profile.viewSales") : "", onNav: hasSales ? () => { mode = "sale"; show(); } : null });
+        renderSharedCollection(share, { handle: prof.handle, name, identityInDash: true, tabsHtml: tabsHtml() });
       }
+    }
+
+    // Abas + abrir coleção da vitrine (delegado uma vez no container).
+    if (!sv.dataset.profTabsBound) {
+      sv.dataset.profTabsBound = "1";
+      sv.addEventListener("click", (event) => {
+        const tab = event.target.closest("[data-profile-tab]");
+        if (tab) { mode = tab.dataset.profileTab; openId = null; show(); return; }
+        const open = event.target.closest("[data-vitrine-open]");
+        if (open) { openId = open.dataset.vitrineOpen; show(); return; }
+      });
     }
     show();
   }

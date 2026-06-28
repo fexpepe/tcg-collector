@@ -539,7 +539,16 @@ input::placeholder {
 
 /* --- Card de coleção (minimizada) --- */
 /* 6 por linha, mesma largura das cartas das grades (#salesGrid também é 6). */
-.coll-card { flex: 0 0 calc((100% - 5 * 16px) / 6); padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+.coll-card { flex: 0 0 calc((100% - 5 * 16px) / 6); padding: 0; overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
+/* Card da vitrine no perfil público (somente leitura, o card todo é um botão). */
+.coll-card-ro { cursor: pointer; text-align: left; color: var(--text); font: inherit; min-height: 0; }
+.coll-card-ro .coll-card-cover { display: block; }
+
+/* Vitrine pública + abas do perfil */
+.coll-vitrine { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+.prof-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.prof-tab { border: 1px solid var(--line); background: var(--panel); color: var(--text); padding: 8px 15px; border-radius: 999px; font-weight: 700; font-size: 13px; cursor: pointer; min-height: 0; }
+.prof-tab.is-active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 @media (max-width: 1000px) { .coll-card { flex-basis: calc((100% - 3 * 16px) / 4); } }
 @media (max-width: 680px)  { .coll-card { flex-basis: calc((100% - 2 * 16px) / 3); } }
 @media (max-width: 460px)  { .coll-card { flex-basis: calc((100% - 16px) / 2); } }
