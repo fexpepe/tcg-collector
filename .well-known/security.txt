@@ -1,0 +1,6 @@
+# Política de divulgação de vulnerabilidades do Sleevu (RFC 9116).
+# Achou uma falha de segurança? Avise pelo contato abaixo antes de divulgar.
+Contact: mailto:fernandopepe.pereira@gmail.com
+Expires: 2027-06-29T00:00:00.000Z
+Preferred-Languages: pt, en
+Canonical: https://sleevu.app/.well-known/security.txt
