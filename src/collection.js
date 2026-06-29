@@ -503,7 +503,9 @@
     if (elements.dashProfile) {
       const p = shared.getProfile ? shared.getProfile() : {};
       const nm = (p.displayName || "").trim();
-      const showId = activeTab === "folders" && (nm || p.handle);
+      // Identidade (nome + @) no dashboard em TODA a coleção (Toda Coleção, Coleções,
+      // e em qualquer filtro de jogo) — não só no perfil público.
+      const showId = nm || p.handle;
       elements.dashProfile.hidden = !showId;
       elements.dashProfile.innerHTML = showId
         ? `<div class="dash-profile-id"><strong class="dash-profile-name">${escapeHtml(nm || ("@" + p.handle))}</strong>${p.handle ? `<span class="dash-profile-handle">@${escapeHtml(p.handle)}</span>` : ""}</div>`
