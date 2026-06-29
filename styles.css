@@ -4272,6 +4272,12 @@ a.progress-row:hover {
 .dash-stat-money { display: flex; flex-direction: column; gap: 2px; padding-top: 12px; border-top: 1px solid var(--line); }
 .dash-stat-money .dash-stat-val { font-size: 30px; letter-spacing: -0.5px; white-space: nowrap; }
 .dash-top-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+/* Dashboard do DONO (#collectionDashboard): altura-piso nos cards que variam com
+   o conteúdo (mais valiosas = 3 itens de 33px; distribuição = até 4 barras de 17px)
+   pra o dashboard NÃO "crescer" ao trocar o filtro Todos/Pokémon/Lorcana. O público
+   (#sharedCollection) não é afetado. */
+#collectionDashboard .dash-top-list { min-height: 115px; }
+#collectionDashboard .dash-dist-bars { min-height: 98px; }
 .dash-top-list a, .dash-top-list .dash-top-row { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
 .dash-top-thumb { width: 30px; flex: none; }
 .dash-top-thumb img { width: 100%; border-radius: 3px; display: block; }
