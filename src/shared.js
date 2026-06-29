@@ -596,6 +596,22 @@
     return { value: 0, currency: cur, source: null, estimated: false };
   }
 
+  // Valor de mercado de uma carta GRADUADA (slab): preço de venda graded da PPT,
+  // por graduadora + nota, em USD (do eBay sold) → convertido pra moeda atual.
+  // A tabela TCG_PRICING traz, quando há dado, `g: { psa: { "10": usd, "9": usd },
+  // bgs:{…}, cgc:{…}, sgc:{…} }` (TAG/Lorcana não têm → cai no valor manual).
+  // company: "psa"|"bgs"|"cgc"|"sgc"|"tag"; grade: string ("10","9.5"…). 0 se faltar.
+  function gradedValue(card, company, grade) {
+    const cur = currentCurrency;
+    const cardId = card && card.id;
+    const table = window.TCG_PRICING;
+    const ref = cardId && table && (table[cardId] || table[basePricingId(cardId)]);
+    const byCompany = ref && ref.g && ref.g[String(company || "").toLowerCase()];
+    const usd = byCompany && byCompany[String(grade)];
+    if (usd > 0) { const v = convertMoney(usd, "USD", cur); if (v != null) return { value: v, currency: cur, source: "ppt" }; }
+    return { value: 0, currency: cur, source: null };
+  }
+
   // Soma o valor (variante padrão, NM) de uma lista de cartas, na moeda atual.
   function sumCardsValue(cards, prices) {
     let total = 0;
@@ -675,7 +691,7 @@
       }
     }
     const exploreActive = ["pokedex", "trainers", "sets", "artists", "cards", "hub"].includes(active);
-    const collectionActive = ["collection", "wishlist", "binders", "sales"].includes(active);
+    const collectionActive = ["collection", "wishlist", "binders", "sales", "graded"].includes(active);
 
     const link = (href, key, page) => `<a href="${escapeAttribute(href)}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
     const group = (key, isActive, links) => `
@@ -729,7 +745,8 @@
           ${link("collection.html", "nav.collectionMine", "collection")}
           ${link("binders.html", "nav.binders", "binders")}
           ${link("wishlist.html", "nav.wishlist", "wishlist")}
-          ${link("sales.html", "nav.sales", "sales")}`)}
+          ${link("sales.html", "nav.sales", "sales")}
+          ${link("graded.html", "nav.graded", "graded")}`)}
       ${link("portfolio.html?game=hub", "nav.portfolio", "portfolio")}
     `;
 
@@ -2835,6 +2852,7 @@
     createShare,
     fetchShare,
     cardValue,
+    gradedValue,
     formatMoney: fmtMoney,
     cardLanguageFromId,
     spriteUrl,
@@ -2903,6 +2921,7 @@
     binders: "tcg-collector-binders-all-v1", // binders são globais (cross-game)
     folders: "tcg-collector-collection-folders-v1", // pastas da coleção (globais)
     sales: "tcg-collector-collection-sales-v1", // cartas à venda (globais)
+    graded: "tcg-collector-collection-graded-v1", // cartas graduadas/slabs (globais)
     favorites: "tcg-collector-favorites-v1", // Pokémon favoritados (globais)
     favoritesMeta: "tcg-collector-favorites-meta-v1", // updatedAt p/ LWW dos favoritos
     history: gameKey("history-v1")
@@ -3161,6 +3180,11 @@
     if (a && b) return ((Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0)) ? b : a;
     return a || b || undefined;
   }
+  // Graded ({ items, order, updatedAt }): mesmo LWW do bloco (cada slab é único).
+  function mergeGraded(a, b) {
+    if (a && b) return ((Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0)) ? b : a;
+    return a || b || undefined;
+  }
   // Histórico do portfólio ([{ d, c, b, w }]): une por dia; em conflito o local
   // vence (foi recém-calculado a partir da coleção já mesclada). Teto de 800 dias.
   function mergeHistory(a, b) {
@@ -3199,6 +3223,7 @@
       binders: mergeBinders(a.binders, b.binders),
       folders: mergeFolders(a.folders, b.folders),
       sales: mergeSales(a.sales, b.sales),
+      graded: mergeGraded(a.graded, b.graded),
       favorites: fav.favorites,
       favoritesMeta: fav.meta,
       history: mergeHistory(a.history, b.history)
@@ -3582,6 +3607,7 @@
       try { const b = JSON.parse(localStorage.getItem(SYNC_KEYS.binders) || "null"); if (b) payload.binders = b; } catch (e) { /* ignora */ }
       try { const f = JSON.parse(localStorage.getItem(SYNC_KEYS.folders) || "null"); if (f) payload.folders = f; } catch (e) { /* ignora */ }
       try { const sa = JSON.parse(localStorage.getItem(SYNC_KEYS.sales) || "null"); if (sa) payload.sales = sa; } catch (e) { /* ignora */ }
+      try { const gr = JSON.parse(localStorage.getItem(SYNC_KEYS.graded) || "null"); if (gr) payload.graded = gr; } catch (e) { /* ignora */ }
       try { const fav = JSON.parse(localStorage.getItem(SYNC_KEYS.favorites) || "null"); if (Array.isArray(fav)) payload.favorites = fav; } catch (e) { /* ignora */ }
       return payload;
     }
@@ -3604,6 +3630,7 @@
         if (payload.binders && typeof payload.binders === "object") localStorage.setItem(SYNC_KEYS.binders, JSON.stringify(payload.binders));
         if (payload.folders && typeof payload.folders === "object") localStorage.setItem(SYNC_KEYS.folders, JSON.stringify(payload.folders));
         if (payload.sales && typeof payload.sales === "object") localStorage.setItem(SYNC_KEYS.sales, JSON.stringify(payload.sales));
+        if (payload.graded && typeof payload.graded === "object") localStorage.setItem(SYNC_KEYS.graded, JSON.stringify(payload.graded));
         if (Array.isArray(payload.favorites)) localStorage.setItem(SYNC_KEYS.favorites, JSON.stringify(payload.favorites));
         window.location.reload();
       } catch (e) { alert(t("error.import")); }

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://wsrv.nl; connect-src 'self' https://api.tcgdex.net https://pokeapi.co https://economia.awesomeapi.com.br https://*.supabase.co https://cloudflareinsights.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="title.graded">Cartas Graded - Sleevu</title>
+    <meta name="description" content="Catalogue suas cartas graduadas (PSA, BGS, CGC, SGC, TAG) com a nota e o valor de mercado graded, e compartilhe com seus grupos.">
+    <link rel="canonical" href="https://sleevu.app/graded">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sleevu.app/graded">
+    <meta property="og:title" content="Cartas Graded - Sleevu">
+    <meta property="og:description" content="Catalogue suas cartas graduadas (PSA, BGS, CGC, SGC, TAG) com a nota e o valor de mercado graded.">
+    <meta property="og:image" content="https://sleevu.app/og-image.svg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Cartas Graded - Sleevu">
+    <meta name="twitter:description" content="Catalogue suas cartas graduadas (PSA, BGS, CGC, SGC, TAG) com a nota e o valor de mercado graded.">
+    <meta name="twitter:image" content="https://sleevu.app/og-image.svg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://assets.tcgdex.net">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#0d0e12">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <script src="src/game.js" data-catalog="cards,indexes,set-id-map,pricing"></script>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">Sleevu</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page="graded"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-head">
+        <h1 data-i18n="nav.graded">Cartas Graded</h1>
+      </div>
+
+      <p class="collection-subtitle" data-i18n="graded.pageSubtitle">Catalogue suas cartas graduadas com a graduadora e a nota — o valor de mercado graded vem automático (PSA/BGS/CGC/SGC), e você pode ajustar na mão.</p>
+
+      <div class="collection-toolbar">
+        <div id="gameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
+          <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
+          <button type="button" class="chip" data-game-filter="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
+          <button type="button" class="chip" data-game-filter="lorcana" aria-pressed="false" data-i18n="filter.gameLorcana">Lorcana</button>
+        </div>
+      </div>
+
+      <section id="gradedDashboard" class="collection-dashboard" aria-label="Resumo das cartas graded" hidden>
+        <article class="dash-card dash-stats">
+          <div class="dash-stats-counts">
+            <div><span class="dash-stat-val" id="gradedDashCount">0</span><span class="dash-stat-label" data-i18n="graded.dash.count">cartas graded</span></div>
+          </div>
+          <div class="dash-stat-money"><span class="dash-stat-val" id="gradedDashValue">—</span><span class="dash-stat-label" data-i18n="graded.dash.value">valor graded</span></div>
+        </article>
+        <article class="dash-card dash-top">
+          <h3 data-i18n="graded.dash.top">Mais valiosas</h3>
+          <ol id="gradedDashTop" class="dash-top-list"></ol>
+        </article>
+        <article class="dash-card dash-dist">
+          <h3 data-i18n="graded.dash.distTitle">Por graduadora</h3>
+          <div id="gradedDashDist" class="dash-dist-bars"></div>
+        </article>
+      </section>
+
+      <div id="gradedView">
+        <section class="sales-toolbar">
+          <button type="button" id="gradedAddBtn" class="secondary" data-i18n="graded.add">Adicionar cartas</button>
+          <button type="button" id="gradedShareBtn" class="secondary" data-i18n="graded.share">Compartilhar</button>
+          <button type="button" id="gradedExportBtn" class="secondary" data-i18n="graded.export">Exportar imagem</button>
+          <div class="sort-select sales-sort-row">
+            <label for="gradedSortSelect" data-i18n="sort.label">Ordenar:</label>
+            <select id="gradedSortSelect">
+              <option value="value-desc" data-i18n="sort.valueDesc">Valor (maior → menor)</option>
+              <option value="value-asc" data-i18n="sort.valueAsc">Valor (menor → maior)</option>
+              <option value="grade-desc" data-i18n="graded.sort.gradeDesc">Nota (maior → menor)</option>
+              <option value="num-asc" data-i18n="sort.numAsc">Nº da carta (menor → maior)</option>
+              <option value="num-desc" data-i18n="sort.numDesc">Nº da carta (maior → menor)</option>
+              <option value="release" data-i18n="sort.releaseDate">Lançamento</option>
+              <option value="added-desc" data-i18n="sort.addedDesc">Adição (última → primeira)</option>
+              <option value="added-asc" data-i18n="sort.addedAsc">Adição (primeira → última)</option>
+            </select>
+          </div>
+        </section>
+        <p id="gradedHint" class="collection-subtitle" data-i18n="graded.hint">Escolha a graduadora e a nota. O valor de mercado graded entra sozinho quando há dado; sobrescreva se quiser. Toque na carta pra ampliar.</p>
+        <section id="gradedGrid" class="card-grid"></section>
+        <p id="gradedEmpty" class="empty-state" data-i18n-html="graded.empty" hidden>Nenhuma carta graded ainda. Use <strong>Adicionar cartas</strong> pra registrar um slab (PSA, BGS, CGC, SGC ou TAG).</p>
+      </div>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/shared.js"></script>
+    <script defer src="src/graded.js"></script>
+  </body>
+</html>

@@ -1246,16 +1246,20 @@
   function sharedTile(it) {
     const img = shared.localizedImg(it.img, { alt: it.n, fallback: it.fb, loading: "lazy", thumb: true });
     const flag = shared.cardFlag(it.lang);
-    // Venda: mostra o PREÇO DE VENDA (sp) na moeda do vendedor. Senão, valor de mercado.
+    // Graded: mostra o valor graded (gv). Venda: o PREÇO DE VENDA (sp). Senão, mercado.
     let priceHtml = "";
-    if (it.sp != null && it.sp > 0) {
+    if (it.gv != null && it.gv > 0) {
+      priceHtml = `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(it.cur || "BRL", it.gv))}</p>`;
+    } else if (it.sp != null && it.sp > 0) {
       priceHtml = `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(it.cur || "BRL", it.sp))}</p>`;
     } else {
       const val = fromBRL(it.vbrl || 0);
       if (val > 0) priceHtml = `<p class="tile-price">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>`;
     }
-    return `<article class="card-tile shared-tile">
-      <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(it.id)}" data-preview-variant="${escapeAttribute(it.v)}" aria-label="${escapeAttribute(t("card.zoom", { name: it.n }))}">${img}</button></div>
+    // Slab graduado: etiqueta sobreposta com graduadora + nota (PSA 10, BGS 9.5…).
+    const gradedBadge = it.co ? `<span class="graded-label graded-label-shared"><span class="graded-label-co">${escapeHtml(String(it.co).toUpperCase())}</span><span class="graded-label-grade">${escapeHtml(it.gr || "—")}</span></span>` : "";
+    return `<article class="card-tile shared-tile${it.co ? " graded-tile-shared" : ""}">
+      <div class="card-image">${gradedBadge}<button type="button" class="image-open" data-preview-card-id="${escapeAttribute(it.id)}" data-preview-variant="${escapeAttribute(it.v)}" aria-label="${escapeAttribute(t("card.zoom", { name: it.n }))}">${img}</button></div>
       <div class="tile-info">
         <h3>${escapeHtml(it.n)}</h3>
         <p class="tile-set"><span>${escapeHtml(it.s)} · ${escapeHtml(it.num)}</span></p>
@@ -1287,13 +1291,16 @@
     const allItems = share.data.items;
     const isFolder = share.data.scope === "folder"; // compartilhamento de UMA pasta
     const isSale = share.data.scope === "sale";      // lista de vendas
+    const isGraded = share.data.scope === "graded";  // cartas graduadas (slabs)
     const saleCur = share.data.cur || "BRL";
-    // Total: venda soma os preços de venda (sp) na moeda do vendedor; senão valor de mercado.
-    const bannerTotal = isSale
-      ? allItems.reduce((s, it) => s + (Number(it.sp) || 0) * (it.q || 1), 0)
-      : allItems.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
-    const bannerMoney = isSale ? shared.formatMoney(saleCur, bannerTotal) : shared.formatMoney(shared.getCurrency(), bannerTotal);
-    const kindLabel = isSale ? t("sales.shared.label") : (isFolder ? t("folders.shared.label") : "");
+    // Total: venda/graded somam o valor (sp/gv) na moeda do dono; senão valor de mercado.
+    const bannerTotal = isGraded
+      ? allItems.reduce((s, it) => s + (Number(it.gv) || 0), 0)
+      : isSale
+        ? allItems.reduce((s, it) => s + (Number(it.sp) || 0) * (it.q || 1), 0)
+        : allItems.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
+    const bannerMoney = (isSale || isGraded) ? shared.formatMoney(saleCur, bannerTotal) : shared.formatMoney(shared.getCurrency(), bannerTotal);
+    const kindLabel = isGraded ? t("graded.shared.label") : isSale ? t("sales.shared.label") : (isFolder ? t("folders.shared.label") : "");
 
     // Filtro de jogo (Todos/Pokémon/Lorcana) — igual à página da coleção. Só
     // aparece quando o share tem MAIS DE UM jogo, pra quem está vendo conseguir
@@ -1347,7 +1354,7 @@
     function paintShared() {
       const items = sharedFilter === "all" ? allItems : allItems.filter((it) => (it.g || "pokemon") === sharedFilter);
       const total = items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
-      const dash = isSale ? "" : sharedDashboardHtml(items, total, profileNav);
+      const dash = (isSale || isGraded) ? "" : sharedDashboardHtml(items, total, profileNav);
       document.getElementById("sharedBody").innerHTML =
         `${dash}<div class="card-grid">${items.map(sharedTile).join("")}</div>`;
     }
