@@ -448,6 +448,11 @@ button {
   color: var(--on-accent);
 }
 
+/* Chips que são LINKS (ex.: a aba "Graded" leva pra graded.html, e a faixa de
+   abas na graded.html volta pra collection.html?tab=): sem sublinhado e com o
+   texto centralizado como nos chips-botão. */
+a.chip { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+
 /* Toggle segmentado (Todos | EN | JA...): trilho único com a opção ativa
    preenchida, no lugar de <select> para poucas opções. */
 .segmented {

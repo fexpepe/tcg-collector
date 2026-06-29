@@ -314,7 +314,11 @@
 
     elements.tabs.addEventListener("click", (event) => {
       const chip = event.target.closest("[data-tab]");
-      if (!chip || chip.dataset.tab === activeTab) return;
+      if (!chip) return;
+      // "Graded" é uma PÁGINA (graded.html): o chip é um <a> — deixa o link navegar
+      // (não troca de aba in-page nem dá preventDefault).
+      if (chip.dataset.tab === "graded") return;
+      if (chip.dataset.tab === activeTab) return;
       activeTab = chip.dataset.tab;
       if (GROUP_TABS[activeTab]) {
         sortMode = GROUP_TABS[activeTab].defaultSort;
@@ -324,6 +328,16 @@
       });
       render();
     });
+
+    // Abrir uma aba específica via ?tab= (ex.: voltar da página Graded p/ "Coleções").
+    const wantTab = collParams.get("tab");
+    const VALID_TABS = ["cards", "folders", "pokemon", "artists", "sets"];
+    if (wantTab && VALID_TABS.includes(wantTab) && wantTab !== activeTab) {
+      activeTab = wantTab;
+      if (GROUP_TABS[activeTab]) sortMode = GROUP_TABS[activeTab].defaultSort;
+      Array.from(elements.tabs.children).forEach((node) =>
+        node.setAttribute("aria-pressed", String(node.dataset && node.dataset.tab === activeTab)));
+    }
 
     elements.sortChips.addEventListener("click", (event) => {
       const chip = event.target.closest("[data-sort]");
