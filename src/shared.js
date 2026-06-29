@@ -3688,10 +3688,6 @@
     document.addEventListener("sleevu:installable", updateInstallItem);
 
     // Atalhos de navegação (relativos — site único).
-    const navItems = `<li class="auth-sep" aria-hidden="true"></li>
-      <a class="lang-dd-option auth-link" role="menuitem" href="collection.html">${escapeHtml(t("nav.collection"))}</a>
-      <a class="lang-dd-option auth-link" role="menuitem" href="portfolio.html?game=hub">${escapeHtml(t("nav.portfolio"))}</a>
-      <a class="lang-dd-option auth-link" role="menuitem" href="hub.html">${escapeHtml(t("nav.explore"))}</a>`;
     // Apoiar (lugar do "assine" dos concorrentes — aqui é grátis, só doação).
     const supportItem = `<li class="auth-sep" aria-hidden="true"></li>
       <a class="lang-dd-option auth-link auth-support" role="menuitem" href="https://ko-fi.com/fernandopepe" target="_blank" rel="noopener">${escapeHtml(t("auth.support"))}</a>`;
@@ -3756,7 +3752,6 @@
           <li class="auth-sync" data-auth-sync></li>
           ${profileItem}
           ${installItem}
-          ${navItems}
           ${supportItem}
           ${dataItems}
           ${aboutItems}
