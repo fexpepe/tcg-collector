@@ -784,9 +784,9 @@
         ? shared.localizedImg(shared.cardImageSources(cover).url, { alt: "", fallback: shared.cardImageSources(cover).fallback, loading: "lazy", thumb: true })
         : `<span class="coll-card-empty">${escapeHtml(t("folders.empty"))}</span>`;
       return `<section class="folder-section is-collapsed coll-card" data-folder-id="${escapeAttribute(folder.id)}" draggable="true">
+        <div class="coll-card-title"><strong class="coll-card-name">${escapeHtml(folder.name || t("folders.untitled"))}</strong></div>
         <button type="button" class="coll-card-cover" data-folder-collapse aria-label="${escapeAttribute(t("folders.toggle"))}">${coverImg}</button>
         <div class="coll-card-body">
-          <strong class="coll-card-name">${escapeHtml(folder.name || t("folders.untitled"))}</strong>
           <div class="coll-card-meta-row">
             <span class="coll-card-meta">${escapeHtml(meta)}</span>
             ${folderTagHtml(games)}
@@ -1415,11 +1415,12 @@
         ? shared.localizedImg(cover.img, { alt: "", fallback: cover.fb, loading: "lazy", thumb: true })
         : `<span class="coll-card-empty">—</span>`;
       let stars = ""; for (let i = 1; i <= 3; i++) stars += `<span class="coll-star${i <= (f.stars || 0) ? " on" : ""}">★</span>`;
+      const gset = new Set(items.map((it) => it.g).filter(Boolean));
       return `<button type="button" class="coll-card coll-card-ro" data-vitrine-open="${escapeAttribute(f.id)}">
+        <span class="coll-card-title"><strong class="coll-card-name">${escapeHtml(f.name || t("folders.untitled"))}</strong></span>
         <span class="coll-card-cover">${coverImg}</span>
         <span class="coll-card-body">
-          <strong class="coll-card-name">${escapeHtml(f.name || t("folders.untitled"))}</strong>
-          <span class="coll-card-meta">${escapeHtml(metaTxt)}</span>
+          <span class="coll-card-meta-row"><span class="coll-card-meta">${escapeHtml(metaTxt)}</span>${folderTagHtml(gset)}</span>
           <span class="coll-stars">${stars}</span>
         </span>
       </button>`;
