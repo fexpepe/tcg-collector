@@ -567,6 +567,11 @@ input::placeholder {
 .coll-card-acts { display: flex; gap: 1px; }
 .coll-card-acts .folder-act { padding: 4px; min-height: 0; }
 
+/* Arrastar coleção (reordenar a vitrine) */
+.coll-card[draggable="true"] { cursor: grab; }
+.coll-card.coll-dragging { opacity: 0.45; }
+.coll-card.dropbefore { box-shadow: -3px 0 0 0 var(--accent); }
+
 /* Estrelas de preferência */
 .coll-stars { display: inline-flex; gap: 1px; }
 .coll-star { border: 0; background: transparent; cursor: pointer; font-size: 15px; line-height: 1; padding: 1px 2px; color: var(--line); min-height: 0; }

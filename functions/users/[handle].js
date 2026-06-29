@@ -54,7 +54,14 @@ export async function onRequestGet(context) {
     element(el) { el.setAttribute("href", href); }
   });
 
-  return new HTMLRewriter()
+  // og:image = carta mais valiosa do perfil (items já vem ordenado por valor desc),
+  // pulando .avif (Lorcana) que WhatsApp/Facebook não renderizam como preview.
+  // Imagem real → renderiza em todo lugar, ao contrário do .svg genérico.
+  const ogPick = items.find((it) => it.img && !/\.avif(\?|$)/i.test(it.img)) || items[0];
+  const ogImage = (ogPick && ogPick.img) || null;
+  const remove = { element(el) { el.remove(); } };
+
+  let rw = new HTMLRewriter()
     .on("title", setText(title))
     .on('meta[property="og:title"]', setMeta(null, title))
     .on('meta[name="twitter:title"]', setMeta(null, title))
@@ -62,6 +69,14 @@ export async function onRequestGet(context) {
     .on('meta[property="og:description"]', setMeta(null, desc))
     .on('meta[name="twitter:description"]', setMeta(null, desc))
     .on('meta[property="og:url"]', setMeta(null, url))
-    .on('link[rel="canonical"]', setHref(url))
-    .transform(shell);
+    .on('link[rel="canonical"]', setHref(url));
+  if (ogImage) {
+    rw = rw
+      .on('meta[property="og:image"]', setMeta(null, ogImage))
+      .on('meta[name="twitter:image"]', setMeta(null, ogImage))
+      // dimensões fixas (1200x630) do .svg genérico não valem pra carta (retrato).
+      .on('meta[property="og:image:width"]', remove)
+      .on('meta[property="og:image:height"]', remove);
+  }
+  return rw.transform(shell);
 }

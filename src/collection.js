@@ -57,6 +57,14 @@
         if (i < 0 || j < 0 || j >= data.folders.length) return;
         const [f] = data.folders.splice(i, 1); data.folders.splice(j, 0, f); save();
       },
+      reorderTo(dragId, targetId) { // arrasta: insere dragId na posição de targetId
+        const from = data.folders.findIndex((f) => f.id === dragId);
+        if (from < 0 || dragId === targetId) return;
+        const [f] = data.folders.splice(from, 1);
+        const to = data.folders.findIndex((x) => x.id === targetId);
+        if (to < 0) data.folders.push(f); else data.folders.splice(to, 0, f);
+        save();
+      },
       assign(cardId, folderId) {
         if (folderId && byId(folderId)) data.assign[cardId] = folderId; else delete data.assign[cardId];
         // Tira da ordem manual de qualquer bucket (vai ser anexada no novo).
@@ -415,6 +423,7 @@
     });
 
     bindFolderDrag();
+    bindCollectionDrag();
     initCarousel();
   }
 
@@ -774,7 +783,7 @@
       const coverImg = cover
         ? shared.localizedImg(shared.cardImageSources(cover).url, { alt: "", fallback: shared.cardImageSources(cover).fallback, loading: "lazy", thumb: true })
         : `<span class="coll-card-empty">${escapeHtml(t("folders.empty"))}</span>`;
-      return `<section class="folder-section is-collapsed coll-card" data-folder-id="${escapeAttribute(folder.id)}">
+      return `<section class="folder-section is-collapsed coll-card" data-folder-id="${escapeAttribute(folder.id)}" draggable="true">
         <button type="button" class="coll-card-cover" data-folder-collapse aria-label="${escapeAttribute(t("folders.toggle"))}">${coverImg}</button>
         <div class="coll-card-body">
           <strong class="coll-card-name">${escapeHtml(folder.name || t("folders.untitled"))}</strong>
@@ -879,6 +888,50 @@
         render();
       }
       draggingId = null;
+    });
+  }
+
+  // Arrastar uma COLEÇÃO minimizada (card) pra reordenar a vitrine (desktop; o
+  // touch usa as setas ↑↓). Usa um mime PRÓPRIO (não text/plain) pra não colidir
+  // com o arraste de cartas do bindFolderDrag (que reatribuiria folder-id como carta).
+  function bindCollectionDrag() {
+    const sections = elements.folderSections;
+    let dragId = null;
+    const clearHints = () => sections.querySelectorAll(".coll-card.dropbefore").forEach((c) => c.classList.remove("dropbefore"));
+    sections.addEventListener("dragstart", (event) => {
+      if (event.target.closest(".card-tile")) return; // arraste de carta: outro handler
+      const card = event.target.closest(".coll-card");
+      if (!card) return;
+      dragId = card.dataset.folderId;
+      event.dataTransfer.effectAllowed = "move";
+      try { event.dataTransfer.setData("application/x-coll", dragId); } catch (e) { /* Firefox exige algum setData */ }
+      card.classList.add("coll-dragging");
+    });
+    sections.addEventListener("dragend", () => {
+      sections.querySelectorAll(".coll-card.coll-dragging").forEach((c) => c.classList.remove("coll-dragging"));
+      clearHints();
+      dragId = null;
+    });
+    sections.addEventListener("dragover", (event) => {
+      if (!dragId) return;
+      const card = event.target.closest(".coll-card");
+      if (!card || card.dataset.folderId === dragId) return;
+      event.preventDefault();
+      event.dataTransfer.dropEffect = "move";
+      clearHints();
+      card.classList.add("dropbefore");
+    });
+    sections.addEventListener("drop", (event) => {
+      if (!dragId) return;
+      const card = event.target.closest(".coll-card");
+      if (card && card.dataset.folderId !== dragId) {
+        event.preventDefault();
+        folders.reorderTo(dragId, card.dataset.folderId);
+        dragId = null;
+        renderCards();
+        return;
+      }
+      dragId = null; clearHints();
     });
   }
 
