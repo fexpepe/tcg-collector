@@ -107,11 +107,12 @@
   }
 
   // Valor efetivo de um slab: override manual (>0) ou o valor de mercado graded
-  // da PPT (por graduadora+nota). Recalcula pelo grade atual quando é automático.
+  // da PPT (só PSA 9/10). Recalcula pelo grade/graduadora atual quando é automático.
+  // `n` = nº de vendas eBay (90d) que embasam o auto; `trend` = 1 alta / -1 baixa.
   function effectiveValue(it, card) {
-    if (it.value > 0) return { value: it.value, auto: false };
-    const auto = shared.gradedValue(card, it.company, it.grade).value || 0;
-    return { value: auto, auto: true };
+    if (it.value > 0) return { value: it.value, auto: false, n: 0, trend: 0 };
+    const gv = shared.gradedValue(card, it.company, it.grade);
+    return { value: gv.value || 0, auto: true, n: gv.n || 0, trend: gv.trend || 0 };
   }
   // Nota numérica pra ordenação ("9.5" → 9.5; vazio → 0).
   const gradeNum = (g) => { const n = parseFloat(String(g).replace(",", ".")); return isFinite(n) ? n : 0; };
@@ -207,8 +208,10 @@
     const src = shared.cardImageSources(card);
     const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
     const eff = effectiveValue(it, card);
-    const autoCls = eff.auto && eff.value > 0 ? " is-auto" : "";
-    const valStr = it.value > 0 ? String(it.value).replace(".", ",") : (eff.auto && eff.value > 0 ? eff.value.toFixed(2).replace(".", ",") : "");
+    const isAuto = eff.auto && eff.value > 0;
+    const autoCls = isAuto ? " is-auto" : "";
+    const valStr = it.value > 0 ? String(it.value).replace(".", ",") : (isAuto ? eff.value.toFixed(2).replace(".", ",") : "");
+    const valTitle = isAuto ? t("graded.autoHint", { n: eff.n }) : t("graded.value");
     const companyOpts = GRADERS.map((g) => `<option value="${g.code}"${g.code === it.company ? " selected" : ""}>${escapeHtml(g.label)}</option>`).join("");
     return `<article class="card-tile graded-tile" data-graded-gid="${escapeAttribute(it.gid)}">
       <div class="graded-slab">
@@ -226,7 +229,7 @@
             <select class="graded-company" data-graded-company aria-label="${escapeAttribute(t("graded.company"))}" title="${escapeAttribute(t("graded.company"))}">${companyOpts}</select>
             <input type="text" inputmode="decimal" class="graded-grade" data-graded-grade value="${escapeAttribute(it.grade)}" maxlength="4" placeholder="10" aria-label="${escapeAttribute(t("graded.grade"))}" title="${escapeAttribute(t("graded.grade"))}">
           </div>
-          <label class="sale-price-field${autoCls}"><span class="sale-cur">${escapeHtml(sym)}</span><input type="text" inputmode="decimal" class="sale-price${autoCls}" data-graded-value value="${escapeAttribute(valStr)}" placeholder="0,00" aria-label="${escapeAttribute(t("graded.value"))}"></label>
+          <label class="sale-price-field${autoCls}" title="${escapeAttribute(valTitle)}"><span class="sale-cur">${escapeHtml(sym)}</span><input type="text" inputmode="decimal" class="sale-price${autoCls}" data-graded-value value="${escapeAttribute(valStr)}" placeholder="0,00" aria-label="${escapeAttribute(t("graded.value"))}"></label>
         </div>
         <input type="text" class="graded-cert" data-graded-cert value="${escapeAttribute(it.cert)}" placeholder="${escapeAttribute(t("graded.certPlaceholder"))}" aria-label="${escapeAttribute(t("graded.cert"))}">
       </div>

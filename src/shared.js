@@ -596,19 +596,25 @@
     return { value: 0, currency: cur, source: null, estimated: false };
   }
 
-  // Valor de mercado de uma carta GRADUADA (slab): preço de venda graded da PPT,
-  // por graduadora + nota, em USD (do eBay sold) → convertido pra moeda atual.
-  // A tabela TCG_PRICING traz, quando há dado, `g: { psa: { "10": usd, "9": usd },
-  // bgs:{…}, cgc:{…}, sgc:{…} }` (TAG/Lorcana não têm → cai no valor manual).
-  // company: "psa"|"bgs"|"cgc"|"sgc"|"tag"; grade: string ("10","9.5"…). 0 se faltar.
+  // Valor de mercado de uma carta GRADUADA (slab): preço graded da PPT, em USD (do
+  // eBay sold) → convertido pra moeda atual. A PPT só fornece graded de **PSA**,
+  // notas **9 e 10** (as que movem o mercado); por isso só PSA 9/10 têm valor
+  // automático — BGS/CGC/SGC/TAG (e PSA <9) caem no valor manual. A tabela
+  // TCG_PRICING traz, quando há dado, `g: { "10": { s, r, m, n, t }, "9": {…} }`
+  // (por NOTA; `s` = smartMarket ponderado em USD; `n` = nº de vendas 90d; `t` =
+  // tendência). company: "psa"|"bgs"|"cgc"|"sgc"|"tag"; grade: string. 0 se faltar.
   function gradedValue(card, company, grade) {
     const cur = currentCurrency;
+    if (String(company || "").toLowerCase() !== "psa") return { value: 0, currency: cur, source: null };
     const cardId = card && card.id;
     const table = window.TCG_PRICING;
     const ref = cardId && table && (table[cardId] || table[basePricingId(cardId)]);
-    const byCompany = ref && ref.g && ref.g[String(company || "").toLowerCase()];
-    const usd = byCompany && byCompany[String(grade)];
-    if (usd > 0) { const v = convertMoney(usd, "USD", cur); if (v != null) return { value: v, currency: cur, source: "ppt" }; }
+    const node = ref && ref.g && ref.g[String(grade)];
+    const usd = node && node.s;
+    if (usd > 0) {
+      const v = convertMoney(usd, "USD", cur);
+      if (v != null) return { value: v, currency: cur, source: "ppt", n: node.n || 0, trend: node.t || 0 };
+    }
     return { value: 0, currency: cur, source: null };
   }
 
