@@ -404,7 +404,8 @@
         if (fid) { coverPickId = coverPickId === fid ? null : fid; renderCards(); }
         return;
       }
-      if (event.target.closest("[data-folder-collapse]")) { if (fid) { folders.toggleCollapse(fid); coverPickId = null; renderCards(); } return; }
+      if (event.target.closest("[data-folder-collapse]")) { if (fid) { openFolderId = fid; coverPickId = null; renderCards(); } return; }
+      if (event.target.closest("[data-folder-back]")) { openFolderId = null; coverPickId = null; renderCards(); return; }
       const moveBtn = event.target.closest("[data-folder-move]");
       if (moveBtn) { if (fid) { folders.move(fid, Number(moveBtn.dataset.folderMove)); renderCards(); } return; }
       if (event.target.closest("[data-folder-delete]")) { if (fid && window.confirm(t("folders.deleteConfirm"))) { folders.remove(fid); render(); } return; }
@@ -476,6 +477,7 @@
     // "Cartas" (grade plana) e "Pastas" (seções) usam a MESMA toolbar de filtros.
     const isCardsLike = activeTab === "cards" || activeTab === "folders";
     const isFolders = activeTab === "folders";
+    if (!isFolders) openFolderId = null; // sair das Coleções volta pra vitrine
     elements.groupsView.hidden = isCardsLike;
     elements.cardsView.hidden = !isCardsLike;
     // Título e "Nova coleção" mudam conforme a aba (Cartas vs Coleções).
@@ -615,6 +617,8 @@
   const TRASH_ICON = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>';
   // Coleção em "modo trocar capa": clicar numa carta da seção a define como capa.
   let coverPickId = null;
+  // Coleção ABERTA (foco): mostra só ela; null = vitrine (todas como cards).
+  let openFolderId = null;
 
   // variantTile devolve um NÓ do DOM (não string) — usado tanto no pager (flat)
   // quanto via appendChild nas seções de pasta.
@@ -629,7 +633,7 @@
     const useFolders = activeTab === "folders";
     elements.grid.hidden = useFolders;
     elements.folderSections.hidden = !useFolders;
-    if (elements.newFolderBtn) elements.newFolderBtn.hidden = !useFolders;
+    if (elements.newFolderBtn) elements.newFolderBtn.hidden = !useFolders || !!openFolderId;
     if (!useFolders) {
       elements.folderSections.innerHTML = "";
       pager.render(tiles, makeTile, { resetCount });
@@ -653,14 +657,22 @@
     // Pastas que não contêm o jogo filtrado somem (pokemon → some lorcana-only;
     // vazias mostram sempre, pra você poder enchê-las).
     const folderGames = computeFolderGames();
-    const visible = folders.list().filter((f) => {
-      if (gameFilter === "all") return true;
-      const gs = folderGames.get(f.id);
-      return !gs || gs.size === 0 || gs.has(gameFilter);
-    });
-    const sections = visible.map((f) => ({ folder: f, games: folderGames.get(f.id), pairs: applyFolderOrder(f.id, groups.get(f.id) || []) }));
-    const noneTiles = applyFolderOrder("__none__", groups.get("__none__") || []);
-    if (noneTiles.length) sections.push({ folder: null, games: null, pairs: noneTiles });
+    const open = openFolderId ? folders.get(openFolderId) : null;
+    let sections;
+    if (open) {
+      // Coleção ABERTA: só ela (foco), pra não confundir com as outras.
+      sections = [{ folder: open, games: folderGames.get(open.id), pairs: applyFolderOrder(open.id, groups.get(open.id) || []) }];
+    } else {
+      // Vitrine: todas as coleções (cards) + "Sem coleção".
+      const visible = folders.list().filter((f) => {
+        if (gameFilter === "all") return true;
+        const gs = folderGames.get(f.id);
+        return !gs || gs.size === 0 || gs.has(gameFilter);
+      });
+      sections = visible.map((f) => ({ folder: f, games: folderGames.get(f.id), pairs: applyFolderOrder(f.id, groups.get(f.id) || []) }));
+      const noneTiles = applyFolderOrder("__none__", groups.get("__none__") || []);
+      if (noneTiles.length) sections.push({ folder: null, games: null, pairs: noneTiles });
+    }
     elements.folderSections.innerHTML = sections.map(({ folder, pairs, games }) => folderSectionHtml(folder, pairs, games)).join("");
     sections.forEach(({ folder, pairs }) => {
       const sel = folder ? `[data-folder-id="${folder.id}"]` : ".folder-none";
@@ -772,13 +784,14 @@
 
   function folderSectionHtml(folder, pairs, games) {
     const isNone = !folder;
-    const collapsed = !isNone && folder.collapsed;
+    const isOpen = !isNone && folder.id === openFolderId; // aberta (foco) vs card
     const value = folderValue(pairs);
     const meta = `${pairs.length}${value > 0 ? " · " + shared.formatMoney(shared.getCurrency(), value) : ""}`;
     const listCls = cardsView === "list" ? " is-list" : "";
 
-    // MINIMIZADA → card de coleção (vitrine): capa + nome + meta + estrelas.
-    if (collapsed) {
+    // CARD de coleção (vitrine): capa + nome + meta + estrelas. (Tudo que não é a
+    // coleção aberta nem a seção "Sem coleção".)
+    if (!isNone && !isOpen) {
       const cover = folderCoverCard(folder, pairs);
       const coverImg = cover
         ? shared.localizedImg(shared.cardImageSources(cover).url, { alt: "", fallback: shared.cardImageSources(cover).fallback, loading: "lazy", thumb: true })
@@ -816,9 +829,10 @@
         <button type="button" class="folder-act folder-act-danger folder-del-btn" data-folder-delete title="${escapeAttribute(t("folders.deleteBtn"))}" aria-label="${escapeAttribute(t("folders.deleteBtn"))}">${TRASH_ICON}<span>${escapeHtml(t("folders.deleteBtn"))}</span></button>
       </span>`;
     const pickHint = (!isNone && coverPickId === folder.id) ? `<p class="coll-cover-hint">${escapeHtml(t("folders.coverPick"))}</p>` : "";
+    const backBtn = isOpen ? `<button type="button" class="secondary coll-back-btn" data-folder-back>← ${escapeHtml(t("folders.back"))}</button>` : "";
     return `<section class="folder-section${isNone ? " folder-none" : ""}${(!isNone && coverPickId === folder.id) ? " is-cover-pick" : ""}" data-folder-id="${escapeAttribute(isNone ? "" : folder.id)}">
       <header class="folder-head">
-        <button type="button" class="folder-collapse" data-folder-collapse aria-expanded="true" aria-label="${escapeAttribute(t("folders.toggle"))}">▾</button>
+        ${backBtn}
         ${nameHtml}
         ${isNone ? "" : folderTagHtml(games)}
         <span class="folder-meta">${escapeHtml(meta)}</span>

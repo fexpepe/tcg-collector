@@ -569,6 +569,9 @@ input::placeholder {
 .coll-card-acts { display: flex; gap: 1px; }
 .coll-card-acts .folder-act { padding: 4px; min-height: 0; }
 
+/* Botão "Voltar" da coleção aberta (foco) — no lugar da setinha. */
+.coll-back-btn { flex: none; gap: 4px; font-size: 13px; font-weight: 700; padding: 0 13px; }
+
 /* Arrastar coleção (reordenar a vitrine) */
 .coll-card[draggable="true"] { cursor: grab; }
 .coll-card.coll-dragging { opacity: 0.45; }
