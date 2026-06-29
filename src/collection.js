@@ -1386,9 +1386,9 @@
     } catch (e) { /* sem catálogo: tiles seguem, só o preview não abre */ }
   }
 
-  // Perfil público (/users/<handle> → ?u=). Lê o payload curado e mostra a
-  // Coleção, com um link pra alternar pra Vendas e Trocas (e voltar). Reusa toda
-  // a renderização de leitura (renderSharedCollection) com um cabeçalho @handle.
+  // Perfil público (/users/<handle> → ?u=). Layout espelha a coleção do dono:
+  // DASHBOARD fixo no topo (identidade + stats, persistente) → ABAS (Toda Coleção /
+  // Coleções / Vendas) → conteúdo. Auto-contido (payload curado, tiles em string).
   async function renderPublicProfile(handle) {
     const sv = prepareSharedView();
     if (!sv) return;
@@ -1402,13 +1402,14 @@
     const col = (prof.data.collection && Array.isArray(prof.data.collection.items)) ? prof.data.collection : { items: [] };
     const sale = (prof.data.sales && Array.isArray(prof.data.sales.items)) ? prof.data.sales : { items: [], cur: "BRL" };
     const hasSales = sale.items.length > 0;
-    // Coleções (vitrine): ordenadas por estrelas (preferência) desc.
     const collFolders = (Array.isArray(prof.data.folders) ? prof.data.folders : [])
       .filter((f) => col.items.some((it) => it.f === f.id))
       .sort((a, b) => (b.stars || 0) - (a.stars || 0));
     const hasFolders = collFolders.length > 0;
+    const gamesPresent = [...new Set(col.items.map((it) => it.g).filter(Boolean))];
     let mode = (hasSales && collParams.get("t") === "sales") ? "sale" : "collection";
     let openId = null; // coleção aberta dentro da vitrine
+    let gFilter = "all";
 
     function tabsHtml() {
       const tab = (m, label, on) => on ? `<button type="button" class="prof-tab${mode === m ? " is-active" : ""}" data-profile-tab="${m}">${escapeHtml(label)}</button>` : "";
@@ -1418,7 +1419,19 @@
         ${tab("sale", t("nav.sales"), hasSales)}
       </div>`;
     }
-
+    // Dashboard SEMPRE da coleção (visão geral do perfil); reage ao filtro de jogo.
+    function dashHtml() {
+      const items = gFilter === "all" ? col.items : col.items.filter((it) => (it.g || "pokemon") === gFilter);
+      const total = items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
+      return sharedDashboardHtml(items, total, { name, handle: prof.handle });
+    }
+    function gameFilterHtml() {
+      if (gamesPresent.length <= 1) return "";
+      const chip = (g, label) => `<button type="button" class="chip" data-game-filter="${g}" aria-pressed="${gFilter === g}">${escapeHtml(label)}</button>`;
+      return `<div class="collection-toolbar"><div id="sharedGameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
+        ${chip("all", t("filter.gameAll"))}${chip("pokemon", t("filter.gamePokemon"))}${chip("lorcana", t("filter.gameLorcana"))}
+      </div></div>`;
+    }
     // Card de coleção (somente leitura) da vitrine: capa + nome + meta + estrelas.
     function vitrineCard(f) {
       const items = col.items.filter((it) => it.f === f.id);
@@ -1441,39 +1454,49 @@
         </span>
       </button>`;
     }
-
-    function show() {
+    function contentHtml() {
       if (mode === "vitrine") {
         if (openId) {
-          const f = collFolders.find((x) => x.id === openId);
           const items = col.items.filter((it) => it.f === openId);
-          const share = { kind: "collection", title: (f && f.name) || t("folders.untitled"), data: { items } };
-          renderSharedCollection(share, { handle: prof.handle, name, tabsHtml: tabsHtml(), label: t("profile.viewCollections"), onNav: () => { openId = null; show(); } });
-        } else {
-          sv.innerHTML = `${tabsHtml()}<div class="coll-vitrine">${collFolders.map(vitrineCard).join("")}</div>`;
+          return `<div class="card-grid">${items.map(sharedTile).join("")}</div>`;
         }
-        return;
+        return `<div class="coll-vitrine">${collFolders.map(vitrineCard).join("")}</div>`;
       }
-      if (mode === "sale") {
-        const share = { kind: "collection", title: name, data: { items: sale.items, scope: "sale", cur: sale.cur || "BRL" } };
-        renderSharedCollection(share, { handle: prof.handle, name, tabsHtml: tabsHtml() });
-      } else {
-        const share = { kind: "collection", title: name, data: { items: col.items } };
-        renderSharedCollection(share, { handle: prof.handle, name, identityInDash: true, tabsHtml: tabsHtml() });
-      }
+      const items = mode === "sale" ? sale.items
+        : (gFilter === "all" ? col.items : col.items.filter((it) => (it.g || "pokemon") === gFilter));
+      return `<div class="card-grid">${items.map(sharedTile).join("")}</div>`;
     }
 
-    // Abas + abrir coleção da vitrine (delegado uma vez no container).
-    if (!sv.dataset.profTabsBound) {
-      sv.dataset.profTabsBound = "1";
-      sv.addEventListener("click", (event) => {
-        const tab = event.target.closest("[data-profile-tab]");
-        if (tab) { mode = tab.dataset.profileTab; openId = null; show(); return; }
-        const open = event.target.closest("[data-vitrine-open]");
-        if (open) { openId = open.dataset.vitrineOpen; show(); return; }
-      });
+    function render() {
+      const openColl = mode === "vitrine" && openId;
+      const back = openColl
+        ? `<div class="coll-open-head"><button type="button" class="secondary coll-back-btn" data-vitrine-back>${escapeHtml(t("profile.viewCollections"))}</button><strong class="coll-open-name">${escapeHtml((collFolders.find((x) => x.id === openId) || {}).name || "")}</strong></div>`
+        : "";
+      const gf = (mode === "collection" || mode === "sale") ? gameFilterHtml() : "";
+      sv.innerHTML = `<div class="prof-dash">${dashHtml()}</div>${tabsHtml()}${back}${gf}<div class="prof-content">${contentHtml()}</div>`;
     }
-    show();
+
+    // Delegação no container (sobrevive aos re-renders): abas, vitrine, filtro, preview.
+    sv.addEventListener("click", (event) => {
+      const tab = event.target.closest("[data-profile-tab]");
+      if (tab) { mode = tab.dataset.profileTab; openId = null; render(); return; }
+      const open = event.target.closest("[data-vitrine-open]");
+      if (open) { openId = open.dataset.vitrineOpen; render(); return; }
+      if (event.target.closest("[data-vitrine-back]")) { openId = null; render(); return; }
+      const chip = event.target.closest("[data-game-filter]");
+      if (chip) { gFilter = chip.dataset.gameFilter; render(); return; }
+      const card = event.target.closest("[data-preview-card-id]");
+      if (card) preview.open(card.dataset.previewCardId, card.dataset.previewVariant);
+    });
+    render();
+
+    // Catálogo das cartas do perfil, p/ o preview abrir com o detalhe completo.
+    const idsByGame = {};
+    col.items.concat(sale.items).forEach((it) => { const g = it.g || "pokemon"; (idsByGame[g] = idsByGame[g] || []).push(it.id); });
+    try {
+      const catalog = await shared.loadOwnedAcrossGames(idsByGame);
+      (catalog.cards || []).forEach((card) => { cardsById.set(card.id, card); cardGameMap.set(card.id, card.game); });
+    } catch (e) { /* sem catálogo: só o preview não abre */ }
   }
 
   // Mesmo dashboard da coleção, porém a partir dos itens desnormalizados do share
