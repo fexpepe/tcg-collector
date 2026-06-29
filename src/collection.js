@@ -1460,7 +1460,8 @@
           const items = col.items.filter((it) => it.f === openId);
           return `<div class="card-grid">${items.map(sharedTile).join("")}</div>`;
         }
-        return `<div class="coll-vitrine">${collFolders.map(vitrineCard).join("")}</div>`;
+        const fs = gFilter === "all" ? collFolders : collFolders.filter((f) => col.items.some((it) => it.f === f.id && (it.g || "pokemon") === gFilter));
+        return `<div class="coll-vitrine">${fs.map(vitrineCard).join("")}</div>`;
       }
       const items = mode === "sale" ? sale.items
         : (gFilter === "all" ? col.items : col.items.filter((it) => (it.g || "pokemon") === gFilter));
@@ -1468,12 +1469,13 @@
     }
 
     function render() {
+      shared.applyGameAccent(gFilter); // o filtro de jogo muda as cores (accent), por isso fica no topo
       const openColl = mode === "vitrine" && openId;
       const back = openColl
         ? `<div class="coll-open-head"><button type="button" class="secondary coll-back-btn" data-vitrine-back>${escapeHtml(t("profile.viewCollections"))}</button><strong class="coll-open-name">${escapeHtml((collFolders.find((x) => x.id === openId) || {}).name || "")}</strong></div>`
         : "";
-      const gf = (mode === "collection" || mode === "sale") ? gameFilterHtml() : "";
-      sv.innerHTML = `<div class="prof-dash">${dashHtml()}</div>${tabsHtml()}${back}${gf}<div class="prof-content">${contentHtml()}</div>`;
+      // Filtro de JOGO (global, muda as cores) no topo; ABAS/páginas embaixo do dashboard.
+      sv.innerHTML = `${gameFilterHtml()}<div class="prof-dash">${dashHtml()}</div>${tabsHtml()}${back}<div class="prof-content">${contentHtml()}</div>`;
     }
 
     // Delegação no container (sobrevive aos re-renders): abas, vitrine, filtro, preview.
