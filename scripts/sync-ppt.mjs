@@ -157,7 +157,10 @@ const EN_FILL_SETS = {
 // merge-catalogs cria um chunk novo pra esses setIds (ja). Quando a TCGdex
 // finalmente cadastrar o set, é só tirar daqui (a TCGdex tem metadata melhor).
 // O code tem que casar com o prefixo do setName da PPT (ex.: "M5: ..." -> M5).
-const JP_IMPORT_SETS = ["M5", "MBG"];
+// Entrada pode ser uma string (code resolvido via /sets) OU { code, ppt } com o
+// tcgPlayerNumericId direto — pra sets cujo nome na PPT não tem prefixo "CÓDIGO:"
+// (ex.: "SV-P Promotional Cards", que não cai no setMap). svpj = SV-P japonês.
+const JP_IMPORT_SETS = ["M5", "MBG", { code: "svpj", ppt: 23779 }];
 
 // Cartas avulsas CURADAS que a TCGdex não tem (ex.: Ancient Mew, promo de filme que
 // não está em set nenhum da TCGdex). Puxamos da PPT pelo NOME EXATO (preço de
@@ -633,11 +636,13 @@ async function run() {
   // Importação de sets JP inteiros que a TCGdex ainda não tem (M5, MBG…). O
   // pptId vem do /sets (grátis); se a PPT ainda não listar o set, loga e segue
   // (é o "probe": no próximo run que a PPT tiver, importa). Cacheia por code.
-  for (const code of JP_IMPORT_SETS) {
+  for (const entry of JP_IMPORT_SETS) {
+    const code = typeof entry === "string" ? entry : entry.code;
+    const explicitPpt = (entry && typeof entry === "object") ? entry.ppt : null;
     const ck = `jpimport-${code}`;
     const cached = await readCache(ck);
     if (cached && Date.now() - (cached.t || 0) < REFRESH_DAYS * 864e5 && !DRY) { newCardsAll.push(...(cached.newCards || [])); continue; }
-    const pptId = map.get(code.toUpperCase());
+    const pptId = explicitPpt != null ? explicitPpt : map.get(code.toUpperCase());
     if (pptId == null) {
       console.log(`  [JP import] ${code}: a PPT ainda não lista esse set (pulado)`);
       if (cached) newCardsAll.push(...(cached.newCards || []));
