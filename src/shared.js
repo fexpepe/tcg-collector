@@ -2206,15 +2206,25 @@
       ? `<button type="button" class="tile-btn tile-want${isWanted ? " active" : ""}" data-want-card-id="${escapeAttribute(card.id)}" data-want-variant="${escapeAttribute(variant)}" aria-pressed="${isWanted}" aria-label="${escapeAttribute(isWanted ? t("tile.unwantAria", { variant }) : t("tile.wantAria", { variant }))}" title="${escapeAttribute(isWanted ? t("tile.wanted") : t("tile.want"))}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}</button>`
       : `<button type="button" class="tile-btn" disabled title="${escapeAttribute(t("tile.binder"))}" aria-label="${escapeAttribute(t("tile.binder"))}">${TILE_ICONS.binder}</button>`;
 
+    // Tags no rodapé (à esquerda dos botões): mostra só 1 chip + indicador "+N"
+    // se houver mais; sem tags, o chip fantasma "+ Tag". A linha toda abre o menu.
+    const tagsFootHtml = (opts && opts.tags) ? (function () {
+      const list = opts.cardTags || [];
+      const inner = list.length
+        ? `<span class="tile-tag-chip" style="--tag:${list[0].color}">${escapeHtml(list[0].name)}</span>` + (list.length > 1 ? `<span class="tile-tag-more">+${list.length - 1}</span>` : "")
+        : `<span class="tile-tag-add">+ ${escapeHtml(t("tags.addShort"))}</span>`;
+      return `<div class="tile-tags" data-tag-card-id="${escapeAttribute(card.id)}" data-tag-variant="${escapeAttribute(variant)}" role="button" tabindex="0" aria-label="${escapeAttribute(t("tile.tags"))}" title="${escapeAttribute(t("tile.tags"))}">${inner}</div>`;
+    })() : "";
+
     article.innerHTML = `
       <div class="card-image">${image}</div>
       <div class="tile-info">
         <h3>${escapeHtml(cardLabel(card))}</h3>
         <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${cardFlag(card.language)}<span>${escapeHtml(variant)}</span></p>
         <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
-        ${opts && opts.tags ? `<div class="tile-tags" data-tag-card-id="${escapeAttribute(card.id)}" data-tag-variant="${escapeAttribute(variant)}" role="button" tabindex="0" aria-label="${escapeAttribute(t("tile.tags"))}" title="${escapeAttribute(t("tile.tags"))}">${(opts.cardTags || []).map((tg) => `<span class="tile-tag-chip" style="--tag:${tg.color}">${escapeHtml(tg.name)}</span>`).join("")}<span class="tile-tag-add">${(opts.cardTags && opts.cardTags.length) ? "+" : "+ " + escapeHtml(t("tags.addShort"))}</span></div>` : ""}
         ${tilePriceHtml(card, variant, prices)}
         <div class="tile-foot">
+          ${tagsFootHtml}
           <div class="tile-actions">
           ${wantButton}
           <button type="button" class="tile-btn tile-own${ownActive}" data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}" aria-pressed="${!addMode && isOwned}" aria-label="${escapeAttribute(ownAria)}">

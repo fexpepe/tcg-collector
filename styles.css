@@ -3406,17 +3406,16 @@ a.progress-row:hover {
   flex-direction: column;
   flex: 1;
 }
-/* Rodapé do card: os botões de ação CENTRALIZADOS, empurrados pro fundo do card
-   (alinhados entre os cards da fileira). A condição da carta fica só dentro do
-   preview, não na frente do tile. */
+/* Rodapé do card numa linha só: tag (1 chip + "+N") à ESQUERDA e os botões à
+   DIREITA, no fundo do card. Compacto — economiza a altura da parte de baixo. */
 .tile-foot {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
   margin-top: auto;
-  padding-top: 8px;
+  padding-top: 6px;
 }
+.tile-foot .tile-actions { margin-left: auto; flex: none; }
 
 .tile-info h3 {
   margin: 0 0 2px;
@@ -3525,12 +3524,14 @@ a.progress-row:hover {
 .tile-tag.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
 /* Chips coloridos das tags no tile (fundo tingido + texto na cor, lê em qualquer cor/tema).
    A linha inteira é o ponto de adicionar/gerenciar (abre o menu), com um chip "+ Tag". */
-.tile-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: 2px 0 6px; cursor: pointer; }
+.tile-tags { display: flex; align-items: center; gap: 4px; min-width: 0; flex: 0 1 auto; overflow: hidden; cursor: pointer; }
 .tile-tag-add {
   font-size: 10.5px; font-weight: 800; padding: 1px 7px; border-radius: 5px;
   border: 1px dashed var(--line); color: var(--subtle); background: transparent; white-space: nowrap;
 }
 .tile-tags:hover .tile-tag-add, .tile-tags:focus-visible .tile-tag-add { border-color: var(--accent); color: var(--accent); }
+/* Indicador de "tem mais tags" (ex.: +2), ao lado do único chip mostrado. */
+.tile-tag-more { flex: none; font-size: 10.5px; font-weight: 800; padding: 1px 6px; border-radius: 5px; background: var(--line); color: var(--subtle); }
 .tile-tag-chip {
   max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font-size: 10.5px; font-weight: 800; padding: 1px 7px; border-radius: 5px;

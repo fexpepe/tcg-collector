@@ -845,8 +845,9 @@
     const row = tile && tile.querySelector(".tile-tags");
     if (row) {
       const list = tags.tagsOf(cardId);
-      const chips = list.map((tg) => `<span class="tile-tag-chip" style="--tag:${tg.color}">${escapeHtml(tg.name || t("tags.untitled"))}</span>`).join("");
-      row.innerHTML = chips + `<span class="tile-tag-add">${list.length ? "+" : "+ " + escapeHtml(t("tags.addShort"))}</span>`;
+      row.innerHTML = list.length
+        ? `<span class="tile-tag-chip" style="--tag:${list[0].color}">${escapeHtml(list[0].name || t("tags.untitled"))}</span>` + (list.length > 1 ? `<span class="tile-tag-more">+${list.length - 1}</span>` : "")
+        : `<span class="tile-tag-add">+ ${escapeHtml(t("tags.addShort"))}</span>`;
     }
     renderDashboard();
   }
