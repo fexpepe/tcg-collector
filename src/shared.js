@@ -2212,7 +2212,7 @@
         <h3>${escapeHtml(cardLabel(card))}</h3>
         <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${cardFlag(card.language)}<span>${escapeHtml(variant)}</span></p>
         <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
-        ${opts && opts.cardTags && opts.cardTags.length ? `<div class="tile-tags">${opts.cardTags.map((tg) => `<span class="tile-tag-chip" style="--tag:${tg.color}">${escapeHtml(tg.name)}</span>`).join("")}</div>` : ""}
+        ${opts && opts.tags ? `<div class="tile-tags" data-tag-card-id="${escapeAttribute(card.id)}" data-tag-variant="${escapeAttribute(variant)}" role="button" tabindex="0" aria-label="${escapeAttribute(t("tile.tags"))}" title="${escapeAttribute(t("tile.tags"))}">${(opts.cardTags || []).map((tg) => `<span class="tile-tag-chip" style="--tag:${tg.color}">${escapeHtml(tg.name)}</span>`).join("")}<span class="tile-tag-add">${(opts.cardTags && opts.cardTags.length) ? "+" : "+ " + escapeHtml(t("tags.addShort"))}</span></div>` : ""}
         ${tilePriceHtml(card, variant, prices)}
         <div class="tile-foot">
           <div class="tile-actions">
@@ -2221,7 +2221,6 @@
             ${ownIcon}${qtyBadge}
           </button>
           ${opts && opts.folders ? `<button type="button" class="tile-btn tile-folder${opts.inFolder ? " active" : ""}" data-folder-card-id="${escapeAttribute(card.id)}" data-folder-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.collection"))}" title="${escapeAttribute(t("tile.collection"))}">${TILE_ICONS.folder}</button>` : ""}
-          ${opts && opts.tags ? `<button type="button" class="tile-btn tile-tag${opts.tagActive ? " active" : ""}" data-tag-card-id="${escapeAttribute(card.id)}" data-tag-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.tags"))}" title="${escapeAttribute(t("tile.tags"))}">${TILE_ICONS.tag}</button>` : ""}
         </div>
         </div>
       </div>

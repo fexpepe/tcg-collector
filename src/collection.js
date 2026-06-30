@@ -838,18 +838,15 @@
     });
     document.addEventListener("scroll", closeTileTagMenu, true);
   }
-  // Atualiza in place os chips + o estado do botão de tag de um tile (sem re-render).
+  // Atualiza in place os chips do tile (sem re-render). A linha é o próprio ponto
+  // de adicionar (chip "+ Tag" no fim), então sempre existe — só troca o conteúdo.
   function updateTileTags(anchor, cardId) {
     const tile = anchor.closest(".card-tile");
-    if (tile) {
-      const btn = tile.querySelector(".tile-tag");
+    const row = tile && tile.querySelector(".tile-tags");
+    if (row) {
       const list = tags.tagsOf(cardId);
-      if (btn) btn.classList.toggle("active", list.length > 0);
-      let row = tile.querySelector(".tile-tags");
-      if (list.length) {
-        if (!row) { row = document.createElement("div"); row.className = "tile-tags"; const setEl = tile.querySelector(".tile-set"); if (setEl) setEl.insertAdjacentElement("afterend", row); }
-        row.innerHTML = list.map((tg) => `<span class="tile-tag-chip" style="--tag:${tg.color}">${escapeHtml(tg.name || t("tags.untitled"))}</span>`).join("");
-      } else if (row) { row.remove(); }
+      const chips = list.map((tg) => `<span class="tile-tag-chip" style="--tag:${tg.color}">${escapeHtml(tg.name || t("tags.untitled"))}</span>`).join("");
+      row.innerHTML = chips + `<span class="tile-tag-add">${list.length ? "+" : "+ " + escapeHtml(t("tags.addShort"))}</span>`;
     }
     renderDashboard();
   }
