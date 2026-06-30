@@ -23,7 +23,7 @@
     { code: "bgs", label: "BGS", bg: "#15171d", fg: "#e8c46a" },
     { code: "cgc", label: "CGC", bg: "#0a3d91", fg: "#ffffff" },
     { code: "sgc", label: "SGC", bg: "#101216", fg: "#ffffff" },
-    { code: "tag", label: "TAG", bg: "#0e7490", fg: "#ffffff" }
+    { code: "tag", label: "TAG", bg: "#0b0b0d", fg: "#ffffff" }
   ];
   const graderOf = (code) => GRADERS.find((x) => x.code === code) || GRADERS[0];
 

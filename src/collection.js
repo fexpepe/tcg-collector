@@ -95,7 +95,7 @@
     };
   })();
   // Cores da tarja por graduadora (fundo, texto) — espelha as GRADERS de graded.js.
-  const GRADED_COLORS = { psa: ["#c8102e", "#ffffff"], bgs: ["#15171d", "#e8c46a"], cgc: ["#0a3d91", "#ffffff"], sgc: ["#101216", "#ffffff"], tag: ["#0e7490", "#ffffff"] };
+  const GRADED_COLORS = { psa: ["#c8102e", "#ffffff"], bgs: ["#15171d", "#e8c46a"], cgc: ["#0a3d91", "#ffffff"], sgc: ["#101216", "#ffffff"], tag: ["#0b0b0d", "#ffffff"] };
 
   // Tags custom: como as Coleções, mas uma carta pode ter VÁRIAS (pertencimento
   // múltiplo) + cor + teto de 15. Global cross-game, sincronizada (LWW do bloco).

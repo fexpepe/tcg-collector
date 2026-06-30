@@ -1921,7 +1921,7 @@
 
   // Selo "PSA 9" (cor da graduadora) e o sufixo de busca pras lojas — usados só
   // quando o preview é aberto de uma carta GRADUADA.
-  const GRADED_BADGE_COLORS = { psa: ["#c8102e", "#ffffff"], bgs: ["#15171d", "#e8c46a"], cgc: ["#0a3d91", "#ffffff"], sgc: ["#101216", "#ffffff"], tag: ["#0e7490", "#ffffff"] };
+  const GRADED_BADGE_COLORS = { psa: ["#c8102e", "#ffffff"], bgs: ["#15171d", "#e8c46a"], cgc: ["#0a3d91", "#ffffff"], sgc: ["#101216", "#ffffff"], tag: ["#0b0b0d", "#ffffff"] };
   function gradedSearchTag(g) { return (g && g.company) ? `${String(g.company).toUpperCase()} ${g.grade || ""}`.trim() : ""; }
   function gradedBadgeHtml(g) {
     if (!g || !g.company) return "";
