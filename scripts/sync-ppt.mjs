@@ -123,6 +123,12 @@ const EN_GRADED_SETS = {
 // e o fill é silenciosamente pulado. Confirmadas contra o manifest de produção.
 const EN_FILL_SETS = {
   mep: [24451],               // MEP Black Star Promos (era Mega: 0 arte na TCGdex)
+  // Black Star Promos: a TCGdex NÃO precifica promos -> sem preço no app. A PPT
+  // tem o mercado do TCGplayer; casamos por número (SM04, 027, SWSH001, XY01...).
+  smp: [1861],                // SM Black Star Promos  (PPT "SM Promos")
+  svp: [22872],               // SVP Black Star Promos (PPT "SV: Scarlet & Violet Promo Cards")
+  swshp: [2545],              // SWSH Black Star Promos (PPT "SWSH: Sword & Shield Promo Cards")
+  xyp: [1451],                // XY Black Star Promos  (PPT "XY Promos")
   swsh7: [2848],              // Evolving Skies
   swsh8: [2906],              // Fusion Strike
   swsh9: [2948, 3020],        // Brilliant Stars (+ Trainer Gallery)
