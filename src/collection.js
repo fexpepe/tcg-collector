@@ -867,7 +867,7 @@
       elements.folderSections.innerHTML = `<p class="empty-state" data-tags-empty>${escapeHtml(t("tags.empty"))}</p>`;
       return;
     }
-    elements.folderSections.innerHTML = `<div class="coll-vitrine">${tags.list().map(tagCardHtml).join("")}</div>`;
+    elements.folderSections.innerHTML = tags.list().map(tagCardHtml).join("");
   }
 
   // Card da tag na vitrine (mesmo formato das Coleções, com a cor da tag).
