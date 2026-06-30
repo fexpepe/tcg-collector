@@ -3348,6 +3348,8 @@ a.progress-row:hover {
   overflow: hidden;
   box-shadow: var(--shadow);
   transition: border-color 120ms ease, box-shadow 120ms ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-tile.owned {
@@ -3400,7 +3402,21 @@ a.progress-row:hover {
 
 .tile-info {
   padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
+/* Rodapé do card: condição (ex.: "NM ×1") à esquerda + os botões à direita, na
+   MESMA linha, empurrados pro fundo do card (alinhados entre os cards da fileira). */
+.tile-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+.tile-foot .tile-conditions { margin: 0; min-width: 0; }
 
 .tile-info h3 {
   margin: 0 0 2px;

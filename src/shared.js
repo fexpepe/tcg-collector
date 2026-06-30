@@ -2215,7 +2215,9 @@
         <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
         ${opts && opts.cardTags && opts.cardTags.length ? `<div class="tile-tags">${opts.cardTags.map((tg) => `<span class="tile-tag-chip" style="--tag:${tg.color}">${escapeHtml(tg.name)}</span>`).join("")}</div>` : ""}
         ${tilePriceHtml(card, variant, prices)}
-        <div class="tile-actions">
+        <div class="tile-foot">
+          <p class="tile-conditions" data-tile-conditions>${escapeHtml(summary)}</p>
+          <div class="tile-actions">
           ${wantButton}
           <button type="button" class="tile-btn tile-own${ownActive}" data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}" aria-pressed="${!addMode && isOwned}" aria-label="${escapeAttribute(ownAria)}">
             ${ownIcon}${qtyBadge}
@@ -2223,7 +2225,7 @@
           ${opts && opts.folders ? `<button type="button" class="tile-btn tile-folder${opts.inFolder ? " active" : ""}" data-folder-card-id="${escapeAttribute(card.id)}" data-folder-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.collection"))}" title="${escapeAttribute(t("tile.collection"))}">${TILE_ICONS.folder}</button>` : ""}
           ${opts && opts.tags ? `<button type="button" class="tile-btn tile-tag${opts.tagActive ? " active" : ""}" data-tag-card-id="${escapeAttribute(card.id)}" data-tag-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.tags"))}" title="${escapeAttribute(t("tile.tags"))}">${TILE_ICONS.tag}</button>` : ""}
         </div>
-        <p class="tile-conditions" data-tile-conditions>${escapeHtml(summary)}</p>
+        </div>
       </div>
     `;
 
