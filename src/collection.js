@@ -1756,10 +1756,21 @@
       const val = fromBRL(it.vbrl || 0);
       if (val > 0) priceHtml = `<p class="tile-price">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>`;
     }
-    // Slab graduado: etiqueta sobreposta com graduadora + nota (PSA 10, BGS 9.5…).
-    const gradedBadge = it.co ? `<span class="graded-label graded-label-shared"><span class="graded-label-co">${escapeHtml(String(it.co).toUpperCase())}</span><span class="graded-label-grade">${escapeHtml(shared.gradedGradeText(it.gr, it.pr) || "—")}</span></span>` : "";
-    return `<article class="card-tile shared-tile${it.co ? " graded-tile-shared" : ""}">
-      <div class="card-image">${gradedBadge}<button type="button" class="image-open" data-preview-card-id="${escapeAttribute(it.id)}" data-preview-variant="${escapeAttribute(it.v)}" aria-label="${escapeAttribute(t("card.zoom", { name: it.n }))}">${img}</button></div>
+    // Slab graduado: MESMO visual da coleção (makeGradedNode) — imagem limpa e o
+    // badge da graduadora (cor do slab) na linha da variante, em vez do overlay.
+    if (it.co) {
+      return `<article class="card-tile graded-tile graded-grid-tile shared-tile">
+        <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(it.id)}" data-preview-variant="${escapeAttribute(it.v)}" aria-label="${escapeAttribute(t("card.zoom", { name: it.n }))}">${img}</button></div>
+        <div class="tile-info">
+          <h3>${escapeHtml(it.n)}</h3>
+          <p class="tile-variant">${flag}${shared.gradedBadgeHtml({ company: it.co, grade: it.gr, pristine: it.pr })}</p>
+          <p class="tile-set"><span>${escapeHtml(it.s)} · ${escapeHtml(it.num)}</span></p>
+          ${priceHtml}
+        </div>
+      </article>`;
+    }
+    return `<article class="card-tile shared-tile">
+      <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(it.id)}" data-preview-variant="${escapeAttribute(it.v)}" aria-label="${escapeAttribute(t("card.zoom", { name: it.n }))}">${img}</button></div>
       <div class="tile-info">
         <h3>${escapeHtml(it.n)}</h3>
         <p class="tile-set"><span>${escapeHtml(it.s)} · ${escapeHtml(it.num)}</span></p>
@@ -1961,8 +1972,14 @@
     // Dashboard SEMPRE da coleção (visão geral do perfil); reage ao filtro de jogo.
     function dashHtml() {
       const items = gFilter === "all" ? col.items : col.items.filter((it) => (it.g || "pokemon") === gFilter);
-      const total = items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
-      return sharedDashboardHtml(items, total, { name, handle: prof.handle });
+      // Total = cartas raw + slabs graded (igual à Minha Coleção). gv vem na moeda
+      // do dono; converte pra moeda atual. Antes o graded ficava de fora (link < coleção).
+      const cur = shared.getCurrency();
+      const rawTotal = items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
+      const gradedTotal = gradedList
+        .filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter)
+        .reduce((s, it) => { const v = shared.convertMoney(it.gv || 0, it.cur || "BRL", cur); return s + (v == null ? (it.gv || 0) : v); }, 0);
+      return sharedDashboardHtml(items, rawTotal + gradedTotal, { name, handle: prof.handle });
     }
     function gameFilterHtml() {
       if (gamesPresent.length <= 1) return "";

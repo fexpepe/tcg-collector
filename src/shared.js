@@ -2970,6 +2970,7 @@
     cardValue,
     gradedValue,
     gradedGradeText,
+    gradedBadgeHtml,
     gradedSlabsValued,
     gradedTotalValue,
     formatMoney: fmtMoney,
@@ -3565,9 +3566,15 @@
       const src = cardImageSources(card);
       let vbrl = 0;
       if (showValues) {
-        const unit = cardValue(card, variant, prices).value || 0;
-        const c = convertMoney(unit, cur, "BRL");
-        vbrl = c == null ? 0 : Math.round(c * 100) / 100;
+        // Valor POR CONDIÇÃO (igual ao total da Coleção), não tudo a NM. vbrl é o
+        // valor unitário médio em BRL, então vbrl*q = valor real do lote.
+        let valCur = 0;
+        owned.conditionBreakdown(card.id, variant).forEach(({ condition, quantity }) => {
+          valCur += (cardValue(card, variant, prices, condition).value || 0) * quantity;
+        });
+        const c = convertMoney(valCur, cur, "BRL");
+        const totalBRL = c == null ? valCur : c;
+        vbrl = qty > 0 ? Math.round((totalBRL / qty) * 100) / 100 : 0;
       }
       colItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, a: card.artist || "", v: variant, q: qty, vbrl, img: src.url, fb: src.fallback || "" });
     });
