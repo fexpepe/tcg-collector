@@ -1075,6 +1075,7 @@
     // Atualiza in-place os tiles visíveis (grade plana OU seções de pasta), sem
     // reconstruir — preserva o flash do quick-add e não pisca as imagens.
     elements.cardsView.querySelectorAll(".card-tile").forEach((tile) => {
+      if (tile.classList.contains("graded-tile")) return; // slab não é da store owned
       const quantity = owned.variantTotal(tile.dataset.tileCardId, tile.dataset.tileVariant);
       if (quantity > 0) {
         shared.refreshTileOwnership(tile, owned, wishlist, { addMode: true });

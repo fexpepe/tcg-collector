@@ -732,8 +732,12 @@ input::placeholder {
 @media (max-width: 1000px) { #gradedGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (max-width: 680px) { #gradedGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 460px) { #gradedGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.graded-slab { position: relative; }
-.graded-slab .card-image { border: 2px solid var(--slab-frame, rgba(120,130,150,.35)); border-radius: 12px; }
+/* Card graded com o MESMO contorno das cartas que você tem (anel de accent) — a
+   graded é uma carta sua, então recebe o realce, ficando coeso na grade. */
+.card-tile.graded-tile {
+  border-color: rgba(var(--accent-rgb), 0.55);
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.25), var(--shadow);
+}
 .graded-label {
   position: absolute; top: 0; left: 0; right: 0; z-index: 3;
   display: flex; align-items: center; gap: 6px;
