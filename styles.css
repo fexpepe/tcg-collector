@@ -553,8 +553,9 @@ input::placeholder {
 .coll-vitrine { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
 .prof-tabs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 16px; }
 .prof-tab { border: 1px solid var(--line); background: var(--panel); color: var(--text); padding: 8px 15px; border-radius: 999px; font-weight: 700; font-size: 13px; cursor: pointer; min-height: 0; }
-/* Ordenação por valor: empurrada pro canto direito da fileira de abas. */
-.prof-sort { margin-left: auto; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 999px; padding: 7px 13px; font-weight: 700; font-size: 12px; cursor: pointer; }
+/* Ordenação por valor: compacta e ancorada à direita, na MESMA fileira das abas.
+   width/flex sobrescrevem o "select { width:100% }" global (senão estoura a linha). */
+.prof-sort { width: auto; flex: 0 0 auto; margin-left: auto; align-self: center; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 999px; padding: 7px 13px; font-weight: 700; font-size: 12px; cursor: pointer; }
 .prof-tab.is-active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 /* Cabeçalho da coleção aberta no perfil público (Voltar + nome). */
 .coll-open-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
