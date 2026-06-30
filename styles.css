@@ -3406,17 +3406,17 @@ a.progress-row:hover {
   flex-direction: column;
   flex: 1;
 }
-/* Rodapé do card: condição (ex.: "NM ×1") à esquerda + os botões à direita, na
-   MESMA linha, empurrados pro fundo do card (alinhados entre os cards da fileira). */
+/* Rodapé do card: os botões de ação CENTRALIZADOS, empurrados pro fundo do card
+   (alinhados entre os cards da fileira). A condição da carta fica só dentro do
+   preview, não na frente do tile. */
 .tile-foot {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 8px;
   margin-top: auto;
   padding-top: 8px;
 }
-.tile-foot .tile-conditions { margin: 0; min-width: 0; }
 
 .tile-info h3 {
   margin: 0 0 2px;

@@ -2202,7 +2202,6 @@
     const qtyBadge = quantity > (addMode ? 0 : 1) ? `<span class="tile-qty">×${quantity}</span>` : "";
     const ownIcon = addMode ? TILE_ICONS.plus : (isOwned ? TILE_ICONS.check : TILE_ICONS.plus);
     const ownActive = !addMode && isOwned ? " active" : "";
-    const summary = conditionSummary(store, card.id, variant);
     const wantButton = wishlist
       ? `<button type="button" class="tile-btn tile-want${isWanted ? " active" : ""}" data-want-card-id="${escapeAttribute(card.id)}" data-want-variant="${escapeAttribute(variant)}" aria-pressed="${isWanted}" aria-label="${escapeAttribute(isWanted ? t("tile.unwantAria", { variant }) : t("tile.wantAria", { variant }))}" title="${escapeAttribute(isWanted ? t("tile.wanted") : t("tile.want"))}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}</button>`
       : `<button type="button" class="tile-btn" disabled title="${escapeAttribute(t("tile.binder"))}" aria-label="${escapeAttribute(t("tile.binder"))}">${TILE_ICONS.binder}</button>`;
@@ -2216,7 +2215,6 @@
         ${opts && opts.cardTags && opts.cardTags.length ? `<div class="tile-tags">${opts.cardTags.map((tg) => `<span class="tile-tag-chip" style="--tag:${tg.color}">${escapeHtml(tg.name)}</span>`).join("")}</div>` : ""}
         ${tilePriceHtml(card, variant, prices)}
         <div class="tile-foot">
-          <p class="tile-conditions" data-tile-conditions>${escapeHtml(summary)}</p>
           <div class="tile-actions">
           ${wantButton}
           <button type="button" class="tile-btn tile-own${ownActive}" data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}" aria-pressed="${!addMode && isOwned}" aria-label="${escapeAttribute(ownAria)}">
