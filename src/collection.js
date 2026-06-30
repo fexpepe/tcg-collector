@@ -683,7 +683,7 @@
     const byGame = {};
     myCards.forEach((card) => { byGame[card.game] = (byGame[card.game] || 0) + 1; });
     elements.dashDist.innerHTML = distBarsHtml([
-      { label: t("filter.gamePokemon"), n: byGame.pokemon || 0, color: "#d9a300" },
+      { label: t("filter.gamePokemon"), n: byGame.pokemon || 0, color: "#e23030" },
       { label: t("filter.gameLorcana"), n: byGame.lorcana || 0, color: "#3f3d96" }
     ]);
 
@@ -2041,7 +2041,7 @@
     const byGame = {};
     items.forEach((it) => { if (it.g && !seen.has(it.id)) { seen.add(it.id); byGame[it.g] = (byGame[it.g] || 0) + 1; } });
     const distOrder = [
-      { game: "pokemon", label: t("filter.gamePokemon"), color: "#d9a300" },
+      { game: "pokemon", label: t("filter.gamePokemon"), color: "#e23030" },
       { game: "lorcana", label: t("filter.gameLorcana"), color: "#3f3d96" }
     ].filter((g) => byGame[g.game]);
     const max = Math.max(1, ...distOrder.map((g) => byGame[g.game]));
