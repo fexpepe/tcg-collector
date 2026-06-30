@@ -381,6 +381,9 @@
           return;
         }
       }
+      // Botão "Coleções" do tile: abre o menu pra atribuir a carta a uma coleção.
+      const folderBtn = event.target.closest("[data-folder-card-id]");
+      if (folderBtn) { openTileFolderMenu(folderBtn, folderBtn.dataset.folderCardId); return; }
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) {
         const co = imageButton.dataset.gradedCompany;
@@ -453,6 +456,12 @@
     elements.folderSections.addEventListener("keydown", (event) => {
       if (event.key === "Enter" && event.target.closest("[data-folder-rename]")) event.target.blur();
     });
+
+    // Fecha o menu de coleções do tile ao clicar fora ou apertar Esc.
+    document.addEventListener("click", (event) => {
+      if (tileFolderMenu && !event.target.closest(".tile-folder-menu") && !event.target.closest("[data-folder-card-id]")) closeTileFolderMenu();
+    });
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeTileFolderMenu(); });
 
     bindFolderDrag();
     bindCollectionDrag();
@@ -658,7 +667,60 @@
   // variantTile devolve um NÓ do DOM (não string) — usado tanto no pager (flat)
   // quanto via appendChild nas seções de pasta.
   function makeTile({ card, variant }) {
-    return shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true });
+    return shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, folders: true, inFolder: !!folders.folderOf(card.id) });
+  }
+
+  // Menu "Coleções" do tile (botão da pasta na grade): lista as coleções pra
+  // atribuir a carta direto, sem abrir o preview. "Sem coleção" tira; "+ Nova
+  // coleção" cria e já atribui. Fecha ao clicar fora, rolar ou Esc.
+  let tileFolderMenu = null;
+  function closeTileFolderMenu() {
+    if (tileFolderMenu) { tileFolderMenu.remove(); tileFolderMenu = null; }
+    document.removeEventListener("scroll", closeTileFolderMenu, true);
+  }
+  function openTileFolderMenu(anchor, cardId) {
+    if (tileFolderMenu && tileFolderMenu.dataset.card === cardId) { closeTileFolderMenu(); return; }
+    closeTileFolderMenu();
+    const current = folders.folderOf(cardId);
+    const menu = document.createElement("div");
+    menu.className = "tile-folder-menu";
+    menu.dataset.card = cardId;
+    const item = (id, label, on) => `<button type="button" class="tile-folder-item${on ? " on" : ""}" data-assign="${escapeAttribute(id)}">${escapeHtml(label)}</button>`;
+    menu.innerHTML = item("", t("folders.none"), !current)
+      + folders.list().map((f) => item(f.id, f.name || t("folders.untitled"), current === f.id)).join("")
+      + `<button type="button" class="tile-folder-item tile-folder-new" data-assign-new>+ ${escapeHtml(t("folders.new"))}</button>`;
+    document.body.appendChild(menu);
+    // Posiciona perto do botão (fixed), sem sair da viewport.
+    const r = anchor.getBoundingClientRect();
+    const mw = menu.offsetWidth, mh = menu.offsetHeight;
+    const top = r.bottom + 6 + mh > window.innerHeight ? Math.max(8, r.top - 6 - mh) : r.bottom + 6;
+    menu.style.top = `${top}px`;
+    menu.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - mw - 8))}px`;
+    tileFolderMenu = menu;
+    menu.addEventListener("click", (event) => {
+      const newBtn = event.target.closest("[data-assign-new]");
+      if (newBtn) {
+        const name = (window.prompt(t("folders.new")) || "").trim().slice(0, 24);
+        closeTileFolderMenu();
+        if (name) { const f = folders.create(name); folders.assign(cardId, f.id); afterFolderAssign(anchor, cardId); }
+        return;
+      }
+      const pick = event.target.closest("[data-assign]");
+      if (!pick) return;
+      folders.assign(cardId, pick.dataset.assign || null);
+      closeTileFolderMenu();
+      afterFolderAssign(anchor, cardId);
+    });
+    document.addEventListener("scroll", closeTileFolderMenu, true);
+  }
+  // Pós-atribuição: na aba Coleções a carta muda de seção (re-render); na aba
+  // Cartas só atualiza o estado do botão + o dashboard (sem piscar a grade).
+  function afterFolderAssign(anchor, cardId) {
+    if (activeTab === "folders") { render(); return; }
+    const tile = anchor.closest(".card-tile");
+    const btn = tile && tile.querySelector(".tile-folder");
+    if (btn) btn.classList.toggle("active", !!folders.folderOf(cardId));
+    renderDashboard();
   }
 
   // Slabs (cartas graduadas) como "pares" pro pager — filtrados por jogo + busca,
