@@ -196,15 +196,8 @@
     if (elements.exportBtn) elements.exportBtn.disabled = !items.length;
   }
 
-  // Etiqueta do slab (tarja superior): NOME da carta em cima + graduadora/nota
-  // embaixo, com as cores da graduadora — emula o rótulo do slab graded.
-  function slabLabelHtml(company, grade, name) {
-    const g = graderOf(company);
-    return `<span class="graded-label graded-label-named" style="--slab-bg:${g.bg};--slab-fg:${g.fg}"><span class="graded-label-name">${escapeHtml(name || "")}</span><span class="graded-label-tag">${escapeHtml(g.label)} ${escapeHtml(grade || "—")}</span></span>`;
-  }
-
-  // Tile: slab sintetizado (etiqueta + imagem do catálogo numa moldura) + editor
-  // (graduadora, nota, valor) + nº do cert (opcional) + ✕ remover.
+  // Tile (editor): imagem limpa em cima (= carta normal) + Nome, Coleção · nº e os
+  // campos (graduadora, nota, valor, cert). Coeso com as cartas comuns.
   function gradedTileHtml(card, it, sym) {
     const src = shared.cardImageSources(card);
     const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
@@ -215,15 +208,13 @@
     const valTitle = isAuto ? t("graded.autoHint", { n: eff.n }) : t("graded.value");
     const companyOpts = GRADERS.map((g) => `<option value="${g.code}"${g.code === it.company ? " selected" : ""}>${escapeHtml(g.label)}</option>`).join("");
     return `<article class="card-tile graded-tile" data-graded-gid="${escapeAttribute(it.gid)}">
-      <div class="graded-slab">
-        ${slabLabelHtml(it.company, it.grade, card.name)}
-        <div class="card-image">
-          <button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button>
-        </div>
+      <div class="card-image">
+        <button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button>
         <button type="button" class="sale-remove" data-graded-remove title="${escapeAttribute(t("graded.remove"))}" aria-label="${escapeAttribute(t("graded.remove"))}">✕</button>
       </div>
       <div class="tile-info">
-        <p class="tile-variant">${shared.cardFlag(card.language)}<span>${escapeHtml(it.variant)}</span></p>
+        <h3>${escapeHtml(card.name)}</h3>
+        <p class="tile-variant">${shared.cardFlag(card.language)}<span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
         <div class="graded-fields">
           <div class="graded-row">
             <select class="graded-company" data-graded-company aria-label="${escapeAttribute(t("graded.company"))}" title="${escapeAttribute(t("graded.company"))}">${companyOpts}</select>

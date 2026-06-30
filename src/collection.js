@@ -669,9 +669,10 @@
       .filter((p) => p.card && inGameFilter(p.card) && (!q || shared.matchesCardQuery(p.card, q)));
   }
 
-  // Nó do slab (somente leitura) pra grade: NOME + nota na tarja de cima (emula o
-  // slab graded e diferencia das cartas normais), imagem, set/valor embaixo. MESMO
-  // tamanho dos outros tiles — a tarja é overlay, não empurra a altura.
+  // Nó do slab (somente leitura) pra grade: MESMO formato da carta normal pra ficar
+  // coeso — imagem limpa em cima, e embaixo Nome → bandeira+badge da graduadora/nota
+  // (no lugar da variante) → Coleção · nº → Preço. O badge (ex.: "PSA 9") com a cor
+  // da graduadora é o que diferencia das cartas comuns.
   function makeGradedNode(p) {
     const { it, card } = p;
     const [bg, fg] = GRADED_COLORS[it.company] || GRADED_COLORS.psa;
@@ -679,17 +680,13 @@
     const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
     const val = it.value > 0 ? it.value : (shared.gradedValue(card, it.company, it.grade).value || 0);
     const priceHtml = val > 0 ? `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>` : "";
-    const tag = `${(it.company || "").toUpperCase()} ${it.grade || ""}`.trim();
+    const badge = `<span class="graded-badge" style="--slab-bg:${bg};--slab-fg:${fg}">${escapeHtml((it.company || "").toUpperCase())} ${escapeHtml(it.grade || "")}</span>`;
     const wrap = document.createElement("div");
     wrap.innerHTML = `<article class="card-tile graded-tile graded-grid-tile" data-graded-gid="${escapeAttribute(it.gid)}">
-      <div class="graded-slab">
-        <span class="graded-label graded-label-named" style="--slab-bg:${bg};--slab-fg:${fg}">
-          <span class="graded-label-name">${escapeHtml(card.name)}</span>
-          <span class="graded-label-tag">${escapeHtml(tag)}</span>
-        </span>
-        <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button></div>
-      </div>
+      <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button></div>
       <div class="tile-info">
+        <h3>${escapeHtml(card.name)}</h3>
+        <p class="tile-variant">${shared.cardFlag(card.language)}${badge}</p>
         <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
         ${priceHtml}
       </div>

@@ -743,11 +743,14 @@ input::placeholder {
 }
 .graded-label-co { font-size: 13px; }
 .graded-label-grade { font-size: 15px; }
-/* Tarja "nomeada" (grade da coleção): NOME em cima + graduadora/nota embaixo,
-   emulando o rótulo do slab. Overlay no topo da arte — NÃO aumenta o tile. */
-.graded-label-named { flex-direction: column; align-items: flex-start; gap: 0; line-height: 1.15; padding: 4px 8px; }
-.graded-label-name { max-width: 100%; font-size: 11.5px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.graded-label-tag { font-size: 12.5px; font-weight: 900; letter-spacing: .03em; }
+/* Badge da graduadora+nota (ex.: "PSA 9") na linha da variante do tile graded —
+   no lugar do "Foil"/variante, com a cor da graduadora. Diferencia das cartas
+   normais sem mudar o formato do card (imagem limpa em cima, infos embaixo). */
+.graded-badge {
+  display: inline-flex; align-items: center; padding: 1px 8px; border-radius: 6px;
+  background: var(--slab-bg, #c8102e); color: var(--slab-fg, #fff);
+  font-size: 11px; font-weight: 800; letter-spacing: .02em; margin-left: 2px;
+}
 /* Campos do slab: graduadora + nota numa linha; valor numa linha própria (largura
    cheia, pra caber valores grandes sem espremer). */
 .graded-fields { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
