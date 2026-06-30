@@ -1919,8 +1919,8 @@
       return `<div class="prof-tabs">
         ${tab("collection", t("nav.collection"), true)}
         ${tab("vitrine", t("collection.tab.folders"), hasFolders)}
-        ${tab("tags", t("collection.tab.tags"), hasTags)}
         ${tab("graded", t("nav.graded"), hasGraded)}
+        ${tab("tags", t("collection.tab.tags"), hasTags)}
         ${tab("artists", t("collection.tab.artists"), hasArtists)}
         ${tab("sets", t("collection.tab.sets"), hasSets)}
         ${tab("sale", t("nav.sales"), hasSales)}
