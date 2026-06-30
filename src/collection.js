@@ -97,6 +97,52 @@
   // Cores da tarja por graduadora (fundo, texto) — espelha as GRADERS de graded.js.
   const GRADED_COLORS = { psa: ["#c8102e", "#ffffff"], bgs: ["#15171d", "#e8c46a"], cgc: ["#0a3d91", "#ffffff"], sgc: ["#101216", "#ffffff"], tag: ["#0e7490", "#ffffff"] };
 
+  // Tags custom: como as Coleções, mas uma carta pode ter VÁRIAS (pertencimento
+  // múltiplo) + cor + teto de 15. Global cross-game, sincronizada (LWW do bloco).
+  const TAG_LIMIT = 15;
+  const TAG_COLORS = ["#e23030", "#e8820c", "#d9a300", "#3fae5a", "#14b8a6", "#0ea5e9", "#3b6fe0", "#6d28d9", "#a83fd9", "#d6398e", "#7c5cff", "#5b6472"];
+  const tags = createTagStore();
+  function createTagStore() {
+    const KEY = "tcg-collector-collection-tags-v1";
+    let data = { tags: [], assign: {} };
+    try { const raw = JSON.parse(localStorage.getItem(KEY) || "null"); if (raw && Array.isArray(raw.tags) && raw.assign && typeof raw.assign === "object") data = raw; } catch (e) { /* corrompido */ }
+    if (!data.assign || typeof data.assign !== "object") data.assign = {};
+    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { /* quota */ } };
+    const uid = () => "t_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    const byId = (id) => data.tags.find((x) => x.id === id) || null;
+    return {
+      list: () => data.tags.slice(),
+      any: () => data.tags.length > 0,
+      count: () => data.tags.length,
+      atLimit: () => data.tags.length >= TAG_LIMIT,
+      get: byId,
+      create(name, color) {
+        if (data.tags.length >= TAG_LIMIT) return null;
+        const tg = { id: uid(), name: String(name || "").slice(0, 24), color: color || TAG_COLORS[data.tags.length % TAG_COLORS.length] };
+        data.tags.push(tg); save(); return tg;
+      },
+      rename(id, name) { const tg = byId(id); if (tg) { tg.name = String(name || "").slice(0, 24); save(); } },
+      setColor(id, color) { const tg = byId(id); if (tg) { tg.color = color; save(); } },
+      remove(id) {
+        data.tags = data.tags.filter((x) => x.id !== id);
+        Object.keys(data.assign).forEach((cid) => { data.assign[cid] = (data.assign[cid] || []).filter((x) => x !== id); if (!data.assign[cid].length) delete data.assign[cid]; });
+        save();
+      },
+      // Tags de uma carta (só as que ainda existem), na ordem de criação das tags.
+      tagsOf: (cardId) => { const ids = data.assign[cardId] || []; return data.tags.filter((tg) => ids.indexOf(tg.id) >= 0); },
+      has: (cardId, tagId) => (data.assign[cardId] || []).indexOf(tagId) >= 0,
+      toggle(cardId, tagId) {
+        const arr = data.assign[cardId] || (data.assign[cardId] = []);
+        const i = arr.indexOf(tagId);
+        if (i >= 0) arr.splice(i, 1); else arr.push(tagId);
+        if (!arr.length) delete data.assign[cardId];
+        save();
+      },
+      countOf: (tagId) => Object.keys(data.assign).reduce((n, cid) => n + ((data.assign[cid] || []).indexOf(tagId) >= 0 ? 1 : 0), 0),
+      cardsWith: (tagId) => Object.keys(data.assign).filter((cid) => (data.assign[cid] || []).indexOf(tagId) >= 0)
+    };
+  }
+
   let activeTab = "cards";
   let sortMode = "dex";
 
@@ -141,6 +187,7 @@
     folderSections: document.getElementById("folderSections"),
     newFolderBtn: document.getElementById("newFolderBtn"),
     gradedManageBtn: document.getElementById("gradedManageBtn"),
+    tagsNewBtn: document.getElementById("tagsNewBtn"),
     heading: document.querySelector(".results-header h2"),
     dashProfile: document.getElementById("dashProfile"),
     empty: document.getElementById("emptyState"),
@@ -347,7 +394,7 @@
 
     // Abrir uma aba específica via ?tab= (ex.: voltar da página Graded p/ "Coleções").
     const wantTab = collParams.get("tab");
-    const VALID_TABS = ["cards", "folders", "graded", "pokemon", "artists", "sets"];
+    const VALID_TABS = ["cards", "folders", "tags", "graded", "pokemon", "artists", "sets"];
     if (wantTab && VALID_TABS.includes(wantTab) && wantTab !== activeTab) {
       activeTab = wantTab;
       if (GROUP_TABS[activeTab]) sortMode = GROUP_TABS[activeTab].defaultSort;
@@ -384,6 +431,9 @@
       // Botão "Coleções" do tile: abre o menu pra atribuir a carta a uma coleção.
       const folderBtn = event.target.closest("[data-folder-card-id]");
       if (folderBtn) { openTileFolderMenu(folderBtn, folderBtn.dataset.folderCardId); return; }
+      // Botão "Tags" do tile: menu multi-seleção de tags.
+      const tagBtn = event.target.closest("[data-tag-card-id]");
+      if (tagBtn) { openTileTagMenu(tagBtn, tagBtn.dataset.tagCardId); return; }
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) {
         const co = imageButton.dataset.gradedCompany;
@@ -416,6 +466,16 @@
     });
 
     elements.folderSections.addEventListener("click", (event) => {
+      // --- Tags (vitrine/foco): editar, excluir, abrir, voltar, adicionar cartas ---
+      const tagSec = event.target.closest("[data-tag-id]");
+      const tid = tagSec && tagSec.dataset.tagId;
+      const tEdit = event.target.closest("[data-tag-edit]");
+      if (tEdit) { if (tid) openTagEditor(tags.get(tid), tEdit); return; }
+      if (event.target.closest("[data-tag-delete]")) { if (tid && window.confirm(t("tags.deleteConfirm"))) { tags.remove(tid); render(); } return; }
+      if (event.target.closest("[data-tag-open]")) { if (tid) { openTagId = tid; renderCards(); } return; }
+      if (event.target.closest("[data-tag-back]")) { openTagId = null; renderCards(); return; }
+      if (event.target.closest("[data-tag-add]")) { if (tid) openTagPicker(tid); return; }
+
       const section = event.target.closest("[data-folder-id]");
       const fid = section && section.dataset.folderId;
       const moveTile = event.target.closest("[data-tile-move]");
@@ -457,11 +517,15 @@
       if (event.key === "Enter" && event.target.closest("[data-folder-rename]")) event.target.blur();
     });
 
-    // Fecha o menu de coleções do tile ao clicar fora ou apertar Esc.
+    if (elements.tagsNewBtn) elements.tagsNewBtn.addEventListener("click", () => openTagEditor(null, elements.tagsNewBtn));
+
+    // Fecha menus/popovers ao clicar fora ou apertar Esc.
     document.addEventListener("click", (event) => {
       if (tileFolderMenu && !event.target.closest(".tile-folder-menu") && !event.target.closest("[data-folder-card-id]")) closeTileFolderMenu();
+      if (tileTagMenu && !event.target.closest(".tile-folder-menu") && !event.target.closest("[data-tag-card-id]")) closeTileTagMenu();
+      if (tagEditorEl && !event.target.closest(".tag-editor") && !event.target.closest("[data-tag-edit]") && event.target !== elements.tagsNewBtn) closeTagEditor();
     });
-    document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeTileFolderMenu(); });
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape") { closeTileFolderMenu(); closeTileTagMenu(); closeTagEditor(); } });
 
     bindFolderDrag();
     bindCollectionDrag();
@@ -517,14 +581,17 @@
     // "Cartas", "Graded" (grade plana) e "Pastas" (seções) usam a MESMA toolbar.
     const isFolders = activeTab === "folders";
     const isGraded = activeTab === "graded";
-    const isCardsLike = activeTab === "cards" || isFolders || isGraded;
+    const isTags = activeTab === "tags";
+    const isCardsLike = activeTab === "cards" || isFolders || isGraded || isTags;
     if (!isFolders) openFolderId = null; // sair das Coleções volta pra vitrine
+    if (!isTags) openTagId = null;       // sair das Tags volta pra vitrine de tags
     elements.groupsView.hidden = isCardsLike;
     elements.cardsView.hidden = !isCardsLike;
-    // Título muda conforme a aba; "Nova coleção" só em Pastas; "gerenciar" só em Graded.
-    if (elements.heading) elements.heading.textContent = t(isFolders ? "collection.heading.folders" : isGraded ? "nav.graded" : "collection.heading.cards");
+    // Título muda conforme a aba; botões contextuais (Nova coleção / gerenciar / Nova tag).
+    if (elements.heading) elements.heading.textContent = t(isFolders ? "collection.heading.folders" : isGraded ? "nav.graded" : isTags ? "tags.heading" : "collection.heading.cards");
     if (elements.newFolderBtn) elements.newFolderBtn.hidden = !isFolders;
     if (elements.gradedManageBtn) elements.gradedManageBtn.hidden = !isGraded;
+    if (elements.tagsNewBtn) elements.tagsNewBtn.hidden = !isTags || !!openTagId;
 
     renderDashboard();
     updatePokemonFilterLabel();
@@ -663,11 +730,19 @@
   let coverPickId = null;
   // Coleção ABERTA (foco): mostra só ela; null = vitrine (todas como cards).
   let openFolderId = null;
+  // Tag ABERTA (foco): mostra só as cartas dessa tag; null = vitrine de tags.
+  let openTagId = null;
 
   // variantTile devolve um NÓ do DOM (não string) — usado tanto no pager (flat)
   // quanto via appendChild nas seções de pasta.
   function makeTile({ card, variant }) {
-    return shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, folders: true, inFolder: !!folders.folderOf(card.id) });
+    const cardTags = tags.tagsOf(card.id);
+    return shared.variantTile(card, variant, owned, wishlist, prices, {
+      addMode: true,
+      folders: true, inFolder: !!folders.folderOf(card.id),
+      tags: true, tagActive: cardTags.length > 0,
+      cardTags: cardTags.map((tg) => ({ name: tg.name || t("tags.untitled"), color: tg.color }))
+    });
   }
 
   // Menu "Coleções" do tile (botão da pasta na grade): lista as coleções pra
@@ -723,6 +798,201 @@
     renderDashboard();
   }
 
+  // Menu de TAGS do tile (multi-seleção): marca/desmarca várias tags na carta sem
+  // sair do menu. "+ Nova tag" cria. Fecha ao clicar fora / Esc / rolar.
+  let tileTagMenu = null;
+  function closeTileTagMenu() {
+    if (tileTagMenu) {
+      // Na aba Tags, mexer nas tags pode tirar a carta da tag aberta → re-render ao fechar.
+      const wasTags = activeTab === "tags";
+      tileTagMenu.remove(); tileTagMenu = null;
+      document.removeEventListener("scroll", closeTileTagMenu, true);
+      if (wasTags) render();
+    }
+  }
+  function openTileTagMenu(anchor, cardId) {
+    if (tileTagMenu && tileTagMenu.dataset.card === cardId) { closeTileTagMenu(); return; }
+    closeTileTagMenu();
+    const menu = document.createElement("div");
+    menu.className = "tile-folder-menu tile-tag-menu";
+    menu.dataset.card = cardId;
+    const newItem = `<button type="button" class="tile-folder-item tile-folder-new" data-tag-menu-new>+ ${escapeHtml(t("tags.new"))}</button>`;
+    menu.innerHTML = (tags.any()
+      ? tags.list().map((tg) => `<button type="button" class="tile-folder-item tile-tag-item${tags.has(cardId, tg.id) ? " on" : ""}" data-tag-toggle="${escapeAttribute(tg.id)}"><span class="tile-tag-swatch" style="background:${tg.color}"></span>${escapeHtml(tg.name || t("tags.untitled"))}</button>`).join("")
+      : `<p class="tile-tag-empty">${escapeHtml(t("tags.menuEmpty"))}</p>`) + newItem;
+    document.body.appendChild(menu);
+    const r = anchor.getBoundingClientRect();
+    const mw = menu.offsetWidth, mh = menu.offsetHeight;
+    const top = r.bottom + 6 + mh > window.innerHeight ? Math.max(8, r.top - 6 - mh) : r.bottom + 6;
+    menu.style.top = `${top}px`;
+    menu.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - mw - 8))}px`;
+    tileTagMenu = menu;
+    menu.addEventListener("click", (event) => {
+      if (event.target.closest("[data-tag-menu-new]")) { closeTileTagMenu(); openTagEditor(null, anchor); return; }
+      const item = event.target.closest("[data-tag-toggle]");
+      if (!item) return;
+      const tagId = item.dataset.tagToggle;
+      tags.toggle(cardId, tagId);
+      item.classList.toggle("on", tags.has(cardId, tagId));
+      updateTileTags(anchor, cardId); // atualiza chips + botão sem fechar o menu
+    });
+    document.addEventListener("scroll", closeTileTagMenu, true);
+  }
+  // Atualiza in place os chips + o estado do botão de tag de um tile (sem re-render).
+  function updateTileTags(anchor, cardId) {
+    const tile = anchor.closest(".card-tile");
+    if (tile) {
+      const btn = tile.querySelector(".tile-tag");
+      const list = tags.tagsOf(cardId);
+      if (btn) btn.classList.toggle("active", list.length > 0);
+      let row = tile.querySelector(".tile-tags");
+      if (list.length) {
+        if (!row) { row = document.createElement("div"); row.className = "tile-tags"; const setEl = tile.querySelector(".tile-set"); if (setEl) setEl.insertAdjacentElement("afterend", row); }
+        row.innerHTML = list.map((tg) => `<span class="tile-tag-chip" style="--tag:${tg.color}">${escapeHtml(tg.name || t("tags.untitled"))}</span>`).join("");
+      } else if (row) { row.remove(); }
+    }
+    renderDashboard();
+  }
+
+  // ======= TAGS (aba) — coleções de pertencimento MÚLTIPLO + cor =======
+  // Cartas owned de uma tag (resolvidas, respeitando o filtro de jogo).
+  function tagOwnedCards(tagId) {
+    return tags.cardsWith(tagId).map((id) => cardsById.get(id)).filter((c) => c && owned.has(c.id) && inGameFilter(c));
+  }
+
+  function renderTags() {
+    const open = openTagId ? tags.get(openTagId) : null;
+    if (openTagId && !open) openTagId = null;
+    if (open) { renderTagFocus(open); return; }
+    updateCardsStats(tags.count());
+    if (!tags.any()) {
+      elements.folderSections.innerHTML = `<p class="empty-state" data-tags-empty>${escapeHtml(t("tags.empty"))}</p>`;
+      return;
+    }
+    elements.folderSections.innerHTML = `<div class="coll-vitrine">${tags.list().map(tagCardHtml).join("")}</div>`;
+  }
+
+  // Card da tag na vitrine (mesmo formato das Coleções, com a cor da tag).
+  function tagCardHtml(tag) {
+    const cards = tagOwnedCards(tag.id);
+    const cover = cards.slice().sort((a, b) => (shared.cardValue(b, shared.defaultVariant(b), prices).value || 0) - (shared.cardValue(a, shared.defaultVariant(a), prices).value || 0))[0] || null;
+    const coverImg = cover
+      ? shared.localizedImg(shared.cardImageSources(cover).url, { alt: "", fallback: shared.cardImageSources(cover).fallback, loading: "lazy", thumb: true })
+      : `<span class="coll-card-empty">${escapeHtml(t("folders.empty"))}</span>`;
+    return `<section class="folder-section is-collapsed coll-card tag-card" data-tag-id="${escapeAttribute(tag.id)}" style="--tag:${tag.color}">
+      <div class="coll-card-title"><span class="tag-dot"></span><strong class="coll-card-name">${escapeHtml(tag.name || t("tags.untitled"))}</strong></div>
+      <button type="button" class="coll-card-cover" data-tag-open aria-label="${escapeAttribute(tag.name || t("tags.untitled"))}">${coverImg}</button>
+      <div class="coll-card-body">
+        <div class="coll-card-meta-row"><span class="coll-card-meta">${escapeHtml(tn("tags.count", cards.length))}</span></div>
+        <div class="coll-card-foot"><span class="coll-card-acts">
+          <button type="button" class="folder-act" data-tag-edit title="${escapeAttribute(t("tags.edit"))}" aria-label="${escapeAttribute(t("tags.edit"))}">✎</button>
+          <button type="button" class="folder-act folder-act-danger" data-tag-delete title="${escapeAttribute(t("tags.delete"))}" aria-label="${escapeAttribute(t("tags.delete"))}">✕</button>
+        </span></div>
+      </div>
+    </section>`;
+  }
+
+  // Tag ABERTA (foco): só as cartas dela + "Adicionar cartas" + editar.
+  function renderTagFocus(tag) {
+    const ids = new Set(tags.cardsWith(tag.id));
+    const pairs = ownedTilePairs().filter((p) => ids.has(p.card.id));
+    updateCardsStats(pairs.length);
+    elements.folderSections.innerHTML = `<section class="folder-section" data-tag-id="${escapeAttribute(tag.id)}">
+      <header class="folder-head tag-open-head">
+        <button type="button" class="secondary coll-back-btn" data-tag-back>← ${escapeHtml(t("tags.back"))}</button>
+        <span class="tag-chip" style="--tag:${tag.color}">${escapeHtml(tag.name || t("tags.untitled"))}</span>
+        <span class="folder-meta">${escapeHtml(tn("tags.count", pairs.length))}</span>
+        <span class="folder-actions">
+          <button type="button" class="folder-act tag-add-btn" data-tag-add>+ ${escapeHtml(t("tags.addCards"))}</button>
+          <button type="button" class="folder-act" data-tag-edit title="${escapeAttribute(t("tags.edit"))}" aria-label="${escapeAttribute(t("tags.edit"))}">✎</button>
+        </span>
+      </header>
+      <div class="card-grid${cardsView === "list" ? " is-list" : ""}">${pairs.length ? "" : `<p class="folder-empty">${escapeHtml(t("tags.emptyCards"))}</p>`}</div>
+    </section>`;
+    const grid = elements.folderSections.querySelector(".card-grid");
+    pairs.forEach((p) => grid.appendChild(makeTile(p)));
+  }
+
+  // Editor de tag (criar/editar): nome (≤24) + paleta de cores. Popover.
+  let tagEditorEl = null;
+  function closeTagEditor() { if (tagEditorEl) { tagEditorEl.remove(); tagEditorEl = null; } }
+  function openTagEditor(tag, anchor) {
+    closeTagEditor();
+    const editing = !!tag;
+    let picked = tag ? tag.color : TAG_COLORS[tags.count() % TAG_COLORS.length];
+    const pop = document.createElement("div");
+    pop.className = "tag-editor";
+    pop.innerHTML = `
+      <input type="text" class="tag-editor-name" maxlength="24" placeholder="${escapeAttribute(t("tags.namePlaceholder"))}" value="${escapeAttribute(tag ? tag.name : "")}">
+      <div class="tag-editor-colors">${TAG_COLORS.map((c) => `<button type="button" class="tag-swatch${c === picked ? " on" : ""}" data-color="${c}" style="background:${c}" aria-label="${c}"></button>`).join("")}</div>
+      <div class="tag-editor-actions">
+        ${editing ? `<button type="button" class="tag-editor-del" data-tag-editor-del>${escapeHtml(t("tags.delete"))}</button>` : ""}
+        <button type="button" class="primary tag-editor-save" data-tag-editor-save>${escapeHtml(editing ? t("tags.save") : t("tags.create"))}</button>
+      </div>`;
+    document.body.appendChild(pop);
+    const r = anchor.getBoundingClientRect();
+    pop.style.top = `${Math.max(8, Math.min(r.bottom + 6, window.innerHeight - pop.offsetHeight - 8))}px`;
+    pop.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - pop.offsetWidth - 8))}px`;
+    tagEditorEl = pop;
+    const nameInput = pop.querySelector(".tag-editor-name");
+    nameInput.focus();
+    pop.addEventListener("click", (event) => {
+      const sw = event.target.closest("[data-color]");
+      if (sw) { picked = sw.dataset.color; pop.querySelectorAll(".tag-swatch").forEach((s) => s.classList.toggle("on", s === sw)); return; }
+      if (event.target.closest("[data-tag-editor-save]")) {
+        const name = nameInput.value.trim().slice(0, 24);
+        if (editing) { tags.rename(tag.id, name); tags.setColor(tag.id, picked); }
+        else { if (tags.atLimit()) { alert(t("tags.limit", { n: TAG_LIMIT })); return; } if (!name) { nameInput.focus(); return; } tags.create(name, picked); }
+        closeTagEditor(); render();
+        return;
+      }
+      if (event.target.closest("[data-tag-editor-del]")) {
+        if (window.confirm(t("tags.deleteConfirm"))) { tags.remove(tag.id); closeTagEditor(); if (openTagId === tag.id) openTagId = null; render(); }
+      }
+    });
+    pop.addEventListener("keydown", (event) => { if (event.key === "Enter" && event.target.closest(".tag-editor-name")) { const s = pop.querySelector("[data-tag-editor-save]"); if (s) s.click(); } });
+  }
+
+  // Picker "Adicionar cartas" da tag aberta: busca + grade das cartas que você TEM;
+  // tocar alterna a tag (✓ = tem a tag). Persiste na hora.
+  function openTagPicker(tagId) {
+    const tag = tags.get(tagId);
+    if (!tag) return;
+    let modal = document.getElementById("tagPickerModal");
+    if (!modal) { modal = document.createElement("div"); modal.id = "tagPickerModal"; modal.className = "sales-picker-modal"; document.body.appendChild(modal); }
+    const renderList = () => {
+      const q = modal.querySelector(".sales-picker-search").value;
+      const list = cards.filter((c) => owned.has(c.id) && inGameFilter(c) && (!q.trim() || shared.matchesCardQuery(c, q))).slice(0, 200);
+      modal.querySelector(".sales-picker-results").innerHTML = list.map((card) => {
+        const src = shared.cardImageSources(card);
+        const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
+        const on = tags.has(card.id, tag.id);
+        return `<div class="sales-pick${on ? " is-added" : ""}" role="button" tabindex="0" data-pick-card="${escapeAttribute(card.id)}">
+          <span class="sales-pick-img">${img}<span class="sales-pick-check">✓</span></span>
+          <span class="sales-pick-name">${escapeHtml(card.name)}</span>
+          <span class="sales-pick-var">${shared.cardFlag(card.language)}<span>${escapeHtml(card.set)}</span></span>
+        </div>`;
+      }).join("") || `<p class="empty-state">${escapeHtml(t("sales.pickerEmpty"))}</p>`;
+    };
+    modal.innerHTML = `<div class="sales-picker-backdrop" data-tag-picker-close></div>
+      <section class="sales-picker-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("tags.addCards"))}">
+        <header class="sales-picker-head"><strong><span class="tag-chip" style="--tag:${tag.color}">${escapeHtml(tag.name || t("tags.untitled"))}</span></strong>
+          <button type="button" class="preview-close" data-tag-picker-close aria-label="${escapeAttribute(t("modal.close"))}">×</button></header>
+        <div class="sales-picker-controls"><input type="search" class="sales-picker-search" placeholder="${escapeAttribute(t("search.placeholder.cards"))}"></div>
+        <p class="sales-picker-hint">${escapeHtml(t("tags.pickerHint"))}</p>
+        <div class="sales-picker-results"></div>
+        <footer class="sales-picker-foot"><span></span><button type="button" class="primary" data-tag-picker-close>${escapeHtml(t("sales.pickerDone"))}</button></footer>
+      </section>`;
+    document.body.classList.add("preview-open");
+    renderList();
+    modal.querySelector(".sales-picker-search").addEventListener("input", debounce(renderList, 200));
+    modal.addEventListener("click", (event) => {
+      if (event.target.closest("[data-tag-picker-close]")) { modal.remove(); document.body.classList.remove("preview-open"); render(); return; }
+      const pick = event.target.closest("[data-pick-card]");
+      if (pick) { tags.toggle(pick.dataset.pickCard, tag.id); pick.classList.toggle("is-added", tags.has(pick.dataset.pickCard, tag.id)); }
+    });
+  }
+
   // Slabs (cartas graduadas) como "pares" pro pager — filtrados por jogo + busca,
   // pra aparecerem na grade de "Toda Coleção" e na aba "Graded".
   function gradedPairs() {
@@ -761,6 +1031,13 @@
   function makeAnyTile(pair) { return pair.graded ? makeGradedNode(pair) : makeTile(pair); }
 
   function renderCards({ resetCount = false } = {}) {
+    // Tags: vitrine de tags / foco numa tag, na mesma área das Coleções.
+    if (activeTab === "tags") {
+      elements.grid.hidden = true;
+      elements.folderSections.hidden = false;
+      renderTags();
+      return;
+    }
     const isGradedTab = activeTab === "graded";
     const useFolders = activeTab === "folders";
     const ownedPairs = isGradedTab ? [] : ownedTilePairs();
