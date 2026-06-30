@@ -89,7 +89,7 @@
         const d = read();
         return (d.order || []).filter((g) => d.items[g]).map((g) => {
           const e = d.items[g];
-          return { gid: g, cardId: e.cardId, variant: e.variant || "Normal", company: e.company || "psa", grade: e.grade || "", value: Number(e.value) || 0 };
+          return { gid: g, cardId: e.cardId, variant: e.variant || "Normal", company: e.company || "psa", grade: e.grade || "", pristine: !!e.pristine, value: Number(e.value) || 0 };
         });
       }
     };
@@ -456,7 +456,7 @@
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) {
         const co = imageButton.dataset.gradedCompany;
-        preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant, co ? { graded: { company: co, grade: imageButton.dataset.gradedGrade } } : undefined);
+        preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant, co ? { graded: { company: co, grade: imageButton.dataset.gradedGrade, pristine: imageButton.dataset.gradedPristine === "1" } } : undefined);
         return;
       }
       if (shared.handleWantTileClick(event, wishlist)) {
@@ -1088,10 +1088,10 @@
     const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
     const val = it.value > 0 ? it.value : (shared.gradedValue(card, it.company, it.grade).value || 0);
     const priceHtml = val > 0 ? `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>` : "";
-    const badge = `<span class="graded-badge" style="--slab-bg:${bg};--slab-fg:${fg}">${escapeHtml((it.company || "").toUpperCase())} ${escapeHtml(it.grade || "")}</span>`;
+    const badge = `<span class="graded-badge" style="--slab-bg:${bg};--slab-fg:${fg}">${escapeHtml((it.company || "").toUpperCase())} ${escapeHtml(shared.gradedGradeText(it.grade, it.pristine))}</span>`;
     const wrap = document.createElement("div");
     wrap.innerHTML = `<article class="card-tile graded-tile graded-grid-tile" data-graded-gid="${escapeAttribute(it.gid)}">
-      <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" data-graded-company="${escapeAttribute(it.company)}" data-graded-grade="${escapeAttribute(it.grade)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button></div>
+      <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" data-graded-company="${escapeAttribute(it.company)}" data-graded-grade="${escapeAttribute(it.grade)}" data-graded-pristine="${it.pristine ? "1" : ""}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button></div>
       <div class="tile-info">
         <h3>${escapeHtml(card.name)}</h3>
         <p class="tile-variant">${shared.cardFlag(card.language)}${badge}</p>
@@ -1755,7 +1755,7 @@
       if (val > 0) priceHtml = `<p class="tile-price">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>`;
     }
     // Slab graduado: etiqueta sobreposta com graduadora + nota (PSA 10, BGS 9.5…).
-    const gradedBadge = it.co ? `<span class="graded-label graded-label-shared"><span class="graded-label-co">${escapeHtml(String(it.co).toUpperCase())}</span><span class="graded-label-grade">${escapeHtml(it.gr || "—")}</span></span>` : "";
+    const gradedBadge = it.co ? `<span class="graded-label graded-label-shared"><span class="graded-label-co">${escapeHtml(String(it.co).toUpperCase())}</span><span class="graded-label-grade">${escapeHtml(shared.gradedGradeText(it.gr, it.pr) || "—")}</span></span>` : "";
     return `<article class="card-tile shared-tile${it.co ? " graded-tile-shared" : ""}">
       <div class="card-image">${gradedBadge}<button type="button" class="image-open" data-preview-card-id="${escapeAttribute(it.id)}" data-preview-variant="${escapeAttribute(it.v)}" aria-label="${escapeAttribute(t("card.zoom", { name: it.n }))}">${img}</button></div>
       <div class="tile-info">

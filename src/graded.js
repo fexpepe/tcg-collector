@@ -20,10 +20,10 @@
   // TAG não tem dado → valor manual.
   const GRADERS = [
     { code: "psa", label: "PSA", bg: "#c8102e", fg: "#ffffff" },
-    { code: "bgs", label: "BGS", bg: "#15171d", fg: "#e8c46a" },
-    { code: "cgc", label: "CGC", bg: "#0a3d91", fg: "#ffffff" },
+    { code: "bgs", label: "BGS", bg: "#15171d", fg: "#e8c46a", pristine: true },
+    { code: "cgc", label: "CGC", bg: "#0a3d91", fg: "#ffffff", pristine: true },
     { code: "sgc", label: "SGC", bg: "#101216", fg: "#ffffff" },
-    { code: "tag", label: "TAG", bg: "#0b0b0d", fg: "#ffffff" }
+    { code: "tag", label: "TAG", bg: "#0b0b0d", fg: "#ffffff", pristine: true }
   ];
   const graderOf = (code) => GRADERS.find((x) => x.code === code) || GRADERS[0];
 
@@ -61,16 +61,17 @@
       countOf: (cardId, variant) => data.order.reduce((n, gid) => { const e = data.items[gid]; return n + (e && e.cardId === cardId && e.variant === variant ? 1 : 0); }, 0),
       list: () => data.order.filter((gid) => data.items[gid]).map((gid) => {
         const e = data.items[gid];
-        return { gid, cardId: e.cardId, variant: e.variant, company: e.company || "psa", grade: e.grade || "", cert: e.cert || "", value: Number(e.value) || 0 };
+        return { gid, cardId: e.cardId, variant: e.variant, company: e.company || "psa", grade: e.grade || "", pristine: !!e.pristine, cert: e.cert || "", value: Number(e.value) || 0 };
       }),
       // Adiciona um slab novo (1 por chamada). company/grade padrão; value 0 = auto.
       add(cardId, variant, company, grade) {
         const gid = newId();
-        data.items[gid] = { cardId, variant, company: company || "psa", grade: grade || "10", cert: "", value: 0 };
+        data.items[gid] = { cardId, variant, company: company || "psa", grade: grade || "10", pristine: false, cert: "", value: 0 };
         data.order.push(gid); save();
         return gid;
       },
       setCompany(gid, company) { const e = data.items[gid]; if (e) { e.company = company; save(); } },
+      setPristine(gid, pristine) { const e = data.items[gid]; if (e) { e.pristine = !!pristine; save(); } },
       setGrade(gid, grade) { const e = data.items[gid]; if (e) { e.grade = grade; save(); } },
       setCert(gid, cert) { const e = data.items[gid]; if (e) { e.cert = cert; save(); } },
       setValue(gid, value) { const e = data.items[gid]; if (e) { e.value = Number(value) || 0; save(); } },
@@ -207,9 +208,13 @@
     const valStr = it.value > 0 ? String(it.value).replace(".", ",") : (isAuto ? eff.value.toFixed(2).replace(".", ",") : "");
     const valTitle = isAuto ? t("graded.autoHint", { n: eff.n }) : t("graded.value");
     const companyOpts = GRADERS.map((g) => `<option value="${g.code}"${g.code === it.company ? " selected" : ""}>${escapeHtml(g.label)}</option>`).join("");
+    const canPristine = !!graderOf(it.company).pristine; // BGS/CGC/TAG têm "Pristine"
+    const pristineRow = canPristine
+      ? `<label class="graded-pristine" title="${escapeAttribute(t("graded.pristineHint"))}"><input type="checkbox" data-graded-pristine${it.pristine ? " checked" : ""} aria-label="${escapeAttribute(t("graded.pristine"))}"><span>${escapeHtml(t("graded.pristine"))}</span></label>`
+      : "";
     return `<article class="card-tile graded-tile" data-graded-gid="${escapeAttribute(it.gid)}">
       <div class="card-image">
-        <button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" data-graded-company="${escapeAttribute(it.company)}" data-graded-grade="${escapeAttribute(it.grade)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button>
+        <button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" data-graded-company="${escapeAttribute(it.company)}" data-graded-grade="${escapeAttribute(it.grade)}" data-graded-pristine="${it.pristine ? "1" : ""}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button>
         <button type="button" class="sale-remove" data-graded-remove title="${escapeAttribute(t("graded.remove"))}" aria-label="${escapeAttribute(t("graded.remove"))}">✕</button>
       </div>
       <div class="tile-info">
@@ -220,6 +225,7 @@
             <select class="graded-company" data-graded-company aria-label="${escapeAttribute(t("graded.company"))}" title="${escapeAttribute(t("graded.company"))}">${companyOpts}</select>
             <input type="text" inputmode="decimal" class="graded-grade" data-graded-grade value="${escapeAttribute(it.grade)}" maxlength="4" placeholder="10" aria-label="${escapeAttribute(t("graded.grade"))}" title="${escapeAttribute(t("graded.grade"))}">
           </div>
+          ${pristineRow}
           <label class="sale-price-field${autoCls}" title="${escapeAttribute(valTitle)}"><span class="sale-cur">${escapeHtml(sym)}</span><input type="text" inputmode="decimal" class="sale-price${autoCls}" data-graded-value value="${escapeAttribute(valStr)}" placeholder="0,00" aria-label="${escapeAttribute(t("graded.value"))}"></label>
         </div>
         <input type="text" class="graded-cert" data-graded-cert value="${escapeAttribute(it.cert)}" placeholder="${escapeAttribute(t("graded.certPlaceholder"))}" aria-label="${escapeAttribute(t("graded.cert"))}">
@@ -336,7 +342,7 @@
       const src = shared.cardImageSources(card);
       return {
         id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language,
-        g: card.game, v: it.variant, q: 1, co: it.company, gr: it.grade, gv: val, cur, img: src.url, fb: src.fallback || ""
+        g: card.game, v: it.variant, q: 1, co: it.company, gr: it.grade, pr: it.pristine ? 1 : 0, gv: val, cur, img: src.url, fb: src.fallback || ""
       };
     });
     return { items, scope: "graded", cur };
@@ -412,7 +418,7 @@
       ctx.fillStyle = g.fg; ctx.textAlign = "left"; ctx.textBaseline = "middle";
       ctx.font = `800 19px ${FONT}`; ctx.fillText(g.label, x + 14, y + LABEL_H / 2 + 1);
       ctx.textAlign = "right"; ctx.font = `800 21px ${FONT}`;
-      ctx.fillText(String(it.grade || "—"), x + CARD_W - 14, y + LABEL_H / 2 + 1);
+      ctx.fillText(shared.gradedGradeText(it.grade, it.pristine) || "—", x + CARD_W - 14, y + LABEL_H / 2 + 1);
       // Carta
       const cy = y + LABEL_H;
       ctx.save();
@@ -469,7 +475,7 @@
     }
     elements.grid.addEventListener("click", (event) => {
       const imageButton = event.target.closest("[data-preview-card-id]");
-      if (imageButton) { const co = imageButton.dataset.gradedCompany; preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant, co ? { graded: { company: co, grade: imageButton.dataset.gradedGrade } } : undefined); return; }
+      if (imageButton) { const co = imageButton.dataset.gradedCompany; preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant, co ? { graded: { company: co, grade: imageButton.dataset.gradedGrade, pristine: imageButton.dataset.gradedPristine === "1" } } : undefined); return; }
       const rm = event.target.closest("[data-graded-remove]");
       if (rm) { const tile = rm.closest(".graded-tile"); if (tile) { graded.remove(tile.dataset.gradedGid); render(); } }
     });
@@ -478,7 +484,9 @@
       if (!tile) return;
       const gid = tile.dataset.gradedGid;
       const co = event.target.closest("[data-graded-company]");
-      if (co) { graded.setCompany(gid, co.value); render(); return; }
+      if (co) { graded.setCompany(gid, co.value); if (!graderOf(co.value).pristine) graded.setPristine(gid, false); render(); return; }
+      const pr = event.target.closest("[data-graded-pristine]");
+      if (pr) { graded.setPristine(gid, pr.checked); render(); return; }
       const cert = event.target.closest("[data-graded-cert]");
       if (cert) { graded.setCert(gid, cert.value.trim()); return; }
       const gr = event.target.closest("[data-graded-grade]");

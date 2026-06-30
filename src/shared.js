@@ -1640,7 +1640,7 @@
   function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders, sale, tags }) {
     let activeCard = null;
     let activeVariant = null;
-    let activeGraded = null; // { company, grade } quando aberto de uma carta GRADUADA
+    let activeGraded = null; // { company, grade, pristine } quando aberto de uma carta GRADUADA
     let openerElement = null;
 
     document.addEventListener("click", handleClick);
@@ -1697,7 +1697,7 @@
       if (!activeCard) return;
       // Contexto graded (opcional): muda a busca das lojas (eBay/PriceCharting já
       // vão com a graduadora+nota) e mostra o selo da nota no topo do modal.
-      activeGraded = (opts && opts.graded && opts.graded.company) ? { company: String(opts.graded.company), grade: String(opts.graded.grade || "") } : null;
+      activeGraded = (opts && opts.graded && opts.graded.company) ? { company: String(opts.graded.company), grade: String(opts.graded.grade || ""), pristine: !!opts.graded.pristine } : null;
       const variants = activeCard.variants && activeCard.variants.length ? activeCard.variants : [defaultVariant(activeCard)];
       activeVariant = variant && variants.includes(variant) ? variant : null;
 
@@ -1974,11 +1974,14 @@
   // Selo "PSA 9" (cor da graduadora) e o sufixo de busca pras lojas — usados só
   // quando o preview é aberto de uma carta GRADUADA.
   const GRADED_BADGE_COLORS = { psa: ["#c8102e", "#ffffff"], bgs: ["#15171d", "#e8c46a"], cgc: ["#0a3d91", "#ffffff"], sgc: ["#101216", "#ffffff"], tag: ["#0b0b0d", "#ffffff"] };
-  function gradedSearchTag(g) { return (g && g.company) ? `${String(g.company).toUpperCase()} ${g.grade || ""}`.trim() : ""; }
+  // Texto da nota com a designação "Pristine" (BGS/CGC/TAG têm essa categoria —
+  // um 10 sem defeito algum). Pristine é termo de mercado, mantido em inglês.
+  function gradedGradeText(grade, pristine) { return pristine ? `Pristine ${grade || ""}`.trim() : (grade || ""); }
+  function gradedSearchTag(g) { return (g && g.company) ? `${String(g.company).toUpperCase()} ${gradedGradeText(g.grade, g.pristine)}`.trim() : ""; }
   function gradedBadgeHtml(g) {
     if (!g || !g.company) return "";
     const [bg, fg] = GRADED_BADGE_COLORS[String(g.company).toLowerCase()] || GRADED_BADGE_COLORS.psa;
-    return `<span class="graded-badge" style="--slab-bg:${bg};--slab-fg:${fg}">${escapeHtml(String(g.company).toUpperCase())} ${escapeHtml(g.grade || "")}</span>`;
+    return `<span class="graded-badge" style="--slab-bg:${bg};--slab-fg:${fg}">${escapeHtml(String(g.company).toUpperCase())} ${escapeHtml(gradedGradeText(g.grade, g.pristine))}</span>`;
   }
 
   function usSearchText(card, game) {
@@ -2950,6 +2953,7 @@
     fetchShare,
     cardValue,
     gradedValue,
+    gradedGradeText,
     formatMoney: fmtMoney,
     cardLanguageFromId,
     spriteUrl,
@@ -3528,7 +3532,7 @@
       const d = JSON.parse(localStorage.getItem(SYNC_KEYS.graded) || "{}");
       const items = d.items || {};
       const order = Array.isArray(d.order) ? d.order : Object.keys(items);
-      return order.filter((g) => items[g]).map((g) => { const e = items[g]; return { cardId: e.cardId, variant: e.variant || "Normal", company: e.company || "psa", grade: e.grade || "", value: Number(e.value) || 0 }; });
+      return order.filter((g) => items[g]).map((g) => { const e = items[g]; return { cardId: e.cardId, variant: e.variant || "Normal", company: e.company || "psa", grade: e.grade || "", pristine: !!e.pristine, value: Number(e.value) || 0 }; });
     } catch (e) { return []; }
   }
   // Monta o payload CURADO do perfil público: coleção (valor de mercado só se
@@ -3580,7 +3584,7 @@
       if (!card) return;
       const src = cardImageSources(card);
       const gv = showValues ? (it.value > 0 ? it.value : (gradedValue(card, it.company, it.grade).value || 0)) : 0;
-      gradedItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, a: card.artist || "", v: it.variant, co: it.company, gr: it.grade, gv, cur, img: src.url, fb: src.fallback || "" });
+      gradedItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, a: card.artist || "", v: it.variant, co: it.company, gr: it.grade, pr: it.pristine ? 1 : 0, gv, cur, img: src.url, fb: src.fallback || "" });
     });
 
     return { collection: { items: colItems }, sales: { items: saleItems, cur, scope: "sale" }, folders: pubFolders, tags: pubTags, graded: { items: gradedItems }, showValues: !!showValues };
