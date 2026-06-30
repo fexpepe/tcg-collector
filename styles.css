@@ -708,6 +708,32 @@ input::placeholder {
   border: 1px solid var(--line); background: var(--surface); color: var(--text);
 }
 
+/* Coleção + Tags lado a lado (metade/metade) dentro do preview da carta. */
+.preview-org-row { display: flex; gap: 10px; align-items: flex-start; flex-wrap: wrap; margin-top: 8px; }
+.preview-org-row > * { flex: 1 1 calc(50% - 5px); min-width: 0; margin-top: 0; }
+.preview-org-row .preview-folder-row { flex-direction: column; align-items: stretch; gap: 4px; }
+.preview-tags-row { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--subtle); font-weight: 700; }
+.preview-tags-ctl { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.preview-tag-chip {
+  display: inline-flex; align-items: center; gap: 4px; min-height: 0; cursor: pointer;
+  font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px;
+  background: color-mix(in srgb, var(--tag) 16%, transparent);
+  color: var(--tag); border: 1px solid color-mix(in srgb, var(--tag) 40%, transparent);
+}
+.preview-tags-add {
+  min-height: 0; cursor: pointer; font-size: 11px; font-weight: 800; padding: 3px 8px;
+  border-radius: 6px; border: 1px dashed var(--line); color: var(--subtle); background: transparent;
+}
+.preview-tags-add:hover { border-color: var(--accent); color: var(--accent); }
+.preview-tags-panel { flex-basis: 100%; display: flex; flex-direction: column; gap: 2px; margin-top: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.preview-tag-opt { display: flex; align-items: center; gap: 8px; min-height: 0; text-align: left; padding: 6px 8px; border: 0; border-radius: 6px; background: transparent; color: var(--text); font: inherit; font-weight: 600; font-size: 13px; cursor: pointer; }
+.preview-tag-opt:hover { background: var(--panel); }
+.preview-tag-opt.on { color: var(--accent); font-weight: 800; }
+.preview-tag-opt.on::after { content: "✓"; margin-left: auto; }
+.preview-tag-sw { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+.preview-tag-new { color: var(--accent); font-weight: 800; border-top: 1px solid var(--line); border-radius: 0; margin-top: 2px; }
+.preview-tags-empty { padding: 4px 8px; color: var(--subtle); font-size: 12px; }
+
 /* --- Vendas (cartas à venda com preço) --- */
 .sales-toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 .sales-toolbar button[disabled] { opacity: 0.5; cursor: not-allowed; }

@@ -1626,7 +1626,7 @@
   function saleCurrencySymbol() {
     return fmtMoney(getCurrency(), 0).replace(/[\d.,\s ]/g, "") || getCurrency();
   }
-  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders, sale }) {
+  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders, sale, tags }) {
     let activeCard = null;
     let activeVariant = null;
     let activeGraded = null; // { company, grade } quando aberto de uma carta GRADUADA
@@ -1661,6 +1661,25 @@
         close();
       }
     });
+
+    // Caixa de TAGS dentro do preview (metade da linha, ao lado da Coleção): chips
+    // das tags da carta (✕ pra remover) + "+ Tag" que expande a lista pra marcar/
+    // criar. `tags` é um hook injetado (list/has/toggle/create/onChange).
+    function previewTagsCtlHtml(expanded) {
+      if (!tags || !activeCard) return "";
+      const cardId = activeCard.id;
+      const all = tags.list();
+      const mine = all.filter((tg) => tags.has(cardId, tg.id));
+      const chips = mine.map((tg) => `<button type="button" class="preview-tag-chip" style="--tag:${tg.color}" data-preview-tag-remove="${escapeAttribute(tg.id)}" title="${escapeAttribute(tg.name)}">${escapeHtml(tg.name)} <span aria-hidden="true">✕</span></button>`).join("");
+      const panel = expanded ? `<div class="preview-tags-panel">${all.length
+        ? all.map((tg) => `<button type="button" class="preview-tag-opt${tags.has(cardId, tg.id) ? " on" : ""}" data-preview-tag-toggle="${escapeAttribute(tg.id)}"><span class="preview-tag-sw" style="background:${tg.color}"></span>${escapeHtml(tg.name || t("tags.untitled"))}</button>`).join("")
+        : `<span class="preview-tags-empty">${escapeHtml(t("tags.menuEmpty"))}</span>`}<button type="button" class="preview-tag-opt preview-tag-new" data-preview-tag-new>+ ${escapeHtml(t("tags.new"))}</button></div>` : "";
+      return `${chips}<button type="button" class="preview-tags-add" data-preview-tag-open aria-expanded="${expanded ? "true" : "false"}">+ ${escapeHtml(t("tags.addShort"))}</button>${panel}`;
+    }
+    function refreshPreviewTags(expanded) {
+      const ctl = document.querySelector("#cardPreviewModal [data-preview-tags]");
+      if (ctl) ctl.innerHTML = previewTagsCtlHtml(expanded);
+    }
 
     function open(cardId, variant, opts) {
       activeCard = getCard(cardId);
@@ -1715,11 +1734,15 @@
               <button class="owned-toggle preview-owned" data-card-id="${escapeAttribute(activeCard.id)}"${activeVariant ? ` data-variant="${escapeAttribute(activeVariant)}"` : ""} aria-pressed="${isOwned}">
                 ${isOwned ? t("card.inCollection") : t("card.markOwned")}
               </button>
-              ${(folders && folders.list().length) ? `<label class="preview-folder-row"><span>${escapeHtml(t("folders.assign"))}</span>
-                <select class="preview-folder" data-preview-folder>
-                  <option value="">${escapeHtml(t("folders.none"))}</option>
-                  ${folders.list().map((f) => `<option value="${escapeAttribute(f.id)}"${folders.currentOf(activeCard.id) === f.id ? " selected" : ""}>${escapeHtml(f.name || t("folders.untitled"))}</option>`).join("")}
-                </select></label>` : ""}
+              ${((folders && folders.list().length) || tags) ? `<div class="preview-org-row">
+                ${(folders && folders.list().length) ? `<label class="preview-folder-row"><span>${escapeHtml(t("folders.assign"))}</span>
+                  <select class="preview-folder" data-preview-folder>
+                    <option value="">${escapeHtml(t("folders.none"))}</option>
+                    ${folders.list().map((f) => `<option value="${escapeAttribute(f.id)}"${folders.currentOf(activeCard.id) === f.id ? " selected" : ""}>${escapeHtml(f.name || t("folders.untitled"))}</option>`).join("")}
+                  </select></label>` : ""}
+                ${tags ? `<div class="preview-tags-row"><span>${escapeHtml(t("collection.tab.tags"))}</span>
+                  <div class="preview-tags-ctl" data-preview-tags>${previewTagsCtlHtml(false)}</div></div>` : ""}
+              </div>` : ""}
               ${sale ? `<label class="preview-sale-row"><span>${escapeHtml(t("sales.sell"))}</span><span class="preview-sale-cur">${escapeHtml(saleCurrencySymbol())}</span>
                 <input type="text" inputmode="decimal" class="preview-sale-price" data-preview-sale value="${escapeAttribute((function () { const p = sale.priceOf(activeCard.id, activeVariant || defaultVariant(activeCard)); return p > 0 ? String(p).replace(".", ",") : ""; })())}" placeholder="0,00"></label>` : ""}
             </div>
@@ -1788,6 +1811,24 @@
       if (event.target.closest("[data-preview-share]")) {
         shareCard();
         return;
+      }
+
+      // Caixa de tags do preview: expandir, marcar/desmarcar, remover, criar.
+      if (tags && activeCard && event.target.closest("#cardPreviewModal [data-preview-tags]")) {
+        const open = event.target.closest("[data-preview-tag-open]");
+        if (open) { refreshPreviewTags(open.getAttribute("aria-expanded") !== "true"); return; }
+        const toggle = event.target.closest("[data-preview-tag-toggle]");
+        if (toggle) { tags.toggle(activeCard.id, toggle.dataset.previewTagToggle); if (tags.onChange) tags.onChange(activeCard.id); refreshPreviewTags(true); return; }
+        const remove = event.target.closest("[data-preview-tag-remove]");
+        if (remove) { tags.toggle(activeCard.id, remove.dataset.previewTagRemove); if (tags.onChange) tags.onChange(activeCard.id); refreshPreviewTags(false); return; }
+        const create = event.target.closest("[data-preview-tag-new]");
+        if (create) {
+          if (tags.atLimit && tags.atLimit()) { alert(t("tags.limit", { n: tags.limit })); return; }
+          const name = (window.prompt(t("tags.namePlaceholder")) || "").trim().slice(0, 24);
+          if (name) { const ntag = tags.create(name); if (ntag) tags.toggle(activeCard.id, ntag.id); if (tags.onChange) tags.onChange(activeCard.id); }
+          refreshPreviewTags(true);
+          return;
+        }
       }
 
       if (event.target.closest("[data-preview-want]") && wishlist && activeCard) {

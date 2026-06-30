@@ -230,6 +230,20 @@
       list: () => folders.list(),
       currentOf: (cardId) => folders.folderOf(cardId),
       onChange: (cardId, folderId) => { folders.assign(cardId, folderId); renderDashboard(); renderCards(); }
+    },
+    // Caixa de tags dentro do preview (marca/remove/cria — multi). Atualiza o tile
+    // da carta na grade in place (sem re-render) + o dashboard.
+    tags: {
+      list: () => tags.list(),
+      has: (cardId, id) => tags.has(cardId, id),
+      toggle: (cardId, id) => tags.toggle(cardId, id),
+      create: (name) => tags.create(name),
+      atLimit: () => tags.atLimit(),
+      limit: TAG_LIMIT,
+      onChange: (cardId) => {
+        const tile = document.querySelector(`#cardGrid .card-tile[data-tile-card-id="${cardId}"]`) || document.querySelector(`#folderSections .card-tile[data-tile-card-id="${cardId}"]`);
+        if (tile) updateTileTags(tile, cardId); else renderDashboard();
+      }
     }
   });
 
