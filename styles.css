@@ -755,9 +755,10 @@ input::placeholder {
   background: var(--slab-bg, #c8102e); color: var(--slab-fg, #fff);
   font-size: 11px; font-weight: 800; letter-spacing: .02em; margin-left: 2px;
 }
-/* Selo da nota no topo do popup quando a carta é graduada. */
-.preview-graded-line { margin: 4px 0 0; }
+/* Selo da nota + preço graded no topo do popup quando a carta é graduada. */
+.preview-graded-line { margin: 4px 0 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .preview-graded-line .graded-badge { margin-left: 0; font-size: 12.5px; padding: 2px 10px; }
+.preview-graded-price { font-weight: 800; color: var(--gold); font-size: 15px; }
 /* Campos do slab: graduadora + nota numa linha; valor numa linha própria (largura
    cheia, pra caber valores grandes sem espremer). */
 .graded-fields { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
