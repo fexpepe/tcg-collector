@@ -769,7 +769,7 @@
           ${link("wishlist.html", "nav.wishlist", "wishlist")}
           ${link("sales.html", "nav.sales", "sales")}
           ${link("graded.html", "nav.graded", "graded")}`)}
-      ${link("portfolio.html?game=hub", "nav.portfolio", "portfolio")}
+      ${link("portfolio.html", "nav.portfolio", "portfolio")}
     `;
 
     const groups = Array.from(nav.querySelectorAll(".nav-group")).map((groupEl) => ({
