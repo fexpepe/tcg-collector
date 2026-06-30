@@ -1902,9 +1902,16 @@
       .filter((f) => col.items.some((it) => it.f === f.id))
       .sort((a, b) => (b.stars || 0) - (a.stars || 0));
     const hasFolders = collFolders.length > 0;
+    const gradedList = (prof.data.graded && Array.isArray(prof.data.graded.items)) ? prof.data.graded.items : [];
+    const tagDefs = Array.isArray(prof.data.tags) ? prof.data.tags : [];
+    const hasGraded = gradedList.length > 0;
+    const hasTags = tagDefs.length > 0 && col.items.some((it) => (it.tg || []).length);
+    const hasArtists = col.items.some((it) => it.a);
+    const hasSets = col.items.length > 0;
     const gamesPresent = [...new Set(col.items.map((it) => it.g).filter(Boolean))];
+    const GROUPED = ["vitrine", "tags", "artists", "sets"]; // abas que viram vitrine de grupos
     let mode = (hasSales && collParams.get("t") === "sales") ? "sale" : "collection";
-    let openId = null; // coleção aberta dentro da vitrine
+    let openId = null; // grupo aberto (coleção/tag/artista/set)
     let gFilter = "all";
 
     function tabsHtml() {
@@ -1912,6 +1919,10 @@
       return `<div class="prof-tabs">
         ${tab("collection", t("nav.collection"), true)}
         ${tab("vitrine", t("collection.tab.folders"), hasFolders)}
+        ${tab("tags", t("collection.tab.tags"), hasTags)}
+        ${tab("graded", t("nav.graded"), hasGraded)}
+        ${tab("artists", t("collection.tab.artists"), hasArtists)}
+        ${tab("sets", t("collection.tab.sets"), hasSets)}
         ${tab("sale", t("nav.sales"), hasSales)}
       </div>`;
     }
@@ -1928,47 +1939,56 @@
         ${chip("all", t("filter.gameAll"))}${chip("pokemon", t("filter.gamePokemon"))}${chip("lorcana", t("filter.gameLorcana"))}
       </div></div>`;
     }
-    // Card de coleção (somente leitura) da vitrine: capa + nome + meta + estrelas.
-    function vitrineCard(f) {
-      const items = col.items.filter((it) => it.f === f.id);
-      const copies = items.reduce((s, it) => s + (it.q || 1), 0);
-      const val = items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
+    // Grupos das abas-vitrine (Coleções/Tags/Artistas/Sets): {id,name,color?,stars?,cover?,items}.
+    function groupsFor(m) {
+      const inG = (it) => gFilter === "all" || (it.g || "pokemon") === gFilter;
+      if (m === "vitrine") return collFolders.map((f) => ({ id: f.id, name: f.name || t("folders.untitled"), stars: f.stars || 0, cover: f.cover, items: col.items.filter((it) => it.f === f.id && inG(it)) })).filter((gp) => gp.items.length);
+      if (m === "tags") return tagDefs.map((tg) => ({ id: tg.id, name: tg.name || t("tags.untitled"), color: tg.color, items: col.items.filter((it) => (it.tg || []).indexOf(tg.id) >= 0 && inG(it)) })).filter((gp) => gp.items.length);
+      if (m === "artists") return [...new Set(col.items.map((it) => it.a).filter(Boolean))].sort().map((a) => ({ id: a, name: a, items: col.items.filter((it) => it.a === a && inG(it)) })).filter((gp) => gp.items.length);
+      if (m === "sets") return [...new Set(col.items.map((it) => it.s).filter(Boolean))].sort().map((s) => ({ id: s, name: s, items: col.items.filter((it) => it.s === s && inG(it)) })).filter((gp) => gp.items.length);
+      return [];
+    }
+    // Card de grupo (somente leitura): capa + nome + meta (+ estrelas/cor quando houver).
+    function groupCard(gp) {
+      const copies = gp.items.reduce((s, it) => s + (it.q || 1), 0);
+      const val = gp.items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
       const metaTxt = `${copies}${val > 0 ? " · " + shared.formatMoney(shared.getCurrency(), val) : ""}`;
-      let cover = f.cover ? items.find((it) => it.id === f.cover) : null;
-      if (!cover) cover = items.slice().sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q))[0];
-      const coverImg = cover
-        ? shared.localizedImg(cover.img, { alt: "", fallback: cover.fb, loading: "lazy", thumb: true })
-        : `<span class="coll-card-empty">—</span>`;
-      let stars = ""; for (let i = 1; i <= 3; i++) stars += `<span class="coll-star${i <= (f.stars || 0) ? " on" : ""}">★</span>`;
-      const gset = new Set(items.map((it) => it.g).filter(Boolean));
-      return `<button type="button" class="coll-card coll-card-ro" data-vitrine-open="${escapeAttribute(f.id)}">
-        <span class="coll-card-title"><strong class="coll-card-name">${escapeHtml(f.name || t("folders.untitled"))}</strong></span>
+      let cover = gp.cover ? gp.items.find((it) => it.id === gp.cover) : null;
+      if (!cover) cover = gp.items.slice().sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q))[0];
+      const coverImg = cover ? shared.localizedImg(cover.img, { alt: "", fallback: cover.fb, loading: "lazy", thumb: true }) : `<span class="coll-card-empty">—</span>`;
+      let stars = ""; if (gp.stars != null) for (let i = 1; i <= 3; i++) stars += `<span class="coll-star${i <= (gp.stars || 0) ? " on" : ""}">★</span>`;
+      const gset = new Set(gp.items.map((it) => it.g).filter(Boolean));
+      const dot = gp.color ? `<span class="tag-dot" style="background:${gp.color}"></span>` : "";
+      return `<button type="button" class="coll-card coll-card-ro${gp.color ? " tag-card" : ""}"${gp.color ? ` style="--tag:${gp.color}"` : ""} data-vitrine-open="${escapeAttribute(gp.id)}">
+        <span class="coll-card-title">${dot}<strong class="coll-card-name">${escapeHtml(gp.name)}</strong></span>
         <span class="coll-card-cover">${coverImg}</span>
         <span class="coll-card-body">
           <span class="coll-card-meta-row"><span class="coll-card-meta">${escapeHtml(metaTxt)}</span>${folderTagHtml(gset)}</span>
-          <span class="coll-stars">${stars}</span>
+          ${gp.stars != null ? `<span class="coll-stars">${stars}</span>` : ""}
         </span>
       </button>`;
     }
     function contentHtml() {
-      if (mode === "vitrine") {
-        if (openId) {
-          const items = col.items.filter((it) => it.f === openId);
-          return `<div class="card-grid">${items.map(sharedTile).join("")}</div>`;
-        }
-        const fs = gFilter === "all" ? collFolders : collFolders.filter((f) => col.items.some((it) => it.f === f.id && (it.g || "pokemon") === gFilter));
-        return `<div class="coll-vitrine">${fs.map(vitrineCard).join("")}</div>`;
+      if (mode === "graded") {
+        const items = gradedList.filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter);
+        return `<div class="card-grid">${items.map(sharedTile).join("")}</div>`;
       }
-      const items = mode === "sale" ? sale.items
-        : (gFilter === "all" ? col.items : col.items.filter((it) => (it.g || "pokemon") === gFilter));
+      if (mode === "sale") return `<div class="card-grid">${sale.items.map(sharedTile).join("")}</div>`;
+      if (GROUPED.indexOf(mode) >= 0) {
+        const groups = groupsFor(mode);
+        if (openId) { const gp = groups.find((x) => x.id === openId); return `<div class="card-grid">${(gp ? gp.items : []).map(sharedTile).join("")}</div>`; }
+        return `<div class="coll-vitrine">${groups.map(groupCard).join("")}</div>`;
+      }
+      const items = gFilter === "all" ? col.items : col.items.filter((it) => (it.g || "pokemon") === gFilter);
       return `<div class="card-grid">${items.map(sharedTile).join("")}</div>`;
     }
 
     function render() {
       shared.applyGameAccent(gFilter); // o filtro de jogo muda as cores (accent), por isso fica no topo
-      const openColl = mode === "vitrine" && openId;
-      const back = openColl
-        ? `<div class="coll-open-head"><button type="button" class="secondary coll-back-btn" data-vitrine-back>${escapeHtml(t("profile.viewCollections"))}</button><strong class="coll-open-name">${escapeHtml((collFolders.find((x) => x.id === openId) || {}).name || "")}</strong></div>`
+      const grouped = GROUPED.indexOf(mode) >= 0 && openId;
+      const openName = grouped ? (groupsFor(mode).find((x) => x.id === openId) || {}).name : "";
+      const back = grouped
+        ? `<div class="coll-open-head"><button type="button" class="secondary coll-back-btn" data-vitrine-back>${escapeHtml(t("profile.viewCollections"))}</button><strong class="coll-open-name">${escapeHtml(openName || "")}</strong></div>`
         : "";
       // Filtro de JOGO (global, muda as cores) no topo; ABAS/páginas embaixo do dashboard.
       sv.innerHTML = `${gameFilterHtml()}<div class="prof-dash">${dashHtml()}</div>${tabsHtml()}${back}<div class="prof-content">${contentHtml()}</div>`;

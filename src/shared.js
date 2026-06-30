@@ -3504,6 +3504,22 @@
       return { folders: Array.isArray(d.folders) ? d.folders : [], assign: (d.assign && typeof d.assign === "object") ? d.assign : {} };
     } catch (e) { return { folders: [], assign: {} }; }
   }
+  // Tags (multi por carta) p/ a vitrine de tags do perfil público.
+  function readTagsData() {
+    try {
+      const d = JSON.parse(localStorage.getItem(SYNC_KEYS.tags) || "{}");
+      return { tags: Array.isArray(d.tags) ? d.tags : [], assign: (d.assign && typeof d.assign === "object") ? d.assign : {} };
+    } catch (e) { return { tags: [], assign: {} }; }
+  }
+  // Slabs graded p/ a aba Graded do perfil público.
+  function readGradedList() {
+    try {
+      const d = JSON.parse(localStorage.getItem(SYNC_KEYS.graded) || "{}");
+      const items = d.items || {};
+      const order = Array.isArray(d.order) ? d.order : Object.keys(items);
+      return order.filter((g) => items[g]).map((g) => { const e = items[g]; return { cardId: e.cardId, variant: e.variant || "Normal", company: e.company || "psa", grade: e.grade || "", value: Number(e.value) || 0 }; });
+    } catch (e) { return []; }
+  }
   // Monta o payload CURADO do perfil público: coleção (valor de mercado só se
   // showValues) + lista de vendas + as Coleções (vitrine). Auto-contido (embute
   // detalhe da carta). `cards`=catálogo, `owned`=store da página, `prices`=preços.
@@ -3520,7 +3536,7 @@
         const c = convertMoney(unit, cur, "BRL");
         vbrl = c == null ? 0 : Math.round(c * 100) / 100;
       }
-      colItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, v: variant, q: qty, vbrl, img: src.url, fb: src.fallback || "" });
+      colItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, a: card.artist || "", v: variant, q: qty, vbrl, img: src.url, fb: src.fallback || "" });
     });
     colItems.sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q));
     const byId = new Map((cards || []).map((c) => [c.id, c]));
@@ -3540,7 +3556,23 @@
       .filter((f) => used.has(f.id))
       .map((f) => ({ id: f.id, name: f.name || "", stars: f.stars || 0, cover: f.cover || null }));
 
-    return { collection: { items: colItems }, sales: { items: saleItems, cur, scope: "sale" }, folders: pubFolders, showValues: !!showValues };
+    // Tags: marca cada carta com suas tags (tg) e lista as tags usadas (id/nome/cor).
+    const tdata = readTagsData();
+    colItems.forEach((it) => { const ids = tdata.assign[it.id]; if (ids && ids.length) it.tg = ids.slice(); });
+    const usedTags = new Set(); colItems.forEach((it) => (it.tg || []).forEach((id) => usedTags.add(id)));
+    const pubTags = tdata.tags.filter((tg) => usedTags.has(tg.id)).map((tg) => ({ id: tg.id, name: tg.name || "", color: tg.color }));
+
+    // Graded (slabs): cada um com graduadora (co), nota (gr) e valor graded (gv, só se showValues).
+    const gradedItems = [];
+    readGradedList().forEach((it) => {
+      const card = byId.get(it.cardId);
+      if (!card) return;
+      const src = cardImageSources(card);
+      const gv = showValues ? (it.value > 0 ? it.value : (gradedValue(card, it.company, it.grade).value || 0)) : 0;
+      gradedItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, a: card.artist || "", v: it.variant, co: it.company, gr: it.grade, gv, cur, img: src.url, fb: src.fallback || "" });
+    });
+
+    return { collection: { items: colItems }, sales: { items: saleItems, cur, scope: "sale" }, folders: pubFolders, tags: pubTags, graded: { items: gradedItems }, showValues: !!showValues };
   }
   // Publica/atualiza (ou apaga) o perfil público conforme is_public. Debounced e
   // só re-envia se o payload mudou. Chamado pelas páginas (coleção/vendas).
