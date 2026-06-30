@@ -105,7 +105,9 @@ const EN_GRADED_SETS = {
   gym1: 1441, gym2: 1440,
   neo1: 1396, neo2: 1434, neo3: 1389, neo4: 1444,
   ecard1: 1375, ecard2: 1397, ecard3: 1372,
-  sma: 2594 // Hidden Fates Shiny Vault
+  sma: 2594, // Hidden Fates Shiny Vault
+  cel25: 2867 // Celebrations (set principal 1-25; a Classic Collection "A" vive no
+              // mesmo chunk com numeração própria e NÃO casa com este id — ok)
 };
 
 // Sets EN onde a PPT PREENCHE/SOBREPÕE preço (+ imagem faltante + add-on-miss):
@@ -213,8 +215,11 @@ async function revNames() {
 async function syncGradedEN(ourSetId, pptNumericId) {
   const chunk = await ourChunk(ourSetId, "en");
   if (!chunk || !chunk.length) return null;
+  // normNum (preserva sufixo: "5"->"5", "4A"->"4a") em vez de numOf, pra cards de
+  // bônus no MESMO chunk (ex.: Celebrations Classic Collection "cel25-4A") não
+  // colidirem com o número regular ("cel25-4") e roubarem/perderem o preço graded.
   const byNum = new Map();
-  for (const card of chunk) { const n = numOf(String(card.id).replace(`${ourSetId}-`, "")); if (n != null) byNum.set(n, card.id); }
+  for (const card of chunk) { const n = normNum(String(card.id).replace(`${ourSetId}-`, "")); if (n) byNum.set(n, card.id); }
   const arr = [];
   for (let page = 0, offset = 0; page < 30; page++) {
     const j = await ppt(`/cards?setId=${pptNumericId}&language=english&limit=100&offset=${offset}&includeEbay=true&days=90`);
@@ -228,7 +233,7 @@ async function syncGradedEN(ourSetId, pptNumericId) {
   // não a variante de erro (que costuma vir sem graded).
   const best = {};
   for (const c of arr) {
-    const ourId = byNum.get(numOf(c.cardNumber));
+    const ourId = byNum.get(normNum(c.cardNumber));
     if (!ourId) continue;
     const g = pickGraded(c);
     if (!g) continue;
