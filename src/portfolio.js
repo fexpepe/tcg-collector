@@ -250,6 +250,40 @@
     if (!controlsBound) { bindControls(); controlsBound = true; }
     renderControls();
     renderChart(hist);
+    renderInsights(hist);
+  }
+
+  // Insights: variação do valor (coleção+binders) em 7d / 30d / desde o início, a
+  // partir do histórico diário (BRL). Precisa de >=2 dias (o 1º dia não tem base).
+  function renderInsights(hist) {
+    const sec = document.getElementById("portfolioInsights");
+    if (!sec) return;
+    if (!hist || hist.length < 2) { sec.hidden = true; return; }
+    const valOf = (p) => (p.c || 0) + (p.b || 0); // BRL
+    const last = hist[hist.length - 1];
+    const now = valOf(last);
+    const todayMs = new Date(last.d + "T00:00:00").getTime();
+    // Valor N dias atrás: último ponto com data <= (hoje - N); senão o 1º ponto.
+    const valueDaysAgo = (n) => {
+      const cutoff = todayMs - n * 864e5;
+      let chosen = null;
+      for (const p of hist) { if (new Date(p.d + "T00:00:00").getTime() <= cutoff) chosen = p; else break; }
+      return chosen ? valOf(chosen) : valOf(hist[0]);
+    };
+    const card = (key, then) => {
+      const deltaBRL = now - then;
+      const pct = then > 0 ? (deltaBRL / then) * 100 : 0;
+      const dir = deltaBRL > 0.005 ? "up" : (deltaBRL < -0.005 ? "down" : "flat");
+      const sign = dir === "up" ? "+" : (dir === "down" ? "−" : "");
+      const arrow = dir === "up" ? "▲" : (dir === "down" ? "▼" : "→");
+      return `<article class="pf-insight pf-insight-${dir}">
+        <span class="pf-insight-label">${escapeHtml(t("portfolio.delta." + key))}</span>
+        <span class="pf-insight-pct">${arrow} ${sign}${Math.abs(pct).toFixed(1)}%</span>
+        <span class="pf-insight-abs">${sign}${escapeHtml(money(Math.abs(fromBRL(deltaBRL))))}</span>
+      </article>`;
+    };
+    sec.innerHTML = card("7d", valueDaysAgo(7)) + card("30d", valueDaysAgo(30)) + card("total", valOf(hist[0]));
+    sec.hidden = false;
   }
 
   // Espelha o resumo do portfólio deste jogo num cookie de domínio .sleevu.app,

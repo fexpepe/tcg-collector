@@ -3542,6 +3542,15 @@ a.progress-row:hover {
 /* Barra de progresso de conclusão do set (detalhe). */
 .completion-bar { height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; margin: 2px 0 6px; }
 .completion-fill { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .3s ease; }
+
+/* Insights do portfólio: variação 7d / 30d / desde o início. */
+.pf-insights { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+.pf-insight { flex: 1 1 140px; min-width: 0; display: flex; flex-direction: column; gap: 3px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+.pf-insight-label { font-size: 12px; color: var(--muted); font-weight: 700; }
+.pf-insight-pct { font-size: 20px; font-weight: 800; color: var(--muted); }
+.pf-insight-abs { font-size: 12px; color: var(--subtle); font-weight: 700; }
+.pf-insight-up .pf-insight-pct { color: #2ecc71; }
+.pf-insight-down .pf-insight-pct { color: #e8553c; }
 .tile-tag-chip {
   max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font-size: 10.5px; font-weight: 800; padding: 1px 7px; border-radius: 5px;
