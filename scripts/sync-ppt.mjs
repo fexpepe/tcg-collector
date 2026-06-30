@@ -166,7 +166,9 @@ const JP_IMPORT_SETS = ["M5", "MBG"];
 // nome limpo exato (a PPT tem várias "Ancient Mew" — só a principal).
 const CURATED_SINGLES = [
   { id: "amew-1", pptName: "Ancient Mew", lang: "en", setId: "amew", set: "Ancient Mew",
-    name: "Ancient Mew", number: "1", dexId: 151, year: "2000", rarity: "Promo", variants: ["Holo"] }
+    name: "Ancient Mew", number: "1", dexId: 151, year: "2000", rarity: "Promo", variants: ["Holo"] },
+  { id: "amew-2", pptName: "Ancient Mew (Japanese Exclusive Print)", lang: "en", setId: "amew", set: "Ancient Mew",
+    name: "Ancient Mew (Japanese Exclusive Print)", number: "2", dexId: 151, year: "2000", rarity: "Promo", variants: ["Holo"] }
 ];
 
 // Nome limpo da carta PPT: tira o sufixo de número e tags ("Snorlax - 077/071"
