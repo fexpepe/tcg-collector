@@ -2210,10 +2210,13 @@
     // se houver mais; sem tags, o chip fantasma "+ Tag". A linha toda abre o menu.
     const tagsFootHtml = (opts && opts.tags) ? (function () {
       const list = opts.cardTags || [];
+      const chip = (tg) => `<span class="tile-tag-chip" style="--tag:${tg.color}" data-tag-goto="${escapeAttribute(tg.id)}" role="button" tabindex="0" title="${escapeAttribute(tg.name)}">${escapeHtml(tg.name)}</span>`;
       const inner = list.length
-        ? `<span class="tile-tag-chip" style="--tag:${list[0].color}">${escapeHtml(list[0].name)}</span>` + (list.length > 1 ? `<span class="tile-tag-more">+${list.length - 1}</span>` : "")
-        : `<span class="tile-tag-add">+ ${escapeHtml(t("tags.addShort"))}</span>`;
-      return `<div class="tile-tags" data-tag-card-id="${escapeAttribute(card.id)}" data-tag-variant="${escapeAttribute(variant)}" role="button" tabindex="0" aria-label="${escapeAttribute(t("tile.tags"))}" title="${escapeAttribute(t("tile.tags"))}">${inner}</div>`;
+        ? chip(list[0])
+          + (list.length > 1 ? `<span class="tile-tag-more" data-tag-more role="button" tabindex="0" title="${escapeAttribute(t("tile.tags"))}">+${list.length - 1}</span>` : "")
+          + `<span class="tile-tag-add tile-tag-add-mini" data-tag-manage role="button" tabindex="0" aria-label="${escapeAttribute(t("tile.tags"))}" title="${escapeAttribute(t("tile.tags"))}">+</span>`
+        : `<span class="tile-tag-add" data-tag-manage role="button" tabindex="0" aria-label="${escapeAttribute(t("tile.tags"))}" title="${escapeAttribute(t("tile.tags"))}">+ ${escapeHtml(t("tags.addShort"))}</span>`;
+      return `<div class="tile-tags" data-tag-card="${escapeAttribute(card.id)}">${inner}</div>`;
     })() : "";
 
     article.innerHTML = `

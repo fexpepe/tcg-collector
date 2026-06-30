@@ -431,9 +431,14 @@
       // Botão "Coleções" do tile: abre o menu pra atribuir a carta a uma coleção.
       const folderBtn = event.target.closest("[data-folder-card-id]");
       if (folderBtn) { openTileFolderMenu(folderBtn, folderBtn.dataset.folderCardId); return; }
-      // Botão "Tags" do tile: menu multi-seleção de tags.
-      const tagBtn = event.target.closest("[data-tag-card-id]");
-      if (tagBtn) { openTileTagMenu(tagBtn, tagBtn.dataset.tagCardId); return; }
+      // Tags no tile: chip → vai pro filtro da tag; "+N" → popover com todas (clicáveis);
+      // "+" → menu multi-seleção pra adicionar/remover.
+      const tagGoto = event.target.closest("[data-tag-goto]");
+      if (tagGoto) { goToTag(tagGoto.dataset.tagGoto); return; }
+      const tagMore = event.target.closest("[data-tag-more]");
+      if (tagMore) { const r = tagMore.closest(".tile-tags"); openTagListPopover(tagMore, r && r.dataset.tagCard); return; }
+      const tagManage = event.target.closest("[data-tag-manage]");
+      if (tagManage) { const r = tagManage.closest(".tile-tags"); openTileTagMenu(tagManage, r && r.dataset.tagCard); return; }
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) {
         const co = imageButton.dataset.gradedCompany;
@@ -522,10 +527,24 @@
     // Fecha menus/popovers ao clicar fora ou apertar Esc.
     document.addEventListener("click", (event) => {
       if (tileFolderMenu && !event.target.closest(".tile-folder-menu") && !event.target.closest("[data-folder-card-id]")) closeTileFolderMenu();
-      if (tileTagMenu && !event.target.closest(".tile-folder-menu") && !event.target.closest("[data-tag-card-id]")) closeTileTagMenu();
+      if (tileTagMenu && !event.target.closest(".tile-tag-menu") && !event.target.closest("[data-tag-manage]")) closeTileTagMenu();
+      if (tagListPop && !event.target.closest(".tag-list-pop") && !event.target.closest("[data-tag-more]")) closeTagListPopover();
       if (tagEditorEl && !event.target.closest(".tag-editor") && !event.target.closest("[data-tag-edit]") && event.target !== elements.tagsNewBtn) closeTagEditor();
     });
-    document.addEventListener("keydown", (event) => { if (event.key === "Escape") { closeTileFolderMenu(); closeTileTagMenu(); closeTagEditor(); } });
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape") { closeTileFolderMenu(); closeTileTagMenu(); closeTagListPopover(); closeTagEditor(); } });
+    // Hover no "+N" das tags: abre o popover; sair agenda o fechamento (cancela se
+    // o mouse entrar no popover).
+    document.addEventListener("mouseover", (event) => {
+      const more = event.target.closest("[data-tag-more]");
+      if (!more) return;
+      const r = more.closest(".tile-tags");
+      if (!r) return;
+      if (tagListTimer) { clearTimeout(tagListTimer); tagListTimer = null; }
+      openTagListPopover(more, r.dataset.tagCard);
+    });
+    document.addEventListener("mouseout", (event) => {
+      if (event.target.closest("[data-tag-more]") && tagListPop) { tagListTimer = setTimeout(closeTagListPopover, 200); }
+    });
 
     bindFolderDrag();
     bindCollectionDrag();
@@ -741,7 +760,7 @@
       addMode: true,
       folders: true, inFolder: !!folders.folderOf(card.id),
       tags: true, tagActive: cardTags.length > 0,
-      cardTags: cardTags.map((tg) => ({ name: tg.name || t("tags.untitled"), color: tg.color }))
+      cardTags: cardTags.map((tg) => ({ id: tg.id, name: tg.name || t("tags.untitled"), color: tg.color }))
     });
   }
 
@@ -827,27 +846,71 @@
     menu.style.top = `${top}px`;
     menu.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - mw - 8))}px`;
     tileTagMenu = menu;
+    const tileEl = anchor.closest(".card-tile"); // estável (o anchor é recriado no update)
     menu.addEventListener("click", (event) => {
-      if (event.target.closest("[data-tag-menu-new]")) { closeTileTagMenu(); openTagEditor(null, anchor); return; }
+      if (event.target.closest("[data-tag-menu-new]")) { closeTileTagMenu(); goToNewTag(); return; }
       const item = event.target.closest("[data-tag-toggle]");
       if (!item) return;
       const tagId = item.dataset.tagToggle;
       tags.toggle(cardId, tagId);
       item.classList.toggle("on", tags.has(cardId, tagId));
-      updateTileTags(anchor, cardId); // atualiza chips + botão sem fechar o menu
+      updateTileTags(tileEl, cardId); // atualiza chips in place sem fechar o menu
     });
     document.addEventListener("scroll", closeTileTagMenu, true);
   }
+
+  // Clicar numa tag (chip do tile ou item do popover) → abre o filtro dela (aba Tags).
+  function goToTag(tagId) {
+    if (!tags.get(tagId)) return;
+    closeTileFolderMenu(); closeTileTagMenu(); closeTagListPopover();
+    activeTab = "tags"; openTagId = tagId;
+    Array.from(elements.tabs.children).forEach((node) => node.setAttribute("aria-pressed", String(node.dataset && node.dataset.tab === "tags")));
+    render();
+  }
+  // "+ Nova tag" (no menu do tile) → vai pra aba Tags e abre o editor pra criar lá.
+  function goToNewTag() {
+    activeTab = "tags"; openTagId = null;
+    Array.from(elements.tabs.children).forEach((node) => node.setAttribute("aria-pressed", String(node.dataset && node.dataset.tab === "tags")));
+    render();
+    // Próximo tick: deixa o clique atual terminar de borbulhar (senão o handler de
+    // "fechar ao clicar fora" fecharia o editor recém-aberto).
+    setTimeout(() => { if (elements.tagsNewBtn) openTagEditor(null, elements.tagsNewBtn); }, 0);
+  }
+  // Popover do "+N": lista TODAS as tags da carta (clicáveis → filtro da tag). Abre
+  // no hover (e no clique, p/ touch); fecha ao sair (com folga pra entrar nele).
+  let tagListPop = null, tagListTimer = null;
+  function closeTagListPopover() { if (tagListTimer) { clearTimeout(tagListTimer); tagListTimer = null; } if (tagListPop) { tagListPop.remove(); tagListPop = null; } }
+  function openTagListPopover(anchor, cardId) {
+    const list = tags.tagsOf(cardId);
+    if (!list.length) return;
+    if (tagListPop && tagListPop.dataset.card === cardId) return;
+    closeTagListPopover();
+    const pop = document.createElement("div");
+    pop.className = "tile-folder-menu tag-list-pop";
+    pop.dataset.card = cardId;
+    pop.innerHTML = list.map((tg) => `<button type="button" class="tile-folder-item tile-tag-item" data-tag-goto="${escapeAttribute(tg.id)}"><span class="tile-tag-swatch" style="background:${tg.color}"></span>${escapeHtml(tg.name || t("tags.untitled"))}</button>`).join("");
+    document.body.appendChild(pop);
+    const r = anchor.getBoundingClientRect();
+    const mw = pop.offsetWidth, mh = pop.offsetHeight;
+    pop.style.top = `${r.bottom + 6 + mh > window.innerHeight ? Math.max(8, r.top - 6 - mh) : r.bottom + 6}px`;
+    pop.style.left = `${Math.max(8, Math.min(r.left, window.innerWidth - mw - 8))}px`;
+    tagListPop = pop;
+    pop.addEventListener("mouseenter", () => { if (tagListTimer) { clearTimeout(tagListTimer); tagListTimer = null; } });
+    pop.addEventListener("mouseleave", () => { tagListTimer = setTimeout(closeTagListPopover, 150); });
+    pop.addEventListener("click", (event) => { const it = event.target.closest("[data-tag-goto]"); if (it) goToTag(it.dataset.tagGoto); });
+  }
   // Atualiza in place os chips do tile (sem re-render). A linha é o próprio ponto
   // de adicionar (chip "+ Tag" no fim), então sempre existe — só troca o conteúdo.
-  function updateTileTags(anchor, cardId) {
-    const tile = anchor.closest(".card-tile");
+  function updateTileTags(tile, cardId) {
     const row = tile && tile.querySelector(".tile-tags");
     if (row) {
       const list = tags.tagsOf(cardId);
+      const chip = (tg) => `<span class="tile-tag-chip" style="--tag:${tg.color}" data-tag-goto="${escapeAttribute(tg.id)}" role="button" tabindex="0" title="${escapeAttribute(tg.name || t("tags.untitled"))}">${escapeHtml(tg.name || t("tags.untitled"))}</span>`;
       row.innerHTML = list.length
-        ? `<span class="tile-tag-chip" style="--tag:${list[0].color}">${escapeHtml(list[0].name || t("tags.untitled"))}</span>` + (list.length > 1 ? `<span class="tile-tag-more">+${list.length - 1}</span>` : "")
-        : `<span class="tile-tag-add">+ ${escapeHtml(t("tags.addShort"))}</span>`;
+        ? chip(list[0])
+          + (list.length > 1 ? `<span class="tile-tag-more" data-tag-more role="button" tabindex="0" title="${escapeAttribute(t("tile.tags"))}">+${list.length - 1}</span>` : "")
+          + `<span class="tile-tag-add tile-tag-add-mini" data-tag-manage role="button" tabindex="0" aria-label="${escapeAttribute(t("tile.tags"))}" title="${escapeAttribute(t("tile.tags"))}">+</span>`
+        : `<span class="tile-tag-add" data-tag-manage role="button" tabindex="0" aria-label="${escapeAttribute(t("tile.tags"))}" title="${escapeAttribute(t("tile.tags"))}">+ ${escapeHtml(t("tags.addShort"))}</span>`;
     }
     renderDashboard();
   }
