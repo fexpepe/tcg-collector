@@ -2229,11 +2229,11 @@
         <div class="tile-foot">
           ${tagsFootHtml}
           <div class="tile-actions">
+          ${opts && opts.folders ? `<button type="button" class="tile-btn tile-folder${opts.inFolder ? " active" : ""}" data-folder-card-id="${escapeAttribute(card.id)}" data-folder-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.collection"))}" title="${escapeAttribute(t("tile.collection"))}">${TILE_ICONS.folder}</button>` : ""}
           ${wantButton}
           <button type="button" class="tile-btn tile-own${ownActive}" data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}" aria-pressed="${!addMode && isOwned}" aria-label="${escapeAttribute(ownAria)}">
             ${ownIcon}${qtyBadge}
           </button>
-          ${opts && opts.folders ? `<button type="button" class="tile-btn tile-folder${opts.inFolder ? " active" : ""}" data-folder-card-id="${escapeAttribute(card.id)}" data-folder-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.collection"))}" title="${escapeAttribute(t("tile.collection"))}">${TILE_ICONS.folder}</button>` : ""}
         </div>
         </div>
       </div>
