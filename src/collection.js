@@ -661,7 +661,9 @@
     elements.dashCopies.textContent = copies;
     elements.dashDistinct.textContent = myCards.length;
     elements.dashSets.textContent = unique(myCards.map((card) => card.set)).length;
-    const value = ownedMarketValue(myCards);
+    // Valor de mercado = coleção raw + slabs graded (o que você TEM), respeitando
+    // o filtro de jogo. Mesma fórmula do Portfólio, pros dois baterem.
+    const value = ownedMarketValue(myCards) + shared.gradedTotalValue(gameOf, gameFilter);
     elements.dashValue.textContent = value > 0 ? shared.formatMoney(shared.getCurrency(), value) : "—";
 
     // Mais valiosas (top 3 por valor unitário)

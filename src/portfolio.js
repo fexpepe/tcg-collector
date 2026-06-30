@@ -2,21 +2,10 @@
   const shared = window.TCGShared;
   const { escapeHtml, escapeAttribute, t, getLocale, detailUrl } = shared;
 
-  let cards = [];
-  let cardsById = new Map();
-  const owned = shared.createCollectionStore();
-  const wishlist = shared.createWishlistStore();
-  const prices = shared.createPriceStore();
-
-  const elements = {
-    totalValue: document.getElementById("totalValue"),
-    pricedCopies: document.getElementById("pricedCopies"),
-    wishlistValue: document.getElementById("wishlistValue"),
-    bindersValue: document.getElementById("bindersValue"),
-    grandTotal: document.getElementById("grandTotal"),
-    topCards: document.getElementById("topCards"),
-    empty: document.getElementById("emptyState")
-  };
+  // Tudo na moeda escolhida no header.
+  function money(value) {
+    return shared.formatMoney(shared.getCurrency(), value > 0 ? value : 0);
+  }
 
   // No HUB (apex) não há catálogo próprio. O portfólio COMBINADO soma os jogos a
   // partir do resumo que cada jogo grava num cookie .sleevu.app
@@ -32,7 +21,7 @@
       try { return JSON.parse(decodeURIComponent(m[1])); } catch (e) { return null; }
     };
     const fromBRL = (v) => { const r = shared.convertMoney(v, "BRL", shared.getCurrency()); return r == null ? v : r; };
-    const COLORS = { pokemon: "#d9a300", lorcana: "#3f3d96" };
+    const COLORS = { pokemon: "#e23030", lorcana: "#3f3d96" };
     const games = [
       { g: "pokemon", name: "Pokémon TCG", data: readPf("pokemon") },
       { g: "lorcana", name: "Disney Lorcana", data: readPf("lorcana") }
@@ -44,7 +33,7 @@
     });
     const combined = games.reduce((s, x) => s + (x.total || 0), 0);
 
-    // Gráfico: uma linha por jogo (valor coleção+binders no tempo, moeda do header).
+    // Gráfico: uma linha por jogo (valor coleção+graded no tempo, moeda do header).
     const hubChart = () => {
       const withPts = games.filter((x) => x.pts && x.pts.length >= 2);
       if (!withPts.length) return "";
@@ -85,11 +74,55 @@
     return;
   }
 
-  Promise.all([shared.loadCatalog(), shared.loadFxRates()])
+  // ===========================================================================
+  // Portfólio por jogo (não-hub): visão FINANCEIRA da Minha Coleção. O total tem
+  // que BATER com a Coleção -> mesma fonte e mesma fórmula:
+  //   patrimônio = cartas raw (todos os jogos) + slabs graded.
+  // Binders e wishlist são VISÕES (filtros), não somam ao patrimônio.
+  // Coleção unificada igual à collection.js (stores por jogo + facades).
+  // ===========================================================================
+  const GAMES = ["pokemon", "lorcana"];
+  const GAME_COLOR = { pokemon: "#e23030", lorcana: "#3f3d96" };
+  const ownedByGame = { pokemon: shared.createCollectionStore("pokemon"), lorcana: shared.createCollectionStore("lorcana") };
+  const wishlistByGame = { pokemon: shared.createWishlistStore("pokemon"), lorcana: shared.createWishlistStore("lorcana") };
+  const pricesByGame = { pokemon: shared.createPriceStore("pokemon"), lorcana: shared.createPriceStore("lorcana") };
+  const cardGameMap = new Map();
+  const gameOf = (id) => cardGameMap.get(id) || "pokemon";
+  const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
+  const wishlist = shared.mergedWishlistStore(wishlistByGame, gameOf);
+  const prices = shared.mergedPriceStore(pricesByGame, gameOf);
+
+  let cards = [];
+  let cardsById = new Map();
+  let gameFilter = "all";
+
+  const elements = {
+    grandTotal: document.getElementById("grandTotal"),
+    rawValue: document.getElementById("rawValue"),
+    gradedValue: document.getElementById("gradedValue"),
+    pricedCopies: document.getElementById("pricedCopies"),
+    wishlistValue: document.getElementById("wishlistValue"),
+    composition: document.getElementById("pfComposition"),
+    gameFilter: document.getElementById("pfGameFilter"),
+    topCards: document.getElementById("topCards"),
+    empty: document.getElementById("emptyState")
+  };
+
+  const inGameId = (g) => gameFilter === "all" || (g || "pokemon") === gameFilter;
+
+  Promise.all([
+    shared.loadOwnedAcrossGames({
+      pokemon: ownedByGame.pokemon.knownCardIds(),
+      lorcana: ownedByGame.lorcana.knownCardIds()
+    }),
+    shared.loadFxRates()
+  ])
     .then(([catalog]) => {
       cards = catalog.cards;
+      cards.forEach((card) => cardGameMap.set(card.id, card.game));
       cardsById = new Map(cards.map((card) => [card.id, card]));
-      owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
+      GAMES.forEach((g) => ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
+      bindGameFilter();
       render();
     })
     .catch((error) => {
@@ -97,96 +130,159 @@
       elements.empty.hidden = false;
     });
 
-  // Tudo na moeda escolhida no header. O valor de cada carta sai do preço manual
-  // (convertido) ou, na falta, da referência TCGdex (também convertida).
-  function money(value) {
-    return value > 0 ? shared.formatMoney(shared.getCurrency(), value) : shared.formatMoney(shared.getCurrency(), 0);
+  function bindGameFilter() {
+    if (!elements.gameFilter) return;
+    elements.gameFilter.addEventListener("click", (event) => {
+      const chip = event.target.closest("[data-pf-game]");
+      if (!chip || chip.dataset.pfGame === gameFilter) return;
+      gameFilter = chip.dataset.pfGame;
+      Array.from(elements.gameFilter.children).forEach((node) =>
+        node.setAttribute("aria-pressed", String(node === chip)));
+      shared.applyGameAccent(gameFilter);
+      render();
+    });
   }
 
-  // Cada linha é um lote carta×variante×condição da coleção, com valor unitário
-  // do preço registrado (ou referência TCGdex), na moeda escolhida.
-  function collectionLines() {
+  // ---- Fontes de valor (moeda atual), filtráveis por jogo --------------------
+
+  // Cada linha é um lote carta×variante×condição da coleção, com valor unitário.
+  function collectionLines(gf) {
     const lines = [];
-    let totalCopies = 0;
+    let totalCopies = 0, pricedCopies = 0;
     cards.forEach((card) => {
+      if (gf && gf !== "all" && card.game !== gf) return;
       const variants = card.variants && card.variants.length ? card.variants : [shared.defaultVariant(card)];
       variants.forEach((variant) => {
         owned.conditionBreakdown(card.id, variant).forEach(({ condition, quantity }) => {
           totalCopies += quantity;
           const val = shared.cardValue(card, variant, prices, condition);
           if (val.value > 0) {
+            pricedCopies += quantity;
             lines.push({ card, variant, condition, quantity, unit: val.value, total: val.value * quantity, estimated: val.estimated, source: val.source });
           }
         });
       });
     });
-    return { lines, totalCopies };
+    return { lines, totalCopies, pricedCopies };
   }
 
-  function wishlistTotal() {
+  function gradedSlabs(gf) {
+    return shared.gradedSlabsValued(gameOf).filter((s) => !gf || gf === "all" || s.game === gf);
+  }
+
+  function wishlistTotal(gf) {
     let total = 0;
     cards.forEach((card) => {
-      wishlist.variants(card.id).forEach((variant) => {
-        total += shared.cardValue(card, variant, prices).value;
-      });
+      if (gf && gf !== "all" && card.game !== gf) return;
+      wishlist.variants(card.id).forEach((variant) => { total += shared.cardValue(card, variant, prices).value; });
     });
     return total;
   }
 
-  // Valor de todos os binders (slots com carta do catálogo), na moeda escolhida.
-  function bindersTotal() {
+  // "Desejos do binder": slots de cartas que você NÃO tem (faltantes), por jogo.
+  function binderWishTotal(gf) {
     let total = 0;
     try {
       const data = JSON.parse(localStorage.getItem("tcg-collector-binders-v1") || "null");
       const binders = data && Array.isArray(data.binders) ? data.binders : [];
       binders.forEach((binder) => (binder.slots || []).forEach((slot) => {
-        if (slot && slot.cardId) total += shared.cardValue({ id: slot.cardId }, slot.variant || shared.DEFAULT_CONDITION, prices).value;
+        if (!slot || !slot.cardId) return;
+        if (owned.has(slot.cardId)) return; // já é da coleção -> não é desejo
+        if (gf && gf !== "all" && gameOf(slot.cardId) !== gf) return;
+        total += shared.cardValue({ id: slot.cardId }, slot.variant || shared.DEFAULT_CONDITION, prices).value;
       }));
     } catch (error) { /* sem binders */ }
     return total;
   }
 
+  // ---- Render ---------------------------------------------------------------
+
   function render() {
-    const { lines, totalCopies } = collectionLines();
-    const total = lines.reduce((sum, line) => sum + line.total, 0);
-    const pricedCount = lines.reduce((sum, line) => sum + line.quantity, 0);
+    const { lines, totalCopies, pricedCopies } = collectionLines(gameFilter);
+    const rawTotal = lines.reduce((sum, line) => sum + line.total, 0);
+    const slabs = gradedSlabs(gameFilter);
+    const gradedTotal = slabs.reduce((sum, s) => sum + (s.value || 0), 0);
+    const networth = rawTotal + gradedTotal;
+    const wish = wishlistTotal(gameFilter) + binderWishTotal(gameFilter);
 
-    const binders = bindersTotal();
-    const wish = wishlistTotal();
-    elements.totalValue.textContent = money(total);
-    elements.pricedCopies.textContent = `${pricedCount}/${totalCopies}`;
-    elements.wishlistValue.textContent = money(wish);
-    if (elements.bindersValue) elements.bindersValue.textContent = money(binders);
-    if (elements.grandTotal) elements.grandTotal.textContent = money(total + binders);
+    if (elements.grandTotal) elements.grandTotal.textContent = money(networth);
+    if (elements.rawValue) elements.rawValue.textContent = money(rawTotal);
+    if (elements.gradedValue) elements.gradedValue.textContent = money(gradedTotal);
+    if (elements.pricedCopies) elements.pricedCopies.textContent = `${pricedCopies}/${totalCopies}`;
+    if (elements.wishlistValue) elements.wishlistValue.textContent = money(wish);
 
-    updateChart(total, binders, wish);
+    renderComposition(rawTotal, gradedTotal);
+    renderTop(lines, slabs);
+    updateChart();
+  }
 
-    lines.sort((a, b) => b.total - a.total);
-    const top = lines.slice(0, 15);
+  // Composição: cartas (raw) × graded; e por jogo (só no filtro "Todos").
+  function renderComposition(rawTotal, gradedTotal) {
+    const sec = elements.composition;
+    if (!sec) return;
+    const bars = (title, rows) => {
+      const max = Math.max(1, ...rows.map((r) => r.value));
+      const body = rows.filter((r) => r.value > 0).map((r) =>
+        `<div class="pf-comp-row"><span class="pf-comp-label">${escapeHtml(r.label)}</span>
+          <span class="pf-comp-track"><span class="pf-comp-fill" style="width:${Math.round((r.value / max) * 100)}%;background:${r.color}"></span></span>
+          <span class="pf-comp-val">${escapeHtml(money(r.value))}</span></div>`).join("");
+      return body ? `<div class="pf-comp-block"><h3>${escapeHtml(title)}</h3>${body}</div>` : "";
+    };
+    let html = bars(t("portfolio.comp.type"), [
+      { label: t("portfolio.rawValue"), value: rawTotal, color: "#2dd4bf" },
+      { label: t("portfolio.gradedValue"), value: gradedTotal, color: "#e8c46a" }
+    ]);
+    if (gameFilter === "all") {
+      const byGame = GAMES.map((g) => ({
+        label: g === "pokemon" ? t("filter.gamePokemon") : t("filter.gameLorcana"),
+        color: GAME_COLOR[g],
+        value: collectionLines(g).lines.reduce((s, l) => s + l.total, 0) + gradedSlabs(g).reduce((s, x) => s + (x.value || 0), 0)
+      }));
+      if (byGame.filter((r) => r.value > 0).length > 1) html += bars(t("portfolio.comp.game"), byGame);
+    }
+    sec.innerHTML = html;
+    sec.hidden = !html;
+  }
+
+  // Mais valiosas: raw + graded juntos, por valor do lote/slab (top 15).
+  function renderTop(lines, slabs) {
+    const rows = lines.map((line) => ({
+      name: `${line.card.name} · ${line.card.set} ${line.card.number}`,
+      href: detailUrl("set", line.card.set),
+      kind: line.variant,
+      cond: line.condition,
+      estTitle: line.source === "ref" ? t("portfolio.estRef") : line.source === "myp" ? t("portfolio.estMyp") : t("portfolio.estimated"),
+      estimated: line.estimated,
+      qty: line.quantity, unit: line.unit, total: line.total
+    }));
+    slabs.forEach((s) => {
+      const card = cardsById.get(s.cardId);
+      if (!card || !(s.value > 0)) return;
+      rows.push({
+        name: `${card.name} · ${card.set} ${card.number}`,
+        href: detailUrl("set", card.set),
+        kind: `${String(s.company || "").toUpperCase()} ${shared.gradedGradeText(s.grade, s.pristine)}`,
+        cond: t("nav.graded"), graded: true,
+        estimated: false, qty: 1, unit: s.value, total: s.value
+      });
+    });
+    rows.sort((a, b) => b.total - a.total);
+    const top = rows.slice(0, 15);
 
     elements.empty.hidden = top.length > 0;
-    if (!top.length) {
-      elements.topCards.innerHTML = "";
-      return;
-    }
+    if (!top.length) { elements.topCards.innerHTML = ""; return; }
 
-    const rows = top.map((line) => {
-      const name = `${line.card.name} · ${line.card.set} ${line.card.number}`;
-      const estTitle = line.source === "ref" ? t("portfolio.estRef")
-        : line.source === "myp" ? t("portfolio.estMyp")
-        : t("portfolio.estimated");
-      const unit = `${money(line.unit)}${line.estimated ? ` <span class="price-estimated" title="${escapeAttribute(estTitle)}">≈</span>` : ""}`;
-      const href = detailUrl("set", line.card.set);
-      return `
-        <tr>
-          <td><a href="${escapeAttribute(href)}">${escapeHtml(name)}</a></td>
-          <td>${escapeHtml(line.variant)}</td>
-          <td>${escapeHtml(line.condition)}</td>
-          <td class="num">${line.quantity}</td>
-          <td class="num">${unit}</td>
-          <td class="num"><strong>${money(line.total)}</strong></td>
-        </tr>
-      `;
+    const body = top.map((r) => {
+      const unit = `${money(r.unit)}${r.estimated ? ` <span class="price-estimated" title="${escapeAttribute(r.estTitle)}">≈</span>` : ""}`;
+      const kind = r.graded ? `<span class="pf-graded-tag">${escapeHtml(r.kind)}</span>` : escapeHtml(r.kind);
+      return `<tr>
+        <td><a href="${escapeAttribute(r.href)}">${escapeHtml(r.name)}</a></td>
+        <td>${kind}</td>
+        <td>${escapeHtml(r.cond)}</td>
+        <td class="num">${r.qty}</td>
+        <td class="num">${unit}</td>
+        <td class="num"><strong>${money(r.total)}</strong></td>
+      </tr>`;
     }).join("");
 
     elements.topCards.innerHTML = `
@@ -201,24 +297,22 @@
             <th class="num">${escapeHtml(t("portfolio.col.total"))}</th>
           </tr>
         </thead>
-        <tbody>${rows}</tbody>
-      </table>
-    `;
+        <tbody>${body}</tbody>
+      </table>`;
   }
 
   // ---------------------------------------------------------------------------
-  // Gráfico de progressão — snapshot diário (em BRL, moeda canônica) + SVG.
-  // Não dá pra reconstruir o passado (não guardamos histórico de preços), então
-  // a série começa hoje e cresce a cada visita/dia.
+  // Progressão — snapshot diário POR JOGO (em BRL), pro gráfico local somar/filtrar
+  // e pros cookies do hub ficarem corretos por jogo. Esquema do ponto: {d, c, b, w}
+  // = raw, graded, desejos (em BRL). combined = c+b = patrimônio do jogo.
   // ---------------------------------------------------------------------------
-  const HISTORY_KEY = shared.gameKey("history-v1");
   const SERIES = {
     combined: { color: "#34d399", get: (p) => (p.c || 0) + (p.b || 0) },
     collection: { color: "#2dd4bf", get: (p) => p.c || 0 },
-    binders: { color: "#a78bfa", get: (p) => p.b || 0 },
+    graded: { color: "#e8c46a", get: (p) => p.b || 0 },
     wishlist: { color: "#f5a524", get: (p) => p.w || 0 }
   };
-  const SERIES_ORDER = ["combined", "collection", "binders", "wishlist"];
+  const SERIES_ORDER = ["combined", "collection", "graded", "wishlist"];
   const RANGES = [["1d", 1], ["7d", 7], ["1m", 30], ["3m", 90], ["6m", 180], ["max", 1e9]];
   let activeSeries = new Set(["combined"]);
   let activeRange = "1m";
@@ -226,44 +320,78 @@
 
   const toBRL = (v) => { const r = shared.convertMoney(v, shared.getCurrency(), "BRL"); return r == null ? v : Math.round(r * 100) / 100; };
   const fromBRL = (v) => { const r = shared.convertMoney(v, "BRL", shared.getCurrency()); return r == null ? v : r; };
-  function loadHistory() {
-    try { const a = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]"); return Array.isArray(a) ? a : []; } catch (e) { return []; }
+  const histKey = (g) => shared.gameKey("history-v2", g);
+
+  function loadHist(g) {
+    try { const a = JSON.parse(localStorage.getItem(histKey(g)) || "[]"); return Array.isArray(a) ? a : []; } catch (e) { return []; }
   }
-  // Grava (ou substitui) o ponto de hoje. Valores em BRL pra não derreter com câmbio.
-  function recordSnapshot(collection, binders, wishlist) {
-    const hist = loadHistory();
+  // Migra o histórico antigo (v1, por jogo de sessão: c=coleção, b=binders, w=wishlist)
+  // pro v2 do mesmo jogo, mapeando c e w; graded (b) começa do zero (antes nem existia).
+  function migrateV1(g) {
+    if (loadHist(g).length) return;
+    try {
+      const old = JSON.parse(localStorage.getItem(shared.gameKey("history-v1", g)) || "[]");
+      if (Array.isArray(old) && old.length) {
+        const v2 = old.map((p) => ({ d: p.d, c: p.c || 0, b: 0, w: p.w || 0 }));
+        localStorage.setItem(histKey(g), JSON.stringify(v2));
+      }
+    } catch (e) { /* ignora */ }
+  }
+
+  // Grava o ponto de hoje de UM jogo (substitui se já houver hoje).
+  function recordSnapshot(g, raw, graded, wish) {
+    migrateV1(g);
+    const hist = loadHist(g);
     const d = new Date().toISOString().slice(0, 10);
-    const point = { d, c: toBRL(collection), b: toBRL(binders), w: toBRL(wishlist) };
+    const point = { d, c: toBRL(raw), b: toBRL(graded), w: toBRL(wish) };
     if (hist.length && hist[hist.length - 1].d === d) hist[hist.length - 1] = point;
     else hist.push(point);
     if (hist.length > 800) hist.splice(0, hist.length - 800);
-    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(hist)); } catch (e) { /* storage cheio: ignora */ }
+    try { localStorage.setItem(histKey(g), JSON.stringify(hist)); } catch (e) { /* quota: ignora */ }
     return hist;
   }
 
-  function updateChart(collection, binders, wishlist) {
+  // Série do gráfico conforme o filtro: "all" soma os jogos por data; senão um só.
+  function chartHistory() {
+    if (gameFilter !== "all") return loadHist(gameFilter);
+    const byDate = new Map();
+    GAMES.forEach((g) => loadHist(g).forEach((p) => {
+      const cur = byDate.get(p.d) || { d: p.d, c: 0, b: 0, w: 0 };
+      cur.c += p.c || 0; cur.b += p.b || 0; cur.w += p.w || 0;
+      byDate.set(p.d, cur);
+    }));
+    return Array.from(byDate.values()).sort((a, b) => a.d.localeCompare(b.d));
+  }
+
+  function updateChart() {
     const section = document.getElementById("portfolioChart");
     if (!section) return;
     section.hidden = false;
-    const hist = recordSnapshot(collection, binders, wishlist);
-    writePortfolioCookie(hist);
+    // Snapshot de CADA jogo (não só o filtrado) -> cookies/hist do hub corretos.
+    GAMES.forEach((g) => {
+      const raw = collectionLines(g).lines.reduce((s, l) => s + l.total, 0);
+      const graded = gradedSlabs(g).reduce((s, x) => s + (x.value || 0), 0);
+      const wish = wishlistTotal(g) + binderWishTotal(g);
+      if (raw <= 0 && graded <= 0 && wish <= 0 && !loadHist(g).length) return; // jogo vazio: não polui
+      const hist = recordSnapshot(g, raw, graded, wish);
+      writePortfolioCookie(g, hist);
+    });
     if (!controlsBound) { bindControls(); controlsBound = true; }
     renderControls();
+    const hist = chartHistory();
     renderChart(hist);
     renderInsights(hist);
   }
 
-  // Insights: variação do valor (coleção+binders) em 7d / 30d / desde o início, a
-  // partir do histórico diário (BRL). Precisa de >=2 dias (o 1º dia não tem base).
+  // Insights: variação do patrimônio (c+b) em 7d / 30d / desde o início (BRL).
   function renderInsights(hist) {
     const sec = document.getElementById("portfolioInsights");
     if (!sec) return;
     if (!hist || hist.length < 2) { sec.hidden = true; return; }
-    const valOf = (p) => (p.c || 0) + (p.b || 0); // BRL
+    const valOf = (p) => (p.c || 0) + (p.b || 0);
     const last = hist[hist.length - 1];
     const now = valOf(last);
     const todayMs = new Date(last.d + "T00:00:00").getTime();
-    // Valor N dias atrás: último ponto com data <= (hoje - N); senão o 1º ponto.
     const valueDaysAgo = (n) => {
       const cutoff = todayMs - n * 864e5;
       let chosen = null;
@@ -286,12 +414,9 @@
     sec.hidden = false;
   }
 
-  // Espelha o resumo do portfólio deste jogo num cookie de domínio .sleevu.app,
-  // pro HUB (apex) somar todos os jogos sem precisar de iframe/cross-origin.
-  // Valores em BRL (canônico); histórico compacto (combinado c+b, últimos pontos).
-  function writePortfolioCookie(hist) {
-    const g = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
-    if (g === "hub") return;
+  // Espelha o resumo de UM jogo num cookie .sleevu.app pro HUB somar sem iframe.
+  // c=raw, b=graded, w=desejos (BRL). h = histórico do patrimônio (c+b) do jogo.
+  function writePortfolioCookie(g, hist) {
     const last = hist[hist.length - 1] || {};
     const h = hist.slice(-50).map((p) => [p.d, Math.round(((p.c || 0) + (p.b || 0)) * 100) / 100]);
     const payload = { c: last.c || 0, b: last.b || 0, w: last.w || 0, ts: Date.now(), h: h };
@@ -302,8 +427,6 @@
     } catch (e) { /* ignora */ }
   }
 
-  // Listeners uma vez só (senão empilham a cada renderControls e o toggle dispara
-  // múltiplas vezes). Delegação no container; o innerHTML pode ser recriado à vontade.
   function bindControls() {
     const seriesEl = document.getElementById("pfSeries");
     const rangeEl = document.getElementById("pfRanges");
@@ -311,12 +434,12 @@
       const b = e.target.closest("[data-series]"); if (!b) return;
       const k = b.dataset.series;
       if (activeSeries.has(k)) { if (activeSeries.size > 1) activeSeries.delete(k); } else activeSeries.add(k);
-      renderControls(); renderChart(loadHistory());
+      renderControls(); renderChart(chartHistory());
     });
     if (rangeEl) rangeEl.addEventListener("click", (e) => {
       const b = e.target.closest("[data-range]"); if (!b) return;
       activeRange = b.dataset.range;
-      renderControls(); renderChart(loadHistory());
+      renderControls(); renderChart(chartHistory());
     });
   }
 

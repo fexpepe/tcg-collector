@@ -618,6 +618,22 @@
     return { value: 0, currency: cur, source: null };
   }
 
+  // Slabs graded valorados (moeda atual): valor manual (se >0) ou o automático
+  // (PSA 9/10 via PPT). `gameOf(cardId)` atribui o jogo (a store de graded é global
+  // e não guarda o jogo). Usado pelo total da Coleção e pelo Portfólio — uma fonte
+  // só, pra os dois baterem.
+  function gradedSlabsValued(gameOf) {
+    return readGradedList().map((it) => ({
+      cardId: it.cardId, variant: it.variant, company: it.company, grade: it.grade, pristine: it.pristine,
+      game: gameOf ? gameOf(it.cardId) : null,
+      value: it.value > 0 ? it.value : (gradedValue({ id: it.cardId }, it.company, it.grade).value || 0)
+    }));
+  }
+  function gradedTotalValue(gameOf, gameFilter) {
+    return gradedSlabsValued(gameOf).reduce((s, x) =>
+      ((!gameFilter || gameFilter === "all" || x.game === gameFilter) ? s + (x.value || 0) : s), 0);
+  }
+
   // Soma o valor (variante padrão, NM) de uma lista de cartas, na moeda atual.
   function sumCardsValue(cards, prices) {
     let total = 0;
@@ -2954,6 +2970,8 @@
     cardValue,
     gradedValue,
     gradedGradeText,
+    gradedSlabsValued,
+    gradedTotalValue,
     formatMoney: fmtMoney,
     cardLanguageFromId,
     spriteUrl,

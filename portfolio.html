@@ -28,7 +28,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Sleevu">
     <script src="src/theme.js"></script>
-    <script src="src/game.js" data-catalog="cards,indexes,pricing"></script>
+    <script src="src/game.js" data-catalog="cards,indexes,set-id-map,pricing"></script>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -47,7 +47,13 @@
         <h1 data-i18n="nav.portfolio">Portfólio</h1>
       </div>
 
-      <p class="collection-subtitle" data-i18n="portfolio.subtitle">Valor estimado da sua coleção em reais, a partir dos preços que você registrou nas cartas.</p>
+      <p class="collection-subtitle" data-i18n="portfolio.subtitle">Visão financeira da sua coleção: tudo o que você tem (cartas + graded), por jogo, com a progressão de valor no tempo.</p>
+
+      <div id="pfGameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
+        <button type="button" class="chip" data-pf-game="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
+        <button type="button" class="chip" data-pf-game="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
+        <button type="button" class="chip" data-pf-game="lorcana" aria-pressed="false" data-i18n="filter.gameLorcana">Lorcana</button>
+      </div>
 
       <section id="portfolioChart" class="pf-chart" aria-label="Progressão do portfólio" hidden>
         <div class="pf-chart-controls">
@@ -60,9 +66,17 @@
       <section id="portfolioInsights" class="pf-insights" aria-label="Variação do portfólio" hidden></section>
 
       <section class="stats-grid" aria-label="Resumo do portfólio">
+        <article class="stat-grand">
+          <span id="grandTotal">—</span>
+          <p data-i18n="portfolio.networth">patrimônio (cartas + graded)</p>
+        </article>
         <article>
-          <span id="totalValue">R$ 0,00</span>
-          <p data-i18n="portfolio.total">valor da coleção</p>
+          <span id="rawValue">R$ 0,00</span>
+          <p data-i18n="portfolio.rawValue">cartas (raw)</p>
+        </article>
+        <article>
+          <span id="gradedValue">R$ 0,00</span>
+          <p data-i18n="portfolio.gradedValue">graded</p>
         </article>
         <article>
           <span id="pricedCopies">0/0</span>
@@ -70,17 +84,11 @@
         </article>
         <article>
           <span id="wishlistValue">R$ 0,00</span>
-          <p data-i18n="portfolio.wishlistTotal">custo da wishlist</p>
-        </article>
-        <article>
-          <span id="bindersValue">—</span>
-          <p data-i18n="portfolio.bindersValue">valor dos binders</p>
-        </article>
-        <article class="stat-grand">
-          <span id="grandTotal">—</span>
-          <p data-i18n="portfolio.grandTotal">total (coleção + binders)</p>
+          <p data-i18n="portfolio.desejos">desejos (wishlist + binder)</p>
         </article>
       </section>
+
+      <section id="pfComposition" class="pf-composition" aria-label="Composição do portfólio" hidden></section>
 
       <section class="results-header">
         <h2 data-i18n="portfolio.topCards">Cartas mais valiosas</h2>
@@ -88,7 +96,7 @@
 
       <section id="topCards" class="portfolio-table-wrap" aria-live="polite"></section>
       <p id="emptyState" class="empty-state" data-i18n-html="portfolio.empty" hidden>Nenhuma carta com preço ainda. Abra uma carta da sua <a href="collection.html">coleção</a>, confira o valor nos sites (Liga, LigaBRA, MYP) e registre no campo "Preço BR".</p>
-      <p class="portfolio-note" data-i18n="portfolio.note">Valores em R$ registrados manualmente por você. Condições sem preço próprio são estimadas a partir do NM (SP 85%, MP 70%, HP 50%, D 30%).</p>
+      <p class="portfolio-note" data-i18n="portfolio.note">Patrimônio = tudo o que você tem (cartas + graded), igual à sua Coleção. Binders e wishlist são visões, não somam ao patrimônio. Valores na moeda do topo; condições sem preço próprio são estimadas a partir do NM.</p>
     </main>
 
     <script defer src="src/i18n.js"></script>
