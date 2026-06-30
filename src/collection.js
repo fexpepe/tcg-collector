@@ -1119,7 +1119,11 @@
     // "Graded" = só os slabs; "Toda Coleção" (cards) = slabs no topo + cartas
     // normais (os slabs aparecem junto da coleção). "Pastas" não mistura graded.
     const slabs = (isGradedTab || activeTab === "cards") ? gradedPairs() : [];
-    const tiles = isGradedTab ? slabs : (activeTab === "cards" ? slabs.concat(ownedPairs) : ownedPairs);
+    // Aba "Toda Coleção": slabs + cartas normais ordenados JUNTOS (pelo seletor),
+    // não os slabs grudados no topo. ownedPairs já vem ordenado (serve pras pastas);
+    // pra grade do "cards" reordena a lista combinada. Graded tab também ordena.
+    const tiles = isGradedTab ? sortTiles(slabs)
+      : (activeTab === "cards" ? sortTiles(slabs.concat(ownedPairs)) : ownedPairs);
     updateCardsStats(tiles.length);
     elements.grid.hidden = useFolders;
     elements.folderSections.hidden = !useFolders;
@@ -1447,7 +1451,12 @@
 
   // Ordena os pares carta×variante conforme o seletor (mesma lógica do detalhe).
   function sortTiles(pairs) {
-    const priceOf = (p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0;
+    // priceOf precisa casar com o VALOR EXIBIDO no tile: slab graded usa o valor
+    // manual ou o gradedValue (mesma expressão do makeGradedNode); carta normal usa
+    // o valor de mercado. Sem isso, os slabs ordenavam pelo preço RAW (errado).
+    const priceOf = (p) => p.graded
+      ? (p.it.value > 0 ? p.it.value : (shared.gradedValue(p.card, p.it.company, p.it.grade).value || 0))
+      : (shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0);
     const byNum = (a, b) => shared.compareCardNumbers(a.card.number, b.card.number);
     if (cardsSort === "num-asc") pairs.sort(byNum);
     else if (cardsSort === "num-desc") pairs.sort((a, b) => byNum(b, a));
