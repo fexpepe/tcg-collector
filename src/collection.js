@@ -562,7 +562,34 @@
 
     bindFolderDrag();
     bindCollectionDrag();
+    setupDragAutoScroll();
     initCarousel();
+  }
+
+  // Ao arrastar uma carta/coleção, rolar a página sozinha quando o cursor chega
+  // perto do topo/base da janela — assim dá pra pegar uma carta lá embaixo e levar
+  // pra um showcase lá em cima. A roda do mouse também rola durante o arraste.
+  function setupDragAutoScroll() {
+    const EDGE = 100;      // zona (px) junto à borda que dispara o scroll
+    const MAX_SPEED = 17;  // px por tick (~16ms) na borda extrema
+    let pointerY = 0, timer = 0, dragging = false;
+    const tick = () => {
+      const h = window.innerHeight;
+      let dy = 0;
+      if (pointerY < EDGE) dy = -MAX_SPEED * (1 - Math.max(0, pointerY) / EDGE);
+      else if (pointerY > h - EDGE) dy = MAX_SPEED * (1 - Math.max(0, h - pointerY) / EDGE);
+      if (dy) window.scrollBy(0, dy);
+    };
+    // setInterval (não rAF): roda mesmo se o rAF estiver throttled; o arraste só
+    // acontece com a aba visível, então não há desperdício em background.
+    const start = () => { if (!dragging) { dragging = true; if (!timer) timer = setInterval(tick, 16); } };
+    const stop = () => { dragging = false; if (timer) { clearInterval(timer); timer = 0; } };
+    document.addEventListener("dragstart", (e) => { if (e.target.closest && e.target.closest(".card-tile, .coll-card")) start(); });
+    document.addEventListener("dragover", (e) => { pointerY = e.clientY; }, { passive: true });
+    document.addEventListener("dragend", stop);
+    document.addEventListener("drop", stop);
+    // Durante o DnD nativo a roda às vezes não rola; rola na mão enquanto arrasta.
+    window.addEventListener("wheel", (e) => { if (dragging) window.scrollBy(0, e.deltaY); }, { passive: true });
   }
 
   // Carrossel das distribuições: setas rolam o track por ~1 card; as setas
