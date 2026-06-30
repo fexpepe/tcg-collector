@@ -62,7 +62,7 @@
           <div class="dash-stats-counts">
             <div><span class="dash-stat-val" id="salesDashCount">0</span><span class="dash-stat-label" data-i18n="sales.dash.count">cartas à venda</span></div>
           </div>
-          <div class="dash-stat-money"><span class="dash-stat-val" id="salesDashValue">—</span><span class="dash-stat-label" data-i18n="sales.dash.value">valor da lista</span></div>
+          <div class="dash-stat-money"><span class="dash-stat-val" id="salesDashValue">—</span><span class="dash-stat-label" data-i18n="sales.dash.value">valor da lista</span><span class="dash-markup-badge" id="salesDashMarkup" hidden></span></div>
         </article>
         <article class="dash-card dash-top">
           <h3 data-i18n="sales.dash.top">Mais caras</h3>
@@ -75,6 +75,22 @@
       </section>
 
       <div id="salesView">
+        <section class="sales-batch" aria-label="Precificar em lote">
+          <span class="sales-batch-label" data-i18n="sales.batch.label">Precificar todas pela referência:</span>
+          <div class="sales-batch-chips">
+            <button type="button" class="sales-batch-chip" data-batch-pct="-15">−15%</button>
+            <button type="button" class="sales-batch-chip" data-batch-pct="-10">−10%</button>
+            <button type="button" class="sales-batch-chip" data-batch-pct="-5">−5%</button>
+            <button type="button" class="sales-batch-chip" data-batch-pct="0" data-i18n="sales.batch.market">Mercado</button>
+            <button type="button" class="sales-batch-chip" data-batch-pct="5">+5%</button>
+            <button type="button" class="sales-batch-chip" data-batch-pct="10">+10%</button>
+          </div>
+          <span class="sales-batch-custom">
+            <input type="number" id="salesBatchPct" step="1" inputmode="numeric" placeholder="0" aria-label="Percentual"><span class="sales-batch-pct">%</span>
+            <button type="button" id="salesBatchApply" class="primary" data-i18n="sales.batch.apply">Aplicar</button>
+          </span>
+          <span class="sales-batch-hint" data-i18n="sales.batch.hint">Define o preço de TODAS pela cotação de mercado (referência) ± o percentual. Ex.: −10 = 10% abaixo do mercado.</span>
+        </section>
         <section class="sales-toolbar">
           <button type="button" id="salesAddBtn" class="secondary" data-i18n="sales.add">Adicionar cartas</button>
           <button type="button" id="salesShareBtn" class="secondary" data-i18n="sales.share">Compartilhar vendas</button>

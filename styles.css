@@ -741,6 +741,23 @@ input::placeholder {
 .sales-toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 .sales-toolbar button[disabled] { opacity: 0.5; cursor: not-allowed; }
 
+/* Precificar em lote (markup sobre a referência): chips rápidos + campo custom. */
+.sales-batch { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 14px; margin-bottom: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+.sales-batch-label { font-size: 13px; font-weight: 800; color: var(--text); }
+.sales-batch-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.sales-batch-chip { border: 1px solid var(--line); background: var(--surface); color: var(--text); padding: 6px 11px; border-radius: 999px; font-size: 12px; font-weight: 800; cursor: pointer; }
+.sales-batch-chip:hover { border-color: var(--accent); }
+.sales-batch-custom { display: inline-flex; align-items: center; gap: 6px; }
+.sales-batch-custom input { width: 64px; height: 34px; box-sizing: border-box; text-align: center; font: inherit; font-weight: 800; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); color: var(--text); }
+.sales-batch-custom input:focus { outline: none; border-color: var(--accent); }
+.sales-batch-pct { font-weight: 800; color: var(--muted); }
+.sales-batch-custom .primary { height: 34px; padding: 0 14px; }
+.sales-batch-hint { flex: 1 1 100%; font-size: 12px; color: var(--subtle); }
+/* Badge do markup no dashboard (ex.: "−10% da referência"). */
+.dash-markup-badge { display: inline-block; margin-top: 4px; align-self: flex-start; font-size: 12px; font-weight: 800; padding: 2px 9px; border-radius: 999px; background: var(--panel-strong); color: var(--muted); }
+.dash-markup-badge.is-down { background: color-mix(in srgb, #e8553c 18%, transparent); color: #e8553c; }
+.dash-markup-badge.is-up { background: color-mix(in srgb, #2ecc71 18%, transparent); color: #21a558; }
+
 .sale-tile, .graded-tile { position: relative; }
 .sale-tile .sale-remove, .graded-tile .sale-remove {
   position: absolute; top: 6px; right: 6px; z-index: 4;

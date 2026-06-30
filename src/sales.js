@@ -92,7 +92,24 @@
         save();
       },
       setCond(cardId, variant, idx, cond) { const e = data.sales[keyOf(cardId, variant, idx)]; if (e) { e.cond = cond; save(); } },
-      remove(cardId, variant, idx) { const k = keyOf(cardId, variant, idx); if (data.sales[k]) { delete data.sales[k]; data.order = data.order.filter((x) => x !== k); save(); } }
+      remove(cardId, variant, idx) { const k = keyOf(cardId, variant, idx); if (data.sales[k]) { delete data.sales[k]; data.order = data.order.filter((x) => x !== k); save(); } },
+      // Markup global (% sobre a REFERÊNCIA de mercado): -10 = vender a 10% abaixo.
+      // Fica salvo pra aparecer no dashboard e valer pras cartas adicionadas depois.
+      getMarkup: () => Number(data.markup) || 0,
+      // Aplica o markup a TODAS as cartas: preço = referência(condição) × (1 + pct/100).
+      // refFn(cardId, variant, cond) -> valor de mercado. Mantém o item mesmo sem
+      // cotação (preço 0). Marca auto (derivado da referência, não digitado à mão).
+      applyMarkup(pct, refFn) {
+        data.markup = Number(pct) || 0;
+        const f = 1 + data.markup / 100;
+        data.order.forEach((k) => {
+          const e = data.sales[k]; if (!e) return;
+          const ref = (refFn && refFn(e.cardId, e.variant, e.cond)) || 0;
+          e.price = ref > 0 ? Math.round(ref * f * 100) / 100 : 0;
+          e.auto = true;
+        });
+        save();
+      }
     };
   }
 
@@ -104,8 +121,12 @@
     salesShareBtn: document.getElementById("salesShareBtn"),
     salesExportBtn: document.getElementById("salesExportBtn"),
     salesSort: document.getElementById("salesSortSelect"),
+    batch: document.querySelector(".sales-batch"),
+    batchInput: document.getElementById("salesBatchPct"),
+    batchApply: document.getElementById("salesBatchApply"),
     dashboard: document.getElementById("salesDashboard"),
     dashValue: document.getElementById("salesDashValue"),
+    dashMarkup: document.getElementById("salesDashMarkup"),
     dashCount: document.getElementById("salesDashCount"),
     dashTopList: document.getElementById("salesDashTop"),
     dashDist: document.getElementById("salesDashDist")
@@ -125,6 +146,25 @@
   });
 
   function inGameFilter(card) { return gameFilter === "all" || card.game === gameFilter; }
+
+  // Referência de mercado de um item (por condição) — base do markup em lote.
+  function refValue(cardId, variant, cond) {
+    const card = cardsById.get(cardId);
+    return card ? (shared.cardValue(card, variant, prices, cond).value || 0) : 0;
+  }
+  // Texto do markup pro dashboard: "−10% da referência" / "+5% da referência".
+  function markupLabel(pct) {
+    if (!pct) return t("sales.batch.atMarket");
+    const sign = pct > 0 ? "+" : "−";
+    return t("sales.batch.badge", { pct: sign + Math.abs(pct) });
+  }
+  // Aplica o markup e re-renderiza (sincroniza o input).
+  function applyMarkup(pct) {
+    const p = Math.max(-95, Math.min(500, Math.round(Number(pct) || 0)));
+    sales.applyMarkup(p, refValue);
+    if (elements.batchInput) elements.batchInput.value = p ? String(p) : "";
+    render();
+  }
 
   // Símbolo da moeda atual (R$/$/€…) extraído do formatMoney.
   function currencySymbol() {
@@ -185,6 +225,14 @@
     const total = items.reduce((sum, { it }) => sum + (it.price || 0), 0);
     elements.dashValue.textContent = total > 0 ? shared.formatMoney(cur, total) : "—";
     elements.dashCount.textContent = items.length;
+    // Badge do markup: evidencia que a lista está, ex., 10% abaixo da referência.
+    if (elements.dashMarkup) {
+      const mk = sales.getMarkup();
+      elements.dashMarkup.textContent = markupLabel(mk);
+      elements.dashMarkup.hidden = !mk;
+      elements.dashMarkup.classList.toggle("is-down", mk < 0);
+      elements.dashMarkup.classList.toggle("is-up", mk > 0);
+    }
 
     // Mais caras (top 3 pelo preço de venda).
     const top = items.filter(({ it }) => it.price > 0).sort((a, b) => b.it.price - a.it.price).slice(0, 3);
@@ -350,8 +398,10 @@
           // todas já à venda → tira todas
           for (let i = 0; i < total; i++) sales.remove(id, v, i);
         } else {
-          // adiciona TODAS as cópias que faltam, cada uma com sua condição + preço de mercado
-          const mkt = priceOf(cardsById.get(id), v);
+          // adiciona TODAS as cópias que faltam, cada uma com sua condição + preço de
+          // mercado JÁ com o markup ativo (pra ficar consistente com a lista).
+          const f = 1 + sales.getMarkup() / 100;
+          const mkt = priceOf(cardsById.get(id), v) * f;
           conds.forEach((cond, i) => { if (!sales.has(id, v, i)) sales.add(id, v, i, mkt, cond); });
         }
         // atualiza o tile no lugar (sem re-render, pra não perder a rolagem)
@@ -541,6 +591,15 @@
       sales.setPrice(id, v, idx, amount);
       render(); // o tile pode sumir (preço 0) e o dashboard muda
     });
+    // Batch: chips de % rápido + campo custom. Aplica o markup pela referência.
+    if (elements.batch) {
+      elements.batch.addEventListener("click", (event) => {
+        const chip = event.target.closest("[data-batch-pct]");
+        if (chip) { applyMarkup(Number(chip.dataset.batchPct)); }
+      });
+    }
+    if (elements.batchApply) elements.batchApply.addEventListener("click", () => applyMarkup(elements.batchInput ? elements.batchInput.value : 0));
+    if (elements.batchInput) elements.batchInput.addEventListener("keydown", (event) => { if (event.key === "Enter") applyMarkup(elements.batchInput.value); });
     if (elements.salesAddBtn) elements.salesAddBtn.addEventListener("click", openSalesPicker);
     if (elements.salesShareBtn) elements.salesShareBtn.addEventListener("click", () => shareSales(elements.salesShareBtn));
     if (elements.salesExportBtn) elements.salesExportBtn.addEventListener("click", () => exportSalesImage(elements.salesExportBtn));
@@ -570,6 +629,7 @@
       cardsById = new Map(cards.map((card) => [card.id, card]));
       Object.keys(ownedByGame).forEach((g) =>
         ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
+      if (elements.batchInput) { const mk = sales.getMarkup(); elements.batchInput.value = mk ? String(mk) : ""; }
       render();
       shared.publishProfile(cards, owned, prices); // republica o perfil público (vendas atualizadas)
     })
