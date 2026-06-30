@@ -508,29 +508,96 @@
       return;
     }
     const active = SERIES_ORDER.filter((k) => activeSeries.has(k));
-    const W = 820, H = 240, PL = 6, PR = 6, PT = 12, PB = 20;
+    const W = 820, H = 252, PL = 6, PR = 6, PT = 14, PB = 28;
     let yMin = Infinity, yMax = -Infinity;
     pts.forEach((p) => active.forEach((k) => { const v = fromBRL(SERIES[k].get(p)); if (v < yMin) yMin = v; if (v > yMax) yMax = v; }));
     if (!isFinite(yMin)) { yMin = 0; yMax = 1; }
     if (yMin === yMax) { yMin -= 1; yMax += 1; }
     const padY = (yMax - yMin) * 0.12; yMin -= padY; yMax += padY;
     const plotW = W - PL - PR, plotH = H - PT - PB;
+    const baseY = PT + plotH;
     const X = (i) => PL + (pts.length === 1 ? plotW / 2 : (i / (pts.length - 1)) * plotW);
     const Y = (v) => PT + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
     const loc = getLocale();
+    const money = (v) => shared.formatMoney(shared.getCurrency(), v);
+    const fmtDay = (s) => { const dt = new Date(s + "T00:00:00"); return ("0" + dt.getDate()).slice(-2) + "/" + ("0" + (dt.getMonth() + 1)).slice(-2); };
+
+    // Grade horizontal + rótulos do eixo Y.
     let grid = "";
     for (let g = 0; g <= 3; g++) {
       const v = yMin + (g / 3) * (yMax - yMin), y = Y(v);
       grid += `<line class="pf-grid" x1="${PL}" y1="${y.toFixed(1)}" x2="${W - PR}" y2="${y.toFixed(1)}"/>`;
       grid += `<text class="pf-axis" x="${PL + 2}" y="${(y - 4).toFixed(1)}">${escapeHtml(Math.round(v).toLocaleString(loc))}</text>`;
     }
-    let lines = "";
+    // Régua de datas (eixo X): ~6 marcações.
+    const T = Math.min(6, pts.length);
+    let xaxis = "";
+    for (let j = 0; j < T; j++) {
+      const i = Math.round((j / (T - 1)) * (pts.length - 1));
+      const x = X(i), anchor = j === 0 ? "start" : (j === T - 1 ? "end" : "middle");
+      xaxis += `<text class="pf-xaxis" x="${x.toFixed(1)}" y="${(H - 8).toFixed(1)}" text-anchor="${anchor}">${escapeHtml(fmtDay(pts[i].d))}</text>`;
+    }
+    // Área (gradiente) + linha + ponta de cada série.
+    let defs = "", areas = "", lines = "";
     active.forEach((k) => {
-      const path = pts.map((p, i) => `${X(i).toFixed(1)},${Y(fromBRL(SERIES[k].get(p))).toFixed(1)}`).join(" ");
-      const lastV = Y(fromBRL(SERIES[k].get(pts[pts.length - 1])));
-      lines += `<polyline class="pf-line" points="${path}" stroke="${SERIES[k].color}"/>`;
-      lines += `<circle cx="${X(pts.length - 1).toFixed(1)}" cy="${lastV.toFixed(1)}" r="3.5" fill="${SERIES[k].color}"/>`;
+      const gid = "pfg-" + k;
+      defs += `<linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${SERIES[k].color}" stop-opacity="0.28"/><stop offset="100%" stop-color="${SERIES[k].color}" stop-opacity="0"/></linearGradient>`;
+      const linePts = pts.map((p, i) => `${X(i).toFixed(1)},${Y(fromBRL(SERIES[k].get(p))).toFixed(1)}`).join(" ");
+      areas += `<polygon class="pf-area" points="${X(0).toFixed(1)},${baseY.toFixed(1)} ${linePts} ${X(pts.length - 1).toFixed(1)},${baseY.toFixed(1)}" fill="url(#${gid})"/>`;
+      lines += `<polyline class="pf-line" points="${linePts}" stroke="${SERIES[k].color}"/>`;
+      lines += `<circle cx="${X(pts.length - 1).toFixed(1)}" cy="${Y(fromBRL(SERIES[k].get(pts[pts.length - 1]))).toFixed(1)}" r="3.5" fill="${SERIES[k].color}"/>`;
     });
-    body.innerHTML = `<svg viewBox="0 0 ${W} ${H}" class="pf-svg" role="img" aria-label="${escapeAttribute(t("portfolio.chart.title"))}">${grid}${lines}</svg>`;
+    // Alta/Baixa da série principal (combinada, se ativa).
+    const primary = active.indexOf("combined") >= 0 ? "combined" : active[0];
+    const vals = pts.map((p) => fromBRL(SERIES[primary].get(p)));
+    let maxI = 0, minI = 0;
+    vals.forEach((v, i) => { if (v > vals[maxI]) maxI = i; if (v < vals[minI]) minI = i; });
+    const pill = (i, label, color, above) => {
+      const x = X(i), y = Y(vals[i]), txt = `${label} ${money(vals[i])}`;
+      const w = 14 + txt.length * 6.1, h = 19;
+      let bx = Math.max(PL, Math.min(W - PR - w, x - w / 2));
+      const by = above ? y - h - 10 : y + 10;
+      return `<g class="pf-hilo"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4" fill="${color}"/>
+        <rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${w.toFixed(1)}" height="${h}" rx="6"/>
+        <text x="${(bx + w / 2).toFixed(1)}" y="${(by + h / 2 + 3.6).toFixed(1)}" text-anchor="middle">${escapeHtml(txt)}</text></g>`;
+    };
+    const hilo = maxI !== minI ? pill(maxI, t("portfolio.chart.high"), "#a78bfa", true) + pill(minI, t("portfolio.chart.low"), "#f0883e", false) : "";
+
+    body.innerHTML = `<div class="pf-chart-rel">
+      <svg viewBox="0 0 ${W} ${H}" class="pf-svg" role="img" aria-label="${escapeAttribute(t("portfolio.chart.title"))}">
+        <defs>${defs}</defs>${grid}${areas}${lines}${xaxis}${hilo}
+        <g class="pf-hover" style="display:none"></g>
+      </svg>
+      <div class="pf-tip" hidden></div>
+    </div>`;
+
+    // Hover: guia vertical + pontos + tooltip com o valor do dia.
+    const svg = body.querySelector(".pf-svg");
+    const hoverG = body.querySelector(".pf-hover");
+    const tip = body.querySelector(".pf-tip");
+    function onMove(ev) {
+      const r = svg.getBoundingClientRect();
+      if (!r.width) return;
+      const clientX = ev.touches && ev.touches[0] ? ev.touches[0].clientX : ev.clientX;
+      const vx = (clientX - r.left) * (W / r.width);
+      let i = Math.round((vx - PL) / plotW * (pts.length - 1));
+      i = Math.max(0, Math.min(pts.length - 1, i));
+      const x = X(i);
+      let g = `<line class="pf-guide" x1="${x.toFixed(1)}" y1="${PT}" x2="${x.toFixed(1)}" y2="${baseY.toFixed(1)}"/>`;
+      active.forEach((k) => { g += `<circle class="pf-hover-dot" cx="${x.toFixed(1)}" cy="${Y(fromBRL(SERIES[k].get(pts[i]))).toFixed(1)}" r="3.6" fill="${SERIES[k].color}"/>`; });
+      hoverG.innerHTML = g; hoverG.style.display = "";
+      const rows = active.map((k) => `<span class="pf-tip-row"><span class="pf-tip-dot" style="background:${SERIES[k].color}"></span>${escapeHtml(t("portfolio.series." + k))}: <strong>${escapeHtml(money(fromBRL(SERIES[k].get(pts[i]))))}</strong></span>`).join("");
+      tip.innerHTML = `<span class="pf-tip-date">${escapeHtml(fmtDay(pts[i].d))}</span>${rows}`;
+      tip.hidden = false;
+      const leftPx = (x / W) * r.width;
+      tip.style.left = Math.max(0, Math.min(r.width - tip.offsetWidth, leftPx - tip.offsetWidth / 2)) + "px";
+      const topPx = (Y(vals[i]) / H) * r.height - tip.offsetHeight - 12;
+      tip.style.top = Math.max(0, topPx) + "px";
+    }
+    function onLeave() { hoverG.style.display = "none"; tip.hidden = true; }
+    svg.addEventListener("mousemove", onMove);
+    svg.addEventListener("mouseleave", onLeave);
+    svg.addEventListener("touchstart", onMove, { passive: true });
+    svg.addEventListener("touchmove", onMove, { passive: true });
   }
 })();

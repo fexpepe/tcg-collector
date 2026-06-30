@@ -4067,10 +4067,24 @@ a.progress-row:hover {
 }
 .pf-range-btn.active { background: var(--accent-soft); color: var(--accent); }
 .pf-chart-body { width: 100%; }
+.pf-chart-rel { position: relative; width: 100%; }
 .pf-svg { width: 100%; height: auto; display: block; }
 .pf-line { fill: none; stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; }
+.pf-area { stroke: none; }
 .pf-grid { stroke: var(--line); stroke-width: 1; opacity: 0.5; }
 .pf-axis { fill: var(--subtle); font-size: 11px; }
+.pf-xaxis { fill: var(--subtle); font-size: 11px; }
+/* Marcadores de Alta/Baixa (pílulas escuras, estilo tooltip). */
+.pf-hilo rect { fill: #15171d; }
+.pf-hilo text { fill: #ffffff; font-size: 11px; font-weight: 800; }
+/* Guia de hover + pontos. */
+.pf-guide { stroke: var(--subtle); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.7; }
+.pf-hover-dot { stroke: var(--surface); stroke-width: 1.5; }
+/* Tooltip que segue o cursor com o valor do dia. */
+.pf-tip { position: absolute; pointer-events: none; z-index: 3; top: 0; background: #15171d; color: #fff; border: 1px solid rgba(255,255,255,0.12); border-radius: 9px; padding: 7px 10px; font-size: 12px; line-height: 1.35; white-space: nowrap; box-shadow: 0 10px 26px rgba(0,0,0,0.4); }
+.pf-tip-date { display: block; font-weight: 800; margin-bottom: 3px; opacity: 0.85; }
+.pf-tip-row { display: block; }
+.pf-tip-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
 .pf-chart-empty {
   margin: 0;
   padding: 40px 12px;
