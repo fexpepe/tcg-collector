@@ -383,7 +383,8 @@
       }
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) {
-        preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant);
+        const co = imageButton.dataset.gradedCompany;
+        preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant, co ? { graded: { company: co, grade: imageButton.dataset.gradedGrade } } : undefined);
         return;
       }
       if (shared.handleWantTileClick(event, wishlist)) {
@@ -683,7 +684,7 @@
     const badge = `<span class="graded-badge" style="--slab-bg:${bg};--slab-fg:${fg}">${escapeHtml((it.company || "").toUpperCase())} ${escapeHtml(it.grade || "")}</span>`;
     const wrap = document.createElement("div");
     wrap.innerHTML = `<article class="card-tile graded-tile graded-grid-tile" data-graded-gid="${escapeAttribute(it.gid)}">
-      <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button></div>
+      <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" data-graded-company="${escapeAttribute(it.company)}" data-graded-grade="${escapeAttribute(it.grade)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button></div>
       <div class="tile-info">
         <h3>${escapeHtml(card.name)}</h3>
         <p class="tile-variant">${shared.cardFlag(card.language)}${badge}</p>

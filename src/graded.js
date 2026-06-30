@@ -209,7 +209,7 @@
     const companyOpts = GRADERS.map((g) => `<option value="${g.code}"${g.code === it.company ? " selected" : ""}>${escapeHtml(g.label)}</option>`).join("");
     return `<article class="card-tile graded-tile" data-graded-gid="${escapeAttribute(it.gid)}">
       <div class="card-image">
-        <button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button>
+        <button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" data-graded-company="${escapeAttribute(it.company)}" data-graded-grade="${escapeAttribute(it.grade)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button>
         <button type="button" class="sale-remove" data-graded-remove title="${escapeAttribute(t("graded.remove"))}" aria-label="${escapeAttribute(t("graded.remove"))}">✕</button>
       </div>
       <div class="tile-info">
@@ -469,7 +469,7 @@
     }
     elements.grid.addEventListener("click", (event) => {
       const imageButton = event.target.closest("[data-preview-card-id]");
-      if (imageButton) { preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant); return; }
+      if (imageButton) { const co = imageButton.dataset.gradedCompany; preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant, co ? { graded: { company: co, grade: imageButton.dataset.gradedGrade } } : undefined); return; }
       const rm = event.target.closest("[data-graded-remove]");
       if (rm) { const tile = rm.closest(".graded-tile"); if (tile) { graded.remove(tile.dataset.gradedGid); render(); } }
     });

@@ -1629,6 +1629,7 @@
   function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders, sale }) {
     let activeCard = null;
     let activeVariant = null;
+    let activeGraded = null; // { company, grade } quando aberto de uma carta GRADUADA
     let openerElement = null;
 
     document.addEventListener("click", handleClick);
@@ -1661,9 +1662,12 @@
       }
     });
 
-    function open(cardId, variant) {
+    function open(cardId, variant, opts) {
       activeCard = getCard(cardId);
       if (!activeCard) return;
+      // Contexto graded (opcional): muda a busca das lojas (eBay/PriceCharting já
+      // vão com a graduadora+nota) e mostra o selo da nota no topo do modal.
+      activeGraded = (opts && opts.graded && opts.graded.company) ? { company: String(opts.graded.company), grade: String(opts.graded.grade || "") } : null;
       const variants = activeCard.variants && activeCard.variants.length ? activeCard.variants : [defaultVariant(activeCard)];
       activeVariant = variant && variants.includes(variant) ? variant : null;
 
@@ -1695,6 +1699,7 @@
             <div>
               <p class="eyebrow">${escapeHtml(activeCard.set)}</p>
               <h2>${escapeHtml(cardLabel(activeCard))}</h2>
+              ${activeGraded ? `<p class="preview-graded-line">${gradedBadgeHtml(activeGraded)}</p>` : ""}
               <p class="preview-subtitle">${(function () {
                 const year = String(activeCard.setReleaseDate || "").slice(0, 4);
                 return /^\d{4}$/.test(year) ? `<span class="preview-year">${year}</span>` : "";
@@ -1727,7 +1732,7 @@
             </div>
             <div class="variant-quantities">${variantQuantityRows(activeCard, store, prices, activeVariant)}</div>
             <section class="market-quote" data-market-quote><p class="market-loading">${escapeHtml(t("market.loading"))}</p></section>
-            ${prices ? brMarketplaceLinks(activeCard) : ""}
+            ${prices ? brMarketplaceLinks(activeCard, gradedSearchTag(activeGraded)) : ""}
           </div>
         </section>
       `;
@@ -1899,13 +1904,27 @@
   // Mercado internacional/EUA — funciona pros dois jogos (eBay/TCGplayer/
   // PriceCharting têm Lorcana). A linha do TCGplayer e o texto de busca seguem o
   // jogo atual.
-  function usMarketplaces(game) {
+  function usMarketplaces(game, gradedTag) {
     const line = game === "lorcana" ? "lorcana" : "pokemon";
+    // Carta graduada: eBay e PriceCharting buscam com a graduadora+nota (ex.: "PSA
+    // 9") junto do nome — é onde o preço graded mora. O TCGplayer não lista graded,
+    // então segue com a busca normal (sem o tag).
+    const g = gradedTag ? " " + gradedTag : "";
     return [
-      { key: "ebay", label: "eBay", url: (card) => `https://www.ebay.com/sch/i.html?_nkw=${enc(usSearchText(card, game))}` },
+      { key: "ebay", label: "eBay", url: (card) => `https://www.ebay.com/sch/i.html?_nkw=${enc(usSearchText(card, game) + g)}` },
       { key: "tcgplayer", label: "TCGplayer", url: (card) => `https://www.tcgplayer.com/search/${line}/product?productLineName=${line}&q=${enc(usSearchText(card, game))}` },
-      { key: "pricecharting", label: "PriceCharting", url: (card) => `https://www.pricecharting.com/search-products?type=prices&q=${enc(usSearchText(card, game))}` }
+      { key: "pricecharting", label: "PriceCharting", url: (card) => `https://www.pricecharting.com/search-products?type=prices&q=${enc(usSearchText(card, game) + g)}` }
     ];
+  }
+
+  // Selo "PSA 9" (cor da graduadora) e o sufixo de busca pras lojas — usados só
+  // quando o preview é aberto de uma carta GRADUADA.
+  const GRADED_BADGE_COLORS = { psa: ["#c8102e", "#ffffff"], bgs: ["#15171d", "#e8c46a"], cgc: ["#0a3d91", "#ffffff"], sgc: ["#101216", "#ffffff"], tag: ["#0e7490", "#ffffff"] };
+  function gradedSearchTag(g) { return (g && g.company) ? `${String(g.company).toUpperCase()} ${g.grade || ""}`.trim() : ""; }
+  function gradedBadgeHtml(g) {
+    if (!g || !g.company) return "";
+    const [bg, fg] = GRADED_BADGE_COLORS[String(g.company).toLowerCase()] || GRADED_BADGE_COLORS.psa;
+    return `<span class="graded-badge" style="--slab-bg:${bg};--slab-fg:${fg}">${escapeHtml(String(g.company).toUpperCase())} ${escapeHtml(g.grade || "")}</span>`;
   }
 
   function usSearchText(card, game) {
@@ -2030,14 +2049,15 @@
     return `<span class="br-links-label">${escapeHtml(t(labelKey))}</span><div class="br-links-chips">${links}</div>`;
   }
 
-  function brMarketplaceLinks(card) {
+  function brMarketplaceLinks(card, gradedTag) {
     // O jogo vem da PRÓPRIA carta (card.game), não da sessão: uma carta Pokémon
     // mostra LigaPokémon mesmo numa sessão Lorcana, e vice-versa. Fallback pra
-    // sessão só pra cartas sem tag (catálogos antigos).
+    // sessão só pra cartas sem tag (catálogos antigos). gradedTag (ex.: "PSA 9")
+    // só vem quando a carta é graduada e entra na busca de eBay/PriceCharting.
     const game = card.game || currentGame();
     return `<div class="market-links">`
       + marketplaceRow("price.checkBr", brMarketplaces(game), card)
-      + marketplaceRow("price.checkUs", usMarketplaces(game), card)
+      + marketplaceRow("price.checkUs", usMarketplaces(game, gradedTag), card)
       + `</div>`;
   }
 
