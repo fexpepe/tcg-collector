@@ -1778,6 +1778,40 @@ input::placeholder {
   gap: 14px;
 }
 
+/* Hero do Pokémon com "Mais valiosas": aperta arte+infos à esquerda e abre a
+   fileira de destaques à direita; os stats descem pra uma faixa embaixo. */
+.detail-hero.has-featured {
+  grid-template-columns: minmax(150px, 200px) minmax(170px, 230px) minmax(0, 1fr);
+  align-items: center;
+}
+.detail-hero.has-featured .detail-stats {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 14px 26px;
+  align-self: auto;
+  justify-content: flex-start;
+  padding: 14px 0 0;
+  border-left: none;
+  border-top: 1px solid var(--line);
+}
+.pokemon-hero-featured { min-width: 0; align-self: stretch; display: flex; flex-direction: column; gap: 8px; }
+.pokemon-hero-featured-title { margin: 0; font-size: 12px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--subtle); }
+.pokemon-hero-featured-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.pkmn-feat-card { display: flex; flex-direction: column; gap: 5px; padding: 0; border: 0; background: none; cursor: pointer; min-width: 0; }
+.pkmn-feat-img { display: block; border-radius: 8px; overflow: hidden; background: var(--panel-strong); aspect-ratio: 63 / 88; }
+.pkmn-feat-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .15s ease; }
+.pkmn-feat-card:hover .pkmn-feat-img img { transform: scale(1.04); }
+.pkmn-feat-price { font-size: 12px; font-weight: 800; color: var(--text); text-align: center; }
+@media (max-width: 1000px) {
+  .detail-hero.has-featured { grid-template-columns: minmax(150px, 200px) 1fr; }
+  .pokemon-hero-featured { grid-column: 1 / -1; }
+}
+@media (max-width: 460px) {
+  .pokemon-hero-featured-row { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .pkmn-feat-price { font-size: 11px; }
+}
+
 .pokemon-hero-title {
   margin: 0;
   display: flex;
