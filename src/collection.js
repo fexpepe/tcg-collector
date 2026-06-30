@@ -1246,13 +1246,25 @@
 
   // Chip da tag da pasta: Pokémon / Lorcana / Misto (vazia = sem chip). Cor no
   // pontinho (gold/indigo/cinza). Nome é texto fixo do i18n.
+  // Cor que representa o jogo (Pokémon = vermelho da marca, Lorcana = roxo; misto =
+  // neutro). Usada no badge e no fundo do título dos cards de showcase.
+  function gameColor(games) {
+    if (!games || games.size === 0) return "";
+    if (games.size > 1) return "#5a6473";
+    return games.has("lorcana") ? "#3f3d96" : "#e23030";
+  }
   function folderTagHtml(games) {
     if (!games || games.size === 0) return "";
-    let label, color;
-    if (games.size > 1) { label = t("folders.tag.mixed"); color = "#8a93a3"; }
-    else if (games.has("lorcana")) { label = t("filter.gameLorcana"); color = "#3f3d96"; }
-    else { label = t("filter.gamePokemon"); color = "#d9a300"; }
-    return `<span class="folder-tag" style="--tag:${color}">${escapeHtml(label)}</span>`;
+    let label;
+    if (games.size > 1) label = t("folders.tag.mixed");
+    else if (games.has("lorcana")) label = t("filter.gameLorcana");
+    else label = t("filter.gamePokemon");
+    return `<span class="folder-tag" style="--tag:${gameColor(games)}">${escapeHtml(label)}</span>`;
+  }
+  // Título do card de showcase pintado na cor do jogo (classe + style inline).
+  function gameTitleHtml(name, games) {
+    const c = gameColor(games);
+    return `<div class="coll-card-title${c ? " coll-card-title-game" : ""}"${c ? ` style="background:${c}"` : ""}><strong class="coll-card-name">${escapeHtml(name)}</strong></div>`;
   }
 
   // Reordena os pares de um bucket pela ordem manual (se houver). Cards fora da
@@ -1320,7 +1332,7 @@
         ? shared.localizedImg(shared.cardImageSources(cover).url, { alt: "", fallback: shared.cardImageSources(cover).fallback, loading: "lazy", thumb: true })
         : `<span class="coll-card-empty">${escapeHtml(t("folders.empty"))}</span>`;
       return `<section class="folder-section is-collapsed coll-card" data-folder-id="${escapeAttribute(folder.id)}" draggable="true">
-        <div class="coll-card-title"><strong class="coll-card-name">${escapeHtml(folder.name || t("folders.untitled"))}</strong></div>
+        ${gameTitleHtml(folder.name || t("folders.untitled"), games)}
         <button type="button" class="coll-card-cover" data-folder-collapse aria-label="${escapeAttribute(t("folders.toggle"))}">${coverImg}</button>
         <div class="coll-card-body">
           <div class="coll-card-meta-row">
@@ -2035,8 +2047,9 @@
       let stars = ""; if (gp.stars != null) for (let i = 1; i <= 3; i++) stars += `<span class="coll-star${i <= (gp.stars || 0) ? " on" : ""}">★</span>`;
       const gset = new Set(gp.items.map((it) => it.g).filter(Boolean));
       const dot = gp.color ? `<span class="tag-dot" style="background:${gp.color}"></span>` : "";
+      const gc = gp.color ? "" : gameColor(gset); // showcases/sets/artistas: cor do jogo
       return `<button type="button" class="coll-card coll-card-ro${gp.color ? " tag-card" : ""}"${gp.color ? ` style="--tag:${gp.color}"` : ""} data-vitrine-open="${escapeAttribute(gp.id)}">
-        <span class="coll-card-title">${dot}<strong class="coll-card-name">${escapeHtml(gp.name)}</strong></span>
+        <span class="coll-card-title${gc ? " coll-card-title-game" : ""}"${gc ? ` style="background:${gc}"` : ""}>${dot}<strong class="coll-card-name">${escapeHtml(gp.name)}</strong></span>
         <span class="coll-card-cover">${coverImg}</span>
         <span class="coll-card-body">
           <span class="coll-card-meta-row"><span class="coll-card-meta">${escapeHtml(metaTxt)}</span>${folderTagHtml(gset)}</span>

@@ -574,6 +574,8 @@ input::placeholder {
 .coll-card-title { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 3.1em; padding: 8px 11px; border-bottom: 1px solid var(--line); }
 .coll-card-body { padding: 9px 11px 11px; display: flex; flex-direction: column; gap: 5px; }
 .coll-card-name { font-size: 15.4px; font-weight: 800; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+/* Título pintado na cor do jogo (Pokémon vermelho, Lorcana roxo): texto branco. */
+.coll-card-title-game { color: #ffffff; border-bottom-color: transparent; }
 .coll-card-meta-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .coll-card-meta { font-size: 12px; color: var(--muted); }
 .coll-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: 4px; }
@@ -716,7 +718,9 @@ input::placeholder {
 .preview-org-row > * { flex: 1 1 calc(50% - 5px); min-width: 0; margin-top: 0; }
 .preview-org-row .preview-folder-row { flex-direction: column; align-items: stretch; gap: 4px; }
 .preview-tags-row { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--subtle); font-weight: 700; }
-.preview-tags-ctl { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+/* Caixa de Tags com o MESMO tamanho do select de Coleção (mesma altura/largura):
+   vira um campo com borda; chips e "+ Tag" ficam dentro. */
+.preview-tags-ctl { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; box-sizing: border-box; width: 100%; min-height: 35px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
 .preview-tag-chip {
   display: inline-flex; align-items: center; gap: 4px; min-height: 0; cursor: pointer;
   font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px;
