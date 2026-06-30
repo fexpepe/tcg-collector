@@ -1699,14 +1699,13 @@
             <div>
               <p class="eyebrow">${escapeHtml(activeCard.set)}</p>
               <h2>${escapeHtml(cardLabel(activeCard))}</h2>
-              ${activeGraded ? `<p class="preview-graded-line">${gradedBadgeHtml(activeGraded)}${(function () {
-                const gv = gradedValue(activeCard, activeGraded.company, activeGraded.grade);
-                return gv.value > 0 ? `<span class="preview-graded-price">${escapeHtml(fmtMoney(getCurrency(), gv.value))}</span>` : "";
-              })()}</p>` : ""}
               <p class="preview-subtitle">${(function () {
                 const year = String(activeCard.setReleaseDate || "").slice(0, 4);
                 return /^\d{4}$/.test(year) ? `<span class="preview-year">${year}</span>` : "";
-              })()}${cardFlag(activeCard.language)}<span>${escapeHtml(activeCard.number)} · ${escapeHtml(cardLangSigla(activeCard.language))}</span></p>
+              })()}${cardFlag(activeCard.language)}<span>${escapeHtml(activeCard.number)} · ${escapeHtml(cardLangSigla(activeCard.language))}</span>${activeGraded ? `${gradedBadgeHtml(activeGraded)}${(function () {
+                const gv = gradedValue(activeCard, activeGraded.company, activeGraded.grade);
+                return gv.value > 0 ? `<span class="preview-graded-price">${escapeHtml(fmtMoney(getCurrency(), gv.value))}</span>` : "";
+              })()}` : ""}</p>
             </div>
             <div class="preview-actions">
               <div class="preview-actions-row">
