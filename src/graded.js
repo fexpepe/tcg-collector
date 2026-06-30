@@ -196,10 +196,11 @@
     if (elements.exportBtn) elements.exportBtn.disabled = !items.length;
   }
 
-  // Etiqueta do slab (barra superior): "PSA" + nota, com as cores da graduadora.
-  function slabLabelHtml(company, grade) {
+  // Etiqueta do slab (tarja superior): NOME da carta em cima + graduadora/nota
+  // embaixo, com as cores da graduadora — emula o rótulo do slab graded.
+  function slabLabelHtml(company, grade, name) {
     const g = graderOf(company);
-    return `<span class="graded-label" style="--slab-bg:${g.bg};--slab-fg:${g.fg}"><span class="graded-label-co">${escapeHtml(g.label)}</span><span class="graded-label-grade">${escapeHtml(grade || "—")}</span></span>`;
+    return `<span class="graded-label graded-label-named" style="--slab-bg:${g.bg};--slab-fg:${g.fg}"><span class="graded-label-name">${escapeHtml(name || "")}</span><span class="graded-label-tag">${escapeHtml(g.label)} ${escapeHtml(grade || "—")}</span></span>`;
   }
 
   // Tile: slab sintetizado (etiqueta + imagem do catálogo numa moldura) + editor
@@ -215,14 +216,13 @@
     const companyOpts = GRADERS.map((g) => `<option value="${g.code}"${g.code === it.company ? " selected" : ""}>${escapeHtml(g.label)}</option>`).join("");
     return `<article class="card-tile graded-tile" data-graded-gid="${escapeAttribute(it.gid)}">
       <div class="graded-slab">
-        ${slabLabelHtml(it.company, it.grade)}
+        ${slabLabelHtml(it.company, it.grade, card.name)}
         <div class="card-image">
           <button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button>
         </div>
         <button type="button" class="sale-remove" data-graded-remove title="${escapeAttribute(t("graded.remove"))}" aria-label="${escapeAttribute(t("graded.remove"))}">✕</button>
       </div>
       <div class="tile-info">
-        <h3>${escapeHtml(card.name)}</h3>
         <p class="tile-variant">${shared.cardFlag(card.language)}<span>${escapeHtml(it.variant)}</span></p>
         <div class="graded-fields">
           <div class="graded-row">

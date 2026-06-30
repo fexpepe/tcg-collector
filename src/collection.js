@@ -78,6 +78,25 @@
     };
   }
 
+  // Cartas graded (slabs): a coleção só LÊ a store por-slab pra mostrar os slabs
+  // na grade ("Toda Coleção" + aba "Graded"). A gestão completa (adicionar/editar/
+  // compartilhar/exportar) fica na página graded.html (botão "Adicionar / gerenciar").
+  const gradedReader = (function () {
+    const KEY = "tcg-collector-collection-graded-v1";
+    const read = () => { try { const r = JSON.parse(localStorage.getItem(KEY) || "null"); return (r && r.items) ? r : { items: {}, order: [] }; } catch (e) { return { items: {}, order: [] }; } };
+    return {
+      list() {
+        const d = read();
+        return (d.order || []).filter((g) => d.items[g]).map((g) => {
+          const e = d.items[g];
+          return { gid: g, cardId: e.cardId, variant: e.variant || "Normal", company: e.company || "psa", grade: e.grade || "", value: Number(e.value) || 0 };
+        });
+      }
+    };
+  })();
+  // Cores da tarja por graduadora (fundo, texto) — espelha as GRADERS de graded.js.
+  const GRADED_COLORS = { psa: ["#c8102e", "#ffffff"], bgs: ["#15171d", "#e8c46a"], cgc: ["#0a3d91", "#ffffff"], sgc: ["#101216", "#ffffff"], tag: ["#0e7490", "#ffffff"] };
+
   let activeTab = "cards";
   let sortMode = "dex";
 
@@ -121,6 +140,7 @@
     grid: document.getElementById("cardGrid"),
     folderSections: document.getElementById("folderSections"),
     newFolderBtn: document.getElementById("newFolderBtn"),
+    gradedManageBtn: document.getElementById("gradedManageBtn"),
     heading: document.querySelector(".results-header h2"),
     dashProfile: document.getElementById("dashProfile"),
     empty: document.getElementById("emptyState"),
@@ -314,11 +334,7 @@
 
     elements.tabs.addEventListener("click", (event) => {
       const chip = event.target.closest("[data-tab]");
-      if (!chip) return;
-      // "Graded" é uma PÁGINA (graded.html): o chip é um <a> — deixa o link navegar
-      // (não troca de aba in-page nem dá preventDefault).
-      if (chip.dataset.tab === "graded") return;
-      if (chip.dataset.tab === activeTab) return;
+      if (!chip || chip.dataset.tab === activeTab) return;
       activeTab = chip.dataset.tab;
       if (GROUP_TABS[activeTab]) {
         sortMode = GROUP_TABS[activeTab].defaultSort;
@@ -331,7 +347,7 @@
 
     // Abrir uma aba específica via ?tab= (ex.: voltar da página Graded p/ "Coleções").
     const wantTab = collParams.get("tab");
-    const VALID_TABS = ["cards", "folders", "pokemon", "artists", "sets"];
+    const VALID_TABS = ["cards", "folders", "graded", "pokemon", "artists", "sets"];
     if (wantTab && VALID_TABS.includes(wantTab) && wantTab !== activeTab) {
       activeTab = wantTab;
       if (GROUP_TABS[activeTab]) sortMode = GROUP_TABS[activeTab].defaultSort;
@@ -488,15 +504,17 @@
   function render(options) {
     shared.applyGameAccent(gameFilter); // accent vermelho/roxo/neutro conforme o jogo
     syncGameTabs();
-    // "Cartas" (grade plana) e "Pastas" (seções) usam a MESMA toolbar de filtros.
-    const isCardsLike = activeTab === "cards" || activeTab === "folders";
+    // "Cartas", "Graded" (grade plana) e "Pastas" (seções) usam a MESMA toolbar.
     const isFolders = activeTab === "folders";
+    const isGraded = activeTab === "graded";
+    const isCardsLike = activeTab === "cards" || isFolders || isGraded;
     if (!isFolders) openFolderId = null; // sair das Coleções volta pra vitrine
     elements.groupsView.hidden = isCardsLike;
     elements.cardsView.hidden = !isCardsLike;
-    // Título e "Nova coleção" mudam conforme a aba (Cartas vs Coleções).
-    if (elements.heading) elements.heading.textContent = t(isFolders ? "collection.heading.folders" : "collection.heading.cards");
+    // Título muda conforme a aba; "Nova coleção" só em Pastas; "gerenciar" só em Graded.
+    if (elements.heading) elements.heading.textContent = t(isFolders ? "collection.heading.folders" : isGraded ? "nav.graded" : "collection.heading.cards");
     if (elements.newFolderBtn) elements.newFolderBtn.hidden = !isFolders;
+    if (elements.gradedManageBtn) elements.gradedManageBtn.hidden = !isGraded;
 
     renderDashboard();
     updatePokemonFilterLabel();
@@ -642,20 +660,64 @@
     return shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true });
   }
 
+  // Slabs (cartas graduadas) como "pares" pro pager — filtrados por jogo + busca,
+  // pra aparecerem na grade de "Toda Coleção" e na aba "Graded".
+  function gradedPairs() {
+    const q = ((elements.search && elements.search.value) || "").trim();
+    return gradedReader.list()
+      .map((it) => ({ graded: true, it, card: cardsById.get(it.cardId) }))
+      .filter((p) => p.card && inGameFilter(p.card) && (!q || shared.matchesCardQuery(p.card, q)));
+  }
+
+  // Nó do slab (somente leitura) pra grade: NOME + nota na tarja de cima (emula o
+  // slab graded e diferencia das cartas normais), imagem, set/valor embaixo. MESMO
+  // tamanho dos outros tiles — a tarja é overlay, não empurra a altura.
+  function makeGradedNode(p) {
+    const { it, card } = p;
+    const [bg, fg] = GRADED_COLORS[it.company] || GRADED_COLORS.psa;
+    const src = shared.cardImageSources(card);
+    const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
+    const val = it.value > 0 ? it.value : (shared.gradedValue(card, it.company, it.grade).value || 0);
+    const priceHtml = val > 0 ? `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>` : "";
+    const tag = `${(it.company || "").toUpperCase()} ${it.grade || ""}`.trim();
+    const wrap = document.createElement("div");
+    wrap.innerHTML = `<article class="card-tile graded-tile graded-grid-tile" data-graded-gid="${escapeAttribute(it.gid)}">
+      <div class="graded-slab">
+        <span class="graded-label graded-label-named" style="--slab-bg:${bg};--slab-fg:${fg}">
+          <span class="graded-label-name">${escapeHtml(card.name)}</span>
+          <span class="graded-label-tag">${escapeHtml(tag)}</span>
+        </span>
+        <div class="card-image"><button type="button" class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${img}</button></div>
+      </div>
+      <div class="tile-info">
+        <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
+        ${priceHtml}
+      </div>
+    </article>`;
+    return wrap.firstElementChild;
+  }
+
+  // Dispatcher do pager: slab (graded) ou carta normal (variantTile).
+  function makeAnyTile(pair) { return pair.graded ? makeGradedNode(pair) : makeTile(pair); }
+
   function renderCards({ resetCount = false } = {}) {
-    const tiles = ownedTilePairs();
-    updateCardsStats(tiles.length);
-    // "Cartas" = sempre grade plana (sem divisões); "Pastas" = seções por pasta.
+    const isGradedTab = activeTab === "graded";
     const useFolders = activeTab === "folders";
+    const ownedPairs = isGradedTab ? [] : ownedTilePairs();
+    // "Graded" = só os slabs; "Toda Coleção" (cards) = slabs no topo + cartas
+    // normais (os slabs aparecem junto da coleção). "Pastas" não mistura graded.
+    const slabs = (isGradedTab || activeTab === "cards") ? gradedPairs() : [];
+    const tiles = isGradedTab ? slabs : (activeTab === "cards" ? slabs.concat(ownedPairs) : ownedPairs);
+    updateCardsStats(tiles.length);
     elements.grid.hidden = useFolders;
     elements.folderSections.hidden = !useFolders;
     if (elements.newFolderBtn) elements.newFolderBtn.hidden = !useFolders || !!openFolderId;
     if (!useFolders) {
       elements.folderSections.innerHTML = "";
-      pager.render(tiles, makeTile, { resetCount });
+      pager.render(tiles, makeAnyTile, { resetCount });
       return;
     }
-    renderFolderSections(tiles);
+    renderFolderSections(ownedPairs);
   }
 
   // Agrupa os pares carta×variante por pasta (folderOf por cardId) e renderiza

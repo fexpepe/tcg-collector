@@ -106,7 +106,7 @@
       <div id="collectionTabs" class="chip-filter collection-tabs" role="group" aria-label="Visões da coleção">
         <button type="button" class="chip" data-tab="cards" aria-pressed="true" data-i18n="collection.tab.cards">Cartas</button>
         <button type="button" class="chip" data-tab="folders" aria-pressed="false" data-i18n="collection.tab.folders">Coleções</button>
-        <a class="chip" href="graded.html" data-tab="graded" data-i18n="collection.tab.graded">Graded</a>
+        <button type="button" class="chip" data-tab="graded" aria-pressed="false" data-i18n="collection.tab.graded">Graded</button>
         <button type="button" class="chip" data-tab="pokemon" aria-pressed="false" data-i18n="collection.tab.pokemon">Pokémon</button>
         <button type="button" class="chip" data-tab="artists" aria-pressed="false" data-i18n="collection.tab.artists">Artistas</button>
         <button type="button" class="chip" data-tab="sets" aria-pressed="false" data-i18n="collection.tab.sets">Sets</button>
@@ -178,6 +178,7 @@
         <section class="results-header">
           <h2 data-i18n="collection.heading.cards">Minhas Cartas</h2>
           <button type="button" id="newFolderBtn" class="secondary new-folder-btn" data-i18n="folders.new">Nova pasta</button>
+          <a id="gradedManageBtn" class="secondary new-folder-btn" href="graded.html" data-i18n="graded.manage" hidden>Adicionar / gerenciar</a>
           <p id="resultCount">0 resultados</p>
         </section>
 
