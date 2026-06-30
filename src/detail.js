@@ -45,6 +45,8 @@
     ownedCount: document.getElementById("ownedCount"),
     totalCount: document.getElementById("totalCount"),
     completionRate: document.getElementById("completionRate"),
+    completionFill: document.getElementById("completionFill"),
+    completionBar: document.getElementById("completionBar"),
     detailValues: document.getElementById("detailValues"),
     valueTotal: document.getElementById("valueTotal"),
     valueOwned: document.getElementById("valueOwned"),
@@ -525,9 +527,12 @@
 
   function updateHeaderStats() {
     const ownedInPage = pageCards.filter((card) => owned.has(card.id)).length;
+    const pct = pageCards.length ? Math.round((ownedInPage / pageCards.length) * 100) : 0;
     elements.ownedCount.textContent = ownedInPage;
     elements.totalCount.textContent = pageCards.length;
-    elements.completionRate.textContent = pageCards.length ? `${Math.round((ownedInPage / pageCards.length) * 100)}%` : "0%";
+    elements.completionRate.textContent = `${pct}%`;
+    if (elements.completionFill) elements.completionFill.style.width = `${pct}%`;
+    if (elements.completionBar) elements.completionBar.setAttribute("aria-valuenow", String(pct));
     updateValueStats();
   }
 
