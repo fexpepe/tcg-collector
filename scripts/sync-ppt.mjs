@@ -159,6 +159,16 @@ const EN_FILL_SETS = {
 // O code tem que casar com o prefixo do setName da PPT (ex.: "M5: ..." -> M5).
 const JP_IMPORT_SETS = ["M5", "MBG"];
 
+// Cartas avulsas CURADAS que a TCGdex não tem (ex.: Ancient Mew, promo de filme que
+// não está em set nenhum da TCGdex). Puxamos da PPT pelo NOME EXATO (preço de
+// mercado + graded PSA + imagem) e emitimos como carta nova num set próprio. Cada
+// uma vira 1 carta no catálogo (merge cria o chunk do setId). `pptName` casa o
+// nome limpo exato (a PPT tem várias "Ancient Mew" — só a principal).
+const CURATED_SINGLES = [
+  { id: "amew-1", pptName: "Ancient Mew", lang: "en", setId: "amew", set: "Ancient Mew",
+    name: "Ancient Mew", number: "1", dexId: 151, year: "2000", rarity: "Promo", variants: ["Holo"] }
+];
+
 // Nome limpo da carta PPT: tira o sufixo de número e tags ("Snorlax - 077/071"
 // -> "Snorlax"; "Meganium - 001 [Staff]" -> "Meganium").
 function cleanName(name) {
@@ -475,6 +485,36 @@ async function importJpSet(code, pptSetId) {
   return newCards;
 }
 
+// Cartas avulsas curadas (CURATED_SINGLES): busca por nome exato na PPT, com
+// graded (includeEbay) + imagem, e popula `out` (preço/g) + `newCards` (a carta).
+async function syncCuratedSingles(out, newCards) {
+  for (const s of CURATED_SINGLES) {
+    try {
+      const lang = s.lang === "en" ? "english" : "japanese";
+      const j = await ppt(`/cards?search=${encodeURIComponent(s.pptName)}&language=${lang}&limit=10&includeEbay=true&days=90`);
+      const hit = (j.data || []).find((c) => cleanName(c.name).toLowerCase() === s.pptName.toLowerCase());
+      if (!hit) { console.log(`  [curado] ${s.id}: nome "${s.pptName}" não achado na PPT`); continue; }
+      const u = pickPrice(hit), img = hit.imageCdnUrl400 || hit.imageCdnUrl200 || hit.imageUrl || null;
+      const g = pickGraded(hit);
+      const e = {};
+      if (u > 0) e.u = Math.round(u * 100) / 100;
+      if (img) e.img = img;
+      if (g) e.g = g;
+      if (Object.keys(e).length) out[s.id] = e;
+      newCards.push({
+        id: s.id, name: s.name, pokemonName: "", category: "",
+        dexId: s.dexId || "", generation: s.dexId ? genOf(s.dexId) : "",
+        pokemonImage: s.dexId ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${s.dexId}.png` : "",
+        number: s.number, set: s.set, setId: s.setId,
+        setLogo: "", setSymbol: "", setTotal: "", setReleaseDate: s.year || "",
+        setSerieId: "", setSerieName: "", artist: "", rarity: s.rarity || "Promo",
+        language: s.lang, image: img, variants: s.variants || ["Normal"], _new: true
+      });
+      console.log(`  [curado] ${s.id}: "${s.name}" u=${e.u || "-"} graded=${g ? "sim" : "não"} img=${img ? "sim" : "não"}`);
+    } catch (err) { console.log(`  [curado] ${s.id}: erro ${err.message}`); }
+  }
+}
+
 const REFRESH_DAYS = 7; // re-busca um set se o cache dele tiver mais que isso
 
 async function run() {
@@ -613,6 +653,12 @@ async function run() {
   }
 
   if (discDirty) await saveDiscovered(discovered);
+
+  // Cartas avulsas curadas (Ancient Mew etc.) — barato (1 busca/carta), sempre roda.
+  if (CURATED_SINGLES.length && creditsUsed < BUDGET) {
+    try { await syncCuratedSingles(out, newCardsAll); } catch (e) { console.log(`  [curado] erro: ${e.message}`); }
+  }
+
   // Dedupe das cartas novas por id (sets podem repetir entre runs/cache).
   const newById = new Map();
   for (const c of newCardsAll) if (c && c.id && !newById.has(c.id)) newById.set(c.id, c);
