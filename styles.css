@@ -755,6 +755,11 @@ input::placeholder {
   background: var(--slab-bg, #c8102e); color: var(--slab-fg, #fff);
   font-size: 11px; font-weight: 800; letter-spacing: .02em; margin-left: 2px;
 }
+/* No tile da grade, a tag vira uma FAIXA: começa no texto (depois da bandeira) e
+   estica até a borda direita do card, como uma tarja da graduadora. */
+.graded-grid-tile .tile-variant .graded-badge {
+  flex: 1; justify-content: flex-start; margin-left: 0; padding: 3px 10px;
+}
 /* Selo da nota + preço graded na linha de metadados do popup (junto do ano,
    bandeira e número) quando a carta é graduada. */
 .preview-subtitle .graded-badge { margin-left: 2px; font-size: 12px; padding: 2px 9px; }
