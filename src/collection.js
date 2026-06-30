@@ -1922,6 +1922,23 @@
     let mode = (hasSales && collParams.get("t") === "sales") ? "sale" : "collection";
     let openId = null; // grupo aberto (coleção/tag/artista/set)
     let gFilter = "all";
+    let cardSort = "value-desc"; // ordenação por valor (só no perfil; em memória)
+    // Valor por item (na moeda atual): coleção em BRL (vbrl), graded/venda já na
+    // moeda do dono (gv/sp). Dentro de cada modo os itens são homogêneos.
+    const itemVal = (it) => it.vbrl != null ? fromBRL(it.vbrl) : (it.gv != null ? it.gv : (it.sp || 0));
+    function sortItems(arr) {
+      const c = arr.slice();
+      c.sort((a, b) => {
+        const pa = itemVal(a), pb = itemVal(b);
+        if (cardSort === "value-asc") { if (!pa && !pb) return 0; if (!pa) return 1; if (!pb) return -1; return pa - pb; }
+        return pb - pa;
+      });
+      return c;
+    }
+    function sortGroupsByValue(groups) {
+      const gv = (gp) => gp.items.reduce((s, it) => s + itemVal(it) * (it.q || 1), 0);
+      return groups.slice().sort((a, b) => cardSort === "value-asc" ? gv(a) - gv(b) : gv(b) - gv(a));
+    }
 
     function tabsHtml() {
       const tab = (m, label, on) => on ? `<button type="button" class="prof-tab${mode === m ? " is-active" : ""}" data-profile-tab="${m}">${escapeHtml(label)}</button>` : "";
@@ -1933,6 +1950,10 @@
         ${tab("artists", t("collection.tab.artists"), hasArtists)}
         ${tab("sets", t("collection.tab.sets"), hasSets)}
         ${tab("sale", t("nav.sales"), hasSales)}
+        <select class="prof-sort" data-profile-sort aria-label="${escapeAttribute(t("sort.label"))}">
+          <option value="value-desc"${cardSort === "value-desc" ? " selected" : ""}>${escapeHtml(t("sort.valueDesc"))}</option>
+          <option value="value-asc"${cardSort === "value-asc" ? " selected" : ""}>${escapeHtml(t("sort.valueAsc"))}</option>
+        </select>
       </div>`;
     }
     // Dashboard SEMPRE da coleção (visão geral do perfil); reage ao filtro de jogo.
@@ -1980,16 +2001,16 @@
     function contentHtml() {
       if (mode === "graded") {
         const items = gradedList.filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter);
-        return `<div class="card-grid">${items.map(sharedTile).join("")}</div>`;
+        return `<div class="card-grid">${sortItems(items).map(sharedTile).join("")}</div>`;
       }
-      if (mode === "sale") return `<div class="card-grid">${sale.items.map(sharedTile).join("")}</div>`;
+      if (mode === "sale") return `<div class="card-grid">${sortItems(sale.items).map(sharedTile).join("")}</div>`;
       if (GROUPED.indexOf(mode) >= 0) {
         const groups = groupsFor(mode);
-        if (openId) { const gp = groups.find((x) => x.id === openId); return `<div class="card-grid">${(gp ? gp.items : []).map(sharedTile).join("")}</div>`; }
-        return `<div class="coll-vitrine">${groups.map(groupCard).join("")}</div>`;
+        if (openId) { const gp = groups.find((x) => x.id === openId); return `<div class="card-grid">${sortItems(gp ? gp.items : []).map(sharedTile).join("")}</div>`; }
+        return `<div class="coll-vitrine">${sortGroupsByValue(groups).map(groupCard).join("")}</div>`;
       }
       const items = gFilter === "all" ? col.items : col.items.filter((it) => (it.g || "pokemon") === gFilter);
-      return `<div class="card-grid">${items.map(sharedTile).join("")}</div>`;
+      return `<div class="card-grid">${sortItems(items).map(sharedTile).join("")}</div>`;
     }
 
     function render() {
@@ -2014,6 +2035,10 @@
       if (chip) { gFilter = chip.dataset.gameFilter; render(); return; }
       const card = event.target.closest("[data-preview-card-id]");
       if (card) preview.open(card.dataset.previewCardId, card.dataset.previewVariant);
+    });
+    sv.addEventListener("change", (event) => {
+      const sortSel = event.target.closest("[data-profile-sort]");
+      if (sortSel) { cardSort = sortSel.value; render(); }
     });
     render();
 
