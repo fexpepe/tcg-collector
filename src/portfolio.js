@@ -95,6 +95,7 @@
   let cards = [];
   let cardsById = new Map();
   let gameFilter = "all";
+  let breakdownMode = "set"; // set | rarity
 
   const elements = {
     grandTotal: document.getElementById("grandTotal"),
@@ -103,6 +104,9 @@
     pricedCopies: document.getElementById("pricedCopies"),
     wishlistValue: document.getElementById("wishlistValue"),
     composition: document.getElementById("pfComposition"),
+    breakdown: document.getElementById("pfBreakdown"),
+    breakdownTabs: document.getElementById("pfBreakdownTabs"),
+    breakdownBody: document.getElementById("pfBreakdownBody"),
     gameFilter: document.getElementById("pfGameFilter"),
     topCards: document.getElementById("topCards"),
     empty: document.getElementById("emptyState")
@@ -123,6 +127,7 @@
       cardsById = new Map(cards.map((card) => [card.id, card]));
       GAMES.forEach((g) => ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
       bindGameFilter();
+      bindBreakdown();
       render();
     })
     .catch((error) => {
@@ -139,6 +144,18 @@
       Array.from(elements.gameFilter.children).forEach((node) =>
         node.setAttribute("aria-pressed", String(node === chip)));
       shared.applyGameAccent(gameFilter);
+      render();
+    });
+  }
+
+  function bindBreakdown() {
+    if (!elements.breakdownTabs) return;
+    elements.breakdownTabs.addEventListener("click", (event) => {
+      const tab = event.target.closest("[data-bd]");
+      if (!tab || tab.dataset.bd === breakdownMode) return;
+      breakdownMode = tab.dataset.bd;
+      Array.from(elements.breakdownTabs.children).forEach((node) =>
+        node.classList.toggle("active", node === tab));
       render();
     });
   }
@@ -212,8 +229,34 @@
     if (elements.wishlistValue) elements.wishlistValue.textContent = money(wish);
 
     renderComposition(rawTotal, gradedTotal);
+    renderBreakdown(lines, slabs);
     renderTop(lines, slabs);
     updateChart();
+  }
+
+  // Agrega valor (cartas raw + slabs graded) por uma chave da carta (set, raridade…).
+  function breakdownBy(lines, slabs, keyFn) {
+    const map = new Map();
+    lines.forEach((l) => { const k = keyFn(l.card); if (!k) return; map.set(k, (map.get(k) || 0) + l.total); });
+    slabs.forEach((s) => { const c = cardsById.get(s.cardId); if (!c || !(s.value > 0)) return; const k = keyFn(c); if (!k) return; map.set(k, (map.get(k) || 0) + s.value); });
+    return Array.from(map.entries()).map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value);
+  }
+
+  // Detalhamento: valor por set (top 12) ou por raridade (todas). Barras rankeadas.
+  function renderBreakdown(lines, slabs) {
+    const sec = elements.breakdown;
+    if (!sec) return;
+    const rows = breakdownMode === "rarity"
+      ? breakdownBy(lines, slabs, (c) => c.rarity)
+      : breakdownBy(lines, slabs, (c) => c.set);
+    const shown = breakdownMode === "rarity" ? rows : rows.slice(0, 12);
+    if (!shown.length) { sec.hidden = true; return; }
+    const max = Math.max(1, ...shown.map((r) => r.value));
+    elements.breakdownBody.innerHTML = shown.map((r) =>
+      `<div class="pf-comp-row"><span class="pf-comp-label pf-bd-name" title="${escapeAttribute(r.label)}">${escapeHtml(r.label)}</span>
+        <span class="pf-comp-track"><span class="pf-comp-fill" style="width:${Math.round((r.value / max) * 100)}%;background:var(--accent)"></span></span>
+        <span class="pf-comp-val">${escapeHtml(money(r.value))}</span></div>`).join("");
+    sec.hidden = false;
   }
 
   // Composição: cartas (raw) × graded; e por jogo (só no filtro "Todos").

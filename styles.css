@@ -3595,6 +3595,13 @@ a.progress-row:hover {
 .pf-comp-val { font-size: 13px; font-weight: 800; color: var(--text); }
 /* Etiqueta da graduadora na tabela de mais valiosas. */
 .pf-graded-tag { display: inline-block; font-size: 11px; font-weight: 800; padding: 1px 7px; border-radius: 6px; background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--text); border: 1px solid var(--line); }
+/* Detalhamento (por set / por raridade): tabs + barras rankeadas. */
+.pf-breakdown { margin: 0 0 18px; }
+.pf-bd-tabs { display: flex; gap: 8px; margin-bottom: 10px; }
+.pf-bd-tab { border: 1px solid var(--line); background: var(--panel); color: var(--muted); padding: 6px 13px; border-radius: 999px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.pf-bd-tab.active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+#pfBreakdown .pf-comp-row { grid-template-columns: minmax(110px, 30%) 1fr auto; }
+.pf-bd-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tile-tag-chip {
   max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font-size: 10.5px; font-weight: 800; padding: 1px 7px; border-radius: 5px;
