@@ -1592,7 +1592,18 @@
         + lor + `<p class="market-source">${escapeHtml(t("market.lorcanaSource"))}</p>`;
     }
     const data = pricing ? marketQuoteData(pricing, card) : { nonfoil: null, foil: null, updated: "" };
-    const tcgdex = marketFinishRow(t("market.nonfoil"), data.nonfoil, fx) + marketFinishRow(t("market.foil"), data.foil, fx);
+    let tcgdex = marketFinishRow(t("market.nonfoil"), data.nonfoil, fx) + marketFinishRow(t("market.foil"), data.foil, fx);
+    // Fallback do RAW: carta sem cotação na TCGdex (só-PPT/curada, ex.: Ancient Mew)
+    // usa o preço baked do TCG_PRICING (u = TCGplayer USD, e = Cardmarket EUR).
+    if (!tcgdex) {
+      const tbl = window.TCG_PRICING;
+      const ref2 = tbl && card && card.id && (tbl[card.id] || tbl[basePricingId(card.id)]);
+      if (ref2 && (ref2.u > 0 || ref2.e > 0)) {
+        const finish = { usd: ref2.u > 0 ? { min: null, med: ref2.u, max: null } : null, eur: ref2.e > 0 ? { min: null, med: ref2.e, max: null } : null };
+        const isFoil = (card.variants || []).some((v) => /holo|revers/i.test(v));
+        tcgdex = marketFinishRow(isFoil ? t("market.foil") : t("market.nonfoil"), finish, fx);
+      }
+    }
     const br = marketBrRow(card, fx);
     const graded = gradedHtml(card, fx);
     if (!tcgdex && !br && !graded) return "";
