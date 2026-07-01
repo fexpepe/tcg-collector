@@ -98,8 +98,21 @@ jobs:
 
       # O game.js injeta o catálogo em runtime por jogo; em produção ele carrega
       # os arquivos .generated mesclados em vez dos crus. Basta flipar a flag.
+      # PRECISA rodar antes da minificação (o padrão com espaços some no minify).
       - name: Ativa modo manifest (flag no game.js)
         run: sed -i 's|var MANIFEST = false|var MANIFEST = true|' src/game.js
+
+      # Minifica JS/CSS servidos, IN PLACE (as URLs não mudam; o repo fica intacto —
+      # isso só existe no workspace do runner). Corta ~50% do transfer e acelera o
+      # parse no mobile. Bônus: o esbuild FALHA em erro de sintaxe, então este passo
+      # também barra deploy de código quebrado. Sourcemaps pra debugar produção.
+      # --charset=utf8 mantém os acentos/emoji do i18n como UTF-8 (todas as páginas
+      # declaram <meta charset="utf-8">; SWs são decodificados como UTF-8 por spec).
+      - name: Minifica JS e CSS
+        run: |
+          npx --yes esbuild --minify --sourcemap --charset=utf8 --allow-overwrite --outdir=src src/*.js
+          npx --yes esbuild --minify --charset=utf8 --allow-overwrite --outfile=styles.css styles.css
+          npx --yes esbuild --minify --sourcemap --charset=utf8 --allow-overwrite --outfile=sw.js sw.js
 
       - name: Remove arquivos que não vão para o site
         run: rm -rf .git .github .claude data/.cache data/cards.generated.js scripts
