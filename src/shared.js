@@ -2656,6 +2656,16 @@
       if (r.pricing) Object.assign(mergedPricing, r.pricing);
     }
     window.TCG_PRICING = mergedPricing;
+    // Índice MESCLADO (sets/artistas/pokemonTotals dos dois jogos) num global, pro
+    // buildPublicPayload embutir os totais (denominador do progresso) no payload.
+    const mergedIdx = { sets: [], artists: [], pokemonTotals: {} };
+    Object.keys(indexesByGame).forEach((g) => {
+      const idx = indexesByGame[g]; if (!idx) return;
+      (idx.sets || []).forEach((s) => mergedIdx.sets.push(s));
+      (idx.artists || []).forEach((a) => mergedIdx.artists.push(a));
+      if (idx.pokemonTotals) Object.assign(mergedIdx.pokemonTotals, idx.pokemonTotals);
+    });
+    window.TCG_INDEXES_MERGED = mergedIdx;
     return { cards, indexesByGame };
   }
 
@@ -3577,7 +3587,7 @@
         const totalBRL = c == null ? valCur : c;
         vbrl = qty > 0 ? Math.round((totalBRL / qty) * 100) / 100 : 0;
       }
-      colItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, a: card.artist || "", r: card.rarity || "", pk: card.pokemonName || "", v: variant, q: qty, vbrl, img: src.url, fb: src.fallback || "" });
+      colItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, a: card.artist || "", r: card.rarity || "", pk: card.pokemonName || "", dx: card.dexId || 0, v: variant, q: qty, vbrl, img: src.url, fb: src.fallback || "" });
       // Meta do set (uma vez por set): total oficial + símbolo, p/ a aba Sets do
       // perfil público mostrar a barra de progresso igual à Coleção.
       if (card.set && !setsMeta[card.set]) setsMeta[card.set] = { t: card.setTotal || 0, sy: card.setSymbol || "", g: card.game };
@@ -3616,7 +3626,19 @@
       gradedItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, a: card.artist || "", v: it.variant, co: it.company, gr: it.grade, pr: it.pristine ? 1 : 0, gv, cur, img: src.url, fb: src.fallback || "" });
     });
 
-    return { collection: { items: colItems }, sales: { items: saleItems, cur, scope: "sale" }, folders: pubFolders, tags: pubTags, graded: { items: gradedItems }, setsMeta, showValues: !!showValues };
+    // Totais de espécie (Pokémon) e artista, tirados do índice mesclado — só pras
+    // espécies/artistas que o dono TEM (payload compacto). Denominador do progresso.
+    const idx = window.TCG_INDEXES_MERGED || null;
+    const speciesTotals = {}, artistTotals = {};
+    if (idx) {
+      const artIdx = {};
+      (idx.artists || []).forEach((a) => { artIdx[a.name] = (artIdx[a.name] || 0) + (a.cardIds ? a.cardIds.length : 0); });
+      const spSeen = new Set(), arSeen = new Set();
+      colItems.forEach((it) => { const sp = it.pk || speciesName(it.n); if (sp) spSeen.add(sp); if (it.a) arSeen.add(it.a); });
+      spSeen.forEach((sp) => { if (idx.pokemonTotals && idx.pokemonTotals[sp] != null) speciesTotals[sp] = idx.pokemonTotals[sp]; });
+      arSeen.forEach((ar) => { if (artIdx[ar] != null) artistTotals[ar] = artIdx[ar]; });
+    }
+    return { collection: { items: colItems }, sales: { items: saleItems, cur, scope: "sale" }, folders: pubFolders, tags: pubTags, graded: { items: gradedItems }, setsMeta, speciesTotals, artistTotals, showValues: !!showValues };
   }
   // Publica/atualiza (ou apaga) o perfil público conforme is_public. Debounced e
   // só re-envia se o payload mudou. Chamado pelas páginas (coleção/vendas).

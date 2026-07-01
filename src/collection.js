@@ -1965,13 +1965,17 @@
     const hasFolders = collFolders.length > 0;
     const gradedList = (prof.data.graded && Array.isArray(prof.data.graded.items)) ? prof.data.graded.items : [];
     const setsMeta = (prof.data.setsMeta && typeof prof.data.setsMeta === "object") ? prof.data.setsMeta : {};
+    const speciesTotals = (prof.data.speciesTotals && typeof prof.data.speciesTotals === "object") ? prof.data.speciesTotals : {};
+    const artistTotals = (prof.data.artistTotals && typeof prof.data.artistTotals === "object") ? prof.data.artistTotals : {};
     const tagDefs = Array.isArray(prof.data.tags) ? prof.data.tags : [];
     const hasGraded = gradedList.length > 0;
     const hasTags = tagDefs.length > 0 && col.items.some((it) => (it.tg || []).length);
     const hasArtists = col.items.some((it) => it.a);
+    const hasPokemon = col.items.some((it) => (it.g || "pokemon") === "pokemon");
     const hasSets = col.items.length > 0;
     const gamesPresent = [...new Set(col.items.map((it) => it.g).filter(Boolean))];
-    const GROUPED = ["vitrine", "tags", "artists", "sets"]; // abas que viram vitrine de grupos
+    const GROUPED = ["vitrine", "tags", "pokemon", "artists", "sets"]; // abas de grupos
+    const PROGRESS_MODES = ["pokemon", "artists", "sets"]; // grupos em linha de progresso
     let mode = (hasSales && collParams.get("t") === "sales") ? "sale" : "collection";
     let openId = null; // grupo aberto (coleção/tag/artista/set)
     let gFilter = "all";
@@ -1979,7 +1983,7 @@
     // Filtros da aba "Toda Coleção" (mesmos da tela de Coleção): espécie, set,
     // idioma, raridade + visualização (grade/lista). Em memória.
     let fPokemon = "", fSet = "", fLang = "", fRarity = "", cardView = "grid";
-    let setsSort = "name"; // aba Sets: "name" | "progress"
+    let groupSort = "name"; // abas de progresso (Sets/Pokémon/Artistas): "name" | "progress"
     // Valor por item (na moeda atual): coleção em BRL (vbrl), graded/venda já na
     // moeda do dono (gv/sp). Dentro de cada modo os itens são homogêneos.
     const itemVal = (it) => it.vbrl != null ? fromBRL(it.vbrl) : (it.gv != null ? it.gv : (it.sp || 0));
@@ -2016,10 +2020,11 @@
         ${tab("vitrine", t("collection.tab.folders"), hasFolders)}
         ${tab("graded", t("nav.graded"), hasGraded)}
         ${tab("tags", t("collection.tab.tags"), hasTags)}
+        ${tab("pokemon", t("collection.tab.pokemon"), hasPokemon)}
         ${tab("artists", t("collection.tab.artists"), hasArtists)}
         ${tab("sets", t("collection.tab.sets"), hasSets)}
         ${tab("sale", t("nav.sales"), hasSales)}
-        ${(mode !== "collection" && mode !== "sets") ? `<select class="prof-sort" data-profile-sort aria-label="${escapeAttribute(t("sort.label"))}">
+        ${(mode !== "collection" && PROGRESS_MODES.indexOf(mode) < 0) ? `<select class="prof-sort" data-profile-sort aria-label="${escapeAttribute(t("sort.label"))}">
           <option value="value-desc"${cardSort === "value-desc" ? " selected" : ""}>${escapeHtml(t("sort.valueDesc"))}</option>
           <option value="value-asc"${cardSort === "value-asc" ? " selected" : ""}>${escapeHtml(t("sort.valueAsc"))}</option>
         </select>` : ""}
@@ -2080,39 +2085,45 @@
       const inG = (it) => gFilter === "all" || (it.g || "pokemon") === gFilter;
       if (m === "vitrine") return collFolders.map((f) => ({ id: f.id, name: f.name || t("folders.untitled"), stars: f.stars || 0, cover: f.cover, items: col.items.filter((it) => it.f === f.id && inG(it)) })).filter((gp) => gp.items.length);
       if (m === "tags") return tagDefs.map((tg) => ({ id: tg.id, name: tg.name || t("tags.untitled"), color: tg.color, items: col.items.filter((it) => (it.tg || []).indexOf(tg.id) >= 0 && inG(it)) })).filter((gp) => gp.items.length);
+      if (m === "pokemon") return [...new Set(col.items.map(speciesOf).filter(Boolean))].map((sp) => ({ id: sp, name: sp, items: col.items.filter((it) => speciesOf(it) === sp && inG(it)) })).filter((gp) => gp.items.length);
       if (m === "artists") return [...new Set(col.items.map((it) => it.a).filter(Boolean))].sort().map((a) => ({ id: a, name: a, items: col.items.filter((it) => it.a === a && inG(it)) })).filter((gp) => gp.items.length);
       if (m === "sets") return [...new Set(col.items.map((it) => it.s).filter(Boolean))].sort().map((s) => ({ id: s, name: s, items: col.items.filter((it) => it.s === s && inG(it)) })).filter((gp) => gp.items.length);
       return [];
     }
-    // Aba Sets: MESMO visual da Coleção (linhas de progresso com símbolo do set,
-    // possuídas/total, barra e %). Totais vêm do setsMeta embutido no payload.
-    function setsViewHtml() {
+    // Abas Sets/Pokémon/Artistas: MESMO visual da Coleção (linhas de progresso com
+    // arte + possuídas/total + barra + %). Totais vêm do payload (setsMeta / species
+    // Totals / artistTotals). Denominador = total do catálogo; se faltar, = possuídas.
+    function groupsProgressHtml(mode) {
       const fmtPct = (p) => (p >= 10 ? Math.round(p) : Math.round(p * 10) / 10);
-      const groups = groupsFor("sets").map((gp) => {
+      const totalOf = (name) => mode === "sets" ? ((setsMeta[name] && setsMeta[name].t) || 0)
+        : mode === "pokemon" ? (speciesTotals[name] || 0) : (artistTotals[name] || 0);
+      const artOf = (gp) => {
+        const initial = `<span class="progress-row-initial">${escapeHtml((gp.name || "?").charAt(0).toUpperCase())}</span>`;
+        if (mode === "sets") { const sy = setsMeta[gp.name] && setsMeta[gp.name].sy; return sy ? shared.localizedImg(sy, { loading: "lazy" }) : initial; }
+        if (mode === "pokemon") { const it = gp.items.find((x) => x.dx); return it ? `<img loading="lazy" src="${escapeAttribute(shared.spriteUrl(it.dx))}" alt="">` : initial; }
+        return initial; // artistas
+      };
+      const groups = groupsFor(mode).map((gp) => {
         const ownedN = new Set(gp.items.map((it) => it.id)).size;
-        const total = Math.max(ownedN, (setsMeta[gp.name] && setsMeta[gp.name].t) || 0);
+        const total = Math.max(ownedN, totalOf(gp.name));
         return { gp, ownedN, total, pct: total ? (ownedN / total) * 100 : 0 };
       });
-      if (setsSort === "progress") groups.sort((a, b) => b.pct - a.pct || a.gp.name.localeCompare(b.gp.name));
+      if (groupSort === "progress") groups.sort((a, b) => b.pct - a.pct || a.gp.name.localeCompare(b.gp.name));
       else groups.sort((a, b) => a.gp.name.localeCompare(b.gp.name));
       const ownedSum = groups.reduce((s, g) => s + g.ownedN, 0);
       const totalSum = groups.reduce((s, g) => s + g.total, 0);
       const overallPct = totalSum ? fmtPct((ownedSum / totalSum) * 100) : 0;
-      const chip = (v, k) => `<button type="button" class="chip" data-sets-sort="${v}" aria-pressed="${setsSort === v}">${escapeHtml(t(k))}</button>`;
-      const rows = groups.map((g) => {
-        const meta = setsMeta[g.gp.name] || {};
-        const art = meta.sy ? shared.localizedImg(meta.sy, { loading: "lazy" }) : `<span class="progress-row-initial">${escapeHtml(g.gp.name.charAt(0).toUpperCase())}</span>`;
-        return `<button type="button" class="progress-row" data-vitrine-open="${escapeAttribute(g.gp.id)}">
-          <div class="progress-row-art">${art}</div>
+      const chip = (v, k) => `<button type="button" class="chip" data-group-sort="${v}" aria-pressed="${groupSort === v}">${escapeHtml(t(k))}</button>`;
+      const rows = groups.map((g) => `<button type="button" class="progress-row" data-vitrine-open="${escapeAttribute(g.gp.id)}">
+          <div class="progress-row-art">${artOf(g.gp)}</div>
           <div class="progress-row-body">
             <div class="progress-row-title"><strong>${escapeHtml(g.gp.name)}</strong><span class="row-count">${g.ownedN}/${g.total}</span></div>
             <div class="progress-bar"><span style="width:${Math.min(100, g.pct).toFixed(1)}%"></span></div>
             <p class="progress-row-meta">${escapeHtml(tn("count.cards", g.total) + " · " + fmtPct(g.pct) + "%")}</p>
           </div>
-        </button>`;
-      }).join("");
+        </button>`).join("");
       return `<div class="group-summary">
-          <div class="group-summary-row"><strong>${escapeHtml(tn("collection.summary.sets", groups.length, { o: ownedSum, t: totalSum }))}</strong><span class="summary-pct">${overallPct}%</span></div>
+          <div class="group-summary-row"><strong>${escapeHtml(tn("collection.summary." + mode, groups.length, { o: ownedSum, t: totalSum }))}</strong><span class="summary-pct">${overallPct}%</span></div>
           <div class="progress-bar"><span style="width:${Math.min(100, totalSum ? (ownedSum / totalSum) * 100 : 0).toFixed(1)}%"></span></div>
         </div>
         <div class="sort-row"><span>${escapeHtml(t("sort.label"))}</span><div class="chip-filter">${chip("name", "sort.name")}${chip("progress", "sort.progress")}</div></div>
@@ -2151,7 +2162,7 @@
       if (GROUPED.indexOf(mode) >= 0) {
         const groups = groupsFor(mode);
         if (openId) { const gp = groups.find((x) => x.id === openId); return `<div class="card-grid">${sortItems(gp ? gp.items : []).map(sharedTile).join("")}</div>`; }
-        if (mode === "sets") return setsViewHtml();
+        if (PROGRESS_MODES.indexOf(mode) >= 0) return groupsProgressHtml(mode);
         return `<div class="coll-vitrine">${sortGroupsByValue(groups).map((gp) => groupCard(gp, mode)).join("")}</div>`;
       }
       const base = gFilter === "all" ? col.items : col.items.filter((it) => (it.g || "pokemon") === gFilter);
@@ -2184,8 +2195,8 @@
       if (chip) { gFilter = chip.dataset.gameFilter; fPokemon = fSet = fLang = fRarity = ""; render(); return; }
       const vw = event.target.closest("[data-pf-view]");
       if (vw) { cardView = vw.dataset.pfView === "list" ? "list" : "grid"; render(); return; }
-      const ss = event.target.closest("[data-sets-sort]");
-      if (ss) { setsSort = ss.dataset.setsSort; render(); return; }
+      const ss = event.target.closest("[data-group-sort]");
+      if (ss) { groupSort = ss.dataset.groupSort; render(); return; }
       const card = event.target.closest("[data-preview-card-id]");
       if (card) preview.open(card.dataset.previewCardId, card.dataset.previewVariant);
     });
