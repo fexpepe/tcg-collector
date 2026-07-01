@@ -3560,6 +3560,7 @@
   function buildPublicPayload(cards, owned, prices, showValues, currency) {
     const cur = currency || "BRL";
     const colItems = [];
+    const setsMeta = {};
     cardVariantPairs((cards || []).filter((c) => owned.has(c.id))).forEach(({ card, variant }) => {
       const qty = owned.variantTotal(card.id, variant);
       if (qty <= 0) return;
@@ -3577,6 +3578,9 @@
         vbrl = qty > 0 ? Math.round((totalBRL / qty) * 100) / 100 : 0;
       }
       colItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, a: card.artist || "", r: card.rarity || "", pk: card.pokemonName || "", v: variant, q: qty, vbrl, img: src.url, fb: src.fallback || "" });
+      // Meta do set (uma vez por set): total oficial + símbolo, p/ a aba Sets do
+      // perfil público mostrar a barra de progresso igual à Coleção.
+      if (card.set && !setsMeta[card.set]) setsMeta[card.set] = { t: card.setTotal || 0, sy: card.setSymbol || "", g: card.game };
     });
     colItems.sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q));
     const byId = new Map((cards || []).map((c) => [c.id, c]));
@@ -3612,7 +3616,7 @@
       gradedItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, a: card.artist || "", v: it.variant, co: it.company, gr: it.grade, pr: it.pristine ? 1 : 0, gv, cur, img: src.url, fb: src.fallback || "" });
     });
 
-    return { collection: { items: colItems }, sales: { items: saleItems, cur, scope: "sale" }, folders: pubFolders, tags: pubTags, graded: { items: gradedItems }, showValues: !!showValues };
+    return { collection: { items: colItems }, sales: { items: saleItems, cur, scope: "sale" }, folders: pubFolders, tags: pubTags, graded: { items: gradedItems }, setsMeta, showValues: !!showValues };
   }
   // Publica/atualiza (ou apaga) o perfil público conforme is_public. Debounced e
   // só re-envia se o payload mudou. Chamado pelas páginas (coleção/vendas).
