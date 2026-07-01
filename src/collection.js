@@ -2037,7 +2037,7 @@
       return [];
     }
     // Card de grupo (somente leitura): capa + nome + meta (+ estrelas/cor quando houver).
-    function groupCard(gp) {
+    function groupCard(gp, mode) {
       const copies = gp.items.reduce((s, it) => s + (it.q || 1), 0);
       const val = gp.items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
       const metaTxt = `${copies}${val > 0 ? " · " + shared.formatMoney(shared.getCurrency(), val) : ""}`;
@@ -2047,7 +2047,7 @@
       let stars = ""; if (gp.stars != null) for (let i = 1; i <= 3; i++) stars += `<span class="coll-star${i <= (gp.stars || 0) ? " on" : ""}">★</span>`;
       const gset = new Set(gp.items.map((it) => it.g).filter(Boolean));
       const dot = gp.color ? `<span class="tag-dot" style="background:${gp.color}"></span>` : "";
-      const gc = gp.color ? "" : gameColor(gset); // showcases/sets/artistas: cor do jogo
+      const gc = (mode === "vitrine" && !gp.color) ? gameColor(gset) : ""; // cor do jogo SÓ no showcase
       return `<button type="button" class="coll-card coll-card-ro${gp.color ? " tag-card" : ""}"${gp.color ? ` style="--tag:${gp.color}"` : ""} data-vitrine-open="${escapeAttribute(gp.id)}">
         <span class="coll-card-title${gc ? " coll-card-title-game" : ""}"${gc ? ` style="background:${gc}"` : ""}>${dot}<strong class="coll-card-name">${escapeHtml(gp.name)}</strong></span>
         <span class="coll-card-cover">${coverImg}</span>
@@ -2062,11 +2062,14 @@
         const items = gradedList.filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter);
         return `<div class="card-grid">${sortItems(items).map(sharedTile).join("")}</div>`;
       }
-      if (mode === "sale") return `<div class="card-grid">${sortItems(sale.items).map(sharedTile).join("")}</div>`;
+      if (mode === "sale") {
+        const items = sale.items.filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter);
+        return `<div class="card-grid">${sortItems(items).map(sharedTile).join("")}</div>`;
+      }
       if (GROUPED.indexOf(mode) >= 0) {
         const groups = groupsFor(mode);
         if (openId) { const gp = groups.find((x) => x.id === openId); return `<div class="card-grid">${sortItems(gp ? gp.items : []).map(sharedTile).join("")}</div>`; }
-        return `<div class="coll-vitrine">${sortGroupsByValue(groups).map(groupCard).join("")}</div>`;
+        return `<div class="coll-vitrine">${sortGroupsByValue(groups).map((gp) => groupCard(gp, mode)).join("")}</div>`;
       }
       const items = gFilter === "all" ? col.items : col.items.filter((it) => (it.g || "pokemon") === gFilter);
       return `<div class="card-grid">${sortItems(items).map(sharedTile).join("")}</div>`;
