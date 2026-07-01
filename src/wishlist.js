@@ -164,7 +164,7 @@
 
   // Comparador do seletor de ordenação (mesma lógica da Coleção/Explorar).
   function sortComparator() {
-    const priceOf = (p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0;
+    const priceOf = shared.memoValue((p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0);
     const byNum = (a, b) => shared.compareCardNumbers(a.card.number, b.card.number);
     if (cardsSort === "num-asc") return byNum;
     if (cardsSort === "num-desc") return (a, b) => byNum(b, a);

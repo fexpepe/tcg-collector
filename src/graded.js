@@ -103,9 +103,7 @@
 
   function inGameFilter(card) { return gameFilter === "all" || card.game === gameFilter; }
 
-  function currencySymbol() {
-    return shared.formatMoney(shared.getCurrency(), 1).replace(/[\d.,\s ]/g, "") || shared.getCurrency();
-  }
+  const currencySymbol = shared.currencySymbol;
 
   // Valor efetivo de um slab: override manual (>0) ou o valor de mercado graded
   // da PPT (só PSA 9/10). Recalcula pelo grade/graduadora atual quando é automático.
@@ -118,16 +116,8 @@
   // Nota numérica pra ordenação ("9.5" → 9.5; vazio → 0).
   const gradeNum = (g) => { const n = parseFloat(String(g).replace(",", ".")); return isFinite(n) ? n : 0; };
 
-  function distBarsHtml(rows) {
-    const shown = rows.filter((r) => r.n > 0);
-    if (!shown.length) return `<p class="dash-empty">${escapeHtml(t("dash.empty"))}</p>`;
-    const max = Math.max(1, ...shown.map((r) => r.n));
-    return shown.map((r) => `<div class="dash-dist-row">
-        <span class="dash-dist-label">${escapeHtml(r.label)}</span>
-        <span class="dash-dist-track"><span class="dash-dist-fill" style="width:${Math.round((r.n / max) * 100)}%;background:${r.color}"></span></span>
-        <span class="dash-dist-n">${r.n}</span>
-      </div>`).join("");
-  }
+  // Versão compartilhada NÃO escapa o label (chamadas aqui usam rótulos fixos).
+  const distBarsHtml = shared.distBarsHtml;
 
   const GRADED_SORTS = ["value-desc", "value-asc", "grade-desc", "num-asc", "num-desc", "release", "added-desc", "added-asc"];
   let gradedSort = GRADED_SORTS.includes(localStorage.getItem("tcg-graded-sort")) ? localStorage.getItem("tcg-graded-sort") : "added-asc";

@@ -756,16 +756,7 @@
 
   // Barras horizontais de distribuição: [{label, n, color}]. `label` pode ter HTML
   // confiável (flag SVG); textos vêm do i18n (sem HTML do usuário). Zeradas saem.
-  function distBarsHtml(rows) {
-    const shown = rows.filter((r) => r.n > 0);
-    if (!shown.length) return `<p class="dash-empty">${escapeHtml(t("dash.empty"))}</p>`;
-    const max = Math.max(1, ...shown.map((r) => r.n));
-    return shown.map((r) => `<div class="dash-dist-row">
-        <span class="dash-dist-label">${r.label}</span>
-        <span class="dash-dist-track"><span class="dash-dist-fill" style="width:${Math.round((r.n / max) * 100)}%;background:${r.color}"></span></span>
-        <span class="dash-dist-n">${r.n}</span>
-      </div>`).join("");
-  }
+  const distBarsHtml = shared.distBarsHtml;
 
   // Valor de mercado das cartas que você tem (na moeda atual): soma cada cópia
   // pela condição que ela tem.
@@ -1494,10 +1485,10 @@
   function sortTiles(pairs) {
     // priceOf precisa casar com o VALOR EXIBIDO no tile: slab graded usa o valor
     // manual ou o gradedValue (mesma expressão do makeGradedNode); carta normal usa
-    // o valor de mercado. Sem isso, os slabs ordenavam pelo preço RAW (errado).
-    const priceOf = (p) => p.graded
+    // o valor de mercado. Memoizado: 1 lookup por item, não por comparação.
+    const priceOf = shared.memoValue((p) => p.graded
       ? (p.it.value > 0 ? p.it.value : (shared.gradedValue(p.card, p.it.company, p.it.grade).value || 0))
-      : (shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0);
+      : (shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0));
     const byNum = (a, b) => shared.compareCardNumbers(a.card.number, b.card.number);
     if (cardsSort === "num-asc") pairs.sort(byNum);
     else if (cardsSort === "num-desc") pairs.sort((a, b) => byNum(b, a));
@@ -1991,11 +1982,14 @@
       const c = arr.slice();
       if (cardSort === "num-asc") c.sort((a, b) => shared.compareCardNumbers(a.num, b.num));
       else if (cardSort === "num-desc") c.sort((a, b) => shared.compareCardNumbers(b.num, a.num));
-      else c.sort((a, b) => {
-        const pa = itemVal(a), pb = itemVal(b);
-        if (cardSort === "value-asc") { if (!pa && !pb) return 0; if (!pa) return 1; if (!pb) return -1; return pa - pb; }
-        return pb - pa;
-      });
+      else {
+        const val = shared.memoValue(itemVal); // 1 conversão de moeda por item, não por comparação
+        c.sort((a, b) => {
+          const pa = val(a), pb = val(b);
+          if (cardSort === "value-asc") { if (!pa && !pb) return 0; if (!pa) return 1; if (!pb) return -1; return pa - pb; }
+          return pb - pa;
+        });
+      }
       return c;
     }
     // Espécie/personagem do item (igual à Coleção): pokemonName ou derivado do nome.
@@ -2009,7 +2003,8 @@
         (!fRarity || (it.r || "") === fRarity));
     }
     function sortGroupsByValue(groups) {
-      const gv = (gp) => gp.items.reduce((s, it) => s + itemVal(it) * (it.q || 1), 0);
+      // Soma do grupo pré-computada 1x (o reduce por comparação era O(n·g log g)).
+      const gv = shared.memoValue((gp) => gp.items.reduce((s, it) => s + itemVal(it) * (it.q || 1), 0));
       return groups.slice().sort((a, b) => cardSort === "value-asc" ? gv(a) - gv(b) : gv(b) - gv(a));
     }
 
@@ -2183,6 +2178,12 @@
       // Filtro de JOGO (global, muda as cores) no topo; ABAS/páginas embaixo do dashboard.
       sv.innerHTML = `${gameFilterHtml()}<div class="prof-dash">${dashHtml()}</div>${tabsHtml()}${filterBarHtml()}${back}<div class="prof-content">${contentHtml()}</div>`;
     }
+    // Re-render PARCIAL: filtro/ordenação/visualização só trocam as cartas — não
+    // reconstrói dashboard/abas/barra (mais rápido e preserva o foco nos selects).
+    function renderContent() {
+      const el = sv.querySelector(".prof-content");
+      if (el) el.innerHTML = contentHtml(); else render();
+    }
 
     // Delegação no container (sobrevive aos re-renders): abas, vitrine, filtro, preview.
     sv.addEventListener("click", (event) => {
@@ -2194,21 +2195,25 @@
       const chip = event.target.closest("[data-game-filter]");
       if (chip) { gFilter = chip.dataset.gameFilter; fPokemon = fSet = fLang = fRarity = ""; render(); return; }
       const vw = event.target.closest("[data-pf-view]");
-      if (vw) { cardView = vw.dataset.pfView === "list" ? "list" : "grid"; render(); return; }
+      if (vw) {
+        cardView = vw.dataset.pfView === "list" ? "list" : "grid";
+        sv.querySelectorAll("[data-pf-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.pfView === cardView)));
+        renderContent(); return;
+      }
       const ss = event.target.closest("[data-group-sort]");
-      if (ss) { groupSort = ss.dataset.groupSort; render(); return; }
+      if (ss) { groupSort = ss.dataset.groupSort; renderContent(); return; }
       const card = event.target.closest("[data-preview-card-id]");
       if (card) preview.open(card.dataset.previewCardId, card.dataset.previewVariant);
     });
     sv.addEventListener("change", (event) => {
       const sortSel = event.target.closest("[data-profile-sort]");
-      if (sortSel) { cardSort = sortSel.value; render(); return; }
+      if (sortSel) { cardSort = sortSel.value; renderContent(); return; }
       const ff = event.target.closest("[data-pf-filter]");
       if (ff) {
         const k = ff.dataset.pfFilter;
         if (k === "pokemon") fPokemon = ff.value; else if (k === "set") fSet = ff.value;
         else if (k === "lang") fLang = ff.value; else if (k === "rarity") fRarity = ff.value;
-        render();
+        renderContent(); // as opções da barra não dependem dos filtros escolhidos
       }
     });
     render();

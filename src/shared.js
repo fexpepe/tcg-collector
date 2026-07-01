@@ -1649,9 +1649,36 @@
     }
   }
 
-  // Símbolo da moeda atual (R$/$/€…) — pro campo "Vender por".
+  // Símbolo da moeda atual (R$/$/€…). Valor != 0 de propósito: fmtMoney(cur, 0)
+  // devolve "—" e o símbolo sairia "—" (bug que existia no campo "Vender por").
   function saleCurrencySymbol() {
-    return fmtMoney(getCurrency(), 0).replace(/[\d.,\s ]/g, "") || getCurrency();
+    return fmtMoney(getCurrency(), 1).replace(/[\d.,\s ]/g, "") || getCurrency();
+  }
+
+  // Barras de distribuição dos dashboards (label + barra proporcional + n).
+  // `label` pode trazer HTML — quem chama escapa o que for dinâmico. Antes vivia
+  // copiado em coleção/vendas/graded; uma fonte só.
+  function distBarsHtml(rows) {
+    const shown = rows.filter((r) => r.n > 0);
+    if (!shown.length) return `<p class="dash-empty">${escapeHtml(t("dash.empty"))}</p>`;
+    const max = Math.max(1, ...shown.map((r) => r.n));
+    return shown.map((r) => `<div class="dash-dist-row">
+        <span class="dash-dist-label">${r.label}</span>
+        <span class="dash-dist-track"><span class="dash-dist-fill" style="width:${Math.round((r.n / max) * 100)}%;background:${r.color}"></span></span>
+        <span class="dash-dist-n">${r.n}</span>
+      </div>`).join("");
+  }
+
+  // Memoiza uma função de valor por item (Map por identidade). Comparadores de
+  // ordenação que chamam cardValue/gradedValue A CADA comparação fazem O(n log n)
+  // lookups — com o cache, 1 lookup por item (perceptível no Explorar, ~8k cartas).
+  function memoValue(valueOf) {
+    const cache = new Map();
+    return (p) => {
+      let v = cache.get(p);
+      if (v === undefined) { v = valueOf(p); cache.set(p, v); }
+      return v;
+    };
   }
   function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders, sale, tags }) {
     let activeCard = null;
@@ -2983,6 +3010,9 @@
     gradedBadgeHtml,
     gradedSlabsValued,
     gradedTotalValue,
+    currencySymbol: saleCurrencySymbol,
+    distBarsHtml,
+    memoValue,
     formatMoney: fmtMoney,
     cardLanguageFromId,
     spriteUrl,

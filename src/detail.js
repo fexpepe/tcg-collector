@@ -65,8 +65,8 @@
   // dos outros filtros: não esconde nada, só reordena a grade.
   function sortTiles(pairs) {
     // Mesmo valor exibido no tile (preço manual ou, na falta, referência de
-    // mercado), para a ordenação por preço bater com o que se vê.
-    const priceOf = (p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0;
+    // mercado), para a ordenação por preço bater com o que se vê. Memoizado.
+    const priceOf = shared.memoValue((p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0);
     const byNum = (a, b) => shared.compareCardNumbers(a.card.number, b.card.number);
     if (selectedSort === "num-asc") {
       pairs.sort(byNum);

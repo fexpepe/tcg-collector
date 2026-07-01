@@ -166,22 +166,8 @@
     render();
   }
 
-  // Símbolo da moeda atual (R$/$/€…) extraído do formatMoney.
-  function currencySymbol() {
-    // Usa um valor != 0: formatMoney(cur, 0) devolve "—", e o símbolo sairia "—".
-    return shared.formatMoney(shared.getCurrency(), 1).replace(/[\d.,\s ]/g, "") || shared.getCurrency();
-  }
-
-  function distBarsHtml(rows) {
-    const shown = rows.filter((r) => r.n > 0);
-    if (!shown.length) return `<p class="dash-empty">${escapeHtml(t("dash.empty"))}</p>`;
-    const max = Math.max(1, ...shown.map((r) => r.n));
-    return shown.map((r) => `<div class="dash-dist-row">
-        <span class="dash-dist-label">${r.label}</span>
-        <span class="dash-dist-track"><span class="dash-dist-fill" style="width:${Math.round((r.n / max) * 100)}%;background:${r.color}"></span></span>
-        <span class="dash-dist-n">${r.n}</span>
-      </div>`).join("");
-  }
+  const currencySymbol = shared.currencySymbol;
+  const distBarsHtml = shared.distBarsHtml;
 
   // Ordenação da lista de vendas (mesmas opções da Coleção). Persistida.
   const SALES_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "release", "added-desc", "added-asc"];
