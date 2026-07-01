@@ -3576,7 +3576,7 @@
         const totalBRL = c == null ? valCur : c;
         vbrl = qty > 0 ? Math.round((totalBRL / qty) * 100) / 100 : 0;
       }
-      colItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, a: card.artist || "", v: variant, q: qty, vbrl, img: src.url, fb: src.fallback || "" });
+      colItems.push({ id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language, g: card.game, a: card.artist || "", r: card.rarity || "", pk: card.pokemonName || "", v: variant, q: qty, vbrl, img: src.url, fb: src.fallback || "" });
     });
     colItems.sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q));
     const byId = new Map((cards || []).map((c) => [c.id, c]));

@@ -1974,18 +1974,33 @@
     let mode = (hasSales && collParams.get("t") === "sales") ? "sale" : "collection";
     let openId = null; // grupo aberto (coleção/tag/artista/set)
     let gFilter = "all";
-    let cardSort = "value-desc"; // ordenação por valor (só no perfil; em memória)
+    let cardSort = "value-desc"; // ordenação (em memória)
+    // Filtros da aba "Toda Coleção" (mesmos da tela de Coleção): espécie, set,
+    // idioma, raridade + visualização (grade/lista). Em memória.
+    let fPokemon = "", fSet = "", fLang = "", fRarity = "", cardView = "grid";
     // Valor por item (na moeda atual): coleção em BRL (vbrl), graded/venda já na
     // moeda do dono (gv/sp). Dentro de cada modo os itens são homogêneos.
     const itemVal = (it) => it.vbrl != null ? fromBRL(it.vbrl) : (it.gv != null ? it.gv : (it.sp || 0));
     function sortItems(arr) {
       const c = arr.slice();
-      c.sort((a, b) => {
+      if (cardSort === "num-asc") c.sort((a, b) => shared.compareCardNumbers(a.num, b.num));
+      else if (cardSort === "num-desc") c.sort((a, b) => shared.compareCardNumbers(b.num, a.num));
+      else c.sort((a, b) => {
         const pa = itemVal(a), pb = itemVal(b);
         if (cardSort === "value-asc") { if (!pa && !pb) return 0; if (!pa) return 1; if (!pb) return -1; return pa - pb; }
         return pb - pa;
       });
       return c;
+    }
+    // Espécie/personagem do item (igual à Coleção): pokemonName ou derivado do nome.
+    const speciesOf = (it) => it.pk || speciesName(it.n);
+    // Aplica os filtros da barra (só na aba Toda Coleção).
+    function applyColFilters(items) {
+      return items.filter((it) =>
+        (!fPokemon || speciesOf(it) === fPokemon) &&
+        (!fSet || it.s === fSet) &&
+        (!fLang || (it.lang || "") === fLang) &&
+        (!fRarity || (it.r || "") === fRarity));
     }
     function sortGroupsByValue(groups) {
       const gv = (gp) => gp.items.reduce((s, it) => s + itemVal(it) * (it.q || 1), 0);
@@ -2002,11 +2017,42 @@
         ${tab("artists", t("collection.tab.artists"), hasArtists)}
         ${tab("sets", t("collection.tab.sets"), hasSets)}
         ${tab("sale", t("nav.sales"), hasSales)}
-        <select class="prof-sort" data-profile-sort aria-label="${escapeAttribute(t("sort.label"))}">
+        ${mode !== "collection" ? `<select class="prof-sort" data-profile-sort aria-label="${escapeAttribute(t("sort.label"))}">
           <option value="value-desc"${cardSort === "value-desc" ? " selected" : ""}>${escapeHtml(t("sort.valueDesc"))}</option>
           <option value="value-asc"${cardSort === "value-asc" ? " selected" : ""}>${escapeHtml(t("sort.valueAsc"))}</option>
-        </select>
+        </select>` : ""}
       </div>`;
+    }
+
+    // Barra de filtros da aba "Toda Coleção" — MESMOS filtros da tela de Coleção
+    // (Pokémon/Personagem, Set, Idioma, Raridade, Ordenar, Visualização).
+    function filterBarHtml() {
+      if (mode !== "collection") return "";
+      const pool = col.items.filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter);
+      const uniq = (arr) => Array.from(new Set(arr.filter(Boolean)));
+      const opts = (values, sel, fmt) => `<option value="">${escapeHtml(t("filter.all.m"))}</option>` +
+        values.map((v) => `<option value="${escapeAttribute(v)}"${v === sel ? " selected" : ""}>${escapeHtml(fmt ? fmt(v) : v)}</option>`).join("");
+      const pkLabel = gFilter === "lorcana" ? t("toolbar.characters") : t("toolbar.pokemon");
+      const species = uniq(pool.map(speciesOf)).sort((a, b) => a.localeCompare(b));
+      const sets = uniq(pool.map((it) => it.s)).sort((a, b) => a.localeCompare(b));
+      const langs = uniq(pool.map((it) => it.lang));
+      const rarities = uniq(pool.map((it) => it.r)).sort((a, b) => a.localeCompare(b));
+      const sortOpt = (v, k) => `<option value="${v}"${cardSort === v ? " selected" : ""}>${escapeHtml(t(k))}</option>`;
+      return `<section class="toolbar prof-toolbar" aria-label="${escapeAttribute(t("sort.label"))}">
+        <div><label>${escapeHtml(pkLabel)}</label><select data-pf-filter="pokemon">${opts(species, fPokemon)}</select></div>
+        <div><label>${escapeHtml(t("toolbar.set"))}</label><select data-pf-filter="set">${opts(sets, fSet)}</select></div>
+        <div><label>${escapeHtml(t("toolbar.language"))}</label><select data-pf-filter="lang">${opts(langs, fLang, langOptionLabel)}</select></div>
+        <div><label>${escapeHtml(t("toolbar.rarity"))}</label><select data-pf-filter="rarity">${(`<option value="">${escapeHtml(t("filter.all.f"))}</option>` + rarities.map((v) => `<option value="${escapeAttribute(v)}"${v === fRarity ? " selected" : ""}>${escapeHtml(v)}</option>`).join(""))}</select></div>
+        <div class="sort-select"><label>${escapeHtml(t("sort.label"))}</label><select data-profile-sort>
+          ${sortOpt("value-desc", "sort.valueDesc")}${sortOpt("value-asc", "sort.valueAsc")}${sortOpt("num-asc", "sort.numAsc")}${sortOpt("num-desc", "sort.numDesc")}
+        </select></div>
+        <div class="view-toggle-field"><label>${escapeHtml(t("toolbar.view"))}</label>
+          <div class="view-toggle" role="group">
+            <button type="button" class="view-toggle-btn" data-pf-view="grid" aria-pressed="${cardView === "grid"}" title="${escapeAttribute(t("toolbar.view"))}">▦</button>
+            <button type="button" class="view-toggle-btn" data-pf-view="list" aria-pressed="${cardView === "list"}" title="${escapeAttribute(t("toolbar.view"))}">≣</button>
+          </div>
+        </div>
+      </section>`;
     }
     // Dashboard SEMPRE da coleção (visão geral do perfil); reage ao filtro de jogo.
     function dashHtml() {
@@ -2071,8 +2117,12 @@
         if (openId) { const gp = groups.find((x) => x.id === openId); return `<div class="card-grid">${sortItems(gp ? gp.items : []).map(sharedTile).join("")}</div>`; }
         return `<div class="coll-vitrine">${sortGroupsByValue(groups).map((gp) => groupCard(gp, mode)).join("")}</div>`;
       }
-      const items = gFilter === "all" ? col.items : col.items.filter((it) => (it.g || "pokemon") === gFilter);
-      return `<div class="card-grid">${sortItems(items).map(sharedTile).join("")}</div>`;
+      const base = gFilter === "all" ? col.items : col.items.filter((it) => (it.g || "pokemon") === gFilter);
+      const items = applyColFilters(base);
+      const grid = items.length
+        ? sortItems(items).map(sharedTile).join("")
+        : `<p class="empty-state">${escapeHtml(t("collection.noResults"))}</p>`;
+      return `<div class="card-grid${cardView === "list" ? " is-list" : ""}">${grid}</div>`;
     }
 
     function render() {
@@ -2083,7 +2133,7 @@
         ? `<div class="coll-open-head"><button type="button" class="secondary coll-back-btn" data-vitrine-back>${escapeHtml(t("profile.viewCollections"))}</button><strong class="coll-open-name">${escapeHtml(openName || "")}</strong></div>`
         : "";
       // Filtro de JOGO (global, muda as cores) no topo; ABAS/páginas embaixo do dashboard.
-      sv.innerHTML = `${gameFilterHtml()}<div class="prof-dash">${dashHtml()}</div>${tabsHtml()}${back}<div class="prof-content">${contentHtml()}</div>`;
+      sv.innerHTML = `${gameFilterHtml()}<div class="prof-dash">${dashHtml()}</div>${tabsHtml()}${filterBarHtml()}${back}<div class="prof-content">${contentHtml()}</div>`;
     }
 
     // Delegação no container (sobrevive aos re-renders): abas, vitrine, filtro, preview.
@@ -2094,13 +2144,22 @@
       if (open) { openId = open.dataset.vitrineOpen; render(); return; }
       if (event.target.closest("[data-vitrine-back]")) { openId = null; render(); return; }
       const chip = event.target.closest("[data-game-filter]");
-      if (chip) { gFilter = chip.dataset.gameFilter; render(); return; }
+      if (chip) { gFilter = chip.dataset.gameFilter; fPokemon = fSet = fLang = fRarity = ""; render(); return; }
+      const vw = event.target.closest("[data-pf-view]");
+      if (vw) { cardView = vw.dataset.pfView === "list" ? "list" : "grid"; render(); return; }
       const card = event.target.closest("[data-preview-card-id]");
       if (card) preview.open(card.dataset.previewCardId, card.dataset.previewVariant);
     });
     sv.addEventListener("change", (event) => {
       const sortSel = event.target.closest("[data-profile-sort]");
-      if (sortSel) { cardSort = sortSel.value; render(); }
+      if (sortSel) { cardSort = sortSel.value; render(); return; }
+      const ff = event.target.closest("[data-pf-filter]");
+      if (ff) {
+        const k = ff.dataset.pfFilter;
+        if (k === "pokemon") fPokemon = ff.value; else if (k === "set") fSet = ff.value;
+        else if (k === "lang") fLang = ff.value; else if (k === "rarity") fRarity = ff.value;
+        render();
+      }
     });
     render();
 
