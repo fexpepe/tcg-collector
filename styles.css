@@ -544,7 +544,7 @@ input::placeholder {
 
 /* --- Card de coleção (minimizada) --- */
 /* 6 por linha, mesma largura das cartas das grades (#salesGrid também é 6). */
-.coll-card { flex: 0 0 calc((100% - 5 * 16px) / 6); padding: 0; overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
+.coll-card { flex: 0 0 calc((100% - 5 * 16px) / 6); padding: 0; overflow: hidden; display: flex; flex-direction: column; align-items: stretch; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
 /* Card da vitrine no perfil público (somente leitura, o card todo é um botão). */
 .coll-card-ro { cursor: pointer; text-align: left; color: var(--text); font: inherit; min-height: 0; }
 .coll-card-ro .coll-card-cover { display: block; }
