@@ -3224,6 +3224,8 @@
     moneyToCurrent,
     snapshotKeys,
     toastUndo,
+    loadPriceDeltas,
+    basePricingId,
     formatMoney: fmtMoney,
     cardLanguageFromId,
     spriteUrl,
@@ -3298,7 +3300,10 @@
     costs: "tcg-collector-collection-costs-v1", // custo pago por carta×variante (globais)
     favorites: "tcg-collector-favorites-v1", // Pokémon favoritados (globais)
     favoritesMeta: "tcg-collector-favorites-meta-v1", // updatedAt p/ LWW dos favoritos
-    history: gameKey("history-v1")
+    // Histórico do portfólio (v2: c=raw, b=graded, w=desejos). Campo NOVO no blob
+    // ("history2") de propósito: o "history" antigo (v1, b=binders) fica ignorado
+    // no pull — sincronizar o velho dentro do v2 misturaria semânticas.
+    history2: gameKey("history-v2")
   };
 
   function authHeaders(token) {
@@ -3608,7 +3613,7 @@
       costs: mergeSales(a.costs, b.costs), // idem (custos por carta×variante)
       favorites: fav.favorites,
       favoritesMeta: fav.meta,
-      history: mergeHistory(a.history, b.history)
+      history2: mergeHistory(a.history2, b.history2)
     };
   }
   // Observabilidade do sync: registra o resultado de cada pull/push (no console

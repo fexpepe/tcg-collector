@@ -66,11 +66,38 @@
         ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
       hydrateFilters();
       render();
+      renderDropNotice(); // quedas de preço da semana (histórico do build; async)
     })
     .catch((error) => {
       elements.empty.textContent = t("error.catalog", { message: error.message });
       elements.empty.hidden = false;
     });
+
+  // "Notificação" serverless: cruza a wishlist com os deltas semanais de preço
+  // (price-deltas do build) e avisa das QUEDAS (>= 3%) — hora boa de comprar.
+  // Sem histórico ainda (primeira semana) ou sem quedas, fica invisível.
+  async function renderDropNotice() {
+    const el = document.getElementById("wishDrops");
+    if (!el) return;
+    try {
+      const [pk, lc] = await Promise.all([shared.loadPriceDeltas("pokemon"), shared.loadPriceDeltas("lorcana")]);
+      const deltas = {};
+      [pk, lc].forEach((d) => { if (d && d.c) Object.assign(deltas, d.c); });
+      const drops = [];
+      cards.forEach((card) => {
+        if (!wishlist.hasCard(card.id)) return;
+        const pct = deltas[card.id] != null ? deltas[card.id] : deltas[shared.basePricingId(card.id)];
+        if (pct != null && pct <= -3) drops.push({ card, pct });
+      });
+      if (!drops.length) { el.hidden = true; return; }
+      drops.sort((a, b) => a.pct - b.pct);
+      const loc = shared.getLocale();
+      const chips = drops.slice(0, 6).map(({ card, pct }) =>
+        `<a class="wish-drop-chip" href="${shared.escapeAttribute(shared.detailUrl("set", card.set))}">${shared.escapeHtml(card.name)} <span class="wish-drop-pct">▼ ${Math.abs(pct).toLocaleString(loc, { maximumFractionDigits: 1 })}%</span></a>`).join("");
+      el.innerHTML = `<strong>${shared.escapeHtml(tn("wish.drops.title", drops.length))}</strong><span class="wish-drop-chips">${chips}</span>`;
+      el.hidden = false;
+    } catch (e) { el.hidden = true; /* aviso é opcional */ }
+  }
 
   function inGameFilter(card) {
     return gameFilter === "all" || card.game === gameFilter;
