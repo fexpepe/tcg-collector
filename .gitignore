@@ -5,6 +5,7 @@ data/.cache/
 data/*.generated.js
 data/*.generated.json
 data/lorcana/*.generated.js
+data/lorcana/*.generated.json
 data/sets/
 
 # Key local da PokemonPriceTracker (só pra teste local; NUNCA versionar)

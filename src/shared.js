@@ -1699,6 +1699,35 @@
       + srcGraded;
   }
 
+  // --- Variação de preço (histórico semanal do build, sem servidor) ---
+  // price-deltas.generated.json: { from, to, c: { cardId: pct } } — % desde o
+  // snapshot anterior. Carregado 1x por jogo, sob demanda (só quando um preview
+  // abre); ausência (primeira semana / dev) é silenciosa.
+  const priceDeltasByGame = {};
+  function loadPriceDeltas(game) {
+    const g = game === "lorcana" ? "lorcana" : "pokemon";
+    if (!priceDeltasByGame[g]) {
+      const dataDir = g === "lorcana" ? "data/lorcana/" : "data/";
+      priceDeltasByGame[g] = fetch(dataDir + "price-deltas.generated.json")
+        .then((r) => (r.ok ? r.json() : null)).catch(() => null);
+    }
+    return priceDeltasByGame[g];
+  }
+  function priceDeltaChipHtml(pct, from) {
+    const up = pct > 0;
+    const title = from ? t("market.deltaSince", { date: from }) : "";
+    const n = Math.abs(pct).toLocaleString(getLocale(), { maximumFractionDigits: 1 });
+    return `<span class="price-delta ${up ? "is-up" : "is-down"}" title="${escapeAttribute(title)}">${up ? "▲" : "▼"} ${up ? "+" : "−"}${n}%</span>`;
+  }
+  async function fillPriceDelta(section, card) {
+    const d = await loadPriceDeltas(card.game || currentGame());
+    if (!d || !d.c || !section.isConnected) return;
+    const pct = d.c[card.id] != null ? d.c[card.id] : d.c[basePricingId(card.id)];
+    if (pct == null) return;
+    const head = section.querySelector(".market-quote-head h3");
+    if (head && !section.querySelector(".price-delta")) head.insertAdjacentHTML("afterend", priceDeltaChipHtml(pct, d.from));
+  }
+
   // Busca cotação + câmbio e preenche a seção no modal (some se não houver).
   async function fillMarketQuote(card) {
     const section = document.querySelector("#cardPreviewModal [data-market-quote]");
@@ -1709,6 +1738,7 @@
     if (html) {
       section.innerHTML = html;
       section.hidden = false;
+      fillPriceDelta(section, card); // ▲▼ % da semana, quando o histórico existir
     } else {
       section.hidden = true;
     }

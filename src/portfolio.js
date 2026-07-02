@@ -117,13 +117,23 @@
 
   const inGameId = (g) => gameFilter === "all" || (g || "pokemon") === gameFilter;
 
-  Promise.all([
-    shared.loadOwnedAcrossGames({
-      pokemon: ownedByGame.pokemon.knownCardIds(),
-      lorcana: ownedByGame.lorcana.knownCardIds()
-    }),
-    shared.loadFxRates()
-  ])
+  // Maiores altas/quedas do MERCADO (price-movers do build semanal). Busca antes
+  // do catálogo pra incluir os ids dos movers no carregamento (podem não ser seus).
+  const moversByGame = { pokemon: null, lorcana: null };
+  const fetchMovers = (dir) => fetch(dir + "price-movers.generated.json").then((r) => (r.ok ? r.json() : null)).catch(() => null);
+
+  Promise.all([fetchMovers("data/"), fetchMovers("data/lorcana/")])
+    .then(([pk, lc]) => {
+      moversByGame.pokemon = pk; moversByGame.lorcana = lc;
+      const idsOf = (m) => m ? (m.up || []).concat(m.down || []).map((x) => x.id) : [];
+      return Promise.all([
+        shared.loadOwnedAcrossGames({
+          pokemon: ownedByGame.pokemon.knownCardIds().concat(idsOf(pk)),
+          lorcana: ownedByGame.lorcana.knownCardIds().concat(idsOf(lc))
+        }),
+        shared.loadFxRates()
+      ]);
+    })
     .then(([catalog]) => {
       cards = catalog.cards;
       cards.forEach((card) => cardGameMap.set(card.id, card.game));
@@ -234,8 +244,47 @@
     renderComposition(rawTotal, gradedTotal);
     renderBreakdown(lines, slabs);
     renderInvest();
+    renderMovers();
     renderTop(lines, slabs);
     updateChart();
+  }
+
+  // Maiores altas e quedas da semana (mercado — do histórico de preços do build).
+  // Só aparece quando há >= 2 snapshots (a partir da 2ª semana no ar).
+  function renderMovers() {
+    const sec = document.getElementById("pfMovers");
+    if (!sec) return;
+    const pool = gameFilter === "all" ? ["pokemon", "lorcana"] : [gameFilter];
+    let up = [], down = [], from = null;
+    pool.forEach((g) => {
+      const m = moversByGame[g];
+      if (!m) return;
+      if (m.from) from = from || m.from;
+      up = up.concat(m.up || []); down = down.concat(m.down || []);
+    });
+    const resolve = (arr) => arr
+      .map((x) => ({ x, card: cardsById.get(x.id) }))
+      .filter((r) => r.card)
+      .sort((a, b) => Math.abs(b.x.pct) - Math.abs(a.x.pct))
+      .slice(0, 8);
+    const ups = resolve(up), downs = resolve(down);
+    if (!ups.length && !downs.length) { sec.hidden = true; sec.innerHTML = ""; return; }
+    const loc = getLocale();
+    const row = ({ x, card }) => {
+      const src = shared.cardImageSources(card);
+      const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
+      const ownedTag = owned.has(card.id) ? `<span class="pf-mover-owned">${escapeHtml(t("portfolio.movers.owned"))}</span>` : "";
+      const pct = `${x.pct > 0 ? "+" : "−"}${Math.abs(x.pct).toLocaleString(loc, { maximumFractionDigits: 1 })}%`;
+      return `<a class="pf-mover" href="${escapeAttribute(detailUrl("set", card.set))}">
+        <span class="pf-mover-thumb">${thumb}</span>
+        <span class="pf-mover-info"><strong>${escapeHtml(card.name)}</strong><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span>${ownedTag}</span>
+        <span class="pf-mover-pct ${x.pct > 0 ? "is-up" : "is-down"}">${x.pct > 0 ? "▲" : "▼"} ${escapeHtml(pct)}</span>
+      </a>`;
+    };
+    const col = (title, arr) => arr.length ? `<div class="pf-movers-col"><h3>${escapeHtml(title)}</h3>${arr.map(row).join("")}</div>` : "";
+    sec.innerHTML = `<h2 class="pf-invest-title">${escapeHtml(t("portfolio.movers.title"))}${from ? ` <span class="pf-movers-since">${escapeHtml(t("market.deltaSince", { date: from }))}</span>` : ""}</h2>
+      <div class="pf-movers-grid">${col(t("portfolio.movers.up"), ups)}${col(t("portfolio.movers.down"), downs)}</div>`;
+    sec.hidden = false;
   }
 
   // --- Investimento (opcional): só aparece pra quem preenche custo ou vende ---

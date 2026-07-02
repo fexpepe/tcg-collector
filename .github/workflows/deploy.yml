@@ -83,11 +83,20 @@ jobs:
       - name: Mescla catálogos num manifest unificado
         run: node scripts/merge-catalogs.mjs en ja zh-tw pt
 
+      # Histórico de preços SEM servidor: busca o acumulador publicado no deploy
+      # anterior (a produção é o "banco"), anexa o snapshot de hoje e re-publica
+      # (+ deltas ▲▼ e maiores altas/quedas). Backup em data/.cache.
+      - name: Snapshot de preços (histórico Pokémon)
+        run: node scripts/sync-price-history.mjs data
+
       # Catálogo do Lorcana (Lorcast). Independente do Pokémon; gera data/lorcana/
       # cards/indexes/pricing + .generated (modo prod). Não derruba o build se a
       # API comunitária estiver fora (mantém o cards.js versionado).
       - name: Sincroniza catálogo do Lorcana (Lorcast)
         run: node scripts/sync-lorcana.mjs || echo "sync-lorcana falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Lorcana)
+        run: node scripts/sync-price-history.mjs data/lorcana
 
       # Salva o cache AGORA (data/.cache ainda existe; a limpeza apaga depois).
       - name: Salva cache (TCGdex + PPT)
