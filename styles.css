@@ -3717,6 +3717,19 @@ a.progress-row:hover {
   .sold-date, .sold-paid { display: none; }
   .sold-row-head { display: none; }
 }
+/* Adição rápida por número (checklist do set). */
+.quick-add { margin: 10px 0 4px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+.quick-add-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.quick-add-label { flex: none; font-size: 12px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--subtle); }
+#quickAddInput { flex: 0 1 220px; min-width: 150px; height: 38px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); color: var(--text); padding: 0 12px; font: inherit; font-weight: 700; }
+#quickAddInput:focus { outline: none; border-color: var(--accent); }
+.quick-add-log { display: flex; flex-wrap: wrap; gap: 5px; min-width: 0; flex: 1; }
+.quick-add-chip { min-height: 0; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel-strong); color: var(--text); font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.quick-add-chip.is-hit { border-color: color-mix(in srgb, #2ecc71 45%, transparent); color: #2ecc71; background: color-mix(in srgb, #2ecc71 10%, transparent); }
+.quick-add-chip.is-miss { border-color: color-mix(in srgb, #e8553c 45%, transparent); color: #e8553c; background: color-mix(in srgb, #e8553c 10%, transparent); cursor: default; }
+.quick-add-chip.is-undone { text-decoration: line-through; opacity: .55; cursor: default; }
+.quick-add-hint { margin: 8px 0 0; font-size: 12px; color: var(--subtle); }
+
 /* Portfólio: seção Investimento. */
 .pf-invest { margin: 6px 0 18px; }
 .pf-invest-title { margin: 0 0 10px; font-size: 17px; }

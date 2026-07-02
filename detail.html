@@ -61,6 +61,15 @@
         </section>
         <div id="completionBar" class="completion-bar" role="progressbar" aria-label="Progresso do set" aria-valuemin="0" aria-valuemax="100"><span id="completionFill" class="completion-fill"></span></div>
 
+        <section id="quickAdd" class="quick-add" aria-label="Adição rápida por número" hidden>
+          <div class="quick-add-row">
+            <label for="quickAddInput" class="quick-add-label" data-i18n="quickadd.label">Adição rápida</label>
+            <input id="quickAddInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+            <span id="quickAddLog" class="quick-add-log" aria-live="polite"></span>
+          </div>
+          <p class="quick-add-hint" data-i18n="quickadd.hint">Digite o número da carta e Enter (4, 23, TG05…) — cada entrada adiciona 1 cópia. Cole uma lista ("4, 7, 23") pra marcar tudo de uma vez. Toque num chip pra desfazer.</p>
+        </section>
+
         <section id="detailValues" class="stats-grid detail-values" aria-label="Valores" hidden>
           <article>
             <span id="valueTotal">—</span>
