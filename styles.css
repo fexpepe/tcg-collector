@@ -4806,6 +4806,8 @@ a.progress-row:hover {
 .game-filter { margin: 0; }
 .binder-editor-gamefilter { margin: 0 0 10px; }
 .collection-share-btn { margin: 0; }
+.collection-toolbar-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.collection-toolbar-actions .bulk-toggle { margin: 0; }
 /* Banner do binder compartilhado (somente leitura) + CTA pro visitante. */
 .binder-shared-banner {
   display: flex;

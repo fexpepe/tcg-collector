@@ -92,7 +92,10 @@
           <button type="button" class="chip" data-game-filter="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
           <button type="button" class="chip" data-game-filter="lorcana" aria-pressed="false" data-i18n="filter.gameLorcana">Lorcana</button>
         </div>
-        <button type="button" id="collectionShareBtn" class="secondary collection-share-btn" data-i18n="collection.share" hidden>Compartilhar coleção</button>
+        <div class="collection-toolbar-actions">
+          <button type="button" id="bulkSelectBtn" class="secondary bulk-toggle" aria-pressed="false" data-i18n="bulk.enter">Selecionar</button>
+          <button type="button" id="collectionShareBtn" class="secondary collection-share-btn" data-i18n="collection.share" hidden>Compartilhar coleção</button>
+        </div>
       </div>
 
       <section id="collectionDashboard" class="collection-dashboard" aria-label="Resumo da coleção" hidden>
@@ -211,10 +214,6 @@
               <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" aria-label="Grade" title="Grade">▦</button>
               <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" aria-label="Lista" title="Lista">≣</button>
             </div>
-          </div>
-          <div class="view-toggle-field">
-            <label data-i18n="bulk.label">Em massa</label>
-            <button type="button" id="bulkSelectBtn" class="secondary bulk-toggle" aria-pressed="false" data-i18n="bulk.enter">Selecionar</button>
           </div>
         </section>
 
