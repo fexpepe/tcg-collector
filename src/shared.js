@@ -619,36 +619,76 @@
   }
 
   // --- Busca global (Ctrl+K / Cmd+K): paleta sobre qualquer página ---
-  // Procura Pokémon, sets e artistas nos ÍNDICES já carregados (leve, sem rede) e
-  // navega pro detalhe. Sempre oferece "buscar no Explorar" (cartas por nome, ?q=).
+  // Busca o SITE INTEIRO, independente do jogo da sessão: índice próprio dos DOIS
+  // jogos (fetch lazy no 1º uso; ~2MB do Pokémon vem gzipado e o SW cacheia).
+  // Resultados carregam &game= na URL — clicar num set de Lorcana TROCA a sessão.
+  // Cartas por nome ficam a um Enter: "buscar no Explorar" de cada jogo (?q=).
+  let cmdkIndex = null, cmdkIndexPromise = null;
+  function loadCmdkIndex() {
+    if (cmdkIndexPromise) return cmdkIndexPromise;
+    cmdkIndexPromise = (async () => {
+      const merged = { species: [], sets: [], artists: [] };
+      for (const { game, dataDir } of DATA_GAMES) {
+        let idx = null;
+        // Produção usa o gerado; dev usa o cru — tenta os dois formatos.
+        for (const f of ["indexes.generated.js", "indexes.js"]) {
+          try {
+            const r = await fetch(dataDir + f);
+            if (!r.ok) continue;
+            const text = await r.text();
+            const s = text.indexOf("{"), e = text.lastIndexOf("}");
+            if (s < 0 || e <= s) continue;
+            idx = JSON.parse(text.slice(s, e + 1));
+            break;
+          } catch (err) { /* tenta o próximo */ }
+        }
+        if (!idx) continue;
+        const species = (idx.pokedex || []).map((p) => p.name).filter(Boolean);
+        (species.length ? species : Object.keys(idx.pokemonTotals || {})).forEach((n) => merged.species.push({ name: n, game }));
+        unique((idx.sets || []).map((x) => x.name)).forEach((n) => merged.sets.push({ name: n, game }));
+        unique((idx.artists || []).map((x) => x.name)).forEach((n) => merged.artists.push({ name: n, game }));
+      }
+      cmdkIndex = merged;
+      return merged;
+    })();
+    return cmdkIndexPromise;
+  }
   function initCommandPalette() {
     let overlay = null, items = [], active = 0;
-    const idxData = () => window.TCG_INDEXES_MERGED || window.TCG_INDEXES || null;
     const close = () => { if (overlay) { overlay.remove(); overlay = null; } };
+    const gameLabel = (g) => (g === "lorcana" ? t("filter.gameLorcana") : t("filter.gamePokemon"));
     function results(q) {
       const out = [];
       const nq = normalize(q);
-      const idx = idxData();
-      if (nq && idx) {
-        const match = (name) => normalize(name).includes(nq);
-        const rank = (name) => (normalize(name).startsWith(nq) ? 0 : 1);
-        const top = (names) => names.filter(match).sort((a, b) => rank(a) - rank(b) || a.localeCompare(b)).slice(0, 5);
-        top(Object.keys((idx.pokemonTotals || {}))).forEach((n) => out.push({ group: t("toolbar.pokemon"), name: n, url: detailUrl("pokemon", n) }));
-        top(unique((idx.sets || []).map((s) => s.name))).forEach((n) => out.push({ group: t("nav.sets"), name: n, url: detailUrl("set", n) }));
-        top(unique((idx.artists || []).map((a) => a.name))).forEach((n) => out.push({ group: t("nav.artists"), name: n, url: detailUrl("artist", n) }));
+      if (nq && cmdkIndex) {
+        const match = (x) => normalize(x.name).includes(nq);
+        const rank = (x) => (normalize(x.name).startsWith(nq) ? 0 : 1);
+        const top = (arr) => arr.filter(match).sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name)).slice(0, 5);
+        const push = (group, type, x) => out.push({ group, name: x.name, game: x.game, url: `${detailUrl(type, x.name)}&game=${x.game}` });
+        top(cmdkIndex.species).forEach((x) => push(t("toolbar.pokemon"), "pokemon", x));
+        top(cmdkIndex.sets).forEach((x) => push(t("nav.sets"), "set", x));
+        top(cmdkIndex.artists).forEach((x) => push(t("nav.artists"), "artist", x));
       }
-      if (nq) out.push({ group: "", name: t("cmdk.explore", { q }), url: "cards.html?q=" + encodeURIComponent(q), explore: true });
+      if (nq) {
+        out.push({ group: "", name: `${t("cmdk.explore", { q })} · ${gameLabel("pokemon")}`, url: `cards.html?game=pokemon&q=${encodeURIComponent(q)}`, explore: true });
+        out.push({ group: "", name: `${t("cmdk.explore", { q })} · ${gameLabel("lorcana")}`, url: `cards.html?game=lorcana&q=${encodeURIComponent(q)}`, explore: true });
+      }
       return out;
     }
     function renderList(q) {
       items = results(q);
       active = 0;
       const list = overlay.querySelector(".cmdk-results");
+      if (normalize(q) && !cmdkIndex) { // índice dos 2 jogos ainda baixando (1º uso)
+        list.innerHTML = `<p class="cmdk-empty">${escapeHtml(t("cmdk.loading"))}</p>`;
+        return;
+      }
       let lastGroup = null;
       list.innerHTML = items.map((it, i) => {
         const head = it.group && it.group !== lastGroup ? `<div class="cmdk-group">${escapeHtml(it.group)}</div>` : "";
         lastGroup = it.group;
-        return `${head}<button type="button" class="cmdk-item${i === active ? " is-active" : ""}${it.explore ? " cmdk-explore" : ""}" data-cmdk-i="${i}">${escapeHtml(it.name)}</button>`;
+        const badge = it.game ? `<span class="cmdk-game">${escapeHtml(gameLabel(it.game))}</span>` : "";
+        return `${head}<button type="button" class="cmdk-item${i === active ? " is-active" : ""}${it.explore ? " cmdk-explore" : ""}" data-cmdk-i="${i}"><span class="cmdk-item-name">${escapeHtml(it.name)}</span>${badge}</button>`;
       }).join("") || `<p class="cmdk-empty">${escapeHtml(t("cmdk.empty"))}</p>`;
     }
     function setActive(i) {
@@ -671,6 +711,8 @@
       document.body.appendChild(overlay);
       const input = overlay.querySelector(".cmdk-input");
       renderList("");
+      // Baixa o índice dos 2 jogos no 1º uso; quando chegar, re-renderiza a busca atual.
+      loadCmdkIndex().then(() => { if (overlay && overlay.isConnected) renderList(input.value.trim()); });
       overlay.addEventListener("click", (e) => {
         const item = e.target.closest("[data-cmdk-i]");
         if (item) { go(Number(item.dataset.cmdkI)); return; }
@@ -688,6 +730,17 @@
       if ((e.ctrlKey || e.metaKey) && String(e.key).toLowerCase() === "k") { e.preventDefault(); if (overlay) close(); else open(); return; }
       if (e.key === "Escape" && overlay) close();
     });
+  }
+
+  // Marca-d'água "Ctrl+K" nas buscas de página, pro atalho ser descoberto.
+  // Só onde há teclado físico (em touch o atalho não existe).
+  function initSearchShortcutHint() {
+    try {
+      if (window.matchMedia("(pointer: coarse)").matches) return;
+      document.querySelectorAll(".page-search input").forEach((el) => {
+        if (el.placeholder && el.placeholder.indexOf("Ctrl+K") < 0) el.placeholder += "   ·   Ctrl+K";
+      });
+    } catch (e) { /* decorativo */ }
   }
 
   // --- Toast com "Desfazer" (ações destrutivas sem confirm() bloqueante) ---
@@ -4539,6 +4592,7 @@
   initThemeToggle();
   initTroubleshootTriggers();
   initCommandPalette();
+  initSearchShortcutHint(); // depois do applyTranslations (placeholders já traduzidos)
   initAuth();
 
   // Service worker: cacheia as imagens já vistas para sobreviverem a um outage

@@ -3794,9 +3794,12 @@ a.progress-row:hover {
 .cmdk-input:focus { outline: none; }
 .cmdk-results { max-height: 46vh; overflow-y: auto; padding: 6px; }
 .cmdk-group { padding: 8px 10px 3px; font-size: 11px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--subtle); }
-.cmdk-item { display: block; width: 100%; text-align: left; min-height: 0; padding: 8px 10px; border: 0; border-radius: 8px; background: transparent; color: var(--text); font: inherit; font-weight: 600; font-size: 14px; cursor: pointer; }
+.cmdk-item { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; min-height: 0; padding: 8px 10px; border: 0; border-radius: 8px; background: transparent; color: var(--text); font: inherit; font-weight: 600; font-size: 14px; cursor: pointer; }
 .cmdk-item:hover { background: var(--panel-strong); }
 .cmdk-item.is-active { background: var(--accent); color: var(--on-accent); }
+.cmdk-item-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cmdk-game { flex: none; font-size: 10.5px; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; color: var(--subtle); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; }
+.cmdk-item.is-active .cmdk-game { color: var(--on-accent); border-color: color-mix(in srgb, var(--on-accent) 40%, transparent); }
 .cmdk-explore { color: var(--accent); font-weight: 800; }
 .cmdk-explore.is-active { color: var(--on-accent); }
 .cmdk-empty { margin: 0; padding: 14px 12px; font-size: 13px; color: var(--subtle); }
