@@ -10,11 +10,12 @@
   // Coleção UNIFICADA: stores por jogo + facades que despacham por jogo (resolvido
   // pelo cardGameMap, populado quando o catálogo carrega). Assim variantTile/
   // preview/handlers funcionam sem saber que há vários jogos.
-  const ownedByGame = { pokemon: shared.createCollectionStore("pokemon"), lorcana: shared.createCollectionStore("lorcana") };
-  const wishlistByGame = { pokemon: shared.createWishlistStore("pokemon"), lorcana: shared.createWishlistStore("lorcana") };
-  const pricesByGame = { pokemon: shared.createPriceStore("pokemon"), lorcana: shared.createPriceStore("lorcana") };
+  const ownedByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createCollectionStore(g)]));
+  const wishlistByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createWishlistStore(g)]));
+  const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
   const cardGameMap = new Map();
   const gameOf = (id) => cardGameMap.get(id) || "pokemon";
+  const gameLabelOf = (g) => t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : "filter.gamePokemon");
   const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
   const wishlist = shared.mergedWishlistStore(wishlistByGame, gameOf);
   const prices = shared.mergedPriceStore(pricesByGame, gameOf);
@@ -359,10 +360,7 @@
     // Assim os botões nunca ficam "mortos" se o carregamento demorar/falhar.
     bindEvents();
     Promise.all([
-      shared.loadOwnedAcrossGames({
-        pokemon: ownedByGame.pokemon.knownCardIds(),
-        lorcana: ownedByGame.lorcana.knownCardIds()
-      }),
+      shared.loadOwnedAcrossGames(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, ownedByGame[g].knownCardIds()]))),
       shared.loadFxRates()
     ])
       .then(([catalog]) => {
@@ -449,7 +447,7 @@
   // acompanha o jogo selecionado.
   function updatePokemonFilterLabel() {
     const label = document.querySelector('label[for="pokemonFilter"]');
-    if (label) label.textContent = gameFilter === "lorcana" ? t("toolbar.characters") : t("toolbar.pokemon");
+    if (label) label.textContent = gameFilter !== "pokemon" && gameFilter !== "all" ? t("toolbar.characters") : t("toolbar.pokemon");
   }
 
   // Aplica o idioma de carta preferido como valor inicial do filtro de idioma,
@@ -741,7 +739,7 @@
     if (!tab) return;
     const hide = gameFilter === "all";
     tab.hidden = hide;
-    if (!hide) tab.textContent = gameFilter === "lorcana" ? t("toolbar.characters") : t("toolbar.pokemon");
+    if (!hide) tab.textContent = gameFilter !== "pokemon" && gameFilter !== "all" ? t("toolbar.characters") : t("toolbar.pokemon");
     if (hide && activeTab === "pokemon") {
       activeTab = "cards";
       Array.from(elements.tabs.children).forEach((n) => n.setAttribute("aria-pressed", n.dataset.tab === "cards" ? "true" : "false"));
@@ -833,10 +831,7 @@
     // Distribuição por jogo (Pokémon × Lorcana), entre as cartas filtradas.
     const byGame = {};
     myCards.forEach((card) => { byGame[card.game] = (byGame[card.game] || 0) + 1; });
-    elements.dashDist.innerHTML = distBarsHtml([
-      { label: t("filter.gamePokemon"), n: byGame.pokemon || 0, color: "#e23030" },
-      { label: t("filter.gameLorcana"), n: byGame.lorcana || 0, color: "#3f3d96" }
-    ]);
+    elements.dashDist.innerHTML = distBarsHtml(shared.GAME_SLUGS.map((g) => ({ label: gameLabelOf(g), n: byGame[g] || 0, color: shared.GAME_COLOR[g] })));
 
     // Distribuição por região/idioma das cartas (com bandeirinha).
     const byRegion = {};
@@ -1371,14 +1366,13 @@
   function gameColor(games) {
     if (!games || games.size === 0) return "";
     if (games.size > 1) return "#5a6473";
-    return games.has("lorcana") ? "#3f3d96" : "#e23030";
+    return shared.GAME_COLOR[games.values().next().value] || shared.GAME_COLOR.pokemon;
   }
   function folderTagHtml(games) {
     if (!games || games.size === 0) return "";
     let label;
     if (games.size > 1) label = t("folders.tag.mixed");
-    else if (games.has("lorcana")) label = t("filter.gameLorcana");
-    else label = t("filter.gamePokemon");
+    else label = gameLabelOf(games.values().next().value);
     return `<span class="folder-tag" style="--tag:${gameColor(games)}">${escapeHtml(label)}</span>`;
   }
   // Título do card de showcase pintado na cor do jogo (classe + style inline).
@@ -1985,8 +1979,7 @@
     const filterHtml = gamesPresent.length > 1
       ? `<div class="collection-toolbar"><div id="sharedGameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
           <button type="button" class="chip" data-game-filter="all" aria-pressed="true">${escapeHtml(t("filter.gameAll"))}</button>
-          <button type="button" class="chip" data-game-filter="pokemon" aria-pressed="false">${escapeHtml(t("filter.gamePokemon"))}</button>
-          <button type="button" class="chip" data-game-filter="lorcana" aria-pressed="false">${escapeHtml(t("filter.gameLorcana"))}</button>
+          ${shared.GAME_SLUGS.map((g) => `<button type="button" class="chip" data-game-filter="${g}" aria-pressed="false">${escapeHtml(gameLabelOf(g))}</button>`).join("")}
         </div></div>`
       : "";
 
@@ -2168,7 +2161,7 @@
       const uniq = (arr) => Array.from(new Set(arr.filter(Boolean)));
       const opts = (values, sel, fmt) => `<option value="">${escapeHtml(t("filter.all.m"))}</option>` +
         values.map((v) => `<option value="${escapeAttribute(v)}"${v === sel ? " selected" : ""}>${escapeHtml(fmt ? fmt(v) : v)}</option>`).join("");
-      const pkLabel = gFilter === "lorcana" ? t("toolbar.characters") : t("toolbar.pokemon");
+      const pkLabel = gFilter !== "pokemon" && gFilter !== "all" ? t("toolbar.characters") : t("toolbar.pokemon");
       const species = uniq(pool.map(speciesOf)).sort((a, b) => a.localeCompare(b));
       const sets = uniq(pool.map((it) => it.s)).sort((a, b) => a.localeCompare(b));
       const langs = uniq(pool.map((it) => it.lang));
@@ -2206,7 +2199,7 @@
       if (gamesPresent.length <= 1) return "";
       const chip = (g, label) => `<button type="button" class="chip" data-game-filter="${g}" aria-pressed="${gFilter === g}">${escapeHtml(label)}</button>`;
       return `<div class="collection-toolbar"><div id="sharedGameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
-        ${chip("all", t("filter.gameAll"))}${chip("pokemon", t("filter.gamePokemon"))}${chip("lorcana", t("filter.gameLorcana"))}
+        ${chip("all", t("filter.gameAll"))}${shared.GAME_SLUGS.map((g) => chip(g, gameLabelOf(g))).join("")}
       </div></div>`;
     }
     // Grupos das abas-vitrine (Coleções/Tags/Artistas/Sets): {id,name,color?,stars?,cover?,items}.
@@ -2384,10 +2377,7 @@
     const seen = new Set();
     const byGame = {};
     items.forEach((it) => { if (it.g && !seen.has(it.id)) { seen.add(it.id); byGame[it.g] = (byGame[it.g] || 0) + 1; } });
-    const distOrder = [
-      { game: "pokemon", label: t("filter.gamePokemon"), color: "#e23030" },
-      { game: "lorcana", label: t("filter.gameLorcana"), color: "#3f3d96" }
-    ].filter((g) => byGame[g.game]);
+    const distOrder = shared.GAME_SLUGS.map((g) => ({ game: g, label: gameLabelOf(g), color: shared.GAME_COLOR[g] })).filter((g) => byGame[g.game]);
     const max = Math.max(1, ...distOrder.map((g) => byGame[g.game]));
     const distHtml = distOrder.length
       ? distOrder.map((g) => `<div class="dash-dist-row">

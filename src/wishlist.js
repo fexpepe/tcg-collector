@@ -13,9 +13,9 @@
   let cardsView = localStorage.getItem("tcg-wishlist-view") === "list" ? "list" : "grid";
 
   // Wishlist UNIFICADA: stores por jogo + facades que despacham por jogo (cardGameMap).
-  const ownedByGame = { pokemon: shared.createCollectionStore("pokemon"), lorcana: shared.createCollectionStore("lorcana") };
-  const wishlistByGame = { pokemon: shared.createWishlistStore("pokemon"), lorcana: shared.createWishlistStore("lorcana") };
-  const pricesByGame = { pokemon: shared.createPriceStore("pokemon"), lorcana: shared.createPriceStore("lorcana") };
+  const ownedByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createCollectionStore(g)]));
+  const wishlistByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createWishlistStore(g)]));
+  const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
   const cardGameMap = new Map();
   const gameOf = (id) => cardGameMap.get(id) || "pokemon";
   const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
@@ -55,7 +55,7 @@
   // botões nunca ficam "mortos" se o carregamento demorar/falhar.
   bindEvents();
   Promise.all([
-    shared.loadOwnedAcrossGames({ pokemon: idsFor("pokemon"), lorcana: idsFor("lorcana") }),
+    shared.loadOwnedAcrossGames(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, idsFor(g)]))),
     shared.loadFxRates()
   ])
     .then(([catalog]) => {
@@ -81,7 +81,7 @@
     const el = document.getElementById("wishSellers");
     if (!el || !shared.findSellers) return;
     try {
-      const wishIds = [...new Set([...wishlistByGame.pokemon.knownCardIds(), ...wishlistByGame.lorcana.knownCardIds()])];
+      const wishIds = [...new Set(shared.GAME_SLUGS.flatMap((g) => wishlistByGame[g].knownCardIds()))];
       if (!wishIds.length) { el.hidden = true; return; }
       const rows = await shared.findSellers(wishIds);
       const myHandle = (shared.getProfile && shared.getProfile().handle) || "";
@@ -121,9 +121,9 @@
     const el = document.getElementById("wishDrops");
     if (!el) return;
     try {
-      const [pk, lc] = await Promise.all([shared.loadPriceDeltas("pokemon"), shared.loadPriceDeltas("lorcana")]);
+      const perGame = await Promise.all(shared.GAME_SLUGS.map((g) => shared.loadPriceDeltas(g)));
       const deltas = {};
-      [pk, lc].forEach((d) => { if (d && d.c) Object.assign(deltas, d.c); });
+      perGame.forEach((d) => { if (d && d.c) Object.assign(deltas, d.c); });
       const drops = [];
       cards.forEach((card) => {
         if (!wishlist.hasCard(card.id)) return;
@@ -166,7 +166,7 @@
   // 1º filtro: Pokémon (espécie) / Personagens (Lorcana), conforme o jogo.
   function updatePokemonFilterLabel() {
     const label = document.querySelector('label[for="pokemonFilter"]');
-    if (label) label.textContent = gameFilter === "lorcana" ? t("toolbar.characters") : t("toolbar.pokemon");
+    if (label) label.textContent = gameFilter !== "pokemon" && gameFilter !== "all" ? t("toolbar.characters") : t("toolbar.pokemon");
   }
 
   function bindEvents() {

@@ -17,11 +17,12 @@
 
   // Stores por jogo + facades (despacham por jogo pelo cardGameMap). Igual às
   // outras páginas: a página de vendas só lê cartas que você TEM.
-  const ownedByGame = { pokemon: shared.createCollectionStore("pokemon"), lorcana: shared.createCollectionStore("lorcana") };
-  const wishlistByGame = { pokemon: shared.createWishlistStore("pokemon"), lorcana: shared.createWishlistStore("lorcana") };
-  const pricesByGame = { pokemon: shared.createPriceStore("pokemon"), lorcana: shared.createPriceStore("lorcana") };
+  const ownedByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createCollectionStore(g)]));
+  const wishlistByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createWishlistStore(g)]));
+  const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
   const cardGameMap = new Map();
   const gameOf = (id) => cardGameMap.get(id) || "pokemon";
+  const gameLabelOf = (g) => t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : "filter.gamePokemon");
   const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
   const wishlist = shared.mergedWishlistStore(wishlistByGame, gameOf);
   const prices = shared.mergedPriceStore(pricesByGame, gameOf);
@@ -239,10 +240,7 @@
     // Distribuição por jogo (Pokémon × Lorcana) das cartas à venda.
     const byGame = {};
     items.forEach(({ card }) => { byGame[card.game] = (byGame[card.game] || 0) + 1; });
-    elements.dashDist.innerHTML = distBarsHtml([
-      { label: t("filter.gamePokemon"), n: byGame.pokemon || 0, color: "#d9a300" },
-      { label: t("filter.gameLorcana"), n: byGame.lorcana || 0, color: "#3f3d96" }
-    ]);
+    elements.dashDist.innerHTML = distBarsHtml(shared.GAME_SLUGS.map((g) => ({ label: gameLabelOf(g), n: byGame[g] || 0, color: shared.GAME_COLOR[g] })));
   }
 
   function renderSales() {
@@ -487,8 +485,7 @@
         <div class="sales-picker-controls">
           <div class="chip-filter game-filter" id="salesPickerGame" role="group" aria-label="Jogo">
             <button type="button" class="chip" data-pick-game="all" aria-pressed="${pickGame === "all"}">${escapeHtml(t("filter.gameAll"))}</button>
-            <button type="button" class="chip" data-pick-game="pokemon" aria-pressed="${pickGame === "pokemon"}">${escapeHtml(t("filter.gamePokemon"))}</button>
-            <button type="button" class="chip" data-pick-game="lorcana" aria-pressed="${pickGame === "lorcana"}">${escapeHtml(t("filter.gameLorcana"))}</button>
+            ${shared.GAME_SLUGS.map((g) => `<button type="button" class="chip" data-pick-game="${g}" aria-pressed="${pickGame === g}">${escapeHtml(gameLabelOf(g))}</button>`).join("")}
           </div>
           <input type="search" class="sales-picker-search" placeholder="${escapeAttribute(t("search.placeholder.cards"))}">
           <label class="sales-picker-field"><span>${escapeHtml(t("toolbar.rarity"))}</span>
@@ -638,10 +635,11 @@
       ctx.save();
       roundRect(x, y, CARD_W, CARD_H, RADIUS); ctx.fillStyle = "#eceff3"; ctx.fill(); ctx.clip();
       const src = shared.cardImageSources(card);
-      // Lorcana: cards.lorcast.io NÃO manda CORS → o crossOrigin falhava e caía no
-      // fallback (que é uma URL de Pokémon!). Roteia pela wsrv.nl (proxy com CORS)
-      // e NÃO usa o fallback de Pokémon. Pokémon segue direto pela tcgdex (tem CORS).
-      const lor = card.game === "lorcana";
+      // Lorcana (cards.lorcast.io) e One Piece (tcgplayer-cdn) NÃO mandam CORS →
+      // o crossOrigin falhava e caía no fallback (que é uma URL de Pokémon!).
+      // Roteia pela wsrv.nl (proxy com CORS) e NÃO usa o fallback de Pokémon.
+      // Pokémon segue direto pela tcgdex (tem CORS).
+      const lor = card.game === "lorcana" || card.game === "onepiece";
       let img;
       if (lor) {
         img = await loadImage(`https://wsrv.nl/?url=${encodeURIComponent(src.url)}&output=webp`, true);
@@ -761,10 +759,7 @@
   // catálogo — inclui os ids nos dois jogos (id de outro jogo é no-op no loader).
   const soldIds = sold.list().map((x) => x.cardId);
   Promise.all([
-    shared.loadOwnedAcrossGames({
-      pokemon: ownedByGame.pokemon.knownCardIds().concat(soldIds),
-      lorcana: ownedByGame.lorcana.knownCardIds().concat(soldIds)
-    }),
+    shared.loadOwnedAcrossGames(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, ownedByGame[g].knownCardIds().concat(soldIds)]))),
     shared.loadFxRates()
   ])
     .then(([catalog]) => {

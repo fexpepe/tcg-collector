@@ -21,11 +21,9 @@
       try { return JSON.parse(decodeURIComponent(m[1])); } catch (e) { return null; }
     };
     const fromBRL = (v) => { const r = shared.convertMoney(v, "BRL", shared.getCurrency()); return r == null ? v : r; };
-    const COLORS = { pokemon: "#e23030", lorcana: "#3f3d96" };
-    const games = [
-      { g: "pokemon", name: "Pokémon TCG", data: readPf("pokemon") },
-      { g: "lorcana", name: "Disney Lorcana", data: readPf("lorcana") }
-    ];
+    const COLORS = shared.GAME_COLOR;
+    const NAMES = { pokemon: "Pokémon TCG", lorcana: "Disney Lorcana", onepiece: "One Piece Card Game" };
+    const games = shared.GAME_SLUGS.map((g) => ({ g, name: NAMES[g] || g, data: readPf(g) }));
     games.forEach((x) => {
       x.color = COLORS[x.g];
       x.total = x.data ? fromBRL((x.data.c || 0) + (x.data.b || 0)) : null;
@@ -81,11 +79,11 @@
   // Binders e wishlist são VISÕES (filtros), não somam ao patrimônio.
   // Coleção unificada igual à collection.js (stores por jogo + facades).
   // ===========================================================================
-  const GAMES = ["pokemon", "lorcana"];
-  const GAME_COLOR = { pokemon: "#e23030", lorcana: "#3f3d96" };
-  const ownedByGame = { pokemon: shared.createCollectionStore("pokemon"), lorcana: shared.createCollectionStore("lorcana") };
-  const wishlistByGame = { pokemon: shared.createWishlistStore("pokemon"), lorcana: shared.createWishlistStore("lorcana") };
-  const pricesByGame = { pokemon: shared.createPriceStore("pokemon"), lorcana: shared.createPriceStore("lorcana") };
+  const GAMES = shared.GAME_SLUGS;
+  const GAME_COLOR = shared.GAME_COLOR;
+  const ownedByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createCollectionStore(g)]));
+  const wishlistByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createWishlistStore(g)]));
+  const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
   const cardGameMap = new Map();
   const gameOf = (id) => cardGameMap.get(id) || "pokemon";
   const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
@@ -119,18 +117,15 @@
 
   // Maiores altas/quedas do MERCADO (price-movers do build semanal). Busca antes
   // do catálogo pra incluir os ids dos movers no carregamento (podem não ser seus).
-  const moversByGame = { pokemon: null, lorcana: null };
+  const moversByGame = Object.fromEntries(GAMES.map((g) => [g, null]));
   const fetchMovers = (dir) => fetch(dir + "price-movers.generated.json").then((r) => (r.ok ? r.json() : null)).catch(() => null);
 
-  Promise.all([fetchMovers("data/"), fetchMovers("data/lorcana/")])
-    .then(([pk, lc]) => {
-      moversByGame.pokemon = pk; moversByGame.lorcana = lc;
+  Promise.all(GAMES.map((g) => fetchMovers(shared.gameDataDir(g))))
+    .then((movers) => {
+      GAMES.forEach((g, i) => { moversByGame[g] = movers[i]; });
       const idsOf = (m) => m ? (m.up || []).concat(m.down || []).map((x) => x.id) : [];
       return Promise.all([
-        shared.loadOwnedAcrossGames({
-          pokemon: ownedByGame.pokemon.knownCardIds().concat(idsOf(pk)),
-          lorcana: ownedByGame.lorcana.knownCardIds().concat(idsOf(lc))
-        }),
+        shared.loadOwnedAcrossGames(Object.fromEntries(GAMES.map((g, i) => [g, ownedByGame[g].knownCardIds().concat(idsOf(movers[i]))]))),
         shared.loadFxRates()
       ]);
     })
@@ -254,7 +249,7 @@
   function renderMovers() {
     const sec = document.getElementById("pfMovers");
     if (!sec) return;
-    const pool = gameFilter === "all" ? ["pokemon", "lorcana"] : [gameFilter];
+    const pool = gameFilter === "all" ? GAMES : [gameFilter];
     let up = [], down = [], from = null;
     pool.forEach((g) => {
       const m = moversByGame[g];

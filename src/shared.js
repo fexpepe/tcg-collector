@@ -656,7 +656,7 @@
   function initCommandPalette() {
     let overlay = null, items = [], active = 0;
     const close = () => { if (overlay) { overlay.remove(); overlay = null; } };
-    const gameLabel = (g) => (g === "lorcana" ? t("filter.gameLorcana") : t("filter.gamePokemon"));
+    const gameLabel = (g) => t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : "filter.gamePokemon");
     function results(q) {
       const out = [];
       const nq = normalize(q);
@@ -670,8 +670,9 @@
         top(cmdkIndex.artists).forEach((x) => push(t("nav.artists"), "artist", x));
       }
       if (nq) {
-        out.push({ group: "", name: `${t("cmdk.explore", { q })} · ${gameLabel("pokemon")}`, url: `cards.html?game=pokemon&q=${encodeURIComponent(q)}`, explore: true });
-        out.push({ group: "", name: `${t("cmdk.explore", { q })} · ${gameLabel("lorcana")}`, url: `cards.html?game=lorcana&q=${encodeURIComponent(q)}`, explore: true });
+        for (const g of GAME_SLUGS) {
+          out.push({ group: "", name: `${t("cmdk.explore", { q })} · ${gameLabel(g)}`, url: `cards.html?game=${g}&q=${encodeURIComponent(q)}`, explore: true });
+        }
       }
       return out;
     }
@@ -972,6 +973,11 @@
               ${exploreLink("cards.html?game=lorcana", "nav.allCards")}
               ${exploreLink("sets.html?game=lorcana", "nav.sets")}
               ${exploreLink("artists.html?game=lorcana", "nav.artists")}
+            </div>
+            <div class="nav-mega-col">
+              <span class="nav-mega-head">${escapeHtml(t("nav.gameOnePiece"))}</span>
+              ${exploreLink("cards.html?game=onepiece", "nav.allCards")}
+              ${exploreLink("sets.html?game=onepiece", "nav.sets")}
             </div>
           </div>
         </div>
@@ -1323,7 +1329,7 @@
   function logCardView(card) {
     if (!AUTH_ENABLED || !card || !card.id) return;
     try {
-      const game = (card.game || currentGame()) === "lorcana" ? "lorcana" : "pokemon";
+      const game = normalizeGame(card.game || currentGame());
       const k = `tcg-viewed:${game}:${card.id}`;
       if (sessionStorage.getItem(k)) return;
       sessionStorage.setItem(k, "1");
@@ -1339,7 +1345,7 @@
   async function fetchTopViewed(game, limit) {
     if (!AUTH_ENABLED) return [];
     try {
-      const g = game === "lorcana" ? "lorcana" : "pokemon";
+      const g = normalizeGame(game);
       const r = await fetch(`${SUPABASE_URL}/rest/v1/card_views?game=eq.${g}&order=views.desc&limit=${limit || 8}&select=card_id,views`, { headers: authHeaders() });
       return r.ok ? await r.json() : [];
     } catch (e) { return []; }
@@ -1393,7 +1399,7 @@
   // localStorage cru dos dois jogos. {cardId:{variant:qty}}. Usado no perfil/hub.
   function collectionCounts() {
     let copies = 0, distinct = 0;
-    ["pokemon", "lorcana"].forEach((g) => {
+    GAME_SLUGS.forEach((g) => {
       try {
         const raw = JSON.parse(localStorage.getItem(gameKey("collection-v3", g)) || "{}");
         Object.keys(raw).forEach((cardId) => {
@@ -1408,7 +1414,7 @@
   // sleevu_pf_<game> (escrito pelo Portfólio) — sem catálogo. Na moeda atual.
   function portfolioValueTotal() {
     let brl = 0; let has = false;
-    ["pokemon", "lorcana"].forEach((g) => {
+    GAME_SLUGS.forEach((g) => {
       const m = document.cookie.match(new RegExp("(?:^|; )sleevu_pf_" + g + "=([^;]*)"));
       if (!m) return;
       try { const d = JSON.parse(decodeURIComponent(m[1])); brl += (d.c || 0) + (d.b || 0); has = true; } catch (e) { /* ignora */ }
@@ -1917,11 +1923,15 @@
   function marketQuoteHtml(pricing, fx, card) {
     // Formato segue o jogo da CARTA, não a sessão: carta Lorcana mostra a cotação
     // Lorcana (LigaLorcana etc.) mesmo numa sessão Pokémon, e vice-versa.
-    if ((card.game || currentGame()) === "lorcana") {
+    // Lorcana e One Piece têm a MESMA forma de preço (TCGplayer market u/uf por
+    // acabamento) — só muda o texto da fonte.
+    const cardGame = card.game || currentGame();
+    if (cardGame === "lorcana" || cardGame === "onepiece") {
       const lor = lorcanaMarketHtml(card, fx);
       if (!lor) return "";
+      const srcKey = cardGame === "lorcana" ? "market.lorcanaSource" : "market.onepieceSource";
       return `<div class="market-quote-head"><h3>${escapeHtml(t("market.title"))}</h3></div>`
-        + lor + `<p class="market-source">${escapeHtml(t("market.lorcanaSource"))}</p>`;
+        + lor + `<p class="market-source">${escapeHtml(t(srcKey))}</p>`;
     }
     const data = pricing ? marketQuoteData(pricing, card) : { nonfoil: null, foil: null, updated: "" };
     let tcgdex = marketFinishRow(t("market.nonfoil"), data.nonfoil, fx) + marketFinishRow(t("market.foil"), data.foil, fx);
@@ -1956,9 +1966,9 @@
   // abre); ausência (primeira semana / dev) é silenciosa.
   const priceDeltasByGame = {};
   function loadPriceDeltas(game) {
-    const g = game === "lorcana" ? "lorcana" : "pokemon";
+    const g = normalizeGame(game);
     if (!priceDeltasByGame[g]) {
-      const dataDir = g === "lorcana" ? "data/lorcana/" : "data/";
+      const dataDir = gameDataDir(g);
       priceDeltasByGame[g] = fetch(dataDir + "price-deltas.generated.json")
         .then((r) => (r.ok ? r.json() : null)).catch(() => null);
     }
@@ -2349,6 +2359,14 @@
         { key: "liga", label: "LigaLorcana", url: (card) => `https://www.ligalorcana.com.br/?view=cards/search&card=${enc(card.name)}` }
       ];
     }
+    if (game === "onepiece") {
+      // Liga tem site próprio de One Piece; MYP também lista o jogo. A busca por
+      // nome + código oficial ("Monkey.D.Luffy OP01-003") casa melhor que só nome.
+      return [
+        { key: "liga", label: "LigaOnePiece", url: (card) => `https://www.ligaonepiece.com.br/?view=cards/search&card=${enc(card.name)}` },
+        { key: "myp", label: "MYP", url: (card) => `https://mypcards.com/onepiece?ProdutoSearch%5Bquery%5D=${enc(card.name)}` }
+      ];
+    }
     return [
       { key: "liga", label: "LigaPokémon", url: (card) => `https://www.ligapokemon.com.br/?view=cards/search&card=${enc(paddedCardQuery(card, true))}` },
       { key: "ligabra", label: "LigaBRA", url: (card) => `https://ligabra.com/filter-products/${enc(cardSearchQuery(card))}` },
@@ -2360,7 +2378,7 @@
   // PriceCharting têm Lorcana). A linha do TCGplayer e o texto de busca seguem o
   // jogo atual.
   function usMarketplaces(game, gradedTag) {
-    const line = game === "lorcana" ? "lorcana" : "pokemon";
+    const line = game === "lorcana" ? "lorcana" : game === "onepiece" ? "one-piece-card-game" : "pokemon";
     // Carta graduada: eBay e PriceCharting buscam com a graduadora+nota (ex.: "PSA
     // 9") junto do nome — é onde o preço graded mora. O TCGplayer não lista graded,
     // então segue com a busca normal (sem o tag).
@@ -2386,7 +2404,7 @@
   }
 
   function usSearchText(card, game) {
-    const prefix = game === "lorcana" ? "lorcana" : "pokemon";
+    const prefix = game === "lorcana" ? "lorcana" : game === "onepiece" ? "one piece" : "pokemon";
     return `${prefix} ${card.name} ${cardCode(card)}`.trim();
   }
 
@@ -2975,8 +2993,20 @@
   // de preço de referência (os cardIds não colidem entre jogos).
   const DATA_GAMES = [
     { game: "pokemon", dataDir: "data/" },
-    { game: "lorcana", dataDir: "data/lorcana/" }
+    { game: "lorcana", dataDir: "data/lorcana/" },
+    { game: "onepiece", dataDir: "data/onepiece/" }
   ];
+  // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
+  // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
+  const GAME_SLUGS = DATA_GAMES.map((d) => d.game);
+  const GAME_COLOR = { pokemon: "#e23030", lorcana: "#3f3d96", onepiece: "#d9a400" };
+  function normalizeGame(g) {
+    return GAME_SLUGS.includes(g) ? g : "pokemon";
+  }
+  function gameDataDir(g) {
+    const d = DATA_GAMES.find((x) => x.game === g);
+    return d ? d.dataDir : "data/";
+  }
 
   function injectScript(src) {
     return new Promise((resolve) => {
@@ -3336,6 +3366,10 @@
     applyGameAccent,
     gameColorsEnabled,
     setGameColors,
+    GAME_SLUGS,
+    GAME_COLOR,
+    normalizeGame,
+    gameDataDir,
     getTheme,
     setTheme,
     getLanguage,
@@ -4482,7 +4516,7 @@
         if (Date.now() < Number(localStorage.getItem(SNOOZE_KEY) || 0)) return;
         if (Date.now() - Number(localStorage.getItem(EXPORT_KEY) || 0) < 30 * 864e5) return;
         let copies = 0;
-        ["pokemon", "lorcana"].forEach((g) => {
+        GAME_SLUGS.forEach((g) => {
           const raw = JSON.parse(localStorage.getItem(`tcg-collector-${g}-collection-v3`) || "{}");
           Object.values(raw).forEach((variants) => Object.values(variants || {}).forEach((conds) => Object.values(conds || {}).forEach((q) => { copies += Number(q) || 0; })));
         });
@@ -4560,7 +4594,7 @@
     try { return localStorage.getItem(GAME_COLORS_PREF) !== "off"; } catch (e) { return true; }
   }
   function applyGameAccent(value) {
-    const v = gameColorsEnabled() && (value === "pokemon" || value === "lorcana") ? value : "all";
+    const v = gameColorsEnabled() && GAME_SLUGS.includes(value) ? value : "all";
     document.documentElement.dataset.gameAccent = v;
   }
   function setGameColors(on) {

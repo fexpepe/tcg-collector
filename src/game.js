@@ -18,7 +18,8 @@
     // Início/HUB: não é um jogo — não tem catálogo nem dados próprios.
     hub: { slug: "hub", name: "Sleevu", isHub: true },
     pokemon: { slug: "pokemon", name: "Pokémon", dataDir: "data/" },
-    lorcana: { slug: "lorcana", name: "Lorcana", dataDir: "data/lorcana/" }
+    lorcana: { slug: "lorcana", name: "Lorcana", dataDir: "data/lorcana/" },
+    onepiece: { slug: "onepiece", name: "One Piece", dataDir: "data/onepiece/" }
   };
 
   var GAME_KEY = "tcg-collector-game-v1"; // sessão: jogo escolhido por último

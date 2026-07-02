@@ -212,6 +212,8 @@
       if (serieParam) return setItems.filter((set) => set.serieId === serieParam).sort(sortByReleaseDesc);
       // Lorcana não tem séries: separa em 2 categorias (Principais + Promos).
       if ((window.SLEEVU && window.SLEEVU.game) === "lorcana") return groupLorcanaSets(setItems);
+      // One Piece: Boosters (OP01…) + Starter Decks (ST-…) + o resto (promos etc.).
+      if ((window.SLEEVU && window.SLEEVU.game) === "onepiece") return groupOnePieceSets(setItems);
       // Página de Sets: agrupada por série (coleção).
       return groupSetsBySeries(setItems);
     }
@@ -578,6 +580,30 @@
     if (main.length) {
       items.push({ type: "category-head", name: t("sets.category.main"), count: main.length });
       main.forEach((set) => items.push(set));
+    }
+    if (promos.length) {
+      items.push({ type: "category-head", name: t("sets.category.promos"), count: promos.length });
+      promos.forEach((set) => items.push(set));
+    }
+    return items;
+  }
+
+  // One Piece: boosters principais têm setId "OP<nn>"; starter decks "ST-…"; o
+  // resto (pre-release, demo, promos) vai numa categoria final.
+  function groupOnePieceSets(setItems) {
+    const isMain = (set) => /^OP\d+$/i.test(String(set.setId || "").trim());
+    const isDeck = (set) => /^ST/i.test(String(set.setId || "").trim());
+    const main = setItems.filter(isMain).sort(sortByReleaseDesc);
+    const decks = setItems.filter((s) => !isMain(s) && isDeck(s)).sort(sortByReleaseDesc);
+    const promos = setItems.filter((s) => !isMain(s) && !isDeck(s)).sort(sortByReleaseDesc);
+    const items = [];
+    if (main.length) {
+      items.push({ type: "category-head", name: t("sets.category.main"), count: main.length });
+      main.forEach((set) => items.push(set));
+    }
+    if (decks.length) {
+      items.push({ type: "category-head", name: t("sets.category.decks"), count: decks.length });
+      decks.forEach((set) => items.push(set));
     }
     if (promos.length) {
       items.push({ type: "category-head", name: t("sets.category.promos"), count: promos.length });

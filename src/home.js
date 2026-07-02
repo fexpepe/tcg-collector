@@ -25,17 +25,16 @@
     const row = document.getElementById("homeTopViewedRow");
     if (!shared || !sec || !row || !shared.fetchTopViewed) return;
     try {
-      const [pk, lc] = await Promise.all([shared.fetchTopViewed("pokemon", 8), shared.fetchTopViewed("lorcana", 8)]);
-      const tops = pk.map((x) => ({ id: x.card_id, views: x.views, game: "pokemon" }))
-        .concat(lc.map((x) => ({ id: x.card_id, views: x.views, game: "lorcana" })))
+      const games = shared.GAME_SLUGS || ["pokemon", "lorcana"];
+      const perGame = await Promise.all(games.map((g) => shared.fetchTopViewed(g, 8)));
+      const tops = games.flatMap((g, i) => perGame[i].map((x) => ({ id: x.card_id, views: x.views, game: g })))
         .filter((x) => x.views >= 2)
         .sort((a, b) => b.views - a.views)
         .slice(0, 8);
       if (tops.length < 4) return;
-      const catalog = await shared.loadOwnedAcrossGames({
-        pokemon: tops.filter((x) => x.game === "pokemon").map((x) => x.id),
-        lorcana: tops.filter((x) => x.game === "lorcana").map((x) => x.id)
-      });
+      const idsByGame = {};
+      games.forEach((g) => { idsByGame[g] = tops.filter((x) => x.game === g).map((x) => x.id); });
+      const catalog = await shared.loadOwnedAcrossGames(idsByGame);
       const byId = new Map((catalog.cards || []).map((c) => [c.id, c]));
       const html = tops.map(({ id, views }) => {
         const card = byId.get(id);

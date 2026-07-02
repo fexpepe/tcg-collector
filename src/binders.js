@@ -28,9 +28,9 @@
   // qualquer jogo. As stores de coleção/desejo/preços (resumo Tenho/Faltando,
   // "marcar tudo", busca) viram facades que despacham por jogo (cardGameMap,
   // populado quando o catálogo dos dois jogos carrega).
-  const ownedByGame = { pokemon: shared.createCollectionStore("pokemon"), lorcana: shared.createCollectionStore("lorcana") };
-  const wishlistByGame = { pokemon: shared.createWishlistStore("pokemon"), lorcana: shared.createWishlistStore("lorcana") };
-  const pricesByGame = { pokemon: shared.createPriceStore("pokemon"), lorcana: shared.createPriceStore("lorcana") };
+  const ownedByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createCollectionStore(g)]));
+  const wishlistByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createWishlistStore(g)]));
+  const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
   const cardGameMap = new Map();
   const gameOf = (id) => cardGameMap.get(id) || "pokemon";
   const ownedStore = shared.mergedCollectionStore(ownedByGame, gameOf);
@@ -974,8 +974,7 @@
           <div class="binder-editor-tabpanel"${searchTab ? "" : " hidden"}>
             <div class="chip-filter game-filter binder-editor-gamefilter" role="group" aria-label="Jogo">
               <button type="button" class="chip${editorGameFilter === "all" ? " active" : ""}" data-edit-game="all" aria-pressed="${editorGameFilter === "all"}">${escapeHtml(t("filter.gameAll"))}</button>
-              <button type="button" class="chip${editorGameFilter === "pokemon" ? " active" : ""}" data-edit-game="pokemon" aria-pressed="${editorGameFilter === "pokemon"}">${escapeHtml(t("filter.gamePokemon"))}</button>
-              <button type="button" class="chip${editorGameFilter === "lorcana" ? " active" : ""}" data-edit-game="lorcana" aria-pressed="${editorGameFilter === "lorcana"}">${escapeHtml(t("filter.gameLorcana"))}</button>
+              ${shared.GAME_SLUGS.map((g) => `<button type="button" class="chip${editorGameFilter === g ? " active" : ""}" data-edit-game="${g}" aria-pressed="${editorGameFilter === g}">${escapeHtml(t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : "filter.gamePokemon"))}</button>`).join("")}
             </div>
             <div class="binder-editor-searchbar">
               <input type="search" class="binder-editor-search" data-edit-search placeholder="${escapeAttribute(t("binders.editor.search"))}" value="${escapeAttribute(editing.query || "")}">

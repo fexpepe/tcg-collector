@@ -98,6 +98,15 @@ jobs:
       - name: Snapshot de preços (histórico Lorcana)
         run: node scripts/sync-price-history.mjs data/lorcana
 
+      # Catálogo do One Piece (TCGCSV, espelho público do TCGplayer — cat. 68).
+      # Gera data/onepiece/ cards/indexes/pricing + .generated com preços USD.
+      # Não derruba o build se o espelho estiver fora (mantém o catálogo versionado).
+      - name: Sincroniza catálogo do One Piece (TCGCSV)
+        run: node scripts/sync-onepiece.mjs || echo "sync-onepiece falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico One Piece)
+        run: node scripts/sync-price-history.mjs data/onepiece
+
       # SEO: pré-renderiza uma página HTML estática por set do Pokémon em /set/<slug>.html
       # (title, meta, Open Graph, JSON-LD e a lista de cartas já no HTML) + regenera o
       # sitemap.xml com todas as URLs. Assim o Google indexa "Base Set", "151" etc. em vez

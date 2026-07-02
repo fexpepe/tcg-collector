@@ -33,9 +33,9 @@
 
   // Stores por jogo + facades (despacham por jogo pelo cardGameMap). A página só
   // lê cartas que você TEM (pra o picker), igual à de Vendas.
-  const ownedByGame = { pokemon: shared.createCollectionStore("pokemon"), lorcana: shared.createCollectionStore("lorcana") };
-  const wishlistByGame = { pokemon: shared.createWishlistStore("pokemon"), lorcana: shared.createWishlistStore("lorcana") };
-  const pricesByGame = { pokemon: shared.createPriceStore("pokemon"), lorcana: shared.createPriceStore("lorcana") };
+  const ownedByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createCollectionStore(g)]));
+  const wishlistByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createWishlistStore(g)]));
+  const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
   const cardGameMap = new Map();
   const gameOf = (id) => cardGameMap.get(id) || "pokemon";
   const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
@@ -275,8 +275,7 @@
         <div class="sales-picker-controls">
           <div class="chip-filter game-filter" id="gradedPickerGame" role="group" aria-label="Jogo">
             <button type="button" class="chip" data-pick-game="all" aria-pressed="${pickGame === "all"}">${escapeHtml(t("filter.gameAll"))}</button>
-            <button type="button" class="chip" data-pick-game="pokemon" aria-pressed="${pickGame === "pokemon"}">${escapeHtml(t("filter.gamePokemon"))}</button>
-            <button type="button" class="chip" data-pick-game="lorcana" aria-pressed="${pickGame === "lorcana"}">${escapeHtml(t("filter.gameLorcana"))}</button>
+            ${shared.GAME_SLUGS.map((g) => `<button type="button" class="chip" data-pick-game="${g}" aria-pressed="${pickGame === g}">${escapeHtml(t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : "filter.gamePokemon"))}</button>`).join("")}
           </div>
           <input type="search" class="sales-picker-search" placeholder="${escapeAttribute(t("search.placeholder.cards"))}">
           <label class="sales-picker-field"><span>${escapeHtml(t("toolbar.rarity"))}</span>
@@ -414,7 +413,7 @@
       ctx.save();
       roundRect(x, cy, CARD_W, CARD_H, RADIUS); ctx.fillStyle = "#eceff3"; ctx.fill(); ctx.clip();
       const src = shared.cardImageSources(card);
-      const lor = card.game === "lorcana";
+      const lor = card.game === "lorcana" || card.game === "onepiece"; // hosts sem CORS → proxy
       let img;
       if (lor) {
         img = await loadImage(`https://wsrv.nl/?url=${encodeURIComponent(src.url)}&output=webp`, true);
@@ -504,10 +503,7 @@
 
   bindEvents();
   Promise.all([
-    shared.loadOwnedAcrossGames({
-      pokemon: ownedByGame.pokemon.knownCardIds(),
-      lorcana: ownedByGame.lorcana.knownCardIds()
-    }),
+    shared.loadOwnedAcrossGames(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, ownedByGame[g].knownCardIds()]))),
     shared.loadFxRates()
   ])
     .then(([catalog]) => {
