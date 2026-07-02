@@ -467,7 +467,7 @@
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) { const co = imageButton.dataset.gradedCompany; preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant, co ? { graded: { company: co, grade: imageButton.dataset.gradedGrade, pristine: imageButton.dataset.gradedPristine === "1" } } : undefined); return; }
       const rm = event.target.closest("[data-graded-remove]");
-      if (rm) { const tile = rm.closest(".graded-tile"); if (tile) { graded.remove(tile.dataset.gradedGid); render(); } }
+      if (rm) { const tile = rm.closest(".graded-tile"); if (tile) { const restore = shared.snapshotKeys(["tcg-collector-collection-graded-v1"]); graded.remove(tile.dataset.gradedGid); render(); shared.toastUndo(t("undo.slabRemoved"), restore); } }
     });
     elements.grid.addEventListener("change", (event) => {
       const tile = event.target.closest(".graded-tile");

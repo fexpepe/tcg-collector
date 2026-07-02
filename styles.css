@@ -3735,6 +3735,59 @@ a.progress-row:hover {
 .pf-invest-title { margin: 0 0 10px; font-size: 17px; }
 .pf-pnl-pct { font-size: 11.5px; font-weight: 700; opacity: .85; }
 
+/* Seleção em massa (aba Cartas). */
+.bulk-toggle[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.bulk-mode .card-tile { cursor: pointer; }
+.card-tile.bulk-selected { outline: 3px solid var(--accent); outline-offset: -3px; border-radius: 12px; position: relative; }
+.card-tile.bulk-selected::after { content: "✓"; position: absolute; top: 6px; right: 6px; z-index: 2; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--accent); color: var(--on-accent); font-weight: 800; font-size: 14px; }
+.bulk-bar {
+  position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 55;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center;
+  max-width: calc(100vw - 24px); padding: 10px 14px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.45); font-size: 13px;
+}
+.bulk-bar select { width: auto; height: 34px; padding: 0 28px 0 10px; font-size: 12.5px; font-weight: 700; border-radius: 9px; }
+.bulk-bar-btn { min-height: 34px; padding: 0 14px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); color: var(--text); font-weight: 800; font-size: 12.5px; cursor: pointer; }
+.bulk-bar-btn.is-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.bulk-bar [disabled] { opacity: .5; cursor: not-allowed; }
+
+/* Busca global (Ctrl+K): paleta de comandos. */
+.cmdk-overlay { position: fixed; inset: 0; z-index: 70; background: rgba(6, 8, 12, 0.6); backdrop-filter: blur(2px); display: flex; align-items: flex-start; justify-content: center; padding: 12vh 16px 16px; }
+.cmdk-panel { width: 100%; max-width: 520px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); overflow: hidden; display: flex; flex-direction: column; }
+.cmdk-input { width: 100%; height: 48px; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: var(--surface); color: var(--text); padding: 0 16px; font: inherit; font-size: 15px; font-weight: 600; }
+.cmdk-input:focus { outline: none; }
+.cmdk-results { max-height: 46vh; overflow-y: auto; padding: 6px; }
+.cmdk-group { padding: 8px 10px 3px; font-size: 11px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--subtle); }
+.cmdk-item { display: block; width: 100%; text-align: left; min-height: 0; padding: 8px 10px; border: 0; border-radius: 8px; background: transparent; color: var(--text); font: inherit; font-weight: 600; font-size: 14px; cursor: pointer; }
+.cmdk-item:hover { background: var(--panel-strong); }
+.cmdk-item.is-active { background: var(--accent); color: var(--on-accent); }
+.cmdk-explore { color: var(--accent); font-weight: 800; }
+.cmdk-explore.is-active { color: var(--on-accent); }
+.cmdk-empty { margin: 0; padding: 14px 12px; font-size: 13px; color: var(--subtle); }
+.cmdk-hint { margin: 0; padding: 8px 14px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--subtle); }
+
+/* Onboarding (coleção vazia): guia de 3 passos. */
+.onboarding { margin: 4px 0 18px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
+.onboarding h2 { margin: 0 0 14px; font-size: 19px; }
+.onb-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.onb-step { display: flex; gap: 12px; align-items: flex-start; }
+.onb-num { flex: none; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--accent); color: var(--on-accent); font-weight: 800; font-size: 14px; }
+.onb-body strong { display: block; font-size: 14.5px; margin-bottom: 4px; }
+.onb-body p { margin: 0; font-size: 13px; color: var(--muted); }
+.onb-ctas { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.onb-ctas .cta { min-height: 34px; padding: 0 14px; font-size: 13px; display: inline-flex; align-items: center; }
+
+/* Toast com "Desfazer" (ações destrutivas). */
+.undo-toast {
+  position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 60;
+  display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+  background: #15171d; color: #fff; border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 12px; font-size: 13.5px; font-weight: 700;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.45);
+}
+.undo-toast-btn { min-height: 0; padding: 5px 12px; border: 0; border-radius: 8px; background: var(--accent); color: var(--on-accent); font-weight: 800; font-size: 12.5px; cursor: pointer; }
+
 /* Aviso de backup (local-first sem conta/export): faixa discreta sob o header. */
 .backup-banner {
   display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;

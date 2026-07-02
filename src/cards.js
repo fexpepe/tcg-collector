@@ -47,6 +47,9 @@
       owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
       hydrateFilters();
       bindEvents();
+      // Deep-link de busca (?q=...): usado pela busca global (Ctrl+K) de outras páginas.
+      const q = new URLSearchParams(window.location.search).get("q");
+      if (q && elements.search) elements.search.value = q;
       render();
     })
     .catch((error) => {

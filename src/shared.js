@@ -618,6 +618,105 @@
     return { value: 0, currency: cur, source: null };
   }
 
+  // --- Busca global (Ctrl+K / Cmd+K): paleta sobre qualquer página ---
+  // Procura Pokémon, sets e artistas nos ÍNDICES já carregados (leve, sem rede) e
+  // navega pro detalhe. Sempre oferece "buscar no Explorar" (cartas por nome, ?q=).
+  function initCommandPalette() {
+    let overlay = null, items = [], active = 0;
+    const idxData = () => window.TCG_INDEXES_MERGED || window.TCG_INDEXES || null;
+    const close = () => { if (overlay) { overlay.remove(); overlay = null; } };
+    function results(q) {
+      const out = [];
+      const nq = normalize(q);
+      const idx = idxData();
+      if (nq && idx) {
+        const match = (name) => normalize(name).includes(nq);
+        const rank = (name) => (normalize(name).startsWith(nq) ? 0 : 1);
+        const top = (names) => names.filter(match).sort((a, b) => rank(a) - rank(b) || a.localeCompare(b)).slice(0, 5);
+        top(Object.keys((idx.pokemonTotals || {}))).forEach((n) => out.push({ group: t("toolbar.pokemon"), name: n, url: detailUrl("pokemon", n) }));
+        top(unique((idx.sets || []).map((s) => s.name))).forEach((n) => out.push({ group: t("nav.sets"), name: n, url: detailUrl("set", n) }));
+        top(unique((idx.artists || []).map((a) => a.name))).forEach((n) => out.push({ group: t("nav.artists"), name: n, url: detailUrl("artist", n) }));
+      }
+      if (nq) out.push({ group: "", name: t("cmdk.explore", { q }), url: "cards.html?q=" + encodeURIComponent(q), explore: true });
+      return out;
+    }
+    function renderList(q) {
+      items = results(q);
+      active = 0;
+      const list = overlay.querySelector(".cmdk-results");
+      let lastGroup = null;
+      list.innerHTML = items.map((it, i) => {
+        const head = it.group && it.group !== lastGroup ? `<div class="cmdk-group">${escapeHtml(it.group)}</div>` : "";
+        lastGroup = it.group;
+        return `${head}<button type="button" class="cmdk-item${i === active ? " is-active" : ""}${it.explore ? " cmdk-explore" : ""}" data-cmdk-i="${i}">${escapeHtml(it.name)}</button>`;
+      }).join("") || `<p class="cmdk-empty">${escapeHtml(t("cmdk.empty"))}</p>`;
+    }
+    function setActive(i) {
+      if (!items.length) return;
+      active = (i + items.length) % items.length;
+      overlay.querySelectorAll(".cmdk-item").forEach((el) => el.classList.toggle("is-active", Number(el.dataset.cmdkI) === active));
+      const el = overlay.querySelector(".cmdk-item.is-active");
+      if (el) el.scrollIntoView({ block: "nearest" });
+    }
+    function go(i) { const it = items[i]; if (it) { close(); window.location.href = it.url; } }
+    function open() {
+      close();
+      overlay = document.createElement("div");
+      overlay.className = "cmdk-overlay";
+      overlay.innerHTML = `<div class="cmdk-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("cmdk.placeholder"))}">
+          <input type="text" class="cmdk-input" placeholder="${escapeAttribute(t("cmdk.placeholder"))}" autocomplete="off" spellcheck="false">
+          <div class="cmdk-results"></div>
+          <p class="cmdk-hint">${escapeHtml(t("cmdk.hint"))}</p>
+        </div>`;
+      document.body.appendChild(overlay);
+      const input = overlay.querySelector(".cmdk-input");
+      renderList("");
+      overlay.addEventListener("click", (e) => {
+        const item = e.target.closest("[data-cmdk-i]");
+        if (item) { go(Number(item.dataset.cmdkI)); return; }
+        if (!e.target.closest(".cmdk-panel")) close(); // clique fora fecha
+      });
+      input.addEventListener("input", () => renderList(input.value.trim()));
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowDown") { e.preventDefault(); setActive(active + 1); }
+        else if (e.key === "ArrowUp") { e.preventDefault(); setActive(active - 1); }
+        else if (e.key === "Enter") { e.preventDefault(); go(active); }
+      });
+      input.focus();
+    }
+    document.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && String(e.key).toLowerCase() === "k") { e.preventDefault(); if (overlay) close(); else open(); return; }
+      if (e.key === "Escape" && overlay) close();
+    });
+  }
+
+  // --- Toast com "Desfazer" (ações destrutivas sem confirm() bloqueante) ---
+  // Padrão: tira um snapshot do localStorage ANTES de apagar, apaga na hora e dá
+  // 6s pra voltar atrás. O undo restaura as chaves e RECARREGA a página (os stores
+  // guardam estado em closure; recarregar é o jeito universal de re-hidratar).
+  function snapshotKeys(keys) {
+    const snap = keys.map((k) => [k, localStorage.getItem(k)]);
+    return () => snap.forEach(([k, v]) => { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); });
+  }
+  let undoToastEl = null, undoToastTimer = 0;
+  function toastUndo(message, restore) {
+    try {
+      if (undoToastEl) { undoToastEl.remove(); clearTimeout(undoToastTimer); undoToastEl = null; }
+      const el = document.createElement("div");
+      el.className = "undo-toast";
+      el.setAttribute("role", "status");
+      el.innerHTML = `<span>${escapeHtml(message)}</span><button type="button" class="undo-toast-btn">${escapeHtml(t("undo.action"))}</button>`;
+      document.body.appendChild(el);
+      undoToastEl = el;
+      el.querySelector("button").addEventListener("click", () => {
+        clearTimeout(undoToastTimer); el.remove(); undoToastEl = null;
+        try { restore(); } catch (e) { /* snapshot inválido: nada a fazer */ }
+        window.location.reload();
+      });
+      undoToastTimer = setTimeout(() => { el.remove(); if (undoToastEl === el) undoToastEl = null; }, 6000);
+    } catch (e) { /* toast é açúcar: nunca quebra o fluxo de apagar */ }
+  }
+
   // --- "Modo investidor": vendas REALIZADAS (sold) + custo pago (costs) ---
   // Globais (cross-game), sincronizados via SYNC_KEYS (LWW do bloco, como graded)
   // e incluídos no backup JSON. PRIVADOS: nunca entram no perfil público.
@@ -3123,6 +3222,8 @@
     createCostsStore,
     readSoldList,
     moneyToCurrent,
+    snapshotKeys,
+    toastUndo,
     formatMoney: fmtMoney,
     cardLanguageFromId,
     spriteUrl,
@@ -4328,6 +4429,7 @@
   initPartnerBanner();
   initThemeToggle();
   initTroubleshootTriggers();
+  initCommandPalette();
   initAuth();
 
   // Service worker: cacheia as imagens já vistas para sobreviverem a um outage

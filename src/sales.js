@@ -282,6 +282,31 @@
     </article>`;
   }
 
+  // Duplicatas → venda em 1 clique: todo card×variante com mais de 1 cópia entra
+  // na lista com as cópias EXCEDENTES (mantém 1 na coleção), cada uma com a sua
+  // condição real e o preço de mercado. Respeita o filtro de jogo e o que já
+  // está à venda (não duplica itens).
+  function addDuplicatesToSale() {
+    const priceOf = (card, variant) => shared.cardValue(card, variant, prices, shared.DEFAULT_CONDITION).value || 0;
+    let added = 0;
+    cards.filter((c) => inGameFilter(c) && owned.has(c.id)).forEach((card) => {
+      (card.variants && card.variants.length ? card.variants : [shared.defaultVariant(card)]).forEach((variant) => {
+        const total = owned.variantTotal(card.id, variant);
+        if (total <= 1) return;
+        const conds = [];
+        owned.conditionBreakdown(card.id, variant).forEach(({ condition, quantity }) => { for (let i = 0; i < quantity; i++) conds.push(condition); });
+        const sellable = total - 1; // 1 fica na coleção
+        const inSale = sales.countOf(card.id, variant);
+        for (let i = inSale; i < sellable; i++) {
+          if (!sales.has(card.id, variant, i)) { sales.add(card.id, variant, i, priceOf(card, variant), conds[i + 1] || "NM"); added++; }
+        }
+      });
+    });
+    if (!added) { alert(t("sales.dup.none")); return; }
+    render();
+    alert(t("sales.dup.done", { n: added }));
+  }
+
   // --- VENDA (venda realizada) ---------------------------------------------
   // Confirma o valor num popup; ao confirmar: registra no histórico (sold),
   // tira da lista de vendas e REMOVE a cópia da coleção (vendeu = não tem mais).
@@ -689,7 +714,7 @@
       const del = event.target.closest("[data-sold-del]");
       if (!del) return;
       const row = del.closest(".sold-row");
-      if (row && confirm(t("sales.sold.deleteConfirm"))) { sold.remove(row.dataset.sid); render(); }
+      if (row) { const restore = shared.snapshotKeys(["tcg-collector-collection-sold-v1"]); sold.remove(row.dataset.sid); render(); shared.toastUndo(t("undo.soldRemoved"), restore); }
     });
     // Editar preço / condição inline (por cópia, via data-sale-idx)
     elements.grid.addEventListener("change", (event) => {
@@ -715,6 +740,8 @@
     if (elements.batchApply) elements.batchApply.addEventListener("click", () => applyMarkup(elements.batchInput ? elements.batchInput.value : 0));
     if (elements.batchInput) elements.batchInput.addEventListener("keydown", (event) => { if (event.key === "Enter") applyMarkup(elements.batchInput.value); });
     if (elements.salesAddBtn) elements.salesAddBtn.addEventListener("click", openSalesPicker);
+    const dupBtn = document.getElementById("salesDupBtn");
+    if (dupBtn) dupBtn.addEventListener("click", addDuplicatesToSale);
     if (elements.salesShareBtn) elements.salesShareBtn.addEventListener("click", () => shareSales(elements.salesShareBtn));
     if (elements.salesExportBtn) elements.salesExportBtn.addEventListener("click", () => exportSalesImage(elements.salesExportBtn));
     if (elements.salesSort) {

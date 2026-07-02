@@ -58,6 +58,34 @@
 
       <p class="collection-subtitle" data-i18n="collection.subtitle">Pokémon, artistas, sets e idiomas que você está colecionando.</p>
 
+      <section id="collectionOnboarding" class="onboarding" aria-label="Primeiros passos" hidden>
+        <h2 data-i18n="onb.title">Comece sua coleção em 3 passos</h2>
+        <div class="onb-steps">
+          <div class="onb-step">
+            <span class="onb-num">1</span>
+            <div class="onb-body">
+              <strong data-i18n="onb.s1t">Explore e marque o que você tem</strong>
+              <p data-i18n="onb.s1p">Abra a Pokédex ou os sets e toque no + das cartas que você possui. Nos sets, use a Adição rápida pra marcar por número.</p>
+              <span class="onb-ctas"><a class="cta" href="pokedex.html" data-i18n="onb.s1a">Abrir a Pokédex</a><a class="cta secondary-cta" href="sets.html" data-i18n="onb.s1b">Explorar sets</a></span>
+            </div>
+          </div>
+          <div class="onb-step">
+            <span class="onb-num">2</span>
+            <div class="onb-body">
+              <strong data-i18n="onb.s2t">Veja quanto vale</strong>
+              <p data-i18n="onb.s2p">O Portfólio calcula o valor de mercado de tudo automaticamente (EUA, Europa e Brasil), com gráfico da evolução.</p>
+            </div>
+          </div>
+          <div class="onb-step">
+            <span class="onb-num">3</span>
+            <div class="onb-body">
+              <strong data-i18n="onb.s3t">Organize e compartilhe</strong>
+              <p data-i18n="onb.s3p">Monte showcases e tags, registre graded, e compartilhe seu perfil público com os amigos.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <div class="collection-toolbar">
         <div id="gameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
           <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
@@ -155,6 +183,16 @@
               <option value="" data-i18n="filter.all.f">Todas</option>
             </select>
           </div>
+          <div>
+            <label for="valueFilter" data-i18n="toolbar.value">Valor</label>
+            <select id="valueFilter">
+              <option value="" data-i18n="filter.all.m">Todos</option>
+              <option value="0-10">≤ 10</option>
+              <option value="10-50">10–50</option>
+              <option value="50-200">50–200</option>
+              <option value="200-">200+</option>
+            </select>
+          </div>
           <div class="sort-select">
             <label for="cardsSortSelect" data-i18n="sort.label">Ordenar:</label>
             <select id="cardsSortSelect">
@@ -173,6 +211,10 @@
               <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" aria-label="Grade" title="Grade">▦</button>
               <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" aria-label="Lista" title="Lista">≣</button>
             </div>
+          </div>
+          <div class="view-toggle-field">
+            <label data-i18n="bulk.label">Em massa</label>
+            <button type="button" id="bulkSelectBtn" class="secondary bulk-toggle" aria-pressed="false" data-i18n="bulk.enter">Selecionar</button>
           </div>
         </section>
 

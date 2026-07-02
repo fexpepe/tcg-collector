@@ -151,6 +151,97 @@
   let cardsSort = CARDS_SORTS.includes(localStorage.getItem("tcg-collection-sort")) ? localStorage.getItem("tcg-collection-sort") : "value-desc";
   let cardsView = localStorage.getItem("tcg-collection-view") === "list" ? "list" : "grid";
 
+  // --- Seleção em massa (aba Cartas): toque marca/desmarca; barra fixa aplica
+  // showcase/tag/venda a tudo de uma vez. Seleção por carta×variante (tiles). ---
+  let bulkMode = false;
+  const bulkSel = new Set(); // "cardId|variant"
+  const bulkPairs = () => Array.from(bulkSel).map((k) => { const i = k.lastIndexOf("|"); return { cardId: k.slice(0, i), variant: k.slice(i + 1) }; });
+  const bulkCardIds = () => unique(bulkPairs().map((p) => p.cardId));
+  function setBulkMode(on) {
+    bulkMode = on;
+    if (!on) bulkSel.clear();
+    if (elements.bulkBtn) {
+      elements.bulkBtn.setAttribute("aria-pressed", String(on));
+      elements.bulkBtn.textContent = t(on ? "bulk.exit" : "bulk.enter");
+    }
+    if (elements.grid) elements.grid.classList.toggle("bulk-mode", on);
+    updateBulkBar();
+  }
+  function updateBulkBar() {
+    let bar = document.getElementById("bulkBar");
+    if (!bulkMode) { if (bar) bar.remove(); return; }
+    if (!bar) {
+      bar = document.createElement("div");
+      bar.id = "bulkBar";
+      bar.className = "bulk-bar";
+      document.body.appendChild(bar);
+      // Delegação no próprio bar (sobrevive aos rebuilds do innerHTML).
+      bar.addEventListener("change", (event) => {
+        const f = event.target.closest("[data-bulk-folder]");
+        if (f && f.value) {
+          const fid = f.value === "__none__" ? null : f.value;
+          bulkCardIds().forEach((id) => folders.assign(id, fid));
+          f.value = "";
+          render();
+          return;
+        }
+        const tg = event.target.closest("[data-bulk-tag]");
+        if (tg && tg.value) {
+          bulkCardIds().forEach((id) => { if (!tags.has(id, tg.value)) tags.toggle(id, tg.value); });
+          tg.value = "";
+          render();
+        }
+      });
+      bar.addEventListener("click", (event) => {
+        if (event.target.closest("[data-bulk-done]")) { setBulkMode(false); render(); return; }
+        if (event.target.closest("[data-bulk-sale]")) {
+          const n = bulkAddToSale(bulkPairs());
+          alert(t("bulk.saleDone", { n }));
+        }
+      });
+    }
+    const n = bulkSel.size;
+    const dis = n ? "" : " disabled";
+    const folderOpts = `<option value="">${escapeHtml(t("bulk.toFolder"))}</option><option value="__none__">${escapeHtml(t("folders.none"))}</option>`
+      + folders.list().map((f) => `<option value="${escapeAttribute(f.id)}">${escapeHtml(f.name || t("folders.untitled"))}</option>`).join("");
+    const tagOpts = `<option value="">${escapeHtml(t("bulk.addTag"))}</option>`
+      + tags.list().map((tg) => `<option value="${escapeAttribute(tg.id)}">${escapeHtml(tg.name || t("tags.untitled"))}</option>`).join("");
+    bar.innerHTML = `<strong class="bulk-count">${escapeHtml(tn("bulk.count", n))}</strong>
+      <select data-bulk-folder${dis}>${folderOpts}</select>
+      <select data-bulk-tag${dis}>${tagOpts}</select>
+      <button type="button" class="bulk-bar-btn" data-bulk-sale${dis}>${escapeHtml(t("bulk.sale"))}</button>
+      <button type="button" class="bulk-bar-btn is-primary" data-bulk-done>${escapeHtml(t("bulk.done"))}</button>`;
+  }
+  // Escreve DIRETO na store de vendas (mesmo formato do createSalesStore da página
+  // de Vendas: sales["cardId|variant|idx"], order, updatedAt). Todas as cópias da
+  // variante entram, com condição real + preço de mercado (auto).
+  function bulkAddToSale(pairs) {
+    const KEY = "tcg-collector-collection-sales-v1";
+    let data;
+    try { data = JSON.parse(localStorage.getItem(KEY) || "null") || {}; } catch (e) { data = {}; }
+    if (!data.sales || typeof data.sales !== "object") data.sales = {};
+    if (!Array.isArray(data.order)) data.order = [];
+    let added = 0;
+    pairs.forEach(({ cardId, variant }) => {
+      const card = cardsById.get(cardId);
+      if (!card) return;
+      const conds = [];
+      owned.conditionBreakdown(cardId, variant).forEach(({ condition, quantity }) => { for (let i = 0; i < quantity; i++) conds.push(condition); });
+      if (!conds.length) return;
+      const mkt = shared.cardValue(card, variant, prices, shared.DEFAULT_CONDITION).value || 0;
+      for (let i = 0; i < conds.length; i++) {
+        const k = `${cardId}|${variant}|${i}`;
+        if (data.sales[k]) continue;
+        data.sales[k] = { cardId, variant, idx: i, price: mkt > 0 ? Math.round(mkt * 100) / 100 : 0, cond: conds[i], auto: true };
+        data.order.push(k);
+        added++;
+      }
+    });
+    data.updatedAt = Date.now();
+    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { /* quota: ignora */ }
+    return added;
+  }
+
   const GROUP_TABS = {
     pokemon: {
       getKey: (card) => card.pokemonName || speciesName(card.name),
@@ -187,6 +278,7 @@
     folderSections: document.getElementById("folderSections"),
     newFolderBtn: document.getElementById("newFolderBtn"),
     gradedManageBtn: document.getElementById("gradedManageBtn"),
+    bulkBtn: document.getElementById("bulkSelectBtn"),
     tagsNewBtn: document.getElementById("tagsNewBtn"),
     heading: document.querySelector(".results-header h2"),
     dashProfile: document.getElementById("dashProfile"),
@@ -196,6 +288,7 @@
     setFilter: document.getElementById("setFilter"),
     languageFilter: document.getElementById("languageFilter"),
     rarityFilter: document.getElementById("rarityFilter"),
+    valueFilter: document.getElementById("valueFilter"),
     cardsSortSelect: document.getElementById("cardsSortSelect"),
     cardsViewToggle: document.getElementById("cardsViewToggle"),
     resultCount: document.getElementById("resultCount"),
@@ -317,6 +410,12 @@
   function hydrateFilters() {
     refreshFilters();
     applyCardLangDefault(elements.languageFilter);
+    // Rótulos da faixa de valor com o símbolo da moeda atual (R$/$/€…).
+    if (elements.valueFilter) {
+      const sym = shared.currencySymbol();
+      const labels = { "0-10": `≤ ${sym} 10`, "10-50": `${sym} 10–50`, "50-200": `${sym} 50–200`, "200-": `${sym} 200+` };
+      Array.from(elements.valueFilter.options).forEach((o) => { if (labels[o.value]) o.textContent = labels[o.value]; });
+    }
   }
 
   // Reconstrói um <select> de filtro mantendo a 1ª opção ("Todos") e preservando
@@ -425,12 +524,24 @@
 
     const applyFilters = () => render({ resetCount: true });
     elements.search.addEventListener("input", debounce(applyFilters, 200));
-    [elements.pokemonFilter, elements.setFilter, elements.languageFilter, elements.rarityFilter].forEach((element) => {
-      element.addEventListener("input", applyFilters);
+    [elements.pokemonFilter, elements.setFilter, elements.languageFilter, elements.rarityFilter, elements.valueFilter].forEach((element) => {
+      if (element) element.addEventListener("input", applyFilters);
     });
 
     // Cliques nos tiles: vale pra grade plana (#cardGrid) E pras seções de pasta.
     const handleTileClick = (event) => {
+      // Modo SELEÇÃO: o toque marca/desmarca o tile (nada de preview/ações).
+      if (bulkMode && activeTab === "cards") {
+        const tile = event.target.closest(".card-tile");
+        if (tile && !tile.classList.contains("graded-tile") && tile.dataset.tileCardId) {
+          event.preventDefault();
+          const k = `${tile.dataset.tileCardId}|${tile.dataset.tileVariant || ""}`;
+          if (bulkSel.has(k)) bulkSel.delete(k); else bulkSel.add(k);
+          tile.classList.toggle("bulk-selected", bulkSel.has(k));
+          updateBulkBar();
+        }
+        return;
+      }
       // Modo "trocar capa": clicar numa carta da coleção a define como capa.
       if (coverPickId) {
         const sec = event.target.closest("[data-folder-id]");
@@ -490,7 +601,7 @@
       const tid = tagSec && tagSec.dataset.tagId;
       const tEdit = event.target.closest("[data-tag-edit]");
       if (tEdit) { if (tid) openTagEditor(tags.get(tid), tEdit); return; }
-      if (event.target.closest("[data-tag-delete]")) { if (tid && window.confirm(t("tags.deleteConfirm"))) { tags.remove(tid); render(); } return; }
+      if (event.target.closest("[data-tag-delete]")) { if (tid) { const restore = shared.snapshotKeys(["tcg-collector-collection-tags-v1"]); tags.remove(tid); render(); shared.toastUndo(t("undo.tagDeleted"), restore); } return; }
       if (event.target.closest("[data-tag-open]")) { if (tid) { openTagId = tid; renderCards(); } return; }
       if (event.target.closest("[data-tag-back]")) { openTagId = null; renderCards(); return; }
       if (event.target.closest("[data-tag-add]")) { if (tid) openTagPicker(tid); return; }
@@ -521,7 +632,7 @@
       if (event.target.closest("[data-folder-back]")) { openFolderId = null; coverPickId = null; renderCards(); return; }
       const moveBtn = event.target.closest("[data-folder-move]");
       if (moveBtn) { if (fid) { folders.move(fid, Number(moveBtn.dataset.folderMove)); renderCards(); } return; }
-      if (event.target.closest("[data-folder-delete]")) { if (fid && window.confirm(t("folders.deleteConfirm"))) { folders.remove(fid); render(); } return; }
+      if (event.target.closest("[data-folder-delete]")) { if (fid) { const restore = shared.snapshotKeys(["tcg-collector-collection-folders-v1"]); folders.remove(fid); render(); shared.toastUndo(t("undo.folderDeleted"), restore); } return; }
       if (event.target.closest("[data-folder-share]")) { if (fid) shareFolder(fid, event.target.closest("[data-folder-share]")); return; }
     });
 
@@ -559,6 +670,8 @@
     document.addEventListener("mouseout", (event) => {
       if (event.target.closest("[data-tag-more]") && tagListPop) { tagListTimer = setTimeout(closeTagListPopover, 200); }
     });
+
+    if (elements.bulkBtn) elements.bulkBtn.addEventListener("click", () => { setBulkMode(!bulkMode); if (!bulkMode) render(); });
 
     bindFolderDrag();
     bindCollectionDrag();
@@ -638,6 +751,9 @@
   function render(options) {
     shared.applyGameAccent(gameFilter); // accent vermelho/roxo/neutro conforme o jogo
     syncGameTabs();
+    // Onboarding de primeira visita: coleção 100% vazia (nem slabs) mostra o guia.
+    const onb = document.getElementById("collectionOnboarding");
+    if (onb) onb.hidden = !(owned.size === 0 && !gradedReader.list().length);
     // "Cartas", "Graded" (grade plana) e "Pastas" (seções) usam a MESMA toolbar.
     const isFolders = activeTab === "folders";
     const isGraded = activeTab === "graded";
@@ -651,6 +767,12 @@
     if (elements.heading) elements.heading.textContent = t(isFolders ? "collection.heading.folders" : isGraded ? "nav.graded" : isTags ? "tags.heading" : "collection.heading.cards");
     if (elements.newFolderBtn) elements.newFolderBtn.hidden = !isFolders;
     if (elements.gradedManageBtn) elements.gradedManageBtn.hidden = !isGraded;
+    // Seleção em massa só na aba Cartas; trocar de aba encerra o modo.
+    if (elements.bulkBtn) {
+      const wrap = elements.bulkBtn.closest(".view-toggle-field") || elements.bulkBtn;
+      wrap.hidden = activeTab !== "cards";
+      if (activeTab !== "cards" && bulkMode) setBulkMode(false);
+    }
     if (elements.tagsNewBtn) elements.tagsNewBtn.hidden = !isTags || !!openTagId;
 
     renderDashboard();
@@ -1042,7 +1164,9 @@
         return;
       }
       if (event.target.closest("[data-tag-editor-del]")) {
-        if (window.confirm(t("tags.deleteConfirm"))) { tags.remove(tag.id); closeTagEditor(); if (openTagId === tag.id) openTagId = null; render(); }
+        const restore = shared.snapshotKeys(["tcg-collector-collection-tags-v1"]);
+        tags.remove(tag.id); closeTagEditor(); if (openTagId === tag.id) openTagId = null; render();
+        shared.toastUndo(t("undo.tagDeleted"), restore);
       }
     });
     pop.addEventListener("keydown", (event) => { if (event.key === "Enter" && event.target.closest(".tag-editor-name")) { const s = pop.querySelector("[data-tag-editor-save]"); if (s) s.click(); } });
@@ -1123,7 +1247,12 @@
   }
 
   // Dispatcher do pager: slab (graded) ou carta normal (variantTile).
-  function makeAnyTile(pair) { return pair.graded ? makeGradedNode(pair) : makeTile(pair); }
+  function makeAnyTile(pair) {
+    const el = pair.graded ? makeGradedNode(pair) : makeTile(pair);
+    // Seleção em massa sobrevive ao re-render/paginação (o pager cria tiles aos poucos).
+    if (bulkMode && !pair.graded && bulkSel.has(`${pair.card.id}|${pair.variant}`)) el.classList.add("bulk-selected");
+    return el;
+  }
 
   function renderCards({ resetCount = false } = {}) {
     // Tags: vitrine de tags / foco numa tag, na mesma área das Coleções.
@@ -1552,6 +1681,10 @@
     const setValue = elements.setFilter.value;
     const languageValue = elements.languageFilter.value;
     const rarityValue = elements.rarityFilter.value;
+    // Faixa de valor ("min-max" na moeda atual; max vazio = sem teto).
+    const range = (elements.valueFilter && elements.valueFilter.value) || "";
+    const [vMin, vMax] = range ? range.split("-").map((x) => (x === "" ? null : Number(x))) : [null, null];
+    const valueOf = shared.memoValue((card) => shared.cardValue(card, shared.defaultVariant(card), prices, shared.DEFAULT_CONDITION).value || 0);
 
     return ownedCards().filter((card) => {
       const matchesQuery = shared.matchesCardQuery(card, elements.search.value);
@@ -1559,8 +1692,9 @@
       const matchesSet = !setValue || card.set === setValue;
       const matchesLanguage = !languageValue || card.language === languageValue;
       const matchesRarity = !rarityValue || card.rarity === rarityValue;
+      const matchesValue = !range || (function () { const v = valueOf(card); return (vMin == null || v >= vMin) && (vMax == null || v <= vMax); })();
 
-      return matchesQuery && matchesPokemon && matchesSet && matchesLanguage && matchesRarity;
+      return matchesQuery && matchesPokemon && matchesSet && matchesLanguage && matchesRarity && matchesValue;
     });
   }
 
@@ -1813,7 +1947,7 @@
   // Prepara o container de leitura (esconde a UI normal da coleção).
   function prepareSharedView() {
     ["page-search", "collection-subtitle", "collection-toolbar", "collection-dashboard"].forEach((c) => { const el = document.querySelector("." + c); if (el) el.hidden = true; });
-    [elements.tabs, elements.groupsView, elements.cardsView, elements.dashboard, document.getElementById("collectionShareBtn")].forEach((el) => { if (el) el.hidden = true; });
+    [elements.tabs, elements.groupsView, elements.cardsView, elements.dashboard, document.getElementById("collectionShareBtn"), document.getElementById("collectionOnboarding")].forEach((el) => { if (el) el.hidden = true; });
     const sv = document.getElementById("sharedCollection");
     if (sv) { sv.hidden = false; sv.innerHTML = `<p class="empty-state">${escapeHtml(t("collection.shared.loading"))}</p>`; }
     return sv;
