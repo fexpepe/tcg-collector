@@ -618,6 +618,71 @@
     return { value: 0, currency: cur, source: null };
   }
 
+  // --- "Modo investidor": vendas REALIZADAS (sold) + custo pago (costs) ---
+  // Globais (cross-game), sincronizados via SYNC_KEYS (LWW do bloco, como graded)
+  // e incluídos no backup JSON. PRIVADOS: nunca entram no perfil público.
+  const SOLD_KEY = "tcg-collector-collection-sold-v1";
+  const COSTS_KEY = "tcg-collector-collection-costs-v1";
+
+  // Vendas realizadas: cada registro é um FATO histórico (carta, variante,
+  // condição, valor, moeda em que foi digitado, custo pago na época e data).
+  // Vender remove a cópia da coleção — o registro é o que resta dela.
+  function createSoldStore() {
+    let data = { items: {}, order: [], updatedAt: 0 };
+    try { const raw = JSON.parse(localStorage.getItem(SOLD_KEY) || "null"); if (raw && raw.items) data = raw; } catch (e) { /* começa vazio */ }
+    if (!Array.isArray(data.order)) data.order = [];
+    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(SOLD_KEY, JSON.stringify(data)); } catch (e) { /* quota: ignora */ } };
+    const uid = () => "v_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    return {
+      any: () => data.order.some((k) => data.items[k]),
+      // Mais recente primeiro (ordem de registro).
+      list: () => data.order.filter((k) => data.items[k]).map((k) => {
+        const e = data.items[k];
+        return { sid: k, cardId: e.cardId, variant: e.variant || "Normal", cond: e.cond || "NM", price: Number(e.price) || 0, paid: Number(e.paid) || 0, cur: e.cur || "BRL", date: e.date || "" };
+      }),
+      add(rec) {
+        const sid = uid();
+        data.items[sid] = {
+          cardId: rec.cardId, variant: rec.variant || "Normal", cond: rec.cond || "NM",
+          price: Math.round((Number(rec.price) || 0) * 100) / 100,
+          paid: Math.round((Number(rec.paid) || 0) * 100) / 100,
+          cur: rec.cur || getCurrency(), date: rec.date || new Date().toISOString().slice(0, 10)
+        };
+        data.order.unshift(sid);
+        save();
+        return sid;
+      },
+      remove(sid) { if (data.items[sid]) { delete data.items[sid]; data.order = data.order.filter((x) => x !== sid); save(); } }
+    };
+  }
+  function readSoldList() { return createSoldStore().list(); }
+
+  // Custo pago por carta×variante (UNITÁRIO, na moeda em que foi digitado).
+  // Simplificação deliberada (vs. lotes por cópia do Collectr): 1 custo médio
+  // por variante é o 80/20 de "fácil de usar".
+  function createCostsStore() {
+    let data = { costs: {}, updatedAt: 0 };
+    try { const raw = JSON.parse(localStorage.getItem(COSTS_KEY) || "null"); if (raw && raw.costs) data = raw; } catch (e) { /* começa vazio */ }
+    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(COSTS_KEY, JSON.stringify(data)); } catch (e) { /* quota: ignora */ } };
+    const keyOf = (cardId, variant) => `${cardId}|${variant}`;
+    return {
+      get(cardId, variant) { const e = data.costs[keyOf(cardId, variant)]; return e ? { v: Number(e.v) || 0, cur: e.cur || "BRL" } : null; },
+      set(cardId, variant, value, cur) {
+        const k = keyOf(cardId, variant), v = Number(value) || 0;
+        if (v > 0) data.costs[k] = { v: Math.round(v * 100) / 100, cur: cur || getCurrency() };
+        else delete data.costs[k]; // limpar o campo apaga o custo
+        save();
+      },
+      any: () => Object.keys(data.costs).length > 0,
+      entries: () => Object.entries(data.costs).map(([k, e]) => {
+        const i = k.indexOf("|");
+        return { cardId: k.slice(0, i), variant: k.slice(i + 1), v: Number(e.v) || 0, cur: e.cur || "BRL" };
+      })
+    };
+  }
+  // Converte um {v, cur} histórico pra moeda atual (fallback: valor cru).
+  function moneyToCurrent(v, cur) { const r = convertMoney(v, cur || "BRL", getCurrency()); return r == null ? (Number(v) || 0) : r; }
+
   // Slabs graded valorados (moeda atual): valor manual (se >0) ou o automático
   // (PSA 9/10 via PPT). `gameOf(cardId)` atribui o jogo (a store de graded é global
   // e não guarda o jogo). Usado pelo total da Coleção e pelo Portfólio — uma fonte
@@ -1685,6 +1750,7 @@
     let activeVariant = null;
     let activeGraded = null; // { company, grade, pristine } quando aberto de uma carta GRADUADA
     let openerElement = null;
+    const previewCosts = createCostsStore(); // custo "Paguei" (global, modo investidor)
 
     document.addEventListener("click", handleClick);
     // Salva o preço BR digitado ao sair do campo (change = blur ou Enter).
@@ -1695,6 +1761,14 @@
         const text = String(saleInput.value).trim();
         const amount = Number(text.includes(",") ? text.replace(/\./g, "").replace(",", ".") : text) || 0;
         sale.onChange(activeCard.id, activeVariant || defaultVariant(activeCard), amount);
+        return;
+      }
+      // "Paguei": custo unitário da carta×variante (modo investidor). Vazio apaga.
+      const costInput = event.target.closest("#cardPreviewModal [data-preview-cost]");
+      if (costInput && activeCard) {
+        const text = String(costInput.value).trim();
+        const amount = Number(text.includes(",") ? text.replace(/\./g, "").replace(",", ".") : text) || 0;
+        previewCosts.set(activeCard.id, activeVariant || defaultVariant(activeCard), amount, getCurrency());
         return;
       }
       const folderSelect = event.target.closest("#cardPreviewModal [data-preview-folder]");
@@ -1799,6 +1873,8 @@
               </div>` : ""}
               ${sale ? `<label class="preview-sale-row"><span>${escapeHtml(t("sales.sell"))}</span><span class="preview-sale-cur">${escapeHtml(saleCurrencySymbol())}</span>
                 <input type="text" inputmode="decimal" class="preview-sale-price" data-preview-sale value="${escapeAttribute((function () { const p = sale.priceOf(activeCard.id, activeVariant || defaultVariant(activeCard)); return p > 0 ? String(p).replace(".", ",") : ""; })())}" placeholder="0,00"></label>` : ""}
+              ${isOwned ? `<label class="preview-sale-row preview-cost-row" title="${escapeAttribute(t("cost.hint"))}"><span>${escapeHtml(t("cost.label"))}</span><span class="preview-sale-cur">${escapeHtml(saleCurrencySymbol())}</span>
+                <input type="text" inputmode="decimal" class="preview-sale-price" data-preview-cost value="${escapeAttribute((function () { const c = previewCosts.get(activeCard.id, activeVariant || defaultVariant(activeCard)); if (!c) return ""; const v = moneyToCurrent(c.v, c.cur); return v > 0 ? v.toFixed(2).replace(".", ",") : ""; })())}" placeholder="0,00"></label>` : ""}
             </div>
             <div class="preview-details">
               <h3>${escapeHtml(t("modal.details"))}</h3>
@@ -3013,6 +3089,10 @@
     currencySymbol: saleCurrencySymbol,
     distBarsHtml,
     memoValue,
+    createSoldStore,
+    createCostsStore,
+    readSoldList,
+    moneyToCurrent,
     formatMoney: fmtMoney,
     cardLanguageFromId,
     spriteUrl,
@@ -3083,6 +3163,8 @@
     sales: "tcg-collector-collection-sales-v1", // cartas à venda (globais)
     graded: "tcg-collector-collection-graded-v1", // cartas graduadas/slabs (globais)
     tags: "tcg-collector-collection-tags-v1", // tags custom (multi por carta, globais)
+    sold: "tcg-collector-collection-sold-v1", // vendas realizadas (globais)
+    costs: "tcg-collector-collection-costs-v1", // custo pago por carta×variante (globais)
     favorites: "tcg-collector-favorites-v1", // Pokémon favoritados (globais)
     favoritesMeta: "tcg-collector-favorites-meta-v1", // updatedAt p/ LWW dos favoritos
     history: gameKey("history-v1")
@@ -3391,6 +3473,8 @@
       sales: mergeSales(a.sales, b.sales),
       graded: mergeGraded(a.graded, b.graded),
       tags: mergeTags(a.tags, b.tags),
+      sold: mergeSales(a.sold, b.sold),   // mesmo LWW do bloco (registros históricos)
+      costs: mergeSales(a.costs, b.costs), // idem (custos por carta×variante)
       favorites: fav.favorites,
       favoritesMeta: fav.meta,
       history: mergeHistory(a.history, b.history)
@@ -3830,6 +3914,8 @@
       try { const sa = JSON.parse(localStorage.getItem(SYNC_KEYS.sales) || "null"); if (sa) payload.sales = sa; } catch (e) { /* ignora */ }
       try { const gr = JSON.parse(localStorage.getItem(SYNC_KEYS.graded) || "null"); if (gr) payload.graded = gr; } catch (e) { /* ignora */ }
       try { const tg = JSON.parse(localStorage.getItem(SYNC_KEYS.tags) || "null"); if (tg) payload.tags = tg; } catch (e) { /* ignora */ }
+      try { const sd = JSON.parse(localStorage.getItem(SYNC_KEYS.sold) || "null"); if (sd) payload.sold = sd; } catch (e) { /* ignora */ }
+      try { const co = JSON.parse(localStorage.getItem(SYNC_KEYS.costs) || "null"); if (co) payload.costs = co; } catch (e) { /* ignora */ }
       try { const fav = JSON.parse(localStorage.getItem(SYNC_KEYS.favorites) || "null"); if (Array.isArray(fav)) payload.favorites = fav; } catch (e) { /* ignora */ }
       return payload;
     }
@@ -3854,6 +3940,8 @@
         if (payload.sales && typeof payload.sales === "object") localStorage.setItem(SYNC_KEYS.sales, JSON.stringify(payload.sales));
         if (payload.graded && typeof payload.graded === "object") localStorage.setItem(SYNC_KEYS.graded, JSON.stringify(payload.graded));
         if (payload.tags && typeof payload.tags === "object") localStorage.setItem(SYNC_KEYS.tags, JSON.stringify(payload.tags));
+        if (payload.sold && typeof payload.sold === "object") localStorage.setItem(SYNC_KEYS.sold, JSON.stringify(payload.sold));
+        if (payload.costs && typeof payload.costs === "object") localStorage.setItem(SYNC_KEYS.costs, JSON.stringify(payload.costs));
         if (Array.isArray(payload.favorites)) localStorage.setItem(SYNC_KEYS.favorites, JSON.stringify(payload.favorites));
         window.location.reload();
       } catch (e) { alert(t("error.import")); }

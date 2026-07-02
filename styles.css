@@ -3668,6 +3668,59 @@ a.progress-row:hover {
 .pf-bd-tab.active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 #pfBreakdown .pf-comp-row { grid-template-columns: minmax(110px, 30%) 1fr auto; }
 .pf-bd-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* --- Modo investidor: VENDA, histórico de vendas e P&L --- */
+.sale-sold-btn {
+  width: 100%; margin-top: 6px; min-height: 34px; padding: 0 10px;
+  border: 1px solid transparent; border-radius: 9px; cursor: pointer;
+  background: #1f9d55; color: #fff; font-weight: 800; font-size: 12.5px; letter-spacing: .04em;
+}
+.sale-sold-btn:hover { background: #23b263; }
+/* Popup de confirmação (reusa o shell do picker). */
+.sold-confirm-panel { max-width: 420px; }
+.sold-confirm-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+.sold-confirm-card { display: flex; align-items: center; gap: 10px; }
+.sold-confirm-thumb { flex: none; width: 52px; border-radius: 6px; overflow: hidden; }
+.sold-confirm-thumb img { display: block; width: 100%; }
+.sold-confirm-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.sold-confirm-info span { color: var(--muted); font-size: 12.5px; }
+.sold-confirm-field { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700; color: var(--subtle); }
+.sold-confirm-field .sale-price-field { display: flex; }
+.sold-confirm-field input[type="date"] { height: 38px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); color: var(--text); padding: 0 10px; font: inherit; }
+.sold-confirm-paid { margin: 0; font-size: 12.5px; color: var(--muted); }
+.sold-confirm-note { margin: 0; font-size: 12.5px; font-weight: 700; color: #e8553c; }
+/* Histórico de vendas realizadas: linhas compactas. */
+.sold-header { display: flex; align-items: baseline; gap: 12px; margin-top: 26px; }
+.sold-summary { color: var(--muted); font-size: 13px; font-weight: 700; }
+.sold-list { display: flex; flex-direction: column; gap: 6px; }
+.sold-row {
+  display: grid; grid-template-columns: 58px 34px minmax(0, 1fr) 90px 90px 110px 30px;
+  gap: 10px; align-items: center; padding: 8px 12px;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--panel);
+}
+.sold-row-head { border: 0; background: transparent; padding: 0 12px; font-size: 11px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--subtle); }
+.sold-date { font-size: 12px; color: var(--subtle); font-weight: 700; }
+.sold-thumb { width: 34px; border-radius: 4px; overflow: hidden; }
+.sold-thumb img { display: block; width: 100%; }
+.sold-info { display: flex; flex-direction: column; min-width: 0; }
+.sold-info strong { font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sold-info span { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sold-paid, .sold-price { font-size: 13px; font-weight: 700; text-align: right; }
+.sold-price { font-weight: 800; }
+.sold-pnl { font-size: 13px; font-weight: 800; text-align: right; }
+.sold-pnl.is-up, .pf-pnl.is-up { color: #2ecc71; }
+.sold-pnl.is-down, .pf-pnl.is-down { color: #e8553c; }
+.sold-pnl.is-na { color: var(--subtle); font-weight: 600; }
+.sold-del { position: static; }
+@media (max-width: 700px) {
+  .sold-row { grid-template-columns: 34px minmax(0, 1fr) 90px 30px; }
+  .sold-date, .sold-paid { display: none; }
+  .sold-row-head { display: none; }
+}
+/* Portfólio: seção Investimento. */
+.pf-invest { margin: 6px 0 18px; }
+.pf-invest-title { margin: 0 0 10px; font-size: 17px; }
+.pf-pnl-pct { font-size: 11.5px; font-weight: 700; opacity: .85; }
 .tile-tag-chip {
   max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font-size: 10.5px; font-weight: 800; padding: 1px 7px; border-radius: 5px;

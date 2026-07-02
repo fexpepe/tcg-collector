@@ -91,6 +91,9 @@
   const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
   const wishlist = shared.mergedWishlistStore(wishlistByGame, gameOf);
   const prices = shared.mergedPriceStore(pricesByGame, gameOf);
+  // Modo investidor (opcional): custo pago por carta + vendas realizadas.
+  const costsStore = shared.createCostsStore();
+  const soldStore = shared.createSoldStore();
 
   let cards = [];
   let cardsById = new Map();
@@ -230,8 +233,92 @@
 
     renderComposition(rawTotal, gradedTotal);
     renderBreakdown(lines, slabs);
+    renderInvest();
     renderTop(lines, slabs);
     updateChart();
+  }
+
+  // --- Investimento (opcional): só aparece pra quem preenche custo ou vende ---
+  // Posições = cartas COM custo que você ainda tem: pago (unitário × qtd) vs
+  // valor atual, com lucro/prejuízo não realizado. Vendas realizadas entram como
+  // resultado REALIZADO (vendido − pago; só registros com custo contam no P&L).
+  function renderInvest() {
+    const sec = document.getElementById("pfInvest");
+    if (!sec) return;
+    const inG = (id) => gameFilter === "all" || gameOf(id) === gameFilter;
+    // Posições abertas (custo preenchido + ainda na coleção).
+    const positions = [];
+    let invested = 0, currentTotal = 0;
+    costsStore.entries().forEach((e) => {
+      if (!inG(e.cardId)) return;
+      const card = cardsById.get(e.cardId);
+      const qty = owned.variantTotal(e.cardId, e.variant);
+      if (!card || qty <= 0) return;
+      const paidUnit = shared.moneyToCurrent(e.v, e.cur);
+      let now = 0;
+      owned.conditionBreakdown(e.cardId, e.variant).forEach(({ condition, quantity }) => {
+        now += (shared.cardValue(card, e.variant, prices, condition).value || 0) * quantity;
+      });
+      const paid = paidUnit * qty;
+      positions.push({ card, variant: e.variant, qty, paid, now, delta: now - paid });
+      invested += paid; currentTotal += now;
+    });
+    // Realizado (vendas): total vendido + resultado das que têm custo.
+    const soldItems = soldStore.list().filter((it) => inG(it.cardId));
+    let soldTotal = 0, realized = 0, realizedCount = 0;
+    soldItems.forEach((it) => {
+      const price = shared.moneyToCurrent(it.price, it.cur);
+      soldTotal += price;
+      if (it.paid > 0) { realized += price - shared.moneyToCurrent(it.paid, it.cur); realizedCount++; }
+    });
+    if (!positions.length && !soldItems.length) { sec.hidden = true; sec.innerHTML = ""; return; }
+
+    const unreal = currentTotal - invested;
+    const pct = invested > 0 ? (unreal / invested) * 100 : 0;
+    const sign = (v) => (v >= 0 ? "+" : "−");
+    const cls = (v) => (v > 0.005 ? "is-up" : (v < -0.005 ? "is-down" : ""));
+    const statCard = (label, value, extra, klass) =>
+      `<article class="pf-insight ${klass || ""}"><span class="pf-insight-label">${escapeHtml(label)}</span>
+        <span class="pf-insight-pct">${value}</span>${extra ? `<span class="pf-insight-abs">${extra}</span>` : ""}</article>`;
+    let html = `<h2 class="pf-invest-title">${escapeHtml(t("portfolio.invest.title"))}</h2><div class="pf-insights">`;
+    if (positions.length) {
+      html += statCard(t("portfolio.invest.paid"), escapeHtml(money(invested)));
+      html += statCard(t("portfolio.invest.now"), escapeHtml(money(currentTotal)));
+      html += statCard(t("portfolio.invest.unreal"),
+        `${sign(unreal)}${escapeHtml(money(Math.abs(unreal)))}`,
+        `${sign(unreal)}${Math.abs(pct).toFixed(1)}%`, `pf-insight-${cls(unreal) === "is-up" ? "up" : cls(unreal) === "is-down" ? "down" : "flat"}`);
+    }
+    if (soldItems.length) {
+      html += statCard(t("portfolio.invest.soldTotal"), escapeHtml(money(soldTotal)), escapeHtml(t("portfolio.invest.soldCount", { n: soldItems.length })));
+      if (realizedCount) html += statCard(t("portfolio.invest.realized"),
+        `${sign(realized)}${escapeHtml(money(Math.abs(realized)))}`,
+        escapeHtml(t("portfolio.invest.realizedNote", { n: realizedCount })), `pf-insight-${realized >= 0 ? "up" : "down"}`);
+    }
+    html += `</div>`;
+    if (positions.length) {
+      positions.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
+      const rows = positions.slice(0, 12).map((p) => {
+        const dPct = p.paid > 0 ? (p.delta / p.paid) * 100 : 0;
+        return `<tr>
+          <td><a href="${escapeAttribute(detailUrl("set", p.card.set))}">${escapeHtml(`${p.card.name} · ${p.card.set} ${p.card.number}`)}</a></td>
+          <td>${escapeHtml(p.variant)}</td>
+          <td class="num">${p.qty}</td>
+          <td class="num">${escapeHtml(money(p.paid))}</td>
+          <td class="num">${escapeHtml(money(p.now))}</td>
+          <td class="num pf-pnl ${cls(p.delta)}"><strong>${sign(p.delta)}${escapeHtml(money(Math.abs(p.delta)))}</strong> <span class="pf-pnl-pct">${sign(p.delta)}${Math.abs(dPct).toFixed(0)}%</span></td>
+        </tr>`;
+      }).join("");
+      html += `<div class="portfolio-table-wrap"><table class="portfolio-table">
+        <thead><tr>
+          <th>${escapeHtml(t("portfolio.col.card"))}</th><th>${escapeHtml(t("portfolio.col.variant"))}</th>
+          <th class="num">${escapeHtml(t("portfolio.col.qty"))}</th>
+          <th class="num">${escapeHtml(t("portfolio.invest.col.paid"))}</th>
+          <th class="num">${escapeHtml(t("portfolio.invest.col.now"))}</th>
+          <th class="num">${escapeHtml(t("portfolio.invest.col.delta"))}</th>
+        </tr></thead><tbody>${rows}</tbody></table></div>`;
+    }
+    sec.innerHTML = html;
+    sec.hidden = false;
   }
 
   // Agrega valor (cartas raw + slabs graded) por uma chave da carta (set, raridade…).

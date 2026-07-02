@@ -111,6 +111,14 @@
         <p id="salesHint" class="collection-subtitle" data-i18n="sales.hint">Toque numa carta pra ver a cotação de mercado e te ajudar a precificar. Deixe o preço vazio pra tirar da venda.</p>
         <section id="salesGrid" class="card-grid"></section>
         <p id="salesEmpty" class="empty-state" data-i18n-html="sales.empty" hidden>Nenhuma carta à venda. Use <strong>Adicionar cartas</strong> ou abra uma carta e toque em “Pôr à venda”.</p>
+
+        <section id="soldSection" aria-label="Vendas realizadas" hidden>
+          <header class="results-header sold-header">
+            <h2 data-i18n="sales.sold.heading">Vendas realizadas</h2>
+            <span id="soldSummary" class="sold-summary"></span>
+          </header>
+          <div id="soldList" class="sold-list"></div>
+        </section>
       </div>
     </main>
 

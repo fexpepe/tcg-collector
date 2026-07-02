@@ -29,6 +29,9 @@
   // Vendas: cartas à venda, cada uma com um PREÇO DE VENDA + condição. Global
   // cross-game, por cardId|variant. Local + sync (carimba updatedAt p/ merge LWW).
   const sales = createSalesStore();
+  // Modo investidor: vendas REALIZADAS (histórico) + custo pago (pro P&L).
+  const sold = shared.createSoldStore();
+  const costs = shared.createCostsStore();
   function createSalesStore() {
     const KEY = "tcg-collector-collection-sales-v1";
     let data = { sales: {}, order: [], updatedAt: 0 };
@@ -200,6 +203,7 @@
     shared.applyGameAccent(gameFilter); // accent vermelho/roxo/neutro conforme o jogo
     renderDashboard();
     renderSales();
+    renderSold();
   }
 
   // Dashboard de resumo: valor total da lista + quantidade + mais caras + por jogo.
@@ -273,8 +277,122 @@
           <label class="sale-price-field${autoCls}"><span class="sale-cur">${escapeHtml(sym)}</span><input type="text" inputmode="decimal" class="sale-price${autoCls}" data-sale-price value="${escapeAttribute(priceStr)}" placeholder="0,00"></label>
           <select class="sale-cond" data-sale-cond aria-label="${escapeAttribute(t("sales.condition"))}" title="${escapeAttribute(t("sales.condition"))}">${condOpts}</select>
         </div>
+        <button type="button" class="sale-sold-btn" data-sale-sold title="${escapeAttribute(t("sales.sold.hint"))}">${escapeHtml(t("sales.sold.btn"))}</button>
       </div>
     </article>`;
+  }
+
+  // --- VENDA (venda realizada) ---------------------------------------------
+  // Confirma o valor num popup; ao confirmar: registra no histórico (sold),
+  // tira da lista de vendas e REMOVE a cópia da coleção (vendeu = não tem mais).
+  function openSoldConfirm(cardId, variant, idx) {
+    const card = cardsById.get(cardId);
+    if (!card) return;
+    let modal = document.getElementById("soldConfirmModal");
+    if (!modal) { modal = document.createElement("div"); modal.id = "soldConfirmModal"; modal.className = "sales-picker-modal"; document.body.appendChild(modal); }
+    const sym = currencySymbol();
+    const price = sales.priceOf(cardId, variant, idx);
+    const cond = sales.condOf(cardId, variant, idx);
+    const cost = costs.get(cardId, variant);
+    const paidNow = cost ? shared.moneyToCurrent(cost.v, cost.cur) : 0;
+    const src = shared.cardImageSources(card);
+    const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, thumb: true });
+    modal.innerHTML = `<div class="sales-picker-backdrop" data-sold-close></div>
+      <section class="sales-picker-panel sold-confirm-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("sales.sold.title"))}">
+        <header class="sales-picker-head"><strong>${escapeHtml(t("sales.sold.title"))}</strong>
+          <button type="button" class="preview-close" data-sold-close aria-label="${escapeAttribute(t("modal.close"))}">×</button></header>
+        <div class="sold-confirm-body">
+          <div class="sold-confirm-card">
+            <span class="sold-confirm-thumb">${img}</span>
+            <span class="sold-confirm-info"><strong>${escapeHtml(card.name)}</strong>
+              <span>${escapeHtml(card.set)} · ${escapeHtml(card.number)} · ${escapeHtml(variant)} · ${escapeHtml(cond)}</span></span>
+          </div>
+          <label class="sold-confirm-field"><span>${escapeHtml(t("sales.sold.price"))}</span>
+            <span class="sale-price-field"><span class="sale-cur">${escapeHtml(sym)}</span>
+            <input type="text" inputmode="decimal" class="sale-price" id="soldPriceInput" value="${escapeAttribute(price > 0 ? price.toFixed(2).replace(".", ",") : "")}" placeholder="0,00"></span></label>
+          <label class="sold-confirm-field"><span>${escapeHtml(t("sales.sold.date"))}</span>
+            <input type="date" id="soldDateInput" value="${new Date().toISOString().slice(0, 10)}"></label>
+          ${paidNow > 0 ? `<p class="sold-confirm-paid">${escapeHtml(t("sales.sold.paidInfo", { v: shared.formatMoney(shared.getCurrency(), paidNow) }))}</p>` : ""}
+          <p class="sold-confirm-note">${escapeHtml(t("sales.sold.removeNote"))}</p>
+        </div>
+        <footer class="sales-picker-foot">
+          <button type="button" class="secondary" data-sold-close>${escapeHtml(t("modal.close"))}</button>
+          <button type="button" class="primary" data-sold-confirm>${escapeHtml(t("sales.sold.confirm"))}</button>
+        </footer>
+      </section>`;
+    document.body.classList.add("preview-open");
+    const close = () => { modal.remove(); document.body.classList.remove("preview-open"); };
+    modal.addEventListener("click", (event) => {
+      if (event.target.closest("[data-sold-close]")) { close(); return; }
+      if (!event.target.closest("[data-sold-confirm]")) return;
+      const text = String(modal.querySelector("#soldPriceInput").value).trim();
+      const amount = Number(text.includes(",") ? text.replace(/\./g, "").replace(",", ".") : text) || 0;
+      const date = modal.querySelector("#soldDateInput").value || new Date().toISOString().slice(0, 10);
+      sold.add({ cardId, variant, cond, price: amount, paid: paidNow, cur: shared.getCurrency(), date });
+      sales.remove(cardId, variant, idx);
+      removeCopyFromCollection(cardId, variant, cond);
+      close();
+      render();
+    });
+    setTimeout(() => { const i = modal.querySelector("#soldPriceInput"); if (i) { i.focus(); i.select(); } }, 0);
+  }
+
+  // Remove UMA cópia da coleção: primeiro a condição da venda; se ela não tiver
+  // estoque (condição editada só na venda), cai na primeira condição com cópias.
+  function removeCopyFromCollection(cardId, variant, cond) {
+    if (owned.getQuantity(cardId, variant, cond) > 0) { owned.add(cardId, variant, cond, -1); return; }
+    const bd = owned.conditionBreakdown(cardId, variant);
+    if (bd.length) owned.add(cardId, variant, bd[0].condition, -1);
+  }
+
+  // Histórico de vendas realizadas: linhas com data, carta, pago, vendido e
+  // resultado (vendido − pago, quando há custo). PRIVADO (não vai no share).
+  function renderSold() {
+    const section = document.getElementById("soldSection");
+    const listEl = document.getElementById("soldList");
+    const sumEl = document.getElementById("soldSummary");
+    if (!section || !listEl) return;
+    const items = sold.list()
+      .map((it) => ({ it, card: cardsById.get(it.cardId) }))
+      .filter((x) => x.card && inGameFilter(x.card));
+    section.hidden = !items.length;
+    if (!items.length) { listEl.innerHTML = ""; if (sumEl) sumEl.textContent = ""; return; }
+    const cur = shared.getCurrency();
+    const fmtDate = (s) => { const m = String(s).match(/^(\d{4})-(\d{2})-(\d{2})$/); return m ? `${m[3]}/${m[2]}/${m[1].slice(2)}` : s; };
+    let totalSold = 0, totalPnl = 0, pnlCount = 0;
+    const rows = items.map(({ it, card }) => {
+      const price = shared.moneyToCurrent(it.price, it.cur);
+      const paid = shared.moneyToCurrent(it.paid, it.cur);
+      totalSold += price;
+      const hasPnl = it.paid > 0;
+      const pnl = price - paid;
+      if (hasPnl) { totalPnl += pnl; pnlCount++; }
+      const src = shared.cardImageSources(card);
+      const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
+      const pnlHtml = hasPnl
+        ? `<span class="sold-pnl ${pnl >= 0 ? "is-up" : "is-down"}">${pnl >= 0 ? "+" : "−"}${escapeHtml(shared.formatMoney(cur, Math.abs(pnl)))}</span>`
+        : `<span class="sold-pnl is-na">—</span>`;
+      return `<div class="sold-row" data-sid="${escapeAttribute(it.sid)}">
+        <span class="sold-date">${escapeHtml(fmtDate(it.date))}</span>
+        <span class="sold-thumb">${thumb}</span>
+        <span class="sold-info"><strong>${escapeHtml(card.name)}</strong><span>${escapeHtml(card.set)} · ${escapeHtml(it.variant)} · ${escapeHtml(it.cond)}</span></span>
+        <span class="sold-paid">${it.paid > 0 ? escapeHtml(shared.formatMoney(cur, paid)) : "—"}</span>
+        <span class="sold-price">${escapeHtml(shared.formatMoney(cur, price))}</span>
+        ${pnlHtml}
+        <button type="button" class="sale-remove sold-del" data-sold-del title="${escapeAttribute(t("sales.sold.delete"))}" aria-label="${escapeAttribute(t("sales.sold.delete"))}">✕</button>
+      </div>`;
+    }).join("");
+    listEl.innerHTML = `<div class="sold-row sold-row-head">
+        <span class="sold-date">${escapeHtml(t("sales.sold.date"))}</span><span></span><span></span>
+        <span class="sold-paid">${escapeHtml(t("cost.label"))}</span>
+        <span class="sold-price">${escapeHtml(t("sales.sold.priceShort"))}</span>
+        <span class="sold-pnl">${escapeHtml(t("sales.sold.result"))}</span><span></span>
+      </div>` + rows;
+    if (sumEl) {
+      let s = `${items.length} · ${shared.formatMoney(cur, totalSold)}`;
+      if (pnlCount) s += ` · ${t("sales.sold.result")} ${totalPnl >= 0 ? "+" : "−"}${shared.formatMoney(cur, Math.abs(totalPnl))}`;
+      sumEl.textContent = s;
+    }
   }
 
   // Picker pra adicionar/tirar cartas da venda em lote: filtro de jogo + busca +
@@ -560,8 +678,18 @@
     elements.grid.addEventListener("click", (event) => {
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) { preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant); return; }
+      const sb = event.target.closest("[data-sale-sold]");
+      if (sb) { const tile = sb.closest(".sale-tile"); if (tile) openSoldConfirm(tile.dataset.saleCard, tile.dataset.saleVariant, Number(tile.dataset.saleIdx) || 0); return; }
       const rm = event.target.closest("[data-sale-remove]");
       if (rm) { const tile = rm.closest(".sale-tile"); if (tile) { sales.remove(tile.dataset.saleCard, tile.dataset.saleVariant, Number(tile.dataset.saleIdx) || 0); render(); } }
+    });
+    // Histórico de vendas realizadas: remover um registro (a carta NÃO volta).
+    const soldList = document.getElementById("soldList");
+    if (soldList) soldList.addEventListener("click", (event) => {
+      const del = event.target.closest("[data-sold-del]");
+      if (!del) return;
+      const row = del.closest(".sold-row");
+      if (row && confirm(t("sales.sold.deleteConfirm"))) { sold.remove(row.dataset.sid); render(); }
     });
     // Editar preço / condição inline (por cópia, via data-sale-idx)
     elements.grid.addEventListener("change", (event) => {
@@ -602,10 +730,13 @@
   // Boot: liga os controles já (independem do catálogo) e carrega as cartas que
   // você tem dos dois jogos.
   bindEvents();
+  // Cartas VENDIDAS já saíram da coleção, mas o histórico precisa delas no
+  // catálogo — inclui os ids nos dois jogos (id de outro jogo é no-op no loader).
+  const soldIds = sold.list().map((x) => x.cardId);
   Promise.all([
     shared.loadOwnedAcrossGames({
-      pokemon: ownedByGame.pokemon.knownCardIds(),
-      lorcana: ownedByGame.lorcana.knownCardIds()
+      pokemon: ownedByGame.pokemon.knownCardIds().concat(soldIds),
+      lorcana: ownedByGame.lorcana.knownCardIds().concat(soldIds)
     }),
     shared.loadFxRates()
   ])
