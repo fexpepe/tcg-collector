@@ -8,6 +8,9 @@ data/lorcana/*.generated.js
 data/lorcana/*.generated.json
 data/sets/
 
+# Páginas de set pré-renderizadas p/ SEO (geradas no build por scripts/prerender-catalog.mjs)
+set/
+
 # Key local da PokemonPriceTracker (só pra teste local; NUNCA versionar)
 .ppt.key
 # Chaves do web push (privada VAPID + chave do sender; vão pra GitHub Secrets)

@@ -98,6 +98,13 @@ jobs:
       - name: Snapshot de preços (histórico Lorcana)
         run: node scripts/sync-price-history.mjs data/lorcana
 
+      # SEO: pré-renderiza uma página HTML estática por set do Pokémon em /set/<slug>.html
+      # (title, meta, Open Graph, JSON-LD e a lista de cartas já no HTML) + regenera o
+      # sitemap.xml com todas as URLs. Assim o Google indexa "Base Set", "151" etc. em vez
+      # da casca vazia da SPA. Lê os chunks data/sets/** gerados acima.
+      - name: Pré-renderiza páginas de set (SEO)
+        run: node scripts/prerender-catalog.mjs
+
       # Salva o cache AGORA (data/.cache ainda existe; a limpeza apaga depois).
       - name: Salva cache (TCGdex + PPT)
         uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
