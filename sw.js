@@ -8,7 +8,7 @@
 //    da rede quando online (assim um deploy novo é sempre pego, sem o app ficar
 //    preso numa versão velha) e caem no cache quando offline — fazendo o app
 //    abrir e a coleção já vista funcionar sem internet (PWA instalável).
-const SHELL_CACHE = "tcg-shell-v128";
+const SHELL_CACHE = "tcg-shell-v129";
 const IMAGE_CACHE = "tcg-images-v1";
 const DATA_CACHE = "tcg-data-v1";
 const CACHES = [SHELL_CACHE, IMAGE_CACHE, DATA_CACHE];
@@ -122,6 +122,28 @@ async function networkFirst(request, url) {
     return cached || Response.error();
   }
 }
+
+// Web push (quedas da wishlist, enviado pelo robô semanal): mostra a notificação
+// e, no toque, abre a wishlist (foca uma aba existente do site se houver).
+self.addEventListener("push", (event) => {
+  let data = {};
+  try { data = event.data ? event.data.json() : {}; } catch (e) { /* payload não-JSON */ }
+  event.waitUntil(self.registration.showNotification(data.title || "Sleevu", {
+    body: data.body || "",
+    icon: "apple-touch-icon.png",
+    badge: "apple-touch-icon.png",
+    data: { url: data.url || "wishlist.html" }
+  }));
+});
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const url = new URL((event.notification.data && event.notification.data.url) || "wishlist.html", self.location.href).href;
+  event.waitUntil((async () => {
+    const wins = await clients.matchAll({ type: "window", includeUncontrolled: true });
+    for (const w of wins) { if (w.url.startsWith(self.location.origin)) { w.navigate(url); return w.focus(); } }
+    return clients.openWindow(url);
+  })());
+});
 
 async function trim(cacheName, maxEntries) {
   if (!Number.isFinite(maxEntries)) return;

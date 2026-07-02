@@ -86,6 +86,32 @@
     document.addEventListener("sleevu:theme", () => { theme.value = shared.getTheme(); });
   }
 
+  // Notificações: aviso semanal de quedas da wishlist (web push; precisa de conta
+  // e da permissão do navegador). O estado real vem da assinatura do SW.
+  const pushToggle = document.getElementById("pushWishToggle");
+  if (pushToggle && shared.pushWishlist) {
+    const syncPush = async () => pushToggle.setAttribute("aria-checked", String(await shared.pushWishlist.isOn()));
+    if (!shared.pushWishlist.supported()) {
+      pushToggle.disabled = true;
+      pushToggle.title = shared.t("settings.pushUnsupported");
+    } else {
+      syncPush();
+      pushToggle.addEventListener("click", async () => {
+        pushToggle.disabled = true;
+        try {
+          const on = await shared.pushWishlist.isOn();
+          const r = on ? await shared.pushWishlist.disable() : await shared.pushWishlist.enable();
+          if (r === "auth") alert(shared.t("settings.pushNeedLogin"));
+          else if (r === "denied") alert(shared.t("settings.pushDenied"));
+          else if (r === "error") alert(shared.t("settings.pushError"));
+          await syncPush();
+        } finally {
+          pushToggle.disabled = false; // nunca deixa o switch travado
+        }
+      });
+    }
+  }
+
   // Idioma e moeda — recarregam (re-renderizam tudo).
   const lang = document.getElementById("settingLang");
   if (lang) {

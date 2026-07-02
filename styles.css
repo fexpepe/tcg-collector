@@ -3735,6 +3735,29 @@ a.progress-row:hover {
 .pf-invest-title { margin: 0 0 10px; font-size: 17px; }
 .pf-pnl-pct { font-size: 11.5px; font-weight: 700; opacity: .85; }
 
+/* Home: cartas mais vistas pela comunidade. */
+.home-top-viewed { margin: 34px 0; }
+.home-top-viewed h2 { margin: 0 0 14px; }
+.home-top-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+.home-top-card { display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: var(--text); }
+.home-top-img { display: block; border-radius: 8px; overflow: hidden; aspect-ratio: 63 / 88; background: var(--panel-strong); }
+.home-top-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .15s ease; }
+.home-top-card:hover .home-top-img img { transform: scale(1.04); }
+.home-top-card strong { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.home-top-views { font-size: 11.5px; color: var(--subtle); font-weight: 700; }
+
+/* Wishlist: cartas desejadas à venda por outros colecionadores (trade matching). */
+.wish-sellers { margin: 4px 0 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+.wish-sellers h2 { margin: 0 0 10px; font-size: 15px; }
+.wish-seller-list { display: flex; flex-direction: column; gap: 8px; }
+.wish-seller { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--text); text-decoration: none; }
+.wish-seller:hover { border-color: var(--accent); }
+.wish-seller strong { font-size: 13.5px; }
+.wish-seller-n { font-size: 12px; color: var(--accent); font-weight: 800; }
+.wish-seller-chips { display: inline-flex; gap: 5px; flex-wrap: wrap; }
+.wish-seller-chip { font-size: 11.5px; font-weight: 700; color: var(--muted); padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; }
+.wish-sellers-note { margin: 10px 0 0; font-size: 11.5px; color: var(--subtle); }
+
 /* Wishlist: aviso de quedas de preço da semana (hora de comprar). */
 .wish-drops {
   display: flex; align-items: center; gap: 10px; flex-wrap: wrap;

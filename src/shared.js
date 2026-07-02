@@ -1205,6 +1205,105 @@
       });
     } catch (e) { /* analytics nunca quebra a página */ }
   }
+  // --- Web push: aviso de quedas da wishlist (só logados; opt-in nas Config) ---
+  // A assinatura do navegador vai pra push_subs (RLS por dono); o robô semanal do
+  // CI cruza a wishlist sincronizada com os price-deltas e envia. A chave abaixo
+  // é a VAPID PÚBLICA (por design); a privada vive só nos GitHub Secrets.
+  const VAPID_PUBLIC_KEY = "BP-4UgJQ79n0nYxdddKDBMjIh5GHDNYQv9gGftS0wzdk9-6ei7WupeCbA-l_nZ52BL1G0TDBsRAjMNoAJhiWytg";
+  function vapidKeyBytes() {
+    const b64 = (VAPID_PUBLIC_KEY + "=".repeat((4 - (VAPID_PUBLIC_KEY.length % 4)) % 4)).replace(/-/g, "+").replace(/_/g, "/");
+    const raw = atob(b64);
+    return Uint8Array.from(raw, (c) => c.charCodeAt(0));
+  }
+  async function pushAuthedFetch(path, init) {
+    let s = getSession();
+    if (!s) return null;
+    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
+    return fetch(`${SUPABASE_URL}${path}`, Object.assign({}, init, { headers: Object.assign(authHeaders(s.access_token), (init && init.headers) || {}) }));
+  }
+  const pushWishlist = {
+    supported: () => "serviceWorker" in navigator && "PushManager" in window && "Notification" in window,
+    async isOn() {
+      try {
+        if (!this.supported() || !getSession()) return false;
+        const reg = await navigator.serviceWorker.ready;
+        return !!(await reg.pushManager.getSubscription());
+      } catch (e) { return false; }
+    },
+    // Liga: pede permissão, assina e grava no banco. Retorna "ok" | "denied" |
+    // "auth" (precisa logar) | "error".
+    async enable() {
+      try {
+        if (!this.supported()) return "error";
+        if (!getSession()) return "auth";
+        const perm = await Notification.requestPermission();
+        if (perm !== "granted") return "denied";
+        const reg = await navigator.serviceWorker.ready;
+        const sub = (await reg.pushManager.getSubscription())
+          || (await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: vapidKeyBytes() }));
+        const j = sub.toJSON();
+        const s = getSession();
+        const r = await pushAuthedFetch("/rest/v1/push_subs?on_conflict=user_id,endpoint", {
+          method: "POST",
+          headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
+          body: JSON.stringify({ user_id: s.user.id, endpoint: sub.endpoint, p256dh: j.keys.p256dh, auth: j.keys.auth, lang: getLanguage() === "en" ? "en" : "pt" })
+        });
+        return r && r.ok ? "ok" : "error";
+      } catch (e) { return "error"; }
+    },
+    async disable() {
+      try {
+        const reg = await navigator.serviceWorker.ready;
+        const sub = await reg.pushManager.getSubscription();
+        if (sub) {
+          await pushAuthedFetch(`/rest/v1/push_subs?endpoint=eq.${encodeURIComponent(sub.endpoint)}`, { method: "DELETE" });
+          await sub.unsubscribe();
+        }
+        return "ok";
+      } catch (e) { return "error"; }
+    }
+  };
+
+  // Views por CARTA (agregado e anônimo, tabela card_views): alimenta "mais
+  // vistas". 1 view por carta por sessão (throttle no sessionStorage); a escrita
+  // é via RPC validada no servidor. Nunca quebra a página.
+  function logCardView(card) {
+    if (!AUTH_ENABLED || !card || !card.id) return;
+    try {
+      const game = (card.game || currentGame()) === "lorcana" ? "lorcana" : "pokemon";
+      const k = `tcg-viewed:${game}:${card.id}`;
+      if (sessionStorage.getItem(k)) return;
+      sessionStorage.setItem(k, "1");
+      fetch(`${SUPABASE_URL}/rest/v1/rpc/increment_card_view`, {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify({ p_game: game, p_card_id: card.id }),
+        keepalive: true
+      });
+    } catch (e) { /* contador é opcional */ }
+  }
+  // Top de views de um jogo (leitura pública do agregado).
+  async function fetchTopViewed(game, limit) {
+    if (!AUTH_ENABLED) return [];
+    try {
+      const g = game === "lorcana" ? "lorcana" : "pokemon";
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/card_views?game=eq.${g}&order=views.desc&limit=${limit || 8}&select=card_id,views`, { headers: authHeaders() });
+      return r.ok ? await r.json() : [];
+    } catch (e) { return []; }
+  }
+  // Trade matching: vendedores (perfis públicos) que têm essas cartas à venda.
+  async function findSellers(cardIds) {
+    if (!AUTH_ENABLED || !cardIds || !cardIds.length) return [];
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/find_sellers`, {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify({ p_card_ids: cardIds.slice(0, 300) })
+      });
+      return r.ok ? await r.json() : [];
+    } catch (e) { return []; }
+  }
+
   // Cloudflare Web Analytics: agregado e cookieless (tráfego/origem/países/web vitals).
   // Pages não injeta sozinho, então plugamos o beacon aqui. SÓ em produção
   // (sleevu.app) pra não contar localhost/preview. CSP já libera o host.
@@ -1941,6 +2040,7 @@
     function open(cardId, variant, opts) {
       activeCard = getCard(cardId);
       if (!activeCard) return;
+      logCardView(activeCard); // "mais vistas": 1 view por carta por sessão (anônimo)
       // Contexto graded (opcional): muda a busca das lojas (eBay/PriceCharting já
       // vão com a graduadora+nota) e mostra o selo da nota no topo do modal.
       activeGraded = (opts && opts.graded && opts.graded.company) ? { company: String(opts.graded.company), grade: String(opts.graded.grade || ""), pristine: !!opts.graded.pristine } : null;
@@ -3226,6 +3326,10 @@
     toastUndo,
     loadPriceDeltas,
     basePricingId,
+    logCardView,
+    fetchTopViewed,
+    findSellers,
+    pushWishlist,
     formatMoney: fmtMoney,
     cardLanguageFromId,
     spriteUrl,

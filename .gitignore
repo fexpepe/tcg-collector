@@ -10,6 +10,9 @@ data/sets/
 
 # Key local da PokemonPriceTracker (só pra teste local; NUNCA versionar)
 .ppt.key
+# Chaves do web push (privada VAPID + chave do sender; vão pra GitHub Secrets)
+.vapid.key
+.push.key
 # Saídas temporárias dos probes/dry-runs da PPT
 ppt-*.txt
 

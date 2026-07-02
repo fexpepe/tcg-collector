@@ -67,11 +67,52 @@
       hydrateFilters();
       render();
       renderDropNotice(); // quedas de preço da semana (histórico do build; async)
+      renderSellers();    // trade matching: quem tem suas desejadas à venda (async)
     })
     .catch((error) => {
       elements.empty.textContent = t("error.catalog", { message: error.message });
       elements.empty.hidden = false;
     });
+
+  // Trade matching: cruza a wishlist com as LISTAS DE VENDA dos perfis públicos
+  // (RPC find_sellers, que varre public_profiles — dados já públicos). Agrupa por
+  // vendedor e linka a aba de vendas do perfil. O próprio usuário fica de fora.
+  async function renderSellers() {
+    const el = document.getElementById("wishSellers");
+    if (!el || !shared.findSellers) return;
+    try {
+      const wishIds = [...new Set([...wishlistByGame.pokemon.knownCardIds(), ...wishlistByGame.lorcana.knownCardIds()])];
+      if (!wishIds.length) { el.hidden = true; return; }
+      const rows = await shared.findSellers(wishIds);
+      const myHandle = (shared.getProfile && shared.getProfile().handle) || "";
+      const bySeller = new Map();
+      rows.forEach((r) => {
+        if (!r || !r.handle || r.handle === myHandle) return;
+        let s = bySeller.get(r.handle);
+        if (!s) { s = { handle: r.handle, name: r.display_name || ("@" + r.handle), items: new Map() }; bySeller.set(r.handle, s); }
+        const prev = s.items.get(r.card_id);
+        if (!prev || r.price < prev.price) s.items.set(r.card_id, { price: r.price, cur: r.cur, cond: r.cond });
+      });
+      const sellers = [...bySeller.values()].filter((s) => s.items.size).sort((a, b) => b.items.size - a.items.size).slice(0, 5);
+      if (!sellers.length) { el.hidden = true; return; }
+      const blocks = sellers.map((s) => {
+        const chips = [...s.items.entries()].slice(0, 6).map(([id, it]) => {
+          const card = cardsById.get(id);
+          const label = card ? card.name : id;
+          const price = it.price > 0 ? ` · ${shared.formatMoney(it.cur || "BRL", it.price)}` : "";
+          return `<span class="wish-seller-chip">${shared.escapeHtml(label)}${shared.escapeHtml(price)}</span>`;
+        }).join("");
+        return `<a class="wish-seller" href="collection.html?u=${shared.escapeAttribute(s.handle)}&t=sales">
+          <strong>${shared.escapeHtml(s.name)}</strong>
+          <span class="wish-seller-n">${shared.escapeHtml(tn("wish.sellers.count", s.items.size))}</span>
+          <span class="wish-seller-chips">${chips}</span>
+        </a>`;
+      }).join("");
+      el.innerHTML = `<h2>${shared.escapeHtml(t("wish.sellers.title"))}</h2><div class="wish-seller-list">${blocks}</div>
+        <p class="wish-sellers-note">${shared.escapeHtml(t("wish.sellers.note"))}</p>`;
+      el.hidden = false;
+    } catch (e) { el.hidden = true; /* seção é opcional */ }
+  }
 
   // "Notificação" serverless: cruza a wishlist com os deltas semanais de preço
   // (price-deltas do build) e avisa das QUEDAS (>= 3%) — hora boa de comprar.
