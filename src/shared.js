@@ -3949,7 +3949,11 @@
       try { const fav = JSON.parse(localStorage.getItem(SYNC_KEYS.favorites) || "null"); if (Array.isArray(fav)) payload.favorites = fav; } catch (e) { /* ignora */ }
       return payload;
     }
-    function exportJson() { dl(JSON.stringify(backupObject(), null, 2), "tcg-collection.json", "application/json"); }
+    function exportJson() {
+      dl(JSON.stringify(backupObject(), null, 2), "tcg-collection.json", "application/json");
+      // Carimbo pro aviso de backup: exportou = protegido por 30 dias.
+      try { localStorage.setItem("tcg-backup-exported-at", String(Date.now())); } catch (e) { /* ignora */ }
+    }
     async function exportCsv() {
       let byId = new Map();
       try { const cat = await loadCatalog(); byId = new Map((cat.cards || []).map((c) => [c.id, c])); } catch (e) { /* CSV sem nomes */ }
@@ -4201,6 +4205,52 @@
       pullProfile(); // sincroniza o perfil (handle/visibilidade) sem bloquear
       startSyncLoop();
     })();
+
+    // --- Aviso de backup (proteção contra perda de dados do local-first) ---
+    // Coleção só neste navegador = limpar os dados apaga tudo. Banner discreto
+    // quando há >= 20 cópias, SEM conta e SEM export recente (30d). "Depois"
+    // adia 14 dias. Nunca derruba a página (try/catch em volta de tudo).
+    function maybeShowBackupBanner() {
+      try {
+        if (/login\.html$/i.test(window.location.pathname)) return; // já está resolvendo
+        if (getSession()) return; // logado = sincronizado na nuvem
+        const SNOOZE_KEY = "tcg-backup-snooze-until";
+        const EXPORT_KEY = "tcg-backup-exported-at";
+        if (Date.now() < Number(localStorage.getItem(SNOOZE_KEY) || 0)) return;
+        if (Date.now() - Number(localStorage.getItem(EXPORT_KEY) || 0) < 30 * 864e5) return;
+        let copies = 0;
+        ["pokemon", "lorcana"].forEach((g) => {
+          const raw = JSON.parse(localStorage.getItem(`tcg-collector-${g}-collection-v3`) || "{}");
+          Object.values(raw).forEach((variants) => Object.values(variants || {}).forEach((conds) => Object.values(conds || {}).forEach((q) => { copies += Number(q) || 0; })));
+        });
+        if (copies < 20) return;
+        const header = document.querySelector(".app-header");
+        if (!header) return;
+        const bar = document.createElement("div");
+        bar.className = "backup-banner";
+        bar.setAttribute("role", "status");
+        bar.innerHTML = `<span class="backup-banner-text">${escapeHtml(t("backup.banner", { n: copies }))}</span>
+          <span class="backup-banner-actions">
+            <button type="button" class="backup-banner-btn is-primary" data-backup-login>${escapeHtml(t("backup.createAccount"))}</button>
+            <button type="button" class="backup-banner-btn" data-backup-export>${escapeHtml(t("backup.export"))}</button>
+            <button type="button" class="backup-banner-later" data-backup-later>${escapeHtml(t("backup.later"))}</button>
+          </span>`;
+        header.insertAdjacentElement("afterend", bar);
+        bar.addEventListener("click", (event) => {
+          if (event.target.closest("[data-backup-login]")) {
+            try { localStorage.setItem("tcg-login-return", window.location.pathname); } catch (e) { /* ignora */ }
+            window.location.href = "login.html";
+            return;
+          }
+          if (event.target.closest("[data-backup-export]")) { exportJson(); bar.remove(); return; }
+          if (event.target.closest("[data-backup-later]")) {
+            try { localStorage.setItem(SNOOZE_KEY, String(Date.now() + 14 * 864e5)); } catch (e) { /* ignora */ }
+            bar.remove();
+          }
+        });
+      } catch (e) { /* aviso é opcional: nunca quebra a página */ }
+    }
+    maybeShowBackupBanner();
   }
 
   // Título "Procurar:" acima do campo de busca (presente em todas as páginas).
