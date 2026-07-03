@@ -408,7 +408,7 @@
     ]);
     if (gameFilter === "all") {
       const byGame = GAMES.map((g) => ({
-        label: g === "pokemon" ? t("filter.gamePokemon") : t("filter.gameLorcana"),
+        label: t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : "filter.gamePokemon"),
         color: GAME_COLOR[g],
         value: collectionLines(g).lines.reduce((s, l) => s + l.total, 0) + gradedSlabs(g).reduce((s, x) => s + (x.value || 0), 0)
       }));
