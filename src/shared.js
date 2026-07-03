@@ -3500,6 +3500,19 @@
     // no pull — sincronizar o velho dentro do v2 misturaria semânticas.
     history2: gameKey("history-v2")
   };
+  // Chaves de sync de um jogo ESPECÍFICO (o sync roda pra todos os jogos, não só
+  // o da sessão — senão uma carta de One Piece marcada no PC só aparecia no
+  // celular depois de entrar numa sessão One Piece lá). Globais são as mesmas.
+  function syncKeysFor(game) {
+    return Object.assign({}, SYNC_KEYS, {
+      collection: gameKey("collection-v3", game),
+      collectionMeta: gameKey("collection-meta-v1", game),
+      wishlist: gameKey("wishlist-v1", game),
+      wishlistMeta: gameKey("wishlist-meta-v1", game),
+      prices: gameKey("prices-v1", game),
+      history2: gameKey("history-v2", game)
+    });
+  }
 
   function authHeaders(token) {
     const h = { apikey: SUPABASE_KEY, "Content-Type": "application/json" };
@@ -3624,16 +3637,18 @@
   }
 
   // --- Sync (merge sem perder dados) ---
-  function localSnapshot() {
+  function localSnapshot(game) {
+    const keys = game ? syncKeysFor(game) : SYNC_KEYS;
     const out = {};
-    Object.entries(SYNC_KEYS).forEach(([k, key]) => {
+    Object.entries(keys).forEach(([k, key]) => {
       try { const v = JSON.parse(localStorage.getItem(key) || "null"); if (v) out[k] = v; } catch (e) { /* ignora */ }
     });
     return out;
   }
-  function writeSnapshot(data) {
+  function writeSnapshot(data, game) {
     if (!data) return;
-    Object.entries(SYNC_KEYS).forEach(([k, key]) => { if (data[k] != null) localStorage.setItem(key, JSON.stringify(data[k])); });
+    const keys = game ? syncKeysFor(game) : SYNC_KEYS;
+    Object.entries(keys).forEach(([k, key]) => { if (data[k] != null) localStorage.setItem(key, JSON.stringify(data[k])); });
   }
   // LWW-element-set por carta: para cada id, compara o "presente mais novo"
   // (mod) com o "apagado mais novo" (del); se a exclusão for mais recente que a
@@ -3827,21 +3842,22 @@
   // (game.js); sem ele, "pokemon" (default do backend).
   function currentGame() { return (window.SLEEVU && window.SLEEVU.game) || "pokemon"; }
 
-  async function pullRemote(token, uid) {
+  async function pullRemote(token, uid, game) {
     try {
-      const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?user_id=eq.${uid}&game=eq.${currentGame()}&select=data`, { headers: authHeaders(token) });
+      const g = game || currentGame();
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?user_id=eq.${uid}&game=eq.${g}&select=data`, { headers: authHeaders(token) });
       if (!r.ok) { recordSync("pull", false, `HTTP ${r.status}`); return null; }
       const rows = await r.json();
       recordSync("pull", true);
       return rows && rows[0] ? rows[0].data : {};
     } catch (e) { recordSync("pull", false, e && e.message); return null; }
   }
-  async function pushRemote(token, uid, data, keepalive) {
+  async function pushRemote(token, uid, data, keepalive, game) {
     try {
       const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?on_conflict=user_id,game`, {
         method: "POST",
         headers: Object.assign(authHeaders(token), { Prefer: "resolution=merge-duplicates,return=minimal" }),
-        body: JSON.stringify({ user_id: uid, game: currentGame(), data, updated_at: new Date().toISOString() }),
+        body: JSON.stringify({ user_id: uid, game: game || currentGame(), data, updated_at: new Date().toISOString() }),
         keepalive: !!keepalive
       });
       recordSync("push", r.ok, r.ok ? "" : `HTTP ${r.status}`);
@@ -4120,10 +4136,11 @@
     } catch (e) { return false; }
   }
 
-  let lastPushed = "";
+  const lastPushedByGame = {};
   // Lê a sessão na hora de cada push (pega o token renovado) e renova de forma
   // preguiçosa antes de expirar (token do Supabase dura ~1h) — sem isso o sync
-  // morre silenciosamente depois de uma hora.
+  // morre silenciosamente depois de uma hora. Percorre TODOS os jogos (páginas
+  // unificadas editam qualquer jogo, não só o da sessão); só empurra o que mudou.
   async function syncPush(keepalive) {
     let s = getSession();
     if (!s) return;
@@ -4131,11 +4148,13 @@
       s = (await refreshSession()) || getSession();
       if (!s) return;
     }
-    const snap = localSnapshot();
-    const json = JSON.stringify(snap);
-    if (json === lastPushed) return;
-    lastPushed = json;
-    pushRemote(s.access_token, s.user.id, snap, keepalive);
+    for (const g of GAME_SLUGS) {
+      const snap = localSnapshot(g);
+      const json = JSON.stringify(snap);
+      if (json === lastPushedByGame[g]) continue;
+      lastPushedByGame[g] = json;
+      pushRemote(s.access_token, s.user.id, snap, keepalive, g);
+    }
   }
   function startSyncLoop() {
     setInterval(() => syncPush(false), 20000);
@@ -4170,11 +4189,16 @@
     const fail = (msg) => { if (btn) { btn.disabled = false; btn.textContent = label; } window.alert(msg); };
     session = (await refreshSession()) || session;
     if (!getSession()) { fail(t("ts.syncNeedsLogin")); return; }
-    const remote = await pullRemote(session.access_token, session.user.id);
-    if (remote == null) { fail(t("ts.syncError")); return; }
-    const merged = mergeData(localSnapshot(), remote);
-    writeSnapshot(merged);
-    await pushRemote(session.access_token, session.user.id, merged);
+    let anyOk = false;
+    for (const g of GAME_SLUGS) {
+      const remote = await pullRemote(session.access_token, session.user.id, g);
+      if (remote == null) continue; // um jogo falhar não trava os outros
+      anyOk = true;
+      const merged = mergeData(localSnapshot(g), remote);
+      writeSnapshot(merged, g);
+      await pushRemote(session.access_token, session.user.id, merged, false, g);
+    }
+    if (!anyOk) { fail(t("ts.syncError")); return; }
     window.location.reload();
   }
 
@@ -4476,33 +4500,39 @@
       const fresh = await consumeAuthRedirect();
       if (fresh) {
         renderLoggedIn(fresh);
-        const remote = await pullRemote(fresh.access_token, fresh.user.id);
-        const merged = mergeData(localSnapshot(), remote);
-        writeSnapshot(merged);
-        await pushRemote(fresh.access_token, fresh.user.id, merged);
+        for (const g of GAME_SLUGS) {
+          const remote = await pullRemote(fresh.access_token, fresh.user.id, g);
+          const merged = mergeData(localSnapshot(g), remote);
+          writeSnapshot(merged, g);
+          await pushRemote(fresh.access_token, fresh.user.id, merged, false, g);
+        }
         await pullProfile();
         window.location.reload();
         return;
       }
-      // 2) Sessão existente: renova, puxa o remoto e mescla (recarrega se mudou).
+      // 2) Sessão existente: renova, puxa o remoto de CADA jogo e mescla
+      // (recarrega se algum mudou).
       let session = getSession();
       if (!session) { renderLoggedOut(); return; }
       session = await refreshSession() || session;
       if (!getSession()) { renderLoggedOut(); return; }
       renderLoggedIn(session);
-      const remote = await pullRemote(session.access_token, session.user.id);
-      if (remote) {
-        const before = JSON.stringify(localSnapshot());
-        const merged = mergeData(localSnapshot(), remote);
+      let changed = false;
+      for (const g of GAME_SLUGS) {
+        const remote = await pullRemote(session.access_token, session.user.id, g);
+        if (!remote) continue;
+        const before = JSON.stringify(localSnapshot(g));
+        const merged = mergeData(localSnapshot(g), remote);
         const after = JSON.stringify(merged);
         if (after !== before) {
-          writeSnapshot(merged);
-          await pushRemote(session.access_token, session.user.id, merged);
-          window.location.reload();
-          return;
+          writeSnapshot(merged, g);
+          await pushRemote(session.access_token, session.user.id, merged, false, g);
+          changed = true;
+        } else {
+          lastPushedByGame[g] = before;
         }
-        lastPushed = before;
       }
+      if (changed) { window.location.reload(); return; }
       pullProfile(); // sincroniza o perfil (handle/visibilidade) sem bloquear
       startSyncLoop();
     })();
