@@ -2295,15 +2295,28 @@
       return `<div class="card-grid${cardView === "list" ? " is-list" : ""}">${grid}</div>`;
     }
 
+    // "Voltar" (dentro de um grupo aberto: coleção/tag/artista/set).
+    function backHtml() {
+      const grouped = GROUPED.indexOf(mode) >= 0 && openId;
+      if (!grouped) return "";
+      const openName = (groupsFor(mode).find((x) => x.id === openId) || {}).name || "";
+      return `<div class="coll-open-head"><button type="button" class="secondary coll-back-btn" data-vitrine-back>${escapeHtml(t("profile.viewCollections"))}</button><strong class="coll-open-name">${escapeHtml(openName)}</strong></div>`;
+    }
+    // Tudo ABAIXO do dashboard (abas + barra de filtros + voltar + conteúdo). Trocar
+    // de aba re-renderiza SÓ isto — o dashboard fica intacto no DOM (não "pula").
+    function swapHtml() {
+      return `${tabsHtml()}${filterBarHtml()}${backHtml()}<div class="prof-content">${contentHtml()}</div>`;
+    }
     function render() {
       shared.applyGameAccent(gFilter); // o filtro de jogo muda as cores (accent), por isso fica no topo
-      const grouped = GROUPED.indexOf(mode) >= 0 && openId;
-      const openName = grouped ? (groupsFor(mode).find((x) => x.id === openId) || {}).name : "";
-      const back = grouped
-        ? `<div class="coll-open-head"><button type="button" class="secondary coll-back-btn" data-vitrine-back>${escapeHtml(t("profile.viewCollections"))}</button><strong class="coll-open-name">${escapeHtml(openName || "")}</strong></div>`
-        : "";
-      // Filtro de JOGO (global, muda as cores) no topo; ABAS/páginas embaixo do dashboard.
-      sv.innerHTML = `${gameFilterHtml()}<div class="prof-dash">${dashHtml()}</div>${tabsHtml()}${filterBarHtml()}${back}<div class="prof-content">${contentHtml()}</div>`;
+      // Topo PERSISTENTE (filtro de jogo + dashboard) + bloco trocável (.prof-swap).
+      sv.innerHTML = `${gameFilterHtml()}<div class="prof-dash">${dashHtml()}</div><div class="prof-swap">${swapHtml()}</div>`;
+    }
+    // Troca de aba / abrir grupo / voltar: reconstrói só o bloco abaixo do dashboard
+    // (abas+conteúdo), mantendo o dashboard e o filtro de jogo fixos no lugar.
+    function renderSwap() {
+      const el = sv.querySelector(".prof-swap");
+      if (el) el.innerHTML = swapHtml(); else render();
     }
     // Re-render PARCIAL: filtro/ordenação/visualização só trocam as cartas — não
     // reconstrói dashboard/abas/barra (mais rápido e preserva o foco nos selects).
@@ -2315,10 +2328,10 @@
     // Delegação no container (sobrevive aos re-renders): abas, vitrine, filtro, preview.
     sv.addEventListener("click", (event) => {
       const tab = event.target.closest("[data-profile-tab]");
-      if (tab) { mode = tab.dataset.profileTab; openId = null; render(); return; }
+      if (tab) { mode = tab.dataset.profileTab; openId = null; renderSwap(); return; }
       const open = event.target.closest("[data-vitrine-open]");
-      if (open) { openId = open.dataset.vitrineOpen; render(); return; }
-      if (event.target.closest("[data-vitrine-back]")) { openId = null; render(); return; }
+      if (open) { openId = open.dataset.vitrineOpen; renderSwap(); return; }
+      if (event.target.closest("[data-vitrine-back]")) { openId = null; renderSwap(); return; }
       const chip = event.target.closest("[data-game-filter]");
       if (chip) { gFilter = chip.dataset.gameFilter; fPokemon = fSet = fLang = fRarity = ""; render(); return; }
       const vw = event.target.closest("[data-pf-view]");
