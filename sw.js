@@ -8,7 +8,7 @@
 //    da rede quando online (assim um deploy novo é sempre pego, sem o app ficar
 //    preso numa versão velha) e caem no cache quando offline — fazendo o app
 //    abrir e a coleção já vista funcionar sem internet (PWA instalável).
-const SHELL_CACHE = "tcg-shell-v131";
+const SHELL_CACHE = "tcg-shell-v132";
 const IMAGE_CACHE = "tcg-images-v1";
 const DATA_CACHE = "tcg-data-v1";
 const CACHES = [SHELL_CACHE, IMAGE_CACHE, DATA_CACHE];
@@ -77,26 +77,56 @@ self.addEventListener("fetch", (event) => {
   // Outras origens (ex.: JSON da PokéAPI): deixa o navegador tratar.
 });
 
+// Circuit breaker por host de imagem: quando um CDN cai (a TCGdex some do ar de
+// vez em quando), cada tentativa ficava pendurada ~20s no timeout de conexão e a
+// grade inteira parecia morta — o fallback (onerror da página) só disparava
+// depois. Agora cada tentativa tem timeout curto e, após 3 falhas seguidas do
+// host, as próximas falham NA HORA por 30s (aí o onerror troca pro fallback
+// imediatamente). Estado em memória do SW: zera sozinho quando o SW recicla.
+const FETCH_TIMEOUT_MS = 6000;
+const HOST_FAIL_LIMIT = 3;
+const HOST_FAIL_COOLDOWN_MS = 30000;
+const hostFails = new Map(); // host -> { n, until }
+function hostDown(host) {
+  const s = hostFails.get(host);
+  return !!s && s.n >= HOST_FAIL_LIMIT && Date.now() < s.until;
+}
+function noteHostFail(host) {
+  const s = hostFails.get(host) || { n: 0, until: 0 };
+  s.n += 1;
+  s.until = Date.now() + HOST_FAIL_COOLDOWN_MS;
+  hostFails.set(host, s);
+}
+function fetchWithTimeout(href, init) {
+  if (typeof AbortSignal !== "undefined" && AbortSignal.timeout) {
+    return fetch(href, Object.assign({ signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) }, init));
+  }
+  return fetch(href, init); // navegador sem AbortSignal.timeout: segue sem
+}
+
 // Imagens: serve do cache; em miss busca (cors → resposta não-opaca, cacheável
 // sem o padding de cota), e em falha de rede deixa o <img> cair no onerror.
 async function cacheFirst(url) {
   const cache = await caches.open(IMAGE_CACHE);
   const cached = await cache.match(url.href);
   if (cached) return cached;
+  if (hostDown(url.hostname)) return Response.error(); // CDN caído: falha rápida -> onerror/fallback
   // cors dá resposta não-opaca (cacheável sem padding de cota) — funciona com
   // hosts que enviam CORS (TCGdex etc.). Hosts SEM CORS (ex.: cards.lorcast.io do
   // Lorcana) rejeitam o fetch cors; aí cai no no-cors (resposta opaca: ainda
   // exibe no <img> e cacheia, só com padding de cota). Sem isto, a imagem quebrava.
   for (const mode of ["cors", "no-cors"]) {
     try {
-      const response = await fetch(url.href, { mode, credentials: "omit" });
+      const response = await fetchWithTimeout(url.href, { mode, credentials: "omit" });
       if (response && (response.ok || response.type === "opaque")) {
+        hostFails.delete(url.hostname);
         cache.put(url.href, response.clone());
         trim(IMAGE_CACHE, MAX_IMAGES);
         return response;
       }
     } catch (error) { /* tenta o próximo modo */ }
   }
+  noteHostFail(url.hostname);
   return cached || Response.error();
 }
 

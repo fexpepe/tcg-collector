@@ -1647,7 +1647,11 @@
   // da TCGdex). Só vale para cartas EN com número puramente numérico; sets/
   // numerações que não batem simplesmente não geram fallback.
   function pokemontcgImageUrl(card, hires) {
-    if (!card || card.language !== "en") return "";
+    // EN e PT-BR: os sets PT espelham a numeração EN (151, Fogo Branco, Raio
+    // Preto…), então a arte EN do pokemontcg.io serve de fallback quando a
+    // TCGdex está fora. JA/ZH têm numeração própria — sem fallback (imagem
+    // errada é pior que o verso).
+    if (!card || (card.language !== "en" && card.language !== "pt")) return "";
     const setId = pokemontcgSetId(card.setId);
     const number = String(card.number || "").split("/")[0].replace(/^0+/, "");
     if (!setId || !number || !/^\d+$/.test(number)) return "";
