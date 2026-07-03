@@ -5587,3 +5587,83 @@ a.progress-row:hover {
 .binder-slot-want.wanted {
   color: #ff5d73;
 }
+
+/* ==========================================================================
+   MOBILE UX (≤600px) — encurta o "corredor" até as cartas SEM tirar informação
+   nem tocar no desktop. Tudo aqui é só compactação/reorganização de telas de
+   celular: dashboard e filtros que empilhavam em torres viram faixas roláveis,
+   chips/abas rolam na horizontal em vez de quebrar linha, e textos redundantes
+   somem. Fica no fim do arquivo de propósito (vence o cascade das regras acima).
+   ========================================================================== */
+@media (max-width: 600px) {
+  /* Busca: o rótulo "Procurar:" some (o placeholder já diz), mas segue legível
+     por leitor de tela. Menos uma linha antes da barra. */
+  .page-search-label {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+  .page-search { margin-bottom: 12px; }
+  .page-search input { height: 46px; }
+
+  /* Subtítulo decorativo da Coleção: escondido no celular (o título já situa). */
+  .collection-subtitle { display: none; }
+  .page-head { margin-bottom: 10px; }
+  .page-head h1 { font-size: 26px; }
+
+  /* Toolbar do topo (filtro de jogo + ações): empilha em 2 faixas full-width.
+     Os chips de jogo rolam na horizontal em vez de quebrar pra 2 linhas. */
+  .collection-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
+  .game-filter, .collection-tabs {
+    flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; padding-bottom: 2px; margin-bottom: 12px;
+  }
+  .game-filter::-webkit-scrollbar, .collection-tabs::-webkit-scrollbar { display: none; }
+  .game-filter .chip, .collection-tabs .chip { flex: 0 0 auto; }
+  .collection-toolbar-actions { width: 100%; }
+  .collection-toolbar-actions .secondary { flex: 1 1 0; }
+
+  /* Dashboard: em vez de 4 caixas empilhadas (~600px de rolagem), vira uma
+     ESTEIRA horizontal com scroll-snap — 1 card por vez, o de stats+valor
+     primeiro. O carrossel interno de distribuições é achatado (display:contents)
+     pra suas caixas entrarem na mesma esteira; as setas somem. */
+  .collection-dashboard {
+    display: flex; grid-template-columns: none; gap: 12px;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    margin: 0 -16px 16px; padding: 0 16px;
+  }
+  .collection-dashboard::-webkit-scrollbar { display: none; }
+  .collection-dashboard .dash-card {
+    flex: 0 0 84%; min-width: 0; scroll-snap-align: start; margin: 0;
+  }
+  .dash-carousel, .dash-carousel-track { display: contents; }
+  .dash-carousel-arrow { display: none; }
+  #collectionDashboard .dash-top-list, #collectionDashboard .dash-dist-bars { min-height: 0; }
+
+  /* Filtros da aba Cartas: de 6 selects empilhados (~700px) pra grade 2×.
+     Ordenar e Visualização ocupam a linha inteira embaixo, alinhados como o
+     resto (o "Ordenar:" deixa de vir centralizado/recuado). */
+  .toolbar { grid-template-columns: 1fr 1fr; gap: 10px 12px; padding: 12px; margin-bottom: 16px; }
+  .toolbar > div, .toolbar > .sort-select, .toolbar > .view-toggle-field { min-width: 0; margin-left: 0; }
+  .toolbar > .view-toggle-field { grid-column: 1 / -1; }
+  .toolbar > .sort-select label, .toolbar > .view-toggle-field label { text-align: left; display: block; }
+
+  /* Detalhe (set/carta): hero enxuto. Logo menor, nome duplicado do hero some
+     (o cabeçalho da página já mostra) e a dica da Adição rápida fica só no
+     desktop — no toque o placeholder do campo já explica. */
+  .detail-hero { grid-template-columns: 1fr; gap: 10px; padding: 12px; }
+  /* Só o hero de SET tem o nome duplicado (o cabeçalho já mostra); o de Pokémon
+     traz o nº da Pokédex no h2, então fica. :has escopa pra caixa do set. */
+  .detail-hero:has(.detail-set-art) h2 { display: none; }
+  .detail-set-art { min-height: 0; }
+  .set-logo { max-height: 76px; }
+  .quick-add-hint { display: none; }
+
+  /* Valores (Valor total / Já gasto / A comprar): 3 caixotes empilhados viram
+     uma faixa de 3 colunas compacta. Especificidade casa a regra do has-hero. */
+  .detail-summary.has-hero .detail-values,
+  .detail-values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+  .detail-values article { padding: 11px 10px; }
+  .detail-values article span { font-size: 17px; }
+  .detail-values article p { font-size: 11px; margin-top: 3px; }
+}
