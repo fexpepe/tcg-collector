@@ -26,6 +26,96 @@ const UA = "Sleevu (sleevu.app) catalog sync";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+// ── Capas de set (site oficial da Bandai) ──────────────────────────────────
+// O TCGplayer não tem logo/capa de set, então a página de Sets caía na arte da
+// 1ª carta. O índice de produtos da Bandai (en.onepiece-cardgame.com/products)
+// lista cada booster/deck com a ARTE OFICIAL DO PRODUTO e o código no título
+// ("[OP-16]") — raspamos esse índice (2 subcategorias × poucas páginas), baixamos
+// as capas e hospedamos LOCAL em data/onepiece/set-logos/ (padrão do Lorcana).
+// Sets sem produto no site EN (demo, promo, pre-release sem capa própria) caem
+// no fallback (capa do booster-pai pelo prefixo do código, ou arte da 1ª carta).
+const BANDAI = "https://en.onepiece-cardgame.com";
+const LOGOS_DIR = new URL("set-logos/", OUT);
+const UA_HEADERS = { "User-Agent": "Mozilla/5.0 (Sleevu catalog sync; sleevu.app)" };
+const normCode = (s) => String(s || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+
+async function fetchSetCovers() {
+  const covers = new Map(); // código normalizado ("OP16") -> URL absoluta da capa
+  for (const sub of ["boosters", "decks"]) {
+    for (let page = 1; page <= 8; page++) {
+      let html;
+      try {
+        const r = await fetch(`${BANDAI}/products/?subcategory=${sub}&page=${page}`, { headers: UA_HEADERS });
+        if (!r.ok) break;
+        html = await r.text();
+      } catch (e) { break; }
+      const re = /<a[^>]+href="[^"]*products[^"]*\.(?:html|php)"[^>]*>([\s\S]*?)<\/a>/g;
+      let m, novos = 0;
+      while ((m = re.exec(html))) {
+        const inner = m[1];
+        const img = (inner.match(/<img[^>]+src="([^"]+)"/) || [])[1];
+        const code = (inner.replace(/<[^>]+>/g, " ").match(/\[([A-Z0-9-]+)\]/) || [])[1];
+        if (!code || !img || /noimage/i.test(img)) continue;
+        const norm = normCode(code);
+        if (covers.has(norm)) continue;
+        covers.set(norm, new URL(img, `${BANDAI}/products/`).href);
+        novos++;
+      }
+      if (!novos) break; // página repetida/vazia = acabou a paginação
+      await sleep(150);
+    }
+  }
+  return covers;
+}
+
+// Casa a abreviação da TCGCSV com o código da Bandai: exato, ou por prefixo
+// (Bandai "OP15-EB04" ↔ TCGCSV "OP15"; TCGCSV "OP04 PRE" herda a capa do OP04).
+function coverFor(covers, setId) {
+  const norm = normCode(setId);
+  if (!norm) return null;
+  if (covers.has(norm)) return { key: norm, url: covers.get(norm) };
+  for (const [key, url] of covers) {
+    if (key.length >= 4 && norm.length >= 4 && (key.startsWith(norm) || norm.startsWith(key))) return { key, url };
+  }
+  return null;
+}
+
+// Alguns produtos saíram do índice EN (fora de catálogo: OP05/OP09/OP13/ST05…),
+// mas a arte segue no padrão LEGADO de URL do site. Tenta boosters e decks.
+async function legacyCover(setId) {
+  const norm = normCode(setId);
+  if (!/^(OP|EB|PRB|ST)\d+$/.test(norm)) return null;
+  const lower = norm.toLowerCase();
+  const dirs = norm.startsWith("ST") ? ["decks", "boosters"] : ["boosters", "decks"];
+  for (const dir of dirs) {
+    const url = `${BANDAI}/images/products/${dir}/${lower}/img_thumbnail.png`;
+    try {
+      const r = await fetch(url, { method: "HEAD", headers: UA_HEADERS });
+      if (r.ok) return { key: norm, url };
+    } catch (e) { /* tenta o próximo */ }
+  }
+  return null;
+}
+
+// Baixa a capa 1x (dedup por código Bandai) e devolve o caminho local no site.
+const downloadedCovers = new Map(); // key Bandai -> caminho relativo
+async function downloadCover(key, url) {
+  if (downloadedCovers.has(key)) return downloadedCovers.get(key);
+  try {
+    const r = await fetch(url, { headers: UA_HEADERS });
+    if (!r.ok) return null;
+    const buf = Buffer.from(await r.arrayBuffer());
+    if (buf.length < 500) return null;
+    const ext = /\.png(\?|$)/i.test(url) ? "png" : /\.jpe?g(\?|$)/i.test(url) ? "jpg" : "webp";
+    const file = `${key.toLowerCase()}.${ext}`;
+    await mkdir(LOGOS_DIR, { recursive: true });
+    await writeFile(new URL(file, LOGOS_DIR), buf);
+    const rel = `data/onepiece/set-logos/${file}`;
+    downloadedCovers.set(key, rel);
+    return rel;
+  } catch (e) { return null; }
+}
+
 async function api(path) {
   for (let attempt = 0; attempt < 4; attempt++) {
     const r = await fetch(`${API}${path}`, { headers: { "User-Agent": UA, Accept: "application/json" } });
@@ -115,11 +205,25 @@ async function run() {
   cards.sort((a, b) => a.setId.localeCompare(b.setId) || a.number.localeCompare(b.number, undefined, { numeric: true }) || a.id.localeCompare(b.id));
   console.log(`Total: ${cards.length} cartas, ${Object.keys(pricing).length} com preço.`);
 
-  // setLogo: o TCGplayer não tem logo de set — usa a arte da 1ª carta (o líder
-  // costuma abrir o set) como capa, mesmo fallback final do Lorcana.
+  // setLogo: capa OFICIAL do produto (Bandai) quando existe; só em último caso a
+  // arte da 1ª carta do set (demo/promos sem produto no site EN).
+  console.log("One Piece: buscando capas de set (Bandai)…");
+  let covers = new Map();
+  try { covers = await fetchSetCovers(); } catch (e) { console.warn(`  capas indisponíveis: ${e.message}`); }
+  console.log(`  ${covers.size} capas no índice de produtos.`);
+  const logoBySet = {};
+  const setIds = [...new Set(cards.map((c) => c.setId))];
+  for (const setId of setIds) {
+    const hit = coverFor(covers, setId) || await legacyCover(setId);
+    if (!hit) continue;
+    const rel = await downloadCover(hit.key, hit.url);
+    if (rel) { logoBySet[setId] = rel; }
+    await sleep(100);
+  }
+  console.log(`  ${Object.keys(logoBySet).length}/${setIds.length} sets com capa oficial (resto: arte da 1ª carta).`);
   const coverBySet = {};
   for (const c of cards) { if (!coverBySet[c.setId]) coverBySet[c.setId] = c.image; }
-  for (const c of cards) { c.setLogo = coverBySet[c.setId] || ""; }
+  for (const c of cards) { c.setLogo = logoBySet[c.setId] || coverBySet[c.setId] || ""; }
 
   // Índices no formato { name, cardIds } (páginas Sets/Artistas). Sem artistas:
   // o TCGplayer não expõe ilustrador, então o índice fica vazio e a página de
