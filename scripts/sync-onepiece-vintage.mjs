@@ -67,13 +67,20 @@ async function fetchOverview() {
 }
 
 // Extrai as cartas de um bloco HTML de um set. Cada linha tem número, nome EN,
-// nome JP, tipo, mark (letra/cor) e power (valor de JOGO, não preço).
+// nome JP, tipo, mark (letra/cor) e power (valor de JOGO, não preço). A célula do
+// nome é capturada inteira e destrinchada depois: assim linhas SEM link <a> ou
+// SEM o <i> do nome JP (que existem em alguns sets) também entram — antes o regex
+// rígido as pulava.
 function cardsIn(block) {
   const out = [];
-  const re = /HBcardNum">([A-Z0-9]+)<\/td>\s*<td id="HBcardName"><a[^>]*>([^<]*)<i id="HBcardNameJP">「([^」]*)」<\/i><\/a><\/td>\s*<td id="HBcardType">([^<]*)<\/td>\s*<td id="HBcardMark">([^<]*)<\/td>\s*<td id="HBcardValue">([^<]*)<\/td>/g;
+  const re = /HBcardNum">([A-Z0-9]+)<\/td>\s*<td id="HBcardName">([\s\S]*?)<\/td>\s*<td id="HBcardType">([^<]*)<\/td>\s*<td id="HBcardMark">([^<]*)<\/td>\s*<td id="HBcardValue">([^<]*)<\/td>/g;
   let m;
   while ((m = re.exec(block))) {
-    out.push({ num: m[1].trim(), nameEn: decode(m[2]), nameJp: m[3].trim(), type: decode(m[4]), mark: decode(m[5]), power: decode(m[6]) });
+    const nameCell = m[2];
+    const nameJp = (nameCell.match(/「([^」]*)」/) || [])[1] || "";
+    // EN: o texto da célula sem o <i> do nome JP (e sem as demais tags).
+    const nameEn = decode(nameCell.replace(/<i id="HBcardNameJP">[\s\S]*?<\/i>/, ""));
+    out.push({ num: m[1].trim(), nameEn, nameJp: nameJp.trim(), type: decode(m[3]), mark: decode(m[4]), power: decode(m[5]) });
   }
   return out;
 }
