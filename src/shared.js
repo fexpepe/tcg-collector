@@ -1653,8 +1653,16 @@
     // errada é pior que o verso).
     if (!card || (card.language !== "en" && card.language !== "pt")) return "";
     const setId = pokemontcgSetId(card.setId);
-    const number = String(card.number || "").split("/")[0].replace(/^0+/, "");
-    if (!setId || !number || !/^\d+$/.test(number)) return "";
+    // O número vai COMO ESTÁ pra pokemontcg.io — inclusive prefixos de letra:
+    // H29 (Aquapolis holo), SM240/SVP196 (promos), TG12 (Trainer Gallery), GG05
+    // (Galarian Gallery), RC22 (Radiant Collection). A TCGdex costuma não ter arte
+    // dessas, e o filtro só-numérico de antes barrava TODAS — agora elas caem no
+    // fallback e aparecem. Zeros à esquerda só somem de número puramente numérico
+    // (pokemontcg.io usa "196", mas mantém "TG05"). URL errada é inócua: 404 →
+    // onerror → placeholder, igual a hoje.
+    let number = String(card.number || "").split("/")[0].trim();
+    if (/^\d+$/.test(number)) number = number.replace(/^0+/, "");
+    if (!setId || !number || !/^[A-Za-z]*\d+[A-Za-z]?$/.test(number)) return "";
     return `https://images.pokemontcg.io/${setId}/${number}${hires ? "_hires" : ""}.png`;
   }
 
