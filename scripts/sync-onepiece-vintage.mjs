@@ -96,6 +96,8 @@ async function run() {
   console.log(`  ${segs.length} seções de set encontradas.`);
 
   const vintage = [];
+  const skipped = [];    // sets encontrados na página mas sem cartas extraídas
+  const incomplete = []; // sets onde extraímos MENOS que o total oficial (HBsetCC)
   let order = 0;
   for (const seg of segs) {
     order++;
@@ -103,7 +105,8 @@ async function run() {
     const date = toISO((seg.match(/id="HBsetDate">([^<]+)</) || [])[1] || "");
     const official = Number((seg.match(/id="HBsetCC">(\d+)</) || [])[1] || 0);
     const cards = cardsIn(seg);
-    if (!cards.length) { console.log(`  ${name}: 0 cartas (pulado)`); continue; }
+    if (!cards.length) { skipped.push(name); console.log(`  ⚠ ${name}: 0 cartas (PULADO — set não entra no catálogo)`); continue; }
+    if (official && cards.length < official) incomplete.push(`${name} (${cards.length}/${official})`);
     const setId = "opcd-" + slug(name);
     for (const c of cards) {
       vintage.push({
@@ -130,7 +133,11 @@ async function run() {
     }
     console.log(`  ${name} (${date}): ${cards.length} cartas`);
   }
-  console.log(`Total vintage: ${vintage.length} cartas em ${new Set(vintage.map((c) => c.setId)).size} sets.`);
+  console.log(`Total vintage: ${vintage.length} cartas em ${new Set(vintage.map((c) => c.setId)).size} de ${segs.length} seções da página.`);
+  // Resumo de completude — pra saber, de uma olhada, se falta SET ou CARTA.
+  if (skipped.length) console.log(`⚠ SETS PULADOS (${skipped.length}) — na página mas sem cartas extraídas:\n   - ${skipped.join("\n   - ")}`);
+  if (incomplete.length) console.log(`⚠ Sets INCOMPLETOS (extraído < oficial):\n   - ${incomplete.join("\n   - ")}`);
+  if (!skipped.length && !incomplete.length) console.log("✓ Todos os sets da página entraram completos.");
 
   // setLogo: o wiki não tem logo transparente por set — usa a arte da 1ª carta do
   // set como capa (mesmo fallback do resto do One Piece).
