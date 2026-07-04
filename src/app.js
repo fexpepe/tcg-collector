@@ -33,6 +33,7 @@
   // Região padrão segue a preferência de idioma de carta; sem preferência ("all")
   // mantém o comportamento antigo (Inglês). Com preferência, os chips de região
   // somem (o seletor global de idioma passa a governar) — ver init().
+  const isPokemonGame = () => ((window.SLEEVU && window.SLEEVU.game) || "pokemon") === "pokemon";
   let selectedLangRegion = shared.getCardLang() !== "all"
     ? shared.cardLanguageRegion(shared.getCardLang())
     : "english";
@@ -75,8 +76,11 @@
 
   function init() {
     // Com preferência de idioma de carta, o filtro de região vira redundante
-    // (só aquele idioma é carregado) — esconde pra não conflitar.
-    if (elements.setRegionChips && shared.getCardLang() !== "all") {
+    // (só aquele idioma é carregado) — esconde pra não conflitar. Também some
+    // fora do Pokémon: região (EN/JP/CN/PT do MESMO set) é conceito de Pokémon;
+    // no One Piece/Lorcana cada carta tem sua região (ex.: vintage Carddass = JP),
+    // e filtrar por região esconderia o vintage por baixo do padrão "english".
+    if (elements.setRegionChips && (shared.getCardLang() !== "all" || !isPokemonGame())) {
       elements.setRegionChips.hidden = true;
     }
     if (view === "sets" && serieParam) applySerieTitle();
@@ -335,7 +339,7 @@
       const matchesQuery = shared.matchesCardQuery(card, elements.search.value);
       const matchesGeneration = !generationValue || String(card.generation) === generationValue;
       const matchesType = !typeValue || shared.typesForDex(card.dexId).includes(typeValue);
-      const matchesLangRegion = !elements.setRegionChips || shared.cardLanguageRegion(card.language) === selectedLangRegion;
+      const matchesLangRegion = !isPokemonGame() || !elements.setRegionChips || shared.cardLanguageRegion(card.language) === selectedLangRegion;
       const matchesSet = !setValue || card.set === setValue;
       const matchesLanguage = !languageValue || card.language === languageValue;
       const isOwned = owned.has(card.id);
@@ -591,11 +595,14 @@
   // One Piece: boosters principais têm setId "OP<nn>"; starter decks "ST-…"; o
   // resto (pre-release, demo, promos) vai numa categoria final.
   function groupOnePieceSets(setItems) {
+    const isVintage = (set) => /^opcd-/i.test(String(set.setId || "").trim());
     const isMain = (set) => /^OP\d+$/i.test(String(set.setId || "").trim());
     const isDeck = (set) => /^ST/i.test(String(set.setId || "").trim());
-    const main = setItems.filter(isMain).sort(sortByReleaseDesc);
-    const decks = setItems.filter((s) => !isMain(s) && isDeck(s)).sort(sortByReleaseDesc);
-    const promos = setItems.filter((s) => !isMain(s) && !isDeck(s)).sort(sortByReleaseDesc);
+    const vintage = setItems.filter(isVintage).sort(sortByReleaseDesc);
+    const rest = setItems.filter((s) => !isVintage(s));
+    const main = rest.filter(isMain).sort(sortByReleaseDesc);
+    const decks = rest.filter((s) => !isMain(s) && isDeck(s)).sort(sortByReleaseDesc);
+    const promos = rest.filter((s) => !isMain(s) && !isDeck(s)).sort(sortByReleaseDesc);
     const items = [];
     if (main.length) {
       items.push({ type: "category-head", name: t("sets.category.main"), count: main.length });
@@ -608,6 +615,12 @@
     if (promos.length) {
       items.push({ type: "category-head", name: t("sets.category.promos"), count: promos.length });
       promos.forEach((set) => items.push(set));
+    }
+    // Carddass Hyper Battle (1999–2002): as cartas vintage, numa categoria própria
+    // no fim (ordem crescente por lançamento — do First Stage pro Grand Box DX).
+    if (vintage.length) {
+      items.push({ type: "category-head", name: t("sets.category.vintage"), count: vintage.length });
+      vintage.slice().reverse().forEach((set) => items.push(set));
     }
     return items;
   }
