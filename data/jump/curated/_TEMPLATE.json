@@ -1,0 +1,9 @@
+{
+  "name": "NOME DO SET (ex.: Jump Festa 2000)",
+  "date": "AAAA-MM",
+  "language": "ja",
+  "vintage": true,
+  "cards": [
+    { "number": "XX-01", "name": "Nome EN", "nameJp": "", "franchise": "", "rarity": "Promo", "image": "" }
+  ]
+}

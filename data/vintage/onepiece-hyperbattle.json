@@ -1,0 +1,6391 @@
+{
+ "source": "https://grandlinewiki.net/tcg/carddasshyper.html",
+ "note": "Snapshot versionado da checklist Carddass Hyper Battle. O build SEMPRE parte daqui; o sync só atualiza quando a fonte responde e nao regride.",
+ "updatedAt": "2026-07-04",
+ "sets": [
+  {
+   "name": "2nd Stage",
+   "date": "2000-01",
+   "official": 42,
+   "cards": [
+    {
+     "num": "C35",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Devil Fruit/Technique",
+     "mark": "Ｌ",
+     "power": "400"
+    },
+    {
+     "num": "C36",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Others",
+     "mark": "Ｌ",
+     "power": "300 &#8594; 600"
+    },
+    {
+     "num": "C37",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Devil Fruit/Technique",
+     "mark": "武 Ｌ",
+     "power": "400"
+    },
+    {
+     "num": "C38",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Technique",
+     "mark": "剣 武",
+     "power": "200 &#8594; 450"
+    },
+    {
+     "num": "C39",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣 武",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "C40",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣",
+     "power": "150"
+    },
+    {
+     "num": "C41",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Wisdom",
+     "mark": "知 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C42",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Wisdom",
+     "mark": "民 知",
+     "power": "150"
+    },
+    {
+     "num": "C43",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Wisdom",
+     "mark": "知 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C44",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate/Technique",
+     "mark": "賊 Ｌ",
+     "power": "200"
+    },
+    {
+     "num": "C45",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Others",
+     "mark": "賊",
+     "power": "200"
+    },
+    {
+     "num": "C46",
+     "nameEn": "Usopp's Weapon",
+     "nameJp": "ウソップの武器",
+     "type": "Item",
+     "mark": "賊 民 Ｌ",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "C47",
+     "nameEn": "Chou-chou",
+     "nameJp": "シュシュ",
+     "type": "Citizen/Animal",
+     "mark": "民 獣 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C48",
+     "nameEn": "Yasopp",
+     "nameJp": "ヤソップ",
+     "type": "Pirate/Technique",
+     "mark": "賊 民",
+     "power": "300"
+    },
+    {
+     "num": "C49",
+     "nameEn": "Kaya",
+     "nameJp": "カヤ",
+     "type": "Citizen",
+     "mark": "民 知",
+     "power": "100"
+    },
+    {
+     "num": "C50",
+     "nameEn": "Merry",
+     "nameJp": "メリー",
+     "type": "Citizen/Wisdom",
+     "mark": "民 獣 知",
+     "power": "100"
+    },
+    {
+     "num": "C51",
+     "nameEn": "Kurahadol",
+     "nameJp": "クラハドール",
+     "type": "Citizen/Wisdom",
+     "mark": "民 知",
+     "power": "200"
+    },
+    {
+     "num": "C52",
+     "nameEn": "Tamanegi",
+     "nameJp": "たまねぎ",
+     "type": "Citizen",
+     "mark": "賊 民 知",
+     "power": "100"
+    },
+    {
+     "num": "C53",
+     "nameEn": "Piiman",
+     "nameJp": "ピーマン",
+     "type": "Citizen",
+     "mark": "賊 民 剣",
+     "power": "100"
+    },
+    {
+     "num": "C54",
+     "nameEn": "Ninjin",
+     "nameJp": "にんじん",
+     "type": "Citizen",
+     "mark": "賊 民 武",
+     "power": "100"
+    },
+    {
+     "num": "C55",
+     "nameEn": "Buggy",
+     "nameJp": "バギー",
+     "type": "Pirate/Technique",
+     "mark": "賊 武",
+     "power": "250"
+    },
+    {
+     "num": "C56",
+     "nameEn": "Buggy",
+     "nameJp": "バギー",
+     "type": "Pirate/Devil Fruit",
+     "mark": "賊",
+     "power": "500"
+    },
+    {
+     "num": "C57",
+     "nameEn": "Mohji & Richie",
+     "nameJp": "モージ＆リッチー",
+     "type": "Pirate/Animal",
+     "mark": "賊 獣 武",
+     "power": "250"
+    },
+    {
+     "num": "C58",
+     "nameEn": "Cabaji",
+     "nameJp": "カバジ",
+     "type": "Pirate/Swordsman",
+     "mark": "賊 剣 武",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "C59",
+     "nameEn": "Buggy's 3 Underlings",
+     "nameJp": "バギーの三下",
+     "type": "Pirate/Battalion",
+     "mark": "賊 民 武",
+     "power": "100"
+    },
+    {
+     "num": "C60",
+     "nameEn": "Kuro",
+     "nameJp": "クロ",
+     "type": "Pirate/Technique",
+     "mark": "賊",
+     "power": "300"
+    },
+    {
+     "num": "C61",
+     "nameEn": "Kuro",
+     "nameJp": "クロ",
+     "type": "Pirate/Technique",
+     "mark": "賊 武",
+     "power": "150 &#8594; 400"
+    },
+    {
+     "num": "C62",
+     "nameEn": "Jango",
+     "nameJp": "ジャンゴ",
+     "type": "Pirate/Wisdom",
+     "mark": "賊 知",
+     "power": "100 &#8594; 400"
+    },
+    {
+     "num": "C63",
+     "nameEn": "Jango's Weapon",
+     "nameJp": "ジャンゴの武器",
+     "type": "Item",
+     "mark": "賊 知",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "C64",
+     "nameEn": "Sham",
+     "nameJp": "シャム",
+     "type": "Pirate/Animal",
+     "mark": "賊 獣",
+     "power": "200"
+    },
+    {
+     "num": "C65",
+     "nameEn": "Buchi",
+     "nameJp": "ブチ",
+     "type": "Pirate/Animal",
+     "mark": "賊 獣",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "C66",
+     "nameEn": "Black Cat Pirates",
+     "nameJp": "クロネコ海賊団",
+     "type": "Pirates/Battalion",
+     "mark": "賊 獣 武",
+     "power": "150 &#8594; 200"
+    },
+    {
+     "num": "FP1",
+     "nameEn": "Large Maelstrom",
+     "nameJp": "大渦巻",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP2",
+     "nameEn": "Buggy Pirates",
+     "nameJp": "バギー船",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "S09",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100 &#8594; 1200"
+    },
+    {
+     "num": "S10",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "600"
+    },
+    {
+     "num": "S11",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300 &#8594; –"
+    },
+    {
+     "num": "S12",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "400"
+    },
+    {
+     "num": "S13",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200 &#8594; –"
+    },
+    {
+     "num": "S14",
+     "nameEn": "Buggy",
+     "nameJp": "バギー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200"
+    },
+    {
+     "num": "S15",
+     "nameEn": "Kuro",
+     "nameJp": "クロ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200 &#8594; 600"
+    },
+    {
+     "num": "S16",
+     "nameEn": "Jango",
+     "nameJp": "ジャンゴ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300"
+    }
+   ]
+  },
+  {
+   "name": "3rd Stage",
+   "date": "2000-04",
+   "official": 42,
+   "cards": [
+    {
+     "num": "C111",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Wisdom",
+     "mark": "Ｌ",
+     "power": "250"
+    },
+    {
+     "num": "C112",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Devil Fruit",
+     "mark": "民 武 Ｌ",
+     "power": "550"
+    },
+    {
+     "num": "C113",
+     "nameEn": "C113",
+     "nameJp": "ルフィ",
+     "type": "Devil Fruit/ Technique",
+     "mark": "武 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C114",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣",
+     "power": "900"
+    },
+    {
+     "num": "C115",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣 武 Ｌ",
+     "power": "450"
+    },
+    {
+     "num": "C116",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Wisdom",
+     "mark": "賊 知",
+     "power": "0"
+    },
+    {
+     "num": "C117",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Citizen/Wisdom",
+     "mark": "民 知 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C118",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate/Technique",
+     "mark": "賊",
+     "power": "50 &#8594; 500"
+    },
+    {
+     "num": "C119",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate",
+     "mark": "賊 Ｌ",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "C120",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Others",
+     "mark": "料 武",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C121",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Cooking",
+     "mark": "料 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C122",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス",
+     "type": "Others",
+     "mark": "賊 Ｌ",
+     "power": "250"
+    },
+    {
+     "num": "C123",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス",
+     "type": "Others",
+     "mark": "賊 Ｌ",
+     "power": "200"
+    },
+    {
+     "num": "C124",
+     "nameEn": "Kaya",
+     "nameJp": "カヤ",
+     "type": "Citizens",
+     "mark": "民 知",
+     "power": "150"
+    },
+    {
+     "num": "C125",
+     "nameEn": "Gaimon",
+     "nameJp": "ガイモン",
+     "type": "Pirate/Animal",
+     "mark": "賊 獣",
+     "power": "150"
+    },
+    {
+     "num": "C126",
+     "nameEn": "Zeff",
+     "nameJp": "ゼフ",
+     "type": "Technique",
+     "mark": "料 武",
+     "power": "150"
+    },
+    {
+     "num": "C127",
+     "nameEn": "Yosaku",
+     "nameJp": "ジョニー",
+     "type": "Swordsman/Technique",
+     "mark": "剣 武",
+     "power": "100 &#8594; 400"
+    },
+    {
+     "num": "C128",
+     "nameEn": "Johnny",
+     "nameJp": "ヨサク",
+     "type": "Swordsman/Technique",
+     "mark": "剣 武",
+     "power": "100 &#8594; 400"
+    },
+    {
+     "num": "C129",
+     "nameEn": "Ganzo",
+     "nameJp": "岩蔵",
+     "type": "Citizen",
+     "mark": "民 料",
+     "power": "150"
+    },
+    {
+     "num": "C130",
+     "nameEn": "Ganzo",
+     "nameJp": "岩蔵",
+     "type": "Citizen",
+     "mark": "民 料 知",
+     "power": "100"
+    },
+    {
+     "num": "C131",
+     "nameEn": "Tobio",
+     "nameJp": "トビオ",
+     "type": "Citizen",
+     "mark": "賊 民 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C132",
+     "nameEn": "Woonan",
+     "nameJp": "ウーナン",
+     "type": "Pirate",
+     "mark": "賊 民",
+     "power": "150"
+    },
+    {
+     "num": "C133",
+     "nameEn": "Woonan",
+     "nameJp": "ウーナン",
+     "type": "Pirate",
+     "mark": "賊",
+     "power": "1200"
+    },
+    {
+     "num": "C134",
+     "nameEn": "Kuro",
+     "nameJp": "クロ",
+     "type": "Pirate/Wisdom",
+     "mark": "賊 知",
+     "power": "150"
+    },
+    {
+     "num": "C135",
+     "nameEn": "Jango",
+     "nameJp": "ジャンゴ",
+     "type": "Pirate/Technique",
+     "mark": "賊 知",
+     "power": "200 &#8594; 350"
+    },
+    {
+     "num": "C136",
+     "nameEn": "Jango",
+     "nameJp": "ジャンゴ",
+     "type": "Pirate/Technique",
+     "mark": "賊 知",
+     "power": "0"
+    },
+    {
+     "num": "C137",
+     "nameEn": "Krieg",
+     "nameJp": "クリーク",
+     "type": "Pirate/Technique",
+     "mark": "賊 武",
+     "power": "500"
+    },
+    {
+     "num": "C138",
+     "nameEn": "Gin",
+     "nameJp": "ギン",
+     "type": "Pirate",
+     "mark": "賊 武",
+     "power": "100 &#8594; 500"
+    },
+    {
+     "num": "C139",
+     "nameEn": "El Drago",
+     "nameJp": "エルドラゴ",
+     "type": "Devil Fruit/Animal",
+     "mark": "賊",
+     "power": "650"
+    },
+    {
+     "num": "C140",
+     "nameEn": "Golass",
+     "nameJp": "ゴラス",
+     "type": "Swordsman/Technique",
+     "mark": "賊 剣",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C141",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Pirates",
+     "mark": "賊",
+     "power": "100 &#8594; 900"
+    },
+    {
+     "num": "C142",
+     "nameEn": "Usopp Pirates",
+     "nameJp": "ウソップ海賊団",
+     "type": "Wisdom/Battalion",
+     "mark": "賊 民 武",
+     "power": "150"
+    },
+    {
+     "num": "C143",
+     "nameEn": "Krieg Plunder Force",
+     "nameJp": "クリーク略奪部隊",
+     "type": "Pirates/Battalion",
+     "mark": "賊 剣 武",
+     "power": "150 &#8594; 200"
+    },
+    {
+     "num": "C144",
+     "nameEn": "Eldraggo's 3 Men",
+     "nameJp": "エルドラゴ三人衆",
+     "type": "Pirates/Battalion",
+     "mark": "賊 民 獣",
+     "power": "100"
+    },
+    {
+     "num": "FP09",
+     "nameEn": "Krieg Grand Fleet",
+     "nameJp": "クリーク大艦隊",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP10",
+     "nameEn": "Baratie Cooking",
+     "nameJp": "ガイモンの島",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "S27",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "400"
+    },
+    {
+     "num": "S28",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200"
+    },
+    {
+     "num": "S29",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100"
+    },
+    {
+     "num": "S30",
+     "nameEn": "Kurohadol",
+     "nameJp": "クラハドール",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200 &#8594; 600"
+    },
+    {
+     "num": "S31",
+     "nameEn": "Krieg",
+     "nameJp": "クリーク",
+     "type": "Special",
+     "mark": "逆",
+     "power": "500"
+    },
+    {
+     "num": "S32",
+     "nameEn": "Eldraggo",
+     "nameJp": "エルドラゴ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "250"
+    }
+   ]
+  },
+  {
+   "name": "4th Stage",
+   "date": "2000-06",
+   "official": 42,
+   "cards": [
+    {
+     "num": "159",
+     "nameEn": "Gaimon",
+     "nameJp": "ガイモン",
+     "type": "Technique",
+     "mark": "賊 知 獣",
+     "power": "50"
+    },
+    {
+     "num": "C145",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Devil Fruit/Technique",
+     "mark": "Ｌ",
+     "power": "650"
+    },
+    {
+     "num": "C146",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Pirate",
+     "mark": "武 Ｌ",
+     "power": "200"
+    },
+    {
+     "num": "C147",
+     "nameEn": "Meat On The Bone",
+     "nameJp": "骨つき肉",
+     "type": "Item",
+     "mark": "武 料 Ｌ",
+     "power": "50"
+    },
+    {
+     "num": "C148",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Tecnhique",
+     "mark": "賊 剣 Ｌ",
+     "power": "350"
+    },
+    {
+     "num": "C149",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣 Ｌ",
+     "power": "50"
+    },
+    {
+     "num": "C150",
+     "nameEn": "Wado Ichimonji",
+     "nameJp": "和道一文字",
+     "type": "Item",
+     "mark": "剣",
+     "power": "50 &#8594; 500"
+    },
+    {
+     "num": "C151",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Pirate",
+     "mark": "魚 知",
+     "power": "500"
+    },
+    {
+     "num": "C152",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Tecnique",
+     "mark": "武 知 Ｌ",
+     "power": "100 &#8594; 300"
+    },
+    {
+     "num": "C153",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate/Wisdom",
+     "mark": "賊 知",
+     "power": "200"
+    },
+    {
+     "num": "C154",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate",
+     "mark": "賊 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C155",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Technique/Cooking",
+     "mark": "料 Ｌ",
+     "power": "450"
+    },
+    {
+     "num": "C156",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Others",
+     "mark": "料 知",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C157",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Cooking",
+     "mark": "料 民 知",
+     "power": "100"
+    },
+    {
+     "num": "C158",
+     "nameEn": "Kuina",
+     "nameJp": "くいな",
+     "type": "Swordsman",
+     "mark": "民 剣",
+     "power": "200"
+    },
+    {
+     "num": "C160",
+     "nameEn": "Zeff",
+     "nameJp": "ゼフ",
+     "type": "Cooking",
+     "mark": "料 知",
+     "power": "100"
+    },
+    {
+     "num": "C161",
+     "nameEn": "Zeff",
+     "nameJp": "ゼフ",
+     "type": "Pirate/Technique",
+     "mark": "料",
+     "power": "100 &#8594; 600"
+    },
+    {
+     "num": "C162",
+     "nameEn": "Patty",
+     "nameJp": "パティ",
+     "type": "Technique/Cooking",
+     "mark": "料 武",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C163",
+     "nameEn": "Carne",
+     "nameJp": "カルネ",
+     "type": "Cooking",
+     "mark": "料 知",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C164",
+     "nameEn": "Yosaku",
+     "nameJp": "ヨサク",
+     "type": "Technique",
+     "mark": "剣 武",
+     "power": "150"
+    },
+    {
+     "num": "C165",
+     "nameEn": "Johnny",
+     "nameJp": "ジョニー",
+     "type": "Technique",
+     "mark": "剣 知",
+     "power": "150"
+    },
+    {
+     "num": "C166",
+     "nameEn": "Nojiko",
+     "nameJp": "ノジコ",
+     "type": "Citizen",
+     "mark": "民 知",
+     "power": "150"
+    },
+    {
+     "num": "C167",
+     "nameEn": "Bell-mère",
+     "nameJp": "ベルメール",
+     "type": "Others",
+     "mark": "軍 知",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C168",
+     "nameEn": "Genzo",
+     "nameJp": "ゲンゾウ",
+     "type": "Citizen",
+     "mark": "民 武 知",
+     "power": "100 &#8594; 300"
+    },
+    {
+     "num": "C169",
+     "nameEn": "Fullbody",
+     "nameJp": "フルボディ",
+     "type": "Marine/Technique",
+     "mark": "軍 民 武",
+     "power": "350 &#8594; 0"
+    },
+    {
+     "num": "C170",
+     "nameEn": "Mihawk",
+     "nameJp": "ミホーク",
+     "type": "Pirate/Technique",
+     "mark": "剣",
+     "power": "1150"
+    },
+    {
+     "num": "C171",
+     "nameEn": "Mihawk's Sword",
+     "nameJp": "ミホークの刀",
+     "type": "Item",
+     "mark": "剣",
+     "power": "50 &#8594; 600"
+    },
+    {
+     "num": "C172",
+     "nameEn": "Krieg",
+     "nameJp": "クリーク",
+     "type": "Pirate",
+     "mark": "賊",
+     "power": "450"
+    },
+    {
+     "num": "C173",
+     "nameEn": "Krieg's Weapon",
+     "nameJp": "クリークの武器",
+     "type": "Item",
+     "mark": "賊 武",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "C174",
+     "nameEn": "Gin",
+     "nameJp": "ギン",
+     "type": "Pirate",
+     "mark": "賊 武",
+     "power": "100"
+    },
+    {
+     "num": "C175",
+     "nameEn": "Pearl",
+     "nameJp": "パール",
+     "type": "Pirate/Technique",
+     "mark": "賊 武",
+     "power": "500"
+    },
+    {
+     "num": "C176",
+     "nameEn": "Arlong",
+     "nameJp": "アーロン",
+     "type": "Fishman",
+     "mark": "賊 魚",
+     "power": "500"
+    },
+    {
+     "num": "C177",
+     "nameEn": "Fighting Cooks",
+     "nameJp": "戦うコックさん",
+     "type": "Battalion/Cooking",
+     "mark": "民 料 武",
+     "power": "150 &#8594; 200"
+    },
+    {
+     "num": "FP11",
+     "nameEn": "Baratie in Battle",
+     "nameJp": "バラティエ戦闘中",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP12",
+     "nameEn": "Krieg's Sunken Ship",
+     "nameJp": "クリークの沈没船",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "S33",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100"
+    },
+    {
+     "num": "S34",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "1000"
+    },
+    {
+     "num": "S35",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200 &#8594; 400"
+    },
+    {
+     "num": "S36",
+     "nameEn": "Krieg",
+     "nameJp": "クリーク",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100"
+    },
+    {
+     "num": "S37",
+     "nameEn": "Gin",
+     "nameJp": "ギン",
+     "type": "Special",
+     "mark": "逆",
+     "power": "750"
+    },
+    {
+     "num": "S38",
+     "nameEn": "Arlong",
+     "nameJp": "アーロン",
+     "type": "Special",
+     "mark": "逆",
+     "power": "400"
+    },
+    {
+     "num": "S39",
+     "nameEn": "Luffy Vs. Arlong",
+     "nameJp": "ルフィVSアーロン",
+     "type": "Special",
+     "mark": "逆",
+     "power": "50"
+    }
+   ]
+  },
+  {
+   "name": "5th Stage",
+   "date": "2000-08",
+   "official": 42,
+   "cards": [
+    {
+     "num": "C221",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Pirate",
+     "mark": "賊 Ｌ",
+     "power": "500"
+    },
+    {
+     "num": "C222",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Fishman/Wisdom",
+     "mark": "魚 知 Ｌ",
+     "power": "200 &#8594; 300"
+    },
+    {
+     "num": "C223",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Technique/Devil Fruit",
+     "mark": "武 Ｌ",
+     "power": "450"
+    },
+    {
+     "num": "C224",
+     "nameEn": "Fishman Nami",
+     "nameJp": "魚人ナミ",
+     "type": "Item",
+     "mark": "民 知 Ｌ",
+     "power": "100 &#8594; 200"
+    },
+    {
+     "num": "C225",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Technique",
+     "mark": "剣 Ｌ",
+     "power": "700"
+    },
+    {
+     "num": "C226",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣 武",
+     "power": "450"
+    },
+    {
+     "num": "C227",
+     "nameEn": "Yubashiri",
+     "nameJp": "雪走",
+     "type": "Item",
+     "mark": "剣 知",
+     "power": "100 &#8594; 400"
+    },
+    {
+     "num": "C228",
+     "nameEn": "Sandai Kitetsu",
+     "nameJp": "三代鬼徹",
+     "type": "Item",
+     "mark": "剣 武",
+     "power": "550"
+    },
+    {
+     "num": "C229",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Others",
+     "mark": "民 知",
+     "power": "200"
+    },
+    {
+     "num": "C230",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Wisdom",
+     "mark": "賊 知 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C231",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Fishman/Wisdom",
+     "mark": "魚 武",
+     "power": "200 &#8594; 350"
+    },
+    {
+     "num": "C232",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate/Wisdom",
+     "mark": "賊 知",
+     "power": "150"
+    },
+    {
+     "num": "C233",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Wisdom",
+     "mark": "賊 Ｌ",
+     "power": "300"
+    },
+    {
+     "num": "C234",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Technique",
+     "mark": "料 武",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C235",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Cooking/Technique",
+     "mark": "料 Ｌ",
+     "power": "200"
+    },
+    {
+     "num": "C236",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Others",
+     "mark": "料 武",
+     "power": "300 &#8594; 50"
+    },
+    {
+     "num": "C237",
+     "nameEn": "Yosaku",
+     "nameJp": "ヨサク",
+     "type": "Swordsman",
+     "mark": "剣 武",
+     "power": "300 &#8594; 0"
+    },
+    {
+     "num": "C238",
+     "nameEn": "Johnny",
+     "nameJp": "ジョニー",
+     "type": "Swordsman",
+     "mark": "剣 知",
+     "power": "300 &#8594; 0"
+    },
+    {
+     "num": "C239",
+     "nameEn": "Genzo",
+     "nameJp": "ゲンゾウ",
+     "type": "Citizen/Wisdom",
+     "mark": "民 知",
+     "power": "200"
+    },
+    {
+     "num": "C240",
+     "nameEn": "Nojiko",
+     "nameJp": "ノジコ",
+     "type": "Citizen/Wisdom",
+     "mark": "民 知",
+     "power": "150"
+    },
+    {
+     "num": "C241",
+     "nameEn": "Bell-mère",
+     "nameJp": "ベルメール",
+     "type": "Marine/Citizen",
+     "mark": "軍 知",
+     "power": "100"
+    },
+    {
+     "num": "C242",
+     "nameEn": "Ipponmatsu",
+     "nameJp": "いっぽんマツ",
+     "type": "Citizen/Wisdom",
+     "mark": "剣 民",
+     "power": "150"
+    },
+    {
+     "num": "C243",
+     "nameEn": "Nezumi",
+     "nameJp": "ネズミ",
+     "type": "Marine/Wisdom",
+     "mark": "軍 魚",
+     "power": "150"
+    },
+    {
+     "num": "C244",
+     "nameEn": "Tashigi",
+     "nameJp": "たしぎ",
+     "type": "Marine/Swordsman",
+     "mark": "軍 剣",
+     "power": "150"
+    },
+    {
+     "num": "C245",
+     "nameEn": "Shikure",
+     "nameJp": "時雨",
+     "type": "Item",
+     "mark": "剣 武",
+     "power": "100 &#8594; 400"
+    },
+    {
+     "num": "C246",
+     "nameEn": "Arlong",
+     "nameJp": "アーロン",
+     "type": "Fishman",
+     "mark": "魚",
+     "power": "250 &#8594; 500"
+    },
+    {
+     "num": "C247",
+     "nameEn": "Arlong",
+     "nameJp": "アーロン",
+     "type": "Fishman/Technique",
+     "mark": "魚 武",
+     "power": "600"
+    },
+    {
+     "num": "C248",
+     "nameEn": "Hatchan",
+     "nameJp": "はっちゃん",
+     "type": "Fishman/Technique",
+     "mark": "剣 魚",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C249",
+     "nameEn": "Kuroobi",
+     "nameJp": "クロオビ",
+     "type": "Fishman/Technique",
+     "mark": "魚 武",
+     "power": "400"
+    },
+    {
+     "num": "C250",
+     "nameEn": "Chew",
+     "nameJp": "チュウ",
+     "type": "Fishman/Wisdom",
+     "mark": "魚 知",
+     "power": "400"
+    },
+    {
+     "num": "C251",
+     "nameEn": "Momoo",
+     "nameJp": "モーム",
+     "type": "Fishman/Animal",
+     "mark": "魚 獣",
+     "power": "450"
+    },
+    {
+     "num": "C252",
+     "nameEn": "Buggy",
+     "nameJp": "バギー",
+     "type": "Pirate",
+     "mark": "賊",
+     "power": "250-500"
+    },
+    {
+     "num": "C253",
+     "nameEn": "Arlong's Crew",
+     "nameJp": "アーロン一味",
+     "type": "Fishman/Battalion",
+     "mark": "賊 魚",
+     "power": "100 &#8594; 250"
+    },
+    {
+     "num": "C254",
+     "nameEn": "Buggy's Crew",
+     "nameJp": "新生バギー一味",
+     "type": "Pirate/Battalion",
+     "mark": "賊 知",
+     "power": "100 &#8594; 250"
+    },
+    {
+     "num": "FP19",
+     "nameEn": "Nami's Survey Room",
+     "nameJp": "ナミの測量室",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP20",
+     "nameEn": "Loguetown",
+     "nameJp": "ローグタウン",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "S51",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "800"
+    },
+    {
+     "num": "S52",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "50 &#8594; 600"
+    },
+    {
+     "num": "S53",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス",
+     "type": "Special",
+     "mark": "逆",
+     "power": "500"
+    },
+    {
+     "num": "S54",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "350 &#8594; 700"
+    },
+    {
+     "num": "S55",
+     "nameEn": "Arlong",
+     "nameJp": "アーロン",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200 &#8594; 650"
+    },
+    {
+     "num": "S56",
+     "nameEn": "Alvida",
+     "nameJp": "アルビダ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300"
+    }
+   ]
+  },
+  {
+   "name": "6th Stage",
+   "date": "2000-11",
+   "official": 42,
+   "cards": [
+    {
+     "num": "C255",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Pirate",
+     "mark": "Ｌ",
+     "power": "600"
+    },
+    {
+     "num": "C256",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Technique/Devil Fruit",
+     "mark": "Ｌ 武",
+     "power": "200 &#8594; 350"
+    },
+    {
+     "num": "C257",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Pirate",
+     "mark": "Ｌ 武 知",
+     "power": "100 &#8594; 300"
+    },
+    {
+     "num": "C258",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣",
+     "power": "200"
+    },
+    {
+     "num": "C259",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Technique",
+     "mark": "剣 知",
+     "power": "200"
+    },
+    {
+     "num": "C260",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Technique",
+     "mark": "剣 武 Ｌ",
+     "power": "250"
+    },
+    {
+     "num": "C261",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Citizen/Wisdom",
+     "mark": "知 Ｌ",
+     "power": "250"
+    },
+    {
+     "num": "C262",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Others",
+     "mark": "民 知",
+     "power": "100 &#8594; 400"
+    },
+    {
+     "num": "C263",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate/Cooking",
+     "mark": "賊 料",
+     "power": "100 &#8594; 400"
+    },
+    {
+     "num": "C264",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate/Wisdom",
+     "mark": "賊 Ｌ",
+     "power": "200"
+    },
+    {
+     "num": "C265",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Cooking",
+     "mark": "民 料",
+     "power": "250"
+    },
+    {
+     "num": "C266",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Technique",
+     "mark": "料 Ｌ",
+     "power": "200"
+    },
+    {
+     "num": "C267",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス",
+     "type": "Pirate",
+     "mark": "賊 Ｌ",
+     "power": "250"
+    },
+    {
+     "num": "C268",
+     "nameEn": "Nojiko",
+     "nameJp": "ノジコ",
+     "type": "Citizen/Wisdom",
+     "mark": "民 知 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C269",
+     "nameEn": "Bell-mère",
+     "nameJp": "ベルメール",
+     "type": "Others",
+     "mark": "軍 民 知",
+     "power": "200"
+    },
+    {
+     "num": "C270",
+     "nameEn": "Apis",
+     "nameJp": "アビス",
+     "type": "Citizen/Devil Fruit",
+     "mark": "獣 Ｌ",
+     "power": "50"
+    },
+    {
+     "num": "C271",
+     "nameEn": "Ryuuji",
+     "nameJp": "リュウ爺",
+     "type": "Wisdom/Animal",
+     "mark": "超 獣",
+     "power": "50 &#8594; 500"
+    },
+    {
+     "num": "C272",
+     "nameEn": "Dragon",
+     "nameJp": "ドラゴン",
+     "type": "Pirate",
+     "mark": "賊",
+     "power": "50"
+    },
+    {
+     "num": "C273",
+     "nameEn": "Pudding Pudding",
+     "nameJp": "プリンプリン",
+     "type": "Marine/Wisdom",
+     "mark": "軍 民 武",
+     "power": "150"
+    },
+    {
+     "num": "C274",
+     "nameEn": "Nezumi",
+     "nameJp": "ネズミ",
+     "type": "Marine/Wisdom",
+     "mark": "軍 魚 知",
+     "power": "50"
+    },
+    {
+     "num": "C275",
+     "nameEn": "Brannew",
+     "nameJp": "ブランニュー",
+     "type": "Marine",
+     "mark": "軍 知",
+     "power": "50"
+    },
+    {
+     "num": "C276",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー",
+     "type": "Technique/Devil Fruit",
+     "mark": "軍",
+     "power": "0 &#8594; –"
+    },
+    {
+     "num": "C277",
+     "nameEn": "Nelson Royale",
+     "nameJp": "ネルソン・ロイヤル",
+     "type": "Marine/Wisdom",
+     "mark": "賊 軍 知",
+     "power": "150"
+    },
+    {
+     "num": "C278",
+     "nameEn": "Marine Headquarters' Forces",
+     "nameJp": "海軍本部直轄部隊",
+     "type": "Marine/Battalion",
+     "mark": "軍",
+     "power": "250"
+    },
+    {
+     "num": "C279",
+     "nameEn": "Arlong",
+     "nameJp": "アーロン",
+     "type": "Fishman",
+     "mark": "魚",
+     "power": "300"
+    },
+    {
+     "num": "C280",
+     "nameEn": "Hatchan",
+     "nameJp": "はっちゃん",
+     "type": "Swordsman/Fishman",
+     "mark": "剣 魚",
+     "power": "200 &#8594; 350"
+    },
+    {
+     "num": "C281",
+     "nameEn": "Kuroobi",
+     "nameJp": "クロオビ",
+     "type": "Fishman/Technique",
+     "mark": "魚 武",
+     "power": "200 &#8594; 350"
+    },
+    {
+     "num": "C282",
+     "nameEn": "Chew",
+     "nameJp": "チュウ",
+     "type": "Fishman/Technique",
+     "mark": "魚 知",
+     "power": "200 &#8594; 350"
+    },
+    {
+     "num": "C283",
+     "nameEn": "Alvida",
+     "nameJp": "アルビダ",
+     "type": "Wisdom/Devil Fruit",
+     "mark": "賊",
+     "power": "200"
+    },
+    {
+     "num": "C284",
+     "nameEn": "Buggy",
+     "nameJp": "バギー",
+     "type": "Pirate",
+     "mark": "賊",
+     "power": "200 &#8594; 600"
+    },
+    {
+     "num": "C285",
+     "nameEn": "Cabaji",
+     "nameJp": "カバジ",
+     "type": "Swordsman/Wisdom",
+     "mark": "賊 剣",
+     "power": "200"
+    },
+    {
+     "num": "C286",
+     "nameEn": "Richie Bike",
+     "nameJp": "リッチーバイク",
+     "type": "Animal/Technique",
+     "mark": "賊 獣",
+     "power": "200"
+    },
+    {
+     "num": "C287",
+     "nameEn": "Eric",
+     "nameJp": "エリック",
+     "type": "Technique/Devil Fruit",
+     "mark": "賊 軍",
+     "power": "600"
+    },
+    {
+     "num": "FP22",
+     "nameEn": "Lost Island",
+     "nameJp": "ロストアイランド",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "S57",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200 &#8594; 1000"
+    },
+    {
+     "num": "S58",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300"
+    },
+    {
+     "num": "S59",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "150 &#8594; 650"
+    },
+    {
+     "num": "S60",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "400"
+    },
+    {
+     "num": "S61",
+     "nameEn": "Dragon",
+     "nameJp": "ドラゴン",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100"
+    },
+    {
+     "num": "S62",
+     "nameEn": "Buggy",
+     "nameJp": "バギー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "250 &#8594; 450"
+    },
+    {
+     "num": "S63",
+     "nameEn": "Arlong",
+     "nameJp": "アーロン",
+     "type": "Special",
+     "mark": "逆",
+     "power": "150 &#8594; 600"
+    }
+   ]
+  },
+  {
+   "name": "7th Stage",
+   "date": "2001-02",
+   "official": 43,
+   "cards": [
+    {
+     "num": "C331",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Devil Fruit/Technique",
+     "mark": "Ｌ",
+     "power": "200 &#8594; 600"
+    },
+    {
+     "num": "C332",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Pirate",
+     "mark": "賊 武 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C333",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Technique",
+     "mark": "剣",
+     "power": "700"
+    },
+    {
+     "num": "C334",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣 武",
+     "power": "300"
+    },
+    {
+     "num": "C335",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣 Ｌ",
+     "power": "300 &#8594; 50"
+    },
+    {
+     "num": "C336",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Citizen/Wisdom",
+     "mark": "民 知",
+     "power": "100"
+    },
+    {
+     "num": "C337",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Wisdom",
+     "mark": "知 Ｌ",
+     "power": "300 &#8594; 50"
+    },
+    {
+     "num": "C338",
+     "nameEn": "Log Pose",
+     "nameJp": "ログポース",
+     "type": "Item",
+     "mark": "民 知",
+     "power": "200"
+    },
+    {
+     "num": "C339",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate",
+     "mark": "賊",
+     "power": "200"
+    },
+    {
+     "num": "C340",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Wisdom",
+     "mark": "賊 Ｌ",
+     "power": "300 &#8594; 50"
+    },
+    {
+     "num": "C341",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Others",
+     "mark": "料 Ｌ",
+     "power": "600"
+    },
+    {
+     "num": "C342",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Cooking",
+     "mark": "料 知",
+     "power": "150"
+    },
+    {
+     "num": "C343",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Technique",
+     "mark": "料 Ｌ",
+     "power": "300 &#8594; 50"
+    },
+    {
+     "num": "C344",
+     "nameEn": "Carmen",
+     "nameJp": "カルメン",
+     "type": "Cooking",
+     "mark": "民 料",
+     "power": "100"
+    },
+    {
+     "num": "C345",
+     "nameEn": "Apis",
+     "nameJp": "アピス",
+     "type": "Others",
+     "mark": "民 獣 Ｌ",
+     "power": "200"
+    },
+    {
+     "num": "C346",
+     "nameEn": "Borodo",
+     "nameJp": "ボロード",
+     "type": "Citizen",
+     "mark": "罪 Ｌ",
+     "power": "50"
+    },
+    {
+     "num": "C347",
+     "nameEn": "Akisu",
+     "nameJp": "アキース",
+     "type": "Citizen",
+     "mark": "罪 知 Ｌ",
+     "power": "50"
+    },
+    {
+     "num": "C348",
+     "nameEn": "Crocus",
+     "nameJp": "クロッカス",
+     "type": "Pirate/Citizen",
+     "mark": "民 獣",
+     "power": "150"
+    },
+    {
+     "num": "C349",
+     "nameEn": "Laboon",
+     "nameJp": "ラブーン",
+     "type": "Animal",
+     "mark": "獣 超 Ｌ",
+     "power": "900"
+    },
+    {
+     "num": "C350",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー",
+     "type": "Devil Fruit/Marine",
+     "mark": "軍",
+     "power": "0 &#8594; 600"
+    },
+    {
+     "num": "C351",
+     "nameEn": "Tashigi",
+     "nameJp": "たしぎ",
+     "type": "Marine/Swordsman",
+     "mark": "軍 剣",
+     "power": "300"
+    },
+    {
+     "num": "C352",
+     "nameEn": "Den Den Mushi",
+     "nameJp": "電伝虫",
+     "type": "Item",
+     "mark": "軍 民",
+     "power": "150"
+    },
+    {
+     "num": "C353",
+     "nameEn": "Daddy",
+     "nameJp": "ダディ",
+     "type": "Marine/Technique",
+     "mark": "軍 民 武",
+     "power": "200"
+    },
+    {
+     "num": "C354",
+     "nameEn": "Buggy & Alvida",
+     "nameJp": "バギー＆アルビダ",
+     "type": "Pirate/Wisdom",
+     "mark": "賊 知",
+     "power": "500"
+    },
+    {
+     "num": "C355",
+     "nameEn": "Eric",
+     "nameJp": "エリック",
+     "type": "Devil Fruit/Technique",
+     "mark": "賊 武",
+     "power": "850"
+    },
+    {
+     "num": "C356",
+     "nameEn": "Captain Joke",
+     "nameJp": "キャプテン・ジョーク",
+     "type": "Pirate",
+     "mark": "賊",
+     "power": "400"
+    },
+    {
+     "num": "C357",
+     "nameEn": "Bear King",
+     "nameJp": "ベアキング",
+     "type": "Devil Fruit/Pirate",
+     "mark": "賊",
+     "power": "250 &#8594; 1000"
+    },
+    {
+     "num": "C358",
+     "nameEn": "Pin Joker",
+     "nameJp": "ピンジョーカー",
+     "type": "Devil Fruit/Swordsman",
+     "mark": "賊 剣",
+     "power": "250 &#8594; 300"
+    },
+    {
+     "num": "C359",
+     "nameEn": "Skunk One",
+     "nameJp": "スカンクワン",
+     "type": "Devil Fruit/Pirate",
+     "mark": "賊 知",
+     "power": "250 &#8594; 300"
+    },
+    {
+     "num": "C360",
+     "nameEn": "Honey Queen",
+     "nameJp": "ハニークイーン",
+     "type": "Devil Fruit/Wisdom",
+     "mark": "賊 民",
+     "power": "250 &#8594; 300"
+    },
+    {
+     "num": "C361",
+     "nameEn": "Boo Jack",
+     "nameJp": "ブージャック",
+     "type": "Devil Fruit/Technique",
+     "mark": "賊 武",
+     "power": "250 &#8594; 300"
+    },
+    {
+     "num": "C362",
+     "nameEn": "Mr. 9",
+     "nameJp": "Ｍｒ．９",
+     "type": "Organization/Technique",
+     "mark": "罪 武",
+     "power": "0"
+    },
+    {
+     "num": "C363",
+     "nameEn": "Miss Wednesday",
+     "nameJp": "ミス・ウェンズデー",
+     "type": "Organization/Technique",
+     "mark": "罪 Ｌ",
+     "power": "0"
+    },
+    {
+     "num": "C364",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Others",
+     "mark": "Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "FP29",
+     "nameEn": "Clockwork Island",
+     "nameJp": "ねじまき島",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP30",
+     "nameEn": "Reverse Mountain",
+     "nameJp": "リバースマウンテン",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "S75",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Special",
+     "mark": "逆",
+     "power": "1600"
+    },
+    {
+     "num": "S76",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "1200"
+    },
+    {
+     "num": "S77",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "0"
+    },
+    {
+     "num": "S78",
+     "nameEn": "Ryuuji",
+     "nameJp": "リュウ爺",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300 &#8594; 600"
+    },
+    {
+     "num": "S79",
+     "nameEn": "Laboon",
+     "nameJp": "ラブーン",
+     "type": "Special",
+     "mark": "逆",
+     "power": "750"
+    },
+    {
+     "num": "S80",
+     "nameEn": "Bear King",
+     "nameJp": "ベアキング",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300"
+    },
+    {
+     "num": "S81",
+     "nameEn": "Unluckies",
+     "nameJp": "アンラッキーズ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "600"
+    }
+   ]
+  },
+  {
+   "name": "First Stage",
+   "date": "1999-11",
+   "official": 42,
+   "cards": [
+    {
+     "num": "C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Pirate",
+     "mark": "Ｌ",
+     "power": "500"
+    },
+    {
+     "num": "C02",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Devil Fruit/Technique",
+     "mark": "賊 武 Ｌ",
+     "power": "250"
+    },
+    {
+     "num": "C03",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Devil Fruit/Technique",
+     "mark": "賊 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C04",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Others",
+     "mark": "賊 民 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C05",
+     "nameEn": "Luffy's Hat",
+     "nameJp": "ルフィの帽子",
+     "type": "Item",
+     "mark": "賊 民 Ｌ",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "C06",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Technique",
+     "mark": "剣",
+     "power": "300"
+    },
+    {
+     "num": "C07",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Technique",
+     "mark": "剣 Ｌ",
+     "power": "250 &#8594; 400"
+    },
+    {
+     "num": "C08",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣 民 武",
+     "power": "150"
+    },
+    {
+     "num": "C09",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Others",
+     "mark": "知",
+     "power": "100"
+    },
+    {
+     "num": "C10",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Wisdom",
+     "mark": "知 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C11",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Technique",
+     "mark": "民 武 知",
+     "power": "200"
+    },
+    {
+     "num": "C12",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Technique",
+     "mark": "賊 武 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C13",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Wisdom",
+     "mark": "賊 知",
+     "power": "150"
+    },
+    {
+     "num": "C14",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス",
+     "type": "Pirate",
+     "mark": "賊",
+     "power": "600"
+    },
+    {
+     "num": "C15",
+     "nameEn": "Beckmann",
+     "nameJp": "ベックマン",
+     "type": "Pirate/Swordsman",
+     "mark": "賊 剣",
+     "power": "400"
+    },
+    {
+     "num": "C16",
+     "nameEn": "Kuina",
+     "nameJp": "くいな",
+     "type": "Swordsman",
+     "mark": "剣 武 民",
+     "power": "150"
+    },
+    {
+     "num": "C17",
+     "nameEn": "Koby",
+     "nameJp": "コビー",
+     "type": "Marine",
+     "mark": "軍 民 武",
+     "power": "150 &#8594; 250"
+    },
+    {
+     "num": "C18",
+     "nameEn": "Rika",
+     "nameJp": "リカ",
+     "type": "Citizen",
+     "mark": "民 料 知",
+     "power": "50"
+    },
+    {
+     "num": "C19",
+     "nameEn": "Boodle",
+     "nameJp": "ブードル",
+     "type": "Citizen",
+     "mark": "民 武 獣",
+     "power": "150"
+    },
+    {
+     "num": "C20",
+     "nameEn": "Chou-chou",
+     "nameJp": "シュシュ",
+     "type": "Citizen/Animal",
+     "mark": "民 獣",
+     "power": "150"
+    },
+    {
+     "num": "C21",
+     "nameEn": "Alvida",
+     "nameJp": "アルビダ",
+     "type": "Pirate",
+     "mark": "賊 知",
+     "power": "150"
+    },
+    {
+     "num": "C22",
+     "nameEn": "Morgan",
+     "nameJp": "モーガン",
+     "type": "Marine",
+     "mark": "軍 武",
+     "power": "150"
+    },
+    {
+     "num": "C23",
+     "nameEn": "Helmeppo",
+     "nameJp": "ヘルメッポ",
+     "type": "Marine",
+     "mark": "軍 民 知",
+     "power": "100"
+    },
+    {
+     "num": "C24",
+     "nameEn": "Buggy",
+     "nameJp": "バギー",
+     "type": "Pirate",
+     "mark": "賊",
+     "power": "300"
+    },
+    {
+     "num": "C25",
+     "nameEn": "Buggy",
+     "nameJp": "バギー",
+     "type": "Devil Fruit/Technique",
+     "mark": "賊 知",
+     "power": "200"
+    },
+    {
+     "num": "C26",
+     "nameEn": "Buggy Cannon",
+     "nameJp": "バギー砲",
+     "type": "Item",
+     "mark": "賊 武",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "C27",
+     "nameEn": "Mohji",
+     "nameJp": "モージ",
+     "type": "Pirate/Wisdom",
+     "mark": "賊 獣 武",
+     "power": "150 &#8594; 250"
+    },
+    {
+     "num": "C28",
+     "nameEn": "Richie",
+     "nameJp": "リッチー",
+     "type": "Animal/Technique",
+     "mark": "賊 獣 武",
+     "power": "150 &#8594; 250"
+    },
+    {
+     "num": "C29",
+     "nameEn": "Cabaji",
+     "nameJp": "カバジ",
+     "type": "Pirate/Swordsman",
+     "mark": "賊 剣",
+     "power": "250"
+    },
+    {
+     "num": "C30",
+     "nameEn": "Lord of the Coast",
+     "nameJp": "近海の主",
+     "type": "Animal/Technique",
+     "mark": "獣 武",
+     "power": "250"
+    },
+    {
+     "num": "C31",
+     "nameEn": "Alvida Crew",
+     "nameJp": "アルビダ一家",
+     "type": "Pirate/Battalion",
+     "mark": "賊 民 武",
+     "power": "150 &#8594; 200"
+    },
+    {
+     "num": "C32",
+     "nameEn": "Morgan Troops",
+     "nameJp": "モーガン部隊",
+     "type": "Marine/Battalion",
+     "mark": "軍 民 武",
+     "power": "200 &#8594; 0"
+    },
+    {
+     "num": "C33",
+     "nameEn": "Buggy Crew",
+     "nameJp": "バギー一味",
+     "type": "Pirate/Battalion",
+     "mark": "賊 剣 知",
+     "power": "150 &#8594; 200"
+    },
+    {
+     "num": "C34",
+     "nameEn": "Red Hair Pirates",
+     "nameJp": "赤髪海賊団",
+     "type": "Pirate/Battalion",
+     "mark": "賊",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "S01",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Special",
+     "mark": "逆",
+     "power": "700"
+    },
+    {
+     "num": "S02",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200 &#8594; 500"
+    },
+    {
+     "num": "S03",
+     "nameEn": "Gomu Gomu no Mi",
+     "nameJp": "ゴムゴムの実",
+     "type": "Special",
+     "mark": "逆",
+     "power": "250 &#8594; 450"
+    },
+    {
+     "num": "S04",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300 &#8594; –"
+    },
+    {
+     "num": "S05",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "0"
+    },
+    {
+     "num": "S06",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス",
+     "type": "Special",
+     "mark": "逆",
+     "power": "0"
+    },
+    {
+     "num": "S07",
+     "nameEn": "Morgan",
+     "nameJp": "モーガン",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300"
+    },
+    {
+     "num": "S08",
+     "nameEn": "Buggy",
+     "nameJp": "バギー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "250"
+    }
+   ]
+  },
+  {
+   "name": "Grand Box",
+   "date": "2000-03",
+   "official": 60,
+   "cards": [
+    {
+     "num": "C67",
+     "nameEn": "Red Hair Pirates",
+     "nameJp": "赤髪海賊団",
+     "type": "Pirate/Battalion",
+     "mark": "賊 武",
+     "power": "200"
+    },
+    {
+     "num": "C68",
+     "nameEn": "Usopp Pirates",
+     "nameJp": "ウソップ海賊団",
+     "type": "Citizen/Battalion",
+     "mark": "民 賊 武",
+     "power": "150"
+    },
+    {
+     "num": "C69",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Others",
+     "mark": "Ｌ",
+     "power": "350 &#8594; 650"
+    },
+    {
+     "num": "C70",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Devil Fruit/Technique",
+     "mark": "武 Ｌ",
+     "power": "400"
+    },
+    {
+     "num": "C71",
+     "nameEn": "Luffy's Hat",
+     "nameJp": "ルフィの帽子",
+     "type": "Item",
+     "mark": "賊 Ｌ",
+     "power": "100 &#8594; 350"
+    },
+    {
+     "num": "C72",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣",
+     "power": "150 &#8594; 600"
+    },
+    {
+     "num": "C73",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣 武 Ｌ",
+     "power": "0"
+    },
+    {
+     "num": "C74",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Technique",
+     "mark": "剣 武",
+     "power": "150 &#8594; 250"
+    },
+    {
+     "num": "C75",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Wisdom",
+     "mark": "知",
+     "power": "100"
+    },
+    {
+     "num": "C76",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Wisdom",
+     "mark": "知 Ｌ",
+     "power": "200"
+    },
+    {
+     "num": "C77",
+     "nameEn": "Nami's Weapon",
+     "nameJp": "ナミの三節棍",
+     "type": "Item",
+     "mark": "知 Ｌ",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "C78",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Wisdom",
+     "mark": "賊 知",
+     "power": "100 &#8594; 600"
+    },
+    {
+     "num": "C79",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Technique",
+     "mark": "賊 民 Ｌ",
+     "power": "50"
+    },
+    {
+     "num": "C80",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Technique",
+     "mark": "料 武",
+     "power": "350 &#8594; 550"
+    },
+    {
+     "num": "C81",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Wisdom",
+     "mark": "料 知 Ｌ",
+     "power": "250"
+    },
+    {
+     "num": "C82",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス",
+     "type": "Pirate",
+     "mark": "賊",
+     "power": "700"
+    },
+    {
+     "num": "C83",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス",
+     "type": "Pirate",
+     "mark": "賊 民 武",
+     "power": "200"
+    },
+    {
+     "num": "C84",
+     "nameEn": "Beckmann",
+     "nameJp": "ベックマン",
+     "type": "Pirate",
+     "mark": "賊 剣 知",
+     "power": "350"
+    },
+    {
+     "num": "C85",
+     "nameEn": "Lucky Roux",
+     "nameJp": "ラッキー・ルウ",
+     "type": "Pirate",
+     "mark": "賊 料 武",
+     "power": "300"
+    },
+    {
+     "num": "C86",
+     "nameEn": "Yasopp",
+     "nameJp": "ヤソップ",
+     "type": "Pirate",
+     "mark": "賊 武",
+     "power": "150"
+    },
+    {
+     "num": "C87",
+     "nameEn": "Makino",
+     "nameJp": "マキノ",
+     "type": "Citizen",
+     "mark": "民 料",
+     "power": "0"
+    },
+    {
+     "num": "C88",
+     "nameEn": "Koby",
+     "nameJp": "コビー",
+     "type": "Citizen/Marine",
+     "mark": "軍 民 知",
+     "power": "100 &#8594; 250"
+    },
+    {
+     "num": "C89",
+     "nameEn": "Rika",
+     "nameJp": "リカ",
+     "type": "Citizen",
+     "mark": "民 料 知",
+     "power": "0"
+    },
+    {
+     "num": "C90",
+     "nameEn": "Kuina",
+     "nameJp": "くいな",
+     "type": "Swordsman/Technique",
+     "mark": "剣 武",
+     "power": "50"
+    },
+    {
+     "num": "C91",
+     "nameEn": "Boodle",
+     "nameJp": "ブードル",
+     "type": "Citizen",
+     "mark": "民 武",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "C92",
+     "nameEn": "ChuChu",
+     "nameJp": "シュシュ",
+     "type": "Citizen/Animal",
+     "mark": "民 獣",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "C93",
+     "nameEn": "Kaya",
+     "nameJp": "カヤ",
+     "type": "Citizen",
+     "mark": "民 知",
+     "power": "150"
+    },
+    {
+     "num": "C94",
+     "nameEn": "Kurohadol",
+     "nameJp": "クラハドール",
+     "type": "Citizen/Wisdom",
+     "mark": "武 民 知",
+     "power": "100 &#8594; 300"
+    },
+    {
+     "num": "C95",
+     "nameEn": "Alvida",
+     "nameJp": "アルビダ",
+     "type": "Pirate/Technique",
+     "mark": "賊",
+     "power": "200 &#8594; 400"
+    },
+    {
+     "num": "C96",
+     "nameEn": "Morgan",
+     "nameJp": "モーガン",
+     "type": "Marine/Technique",
+     "mark": "軍 剣 武",
+     "power": "200 &#8594; 450"
+    },
+    {
+     "num": "C97",
+     "nameEn": "Helmeppo",
+     "nameJp": "ヘルメッポ",
+     "type": "Citizen/Wisdom",
+     "mark": "軍 民 知",
+     "power": "50 &#8594; 150"
+    },
+    {
+     "num": "C98",
+     "nameEn": "Buggy",
+     "nameJp": "バギー",
+     "type": "Pirate/Devil Fruit",
+     "mark": "賊 武",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C99",
+     "nameEn": "Buggy",
+     "nameJp": "バギー",
+     "type": "Pirate",
+     "mark": "賊 民 知",
+     "power": "200"
+    },
+    {
+     "num": "C100",
+     "nameEn": "Cabaji",
+     "nameJp": "カバジ",
+     "type": "Pirate/Swordsman",
+     "mark": "賊 剣 武",
+     "power": "250 &#8594; 500"
+    },
+    {
+     "num": "C101",
+     "nameEn": "Cabaji",
+     "nameJp": "カバジ",
+     "type": "Pirate/Wisdom",
+     "mark": "賊 剣",
+     "power": "200"
+    },
+    {
+     "num": "C102",
+     "nameEn": "Mohji & Richie",
+     "nameJp": "モージ＆リッチー",
+     "type": "Pirate/Animal",
+     "mark": "賊 獣",
+     "power": "300"
+    },
+    {
+     "num": "C103",
+     "nameEn": "Kuro's Weapon",
+     "nameJp": "クロの武器",
+     "type": "Item",
+     "mark": "賊 武",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "C104",
+     "nameEn": "Jango",
+     "nameJp": "ジャンゴ",
+     "type": "Pirate/Wisdom",
+     "mark": "賊 知",
+     "power": "150"
+    },
+    {
+     "num": "C105",
+     "nameEn": "Buchi",
+     "nameJp": "ブチ",
+     "type": "Pirate/Animal",
+     "mark": "賊 獣",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C106",
+     "nameEn": "Sham",
+     "nameJp": "シャム",
+     "type": "Pirate/Animal",
+     "mark": "賊 獣",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C107",
+     "nameEn": "Krieg",
+     "nameJp": "クリーク",
+     "type": "Pirate",
+     "mark": "賊",
+     "power": "350 &#8594; 700"
+    },
+    {
+     "num": "C108",
+     "nameEn": "Krieg",
+     "nameJp": "クリーク",
+     "type": "Pirate/Wisdom",
+     "mark": "賊 武 知",
+     "power": "50"
+    },
+    {
+     "num": "C109",
+     "nameEn": "Buggy Crew",
+     "nameJp": "バギー一味",
+     "type": "Pirate/Battalion",
+     "mark": "賊 剣 武",
+     "power": "150"
+    },
+    {
+     "num": "C110",
+     "nameEn": "Black Cat Pirates",
+     "nameJp": "クロネコ海賊団",
+     "type": "Pirate/Battalion",
+     "mark": "賊 獣 武",
+     "power": "150"
+    },
+    {
+     "num": "FP3",
+     "nameEn": "Usopp's Village",
+     "nameJp": "ウソップの村",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP4",
+     "nameEn": "Makino's Bar",
+     "nameJp": "マキノの酒場",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP5",
+     "nameEn": "Drinking Pub",
+     "nameJp": "ドリンカーパブ",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP6",
+     "nameEn": "Jango's Pirates",
+     "nameJp": "ジャンゴの海賊船",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP7",
+     "nameEn": "Going Merry",
+     "nameJp": "ゴーイング・メリー号",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP8",
+     "nameEn": "Baratie is Open for Buisness",
+     "nameJp": "バラティエ営業中",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "S17",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Special",
+     "mark": "逆",
+     "power": "800"
+    },
+    {
+     "num": "S18",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "450"
+    },
+    {
+     "num": "S19",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "750"
+    },
+    {
+     "num": "S20",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100"
+    },
+    {
+     "num": "S21",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300"
+    },
+    {
+     "num": "S22",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス",
+     "type": "Special",
+     "mark": "逆",
+     "power": "250"
+    },
+    {
+     "num": "S23",
+     "nameEn": "Alvida",
+     "nameJp": "アルビダ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "250 &#8594; 500"
+    },
+    {
+     "num": "S24",
+     "nameEn": "Morgan",
+     "nameJp": "モーガン",
+     "type": "Special",
+     "mark": "逆",
+     "power": "250 &#8594; 450"
+    },
+    {
+     "num": "S25",
+     "nameEn": "Buggy",
+     "nameJp": "バギー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100"
+    },
+    {
+     "num": "S26",
+     "nameEn": "Kuro",
+     "nameJp": "クロ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "250 &#8594; 450"
+    }
+   ]
+  },
+  {
+   "name": "Grand Box 2",
+   "date": "2000-07",
+   "official": 60,
+   "cards": [
+    {
+     "num": "C178",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Devil Fruit/Technique",
+     "mark": "Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C179",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Wisdom",
+     "mark": "民 知 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C180",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣 武",
+     "power": "100"
+    },
+    {
+     "num": "C181",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Technique",
+     "mark": "剣",
+     "power": "100 &#8594; 600"
+    },
+    {
+     "num": "C182",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Pirate/Wisdom",
+     "mark": "魚 知",
+     "power": "500"
+    },
+    {
+     "num": "C183",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Others",
+     "mark": "民 知 Ｌ",
+     "power": "250"
+    },
+    {
+     "num": "C184",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Citizen",
+     "mark": "民 知 Ｌ",
+     "power": "0"
+    },
+    {
+     "num": "C185",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate/Technique",
+     "mark": "賊",
+     "power": "200 &#8594; 600"
+    },
+    {
+     "num": "C186",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Wisdom",
+     "mark": "賊 知 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C187",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Technique",
+     "mark": "料 武",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C188",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Cooking",
+     "mark": "料 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C189",
+     "nameEn": "Kaya",
+     "nameJp": "カヤ",
+     "type": "Citizen",
+     "mark": "民 Ｌ",
+     "power": "0"
+    },
+    {
+     "num": "C190",
+     "nameEn": "Gaimon",
+     "nameJp": "ガイモン",
+     "type": "Pirate",
+     "mark": "賊 武 Ｌ",
+     "power": "50"
+    },
+    {
+     "num": "C191",
+     "nameEn": "Zeff",
+     "nameJp": "ゼフ",
+     "type": "Citizen",
+     "mark": "料 知",
+     "power": "0"
+    },
+    {
+     "num": "C192",
+     "nameEn": "Patty",
+     "nameJp": "パティ",
+     "type": "Cooking",
+     "mark": "民 料 知",
+     "power": "100 &#8594; 300"
+    },
+    {
+     "num": "C193",
+     "nameEn": "Carne",
+     "nameJp": "カルネ",
+     "type": "Cooking",
+     "mark": "民 料 武",
+     "power": "100 &#8594; 300"
+    },
+    {
+     "num": "C194",
+     "nameEn": "Chef's Knife",
+     "nameJp": "料理包丁",
+     "type": "Item",
+     "mark": "料 知",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "C195",
+     "nameEn": "Sabagashira 1",
+     "nameJp": "サバガシラ１号",
+     "type": "Item",
+     "mark": "料 武",
+     "power": "200"
+    },
+    {
+     "num": "C196",
+     "nameEn": "Yosaku",
+     "nameJp": "ヨサク",
+     "type": "Swordsman/Technique",
+     "mark": "剣 武 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C197",
+     "nameEn": "Johnny",
+     "nameJp": "ジョニー",
+     "type": "Swordsman/Wisdom",
+     "mark": "剣 知 Ｌ",
+     "power": "250"
+    },
+    {
+     "num": "C198",
+     "nameEn": "Nojiko",
+     "nameJp": "ノジコ",
+     "type": "Citizen/Wisdom",
+     "mark": "民 知",
+     "power": "200"
+    },
+    {
+     "num": "C199",
+     "nameEn": "Bell-mère",
+     "nameJp": "ベルメール",
+     "type": "Marine/Citizen",
+     "mark": "軍 武 知",
+     "power": "300"
+    },
+    {
+     "num": "C200",
+     "nameEn": "Bell-mère and Children",
+     "nameJp": "ベルメール親子",
+     "type": "Citizen",
+     "mark": "民 知",
+     "power": "50 &#8594; 500"
+    },
+    {
+     "num": "C201",
+     "nameEn": "Cocoyasi Townspeople",
+     "nameJp": "ココヤシの村人",
+     "type": "Citizen/Battalion",
+     "mark": "軍 民 知",
+     "power": "200"
+    },
+    {
+     "num": "C202",
+     "nameEn": "Fullbody",
+     "nameJp": "フルボディ",
+     "type": "Marine",
+     "mark": "軍 武",
+     "power": "300"
+    },
+    {
+     "num": "C203",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー",
+     "type": "Devil Fruit/Marine",
+     "mark": "軍",
+     "power": "650"
+    },
+    {
+     "num": "C204",
+     "nameEn": "Tashigi",
+     "nameJp": "たしぎ",
+     "type": "Marine/Swordsman",
+     "mark": "軍 剣",
+     "power": "250"
+    },
+    {
+     "num": "C205",
+     "nameEn": "Kuro",
+     "nameJp": "クロ",
+     "type": "Pirate/Wisdom",
+     "mark": "賊 獣 知",
+     "power": "200"
+    },
+    {
+     "num": "C206",
+     "nameEn": "Jango",
+     "nameJp": "ジャンゴ",
+     "type": "Pirate/Wisdom",
+     "mark": "賊 知",
+     "power": "150"
+    },
+    {
+     "num": "C207",
+     "nameEn": "Krieg",
+     "nameJp": "クリーク",
+     "type": "Pirate/Technique",
+     "mark": "賊",
+     "power": "150"
+    },
+    {
+     "num": "C208",
+     "nameEn": "Krieg",
+     "nameJp": "クリーク",
+     "type": "Pirate/Technique",
+     "mark": "賊 武",
+     "power": "200 &#8594; 350"
+    },
+    {
+     "num": "C209",
+     "nameEn": "Gin",
+     "nameJp": "ギン",
+     "type": "Pirate",
+     "mark": "賊 料 武",
+     "power": "250"
+    },
+    {
+     "num": "C210",
+     "nameEn": "Gin",
+     "nameJp": "ギン",
+     "type": "Pirate/Technique",
+     "mark": "賊 武",
+     "power": "150"
+    },
+    {
+     "num": "C211",
+     "nameEn": "Pearl",
+     "nameJp": "パール",
+     "type": "Pirate/Technique",
+     "mark": "賊 武",
+     "power": "400"
+    },
+    {
+     "num": "C212",
+     "nameEn": "Arlong",
+     "nameJp": "アーロン",
+     "type": "Fishman/Technique",
+     "mark": "魚",
+     "power": "700"
+    },
+    {
+     "num": "C213",
+     "nameEn": "Arlong's Weapon",
+     "nameJp": "アーロンの武器",
+     "type": "Item",
+     "mark": "魚 武",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "C214",
+     "nameEn": "Hatchan",
+     "nameJp": "はっちゃん",
+     "type": "Fishman/Swordsman",
+     "mark": "魚 剣 武",
+     "power": "100"
+    },
+    {
+     "num": "C215",
+     "nameEn": "Kuroobi",
+     "nameJp": "クロオビ",
+     "type": "Fishman/Technique",
+     "mark": "魚 武",
+     "power": "150 &#8594; 300"
+    },
+    {
+     "num": "C216",
+     "nameEn": "Chew",
+     "nameJp": "チュウ",
+     "type": "Fishman/Wisdom",
+     "mark": "魚 知",
+     "power": "150"
+    },
+    {
+     "num": "C217",
+     "nameEn": "Momoo",
+     "nameJp": "モーム",
+     "type": "Animal",
+     "mark": "魚 獣",
+     "power": "400"
+    },
+    {
+     "num": "C218",
+     "nameEn": "Black Cat Pirates",
+     "nameJp": "クロネコ海賊団",
+     "type": "Pirate/Battalion",
+     "mark": "賊 獣 知",
+     "power": "150"
+    },
+    {
+     "num": "C219",
+     "nameEn": "Krieg Assault Force",
+     "nameJp": "クリーク突撃部隊",
+     "type": "Pirate/Battalion",
+     "mark": "賊 剣 武",
+     "power": "200 &#8594; 0"
+    },
+    {
+     "num": "C220",
+     "nameEn": "Arlong Crew",
+     "nameJp": "アーロン一味",
+     "type": "Fishman/Battalion",
+     "mark": "賊 魚 武",
+     "power": "150 &#8594; 200"
+    },
+    {
+     "num": "FP13",
+     "nameEn": "Decisive Battle on the Slope",
+     "nameJp": "決戦の坂道",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP14",
+     "nameEn": "Krieg's Giant Galley",
+     "nameJp": "クリークの巨大ガレー",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP15",
+     "nameEn": "Baratie Customer Service",
+     "nameJp": "バラティエ接客中",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP16",
+     "nameEn": "Arlong Park",
+     "nameJp": "アーロンパーク",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP17",
+     "nameEn": "Cocoyasi Village",
+     "nameJp": "ココヤシ村",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP18",
+     "nameEn": "Voyage of the Going Merry",
+     "nameJp": "メリー号の船旅",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "S40",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Special",
+     "mark": "逆",
+     "power": "1200"
+    },
+    {
+     "num": "S41",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100 &#8594; 900"
+    },
+    {
+     "num": "S42",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "500"
+    },
+    {
+     "num": "S43",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "150"
+    },
+    {
+     "num": "S44",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "50"
+    },
+    {
+     "num": "S45",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "600"
+    },
+    {
+     "num": "S46",
+     "nameEn": "Zeff",
+     "nameJp": "ゼフ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "350"
+    },
+    {
+     "num": "S47",
+     "nameEn": "Mihawk",
+     "nameJp": "ミホーク",
+     "type": "Special",
+     "mark": "逆",
+     "power": "500"
+    },
+    {
+     "num": "S48",
+     "nameEn": "Kuro",
+     "nameJp": "クロ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "250 &#8594; 450"
+    },
+    {
+     "num": "S49",
+     "nameEn": "Krieg",
+     "nameJp": "クリーク",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200 &#8594; 600"
+    },
+    {
+     "num": "S50",
+     "nameEn": "Arlong",
+     "nameJp": "アーロン",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100 &#8594; 800"
+    }
+   ]
+  },
+  {
+   "name": "Grand Box 3",
+   "date": "2000-12",
+   "official": 60,
+   "cards": [
+    {
+     "num": "C288",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Pirate/Technique",
+     "mark": "Ｌ",
+     "power": "300 &#8594; 1000"
+    },
+    {
+     "num": "C289",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Pirate",
+     "mark": "Ｌ 武",
+     "power": "250"
+    },
+    {
+     "num": "C290",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Technique/Devil Fruit",
+     "mark": "Ｌ 知",
+     "power": "250"
+    },
+    {
+     "num": "C291",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Pirate/Technique",
+     "mark": "剣 Ｌ",
+     "power": "250 &#8594; 550"
+    },
+    {
+     "num": "C292",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Technique",
+     "mark": "剣 武",
+     "power": "500"
+    },
+    {
+     "num": "C293",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣 知",
+     "power": "250"
+    },
+    {
+     "num": "C294",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Citizen",
+     "mark": "知 Ｌ",
+     "power": "250"
+    },
+    {
+     "num": "C295",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Pirate/Wisdom",
+     "mark": "賊 知 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C296",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Citizen/Wisdom",
+     "mark": "民 知",
+     "power": "150"
+    },
+    {
+     "num": "C297",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate",
+     "mark": "賊",
+     "power": "50"
+    },
+    {
+     "num": "C298",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate/Technique",
+     "mark": "賊 Ｌ",
+     "power": "250"
+    },
+    {
+     "num": "C299",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Citizen/Wisdom",
+     "mark": "賊 民",
+     "power": "200"
+    },
+    {
+     "num": "C300",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Pirate/Technique",
+     "mark": "料 Ｌ",
+     "power": "250 &#8594; 550"
+    },
+    {
+     "num": "C301",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Technique",
+     "mark": "料 武",
+     "power": "250"
+    },
+    {
+     "num": "C302",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Cooking/Wisdom",
+     "mark": "料 知 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C303",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス",
+     "type": "Pirate/Swordsman",
+     "mark": "賊 剣",
+     "power": "250"
+    },
+    {
+     "num": "C304",
+     "nameEn": "Beckmann",
+     "nameJp": "ベックマン",
+     "type": "Pirate/Technique",
+     "mark": "賊 武",
+     "power": "100"
+    },
+    {
+     "num": "C305",
+     "nameEn": "Lucky Roux",
+     "nameJp": "ラッキー・ルウ",
+     "type": "Pirate/Cooking",
+     "mark": "賊 料",
+     "power": "100"
+    },
+    {
+     "num": "C306",
+     "nameEn": "Makino",
+     "nameJp": "マキノ",
+     "type": "Citizen/Cooking",
+     "mark": "民 料",
+     "power": "0"
+    },
+    {
+     "num": "C307",
+     "nameEn": "Yosaku & Johnny",
+     "nameJp": "ヨサク ＆ ジョニー",
+     "type": "Swordsman",
+     "mark": "剣 武",
+     "power": "450"
+    },
+    {
+     "num": "C308",
+     "nameEn": "Bell-mère and Children",
+     "nameJp": "ベルメール親子",
+     "type": "Citizen/Cooking",
+     "mark": "軍 民 知",
+     "power": "400"
+    },
+    {
+     "num": "C309",
+     "nameEn": "Apis",
+     "nameJp": "アピス",
+     "type": "Cooking/Wisdom",
+     "mark": "料 獣 Ｌ",
+     "power": "50"
+    },
+    {
+     "num": "C310",
+     "nameEn": "Ryuuji",
+     "nameJp": "リュウ爺",
+     "type": "Animal",
+     "mark": "超 獣",
+     "power": "0"
+    },
+    {
+     "num": "C311",
+     "nameEn": "Bokuden",
+     "nameJp": "ボクデン",
+     "type": "Citizen/Wisdom",
+     "mark": "民 獣",
+     "power": "50"
+    },
+    {
+     "num": "C312",
+     "nameEn": "Dragon",
+     "nameJp": "ドラゴン",
+     "type": "Pirate",
+     "mark": "賊",
+     "power": "300"
+    },
+    {
+     "num": "C313",
+     "nameEn": "Koby",
+     "nameJp": "コビー",
+     "type": "Marine/Technique",
+     "mark": "軍 民 武",
+     "power": "100"
+    },
+    {
+     "num": "C314",
+     "nameEn": "Helmeppo",
+     "nameJp": "ヘルメッポ",
+     "type": "Marine/Wisdom",
+     "mark": "軍 民 知",
+     "power": "100"
+    },
+    {
+     "num": "C315",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー",
+     "type": "Marine/Devil Fruit",
+     "mark": "軍 武",
+     "power": "900"
+    },
+    {
+     "num": "C316",
+     "nameEn": "Tashigi",
+     "nameJp": "たしぎ",
+     "type": "Marine/Swordsman",
+     "mark": "軍 剣",
+     "power": "150"
+    },
+    {
+     "num": "C317",
+     "nameEn": "Nelson Royale",
+     "nameJp": "ネルソン・ロイヤル",
+     "type": "Marine/Wisdom",
+     "mark": "賊 軍",
+     "power": "100"
+    },
+    {
+     "num": "C318",
+     "nameEn": "Loguetown Garrison",
+     "nameJp": "ローグタウン守備隊",
+     "type": "Marine/Battlion",
+     "mark": "軍 剣",
+     "power": "100 &#8594; 250"
+    },
+    {
+     "num": "C319",
+     "nameEn": "Royale Marine Corps.",
+     "nameJp": "ロイヤル海兵隊",
+     "type": "Marine/Battlion",
+     "mark": "賊 軍 武",
+     "power": "150 &#8594; 200"
+    },
+    {
+     "num": "C320",
+     "nameEn": "Arlong",
+     "nameJp": "アーロン",
+     "type": "Fishman",
+     "mark": "賊 魚",
+     "power": "150"
+    },
+    {
+     "num": "C321",
+     "nameEn": "Hatchan",
+     "nameJp": "はっちゃん",
+     "type": "Fishman/Swordsman",
+     "mark": "魚 剣",
+     "power": "250"
+    },
+    {
+     "num": "C322",
+     "nameEn": "Kuroobi",
+     "nameJp": "クロオビ",
+     "type": "Fishman/Technique",
+     "mark": "魚 武",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C323",
+     "nameEn": "Chew",
+     "nameJp": "チュウ",
+     "type": "Fishman/Wisdom",
+     "mark": "魚 知",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C324",
+     "nameEn": "Alvida",
+     "nameJp": "アルビダ",
+     "type": "Wisdom/Devil Fruit",
+     "mark": "賊",
+     "power": "150"
+    },
+    {
+     "num": "C325",
+     "nameEn": "Buggy",
+     "nameJp": "バギー",
+     "type": "Technique/Devil Fruit",
+     "mark": "賊",
+     "power": "150"
+    },
+    {
+     "num": "C326",
+     "nameEn": "Cabaji & Mohji",
+     "nameJp": "カバジ＆モージ",
+     "type": "Pirate",
+     "mark": "賊 獣 武",
+     "power": "300"
+    },
+    {
+     "num": "C327",
+     "nameEn": "Richie",
+     "nameJp": "リッチー",
+     "type": "Pirate/Animal",
+     "mark": "賊 獣",
+     "power": "150"
+    },
+    {
+     "num": "C328",
+     "nameEn": "Eric",
+     "nameJp": "エリック",
+     "type": "Technique/Devil Fruit",
+     "mark": "賊 軍",
+     "power": "250 &#8594; 500"
+    },
+    {
+     "num": "C329",
+     "nameEn": "Bat",
+     "nameJp": "コウモリ",
+     "type": "Pirate/Animal",
+     "mark": "賊 獣",
+     "power": "150"
+    },
+    {
+     "num": "C330",
+     "nameEn": "Captain Joke",
+     "nameJp": "キャプテン・ジョーク",
+     "type": "Pirate/Animal",
+     "mark": "賊 獣",
+     "power": "50 &#8594; 450"
+    },
+    {
+     "num": "FP23",
+     "nameEn": "Gosa Village",
+     "nameJp": "ゴサの村",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP24",
+     "nameEn": "Freedom Banquet",
+     "nameJp": "解放の宴",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP25",
+     "nameEn": "Town Full of Monsters",
+     "nameJp": "怪物達の集う町",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP26",
+     "nameEn": "Warship Island",
+     "nameJp": "軍艦島",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP27",
+     "nameEn": "Arlong's Pirate Ship",
+     "nameJp": "アーロンの海賊船",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP28",
+     "nameEn": "Merry Meal",
+     "nameJp": "メリー号の食事",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "S64",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Special",
+     "mark": "逆",
+     "power": "800"
+    },
+    {
+     "num": "S65",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "500"
+    },
+    {
+     "num": "S66",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "400"
+    },
+    {
+     "num": "S67",
+     "nameEn": "Apis",
+     "nameJp": "アピス",
+     "type": "Special",
+     "mark": "逆",
+     "power": "0"
+    },
+    {
+     "num": "S68",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "350"
+    },
+    {
+     "num": "S69",
+     "nameEn": "Tashigi",
+     "nameJp": "たしぎ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "600"
+    },
+    {
+     "num": "S70",
+     "nameEn": "Arlong",
+     "nameJp": "アーロン",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300"
+    },
+    {
+     "num": "S71",
+     "nameEn": "Alvida",
+     "nameJp": "アルビダ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100"
+    },
+    {
+     "num": "S72",
+     "nameEn": "Buggy",
+     "nameJp": "バギー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100 &#8594; 750"
+    },
+    {
+     "num": "S73",
+     "nameEn": "Eric",
+     "nameJp": "エリック",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100"
+    },
+    {
+     "num": "S74",
+     "nameEn": "Captain Roger",
+     "nameJp": "ゴールド・ロジャー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200"
+    }
+   ]
+  },
+  {
+   "name": "Grand Box 4",
+   "date": "2001-04",
+   "official": 60,
+   "cards": [
+    {
+     "num": "C365",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Devil Fruit/Technique",
+     "mark": "Ｌ",
+     "power": "1100"
+    },
+    {
+     "num": "C366",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Pirate",
+     "mark": "賊 Ｌ",
+     "power": "50"
+    },
+    {
+     "num": "C367",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Technique",
+     "mark": "剣",
+     "power": "200"
+    },
+    {
+     "num": "C368",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Citizen",
+     "mark": "剣 知 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C369",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Pirate/Wisdom",
+     "mark": "知",
+     "power": "150"
+    },
+    {
+     "num": "C370",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Citizen/Wisdom",
+     "mark": "武 知 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C371",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate",
+     "mark": "賊",
+     "power": "200"
+    },
+    {
+     "num": "C372",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate/Citizen",
+     "mark": "賊 武 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C373",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Cooking",
+     "mark": "民 料",
+     "power": "150"
+    },
+    {
+     "num": "C374",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Cooking/Citizen",
+     "mark": "料 知 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C375",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス",
+     "type": "Pirate",
+     "mark": "賊",
+     "power": "350"
+    },
+    {
+     "num": "C376",
+     "nameEn": "Apis",
+     "nameJp": "アピス",
+     "type": "Citizen",
+     "mark": "Ｌ 民 獣",
+     "power": "0"
+    },
+    {
+     "num": "C377",
+     "nameEn": "Ryuuji",
+     "nameJp": "リュウ爺",
+     "type": "Animal",
+     "mark": "超 獣",
+     "power": "800"
+    },
+    {
+     "num": "C378",
+     "nameEn": "Crocus & Laboon",
+     "nameJp": "クロッカス ＆ ラブーン",
+     "type": "Citizen/Wisdom",
+     "mark": "超 獣 知",
+     "power": "0"
+    },
+    {
+     "num": "C379",
+     "nameEn": "Crocus",
+     "nameJp": "クロッカス",
+     "type": "Wisdom",
+     "mark": "民 獣",
+     "power": "100"
+    },
+    {
+     "num": "C380",
+     "nameEn": "Laboon",
+     "nameJp": "ラブーン",
+     "type": "Animal",
+     "mark": "超 獣",
+     "power": "900"
+    },
+    {
+     "num": "C381",
+     "nameEn": "Vivi",
+     "nameJp": "ビビ",
+     "type": "Organization/Government",
+     "mark": "罪 政 Ｌ",
+     "power": "250"
+    },
+    {
+     "num": "C382",
+     "nameEn": "Karoo",
+     "nameJp": "カルー",
+     "type": "Government/Animal",
+     "mark": "政 獣",
+     "power": "200"
+    },
+    {
+     "num": "C383",
+     "nameEn": "Guardians of the City",
+     "nameJp": "街の守護者",
+     "type": "Marine/Citizen",
+     "mark": "軍 民",
+     "power": "150"
+    },
+    {
+     "num": "C384",
+     "nameEn": "Pin Joker",
+     "nameJp": "ピンジョーカー",
+     "type": "Pirate/Swordsman",
+     "mark": "賊 剣",
+     "power": "250 &#8594; 500"
+    },
+    {
+     "num": "C385",
+     "nameEn": "Skunk One",
+     "nameJp": "スカンクワン",
+     "type": "Pirate/Wisdom",
+     "mark": "賊 知",
+     "power": "250 &#8594; 500"
+    },
+    {
+     "num": "C386",
+     "nameEn": "Honey Queen",
+     "nameJp": "ハニークイーン",
+     "type": "Devil Fruit/Wisdom",
+     "mark": "賊 民",
+     "power": "250 &#8594; 500"
+    },
+    {
+     "num": "C387",
+     "nameEn": "Boo Jack",
+     "nameJp": "ブージャック",
+     "type": "Pirate/Technique",
+     "mark": "賊 武",
+     "power": "250 &#8594; 500"
+    },
+    {
+     "num": "C388",
+     "nameEn": "King Cannon",
+     "nameJp": "キング砲",
+     "type": "Item",
+     "mark": "賊",
+     "power": "450"
+    },
+    {
+     "num": "C389",
+     "nameEn": "Mr. 5",
+     "nameJp": "Ｍｒ．５",
+     "type": "Devil Fruit/Technique",
+     "mark": "罪 武",
+     "power": "600"
+    },
+    {
+     "num": "C390",
+     "nameEn": "Mr. 8",
+     "nameJp": "Ｍｒ．８",
+     "type": "Organization/Government",
+     "mark": "罪 政 武",
+     "power": "200"
+    },
+    {
+     "num": "C391",
+     "nameEn": "Mr. 9",
+     "nameJp": "Ｍｒ．９",
+     "type": "Organization/Technique",
+     "mark": "罪 武",
+     "power": "450"
+    },
+    {
+     "num": "C392",
+     "nameEn": "Mr. 9",
+     "nameJp": "Ｍｒ．９",
+     "type": "Organization/Swordsman",
+     "mark": "罪 剣",
+     "power": "250 &#8594; 450"
+    },
+    {
+     "num": "C393",
+     "nameEn": "Miss Valentine",
+     "nameJp": "ミス・バレンタイン",
+     "type": "Devil Fruit/Organization",
+     "mark": "罪 知",
+     "power": "100"
+    },
+    {
+     "num": "C394",
+     "nameEn": "Miss Monday",
+     "nameJp": "ミス・マンデー",
+     "type": "Organization/Technique",
+     "mark": "罪 武",
+     "power": "400"
+    },
+    {
+     "num": "C395",
+     "nameEn": "Miss Wednesday",
+     "nameJp": "ミス・ウェンズデー　機転",
+     "type": "Organization/Wisdom",
+     "mark": "罪 知",
+     "power": "100"
+    },
+    {
+     "num": "C396",
+     "nameEn": "Metal Bat",
+     "nameJp": "金属バット",
+     "type": "Item",
+     "mark": "民 罪 武",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C397",
+     "nameEn": "Peacock Slicer",
+     "nameJp": "孔雀スラッシャー",
+     "type": "Item",
+     "mark": "罪 政 知",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "FP31",
+     "nameEn": "Logue Town Tempest",
+     "nameJp": "嵐のローグタウン",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP32",
+     "nameEn": "Lost Island Battleground",
+     "nameJp": "戦場のロストアイランド",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP33",
+     "nameEn": "Royale Armada",
+     "nameJp": "ロイヤル艦隊",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP34",
+     "nameEn": "Sea King Nest",
+     "nameJp": "海王類の巣",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP35",
+     "nameEn": "Trump Castle",
+     "nameJp": "トランプ城",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP36",
+     "nameEn": "Whiskey Peak",
+     "nameJp": "ウィスキーピーク",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "H01",
+     "nameEn": "Martial Arts",
+     "nameJp": "武闘術",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H02",
+     "nameEn": "Assistance",
+     "nameJp": "助太刀",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H03",
+     "nameEn": "Obliteration Order",
+     "nameJp": "抹殺指令",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H04",
+     "nameEn": "Maneuverability",
+     "nameJp": "機動力",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H05",
+     "nameEn": "Pacifistic Defense",
+     "nameJp": "専守防衛",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H06",
+     "nameEn": "Fighting Spirit",
+     "nameJp": "気合",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H07",
+     "nameEn": "Three Sword Style",
+     "nameJp": "三倍剣",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H08",
+     "nameEn": "Stampede",
+     "nameJp": "スタンピード",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H09",
+     "nameEn": "Forecful Seizure",
+     "nameJp": "強奪",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "S82",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Special",
+     "mark": "逆",
+     "power": "900"
+    },
+    {
+     "num": "S83",
+     "nameEn": "Bear King Gang",
+     "nameJp": "ベアキング一味",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200"
+    },
+    {
+     "num": "S84",
+     "nameEn": "Luffy & Zoro",
+     "nameJp": "ルフィ ＆ ゾロ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "1200"
+    },
+    {
+     "num": "S85",
+     "nameEn": "Apis & Bokuden",
+     "nameJp": "アピス ＆ ボクデン",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100"
+    },
+    {
+     "num": "S86",
+     "nameEn": "Eric & Nelson",
+     "nameJp": "エリック ＆ ネルソン",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100"
+    },
+    {
+     "num": "S87",
+     "nameEn": "Agents",
+     "nameJp": "エージェントたち",
+     "type": "Special",
+     "mark": "逆",
+     "power": "650"
+    },
+    {
+     "num": "S88",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100"
+    },
+    {
+     "num": "S89",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "1000"
+    },
+    {
+     "num": "S90",
+     "nameEn": "Borodo",
+     "nameJp": "ボロード",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300"
+    },
+    {
+     "num": "S91",
+     "nameEn": "Akisu",
+     "nameJp": "アキース",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300"
+    },
+    {
+     "num": "S92",
+     "nameEn": "Clockwork Island Residents",
+     "nameJp": "ねじまき島の住人",
+     "type": "Special",
+     "mark": "逆",
+     "power": "250 &#8594; 500"
+    },
+    {
+     "num": "S93",
+     "nameEn": "Bear King",
+     "nameJp": "ベアキング",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300 &#8594; 600"
+    }
+   ]
+  },
+  {
+   "name": "Grand Box 5",
+   "date": "2001-10",
+   "official": 60,
+   "cards": [
+    {
+     "num": "C457",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Devil Fruit/Pirate",
+     "mark": "Ｌ",
+     "power": "900"
+    },
+    {
+     "num": "C458",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Pirate",
+     "mark": "民 武 Ｌ",
+     "power": "300"
+    },
+    {
+     "num": "C459",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Pirate/Swordsman",
+     "mark": "剣 武",
+     "power": "100 &#8594; 600"
+    },
+    {
+     "num": "C460",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Technique",
+     "mark": "剣 武 Ｌ",
+     "power": "50 &#8594; 400"
+    },
+    {
+     "num": "C461",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Pirate/Wisdom",
+     "mark": "民 知",
+     "power": "250"
+    },
+    {
+     "num": "C462",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Wisdom",
+     "mark": "政 知 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C463",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate",
+     "mark": "賊 民",
+     "power": "100"
+    },
+    {
+     "num": "C464",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate/Technique",
+     "mark": "賊 民 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C465",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Citizen/Cooking",
+     "mark": "料 武",
+     "power": "50 &#8594; 400"
+    },
+    {
+     "num": "C466",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Wisdom",
+     "mark": "料 知 Ｌ",
+     "power": "400"
+    },
+    {
+     "num": "C467",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー",
+     "type": "Pirate/Animal",
+     "mark": "獣 Ｌ",
+     "power": "600"
+    },
+    {
+     "num": "C468",
+     "nameEn": "Rumble Ball",
+     "nameJp": "ランブルボール",
+     "type": "Item",
+     "mark": "獣 知",
+     "power": "50 &#8594; 450"
+    },
+    {
+     "num": "C469",
+     "nameEn": "Amiudake",
+     "nameJp": "アミウダケ",
+     "type": "Item",
+     "mark": "知 獣",
+     "power": "100"
+    },
+    {
+     "num": "C470",
+     "nameEn": "Vivi",
+     "nameJp": "ビビ",
+     "type": "Government",
+     "mark": "民 政 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C471",
+     "nameEn": "Karoo",
+     "nameJp": "カルー",
+     "type": "Animal/Technique",
+     "mark": "政 獣 Ｌ",
+     "power": "400"
+    },
+    {
+     "num": "C472",
+     "nameEn": "Dorry & Brogy",
+     "nameJp": "ドリー ＆ ブロギー",
+     "type": "Pirate",
+     "mark": "賊 剣 Ｌ",
+     "power": "50"
+    },
+    {
+     "num": "C473",
+     "nameEn": "Brogy",
+     "nameJp": "ブロギー",
+     "type": "Pirate/Technique",
+     "mark": "超",
+     "power": "800"
+    },
+    {
+     "num": "C474",
+     "nameEn": "Dorry",
+     "nameJp": "ドリー",
+     "type": "Pirate/Swordsman",
+     "mark": "超",
+     "power": "800"
+    },
+    {
+     "num": "C475",
+     "nameEn": "Dr. Kureha",
+     "nameJp": "Ⅾｒ．くれは",
+     "type": "Technique/Wisdom",
+     "mark": "超 知",
+     "power": "500"
+    },
+    {
+     "num": "C476",
+     "nameEn": "Dr. Hiriluk",
+     "nameJp": "Ⅾｒ．ヒルルク",
+     "type": "Wisdom",
+     "mark": "知 獣",
+     "power": "300"
+    },
+    {
+     "num": "C477",
+     "nameEn": "Cure-All Medicine",
+     "nameJp": "万能薬",
+     "type": "Item",
+     "mark": "知 獣",
+     "power": "50"
+    },
+    {
+     "num": "C478",
+     "nameEn": "Dalton",
+     "nameJp": "ドルトン",
+     "type": "Government/Technique",
+     "mark": "政 剣 獣",
+     "power": "500"
+    },
+    {
+     "num": "C479",
+     "nameEn": "Dalton",
+     "nameJp": "ドルトン",
+     "type": "Government/Swordsman",
+     "mark": "民 政 剣",
+     "power": "150"
+    },
+    {
+     "num": "C480",
+     "nameEn": "Wapol",
+     "nameJp": "ワポル",
+     "type": "Devil Fruit/Government",
+     "mark": "政 武",
+     "power": "500"
+    },
+    {
+     "num": "C481",
+     "nameEn": "Wapol",
+     "nameJp": "ワポル",
+     "type": "Devil Fruit/Government",
+     "mark": "政 武",
+     "power": "150"
+    },
+    {
+     "num": "C482",
+     "nameEn": "Chess",
+     "nameJp": "チェス",
+     "type": "Government/Wisdom",
+     "mark": "政 知",
+     "power": "100"
+    },
+    {
+     "num": "C483",
+     "nameEn": "Kuromarimo",
+     "nameJp": "クロマーリモ",
+     "type": "Government/Technique",
+     "mark": "政 武",
+     "power": "150 &#8594; 450"
+    },
+    {
+     "num": "C484",
+     "nameEn": "Mr. 3",
+     "nameJp": "Ｍｒ．３",
+     "type": "Devil Fruit/Organization",
+     "mark": "罪 知",
+     "power": "550"
+    },
+    {
+     "num": "C485",
+     "nameEn": "Mr. 5",
+     "nameJp": "Ｍｒ．５",
+     "type": "Devil Fruit/Organization",
+     "mark": "罪 武",
+     "power": "400"
+    },
+    {
+     "num": "C486",
+     "nameEn": "Miss Goldenweek",
+     "nameJp": "ミス・ゴールデンウィーク",
+     "type": "Organization/Wisdom",
+     "mark": "罪 知",
+     "power": "100"
+    },
+    {
+     "num": "C487",
+     "nameEn": "Island Eater",
+     "nameJp": "島食い",
+     "type": "Animal",
+     "mark": "超 獣",
+     "power": "400"
+    },
+    {
+     "num": "C488",
+     "nameEn": "Bliking Pirates",
+     "nameJp": "ブリキング海賊団",
+     "type": "Government/Battalion",
+     "mark": "軍 政 武",
+     "power": "150 &#8594; 200"
+    },
+    {
+     "num": "C489",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Pirate",
+     "mark": "Ｌ",
+     "power": "300"
+    },
+    {
+     "num": "FP37",
+     "nameEn": "Mr. 3's Villa",
+     "nameJp": "Ｍｒ．３の別荘",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP38",
+     "nameEn": "Cyclone",
+     "nameJp": "サイクロン",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP39",
+     "nameEn": "Bliking Ship",
+     "nameJp": "ブリキング号",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP41",
+     "nameEn": "Drum Castle",
+     "nameJp": "ドラム城",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP42",
+     "nameEn": "Hiruluk's Sakura",
+     "nameJp": "ヒルルクの桜",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "H22",
+     "nameEn": "Armée de L'Air Gomu Shot",
+     "nameJp": "空軍ゴムシュート",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H23",
+     "nameEn": "Kokutei Roseo",
+     "nameJp": "刻蹄桜",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H24",
+     "nameEn": "Quatro Axes",
+     "nameJp": "四本戦斧",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H25",
+     "nameEn": "Extraordinary Battle",
+     "nameJp": "超常バトル",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H26",
+     "nameEn": "Conspiracy",
+     "nameJp": "陰謀",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H27",
+     "nameEn": "Misrule",
+     "nameJp": "悪政",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H28",
+     "nameEn": "Blood of a Warrior",
+     "nameJp": "戦士の血",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H29",
+     "nameEn": "Brain Play",
+     "nameJp": "頭脳プレイ",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H30",
+     "nameEn": "Tool Master",
+     "nameJp": "ツールマスター",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "S108",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Special",
+     "mark": "逆",
+     "power": "1200"
+    },
+    {
+     "num": "S109",
+     "nameEn": "Nami & Vivi",
+     "nameJp": "ナミ ＆ ビビ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "450"
+    },
+    {
+     "num": "S110",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100 &#8594; 1300"
+    },
+    {
+     "num": "S111",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300"
+    },
+    {
+     "num": "S112",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300"
+    },
+    {
+     "num": "S113",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100"
+    },
+    {
+     "num": "S114",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "850"
+    },
+    {
+     "num": "S115",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "600"
+    },
+    {
+     "num": "S116",
+     "nameEn": "Crocodle",
+     "nameJp": "クロコダイル",
+     "type": "Special",
+     "mark": "逆",
+     "power": "1400"
+    },
+    {
+     "num": "S117",
+     "nameEn": "Mr. 3",
+     "nameJp": "Ｍｒ．３",
+     "type": "Special",
+     "mark": "逆",
+     "power": "250 &#8594; 500"
+    },
+    {
+     "num": "S118",
+     "nameEn": "Wapol",
+     "nameJp": "ワポル",
+     "type": "Special",
+     "mark": "逆",
+     "power": "850"
+    },
+    {
+     "num": "S119",
+     "nameEn": "Unluckies",
+     "nameJp": "アンラッキーズ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200"
+    }
+   ]
+  },
+  {
+   "name": "Grand Box DX",
+   "date": "2001-12",
+   "official": 65,
+   "cards": [
+    {
+     "num": "C400",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Pirate/Cooking",
+     "mark": "賊 料 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C402",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣 武 Ｌ",
+     "power": "150 &#8594; 250"
+    },
+    {
+     "num": "C403",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Citizen/Wisdom",
+     "mark": "知",
+     "power": "150"
+    },
+    {
+     "num": "C405",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate/Cooking",
+     "mark": "賊 料",
+     "power": "500"
+    },
+    {
+     "num": "C407",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Wisdom",
+     "mark": "料 知",
+     "power": "100"
+    },
+    {
+     "num": "C411",
+     "nameEn": "Vivi",
+     "nameJp": "ビビ",
+     "type": "Government",
+     "mark": "政 Ｌ",
+     "power": "0"
+    },
+    {
+     "num": "C419",
+     "nameEn": "Mr. 3",
+     "nameJp": "Ｍｒ．３",
+     "type": "Devil Fruit/Organization",
+     "mark": "罪 武",
+     "power": "200 &#8594; 500"
+    },
+    {
+     "num": "C420",
+     "nameEn": "Mr. 8",
+     "nameJp": "Ｍｒ．８",
+     "type": "Organization/Wisdom",
+     "mark": "罪 政",
+     "power": "250"
+    },
+    {
+     "num": "C423",
+     "nameEn": "Miss Goldenweek",
+     "nameJp": "ミス・ゴールデンウィーク",
+     "type": "Citizen/Organization",
+     "mark": "罪 知",
+     "power": "50"
+    },
+    {
+     "num": "C424",
+     "nameEn": "Miss Valentine",
+     "nameJp": "ミス・バレンタイン",
+     "type": "Devil Fruit/Organization",
+     "mark": "罪 知",
+     "power": "200 &#8594; 600"
+    },
+    {
+     "num": "C425",
+     "nameEn": "Miss Monday",
+     "nameJp": "ミス・マンデー",
+     "type": "Organization/Technique",
+     "mark": "罪 武",
+     "power": "600"
+    },
+    {
+     "num": "C520",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Devil Fruit/Pirate",
+     "mark": "Ｌ",
+     "power": "300"
+    },
+    {
+     "num": "C521",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Technique",
+     "mark": "剣 Ｌ",
+     "power": "100 &#8594; 900"
+    },
+    {
+     "num": "C522",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "賊 剣 武",
+     "power": "800"
+    },
+    {
+     "num": "C523",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Technique/Wisdom",
+     "mark": "武 知",
+     "power": "200 &#8594; 500"
+    },
+    {
+     "num": "C524",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate/Wisdom",
+     "mark": "賊 武",
+     "power": "50"
+    },
+    {
+     "num": "C525",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate",
+     "mark": "賊 武 Ｌ",
+     "power": "0"
+    },
+    {
+     "num": "C526",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Cooking/Technique",
+     "mark": "料 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C527",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Cooking",
+     "mark": "賊 民 料",
+     "power": "350"
+    },
+    {
+     "num": "C528",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー",
+     "type": "Pirate/Animal",
+     "mark": "獣 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C529",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー",
+     "type": "Animal/Wisdom",
+     "mark": "賊 獣 知",
+     "power": "50"
+    },
+    {
+     "num": "C530",
+     "nameEn": "Vivi",
+     "nameJp": "ビビ",
+     "type": "Government/Technique",
+     "mark": "政 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C531",
+     "nameEn": "Ace",
+     "nameJp": "エース",
+     "type": "Devil Fruit/Pirate",
+     "mark": "賊 Ｌ",
+     "power": "1350"
+    },
+    {
+     "num": "C532",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Pirate",
+     "mark": "政 Ｌ",
+     "power": "250"
+    },
+    {
+     "num": "C533",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Pirate",
+     "mark": "Ｌ",
+     "power": "300"
+    },
+    {
+     "num": "C534",
+     "nameEn": "Crocodile",
+     "nameJp": "クロコダイル",
+     "type": "Devil Fruit/Organization",
+     "mark": "罪",
+     "power": "1350"
+    },
+    {
+     "num": "C535",
+     "nameEn": "Mr. 1",
+     "nameJp": "Ｍｒ．１",
+     "type": "Devil Fruit/Swordsman",
+     "mark": "罪 剣",
+     "power": "900"
+    },
+    {
+     "num": "C536",
+     "nameEn": "Mr. 2",
+     "nameJp": "Ｍｒ．２",
+     "type": "Organization/Technique",
+     "mark": "民 武",
+     "power": "200 &#8594; –"
+    },
+    {
+     "num": "C537",
+     "nameEn": "Mr. 3",
+     "nameJp": "Ｍｒ．３",
+     "type": "Devil Fruit/Organization",
+     "mark": "罪 知",
+     "power": "500"
+    },
+    {
+     "num": "C538",
+     "nameEn": "Mr. 4",
+     "nameJp": "Ｍｒ．４",
+     "type": "Technique/Organization",
+     "mark": "獣 武",
+     "power": "550"
+    },
+    {
+     "num": "C539",
+     "nameEn": "Mr. 5",
+     "nameJp": "Ｍｒ．５",
+     "type": "Devil Fruit/Technique",
+     "mark": "罪 武",
+     "power": "500"
+    },
+    {
+     "num": "C540",
+     "nameEn": "Mr. 8",
+     "nameJp": "Ｍｒ．８",
+     "type": "Technique",
+     "mark": "罪 政 武",
+     "power": "150"
+    },
+    {
+     "num": "C541",
+     "nameEn": "Miss All Sunday",
+     "nameJp": "ミス・オールサンデー",
+     "type": "Devil Fruit/Organization",
+     "mark": "罪",
+     "power": "50"
+    },
+    {
+     "num": "C542",
+     "nameEn": "Miss Double Finger",
+     "nameJp": "ミス・ダブルフィンガー",
+     "type": "Devil Fruit/Wisdom",
+     "mark": "罪 知",
+     "power": "100"
+    },
+    {
+     "num": "C543",
+     "nameEn": "Miss Goldenweek",
+     "nameJp": "ミス・ゴールデンウィーク",
+     "type": "Organization/Wisdom",
+     "mark": "民 知",
+     "power": "50"
+    },
+    {
+     "num": "C544",
+     "nameEn": "Miss Merry Christmas",
+     "nameJp": "ミス・メリークリスマス",
+     "type": "Devil Fruit/Animal",
+     "mark": "獣 武",
+     "power": "300"
+    },
+    {
+     "num": "C545",
+     "nameEn": "Miss Wednesday",
+     "nameJp": "ミス・ウェンズデー",
+     "type": "Wisdom",
+     "mark": "罪 政",
+     "power": "150"
+    },
+    {
+     "num": "C546",
+     "nameEn": "Banchi",
+     "nameJp": "バンチ",
+     "type": "Animal",
+     "mark": "罪 獣 知",
+     "power": "100"
+    },
+    {
+     "num": "FP31",
+     "nameEn": "Logue Town Tempest",
+     "nameJp": "嵐のローグタウン",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP36",
+     "nameEn": "Whiskey Peak",
+     "nameJp": "ウィスキーピーク",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP43",
+     "nameEn": "Nanohana Harbour",
+     "nameJp": "港町ナノハナ",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP44",
+     "nameEn": "The Little Great Pirate Ship",
+     "nameJp": "小さき大海賊の船",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP45",
+     "nameEn": "Spider's Cafe",
+     "nameJp": "スパイダーズカフェ",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "FP46",
+     "nameEn": "Million's Fleet",
+     "nameJp": "ビリオンズの船団",
+     "type": "Field Point",
+     "mark": "",
+     "power": "1"
+    },
+    {
+     "num": "H12",
+     "nameEn": "Foresight",
+     "nameJp": "先見の明",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H15",
+     "nameEn": "Organization's Strength",
+     "nameJp": "組織力",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H36",
+     "nameEn": "Final Battle",
+     "nameJp": "最終決戦",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H36",
+     "nameEn": "Final Battle",
+     "nameJp": "最終決戦",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H37",
+     "nameEn": "Extreme Situation",
+     "nameJp": "極限状態",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H38",
+     "nameEn": "Last Hope",
+     "nameJp": "最後の希望",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H39",
+     "nameEn": "Use of Force",
+     "nameJp": "武力行使",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H40",
+     "nameEn": "Agitation",
+     "nameJp": "アジテーション",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "S94",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Special",
+     "mark": "逆",
+     "power": "450 &#8594; 900"
+    },
+    {
+     "num": "S95",
+     "nameEn": "Agents",
+     "nameJp": "エージェントたち",
+     "type": "Special",
+     "mark": "逆",
+     "power": "800"
+    },
+    {
+     "num": "S127",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300"
+    },
+    {
+     "num": "S128",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "600"
+    },
+    {
+     "num": "S129",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300"
+    },
+    {
+     "num": "S130",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "350"
+    },
+    {
+     "num": "S131",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300"
+    },
+    {
+     "num": "S132",
+     "nameEn": "Agents",
+     "nameJp": "エージェントたち",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300"
+    },
+    {
+     "num": "S133",
+     "nameEn": "Mr. 3",
+     "nameJp": "Ｍｒ．３",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200 &#8594; 600"
+    },
+    {
+     "num": "S134",
+     "nameEn": "Paula",
+     "nameJp": "ポーラ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "150"
+    },
+    {
+     "num": "S135",
+     "nameEn": "Miss Goldenweek",
+     "nameJp": "ミス・ゴールデンウィーク",
+     "type": "Special",
+     "mark": "逆",
+     "power": "150"
+    },
+    {
+     "num": "S136",
+     "nameEn": "Miss Monday",
+     "nameJp": "ミス・マンデー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "600"
+    },
+    {
+     "num": "S137",
+     "nameEn": "Unluckies",
+     "nameJp": "アンラッキーズ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "250"
+    }
+   ]
+  },
+  {
+   "name": "Grand Line Compilation 1",
+   "date": "2001-06",
+   "official": 43,
+   "cards": [
+    {
+     "num": "C398",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Devil Fruit/Technique",
+     "mark": "Ｌ",
+     "power": "1050"
+    },
+    {
+     "num": "C399",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Others",
+     "mark": "民 武 Ｌ",
+     "power": "200"
+    },
+    {
+     "num": "C400",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Pirate/Cooking",
+     "mark": "賊 料 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C401",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Technique",
+     "mark": "剣",
+     "power": "900"
+    },
+    {
+     "num": "C402",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣 武 Ｌ",
+     "power": "150 &#8594; 250"
+    },
+    {
+     "num": "C403",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Citizen/Wisdom",
+     "mark": "知",
+     "power": "150"
+    },
+    {
+     "num": "C404",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Pirate/Cooking",
+     "mark": "賊 知 Ｌ",
+     "power": "200 &#8594; 350"
+    },
+    {
+     "num": "C405",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate/Cooking",
+     "mark": "賊 料",
+     "power": "500"
+    },
+    {
+     "num": "C406",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate/Wisdom",
+     "mark": "賊 武 Ｌ",
+     "power": "350"
+    },
+    {
+     "num": "C407",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Wisdom",
+     "mark": "料 知",
+     "power": "100"
+    },
+    {
+     "num": "C408",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Citizen/Cooking",
+     "mark": "民 料 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C409",
+     "nameEn": "Crocus",
+     "nameJp": "クロッカス",
+     "type": "Citizen/Wisdom",
+     "mark": "民 獣",
+     "power": "100"
+    },
+    {
+     "num": "C410",
+     "nameEn": "Laboon",
+     "nameJp": "ラブーン",
+     "type": "Animal",
+     "mark": "超 賊 獣",
+     "power": "400"
+    },
+    {
+     "num": "C411",
+     "nameEn": "Vivi",
+     "nameJp": "ビビ",
+     "type": "Government",
+     "mark": "政 Ｌ",
+     "power": "0"
+    },
+    {
+     "num": "C412",
+     "nameEn": "Karoo",
+     "nameJp": "カルー",
+     "type": "Government/Animal",
+     "mark": "民 政 獣",
+     "power": "200"
+    },
+    {
+     "num": "C413",
+     "nameEn": "Koby",
+     "nameJp": "コビー",
+     "type": "Marine/Technique",
+     "mark": "軍 民 武",
+     "power": "350"
+    },
+    {
+     "num": "C414",
+     "nameEn": "Helmeppo",
+     "nameJp": "ヘルメッポ",
+     "type": "Marine/Wisdom",
+     "mark": "軍 民 知",
+     "power": "300 &#8594; 0"
+    },
+    {
+     "num": "C415",
+     "nameEn": "Dorry & Brogy",
+     "nameJp": "ドリー ＆ ブロギー",
+     "type": "Pirate",
+     "mark": "超 賊",
+     "power": "50"
+    },
+    {
+     "num": "C416",
+     "nameEn": "Brogy",
+     "nameJp": "ブロギー",
+     "type": "Pirate",
+     "mark": "超",
+     "power": "1000"
+    },
+    {
+     "num": "C417",
+     "nameEn": "Dorry",
+     "nameJp": "ドリー",
+     "type": "Pirate",
+     "mark": "超",
+     "power": "1000"
+    },
+    {
+     "num": "C418",
+     "nameEn": "Mr. 3",
+     "nameJp": "Ｍｒ．３",
+     "type": "Devil Fruit/Organization",
+     "mark": "罪 知",
+     "power": "250"
+    },
+    {
+     "num": "C419",
+     "nameEn": "Mr. 3",
+     "nameJp": "Ｍｒ．３",
+     "type": "Devil Fruit/Organization",
+     "mark": "罪 武",
+     "power": "200 &#8594; 500"
+    },
+    {
+     "num": "C420",
+     "nameEn": "Mr. 8",
+     "nameJp": "Ｍｒ．８",
+     "type": "Organization/Wisdom",
+     "mark": "罪 政",
+     "power": "250"
+    },
+    {
+     "num": "C421",
+     "nameEn": "Mr. 8",
+     "nameJp": "Ｍｒ．８",
+     "type": "Organization/Technique",
+     "mark": "罪 政 武",
+     "power": "200"
+    },
+    {
+     "num": "C422",
+     "nameEn": "Miss Goldenweek",
+     "nameJp": "ミス・ゴールデンウィーク",
+     "type": "Organization/Wisdom",
+     "mark": "民 罪",
+     "power": "250"
+    },
+    {
+     "num": "C423",
+     "nameEn": "Miss Goldenweek",
+     "nameJp": "ミス・ゴールデンウィーク",
+     "type": "Citizen/Organization",
+     "mark": "罪 知",
+     "power": "50"
+    },
+    {
+     "num": "C424",
+     "nameEn": "Miss Valentine",
+     "nameJp": "ミス・バレンタイン",
+     "type": "Devil Fruit/Organization",
+     "mark": "罪 知",
+     "power": "200 &#8594; 600"
+    },
+    {
+     "num": "C425",
+     "nameEn": "Miss Monday",
+     "nameJp": "ミス・マンデー",
+     "type": "Organization/Technique",
+     "mark": "罪 武",
+     "power": "600"
+    },
+    {
+     "num": "C427",
+     "nameEn": "Millions",
+     "nameJp": "ミリオンズ",
+     "type": "Basttalion/Cooking",
+     "mark": "罪 料 知",
+     "power": "100 200"
+    },
+    {
+     "num": "H10",
+     "nameEn": "The Long Road Ahead",
+     "nameJp": "長き道のり",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H11",
+     "nameEn": "Warrior Nation",
+     "nameJp": "覇国",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H12",
+     "nameEn": "Foresight",
+     "nameJp": "先見の明",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H13",
+     "nameEn": "Outright Lie",
+     "nameJp": "大ウソ",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H14",
+     "nameEn": "Extraordinary People",
+     "nameJp": "超常者",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H15",
+     "nameEn": "Organization's Strength",
+     "nameJp": "組織力",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "S94",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Special",
+     "mark": "逆",
+     "power": "450 &#8594; 900"
+    },
+    {
+     "num": "S95",
+     "nameEn": "Agents",
+     "nameJp": "エージェントたち",
+     "type": "Special",
+     "mark": "逆",
+     "power": "800"
+    },
+    {
+     "num": "S96",
+     "nameEn": "Luffy & Zoro",
+     "nameJp": "ルフィ＆ゾロ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "500"
+    },
+    {
+     "num": "S97",
+     "nameEn": "Zoro & Sanji",
+     "nameJp": "ゾロ＆サンジ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200"
+    },
+    {
+     "num": "S98",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "50"
+    },
+    {
+     "num": "S99",
+     "nameEn": "Mr. 9",
+     "nameJp": "Ｍｒ．９",
+     "type": "Special",
+     "mark": "逆",
+     "power": "250 &#8594; 550"
+    },
+    {
+     "num": "S100",
+     "nameEn": "Miss All Sunday",
+     "nameJp": "ミス・オールサンデー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300 &#8594; –"
+    }
+   ]
+  },
+  {
+   "name": "Grand Line Compilation 2",
+   "date": "2001-08",
+   "official": 42,
+   "cards": [
+    {
+     "num": "C428",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Devil Fruit/Pirate",
+     "mark": "賊 Ｌ",
+     "power": "800"
+    },
+    {
+     "num": "C429",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Technique",
+     "mark": "剣 武",
+     "power": "700"
+    },
+    {
+     "num": "C430",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman",
+     "mark": "剣 Ｌ",
+     "power": "450"
+    },
+    {
+     "num": "C431",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Citizen",
+     "mark": "知 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C432",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Citizen/Wisdom",
+     "mark": "民 知",
+     "power": "350"
+    },
+    {
+     "num": "C433",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate/Technique",
+     "mark": "賊 Ｌ",
+     "power": "50"
+    },
+    {
+     "num": "C434",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Citizen/Cooking",
+     "mark": "料 Ｌ",
+     "power": "200"
+    },
+    {
+     "num": "C435",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー",
+     "type": "Animal/Wisdom",
+     "mark": "獣 知",
+     "power": "100"
+    },
+    {
+     "num": "C436",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー",
+     "type": "Devil Fruit/Animal",
+     "mark": "獣 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C437",
+     "nameEn": "Vivi",
+     "nameJp": "ビビ",
+     "type": "Organization/Government",
+     "mark": "罪 政 Ｌ",
+     "power": "50"
+    },
+    {
+     "num": "C438",
+     "nameEn": "Karoo",
+     "nameJp": "カルー",
+     "type": "Cooking/Animal",
+     "mark": "政 獣 Ｌ",
+     "power": "50"
+    },
+    {
+     "num": "C439",
+     "nameEn": "Brogy",
+     "nameJp": "ブロギー",
+     "type": "Pirate",
+     "mark": "超",
+     "power": "500"
+    },
+    {
+     "num": "C440",
+     "nameEn": "Dorry",
+     "nameJp": "ドリー",
+     "type": "Pirate",
+     "mark": "超",
+     "power": "650"
+    },
+    {
+     "num": "C441",
+     "nameEn": "Dr. Kureha",
+     "nameJp": "Ⅾｒ．くれは",
+     "type": "Technique/Wisdom",
+     "mark": "超 知",
+     "power": "300"
+    },
+    {
+     "num": "C442",
+     "nameEn": "Dalton",
+     "nameJp": "ドルトン",
+     "type": "Devil Fruit/Swordsman",
+     "mark": "民 政 剣",
+     "power": "200 &#8594; 450"
+    },
+    {
+     "num": "C443",
+     "nameEn": "Dalton",
+     "nameJp": "ドルトン",
+     "type": "Devil Fruit/Animal",
+     "mark": "政 武 獣",
+     "power": "200 &#8594; 450"
+    },
+    {
+     "num": "C444",
+     "nameEn": "Negikuma Maria",
+     "nameJp": "ネギ熊まりあ",
+     "type": "Citizen/Cooking",
+     "mark": "民 料 獣",
+     "power": "100"
+    },
+    {
+     "num": "C445",
+     "nameEn": "Koby",
+     "nameJp": "コビー",
+     "type": "Marine/Technique",
+     "mark": "軍 民 武",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C446",
+     "nameEn": "Helmeppo",
+     "nameJp": "ヘルメッポ",
+     "type": "Marine/Wisdom",
+     "mark": "軍 民 知",
+     "power": "150 &#8594; 350"
+    },
+    {
+     "num": "C447",
+     "nameEn": "Wapol",
+     "nameJp": "ワポル",
+     "type": "Devil Fruit/Government",
+     "mark": "政 武",
+     "power": "250 &#8594; 650"
+    },
+    {
+     "num": "C448",
+     "nameEn": "Chess",
+     "nameJp": "チェス",
+     "type": "Government/Wisdom",
+     "mark": "政 知",
+     "power": "200"
+    },
+    {
+     "num": "C449",
+     "nameEn": "Kuromarimo",
+     "nameJp": "クロマーリモ",
+     "type": "Government/Technique",
+     "mark": "政 武",
+     "power": "200"
+    },
+    {
+     "num": "C450",
+     "nameEn": "Mr. 3",
+     "nameJp": "Ｍｒ．３",
+     "type": "Wisdom/Organization",
+     "mark": "罪 知",
+     "power": "100"
+    },
+    {
+     "num": "C451",
+     "nameEn": "Mr. 3",
+     "nameJp": "Ｍｒ．３",
+     "type": "Devil Fruit/Organization",
+     "mark": "罪 武",
+     "power": "450"
+    },
+    {
+     "num": "C452",
+     "nameEn": "Mr. 5",
+     "nameJp": "Ｍｒ．５",
+     "type": "Devil Fruit/Organization",
+     "mark": "罪 知",
+     "power": "50"
+    },
+    {
+     "num": "C453",
+     "nameEn": "Miss Goldenweek",
+     "nameJp": "ミス・ゴールデンウィーク",
+     "type": "Wisdom/Organization",
+     "mark": "罪 知",
+     "power": "0"
+    },
+    {
+     "num": "C454",
+     "nameEn": "Miss Valentine",
+     "nameJp": "ミス・バレンタイン",
+     "type": "Organization/Wisdom",
+     "mark": "罪 武",
+     "power": "200"
+    },
+    {
+     "num": "C455",
+     "nameEn": "Lapahn",
+     "nameJp": "ラパーン",
+     "type": "Animal/Battalion",
+     "mark": "獣",
+     "power": "150 &#8594; 250"
+    },
+    {
+     "num": "C456",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Pirate",
+     "mark": "Ｌ",
+     "power": "800"
+    },
+    {
+     "num": "H16",
+     "nameEn": "Superdreadnought",
+     "nameJp": "超弩級",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H17",
+     "nameEn": "Continuous Assault",
+     "nameJp": "連続攻撃",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H18",
+     "nameEn": "Complete Recovey",
+     "nameJp": "完治！",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H19",
+     "nameEn": "High Speed",
+     "nameJp": "ハイスピード",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H20",
+     "nameEn": "Assault Command",
+     "nameJp": "突撃命令",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H21",
+     "nameEn": "Aggresion",
+     "nameJp": "侵略",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "S101",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Special",
+     "mark": "逆",
+     "power": "1000"
+    },
+    {
+     "num": "S102",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300"
+    },
+    {
+     "num": "S103",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200 &#8594; 400"
+    },
+    {
+     "num": "S104",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "500"
+    },
+    {
+     "num": "S105",
+     "nameEn": "Garp",
+     "nameJp": "ガープ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "600"
+    },
+    {
+     "num": "S106",
+     "nameEn": "Mr. 2",
+     "nameJp": "Ｍｒ．２",
+     "type": "Special",
+     "mark": "逆",
+     "power": "250"
+    },
+    {
+     "num": "S107",
+     "nameEn": "Miss All Sunday",
+     "nameJp": "ミス・オールサンデー",
+     "type": "Special",
+     "mark": "逆",
+     "power": "100"
+    }
+   ]
+  },
+  {
+   "name": "Grand Line Compilation 3",
+   "date": "2001-12",
+   "official": 42,
+   "cards": [
+    {
+     "num": "C490",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Pirate",
+     "mark": "武 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C491",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Pirate/Technique",
+     "mark": "知 Ｌ",
+     "power": "250"
+    },
+    {
+     "num": "C492",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ",
+     "type": "Swordsman/Wisdom",
+     "mark": "剣 武",
+     "power": "700"
+    },
+    {
+     "num": "C493",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Citizen/Wisdom",
+     "mark": "知 Ｌ",
+     "power": "350"
+    },
+    {
+     "num": "C494",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Pirate/Technique",
+     "mark": "賊 Ｌ",
+     "power": "100 &#8594; 450"
+    },
+    {
+     "num": "C495",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ",
+     "type": "Citizen/Wisdom",
+     "mark": "賊 民 知",
+     "power": "150"
+    },
+    {
+     "num": "C496",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Citizen/Cooking",
+     "mark": "料 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C497",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー",
+     "type": "Animal/Wisdom",
+     "mark": "獣 知",
+     "power": "50"
+    },
+    {
+     "num": "C498",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー",
+     "type": "Pirate/Animal",
+     "mark": "賊 獣 Ｌ",
+     "power": "100"
+    },
+    {
+     "num": "C499",
+     "nameEn": "Zoro & Sanji",
+     "nameJp": "ゾロ ＆ サンジ",
+     "type": "Swordsman/Cooking",
+     "mark": "剣 料 Ｌ",
+     "power": "250 &#8594; 500"
+    },
+    {
+     "num": "C500",
+     "nameEn": "Vivi",
+     "nameJp": "ビビ",
+     "type": "Government",
+     "mark": "政 Ｌ",
+     "power": "50"
+    },
+    {
+     "num": "C501",
+     "nameEn": "Dalton",
+     "nameJp": "ドルトン",
+     "type": "Citizen/Swordsman",
+     "mark": "政 剣 武",
+     "power": "150"
+    },
+    {
+     "num": "C502",
+     "nameEn": "Dalton",
+     "nameJp": "ドルトン",
+     "type": "Devil Fruit/Animal",
+     "mark": "民 政 獣",
+     "power": "500"
+    },
+    {
+     "num": "C503",
+     "nameEn": "Dr. Kureha",
+     "nameJp": "Ⅾｒ．くれは",
+     "type": "Wisdom",
+     "mark": "超 知",
+     "power": "150 &#8594; 450"
+    },
+    {
+     "num": "C504",
+     "nameEn": "Dr. Hiriluk",
+     "nameJp": "Ⅾｒ．ヒルルク",
+     "type": "Citizen/Wisdom",
+     "mark": "知 獣",
+     "power": "50"
+    },
+    {
+     "num": "C505",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー",
+     "type": "Devil Fruit/Marine",
+     "mark": "軍 武",
+     "power": "100 &#8594; 1300"
+    },
+    {
+     "num": "C506",
+     "nameEn": "Tashigi",
+     "nameJp": "たしぎ",
+     "type": "Marine/Swordsman",
+     "mark": "軍 剣 武",
+     "power": "150"
+    },
+    {
+     "num": "C507",
+     "nameEn": "Crocodile",
+     "nameJp": "クロコダイル",
+     "type": "Devil Fruit/Organization",
+     "mark": "賊 罪",
+     "power": "1300"
+    },
+    {
+     "num": "C508",
+     "nameEn": "Mr. 2",
+     "nameJp": "Ｍｒ．２",
+     "type": "Devil Fruit/Organization",
+     "mark": "罪 知",
+     "power": "700"
+    },
+    {
+     "num": "C509",
+     "nameEn": "Wapol",
+     "nameJp": "ワポル",
+     "type": "Devil Fruit/Government",
+     "mark": "政 武",
+     "power": "150"
+    },
+    {
+     "num": "C510",
+     "nameEn": "Bliking Cannon",
+     "nameJp": "ブリキング大砲",
+     "type": "Item",
+     "mark": "政 武",
+     "power": "200 &#8594; 400"
+    },
+    {
+     "num": "C511",
+     "nameEn": "Chess",
+     "nameJp": "チェス",
+     "type": "Government/Technique",
+     "mark": "政 知",
+     "power": "200 &#8594; 400"
+    },
+    {
+     "num": "C512",
+     "nameEn": "Kuromarimo",
+     "nameJp": "クロマーリモ",
+     "type": "Government/Technique",
+     "mark": "政 武",
+     "power": "200 &#8594; 400"
+    },
+    {
+     "num": "C513",
+     "nameEn": "Ace",
+     "nameJp": "エース",
+     "type": "Devil Fruit/Pirate",
+     "mark": "賊 Ｌ",
+     "power": "1300"
+    },
+    {
+     "num": "C514",
+     "nameEn": "Hiking Bear",
+     "nameJp": "ハイキングベア",
+     "type": "Animal/Wisdom",
+     "mark": "民 獣 知",
+     "power": "100"
+    },
+    {
+     "num": "C515",
+     "nameEn": "Isshi-20",
+     "nameJp": "イッシー２０",
+     "type": "Wisdom/Battalion",
+     "mark": "民 政 知",
+     "power": "100"
+    },
+    {
+     "num": "C516",
+     "nameEn": "Luffy & Chopper",
+     "nameJp": "ルフィ ＆ チョッパー",
+     "type": "Pirate",
+     "mark": "獣 Ｌ",
+     "power": "50"
+    },
+    {
+     "num": "C517",
+     "nameEn": "Luffy and Friends 1",
+     "nameJp": "ルフィと仲間達１",
+     "type": "Others",
+     "mark": "料 知 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "C518",
+     "nameEn": "Luffy and Friends 2",
+     "nameJp": "ルフィと仲間達２",
+     "type": "Others",
+     "mark": "政 剣 Ｌ",
+     "power": "150 &#8594; 450"
+    },
+    {
+     "num": "C519",
+     "nameEn": "Luffy and Friends 3",
+     "nameJp": "ルフィと仲間達３",
+     "type": "Others",
+     "mark": "獣 Ｌ",
+     "power": "150"
+    },
+    {
+     "num": "H31",
+     "nameEn": "Set Sail!",
+     "nameJp": "出航！",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H32",
+     "nameEn": "Single Combat",
+     "nameJp": "一騎打ち",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H33",
+     "nameEn": "Skilled Leader",
+     "nameJp": "智将",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H34",
+     "nameEn": "Invisible Adversary",
+     "nameJp": "見えざる敵",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "H35",
+     "nameEn": "Edict",
+     "nameJp": "勅令",
+     "type": "Hyper",
+     "mark": "",
+     "power": ""
+    },
+    {
+     "num": "S120",
+     "nameEn": "Luffy Pirates",
+     "nameJp": "ルフィ海賊団",
+     "type": "Special",
+     "mark": "逆",
+     "power": "500"
+    },
+    {
+     "num": "S121",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "500"
+    },
+    {
+     "num": "S122",
+     "nameEn": "Nami",
+     "nameJp": "ナミ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "200"
+    },
+    {
+     "num": "S123",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "300 &#8594; 600"
+    },
+    {
+     "num": "S124",
+     "nameEn": "Mr. 2",
+     "nameJp": "Ｍｒ．２",
+     "type": "Special",
+     "mark": "逆",
+     "power": "150"
+    },
+    {
+     "num": "S125",
+     "nameEn": "Wapol",
+     "nameJp": "ワポル",
+     "type": "Special",
+     "mark": "逆",
+     "power": "250 &#8594; 500"
+    },
+    {
+     "num": "S126",
+     "nameEn": "Cobra",
+     "nameJp": "コブラ",
+     "type": "Special",
+     "mark": "逆",
+     "power": "250"
+    }
+   ]
+  }
+ ]
+}
