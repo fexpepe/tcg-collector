@@ -110,8 +110,29 @@ jobs:
       - name: Anexa catálogo vintage do One Piece (Carddass)
         run: node scripts/sync-onepiece-vintage.mjs || echo "sync-onepiece-vintage falhou; segue sem o vintage"
 
+      # Espelha as imagens vintage localmente (1x; reuso via data/.cache entre
+      # builds). Se espelhar algo novo, refaz o build vintage pra apontar pro local.
+      - name: Espelha imagens vintage (Carddass)
+        run: (node scripts/mirror-vintage-images.mjs && node scripts/sync-onepiece-vintage.mjs --no-fetch) || echo "mirror falhou; segue com wsrv"
+
       - name: Snapshot de preços (histórico One Piece)
         run: node scripts/sync-price-history.mjs data/onepiece
+
+      # Naruto (TCGCSV): só sincroniza quando a categoria existir (secret/var
+      # NARUTO_TCGCSV_CATEGORY). Sem categoria, o script sai sem mexer em nada.
+      - name: Sincroniza catálogo do Naruto (TCGCSV, se configurado)
+        run: node scripts/sync-naruto.mjs || echo "sync-naruto falhou; mantém o catalogo versionado"
+        env:
+          NARUTO_TCGCSV_CATEGORY: ${{ vars.NARUTO_TCGCSV_CATEGORY }}
+
+      # JUMP: compila os sets curados versionados (data/jump/curated/*.json).
+      - name: Compila catálogo JUMP (curadoria)
+        run: node scripts/build-jump.mjs || echo "build-jump falhou; mantém o catalogo versionado"
+
+      # Lint dos catálogos: FALHA o deploy em corrupção dura (ids duplicados,
+      # catálogo zerado) — contrapeso dos "|| echo" de resiliência acima.
+      - name: Lint dos catálogos
+        run: node scripts/lint-catalog.mjs
 
       # SEO: pré-renderiza uma página HTML estática por set do Pokémon em /set/<slug>.html
       # (title, meta, Open Graph, JSON-LD e a lista de cartas já no HTML) + regenera o

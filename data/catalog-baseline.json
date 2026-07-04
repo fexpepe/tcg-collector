@@ -1,0 +1,17 @@
+{
+ "pokemon": {
+  "cards": 13,
+  "sets": 7,
+  "imgPct": 100
+ },
+ "lorcana": {
+  "cards": 2916,
+  "sets": 19,
+  "imgPct": 100
+ },
+ "onepiece": {
+  "cards": 7235,
+  "sets": 90,
+  "imgPct": 100
+ }
+}

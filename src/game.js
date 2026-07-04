@@ -19,7 +19,10 @@
     hub: { slug: "hub", name: "Sleevu", isHub: true },
     pokemon: { slug: "pokemon", name: "Pokémon", dataDir: "data/" },
     lorcana: { slug: "lorcana", name: "Lorcana", dataDir: "data/lorcana/" },
-    onepiece: { slug: "onepiece", name: "One Piece", dataDir: "data/onepiece/" }
+    onepiece: { slug: "onepiece", name: "One Piece", dataDir: "data/onepiece/" },
+    // Em preparação (catálogo ainda vazio; tiles "Em breve" no hub):
+    naruto: { slug: "naruto", name: "Naruto", dataDir: "data/naruto/" },   // Bandai (moderno) + Carddass vintage
+    jump: { slug: "jump", name: "JUMP", dataDir: "data/jump/" }            // promos curadas (Jump Festa, V-Jump…)
   };
 
   var GAME_KEY = "tcg-collector-game-v1"; // sessão: jogo escolhido por último
