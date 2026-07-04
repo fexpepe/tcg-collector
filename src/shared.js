@@ -2510,9 +2510,13 @@
   // construir o texto uma vez só evita refazer ~48k normalizações por busca.
   function cardSearchHaystack(card) {
     if (card._haystack) return card._haystack;
+    const num = String(card.number || "");
+    // Número tolerante a zero à esquerda depois do prefixo de letra ("H01" -> "h1",
+    // "S09" -> "s9") — assim buscar "H1" acha "H01" nos vintages do One Piece.
+    const numCompact = num.replace(/([a-zA-Z]+)0+(\d)/, "$1$2");
     card._haystack = normalize([
-      card.name, card.pokemonName, card.dexId, card.number, cardCode(card),
-      card.set, card.artist, card.rarity, card.language, ...(card.variants || [])
+      card.name, card.nameJp, card.pokemonName, card.dexId, card.number, numCompact, cardCode(card),
+      card.set, card.artist, card.rarity, card.language, card.cardType, ...(card.variants || [])
     ].join(" "));
     return card._haystack;
   }
