@@ -4314,13 +4314,24 @@
           <a href="mailto:contato@sleevu.app">contato@sleevu.app</a></p>
       </section>`;
     document.body.classList.add("preview-open");
-    const close = () => { modal.remove(); document.body.classList.remove("preview-open"); };
+    // Gestão de foco + Escape SEM vazar: o removeEventListener fica no close()
+    // (antes, fechar pelo × ou backdrop acumulava um keydown por abertura).
+    const opener = document.activeElement;
+    const esc = (e) => { if (e.key === "Escape") close(); };
+    const close = () => {
+      document.removeEventListener("keydown", esc);
+      modal.remove();
+      document.body.classList.remove("preview-open");
+      if (opener && document.contains(opener) && opener.focus) opener.focus();
+    };
     modal.addEventListener("click", (event) => {
       if (event.target.closest("[data-ts-close]")) { close(); return; }
       if (event.target.closest("[data-ts-clear]")) { clearDataCache(); return; }
       if (event.target.closest("[data-ts-sync]")) { forceSync(event.target.closest("[data-ts-sync]")); return; }
     });
-    document.addEventListener("keydown", function esc(e) { if (e.key === "Escape") { close(); document.removeEventListener("keydown", esc); } });
+    document.addEventListener("keydown", esc);
+    const closeBtn = modal.querySelector(".ts-close");
+    if (closeBtn) closeBtn.focus();
   }
 
   // Qualquer link/botão com [data-open-troubleshoot] abre o modal (ex.: Ajuda).
@@ -4751,6 +4762,17 @@
   initPartnerBanner();
   initThemeToggle();
   initTroubleshootTriggers();
+  // A11y: spans/divs com role="button" (chips de tag, slots, etc.) ativam com
+  // Enter/Espaço como um <button> real — um listener global cobre o site todo.
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    const el = event.target;
+    if (el && el.getAttribute && el.getAttribute("role") === "button"
+      && el.tagName !== "BUTTON" && el.tagName !== "A" && el.tagName !== "INPUT") {
+      event.preventDefault();
+      el.click();
+    }
+  });
   initCommandPalette();
   initSearchShortcutHint(); // depois do applyTranslations (placeholders já traduzidos)
   initAuth();

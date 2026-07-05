@@ -42,12 +42,28 @@
     ? shared.cardLanguageRegion(shared.getCardLang())
     : "english";
 
+  // Valor total por set memoizado (a busca da página de Sets recalculava o
+  // catálogo INTEIRO a cada tecla). Invalidado quando algo muda no preview
+  // (posse/preço manual) — o único caminho de edição nesta página.
+  const setValueMemo = new Map();
+
   const preview = shared.createCardPreview({
     getCard: (cardId) => cardsById.get(cardId),
     store: owned,
     prices,
     wishlist,
-    onOwnedChange: () => render()
+    onOwnedChange: () => {
+      setValueMemo.clear();
+      // Se a grade tem tiles de carta, atualiza posse in-place (re-renderizar
+      // tudo fazia as imagens piscarem/recarregarem a cada +/− no preview).
+      const tiles = elements.grid.querySelectorAll(".card-tile");
+      if (tiles.length) {
+        tiles.forEach((tile) => shared.refreshTileOwnership(tile, owned, wishlist));
+        if (elements.ownedCount) elements.ownedCount.textContent = owned.size;
+      } else {
+        render();
+      }
+    }
   });
 
   const cardLang = shared.getCardLang();
@@ -527,6 +543,11 @@
     };
   }
 
+  function memoSetValue(name, sortedCards) {
+    if (!setValueMemo.has(name)) setValueMemo.set(name, shared.sumCardsValue(sortedCards, prices).value);
+    return setValueMemo.get(name);
+  }
+
   function toSetItem(group) {
     const sortedCards = group.cards.slice().sort((a, b) => shared.compareCardNumbers(a.number, b.number));
     const sample = sortedCards[0] || {};
@@ -539,7 +560,7 @@
       totalCount: sortedCards.length,
       ownedCount: sortedCards.filter((card) => owned.has(card.id)).length,
       officialTotal: sample.setTotal || sortedCards.length,
-      value: shared.sumCardsValue(sortedCards, prices).value,
+      value: memoSetValue(group.name, sortedCards),
       logo: sample.setLogo || "",
       symbol: sample.setSymbol || "",
       releaseDate: sample.setReleaseDate || "",

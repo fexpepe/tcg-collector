@@ -1199,9 +1199,19 @@
       </section>`;
     document.body.classList.add("preview-open");
     renderList();
-    modal.querySelector(".sales-picker-search").addEventListener("input", debounce(renderList, 200));
+    // Foco entra no modal ao abrir e volta pro elemento de origem ao fechar.
+    const opener = document.activeElement;
+    const search = modal.querySelector(".sales-picker-search");
+    search.focus();
+    search.addEventListener("input", debounce(renderList, 200));
     modal.addEventListener("click", (event) => {
-      if (event.target.closest("[data-tag-picker-close]")) { modal.remove(); document.body.classList.remove("preview-open"); render(); return; }
+      if (event.target.closest("[data-tag-picker-close]")) {
+        modal.remove();
+        document.body.classList.remove("preview-open");
+        if (opener && document.contains(opener) && opener.focus) opener.focus();
+        render();
+        return;
+      }
       const pick = event.target.closest("[data-pick-card]");
       if (pick) { tags.toggle(pick.dataset.pickCard, tag.id); pick.classList.toggle("is-added", tags.has(pick.dataset.pickCard, tag.id)); }
     });
