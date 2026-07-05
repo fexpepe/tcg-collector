@@ -8,10 +8,11 @@
 //    da rede quando online (assim um deploy novo é sempre pego, sem o app ficar
 //    preso numa versão velha) e caem no cache quando offline — fazendo o app
 //    abrir e a coleção já vista funcionar sem internet (PWA instalável).
-const SHELL_CACHE = "tcg-shell-v136";
+const SHELL_CACHE = "tcg-shell-v137";
 const IMAGE_CACHE = "tcg-images-v1";
 const DATA_CACHE = "tcg-data-v1";
-const CACHES = [SHELL_CACHE, IMAGE_CACHE, DATA_CACHE];
+const OPAQUE_TS_CACHE = "tcg-images-opaque-ts-v1"; // TTL das entradas opacas do IMAGE_CACHE
+const CACHES = [SHELL_CACHE, IMAGE_CACHE, DATA_CACHE, OPAQUE_TS_CACHE];
 
 const IMAGE_HOSTS = new Set([
   "assets.tcgdex.net",            // cartas e logos do catálogo
@@ -107,11 +108,28 @@ function fetchWithTimeout(href, init) {
 
 // Imagens: serve do cache; em miss busca (cors → resposta não-opaca, cacheável
 // sem o padding de cota), e em falha de rede deixa o <img> cair no onerror.
+// Respostas OPACAS (no-cors) escondem o status: um 404/500 do CDN entra no
+// cache parecendo imagem e, em cache-first, seria servido quebrado PARA SEMPRE.
+// Solução: entradas opacas ganham um TTL (timestamp num cache paralelo) e são
+// re-buscadas depois de 7 dias; as cors (status visível, só entra ok) ficam
+// imutáveis como sempre.
+const OPAQUE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+async function opaqueFresh(href) {
+  try {
+    const meta = await (await caches.open(OPAQUE_TS_CACHE)).match(href);
+    if (!meta) return false;
+    return (Date.now() - Number(await meta.text())) < OPAQUE_TTL_MS;
+  } catch (e) { return true; } // sem metadado legível: não força refetch
+}
+async function markOpaque(href) {
+  try { await (await caches.open(OPAQUE_TS_CACHE)).put(href, new Response(String(Date.now()))); } catch (e) { /* ignora */ }
+}
+
 async function cacheFirst(url) {
   const cache = await caches.open(IMAGE_CACHE);
   const cached = await cache.match(url.href);
-  if (cached) return cached;
-  if (hostDown(url.hostname)) return Response.error(); // CDN caído: falha rápida -> onerror/fallback
+  if (cached && (cached.type !== "opaque" || await opaqueFresh(url.href))) return cached;
+  if (hostDown(url.hostname)) return cached || Response.error(); // CDN caído: falha rápida -> onerror/fallback
   // cors dá resposta não-opaca (cacheável sem padding de cota) — funciona com
   // hosts que enviam CORS (TCGdex etc.). Hosts SEM CORS (ex.: cards.lorcast.io do
   // Lorcana) rejeitam o fetch cors; aí cai no no-cors (resposta opaca: ainda
@@ -122,6 +140,7 @@ async function cacheFirst(url) {
       if (response && (response.ok || response.type === "opaque")) {
         hostFails.delete(url.hostname);
         cache.put(url.href, response.clone());
+        if (response.type === "opaque") markOpaque(url.href); // TTL: pode ser um erro escondido
         trim(IMAGE_CACHE, MAX_IMAGES);
         return response;
       }

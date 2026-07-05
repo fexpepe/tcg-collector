@@ -208,13 +208,16 @@
   function binderWishTotal(gf) {
     let total = 0;
     try {
-      const data = JSON.parse(localStorage.getItem("tcg-collector-binders-v1") || "null");
-      const binders = data && Array.isArray(data.binders) ? data.binders : [];
+      // Chave atual (unificada multi-jogo); a antiga fica como fallback pra quem
+      // ainda não abriu a página de binders (que faz a migração).
+      const data = JSON.parse(localStorage.getItem("tcg-collector-binders-all-v1") || localStorage.getItem("tcg-collector-binders-v1") || "null");
+      const deleted = (data && data.deleted) || {};
+      const binders = (data && Array.isArray(data.binders) ? data.binders : []).filter((b) => b && !deleted[b.id]);
       binders.forEach((binder) => (binder.slots || []).forEach((slot) => {
         if (!slot || !slot.cardId) return;
         if (owned.has(slot.cardId)) return; // já é da coleção -> não é desejo
         if (gf && gf !== "all" && gameOf(slot.cardId) !== gf) return;
-        total += shared.cardValue({ id: slot.cardId }, slot.variant || shared.DEFAULT_CONDITION, prices).value;
+        total += shared.cardValue({ id: slot.cardId }, slot.variant || "Normal", prices).value;
       }));
     } catch (error) { /* sem binders */ }
     return total;

@@ -16,8 +16,9 @@
   function returnTarget() {
     let ret = null;
     try { ret = localStorage.getItem("tcg-login-return"); localStorage.removeItem("tcg-login-return"); } catch (e) { /* ignora */ }
-    // Só caminhos internos (evita open-redirect); senão, home.
-    return ret && /^\/[a-zA-Z0-9._\/-]*$/.test(ret) ? ret : "index.html";
+    // Só caminhos internos (evita open-redirect); "//host" é URL absoluta
+    // protocolo-relativa, então a 2ª barra é proibida. Senão, home.
+    return ret && /^\/(?!\/)[a-zA-Z0-9._\/-]*$/.test(ret) ? ret : "index.html";
   }
 
   // Voltando do e-mail (#access_token): o shared.js (initAuth) consome e recarrega;
