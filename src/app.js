@@ -28,6 +28,10 @@
   const view = elements.grid.dataset.view || "pokedex";
   // Página de Sets filtrada por uma série específica (?serie=id).
   const serieParam = new URLSearchParams(window.location.search).get("serie") || "";
+  // ?line=opcd|op2002 (atalho vintage do hub): mostra SÓ os sets daquela linha do
+  // jogo-pai (One Piece), com o prefixo de setId correspondente.
+  const lineParam = new URLSearchParams(window.location.search).get("line") || "";
+  const linePrefix = lineParam === "opcd" ? "opcd-" : lineParam === "op2002" ? "op2002-" : "";
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
   let selectedGeneration = "";
   // Região padrão segue a preferência de idioma de carta; sem preferência ("all")
@@ -84,6 +88,7 @@
       elements.setRegionChips.hidden = true;
     }
     if (view === "sets" && serieParam) applySerieTitle();
+    if (view === "sets" && linePrefix) applyLineTitle();
     hydrateFilters();
     bindEvents();
     render();
@@ -102,6 +107,22 @@
       back.className = "serie-back";
       back.href = "sets.html";
       back.textContent = `← ${t("nav.sets")}`;
+      head.insertBefore(back, h1);
+    }
+  }
+
+  // Atalho vintage (?line=): título com a etiqueta VINTAGE + link de volta ao One Piece.
+  function applyLineTitle() {
+    const head = document.querySelector(".page-head");
+    const h1 = head && head.querySelector("h1");
+    if (!h1) return;
+    h1.removeAttribute("data-i18n");
+    h1.innerHTML = `${escapeHtml(t(lineParam === "op2002" ? "sets.category.op2002" : "sets.category.vintage"))} <span class="line-tag">${escapeHtml(t("hub.vintageTagShort"))}</span>`;
+    if (!head.querySelector(".serie-back")) {
+      const back = document.createElement("a");
+      back.className = "serie-back";
+      back.href = "sets.html?game=onepiece";
+      back.textContent = "← One Piece";
       head.insertBefore(back, h1);
     }
   }
@@ -212,6 +233,8 @@
 
     if (view === "sets") {
       const setItems = indexedGroupsToItems(indexes.sets, visibleIds, toSetItem);
+      // Atalho vintage (?line=): só os sets daquela linha, do mais novo pro mais antigo.
+      if (linePrefix) return setItems.filter((set) => String(set.setId || "").startsWith(linePrefix)).sort(sortByReleaseDesc);
       // Página de uma série (?serie=id): só os sets dela, sem cabeçalhos.
       if (serieParam) return setItems.filter((set) => set.serieId === serieParam).sort(sortByReleaseDesc);
       // Lorcana não tem séries: separa em 2 categorias (Principais + Promos).

@@ -2675,7 +2675,34 @@ input::placeholder {
   background: rgba(176, 125, 16, 0.16);
   color: var(--gold);
 }
+/* Etiqueta VINTAGE fixa (sépia/âmbar) — distingue as linhas clássicas. */
+.game-badge.vintage {
+  background: rgba(159, 122, 66, 0.18);
+  color: #a67c46;
+  border: 1px solid rgba(159, 122, 66, 0.3);
+}
+[data-theme="light"] .game-badge.vintage { color: #8a6a3a; }
 .game-tile.is-soon strong { color: var(--muted); }
+
+/* Seção VINTAGE do hub: cabeçalho + subtítulo acima da grade das linhas clássicas. */
+.hub-vintage { margin-top: 34px; }
+.hub-section-head {
+  margin: 0; font-size: 15px; font-weight: 800; letter-spacing: 0.6px;
+  text-transform: uppercase; color: #a67c46;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.hub-section-head::before {
+  content: "◆"; font-size: 11px; opacity: 0.7;
+}
+.hub-section-sub { max-width: 640px; margin: 6px 0 0; color: var(--muted); font-size: 13.5px; }
+.hub-vintage .hub-grid { margin-top: 16px; }
+/* Tag "Vintage" ao lado do título na visão de uma linha (?line=). */
+.line-tag {
+  font-size: 12px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase;
+  color: #a67c46; background: rgba(159, 122, 66, 0.16);
+  border: 1px solid rgba(159, 122, 66, 0.3); border-radius: 999px;
+  padding: 3px 10px; vertical-align: middle;
+}
 
 /* Página HUB: grade de jogos (estilo Collectr) — escolha um jogo pra ver os sets. */
 .hub { max-width: 1140px; margin: 0 auto; }
