@@ -1182,7 +1182,6 @@
   }
   // Idioma e moeda recarregam (re-renderizam tudo); os setters abaixo são usados
   // tanto pelos dropdowns do topo quanto pela tela de Configurações.
-  function getLanguage() { return currentLanguage; }
   function setLanguage(code) {
     try { localStorage.setItem(languageStorageKey, code); } catch (e) { /* ignora */ }
     window.location.reload();
@@ -1403,7 +1402,9 @@
       try {
         const raw = JSON.parse(localStorage.getItem(gameKey("collection-v3", g)) || "{}");
         Object.keys(raw).forEach((cardId) => {
-          const total = Object.values(raw[cardId] || {}).reduce((s, q) => s + (Number(q) || 0), 0);
+          // v3: cardId -> variante -> condição -> qty (dois níveis até o número).
+          const total = Object.values(raw[cardId] || {}).reduce((s, conds) =>
+            s + Object.values(conds || {}).reduce((s2, q) => s2 + (Number(q) || 0), 0), 0);
           if (total > 0) { distinct += 1; copies += total; }
         });
       } catch (e) { /* ignora */ }
@@ -1837,6 +1838,17 @@
     };
   }
 
+  // Valor digitado -> número, tolerante a pt-BR e en. Com vírgula, pontos são
+  // milhar ("1.250,50"). SEM vírgula, "1.500"/"12.345.678" (grupos de 3) são
+  // milhar — antes viravam 1.5/12.3 e um preço de venda saía 1000× menor.
+  function parseMoney(text) {
+    const s = String(text || "").trim().replace(/[^\d.,-]/g, "");
+    if (!s) return 0;
+    if (s.includes(",")) return Number(s.replace(/\./g, "").replace(",", ".")) || 0;
+    if (/^-?\d{1,3}(\.\d{3})+$/.test(s)) return Number(s.replace(/\./g, "")) || 0;
+    return Number(s) || 0;
+  }
+
   function fmtMoney(currency, value) {
     if (!value) return "—";
     const n = value.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -2062,7 +2074,7 @@
       const saleInput = event.target.closest("#cardPreviewModal [data-preview-sale]");
       if (saleInput && sale && activeCard) {
         const text = String(saleInput.value).trim();
-        const amount = Number(text.includes(",") ? text.replace(/\./g, "").replace(",", ".") : text) || 0;
+        const amount = parseMoney(text);
         sale.onChange(activeCard.id, activeVariant || defaultVariant(activeCard), amount);
         return;
       }
@@ -2070,7 +2082,7 @@
       const costInput = event.target.closest("#cardPreviewModal [data-preview-cost]");
       if (costInput && activeCard) {
         const text = String(costInput.value).trim();
-        const amount = Number(text.includes(",") ? text.replace(/\./g, "").replace(",", ".") : text) || 0;
+        const amount = parseMoney(text);
         previewCosts.set(activeCard.id, activeVariant || defaultVariant(activeCard), amount, getCurrency());
         return;
       }
@@ -2082,7 +2094,7 @@
       const input = event.target.closest("#cardPreviewModal input[data-price-card-id]");
       if (!input || !prices) return;
       const text = String(input.value).trim();
-      const amount = Number(text.includes(",") ? text.replace(/\./g, "").replace(",", ".") : text) || 0;
+      const amount = parseMoney(text);
       prices.setPrice(input.dataset.priceCardId, input.dataset.priceVariant, input.dataset.priceCondition, amount, "manual");
       const saved = prices.getPrice(input.dataset.priceCardId, input.dataset.priceVariant, input.dataset.priceCondition);
       input.value = saved > 0 ? String(saved).replace(".", ",") : "";
@@ -3300,6 +3312,14 @@
     return escapeHtml(value).replace(/`/g, "&#096;");
   }
 
+  // Cor vinda de dado NÃO confiável (tags importadas/perfil público de outro
+  // usuário) interpolada em style="...": só passa #hex — qualquer outra coisa
+  // vira vazio (senão dava pra quebrar o atributo e injetar markup).
+  function safeColor(value) {
+    const s = String(value || "").trim();
+    return /^#[0-9a-fA-F]{3,8}$/.test(s) ? s : "";
+  }
+
   function speciesName(name) {
     return String(name || "")
       .replace(/\b(VMAX|VSTAR|ex|EX|GX|V-UNION|V)\b/g, "")
@@ -3378,6 +3398,8 @@
     loadFxRates,
     sumCardsValue,
     formatMoney: fmtMoney,
+    parseMoney,
+    mergeData, // exposto p/ testes (offline) e diagnóstico
     convertMoney,
     applyGameAccent,
     gameColorsEnabled,
@@ -3388,7 +3410,6 @@
     gameDataDir,
     getTheme,
     setTheme,
-    getLanguage,
     setLanguage,
     setCurrency,
     sensitiveEnabled,
@@ -3433,7 +3454,6 @@
     fetchTopViewed,
     findSellers,
     pushWishlist,
-    formatMoney: fmtMoney,
     cardLanguageFromId,
     spriteUrl,
     matchesCardLang,
@@ -3477,6 +3497,7 @@
     normalize,
     escapeHtml,
     escapeAttribute,
+    safeColor,
     speciesName
   };
 
@@ -3629,6 +3650,10 @@
   }
   async function authSignOut() {
     const s = getSession();
+    // Remove a assinatura de push ANTES de derrubar a sessão: senão a linha em
+    // push_subs fica órfã (o robô segue notificando a wishlist da conta antiga
+    // neste navegador — e mistura contas se outra logar e ativar push aqui).
+    try { await pushWishlist.disable(); } catch (e) { /* best-effort */ }
     if (s) { try { await fetch(`${SUPABASE_URL}/auth/v1/logout`, { method: "POST", headers: authHeaders(s.access_token) }); } catch (e) { /* ignora */ } }
     setSession(null);
     window.location.reload();
@@ -3660,7 +3685,15 @@
   function writeSnapshot(data, game) {
     if (!data) return;
     const keys = game ? syncKeysFor(game) : SYNC_KEYS;
-    Object.entries(keys).forEach(([k, key]) => { if (data[k] != null) localStorage.setItem(key, JSON.stringify(data[k])); });
+    Object.entries(keys).forEach(([k, key]) => {
+      if (data[k] == null) return;
+      // Descarta escrita pendente STALE da mesma chave: as stores em memória
+      // ainda têm o estado pré-merge, e o flush (timer/pagehide do reload)
+      // regravaria o snapshot antigo por cima do mesclado — a perda propagaria
+      // no próximo push. Perder o clique dos últimos ~250ms é o custo aceitável.
+      pendingWrites.delete(key);
+      localStorage.setItem(key, JSON.stringify(data[k]));
+    });
   }
   // LWW-element-set por carta: para cada id, compara o "presente mais novo"
   // (mod) com o "apagado mais novo" (del); se a exclusão for mais recente que a
@@ -3698,13 +3731,24 @@
       if (!r) { del[id] = Math.max(Number(aMeta.del[id]) || 0, Number(bMeta.del[id]) || 0); return; }
       let entry;
       if (aHas && bHas) {
-        entry = JSON.parse(JSON.stringify(aCol[id]));
-        Object.entries(bCol[id]).forEach(([variant, conds]) => {
-          entry[variant] = entry[variant] || {};
-          Object.entries(conds || {}).forEach(([cond, qty]) => {
-            entry[variant][cond] = Math.max(Number(entry[variant][cond]) || 0, Number(qty) || 0);
+        const aTs = Number(aMeta.mod[id]) || 0;
+        const bTs = Number(bMeta.mod[id]) || 0;
+        if (aTs !== bTs) {
+          // LWW por carta: o lado com a mudança MAIS RECENTE vence inteiro —
+          // assim reduzir quantidade/vender uma cópia propaga entre devices
+          // (o max por condição revertia qualquer redução pra sempre).
+          entry = JSON.parse(JSON.stringify(aTs > bTs ? aCol[id] : bCol[id]));
+        } else {
+          // Empate/sem timestamp (dados antigos): união com max por condição
+          // — nunca perde carta na migração.
+          entry = JSON.parse(JSON.stringify(aCol[id]));
+          Object.entries(bCol[id]).forEach(([variant, conds]) => {
+            entry[variant] = entry[variant] || {};
+            Object.entries(conds || {}).forEach(([cond, qty]) => {
+              entry[variant][cond] = Math.max(Number(entry[variant][cond]) || 0, Number(qty) || 0);
+            });
           });
-        });
+        }
       } else {
         entry = JSON.parse(JSON.stringify(aHas ? aCol[id] : bCol[id]));
       }
@@ -3720,10 +3764,16 @@
     ids.forEach((id) => {
       const aList = Array.isArray(aW[id]) ? aW[id] : [];
       const bList = Array.isArray(bW[id]) ? bW[id] : [];
-      const r = resolveCard(!!aList.length, Number(aMeta.mod[id]) || 0, !!bList.length, Number(bMeta.mod[id]) || 0, Number(aMeta.del[id]) || 0, Number(bMeta.del[id]) || 0);
+      const aTs = Number(aMeta.mod[id]) || 0;
+      const bTs = Number(bMeta.mod[id]) || 0;
+      const r = resolveCard(!!aList.length, aTs, !!bList.length, bTs, Number(aMeta.del[id]) || 0, Number(bMeta.del[id]) || 0);
       if (!r) { del[id] = Math.max(Number(aMeta.del[id]) || 0, Number(bMeta.del[id]) || 0); return; }
-      const set = new Set([].concat(aList, bList));
-      if (set.size) { wishlist[id] = Array.from(set); if (r.mod > 0) mod[id] = r.mod; }
+      // LWW por carta quando os timestamps diferem (remover UMA variante da
+      // wishlist propaga); união só no empate/sem timestamp (migração).
+      const list = (aList.length && bList.length && aTs !== bTs)
+        ? (aTs > bTs ? aList : bList)
+        : Array.from(new Set([].concat(aList, bList)));
+      if (list.length) { wishlist[id] = list.slice(); if (r.mod > 0) mod[id] = r.mod; }
     });
     return { wishlist, meta: { mod, del: pruneTombstones(del) } };
   }
@@ -3781,6 +3831,31 @@
     if (a && b) return ((Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0)) ? b : a;
     return a || b || undefined;
   }
+  // Vendas REALIZADAS ({ items:{sid:rec}, order, updatedAt }): é histórico
+  // financeiro — UNIÃO por sid (LWW do bloco descartava todos os registros do
+  // device perdedor). Em conflito do MESMO sid, vence o bloco mais novo.
+  function mergeSold(a, b) {
+    if (!a || !b) return a || b || undefined;
+    const newer = (Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0) ? b : a;
+    const older = newer === a ? b : a;
+    const items = Object.assign({}, older.items || {}, newer.items || {});
+    const order = [];
+    [].concat(newer.order || [], older.order || []).forEach((sid) => {
+      if (items[sid] && !order.includes(sid)) order.push(sid);
+    });
+    return { items, order, updatedAt: Math.max(Number(a.updatedAt) || 0, Number(b.updatedAt) || 0) };
+  }
+  // Custos "Paguei" ({ costs:{cardId|variant:{v,cur}}, updatedAt }): união por
+  // chave; em conflito da mesma chave vence o bloco mais novo.
+  function mergeCosts(a, b) {
+    if (!a || !b) return a || b || undefined;
+    const newer = (Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0) ? b : a;
+    const older = newer === a ? b : a;
+    return {
+      costs: Object.assign({}, older.costs || {}, newer.costs || {}),
+      updatedAt: Math.max(Number(a.updatedAt) || 0, Number(b.updatedAt) || 0)
+    };
+  }
   // Graded ({ items, order, updatedAt }): mesmo LWW do bloco (cada slab é único).
   function mergeGraded(a, b) {
     if (a && b) return ((Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0)) ? b : a;
@@ -3831,8 +3906,8 @@
       sales: mergeSales(a.sales, b.sales),
       graded: mergeGraded(a.graded, b.graded),
       tags: mergeTags(a.tags, b.tags),
-      sold: mergeSales(a.sold, b.sold),   // mesmo LWW do bloco (registros históricos)
-      costs: mergeSales(a.costs, b.costs), // idem (custos por carta×variante)
+      sold: mergeSold(a.sold, b.sold),   // união por sid (histórico financeiro não se perde)
+      costs: mergeCosts(a.costs, b.costs), // união por carta×variante
       favorites: fav.favorites,
       favoritesMeta: fav.meta,
       history2: mergeHistory(a.history2, b.history2)
@@ -3873,7 +3948,8 @@
         keepalive: !!keepalive
       });
       recordSync("push", r.ok, r.ok ? "" : `HTTP ${r.status}`);
-    } catch (e) { recordSync("push", false, e && e.message); /* tenta de novo no próximo ciclo */ }
+      return r.ok;
+    } catch (e) { recordSync("push", false, e && e.message); return false; /* tenta de novo no próximo ciclo */ }
   }
 
   // --- Compartilhamento por link público (tabela `shares`) ---
@@ -4164,8 +4240,11 @@
       const snap = localSnapshot(g);
       const json = JSON.stringify(snap);
       if (json === lastPushedByGame[g]) continue;
-      lastPushedByGame[g] = json;
-      pushRemote(s.access_token, s.user.id, snap, keepalive, g);
+      // Só marca como enviado APÓS o push confirmar (r.ok) — marcar antes fazia
+      // um push falho (offline/5xx) nunca ser retentado até a PRÓXIMA edição.
+      pushRemote(s.access_token, s.user.id, snap, keepalive, g).then((ok) => {
+        if (ok) lastPushedByGame[g] = json;
+      });
     }
   }
   function startSyncLoop() {
@@ -4430,6 +4509,7 @@
       pendingWrites.clear();
       try { Object.keys(localStorage).filter((k) => /^tcg-/.test(k)).forEach((k) => localStorage.removeItem(k)); } catch (e) { /* ignora */ }
       try { if (window.indexedDB) indexedDB.deleteDatabase("tcg-collector"); } catch (e) { /* fotos de binder */ }
+      try { setSession(null); } catch (e) { /* cookie de sessão não pode sobreviver à exclusão da conta */ }
       window.location.replace(window.location.pathname);
     }
     const fileInput = `<input type="file" accept="application/json" data-import-input hidden aria-label="${escapeAttribute(t("auth.import"))}">

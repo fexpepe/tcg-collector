@@ -440,7 +440,7 @@
   function markAll(binder, owned) {
     (binder.slots || []).forEach((slot) => {
       if (!slot || !slot.cardId) return;
-      const variant = slot.variant || DEFAULT_CONDITION;
+      const variant = slot.variant || "Normal";
       const has = ownedStore.variantTotal(slot.cardId, variant) > 0;
       if (owned && !has) ownedStore.toggleVariant(slot.cardId, variant);
       else if (!owned && has) ownedStore.toggleVariant(slot.cardId, variant);
@@ -457,7 +457,7 @@
     let valueTotal = 0;
     let valueOwned = 0;
     cardSlots.forEach((slot) => {
-      const v = shared.cardValue({ id: slot.cardId }, slot.variant || DEFAULT_CONDITION, pricesStore).value;
+      const v = shared.cardValue({ id: slot.cardId }, slot.variant || "Normal", pricesStore).value;
       if (!v) return;
       valueTotal += v;
       if (ownedStore.has(slot.cardId)) valueOwned += v;
@@ -840,7 +840,7 @@
 
     // Coração na carta que você não tem: adiciona/remove da lista de desejo
     // direto do binder (igual aos tiles normais).
-    const variant = slot.variant || DEFAULT_CONDITION;
+    const variant = slot.variant || "Normal";
     const wanted = ownable ? wishlistStore.has(slot.cardId, variant) : false;
     const wantBtn = (ownable && !owned)
       ? `<span class="binder-slot-want${wanted ? " wanted" : ""}" role="button" tabindex="0" data-slot-want="${index}" aria-pressed="${wanted}" aria-label="${escapeAttribute(wanted ? t("tile.unwantAria", { variant }) : t("tile.wantAria", { variant }))}" title="${escapeAttribute(wanted ? t("tile.wanted") : t("tile.want"))}">${heartSvg(wanted)}</span>`
@@ -1187,7 +1187,7 @@
       const noteInput = modal.querySelector("[data-edit-note]");
       if (priceInput) {
         const text = priceInput.value.trim();
-        const amount = Number(text.includes(",") ? text.replace(/\./g, "").replace(",", ".") : text) || 0;
+        const amount = shared.parseMoney(text);
         draft.price = amount > 0 ? Math.round(amount * 100) / 100 : 0;
       }
       if (condSelect) draft.condition = condSelect.value;
@@ -1461,7 +1461,7 @@
       item.set = card ? card.set : "";
       item.variant = slot.variant || "";
       item.owned = ownedStore.has(slot.cardId);
-      const pv = pricesStore.valueFor(slot.cardId, slot.variant || DEFAULT_CONDITION, DEFAULT_CONDITION);
+      const pv = pricesStore.valueFor(slot.cardId, slot.variant || "Normal", DEFAULT_CONDITION);
       item.price = pv && pv.value ? pv.value : 0;
       item.img = slot.image || (card ? cardImageSources(card).url : "");
     } else if (slot.label) {
@@ -1670,7 +1670,7 @@
       const binder = eventBinder(ownToggle);
       const slot = binder && binder.slots[Number(ownToggle.dataset.slotOwn)];
       if (slot && slot.cardId) {
-        const variant = slot.variant || DEFAULT_CONDITION;
+        const variant = slot.variant || "Normal";
         const had = ownedStore.variantTotal(slot.cardId, variant) > 0;
         ownedStore.toggleVariant(slot.cardId, variant);
         if (had) {
@@ -1691,7 +1691,7 @@
       const binder = eventBinder(wantToggle);
       const slot = binder && binder.slots[Number(wantToggle.dataset.slotWant)];
       if (slot && slot.cardId) {
-        wishlistStore.toggle(slot.cardId, slot.variant || DEFAULT_CONDITION);
+        wishlistStore.toggle(slot.cardId, slot.variant || "Normal");
         render();
       }
       return;
@@ -1704,7 +1704,7 @@
       const binder = eventBinder(infoBtn);
       const slot = binder && binder.slots[Number(infoBtn.dataset.slotInfo)];
       if (slot && slot.cardId) {
-        ensureCatalog().then(() => cardPreview.open(slot.cardId, slot.variant || DEFAULT_CONDITION));
+        ensureCatalog().then(() => cardPreview.open(slot.cardId, slot.variant || "Normal"));
       }
       return;
     }

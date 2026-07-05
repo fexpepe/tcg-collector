@@ -483,7 +483,7 @@
       const val = event.target.closest("[data-graded-value]");
       if (val) {
         const text = String(val.value).trim();
-        const amount = Number(text.includes(",") ? text.replace(/\./g, "").replace(",", ".") : text) || 0;
+        const amount = shared.parseMoney(text);
         graded.setValue(gid, amount);
         render();
       }

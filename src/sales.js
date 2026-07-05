@@ -349,7 +349,7 @@
       if (event.target.closest("[data-sold-close]")) { close(); return; }
       if (!event.target.closest("[data-sold-confirm]")) return;
       const text = String(modal.querySelector("#soldPriceInput").value).trim();
-      const amount = Number(text.includes(",") ? text.replace(/\./g, "").replace(",", ".") : text) || 0;
+      const amount = shared.parseMoney(text);
       const date = modal.querySelector("#soldDateInput").value || new Date().toISOString().slice(0, 10);
       sold.add({ cardId, variant, cond, price: amount, paid: paidNow, cur: shared.getCurrency(), date });
       sales.remove(cardId, variant, idx);
@@ -724,7 +724,7 @@
       const input = event.target.closest("[data-sale-price]");
       if (!input) return;
       const text = String(input.value).trim();
-      const amount = Number(text.includes(",") ? text.replace(/\./g, "").replace(",", ".") : text) || 0;
+      const amount = shared.parseMoney(text);
       sales.setPrice(id, v, idx, amount);
       render(); // o tile pode sumir (preço 0) e o dashboard muda
     });

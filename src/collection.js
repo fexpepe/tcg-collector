@@ -988,7 +988,7 @@
     menu.dataset.card = cardId;
     const newItem = `<button type="button" class="tile-folder-item tile-folder-new" data-tag-menu-new>+ ${escapeHtml(t("tags.new"))}</button>`;
     menu.innerHTML = (tags.any()
-      ? tags.list().map((tg) => `<button type="button" class="tile-folder-item tile-tag-item${tags.has(cardId, tg.id) ? " on" : ""}" data-tag-toggle="${escapeAttribute(tg.id)}"><span class="tile-tag-swatch" style="background:${tg.color}"></span>${escapeHtml(tg.name || t("tags.untitled"))}</button>`).join("")
+      ? tags.list().map((tg) => `<button type="button" class="tile-folder-item tile-tag-item${tags.has(cardId, tg.id) ? " on" : ""}" data-tag-toggle="${escapeAttribute(tg.id)}"><span class="tile-tag-swatch" style="background:${shared.safeColor(tg.color)}"></span>${escapeHtml(tg.name || t("tags.untitled"))}</button>`).join("")
       : `<p class="tile-tag-empty">${escapeHtml(t("tags.menuEmpty"))}</p>`) + newItem;
     document.body.appendChild(menu);
     const r = anchor.getBoundingClientRect();
@@ -1039,7 +1039,7 @@
     const pop = document.createElement("div");
     pop.className = "tile-folder-menu tag-list-pop";
     pop.dataset.card = cardId;
-    pop.innerHTML = list.map((tg) => `<button type="button" class="tile-folder-item tile-tag-item" data-tag-goto="${escapeAttribute(tg.id)}"><span class="tile-tag-swatch" style="background:${tg.color}"></span>${escapeHtml(tg.name || t("tags.untitled"))}</button>`).join("");
+    pop.innerHTML = list.map((tg) => `<button type="button" class="tile-folder-item tile-tag-item" data-tag-goto="${escapeAttribute(tg.id)}"><span class="tile-tag-swatch" style="background:${shared.safeColor(tg.color)}"></span>${escapeHtml(tg.name || t("tags.untitled"))}</button>`).join("");
     document.body.appendChild(pop);
     const r = anchor.getBoundingClientRect();
     const mw = pop.offsetWidth, mh = pop.offsetHeight;
@@ -1056,7 +1056,7 @@
     const row = tile && tile.querySelector(".tile-tags");
     if (row) {
       const list = tags.tagsOf(cardId);
-      const chip = (tg) => `<span class="tile-tag-chip" style="--tag:${tg.color}" data-tag-goto="${escapeAttribute(tg.id)}" role="button" tabindex="0" title="${escapeAttribute(tg.name || t("tags.untitled"))}">${escapeHtml(tg.name || t("tags.untitled"))}</span>`;
+      const chip = (tg) => `<span class="tile-tag-chip" style="--tag:${shared.safeColor(tg.color)}" data-tag-goto="${escapeAttribute(tg.id)}" role="button" tabindex="0" title="${escapeAttribute(tg.name || t("tags.untitled"))}">${escapeHtml(tg.name || t("tags.untitled"))}</span>`;
       row.innerHTML = list.length
         ? chip(list[0])
           + (list.length > 1 ? `<span class="tile-tag-more" data-tag-more role="button" tabindex="0" title="${escapeAttribute(t("tile.tags"))}">+${list.length - 1}</span>` : "")
@@ -1091,7 +1091,7 @@
     const coverImg = cover
       ? shared.localizedImg(shared.cardImageSources(cover).url, { alt: "", fallback: shared.cardImageSources(cover).fallback, loading: "lazy", thumb: true })
       : `<span class="coll-card-empty">${escapeHtml(t("folders.empty"))}</span>`;
-    return `<section class="folder-section is-collapsed coll-card tag-card" data-tag-id="${escapeAttribute(tag.id)}" style="--tag:${tag.color}">
+    return `<section class="folder-section is-collapsed coll-card tag-card" data-tag-id="${escapeAttribute(tag.id)}" style="--tag:${shared.safeColor(tag.color)}">
       <div class="coll-card-title"><span class="tag-dot"></span><strong class="coll-card-name">${escapeHtml(tag.name || t("tags.untitled"))}</strong></div>
       <button type="button" class="coll-card-cover" data-tag-open aria-label="${escapeAttribute(tag.name || t("tags.untitled"))}">${coverImg}</button>
       <div class="coll-card-body">
@@ -1112,7 +1112,7 @@
     elements.folderSections.innerHTML = `<section class="folder-section" data-tag-id="${escapeAttribute(tag.id)}">
       <header class="folder-head tag-open-head">
         <button type="button" class="secondary coll-back-btn" data-tag-back>← ${escapeHtml(t("tags.back"))}</button>
-        <span class="tag-chip" style="--tag:${tag.color}">${escapeHtml(tag.name || t("tags.untitled"))}</span>
+        <span class="tag-chip" style="--tag:${shared.safeColor(tag.color)}">${escapeHtml(tag.name || t("tags.untitled"))}</span>
         <span class="folder-meta">${escapeHtml(tn("tags.count", pairs.length))}</span>
         <span class="folder-actions">
           <button type="button" class="folder-act tag-add-btn" data-tag-add>+ ${escapeHtml(t("tags.addCards"))}</button>
@@ -1190,7 +1190,7 @@
     };
     modal.innerHTML = `<div class="sales-picker-backdrop" data-tag-picker-close></div>
       <section class="sales-picker-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("tags.addCards"))}">
-        <header class="sales-picker-head"><strong><span class="tag-chip" style="--tag:${tag.color}">${escapeHtml(tag.name || t("tags.untitled"))}</span></strong>
+        <header class="sales-picker-head"><strong><span class="tag-chip" style="--tag:${shared.safeColor(tag.color)}">${escapeHtml(tag.name || t("tags.untitled"))}</span></strong>
           <button type="button" class="preview-close" data-tag-picker-close aria-label="${escapeAttribute(t("modal.close"))}">×</button></header>
         <div class="sales-picker-controls"><input type="search" class="sales-picker-search" placeholder="${escapeAttribute(t("search.placeholder.cards"))}"></div>
         <p class="sales-picker-hint">${escapeHtml(t("tags.pickerHint"))}</p>
@@ -2261,9 +2261,9 @@
       const coverImg = cover ? shared.localizedImg(cover.img, { alt: "", fallback: cover.fb, loading: "lazy", thumb: true }) : `<span class="coll-card-empty">—</span>`;
       let stars = ""; if (gp.stars != null) for (let i = 1; i <= 3; i++) stars += `<span class="coll-star${i <= (gp.stars || 0) ? " on" : ""}">★</span>`;
       const gset = new Set(gp.items.map((it) => it.g).filter(Boolean));
-      const dot = gp.color ? `<span class="tag-dot" style="background:${gp.color}"></span>` : "";
+      const dot = gp.color ? `<span class="tag-dot" style="background:${shared.safeColor(gp.color)}"></span>` : "";
       const gc = (mode === "vitrine" && !gp.color) ? gameColor(gset) : ""; // cor do jogo SÓ no showcase
-      return `<button type="button" class="coll-card coll-card-ro${gp.color ? " tag-card" : ""}"${gp.color ? ` style="--tag:${gp.color}"` : ""} data-vitrine-open="${escapeAttribute(gp.id)}">
+      return `<button type="button" class="coll-card coll-card-ro${gp.color ? " tag-card" : ""}"${gp.color ? ` style="--tag:${shared.safeColor(gp.color)}"` : ""} data-vitrine-open="${escapeAttribute(gp.id)}">
         <span class="coll-card-title${gc ? " coll-card-title-game" : ""}"${gc ? ` style="background:${gc}"` : ""}>${dot}<strong class="coll-card-name">${escapeHtml(gp.name)}</strong></span>
         <span class="coll-card-cover">${coverImg}</span>
         <span class="coll-card-body">
