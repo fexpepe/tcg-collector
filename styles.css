@@ -2685,7 +2685,13 @@ input::placeholder {
 .game-tile.is-soon strong { color: var(--muted); }
 
 /* Seção VINTAGE do hub: cabeçalho + subtítulo acima da grade das linhas clássicas. */
-.hub-vintage { margin-top: 34px; }
+/* Respiro maior entre os jogos principais e a seção VINTAGE (separação clara
+   de categoria), reforçado por uma linha divisória sutil. */
+.hub-vintage {
+  margin-top: 72px;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+}
 .hub-section-head {
   margin: 0; font-size: 15px; font-weight: 800; letter-spacing: 0.6px;
   text-transform: uppercase; color: #a67c46;
