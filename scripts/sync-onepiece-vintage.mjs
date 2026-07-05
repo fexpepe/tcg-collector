@@ -163,7 +163,9 @@ async function run() {
 
   // Anexa ao catálogo moderno (TCGCSV). Dedupe por id.
   const modern = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
-  const nonVintageModern = modern.filter((c) => !c.vintage); // substitui o vintage antigo pelo rebuild
+  // Mantém tudo que NÃO é Carddass (opcd-) — inclusive a outra linha vintage
+  // (op2002-, do sync-onepiece-2002) e o moderno — e regrava só o Carddass.
+  const nonVintageModern = modern.filter((c) => !String(c.setId).startsWith("opcd-"));
   const have = new Set(nonVintageModern.map((c) => c.id));
   const merged = nonVintageModern.concat(vintage.filter((c) => !have.has(c.id)));
   merged.sort((a, b) => String(a.setId).localeCompare(String(b.setId)) || String(a.number).localeCompare(String(b.number), undefined, { numeric: true }));

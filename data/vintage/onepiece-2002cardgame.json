@@ -1,0 +1,6745 @@
+{
+ "source": "https://grandlinewiki.net/tcg/opcardgame2002.html",
+ "updatedAt": "2026-07-05",
+ "sets": [
+  {
+   "name": "Road to the Pirate King",
+   "date": "2002-02",
+   "official": 66,
+   "cards": [
+    {
+     "num": "LK-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "LK-C02",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "LK-C03",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "LK-C04",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "LK-C05",
+     "nameEn": "Ace",
+     "nameJp": "エース"
+    },
+    {
+     "num": "LK-C06",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー"
+    },
+    {
+     "num": "LK-C07",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "LK-C08",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "LK-C09",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "LK-C10",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "LK-C11",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "LK-C12",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "LK-C13",
+     "nameEn": "Ace",
+     "nameJp": "エース"
+    },
+    {
+     "num": "LK-C14",
+     "nameEn": "Tashigi",
+     "nameJp": "たしぎ"
+    },
+    {
+     "num": "LK-C15",
+     "nameEn": "Miss All-Sunday",
+     "nameJp": "ミス・オールサンデー"
+    },
+    {
+     "num": "LK-C16",
+     "nameEn": "Mr.2",
+     "nameJp": "Ｍｒ．２"
+    },
+    {
+     "num": "LK-C17",
+     "nameEn": "Count Battler",
+     "nameJp": "バトラー伯爵"
+    },
+    {
+     "num": "LK-C18",
+     "nameEn": "Vivi",
+     "nameJp": "ビビ"
+    },
+    {
+     "num": "LK-C19",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "LK-C20",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "LK-C21",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "LK-C22",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "LK-C23",
+     "nameEn": "Crocodile",
+     "nameJp": "クロコダイル"
+    },
+    {
+     "num": "LK-C24",
+     "nameEn": "Vivi",
+     "nameJp": "ビビ"
+    },
+    {
+     "num": "LK-C25",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー"
+    },
+    {
+     "num": "LK-C26",
+     "nameEn": "Crocodile",
+     "nameJp": "クロコダイル"
+    },
+    {
+     "num": "LK-C27",
+     "nameEn": "General Hotdog",
+     "nameJp": "ホットドッグ将軍"
+    },
+    {
+     "num": "LK-C28",
+     "nameEn": "President Heabi",
+     "nameJp": "ヘビー総裁"
+    },
+    {
+     "num": "LK-C29",
+     "nameEn": "Chaka",
+     "nameJp": "チャカ"
+    },
+    {
+     "num": "LK-C30",
+     "nameEn": "Pell",
+     "nameJp": "ペル"
+    },
+    {
+     "num": "LK-C31",
+     "nameEn": "Koza",
+     "nameJp": "コーザ"
+    },
+    {
+     "num": "LK-C32",
+     "nameEn": "Mobambi",
+     "nameJp": "モバンビー"
+    },
+    {
+     "num": "LK-W01",
+     "nameEn": "Gomu Gomu no Gatling",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W02",
+     "nameEn": "Gomu Gomu no Bazooka",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W03",
+     "nameEn": "Onigiri",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W04",
+     "nameEn": "Tatsu Maki",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W05",
+     "nameEn": "Thief's Quick Work",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W06",
+     "nameEn": "Spirit",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W07",
+     "nameEn": "Épaule",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W08",
+     "nameEn": "Joue",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W09",
+     "nameEn": "Walking Point",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W10",
+     "nameEn": "Guard Point",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W11",
+     "nameEn": "Fire Fist",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W12",
+     "nameEn": "Kagero",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W13",
+     "nameEn": "White Snake",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W14",
+     "nameEn": "Kiri Musubi",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W15",
+     "nameEn": "Tres Fleur",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W16",
+     "nameEn": "Sneak Attack",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W17",
+     "nameEn": "Mystical Power",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W18",
+     "nameEn": "Kujakki String Slasher",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W19",
+     "nameEn": "Single Combat",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W20",
+     "nameEn": "Wounded All Over",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W21",
+     "nameEn": "Evasion",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W22",
+     "nameEn": "Courage",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W23",
+     "nameEn": "A Pirates Banquet",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W24",
+     "nameEn": "Friendship",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W25",
+     "nameEn": "Desert Spada",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W26",
+     "nameEn": "Barján",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W27",
+     "nameEn": "3 Revolutions, 1 Kick",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W28",
+     "nameEn": "Serpent Swordsmanship",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W29",
+     "nameEn": "Decleration",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W30",
+     "nameEn": "Model: Falcon",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W31",
+     "nameEn": "Rebellion",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W32",
+     "nameEn": "Wild Can",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W33",
+     "nameEn": "I Was Fooled!",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W34",
+     "nameEn": "Great Escape",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Champion of the East Blue",
+   "date": "2002-03",
+   "official": 60,
+   "cards": [
+    {
+     "num": "CE-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "CE-C02",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "CE-C03",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "CE-C04",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "CE-C05",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "CE-C06",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス"
+    },
+    {
+     "num": "CE-C07",
+     "nameEn": "Alvida",
+     "nameJp": "アルビダ"
+    },
+    {
+     "num": "CE-C08",
+     "nameEn": "Buggy",
+     "nameJp": "バギー"
+    },
+    {
+     "num": "CE-C09",
+     "nameEn": "Kuro",
+     "nameJp": "クロ"
+    },
+    {
+     "num": "CE-C10",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "CE-C11",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "CE-C12",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "CE-C13",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "CE-C14",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "CE-C15",
+     "nameEn": "Beckmann",
+     "nameJp": "ベックマン"
+    },
+    {
+     "num": "CE-C16",
+     "nameEn": "Lucky Roux",
+     "nameJp": "ラッキー・ルウ"
+    },
+    {
+     "num": "CE-C17",
+     "nameEn": "Yasopp",
+     "nameJp": "ヤソップ"
+    },
+    {
+     "num": "CE-C18",
+     "nameEn": "Ace",
+     "nameJp": "エース"
+    },
+    {
+     "num": "CE-C19",
+     "nameEn": "Morgan",
+     "nameJp": "モーガン"
+    },
+    {
+     "num": "CE-C20",
+     "nameEn": "Koby",
+     "nameJp": "コビー"
+    },
+    {
+     "num": "CE-C21",
+     "nameEn": "Alvida",
+     "nameJp": "アルビダ"
+    },
+    {
+     "num": "CE-C22",
+     "nameEn": "Cabaji",
+     "nameJp": "カバジ"
+    },
+    {
+     "num": "CE-C23",
+     "nameEn": "Mohji",
+     "nameJp": "モージ"
+    },
+    {
+     "num": "CE-C24",
+     "nameEn": "Jango",
+     "nameJp": "ジャンゴ"
+    },
+    {
+     "num": "CE-C25",
+     "nameEn": "Sham",
+     "nameJp": "シャム"
+    },
+    {
+     "num": "CE-C26",
+     "nameEn": "Buchi",
+     "nameJp": "ブチ"
+    },
+    {
+     "num": "CE-W01",
+     "nameEn": "Gomu Gomu no Kane",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W02",
+     "nameEn": "Gomu Gomu no Fusen",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W03",
+     "nameEn": "Tora Gari",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W04",
+     "nameEn": "Oni Giri",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W05",
+     "nameEn": "Escaping on Foot",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W06",
+     "nameEn": "Gunpower Star",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W07",
+     "nameEn": "Caltrop Hell",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W08",
+     "nameEn": "Mouton Shot",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W09",
+     "nameEn": "Quasi",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W10",
+     "nameEn": "Scope",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W11",
+     "nameEn": "Fighting For Your Friends",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W12",
+     "nameEn": "Match for a Thousand",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W13",
+     "nameEn": "Gluttony",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W14",
+     "nameEn": "Clean Hit",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W15",
+     "nameEn": "A Great Pirate's Lunch",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W16",
+     "nameEn": "Down Swing",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W17",
+     "nameEn": "A Man's Willpower",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W18",
+     "nameEn": "Seduction",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W19",
+     "nameEn": "Extreme Blow",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W20",
+     "nameEn": "Bara Bara Ho",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W21",
+     "nameEn": "Kamikaze Hyakkoma Gekijo",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W22",
+     "nameEn": "Wild Animal Show",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W23",
+     "nameEn": "Stealth Foot",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W24",
+     "nameEn": "Mass Hypnosis",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W25",
+     "nameEn": "Cat Snatch",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W26",
+     "nameEn": "Runaway Force",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W27",
+     "nameEn": "Objective Sighted!",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W28",
+     "nameEn": "Resolution",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W29",
+     "nameEn": "Words of Our Predecessors",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W30",
+     "nameEn": "Memories of Chouchou",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W31",
+     "nameEn": "Quip",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W32",
+     "nameEn": "Respectful Salute",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W33",
+     "nameEn": "Pirate Scheme",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W34",
+     "nameEn": "Defensive Fight",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Arabasta Offence & Defence",
+   "date": "2002-05",
+   "official": 42,
+   "cards": [
+    {
+     "num": "BA-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "BA-C02",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "BA-C03",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "BA-C04",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー"
+    },
+    {
+     "num": "BA-C05",
+     "nameEn": "Crocodile",
+     "nameJp": "クロコダイル"
+    },
+    {
+     "num": "BA-C06",
+     "nameEn": "Cobra",
+     "nameJp": "コブラ"
+    },
+    {
+     "num": "BA-C07",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "BA-C08",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "BA-C09",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "BA-C10",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "BA-C11",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "BA-C12",
+     "nameEn": "Mr. 2",
+     "nameJp": "Ｍｒ．２"
+    },
+    {
+     "num": "BA-C13",
+     "nameEn": "Mr. 4",
+     "nameJp": "Ｍｒ．４"
+    },
+    {
+     "num": "BA-C14",
+     "nameEn": "Miss Merry Christmas",
+     "nameJp": "ミス・メリークリスマス"
+    },
+    {
+     "num": "BA-C15",
+     "nameEn": "Vivi",
+     "nameJp": "ビビ"
+    },
+    {
+     "num": "BA-C16",
+     "nameEn": "Karoo",
+     "nameJp": "カルー"
+    },
+    {
+     "num": "BA-C17",
+     "nameEn": "Chaka",
+     "nameJp": "チャカ"
+    },
+    {
+     "num": "BA-C18",
+     "nameEn": "Pell",
+     "nameJp": "ペル"
+    },
+    {
+     "num": "BA-W01",
+     "nameEn": "Gomu Gomu no Stamp",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W02",
+     "nameEn": "Funny Gag",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W03",
+     "nameEn": "Sword of War",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W04",
+     "nameEn": "Gathering Signs",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W05",
+     "nameEn": "Usopp Pound",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W06",
+     "nameEn": "Anti-Manner Kick Course",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W07",
+     "nameEn": "Galavant",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W08",
+     "nameEn": "Moving Crab Meeting!",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W09",
+     "nameEn": "Kokutei Roseo",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W10",
+     "nameEn": "Jitte User",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W11",
+     "nameEn": "Sables",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W12",
+     "nameEn": "Swan Arabesque",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W13",
+     "nameEn": "Bombardment",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W14",
+     "nameEn": "Molehill Intersection Number 4",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W15",
+     "nameEn": "Qualities of a King",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W16",
+     "nameEn": "Commitment and Trust",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W17",
+     "nameEn": "Commanders Ability",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W19",
+     "nameEn": "Air Glide",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W20",
+     "nameEn": "Travel Preperation",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W21",
+     "nameEn": "Kingdom in Crisis",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W22",
+     "nameEn": "Harsh Words",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W23",
+     "nameEn": "Bananawani Den",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W24",
+     "nameEn": "Eve of the Decisive Battle",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Powerhouses of the Sea",
+   "date": "2002-06",
+   "official": 60,
+   "cards": [
+    {
+     "num": "MS-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "MS-C02",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "MS-C03",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "MS-C04",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "MS-C05",
+     "nameEn": "Mihawk",
+     "nameJp": "ミホーク"
+    },
+    {
+     "num": "MS-C06",
+     "nameEn": "Dragon",
+     "nameJp": "ドラゴン"
+    },
+    {
+     "num": "MS-C07",
+     "nameEn": "Krieg",
+     "nameJp": "クリーク"
+    },
+    {
+     "num": "MS-C08",
+     "nameEn": "Arlong",
+     "nameJp": "アーロン"
+    },
+    {
+     "num": "MS-C09",
+     "nameEn": "Zeff",
+     "nameJp": "ゼフ"
+    },
+    {
+     "num": "MS-C10",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "MS-C11",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "MS-C12",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "MS-C13",
+     "nameEn": "Fullbody",
+     "nameJp": "フルボディ"
+    },
+    {
+     "num": "MS-C14",
+     "nameEn": "Nezumi",
+     "nameJp": "ネズミ"
+    },
+    {
+     "num": "MS-C15",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー"
+    },
+    {
+     "num": "MS-C16",
+     "nameEn": "Tashigi",
+     "nameJp": "たしぎ"
+    },
+    {
+     "num": "MS-C17",
+     "nameEn": "Gin",
+     "nameJp": "ギン"
+    },
+    {
+     "num": "MS-C18",
+     "nameEn": "Pearl",
+     "nameJp": "パール"
+    },
+    {
+     "num": "MS-C19",
+     "nameEn": "Hatchan",
+     "nameJp": "はっちゃん"
+    },
+    {
+     "num": "MS-C20",
+     "nameEn": "Kuroobi",
+     "nameJp": "クロオビ"
+    },
+    {
+     "num": "MS-C21",
+     "nameEn": "Chew",
+     "nameJp": "チュウ"
+    },
+    {
+     "num": "MS-C22",
+     "nameEn": "Gaimon",
+     "nameJp": "ガイモン"
+    },
+    {
+     "num": "MS-C23",
+     "nameEn": "Johnny",
+     "nameJp": "ジョニー"
+    },
+    {
+     "num": "MS-C24",
+     "nameEn": "Yosaku",
+     "nameJp": "ヨサク"
+    },
+    {
+     "num": "MS-C25",
+     "nameEn": "Patty",
+     "nameJp": "パティ"
+    },
+    {
+     "num": "MS-C26",
+     "nameEn": "Carne",
+     "nameJp": "カルネ"
+    },
+    {
+     "num": "MS-W01",
+     "nameEn": "Gomu Gomu no Kazaguruma",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W02",
+     "nameEn": "Sanzen Sekai",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W03",
+     "nameEn": "Tears",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W04",
+     "nameEn": "Ketchup Boshi",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W05",
+     "nameEn": "Collier",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W06",
+     "nameEn": "Jumping Point",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W07",
+     "nameEn": "The Black Sword Unsheathed",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W08",
+     "nameEn": "Foreboding Storm",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W09",
+     "nameEn": "Fist of Destruction",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W10",
+     "nameEn": "Counting Money",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W11",
+     "nameEn": "White Out",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W12",
+     "nameEn": "Iai",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W13",
+     "nameEn": "Hand-to-hand Combat",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W14",
+     "nameEn": "Cho Tennen Pearl Present",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W15",
+     "nameEn": "Shark On Darts",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W16",
+     "nameEn": "Takohachi Black",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W17",
+     "nameEn": "Hyakumaigawara Seiken",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W18",
+     "nameEn": "Hyappatsu Mizudeppo",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W19",
+     "nameEn": "Things to Protect",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W20",
+     "nameEn": "Sword Strike from the Left",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W21",
+     "nameEn": "Sword Strike from the Right",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W22",
+     "nameEn": "Chef's Prosthetic Kick",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W23",
+     "nameEn": "Food Poisoning Cannonball",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W24",
+     "nameEn": "Giant Fork",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W25",
+     "nameEn": "Sympathizer",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W26",
+     "nameEn": "Bounty Hunter's Target",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W27",
+     "nameEn": "A Man's Departure",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W28",
+     "nameEn": "A Good Bargain",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W29",
+     "nameEn": "Last Extremity",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W30",
+     "nameEn": "MH5",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W31",
+     "nameEn": "Corrupt Control",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W32",
+     "nameEn": "Launching Ceremony",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W33",
+     "nameEn": "Ambush",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W34",
+     "nameEn": "Rising to Action",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Baroque Works Assault",
+   "date": "2002-08",
+   "official": 78,
+   "cards": [
+    {
+     "num": "SB-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "SB-C02",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "SB-C03",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "SB-C04",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "SB-C05",
+     "nameEn": "Mr. 1",
+     "nameJp": "Ｍｒ．１"
+    },
+    {
+     "num": "SB-C06",
+     "nameEn": "Miss Doublefinger",
+     "nameJp": "ミス・ダブルフィンガー"
+    },
+    {
+     "num": "SB-C07",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "SB-C08",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "SB-C09",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "SB-C10",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "SB-C11",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "SB-C12",
+     "nameEn": "Tashigi",
+     "nameJp": "たしぎ"
+    },
+    {
+     "num": "SB-C13",
+     "nameEn": "Crocodile",
+     "nameJp": "クロコダイル"
+    },
+    {
+     "num": "SB-C14",
+     "nameEn": "Miss All Sunday",
+     "nameJp": "ミス・オールサンデー"
+    },
+    {
+     "num": "SB-C15",
+     "nameEn": "Mr. 1",
+     "nameJp": "Ｍｒ．１"
+    },
+    {
+     "num": "SB-C16",
+     "nameEn": "Miss Doublefinger",
+     "nameJp": "ミス・ダブルフィンガー"
+    },
+    {
+     "num": "SB-C17",
+     "nameEn": "Mr. 2",
+     "nameJp": "Ｍｒ．２"
+    },
+    {
+     "num": "SB-C18",
+     "nameEn": "Cobra",
+     "nameJp": "コブラ"
+    },
+    {
+     "num": "SB-C19",
+     "nameEn": "Vivi",
+     "nameJp": "ビビ"
+    },
+    {
+     "num": "SB-C20",
+     "nameEn": "Chaka",
+     "nameJp": "チャカ"
+    },
+    {
+     "num": "SB-C21",
+     "nameEn": "Pell",
+     "nameJp": "ペル"
+    },
+    {
+     "num": "SB-C22",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "SB-C23",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "SB-C24",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "SB-C25",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー"
+    },
+    {
+     "num": "SB-C26",
+     "nameEn": "Crocodile",
+     "nameJp": "クロコダイル"
+    },
+    {
+     "num": "SB-C27",
+     "nameEn": "Koza",
+     "nameJp": "コーザ"
+    },
+    {
+     "num": "SB-C28",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "SB-C29",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "SB-C30",
+     "nameEn": "Ace",
+     "nameJp": "エース"
+    },
+    {
+     "num": "SB-C31",
+     "nameEn": "Mr. 7",
+     "nameJp": "Ｍｒ．７"
+    },
+    {
+     "num": "SB-C32",
+     "nameEn": "Miss Father's Day",
+     "nameJp": "ミス・ファーザーズデー"
+    },
+    {
+     "num": "SB-W01",
+     "nameEn": "Shishi Sonson",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W02",
+     "nameEn": "Veau Shot",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W03",
+     "nameEn": "The Silent Battle",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W04",
+     "nameEn": "Arranged Conflict",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W05",
+     "nameEn": "Scorched Hell",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W06",
+     "nameEn": "Fleeing for your Life",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W07",
+     "nameEn": "Escape Plan",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W08",
+     "nameEn": "Unexpected Help",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W09",
+     "nameEn": "The Losers Fate",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W10",
+     "nameEn": "Imperial Council",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W11",
+     "nameEn": "False Emissary",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W12",
+     "nameEn": "Arabasta's Future",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W13",
+     "nameEn": "Mizu Luffy",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W14",
+     "nameEn": "Gomu Gomu no Shot",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W15",
+     "nameEn": "Ushi Bari",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W16",
+     "nameEn": "Tornado Tempo",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W17",
+     "nameEn": "Usopp Noise",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W18",
+     "nameEn": "Uso-Cho Hammer Suisei",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W19",
+     "nameEn": "Fortunate Passing",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W20",
+     "nameEn": "Ground Death",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W21",
+     "nameEn": "Absolute Defense",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W22",
+     "nameEn": "Dieciséis Fleur",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W23",
+     "nameEn": "Atomic Spurt",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W24",
+     "nameEn": "Spiral Hollow",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W25",
+     "nameEn": "Toge Toge Doping",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W26",
+     "nameEn": "Stinger Flail",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W27",
+     "nameEn": "Urabure Swan Butokai",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W28",
+     "nameEn": "Mane Mane Panic",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W29",
+     "nameEn": "King Chop",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W30",
+     "nameEn": "Mediator",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W31",
+     "nameEn": "Confusion Strategy",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W32",
+     "nameEn": "Narikiba",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W33",
+     "nameEn": "Devoted Blade to the Princess",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W34",
+     "nameEn": "Gomu Gomu no Storm",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W35",
+     "nameEn": "Desert la Spada",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W36",
+     "nameEn": "Tendron",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W37",
+     "nameEn": "Flame Bearer",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W38",
+     "nameEn": "The Invulnerable Man",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W39",
+     "nameEn": "Yellow Gun",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W40",
+     "nameEn": "Gero Gero Gun",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W41",
+     "nameEn": "Persued Truth",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W42",
+     "nameEn": "Oasis Water",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W43",
+     "nameEn": "Premonition of Mortal Combat",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W44",
+     "nameEn": "Rising Tension",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W45",
+     "nameEn": "1 Person & 1 Animal Savior",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W46",
+     "nameEn": "The Strange Grand Troop Line",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Grand Line's Guidance",
+   "date": "2002-10",
+   "official": 60,
+   "cards": [
+    {
+     "num": "RG-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "RG-C02",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "RG-C03",
+     "nameEn": "Dorry",
+     "nameJp": "ドリー"
+    },
+    {
+     "num": "RG-C04",
+     "nameEn": "Brogy",
+     "nameJp": "ブロギー"
+    },
+    {
+     "num": "RG-C05",
+     "nameEn": "Dr. Kureha",
+     "nameJp": "Ｄｒ．くれは"
+    },
+    {
+     "num": "RG-C06",
+     "nameEn": "Mr. 3",
+     "nameJp": "Ｍｒ．３"
+    },
+    {
+     "num": "RG-C07",
+     "nameEn": "Miss Goldenweek",
+     "nameJp": "ミス・ゴールデンウィーク"
+    },
+    {
+     "num": "RG-C08",
+     "nameEn": "Wapol",
+     "nameJp": "ワポル"
+    },
+    {
+     "num": "RG-C09",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "RG-C10",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "RG-C11",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "RG-C12",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "RG-C13",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "RG-C14",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "RG-C15",
+     "nameEn": "Garp",
+     "nameJp": "ガープ"
+    },
+    {
+     "num": "RG-C16",
+     "nameEn": "Mr. 3",
+     "nameJp": "Ｍｒ．３"
+    },
+    {
+     "num": "RG-C17",
+     "nameEn": "Mr. 5",
+     "nameJp": "Ｍｒ．５"
+    },
+    {
+     "num": "RG-C18",
+     "nameEn": "Miss Valentine",
+     "nameJp": "ミス・バレンタイン"
+    },
+    {
+     "num": "RG-C19",
+     "nameEn": "Miss Monday",
+     "nameJp": "ミス・マンデー"
+    },
+    {
+     "num": "RG-C20",
+     "nameEn": "Mr. 9",
+     "nameJp": "Ｍｒ．９"
+    },
+    {
+     "num": "RG-C21",
+     "nameEn": "Unluckies",
+     "nameJp": "アンラッキーズ"
+    },
+    {
+     "num": "RG-C22",
+     "nameEn": "Chess",
+     "nameJp": "チェス"
+    },
+    {
+     "num": "RG-C23",
+     "nameEn": "Kuromarimo",
+     "nameJp": "クロマーリモ"
+    },
+    {
+     "num": "RG-C24",
+     "nameEn": "Crocus",
+     "nameJp": "クロッカス"
+    },
+    {
+     "num": "RG-C25",
+     "nameEn": "Laboon",
+     "nameJp": "ラブーン"
+    },
+    {
+     "num": "RG-C26",
+     "nameEn": "Dalton",
+     "nameJp": "ドルトン"
+    },
+    {
+     "num": "RG-W01",
+     "nameEn": "Hakoku",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W02",
+     "nameEn": "Gomu Gomu no Bazooka",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W03",
+     "nameEn": "Taka Nami",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W04",
+     "nameEn": "Sharp Insight",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W05",
+     "nameEn": "Tokusei Tabasco Boshi",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W06",
+     "nameEn": "Armée de L'Air Gomu Shoot",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W07",
+     "nameEn": "Kokutei Roseo",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W08",
+     "nameEn": "Blue Ogre's Sword",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W09",
+     "nameEn": "Red Ogre's Battle Axe",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W10",
+     "nameEn": "Doctor's Order to Cease",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W11",
+     "nameEn": "Super Fist",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W12",
+     "nameEn": "Tokudai Candle Service Set",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W13",
+     "nameEn": "Candle Lock",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W14",
+     "nameEn": "Colors Trap",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W15",
+     "nameEn": "Nose Fancy Cannon",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W16",
+     "nameEn": "10,000 Kilo Guillotine",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W17",
+     "nameEn": "Kairiki Meriken",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W18",
+     "nameEn": "Nekketsu Nine Konjo Bat",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W19",
+     "nameEn": "Kill Order",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W20",
+     "nameEn": "Baku Baku Factory",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W21",
+     "nameEn": "Slim-up Wapol",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W22",
+     "nameEn": "Weak Point Detection",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W23",
+     "nameEn": "Eleki-Marimo",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W24",
+     "nameEn": "Quatro Axe",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W25",
+     "nameEn": "Reunion Pledge",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W26",
+     "nameEn": "Drastic Treatment",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W27",
+     "nameEn": "Fiddle Banff",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W28",
+     "nameEn": "Great Sacrifice",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W29",
+     "nameEn": "Endless Duel",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W30",
+     "nameEn": "Recreation",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W31",
+     "nameEn": "Strange Behavior of a Genius",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W32",
+     "nameEn": "Future of the Navy",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W33",
+     "nameEn": "Premeditated Crime",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W34",
+     "nameEn": "Tough Inhabitants",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Restoration of the Kingdom",
+   "date": "2002-11",
+   "official": 54,
+   "cards": [
+    {
+     "num": "RK-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "RK-C02",
+     "nameEn": "Ace",
+     "nameJp": "エース"
+    },
+    {
+     "num": "RK-C03",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー"
+    },
+    {
+     "num": "RK-C04",
+     "nameEn": "Hina",
+     "nameJp": "ヒナ"
+    },
+    {
+     "num": "RK-C05",
+     "nameEn": "Crocodile",
+     "nameJp": "クロコダイル"
+    },
+    {
+     "num": "RK-C06",
+     "nameEn": "Vivi",
+     "nameJp": "ビビ"
+    },
+    {
+     "num": "RK-C07",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "RK-C08",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "RK-C09",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "RK-C10",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "RK-C11",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "RK-C12",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "RK-C13",
+     "nameEn": "Tashigi",
+     "nameJp": "たしぎ"
+    },
+    {
+     "num": "RK-C14",
+     "nameEn": "Fullbody",
+     "nameJp": "フルボディ"
+    },
+    {
+     "num": "RK-C15",
+     "nameEn": "Jango",
+     "nameJp": "ジャンゴ"
+    },
+    {
+     "num": "RK-C16",
+     "nameEn": "Mr. 1",
+     "nameJp": "Ｍｒ．１"
+    },
+    {
+     "num": "RK-C17",
+     "nameEn": "Miss Doublefinger",
+     "nameJp": "ミス・ダブルフィンガー"
+    },
+    {
+     "num": "RK-C18",
+     "nameEn": "Mr. 2",
+     "nameJp": "Ｍｒ．２"
+    },
+    {
+     "num": "RK-C19",
+     "nameEn": "Mr. 4",
+     "nameJp": "Ｍｒ．４"
+    },
+    {
+     "num": "RK-C20",
+     "nameEn": "Miss Merry Christmas",
+     "nameJp": "ミス・メリークリスマス"
+    },
+    {
+     "num": "RK-C21",
+     "nameEn": "Igaram",
+     "nameJp": "イガラム"
+    },
+    {
+     "num": "RK-W01",
+     "nameEn": "Pledge of Friendship (1)",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W02",
+     "nameEn": "Pledge of Friendship (2)",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W03",
+     "nameEn": "Personification of Combat",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W04",
+     "nameEn": "Mizu Mizu no Pistol",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W05",
+     "nameEn": "Gazami Dori",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W06",
+     "nameEn": "Shiawase Punch",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W07",
+     "nameEn": "The Blood of an Engineer",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W08",
+     "nameEn": "Basse Côte",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W09",
+     "nameEn": "Horn Point",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W10",
+     "nameEn": "Enjomo",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W11",
+     "nameEn": "The Meaning of Justice",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W12",
+     "nameEn": "Black Spear of Battle",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W13",
+     "nameEn": "Tashigi's Justce",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W14",
+     "nameEn": "Two Iron Fists",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W15",
+     "nameEn": "Honed Hypnotism",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W16",
+     "nameEn": "Sables: Pesado",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W17",
+     "nameEn": "Desert Tyrant",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W18",
+     "nameEn": "Sparkling Daisy",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W19",
+     "nameEn": "Sea Urchin Stinger",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W20",
+     "nameEn": "Perfect Defense Against Sanji",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W21",
+     "nameEn": "Yonhyappon Punk Knock",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W22",
+     "nameEn": "Mogura Banana",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W23",
+     "nameEn": "Kujakki String Slasher Runback",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W24",
+     "nameEn": "Where the Truth Lies",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W25",
+     "nameEn": "Declaration of Victory",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W26",
+     "nameEn": "A New Companion",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W27",
+     "nameEn": "Band Together",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W28",
+     "nameEn": "A Man's Profile",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W29",
+     "nameEn": "The Navy's Problem Child",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W30",
+     "nameEn": "Intruder Detected",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W31",
+     "nameEn": "Tsumegeri Guard Assault",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W32",
+     "nameEn": "Last Waltz",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W33",
+     "nameEn": "Pirate Queen",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Decisive Battle for Arabasta Kingdom",
+   "date": "2002-12",
+   "official": 192,
+   "cards": [
+    {
+     "num": "LK-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "LK-C02",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "LK-C03",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "LK-C04",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "LK-C05",
+     "nameEn": "Ace",
+     "nameJp": "エース"
+    },
+    {
+     "num": "LK-C06",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー"
+    },
+    {
+     "num": "LK-C07",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "LK-C08",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "LK-C09",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "LK-C10",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "LK-C11",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "LK-C12",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "LK-C13",
+     "nameEn": "Ace",
+     "nameJp": "エース"
+    },
+    {
+     "num": "LK-C14",
+     "nameEn": "Tashigi",
+     "nameJp": "たしぎ"
+    },
+    {
+     "num": "LK-C15",
+     "nameEn": "Miss All-Sunday",
+     "nameJp": "ミス・オールサンデー"
+    },
+    {
+     "num": "LK-C16",
+     "nameEn": "Mr.2",
+     "nameJp": "Ｍｒ．２"
+    },
+    {
+     "num": "LK-C17",
+     "nameEn": "Count Battler",
+     "nameJp": "バトラー伯爵"
+    },
+    {
+     "num": "LK-C18",
+     "nameEn": "Vivi",
+     "nameJp": "ビビ"
+    },
+    {
+     "num": "LK-W01",
+     "nameEn": "Gomu Gomu no Gatling",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W02",
+     "nameEn": "Gomu Gomu no Bazooka",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W03",
+     "nameEn": "Onigiri",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W04",
+     "nameEn": "Tatsu Maki",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W05",
+     "nameEn": "Thief's Quick Work",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W06",
+     "nameEn": "Spirit",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W07",
+     "nameEn": "Épaule",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W08",
+     "nameEn": "Joue",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W09",
+     "nameEn": "Walking Point",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W10",
+     "nameEn": "Guard Point",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W11",
+     "nameEn": "Fire Fist",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W12",
+     "nameEn": "Kagero",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W13",
+     "nameEn": "White Snake",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W14",
+     "nameEn": "Kiri Musubi",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W15",
+     "nameEn": "Tres Fleur",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W16",
+     "nameEn": "Sneak Attack",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W17",
+     "nameEn": "Mystical Power",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W18",
+     "nameEn": "Kujakki String Slasher",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W19",
+     "nameEn": "Single Combat",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W20",
+     "nameEn": "Wounded All Over",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W21",
+     "nameEn": "Evasion",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W22",
+     "nameEn": "Courage",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W23",
+     "nameEn": "A Pirates Banquet",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W24",
+     "nameEn": "Friendship",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Straw Hat Pirate Flag",
+   "date": "2002-03",
+   "official": 81,
+   "cards": [
+    {
+     "num": "JS-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "JS-C02",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "JS-C03",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス"
+    },
+    {
+     "num": "JS-C04",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "JS-C05",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "JS-C06",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "JS-C07",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "JS-C08",
+     "nameEn": "Buggy",
+     "nameJp": "バギー"
+    },
+    {
+     "num": "JS-C09",
+     "nameEn": "Bellamy",
+     "nameJp": "ベラミー"
+    },
+    {
+     "num": "JS-C10",
+     "nameEn": "Gasparde",
+     "nameJp": "ガスパーデ"
+    },
+    {
+     "num": "JS-C11",
+     "nameEn": "Cricket",
+     "nameJp": "クリケット"
+    },
+    {
+     "num": "JS-C12",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "JS-C13",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー"
+    },
+    {
+     "num": "JS-C14",
+     "nameEn": "Alvida",
+     "nameJp": "アルビダ"
+    },
+    {
+     "num": "JS-C15",
+     "nameEn": "Kuro",
+     "nameJp": "クロ"
+    },
+    {
+     "num": "JS-C16",
+     "nameEn": "Krieg",
+     "nameJp": "クリーク"
+    },
+    {
+     "num": "JS-C17",
+     "nameEn": "Arlong",
+     "nameJp": "アーロン"
+    },
+    {
+     "num": "JS-C18",
+     "nameEn": "Masira",
+     "nameJp": "マシラ"
+    },
+    {
+     "num": "JS-C19",
+     "nameEn": "Shoujou",
+     "nameJp": "ショウジョウ"
+    },
+    {
+     "num": "JS-C20",
+     "nameEn": "Shuraiya",
+     "nameJp": "シュライヤ"
+    },
+    {
+     "num": "JS-C21",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "JS-C22",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "JS-C23",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "JS-C24",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "JS-C25",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "JS-C26",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "JS-C27",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "JS-C28",
+     "nameEn": "Morgan",
+     "nameJp": "モーガン"
+    },
+    {
+     "num": "JS-C29",
+     "nameEn": "Wapol",
+     "nameJp": "ワポル"
+    },
+    {
+     "num": "JS-T01",
+     "nameEn": "Luffy & Shanks",
+     "nameJp": "ルフィ＆シャンクス"
+    },
+    {
+     "num": "JS-T02",
+     "nameEn": "Buggy & Alvida",
+     "nameJp": "バギー＆アルビダ"
+    },
+    {
+     "num": "JS-T03",
+     "nameEn": "Krieg & Arlong",
+     "nameJp": "クリーク＆アーロン"
+    },
+    {
+     "num": "JS-T04",
+     "nameEn": "Luffy & Zoro",
+     "nameJp": "ルフィ＆ゾロ"
+    },
+    {
+     "num": "JS-T05",
+     "nameEn": "Nami & Sanji",
+     "nameJp": "ナミ＆サンジ"
+    },
+    {
+     "num": "JS-W01",
+     "nameEn": "100 Million Berry Fist",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W02",
+     "nameEn": "Monsters of the East Blue",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W03",
+     "nameEn": "Gomu Gomu no Rocket",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W04",
+     "nameEn": "Offensive Move",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W05",
+     "nameEn": "Defensive Move",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W06",
+     "nameEn": "Seis Fleur Clutch",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W07",
+     "nameEn": "Rush",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W08",
+     "nameEn": "Onslaught",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W09",
+     "nameEn": "Spring Snipe",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W10",
+     "nameEn": "Confronting the Fantasy",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W11",
+     "nameEn": "Forced Exit",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W12",
+     "nameEn": "Chopper!",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W13",
+     "nameEn": "Calm Before the Storm",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W14",
+     "nameEn": "Fascination",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W15",
+     "nameEn": "Usopp Wagomu",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W16",
+     "nameEn": "Serving the Ladies",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W17",
+     "nameEn": "First-Aid Treatment",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W18",
+     "nameEn": "Archeology",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W19",
+     "nameEn": "The Pirate's Way",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W20",
+     "nameEn": "Unexpected Appearance",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W21",
+     "nameEn": "White Blow",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W22",
+     "nameEn": "Threaten",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W23",
+     "nameEn": "Sube Sube Spur",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W24",
+     "nameEn": "Hunter of Love",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W25",
+     "nameEn": "Bara Bara Festival",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W26",
+     "nameEn": "Special Buggy Ball",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W27",
+     "nameEn": "Cat's Hands",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W28",
+     "nameEn": "Nukiashi",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W29",
+     "nameEn": "Volley Firing",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W30",
+     "nameEn": "Golden Armor",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W31",
+     "nameEn": "Shark On Tooth",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W32",
+     "nameEn": "Tooth Gum",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W33",
+     "nameEn": "Bliking Canon",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W34",
+     "nameEn": "Gluttony",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W35",
+     "nameEn": "The Hyena's Way",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W36",
+     "nameEn": "Enigma of the Mysterious Ability",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W37",
+     "nameEn": "Saru Naguri",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W38",
+     "nameEn": "Havoc Sonar",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W39",
+     "nameEn": "Saruyama Alliance Bonds",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W40",
+     "nameEn": "Saruyama Alliance Solidarity",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W41",
+     "nameEn": "Empty-Handed",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W42",
+     "nameEn": "Festival Fever",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W43",
+     "nameEn": "Targeting Rookies",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W44",
+     "nameEn": "A Pirates Main Buisness",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W45",
+     "nameEn": "Proud to be a Pirate",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W46",
+     "nameEn": "Battlefield Bouquets",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W47",
+     "nameEn": "Overcoming Adversity",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Justice on the Great Sea",
+   "date": "2003-06",
+   "official": 59,
+   "cards": [
+    {
+     "num": "JO-C01",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "JO-C02",
+     "nameEn": "Hina",
+     "nameJp": "ヒナ"
+    },
+    {
+     "num": "JO-C03",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "JO-C04",
+     "nameEn": "Mihawk",
+     "nameJp": "ミホーク"
+    },
+    {
+     "num": "JO-C05",
+     "nameEn": "Zeff",
+     "nameJp": "ゼフ"
+    },
+    {
+     "num": "JO-C06",
+     "nameEn": "Sengoku",
+     "nameJp": "センゴク"
+    },
+    {
+     "num": "JO-C07",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー"
+    },
+    {
+     "num": "JO-C08",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "JO-C09",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "JO-C10",
+     "nameEn": "Tashigi",
+     "nameJp": "たしぎ"
+    },
+    {
+     "num": "JO-C11",
+     "nameEn": "Bellamy",
+     "nameJp": "ベラミー"
+    },
+    {
+     "num": "JO-C12",
+     "nameEn": "Gan Fall",
+     "nameJp": "ガン・フォール"
+    },
+    {
+     "num": "JO-C13",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "JO-C14",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "JO-C15",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "JO-C16",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "JO-C17",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "JO-C18",
+     "nameEn": "Koby",
+     "nameJp": "コビー"
+    },
+    {
+     "num": "JO-C19",
+     "nameEn": "Helmeppo",
+     "nameJp": "ヘルメッポ"
+    },
+    {
+     "num": "JO-C201",
+     "nameEn": "Fullbody",
+     "nameJp": "フルボディ"
+    },
+    {
+     "num": "JO-C21",
+     "nameEn": "Jango",
+     "nameJp": "ジャンゴ"
+    },
+    {
+     "num": "JO-C22",
+     "nameEn": "Attachan",
+     "nameJp": "アタっちゃん"
+    },
+    {
+     "num": "JO-C23",
+     "nameEn": "Sarquiss",
+     "nameJp": "サーキース"
+    },
+    {
+     "num": "JO-C24",
+     "nameEn": "Kaya",
+     "nameJp": "カヤ"
+    },
+    {
+     "num": "JO-C25",
+     "nameEn": "Usopp Pirates",
+     "nameJp": "ウソップ海賊団"
+    },
+    {
+     "num": "JO-C26",
+     "nameEn": "Nojiko",
+     "nameJp": "ノジコ"
+    },
+    {
+     "num": "JO-C27",
+     "nameEn": "Conis",
+     "nameJp": "コニス"
+    },
+    {
+     "num": "JO-T01",
+     "nameEn": "Smoker & Tashigi",
+     "nameJp": "スモーカー＆たしぎ"
+    },
+    {
+     "num": "JO-T02",
+     "nameEn": "Luffy & Smoker",
+     "nameJp": "ルフィ＆スモーカー"
+    },
+    {
+     "num": "JO-T03",
+     "nameEn": "Sanji & Zeff",
+     "nameJp": "サンジ＆ゼフ"
+    },
+    {
+     "num": "JO-T04",
+     "nameEn": "Usopp & Usopp Pirates",
+     "nameJp": "ウソップ＆ウソップ海賊団"
+    },
+    {
+     "num": "JO-T05",
+     "nameEn": "Fullbody & Jango",
+     "nameJp": "フルボディ＆ジャンゴ"
+    },
+    {
+     "num": "JO-W01",
+     "nameEn": "Absolute Justice",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W02",
+     "nameEn": "Hand-to-Hand Combat",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W03",
+     "nameEn": "Journey Into the Sky",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W04",
+     "nameEn": "Resolute Blade",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W05",
+     "nameEn": "White Guardien Deity",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W06",
+     "nameEn": "Confinement",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W07",
+     "nameEn": "Gomu Gomu no Hanabi",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W08",
+     "nameEn": "Scold!",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W09",
+     "nameEn": "Kaen Boshi",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W10",
+     "nameEn": "Full Course",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W11",
+     "nameEn": "Wicked Trick",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W12",
+     "nameEn": "Fleet Admiral's Sharp Tongue",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W13",
+     "nameEn": "Duel",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W14",
+     "nameEn": "For the Sake of One's Friends",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W15",
+     "nameEn": "For One's Own Sake",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W16",
+     "nameEn": "Spring Hopper",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W17",
+     "nameEn": "Big Chop",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W18",
+     "nameEn": "Beginning of a Dream",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W19",
+     "nameEn": "All-Out Assault",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W20",
+     "nameEn": "Zeff's Conviction",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W21",
+     "nameEn": "The Hidden Truth",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W22",
+     "nameEn": "Dog Fight",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W23",
+     "nameEn": "Guidance",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W24",
+     "nameEn": "Undersea Treasures",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W25",
+     "nameEn": "Dancing Time",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W26",
+     "nameEn": "Vice Admiral's Wisdom",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W27",
+     "nameEn": "Lunch",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Treasure Sheet",
+   "date": "2003-08",
+   "official": 48,
+   "cards": [
+    {
+     "num": "CE-C13",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "CE-C21",
+     "nameEn": "Alvida",
+     "nameJp": "アルビダ"
+    },
+    {
+     "num": "MS-C07",
+     "nameEn": "Krieg",
+     "nameJp": "クリーク"
+    },
+    {
+     "num": "MS-C08",
+     "nameEn": "Arlong",
+     "nameJp": "アーロン"
+    },
+    {
+     "num": "MS-C09",
+     "nameEn": "Zeff",
+     "nameJp": "ゼフ"
+    },
+    {
+     "num": "MS-C15",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー"
+    },
+    {
+     "num": "MS-C17",
+     "nameEn": "Gin",
+     "nameJp": "ギン"
+    },
+    {
+     "num": "MS-C19",
+     "nameEn": "Hatchan",
+     "nameJp": "はっちゃん"
+    },
+    {
+     "num": "MS-C23",
+     "nameEn": "Johnny",
+     "nameJp": "ジョニー"
+    },
+    {
+     "num": "MS-C24",
+     "nameEn": "Yosaku",
+     "nameJp": "ヨサク"
+    },
+    {
+     "num": "RG-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "RG-C05",
+     "nameEn": "Dr. Kureha",
+     "nameJp": "Ｄｒ．くれは"
+    },
+    {
+     "num": "RG-C09",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "RG-C10",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "RG-C25",
+     "nameEn": "Laboon",
+     "nameJp": "ラブーン"
+    },
+    {
+     "num": "TS-C01",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "TS-C02",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "TS-C03",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "TS-C04",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "TS-C05",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス"
+    },
+    {
+     "num": "TS-C06",
+     "nameEn": "Mihawk",
+     "nameJp": "ミホーク"
+    },
+    {
+     "num": "TS-C07",
+     "nameEn": "Ace",
+     "nameJp": "エース"
+    },
+    {
+     "num": "TS-C08",
+     "nameEn": "Hina",
+     "nameJp": "ヒナ"
+    },
+    {
+     "num": "TS-C09",
+     "nameEn": "Buggy",
+     "nameJp": "バギー"
+    },
+    {
+     "num": "TS-T01",
+     "nameEn": "Luffy & Ace",
+     "nameJp": "ルフィ＆エース"
+    },
+    {
+     "num": "TS-T02",
+     "nameEn": "Zoro & Mihawk",
+     "nameJp": "ゾロ＆ミホーク"
+    },
+    {
+     "num": "TS-T03",
+     "nameEn": "Sanji & Robin",
+     "nameJp": "サンジ＆ロビン"
+    },
+    {
+     "num": "CE-W05",
+     "nameEn": "Escaping on Foot",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W06",
+     "nameEn": "Gunpower Star",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W08",
+     "nameEn": "Mouton Shot",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W10",
+     "nameEn": "Scope",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W11",
+     "nameEn": "Fighting For Your Friends",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W15",
+     "nameEn": "A Great Pirate's Lunch",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W19",
+     "nameEn": "Extreme Blow",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W20",
+     "nameEn": "Bara Bara Cannon",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W01",
+     "nameEn": "Gomu Gomu no Pinwheel",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W02",
+     "nameEn": "Three Thousand Worlds",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W07",
+     "nameEn": "The Black Sword Unsheathed",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W11",
+     "nameEn": "White Out",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W13",
+     "nameEn": "Hand-to-hand Combat",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W15",
+     "nameEn": "Shark On Darts",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W16",
+     "nameEn": "Takohachi Black",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W20",
+     "nameEn": "Sword Strike from the Left",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W21",
+     "nameEn": "Sword Strike from the Right",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W22",
+     "nameEn": "Chef's Prosthetic Kick",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W30",
+     "nameEn": "MH5",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W04",
+     "nameEn": "Sharp Insight",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W10",
+     "nameEn": "Doctor's Order to Cease",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "The Holy War for Skypeia",
+   "date": "2003-09",
+   "official": 82,
+   "cards": [
+    {
+     "num": "CS-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "CS-C02",
+     "nameEn": "Wyper",
+     "nameJp": "ワイパー"
+    },
+    {
+     "num": "CS-C03",
+     "nameEn": "Enel",
+     "nameJp": "エネル"
+    },
+    {
+     "num": "CS-C04",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "CS-C05",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "CS-C06",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "CS-C07",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "CS-C08",
+     "nameEn": "Ohm",
+     "nameJp": "オーム"
+    },
+    {
+     "num": "CS-C09",
+     "nameEn": "Gedatsu",
+     "nameJp": "ゲダツ"
+    },
+    {
+     "num": "CS-C10",
+     "nameEn": "Gan Fall",
+     "nameJp": "ガン・フォール"
+    },
+    {
+     "num": "CS-C11",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "CS-C12",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "CS-C13",
+     "nameEn": "Raki",
+     "nameJp": "ラキ"
+    },
+    {
+     "num": "CS-C14",
+     "nameEn": "Braham",
+     "nameJp": "ブラハム"
+    },
+    {
+     "num": "CS-C15",
+     "nameEn": "Enel",
+     "nameJp": "エネル"
+    },
+    {
+     "num": "CS-C16",
+     "nameEn": "Shura",
+     "nameJp": "シュラ"
+    },
+    {
+     "num": "CS-C17",
+     "nameEn": "Satori",
+     "nameJp": "サトリ"
+    },
+    {
+     "num": "CS-C18",
+     "nameEn": "Master of the Sky",
+     "nameJp": "空の主"
+    },
+    {
+     "num": "CS-C19",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "CS-C20",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "CS-C21",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "CS-C22",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "CS-C23",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "CS-C24",
+     "nameEn": "Wyper",
+     "nameJp": "ワイパー"
+    },
+    {
+     "num": "CS-C25",
+     "nameEn": "Kamakiri",
+     "nameJp": "カマキリ"
+    },
+    {
+     "num": "CS-C26",
+     "nameEn": "Genbo",
+     "nameJp": "ゲンボウ"
+    },
+    {
+     "num": "CS-C27",
+     "nameEn": "Ohm",
+     "nameJp": "オーム"
+    },
+    {
+     "num": "CS-C28",
+     "nameEn": "Gedatsu",
+     "nameJp": "ゲダツ"
+    },
+    {
+     "num": "CS-C29",
+     "nameEn": "Shura",
+     "nameJp": "シュラ"
+    },
+    {
+     "num": "CS-C30",
+     "nameEn": "Yama",
+     "nameJp": "ヤマ"
+    },
+    {
+     "num": "CS-C31",
+     "nameEn": "Holy",
+     "nameJp": "ホーリー"
+    },
+    {
+     "num": "CS-C32",
+     "nameEn": "Fuza",
+     "nameJp": "フザ"
+    },
+    {
+     "num": "CS-C33",
+     "nameEn": "Gan Fall",
+     "nameJp": "ガン・フォール"
+    },
+    {
+     "num": "CS-C34",
+     "nameEn": "Pierre",
+     "nameJp": "ピエール"
+    },
+    {
+     "num": "CS-C35",
+     "nameEn": "Aisa",
+     "nameJp": "アイサ"
+    },
+    {
+     "num": "CS-C36",
+     "nameEn": "Conis",
+     "nameJp": "コニス"
+    },
+    {
+     "num": "CS-C37",
+     "nameEn": "Pagaya",
+     "nameJp": "パガヤ"
+    },
+    {
+     "num": "CS-C38",
+     "nameEn": "McKinley",
+     "nameJp": "マッキンリー"
+    },
+    {
+     "num": "CS-T01",
+     "nameEn": "Wyper & Gan Fall",
+     "nameJp": "ワイパー＆ガン・フォール"
+    },
+    {
+     "num": "CS-T02",
+     "nameEn": "Usopp & Sanji",
+     "nameJp": "ウソップ＆サンジ"
+    },
+    {
+     "num": "CS-T03",
+     "nameEn": "Gan Fall & Pierre",
+     "nameJp": "ガン・フォール＆ピエール"
+    },
+    {
+     "num": "CS-T04",
+     "nameEn": "Ohm & Holy",
+     "nameJp": "オーム＆ホーリー"
+    },
+    {
+     "num": "CS-T05",
+     "nameEn": "Shura & Fuza",
+     "nameJp": "シュラ＆フザ"
+    },
+    {
+     "num": "CS-T06",
+     "nameEn": "Chopper & Robin",
+     "nameJp": "チョッパー＆ロビン"
+    },
+    {
+     "num": "CS-W01",
+     "nameEn": "Heaven's Challengers",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W02",
+     "nameEn": "Gomu Gomu no Rifle",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W03",
+     "nameEn": "Reject",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W04",
+     "nameEn": "El Thor",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W05",
+     "nameEn": "Hyakuhachi Pound Ho",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W06",
+     "nameEn": "Usopp AAaaaAAAaaaAA!",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W07",
+     "nameEn": "Concassé",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W08",
+     "nameEn": "Kokutei Cross",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W09",
+     "nameEn": "Maneuver Warfare",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W10",
+     "nameEn": "Flash Guns",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W11",
+     "nameEn": "20,000,000 Volt Vari",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W12",
+     "nameEn": "Tama Dragon",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W13",
+     "nameEn": "Interception",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W14",
+     "nameEn": "Treasures of the Land of Clouds",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W15",
+     "nameEn": "Sanctions Against God",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W16",
+     "nameEn": "Sanjuroku Pound Ho",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W17",
+     "nameEn": "Impact Dial",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W18",
+     "nameEn": "Whistle of Life",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W19",
+     "nameEn": "Seis Fleur Twist",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W20",
+     "nameEn": "Burn Bazooka",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W21",
+     "nameEn": "Burn Blade",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W22",
+     "nameEn": "Iron Cannonball",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W23",
+     "nameEn": "Eisen Fan",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W24",
+     "nameEn": "Jet Punch",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W25",
+     "nameEn": "Heat Javelin",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W26",
+     "nameEn": "Axe Mountain",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W27",
+     "nameEn": "Boxing",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W28",
+     "nameEn": "Flame Dial",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W29",
+     "nameEn": "Teachings of an Old Soldier",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W30",
+     "nameEn": "Glide",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W31",
+     "nameEn": "Voice of the Heart",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W32",
+     "nameEn": "Nursing with All Your Strength",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W33",
+     "nameEn": "Machine Repair",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W34",
+     "nameEn": "The White Troops",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W35",
+     "nameEn": "God's Invitation",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W36",
+     "nameEn": "Pirate's Adventure",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W37",
+     "nameEn": "Shandian Youth",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W38",
+     "nameEn": "Relentless Pursuers",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Pirate's Bond",
+   "date": "2003-12",
+   "official": 59,
+   "cards": [
+    {
+     "num": "BP-C01",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "BP-C02",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "BP-C03",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "BP-C04",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "BP-C05",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "BP-C06",
+     "nameEn": "Enel",
+     "nameJp": "エネル"
+    },
+    {
+     "num": "BP-C07",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "BP-C08",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "BP-C09",
+     "nameEn": "Koushirou",
+     "nameJp": "コウシロウ"
+    },
+    {
+     "num": "BP-C10",
+     "nameEn": "Ohm",
+     "nameJp": "オーム"
+    },
+    {
+     "num": "BP-C11",
+     "nameEn": "Kuina",
+     "nameJp": "くいな"
+    },
+    {
+     "num": "BP-C12",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "BP-C13",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "BP-C14",
+     "nameEn": "Arlong",
+     "nameJp": "アーロン"
+    },
+    {
+     "num": "BP-C15",
+     "nameEn": "Bell-mère",
+     "nameJp": "ベルメール"
+    },
+    {
+     "num": "BP-C16",
+     "nameEn": "Genzo",
+     "nameJp": "ゲンゾウ"
+    },
+    {
+     "num": "BP-C17",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "BP-C18",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "BP-C19",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "BP-C20",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "BP-C21",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "BP-C22",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "BP-C23",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "BP-C24",
+     "nameEn": "Kuina",
+     "nameJp": "くいな"
+    },
+    {
+     "num": "BP-C25",
+     "nameEn": "Braham",
+     "nameJp": "ブラハム"
+    },
+    {
+     "num": "BP-C26",
+     "nameEn": "Tashigi",
+     "nameJp": "たしぎ"
+    },
+    {
+     "num": "BP-C27",
+     "nameEn": "Bell-mère",
+     "nameJp": "ベルメール"
+    },
+    {
+     "num": "BP-C28",
+     "nameEn": "Cabaji",
+     "nameJp": "カバジ"
+    },
+    {
+     "num": "BP-C29",
+     "nameEn": "Hatchan",
+     "nameJp": "はっちゃん"
+    },
+    {
+     "num": "BP-C30",
+     "nameEn": "Mr. 1",
+     "nameJp": "Ｍｒ．１"
+    },
+    {
+     "num": "BP-C31",
+     "nameEn": "Miss Doublefinger",
+     "nameJp": "ミス・ダブルフィンガー"
+    },
+    {
+     "num": "BP-C32",
+     "nameEn": "Vivi",
+     "nameJp": "ビビ"
+    },
+    {
+     "num": "BP-C33",
+     "nameEn": "Johnny",
+     "nameJp": "ジョニー"
+    },
+    {
+     "num": "BP-C34",
+     "nameEn": "Yosaku",
+     "nameJp": "ヨサク"
+    },
+    {
+     "num": "BP-T01",
+     "nameEn": "Zoro & Nami",
+     "nameJp": "ゾロ＆ナミ"
+    },
+    {
+     "num": "BP-T02",
+     "nameEn": "Luffy & Zoro",
+     "nameJp": "ルフィ＆ゾロ"
+    },
+    {
+     "num": "BP-T03",
+     "nameEn": "Luffy & Nami",
+     "nameJp": "ルフィ＆ナミ"
+    },
+    {
+     "num": "BP-T04",
+     "nameEn": "Zoro & Kuina",
+     "nameJp": "ゾロ＆くいな"
+    },
+    {
+     "num": "BP-T05",
+     "nameEn": "Zoro & Tashigi",
+     "nameJp": "ゾロ＆たしぎ"
+    },
+    {
+     "num": "BP-T06",
+     "nameEn": "Nami & Arlong",
+     "nameJp": "ナミ＆アーロン"
+    },
+    {
+     "num": "BP-T07",
+     "nameEn": "Nami & Vivi",
+     "nameJp": "ナミ＆ビビ"
+    },
+    {
+     "num": "BP-T08",
+     "nameEn": "Johnny & Yosaku",
+     "nameJp": "ジョニー＆ヨサク"
+    },
+    {
+     "num": "BP-W01",
+     "nameEn": "Bonds of Fellowship",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W02",
+     "nameEn": "30,000,000 Volt Kiten",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W03",
+     "nameEn": "Great Pirate's Hospitality",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W04",
+     "nameEn": "Great Pirate's Banquet",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W05",
+     "nameEn": "Decleration of Invicibility",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W06",
+     "nameEn": "Master Swordsman",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W07",
+     "nameEn": "Eisen Back",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W08",
+     "nameEn": "Memories of the Mikan Orchard",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W09",
+     "nameEn": "Tooth Gum",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W10",
+     "nameEn": "Struggle of Endurance",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W11",
+     "nameEn": "Gomu Gomu no Bazooka",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W12",
+     "nameEn": "Toro Nagashi",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W13",
+     "nameEn": "Forward-Thinking Navigator",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W14",
+     "nameEn": "Escort",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W15",
+     "nameEn": "Inability to Hide True Emotions",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W16",
+     "nameEn": "Insatiable Curiousity",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W17",
+     "nameEn": "Eternal Rivals",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W18",
+     "nameEn": "Milky Dial",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W19",
+     "nameEn": "Connoisseur of Swords",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W20",
+     "nameEn": "The Former Marine Mother",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W21",
+     "nameEn": "Kaji Oyaji",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W22",
+     "nameEn": "Rokuto no Waltz",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W23",
+     "nameEn": "Spar Claw",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W24",
+     "nameEn": "Smile of Composure",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W25",
+     "nameEn": "A Moments Rest",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W26",
+     "nameEn": "Uruheee!!",
+     "nameJp": ""
+    },
+    {
+     "num": "BP-W27",
+     "nameEn": "Situation Report",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Grand Battle! 3 Pack",
+   "date": "2003-12",
+   "official": 48,
+   "cards": [
+    {
+     "num": "G3-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "G3-C02",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "G3-C03",
+     "nameEn": "Wyper",
+     "nameJp": "ワイパー"
+    },
+    {
+     "num": "G3-C04",
+     "nameEn": "Enel",
+     "nameJp": "エネル"
+    },
+    {
+     "num": "G3-C05",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "G3-C06",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "G3-C07",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "G3-C08",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "G3-C09",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "G3-C10",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス"
+    },
+    {
+     "num": "G3-C11",
+     "nameEn": "Ace",
+     "nameJp": "エース"
+    },
+    {
+     "num": "G3-C12",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー"
+    },
+    {
+     "num": "G3-C13",
+     "nameEn": "Hina",
+     "nameJp": "ヒナ"
+    },
+    {
+     "num": "G3-C14",
+     "nameEn": "Crocodile",
+     "nameJp": "クロコダイル"
+    },
+    {
+     "num": "G3-C15",
+     "nameEn": "Bon Kurei",
+     "nameJp": "ボン・クレー"
+    },
+    {
+     "num": "G3-C16",
+     "nameEn": "Ohm",
+     "nameJp": "オーム"
+    },
+    {
+     "num": "G3-W01",
+     "nameEn": "Gomu Gomu no Gatling",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W02",
+     "nameEn": "Sanjuroku Pound Ho",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W03",
+     "nameEn": "Burn Bazooka",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W04",
+     "nameEn": "30,000,000 Voly Hino",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W05",
+     "nameEn": "Supporter! Knight of the Sky",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W06",
+     "nameEn": "Elegy to the Duelists",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W07",
+     "nameEn": "Kamaitachi",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W08",
+     "nameEn": "Executioner Summons",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W09",
+     "nameEn": "Tornado Tempo",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W10",
+     "nameEn": "Usopp Pound",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W11",
+     "nameEn": "Inheritor of the Red Leg",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W12",
+     "nameEn": "Kokutei Cross",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W13",
+     "nameEn": "Veinte Fleur Calendula",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W14",
+     "nameEn": "True Pirates",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W15",
+     "nameEn": "Hiken",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W16",
+     "nameEn": "White Out",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W17",
+     "nameEn": "Lock",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W18",
+     "nameEn": "Desert Spada",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W19",
+     "nameEn": "Ano Natsu no Hi no Memoir",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W20",
+     "nameEn": "Eisen Whip",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W21",
+     "nameEn": "Ingenuity",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W22",
+     "nameEn": "Sink or Swim",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W23",
+     "nameEn": "First Strike",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W24",
+     "nameEn": "Rapid Attack!",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W25",
+     "nameEn": "Overwhelm",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W26",
+     "nameEn": "Lucky Chance",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W27",
+     "nameEn": "Secret Messenger",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W28",
+     "nameEn": "Harbrigner of Mortal Combat",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W29",
+     "nameEn": "Beginning of the Trials",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W30",
+     "nameEn": "The Red Hair Pirates Strike",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W31",
+     "nameEn": "Funky Style",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W32",
+     "nameEn": "Luring Trap",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "The Adventurers' Oath",
+   "date": "2004-03",
+   "official": 59,
+   "cards": [
+    {
+     "num": "PA-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "PA-C02",
+     "nameEn": "Enel",
+     "nameJp": "エネル"
+    },
+    {
+     "num": "PA-C03",
+     "nameEn": "Noland",
+     "nameJp": "ノーランド"
+    },
+    {
+     "num": "PA-C04",
+     "nameEn": "Calgara",
+     "nameJp": "カルガラ"
+    },
+    {
+     "num": "PA-C05",
+     "nameEn": "Saga",
+     "nameJp": "サガ"
+    },
+    {
+     "num": "PA-C06",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "PA-C07",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "PA-C08",
+     "nameEn": "Wyper",
+     "nameJp": "ワイパー"
+    },
+    {
+     "num": "PA-C09",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "PA-C10",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "PA-C11",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "PA-C12",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "PA-C13",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "PA-C14",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "PA-C15",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "PA-C16",
+     "nameEn": "Wyper",
+     "nameJp": "ワイパー"
+    },
+    {
+     "num": "PA-C17",
+     "nameEn": "Ace",
+     "nameJp": "エース"
+    },
+    {
+     "num": "PA-C18",
+     "nameEn": "Saga",
+     "nameJp": "サガ"
+    },
+    {
+     "num": "PA-C19",
+     "nameEn": "Toma",
+     "nameJp": "トウマ"
+    },
+    {
+     "num": "PA-C20",
+     "nameEn": "Bismark",
+     "nameJp": "ビスマルク"
+    },
+    {
+     "num": "PA-C21",
+     "nameEn": "Ohm",
+     "nameJp": "オーム"
+    },
+    {
+     "num": "PA-C22",
+     "nameEn": "Gedatsu",
+     "nameJp": "ゲダツ"
+    },
+    {
+     "num": "PA-C23",
+     "nameEn": "Shura",
+     "nameJp": "シュラ"
+    },
+    {
+     "num": "PA-C24",
+     "nameEn": "Satori",
+     "nameJp": "サトリ"
+    },
+    {
+     "num": "PA-C25",
+     "nameEn": "Gan Fall",
+     "nameJp": "ガン・フォール"
+    },
+    {
+     "num": "PA-C26",
+     "nameEn": "Conis",
+     "nameJp": "コニス"
+    },
+    {
+     "num": "PA-C27",
+     "nameEn": "Maya",
+     "nameJp": "マヤ"
+    },
+    {
+     "num": "PA-C28",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "PA-C29",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "PA-T01",
+     "nameEn": "Noland & Calgara",
+     "nameJp": "ノーランド＆カルガラ"
+    },
+    {
+     "num": "PA-T02",
+     "nameEn": "Luff & Wyper",
+     "nameJp": "ルフィ＆ワイパー"
+    },
+    {
+     "num": "PA-T03",
+     "nameEn": "Zoro & Saga",
+     "nameJp": "ゾロ＆サガ"
+    },
+    {
+     "num": "PA-T04",
+     "nameEn": "Ohm & Gedatsu",
+     "nameJp": "オーム＆ゲダツ"
+    },
+    {
+     "num": "PA-T05",
+     "nameEn": "Shura & Satori",
+     "nameJp": "シュラ＆サトリ"
+    },
+    {
+     "num": "PA-T06",
+     "nameEn": "Nami & Robin",
+     "nameJp": "ナミ＆ロビン"
+    },
+    {
+     "num": "PA-T07",
+     "nameEn": "Usopp & Chopper",
+     "nameJp": "ウソップ＆チョッパー"
+    },
+    {
+     "num": "PA-T08",
+     "nameEn": "Luffy & Chopper",
+     "nameJp": "ルフィ＆チョッパー"
+    },
+    {
+     "num": "PA-T09",
+     "nameEn": "Zoro & Sanji",
+     "nameJp": "ゾロ＆サンジ"
+    },
+    {
+     "num": "PA-W01",
+     "nameEn": "Decisive Battle",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W02",
+     "nameEn": "Gomu Gomu no Ogon Rifle",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W03",
+     "nameEn": "200,000,000 Volt Amaru",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W04",
+     "nameEn": "Destructive Fist",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W05",
+     "nameEn": "Sword that Cuts Open the Path",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W06",
+     "nameEn": "Gomu Gomu no Hanabi: Ogon Botan",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W07",
+     "nameEn": "Hero's Cry",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W08",
+     "nameEn": "The Great Warrior's Question",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W09",
+     "nameEn": "Raigo",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W10",
+     "nameEn": "Yoja: Gashuzan",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W11",
+     "nameEn": "Turning a Blade Towards a Friend",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W12",
+     "nameEn": "Nami's Fury",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W13",
+     "nameEn": "Usopp Spell",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W14",
+     "nameEn": "Rule of Judgement",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W15",
+     "nameEn": "Defensive Battle",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W16",
+     "nameEn": "Lone Warrior",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W17",
+     "nameEn": "Going Undercover",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W18",
+     "nameEn": "Battle Expert",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W19",
+     "nameEn": "Sky Island Residents",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W20",
+     "nameEn": "Sacred Prayer",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W21",
+     "nameEn": "Protect Another",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W22",
+     "nameEn": "Campfire",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W23",
+     "nameEn": "Superior Swordsmanship",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W24",
+     "nameEn": "Mantra",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W25",
+     "nameEn": "Pirate Baseball",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W26",
+     "nameEn": "Indestructable Willpower",
+     "nameJp": ""
+    },
+    {
+     "num": "PA-W27",
+     "nameEn": "Indominitable Spirit",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Golden Land in the Sky",
+   "date": "2004-04",
+   "official": 62,
+   "cards": [
+    {
+     "num": "ES-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "ES-C02",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "ES-C03",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "ES-C04",
+     "nameEn": "Enel",
+     "nameJp": "エネル"
+    },
+    {
+     "num": "ES-C05",
+     "nameEn": "Teach",
+     "nameJp": "ティーチ"
+    },
+    {
+     "num": "ES-C06",
+     "nameEn": "Doflamingo",
+     "nameJp": "ドフラミンゴ"
+    },
+    {
+     "num": "ES-C07",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "ES-C08",
+     "nameEn": "Wyper",
+     "nameJp": "ワイパー"
+    },
+    {
+     "num": "ES-C09",
+     "nameEn": "Noland",
+     "nameJp": "ノーランド"
+    },
+    {
+     "num": "ES-C10",
+     "nameEn": "Calgara",
+     "nameJp": "カルガラ"
+    },
+    {
+     "num": "ES-C11",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "ES-C12",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "ES-C13",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "ES-C14",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "ES-C15",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "ES-C16",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "ES-C17",
+     "nameEn": "Braham",
+     "nameJp": "ブラハム"
+    },
+    {
+     "num": "ES-C18",
+     "nameEn": "Raki",
+     "nameJp": "ラキ"
+    },
+    {
+     "num": "ES-C19",
+     "nameEn": "Ohm",
+     "nameJp": "オーム"
+    },
+    {
+     "num": "ES-C20",
+     "nameEn": "Gedatsu",
+     "nameJp": "ゲダツ"
+    },
+    {
+     "num": "ES-C21",
+     "nameEn": "Shura",
+     "nameJp": "シュラ"
+    },
+    {
+     "num": "ES-C22",
+     "nameEn": "Satori",
+     "nameJp": "サトリ"
+    },
+    {
+     "num": "ES-C23",
+     "nameEn": "Van Augur",
+     "nameJp": "ヴァン・オーガー"
+    },
+    {
+     "num": "ES-C24",
+     "nameEn": "Jesus Burgess",
+     "nameJp": "ジーザス・バージェス"
+    },
+    {
+     "num": "ES-C25",
+     "nameEn": "Doc Q",
+     "nameJp": "ドクＱ"
+    },
+    {
+     "num": "ES-C26",
+     "nameEn": "Cricket",
+     "nameJp": "クリケット"
+    },
+    {
+     "num": "ES-C27",
+     "nameEn": "Gan Fall",
+     "nameJp": "ガン・フォール"
+    },
+    {
+     "num": "ES-C28",
+     "nameEn": "Aisa",
+     "nameJp": "アイサ"
+    },
+    {
+     "num": "ES-C29",
+     "nameEn": "Conis",
+     "nameJp": "コニス"
+    },
+    {
+     "num": "ES-C30",
+     "nameEn": "Pagaya",
+     "nameJp": "パガヤ"
+    },
+    {
+     "num": "ES-T01",
+     "nameEn": "Zoro & Braham",
+     "nameJp": "ゾロ＆ブラハム"
+    },
+    {
+     "num": "ES-T02",
+     "nameEn": "Nami & Gan Fall",
+     "nameJp": "ナミ＆ガン・フォール"
+    },
+    {
+     "num": "ES-T03",
+     "nameEn": "Nami & Usopp",
+     "nameJp": "ナミ＆ウソップ"
+    },
+    {
+     "num": "ES-T04",
+     "nameEn": "Usopp & Pagaya",
+     "nameJp": "ウソップ＆パガヤ"
+    },
+    {
+     "num": "ES-T05",
+     "nameEn": "Coni & Aisa",
+     "nameJp": "コニス＆アイサ"
+    },
+    {
+     "num": "ES-W01",
+     "nameEn": "Treasure Get!",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W02",
+     "nameEn": "Inherited Souls",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W03",
+     "nameEn": "Furious Blow",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W04",
+     "nameEn": "Mamaragan",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W05",
+     "nameEn": "Song of the Earth",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W06",
+     "nameEn": "Feast of the Earth",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W07",
+     "nameEn": "Gomu Gomu no Boh...",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W08",
+     "nameEn": "Aerial Battle",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W09",
+     "nameEn": "Maximum Power Waver",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W10",
+     "nameEn": "Man's Resolve",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W11",
+     "nameEn": "Gloam Paddling",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W12",
+     "nameEn": "Everyone's Gathered!",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W13",
+     "nameEn": "Maintenance",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W14",
+     "nameEn": "Solo Ship Watch",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W15",
+     "nameEn": "Cien Fleur Delphinium",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W16",
+     "nameEn": "Standing Firm",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W17",
+     "nameEn": "Botany",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W18",
+     "nameEn": "The Great Warriors Onslaught",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W19",
+     "nameEn": "Absolute Dominance",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W20",
+     "nameEn": "A Friend's Shared Dream",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W21",
+     "nameEn": "Faithful Companion",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W22",
+     "nameEn": "Passage to a Hideen Village",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W23",
+     "nameEn": "Sacrilege Against God",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W24",
+     "nameEn": "Shandia Warriors",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W25",
+     "nameEn": "50 Enforcers",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W26",
+     "nameEn": "Definition of a Pirate",
+     "nameJp": ""
+    },
+    {
+     "num": "ES-W27",
+     "nameEn": "Strategy Meeting",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Treasure Sheet 2",
+   "date": "2004-08",
+   "official": 24,
+   "cards": [
+    {
+     "num": "DG-W01",
+     "nameEn": "Straw Hat of Promise",
+     "nameJp": "約束の麦わら帽子"
+    },
+    {
+     "num": "CE-C10",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "TS-C05",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス"
+    },
+    {
+     "num": "CE-C19",
+     "nameEn": "Morgan",
+     "nameJp": "モーガン"
+    },
+    {
+     "num": "DG-W02",
+     "nameEn": "Oath from Long Ago",
+     "nameJp": "遠き日の誓い"
+    },
+    {
+     "num": "JO-C14",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "BP-C24",
+     "nameEn": "Kuina",
+     "nameJp": "くいな"
+    },
+    {
+     "num": "TS-C06",
+     "nameEn": "Emotion Filled Farewell",
+     "nameJp": "万感の別れ"
+    },
+    {
+     "num": "CE-C13",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "JS-C16",
+     "nameEn": "Krieg",
+     "nameJp": "クリーク"
+    },
+    {
+     "num": "MS-C25",
+     "nameEn": "Patty",
+     "nameJp": "パティ"
+    },
+    {
+     "num": "DG-W03",
+     "nameEn": "Starting Anew with a Smile",
+     "nameJp": "笑顔の再出発"
+    },
+    {
+     "num": "JO-C08",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "DG-W07",
+     "nameEn": "The Lone Inquirer",
+     "nameJp": "孤影の探訪者"
+    },
+    {
+     "num": "SB-C14",
+     "nameEn": "Miss All Sunday",
+     "nameJp": "ミス・オールサンデー"
+    },
+    {
+     "num": "DG-W04",
+     "nameEn": "Captain's Final Orders",
+     "nameJp": "最後のキャプテン命令"
+    },
+    {
+     "num": "MS-C11",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "DG-W06",
+     "nameEn": "Cherry Blossom Blizzard Departure",
+     "nameJp": "旅立ちの桜吹雪"
+    },
+    {
+     "num": "RG-C14",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "DG-W08",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "CS-C15",
+     "nameEn": "Enel",
+     "nameJp": "エネル"
+    },
+    {
+     "num": "CS-C24",
+     "nameEn": "Wyper",
+     "nameJp": "ワイパー"
+    }
+   ]
+  },
+  {
+   "name": "Devil Fruit Users",
+   "date": "2004-09",
+   "official": 64,
+   "cards": [
+    {
+     "num": "LK-C01R",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "LK-C26R",
+     "nameEn": "Crocodile",
+     "nameJp": "クロコダイル"
+    },
+    {
+     "num": "CE-C18R",
+     "nameEn": "Ace",
+     "nameJp": "エース"
+    },
+    {
+     "num": "BA-C18R",
+     "nameEn": "Pell",
+     "nameJp": "ペル"
+    },
+    {
+     "num": "MS-C15R",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー"
+    },
+    {
+     "num": "SB-C25R",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー"
+    },
+    {
+     "num": "RG-C17R",
+     "nameEn": "Mr. 5",
+     "nameJp": "Mr. 5"
+    },
+    {
+     "num": "RG-C18R",
+     "nameEn": "Miss Valentine",
+     "nameJp": "ミス・バレンタイン"
+    },
+    {
+     "num": "RG-C26R",
+     "nameEn": "Dalton",
+     "nameJp": "ドルトン"
+    },
+    {
+     "num": "RK-C12R",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "RK-C16R",
+     "nameEn": "Mr. 1",
+     "nameJp": "Mr. 1"
+    },
+    {
+     "num": "JS-C27R",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "JO-C09R",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "TS-C09R",
+     "nameEn": "Buggy",
+     "nameJp": "バギー"
+    },
+    {
+     "num": "CS-C15R",
+     "nameEn": "Enel",
+     "nameJp": "エネル"
+    },
+    {
+     "num": "BP-C30R",
+     "nameEn": "Mr. 1",
+     "nameJp": "Mr. 1"
+    },
+    {
+     "num": "G3-C15R",
+     "nameEn": "Bon Kurei",
+     "nameJp": "ボン・クレー"
+    },
+    {
+     "num": "CA-T01",
+     "nameEn": "Luffy & Smoker",
+     "nameJp": "ルフィ＆スモーカー"
+    },
+    {
+     "num": "CA-W01",
+     "nameEn": "March of the Mariners",
+     "nameJp": ""
+    },
+    {
+     "num": "CA-W03",
+     "nameEn": "Fugue of the Justice Bearers",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W02R",
+     "nameEn": "Gomu Gomu no Bazooka",
+     "nameJp": ""
+    },
+    {
+     "num": "CE-W20R",
+     "nameEn": "Bara Bara Ho",
+     "nameJp": ""
+    },
+    {
+     "num": "MS-W11R",
+     "nameEn": "White Out",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W27R",
+     "nameEn": "Urabure Swan Butokai",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W33R",
+     "nameEn": "Devoted Blade to the Princess",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W15R",
+     "nameEn": "Nose Fancy Cannon",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W16R",
+     "nameEn": "10,000 Kilo Guillotine",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W27R",
+     "nameEn": "Fiddle Banff",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W18R",
+     "nameEn": "Sparkling Daisy",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W17R",
+     "nameEn": "First-Aid Treatment",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W11R",
+     "nameEn": "Wicked Trick",
+     "nameJp": ""
+    },
+    {
+     "num": "CS-W11R",
+     "nameEn": "20,000,000 Volt Vari",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-C15R",
+     "nameEn": "Miss All Sunday",
+     "nameJp": "ミス・オールサンデー"
+    },
+    {
+     "num": "BA-C13R",
+     "nameEn": "Mr. 4",
+     "nameJp": "Ｍｒ．４"
+    },
+    {
+     "num": "BA-C14R",
+     "nameEn": "Miss Merry Christmas",
+     "nameJp": "ミス・メリークリスマス"
+    },
+    {
+     "num": "BA-C17R",
+     "nameEn": "Chaka",
+     "nameJp": "チャカ"
+    },
+    {
+     "num": "SB-C14R",
+     "nameEn": "Miss All Sunday",
+     "nameJp": "ミス・オールサンデー"
+    },
+    {
+     "num": "SB-C16R",
+     "nameEn": "Miss Doublefinger",
+     "nameJp": "ミス・ダブルフィンガー"
+    },
+    {
+     "num": "RG-C16R",
+     "nameEn": "Mr. 3",
+     "nameJp": "Ｍｒ．３"
+    },
+    {
+     "num": "RK-C02R",
+     "nameEn": "Ace",
+     "nameJp": "エース"
+    },
+    {
+     "num": "RK-C05R",
+     "nameEn": "Crocodile",
+     "nameJp": "クロコダイル"
+    },
+    {
+     "num": "JS-C14R",
+     "nameEn": "Alvida",
+     "nameJp": "アルビダ"
+    },
+    {
+     "num": "JS-C29R",
+     "nameEn": "Wapol",
+     "nameJp": "ワポル"
+    },
+    {
+     "num": "JO-C11R",
+     "nameEn": "Bellamy",
+     "nameJp": "ベラミー"
+    },
+    {
+     "num": "JO-C17R",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "TS-C08R",
+     "nameEn": "Hina",
+     "nameJp": "ヒナ"
+    },
+    {
+     "num": "BP-C17R",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "BP-C31R",
+     "nameEn": "Miss Doublefinger",
+     "nameJp": "ミス・ダブルフィンガー"
+    },
+    {
+     "num": "G3-C13R",
+     "nameEn": "Hina",
+     "nameJp": "ヒナ"
+    },
+    {
+     "num": "CA-T02",
+     "nameEn": "The Joyful Opera of the Ambitious",
+     "nameJp": ""
+    },
+    {
+     "num": "CA-W04",
+     "nameEn": "The Lone Wanderer's Symphony",
+     "nameJp": ""
+    },
+    {
+     "num": "LK-W15R",
+     "nameEn": "Tres Fleur",
+     "nameJp": ""
+    },
+    {
+     "num": "BA-W13R",
+     "nameEn": "Bombardment",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W25R",
+     "nameEn": "Toge Toge Doping",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W32R",
+     "nameEn": "Narikiba",
+     "nameJp": ""
+    },
+    {
+     "num": "SB-W37R",
+     "nameEn": "Flame Bearer",
+     "nameJp": ""
+    },
+    {
+     "num": "RG-W13R",
+     "nameEn": "Candle Lock",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W17R",
+     "nameEn": "Desert Tyrant",
+     "nameJp": ""
+    },
+    {
+     "num": "RK-W22R",
+     "nameEn": "Mogura Banana",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W23R",
+     "nameEn": "Sube Sube Spur",
+     "nameJp": ""
+    },
+    {
+     "num": "JS-W33R",
+     "nameEn": "Bliking Canon",
+     "nameJp": ""
+    },
+    {
+     "num": "JO-W16R",
+     "nameEn": "Spring Hopper",
+     "nameJp": ""
+    },
+    {
+     "num": "G3-W17R",
+     "nameEn": "Lock",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Davy Back Fight Compilation",
+   "date": "2004-09",
+   "official": 62,
+   "cards": [
+    {
+     "num": "TD-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "TD-C02",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "TD-C03",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "TD-C04",
+     "nameEn": "Bartholomew Kuma",
+     "nameJp": "バーソロミュー・くま"
+    },
+    {
+     "num": "TD-C05",
+     "nameEn": "Doflamingo",
+     "nameJp": "ドフラミンゴ"
+    },
+    {
+     "num": "TD-C06",
+     "nameEn": "Foxy",
+     "nameJp": "フォクシー"
+    },
+    {
+     "num": "TD-C07",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "TD-C08",
+     "nameEn": "Sengoku",
+     "nameJp": "センゴク"
+    },
+    {
+     "num": "TD-C09",
+     "nameEn": "Tsuru",
+     "nameJp": "つる"
+    },
+    {
+     "num": "TD-C10",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "TD-C11",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "TD-C12",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "TD-C13",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "TD-C14",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "TD-C15",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "TD-C16",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "TD-C17",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "TD-C18",
+     "nameEn": "Bellamy",
+     "nameJp": "ベラミー"
+    },
+    {
+     "num": "TD-C19",
+     "nameEn": "Sarquiss",
+     "nameJp": "サーキース"
+    },
+    {
+     "num": "TD-C20",
+     "nameEn": "Laffitte",
+     "nameJp": "ラフィット"
+    },
+    {
+     "num": "TD-C21",
+     "nameEn": "Foxy",
+     "nameJp": "フォクシー"
+    },
+    {
+     "num": "TD-C22",
+     "nameEn": "Porche",
+     "nameJp": "ポルチェ"
+    },
+    {
+     "num": "TD-C23",
+     "nameEn": "Hamburg",
+     "nameJp": "ハンバーグ"
+    },
+    {
+     "num": "TD-C24",
+     "nameEn": "Capote",
+     "nameJp": "カポーティ"
+    },
+    {
+     "num": "TD-C25",
+     "nameEn": "Monda",
+     "nameJp": "モンダ"
+    },
+    {
+     "num": "TD-C26",
+     "nameEn": "Pickles",
+     "nameJp": "ピクルス"
+    },
+    {
+     "num": "TD-C27",
+     "nameEn": "Big Pan",
+     "nameJp": "ビッグパン"
+    },
+    {
+     "num": "TD-C28",
+     "nameEn": "Tonjit",
+     "nameJp": "トンジット"
+    },
+    {
+     "num": "TD-T01",
+     "nameEn": "Luffy & Usopp",
+     "nameJp": "ルフィ＆ウソップ"
+    },
+    {
+     "num": "TD-T02",
+     "nameEn": "Zoro & Sanji",
+     "nameJp": "ゾロ＆サンジ"
+    },
+    {
+     "num": "TD-T03",
+     "nameEn": "Davy Back Fight",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W02",
+     "nameEn": "Unwavering Spirit",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W03",
+     "nameEn": "Gomu Gomu no Flail",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W04",
+     "nameEn": "Noro Noro Beam",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W05",
+     "nameEn": "Monster Burger",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W06",
+     "nameEn": "Mutoryu Tatsu Maki",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W07",
+     "nameEn": "Armée de L'Air Power Shoot",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W08",
+     "nameEn": "Ocho Fleur Flip",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W09",
+     "nameEn": "Ohana Shuriken",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W10",
+     "nameEn": "Hamburg Hammer",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W11",
+     "nameEn": "Yellow Card",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W12",
+     "nameEn": "Gomu Hook",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W13",
+     "nameEn": "World of Pirates",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W14",
+     "nameEn": "Serious Reprimand!",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W15",
+     "nameEn": "Cover Fire",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W16",
+     "nameEn": "Troisième Hachis",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W17",
+     "nameEn": "Check Ahead!",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W18",
+     "nameEn": "Silent Oppresion",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W19",
+     "nameEn": "Fleet Admirals Smile",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W20",
+     "nameEn": "Managers of the Ocean",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W21",
+     "nameEn": "Hyenas Persistence",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W22",
+     "nameEn": "Ruthless Fight to the Death",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W23",
+     "nameEn": "The New Age",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W24",
+     "nameEn": "Megaton Kyubi Rush",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W25",
+     "nameEn": "Sling Tackle",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W26",
+     "nameEn": "Two-Fish Engine",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W27",
+     "nameEn": "Ray of Hope",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W28",
+     "nameEn": "Creeping Intruder",
+     "nameJp": ""
+    },
+    {
+     "num": "TD-W29",
+     "nameEn": "Endless Adventure",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Heroes' Shadows",
+   "date": "2005-02",
+   "official": 71,
+   "cards": [
+    {
+     "num": "SH-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "SH-C02",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "SH-C03",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "SH-C04",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "SH-C05",
+     "nameEn": "Shanks",
+     "nameJp": "シャンクス"
+    },
+    {
+     "num": "SH-C06",
+     "nameEn": "Smoker",
+     "nameJp": "スモーカー"
+    },
+    {
+     "num": "SH-C07",
+     "nameEn": "Aokiji",
+     "nameJp": "青キジ"
+    },
+    {
+     "num": "SH-C08",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "SH-C09",
+     "nameEn": "Crocodile",
+     "nameJp": "クロコダイル"
+    },
+    {
+     "num": "SH-C10",
+     "nameEn": "Enel",
+     "nameJp": "エネル"
+    },
+    {
+     "num": "SH-C11",
+     "nameEn": "Foxy",
+     "nameJp": "フォクシー"
+    },
+    {
+     "num": "SH-C12",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "SH-C13",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "SH-C14",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "SH-C15",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "SH-C16",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "SH-C17",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "SH-C18",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "SH-C19",
+     "nameEn": "Wyper",
+     "nameJp": "ワイパー"
+    },
+    {
+     "num": "SH-C20",
+     "nameEn": "Tashigi",
+     "nameJp": "たしぎ"
+    },
+    {
+     "num": "SH-C21",
+     "nameEn": "Aokiji",
+     "nameJp": "青キジ"
+    },
+    {
+     "num": "SH-C22",
+     "nameEn": "Porche",
+     "nameJp": "ポルチェ"
+    },
+    {
+     "num": "SH-C23",
+     "nameEn": "Hamburg",
+     "nameJp": "ハンバーグ"
+    },
+    {
+     "num": "SH-C24",
+     "nameEn": "Muchigoro",
+     "nameJp": "ムチゴロウ"
+    },
+    {
+     "num": "SH-C25",
+     "nameEn": "Iceburg",
+     "nameJp": "アイスバーグ"
+    },
+    {
+     "num": "SH-C26",
+     "nameEn": "Kaku",
+     "nameJp": "カク"
+    },
+    {
+     "num": "SH-C27",
+     "nameEn": "Paulie",
+     "nameJp": "パウリー"
+    },
+    {
+     "num": "SH-C28",
+     "nameEn": "Kalifa",
+     "nameJp": "カリファ"
+    },
+    {
+     "num": "SH-C29",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "SH-C30",
+     "nameEn": "Baron Omatsuri",
+     "nameJp": "オマツリ男爵"
+    },
+    {
+     "num": "SH-C31",
+     "nameEn": "Kokoro",
+     "nameJp": "ココロ"
+    },
+    {
+     "num": "SH-T01",
+     "nameEn": "Luffy & Shanks",
+     "nameJp": "ルフィ＆シャンクス"
+    },
+    {
+     "num": "SH-T02",
+     "nameEn": "Smoker & Tashigi",
+     "nameJp": "スモーカー＆たしぎ"
+    },
+    {
+     "num": "SH-T03",
+     "nameEn": "Foxy & Porche & Hamburg",
+     "nameJp": "フォクシー＆ポルチェ＆ハンバーグ"
+    },
+    {
+     "num": "SH-T04",
+     "nameEn": "Iceburg & Kalifa",
+     "nameJp": "アイスバーグ＆カリファ"
+    },
+    {
+     "num": "SH-T05",
+     "nameEn": "Zoro & Sanji & Usopp",
+     "nameJp": "ゾロ＆サンジ＆ウソップ"
+    },
+    {
+     "num": "SH-W01",
+     "nameEn": "Captain's Orders: \"Single Combat\"",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W02",
+     "nameEn": "Galley-La Company",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W03",
+     "nameEn": "Gomu Gomu no Storm",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W04",
+     "nameEn": "Ice Time",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W05",
+     "nameEn": "Bullish Negotiations",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W06",
+     "nameEn": "Urgent Care",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W07",
+     "nameEn": "Treinta Fleur Clutch",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W08",
+     "nameEn": "Flying Foxy",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W09",
+     "nameEn": "Nitoryu Sai Kuru",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W10",
+     "nameEn": "5-Star Goldfish Catching",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W11",
+     "nameEn": "Slice Shoot",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W12",
+     "nameEn": "Ice Age",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W13",
+     "nameEn": "Operation: \"Utopia\"",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W14",
+     "nameEn": "Activate \"Deathpia\"",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W15",
+     "nameEn": "Floral Cheerleaders",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W16",
+     "nameEn": "Four-Legged Dash",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W17",
+     "nameEn": "No Way!!!!",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W18",
+     "nameEn": "Mountain Wind",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W19",
+     "nameEn": "Round Turn",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W20",
+     "nameEn": "Rude!!",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W21",
+     "nameEn": "Bonds of Fellowship",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W22",
+     "nameEn": "Red Hair's Solidarity",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W23",
+     "nameEn": "Execution of Justice",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W24",
+     "nameEn": "Trials of Omatsuri Island",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W25",
+     "nameEn": "Beginning of the Grand Voyage",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W26",
+     "nameEn": "Fletching of Arrows",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-W27",
+     "nameEn": "Kokoro's Letter of Inroduction",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-F01",
+     "nameEn": "The Great Crimson Pirate Ship",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-F02",
+     "nameEn": "Ship of Piercing Justice",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-F03",
+     "nameEn": "Full",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-F04",
+     "nameEn": "Maxim",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-F05",
+     "nameEn": "Ship of the Pirate King",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-F06",
+     "nameEn": "Going Merry",
+     "nameJp": ""
+    },
+    {
+     "num": "SH-F07",
+     "nameEn": "Sea Train",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Hidden Treasures of Water 7",
+   "date": "2005-08",
+   "official": 59,
+   "cards": [
+    {
+     "num": "TW-C01",
+     "nameEn": "Luffy",
+     "nameJp": "ルフィ"
+    },
+    {
+     "num": "TW-C02",
+     "nameEn": "Usopp",
+     "nameJp": "ウソップ"
+    },
+    {
+     "num": "TW-C03",
+     "nameEn": "Zoro",
+     "nameJp": "ゾロ"
+    },
+    {
+     "num": "TW-C04",
+     "nameEn": "Sanji",
+     "nameJp": "サンジ"
+    },
+    {
+     "num": "TW-C05",
+     "nameEn": "Aokiji",
+     "nameJp": "青キジ"
+    },
+    {
+     "num": "TW-C06",
+     "nameEn": "Franky",
+     "nameJp": "フランキー"
+    },
+    {
+     "num": "TW-C07",
+     "nameEn": "Nami",
+     "nameJp": "ナミ"
+    },
+    {
+     "num": "TW-C08",
+     "nameEn": "Chopper",
+     "nameJp": "チョッパー"
+    },
+    {
+     "num": "TW-C09",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "TW-C10",
+     "nameEn": "Mihawk",
+     "nameJp": "ミホーク"
+    },
+    {
+     "num": "TW-C11",
+     "nameEn": "Ace",
+     "nameJp": "エース"
+    },
+    {
+     "num": "TW-C12",
+     "nameEn": "Robin",
+     "nameJp": "ロビン"
+    },
+    {
+     "num": "TW-C13",
+     "nameEn": "Kaku",
+     "nameJp": "カク"
+    },
+    {
+     "num": "TW-C14",
+     "nameEn": "Kalifa",
+     "nameJp": "カリファ"
+    },
+    {
+     "num": "TW-C15",
+     "nameEn": "Lucci",
+     "nameJp": "ルッチ"
+    },
+    {
+     "num": "TW-C16",
+     "nameEn": "Blueno",
+     "nameJp": "ブルーノ"
+    },
+    {
+     "num": "TW-C17",
+     "nameEn": "Kreig",
+     "nameJp": "クリーク"
+    },
+    {
+     "num": "TW-C18",
+     "nameEn": "Square Sisters",
+     "nameJp": "スクエアシスターズ"
+    },
+    {
+     "num": "TW-C19",
+     "nameEn": "Kokoro",
+     "nameJp": "ココロ"
+    },
+    {
+     "num": "TW-C20",
+     "nameEn": "Iceberg",
+     "nameJp": "アイスバーグ"
+    },
+    {
+     "num": "TW-C21",
+     "nameEn": "Paulie",
+     "nameJp": "パウリー"
+    },
+    {
+     "num": "TW-C22",
+     "nameEn": "Lulu",
+     "nameJp": "ルル"
+    },
+    {
+     "num": "TW-C23",
+     "nameEn": "Tilestone",
+     "nameJp": "タイルストン"
+    },
+    {
+     "num": "TW-C24",
+     "nameEn": "Tom",
+     "nameJp": "トム"
+    },
+    {
+     "num": "TW-C25",
+     "nameEn": "Franky",
+     "nameJp": "フランキー"
+    },
+    {
+     "num": "TW-T01",
+     "nameEn": "Luffy & Zoro",
+     "nameJp": "ルフィ＆ゾロ"
+    },
+    {
+     "num": "TW-T02",
+     "nameEn": "Robin & Blueno",
+     "nameJp": "ロビン＆ブルーノ"
+    },
+    {
+     "num": "TW-T03",
+     "nameEn": "Kaku & Lucci & Kalifa",
+     "nameJp": "カク＆ルッチ＆カリファ"
+    },
+    {
+     "num": "TW-T04",
+     "nameEn": "Franky & Square Sisters",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W01",
+     "nameEn": "Klabautermann",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W02",
+     "nameEn": "Gomu Gomu no Cannon",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W03",
+     "nameEn": "Great Swordsman of Rage",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W04",
+     "nameEn": "How to Become a Navigator",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W05",
+     "nameEn": "Impact Dial",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W06",
+     "nameEn": "Santen Découpage",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W07",
+     "nameEn": "Looking for Usopp",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W08",
+     "nameEn": "Girl Who Lived in the Darkness",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W09",
+     "nameEn": "You Who Are Weak...",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W10",
+     "nameEn": "The Ship-Breaking \"Fire Fist\"",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W11",
+     "nameEn": "Man of Ice",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W12",
+     "nameEn": "Model: Leopard",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W13",
+     "nameEn": "Invincibility Armor",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W14",
+     "nameEn": "Coup de Vent",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W15",
+     "nameEn": "Franky House",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W16",
+     "nameEn": "Sea Train Veteran",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W17",
+     "nameEn": "Tekkai",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W19",
+     "nameEn": "Rankyaku",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W20",
+     "nameEn": "Shigan",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W21",
+     "nameEn": "Soru",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W22",
+     "nameEn": "City of Craftsmen",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-W23",
+     "nameEn": "Aqua Laguna",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-F01",
+     "nameEn": "The Ship that Soars the Sky",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-F02",
+     "nameEn": "The Lonely Ship",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-F03",
+     "nameEn": "The Boat Chasing Blackbeard",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-F04",
+     "nameEn": "Bicycle on the Sea",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-F05",
+     "nameEn": "Giant Galleon Ship",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-F06",
+     "nameEn": "Going Merry",
+     "nameJp": ""
+    },
+    {
+     "num": "TW-F07",
+     "nameEn": "Rocketman",
+     "nameJp": ""
+    }
+   ]
+  },
+  {
+   "name": "Promos",
+   "date": "",
+   "official": 76,
+   "cards": [
+    {
+     "num": "JF-1",
+     "nameEn": "Luffy",
+     "nameJp": ""
+    },
+    {
+     "num": "JF-2",
+     "nameEn": "Crocodile",
+     "nameJp": ""
+    },
+    {
+     "num": "GA-01",
+     "nameEn": "Luffy",
+     "nameJp": ""
+    },
+    {
+     "num": "GA-02",
+     "nameEn": "Giant Feast",
+     "nameJp": ""
+    },
+    {
+     "num": "G2-01",
+     "nameEn": "Luffy",
+     "nameJp": ""
+    },
+    {
+     "num": "G2-02",
+     "nameEn": "Zoro",
+     "nameJp": ""
+    },
+    {
+     "num": "G2-03",
+     "nameEn": "Rescue! Nami & Sanji",
+     "nameJp": ""
+    },
+    {
+     "num": "G2-04",
+     "nameEn": "Luffy",
+     "nameJp": ""
+    },
+    {
+     "num": "WJ-01",
+     "nameEn": "Luffy",
+     "nameJp": ""
+    },
+    {
+     "num": "WJ-02",
+     "nameEn": "Zoro",
+     "nameJp": ""
+    },
+    {
+     "num": "WJ-03",
+     "nameEn": "Sanji",
+     "nameJp": ""
+    },
+    {
+     "num": "WJ-04",
+     "nameEn": "Luffy",
+     "nameJp": ""
+    },
+    {
+     "num": "WJ-05",
+     "nameEn": "Zoro",
+     "nameJp": ""
+    },
+    {
+     "num": "WJ-06",
+     "nameEn": "Sanji",
+     "nameJp": ""
+    },
+    {
+     "num": "WJ-07",
+     "nameEn": "Nami & Robin",
+     "nameJp": ""
+    },
+    {
+     "num": "WJ-08",
+     "nameEn": "Usopp & Chopper",
+     "nameJp": ""
+    },
+    {
+     "num": "WJ-09",
+     "nameEn": "Sanji",
+     "nameJp": ""
+    },
+    {
+     "num": "WJ-10",
+     "nameEn": "Zoro",
+     "nameJp": ""
+    },
+    {
+     "num": "WJ-11",
+     "nameEn": "Luffy",
+     "nameJp": ""
+    },
+    {
+     "num": "WJ-12",
+     "nameEn": "Nami & Robin",
+     "nameJp": ""
+    },
+    {
+     "num": "WJ-13",
+     "nameEn": "Usopp & Chopper",
+     "nameJp": ""
+    },
+    {
+     "num": "BN-01",
+     "nameEn": "Luffy",
+     "nameJp": ""
+    },
+    {
+     "num": "BN-02",
+     "nameEn": "Zoro",
+     "nameJp": ""
+    },
+    {
+     "num": "BN-03",
+     "nameEn": "Sanji",
+     "nameJp": ""
+    },
+    {
+     "num": "BN-04",
+     "nameEn": "Chopper",
+     "nameJp": ""
+    },
+    {
+     "num": "BN-05",
+     "nameEn": "Nami",
+     "nameJp": ""
+    },
+    {
+     "num": "BN-06",
+     "nameEn": "Usopp",
+     "nameJp": ""
+    },
+    {
+     "num": "BN-07",
+     "nameEn": "Luffy",
+     "nameJp": ""
+    },
+    {
+     "num": "BN-08",
+     "nameEn": "Zoro & Sanji",
+     "nameJp": ""
+    },
+    {
+     "num": "BN-09",
+     "nameEn": "Nami & Robin",
+     "nameJp": ""
+    },
+    {
+     "num": "BN-10",
+     "nameEn": "Usopp & Chopper",
+     "nameJp": ""
+    },
+    {
+     "num": "BN-11",
+     "nameEn": "Luffy",
+     "nameJp": ""
+    },
+    {
+     "num": "BN-12",
+     "nameEn": "Luffy & Chopper",
+     "nameJp": ""
+    },
+    {
+     "num": "BN-12",
+     "nameEn": "Going Merry",
+     "nameJp": ""
+    },
+    {
+     "num": "BN-14",
+     "nameEn": "Pirate Band",
+     "nameJp": ""
+    },
+    {
+     "num": "BN-15",
+     "nameEn": "Fighting for One Piece",
+     "nameJp": ""
+    },
+    {
+     "num": "BN-16",
+     "nameEn": "Luffy & Zoro & Franky",
+     "nameJp": ""
+    },
+    {
+     "num": "NJ-01",
+     "nameEn": "Traveling Companion",
+     "nameJp": ""
+    },
+    {
+     "num": "VJ-01",
+     "nameEn": "Legendary Treasure",
+     "nameJp": ""
+    },
+    {
+     "num": "VJ-02",
+     "nameEn": "Duel With A God",
+     "nameJp": ""
+    },
+    {
+     "num": "VJ-03",
+     "nameEn": "Luffy & Chopper",
+     "nameJp": ""
+    },
+    {
+     "num": "JF-01",
+     "nameEn": "Luffy",
+     "nameJp": ""
+    },
+    {
+     "num": "JF-02",
+     "nameEn": "Zoro",
+     "nameJp": ""
+    },
+    {
+     "num": "JF-03",
+     "nameEn": "Nami",
+     "nameJp": ""
+    },
+    {
+     "num": "JF-04",
+     "nameEn": "Usopp",
+     "nameJp": ""
+    },
+    {
+     "num": "JF-05",
+     "nameEn": "Sanji",
+     "nameJp": ""
+    },
+    {
+     "num": "JF-06",
+     "nameEn": "Chopper",
+     "nameJp": ""
+    },
+    {
+     "num": "JF-07",
+     "nameEn": "Vivi",
+     "nameJp": ""
+    },
+    {
+     "num": "JF-08",
+     "nameEn": "Friends of Arabasta",
+     "nameJp": ""
+    },
+    {
+     "num": "JF-09",
+     "nameEn": "Battlefield of Outlaws",
+     "nameJp": ""
+    },
+    {
+     "num": "TB-1",
+     "nameEn": "Rocky Hattari",
+     "nameJp": ""
+    },
+    {
+     "num": "TB-2",
+     "nameEn": "Rhapsody of a Gentle Pirate",
+     "nameJp": ""
+    },
+    {
+     "num": "TB-3",
+     "nameEn": "Sword and Flame Round",
+     "nameJp": ""
+    },
+    {
+     "num": "TB-4",
+     "nameEn": "Ballad Dedicated to Gold",
+     "nameJp": ""
+    },
+    {
+     "num": "TB-5",
+     "nameEn": "The Great Reversal March",
+     "nameJp": ""
+    },
+    {
+     "num": "FA-W01",
+     "nameEn": "Pirates of Recklessness",
+     "nameJp": ""
+    },
+    {
+     "num": "KB-01",
+     "nameEn": "King of Treasure",
+     "nameJp": ""
+    },
+    {
+     "num": "CD-01",
+     "nameEn": "Those Called to the Sword (1)",
+     "nameJp": ""
+    },
+    {
+     "num": "CD-02",
+     "nameEn": "Those Called to the Sword (2)",
+     "nameJp": ""
+    },
+    {
+     "num": "MV-01",
+     "nameEn": "The Cursed Holy Sword",
+     "nameJp": ""
+    },
+    {
+     "num": "GF-01",
+     "nameEn": "Those Who Stand Against God",
+     "nameJp": ""
+    },
+    {
+     "num": "GBA-1",
+     "nameEn": "The Boy Who Takes Away Memories",
+     "nameJp": ""
+    },
+    {
+     "num": "-",
+     "nameEn": "Pirate King",
+     "nameJp": ""
+    },
+    {
+     "num": "-",
+     "nameEn": "Pirate Queen",
+     "nameJp": ""
+    },
+    {
+     "num": "-",
+     "nameEn": "Shichibukai",
+     "nameJp": ""
+    },
+    {
+     "num": "-",
+     "nameEn": "Great Pirate",
+     "nameJp": ""
+    },
+    {
+     "num": "WN-01",
+     "nameEn": "Victory Lineup",
+     "nameJp": ""
+    },
+    {
+     "num": "-",
+     "nameEn": "Captain",
+     "nameJp": ""
+    },
+    {
+     "num": "-",
+     "nameEn": "Pirate",
+     "nameJp": ""
+    },
+    {
+     "num": "-",
+     "nameEn": "Rookie",
+     "nameJp": ""
+    }
+   ]
+  }
+ ]
+}

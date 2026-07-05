@@ -115,6 +115,12 @@ jobs:
       - name: Espelha imagens vintage (Carddass)
         run: (node scripts/mirror-vintage-images.mjs && node scripts/sync-onepiece-vintage.mjs --no-fetch) || echo "mirror falhou; segue com wsrv"
 
+      # One Piece VINTAGE #2: o One Piece Card Game de 2002–2005 (verso madeira),
+      # ~1330 cartas em 22 sets, da mesma checklist do Grand Line Wiki. Anexa ao
+      # catálogo (dedupe pelo prefixo op2002-, coexiste com o Carddass). Sem preço.
+      - name: Anexa catálogo One Piece Card Game 2002 (vintage)
+        run: node scripts/sync-onepiece-2002.mjs || echo "sync-onepiece-2002 falhou; segue sem o 2002"
+
       - name: Snapshot de preços (histórico One Piece)
         run: node scripts/sync-price-history.mjs data/onepiece
 

@@ -595,11 +595,13 @@
   // One Piece: boosters principais têm setId "OP<nn>"; starter decks "ST-…"; o
   // resto (pre-release, demo, promos) vai numa categoria final.
   function groupOnePieceSets(setItems) {
-    const isVintage = (set) => /^opcd-/i.test(String(set.setId || "").trim());
+    const isCarddass = (set) => /^opcd-/i.test(String(set.setId || "").trim());
+    const isOp2002 = (set) => /^op2002-/i.test(String(set.setId || "").trim());
     const isMain = (set) => /^OP\d+$/i.test(String(set.setId || "").trim());
     const isDeck = (set) => /^ST/i.test(String(set.setId || "").trim());
-    const vintage = setItems.filter(isVintage).sort(sortByReleaseDesc);
-    const rest = setItems.filter((s) => !isVintage(s));
+    const carddass = setItems.filter(isCarddass).sort(sortByReleaseDesc);
+    const op2002 = setItems.filter(isOp2002).sort(sortByReleaseDesc);
+    const rest = setItems.filter((s) => !isCarddass(s) && !isOp2002(s));
     const main = rest.filter(isMain).sort(sortByReleaseDesc);
     const decks = rest.filter((s) => !isMain(s) && isDeck(s)).sort(sortByReleaseDesc);
     const promos = rest.filter((s) => !isMain(s) && !isDeck(s)).sort(sortByReleaseDesc);
@@ -616,11 +618,15 @@
       items.push({ type: "category-head", name: t("sets.category.promos"), count: promos.length });
       promos.forEach((set) => items.push(set));
     }
-    // Carddass Hyper Battle (1999–2002): as cartas vintage, numa categoria própria
-    // no fim (ordem crescente por lançamento — do First Stage pro Grand Box DX).
-    if (vintage.length) {
-      items.push({ type: "category-head", name: t("sets.category.vintage"), count: vintage.length });
-      vintage.slice().reverse().forEach((set) => items.push(set));
+    // Duas linhas VINTAGE, cada uma na sua categoria no fim, em ordem crescente de
+    // lançamento: Carddass Hyper Battle (1999–2002) e o One Piece Card Game de 2002–2005.
+    if (carddass.length) {
+      items.push({ type: "category-head", name: t("sets.category.vintage"), count: carddass.length });
+      carddass.slice().reverse().forEach((set) => items.push(set));
+    }
+    if (op2002.length) {
+      items.push({ type: "category-head", name: t("sets.category.op2002"), count: op2002.length });
+      op2002.slice().reverse().forEach((set) => items.push(set));
     }
     return items;
   }
