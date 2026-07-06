@@ -32,11 +32,17 @@ async function loadDeltas(dir) {
   try { const r = await fetch(`${PROD}/${dir}price-deltas.generated.json`); return r.ok ? await r.json() : null; } catch { return null; }
 }
 
-const [pkDeltas, lcDeltas] = await Promise.all([loadDeltas("data/"), loadDeltas("data/lorcana/")]);
-const deltasByGame = { pokemon: (pkDeltas && pkDeltas.c) || {}, lorcana: (lcDeltas && lcDeltas.c) || {} };
+const [pkDeltas, lcDeltas, opDeltas] = await Promise.all([
+  loadDeltas("data/"), loadDeltas("data/lorcana/"), loadDeltas("data/onepiece/")
+]);
+const deltasByGame = {
+  pokemon: (pkDeltas && pkDeltas.c) || {},
+  lorcana: (lcDeltas && lcDeltas.c) || {},
+  onepiece: (opDeltas && opDeltas.c) || {}
+};
 // Sem process.exit daqui em diante (fecha handles pendentes de fetch no Windows);
 // os "returns" são só fluxo normal — o processo termina sozinho, exit code 0.
-if (!Object.keys(deltasByGame.pokemon).length && !Object.keys(deltasByGame.lorcana).length) {
+if (!Object.values(deltasByGame).some((d) => Object.keys(d).length)) {
   console.log("[push] sem deltas publicados (primeira semana?) — nada a enviar.");
 } else {
   await run();
@@ -53,7 +59,8 @@ async function run() {
   for (const r of rows) {
     let e = byEndpoint.get(r.endpoint);
     if (!e) { e = { sub: { endpoint: r.endpoint, keys: { p256dh: r.p256dh, auth: r.auth } }, lang: r.lang || "pt", drops: [] }; byEndpoint.set(r.endpoint, e); }
-    const deltas = deltasByGame[r.game === "lorcana" ? "lorcana" : "pokemon"];
+    // Jogo desconhecido (ex.: linha 'hub' órfã) não casa com delta nenhum.
+    const deltas = deltasByGame[r.game || "pokemon"] || {};
     Object.keys(r.wishlist || {}).forEach((cardId) => {
       const pct = deltas[cardId];
       if (pct != null && pct <= DROP_PCT) e.drops.push(pct);

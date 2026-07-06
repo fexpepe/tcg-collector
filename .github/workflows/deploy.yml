@@ -140,10 +140,11 @@ jobs:
       - name: Lint dos catálogos
         run: node scripts/lint-catalog.mjs
 
-      # SEO: pré-renderiza uma página HTML estática por set do Pokémon em /set/<slug>.html
-      # (title, meta, Open Graph, JSON-LD e a lista de cartas já no HTML) + regenera o
-      # sitemap.xml com todas as URLs. Assim o Google indexa "Base Set", "151" etc. em vez
-      # da casca vazia da SPA. Lê os chunks data/sets/** gerados acima.
+      # SEO: pré-renderiza uma página HTML estática por set — Pokémon, Lorcana e
+      # One Piece — em /set/<slug>.html (title, meta, Open Graph, JSON-LD e a lista
+      # de cartas já no HTML) + regenera o sitemap.xml com todas as URLs. Assim o
+      # Google indexa "Base Set", "Romance Dawn" etc. em vez da casca vazia da SPA.
+      # Lê os chunks data/sets/** (Pokémon) e data/{lorcana,onepiece}/cards.js.
       - name: Pré-renderiza páginas de set (SEO)
         run: node scripts/prerender-catalog.mjs
 

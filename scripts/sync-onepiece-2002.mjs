@@ -28,7 +28,6 @@ const SNAP = new URL("data/vintage/onepiece-2002cardgame.json", ROOT);
 const CACHE = new URL("data/.cache/onepiece-2002.html", ROOT);
 const IMG_DIR = new URL("data/onepiece/vintage-images-2002/", ROOT);
 const OVERVIEW = "https://grandlinewiki.net/tcg/opcardgame2002.html";
-const IMG_BASE = "grandlinewiki.net/images/tcg/02cardgame/cards";
 const UA = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Sleevu/1.0 (+sleevu.app)" };
 const NO_FETCH = process.argv.includes("--no-fetch");
 
@@ -86,11 +85,14 @@ async function refreshSnapshot(existing) {
   return (await readSnapshot(SNAP)) || candidate;
 }
 
-// Imagem: local espelhada vence; senão wsrv (num sem hífen, minúsculo -> lkc01.png).
+// Imagem: só a local espelhada (num sem hífen, minúsculo -> lkc01.webp). O wiki
+// NÃO tem scans do 2002 (o caminho wsrv 404-ava em todas as ~1300 cartas), então
+// sem espelho a carta fica SEM image — o app mostra placeholder e o prerender de
+// SEO não emite <img> quebrado. Se um dia os scans forem espelhados, reaparecem.
 function cardImage(num) {
   const file = String(num).toLowerCase().replace(/-/g, "");
   if (existsSync(new URL(`${file}.webp`, IMG_DIR))) return `data/onepiece/vintage-images-2002/${file}.webp`;
-  return `https://wsrv.nl/?url=${IMG_BASE}/${file}.png&w=440&output=webp`;
+  return "";
 }
 
 async function run() {
@@ -131,8 +133,8 @@ async function run() {
       });
     }
   }
-  const localImgs = cards2002.filter((c) => !c.image.startsWith("http")).length;
-  console.log(`  build: ${cards2002.length} cartas em ${snap.sets.length} sets (${localImgs} com imagem local).`);
+  const localImgs = cards2002.filter((c) => c.image).length;
+  console.log(`  build: ${cards2002.length} cartas em ${snap.sets.length} sets (${localImgs} com imagem espelhada).`);
 
   const cover = {};
   for (const c of cards2002) { if (!cover[c.setId]) cover[c.setId] = c.image; }
