@@ -1012,10 +1012,11 @@ input::placeholder {
 .card-grid.is-list .tile-info { padding: 8px 12px 8px 0; }
 .card-grid.is-list .tile-actions { margin-top: 8px; }
 
+/* Lista de Sets compacta (estilo Collectr): cards menores, mais por linha. */
 .group-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
+  gap: 12px;
 }
 
 .pokedex-card {
@@ -1451,13 +1452,41 @@ input::placeholder {
   color: var(--accent);
 }
 
-/* Cabeçalho de categoria (Lorcana: Principais/Promos): não é link, então não
-   muda de cor no hover nem vira cursor de clique. */
+/* Cabeçalho de categoria recolhível (Lorcana/One Piece: Principais/Promos/
+   Vintage…). É um <button>: reseta o estilo global de botão e vira um toggle
+   de largura total com uma seta que gira quando recolhido. */
 .set-category-head {
-  cursor: default;
+  cursor: pointer;
+  background: none;
+  min-height: 0;
+  padding: 0 0 8px;
+  width: 100%;
+  font-weight: inherit;
+  border-radius: 0;
 }
-.set-category-head:hover .set-series-name {
-  color: var(--text);
+.set-category-head .set-series-name { display: inline-flex; align-items: center; gap: 8px; }
+/* A seta troca de glifo (▾/▸) via JS em applyCollapsed — robusto, sem depender
+   de transform (que alguns renderers ignoram em inline/flex-item). */
+.cat-caret { font-size: 11px; color: var(--subtle); width: 0.9em; display: inline-block; text-align: center; }
+.set-category-head:hover .set-series-name,
+.set-category-head:hover .cat-caret,
+.cat-toggle:hover .set-series-name,
+.cat-toggle:hover .cat-caret { color: var(--accent); }
+/* Nas séries do Pokémon o cabeçalho é um <div>: o nome-que-recolhe é um
+   <button> interno (o "X sets →" ao lado segue sendo link). Reseta o botão. */
+.cat-toggle {
+  background: none;
+  border: 0;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  font: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  color: inherit;
 }
 
 .set-series-count {
@@ -1507,13 +1536,13 @@ input::placeholder {
 }
 
 .set-art {
-  min-height: 154px;
+  min-height: 96px;
   background:
     radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.12), transparent 42%),
     #11141b;
   display: grid;
   place-items: center;
-  padding: 22px;
+  padding: 14px;
   position: relative;
 }
 
@@ -1537,7 +1566,7 @@ input::placeholder {
 
 .set-logo {
   max-width: 88%;
-  max-height: 96px;
+  max-height: 60px;
   object-fit: contain;
 }
 
@@ -1559,22 +1588,23 @@ input::placeholder {
 }
 
 .set-body {
-  padding: 14px;
+  padding: 9px 11px 10px;
 }
 
 .set-title-row {
   display: flex;
   align-items: start;
   justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .set-title-row h3 {
   margin: 0;
-  font-size: 18px;
-  line-height: 1.2;
+  font-size: 14px;
+  line-height: 1.25;
 }
+.set-title-row .tag { flex: none; }
 
 .set-meta {
   display: flex;
@@ -1601,12 +1631,16 @@ input::placeholder {
 
 .set-footer {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
+  margin-top: 7px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
 }
+.set-footer .set-count { font-weight: 700; color: var(--text); white-space: nowrap; }
+.set-footer .set-value { color: #7ee2b8; font-weight: 700; white-space: nowrap; }
+.set-release { top: 6px; right: 6px; padding: 2px 7px; font-size: 10px; }
 
 .set-footer strong {
   color: var(--text);
@@ -2364,7 +2398,8 @@ input::placeholder {
   }
 
   .group-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
 
   /* Especificidade igual à regra de ≤1000px para vencer o cascade e empilhar. */

@@ -32,7 +32,12 @@
   // jogo-pai (One Piece), com o prefixo de setId correspondente.
   const lineParam = new URLSearchParams(window.location.search).get("line") || "";
   const linePrefix = lineParam === "opcd" ? "opcd-" : lineParam === "op2002" ? "op2002-" : "";
-  const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
+  const pager = shared.createPager({
+    grid: elements.grid,
+    pageSize: 60,
+    // Scroll infinito: reaplica o estado recolhido aos cards recém-inseridos.
+    onAppend: () => { if (view === "sets") applyCollapsed(); }
+  });
   let selectedGeneration = "";
   // Região padrão segue a preferência de idioma de carta; sem preferência ("all")
   // mantém o comportamento antigo (Inglês). Com preferência, os chips de região
@@ -223,15 +228,64 @@
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) {
         preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant);
+        return;
+      }
+      // Recolher/expandir uma seção de sets (série do Pokémon ou categoria do
+      // Lorcana/One Piece). O "X sets →" da série continua sendo um link normal.
+      const toggle = event.target.closest(".cat-toggle, .set-category-head");
+      if (toggle) {
+        const head = toggle.closest(".set-series-head");
+        if (head && head.dataset.cat) { toggleCategory(head.dataset.cat); return; }
+      }
+      // Card de set compacto: clicar em qualquer lugar (menos num link) navega.
+      const setCard = event.target.closest(".set-card");
+      if (setCard && setCard.dataset.href && !event.target.closest("a")) {
+        window.location.href = setCard.dataset.href;
       }
     });
+  }
+
+  // Categorias de sets recolhíveis (Lorcana/One Piece: Principais/Promos/Vintage…).
+  // Estado por (jogo + categoria) no localStorage — persiste entre visitas.
+  const COLLAPSE_KEY = "tcg-sets-collapsed";
+  function collapsedSet() {
+    try { return new Set(JSON.parse(localStorage.getItem(COLLAPSE_KEY) || "[]")); } catch (e) { return new Set(); }
+  }
+  function catKey(name) { return `${(window.SLEEVU && window.SLEEVU.game) || "pokemon"}:${name}`; }
+  function isCategoryCollapsed(name) { return collapsedSet().has(catKey(name)); }
+  function toggleCategory(name) {
+    const set = collapsedSet();
+    const k = catKey(name);
+    if (set.has(k)) set.delete(k); else set.add(k);
+    try { localStorage.setItem(COLLAPSE_KEY, JSON.stringify([...set])); } catch (e) { /* ignora */ }
+    applyCollapsed();
+  }
+  // Percorre a grade em ordem, marca cada card com a categoria vigente e esconde
+  // os das categorias recolhidas (+ atualiza a seta e o estado do cabeçalho).
+  function applyCollapsed() {
+    const collapsed = collapsedSet();
+    let cur = null, hidden = false;
+    for (const node of elements.grid.children) {
+      if (node.classList.contains("set-series-head")) {
+        cur = node.dataset.cat || "";
+        hidden = collapsed.has(catKey(cur));
+        node.classList.toggle("is-collapsed", hidden);
+        const btn = node.querySelector(".cat-toggle") || node;
+        btn.setAttribute("aria-expanded", String(!hidden));
+        const caret = node.querySelector(".cat-caret");
+        if (caret) caret.textContent = hidden ? "▸" : "▾";
+      } else if (node.classList.contains("set-card")) {
+        if (cur != null) node.dataset.cat = cur;
+        node.hidden = hidden;
+      }
+    }
   }
 
   function render({ resetCount = false } = {}) {
     // Pokédex não filtra cartas (roda por espécie via índices); as outras
     // visões partem das cartas visíveis após os filtros.
     const items = view === "pokedex" ? pokedexViewItems() : getViewItems(filterCards());
-    pager.render(items, createViewItem, { resetCount });
+    pager.render(items, createViewItem, { resetCount }); // onAppend reaplica o recolhido
 
     // Cabeçalhos de série não contam como resultado.
     const realCount = items.filter((item) => item.type !== "series-head" && item.type !== "category-head").length;
@@ -351,19 +405,23 @@
   // Cabeçalho de série na grade de Sets (ocupa a linha toda); clicável → abre a
   // página daquela série (sets.html?serie=id).
   function createSeriesHead(item) {
-    const link = document.createElement("a");
-    link.className = "set-series-head";
-    link.href = `sets.html?serie=${encodeURIComponent(item.serieId)}`;
-    link.innerHTML = `<span class="set-series-name">${escapeHtml(item.name)}</span><span class="set-series-count">${item.count} sets →</span>`;
-    return link;
+    // O nome (com seta) recolhe/expande a série; o "X sets →" navega pra sub-página.
+    const head = document.createElement("div");
+    head.className = "set-series-head";
+    head.dataset.cat = item.name;
+    head.innerHTML = `<button type="button" class="cat-toggle" aria-expanded="${!isCategoryCollapsed(item.name)}"><span class="cat-caret" aria-hidden="true">▾</span><span class="set-series-name">${escapeHtml(item.name)}</span></button><a class="set-series-count" href="sets.html?serie=${escapeAttribute(item.serieId)}">${item.count} sets →</a>`;
+    return head;
   }
 
   // Cabeçalho de categoria (Lorcana: Principais/Promos). Igual ao de série, mas
   // sem link/seta — é só um rótulo de seção, não navega pra lugar nenhum.
   function createCategoryHead(item) {
-    const head = document.createElement("div");
+    const head = document.createElement("button");
+    head.type = "button";
     head.className = "set-series-head set-category-head";
-    head.innerHTML = `<span class="set-series-name">${escapeHtml(item.name)}</span><span class="set-series-count">${item.count} sets</span>`;
+    head.dataset.cat = item.name;
+    head.setAttribute("aria-expanded", String(!isCategoryCollapsed(item.name)));
+    head.innerHTML = `<span class="set-series-name"><span class="cat-caret" aria-hidden="true">▾</span>${escapeHtml(item.name)}</span><span class="set-series-count">${item.count} sets</span>`;
     return head;
   }
 
@@ -465,6 +523,12 @@
       ? `<span class="set-release" title="${escapeAttribute(formatReleaseDate(item.releaseDate, "long"))}">${escapeHtml(formatReleaseDate(item.releaseDate))}</span>`
       : "";
 
+    // Layout COMPACTO (estilo Collectr): logo, nome, uma linha de progresso
+    // (possuídas/total + %) e o valor só quando houver. O card inteiro navega
+    // (handler na grade); a arte segue como <a> pra middle-click/acessibilidade.
+    const valueHtml = item.value > 0
+      ? `<span class="set-value">${escapeHtml(shared.formatMoney(shared.getCurrency(), item.value))}</span>`
+      : "";
     article.innerHTML = `
       <a class="set-art-link" href="${escapeAttribute(detailUrl("set", item.name))}" aria-label="${escapeAttribute(item.name)}">
         <div class="set-art">
@@ -476,20 +540,15 @@
       <div class="set-body">
         <div class="set-title-row">
           <h3>${escapeHtml(item.name)}</h3>
-          <span class="tag">${escapeHtml(item.languageLabel)}</span>
-        </div>
-        <div class="set-meta">
-          <span class="set-pill"><span class="set-pill-label">${escapeHtml(t("set.totalCardsLabel"))}</span> <strong>${escapeHtml(String(item.totalCount))}</strong></span>
-          ${item.value > 0 ? `<span class="set-pill" title="${escapeAttribute(t("set.valueTitle"))}"><span class="set-pill-label">${escapeHtml(t("set.totalValueLabel"))}</span> <strong class="set-value">${escapeHtml(shared.formatMoney(shared.getCurrency(), item.value))}</strong></span>` : ""}
+          ${item.languageLabel ? `<span class="tag">${escapeHtml(item.languageLabel)}</span>` : ""}
         </div>
         <div class="progress-bar" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
           <span style="width: ${progress}%"></span>
         </div>
         <div class="set-footer">
-          <strong>${progress}%</strong>
-          <span>${item.ownedCount}/${item.totalCount}</span>
+          <span class="set-count">${item.ownedCount}/${item.totalCount} · ${progress}%</span>
+          ${valueHtml}
         </div>
-        <a class="details-link" href="${escapeAttribute(detailUrl("set", item.name))}">${escapeHtml(t("card.viewSet"))}</a>
       </div>
     `;
 

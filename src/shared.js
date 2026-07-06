@@ -3193,7 +3193,7 @@
     return match || cardId.slice(0, cardId.lastIndexOf("-"));
   }
 
-  function createPager({ grid, pageSize = 60 }) {
+  function createPager({ grid, pageSize = 60, onAppend = null }) {
     let items = [];
     let renderItem = null;
     let renderedCount = 0;
@@ -3233,6 +3233,9 @@
         fragment.appendChild(renderItem(items[renderedCount]));
       }
       grid.appendChild(fragment);
+      // Callback pós-append (ex.: reaplicar categorias recolhidas aos cards que
+      // acabaram de entrar via scroll infinito) — antes de recalcular controles.
+      if (onAppend) onAppend();
       updateControls();
     }
 
