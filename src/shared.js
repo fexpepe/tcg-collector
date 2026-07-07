@@ -608,8 +608,13 @@
     if (String(company || "").toLowerCase() !== "psa") return { value: 0, currency: cur, source: null };
     const cardId = card && card.id;
     const table = window.TCG_PRICING;
-    const ref = cardId && table && (table[cardId] || table[basePricingId(cardId)]);
-    const node = ref && ref.g && ref.g[String(grade)];
+    // Graded (g) só existe na entrada da carta BASE (o join da PPT é no chunk EN/JP).
+    // Cartas localizadas (-pt etc.) têm entrada própria de preço raw que SOMBREIA a
+    // base no "||" — por isso o g cai pra base explicitamente.
+    const own = cardId && table && table[cardId];
+    const base = cardId && table && table[basePricingId(cardId)];
+    const g = (own && own.g) || (base && base.g);
+    const node = g && g[String(grade)];
     const usd = node && node.s;
     if (usd > 0) {
       const v = convertMoney(usd, "USD", cur);
@@ -1919,8 +1924,11 @@
   function gradedHtml(card, fx) {
     const table = window.TCG_PRICING;
     if (!table) return "";
-    const ref = (card && card.id && (table[card.id] || table[basePricingId(card.id)])) || null;
-    const g = ref && ref.g;
+    // Mesmo fallback do gradedValue: o g vive na entrada base; a entrada própria
+    // de uma carta localizada (só preço raw) não pode sombreá-lo.
+    const own = card && card.id && table[card.id];
+    const base = card && card.id && table[basePricingId(card.id)];
+    const g = (own && own.g) || (base && base.g);
     if (!g) return "";
     const cards = ["10", "9"].map((grade) => g[grade] ? gradedCardHtml(grade, g[grade], fx) : "").join("");
     if (!cards) return "";

@@ -97,17 +97,24 @@ async function ourChunk(setId, lang = "ja") {
   return null;
 }
 
-// Graded EN: mapa curado nosso setId -> id PPT (tcgPlayerNumericId, EN). Só sets
-// de alto valor (onde graded importa); evita match fuzzy de nome (preço errado é
-// pior que ausente). Os preços EN base vêm da TCGdex; aqui só pegamos o graded.
+// Graded EN: mapa curado nosso setId -> id(s) PPT (tcgPlayerNumericId, EN). Só
+// sets de alto valor (onde graded importa); evita match fuzzy de nome (preço
+// errado é pior que ausente). Os preços EN base vêm da TCGdex; aqui só pegamos o
+// graded. Valor pode ser array: sets cujo chunk nosso junta a galeria bônus
+// (TG/GG), que na PPT é um set separado (mesmos ids do EN_FILL_SETS).
 const EN_GRADED_SETS = {
   base1: 604, base2: 635, base3: 630, base4: 605, base5: 1373,
   gym1: 1441, gym2: 1440,
   neo1: 1396, neo2: 1434, neo3: 1389, neo4: 1444,
   ecard1: 1375, ecard2: 1397, ecard3: 1372,
   sma: 2594, // Hidden Fates Shiny Vault
-  cel25: 2867 // Celebrations (set principal 1-25; a Classic Collection "A" vive no
-              // mesmo chunk com numeração própria e NÃO casa com este id — ok)
+  cel25: 2867, // Celebrations (set principal 1-25; a Classic Collection "A" vive no
+               // mesmo chunk com numeração própria e NÃO casa com este id — ok)
+  // Modernos com mercado PSA real (ids confirmados no EN_FILL_SETS acima):
+  swsh9: [2948, 3020],        // Brilliant Stars (+ Trainer Gallery)
+  "swsh12.5": [17688, 17689], // Crown Zenith (+ Galarian Gallery)
+  "sv03.5": 23237,            // 151
+  "sv08.5": 23821             // Prismatic Evolutions
 };
 
 // Sets EN onde a PPT PREENCHE/SOBREPÕE preço (+ imagem faltante + add-on-miss):
@@ -212,6 +219,7 @@ async function revNames() {
 
 // Busca graded EN de um set curado e casa por número com o nosso chunk EN.
 // Retorna { cardId: { g } } (só graded — não mexe no preço/imagem EN da TCGdex).
+// pptNumericId pode ser array (chunk nosso = set principal + galeria TG/GG).
 async function syncGradedEN(ourSetId, pptNumericId) {
   const chunk = await ourChunk(ourSetId, "en");
   if (!chunk || !chunk.length) return null;
@@ -221,12 +229,14 @@ async function syncGradedEN(ourSetId, pptNumericId) {
   const byNum = new Map();
   for (const card of chunk) { const n = normNum(String(card.id).replace(`${ourSetId}-`, "")); if (n) byNum.set(n, card.id); }
   const arr = [];
-  for (let page = 0, offset = 0; page < 30; page++) {
-    const j = await ppt(`/cards?setId=${pptNumericId}&language=english&limit=100&offset=${offset}&includeEbay=true&days=90`);
-    const batch = j.data || [];
-    arr.push(...batch);
-    if (!(j.metadata && j.metadata.hasMore) || !batch.length) break;
-    offset += batch.length;
+  for (const pid of [].concat(pptNumericId)) {
+    for (let page = 0, offset = 0; page < 30; page++) {
+      const j = await ppt(`/cards?setId=${pid}&language=english&limit=100&offset=${offset}&includeEbay=true&days=90`);
+      const batch = j.data || [];
+      arr.push(...batch);
+      if (!(j.metadata && j.metadata.hasMore) || !batch.length) break;
+      offset += batch.length;
+    }
   }
   // A PPT tem várias entradas no mesmo número (erros, staff, reverse...). Por
   // carta nossa, fica a impressão com MAIS vendas graded — a "principal" líquida,
@@ -593,7 +603,12 @@ async function run() {
   // etc.). Cacheia/rotaciona igual aos JP (chave "en-<setId>", janela REFRESH_DAYS).
   if (GRADED) {
     let enF = 0, enH = 0;
-    for (const [ourSetId, pptNumericId] of Object.entries(EN_GRADED_SETS)) {
+    // --set também filtra aqui (igual ao fill acima) — permite testar/rodar um
+    // set curado isolado sem pagar o crédito da lista inteira.
+    const enGradedTargets = ONLY_SETS.length
+      ? Object.entries(EN_GRADED_SETS).filter(([id]) => ONLY_SETS.includes(id))
+      : Object.entries(EN_GRADED_SETS);
+    for (const [ourSetId, pptNumericId] of enGradedTargets) {
       const ck = `en-${ourSetId}`;
       const cached = await readCache(ck);
       if (cached && Date.now() - (cached.t || 0) < REFRESH_DAYS * 864e5 && !DRY) { Object.assign(out, cached.entries); enH++; continue; }
