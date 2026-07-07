@@ -2104,7 +2104,11 @@
     const gamesPresent = [...new Set(col.items.map((it) => it.g).filter(Boolean))];
     const GROUPED = ["vitrine", "tags", "pokemon", "artists", "sets"]; // abas de grupos
     const PROGRESS_MODES = ["pokemon", "artists", "sets"]; // grupos em linha de progresso
-    let mode = (hasSales && collParams.get("t") === "sales") ? "sale" : "collection";
+    // ?t= abre direto numa aba (links "ver no perfil" de Vendas/Graded).
+    const tParam = collParams.get("t");
+    let mode = (hasSales && tParam === "sales") ? "sale"
+      : (hasGraded && tParam === "graded") ? "graded"
+      : "collection";
     let openId = null; // grupo aberto (coleção/tag/artista/set)
     let gFilter = "all";
     let cardSort = "value-desc"; // ordenação (em memória)

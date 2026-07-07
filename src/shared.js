@@ -1231,11 +1231,12 @@
     return String(raw || "").toLowerCase().replace(/[^a-z0-9_]/g, "").slice(0, 24);
   }
   // Link VIVO do perfil público (sempre atualizado) se o usuário é público + tem
-  // @; senão null (cai no snapshot). tab="sales" abre direto na aba Vendas.
+  // @; senão null (cai no snapshot). tab="sales"|"graded" abre direto na aba.
   function publicProfileUrl(tab) {
     const p = getProfile();
     if (!(p.isPublic && p.handle && p.handle.length >= 3)) return null;
-    return "https://sleevu.app/users/" + p.handle + (tab === "sales" ? "?t=sales" : "");
+    const t = tab === "sales" || tab === "graded" ? `?t=${tab}` : "";
+    return "https://sleevu.app/users/" + p.handle + t;
   }
 
   // --- Analytics first-party: ANÔNIMO e agregado (sem cookie de rastreio, sem
