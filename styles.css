@@ -3747,6 +3747,14 @@ a.progress-row:hover {
 .pf-bd-tab.active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 #pfBreakdown .pf-comp-row { grid-template-columns: minmax(110px, 30%) 1fr auto; }
 .pf-bd-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pf-bd-empty { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+
+/* Cabeçalho do Portfólio: título + Exportar CSV na mesma linha. */
+.pf-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.pf-head h1 { margin: 0; }
+
+/* "Ver todas / top 15" embaixo da tabela de mais valiosas. */
+.pf-top-more { margin-top: 12px; text-align: center; }
 
 /* --- Modo investidor: VENDA, histórico de vendas e P&L --- */
 .sale-sold-btn {

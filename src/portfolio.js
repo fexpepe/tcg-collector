@@ -96,7 +96,8 @@
   let cards = [];
   let cardsById = new Map();
   let gameFilter = "all";
-  let breakdownMode = "set"; // set | rarity
+  let breakdownMode = "set"; // set | rarity | artist
+  let topShowAll = false; // "mais valiosas": top 15 ou a lista inteira
 
   const elements = {
     grandTotal: document.getElementById("grandTotal"),
@@ -110,6 +111,7 @@
     breakdownBody: document.getElementById("pfBreakdownBody"),
     gameFilter: document.getElementById("pfGameFilter"),
     topCards: document.getElementById("topCards"),
+    export: document.getElementById("pfExport"),
     empty: document.getElementById("emptyState")
   };
 
@@ -136,6 +138,7 @@
       GAMES.forEach((g) => ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
       bindGameFilter();
       bindBreakdown();
+      bindExport();
       render();
     })
     .catch((error) => {
@@ -164,6 +167,58 @@
       breakdownMode = tab.dataset.bd;
       Array.from(elements.breakdownTabs.children).forEach((node) =>
         node.classList.toggle("active", node === tab));
+      render();
+    });
+  }
+
+  // ---- Export CSV do portfólio (snapshot financeiro, respeita o filtro de jogo).
+  // Diferente do CSV do menu da conta (inventário do jogo da sessão, preço manual):
+  // aqui vai TODO o patrimônio precificado — cartas raw com valor de mercado por
+  // condição + slabs graded — em todos os jogos, na moeda do topo.
+  const CSV_GAME_NAMES = { pokemon: "Pokémon", lorcana: "Lorcana", onepiece: "One Piece" };
+  function csvCell(value) {
+    const s = value == null ? "" : String(value);
+    return /[";\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+  const csvNum = (v) => (Math.round((v || 0) * 100) / 100).toFixed(2).replace(".", ",");
+  function exportPortfolioCsv() {
+    const cur = shared.getCurrency();
+    const { lines } = collectionLines(gameFilter);
+    const rows = [t("portfolio.csv.header").split(";")];
+    lines.forEach((l) => rows.push([
+      t("portfolio.csv.card"), CSV_GAME_NAMES[l.card.game] || l.card.game, l.card.name, l.card.set,
+      l.card.number, l.card.language || "", l.variant, l.condition, l.quantity, csvNum(l.unit), csvNum(l.total), cur
+    ]));
+    gradedSlabs(gameFilter).forEach((s) => {
+      const card = cardsById.get(s.cardId);
+      if (!card) return;
+      rows.push([
+        t("portfolio.csv.slab"), CSV_GAME_NAMES[card.game] || card.game, card.name, card.set,
+        card.number, card.language || "", s.variant || "", `${String(s.company || "").toUpperCase()} ${shared.gradedGradeText(s.grade, s.pristine)}`,
+        1, csvNum(s.value), csvNum(s.value), cur
+      ]);
+    });
+    // BOM: o Excel só reconhece UTF-8 (acentos) com ele.
+    const csv = "﻿" + rows.map((r) => r.map(csvCell).join(";")).join("\r\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `sleevu-portfolio-${new Date().toISOString().slice(0, 10)}${gameFilter !== "all" ? "-" + gameFilter : ""}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  }
+  function bindExport() {
+    if (!elements.export) return;
+    elements.export.hidden = false;
+    elements.export.addEventListener("click", exportPortfolioCsv);
+    // Toggle "ver todas / top 15" da tabela de mais valiosas (a tabela é
+    // re-renderizada a cada render; delega no container, que é fixo).
+    if (elements.topCards) elements.topCards.addEventListener("click", (event) => {
+      if (!event.target.closest("[data-pf-top-toggle]")) return;
+      topShowAll = !topShowAll;
       render();
     });
   }
@@ -376,15 +431,22 @@
     return Array.from(map.entries()).map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value);
   }
 
-  // Detalhamento: valor por set (top 12) ou por raridade (todas). Barras rankeadas.
+  // Detalhamento: valor por set/artista (top 12) ou por raridade (todas). Barras
+  // rankeadas. Visão sem dados (ex.: artista num jogo sem crédito de arte) mostra
+  // uma nota em vez de sumir com a seção — senão as abas desapareceriam juntas.
   function renderBreakdown(lines, slabs) {
     const sec = elements.breakdown;
     if (!sec) return;
-    const rows = breakdownMode === "rarity"
-      ? breakdownBy(lines, slabs, (c) => c.rarity)
+    const rows = breakdownMode === "rarity" ? breakdownBy(lines, slabs, (c) => c.rarity)
+      : breakdownMode === "artist" ? breakdownBy(lines, slabs, (c) => c.artist)
       : breakdownBy(lines, slabs, (c) => c.set);
     const shown = breakdownMode === "rarity" ? rows : rows.slice(0, 12);
-    if (!shown.length) { sec.hidden = true; return; }
+    if (!shown.length) {
+      if (breakdownMode === "set") { sec.hidden = true; return; } // sem dado nenhum
+      elements.breakdownBody.innerHTML = `<p class="pf-bd-empty">${escapeHtml(t("portfolio.bd.none"))}</p>`;
+      sec.hidden = false;
+      return;
+    }
     const max = Math.max(1, ...shown.map((r) => r.value));
     elements.breakdownBody.innerHTML = shown.map((r) =>
       `<div class="pf-comp-row"><span class="pf-comp-label pf-bd-name" title="${escapeAttribute(r.label)}">${escapeHtml(r.label)}</span>
@@ -444,7 +506,7 @@
       });
     });
     rows.sort((a, b) => b.total - a.total);
-    const top = rows.slice(0, 15);
+    const top = topShowAll ? rows : rows.slice(0, 15);
 
     elements.empty.hidden = top.length > 0;
     if (!top.length) { elements.topCards.innerHTML = ""; return; }
@@ -462,6 +524,9 @@
       </tr>`;
     }).join("");
 
+    const toggle = rows.length > 15
+      ? `<div class="pf-top-more"><button type="button" class="secondary" data-pf-top-toggle>${escapeHtml(topShowAll ? t("portfolio.topLess") : t("portfolio.topAll", { n: rows.length }))}</button></div>`
+      : "";
     elements.topCards.innerHTML = `
       <table class="portfolio-table">
         <thead>
@@ -475,7 +540,7 @@
           </tr>
         </thead>
         <tbody>${body}</tbody>
-      </table>`;
+      </table>${toggle}`;
   }
 
   // ---------------------------------------------------------------------------

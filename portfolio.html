@@ -43,8 +43,9 @@
     </header>
 
     <main>
-      <div class="page-head">
+      <div class="page-head pf-head">
         <h1 data-i18n="nav.portfolio">Portfólio</h1>
+        <button type="button" id="pfExport" class="secondary" data-i18n="portfolio.export" hidden>Exportar CSV</button>
       </div>
 
       <p class="collection-subtitle" data-i18n="portfolio.subtitle">Visão financeira da sua coleção: tudo o que você tem (cartas + graded), por jogo, com a progressão de valor no tempo.</p>
@@ -95,6 +96,7 @@
         <div id="pfBreakdownTabs" class="pf-bd-tabs" role="group" aria-label="Detalhar por">
           <button type="button" class="pf-bd-tab active" data-bd="set" data-i18n="portfolio.bd.set">Por set</button>
           <button type="button" class="pf-bd-tab" data-bd="rarity" data-i18n="portfolio.bd.rarity">Por raridade</button>
+          <button type="button" class="pf-bd-tab" data-bd="artist" data-i18n="portfolio.bd.artist">Por artista</button>
         </div>
         <div id="pfBreakdownBody" class="pf-comp-block"></div>
       </section>
