@@ -1,6 +1,6 @@
 {
- "source": null,
- "note": "Checklist do Naruto Carddass (Bandai, anos 2000) — fonte a levantar. Mesmo padrão snapshot do onepiece-hyperbattle: preencher sets[] e criar o sync que constrói o catálogo a partir daqui (vintage: true dentro do jogo naruto).",
+ "source": "https://tcg-db.nikita.jp/explist/nrt/",
+ "note": "Checklist do Naruto Card Game / Carddass (Bandai, anos 2000). Fonte: tcg-db.nikita.jp (database japones; explist/nrt lista as expansoes, cada uma com sua pagina de cartas). Mesmo padrao snapshot do onepiece-hyperbattle: o sync (a criar: sync-naruto-vintage.mjs) preenche sets[] a partir da fonte e o build gera o catalogo com vintage:true dentro do jogo naruto. O parser precisa do HTML real da explist + de uma pagina de set para ser escrito.",
  "updatedAt": null,
  "sets": []
 }
