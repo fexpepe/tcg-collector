@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://wsrv.nl; connect-src 'self' https://api.tcgdex.net https://pokeapi.co https://economia.awesomeapi.com.br https://*.supabase.co https://cloudflareinsights.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Servida pelo CF Pages em QUALQUER caminho inexistente (inclusive fundos
+         tipo /a/b/c): base href garante que os assets resolvam na raiz. -->
+    <base href="/">
+    <title data-i18n="notfound.title">Página não encontrada - Sleevu</title>
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#0d0e12">
+    <script src="src/theme.js"></script>
+    <script src="src/game.js"></script>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">Sleevu</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page=""></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="empty-state notfound">
+        <p class="notfound-code" aria-hidden="true">404</p>
+        <h1 data-i18n="notfound.heading">Essa página não existe</h1>
+        <p data-i18n="notfound.hint">O link pode estar errado ou a página saiu do ar. Esses caminhos ajudam a voltar:</p>
+        <p class="notfound-links">
+          <a class="primary" href="index.html" data-i18n="notfound.home">Início</a>
+          <a class="secondary" href="sets.html" data-i18n="nav.sets">Sets</a>
+          <a class="secondary" href="collection.html" data-i18n="nav.collectionMine">Minha Coleção</a>
+        </p>
+      </section>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/shared.js"></script>
+  </body>
+</html>

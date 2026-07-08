@@ -3756,6 +3756,15 @@ a.progress-row:hover {
 /* "Ver todas / top 15" embaixo da tabela de mais valiosas. */
 .pf-top-more { margin-top: 12px; text-align: center; }
 
+/* Página 404. */
+.notfound { padding: 56px 20px; }
+.notfound-code { margin: 0 0 4px; font-size: 64px; font-weight: 800; color: var(--subtle); line-height: 1; }
+.notfound h1 { margin: 0 0 10px; }
+.notfound-links { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
+.notfound-links a { text-decoration: none; padding: 10px 18px; border-radius: 10px; font-weight: 600; }
+.notfound-links a.primary { background: var(--accent); color: var(--on-accent); }
+.notfound-links a.secondary { border: 1px solid var(--line); color: var(--text); }
+
 /* --- Modo investidor: VENDA, histórico de vendas e P&L --- */
 .sale-sold-btn {
   width: 100%; margin-top: 6px; min-height: 34px; padding: 0 10px;
