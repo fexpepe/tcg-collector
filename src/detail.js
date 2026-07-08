@@ -314,11 +314,25 @@
       const symbol = sample.setSymbol
         ? localizedImg(sample.setSymbol, { className: "set-symbol" })
         : "";
+      // Custo pra completar: mercado das cartas que faltam (piso "≥" se alguma
+      // faltante não tem preço). Só aparece com coleção iniciada no set.
+      const missing = pageCards.filter((card) => !owned.has(card.id));
+      const ownedHere = pageCards.length - missing.length;
+      let missingHtml = "";
+      if (ownedHere > 0 && missing.length > 0) {
+        const sum = shared.sumCardsValue(missing, prices);
+        if (sum.value > 0) {
+          const cost = `${sum.unpriced > 0 ? "≥ " : "≈ "}${shared.formatMoney(shared.getCurrency(), sum.value)}`;
+          const hint = t("set.missingHint", { n: missing.length }) + (sum.unpriced > 0 ? " " + t("set.missingUnpriced", { u: sum.unpriced }) : "");
+          missingHtml = `<p class="set-missing" title="${escapeAttribute(hint)}">${escapeHtml(t("set.missingCost", { n: missing.length, v: cost }))}</p>`;
+        }
+      }
       elements.hero.innerHTML = `
         <div class="set-art detail-set-art">${logo}${symbol}</div>
         <div>
           <h2>${escapeHtml(sample.set)}</h2>
           <p>${escapeHtml(`${t("set.officialCards", { n: sample.setTotal || pageCards.length })} · ${t("set.inLocalCatalog", { n: pageCards.length })}`)}</p>
+          ${missingHtml}
         </div>
       `;
       elements.hero.hidden = false;

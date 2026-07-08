@@ -1640,6 +1640,13 @@ input::placeholder {
 }
 .set-footer .set-count { font-weight: 700; color: var(--text); white-space: nowrap; }
 .set-footer .set-value { color: #7ee2b8; font-weight: 700; white-space: nowrap; }
+/* Histórico de preço no preview da carta (sparkline da série diária). */
+.price-history-chart svg { width: 100%; height: 92px; display: block; border-radius: 8px; background: var(--panel); border: 1px solid var(--line); }
+.price-history-meta { display: flex; justify-content: space-between; gap: 10px; margin-top: 5px; font-size: 12px; color: var(--muted); }
+
+/* Custo pra completar o set (cards da lista e hero do detail). */
+.set-missing { margin: 6px 0 0; font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.detail-summary .set-missing { font-size: 13px; }
 .set-release { top: 6px; right: 6px; padding: 2px 7px; font-size: 10px; }
 
 .set-footer strong {
@@ -3755,6 +3762,53 @@ a.progress-row:hover {
 
 /* "Ver todas / top 15" embaixo da tabela de mais valiosas. */
 .pf-top-more { margin-top: 12px; text-align: center; }
+
+/* Quick-add na paleta Ctrl+K: linha de carta com thumb e botões inline. */
+.cmdk-carditem { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; cursor: pointer; }
+.cmdk-thumb { flex: none; width: 34px; }
+.cmdk-thumb img { width: 34px; height: auto; border-radius: 4px; display: block; }
+.cmdk-carditem .cmdk-item-name { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.cmdk-card-sub { font-size: 11.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cmdk-actions { display: flex; gap: 6px; flex: none; }
+.cmdk-add { min-height: 0; padding: 5px 9px; font-size: 11.5px; font-weight: 700; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 8px; cursor: pointer; white-space: nowrap; }
+.cmdk-add:hover { border-color: var(--accent); color: var(--accent); }
+.cmdk-add.done { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+
+/* Bottom-bar mobile (feel de app/PWA): fixa, 5 destinos, ativa na cor accent.
+   Fica ABAIXO dos overlays (modais/cmdk/toast usam z-index 50–70). */
+.mobile-tabbar { display: none; }
+@media (max-width: 700px) {
+  .mobile-tabbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    display: flex;
+    background: var(--panel);
+    border-top: 1px solid var(--line);
+    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.12);
+  }
+  .mtab {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 8px 0 7px; min-height: 0; border: 0; border-radius: 0; background: none;
+    font-size: 10.5px; font-weight: 700; color: var(--muted);
+    text-decoration: none; cursor: pointer;
+  }
+  .mtab.active { color: var(--accent); }
+  .mtab-ic svg { width: 22px; height: 22px; display: block; }
+  /* Nada escondido atrás da barra (nem o toast de desfazer). */
+  body { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
+  .undo-toast { bottom: calc(72px + env(safe-area-inset-bottom)); }
+}
+
+/* Skeletons: cards fantasma enquanto os chunks do catálogo baixam. Pulso de
+   opacidade (funciona igual nos temas claro/escuro, sem gradiente). */
+.skel { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); overflow: hidden; animation: skel-pulse 1.2s ease-in-out infinite; }
+.skel-img { aspect-ratio: 63/88; background: var(--line); opacity: 0.5; }
+.skel-art { height: 96px; background: var(--line); opacity: 0.5; }
+.skel-body { padding: 10px 12px 14px; }
+.skel-line { height: 12px; border-radius: 6px; background: var(--line); margin-top: 8px; }
+.skel-line.short { width: 55%; }
+@keyframes skel-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .skel { animation: none; } }
 
 /* Página 404. */
 .notfound { padding: 56px 20px; }

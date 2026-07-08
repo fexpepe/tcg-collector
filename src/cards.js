@@ -39,7 +39,11 @@
   });
 
   // Catálogo inteiro (em produção, baixado dos chunks do manifest, como na
-  // Pokédex). A página só renderiza cartas quando há busca/filtro ativo.
+  // Pokédex). A página só renderiza cartas quando há busca/filtro ativo —
+  // skeletons só no deep-link ?q= (senão a página abre no intro, sem grade).
+  if (new URLSearchParams(window.location.search).get("q") && elements.grid) {
+    shared.showSkeletons(elements.grid, "card", 12);
+  }
   Promise.all([shared.loadCatalog(), shared.loadFxRates()])
     .then(([catalog]) => {
       cards = catalog.cards || [];

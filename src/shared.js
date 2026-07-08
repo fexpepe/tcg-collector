@@ -628,7 +628,7 @@
   // jogos (fetch lazy no 1º uso; ~2MB do Pokémon vem gzipado e o SW cacheia).
   // Resultados carregam &game= na URL — clicar num set de Lorcana TROCA a sessão.
   // Cartas por nome ficam a um Enter: "buscar no Explorar" de cada jogo (?q=).
-  let cmdkIndex = null, cmdkIndexPromise = null;
+  let cmdkIndex = null, cmdkIndexPromise = null, cmdkOpen = null;
   function loadCmdkIndex() {
     if (cmdkIndexPromise) return cmdkIndexPromise;
     cmdkIndexPromise = (async () => {
@@ -658,13 +658,82 @@
     })();
     return cmdkIndexPromise;
   }
+  // --- Quick-add por CÓDIGO na paleta ("op05-119", "sv03.5 198", "1 216") ---
+  // Resolve a carta baixando só o chunk do set certo (manifest leve por jogo,
+  // cacheado). Em dev (sem manifest) busca no TCG_CARDS do jogo da sessão.
+  const CMDK_CODE_RE = /^[a-z0-9.]{1,12}[\s\-\/·]+[a-z0-9]{1,6}$/i;
+  const cmdkNormKey = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  const cmdkGameMeta = {};
+  const cmdkChunkCache = new Map();
+  function cmdkLoadGameMeta(g) {
+    if (!cmdkGameMeta[g]) cmdkGameMeta[g] = (async () => {
+      if (currentGame() === g && (window.TCG_MANIFEST || (Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length))) {
+        return { manifest: window.TCG_MANIFEST || null, cards: (Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length) ? window.TCG_CARDS : null };
+      }
+      try {
+        const r = await fetch(gameDataDir(g) + "manifest.generated.js");
+        if (!r.ok) return null;
+        const tx = await r.text();
+        const s = tx.indexOf("{"), e = tx.lastIndexOf("}");
+        if (s < 0 || e <= s) return null;
+        return { manifest: JSON.parse(tx.slice(s, e + 1)), cards: null };
+      } catch (e) { return null; }
+    })();
+    return cmdkGameMeta[g];
+  }
+  async function cmdkCardsByCode(q) {
+    const m = String(q).trim().match(/^([a-z0-9.]+)[\s\-\/·]+([a-z0-9]+)$/i);
+    if (!m) return [];
+    const full = cmdkNormKey(q), pref = cmdkNormKey(m[1]), num = cmdkNormKey(m[2]);
+    // "080" e "80" são o mesmo número (o Pokémon zero-preenche).
+    const numEq = (a, b) => a === b || (/^\d+$/.test(a) && /^\d+$/.test(b) && parseInt(a, 10) === parseInt(b, 10));
+    const out = [];
+    for (const g of GAME_SLUGS) {
+      const meta = await cmdkLoadGameMeta(g);
+      if (!meta) continue;
+      let pool;
+      if (meta.cards) {
+        pool = meta.cards; // dev: catálogo inteiro em memória
+      } else {
+        const sets = (meta.manifest.sets || []).filter((s) => cmdkNormKey(s.id) === pref).slice(0, 3);
+        if (!sets.length) continue;
+        const chunks = await Promise.all(sets.map((s) => {
+          if (!cmdkChunkCache.has(s.file)) {
+            cmdkChunkCache.set(s.file, fetch(s.file).then((r) => (r.ok ? r.json() : [])).catch(() => []));
+          }
+          return cmdkChunkCache.get(s.file);
+        }));
+        pool = [].concat.apply([], chunks);
+      }
+      for (const c of pool) {
+        // Pokémon numera como "4/102": o número da carta é a parte antes da barra.
+        const nk = cmdkNormKey(String(c.number || "").split("/")[0]);
+        const inSet = meta.cards ? (cmdkNormKey(c.setId) === pref || nk === full) : true;
+        if (inSet && (numEq(nk, num) || nk === full)) {
+          out.push({ card: c, game: g });
+          if (out.length >= 6) return out;
+        }
+      }
+    }
+    return out;
+  }
+
   function initCommandPalette() {
     let overlay = null, items = [], active = 0;
+    let cardHits = [], cardHitsQuery = "";
+    const cmdkStores = { col: {}, wl: {} };
     const close = () => { if (overlay) { overlay.remove(); overlay = null; } };
     const gameLabel = (g) => t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : "filter.gamePokemon");
     function results(q) {
       const out = [];
       const nq = normalize(q);
+      // Cartas resolvidas por código (assíncrono; ver maybeFetchCards).
+      if (String(q).trim() === cardHitsQuery && cardHits.length) {
+        cardHits.forEach((h) => out.push({
+          group: t("cmdk.cards"), card: h.card, game: h.game,
+          name: h.card.name, url: `${detailUrl("set", h.card.set)}&game=${h.game}`
+        }));
+      }
       if (nq && cmdkIndex) {
         const match = (x) => normalize(x.name).includes(nq);
         const rank = (x) => (normalize(x.name).startsWith(nq) ? 0 : 1);
@@ -681,7 +750,43 @@
       }
       return out;
     }
+    // Busca por código roda assíncrona (baixa chunk); re-renderiza quando chega
+    // e a query não mudou. cardHitsQuery marca o "em voo"/resolvido.
+    function maybeFetchCards(q) {
+      const qq = String(q).trim();
+      if (!CMDK_CODE_RE.test(qq)) { cardHits = []; cardHitsQuery = ""; return; }
+      if (qq === cardHitsQuery) return;
+      cardHitsQuery = qq;
+      cardHits = [];
+      cmdkCardsByCode(qq).then((hits) => {
+        if (!overlay || cardHitsQuery !== qq) return;
+        cardHits = hits;
+        const input = overlay.querySelector(".cmdk-input");
+        if (input && input.value.trim() === qq) renderList(qq);
+      });
+    }
+    // Adiciona à Coleção (+1 NM na variante padrão, clique repetido soma) ou
+    // liga/desliga na Wishlist — sem sair da paleta (abrir booster = vários adds).
+    function doCmdkAdd(btn) {
+      const parts = String(btn.dataset.cmdkAdd).split(":");
+      const it = items[Number(parts[1])];
+      if (!it || !it.card) return;
+      const g = it.game || currentGame();
+      const v = defaultVariant(it.card);
+      if (parts[0] === "wl") {
+        const st = cmdkStores.wl[g] || (cmdkStores.wl[g] = createWishlistStore(g));
+        const on = st.toggle(it.card.id, v);
+        btn.textContent = on ? "✓ " + t("cmdk.wl") : t("cmdk.addWl");
+        btn.classList.toggle("done", on);
+      } else {
+        const st = cmdkStores.col[g] || (cmdkStores.col[g] = createCollectionStore(g));
+        st.add(it.card.id, v, DEFAULT_CONDITION, 1);
+        btn.textContent = `✓ ×${st.variantTotal(it.card.id, v)}`;
+        btn.classList.add("done");
+      }
+    }
     function renderList(q) {
+      maybeFetchCards(q);
       items = results(q);
       active = 0;
       const list = overlay.querySelector(".cmdk-results");
@@ -694,6 +799,17 @@
         const head = it.group && it.group !== lastGroup ? `<div class="cmdk-group">${escapeHtml(it.group)}</div>` : "";
         lastGroup = it.group;
         const badge = it.game ? `<span class="cmdk-game">${escapeHtml(gameLabel(it.game))}</span>` : "";
+        if (it.card) {
+          const src = cardImageSources(it.card);
+          const img = localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
+          return `${head}<div class="cmdk-item cmdk-carditem${i === active ? " is-active" : ""}" data-cmdk-i="${i}">
+            <span class="cmdk-thumb">${img}</span>
+            <span class="cmdk-item-name">${escapeHtml(it.card.name)} <small class="cmdk-card-sub">${escapeHtml(`${it.card.set} · ${it.card.number}`)}</small></span>
+            <span class="cmdk-actions">
+              <button type="button" class="cmdk-add" data-cmdk-add="col:${i}">${escapeHtml(t("cmdk.addCol"))}</button>
+              <button type="button" class="cmdk-add" data-cmdk-add="wl:${i}">${escapeHtml(t("cmdk.addWl"))}</button>
+            </span>${badge}</div>`;
+        }
         return `${head}<button type="button" class="cmdk-item${i === active ? " is-active" : ""}${it.explore ? " cmdk-explore" : ""}" data-cmdk-i="${i}"><span class="cmdk-item-name">${escapeHtml(it.name)}</span>${badge}</button>`;
       }).join("") || `<p class="cmdk-empty">${escapeHtml(t("cmdk.empty"))}</p>`;
     }
@@ -720,6 +836,8 @@
       // Baixa o índice dos 2 jogos no 1º uso; quando chegar, re-renderiza a busca atual.
       loadCmdkIndex().then(() => { if (overlay && overlay.isConnected) renderList(input.value.trim()); });
       overlay.addEventListener("click", (e) => {
+        const add = e.target.closest("[data-cmdk-add]");
+        if (add) { doCmdkAdd(add); return; } // add inline: NÃO navega nem fecha
         const item = e.target.closest("[data-cmdk-i]");
         if (item) { go(Number(item.dataset.cmdkI)); return; }
         if (!e.target.closest(".cmdk-panel")) close(); // clique fora fecha
@@ -736,6 +854,7 @@
       if ((e.ctrlKey || e.metaKey) && String(e.key).toLowerCase() === "k") { e.preventDefault(); if (overlay) close(); else open(); return; }
       if (e.key === "Escape" && overlay) close();
     });
+    cmdkOpen = open; // a bottom-bar mobile (e futuros botões) abre a paleta por aqui
   }
 
   // Marca-d'água "Ctrl+K" nas buscas de página, pro atalho ser descoberto.
@@ -858,13 +977,15 @@
   }
 
   // Soma o valor (variante padrão, NM) de uma lista de cartas, na moeda atual.
+  // `unpriced` = quantas ficaram FORA da soma por não terem preço (a soma é um
+  // piso "≥" quando unpriced > 0 — quem consome decide como sinalizar).
   function sumCardsValue(cards, prices) {
-    let total = 0;
+    let total = 0, unpriced = 0;
     (cards || []).forEach((card) => {
       const v = cardValue(card, defaultVariant(card), prices, DEFAULT_CONDITION);
-      if (v && v.value) total += v.value;
+      if (v && v.value) total += v.value; else unpriced++;
     });
-    return { value: total, currency: currentCurrency };
+    return { value: total, currency: currentCurrency, unpriced };
   }
 
   const MESSAGES = window.TCG_MESSAGES || {};
@@ -1030,6 +1151,35 @@
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") closeAll();
     });
+
+    buildMobileTabbar(active, exploreActive, collectionActive);
+  }
+
+  // Bottom-bar fixa no MOBILE (feel de app/PWA): 5 destinos de dedo — Início,
+  // Explorar (sets), Coleção, Busca (paleta) e Portfólio. Só aparece ≤700px
+  // (CSS); o body ganha padding-bottom pra nada ficar escondido atrás dela.
+  function buildMobileTabbar(active, exploreActive, collectionActive) {
+    if (document.querySelector(".mobile-tabbar")) return;
+    const ic = {
+      home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>',
+      explore: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg>',
+      collection: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="12" height="16" rx="2" transform="rotate(-8 10 14)"/><rect x="9" y="4" width="12" height="16" rx="2" transform="rotate(6 15 12)"/></svg>',
+      search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>',
+      portfolio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="m4 15 5-6 4 3 6-8"/></svg>'
+    };
+    const tab = (href, label, icon, isActive) =>
+      `<a class="mtab${isActive ? " active" : ""}" href="${href}"><span class="mtab-ic" aria-hidden="true">${ic[icon]}</span><span class="mtab-label">${escapeHtml(label)}</span></a>`;
+    const bar = document.createElement("nav");
+    bar.className = "mobile-tabbar";
+    bar.setAttribute("aria-label", t("nav.menu"));
+    bar.innerHTML =
+      tab("index.html", t("nav.home"), "home", active === "home" || active === "hub")
+      + tab("sets.html", t("tabbar.explore"), "explore", exploreActive && active !== "hub")
+      + tab("collection.html", t("tabbar.collection"), "collection", collectionActive)
+      + `<button type="button" class="mtab" data-mtab-search><span class="mtab-ic" aria-hidden="true">${ic.search}</span><span class="mtab-label">${escapeHtml(t("tabbar.search"))}</span></button>`
+      + tab("portfolio.html", t("nav.portfolio"), "portfolio", active === "portfolio");
+    document.body.appendChild(bar);
+    bar.querySelector("[data-mtab-search]").addEventListener("click", () => { if (cmdkOpen) cmdkOpen(); });
   }
 
   // Menu hambúrguer no mobile: agrupa a navegação e as ações num drawer
@@ -2022,6 +2172,54 @@
     if (head && !section.querySelector(".price-delta")) head.insertAdjacentHTML("afterend", priceDeltaChipHtml(pct, d.from));
   }
 
+  // --- Histórico de preço (série DIÁRIA do build, sem servidor) ---
+  // price-history.generated.json: { d: [datas], c: { id: { s: "u"|"e"|"b", p } } }.
+  // Pesado no Pokémon (~260KB gz) → baixado 1x por jogo SÓ quando um preview
+  // abre (o SW guarda no DATA_CACHE; as visitas seguintes são locais).
+  const priceHistoryByGame = {};
+  function loadPriceHistory(game) {
+    const g = normalizeGame(game);
+    if (!priceHistoryByGame[g]) {
+      priceHistoryByGame[g] = fetch(gameDataDir(g) + "price-history.generated.json")
+        .then((r) => (r.ok ? r.json() : null)).catch(() => null);
+    }
+    return priceHistoryByGame[g];
+  }
+  // Moeda da série pelo `s` da fonte (u=TCGplayer USD, e=Cardmarket EUR, b=MYP BRL).
+  const HISTORY_CUR = { u: "USD", e: "EUR", b: "BRL" };
+  async function fillPriceHistory(section, card, fx) {
+    const h = await loadPriceHistory(card.game || currentGame());
+    if (!h || !h.c || !section.isConnected) return;
+    const entry = h.c[card.id] || h.c[basePricingId(card.id)];
+    if (!entry || !Array.isArray(entry.p)) return;
+    const pts = [];
+    (h.d || []).forEach((date, i) => { const v = entry.p[i]; if (v != null && v > 0) pts.push([date, v]); });
+    if (pts.length < 3) return; // série curta demais (o acumulador cresce 1 ponto/dia)
+    const cur = getCurrency();
+    const conv = (v) => { const r = toChosenCurrency(v, HISTORY_CUR[entry.s] || "USD", fx); return r == null ? v : r; };
+    const vals = pts.map((p) => conv(p[1]));
+    const W = 560, H = 120, P = 6;
+    let mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
+    if (mn === mx) { mn *= 0.95; mx = mx * 1.05 || 1; }
+    const X = (i) => P + (i / (vals.length - 1)) * (W - 2 * P);
+    const Y = (v) => H - P - ((v - mn) / (mx - mn)) * (H - 2 * P);
+    const line = vals.map((v, i) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
+    const first = vals[0], last = vals[vals.length - 1];
+    const color = last >= first ? "#34d399" : "#f0883e";
+    const fmtDay = (s) => { const m = /^\d{4}-(\d{2})-(\d{2})/.exec(s); return m ? `${m[2]}/${m[1]}` : s; };
+    if (!section.isConnected || section.querySelector(".price-history")) return;
+    section.insertAdjacentHTML("beforeend",
+      `<div class="market-finish price-history"><span class="market-finish-label">${escapeHtml(t("market.history", { n: pts.length }))}</span>
+        <div class="price-history-chart">
+          <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${escapeAttribute(t("market.history", { n: pts.length }))}">
+            <defs><linearGradient id="phg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.25"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
+            <polygon points="${X(0).toFixed(1)},${(H - P).toFixed(1)} ${line} ${X(vals.length - 1).toFixed(1)},${(H - P).toFixed(1)}" fill="url(#phg)"/>
+            <polyline points="${line}" fill="none" stroke="${color}" stroke-width="2"/>
+          </svg>
+          <div class="price-history-meta"><span>${escapeHtml(`${fmtDay(pts[0][0])} · ${fmtMoney(cur, first)}`)}</span><span>${escapeHtml(`${fmtDay(pts[pts.length - 1][0])} · ${fmtMoney(cur, last)}`)}</span></div>
+        </div></div>`);
+  }
+
   // Busca cotação + câmbio e preenche a seção no modal (some se não houver).
   async function fillMarketQuote(card) {
     const section = document.querySelector("#cardPreviewModal [data-market-quote]");
@@ -2033,6 +2231,7 @@
       section.innerHTML = html;
       section.hidden = false;
       fillPriceDelta(section, card); // ▲▼ % da semana, quando o histórico existir
+      fillPriceHistory(section, card, fx); // gráfico da série diária, se houver
     } else {
       section.hidden = true;
     }
@@ -3210,6 +3409,17 @@
     return chunks;
   }
 
+  // Skeletons: cards fantasma enquanto os chunks do catálogo baixam (o layout
+  // aparece na hora; percepção de velocidade no 3G). O primeiro render real
+  // substitui tudo (os renders fazem grid.innerHTML = ""). kind: "card" | "set".
+  function showSkeletons(grid, kind, count) {
+    if (!grid || grid.children.length) return;
+    const one = kind === "set"
+      ? '<div class="skel skel-set" aria-hidden="true"><div class="skel-art"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>'
+      : '<div class="skel skel-card" aria-hidden="true"><div class="skel-img"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>';
+    grid.innerHTML = new Array(count || 12).fill(one).join("");
+  }
+
   function setIdForCard(cardId, setIds) {
     let match = "";
     setIds.forEach((setId) => {
@@ -3511,6 +3721,7 @@
     loadCatalog,
     loadCatalogForCardIds,
     loadOwnedAcrossGames,
+    showSkeletons,
     loadAllGamesCatalog,
     mergedCollectionStore,
     mergedWishlistStore,

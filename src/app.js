@@ -51,6 +51,9 @@
   // catálogo INTEIRO a cada tecla). Invalidado quando algo muda no preview
   // (posse/preço manual) — o único caminho de edição nesta página.
   const setValueMemo = new Map();
+  // Custo pra completar (valor das cartas que FALTAM): depende da posse, então
+  // é invalidado junto no onOwnedChange.
+  const setMissingMemo = new Map();
 
   const preview = shared.createCardPreview({
     getCard: (cardId) => cardsById.get(cardId),
@@ -59,6 +62,7 @@
     wishlist,
     onOwnedChange: () => {
       setValueMemo.clear();
+      setMissingMemo.clear();
       // Se a grade tem tiles de carta, atualiza posse in-place (re-renderizar
       // tudo fazia as imagens piscarem/recarregarem a cada +/− no preview).
       const tiles = elements.grid.querySelectorAll(".card-tile");
@@ -80,6 +84,8 @@
   const catalogPromise = view === "pokedex"
     ? Promise.resolve(shared.loadIndexesOnly())
     : shared.loadCatalog(cardLang);
+  // Skeletons enquanto os chunks baixam (a Pokédex é instantânea: só índices).
+  if (view !== "pokedex" && elements.grid) shared.showSkeletons(elements.grid, view === "sets" ? "set" : "card", 12);
 
   // Na página de Sets, carrega o câmbio junto (pro valor total do set já sair
   // convertido na moeda escolhida).
@@ -529,6 +535,15 @@
     const valueHtml = item.value > 0
       ? `<span class="set-value">${escapeHtml(shared.formatMoney(shared.getCurrency(), item.value))}</span>`
       : "";
+    // Custo pra completar: só em set INCOMPLETO com faltante precificado. Com
+    // cartas sem preço na conta, o valor é um piso ("≥").
+    const m = item.missing;
+    let missingHtml = "";
+    if (m && m.count > 0 && item.ownedCount > 0 && m.value > 0) {
+      const cost = `${m.unpriced > 0 ? "≥ " : "≈ "}${shared.formatMoney(shared.getCurrency(), m.value)}`;
+      const hint = t("set.missingHint", { n: m.count }) + (m.unpriced > 0 ? " " + t("set.missingUnpriced", { u: m.unpriced }) : "");
+      missingHtml = `<div class="set-missing" title="${escapeAttribute(hint)}">${escapeHtml(t("set.missingCost", { n: m.count, v: cost }))}</div>`;
+    }
     article.innerHTML = `
       <a class="set-art-link" href="${escapeAttribute(detailUrl("set", item.name))}" aria-label="${escapeAttribute(item.name)}">
         <div class="set-art">
@@ -549,6 +564,7 @@
           <span class="set-count">${item.ownedCount}/${item.totalCount} · ${progress}%</span>
           ${valueHtml}
         </div>
+        ${missingHtml}
       </div>
     `;
 
@@ -607,6 +623,16 @@
     return setValueMemo.get(name);
   }
 
+  // Custo pra completar: soma do mercado das cartas que você NÃO tem no set.
+  function memoSetMissing(name, sortedCards) {
+    if (!setMissingMemo.has(name)) {
+      const missing = sortedCards.filter((card) => !owned.has(card.id));
+      const sum = shared.sumCardsValue(missing, prices);
+      setMissingMemo.set(name, { count: missing.length, value: sum.value, unpriced: sum.unpriced });
+    }
+    return setMissingMemo.get(name);
+  }
+
   function toSetItem(group) {
     const sortedCards = group.cards.slice().sort((a, b) => shared.compareCardNumbers(a.number, b.number));
     const sample = sortedCards[0] || {};
@@ -620,6 +646,7 @@
       ownedCount: sortedCards.filter((card) => owned.has(card.id)).length,
       officialTotal: sample.setTotal || sortedCards.length,
       value: memoSetValue(group.name, sortedCards),
+      missing: memoSetMissing(group.name, sortedCards),
       logo: sample.setLogo || "",
       symbol: sample.setSymbol || "",
       releaseDate: sample.setReleaseDate || "",
