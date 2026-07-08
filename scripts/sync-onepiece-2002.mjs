@@ -20,7 +20,7 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { decodeEntities as decode, slug, readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, sleep } from "./lib/sync-common.mjs";
+import { decodeEntities as decode, slug, readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, sleep, writeGameCatalog } from "./lib/sync-common.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/onepiece/", ROOT);
@@ -152,14 +152,8 @@ async function run() {
   const indexes = { sets: [...bySet.entries()].map(([name, cardIds]) => ({ name, cardIds })).sort((a, b) => a.name.localeCompare(b.name)), artists: [] };
   const pricing = (await readGlobalVar(new URL("pricing.js", OUT), "TCG_PRICING")) || {};
 
-  await mkdir(OUT, { recursive: true });
-  const w = async (name, varName, value) => writeFile(new URL(name, OUT), `window.${varName} = ${JSON.stringify(value)};\n`, "utf8");
-  await w("cards.js", "TCG_CARDS", merged);
-  await w("manifest.generated.js", "TCG_CARDS", merged);
-  await w("indexes.js", "TCG_INDEXES", indexes);
-  await w("indexes.generated.js", "TCG_INDEXES", indexes);
-  await w("pricing.js", "TCG_PRICING", pricing);
-  await w("pricing.generated.js", "TCG_PRICING", pricing);
+  // Modo prod = manifest real + chunks por set (o front baixa sob demanda).
+  await writeGameCatalog(OUT, { cards: merged, indexes, pricing, webDir: "data/onepiece/" });
   console.log(`Gravado em ${fileURLToPath(OUT)} — ${merged.length} cartas totais.`);
 }
 

@@ -10,6 +10,7 @@
 //   node scripts/sync-lorcana.mjs
 import { writeFile, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
+import { writeGameCatalog } from "./lib/sync-common.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/lorcana/", ROOT);
@@ -184,18 +185,9 @@ async function run() {
     artists: groupBy((c) => c.artist || "Artista desconhecido")
   };
 
-  await mkdir(OUT, { recursive: true });
-  const wlabel = async (name, varname, value) => {
-    const js = `window.${varname} = ${JSON.stringify(value)};\n`;
-    await writeFile(new URL(name, OUT), js, "utf8");
-  };
-  await wlabel("cards.js", "TCG_CARDS", cards);
-  await wlabel("manifest.generated.js", "TCG_CARDS", cards); // modo prod do game.js
-  await wlabel("indexes.js", "TCG_INDEXES", indexes);
-  await wlabel("indexes.generated.js", "TCG_INDEXES", indexes);
-  await wlabel("pricing.js", "TCG_PRICING", pricing);
-  await wlabel("pricing.generated.js", "TCG_PRICING", pricing);
-  console.log(`Gravado em ${fileURLToPath(OUT)} (cards/indexes/pricing + .generated).`);
+  // Modo prod = manifest real + chunks por set (o front baixa sob demanda).
+  await writeGameCatalog(OUT, { cards, indexes, pricing, webDir: "data/lorcana/" });
+  console.log(`Gravado em ${fileURLToPath(OUT)} (cards/indexes/pricing + manifest/chunks).`);
 }
 
 run().catch((e) => { console.error("Falhou:", e); process.exit(1); });

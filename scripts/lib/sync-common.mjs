@@ -1,6 +1,6 @@
 // Helpers compartilhados dos scripts de sync/build de catálogo. Sem dependências.
 // Cada jogo novo deve custar ~1 arquivo pequeno usando estas peças.
-import { writeFile, readFile, mkdir } from "node:fs/promises";
+import { writeFile, readFile, mkdir, rm } from "node:fs/promises";
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -70,17 +70,56 @@ export function buildSetIndexes(cards) {
   };
 }
 
-// Escreve o catálogo completo de um jogo (cards/indexes/pricing + .generated).
-export async function writeGameCatalog(outDirUrl, { cards, indexes, pricing }) {
+// Escreve o catálogo completo de um jogo, nos DOIS modos que o front conhece:
+//   dev  -> cards.js/indexes.js/pricing.js (versionados; catálogo inteiro)
+//   prod -> manifest.generated.js = window.TCG_MANIFEST (só a LISTA de sets) +
+//           chunks por set em <dir>/sets/<slug>.json + indexes/pricing .generated
+// Antes o manifest.generated era uma CÓPIA integral do cards.js: toda página de
+// Lorcana/One Piece parseava o catálogo inteiro (One Piece = 3,6MB de JS). Com o
+// manifest real, os loaders do shared.js (game-agnósticos, provados no Pokémon)
+// baixam só os chunks necessários.
+export async function writeGameCatalog(outDirUrl, { cards, indexes, pricing, webDir }) {
   await mkdir(outDirUrl, { recursive: true });
   const w = (name, varName, value) => writeFile(new URL(name, outDirUrl), `window.${varName} = ${JSON.stringify(value)};\n`, "utf8");
   const idx = indexes || buildSetIndexes(cards);
   await w("cards.js", "TCG_CARDS", cards);
-  await w("manifest.generated.js", "TCG_CARDS", cards);
   await w("indexes.js", "TCG_INDEXES", idx);
   await w("indexes.generated.js", "TCG_INDEXES", idx);
   await w("pricing.js", "TCG_PRICING", pricing || {});
   await w("pricing.generated.js", "TCG_PRICING", pricing || {});
+
+  // Caminho do diretório NA URL DO SITE (o manifest.file é fetch()ado pelo
+  // navegador da raiz): explícito via webDir ou inferido do path físico.
+  const dir = webDir || (() => {
+    const m = decodeURIComponent(outDirUrl.pathname).match(/\/(data\/.*)$/);
+    return m ? m[1].replace(/\/?$/, "/") : "data/";
+  })();
+
+  // Um chunk por setId (arquivo = slug; colisão pós-slug ganha sufixo). O
+  // diretório é recriado do zero pra não sobrar chunk órfão de set removido.
+  const bySet = new Map();
+  for (const c of cards) {
+    const key = String(c.setId || c.set || "sem-set");
+    if (!bySet.has(key)) bySet.set(key, []);
+    bySet.get(key).push(c);
+  }
+  const setsDir = new URL("sets/", outDirUrl);
+  await rm(setsDir, { recursive: true, force: true });
+  await mkdir(setsDir, { recursive: true });
+  const used = new Set();
+  const manifestSets = [];
+  for (const [setId, chunk] of bySet) {
+    const base = slug(setId) || "set";
+    let f = base, i = 2;
+    while (used.has(f)) f = `${base}-${i++}`;
+    used.add(f);
+    await writeFile(new URL(`${f}.json`, setsDir), JSON.stringify(chunk), "utf8");
+    manifestSets.push({
+      id: setId, name: chunk[0].set || String(setId), count: chunk.length,
+      language: chunk[0].language || "en", file: `${dir}sets/${f}.json`
+    });
+  }
+  await w("manifest.generated.js", "TCG_MANIFEST", { generatedAt: new Date().toISOString(), sets: manifestSets });
 }
 
 // Snapshot versionado (fontes-fã frágeis): lê/escreve data/vintage/<nome>.json.

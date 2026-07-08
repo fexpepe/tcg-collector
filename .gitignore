@@ -9,6 +9,8 @@ data/lorcana/*.generated.json
 data/onepiece/*.generated.js
 data/onepiece/*.generated.json
 data/sets/
+# Chunks por set dos outros jogos (gerados por writeGameCatalog no build)
+data/*/sets/
 
 # Páginas de set pré-renderizadas p/ SEO (geradas no build por scripts/prerender-catalog.mjs)
 set/

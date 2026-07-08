@@ -18,6 +18,7 @@
 //   node scripts/sync-onepiece.mjs
 import { writeFile, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
+import { writeGameCatalog } from "./lib/sync-common.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/onepiece/", ROOT);
@@ -234,17 +235,9 @@ async function run() {
     artists: []
   };
 
-  await mkdir(OUT, { recursive: true });
-  const wlabel = async (name, varname, value) => {
-    await writeFile(new URL(name, OUT), `window.${varname} = ${JSON.stringify(value)};\n`, "utf8");
-  };
-  await wlabel("cards.js", "TCG_CARDS", cards);
-  await wlabel("manifest.generated.js", "TCG_CARDS", cards); // modo prod do game.js
-  await wlabel("indexes.js", "TCG_INDEXES", indexes);
-  await wlabel("indexes.generated.js", "TCG_INDEXES", indexes);
-  await wlabel("pricing.js", "TCG_PRICING", pricing);
-  await wlabel("pricing.generated.js", "TCG_PRICING", pricing);
-  console.log(`Gravado em ${fileURLToPath(OUT)} (cards/indexes/pricing + .generated).`);
+  // Modo prod = manifest real + chunks por set (o front baixa sob demanda).
+  await writeGameCatalog(OUT, { cards, indexes, pricing, webDir: "data/onepiece/" });
+  console.log(`Gravado em ${fileURLToPath(OUT)} (cards/indexes/pricing + manifest/chunks).`);
 }
 
 await run();

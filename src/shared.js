@@ -3000,11 +3000,29 @@
     const manifest = window.TCG_MANIFEST;
     if (!manifest || !Array.isArray(manifest.sets)) return loadCatalog();
     const setIds = manifest.sets.map((set) => set.id);
+    const setIdSet = new Set(setIds);
     const needed = new Set();
+    const unresolved = [];
     (cardIds || []).forEach((id) => {
       const setId = setIdForCard(id, setIds);
-      if (setId) needed.add(setId);
+      if (setId && setIdSet.has(setId)) needed.add(setId);
+      else unresolved.push(id);
     });
+    // Ids cujo prefixo NÃO é o setId (One Piece: op-<produtoId>): resolve pelo
+    // índice name->cardIds (indexes.generated.js, que o game.js já carregou) e
+    // casa o nome do set com as entradas do manifest.
+    if (unresolved.length && window.TCG_INDEXES && Array.isArray(window.TCG_INDEXES.sets)) {
+      const want = new Set(unresolved);
+      const byName = new Map();
+      manifest.sets.forEach((set) => {
+        if (!byName.has(set.name)) byName.set(set.name, []);
+        byName.get(set.name).push(set.id);
+      });
+      window.TCG_INDEXES.sets.forEach((ix) => {
+        if (!(ix.cardIds || []).some((id) => want.has(id))) return;
+        (byName.get(ix.name) || []).forEach((sid) => needed.add(sid));
+      });
+    }
     const sets = manifest.sets.filter((set) => needed.has(set.id));
     const cards = await fetchSetChunks(sets);
     return { cards, indexes: window.TCG_INDEXES || null, manifest };
