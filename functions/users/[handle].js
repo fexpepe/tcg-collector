@@ -34,13 +34,20 @@ export async function onRequestGet(context) {
 
   const name = (prof.display_name || ("@" + handle)).trim();
   const items = (prof.data.collection && Array.isArray(prof.data.collection.items)) ? prof.data.collection.items : [];
-  const copies = items.reduce((s, it) => s + (it.q || 1), 0);
+  const slabs = (prof.data.graded && Array.isArray(prof.data.graded.items)) ? prof.data.graded.items : [];
   const distinct = items.length;
-  const value = prof.show_values ? items.reduce((s, it) => s + (Number(it.vbrl) || 0) * (it.q || 1), 0) : 0;
+  // Valor = cartas raw (vbrl sempre BRL) + slabs em BRL (gv tem moeda própria;
+  // sem câmbio na borda, moeda diferente fica de fora — aproxima a menor).
+  let value = 0;
+  if (prof.show_values) {
+    value = items.reduce((s, it) => s + (Number(it.vbrl) || 0) * (it.q || 1), 0)
+      + slabs.reduce((s, it) => s + (((it.cur || "BRL") === "BRL" ? Number(it.gv) : 0) || 0), 0);
+  }
   const url = "https://sleevu.app/users/" + handle;
 
   const title = `${name} (@${handle}) · Sleevu`;
   let desc = `${distinct} cartas`;
+  if (slabs.length) desc += ` · ${slabs.length} slab${slabs.length > 1 ? "s" : ""}`;
   if (value > 0) desc += ` · ${moneyBR(value)}`;
   desc += ` — veja a coleção${(prof.data.sales && prof.data.sales.items && prof.data.sales.items.length) ? " e a lista de Vendas e Trocas" : ""} de ${name} no Sleevu.`;
 
@@ -57,8 +64,14 @@ export async function onRequestGet(context) {
   // og:image = carta mais valiosa do perfil (items já vem ordenado por valor desc),
   // pulando .avif (Lorcana) que WhatsApp/Facebook não renderizam como preview.
   // Imagem real → renderiza em todo lugar, ao contrário do .svg genérico.
-  const ogPick = items.find((it) => it.img && !/\.avif(\?|$)/i.test(it.img)) || items[0];
-  const ogImage = (ogPick && ogPick.img) || null;
+  // ABSOLUTIZA o caminho: img pode ser relativo (ex.: data/onepiece/vintage-images/
+  // x.webp) e og:image relativo é ignorado pelos crawlers — o preview sumia
+  // justamente pra quem tem uma vintage como carta mais valiosa. Preferência por
+  // png/jpg (webp ainda falha no preview do WhatsApp); senão o primeiro não-avif.
+  const absImg = (u) => /^https?:\/\//i.test(u) ? u : "https://sleevu.app/" + String(u).replace(/^\/+/, "");
+  const usable = items.filter((it) => it.img && !/\.avif(\?|$)/i.test(it.img));
+  const ogPick = usable.find((it) => /\.(png|jpe?g)(\?|$)/i.test(it.img)) || usable[0];
+  const ogImage = ogPick ? absImg(ogPick.img) : null;
   const remove = { element(el) { el.remove(); } };
 
   let rw = new HTMLRewriter()
