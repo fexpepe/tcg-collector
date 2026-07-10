@@ -1885,14 +1885,28 @@
   // Cada carta/set já tem a imagem no seu próprio idioma (indicado pela
   // bandeira), então a imagem é renderizada como veio do catálogo — sem trocar
   // o idioma da URL pelo idioma da interface.
+  // Variante MENOR pra grades nos hosts SEM o parâmetro de qualidade da TCGdex:
+  // TCGplayer (One Piece/JP) serve _in_400x400 nativa (~70% menor que a
+  // 1000x1000; 400px cobre tile em tela 2x) e o Lorcast serve /normal/ (~34%
+  // menor que /large/). onerror volta pra original via cadeia de fallback.
+  function gridThumbUrl(u) {
+    if (u.indexOf("tcgplayer-cdn.tcgplayer.com") >= 0) return u.replace("_in_1000x1000.jpg", "_in_400x400.jpg");
+    if (u.indexOf("cards.lorcast.io") >= 0) return u.replace("/card/digital/large/", "/card/digital/normal/");
+    return u;
+  }
+
   function localizedImg(url, options) {
     if (!url) return "";
     const { alt = "", className = "", loading = "", thumb = false, fallback = "" } = options || {};
     const classAttr = className ? ` class="${escapeAttribute(className)}"` : "";
     const loadingAttr = loading ? ` loading="${loading}"` : "";
-    const src = tcgdexAssetUrl(url, thumb ? "low" : "");
+    let src = tcgdexAssetUrl(url, thumb ? "low" : "");
     const chain = [];
-    if (src !== url) chain.push(url); // webp -> png original (mesmo host)
+    if (thumb) {
+      const small = gridThumbUrl(src);
+      if (small !== src) { chain.push(src); src = small; } // thumb -> tamanho cheio
+    }
+    if (src !== url && chain.indexOf(url) < 0) chain.push(url); // webp -> png original (mesmo host)
     (Array.isArray(fallback) ? fallback : [fallback]).forEach((entry) => { if (entry) chain.push(entry); });
     const fallbackAttr = chain.length
       ? ` data-img-fallbacks="${escapeAttribute(chain.join("|"))}"`

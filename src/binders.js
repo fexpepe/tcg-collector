@@ -592,7 +592,7 @@
     let coverHtml = `<span class="binder-card-cover-empty">${escapeHtml((binder.name || "?").charAt(0).toUpperCase())}</span>`;
     if (cover) {
       if (cover.photoId) coverHtml = `<img class="binder-card-cover-img" data-photo-id="${escapeAttribute(cover.photoId)}" alt="">`;
-      else if (cover.image) coverHtml = localizedImg(cover.image, { className: "binder-card-cover-img", alt: "", fallback: cover.fallback || "", loading: "lazy" });
+      else if (cover.image) coverHtml = localizedImg(cover.image, { className: "binder-card-cover-img", alt: "", fallback: cover.fallback || "", loading: "lazy", thumb: true });
     }
     const typeTag = `<span class="binder-card-type">${escapeHtml(t(isSaleBinder(binder) ? "binders.type.sale" : "binders.type.collection"))}</span>`;
     return `
@@ -822,7 +822,7 @@
     if (slot.photoId) {
       media = `<img class="binder-slot-img" data-photo-id="${escapeAttribute(slot.photoId)}" alt="${escapeAttribute(title)}">`;
     } else if (slot.image) {
-      media = localizedImg(slot.image, { className: "binder-slot-img", alt: title, fallback: slot.fallback || "", loading: "lazy" });
+      media = localizedImg(slot.image, { className: "binder-slot-img", alt: title, fallback: slot.fallback || "", loading: "lazy", thumb: true });
     } else {
       media = `<span class="binder-slot-free">${escapeHtml(title || "—")}</span>`;
     }
@@ -1982,7 +1982,7 @@
     }
     const title = slot.cardId ? cardLabelFromSlot(slot) : (slot.label || "");
     const media = slot.image
-      ? localizedImg(slot.image, { className: "binder-slot-img", alt: title, fallback: slot.fallback || "", loading: "lazy" })
+      ? localizedImg(slot.image, { className: "binder-slot-img", alt: title, fallback: slot.fallback || "", loading: "lazy", thumb: true })
       : `<span class="binder-slot-free">${escapeHtml(title || "—")}</span>`;
     return `<div class="binder-slot binder-slot-filled" title="${escapeAttribute(title)}">${media}</div>`;
   }
