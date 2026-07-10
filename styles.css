@@ -3773,6 +3773,19 @@ a.progress-row:hover {
 .explore-subnav { margin: -8px 0 18px; }
 .explore-subnav .chip { text-decoration: none; display: inline-flex; align-items: center; }
 
+/* Conquistas (hub de perfil): grade de badges; travada = esmaecida + progresso. */
+.ach-card { margin-top: 18px; }
+.ach-heading { margin: 0 0 12px; font-size: 17px; }
+.ach-count { color: var(--muted); font-size: 14px; font-weight: 700; }
+.ach-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.ach { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; padding: 12px 8px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); opacity: 0.45; }
+.ach.is-done { opacity: 1; border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-soft); }
+.ach-emoji { font-size: 26px; }
+.ach.is-done .ach-emoji { filter: none; }
+.ach:not(.is-done) .ach-emoji { filter: grayscale(1); }
+.ach-label { font-size: 12px; font-weight: 700; color: var(--text); }
+.ach-progress { font-size: 11px; color: var(--muted); }
+
 /* Página de Novidades + bolinha "novo" nos links do changelog. */
 .news-list { max-width: 720px; }
 .news-day { margin-bottom: 22px; }
