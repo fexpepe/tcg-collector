@@ -140,29 +140,26 @@ jobs:
       - name: Lint dos catálogos
         run: node scripts/lint-catalog.mjs
 
-      # Durabilidade: versiona o catálogo Pokémon VALIDADO de volta no repo.
-      # Junto com a união preservadora do sync-tcgdex ("carta que some da API é
-      # mantida"), garante que carta indexada nunca desaparece — se a TCGdex
-      # morrer, o catálogo congela, mas nenhum item de portfólio some. Só na
-      # main; [skip ci] evita loop de deploy.
-      - name: Versiona snapshot do catálogo Pokémon
+      # Durabilidade: versiona o catálogo VALIDADO de volta no repo (chunks do
+      # Pokémon + cards/indexes/pricing dos outros jogos; o .gitignore filtra
+      # caches e .generated). Junto com a união preservadora do sync-tcgdex
+      # ("carta que some da API é mantida"), garante que carta indexada nunca
+      # desaparece — API morreu = catálogo congela, nenhum item de portfólio
+      # some. Só na main; o marcador skip-ci na mensagem evita loop de deploy.
+      # Push direto, sem rebase (o workspace do build fica sujo de propósito):
+      # numa race com push manual, pula — o próximo build versiona.
+      - name: Versiona snapshot do catálogo
         if: github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/sets
+          git add data
           if git diff --cached --quiet; then
             echo "Catálogo sem mudanças — nada a versionar."
           else
-            git commit -m "Catálogo Pokémon: snapshot automático do build [skip ci]"
-            # Race com push manual durante o build não pode derrubar o deploy:
-            # falhou, aborta o rebase e segue — o próximo build versiona.
-            if git pull --rebase origin main && git push origin HEAD:main; then
-              echo "Snapshot versionado."
-            else
-              git rebase --abort 2>/dev/null || true
-              echo "Snapshot não versionado desta vez (race); o deploy segue normal."
-            fi
+            git commit -m "Catálogo: snapshot automático do build [skip ci]"
+            git push origin HEAD:main && echo "Snapshot versionado." \
+              || echo "Push rejeitado (race com outro push); o próximo build versiona."
           fi
 
       # SEO: pré-renderiza uma página HTML estática por set — Pokémon, Lorcana e
