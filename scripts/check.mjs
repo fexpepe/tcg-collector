@@ -42,7 +42,11 @@ for (const k of enKeys) if (!ptKeys.has(k)) fail(`i18n: "${k}" existe em en mas 
 // 4) Chaves usadas DIRETO — t("x"), tn("x"), data-i18n*="x" — que não existem.
 //    (Pega o bug clássico: t("set.officialCards") sem a chave definida.)
 const haystack = [...srcFiles, ...htmlFiles].map(read).join("\n");
-const dynPrefixes = [...haystack.matchAll(/["'`]([a-zA-Z0-9_.]+)\.\$\{/g)].map((m) => m[1] + ".");
+// Prefixo dinâmico nas DUAS formas: template (`x.${k}`) e concatenação ("x." + k).
+const dynPrefixes = [
+  ...[...haystack.matchAll(/["'`]([a-zA-Z0-9_.]+)\.\$\{/g)].map((m) => m[1] + "."),
+  ...[...haystack.matchAll(/["']([a-zA-Z0-9_.]+)\.["']\s*\+/g)].map((m) => m[1] + ".")
+];
 const skip = (k) => dynPrefixes.some((p) => k.startsWith(p));
 // t("x") e data-i18n="x" exigem "x". tn("x") exige "x.one" e "x.other" (plural).
 const tUsed = new Set();

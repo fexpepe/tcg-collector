@@ -122,6 +122,13 @@ export async function writeGameCatalog(outDirUrl, { cards, indexes, pricing, web
   await w("manifest.generated.js", "TCG_MANIFEST", { generatedAt: new Date().toISOString(), sets: manifestSets });
 }
 
+// União preservadora: cartas do catálogo ANTERIOR que sumiram do novo são
+// mantidas (append no fim). Carta indexada nunca some — API removeu = congela.
+export function preserveMissingCards(previousCards, newCards) {
+  const have = new Set((newCards || []).map((c) => c && c.id).filter(Boolean));
+  return (previousCards || []).filter((c) => c && c.id && !have.has(c.id));
+}
+
 // Snapshot versionado (fontes-fã frágeis): lê/escreve data/vintage/<nome>.json.
 // A regra de ouro: o build SEMPRE parte do snapshot; o fetch da fonte só
 // ATUALIZA o snapshot quando responde e não regride (menos cartas = suspeito).

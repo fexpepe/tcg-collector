@@ -1,5 +1,6 @@
 import { writeFile, readFile, mkdir, readdir } from "node:fs/promises";
 import { parseArgs } from "node:util";
+import { preserveMissingCards } from "./lib/sync-common.mjs";
 
 const { values: options, positionals } = parseArgs({
   allowPositionals: true,
@@ -113,8 +114,7 @@ for (const [index, set] of sets.entries()) {
   const setCards = entry.cards.map((rawCard) => toAppCard(rawCard, language, entry.set));
   // Cartas que EXISTIAM no chunk versionado e sumiram da API: preserva no fim.
   const chunkFile = new URL(`${set.id}.json`, chunksDir);
-  const haveIds = new Set(setCards.map((c) => c.id));
-  const kept = (await readExistingChunk(chunkFile)).filter((c) => c && c.id && !haveIds.has(c.id));
+  const kept = preserveMissingCards(await readExistingChunk(chunkFile), setCards);
   if (kept.length) { setCards.push(...kept); preservedCards += kept.length; }
   if (!setCards.length) continue; // sets sem cartas na TCGdex (comuns em ja/zh antigos)
   cards.push(...setCards);
