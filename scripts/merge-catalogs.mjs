@@ -51,6 +51,26 @@ for (const chunk of chunksByLang.en || []) {
   }
 }
 
+// dexId FALTANTE: a TCGdex às vezes não preenche a cauda de secret rares dos
+// sets JP/CN (ex.: SV8a 188–237 — a Umbreon ex SAR vinha sem dexId). Sem dexId a
+// carta não canoniza o pokemonName, então fica FORA da página da espécie, da
+// Pokédex e da busca por nome EN. Aprende nomeLocal→dex com as cartas que TÊM
+// dexId (qualquer idioma: "ブラッキー"→197) e preenche as órfãs pelo nome.
+// Nome ambíguo (2 dex diferentes) é descartado — preencher errado é pior.
+const dexByLocalName = new Map();
+for (const lang of langs) {
+  for (const chunk of chunksByLang[lang] || []) {
+    for (const card of chunk.cards) {
+      const dex = speciesDexId(card);
+      if (!dex || !card.pokemonName) continue;
+      const cur = dexByLocalName.get(card.pokemonName);
+      if (cur == null) dexByLocalName.set(card.pokemonName, dex);
+      else if (cur !== dex) dexByLocalName.set(card.pokemonName, -1); // ambíguo
+    }
+  }
+}
+let dexBackfilled = 0;
+
 // Número nacional da espécie; dexIds fracionários de forma (Rayquaza ☆ = 384.1)
 // pertencem à espécie da parte inteira.
 function speciesDexId(card) {
@@ -112,6 +132,12 @@ for (const lang of langs) {
       }
     }
     for (const card of chunk.cards) {
+      // Backfill do dexId pelo nome local ANTES da canonização (Trainer/Energy
+      // ficam fora: um treinador homônimo de espécie não pode virar Pokémon).
+      if (!speciesDexId(card) && card.pokemonName && card.category !== "Trainer" && card.category !== "Energy") {
+        const dex = dexByLocalName.get(card.pokemonName);
+        if (dex && dex > 0) { card.dexId = dex; dexBackfilled++; changed = true; }
+      }
       const canonical = speciesByDex.get(speciesDexId(card));
       if (canonical && card.pokemonName !== canonical) {
         card.pokemonName = canonical;
@@ -235,6 +261,7 @@ await writeFile(new URL("manifest.generated.js", dataDir), `window.TCG_MANIFEST 
 await writeFile(new URL("pricing.generated.js", dataDir), `window.TCG_PRICING = ${JSON.stringify(pricing)};\n`, "utf8");
 
 if (pptNewCards.length) console.log(`Cartas novas da PPT (add-on-miss) injetadas: ${injectedNew}/${pptNewCards.length}`);
+if (dexBackfilled) console.log(`dexId preenchido pelo nome local (secret rares JP/CN sem metadado): ${dexBackfilled}`);
 console.log(`Mesclados: ${allCards.length} cartas, ${manifestSets.length} sets (${langs.join(", ")})`);
 console.log(`Preços de referência: ${Object.keys(pricing).length} cartas`);
 console.log(`Espécies canônicas conhecidas: ${speciesByDex.size}`);
