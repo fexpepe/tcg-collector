@@ -1321,13 +1321,32 @@
   const THEME_KEY = "tcg-collector-theme-v1";
   const THEME_SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>';
   const THEME_MOON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
-  function getTheme() {
+  // Preferência CRUA: "light" | "dark" | "auto" (sem escolha salva = auto).
+  function getThemePref() {
     try {
       const saved = localStorage.getItem(THEME_KEY);
       if (saved === "light" || saved === "dark") return saved;
     } catch (e) { /* ignora */ }
-    return "light"; // padrão claro (dia) em todo o ecossistema
+    return "auto";
   }
+  function systemTheme() {
+    try { return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; }
+    catch (e) { return "light"; }
+  }
+  // Tema EFETIVO em uso (auto resolve pro tema do sistema).
+  function getTheme() {
+    const pref = getThemePref();
+    return pref === "auto" ? systemTheme() : pref;
+  }
+  // Em auto, mudar o tema do SISTEMA (dia/noite do aparelho) reflete na hora.
+  try {
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+      if (getThemePref() === "auto") {
+        applyTheme(systemTheme());
+        document.dispatchEvent(new CustomEvent("sleevu:theme"));
+      }
+    });
+  } catch (e) { /* matchMedia sem addEventListener (muito antigo): ignora */ }
   function applyTheme(theme) {
     const root = document.documentElement;
     if (theme === "light") root.setAttribute("data-theme", "light");
@@ -1354,12 +1373,14 @@
     btn.addEventListener("click", () => setTheme(getTheme() === "light" ? "dark" : "light"));
     actions.appendChild(btn);
   }
-  // Troca o tema (claro/escuro) e avisa quem reflete o estado (botão do topo +
-  // a tela de Configurações). Usado pelo toggle do topo e pelo seletor de Settings.
+  // Troca o tema e avisa quem reflete o estado (botão do topo + Configurações).
+  // "auto" LIMPA a escolha salva (volta a seguir o sistema); claro/escuro salvam.
   function setTheme(theme) {
-    const v = theme === "light" ? "light" : "dark";
-    try { localStorage.setItem(THEME_KEY, v); } catch (e) { /* ignora */ }
-    applyTheme(v);
+    try {
+      if (theme === "auto") localStorage.removeItem(THEME_KEY);
+      else localStorage.setItem(THEME_KEY, theme === "light" ? "light" : "dark");
+    } catch (e) { /* ignora */ }
+    applyTheme(getTheme());
     document.dispatchEvent(new CustomEvent("sleevu:theme"));
   }
   // Idioma e moeda recarregam (re-renderizam tudo); os setters abaixo são usados
@@ -3690,6 +3711,7 @@
     normalizeGame,
     gameDataDir,
     getTheme,
+    getThemePref,
     setTheme,
     setLanguage,
     setCurrency,

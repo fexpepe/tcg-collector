@@ -14,8 +14,9 @@
   --panel-strong: #20242d;
   --text: #f3f5f7;
   --muted: #9ba4b3;
-  --subtle: #747d8d;
+  --subtle: #8891a1; /* AA 4.5+: era #747d8d (4.15 sobre o panel) */
   --line: #2d333f;
+  --money: #7ee2b8; /* verde de valores (R$) — legível no escuro (11:1) */
   /* Tema escuro (padrão): accent VERMELHO (Pokémon), pra consolidar a cor do jogo
      nos DOIS temas. Lorcana (roxo) e neutro vêm dos overrides [data-game-accent]. */
   --accent: #ef4444;
@@ -28,6 +29,10 @@
   --header-bg: rgba(13, 14, 18, 0.92);
 }
 
+/* Foco por TECLADO visível em qualquer interativo (a11y AA): anel na cor do
+   jogo. :focus-visible não dispara em clique/touch — só navegação por Tab. */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
 /* Tema claro: sobrescreve as variáveis. Aplicado via data-theme no <html>
    (theme.js no <head> evita o flash; o toggle vive no shared.js). */
 [data-theme="light"] {
@@ -38,8 +43,9 @@
   --panel-strong: #eef1f6;
   --text: #1b1f27;
   --muted: #5a6473;
-  --subtle: #828c9b;
+  --subtle: #6b7585; /* AA 4.5+: era #828c9b (3.4 sobre branco) */
   --line: #e2e6ed;
+  --money: #0c7a54; /* o verde-claro #7ee2b8 dava 1.56 sobre branco (ilegível) */
   /* No tema claro o accent vira VERMELHO (e tints dele via --accent-rgb). */
   --accent: #e23030;
   --accent-dark: #b81e1e;
@@ -1627,7 +1633,7 @@ input::placeholder {
   font-weight: 600;
 }
 .set-pill strong { color: var(--text); font-weight: 700; }
-.set-pill .set-value { color: #7ee2b8; }
+.set-pill .set-value { color: var(--money); }
 
 .set-footer {
   display: flex;
@@ -1639,7 +1645,7 @@ input::placeholder {
   font-size: 12px;
 }
 .set-footer .set-count { font-weight: 700; color: var(--text); white-space: nowrap; }
-.set-footer .set-value { color: #7ee2b8; font-weight: 700; white-space: nowrap; }
+.set-footer .set-value { color: var(--money); font-weight: 700; white-space: nowrap; }
 /* Histórico de preço no preview da carta (sparkline da série diária). */
 .price-history-chart svg { width: 100%; height: 92px; display: block; border-radius: 8px; background: var(--panel); border: 1px solid var(--line); }
 .price-history-meta { display: flex; justify-content: space-between; gap: 10px; margin-top: 5px; font-size: 12px; color: var(--muted); }
@@ -5617,7 +5623,7 @@ a.progress-row:hover {
 .binder-result-price {
   font-size: 0.76rem;
   font-weight: 700;
-  color: #7ee2b8;
+  color: var(--money);
 }
 .binder-result-price-none {
   color: var(--subtle);

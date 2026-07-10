@@ -79,11 +79,13 @@
   }
 
   // Tema — aplica na hora; o botão do topo se sincroniza via evento "sleevu:theme".
+  // O select mostra a PREFERÊNCIA (auto/claro/escuro), não o tema efetivo — em
+  // "auto" o site segue o sistema e o select continua dizendo "Automático".
   const theme = document.getElementById("settingTheme");
   if (theme) {
-    theme.value = shared.getTheme();
+    theme.value = shared.getThemePref();
     theme.addEventListener("change", () => shared.setTheme(theme.value));
-    document.addEventListener("sleevu:theme", () => { theme.value = shared.getTheme(); });
+    document.addEventListener("sleevu:theme", () => { theme.value = shared.getThemePref(); });
   }
 
   // Notificações: aviso semanal de quedas da wishlist (web push; precisa de conta

@@ -1,13 +1,13 @@
-// Aplica o tema salvo (claro/escuro) o quanto antes — script SÍNCRONO no <head>
-// pra não piscar (o CSP 'self' impede inline). O toggle e a persistência ficam no
-// shared.js. Padrão CLARO (dia) em todo o site; a preferência salva pelo usuário
-// sempre vence.
+// Aplica o tema o quanto antes — script SÍNCRONO no <head> pra não piscar (o
+// CSP 'self' impede inline). O toggle e a persistência ficam no shared.js.
+// Preferência salva vence; sem escolha = AUTO (segue o tema do sistema, como
+// os apps nativos). O shared.js escuta a mudança do sistema quando em auto.
 (function () {
   try {
     var saved = localStorage.getItem("tcg-collector-theme-v1");
-    // Padrão CLARO (dia) em todo o ecossistema (hub/poke/lorcana). Preferência
-    // salva pelo usuário sempre vence.
-    var theme = (saved === "light" || saved === "dark") ? saved : "light";
+    var theme = (saved === "light" || saved === "dark")
+      ? saved
+      : (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     if (theme === "light") {
       document.documentElement.setAttribute("data-theme", "light");
     }
