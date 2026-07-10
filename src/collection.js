@@ -1323,7 +1323,11 @@
         return !gs || gs.size === 0 || gs.has(gameFilter);
       });
       sections = visible.map((f) => ({ folder: f, games: folderGames.get(f.id), pairs: applyFolderOrder(f.id, groups.get(f.id) || []) }));
-      const noneTiles = applyFolderOrder("__none__", groups.get("__none__") || []);
+      // "Sem coleção" OBEDECE o seletor Ordenar (os tiles já chegam ordenados):
+      // é o bucket não-curado por definição. Ordem manual (arraste/‹›) fica só
+      // nas coleções de verdade — antes, uma ordem manual antiga salva aqui
+      // atropelava o Ordenar pra sempre e o usuário achava que ele quebrou.
+      const noneTiles = groups.get("__none__") || [];
       if (noneTiles.length) sections.push({ folder: null, games: null, pairs: noneTiles });
     }
     elements.folderSections.innerHTML = sections.map(({ folder, pairs, games }) => folderSectionHtml(folder, pairs, games)).join("");
@@ -1333,9 +1337,9 @@
       if (!grid) return;
       pairs.forEach((pair) => {
         const node = makeTile(pair);
-        node.draggable = true;
-        // Setas ‹ › sobre a imagem (bordas, centralizadas; só no hover no desktop).
-        (node.querySelector(".card-image") || node).appendChild(reorderControl());
+        node.draggable = true; // arrastável mesmo no "Sem coleção" (pra soltar numa coleção)
+        // Setas ‹ › só nas coleções (o "Sem coleção" segue o Ordenar, não tem ordem manual).
+        if (folder) (node.querySelector(".card-image") || node).appendChild(reorderControl());
         grid.appendChild(node);
       });
     });
@@ -1352,6 +1356,7 @@
   }
 
   function moveCardInFolder(section, cardId, dir) {
+    if (!section.dataset.folderId) return; // "Sem coleção": sem ordem manual
     const ids = sectionCardIds(section);
     const i = ids.indexOf(cardId), j = i + dir;
     if (i < 0 || j < 0 || j >= ids.length) return;
@@ -1544,6 +1549,9 @@
       const targetBucket = section.dataset.folderId || "__none__";
       const sourceBucket = folders.folderOf(cardId) || "__none__";
       if (targetBucket === sourceBucket) {
+        // "Sem coleção" não tem ordem manual (segue o Ordenar): soltar dentro
+        // dela mesma é no-op — salvar uma ordem ignorada só confundiria.
+        if (targetBucket === "__none__") { draggingId = null; return; }
         // Mesma pasta → reordenar. Posição = antes do tile-alvo (ou depois, se
         // soltar na metade direita); fora de um tile = vai pro fim.
         const targetTile = event.target.closest(".card-tile");
