@@ -1153,6 +1153,33 @@
     });
 
     buildMobileTabbar(active, exploreActive, collectionActive);
+    buildExploreSubnav(active);
+  }
+
+  // Submenu FIXO do Explorar, logo abaixo do título das páginas de jogo
+  // (Todas as cartas / Sets / Pokédex / Treinadores / Artistas — só o que o
+  // jogo tem): navega entre as visões do catálogo sem abrir o menu de cima.
+  // Mesmo registro de páginas do mega-menu; chips reaproveitados (ativa = accent).
+  const EXPLORE_SUBNAV = {
+    pokemon: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"], ["pokedex.html", "nav.pokedex", "pokedex"], ["trainers.html", "nav.trainers", "trainers"], ["artists.html", "nav.artists", "artists"]],
+    lorcana: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"], ["artists.html", "nav.artists", "artists"]],
+    onepiece: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"]]
+  };
+  function buildExploreSubnav(active) {
+    const game = currentGame();
+    if (game === "hub" || document.querySelector(".explore-subnav")) return;
+    const pages = EXPLORE_SUBNAV[game] || EXPLORE_SUBNAV.pokemon;
+    // Só nas telas do Explorar (o `active` do detail já resolve pro tipo certo).
+    if (!pages.some(([, , page]) => page === active)) return;
+    const head = document.querySelector(".page-head");
+    if (!head) return;
+    const nav = document.createElement("nav");
+    nav.className = "explore-subnav chip-filter";
+    nav.setAttribute("aria-label", t("nav.explore"));
+    nav.innerHTML = pages.map(([href, key, page]) =>
+      `<a class="chip" href="${href}?game=${game}" aria-pressed="${page === active}"${page === active ? ' aria-current="page"' : ""}>${escapeHtml(t(key))}</a>`
+    ).join("");
+    head.insertAdjacentElement("afterend", nav);
   }
 
   // Bottom-bar fixa no MOBILE (feel de app/PWA): 5 destinos de dedo — Início,
