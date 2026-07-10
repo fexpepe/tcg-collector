@@ -73,6 +73,14 @@
             <option value="" data-i18n="filter.all.f">Todas</option>
           </select>
         </div>
+        <div class="price-range-field">
+          <label for="priceMin" data-i18n="toolbar.priceRange">Preço</label>
+          <div class="price-range">
+            <input id="priceMin" type="text" inputmode="decimal" placeholder="mín" aria-label="Preço mínimo">
+            <span aria-hidden="true">–</span>
+            <input id="priceMax" type="text" inputmode="decimal" placeholder="máx" aria-label="Preço máximo">
+          </div>
+        </div>
         <div class="sort-select">
           <label for="cardsSortSelect" data-i18n="sort.label">Ordenar:</label>
           <select id="cardsSortSelect">

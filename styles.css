@@ -3773,6 +3773,11 @@ a.progress-row:hover {
 .explore-subnav { margin: -8px 0 18px; }
 .explore-subnav .chip { text-decoration: none; display: inline-flex; align-items: center; }
 
+/* Faixa de preço do Explorar (min–máx na moeda do topo). */
+.price-range { display: flex; align-items: center; gap: 6px; }
+.price-range input { width: 74px; min-width: 0; }
+.price-range span { color: var(--subtle); }
+
 /* Modos de progresso do set (master set / qualquer idioma). */
 .progress-modes { display: flex; gap: 18px; flex-wrap: wrap; margin: 10px 0 2px; }
 .progress-mode { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--muted); cursor: pointer; }

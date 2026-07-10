@@ -24,9 +24,54 @@
     setFilter: document.getElementById("setFilter"),
     languageFilter: document.getElementById("languageFilter"),
     rarityFilter: document.getElementById("rarityFilter"),
+    priceMin: document.getElementById("priceMin"),
+    priceMax: document.getElementById("priceMax"),
     cardsSortSelect: document.getElementById("cardsSortSelect"),
     cardsViewToggle: document.getElementById("cardsViewToggle")
   };
+
+  // Faixa de preço na MOEDA DO TOPO (aceita vírgula decimal). Vazio = sem limite.
+  function parsePrice(el) {
+    if (!el) return null;
+    const v = parseFloat(String(el.value || "").replace(/[^\d.,]/g, "").replace(",", "."));
+    return Number.isFinite(v) && v >= 0 ? v : null;
+  }
+  // Valor de mercado memoizado por carta (ordenar/filtrar por preço varre o
+  // catálogo inteiro — sem memo seria uma conversão de moeda por comparação).
+  let priceMemo = new Map();
+  function priceOf(card) {
+    if (!priceMemo.has(card.id)) {
+      priceMemo.set(card.id, shared.cardValue(card, shared.defaultVariant(card), prices).value || 0);
+    }
+    return priceMemo.get(card.id);
+  }
+
+  // Filtros ↔ URL (deep-link compartilhável): lê os params no boot e regrava
+  // com replaceState a cada mudança. ?q= já existia (busca global).
+  const URL_FILTERS = [["set", "setFilter"], ["lang", "languageFilter"], ["rarity", "rarityFilter"], ["pmin", "priceMin"], ["pmax", "priceMax"]];
+  function readFiltersFromUrl() {
+    const sp = new URLSearchParams(window.location.search);
+    URL_FILTERS.forEach(([param, key]) => {
+      const v = sp.get(param);
+      if (v != null && elements[key]) elements[key].value = v;
+    });
+    const sort = sp.get("sort");
+    if (sort && CARDS_SORTS.includes(sort)) {
+      cardsSort = sort;
+      if (elements.cardsSortSelect) elements.cardsSortSelect.value = sort;
+    }
+  }
+  function writeFiltersToUrl() {
+    const sp = new URLSearchParams(window.location.search);
+    const q = elements.search.value.trim();
+    if (q) sp.set("q", q); else sp.delete("q");
+    URL_FILTERS.forEach(([param, key]) => {
+      const v = elements[key] ? String(elements[key].value || "").trim() : "";
+      if (v) sp.set(param, v); else sp.delete(param);
+    });
+    sp.set("sort", cardsSort);
+    try { history.replaceState(null, "", `${window.location.pathname}?${sp}`); } catch (e) { /* ignora */ }
+  }
 
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
 
@@ -51,9 +96,11 @@
       owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
       hydrateFilters();
       bindEvents();
-      // Deep-link de busca (?q=...): usado pela busca global (Ctrl+K) de outras páginas.
+      // Deep-links: ?q= (busca global) + filtros/ordenação da URL (links
+      // compartilháveis — os selects já têm as opções após o hydrate).
       const q = new URLSearchParams(window.location.search).get("q");
       if (q && elements.search) elements.search.value = q;
+      readFiltersFromUrl();
       render();
     })
     .catch((error) => {
@@ -78,17 +125,22 @@
   }
 
   function bindEvents() {
-    const apply = () => render({ resetCount: true });
+    const apply = () => { writeFiltersToUrl(); render({ resetCount: true }); };
     elements.search.addEventListener("input", debounce(apply, 200));
     [elements.setFilter, elements.languageFilter, elements.rarityFilter].forEach((element) => {
       element.addEventListener("input", apply);
     });
+    [elements.priceMin, elements.priceMax].forEach((element) => {
+      if (element) element.addEventListener("input", debounce(apply, 300));
+    });
+    // (Trocar a moeda do topo recarrega a página — o memo de preço renasce.)
 
     if (elements.cardsSortSelect) {
       elements.cardsSortSelect.value = cardsSort;
       elements.cardsSortSelect.addEventListener("change", () => {
         cardsSort = elements.cardsSortSelect.value;
         localStorage.setItem("tcg-cards-sort", cardsSort);
+        writeFiltersToUrl();
         render({ resetCount: true });
       });
     }
@@ -120,18 +172,27 @@
   // Só busca quando há texto na busca ou um filtro de set/raridade ativo. Sem
   // isso, a página fica "vazia" (placeholder do futuro "em alta").
   function isSearching() {
-    return !!(elements.search.value.trim() || elements.setFilter.value || elements.rarityFilter.value);
+    return !!(elements.search.value.trim() || elements.setFilter.value || elements.rarityFilter.value
+      || parsePrice(elements.priceMin) != null || parsePrice(elements.priceMax) != null);
   }
 
   function filterCards() {
     const setValue = elements.setFilter.value;
     const languageValue = elements.languageFilter.value;
     const rarityValue = elements.rarityFilter.value;
+    const pMin = parsePrice(elements.priceMin);
+    const pMax = parsePrice(elements.priceMax);
     return cards.filter((card) => {
-      return shared.matchesCardQuery(card, elements.search.value)
-        && (!setValue || card.set === setValue)
-        && (!languageValue || card.language === languageValue)
-        && (!rarityValue || card.rarity === rarityValue);
+      if (!shared.matchesCardQuery(card, elements.search.value)) return false;
+      if (setValue && card.set !== setValue) return false;
+      if (languageValue && card.language !== languageValue) return false;
+      if (rarityValue && card.rarity !== rarityValue) return false;
+      if (pMin != null || pMax != null) {
+        const v = priceOf(card);
+        if (pMin != null && v < pMin) return false;
+        if (pMax != null && (v > pMax || v <= 0)) return false; // sem preço não entra em "até X"
+      }
+      return true;
     });
   }
 
