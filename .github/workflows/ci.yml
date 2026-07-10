@@ -28,7 +28,7 @@ jobs:
           node-version: 22
 
       - name: Testes unitários (node:test)
-        run: node --test tests/sync-common.test.mjs tests/shared-stores.test.mjs
+        run: node --test tests/sync-common.test.mjs tests/shared-stores.test.mjs tests/csv-import.test.mjs
 
       - name: Testes do merge de sync (LWW + tombstones)
         run: node scripts/test-sync-merge.mjs
