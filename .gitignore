@@ -15,6 +15,7 @@ data/*/sets/
 
 # Páginas de set pré-renderizadas p/ SEO (geradas no build por scripts/prerender-catalog.mjs)
 set/
+card/
 
 # Key local da PokemonPriceTracker (só pra teste local; NUNCA versionar)
 .ppt.key

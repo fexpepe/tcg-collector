@@ -242,13 +242,128 @@ function setPageHtml(page, canonical, otherSets) {
 `;
 }
 
-function buildSitemap(setPages) {
+function buildSitemap(setPages, cardPages) {
   const urls = [
     ...STATIC_URLS.map((p) => (p === "/" ? ORIGIN + "/" : ORIGIN + p)),
-    ...setPages.map((s) => `${ORIGIN}/set/${s.slug}`)
+    ...setPages.map((s) => `${ORIGIN}/set/${s.slug}`),
+    ...(cardPages || []).map((c) => `${ORIGIN}/card/${c.slug}`)
   ];
   const body = urls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+}
+
+// ── Páginas de CARTA individual (top por preço + mais vistas) ────────────────
+// O Pokellector domina o Google em busca de carta ("Umbreon ex 161 price");
+// geramos /card/<slug>.html só pras ~1500 mais relevantes: as mais valiosas
+// (pricing do build) + as mais vistas (card_views do Supabase, leitura pública).
+const CARD_OUT_DIR = "card";
+const MAX_CARD_PAGES = 1500;
+const SUPABASE_URL = "https://dlnalopazitfdgnmdguu.supabase.co";
+const SUPABASE_ANON = "sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"; // pública
+
+async function loadPricingTable(dir) {
+  const v = await readGlobalVar(new URL(`../${dir}pricing.generated.js`, import.meta.url), "TCG_PRICING");
+  return v || {};
+}
+function refPriceUSD(entry) {
+  if (!entry) return 0;
+  if (entry.u > 0) return entry.u;
+  if (entry.e > 0) return entry.e * 1.1; // EUR ~ USD pra RANQUEAR (não exibimos convertido)
+  return 0;
+}
+async function fetchTopViews() {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/card_views?select=game,card_id,views&order=views.desc&limit=600`, {
+      headers: { apikey: SUPABASE_ANON }, signal: AbortSignal.timeout(15000)
+    });
+    return r.ok ? await r.json() : [];
+  } catch { return []; }
+}
+
+function cardPageHtml(cp) {
+  const { card, setPage, slug, priceUSD } = cp;
+  const gameLabel = setPage.gameLabel;
+  const canonical = `${ORIGIN}/card/${slug}`;
+  const codeBit = card.number ? ` ${card.number}` : "";
+  // Nome CJK ganha a espécie EN entre parênteses (busca em pt/en acha igual).
+  const enBit = card.pokemonName && !/^[\x00-\x7F]/.test(card.name) ? ` (${card.pokemonName})` : "";
+  const title = `${card.name}${enBit}${codeBit} — ${setPage.name} (${gameLabel}) | preço e coleção | Sleevu`;
+  const priceBit = priceUSD > 0 ? ` Preço de referência: US$ ${priceUSD.toFixed(2)}.` : "";
+  const desc = `${card.name}${codeBit} do set ${setPage.name} de ${gameLabel}.${priceBit} Veja a imagem, acompanhe o preço e marque na sua coleção grátis no Sleevu.`;
+  const img = absUrl(card.image) || "";
+  const appUrl = `/detail.html?type=set&name=${encodeURIComponent(setPage.name)}&game=${setPage.game}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: `${card.name}${codeBit} — ${setPage.name}`,
+    image: img || undefined,
+    description: desc,
+    brand: { "@type": "Brand", name: gameLabel },
+    url: canonical
+  };
+  if (priceUSD > 0) {
+    jsonLd.offers = { "@type": "AggregateOffer", priceCurrency: "USD", lowPrice: priceUSD.toFixed(2), offerCount: 1, availability: "https://schema.org/InStock" };
+  }
+  return `<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="${CSP}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>${escapeHtml(title)}</title>
+    <meta name="description" content="${escapeAttr(desc)}">
+    <link rel="canonical" href="${escapeAttr(canonical)}">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="${escapeAttr(canonical)}">
+    <meta property="og:title" content="${escapeAttr(`${card.name}${codeBit} — ${setPage.name}`)}">
+    <meta property="og:description" content="${escapeAttr(desc)}">
+    ${img ? `<meta property="og:image" content="${escapeAttr(img)}">` : ""}
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0d0e12">
+    <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
+    <script src="/src/theme.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+      .prc-wrap { max-width: 900px; margin: 0 auto; padding: 0 20px 48px; }
+      .prc-hero { display: flex; gap: 26px; flex-wrap: wrap; margin-top: 26px; }
+      .prc-img { width: min(320px, 80vw); height: auto; border-radius: 12px; background: var(--panel, #1a1c22); }
+      .prc-info h1 { margin: 0 0 6px; font-size: 1.5rem; }
+      .prc-sub { color: var(--muted, #9aa0aa); margin: 0 0 12px; }
+      .prc-price { font-size: 1.25rem; font-weight: 800; margin: 8px 0 2px; }
+      .prc-price-note { color: var(--muted, #9aa0aa); font-size: 12.5px; margin: 0 0 14px; }
+      .prc-cta { display: inline-block; margin-top: 8px; padding: 10px 18px; border-radius: 10px; background: var(--accent, #e63946); color: var(--on-accent, #fff); font-weight: 600; text-decoration: none; }
+      .prc-setlink { margin-top: 22px; }
+      .prc-setlink a { color: var(--accent, #e63946); }
+    </style>
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="/">Sleevu</a>
+        <nav class="page-nav" aria-label="Páginas">
+          <a href="/sets?game=${setPage.game}">Sets</a>
+          <a href="/collection">Minha Coleção</a>
+        </nav>
+      </div>
+    </header>
+    <main class="prc-wrap">
+      <div class="prc-hero">
+        ${img ? `<img class="prc-img" src="${escapeAttr(img)}" alt="${escapeAttr(`${card.name}${codeBit} — ${setPage.name}`)}" loading="eager" width="320" height="447">` : ""}
+        <div class="prc-info">
+          <h1>${escapeHtml(card.name)}${codeBit ? ` <small>${escapeHtml(card.number)}</small>` : ""}</h1>
+          <p class="prc-sub">${escapeHtml(`${gameLabel} · ${setPage.name}${card.rarity && card.rarity !== "None" ? ` · ${card.rarity}` : ""}`)}</p>
+          ${priceUSD > 0 ? `<p class="prc-price">US$ ${priceUSD.toFixed(2)}</p><p class="prc-price-note">Preço de referência de mercado (atualizado semanalmente). No Sleevu você vê em reais e acompanha o histórico.</p>` : ""}
+          <a class="prc-cta" href="${escapeAttr(appUrl)}">Marcar na minha coleção</a>
+          <p class="prc-setlink">Ver o set completo: <a href="/set/${escapeAttr(setPage.slug)}">${escapeHtml(setPage.name)}</a></p>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
+`;
 }
 
 async function main() {
@@ -294,9 +409,68 @@ async function main() {
     writeFileSync(join(OUT_DIR, `${page.slug}.html`), html, "utf8");
   }
 
-  writeFileSync("sitemap.xml", buildSitemap(pages), "utf8");
+  // Cartas top: ranqueia por preço (pricing do build) + mais vistas (Supabase).
+  const pricingByGame = {
+    pokemon: await loadPricingTable("data/"),
+    lorcana: await loadPricingTable("data/lorcana/"),
+    onepiece: await loadPricingTable("data/onepiece/")
+  };
+  const candidates = new Map(); // cardId|game -> { card, setPage, score }
+  for (const p of pages) {
+    const pricing = pricingByGame[p.game] || {};
+    for (const card of p.cards) {
+      const usd = refPriceUSD(pricing[card.id]);
+      if (usd <= 0) continue;
+      const k = `${p.game}|${card.id}`;
+      if (!candidates.has(k) || candidates.get(k).score < usd) {
+        candidates.set(k, { card, setPage: p, score: usd, priceUSD: usd });
+      }
+    }
+  }
+  let ranked = [...candidates.values()].sort((a, b) => b.score - a.score).slice(0, MAX_CARD_PAGES - 300);
+  // Mais vistas (até ~300 extras que não entraram por preço).
+  const views = await fetchTopViews();
+  const have = new Set(ranked.map((r) => `${r.setPage.game}|${r.card.id}`));
+  for (const v of views) {
+    if (ranked.length >= MAX_CARD_PAGES) break;
+    const k = `${v.game}|${v.card_id}`;
+    if (have.has(k)) continue;
+    for (const p of pages) {
+      if (p.game !== v.game) continue;
+      const card = p.cards.find((c) => c.id === v.card_id);
+      if (card) {
+        ranked.push({ card, setPage: p, score: 0, priceUSD: refPriceUSD((pricingByGame[p.game] || {})[card.id]) });
+        have.add(k);
+        break;
+      }
+    }
+  }
+  if (existsSync(CARD_OUT_DIR)) rmSync(CARD_OUT_DIR, { recursive: true, force: true });
+  mkdirSync(CARD_OUT_DIR, { recursive: true });
+  const cardSlugs = new Set();
+  const cardPages = [];
+  for (const cp of ranked) {
+    // Nome com CJK sluga mal ("ブラッキーex" -> "ex"): prefixa a espécie EN
+    // canônica (pokemonName pós-merge) pra URL legível (umbreon-ex-217).
+    const hasCjk = /[^\x00-\x7F]/.test(cp.card.name);
+    let nameSlug = hasCjk
+      ? slugify(`${cp.card.pokemonName || ""}-${cp.card.name}`)
+      : slugify(cp.card.name);
+    // Sobrou quase nada legível (pokemonName também CJK, ex.: Pokémon "de
+    // treinador" JP sem dexId): prefixa o setId pra URL ainda fazer sentido.
+    if (hasCjk && nameSlug.length < 4) nameSlug = slugify(`${cp.card.setId || ""}-${nameSlug}`) || nameSlug;
+    let base = slugify(`${nameSlug}-${cp.card.number || cp.card.id}`) || slugify(cp.card.id) || "carta";
+    let s = base, i = 2;
+    while (cardSlugs.has(s)) s = `${base}-${i++}`;
+    cardSlugs.add(s);
+    cp.slug = s;
+    writeFileSync(join(CARD_OUT_DIR, `${s}.html`), cardPageHtml(cp), "utf8");
+    cardPages.push({ slug: s });
+  }
+
+  writeFileSync("sitemap.xml", buildSitemap(pages, cardPages), "utf8");
   const perGame = GAMES.map((g) => `${g.slug} ${pages.filter((p) => p.game === g.slug).length}`).join(" · ");
-  console.log(`prerender-catalog: ${pages.length} páginas de set em /${OUT_DIR}/ (${perGame}) + sitemap.xml (${STATIC_URLS.length + pages.length} URLs).`);
+  console.log(`prerender-catalog: ${pages.length} páginas de set em /${OUT_DIR}/ (${perGame}) + ${cardPages.length} páginas de carta em /${CARD_OUT_DIR}/ + sitemap.xml (${STATIC_URLS.length + pages.length + cardPages.length} URLs).`);
 }
 
 await main();
