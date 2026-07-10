@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write # o build commita o snapshot do catálogo Pokémon de volta (ver passo "Versiona")
 
 # Opta as actions JS para o Node 24 (o runner vai forçar isso a partir de
 # 16/09/2026); evita o aviso de deprecação do Node 20.
@@ -139,6 +139,31 @@ jobs:
       # catálogo zerado) — contrapeso dos "|| echo" de resiliência acima.
       - name: Lint dos catálogos
         run: node scripts/lint-catalog.mjs
+
+      # Durabilidade: versiona o catálogo Pokémon VALIDADO de volta no repo.
+      # Junto com a união preservadora do sync-tcgdex ("carta que some da API é
+      # mantida"), garante que carta indexada nunca desaparece — se a TCGdex
+      # morrer, o catálogo congela, mas nenhum item de portfólio some. Só na
+      # main; [skip ci] evita loop de deploy.
+      - name: Versiona snapshot do catálogo Pokémon
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/sets
+          if git diff --cached --quiet; then
+            echo "Catálogo sem mudanças — nada a versionar."
+          else
+            git commit -m "Catálogo Pokémon: snapshot automático do build [skip ci]"
+            # Race com push manual durante o build não pode derrubar o deploy:
+            # falhou, aborta o rebase e segue — o próximo build versiona.
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              echo "Snapshot versionado."
+            else
+              git rebase --abort 2>/dev/null || true
+              echo "Snapshot não versionado desta vez (race); o deploy segue normal."
+            fi
+          fi
 
       # SEO: pré-renderiza uma página HTML estática por set — Pokémon, Lorcana e
       # One Piece — em /set/<slug>.html (title, meta, Open Graph, JSON-LD e a lista

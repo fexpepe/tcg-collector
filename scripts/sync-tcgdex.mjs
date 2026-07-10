@@ -1,4 +1,4 @@
-import { writeFile, readFile, mkdir } from "node:fs/promises";
+import { writeFile, readFile, mkdir, readdir } from "node:fs/promises";
 import { parseArgs } from "node:util";
 
 const { values: options, positionals } = parseArgs({
@@ -92,6 +92,16 @@ await mkdir(cacheDir, { recursive: true });
 
 await mkdir(chunksDir, { recursive: true });
 
+// União PRESERVADORA: carta indexada nunca some do catálogo. Se a TCGdex parar
+// de listar uma carta (ou um set inteiro), a versão já versionada no repo é
+// mantida — no pior caso ela congela sem update de preço/imagem. É a garantia
+// de que um item marcado no portfólio de alguém não desaparece embaixo dele.
+async function readExistingChunk(fileUrl) {
+  try { const a = JSON.parse(await readFile(fileUrl, "utf8")); return Array.isArray(a) ? a : []; } catch { return []; }
+}
+let preservedCards = 0;
+let preservedSets = 0;
+
 const cards = [];
 const manifestSets = [];
 const seenSetIds = new Set();
@@ -101,16 +111,39 @@ for (const [index, set] of sets.entries()) {
   const label = `[${index + 1}/${sets.length}] ${set.id}`;
   const entry = await loadSetCards(set.id, label);
   const setCards = entry.cards.map((rawCard) => toAppCard(rawCard, language, entry.set));
+  // Cartas que EXISTIAM no chunk versionado e sumiram da API: preserva no fim.
+  const chunkFile = new URL(`${set.id}.json`, chunksDir);
+  const haveIds = new Set(setCards.map((c) => c.id));
+  const kept = (await readExistingChunk(chunkFile)).filter((c) => c && c.id && !haveIds.has(c.id));
+  if (kept.length) { setCards.push(...kept); preservedCards += kept.length; }
   if (!setCards.length) continue; // sets sem cartas na TCGdex (comuns em ja/zh antigos)
   cards.push(...setCards);
 
-  await writeFile(new URL(`${set.id}.json`, chunksDir), JSON.stringify(setCards), "utf8");
+  await writeFile(chunkFile, JSON.stringify(setCards), "utf8");
   manifestSets.push({
     id: set.id,
     name: entry.set.name || set.id,
     count: setCards.length,
     file: `data/sets/${language}/${set.id}.json`
   });
+}
+
+// Set que sumiu da LISTA da TCGdex: o chunk versionado continua valendo — entra
+// no manifest/catálogo como estava (congelado), em vez de evaporar do site.
+try {
+  for (const f of await readdir(chunksDir)) {
+    if (!f.endsWith(".json")) continue;
+    const setId = f.replace(/\.json$/, "");
+    if (seenSetIds.has(setId)) continue;
+    const existing = await readExistingChunk(new URL(f, chunksDir));
+    if (!existing.length) continue;
+    cards.push(...existing);
+    manifestSets.push({ id: setId, name: existing[0].set || setId, count: existing.length, file: `data/sets/${language}/${f}` });
+    preservedSets++;
+  }
+} catch { /* diretório recém-criado */ }
+if (preservedCards || preservedSets) {
+  console.log(`Preservados do catálogo versionado (sumiram da API): ${preservedCards} cartas · ${preservedSets} sets inteiros`);
 }
 
 const manifest = {

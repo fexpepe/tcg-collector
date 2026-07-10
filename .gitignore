@@ -8,7 +8,8 @@ data/lorcana/*.generated.js
 data/lorcana/*.generated.json
 data/onepiece/*.generated.js
 data/onepiece/*.generated.json
-data/sets/
+# data/sets/ (chunks do Pokémon) é VERSIONADO de propósito: o deploy commita o
+# snapshot validado de volta (carta indexada nunca some, mesmo se a TCGdex sumir).
 # Chunks por set dos outros jogos (gerados por writeGameCatalog no build)
 data/*/sets/
 
