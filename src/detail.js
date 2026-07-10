@@ -54,8 +54,50 @@
     valueTotal: document.getElementById("valueTotal"),
     valueOwned: document.getElementById("valueOwned"),
     valueToBuy: document.getElementById("valueToBuy"),
-    resultCount: document.getElementById("resultCount")
+    resultCount: document.getElementById("resultCount"),
+    progressModes: document.getElementById("progressModes"),
+    modeMaster: document.getElementById("modeMaster"),
+    modeAnyLang: document.getElementById("modeAnyLang")
   };
+
+  // --- Modos de contagem do progresso (páginas de set) ---
+  // Master set: cada VARIANTE (Normal/Reverse/Holo…) é um slot próprio, como no
+  // tcgcollector.com. Qualquer idioma: a carta conta se QUALQUER versão de
+  // língua do mesmo slot for sua (EN/PT compartilham o id base "sv03.5-198" —
+  // quem mistura línguas fecha o set numa progressão só; o tile continua
+  // mostrando exatamente qual língua você tem). Preferências GLOBAIS.
+  const MASTER_KEY = "tcg-progress-master-v1";
+  const ANYLANG_KEY = "tcg-progress-anylang-v1";
+  let masterMode = localStorage.getItem(MASTER_KEY) === "1";
+  let anyLangMode = localStorage.getItem(ANYLANG_KEY) === "1";
+  // Índice base->ids POSSUÍDOS (qualquer língua), reconstruído a cada contagem
+  // (barato: percorre só o que você tem).
+  function ownedBaseIndex() {
+    const map = new Map();
+    owned.knownCardIds().forEach((id) => {
+      if (!owned.has(id)) return;
+      const b = shared.basePricingId(id);
+      if (!map.has(b)) map.set(b, []);
+      map.get(b).push(id);
+    });
+    return map;
+  }
+  function initProgressModes() {
+    if (detailType !== "set" || !elements.progressModes) return;
+    elements.progressModes.hidden = false;
+    elements.modeMaster.checked = masterMode;
+    elements.modeAnyLang.checked = anyLangMode;
+    elements.modeMaster.addEventListener("change", () => {
+      masterMode = elements.modeMaster.checked;
+      try { localStorage.setItem(MASTER_KEY, masterMode ? "1" : "0"); } catch (e) { /* ignora */ }
+      updateHeaderStats();
+    });
+    elements.modeAnyLang.addEventListener("change", () => {
+      anyLangMode = elements.modeAnyLang.checked;
+      try { localStorage.setItem(ANYLANG_KEY, anyLangMode ? "1" : "0"); } catch (e) { /* ignora */ }
+      updateHeaderStats();
+    });
+  }
 
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
   let selectedLanguage = "";
@@ -163,6 +205,7 @@
     if (elements.sortSelect) elements.sortSelect.value = selectedSort; // padrão: maior preço
     bindEvents();
     initQuickAdd();
+    initProgressModes();
     applyGridView();
     render();
   }
@@ -642,11 +685,45 @@
   }
 
   function updateHeaderStats() {
-    const ownedInPage = pageCards.filter((card) => owned.has(card.id)).length;
-    const pct = pageCards.length ? Math.round((ownedInPage / pageCards.length) * 100) : 0;
-    elements.ownedCount.textContent = ownedInPage;
-    elements.totalCount.textContent = pageCards.length;
+    const useModes = detailType === "set" && (masterMode || anyLangMode);
+    let ownedN, totalN;
+    if (!useModes) {
+      ownedN = pageCards.filter((card) => owned.has(card.id)).length;
+      totalN = pageCards.length;
+    } else {
+      // "Qualquer idioma": donos por id BASE (EN/PT do mesmo slot contam juntas).
+      const baseIdx = anyLangMode ? ownedBaseIndex() : null;
+      const idsOf = (card) => {
+        if (!anyLangMode) return [card.id];
+        return baseIdx.get(shared.basePricingId(card.id)) || [];
+      };
+      const cardOwned = (card) => (anyLangMode ? idsOf(card).length > 0 : owned.has(card.id));
+      if (!masterMode) {
+        ownedN = pageCards.filter(cardOwned).length;
+        totalN = pageCards.length;
+      } else {
+        // Master set: cada variante é um slot; possuída se qualquer id (da
+        // língua certa ou de qualquer uma, conforme o modo) tem a variante.
+        ownedN = 0; totalN = 0;
+        pageCards.forEach((card) => {
+          const variants = (card.variants && card.variants.length) ? card.variants : [shared.defaultVariant(card)];
+          totalN += variants.length;
+          const ids = anyLangMode ? idsOf(card) : [card.id];
+          variants.forEach((v) => {
+            if (ids.some((id) => owned.variantTotal(id, v) > 0)) ownedN++;
+          });
+        });
+      }
+    }
+    const pct = totalN ? Math.round((ownedN / totalN) * 100) : 0;
+    elements.ownedCount.textContent = ownedN;
+    elements.totalCount.textContent = totalN;
     elements.completionRate.textContent = `${pct}%`;
+    // Rótulos acompanham o modo (variantes ≠ cartas).
+    const ownedLabel = elements.ownedCount.nextElementSibling;
+    const totalLabel = elements.totalCount.nextElementSibling;
+    if (ownedLabel) ownedLabel.textContent = t(masterMode && detailType === "set" ? "master.slotsOwned" : "stats.owned");
+    if (totalLabel) totalLabel.textContent = t(masterMode && detailType === "set" ? "master.slotsTotal" : "stats.pageTotal");
     if (elements.completionFill) elements.completionFill.style.width = `${pct}%`;
     if (elements.completionBar) elements.completionBar.setAttribute("aria-valuenow", String(pct));
     updateValueStats();

@@ -3773,6 +3773,11 @@ a.progress-row:hover {
 .explore-subnav { margin: -8px 0 18px; }
 .explore-subnav .chip { text-decoration: none; display: inline-flex; align-items: center; }
 
+/* Modos de progresso do set (master set / qualquer idioma). */
+.progress-modes { display: flex; gap: 18px; flex-wrap: wrap; margin: 10px 0 2px; }
+.progress-mode { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--muted); cursor: pointer; }
+.progress-mode input { accent-color: var(--accent); width: 16px; height: 16px; }
+
 /* Modal de prévia do importador de CSV (reusa .ts-modal/.ts-panel). */
 .ts-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
 .csvimport-miss { margin: 10px 0; font-size: 13px; }

@@ -61,6 +61,15 @@
         </section>
         <div id="completionBar" class="completion-bar" role="progressbar" aria-label="Progresso do set" aria-valuemin="0" aria-valuemax="100"><span id="completionFill" class="completion-fill"></span></div>
 
+        <!-- Modos de contagem do progresso (páginas de set): master set conta
+             CADA variante como slot; "qualquer idioma" casa a carta base
+             (EN/PT do mesmo set contam juntas — quem mistura línguas fecha o
+             set numa progressão só). -->
+        <div id="progressModes" class="progress-modes" hidden>
+          <label class="progress-mode"><input type="checkbox" id="modeMaster"> <span data-i18n="master.toggle">Master set (contar variantes)</span></label>
+          <label class="progress-mode"><input type="checkbox" id="modeAnyLang"> <span data-i18n="master.anyLang">Contar qualquer idioma</span></label>
+        </div>
+
         <section id="quickAdd" class="quick-add" aria-label="Adição rápida por número" hidden>
           <div class="quick-add-row">
             <label for="quickAddInput" class="quick-add-label" data-i18n="quickadd.label">Adição rápida</label>
