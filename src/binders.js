@@ -1799,6 +1799,34 @@
     }
   });
 
+  // Virar folha como num fichário de verdade: SWIPE no celular (sobre o spread)
+  // e setas ← → no teclado. Reusa os botões ‹ › (respeita o disabled das pontas).
+  function flipPage(dir) {
+    const btn = elements.list.querySelector(dir < 0 ? "[data-page-prev]" : "[data-page-next]");
+    if (btn && !btn.disabled) btn.click();
+  }
+  let swipeX = null, swipeY = null;
+  elements.list.addEventListener("touchstart", (event) => {
+    if (!event.target.closest(".binder-spread")) { swipeX = null; return; }
+    swipeX = event.touches[0].clientX;
+    swipeY = event.touches[0].clientY;
+  }, { passive: true });
+  elements.list.addEventListener("touchend", (event) => {
+    if (swipeX == null) return;
+    const dx = event.changedTouches[0].clientX - swipeX;
+    const dy = event.changedTouches[0].clientY - swipeY;
+    swipeX = null;
+    // Gesto horizontal dominante (não rouba o scroll vertical).
+    if (Math.abs(dx) > 60 && Math.abs(dx) > 2 * Math.abs(dy)) flipPage(dx > 0 ? -1 : 1);
+  }, { passive: true });
+  document.addEventListener("keydown", (event) => {
+    if (elements.detail.hidden) return; // só com um binder aberto
+    const tag = (document.activeElement && document.activeElement.tagName) || "";
+    if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+    if (event.key === "ArrowLeft") flipPage(-1);
+    else if (event.key === "ArrowRight") flipPage(1);
+  });
+
   elements.list.addEventListener("change", (event) => {
     const gridSelect = event.target.closest("[data-binder-grid]");
     if (gridSelect) {
