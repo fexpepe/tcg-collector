@@ -1317,6 +1317,101 @@
     document.body.appendChild(footer);
   }
 
+  // --- Helpers PUROS de importação de CSV (Dex/TCGplayer/Collectr) ---
+  // No escopo do módulo de propósito: os testes (tests/csv-import.test.mjs)
+  // os capturam via sandbox. As partes com rede/UI vivem no menu da conta.
+  function mapDexVariant(v) {
+    const s = String(v || "").toLowerCase().trim();
+    if (!s || s === "normal") return "Normal";
+    if (s.indexOf("1st edition") >= 0) return "1st Edition";
+    if (s.indexOf("reverse") >= 0) return "Reverse";
+    if (s.indexOf("holo") >= 0) return "Holo";
+    return "Normal"; // promos diversos → carta base (Normal)
+  }
+  // Parser CSV com aspas (nomes têm vírgula: "Erika's Venusaur, Holo").
+  // Detecta o separador (vírgula/;/tab) pela linha do cabeçalho.
+  function parseCsvText(text) {
+    text = text.replace(/^﻿/, "");
+    const nl = text.indexOf("\n");
+    const firstLine = nl >= 0 ? text.slice(0, nl + 1) : text;
+    const sep = [",", ";", "\t"].map((s) => [s, firstLine.split(s).length - 1])
+      .sort((a, b) => b[1] - a[1])[0][0];
+    const rows = [];
+    let row = [], field = "", inQ = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (inQ) {
+        if (ch === '"') { if (text[i + 1] === '"') { field += '"'; i++; } else inQ = false; }
+        else field += ch;
+      } else if (ch === '"') inQ = true;
+      else if (ch === sep) { row.push(field); field = ""; }
+      else if (ch === "\n" || ch === "\r") {
+        if (ch === "\r" && text[i + 1] === "\n") i++;
+        row.push(field); field = "";
+        if (row.some((c) => c.trim() !== "")) rows.push(row);
+        row = [];
+      } else field += ch;
+    }
+    row.push(field);
+    if (row.some((c) => c.trim() !== "")) rows.push(row);
+    return rows;
+  }
+  // Acha o índice de cada campo por SINÔNIMOS de cabeçalho (case-insensitive).
+  function mapCsvHeader(header) {
+    const h = header.map((c) => String(c || "").trim().toLowerCase());
+    const find = (...names) => {
+      for (const n of names) { const i = h.indexOf(n); if (i >= 0) return i; }
+      return -1;
+    };
+    return {
+      qty: find("quantity", "qty", "count", "quantidade", "amount"),
+      name: find("card name", "product name", "name", "card", "nome", "simple name"),
+      set: find("set name", "set", "expansion", "edition", "coleção"),
+      number: find("card number", "collector number", "number", "num", "número", "no."),
+      variant: find("printing", "variance", "variant", "finish", "foil"),
+      condition: find("condition", "cond", "condição"),
+      language: find("language", "lang", "idioma"),
+      game: find("game", "category", "tcg", "jogo")
+    };
+  }
+  function mapCsvCondition(c) {
+    const s = String(c || "").toLowerCase();
+    if (!s || s.indexOf("near") >= 0 || s === "nm") return "NM";
+    if (s.indexOf("mint") === 0 || s === "m") return "M";
+    if (s.indexOf("light") >= 0 || s === "sp" || s === "lp" || s.indexOf("slightly") >= 0 || s.indexOf("excellent") >= 0) return "SP";
+    if (s.indexOf("moderate") >= 0 || s === "mp" || s.indexOf("played") === 0 || s.indexOf("good") >= 0) return "MP";
+    if (s.indexOf("heav") >= 0 || s === "hp") return "HP";
+    if (s.indexOf("damag") >= 0 || s === "d" || s.indexOf("poor") >= 0) return "D";
+    return "NM";
+  }
+  function mapCsvLanguage(l) {
+    const s = String(l || "").toLowerCase();
+    if (s.indexOf("port") >= 0 || s === "pt") return "pt";
+    if (s.indexOf("jap") >= 0 || s === "ja" || s === "jp") return "ja";
+    if (s.indexOf("chin") >= 0 || s.indexOf("zh") >= 0) return "zh-tw";
+    return "en";
+  }
+  function mapCsvGame(g) {
+    const s = String(g || "").toLowerCase();
+    if (s.indexOf("lorcana") >= 0) return "lorcana";
+    if (s.indexOf("one piece") >= 0 || s.indexOf("onepiece") >= 0) return "onepiece";
+    if (s.indexOf("pok") >= 0) return "pokemon";
+    return ""; // desconhecido: tenta todos
+  }
+  const csvNorm = (s) => normalize(String(s || "")).replace(/[^a-z0-9]/g, "");
+  // Nome de set dos exports vem com prefixo de código ("SV08.5: Prismatic
+  // Evolutions", "SWSH09: ..."): compara também sem o prefixo.
+  function csvSetKeys(name) {
+    const keys = new Set();
+    const raw = String(name || "").trim();
+    if (!raw) return keys;
+    keys.add(csvNorm(raw));
+    const noCode = raw.replace(/^[A-Za-z0-9.\-]+\s*:\s*/, "");
+    if (noCode !== raw) keys.add(csvNorm(noCode));
+    return keys;
+  }
+  function mapCsvVariant(v) { return mapDexVariant(v); } // mesma tabela (Holo/Reverse/1st Ed)
+
   // --- Tema (claro/escuro) ---
   const THEME_KEY = "tcg-collector-theme-v1";
   const THEME_SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>';
@@ -4717,14 +4812,163 @@
     // Quantity;Price. Os IDs são TCGdex (iguais aos do Sleevu), então é só casar
     // id+variante e gravar na coleção do Pokémon. Idempotente (re-importar dá o
     // mesmo resultado): cada (id, variante) fica com a quantidade do CSV.
-    function mapDexVariant(v) {
-      const s = String(v || "").toLowerCase().trim();
-      if (!s || s === "normal") return "Normal";
-      if (s.indexOf("1st edition") >= 0) return "1st Edition";
-      if (s.indexOf("reverse") >= 0) return "Reverse";
-      if (s.indexOf("holo") >= 0) return "Holo";
-      return "Normal"; // promos diversos → carta base (Normal)
+    // (mapDexVariant vive no escopo do módulo, junto dos helpers de CSV.)
+    // ── Importador GENÉRICO de CSV (TCGplayer, Collectr e afins) ────────────
+    // Diferente do Dex (ids TCGdex prontos), esses exports só têm nome/set/
+    // número — o match é feito contra o NOSSO catálogo baixando apenas os
+    // chunks dos sets citados no arquivo (via manifest, igual ao quick-add).
+    // Fluxo: parse tolerante -> match -> MODAL de prévia (casadas/não casadas)
+    // -> aplicar (idempotente: seta a quantidade-alvo por carta×variante×cond).
+    // Os helpers puros (parse/mapeamentos) vivem no escopo do módulo, testáveis.
+
+    // Índice de manifests por jogo (fetch leve; cacheado por sessão de import).
+    async function csvGameManifest(game) {
+      if (currentGame() === game && window.TCG_MANIFEST) return window.TCG_MANIFEST;
+      if (currentGame() === game && Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length) {
+        // dev: sintetiza um "manifest" com um pseudo-chunk em memória
+        return { sets: [], __cards: window.TCG_CARDS };
+      }
+      try {
+        const r = await fetch(gameDataDir(game) + "manifest.generated.js");
+        if (!r.ok) return null;
+        const tx = await r.text();
+        const s = tx.indexOf("{"), e = tx.lastIndexOf("}");
+        return s >= 0 ? JSON.parse(tx.slice(s, e + 1)) : null;
+      } catch (e) { return null; }
     }
+
+    async function importGenericCsv(file) {
+      if (!file) return;
+      if (file.size > 20 * 1024 * 1024) { alert(t("error.import")); return; }
+      try {
+        const rows = parseCsvText(await file.text());
+        if (rows.length < 2) { alert(t("csvimport.empty")); return; }
+        const cols = mapCsvHeader(rows[0]);
+        if (cols.name < 0 && (cols.set < 0 || cols.number < 0)) { alert(t("csvimport.badFormat")); return; }
+
+        // Linhas normalizadas do arquivo.
+        const items = rows.slice(1).map((r) => ({
+          name: cols.name >= 0 ? String(r[cols.name] || "").trim() : "",
+          set: cols.set >= 0 ? String(r[cols.set] || "").trim() : "",
+          number: cols.number >= 0 ? String(r[cols.number] || "").trim() : "",
+          qty: cols.qty >= 0 ? (parseInt(String(r[cols.qty] || "1"), 10) || 0) : 1,
+          variant: mapCsvVariant(cols.variant >= 0 ? r[cols.variant] : ""),
+          condition: mapCsvCondition(cols.condition >= 0 ? r[cols.condition] : ""),
+          language: mapCsvLanguage(cols.language >= 0 ? r[cols.language] : ""),
+          game: mapCsvGame(cols.game >= 0 ? r[cols.game] : "")
+        })).filter((it) => it.qty > 0 && (it.name || (it.set && it.number)));
+        if (!items.length) { alert(t("csvimport.empty")); return; }
+
+        // Match: por jogo, acha os sets citados no manifest e baixa SÓ esses
+        // chunks; dentro do chunk casa por número (antes da "/") ou nome exato.
+        const games = ["pokemon", "lorcana", "onepiece"];
+        const matched = []; const unmatched = [];
+        const chunkCache = new Map();
+        const fetchChunk = (fileUrl) => {
+          if (!chunkCache.has(fileUrl)) {
+            chunkCache.set(fileUrl, fetch(fileUrl).then((r) => (r.ok ? r.json() : [])).catch(() => []));
+          }
+          return chunkCache.get(fileUrl);
+        };
+        const manifests = {};
+        for (const g of games) manifests[g] = await csvGameManifest(g);
+
+        for (const it of items) {
+          const tryGames = it.game ? [it.game] : games;
+          let hit = null;
+          for (const g of tryGames) {
+            const mf = manifests[g];
+            if (!mf) continue;
+            const setKeys = csvSetKeys(it.set);
+            let pool;
+            if (mf.__cards) {
+              pool = mf.__cards.filter((c) => !setKeys.size || setKeys.has(csvNorm(c.set)));
+            } else {
+              let sets = mf.sets.filter((s) => setKeys.has(csvNorm(s.name)));
+              // Preferência de idioma da linha; sem set na língua, tenta o resto.
+              const langSets = sets.filter((s) => (s.language || "en") === it.language);
+              if (langSets.length) sets = langSets;
+              if (!sets.length) continue;
+              const chunks = await Promise.all(sets.slice(0, 4).map((s) => fetchChunk(s.file)));
+              pool = [].concat.apply([], chunks);
+            }
+            // Número manda (zero-padding tolerado); sem número, nome exato.
+            const num = csvNorm(String(it.number).split("/")[0]);
+            const nameKey = csvNorm(it.name);
+            hit = pool.find((c) => {
+              const cNum = csvNorm(String(c.number || "").split("/")[0]);
+              if (num) {
+                return cNum === num
+                  || (/^\d+$/.test(num) && /^\d+$/.test(cNum) && parseInt(num, 10) === parseInt(cNum, 10));
+              }
+              return nameKey && csvNorm(c.name) === nameKey;
+            }) || null;
+            if (hit) { hit = { card: hit, game: g }; break; }
+          }
+          if (hit) matched.push({ ...it, cardId: hit.card.id, cardName: hit.card.name, game: hit.game });
+          else unmatched.push(it);
+        }
+
+        showCsvImportPreview(items.length, matched, unmatched);
+      } catch (e) { alert(t("error.import")); }
+    }
+
+    // Prévia: nada é gravado antes do OK. Aplicar é idempotente (seta o alvo).
+    function showCsvImportPreview(total, matched, unmatched) {
+      const old = document.querySelector(".csvimport-modal");
+      if (old) old.remove();
+      const wrap = document.createElement("div");
+      wrap.className = "ts-modal csvimport-modal";
+      const unmatchedHtml = unmatched.length
+        ? `<details class="csvimport-miss"><summary>${escapeHtml(t("csvimport.unmatched", { n: unmatched.length }))}</summary>
+             <ul>${unmatched.slice(0, 60).map((u) => `<li>${escapeHtml(`${u.name || "?"} · ${u.set || "?"} ${u.number || ""}`)}</li>`).join("")}</ul></details>`
+        : "";
+      const perGame = ["pokemon", "lorcana", "onepiece"]
+        .map((g) => [g, matched.filter((m) => m.game === g).length])
+        .filter(([, n]) => n > 0)
+        .map(([g, n]) => `${gameShortLabel(g)}: ${n}`).join(" · ");
+      wrap.innerHTML = `<div class="ts-backdrop" data-csvimport-close></div>
+        <div class="ts-panel">
+          <h3>${escapeHtml(t("csvimport.title"))}</h3>
+          <p>${escapeHtml(t("csvimport.summary", { total, ok: matched.length }))}${perGame ? ` <span class="csvimport-pergame">(${escapeHtml(perGame)})</span>` : ""}</p>
+          ${unmatchedHtml}
+          <p class="csvimport-note">${escapeHtml(t("csvimport.note"))}</p>
+          <div class="ts-actions">
+            <button type="button" class="secondary" data-csvimport-close>${escapeHtml(t("csvimport.cancel"))}</button>
+            <button type="button" class="primary" data-csvimport-apply ${matched.length ? "" : "disabled"}>${escapeHtml(t("csvimport.apply", { n: matched.length }))}</button>
+          </div>
+        </div>`;
+      document.body.appendChild(wrap);
+      wrap.addEventListener("click", (e) => {
+        if (e.target.closest("[data-csvimport-close]")) { wrap.remove(); return; }
+        if (!e.target.closest("[data-csvimport-apply]") || !matched.length) return;
+        // Agrega alvo por (jogo, carta, variante, condição) e SETA (idempotente).
+        const stores = {};
+        const agg = new Map();
+        matched.forEach((m) => {
+          const k = `${m.game}|${m.cardId}|${m.variant}|${m.condition}`;
+          agg.set(k, (agg.get(k) || 0) + m.qty);
+        });
+        let copies = 0;
+        agg.forEach((target, k) => {
+          const [g, id, variant, cond] = k.split("|");
+          const st = stores[g] || (stores[g] = createCollectionStore(g));
+          st.add(id, variant, cond, target - st.getQuantity(id, variant, cond));
+          copies += target;
+        });
+        flushWrites();
+        wrap.remove();
+        alert(t("csvimport.done", { cards: agg.size, copies }));
+        window.location.href = "collection.html";
+      });
+    }
+    function gameShortLabel(g) {
+      return t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : "filter.gamePokemon");
+    }
+    // API pública: outras telas (e testes) podem disparar a importação com um
+    // File/Blob de CSV sem depender do menu da conta (que exige login).
+    window.TCGShared.importCsvFile = importGenericCsv;
+
     async function importDexCsv(file) {
       if (!file) return;
       if (file.size > 20 * 1024 * 1024) { alert(t("error.import")); return; }
@@ -4799,7 +5043,8 @@
       <li class="lang-dd-option" role="menuitem" data-export-json>${escapeHtml(t("auth.exportJson"))}</li>
       <li class="lang-dd-option" role="menuitem" data-export-csv>${escapeHtml(t("auth.exportCsv"))}</li>
       <li class="lang-dd-option" role="menuitem" data-import>${escapeHtml(t("auth.import"))}</li>
-      <li class="lang-dd-option" role="menuitem" data-import-dex>${escapeHtml(t("dex.import"))}</li>`;
+      <li class="lang-dd-option" role="menuitem" data-import-dex>${escapeHtml(t("dex.import"))}</li>
+      <li class="lang-dd-option" role="menuitem" data-import-csv>${escapeHtml(t("csvimport.menu"))}</li>`;
     // Sobre (ajuda + troubleshooting + privacidade/termos).
     const aboutItems = `<li class="auth-sep" aria-hidden="true"></li>
       <a class="lang-dd-option auth-link" role="menuitem" href="settings.html">${escapeHtml(t("footer.settings"))}</a>
@@ -4828,7 +5073,8 @@
       window.location.replace(window.location.pathname);
     }
     const fileInput = `<input type="file" accept="application/json" data-import-input hidden aria-label="${escapeAttribute(t("auth.import"))}">
-      <input type="file" accept=".csv,text/csv" data-import-dex-input hidden aria-label="${escapeAttribute(t("dex.import"))}">`;
+      <input type="file" accept=".csv,text/csv" data-import-dex-input hidden aria-label="${escapeAttribute(t("dex.import"))}">
+      <input type="file" accept=".csv,text/csv" data-import-csv-input hidden aria-label="${escapeAttribute(t("csvimport.menu"))}">`;
 
     function wireDropdown() {
       const dd = slot.querySelector("#authDd");
@@ -4891,6 +5137,7 @@
       if (event.target.closest("[data-export-csv]")) { exportCsv(); return; }
       if (event.target.closest("[data-import]")) { const inp = slot.querySelector("[data-import-input]"); if (inp) inp.click(); return; }
       if (event.target.closest("[data-import-dex]")) { const inp = slot.querySelector("[data-import-dex-input]"); if (inp) inp.click(); return; }
+      if (event.target.closest("[data-import-csv]")) { const inp = slot.querySelector("[data-import-csv-input]"); if (inp) inp.click(); return; }
       if (event.target.closest("[data-troubleshoot]")) { openTroubleshooting(); return; }
       if (event.target.closest("[data-delete-account]")) { deleteAccountFlow(); return; }
       if (event.target.closest("[data-auth-logout]")) { authSignOut(); }
@@ -4900,6 +5147,8 @@
       if (inp && inp.files && inp.files[0]) { importJson(inp.files[0]); inp.value = ""; return; }
       const dexInp = event.target.closest("[data-import-dex-input]");
       if (dexInp && dexInp.files && dexInp.files[0]) { importDexCsv(dexInp.files[0]); dexInp.value = ""; }
+      const csvInp = event.target.closest("[data-import-csv-input]");
+      if (csvInp && csvInp.files && csvInp.files[0]) { importGenericCsv(csvInp.files[0]); csvInp.value = ""; }
     });
 
     (async function boot() {
