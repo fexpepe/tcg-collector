@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://wsrv.nl; connect-src 'self' https://api.tcgdex.net https://pokeapi.co https://economia.awesomeapi.com.br https://*.supabase.co https://cloudflareinsights.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="news.title">Novidades - Sleevu</title>
+    <meta name="description" content="O que há de novo no Sleevu: melhorias e recursos novos do acompanhador de coleções de TCG.">
+    <link rel="canonical" href="https://sleevu.app/novidades">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#0d0e12">
+    <script src="src/theme.js"></script>
+    <script src="src/game.js"></script>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">Sleevu</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page=""></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-head">
+        <h1 data-i18n="news.heading">Novidades</h1>
+        <p class="page-head-sub" data-i18n="news.sub">O que entrou de novo no Sleevu, do mais recente pro mais antigo.</p>
+      </div>
+      <section id="newsList" class="news-list" aria-live="polite">
+        <p class="empty-state" data-i18n="news.loading">Carregando…</p>
+      </section>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/shared.js"></script>
+    <script defer src="src/news.js"></script>
+  </body>
+</html>

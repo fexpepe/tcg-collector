@@ -3773,6 +3773,13 @@ a.progress-row:hover {
 .explore-subnav { margin: -8px 0 18px; }
 .explore-subnav .chip { text-decoration: none; display: inline-flex; align-items: center; }
 
+/* Página de Novidades + bolinha "novo" nos links do changelog. */
+.news-list { max-width: 720px; }
+.news-day { margin-bottom: 22px; }
+.news-date { font-size: 15px; color: var(--accent); margin: 0 0 8px; text-transform: capitalize; }
+.news-day ul { margin: 0; padding-left: 20px; display: grid; gap: 7px; color: var(--text); }
+[data-news-link].has-news::after { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-left: 6px; vertical-align: middle; }
+
 /* Faixa de preço do Explorar (min–máx na moeda do topo). */
 .price-range { display: flex; align-items: center; gap: 6px; }
 .price-range input { width: 74px; min-width: 0; }

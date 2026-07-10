@@ -1296,6 +1296,23 @@
     }
   }
 
+  // Bolinha "novo" nos links de Novidades quando o changelog tem entrada mais
+  // nova que a última vista (tcg-news-seen-v1, gravada ao visitar a página).
+  // Busca preguiçosa e única por sessão; o SW cacheia o JSON como dado.
+  function initNewsBadge() {
+    const links = document.querySelectorAll("[data-news-link]");
+    if (!links.length) return;
+    fetch("data/changelog.json").then((r) => (r.ok ? r.json() : null)).then((items) => {
+      if (!Array.isArray(items) || !items.length) return;
+      const latest = items.map((i) => i && i.d).filter(Boolean).sort().pop() || "";
+      let seen = "";
+      try { seen = localStorage.getItem("tcg-news-seen-v1") || ""; } catch (e) { /* ignora */ }
+      if (latest && latest > seen) {
+        document.querySelectorAll("[data-news-link]").forEach((a) => a.classList.add("has-news"));
+      }
+    }).catch(() => { /* offline: sem bolinha */ });
+  }
+
   function initSiteFooter() {
     if (document.querySelector(".site-footer")) return;
     const footer = document.createElement("footer");
@@ -1304,6 +1321,7 @@
       <div class="site-footer-inner">
         <nav class="site-footer-links" aria-label="${escapeAttribute(t("footer.linksLabel"))}">
           <a href="about.html">${escapeHtml(t("footer.about"))}</a>
+          <a href="novidades.html" data-news-link>${escapeHtml(t("news.heading"))}</a>
           <a href="faq.html">${escapeHtml(t("footer.faq"))}</a>
           <a href="help.html">${escapeHtml(t("footer.help"))}</a>
           <a href="settings.html">${escapeHtml(t("footer.settings"))}</a>
@@ -5047,6 +5065,7 @@
       <li class="lang-dd-option" role="menuitem" data-import-csv>${escapeHtml(t("csvimport.menu"))}</li>`;
     // Sobre (ajuda + troubleshooting + privacidade/termos).
     const aboutItems = `<li class="auth-sep" aria-hidden="true"></li>
+      <a class="lang-dd-option auth-link" role="menuitem" href="novidades.html" data-news-link>${escapeHtml(t("news.heading"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="settings.html">${escapeHtml(t("footer.settings"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="help.html">${escapeHtml(t("footer.help"))}</a>
       <li class="lang-dd-option" role="menuitem" data-troubleshoot>${escapeHtml(t("ts.title"))}</li>
@@ -5312,6 +5331,7 @@
   injectCfBeacon(); // Cloudflare Web Analytics (só em produção)
   initMobileMenu();
   initSiteFooter();
+  initNewsBadge(); // bolinha "novo" nos links de Novidades (footer + menu)
   initPartnerBanner();
   initThemeToggle();
   initTroubleshootTriggers();

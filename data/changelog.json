@@ -1,0 +1,16 @@
+[
+  { "d": "2026-07-11", "pt": "Importador de CSV: traga sua coleção do TCGplayer, Collectr e afins em 1 clique (menu da conta), com prévia antes de gravar.", "en": "CSV importer: bring your collection from TCGplayer, Collectr and similar in 1 click (account menu), with a preview before saving." },
+  { "d": "2026-07-11", "pt": "Modo Master Set na página do set: conte cada variante (Normal/Reverse/Holo) como um slot — e \"contar qualquer idioma\" junta EN/PT na mesma progressão.", "en": "Master Set mode on the set page: count each variant (Normal/Reverse/Holo) as its own slot — and \"count any language\" merges EN/PT into one progression." },
+  { "d": "2026-07-11", "pt": "Explorar ganhou faixa de preço e filtros que viram link compartilhável.", "en": "Explore gained a price range filter and shareable filter links." },
+  { "d": "2026-07-11", "pt": "Tema Automático: sem escolha salva, o site segue o claro/escuro do seu aparelho.", "en": "Auto theme: with no saved choice, the site follows your device's light/dark mode." },
+  { "d": "2026-07-11", "pt": "Grades até 70% mais leves no celular (miniaturas nativas dos CDNs).", "en": "Grids up to 70% lighter on mobile (native CDN thumbnails)." },
+  { "d": "2026-07-10", "pt": "Garantia de catálogo: carta indexada nunca some — o catálogo inteiro agora é versionado e preservado a cada build.", "en": "Catalog guarantee: an indexed card never disappears — the whole catalog is now versioned and preserved on every build." },
+  { "d": "2026-07-10", "pt": "Submenu fixo do Explorar abaixo do título (Todas as cartas · Sets · Pokédex · …).", "en": "Fixed Explore submenu below the title (All cards · Sets · Pokédex · …)." },
+  { "d": "2026-07-09", "pt": "Adicione cartas direto da busca (Ctrl+K ou aba Busca): digite um código tipo OP05-119 e toque em + Coleção.", "en": "Add cards straight from search (Ctrl+K or the Search tab): type a code like OP05-119 and tap + Collection." },
+  { "d": "2026-07-09", "pt": "Barra de navegação inferior no celular, estilo app.", "en": "App-style bottom navigation bar on mobile." },
+  { "d": "2026-07-09", "pt": "Gráfico do histórico de preço no detalhe da carta (série diária).", "en": "Price history chart in the card detail (daily series)." },
+  { "d": "2026-07-09", "pt": "Custo pra completar o set: \"Faltam N · completar ≈ R$X\" nos sets e na página do set.", "en": "Cost to complete the set: \"Missing N · complete for ≈ $X\" on sets and the set page." },
+  { "d": "2026-07-08", "pt": "Notificações de queda de preço da wishlist (ative em Configurações, para usuários logados).", "en": "Wishlist price-drop notifications (enable in Settings, for signed-in users)." },
+  { "d": "2026-07-08", "pt": "Slabs graduados no perfil público, com link direto pra aba Graded.", "en": "Graded slabs on the public profile, with a direct link to the Graded tab." },
+  { "d": "2026-07-07", "pt": "Lista de Sets compacta com categorias recolhíveis.", "en": "Compact Sets list with collapsible categories." }
+]

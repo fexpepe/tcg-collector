@@ -40,7 +40,7 @@ const CSP = `default-src 'self'; script-src 'self' https://static.cloudflareinsi
 const STATIC_URLS = [
   "/", "/hub", "/cards", "/pokedex", "/sets", "/artists", "/trainers",
   "/collection", "/wishlist", "/portfolio", "/binders", "/sales", "/graded",
-  "/about", "/faq", "/help", "/privacy", "/terms"
+  "/about", "/novidades", "/faq", "/help", "/privacy", "/terms"
 ];
 
 const MONTHS_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
