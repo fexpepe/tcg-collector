@@ -28,7 +28,8 @@ const OUT_DIR = "set";
 const GAMES = [
   { slug: "pokemon", label: "Pokémon TCG" },
   { slug: "lorcana", label: "Disney Lorcana" },
-  { slug: "onepiece", label: "One Piece Card Game" }
+  { slug: "onepiece", label: "One Piece Card Game" },
+  { slug: "naruto", label: "Naruto Card Game" }
 ];
 
 // CSP idêntica à das outras páginas (o <script type=application/ld+json> é bloco
@@ -426,6 +427,9 @@ async function main() {
       cards.sort((a, b) => cmpNumber(a.number, b.number));
       const rep = cards.find((c) => c.setLogo) || cards.find((c) => c.setReleaseDate) || cards[0];
       let slug = slugify(name) || slugify(rep.setId) || "set";
+      // Nome quase todo CJK (sobra só um dígito, ex.: ※確認中1 -> "1"): slug
+      // curto demais colide entre jogos — prefixa o setId, como nas cartas.
+      if (slug.length < 4) slug = slugify(rep.setId) ? `${slugify(rep.setId)}-${slug}` : `set-${slug}`;
       let s = slug, i = 2;
       while (used.has(s)) s = `${slug}-${i++}`;
       used.add(s);

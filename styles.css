@@ -82,6 +82,16 @@
   --accent: #d9a400; --accent-dark: #b78a00; --accent-rgb: 217, 164, 0;
   --accent-soft: rgba(217, 164, 0, 0.12); --on-accent: #0a0c10;
 }
+/* Naruto: laranja. Texto escuro sobre o laranja claro do tema escuro; branco
+   sobre o laranja fechado do claro. */
+[data-game-accent="naruto"] {
+  --accent: #fb923c; --accent-dark: #f97316; --accent-rgb: 251, 146, 60;
+  --accent-soft: rgba(251, 146, 60, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="naruto"] {
+  --accent: #ea580c; --accent-dark: #c2410c; --accent-rgb: 234, 88, 12;
+  --accent-soft: rgba(234, 88, 12, 0.1); --on-accent: #ffffff;
+}
 [data-game-accent="all"] {
   --accent: #e3e7ee; --accent-dark: #c3c9d4; --accent-rgb: 227, 231, 238;
   --accent-soft: rgba(227, 231, 238, 0.12); --on-accent: #0a0c10;
@@ -3158,6 +3168,7 @@ a.hub-tile:hover {
 .sw-pokemon { background: #e23030; }
 .sw-lorcana { background: #6d28d9; }
 .sw-onepiece { background: #d9a400; color: #0a0c10; }
+.sw-naruto { background: #ea580c; color: #ffffff; }
 .sw-neutral { background: #1b1f27; }
 .settings.colors-off .setting-swatch { background: var(--line); color: var(--subtle); }
 /* Switch (toggle) iOS-like */

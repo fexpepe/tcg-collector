@@ -723,7 +723,7 @@
     let cardHits = [], cardHitsQuery = "";
     const cmdkStores = { col: {}, wl: {} };
     const close = () => { if (overlay) { overlay.remove(); overlay = null; } };
-    const gameLabel = (g) => t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : "filter.gamePokemon");
+    const gameLabel = (g) => t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : g === "naruto" ? "filter.gameNaruto" : "filter.gamePokemon");
     function results(q) {
       const out = [];
       const nq = normalize(q);
@@ -1124,6 +1124,11 @@
               ${exploreLink("cards.html?game=onepiece", "nav.allCards")}
               ${exploreLink("sets.html?game=onepiece", "nav.sets")}
             </div>
+            <div class="nav-mega-col">
+              <span class="nav-mega-head">${escapeHtml(t("nav.gameNaruto"))}</span>
+              ${exploreLink("cards.html?game=naruto", "nav.allCards")}
+              ${exploreLink("sets.html?game=naruto", "nav.sets")}
+            </div>
           </div>
         </div>
       </div>`;
@@ -1182,7 +1187,8 @@
   const EXPLORE_SUBNAV = {
     pokemon: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"], ["pokedex.html", "nav.pokedex", "pokedex"], ["trainers.html", "nav.trainers", "trainers"], ["artists.html", "nav.artists", "artists"]],
     lorcana: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"], ["artists.html", "nav.artists", "artists"]],
-    onepiece: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"]]
+    onepiece: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"]],
+    naruto: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"]]
   };
   function buildExploreSubnav(active) {
     const game = currentGame();
@@ -1432,6 +1438,7 @@
     const s = String(g || "").toLowerCase();
     if (s.indexOf("lorcana") >= 0) return "lorcana";
     if (s.indexOf("one piece") >= 0 || s.indexOf("onepiece") >= 0) return "onepiece";
+    if (s.indexOf("naruto") >= 0) return "naruto";
     if (s.indexOf("pok") >= 0) return "pokemon";
     return ""; // desconhecido: tenta todos
   }
@@ -2785,6 +2792,10 @@
         { key: "liga", label: "LigaLorcana", url: (card) => `https://www.ligalorcana.com.br/?view=cards/search&card=${enc(card.name)}` }
       ];
     }
+    if (game === "naruto") {
+      // Nenhuma loja BR lista o NARUTO カードゲーム de 2003 — sem chips BR.
+      return [];
+    }
     if (game === "onepiece") {
       // Liga tem site próprio de One Piece; MYP também lista o jogo. A busca por
       // nome + código oficial ("Monkey.D.Luffy OP01-003") casa melhor que só nome.
@@ -2805,6 +2816,7 @@
   // jogo atual.
   function usMarketplaces(game, gradedTag) {
     const line = game === "lorcana" ? "lorcana" : game === "onepiece" ? "one-piece-card-game" : "pokemon";
+    const noTcgplayer = game === "naruto"; // TCGplayer não lista o jogo de 2003
     // Carta graduada: eBay e PriceCharting buscam com a graduadora+nota (ex.: "PSA
     // 9") junto do nome — é onde o preço graded mora. O TCGplayer não lista graded,
     // então segue com a busca normal (sem o tag).
@@ -2813,7 +2825,7 @@
       { key: "ebay", label: "eBay", url: (card) => `https://www.ebay.com/sch/i.html?_nkw=${enc(usSearchText(card, game) + g)}` },
       { key: "tcgplayer", label: "TCGplayer", url: (card) => `https://www.tcgplayer.com/search/${line}/product?productLineName=${line}&q=${enc(usSearchText(card, game))}` },
       { key: "pricecharting", label: "PriceCharting", url: (card) => `https://www.pricecharting.com/search-products?type=prices&q=${enc(usSearchText(card, game) + g)}` }
-    ];
+    ].filter((m) => !(noTcgplayer && m.key === "tcgplayer"));
   }
 
   // Selo "PSA 9" (cor da graduadora) e o sufixo de busca pras lojas — usados só
@@ -2830,7 +2842,7 @@
   }
 
   function usSearchText(card, game) {
-    const prefix = game === "lorcana" ? "lorcana" : game === "onepiece" ? "one piece" : "pokemon";
+    const prefix = game === "lorcana" ? "lorcana" : game === "onepiece" ? "one piece" : game === "naruto" ? "naruto card game" : "pokemon";
     return `${prefix} ${card.name} ${cardCode(card)}`.trim();
   }
 
@@ -2949,6 +2961,7 @@
   // Uma linha do grid: rótulo na 1ª coluna, chips na 2ª (os chips alinham entre
   // as linhas porque a coluna do rótulo tem a largura do maior rótulo).
   function marketplaceRow(labelKey, list, card) {
+    if (!list.length) return "";
     const links = list
       .map(({ key, label, url }) => `<a class="br-link br-link-${key}" href="${escapeAttribute(url(card))}" target="_blank" rel="noopener">${escapeHtml(label)}</a>`)
       .join("");
@@ -3442,12 +3455,13 @@
   const DATA_GAMES = [
     { game: "pokemon", dataDir: "data/" },
     { game: "lorcana", dataDir: "data/lorcana/" },
-    { game: "onepiece", dataDir: "data/onepiece/" }
+    { game: "onepiece", dataDir: "data/onepiece/" },
+    { game: "naruto", dataDir: "data/naruto/" }
   ];
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
   const GAME_SLUGS = DATA_GAMES.map((d) => d.game);
-  const GAME_COLOR = { pokemon: "#e23030", lorcana: "#3f3d96", onepiece: "#d9a400" };
+  const GAME_COLOR = { pokemon: "#e23030", lorcana: "#3f3d96", onepiece: "#d9a400", naruto: "#ea580c" };
   function normalizeGame(g) {
     return GAME_SLUGS.includes(g) ? g : "pokemon";
   }
@@ -5017,7 +5031,7 @@
       });
     }
     function gameShortLabel(g) {
-      return t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : "filter.gamePokemon");
+      return t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : g === "naruto" ? "filter.gameNaruto" : "filter.gamePokemon");
     }
     // API pública: outras telas (e testes) podem disparar a importação com um
     // File/Blob de CSV sem depender do menu da conta (que exige login).

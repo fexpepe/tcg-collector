@@ -974,7 +974,7 @@
           <div class="binder-editor-tabpanel"${searchTab ? "" : " hidden"}>
             <div class="chip-filter game-filter binder-editor-gamefilter" role="group" aria-label="Jogo">
               <button type="button" class="chip${editorGameFilter === "all" ? " active" : ""}" data-edit-game="all" aria-pressed="${editorGameFilter === "all"}">${escapeHtml(t("filter.gameAll"))}</button>
-              ${shared.GAME_SLUGS.map((g) => `<button type="button" class="chip${editorGameFilter === g ? " active" : ""}" data-edit-game="${g}" aria-pressed="${editorGameFilter === g}">${escapeHtml(t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : "filter.gamePokemon"))}</button>`).join("")}
+              ${shared.GAME_SLUGS.map((g) => `<button type="button" class="chip${editorGameFilter === g ? " active" : ""}" data-edit-game="${g}" aria-pressed="${editorGameFilter === g}">${escapeHtml(t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : g === "naruto" ? "filter.gameNaruto" : "filter.gamePokemon"))}</button>`).join("")}
             </div>
             <div class="binder-editor-searchbar">
               <input type="search" class="binder-editor-search" data-edit-search placeholder="${escapeAttribute(t("binders.editor.search"))}" value="${escapeAttribute(editing.query || "")}">

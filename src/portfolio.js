@@ -22,7 +22,7 @@
     };
     const fromBRL = (v) => { const r = shared.convertMoney(v, "BRL", shared.getCurrency()); return r == null ? v : r; };
     const COLORS = shared.GAME_COLOR;
-    const NAMES = { pokemon: "Pokémon TCG", lorcana: "Disney Lorcana", onepiece: "One Piece Card Game" };
+    const NAMES = { pokemon: "Pokémon TCG", lorcana: "Disney Lorcana", onepiece: "One Piece Card Game", naruto: "Naruto Card Game" };
     const games = shared.GAME_SLUGS.map((g) => ({ g, name: NAMES[g] || g, data: readPf(g) }));
     games.forEach((x) => {
       x.color = COLORS[x.g];
@@ -175,7 +175,7 @@
   // Diferente do CSV do menu da conta (inventário do jogo da sessão, preço manual):
   // aqui vai TODO o patrimônio precificado — cartas raw com valor de mercado por
   // condição + slabs graded — em todos os jogos, na moeda do topo.
-  const CSV_GAME_NAMES = { pokemon: "Pokémon", lorcana: "Lorcana", onepiece: "One Piece" };
+  const CSV_GAME_NAMES = { pokemon: "Pokémon", lorcana: "Lorcana", onepiece: "One Piece", naruto: "Naruto" };
   function csvCell(value) {
     const s = value == null ? "" : String(value);
     return /[";\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
@@ -473,7 +473,7 @@
     ]);
     if (gameFilter === "all") {
       const byGame = GAMES.map((g) => ({
-        label: t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : "filter.gamePokemon"),
+        label: t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : g === "naruto" ? "filter.gameNaruto" : "filter.gamePokemon"),
         color: GAME_COLOR[g],
         value: collectionLines(g).lines.reduce((s, l) => s + l.total, 0) + gradedSlabs(g).reduce((s, x) => s + (x.value || 0), 0)
       }));

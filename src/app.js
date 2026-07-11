@@ -807,7 +807,9 @@
     }
     if (a.releaseDate) return -1;
     if (b.releaseDate) return 1;
-    return a.name.localeCompare(b.name);
+    // Ambos sem data (linhas vintage sem data oficial): o setId sequencial do
+    // sync (ex.: nrt-s01..s22) preserva a ordem cronológica da checklist.
+    return String(a.setId || "").localeCompare(String(b.setId || "")) || a.name.localeCompare(b.name);
   }
 
 

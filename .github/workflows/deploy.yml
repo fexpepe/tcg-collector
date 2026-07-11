@@ -131,6 +131,12 @@ jobs:
         env:
           NARUTO_TCGCSV_CATEGORY: ${{ vars.NARUTO_TCGCSV_CATEGORY }}
 
+      # Naruto VINTAGE: NARUTO カードゲーム (Bandai 2003–2006), checklist do
+      # tcg-db.nikita.jp (snapshot versionado, não regride). ANEXA ao catálogo do
+      # Naruto (roda DEPOIS do sync-naruto). Imagens via wsrv.nl. Sem preço.
+      - name: Anexa catálogo vintage do Naruto (Bandai 2003)
+        run: node scripts/sync-naruto-vintage.mjs || echo "sync-naruto-vintage falhou; segue com o snapshot versionado"
+
       # JUMP: compila os sets curados versionados (data/jump/curated/*.json).
       - name: Compila catálogo JUMP (curadoria)
         run: node scripts/build-jump.mjs || echo "build-jump falhou; mantém o catalogo versionado"
