@@ -21,6 +21,8 @@
   const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
   const wishlist = shared.mergedWishlistStore(wishlistByGame, gameOf);
   const prices = shared.mergedPriceStore(pricesByGame, gameOf);
+  // Preço-alvo por carta ("me avisa quando chegar a R$X") — global, sincronizado.
+  const targets = shared.createWishTargetsStore();
 
   const elements = {
     gameFilter: document.getElementById("gameFilter"),
@@ -67,6 +69,7 @@
       hydrateFilters();
       render();
       renderDropNotice(); // quedas de preço da semana (histórico do build; async)
+      renderTargetNotice(); // cartas que atingiram o preço-alvo do usuário
       renderSellers();    // trade matching: quem tem suas desejadas à venda (async)
     })
     .catch((error) => {
@@ -140,6 +143,64 @@
     } catch (e) { el.hidden = true; /* aviso é opcional */ }
   }
 
+  // --- Preço-alvo: banner das atingidas + sino por tile ---
+  // Valor atual da carta (menor entre as variantes desejadas), na moeda do topo.
+  function currentWishValue(card) {
+    const vals = wishlist.variants(card.id)
+      .map((v) => shared.cardValue(card, v, prices).value || 0)
+      .filter((v) => v > 0);
+    return vals.length ? Math.min(...vals) : 0;
+  }
+  function renderTargetNotice() {
+    const el = document.getElementById("wishTargets");
+    if (!el) return;
+    const hits = [];
+    targets.entries().forEach(({ cardId, v, cur }) => {
+      const card = cardsById.get(cardId);
+      if (!card || !wishlist.hasCard(cardId)) return;
+      const now = currentWishValue(card);
+      const targetNow = shared.moneyToCurrent(v, cur);
+      if (now > 0 && targetNow > 0 && now <= targetNow) hits.push({ card, now, targetNow });
+    });
+    if (!hits.length) { el.hidden = true; el.innerHTML = ""; return; }
+    hits.sort((a, b) => (a.now / a.targetNow) - (b.now / b.targetNow));
+    const curSym = shared.getCurrency();
+    const chips = hits.slice(0, 6).map(({ card, now }) =>
+      `<a class="wish-drop-chip" href="${shared.escapeAttribute(shared.detailUrl("set", card.set))}">${shared.escapeHtml(card.name)} <span class="wish-target-now">🎯 ${shared.escapeHtml(shared.formatMoney(curSym, now))}</span></a>`).join("");
+    el.innerHTML = `<strong>${shared.escapeHtml(tn("wish.target.hit", hits.length))}</strong><span class="wish-drop-chips">${chips}</span>`;
+    el.hidden = false;
+  }
+  // Sino no tile: define/edita o alvo via prompt (vazio remove). Estado no botão.
+  function targetBellHtml(card) {
+    const cur = targets.get(card.id);
+    const label = cur
+      ? t("wish.target.editAria", { v: shared.formatMoney(cur.cur, cur.v) })
+      : t("wish.target.setAria");
+    return `<button type="button" class="wish-target-btn${cur ? " has-target" : ""}" data-wish-target="${shared.escapeAttribute(card.id)}" title="${shared.escapeAttribute(label)}" aria-label="${shared.escapeAttribute(label)}">🔔</button>`;
+  }
+  function decorateTile(node, card) {
+    const info = node.querySelector(".tile-info") || node;
+    info.insertAdjacentHTML("beforeend", targetBellHtml(card));
+    return node;
+  }
+  function handleTargetClick(btn) {
+    const cardId = btn.dataset.wishTarget;
+    const card = cardsById.get(cardId);
+    const cur = targets.get(cardId);
+    const raw = window.prompt(
+      t("wish.target.prompt", { name: card ? card.name : cardId, cur: shared.getCurrency() }),
+      cur ? String(cur.v).replace(".", ",") : ""
+    );
+    if (raw === null) return; // cancelou
+    const v = parseFloat(String(raw).replace(/[^\d.,]/g, "").replace(",", "."));
+    targets.set(cardId, Number.isFinite(v) && v > 0 ? v : 0, shared.getCurrency());
+    const fresh = targets.get(cardId);
+    btn.classList.toggle("has-target", !!fresh);
+    const label = fresh ? t("wish.target.editAria", { v: shared.formatMoney(fresh.cur, fresh.v) }) : t("wish.target.setAria");
+    btn.title = label; btn.setAttribute("aria-label", label);
+    renderTargetNotice();
+  }
+
   function inGameFilter(card) {
     return gameFilter === "all" || card.game === gameFilter;
   }
@@ -206,6 +267,10 @@
     });
 
     elements.grid.addEventListener("click", (event) => {
+      // Sino do preço-alvo: antes de tudo (não abre preview nem remove desejo).
+      const targetBtn = event.target.closest("[data-wish-target]");
+      if (targetBtn) { handleTargetClick(targetBtn); return; }
+
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) {
         preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant);
@@ -257,7 +322,7 @@
   function render({ resetCount = false } = {}) {
     updatePokemonFilterLabel();
     const tiles = wantedPairs();
-    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices), { resetCount });
+    pager.render(tiles, ({ card, variant }) => decorateTile(shared.variantTile(card, variant, owned, wishlist, prices), card), { resetCount });
     updateStats(tiles.length);
   }
 

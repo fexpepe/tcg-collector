@@ -957,6 +957,25 @@
       })
     };
   }
+  // Preço-alvo da wishlist (por carta, global): "me avisa quando chegar a R$X".
+  // v:0 fica gravado como tombstone (remoção que não ressuscita no merge).
+  function createWishTargetsStore() {
+    let data = { targets: {}, updatedAt: 0 };
+    try { const raw = JSON.parse(localStorage.getItem(SYNC_KEYS.wishTargets) || "null"); if (raw && raw.targets) data = raw; } catch (e) { /* começa vazio */ }
+    const save = () => { data.updatedAt = Date.now(); scheduleWrite(SYNC_KEYS.wishTargets, () => JSON.stringify(data)); };
+    return {
+      get(cardId) { const e = data.targets[cardId]; return e && Number(e.v) > 0 ? { v: Number(e.v), cur: e.cur || "BRL" } : null; },
+      set(cardId, value, cur) {
+        const v = Number(value) || 0;
+        data.targets[cardId] = { v: v > 0 ? Math.round(v * 100) / 100 : 0, cur: cur || getCurrency() };
+        save();
+      },
+      entries: () => Object.entries(data.targets)
+        .filter(([, e]) => Number(e.v) > 0)
+        .map(([cardId, e]) => ({ cardId, v: Number(e.v), cur: e.cur || "BRL" }))
+    };
+  }
+
   // Converte um {v, cur} histórico pra moeda atual (fallback: valor cru).
   function moneyToCurrent(v, cur) { const r = convertMoney(v, cur || "BRL", getCurrency()); return r == null ? (Number(v) || 0) : r; }
 
@@ -3860,6 +3879,7 @@
     memoValue,
     createSoldStore,
     createCostsStore,
+    createWishTargetsStore,
     readSoldList,
     moneyToCurrent,
     snapshotKeys,
@@ -3943,6 +3963,7 @@
     tags: "tcg-collector-collection-tags-v1", // tags custom (multi por carta, globais)
     sold: "tcg-collector-collection-sold-v1", // vendas realizadas (globais)
     costs: "tcg-collector-collection-costs-v1", // custo pago por carta×variante (globais)
+    wishTargets: "tcg-collector-wishlist-targets-v1", // preço-alvo por carta da wishlist (globais)
     favorites: "tcg-collector-favorites-v1", // Pokémon favoritados (globais)
     favoritesMeta: "tcg-collector-favorites-meta-v1", // updatedAt p/ LWW dos favoritos
     // Histórico do portfólio (v2: c=raw, b=graded, w=desejos). Campo NOVO no blob
@@ -4273,6 +4294,18 @@
       updatedAt: Math.max(Number(a.updatedAt) || 0, Number(b.updatedAt) || 0)
     };
   }
+  // Preço-alvo da wishlist ({ targets: { cardId: { v, cur } }, updatedAt }):
+  // união com o bloco mais novo por cima (igual costs). Remoção vira v:0 (fica
+  // como "sem alvo") — tombstone barato que não ressuscita no merge.
+  function mergeWishTargets(a, b) {
+    if (!a || !b) return a || b || undefined;
+    const newer = (Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0) ? b : a;
+    const older = newer === a ? b : a;
+    return {
+      targets: Object.assign({}, older.targets || {}, newer.targets || {}),
+      updatedAt: Math.max(Number(a.updatedAt) || 0, Number(b.updatedAt) || 0)
+    };
+  }
   // Graded ({ items, order, updatedAt }): mesmo LWW do bloco (cada slab é único).
   function mergeGraded(a, b) {
     if (a && b) return ((Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0)) ? b : a;
@@ -4325,6 +4358,7 @@
       tags: mergeTags(a.tags, b.tags),
       sold: mergeSold(a.sold, b.sold),   // união por sid (histórico financeiro não se perde)
       costs: mergeCosts(a.costs, b.costs), // união por carta×variante
+      wishTargets: mergeWishTargets(a.wishTargets, b.wishTargets), // preço-alvo da wishlist
       favorites: fav.favorites,
       favoritesMeta: fav.meta,
       history2: mergeHistory(a.history2, b.history2)
@@ -4790,6 +4824,7 @@
       try { const tg = JSON.parse(localStorage.getItem(SYNC_KEYS.tags) || "null"); if (tg) payload.tags = tg; } catch (e) { /* ignora */ }
       try { const sd = JSON.parse(localStorage.getItem(SYNC_KEYS.sold) || "null"); if (sd) payload.sold = sd; } catch (e) { /* ignora */ }
       try { const co = JSON.parse(localStorage.getItem(SYNC_KEYS.costs) || "null"); if (co) payload.costs = co; } catch (e) { /* ignora */ }
+      try { const wt = JSON.parse(localStorage.getItem(SYNC_KEYS.wishTargets) || "null"); if (wt) payload.wishTargets = wt; } catch (e) { /* ignora */ }
       try { const fav = JSON.parse(localStorage.getItem(SYNC_KEYS.favorites) || "null"); if (Array.isArray(fav)) payload.favorites = fav; } catch (e) { /* ignora */ }
       return payload;
     }
@@ -4820,6 +4855,7 @@
         if (payload.tags && typeof payload.tags === "object") localStorage.setItem(SYNC_KEYS.tags, JSON.stringify(payload.tags));
         if (payload.sold && typeof payload.sold === "object") localStorage.setItem(SYNC_KEYS.sold, JSON.stringify(payload.sold));
         if (payload.costs && typeof payload.costs === "object") localStorage.setItem(SYNC_KEYS.costs, JSON.stringify(payload.costs));
+        if (payload.wishTargets && typeof payload.wishTargets === "object") localStorage.setItem(SYNC_KEYS.wishTargets, JSON.stringify(payload.wishTargets));
         if (Array.isArray(payload.favorites)) localStorage.setItem(SYNC_KEYS.favorites, JSON.stringify(payload.favorites));
         window.location.reload();
       } catch (e) { alert(t("error.import")); }
