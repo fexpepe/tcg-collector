@@ -137,6 +137,12 @@ jobs:
       - name: Anexa catálogo vintage do Naruto (Bandai 2003)
         run: node scripts/sync-naruto-vintage.mjs || echo "sync-naruto-vintage falhou; segue com o snapshot versionado"
 
+      # Miracle Battle Carddass (2009-2015): linhas ONE PIECE e NARUTO do jogo
+      # crossover da Jump, anexadas como vintage nos dois catalogos (roda DEPOIS
+      # dos syncs do One Piece e do Naruto). Fonte tcg-db, sem preco.
+      - name: Anexa Miracle Battle Carddass (One Piece + Naruto)
+        run: node scripts/sync-miracle-battle.mjs || echo "sync-miracle-battle falhou; segue com o snapshot versionado"
+
       # JUMP: compila os sets curados versionados (data/jump/curated/*.json).
       - name: Compila catálogo JUMP (curadoria)
         run: node scripts/build-jump.mjs || echo "build-jump falhou; mantém o catalogo versionado"

@@ -31,7 +31,15 @@
   // ?line=opcd|op2002 (atalho vintage do hub): mostra SÓ os sets daquela linha do
   // jogo-pai (One Piece), com o prefixo de setId correspondente.
   const lineParam = new URLSearchParams(window.location.search).get("line") || "";
-  const linePrefix = lineParam === "opcd" ? "opcd-" : lineParam === "op2002" ? "op2002-" : "";
+  // Linhas vintage conhecidas: prefixo de setId + título + jogo-pai do "voltar".
+  const VINTAGE_LINES = {
+    "opcd": { prefix: "opcd-", title: "sets.category.vintage", game: "onepiece", back: "One Piece" },
+    "op2002": { prefix: "op2002-", title: "sets.category.op2002", game: "onepiece", back: "One Piece" },
+    "op-mb": { prefix: "op-mb-", title: "sets.category.mbop", game: "onepiece", back: "One Piece" },
+    "nrt-mb": { prefix: "nrt-mb-", title: "sets.category.mbnr", game: "naruto", back: "Naruto" }
+  };
+  const lineDef = VINTAGE_LINES[lineParam] || null;
+  const linePrefix = lineDef ? lineDef.prefix : "";
   const pager = shared.createPager({
     grid: elements.grid,
     pageSize: 60,
@@ -144,12 +152,12 @@
     const h1 = head && head.querySelector("h1");
     if (!h1) return;
     h1.removeAttribute("data-i18n");
-    h1.innerHTML = `${escapeHtml(t(lineParam === "op2002" ? "sets.category.op2002" : "sets.category.vintage"))} <span class="line-tag">${escapeHtml(t("hub.vintageTagShort"))}</span>`;
+    h1.innerHTML = `${escapeHtml(t(lineDef.title))} <span class="line-tag">${escapeHtml(t("hub.vintageTagShort"))}</span>`;
     if (!head.querySelector(".serie-back")) {
       const back = document.createElement("a");
       back.className = "serie-back";
-      back.href = "sets.html?game=onepiece";
-      back.textContent = "← One Piece";
+      back.href = `sets.html?game=${lineDef.game}`;
+      back.textContent = `← ${lineDef.back}`;
       head.insertBefore(back, h1);
     }
   }
@@ -317,6 +325,7 @@
       if ((window.SLEEVU && window.SLEEVU.game) === "lorcana") return groupLorcanaSets(setItems);
       // One Piece: Boosters (OP01…) + Starter Decks (ST-…) + o resto (promos etc.).
       if ((window.SLEEVU && window.SLEEVU.game) === "onepiece") return groupOnePieceSets(setItems);
+      if ((window.SLEEVU && window.SLEEVU.game) === "naruto") return groupNarutoSets(setItems);
       // Página de Sets: agrupada por série (coleção).
       return groupSetsBySeries(setItems);
     }
@@ -727,11 +736,13 @@
   function groupOnePieceSets(setItems) {
     const isCarddass = (set) => /^opcd-/i.test(String(set.setId || "").trim());
     const isOp2002 = (set) => /^op2002-/i.test(String(set.setId || "").trim());
+    const isMb = (set) => /^op-mb-/i.test(String(set.setId || "").trim());
     const isMain = (set) => /^OP\d+$/i.test(String(set.setId || "").trim());
     const isDeck = (set) => /^ST/i.test(String(set.setId || "").trim());
     const carddass = setItems.filter(isCarddass).sort(sortByReleaseDesc);
     const op2002 = setItems.filter(isOp2002).sort(sortByReleaseDesc);
-    const rest = setItems.filter((s) => !isCarddass(s) && !isOp2002(s));
+    const mb = setItems.filter(isMb).sort((a, b) => String(a.setId).localeCompare(String(b.setId)));
+    const rest = setItems.filter((s) => !isCarddass(s) && !isOp2002(s) && !isMb(s));
     const main = rest.filter(isMain).sort(sortByReleaseDesc);
     const decks = rest.filter((s) => !isMain(s) && isDeck(s)).sort(sortByReleaseDesc);
     const promos = rest.filter((s) => !isMain(s) && !isDeck(s)).sort(sortByReleaseDesc);
@@ -757,6 +768,34 @@
     if (op2002.length) {
       items.push({ type: "category-head", name: t("sets.category.op2002"), count: op2002.length });
       op2002.slice().reverse().forEach((set) => items.push(set));
+    }
+    if (mb.length) {
+      items.push({ type: "category-head", name: t("sets.category.mbop"), count: mb.length });
+      mb.forEach((set) => items.push(set));
+    }
+    return items;
+  }
+
+  // Naruto: volumes do Card Game 2002-2006, depois promos/extras, depois a
+  // linha vintage Miracle Battle (2012-2014).
+  function groupNarutoSets(setItems) {
+    const isMb = (set) => /^nrt-mb-/i.test(String(set.setId || "").trim());
+    const isMain = (set) => /^nrt-s\d+$/i.test(String(set.setId || "").trim());
+    const main = setItems.filter((s) => !isMb(s) && isMain(s)).sort(sortByReleaseDesc);
+    const extras = setItems.filter((s) => !isMb(s) && !isMain(s)).sort(sortByReleaseDesc);
+    const mb = setItems.filter(isMb).sort((a, b) => String(a.setId).localeCompare(String(b.setId)));
+    const items = [];
+    if (main.length) {
+      items.push({ type: "category-head", name: t("sets.category.main"), count: main.length });
+      main.forEach((set) => items.push(set));
+    }
+    if (extras.length) {
+      items.push({ type: "category-head", name: t("sets.category.promos"), count: extras.length });
+      extras.forEach((set) => items.push(set));
+    }
+    if (mb.length) {
+      items.push({ type: "category-head", name: t("sets.category.mbnr"), count: mb.length });
+      mb.forEach((set) => items.push(set));
     }
     return items;
   }
