@@ -22,7 +22,7 @@
     };
     const fromBRL = (v) => { const r = shared.convertMoney(v, "BRL", shared.getCurrency()); return r == null ? v : r; };
     const COLORS = shared.GAME_COLOR;
-    const NAMES = { pokemon: "Pokémon TCG", lorcana: "Disney Lorcana", onepiece: "One Piece Card Game", naruto: "Naruto Carddass (2002~2006)" };
+    const NAMES = { pokemon: "Pokémon TCG", lorcana: "Disney Lorcana", onepiece: "One Piece Card Game", naruto: "Naruto Card Game (2002~2006)" };
     const games = shared.GAME_SLUGS.map((g) => ({ g, name: NAMES[g] || g, data: readPf(g) }));
     games.forEach((x) => {
       x.color = COLORS[x.g];

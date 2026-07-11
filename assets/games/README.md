@@ -1,30 +1,34 @@
-# Logos dos jogos (seção "Mais de um jogo" na home)
+# Logos dos jogos (hub e sets)
 
-Coloque aqui os logos dos jogos. O `index.html` já aponta pra eles; assim que os
-arquivos existirem, os logos aparecem (o `home.js` revela o `<img>` ao carregar) e
-o nome em texto some. Sem os arquivos, fica o nome em texto (fallback) — sem erro.
+Padrão: **`game_<slug>.webp`**, 512px de largura, fundo transparente (o ffmpeg
+preserva o alpha). O `hub.html` aponta pra eles; o `hub.js` revela o `<img>`
+quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
 
-## Arquivos esperados (nome exato)
+## Arquivos
 
-- `pokemon.png` — logo do Pokémon TCG
-- `lorcana.png` — logo do Disney Lorcana
+- `game_pokemon.webp` — Pokémon TCG
+- `game_lorcana.webp` — Disney Lorcana
+- `game_onepiece.webp` — One Piece Card Game
+- `game_onepiece_carddass.webp` — Carddass Hyper Battle (tile vintage do OP)
+- `game_naruto.webp` — Naruto Card Game 2002~2006 (tile do jogo, tile vintage e
+  `setLogo` de todos os sets do Naruto, via sync-naruto-vintage.mjs)
+- `game_naruto.svg` — FONTE vetorial do logo do Naruto (Inkscape). Se editar,
+  re-exporte o webp: @resvg/resvg-js (ou qualquer rasterizador) em 512px e
+  depois `ffmpeg -i logo.png -c:v libwebp -quality 90 game_naruto.webp`.
 
-(SVG também serve; se usar SVG, troque a extensão no `src` do `index.html`.)
+## Conversão (novo logo)
 
-## Recomendações
+```sh
+ffmpeg -i logo.png -vf "scale=512:-1" -c:v libwebp -quality 88 game_<slug>.webp
+```
 
-- **Formato:** PNG com **fundo transparente** (os logos oficiais são raster). SVG
-  também serve.
-- **Contraste:** o CSS já põe um **chip branco** atrás do logo, então logos com
-  texto escuro (ex.: o roxo do Lorcana) ficam legíveis nos dois temas.
-- **Proporção:** paisagem; o CSS usa `height: 64px` + `object-fit: contain`, então
-  não precisa de tamanho exato.
+## Notas
 
-## Trocar o caminho/nome
-
-Se preferir outro nome/caminho, ajuste o `src` dos `<img class="game-logo">` em
-`index.html`. O CSP (`img-src 'self'`) já libera arquivos locais — não precisa
-mexer nele.
+- **Contraste:** o CSS põe um chip branco atrás do logo, então logos escuros
+  ficam legíveis nos dois temas.
+- **Proporção:** paisagem; o CSS usa `object-fit: contain` — não precisa de
+  tamanho exato.
+- O CSP (`img-src 'self'`) já cobre arquivos locais.
 
 > São marcas registradas dos respectivos titulares; o uso aqui é nominativo (pra
 > identificar os jogos), e o site já traz o disclaimer no rodapé.
