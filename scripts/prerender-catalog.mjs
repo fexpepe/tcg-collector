@@ -117,13 +117,55 @@ async function loadGameSets(slug) {
   return byName;
 }
 
-function setPageHtml(page, canonical, otherSets) {
+// Textos das páginas de set nos DOIS idiomas (pt = padrão/x-default, en = a
+// variante hreflang). A estrutura/HTML é idêntica — só muda o copy.
+const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+function fmtDateEn(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || "");
+  if (!m) return "";
+  return `${MONTHS_EN[Number(m[2]) - 1]} ${Number(m[3])}, ${m[1]}`;
+}
+const SET_L10N = {
+  pt: {
+    htmlLang: "pt-BR",
+    fmtDate: fmtDatePt,
+    title: (name, gameLabel) => `${name} — cartas do set ${gameLabel} | Sleevu`,
+    desc: (n, name, gameLabel, dateHuman) => `Lista completa das ${n} cartas do set ${name} de ${gameLabel}${dateHuman ? `, lançado em ${dateHuman}` : ""}. Veja imagens, números e raridades e monte sua coleção no Sleevu.`,
+    sub: (gameLabel, total, dateHuman, n) => `${gameLabel} · ${total} cartas oficiais${dateHuman ? ` · lançado em ${dateHuman}` : ""} · ${n} no catálogo do Sleevu`,
+    cta: "Abrir o set no Sleevu",
+    othersAria: "Outros sets",
+    others: (gameLabel) => `Outros sets de ${gameLabel}`,
+    navCollection: "Minha Coleção"
+  },
+  en: {
+    htmlLang: "en",
+    fmtDate: fmtDateEn,
+    title: (name, gameLabel) => `${name} — ${gameLabel} card list | Sleevu`,
+    desc: (n, name, gameLabel, dateHuman) => `Complete list of all ${n} cards in the ${name} set of ${gameLabel}${dateHuman ? `, released on ${dateHuman}` : ""}. See images, numbers and rarities and build your collection on Sleevu.`,
+    sub: (gameLabel, total, dateHuman, n) => `${gameLabel} · ${total} official cards${dateHuman ? ` · released ${dateHuman}` : ""} · ${n} in Sleevu's catalog`,
+    cta: "Open this set on Sleevu",
+    othersAria: "Other sets",
+    others: (gameLabel) => `Other ${gameLabel} sets`,
+    navCollection: "My Collection"
+  }
+};
+
+function setPageHtml(page, canonical, otherSets, lang) {
+  const L = SET_L10N[lang] || SET_L10N.pt;
+  const isEn = L === SET_L10N.en;
   const { name, cards, rep, game, gameLabel } = page;
   const total = rep.setTotal || cards.length;
-  const dateHuman = fmtDatePt(rep.setReleaseDate);
-  const title = `${name} — cartas do set ${gameLabel} | Sleevu`;
-  const desc = `Lista completa das ${cards.length} cartas do set ${name} de ${gameLabel}${dateHuman ? `, lançado em ${dateHuman}` : ""}. Veja imagens, números e raridades e monte sua coleção no Sleevu.`;
+  const dateHuman = L.fmtDate(rep.setReleaseDate);
+  const title = L.title(name, gameLabel);
+  const desc = L.desc(cards.length, name, gameLabel, dateHuman);
   const ogImage = absUrl(rep.setLogo) || `${ORIGIN}/og-image.svg`;
+  // hreflang: cada variante aponta pra si e pra irmã; pt é o x-default.
+  const altPt = `${ORIGIN}/set/${page.slug}`;
+  const altEn = `${ORIGIN}/set/${page.slug}-en`;
+  const hreflangs = `
+    <link rel="alternate" hreflang="pt-BR" href="${escapeAttr(altPt)}">
+    <link rel="alternate" hreflang="en" href="${escapeAttr(altEn)}">
+    <link rel="alternate" hreflang="x-default" href="${escapeAttr(altPt)}">`;
   // ?game= grava a sessão do jogo no app — sem ele, quem estivesse com outro
   // jogo ativo cairia no detail do jogo errado e não acharia o set.
   const appUrl = `/detail.html?type=set&name=${encodeURIComponent(name)}&game=${game}`;
@@ -156,8 +198,9 @@ function setPageHtml(page, canonical, otherSets) {
     return `<li class="pr-card"><a href="${escapeAttr(appUrl)}">${img}<span class="pr-card-meta"><span class="pr-card-num">${num}</span> <span class="pr-card-name">${escapeHtml(c.name)}</span></span></a></li>`;
   }).join("");
 
+  const enSuffix = isEn ? "-en" : "";
   const othersHtml = otherSets.length
-    ? `<nav class="pr-others" aria-label="Outros sets"><h2>Outros sets de ${escapeHtml(gameLabel)}</h2><ul>${otherSets.map((s) => `<li><a href="/set/${escapeAttr(s.slug)}">${escapeHtml(s.name)}</a></li>`).join("")}</ul></nav>`
+    ? `<nav class="pr-others" aria-label="${escapeAttr(L.othersAria)}"><h2>${escapeHtml(L.others(gameLabel))}</h2><ul>${otherSets.map((s) => `<li><a href="/set/${escapeAttr(s.slug)}${enSuffix}">${escapeHtml(s.name)}</a></li>`).join("")}</ul></nav>`
     : "";
 
   const logoHtml = rep.setLogo
@@ -167,18 +210,18 @@ function setPageHtml(page, canonical, otherSets) {
   const navHtml = [
     `<a href="/sets?game=${game}">Sets</a>`,
     game === "pokemon" ? `<a href="/pokedex">Pokédex</a>` : "",
-    `<a href="/collection">Minha Coleção</a>`
+    `<a href="/collection">${escapeHtml(L.navCollection)}</a>`
   ].filter(Boolean).join("\n          ");
 
   return `<!doctype html>
-<html lang="pt-BR">
+<html lang="${L.htmlLang}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy" content="${CSP}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${escapeHtml(title)}</title>
     <meta name="description" content="${escapeAttr(desc)}">
-    <link rel="canonical" href="${escapeAttr(canonical)}">
+    <link rel="canonical" href="${escapeAttr(canonical)}">${hreflangs}
     <meta property="og:site_name" content="Sleevu">
     <meta property="og:type" content="website">
     <meta property="og:url" content="${escapeAttr(canonical)}">
@@ -230,8 +273,8 @@ function setPageHtml(page, canonical, otherSets) {
         <div class="pr-hero-art">${logoHtml}</div>
         <div>
           <h1>${escapeHtml(name)}</h1>
-          <p class="pr-sub">${escapeHtml(`${gameLabel} · ${total} cartas oficiais${dateHuman ? ` · lançado em ${dateHuman}` : ""} · ${cards.length} no catálogo do Sleevu`)}</p>
-          <a class="pr-cta" href="${escapeAttr(appUrl)}">Abrir o set no Sleevu</a>
+          <p class="pr-sub">${escapeHtml(L.sub(gameLabel, total, dateHuman, cards.length))}</p>
+          <a class="pr-cta" href="${escapeAttr(appUrl)}">${escapeHtml(L.cta)}</a>
         </div>
       </div>
       <ul class="pr-grid">${cardsHtml}</ul>
@@ -246,6 +289,7 @@ function buildSitemap(setPages, cardPages) {
   const urls = [
     ...STATIC_URLS.map((p) => (p === "/" ? ORIGIN + "/" : ORIGIN + p)),
     ...setPages.map((s) => `${ORIGIN}/set/${s.slug}`),
+    ...setPages.map((s) => `${ORIGIN}/set/${s.slug}-en`),
     ...(cardPages || []).map((c) => `${ORIGIN}/card/${c.slug}`)
   ];
   const body = urls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n");
@@ -401,12 +445,13 @@ async function main() {
   mkdirSync(OUT_DIR, { recursive: true });
 
   for (const page of pages) {
-    const canonical = `${ORIGIN}/set/${page.slug}`;
     // "Outros sets" só do MESMO jogo (linkar 400 sets de 3 jogos em cada página
     // viraria ruído pro leitor e pro crawler).
     const others = pages.filter((p) => p.game === page.game && p.slug !== page.slug).map((p) => ({ name: p.name, slug: p.slug }));
-    const html = setPageHtml(page, canonical, others);
-    writeFileSync(join(OUT_DIR, `${page.slug}.html`), html, "utf8");
+    // Variante pt (padrão/x-default) + variante en (hreflang) — mesma página,
+    // copy trocado; elas se referenciam via <link rel=alternate>.
+    writeFileSync(join(OUT_DIR, `${page.slug}.html`), setPageHtml(page, `${ORIGIN}/set/${page.slug}`, others, "pt"), "utf8");
+    writeFileSync(join(OUT_DIR, `${page.slug}-en.html`), setPageHtml(page, `${ORIGIN}/set/${page.slug}-en`, others, "en"), "utf8");
   }
 
   // Cartas top: ranqueia por preço (pricing do build) + mais vistas (Supabase).
@@ -470,7 +515,7 @@ async function main() {
 
   writeFileSync("sitemap.xml", buildSitemap(pages, cardPages), "utf8");
   const perGame = GAMES.map((g) => `${g.slug} ${pages.filter((p) => p.game === g.slug).length}`).join(" · ");
-  console.log(`prerender-catalog: ${pages.length} páginas de set em /${OUT_DIR}/ (${perGame}) + ${cardPages.length} páginas de carta em /${CARD_OUT_DIR}/ + sitemap.xml (${STATIC_URLS.length + pages.length + cardPages.length} URLs).`);
+  console.log(`prerender-catalog: ${pages.length} páginas de set em /${OUT_DIR}/ (${perGame}) + ${cardPages.length} páginas de carta em /${CARD_OUT_DIR}/ + sitemap.xml (${STATIC_URLS.length + pages.length * 2 + cardPages.length} URLs).`);
 }
 
 await main();
