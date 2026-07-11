@@ -1894,7 +1894,110 @@
     }
   }
 
+  // --- Imagem social da coleção (canvas, CSP-safe) ---
+  // Gera um PNG "vitrine" pra postar em grupo/rede: top 9 cartas por valor +
+  // stats + @handle + marca. Mesmo motor do export de Vendas: Lorcana/One Piece
+  // não mandam CORS -> roteia pela wsrv.nl senão o canvas fica tainted.
+  async function exportCollectionImage(button) {
+    const pairs = [];
+    ownedCards().forEach((card) => {
+      (card.variants && card.variants.length ? card.variants : [shared.defaultVariant(card)]).forEach((variant) => {
+        const q = owned.variantTotal(card.id, variant);
+        if (q <= 0) return;
+        const v = shared.cardValue(card, variant, prices, shared.DEFAULT_CONDITION).value || 0;
+        pairs.push({ card, variant, value: v * q });
+      });
+    });
+    if (!pairs.length) { alert(t("collection.noResults")); return; }
+    pairs.sort((a, b) => b.value - a.value);
+    // Uma entrada por CARTA (não repetir variantes da mesma na vitrine).
+    const seen = new Set();
+    const top = [];
+    for (const p of pairs) { if (!seen.has(p.card.id)) { seen.add(p.card.id); top.push(p); if (top.length === 9) break; } }
+
+    const label = button ? button.textContent : "";
+    if (button) { button.disabled = true; button.textContent = "…"; }
+    const cols = 3, rows = Math.ceil(top.length / cols);
+    const CARD_W = 300, CARD_H = Math.round(CARD_W * 1.396), GAP = 20, MARGIN = 40, HEADER_H = 120, FOOTER_H = 52, RADIUS = 14;
+    const width = MARGIN * 2 + cols * CARD_W + (cols - 1) * GAP;
+    const height = MARGIN + HEADER_H + rows * CARD_H + (rows - 1) * GAP + FOOTER_H + MARGIN;
+    const canvas = document.createElement("canvas");
+    canvas.width = width; canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    const FONT = "system-ui, -apple-system, Segoe UI, Roboto, sans-serif";
+    // Fundo escuro (vitrine): cartas saltam mais que no branco.
+    ctx.fillStyle = "#12141a"; ctx.fillRect(0, 0, width, height);
+
+    const p = shared.getProfile();
+    const who = (p.displayName || "").trim() || (p.handle ? "@" + p.handle : t("collection.shareImage.mine"));
+    const copies = owned.totalQuantity();
+    const totalValue = pairs.reduce((s, x) => s + x.value, 0);
+    ctx.fillStyle = "#f3f5f7"; ctx.font = `800 40px ${FONT}`; ctx.textBaseline = "top";
+    ctx.fillText(who, MARGIN, MARGIN);
+    ctx.fillStyle = "#9ba4b3"; ctx.font = `600 22px ${FONT}`;
+    ctx.fillText(`${tn("count.cards", copies)} · ${shared.formatMoney(shared.getCurrency(), totalValue)}`, MARGIN, MARGIN + 52);
+
+    const bust = (u) => u ? u + (u.indexOf("?") >= 0 ? "&" : "?") + "sx=1" : u;
+    const loadImage = (url, cross) => new Promise((res) => {
+      if (!url) return res(null);
+      const im = new Image(); if (cross) im.crossOrigin = "anonymous";
+      im.onload = () => res(im); im.onerror = () => res(null); im.src = url;
+    });
+    const drawCover = (img, x, y, w, h) => {
+      const ir = img.width / img.height, rr = w / h; let sw, sh, sx, sy;
+      if (ir > rr) { sh = img.height; sw = sh * rr; sx = (img.width - sw) / 2; sy = 0; }
+      else { sw = img.width; sh = sw / rr; sx = 0; sy = (img.height - sh) / 2; }
+      ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+    };
+    const roundRect = (x, y, w, h, r) => { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); };
+
+    for (let i = 0; i < top.length; i++) {
+      const { card } = top[i];
+      const x = MARGIN + (i % cols) * (CARD_W + GAP);
+      const y = MARGIN + HEADER_H + Math.floor(i / cols) * (CARD_H + GAP);
+      ctx.save();
+      roundRect(x, y, CARD_W, CARD_H, RADIUS); ctx.fillStyle = "#1d2028"; ctx.fill(); ctx.clip();
+      const src = shared.cardImageSources(card);
+      const noCors = card.game === "lorcana" || card.game === "onepiece";
+      let img;
+      if (noCors) {
+        img = await loadImage(`https://wsrv.nl/?url=${encodeURIComponent(src.url)}&output=webp`, true);
+      } else {
+        img = await loadImage(bust(src.url), true);
+        if (!img && src.fallback) img = await loadImage(bust(src.fallback), true);
+      }
+      if (img) drawCover(img, x, y, CARD_W, CARD_H);
+      ctx.restore();
+      ctx.save(); roundRect(x, y, CARD_W, CARD_H, RADIUS); ctx.strokeStyle = "#2d333f"; ctx.lineWidth = 1.5; ctx.stroke(); ctx.restore();
+    }
+    ctx.fillStyle = "#747d8d"; ctx.font = `700 22px ${FONT}`; ctx.textBaseline = "alphabetic";
+    ctx.fillText("Sleevu · sleevu.app", MARGIN, height - MARGIN + 6);
+
+    const finish = () => { if (button) { button.disabled = false; button.textContent = label; } };
+    try {
+      canvas.toBlob(async (blob) => {
+        if (!blob) { alert(t("sales.exportTainted")); finish(); return; }
+        // navigator.share (celular) manda direto pro WhatsApp/rede; senão baixa.
+        const file = new File([blob], "colecao-sleevu.png", { type: "image/png" });
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+          try { await navigator.share({ files: [file] }); finish(); return; } catch (e) { /* cancelou: baixa */ }
+        }
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = "colecao-sleevu.png";
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        finish();
+      }, "image/png");
+    } catch (e) { alert(t("sales.exportTainted")); finish(); }
+  }
+
   function bindShareButton() {
+    const imgBtn = document.getElementById("collectionImageBtn");
+    if (imgBtn) {
+      imgBtn.hidden = ownedCards().length === 0;
+      imgBtn.addEventListener("click", () => exportCollectionImage(imgBtn));
+    }
     const btn = document.getElementById("collectionShareBtn");
     if (!btn) return;
     btn.hidden = ownedCards().length === 0;
