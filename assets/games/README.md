@@ -12,6 +12,8 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
 - `game_onepiece_carddass.webp` — Carddass Hyper Battle (tile vintage do OP)
 - `game_naruto.webp` — Naruto Card Game 2002~2006 (tile do jogo, tile vintage e
   `setLogo` de todos os sets do Naruto, via sync-naruto-vintage.mjs)
+- `game_naruto_miracle.webp` — Miracle Battle Carddass (tile vintage do Naruto
+  e `setLogo` dos sets nrt-mb-*, via sync-miracle-battle.mjs)
 - `game_naruto.svg` — FONTE vetorial do logo do Naruto (Inkscape). Se editar,
   re-exporte o webp: @resvg/resvg-js (ou qualquer rasterizador) em 512px e
   depois `ffmpeg -i logo.png -c:v libwebp -quality 90 game_naruto.webp`.

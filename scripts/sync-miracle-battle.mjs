@@ -27,8 +27,8 @@ const NO_FETCH = process.argv.includes("--no-fetch");
 // Séries importadas: prefixo de código de set -> jogo-pai do Sleevu.
 // (Prefixos mais longos primeiro: "OPS" antes de "OP", "NRS" antes de "NR".)
 const LINES = [
-  { match: /^(OPS|OPC|OP)\d*$/, game: "onepiece", idPrefix: "op-mb", strip: /^ONEPIECE\s*/ },
-  { match: /^(NRS|NR)\d*$/, game: "naruto", idPrefix: "nrt-mb", strip: /^ナルト疾風伝\s*/ }
+  { match: /^(OPS|OPC|OP)\d*$/, game: "onepiece", idPrefix: "op-mb", strip: /^ONEPIECE\s*/, logo: "" },
+  { match: /^(NRS|NR)\d*$/, game: "naruto", idPrefix: "nrt-mb", strip: /^ナルト疾風伝\s*/, logo: "/assets/games/game_naruto_miracle.webp" }
 ];
 
 async function fetchText(url) {
@@ -107,7 +107,7 @@ async function refreshSnapshot(existing) {
 
 const IMG = (scan) => `https://wsrv.nl/?url=${encodeURIComponent(`tcg-db.nikita.jp/img/card/mb/${scan}.jpg`)}&w=440&output=webp`;
 
-async function appendToGame(game, sets, idPrefix, stripRe) {
+async function appendToGame(game, sets, idPrefix, stripRe, logo) {
   const outDir = new URL(`data/${game}/`, ROOT);
   const line = [];
   for (const s of sets) {
@@ -137,7 +137,7 @@ async function appendToGame(game, sets, idPrefix, stripRe) {
         language: "ja",
         image: IMG(c.scan),
         variants: ["Normal"],
-        setLogo: "",
+        setLogo: logo || "",
         vintage: true,
         vintageLine: "mb"
       });
@@ -160,7 +160,7 @@ async function run() {
 
   for (const lineDef of LINES) {
     const sets = snap.sets.filter((s) => lineDef.match.test(s.code));
-    if (sets.length) await appendToGame(lineDef.game, sets, lineDef.idPrefix, lineDef.strip);
+    if (sets.length) await appendToGame(lineDef.game, sets, lineDef.idPrefix, lineDef.strip, lineDef.logo);
   }
 }
 
