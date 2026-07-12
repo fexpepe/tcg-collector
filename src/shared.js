@@ -1103,10 +1103,10 @@
       ${exploreMega}
       ${group("nav.collection", collectionActive, `
           ${link("collection.html", "nav.collectionMine", "collection")}
-          ${link("binders.html", "nav.binders", "binders")}
+          ${link("graded.html", "nav.graded", "graded")}
           ${link("wishlist.html", "nav.wishlist", "wishlist")}
-          ${link("sales.html", "nav.sales", "sales")}
-          ${link("graded.html", "nav.graded", "graded")}`)}
+          ${link("binders.html", "nav.binders", "binders")}
+          ${link("sales.html", "nav.sales", "sales")}`)}
       ${link("portfolio.html", "nav.portfolio", "portfolio")}
     `;
 
