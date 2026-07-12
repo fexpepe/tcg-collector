@@ -1035,6 +1035,12 @@ input::placeholder {
   gap: 12px;
 }
 
+/* Sets: tiles maiores — no máx. 6 por linha no desktop, caindo sozinho
+   (auto-fill) conforme a tela estreita; o mobile (≤~700px) já força 2. */
+.group-grid[data-view="sets"] {
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+}
+
 .pokedex-card {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -2423,6 +2429,11 @@ input::placeholder {
   .group-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+  }
+
+  /* Vence a especificidade da regra de sets (classe+atributo) no mobile. */
+  .group-grid[data-view="sets"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   /* Especificidade igual à regra de ≤1000px para vencer o cascade e empilhar. */
