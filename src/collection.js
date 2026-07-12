@@ -148,7 +148,7 @@
   let sortMode = "dex";
 
   // Aba "Cartas": ordenação + grade/lista (preferências guardadas).
-  const CARDS_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "release", "added-desc", "added-asc"];
+  const CARDS_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "rarity-desc", "rarity-asc", "release", "added-desc", "added-asc"];
   let cardsSort = CARDS_SORTS.includes(localStorage.getItem("tcg-collection-sort")) ? localStorage.getItem("tcg-collection-sort") : "value-desc";
   let cardsView = localStorage.getItem("tcg-collection-view") === "list" ? "list" : "grid";
 
@@ -1636,7 +1636,9 @@
       ? (p.it.value > 0 ? p.it.value : (shared.gradedValue(p.card, p.it.company, p.it.grade).value || 0))
       : (shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0));
     const byNum = (a, b) => shared.compareCardNumbers(a.card.number, b.card.number);
-    if (cardsSort === "num-asc") pairs.sort(byNum);
+    if (cardsSort === "rarity-desc") pairs.sort((a, b) => shared.rarityRank(b.card.rarity) - shared.rarityRank(a.card.rarity) || byNum(a, b));
+    else if (cardsSort === "rarity-asc") pairs.sort((a, b) => shared.rarityRank(a.card.rarity) - shared.rarityRank(b.card.rarity) || byNum(a, b));
+    else if (cardsSort === "num-asc") pairs.sort(byNum);
     else if (cardsSort === "num-desc") pairs.sort((a, b) => byNum(b, a));
     else if (cardsSort === "value-desc") pairs.sort((a, b) => priceOf(b) - priceOf(a));
     else if (cardsSort === "value-asc") pairs.sort((a, b) => {

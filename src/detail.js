@@ -117,6 +117,10 @@
       pairs.sort(byNum);
     } else if (selectedSort === "num-desc") {
       pairs.sort((a, b) => byNum(b, a));
+    } else if (selectedSort === "rarity-desc") {
+      pairs.sort((a, b) => shared.rarityRank(b.card.rarity) - shared.rarityRank(a.card.rarity) || byNum(a, b));
+    } else if (selectedSort === "rarity-asc") {
+      pairs.sort((a, b) => shared.rarityRank(a.card.rarity) - shared.rarityRank(b.card.rarity) || byNum(a, b));
     } else if (selectedSort === "value-desc") {
       pairs.sort((a, b) => priceOf(b) - priceOf(a));
     } else if (selectedSort === "value-asc") {

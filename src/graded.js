@@ -119,7 +119,7 @@
   // Versão compartilhada NÃO escapa o label (chamadas aqui usam rótulos fixos).
   const distBarsHtml = shared.distBarsHtml;
 
-  const GRADED_SORTS = ["value-desc", "value-asc", "grade-desc", "num-asc", "num-desc", "release", "added-desc", "added-asc"];
+  const GRADED_SORTS = ["value-desc", "value-asc", "grade-desc", "num-asc", "num-desc", "rarity-desc", "rarity-asc", "release", "added-desc", "added-asc"];
   let gradedSort = GRADED_SORTS.includes(localStorage.getItem("tcg-graded-sort")) ? localStorage.getItem("tcg-graded-sort") : "added-asc";
 
   function sortItems(arr) {
@@ -129,6 +129,8 @@
     if (gradedSort === "num-asc") a.sort((x, y) => shared.compareCardNumbers(x.card.number, y.card.number));
     else if (gradedSort === "num-desc") a.sort((x, y) => shared.compareCardNumbers(y.card.number, x.card.number));
     else if (gradedSort === "release") a.sort((x, y) => String(y.card.setReleaseDate || "").localeCompare(String(x.card.setReleaseDate || "")));
+    else if (gradedSort === "rarity-desc") a.sort((x, y) => shared.rarityRank(y.card.rarity) - shared.rarityRank(x.card.rarity) || shared.compareCardNumbers(x.card.number, y.card.number));
+    else if (gradedSort === "rarity-asc") a.sort((x, y) => shared.rarityRank(x.card.rarity) - shared.rarityRank(y.card.rarity) || shared.compareCardNumbers(x.card.number, y.card.number));
     else if (gradedSort === "grade-desc") a.sort((x, y) => gradeNum(y.it.grade) - gradeNum(x.it.grade));
     else if (gradedSort === "value-desc") a.sort((x, y) => y.val - x.val);
     else if (gradedSort === "value-asc") a.sort((x, y) => { if (!x.val && !y.val) return 0; if (!x.val) return 1; if (!y.val) return -1; return x.val - y.val; });

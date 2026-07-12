@@ -10,7 +10,7 @@
 
   // Ordenação/visualização da grade (persistidas, chaves próprias da página de
   // busca — independentes da Coleção). Mesmas opções dos dois lugares.
-  const CARDS_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "release"];
+  const CARDS_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "rarity-desc", "rarity-asc", "release"];
   let cardsSort = CARDS_SORTS.includes(localStorage.getItem("tcg-cards-sort")) ? localStorage.getItem("tcg-cards-sort") : "value-desc";
   let cardsView = localStorage.getItem("tcg-cards-view") === "list" ? "list" : "grid";
 
@@ -217,6 +217,8 @@
       const pa = priceOf(a), pb = priceOf(b);
       if (!pa && !pb) return 0; if (!pa) return 1; if (!pb) return -1; return pa - pb;
     };
+    if (cardsSort === "rarity-desc") return (a, b) => shared.rarityRank(b.card.rarity) - shared.rarityRank(a.card.rarity) || byNum(a, b);
+    if (cardsSort === "rarity-asc") return (a, b) => shared.rarityRank(a.card.rarity) - shared.rarityRank(b.card.rarity) || byNum(a, b);
     if (cardsSort === "release") return (a, b) => String(b.card.setReleaseDate || "").localeCompare(String(a.card.setReleaseDate || ""));
     return (a, b) => priceOf(b) - priceOf(a); // value-desc (padrão)
   }
