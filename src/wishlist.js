@@ -56,6 +56,10 @@
   // Liga os controles JÁ (filtro/busca) — não dependem do catálogo; assim os
   // botões nunca ficam "mortos" se o carregamento demorar/falhar.
   bindEvents();
+  // Skeletons enquanto os chunks baixam (se já há cartas conhecidas).
+  if (elements.grid && shared.GAME_SLUGS.some((g) => idsFor(g).length)) {
+    shared.showSkeletons(elements.grid, "card", 8);
+  }
   Promise.all([
     shared.loadOwnedAcrossGames(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, idsFor(g)]))),
     shared.loadFxRates()

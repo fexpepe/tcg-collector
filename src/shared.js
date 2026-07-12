@@ -3349,6 +3349,9 @@
   // chunks daquele idioma (corta o download — ex.: PT ~14k em vez de 48k);
   // no modo local filtra a amostra já carregada.
   async function loadCatalog(cardLang) {
+    return withPageLoading(loadCatalogInner(cardLang));
+  }
+  async function loadCatalogInner(cardLang) {
     await awaitCatalog();
     const lang = cardLang || "all";
     const matches = (value) => lang === "all" || value === lang;
@@ -3550,9 +3553,9 @@
   }
 
   // Só as cartas que você tem (Coleção/Wishlist): carga direcionada por jogo.
-  function loadOwnedAcrossGames(idsByGame) { return loadAcrossGames(idsByGame || {}); }
+  function loadOwnedAcrossGames(idsByGame) { return withPageLoading(loadAcrossGames(idsByGame || {})); }
   // Catálogo INTEIRO dos dois jogos (seletor do Binder).
-  function loadAllGamesCatalog() { return loadAcrossGames(null); }
+  function loadAllGamesCatalog() { return withPageLoading(loadAcrossGames(null)); }
 
   // Facade que despacha cada método por jogo (resolvido por gameOf(cardId));
   // agregados (size/totalQuantity/...) somam os jogos. Deixa Coleção/Wishlist/
@@ -3623,6 +3626,34 @@
   // Skeletons: cards fantasma enquanto os chunks do catálogo baixam (o layout
   // aparece na hora; percepção de velocidade no 3G). O primeiro render real
   // substitui tudo (os renders fazem grid.innerHTML = ""). kind: "card" | "set".
+  // Indicador GLOBAL de carregamento: pill fixa no topo enquanto houver
+  // trabalho inicial em andamento (sync da conta e/ou download de catálogo).
+  // Ref-count: vários carregamentos simultâneos = uma pill só; some no fim.
+  // Resolve o "site parado sem dizer nada" em conexão lenta/primeiro acesso.
+  let pageLoadingCount = 0;
+  function pageLoading(on) {
+    pageLoadingCount = Math.max(0, pageLoadingCount + (on ? 1 : -1));
+    let el = document.getElementById("pageLoadingPill");
+    if (pageLoadingCount > 0) {
+      if (!el) {
+        el = document.createElement("div");
+        el.id = "pageLoadingPill";
+        el.className = "page-loading";
+        el.setAttribute("role", "status");
+        el.innerHTML = `<span class="page-loading-spin" aria-hidden="true"></span><span>${escapeHtml(t("loading.data"))}</span>`;
+        (document.body || document.documentElement).appendChild(el);
+      }
+      el.hidden = false;
+    } else if (el) {
+      el.hidden = true;
+    }
+  }
+  // Envolve uma promise com a pill (garante o decremento mesmo em erro).
+  async function withPageLoading(promise) {
+    pageLoading(true);
+    try { return await promise; } finally { pageLoading(false); }
+  }
+
   function showSkeletons(grid, kind, count) {
     if (!grid || grid.children.length) return;
     const one = kind === "set"
@@ -3962,6 +3993,8 @@
     loadCatalogForCardIds,
     loadOwnedAcrossGames,
     showSkeletons,
+    pageLoading,
+    withPageLoading,
     loadAllGamesCatalog,
     mergedCollectionStore,
     mergedWishlistStore,
@@ -5259,6 +5292,7 @@
       const fresh = await consumeAuthRedirect();
       if (fresh) {
         renderLoggedIn(fresh);
+        pageLoading(true); // sync inicial da conta (a página recarrega no fim)
         for (const g of GAME_SLUGS) {
           const remote = await pullRemote(fresh.access_token, fresh.user.id, g);
           const merged = mergeData(localSnapshot(g), remote);
@@ -5277,6 +5311,7 @@
       if (!getSession()) { renderLoggedOut(); return; }
       renderLoggedIn(session);
       let changed = false;
+      pageLoading(true); // puxando a coleção da nuvem (1º acesso pode demorar)
       for (const g of GAME_SLUGS) {
         const remote = await pullRemote(session.access_token, session.user.id, g);
         if (!remote) continue;
@@ -5291,6 +5326,7 @@
           lastPushedByGame[g] = before;
         }
       }
+      pageLoading(false);
       if (changed) { window.location.reload(); return; }
       pullProfile(); // sincroniza o perfil (handle/visibilidade) sem bloquear
       startSyncLoop();
