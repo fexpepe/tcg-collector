@@ -1307,6 +1307,12 @@
   }
 
   function initSiteFooter() {
+    // Rodapé institucional SÓ na Início e nas páginas de apoio (sobre, FAQ,
+    // ajuda, configurações...). As telas de uso contínuo — Explorar, Coleção,
+    // Portfólio — ficam limpas (decisão de produto, 2026-07-12).
+    const FOOTER_PAGES = ["", "index", "about", "novidades", "faq", "help", "settings", "privacy", "terms", "login", "404"];
+    const page = (window.location.pathname.split("/").pop() || "").replace(/\.html$/, "");
+    if (!FOOTER_PAGES.includes(page)) return;
     if (document.querySelector(".site-footer")) return;
     const footer = document.createElement("footer");
     footer.className = "site-footer";
