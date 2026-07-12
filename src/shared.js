@@ -1201,8 +1201,11 @@
     const nav = document.createElement("nav");
     nav.className = "explore-subnav chip-filter";
     nav.setAttribute("aria-label", t("nav.explore"));
+    // Dentro de uma linha vintage (?line=), as abas continuam na linha.
+    const line = lineParamOf();
+    const lineSuffix = line && GAME_LINES[game] && GAME_LINES[game][line] ? `&line=${line}` : "";
     nav.innerHTML = pages.map(([href, key, page]) =>
-      `<a class="chip" href="${href}?game=${game}" aria-pressed="${page === active}"${page === active ? ' aria-current="page"' : ""}>${escapeHtml(t(key))}</a>`
+      `<a class="chip" href="${href}?game=${game}${lineSuffix}" aria-pressed="${page === active}"${page === active ? ' aria-current="page"' : ""}>${escapeHtml(t(key))}</a>`
     ).join("");
     head.insertAdjacentElement("afterend", nav);
   }
@@ -3462,6 +3465,35 @@
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
   const GAME_SLUGS = DATA_GAMES.map((d) => d.game);
   const GAME_COLOR = { pokemon: "#e23030", lorcana: "#3f3d96", onepiece: "#d9a400", naruto: "#ea580c" };
+  // Jogos por MARCA: cada IP pode ter várias LINHAS de jogo (o principal e os
+  // vintage). A NAVEGAÇÃO do Explorar trata cada linha como um jogo próprio
+  // (?line= define o escopo; sem line = só o jogo principal, excluindo as
+  // linhas). A CONTA (Coleção/Portfólio/Wishlist) soma tudo pela marca — sem
+  // filtro por linha lá, por decisão de produto.
+  const GAME_LINES = {
+    onepiece: {
+      "opcd": { prefix: "opcd-", label: "Carddass Hyper Battle", titleKey: "sets.category.vintage" },
+      "op2002": { prefix: "op2002-", label: "One Piece Card Game (2002)", titleKey: "sets.category.op2002" },
+      "op-mb": { prefix: "op-mb-", label: "Miracle Battle", titleKey: "sets.category.mbop" }
+    },
+    naruto: {
+      "nrt-mb": { prefix: "nrt-mb-", label: "Miracle Battle", titleKey: "sets.category.mbnr" },
+      "nrt-dc": { prefix: "nrt-dc-", label: "Data Carddass", titleKey: "sets.category.dcnr" }
+    }
+  };
+  function lineParamOf() {
+    try { return new URLSearchParams(window.location.search).get("line") || ""; } catch (e) { return ""; }
+  }
+  // Escopo de setId do "jogo" atual: ?line= conhecida -> só a linha; sem line
+  // -> o jogo principal (exclui as linhas da marca). Jogo sem linhas -> tudo.
+  function lineScope(game, lineParam) {
+    const lines = GAME_LINES[game];
+    if (!lines) return { line: null, def: null, includes: () => true };
+    const def = lineParam ? lines[lineParam] : null;
+    if (def) return { line: lineParam, def, includes: (setId) => String(setId || "").indexOf(def.prefix) === 0 };
+    const prefixes = Object.keys(lines).map((k) => lines[k].prefix);
+    return { line: null, def: null, includes: (setId) => !prefixes.some((p) => String(setId || "").indexOf(p) === 0) };
+  }
   function normalizeGame(g) {
     return GAME_SLUGS.includes(g) ? g : "pokemon";
   }
@@ -3973,6 +4005,9 @@
     unique,
     compareCardNumbers,
     rarityRank,
+    GAME_LINES,
+    lineScope,
+    lineParamOf,
     normalize,
     escapeHtml,
     escapeAttribute,
@@ -5369,7 +5404,8 @@
     const name = window.SLEEVU && window.SLEEVU.name;
     if (game === "hub" || !name) return;
     const h1 = document.querySelector(".page-head h1") || document.querySelector("main h1");
-    if (h1) h1.dataset.game = name;
+    const lineDef = GAME_LINES[game] && GAME_LINES[game][lineParamOf()];
+    if (h1) h1.dataset.game = lineDef ? lineDef.label : name;
   }
 
   // Accent por contexto de jogo: vermelho (Pokémon), roxo (Lorcana), neutro (all).

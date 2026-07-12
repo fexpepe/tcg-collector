@@ -91,7 +91,10 @@
   }
   Promise.all([shared.loadCatalog(), shared.loadFxRates()])
     .then(([catalog]) => {
-      cards = catalog.cards || [];
+      // Escopo por linha de jogo: a página de uma linha vintage (?line=) só vê
+      // as cartas dela; o jogo principal exclui as linhas (páginas próprias).
+      const scope = shared.lineScope((window.SLEEVU && window.SLEEVU.game) || "pokemon", shared.lineParamOf());
+      cards = (catalog.cards || []).filter((card) => scope.includes(card.setId));
       cardsById = new Map(cards.map((card) => [card.id, card]));
       owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
       hydrateFilters();
