@@ -37,7 +37,7 @@
    (theme.js no <head> evita o flash; o toggle vive no shared.js). */
 [data-theme="light"] {
   color-scheme: light;
-  --bg: #f4f6f9;
+  --bg: #e8ecf1;
   --surface: #ffffff;
   --panel: #ffffff;
   --panel-strong: #eef1f6;
@@ -1045,7 +1045,7 @@ input::placeholder {
 }
 
 /* Tema claro: o card branco (--panel) some no fundo quase branco da página
-   (--bg #f4f6f9) com a borda clara (--line). Um cinza sutil no fundo + borda
+   (--bg #e8ecf1) com a borda clara (--line). Um cinza sutil no fundo + borda
    mais escura deixam cada slot visível. (Vem antes de :hover/.owned pra que
    eles ainda sobreponham a cor da borda.) */
 [data-theme="light"] .pokedex-card {
