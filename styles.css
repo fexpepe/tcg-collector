@@ -8,7 +8,7 @@
   color-scheme: dark;
   /* Largura do conteúdo (header, main, footer) — mais largo, estilo Collectr. */
   --content-w: min(1440px, calc(100% - 40px));
-  --bg: #0d0e12;
+  --bg: #101218;
   --surface: #13151b;
   --panel: #181b22;
   --panel-strong: #20242d;

@@ -1491,7 +1491,7 @@
     if (theme === "light") root.setAttribute("data-theme", "light");
     else root.removeAttribute("data-theme");
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", theme === "light" ? "#e8ecf1" : "#0d0e12");
+    if (meta) meta.setAttribute("content", theme === "light" ? "#e8ecf1" : "#101218");
   }
   // Botão de tema ao lado do perfil (mostra o ícone do tema PRA ONDE vai trocar).
   function initThemeToggle() {

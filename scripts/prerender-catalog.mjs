@@ -237,7 +237,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
     <link rel="preconnect" href="https://assets.tcgdex.net">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <meta name="theme-color" content="#0d0e12">
+    <meta name="theme-color" content="#101218">
     <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
     <script src="/src/theme.js"></script>
     <link rel="stylesheet" href="/styles.css">
@@ -367,7 +367,7 @@ function cardPageHtml(cp) {
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#0d0e12">
+    <meta name="theme-color" content="#101218">
     <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
     <script src="/src/theme.js"></script>
     <link rel="stylesheet" href="/styles.css">
