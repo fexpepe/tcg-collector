@@ -1094,44 +1094,9 @@
     const brand = document.querySelector(".brand");
     if (brand) brand.setAttribute("href", apexUrl);
 
-    // "Explorar" = mega-menu com uma coluna por jogo + atalho pra grade de jogos.
-    // Substitui o antigo item "HUB" e o antigo dropdown "Explorar" por jogo.
-    const exploreLink = (href, key) => `<a href="${escapeAttribute(href)}">${escapeHtml(t(key))}</a>`;
-    const exploreMega = `
-      <div class="nav-group">
-        <button type="button" class="nav-group-toggle${exploreActive ? " active" : ""}" aria-expanded="false" aria-haspopup="true">
-          ${escapeHtml(t("nav.explore"))}<span class="nav-caret" aria-hidden="true">▾</span>
-        </button>
-        <div class="nav-dropdown nav-mega" hidden>
-          <a class="nav-mega-all" href="hub.html">${escapeHtml(t("nav.exploreAll"))}</a>
-          <div class="nav-mega-cols">
-            <div class="nav-mega-col">
-              <span class="nav-mega-head">${escapeHtml(t("nav.gamePokemon"))}</span>
-              ${exploreLink("cards.html?game=pokemon", "nav.allCards")}
-              ${exploreLink("sets.html?game=pokemon", "nav.sets")}
-              ${exploreLink("pokedex.html?game=pokemon", "nav.pokedex")}
-              ${exploreLink("trainers.html?game=pokemon", "nav.trainers")}
-              ${exploreLink("artists.html?game=pokemon", "nav.artists")}
-            </div>
-            <div class="nav-mega-col">
-              <span class="nav-mega-head">${escapeHtml(t("nav.gameLorcana"))}</span>
-              ${exploreLink("cards.html?game=lorcana", "nav.allCards")}
-              ${exploreLink("sets.html?game=lorcana", "nav.sets")}
-              ${exploreLink("artists.html?game=lorcana", "nav.artists")}
-            </div>
-            <div class="nav-mega-col">
-              <span class="nav-mega-head">${escapeHtml(t("nav.gameOnePiece"))}</span>
-              ${exploreLink("cards.html?game=onepiece", "nav.allCards")}
-              ${exploreLink("sets.html?game=onepiece", "nav.sets")}
-            </div>
-            <div class="nav-mega-col">
-              <span class="nav-mega-head">${escapeHtml(t("nav.gameNaruto"))}</span>
-              ${exploreLink("cards.html?game=naruto", "nav.allCards")}
-              ${exploreLink("sets.html?game=naruto", "nav.sets")}
-            </div>
-          </div>
-        </div>
-      </div>`;
+    // "Explorar" é um LINK direto pra grade de jogos (hub) — simplificação:
+    // sem mega-menu; o caminho é hub -> tile do jogo -> páginas do jogo.
+    const exploreMega = `<a href="hub.html"${exploreActive ? ' class="active"' : ""}>${escapeHtml(t("nav.explore"))}</a>`;
 
     nav.innerHTML = `
       ${link(apexUrl, "nav.home", "home")}
@@ -1228,8 +1193,8 @@
     bar.className = "mobile-tabbar";
     bar.setAttribute("aria-label", t("nav.menu"));
     bar.innerHTML =
-      tab("index.html", t("nav.home"), "home", active === "home" || active === "hub")
-      + tab("sets.html", t("tabbar.explore"), "explore", exploreActive && active !== "hub")
+      tab("index.html", t("nav.home"), "home", active === "home")
+      + tab("hub.html", t("tabbar.explore"), "explore", exploreActive)
       + tab("collection.html", t("tabbar.collection"), "collection", collectionActive)
       + `<button type="button" class="mtab" data-mtab-search><span class="mtab-ic" aria-hidden="true">${ic.search}</span><span class="mtab-label">${escapeHtml(t("tabbar.search"))}</span></button>`
       + tab("portfolio.html", t("nav.portfolio"), "portfolio", active === "portfolio");
