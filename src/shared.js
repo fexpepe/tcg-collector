@@ -3730,6 +3730,33 @@
 
   // Compara números de carta ("4/102", "199/165", "TG12/TG30") numericamente
   // pelo primeiro inteiro — localeCompare ordenaria "10" antes de "4".
+  // Peso de raridade pra ORDENAÇÃO (maior = mais rara), cobrindo os 4 jogos:
+  // nomes da TCGdex em en+pt (Common/Comum ... Special Illustration/Secreta),
+  // siglas da TCGCSV do One Piece (C/UC/R/SR/L/SEC/PR) e tiers do Lorcana
+  // (Super_rare/Legendary/Enchanted...). Heurística por palavra-chave, do mais
+  // específico pro mais genérico; raridade vazia/desconhecida (vintage) = 0.
+  function rarityRank(rarity) {
+    const s = String(rarity || "").toLowerCase().trim();
+    if (!s || s === "none") return 0;
+    if (s === "c") return 10;
+    if (s === "uc") return 20;
+    if (s === "r") return 30;
+    if (s === "pr" || s === "tr" || s === "promo") return 35;
+    if (s === "sr" || s === "super_rare") return 50;
+    if (s === "l") return 55; // Leader (One Piece)
+    if (s === "sec") return 70;
+    if (/special illustration|ilustração rara especial|hyper|hiper|secret|secreta|enchanted|iconic/.test(s)) return 70;
+    if (/illustration|ilustração|shiny|brilhante|full art|arte completa/.test(s)) return 60;
+    if (/legendary|legend/.test(s)) return 55;
+    if (/ultra/.test(s)) return 50;
+    if (/epic/.test(s)) return 45;
+    if (/holo|double|dupla|radiant|radiante|amazing|incríveis|ace spec|prime|classic/.test(s)) return 40;
+    if (/uncommon|incomum/.test(s)) return 20;
+    if (/common|comum/.test(s)) return 10;
+    if (/rare|rara/.test(s)) return 30;
+    return 5; // string exótica (atributos das linhas vintage): acima do vazio, abaixo do comum
+  }
+
   function compareCardNumbers(a, b) {
     const numA = parseInt(String(a).match(/\d+/), 10);
     const numB = parseInt(String(b).match(/\d+/), 10);
@@ -3945,6 +3972,7 @@
     detailUrl,
     unique,
     compareCardNumbers,
+    rarityRank,
     normalize,
     escapeHtml,
     escapeAttribute,

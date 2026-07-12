@@ -174,7 +174,7 @@
   const distBarsHtml = shared.distBarsHtml;
 
   // Ordenação da lista de vendas (mesmas opções da Coleção). Persistida.
-  const SALES_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "release", "added-desc", "added-asc"];
+  const SALES_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "rarity-desc", "rarity-asc", "release", "added-desc", "added-asc"];
   let salesSort = SALES_SORTS.includes(localStorage.getItem("tcg-sales-sort")) ? localStorage.getItem("tcg-sales-sort") : "added-asc";
 
   // Ordena itens [{it, card}]. "Valor" = preço de VENDA; "Adição" = ordem em que
@@ -186,6 +186,8 @@
     if (salesSort === "num-asc") a.sort((x, y) => shared.compareCardNumbers(x.card.number, y.card.number));
     else if (salesSort === "num-desc") a.sort((x, y) => shared.compareCardNumbers(y.card.number, x.card.number));
     else if (salesSort === "release") a.sort((x, y) => String(y.card.setReleaseDate || "").localeCompare(String(x.card.setReleaseDate || "")));
+    else if (salesSort === "rarity-desc") a.sort((x, y) => shared.rarityRank(y.card.rarity) - shared.rarityRank(x.card.rarity) || shared.compareCardNumbers(x.card.number, y.card.number));
+    else if (salesSort === "rarity-asc") a.sort((x, y) => shared.rarityRank(x.card.rarity) - shared.rarityRank(y.card.rarity) || shared.compareCardNumbers(x.card.number, y.card.number));
     else if (salesSort === "value-desc") a.sort((x, y) => y.it.price - x.it.price);
     else if (salesSort === "value-asc") a.sort((x, y) => { const px = x.it.price, py = y.it.price; if (!px && !py) return 0; if (!px) return 1; if (!py) return -1; return px - py; });
     else if (salesSort === "added-desc") a.sort((x, y) => rank(y) - rank(x));
