@@ -36,7 +36,8 @@
     "opcd": { prefix: "opcd-", title: "sets.category.vintage", game: "onepiece", back: "One Piece" },
     "op2002": { prefix: "op2002-", title: "sets.category.op2002", game: "onepiece", back: "One Piece" },
     "op-mb": { prefix: "op-mb-", title: "sets.category.mbop", game: "onepiece", back: "One Piece" },
-    "nrt-mb": { prefix: "nrt-mb-", title: "sets.category.mbnr", game: "naruto", back: "Naruto" }
+    "nrt-mb": { prefix: "nrt-mb-", title: "sets.category.mbnr", game: "naruto", back: "Naruto" },
+    "nrt-dc": { prefix: "nrt-dc-", title: "sets.category.dcnr", game: "naruto", back: "Naruto" }
   };
   const lineDef = VINTAGE_LINES[lineParam] || null;
   const linePrefix = lineDef ? lineDef.prefix : "";
@@ -780,9 +781,11 @@
   // linha vintage Miracle Battle (2012-2014).
   function groupNarutoSets(setItems) {
     const isMb = (set) => /^nrt-mb-/i.test(String(set.setId || "").trim());
+    const isDc = (set) => /^nrt-dc-/i.test(String(set.setId || "").trim());
     const isMain = (set) => /^nrt-s\d+$/i.test(String(set.setId || "").trim());
-    const main = setItems.filter((s) => !isMb(s) && isMain(s)).sort(sortByReleaseDesc);
-    const extras = setItems.filter((s) => !isMb(s) && !isMain(s)).sort(sortByReleaseDesc);
+    const main = setItems.filter((s) => !isMb(s) && !isDc(s) && isMain(s)).sort(sortByReleaseDesc);
+    const extras = setItems.filter((s) => !isMb(s) && !isDc(s) && !isMain(s)).sort(sortByReleaseDesc);
+    const dc = setItems.filter(isDc).sort((a, b) => String(a.setId).localeCompare(String(b.setId)));
     const mb = setItems.filter(isMb).sort((a, b) => String(a.setId).localeCompare(String(b.setId)));
     const items = [];
     if (main.length) {
@@ -792,6 +795,10 @@
     if (extras.length) {
       items.push({ type: "category-head", name: t("sets.category.promos"), count: extras.length });
       extras.forEach((set) => items.push(set));
+    }
+    if (dc.length) {
+      items.push({ type: "category-head", name: t("sets.category.dcnr"), count: dc.length });
+      dc.forEach((set) => items.push(set));
     }
     if (mb.length) {
       items.push({ type: "category-head", name: t("sets.category.mbnr"), count: mb.length });
