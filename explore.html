@@ -29,6 +29,9 @@
     <meta name="apple-mobile-web-app-title" content="Sleevu">
     <script src="src/theme.js"></script>
     <script src="src/game.js"></script>
+    <!-- Página neutra (sessão hub): o game.js não injeta catálogo nenhum, mas o
+         de-para de setIds é estático e o fallback de imagem EN precisa dele. -->
+    <script src="data/set-id-map.js"></script>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>

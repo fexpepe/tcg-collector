@@ -13,6 +13,21 @@ import { writeFile } from "node:fs/promises";
 const MANUAL_OVERRIDES = {
   // Sets duplos da era SV (a regra algorítmica do app já cobre, mas fixamos):
   "sv03.5": "sv3pt5",
+  // Ids com ponto que a pokemontcg.io escreve de formas irregulares (testados
+  // um a um em 2026-07: uns viram "pt5", outros colapsam o ponto, GO é "pgo",
+  // e Black Bolt/White Flare ganham prefixo z/r):
+  "swsh3.5": "swsh35",
+  "swsh4.5": "swsh45",
+  "swsh4.5sv": "swsh45sv",
+  "swsh9.5tg": "swsh9tg",
+  "swsh10.5": "pgo",
+  "swsh11.5tg": "swsh11tg",
+  "swsh12.5": "swsh12pt5",
+  "swsh12.5gg": "swsh12pt5gg",
+  "swsh12.5tg": "swsh12tg",
+  "sm11.5": "sm115",
+  "sv10.5b": "zsv10pt5",
+  "sv10.5w": "rsv10pt5",
   // McDonald's Collections (nomes/ids divergem bastante entre as bases):
   "2011bw": "mcd11",
   "2012bw": "mcd12",

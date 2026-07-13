@@ -1979,6 +1979,9 @@
     // onerror → placeholder, igual a hoje.
     let number = String(card.number || "").split("/")[0].trim();
     if (/^\d+$/.test(number)) number = number.replace(/^0+/, "");
+    // Holos H dos sets e-card: a TCGdex zero-preenche (H07) e a pokemontcg.io
+    // não (H7) — só nesses sets; TG05/GG05/SV001 mantêm o zero lá (testado).
+    if (/^ecard\d$/.test(setId)) number = number.replace(/^([A-Za-z]+)0+(?=\d)/, "$1");
     if (!setId || !number || !/^[A-Za-z]*\d+[A-Za-z]?$/.test(number)) return "";
     return `https://images.pokemontcg.io/${setId}/${number}${hires ? "_hires" : ""}.png`;
   }
