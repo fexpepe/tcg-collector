@@ -167,7 +167,7 @@
           const src = shared.cardImageSources(card);
           const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
           const g = graderOf(it.company);
-          return `<li><a href="${escapeAttribute(detailUrl("set", card.set))}"><span class="dash-top-thumb">${thumb}</span>
+          return `<li><a href="${escapeAttribute(detailUrl("set", card.set, "", card.game))}"><span class="dash-top-thumb">${thumb}</span>
             <span class="dash-top-info"><strong>${escapeHtml(card.name)}</strong><span class="dash-top-set">${escapeHtml(g.label)} ${escapeHtml(it.grade)} · ${escapeHtml(card.set)}</span></span>
             <span class="dash-top-val">${escapeHtml(shared.formatMoney(cur, val))}</span></a></li>`;
         }).join("")

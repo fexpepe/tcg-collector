@@ -41,7 +41,7 @@
         if (!card) return "";
         const src = shared.cardImageSources(card);
         const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
-        return `<a class="home-top-card" href="${shared.escapeAttribute(shared.detailUrl("set", card.set))}">
+        return `<a class="home-top-card" href="${shared.escapeAttribute(shared.detailUrl("set", card.set, "", card.game))}">
           <span class="home-top-img">${img}</span>
           <strong>${shared.escapeHtml(card.name)}</strong>
           <span class="home-top-views">${shared.escapeHtml(String(views))} 👁</span>

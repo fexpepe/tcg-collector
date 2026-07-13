@@ -827,7 +827,7 @@
       ? top.map(({ card, val }) => {
           const src = shared.cardImageSources(card);
           const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
-          return `<li><a href="${escapeAttribute(detailUrl("set", card.set))}"><span class="dash-top-thumb">${thumb}</span>
+          return `<li><a href="${escapeAttribute(detailUrl("set", card.set, "", card.game))}"><span class="dash-top-thumb">${thumb}</span>
             <span class="dash-top-info"><strong>${escapeHtml(card.name)}</strong><span class="dash-top-set">${escapeHtml(card.set)}</span></span>
             <span class="dash-top-val">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</span></a></li>`;
         }).join("")
@@ -1827,7 +1827,7 @@
     `;
 
     if (tab.detailType) {
-      return `<a class="progress-row" href="${escapeAttribute(detailUrl(tab.detailType, group.name, "collection"))}">${body}</a>`;
+      return `<a class="progress-row" href="${escapeAttribute(detailUrl(tab.detailType, group.name, "collection", group.sample && group.sample.game))}">${body}</a>`;
     }
     return `<div class="progress-row">${body}</div>`;
   }

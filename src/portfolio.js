@@ -328,7 +328,7 @@
       const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
       const ownedTag = owned.has(card.id) ? `<span class="pf-mover-owned">${escapeHtml(t("portfolio.movers.owned"))}</span>` : "";
       const pct = `${x.pct > 0 ? "+" : "−"}${Math.abs(x.pct).toLocaleString(loc, { maximumFractionDigits: 1 })}%`;
-      return `<a class="pf-mover" href="${escapeAttribute(detailUrl("set", card.set))}">
+      return `<a class="pf-mover" href="${escapeAttribute(detailUrl("set", card.set, "", card.game))}">
         <span class="pf-mover-thumb">${thumb}</span>
         <span class="pf-mover-info"><strong>${escapeHtml(card.name)}</strong><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span>${ownedTag}</span>
         <span class="pf-mover-pct ${x.pct > 0 ? "is-up" : "is-down"}">${x.pct > 0 ? "▲" : "▼"} ${escapeHtml(pct)}</span>
@@ -402,7 +402,7 @@
       const rows = positions.slice(0, 12).map((p) => {
         const dPct = p.paid > 0 ? (p.delta / p.paid) * 100 : 0;
         return `<tr>
-          <td><a href="${escapeAttribute(detailUrl("set", p.card.set))}">${escapeHtml(`${p.card.name} · ${p.card.set} ${p.card.number}`)}</a></td>
+          <td><a href="${escapeAttribute(detailUrl("set", p.card.set, "", p.card.game))}">${escapeHtml(`${p.card.name} · ${p.card.set} ${p.card.number}`)}</a></td>
           <td>${escapeHtml(p.variant)}</td>
           <td class="num">${p.qty}</td>
           <td class="num">${escapeHtml(money(p.paid))}</td>
@@ -487,7 +487,7 @@
   function renderTop(lines, slabs) {
     const rows = lines.map((line) => ({
       name: `${line.card.name} · ${line.card.set} ${line.card.number}`,
-      href: detailUrl("set", line.card.set),
+      href: detailUrl("set", line.card.set, "", line.card.game),
       kind: line.variant,
       cond: line.condition,
       estTitle: line.source === "ref" ? t("portfolio.estRef") : line.source === "myp" ? t("portfolio.estMyp") : t("portfolio.estimated"),
@@ -499,7 +499,7 @@
       if (!card || !(s.value > 0)) return;
       rows.push({
         name: `${card.name} · ${card.set} ${card.number}`,
-        href: detailUrl("set", card.set),
+        href: detailUrl("set", card.set, "", card.game),
         kind: `${String(s.company || "").toUpperCase()} ${shared.gradedGradeText(s.grade, s.pristine)}`,
         cond: t("nav.graded"), graded: true,
         estimated: false, qty: 1, unit: s.value, total: s.value

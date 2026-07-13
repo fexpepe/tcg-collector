@@ -3754,9 +3754,13 @@
     });
   }
 
-  function detailUrl(type, name, scope) {
+  function detailUrl(type, name, scope, game) {
     const params = new URLSearchParams({ type, name });
     if (scope) params.set("scope", scope);
+    // Multi-jogo: o detail é página de SESSÃO — sem ?game= ele abre no último
+    // jogo visitado e resolve o set/artista errado. Sempre que o chamador sabe
+    // o jogo da carta (páginas mescladas: Coleção/Portfólio/Graded), vai na URL.
+    if (game && GAME_SLUGS.includes(game)) params.set("game", game);
     return `detail.html?${params.toString()}`;
   }
 
