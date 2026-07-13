@@ -2830,6 +2830,11 @@ a.hub-tile:hover {
 .hub-tile.is-soon { opacity: 0.65; }
 .hub-tile.is-soon .hub-logo-box { background: var(--bg); }
 .hub-tile.is-soon .hub-logo-text { color: var(--muted); }
+/* "Em breve" COM logo (ex.: NARUTO CARD GAME 2027): chip branco e sem
+   esmaecer, igual aos jogos disponíveis — o badge já diz que não lançou.
+   (Sem :has, cai no visual escuro de antes — degrada bem.) */
+.hub-tile.is-soon:has(.hub-logo) { opacity: 1; }
+.hub-tile.is-soon:has(.hub-logo) .hub-logo-box { background: #fff; }
 
 .home-sources {
   margin-top: 44px;
