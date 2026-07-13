@@ -28,6 +28,11 @@ ppt-*.txt
 # Configuração local do Claude Code
 .claude/settings.local.json
 
+# Dependências e cache de ferramentas (nunca versionar; apareceram de npx/wrangler
+# locais — o site é estático e não tem package.json na raiz)
+node_modules/
+.wrangler/
+
 # Lixo de SO/editor
 Thumbs.db
 .DS_Store

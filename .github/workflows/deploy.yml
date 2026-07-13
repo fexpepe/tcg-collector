@@ -83,6 +83,14 @@ jobs:
       - name: Mescla catálogos num manifest unificado
         run: node scripts/merge-catalogs.mjs en ja zh-tw pt
 
+      # Espelha logos/símbolos de SET do Pokémon localmente (independência da
+      # TCGdex; as CARTAS seguem remotas). Roda DEPOIS do merge (que reescreve os
+      # chunks) e reescreve setLogo/setSymbol pros caminhos em data/set-logos/.
+      # Idempotente: baixa só o que falta (versionado) e re-localiza as URLs que
+      # o sync trouxe de volta remotas. Não derruba o build se o CDN estiver fora.
+      - name: Espelha logos de set (Pokémon)
+        run: node scripts/mirror-set-logos.mjs || echo "mirror-set-logos falhou; segue com as URLs da TCGdex"
+
       # Histórico de preços SEM servidor: busca o acumulador publicado no deploy
       # anterior (a produção é o "banco"), anexa o snapshot de hoje e re-publica
       # (+ deltas ▲▼ e maiores altas/quedas). Backup em data/.cache.
