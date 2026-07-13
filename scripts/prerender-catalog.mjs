@@ -39,7 +39,7 @@ const CSP = `default-src 'self'; script-src 'self' https://static.cloudflareinsi
 
 // Páginas estáticas do site (base do sitemap), extensionless como o CF Pages serve.
 const STATIC_URLS = [
-  "/", "/hub", "/explore", "/cards", "/pokedex", "/sets", "/artists", "/trainers",
+  "/", "/hub", "/explore", "/dashboard", "/cards", "/pokedex", "/sets", "/artists", "/trainers",
   "/collection", "/wishlist", "/portfolio", "/binders", "/sales", "/graded",
   "/about", "/novidades", "/faq", "/help", "/privacy", "/terms"
 ];

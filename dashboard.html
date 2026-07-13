@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://wsrv.nl; connect-src 'self' https://api.tcgdex.net https://pokeapi.co https://economia.awesomeapi.com.br https://*.supabase.co https://cloudflareinsights.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="title.dashboard">Dashboard - Sleevu</title>
+    <meta name="description" content="Seu hub de colecionador no Sleevu: resumo das coleções de todos os jogos, patrimônio e atalhos rápidos.">
+    <meta name="robots" content="noindex">
+    <link rel="canonical" href="https://sleevu.app/dashboard">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://assets.tcgdex.net">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#101218">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <script src="src/game.js"></script>
+    <!-- Página neutra (sessão hub): o de-para de setIds é estático e o fallback
+         de imagem EN das "mais valiosas" precisa dele. -->
+    <script src="data/set-id-map.js"></script>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">Sleevu</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page="dashboard"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-head dash-head">
+        <h1 data-i18n="nav.dashboard">Dashboard</h1>
+        <div id="dashProfileLine" class="dash-profile-line" hidden></div>
+      </div>
+
+      <!-- Resumo instantâneo (localStorage + cookie do Portfólio; sem catálogo) -->
+      <section class="stats-grid" aria-label="Resumo do colecionador">
+        <article class="stat-grand">
+          <span id="dhValue">—</span>
+          <p data-i18n="portfolio.networth">patrimônio (cartas + graded)</p>
+        </article>
+        <article>
+          <span id="dhCopies">0</span>
+          <p data-i18n="stats.copies">cópias no total</p>
+        </article>
+        <article>
+          <span id="dhDistinct">0</span>
+          <p data-i18n="stats.distinct">cartas distintas</p>
+        </article>
+        <article>
+          <span id="dhWish">0</span>
+          <p data-i18n="dash.wish">na lista de desejos</p>
+        </article>
+        <article>
+          <span id="dhSlabs">0</span>
+          <p data-i18n="dash.slabs">slabs graded</p>
+        </article>
+      </section>
+
+      <!-- Distribuição por marca (contagem de cartas distintas) -->
+      <section id="dhGames" class="dash-games" aria-label="Coleções por jogo"></section>
+
+      <!-- Atalhos: o HUB do jogador -->
+      <h2 class="dash-section-head" data-i18n="dash.shortcuts">Ir para</h2>
+      <section id="dhLinks" class="dash-links" aria-label="Atalhos"></section>
+
+      <!-- Mais valiosas (carrega o catálogo das suas cartas sob demanda) -->
+      <section id="dhTopCard" class="dash-top-card" hidden>
+        <div class="results-header dash-top-head">
+          <h2 data-i18n="portfolio.topCards">Cartas mais valiosas</h2>
+          <a href="portfolio.html" class="dash-more" data-i18n="dash.seePortfolio">Ver o Portfólio →</a>
+        </div>
+        <div id="dhTopList" class="dash-top-list"></div>
+      </section>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/shared.js"></script>
+    <script defer src="src/dashboard.js"></script>
+  </body>
+</html>

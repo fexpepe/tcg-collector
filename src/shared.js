@@ -1076,7 +1076,7 @@
       }
     }
     const exploreActive = ["pokedex", "trainers", "sets", "artists", "cards", "hub"].includes(active);
-    const collectionActive = ["collection", "wishlist", "binders", "sales", "graded"].includes(active);
+    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "graded"].includes(active);
 
     const link = (href, key, page) => `<a href="${escapeAttribute(href)}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
     const group = (key, isActive, links) => `
@@ -1101,6 +1101,7 @@
       ${link(apexUrl, "nav.home", "home")}
       ${exploreMega}
       ${group("nav.collection", collectionActive, `
+          ${link("dashboard.html", "nav.dashboard", "dashboard")}
           ${link("collection.html", "nav.collectionMine", "collection")}
           ${link("graded.html", "nav.graded", "graded")}
           ${link("wishlist.html", "nav.wishlist", "wishlist")}

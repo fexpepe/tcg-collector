@@ -36,7 +36,7 @@
   // (/, /index, /hub) e o .html.
   function isNeutralPage() {
     var p = (location.pathname || "").replace(/\/+$/, "");
-    return p === "" || /\/(index|hub|explore)(\.html)?$/i.test(p);
+    return p === "" || /\/(index|hub|explore|dashboard)(\.html)?$/i.test(p);
   }
 
   function detectGame() {
