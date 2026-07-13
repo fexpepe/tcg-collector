@@ -1094,9 +1094,8 @@
     const brand = document.querySelector(".brand");
     if (brand) brand.setAttribute("href", apexUrl);
 
-    // "Explorar" é um LINK direto pra grade de jogos (hub) — simplificação:
-    // sem mega-menu; o caminho é hub -> tile do jogo -> páginas do jogo.
-    const exploreMega = `<a href="hub.html"${exploreActive ? ' class="active"' : ""}>${escapeHtml(t("nav.explore"))}</a>`;
+    // "Jogos" = grade de jogos (hub); "Explorar" = busca GLOBAL multi-jogo.
+    const exploreMega = `<a href="hub.html"${exploreActive ? ' class="active"' : ""}>${escapeHtml(t("nav.games"))}</a><a href="explore.html"${active === "explore" ? ' class="active"' : ""}>${escapeHtml(t("nav.explore"))}</a>`;
 
     nav.innerHTML = `
       ${link(apexUrl, "nav.home", "home")}
@@ -1193,8 +1192,8 @@
     bar.className = "mobile-tabbar";
     bar.setAttribute("aria-label", t("nav.menu"));
     bar.innerHTML =
-      tab("index.html", t("nav.home"), "home", active === "home")
-      + tab("hub.html", t("tabbar.explore"), "explore", exploreActive)
+      tab("index.html", t("nav.home"), "home", active === "home" || active === "hub")
+      + tab("explore.html", t("tabbar.explore"), "explore", active === "explore" || (exploreActive && active !== "hub"))
       + tab("collection.html", t("tabbar.collection"), "collection", collectionActive)
       + `<button type="button" class="mtab" data-mtab-search><span class="mtab-ic" aria-hidden="true">${ic.search}</span><span class="mtab-label">${escapeHtml(t("tabbar.search"))}</span></button>`
       + tab("portfolio.html", t("nav.portfolio"), "portfolio", active === "portfolio");
