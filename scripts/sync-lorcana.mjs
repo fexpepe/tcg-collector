@@ -8,7 +8,7 @@
 // (game-aware da Fase 0) renderizar igual.
 //
 //   node scripts/sync-lorcana.mjs
-import { writeFile, mkdir } from "node:fs/promises";
+import { writeFile, mkdir, access } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { writeGameCatalog } from "./lib/sync-common.mjs";
 
@@ -45,7 +45,14 @@ function cardName(c) {
 // da 1ª carta. Nunca derruba o sync (try/catch -> null).
 const LOGOS_DIR = new URL("set-logos/", OUT);
 const WIKI_API = "https://wiki.mushureport.com/api.php";
+// Logo já existente em set-logos/ é CURADO (normalizado em 1000x500, alta
+// resolução) e vence: não re-baixa. Também evita regressão agora que o wiki
+// está atrás de challenge do Cloudflare (fetch de fora falha com 403).
+async function hasLocal(name) {
+  try { await access(new URL(name, LOGOS_DIR)); return true; } catch { return false; }
+}
 async function fetchSetLogo(setName, code) {
+  if (await hasLocal(`${code}.png`)) return `data/lorcana/set-logos/${code}.png`;
   try {
     const u = new URL(WIKI_API);
     u.search = new URLSearchParams({
@@ -77,6 +84,7 @@ async function fetchSetLogo(setName, code) {
 // da arte de uma carta aleatória. Salvo em set-logos/_lorcana.png. Retorna o
 // caminho relativo, ou null (aí cai pra arte da carta).
 async function fetchBrandLogo() {
+  if (await hasLocal("_lorcana.png")) return "data/lorcana/set-logos/_lorcana.png";
   try {
     const u = new URL(WIKI_API);
     u.search = new URLSearchParams({
@@ -170,7 +178,18 @@ async function run() {
   // (promos/challenge); e só em último caso a arte da 1ª carta do set.
   const coverBySet = {};
   for (const c of cards) { if (c.image && !coverBySet[c.setId]) coverBySet[c.setId] = c.image; }
-  for (const c of cards) { c.setLogo = logoBySet[c.setId] || brandLogo || coverBySet[c.setId] || ""; }
+  // Anti-regressão: logo LOCAL do build anterior nunca é rebaixado pra arte
+  // remota (foi exatamente o estrago do revert acidental de 2026-07-10 — com
+  // esta guarda, mesmo um bug no resolve deixa os sets com o último logo bom).
+  const prevLocal = {};
+  try {
+    const { readGlobalVar } = await import("./lib/sync-common.mjs");
+    const prev = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
+    for (const c of prev) {
+      if (c && c.setLogo && String(c.setLogo).indexOf("data/lorcana/set-logos/") === 0) prevLocal[c.setId] = c.setLogo;
+    }
+  } catch (e) { /* primeiro build: sem anterior */ }
+  for (const c of cards) { c.setLogo = logoBySet[c.setId] || prevLocal[c.setId] || brandLogo || coverBySet[c.setId] || ""; }
 
   // Índices (sets, artists) no formato { name, cardIds } — o frontend usa nas
   // páginas Sets e Artistas. (Sem pokedex/trainers: não existem no Lorcana.)
