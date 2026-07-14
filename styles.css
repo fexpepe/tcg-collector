@@ -5039,12 +5039,67 @@ a.progress-row:hover {
      valor (R$ …) muda de largura entre Todos/Pokémon/Lorcana e desloca tudo. */
   grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr) minmax(0, 1.4fr);
 }
-/* Minha Coleção pós-limpeza: só o card de stats sobra -> ocupa a linha toda.
-   O Dashboard (/dashboard) usa o grid completo com as cápsulas. */
+/* Minha Coleção pós-limpeza: só o card de stats sobra -> vira uma BARRA de
+   UMA linha, fixada logo abaixo do header enquanto a página rola (--header-h
+   vem do collection.js com a altura real do header). O Dashboard (/dashboard)
+   usa o grid completo com as cápsulas. */
 #collectionDashboard.collection-dashboard {
   grid-template-columns: minmax(0, 1fr);
   gap: 14px;
   margin: 0 0 18px;
+  position: sticky;
+  top: var(--header-h, 53px);
+  z-index: 4; /* abaixo do header (5), acima das grades/preview de tile */
+}
+/* Slots FIXOS: perfil | cópias | distintas | sets | valor. Colunas travadas por
+   fração do espaço + números tabulares: trocar o filtro Todos/Pokémon/… muda os
+   NÚMEROS, nunca as posições. Perfil ausente deixa o slot vazio (não desloca). */
+#collectionDashboard .dash-stats {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.4fr);
+  align-items: center;
+  gap: 2px 18px;
+  padding: 10px 18px;
+  box-shadow: var(--shadow);
+}
+#collectionDashboard .dash-profile { grid-column: 1; border: 0; padding: 0; margin: 0; flex-wrap: nowrap; }
+#collectionDashboard .dash-profile-name { font-size: 18px; letter-spacing: -0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#collectionDashboard .dash-profile-handle { font-size: 12px; }
+#collectionDashboard .dash-stats-counts { display: contents; }
+#collectionDashboard .dash-stats-counts > div:nth-child(1) { grid-column: 2; }
+#collectionDashboard .dash-stats-counts > div:nth-child(2) { grid-column: 3; }
+#collectionDashboard .dash-stats-counts > div:nth-child(3) { grid-column: 4; }
+#collectionDashboard .dash-stat-val { font-size: 20px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+#collectionDashboard .dash-stat-label { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#collectionDashboard .dash-stat-money { grid-column: 5; border: 0; padding: 0; justify-self: end; text-align: right; min-width: 0; max-width: 100%; }
+#collectionDashboard .dash-stat-money .dash-stat-val { font-size: 22px; }
+/* Mobile: a barra troca a esteira de cards por 2 linhas compactas (identidade +
+   valor em cima, contagens embaixo), full-bleed e ainda fixa sob o header. */
+@media (max-width: 720px) {
+  #collectionDashboard.collection-dashboard {
+    display: grid;
+    overflow: visible; /* sticky morre com overflow-x da esteira */
+    scroll-snap-type: none;
+    margin: 0 -16px 14px;
+    padding: 0;
+  }
+  #collectionDashboard .dash-card.dash-stats {
+    flex: none;
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px 12px;
+    padding: 8px 16px;
+  }
+  #collectionDashboard .dash-profile { grid-column: 1 / 3; grid-row: 1; }
+  #collectionDashboard .dash-profile-name { font-size: 16px; }
+  #collectionDashboard .dash-stat-money { grid-column: 3; grid-row: 1; }
+  #collectionDashboard .dash-stats-counts > div:nth-child(1) { grid-column: 1; grid-row: 2; }
+  #collectionDashboard .dash-stats-counts > div:nth-child(2) { grid-column: 2; grid-row: 2; }
+  #collectionDashboard .dash-stats-counts > div:nth-child(3) { grid-column: 3; grid-row: 2; }
+  #collectionDashboard .dash-stat-val { font-size: 17px; }
+  #collectionDashboard .dash-stat-money .dash-stat-val { font-size: 18px; }
 }
 @media (max-width: 1080px) { .collection-dashboard { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .dash-carousel { grid-column: 1 / -1; } }
 @media (max-width: 560px) { .collection-dashboard { grid-template-columns: minmax(0, 1fr); } }
