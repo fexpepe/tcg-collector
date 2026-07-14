@@ -618,6 +618,7 @@
       if (event.target.closest("[data-tag-open]")) { if (tid) { openTagId = tid; renderCards(); } return; }
       if (event.target.closest("[data-tag-back]")) { openTagId = null; renderCards(); return; }
       if (event.target.closest("[data-tag-add]")) { if (tid) openTagPicker(tid); return; }
+      if (event.target.closest("[data-tag-share]")) { if (tid) shareTag(tid, event.target.closest("[data-tag-share]")); return; }
 
       const section = event.target.closest("[data-folder-id]");
       const fid = section && section.dataset.folderId;
@@ -1112,6 +1113,7 @@
       <div class="coll-card-body">
         <div class="coll-card-meta-row"><span class="coll-card-meta">${escapeHtml(tn("tags.count", cards.length))}</span></div>
         <div class="coll-card-foot"><span class="coll-card-acts">
+          <button type="button" class="folder-act folder-share-btn" data-tag-share title="${escapeAttribute(t("tags.share"))}" aria-label="${escapeAttribute(t("tags.share"))}">${SHARE_ICON}</button>
           <button type="button" class="folder-act" data-tag-edit title="${escapeAttribute(t("tags.edit"))}" aria-label="${escapeAttribute(t("tags.edit"))}">✎</button>
           <button type="button" class="folder-act folder-act-danger" data-tag-delete title="${escapeAttribute(t("tags.delete"))}" aria-label="${escapeAttribute(t("tags.delete"))}">✕</button>
         </span></div>
@@ -1131,6 +1133,7 @@
         <span class="folder-meta">${escapeHtml(tn("tags.count", pairs.length))}</span>
         <span class="folder-actions">
           <button type="button" class="folder-act tag-add-btn" data-tag-add>+ ${escapeHtml(t("tags.addCards"))}</button>
+          <button type="button" class="folder-act folder-share-btn" data-tag-share title="${escapeAttribute(t("tags.share"))}" aria-label="${escapeAttribute(t("tags.share"))}">${SHARE_ICON}<span>${escapeHtml(t("folders.shareBtn"))}</span></button>
           <button type="button" class="folder-act" data-tag-edit title="${escapeAttribute(t("tags.edit"))}" aria-label="${escapeAttribute(t("tags.edit"))}">✎</button>
         </span>
       </header>
@@ -1906,6 +1909,27 @@
     }
   }
 
+  // Compartilha SÓ as cartas de uma tag (nome da tag vira o título; a cor vai
+  // junto pro rótulo do viewer). Mesmo fluxo das pastas: createShare + copiar.
+  async function shareTag(tagId, btn) {
+    const tag = tags.get(tagId);
+    if (!tag) return;
+    const data = buildShareData((card) => tags.has(card.id, tagId));
+    if (!data.items.length) { alert(t("tags.shareEmpty")); return; }
+    data.scope = "tag"; // a view ?s= mostra o rótulo "Tag compartilhada"
+    data.color = tag.color;
+    if (btn) btn.disabled = true;
+    const res = await shared.createShare("collection", tag.name || t("tags.untitled"), data);
+    if (btn) btn.disabled = false;
+    if (res && res.id) {
+      const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection.html?s=${res.id}`;
+      try { await navigator.clipboard.writeText(link); alert(t("collection.share.copied")); }
+      catch (e) { window.prompt(t("collection.share.copyManual"), link); }
+    } else {
+      alert(res && res.error === "auth" ? t("collection.share.needLogin") : t("collection.share.error"));
+    }
+  }
+
   // --- Imagem social da coleção (canvas, CSP-safe) ---
   // Gera um PNG "vitrine" pra postar em grupo/rede: top 9 cartas por valor +
   // stats + @handle + marca. Mesmo motor do export de Vendas: Lorcana/One Piece
@@ -2097,6 +2121,7 @@
     }
     const allItems = share.data.items;
     const isFolder = share.data.scope === "folder"; // compartilhamento de UMA pasta
+    const isTag = share.data.scope === "tag";        // lista/showcase de uma tag
     const isSale = share.data.scope === "sale";      // lista de vendas
     const isGraded = share.data.scope === "graded";  // cartas graduadas (slabs)
     const saleCur = share.data.cur || "BRL";
@@ -2107,7 +2132,7 @@
         ? allItems.reduce((s, it) => s + (Number(it.sp) || 0) * (it.q || 1), 0)
         : allItems.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
     const bannerMoney = (isSale || isGraded) ? shared.formatMoney(saleCur, bannerTotal) : shared.formatMoney(shared.getCurrency(), bannerTotal);
-    const kindLabel = isGraded ? t("graded.shared.label") : isSale ? t("sales.shared.label") : (isFolder ? t("folders.shared.label") : "");
+    const kindLabel = isGraded ? t("graded.shared.label") : isSale ? t("sales.shared.label") : isTag ? t("tags.shared.label") : (isFolder ? t("folders.shared.label") : "");
 
     // Filtro de jogo (Todos/Pokémon/Lorcana) — igual à página da coleção. Só
     // aparece quando o share tem MAIS DE UM jogo, pra quem está vendo conseguir
@@ -2128,7 +2153,7 @@
         <div class="binder-shared-info">
           ${kindLabel ? `<span class="shared-kind">${escapeHtml(kindLabel)}</span>` : ""}
           ${profileNav ? `<span class="shared-kind">@${escapeHtml(profileNav.handle)}</span>` : ""}
-          ${profileNav ? "" : `<strong>${escapeHtml(share.title || t("collection.shared.title"))}</strong>`}
+          ${profileNav ? "" : `<strong>${isTag && share.data.color ? `<span class="tag-dot" style="--tag:${shared.safeColor(share.data.color)}"></span> ` : ""}${escapeHtml(share.title || t("collection.shared.title"))}</strong>`}
           <span>${escapeHtml(tn("collection.shared.banner", allItems.length))} · ${escapeHtml(bannerMoney)}</span>
         </div>
         ${profileNav && profileNav.label

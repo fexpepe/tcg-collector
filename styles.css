@@ -4214,6 +4214,8 @@ a.progress-row:hover {
 .tag-card { box-shadow: inset 0 4px 0 var(--tag), var(--shadow); }
 .tag-card .coll-card-title { display: flex; align-items: center; gap: 6px; }
 .tag-dot { width: 11px; height: 11px; border-radius: 3px; background: var(--tag); flex: none; }
+/* No banner do share (?s= de tag) o dot vive dentro do <strong>, fora de flex. */
+.binder-shared-info .tag-dot { display: inline-block; vertical-align: -1px; }
 /* Chip grande da tag (cabeçalho do foco + picker): pílula sólida na cor. */
 .tag-chip { display: inline-flex; align-items: center; padding: 3px 12px; border-radius: 999px; background: var(--tag); color: #fff; font-weight: 800; font-size: 13px; }
 .tag-open-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
