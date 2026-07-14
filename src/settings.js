@@ -138,6 +138,16 @@
     gameColors.addEventListener("click", () => { shared.setGameColors(!shared.gameColorsEnabled()); sync(); });
   }
 
+  // UI Editor (experimental) — liga/desliga e recarrega (o script é injetado no boot).
+  const uiEditor = document.getElementById("uiEditorToggle");
+  if (uiEditor) {
+    uiEditor.setAttribute("aria-checked", String(shared.uiEditorEnabled()));
+    uiEditor.addEventListener("click", () => {
+      shared.setUiEditor(!shared.uiEditorEnabled());
+      window.location.reload();
+    });
+  }
+
   // Modo sensível — borra os valores de portfólio/coleção.
   const sensitive = document.getElementById("sensitiveToggle");
   if (sensitive) {

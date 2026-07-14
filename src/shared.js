@@ -4001,6 +4001,8 @@
     loadOwnedAcrossGames,
     showSkeletons,
     pageLoading,
+    uiEditorEnabled,
+    setUiEditor,
     withPageLoading,
     loadAllGamesCatalog,
     mergedCollectionStore,
@@ -5426,6 +5428,27 @@
   // Marca data-game-accent no <html>; o CSS troca --accent + tints. As páginas
   // unificadas (Coleção/Vendas) chamam applyGameAccent(filtro) ao trocar o jogo.
   // Pode ser DESLIGADO nas Configurações (pref local) — aí fica sempre neutro.
+  // UI Editor (experimental, modo de teste): flag local; com ela ligada o
+  // script do editor é injetado (custo zero pros demais usuários). ?uieditor=1
+  // liga a flag por deep-link (útil pra abrir direto numa versão de testes).
+  const UI_EDITOR_PREF = "tcg-collector-pref-ui-editor";
+  function uiEditorEnabled() {
+    try { return localStorage.getItem(UI_EDITOR_PREF) === "on"; } catch (e) { return false; }
+  }
+  function setUiEditor(on) {
+    try { localStorage.setItem(UI_EDITOR_PREF, on ? "on" : "off"); } catch (e) { /* ignora */ }
+  }
+  function initUiEditor() {
+    try {
+      if (new URLSearchParams(location.search).get("uieditor") === "1") setUiEditor(true);
+    } catch (e) { /* ignora */ }
+    if (!uiEditorEnabled()) return;
+    const sc = document.createElement("script");
+    sc.src = "src/ui-editor.js";
+    sc.defer = true;
+    document.head.appendChild(sc);
+  }
+
   const GAME_COLORS_PREF = "tcg-collector-pref-game-colors";
   function gameColorsEnabled() {
     try { return localStorage.getItem(GAME_COLORS_PREF) !== "off"; } catch (e) { return true; }
@@ -5459,6 +5482,7 @@
   injectCfBeacon(); // Cloudflare Web Analytics (só em produção)
   initMobileMenu();
   initSiteFooter();
+  initUiEditor();
   initNewsBadge(); // bolinha "novo" nos links de Novidades (footer + menu)
   initPartnerBanner();
   initThemeToggle();
