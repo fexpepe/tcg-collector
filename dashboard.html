@@ -71,13 +71,20 @@
       <h2 class="dash-section-head" data-i18n="dash.shortcuts">Ir para</h2>
       <section id="dhLinks" class="dash-links" aria-label="Atalhos"></section>
 
-      <!-- Mais valiosas (carrega o catálogo das suas cartas sob demanda) -->
-      <section id="dhTopCard" class="dash-top-card" hidden>
-        <div class="results-header dash-top-head">
-          <h2 data-i18n="portfolio.topCards">Cartas mais valiosas</h2>
-          <a href="portfolio.html" class="dash-more" data-i18n="dash.seePortfolio">Ver o Portfólio →</a>
-        </div>
-        <div id="dhTopList" class="dash-top-list"></div>
+      <!-- Cápsulas detalhadas (hidratam carregando só as suas cartas) -->
+      <section id="dhCaps" class="collection-dashboard" aria-label="Resumo detalhado" hidden>
+        <article class="dash-card dash-top">
+          <h3 data-i18n="dash.topTitle">Mais valiosas</h3>
+          <ol id="dhTopList" class="dash-top-list"></ol>
+        </article>
+        <article class="dash-card dash-dist">
+          <h3 data-i18n="dash.distTitle">Distribuição por jogo</h3>
+          <div id="dhDist" class="dash-dist-bars"></div>
+        </article>
+        <article class="dash-card dash-dist">
+          <h3 data-i18n="dash.regionTitle">Distribuição por região</h3>
+          <div id="dhRegion" class="dash-dist-bars"></div>
+        </article>
       </section>
     </main>
 

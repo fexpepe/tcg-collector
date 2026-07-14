@@ -3917,23 +3917,6 @@ a.progress-row:hover {
 .dash-link-body strong { font-size: 14px; }
 .dash-link-body span { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dash-link-go { margin-left: auto; color: var(--subtle); }
-.dash-top-card { margin-top: 22px; }
-.dash-top-head { display: flex; align-items: baseline; justify-content: space-between; }
-.dash-more { font-size: 13px; color: var(--accent); }
-.dash-top-list { display: flex; flex-direction: column; gap: 8px; }
-.dash-top-row {
-  display: flex; align-items: center; gap: 12px;
-  padding: 8px 12px; border-radius: 10px;
-  background: var(--panel); border: 1px solid var(--line);
-  color: var(--text); text-decoration: none;
-}
-.dash-top-row:hover { border-color: var(--accent); }
-.dash-top-row .dash-top-thumb { width: 34px; flex: none; }
-.dash-top-row .dash-top-thumb img { width: 100%; border-radius: 4px; display: block; }
-.dash-top-name { display: flex; flex-direction: column; min-width: 0; }
-.dash-top-name strong { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.dash-top-name span { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.dash-top-value { margin-left: auto; font-weight: 800; color: var(--money); white-space: nowrap; }
 
 /* Pill global de carregamento (sync da conta / download de catálogo). */
 .page-loading {
@@ -5023,6 +5006,11 @@ a.progress-row:hover {
   /* minmax(0,…fr): trava as proporções pelo espaço, NÃO pelo conteúdo — senão o
      valor (R$ …) muda de largura entre Todos/Pokémon/Lorcana e desloca tudo. */
   grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr) minmax(0, 1.4fr);
+}
+/* Minha Coleção pós-limpeza: só o card de stats sobra -> ocupa a linha toda.
+   O Dashboard (/dashboard) usa o grid completo com as cápsulas. */
+#collectionDashboard.collection-dashboard {
+  grid-template-columns: minmax(0, 1fr);
   gap: 14px;
   margin: 0 0 18px;
 }

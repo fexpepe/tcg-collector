@@ -14,8 +14,10 @@
     slabs: document.getElementById("dhSlabs"),
     games: document.getElementById("dhGames"),
     links: document.getElementById("dhLinks"),
-    topCard: document.getElementById("dhTopCard"),
-    topList: document.getElementById("dhTopList")
+    caps: document.getElementById("dhCaps"),
+    topList: document.getElementById("dhTopList"),
+    dist: document.getElementById("dhDist"),
+    region: document.getElementById("dhRegion")
   };
 
   // ── Leituras locais (read-only, defensivas) ─────────────────────────────────
@@ -107,41 +109,62 @@
       <span class="dash-link-go" aria-hidden="true">→</span>
     </a>`).join("");
 
-  // ── Mais valiosas (hidrata depois; só as cartas que você tem) ──────────────
+  // ── Cápsulas detalhadas (hidratam depois; só as cartas que você tem) ───────
+  // Mesmo visual da antiga dashboard da Coleção (que ficou só com os stats):
+  // Mais valiosas (top 3 por valor unitário) + distribuição por jogo e região.
   const idsByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, ownedByGame[g].knownCardIds()]));
   if (!Object.values(idsByGame).some((ids) => ids.length)) return;
   const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
   const cardGameMap = new Map();
-  const prices = shared.mergedPriceStore(pricesByGame, (id) => cardGameMap.get(id) || "pokemon");
+  const gameOf = (id) => cardGameMap.get(id) || "pokemon";
+  const prices = shared.mergedPriceStore(pricesByGame, gameOf);
 
   Promise.all([shared.loadOwnedAcrossGames(idsByGame), shared.loadFxRates()]).then(([catalog]) => {
     const cards = catalog.cards || [];
     cards.forEach((c) => cardGameMap.set(c.id, c.game));
-    const owned = shared.mergedCollectionStore(ownedByGame, (id) => cardGameMap.get(id) || "pokemon");
-    const rows = [];
+    const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
     const seen = new Set();
-    cards.forEach((card) => {
-      if (seen.has(card.id)) return;
+    const myCards = cards.filter((card) => {
+      if (seen.has(card.id)) return false;
       seen.add(card.id);
-      let total = 0;
-      (card.variants || ["Normal"]).forEach((v) => {
-        const q = owned.variantTotal(card.id, v);
-        if (q > 0) total += q * (shared.cardValue(card, v, prices, shared.DEFAULT_CONDITION).value || 0);
-      });
-      if (total > 0) rows.push({ card, total });
+      return (card.variants || ["Normal"]).some((v) => owned.variantTotal(card.id, v) > 0);
     });
-    rows.sort((a, b) => b.total - a.total);
-    const top = rows.slice(0, 5);
-    if (!top.length) return;
-    el.topList.innerHTML = top.map(({ card, total }) => {
-      const src = shared.cardImageSources(card, false);
-      const img = src.url ? shared.localizedImg(src.url, { alt: card.name, loading: "lazy", thumb: true, fallback: src.fallback }) : "";
-      return `<a class="dash-top-row" href="${escapeAttribute(shared.detailUrl("set", card.set, "", card.game))}">
-        <span class="dash-top-thumb">${img}</span>
-        <span class="dash-top-name"><strong>${escapeHtml(card.name)}</strong><span>${escapeHtml(`${card.set} · ${card.number}`)}</span></span>
-        <span class="dash-top-value">${escapeHtml(shared.formatMoney(shared.getCurrency(), total))}</span>
-      </a>`;
-    }).join("");
-    el.topCard.hidden = false;
+    if (!myCards.length) return;
+
+    // Mais valiosas (top 3 por valor unitário, como era na Coleção)
+    const top = myCards.map((card) => {
+      const variant = (card.variants || []).find((v) => owned.variantTotal(card.id, v) > 0) || shared.defaultVariant(card);
+      return { card, val: shared.cardValue(card, variant, prices).value || 0 };
+    }).filter((x) => x.val > 0).sort((a, b) => b.val - a.val).slice(0, 3);
+    el.topList.innerHTML = top.length
+      ? top.map(({ card, val }) => {
+          const src = shared.cardImageSources(card);
+          const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
+          return `<li><a href="${escapeAttribute(shared.detailUrl("set", card.set, "", card.game))}"><span class="dash-top-thumb">${thumb}</span>
+            <span class="dash-top-info"><strong>${escapeHtml(card.name)}</strong><span class="dash-top-set">${escapeHtml(card.set)}</span></span>
+            <span class="dash-top-val">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</span></a></li>`;
+        }).join("")
+      : `<li class="dash-empty">${escapeHtml(t("dash.empty"))}</li>`;
+
+    // Distribuição por jogo
+    const byGame = {};
+    myCards.forEach((card) => { byGame[card.game] = (byGame[card.game] || 0) + 1; });
+    el.dist.innerHTML = shared.distBarsHtml(shared.GAME_SLUGS.map((g) => ({ label: gameLabel(g), n: byGame[g] || 0, color: shared.GAME_COLOR[g] })));
+
+    // Distribuição por região/idioma (flag SVG como na Coleção)
+    const byRegion = {};
+    myCards.forEach((card) => { const r = shared.cardLanguageRegion(card.language); byRegion[r] = (byRegion[r] || 0) + 1; });
+    const regions = [
+      { region: "english", lang: "en", color: "#2aa3df" },
+      { region: "japanese", lang: "ja", color: "#d23b4e" },
+      { region: "portuguese", lang: "pt", color: "#1f9d77" },
+      { region: "chinese", lang: "zh", color: "#e0992f" }
+    ];
+    el.region.innerHTML = shared.distBarsHtml(regions.map((r) => ({
+      label: `${shared.cardFlag(r.lang)}<span>${escapeHtml(t("setRegion." + r.region).replace(/\s*\(.*/, ""))}</span>`,
+      n: byRegion[r.region] || 0, color: r.color
+    })));
+
+    el.caps.hidden = false;
   }).catch(() => { /* rede: o resto do dashboard já está renderizado */ });
 })();

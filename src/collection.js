@@ -823,7 +823,7 @@
       const variant = (card.variants || []).find((v) => owned.variantTotal(card.id, v) > 0) || shared.defaultVariant(card);
       return { card, variant, val: shared.cardValue(card, variant, prices).value || 0 };
     }).filter((x) => x.val > 0).sort((a, b) => b.val - a.val).slice(0, 3);
-    elements.dashTopList.innerHTML = top.length
+    if (elements.dashTopList) elements.dashTopList.innerHTML = top.length
       ? top.map(({ card, val }) => {
           const src = shared.cardImageSources(card);
           const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
@@ -836,7 +836,7 @@
     // Distribuição por jogo (Pokémon × Lorcana), entre as cartas filtradas.
     const byGame = {};
     myCards.forEach((card) => { byGame[card.game] = (byGame[card.game] || 0) + 1; });
-    elements.dashDist.innerHTML = distBarsHtml(shared.GAME_SLUGS.map((g) => ({ label: gameLabelOf(g), n: byGame[g] || 0, color: shared.GAME_COLOR[g] })));
+    if (elements.dashDist) elements.dashDist.innerHTML = distBarsHtml(shared.GAME_SLUGS.map((g) => ({ label: gameLabelOf(g), n: byGame[g] || 0, color: shared.GAME_COLOR[g] })));
 
     // Distribuição por região/idioma das cartas (com bandeirinha).
     const byRegion = {};
