@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://wsrv.nl; connect-src 'self' https://api.tcgdex.net https://pokeapi.co https://economia.awesomeapi.com.br https://*.supabase.co https://cloudflareinsights.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="title.badges">Badges - Sleevu</title>
+    <meta name="description" content="Suas conquistas de colecionador no Sleevu: medalhas por marcos da coleção, sets completos, raridades e mais.">
+    <meta name="robots" content="noindex">
+    <link rel="canonical" href="https://sleevu.app/badges">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://assets.tcgdex.net">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#101218">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <script src="src/game.js"></script>
+    <script src="data/set-id-map.js"></script>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">Sleevu</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page="badges"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-head dash-head">
+        <h1 data-i18n="badges.heading">Badges</h1>
+        <a href="dashboard.html" class="serie-back" data-i18n="badges.back">← Dashboard</a>
+      </div>
+
+      <!-- Placar geral -->
+      <section class="bdg-score" aria-label="Progresso das conquistas">
+        <div class="bdg-score-num"><span id="bdgEarned">0</span><span class="bdg-score-total">/<span id="bdgTotal">0</span></span></div>
+        <div class="bdg-score-body">
+          <p data-i18n="badges.scoreLabel">conquistas desbloqueadas</p>
+          <div class="progress-bar bdg-score-bar"><span id="bdgScoreBar" style="width:0%"></span></div>
+        </div>
+      </section>
+
+      <!-- Cápsula divertida: a torre de cartas (estilo Flighty) -->
+      <section id="bdgFun" class="bdg-fun" aria-label="Sua torre de cartas" hidden>
+        <h2 class="dash-section-head" data-i18n="badges.funTitle">Sua torre de cartas</h2>
+        <p id="bdgFunLine" class="bdg-fun-line"></p>
+        <div id="bdgFunBars" class="bdg-fun-bars"></div>
+      </section>
+
+      <!-- Grade de medalhas -->
+      <h2 class="dash-section-head" data-i18n="badges.allTitle">Todas as medalhas</h2>
+      <section id="bdgGrid" class="bdg-grid" aria-live="polite"></section>
+      <p class="portfolio-note" data-i18n="badges.note">As medalhas são calculadas com os dados deste navegador/conta — marque cartas, complete sets e registre slabs pra desbloquear. Medalhas de set, idioma e raridade valem pra QUALQUER jogo.</p>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/shared.js"></script>
+    <script defer src="src/badges.js"></script>
+  </body>
+</html>
