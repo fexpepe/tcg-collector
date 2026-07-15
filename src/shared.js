@@ -1097,17 +1097,20 @@
     // "Jogos" = grade de jogos (hub); "Explorar" = busca GLOBAL multi-jogo.
     const exploreMega = `<a href="hub.html"${exploreActive ? ' class="active"' : ""}>${escapeHtml(t("nav.games"))}</a><a href="explore.html"${active === "explore" ? ' class="active"' : ""}>${escapeHtml(t("nav.explore"))}</a>`;
 
+    // Toda Coleção e Portfólio são páginas PESSOAIS: só existem no menu com
+    // login (deslogado, o "Entrar" do header é o caminho — sem atalhos mortos).
+    const loggedIn = !!getSession();
     nav.innerHTML = `
       ${link(apexUrl, "nav.home", "home")}
       ${exploreMega}
-      ${group("nav.collection", collectionActive, `
+      ${loggedIn ? `${group("nav.collection", collectionActive, `
           ${link("dashboard.html", "nav.dashboard", "dashboard")}
           ${link("collection.html", "nav.collectionMine", "collection")}
           ${link("graded.html", "nav.graded", "graded")}
           ${link("wishlist.html", "nav.wishlist", "wishlist")}
           ${link("binders.html", "nav.binders", "binders")}
           ${link("sales.html", "nav.sales", "sales")}`)}
-      ${link("portfolio.html", "nav.portfolio", "portfolio")}
+      ${link("portfolio.html", "nav.portfolio", "portfolio")}` : ""}
     `;
 
     const groups = Array.from(nav.querySelectorAll(".nav-group")).map((groupEl) => ({
@@ -1192,12 +1195,15 @@
     const bar = document.createElement("nav");
     bar.className = "mobile-tabbar";
     bar.setAttribute("aria-label", t("nav.menu"));
+    // Coleção e Portfólio são pessoais: as abas só existem com login (espelha
+    // o menu do header — deslogado fica Início / Explorar / Busca).
+    const logged = !!getSession();
     bar.innerHTML =
       tab("index.html", t("nav.home"), "home", active === "home" || active === "hub")
       + tab("explore.html", t("tabbar.explore"), "explore", active === "explore" || (exploreActive && active !== "hub"))
-      + tab("collection.html", t("tabbar.collection"), "collection", collectionActive)
+      + (logged ? tab("collection.html", t("tabbar.collection"), "collection", collectionActive) : "")
       + `<button type="button" class="mtab" data-mtab-search><span class="mtab-ic" aria-hidden="true">${ic.search}</span><span class="mtab-label">${escapeHtml(t("tabbar.search"))}</span></button>`
-      + tab("portfolio.html", t("nav.portfolio"), "portfolio", active === "portfolio");
+      + (logged ? tab("portfolio.html", t("nav.portfolio"), "portfolio", active === "portfolio") : "");
     document.body.appendChild(bar);
     bar.querySelector("[data-mtab-search]").addEventListener("click", () => { if (cmdkOpen) cmdkOpen(); });
   }
@@ -5469,6 +5475,23 @@
     const g = (window.SLEEVU && window.SLEEVU.game) || "";
     applyGameAccent(GAME_PAGES.includes(active) ? g : "all");
   }
+
+  // Login OBRIGATÓRIO nas páginas pessoais (Toda Coleção + Portfólio + Badges):
+  // sem sessão, guarda a página pra voltar e manda pro login. As views PÚBLICAS
+  // servidas pelas mesmas páginas ficam de fora: ?s= (links compartilhados de
+  // coleção/pasta/tag/binder/vendas/graded) e /users/<handle> (perfil público).
+  function enforceLoginGate() {
+    const AUTH_PAGES = ["dashboard", "collection", "graded", "wishlist", "binders", "sales", "portfolio", "badges"];
+    const nav = document.querySelector(".page-nav[data-active-page]");
+    const page = nav ? nav.dataset.activePage : "";
+    if (!AUTH_PAGES.includes(page) || getSession()) return false;
+    if (new URLSearchParams(window.location.search).get("s")) return false;
+    if (/^\/users\//.test(window.location.pathname)) return false;
+    try { localStorage.setItem("tcg-login-return", window.location.pathname); } catch (e) { /* ignora */ }
+    window.location.replace("login.html");
+    return true;
+  }
+  if (enforceLoginGate()) return; // já está indo pro login; não monta a página
 
   applyTranslations();
   initLanguageSwitcher();
