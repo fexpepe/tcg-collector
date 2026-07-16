@@ -3888,7 +3888,19 @@ a.progress-row:hover {
 .dash-head { align-items: baseline; gap: 14px; }
 .dash-profile-line { color: var(--muted); font-size: 14px; }
 .dash-profile-line a { color: var(--accent); }
-.dash-games { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px; }
+/* Ritmo do Dashboard: o resumo vira UMA linha equilibrada (patrimônio um pouco
+   maior), sem o 3+2 desigual do grid genérico; números tabulares e sem quebra
+   pra os cards não mudarem de altura/largura entre si. */
+.dash-main .stats-grid { grid-template-columns: minmax(0, 1.6fr) repeat(4, minmax(0, 1fr)); margin-bottom: 14px; }
+.dash-main .stats-grid article { display: flex; flex-direction: column; justify-content: center; }
+.dash-main .stats-grid span { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.dash-main .stats-grid p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 1080px) {
+  /* Tablet: patrimônio numa linha inteira, contagens em 2×2. */
+  .dash-main .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dash-main .stats-grid .stat-grand { grid-column: 1 / -1; }
+}
+.dash-games { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 6px; }
 .dash-game-chip {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 7px 12px; border-radius: 999px;
@@ -3897,7 +3909,9 @@ a.progress-row:hover {
 }
 .dash-game-chip strong { font-weight: 800; }
 .dash-game-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--chip, var(--accent)); flex: none; }
-.dash-section-head { font-size: 17px; margin: 22px 0 10px; }
+.dash-section-head { font-size: 17px; margin: 26px 0 12px; }
+/* Cápsulas detalhadas: respiro claro depois da grade de atalhos. */
+.dash-main #dhCaps { margin-top: 26px; gap: 12px; }
 .dash-links {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
