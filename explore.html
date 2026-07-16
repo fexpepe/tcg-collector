@@ -84,6 +84,14 @@
       </section>
 
       <p id="exploreIntro" class="empty-state" data-i18n="explore.intro">Pesquise em todos os jogos de uma vez: nome da carta, set, artista ou número (ex.: OP05-119, 忍-1, Pikachu).</p>
+
+      <!-- Estado inicial (sem busca, estilo Collectr): mais vistas pela comunidade.
+           Some ao digitar (vira a grade de resultados) e volta ao limpar. -->
+      <section id="exploreTopViewed" class="home-top-viewed" aria-label="Cartas mais vistas" hidden>
+        <h2 data-i18n="home.topViewed">Cartas mais vistas pela comunidade</h2>
+        <div id="exploreTopViewedRow" class="home-top-row"></div>
+      </section>
+
       <section id="exploreGrid" class="card-grid" aria-live="polite"></section>
       <p id="exploreEmpty" class="empty-state" data-i18n="explore.empty" hidden>Nenhuma carta encontrada em nenhum jogo. Tente outro nome ou código.</p>
     </main>

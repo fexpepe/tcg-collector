@@ -13,7 +13,9 @@
     resultsHeader: document.getElementById("exploreResultsHeader"),
     resultCount: document.getElementById("exploreResultCount"),
     gameFilter: document.getElementById("exploreGameFilter"),
-    sortSelect: document.getElementById("exploreSortSelect")
+    sortSelect: document.getElementById("exploreSortSelect"),
+    topViewed: document.getElementById("exploreTopViewed"),
+    topViewedRow: document.getElementById("exploreTopViewedRow")
   };
 
   const SORTS = ["value-desc", "value-asc", "rarity-desc", "rarity-asc", "release", "num-asc"];
@@ -67,6 +69,43 @@
   const term = () => String(elements.search.value || "").trim();
   const isSearching = () => term().length >= 2;
 
+  // "Mais vistas pela comunidade" (antes na home): estado INICIAL do Explorar,
+  // estilo Collectr. Top do contador anônimo de views (card_views) de todos os
+  // jogos; só aparece com dados suficientes (>= 4 cartas com 2+ views) e some
+  // enquanto há busca ativa (render() controla o hidden).
+  let topViewedReady = false;
+  (async function renderTopViewed() {
+    if (!elements.topViewed || !elements.topViewedRow || !shared.fetchTopViewed) return;
+    try {
+      const games = shared.GAME_SLUGS || ["pokemon", "lorcana"];
+      const perGame = await Promise.all(games.map((g) => shared.fetchTopViewed(g, 8)));
+      const tops = games.flatMap((g, i) => perGame[i].map((x) => ({ id: x.card_id, views: x.views, game: g })))
+        .filter((x) => x.views >= 2)
+        .sort((a, b) => b.views - a.views)
+        .slice(0, 8);
+      if (tops.length < 4) return;
+      const idsByGame = {};
+      games.forEach((g) => { idsByGame[g] = tops.filter((x) => x.game === g).map((x) => x.id); });
+      const catalog = await shared.loadOwnedAcrossGames(idsByGame);
+      const byId = new Map((catalog.cards || []).map((c) => [c.id, c]));
+      const html = tops.map(({ id, views }) => {
+        const card = byId.get(id);
+        if (!card) return "";
+        const src = shared.cardImageSources(card);
+        const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
+        return `<a class="home-top-card" href="${shared.escapeAttribute(shared.detailUrl("set", card.set, "", card.game))}">
+          <span class="home-top-img">${img}</span>
+          <strong>${shared.escapeHtml(card.name)}</strong>
+          <span class="home-top-views">${shared.escapeHtml(String(views))} 👁</span>
+        </a>`;
+      }).join("");
+      if (!html) return;
+      elements.topViewedRow.innerHTML = html;
+      topViewedReady = true;
+      elements.topViewed.hidden = isSearching();
+    } catch (e) { /* seção é opcional */ }
+  })();
+
   function sortComparator() {
     const priceOf = shared.memoValue((p) => shared.cardValue(p.card, p.variant, prices, shared.DEFAULT_CONDITION).value || 0);
     const byNum = (a, b) => shared.compareCardNumbers(a.card.number, b.card.number);
@@ -84,6 +123,7 @@
   function render(options) {
     const searching = isSearching();
     elements.intro.hidden = searching;
+    if (elements.topViewed) elements.topViewed.hidden = searching || !topViewedReady;
     elements.resultsHeader.hidden = !searching;
     if (!searching) {
       pager.render([], () => document.createComment(""), { resetCount: true });
