@@ -29,6 +29,9 @@ const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/naruto/", ROOT);
 const SNAP_DB = new URL("data/vintage/naruto-carddass.json", ROOT);
 const SNAP_TVT = new URL("data/vintage/naruto-tvtokyo.json", ROOT);
+// Promos confirmadas publicamente sem scan no tcg-db (curadoria manual):
+// entram com placeholder de imagem; um scan futuro do tcg-db assume na hora.
+const CURATED_PROMOS = new URL("data/vintage/naruto-promos-curated.json", ROOT);
 const CACHE_DIR = new URL("data/.cache/", ROOT);
 const DB_BASE = "https://tcg-db.nikita.jp";
 const TVT_BASE = "https://www.tv-tokyo.co.jp/anime/naruto2002/goods";
@@ -215,8 +218,15 @@ const IMG_DB = (code) => `https://wsrv.nl/?url=${encodeURIComponent(`tcg-db.niki
 const IMG_TVT = (file) => `https://wsrv.nl/?url=${encodeURIComponent(`www.tv-tokyo.co.jp/anime/naruto2002/goods/cardimg/${file}`)}&w=440&we&output=webp`;
 
 // Id ASCII estável pra carta sem scan do tcg-db: nrt-nin-19, nrt-jutsu-30...
+// Promos seguem o padrão dos códigos do tcg-db (PRN-006 = PR忍-6), com pad 3,
+// pra um scan futuro cair no MESMO id (e o id pegajoso segurar de qualquer jeito).
 const NUM_SLUG = { "忍": "nin", "術": "jutsu", "作": "saku", "依": "irai", "騎": "ki" };
+const PR_SLUG = { "忍": "PRN", "術": "PRJ", "作": "PRS", "依": "PRI", "騎士": "PRK" };
 function numId(num) {
+  const pr = String(num).match(/^PR(忍|術|作|依|騎士)-(\d+)$/);
+  if (pr) return `nrt-${PR_SLUG[pr[1]]}-${String(pr[2]).padStart(3, "0")}`;
+  const op = String(num).match(/^OP忍-?(\d+)$/);
+  if (op) return `nrt-OPN-${String(op[1]).padStart(3, "0")}`;
   const m = String(num).match(/^(忍|術|作|依|騎)-(\d+)$/);
   return m ? `nrt-${NUM_SLUG[m[1]]}-${m[2]}` : `nrt-x-${encodeURIComponent(num)}`;
 }
@@ -252,6 +262,19 @@ async function run() {
     }
   }
 
+  // Promos curadas: só COMPLETAM (número que nenhuma fonte tem). Nunca tocam
+  // numa carta que já veio com scan — o snapshot/tcg-db sempre manda.
+  try {
+    const curated = JSON.parse(await readFile(CURATED_PROMOS, "utf8"));
+    let added = 0;
+    for (const c of curated.cards || []) {
+      if (byNum.has(c.num)) { if (c.rarity && !byNum.get(c.num).rarity) byNum.get(c.num).rarity = c.rarity; continue; }
+      byNum.set(c.num, { num: c.num, name: c.name, code: "", img: "", dbSet: PROMO_SET, rarity: c.rarity || "" });
+      added += 1;
+    }
+    console.log(`  promos curadas: +${added} sem scan (de ${curated.cards.length} confirmadas).`);
+  } catch (e) { console.log("  promos curadas: arquivo ausente/inválido — seguindo sem."); }
+
   // Ids pegajosos: número -> id já publicado no catálogo atual.
   const existing = (await readGlobalVar(new URL("cards.js", OUT), "TCG_CARDS")) || [];
   const idByNum = new Map();
@@ -270,7 +293,7 @@ async function run() {
     const vol = card.tvtVol != null ? volByNo.get(card.tvtVol) : classifyByRange(card.num);
     let setName, meta;
     if (vol) { setName = vol.name; meta = vol; }
-    else if (/^PR/.test(card.num) || card.dbSet === PROMO_SET) { setName = PROMO_SET; meta = null; }
+    else if (/^(PR|OP忍)/.test(card.num) || card.dbSet === PROMO_SET) { setName = PROMO_SET; meta = null; }
     else if (/^(忍|術|作|依|騎|K|COIN)/.test(card.num)) { setName = EXTRA_SET; meta = null; }
     else { setName = UNKNOWN_SET; meta = null; }
     if (!setsOut.has(setName)) setsOut.set(setName, { meta, cards: [] });
@@ -298,7 +321,7 @@ async function run() {
         number: c.num,
         setTotal: meta ? meta.total : cards.length,
         setReleaseDate: meta ? meta.date : "",
-        rarity: "",
+        rarity: c.rarity || "",
         artist: "",
         language: "ja",
         image: c.code ? IMG_DB(c.code) : (c.img ? IMG_TVT(c.img) : ""),
