@@ -3428,9 +3428,46 @@ a.hub-tile:hover {
   margin: -6px 0 16px;
 }
 
+/* Abas da coleção (Cartas/Showcase/Graded/…): régua de RETÂNGULOS lado a lado
+   ocupando a largura toda — de propósito diferente dos chips-pílula de jogo.
+   Cada aba tem um contorno INTERNO na cor do jogo da sessão e uma "dobra de
+   folha" (triângulo maior na cor) na quina inferior direita. */
 .collection-tabs {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 10px;
   margin-bottom: 18px;
 }
+.collection-tabs .chip {
+  position: relative;
+  overflow: hidden; /* recorta a dobra no raio da quina */
+  border-radius: 10px;
+  min-height: 44px;
+  padding: 0 10px;
+  color: var(--text);
+}
+.collection-tabs .chip::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  border-radius: 7px;
+  pointer-events: none;
+}
+.collection-tabs .chip::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  border-style: solid;
+  border-width: 0 0 16px 16px;
+  border-color: transparent transparent var(--accent) transparent;
+}
+.collection-tabs .chip:hover { border-color: var(--accent); }
+/* Ativa: fundo na cor do jogo -> contorno interno e dobra em tons legíveis. */
+.collection-tabs .chip[aria-pressed="true"]::before { border-color: color-mix(in srgb, var(--on-accent) 40%, transparent); }
+.collection-tabs .chip[aria-pressed="true"]::after { border-bottom-color: var(--accent-dark); }
 
 .group-summary {
   background: var(--panel);
@@ -6016,6 +6053,9 @@ a.progress-row:hover {
   }
   .game-filter::-webkit-scrollbar, .collection-tabs::-webkit-scrollbar { display: none; }
   .game-filter .chip, .collection-tabs .chip { flex: 0 0 auto; }
+  /* Abas-retângulo: largura mínima legível + rolagem horizontal (o grid
+     continua; só as colunas param de espremer). */
+  .collection-tabs { grid-auto-columns: minmax(112px, 1fr); }
   .collection-toolbar-actions { width: 100%; }
   .collection-toolbar-actions .secondary { flex: 1 1 0; }
 
