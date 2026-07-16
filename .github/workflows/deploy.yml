@@ -11,6 +11,10 @@ on:
   schedule:
     # toda segunda às 06:00 UTC — atualiza o catálogo com sets novos (na main).
     - cron: "0 6 * * 1"
+    # sexta às 21:00 UTC — dia de lançamento de set do Pokémon TCG; pega o set
+    # novo (ex.: Pitch Black, 17/07/2026) assim que a TCGdex publica, sem
+    # esperar segunda nem depender de um push manual.
+    - cron: "0 21 * * 5"
   workflow_dispatch:
 
 permissions:
