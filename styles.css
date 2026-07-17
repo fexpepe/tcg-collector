@@ -3441,21 +3441,20 @@ a.hub-tile:hover {
 }
 .collection-tabs .chip {
   position: relative;
-  overflow: hidden; /* recorta a dobra no raio da quina */
-  border-radius: 10px;
+  overflow: hidden;
+  border-radius: 0; /* retângulo reto, sem curvatura */
   min-height: 44px;
   padding: 0 14px;
   color: var(--text);
   border-color: var(--accent);
 }
 /* Moldura: da linha de contorno pra FORA é pintado na cor do jogo — anel de
-   4px (sem fundo, então nunca cobre o texto) + a linha 1px logo por dentro. */
+   2px (sem fundo, então nunca cobre o texto) + a linha 1px logo por dentro. */
 .collection-tabs .chip::before {
   content: "";
   position: absolute;
   inset: 0;
-  border: 4px solid var(--accent);
-  border-radius: 10px;
+  border: 2px solid var(--accent);
   box-shadow: inset 0 0 0 1px var(--accent-dark);
   pointer-events: none;
 }
