@@ -1,1 +1,1 @@
-window.TCG_MANIFEST = {"generatedAt":"2026-07-17T21:58:36.052Z","sets":[]};
+window.TCG_MANIFEST = {"generatedAt":"2026-07-17T22:08:23.194Z","sets":[]};
