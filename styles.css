@@ -3444,15 +3444,19 @@ a.hub-tile:hover {
   overflow: hidden; /* recorta a dobra no raio da quina */
   border-radius: 10px;
   min-height: 44px;
-  padding: 0 10px;
+  padding: 0 14px;
   color: var(--text);
+  border-color: var(--accent);
 }
+/* Moldura: da linha de contorno pra FORA é pintado na cor do jogo — anel de
+   4px (sem fundo, então nunca cobre o texto) + a linha 1px logo por dentro. */
 .collection-tabs .chip::before {
   content: "";
   position: absolute;
-  inset: 4px;
-  border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
-  border-radius: 7px;
+  inset: 0;
+  border: 4px solid var(--accent);
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1px var(--accent-dark);
   pointer-events: none;
 }
 .collection-tabs .chip::after {
@@ -3462,12 +3466,14 @@ a.hub-tile:hover {
   bottom: 0;
   border-style: solid;
   border-width: 0 0 16px 16px;
-  border-color: transparent transparent var(--accent) transparent;
+  border-color: transparent transparent var(--accent-dark) transparent;
 }
-.collection-tabs .chip:hover { border-color: var(--accent); }
-/* Ativa: fundo na cor do jogo -> contorno interno e dobra em tons legíveis. */
-.collection-tabs .chip[aria-pressed="true"]::before { border-color: color-mix(in srgb, var(--on-accent) 40%, transparent); }
-.collection-tabs .chip[aria-pressed="true"]::after { border-bottom-color: var(--accent-dark); }
+.collection-tabs .chip:hover { color: var(--text); background: var(--accent-soft); }
+/* Ativa: fundo inteiro na cor do jogo; o texto usa o --on-accent do PRÓPRIO
+   accent (branco no neutro/vermelho/roxo, escuro no amarelo/laranja claro),
+   e a linha interna vira um tom do texto pra moldura seguir visível. */
+.collection-tabs .chip[aria-pressed="true"] { color: var(--on-accent); }
+.collection-tabs .chip[aria-pressed="true"]::before { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--on-accent) 45%, transparent); }
 
 .group-summary {
   background: var(--panel);
