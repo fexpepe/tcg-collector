@@ -359,7 +359,7 @@ async function run() {
   // e regrava só a linha vintage (nrtcg). Antes o filtro descartava TUDO que
   // começasse com nrt-, apagando MB/DC quando o script rodava sozinho (no CI
   // não aparecia porque eles rodam depois e se re-anexam).
-  const OTHER_LINES = /^nrt-(mb|dc)-/;
+  const OTHER_LINES = /^nrt-(mb|dc|nf|nx)-/;
   const kept = existing.filter((c) => c && (!String(c.id).startsWith("nrt-") || OTHER_LINES.test(String(c.id))));
   const have = new Set(kept.map((c) => c.id));
   const merged = kept.concat(cardsNrt.filter((c) => !have.has(c.id)));

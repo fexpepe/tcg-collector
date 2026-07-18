@@ -3504,7 +3504,9 @@
     },
     naruto: {
       "nrt-mb": { prefix: "nrt-mb-", label: "Miracle Battle", titleKey: "sets.category.mbnr" },
-      "nrt-dc": { prefix: "nrt-dc-", label: "Data Carddass", titleKey: "sets.category.dcnr" }
+      "nrt-dc": { prefix: "nrt-dc-", label: "Data Carddass", titleKey: "sets.category.dcnr" },
+      "nrt-nf": { prefix: "nrt-nf-", label: "ナルティメットフォーメーション", titleKey: "sets.category.nrtnf" },
+      "nrt-nx": { prefix: "nrt-nx-", label: "ナルティメットクロス", titleKey: "sets.category.nrtnx" }
     }
   };
   function lineParamOf() {

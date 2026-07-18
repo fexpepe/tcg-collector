@@ -160,6 +160,12 @@ jobs:
       - name: Anexa Data Carddass NARUTO (arcade)
         run: node scripts/sync-naruto-datacarddass.mjs || echo "sync-naruto-datacarddass falhou; segue com o snapshot versionado"
 
+      # Data Carddass NARUTO — Formation (2007-08) e Cross (2009-10): snapshot
+      # versionado do catalogo do Suruga-ya (re-coleta manual; anti-bot barra
+      # fetch em CI). Anexa as duas linhas ao catalogo do Naruto.
+      - name: Anexa Data Carddass Formation + Cross
+        run: node scripts/sync-naruto-dc-cross-formation.mjs || echo "sync formation/cross falhou; segue com o snapshot versionado"
+
       # JUMP: compila os sets curados versionados (data/jump/curated/*.json).
       - name: Compila catálogo JUMP (curadoria)
         run: node scripts/build-jump.mjs || echo "build-jump falhou; mantém o catalogo versionado"
