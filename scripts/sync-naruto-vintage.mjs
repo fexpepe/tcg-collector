@@ -22,6 +22,7 @@
 // (mapeado pelo número oficial), mesmo que a fonte da imagem mude — coleções de
 // usuários referenciam esses ids.
 import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, sleep } from "./lib/sync-common.mjs";
 
@@ -213,6 +214,18 @@ function classifyByRange(num) {
   return null;
 }
 
+// Imagens CURADAS: um arquivo assets/cards/naruto/<id>.(webp|jpg|png) no repo
+// SUBSTITUI a imagem da fonte (ex.: 忍-2 — o tcg-db só tem o scan do reprint
+// 2003; a impressão original 2002 entra curada). Nada existe -> segue a fonte.
+function curatedImg(id) {
+  for (const ext of ["webp", "jpg", "png"]) {
+    if (existsSync(fileURLToPath(new URL(`assets/cards/naruto/${id}.${ext}`, ROOT)))) {
+      return `/assets/cards/naruto/${id}.${ext}`;
+    }
+  }
+  return null;
+}
+
 const IMG_DB = (code) => `https://wsrv.nl/?url=${encodeURIComponent(`tcg-db.nikita.jp/img/card/nrt/${code}.jpg`)}&w=440&output=webp`;
 // Thumbs da TV Tokyo são pequenas: &we (without enlargement) evita esticar.
 const IMG_TVT = (file) => `https://wsrv.nl/?url=${encodeURIComponent(`www.tv-tokyo.co.jp/anime/naruto2002/goods/cardimg/${file}`)}&w=440&we&output=webp`;
@@ -313,8 +326,10 @@ async function run() {
     const setId = meta ? `nrt-s${String(meta.vol).padStart(2, "0")}` : (setName === PROMO_SET ? "nrt-promo" : setName === EXTRA_SET ? "nrt-extra" : `nrt-unk${i}`);
     const cmp = (a, b) => String(a.num).localeCompare(String(b.num), "ja", { numeric: true });
     for (const c of cards.sort(cmp)) {
+      const cardId = idByNum.get(c.num) || (c.code ? `nrt-${c.code}` : numId(c.num));
+      const curated = curatedImg(cardId);
       cardsNrt.push({
-        id: idByNum.get(c.num) || (c.code ? `nrt-${c.code}` : numId(c.num)),
+        id: cardId,
         name: c.name,
         set: setName,
         setId,
@@ -324,7 +339,7 @@ async function run() {
         rarity: c.rarity || "",
         artist: "",
         language: "ja",
-        image: c.code ? IMG_DB(c.code) : (c.img ? IMG_TVT(c.img) : ""),
+        image: curated || (c.code ? IMG_DB(c.code) : (c.img ? IMG_TVT(c.img) : "")),
         variants: ["Normal"],
         setLogo: "/assets/games/game_naruto.webp",
         vintage: true,
