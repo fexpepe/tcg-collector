@@ -15,6 +15,7 @@
 //
 //   node scripts/sync-miracle-battle.mjs             # fetch (se der) + build
 //   node scripts/sync-miracle-battle.mjs --no-fetch  # só build do snapshot
+import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, sleep } from "./lib/sync-common.mjs";
 
@@ -105,6 +106,17 @@ async function refreshSnapshot(existing) {
   return (await readSnapshot(SNAP)) || candidate;
 }
 
+// Imagem CURADA do dono: assets/cards/<game>/<id>.(webp|jpg|png) substitui o
+// scan/placeholder (mesmo mecanismo dos outros syncs do Naruto).
+function curatedImg(game, id) {
+  for (const ext of ["webp", "jpg", "png"]) {
+    if (existsSync(fileURLToPath(new URL(`assets/cards/${game}/${id}.${ext}`, ROOT)))) {
+      return `/assets/cards/${game}/${id}.${ext}`;
+    }
+  }
+  return null;
+}
+
 const IMG = (scan) => `https://wsrv.nl/?url=${encodeURIComponent(`tcg-db.nikita.jp/img/card/mb/${scan}.jpg`)}&w=440&output=webp`;
 
 async function appendToGame(game, sets, idPrefix, stripRe, logo) {
@@ -124,8 +136,9 @@ async function appendToGame(game, sets, idPrefix, stripRe, logo) {
       // Id pelo NÚMERO oficial (não pelo arquivo do scan): estável mesmo que o
       // tcg-db troque/adicione scans (_2) depois.
       const numSlug = String(c.num).toLowerCase().replace(/[\s/]+/g, "-");
+      const cardId = `${idPrefix}-${s.code.toLowerCase()}-${numSlug}`;
       line.push({
-        id: `${idPrefix}-${s.code.toLowerCase()}-${numSlug}`,
+        id: cardId,
         name: c.name,
         set: setName,
         setId,
@@ -135,7 +148,7 @@ async function appendToGame(game, sets, idPrefix, stripRe, logo) {
         rarity: "",
         artist: "",
         language: "ja",
-        image: IMG(c.scan),
+        image: curatedImg(game, cardId) || (c.scan ? IMG(c.scan) : ""),
         variants: ["Normal"],
         setLogo: logo || "",
         vintage: true,
