@@ -200,7 +200,20 @@ async function loadSetCards(setId, label) {
   }
 
   // encodeURIComponent: ids como "SM1+" quebrariam a URL sem escape
-  const fullSet = await fetchJson(`${baseUrl}/sets/${encodeURIComponent(setId)}`);
+  // 404 no DETALHE de um set que a própria lista anunciou = inconsistência
+  // upstream (acontece quando a TCGdex está no meio de uma atualização). Não
+  // derruba o build: pula o set — o chunk versionado é preservado pelo
+  // preserveMissingCards e a próxima rodada tenta de novo.
+  let fullSet;
+  try {
+    fullSet = await fetchJson(`${baseUrl}/sets/${encodeURIComponent(setId)}`);
+  } catch (error) {
+    if (error.status === 404) {
+      console.warn(`${label} — set listado mas detalhe 404 (TCGdex inconsistente), pulando`);
+      return { set: { id: setId }, cards: [] };
+    }
+    throw error;
+  }
   const briefs = fullSet.cards || [];
 
   const fetchedCards = await mapLimit(briefs, concurrency, async (brief) => {
