@@ -27,7 +27,7 @@ const NO_FETCH = process.argv.includes("--no-fetch");
 // Séries importadas: prefixo de código de set -> jogo-pai do Sleevu.
 // (Prefixos mais longos primeiro: "OPS" antes de "OP", "NRS" antes de "NR".)
 const LINES = [
-  { match: /^(OPS|OPC|OP)\d*$/, game: "onepiece", idPrefix: "op-mb", strip: /^ONEPIECE\s*/, logo: "" },
+  { match: /^(OPS|OPC|OP)\d*$/, game: "onepiece", idPrefix: "op-mb", strip: /^ONEPIECE\s*/, logo: "/assets/games/game_onepiece_miracle.webp" },
   { match: /^(NRS|NR)\d*$/, game: "naruto", idPrefix: "nrt-mb", strip: /^ナルト疾風伝\s*/, logo: "/assets/games/game_naruto_miracle.webp" }
 ];
 
