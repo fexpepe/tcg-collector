@@ -3,7 +3,8 @@
   "updatedAt": "2026-07-16",
   "note": "Promos do NARUTO カードゲーム (2002–2006) sem scan no tcg-db entram daqui, com placeholder de imagem. O sync NUNCA sobrescreve uma carta que já veio com scan (o número manda). 名称確認中 = número confirmado publicamente, nome ainda não.",
   "cards": [
-    { "num": "PR忍-1",  "name": "うずまきナルト", "rarity": "R" },
+    { "num": "PR忍-1",  "name": "うずまきナルト" },
+    { "num": "PR忍-1-R", "name": "うずまきナルト（箔押し）", "rarity": "R", "id": "nrt-PRN-001R" },
     { "num": "PR忍-2",  "name": "うちはサスケ" },
     { "num": "PR忍-5",  "name": "初代火影", "rarity": "R" },
     { "num": "PR忍-6",  "name": "二代目火影", "rarity": "R" },
