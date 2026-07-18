@@ -12,48 +12,22 @@
     return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
 
-  // --- Conquistas (gamification, estilo Collectr goals) ---
-  // 100% derivadas dos dados LOCAIS (coleção/graded/wishlist/valor gravado) —
-  // sem backend, sem catálogo. Cada uma: alvo, valor atual e emoji.
-  function achievements() {
-    const games = shared.GAME_SLUGS;
-    const stores = games.map((g) => shared.createCollectionStore(g));
-    const copies = stores.reduce((s, st) => s + st.totalQuantity(), 0);
-    const distinct = stores.reduce((s, st) => s + st.size, 0);
-    const gamesWith = stores.filter((st) => st.size > 0).length;
-    const slabs = shared.gradedSlabsValued(() => null).length;
-    const wishes = games.reduce((s, g) => s + shared.createWishlistStore(g).size, 0);
-    const value = shared.portfolioValueTotal() || 0;
-    const valueBRL = shared.convertMoney(value, shared.getCurrency(), "BRL") ?? value;
-    return [
-      { id: "first", emoji: "🃏", key: "ach.first", cur: copies, target: 1 },
-      { id: "c100", emoji: "📦", key: "ach.c100", cur: copies, target: 100 },
-      { id: "c500", emoji: "🗃️", key: "ach.c500", cur: copies, target: 500 },
-      { id: "c1000", emoji: "🏛️", key: "ach.c1000", cur: copies, target: 1000 },
-      { id: "d250", emoji: "🎴", key: "ach.d250", cur: distinct, target: 250 },
-      { id: "games2", emoji: "🎮", key: "ach.games2", cur: gamesWith, target: 2 },
-      { id: "games3", emoji: "🌐", key: "ach.games3", cur: gamesWith, target: 3 },
-      { id: "slab1", emoji: "💎", key: "ach.slab1", cur: slabs, target: 1 },
-      { id: "slab5", emoji: "🏆", key: "ach.slab5", cur: slabs, target: 5 },
-      { id: "wish10", emoji: "⭐", key: "ach.wish10", cur: wishes, target: 10 },
-      { id: "v1k", emoji: "💰", key: "ach.v1k", cur: Math.floor(valueBRL), target: 1000 },
-      { id: "v10k", emoji: "👑", key: "ach.v10k", cur: Math.floor(valueBRL), target: 10000 }
-    ];
-  }
+  // --- Badges (unificado com badges.html) ---
+  // O perfil NÃO recalcula conquistas: mostra o resumo do último cálculo da
+  // página de Badges (tcg-badges-summary-v1, gravado pelo badges.js) e linka
+  // pra lá. Uma fonte de verdade só — as 12 conquistas antigas viraram as 29
+  // medalhas.
   function achievementsHtml() {
-    const list = achievements();
-    const earned = list.filter((a) => a.cur >= a.target).length;
-    const badge = (a) => {
-      const done = a.cur >= a.target;
-      const progress = done ? "" : `<span class="ach-progress">${Math.min(a.cur, a.target).toLocaleString(shared.getLocale())}/${a.target.toLocaleString(shared.getLocale())}</span>`;
-      return `<div class="ach${done ? " is-done" : ""}" title="${esc(t(a.key))}">
-        <span class="ach-emoji" aria-hidden="true">${a.emoji}</span>
-        <span class="ach-label">${esc(t(a.key))}</span>${progress}
-      </div>`;
-    };
-    return `<section class="profile-card ach-card" aria-label="${esc(t("ach.heading"))}">
-      <h2 class="ach-heading">${esc(t("ach.heading"))} <span class="ach-count">${earned}/${list.length}</span></h2>
-      <div class="ach-grid">${list.map(badge).join("")}</div>
+    let s = null;
+    try { s = JSON.parse(localStorage.getItem("tcg-badges-summary-v1") || "null"); } catch (e) { /* corrompido */ }
+    const count = s ? ` <span class="ach-count">${s.earned}/${s.total}</span>` : "";
+    const body = s && Array.isArray(s.emojis) && s.emojis.length
+      ? `<div class="ach-emoji-strip" aria-hidden="true">${s.emojis.map((e) => `<span>${esc(e)}</span>`).join("")}</div>`
+      : `<p class="profile-hint">${esc(t("profile.badgesHint"))}</p>`;
+    return `<section class="profile-card ach-card" aria-label="${esc(t("dash.badges"))}">
+      <h2 class="ach-heading">${esc(t("dash.badges"))}${count}</h2>
+      ${body}
+      <div class="profile-actions"><a class="primary" href="badges.html">${esc(t("profile.badgesCta"))}</a></div>
     </section>`;
   }
 

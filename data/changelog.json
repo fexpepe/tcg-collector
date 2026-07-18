@@ -1,27 +1,132 @@
 [
-  {"d": "2026-07-14", "pt": "Badges! 29 medalhas de colecionador (Dashboard → Badges): marcos de coleção, sets 100%, idiomas, raridades, vintage e mais — quase todas valem pra qualquer jogo. De brinde: sua torre de cartas comparada com uma girafa, o Cristo e a Torre Eiffel.", "en": "Badges! 29 collector medals (Dashboard → Badges): collection milestones, 100% sets, languages, rarities, vintage and more — almost all count for any game. Bonus: your card tower compared to a giraffe, Christ the Redeemer and the Eiffel Tower."},
-  {"d": "2026-07-13", "pt": "Dashboard do jogador: seu hub pessoal com o resumo de todas as coleções (patrimônio, cópias, desejos, slabs), distribuição por jogo, mais valiosas e atalhos pra tudo — em Toda Coleção → Dashboard.", "en": "Player Dashboard: your personal hub with a summary of all collections (net worth, copies, wishes, slabs), per-game distribution, top cards and shortcuts to everything — under Collection → Dashboard."},
-  {"d": "2026-07-13", "pt": "Página Explorar nova: uma busca global que encontra qualquer carta de qualquer jogo de uma vez (com filtro por jogo e adição rápida). O menu de jogos virou \"Jogos\".", "en": "New Explore page: one global search that finds any card from any game at once (with game filter and quick add). The games menu is now \"Games\"."},
-  {"d": "2026-07-12", "pt": "Cada jogo vintage agora tem página própria no Explorar (sets e cartas separados do jogo moderno da marca) — a Coleção e o Portfólio seguem somando tudo pela marca.", "en": "Each vintage game now has its own Explore page (sets and cards separate from the brand's modern game) — Collection and Portfolio still add everything up by brand."},
-  {"d": "2026-07-12", "pt": "Data Carddass NARUTO (2005–2008) chegou como linha vintage: 486 cartas de arcade (Card Battle + Mission) com checklist oficial por código DN/NM.", "en": "Data Carddass NARUTO (2005–2008) arrives as a vintage line: 486 arcade cards (Card Battle + Mission) with the official DN/NM code checklist."},
-  {"d": "2026-07-11", "pt": "Miracle Battle Carddass (2009–2015) chegou como linha vintage: os sets de One Piece (2010–2014) e Naruto Shippuden (2012–2014) do jogo crossover da Jump, com scans e tiles próprios no hub.", "en": "Miracle Battle Carddass (2009–2015) arrives as a vintage line: the One Piece (2010–2014) and Naruto Shippuden (2012–2014) sets of the Jump crossover game, with scans and their own hub tiles."},
-  {"d": "2026-07-11", "pt": "Catálogo do Naruto quase dobrou: 801 cartas com as listas oficiais dos volumes 1–13 (TV Tokyo), datas de lançamento reais e os 17 volumes no lugar certo.", "en": "Naruto catalog nearly doubled: 801 cards with the official volume 1–13 lists (TV Tokyo), real release dates and all 17 volumes properly organized."},
-  {"d": "2026-07-11", "pt": "Naruto chegou! O card game da Bandai (2003–2006), com as 428 cartas japonesas em 22 sets — coleção, wishlist, binders e graded funcionam desde já.", "en": "Naruto is here! Bandai's card game (2003–2006), with all 428 Japanese cards across 22 sets — collection, wishlist, binders and graded work from day one."},
-  {"d": "2026-07-11", "pt": "Preço-alvo na wishlist: toque no 🔔 de uma carta desejada e o site avisa quando o preço de mercado chegar lá.", "en": "Wishlist price target: tap the 🔔 on a wished card and the site tells you when the market price gets there."},
-  {"d": "2026-07-11", "pt": "Compartilhe sua coleção como imagem: um card social com suas 9 cartas mais valiosas, direto do botão Gerar imagem.", "en": "Share your collection as an image: a social card with your 9 most valuable cards, straight from the Generate image button."},
-  {"d": "2026-07-11", "pt": "Páginas de set agora também em inglês (/set/<nome>-en), com hreflang pro Google servir o idioma certo.", "en": "Set pages now also in English (/set/<name>-en), with hreflang so Google serves the right language."},
-  {"d": "2026-07-11", "pt": "Importador de CSV: traga sua coleção do TCGplayer, Collectr e afins em 1 clique (menu da conta), com prévia antes de gravar.", "en": "CSV importer: bring your collection from TCGplayer, Collectr and similar in 1 click (account menu), with a preview before saving."},
-  {"d": "2026-07-11", "pt": "Modo Master Set na página do set: conte cada variante (Normal/Reverse/Holo) como um slot — e \"contar qualquer idioma\" junta EN/PT na mesma progressão.", "en": "Master Set mode on the set page: count each variant (Normal/Reverse/Holo) as its own slot — and \"count any language\" merges EN/PT into one progression."},
-  {"d": "2026-07-11", "pt": "Explorar ganhou faixa de preço e filtros que viram link compartilhável.", "en": "Explore gained a price range filter and shareable filter links."},
-  {"d": "2026-07-11", "pt": "Tema Automático: sem escolha salva, o site segue o claro/escuro do seu aparelho.", "en": "Auto theme: with no saved choice, the site follows your device's light/dark mode."},
-  {"d": "2026-07-11", "pt": "Grades até 70% mais leves no celular (miniaturas nativas dos CDNs).", "en": "Grids up to 70% lighter on mobile (native CDN thumbnails)."},
-  {"d": "2026-07-10", "pt": "Garantia de catálogo: carta indexada nunca some — o catálogo inteiro agora é versionado e preservado a cada build.", "en": "Catalog guarantee: an indexed card never disappears — the whole catalog is now versioned and preserved on every build."},
-  {"d": "2026-07-10", "pt": "Submenu fixo do Explorar abaixo do título (Todas as cartas · Sets · Pokédex · …).", "en": "Fixed Explore submenu below the title (All cards · Sets · Pokédex · …)."},
-  {"d": "2026-07-09", "pt": "Adicione cartas direto da busca (Ctrl+K ou aba Busca): digite um código tipo OP05-119 e toque em + Coleção.", "en": "Add cards straight from search (Ctrl+K or the Search tab): type a code like OP05-119 and tap + Collection."},
-  {"d": "2026-07-09", "pt": "Barra de navegação inferior no celular, estilo app.", "en": "App-style bottom navigation bar on mobile."},
-  {"d": "2026-07-09", "pt": "Gráfico do histórico de preço no detalhe da carta (série diária).", "en": "Price history chart in the card detail (daily series)."},
-  {"d": "2026-07-09", "pt": "Custo pra completar o set: \"Faltam N · completar ≈ R$X\" nos sets e na página do set.", "en": "Cost to complete the set: \"Missing N · complete for ≈ $X\" on sets and the set page."},
-  {"d": "2026-07-08", "pt": "Notificações de queda de preço da wishlist (ative em Configurações, para usuários logados).", "en": "Wishlist price-drop notifications (enable in Settings, for signed-in users)."},
-  {"d": "2026-07-08", "pt": "Slabs graduados no perfil público, com link direto pra aba Graded.", "en": "Graded slabs on the public profile, with a direct link to the Graded tab."},
-  {"d": "2026-07-07", "pt": "Lista de Sets compacta com categorias recolhíveis.", "en": "Compact Sets list with collapsible categories."}
+ {
+  "d": "2026-07-18",
+  "pt": "Badges V2: medalhas sazonais (Caçador de lançamentos e Colecionador 2026), raridade em cada medalha (Comum/Rara/Épica/Lendária) e compartilhar medalha como imagem. E as tags compartilhadas ganharam o \"Salvar na minha coleção\", como as pastas.",
+  "en": "Badges V2: seasonal medals (Release hunter and 2026 collector), a rarity tier on every medal (Common/Rare/Epic/Legendary) and share-medal-as-image. Shared tags also got \"Save to my collection\", like folders."
+ },
+ {
+  "d": "2026-07-14",
+  "pt": "Badges! 29 medalhas de colecionador (Dashboard → Badges): marcos de coleção, sets 100%, idiomas, raridades, vintage e mais — quase todas valem pra qualquer jogo. De brinde: sua torre de cartas comparada com uma girafa, o Cristo e a Torre Eiffel.",
+  "en": "Badges! 29 collector medals (Dashboard → Badges): collection milestones, 100% sets, languages, rarities, vintage and more — almost all count for any game. Bonus: your card tower compared to a giraffe, Christ the Redeemer and the Eiffel Tower."
+ },
+ {
+  "d": "2026-07-13",
+  "pt": "Dashboard do jogador: seu hub pessoal com o resumo de todas as coleções (patrimônio, cópias, desejos, slabs), distribuição por jogo, mais valiosas e atalhos pra tudo — em Toda Coleção → Dashboard.",
+  "en": "Player Dashboard: your personal hub with a summary of all collections (net worth, copies, wishes, slabs), per-game distribution, top cards and shortcuts to everything — under Collection → Dashboard."
+ },
+ {
+  "d": "2026-07-13",
+  "pt": "Página Explorar nova: uma busca global que encontra qualquer carta de qualquer jogo de uma vez (com filtro por jogo e adição rápida). O menu de jogos virou \"Jogos\".",
+  "en": "New Explore page: one global search that finds any card from any game at once (with game filter and quick add). The games menu is now \"Games\"."
+ },
+ {
+  "d": "2026-07-12",
+  "pt": "Cada jogo vintage agora tem página própria no Explorar (sets e cartas separados do jogo moderno da marca) — a Coleção e o Portfólio seguem somando tudo pela marca.",
+  "en": "Each vintage game now has its own Explore page (sets and cards separate from the brand's modern game) — Collection and Portfolio still add everything up by brand."
+ },
+ {
+  "d": "2026-07-12",
+  "pt": "Data Carddass NARUTO (2005–2008) chegou como linha vintage: 486 cartas de arcade (Card Battle + Mission) com checklist oficial por código DN/NM.",
+  "en": "Data Carddass NARUTO (2005–2008) arrives as a vintage line: 486 arcade cards (Card Battle + Mission) with the official DN/NM code checklist."
+ },
+ {
+  "d": "2026-07-11",
+  "pt": "Miracle Battle Carddass (2009–2015) chegou como linha vintage: os sets de One Piece (2010–2014) e Naruto Shippuden (2012–2014) do jogo crossover da Jump, com scans e tiles próprios no hub.",
+  "en": "Miracle Battle Carddass (2009–2015) arrives as a vintage line: the One Piece (2010–2014) and Naruto Shippuden (2012–2014) sets of the Jump crossover game, with scans and their own hub tiles."
+ },
+ {
+  "d": "2026-07-11",
+  "pt": "Catálogo do Naruto quase dobrou: 801 cartas com as listas oficiais dos volumes 1–13 (TV Tokyo), datas de lançamento reais e os 17 volumes no lugar certo.",
+  "en": "Naruto catalog nearly doubled: 801 cards with the official volume 1–13 lists (TV Tokyo), real release dates and all 17 volumes properly organized."
+ },
+ {
+  "d": "2026-07-11",
+  "pt": "Naruto chegou! O card game da Bandai (2003–2006), com as 428 cartas japonesas em 22 sets — coleção, wishlist, binders e graded funcionam desde já.",
+  "en": "Naruto is here! Bandai's card game (2003–2006), with all 428 Japanese cards across 22 sets — collection, wishlist, binders and graded work from day one."
+ },
+ {
+  "d": "2026-07-11",
+  "pt": "Preço-alvo na wishlist: toque no 🔔 de uma carta desejada e o site avisa quando o preço de mercado chegar lá.",
+  "en": "Wishlist price target: tap the 🔔 on a wished card and the site tells you when the market price gets there."
+ },
+ {
+  "d": "2026-07-11",
+  "pt": "Compartilhe sua coleção como imagem: um card social com suas 9 cartas mais valiosas, direto do botão Gerar imagem.",
+  "en": "Share your collection as an image: a social card with your 9 most valuable cards, straight from the Generate image button."
+ },
+ {
+  "d": "2026-07-11",
+  "pt": "Páginas de set agora também em inglês (/set/<nome>-en), com hreflang pro Google servir o idioma certo.",
+  "en": "Set pages now also in English (/set/<name>-en), with hreflang so Google serves the right language."
+ },
+ {
+  "d": "2026-07-11",
+  "pt": "Importador de CSV: traga sua coleção do TCGplayer, Collectr e afins em 1 clique (menu da conta), com prévia antes de gravar.",
+  "en": "CSV importer: bring your collection from TCGplayer, Collectr and similar in 1 click (account menu), with a preview before saving."
+ },
+ {
+  "d": "2026-07-11",
+  "pt": "Modo Master Set na página do set: conte cada variante (Normal/Reverse/Holo) como um slot — e \"contar qualquer idioma\" junta EN/PT na mesma progressão.",
+  "en": "Master Set mode on the set page: count each variant (Normal/Reverse/Holo) as its own slot — and \"count any language\" merges EN/PT into one progression."
+ },
+ {
+  "d": "2026-07-11",
+  "pt": "Explorar ganhou faixa de preço e filtros que viram link compartilhável.",
+  "en": "Explore gained a price range filter and shareable filter links."
+ },
+ {
+  "d": "2026-07-11",
+  "pt": "Tema Automático: sem escolha salva, o site segue o claro/escuro do seu aparelho.",
+  "en": "Auto theme: with no saved choice, the site follows your device's light/dark mode."
+ },
+ {
+  "d": "2026-07-11",
+  "pt": "Grades até 70% mais leves no celular (miniaturas nativas dos CDNs).",
+  "en": "Grids up to 70% lighter on mobile (native CDN thumbnails)."
+ },
+ {
+  "d": "2026-07-10",
+  "pt": "Garantia de catálogo: carta indexada nunca some — o catálogo inteiro agora é versionado e preservado a cada build.",
+  "en": "Catalog guarantee: an indexed card never disappears — the whole catalog is now versioned and preserved on every build."
+ },
+ {
+  "d": "2026-07-10",
+  "pt": "Submenu fixo do Explorar abaixo do título (Todas as cartas · Sets · Pokédex · …).",
+  "en": "Fixed Explore submenu below the title (All cards · Sets · Pokédex · …)."
+ },
+ {
+  "d": "2026-07-09",
+  "pt": "Adicione cartas direto da busca (Ctrl+K ou aba Busca): digite um código tipo OP05-119 e toque em + Coleção.",
+  "en": "Add cards straight from search (Ctrl+K or the Search tab): type a code like OP05-119 and tap + Collection."
+ },
+ {
+  "d": "2026-07-09",
+  "pt": "Barra de navegação inferior no celular, estilo app.",
+  "en": "App-style bottom navigation bar on mobile."
+ },
+ {
+  "d": "2026-07-09",
+  "pt": "Gráfico do histórico de preço no detalhe da carta (série diária).",
+  "en": "Price history chart in the card detail (daily series)."
+ },
+ {
+  "d": "2026-07-09",
+  "pt": "Custo pra completar o set: \"Faltam N · completar ≈ R$X\" nos sets e na página do set.",
+  "en": "Cost to complete the set: \"Missing N · complete for ≈ $X\" on sets and the set page."
+ },
+ {
+  "d": "2026-07-08",
+  "pt": "Notificações de queda de preço da wishlist (ative em Configurações, para usuários logados).",
+  "en": "Wishlist price-drop notifications (enable in Settings, for signed-in users)."
+ },
+ {
+  "d": "2026-07-08",
+  "pt": "Slabs graduados no perfil público, com link direto pra aba Graded.",
+  "en": "Graded slabs on the public profile, with a direct link to the Graded tab."
+ },
+ {
+  "d": "2026-07-07",
+  "pt": "Lista de Sets compacta com categorias recolhíveis.",
+  "en": "Compact Sets list with collapsible categories."
+ }
 ]

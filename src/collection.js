@@ -2158,7 +2158,7 @@
         </div>
         ${profileNav && profileNav.label
           ? `<button type="button" class="secondary" data-profile-nav>${escapeHtml(profileNav.label)}</button>`
-          : (isFolder ? `<button type="button" class="primary" id="sharedSaveBtn">${escapeHtml(t("folders.shared.save"))}</button>` : "")}
+          : (isFolder || isTag ? `<button type="button" class="primary" id="sharedSaveBtn">${escapeHtml(t(isTag ? "tags.shared.save" : "folders.shared.save"))}</button>` : "")}
       </div>`;
     sv.innerHTML = `${(profileNav && profileNav.tabsHtml) || ""}${banner}${filterHtml}<div id="sharedBody"></div>`;
 
@@ -2177,6 +2177,26 @@
         });
         alert(t("folders.shared.saved"));
         window.location.href = "collection.html"; // abre a coleção da pessoa
+      });
+    }
+
+    // "Salvar na minha coleção" de uma TAG compartilhada: cria a tag (mesmo
+    // nome/cor, respeitando o limite), marca as cartas como suas e etiqueta.
+    if (isTag) {
+      const saveBtn = document.getElementById("sharedSaveBtn");
+      if (saveBtn) saveBtn.addEventListener("click", () => {
+        const name = share.title || t("tags.untitled");
+        if (tags.atLimit()) { alert(t("tags.limit", { n: 15 })); return; }
+        if (!window.confirm(t("tags.shared.saveConfirm", { n: allItems.length, name }))) return;
+        const tg = tags.create(name, share.data.color);
+        if (!tg) { alert(t("tags.limit", { n: 15 })); return; }
+        allItems.forEach((it) => {
+          const store = ownedByGame[it.g] || ownedByGame.pokemon;
+          if (store) store.add(it.id, it.v, shared.DEFAULT_CONDITION, it.q || 1);
+          if (!tags.has(it.id, tg.id)) tags.toggle(it.id, tg.id);
+        });
+        alert(t("tags.shared.saved"));
+        window.location.href = "collection.html?tab=tags";
       });
     }
 

@@ -51,44 +51,50 @@
 
   // ── Definições (id, emoji, alvo, valor atual; hidratadas começam nulas) ────
   // key/desc no i18n: badge.<id> / badge.<id>.d
+  // tier = dificuldade CURADA (comum/rara/épica/lendária). Porcentagem real de
+  // jogadores exigiria agregação no backend — quando houver, o tier vira %.
+  const YEAR = String(new Date().getFullYear());
   const defs = [
     // Coleção (globais)
-    { id: "first", emoji: "🃏", cur: copies, target: 1 },
-    { id: "c100", emoji: "📦", cur: copies, target: 100 },
-    { id: "c500", emoji: "🗃️", cur: copies, target: 500 },
-    { id: "c1000", emoji: "🏛️", cur: copies, target: 1000 },
-    { id: "c2500", emoji: "🏰", cur: copies, target: 2500 },
-    { id: "d100", emoji: "🎴", cur: distinct, target: 100 },
-    { id: "d250", emoji: "🎨", cur: distinct, target: 250 },
-    { id: "d500", emoji: "🖼️", cur: distinct, target: 500 },
+    { id: "first", emoji: "🃏", cur: copies, target: 1, tier: "common" },
+    { id: "c100", emoji: "📦", cur: copies, target: 100, tier: "common" },
+    { id: "c500", emoji: "🗃️", cur: copies, target: 500, tier: "rare" },
+    { id: "c1000", emoji: "🏛️", cur: copies, target: 1000, tier: "epic" },
+    { id: "c2500", emoji: "🏰", cur: copies, target: 2500, tier: "legendary" },
+    { id: "d100", emoji: "🎴", cur: distinct, target: 100, tier: "common" },
+    { id: "d250", emoji: "🎨", cur: distinct, target: 250, tier: "rare" },
+    { id: "d500", emoji: "🖼️", cur: distinct, target: 500, tier: "epic" },
     // Marcas
-    { id: "games2", emoji: "🎮", cur: gamesWith, target: 2 },
-    { id: "games4", emoji: "🌍", cur: gamesWith, target: games.length },
+    { id: "games2", emoji: "🎮", cur: gamesWith, target: 2, tier: "common" },
+    { id: "games4", emoji: "🌍", cur: gamesWith, target: games.length, tier: "epic" },
     // Graded
-    { id: "slab1", emoji: "💎", cur: slabs, target: 1 },
-    { id: "slab5", emoji: "🏆", cur: slabs, target: 5 },
-    { id: "slab25", emoji: "👑", cur: slabs, target: 25 },
+    { id: "slab1", emoji: "💎", cur: slabs, target: 1, tier: "common" },
+    { id: "slab5", emoji: "🏆", cur: slabs, target: 5, tier: "rare" },
+    { id: "slab25", emoji: "👑", cur: slabs, target: 25, tier: "legendary" },
     // Wishlist
-    { id: "wish10", emoji: "⭐", cur: wishes, target: 10 },
-    { id: "target1", emoji: "🎯", cur: targets, target: 1 },
+    { id: "wish10", emoji: "⭐", cur: wishes, target: 10, tier: "common" },
+    { id: "target1", emoji: "🎯", cur: targets, target: 1, tier: "rare" },
     // Vendas
-    { id: "sale1", emoji: "🏪", cur: selling, target: 1 },
-    { id: "sold1", emoji: "🤝", cur: sold, target: 1 },
-    { id: "sold10", emoji: "📈", cur: sold, target: 10 },
+    { id: "sale1", emoji: "🏪", cur: selling, target: 1, tier: "common" },
+    { id: "sold1", emoji: "🤝", cur: sold, target: 1, tier: "rare" },
+    { id: "sold10", emoji: "📈", cur: sold, target: 10, tier: "epic" },
     // Organização
-    { id: "binder1", emoji: "📒", cur: bindersCount, target: 1 },
+    { id: "binder1", emoji: "📒", cur: bindersCount, target: 1, tier: "common" },
     // Patrimônio (BRL)
-    { id: "v1k", emoji: "💰", cur: valueBRL, target: 1000 },
-    { id: "v10k", emoji: "🪙", cur: valueBRL, target: 10000 },
-    { id: "v50k", emoji: "🐉", cur: valueBRL, target: 50000 },
+    { id: "v1k", emoji: "💰", cur: valueBRL, target: 1000, tier: "rare" },
+    { id: "v10k", emoji: "🪙", cur: valueBRL, target: 10000, tier: "epic" },
+    { id: "v50k", emoji: "🐉", cur: valueBRL, target: 50000, tier: "legendary" },
     // Hidratadas (catálogo das suas cartas)
-    { id: "set100", emoji: "🧩", cur: null, target: 1 },
-    { id: "sets5", emoji: "🗺️", cur: null, target: 5 },
-    { id: "lang2", emoji: "🌎", cur: null, target: 2 },
-    { id: "lang4", emoji: "🗣️", cur: null, target: 4 },
-    { id: "secret1", emoji: "✨", cur: null, target: 1 },
-    { id: "vintage1", emoji: "🕰️", cur: null, target: 1 },
-    { id: "old2005", emoji: "📼", cur: null, target: 1 }
+    { id: "set100", emoji: "🧩", cur: null, target: 1, tier: "epic" },
+    { id: "sets5", emoji: "🗺️", cur: null, target: 5, tier: "legendary" },
+    { id: "lang2", emoji: "🌎", cur: null, target: 2, tier: "common" },
+    { id: "lang4", emoji: "🗣️", cur: null, target: 4, tier: "epic" },
+    { id: "secret1", emoji: "✨", cur: null, target: 1, tier: "rare" },
+    { id: "vintage1", emoji: "🕰️", cur: null, target: 1, tier: "rare" },
+    { id: "old2005", emoji: "📼", cur: null, target: 1, tier: "epic" },
+    // Sazonais (rotacionam com o calendário; recalculadas a cada visita)
+    { id: "season90", emoji: "🚀", cur: null, target: 1, tier: "common", seasonal: true },
+    { id: "seasonYear", emoji: "🗓️", cur: null, target: 10, tier: "rare", seasonal: true, nameArgs: { year: YEAR } }
   ];
 
   // ── Render ──────────────────────────────────────────────────────────────────
@@ -102,11 +108,14 @@
       : pending
         ? `<span class="bdg-progress">…</span>`
         : `<span class="bdg-progress">${Math.min(d.cur, d.target).toLocaleString(shared.getLocale())}/${d.target.toLocaleString(shared.getLocale())}</span>`;
+    const tier = d.tier || "common";
     return `<article class="bdg${done ? " is-done" : ""}${isNew ? " is-new" : ""}" data-badge="${d.id}">
       ${isNew ? '<span class="bdg-new">✨</span>' : ""}
+      ${done ? `<button type="button" class="bdg-share" data-share-badge="${d.id}" title="${escapeHtml(t("badges.share"))}" aria-label="${escapeHtml(t("badges.share"))}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg></button>` : ""}
       <span class="bdg-emoji" aria-hidden="true">${d.emoji}</span>
-      <strong class="bdg-name">${escapeHtml(t(`badge.${d.id}`))}</strong>
-      <span class="bdg-desc">${escapeHtml(t(`badge.${d.id}.d`))}</span>
+      <strong class="bdg-name">${escapeHtml(t(`badge.${d.id}`, d.nameArgs))}</strong>
+      <span class="bdg-desc">${escapeHtml(t(`badge.${d.id}.d`, d.nameArgs))}</span>
+      <span class="bdg-tags">${d.seasonal ? `<span class="bdg-chip bdg-chip-season">${escapeHtml(t("badges.seasonal"))}</span>` : ""}<span class="bdg-chip" data-tier="${tier}">${escapeHtml(t(`badges.tier.${tier}`))}</span></span>
       <div class="progress-bar bdg-bar"><span style="width:${pct}%"></span></div>
       ${progress}
     </article>`;
@@ -129,6 +138,69 @@
     el.grid.innerHTML = sorted.map(badgeHtml).join("");
   }
   render();
+
+  // ── Compartilhar medalha como imagem (canvas 1080², CSP-safe: só emoji/texto,
+  //    nenhuma imagem remota). navigator.share com arquivo no mobile; senão PNG.
+  const TIER_COLORS = { common: "#8a93a3", rare: "#3b82f6", epic: "#a855f7", legendary: "#f0b84b" };
+  function wrapText(ctx, text, x, y, maxW, lineH) {
+    let line = "", yy = y;
+    for (const w of String(text).split(" ")) {
+      const probe = line ? `${line} ${w}` : w;
+      if (ctx.measureText(probe).width > maxW && line) { ctx.fillText(line, x, yy); line = w; yy += lineH; }
+      else line = probe;
+    }
+    if (line) { ctx.fillText(line, x, yy); yy += lineH; }
+    return yy;
+  }
+  async function shareBadgeImage(d, btn) {
+    const FONT = "system-ui, -apple-system, Segoe UI, Roboto, sans-serif";
+    const tier = TIER_COLORS[d.tier || "common"];
+    const W = 1080, H = 1080;
+    const canvas = document.createElement("canvas");
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#12141a"; ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = tier; ctx.lineWidth = 14; ctx.strokeRect(28, 28, W - 56, H - 56);
+    // dobra de folha na quina (assinatura visual do site)
+    ctx.fillStyle = tier; ctx.beginPath();
+    ctx.moveTo(W - 28, H - 118); ctx.lineTo(W - 28, H - 28); ctx.lineTo(W - 118, H - 28); ctx.closePath(); ctx.fill();
+    ctx.textAlign = "center";
+    ctx.font = `240px ${FONT}`; ctx.textBaseline = "middle";
+    ctx.fillText(d.emoji, W / 2, 330);
+    ctx.textBaseline = "top";
+    ctx.fillStyle = tier; ctx.font = `800 30px ${FONT}`;
+    const tierLabel = `${t(`badges.tier.${d.tier || "common"}`)}${d.seasonal ? ` · ${t("badges.seasonal")}` : ""}`.toUpperCase();
+    ctx.fillText(tierLabel, W / 2, 520);
+    ctx.fillStyle = "#f3f5f7"; ctx.font = `800 62px ${FONT}`;
+    ctx.fillText(t(`badge.${d.id}`, d.nameArgs), W / 2, 578);
+    ctx.fillStyle = "#9ba4b3"; ctx.font = `500 34px ${FONT}`;
+    wrapText(ctx, t(`badge.${d.id}.d`, d.nameArgs), W / 2, 680, 780, 46);
+    const p = shared.getProfile();
+    const who = (p.displayName || "").trim() || (p.handle ? `@${p.handle}` : "");
+    ctx.fillStyle = "#f3f5f7"; ctx.font = `700 36px ${FONT}`;
+    if (who) ctx.fillText(who, W / 2, 880);
+    ctx.fillStyle = "#9ba4b3"; ctx.font = `700 30px ${FONT}`;
+    ctx.fillText("sleevu.app", W / 2, who ? 930 : 890);
+    if (btn) btn.disabled = true;
+    canvas.toBlob(async (blob) => {
+      if (btn) btn.disabled = false;
+      if (!blob) return;
+      const fname = `sleevu-badge-${d.id}.png`;
+      const file = new File([blob], fname, { type: "image/png" });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try { await navigator.share({ files: [file], title: t(`badge.${d.id}`, d.nameArgs) }); return; } catch (e) { /* cancelado */ }
+      }
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = fname; a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    }, "image/png");
+  }
+  el.grid.addEventListener("click", (event) => {
+    const btn = event.target.closest("[data-share-badge]");
+    if (!btn) return;
+    const d = defs.find((x) => x.id === btn.dataset.shareBadge);
+    if (d) shareBadgeImage(d, btn);
+  });
 
   // ── Torre de cartas (cápsula divertida, estilo Flighty) ────────────────────
   // Carta padrão ~0,305mm de espessura e ~1,73g. Comparações com barras de
@@ -161,8 +233,15 @@
   const idsByGame = Object.fromEntries(games.map((g) => [g, ownedByGame[g].knownCardIds()]));
   const finish = () => {
     // marca tudo que está desbloqueado como visto (o ✨ desta visita permanece)
-    const earnedIds = defs.filter((d) => d.cur != null && d.cur >= d.target).map((d) => d.id);
-    try { localStorage.setItem(SEEN_KEY, JSON.stringify(earnedIds)); } catch (e) { /* quota */ }
+    const earnedDefs = defs.filter((d) => d.cur != null && d.cur >= d.target);
+    try { localStorage.setItem(SEEN_KEY, JSON.stringify(earnedDefs.map((d) => d.id))); } catch (e) { /* quota */ }
+    // Resumo pro card de Badges do perfil (profile.js) — UMA fonte de verdade:
+    // o perfil só exibe o último cálculo feito aqui, nunca recalcula sozinho.
+    try {
+      localStorage.setItem("tcg-badges-summary-v1", JSON.stringify({
+        earned: earnedDefs.length, total: defs.length, emojis: earnedDefs.map((d) => d.emoji)
+      }));
+    } catch (e) { /* quota */ }
   };
   if (!Object.values(idsByGame).some((ids) => ids.length)) {
     defs.forEach((d) => { if (d.cur == null) d.cur = 0; });
@@ -195,6 +274,12 @@
     const hasVintage = mine.some((c) => c.vintage);
     const hasOld = mine.some((c) => (c.setReleaseDate || "9999") < "2005");
 
+    // Sazonais: contam cartas de sets pela DATA de lançamento (rotaciona sozinho
+    // com o calendário — perder a condição no ano seguinte faz parte do jogo).
+    const cut90 = new Date(Date.now() - 90 * 864e5).toISOString().slice(0, 10);
+    const recent90 = mine.filter((c) => (c.setReleaseDate || "") >= cut90).length;
+    const thisYear = mine.filter((c) => String(c.setReleaseDate || "").startsWith(YEAR)).length;
+
     const set = (id, cur) => { const d = defs.find((x) => x.id === id); if (d) d.cur = cur; };
     set("set100", complete >= 1 ? 1 : 0);
     set("sets5", complete);
@@ -203,6 +288,8 @@
     set("secret1", topRarity ? 1 : 0);
     set("vintage1", hasVintage ? 1 : 0);
     set("old2005", hasOld ? 1 : 0);
+    set("season90", recent90);
+    set("seasonYear", thisYear);
     render(); finish();
   }).catch(() => {
     defs.forEach((d) => { if (d.cur == null) d.cur = 0; });
