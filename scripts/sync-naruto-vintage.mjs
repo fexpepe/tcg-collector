@@ -67,6 +67,7 @@ const OFFICIAL_VOLUMES = [
 ];
 const PROMO_SET = "プロモーションカード";
 const EXTRA_SET = "拡張・スペシャル";   // starters, folhas de expansão, boxes (fora das faixas dos volumes)
+const ATARI_SET = "あたりカード";       // comprovantes de prêmio das vending machines (curados, sem fonte)
 const UNKNOWN_SET = "※確認中";          // sobras que nenhuma faixa/fonte classifica
 
 async function fetchText(url) {
@@ -282,7 +283,8 @@ async function run() {
     let added = 0;
     for (const c of curated.cards || []) {
       if (byNum.has(c.num)) { if (c.rarity && !byNum.get(c.num).rarity) byNum.get(c.num).rarity = c.rarity; continue; }
-      byNum.set(c.num, { num: c.num, name: c.name, code: "", img: "", dbSet: PROMO_SET, rarity: c.rarity || "" });
+      // `set`/`id` explícitos permitem sets curados fora das promos (ex.: あたり).
+      byNum.set(c.num, { num: c.num, name: c.name, code: "", img: "", dbSet: c.set || PROMO_SET, rarity: c.rarity || "", curatedId: c.id || "" });
       added += 1;
     }
     console.log(`  promos curadas: +${added} sem scan (de ${curated.cards.length} confirmadas).`);
@@ -306,6 +308,7 @@ async function run() {
     const vol = card.tvtVol != null ? volByNo.get(card.tvtVol) : classifyByRange(card.num);
     let setName, meta;
     if (vol) { setName = vol.name; meta = vol; }
+    else if (card.dbSet === ATARI_SET) { setName = ATARI_SET; meta = null; }
     else if (/^(PR|OP忍)/.test(card.num) || card.dbSet === PROMO_SET) { setName = PROMO_SET; meta = null; }
     else if (/^(忍|術|作|依|騎|K|COIN)/.test(card.num)) { setName = EXTRA_SET; meta = null; }
     else { setName = UNKNOWN_SET; meta = null; }
@@ -316,17 +319,17 @@ async function run() {
   // Ordem dos sets: volumes 1..17, depois promo, extras e o resto.
   const orderedNames = [
     ...OFFICIAL_VOLUMES.map((v) => v.name).filter((n) => setsOut.has(n)),
-    ...[PROMO_SET, EXTRA_SET, UNKNOWN_SET].filter((n) => setsOut.has(n)),
-    ...Array.from(setsOut.keys()).filter((n) => !OFFICIAL_VOLUMES.some((v) => v.name === n) && ![PROMO_SET, EXTRA_SET, UNKNOWN_SET].includes(n))
+    ...[PROMO_SET, EXTRA_SET, ATARI_SET, UNKNOWN_SET].filter((n) => setsOut.has(n)),
+    ...Array.from(setsOut.keys()).filter((n) => !OFFICIAL_VOLUMES.some((v) => v.name === n) && ![PROMO_SET, EXTRA_SET, ATARI_SET, UNKNOWN_SET].includes(n))
   ];
 
   const cardsNrt = [];
   orderedNames.forEach((setName, i) => {
     const { meta, cards } = setsOut.get(setName);
-    const setId = meta ? `nrt-s${String(meta.vol).padStart(2, "0")}` : (setName === PROMO_SET ? "nrt-promo" : setName === EXTRA_SET ? "nrt-extra" : `nrt-unk${i}`);
+    const setId = meta ? `nrt-s${String(meta.vol).padStart(2, "0")}` : (setName === PROMO_SET ? "nrt-promo" : setName === EXTRA_SET ? "nrt-extra" : setName === ATARI_SET ? "nrt-atari" : `nrt-unk${i}`);
     const cmp = (a, b) => String(a.num).localeCompare(String(b.num), "ja", { numeric: true });
     for (const c of cards.sort(cmp)) {
-      const cardId = idByNum.get(c.num) || (c.code ? `nrt-${c.code}` : numId(c.num));
+      const cardId = idByNum.get(c.num) || c.curatedId || (c.code ? `nrt-${c.code}` : numId(c.num));
       const curated = curatedImg(cardId);
       cardsNrt.push({
         id: cardId,
