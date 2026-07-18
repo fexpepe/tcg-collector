@@ -4145,7 +4145,9 @@ a.progress-row:hover {
 /* Home: cartas mais vistas pela comunidade. */
 .home-top-viewed { margin: 34px 0; }
 .home-top-viewed h2 { margin: 0 0 14px; }
-.home-top-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+/* Mesma régua da .card-grid (minmax 220px): as "mais vistas" do Explorar têm
+   cartas do MESMO tamanho das outras grades do site (6 no desktop largo). */
+.home-top-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
 .home-top-card { display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: var(--text); }
 .home-top-img { display: block; border-radius: 8px; overflow: hidden; aspect-ratio: 63 / 88; background: var(--panel-strong); }
 .home-top-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .15s ease; }

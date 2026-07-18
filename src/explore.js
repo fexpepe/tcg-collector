@@ -82,7 +82,7 @@
       const tops = games.flatMap((g, i) => perGame[i].map((x) => ({ id: x.card_id, views: x.views, game: g })))
         .filter((x) => x.views >= 2)
         .sort((a, b) => b.views - a.views)
-        .slice(0, 8);
+        .slice(0, 6);
       if (tops.length < 4) return;
       const idsByGame = {};
       games.forEach((g) => { idsByGame[g] = tops.filter((x) => x.game === g).map((x) => x.id); });
