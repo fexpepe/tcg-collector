@@ -351,9 +351,13 @@ async function run() {
   const withThumb = cardsNrt.filter((c) => c.image.includes("tv-tokyo")).length;
   console.log(`  build: ${cardsNrt.length} cartas em ${orderedNames.length} sets (${withScan} scans tcg-db, ${withThumb} thumbs TV Tokyo, ${cardsNrt.length - withScan - withThumb} sem imagem).`);
 
-  // Anexa: mantém o que NÃO é desta linha (ids nrt-*) — ex.: um futuro moderno
-  // da TCGCSV — e regrava a linha vintage inteira.
-  const kept = existing.filter((c) => c && !String(c.id).startsWith("nrt-"));
+  // Anexa: mantém o que NÃO é desta linha — outras linhas do Naruto (Miracle
+  // Battle nrt-mb-*, Data Carddass nrt-dc-*) e um futuro moderno da TCGCSV —
+  // e regrava só a linha vintage (nrtcg). Antes o filtro descartava TUDO que
+  // começasse com nrt-, apagando MB/DC quando o script rodava sozinho (no CI
+  // não aparecia porque eles rodam depois e se re-anexam).
+  const OTHER_LINES = /^nrt-(mb|dc)-/;
+  const kept = existing.filter((c) => c && (!String(c.id).startsWith("nrt-") || OTHER_LINES.test(String(c.id))));
   const have = new Set(kept.map((c) => c.id));
   const merged = kept.concat(cardsNrt.filter((c) => !have.has(c.id)));
   const pricing = (await readGlobalVar(new URL("pricing.js", OUT), "TCG_PRICING")) || {}; // vintage sem preço
