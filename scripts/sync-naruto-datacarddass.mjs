@@ -16,11 +16,23 @@
 //   node scripts/sync-naruto-datacarddass.mjs             # fetch + build
 //   node scripts/sync-naruto-datacarddass.mjs --no-fetch  # só build
 import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { readGlobalVar, readSnapshot, writeSnapshot, snapshotCardCount, writeGameCatalog, sleep } from "./lib/sync-common.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/naruto/", ROOT);
+
+// Imagem CURADA do dono: assets/cards/naruto/<id>.(webp|jpg|png) substitui o
+// placeholder (mesmo mecanismo do sync vintage).
+function curatedImg(id) {
+  for (const ext of ["webp", "jpg", "png"]) {
+    if (existsSync(fileURLToPath(new URL(`assets/cards/naruto/${id}.${ext}`, ROOT)))) {
+      return `/assets/cards/naruto/${id}.${ext}`;
+    }
+  }
+  return "";
+}
 const SNAP = new URL("data/vintage/naruto-datacarddass.json", ROOT);
 const CACHE_DIR = new URL("data/.cache/", ROOT);
 const BASE = "http://naruto.noihjp.com/Goods/DataCarddas/";
@@ -124,8 +136,9 @@ async function run() {
     const fresh = s.cards.filter((c) => !seen.has(c.code));
     fresh.forEach((c) => seen.add(c.code));
     for (const c of fresh) {
+      const cardId = `nrt-dc-${c.code.toLowerCase()}`;
       line.push({
-        id: `nrt-dc-${c.code.toLowerCase()}`,
+        id: cardId,
         name: c.name,
         set: setName,
         setId,
@@ -135,7 +148,7 @@ async function run() {
         rarity: "",
         artist: "",
         language: "ja",
-        image: "", // sem scans abertos; placeholder (mesmo caso do OP 2002)
+        image: curatedImg(cardId), // curada do dono se existir; senão placeholder (sem scans abertos)
         variants: ["Normal"],
         setLogo: "",
         vintage: true,
