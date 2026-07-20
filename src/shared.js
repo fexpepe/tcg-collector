@@ -4194,10 +4194,16 @@
     }
   }
 
-  async function sendMagicLink(email) {
+  async function sendMagicLink(email, captchaToken) {
     const redirect = window.location.origin + window.location.pathname;
+    // Turnstile (Cloudflare): com a proteção de captcha LIGADA no Supabase Auth,
+    // o token vai em gotrue_meta_security e o Supabase valida no siteverify.
+    // Sem token (widget bloqueado/omitido), o campo fica de fora — funciona
+    // enquanto a proteção estiver desligada e falha explícito quando ligada.
+    const body = { email, create_user: true };
+    if (captchaToken) body.gotrue_meta_security = { captcha_token: captchaToken };
     const res = await fetch(`${SUPABASE_URL}/auth/v1/otp?redirect_to=${encodeURIComponent(redirect)}`, {
-      method: "POST", headers: authHeaders(), body: JSON.stringify({ email, create_user: true })
+      method: "POST", headers: authHeaders(), body: JSON.stringify(body)
     });
     return res.ok;
   }

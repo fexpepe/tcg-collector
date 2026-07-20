@@ -40,8 +40,13 @@
       event.preventDefault();
       const email = (emailInput.value || "").trim();
       if (!email.includes("@")) return;
+      // Token do Turnstile (se o widget estiver na página). O widget marca
+      // sozinho na maioria dos casos; se o desafio ainda não terminou, avisa.
+      const tsField = form.querySelector('[name="cf-turnstile-response"]');
+      const captchaToken = tsField ? tsField.value : "";
+      if (tsField && !captchaToken) { showMsg(t("login.captcha"), "err"); return; }
       if (submit) { submit.disabled = true; submit.textContent = t("login.sending"); }
-      const ok = await shared.sendMagicLink(email);
+      const ok = await shared.sendMagicLink(email, captchaToken);
       if (submit) { submit.disabled = false; submit.textContent = t("login.submit"); }
       if (ok) {
         form.hidden = true;
