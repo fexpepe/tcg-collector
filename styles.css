@@ -1686,16 +1686,39 @@ input::placeholder {
   margin-bottom: 18px;
 }
 
+/* Layout COMPACTO com áreas explícitas (o auto-placement embaralhava: barra na
+   coluna da direita, adição rápida esticando a linha dos toggles, valores em
+   cartões gigantes). Meta: o mínimo de altura antes da grade de cartas. */
 .detail-summary.has-hero {
-  grid-template-columns: minmax(0, 1fr) minmax(200px, 260px);
-  align-items: stretch;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
+  grid-template-areas:
+    "hero hero"
+    "bar bar"
+    "values quick"
+    "modes quick";
+  align-items: start;
+}
+.detail-summary.has-hero .detail-hero { grid-area: hero; }
+.detail-summary.has-hero .completion-bar { grid-area: bar; margin: 0; }
+.detail-summary.has-hero .detail-values { grid-area: values; }
+.detail-summary.has-hero .progress-modes { grid-area: modes; margin: 0; }
+.detail-summary.has-hero .quick-add { grid-area: quick; margin: 0; align-self: stretch; }
+/* Sem adição rápida (pokémon/artista/coleção): coluna única, sem vão à direita. */
+.detail-summary.has-hero:has(.quick-add[hidden]) {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "hero" "bar" "values" "modes";
 }
 
-/* Coluna direita: os valores em R$ (total / gasto / a comprar) empilhados. */
+/* Valores em R$ (total / gasto / a comprar): UMA fileira compacta, não três
+   cartões gigantes — o usuário quer chegar nas cartas. */
 .detail-summary.has-hero .detail-values {
-  grid-template-columns: 1fr;
-  margin-top: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
 }
+.detail-summary.has-hero .detail-values article { padding: 10px 14px; }
+.detail-summary.has-hero .detail-values span { font-size: 20px; white-space: nowrap; }
+.detail-summary.has-hero .detail-values p { margin-top: 3px; font-size: 12px; }
 
 /* Stats de cartas (marcadas / nessa página / progresso) entram compactos dentro
    do hero. No desktop ficam na 3ª coluna (à direita das infos), empilhados, com
@@ -1757,9 +1780,10 @@ input::placeholder {
 }
 
 @media (max-width: 760px) {
-  /* No mobile empilha hero e valores. */
+  /* No mobile empilha tudo (áreas em coluna única, adição rápida por último). */
   .detail-summary.has-hero {
     grid-template-columns: 1fr;
+    grid-template-areas: "hero" "bar" "values" "modes" "quick";
   }
 }
 
