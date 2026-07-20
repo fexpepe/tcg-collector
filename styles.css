@@ -2756,7 +2756,9 @@ input::placeholder {
 /* Seção VINTAGE do hub: cabeçalho + subtítulo acima da grade das linhas clássicas. */
 /* Respiro maior entre os jogos principais e a seção VINTAGE (separação clara
    de categoria), reforçado por uma linha divisória sutil. */
-.hub-vintage {
+/* .hub.hub-vintage (2 classes): o shorthand `margin: 0 auto` do .hub vem
+   DEPOIS no arquivo e zerava o margin-top — a divisória colava nos tiles. */
+.hub.hub-vintage {
   margin-top: 72px;
   padding-top: 40px;
   border-top: 1px solid var(--line);
