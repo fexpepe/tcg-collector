@@ -3460,9 +3460,8 @@ a.hub-tile:hover {
 }
 
 /* Abas da coleção (Cartas/Showcase/Graded/…): régua de QUADRADOS chapados lado
-   a lado ocupando a largura toda — sem stroke nenhum (decisão de design), só o
-   fundo do painel e a "dobra de folha" na cor do jogo na quina inferior
-   direita. A ativa preenche com a cor do jogo (texto no --on-accent). */
+   a lado ocupando a largura toda — sem stroke e sem adornos (decisão de
+   design). A ativa preenche com a cor do jogo (texto no --on-accent). */
 .collection-tabs {
   display: grid;
   grid-auto-flow: column;
@@ -3471,8 +3470,6 @@ a.hub-tile:hover {
   margin-bottom: 18px;
 }
 .collection-tabs .chip {
-  position: relative;
-  overflow: hidden;
   border: 0;
   border-radius: 0; /* retângulo reto, sem curvatura */
   min-height: 44px;
@@ -3480,21 +3477,8 @@ a.hub-tile:hover {
   color: var(--text);
   background: var(--panel-strong);
 }
-.collection-tabs .chip::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  border-style: solid;
-  border-width: 0 0 16px 16px;
-  border-color: transparent transparent var(--accent) transparent;
-}
 .collection-tabs .chip:hover { color: var(--text); background: var(--accent-soft); }
-/* Ativa: fundo inteiro na cor do jogo; texto no --on-accent do próprio accent
-   (branco no neutro/vermelho/roxo, escuro no amarelo/laranja) e dobra num tom
-   mais escuro pra seguir visível. */
 .collection-tabs .chip[aria-pressed="true"] { color: var(--on-accent); background: var(--accent); }
-.collection-tabs .chip[aria-pressed="true"]::after { border-bottom-color: var(--accent-dark); }
 
 .group-summary {
   background: var(--panel);
