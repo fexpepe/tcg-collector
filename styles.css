@@ -6152,3 +6152,20 @@ a.progress-row:hover {
   .detail-values article span { font-size: 17px; }
   .detail-values article p { font-size: 11px; margin-top: 3px; }
 }
+
+/* ── Passe FLAT (decisão de design, 2026-07): a faixa de CONTROLES — chips de
+   filtro, botões secundários de ação, selects, toolbar de filtros, alternador
+   de visualização e a barra de stats — sem cantos arredondados, em todo o
+   site. Cartas, modais e pills coloridas (tags) mantêm o desenho próprio. */
+.chip,
+.secondary,
+select,
+.sales-picker-select,
+.bulk-bar select,
+.toolbar,
+.view-toggle,
+.view-toggle-btn,
+.stats-grid article,
+#collectionDashboard.collection-dashboard .dash-card {
+  border-radius: 0;
+}
