@@ -695,8 +695,13 @@ input::placeholder {
    se perder no meio do ↑ ↓ ✕. */
 .folder-share-btn {
   width: auto; gap: 5px; padding: 0 11px; font-size: 12.5px; font-weight: 700;
+  white-space: nowrap;
   color: var(--accent); background: var(--accent-soft);
 }
+/* "+ Adicionar cartas" (cabeçalho da tag aberta): rótulo de texto — largura
+   automática (o .folder-act base é 30px pra ícones e o texto vazava por baixo
+   do botão Compartilhar). */
+.tag-add-btn { width: auto; padding: 0 11px; font-size: 12.5px; font-weight: 700; white-space: nowrap; }
 .folder-share-btn:hover { background: var(--accent); color: #fff; }
 /* "Trocar capa": pill com rótulo (largura automática), igual o compartilhar, pra
    o texto não vazar do botão de 30px e encavalar nos vizinhos. */
