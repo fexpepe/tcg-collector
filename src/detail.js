@@ -544,7 +544,7 @@
 
   function hydrateFilters() {
     // Idioma: lista suspensa (igual à Coleção), em vez de botões por língua.
-    addOptions(elements.languageFilter, unique(pageCards.map((card) => card.language)), (value) => shared.cardLanguageLabel(value));
+    addOptions(elements.languageFilter, unique(pageCards.map((card) => shared.normalizeCardLanguage(card.language))), (value) => shared.cardLanguageLabel(value));
     // Idioma de carta preferido vira o filtro padrão (se houver cartas dele aqui).
     const pref = shared.getCardLang();
     if (pref !== "all" && Array.from(elements.languageFilter.options).some((option) => option.value === pref)) {
@@ -759,7 +759,7 @@
 
     return pageCards.filter((card) => {
       const matchesQuery = shared.matchesCardQuery(card, elements.search.value);
-      const matchesLanguage = !languageValue || card.language === languageValue;
+      const matchesLanguage = !languageValue || shared.normalizeCardLanguage(card.language) === languageValue;
       const isOwned = owned.has(card.id);
       const matchesOwned = ownedValue === "all"
         || (ownedValue === "owned" && isOwned)

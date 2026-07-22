@@ -80,7 +80,7 @@
   });
 
   const cardLang = shared.getCardLang();
-  const langMatch = (value) => cardLang === "all" || value === cardLang;
+  const langMatch = (value) => cardLang === "all" || shared.normalizeCardLanguage(value) === cardLang;
 
   // A Pokédex roda só com índices (não baixa os chunks de carta); as outras
   // visões (sets/artistas/treinadores) baixam só os chunks do idioma escolhido
@@ -160,7 +160,7 @@
 
   function hydrateFilters() {
     if (elements.setFilter) addOptions(elements.setFilter, unique(cards.map((card) => card.set)));
-    if (elements.languageFilter) addOptions(elements.languageFilter, unique(cards.map((card) => card.language)));
+    if (elements.languageFilter) addOptions(elements.languageFilter, unique(cards.map((card) => shared.normalizeCardLanguage(card.language))), (value) => shared.cardLanguageLabel(value));
     hydrateTypeFilter();
     buildGenerationChips();
   }
@@ -450,7 +450,7 @@
       const matchesType = !typeValue || shared.typesForDex(card.dexId).includes(typeValue);
       const matchesLangRegion = !isPokemonGame() || !elements.setRegionChips || shared.cardLanguageRegion(card.language) === selectedLangRegion;
       const matchesSet = !setValue || card.set === setValue;
-      const matchesLanguage = !languageValue || card.language === languageValue;
+      const matchesLanguage = !languageValue || shared.normalizeCardLanguage(card.language) === languageValue;
       const isOwned = owned.has(card.id);
       const matchesOwned = ownedValue === "all" || (ownedValue === "owned" && isOwned) || (ownedValue === "missing" && !isOwned);
 

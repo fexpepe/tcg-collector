@@ -218,7 +218,7 @@
     const myCards = wantedCards();
     addOptions(elements.pokemonFilter, unique(myCards.map((card) => card.pokemonName || speciesName(card.name))));
     addOptions(elements.setFilter, unique(myCards.map((card) => card.set)));
-    addOptions(elements.languageFilter, unique(myCards.map((card) => card.language)), (value) => {
+    addOptions(elements.languageFilter, unique(myCards.map((card) => shared.normalizeCardLanguage(card.language))), (value) => {
       const emoji = shared.cardFlagEmoji(value);
       return (emoji ? emoji + " " : "") + shared.cardLanguageLabel(value);
     });
@@ -376,7 +376,7 @@
       const matchesQuery = shared.matchesCardQuery(card, elements.search.value);
       const matchesPokemon = !pokemonValue || (card.pokemonName || speciesName(card.name)) === pokemonValue;
       const matchesSet = !setValue || card.set === setValue;
-      const matchesLanguage = !languageValue || card.language === languageValue;
+      const matchesLanguage = !languageValue || shared.normalizeCardLanguage(card.language) === languageValue;
 
       return matchesQuery && matchesPokemon && matchesSet && matchesLanguage;
     });

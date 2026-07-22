@@ -448,7 +448,7 @@
     const myCards = ownedCards();
     fillFilter(elements.pokemonFilter, unique(myCards.map((card) => card.pokemonName || speciesName(card.name))));
     fillFilter(elements.setFilter, unique(myCards.map((card) => card.set)));
-    fillFilter(elements.languageFilter, unique(myCards.map((card) => card.language)), (value) => langOptionLabel(value));
+    fillFilter(elements.languageFilter, unique(myCards.map((card) => shared.normalizeCardLanguage(card.language))), (value) => langOptionLabel(value));
     fillFilter(elements.rarityFilter, unique(myCards.map((card) => card.rarity).filter(Boolean)).sort());
   }
 
@@ -1722,7 +1722,7 @@
       const matchesQuery = shared.matchesCardQuery(card, elements.search.value);
       const matchesPokemon = !pokemonValue || (card.pokemonName || speciesName(card.name)) === pokemonValue;
       const matchesSet = !setValue || card.set === setValue;
-      const matchesLanguage = !languageValue || card.language === languageValue;
+      const matchesLanguage = !languageValue || shared.normalizeCardLanguage(card.language) === languageValue;
       const matchesRarity = !rarityValue || card.rarity === rarityValue;
       const matchesValue = !range || (function () { const v = valueOf(card); return (vMin == null || v >= vMin) && (vMax == null || v <= vMax); })();
 

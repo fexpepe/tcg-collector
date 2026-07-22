@@ -55,10 +55,13 @@ jobs:
           key: tcgdex-cache-${{ github.run_id }}
           restore-keys: tcgdex-cache-
 
-      - name: Sincroniza catálogos (en, ja, zh-tw, pt)
+      # zh-cn (simplificado) é o CHINÊS PADRÃO do site; zh-tw (tradicional) é
+      # fundido dentro do mesmo "Chinês" — por isso o zh-cn vem antes no merge.
+      - name: Sincroniza catálogos (en, ja, zh-cn, zh-tw, pt)
         run: |
           node scripts/sync-tcgdex.mjs en
           node scripts/sync-tcgdex.mjs ja
+          node scripts/sync-tcgdex.mjs zh-cn
           node scripts/sync-tcgdex.mjs zh-tw
           node scripts/sync-tcgdex.mjs pt
 
@@ -85,7 +88,7 @@ jobs:
         run: node scripts/sync-ppt.mjs --budget 8000 --graded
 
       - name: Mescla catálogos num manifest unificado
-        run: node scripts/merge-catalogs.mjs en ja zh-tw pt
+        run: node scripts/merge-catalogs.mjs en ja zh-cn zh-tw pt
 
       # Espelha logos/símbolos de SET do Pokémon localmente (independência da
       # TCGdex; as CARTAS seguem remotas). Roda DEPOIS do merge (que reescreve os

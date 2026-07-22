@@ -492,12 +492,15 @@
   const currentLanguageMeta = UI_LANGUAGES.find((entry) => entry.code === currentLanguage);
 
   // Idioma das CARTAS (separado do idioma da interface). "all" = todas; ou um
-  // código de idioma de carta (pt/en/ja/zh-tw). É o eixo padrão das listas e do
-  // progresso — quem coleciona em PT vê e conta só PT, sem o ruído das 4 línguas.
-  const CARD_LANGUAGES = ["pt", "en", "ja", "zh-tw"];
+  // código de idioma de carta (pt/en/ja/zh). É o eixo padrão das listas e do
+  // progresso. "zh" é o CHINÊS ÚNICO do site: cobre zh-cn (simplificado, o
+  // padrão/principal) e zh-tw (tradicional, fundido dentro dele) — decisão de
+  // produto: um só Chinês, com o simplificado na frente.
+  const CARD_LANGUAGES = ["pt", "en", "ja", "zh"];
   const cardLangStorageKey = "tcg-collector-card-lang-v1";
   const currentCardLang = (function () {
     const saved = localStorage.getItem(cardLangStorageKey);
+    if (saved === "zh-tw" || saved === "zh-cn") return "zh"; // migração do pref antigo
     return saved === "all" || CARD_LANGUAGES.includes(saved) ? saved : "all";
   })();
 
@@ -506,13 +509,14 @@
   }
 
   // Idioma de uma carta a partir do id (en não tem sufixo; demais terminam em
-  // -pt / -ja / -zh-tw — o -zh do catálogo de exemplo também conta como zh-tw).
-  // Usado onde só há ids (Pokédex roda só com índices, sem as cartas).
+  // -pt / -ja / -zh-cn / -zh-tw / -zh). Devolve o código NORMALIZADO do eixo
+  // (zh cobre simplificado e tradicional). Usado onde só há ids (Pokédex roda
+  // só com índices, sem as cartas).
   function cardLanguageFromId(id) {
     const value = String(id || "");
     if (value.endsWith("-pt")) return "pt";
     if (value.endsWith("-ja")) return "ja";
-    if (value.endsWith("-zh-tw") || value.endsWith("-zh")) return "zh-tw";
+    if (value.endsWith("-zh-cn") || value.endsWith("-zh-tw") || value.endsWith("-zh")) return "zh";
     return "en";
   }
 
@@ -523,7 +527,7 @@
   }
 
   function matchesCardLang(language) {
-    return currentCardLang === "all" || language === currentCardLang;
+    return currentCardLang === "all" || normalizeCardLanguage(language) === currentCardLang;
   }
 
   // Moeda de exibição dos valores (global, ao lado da bandeira de idioma).
@@ -566,7 +570,7 @@
   // ID base da carta sem o sufixo de idioma (-pt/-ja/-zh-tw/-zh), para buscar
   // o preço de referência internacional quando a versão localizada não tem.
   function basePricingId(cardId) {
-    return String(cardId || "").replace(/-(pt|ja|zh-tw|zh)$/, "");
+    return String(cardId || "").replace(/-(pt|ja|zh-cn|zh-tw|zh)$/, "");
   }
 
   function cardValue(card, variant, prices, condition) {
@@ -1411,7 +1415,8 @@
     const s = String(l || "").toLowerCase();
     if (s.indexOf("port") >= 0 || s === "pt") return "pt";
     if (s.indexOf("jap") >= 0 || s === "ja" || s === "jp") return "ja";
-    if (s.indexOf("chin") >= 0 || s.indexOf("zh") >= 0) return "zh-tw";
+    if (s.indexOf("trad") >= 0 || s.indexOf("tw") >= 0) return "zh-tw";
+    if (s.indexOf("chin") >= 0 || s.indexOf("zh") >= 0) return "zh-cn"; // Chinês padrão = simplificado
     return "en";
   }
   function mapCsvGame(g) {
@@ -2098,7 +2103,7 @@
   function tcgdexCardRef(card) {
     return {
       lang: card.language || "en",
-      id: String(card.id || "").replace(/-(pt|ja|zh-tw|zh)$/, "")
+      id: String(card.id || "").replace(/-(pt|ja|zh-cn|zh-tw|zh)$/, "")
     };
   }
 
@@ -3406,7 +3411,8 @@
   async function loadCatalogInner(cardLang) {
     await awaitCatalog();
     const lang = cardLang || "all";
-    const matches = (value) => lang === "all" || value === lang;
+    // Normalizado: pedir "zh" carrega zh-cn E zh-tw (Chinês único do site).
+    const matches = (value) => lang === "all" || normalizeCardLanguage(value) === normalizeCardLanguage(lang);
 
     if (Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length) {
       const cards = window.TCG_CARDS.filter((card) => matches(card.language));
@@ -4037,6 +4043,7 @@
     cardFlag,
     cardFlagEmoji,
     cardLanguageLabel,
+    normalizeCardLanguage,
     cardLangSigla,
     cardLanguageRegion,
     localizedImg,

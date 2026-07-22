@@ -114,7 +114,7 @@
 
   function hydrateFilters() {
     addOptions(elements.setFilter, unique(cards.map((card) => card.set)));
-    addOptions(elements.languageFilter, unique(cards.map((card) => card.language)), (value) => shared.cardLanguageLabel(value));
+    addOptions(elements.languageFilter, unique(cards.map((card) => shared.normalizeCardLanguage(card.language))), (value) => shared.cardLanguageLabel(value));
     applyCardLangDefault(elements.languageFilter);
     addOptions(elements.rarityFilter, unique(cards.map((card) => card.rarity)));
   }
@@ -188,7 +188,7 @@
     return cards.filter((card) => {
       if (!shared.matchesCardQuery(card, elements.search.value)) return false;
       if (setValue && card.set !== setValue) return false;
-      if (languageValue && card.language !== languageValue) return false;
+      if (languageValue && shared.normalizeCardLanguage(card.language) !== languageValue) return false;
       if (rarityValue && card.rarity !== rarityValue) return false;
       if (pMin != null || pMax != null) {
         const v = priceOf(card);

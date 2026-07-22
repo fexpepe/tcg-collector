@@ -215,7 +215,7 @@ for (const lang of langs) {
     let changed = false;
     for (const card of chunk.cards) {
       if (card.image) continue;
-      const enImg = enImageById.get(String(card.id).replace(/-(pt|ja|zh-tw)$/, ""));
+      const enImg = enImageById.get(String(card.id).replace(/-(pt|ja|zh-cn|zh-tw)$/, ""));
       if (enImg) { card.image = enImg; imgFallbacks++; changed = true; }
     }
     if (changed) await writeFile(new URL(`sets/${lang}/${chunk.file}`, dataDir), JSON.stringify(chunk.cards), "utf8");
