@@ -268,7 +268,6 @@
     grid: document.getElementById("cardGrid"),
     folderSections: document.getElementById("folderSections"),
     newFolderBtn: document.getElementById("newFolderBtn"),
-    gradedManageBtn: document.getElementById("gradedManageBtn"),
     gradedAddBtn: document.getElementById("gradedAddBtn"),
     bulkBtn: document.getElementById("bulkSelectBtn"),
     tagsNewBtn: document.getElementById("tagsNewBtn"),
@@ -775,7 +774,6 @@
     // Título muda conforme a aba; botões contextuais (Nova coleção / gerenciar / Nova tag).
     if (elements.heading) elements.heading.textContent = t(isFolders ? "collection.heading.folders" : isGraded ? "nav.graded" : isTags ? "tags.heading" : "collection.heading.cards");
     if (elements.newFolderBtn) elements.newFolderBtn.hidden = !isFolders;
-    if (elements.gradedManageBtn) elements.gradedManageBtn.hidden = !isGraded;
     if (elements.gradedAddBtn) elements.gradedAddBtn.hidden = !isGraded || !window.TCGGradedUI;
     // Seleção em massa só na aba Cartas; trocar de aba encerra o modo.
     if (elements.bulkBtn) {
