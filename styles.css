@@ -6348,3 +6348,10 @@ select,
 #collectionDashboard.collection-dashboard .dash-card {
   border-radius: 0;
 }
+
+/* Cápsulas do header (moeda/idioma/tema/avatar): quadradas como o resto —
+   inclusive o avatar, por decisão explícita (deixa de ser círculo). */
+.lang-dd-toggle,
+.auth-avatar {
+  border-radius: 0;
+}
