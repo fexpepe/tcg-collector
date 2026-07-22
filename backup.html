@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://wsrv.nl; connect-src 'self' https://api.tcgdex.net https://pokeapi.co https://economia.awesomeapi.com.br https://*.supabase.co https://cloudflareinsights.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="title.backup">Exportar / Importar - Sleevu</title>
+    <meta name="description" content="Exporte e importe sua coleção do Sleevu: backup completo em JSON, planilha CSV e migração do Dex, TCGplayer e Collectr.">
+    <meta name="robots" content="noindex">
+    <link rel="canonical" href="https://sleevu.app/backup">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#101218">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <script src="src/game.js"></script>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">Sleevu</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page="backup"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main class="backup-main">
+      <div class="page-head">
+        <h1 data-i18n="backup.heading">Exportar / Importar</h1>
+      </div>
+      <p class="collection-subtitle" data-i18n="backup.sub">Leve seus dados com você — e traga sua coleção de outros apps. Tudo local: os arquivos nunca passam pelos nossos servidores.</p>
+
+      <h2 class="dash-section-head" data-i18n="backup.exportTitle">Exportar</h2>
+      <section class="backup-grid" aria-label="Opções de exportação">
+        <article class="backup-card">
+          <h3 data-i18n="backup.exportJsonT">Backup completo (.json)</h3>
+          <p data-i18n="backup.exportJsonD">Tudo o que existe na sua conta: coleção de todos os jogos, listas de desejo, binders, showcases, tags, graded, vendas e preços. É o formato pra guardar de segurança — e o único que restaura tudo de volta.</p>
+          <button type="button" class="primary" id="btnExportJson" data-i18n="backup.exportJsonBtn">Baixar backup</button>
+        </article>
+        <article class="backup-card">
+          <h3 data-i18n="backup.exportCsvT">Planilha (.csv)</h3>
+          <p data-i18n="backup.exportCsvD">Sua coleção em tabela simples (carta, set, número, variante, quantidade, valor) pra abrir no Excel/Google Sheets, conferir com a pilha física ou compartilhar.</p>
+          <button type="button" class="primary" id="btnExportCsv" data-i18n="backup.exportCsvBtn">Baixar planilha</button>
+        </article>
+      </section>
+
+      <h2 class="dash-section-head" data-i18n="backup.importTitle">Importar</h2>
+      <section class="backup-grid" aria-label="Opções de importação">
+        <article class="backup-card">
+          <h3 data-i18n="backup.importJsonT">Backup do Sleevu (.json)</h3>
+          <p data-i18n="backup.importJsonD">Restaura um backup baixado aqui. As cartas do arquivo são somadas às atuais — nada é apagado.</p>
+          <button type="button" class="secondary" id="btnImportJson" data-i18n="backup.importJsonBtn">Escolher arquivo</button>
+          <input type="file" id="fileImportJson" accept="application/json" hidden>
+        </article>
+        <article class="backup-card">
+          <h3 data-i18n="backup.importDexT">Dex (.csv)</h3>
+          <p data-i18n="backup.importDexD">Migração do app Dex: exporte o CSV por lá e traga sua coleção Pokémon pra cá com quantidades e variantes.</p>
+          <button type="button" class="secondary" id="btnImportDex" data-i18n="backup.importBtn">Escolher CSV</button>
+          <input type="file" id="fileImportDex" accept=".csv,text/csv" hidden>
+        </article>
+        <article class="backup-card">
+          <h3 data-i18n="backup.importCsvT">TCGplayer / Collectr (.csv)</h3>
+          <p data-i18n="backup.importCsvD">Migração dos exports desses apps (e planilhas parecidas, com nome/set/número): mostramos uma prévia do que casou com o catálogo antes de aplicar.</p>
+          <button type="button" class="secondary" id="btnImportCsv" data-i18n="backup.importBtn">Escolher CSV</button>
+          <input type="file" id="fileImportCsv" accept=".csv,text/csv" hidden>
+        </article>
+      </section>
+      <p class="portfolio-note" data-i18n="backup.note">Dica: com a conta, tudo já sincroniza sozinho entre os seus aparelhos — o backup é a sua cópia extra de segurança.</p>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/shared.js"></script>
+    <script defer src="src/backup.js"></script>
+  </body>
+</html>

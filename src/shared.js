@@ -1320,7 +1320,7 @@
     // Rodapé institucional SÓ na Início e nas páginas de apoio (sobre, FAQ,
     // ajuda, configurações...). As telas de uso contínuo — Explorar, Coleção,
     // Portfólio — ficam limpas (decisão de produto, 2026-07-12).
-    const FOOTER_PAGES = ["", "index", "about", "novidades", "faq", "help", "settings", "privacy", "terms", "login", "404"];
+    const FOOTER_PAGES = ["", "index", "about", "novidades", "faq", "help", "settings", "backup", "privacy", "terms", "login", "404"];
     const page = (window.location.pathname.split("/").pop() || "").replace(/\.html$/, "");
     if (!FOOTER_PAGES.includes(page)) return;
     if (document.querySelector(".site-footer")) return;
@@ -5176,6 +5176,11 @@
     // API pública: outras telas (e testes) podem disparar a importação com um
     // File/Blob de CSV sem depender do menu da conta (que exige login).
     window.TCGShared.importCsvFile = importGenericCsv;
+    // Página Exportar/Importar (backup.html): usa as MESMAS rotinas do menu.
+    window.TCGShared.exportBackupJson = exportJson;
+    window.TCGShared.exportBackupCsv = exportCsv;
+    window.TCGShared.importBackupJson = importJson;
+    window.TCGShared.importDexCsvFile = importDexCsv;
 
     async function importDexCsv(file) {
       if (!file) return;
@@ -5246,13 +5251,10 @@
     // Apoiar (lugar do "assine" dos concorrentes — aqui é grátis, só doação).
     const supportItem = `<li class="auth-sep" aria-hidden="true"></li>
       <a class="lang-dd-option auth-link auth-support" role="menuitem" href="https://ko-fi.com/fernandopepe" target="_blank" rel="noopener">${escapeHtml(t("auth.support"))}</a>`;
-    // Dados (export/import + importar do Dex).
+    // Dados: um item só — a página backup.html concentra export/import com
+    // explicação de cada formato (o menu tinha 5 itens crípticos).
     const dataItems = `<li class="auth-sep" aria-hidden="true"></li>
-      <li class="lang-dd-option" role="menuitem" data-export-json>${escapeHtml(t("auth.exportJson"))}</li>
-      <li class="lang-dd-option" role="menuitem" data-export-csv>${escapeHtml(t("auth.exportCsv"))}</li>
-      <li class="lang-dd-option" role="menuitem" data-import>${escapeHtml(t("auth.import"))}</li>
-      <li class="lang-dd-option" role="menuitem" data-import-dex>${escapeHtml(t("dex.import"))}</li>
-      <li class="lang-dd-option" role="menuitem" data-import-csv>${escapeHtml(t("csvimport.menu"))}</li>`;
+      <a class="lang-dd-option auth-link" role="menuitem" href="backup.html">${escapeHtml(t("auth.transfer"))}</a>`;
     // Sobre (ajuda + troubleshooting + privacidade/termos).
     const aboutItems = `<li class="auth-sep" aria-hidden="true"></li>
       <a class="lang-dd-option auth-link" role="menuitem" href="novidades.html" data-news-link>${escapeHtml(t("news.heading"))}</a>
@@ -5539,7 +5541,7 @@
   // servidas pelas mesmas páginas ficam de fora: ?s= (links compartilhados de
   // coleção/pasta/tag/binder/vendas/graded) e /users/<handle> (perfil público).
   function enforceLoginGate() {
-    const AUTH_PAGES = ["dashboard", "collection", "graded", "wishlist", "binders", "sales", "portfolio", "badges"];
+    const AUTH_PAGES = ["dashboard", "collection", "graded", "wishlist", "binders", "sales", "portfolio", "badges", "backup"];
     const nav = document.querySelector(".page-nav[data-active-page]");
     const page = nav ? nav.dataset.activePage : "";
     if (!AUTH_PAGES.includes(page) || getSession()) return false;
