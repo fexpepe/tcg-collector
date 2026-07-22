@@ -159,7 +159,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
   const dateHuman = L.fmtDate(rep.setReleaseDate);
   const title = L.title(name, gameLabel);
   const desc = L.desc(cards.length, name, gameLabel, dateHuman);
-  const ogImage = absUrl(rep.setLogo) || `${ORIGIN}/og-image.svg`;
+  const ogImage = absUrl(rep.setLogo) || `${ORIGIN}/og-image.png`;
   // hreflang: cada variante aponta pra si e pra irmã; pt é o x-default.
   const altPt = `${ORIGIN}/set/${page.slug}`;
   const altEn = `${ORIGIN}/set/${page.slug}-en`;

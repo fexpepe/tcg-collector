@@ -1,6 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512">
-<rect width="512" height="512" fill="#0d0e12"/>
-<g transform="translate(134.85,104.14) scale(1.70151)">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 667 178">
 <defs>
 <clipPath id="clip_1">
 <path transform="matrix(1,0,0,-1,0,178)" d="M0 178H667V0H0Z"/>
@@ -12,6 +10,16 @@
 <path id="font_2_226" d="M.16099549 .55400088 .30000306 .13000489 .44000245 .55400088H.58999636L.3849945 0H.21299744L.009994507 .55400088H.16099549Z"/>
 <path id="font_2_215" d="M.45100404 .07400513V.55400088H.5930023V0H.526001C.5033366 0 .48516847 .006830851 .47149659 .020492554 .45783488 .03416443 .45100404 .052001954 .45100404 .07400513M.27799989-.007003784C.23400371-.007003784 .19600423 .0023295086 .16400147 .020996094 .1319987 .039662679 .10733032 .06666056 .08999634 .101989749 .07266235 .1373291 .06399536 .17999776 .06399536 .22999573V.55400088H.20399475V.25500489C.20399475 .21033733 .21532695 .17566936 .23799134 .15100098 .2606659 .1263326 .29066978 .11399841 .32800294 .11399841 .35333253 .11399841 .37516276 .12049866 .39349366 .13349915 .41183473 .14649964 .42600505 .16433208 .43600465 .18699646 .44600425 .20966085 .45100404 .23533122 .45100404 .26400758L.4730072 .23500061C.4710032 .17966207 .4608307 .13399251 .44248963 .09799194 .42415873 .062001546 .4006602 .035502118 .37199403 .018493653 .34332786 .0014953613 .31199647-.007003784 .27799989-.007003784Z"/>
 </defs>
-<use data-text="s" xlink:href="#font_2_205" transform="matrix(209.3461,0,0,-209.3461,16.6064,165.9551)" fill="#ffffff"/><path transform="matrix(1,0,0,-1,118.5846,167.4181)" stroke-width="9" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="#ffffff" d="M0 0H-94.838C-101.866 0-107.564 5.698-107.564 12.726V143.651C-107.564 150.679-101.866 156.377-92.432 156.377H2.406C7.028 156.377 12.726 150.679 12.726 143.651V12.726C12.726 5.698 7.028 0 0 0Z"/>
+<g>
+<g clip-path="url(#clip_1)">
+<use data-text="s" xlink:href="#font_2_205" transform="matrix(209.3461,0,0,-209.3461,16.6064,165.9551)" fill="currentColor"/>
+<use data-text=" " xlink:href="#font_2_248" transform="matrix(209.3461,0,0,-209.3461,112.27757,165.9551)" fill="currentColor"/>
+<use data-text="l" xlink:href="#font_2_176" transform="matrix(209.3461,0,0,-209.3461,146.19165,165.9551)" fill="currentColor"/>
+<use data-text="e" xlink:href="#font_2_143" transform="matrix(209.3461,0,0,-209.3461,197.2721,165.9551)" fill="currentColor"/>
+<use data-text="e" xlink:href="#font_2_143" transform="matrix(209.3461,0,0,-209.3461,311.15638,165.9551)" fill="currentColor"/>
+<use data-text="v" xlink:href="#font_2_226" transform="matrix(209.3461,0,0,-209.3461,425.04066,165.9551)" fill="currentColor"/>
+<use data-text="u" xlink:href="#font_2_215" transform="matrix(209.3461,0,0,-209.3461,534.9474,165.9551)" fill="currentColor"/>
+<path transform="matrix(1,0,0,-1,118.5846,167.4181)" stroke-width="9" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="currentColor" d="M0 0H-94.838C-101.866 0-107.564 5.698-107.564 12.726V143.651C-107.564 150.679-101.866 156.377-92.432 156.377H2.406C7.028 156.377 12.726 150.679 12.726 143.651V12.726C12.726 5.698 7.028 0 0 0Z"/>
+</g>
 </g>
 </svg>

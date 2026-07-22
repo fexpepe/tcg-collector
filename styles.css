@@ -195,31 +195,26 @@ select {
   display: contents;
 }
 
+/* Logo do header: o wordmark vetorial pintado via CSS mask com currentColor —
+   o texto "Sleevu" segue no HTML (SEO/a11y) com font-size 0, e a cor acompanha
+   o tema e o hover (accent) sem precisar de duas imagens. */
 .brand {
   font-weight: 800;
-  font-size: 34px;
+  font-size: 0;
   color: var(--text);
   text-decoration: none;
   white-space: nowrap;
   flex: none;
+  display: inline-block;
+  width: 94px;
+  height: 25px;
+  background: currentColor;
+  -webkit-mask: url("assets/brand/sleevu-wordmark.svg") no-repeat left center / contain;
+  mask: url("assets/brand/sleevu-wordmark.svg") no-repeat left center / contain;
 }
 
 .brand:hover {
   color: var(--accent);
-}
-
-/* Logo no header (wordmark "Sleevu"). A imagem é branca, então funciona no header
-   escuro; no tema claro vira preto (brightness(0)) pra contrastar. */
-.brand-logo {
-  display: block;
-  height: 24px;
-  width: auto;
-}
-[data-theme="light"] .brand-logo {
-  filter: brightness(0);
-}
-.brand:hover .brand-logo {
-  opacity: 0.85;
 }
 
 .page-head {

@@ -11,7 +11,7 @@ import { dirname, join } from "node:path";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const BASE = "https://sleevu.app/";
-const OG_IMAGE = BASE + "og-image.svg";
+const OG_IMAGE = BASE + "og-image.png";
 // Paginas que nao devem ser indexadas (conteudo dinamico ou de fluxo).
 const NOINDEX = new Set(["detail.html", "login.html"]);
 // Paginas a ignorar de vez (nenhuma hoje, mas deixa explicito o universo).
