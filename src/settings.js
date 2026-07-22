@@ -155,4 +155,7 @@
     sync();
     sensitive.addEventListener("click", () => { shared.setSensitive(!shared.sensitiveEnabled()); sync(); });
   }
+  // Zona de perigo: mesmo fluxo (com confirmações) que morava no menu do usuário.
+  const delBtn = document.getElementById("deleteAccountBtn");
+  if (delBtn) delBtn.addEventListener("click", () => { if (shared.deleteAccountFlow) shared.deleteAccountFlow(); });
 })();

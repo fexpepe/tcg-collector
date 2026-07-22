@@ -6363,3 +6363,8 @@ select,
 .backup-card h3 { margin: 0; font-size: 15px; }
 .backup-card p { margin: 0; color: var(--muted); font-size: 13px; flex: 1; }
 .backup-card .primary, .backup-card .secondary { align-self: flex-start; }
+
+/* Zona de perigo (Configurações): destaque vermelho contido. */
+.settings-danger h2 { color: #d8443c; }
+.setting-danger-btn { color: #d8443c; border-color: rgba(216, 68, 60, 0.5); }
+.setting-danger-btn:hover { background: rgba(216, 68, 60, 0.12); border-color: #d8443c; color: #d8443c; }

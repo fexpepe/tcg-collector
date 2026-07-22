@@ -5181,6 +5181,7 @@
     window.TCGShared.exportBackupCsv = exportCsv;
     window.TCGShared.importBackupJson = importJson;
     window.TCGShared.importDexCsvFile = importDexCsv;
+    window.TCGShared.deleteAccountFlow = deleteAccountFlow;
 
     async function importDexCsv(file) {
       if (!file) return;
@@ -5264,8 +5265,9 @@
       <a class="lang-dd-option auth-link" role="menuitem" href="privacy.html">${escapeHtml(t("footer.privacy"))}</a>
       <a class="lang-dd-option auth-link" role="menuitem" href="terms.html">${escapeHtml(t("footer.terms"))}</a>`;
     // Apagar dados (zona de perigo).
-    const deleteItem = `<li class="auth-sep" aria-hidden="true"></li>
-      <li class="lang-dd-option auth-danger" role="menuitem" data-delete-account>${escapeHtml(t("auth.deleteData"))}</li>`;
+    // "Apagar conta e dados" saiu do menu — mora nas Configurações (zona de
+    // perigo), via window.TCGShared.deleteAccountFlow.
+    const deleteItem = "";
 
     // Apaga conta+nuvem (logado) ou só os dados locais (deslogado), e zera tudo.
     async function deleteAccountFlow() {
