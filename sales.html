@@ -62,20 +62,19 @@
         </div>
       </div>
 
-      <section id="salesDashboard" class="collection-dashboard" aria-label="Resumo das vendas" hidden>
-        <article class="dash-card dash-stats">
-          <div class="dash-stats-counts">
-            <div><span class="dash-stat-val" id="salesDashCount">0</span><span class="dash-stat-label" data-i18n="sales.dash.count">cartas à venda</span></div>
-          </div>
-          <div class="dash-stat-money"><span class="dash-stat-val" id="salesDashValue">—</span><span class="dash-stat-label" data-i18n="sales.dash.value">valor da lista</span><span class="dash-markup-badge" id="salesDashMarkup" hidden></span></div>
+      <section id="salesDashboard" class="stats-grid" aria-label="Resumo das vendas" hidden>
+        <article>
+          <span id="salesDashCount">0</span>
+          <p data-i18n="sales.dash.count">cartas à venda</p>
         </article>
-        <article class="dash-card dash-top">
-          <h3 data-i18n="sales.dash.top">Mais caras</h3>
-          <ol id="salesDashTop" class="dash-top-list"></ol>
+        <article>
+          <span id="salesDashValue">—</span>
+          <p data-i18n="sales.dash.value">valor da lista</p>
+          <span class="dash-markup-badge" id="salesDashMarkup" hidden></span>
         </article>
-        <article class="dash-card dash-dist">
-          <h3 data-i18n="dash.distTitle">Distribuição por jogo</h3>
-          <div id="salesDashDist" class="dash-dist-bars"></div>
+        <article>
+          <span id="salesDashSold">—</span>
+          <p data-i18n="sales.dash.sold">total vendido</p>
         </article>
       </section>
 

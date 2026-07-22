@@ -9,7 +9,7 @@
   const grid = document.getElementById("salesGrid");
   if (!grid) return;
 
-  const { addOptions, detailUrl, unique, t, debounce, escapeHtml, escapeAttribute } = shared;
+  const { unique, t, debounce, escapeHtml, escapeAttribute } = shared;
 
   let cards = [];
   let cardsById = new Map();
@@ -133,8 +133,7 @@
     dashValue: document.getElementById("salesDashValue"),
     dashMarkup: document.getElementById("salesDashMarkup"),
     dashCount: document.getElementById("salesDashCount"),
-    dashTopList: document.getElementById("salesDashTop"),
-    dashDist: document.getElementById("salesDashDist")
+    dashSold: document.getElementById("salesDashSold")
   };
 
   const preview = shared.createCardPreview({
@@ -172,7 +171,6 @@
   }
 
   const currencySymbol = shared.currencySymbol;
-  const distBarsHtml = shared.distBarsHtml;
 
   // Ordenação da lista de vendas (mesmas opções da Coleção). Persistida.
   const SALES_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "rarity-desc", "rarity-asc", "release", "added-desc", "added-asc"];
@@ -217,7 +215,8 @@
     renderSold();
   }
 
-  // Dashboard de resumo: valor total da lista + quantidade + mais caras + por jogo.
+  // Faixa de stats (mesma das outras páginas): quantidade + valor da lista
+  // (com o badge do markup) + total já vendido (histórico, na moeda atual).
   function renderDashboard() {
     if (!elements.dashboard) return;
     const items = saleItems();
@@ -234,23 +233,10 @@
       elements.dashMarkup.classList.toggle("is-down", mk < 0);
       elements.dashMarkup.classList.toggle("is-up", mk > 0);
     }
-
-    // Mais caras (top 3 pelo preço de venda).
-    const top = items.filter(({ it }) => it.price > 0).sort((a, b) => b.it.price - a.it.price).slice(0, 3);
-    elements.dashTopList.innerHTML = top.length
-      ? top.map(({ it, card }) => {
-          const src = shared.cardImageSources(card);
-          const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
-          return `<li><a href="${escapeAttribute(detailUrl("set", card.set))}"><span class="dash-top-thumb">${thumb}</span>
-            <span class="dash-top-info"><strong>${escapeHtml(card.name)}</strong><span class="dash-top-set">${escapeHtml(it.cond)} · ${escapeHtml(card.set)}</span></span>
-            <span class="dash-top-val">${escapeHtml(shared.formatMoney(cur, it.price))}</span></a></li>`;
-        }).join("")
-      : `<li class="dash-empty">${escapeHtml(t("dash.empty"))}</li>`;
-
-    // Distribuição por jogo (Pokémon × Lorcana) das cartas à venda.
-    const byGame = {};
-    items.forEach(({ card }) => { byGame[card.game] = (byGame[card.game] || 0) + 1; });
-    elements.dashDist.innerHTML = distBarsHtml(shared.GAME_SLUGS.map((g) => ({ label: gameLabelOf(g), n: byGame[g] || 0, color: shared.GAME_COLOR[g] })));
+    if (elements.dashSold) {
+      const soldTotal = sold.list().reduce((sum, it) => sum + shared.moneyToCurrent(it.price, it.cur), 0);
+      elements.dashSold.textContent = soldTotal > 0 ? shared.formatMoney(cur, soldTotal) : "—";
+    }
   }
 
   function renderSales() {

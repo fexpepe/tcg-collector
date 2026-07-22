@@ -803,6 +803,8 @@ input::placeholder {
 .dash-markup-badge { display: inline-block; margin-top: 4px; align-self: flex-start; font-size: 12px; font-weight: 800; padding: 2px 9px; border-radius: 999px; background: var(--panel-strong); color: var(--muted); }
 .dash-markup-badge.is-down { background: color-mix(in srgb, #e8553c 18%, transparent); color: #e8553c; }
 .dash-markup-badge.is-up { background: color-mix(in srgb, #2ecc71 18%, transparent); color: #21a558; }
+/* Na faixa de stats (Vendas) o badge não pode herdar o span 28px genérico. */
+.stats-grid .dash-markup-badge { display: inline-block; font-size: 12px; font-weight: 800; margin-top: 6px; line-height: 1.4; }
 
 .sale-tile, .graded-tile { position: relative; }
 .sale-tile .sale-remove, .graded-tile .sale-remove {
