@@ -8,7 +8,7 @@
 //    da rede quando online (assim um deploy novo é sempre pego, sem o app ficar
 //    preso numa versão velha) e caem no cache quando offline — fazendo o app
 //    abrir e a coleção já vista funcionar sem internet (PWA instalável).
-const SHELL_CACHE = "tcg-shell-v210";
+const SHELL_CACHE = "tcg-shell-v211";
 const IMAGE_CACHE = "tcg-images-v1";
 const DATA_CACHE = "tcg-data-v1";
 const OPAQUE_TS_CACHE = "tcg-images-opaque-ts-v1"; // TTL das entradas opacas do IMAGE_CACHE
@@ -33,7 +33,7 @@ const SHELL_ASSETS = [
   "styles.css", "favicon.svg", "icon.svg", "manifest.json",
   "src/theme.js", "src/game.js", "src/i18n.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js", "src/explore.js", "src/dashboard.js", "src/badges.js",
   "src/home.js", "src/wishlist.js", "src/portfolio.js", "src/binders.js",
-  "src/backup.js", "src/cards.js", "src/sales.js", "src/graded.js", "src/login.js", "src/hub.js", "src/settings.js", "src/profile.js", "src/admin.js"
+  "src/backup.js", "src/graded-ui.js", "src/cards.js", "src/sales.js", "src/graded.js", "src/login.js", "src/hub.js", "src/settings.js", "src/profile.js", "src/admin.js"
 ];
 
 // Tetos por cache (FIFO): imagens ~17KB cada; chunks de set são o catálogo.

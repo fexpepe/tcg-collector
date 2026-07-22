@@ -79,22 +79,12 @@
     };
   }
 
-  // Cartas graded (slabs): a coleção só LÊ a store por-slab pra mostrar os slabs
-  // na grade ("Toda Coleção" + aba "Graded"). A gestão completa (adicionar/editar/
-  // compartilhar/exportar) fica na página graded.html (botão "Adicionar / gerenciar").
-  const gradedReader = (function () {
-    const KEY = "tcg-collector-collection-graded-v1";
-    const read = () => { try { const r = JSON.parse(localStorage.getItem(KEY) || "null"); return (r && r.items) ? r : { items: {}, order: [] }; } catch (e) { return { items: {}, order: [] }; } };
-    return {
-      list() {
-        const d = read();
-        return (d.order || []).filter((g) => d.items[g]).map((g) => {
-          const e = d.items[g];
-          return { gid: g, cardId: e.cardId, variant: e.variant || "Normal", company: e.company || "psa", grade: e.grade || "", pristine: !!e.pristine, value: Number(e.value) || 0 };
-        });
-      }
-    };
-  })();
+  // Cartas graded (slabs): a aba Graded agora GERENCIA na própria tela —
+  // store completa + tiles editáveis + picker vêm do módulo compartilhado
+  // src/graded-ui.js (a página graded.html usa o MESMO módulo; zero cópia).
+  const gradedStore = window.TCGGradedUI ? window.TCGGradedUI.createGradedStore() : null;
+  const gradedReader = { list: () => (gradedStore ? gradedStore.list() : []) };
+  const gradedUiCtx = () => ({ shared, graded: gradedStore, owned, prices, cards: () => cards, cardsById: () => cardsById, gameFilter: () => gameFilter, onChange: () => renderCards() });
   // Cores da tarja por graduadora (fundo, texto) — espelha as GRADERS de graded.js.
   const GRADED_COLORS = { psa: ["#c8102e", "#ffffff"], bgs: ["#15171d", "#e8c46a"], cgc: ["#0a3d91", "#ffffff"], sgc: ["#101216", "#ffffff"], tag: ["#0b0b0d", "#ffffff"] };
 
@@ -279,6 +269,7 @@
     folderSections: document.getElementById("folderSections"),
     newFolderBtn: document.getElementById("newFolderBtn"),
     gradedManageBtn: document.getElementById("gradedManageBtn"),
+    gradedAddBtn: document.getElementById("gradedAddBtn"),
     bulkBtn: document.getElementById("bulkSelectBtn"),
     tagsNewBtn: document.getElementById("tagsNewBtn"),
     heading: document.querySelector(".results-header h2"),
@@ -662,6 +653,10 @@
     });
 
     if (elements.tagsNewBtn) elements.tagsNewBtn.addEventListener("click", () => openTagEditor(null, elements.tagsNewBtn));
+    // Graded na própria aba: "+ Adicionar graded" abre o MESMO picker da página
+    // dedicada, e os tiles editáveis usam os eventos do módulo compartilhado.
+    if (elements.gradedAddBtn) elements.gradedAddBtn.addEventListener("click", () => { if (window.TCGGradedUI) window.TCGGradedUI.openPicker(gradedUiCtx()); });
+    if (window.TCGGradedUI) window.TCGGradedUI.bindGridEvents(gradedUiCtx(), elements.grid);
 
     // Fecha menus/popovers ao clicar fora ou apertar Esc.
     document.addEventListener("click", (event) => {
@@ -781,6 +776,7 @@
     if (elements.heading) elements.heading.textContent = t(isFolders ? "collection.heading.folders" : isGraded ? "nav.graded" : isTags ? "tags.heading" : "collection.heading.cards");
     if (elements.newFolderBtn) elements.newFolderBtn.hidden = !isFolders;
     if (elements.gradedManageBtn) elements.gradedManageBtn.hidden = !isGraded;
+    if (elements.gradedAddBtn) elements.gradedAddBtn.hidden = !isGraded || !window.TCGGradedUI;
     // Seleção em massa só na aba Cartas; trocar de aba encerra o modo.
     if (elements.bulkBtn) {
       const wrap = elements.bulkBtn.closest(".view-toggle-field") || elements.bulkBtn;
@@ -1248,8 +1244,15 @@
   // coeso — imagem limpa em cima, e embaixo Nome → bandeira+badge da graduadora/nota
   // (no lugar da variante) → Coleção · nº → Preço. O badge (ex.: "PSA 9") com a cor
   // da graduadora é o que diferencia das cartas comuns.
-  function makeGradedNode(p) {
+  function makeGradedNode(p, editable) {
     const { it, card } = p;
+    // Aba Graded: tile EDITÁVEL do módulo compartilhado (mesma UI da página
+    // dedicada). Na "Toda Coleção" o slab segue somente leitura.
+    if (editable && window.TCGGradedUI) {
+      const w = document.createElement("div");
+      w.innerHTML = window.TCGGradedUI.editableTileHtml(gradedUiCtx(), card, it, shared.currencySymbol());
+      return w.firstElementChild;
+    }
     const [bg, fg] = GRADED_COLORS[it.company] || GRADED_COLORS.psa;
     const src = shared.cardImageSources(card);
     const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
@@ -1271,7 +1274,7 @@
 
   // Dispatcher do pager: slab (graded) ou carta normal (variantTile).
   function makeAnyTile(pair) {
-    const el = pair.graded ? makeGradedNode(pair) : makeTile(pair);
+    const el = pair.graded ? makeGradedNode(pair, activeTab === "graded") : makeTile(pair);
     // Seleção em massa sobrevive ao re-render/paginação (o pager cria tiles aos poucos).
     if (bulkMode && !pair.graded && bulkSel.has(`${pair.card.id}|${pair.variant}`)) el.classList.add("bulk-selected");
     return el;
