@@ -119,6 +119,7 @@
 
   const elements = {
     gameFilter: document.getElementById("gameFilter"),
+    search: document.getElementById("searchInput"),
     grid,
     salesEmpty: document.getElementById("salesEmpty"),
     salesAddBtn: document.getElementById("salesAddBtn"),
@@ -202,6 +203,13 @@
       .filter((x) => x.card && inGameFilter(x.card)));
   }
 
+  // Busca do topo (mesma da Coleção): filtra a grade de vendas e o histórico.
+  // Dashboard e share/export seguem a lista COMPLETA (a busca é só visual).
+  const matchesSearch = (card) => {
+    const q = ((elements.search && elements.search.value) || "").trim();
+    return !q || shared.matchesCardQuery(card, q);
+  };
+
   function render() {
     shared.applyGameAccent(gameFilter); // accent vermelho/roxo/neutro conforme o jogo
     renderDashboard();
@@ -246,11 +254,12 @@
   }
 
   function renderSales() {
-    const items = saleItems();
+    const all = saleItems();
+    const items = all.filter(({ card }) => matchesSearch(card));
     elements.salesEmpty.hidden = items.length > 0;
     const sym = currencySymbol();
     elements.grid.innerHTML = items.map(({ it, card }) => saleTileHtml(card, it.variant, it.idx, it.price, sym, it.cond, it.auto)).join("");
-    const hasPriced = items.some((x) => x.it.price > 0);
+    const hasPriced = all.some((x) => x.it.price > 0);
     if (elements.salesShareBtn) elements.salesShareBtn.disabled = !hasPriced;
     if (elements.salesExportBtn) elements.salesExportBtn.disabled = !hasPriced;
   }
@@ -379,7 +388,7 @@
     if (!section || !listEl) return;
     const items = sold.list()
       .map((it) => ({ it, card: cardsById.get(it.cardId) }))
-      .filter((x) => x.card && inGameFilter(x.card));
+      .filter((x) => x.card && inGameFilter(x.card) && matchesSearch(x.card));
     section.hidden = !items.length;
     if (!items.length) { listEl.innerHTML = ""; if (sumEl) sumEl.textContent = ""; return; }
     const cur = shared.getCurrency();
@@ -689,6 +698,8 @@
   }
 
   function bindEvents() {
+    // Busca do topo: filtra a grade e o histórico enquanto digita.
+    if (elements.search) elements.search.addEventListener("input", debounce(() => { renderSales(); renderSold(); }, 200));
     // Filtro de jogo
     if (elements.gameFilter) {
       elements.gameFilter.addEventListener("click", (event) => {
