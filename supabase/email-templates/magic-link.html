@@ -1,0 +1,47 @@
+<!-- Template do e-mail de login do Sleevu (magic link).
+     Colar em: Supabase Dashboard → Authentication → Email Templates,
+     nos DOIS templates: "Magic Link" E "Confirm signup" (o primeiro login
+     de um e-mail novo usa o Confirm signup; os seguintes usam o Magic Link).
+     Assunto sugerido: Seu link de entrada — Sleevu
+     Variáveis Go template do Supabase: {{ .ConfirmationURL }} = link de login. -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#e8ecf1;padding:32px 12px;">
+  <tr>
+    <td align="center">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:440px;background:#ffffff;border:1px solid #d6dbe3;">
+        <tr>
+          <td style="padding:28px 32px 0;font-family:Arial,Helvetica,sans-serif;">
+            <span style="font-size:22px;font-weight:800;letter-spacing:-0.5px;color:#1b1f27;">Sleevu</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:20px 32px 0;font-family:Arial,Helvetica,sans-serif;color:#1b1f27;font-size:15px;line-height:1.55;">
+            <strong style="font-size:17px;">Seu link de entrada</strong><br><br>
+            Toque no botão abaixo pra entrar na sua conta do Sleevu. O link vale por 1&nbsp;hora e só funciona uma vez.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:24px 32px;font-family:Arial,Helvetica,sans-serif;">
+            <a href="{{ .ConfirmationURL }}"
+               style="display:inline-block;background:#e23030;color:#ffffff;text-decoration:none;font-size:15px;font-weight:700;padding:13px 28px;">
+              Entrar no Sleevu
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0 32px 24px;font-family:Arial,Helvetica,sans-serif;color:#5a6270;font-size:12px;line-height:1.6;">
+            Se o botão não funcionar, copie e cole este endereço no navegador:<br>
+            <a href="{{ .ConfirmationURL }}" style="color:#e23030;word-break:break-all;">{{ .ConfirmationURL }}</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0 32px 28px;font-family:Arial,Helvetica,sans-serif;color:#8a93a0;font-size:12px;line-height:1.6;border-top:1px solid #e8ecf1;">
+            <br>Você recebeu este e-mail porque alguém pediu pra entrar no
+            <a href="https://sleevu.app" style="color:#5a6270;">sleevu.app</a> com este endereço.
+            Se não foi você, é só ignorar — nada acontece sem o link.<br><br>
+            <span style="color:#b0b7c1;">This is your Sleevu sign-in link. If you didn't request it, you can safely ignore this e-mail.</span>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
