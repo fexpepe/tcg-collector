@@ -193,6 +193,12 @@
       ? `${t("detail.scopeCollection")} · ${typeLabel(detailType)}`
       : typeLabel(detailType);
     elements.title.textContent = detailName || t("detail.label");
+    // Páginas de SET: o hero logo abaixo já traz o nome do set — o cabeçalho
+    // duplicado (eyebrow "SET" + título gigante) sai; fica só o "← Voltar".
+    if (detailType === "set") {
+      elements.type.hidden = true;
+      elements.title.hidden = true;
+    }
     if (collectionScope) elements.grid.classList.add("scope-collection");
     renderHero();
     // Com hero (Pokémon/set): a coluna da direita passa a ser os valores (R$) e
