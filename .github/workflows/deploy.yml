@@ -139,6 +139,25 @@ jobs:
       - name: Snapshot de preços (histórico One Piece)
         run: node scripts/sync-price-history.mjs data/onepiece
 
+      # Catálogo do Magic (Scryfall): catálogo + preços TCGplayer USD/Cardmarket
+      # EUR + imagens numa fonte só, grátis. Cache incremental por set em
+      # data/.cache/magic (invalida quando o card_count do set muda). Padrão
+      # POKÉMON de durabilidade: os chunks data/magic/sets/ são versionados pelo
+      # snapshot; o script congela neles se o Scryfall estiver fora.
+      - name: Sincroniza catálogo do Magic (Scryfall)
+        run: node scripts/sync-magic.mjs || echo "sync-magic falhou; mantém os chunks versionados"
+
+      - name: Snapshot de preços (histórico Magic)
+        run: node scripts/sync-price-history.mjs data/magic
+
+      # Catálogo do Flesh and Blood (TCGCSV cat. 62, mesmo espelho do One
+      # Piece). Padrão One Piece: cards.js versionado é a durabilidade.
+      - name: Sincroniza catálogo do FAB (TCGCSV)
+        run: node scripts/sync-fab.mjs || echo "sync-fab falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico FAB)
+        run: node scripts/sync-price-history.mjs data/fab
+
       # Naruto (TCGCSV): só sincroniza quando a categoria existir (secret/var
       # NARUTO_TCGCSV_CATEGORY). Sem categoria, o script sai sem mexer em nada.
       - name: Sincroniza catálogo do Naruto (TCGCSV, se configurado)

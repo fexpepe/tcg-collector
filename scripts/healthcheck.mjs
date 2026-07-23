@@ -92,6 +92,7 @@ await checkCatalog("cards Lorcana", "/data/lorcana/cards.js", "TCG_CARDS", 1500)
 await checkCatalog("cards One Piece", "/data/onepiece/cards.js", "TCG_CARDS", 4000);
 await checkCatalog("cards Naruto", "/data/naruto/cards.js", "TCG_CARDS", 400);
 await checkCatalog("cards Hunter x Hunter", "/data/hxh/cards.js", "TCG_CARDS", 30);
+await checkCatalog("cards FAB", "/data/fab/cards.js", "TCG_CARDS", 5000);
 await checkJson("chunk Pokémon (base1)", "/data/sets/en/base1.json",
   (j) => Array.isArray(j) && j.length >= 100 ? null : "chunk vazio/curto");
 
@@ -99,7 +100,11 @@ console.log("\n[preços]");
 await checkCatalog("pricing Pokémon", "/data/pricing.generated.js", "TCG_PRICING", 20000);
 await checkCatalog("pricing Lorcana", "/data/lorcana/pricing.generated.js", "TCG_PRICING", 1000);
 await checkCatalog("pricing One Piece", "/data/onepiece/pricing.generated.js", "TCG_PRICING", 2000);
-for (const [label, dir] of [["Pokémon", "/data/"], ["Lorcana", "/data/lorcana/"], ["One Piece", "/data/onepiece/"]]) {
+// Magic: só o pricing (o cards.js dele é grande demais pra baixar no probe
+// diário; o lint-catalog do deploy já valida a integridade do catálogo).
+await checkCatalog("pricing Magic", "/data/magic/pricing.generated.js", "TCG_PRICING", 20000);
+await checkCatalog("pricing FAB", "/data/fab/pricing.generated.js", "TCG_PRICING", 3000);
+for (const [label, dir] of [["Pokémon", "/data/"], ["Lorcana", "/data/lorcana/"], ["One Piece", "/data/onepiece/"], ["Magic", "/data/magic/"], ["FAB", "/data/fab/"]]) {
   await checkJson(`deltas ${label}`, `${dir}price-deltas.generated.json`,
     (j) => j && typeof j === "object" && "c" in j ? null : "sem campo c");
 }

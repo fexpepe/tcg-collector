@@ -104,6 +104,24 @@ drop trigger if exists events_guard on public.events;
 create trigger events_guard before insert on public.events
   for each row execute function public.events_guard();
 
+-- card_views tem um CHECK de jogos válidos da migração original (não
+-- versionado, e sem os jogos novos — pendência antiga do naruto/hxh). Recria
+-- com a lista completa, dropando só os CHECKs que mencionam `game` (pra não
+-- levar junto um CHECK de outra coluna).
+do $$
+declare con record;
+begin
+  for con in
+    select conname from pg_constraint
+    where conrelid = 'public.card_views'::regclass and contype = 'c'
+      and pg_get_constraintdef(oid) ilike '%game%'
+  loop
+    execute format('alter table public.card_views drop constraint %I', con.conname);
+  end loop;
+end $$;
+alter table public.card_views add constraint card_views_game_check
+  check (game = any (array['pokemon','lorcana','onepiece','magic','fab','naruto','hxh','jump']));
+
 -- increment_card_view recriada com throttle server-side (120 views/min por IP)
 -- além da validação de entrada. DROP+CREATE porque CREATE OR REPLACE não pode
 -- mudar o tipo de retorno caso a atual retorne algo diferente de void.
@@ -112,7 +130,7 @@ create function public.increment_card_view(p_game text, p_card_id text)
 returns void language plpgsql security definer set search_path = public as $$
 begin
   if p_game is null or p_card_id is null then return; end if;
-  if not (p_game = any (array['pokemon','lorcana','onepiece','naruto','hxh','jump'])) then return; end if;
+  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','naruto','hxh','jump'])) then return; end if;
   if p_card_id !~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$' then return; end if;
   if not _rate_ok('cardview', 120) then return; end if;
   insert into card_views (game, card_id, views) values (p_game, p_card_id, 1)

@@ -20,6 +20,8 @@
     pokemon: { slug: "pokemon", name: "Pokémon", dataDir: "data/" },
     lorcana: { slug: "lorcana", name: "Lorcana", dataDir: "data/lorcana/" },
     onepiece: { slug: "onepiece", name: "One Piece", dataDir: "data/onepiece/" },
+    magic: { slug: "magic", name: "Magic: The Gathering", dataDir: "data/magic/" }, // Scryfall (catálogo EN; pt-BR fase 2)
+    fab: { slug: "fab", name: "Flesh and Blood", dataDir: "data/fab/" }, // TCGCSV cat. 62 (EN-só por design da LSS)
     naruto: { slug: "naruto", name: "Naruto Card Game", dataDir: "data/naruto/" },   // vintage Bandai 2003–2006 (+ moderno TCGCSV no futuro)
     hxh: { slug: "hxh", name: "Hunter × Hunter", dataDir: "data/hxh/" },             // vintage Bandai: Miracle Battle (2011–12); Hyper Battle 1999–2001 em curadoria
     // Em preparação (catálogo ainda vazio; tile "Em breve" no hub):

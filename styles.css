@@ -82,6 +82,26 @@
   --accent: #d9a400; --accent-dark: #b78a00; --accent-rgb: 217, 164, 0;
   --accent-soft: rgba(217, 164, 0, 0.12); --on-accent: #0a0c10;
 }
+/* Magic: azul (mana de Ilha — cor livre na paleta dos jogos). Azul claro com
+   texto escuro no tema escuro; azul fechado com texto branco no claro. */
+[data-game-accent="magic"] {
+  --accent: #60a5fa; --accent-dark: #3b82f6; --accent-rgb: 96, 165, 250;
+  --accent-soft: rgba(96, 165, 250, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="magic"] {
+  --accent: #1d4ed8; --accent-dark: #1e40af; --accent-rgb: 29, 78, 216;
+  --accent-soft: rgba(29, 78, 216, 0.1); --on-accent: #ffffff;
+}
+/* Flesh and Blood: teal (o carmesim da marca colidiria com o vermelho do
+   Pokémon nos chips). Teal claro no escuro; teal fechado no claro. */
+[data-game-accent="fab"] {
+  --accent: #2dd4bf; --accent-dark: #14b8a6; --accent-rgb: 45, 212, 191;
+  --accent-soft: rgba(45, 212, 191, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="fab"] {
+  --accent: #0f766e; --accent-dark: #115e59; --accent-rgb: 15, 118, 110;
+  --accent-soft: rgba(15, 118, 110, 0.1); --on-accent: #ffffff;
+}
 /* Naruto: laranja. Texto escuro sobre o laranja claro do tema escuro; branco
    sobre o laranja fechado do claro. */
 [data-game-accent="naruto"] {

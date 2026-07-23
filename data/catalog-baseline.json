@@ -5,13 +5,38 @@
   "imgPct": 100
  },
  "lorcana": {
-  "cards": 2916,
-  "sets": 19,
+  "cards": 3165,
+  "sets": 20,
   "imgPct": 100
  },
  "onepiece": {
-  "cards": 7235,
-  "sets": 90,
+  "cards": 8899,
+  "sets": 141,
+  "imgPct": 85
+ },
+ "magic": {
+  "cards": 1295,
+  "sets": 2,
   "imgPct": 100
+ },
+ "fab": {
+  "cards": 9871,
+  "sets": 102,
+  "imgPct": 100
+ },
+ "naruto": {
+  "cards": 1798,
+  "sets": 67,
+  "imgPct": 49
+ },
+ "hxh": {
+  "cards": 321,
+  "sets": 15,
+  "imgPct": 100
+ },
+ "jump": {
+  "cards": 0,
+  "sets": 0,
+  "imgPct": 0
  }
 }
