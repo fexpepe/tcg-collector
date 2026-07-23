@@ -4942,7 +4942,7 @@
         <button type="button" class="secondary ts-action" data-ts-sync${loggedIn ? "" : " disabled"}>${escapeHtml(t("ts.forceSync"))}</button>
         ${loggedIn ? "" : `<p class="ts-note">${escapeHtml(t("ts.syncNeedsLogin"))}</p>`}
         <p class="ts-contact">${escapeHtml(t("ts.contact"))}
-          <a href="mailto:contato@sleevu.app">contato@sleevu.app</a></p>
+          <a href="mailto:fernandopepe.pereira@gmail.com">fernandopepe.pereira@gmail.com</a></p>
       </section>`;
     document.body.classList.add("preview-open");
     // Gestão de foco + Escape SEM vazar: o removeEventListener fica no close()
