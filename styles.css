@@ -1588,13 +1588,15 @@ input::placeholder {
    genérico (o mesmo pra todos os sets de Miracle Battle, por exemplo) ou nem
    existe, então é ele que identifica o tile. Mesmo corpo do selo de data. */
 .set-en-title {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  /* UMA linha fixa: tile de altura homogênea em todos os sets — o nome
+     completo aparece no hover (title=). */
+  display: block;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
   margin: 0;
   padding: 9px 10px 7px;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 800;
   line-height: 1.3;
   color: var(--muted);
@@ -1656,8 +1658,13 @@ input::placeholder {
 
 .set-title-row h3 {
   margin: 0;
-  font-size: 14px;
+  font-size: 13.5px;
   line-height: 1.25;
+  /* 1 linha fixa (grade homogênea); nome completo no hover (title=). */
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .set-title-row .tag { flex: none; }
 

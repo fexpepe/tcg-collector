@@ -598,7 +598,7 @@
         <div class="pokedex-number">#${String(item.dexId || "?").padStart(4, "0")}</div>
         <div class="pokedex-image">${image}</div>
         <div class="pokedex-info">
-          <h3>${escapeHtml(item.name)}</h3>
+          <h3 title="${escapeAttribute(item.name)}">${escapeHtml(item.name)}</h3>
           <p>${escapeHtml(t("card.generation", { g: item.generation || "-" }))}</p>
         </div>
         <div class="progress-bar" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
