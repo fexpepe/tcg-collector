@@ -105,7 +105,9 @@ for (const [label, dir] of [["Pokémon", "/data/"], ["Lorcana", "/data/lorcana/"
 }
 
 console.log("\n[backend]");
-await checkJson("Supabase REST (anon)", `${SUPABASE_URL}/rest/v1/public_profiles?select=handle&limit=1`,
+// card_views (leitura pública estável) — public_profiles não é mais legível por
+// anon depois do lockdown anti-scraping (migração 20260723b).
+await checkJson("Supabase REST (anon)", `${SUPABASE_URL}/rest/v1/card_views?select=views&limit=1`,
   (j) => Array.isArray(j) ? null : "resposta não é array");
 
 if (failures.length) {

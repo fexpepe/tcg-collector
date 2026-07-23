@@ -24,10 +24,19 @@ export async function onRequestGet(context) {
   let prof = null;
   if (handle) {
     try {
-      const r = await fetch(`${SUPABASE_URL}/rest/v1/public_profiles?handle=eq.${encodeURIComponent(handle)}&select=display_name,show_values,data`, {
+      // RPC de leitura pontual (a tabela não é paginável por anon — anti-scraping).
+      // GET (a função é STABLE) pra manter o cacheTtl da borda, que POST não tem.
+      // Fallback pro SELECT direto enquanto a RPC não existir no banco (404).
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_public_profile?p_handle=${encodeURIComponent(handle)}`, {
         headers: { apikey: SUPABASE_KEY }, cf: { cacheTtl: 60 }
       });
       if (r.ok) { const rows = await r.json(); prof = rows && rows[0]; }
+      else if (r.status === 404) {
+        const f = await fetch(`${SUPABASE_URL}/rest/v1/public_profiles?handle=eq.${encodeURIComponent(handle)}&select=display_name,show_values,data`, {
+          headers: { apikey: SUPABASE_KEY }, cf: { cacheTtl: 60 }
+        });
+        if (f.ok) { const rows = await f.json(); prof = rows && rows[0]; }
+      }
     } catch (e) { /* sem perfil: serve a shell sem OG dinâmico */ }
   }
   if (!prof || !prof.data) return shell;
