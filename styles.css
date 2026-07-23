@@ -1737,6 +1737,19 @@ input::placeholder {
   grid-template-columns: minmax(0, 1fr);
   grid-template-areas: "hero" "bar" "values" "modes";
 }
+/* Sem VALORES (linhas vintage, que não têm preço): a fileira de valores sai do
+   grid. Sem isto, a adição rápida — que ocupa as duas linhas — tem a altura
+   dividida entre elas e joga os toggles pro meio de um vão enorme. */
+.detail-summary.has-hero:has(.detail-values[hidden]) {
+  grid-template-areas:
+    "hero hero"
+    "bar bar"
+    "modes quick";
+}
+.detail-summary.has-hero:has(.detail-values[hidden]):has(.quick-add[hidden]) {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "hero" "bar" "modes";
+}
 
 /* Valores em R$ (total / gasto / a comprar): UMA fileira compacta, não três
    cartões gigantes — o usuário quer chegar nas cartas. */
