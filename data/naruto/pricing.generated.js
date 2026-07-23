@@ -1,1 +1,0 @@
-window.TCG_PRICING = {};

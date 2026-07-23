@@ -1,13 +1,14 @@
 # Cache do sync da TCGdex (regenerável com node scripts/sync-tcgdex.mjs)
 data/.cache/
 
-# Artefatos gerados pelo sync (regeneráveis; o app usa data/cards.js por padrão)
+# Artefatos gerados pelo sync (regeneráveis; o app usa data/cards.js por padrão).
+# O padrão data/*/ cobre TODOS os jogos — antes só lorcana/onepiece estavam
+# listados e os .generated de naruto/hxh/jump ficaram trackeados por engano,
+# gerando um commit de snapshot por build (o generatedAt muda sempre).
 data/*.generated.js
 data/*.generated.json
-data/lorcana/*.generated.js
-data/lorcana/*.generated.json
-data/onepiece/*.generated.js
-data/onepiece/*.generated.json
+data/*/*.generated.js
+data/*/*.generated.json
 # data/sets/ (chunks do Pokémon) é VERSIONADO de propósito: o deploy commita o
 # snapshot validado de volta (carta indexada nunca some, mesmo se a TCGdex sumir).
 # Chunks por set dos outros jogos (gerados por writeGameCatalog no build)
