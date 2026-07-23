@@ -9,6 +9,10 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
 - `game_pokemon.webp` — Pokémon TCG
 - `game_lorcana.webp` — Disney Lorcana
 - `game_onepiece.webp` — One Piece Card Game
+- `game_magic.webp` — Magic: The Gathering (fonte: `../brand/Magic-The-Gathering-logo.png`)
+- `game_gundam.webp` — Gundam Card Game (fonte: gundam-gcg.com/en/images/common/logo.png;
+  162px nativo, upscalado p/ 512 — line-art aguenta)
+- `game_dbfw.webp` — Dragon Ball Super Fusion World (fonte: `../brand/logo_title_dbfwcardgame.webp`)
 - `game_onepiece_carddass.webp` — Carddass Hyper Battle (tile vintage do OP)
 - `game_naruto.webp` — Naruto Card Game 2002~2006 (tile do jogo, tile vintage e
   `setLogo` de todos os sets do Naruto, via sync-naruto-vintage.mjs)

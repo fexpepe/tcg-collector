@@ -6449,18 +6449,18 @@ select,
 .lp-main { max-width: 1080px; margin: 0 auto; padding: 0 20px 64px; }
 
 /* --- Hero ---------------------------------------------------------------- */
-.lp-hero { position: relative; text-align: center; padding: 96px 0 48px; }
+.lp-hero { position: relative; text-align: center; padding: 132px 0 88px; }
 /* glow discreto atrás do wordmark, na cor da marca */
 .lp-hero::before {
-  content: ""; position: absolute; inset: 0 10% auto; height: 260px;
+  content: ""; position: absolute; inset: 0 8% auto; height: 340px;
   background: radial-gradient(closest-side, rgba(var(--accent-rgb), 0.16), transparent 70%);
   pointer-events: none; z-index: -1;
 }
-.lp-wordmark { width: min(420px, 76vw); height: auto; color: var(--text); display: inline-block; }
-.lp-tagline { font-size: clamp(19px, 2.6vw, 24px); font-weight: 650; margin: 30px 0 0; letter-spacing: -0.01em; }
-.lp-sub { max-width: 640px; margin: 18px auto 0; color: var(--subtle); font-size: 15.5px; line-height: 1.6; }
-.lp-ctas { display: flex; gap: 14px; justify-content: center; margin-top: 34px; flex-wrap: wrap; }
-.lp-hero-note { margin-top: 18px; font-size: 12.5px; color: var(--subtle); }
+.lp-wordmark { width: min(500px, 84vw); height: auto; color: var(--text); display: inline-block; }
+.lp-tagline { font-size: clamp(21px, 2.9vw, 27px); font-weight: 650; margin: 42px 0 0; letter-spacing: -0.01em; }
+.lp-sub { max-width: 660px; margin: 22px auto 0; color: var(--subtle); font-size: 16px; line-height: 1.65; }
+.lp-ctas { display: flex; gap: 14px; justify-content: center; margin-top: 44px; flex-wrap: wrap; }
+.lp-hero-note { margin-top: 20px; font-size: 12.5px; color: var(--subtle); }
 
 /* --- Números ------------------------------------------------------------- */
 .lp-stats {
@@ -6539,7 +6539,7 @@ select,
   .lp-card, .lp-card-wide { grid-column: span 3; }
 }
 @media (max-width: 560px) {
-  .lp-hero { padding-top: 56px; }
+  .lp-hero { padding-top: 84px; }
   .lp-stats { grid-template-columns: repeat(2, 1fr); row-gap: 18px; }
   .lp-card, .lp-card-wide { grid-column: span 6; }
 }
