@@ -6449,28 +6449,15 @@ select,
 .lp-main { max-width: 1080px; margin: 0 auto; padding: 0 20px 64px; }
 
 /* --- Hero ---------------------------------------------------------------- */
-.lp-hero { position: relative; text-align: center; padding: 84px 0 48px; }
-.lp-hero-fan { display: flex; justify-content: center; align-items: flex-end; gap: 0; margin-bottom: 52px; min-height: 150px; }
-.lp-hero-fan img {
-  width: 128px; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 8px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: transform 0.25s ease;
-}
-.lp-hero-fan img:nth-child(1) { transform: rotate(-14deg) translate(26px, 10px); z-index: 1; }
-.lp-hero-fan img:nth-child(2) { transform: rotate(-7deg) translate(12px, 2px); z-index: 2; }
-.lp-hero-fan img:nth-child(3) { transform: translateY(-6px) scale(1.08); z-index: 3; }
-.lp-hero-fan img:nth-child(4) { transform: rotate(7deg) translate(-12px, 2px); z-index: 2; }
-.lp-hero-fan img:nth-child(5) { transform: rotate(14deg) translate(-26px, 10px); z-index: 1; }
-.lp-hero:hover .lp-hero-fan img:nth-child(3) { transform: translateY(-12px) scale(1.1); }
-/* glow discreto atrás do leque, na cor da marca */
+.lp-hero { position: relative; text-align: center; padding: 96px 0 48px; }
+/* glow discreto atrás do wordmark, na cor da marca */
 .lp-hero::before {
-  content: ""; position: absolute; inset: -20px 10% auto; height: 300px;
+  content: ""; position: absolute; inset: 0 10% auto; height: 260px;
   background: radial-gradient(closest-side, rgba(var(--accent-rgb), 0.16), transparent 70%);
   pointer-events: none; z-index: -1;
 }
-.lp-wordmark { width: min(430px, 78vw); height: auto; color: var(--text); display: inline-block; }
-.lp-tagline { font-size: clamp(19px, 2.6vw, 24px); font-weight: 650; margin: 24px 0 0; letter-spacing: -0.01em; }
+.lp-wordmark { width: min(420px, 76vw); height: auto; color: var(--text); display: inline-block; }
+.lp-tagline { font-size: clamp(19px, 2.6vw, 24px); font-weight: 650; margin: 30px 0 0; letter-spacing: -0.01em; }
 .lp-sub { max-width: 640px; margin: 18px auto 0; color: var(--subtle); font-size: 15.5px; line-height: 1.6; }
 .lp-ctas { display: flex; gap: 14px; justify-content: center; margin-top: 34px; flex-wrap: wrap; }
 .lp-hero-note { margin-top: 18px; font-size: 12.5px; color: var(--subtle); }
@@ -6552,10 +6539,7 @@ select,
   .lp-card, .lp-card-wide { grid-column: span 3; }
 }
 @media (max-width: 560px) {
-  .lp-hero { padding-top: 40px; }
-  .lp-hero-fan img { width: 88px; }
+  .lp-hero { padding-top: 56px; }
   .lp-stats { grid-template-columns: repeat(2, 1fr); row-gap: 18px; }
   .lp-card, .lp-card-wide { grid-column: span 6; }
 }
-/* tema claro: sombras mais suaves no leque */
-html[data-theme="light"] .lp-hero-fan img { box-shadow: 0 10px 22px rgba(30, 40, 60, 0.25); border-color: rgba(0, 0, 0, 0.06); }

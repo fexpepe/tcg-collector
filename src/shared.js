@@ -1175,17 +1175,28 @@
   // (Todas as cartas / Sets / Pokédex / Treinadores / Artistas — só o que o
   // jogo tem): navega entre as visões do catálogo sem abrir o menu de cima.
   // Mesmo registro de páginas do mega-menu; chips reaproveitados (ativa = accent).
+  // Pokédex e Treinadores são EXCLUSIVOS do Pokémon (dependem do índice de
+  // espécies/treinadores que só ele tem). Todo jogo tem no mínimo Cards+Sets;
+  // Artistas só onde há dado de ilustrador (pokemon, lorcana, magic). O default
+  // (jogo não listado) é o mínimo seguro — NUNCA o do Pokémon, senão jogos como
+  // Gundam/DBFW ganhariam abas de Pokédex/Treinadores que não existem pra eles.
+  const SUBNAV_MIN = [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"]];
+  const SUBNAV_ARTISTS = SUBNAV_MIN.concat([["artists.html", "nav.artists", "artists"]]);
   const EXPLORE_SUBNAV = {
     pokemon: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"], ["pokedex.html", "nav.pokedex", "pokedex"], ["trainers.html", "nav.trainers", "trainers"], ["artists.html", "nav.artists", "artists"]],
-    lorcana: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"], ["artists.html", "nav.artists", "artists"]],
-    onepiece: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"]],
-    naruto: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"]],
-    hxh: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"]]
+    lorcana: SUBNAV_ARTISTS,
+    magic: SUBNAV_ARTISTS,
+    onepiece: SUBNAV_MIN,
+    fab: SUBNAV_MIN,
+    gundam: SUBNAV_MIN,
+    dbfw: SUBNAV_MIN,
+    naruto: SUBNAV_MIN,
+    hxh: SUBNAV_MIN
   };
   function buildExploreSubnav(active) {
     const game = currentGame();
     if (game === "hub" || document.querySelector(".explore-subnav")) return;
-    const pages = EXPLORE_SUBNAV[game] || EXPLORE_SUBNAV.pokemon;
+    const pages = EXPLORE_SUBNAV[game] || SUBNAV_MIN;
     // Só nas telas do Explorar (o `active` do detail já resolve pro tipo certo).
     if (!pages.some(([, , page]) => page === active)) return;
     const head = document.querySelector(".page-head");
