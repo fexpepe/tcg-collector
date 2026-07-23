@@ -1,0 +1,43 @@
+name: Uptime (produção)
+
+# Monitor leve e frequente — complementa o healthcheck diário (que valida
+# conteúdo a fundo). Aqui é só "o site e o backend respondem?": falhou duas
+# vezes seguidas (com 30s de intervalo) = job vermelho = e-mail do GitHub na
+# hora, em vez de descobrir a queda no healthcheck do dia seguinte.
+#
+# Cron de 30 em 30 min: em repo público os minutos são grátis; se o repo for
+# privado, este job (~30s) gasta ~720 min/mês da cota — apertar pra */15 só
+# se sobrar cota dos builds.
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+permissions:
+  contents: none
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Home + catálogo + Supabase respondem?
+        run: |
+          check() {
+            local label="$1"; shift
+            if curl -fsS --max-time 20 -o /dev/null "$@"; then
+              echo "ok: $label"
+            else
+              echo "FALHOU: $label — tenta de novo em 30s"
+              sleep 30
+              curl -fsS --max-time 20 -o /dev/null "$@" && echo "ok na 2a: $label" || { echo "FALHOU 2x: $label"; return 1; }
+            fi
+          }
+          check "home"     "https://sleevu.app/"
+          check "catalogo" "https://sleevu.app/data/manifest.generated.js"
+          check "supabase" "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/card_views?select=views&limit=1" \
+            -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"

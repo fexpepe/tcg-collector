@@ -10,7 +10,7 @@
     writeScheduled = false;
     if (dataWiped) { pendingWrites.clear(); return; }
     pendingWrites.forEach((getString, key) => {
-      try { localStorage.setItem(key, getString()); } catch (error) { /* quota cheia: ignora */ }
+      try { localStorage.setItem(key, getString()); } catch (error) { notifyStorageFull(); }
     });
     pendingWrites.clear();
   }
@@ -898,6 +898,26 @@
     } catch (e) { /* toast é açúcar: nunca quebra o fluxo de apagar */ }
   }
 
+  // --- Aviso de armazenamento cheio ---
+  // Quota do localStorage estourada = a escrita FALHOU e a mudança do usuário não
+  // persistiu. Isso nunca pode ser silencioso: mostra um toast (1x por página,
+  // com tempo maior — é um aviso sério, não açúcar) e registra como erro no
+  // rastreio first-party pra aparecer no /admin.
+  let storageFullNotified = false;
+  function notifyStorageFull() {
+    if (storageFullNotified) return;
+    storageFullNotified = true;
+    try { logClientError("localStorage quota exceeded", "storage"); } catch (e) { /* segue pro toast */ }
+    try {
+      const el = document.createElement("div");
+      el.className = "undo-toast";
+      el.setAttribute("role", "alert");
+      el.innerHTML = `<span>${escapeHtml(t("storage.full"))}</span>`;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 15000);
+    } catch (e) { /* sem DOM (muito cedo): o flag evita loop e o erro já foi logado */ }
+  }
+
   // --- "Modo investidor": vendas REALIZADAS (sold) + custo pago (costs) ---
   // Globais (cross-game), sincronizados via SYNC_KEYS (LWW do bloco, como graded)
   // e incluídos no backup JSON. PRIVADOS: nunca entram no perfil público.
@@ -1592,6 +1612,42 @@
       });
     } catch (e) { /* analytics nunca quebra a página */ }
   }
+
+  // --- Error tracking first-party: erros de JS em produção viram eventos
+  // anônimos (name="jserror") na MESMA tabela `events` do analytics — sem
+  // serviço terceiro, sem PII (só mensagem + arquivo:linha). O /admin lê o
+  // agregado via RPC error_summary. Dedupe por mensagem + teto por página
+  // pra um erro em loop não inundar o banco.
+  const errorsSeen = new Set();
+  let errorBudget = 5;
+  function logClientError(message, source) {
+    if (!AUTH_ENABLED) return;
+    try {
+      if (!/(^|\.)sleevu\.app$/i.test(location.hostname)) return; // só produção
+      const m = String(message || "").slice(0, 300);
+      if (!m || errorsSeen.has(m) || errorBudget <= 0) return;
+      errorsSeen.add(m);
+      errorBudget -= 1;
+      fetch(`${SUPABASE_URL}/rest/v1/events`, {
+        method: "POST",
+        headers: Object.assign(authHeaders(), { Prefer: "return=minimal" }),
+        body: JSON.stringify({
+          name: "jserror", path: analyticsPath(), anon: anonId(), game: currentGame(),
+          props: { m, s: String(source || "").slice(0, 200) }
+        }),
+        keepalive: true
+      });
+    } catch (e) { /* rastreio nunca quebra a página */ }
+  }
+  window.addEventListener("error", (e) => {
+    const src = (e.filename || "") + (e.lineno ? `:${e.lineno}:${e.colno || 0}` : "");
+    logClientError(e.message, src);
+  });
+  window.addEventListener("unhandledrejection", (e) => {
+    const r = e && e.reason;
+    logClientError(r && r.message ? r.message : String(r), (r && r.stack ? String(r.stack).split("\n")[1] : "") || "promise");
+  });
+
   // --- Web push: aviso de quedas da wishlist (só logados; opt-in nas Config) ---
   // A assinatura do navegador vai pra push_subs (RLS por dono); o robô semanal do
   // CI cruza a wishlist sincronizada com os price-deltas e envia. A chave abaixo
@@ -1713,6 +1769,22 @@
     try {
       const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/analytics_summary`, {
         method: "POST", headers: authHeaders(s.access_token), body: JSON.stringify({ days: days || 30 })
+      });
+      if (!r.ok) return null;
+      return await r.json();
+    } catch (e) { return null; }
+  }
+  // Erros de JS agregados (name="jserror" na tabela events). Mesmo gate do
+  // analytics_summary: só responde pra admin; senão null. Usado pelo /admin.
+  // Devolve null também enquanto a RPC não existir no banco (404).
+  async function errorSummary(days) {
+    let s = getSession();
+    if (!s) return null;
+    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
+    if (!s) return null;
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/error_summary`, {
+        method: "POST", headers: authHeaders(s.access_token), body: JSON.stringify({ days: days || 7 })
       });
       if (!r.ok) return null;
       return await r.json();
@@ -4049,6 +4121,8 @@
     moneyToCurrent,
     snapshotKeys,
     toastUndo,
+    notifyStorageFull,
+    errorSummary,
     loadPriceDeltas,
     basePricingId,
     logCardView,
@@ -4665,11 +4739,22 @@
     } catch (e) { return null; }
   }
   // Lê um perfil público pelo handle (anon). {handle,display_name,show_values,data}|null.
+  // Via RPC get_public_profile (leitura PONTUAL — a tabela não é mais paginável
+  // por anon, anti-scraping). Fallback pro SELECT direto enquanto a RPC não
+  // existir no banco (404), pra ordem deploy×migração não importar.
   async function fetchPublicProfile(handle) {
     try {
-      const r = await fetch(`${SUPABASE_URL}/rest/v1/public_profiles?handle=eq.${encodeURIComponent(handle)}&select=handle,display_name,show_values,data,updated_at`, { headers: authHeaders() });
-      if (!r.ok) return null;
-      const rows = await r.json();
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_public_profile`, {
+        method: "POST", headers: authHeaders(), body: JSON.stringify({ p_handle: handle })
+      });
+      if (r.ok) {
+        const rows = await r.json();
+        return rows && rows[0] ? rows[0] : null;
+      }
+      if (r.status !== 404) return null;
+      const f = await fetch(`${SUPABASE_URL}/rest/v1/public_profiles?handle=eq.${encodeURIComponent(handle)}&select=handle,display_name,show_values,data,updated_at`, { headers: authHeaders() });
+      if (!f.ok) return null;
+      const rows = await f.json();
       return rows && rows[0] ? rows[0] : null;
     } catch (e) { return null; }
   }

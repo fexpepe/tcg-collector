@@ -589,7 +589,7 @@
     if (hist.length && hist[hist.length - 1].d === d) hist[hist.length - 1] = point;
     else hist.push(point);
     if (hist.length > 800) hist.splice(0, hist.length - 800);
-    try { localStorage.setItem(histKey(g), JSON.stringify(hist)); } catch (e) { /* quota: ignora */ }
+    try { localStorage.setItem(histKey(g), JSON.stringify(hist)); } catch (e) { shared.notifyStorageFull(); }
     return hist;
   }
 

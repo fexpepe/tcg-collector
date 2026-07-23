@@ -33,9 +33,21 @@
       root.innerHTML = `<p class="empty-state">Acesso restrito — entre com a conta de admin.</p>`;
       return;
     }
+    // Erros de JS (rastreio first-party). null enquanto a RPC error_summary não
+    // existir no banco — a seção simplesmente não aparece.
+    const errs = await shared.errorSummary(7);
     const stat = (label, val) => `<div class="admin-stat"><span class="admin-stat-val">${fmt(val)}</span><span class="admin-stat-label">${esc(label)}</span></div>`;
     const games = (d.by_game || []).map((g) => `<tr><td>${esc(g.game)}</td><td class="num">${fmt(g.users)}</td><td class="num">${fmt(g.cards)}</td></tr>`).join("") || `<tr><td colspan="3" class="admin-empty">—</td></tr>`;
     const paths = (d.top_paths || []).map((p) => `<tr><td>/${esc(p.path)}</td><td class="num">${fmt(p.views)}</td></tr>`).join("") || `<tr><td colspan="2" class="admin-empty">—</td></tr>`;
+    const errRows = Array.isArray(errs) && errs.length
+      ? errs.map((x) => `<tr><td>${esc(x.message)}<br><small>${esc(x.source || "")}</small></td><td class="num">${fmt(x.hits)}</td><td class="num">${fmt(x.users)}</td><td>${esc(x.last_seen ? new Date(x.last_seen).toLocaleString("pt-BR") : "—")}</td></tr>`).join("")
+      : null;
+    const errSection = Array.isArray(errs)
+      ? `<section class="admin-section">
+          <h2>Erros de JS (7 dias)</h2>
+          ${errRows ? `<table class="admin-table"><thead><tr><th>Erro</th><th class="num">Vezes</th><th class="num">Usuários</th><th>Último</th></tr></thead><tbody>${errRows}</tbody></table>` : `<p class="admin-empty">Nenhum erro registrado. 🎉</p>`}
+        </section>`
+      : "";
 
     root.innerHTML = `
       <div class="admin-stats">
@@ -59,6 +71,7 @@
         <h2>Cartas por jogo</h2>
         <table class="admin-table"><thead><tr><th>Jogo</th><th class="num">Usuários</th><th class="num">Cartas distintas</th></tr></thead><tbody>${games}</tbody></table>
       </section>
+      ${errSection}
       <p class="admin-note">Atualizado em ${esc(new Date(d.generated_at).toLocaleString("pt-BR"))}. DAU/MAU contam visitantes anônimos (uuid first-party); o resto vem do banco (usuários logados).</p>`;
   }
 
