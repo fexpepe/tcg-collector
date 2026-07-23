@@ -6463,8 +6463,8 @@ select,
 .lp-games h2, .lp-features h2 { text-align: center; font-size: clamp(21px, 3vw, 27px); margin: 0 0 22px; letter-spacing: -0.01em; }
 .lp-games-rail { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin: 0; padding: 0; }
 .lp-games-rail a {
-  display: block; text-decoration: none; color: var(--text);
-  background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+  display: block; height: 100%; box-sizing: border-box; text-decoration: none; color: var(--text);
+  background: var(--panel); border: 1px solid var(--line); border-radius: 0;
   padding: 14px 16px 12px; border-top: 3px solid var(--g);
   transition: transform 0.15s ease, border-color 0.15s ease;
 }
