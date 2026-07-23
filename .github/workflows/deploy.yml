@@ -170,6 +170,22 @@ jobs:
       - name: Snapshot de preços (histórico FAB)
         run: node scripts/sync-price-history.mjs data/fab
 
+      # Gundam Card Game (TCGCSV cat. 86, Bandai). Padrão One Piece/FAB:
+      # cards.js versionado é a durabilidade; chunks regenerados no build.
+      - name: Sincroniza catálogo do Gundam (TCGCSV)
+        run: node scripts/sync-gundam.mjs || echo "sync-gundam falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Gundam)
+        run: node scripts/sync-price-history.mjs data/gundam
+
+      # Dragon Ball Super FUSION WORLD (TCGCSV cat. 80, Bandai). Fusion World
+      # (2024+), distinto do classico "Masters" (cat 27) e do DBZ TCG (cat 23).
+      - name: Sincroniza catálogo do Dragon Ball Fusion World (TCGCSV)
+        run: node scripts/sync-dbfw.mjs || echo "sync-dbfw falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Dragon Ball Fusion)
+        run: node scripts/sync-price-history.mjs data/dbfw
+
       # Naruto (TCGCSV): só sincroniza quando a categoria existir (secret/var
       # NARUTO_TCGCSV_CATEGORY). Sem categoria, o script sai sem mexer em nada.
       - name: Sincroniza catálogo do Naruto (TCGCSV, se configurado)

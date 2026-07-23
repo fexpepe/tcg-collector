@@ -3576,20 +3576,23 @@
     { game: "onepiece", dataDir: "data/onepiece/" },
     { game: "magic", dataDir: "data/magic/" },
     { game: "fab", dataDir: "data/fab/" },
+    { game: "gundam", dataDir: "data/gundam/" },
+    { game: "dbfw", dataDir: "data/dbfw/" },
     { game: "naruto", dataDir: "data/naruto/" },
     { game: "hxh", dataDir: "data/hxh/" }
   ];
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
   const GAME_SLUGS = DATA_GAMES.map((d) => d.game);
-  const GAME_COLOR = { pokemon: "#e23030", lorcana: "#3f3d96", onepiece: "#d9a400", magic: "#2563eb", fab: "#0d9488", naruto: "#ea580c", hxh: "#15803d" };
+  const GAME_COLOR = { pokemon: "#e23030", lorcana: "#3f3d96", onepiece: "#d9a400", magic: "#2563eb", fab: "#0d9488", gundam: "#0284c7", dbfw: "#f97316", naruto: "#ea580c", hxh: "#15803d" };
   // Rótulo curto do jogo (chips, filtros, resumos). UM lugar só: as telas chamam
   // shared.gameLabel em vez de repetir o mesmo ternário em cada página — assim
   // um jogo novo aparece rotulado em todas elas de uma vez.
   const GAME_LABEL_KEY = {
     pokemon: "filter.gamePokemon", lorcana: "filter.gameLorcana",
     onepiece: "filter.gameOnePiece", magic: "filter.gameMagic",
-    fab: "filter.gameFab", naruto: "filter.gameNaruto", hxh: "filter.gameHxh"
+    fab: "filter.gameFab", gundam: "filter.gameGundam", dbfw: "filter.gameDbfw",
+    naruto: "filter.gameNaruto", hxh: "filter.gameHxh"
   };
   function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }
   // Jogos por MARCA: cada IP pode ter várias LINHAS de jogo (o principal e os
