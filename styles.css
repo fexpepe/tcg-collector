@@ -2918,6 +2918,10 @@ a.hub-tile:hover {
   border: 1px solid var(--line);
 }
 .hub-logo { max-width: 100%; max-height: 100%; object-fit: contain; }
+/* O logo do Magic é mais "quadrado" (razão ~1.5) que os demais (~1.9 a 3.9), então
+   o object-fit: contain o limita pela altura e ele fica visualmente menor. +20%
+   pra emparelhar com os outros. Vale no tile do hub e no leque da home. */
+.hub-logo[src*="game_magic"], .lp-games-caps img[src*="game_magic"] { transform: scale(1.2); }
 .hub-logo-text { font-size: 19px; font-weight: 800; color: #4b4b4b; text-align: center; }
 .hub-tile-foot {
   display: flex;
