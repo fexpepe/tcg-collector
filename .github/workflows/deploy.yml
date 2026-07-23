@@ -271,8 +271,14 @@ jobs:
           npx --yes esbuild --minify --charset=utf8 --allow-overwrite --outfile=styles.css styles.css
           npx --yes esbuild --minify --sourcemap --charset=utf8 --allow-overwrite --outfile=sw.js sw.js
 
+      # data/magic/cards.js: o monolito do Magic (~37 MiB no build completo)
+      # estoura o teto de 25 MiB/arquivo do Cloudflare Pages. Em produção NADA o
+      # usa — o modo manifest carrega manifest.generated.js + chunks por set; o
+      # cards.js só serve ao dev local (MANIFEST=false). Removido daqui como o
+      # data/cards.generated.js. (One Piece/FAB têm cards.js menor, mas vão bater
+      # no mesmo teto quando crescerem — candidatos ao mesmo tratamento.)
       - name: Remove arquivos que não vão para o site
-        run: rm -rf .git .github .claude data/.cache data/cards.generated.js scripts
+        run: rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js scripts
 
       # Deploy no Cloudflare Pages. main = produção; outras branches = preview
       # (URL única <hash>.tcg-collector.pages.dev). Pulado se o secret faltar.
