@@ -5,19 +5,19 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://wsrv.nl; connect-src 'self' https://api.tcgdex.net https://pokeapi.co https://economia.awesomeapi.com.br https://*.supabase.co https://cloudflareinsights.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title data-i18n="title.home">Sleevu - Para Colecionadores!</title>
-    <meta name="description" content="Acompanhe suas coleções de TCG — Pokémon, Lorcana e mais — por carta, variante e quantidade. Grátis: crie sua conta e registre tudo em qualquer aparelho.">
+    <meta name="description" content="Acompanhe suas coleções de TCG — Pokémon, Lorcana, One Piece, Naruto e mais — por carta, variante e quantidade. Grátis: crie sua conta e registre tudo em qualquer aparelho.">
     <link rel="canonical" href="https://sleevu.app/">
     <meta property="og:site_name" content="Sleevu">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://sleevu.app/">
     <meta property="og:title" content="Sleevu — suas coleções de TCG, num só lugar">
-    <meta property="og:description" content="Acompanhe suas coleções de TCG — Pokémon, Lorcana e mais — por carta, variante e quantidade. Grátis: crie sua conta e registre tudo em qualquer aparelho.">
+    <meta property="og:description" content="Acompanhe suas coleções de TCG — Pokémon, Lorcana, One Piece, Naruto e mais — por carta, variante e quantidade. Grátis: crie sua conta e registre tudo em qualquer aparelho.">
     <meta property="og:image" content="https://sleevu.app/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Sleevu — suas coleções de TCG, num só lugar">
-    <meta name="twitter:description" content="Acompanhe suas coleções de TCG — Pokémon, Lorcana e mais — por carta, variante e quantidade. Grátis: crie sua conta e registre tudo em qualquer aparelho.">
+    <meta name="twitter:description" content="Acompanhe suas coleções de TCG — Pokémon, Lorcana, One Piece, Naruto e mais — por carta, variante e quantidade. Grátis: crie sua conta e registre tudo em qualquer aparelho.">
     <meta name="twitter:image" content="https://sleevu.app/og-image.png">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://assets.tcgdex.net">
@@ -28,7 +28,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Sleevu">
     <script src="src/theme.js"></script>
-    <script src="src/game.js" data-catalog="cards,indexes"></script>
+    <script src="src/game.js" data-catalog=""></script>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body class="home">
@@ -42,45 +42,148 @@
       </div>
     </header>
 
-    <main class="home-main">
-      <section class="hero">
-        <div class="hero-copy">
-          <p class="eyebrow" data-i18n="home.eyebrow">Grátis · multi-jogo · pra sempre</p>
-          <h1 data-i18n-html="home.title">Sua coleção de Pokémon TCG, <span class="accent">organizada</span>.</h1>
-          <p class="hero-sub" data-i18n="home.sub">
-            Acompanhe cada carta por variante e quantidade — Holo, Reverse, 1st Edition —
-            navegando por Pokédex, sets e artistas. Crie sua conta grátis e
-            registre tudo, em qualquer aparelho.
-          </p>
-          <div class="hero-actions">
-            <a class="cta" href="pokedex.html" data-i18n="home.ctaPokedex">Abrir a Pokédex</a>
-            <a class="cta secondary-cta" href="sets.html" data-i18n="home.ctaSets">Explorar sets</a>
-          </div>
-          <p class="hero-note" data-i18n="home.note">Todas as features são — e sempre serão — grátis: o que outros trackers cobram como "pro", aqui é 100% livre. Exporte e importe sua coleção em JSON quando quiser.</p>
-        </div>
-        <div class="hero-cards" aria-hidden="true">
-          <img src="https://assets.tcgdex.net/en/base/base1/2/low.webp" alt="" loading="lazy" decoding="async">
-          <img src="https://assets.tcgdex.net/en/base/base1/4/low.webp" alt="" loading="lazy" decoding="async">
+    <main class="lp-main">
+
+      <!-- HERO: wordmark em alta (SVG) sobre um leque de cartas reais dos jogos -->
+      <section class="lp-hero">
+        <div class="lp-hero-fan" aria-hidden="true">
+          <img src="https://assets.tcgdex.net/en/base/base1/2/low.webp" alt="" loading="eager" decoding="async">
+          <img src="https://cards.lorcast.io/card/digital/large/crd_682afbbf65fa43ec8d17d382183a81e0.avif" alt="" loading="eager" decoding="async">
+          <img src="https://assets.tcgdex.net/en/base/base1/4/low.webp" alt="" loading="eager" decoding="async">
+          <img src="https://tcgplayer-cdn.tcgplayer.com/product/629100_in_1000x1000.jpg" alt="" loading="lazy" decoding="async">
           <img src="https://assets.tcgdex.net/en/base/base1/15/low.webp" alt="" loading="lazy" decoding="async">
+        </div>
+        <svg class="lp-wordmark" role="img" aria-label="Sleevu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 667 178">
+<defs>
+<clipPath id="clip_1">
+<path transform="matrix(1,0,0,-1,0,178)" d="M0 178H667V0H0Z"/>
+</clipPath>
+<path id="font_2_205" d="M.27200318-.007003784C.2320048-.007003784 .19600423-.00033569337 .16400147 .013000488 .1319987 .02633667 .10533142 .044504804 .083999637 .06750488 .06266785 .09050497 .047668458 .1163381 .039001466 .14500427L.17100525 .17500305C.17699687 .15299988 .18899028 .13549805 .20698548 .12249756 .22499085 .10949707 .24599712 .102996829 .27000428 .102996829 .29799906 .102996829 .319163 .10832723 .3334961 .11898804 .3478292 .12965901 .35499574 .1429952 .35499574 .15899658 .35499574 .17566936 .34766136 .188502 .33299256 .1974945 .31833396 .20649719 .29900108 .21383159 .2749939 .21949768 .25099693 .22516378 .22549947 .23149617 .19850159 .23849488 .17150371 .24549358 .14616902 .25482688 .12249756 .26649476 .098836269 .27816264 .07950338 .29416404 .0644989 .3144989 .049504598 .33483378 .042007448 .3619995 .042007448 .3959961 .042007448 .42599488 .0508372 .45365907 .068496707 .47898866 .08616638 .5043284 .11116537 .5243327 .14349365 .53900149 .17583211 .5536702 .21533203 .56100466 .2619934 .56100466 .30066935 .56100466 .3350067 .55500289 .3650055 .54299929 .39500428 .53099569 .41966758 .5139923 .43899537 .49198915 .45833335 .46999613 .47166953 .44366456 .4790039 .41299439L.35099793 .3789978C.34499613 .4023336 .334493 .41999818 .31948854 .43199159 .30449424 .44399516 .28366599 .44999696 .25700379 .44999696 .23100281 .44999696 .21150208 .44532777 .19850159 .43598939 .1855011 .42666117 .17900086 .41399638 .17900086 .397995 .17900086 .38199363 .186498 .36932374 .20149231 .35998536 .21649678 .35065715 .23582967 .3428243 .25949098 .33648683 .28316245 .33015953 .30832926 .3234965 .33499146 .3164978 .36166383 .3094991 .38666789 .29999797 .41000367 .28799439 .43333946 .27600099 .45267234 .25950114 .46800233 .23849488 .4833323 .21749878 .4909973 .19066875 .4909973 .15800476 .4909973 .1273346 .48216249 .099497478 .4644928 .07449341 .44683329 .04949951 .4215037 .029668173 .38850404 .01499939 .35550437 .0003306071 .31667076-.007003784 .27200318-.007003784Z"/>
+<path id="font_2_248" d=""/>
+<path id="font_2_176" d="M.069000247 .14900208V.7400055H.21000672V.15899658C.21000672 .14366658 .21433513 .13216655 .22299195 .12449646 .23165894 .11683655 .24199422 .11300659 .2539978 .11300659 .2626648 .11300659 .26999919 .114339198 .27600099 .117004398L.30200196 .011001587C.27866618-.0010019938 .2523346-.007003784 .2230072-.007003784 .19766744-.007003784 .17332967-.001836141 .1499939 .0084991459 .12666829 .018834433 .10733541 .03533427 .09199524 .057998659 .076665248 .08066305 .069000247 .11099752 .069000247 .14900208Z"/>
+<path id="font_2_143" d="M.33200074-.007003784C.28933717-.007003784 .24966939-.00033569337 .21299744 .013000488 .17633565 .02633667 .14466858 .04550171 .117996219 .070495609 .09133402 .09549967 .070500697 .125 .055496217 .15899658 .04050191 .19300334 .03300476 .23100281 .03300476 .272995 .03300476 .31632997 .040837606 .35566203 .056503297 .3909912 .07216898 .42633058 .09350077 .45666505 .12049866 .48199464 .14749654 .5073344 .17866008 .52683517 .21398926 .5404968 .24932862 .5541687 .28666688 .56100466 .32600404 .56100466 .3600006 .56100466 .39149986 .5565033 .4205017 .5475006 .44950358 .5384979 .47516886 .52582809 .49749757 .50949099 .5198364 .49316407 .53733828 .47366844 .55000308 .45100404 .56266787 .42833964 .56900027 .40367127 .56900027 .3769989 .56900027 .3416697 .5588328 .3125051 .5384979 .289505 .518163 .2665049 .49149577 .24833679 .4584961 .23500061 .42549644 .22166443 .389328 .21233113 .34999085 .20700073 .31066386 .20167034 .27199809 .19967143 .23399353 .20100403 .22866313 .20166524 .22183228 .20199585 .21350098 .20199585 .20516968 .20199585 .19783528 .20232646 .1914978 .20298767 .18517049 .20365906 .18100484 .20366414 .17900086 .20300293 .18299866 .18433635 .19233196 .16750081 .20700073 .15249634 .22166951 .13750203 .24016826 .12567139 .26249696 .117004398 .28483583 .1083374 .30867005 .104003909 .33399964 .104003909 .3560028 .104003909 .37750245 .10783386 .39849855 .115493778 .41949464 .12316386 .43865968 .13349915 .45599366 .14649964 .47332765 .15950012 .48766075 .17366536 .49899293 .18899536L.59599307 .115997318C.57466128 .088663738 .54999288 .06566366 .5219879 .04699707 .49399314 .028330485 .46399436 .014663696 .43199159 .005996704 .399999-.002670288 .3666687-.007003784 .33200074-.007003784M.23899842 .30200196C.2603302 .30200196 .28232829 .30316673 .30499269 .30549623 .32766725 .3078359 .34850059 .31167094 .36749269 .31700135 .38649497 .32233177 .40183006 .33016459 .41349793 .34049989 .4251658 .35083518 .43099977 .3640035 .43099977 .38000489 .43099977 .3933309 .42666627 .40516154 .41799928 .41549684 .40933229 .42583213 .3973287 .43416343 .38198854 .44049073 .36665855 .44682823 .34932963 .44999696 .33000184 .44999696 .29933167 .44999696 .27216087 .44299827 .24848938 .42900086 .22482808 .41500346 .20632935 .39683534 .19299317 .37449647 .17966716 .35216777 .17233785 .32899986 .17100525 .30499269 .17833965 .30433146 .18817139 .30366517 .20050049 .30299378 .21282959 .30233256 .22566223 .30200196 .23899842 .30200196Z"/>
+<path id="font_2_226" d="M.16099549 .55400088 .30000306 .13000489 .44000245 .55400088H.58999636L.3849945 0H.21299744L.009994507 .55400088H.16099549Z"/>
+<path id="font_2_215" d="M.45100404 .07400513V.55400088H.5930023V0H.526001C.5033366 0 .48516847 .006830851 .47149659 .020492554 .45783488 .03416443 .45100404 .052001954 .45100404 .07400513M.27799989-.007003784C.23400371-.007003784 .19600423 .0023295086 .16400147 .020996094 .1319987 .039662679 .10733032 .06666056 .08999634 .101989749 .07266235 .1373291 .06399536 .17999776 .06399536 .22999573V.55400088H.20399475V.25500489C.20399475 .21033733 .21532695 .17566936 .23799134 .15100098 .2606659 .1263326 .29066978 .11399841 .32800294 .11399841 .35333253 .11399841 .37516276 .12049866 .39349366 .13349915 .41183473 .14649964 .42600505 .16433208 .43600465 .18699646 .44600425 .20966085 .45100404 .23533122 .45100404 .26400758L.4730072 .23500061C.4710032 .17966207 .4608307 .13399251 .44248963 .09799194 .42415873 .062001546 .4006602 .035502118 .37199403 .018493653 .34332786 .0014953613 .31199647-.007003784 .27799989-.007003784Z"/>
+</defs>
+<g>
+<g clip-path="url(#clip_1)">
+<use data-text="s" xlink:href="#font_2_205" transform="matrix(209.3461,0,0,-209.3461,16.6064,165.9551)" fill="currentColor"/>
+<use data-text=" " xlink:href="#font_2_248" transform="matrix(209.3461,0,0,-209.3461,112.27757,165.9551)" fill="currentColor"/>
+<use data-text="l" xlink:href="#font_2_176" transform="matrix(209.3461,0,0,-209.3461,146.19165,165.9551)" fill="currentColor"/>
+<use data-text="e" xlink:href="#font_2_143" transform="matrix(209.3461,0,0,-209.3461,197.2721,165.9551)" fill="currentColor"/>
+<use data-text="e" xlink:href="#font_2_143" transform="matrix(209.3461,0,0,-209.3461,311.15638,165.9551)" fill="currentColor"/>
+<use data-text="v" xlink:href="#font_2_226" transform="matrix(209.3461,0,0,-209.3461,425.04066,165.9551)" fill="currentColor"/>
+<use data-text="u" xlink:href="#font_2_215" transform="matrix(209.3461,0,0,-209.3461,534.9474,165.9551)" fill="currentColor"/>
+<path transform="matrix(1,0,0,-1,118.5846,167.4181)" stroke-width="9" stroke-linecap="butt" stroke-miterlimit="10" stroke-linejoin="miter" fill="none" stroke="currentColor" d="M0 0H-94.838C-101.866 0-107.564 5.698-107.564 12.726V143.651C-107.564 150.679-101.866 156.377-92.432 156.377H2.406C7.028 156.377 12.726 150.679 12.726 143.651V12.726C12.726 5.698 7.028 0 0 0Z"/>
+</g>
+</g>
+</svg>
+        <p class="lp-tagline" data-i18n="home.lp.tagline">Sua coleção de cartas, levada a sério.</p>
+        <p class="lp-sub" data-i18n="home.lp.sub">Catalogue por variante e condição, acompanhe o valor no tempo e sincronize em todos os seus aparelhos. Pokémon, Lorcana, One Piece, Naruto e Hunter × Hunter — do lançamento de ontem ao Carddass de 1999.</p>
+        <div class="lp-ctas">
+          <a class="cta" href="hub.html" data-i18n="home.lp.cta">Começar agora — é grátis</a>
+          <a class="cta secondary-cta" href="login.html" data-i18n="home.lp.ctaLogin">Já tenho conta</a>
+        </div>
+        <p class="lp-hero-note" data-i18n="home.lp.note">Sem cartão, sem plano "pro", sem limite de cartas. Exporte seus dados quando quiser.</p>
+      </section>
+
+      <!-- NÚMEROS -->
+      <section class="lp-stats" aria-label="Sleevu em números">
+        <div class="lp-stat"><strong>66.000+</strong><span data-i18n="home.lp.statCards">cartas catalogadas</span></div>
+        <div class="lp-stat"><strong>5</strong><span data-i18n="home.lp.statGames">jogos — modernos e vintage</span></div>
+        <div class="lp-stat"><strong>500+</strong><span data-i18n="home.lp.statSets">sets, de 1999 a hoje</span></div>
+        <div class="lp-stat"><strong>R$ · $ · €</strong><span data-i18n="home.lp.statPrices">preços BR, EUA e Europa</span></div>
+      </section>
+
+      <!-- JOGOS -->
+      <section class="lp-games">
+        <h2 data-i18n="home.lp.gamesTitle">Um app, todos os seus jogos</h2>
+        <ul class="lp-games-rail">
+          <li><a href="sets.html?game=pokemon" style="--g:#e23030"><strong>Pokémon TCG</strong><span data-i18n="home.lp.gPokemon">EN · JP · PT — 52 mil cartas</span></a></li>
+          <li><a href="sets.html?game=lorcana" style="--g:#3f3d96"><strong>Disney Lorcana</strong><span data-i18n="home.lp.gLorcana">Todos os sets, desde o 1º capítulo</span></a></li>
+          <li><a href="sets.html?game=onepiece" style="--g:#d9a400"><strong>One Piece</strong><span data-i18n="home.lp.gOnePiece">Card Game + Carddass 1999–2005</span></a></li>
+          <li><a href="sets.html?game=naruto" style="--g:#ea580c"><strong>Naruto</strong><span data-i18n="home.lp.gNaruto">Card Game 2002–2006 + Carddass</span></a></li>
+          <li><a href="sets.html?game=hxh" style="--g:#15803d"><strong>Hunter × Hunter</strong><span data-i18n="home.lp.gHxh">Miracle Battle + Hyper Battle</span></a></li>
+        </ul>
+        <p class="lp-games-foot" data-i18n="home.lp.gamesFoot">Os catálogos vintage japoneses (Carddass, Miracle Battle, Data Carddass) são raros de achar — aqui vêm completos, com scans.</p>
+      </section>
+
+      <!-- FEATURES: mini-mocks do produto real, não ícones genéricos -->
+      <section class="lp-features">
+        <h2 data-i18n="home.lp.featTitle">Feito por colecionador, pra colecionador</h2>
+        <div class="lp-grid">
+
+          <article class="lp-card lp-card-wide">
+            <div class="lp-mock lp-mock-chart" aria-hidden="true">
+              <svg viewBox="0 0 320 96" preserveAspectRatio="none"><path d="M0 78 C30 74, 48 62, 76 64 S 128 52, 156 46 S 208 40, 236 30 S 292 18, 320 12" fill="none" stroke="var(--accent)" stroke-width="2.5"/><path d="M0 78 C30 74, 48 62, 76 64 S 128 52, 156 46 S 208 40, 236 30 S 292 18, 320 12 L320 96 L0 96 Z" fill="var(--accent-soft)"/></svg>
+              <div class="lp-mock-chart-row"><span data-i18n="home.lp.mockNetworth">patrimônio</span><strong>R$ 12.480</strong><em data-i18n="home.lp.mockDelta">+4,2% na semana</em></div>
+            </div>
+            <h3 data-i18n="home.lp.f1">Portfólio de verdade</h3>
+            <p data-i18n="home.lp.f1d">Valor da coleção no tempo, custo médio, lucro em vendas e maiores altas da semana — como uma corretora, só que de cartas.</p>
+          </article>
+
+          <article class="lp-card lp-card-wide">
+            <div class="lp-mock lp-mock-binder" aria-hidden="true">
+              <img src="https://assets.tcgdex.net/en/base/base1/4/low.webp" alt="" loading="lazy">
+              <img src="https://assets.tcgdex.net/en/base/base1/2/low.webp" alt="" loading="lazy">
+              <img src="https://assets.tcgdex.net/en/base/base1/15/low.webp" alt="" loading="lazy">
+              <img src="https://assets.tcgdex.net/en/base/base1/7/low.webp" alt="" loading="lazy">
+              <img src="https://assets.tcgdex.net/en/base/base1/9/low.webp" alt="" loading="lazy">
+              <img src="https://assets.tcgdex.net/en/base/base1/16/low.webp" alt="" loading="lazy">
+            </div>
+            <h3 data-i18n="home.lp.f2">Binders visuais</h3>
+            <p data-i18n="home.lp.f2d">Monte fichários página a página, com fotos das suas cartas físicas e link de compartilhamento.</p>
+          </article>
+
+          <article class="lp-card">
+            <div class="lp-mock lp-mock-alert" aria-hidden="true">
+              <span class="lp-drop">▼ −18%</span>
+              <span class="lp-drop-name">Charizard ex 199/165</span>
+              <span class="lp-drop-tag" data-i18n="home.lp.mockAlert">alerta de queda</span>
+            </div>
+            <h3 data-i18n="home.lp.f3">Wishlist que avisa</h3>
+            <p data-i18n="home.lp.f3d">Marque o que falta e receba notificação quando o preço de mercado cair — antes de todo mundo.</p>
+          </article>
+
+          <article class="lp-card">
+            <div class="lp-mock lp-mock-slab" aria-hidden="true">
+              <span class="lp-slab-grade">PSA 10</span>
+              <img src="https://assets.tcgdex.net/en/base/base1/4/low.webp" alt="" loading="lazy">
+            </div>
+            <h3 data-i18n="home.lp.f4">Graded e slabs</h3>
+            <p data-i18n="home.lp.f4d">PSA, BGS, CGC — registre nota, certificado e valor de mercado das suas cartas graduadas.</p>
+          </article>
+
+          <article class="lp-card">
+            <div class="lp-mock lp-mock-sync" aria-hidden="true">
+              <span class="lp-sync-dev" data-i18n="home.lp.mockPhone">celular</span>
+              <svg viewBox="0 0 60 12" class="lp-sync-arrows"><path d="M4 4 H50 M46 1 L50 4 L46 7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M56 8 H10 M14 5 L10 8 L14 11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+              <span class="lp-sync-dev" data-i18n="home.lp.mockDesktop">computador</span>
+            </div>
+            <h3 data-i18n="home.lp.f5">Seus dados são seus</h3>
+            <p data-i18n="home.lp.f5d">Sincronização na nuvem grátis entre aparelhos, funciona offline como app instalável, e exporta tudo em JSON/CSV a qualquer momento.</p>
+          </article>
+
         </div>
       </section>
 
-      <section class="home-sources">
+      <!-- FONTES DE PREÇO -->
+      <section class="home-sources lp-sources">
         <h2 data-i18n="home.sources.title">Preços de marketplaces de verdade</h2>
         <p class="home-sources-lead" data-i18n-html="home.sources.lead">Os valores vêm direto das maiores fontes do mercado — nada inventado. E em <strong>cada carta</strong> você encontra os links das lojas pra comparar e comprar no melhor lugar.</p>
-        <p class="home-sources-label" data-i18n="home.sources.storesLabel">Lojas referenciadas</p>
-        <ul class="home-sources-grid">
-          <li><a class="source-chip" href="https://www.tcgplayer.com" target="_blank" rel="noopener"><strong>TCGplayer</strong><span data-i18n="home.sources.tcgplayer">Preços EUA e Japão</span></a></li>
-          <li><a class="source-chip" href="https://www.cardmarket.com" target="_blank" rel="noopener"><strong>Cardmarket</strong><span data-i18n="home.sources.cardmarket">Preços Europa</span></a></li>
-          <li><a class="source-chip" href="https://www.ligapokemon.com.br" target="_blank" rel="noopener"><strong>LigaPokémon</strong><span data-i18n="home.sources.brazil">Mercado Brasil</span></a></li>
-          <li><a class="source-chip" href="https://www.ligalorcana.com.br" target="_blank" rel="noopener"><strong>LigaLorcana</strong><span data-i18n="home.sources.brazil">Mercado Brasil</span></a></li>
-          <li><a class="source-chip" href="https://www.ligaonepiece.com.br" target="_blank" rel="noopener"><strong>LigaOnePiece</strong><span data-i18n="home.sources.brazil">Mercado Brasil</span></a></li>
-          <li><a class="source-chip" href="https://mypcards.com" target="_blank" rel="noopener"><strong>MYP Cards</strong><span data-i18n="home.sources.brazil">Mercado Brasil</span></a></li>
-          <li><a class="source-chip" href="https://www.ebay.com" target="_blank" rel="noopener"><strong>eBay</strong><span data-i18n="home.sources.ebay">Vendas e graded</span></a></li>
+        <ul class="lp-sources-row">
+          <li><a href="https://www.tcgplayer.com" target="_blank" rel="noopener">TCGplayer</a></li>
+          <li><a href="https://www.cardmarket.com" target="_blank" rel="noopener">Cardmarket</a></li>
+          <li><a href="https://www.ligapokemon.com.br" target="_blank" rel="noopener">LigaPokémon</a></li>
+          <li><a href="https://www.ligalorcana.com.br" target="_blank" rel="noopener">LigaLorcana</a></li>
+          <li><a href="https://www.ligaonepiece.com.br" target="_blank" rel="noopener">LigaOnePiece</a></li>
+          <li><a href="https://mypcards.com" target="_blank" rel="noopener">MYP Cards</a></li>
+          <li><a href="https://www.ebay.com" target="_blank" rel="noopener">eBay</a></li>
         </ul>
         <p class="home-sources-foot" data-i18n="home.sources.foot">Catálogo e imagens: TCGdex (Pokémon) · Lorcast (Lorcana) · PokéAPI. Preços de mercado: PokemonPriceTracker, TCGplayer e Cardmarket. Câmbio do dia: AwesomeAPI.</p>
       </section>
 
+      <!-- APOIO -->
       <section class="home-support">
         <div class="support-card">
           <h2 data-i18n="home.support.title">Gostou? Me paga um café ☕</h2>
@@ -93,6 +196,13 @@
           <p class="support-note" data-i18n="home.support.note">Apoiar é opcional — o app é e vai continuar grátis.</p>
         </div>
       </section>
+
+      <!-- CTA FINAL -->
+      <section class="lp-final">
+        <h2 data-i18n="home.lp.finalTitle">Sua coleção merece mais que uma planilha.</h2>
+        <a class="cta" href="hub.html" data-i18n="home.lp.finalCta">Criar minha coleção grátis</a>
+      </section>
+
     </main>
 
     <script defer src="src/i18n.js"></script>
