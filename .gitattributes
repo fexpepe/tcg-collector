@@ -1,0 +1,5 @@
+# Logos/símbolos de set gerados pelos mirrors: são artefatos binários (bytes
+# exatos vindos do CDN/redimensionador). Tratar como binário evita a conversão
+# LF<->CRLF do Windows e o ruído de diff a cada regeneração.
+data/magic/set-logos/*.svg -text
+data/*/set-logos/*.webp -text binary

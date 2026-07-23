@@ -24,7 +24,8 @@
 //
 //   node scripts/sync-fab.mjs
 import { fileURLToPath } from "node:url";
-import { writeGameCatalog, readGlobalVar, preserveMissingCards } from "./lib/sync-common.mjs";
+import { existsSync } from "node:fs";
+import { writeGameCatalog, readGlobalVar, preserveMissingCards, winSafeName } from "./lib/sync-common.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/fab/", ROOT);
@@ -141,10 +142,16 @@ async function run() {
     || a.id.localeCompare(b.id));
   console.log(`Total: ${merged.length} cartas, ${Object.keys(pricing).length} com preço.`);
 
-  // setLogo: arte da 1ª carta do set (a LSS não tem logos públicos por set).
+  // setLogo: logo oficial espelhado em data/fab/set-logos/<CODE>.webp quando
+  // existe (mirror-fab-set-logos.mjs, ~41 sets principais); senão a arte da 1ª
+  // carta do set (a LSS não tem logo público para todos os sets).
+  const localLogo = (setId) => {
+    const code = winSafeName(String(setId).toUpperCase());
+    return existsSync(new URL(`set-logos/${code}.webp`, OUT)) ? `data/fab/set-logos/${code}.webp` : null;
+  };
   const coverBySet = {};
   for (const c of merged) { if (!coverBySet[c.setId]) coverBySet[c.setId] = c.image; }
-  for (const c of merged) { c.setLogo = coverBySet[c.setId] || ""; }
+  for (const c of merged) { c.setLogo = localLogo(c.setId) || coverBySet[c.setId] || ""; }
 
   // Índices { name, cardIds } (página Sets; Artistas fica vazio como no OP).
   const bySet = new Map();

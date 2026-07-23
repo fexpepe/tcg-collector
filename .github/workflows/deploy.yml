@@ -139,6 +139,12 @@ jobs:
       - name: Snapshot de preços (histórico One Piece)
         run: node scripts/sync-price-history.mjs data/onepiece
 
+      # Símbolos de set do Magic (Scryfall SVG, svgs.scryfall.io sem rate limit).
+      # ANTES do sync pra ele já apontar setLogo pro arquivo local. Idempotente
+      # (skip-if-exists), commitado pelo snapshot; não derruba o build se falhar.
+      - name: Espelha símbolos de set (Magic)
+        run: node scripts/mirror-magic-set-logos.mjs || echo "mirror-magic-set-logos falhou; segue com o ícone remoto"
+
       # Catálogo do Magic (Scryfall): catálogo + preços TCGplayer USD/Cardmarket
       # EUR + imagens numa fonte só, grátis. Cache incremental por set em
       # data/.cache/magic (invalida quando o card_count do set muda). Padrão
@@ -149,6 +155,12 @@ jobs:
 
       - name: Snapshot de preços (histórico Magic)
         run: node scripts/sync-price-history.mjs data/magic
+
+      # Logos de set do FAB (the-fab-cube -> PNG oficial da LSS, redimensionado
+      # via wsrv.nl). ANTES do sync pra ele já apontar setLogo pro webp local.
+      # ~41 sets principais; o resto cai na arte da carta. Idempotente.
+      - name: Espelha logos de set (FAB)
+        run: node scripts/mirror-fab-set-logos.mjs || echo "mirror-fab-set-logos falhou; segue com a arte da carta"
 
       # Catálogo do Flesh and Blood (TCGCSV cat. 62, mesmo espelho do One
       # Piece). Padrão One Piece: cards.js versionado é a durabilidade.

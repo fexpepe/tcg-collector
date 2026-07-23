@@ -25,7 +25,8 @@
 // minigame, alchemy/treasure_chest (digitais) e vanguard — não são cartas que
 // se colecionam no fichário. Promos/Secret Lair/Un-sets FICAM (colecionáveis).
 import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
-import { fetchRetry, mapLimit, sleep, writeGameCatalog, preserveMissingCards } from "./lib/sync-common.mjs";
+import { existsSync } from "node:fs";
+import { fetchRetry, mapLimit, sleep, writeGameCatalog, preserveMissingCards, winSafeName } from "./lib/sync-common.mjs";
 
 const API = "https://api.scryfall.com";
 const HEADERS = { "User-Agent": "Sleevu/1.0 (https://sleevu.app)", Accept: "application/json" };
@@ -136,7 +137,12 @@ function makeCard(c, set, usedIds, pricing) {
     language: "en",
     image: img,
     variants,
-    setLogo: set.icon_svg_uri || ""
+    // Símbolo de set: SVG local espelhado (mirror-magic-set-logos.mjs) quando
+    // existe; senão o ícone remoto do Scryfall (degrada gracioso). winSafeName:
+    // códigos como "con" (Conspiracy) viram con_.svg (reservado no Windows).
+    setLogo: existsSync(new URL(`set-logos/${winSafeName(set.code)}.svg`, OUT))
+      ? `data/magic/set-logos/${winSafeName(set.code)}.svg`
+      : (set.icon_svg_uri || "")
   };
 }
 

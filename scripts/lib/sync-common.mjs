@@ -42,6 +42,16 @@ export const decodeEntities = (s) => String(s || "")
   .replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">")
   .replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 
+// Nome de arquivo seguro pro Windows: CON/AUX/PRN/NUL/COM1-9/LPT1-9 são nomes
+// de DISPOSITIVO reservados — o git (core.protectNTFS) recusa versioná-los e o
+// checkout quebra em Windows. Ex.: o set "Conspiracy" do Magic tem código
+// "con". Sufixa com "_" (mesma regra no mirror e no sync, pra os caminhos
+// baterem). Case-insensitive (o Windows não distingue CON de con).
+const WIN_RESERVED = /^(con|aux|prn|nul|com[0-9]|lpt[0-9])$/i;
+export function winSafeName(name) {
+  return WIN_RESERVED.test(name) ? name + "_" : name;
+}
+
 // Lê um window.<var> de um arquivo data/*.js (formato dos catálogos).
 export async function readGlobalVar(fileUrl, varName) {
   try {
