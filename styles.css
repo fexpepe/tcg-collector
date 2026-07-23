@@ -6465,19 +6465,22 @@ select,
 .lp-stat strong { display: block; font-size: clamp(20px, 2.6vw, 27px); letter-spacing: -0.02em; }
 .lp-stat span { font-size: 12.5px; color: var(--subtle); }
 
-/* --- Jogos --------------------------------------------------------------- */
+/* --- Jogos: cápsulas de logo (mesmo visual da página Jogos) -------------- */
 .lp-games { margin-top: 56px; }
 .lp-games h2, .lp-features h2 { text-align: center; font-size: clamp(21px, 3vw, 27px); margin: 0 0 22px; letter-spacing: -0.01em; }
-.lp-games-rail { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin: 0; padding: 0; }
-.lp-games-rail a {
-  display: block; height: 100%; box-sizing: border-box; text-decoration: none; color: var(--text);
-  background: var(--panel); border: 1px solid var(--line); border-radius: 0;
-  padding: 14px 16px 12px; border-top: 3px solid var(--g);
-  transition: transform 0.15s ease, border-color 0.15s ease;
+.lp-games-caps { list-style: none; display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; margin: 0; padding: 0; }
+.lp-games-caps a {
+  display: flex; align-items: center; justify-content: center;
+  width: 250px; height: 112px; padding: 18px 26px; box-sizing: border-box;
+  background: #fff; border: 1px solid var(--line); border-radius: 12px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.lp-games-rail a:hover { transform: translateY(-2px); border-color: var(--g); }
-.lp-games-rail strong { display: block; font-size: 15px; }
-.lp-games-rail span { font-size: 12px; color: var(--subtle); }
+.lp-games-caps a:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25); }
+.lp-games-caps img { max-width: 100%; max-height: 100%; object-fit: contain; }
+@media (max-width: 560px) {
+  .lp-games-caps { gap: 10px; }
+  .lp-games-caps a { width: calc(50% - 5px); height: 84px; padding: 12px 16px; }
+}
 .lp-games-foot { text-align: center; color: var(--subtle); font-size: 13px; margin: 18px auto 0; max-width: 560px; }
 
 /* --- Features (mini-mocks) ------------------------------------------------ */
