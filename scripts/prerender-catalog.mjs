@@ -33,10 +33,8 @@ const GAMES = [
   { slug: "hxh", label: "Hunter × Hunter Carddass" }
 ];
 
-// CSP idêntica à das outras páginas (o <script type=application/ld+json> é bloco
-// de dados, não script executável, então passa mesmo com esta CSP estrita).
-// wsrv.nl: proxy de resize das imagens vintage do One Piece.
-const CSP = `default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://wsrv.nl; connect-src 'self' https://api.tcgdex.net https://pokeapi.co https://economia.awesomeapi.com.br https://*.supabase.co https://cloudflareinsights.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'`;
+// A CSP vem do header em _headers (política única do site inteiro) — estas
+// páginas não levam <meta> de CSP, como as demais.
 
 // Páginas estáticas do site (base do sitemap), extensionless como o CF Pages serve.
 const STATIC_URLS = [
@@ -219,7 +217,6 @@ function setPageHtml(page, canonical, otherSets, lang) {
 <html lang="${L.htmlLang}">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="${CSP}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${escapeHtml(title)}</title>
     <meta name="description" content="${escapeAttr(desc)}">
@@ -354,7 +351,6 @@ function cardPageHtml(cp) {
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="${CSP}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${escapeHtml(title)}</title>
     <meta name="description" content="${escapeAttr(desc)}">
