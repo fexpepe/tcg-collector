@@ -6429,8 +6429,8 @@ select,
 .lp-main { max-width: 1080px; margin: 0 auto; padding: 0 20px 64px; }
 
 /* --- Hero ---------------------------------------------------------------- */
-.lp-hero { position: relative; text-align: center; padding: 68px 0 36px; }
-.lp-hero-fan { display: flex; justify-content: center; align-items: flex-end; gap: 0; margin-bottom: 34px; min-height: 150px; }
+.lp-hero { position: relative; text-align: center; padding: 84px 0 48px; }
+.lp-hero-fan { display: flex; justify-content: center; align-items: flex-end; gap: 0; margin-bottom: 52px; min-height: 150px; }
 .lp-hero-fan img {
   width: 128px; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 8px;
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
@@ -6450,10 +6450,10 @@ select,
   pointer-events: none; z-index: -1;
 }
 .lp-wordmark { width: min(430px, 78vw); height: auto; color: var(--text); display: inline-block; }
-.lp-tagline { font-size: clamp(19px, 2.6vw, 24px); font-weight: 650; margin: 14px 0 0; letter-spacing: -0.01em; }
-.lp-sub { max-width: 640px; margin: 14px auto 0; color: var(--subtle); font-size: 15.5px; line-height: 1.6; }
-.lp-ctas { display: flex; gap: 12px; justify-content: center; margin-top: 26px; flex-wrap: wrap; }
-.lp-hero-note { margin-top: 14px; font-size: 12.5px; color: var(--subtle); }
+.lp-tagline { font-size: clamp(19px, 2.6vw, 24px); font-weight: 650; margin: 24px 0 0; letter-spacing: -0.01em; }
+.lp-sub { max-width: 640px; margin: 18px auto 0; color: var(--subtle); font-size: 15.5px; line-height: 1.6; }
+.lp-ctas { display: flex; gap: 14px; justify-content: center; margin-top: 34px; flex-wrap: wrap; }
+.lp-hero-note { margin-top: 18px; font-size: 12.5px; color: var(--subtle); }
 
 /* --- Números ------------------------------------------------------------- */
 .lp-stats {
