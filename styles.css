@@ -371,6 +371,10 @@ button {
   color: var(--muted);
   margin-bottom: 8px;
 }
+/* Páginas que escondem a busca (perfil público / link compartilhado) deixavam
+   o "Procurar:" órfão no topo, sem campo embaixo. Regra em CSS (e não no JS que
+   cria o rótulo) porque a seção pode ser escondida DEPOIS que ele é inserido. */
+.page-search-label:has(+ .page-search[hidden]) { display: none; }
 
 .page-search {
   position: relative;
@@ -5225,6 +5229,9 @@ a.progress-row:hover {
   #collectionDashboard .dash-stat-money .dash-stat-val { font-size: 18px; }
 }
 @media (max-width: 1080px) { .collection-dashboard { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .dash-carousel { grid-column: 1 / -1; } }
+/* Perfil público: são 3 cards fixos (sem carrossel). Em 2 colunas o terceiro
+   ficava sozinho na 2ª linha, com metade da faixa vazia do lado. */
+@media (max-width: 1080px) { .prof-dash .dash-card.dash-dist { grid-column: 1 / -1; } }
 @media (max-width: 560px) { .collection-dashboard { grid-template-columns: minmax(0, 1fr); } }
 
 /* Carrossel das distribuições (por jogo / região / pasta / …): cada card tem a
