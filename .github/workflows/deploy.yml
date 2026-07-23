@@ -139,12 +139,6 @@ jobs:
       - name: Snapshot de preços (histórico One Piece)
         run: node scripts/sync-price-history.mjs data/onepiece
 
-      # Símbolos de set do Magic (Scryfall SVG, svgs.scryfall.io sem rate limit).
-      # ANTES do sync pra ele já apontar setLogo pro arquivo local. Idempotente
-      # (skip-if-exists), commitado pelo snapshot; não derruba o build se falhar.
-      - name: Espelha símbolos de set (Magic)
-        run: node scripts/mirror-magic-set-logos.mjs || echo "mirror-magic-set-logos falhou; segue com o ícone remoto"
-
       # Catálogo do Magic (Scryfall): catálogo + preços TCGplayer USD/Cardmarket
       # EUR + imagens numa fonte só, grátis. Cache incremental por set em
       # data/.cache/magic (invalida quando o card_count do set muda). Padrão
@@ -155,6 +149,15 @@ jobs:
 
       - name: Snapshot de preços (histórico Magic)
         run: node scripts/sync-price-history.mjs data/magic
+
+      # Símbolos de set do Magic (Scryfall SVG, svgs.scryfall.io sem rate limit):
+      # baixa o ícone local (data/magic/set-logos/) e REESCREVE os chunks pro
+      # setLogo local. DEPOIS do sync-magic de propósito: o sync usa setLogo
+      # cacheado (Scryfall) mesmo com o SVG já presente, então o rewrite tem que
+      # ser a palavra final, senão os símbolos ficam remotos (dependentes de CDN
+      # instável) apesar do espelho existir. Idempotente; não derruba o build.
+      - name: Espelha símbolos de set (Magic) e reaponta os chunks
+        run: node scripts/mirror-magic-set-logos.mjs || echo "mirror-magic-set-logos falhou; segue com o ícone remoto"
 
       # Logos de set do FAB (the-fab-cube -> PNG oficial da LSS, redimensionado
       # via wsrv.nl). ANTES do sync pra ele já apontar setLogo pro webp local.
