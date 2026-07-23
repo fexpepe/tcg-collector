@@ -107,7 +107,9 @@ create trigger events_guard before insert on public.events
 -- card_views tem um CHECK de jogos válidos da migração original (não
 -- versionado, e sem os jogos novos — pendência antiga do naruto/hxh). Recria
 -- com a lista completa, dropando só os CHECKs que mencionam `game` (pra não
--- levar junto um CHECK de outra coluna).
+-- levar junto um CHECK de outra coluna). A lista já inclui gundam e dbfw
+-- (Gundam Card Game e Dragon Ball Fusion World, ambos TCGCSV) mesmo antes do
+-- catálogo existir, pra não reaplicar este bloco quando os jogos entrarem.
 do $$
 declare con record;
 begin
@@ -120,7 +122,7 @@ begin
   end loop;
 end $$;
 alter table public.card_views add constraint card_views_game_check
-  check (game = any (array['pokemon','lorcana','onepiece','magic','fab','naruto','hxh','jump']));
+  check (game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','dbfw','naruto','hxh','jump']));
 
 -- increment_card_view recriada com throttle server-side (120 views/min por IP)
 -- além da validação de entrada. DROP+CREATE porque CREATE OR REPLACE não pode
@@ -130,7 +132,7 @@ create function public.increment_card_view(p_game text, p_card_id text)
 returns void language plpgsql security definer set search_path = public as $$
 begin
   if p_game is null or p_card_id is null then return; end if;
-  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','naruto','hxh','jump'])) then return; end if;
+  if not (p_game = any (array['pokemon','lorcana','onepiece','magic','fab','gundam','dbfw','naruto','hxh','jump'])) then return; end if;
   if p_card_id !~ '^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$' then return; end if;
   if not _rate_ok('cardview', 120) then return; end if;
   insert into card_views (game, card_id, views) values (p_game, p_card_id, 1)
