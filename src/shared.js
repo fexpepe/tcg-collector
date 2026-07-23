@@ -3528,6 +3528,11 @@
       "op2002": { prefix: "op2002-", label: "One Piece Card Game (2002)", titleKey: "sets.category.op2002" },
       "op-mb": { prefix: "op-mb-", label: "Miracle Battle", titleKey: "sets.category.mbop" }
     },
+    // hxh: o PRINCIPAL é o Carddass Hyper Battle (1999–2001); o Miracle Battle
+    // (2011–12) é linha, como no Naruto.
+    hxh: {
+      "hxh-mb": { prefix: "hxh-mb-", label: "Miracle Battle", titleKey: "sets.category.mbhh" }
+    },
     naruto: {
       "nrt-mb": { prefix: "nrt-mb-", label: "Miracle Battle", titleKey: "sets.category.mbnr" },
       "nrt-dc": { prefix: "nrt-dc-", label: "Data Carddass", titleKey: "sets.category.dcnr" },

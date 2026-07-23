@@ -1,0 +1,3308 @@
+{
+ "source": "https://hunterxhunter.fandom.com/wiki/Hunter_%C3%97_Hunter_Carddass_Collections",
+ "updatedAt": "2026-07-23",
+ "sets": [
+  {
+   "code": "p1",
+   "name": "パート1 ハンター試験編",
+   "cards": [
+    {
+     "set": "p1",
+     "num": "C01",
+     "type": "Character",
+     "rarity": "Holo",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_1_card_c01.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/b/be/Hyper_battle_part_1_card_c01.png"
+    },
+    {
+     "set": "p1",
+     "num": "C02",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_1_card_c02.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/a8/Hyper_battle_part_1_card_c02.png"
+    },
+    {
+     "set": "p1",
+     "num": "C03",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_1_card_c03.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/d3/Hyper_battle_part_1_card_c03.png"
+    },
+    {
+     "set": "p1",
+     "num": "C04",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_1_card_c04.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/85/Hyper_battle_part_1_card_c04.png"
+    },
+    {
+     "set": "p1",
+     "num": "C05",
+     "type": "Character",
+     "rarity": "Holo",
+     "chars": [
+      "Scarlet Eyes",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_1_card_c05.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/92/Hyper_battle_part_1_card_c05.png"
+    },
+    {
+     "set": "p1",
+     "num": "C06",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_1_card_c06.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/0f/Hyper_battle_part_1_card_c06.png"
+    },
+    {
+     "set": "p1",
+     "num": "C07",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_part_1_card_c07.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/40/Hyper_battle_part_1_card_c07.png"
+    },
+    {
+     "set": "p1",
+     "num": "C08",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_part_1_card_c08.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/44/Hyper_battle_part_1_card_c08.png"
+    },
+    {
+     "set": "p1",
+     "num": "C09",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Kiriko"
+     ],
+     "file": "Hyper_battle_part_1_card_c09.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/fe/Hyper_battle_part_1_card_c09.png"
+    },
+    {
+     "set": "p1",
+     "num": "C10",
+     "type": "Character",
+     "rarity": "Holo",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_1_card_c10.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/3/3d/Hyper_battle_part_1_card_c10.png"
+    },
+    {
+     "set": "p1",
+     "num": "C11",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_1_card_c11.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/1b/Hyper_battle_part_1_card_c11.png"
+    },
+    {
+     "set": "p1",
+     "num": "C12",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_1_card_c12.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/83/Hyper_battle_part_1_card_c12.png"
+    },
+    {
+     "set": "p1",
+     "num": "C13",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Hyper_battle_part_1_card_c13.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/06/Hyper_battle_part_1_card_c13.png"
+    },
+    {
+     "set": "p1",
+     "num": "C14",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Hyper_battle_part_1_card_c14.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/b/b8/Hyper_battle_part_1_card_c14.png"
+    },
+    {
+     "set": "p1",
+     "num": "C15",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Tonpa"
+     ],
+     "file": "Hyper_battle_part_1_card_c15.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/c7/Hyper_battle_part_1_card_c15.png"
+    },
+    {
+     "set": "p1",
+     "num": "C16",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Hanzo"
+     ],
+     "file": "Hyper_battle_part_1_card_c16.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/6a/Hyper_battle_part_1_card_c16.png"
+    },
+    {
+     "set": "p1",
+     "num": "C17",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Illumi Zoldyck"
+     ],
+     "file": "Hyper_battle_part_1_card_c17.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/22/Hyper_battle_part_1_card_c17.png"
+    },
+    {
+     "set": "p1",
+     "num": "C18",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Illumi Zoldyck"
+     ],
+     "file": "Hyper_battle_part_1_card_c18.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/88/Hyper_battle_part_1_card_c18.png"
+    },
+    {
+     "set": "p1",
+     "num": "C19",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Pokkle"
+     ],
+     "file": "Hyper_battle_part_1_card_c19.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/47/Hyper_battle_part_1_card_c19.png"
+    },
+    {
+     "set": "p1",
+     "num": "C20",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Ponzu"
+     ],
+     "file": "Hyper_battle_part_1_card_c20.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/15/Hyper_battle_part_1_card_c20.png"
+    },
+    {
+     "set": "p1",
+     "num": "C21",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Anita"
+     ],
+     "file": "Hyper_battle_part_1_card_c21.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/5/59/Hyper_battle_part_1_card_c21.png"
+    },
+    {
+     "set": "p1",
+     "num": "C22",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Kon"
+     ],
+     "file": "Hyper_battle_part_1_card_c22.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/fc/Hyper_battle_part_1_card_c22.png"
+    },
+    {
+     "set": "p1",
+     "num": "C23",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Kiriko"
+     ],
+     "file": "Hyper_battle_part_1_card_c23.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/90/Hyper_battle_part_1_card_c23.png"
+    },
+    {
+     "set": "p1",
+     "num": "C24",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Isaac Netero"
+     ],
+     "file": "Hyper_battle_part_1_card_c24.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/69/Hyper_battle_part_1_card_c24.png"
+    },
+    {
+     "set": "p1",
+     "num": "C25",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Satotz"
+     ],
+     "file": "Hyper_battle_part_1_card_c25.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/8e/Hyper_battle_part_1_card_c25.png"
+    },
+    {
+     "set": "p1",
+     "num": "C26",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Menchi"
+     ],
+     "file": "Hyper_battle_part_1_card_c26.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/48/Hyper_battle_part_1_card_c26.png"
+    },
+    {
+     "set": "p1",
+     "num": "C27",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Buhara"
+     ],
+     "file": "Hyper_battle_part_1_card_c27.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/cd/Hyper_battle_part_1_card_c27.png"
+    },
+    {
+     "set": "p1",
+     "num": "C28",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Mito Freecss"
+     ],
+     "file": "Hyper_battle_part_1_card_c28.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/a4/Hyper_battle_part_1_card_c28.png"
+    },
+    {
+     "set": "p1",
+     "num": "C29",
+     "type": "Character",
+     "rarity": "Holo",
+     "chars": [
+      "Kite"
+     ],
+     "file": "Hyper_battle_part_1_card_c29.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/2a/Hyper_battle_part_1_card_c29.png"
+    },
+    {
+     "set": "p1",
+     "num": "E01",
+     "type": "Event",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Tonpa",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_1_card_e01.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/82/Hyper_battle_part_1_card_e01.png"
+    },
+    {
+     "set": "p1",
+     "num": "E02",
+     "type": "Event",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_1_card_e02.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/1a/Hyper_battle_part_1_card_e02.png"
+    },
+    {
+     "set": "p1",
+     "num": "E03",
+     "type": "Event",
+     "rarity": "Normal",
+     "chars": [
+      "Kon"
+     ],
+     "file": "Hyper_battle_part_1_card_e03.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/74/Hyper_battle_part_1_card_e03.png"
+    },
+    {
+     "set": "p1",
+     "num": "E04",
+     "type": "Event",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Hisoka Morow",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_1_card_e04.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/d4/Hyper_battle_part_1_card_e04.png"
+    },
+    {
+     "set": "p1",
+     "num": "E05",
+     "type": "Event",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_1_card_e05.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/5/5e/Hyper_battle_part_1_card_e05.png"
+    },
+    {
+     "set": "p1",
+     "num": "H01",
+     "type": "Licence",
+     "rarity": "Normal",
+     "chars": [
+      "Hunter License"
+     ],
+     "file": "Hyper_battle_part_1_card_h01.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/d6/Hyper_battle_part_1_card_h01.png"
+    },
+    {
+     "set": "p1",
+     "num": "S01",
+     "type": "Hunter",
+     "rarity": "Holo",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_1_card_s01.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/b/b4/Hyper_battle_part_1_card_s01.png"
+    },
+    {
+     "set": "p1",
+     "num": "S02",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_1_card_s02.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/94/Hyper_battle_part_1_card_s02.png"
+    },
+    {
+     "set": "p1",
+     "num": "S03",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_1_card_s03.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/0d/Hyper_battle_part_1_card_s03.png"
+    },
+    {
+     "set": "p1",
+     "num": "S04",
+     "type": "Hunter",
+     "rarity": "Holo",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_part_1_card_s04.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/69/Hyper_battle_part_1_card_s04.png"
+    },
+    {
+     "set": "p1",
+     "num": "S05",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_1_card_s05.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/4f/Hyper_battle_part_1_card_s05.png"
+    },
+    {
+     "set": "p1",
+     "num": "S06",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Hyper_battle_part_1_card_s06.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/f2/Hyper_battle_part_1_card_s06.png"
+    },
+    {
+     "set": "p1",
+     "num": "S07",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_1_card_s07.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/b/b5/Hyper_battle_part_1_card_s07.png"
+    }
+   ]
+  },
+  {
+   "code": "p2",
+   "name": "パート2 終了!×合格?×ハンター試験編",
+   "cards": [
+    {
+     "set": "p2",
+     "num": "C30",
+     "type": "Character",
+     "rarity": "Holo",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_2_Card_c30.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/a6/Hyper_battle_part_2_Card_c30.png"
+    },
+    {
+     "set": "p2",
+     "num": "C31",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_2_Card_c31.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/b/b8/Hyper_battle_part_2_Card_c31.png"
+    },
+    {
+     "set": "p2",
+     "num": "C32",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_2_card_c32.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/94/Hyper_battle_part_2_card_c32.png"
+    },
+    {
+     "set": "p2",
+     "num": "C33",
+     "type": "Character",
+     "rarity": "Holo",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_2_Card_c33.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/9a/Hyper_battle_part_2_Card_c33.png"
+    },
+    {
+     "set": "p2",
+     "num": "C34",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_2_Card_c34.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/c9/Hyper_battle_part_2_Card_c34.png"
+    },
+    {
+     "set": "p2",
+     "num": "C35",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_part_2_Card_c35.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/21/Hyper_battle_part_2_Card_c35.png"
+    },
+    {
+     "set": "p2",
+     "num": "C36",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_part_2_Card_c36.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/75/Hyper_battle_part_2_Card_c36.png"
+    },
+    {
+     "set": "p2",
+     "num": "C37",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Anita",
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_2_Card_c37.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/d2/Hyper_battle_part_2_Card_c37.png"
+    },
+    {
+     "set": "p2",
+     "num": "C38",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_2_Card_c38.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/e0/Hyper_battle_part_2_Card_c38.png"
+    },
+    {
+     "set": "p2",
+     "num": "C39",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Hanzo"
+     ],
+     "file": "Hyper_battle_part_2_Card_c39.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/87/Hyper_battle_part_2_Card_c39.png"
+    },
+    {
+     "set": "p2",
+     "num": "C40",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Hyper_battle_part_2_Card_c40.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/0c/Hyper_battle_part_2_Card_c40.png"
+    },
+    {
+     "set": "p2",
+     "num": "C41",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Hyper_battle_part_2_Card_c41.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/1e/Hyper_battle_part_2_Card_c41.png"
+    },
+    {
+     "set": "p2",
+     "num": "C42",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Illumi Zoldyck"
+     ],
+     "file": "Hyper_battle_part_2_Card_c42.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/5/59/Hyper_battle_part_2_Card_c42.png"
+    },
+    {
+     "set": "p2",
+     "num": "C43",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Man-faced Ape"
+     ],
+     "file": "Hyper_battle_part_2_Card_c43.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/04/Hyper_battle_part_2_Card_c43.png"
+    },
+    {
+     "set": "p2",
+     "num": "C44",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Pokkle"
+     ],
+     "file": "Hyper_battle_part_2_Card_c44.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/72/Hyper_battle_part_2_Card_c44.png"
+    },
+    {
+     "set": "p2",
+     "num": "C45",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Tonpa"
+     ],
+     "file": "Hyper_battle_part_2_Card_c45.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/5/5c/Hyper_battle_part_2_Card_c45.png"
+    },
+    {
+     "set": "p2",
+     "num": "C46",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Nicholas"
+     ],
+     "file": "Hyper_battle_part_2_Card_c46.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/b/b1/Hyper_battle_part_2_Card_c46.png"
+    },
+    {
+     "set": "p2",
+     "num": "C47",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Umori",
+      "Imori",
+      "Amori"
+     ],
+     "file": "Hyper_battle_part_2_Card_c47.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/25/Hyper_battle_part_2_Card_c47.png"
+    },
+    {
+     "set": "p2",
+     "num": "C48",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Geretta"
+     ],
+     "file": "Hyper_battle_part_2_Card_c48.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/69/Hyper_battle_part_2_Card_c48.png"
+    },
+    {
+     "set": "p2",
+     "num": "C49",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Bourbon"
+     ],
+     "file": "Hyper_battle_part_2_Card_c49.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/09/Hyper_battle_part_2_Card_c49.png"
+    },
+    {
+     "set": "p2",
+     "num": "C50",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Menchi"
+     ],
+     "file": "Hyper_battle_part_2_Card_c50.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/e9/Hyper_battle_part_2_Card_c50.png"
+    },
+    {
+     "set": "p2",
+     "num": "C51",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Lippo"
+     ],
+     "file": "Hyper_battle_part_2_Card_c51.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/1b/Hyper_battle_part_2_Card_c51.png"
+    },
+    {
+     "set": "p2",
+     "num": "C52",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Bendot"
+     ],
+     "file": "Hyper_battle_part_2_Card_c52.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/0b/Hyper_battle_part_2_Card_c52.png"
+    },
+    {
+     "set": "p2",
+     "num": "C53",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Sedokan"
+     ],
+     "file": "Hyper_battle_part_2_Card_c53.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/f4/Hyper_battle_part_2_Card_c53.png"
+    },
+    {
+     "set": "p2",
+     "num": "C54",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Majtani"
+     ],
+     "file": "Hyper_battle_part_2_Card_c54.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/e7/Hyper_battle_part_2_Card_c54.png"
+    },
+    {
+     "set": "p2",
+     "num": "C55",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Leroute"
+     ],
+     "file": "Hyper_battle_part_2_Card_c55.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/f5/Hyper_battle_part_2_Card_c55.png"
+    },
+    {
+     "set": "p2",
+     "num": "C56",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Johness"
+     ],
+     "file": "Hyper_battle_part_2_Card_c56.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/98/Hyper_battle_part_2_Card_c56.png"
+    },
+    {
+     "set": "p2",
+     "num": "C57",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Bodoro"
+     ],
+     "file": "Hyper_battle_part_2_Card_c57.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/ca/Hyper_battle_part_2_Card_c57.png"
+    },
+    {
+     "set": "p2",
+     "num": "C58",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Isaac Netero"
+     ],
+     "file": "Hyper_battle_part_2_Card_c58.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/82/Hyper_battle_part_2_Card_c58.png"
+    },
+    {
+     "set": "p2",
+     "num": "C59",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Mamen Beans"
+     ],
+     "file": "Hyper_battle_part_2_Card_c59.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/b/b6/Hyper_battle_part_2_Card_c59.png"
+    },
+    {
+     "set": "p2",
+     "num": "C60",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Kite"
+     ],
+     "file": "Hyper_battle_part_2_Card_c60.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/a1/Hyper_battle_part_2_Card_c60.png"
+    },
+    {
+     "set": "p2",
+     "num": "E06",
+     "type": "Event",
+     "rarity": "Normal",
+     "chars": [
+      "Master of the Swamp",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_2_Card_e06.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/07/Hyper_battle_part_2_Card_e06.png"
+    },
+    {
+     "set": "p2",
+     "num": "E07",
+     "type": "Event",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Hyper_battle_part_2_Card_e07.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/08/Hyper_battle_part_2_Card_e07.png"
+    },
+    {
+     "set": "p2",
+     "num": "E08",
+     "type": "Event",
+     "rarity": "Normal",
+     "chars": [
+      "Noggin Lugging Tortoise"
+     ],
+     "file": "Hyper_battle_part_2_Card_e08.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/ab/Hyper_battle_part_2_Card_e08.png"
+    },
+    {
+     "set": "p2",
+     "num": "E09",
+     "type": "Event",
+     "rarity": "Normal",
+     "chars": [
+      "Isaac Netero",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_2_Card_e09.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/65/Hyper_battle_part_2_Card_e09.png"
+    },
+    {
+     "set": "p2",
+     "num": "E10",
+     "type": "Event",
+     "rarity": "Holo",
+     "chars": [
+      "Illumi Zoldyck",
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_2_Card_e10.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/6e/Hyper_battle_part_2_Card_e10.png"
+    },
+    {
+     "set": "p2",
+     "num": "S08",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_2_Card_s08.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/8e/Hyper_battle_part_2_Card_s08.png"
+    },
+    {
+     "set": "p2",
+     "num": "S09",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_2_Card_s09.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/94/Hyper_battle_part_2_Card_s09.png"
+    },
+    {
+     "set": "p2",
+     "num": "S10",
+     "type": "Hunter",
+     "rarity": "Holo",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_part_2_Card_s10.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/5/56/Hyper_battle_part_2_Card_s10.png"
+    },
+    {
+     "set": "p2",
+     "num": "S11",
+     "type": "Hunter",
+     "rarity": "Holo",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_2_Card_s11.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/98/Hyper_battle_part_2_Card_s11.png"
+    },
+    {
+     "set": "p2",
+     "num": "S12",
+     "type": "Hunter",
+     "rarity": "Holo",
+     "chars": [
+      "Hisoka Morow",
+      "Illumi Zoldyck"
+     ],
+     "file": "Hyper_battle_part_2_Card_s12.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/e4/Hyper_battle_part_2_Card_s12.png"
+    },
+    {
+     "set": "p2",
+     "num": "S13",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Hanzo",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_2_Card_s13.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/48/Hyper_battle_part_2_Card_s13.png"
+    }
+   ]
+  },
+  {
+   "code": "p3",
+   "name": "パート3 纏×絶×練×発×念SPECIAL編",
+   "cards": [
+    {
+     "set": "p3",
+     "num": "C61",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Hunter License",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_3_card_c61.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/b/be/Hyper_battle_part_3_card_c61.png"
+    },
+    {
+     "set": "p3",
+     "num": "C62",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_3_card_c62.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/a7/Hyper_battle_part_3_card_c62.png"
+    },
+    {
+     "set": "p3",
+     "num": "C63",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_3_card_c63.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/dc/Hyper_battle_part_3_card_c63.png"
+    },
+    {
+     "set": "p3",
+     "num": "C64",
+     "type": "Character",
+     "rarity": "Holo",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_3_card_c64.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/74/Hyper_battle_part_3_card_c64.png"
+    },
+    {
+     "set": "p3",
+     "num": "C65",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_3_card_c65.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/81/Hyper_battle_part_3_card_c65.png"
+    },
+    {
+     "set": "p3",
+     "num": "C66",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_3_card_c66.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/3/35/Hyper_battle_part_3_card_c66.png"
+    },
+    {
+     "set": "p3",
+     "num": "C67",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_3_card_c67.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/7c/Hyper_battle_part_3_card_c67.png"
+    },
+    {
+     "set": "p3",
+     "num": "C68",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_part_3_card_c68.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/f3/Hyper_battle_part_3_card_c68.png"
+    },
+    {
+     "set": "p3",
+     "num": "C69",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_part_3_card_c69.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/ea/Hyper_battle_part_3_card_c69.png"
+    },
+    {
+     "set": "p3",
+     "num": "C70",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_3_card_c70.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/c2/Hyper_battle_part_3_card_c70.png"
+    },
+    {
+     "set": "p3",
+     "num": "C71",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_3_card_c71.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/c5/Hyper_battle_part_3_card_c71.png"
+    },
+    {
+     "set": "p3",
+     "num": "C72",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_3_card_c72.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/b/b9/Hyper_battle_part_3_card_c72.png"
+    },
+    {
+     "set": "p3",
+     "num": "C73",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_3_card_c73.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/4f/Hyper_battle_part_3_card_c73.png"
+    },
+    {
+     "set": "p3",
+     "num": "C74",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Zebro",
+      "Testing Gate"
+     ],
+     "file": "Hyper_battle_part_3_card_c74.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/7d/Hyper_battle_part_3_card_c74.png"
+    },
+    {
+     "set": "p3",
+     "num": "C75",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Canary"
+     ],
+     "file": "Hyper_battle_part_3_card_c75.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/97/Hyper_battle_part_3_card_c75.png"
+    },
+    {
+     "set": "p3",
+     "num": "C76",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Wing"
+     ],
+     "file": "Hyper_battle_part_3_card_c76.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/5/59/Hyper_battle_part_3_card_c76.png"
+    },
+    {
+     "set": "p3",
+     "num": "C77",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Zushi"
+     ],
+     "file": "Hyper_battle_part_3_card_c77.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/2a/Hyper_battle_part_3_card_c77.png"
+    },
+    {
+     "set": "p3",
+     "num": "C78",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Ging Freecss"
+     ],
+     "file": "Hyper_battle_part_3_card_c78.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/5/5b/Hyper_battle_part_3_card_c78.png"
+    },
+    {
+     "set": "p3",
+     "num": "C79",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Hyper_battle_part_3_card_c79.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/c8/Hyper_battle_part_3_card_c79.png"
+    },
+    {
+     "set": "p3",
+     "num": "C80",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Zeno Zoldyck"
+     ],
+     "file": "Hyper_battle_part_3_card_c80.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/2e/Hyper_battle_part_3_card_c80.png"
+    },
+    {
+     "set": "p3",
+     "num": "C81",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Silva Zoldyck"
+     ],
+     "file": "Hyper_battle_part_3_card_c81.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/f3/Hyper_battle_part_3_card_c81.png"
+    },
+    {
+     "set": "p3",
+     "num": "C82",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Kikyo Zoldyck"
+     ],
+     "file": "Hyper_battle_part_3_card_c82.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/94/Hyper_battle_part_3_card_c82.png"
+    },
+    {
+     "set": "p3",
+     "num": "C83",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Illumi Zoldyck"
+     ],
+     "file": "Hyper_battle_part_3_card_c83.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/25/Hyper_battle_part_3_card_c83.png"
+    },
+    {
+     "set": "p3",
+     "num": "C84",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Illumi Zoldyck"
+     ],
+     "file": "Hyper_battle_part_3_card_c84.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/fd/Hyper_battle_part_3_card_c84.png"
+    },
+    {
+     "set": "p3",
+     "num": "C85",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Milluki Zoldyck"
+     ],
+     "file": "Hyper_battle_part_3_card_c85.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/91/Hyper_battle_part_3_card_c85.png"
+    },
+    {
+     "set": "p3",
+     "num": "C86",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Kalluto Zoldyck"
+     ],
+     "file": "Hyper_battle_part_3_card_c86.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/c2/Hyper_battle_part_3_card_c86.png"
+    },
+    {
+     "set": "p3",
+     "num": "C87",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Gotoh"
+     ],
+     "file": "Hyper_battle_part_3_card_c87.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/dc/Hyper_battle_part_3_card_c87.png"
+    },
+    {
+     "set": "p3",
+     "num": "C88",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Mike"
+     ],
+     "file": "Hyper_battle_part_3_card_c88.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/3/32/Hyper_battle_part_3_card_c88.png"
+    },
+    {
+     "set": "p3",
+     "num": "C89",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Gido"
+     ],
+     "file": "Hyper_battle_part_3_card_c89.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/cb/Hyper_battle_part_3_card_c89.png"
+    },
+    {
+     "set": "p3",
+     "num": "C90",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Riehlvelt"
+     ],
+     "file": "Hyper_battle_part_3_card_c90.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/d0/Hyper_battle_part_3_card_c90.png"
+    },
+    {
+     "set": "p3",
+     "num": "C91",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Machi Komacine"
+     ],
+     "file": "Hyper_battle_part_3_card_c91.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/a9/Hyper_battle_part_3_card_c91.png"
+    },
+    {
+     "set": "p3",
+     "num": "C92",
+     "type": "Character",
+     "rarity": "Holo",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_3_card_c92.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/2e/Hyper_battle_part_3_card_c92.png"
+    },
+    {
+     "set": "p3",
+     "num": "C93",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Illumi Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_3_card_c93.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/0e/Hyper_battle_part_3_card_c93.png"
+    },
+    {
+     "set": "p3",
+     "num": "C94",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_3_card_c94.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/7e/Hyper_battle_part_3_card_c94.png"
+    },
+    {
+     "set": "p3",
+     "num": "C95",
+     "type": "Character",
+     "rarity": "Holo",
+     "chars": [
+      "Kikyo Zoldyck",
+      "Kalluto Zoldyck",
+      "Silva Zoldyck",
+      "Zeno Zoldyck",
+      "Milluki Zoldyck"
+     ],
+     "file": "Hyper_battle_part_3_card_c95.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/c7/Hyper_battle_part_3_card_c95.png"
+    },
+    {
+     "set": "p3",
+     "num": "N01",
+     "type": "Ability",
+     "rarity": "Holo",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_3_card_n01.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/8e/Hyper_battle_part_3_card_n01.png"
+    },
+    {
+     "set": "p3",
+     "num": "N02",
+     "type": "Ability",
+     "rarity": "Holo",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_3_card_n02.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/a2/Hyper_battle_part_3_card_n02.png"
+    },
+    {
+     "set": "p3",
+     "num": "N03",
+     "type": "Ability",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_part_3_card_n03.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/f4/Hyper_battle_part_3_card_n03.png"
+    },
+    {
+     "set": "p3",
+     "num": "N04",
+     "type": "Ability",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_3_card_n04.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/68/Hyper_battle_part_3_card_n04.png"
+    },
+    {
+     "set": "p3",
+     "num": "N05",
+     "type": "Ability",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Hyper_battle_part_3_card_n05.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/d9/Hyper_battle_part_3_card_n05.png"
+    },
+    {
+     "set": "p3",
+     "num": "N06",
+     "type": "Ability",
+     "rarity": "Normal",
+     "chars": [
+      "Kastro"
+     ],
+     "file": "Hyper_battle_part_3_card_n06.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/e7/Hyper_battle_part_3_card_n06.png"
+    },
+    {
+     "set": "p3",
+     "num": "S14",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_3_card_s14.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/fa/Hyper_battle_part_3_card_s14.png"
+    },
+    {
+     "set": "p3",
+     "num": "S15",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_3_card_s15.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/3/3b/Hyper_battle_part_3_card_s15.png"
+    },
+    {
+     "set": "p3",
+     "num": "S16",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_3_card_s16.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/ec/Hyper_battle_part_3_card_s16.png"
+    },
+    {
+     "set": "p3",
+     "num": "S17",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Hyper_battle_part_3_card_s17.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/0e/Hyper_battle_part_3_card_s17.png"
+    },
+    {
+     "set": "p3",
+     "num": "S18",
+     "type": "Hunter",
+     "rarity": "Holo",
+     "chars": [
+      "Hisoka Morow",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_3_card_s18.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/3/33/Hyper_battle_part_3_card_s18.png"
+    },
+    {
+     "set": "p3",
+     "num": "S19",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Kastro"
+     ],
+     "file": "Hyper_battle_part_3_card_s19.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/13/Hyper_battle_part_3_card_s19.png"
+    },
+    {
+     "set": "p3",
+     "num": "S20",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_3_card_s20.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/8b/Hyper_battle_part_3_card_s20.png"
+    }
+   ]
+  },
+  {
+   "code": "p4",
+   "name": "パート4 競売?×暗躍×幻影旅団登場!!!編",
+   "cards": [
+    {
+     "set": "p4",
+     "num": "C96",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_4_card_c96.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/11/Hyper_battle_part_4_card_c96.png"
+    },
+    {
+     "set": "p4",
+     "num": "C97",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_4_card_c97.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/8e/Hyper_battle_part_4_card_c97.png"
+    },
+    {
+     "set": "p4",
+     "num": "C98",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_4_card_c98.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/e7/Hyper_battle_part_4_card_c98.png"
+    },
+    {
+     "set": "p4",
+     "num": "C99",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Scarlet Eyes",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_4_card_c99.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/82/Hyper_battle_part_4_card_c99.png"
+    },
+    {
+     "set": "p4",
+     "num": "C100",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_4_card_c100.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/8a/Hyper_battle_part_4_card_c100.png"
+    },
+    {
+     "set": "p4",
+     "num": "C101",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_part_4_card_c101.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/70/Hyper_battle_part_4_card_c101.png"
+    },
+    {
+     "set": "p4",
+     "num": "C102",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_part_4_card_c102.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/fc/Hyper_battle_part_4_card_c102.png"
+    },
+    {
+     "set": "p4",
+     "num": "C103",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_4_card_c103.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/92/Hyper_battle_part_4_card_c103.png"
+    },
+    {
+     "set": "p4",
+     "num": "C104",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_4_card_c104.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/d7/Hyper_battle_part_4_card_c104.png"
+    },
+    {
+     "set": "p4",
+     "num": "C105",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Ging Freecss",
+      "Gon Freecss",
+      "Inscription"
+     ],
+     "file": "Hyper_battle_part_4_card_c105.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/d0/Hyper_battle_part_4_card_c105.png"
+    },
+    {
+     "set": "p4",
+     "num": "C106",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Mito Freecss"
+     ],
+     "file": "Hyper_battle_part_4_card_c106.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/c4/Hyper_battle_part_4_card_c106.png"
+    },
+    {
+     "set": "p4",
+     "num": "C107",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Zepile"
+     ],
+     "file": "Hyper_battle_part_4_card_c107.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/f3/Hyper_battle_part_4_card_c107.png"
+    },
+    {
+     "set": "p4",
+     "num": "C108",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Neon Nostrade"
+     ],
+     "file": "Hyper_battle_part_4_card_c108.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/2b/Hyper_battle_part_4_card_c108.png"
+    },
+    {
+     "set": "p4",
+     "num": "C109",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Basho"
+     ],
+     "file": "Hyper_battle_part_4_card_c109.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/22/Hyper_battle_part_4_card_c109.png"
+    },
+    {
+     "set": "p4",
+     "num": "C110",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Melody"
+     ],
+     "file": "Hyper_battle_part_4_card_c110.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/64/Hyper_battle_part_4_card_c110.png"
+    },
+    {
+     "set": "p4",
+     "num": "C111",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Baise"
+     ],
+     "file": "Hyper_battle_part_4_card_c111.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/7f/Hyper_battle_part_4_card_c111.png"
+    },
+    {
+     "set": "p4",
+     "num": "C112",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Izunavi",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_4_card_c112.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/d7/Hyper_battle_part_4_card_c112.png"
+    },
+    {
+     "set": "p4",
+     "num": "C113",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_4_card_c113.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/65/Hyper_battle_part_4_card_c113.png"
+    },
+    {
+     "set": "p4",
+     "num": "C114",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Zeno Zoldyck"
+     ],
+     "file": "Hyper_battle_part_4_card_c114.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/c0/Hyper_battle_part_4_card_c114.png"
+    },
+    {
+     "set": "p4",
+     "num": "C115",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Illumi Zoldyck"
+     ],
+     "file": "Hyper_battle_part_4_card_c115.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/43/Hyper_battle_part_4_card_c115.png"
+    },
+    {
+     "set": "p4",
+     "num": "C116",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Chrollo Lucilfer"
+     ],
+     "file": "Hyper_battle_part_4_card_c116.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/c9/Hyper_battle_part_4_card_c116.png"
+    },
+    {
+     "set": "p4",
+     "num": "C117",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Uvogin"
+     ],
+     "file": "Hyper_battle_part_4_card_c117.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/68/Hyper_battle_part_4_card_c117.png"
+    },
+    {
+     "set": "p4",
+     "num": "C118",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Nobunaga Hazama"
+     ],
+     "file": "Hyper_battle_part_4_card_c118.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/ee/Hyper_battle_part_4_card_c118.png"
+    },
+    {
+     "set": "p4",
+     "num": "C119",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Franklin Bordeau"
+     ],
+     "file": "Hyper_battle_part_4_card_c119.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/80/Hyper_battle_part_4_card_c119.png"
+    },
+    {
+     "set": "p4",
+     "num": "C120",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Shalnark"
+     ],
+     "file": "Hyper_battle_part_4_card_c120.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/20/Hyper_battle_part_4_card_c120.png"
+    },
+    {
+     "set": "p4",
+     "num": "C121",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Machi Komacine"
+     ],
+     "file": "Hyper_battle_part_4_card_c121.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/14/Hyper_battle_part_4_card_c121.png"
+    },
+    {
+     "set": "p4",
+     "num": "C122",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Shizuku Murasaki"
+     ],
+     "file": "Hyper_battle_part_4_card_c122.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/eb/Hyper_battle_part_4_card_c122.png"
+    },
+    {
+     "set": "p4",
+     "num": "C123",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Pakunoda"
+     ],
+     "file": "Hyper_battle_part_4_card_c123.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/c2/Hyper_battle_part_4_card_c123.png"
+    },
+    {
+     "set": "p4",
+     "num": "C124",
+     "type": "Character",
+     "rarity": "Holo",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_4_card_c124.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/e4/Hyper_battle_part_4_card_c124.png"
+    },
+    {
+     "set": "p4",
+     "num": "C125",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_4_card_c125.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/e9/Hyper_battle_part_4_card_c125.png"
+    },
+    {
+     "set": "p4",
+     "num": "C126",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_4_card_c126.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/75/Hyper_battle_part_4_card_c126.png"
+    },
+    {
+     "set": "p4",
+     "num": "C127",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Izunavi",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_4_card_c127.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/4e/Hyper_battle_part_4_card_c127.png"
+    },
+    {
+     "set": "p4",
+     "num": "C128",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Uvogin",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_4_card_c128.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/3/3b/Hyper_battle_part_4_card_c128.png"
+    },
+    {
+     "set": "p4",
+     "num": "C129",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Shachmono Tocino",
+      "Squala",
+      "Dalzollene"
+     ],
+     "file": "Hyper_battle_part_4_card_c129.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/fd/Hyper_battle_part_4_card_c129.png"
+    },
+    {
+     "set": "p4",
+     "num": "C130",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Owl",
+      "Rabid Dog",
+      "Leech",
+      "Worm",
+      "Porcupine",
+      "Shadow Beasts"
+     ],
+     "file": "Hyper_battle_part_4_card_c130.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/5/55/Hyper_battle_part_4_card_c130.png"
+    },
+    {
+     "set": "p4",
+     "num": "N07",
+     "type": "Ability",
+     "rarity": "Secret Holo",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_4_card_n07.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/c1/Hyper_battle_part_4_card_n07.png"
+    },
+    {
+     "set": "p4",
+     "num": "N07-2",
+     "type": "Ability",
+     "rarity": "Secret Holo",
+     "chars": [
+      "Scarlet Eyes",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_4_card_n07-2.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/5/5b/Hyper_battle_part_4_card_n07-2.png"
+    },
+    {
+     "set": "p4",
+     "num": "N08",
+     "type": "Ability",
+     "rarity": "Secret Holo",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_4_card_n08.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/45/Hyper_battle_part_4_card_n08.png"
+    },
+    {
+     "set": "p4",
+     "num": "N08-2",
+     "type": "Ability",
+     "rarity": "Secret Holo",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_4_card_n08-2.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/9a/Hyper_battle_part_4_card_n08-2.png"
+    },
+    {
+     "set": "p4",
+     "num": "N09",
+     "type": "Ability",
+     "rarity": "Normal",
+     "chars": [
+      "Silva Zoldyck"
+     ],
+     "file": "Hyper_battle_part_4_card_n09.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/ed/Hyper_battle_part_4_card_n09.png"
+    },
+    {
+     "set": "p4",
+     "num": "N10",
+     "type": "Ability",
+     "rarity": "Holo",
+     "chars": [
+      "Chrollo Lucilfer"
+     ],
+     "file": "Hyper_battle_part_4_card_n10.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/fd/Hyper_battle_part_4_card_n10.png"
+    },
+    {
+     "set": "p4",
+     "num": "N11",
+     "type": "Ability",
+     "rarity": "Normal",
+     "chars": [
+      "Machi Komacine"
+     ],
+     "file": "Hyper_battle_part_4_card_n11.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/5/52/Hyper_battle_part_4_card_n11.png"
+    },
+    {
+     "set": "p4",
+     "num": "N12",
+     "type": "Ability",
+     "rarity": "Normal",
+     "chars": [
+      "Shizuku Murasaki"
+     ],
+     "file": "Hyper_battle_part_4_card_n12.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/94/Hyper_battle_part_4_card_n12.png"
+    },
+    {
+     "set": "p4",
+     "num": "S21",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [],
+     "file": "Hyper_battle_part_4_card_s21.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/04/Hyper_battle_part_4_card_s21.png"
+    },
+    {
+     "set": "p4",
+     "num": "S22",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Hunter License",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_4_card_s22.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/04/Hyper_battle_part_4_card_s22.png"
+    },
+    {
+     "set": "p4",
+     "num": "S23",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_4_card_s23.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/3/34/Hyper_battle_part_4_card_s23.png"
+    },
+    {
+     "set": "p4",
+     "num": "S24",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Chrollo Lucilfer",
+      "Ben's knives"
+     ],
+     "file": "Hyper_battle_part_4_card_s24.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/9b/Hyper_battle_part_4_card_s24.png"
+    },
+    {
+     "set": "p4",
+     "num": "S25",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Uvogin"
+     ],
+     "file": "Hyper_battle_part_4_card_s25.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/cf/Hyper_battle_part_4_card_s25.png"
+    },
+    {
+     "set": "p4",
+     "num": "S26",
+     "type": "Hunter",
+     "rarity": "Holo",
+     "chars": [
+      "Uvogin",
+      "Nobunaga Hazama",
+      "Shalnark",
+      "Shizuku Murasaki",
+      "Feitan Portor",
+      "Franklin Bordeau"
+     ],
+     "file": "Hyper_battle_part_4_card_s26.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/4a/Hyper_battle_part_4_card_s26.png"
+    },
+    {
+     "set": "p4",
+     "num": "S27",
+     "type": "Hunter",
+     "rarity": "Holo",
+     "chars": [
+      "Hisoka Morow",
+      "Machi Komacine",
+      "Chrollo Lucilfer",
+      "Pakunoda",
+      "Bonolenov Ndongo",
+      "Phinks Magcub",
+      "Kortopi"
+     ],
+     "file": "Hyper_battle_part_4_card_s27.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/f3/Hyper_battle_part_4_card_s27.png"
+    }
+   ]
+  },
+  {
+   "code": "p5",
+   "name": "パート5 ヨークシン×幻影旅団×鎮魂曲",
+   "cards": [
+    {
+     "set": "p5",
+     "num": "C131",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_5_card_c131.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/61/Hyper_battle_part_5_card_c131.png"
+    },
+    {
+     "set": "p5",
+     "num": "C132",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_5_card_c132.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/ce/Hyper_battle_part_5_card_c132.png"
+    },
+    {
+     "set": "p5",
+     "num": "C133",
+     "type": "Character",
+     "rarity": "Holo",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_5_card_c133.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/ea/Hyper_battle_part_5_card_c133.png"
+    },
+    {
+     "set": "p5",
+     "num": "C134",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_part_5_card_c134.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/70/Hyper_battle_part_5_card_c134.png"
+    },
+    {
+     "set": "p5",
+     "num": "C135",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_part_5_card_c135.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/19/Hyper_battle_part_5_card_c135.png"
+    },
+    {
+     "set": "p5",
+     "num": "C136",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_5_card_c136.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/ab/Hyper_battle_part_5_card_c136.png"
+    },
+    {
+     "set": "p5",
+     "num": "C137",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_5_card_c137.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/7e/Hyper_battle_part_5_card_c137.png"
+    },
+    {
+     "set": "p5",
+     "num": "C138",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Zepile"
+     ],
+     "file": "Hyper_battle_part_5_card_c138.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/4a/Hyper_battle_part_5_card_c138.png"
+    },
+    {
+     "set": "p5",
+     "num": "C139",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Chrollo Lucilfer",
+      "Neon Nostrade"
+     ],
+     "file": "Hyper_battle_part_5_card_c139.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/86/Hyper_battle_part_5_card_c139.png"
+    },
+    {
+     "set": "p5",
+     "num": "C140",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Neon Nostrade"
+     ],
+     "file": "Hyper_battle_part_5_card_c140.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/88/Hyper_battle_part_5_card_c140.png"
+    },
+    {
+     "set": "p5",
+     "num": "C141",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_5_card_c141.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/b/b8/Hyper_battle_part_5_card_c141.png"
+    },
+    {
+     "set": "p5",
+     "num": "C142",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Machi Komacine",
+      "Chrollo Lucilfer",
+      "Pakunoda"
+     ],
+     "file": "Hyper_battle_part_5_card_c142.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/6b/Hyper_battle_part_5_card_c142.png"
+    },
+    {
+     "set": "p5",
+     "num": "C143",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Chrollo Lucilfer",
+      "Zeno Zoldyck"
+     ],
+     "file": "Hyper_battle_part_5_card_c143.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/06/Hyper_battle_part_5_card_c143.png"
+    },
+    {
+     "set": "p5",
+     "num": "C144",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Illumi Zoldyck",
+      "Ten Dons"
+     ],
+     "file": "Hyper_battle_part_5_card_c144.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/26/Hyper_battle_part_5_card_c144.png"
+    },
+    {
+     "set": "p5",
+     "num": "C145",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Chrollo Lucilfer"
+     ],
+     "file": "Hyper_battle_part_5_card_c145.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/d1/Hyper_battle_part_5_card_c145.png"
+    },
+    {
+     "set": "p5",
+     "num": "C146",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Chrollo Lucilfer"
+     ],
+     "file": "Hyper_battle_part_5_card_c146.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/00/Hyper_battle_part_5_card_c146.png"
+    },
+    {
+     "set": "p5",
+     "num": "C147",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Uvogin"
+     ],
+     "file": "Hyper_battle_part_5_card_c147.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/97/Hyper_battle_part_5_card_c147.png"
+    },
+    {
+     "set": "p5",
+     "num": "C148",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Nobunaga Hazama"
+     ],
+     "file": "Hyper_battle_part_5_card_c148.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/dd/Hyper_battle_part_5_card_c148.png"
+    },
+    {
+     "set": "p5",
+     "num": "C149",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Feitan Portor",
+      "Phinks Magcub"
+     ],
+     "file": "Hyper_battle_part_5_card_c149.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/c1/Hyper_battle_part_5_card_c149.png"
+    },
+    {
+     "set": "p5",
+     "num": "C150",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Feitan Portor"
+     ],
+     "file": "Hyper_battle_part_5_card_c150.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/41/Hyper_battle_part_5_card_c150.png"
+    },
+    {
+     "set": "p5",
+     "num": "C151",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Shalnark"
+     ],
+     "file": "Hyper_battle_part_5_card_c151.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/0c/Hyper_battle_part_5_card_c151.png"
+    },
+    {
+     "set": "p5",
+     "num": "C152",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Machi Komacine",
+      "Nobunaga Hazama"
+     ],
+     "file": "Hyper_battle_part_5_card_c152.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/a0/Hyper_battle_part_5_card_c152.png"
+    },
+    {
+     "set": "p5",
+     "num": "C153",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Shizuku Murasaki"
+     ],
+     "file": "Hyper_battle_part_5_card_c153.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/b/ba/Hyper_battle_part_5_card_c153.png"
+    },
+    {
+     "set": "p5",
+     "num": "C154",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Pakunoda",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_5_card_c154.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/5/5b/Hyper_battle_part_5_card_c154.png"
+    },
+    {
+     "set": "p5",
+     "num": "C155",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Bonolenov Ndongo"
+     ],
+     "file": "Hyper_battle_part_5_card_c155.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/fc/Hyper_battle_part_5_card_c155.png"
+    },
+    {
+     "set": "p5",
+     "num": "C156",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Kortopi"
+     ],
+     "file": "Hyper_battle_part_5_card_c156.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/5/59/Hyper_battle_part_5_card_c156.png"
+    },
+    {
+     "set": "p5",
+     "num": "C157",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Chrollo Lucilfer",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_5_card_c157.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/17/Hyper_battle_part_5_card_c157.png"
+    },
+    {
+     "set": "p5",
+     "num": "C158",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Chrollo Lucilfer",
+      "Zeno Zoldyck"
+     ],
+     "file": "Hyper_battle_part_5_card_c158.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/43/Hyper_battle_part_5_card_c158.png"
+    },
+    {
+     "set": "p5",
+     "num": "C159",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Kalluto Zoldyck",
+      "Maha Zoldyck"
+     ],
+     "file": "Hyper_battle_part_5_card_c159.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/4c/Hyper_battle_part_5_card_c159.png"
+    },
+    {
+     "set": "p5",
+     "num": "C160",
+     "type": "Character",
+     "rarity": "Holo",
+     "chars": [
+      "Leorio Paradinight",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_5_card_c160.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/aa/Hyper_battle_part_5_card_c160.png"
+    },
+    {
+     "set": "p5",
+     "num": "N13",
+     "type": "Ability",
+     "rarity": "Holo",
+     "chars": [
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_5_card_n13.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/74/Hyper_battle_part_5_card_n13.png"
+    },
+    {
+     "set": "p5",
+     "num": "N14",
+     "type": "Ability",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_5_card_n14.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/a1/Hyper_battle_part_5_card_n14.png"
+    },
+    {
+     "set": "p5",
+     "num": "N15",
+     "type": "Ability",
+     "rarity": "Normal",
+     "chars": [
+      "Neon Nostrade"
+     ],
+     "file": "Hyper_battle_part_5_card_n15.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/4e/Hyper_battle_part_5_card_n15.png"
+    },
+    {
+     "set": "p5",
+     "num": "N16",
+     "type": "Ability",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Chrollo Lucilfer"
+     ],
+     "file": "Hyper_battle_part_5_card_n16.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/03/Hyper_battle_part_5_card_n16.png"
+    },
+    {
+     "set": "p5",
+     "num": "N17",
+     "type": "Ability",
+     "rarity": "Secret Holo",
+     "chars": [
+      "Chrollo Lucilfer"
+     ],
+     "file": "Hyper_battle_part_5_card_n17.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/fa/Hyper_battle_part_5_card_n17.png"
+    },
+    {
+     "set": "p5",
+     "num": "N17-2",
+     "type": "Ability",
+     "rarity": "Secret Holo",
+     "chars": [
+      "Chrollo Lucilfer"
+     ],
+     "file": "Hyper_battle_part_5_card_n17-2.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/2a/Hyper_battle_part_5_card_n17-2.png"
+    },
+    {
+     "set": "p5",
+     "num": "N18",
+     "type": "Ability",
+     "rarity": "Normal",
+     "chars": [
+      "Pakunoda"
+     ],
+     "file": "Hyper_battle_part_5_card_n18.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/7a/Hyper_battle_part_5_card_n18.png"
+    },
+    {
+     "set": "p5",
+     "num": "S28",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_5_card_s28.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/94/Hyper_battle_part_5_card_s28.png"
+    },
+    {
+     "set": "p5",
+     "num": "S29",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_5_card_s29.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/77/Hyper_battle_part_5_card_s29.png"
+    },
+    {
+     "set": "p5",
+     "num": "S30",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_5_card_s30.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/ce/Hyper_battle_part_5_card_s30.png"
+    },
+    {
+     "set": "p5",
+     "num": "S31",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Hyper_battle_part_5_card_s31.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/de/Hyper_battle_part_5_card_s31.png"
+    },
+    {
+     "set": "p5",
+     "num": "S32",
+     "type": "Hunter",
+     "rarity": "Holo",
+     "chars": [
+      "Hisoka Morow",
+      "Machi Komacine",
+      "Pakunoda",
+      "Nobunaga Hazama",
+      "Shalnark",
+      "Feitan Portor"
+     ],
+     "file": "Hyper_battle_part_5_card_s32.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/6f/Hyper_battle_part_5_card_s32.png"
+    },
+    {
+     "set": "p5",
+     "num": "S33",
+     "type": "Hunter",
+     "rarity": "Holo",
+     "chars": [
+      "Chrollo Lucilfer",
+      "Shizuku Murasaki",
+      "Bonolenov Ndongo",
+      "Phinks Magcub",
+      "Franklin Bordeau",
+      "Kortopi"
+     ],
+     "file": "Hyper_battle_part_5_card_s33.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/c9/Hyper_battle_part_5_card_s33.png"
+    },
+    {
+     "set": "p5",
+     "num": "S34",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Silva Zoldyck",
+      "Zeno Zoldyck"
+     ],
+     "file": "Hyper_battle_part_5_card_s34.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/08/Hyper_battle_part_5_card_s34.png"
+    }
+   ]
+  },
+  {
+   "code": "p6",
+   "name": "パート6 9月4日×G・I×発修行",
+   "cards": [
+    {
+     "set": "p6",
+     "num": "C161",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_6_card_c161.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/3/3b/Hyper_battle_part_6_card_c161.png"
+    },
+    {
+     "set": "p6",
+     "num": "C162",
+     "type": "Character",
+     "rarity": "Holo",
+     "chars": [
+      "Chrollo Lucilfer",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_6_card_c162.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/fe/Hyper_battle_part_6_card_c162.png"
+    },
+    {
+     "set": "p6",
+     "num": "C163",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Melody",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_6_card_c163.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/65/Hyper_battle_part_6_card_c163.png"
+    },
+    {
+     "set": "p6",
+     "num": "C164",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_6_card_c164.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/6b/Hyper_battle_part_6_card_c164.png"
+    },
+    {
+     "set": "p6",
+     "num": "C165",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_part_6_card_c165.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/92/Hyper_battle_part_6_card_c165.png"
+    },
+    {
+     "set": "p6",
+     "num": "C166",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_6_card_c166.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/f1/Hyper_battle_part_6_card_c166.png"
+    },
+    {
+     "set": "p6",
+     "num": "C167",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Zushi",
+      "Wing"
+     ],
+     "file": "Hyper_battle_part_6_card_c167.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/7b/Hyper_battle_part_6_card_c167.png"
+    },
+    {
+     "set": "p6",
+     "num": "C168",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Zepile"
+     ],
+     "file": "Hyper_battle_part_6_card_c168.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/40/Hyper_battle_part_6_card_c168.png"
+    },
+    {
+     "set": "p6",
+     "num": "C169",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Melody",
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_6_card_c169.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/f1/Hyper_battle_part_6_card_c169.png"
+    },
+    {
+     "set": "p6",
+     "num": "C170",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Squala"
+     ],
+     "file": "Hyper_battle_part_6_card_c170.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/e7/Hyper_battle_part_6_card_c170.png"
+    },
+    {
+     "set": "p6",
+     "num": "C171",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Eliza"
+     ],
+     "file": "Hyper_battle_part_6_card_c171.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/02/Hyper_battle_part_6_card_c171.png"
+    },
+    {
+     "set": "p6",
+     "num": "C172",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Battera"
+     ],
+     "file": "Hyper_battle_part_6_card_c172.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/a6/Hyper_battle_part_6_card_c172.png"
+    },
+    {
+     "set": "p6",
+     "num": "C173",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Tsezguerra"
+     ],
+     "file": "Hyper_battle_part_6_card_c173.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/65/Hyper_battle_part_6_card_c173.png"
+    },
+    {
+     "set": "p6",
+     "num": "C174",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Jeitsari"
+     ],
+     "file": "Hyper_battle_part_6_card_c174.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/77/Hyper_battle_part_6_card_c174.png"
+    },
+    {
+     "set": "p6",
+     "num": "C175",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Auctioneer",
+      "JoyStation Console"
+     ],
+     "file": "Hyper_battle_part_6_card_c175.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/11/Hyper_battle_part_6_card_c175.png"
+    },
+    {
+     "set": "p6",
+     "num": "C176",
+     "type": "Character",
+     "rarity": "Holo",
+     "chars": [
+      "Hisoka Morow",
+      "Chrollo Lucilfer",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_6_card_c176.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/95/Hyper_battle_part_6_card_c176.png"
+    },
+    {
+     "set": "p6",
+     "num": "C177",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Hyper_battle_part_6_card_c177.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/67/Hyper_battle_part_6_card_c177.png"
+    },
+    {
+     "set": "p6",
+     "num": "C178",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Illumi Zoldyck"
+     ],
+     "file": "Hyper_battle_part_6_card_c178.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/0/0c/Hyper_battle_part_6_card_c178.png"
+    },
+    {
+     "set": "p6",
+     "num": "C179",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Milluki Zoldyck"
+     ],
+     "file": "Hyper_battle_part_6_card_c179.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/91/Hyper_battle_part_6_card_c179.png"
+    },
+    {
+     "set": "p6",
+     "num": "C180",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Kalluto Zoldyck"
+     ],
+     "file": "Hyper_battle_part_6_card_c180.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/22/Hyper_battle_part_6_card_c180.png"
+    },
+    {
+     "set": "p6",
+     "num": "C181",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Chrollo Lucilfer"
+     ],
+     "file": "Hyper_battle_part_6_card_c181.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/5/5a/Hyper_battle_part_6_card_c181.png"
+    },
+    {
+     "set": "p6",
+     "num": "C182",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Phinks Magcub"
+     ],
+     "file": "Hyper_battle_part_6_card_c182.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/a6/Hyper_battle_part_6_card_c182.png"
+    },
+    {
+     "set": "p6",
+     "num": "C183",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Feitan Portor"
+     ],
+     "file": "Hyper_battle_part_6_card_c183.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/22/Hyper_battle_part_6_card_c183.png"
+    },
+    {
+     "set": "p6",
+     "num": "C184",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Shalnark"
+     ],
+     "file": "Hyper_battle_part_6_card_c184.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/17/Hyper_battle_part_6_card_c184.png"
+    },
+    {
+     "set": "p6",
+     "num": "C185",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Machi Komacine",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_6_card_c185.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/4/44/Hyper_battle_part_6_card_c185.png"
+    },
+    {
+     "set": "p6",
+     "num": "C186",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Shizuku Murasaki"
+     ],
+     "file": "Hyper_battle_part_6_card_c186.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/16/Hyper_battle_part_6_card_c186.png"
+    },
+    {
+     "set": "p6",
+     "num": "C187",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Hisoka Morow",
+      "Pakunoda"
+     ],
+     "file": "Hyper_battle_part_6_card_c187.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/84/Hyper_battle_part_6_card_c187.png"
+    },
+    {
+     "set": "p6",
+     "num": "C188",
+     "type": "Character",
+     "rarity": "Normal",
+     "chars": [
+      "Machi Komacine",
+      "Pakunoda",
+      "Nobunaga Hazama",
+      "Shalnark",
+      "Feitan Portor",
+      "Phinks Magcub",
+      "Franklin Bordeau"
+     ],
+     "file": "Hyper_battle_part_6_card_c188.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/89/Hyper_battle_part_6_card_c188.png"
+    },
+    {
+     "set": "p6",
+     "num": "C189",
+     "type": "Character",
+     "rarity": "Holo",
+     "chars": [
+      "Machi Komacine",
+      "Chrollo Lucilfer",
+      "Shizuku Murasaki"
+     ],
+     "file": "Hyper_battle_part_6_card_c189.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/e1/Hyper_battle_part_6_card_c189.png"
+    },
+    {
+     "set": "p6",
+     "num": "N19",
+     "type": "Ability",
+     "rarity": "Holo",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_6_card_n19.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/f8/Hyper_battle_part_6_card_n19.png"
+    },
+    {
+     "set": "p6",
+     "num": "N20",
+     "type": "Ability",
+     "rarity": "Holo",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_6_card_n20.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/7/78/Hyper_battle_part_6_card_n20.png"
+    },
+    {
+     "set": "p6",
+     "num": "N21",
+     "type": "Ability",
+     "rarity": "Normal",
+     "chars": [
+      "Melody"
+     ],
+     "file": "Hyper_battle_part_6_card_n21.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/de/Hyper_battle_part_6_card_n21.png"
+    },
+    {
+     "set": "p6",
+     "num": "N22",
+     "type": "Ability",
+     "rarity": "Normal",
+     "chars": [
+      "Chrollo Lucilfer"
+     ],
+     "file": "Hyper_battle_part_6_card_n22.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/9a/Hyper_battle_part_6_card_n22.png"
+    },
+    {
+     "set": "p6",
+     "num": "N23",
+     "type": "Ability",
+     "rarity": "Normal",
+     "chars": [
+      "Nobunaga Hazama"
+     ],
+     "file": "Hyper_battle_part_6_card_n23.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/60/Hyper_battle_part_6_card_n23.png"
+    },
+    {
+     "set": "p6",
+     "num": "N24",
+     "type": "Ability",
+     "rarity": "Normal",
+     "chars": [
+      "Shalnark",
+      "Franklin Bordeau"
+     ],
+     "file": "Hyper_battle_part_6_card_n24.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/8/8c/Hyper_battle_part_6_card_n24.png"
+    },
+    {
+     "set": "p6",
+     "num": "S35",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Zepile",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_part_6_card_s35.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/26/Hyper_battle_part_6_card_s35.png"
+    },
+    {
+     "set": "p6",
+     "num": "S36",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_part_6_card_s36.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/e/ea/Hyper_battle_part_6_card_s36.png"
+    },
+    {
+     "set": "p6",
+     "num": "S37",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_part_6_card_s37.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/65/Hyper_battle_part_6_card_s37.png"
+    },
+    {
+     "set": "p6",
+     "num": "S38",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_part_6_card_s38.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/b/b3/Hyper_battle_part_6_card_s38.png"
+    },
+    {
+     "set": "p6",
+     "num": "S39",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Phinks Magcub"
+     ],
+     "file": "Hyper_battle_part_6_card_s39.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/19/Hyper_battle_part_6_card_s39.png"
+    },
+    {
+     "set": "p6",
+     "num": "S40",
+     "type": "Hunter",
+     "rarity": "Normal",
+     "chars": [
+      "Feitan Portor"
+     ],
+     "file": "Hyper_battle_part_6_card_s40.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/97/Hyper_battle_part_6_card_s40.png"
+    },
+    {
+     "set": "p6",
+     "num": "S41",
+     "type": "Hunter",
+     "rarity": "Holo",
+     "chars": [
+      "Machi Komacine",
+      "Chrollo Lucilfer",
+      "Uvogin",
+      "Pakunoda",
+      "Nobunaga Hazama",
+      "Shalnark",
+      "Franklin Bordeau"
+     ],
+     "file": "Hyper_battle_part_6_card_s41.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/1c/Hyper_battle_part_6_card_s41.png"
+    }
+   ]
+  },
+  {
+   "code": "gb",
+   "name": "ゲームボーイ ハンターの系譜 特典",
+   "cards": [
+    {
+     "set": "gb",
+     "num": "C-K1",
+     "type": "Character",
+     "rarity": "Promo",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_game_boy_card_c-k1.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/b/b6/Hyper_battle_game_boy_card_c-k1.png"
+    },
+    {
+     "set": "gb",
+     "num": "C-K2",
+     "type": "Character",
+     "rarity": "Promo",
+     "chars": [
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_game_boy_card_c-k2.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/1d/Hyper_battle_game_boy_card_c-k2.png"
+    },
+    {
+     "set": "gb",
+     "num": "C-K3",
+     "type": "Character",
+     "rarity": "Promo",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_game_boy_card_c-k3.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/6/6f/Hyper_battle_game_boy_card_c-k3.png"
+    },
+    {
+     "set": "gb",
+     "num": "C-K4",
+     "type": "Character",
+     "rarity": "Promo",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_game_boy_card_c-k4.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/a6/Hyper_battle_game_boy_card_c-k4.png"
+    },
+    {
+     "set": "gb",
+     "num": "C-K5",
+     "type": "Character",
+     "rarity": "Promo",
+     "chars": [
+      "Hisoka Morow"
+     ],
+     "file": "Hyper_battle_game_boy_card_c-k5.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/c/c3/Hyper_battle_game_boy_card_c-k5.png"
+    },
+    {
+     "set": "gb",
+     "num": "S-K1",
+     "type": "Hunter",
+     "rarity": "Promo",
+     "chars": [
+      "Ogyu"
+     ],
+     "file": "Hyper_battle_game_boy_card_s-k1.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/d/d4/Hyper_battle_game_boy_card_s-k1.png"
+    }
+   ]
+  },
+  {
+   "code": "jf00",
+   "name": "ジャンプフェスタ2000 限定カード",
+   "cards": [
+    {
+     "set": "jf00",
+     "num": "S-J1",
+     "type": "Hunter",
+     "rarity": "Promo",
+     "chars": [
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_jump_festa_2000_gon_card_s-j1.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/2c/Hyper_battle_jump_festa_2000_gon_card_s-j1.png"
+    }
+   ]
+  },
+  {
+   "code": "jf02",
+   "name": "ジャンプフェスタ2002エディション パック",
+   "cards": [
+    {
+     "set": "jf02",
+     "num": "C-J6",
+     "type": "Character",
+     "rarity": "Promo",
+     "chars": [
+      "Zepile",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_jump_festa_2002_card_c-j6.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/9/96/Hyper_battle_jump_festa_2002_card_c-j6.png"
+    },
+    {
+     "set": "jf02",
+     "num": "C-J7",
+     "type": "Character",
+     "rarity": "Promo",
+     "chars": [
+      "Neon Nostrade",
+      "Melody",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_jump_festa_2002_card_c-j7.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/1/1a/Hyper_battle_jump_festa_2002_card_c-j7.png"
+    },
+    {
+     "set": "jf02",
+     "num": "C-J8",
+     "type": "Character",
+     "rarity": "Promo",
+     "chars": [
+      "Leorio Paradinight"
+     ],
+     "file": "Hyper_battle_jump_festa_2002_card_c-j8.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/f8/Hyper_battle_jump_festa_2002_card_c-j8.png"
+    },
+    {
+     "set": "jf02",
+     "num": "C-J9",
+     "type": "Character",
+     "rarity": "Promo",
+     "chars": [
+      "Killua Zoldyck"
+     ],
+     "file": "Hyper_battle_jump_festa_2002_card_c-j9.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/2/22/Hyper_battle_jump_festa_2002_card_c-j9.png"
+    },
+    {
+     "set": "jf02",
+     "num": "C-J10",
+     "type": "Character",
+     "rarity": "Promo",
+     "chars": [
+      "Chrollo Lucilfer"
+     ],
+     "file": "Hyper_battle_jump_festa_2002_card_c-j10.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/fe/Hyper_battle_jump_festa_2002_card_c-j10.png"
+    },
+    {
+     "set": "jf02",
+     "num": "S-J5",
+     "type": "Hunter",
+     "rarity": "Promo",
+     "chars": [
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_jump_festa_2002_card_s-j5.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/5/59/Hyper_battle_jump_festa_2002_card_s-j5.png"
+    },
+    {
+     "set": "jf02",
+     "num": "S-J6",
+     "type": "Hunter",
+     "rarity": "Promo",
+     "chars": [
+      "Killua Zoldyck",
+      "Gon Freecss"
+     ],
+     "file": "Hyper_battle_jump_festa_2002_card_s-j6.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/a/a6/Hyper_battle_jump_festa_2002_card_s-j6.png"
+    },
+    {
+     "set": "jf02",
+     "num": "S-J7",
+     "type": "Hunter",
+     "rarity": "Promo",
+     "chars": [
+      "Leorio Paradinight",
+      "Killua Zoldyck",
+      "Gon Freecss",
+      "Kurapika"
+     ],
+     "file": "Hyper_battle_jump_festa_2002_card_s-j7.png",
+     "img": "https://static.wikia.nocookie.net/hunterxhunter/images/f/f3/Hyper_battle_jump_festa_2002_card_s-j7.png"
+    }
+   ]
+  }
+ ]
+}

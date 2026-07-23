@@ -774,23 +774,21 @@
     return items;
   }
 
-  // Hunter × Hunter (hoje só a linha Miracle Battle): decks montados (HHS),
-  // depois os boosters (HH01…, HHEX) e por fim as promos (código sem número).
+  // Hunter × Hunter (principal = Carddass Hyper Battle): as 6 partes numeradas
+  // primeiro, em ordem CRESCENTE — é uma série linear, lê-se como checklist —,
+  // e depois as promos (Jump Festa, Game Boy). O Miracle Battle é ?line=hxh-mb.
   function groupHxhSets(setItems) {
     const idOf = (set) => String(set.setId || "").trim().toLowerCase();
-    const isDeck = (set) => /-hhs\d+$/.test(idOf(set));
-    const isPromo = (set) => /-hh$/.test(idOf(set));
-    const decks = setItems.filter(isDeck).sort(sortByReleaseDesc);
-    const promos = setItems.filter(isPromo).sort(sortByReleaseDesc);
-    const boosters = setItems.filter((s) => !isDeck(s) && !isPromo(s)).sort(sortByReleaseDesc);
+    const isPart = (set) => /-p\d+$/.test(idOf(set));
+    const parts = setItems.filter(isPart).sort((a, b) => idOf(a).localeCompare(idOf(b), "en", { numeric: true }));
+    const promos = setItems.filter((s) => !isPart(s)).sort(sortByReleaseDesc);
     const items = [];
     const section = (list, key) => {
       if (!list.length) return;
       items.push({ type: "category-head", name: t(key), count: list.length });
       list.forEach((set) => items.push(set));
     };
-    section(boosters, "sets.category.main");
-    section(decks, "sets.category.decks");
+    section(parts, "sets.category.main");
     section(promos, "sets.category.promos");
     return items;
   }

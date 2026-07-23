@@ -159,6 +159,12 @@ jobs:
       - name: Anexa Miracle Battle Carddass (One Piece + Naruto + Hunter x Hunter)
         run: node scripts/sync-miracle-battle.mjs || echo "sync-miracle-battle falhou; segue com o snapshot versionado"
 
+      # Carddass Hyper Battle HUNTER x HUNTER (1999-2001): linha PRINCIPAL do
+      # jogo hxh. Fonte: Hunterpedia (API MediaWiki) - unica com scan carta a
+      # carta. Roda DEPOIS do miracle-battle (que cria data/hxh/). Sem preco.
+      - name: Anexa Carddass Hyper Battle (Hunter x Hunter)
+        run: node scripts/sync-hxh-hyper-battle.mjs || echo "sync-hxh-hyper-battle falhou; segue com o snapshot versionado"
+
       # Data Carddass NARUTO (arcade, 2005-2008): checklist do noihjp (fa site),
       # sem imagens. Anexa ao catalogo do Naruto (roda DEPOIS dos outros).
       - name: Anexa Data Carddass NARUTO (arcade)
