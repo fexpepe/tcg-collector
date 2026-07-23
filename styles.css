@@ -1580,6 +1580,23 @@ input::placeholder {
   position: relative;
 }
 
+/* Título em inglês dos sets VINTAGE, acima da arte: nessas linhas o logo é
+   genérico (o mesmo pra todos os sets de Miracle Battle, por exemplo) ou nem
+   existe, então é ele que identifica o tile. Mesmo corpo do selo de data. */
+.set-en-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+  padding: 9px 10px 7px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--muted);
+  text-align: center;
+}
+
 .set-release {
   position: absolute;
   top: 8px;

@@ -2,6 +2,129 @@
   const shared = window.TCGShared;
   const { addOptions, detailUrl, unique, normalize, escapeHtml, escapeAttribute, speciesName, debounce, t, tn, localizedImg, toRoman } = shared;
 
+  // Título em INGLÊS dos sets vintage japoneses, mostrado acima da arte no tile
+  // (só nos vintage). O logo dessas linhas é genérico — o mesmo pra todos os
+  // sets de Miracle Battle, por exemplo —, então sem isto não dá pra saber qual
+  // set é o tile antes de ler o nome em japonês embaixo. É rótulo de EXIBIÇÃO:
+  // não entra no catálogo nem na busca; os sets do One Piece (2002/Carddass) já
+  // têm nome ocidental e ficam de fora de propósito, pra não duplicar a linha.
+  const VINTAGE_SET_EN = {
+    // ---- One Piece · Miracle Battle Carddass
+    "op-mb-ops01": "Starter Deck — Battle Begins! Luffy Pirates!!",
+    "op-mb-ops02": "Starter Deck — Seaquake \"Grand Line\"!!",
+    "op-mb-ops03": "Super Miracle Heroes Deck — Fierce Battle at Marineford!!",
+    "op-mb-ops04": "Super Fierce Battle — Starter Deck: New World",
+    "op-mb-op01": "Booster Pack 1",
+    "op-mb-op02": "Booster Pack 2 — Threat of the Logia",
+    "op-mb-op03": "Booster Pack 3 — Dawn of a New Era",
+    "op-mb-op04": "Booster Pack 4 — Summit War",
+    "op-mb-op05": "Super Fierce Battle — Booster 1: Powerhouses of the New World",
+    "op-mb-op06": "Super Fierce Battle — Booster 2: Heirs of D's Will",
+    "op-mb-op07": "Super Fierce Battle — Booster 3: Awakening of Haki",
+    "op-mb-op08": "Super Fierce Battle — Booster 4: ROMANCE DAWN ~for the new world~",
+    "op-mb-op09": "Super Fierce Battle — Booster 5: Fish-Man Island Adventure",
+    "op-mb-op10": "Booster Pack — Ryugu Palace Occupied",
+    "op-mb-op11": "Booster Pack — Young Pirates Worth Over 100 Million",
+    "op-mb-op12": "Booster Pack — Blast!! Fire Fist Pistol",
+    "op-mb-op13": "Booster Pack — The Threat of Z",
+    "op-mb-op14": "Booster Pack — Raging New World",
+    "op-mb-op15": "Booster Pack — Haki vs Devil Fruit Users",
+    "op-mb-op16": "Booster Pack — Fighting Alliance",
+    "op-mb-op17": "Character Booster — To the New Era of Heroes",
+    "op-mb-op18": "Character Booster — Fierce Battle! Dressrosa",
+    "op-mb-opc01": "Gigant Pack",
+    "op-mb-op": "Promotional Cards",
+    // ---- Naruto · Card Game (2002–2006), o jogo principal
+    "nrt-s01": "Vol. 1",
+    "nrt-s02": "Vol. 2 — Demon! Zabuza",
+    "nrt-s03": "Vol. 3 — Challengers Assemble!",
+    "nrt-s04": "Vol. 4 — Test of the Forest of Death!",
+    "nrt-s05": "Vol. 5 — Evenly Matched! Preliminary Death Match",
+    "nrt-s06": "Vol. 6 — Each to Their Own Test!",
+    "nrt-s07": "Vol. 7 — Clash! Chunin Final Exam",
+    "nrt-s08": "Vol. 8 — Assault! Konoha Crush",
+    "nrt-s09": "Vol. 9 — Akatsuki, Star of Ill Omen",
+    "nrt-s10": "Vol. 10 — What Is Inherited and Entrusted",
+    "nrt-s11": "Vol. 11 — Formed! The Konoha Squad",
+    "nrt-s12": "Vol. 12 — The Chilling Cursed Seal",
+    "nrt-s13": "Vol. 13 — Two Rivals Clash! Valley of the End",
+    "nrt-s14": "Vol. 14 — Splendid! The Great Ninja Gathering",
+    "nrt-s15": "Vol. 15 — Legend of the Young Days",
+    "nrt-s16": "Vol. 16 — Heir of the Fire",
+    "nrt-s17": "Vol. 17 — Island of the Mighty Beasts",
+    "nrt-promo": "Promotional Cards",
+    "nrt-extra": "Expansions & Specials",
+    "nrt-atari": "\"Atari\" Winner Cards",
+    // ---- Naruto · Miracle Battle Carddass
+    "nrt-mb-nrs01": "Starter Deck — Bonds of the Leaf",
+    "nrt-mb-nr01": "Booster Pack 1 — Great Ninja War",
+    "nrt-mb-nr02": "Booster Pack 2 — Will of the Hokage",
+    "nrt-mb-nr03": "Booster Pack 3 — Those Who Control the Tailed Beasts",
+    "nrt-mb-nr04": "Booster Pack 4 — The One Who Bears the Shadow",
+    "nrt-mb-nr05": "Booster Pack 5 — Uchiha Awakening",
+    "nrt-mb-nr": "Promotional Cards",
+    // ---- Naruto · Data Carddass (Narutimate Card Battle / Mission)
+    "nrt-dc-s01": "Narutimate Card Battle — Vol. 1",
+    "nrt-dc-s02": "Narutimate Card Battle — Vol. 2",
+    "nrt-dc-s03": "Narutimate Card Battle — Vol. 3",
+    "nrt-dc-s05": "Narutimate Card Battle — Vol. 4",
+    "nrt-dc-s06": "Narutimate Card Battle — Vol. 5",
+    "nrt-dc-s07": "Narutimate Card Battle — Special Combo Sheet 2",
+    "nrt-dc-s08": "Narutimate Card Battle — Vol. 6",
+    "nrt-dc-s09": "Narutimate Card Battle — Vol. 7",
+    "nrt-dc-s10": "Narutimate Card Battle — Vol. 8: Narutimate SP!",
+    "nrt-dc-s11": "Narutimate Mission — Ch. 1: Blue Sky! A New Departure",
+    "nrt-dc-s12": "Narutimate Mission — Ch. 2: Reign! Wind Dancing in the Yellow Sand",
+    "nrt-dc-s13": "Narutimate Mission — Ch. 3: Assault! Fangs of Red Despair",
+    "nrt-dc-s14": "Narutimate Mission — Ch. 4: Fierce Battle! Dark Clouds Bearing Gloom",
+    "nrt-dc-s15": "Narutimate Mission — Special Mission Chapter",
+    // ---- Naruto · Data Carddass Narutimate Formation
+    "nrt-nf-s01": "Narutimate Formation — Ch. 1",
+    "nrt-nf-s02": "Narutimate Formation — Campaign Cards",
+    "nrt-nf-s03": "Narutimate Formation",
+    "nrt-nf-s04": "Narutimate Formation — Promotional Cards",
+    "nrt-nf-s05": "Narutimate Formation — Top Secret Mission",
+    "nrt-nf-s06": "Narutimate Formation — Ch. 2",
+    "nrt-nf-s07": "Narutimate Formation — Ch. 5",
+    "nrt-nf-s08": "Narutimate Formation — Ch. 7",
+    "nrt-nf-s09": "Ch. 2 — Reunion! Two Bound by Destiny",
+    "nrt-nf-s10": "Ch. 3 — Rescue! The Soul of a Friend Asleep in the Desert",
+    "nrt-nf-s11": "Ch. 5 — Clash! The Will of Fire Piercing the Dark",
+    "nrt-nf-s12": "V Jump Card Festa 2008",
+    "nrt-nf-s13": "Narutimate Formation — Ch. 6",
+    "nrt-nf-s26": "Pocket File Dass — Narutimate Formation",
+    // ---- Naruto · Data Carddass Narutimate Cross
+    "nrt-nx-s14": "Narutimate Cross — Ch. 2",
+    "nrt-nx-s15": "Narutimate Cross — Ch. 3",
+    "nrt-nx-s16": "Narutimate Cross — McDonald's Exclusive",
+    "nrt-nx-s17": "Narutimate Cross — Promotional Cards",
+    "nrt-nx-s18": "Narutimate Cross — Ch. 1",
+    "nrt-nx-s19": "Pocket File Dass — Narutimate Cross",
+    "nrt-nx-s20": "Narutimate Cross — Ch. 4: 100 Million Cards Commemorative",
+    "nrt-nx-s21": "Narutimate Cross — Ch. 4",
+    "nrt-nx-s22": "V Jump Card Festa 2009",
+    "nrt-nx-s23": "Narutimate Cross — Ch. 5: 10th Anniversary SP",
+    "nrt-nx-s24": "Narutimate Cross — Ch. 6",
+    "nrt-nx-s25": "Narutimate Cross — Ch. 7",
+    // ---- Hunter × Hunter · Carddass Hyper Battle
+    "hxh-hb-p1": "Part 1 — Hunter Exam",
+    "hxh-hb-p2": "Part 2 — Finished! × Passed? × Hunter Exam",
+    "hxh-hb-p3": "Part 3 — Ten × Zetsu × Ren × Hatsu × Nen Special",
+    "hxh-hb-p4": "Part 4 — Auction? × Secret Maneuvers × Phantom Troupe!!!",
+    "hxh-hb-p5": "Part 5 — Yorknew × Phantom Troupe × Requiem",
+    "hxh-hb-p6": "Part 6 — September 4th × G・I × Hatsu Training",
+    "hxh-hb-gb": "Game Boy — Hunter's Genealogy bonus",
+    "hxh-hb-jf00": "Jump Festa 2000 limited card",
+    "hxh-hb-jf02": "Jump Festa 2002 Edition pack",
+    // ---- Hunter × Hunter · Miracle Battle Carddass
+    "hxh-mb-hhs01": "Preconstructed Deck — Four Challengers",
+    "hxh-mb-hh01": "Booster Pack — Hunter Exam",
+    "hxh-mb-hh02": "Booster Pack — Nen Users",
+    "hxh-mb-hh03": "Booster Pack — Phantom Troupe",
+    "hxh-mb-hhex01": "Phantom Booster",
+    "hxh-mb-hh": "Promotional Cards"
+  };
+
   let cards = [];
   let cardsById = new Map();
   let indexes = null;
@@ -551,7 +674,11 @@
       const hint = t("set.missingHint", { n: m.count }) + (m.unpriced > 0 ? " " + t("set.missingUnpriced", { u: m.unpriced }) : "");
       missingHtml = `<div class="set-missing" title="${escapeAttribute(hint)}">${escapeHtml(t("set.missingCost", { n: m.count, v: cost }))}</div>`;
     }
+    // Vintage: título em inglês ACIMA da arte. Nessas linhas o logo é genérico
+    // (ou não existe), então é o que diferencia um tile do outro à primeira vista.
+    const enTitle = item.nameEn ? `<span class="set-en-title" title="${escapeAttribute(item.nameEn)}">${escapeHtml(item.nameEn)}</span>` : "";
     article.innerHTML = `
+      ${enTitle}
       <a class="set-art-link" href="${escapeAttribute(detailUrl("set", item.name))}" aria-label="${escapeAttribute(item.name)}">
         <div class="set-art">
           ${releaseBadge}
@@ -655,6 +782,7 @@
       value: memoSetValue(group.name, sortedCards),
       missing: memoSetMissing(group.name, sortedCards),
       logo: sample.setLogo || "",
+      nameEn: sample.vintage ? (VINTAGE_SET_EN[sample.setId] || "") : "",
       symbol: sample.setSymbol || "",
       releaseDate: sample.setReleaseDate || "",
       serieId,
