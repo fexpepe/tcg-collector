@@ -438,7 +438,8 @@
       // Escopo da linha: página de linha mostra SÓ os sets dela; o jogo
       // principal exclui as linhas (cada uma tem página própria via hub).
       const setItems = indexedGroupsToItems(indexes.sets, visibleIds, toSetItem).filter((set) => lineScope.includes(set.setId));
-      if (linePrefix) return setItems.sort(sortByReleaseDesc);
+      // Linha vintage (?line=): sempre do mais antigo pro mais novo.
+      if (linePrefix) return setItems.sort(sortByReleaseAsc);
       // Página de uma série (?serie=id): só os sets dela, sem cabeçalhos.
       if (serieParam) return setItems.filter((set) => set.serieId === serieParam).sort(sortByReleaseDesc);
       // Lorcana não tem séries: separa em 2 categorias (Principais + Promos).
@@ -888,8 +889,8 @@
   // extras. As linhas Data Carddass/Miracle Battle têm páginas próprias.
   function groupNarutoSets(setItems) {
     const isMain = (set) => /^nrt-s\d+$/i.test(String(set.setId || "").trim());
-    const main = setItems.filter(isMain).sort(sortByReleaseDesc);
-    const extras = setItems.filter((s) => !isMain(s)).sort(sortByReleaseDesc);
+    const main = setItems.filter(isMain).sort(sortByReleaseAsc);
+    const extras = setItems.filter((s) => !isMain(s)).sort(sortByReleaseAsc);
     const items = [];
     if (main.length) {
       items.push({ type: "category-head", name: t("sets.category.main"), count: main.length });
@@ -909,7 +910,7 @@
     const idOf = (set) => String(set.setId || "").trim().toLowerCase();
     const isPart = (set) => /-p\d+$/.test(idOf(set));
     const parts = setItems.filter(isPart).sort((a, b) => idOf(a).localeCompare(idOf(b), "en", { numeric: true }));
-    const promos = setItems.filter((s) => !isPart(s)).sort(sortByReleaseDesc);
+    const promos = setItems.filter((s) => !isPart(s)).sort(sortByReleaseAsc);
     const items = [];
     const section = (list, key) => {
       if (!list.length) return;
@@ -970,6 +971,18 @@
     // Ambos sem data (linhas vintage sem data oficial): o setId sequencial do
     // sync (ex.: nrt-s01..s22) preserva a ordem cronológica da checklist.
     return String(a.setId || "").localeCompare(String(b.setId || "")) || a.name.localeCompare(b.name);
+  }
+
+  // Sets do mais ANTIGO para o mais novo — usado só nas linhas VINTAGE, que se
+  // leem como checklist cronológica (parte 1, 2, 3…) em vez de "novidades
+  // primeiro". Nos jogos modernos o padrão continua sendo o mais novo no topo.
+  function sortByReleaseAsc(a, b) {
+    if (a.releaseDate && b.releaseDate) {
+      return a.releaseDate.localeCompare(b.releaseDate) || a.name.localeCompare(b.name);
+    }
+    if (a.releaseDate) return -1;
+    if (b.releaseDate) return 1;
+    return String(a.setId || "").localeCompare(String(b.setId || ""), "en", { numeric: true }) || a.name.localeCompare(b.name);
   }
 
 
