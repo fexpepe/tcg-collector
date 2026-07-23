@@ -5,6 +5,7 @@
 //
 //   OPS/OP/OPC (ONE PIECE, 2010–2014)      -> data/onepiece/  ids op-mb-*
 //   NRS/NR (NARUTO 疾風伝, 2012–2014)      -> data/naruto/    ids nrt-mb-*
+//   HHS/HH/HHEX (HUNTER×HUNTER, 2011–2012) -> data/hxh/       ids hxh-mb-*
 //
 // Fonte: tcg-db.nikita.jp (mesmo DB de fã do Naruto vintage) — /cardlist/mb/
 // devolve TODAS as cartas numa página, com o código de set embutido no caminho
@@ -29,7 +30,8 @@ const NO_FETCH = process.argv.includes("--no-fetch");
 // (Prefixos mais longos primeiro: "OPS" antes de "OP", "NRS" antes de "NR".)
 const LINES = [
   { match: /^(OPS|OPC|OP)\d*$/, game: "onepiece", idPrefix: "op-mb", strip: /^ONEPIECE\s*/, logo: "/assets/games/game_onepiece_miracle.webp" },
-  { match: /^(NRS|NR)\d*$/, game: "naruto", idPrefix: "nrt-mb", strip: /^ナルト疾風伝\s*/, logo: "/assets/games/game_naruto_miracle.webp" }
+  { match: /^(NRS|NR)\d*$/, game: "naruto", idPrefix: "nrt-mb", strip: /^ナルト疾風伝\s*/, logo: "/assets/games/game_naruto_miracle.webp" },
+  { match: /^(HHS|HHEX|HH)\d*$/, game: "hxh", idPrefix: "hxh-mb", strip: /^HUNTER×HUNTER\s*/, logo: "/assets/games/game_hxh_miracle.webp" }
 ];
 
 async function fetchText(url) {

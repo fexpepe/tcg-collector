@@ -21,6 +21,7 @@
     lorcana: { slug: "lorcana", name: "Lorcana", dataDir: "data/lorcana/" },
     onepiece: { slug: "onepiece", name: "One Piece", dataDir: "data/onepiece/" },
     naruto: { slug: "naruto", name: "Naruto Card Game", dataDir: "data/naruto/" },   // vintage Bandai 2003–2006 (+ moderno TCGCSV no futuro)
+    hxh: { slug: "hxh", name: "Hunter × Hunter", dataDir: "data/hxh/" },             // vintage Bandai: Miracle Battle (2011–12); Hyper Battle 1999–2001 em curadoria
     // Em preparação (catálogo ainda vazio; tile "Em breve" no hub):
     jump: { slug: "jump", name: "JUMP", dataDir: "data/jump/" }            // promos curadas (Jump Festa, V-Jump…)
   };

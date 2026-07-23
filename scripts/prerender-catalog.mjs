@@ -29,7 +29,8 @@ const GAMES = [
   { slug: "pokemon", label: "Pokémon TCG" },
   { slug: "lorcana", label: "Disney Lorcana" },
   { slug: "onepiece", label: "One Piece Card Game" },
-  { slug: "naruto", label: "Naruto Card Game (2002~2006)" }
+  { slug: "naruto", label: "Naruto Card Game (2002~2006)" },
+  { slug: "hxh", label: "Hunter × Hunter Carddass" }
 ];
 
 // CSP idêntica à das outras páginas (o <script type=application/ld+json> é bloco

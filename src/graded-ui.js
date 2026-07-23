@@ -182,7 +182,7 @@
         <div class="sales-picker-controls">
           <div class="chip-filter game-filter" id="gradedPickerGame" role="group" aria-label="Jogo">
             <button type="button" class="chip" data-pick-game="all" aria-pressed="${pickGame === "all"}">${escapeHtml(t("filter.gameAll"))}</button>
-            ${shared.GAME_SLUGS.map((g) => `<button type="button" class="chip" data-pick-game="${g}" aria-pressed="${pickGame === g}">${escapeHtml(t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : g === "naruto" ? "filter.gameNaruto" : "filter.gamePokemon"))}</button>`).join("")}
+            ${shared.GAME_SLUGS.map((g) => `<button type="button" class="chip" data-pick-game="${g}" aria-pressed="${pickGame === g}">${escapeHtml(shared.gameLabel(g))}</button>`).join("")}
           </div>
           <input type="search" class="sales-picker-search" placeholder="${escapeAttribute(t("search.placeholder.cards"))}">
           <label class="sales-picker-field"><span>${escapeHtml(t("toolbar.rarity"))}</span>

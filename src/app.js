@@ -323,6 +323,7 @@
       // One Piece: Boosters (OP01…) + Starter Decks (ST-…) + o resto (promos etc.).
       if ((window.SLEEVU && window.SLEEVU.game) === "onepiece") return groupOnePieceSets(setItems);
       if ((window.SLEEVU && window.SLEEVU.game) === "naruto") return groupNarutoSets(setItems);
+      if ((window.SLEEVU && window.SLEEVU.game) === "hxh") return groupHxhSets(setItems);
       // Página de Sets: agrupada por série (coleção).
       return groupSetsBySeries(setItems);
     }
@@ -770,6 +771,27 @@
       items.push({ type: "category-head", name: t("sets.category.promos"), count: extras.length });
       extras.forEach((set) => items.push(set));
     }
+    return items;
+  }
+
+  // Hunter × Hunter (hoje só a linha Miracle Battle): decks montados (HHS),
+  // depois os boosters (HH01…, HHEX) e por fim as promos (código sem número).
+  function groupHxhSets(setItems) {
+    const idOf = (set) => String(set.setId || "").trim().toLowerCase();
+    const isDeck = (set) => /-hhs\d+$/.test(idOf(set));
+    const isPromo = (set) => /-hh$/.test(idOf(set));
+    const decks = setItems.filter(isDeck).sort(sortByReleaseDesc);
+    const promos = setItems.filter(isPromo).sort(sortByReleaseDesc);
+    const boosters = setItems.filter((s) => !isDeck(s) && !isPromo(s)).sort(sortByReleaseDesc);
+    const items = [];
+    const section = (list, key) => {
+      if (!list.length) return;
+      items.push({ type: "category-head", name: t(key), count: list.length });
+      list.forEach((set) => items.push(set));
+    };
+    section(boosters, "sets.category.main");
+    section(decks, "sets.category.decks");
+    section(promos, "sets.category.promos");
     return items;
   }
 

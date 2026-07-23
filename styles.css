@@ -92,6 +92,16 @@
   --accent: #ea580c; --accent-dark: #c2410c; --accent-rgb: 234, 88, 12;
   --accent-soft: rgba(234, 88, 12, 0.1); --on-accent: #ffffff;
 }
+/* Hunter × Hunter: verde (o verde do Gon / da licença de Hunter). Verde claro
+   com texto escuro no tema escuro; verde fechado com texto branco no claro. */
+[data-game-accent="hxh"] {
+  --accent: #4ade80; --accent-dark: #22c55e; --accent-rgb: 74, 222, 128;
+  --accent-soft: rgba(74, 222, 128, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="hxh"] {
+  --accent: #15803d; --accent-dark: #166534; --accent-rgb: 21, 128, 61;
+  --accent-soft: rgba(21, 128, 61, 0.1); --on-accent: #ffffff;
+}
 [data-game-accent="all"] {
   --accent: #e3e7ee; --accent-dark: #c3c9d4; --accent-rgb: 227, 231, 238;
   --accent-soft: rgba(227, 231, 238, 0.12); --on-accent: #0a0c10;
@@ -3213,6 +3223,7 @@ a.hub-tile:hover {
 .sw-lorcana { background: #6d28d9; }
 .sw-onepiece { background: #d9a400; color: #0a0c10; }
 .sw-naruto { background: #ea580c; color: #ffffff; }
+.sw-hxh { background: #15803d; color: #ffffff; }
 .sw-neutral { background: #1b1f27; }
 .settings.colors-off .setting-swatch { background: var(--line); color: var(--subtle); }
 /* Switch (toggle) iOS-like */

@@ -14,7 +14,7 @@ import { readFile, writeFile } from "node:fs/promises";
 
 const ROOT = new URL("../", import.meta.url);
 const BASELINE = new URL("data/catalog-baseline.json", ROOT);
-const GAMES = { pokemon: "data/", lorcana: "data/lorcana/", onepiece: "data/onepiece/", naruto: "data/naruto/", jump: "data/jump/" };
+const GAMES = { pokemon: "data/", lorcana: "data/lorcana/", onepiece: "data/onepiece/", naruto: "data/naruto/", hxh: "data/hxh/", jump: "data/jump/" };
 const UPDATE = process.argv.includes("--update-baseline");
 
 async function readCards(dir) {

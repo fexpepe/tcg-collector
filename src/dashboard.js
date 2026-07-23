@@ -71,7 +71,7 @@
   }
 
   // ── Distribuição por marca (chips) ─────────────────────────────────────────
-  const gameLabel = (g) => t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : g === "naruto" ? "filter.gameNaruto" : "filter.gamePokemon");
+  const gameLabel = (g) => shared.gameLabel(g);
   const dist = shared.GAME_SLUGS
     .map((g) => ({ g, n: distinctOf(g) }))
     .filter((x) => x.n > 0);

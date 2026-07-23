@@ -91,6 +91,7 @@ try {
 await checkCatalog("cards Lorcana", "/data/lorcana/cards.js", "TCG_CARDS", 1500);
 await checkCatalog("cards One Piece", "/data/onepiece/cards.js", "TCG_CARDS", 4000);
 await checkCatalog("cards Naruto", "/data/naruto/cards.js", "TCG_CARDS", 400);
+await checkCatalog("cards Hunter x Hunter", "/data/hxh/cards.js", "TCG_CARDS", 30);
 await checkJson("chunk Pokémon (base1)", "/data/sets/en/base1.json",
   (j) => Array.isArray(j) && j.length >= 100 ? null : "chunk vazio/curto");
 

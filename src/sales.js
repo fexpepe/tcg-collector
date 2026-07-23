@@ -22,7 +22,7 @@
   const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
   const cardGameMap = new Map();
   const gameOf = (id) => cardGameMap.get(id) || "pokemon";
-  const gameLabelOf = (g) => t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : g === "naruto" ? "filter.gameNaruto" : "filter.gamePokemon");
+  const gameLabelOf = (g) => shared.gameLabel(g);
   const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
   const wishlist = shared.mergedWishlistStore(wishlistByGame, gameOf);
   const prices = shared.mergedPriceStore(pricesByGame, gameOf);

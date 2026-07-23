@@ -727,7 +727,6 @@
     let cardHits = [], cardHitsQuery = "";
     const cmdkStores = { col: {}, wl: {} };
     const close = () => { if (overlay) { overlay.remove(); overlay = null; } };
-    const gameLabel = (g) => t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : g === "naruto" ? "filter.gameNaruto" : "filter.gamePokemon");
     function results(q) {
       const out = [];
       const nq = normalize(q);
@@ -1160,7 +1159,8 @@
     pokemon: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"], ["pokedex.html", "nav.pokedex", "pokedex"], ["trainers.html", "nav.trainers", "trainers"], ["artists.html", "nav.artists", "artists"]],
     lorcana: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"], ["artists.html", "nav.artists", "artists"]],
     onepiece: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"]],
-    naruto: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"]]
+    naruto: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"]],
+    hxh: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"]]
   };
   function buildExploreSubnav(active) {
     const game = currentGame();
@@ -1424,6 +1424,7 @@
     if (s.indexOf("lorcana") >= 0) return "lorcana";
     if (s.indexOf("one piece") >= 0 || s.indexOf("onepiece") >= 0) return "onepiece";
     if (s.indexOf("naruto") >= 0) return "naruto";
+    if (s.indexOf("hunter") >= 0 || s.indexOf("hxh") >= 0) return "hxh";
     if (s.indexOf("pok") >= 0) return "pokemon";
     return ""; // desconhecido: tenta todos
   }
@@ -2780,8 +2781,9 @@
         { key: "liga", label: "LigaLorcana", url: (card) => `https://www.ligalorcana.com.br/?view=cards/search&card=${enc(card.name)}` }
       ];
     }
-    if (game === "naruto") {
-      // Nenhuma loja BR lista o NARUTO カードゲーム de 2003 — sem chips BR.
+    if (game === "naruto" || game === "hxh") {
+      // Nenhuma loja BR lista os Carddass japoneses (NARUTO 2003, HUNTER×HUNTER
+      // Miracle Battle) — sem chips BR.
       return [];
     }
     if (game === "onepiece") {
@@ -2804,7 +2806,7 @@
   // jogo atual.
   function usMarketplaces(game, gradedTag) {
     const line = game === "lorcana" ? "lorcana" : game === "onepiece" ? "one-piece-card-game" : "pokemon";
-    const noTcgplayer = game === "naruto"; // TCGplayer não lista o jogo de 2003
+    const noTcgplayer = game === "naruto" || game === "hxh"; // TCGplayer não lista os Carddass JP
     // Carta graduada: eBay e PriceCharting buscam com a graduadora+nota (ex.: "PSA
     // 9") junto do nome — é onde o preço graded mora. O TCGplayer não lista graded,
     // então segue com a busca normal (sem o tag).
@@ -2830,7 +2832,7 @@
   }
 
   function usSearchText(card, game) {
-    const prefix = game === "lorcana" ? "lorcana" : game === "onepiece" ? "one piece" : game === "naruto" ? "naruto card game" : "pokemon";
+    const prefix = game === "lorcana" ? "lorcana" : game === "onepiece" ? "one piece" : game === "naruto" ? "naruto card game" : game === "hxh" ? "hunter x hunter carddass" : "pokemon";
     return `${prefix} ${card.name} ${cardCode(card)}`.trim();
   }
 
@@ -2953,7 +2955,16 @@
     ["sengoku", ["センゴク"]], ["ivankov", ["イワンコフ"]], ["bonney", ["ボニー"]],
     ["kidd", ["キッド"]], ["kid", ["キッド"]], ["drake", ["ドレーク"]], ["law", ["トラファルガー", "ロー"]],
     ["vivi", ["ビビ"]], ["smoker", ["スモーカー"]], ["arlong", ["アーロン"]], ["sabo", ["サボ"]],
-    ["monkey", ["モンキー"]], ["gomu", ["ゴムゴム"]], ["merry", ["メリー"]], ["sunny", ["サニー"]]
+    ["monkey", ["モンキー"]], ["gomu", ["ゴムゴム"]], ["merry", ["メリー"]], ["sunny", ["サニー"]],
+    // HUNTER×HUNTER
+    ["gon", ["ゴン"]], ["freecss", ["フリークス"]], ["killua", ["キルア"]], ["zoldyck", ["ゾルディック"]],
+    ["kurapika", ["クラピカ"]], ["leorio", ["レオリオ"]], ["hisoka", ["ヒソカ"]], ["kuroro", ["クロロ"]],
+    ["chrollo", ["クロロ"]], ["lucilfer", ["ルシルフル"]], ["biscuit", ["ビスケット"]], ["bisky", ["ビスケット"]],
+    ["kruger", ["クルーガー"]], ["shizuku", ["シズク"]], ["shalnark", ["シャルナーク"]], ["feitan", ["フェイタン"]],
+    ["machi", ["マチ"]], ["nobunaga", ["ノブナガ"]], ["uvogin", ["ウボォー"]], ["pakunoda", ["パクノダ"]],
+    ["netero", ["ネテロ"]], ["zushi", ["ズシ"]], ["wing", ["ウイング"]], ["kite", ["カイト"]],
+    ["ging", ["ジン"]], ["illumi", ["イルミ"]], ["genthru", ["ゲンスルー"]], ["meruem", ["メルエム"]],
+    ["nen", ["念"]], ["kurta", ["クルタ"]], ["ryodan", ["旅団"]], ["phantom", ["幻影旅団"]]
   ];
   const JP_CHARS = /[぀-ヿ一-鿿]/;
   function jpNameAliases(jpName) {
@@ -3491,12 +3502,21 @@
     { game: "pokemon", dataDir: "data/" },
     { game: "lorcana", dataDir: "data/lorcana/" },
     { game: "onepiece", dataDir: "data/onepiece/" },
-    { game: "naruto", dataDir: "data/naruto/" }
+    { game: "naruto", dataDir: "data/naruto/" },
+    { game: "hxh", dataDir: "data/hxh/" }
   ];
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
   const GAME_SLUGS = DATA_GAMES.map((d) => d.game);
-  const GAME_COLOR = { pokemon: "#e23030", lorcana: "#3f3d96", onepiece: "#d9a400", naruto: "#ea580c" };
+  const GAME_COLOR = { pokemon: "#e23030", lorcana: "#3f3d96", onepiece: "#d9a400", naruto: "#ea580c", hxh: "#15803d" };
+  // Rótulo curto do jogo (chips, filtros, resumos). UM lugar só: as telas chamam
+  // shared.gameLabel em vez de repetir o mesmo ternário em cada página — assim
+  // um jogo novo aparece rotulado em todas elas de uma vez.
+  const GAME_LABEL_KEY = {
+    pokemon: "filter.gamePokemon", lorcana: "filter.gameLorcana",
+    onepiece: "filter.gameOnePiece", naruto: "filter.gameNaruto", hxh: "filter.gameHxh"
+  };
+  function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }
   // Jogos por MARCA: cada IP pode ter várias LINHAS de jogo (o principal e os
   // vintage). A NAVEGAÇÃO do Explorar trata cada linha como um jogo próprio
   // (?line= define o escopo; sem line = só o jogo principal, excluindo as
@@ -3979,6 +3999,7 @@
     setGameColors,
     GAME_SLUGS,
     GAME_COLOR,
+    gameLabel,
     normalizeGame,
     gameDataDir,
     getTheme,
@@ -5170,9 +5191,7 @@
         window.location.href = "collection.html";
       });
     }
-    function gameShortLabel(g) {
-      return t(g === "lorcana" ? "filter.gameLorcana" : g === "onepiece" ? "filter.gameOnePiece" : g === "naruto" ? "filter.gameNaruto" : "filter.gamePokemon");
-    }
+    const gameShortLabel = gameLabel;
     // API pública: outras telas (e testes) podem disparar a importação com um
     // File/Blob de CSV sem depender do menu da conta (que exige login).
     window.TCGShared.importCsvFile = importGenericCsv;
