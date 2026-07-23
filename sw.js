@@ -20,6 +20,8 @@ const IMAGE_HOSTS = new Set([
   "raw.githubusercontent.com",    // artes da PokéAPI (Pokédex)
   "tcgplayer-cdn.tcgplayer.com",  // imagens JP da PPT (onde a TCGdex não tem)
   "cards.lorcast.io",             // imagens de cartas do Lorcana (Lorcast)
+  "cards.scryfall.io",            // imagens de cartas do Magic (Scryfall)
+  "svgs.scryfall.io",             // ícones de set do Magic (Scryfall)
   "wsrv.nl"                       // proxy de resize (scans vintage do One Piece Carddass)
 ]);
 

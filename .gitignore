@@ -13,6 +13,13 @@ data/*/*.generated.json
 # snapshot validado de volta (carta indexada nunca some, mesmo se a TCGdex sumir).
 # Chunks por set dos outros jogos (gerados por writeGameCatalog no build)
 data/*/sets/
+# Magic segue o padrão POKÉMON: chunks versionados (delta pequeno por set no
+# git), e o cards.js monolítico (~30MB, mudaria toda semana = blob novo gigante)
+# fica de fora — é regenerado dos chunks no build (sync-magic.mjs --no-fetch).
+!data/magic/sets/
+data/magic/cards.js
+data/magic/indexes.js
+data/magic/pricing.js
 
 # Páginas de set pré-renderizadas p/ SEO (geradas no build por scripts/prerender-catalog.mjs)
 set/
