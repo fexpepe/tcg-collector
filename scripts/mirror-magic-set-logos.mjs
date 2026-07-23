@@ -14,13 +14,14 @@
 // Saída: data/magic/set-logos/<code>.svg. O sync-magic lê esta pasta e usa o
 // símbolo local como setLogo quando existe. Idempotente (skip-if-exists).
 //   node scripts/mirror-magic-set-logos.mjs [--force]
-import { writeFile, mkdir } from "node:fs/promises";
+import { readFile, readdir, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { fetchRetry, mapLimit, sleep, winSafeName } from "./lib/sync-common.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/magic/set-logos/", ROOT);
+const CHUNKS = new URL("data/magic/sets/", ROOT);
 const HEADERS = { "User-Agent": "Sleevu/1.0 (https://sleevu.app)", Accept: "application/json" };
 const FORCE = process.argv.includes("--force");
 const FILL = "#9aa4b2";
@@ -60,6 +61,30 @@ async function run() {
     } catch { fail++; }
   });
   console.log(`  baixados: ${ok} · já existiam: ${skip} · falharam: ${fail}`);
+
+  // Reescreve os chunks já gerados (data/magic/sets/<code>.json) pro setLogo
+  // local — igual ao mirror-set-logos do Pokémon. Assim os símbolos localizam
+  // mesmo sem re-rodar o sync-magic (que é lento pelo rate limit da API). O
+  // sync-magic também localiza ao regenerar; os dois convergem no mesmo path.
+  let chunkFiles = [];
+  try { chunkFiles = (await readdir(CHUNKS)).filter((f) => f.endsWith(".json")); } catch { /* sem chunks ainda */ }
+  let rewritten = 0;
+  for (const f of chunkFiles) {
+    const url = new URL(f, CHUNKS);
+    let cards;
+    try { cards = JSON.parse(await readFile(url, "utf8")); } catch { continue; }
+    if (!cards.length) continue;
+    // O código vem do setId de DENTRO do chunk (não do nome do arquivo: o
+    // writeGameCatalog prefixa nomes reservados, ex. chunk "_con.json" p/ o
+    // setId "con"). O logo usa o sufixo winSafeName ("con" -> "con_.svg").
+    const localFile = winSafeName(cards[0].setId) + ".svg";
+    if (!existsSync(new URL(localFile, OUT))) continue; // símbolo não baixou: mantém remoto
+    const localPath = `data/magic/set-logos/${localFile}`;
+    let changed = false;
+    for (const c of cards) { if (c.setLogo !== localPath) { c.setLogo = localPath; changed = true; } }
+    if (changed) { await writeFile(url, JSON.stringify(cards), "utf8"); rewritten++; }
+  }
+  if (chunkFiles.length) console.log(`  chunks reescritos p/ símbolo local: ${rewritten}/${chunkFiles.length}`);
   console.log(`Saída: ${fileURLToPath(OUT)} — commitar os arquivos novos.`);
 }
 
