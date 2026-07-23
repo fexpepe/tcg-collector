@@ -119,14 +119,13 @@ export async function writeGameCatalog(outDirUrl, { cards, indexes, pricing, web
   const used = new Set();
   const manifestSets = [];
   for (const [setId, chunk] of bySet) {
-    // Windows reserva CON/PRN/AUX/NUL/COM1-9/LPT1-9 como nomes de dispositivo: um
-    // chunk <base>.json com esses nomes não pode ser criado nem passar por checkout
-    // no Windows (o CI Linux gera, mas trava git pull/rebase local — ex.: Conflux
-    // do Magic = "con"). Prefixa "_"; o manifest.file carrega o nome, então o
-    // cliente (que busca só por .file) segue idêntico e o setId nos dados não muda.
-    let base = slug(setId) || "set";
-    if (/^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/.test(base)) base = `_${base}`;
-    let f = base, i = 2;
+    // Nome do chunk seguro pro Windows via winSafeName (CON/AUX/PRN/NUL/COM/LPT
+    // são dispositivos reservados — ex.: Conflux do Magic = "con", que trava o
+    // checkout/git no Windows; o CI Linux gera, mas o pull/rebase local quebra).
+    // O manifest.file carrega o nome, então o cliente (que busca só por .file)
+    // segue idêntico e o setId nos dados não muda.
+    let f = winSafeName(slug(setId) || "set"), i = 2;
+    const base = f;
     while (used.has(f)) f = `${base}-${i++}`;
     used.add(f);
     await writeFile(new URL(`${f}.json`, setsDir), JSON.stringify(chunk), "utf8");
