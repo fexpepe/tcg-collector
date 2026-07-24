@@ -8,7 +8,10 @@
 //    da rede quando online (assim um deploy novo é sempre pego, sem o app ficar
 //    preso numa versão velha) e caem no cache quando offline — fazendo o app
 //    abrir e a coleção já vista funcionar sem internet (PWA instalável).
-const SHELL_CACHE = "tcg-shell-v225";
+// v226: entram as páginas de Decks (decks.html pública + my-decks.html pessoal)
+// e os scripts do construtor. Bump obrigatório — sem ele o SW instalado segue
+// servindo o shell antigo, que não conhece as páginas novas.
+const SHELL_CACHE = "tcg-shell-v226";
 // IMAGE_CACHE vai a v2: a versão anterior do SW podia cravar um erro 404/timeout
 // como imagem "opaca" por 7 dias (imagem quebrada presa até um hard refresh).
 // Renomear o cache faz o activate apagar o antigo UMA vez — limpa os erros
@@ -36,10 +39,15 @@ const SHELL_ASSETS = [
   "./", "index.html", "hub.html", "pokedex.html", "sets.html", "artists.html",
   "trainers.html", "collection.html", "wishlist.html", "portfolio.html", "explore.html", "dashboard.html", "badges.html",
   "backup.html", "detail.html", "binders.html", "cards.html", "sales.html", "graded.html", "about.html", "novidades.html", "faq.html", "help.html", "privacy.html", "terms.html", "login.html", "settings.html", "profile.html", "admin.html",
+  "decks.html", "my-decks.html",
   "styles.css", "favicon.svg", "icon.svg", "assets/brand/sleevu-wordmark.svg", "manifest.json",
+  // Fonte da marca (auto-hospedada): precisa estar no shell pra o app abrir
+  // offline com a tipografia certa, sem "trocar de fonte" ao reconectar.
+  "assets/fonts/outfit-latin.woff2", "assets/fonts/outfit-latin-ext.woff2",
   "src/theme.js", "src/game.js", "src/i18n.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js", "src/explore.js", "src/dashboard.js", "src/badges.js",
   "src/home.js", "src/wishlist.js", "src/portfolio.js", "src/binders.js",
-  "src/backup.js", "src/graded-ui.js", "src/cards.js", "src/sales.js", "src/graded.js", "src/login.js", "src/hub.js", "src/settings.js", "src/profile.js", "src/admin.js"
+  "src/backup.js", "src/graded-ui.js", "src/cards.js", "src/sales.js", "src/graded.js", "src/login.js", "src/hub.js", "src/settings.js", "src/profile.js", "src/admin.js",
+  "src/deck-rules.js", "src/decks.js"
 ];
 
 // Tetos por cache (FIFO): imagens ~17KB cada; chunks de set são o catálogo.

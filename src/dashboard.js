@@ -90,7 +90,10 @@
     portfolio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="m4 15 5-6 4 3 6-8"/></svg>',
     explore: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>',
     games: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg>',
-    badges: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.5 14-2 7 5.5-3 5.5 3-2-7"/></svg>'
+    badges: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.5 14-2 7 5.5-3 5.5 3-2-7"/></svg>',
+    // Decks: duas cartas empilhadas em leque (monte de deck), distinto do binder
+    // (que é um álbum aberto com lombada).
+    decks: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="12" height="16" rx="2"/><path d="M4.5 6.5v12a2 2 0 0 0 2 2h9"/></svg>'
   };
   const soldTotal = shared.readSoldList().length;
   const links = [
@@ -98,6 +101,7 @@
     { href: "graded.html", icon: "graded", key: "nav.graded", stat: tn("dash.slabsCount", slabs) },
     { href: "wishlist.html", icon: "wishlist", key: "nav.wishlist", stat: tn("dash.wishCount", wishTotal) },
     { href: "binders.html", icon: "binders", key: "nav.binders", stat: "" },
+    { href: "my-decks.html", icon: "decks", key: "nav.myDecks", stat: t("dash.decksHint") },
     { href: "sales.html", icon: "sales", key: "nav.sales", stat: tn("dash.salesCount", salesCount()) + (soldTotal ? ` · ${tn("dash.soldCount", soldTotal)}` : "") },
     { href: "portfolio.html", icon: "portfolio", key: "nav.portfolio", stat: pf != null ? shared.formatMoney(shared.getCurrency(), pf) : "" },
     { href: "badges.html", icon: "badges", key: "dash.badges", stat: t("dash.badgesHint") }

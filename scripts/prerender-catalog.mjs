@@ -40,6 +40,9 @@ const GAMES = [
 const STATIC_URLS = [
   "/", "/hub", "/explore", "/dashboard", "/cards", "/pokedex", "/sets", "/artists", "/trainers",
   "/collection", "/wishlist", "/portfolio", "/binders", "/sales", "/graded",
+  // /decks é a galeria PÚBLICA (indexável). /my-decks fica de fora de propósito:
+  // é página pessoal e está marcada noindex.
+  "/decks",
   "/about", "/novidades", "/faq", "/help", "/privacy", "/terms"
 ];
 

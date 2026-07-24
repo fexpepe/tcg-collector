@@ -1099,7 +1099,9 @@
       }
     }
     const exploreActive = ["pokedex", "trainers", "sets", "artists", "cards", "hub"].includes(active);
-    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "graded"].includes(active);
+    // "Meus Decks" é página PESSOAL (entra pelo Dashboard), então acende a
+    // Coleção — diferente de "Decks", que é a galeria PÚBLICA e tem item próprio.
+    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "graded", "mydecks"].includes(active);
 
     const link = (href, key, page) => `<a href="${escapeAttribute(href)}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
     const group = (key, isActive, links) => `
@@ -1123,9 +1125,13 @@
     // Toda Coleção e Portfólio são páginas PESSOAIS: só existem no menu com
     // login (deslogado, o "Entrar" do header é o caminho — sem atalhos mortos).
     const loggedIn = !!getSession();
+    // Decks fica FORA da Coleção e aparece deslogado de propósito: a galeria da
+    // comunidade é conteúdo público (e indexável) — é a porta de entrada de quem
+    // ainda não tem conta. Criar/salvar deck é que exige login, dentro da página.
     nav.innerHTML = `
       ${link(apexUrl, "nav.home", "home")}
       ${exploreMega}
+      ${link("decks.html", "nav.decks", "decks")}
       ${loggedIn ? `<a href="dashboard.html"${collectionActive ? ' class="active"' : ""}>${escapeHtml(t("nav.collection"))}</a>
       ${link("portfolio.html", "nav.portfolio", "portfolio")}` : ""}
     `;
@@ -2846,44 +2852,60 @@
   // abre a busca pra conferir o preço e digitar no campo manual). Cada um tem
   // sua própria formatação de número (ver as helpers de query abaixo).
   const enc = (s) => encodeURIComponent(s);
-  // Marketplaces por jogo (a rede "Liga" tem um site por TCG — ligapokemon /
-  // ligalorcana — mesma plataforma de busca). No Lorcana só a LigaLorcana (BR);
-  // LigaBRA/MYP são focados em Pokémon.
+  // ── Marketplaces por jogo ──────────────────────────────────────────────────
+  // A rede "Liga" tem UM SITE POR TCG (mesma plataforma de busca, domínio
+  // diferente): ligapokemon, ligamagic, ligayugioh… Mandar carta de Magic pra
+  // LigaPokémon (o que acontecia com todo jogo fora da lista antiga) não acha
+  // nada. Tabela declarativa pra não repetir esse bug ao entrar um jogo novo.
+  //
+  // Verificado em 24/07/2026 (todos responderam 200 e a busca casou o termo):
+  //   liga     — domínio da rede Liga; busca `?view=cards/search&card=`.
+  //              Dragon Ball é o único com SUBDOMÍNIO: ligadragonball serve um
+  //              seletor (Fusion World × Masters) — o nosso é `fusion.`.
+  //   myp      — mypcards.com/<caminho>. NÃO inclui Dragon Ball: /dragonball
+  //              responde 200 mas com metadados de outro jogo (Gundam/Lorcana),
+  //              então não é seção real. /fusionworld dá 404.
+  //   ligabra  — a busca é presa ao contexto Pokémon do site ("Sol Ring" -> 0
+  //              resultados), então fica SÓ no Pokémon.
+  //   tcgLine  — productLineName do TCGplayer (confirmado pelo "in <Linha>" da
+  //              página de resultado, não derivado do nome).
+  //   usText   — prefixo da busca no eBay/PriceCharting.
+  // naruto/hxh: Carddass japonês, nenhuma loja BR lista e o TCGplayer não tem.
+  const MARKETS = {
+    pokemon:   { liga: ["LigaPokémon", "https://www.ligapokemon.com.br"], myp: "pokemon", ligabra: true, padded: true, tcgLine: "pokemon", usText: "pokemon" },
+    lorcana:   { liga: ["LigaLorcana", "https://www.ligalorcana.com.br"], myp: "lorcana", tcgLine: "lorcana", usText: "lorcana" },
+    onepiece:  { liga: ["LigaOnePiece", "https://www.ligaonepiece.com.br"], myp: "onepiece", tcgLine: "one-piece-card-game", usText: "one piece" },
+    magic:     { liga: ["LigaMagic", "https://www.ligamagic.com.br"], myp: "magic", tcgLine: "magic", usText: "mtg" },
+    ygo:       { liga: ["LigaYugioh", "https://www.ligayugioh.com.br"], myp: "yugioh", tcgLine: "yugioh", usText: "yugioh" },
+    digimon:   { liga: ["LigaDigimon", "https://www.ligadigimon.com.br"], myp: "digimon", tcgLine: "digimon-card-game", usText: "digimon" },
+    fab:       { liga: ["LigaFAB", "https://www.ligafab.com.br"], myp: "fab", tcgLine: "flesh-and-blood-tcg", usText: "flesh and blood" },
+    gundam:    { liga: ["LigaGundam", "https://www.ligagundam.com.br"], myp: "gundam", tcgLine: "gundam-card-game", usText: "gundam card game" },
+    dbfw:      { liga: ["LigaDragonBall", "https://fusion.ligadragonball.com.br"], tcgLine: "dragon-ball-super-fusion-world", usText: "dragon ball fusion world" },
+    riftbound: { liga: ["LigaRiftbound", "https://www.ligariftbound.com.br"], myp: "riftbound", tcgLine: "riftbound-league-of-legends-trading-card-game", usText: "riftbound" },
+    naruto:    { usText: "naruto card game", noTcgplayer: true },
+    hxh:       { usText: "hunter x hunter carddass", noTcgplayer: true }
+  };
+  function marketOf(game) { return MARKETS[game] || MARKETS.pokemon; }
+
   function brMarketplaces(game) {
-    if (game === "lorcana") {
-      // Busca SÓ pelo nome (que já inclui a versão, ex.: "Hades - Looking for a
-      // Deal"). A raridade entre parênteses — "(Legendary)", "(Enchanted)" — fazia
-      // a busca da LigaLorcana não retornar nada; sem ela casa certo.
-      return [
-        { key: "liga", label: "LigaLorcana", url: (card) => `https://www.ligalorcana.com.br/?view=cards/search&card=${enc(card.name)}` }
-      ];
-    }
-    if (game === "naruto" || game === "hxh") {
-      // Nenhuma loja BR lista os Carddass japoneses (NARUTO 2003, HUNTER×HUNTER
-      // Miracle Battle) — sem chips BR.
-      return [];
-    }
-    if (game === "onepiece") {
-      // Liga tem site próprio de One Piece; MYP também lista o jogo. A busca por
-      // nome + código oficial ("Monkey.D.Luffy OP01-003") casa melhor que só nome.
-      return [
-        { key: "liga", label: "LigaOnePiece", url: (card) => `https://www.ligaonepiece.com.br/?view=cards/search&card=${enc(card.name)}` },
-        { key: "myp", label: "MYP", url: (card) => `https://mypcards.com/onepiece?ProdutoSearch%5Bquery%5D=${enc(card.name)}` }
-      ];
-    }
-    return [
-      { key: "liga", label: "LigaPokémon", url: (card) => `https://www.ligapokemon.com.br/?view=cards/search&card=${enc(paddedCardQuery(card, true))}` },
-      { key: "ligabra", label: "LigaBRA", url: (card) => `https://ligabra.com/filter-products/${enc(cardSearchQuery(card))}` },
-      { key: "myp", label: "MYP", url: (card) => `https://mypcards.com/pokemon?ProdutoSearch%5Bquery%5D=${enc(paddedCardQuery(card, false))}` }
-    ];
+    const m = marketOf(game);
+    const out = [];
+    // Só o Pokémon usa a query com número zerado à esquerda ("Nome (004/102)").
+    // Nos demais, token extra faz a busca da Liga/MYP voltar VAZIA — o nome puro
+    // já casa (no Lorcana ele inclusive traz a versão: "Hades - Looking for a Deal").
+    const q = (card) => (m.padded ? paddedCardQuery(card, true) : card.name);
+    if (m.liga) out.push({ key: "liga", label: m.liga[0], url: (card) => `${m.liga[1]}/?view=cards/search&card=${enc(q(card))}` });
+    if (m.ligabra) out.push({ key: "ligabra", label: "LigaBRA", url: (card) => `https://ligabra.com/filter-products/${enc(cardSearchQuery(card))}` });
+    if (m.myp) out.push({ key: "myp", label: "MYP", url: (card) => `https://mypcards.com/${m.myp}?ProdutoSearch%5Bquery%5D=${enc(m.padded ? paddedCardQuery(card, false) : card.name)}` });
+    return out;
   }
 
-  // Mercado internacional/EUA — funciona pros dois jogos (eBay/TCGplayer/
-  // PriceCharting têm Lorcana). A linha do TCGplayer e o texto de busca seguem o
-  // jogo atual.
+  // Mercado internacional/EUA (eBay/TCGplayer/PriceCharting). A linha do
+  // TCGplayer e o texto de busca seguem o jogo da CARTA (ver brMarketplaceLinks).
   function usMarketplaces(game, gradedTag) {
-    const line = game === "lorcana" ? "lorcana" : game === "onepiece" ? "one-piece-card-game" : "pokemon";
-    const noTcgplayer = game === "naruto" || game === "hxh"; // TCGplayer não lista os Carddass JP
+    const m = marketOf(game);
+    const line = m.tcgLine || "pokemon";
+    const noTcgplayer = !!m.noTcgplayer; // TCGplayer não lista os Carddass JP
     // Carta graduada: eBay e PriceCharting buscam com a graduadora+nota (ex.: "PSA
     // 9") junto do nome — é onde o preço graded mora. O TCGplayer não lista graded,
     // então segue com a busca normal (sem o tag).
@@ -2892,7 +2914,7 @@
       { key: "ebay", label: "eBay", url: (card) => `https://www.ebay.com/sch/i.html?_nkw=${enc(usSearchText(card, game) + g)}` },
       { key: "tcgplayer", label: "TCGplayer", url: (card) => `https://www.tcgplayer.com/search/${line}/product?productLineName=${line}&q=${enc(usSearchText(card, game))}` },
       { key: "pricecharting", label: "PriceCharting", url: (card) => `https://www.pricecharting.com/search-products?type=prices&q=${enc(usSearchText(card, game) + g)}` }
-    ].filter((m) => !(noTcgplayer && m.key === "tcgplayer"));
+    ].filter((entry) => !(noTcgplayer && entry.key === "tcgplayer"));
   }
 
   // Selo "PSA 9" (cor da graduadora) e o sufixo de busca pras lojas — usados só
@@ -2908,9 +2930,10 @@
     return `<span class="graded-badge" style="--slab-bg:${bg};--slab-fg:${fg}">${escapeHtml(String(g.company).toUpperCase())} ${escapeHtml(gradedGradeText(g.grade, g.pristine))}</span>`;
   }
 
+  // Prefixo do jogo na busca do eBay/PriceCharting (sem ele, "Agumon" no eBay
+  // traz brinquedo e mangá). Vem da mesma tabela MARKETS.
   function usSearchText(card, game) {
-    const prefix = game === "lorcana" ? "lorcana" : game === "onepiece" ? "one piece" : game === "naruto" ? "naruto card game" : game === "hxh" ? "hunter x hunter carddass" : "pokemon";
-    return `${prefix} ${card.name} ${cardCode(card)}`.trim();
+    return `${marketOf(game).usText || "pokemon"} ${card.name} ${cardCode(card)}`.trim();
   }
 
   // Separa número e total ("4/102" -> {4,102}; ou number "4" + setTotal "102").
@@ -4186,6 +4209,9 @@
     loadCatalog,
     loadCatalogForCardIds,
     loadOwnedAcrossGames,
+    // Catálogo de UM jogo (pode ser diferente do jogo da sessão) — o construtor
+    // de decks precisa disto: um deck de Lorcana aberto numa sessão Pokémon.
+    loadGameCatalog,
     showSkeletons,
     pageLoading,
     uiEditorEnabled,

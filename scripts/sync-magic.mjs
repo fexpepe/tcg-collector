@@ -34,6 +34,12 @@ const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("data/magic/", ROOT);
 const CHUNKS = new URL("data/magic/sets/", ROOT);
 const CACHE = new URL("data/.cache/magic/", ROOT);
+// Versão do FORMATO da carta gravada no cache. O cache guarda a carta já
+// transformada (não a resposta crua), então mudar o shape do makeCard sem
+// invalidar deixaria os sets estáveis (card_count igual) presos no formato
+// antigo pra sempre. Bump obrigatório a cada campo novo/renomeado.
+//   v2: campos de deck (cardType, manaCost, cost, color, colorId).
+const CACHE_VERSION = 2;
 
 const argv = process.argv.slice(2);
 const NO_FETCH = argv.includes("--no-fetch");
@@ -124,7 +130,20 @@ function makeCard(c, set, usedIds, pricing) {
   if (num(p.eur)) pr.e = num(p.eur);
   if (Object.keys(pr).length) pricing[id] = pr;
 
-  return {
+  // Campos de DECK (construtor de decks). O Scryfall já mandou tudo isto na mesma
+  // resposta — só não era gravado. Nomes alinhados com os outros jogos pra engine
+  // de decks ser genérica: `cardType` (= type_line), `cost` (= cmc, numérico, vira
+  // a curva) e `color` (";"-joined, como no Digimon/Gundam).
+  // Carta de duas faces (transform/modal): o topo vem vazio — cai pra 1ª face.
+  const face0 = faces[0] || {};
+  const cardType = c.type_line || face0.type_line || "";
+  const manaCost = c.mana_cost || face0.mana_cost || "";
+  const colors = Array.isArray(c.colors) ? c.colors : (Array.isArray(face0.colors) ? face0.colors : []);
+  // color_identity é sempre do card inteiro (as duas faces somadas) — é o que
+  // Commander usa pra legalidade, então guardamos separado das cores de custo.
+  const colorId = Array.isArray(c.color_identity) ? c.color_identity : [];
+
+  const card = {
     id,
     name: c.name,
     set: set.name,
@@ -144,6 +163,16 @@ function makeCard(c, set, usedIds, pricing) {
       ? `data/magic/set-logos/${winSafeName(set.code)}.svg`
       : (set.icon_svg_uri || "")
   };
+
+  // Só grava o que existe: campo vazio em ~100k cartas viraria peso morto no
+  // catálogo (que é servido em chunks).
+  if (cardType) card.cardType = cardType;
+  if (manaCost) card.manaCost = manaCost;
+  if (typeof c.cmc === "number") card.cost = c.cmc;
+  if (colors.length) card.color = colors.join(";");
+  if (colorId.length) card.colorId = colorId.join(";");
+
+  return card;
 }
 
 // Busca as cartas de UM set (paginado), com cache incremental: o cache vale
@@ -152,7 +181,7 @@ async function fetchSetCards(set, pricing, usedIds) {
   const cacheFile = new URL(`${set.code}.json`, CACHE);
   try {
     const cached = JSON.parse(await readFile(cacheFile, "utf8"));
-    if (cached && cached.count === set.card_count && Array.isArray(cached.cards)) {
+    if (cached && cached.v === CACHE_VERSION && cached.count === set.card_count && Array.isArray(cached.cards)) {
       for (const c of cached.cards) usedIds.add(c.id);
       Object.assign(pricing, cached.pricing || {});
       return cached.cards;
@@ -178,7 +207,7 @@ async function fetchSetCards(set, pricing, usedIds) {
   }
   Object.assign(pricing, localPricing);
   await mkdir(CACHE, { recursive: true });
-  await writeFile(cacheFile, JSON.stringify({ count: set.card_count, cards, pricing: localPricing }), "utf8");
+  await writeFile(cacheFile, JSON.stringify({ v: CACHE_VERSION, count: set.card_count, cards, pricing: localPricing }), "utf8");
   return cards;
 }
 

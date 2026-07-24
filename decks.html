@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="title.decks">Decks da comunidade - Sleevu</title>
+    <meta name="description" content="Decks de Pokémon, Magic, Lorcana, One Piece, Yu-Gi-Oh e mais, criados pela comunidade. Veja a lista de cartas, o custo total e quanto falta pra você montar o seu.">
+    <link rel="canonical" href="https://sleevu.app/decks">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sleevu.app/decks">
+    <meta property="og:title" content="Decks da comunidade — Sleevu">
+    <meta property="og:description" content="Decks criados pela comunidade, com custo total e quanto falta pra você montar o seu.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://assets.tcgdex.net">
+    <link rel="preconnect" href="https://tcgplayer-cdn.tcgplayer.com">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#101218">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <script src="src/game.js"></script>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">Sleevu</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page="decks"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-head">
+        <h1 data-i18n="decks.publicHeading">Decks da comunidade</h1>
+        <p class="page-sub" data-i18n="decks.publicLead">Veja o que a comunidade está montando — lista de cartas, custo total e quanto falta pra você montar o seu.</p>
+      </div>
+
+      <!-- Galeria pública: aberta a QUALQUER visitante (sem login). Criar/salvar
+           deck é que pede conta — ver docs/DECKS.md §12. -->
+      <section class="empty-state">
+        <h2 data-i18n="decks.soonTitle">Em breve</h2>
+        <p data-i18n="decks.publicSoon">Os decks da comunidade aparecem aqui — em alta, novos e mais copiados, com filtro por jogo. Enquanto isso, crie sua conta pra ser um dos primeiros a publicar.</p>
+        <p><a class="cta" href="login.html" data-i18n="decks.publicCta">Criar conta grátis</a></p>
+      </section>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/shared.js"></script>
+  </body>
+</html>

@@ -315,6 +315,21 @@ function toAppCard(card, fallbackLanguage, fullSet) {
     price: compactPrice(card.pricing)
   };
   if (!appCard.price) delete appCard.price;
+
+  // Campos de DECK (construtor de decks). A TCGdex já manda tudo isto no card
+  // completo — só não era gravado. `category` (acima) já dá o supertipo
+  // (Pokemon/Trainer/Energy); estes quatro completam o que a regra precisa:
+  //   energyType: "Normal" = energia BÁSICA (única isenta do limite de 4 cópias),
+  //     "Special" = energia especial (limitada). Confirmado na API: a básica vem
+  //     como Normal + stage "Basic"; NÃO existe energyType "Basic".
+  //   types/stage/trainerType -> facetas e curva de estágio na busca do editor.
+  // Multi-valor vira string ";"-joined (mesma convenção do opColor do One Piece).
+  const types = Array.isArray(card.types) ? card.types.filter(Boolean) : [];
+  if (types.length) appCard.types = types.join(";");
+  if (card.stage) appCard.stage = card.stage;
+  if (card.energyType) appCard.energyType = card.energyType;
+  if (card.trainerType) appCard.trainerType = card.trainerType;
+
   return appCard;
 }
 

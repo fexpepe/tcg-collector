@@ -32,3 +32,10 @@
   Cache-Control: no-cache
 /styles.css
   Cache-Control: no-cache
+
+# Fonte da marca: conteúdo imutável (o .woff2 do Outfit v15 não muda). Cache
+# longo evita re-baixar 31KB a cada visita. Ao trocar a fonte, RENOMEIE o
+# arquivo (outfit-v16-…) em vez de sobrescrever — com immutable, o navegador
+# não revalida e ficaria com a versão velha por um ano.
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable

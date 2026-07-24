@@ -4,6 +4,31 @@
    coleção compartilhada). */
 [hidden] { display: none !important; }
 
+/* Outfit (Google Fonts, licença OFL) — AUTO-HOSPEDADA de propósito:
+   1. a CSP é `default-src 'self'` sem font-src, então o fonts.gstatic.com seria
+      BLOQUEADO (liberar exigiria afrouxar style-src e font-src);
+   2. o site é PWA offline — fonte externa não é cacheável pelo nosso SW;
+   3. sem DNS/TLS extra pro Google no carregamento.
+   Arquivo VARIÁVEL (weight 100–900 num só .woff2): cobre os pesos 650/700/800/900
+   que o site usa sem baixar um arquivo por peso. unicode-range faz o navegador
+   pegar o latin-ext só quando a página tiver esses caracteres. */
+@font-face {
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap; /* texto aparece na hora com a fonte de sistema e troca depois */
+  src: url("assets/fonts/outfit-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("assets/fonts/outfit-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 :root {
   color-scheme: dark;
   /* Largura do conteúdo (header, main, footer) — mais largo, estilo Collectr. */
@@ -157,7 +182,11 @@ body {
     linear-gradient(180deg, rgba(var(--accent-rgb), 0.08), transparent 240px),
     var(--bg);
   color: var(--text);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Outfit (auto-hospedada, ver @font-face no topo). "Inter" saiu da lista: o
+     site nunca a carregou, então só pegava em quem a tinha instalada localmente
+     — a mesma tela renderizava diferente entre visitantes. O resto da pilha é o
+     fallback de sistema enquanto o .woff2 não chega (font-display: swap). */
+  font-family: "Outfit", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 main {
@@ -2162,6 +2191,15 @@ input::placeholder {
 
 .empty-state a {
   color: var(--accent);
+}
+
+/* Exceção: BOTÃO dentro de um estado vazio. A regra acima é pra link de texto,
+   mas ela tem especificidade maior (0-1-1) que .cta (0-1-0) e vencia — pintando
+   o texto do botão na MESMA cor do fundo (botão em branco, ilegível). Restaura
+   o par background/texto do .cta. O .secondary-cta já fica certo: o accent dele
+   é o texto, sobre o fundo suave. */
+.empty-state a.cta:not(.secondary-cta) {
+  color: var(--on-accent);
 }
 
 .card-preview-modal {
@@ -6566,3 +6604,115 @@ select,
   .lp-stats { grid-template-columns: repeat(2, 1fr); row-gap: 18px; }
   .lp-card, .lp-card-wide { grid-column: span 6; }
 }
+
+/* ============================================================================
+   DECKS (my-decks.html) — galeria + editor. Segue os tokens do tema: cards
+   retos, botões arredondados, accent do jogo. Ver docs/DECKS.md.
+   ========================================================================= */
+.deck-gal-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+.deck-gal-head h2 { margin: 0; }
+.deck-dot { display: inline-block; width: 9px; height: 9px; border-radius: 99px; margin-right: 7px; vertical-align: baseline; }
+
+.deck-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+.deck-card { border: 1px solid var(--line); background: var(--panel); display: flex; flex-direction: column; }
+.deck-card-open { display: block; padding: 16px; text-decoration: none; color: var(--text); }
+.deck-card-open:hover { background: var(--panel-strong); }
+.deck-card-name { display: block; font-weight: 800; font-size: 16px; letter-spacing: -0.01em; }
+.deck-card-meta { display: block; margin-top: 6px; font-size: 12.5px; color: var(--subtle); font-weight: 700; }
+.deck-card-actions { display: flex; gap: 8px; padding: 0 16px 14px; }
+
+.deck-mini { min-height: 32px; padding: 0 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 8px; font-size: 12.5px; font-weight: 700; cursor: pointer; }
+.deck-mini:hover { background: var(--panel-strong); }
+.deck-mini.danger:hover { border-color: var(--accent); color: var(--accent); }
+
+/* --- Modal de novo deck --- */
+.deck-modal { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: grid; place-items: center; z-index: 60; padding: 20px; }
+.deck-modal-box { background: var(--surface); border: 1px solid var(--line); max-width: 520px; width: 100%; padding: 22px; max-height: 86vh; overflow: auto; }
+.deck-modal-box h2 { margin: 0 0 16px; font-size: 19px; }
+.deck-game-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-bottom: 16px; }
+.deck-game-pick { display: flex; align-items: center; min-height: 42px; padding: 0 13px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 13.5px; font-weight: 700; cursor: pointer; text-align: left; }
+.deck-game-pick:hover { border-color: var(--accent); background: var(--panel-strong); }
+
+/* --- Editor --- */
+.deck-ed-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+.deck-name-input { flex: 1 1 240px; min-height: 42px; padding: 0 13px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 17px; font-weight: 800; border-radius: 8px; }
+.deck-ed-game { font-size: 13px; font-weight: 700; color: var(--subtle); }
+.deck-ed-cols { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 22px; align-items: start; }
+
+.deck-zone { margin-bottom: 20px; }
+.deck-zone h3 { margin: 0 0 8px; font-size: 15px; display: flex; align-items: baseline; gap: 9px; }
+.deck-zone-n { font-size: 12.5px; color: var(--subtle); font-weight: 700; }
+.deck-list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); }
+.deck-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-bottom: 1px solid var(--line); font-size: 13.5px; }
+.deck-row:last-child { border-bottom: 0; }
+.deck-qty { font-weight: 800; color: var(--subtle); min-width: 26px; }
+.deck-row-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.deck-row-btns { display: flex; gap: 5px; }
+.deck-row-btns .deck-mini { min-height: 26px; padding: 0 9px; }
+.deck-empty { padding: 14px 12px; color: var(--subtle); font-size: 13px; }
+
+.deck-own { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; padding: 3px 7px; border-radius: 99px; white-space: nowrap; }
+.deck-own.ok { color: var(--money); border: 1px solid color-mix(in srgb, var(--money) 40%, transparent); }
+.deck-own.part { color: var(--gold); border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent); }
+.deck-own.no { color: var(--subtle); border: 1px solid var(--line); }
+
+.deck-issues { list-style: none; margin: 0 0 18px; padding: 12px 14px; border: 1px solid var(--line); border-left: 3px solid var(--accent); background: var(--accent-soft); font-size: 13px; }
+.deck-issues li { margin: 3px 0; }
+.deck-legal { margin: 0 0 18px; font-size: 13px; color: var(--subtle); }
+
+.deck-value { border: 1px solid var(--line); padding: 14px; }
+.deck-value h3 { margin: 0 0 10px; font-size: 15px; }
+.deck-value-row { display: flex; justify-content: space-between; align-items: baseline; padding: 5px 0; font-size: 13.5px; color: var(--subtle); }
+.deck-value-row strong { font-size: 15px; color: var(--text); }
+.deck-value-row strong.have { color: var(--money); }
+.deck-value-row.missing { border-top: 1px solid var(--line); margin-top: 5px; padding-top: 9px; }
+.deck-value-row.missing strong { color: var(--accent); font-size: 17px; }
+.deck-value-note { margin: 8px 0 0; font-size: 12px; color: var(--subtle); }
+
+/* --- Busca do editor (sempre travada no jogo do deck) --- */
+.deck-ed-right h3 { margin: 0 0 10px; font-size: 15px; }
+.deck-search { width: 100%; min-height: 42px; padding: 0 13px; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 8px; font-size: 14px; }
+.deck-results { margin-top: 12px; display: grid; gap: 7px; max-height: 62vh; overflow: auto; }
+.deck-hint { color: var(--subtle); font-size: 13px; }
+.deck-hit { display: flex; align-items: center; gap: 11px; width: 100%; padding: 7px; border: 1px solid var(--line); background: var(--panel); color: var(--text); cursor: pointer; text-align: left; }
+.deck-hit:hover:not(:disabled) { border-color: var(--accent); background: var(--panel-strong); }
+.deck-hit:disabled { opacity: .45; cursor: not-allowed; }
+.deck-hit-img { flex: none; width: 34px; }
+.deck-hit-img img { width: 100%; aspect-ratio: 63/88; object-fit: cover; display: block; }
+.deck-noimg { display: block; width: 34px; aspect-ratio: 63/88; background: var(--panel-strong); }
+.deck-hit-body { flex: 1; min-width: 0; }
+.deck-hit-name { display: block; font-size: 13px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.deck-hit-meta { display: block; font-size: 11.5px; color: var(--subtle); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+@media (max-width: 880px) {
+  /* Mobile: uma coluna só — a busca vai pro fim, depois do deck. */
+  .deck-ed-cols { grid-template-columns: 1fr; }
+  .deck-results { max-height: none; }
+}
+
+/* --- Análise do deck (curva, cores, raridade) — barras em CSS puro --- */
+.deck-analysis { border: 1px solid var(--line); padding: 14px; margin-top: 16px; }
+.deck-analysis h3 { margin: 0 0 10px; font-size: 15px; }
+.deck-an-block { margin-bottom: 14px; }
+.deck-an-block:last-child { margin-bottom: 0; }
+.deck-an-block h4 { margin: 0 0 7px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--subtle); font-weight: 800; }
+.deck-bar { display: flex; align-items: center; gap: 9px; margin: 3px 0; font-size: 12px; }
+.deck-bar-lbl { flex: 0 0 84px; color: var(--subtle); font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.deck-bar-track { flex: 1; height: 9px; background: var(--panel-strong); overflow: hidden; }
+.deck-bar-fill { display: block; height: 100%; background: var(--accent); }
+.deck-bar-n { flex: 0 0 26px; text-align: right; font-weight: 800; }
+
+/* Botões de zona no resultado da busca (main × side × comandante) */
+.deck-hit-btns { display: flex; gap: 5px; flex: none; }
+.deck-hit-btns .deck-mini { min-height: 26px; padding: 0 9px; font-size: 11.5px; }
+.deck-hit.is-off { opacity: .45; }
+
+/* Curva de custo: COLUNAS verticais empilhadas por cor (padrão dos deck
+   builders). Altura da coluna = proporção do maior balde; dentro dela, cada
+   segmento é uma cor. Sem biblioteca de gráfico. */
+.deck-cv { display: flex; align-items: flex-end; gap: 6px; height: 132px; padding: 14px 0 0; }
+.deck-cv-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
+.deck-cv-n { font-size: 11.5px; font-weight: 800; color: var(--subtle); line-height: 1; margin-bottom: 4px; }
+.deck-cv-bar { width: 100%; min-height: 2px; display: flex; flex-direction: column-reverse; overflow: hidden; border-radius: 2px 2px 0 0; }
+.deck-cv-seg { display: block; width: 100%; }
+.deck-cv-x { font-size: 11.5px; font-weight: 700; color: var(--subtle); margin-top: 5px; border-top: 1px solid var(--line); width: 100%; text-align: center; padding-top: 4px; }
