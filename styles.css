@@ -6481,18 +6481,24 @@ select,
 /* --- Jogos: cápsulas de logo (mesmo visual da página Jogos) -------------- */
 .lp-games { margin-top: 56px; }
 .lp-games h2, .lp-features h2 { text-align: center; font-size: clamp(21px, 3vw, 27px); margin: 0 0 22px; letter-spacing: -0.01em; }
-.lp-games-caps { list-style: none; display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; margin: 0; padding: 0; }
+.lp-games-caps { list-style: none; display: flex; justify-content: center; flex-wrap: nowrap; gap: 12px; margin: 0 auto; padding: 0; max-width: 940px; }
 .lp-games-caps a {
+  /* flex 1 1 0 + nowrap: os 4 dividem a linha igualmente (UMA fileira só) e
+     encolhem pra caber; o teto de max-width e a proporção fixa (aspect-ratio)
+     mantêm o visual de cápsula. min-width 0 permite o encolhimento. */
+  flex: 1 1 0; max-width: 224px; min-width: 0;
   display: flex; align-items: center; justify-content: center;
-  width: 250px; height: 112px; padding: 18px 26px; box-sizing: border-box;
+  aspect-ratio: 250 / 112; padding: 16px 22px; box-sizing: border-box;
   background: #fff; border: 1px solid var(--line); border-radius: 0;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .lp-games-caps a:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25); }
 .lp-games-caps img { max-width: 100%; max-height: 100%; object-fit: contain; }
 @media (max-width: 560px) {
-  .lp-games-caps { gap: 10px; }
-  .lp-games-caps a { width: calc(50% - 5px); height: 84px; padding: 12px 16px; }
+  /* no celular, volta a quebrar: 2 por linha (4 numa fileira ficaria minúsculo);
+     a altura vem do aspect-ratio, então não fixa height. */
+  .lp-games-caps { gap: 10px; flex-wrap: wrap; }
+  .lp-games-caps a { flex: 0 0 calc(50% - 5px); max-width: none; min-width: 0; padding: 12px 16px; }
 }
 .lp-games-foot { text-align: center; color: var(--subtle); font-size: 13px; margin: 18px auto 0; max-width: 560px; }
 
