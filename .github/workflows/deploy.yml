@@ -189,6 +189,29 @@ jobs:
       - name: Snapshot de preços (histórico Dragon Ball Fusion)
         run: node scripts/sync-price-history.mjs data/dbfw
 
+      # Yu-Gi-Oh! (TCGCSV cat. 2, Konami): o MAIOR catalogo (~46k impressoes).
+      # Padrao MAGIC: chunks versionados, monolito cards.js fora do deploy (ver
+      # gitignore e o passo "Remove arquivos"). Nao derruba o build se cair.
+      - name: Sincroniza catálogo do Yu-Gi-Oh! (TCGCSV)
+        run: node scripts/sync-ygo.mjs || echo "sync-ygo falhou; mantém os chunks versionados"
+
+      - name: Snapshot de preços (histórico Yu-Gi-Oh)
+        run: node scripts/sync-price-history.mjs data/ygo
+
+      # Digimon Card Game (TCGCSV cat. 63, Bandai 2020+). Padrao One Piece/FAB.
+      - name: Sincroniza catálogo do Digimon (TCGCSV)
+        run: node scripts/sync-digimon.mjs || echo "sync-digimon falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Digimon)
+        run: node scripts/sync-price-history.mjs data/digimon
+
+      # Riftbound (TCGCSV cat. 89, Riot — League of Legends, 2025). Padrao FAB.
+      - name: Sincroniza catálogo do Riftbound (TCGCSV)
+        run: node scripts/sync-riftbound.mjs || echo "sync-riftbound falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Riftbound)
+        run: node scripts/sync-price-history.mjs data/riftbound
+
       # Naruto (TCGCSV): só sincroniza quando a categoria existir (secret/var
       # NARUTO_TCGCSV_CATEGORY). Sem categoria, o script sai sem mexer em nada.
       - name: Sincroniza catálogo do Naruto (TCGCSV, se configurado)
@@ -297,7 +320,7 @@ jobs:
       # data/cards.generated.js. (One Piece/FAB têm cards.js menor, mas vão bater
       # no mesmo teto quando crescerem — candidatos ao mesmo tratamento.)
       - name: Remove arquivos que não vão para o site
-        run: rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js scripts
+        run: rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js data/ygo/cards.js scripts
 
       # Deploy no Cloudflare Pages. main = produção; outras branches = preview
       # (URL única <hash>.tcg-collector.pages.dev). Pulado se o secret faltar.

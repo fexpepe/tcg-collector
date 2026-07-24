@@ -21,6 +21,14 @@ data/magic/cards.js
 data/magic/indexes.js
 data/magic/pricing.js
 
+# Yu-Gi-Oh! segue o mesmo padrão do Magic: ~46k impressões, cards.js monolítico
+# de dezenas de MB (estoura o limite de 25 MiB/arquivo do Cloudflare Pages) fica
+# de fora; os chunks por set são versionados e o build regenera o resto.
+!data/ygo/sets/
+data/ygo/cards.js
+data/ygo/indexes.js
+data/ygo/pricing.js
+
 # Páginas de set pré-renderizadas p/ SEO (geradas no build por scripts/prerender-catalog.mjs)
 set/
 card/
