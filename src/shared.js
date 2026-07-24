@@ -3615,7 +3615,8 @@
   // set quebra. "" pros jogos sem arquivo de logo (fab/jump) — aí cai no texto.
   const GAME_LOGO = {
     pokemon: "game_pokemon.webp", lorcana: "game_lorcana.webp", onepiece: "game_onepiece.webp",
-    magic: "game_magic.webp", gundam: "game_gundam.webp", dbfw: "game_dbfw.webp",
+    magic: "game_magic.webp", fab: "game_fab.webp", gundam: "game_gundam.webp", dbfw: "game_dbfw.webp",
+    ygo: "game_ygo.webp", digimon: "game_digimon.webp", riftbound: "game_riftbound.webp",
     naruto: "game_naruto.webp", hxh: "game_hxh.webp"
   };
   function gameLogoUrl(game) {

@@ -13,6 +13,12 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
 - `game_gundam.webp` — Gundam Card Game (fonte: gundam-gcg.com/en/images/common/logo.png;
   162px nativo, upscalado p/ 512 — line-art aguenta)
 - `game_dbfw.webp` — Dragon Ball Super Fusion World (fonte: `../brand/logo_title_dbfwcardgame.webp`)
+- `game_fab.webp` — Flesh and Blood (fonte: `../brand/Flesh_and_Blood_TCG_Logo.png`)
+- `game_ygo.webp` — Yu-Gi-Oh! (fonte: `../brand/yugioh.jpg` — JPG de fundo branco,
+  funde no chip branco; sem alpha)
+- `game_digimon.webp` — Digimon Card Game (fonte: `../brand/digimon.webp`)
+- `game_riftbound.webp` — Riftbound / League of Legends (fonte: `../brand/riftbound.webp`,
+  1908×1908 com padding — cortado pro bbox do conteúdo antes de escalar)
 - `game_onepiece_carddass.webp` — Carddass Hyper Battle (tile vintage do OP)
 - `game_naruto.webp` — Naruto Card Game 2002~2006 (tile do jogo, tile vintage e
   `setLogo` de todos os sets do Naruto, via sync-naruto-vintage.mjs)
