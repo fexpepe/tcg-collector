@@ -19,6 +19,7 @@
     empty: document.getElementById("emptyState"),
     intro: document.getElementById("cardsIntro"),
     resultsHeader: document.getElementById("resultsHeader"),
+    resultsTitle: document.querySelector("#resultsHeader h2"),
     resultCount: document.getElementById("resultCount"),
     search: document.getElementById("searchInput"),
     setFilter: document.getElementById("setFilter"),
@@ -105,6 +106,7 @@
       if (q && elements.search) elements.search.value = q;
       readFiltersFromUrl();
       render();
+      loadTopViewed(); // popula o estado inicial com as mais vistas da comunidade
     })
     .catch((error) => {
       elements.intro.hidden = true;
@@ -236,16 +238,50 @@
     }
   }
 
+  // Mais vistas pela comunidade: estado INICIAL da página (em vez de vazia). Puxa
+  // o top do contador anônimo (card_views) DESTE jogo, resolve nas cartas já
+  // carregadas (cardsById já é filtrado por escopo/linha) e mostra ~4-5 fileiras.
+  // Ao digitar/filtrar, o render troca pros resultados da busca.
+  let topViewedPairs = [];
+  async function loadTopViewed() {
+    try {
+      if (!shared.fetchTopViewed) return;
+      const game = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
+      const top = await shared.fetchTopViewed(game, 40);
+      const seen = new Set();
+      const picked = [];
+      for (const row of top) {
+        const card = cardsById.get(row.card_id);
+        if (!card || seen.has(card.id)) continue;
+        seen.add(card.id);
+        picked.push({ card, variant: shared.defaultVariant(card) });
+        if (picked.length >= 30) break;
+      }
+      topViewedPairs = picked;
+      if (topViewedPairs.length >= 4 && !isSearching()) render({ resetCount: true });
+    } catch (e) { /* seção é opcional */ }
+  }
+
   function render(options) {
     const searching = isSearching();
-    elements.intro.hidden = searching;
-    elements.resultsHeader.hidden = !searching;
     if (!searching) {
-      pager.render([], () => document.createComment(""), { resetCount: true });
+      const showTop = topViewedPairs.length >= 4;
+      elements.intro.hidden = showTop;
       elements.empty.hidden = true;
       elements.resultCount.textContent = "";
+      if (showTop) {
+        elements.resultsHeader.hidden = false;
+        if (elements.resultsTitle) elements.resultsTitle.textContent = t("home.topViewed");
+        pager.render(topViewedPairs, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true }), { resetCount: true });
+      } else {
+        elements.resultsHeader.hidden = true;
+        pager.render([], () => document.createComment(""), { resetCount: true });
+      }
       return;
     }
+    elements.intro.hidden = true;
+    elements.resultsHeader.hidden = false;
+    if (elements.resultsTitle) elements.resultsTitle.textContent = t("results.heading.cards");
     const tiles = tilePairs();
     pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true }), options || {});
     elements.empty.hidden = tiles.length > 0;

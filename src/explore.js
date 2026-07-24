@@ -11,6 +11,7 @@
     intro: document.getElementById("exploreIntro"),
     empty: document.getElementById("exploreEmpty"),
     resultsHeader: document.getElementById("exploreResultsHeader"),
+    resultsTitle: document.querySelector("#exploreResultsHeader h2"),
     resultCount: document.getElementById("exploreResultCount"),
     gameFilter: document.getElementById("exploreGameFilter"),
     sortSelect: document.getElementById("exploreSortSelect"),
@@ -73,36 +74,41 @@
   // estilo Collectr. Top do contador anônimo de views (card_views) de todos os
   // jogos; só aparece com dados suficientes (>= 4 cartas com 2+ views) e some
   // enquanto há busca ativa (render() controla o hidden).
+  // "Mais vistas pela comunidade": estado INICIAL do Explorar (em vez de vazio).
+  // Puxa o top do contador anônimo (card_views) de TODOS os jogos, resolve as
+  // cartas e mostra ~4-5 fileiras no GRID (tiles normais, com preview e +). Ao
+  // digitar, o render() troca pros resultados da busca. O mini-row antigo
+  // (exploreTopViewed) some — as mais-vistas agora vivem no grid.
   let topViewedReady = false;
-  (async function renderTopViewed() {
-    if (!elements.topViewed || !elements.topViewedRow || !shared.fetchTopViewed) return;
+  let topViewedPairs = [];
+  (async function loadTopViewed() {
+    if (!shared.fetchTopViewed) return;
+    if (elements.topViewed) elements.topViewed.hidden = true;
     try {
       const games = shared.GAME_SLUGS || ["pokemon", "lorcana"];
-      const perGame = await Promise.all(games.map((g) => shared.fetchTopViewed(g, 8)));
+      const perGame = await Promise.all(games.map((g) => shared.fetchTopViewed(g, 6)));
       const tops = games.flatMap((g, i) => perGame[i].map((x) => ({ id: x.card_id, views: x.views, game: g })))
         .filter((x) => x.views >= 2)
         .sort((a, b) => b.views - a.views)
-        .slice(0, 6);
+        .slice(0, 30);
       if (tops.length < 4) return;
       const idsByGame = {};
       games.forEach((g) => { idsByGame[g] = tops.filter((x) => x.game === g).map((x) => x.id); });
       const catalog = await shared.loadOwnedAcrossGames(idsByGame);
       const byId = new Map((catalog.cards || []).map((c) => [c.id, c]));
-      const html = tops.map(({ id, views }) => {
+      const pairs = [];
+      for (const { id } of tops) {
         const card = byId.get(id);
-        if (!card) return "";
-        const src = shared.cardImageSources(card);
-        const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
-        return `<a class="home-top-card" href="${shared.escapeAttribute(shared.detailUrl("set", card.set, "", card.game))}">
-          <span class="home-top-img">${img}</span>
-          <strong>${shared.escapeHtml(card.name)}</strong>
-          <span class="home-top-views">${shared.escapeHtml(String(views))} 👁</span>
-        </a>`;
-      }).join("");
-      if (!html) return;
-      elements.topViewedRow.innerHTML = html;
-      topViewedReady = true;
-      elements.topViewed.hidden = isSearching();
+        if (!card) continue;
+        // registra pro preview/posse funcionarem antes da 1ª busca (o
+        // ensureCatalog depois reescreve cardsById com o catálogo completo).
+        cardGameMap.set(card.id, card.game);
+        cardsById.set(card.id, card);
+        pairs.push({ card, variant: shared.defaultVariant(card) });
+      }
+      topViewedPairs = pairs;
+      topViewedReady = pairs.length >= 4;
+      if (topViewedReady && !isSearching()) render({ resetCount: true });
     } catch (e) { /* seção é opcional */ }
   })();
 
@@ -122,15 +128,25 @@
 
   function render(options) {
     const searching = isSearching();
-    elements.intro.hidden = searching;
-    if (elements.topViewed) elements.topViewed.hidden = searching || !topViewedReady;
-    elements.resultsHeader.hidden = !searching;
+    if (elements.topViewed) elements.topViewed.hidden = true; // mini-row aposentado: vai no grid
     if (!searching) {
-      pager.render([], () => document.createComment(""), { resetCount: true });
+      const showTop = topViewedReady && topViewedPairs.length >= 4;
+      elements.intro.hidden = showTop;
       elements.empty.hidden = true;
       elements.resultCount.textContent = "";
+      if (showTop) {
+        elements.resultsHeader.hidden = false;
+        if (elements.resultsTitle) elements.resultsTitle.textContent = t("home.topViewed");
+        pager.render(topViewedPairs, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true }), { resetCount: true });
+      } else {
+        elements.resultsHeader.hidden = true;
+        pager.render([], () => document.createComment(""), { resetCount: true });
+      }
       return;
     }
+    elements.intro.hidden = true;
+    elements.resultsHeader.hidden = false;
+    if (elements.resultsTitle) elements.resultsTitle.textContent = t("results.heading.cards");
     // Filtra ANTES de gerar pares carta×variante (barato mesmo com ~60k cartas).
     const q = term();
     const matched = cards.filter((card) =>
