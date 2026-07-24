@@ -100,9 +100,9 @@
     { href: "binders.html", icon: "binders", key: "nav.binders", stat: "" },
     { href: "sales.html", icon: "sales", key: "nav.sales", stat: tn("dash.salesCount", salesCount()) + (soldTotal ? ` · ${tn("dash.soldCount", soldTotal)}` : "") },
     { href: "portfolio.html", icon: "portfolio", key: "nav.portfolio", stat: pf != null ? shared.formatMoney(shared.getCurrency(), pf) : "" },
-    { href: "badges.html", icon: "badges", key: "dash.badges", stat: t("dash.badgesHint") },
-    { href: "explore.html", icon: "explore", key: "nav.explore", stat: t("dash.exploreHint") },
-    { href: "hub.html", icon: "games", key: "nav.games", stat: t("dash.gamesHint") }
+    { href: "badges.html", icon: "badges", key: "dash.badges", stat: t("dash.badgesHint") }
+    // Explorar e Jogos saíram daqui: já são itens fixos do menu do header, então
+    // repetir na dashboard era redundante.
   ];
   el.links.innerHTML = links.map((l) =>
     `<a class="dash-link" href="${escapeAttribute(l.href)}">
