@@ -8,7 +8,7 @@
 //    da rede quando online (assim um deploy novo é sempre pego, sem o app ficar
 //    preso numa versão velha) e caem no cache quando offline — fazendo o app
 //    abrir e a coleção já vista funcionar sem internet (PWA instalável).
-const SHELL_CACHE = "tcg-shell-v223";
+const SHELL_CACHE = "tcg-shell-v224";
 // IMAGE_CACHE vai a v2: a versão anterior do SW podia cravar um erro 404/timeout
 // como imagem "opaca" por 7 dias (imagem quebrada presa até um hard refresh).
 // Renomear o cache faz o activate apagar o antigo UMA vez — limpa os erros
@@ -85,37 +85,14 @@ self.addEventListener("fetch", (event) => {
   // Outras origens (ex.: JSON da PokéAPI): deixa o navegador tratar.
 });
 
-// Circuit breaker por host de imagem: quando um CDN cai (a TCGdex some do ar de
-// vez em quando), cada tentativa ficava pendurada ~20s no timeout de conexão e a
-// grade inteira parecia morta — o fallback (onerror da página) só disparava
-// depois. Agora cada tentativa tem timeout curto e, após 3 falhas seguidas do
-// host, as próximas falham NA HORA por 30s (aí o onerror troca pro fallback
-// imediatamente). Estado em memória do SW: zera sozinho quando o SW recicla.
-// Timeout generoso: imagem de set/carta NOVA vem de borda fria do CDN e pode
-// demorar; 6s cortava cedo e contava como falha. Limite de falhas mais alto: uma
-// página de Sets dispara 100+ símbolos no mesmo host, então 3 era fácil de estourar
-// numa rajada normal e derrubava o lote todo. 8 falhas só trip quando o host cai
-// de verdade.
-const FETCH_TIMEOUT_MS = 12000;
-const HOST_FAIL_LIMIT = 8;
-const HOST_FAIL_COOLDOWN_MS = 30000;
-const hostFails = new Map(); // host -> { n, until }
-function hostDown(host) {
-  const s = hostFails.get(host);
-  return !!s && s.n >= HOST_FAIL_LIMIT && Date.now() < s.until;
-}
-function noteHostFail(host) {
-  const s = hostFails.get(host) || { n: 0, until: 0 };
-  s.n += 1;
-  s.until = Date.now() + HOST_FAIL_COOLDOWN_MS;
-  hostFails.set(host, s);
-}
-function fetchWithTimeout(href, init) {
-  if (typeof AbortSignal !== "undefined" && AbortSignal.timeout) {
-    return fetch(href, Object.assign({ signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) }, init));
-  }
-  return fetch(href, init); // navegador sem AbortSignal.timeout: segue sem
-}
+// NÃO usar circuit breaker nem AbortSignal.timeout artificial aqui: numa página
+// pesada com o cache VAZIO (ex.: logo após um bump de versão do cache), o
+// navegador enfileira as imagens (6 conexões/host) e o timeout, que conta o tempo
+// NA FILA, abortava as do fim sem nem começar — o breaker então contava como
+// falha e, ao estourar o limite, bloqueava o host inteiro, quebrando a grade em
+// massa. Sem timeout, cada imagem espera a vez e carrega; o navegador tem seu
+// próprio timeout de conexão pro caso raro de CDN realmente fora, e o <img> tem
+// onerror/fallback na página.
 
 // Imagens: serve do cache; em miss busca (cors → resposta não-opaca, cacheável
 // sem o padding de cota), e em falha de rede deixa o <img> cair no onerror.
@@ -138,40 +115,34 @@ async function markOpaque(href) {
 
 async function cacheFirst(url) {
   const cache = await caches.open(IMAGE_CACHE);
-  const host = url.hostname;
   const cached = await cache.match(url.href);
   if (cached && (cached.type !== "opaque" || await opaqueFresh(url.href))) return cached;
-  if (hostDown(host)) return cached || Response.error(); // CDN caído: falha rápida -> onerror/fallback
   // 1) cors PRIMEIRO: se o host responde (mesmo com erro), o status é VISÍVEL.
   //    - ok         -> cacheia (imutável por URL) e retorna;
-  //    - erro (404/5xx) -> NÃO cacheia e NÃO cai pro no-cors. Cair pro no-cors
-  //      ESCONDIA o status (resposta opaca) e cravava o erro no cache por 7 dias
-  //      — era a causa da imagem de set/carta nova quebrada "presa" até um hard
-  //      refresh (um 404 transitório da borda fria virava cache de erro).
+  //    - erro (404/5xx) -> devolve pro <img> (onerror/fallback) e NÃO cacheia,
+  //      pra não cravar um 404 transitório no cache por dias. NÃO cai pro no-cors
+  //      (que esconderia o status).
   try {
-    const res = await fetchWithTimeout(url.href, { mode: "cors", credentials: "omit" });
+    const res = await fetch(url.href, { mode: "cors", credentials: "omit" });
     if (res && res.ok) {
-      hostFails.delete(host);
       cache.put(url.href, res.clone());
       trim(IMAGE_CACHE, MAX_IMAGES);
       return res;
     }
-    if (res) { noteHostFail(host); return cached || Response.error(); } // erro visível: não polui o cache
+    if (res) return res; // erro visível: não polui o cache
   } catch (e) { /* cors rejeitado -> host sem CORS, tenta no-cors abaixo */ }
   // 2) no-cors: só pros hosts que REJEITAM cors (ex.: cards.lorcast.io do Lorcana).
   //    A resposta opaca esconde o status, então ganha TTL (opaqueFresh) pra se
   //    auto-curar se for um erro escondido.
   try {
-    const res = await fetchWithTimeout(url.href, { mode: "no-cors", credentials: "omit" });
+    const res = await fetch(url.href, { mode: "no-cors", credentials: "omit" });
     if (res && res.type === "opaque") {
-      hostFails.delete(host);
       cache.put(url.href, res.clone());
       markOpaque(url.href);
       trim(IMAGE_CACHE, MAX_IMAGES);
       return res;
     }
   } catch (e) { /* falhou de vez */ }
-  noteHostFail(host);
   return cached || Response.error();
 }
 
