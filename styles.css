@@ -57,6 +57,13 @@
   --header-bg: rgba(255, 255, 255, 0.9);
 }
 
+/* Botões/abas INATIVOS no tema claro: o cinza padrão (--panel #fff dos chips e
+   --panel-strong #eef1f6 das abas) quase some no fundo claro (--bg #e8ecf1).
+   Escurece um pouco SÓ os inativos pra terem contorno. O ativo (aria-pressed)
+   fica no accent; o hover das abas continua no accent-soft (a regra do :hover
+   vem depois no arquivo e vence). Colocada cedo de propósito por causa disso. */
+[data-theme="light"] .chip:not([aria-pressed="true"]) { background: #d8dee8; border-color: #cbd2dd; }
+
 /* Accent por CONTEXTO DE JOGO (data-game-accent no <html>, setado em runtime):
    - Pokémon: usa o accent base do tema (vermelho no claro / amarelo no escuro);
    - Lorcana: roxo;
@@ -5359,6 +5366,10 @@ a.progress-row:hover {
   margin: 0 0 16px;
 }
 .game-filter { margin: 0; }
+/* No Portfólio o filtro de jogo fica colado no box do gráfico (o .game-filter é
+   margin:0 e o .pf-chart não tem margin-top) — dá respiro em cima e embaixo pra
+   as cápsulas não encavalarem, inclusive quando quebram pra 2 linhas. */
+#pfGameFilter { margin: 6px 0 18px; }
 .binder-editor-gamefilter { margin: 0 0 10px; }
 .collection-share-btn { margin: 0; }
 .collection-toolbar-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
