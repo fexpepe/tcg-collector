@@ -1,6 +1,6 @@
 (function () {
   const shared = window.TCGShared;
-  const { addOptions, detailUrl, unique, normalize, escapeHtml, escapeAttribute, speciesName, debounce, t, tn, localizedImg, toRoman } = shared;
+  const { addOptions, detailUrl, unique, normalize, escapeHtml, escapeAttribute, speciesName, debounce, t, tn, localizedImg, gameLogoUrl, toRoman } = shared;
 
   // Título em INGLÊS dos sets vintage japoneses, mostrado acima da arte no tile
   // (só nos vintage). O logo dessas linhas é genérico — o mesmo pra todos os
@@ -650,9 +650,15 @@
     article.className = "set-card";
     article.dataset.href = detailUrl("set", item.name);
     const progress = item.totalCount ? Math.round((item.ownedCount / item.totalCount) * 100) : 0;
+    // Set sem logo próprio: usa o logo do JOGO no lugar do texto (e, quando o
+    // set tem logo, o do jogo vira o último fallback se ele quebrar). Jogo sem
+    // arquivo de logo (fab/jump) cai no placeholder de texto, como antes.
+    const gameLogo = gameLogoUrl((window.SLEEVU && window.SLEEVU.game) || "pokemon");
     const logo = item.logo
-      ? localizedImg(item.logo, { alt: item.name, className: "set-logo", loading: "lazy" })
-      : `<span class="set-logo-placeholder">${escapeHtml(item.name)}</span>`;
+      ? localizedImg(item.logo, { alt: item.name, className: "set-logo", loading: "lazy", fallback: gameLogo })
+      : gameLogo
+        ? localizedImg(gameLogo, { alt: item.name, className: "set-logo", loading: "lazy" })
+        : `<span class="set-logo-placeholder">${escapeHtml(item.name)}</span>`;
     const symbol = item.symbol
       ? localizedImg(item.symbol, { className: "set-symbol", loading: "lazy" })
       : "";

@@ -3606,6 +3606,18 @@
     naruto: "filter.gameNaruto", hxh: "filter.gameHxh"
   };
   function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }
+  // Logo do jogo (assets/games/game_<slug>.webp): usado como stand-in do logo de
+  // set quando o set não tem um próprio, e como último fallback quando o logo do
+  // set quebra. "" pros jogos sem arquivo de logo (fab/jump) — aí cai no texto.
+  const GAME_LOGO = {
+    pokemon: "game_pokemon.webp", lorcana: "game_lorcana.webp", onepiece: "game_onepiece.webp",
+    magic: "game_magic.webp", gundam: "game_gundam.webp", dbfw: "game_dbfw.webp",
+    naruto: "game_naruto.webp", hxh: "game_hxh.webp"
+  };
+  function gameLogoUrl(game) {
+    const f = GAME_LOGO[game || currentGameSlug()];
+    return f ? "assets/games/" + f : "";
+  }
   // Jogos por MARCA: cada IP pode ter várias LINHAS de jogo (o principal e os
   // vintage). A NAVEGAÇÃO do Explorar trata cada linha como um jogo próprio
   // (?line= define o escopo; sem line = só o jogo principal, excluindo as
@@ -4094,6 +4106,7 @@
     GAME_SLUGS,
     GAME_COLOR,
     gameLabel,
+    gameLogoUrl,
     normalizeGame,
     gameDataDir,
     getTheme,
