@@ -1126,13 +1126,7 @@
     nav.innerHTML = `
       ${link(apexUrl, "nav.home", "home")}
       ${exploreMega}
-      ${loggedIn ? `${group("nav.collection", collectionActive, `
-          ${link("dashboard.html", "nav.dashboard", "dashboard")}
-          ${link("collection.html", "nav.collectionMine", "collection")}
-          ${link("graded.html", "nav.graded", "graded")}
-          ${link("wishlist.html", "nav.wishlist", "wishlist")}
-          ${link("binders.html", "nav.binders", "binders")}
-          ${link("sales.html", "nav.sales", "sales")}`)}
+      ${loggedIn ? `<a href="dashboard.html"${collectionActive ? ' class="active"' : ""}>${escapeHtml(t("nav.collection"))}</a>
       ${link("portfolio.html", "nav.portfolio", "portfolio")}` : ""}
     `;
 
