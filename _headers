@@ -9,8 +9,15 @@
 # style-src mantém 'unsafe-inline' de propósito: o UI Editor e o print de
 # binders injetam <style> dinâmicos (conteúdo do usuário — nonce/hash não
 # se aplicam). Scripts continuam sem 'unsafe-inline', que é o que importa.
+#
+# IMPORTANTE: os hosts de imagem (tcgdex/tcgplayer-cdn/scryfall/lorcast/wsrv…)
+# estão em img-src E em connect-src. O connect-src é obrigatório porque o
+# service worker (sw.js) baixa TODA imagem via fetch(), que é regido por
+# connect-src (não img-src). Sem eles no connect-src, o SW é bloqueado pela CSP
+# e as imagens somem no site inteiro. (Quando a CSP vivia no <meta> isso não
+# aparecia: meta-CSP não vale pro contexto do SW; via header, vale.)
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://cards.scryfall.io https://svgs.scryfall.io https://wsrv.nl; connect-src 'self' https://api.tcgdex.net https://pokeapi.co https://economia.awesomeapi.com.br https://*.supabase.co https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://cards.scryfall.io https://svgs.scryfall.io https://wsrv.nl; connect-src 'self' https://api.tcgdex.net https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://cards.scryfall.io https://svgs.scryfall.io https://wsrv.nl https://pokeapi.co https://economia.awesomeapi.com.br https://*.supabase.co https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
