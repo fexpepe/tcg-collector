@@ -170,9 +170,9 @@
     el.editor.hidden = view !== "editor";
   }
 
-  function gameDot(game) {
-    return `<span class="deck-dot" style="background:${escA(shared.GAME_COLOR[game] || "#888")}"></span>`;
-  }
+  // Etiqueta preenchida na cor do jogo (mesmo idioma visual da Coleção). O
+  // "pontinho + texto" sumia em lista densa.
+  function gameTag(game) { return shared.gameTagHtml(game); }
 
   // ---------- Galeria ----------
   function renderGallery() {
@@ -191,7 +191,7 @@
       return `<article class="deck-card" data-deck-id="${escA(d.id)}">
         <a class="deck-card-open" href="my-decks.html?id=${encodeURIComponent(d.id)}">
           <span class="deck-card-name">${esc(d.name)}</span>
-          <span class="deck-card-meta">${gameDot(d.game)}${esc(shared.gameLabel(d.game))}${d.format ? " · " + esc(t("decks.format." + d.format)) : ""} · ${esc(String(n))} ${esc(t("decks.cardsWord"))}</span>
+          <span class="deck-card-meta">${gameTag(d.game)}${d.format ? "<span>" + esc(t("decks.format." + d.format)) + "</span>" : ""}<span>${esc(String(n))} ${esc(t("decks.cardsWord"))}</span></span>
         </a>
         <div class="deck-card-actions">
           <button type="button" class="deck-mini" data-deck-dup="${escA(d.id)}">${esc(t("decks.duplicate"))}</button>
@@ -212,7 +212,7 @@
       // da SESSÃO, então um closest("[data-game]") casaria com ele e qualquer
       // clique no modal viraria "escolheu o jogo da sessão".
       const games = shared.GAME_SLUGS.map((g) =>
-        `<button type="button" class="deck-game-pick" data-pick-game="${escA(g)}">${gameDot(g)}${esc(shared.gameLabel(g))}</button>`).join("");
+        `<button type="button" class="deck-game-pick" data-pick-game="${escA(g)}">${gameTag(g)}</button>`).join("");
       wrap.innerHTML = `
         <div class="deck-modal-box" role="dialog" aria-modal="true" aria-label="${escA(t("decks.new"))}">
           <h2>${esc(t("decks.pickGame"))}</h2>
@@ -350,15 +350,19 @@
   const SORTS = ["cost", "set", "nameAsc", "nameDesc", "priceAsc", "priceDesc"];
   const GROUPS = ["none", "type", "cost", "color", "rarity"];
   const LAYOUTS = ["grid", "list", "stack"];
+  // Padrão: GRADE, sem agrupamento, por custo — deck se lê pela arte, não por
+  // uma lista de nomes. Quem já escolheu outra coisa mantém a sua (só entra
+  // aqui quando não há preferência salva).
+  const VIEW_DEFAULT = { layout: "grid", group: "type", sort: "cost" };
   let view = (function readView() {
     try {
       const v = JSON.parse(localStorage.getItem(VIEW_KEY) || "null") || {};
       return {
-        layout: LAYOUTS.includes(v.layout) ? v.layout : "list",
-        group: GROUPS.includes(v.group) ? v.group : "none",
-        sort: SORTS.includes(v.sort) ? v.sort : "cost"
+        layout: LAYOUTS.includes(v.layout) ? v.layout : VIEW_DEFAULT.layout,
+        group: GROUPS.includes(v.group) ? v.group : VIEW_DEFAULT.group,
+        sort: SORTS.includes(v.sort) ? v.sort : VIEW_DEFAULT.sort
       };
-    } catch (e) { return { layout: "list", group: "none", sort: "cost" }; }
+    } catch (e) { return Object.assign({}, VIEW_DEFAULT); }
   })();
   function saveView() { try { localStorage.setItem(VIEW_KEY, JSON.stringify(view)); } catch (e) { /* ignora */ } }
 
@@ -521,7 +525,7 @@
       <div class="deck-ed-head">
         <a href="my-decks.html" class="serie-back">${esc(t("decks.backList"))}</a>
         <input id="deckName" class="deck-name-input" value="${escA(deck.name)}" aria-label="${escA(t("decks.nameLabel"))}">
-        <span class="deck-ed-game">${gameDot(deck.game)}${esc(shared.gameLabel(deck.game))}${pack.format ? " · " + esc(t("decks.format." + pack.format)) : ""}</span>
+        <span class="deck-ed-game">${gameTag(deck.game)}${pack.format ? "<span>" + esc(t("decks.format." + pack.format)) + "</span>" : ""}</span>
         ${viewMenuHtml()}
       </div>
       ${issuesHtml}
@@ -592,7 +596,12 @@
       const btns = zones.length > 1
         ? zones.map((z) => `<button type="button" class="deck-mini" data-add="${escA(c.id)}" data-zone="${escA(z)}">${esc(t("decks.zone." + z))}</button>`).join("")
         : `<button type="button" class="deck-mini" data-add="${escA(c.id)}" data-zone="${escA(def || "")}"${def ? "" : " disabled"}>+</button>`;
-      return `<div class="deck-hit${def || zones.length ? "" : " is-off"}">
+      // O resultado INTEIRO adiciona (não só o "+"): alvo grande é o que se
+      // espera ao montar deck. Com várias zonas possíveis, o clique no corpo vai
+      // pra zona padrão e os botões seguem lá pra escolher explicitamente —
+      // o closest("[data-add]") pega o botão antes do container.
+      const clickable = def ? ` data-add="${escA(c.id)}" data-zone="${escA(def)}" title="${escA(t("decks.clickToAdd"))}"` : "";
+      return `<div class="deck-hit${def ? " is-clickable" : (zones.length ? "" : " is-off")}"${clickable}>
         <span class="deck-hit-img">${img}</span>
         <span class="deck-hit-body">
           <span class="deck-hit-name">${esc(c.name)}</span>
@@ -674,29 +683,33 @@
     document.body.appendChild(hoverEl);
     return hoverEl;
   }
-  // Ancora na LINHA, não no cursor: seguindo o mouse, o preview cobria a própria
-  // lista que a pessoa está lendo e tremia a cada movimento. Preso à direita da
-  // linha ele fica estável e nunca tapa o nome.
-  function placeHover(row) {
+  // Segue o CURSOR. (Ancorar na linha deixava o preview sempre no mesmo X, já que
+  // todas as linhas terminam na mesma borda — parecia preso no meio da tela.)
+  function placeHover(x, y) {
     const box = hoverBox();
-    const r = row.getBoundingClientRect();
-    const pad = 12;
-    let left = r.right + pad;
-    if (left + HOVER_W > window.innerWidth - 8) left = r.left - pad - HOVER_W; // não cabe: vai pra esquerda
+    const pad = 18;
+    // À direita do cursor; se não couber, vai pra esquerda dele.
+    let left = x + pad;
+    if (left + HOVER_W > window.innerWidth - 8) left = x - pad - HOVER_W;
     if (left < 8) left = 8;
-    // Centrado na linha e presa à janela — nunca sai da tela.
-    let top = r.top + r.height / 2 - HOVER_H / 2;
+    // Centrado no cursor, preso à janela — nunca sai da tela.
+    let top = y - HOVER_H / 2;
     top = Math.max(8, Math.min(top, window.innerHeight - HOVER_H - 8));
     box.style.left = left + "px";
     box.style.top = top + "px";
   }
-  function showHover(card, row) {
+  // Sem cursor (foco por teclado): usa a linha como referência.
+  function placeHoverAtRow(row) {
+    const r = row.getBoundingClientRect();
+    placeHover(r.right, r.top + r.height / 2);
+  }
+  function showHover(card, x, y) {
     if (!card || !card.image) return hideHover();
     const box = hoverBox();
     const img = box.querySelector("img");
     if (img.getAttribute("src") !== card.image) img.setAttribute("src", card.image);
     box.hidden = false;
-    placeHover(row);
+    placeHover(x, y);
   }
   function hideHover() { if (hoverEl) hoverEl.hidden = true; }
 
@@ -705,7 +718,11 @@
       // Só linha de lista: nas miniaturas a arte já está à vista.
       const row = ev.target.closest(".deck-row[data-card]");
       if (!row) return;
-      showHover(cat && cat.byId ? cat.byId[row.dataset.card] : null, row);
+      showHover(cat && cat.byId ? cat.byId[row.dataset.card] : null, ev.clientX, ev.clientY);
+    });
+    // Acompanha o cursor enquanto anda pela linha.
+    el.editor.addEventListener("mousemove", (ev) => {
+      if (hoverEl && !hoverEl.hidden && ev.target.closest(".deck-row[data-card]")) placeHover(ev.clientX, ev.clientY);
     });
     el.editor.addEventListener("mouseout", (ev) => {
       const to = ev.relatedTarget;
@@ -714,8 +731,14 @@
     // Teclado: quem navega por Tab cai nos botões +/− da linha e também vê a arte.
     el.editor.addEventListener("focusin", (ev) => {
       const row = ev.target.closest(".deck-row[data-card]");
-      if (row) showHover(cat && cat.byId ? cat.byId[row.dataset.card] : null, row);
-      else hideHover();
+      if (!row) return hideHover();
+      const card = cat && cat.byId ? cat.byId[row.dataset.card] : null;
+      if (!card || !card.image) return hideHover();
+      const box = hoverBox();
+      const img = box.querySelector("img");
+      if (img.getAttribute("src") !== card.image) img.setAttribute("src", card.image);
+      box.hidden = false;
+      placeHoverAtRow(row);
     });
     // Rolar/sair da aba com o preview aberto deixaria ele "solto" na tela.
     window.addEventListener("scroll", hideHover, { passive: true });

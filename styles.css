@@ -6611,7 +6611,6 @@ select,
    ========================================================================= */
 .deck-gal-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
 .deck-gal-head h2 { margin: 0; }
-.deck-dot { display: inline-block; width: 9px; height: 9px; border-radius: 99px; margin-right: 7px; vertical-align: baseline; }
 
 .deck-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
 .deck-card { border: 1px solid var(--line); background: var(--panel); display: flex; flex-direction: column; }
@@ -6743,7 +6742,9 @@ select,
 .deck-group > h4 span { color: var(--text); }
 
 /* Layout GRADE: miniaturas das cartas */
-.deck-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 8px; }
+/* 117px = 78 + 50%: a arte é o que identifica a carta; miniatura pequena demais
+   obrigava a passar o mouse pra saber o que era. */
+.deck-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(117px, 1fr)); gap: 10px; }
 .deck-tile { position: relative; }
 .deck-tile-img { display: block; border: 1px solid var(--line); overflow: hidden; }
 .deck-tile-img img, .deck-tile-img .deck-noimg { width: 100%; aspect-ratio: 63/88; object-fit: cover; display: block; }
@@ -6754,7 +6755,8 @@ select,
 
 /* Layout PILHA: cartas sobrepostas (leitura rápida do volume) */
 .deck-pile { display: flex; flex-wrap: wrap; gap: 8px 0; padding-top: 4px; }
-.deck-pile .deck-tile { width: 62px; margin-right: -22px; transition: margin .12s ease; }
+/* +50% junto com a grade (62 -> 93); a sobreposição acompanha na mesma escala. */
+.deck-pile .deck-tile { width: 93px; margin-right: -33px; transition: margin .12s ease; }
 .deck-pile .deck-tile:hover { margin-right: 0; z-index: 2; }
 .deck-pile .deck-tile:last-child { margin-right: 0; }
 
@@ -6781,3 +6783,20 @@ select,
 /* Avisos de legalidade viram faixa de largura total, entre o cabeçalho e as
    colunas: some da esquerda sem perder destaque (é status do deck inteiro). */
 .deck-ed-cols { margin-top: 0; }
+
+/* Resultado da busca clicável inteiro (não só o "+"): alvo grande é o esperado
+   ao montar deck. Os botões de zona seguem funcionando por cima. */
+.deck-hit.is-clickable { cursor: pointer; }
+
+/* Etiqueta do jogo: retângulo PREENCHIDO na cor do jogo (mesmo idioma visual dos
+   cards da Coleção). Substitui o "pontinho + texto" — em lista densa o ponto
+   perdia a cor de vista. A cor do texto vem do JS, pela luminância do fundo. */
+.game-tag {
+  display: inline-flex; align-items: center;
+  background: var(--gt, var(--accent)); color: var(--gt-fg, #fff);
+  font-size: 12px; font-weight: 800; letter-spacing: -0.01em;
+  padding: 3px 9px; border-radius: 6px; white-space: nowrap; flex: none;
+}
+/* Nas metas o restante do texto segue discreto; a etiqueta é o destaque. */
+.deck-card-meta, .deck-ed-game { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.deck-game-pick { justify-content: flex-start; }

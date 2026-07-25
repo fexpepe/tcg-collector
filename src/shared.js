@@ -3616,6 +3616,34 @@
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
   const GAME_SLUGS = DATA_GAMES.map((d) => d.game);
   const GAME_COLOR = { pokemon: "#e23030", lorcana: "#3f3d96", onepiece: "#d9a400", magic: "#2563eb", fab: "#0d9488", gundam: "#0284c7", dbfw: "#f97316", ygo: "#7c3aed", digimon: "#0e7490", riftbound: "#db2777", naruto: "#ea580c", hxh: "#15803d" };
+  // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
+  // (fórmula WCAG), não um limiar de luminância chutado: com limiar fixo o
+  // amarelo do One Piece (#d9a400) ficava com texto branco a 2.3:1, ilegível.
+  function relLuminance(hex) {
+    const h = String(hex || "").replace("#", "");
+    if (h.length !== 6) return 0;
+    const ch = (i) => {
+      const v = parseInt(h.slice(i, i + 2), 16) / 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    };
+    return 0.2126 * ch(0) + 0.7152 * ch(2) + 0.0722 * ch(4);
+  }
+  function textOnColor(hex) {
+    const L = relLuminance(hex);
+    const vsWhite = 1.05 / (L + 0.05);   // contraste com #fff
+    const vsBlack = (L + 0.05) / 0.05;   // contraste com preto
+    // Preto PURO (não o quase-preto do tema): com #0a0c10 o vermelho do Pokémon
+    // parava em 4.47; com #000 os 12 jogos passam de 4.5 (AA).
+    return vsBlack >= vsWhite ? "#000000" : "#ffffff";
+  }
+  // Etiqueta do jogo: retângulo PREENCHIDO na cor do jogo (mesmo idioma visual
+  // dos cards da Coleção). Substitui o "pontinho + texto", que perdia a cor de
+  // vista em listas densas.
+  function gameTagHtml(game, extraClass) {
+    const g = normalizeGame(game);
+    const bg = GAME_COLOR[g] || GAME_COLOR.pokemon;
+    return `<span class="game-tag${extraClass ? " " + escapeAttribute(extraClass) : ""}" style="--gt:${escapeAttribute(bg)};--gt-fg:${textOnColor(bg)}">${escapeHtml(gameLabel(g))}</span>`;
+  }
   // Rótulo curto do jogo (chips, filtros, resumos). UM lugar só: as telas chamam
   // shared.gameLabel em vez de repetir o mesmo ternário em cada página — assim
   // um jogo novo aparece rotulado em todas elas de uma vez.
@@ -4127,6 +4155,8 @@
     setGameColors,
     GAME_SLUGS,
     GAME_COLOR,
+    gameTagHtml,
+    textOnColor,
     gameLabel,
     gameLogoUrl,
     normalizeGame,

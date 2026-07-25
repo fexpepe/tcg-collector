@@ -77,7 +77,8 @@
     .filter((x) => x.n > 0);
   el.games.innerHTML = dist.length
     ? dist.map(({ g, n }) =>
-        `<a class="dash-game-chip" href="collection.html" style="--chip:${shared.GAME_COLOR[g]}"><span class="dash-game-dot" aria-hidden="true"></span>${escapeHtml(gameLabel(g))}<strong>${n}</strong></a>`).join("")
+        // Etiqueta preenchida na cor do jogo (mesmo padrão dos decks e da Coleção).
+        `<a class="dash-game-chip" href="collection.html">${shared.gameTagHtml(g)}<strong>${n}</strong></a>`).join("")
     : `<p class="empty-state">${escapeHtml(t("dash.empty"))}</p>`;
 
   // ── Atalhos (HUB) ───────────────────────────────────────────────────────────
