@@ -6716,3 +6716,48 @@ select,
 .deck-cv-bar { width: 100%; min-height: 2px; display: flex; flex-direction: column-reverse; overflow: hidden; border-radius: 2px 2px 0 0; }
 .deck-cv-seg { display: block; width: 100%; }
 .deck-cv-x { font-size: 11.5px; font-weight: 700; color: var(--subtle); margin-top: 5px; border-top: 1px solid var(--line); width: 100%; text-align: center; padding-top: 4px; }
+
+/* --- Menu "Exibir" do editor: layout + agrupar + ordenar ------------------ */
+.deck-view { position: relative; margin-left: auto; }
+.deck-view > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; min-height: 34px; }
+.deck-view > summary::-webkit-details-marker { display: none; }
+.deck-view-panel {
+  position: absolute; right: 0; top: calc(100% + 6px); z-index: 30; width: 232px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  padding: 14px; box-shadow: var(--shadow);
+}
+.deck-view-lbl { display: block; font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--subtle); margin: 0 0 6px; }
+.deck-view-lbl + .deck-view-sel, .deck-lay-row + .deck-view-lbl { margin-bottom: 0; }
+.deck-view-sel { width: 100%; min-height: 36px; padding: 0 10px; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 8px; font-size: 13.5px; margin-bottom: 14px; }
+.deck-view-sel:last-child { margin-bottom: 0; }
+.deck-lay-row { display: flex; gap: 6px; margin-bottom: 14px; }
+.deck-lay { flex: 1; display: grid; place-items: center; min-height: 36px; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 8px; cursor: pointer; }
+.deck-lay:hover { background: var(--panel-strong); }
+.deck-lay.on { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+
+/* Cabeçalho de grupo dentro da zona */
+.deck-group { margin-bottom: 14px; }
+.deck-group > h4 { margin: 0 0 6px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--subtle); display: flex; gap: 8px; align-items: baseline; }
+.deck-group > h4 span { color: var(--text); }
+
+/* Layout GRADE: miniaturas das cartas */
+.deck-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 8px; }
+.deck-tile { position: relative; }
+.deck-tile-img { display: block; border: 1px solid var(--line); overflow: hidden; }
+.deck-tile-img img, .deck-tile-img .deck-noimg { width: 100%; aspect-ratio: 63/88; object-fit: cover; display: block; }
+.deck-tile-qty { position: absolute; left: 4px; top: 4px; background: rgba(0,0,0,.72); color: #fff; font-size: 11px; font-weight: 800; border-radius: 5px; padding: 2px 6px; }
+.deck-tile-btns { position: absolute; inset: auto 0 0 0; display: flex; gap: 3px; justify-content: center; padding: 4px; opacity: 0; transition: opacity .12s ease; }
+.deck-tile:hover .deck-tile-btns, .deck-tile:focus-within .deck-tile-btns { opacity: 1; }
+.deck-tile-btns .deck-mini { min-height: 24px; padding: 0 8px; }
+
+/* Layout PILHA: cartas sobrepostas (leitura rápida do volume) */
+.deck-pile { display: flex; flex-wrap: wrap; gap: 8px 0; padding-top: 4px; }
+.deck-pile .deck-tile { width: 62px; margin-right: -22px; transition: margin .12s ease; }
+.deck-pile .deck-tile:hover { margin-right: 0; z-index: 2; }
+.deck-pile .deck-tile:last-child { margin-right: 0; }
+
+/* Toque: sem hover, os botões ficam sempre visíveis */
+@media (hover: none) {
+  .deck-tile-btns { opacity: 1; }
+  .deck-pile .deck-tile { margin-right: 0; }
+}

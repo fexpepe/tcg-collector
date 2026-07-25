@@ -342,39 +342,174 @@
     }).join("") + `</div>`;
   }
 
+  // ---------------------------------------------------------------------------
+  // View: layout (grade/lista/pilha), agrupamento e ordenação. Preferência é do
+  // USUÁRIO, não do deck — vale pra todos, então vive na própria chave.
+  // ---------------------------------------------------------------------------
+  const VIEW_KEY = "tcg-collector-deck-view-v1";
+  const SORTS = ["cost", "set", "nameAsc", "nameDesc", "priceAsc", "priceDesc"];
+  const GROUPS = ["none", "type", "cost", "color", "rarity"];
+  const LAYOUTS = ["grid", "list", "stack"];
+  let view = (function readView() {
+    try {
+      const v = JSON.parse(localStorage.getItem(VIEW_KEY) || "null") || {};
+      return {
+        layout: LAYOUTS.includes(v.layout) ? v.layout : "list",
+        group: GROUPS.includes(v.group) ? v.group : "none",
+        sort: SORTS.includes(v.sort) ? v.sort : "cost"
+      };
+    } catch (e) { return { layout: "list", group: "none", sort: "cost" }; }
+  })();
+  function saveView() { try { localStorage.setItem(VIEW_KEY, JSON.stringify(view)); } catch (e) { /* ignora */ } }
+
+  // Preço unitário da entrada (usado por "Preço: menor/maior" e pela linha).
+  function unitPrice(deck, entry) {
+    const card = cat.byId[entry.id];
+    if (!card) return 0;
+    const prices = shared.createPriceStore(deck.game);
+    return (shared.cardValue(card, entry.variant || shared.defaultVariant(card), prices) || {}).value || 0;
+  }
+
+  function sortEntries(deck, entries) {
+    const c = (e) => cat.byId[e.id] || {};
+    const num = (e) => { const m = String(c(e).number || "").match(/\d+/); return m ? Number(m[0]) : 1e9; };
+    const cost = (e) => { const v = Number(c(e).cost); return Number.isFinite(v) ? v : 1e9; };
+    const name = (e) => String(c(e).name || e.id);
+    const arr = entries.slice();
+    const byName = (a, b) => name(a).localeCompare(name(b), shared.getLocale ? shared.getLocale() : "pt-BR");
+    switch (view.sort) {
+      // Desempate por nome em todos: ordem estável e previsível entre re-renders.
+      case "set": arr.sort((a, b) => String(c(a).setId || "").localeCompare(String(c(b).setId || "")) || (num(a) - num(b)) || byName(a, b)); break;
+      case "nameAsc": arr.sort(byName); break;
+      case "nameDesc": arr.sort((a, b) => byName(b, a)); break;
+      case "priceAsc": arr.sort((a, b) => unitPrice(deck, a) - unitPrice(deck, b) || byName(a, b)); break;
+      case "priceDesc": arr.sort((a, b) => unitPrice(deck, b) - unitPrice(deck, a) || byName(a, b)); break;
+      default: arr.sort((a, b) => cost(a) - cost(b) || byName(a, b)); break;
+    }
+    return arr;
+  }
+
+  // Chave de agrupamento. Devolve "" quando o jogo não tem o dado (ex.: custo no
+  // Pokémon) — aí o grupo vira "Sem categoria" em vez de sumir com a carta.
+  function groupKeyOf(deck, entry) {
+    const card = cat.byId[entry.id] || {};
+    const pack = packOf(deck);
+    if (view.group === "type") return String(card.cardType || card.category || "");
+    if (view.group === "cost") return card.cost == null || card.cost === "" ? "" : String(card.cost);
+    if (view.group === "color") return pack.dist ? String(card[pack.dist] || "") : "";
+    if (view.group === "rarity") return String(card.rarity || "");
+    return "";
+  }
+  function groupEntries(deck, entries) {
+    if (view.group === "none") return [{ label: null, entries: entries }];
+    const map = new Map();
+    entries.forEach((e) => {
+      const k = groupKeyOf(deck, e);
+      if (!map.has(k)) map.set(k, []);
+      map.get(k).push(e);
+    });
+    // Grupos sem valor ("") por último — o miolo do deck vem primeiro.
+    return [...map.entries()]
+      .sort((a, b) => (a[0] === "" ? 1 : b[0] === "" ? -1 : String(a[0]).localeCompare(String(b[0]), undefined, { numeric: true })))
+      .map(([k, list]) => ({ label: k === "" ? t("decks.groupNone") : prettyLabel(k), entries: list }));
+  }
+
+  // Menu "View": layout + agrupar + ordenar. <details> nativo — abre/fecha e
+  // fecha no Esc sem JS, e é acessível por teclado de graça.
+  const LAYOUT_ICON = {
+    grid: '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>',
+    list: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>',
+    stack: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></svg>'
+  };
+  function viewMenuHtml() {
+    const layouts = LAYOUTS.map((l) =>
+      `<button type="button" class="deck-lay${view.layout === l ? " on" : ""}" data-layout="${escA(l)}" aria-pressed="${view.layout === l}" title="${escA(t("decks.layout." + l))}" aria-label="${escA(t("decks.layout." + l))}">${LAYOUT_ICON[l]}</button>`).join("");
+    const opts = (name, values, cur) => values.map((v) =>
+      `<option value="${escA(v)}"${v === cur ? " selected" : ""}>${esc(t("decks." + name + "." + v))}</option>`).join("");
+    return `<details class="deck-view">
+      <summary class="deck-mini">${esc(t("decks.view"))} <span aria-hidden="true">▾</span></summary>
+      <div class="deck-view-panel">
+        <label class="deck-view-lbl">${esc(t("decks.layoutLabel"))}</label>
+        <div class="deck-lay-row">${layouts}</div>
+        <label class="deck-view-lbl" for="deckGroupBy">${esc(t("decks.groupBy"))}</label>
+        <select id="deckGroupBy" class="deck-view-sel">${opts("group", GROUPS, view.group)}</select>
+        <label class="deck-view-lbl" for="deckSortBy">${esc(t("decks.sortBy"))}</label>
+        <select id="deckSortBy" class="deck-view-sel">${opts("sort", SORTS, view.sort)}</select>
+      </div>
+    </details>`;
+  }
+
   function renderEditor() {
     const deck = current;
     const pack = packOf(deck);
+    const viewOpenEl = el.editor.querySelector(".deck-view");
+    const viewWasOpen = !!(viewOpenEl && viewOpenEl.open);
     const val = computeValue(deck, cat.byId);
     const issues = rules.validate(deck, cat.byId);
     const an = rules.analyze(deck, cat.byId);
 
-    const zonesHtml = (pack.zones || []).map((z) => {
-      const entries = deck.zones[z.key] || [];
-      const n = rules.countIn(deck, z.key);
-      const limit = z.max ? `${n}/${z.max}` : (z.min ? `${n}/${z.min}` : String(n));
-      const rows = entries.map((e) => {
+    // Selo de posse — compartilhado pelos 3 layouts.
+    const ownBadge = (e) => {
+      const have = ownedCountOf(deck, e.id);
+      return have >= (e.qty || 0)
+        ? `<span class="deck-own ok">${esc(t("decks.ownHave"))}</span>`
+        : have > 0
+          ? `<span class="deck-own part">${esc(t("decks.ownPartial").replace("{n}", String(have)))}</span>`
+          : `<span class="deck-own no">${esc(t("decks.ownNone"))}</span>`;
+    };
+    const imgOf = (card) => (card && card.image)
+      ? `<img src="${escA(card.image)}" alt="" loading="lazy">`
+      : `<span class="deck-noimg"></span>`;
+
+    function entriesHtml(zoneKey, list) {
+      if (view.layout === "grid" || view.layout === "stack") {
+        const cls = view.layout === "grid" ? "deck-tiles" : "deck-pile";
+        return `<div class="${cls}">` + list.map((e) => {
+          const card = cat.byId[e.id];
+          return `<div class="deck-tile" data-zone="${escA(zoneKey)}" data-card="${escA(e.id)}" title="${escA((card && card.name) || e.id)}">
+            <span class="deck-tile-img">${imgOf(card)}</span>
+            <span class="deck-tile-qty">${esc(String(e.qty))}×</span>
+            <span class="deck-tile-btns">
+              <button type="button" class="deck-mini" data-dec>−</button>
+              <button type="button" class="deck-mini" data-inc>+</button>
+            </span>
+          </div>`;
+        }).join("") + `</div>`;
+      }
+      return `<ul class="deck-list">` + list.map((e) => {
         const card = cat.byId[e.id];
-        const name = card ? card.name : e.id;
-        const have = ownedCountOf(deck, e.id);
-        const badge = have >= (e.qty || 0)
-          ? `<span class="deck-own ok">${esc(t("decks.ownHave"))}</span>`
-          : have > 0
-            ? `<span class="deck-own part">${esc(t("decks.ownPartial").replace("{n}", String(have)))}</span>`
-            : `<span class="deck-own no">${esc(t("decks.ownNone"))}</span>`;
-        return `<li class="deck-row" data-zone="${escA(z.key)}" data-card="${escA(e.id)}">
+        return `<li class="deck-row" data-zone="${escA(zoneKey)}" data-card="${escA(e.id)}">
           <span class="deck-qty">${esc(String(e.qty))}×</span>
-          <span class="deck-row-name">${esc(name)}</span>
-          ${badge}
+          <span class="deck-row-name">${esc((card && card.name) || e.id)}</span>
+          ${ownBadge(e)}
           <span class="deck-row-btns">
             <button type="button" class="deck-mini" data-dec>−</button>
             <button type="button" class="deck-mini" data-inc>+</button>
           </span>
         </li>`;
-      }).join("");
+      }).join("") + `</ul>`;
+    }
+
+    const zonesHtml = (pack.zones || []).map((z) => {
+      const entries = deck.zones[z.key] || [];
+      const n = rules.countIn(deck, z.key);
+      const limit = z.max ? `${n}/${z.max}` : (z.min ? `${n}/${z.min}` : String(n));
+      let body;
+      if (!entries.length) {
+        body = `<ul class="deck-list"><li class="deck-empty">${esc(t("decks.zoneEmpty"))}</li></ul>`;
+      } else {
+        // Ordena DENTRO de cada grupo: agrupar antes tornaria a ordenação
+        // global inútil (os grupos já separam).
+        body = groupEntries(deck, entries).map((g) => {
+          const inner = entriesHtml(z.key, sortEntries(deck, g.entries));
+          const qty = g.entries.reduce((s, e) => s + (e.qty || 0), 0);
+          return g.label == null ? inner
+            : `<div class="deck-group"><h4>${esc(g.label)} <span>${esc(String(qty))}</span></h4>${inner}</div>`;
+        }).join("");
+      }
       return `<section class="deck-zone">
         <h3>${esc(t("decks.zone." + z.key))} <span class="deck-zone-n">${esc(limit)}</span></h3>
-        <ul class="deck-list">${rows || `<li class="deck-empty">${esc(t("decks.zoneEmpty"))}</li>`}</ul>
+        ${body}
       </section>`;
     }).join("");
 
@@ -387,6 +522,7 @@
         <a href="my-decks.html" class="serie-back">${esc(t("decks.backList"))}</a>
         <input id="deckName" class="deck-name-input" value="${escA(deck.name)}" aria-label="${escA(t("decks.nameLabel"))}">
         <span class="deck-ed-game">${gameDot(deck.game)}${esc(shared.gameLabel(deck.game))}${pack.format ? " · " + esc(t("decks.format." + pack.format)) : ""}</span>
+        ${viewMenuHtml()}
       </div>
       <div class="deck-ed-cols">
         <div class="deck-ed-left">
@@ -412,6 +548,11 @@
           <div id="deckResults" class="deck-results"></div>
         </div>
       </div>`;
+
+    // O editor re-renderiza inteiro a cada ajuste; sem isto o painel de View
+    // fecharia sozinho ao trocar "agrupar por" — ninguém consegue mexer em dois
+    // controles seguidos.
+    if (viewWasOpen) { const d = el.editor.querySelector(".deck-view"); if (d) d.open = true; }
 
     renderResults();
     const nameInput = document.getElementById("deckName");
@@ -493,12 +634,23 @@
       if (card && add.dataset.zone) { addCard(current, add.dataset.zone, card, 1); renderEditor(); }
       return;
     }
-    const row = ev.target.closest(".deck-row");
-    if (!row) return;
-    const card = cat.byId[row.dataset.card];
+    // Layout (grade/lista/pilha)
+    const lay = ev.target.closest("[data-layout]");
+    if (lay) { view.layout = lay.dataset.layout; saveView(); renderEditor(); return; }
+
+    // +/− vale nos 3 layouts: linha (.deck-row) e miniatura (.deck-tile).
+    const item = ev.target.closest(".deck-row, .deck-tile");
+    if (!item) return;
+    const card = cat.byId[item.dataset.card];
     if (!card) return;
-    if (ev.target.closest("[data-inc]")) { addCard(current, row.dataset.zone, card, 1); renderEditor(); }
-    else if (ev.target.closest("[data-dec]")) { addCard(current, row.dataset.zone, card, -1); renderEditor(); }
+    if (ev.target.closest("[data-inc]")) { addCard(current, item.dataset.zone, card, 1); renderEditor(); }
+    else if (ev.target.closest("[data-dec]")) { addCard(current, item.dataset.zone, card, -1); renderEditor(); }
+  });
+
+  // Agrupar / ordenar (selects não disparam "click" útil)
+  el.editor.addEventListener("change", (ev) => {
+    if (ev.target.id === "deckGroupBy") { view.group = ev.target.value; saveView(); renderEditor(); }
+    else if (ev.target.id === "deckSortBy") { view.sort = ev.target.value; saveView(); renderEditor(); }
   });
 
   // ---------------------------------------------------------------------------
