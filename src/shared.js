@@ -487,7 +487,12 @@
   const languageStorageKey = "tcg-collector-ui-lang-v1";
   const currentLanguage = (function () {
     const saved = localStorage.getItem(languageStorageKey);
-    return UI_LANGUAGES.some((entry) => entry.code === saved) ? saved : "pt";
+    if (UI_LANGUAGES.some((entry) => entry.code === saved)) return saved; // escolha explícita vence
+    // Sem escolha: usa o idioma que o theme.js já resolveu do navegador (a
+    // detecção mora lá porque precisa rodar antes da 1ª pintura, pro <html lang>
+    // nascer certo). Aqui só se reaproveita — uma lógica só, um lugar só.
+    const detected = window.SLEEVU_LANG;
+    return UI_LANGUAGES.some((entry) => entry.code === detected) ? detected : "pt";
   })();
   const currentLanguageMeta = UI_LANGUAGES.find((entry) => entry.code === currentLanguage);
 
