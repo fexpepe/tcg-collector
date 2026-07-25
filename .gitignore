@@ -29,6 +29,12 @@ data/ygo/cards.js
 data/ygo/indexes.js
 data/ygo/pricing.js
 
+# Índice de busca do construtor de decks (writeGameCatalog gera no build a partir
+# do catálogo). Derivado 100% dos chunks — versionar seria duplicar o catálogo no
+# git e gerar blob novo a cada sync (o do Magic sozinho passa de 5 MB).
+data/search-index.json
+data/*/search-index.json
+
 # Páginas de set pré-renderizadas p/ SEO (geradas no build por scripts/prerender-catalog.mjs)
 set/
 card/

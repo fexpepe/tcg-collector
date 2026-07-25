@@ -6807,3 +6807,25 @@ select,
 /* Carta do deck abre o card completo ao clicar (fora dos botões +/−). */
 .deck-tile, .deck-row { cursor: pointer; }
 .deck-tile-btns .deck-mini, .deck-row-btns .deck-mini { cursor: pointer; }
+
+/* --- Filtros por faceta na busca do editor -------------------------------- */
+.deck-facets { display: grid; gap: 9px; margin-top: 11px; padding: 11px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+.deck-facet { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.deck-facet-lbl { flex: 0 0 54px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--subtle); }
+.deck-facet-chips { display: flex; gap: 5px; flex-wrap: wrap; }
+.deck-facet-chip {
+  display: inline-flex; align-items: center; gap: 5px; min-height: 26px; padding: 0 9px;
+  border: 1px solid var(--line); background: var(--panel-strong); color: var(--text);
+  border-radius: 999px; font-size: 12px; font-weight: 700; cursor: pointer;
+}
+.deck-facet-chip:hover { border-color: var(--accent); }
+/* Chip de COR ganha a cor do jogo como bolinha; ativo pinta o fundo. */
+.deck-facet-chip[style*="--fc"]::before { content: ""; width: 8px; height: 8px; border-radius: 99px; background: var(--fc); }
+.deck-facet-chip.on { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.deck-facet-sel { flex: 1; min-width: 0; min-height: 30px; padding: 0 9px; border: 1px solid var(--line); background: var(--panel-strong); color: var(--text); border-radius: 8px; font-size: 12.5px; }
+.deck-facets > .deck-mini { justify-self: start; }
+
+/* Importar lista em texto */
+.deck-modal-hint { font-size: 12.5px; color: var(--subtle); line-height: 1.5; margin: 0 0 10px; }
+.deck-import-area { width: 100%; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 8px; padding: 10px; font-size: 13px; font-family: ui-monospace, Menlo, Consolas, monospace; resize: vertical; }
+.deck-modal-foot { display: flex; gap: 9px; justify-content: flex-end; margin-top: 12px; }

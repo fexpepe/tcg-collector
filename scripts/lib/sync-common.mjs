@@ -135,6 +135,38 @@ export async function writeGameCatalog(outDirUrl, { cards, indexes, pricing, web
     });
   }
   await w("manifest.generated.js", "TCG_MANIFEST", { generatedAt: new Date().toISOString(), sets: manifestSets });
+
+  // Índice de BUSCA (search-index.json): só o necessário pra achar a carta —
+  // sem texto, sem imagem, sem preço. O construtor de decks precisa varrer nomes
+  // do jogo inteiro; sem isto ele baixaria TODOS os chunks (Yu-Gi-Oh! tem 46k
+  // cartas, Magic 97k). Achou a carta, aí sim baixa só o chunk dela.
+  // Chaves curtas de propósito: o arquivo é servido a cada abertura do editor.
+  //   i=id · n=nome · s=set · u=número · t=tipo · c=custo · k=cor · r=raridade
+  // Set/tipo/raridade/cor repetem muito (um set name aparece em centenas de
+  // cartas). Vão em DICIONÁRIO e a carta guarda só o índice — sem isso o arquivo
+  // do Magic passaria de 10 MB. O cliente re-expande ao carregar.
+  const COLOR_FIELDS = ["ink", "opColor", "color", "colorId", "types", "attribute"];
+  const dicts = { s: [], t: [], r: [], k: [] };
+  const dictPos = { s: new Map(), t: new Map(), r: new Map(), k: new Map() };
+  const put = (key, value) => {
+    const v = String(value);
+    let i = dictPos[key].get(v);
+    if (i === undefined) { i = dicts[key].length; dicts[key].push(v); dictPos[key].set(v, i); }
+    return i;
+  };
+  const entries = cards.map((c) => {
+    const e = { i: c.id, n: c.name };
+    if (c.set) e.s = put("s", c.set);
+    if (c.number) e.u = String(c.number);
+    if (c.cardType != null && c.cardType !== "") e.t = put("t", c.cardType);
+    if (c.cost != null && c.cost !== "") e.c = c.cost;          // numérico: não vale dicionário
+    if (c.rarity) e.r = put("r", c.rarity);
+    // Cor tem nome diferente por jogo (ink/opColor/color/types…): normaliza numa
+    // chave só, senão o filtro do editor teria que conhecer cada jogo.
+    for (const f of COLOR_FIELDS) { if (c[f] != null && c[f] !== "") { e.k = put("k", c[f]); break; } }
+    return e;
+  });
+  await writeFile(new URL("search-index.json", outDirUrl), JSON.stringify({ d: dicts, c: entries }), "utf8");
 }
 
 // União preservadora: cartas do catálogo ANTERIOR que sumiram do novo são

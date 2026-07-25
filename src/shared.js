@@ -4295,6 +4295,7 @@
     wishlistMeta: gameKey("wishlist-meta-v1"),
     prices: gameKey("prices-v1"),
     binders: "tcg-collector-binders-all-v1", // binders são globais (cross-game)
+    decks: "tcg-collector-decks-all-v1", // decks são globais (cada deck tem seu `game`)
     folders: "tcg-collector-collection-folders-v1", // pastas da coleção (globais)
     sales: "tcg-collector-collection-sales-v1", // cartas à venda (globais)
     graded: "tcg-collector-collection-graded-v1", // cartas graduadas/slabs (globais)
@@ -4573,6 +4574,32 @@
   }
   // Binders ({ binders: [...] }): une por id, mantendo o de updatedAt mais novo.
   // (As fotos ficam só no IndexedDB local; só a estrutura/cartas sincroniza.)
+  // Decks: mesma estratégia dos binders — união por id, LWW por updatedAt e
+  // tombstones de exclusão. Sem os tombstones, apagar um deck no celular o
+  // traria de volta do PC no próximo sync.
+  function mergeDecks(a, b) {
+    const al = (a && Array.isArray(a.decks)) ? a.decks : [];
+    const bl = (b && Array.isArray(b.decks)) ? b.decks : [];
+    const deleted = {};
+    [a, b].forEach((side) => {
+      const d = side && side.deleted;
+      if (d && typeof d === "object") Object.keys(d).forEach((id) => {
+        const ts = Number(d[id]) || 0;
+        if (ts > (deleted[id] || 0)) deleted[id] = ts;
+      });
+    });
+    const byId = new Map();
+    al.concat(bl).forEach((dk) => {
+      if (!dk || !dk.id) return;
+      const prev = byId.get(dk.id);
+      if (!prev || (Number(dk.updatedAt) || 0) > (Number(prev.updatedAt) || 0)) byId.set(dk.id, dk);
+    });
+    // Uma edição posterior à exclusão "revive" o deck (editei no PC depois de
+    // apagar no celular = quis manter).
+    const decks = Array.from(byId.values()).filter((dk) => (deleted[dk.id] || 0) < (Number(dk.updatedAt) || 0));
+    return { decks, deleted };
+  }
+
   function mergeBinders(a, b) {
     const al = (a && Array.isArray(a.binders)) ? a.binders : [];
     const bl = (b && Array.isArray(b.binders)) ? b.binders : [];
@@ -4696,6 +4723,7 @@
       wishlistMeta: wl.meta,
       prices: mergePrices(a.prices, b.prices),
       binders: mergeBinders(a.binders, b.binders),
+      decks: mergeDecks(a.decks, b.decks),
       folders: mergeFolders(a.folders, b.folders),
       sales: mergeSales(a.sales, b.sales),
       graded: mergeGraded(a.graded, b.graded),

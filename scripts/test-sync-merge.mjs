@@ -90,5 +90,23 @@ const T1 = NOW - 3000, T2 = NOW - 2000, T3 = NOW - 1000;
   check("wishlist: união no empate de timestamp", mt.wishlist["w-3"].sort().join(",") === "holo,normal");
 }
 
+// 6) Decks (globais, cross-game): uniao por id, LWW por updatedAt e tombstone.
+{
+  const A = { id: "d1", name: "A", game: "lorcana", updatedAt: T1, zones: { main: [] } };
+  const B = { id: "d1", name: "B novo", game: "lorcana", updatedAt: T3, zones: { main: [] } };
+  const C = { id: "d2", name: "So no remoto", game: "magic", updatedAt: T2, zones: { main: [] } };
+
+  const m1 = mergeData({ decks: { decks: [A] } }, { decks: { decks: [B, C] } });
+  check("decks: LWW pelo updatedAt", m1.decks.decks.find((d) => d.id === "d1").name === "B novo");
+  check("decks: uniao traz deck que so existe de um lado", !!m1.decks.decks.find((d) => d.id === "d2"));
+
+  const m2 = mergeData({ decks: { decks: [], deleted: { d1: T3 } } }, { decks: { decks: [A] } });
+  check("decks: exclusao propaga (nao ressuscita)", !m2.decks.decks.find((d) => d.id === "d1"));
+  check("decks: tombstone mantido pra propagar", m2.decks.deleted.d1 === T3);
+
+  const m3 = mergeData({ decks: { decks: [], deleted: { d1: T1 } } }, { decks: { decks: [B] } });
+  check("decks: edicao posterior revive o deck", !!m3.decks.decks.find((d) => d.id === "d1"));
+}
+
 console.log(`\n  ${pass} passou, ${fail} falhou`);
 process.exit(fail ? 1 : 0);

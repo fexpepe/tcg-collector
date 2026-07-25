@@ -21,10 +21,16 @@
   function readData() {
     try {
       const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
-      if (parsed && typeof parsed === "object" && Array.isArray(parsed.decks)) return parsed;
+      if (parsed && typeof parsed === "object" && Array.isArray(parsed.decks)) {
+        if (!parsed.deleted || typeof parsed.deleted !== "object") parsed.deleted = {};
+        return parsed;
+      }
     } catch (e) { /* corrompido: começa limpo */ }
-    return { decks: [] };
+    return { decks: [], deleted: {} };
   }
+  // `deleted` = tombstones (id -> quando foi apagado). O sync na nuvem precisa
+  // deles: sem tombstone, um deck apagado no celular volta do PC no próximo
+  // merge (a união por id não sabe distinguir "não existe" de "foi apagado").
   const data = readData();
 
   function save() {
@@ -94,19 +100,54 @@
   // Catálogo do jogo do deck (pode ser != do jogo da sessão). Cache em memória
   // por jogo: reabrir o editor no mesmo jogo não baixa de novo.
   // ---------------------------------------------------------------------------
+  // Cartas COMPLETAS já carregadas, por jogo. Nunca baixa o catálogo inteiro: só
+  // os chunks dos sets das cartas pedidas (loadGameCatalog com ids). Yu-Gi-Oh!
+  // tem 46k cartas e Magic 97k — baixar tudo pra abrir um deck de 60 era inviável.
   const catalogCache = {};
-  async function catalogFor(game) {
-    if (catalogCache[game]) return catalogCache[game];
-    const dir = shared.gameDataDir(game);
-    const r = await shared.loadGameCatalog(game, dir, null);
-    const cards = r.cards || [];
-    const byId = {};
-    cards.forEach((c) => { c.game = game; byId[c.id] = c; });
+  async function ensureCards(game, ids) {
+    const entry = catalogCache[game] || (catalogCache[game] = { byId: {}, all: false });
+    if (entry.all) return entry;
+    const need = ids ? ids.filter((id) => !entry.byId[id]) : null;
+    if (ids && !need.length) return entry;                    // tudo em cache
+    const r = await shared.loadGameCatalog(game, shared.gameDataDir(game), need);
+    (r.cards || []).forEach((c) => { c.game = game; entry.byId[c.id] = c; });
+    if (!ids) entry.all = true;
     // cardValue lê window.TCG_PRICING; loadGameCatalog restaura o da sessão, então
     // mescla o do jogo do deck pra o preço não sair zerado.
     if (r.pricing) window.TCG_PRICING = Object.assign({}, window.TCG_PRICING || {}, r.pricing);
-    catalogCache[game] = { cards, byId };
-    return catalogCache[game];
+    return entry;
+  }
+
+  // Índice de busca: só id/nome/set/número + facetas (gerado no build por
+  // writeGameCatalog). É o que permite buscar no jogo inteiro sem baixá-lo.
+  const indexCache = {};
+  async function searchIndexFor(game) {
+    if (indexCache[game]) return indexCache[game];
+    try {
+      const r = await fetch(shared.gameDataDir(game) + "search-index.json");
+      if (r.ok) {
+        const raw = await r.json();
+        // Formato compacto: { d: dicionários, c: cartas com índices }. Re-expande
+        // aqui (uma vez) pra o resto do código ver strings normais.
+        const d = raw.d || {};
+        const back = (key, i) => (i == null ? "" : ((d[key] || [])[i] || ""));
+        indexCache[game] = (raw.c || []).map((e) => ({
+          i: e.i, n: e.n, u: e.u, c: e.c,
+          s: back("s", e.s), t: back("t", e.t), r: back("r", e.r), k: back("k", e.k)
+        }));
+        return indexCache[game];
+      }
+    } catch (e) { /* sem índice: cai no fallback abaixo */ }
+    // Local/dev (o índice é gerado no build): monta a partir do catálogo, que
+    // aqui é a amostra pequena. Mesma forma de dado, então a busca não sabe a
+    // diferença.
+    const cat = await ensureCards(game, null);
+    indexCache[game] = Object.values(cat.byId).map((c) => ({
+      i: c.id, n: c.name, s: c.set, u: c.number,
+      t: c.cardType, c: c.cost, r: c.rarity,
+      k: c.ink || c.opColor || c.color || c.colorId || c.types || c.attribute
+    }));
+    return indexCache[game];
   }
 
   // ---------------------------------------------------------------------------
@@ -233,6 +274,131 @@
     }).join("") + `</div>`;
   }
 
+  // ---------------------------------------------------------------------------
+  // Export / import de lista em TEXTO — o formato que todo mundo usa
+  // (Moxfield, Limitless, Dreamborn, Discord): "4 Nome da Carta" por linha,
+  // com cabeçalho por zona. É o que permite trazer um deck pronto sem
+  // redigitar 60 cartas.
+  // ---------------------------------------------------------------------------
+  function deckToText(deck) {
+    const pack = packOf(deck);
+    const out = [];
+    (pack.zones || []).forEach((z) => {
+      const entries = deck.zones[z.key] || [];
+      if (!entries.length) return;
+      // Zona única (a maioria dos jogos) dispensa cabeçalho — assim o texto cola
+      // limpo em qualquer lugar.
+      if ((pack.zones || []).length > 1) { if (out.length) out.push(""); out.push(t("decks.zone." + z.key)); }
+      sortEntries(deck, entries).forEach((e) => {
+        const card = cat && cat.byId[e.id];
+        out.push(`${e.qty} ${card ? card.name : e.id}`);
+      });
+    });
+    return out.join("\n");
+  }
+
+  // Lê "4 Nome", "4x Nome", "Nome" (=1) e ignora linha vazia/comentário. O
+  // cabeçalho de zona é reconhecido pelo rótulo traduzido; o que não casa vira
+  // carta (uma lista sem cabeçalho continua funcionando).
+  function parseDeckText(text, pack) {
+    const zoneByLabel = {};
+    (pack.zones || []).forEach((z) => { zoneByLabel[norm(t("decks.zone." + z.key))] = z.key; });
+    const first = (pack.zones && pack.zones[0] && pack.zones[0].key) || "main";
+    let zone = first;
+    const rows = [];
+    String(text || "").split(/\r?\n/).forEach((raw) => {
+      const line = raw.trim();
+      if (!line || line.startsWith("#") || line.startsWith("//")) return;
+      const asZone = zoneByLabel[norm(line.replace(/[:\-–—]+$/, "").trim())];
+      if (asZone) { zone = asZone; return; }
+      const m = line.match(/^(\d+)\s*[xX]?\s+(.+)$/);
+      const qty = m ? Math.min(Number(m[1]) || 1, 99) : 1;   // teto: linha corrompida não vira 9999 cópias
+      let name = (m ? m[2] : line).trim();
+      // Sufixos comuns dos outros sites: "(SET) 123" / "[SET]" / "· 4/102".
+      name = name.replace(/\s*[\(\[][^\)\]]*[\)\]]\s*\d*$/, "").replace(/\s+·.*$/, "").trim();
+      if (name) rows.push({ zone, qty, name });
+    });
+    return rows;
+  }
+
+  // Casa os nomes com o índice do jogo (nome exato, sem acento/caixa). Devolve
+  // o que casou e o que não achou — a lista de "não encontradas" é mostrada, não
+  // engolida: importar 58 de 60 em silêncio seria pior que falhar.
+  async function importText(deck, text) {
+    const pack = packOf(deck);
+    const rows = parseDeckText(text, pack);
+    if (!rows.length) return { added: 0, missing: [] };
+    const index = await searchIndexFor(deck.game);
+    const byName = new Map();
+    index.forEach((e) => { const k = norm(e.n); if (!byName.has(k)) byName.set(k, e); });
+    const hits = [], missing = [];
+    rows.forEach((r) => {
+      const e = byName.get(norm(r.name));
+      if (e) hits.push({ zone: r.zone, qty: r.qty, id: e.i });
+      else missing.push(r.name);
+    });
+    if (hits.length) {
+      cat = await ensureCards(deck.game, hits.map((h) => h.id));
+      hits.forEach((h) => {
+        const card = cat.byId[h.id];
+        if (!card) return;
+        // A zona do texto só vale se a carta couber nela (líder não vai pro deck).
+        const ok = rules.zonesForCard(pack, card);
+        const zone = ok.includes(h.zone) ? h.zone : rules.zoneForCard(pack, card);
+        if (zone) addCard(deck, zone, card, h.qty);
+      });
+    }
+    return { added: hits.length, missing };
+  }
+
+  function openImportModal() {
+    const wrap = document.createElement("div");
+    wrap.className = "deck-modal";
+    wrap.innerHTML = `
+      <div class="deck-modal-box" role="dialog" aria-modal="true" aria-label="${escA(t("decks.import"))}">
+        <h2>${esc(t("decks.import"))}</h2>
+        <p class="deck-modal-hint">${esc(t("decks.importHint"))}</p>
+        <textarea id="deckImportText" class="deck-import-area" rows="12" placeholder="4 Charizard&#10;2 Blastoise"></textarea>
+        <p id="deckImportMsg" class="deck-modal-hint"></p>
+        <div class="deck-modal-foot">
+          <button type="button" class="deck-mini" data-deck-cancel>${esc(t("decks.cancel"))}</button>
+          <button type="button" class="cta" data-import-go>${esc(t("decks.importGo"))}</button>
+        </div>
+      </div>`;
+    document.body.appendChild(wrap);
+    wrap.addEventListener("click", async (ev) => {
+      if (ev.target === wrap || ev.target.closest("[data-deck-cancel]")) { wrap.remove(); return; }
+      if (!ev.target.closest("[data-import-go]")) return;
+      const msg = wrap.querySelector("#deckImportMsg");
+      msg.textContent = t("decks.loading");
+      try {
+        const res = await importText(current, wrap.querySelector("#deckImportText").value);
+        if (!res.added && !res.missing.length) { msg.textContent = t("decks.importEmpty"); return; }
+        wrap.remove();
+        renderEditor();
+        if (res.missing.length) {
+          alert(t("decks.importMissing", { n: res.missing.length }) + "\n\n" + res.missing.slice(0, 20).join("\n"));
+        }
+      } catch (e) { msg.textContent = t("decks.loadError"); }
+    });
+    setTimeout(() => { const a = wrap.querySelector("#deckImportText"); if (a) a.focus(); }, 0);
+  }
+
+  async function copyDeckText() {
+    const text = deckToText(current);
+    try { await navigator.clipboard.writeText(text); return true; }
+    catch (e) {
+      // Sem Clipboard API (contexto inseguro): cai no textarea + execCommand.
+      const ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      let ok = false;
+      try { ok = document.execCommand("copy"); } catch (e2) { ok = false; }
+      ta.remove();
+      return ok;
+    }
+  }
+
   // ---------- Modal: novo deck (jogo -> formato, quando o jogo tem mais de um) ----------
   function openNewDeckModal() {
     const wrap = document.createElement("div");
@@ -299,7 +465,8 @@
       // loadFxRates é OBRIGATÓRIO antes de calcular valor: sem as taxas,
       // convertMoney devolve null e cardValue cai pra 0 — o painel inteiro
       // sairia zerado mesmo com preço no catálogo.
-      const [c] = await Promise.all([catalogFor(deck.game), shared.loadFxRates()]);
+      // Só as cartas DESTE deck: abrir um deck de 60 não pode baixar 46k.
+      const [c] = await Promise.all([ensureCards(deck.game, deckCardIds(deck)), shared.loadFxRates()]);
       cat = c;
     } catch (e) {
       el.editor.innerHTML = `<p class="empty-state">${esc(t("decks.loadError"))}</p>`;
@@ -558,6 +725,8 @@
         <a href="my-decks.html" class="serie-back">${esc(t("decks.backList"))}</a>
         <input id="deckName" class="deck-name-input" value="${escA(deck.name)}" aria-label="${escA(t("decks.nameLabel"))}">
         <span class="deck-ed-game">${gameTag(deck.game)}${pack.format ? "<span>" + esc(t("decks.format." + pack.format)) + "</span>" : ""}</span>
+        <button type="button" class="deck-mini" data-deck-import>${esc(t("decks.import"))}</button>
+        <button type="button" class="deck-mini" data-deck-copy>${esc(t("decks.copyList"))}</button>
         ${viewMenuHtml()}
       </div>
       ${issuesHtml}
@@ -570,6 +739,7 @@
         <div class="deck-ed-right">
           <h3>${esc(t("decks.addCards"))}</h3>
           <input id="deckSearch" class="deck-search" type="search" placeholder="${escA(t("decks.searchPlaceholder", { deckGame: shared.gameLabel(deck.game) }))}" value="${escA(query)}">
+          <div id="deckFacets">${facetsHtml(deck.game)}</div>
           <div id="deckResults" class="deck-results"></div>
           <section class="deck-value">
             <h3>${esc(t("decks.value"))}</h3>
@@ -604,18 +774,105 @@
     });
   }
 
+  // Normaliza pra busca (sem acento/caixa) — o índice guarda o nome cru.
+  const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+
+  // ---------------------------------------------------------------------------
+  // Filtros por faceta. As opções saem do PRÓPRIO índice do jogo (não de uma
+  // lista fixa): jogo sem custo não ganha filtro de custo, e nenhum jogo precisa
+  // ser cadastrado à mão. Chaves do índice: k=cor, c=custo, t=tipo, r=raridade.
+  // ---------------------------------------------------------------------------
+  let facetSel = { k: "", c: "", t: "", r: "" };
+  const facetOptsCache = {};
+  function facetOptions(game, index) {
+    if (facetOptsCache[game]) return facetOptsCache[game];
+    const uniq = { k: new Set(), c: new Set(), t: new Set(), r: new Set() };
+    index.forEach((e) => {
+      rules.multi(e.k).forEach((v) => uniq.k.add(v));            // "Amber/Steel" -> 2 cores
+      if (e.c != null && e.c !== "") uniq.c.add(String(e.c));
+      if (e.t) uniq.t.add(String(e.t));
+      if (e.r) uniq.r.add(String(e.r));
+    });
+    const opts = {
+      k: [...uniq.k].sort(),
+      c: [...uniq.c].sort((a, b) => Number(a) - Number(b)),
+      t: [...uniq.t].sort(),
+      r: [...uniq.r].sort()
+    };
+    // Faceta com um valor só não filtra nada — não vira UI.
+    Object.keys(opts).forEach((k) => { if (opts[k].length < 2) opts[k] = []; });
+    facetOptsCache[game] = opts;
+    return opts;
+  }
+  function passesFacets(e) {
+    if (facetSel.k && !rules.multi(e.k).includes(facetSel.k)) return false;
+    if (facetSel.c && String(e.c) !== facetSel.c) return false;
+    if (facetSel.t && String(e.t || "") !== facetSel.t) return false;
+    if (facetSel.r && String(e.r || "") !== facetSel.r) return false;
+    return true;
+  }
+  function facetsHtml(game) {
+    const opts = facetOptsCache[game];
+    if (!opts) return "";                                    // índice ainda não chegou
+    const chips = (key, values, label) => {
+      if (!values.length) return "";
+      return `<div class="deck-facet"><span class="deck-facet-lbl">${esc(label)}</span>
+        <div class="deck-facet-chips">` + values.map((v) =>
+          `<button type="button" class="deck-facet-chip${facetSel[key] === v ? " on" : ""}" data-facet="${escA(key)}" data-facet-val="${escA(v)}"${key === "k" ? ` style="--fc:${escA(inkColor(v))}"` : ""}>${esc(prettyLabel(v))}</button>`).join("") + `</div></div>`;
+    };
+    const sel = (key, values, label) => {
+      if (!values.length) return "";
+      return `<div class="deck-facet"><span class="deck-facet-lbl">${esc(label)}</span>
+        <select class="deck-facet-sel" data-facet-sel="${escA(key)}">
+          <option value="">${esc(t("decks.facet.any"))}</option>
+          ${values.map((v) => `<option value="${escA(v)}"${facetSel[key] === v ? " selected" : ""}>${esc(prettyLabel(v))}</option>`).join("")}
+        </select></div>`;
+    };
+    const body = chips("k", opts.k, t("decks.facet.color"))
+      + chips("c", opts.c, t("decks.facet.cost"))
+      + sel("t", opts.t, t("decks.facet.type"))          // tipo pode ter 90+ valores: select
+      + sel("r", opts.r, t("decks.facet.rarity"));
+    if (!body) return "";
+    const ativo = Object.keys(facetSel).some((k) => facetSel[k]);
+    return `<div class="deck-facets">${body}${ativo ? `<button type="button" class="deck-mini" data-facet-clear>${esc(t("decks.facet.clear"))}</button>` : ""}</div>`;
+  }
+
   // Resultados da busca — SEMPRE do jogo do deck (nunca mistura catálogo).
-  function renderResults() {
+  // Varre o ÍNDICE (leve) e só depois baixa os chunks das ≤60 cartas exibidas.
+  let searchSeq = 0;
+  async function renderResults() {
     const box = document.getElementById("deckResults");
     if (!box) return;
     const deck = current;
     const q = query.trim();
     if (q.length < 2) { box.innerHTML = `<p class="deck-hint">${esc(t("decks.searchHint"))}</p>`; return; }
-    const hits = [];
-    for (const card of cat.cards) {
-      if (shared.matchesCardQuery(card, q)) hits.push(card);
-      if (hits.length >= 60) break;             // teto: catálogo pode ter 46k
+    const seq = ++searchSeq;                    // descarta resposta de busca velha
+    let index;
+    try { index = await searchIndexFor(deck.game); }
+    catch (e) { box.innerHTML = `<p class="deck-hint">${esc(t("decks.loadError"))}</p>`; return; }
+    if (seq !== searchSeq) return;
+    // As opções de filtro saem do índice; ele chega assíncrono, então a UI de
+    // facetas só existe a partir daqui.
+    const hadOpts = !!facetOptsCache[deck.game];
+    facetOptions(deck.game, index);
+    const fbox = document.getElementById("deckFacets");
+    if (fbox && !hadOpts) fbox.innerHTML = facetsHtml(deck.game);
+
+    const terms = norm(q).split(/\s+/).filter(Boolean);
+    const found = [];
+    for (const e of index) {
+      const hay = norm(e.n + " " + (e.s || "") + " " + (e.u || ""));
+      if (terms.every((tm) => hay.includes(tm)) && passesFacets(e)) found.push(e);
+      if (found.length >= 60) break;            // teto: o índice tem o jogo inteiro
     }
+    if (!found.length) { box.innerHTML = `<p class="deck-hint">${esc(t("decks.noResults"))}</p>`; return; }
+
+    // Hidrata só os resultados exibidos (≤60): baixa os chunks dos sets deles.
+    box.innerHTML = `<p class="deck-hint">${esc(t("decks.loading"))}</p>`;
+    try { cat = await ensureCards(deck.game, found.map((e) => e.i)); }
+    catch (e) { box.innerHTML = `<p class="deck-hint">${esc(t("decks.loadError"))}</p>`; return; }
+    if (seq !== searchSeq) return;
+    const hits = found.map((e) => cat.byId[e.i]).filter(Boolean);
     if (!hits.length) { box.innerHTML = `<p class="deck-hint">${esc(t("decks.noResults"))}</p>`; return; }
     const pack = packOf(deck);
     box.innerHTML = hits.map((c) => {
@@ -665,7 +922,9 @@
     if (del) {
       const d = getDeck(del.dataset.deckDel);
       if (d && confirm(t("decks.confirmDelete").replace("{name}", d.name))) {
-        data.decks.splice(data.decks.indexOf(d), 1); save(); renderGallery();
+        data.decks.splice(data.decks.indexOf(d), 1);
+        data.deleted[d.id] = Date.now();     // tombstone: a exclusão precisa propagar
+        save(); renderGallery();
       }
     }
   });
@@ -677,9 +936,35 @@
       if (card && add.dataset.zone) { addCard(current, add.dataset.zone, card, 1); renderEditor(); }
       return;
     }
+    // Importar / copiar lista em texto
+    if (ev.target.closest("[data-deck-import]")) { openImportModal(); return; }
+    const cp = ev.target.closest("[data-deck-copy]");
+    if (cp) {
+      copyDeckText().then((ok) => {
+        const before = cp.textContent;
+        cp.textContent = t(ok ? "decks.copied" : "decks.copyFail");
+        setTimeout(() => { cp.textContent = before; }, 1800);
+      });
+      return;
+    }
+
     // Layout (grade/lista/pilha)
     const lay = ev.target.closest("[data-layout]");
     if (lay) { view.layout = lay.dataset.layout; saveView(); renderEditor(); return; }
+
+    // Filtros por faceta: clicar no chip ativo desliga (toggle).
+    const fc = ev.target.closest("[data-facet]");
+    if (fc) {
+      const k = fc.dataset.facet;
+      facetSel[k] = facetSel[k] === fc.dataset.facetVal ? "" : fc.dataset.facetVal;
+      refreshFacets();
+      return;
+    }
+    if (ev.target.closest("[data-facet-clear]")) {
+      facetSel = { k: "", c: "", t: "", r: "" };
+      refreshFacets();
+      return;
+    }
 
     // +/− vale nos 3 layouts: linha (.deck-row) e miniatura (.deck-tile).
     const item = ev.target.closest(".deck-row, .deck-tile");
@@ -696,10 +981,22 @@
     }
   });
 
-  // Agrupar / ordenar (selects não disparam "click" útil)
+  // Redesenha só o bloco de facetas + resultados (não o editor inteiro: perderia
+  // o foco do campo de busca no meio da digitação).
+  function refreshFacets() {
+    const fbox = document.getElementById("deckFacets");
+    if (fbox && current) fbox.innerHTML = facetsHtml(current.game);
+    renderResults();
+  }
+
+  // Agrupar / ordenar / facetas em <select> (não disparam "click" útil)
   el.editor.addEventListener("change", (ev) => {
     if (ev.target.id === "deckGroupBy") { view.group = ev.target.value; saveView(); renderEditor(); }
     else if (ev.target.id === "deckSortBy") { view.sort = ev.target.value; saveView(); renderEditor(); }
+    else if (ev.target.dataset && ev.target.dataset.facetSel) {
+      facetSel[ev.target.dataset.facetSel] = ev.target.value;
+      refreshFacets();
+    }
   });
 
   // ---------------------------------------------------------------------------
