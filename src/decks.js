@@ -524,10 +524,17 @@
         <span class="deck-ed-game">${gameDot(deck.game)}${esc(shared.gameLabel(deck.game))}${pack.format ? " · " + esc(t("decks.format." + pack.format)) : ""}</span>
         ${viewMenuHtml()}
       </div>
+      ${issuesHtml}
       <div class="deck-ed-cols">
+        <!-- ESQUERDA: só as cartas do deck. -->
         <div class="deck-ed-left">
           ${zonesHtml}
-          ${issuesHtml}
+        </div>
+        <!-- DIREITA: busca + números do deck (valor e análise). -->
+        <div class="deck-ed-right">
+          <h3>${esc(t("decks.addCards"))}</h3>
+          <input id="deckSearch" class="deck-search" type="search" placeholder="${escA(t("decks.searchPlaceholder", { deckGame: shared.gameLabel(deck.game) }))}" value="${escA(query)}">
+          <div id="deckResults" class="deck-results"></div>
           <section class="deck-value">
             <h3>${esc(t("decks.value"))}</h3>
             <div class="deck-value-row"><span>${esc(t("decks.valueTotal"))}</span><strong>${esc(money(val.total))}</strong></div>
@@ -541,11 +548,6 @@
             ${barsHtml(t("decks.dist"), an.dist, true)}
             ${barsHtml(t("decks.rarity"), an.rarity)}
           </section>` : ""}
-        </div>
-        <div class="deck-ed-right">
-          <h3>${esc(t("decks.addCards"))}</h3>
-          <input id="deckSearch" class="deck-search" type="search" placeholder="${escA(t("decks.searchPlaceholder", { deckGame: shared.gameLabel(deck.game) }))}" value="${escA(query)}">
-          <div id="deckResults" class="deck-results"></div>
         </div>
       </div>`;
 

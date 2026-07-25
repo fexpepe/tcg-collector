@@ -6672,7 +6672,9 @@ select,
 /* --- Busca do editor (sempre travada no jogo do deck) --- */
 .deck-ed-right h3 { margin: 0 0 10px; font-size: 15px; }
 .deck-search { width: 100%; min-height: 42px; padding: 0 13px; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 8px; font-size: 14px; }
-.deck-results { margin-top: 12px; display: grid; gap: 7px; max-height: 62vh; overflow: auto; }
+/* 38vh (era 62): valor e análise agora ficam ABAIXO da busca na coluna direita —
+   com a lista alta demais, os números do deck sumiam pra fora da tela. */
+.deck-results { margin-top: 12px; display: grid; gap: 7px; max-height: 38vh; overflow: auto; }
 .deck-hint { color: var(--subtle); font-size: 13px; }
 .deck-hit { display: flex; align-items: center; gap: 11px; width: 100%; padding: 7px; border: 1px solid var(--line); background: var(--panel); color: var(--text); cursor: pointer; text-align: left; }
 .deck-hit:hover:not(:disabled) { border-color: var(--accent); background: var(--panel-strong); }
@@ -6771,3 +6773,11 @@ select,
   border: 1px solid var(--line); background: var(--panel-strong);
 }
 .deck-hover img { display: block; width: 100%; aspect-ratio: 63 / 88; object-fit: cover; }
+
+/* Valor e Análise passaram pra coluna DIREITA (a esquerda é só o deck).
+   Espaçamento próprio porque agora vêm logo abaixo da busca. */
+.deck-ed-right .deck-value { margin-top: 18px; }
+.deck-ed-right .deck-analysis { margin-top: 14px; }
+/* Avisos de legalidade viram faixa de largura total, entre o cabeçalho e as
+   colunas: some da esquerda sem perder destaque (é status do deck inteiro). */
+.deck-ed-cols { margin-top: 0; }
