@@ -142,6 +142,23 @@
   // ---------------------------------------------------------------------------
   // Vistas
   // ---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Página PÚBLICA (decks.html): só a listagem da comunidade está pendente — o
+  // construtor já existe. Logado, o CTA "Criar conta" não faz sentido (a pessoa
+  // já tem conta) e não havia caminho nenhum pro editor. Troca por "Meus Decks".
+  // ---------------------------------------------------------------------------
+  const publicCta = document.getElementById("decksCta");
+  if (publicCta) {
+    if (shared.getSession && shared.getSession()) {
+      publicCta.setAttribute("href", "my-decks.html");
+      publicCta.removeAttribute("data-i18n");          // senão o i18n reescreve
+      publicCta.textContent = t("decks.goMine");
+      const txt = document.getElementById("decksSoonText");
+      if (txt) { txt.removeAttribute("data-i18n"); txt.textContent = t("decks.publicSoonAuth"); }
+    }
+    return; // a página pública não tem galeria/editor
+  }
+
   const el = {
     gallery: document.getElementById("deckGallery"),
     editor: document.getElementById("deckEditor")

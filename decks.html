@@ -45,12 +45,17 @@
            deck é que pede conta — ver docs/DECKS.md §12. -->
       <section class="empty-state">
         <h2 data-i18n="decks.soonTitle">Em breve</h2>
-        <p data-i18n="decks.publicSoon">Os decks da comunidade aparecem aqui — em alta, novos e mais copiados, com filtro por jogo. Enquanto isso, crie sua conta pra ser um dos primeiros a publicar.</p>
-        <p><a class="cta" href="login.html" data-i18n="decks.publicCta">Criar conta grátis</a></p>
+        <!-- Só a LISTAGEM da comunidade está pendente (Fase 4). O construtor já
+             funciona: o decks.js troca o texto e o botão por "Meus Decks" quando
+             há sessão. O padrão do HTML é o deslogado, pra funcionar sem JS. -->
+        <p id="decksSoonText" data-i18n="decks.publicSoon">Os decks da comunidade aparecem aqui — em alta, novos e mais copiados, com filtro por jogo. Enquanto isso, crie sua conta pra ser um dos primeiros a publicar.</p>
+        <p><a class="cta" id="decksCta" href="login.html" data-i18n="decks.publicCta">Criar conta grátis</a></p>
       </section>
     </main>
 
     <script defer src="src/i18n.js"></script>
     <script defer src="src/shared.js"></script>
+    <script defer src="src/deck-rules.js"></script>
+    <script defer src="src/decks.js"></script>
   </body>
 </html>
