@@ -1,6 +1,6 @@
 (function () {
   const shared = window.TCGShared;
-  const { escapeHtml, escapeAttribute, t, getLocale, detailUrl } = shared;
+  const { escapeHtml, escapeAttribute, t, tn, getLocale, detailUrl } = shared;
 
   // Tudo na moeda escolhida no header.
   function money(value) {
@@ -391,10 +391,10 @@
         `${sign(unreal)}${Math.abs(pct).toFixed(1)}%`, `pf-insight-${cls(unreal) === "is-up" ? "up" : cls(unreal) === "is-down" ? "down" : "flat"}`);
     }
     if (soldItems.length) {
-      html += statCard(t("portfolio.invest.soldTotal"), escapeHtml(money(soldTotal)), escapeHtml(t("portfolio.invest.soldCount", { n: soldItems.length })));
+      html += statCard(t("portfolio.invest.soldTotal"), escapeHtml(money(soldTotal)), escapeHtml(tn("portfolio.invest.soldCount", soldItems.length)));
       if (realizedCount) html += statCard(t("portfolio.invest.realized"),
         `${sign(realized)}${escapeHtml(money(Math.abs(realized)))}`,
-        escapeHtml(t("portfolio.invest.realizedNote", { n: realizedCount })), `pf-insight-${realized >= 0 ? "up" : "down"}`);
+        escapeHtml(tn("portfolio.invest.realizedNote", realizedCount)), `pf-insight-${realized >= 0 ? "up" : "down"}`);
     }
     html += `</div>`;
     if (positions.length) {

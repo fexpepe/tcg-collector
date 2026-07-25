@@ -112,9 +112,15 @@
   // ---------------------------------------------------------------------------
   // Valor: total, o que já tenho e o que falta comprar (o número que importa).
   // ---------------------------------------------------------------------------
+  // Stores por jogo, criados UMA vez cada: createCollectionStore/PriceStore leem
+  // e parseiam o localStorage inteiro, e isto é chamado por carta a cada render.
+  const ownedCache = {}, priceCache = {};
+  const ownedFor = (g) => ownedCache[g] || (ownedCache[g] = shared.createCollectionStore(g));
+  const pricesFor = (g) => priceCache[g] || (priceCache[g] = shared.createPriceStore(g));
+
   function computeValue(deck, byId) {
-    const owned = shared.createCollectionStore(deck.game);
-    const prices = shared.createPriceStore(deck.game);
+    const owned = ownedFor(deck.game);
+    const prices = pricesFor(deck.game);
     let total = 0, have = 0, missing = 0, missingCards = 0;
     allEntries(deck).forEach(({ entry }) => {
       const card = byId[entry.id];
@@ -133,7 +139,7 @@
     return { total, have, missing, missingCards };
   }
   function ownedCountOf(deck, cardId) {
-    const owned = shared.createCollectionStore(deck.game);
+    const owned = ownedFor(deck.game);
     return owned.totalForCard ? owned.totalForCard(cardId) : 0;
   }
 
@@ -164,6 +170,32 @@
     editor: document.getElementById("deckEditor")
   };
   if (!el.gallery || !el.editor) return;
+
+  // Preview da carta — o MESMO modal do Explorar/Binder. Criado UMA vez (ele
+  // registra listeners no document; recriar empilharia handlers), mas o jogo
+  // muda por deck: os proxies encaminham pro store do deck aberto.
+  const curGame = () => (current && current.game) || "pokemon";
+  // Encaminha qualquer acesso pro store do jogo do deck ABERTO no momento
+  // (métodos vêm ligados ao store certo).
+  function liveStore(factory) {
+    return new Proxy({}, {
+      get(_t, prop) {
+        const s = factory(curGame());
+        const v = s[prop];
+        return typeof v === "function" ? v.bind(s) : v;
+      }
+    });
+  }
+  const cardPreview = shared.createCardPreview({
+    getCard: (cardId) => (cat && cat.byId ? cat.byId[cardId] : null),
+    // Proxy em vez de listar os métodos na mão: o preview chama helpers que usam
+    // outros métodos do store (getQuantity, conditionBreakdown…), e enumerar
+    // quebraria de novo a cada método novo. O Proxy encaminha tudo.
+    store: liveStore(ownedFor),
+    prices: liveStore(pricesFor),
+    // Mexer na posse pelo preview muda o selo "tenho/falta" e o valor do deck.
+    onOwnedChange: () => { if (current && cat) renderEditor(); }
+  });
 
   function show(view) {
     el.gallery.hidden = view !== "gallery";
@@ -370,7 +402,7 @@
   function unitPrice(deck, entry) {
     const card = cat.byId[entry.id];
     if (!card) return 0;
-    const prices = shared.createPriceStore(deck.game);
+    const prices = pricesFor(deck.game);
     return (shared.cardValue(card, entry.variant || shared.defaultVariant(card), prices) || {}).value || 0;
   }
 
@@ -656,6 +688,12 @@
     if (!card) return;
     if (ev.target.closest("[data-inc]")) { addCard(current, item.dataset.zone, card, 1); renderEditor(); }
     else if (ev.target.closest("[data-dec]")) { addCard(current, item.dataset.zone, card, -1); renderEditor(); }
+    else {
+      // Clique fora do +/−: abre o card completo (texto, preço, marcar posse).
+      hideHover();                                   // senão o preview de hover fica por cima
+      const entry = (current.zones[item.dataset.zone] || []).find((e) => e.id === card.id);
+      cardPreview.open(card.id, (entry && entry.variant) || shared.defaultVariant(card));
+    }
   });
 
   // Agrupar / ordenar (selects não disparam "click" útil)

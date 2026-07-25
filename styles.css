@@ -6800,3 +6800,10 @@ select,
 /* Nas metas o restante do texto segue discreto; a etiqueta é o destaque. */
 .deck-card-meta, .deck-ed-game { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .deck-game-pick { justify-content: flex-start; }
+
+/* Dica sob o campo de custo na confirmação de venda. */
+.sold-confirm-hint { margin: -4px 0 0; font-size: 12px; color: var(--subtle); line-height: 1.45; }
+
+/* Carta do deck abre o card completo ao clicar (fora dos botões +/−). */
+.deck-tile, .deck-row { cursor: pointer; }
+.deck-tile-btns .deck-mini, .deck-row-btns .deck-mini { cursor: pointer; }

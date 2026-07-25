@@ -332,7 +332,14 @@
             <input type="text" inputmode="decimal" class="sale-price" id="soldPriceInput" value="${escapeAttribute(price > 0 ? price.toFixed(2).replace(".", ",") : "")}" placeholder="0,00"></span></label>
           <label class="sold-confirm-field"><span>${escapeHtml(t("sales.sold.date"))}</span>
             <input type="date" id="soldDateInput" value="${new Date().toISOString().slice(0, 10)}"></label>
-          ${paidNow > 0 ? `<p class="sold-confirm-paid">${escapeHtml(t("sales.sold.paidInfo", { v: shared.formatMoney(shared.getCurrency(), paidNow) }))}</p>` : ""}
+          <!-- Custo EDITÁVEL na hora da venda. Antes era só um texto informativo:
+               quem não tinha preenchido o custo na Coleção vendia com paid=0 e a
+               venda sumia do lucro do Portfólio sem avisar. Vem pré-preenchido
+               com o custo da carta, quando existe. -->
+          <label class="sold-confirm-field"><span>${escapeHtml(t("sales.sold.paid"))}</span>
+            <span class="sale-price-field"><span class="sale-cur">${escapeHtml(sym)}</span>
+            <input type="text" inputmode="decimal" class="sale-price" id="soldPaidInput" value="${escapeAttribute(paidNow > 0 ? paidNow.toFixed(2).replace(".", ",") : "")}" placeholder="0,00"></span></label>
+          <p class="sold-confirm-hint">${escapeHtml(t("sales.sold.paidHint"))}</p>
           <p class="sold-confirm-note">${escapeHtml(t("sales.sold.removeNote"))}</p>
         </div>
         <footer class="sales-picker-foot">
@@ -348,7 +355,11 @@
       const text = String(modal.querySelector("#soldPriceInput").value).trim();
       const amount = shared.parseMoney(text);
       const date = modal.querySelector("#soldDateInput").value || new Date().toISOString().slice(0, 10);
-      sold.add({ cardId, variant, cond, price: amount, paid: paidNow, cur: shared.getCurrency(), date });
+      const paidAmount = shared.parseMoney(String(modal.querySelector("#soldPaidInput").value).trim());
+      // Corrigiu/informou o custo aqui? Guarda na carta também: as cópias que
+      // sobraram passam a ter o custo certo, e não se digita de novo na próxima.
+      if (paidAmount > 0 && paidAmount !== paidNow) costs.set(cardId, variant, paidAmount, shared.getCurrency());
+      sold.add({ cardId, variant, cond, price: amount, paid: paidAmount, cur: shared.getCurrency(), date });
       sales.remove(cardId, variant, idx);
       removeCopyFromCollection(cardId, variant, cond);
       close();
