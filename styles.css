@@ -6761,3 +6761,13 @@ select,
   .deck-tile-btns { opacity: 1; }
   .deck-pile .deck-tile { margin-right: 0; }
 }
+
+/* Preview da carta no hover (visão de LISTA do deck). position: fixed + pointer-
+   events: none — o preview acompanha o cursor sem nunca roubar o hover da linha
+   (senão piscaria ao passar por baixo dele). */
+.deck-hover {
+  position: fixed; z-index: 80; width: 244px; pointer-events: none;
+  border-radius: 10px; overflow: hidden; box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
+  border: 1px solid var(--line); background: var(--panel-strong);
+}
+.deck-hover img { display: block; width: 100%; aspect-ratio: 63 / 88; object-fit: cover; }

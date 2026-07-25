@@ -654,6 +654,73 @@
   });
 
   // ---------------------------------------------------------------------------
+  // Preview no hover — SÓ na visão de lista (grade e pilha já mostram a arte).
+  // Na lista você lê nomes; a imagem é o que faz reconhecer a carta rápido.
+  // ---------------------------------------------------------------------------
+  const HOVER_W = 244;                 // largura do preview (proporção 63/88)
+  const HOVER_H = Math.round(HOVER_W * 88 / 63);
+  const canHover = !window.matchMedia || window.matchMedia("(hover: hover)").matches;
+  let hoverEl = null;
+
+  function hoverBox() {
+    if (hoverEl) return hoverEl;
+    hoverEl = document.createElement("div");
+    hoverEl.className = "deck-hover";
+    hoverEl.setAttribute("aria-hidden", "true"); // decorativo: o nome já está na linha
+    hoverEl.hidden = true;
+    hoverEl.innerHTML = '<img alt="">';
+    document.body.appendChild(hoverEl);
+    return hoverEl;
+  }
+  // Ancora na LINHA, não no cursor: seguindo o mouse, o preview cobria a própria
+  // lista que a pessoa está lendo e tremia a cada movimento. Preso à direita da
+  // linha ele fica estável e nunca tapa o nome.
+  function placeHover(row) {
+    const box = hoverBox();
+    const r = row.getBoundingClientRect();
+    const pad = 12;
+    let left = r.right + pad;
+    if (left + HOVER_W > window.innerWidth - 8) left = r.left - pad - HOVER_W; // não cabe: vai pra esquerda
+    if (left < 8) left = 8;
+    // Centrado na linha e presa à janela — nunca sai da tela.
+    let top = r.top + r.height / 2 - HOVER_H / 2;
+    top = Math.max(8, Math.min(top, window.innerHeight - HOVER_H - 8));
+    box.style.left = left + "px";
+    box.style.top = top + "px";
+  }
+  function showHover(card, row) {
+    if (!card || !card.image) return hideHover();
+    const box = hoverBox();
+    const img = box.querySelector("img");
+    if (img.getAttribute("src") !== card.image) img.setAttribute("src", card.image);
+    box.hidden = false;
+    placeHover(row);
+  }
+  function hideHover() { if (hoverEl) hoverEl.hidden = true; }
+
+  if (canHover) {
+    el.editor.addEventListener("mouseover", (ev) => {
+      // Só linha de lista: nas miniaturas a arte já está à vista.
+      const row = ev.target.closest(".deck-row[data-card]");
+      if (!row) return;
+      showHover(cat && cat.byId ? cat.byId[row.dataset.card] : null, row);
+    });
+    el.editor.addEventListener("mouseout", (ev) => {
+      const to = ev.relatedTarget;
+      if (!to || !to.closest || !to.closest(".deck-row[data-card]")) hideHover();
+    });
+    // Teclado: quem navega por Tab cai nos botões +/− da linha e também vê a arte.
+    el.editor.addEventListener("focusin", (ev) => {
+      const row = ev.target.closest(".deck-row[data-card]");
+      if (row) showHover(cat && cat.byId ? cat.byId[row.dataset.card] : null, row);
+      else hideHover();
+    });
+    // Rolar/sair da aba com o preview aberto deixaria ele "solto" na tela.
+    window.addEventListener("scroll", hideHover, { passive: true });
+    window.addEventListener("blur", hideHover);
+  }
+
+  // ---------------------------------------------------------------------------
   // Boot
   // ---------------------------------------------------------------------------
   const id = new URLSearchParams(location.search).get("id");
