@@ -1870,11 +1870,14 @@ input::placeholder {
    cartões gigantes). Meta: o mínimo de altura antes da grade de cartas. */
 .detail-summary.has-hero {
   grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
+  /* A adição rápida sobe pra LINHA DO HERO: lá já sobra espaço horizontal (o
+     hero é logo + título + stats), enquanto embaixo ela esticava a fileira dos
+     toggles e abria um vão morto de ~75px antes da grade de cartas. */
   grid-template-areas:
-    "hero hero"
+    "hero quick"
     "bar bar"
-    "values quick"
-    "modes quick";
+    "values values"
+    "modes modes";
   align-items: start;
 }
 .detail-summary.has-hero .detail-hero { grid-area: hero; }
@@ -1882,6 +1885,7 @@ input::placeholder {
 .detail-summary.has-hero .detail-values { grid-area: values; }
 .detail-summary.has-hero .progress-modes { grid-area: modes; margin: 0; }
 .detail-summary.has-hero .quick-add { grid-area: quick; margin: 0; align-self: stretch; }
+/* Sem adição rápida a coluna da direita some e o hero volta a ocupar tudo. */
 /* Sem adição rápida (pokémon/artista/coleção): coluna única, sem vão à direita. */
 .detail-summary.has-hero:has(.quick-add[hidden]) {
   grid-template-columns: minmax(0, 1fr);
@@ -1892,9 +1896,9 @@ input::placeholder {
    dividida entre elas e joga os toggles pro meio de um vão enorme. */
 .detail-summary.has-hero:has(.detail-values[hidden]) {
   grid-template-areas:
-    "hero hero"
+    "hero quick"
     "bar bar"
-    "modes quick";
+    "modes modes";
 }
 .detail-summary.has-hero:has(.detail-values[hidden]):has(.quick-add[hidden]) {
   grid-template-columns: minmax(0, 1fr);
