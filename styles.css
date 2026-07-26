@@ -413,6 +413,13 @@ main {
   font-weight: 800;
 }
 
+/* Item ATIVO do menu no tema claro: o --panel-strong (#eef1f6) é quase o branco
+   do header (1.10 de contraste entre eles) — não dava pra ver o que estava
+   selecionado. Um cinza mais fechado separa sem pesar; o texto continua com
+   12:1. Só no claro: no escuro o --panel-strong já destaca. */
+[data-theme="light"] .page-nav a.active,
+[data-theme="light"] .nav-group-toggle.active { background: #dce2ec; }
+
 .page-nav a.active {
   background: var(--panel-strong);
   border-color: var(--line);
@@ -7021,3 +7028,17 @@ select,
 .dkc-view-head .cta { margin-left: auto; }
 .dkc-author { font-size: 13px; color: var(--subtle); font-weight: 700; }
 .dkc-value { max-width: 420px; margin-bottom: 18px; }
+
+/* Leitura do histórico de preço (crosshair + tooltip do sparkline do preview).
+   Overlay em HTML sobre o SVG; posições em % seguem qualquer largura. */
+.price-history-chart { position: relative; }
+.price-history-chart svg { touch-action: pan-y; cursor: crosshair; }
+.ph-cross { position: absolute; top: 0; height: calc(100% - 22px); width: 0; border-left: 1px dashed var(--subtle); pointer-events: none; }
+.ph-dot { position: absolute; width: 9px; height: 9px; border-radius: 50%; background: var(--text); border: 2px solid var(--bg); transform: translate(-50%, -50%); pointer-events: none; }
+.ph-tip {
+  position: absolute; top: 4px; transform: translateX(8px);
+  background: var(--surface); border: 1px solid var(--line); color: var(--text);
+  font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 6px;
+  white-space: nowrap; pointer-events: none; box-shadow: var(--shadow);
+}
+.ph-tip.is-flip { transform: translateX(calc(-100% - 8px)); }

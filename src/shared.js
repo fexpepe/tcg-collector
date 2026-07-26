@@ -899,6 +899,22 @@
     });
   }
 
+  // Chips de filtro por jogo (#gameFilter da Coleção/Graded/Vendas). O HTML
+  // dessas páginas trazia CINCO jogos fixos, então Gundam, Magic, YGO, Digimon,
+  // FAB, DBFW e Riftbound eram invisíveis mesmo com cartas na coleção. Aqui a
+  // lista sai de GAME_SLUGS: jogo novo aparece nas três telas sozinho.
+  // Mantém o markup (button.chip + data-game-filter + aria-pressed) porque a
+  // delegação de clique de cada página depende dele.
+  function initGameFilterChips() {
+    document.querySelectorAll("#gameFilter").forEach((box) => {
+      const atual = (box.querySelector('[data-game-filter][aria-pressed="true"]') || {}).dataset;
+      const ativo = (atual && atual.gameFilter) || "all";
+      const chip = (g, label) =>
+        `<button type="button" class="chip" data-game-filter="${escapeAttribute(g)}" aria-pressed="${g === ativo}">${escapeHtml(label)}</button>`;
+      box.innerHTML = chip("all", t("filter.gameAll")) + GAME_SLUGS.map((g) => chip(g, gameLabel(g))).join("");
+    });
+  }
+
   function initSearchShortcutHint() {
     try {
       if (window.matchMedia("(pointer: coarse)").matches) return;
@@ -2531,6 +2547,49 @@
           </svg>
           <div class="price-history-meta"><span>${escapeHtml(`${fmtDay(pts[0][0])} · ${fmtMoney(cur, first)}`)}</span><span>${escapeHtml(`${fmtDay(pts[pts.length - 1][0])} · ${fmtMoney(cur, last)}`)}</span></div>
         </div></div>`);
+    // Leitura ponto a ponto: mouse no desktop, dedo no celular. Os dados ficam
+    // no próprio elemento (o modal é descartado ao fechar — nada vaza).
+    const chart = section.querySelector(".price-history-chart");
+    if (chart) attachPriceHistoryPointer(chart, { pts, vals, cur, W, H, X, Y, fmtDay });
+  }
+
+  // Crosshair + tooltip do sparkline. Overlay em HTML (não dentro do SVG): o
+  // viewBox estica com preserveAspectRatio=none e distorceria o raio do ponto;
+  // posições em % ficam corretas em qualquer largura.
+  function attachPriceHistoryPointer(chart, data) {
+    const { pts, vals, cur, W, H, X, Y, fmtDay } = data;
+    chart.insertAdjacentHTML("beforeend",
+      `<div class="ph-cross" hidden></div><div class="ph-dot" hidden></div><div class="ph-tip" hidden></div>`);
+    const cross = chart.querySelector(".ph-cross");
+    const dot = chart.querySelector(".ph-dot");
+    const tip = chart.querySelector(".ph-tip");
+    const svg = chart.querySelector("svg");
+
+    function show(clientX) {
+      const r = svg.getBoundingClientRect();
+      if (!r.width) return;
+      const frac = Math.max(0, Math.min(1, (clientX - r.left) / r.width));
+      const i = Math.round(frac * (vals.length - 1));
+      const leftPct = (X(i) / W) * 100;
+      const topPct = (Y(vals[i]) / H) * 100;
+      cross.style.left = leftPct + "%";
+      dot.style.left = leftPct + "%";
+      dot.style.top = topPct + "%";
+      tip.textContent = `${fmtDay(pts[i][0])} · ${fmtMoney(cur, vals[i])}`;
+      // O tooltip troca de lado no meio pra nunca sair do gráfico.
+      tip.style.left = leftPct + "%";
+      tip.classList.toggle("is-flip", leftPct > 55);
+      cross.hidden = dot.hidden = tip.hidden = false;
+    }
+    function hide() { cross.hidden = dot.hidden = tip.hidden = true; }
+
+    // Pointer Events cobrem mouse E toque. touch-action: pan-y (no CSS) deixa o
+    // arraste HORIZONTAL ler o gráfico sem sequestrar a rolagem vertical do modal.
+    svg.addEventListener("pointerdown", (e) => { svg.setPointerCapture(e.pointerId); show(e.clientX); });
+    svg.addEventListener("pointermove", (e) => { if (e.pointerType === "mouse" || e.pressure > 0) show(e.clientX); });
+    svg.addEventListener("pointerup", hide);
+    svg.addEventListener("pointercancel", hide);
+    svg.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") hide(); });
   }
 
   // Busca cotação + câmbio e preenche a seção no modal (some se não houver).
@@ -5862,6 +5921,7 @@
     }
   });
   initCommandPalette();
+  initGameFilterChips();   // ANTES do applyTranslations não: os rótulos usam t()
   initSearchShortcutHint(); // depois do applyTranslations (placeholders já traduzidos)
   initFilterToggle();
   initAuth();
