@@ -52,12 +52,22 @@
   --accent: #dc2626;
   --accent-dark: #b91c1c;
   --accent-rgb: 220, 38, 38;
+  /* O accent tem DOIS papéis com exigências opostas: como FUNDO (texto branco
+     por cima) precisa ser escuro; como TEXTO sobre superfície escura precisa
+     ser claro. Um tom só não passa nos dois — o #dc2626 dá 4.83 de fundo mas
+     só 3.57 como texto. --accent-ink é o tom claro, pra texto. */
+  --accent-ink: #ef4444;
   --accent-soft: rgba(var(--accent-rgb), 0.13);
   --on-accent: #ffffff; /* texto branco sobre o vermelho */
   --gold: #f0b84b;
   --shadow: 0 18px 45px rgba(0, 0, 0, 0.32);
   --header-bg: rgba(13, 14, 18, 0.92);
 }
+
+/* --accent-ink nos DEMAIS jogos: o accent deles já é um tom claro (escolhido
+   pra receber texto escuro em cima), então serve de tinta sem ajuste. Só o
+   Pokémon precisa dos dois tons separados. */
+[data-game-accent]:not([data-game-accent="pokemon"]) { --accent-ink: var(--accent); }
 
 /* Foco por TECLADO visível em qualquer interativo (a11y AA): anel na cor do
    jogo. :focus-visible não dispara em clique/touch — só navegação por Tab. */
@@ -72,14 +82,23 @@
   --panel: #ffffff;
   --panel-strong: #eef1f6;
   --text: #1b1f27;
-  --muted: #5a6473;
-  --subtle: #6b7585; /* AA 4.5+: era #828c9b (3.4 sobre branco) */
+  /* #525b68: o #5a6473 caía a 4.43 sobre o fundo dos chips inativos. Precisa
+     ser mais escuro que --subtle (é o tom MAIS forte dos dois). */
+  --muted: #525b68;
+  /* #57606d: o #6b7585 passava sobre BRANCO (4.66) mas caía a 3.45 sobre o
+     fundo dos chips inativos (#d8dee8) e 4.11 sobre o --panel-strong. Este tom
+     passa nas TRÊS superfícies do tema claro (4.71 / 6.37 / 5.62). */
+  --subtle: #57606d;
   --line: #e2e6ed;
   --money: #0c7a54; /* o verde-claro #7ee2b8 dava 1.56 sobre branco (ilegível) */
-  /* No tema claro o accent vira VERMELHO (e tints dele via --accent-rgb). */
-  --accent: #e23030;
+  /* No tema claro o accent vira VERMELHO (e tints dele via --accent-rgb).
+     #df2c2c e não #e23030: com texto branco o anterior dava 4.47:1, um fio
+     abaixo do mínimo AA (4.5). Este dá 4.63 e é visualmente o mesmo vermelho. */
+  --accent: #df2c2c;
   --accent-dark: #b81e1e;
-  --accent-rgb: 226, 48, 48;
+  /* Tema CLARO: a superfície é clara, então a tinta é o accent escuro mesmo. */
+  --accent-ink: #c62222;
+  --accent-rgb: 223, 44, 44;
   --accent-soft: rgba(var(--accent-rgb), 0.1);
   --on-accent: #ffffff; /* texto branco sobre o vermelho */
   --gold: #b07d10;
@@ -179,11 +198,13 @@
 img, svg, video, canvas {
   max-width: 100%;
 }
-/* height: auto só onde a altura NÃO é controlada por CSS — senão quebraria
-   quem usa aspect-ratio/height fixo (miniaturas de carta, ícones de nav). */
-img:not([width][height]) {
-  height: auto;
-}
+/* NÃO adicionar `height: auto` aqui. Já foi tentado e causou regressão de CLS:
+   `img:not([width][height])` tem especificidade 0-2-1 (os dois seletores de
+   atributo dentro do :not contam) e VENCE regras como
+   `.coll-card-cover img { height: 100% }` (0-1-1) — as imagens que preenchiam
+   um contêiner com espaço reservado passavam a colapsar pra altura natural.
+   E é inútil: em imagem sem os atributos width/height, `height: auto` já é o
+   padrão do navegador. */
 
 /* Item de grid/flex tem `min-width: auto` por padrão — ou seja, NÃO encolhe
    abaixo do próprio conteúdo. Uma palavra longa (nome de carta japonesa, id de
@@ -4090,7 +4111,9 @@ a.progress-row:hover {
     font-size: 10.5px; font-weight: 700; color: var(--muted);
     text-decoration: none; cursor: pointer;
   }
-  .mtab.active { color: var(--accent); }
+  /* --accent-ink (tom claro) e não --accent: como TEXTO sobre a barra escura o
+     accent de fundo dava 3.57:1 (reprovado pelo Lighthouse). */
+  .mtab.active { color: var(--accent-ink); }
   .mtab-ic svg { width: 22px; height: 22px; display: block; }
   /* Nada escondido atrás da barra (nem o toast de desfazer). */
   body { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
