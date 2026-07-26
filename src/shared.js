@@ -4227,6 +4227,7 @@
     getSession,
     createShare,
     fetchShare,
+    listShares,
     cardValue,
     gradedValue,
     gradedGradeText,
@@ -4812,11 +4813,13 @@
 
   // --- Compartilhamento por link público (tabela `shares`) ---
   // Escrita exige login (RLS: auth.uid() = user_id); leitura é pública pelo id.
-  async function createShare(kind, title, data) {
+  async function createShare(kind, title, data, game) {
     let s = getSession();
     if (!s) return { error: "auth" };
     if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
-    const body = JSON.stringify({ kind, game: currentGame(), title: title || null, data });
+    // `game` explícito: um deck de Lorcana publicado numa sessão Pokémon tem que
+    // ser arquivado (e filtrado na galeria) como Lorcana, não como a sessão.
+    const body = JSON.stringify({ kind, game: game || currentGame(), title: title || null, data });
     const post = (tok) => fetch(`${SUPABASE_URL}/rest/v1/shares`, {
       method: "POST", body,
       headers: Object.assign(authHeaders(tok), { Prefer: "return=representation" })
@@ -4836,6 +4839,19 @@
       const rows = await r.json();
       return rows && rows[0] ? rows[0] : null;
     } catch (e) { return null; }
+  }
+  // Lista pública de shares de um tipo (galeria de decks da comunidade). O RLS
+  // da tabela já permite SELECT anônimo (o fetchShare por id depende disso);
+  // aqui só se lista mais de um. `game` opcional filtra no servidor.
+  // SEM o `data` no select de propósito: a listagem só precisa dos metadados —
+  // trazer o payload de 60 decks seria pesado à toa.
+  async function listShares(kind, game, limit) {
+    if (!AUTH_ENABLED) return [];
+    try {
+      const g = game ? `&game=eq.${encodeURIComponent(normalizeGame(game))}` : "";
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/shares?kind=eq.${encodeURIComponent(kind)}${g}&select=id,title,game,created_at&order=created_at.desc&limit=${Math.min(Number(limit) || 60, 100)}`, { headers: authHeaders() });
+      return r.ok ? await r.json() : [];
+    } catch (e) { return []; }
   }
   // --- Perfil na nuvem (tabelas `profiles` + `public_profiles`) ---
   // Sobe o perfil (handle/nome/visibilidade). Exige login. 409 = @ já em uso.

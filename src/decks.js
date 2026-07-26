@@ -190,20 +190,155 @@
   // Vistas
   // ---------------------------------------------------------------------------
   // ---------------------------------------------------------------------------
-  // Página PÚBLICA (decks.html): só a listagem da comunidade está pendente — o
-  // construtor já existe. Logado, o CTA "Criar conta" não faz sentido (a pessoa
-  // já tem conta) e não havia caminho nenhum pro editor. Troca por "Meus Decks".
+  // Página PÚBLICA (decks.html): galeria da comunidade + viewer (?s=<id>).
+  // Vive na tabela `shares` que JÁ existe (kind="deck") — sem mudança de banco.
+  // Leitura é anônima (RLS de SELECT já era público, o fetchShare dependia
+  // disso); publicar/copiar é que exigem conta.
+  // ATENÇÃO: título/autor/nomes vêm de USUÁRIO — escapar TUDO ao renderizar.
   // ---------------------------------------------------------------------------
-  const publicCta = document.getElementById("decksCta");
-  if (publicCta) {
-    if (shared.getSession && shared.getSession()) {
-      publicCta.setAttribute("href", "my-decks.html");
-      publicCta.removeAttribute("data-i18n");          // senão o i18n reescreve
-      publicCta.textContent = t("decks.goMine");
-      const txt = document.getElementById("decksSoonText");
-      if (txt) { txt.removeAttribute("data-i18n"); txt.textContent = t("decks.publicSoonAuth"); }
+  // Declarada ANTES da chamada: initPublicPage roda já na linha de baixo, e um
+  // `let` depois dela ficaria em TDZ — a exceção travava o "Carregando…".
+  let communityGame = "";                       // filtro ativo ("" = todos)
+  const pubBox = document.getElementById("deckCommunity");
+  if (pubBox) { initPublicPage(pubBox); return; }
+
+  function initPublicPage(box) {
+    const logged = !!(shared.getSession && shared.getSession());
+    const sharedId = new URLSearchParams(location.search).get("s");
+    if (sharedId) { renderPublicDeck(box, sharedId, logged); return; }
+    renderCommunity(box, logged);
+  }
+
+  // Payload de share pode vir adulterado: só aceita o shape v1 e com limites.
+  function sanitizeDeckPayload(raw) {
+    if (!raw || typeof raw !== "object" || raw.v !== 1) return null;
+    const game = shared.normalizeGame(String(raw.game || ""));
+    if (!shared.GAME_SLUGS.includes(game)) return null;
+    const zones = {};
+    let total = 0;
+    Object.keys(raw.zones && typeof raw.zones === "object" ? raw.zones : {}).slice(0, 6).forEach((k) => {
+      if (!/^[a-z]{1,12}$/.test(k) || !Array.isArray(raw.zones[k])) return;
+      zones[k] = raw.zones[k].slice(0, 300).map((e) => ({
+        id: String(e && e.id || "").slice(0, 60),
+        qty: Math.max(1, Math.min(99, Math.floor(Number(e && e.qty) || 1)))
+      })).filter((e) => e.id);
+      total += zones[k].reduce((s, e) => s + e.qty, 0);
+    });
+    if (!total) return null;
+    return {
+      game, zones, total,
+      name: String(raw.name || "").slice(0, 60) || t("decks.untitled"),
+      format: raw.format ? String(raw.format).slice(0, 20) : null,
+      author: raw.author ? String(raw.author).slice(0, 30) : null
+    };
+  }
+
+  // ---------- Galeria da comunidade (com filtro por jogo) ----------
+  async function renderCommunity(box, logged) {
+    box.innerHTML = `<p class="deck-hint">${esc(t("decks.loading"))}</p>`;
+    const rows = await shared.listShares("deck", communityGame || null, 60);
+    // Filtros: chips por jogo — sempre TODOS os jogos com a cor deles (o
+    // usuário pediu filtros; jogo sem deck fica com o chip mesmo assim, senão
+    // o filtro "some" conforme o conteúdo).
+    const chips = `<div class="dkc-filters">
+      <button type="button" class="dkc-filter${communityGame === "" ? " on" : ""}" data-dkc-game="">${esc(t("decks.filterAll"))}</button>
+      ${shared.GAME_SLUGS.map((g) => `<button type="button" class="dkc-filter${communityGame === g ? " on" : ""}" data-dkc-game="${escA(g)}">${shared.gameTagHtml(g)}</button>`).join("")}
+    </div>`;
+    const topCta = logged
+      ? `<a class="cta secondary-cta" href="my-decks.html">${esc(t("decks.goMine"))}</a>`
+      : `<a class="cta" href="login.html">${esc(t("decks.publicCta"))}</a>`;
+    let body;
+    if (!rows.length) {
+      body = `<section class="empty-state"><h2>${esc(t("decks.emptyCommunityTitle"))}</h2>
+        <p>${esc(t(communityGame ? "decks.emptyCommunityGame" : "decks.emptyCommunity"))}</p></section>`;
+    } else {
+      body = `<div class="dkc-grid">` + rows.map((r) => {
+        const g = shared.normalizeGame(r.game || "pokemon");
+        const quando = r.created_at ? new Date(r.created_at).toLocaleDateString(shared.getLocale()) : "";
+        return `<a class="dkc-card" href="decks.html?s=${encodeURIComponent(r.id)}">
+          <span class="dkc-card-name">${esc(String(r.title || t("decks.untitled")).slice(0, 60))}</span>
+          <span class="dkc-card-meta">${shared.gameTagHtml(g)}<span>${esc(quando)}</span></span>
+        </a>`;
+      }).join("") + `</div>`;
     }
-    return; // a página pública não tem galeria/editor
+    box.innerHTML = `<div class="dkc-head">${chips}${topCta}</div>${body}`;
+    box.querySelectorAll("[data-dkc-game]").forEach((b) => b.addEventListener("click", () => {
+      communityGame = b.dataset.dkcGame;
+      renderCommunity(box, logged);
+    }));
+  }
+
+  // ---------- Viewer de um deck publicado ----------
+  async function renderPublicDeck(box, id, logged) {
+    box.innerHTML = `<p class="deck-hint">${esc(t("decks.loading"))}</p>`;
+    const row = await shared.fetchShare(id);
+    const deck = row && row.kind === "deck" ? sanitizeDeckPayload(row.data) : null;
+    if (!deck) { box.innerHTML = `<section class="empty-state"><p>${esc(t("decks.sharedGone"))}</p></section>`; return; }
+
+    // Catálogo + preços do jogo do deck, só das cartas dele.
+    const ids = [...new Set(Object.values(deck.zones).flat().map((e) => e.id))];
+    let byId = {}, priceOk = false;
+    try {
+      const [r] = await Promise.all([shared.loadGameCatalog(deck.game, shared.gameDataDir(deck.game), ids), shared.loadFxRates()]);
+      (r.cards || []).forEach((c) => { byId[c.id] = c; });
+      if (r.pricing) { window.TCG_PRICING = Object.assign({}, window.TCG_PRICING || {}, r.pricing); }
+      priceOk = true;
+    } catch (e) { /* sem catálogo: mostra ids mesmo */ }
+
+    // Valor pro VISITANTE: total e quanto falta pra ELE (coleção local dele).
+    const prices = shared.createPriceStore(deck.game);
+    const owned = shared.createCollectionStore(deck.game);
+    let total = 0, missing = 0;
+    Object.values(deck.zones).flat().forEach((e) => {
+      const card = byId[e.id];
+      if (!card) return;
+      const unit = (shared.cardValue(card, shared.defaultVariant(card), prices) || {}).value || 0;
+      const have = owned.totalForCard ? owned.totalForCard(e.id) : 0;
+      total += unit * e.qty;
+      missing += unit * Math.max(0, e.qty - have);
+    });
+    const money = (v) => shared.formatMoney(shared.getCurrency(), v);
+
+    const zonesHtml = Object.keys(deck.zones).map((zk) => {
+      const list = deck.zones[zk];
+      if (!list.length) return "";
+      const label = t("decks.zone." + zk);
+      return `<section class="deck-zone"><h3>${esc(label === "decks.zone." + zk ? zk : label)} <span class="deck-zone-n">${esc(String(list.reduce((s, e) => s + e.qty, 0)))}</span></h3>
+        <div class="deck-tiles">` + list.map((e) => {
+          const card = byId[e.id];
+          const img = card && card.image ? `<img src="${escA(card.image)}" alt="${escA(card.name || "")}" loading="lazy">` : `<span class="deck-noimg"></span>`;
+          return `<div class="deck-tile" title="${escA((card && card.name) || e.id)}">
+            <span class="deck-tile-img">${img}</span>
+            <span class="deck-tile-qty">${esc(String(e.qty))}×</span>
+          </div>`;
+        }).join("") + `</div></section>`;
+    }).join("");
+
+    box.innerHTML = `
+      <div class="dkc-view-head">
+        <a href="decks.html" class="serie-back">${esc(t("decks.backCommunity"))}</a>
+        <h2 class="dkc-view-name">${esc(deck.name)}</h2>
+        <span class="deck-ed-game">${shared.gameTagHtml(deck.game)}${deck.author ? `<span class="dkc-author">${esc(t("decks.byAuthor", { author: deck.author }))}</span>` : ""}</span>
+        <button type="button" class="cta" data-dkc-copy>${esc(t(logged ? "decks.copyToMine" : "decks.loginToCopy"))}</button>
+      </div>
+      ${priceOk ? `<section class="deck-value dkc-value">
+        <div class="deck-value-row"><span>${esc(t("decks.valueTotal"))}</span><strong>${esc(money(total))}</strong></div>
+        <div class="deck-value-row missing"><span>${esc(t("decks.valueMissingYou"))}</span><strong>${esc(money(missing))}</strong></div>
+      </section>` : ""}
+      ${zonesHtml}`;
+
+    box.querySelector("[data-dkc-copy]").addEventListener("click", () => {
+      if (!logged) { location.href = "login.html"; return; }
+      // Fork: entra no MEU store local com id novo (o sync sobe no próximo ciclo).
+      const zones = {};
+      Object.keys(deck.zones).forEach((k) => { zones[k] = deck.zones[k].map((e) => ({ id: e.id, qty: e.qty, variant: "Normal" })); });
+      const novo = {
+        id: newId(), game: deck.game, format: deck.format, name: deck.name,
+        zones, forkedFrom: id, createdAt: Date.now(), updatedAt: Date.now()
+      };
+      data.decks.unshift(novo);
+      if (save()) location.href = "my-decks.html?id=" + encodeURIComponent(novo.id);
+    });
   }
 
   const el = {
@@ -730,6 +865,7 @@
         <span class="deck-ed-game">${gameTag(deck.game)}${pack.format ? "<span>" + esc(t("decks.format." + pack.format)) + "</span>" : ""}</span>
         <button type="button" class="deck-mini" data-deck-import>${esc(t("decks.import"))}</button>
         <button type="button" class="deck-mini" data-deck-copy>${esc(t("decks.copyList"))}</button>
+        <button type="button" class="deck-mini" data-deck-publish>${esc(t(deck.publishedId ? "decks.published" : "decks.publish"))}</button>
         ${viewMenuHtml()}
       </div>
       ${issuesHtml}
@@ -1006,6 +1142,38 @@
       el.editor.querySelector(".deck-ed-cols").dataset.mobtab = mobTab;
       el.editor.querySelectorAll(".deck-tab").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === mobTab)));
       if (mobTab === "find") { const s = document.getElementById("deckSearch"); if (s) s.focus(); }
+      return;
+    }
+
+    // Publicar na comunidade (tabela shares, kind="deck"). Exige login; o botão
+    // fica sempre visível pra função ser DESCOBRÍVEL — sem conta, explica.
+    const pub = ev.target.closest("[data-deck-publish]");
+    if (pub) {
+      (async () => {
+        if (!totalCards(current)) { alert(t("decks.publishEmpty")); return; }
+        pub.disabled = true;
+        const zones = {};
+        Object.keys(current.zones || {}).forEach((k) => {
+          zones[k] = (current.zones[k] || []).map((e) => ({ id: e.id, qty: e.qty }));
+        });
+        const handle = (shared.getProfile && (shared.getProfile() || {}).handle) || null;
+        const payload = { v: 1, name: current.name, game: current.game, format: current.format || null, author: handle, zones };
+        const res = await shared.createShare("deck", current.name, payload, current.game);
+        pub.disabled = false;
+        if (res && res.id) {
+          // Republicar gera um id NOVO (a tabela não tem update público): o link
+          // antigo continua servindo a versão antiga — comportamento de "versão".
+          current.publishedId = res.id;
+          current.publishedAt = Date.now();
+          touch(current);
+          const url = `${location.origin}${location.pathname.replace(/[^/]*$/, "")}decks.html?s=${res.id}`;
+          try { await navigator.clipboard.writeText(url); } catch (e) { /* sem clipboard: o prompt abaixo cobre */ }
+          window.prompt(t("decks.publishOk"), url);
+          renderEditor();
+        } else {
+          alert(t(res && res.error === "auth" ? "decks.publishAuth" : "decks.publishFail"));
+        }
+      })();
       return;
     }
 

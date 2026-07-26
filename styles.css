@@ -9,6 +9,11 @@
       BLOQUEADO (liberar exigiria afrouxar style-src e font-src);
    2. o site é PWA offline — fonte externa não é cacheável pelo nosso SW;
    3. sem DNS/TLS extra pro Google no carregamento.
+   font-display OPTIONAL (não swap): o swap trocava a fonte já com a página
+   pintada e o texto reflow-ava — era a principal suspeita do CLS de 0.17 nas
+   páginas de catálogo. Com optional a 1ª visita usa a fonte do sistema (sem
+   troca no meio) e, como o service worker pré-cacheia os .woff2, da 2ª carga em
+   diante a Outfit aparece desde o primeiro frame.
    Arquivo VARIÁVEL (weight 100–900 num só .woff2): cobre os pesos 650/700/800/900
    que o site usa sem baixar um arquivo por peso. unicode-range faz o navegador
    pegar o latin-ext só quando a página tiver esses caracteres. */
@@ -16,7 +21,7 @@
   font-family: "Outfit";
   font-style: normal;
   font-weight: 100 900;
-  font-display: swap; /* texto aparece na hora com a fonte de sistema e troca depois */
+  font-display: optional; /* ver comentário do bloco: elimina o CLS da troca de fonte */
   src: url("assets/fonts/outfit-latin.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -24,7 +29,7 @@
   font-family: "Outfit";
   font-style: normal;
   font-weight: 100 900;
-  font-display: swap;
+  font-display: optional;
   src: url("assets/fonts/outfit-latin-ext.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
@@ -6997,3 +7002,22 @@ select,
   .filters-toggle[aria-expanded="true"]::after { content: "▴"; }
   .toolbar.is-collapsed { display: none; }
 }
+
+/* ============================================================================
+   DECKS DA COMUNIDADE (decks.html) — galeria pública + viewer de deck.
+   ========================================================================= */
+.dkc-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+.dkc-filters { display: flex; flex-wrap: wrap; gap: 7px; }
+.dkc-filter { display: inline-flex; align-items: center; min-height: 34px; padding: 0 10px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 13px; font-weight: 700; cursor: pointer; }
+.dkc-filter .game-tag { min-height: 0; padding: 2px 8px; }
+.dkc-filter.on { border-color: var(--accent); background: var(--accent-soft); }
+.dkc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.dkc-card { display: flex; flex-direction: column; gap: 9px; padding: 15px; border: 1px solid var(--line); background: var(--panel); color: var(--text); text-decoration: none; }
+.dkc-card:hover { background: var(--panel-strong); border-color: var(--accent); }
+.dkc-card-name { font-weight: 800; font-size: 15.5px; letter-spacing: -0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dkc-card-meta { display: inline-flex; align-items: center; gap: 9px; font-size: 12px; color: var(--subtle); font-weight: 700; }
+.dkc-view-head { display: flex; align-items: center; gap: 13px; flex-wrap: wrap; margin-bottom: 16px; }
+.dkc-view-name { margin: 0; font-size: 22px; letter-spacing: -0.01em; }
+.dkc-view-head .cta { margin-left: auto; }
+.dkc-author { font-size: 13px; color: var(--subtle); font-weight: 700; }
+.dkc-value { max-width: 420px; margin-bottom: 18px; }
