@@ -50,7 +50,9 @@
       <div class="chip-filter collection-tabs" role="group" aria-label="Visões da coleção">
         <a class="chip" href="collection.html?tab=cards" data-i18n="collection.tab.cards">Cartas</a>
         <a class="chip" href="collection.html?tab=folders" data-i18n="collection.tab.folders">Showcase</a>
-        <a class="chip" href="graded.html" aria-pressed="true" data-i18n="collection.tab.graded">Graded</a>
+        <!-- aria-current (não aria-pressed): é um LINK. aria-pressed só vale em
+             role=button — o leitor de tela anunciava um botão inexistente. -->
+        <a class="chip" href="graded.html" aria-current="page" data-i18n="collection.tab.graded">Graded</a>
         <a class="chip" href="collection.html?tab=tags" data-i18n="collection.tab.tags">Tags</a>
         <a class="chip" href="collection.html?tab=pokemon" data-i18n="collection.tab.pokemon">Pokémon</a>
         <a class="chip" href="collection.html?tab=artists" data-i18n="collection.tab.artists">Artistas</a>

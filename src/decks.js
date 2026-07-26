@@ -456,6 +456,9 @@
   let current = null;      // deck aberto
   let cat = null;          // { cards, byId } do jogo do deck
   let query = "";
+  // Aba ativa no MOBILE ("deck" | "find" | "stats"). No desktop as 3 áreas
+  // aparecem juntas e o CSS ignora isto.
+  let mobTab = "deck";
 
   async function openEditor(deck) {
     current = deck;
@@ -730,17 +733,28 @@
         ${viewMenuHtml()}
       </div>
       ${issuesHtml}
-      <div class="deck-ed-cols">
+      <!-- Abas SÓ no mobile (CSS esconde no desktop, onde as 2 colunas cabem):
+           sem elas, a busca fica embaixo do deck inteiro e cada carta
+           adicionada exige rolar até o fim e voltar. -->
+      <div class="deck-tabs" role="tablist">
+        <button type="button" class="deck-tab" data-tab="deck" role="tab" aria-selected="${mobTab === "deck"}">${esc(t("decks.tab.deck"))}</button>
+        <button type="button" class="deck-tab" data-tab="find" role="tab" aria-selected="${mobTab === "find"}">${esc(t("decks.tab.find"))}</button>
+        <button type="button" class="deck-tab" data-tab="stats" role="tab" aria-selected="${mobTab === "stats"}">${esc(t("decks.tab.stats"))}</button>
+      </div>
+      <div class="deck-ed-cols" data-mobtab="${escA(mobTab)}">
         <!-- ESQUERDA: só as cartas do deck. -->
         <div class="deck-ed-left">
           ${zonesHtml}
         </div>
         <!-- DIREITA: busca + números do deck (valor e análise). -->
         <div class="deck-ed-right">
-          <h3>${esc(t("decks.addCards"))}</h3>
-          <input id="deckSearch" class="deck-search" type="search" placeholder="${escA(t("decks.searchPlaceholder", { deckGame: shared.gameLabel(deck.game) }))}" value="${escA(query)}">
-          <div id="deckFacets">${facetsHtml(deck.game)}</div>
-          <div id="deckResults" class="deck-results"></div>
+          <div class="deck-find">
+            <h3>${esc(t("decks.addCards"))}</h3>
+            <input id="deckSearch" class="deck-search" type="search" placeholder="${escA(t("decks.searchPlaceholder", { deckGame: shared.gameLabel(deck.game) }))}" value="${escA(query)}">
+            <div id="deckFacets">${facetsHtml(deck.game)}</div>
+            <div id="deckResults" class="deck-results"></div>
+          </div>
+          <div class="deck-stats">
           <section class="deck-value">
             <h3>${esc(t("decks.value"))}</h3>
             <div class="deck-value-row"><span>${esc(t("decks.valueTotal"))}</span><strong>${esc(money(val.total))}</strong></div>
@@ -754,6 +768,7 @@
             ${barsHtml(t("decks.dist"), an.dist, true)}
             ${barsHtml(t("decks.rarity"), an.rarity)}
           </section>` : ""}
+          </div>
         </div>
       </div>`;
 
@@ -776,6 +791,47 @@
 
   // Normaliza pra busca (sem acento/caixa) — o índice guarda o nome cru.
   const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+
+  // ---------------------------------------------------------------------------
+  // Índice de PREFIXO (3 letras -> cartas). Varrer o índice inteiro a cada tecla
+  // custava ~2,5s no Magic (97k) no desktop e bem mais no celular. Aqui o custo
+  // é pago UMA vez por jogo e cada busca vira uma consulta a um Map.
+  // ---------------------------------------------------------------------------
+  const PREFIX_LEN = 3;
+  const prefixCache = {};
+  function buildPrefix(game, index) {
+    if (prefixCache[game]) return prefixCache[game];
+    const map = new Map();
+    index.forEach((e) => {
+      // Indexa por PALAVRA: "Ariel - Spectacular Singer" entra em ari/spe/sin,
+      // então buscar "singer" acha sem varrer tudo.
+      const seen = new Set();
+      norm(e.n).split(/[^a-z0-9]+/).forEach((w) => {
+        if (w.length < PREFIX_LEN) return;
+        const p = w.slice(0, PREFIX_LEN);
+        if (seen.has(p)) return;
+        seen.add(p);
+        let arr = map.get(p);
+        if (!arr) { arr = []; map.set(p, arr); }
+        arr.push(e);
+      });
+    });
+    prefixCache[game] = map;
+    return map;
+  }
+  // Universo a percorrer: o menor balde entre os termos. Termo com menos de 3
+  // letras (ou sem balde) cai no índice inteiro — correção acima de velocidade.
+  function prefixCandidates(game, index, terms) {
+    const map = buildPrefix(game, index);
+    let melhor = null;
+    for (const tm of terms) {
+      if (tm.length < PREFIX_LEN) continue;
+      const arr = map.get(tm.slice(0, PREFIX_LEN));
+      if (!arr) return [];                       // nenhum nome começa assim
+      if (!melhor || arr.length < melhor.length) melhor = arr;
+    }
+    return melhor || index;
+  }
 
   // ---------------------------------------------------------------------------
   // Filtros por faceta. As opções saem do PRÓPRIO índice do jogo (não de uma
@@ -859,9 +915,15 @@
     if (fbox && !hadOpts) fbox.innerHTML = facetsHtml(deck.game);
 
     const terms = norm(q).split(/\s+/).filter(Boolean);
+    // Candidatos pelo ÍNDICE DE PREFIXO em vez de varrer as 97k entradas do
+    // Magic a cada tecla (2,5s no desktop, pior no celular). O prefixo de 3
+    // letras do termo mais longo corta a busca pra algumas centenas.
+    const pool = prefixCandidates(deck.game, index, terms);
     const found = [];
-    for (const e of index) {
-      const hay = norm(e.n + " " + (e.s || "") + " " + (e.u || ""));
+    for (const e of pool) {
+      // O haystack normalizado é memoizado no próprio item (`_h`): sem isso a
+      // normalização (NFD + regex) rodava de novo a cada tecla digitada.
+      const hay = e._h || (e._h = norm(e.n + " " + (e.s || "") + " " + (e.u || "")));
       if (terms.every((tm) => hay.includes(tm)) && passesFacets(e)) found.push(e);
       if (found.length >= 60) break;            // teto: o índice tem o jogo inteiro
     }
@@ -936,6 +998,17 @@
       if (card && add.dataset.zone) { addCard(current, add.dataset.zone, card, 1); renderEditor(); }
       return;
     }
+    // Abas do mobile: troca sem re-render (o DOM já tem as 3 áreas; o CSS
+    // decide qual mostrar). Re-renderizar perderia o texto digitado na busca.
+    const tab = ev.target.closest("[data-tab]");
+    if (tab) {
+      mobTab = tab.dataset.tab;
+      el.editor.querySelector(".deck-ed-cols").dataset.mobtab = mobTab;
+      el.editor.querySelectorAll(".deck-tab").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === mobTab)));
+      if (mobTab === "find") { const s = document.getElementById("deckSearch"); if (s) s.focus(); }
+      return;
+    }
+
     // Importar / copiar lista em texto
     if (ev.target.closest("[data-deck-import]")) { openImportModal(); return; }
     const cp = ev.target.closest("[data-deck-copy]");

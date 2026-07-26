@@ -44,9 +44,14 @@
   --money: #7ee2b8; /* verde de valores (R$) — legível no escuro (11:1) */
   /* Tema escuro (padrão): accent VERMELHO (Pokémon), pra consolidar a cor do jogo
      nos DOIS temas. Lorcana (roxo) e neutro vêm dos overrides [data-game-accent]. */
-  --accent: #ef4444;
-  --accent-dark: #dc2626;
-  --accent-rgb: 239, 68, 68;
+  /* #dc2626 e não #ef4444: com texto branco o vermelho claro dava 3.76:1, abaixo
+     do mínimo AA (4.5) — e este par pinta o botão PRINCIPAL do site (.cta) e a
+     aba ativa. O #dc2626 dá 4.83 e já era o --accent-dark da paleta, então é a
+     mesma marca, um tom abaixo. Os outros 11 jogos já passavam (usam texto
+     escuro sobre cores claras). */
+  --accent: #dc2626;
+  --accent-dark: #b91c1c;
+  --accent-rgb: 220, 38, 38;
   --accent-soft: rgba(var(--accent-rgb), 0.13);
   --on-accent: #ffffff; /* texto branco sobre o vermelho */
   --gold: #f0b84b;
@@ -87,7 +92,7 @@
    Escurece um pouco SÓ os inativos pra terem contorno. O ativo (aria-pressed)
    fica no accent; o hover das abas continua no accent-soft (a regra do :hover
    vem depois no arquivo e vence). Colocada cedo de propósito por causa disso. */
-[data-theme="light"] .chip:not([aria-pressed="true"]) { background: #d8dee8; border-color: #cbd2dd; }
+[data-theme="light"] .chip:not([aria-pressed="true"]):not([aria-current="page"]) { background: #d8dee8; border-color: #cbd2dd; }
 
 /* Accent por CONTEXTO DE JOGO (data-game-accent no <html>, setado em runtime):
    - Pokémon: usa o accent base do tema (vermelho no claro / amarelo no escuro);
@@ -167,6 +172,30 @@
   box-sizing: border-box;
 }
 
+/* Mídia nunca estoura o contêiner. Sem esta regra, CADA imagem/SVG depende de
+   uma regra própria — e a que faltar arrebenta o layout no celular (foi o que
+   aconteceu com o wordmark da home). Aqui a proteção é do site inteiro,
+   inclusive do que for adicionado depois. */
+img, svg, video, canvas {
+  max-width: 100%;
+}
+/* height: auto só onde a altura NÃO é controlada por CSS — senão quebraria
+   quem usa aspect-ratio/height fixo (miniaturas de carta, ícones de nav). */
+img:not([width][height]) {
+  height: auto;
+}
+
+/* Item de grid/flex tem `min-width: auto` por padrão — ou seja, NÃO encolhe
+   abaixo do próprio conteúdo. Uma palavra longa (nome de carta japonesa, id de
+   set) ou uma imagem larga empurra a coluna e estoura a linha inteira no
+   celular. `min-width: 0` devolve o controle ao grid.
+   :where() = especificidade ZERO: qualquer regra específica continua vencendo. */
+:where(.card-grid, .group-grid, .deck-grid, .deck-tiles, .deck-ed-cols, .deck-facets,
+       .dash-links, .dash-main, .backup-grid, .bdg-grid, .home-top-row,
+       .lp-grid, .lp-stats, .detail-summary, .detail-hero, .help-layout) > * {
+  min-width: 0;
+}
+
 html {
   /* Reserva a calha da barra de rolagem sempre, para o conteúdo centralizado
      não deslocar entre páginas com e sem scroll (ex.: ao abrir o Início). */
@@ -187,6 +216,22 @@ body {
      — a mesma tela renderizava diferente entre visitantes. O resto da pilha é o
      fallback de sistema enquanto o .woff2 não chega (font-display: swap). */
   font-family: "Outfit", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Guarda contra estouro horizontal: um filho largo passa a ser cortado em vez
+     de criar scroll lateral no site todo. `clip` (e não `hidden`) porque hidden
+     cria contexto de rolagem e QUEBRA o position: sticky do header. */
+  overflow-x: clip;
+}
+
+/* Controles em tela de TOQUE: fonte mínima de 16px. Abaixo disso o Safari do
+   iOS dá ZOOM automático ao focar o campo — a página "desfixa", ganha rolagem
+   lateral e só volta com pinça. É a causa nº 1 de "o mobile desconfigurou".
+   Só em ponteiro grosso pra não engordar os controles no desktop. */
+@media (pointer: coarse), (max-width: 700px) {
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    font-size: 16px;
+  }
 }
 
 main {
@@ -533,7 +578,10 @@ button {
   font-size: 12.5px;
 }
 
-.chip[aria-pressed="true"] {
+/* Ativo: [aria-pressed] nos chips-BOTÃO e [aria-current] nos chips-LINK
+   (link não aceita aria-pressed — ver buildExploreSubnav). */
+.chip[aria-pressed="true"],
+.chip[aria-current="page"] {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--on-accent);
@@ -6511,7 +6559,9 @@ select,
   background: radial-gradient(closest-side, rgba(var(--accent-rgb), 0.16), transparent 70%);
   pointer-events: none; z-index: -1;
 }
-.lp-wordmark { width: min(575px, 90vw); height: auto; color: var(--text); display: inline-block; }
+/* 100% (do contêiner), não 90vw: vw ignora o padding de 20px da .lp-main, então
+   o wordmark encostava/cortava na borda direita no celular. */
+.lp-wordmark { width: min(575px, 100%); height: auto; color: var(--text); display: inline-block; }
 .lp-tagline { font-size: clamp(24px, 3.3vw, 31px); font-weight: 650; margin: 48px 0 0; letter-spacing: -0.01em; }
 .lp-sub { max-width: 720px; margin: 25px auto 0; color: var(--subtle); font-size: 18px; line-height: 1.65; }
 .lp-ctas { display: flex; gap: 16px; justify-content: center; margin-top: 50px; flex-wrap: wrap; }
@@ -6829,3 +6879,85 @@ select,
 .deck-modal-hint { font-size: 12.5px; color: var(--subtle); line-height: 1.5; margin: 0 0 10px; }
 .deck-import-area { width: 100%; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 8px; padding: 10px; font-size: 13px; font-family: ui-monospace, Menlo, Consolas, monospace; resize: vertical; }
 .deck-modal-foot { display: flex; gap: 9px; justify-content: flex-end; margin-top: 12px; }
+
+/* ============================================================================
+   TOQUE — alvos maiores em tela sem mouse. A skill de UX classifica alvo
+   menor que 44x44 como severidade ALTA: no dedo, botão de 24px erra muito.
+   Só em (pointer: coarse) pra a densidade do desktop não mudar.
+   ========================================================================= */
+@media (pointer: coarse), (max-width: 700px) {
+  /* Botõezinhos do construtor de decks: os +/− das miniaturas tinham 24px. */
+  .deck-mini,
+  .deck-facet-chip,
+  .deck-lay,
+  .deck-tile-btns .deck-mini,
+  .deck-row-btns .deck-mini,
+  .deck-hit-btns .deck-mini {
+    min-height: 44px;
+    padding-inline: 14px;
+  }
+  /* Chips e abas do site (filtros do Explorar, abas do perfil). */
+  .chip,
+  .prof-tab,
+  .explore-subnav .chip {
+    min-height: 44px;
+  }
+  /* Ícones de ação que são quadrados (fechar, editar pasta): vira 44 no dedo. */
+  .folder-act,
+  .preview-close {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  /* Espaçamento entre alvos adjacentes: 8px é o mínimo da regra de toque —
+     sem isso, alvos grandes colados continuam gerando toque errado. */
+  .deck-tile-btns,
+  .deck-row-btns,
+  .deck-hit-btns,
+  .deck-facet-chips {
+    gap: 8px;
+  }
+  /* A miniatura precisa caber os dois botões de 44px lado a lado. */
+  .deck-tiles {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+/* --- Abas do editor no MOBILE (Deck | Buscar | Números) -------------------- */
+/* No desktop as 3 áreas cabem lado a lado: as abas somem e nada é escondido. */
+.deck-tabs { display: none; }
+@media (max-width: 880px) {
+  .deck-tabs {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+    margin: 0 0 14px; position: sticky; top: 0; z-index: 5;
+    background: var(--bg); padding: 8px 0;
+  }
+  .deck-tab {
+    min-height: 44px; border: 1px solid var(--line); background: var(--panel);
+    color: var(--subtle); border-radius: 9px; font-size: 14px; font-weight: 800; cursor: pointer;
+  }
+  .deck-tab[aria-selected="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+  /* Mostra só a área da aba ativa. */
+  .deck-ed-cols[data-mobtab="deck"]  .deck-ed-right,
+  .deck-ed-cols[data-mobtab="find"]  .deck-ed-left,
+  .deck-ed-cols[data-mobtab="find"]  .deck-stats,
+  .deck-ed-cols[data-mobtab="stats"] .deck-ed-left,
+  .deck-ed-cols[data-mobtab="stats"] .deck-find { display: none; }
+  /* Na aba Buscar a lista usa a tela toda (não divide espaço com nada). */
+  .deck-ed-cols[data-mobtab="find"] .deck-results { max-height: none; }
+  .deck-ed-right .deck-value { margin-top: 0; }
+}
+
+/* --- Filtros colapsáveis no mobile ---------------------------------------- */
+/* No desktop o botão não existe e a toolbar fica sempre aberta. */
+.filters-toggle { display: none; }
+@media (max-width: 700px) {
+  .filters-toggle {
+    display: inline-flex; align-items: center; gap: 7px;
+    min-height: 44px; padding: 0 15px; margin: 0 0 12px;
+    border: 1px solid var(--line); background: var(--panel); color: var(--text);
+    border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer;
+  }
+  .filters-toggle::after { content: "▾"; font-size: 11px; color: var(--subtle); }
+  .filters-toggle[aria-expanded="true"]::after { content: "▴"; }
+  .toolbar.is-collapsed { display: none; }
+}

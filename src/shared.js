@@ -867,6 +867,38 @@
 
   // Marca-d'água "Ctrl+K" nas buscas de página, pro atalho ser descoberto.
   // Só onde há teclado físico (em touch o atalho não existe).
+  // Filtros colapsáveis no MOBILE. A .toolbar (Explorar/Sets/Artistas/Coleção…)
+  // ocupa ~40% da tela do celular ANTES da primeira carta — o usuário chega
+  // buscando carta e vê um formulário. No desktop nada muda (o botão fica
+  // escondido por CSS e a toolbar segue sempre aberta).
+  // Estado guardado: quem abre os filtros normalmente quer mantê-los abertos.
+  const FILTERS_OPEN_KEY = "tcg-collector-filters-open";
+  function initFilterToggle() {
+    const bars = document.querySelectorAll("main .toolbar");
+    if (!bars.length) return;
+    let open = false;
+    try { open = localStorage.getItem(FILTERS_OPEN_KEY) === "1"; } catch (e) { /* ignora */ }
+    bars.forEach((bar) => {
+      if (bar.previousElementSibling && bar.previousElementSibling.classList.contains("filters-toggle")) return;
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "filters-toggle";
+      btn.setAttribute("aria-controls", bar.id || (bar.id = "toolbarFilters"));
+      const paint = () => {
+        btn.setAttribute("aria-expanded", String(open));
+        btn.textContent = t(open ? "filters.hide" : "filters.show");
+        bar.classList.toggle("is-collapsed", !open);
+      };
+      btn.addEventListener("click", () => {
+        open = !open;
+        try { localStorage.setItem(FILTERS_OPEN_KEY, open ? "1" : "0"); } catch (e) { /* ignora */ }
+        paint();
+      });
+      bar.parentNode.insertBefore(btn, bar);
+      paint();
+    });
+  }
+
   function initSearchShortcutHint() {
     try {
       if (window.matchMedia("(pointer: coarse)").matches) return;
@@ -1213,7 +1245,10 @@
     const line = lineParamOf();
     const lineSuffix = line && GAME_LINES[game] && GAME_LINES[game][line] ? `&line=${line}` : "";
     nav.innerHTML = pages.map(([href, key, page]) =>
-      `<a class="chip" href="${href}?game=${game}${lineSuffix}" aria-pressed="${page === active}"${page === active ? ' aria-current="page"' : ""}>${escapeHtml(t(key))}</a>`
+      // aria-current (não aria-pressed): estes chips são LINKS. aria-pressed só
+      // vale em role=button — o Lighthouse acusava "aria-* não corresponde ao
+      // role" e o leitor de tela anunciava um botão que não existe.
+      `<a class="chip" href="${href}?game=${game}${lineSuffix}"${page === active ? ' aria-current="page"' : ""}>${escapeHtml(t(key))}</a>`
     ).join("");
     head.insertAdjacentElement("afterend", nav);
   }
@@ -5812,6 +5847,7 @@
   });
   initCommandPalette();
   initSearchShortcutHint(); // depois do applyTranslations (placeholders já traduzidos)
+  initFilterToggle();
   initAuth();
 
   // Service worker: cacheia as imagens já vistas para sobreviverem a um outage

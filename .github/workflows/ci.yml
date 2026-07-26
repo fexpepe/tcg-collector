@@ -36,6 +36,12 @@ jobs:
       - name: Smoke estático (sintaxe + i18n pt/en + ordem de scripts)
         run: node scripts/check.mjs
 
+      # Guardas de mobile: reset de mídia, overflow-x, fonte 16px no toque e
+      # aria-pressed em link. São regras que já quebraram aqui e cujo sintoma
+      # (layout estourado no celular) não aparece em teste de unidade.
+      - name: Guardas de layout mobile
+        run: node scripts/check-mobile.mjs
+
       - name: Sintaxe dos scripts de build
         run: for f in scripts/*.mjs scripts/lib/*.mjs; do node --check "$f"; done
 
