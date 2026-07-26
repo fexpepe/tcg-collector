@@ -84,41 +84,114 @@
     onOwnedChange: () => refreshOwnership()
   });
 
-  // Catálogo inteiro (em produção, baixado dos chunks do manifest, como na
-  // Pokédex). A página só renderiza cartas quando há busca/filtro ativo —
-  // skeletons só no deep-link ?q= (senão a página abre no intro, sem grade).
-  if (new URLSearchParams(window.location.search).get("q") && elements.grid) {
-    shared.showSkeletons(elements.grid, "card", 12);
+  // ── Carga do catálogo: SOB INTENÇÃO, não no boot ───────────────────────────
+  // Esta página filtra sobre o catálogo inteiro em memória (busca, set, idioma,
+  // raridade, faixa de preço, 7 ordenações), então quando o usuário busca ela
+  // realmente precisa de tudo. O problema era PAGAR isso sempre: no Pokémon são
+  // 234 chunks / ~15MB, e nada renderizava antes de o último chegar — inclusive
+  // a tela inicial, que nem grade tem (é o intro + "mais vistas").
+  // Agora: o intro sobe na hora (as "mais vistas" vêm por loadCatalogForCardIds,
+  // que baixa só os chunks daquelas ~40 cartas), e o catálogo completo só começa
+  // a descer quando o usuário demonstra intenção de buscar. Quem cai aqui pelo
+  // Google e não busca não baixa mais o catálogo inteiro à toa.
+  let catalogPromise = null;
+  let catalogPronto = false;
+  function ensureCatalog() {
+    if (!catalogPromise) {
+      catalogPromise = shared.loadCatalog().then((catalog) => {
+        // Escopo por linha de jogo: a página de uma linha vintage (?line=) só vê
+        // as cartas dela; o jogo principal exclui as linhas (páginas próprias).
+        const scope = shared.lineScope((window.SLEEVU && window.SLEEVU.game) || "pokemon", shared.lineParamOf());
+        cards = (catalog.cards || []).filter((card) => scope.includes(card.setId));
+        // Mantém as cartas que já vieram pelo caminho das "mais vistas" — o
+        // preview e os tiles do intro dependem do cardsById.
+        const merged = new Map(cardsById);
+        cards.forEach((card) => merged.set(card.id, card));
+        cardsById = merged;
+        priceMemo = new Map();
+        owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
+        hydrateFilters();
+        catalogPronto = true;
+        return catalog;
+      }).catch((error) => {
+        catalogPromise = null; // deixa tentar de novo na próxima interação
+        elements.intro.hidden = true;
+        elements.empty.textContent = t("error.catalog", { message: error.message });
+        elements.empty.hidden = false;
+        throw error;
+      });
+    }
+    return catalogPromise;
   }
-  Promise.all([shared.loadCatalog(), shared.loadFxRates()])
-    .then(([catalog]) => {
-      // Escopo por linha de jogo: a página de uma linha vintage (?line=) só vê
-      // as cartas dela; o jogo principal exclui as linhas (páginas próprias).
-      const scope = shared.lineScope((window.SLEEVU && window.SLEEVU.game) || "pokemon", shared.lineParamOf());
-      cards = (catalog.cards || []).filter((card) => scope.includes(card.setId));
-      cardsById = new Map(cards.map((card) => [card.id, card]));
-      owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
-      hydrateFilters();
-      bindEvents();
-      // Deep-links: ?q= (busca global) + filtros/ordenação da URL (links
-      // compartilháveis — os selects já têm as opções após o hydrate).
-      const q = new URLSearchParams(window.location.search).get("q");
-      if (q && elements.search) elements.search.value = q;
-      readFiltersFromUrl();
-      render();
-      loadTopViewed(); // popula o estado inicial com as mais vistas da comunidade
-    })
-    .catch((error) => {
-      elements.intro.hidden = true;
-      elements.empty.textContent = t("error.catalog", { message: error.message });
-      elements.empty.hidden = false;
+
+  // Carrega de cara quando adiar não economiza nada:
+  //  - deep-link com busca/filtro na URL: o usuário já chegou buscando;
+  //  - modo dev (MANIFEST=false): o game.js já injetou o catálogo inteiro como
+  //    <script>, então window.TCG_CARDS está em memória e loadCatalog() resolve
+  //    sem tocar na rede — adiar só deixaria os filtros vazios à toa.
+  const sp0 = new URLSearchParams(window.location.search);
+  const catalogoEmMemoria = Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length > 0;
+  const temDeepLink = !!(sp0.get("q") || URL_FILTERS.some(([param]) => sp0.get(param)));
+  const carregarNoBoot = temDeepLink || catalogoEmMemoria;
+  // Skeleton só no deep-link de verdade: com o catálogo em memória não há espera.
+  if (temDeepLink && elements.grid) shared.showSkeletons(elements.grid, "card", 12);
+
+  // Ordem importa: as opções primeiro, o valor da URL depois. Um <select> não
+  // aceita um value cuja <option> ainda não existe.
+  hydrateFiltersDoManifest(); // set/idioma saem do manifest (46KB, já carregado)
+  const q0 = sp0.get("q");
+  if (q0 && elements.search) elements.search.value = q0;
+  readFiltersFromUrl();
+  bindEvents();
+
+  // Câmbio e catálogo são INDEPENDENTES — vão juntos, não em fila. (Encadeados,
+  // um câmbio lento segurava o catálogo e vice-versa.) Cada um com seu catch:
+  // falha no câmbio não pode impedir a página de listar cartas.
+  Promise.all([
+    shared.loadFxRates().catch(() => { /* sem conversão: cai no preço cru */ }),
+    carregarNoBoot ? ensureCatalog().catch(() => { /* erro já exibido */ }) : Promise.resolve()
+  ]).then(() => { render(); loadTopViewed(); });
+
+  // Os filtros são hidratados DUAS vezes: primeiro com o que o manifest dá, e
+  // de novo quando o catálogo completo chega. Um <select> descarta o `value`
+  // quando a <option> correspondente some, então toda hidratação perderia a
+  // seleção — inclusive a do deep-link ?set=..., que nem chega a "pegar" na
+  // primeira vez (é lida antes de existir qualquer opção).
+  // A reposição sai da URL, não do estado do select: writeFiltersToUrl grava lá
+  // a cada mudança, então a URL é sempre o espelho fiel da escolha atual.
+  const FILTER_SELECTS = ["setFilter", "languageFilter", "rarityFilter"];
+  function reidratando(fn) {
+    FILTER_SELECTS.forEach((k) => {
+      const select = elements[k];
+      if (select) while (select.options.length > 1) select.remove(1); // mantém o "Todos"
     });
+    fn();
+    readFiltersFromUrl();
+  }
+
+  // Hidratação IMEDIATA, só com o que o manifest já traz (nome e idioma de cada
+  // set — 46KB que o game.js carregou junto com a página). Cobre 2 dos 3 filtros
+  // sem tocar em nenhum chunk; a raridade só existe na carta, então espera o
+  // catálogo. Assim os selects não abrem vazios enquanto ninguém buscou ainda.
+  function hydrateFiltersDoManifest() {
+    const manifest = window.TCG_MANIFEST;
+    if (!manifest || !Array.isArray(manifest.sets)) return;
+    const scope = shared.lineScope((window.SLEEVU && window.SLEEVU.game) || "pokemon", shared.lineParamOf());
+    const sets = manifest.sets.filter((s) => scope.includes(s.id));
+    reidratando(() => {
+      addOptions(elements.setFilter, unique(sets.map((s) => s.name)));
+      addOptions(elements.languageFilter, unique(sets.map((s) => shared.normalizeCardLanguage(s.language))), (value) => shared.cardLanguageLabel(value));
+      applyCardLangDefault(elements.languageFilter);
+    });
+  }
 
   function hydrateFilters() {
-    addOptions(elements.setFilter, unique(cards.map((card) => card.set)));
-    addOptions(elements.languageFilter, unique(cards.map((card) => shared.normalizeCardLanguage(card.language))), (value) => shared.cardLanguageLabel(value));
-    applyCardLangDefault(elements.languageFilter);
-    addOptions(elements.rarityFilter, unique(cards.map((card) => card.rarity)));
+    reidratando(() => {
+      addOptions(elements.setFilter, unique(cards.map((card) => card.set)));
+      addOptions(elements.languageFilter, unique(cards.map((card) => shared.normalizeCardLanguage(card.language))), (value) => shared.cardLanguageLabel(value));
+      applyCardLangDefault(elements.languageFilter);
+      addOptions(elements.rarityFilter, unique(cards.map((card) => card.rarity)));
+    });
   }
 
   // Idioma de carta preferido como valor inicial do filtro (se existir nas opções).
@@ -130,7 +203,24 @@
   }
 
   function bindEvents() {
-    const apply = () => { writeFiltersToUrl(); render({ resetCount: true }); };
+    // Toda interação de busca/filtro passa por aqui: garante o catálogo (baixa
+    // na 1ª vez, reaproveita depois) e só então filtra. Enquanto desce, o
+    // render mostra os skeletons — o campo continua digitável.
+    const apply = () => {
+      writeFiltersToUrl();
+      render({ resetCount: true });
+      if (!catalogPronto && isSearching()) {
+        ensureCatalog().then(() => render({ resetCount: true })).catch(() => { /* erro já exibido */ });
+      }
+    };
+    // Focar a busca ou os filtros JÁ é intenção: adianta o download em vez de
+    // esperar a primeira tecla, senão o usuário digita e encara o skeleton.
+    const adiantar = () => { ensureCatalog().catch(() => { /* erro já exibido */ }); };
+    [elements.search, elements.setFilter, elements.languageFilter, elements.rarityFilter,
+      elements.priceMin, elements.priceMax].forEach((element) => {
+      if (element) element.addEventListener("focus", adiantar, { once: true });
+    });
+
     elements.search.addEventListener("input", debounce(apply, 200));
     [elements.setFilter, elements.languageFilter, elements.rarityFilter].forEach((element) => {
       element.addEventListener("input", apply);
@@ -248,6 +338,13 @@
       if (!shared.fetchTopViewed) return;
       const game = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
       const top = await shared.fetchTopViewed(game, 40);
+      if (!top.length) return;
+      // Só os chunks das cartas em destaque (~40 ids => punhado de sets), em vez
+      // do catálogo inteiro. É isto que deixa o intro subir sem esperar os 15MB.
+      if (!catalogPronto) {
+        const r = await shared.loadCatalogForCardIds(top.map((row) => row.card_id));
+        (r.cards || []).forEach((card) => { if (!cardsById.has(card.id)) cardsById.set(card.id, card); });
+      }
       const seen = new Set();
       const picked = [];
       for (const row of top) {
@@ -282,6 +379,15 @@
     elements.intro.hidden = true;
     elements.resultsHeader.hidden = false;
     if (elements.resultsTitle) elements.resultsTitle.textContent = t("results.heading.cards");
+    // Buscando com o catálogo ainda a caminho: skeletons em vez de "nenhum
+    // resultado". Sem isto a página afirmaria que a carta não existe só porque
+    // os chunks não chegaram — o `render` é chamado de novo quando chegam.
+    if (!catalogPronto) {
+      elements.empty.hidden = true;
+      elements.resultCount.textContent = "";
+      shared.showSkeletons(elements.grid, "card", 12);
+      return;
+    }
     const tiles = tilePairs();
     pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true }), options || {});
     elements.empty.hidden = tiles.length > 0;
