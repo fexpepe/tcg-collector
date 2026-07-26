@@ -5,6 +5,7 @@
 //   - gera data/indexes.generated.js e data/manifest.generated.js mesclados.
 // Uso: node scripts/merge-catalogs.mjs en ja zh-tw pt
 import { readdir, readFile, writeFile } from "node:fs/promises";
+import { writeSplitIndexes } from "./lib/sync-common.mjs";
 
 const langs = process.argv.slice(2).filter((arg) => !arg.startsWith("-"));
 if (!langs.length) {
@@ -256,7 +257,11 @@ const manifest = {
   sets: manifestSets
 };
 
-await writeFile(new URL("indexes.generated.js", dataDir), `window.TCG_INDEXES = ${JSON.stringify(buildIndexes(allCards))};\n`, "utf8");
+const mergedIndexes = buildIndexes(allCards);
+await writeFile(new URL("indexes.generated.js", dataDir), `window.TCG_INDEXES = ${JSON.stringify(mergedIndexes)};\n`, "utf8");
+// Fatias por chave (indexes-sets/-artists/…): é o que as páginas realmente
+// carregam. Ver writeSplitIndexes.
+await writeSplitIndexes(dataDir, mergedIndexes);
 await writeFile(new URL("manifest.generated.js", dataDir), `window.TCG_MANIFEST = ${JSON.stringify(manifest)};\n`, "utf8");
 await writeFile(new URL("pricing.generated.js", dataDir), `window.TCG_PRICING = ${JSON.stringify(pricing)};\n`, "utf8");
 

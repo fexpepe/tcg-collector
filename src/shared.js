@@ -1246,16 +1246,28 @@
     naruto: SUBNAV_MIN,
     hxh: SUBNAV_MIN
   };
+  // As páginas do Explorar trazem um <nav class="explore-subnav" data-placeholder>
+  // VAZIO no HTML, com a altura de uma linha de chips já reservada no CSS.
+  // Antes esta função criava o elemento do zero depois do primeiro paint, e as
+  // 38px que ele passava a ocupar empurravam a página inteira pra baixo (era a
+  // 2ª maior fonte de CLS). Agora ela PREENCHE o que já está lá; o espaço nunca
+  // muda de tamanho. Quando a página não tem subnav pro jogo atual (ex.: abrir
+  // a Pokédex com ?game=lorcana), o placeholder é removido — aí o layout muda,
+  // mas é uma combinação que só acontece mexendo na URL na mão.
   function buildExploreSubnav(active) {
     const game = currentGame();
-    if (game === "hub" || document.querySelector(".explore-subnav")) return;
+    const existing = document.querySelector(".explore-subnav");
+    // Já preenchido (ou criado por uma chamada anterior): nada a fazer.
+    if (existing && !existing.hasAttribute("data-placeholder")) return;
     const pages = EXPLORE_SUBNAV[game] || SUBNAV_MIN;
     // Só nas telas do Explorar (o `active` do detail já resolve pro tipo certo).
-    if (!pages.some(([, , page]) => page === active)) return;
+    const semSubnav = game === "hub" || !pages.some(([, , page]) => page === active);
+    if (semSubnav) { if (existing) existing.remove(); return; }
     const head = document.querySelector(".page-head");
-    if (!head) return;
-    const nav = document.createElement("nav");
+    if (!head && !existing) return;
+    const nav = existing || document.createElement("nav");
     nav.className = "explore-subnav chip-filter";
+    nav.removeAttribute("data-placeholder");
     nav.setAttribute("aria-label", t("nav.explore"));
     // Dentro de uma linha vintage (?line=), as abas continuam na linha.
     const line = lineParamOf();
@@ -1266,7 +1278,9 @@
       // role" e o leitor de tela anunciava um botão que não existe.
       `<a class="chip" href="${href}?game=${game}${lineSuffix}"${page === active ? ' aria-current="page"' : ""}>${escapeHtml(t(key))}</a>`
     ).join("");
-    head.insertAdjacentElement("afterend", nav);
+    // O placeholder já nasce na posição certa no HTML; só insere quando a nav
+    // foi criada aqui (páginas que ainda não têm o placeholder no markup).
+    if (!existing) head.insertAdjacentElement("afterend", nav);
   }
 
   // Bottom-bar fixa no MOBILE (feel de app/PWA): 5 destinos de dedo — Início,
@@ -5793,9 +5807,14 @@
     maybeShowBackupBanner();
   }
 
-  // Título "Procurar:" acima do campo de busca (presente em todas as páginas).
-  // É um <label> de verdade ligado ao campo (a11y: leitor de tela anuncia o
-  // rótulo, e clicar nele foca a busca) — antes era só uma <div> decorativa.
+  // Título "Procurar:" acima do campo de busca. É um <label> de verdade ligado
+  // ao campo (a11y: leitor de tela anuncia o rótulo, e clicar nele foca a
+  // busca) — antes era só uma <div> decorativa.
+  // Hoje as 10 páginas com .page-search já trazem o <label> no HTML: criá-lo
+  // aqui, depois do primeiro paint, empurrava tudo ~26px pra baixo e era a
+  // MAIOR fonte de CLS do site. Esta função virou rede de segurança — sai na
+  // primeira linha quando o rótulo já está no markup. Página nova com busca
+  // deve trazer o <label class="page-search-label" for="..."> no HTML.
   function initSearchLabel() {
     const section = document.querySelector(".page-search");
     if (!section) return;

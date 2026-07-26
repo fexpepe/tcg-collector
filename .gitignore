@@ -20,6 +20,10 @@ data/*/sets/
 data/magic/cards.js
 data/magic/indexes.js
 data/magic/pricing.js
+# Fatias do índice (indexes-sets.js etc.): mesma regra do indexes.js acima. As
+# do Magic sozinhas dão 2,8 MB (sets 1,4 + artists 1,4) e são 100% derivadas —
+# o build as regenera via writeSplitIndexes/split-indexes.mjs.
+data/magic/indexes-*.js
 
 # Yu-Gi-Oh! segue o mesmo padrão do Magic: ~46k impressões, cards.js monolítico
 # de dezenas de MB (estoura o limite de 25 MiB/arquivo do Cloudflare Pages) fica
@@ -28,6 +32,7 @@ data/magic/pricing.js
 data/ygo/cards.js
 data/ygo/indexes.js
 data/ygo/pricing.js
+data/ygo/indexes-*.js
 
 # Índice de busca do construtor de decks (writeGameCatalog gera no build a partir
 # do catálogo). Derivado 100% dos chunks — versionar seria duplicar o catálogo no

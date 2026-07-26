@@ -88,6 +88,46 @@ export function buildSetIndexes(cards) {
 // Lorcana/One Piece parseava o catálogo inteiro (One Piece = 3,6MB de JS). Com o
 // manifest real, os loaders do shared.js (game-agnósticos, provados no Pokémon)
 // baixam só os chunks necessários.
+// Índices FATIADOS por chave. O indexes.js junto tem ~800KB no Pokémon
+// (pokedex 234 + sets 236 + artists 243 + trainers 83), mas NENHUMA página usa
+// mais de uma ou duas chaves: sets.html só quer `sets`, artists.html só
+// `artists`, e as telas de coleção/portfólio só `sets`. Baixar as quatro em
+// todas as páginas era o maior peso do caminho crítico.
+//
+// Cada fatia faz `(window.TCG_INDEXES = window.TCG_INDEXES || {}).<k> = ...`,
+// então as fatias COMPÕEM entre si e com o arquivo junto (que continua sendo
+// gerado — o caminho multi-jogo do loadGameCatalog ainda o usa). Nenhum
+// consumidor muda: quem lê `indexes.sets` continua lendo `indexes.sets`.
+//
+// O game.js pede uma fatia com o token `indexes:<chave>` no data-catalog.
+export const INDEX_KEYS = ["pokedex", "trainers", "sets", "artists", "pokemonTotals"];
+
+// Nome de arquivo da fatia (pokemonTotals vira "totals" pra casar com o token
+// `indexes:totals` do data-catalog).
+export const indexSliceFile = (key, generated) =>
+  `indexes-${key === "pokemonTotals" ? "totals" : key}${generated ? ".generated" : ""}.js`;
+
+// Conteúdo exato da fatia. Usado tanto pela escrita quanto pelo --check do
+// split-indexes.mjs, pra os dois nunca divergirem.
+export function indexSliceBody(key, value) {
+  // Chave ausente vira arquivo VAZIO de propósito, não 404: o 404 custaria um
+  // round-trip em toda página do jogo (só o Pokémon tem pokedex/trainers).
+  const fallback = key === "pokemonTotals" ? {} : [];
+  return `(window.TCG_INDEXES = window.TCG_INDEXES || {}).${key} = ${JSON.stringify(value === undefined ? fallback : value)};\n`;
+}
+
+// `only` limita a qual família escrever ("dev" = indexes-X.js, "generated" =
+// indexes-X.generated.js). O padrão escreve as duas com o mesmo conteúdo, que é
+// o caso da maioria dos jogos; no Pokémon o .generated é o merge de idiomas e
+// difere do dev, então o split-indexes.mjs chama uma vez por família.
+export async function writeSplitIndexes(outDirUrl, idx, { only } = {}) {
+  for (const k of INDEX_KEYS) {
+    const body = indexSliceBody(k, idx && idx[k]);
+    if (only !== "generated") await writeFile(new URL(indexSliceFile(k, false), outDirUrl), body, "utf8");
+    if (only !== "dev") await writeFile(new URL(indexSliceFile(k, true), outDirUrl), body, "utf8");
+  }
+}
+
 export async function writeGameCatalog(outDirUrl, { cards, indexes, pricing, webDir }) {
   await mkdir(outDirUrl, { recursive: true });
   const w = (name, varName, value) => writeFile(new URL(name, outDirUrl), `window.${varName} = ${JSON.stringify(value)};\n`, "utf8");
@@ -95,6 +135,7 @@ export async function writeGameCatalog(outDirUrl, { cards, indexes, pricing, web
   await w("cards.js", "TCG_CARDS", cards);
   await w("indexes.js", "TCG_INDEXES", idx);
   await w("indexes.generated.js", "TCG_INDEXES", idx);
+  await writeSplitIndexes(outDirUrl, idx);
   await w("pricing.js", "TCG_PRICING", pricing || {});
   await w("pricing.generated.js", "TCG_PRICING", pricing || {});
 

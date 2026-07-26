@@ -67,6 +67,19 @@
   var cfg = GAMES[game] || GAMES.pokemon;
   document.documentElement.setAttribute("data-game", cfg.slug);
 
+  // Idioma de CARTA no <html>, ainda no <head>. Não é usado pra traduzir nada
+  // aqui — serve pro CSS decidir, ANTES do primeiro paint, se os chips de
+  // região (#setRegionChips) aparecem. Antes quem escondia era o app.js depois
+  // de montar a página: os chips pintavam, sumiam, e tudo abaixo pulava 38px
+  // pra cima. Espelha o default do shared.js ("all" quando não há preferência).
+  var cardLang = "all";
+  try {
+    var savedLang = localStorage.getItem("tcg-collector-card-lang-v1");
+    if (savedLang === "zh-tw" || savedLang === "zh-cn") cardLang = "zh";
+    else if (savedLang === "all" || ["pt", "en", "ja", "zh"].indexOf(savedLang) >= 0) cardLang = savedLang;
+  } catch (e) { /* storage bloqueado: fica em "all" */ }
+  document.documentElement.setAttribute("data-cardlang", cardLang);
+
   // Modo manifest (produção): o deploy flipa esta flag pra true (sed em game.js).
   // No modo manifest, cards/indexes/pricing viram os arquivos .generated mesclados.
   var MANIFEST = false; /* SLEEVU_MANIFEST */
@@ -82,28 +95,67 @@
     "pokemon-types": "pokemon-types.js"
   };
 
+  // `indexes` inteiro tem ~800KB e nenhuma página usa mais de duas chaves. O
+  // token `indexes:<chave>` pega só uma fatia (ver writeSplitIndexes no
+  // sync-common). `indexes:auto` é da detail.html, que só sabe de qual índice
+  // precisa lendo o ?type= da URL.
+  var AUTO_INDEX = { artist: "artists", trainer: "trainers", set: "sets" };
+  function autoIndexKey() {
+    var type = "";
+    try { type = new URLSearchParams(location.search).get("type") || ""; } catch (e) { /* ignora */ }
+    return AUTO_INDEX[type] || "pokedex";
+  }
+  function fileFor(token) {
+    if (token.slice(0, 8) === "indexes:") {
+      var key = token.slice(8);
+      if (key === "auto") key = autoIndexKey();
+      return "indexes-" + key + (MANIFEST ? ".generated.js" : ".js");
+    }
+    // pokemon-names/-types só existem em data/ (Pokémon). A detail.html e a
+    // pokedex.html declaram os dois pra qualquer jogo, e em Lorcana/Magic/etc.
+    // isso virava um 404 por pageview — round-trip jogado fora.
+    if (token.slice(0, 8) === "pokemon-" && cfg.slug !== "pokemon") return null;
+    return FILE[token] || null;
+  }
+
   var me = document.currentScript;
   var list = ((me && me.getAttribute("data-catalog")) || "")
     .split(",").map(function (s) { return s.trim(); }).filter(Boolean);
 
-  // Injeta os scripts do catálogo em ordem (async=false = execução ordenada) e
-  // resolve catalogReady quando o último carregar. onerror não trava: um dataset
-  // ausente não pode derrubar a página inteira.
+  // Injeta TODOS os scripts de uma vez. `async = false` em script injetado
+  // significa "execute na ordem de inserção", NÃO "baixe um de cada vez" — os
+  // downloads acontecem em paralelo e só a execução é serializada. Antes cada
+  // arquivo só era inserido no onload do anterior, o que virava uma cascata de
+  // 4 round-trips (cards -> indexes -> set-id-map -> pricing) antes de a página
+  // poder desenhar qualquer coisa.
+  // catalogReady resolve quando o último terminar. onerror conta como terminado:
+  // um dataset ausente não pode derrubar a página inteira.
   var resolveReady;
   var catalogReady = new Promise(function (res) { resolveReady = res; });
-  function loadNext(i) {
-    // Hub não tem catálogo (sem dataDir): resolve na hora, sem injetar nada.
-    if (!cfg.dataDir || i >= list.length) { resolveReady(); return; }
-    var file = FILE[list[i]];
-    if (!file) { loadNext(i + 1); return; }
-    var s = document.createElement("script");
-    s.src = cfg.dataDir + file;
-    s.async = false;
-    s.onload = function () { loadNext(i + 1); };
-    s.onerror = function () { loadNext(i + 1); };
-    (document.head || document.documentElement).appendChild(s);
+  // Dedupe: a detail.html pede `indexes:auto` + `indexes:sets`, e com ?type=set
+  // os dois resolvem pro mesmo arquivo.
+  var files = [];
+  if (cfg.dataDir) {
+    for (var i = 0; i < list.length; i++) {
+      var f = fileFor(list[i]);
+      if (f && files.indexOf(f) === -1) files.push(f);
+    }
   }
-  loadNext(0);
+  // Hub (sem dataDir) e páginas sem catálogo resolvem na hora.
+  if (!files.length) resolveReady();
+  else {
+    var pending = files.length;
+    var done = function () { if (--pending === 0) resolveReady(); };
+    var head = document.head || document.documentElement;
+    for (var j = 0; j < files.length; j++) {
+      var s = document.createElement("script");
+      s.src = cfg.dataDir + files[j];
+      s.async = false;
+      s.onload = done;
+      s.onerror = done;
+      head.appendChild(s);
+    }
+  }
 
   window.SLEEVU = {
     game: cfg.slug,

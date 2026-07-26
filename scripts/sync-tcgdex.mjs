@@ -1,6 +1,6 @@
 import { writeFile, readFile, mkdir, readdir } from "node:fs/promises";
 import { parseArgs } from "node:util";
-import { preserveMissingCards } from "./lib/sync-common.mjs";
+import { preserveMissingCards, writeSplitIndexes } from "./lib/sync-common.mjs";
 
 const { values: options, positionals } = parseArgs({
   allowPositionals: true,
@@ -153,7 +153,10 @@ const manifest = {
 };
 
 await writeFile(cardsOutFile, `window.TCG_CARDS = ${JSON.stringify(cards)};\n`, "utf8");
-await writeFile(indexesOutFile, `window.TCG_INDEXES = ${JSON.stringify(buildIndexes(cards))};\n`, "utf8");
+const builtIndexes = buildIndexes(cards);
+await writeFile(indexesOutFile, `window.TCG_INDEXES = ${JSON.stringify(builtIndexes)};\n`, "utf8");
+// Fatias por chave, no mesmo diretório do indexes.js (ver writeSplitIndexes).
+await writeSplitIndexes(new URL("./", indexesOutFile), builtIndexes);
 await writeFile(manifestOutFile, `window.TCG_MANIFEST = ${JSON.stringify(manifest)};\n`, "utf8");
 
 const seconds = Math.round((Date.now() - startedAt) / 1000);

@@ -295,6 +295,14 @@ jobs:
           path: data/.cache
           key: tcgdex-cache-${{ github.run_id }}
 
+      # Rede de segurança das FATIAS de índice (indexes-sets.js etc.), que é o
+      # que as páginas carregam de verdade. Os syncs já as geram, mas cada sync
+      # tem "|| echo ... mantém o catalogo versionado": se o do jogo X falhar,
+      # sobra o indexes.js versionado sem as fatias. Este passo as deriva do que
+      # existir no disco, então nenhum jogo sai do build com fatia faltando.
+      - name: Deriva fatias de índice que faltarem
+        run: node scripts/split-indexes.mjs
+
       # O game.js injeta o catálogo em runtime por jogo; em produção ele carrega
       # os arquivos .generated mesclados em vez dos crus. Basta flipar a flag.
       # PRECISA rodar antes da minificação (o padrão com espaços some no minify).

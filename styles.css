@@ -9,11 +9,10 @@
       BLOQUEADO (liberar exigiria afrouxar style-src e font-src);
    2. o site é PWA offline — fonte externa não é cacheável pelo nosso SW;
    3. sem DNS/TLS extra pro Google no carregamento.
-   font-display OPTIONAL (não swap): o swap trocava a fonte já com a página
-   pintada e o texto reflow-ava — era a principal suspeita do CLS de 0.17 nas
-   páginas de catálogo. Com optional a 1ª visita usa a fonte do sistema (sem
-   troca no meio) e, como o service worker pré-cacheia os .woff2, da 2ª carga em
-   diante a Outfit aparece desde o primeiro frame.
+   font-display SWAP + fallback com métricas casadas (ver "Outfit Fallback"
+   abaixo). Antes era `optional`, que matava o CLS ao custo de a 1ª visita nunca
+   ver a Outfit. Com o fallback calibrado a troca não mexe no layout, então dá
+   pra ter as duas coisas: fonte da marca desde a 1ª visita E sem reflow.
    Arquivo VARIÁVEL (weight 100–900 num só .woff2): cobre os pesos 650/700/800/900
    que o site usa sem baixar um arquivo por peso. unicode-range faz o navegador
    pegar o latin-ext só quando a página tiver esses caracteres. */
@@ -21,7 +20,7 @@
   font-family: "Outfit";
   font-style: normal;
   font-weight: 100 900;
-  font-display: optional; /* ver comentário do bloco: elimina o CLS da troca de fonte */
+  font-display: swap; /* seguro por causa do "Outfit Fallback" logo abaixo */
   src: url("assets/fonts/outfit-latin.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -32,6 +31,33 @@
   font-display: optional;
   src: url("assets/fonts/outfit-latin-ext.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* FALLBACK COM MÉTRICAS CASADAS — é isto que zera o CLS.
+   Não baixa nada: pega uma fonte JÁ instalada e a re-escala pra ocupar
+   exatamente o mesmo espaço que a Outfit. Assim o texto pintado antes do
+   .woff2 chegar tem a mesma altura de linha e quase a mesma largura, e a troca
+   não empurra nada.
+
+   Os números NÃO são chutados — vieram de medir as duas fontes no canvas
+   (measureText/fontBoundingBox, corpo de 100px):
+     Outfit    largura 2510,3   ascent 0,890   descent 0,220
+     Segoe UI  largura 2710,8   ascent 1,080   descent 0,250
+   size-adjust      = 2510,3/2710,8       = 92,6%
+   ascent-override  = 0,890/0,926         = 96,1%   (override é % do em JÁ ajustado)
+   descent-override = 0,220/0,926         = 23,8%
+
+   Calibrado sobre a Segoe UI (Windows). Em macOS/Android o local() cai na
+   Helvetica/Roboto, cujas larguras não são idênticas — sobra um erro pequeno,
+   mas as métricas VERTICAIS (que é o que causava o reflow de altura) casam nas
+   três. Se um dia mudar o .woff2 da Outfit, re-medir e atualizar estes valores. */
+@font-face {
+  font-family: "Outfit Fallback";
+  src: local("Segoe UI"), local("Helvetica Neue"), local("Roboto"), local("Arial");
+  size-adjust: 92.6%;
+  ascent-override: 96.1%;
+  descent-override: 23.8%;
+  line-gap-override: 0%;
 }
 
 :root {
@@ -239,9 +265,11 @@ body {
   color: var(--text);
   /* Outfit (auto-hospedada, ver @font-face no topo). "Inter" saiu da lista: o
      site nunca a carregou, então só pegava em quem a tinha instalada localmente
-     — a mesma tela renderizava diferente entre visitantes. O resto da pilha é o
-     fallback de sistema enquanto o .woff2 não chega (font-display: swap). */
-  font-family: "Outfit", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+     — a mesma tela renderizava diferente entre visitantes. "Outfit Fallback" é
+     a fonte do sistema re-escalada pra ocupar o mesmo espaço da Outfit (ver
+     @font-face no topo); tem que vir LOGO DEPOIS da Outfit, senão o texto do
+     primeiro frame usa métricas erradas e volta o CLS. */
+  font-family: "Outfit", "Outfit Fallback", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   /* Guarda contra estouro horizontal: um filho largo passa a ser cortado em vez
      de criar scroll lateral no site todo. `clip` (e não `hidden`) porque hidden
      cria contexto de rolagem e QUEBRA o position: sticky do header. */
@@ -4052,6 +4080,30 @@ a.progress-row:hover {
 /* Submenu fixo do Explorar (abaixo do título das páginas de jogo). */
 .explore-subnav { margin: -8px 0 18px; }
 .explore-subnav .chip { text-decoration: none; display: inline-flex; align-items: center; }
+/* A subnav é sempre UMA linha: em tela estreita ela rola na horizontal em vez
+   de quebrar. Não é só estética — é o que torna a altura PREVISÍVEL. Enquanto
+   quebrava, o Pokémon (5 abas) ocupava 2 linhas a 502px e 1 no desktop, e
+   nenhuma reserva fixa podia acertar os dois; a página pulava ~58px quando os
+   chips entravam. Com uma linha só, a reserva abaixo vale em qualquer largura.
+   scrollbar-width/::-webkit-scrollbar: some com a barra, que aqui só polui —
+   a faixa é curta e o gesto de arrastar é óbvio. */
+.explore-subnav {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.explore-subnav::-webkit-scrollbar { display: none; }
+.explore-subnav .chip { flex: none; }
+
+/* Altura de UMA linha de chips, reservada enquanto a subnav está vazia. As
+   páginas do Explorar trazem <nav class="explore-subnav" data-placeholder>
+   vazio no HTML e o shared.js o preenche; sem esta reserva a página inteira
+   descia no momento em que os chips entravam.
+   Casa com a altura real do .chip (padding 8/14 + borda + line-height). O 44
+   do toque vem logo abaixo, junto da regra que engorda os chips — os dois
+   números têm que andar juntos. */
+.explore-subnav[data-placeholder] { min-height: 38px; }
 
 /* Preço-alvo da wishlist: sino no tile + banner das atingidas. */
 .wish-target-btn { position: absolute; top: 8px; left: 8px; z-index: 2; width: 30px; height: 30px; min-height: 0; padding: 0; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); font-size: 14px; line-height: 1; cursor: pointer; opacity: 0.55; }
@@ -5137,6 +5189,19 @@ a.progress-row:hover {
 /* Filtro mestre (origem dos sets) */
 .master-filter {
   margin-bottom: 18px;
+}
+
+/* Chips de região só fazem sentido no Pokémon (é o único catálogo com EN/PT/JA/
+   ZH lado a lado) e só quando o filtro de idioma está em "todos". Quem escondia
+   era o app.js, DEPOIS de a página pintar: os chips apareciam e sumiam, e as
+   ~38px que ocupavam faziam tudo abaixo pular pra cima (CLS).
+   Aqui a decisão é do CSS, com os atributos que o game.js já grava no <html>
+   ainda no <head> — então nas 11 outras marcas os chips nunca chegam a pintar.
+   O app.js continua com o `hidden` dele: isto é a versão pré-paint da MESMA
+   regra, não uma substituta (ele ainda precisa reagir à troca de idioma). */
+html:not([data-game="pokemon"]) #setRegionChips,
+html:not([data-cardlang="all"]) #setRegionChips {
+  display: none;
 }
 
 /* Resumo de condições no tile (ex.: "NM ×2 · M ×1") */
@@ -6954,6 +7019,9 @@ select,
   .explore-subnav .chip {
     min-height: 44px;
   }
+  /* A reserva da subnav acompanha o chip engordado — senão a página pula 6px
+     no toque, exatamente o que a reserva existe pra evitar. */
+  .explore-subnav[data-placeholder] { min-height: 44px; }
   /* Ícones de ação que são quadrados (fechar, editar pasta): vira 44 no dedo. */
   .folder-act,
   .preview-close {

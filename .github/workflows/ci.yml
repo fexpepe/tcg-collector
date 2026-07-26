@@ -42,6 +42,12 @@ jobs:
       - name: Guardas de layout mobile
         run: node scripts/check-mobile.mjs
 
+      # As páginas carregam FATIAS do índice (indexes-sets.js etc.), não o
+      # indexes.js inteiro. Se alguém regenerar o indexes.js e esquecer as
+      # fatias, a página abre com índice velho — e nada mais acusa isso.
+      - name: Fatias de índice em dia
+        run: node scripts/split-indexes.mjs --check
+
       - name: Sintaxe dos scripts de build
         run: for f in scripts/*.mjs scripts/lib/*.mjs; do node --check "$f"; done
 
