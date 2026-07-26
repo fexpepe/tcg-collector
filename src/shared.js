@@ -3622,8 +3622,30 @@
   // Espera o catálogo do jogo (window.TCG_*) terminar de carregar. O game.js
   // injeta os scripts em runtime e resolve window.SLEEVU.catalogReady — sem isto
   // os globais ainda não existem. Fallback p/ páginas sem game.js (ex.: login).
+  // Tabela de preços SOB DEMANDA. Saiu do data-catalog (onde o game.js a baixava
+  // no boot de 9 páginas) porque ela só é lida quando algum VALOR é desenhado —
+  // e valor só aparece depois de as cartas chegarem. São 306KB brotli / 1,4MB
+  // decodificados no Pokémon, fora do caminho crítico do primeiro paint.
+  // Enganchada no awaitCatalog, que é o ponto de espera de TODOS os carregadores
+  // (loadCatalog, loadCatalogForCardIds, loadIndexesOnly): quem espera cartas
+  // passa a esperar as duas coisas juntas, então nenhum consumidor muda — o
+  // window.TCG_PRICING continua pronto quando o catálogo fica pronto.
+  // Ganho concreto: no Explorar o catálogo virou sob intenção, e o preço foi
+  // junto — quem abre e sai não baixa mais nem um nem outro.
+  let pricingPromise = null;
+  function loadPricing() {
+    if (!pricingPromise) {
+      const sleevu = window.SLEEVU || {};
+      // Hub não tem dataDir; e se alguém já carregou a tabela, não repete.
+      if (!sleevu.dataDir || window.TCG_PRICING) pricingPromise = Promise.resolve();
+      else pricingPromise = injectScript(sleevu.dataDir + (sleevu.manifest ? "pricing.generated.js" : "pricing.js"));
+    }
+    return pricingPromise;
+  }
+
   function awaitCatalog() {
-    return (window.SLEEVU && window.SLEEVU.catalogReady) || Promise.resolve();
+    const ready = (window.SLEEVU && window.SLEEVU.catalogReady) || Promise.resolve();
+    return Promise.all([ready, loadPricing()]);
   }
 
   // `cardLang` opcional ("all" ou um idioma): no modo manifest baixa só os
@@ -3847,6 +3869,12 @@
       const r = await run();
       return { cards: r.cards, indexes: r.indexes, pricing: window.TCG_PRICING || null };
     }
+    // Resolve a tabela de preços da SESSÃO antes de trocar os globals. Sem isto,
+    // se esta função rodasse antes de qualquer carga do jogo da sessão, o
+    // loadPricing (disparado lá dentro pelo awaitCatalog) veria TCG_PRICING já
+    // zerado e injetaria o preço do jogo da SESSÃO no meio da carga do OUTRO
+    // jogo — e o `pricing` devolvido sairia do jogo errado.
+    await loadPricing();
     const saved = {
       cards: window.TCG_CARDS, indexes: window.TCG_INDEXES, manifest: window.TCG_MANIFEST,
       pricing: window.TCG_PRICING, setIdMap: window.TCG_SET_ID_MAP
