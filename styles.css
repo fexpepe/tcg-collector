@@ -6693,7 +6693,9 @@ select,
 .deck-card-meta { display: block; margin-top: 6px; font-size: 12.5px; color: var(--subtle); font-weight: 700; }
 .deck-card-actions { display: flex; gap: 8px; padding: 0 16px 14px; }
 
-.deck-mini { min-height: 32px; padding: 0 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 8px; font-size: 12.5px; font-weight: 700; cursor: pointer; }
+/* border-radius 0 + 34px: cantos retos (identidade do site) e MESMA altura do
+   "Exibir" (summary, 34px) — antes era 32 e a fileira do cabeçalho dançava. */
+.deck-mini { min-height: 34px; padding: 0 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 0; font-size: 12.5px; font-weight: 700; cursor: pointer; }
 .deck-mini:hover { background: var(--panel-strong); }
 .deck-mini.danger:hover { border-color: var(--accent); color: var(--accent); }
 
@@ -6805,7 +6807,7 @@ select,
 .deck-view-sel { width: 100%; min-height: 36px; padding: 0 10px; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 8px; font-size: 13.5px; margin-bottom: 14px; }
 .deck-view-sel:last-child { margin-bottom: 0; }
 .deck-lay-row { display: flex; gap: 6px; margin-bottom: 14px; }
-.deck-lay { flex: 1; display: grid; place-items: center; min-height: 36px; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 8px; cursor: pointer; }
+.deck-lay { flex: 1; display: grid; place-items: center; min-height: 36px; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 0; cursor: pointer; }
 .deck-lay:hover { background: var(--panel-strong); }
 .deck-lay.on { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 
@@ -6868,8 +6870,13 @@ select,
   display: inline-flex; align-items: center;
   background: var(--gt, var(--accent)); color: var(--gt-fg, #fff);
   font-size: 12px; font-weight: 800; letter-spacing: -0.01em;
-  padding: 3px 9px; border-radius: 6px; white-space: nowrap; flex: none;
+  /* Cantos RETOS: a identidade do site é card quadrado (os títulos de jogo da
+     Coleção já são assim); o radius destoava ao lado dos botões do editor. */
+  padding: 3px 9px; border-radius: 0; white-space: nowrap; flex: none;
 }
+/* No cabeçalho do editor a etiqueta convive com os botões (Importar/Copiar/
+   Exibir): mesma ALTURA deles, senão fica um selo baixinho no meio da fileira. */
+.deck-ed-head .game-tag { min-height: 34px; padding-inline: 13px; font-size: 12.5px; }
 /* Nas metas o restante do texto segue discreto; a etiqueta é o destaque. */
 .deck-card-meta, .deck-ed-game { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .deck-game-pick { justify-content: flex-start; }
@@ -6911,6 +6918,9 @@ select,
 @media (pointer: coarse), (max-width: 700px) {
   /* Botõezinhos do construtor de decks: os +/− das miniaturas tinham 24px. */
   .deck-mini,
+  /* o summary "Exibir" precisa estar NOMEADO: .deck-view > summary (0-1-1)
+     vence .deck-mini (0-1-0) e ficaria em 34px no meio de botões de 44. */
+  .deck-view > summary.deck-mini,
   .deck-facet-chip,
   .deck-lay,
   .deck-tile-btns .deck-mini,
@@ -6919,6 +6929,9 @@ select,
     min-height: 44px;
     padding-inline: 14px;
   }
+  /* A etiqueta do jogo acompanha a altura dos botões do cabeçalho — senão a
+     fileira desuniformiza de novo no celular. */
+  .deck-ed-head .game-tag { min-height: 44px; }
   /* Chips e abas do site (filtros do Explorar, abas do perfil). */
   .chip,
   .prof-tab,
@@ -6956,7 +6969,7 @@ select,
   }
   .deck-tab {
     min-height: 44px; border: 1px solid var(--line); background: var(--panel);
-    color: var(--subtle); border-radius: 9px; font-size: 14px; font-weight: 800; cursor: pointer;
+    color: var(--subtle); border-radius: 0; font-size: 14px; font-weight: 800; cursor: pointer;
   }
   .deck-tab[aria-selected="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
   /* Mostra só a área da aba ativa. */
