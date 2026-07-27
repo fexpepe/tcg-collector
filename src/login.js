@@ -21,6 +21,17 @@
     return ret && /^\/(?!\/)[a-zA-Z0-9._\/-]*$/.test(ret) ? ret : "index.html";
   }
 
+  // Volta pelo bfcache (botão VOLTAR depois de logar): o navegador restaura a
+  // página congelada sem rodar nenhum script. Dois estragos vistos em produção:
+  // o usuário logado vê o formulário de login (o redirect lá embaixo não roda de
+  // novo) e o api.js do Turnstile re-renderiza um widget novo AO LADO do velho
+  // expirado — aparecia "Falha na verificação" e "Sucesso!" lado a lado, e o
+  // submit lia o token do widget errado. Reload resolve os dois: a página
+  // renasce, o script roda e ou redireciona (logado) ou monta UM widget novo.
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) window.location.reload();
+  });
+
   // Voltando do e-mail (#access_token): o shared.js (initAuth) consome e recarrega;
   // aqui só mostra "entrando…" para não piscar o formulário.
   if (window.location.hash.indexOf("access_token") >= 0) {
@@ -42,9 +53,13 @@
       if (!email.includes("@")) return;
       // Token do Turnstile (se o widget estiver na página). O widget marca
       // sozinho na maioria dos casos; se o desafio ainda não terminou, avisa.
-      const tsField = form.querySelector('[name="cf-turnstile-response"]');
-      const captchaToken = tsField ? tsField.value : "";
-      if (tsField && !captchaToken) { showMsg(t("login.captcha"), "err"); return; }
+      // querySelectorAll + último NÃO-VAZIO: se por qualquer motivo houver mais
+      // de um widget no form (já houve, via bfcache), o válido é o mais novo —
+      // pegar o primeiro mandava token vazio/expirado e o Supabase recusava.
+      const tsFields = form.querySelectorAll('[name="cf-turnstile-response"]');
+      let captchaToken = "";
+      tsFields.forEach((f) => { if (f.value) captchaToken = f.value; });
+      if (tsFields.length && !captchaToken) { showMsg(t("login.captcha"), "err"); return; }
       if (submit) { submit.disabled = true; submit.textContent = t("login.sending"); }
       const r = await shared.sendMagicLink(email, captchaToken);
       if (submit) { submit.disabled = false; submit.textContent = t("login.submit"); }

@@ -3342,6 +3342,19 @@ a.hub-tile:hover {
   text-align: center;
 }
 .login-logo { font-size: 22px; font-weight: 800; letter-spacing: 0.14em; }
+/* Wordmark Sleevu no cartão de login (mesma técnica do .brand do header:
+   SVG via mask pintado com currentColor — acompanha o tema). Centrado porque
+   o cartão inteiro é centrado. */
+.login-logo-mark {
+  font-size: 0;
+  width: 132px;
+  height: 34px;
+  margin: 0 auto;
+  color: var(--text);
+  background: currentColor;
+  -webkit-mask: url("assets/brand/sleevu-wordmark.svg") no-repeat center / contain;
+  mask: url("assets/brand/sleevu-wordmark.svg") no-repeat center / contain;
+}
 .login-tagline {
   color: var(--subtle);
   font-size: 11px;
