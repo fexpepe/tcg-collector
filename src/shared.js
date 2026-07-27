@@ -4573,7 +4573,14 @@
     const res = await fetch(`${SUPABASE_URL}/auth/v1/otp?redirect_to=${encodeURIComponent(redirect)}`, {
       method: "POST", headers: authHeaders(), body: JSON.stringify(body)
     });
-    return res.ok;
+    if (res.ok) return { ok: true };
+    // O motivo IMPORTA: um `return res.ok` seco escondeu por dias que o Supabase
+    // estava rejeitando TODO login com captcha_failed (secret do Turnstile
+    // errado no painel) — o usuário via "não consegui enviar" e achava que era
+    // o e-mail dele. error_code é o campo do GoTrue; msg é o texto cru.
+    let code = "", msg = "";
+    try { const b = await res.json(); code = b.error_code || ""; msg = b.msg || b.message || ""; } catch (e) { /* corpo não-JSON */ }
+    return { ok: false, status: res.status, code, msg };
   }
   async function fetchAuthUser(token) {
     try { const r = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: authHeaders(token) }); return r.ok ? r.json() : null; } catch (e) { return null; }

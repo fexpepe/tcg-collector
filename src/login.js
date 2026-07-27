@@ -46,11 +46,21 @@
       const captchaToken = tsField ? tsField.value : "";
       if (tsField && !captchaToken) { showMsg(t("login.captcha"), "err"); return; }
       if (submit) { submit.disabled = true; submit.textContent = t("login.sending"); }
-      const ok = await shared.sendMagicLink(email, captchaToken);
+      const r = await shared.sendMagicLink(email, captchaToken);
       if (submit) { submit.disabled = false; submit.textContent = t("login.submit"); }
-      if (ok) {
+      if (r.ok) {
         form.hidden = true;
         showMsg(t("login.sent"), "ok");
+      } else if (r.code === "captcha_failed") {
+        // Falha na VALIDAÇÃO do captcha (não no widget): ou o token expirou na
+        // digitação, ou o secret do Turnstile no painel do Supabase está errado
+        // — foi este segundo caso que derrubou o login do site inteiro uma vez,
+        // mascarado pela mensagem genérica. O widget é resetado pra gerar token
+        // novo; se persistir, o texto aponta o captcha, não o e-mail.
+        try { if (window.turnstile) window.turnstile.reset(); } catch (e) { /* sem widget */ }
+        showMsg(t("login.captchaRejected"), "err");
+      } else if (r.code === "over_email_send_rate_limit" || r.status === 429) {
+        showMsg(t("login.rateLimited"), "err");
       } else {
         showMsg(t("login.error"), "err");
       }
