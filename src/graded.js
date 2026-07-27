@@ -321,6 +321,10 @@
       cardsById = new Map(cards.map((card) => [card.id, card]));
       Object.keys(ownedByGame).forEach((g) =>
         ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
+      // Filtro de jogo só com os jogos que têm slab. Aqui (e não antes do
+      // catálogo) porque o jogo do item graded vem da CARTA, não do registro.
+      shared.setGameFilterScope([...new Set(graded.list()
+        .map((it) => cardGameMap.get(it.cardId)).filter(Boolean))]);
       render();
     })
     .catch((error) => {

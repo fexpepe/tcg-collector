@@ -5590,6 +5590,12 @@ html:not([data-cardlang="all"]) #setRegionChips {
   margin: 0 0 16px;
 }
 .game-filter { margin: 0; }
+/* Título ↔ filtro de jogo: o .page-head tem 20px embaixo, mas a barra separa as
+   próprias linhas com o gap de 10px do flex — dava 20 em cima e 10 embaixo, e a
+   fileira de chips parecia solta do título. 10px nos dois lados fecha o bloco.
+   :has(~ …) e não `+` porque a seção de onboarding fica entre os dois no DOM
+   (mesmo quando hidden). */
+.page-head:has(~ .collection-toolbar) { margin-bottom: 10px; }
 /* No Portfólio o filtro de jogo fica colado no box do gráfico (o .game-filter é
    margin:0 e o .pf-chart não tem margin-top) — dá respiro em cima e embaixo pra
    as cápsulas não encavalarem, inclusive quando quebram pra 2 linhas. */

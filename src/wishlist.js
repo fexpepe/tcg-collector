@@ -60,6 +60,8 @@
   if (elements.grid && shared.GAME_SLUGS.some((g) => idsFor(g).length)) {
     shared.showSkeletons(elements.grid, "card", 8);
   }
+  // Filtro de jogo só com os jogos que têm carta na lista de desejos.
+  shared.setGameFilterScope(shared.GAME_SLUGS.filter((g) => idsFor(g).length > 0));
   Promise.all([
     shared.loadOwnedAcrossGames(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, idsFor(g)]))),
     shared.loadFxRates()

@@ -779,6 +779,12 @@
       Object.keys(ownedByGame).forEach((g) =>
         ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
       if (elements.batchInput) { const mk = sales.getMarkup(); elements.batchInput.value = mk ? String(mk) : ""; }
+      // Filtro de jogo só com os jogos que têm venda/anúncio registrado — o jogo
+      // vem da CARTA, então só dá pra saber depois do catálogo.
+      shared.setGameFilterScope([...new Set(
+        sales.list().map((it) => cardGameMap.get(it.cardId))
+          .concat(sold.list().map((it) => cardGameMap.get(it.cardId)))
+          .filter(Boolean))]);
       render();
       shared.publishProfile(cards, owned, prices); // republica o perfil público (vendas atualizadas)
     })

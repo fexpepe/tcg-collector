@@ -905,15 +905,31 @@
   // lista sai de GAME_SLUGS: jogo novo aparece nas três telas sozinho.
   // Mantém o markup (button.chip + data-game-filter + aria-pressed) porque a
   // delegação de clique de cada página depende dele.
-  function initGameFilterChips() {
+  function initGameFilterChips(games) {
+    // `games` = jogos que o usuário REALMENTE tem nesta tela. Sem o argumento
+    // (chamada do boot, antes de os dados carregarem) mostra todos — quem tem a
+    // informação é cada página, e ela chama de novo via setGameFilterScope.
+    const lista = Array.isArray(games) ? GAME_SLUGS.filter((g) => games.includes(g)) : GAME_SLUGS;
     document.querySelectorAll("#gameFilter").forEach((box) => {
+      // Com 0 ou 1 jogo o filtro não filtra nada — "Todos" e o único jogo são o
+      // mesmo conjunto. Esconde a barra inteira em vez de deixar um controle
+      // decorativo ocupando espaço.
+      if (Array.isArray(games) && lista.length < 2) { box.hidden = true; return; }
+      box.hidden = false;
       const atual = (box.querySelector('[data-game-filter][aria-pressed="true"]') || {}).dataset;
-      const ativo = (atual && atual.gameFilter) || "all";
+      let ativo = (atual && atual.gameFilter) || "all";
+      // O jogo ativo sumiu da lista (última carta dele removida): volta pra
+      // "Todos" em vez de deixar um filtro sem chip correspondente.
+      if (ativo !== "all" && !lista.includes(ativo)) ativo = "all";
       const chip = (g, label) =>
         `<button type="button" class="chip" data-game-filter="${escapeAttribute(g)}" aria-pressed="${g === ativo}">${escapeHtml(label)}</button>`;
-      box.innerHTML = chip("all", t("filter.gameAll")) + GAME_SLUGS.map((g) => chip(g, gameLabel(g))).join("");
+      box.innerHTML = chip("all", t("filter.gameAll")) + lista.map((g) => chip(g, gameLabel(g))).join("");
     });
   }
+  // Reconstrói os chips com o escopo real da página. Cada tela chama depois de
+  // carregar os dados dela (Coleção = cartas marcadas, Wishlist = desejadas,
+  // Graded = slabs, Vendas = vendas) — o boot não tem como saber.
+  function setGameFilterScope(games) { initGameFilterChips(games || []); }
 
   function initSearchShortcutHint() {
     try {
@@ -4550,6 +4566,7 @@
     fetchShare,
     hasConsent,
     setConsent,
+    setGameFilterScope,
     listShares,
     listMyShares,
     updateShare,

@@ -364,6 +364,10 @@
     if (elements.grid && shared.GAME_SLUGS.some((g) => ownedByGame[g].knownCardIds().length)) {
       shared.showSkeletons(elements.grid, "card", 8);
     }
+    // Filtro de jogo só com os jogos em que há carta marcada — quem coleciona
+    // só Pokémon não precisa ver 12 chips (e o filtro some de vez com 1 jogo).
+    // Roda aqui, antes dos catálogos: a posse vem do localStorage, não da rede.
+    shared.setGameFilterScope(shared.GAME_SLUGS.filter((g) => ownedByGame[g].size > 0));
     Promise.all([
       shared.loadOwnedAcrossGames(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, ownedByGame[g].knownCardIds()]))),
       shared.loadFxRates()
