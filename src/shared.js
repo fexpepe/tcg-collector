@@ -3833,7 +3833,30 @@
   // Slugs e cor de cada jogo, num lugar só (adicionar um jogo = 1 entrada aqui
   // + 1 no game.js + labels no i18n; as páginas iteram em vez de hardcodear).
   const GAME_SLUGS = DATA_GAMES.map((d) => d.game);
-  const GAME_COLOR = { pokemon: "#e23030", lorcana: "#3f3d96", onepiece: "#d9a400", magic: "#2563eb", fab: "#0d9488", gundam: "#0284c7", dbfw: "#f97316", ygo: "#7c3aed", digimon: "#0e7490", riftbound: "#db2777", naruto: "#ea580c", hxh: "#15803d" };
+  // Cor de cada marca. Escolhidas pelo Fernando; os tons exatos foram calibrados
+  // em dois eixos antes de entrar:
+  //   1. CONTRASTE — o textOnColor abaixo escolhe preto ou branco pelo maior
+  //      contraste real; as 12 passam em AA (≥4.5:1) com a cor escolhida.
+  //   2. DISTINÇÃO — as etiquetas aparecem lado a lado na galeria e nos filtros,
+  //      então cores muito próximas se confundem. O ouro do Riftbound começou em
+  //      #b8860b e virou #a67c00: a 46 de distância RGB ele empatava com o
+  //      amarelo do One Piece; a 65 dá pra diferenciar de relance.
+  // Pokémon × Naruto ficam a 54 (vermelho × laranja) — herdado e mantido a
+  // pedido; os dois nunca aparecem no mesmo filtro por acaso, mas fica o registro.
+  const GAME_COLOR = {
+    pokemon: "#e23030",    // vermelho
+    lorcana: "#3f3d96",    // roxo
+    onepiece: "#d9a400",   // amarelo
+    magic: "#7a4a2b",      // marrom (o couro do verso da carta)
+    fab: "#a34a5e",        // vinho claro
+    gundam: "#2563eb",     // azul (o tom que era do Magic)
+    dbfw: "#9aa3ae",       // prata
+    ygo: "#7c3aed",        // roxo-violeta
+    digimon: "#123f6d",    // azul escuro
+    riftbound: "#a67c00",  // ouro
+    naruto: "#ea580c",     // laranja
+    hxh: "#15803d"         // verde
+  };
   // Preto ou branco sobre a cor do jogo — o que der MAIOR contraste de verdade
   // (fórmula WCAG), não um limiar de luminância chutado: com limiar fixo o
   // amarelo do One Piece (#d9a400) ficava com texto branco a 2.3:1, ilegível.

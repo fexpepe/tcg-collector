@@ -169,25 +169,27 @@
   --accent: #d9a400; --accent-dark: #b78a00; --accent-rgb: 217, 164, 0;
   --accent-soft: rgba(217, 164, 0, 0.12); --on-accent: #0a0c10;
 }
-/* Magic: azul (mana de Ilha — cor livre na paleta dos jogos). Azul claro com
-   texto escuro no tema escuro; azul fechado com texto branco no claro. */
+/* Magic: MARROM (o couro do verso da carta). O azul daqui foi pro Gundam.
+   Marrom claro com texto escuro no tema escuro; marrom fechado com texto branco
+   no claro — os dois em ≥7:1. */
 [data-game-accent="magic"] {
-  --accent: #60a5fa; --accent-dark: #3b82f6; --accent-rgb: 96, 165, 250;
-  --accent-soft: rgba(96, 165, 250, 0.16); --on-accent: #0a0c10;
+  --accent: #c99a6b; --accent-dark: #b3814f; --accent-rgb: 201, 154, 107;
+  --accent-soft: rgba(201, 154, 107, 0.16); --on-accent: #0a0c10;
 }
 [data-theme="light"][data-game-accent="magic"] {
-  --accent: #1d4ed8; --accent-dark: #1e40af; --accent-rgb: 29, 78, 216;
-  --accent-soft: rgba(29, 78, 216, 0.1); --on-accent: #ffffff;
+  --accent: #7a4a2b; --accent-dark: #613a21; --accent-rgb: 122, 74, 43;
+  --accent-soft: rgba(122, 74, 43, 0.1); --on-accent: #ffffff;
 }
-/* Flesh and Blood: teal (o carmesim da marca colidiria com o vermelho do
-   Pokémon nos chips). Teal claro no escuro; teal fechado no claro. */
+/* Flesh and Blood: VINHO CLARO. Rosa-vinho no tema escuro (texto escuro) e
+   vinho fechado no claro (texto branco) — longe do vermelho do Pokémon, que era
+   o motivo do teal antigo. */
 [data-game-accent="fab"] {
-  --accent: #2dd4bf; --accent-dark: #14b8a6; --accent-rgb: 45, 212, 191;
-  --accent-soft: rgba(45, 212, 191, 0.16); --on-accent: #0a0c10;
+  --accent: #e08a9c; --accent-dark: #cf7286; --accent-rgb: 224, 138, 156;
+  --accent-soft: rgba(224, 138, 156, 0.16); --on-accent: #0a0c10;
 }
 [data-theme="light"][data-game-accent="fab"] {
-  --accent: #0f766e; --accent-dark: #115e59; --accent-rgb: 15, 118, 110;
-  --accent-soft: rgba(15, 118, 110, 0.1); --on-accent: #ffffff;
+  --accent: #a34a5e; --accent-dark: #86394b; --accent-rgb: 163, 74, 94;
+  --accent-soft: rgba(163, 74, 94, 0.1); --on-accent: #ffffff;
 }
 /* Naruto: laranja. Texto escuro sobre o laranja claro do tema escuro; branco
    sobre o laranja fechado do claro. */
