@@ -260,8 +260,12 @@ const manifest = {
 const mergedIndexes = buildIndexes(allCards);
 await writeFile(new URL("indexes.generated.js", dataDir), `window.TCG_INDEXES = ${JSON.stringify(mergedIndexes)};\n`, "utf8");
 // Fatias por chave (indexes-sets/-artists/…): é o que as páginas realmente
-// carregam. Ver writeSplitIndexes.
-await writeSplitIndexes(dataDir, mergedIndexes);
+// carregam. SÓ a família .generated: o índice MESCLADO é artefato de produção,
+// e escrever as fatias de dev com ele deixava indexes-sets.json (versionado,
+// espelho do data/indexes.js de dev) com conteúdo mesclado — o snapshot
+// automático commitava a mistura e o `split-indexes.mjs --check` do CI quebrava
+// no push seguinte. A família de dev é do split-indexes.mjs (backfill).
+await writeSplitIndexes(dataDir, mergedIndexes, { only: "generated" });
 await writeFile(new URL("manifest.generated.js", dataDir), `window.TCG_MANIFEST = ${JSON.stringify(manifest)};\n`, "utf8");
 await writeFile(new URL("pricing.generated.js", dataDir), `window.TCG_PRICING = ${JSON.stringify(pricing)};\n`, "utf8");
 

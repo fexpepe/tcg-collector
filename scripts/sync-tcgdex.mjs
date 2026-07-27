@@ -155,8 +155,11 @@ const manifest = {
 await writeFile(cardsOutFile, `window.TCG_CARDS = ${JSON.stringify(cards)};\n`, "utf8");
 const builtIndexes = buildIndexes(cards);
 await writeFile(indexesOutFile, `window.TCG_INDEXES = ${JSON.stringify(builtIndexes)};\n`, "utf8");
-// Fatias por chave, no mesmo diretório do indexes.js (ver writeSplitIndexes).
-await writeSplitIndexes(new URL("./", indexesOutFile), builtIndexes);
+// Fatias por chave — SÓ a família .generated (este arquivo de saída é o
+// indexes.generated.js; a fatia de dev espelha o data/indexes.js versionado e
+// é responsabilidade do split-indexes.mjs). De todo modo o merge-catalogs
+// sobrescreve estas na sequência com o índice mesclado dos idiomas.
+await writeSplitIndexes(new URL("./", indexesOutFile), builtIndexes, { only: "generated" });
 await writeFile(manifestOutFile, `window.TCG_MANIFEST = ${JSON.stringify(manifest)};\n`, "utf8");
 
 const seconds = Math.round((Date.now() - startedAt) / 1000);
