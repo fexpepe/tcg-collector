@@ -1663,10 +1663,52 @@
     return "https://sleevu.app/users/" + p.handle + t;
   }
 
+  // ── CONSENTIMENTO ──────────────────────────────────────────────────────────
+  // Base pra decidir o que pode rodar no navegador do visitante. Hoje o site só
+  // tem duas categorias de verdade; a terceira já existe porque a intenção é
+  // colocar anúncios pra sustentar o projeto, e a regra legal muda com eles:
+  //
+  //   essential  sempre ligado. Login, preferências, o próprio app. Não é opção.
+  //   analytics  ligado por padrão (OPT-OUT). É medição própria, anônima e
+  //              agregada, sem cookie e sem terceiro — base de legítimo
+  //              interesse na LGPD, com a saída aqui.
+  //   ads        DESLIGADO por padrão (OPT-IN). Publicidade comportamental exige
+  //              consentimento EXPLÍCITO e prévio — não pode herdar o default do
+  //              analytics. Quando os anúncios entrarem, o banner só precisa
+  //              chamar setConsent("ads", true) e o script do anunciante ficar
+  //              atrás de hasConsent("ads"); nada mais neste arquivo muda.
+  const CONSENT_KEY = "sleevu-consent-v1";
+  const CONSENT_DEFAULT = { analytics: true, ads: false };
+  function readConsent() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(CONSENT_KEY) || "null");
+      return raw && typeof raw === "object" ? Object.assign({}, CONSENT_DEFAULT, raw) : Object.assign({}, CONSENT_DEFAULT);
+    } catch (e) { return Object.assign({}, CONSENT_DEFAULT); }
+  }
+  function hasConsent(cat) {
+    if (cat === "essential") return true;
+    return !!readConsent()[cat];
+  }
+  function setConsent(cat, valor) {
+    if (cat === "essential") return;
+    const c = readConsent();
+    c[cat] = !!valor;
+    try { localStorage.setItem(CONSENT_KEY, JSON.stringify(c)); } catch (e) { /* storage bloqueado */ }
+    // Recusou a medição: apaga o identificador que existia só pra isso. Deixar
+    // pra trás seria guardar um id sem propósito — e sem base legal.
+    if (cat === "analytics" && !valor) {
+      try { localStorage.removeItem("sleevu-anon-v1"); } catch (e) { /* ignora */ }
+    }
+  }
+
   // --- Analytics first-party: ANÔNIMO e agregado (sem cookie de rastreio, sem
   // terceiro). Loga 1 pageview por carregamento na tabela `events`; o id anônimo é
   // um uuid first-party no localStorage só p/ contar visitante único (DAU/MAU). ---
   function anonId() {
+    // Sem consentimento de medição, NÃO cria nem guarda id. Sem esta guarda o
+    // opt-out vazava: o logClientError também chama aqui, então o primeiro erro
+    // de JS depois de desligar recriaria o identificador recém-apagado.
+    if (!hasConsent("analytics")) return null;
     try {
       let id = localStorage.getItem("sleevu-anon-v1");
       if (!id) {
@@ -1683,7 +1725,7 @@
     return seg || "home";
   }
   function logPageview() {
-    if (!AUTH_ENABLED) return;
+    if (!AUTH_ENABLED || !hasConsent("analytics")) return;
     try {
       fetch(`${SUPABASE_URL}/rest/v1/events`, {
         method: "POST",
@@ -4506,6 +4548,8 @@
     getSession,
     createShare,
     fetchShare,
+    hasConsent,
+    setConsent,
     listShares,
     listMyShares,
     updateShare,

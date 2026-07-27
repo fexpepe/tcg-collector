@@ -148,6 +148,18 @@
     });
   }
 
+  // Privacidade: opt-out da medição de audiência. Sem reload — o logPageview
+  // desta página já rodou, e o efeito vale da próxima navegação em diante.
+  const analytics = document.getElementById("analyticsToggle");
+  if (analytics) {
+    const sync = () => analytics.setAttribute("aria-checked", String(shared.hasConsent("analytics")));
+    sync();
+    analytics.addEventListener("click", () => {
+      shared.setConsent("analytics", !shared.hasConsent("analytics"));
+      sync();
+    });
+  }
+
   // Modo sensível — borra os valores de portfólio/coleção.
   const sensitive = document.getElementById("sensitiveToggle");
   if (sensitive) {

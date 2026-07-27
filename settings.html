@@ -124,6 +124,20 @@
           </div>
         </section>
 
+        <!-- Privacidade: o site não usa cookie de rastreio nem anúncio, mas a
+             medição de audiência guarda um id anônimo no navegador. Esta é a
+             saída (opt-out) — ver hasConsent/setConsent no shared.js. -->
+        <section class="settings-group" aria-labelledby="settingsPrivacy">
+          <h2 id="settingsPrivacy" data-i18n="settings.privacy">Privacidade</h2>
+          <div class="setting-row">
+            <div class="setting-info">
+              <strong data-i18n="settings.analytics">Contar minhas visitas</strong>
+              <span data-i18n="settings.analyticsDesc">Estatística anônima e agregada (quais páginas abrem, de qual jogo) pra saber o que melhorar. Sem cookie, sem terceiro e sem nada ligado à sua coleção. Desligando, o identificador aleatório guardado no seu navegador é apagado na hora.</span>
+            </div>
+            <button type="button" class="setting-switch" id="analyticsToggle" role="switch" aria-checked="true" aria-label="Contar minhas visitas"><span class="setting-switch-knob"></span></button>
+          </div>
+        </section>
+
         <section class="settings-group" aria-labelledby="settingsNotif">
           <h2 id="settingsNotif" data-i18n="settings.notif">Notificações</h2>
           <div class="setting-row">
