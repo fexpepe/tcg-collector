@@ -8,10 +8,11 @@
 //    da rede quando online (assim um deploy novo é sempre pego, sem o app ficar
 //    preso numa versão velha) e caem no cache quando offline — fazendo o app
 //    abrir e a coleção já vista funcionar sem internet (PWA instalável).
-// v227: as páginas passaram a pedir FATIAS do índice (indexes-sets.js etc.) em
-// vez do indexes.js inteiro, e ganharam o <label> da busca + o placeholder da
-// subnav no HTML. Bump obrigatório: o HTML antigo em cache pediria o índice
-// junto e injetaria o rótulo por JS de novo (voltando o CLS).
+// v227: as páginas passaram a pedir FATIAS do índice (indexes-sets.json etc.)
+// em vez do indexes.js inteiro, o pricing saiu do data-catalog (agora sob
+// demanda), e o <label> da busca + o placeholder da subnav foram pro HTML.
+// Bump obrigatório: o HTML antigo em cache pediria o índice junto, baixaria o
+// preço no boot e injetaria o rótulo por JS de novo (voltando o CLS).
 const SHELL_CACHE = "tcg-shell-v227";
 // IMAGE_CACHE vai a v2: a versão anterior do SW podia cravar um erro 404/timeout
 // como imagem "opaca" por 7 dias (imagem quebrada presa até um hard refresh).

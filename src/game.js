@@ -109,7 +109,8 @@
     if (token.slice(0, 8) === "indexes:") {
       var key = token.slice(8);
       if (key === "auto") key = autoIndexKey();
-      return "indexes-" + key + (MANIFEST ? ".generated.js" : ".js");
+      // .json: entra por fetch + JSON.parse (ver loadJson), não por <script>.
+      return "indexes-" + key + (MANIFEST ? ".generated.json" : ".json");
     }
     // pokemon-names/-types só existem em data/ (Pokémon). A detail.html e a
     // pokedex.html declaram os dois pra qualquer jogo, e em Lorcana/Magic/etc.
@@ -141,6 +142,26 @@
       if (f && files.indexOf(f) === -1) files.push(f);
     }
   }
+  // Fatia de índice: baixa como DADO e faz JSON.parse. O nome do arquivo diz a
+  // chave (indexes-sets.generated.json -> sets), e cada uma escreve num campo
+  // diferente de window.TCG_INDEXES, então a ordem entre elas não importa.
+  // Falha (404/JSON quebrado) não derruba a página: a chave fica vazia, mesmo
+  // efeito do onerror do <script>.
+  function loadJson(file, done) {
+    var key = file.replace(/^indexes-/, "").replace(/\.generated/, "").replace(/\.json$/, "");
+    if (key === "totals") key = "pokemonTotals";
+    fetch(cfg.dataDir + file)
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        if (data) {
+          window.TCG_INDEXES = window.TCG_INDEXES || {};
+          window.TCG_INDEXES[key] = data;
+        }
+      })
+      .catch(function () { /* índice ausente: a página degrada, não quebra */ })
+      .then(done, done);
+  }
+
   // Hub (sem dataDir) e páginas sem catálogo resolvem na hora.
   if (!files.length) resolveReady();
   else {
@@ -148,8 +169,10 @@
     var done = function () { if (--pending === 0) resolveReady(); };
     var head = document.head || document.documentElement;
     for (var j = 0; j < files.length; j++) {
+      var file = files[j];
+      if (file.slice(-5) === ".json") { loadJson(file, done); continue; }
       var s = document.createElement("script");
-      s.src = cfg.dataDir + files[j];
+      s.src = cfg.dataDir + file;
       s.async = false;
       s.onload = done;
       s.onerror = done;

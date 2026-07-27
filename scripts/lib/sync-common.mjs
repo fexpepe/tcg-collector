@@ -104,8 +104,14 @@ export const INDEX_KEYS = ["pokedex", "trainers", "sets", "artists", "pokemonTot
 
 // Nome de arquivo da fatia (pokemonTotals vira "totals" pra casar com o token
 // `indexes:totals` do data-catalog).
+//
+// .json e NÃO .js: o navegador roda JSON.parse em vez de parse+compile+execute
+// de JavaScript, que é bem mais caro pro mesmo payload (o JSON.parse do V8 é um
+// caminho especializado; um literal de objeto passa pelo parser da linguagem
+// inteira). Na fatia do Magic são 1,4 MB, e isso pesa no celular.
+// Deu pra fazer sem migração porque as fatias nasceram já assim.
 export const indexSliceFile = (key, generated) =>
-  `indexes-${key === "pokemonTotals" ? "totals" : key}${generated ? ".generated" : ""}.js`;
+  `indexes-${key === "pokemonTotals" ? "totals" : key}${generated ? ".generated" : ""}.json`;
 
 // Conteúdo exato da fatia. Usado tanto pela escrita quanto pelo --check do
 // split-indexes.mjs, pra os dois nunca divergirem.
@@ -113,7 +119,7 @@ export function indexSliceBody(key, value) {
   // Chave ausente vira arquivo VAZIO de propósito, não 404: o 404 custaria um
   // round-trip em toda página do jogo (só o Pokémon tem pokedex/trainers).
   const fallback = key === "pokemonTotals" ? {} : [];
-  return `(window.TCG_INDEXES = window.TCG_INDEXES || {}).${key} = ${JSON.stringify(value === undefined ? fallback : value)};\n`;
+  return JSON.stringify(value === undefined ? fallback : value) + "\n";
 }
 
 // `only` limita a qual família escrever ("dev" = indexes-X.js, "generated" =
