@@ -4,3 +4,8 @@ Contact: mailto:fernandopepe.pereira@gmail.com
 Expires: 2027-06-29T00:00:00.000Z
 Preferred-Languages: pt, en
 Canonical: https://sleevu.app/.well-known/security.txt
+
+# Escopo — evita relatório de coisa que é intencional:
+# O catálogo de cartas (data/**) é PÚBLICO de propósito; baixá-lo não é falha.
+# Interessa: acesso a dado de OUTRO usuário (coleção, e-mail, sessão), escalada
+# de privilégio, XSS/CSRF, falha de autenticação ou bypass de RLS.

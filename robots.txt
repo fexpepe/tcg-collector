@@ -1,4 +1,43 @@
+# Sleevu — sleevu.app
+#
+# Política: o CONTEÚDO é aberto de propósito. Sets, cartas e decks da comunidade
+# existem pra serem achados na busca e citados por assistentes de IA — é o canal
+# de entrada orgânico do site. Nada aqui bloqueia buscador nem crawler de IA.
+#
+# O que sai da lista são as páginas SEM valor de busca: telas pessoais (que só
+# fazem sentido logado e renderizam vazias pro robô) e os fluxos de conta.
+# Deixá-las liberadas gastava orçamento de rastreio em casca vazia e ainda
+# arriscava indexar título de tela privada.
+
 User-agent: *
 Allow: /
+
+# Telas pessoais: exigem sessão; pro crawler são páginas vazias.
+Disallow: /dashboard
+Disallow: /collection
+Disallow: /wishlist
+Disallow: /portfolio
+Disallow: /binders
+Disallow: /sales
+Disallow: /graded
+Disallow: /badges
+Disallow: /my-decks
+Disallow: /profile
+Disallow: /settings
+
+# Conta e ferramentas internas.
+Disallow: /login
+Disallow: /backup
+Disallow: /admin
+
+# Parâmetros que geram infinitas variações da MESMA página — armadilha clássica
+# de rastreio: o robô fica preso paginando combinações de filtro em vez de achar
+# as páginas de set, carta e deck, que são as que importam.
+Disallow: /*?q=
+Disallow: /*?set=
+Disallow: /*?rarity=
+Disallow: /*?sort=
+Disallow: /*?pmin=
+Disallow: /*?pmax=
 
 Sitemap: https://sleevu.app/sitemap.xml

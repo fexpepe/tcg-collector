@@ -8,17 +8,29 @@ poucos.)
 
 ## Pendentes de aplicar
 
-Ordem obrigatória (o front já está preparado para qualquer momento da A, mas a
-B só pode entrar depois do deploy):
+Todas são aditivas e independentes entre si — pode aplicar na ordem abaixo,
+colando cada arquivo inteiro no SQL Editor.
 
-1. **`20260723a_rpc_rate_limits_errors.sql`** — aditiva, aplicar já.
-   Cria `get_public_profile`, torna `find_sellers` SECURITY DEFINER, adiciona
-   rate limit por IP em `events` (trigger) e `increment_card_view` (recriada),
-   e cria `error_summary` pro painel /admin.
-2. **Deploy do front** (push na main) com as mudanças de 2026-07-23
-   (fetchPublicProfile via RPC com fallback; error tracking; aviso de quota).
-3. **`20260723b_public_profiles_lockdown.sql`** — SÓ depois do deploy.
-   Fecha a leitura pública direta de `public_profiles` (anti-scraping).
+1. **`20260727b_shares_update_policy.sql`** — **a mais urgente.**
+   `shares` nunca teve policy de UPDATE, então "republicar" um deck criava uma
+   linha NOVA em vez de atualizar: o mesmo deck ficava duplicado na galeria e a
+   versão antiga sem como remover. Também recria a policy de DELETE (é o que faz
+   o botão "Despublicar" funcionar de verdade).
+2. **`20260727c_shares_hide_user_id.sql`** — endurecimento.
+   Tira o `user_id` da leitura ANÔNIMA de `shares`. Sem isso, qualquer um lista
+   todas as publicações com o UUID do dono e correlaciona deck+pasta+coleção da
+   mesma pessoa. `authenticated` mantém (a tela "Publicados por você" filtra por
+   essa coluna).
+
+### Já aplicadas (verificado em produção, 2026-07-27)
+
+- `20260723a` — rate limit por IP em `events`/`increment_card_view`,
+  `get_public_profile`, `error_summary`. Confirmado: as tabelas respondem e o
+  guard de `events` descarta nome fora da whitelist.
+- `20260723b` — lockdown de `public_profiles`. Confirmado: leitura anônima
+  devolve `[]`.
+- `20260724a` — slugs de YGO/Digimon/Riftbound no CHECK de `card_views`.
+- `20260727a` — `kind='deck'` liberado em `shares` (destravou o publicar).
 
 Como aplicar: SQL Editor do dashboard (colar o arquivo inteiro) ou
 `supabase db push` com o CLI ligado ao projeto `dlnalopazitfdgnmdguu`.

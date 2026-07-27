@@ -37,11 +37,15 @@ const GAMES = [
 // páginas não levam <meta> de CSP, como as demais.
 
 // Páginas estáticas do site (base do sitemap), extensionless como o CF Pages serve.
+// Só páginas PÚBLICAS e indexáveis. As telas pessoais (dashboard, collection,
+// wishlist, portfolio, binders, sales, graded, my-decks…) saíram: todas exigem
+// sessão e redirecionam pro login, então o buscador indexava um redirecionamento
+// — página fina, zero valor de busca. Elas agora estão no Disallow do
+// robots.txt, e sitemap × robots precisam concordar: anunciar no sitemap uma URL
+// bloqueada no robots vira erro no Search Console.
+// /decks é a galeria PÚBLICA da comunidade e fica.
 const STATIC_URLS = [
-  "/", "/hub", "/explore", "/dashboard", "/cards", "/pokedex", "/sets", "/artists", "/trainers",
-  "/collection", "/wishlist", "/portfolio", "/binders", "/sales", "/graded",
-  // /decks é a galeria PÚBLICA (indexável). /my-decks fica de fora de propósito:
-  // é página pessoal e está marcada noindex.
+  "/", "/hub", "/explore", "/cards", "/pokedex", "/sets", "/artists", "/trainers",
   "/decks",
   "/about", "/novidades", "/faq", "/help", "/privacy", "/terms"
 ];
