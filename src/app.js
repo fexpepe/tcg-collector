@@ -226,6 +226,7 @@
         : (catalog.manifest ? catalog.manifest.sets.filter((set) => langMatch(set.language)).reduce((sum, set) => sum + (set.count || 0), 0) : 0);
       owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
       init();
+      preview.openFromUrl(); // ?card=<id> compartilhado: reabre o popup
     })
     .catch((error) => {
       elements.empty.textContent = t("error.catalog", { message: error.message });

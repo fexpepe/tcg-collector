@@ -2718,9 +2718,33 @@
       if (ctl) ctl.innerHTML = previewTagsCtlHtml(expanded);
     }
 
+    // ── Deep-link do popup ─────────────────────────────────────────────────
+    // A URL ganha ?card=<id> com o popup aberto (replaceState: nada de entrada
+    // extra no histórico) e perde ao fechar. É o que torna a carta LINKÁVEL:
+    // o botão de compartilhar do modal já mandava location.href — só que a URL
+    // não dizia qual carta estava aberta, então o link chegava sem ela.
+    // openFromUrl() faz o caminho de volta: cada página chama depois que o
+    // catálogo dela carrega, e o popup reabre sozinho. É também onde as páginas
+    // /card/<slug>.html do Google aterrissam (detail.html?...&card=<id>).
+    function stampCardUrl(cardId) {
+      try {
+        const url = new URL(location.href);
+        if (cardId) url.searchParams.set("card", cardId); else url.searchParams.delete("card");
+        history.replaceState(history.state, "", url);
+      } catch (e) { /* history bloqueado: o popup funciona igual, só não linka */ }
+    }
+    function openFromUrl() {
+      let cardId = null;
+      try { cardId = new URLSearchParams(location.search).get("card"); } catch (e) { return false; }
+      if (!cardId || !getCard(cardId)) return false;
+      open(cardId);
+      return true;
+    }
+
     function open(cardId, variant, opts) {
       activeCard = getCard(cardId);
       if (!activeCard) return;
+      stampCardUrl(activeCard.id);
       logCardView(activeCard); // "mais vistas": 1 view por carta por sessão (anônimo)
       // Contexto graded (opcional): muda a busca das lojas (eBay/PriceCharting já
       // vão com a graduadora+nota) e mostra o selo da nota no topo do modal.
@@ -2835,6 +2859,7 @@
       const modal = document.getElementById("cardPreviewModal");
       if (modal) modal.remove();
       activeCard = null;
+      stampCardUrl(null); // a URL volta a ser a da página, sem o ?card=
       document.body.classList.remove("preview-open");
       if (openerElement && document.contains(openerElement)) {
         openerElement.focus();
@@ -2958,7 +2983,7 @@
       }
     }
 
-    return { open, close };
+    return { open, close, openFromUrl };
   }
 
   // Busca da carta nos marketplaces brasileiros (não têm API pública; o link
@@ -4133,9 +4158,17 @@
     const params = new URLSearchParams({ type, name });
     if (scope) params.set("scope", scope);
     // Multi-jogo: o detail é página de SESSÃO — sem ?game= ele abre no último
-    // jogo visitado e resolve o set/artista errado. Sempre que o chamador sabe
-    // o jogo da carta (páginas mescladas: Coleção/Portfólio/Graded), vai na URL.
-    if (game && GAME_SLUGS.includes(game)) params.set("game", game);
+    // jogo visitado e resolve o set/artista errado. Páginas mescladas
+    // (Coleção/Portfólio/Graded) passam o jogo da carta; as páginas de um jogo
+    // só (Sets/Pokédex/Artistas) não passavam nada, e o link saía sem o jogo.
+    // O link ficava certo pra quem clicava (a sessão resolvia) e QUEBRADO pra
+    // quem recebia: sleevu.app/detail?type=set&name=Freedom+Ascension abria o
+    // catálogo do Pokémon e mostrava o set do Gundam vazio.
+    // Por isso o fallback é o jogo da sessão: todo link nasce se descrevendo,
+    // inclusive o que o "copiar endereço do link" copia (que é o href cru, não
+    // o que está na barra de endereço).
+    const slug = game || currentGame();
+    if (slug && GAME_SLUGS.includes(slug)) params.set("game", slug);
     return `detail.html?${params.toString()}`;
   }
 

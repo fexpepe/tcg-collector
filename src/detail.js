@@ -181,12 +181,45 @@
       cardsById = new Map(cards.map((card) => [card.id, card]));
       owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
       pageCards = getPageCards();
+      // Set vazio = provável link de OUTRO jogo (links antigos circulando sem
+      // ?game=; o site caía no jogo da sessão e mostrava a página oca). Procura
+      // o set nos outros catálogos e redireciona com o jogo certo.
+      if (!pageCards.length && detailType === "set" && detailName) {
+        rescueWrongGame();
+      }
       init();
+      // ?card=<id>: reabre o popup da carta — é onde o link compartilhado do
+      // modal e as páginas /card/<slug>.html do Google aterrissam.
+      preview.openFromUrl();
     })
     .catch((error) => {
       elements.empty.textContent = t("error.cards", { message: error.message });
       elements.empty.hidden = false;
     });
+
+  // Procura o set pelo NOME nos outros jogos (fatia indexes-sets de cada um,
+  // JSON leve) e, achando exatamente um dono, troca o ?game= da URL e recarrega.
+  // Sequencial e com parada no primeiro match: é caminho raro (só link errado),
+  // não vale abrir 11 requisições em paralelo.
+  async function rescueWrongGame() {
+    const atual = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
+    const manifestMode = !!(window.SLEEVU && window.SLEEVU.manifest);
+    for (const slug of shared.GAME_SLUGS) {
+      if (slug === atual) continue;
+      try {
+        const dir = shared.gameDataDir(slug);
+        const r = await fetch(dir + (manifestMode ? "indexes-sets.generated.json" : "indexes-sets.json"));
+        if (!r.ok) continue;
+        const sets = await r.json();
+        if (!Array.isArray(sets) || !sets.some((s) => s.name === detailName)) continue;
+        const url = new URL(location.href);
+        url.searchParams.set("game", slug);
+        // replace, não assign: a URL quebrada não fica no histórico do "voltar".
+        location.replace(url);
+        return;
+      } catch (e) { /* jogo sem fatia: segue procurando */ }
+    }
+  }
 
   function init() {
     elements.type.textContent = collectionScope

@@ -131,7 +131,9 @@
   //    sem tocar na rede — adiar só deixaria os filtros vazios à toa.
   const sp0 = new URLSearchParams(window.location.search);
   const catalogoEmMemoria = Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length > 0;
-  const temDeepLink = !!(sp0.get("q") || URL_FILTERS.some(([param]) => sp0.get(param)));
+  // ?card= (popup de carta compartilhado) também é intenção: precisa do catálogo
+  // pra resolver o id e reabrir o modal.
+  const temDeepLink = !!(sp0.get("q") || sp0.get("card") || URL_FILTERS.some(([param]) => sp0.get(param)));
   const carregarNoBoot = temDeepLink || catalogoEmMemoria;
   // Skeleton só no deep-link de verdade: com o catálogo em memória não há espera.
   if (temDeepLink && elements.grid) shared.showSkeletons(elements.grid, "card", 12);
@@ -150,7 +152,7 @@
   Promise.all([
     shared.loadFxRates().catch(() => { /* sem conversão: cai no preço cru */ }),
     carregarNoBoot ? ensureCatalog().catch(() => { /* erro já exibido */ }) : Promise.resolve()
-  ]).then(() => { render(); loadTopViewed(); });
+  ]).then(() => { render(); loadTopViewed(); preview.openFromUrl(); });
 
   // Os filtros são hidratados DUAS vezes: primeiro com o que o manifest dá, e
   // de novo quando o catálogo completo chega. Um <select> descarta o `value`

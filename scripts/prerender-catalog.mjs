@@ -337,7 +337,10 @@ function cardPageHtml(cp) {
   const priceBit = priceUSD > 0 ? ` Preço de referência: US$ ${priceUSD.toFixed(2)}.` : "";
   const desc = `${card.name}${codeBit} do set ${setPage.name} de ${gameLabel}.${priceBit} Veja a imagem, acompanhe o preço e marque na sua coleção grátis no Sleevu.`;
   const img = absUrl(card.image) || "";
-  const appUrl = `/detail.html?type=set&name=${encodeURIComponent(setPage.name)}&game=${setPage.game}`;
+  // &card=<id>: o detail.js reabre o POPUP da carta ao aterrissar (openFromUrl)
+  // — quem acha a carta no Google cai direto nela, não na página do set pra
+  // procurar de novo.
+  const appUrl = `/detail.html?type=set&name=${encodeURIComponent(setPage.name)}&game=${setPage.game}&card=${encodeURIComponent(card.id)}`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",

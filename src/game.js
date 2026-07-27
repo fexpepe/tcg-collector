@@ -59,8 +59,29 @@
     if (q === "hub") return "hub";                              // portfólio combinado
     if (q && GAMES[q] && !GAMES[q].isHub) { writeSession(q); return q; } // troca/deep-link
     var s = readSession();
-    if (s) return s;                                            // sessão atual
+    if (s) { stampGame(s); return s; }                          // sessão atual
+    stampGame("pokemon");
     return "pokemon";                                           // padrão
+  }
+
+  // Escreve o jogo resolvido na barra de endereço quando ele NÃO veio da URL.
+  // Sem isso, /sets e /detail?type=set&name=X são páginas de SESSÃO: cada
+  // visitante abre no último jogo que ele visitou. Compartilhar "os sets do
+  // Gundam" entregava os sets do Pokémon pra quem recebesse — e um link de set
+  // de outro jogo abria a página vazia, porque o set não existe no catálogo que
+  // foi carregado.
+  // replaceState (não pushState): não cria entrada no histórico, então o
+  // "voltar" do navegador segue funcionando igual. Roda no <head>, antes de
+  // qualquer render — a URL já está certa quando a página aparece.
+  // As <link rel="canonical"> são fixas e sem query, então o Google continua
+  // consolidando tudo numa URL só.
+  function stampGame(slug) {
+    try {
+      var url = new URL(location.href);
+      if (url.searchParams.get("game")) return;
+      url.searchParams.set("game", slug);
+      history.replaceState(history.state, "", url);
+    } catch (e) { /* history bloqueado: segue sem carimbar */ }
   }
 
   var game = detectGame();
