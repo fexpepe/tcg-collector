@@ -6871,6 +6871,27 @@ select,
 .deck-hit-name { display: block; font-size: 13px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .deck-hit-meta { display: block; font-size: 11.5px; color: var(--subtle); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+/* Adição RECUSADA pela regra do jogo (deck cheio, cópias no limite): a carta
+   pisca em vermelho e balança de leve, no lugar de simplesmente não acontecer
+   nada. Vale tanto no resultado da busca (.deck-hit) quanto na carta já no deck
+   (.deck-row/.deck-tile), por isso a classe é solta. O motivo vai no title.
+   prefers-reduced-motion: mantém a cor (que é o recado) e tira o movimento. */
+.deck-blocked {
+  animation: deck-blocked-shake 0.35s ease;
+  border-color: var(--danger, #ef4444) !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.35);
+  position: relative;
+  z-index: 1;
+}
+@keyframes deck-blocked-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .deck-blocked { animation: none; }
+}
+
 @media (max-width: 880px) {
   /* Mobile: uma coluna só — a busca vai pro fim, depois do deck. */
   .deck-ed-cols { grid-template-columns: 1fr; }

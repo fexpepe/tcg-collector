@@ -5105,7 +5105,16 @@
     try {
       let r = await post(s.access_token);
       if (r.status === 401) { const ns = await refreshSession(); if (ns) r = await post(ns.access_token); }
-      if (!r.ok) return { error: "http" };
+      if (!r.ok) {
+        // O MOTIVO importa: `return { error: "http" }` seco escondeu por semanas
+        // que todo publicar de deck batia num CHECK da coluna `kind` (a tabela
+        // só conhecia collection/binder). O usuário via "tente de novo em
+        // instantes" e tentava pra sempre. Guarda code/message do PostgREST.
+        let code = "", message = "";
+        try { const b = await r.json(); code = b.code || ""; message = b.message || b.msg || ""; } catch (e) { /* corpo não-JSON */ }
+        console.warn("createShare falhou:", r.status, code, message);
+        return { error: "http", status: r.status, code: code, message: message };
+      }
       const rows = await r.json();
       return rows && rows[0] && rows[0].id ? { id: rows[0].id } : { error: "empty" };
     } catch (e) { return { error: "net" }; }

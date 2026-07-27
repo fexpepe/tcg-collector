@@ -96,6 +96,30 @@
     touch(deck);
   }
 
+  // Adiciona 1 cópia SE a regra do jogo permitir. Barrado, pisca a carta em
+  // vermelho no lugar de adicionar em silêncio — antes dava pra passar de 60/60
+  // e o deck só acusava o erro depois, no painel de validação.
+  // `alvo` é o elemento que recebe o feedback (o resultado da busca ou a carta
+  // já no deck); o motivo vai no title, então quem parar o mouse lê o porquê.
+  function tryAdd(deck, zoneKey, card, alvo) {
+    const r = rules.canAdd(deck, zoneKey, card, cat.byId);
+    if (r.ok) { addCard(deck, zoneKey, card, 1); return true; }
+    // Mensagem de BLOQUEIO (não a do validate, que descreve um deck já fora da
+    // regra): aqui o deck está certo e a ação é que foi recusada. A zona vai
+    // traduzida ("Principal"), não com a chave crua ("main").
+    const vals = Object.assign({}, r.vals || {});
+    if (vals.zone) vals.zone = t("decks.zone." + vals.zone);
+    const motivo = t("decks.blocked." + r.code, vals);
+    if (alvo) {
+      alvo.classList.remove("deck-blocked");
+      void alvo.offsetWidth;              // reinicia a animação em cliques seguidos
+      alvo.classList.add("deck-blocked");
+      alvo.setAttribute("title", motivo);
+      setTimeout(() => alvo.classList.remove("deck-blocked"), 1000);
+    }
+    return false;
+  }
+
   // ---------------------------------------------------------------------------
   // Catálogo do jogo do deck (pode ser != do jogo da sessão). Cache em memória
   // por jogo: reabrir o editor no mesmo jogo não baixa de novo.
@@ -749,9 +773,19 @@
       if (!map.has(k)) map.set(k, []);
       map.get(k).push(e);
     });
-    // Grupos sem valor ("") por último — o miolo do deck vem primeiro.
+    // Ordem dos grupos: o MAIOR primeiro (soma de cópias, não de linhas). Num
+    // deck de Lorcana os 52 personagens são o assunto principal e ficavam
+    // embaixo de "Action 4" só porque A vem antes de C no alfabeto — obrigando a
+    // rolar pra ver o miolo do deck. Empate desempata por nome, e os grupos sem
+    // valor ("") vão sempre pro fim.
+    const total = (list) => list.reduce((s, e) => s + (e.qty || 0), 0);
     return [...map.entries()]
-      .sort((a, b) => (a[0] === "" ? 1 : b[0] === "" ? -1 : String(a[0]).localeCompare(String(b[0]), undefined, { numeric: true })))
+      .sort((a, b) => {
+        if (a[0] === "") return 1;
+        if (b[0] === "") return -1;
+        return total(b[1]) - total(a[1])
+          || String(a[0]).localeCompare(String(b[0]), undefined, { numeric: true });
+      })
       .map(([k, list]) => ({ label: k === "" ? t("decks.groupNone") : prettyLabel(k), entries: list }));
   }
 
@@ -1131,7 +1165,10 @@
     const add = ev.target.closest("[data-add]");
     if (add && !add.disabled) {
       const card = cat.byId[add.dataset.add];
-      if (card && add.dataset.zone) { addCard(current, add.dataset.zone, card, 1); renderEditor(); }
+      if (card && add.dataset.zone) {
+        if (!tryAdd(current, add.dataset.zone, card, ev.target.closest(".deck-hit") || add)) return;
+        renderEditor();
+      }
       return;
     }
     // Abas do mobile: troca sem re-render (o DOM já tem as 3 áreas; o CSS
@@ -1170,8 +1207,14 @@
           try { await navigator.clipboard.writeText(url); } catch (e) { /* sem clipboard: o prompt abaixo cobre */ }
           window.prompt(t("decks.publishOk"), url);
           renderEditor();
+        } else if (res && res.error === "auth") {
+          alert(t("decks.publishAuth"));
         } else {
-          alert(t(res && res.error === "auth" ? "decks.publishAuth" : "decks.publishFail"));
+          // Anexa o motivo do servidor quando houver: "tente de novo em
+          // instantes" é enganoso pra erro que NUNCA vai passar sozinho (foi o
+          // caso do CHECK de `kind` sem 'deck' — ver 20260727a).
+          const detalhe = res && (res.message || res.code) ? `\n\n(${res.code || res.status}: ${res.message || ""})` : "";
+          alert(t("decks.publishFail") + detalhe);
         }
       })();
       return;
@@ -1212,7 +1255,10 @@
     if (!item) return;
     const card = cat.byId[item.dataset.card];
     if (!card) return;
-    if (ev.target.closest("[data-inc]")) { addCard(current, item.dataset.zone, card, 1); renderEditor(); }
+    if (ev.target.closest("[data-inc]")) {
+      if (!tryAdd(current, item.dataset.zone, card, item)) return;
+      renderEditor();
+    }
     else if (ev.target.closest("[data-dec]")) { addCard(current, item.dataset.zone, card, -1); renderEditor(); }
     else {
       // Clique fora do +/−: abre o card completo (texto, preço, marcar posse).

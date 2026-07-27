@@ -177,6 +177,51 @@
     return ((deck.zones && deck.zones[zoneKey]) || []).reduce((sum, e) => sum + (e.qty || 0), 0);
   }
 
+  // Pode somar mais UMA cópia desta carta nesta zona? É a checagem PRÉVIA que o
+  // editor usa pra barrar o clique — o `validate` continua avaliando o deck
+  // pronto (deck importado/antigo pode estar fora da regra, e aí o aviso é dele).
+  // Devolve { ok, code, vals } com o mesmo vocabulário de código do validate,
+  // pra reaproveitar as traduções `decks.issue.<code>`.
+  //
+  // Barra os dois limites que são "cheios de verdade":
+  //   zoneMax   — a zona atingiu o máximo (é o "59/60" do cabeçalho);
+  //   copyLimit — já tem o máximo de cópias da mesma carta (4, ou 1 no
+  //               singleton do Commander). Conta em TODAS as zonas, porque o
+  //               limite é do deck inteiro, e respeita as isenções (energia
+  //               básica, terreno básico) e o copyKey de cada jogo.
+  // Regras de identidade (tinta/cor) NÃO barram: elas dependem do conjunto e o
+  // usuário pode estar trocando o líder/comandante no meio da montagem.
+  function canAdd(deck, zoneKey, card, cardById) {
+    const pack = packFor(deck.game, deck.format);
+    if (pack.free) return { ok: true };
+
+    const zone = (pack.zones || []).find((z) => z.key === zoneKey);
+    if (zone && zone.max && countIn(deck, zoneKey) >= zone.max) {
+      return { ok: false, code: "zoneMax", vals: { zone: zoneKey, n: countIn(deck, zoneKey), max: zone.max } };
+    }
+
+    if (pack.copyLimit && card && !(pack.exempt && pack.exempt(card))) {
+      const key = pack.copyKey ? pack.copyKey(card) : card.name;
+      let qty = 0;
+      (pack.zones || []).forEach((z) => {
+        ((deck.zones && deck.zones[z.key]) || []).forEach((e) => {
+          const c = e.id === card.id ? card : (cardById && cardById[e.id]);
+          if (!c) return;                                  // fora do catálogo carregado
+          if (pack.exempt && pack.exempt(c)) return;
+          if ((pack.copyKey ? pack.copyKey(c) : c.name) === key) qty += (e.qty || 0);
+        });
+      });
+      if (qty >= pack.copyLimit) {
+        return {
+          ok: false,
+          code: pack.copyLimit === 1 ? "singleton" : "copyLimit",
+          vals: { name: card.name, qty: qty, max: pack.copyLimit }
+        };
+      }
+    }
+    return { ok: true };
+  }
+
   // Valida o deck. Devolve [{ level, code, vals, cardId }] — decks.js traduz por
   // `decks.issue.<code>`. NUNCA lança: catálogo incompleto vira deck sem aviso,
   // não página quebrada.
@@ -317,5 +362,5 @@
     };
   }
 
-  window.TCGDeckRules = { packFor, formatsOf, zoneForCard, zonesForCard, countIn, validate, analyze, multi, FREE_PACK: FREE };
+  window.TCGDeckRules = { packFor, formatsOf, zoneForCard, zonesForCard, countIn, canAdd, validate, analyze, multi, FREE_PACK: FREE };
 })();
