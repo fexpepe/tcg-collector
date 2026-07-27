@@ -1053,7 +1053,8 @@
         <span class="deck-ed-game">${gameTag(deck.game)}${pack.format ? "<span>" + esc(t("decks.format." + pack.format)) + "</span>" : ""}</span>
         <button type="button" class="deck-mini" data-deck-import>${esc(t("decks.import"))}</button>
         <button type="button" class="deck-mini" data-deck-copy>${esc(t("decks.copyList"))}</button>
-        <button type="button" class="deck-mini" data-deck-publish>${esc(t(deck.publishedId ? "decks.published" : "decks.publish"))}</button>
+        <button type="button" class="deck-mini" data-deck-publish>${esc(t(deck.publishedId ? "decks.savePublic" : "decks.publish"))}</button>
+        ${deck.publishedId ? `<button type="button" class="deck-mini deck-unpub" data-deck-unpublish>${esc(t("decks.unpublish"))}</button>` : ""}
         ${viewMenuHtml()}
       </div>
       ${issuesHtml}
@@ -1336,6 +1337,27 @@
       return;
     }
 
+    // Despublicar: tira o deck da galeria (apaga a linha do share). O deck
+    // continua no "Meus Decks" — só deixa de ser público.
+    const unpub = ev.target.closest("[data-deck-unpublish]");
+    if (unpub) {
+      (async () => {
+        if (!confirm(t("decks.confirmUnpublish").replace("{name}", current.name))) return;
+        unpub.disabled = true;
+        const r = await shared.deleteShare(current.publishedId);
+        unpub.disabled = false;
+        if (r && r.ok) {
+          current.publishedId = null;
+          current.publishedAt = null;
+          touch(current);
+          renderEditor();
+        } else {
+          alert(t(r && r.error === "auth" ? "decks.publishAuth" : "decks.unpublishFail"));
+        }
+      })();
+      return;
+    }
+
     // Publicar na comunidade (tabela shares, kind="deck"). Exige login; o botão
     // fica sempre visível pra função ser DESCOBRÍVEL — sem conta, explica.
     const pub = ev.target.closest("[data-deck-publish]");
@@ -1361,11 +1383,20 @@
           total: totalCards(current),
           cover: (capa && capa.image) || null
         };
-        const res = await shared.createShare("deck", current.name, payload, current.game);
+        // Já publicado -> ATUALIZA a mesma linha ("salvar público"): o id do
+        // share não muda, então o link já compartilhado continua valendo e a
+        // página /deck/<slug> mantém o endereço. Antes isto inseria de novo e
+        // o mesmo deck aparecia DUPLICADO na galeria, sem como apagar o antigo.
+        // Se o share sumiu (apagado por fora) ou a policy de UPDATE ainda não
+        // foi aplicada, o update devolve "missing" e caímos no publicar normal.
+        let res = null;
+        if (current.publishedId) {
+          res = await shared.updateShare(current.publishedId, current.name, payload);
+          if (res && res.error === "missing") res = null;
+        }
+        if (!res) res = await shared.createShare("deck", current.name, payload, current.game);
         pub.disabled = false;
         if (res && res.id) {
-          // Republicar gera um id NOVO (a tabela não tem update público): o link
-          // antigo continua servindo a versão antiga — comportamento de "versão".
           current.publishedId = res.id;
           current.publishedAt = Date.now();
           touch(current);

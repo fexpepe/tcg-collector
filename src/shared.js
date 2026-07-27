@@ -4507,6 +4507,8 @@
     createShare,
     fetchShare,
     listShares,
+    updateShare,
+    deleteShare,
     cardValue,
     gradedValue,
     gradedGradeText,
@@ -5127,6 +5129,53 @@
       return rows && rows[0] && rows[0].id ? { id: rows[0].id } : { error: "empty" };
     } catch (e) { return { error: "net" }; }
   }
+  // Atualiza um share EXISTENTE (id estável). É o que faz "republicar" virar
+  // "salvar público": sem isto o cliente só sabia inserir, e cada republicação
+  // criava uma linha nova — o mesmo deck aparecia duplicado na galeria, e a
+  // versão antiga ficava lá sem como remover.
+  // Depende da policy de UPDATE (migração 20260727b). Enquanto ela não estiver
+  // aplicada o PostgREST devolve 0 linhas; quem chama trata como "não achou" e
+  // cai no createShare, então nada quebra.
+  async function updateShare(id, title, data) {
+    let s = getSession();
+    if (!s) return { error: "auth" };
+    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
+    const body = JSON.stringify({ title: title || null, data });
+    const patch = (tok) => fetch(`${SUPABASE_URL}/rest/v1/shares?id=eq.${encodeURIComponent(id)}`, {
+      method: "PATCH", body,
+      headers: Object.assign(authHeaders(tok), { Prefer: "return=representation" })
+    });
+    try {
+      let r = await patch(s.access_token);
+      if (r.status === 401) { const ns = await refreshSession(); if (ns) r = await patch(ns.access_token); }
+      if (!r.ok) {
+        let code = "", message = "";
+        try { const b = await r.json(); code = b.code || ""; message = b.message || b.msg || ""; } catch (e) { /* corpo não-JSON */ }
+        console.warn("updateShare falhou:", r.status, code, message);
+        return { error: "http", status: r.status, code: code, message: message };
+      }
+      const rows = await r.json();
+      // 0 linhas = o share sumiu (apagado) OU a policy de UPDATE ainda não
+      // existe. Nos dois casos o certo é publicar de novo.
+      return rows && rows.length ? { id: id } : { error: "missing" };
+    } catch (e) { return { error: "net" }; }
+  }
+
+  // Despublica: apaga a linha do share. Só o dono (RLS).
+  async function deleteShare(id) {
+    let s = getSession();
+    if (!s) return { error: "auth" };
+    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
+    const del = (tok) => fetch(`${SUPABASE_URL}/rest/v1/shares?id=eq.${encodeURIComponent(id)}`, {
+      method: "DELETE", headers: authHeaders(tok)
+    });
+    try {
+      let r = await del(s.access_token);
+      if (r.status === 401) { const ns = await refreshSession(); if (ns) r = await del(ns.access_token); }
+      return r.ok ? { ok: true } : { error: "http", status: r.status };
+    } catch (e) { return { error: "net" }; }
+  }
+
   async function fetchShare(id) {
     try {
       const r = await fetch(`${SUPABASE_URL}/rest/v1/shares?id=eq.${encodeURIComponent(id)}&select=kind,title,data,created_at`, { headers: authHeaders() });
