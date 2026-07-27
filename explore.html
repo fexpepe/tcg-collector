@@ -65,11 +65,22 @@
       </section>
 
       <div class="collection-toolbar">
+        <!-- A lista completa vem no HTML de propósito: o shared.js reconstrói
+             estes chips a partir de GAME_SLUGS no boot, e se o markup trouxesse
+             um subconjunto a barra mudaria de altura depois do JS (CLS). Ordem e
+             rótulos têm de bater com DATA_GAMES. -->
         <div id="exploreGameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
           <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
           <button type="button" class="chip" data-game-filter="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
           <button type="button" class="chip" data-game-filter="lorcana" aria-pressed="false" data-i18n="filter.gameLorcana">Lorcana</button>
           <button type="button" class="chip" data-game-filter="onepiece" aria-pressed="false" data-i18n="filter.gameOnePiece">One Piece</button>
+          <button type="button" class="chip" data-game-filter="magic" aria-pressed="false" data-i18n="filter.gameMagic">Magic</button>
+          <button type="button" class="chip" data-game-filter="fab" aria-pressed="false" data-i18n="filter.gameFab">Flesh and Blood</button>
+          <button type="button" class="chip" data-game-filter="gundam" aria-pressed="false" data-i18n="filter.gameGundam">Gundam</button>
+          <button type="button" class="chip" data-game-filter="dbfw" aria-pressed="false" data-i18n="filter.gameDbfw">Dragon Ball Fusion</button>
+          <button type="button" class="chip" data-game-filter="ygo" aria-pressed="false" data-i18n="filter.gameYgo">Yu-Gi-Oh!</button>
+          <button type="button" class="chip" data-game-filter="digimon" aria-pressed="false" data-i18n="filter.gameDigimon">Digimon</button>
+          <button type="button" class="chip" data-game-filter="riftbound" aria-pressed="false" data-i18n="filter.gameRiftbound">Riftbound</button>
           <button type="button" class="chip" data-game-filter="naruto" aria-pressed="false" data-i18n="filter.gameNaruto">Naruto</button>
           <button type="button" class="chip" data-game-filter="hxh" aria-pressed="false" data-i18n="filter.gameHxh">Hunter × Hunter</button>
         </div>

@@ -910,7 +910,11 @@
     // (chamada do boot, antes de os dados carregarem) mostra todos — quem tem a
     // informação é cada página, e ela chama de novo via setGameFilterScope.
     const lista = Array.isArray(games) ? GAME_SLUGS.filter((g) => games.includes(g)) : GAME_SLUGS;
-    document.querySelectorAll("#gameFilter").forEach((box) => {
+    // #exploreGameFilter entra aqui junto: o Explorar tinha SEIS jogos fixos no
+    // HTML, então Magic, FAB, Gundam, DBFW, YGO, Digimon e Riftbound não tinham
+    // como ser filtrados. Ele nunca recebe escopo (setGameFilterScope é coisa das
+    // telas pessoais), então cai no ramo `games === undefined` = catálogo inteiro.
+    document.querySelectorAll("#gameFilter, #exploreGameFilter").forEach((box) => {
       // Com 0 ou 1 jogo o filtro não filtra nada — "Todos" e o único jogo são o
       // mesmo conjunto. Esconde a barra inteira em vez de deixar um controle
       // decorativo ocupando espaço.
@@ -930,6 +934,55 @@
   // carregar os dados dela (Coleção = cartas marcadas, Wishlist = desejadas,
   // Graded = slabs, Vendas = vendas) — o boot não tem como saber.
   function setGameFilterScope(games) { initGameFilterChips(games || []); }
+
+  // Em tela estreita a fileira de chips vira uma gaveta: com 12 jogos cabem uns
+  // 3 na largura e os outros ficam atrás de um scroll horizontal que ninguém
+  // adivinha que existe. Aqui cada .game-filter ganha um <select> IRMÃO com as
+  // mesmas opções, e o CSS mostra um OU outro pela largura da tela.
+  //
+  // O select não guarda estado nenhum: ao mudar, ele clica no chip equivalente.
+  // Assim toda a delegação de clique que cada página já tem (explore, coleção,
+  // wishlist, graded, vendas...) continua valendo sem precisar saber que existe
+  // um segundo controle — e o chip segue sendo a única fonte da verdade.
+  function syncGameFilterSelect(box) {
+    const chips = [...box.querySelectorAll("[data-game-filter]")];
+    let sel = box.nextElementSibling;
+    if (!sel || !sel.classList.contains("game-filter-select")) {
+      sel = document.createElement("select");
+      sel.className = "game-filter-select";
+      // Herda o rótulo da caixa de chips (todas trazem aria-label="Jogo" fixo no
+      // HTML); o literal é só rede de segurança pra caixa montada por JS sem ele.
+      sel.setAttribute("aria-label", box.getAttribute("aria-label") || "Jogo");
+      box.insertAdjacentElement("afterend", sel);
+      sel.addEventListener("change", () => {
+        const alvo = chipsDe(box).find((c) => c.dataset.gameFilter === sel.value);
+        if (alvo) alvo.click();
+      });
+    }
+    // Um jogo só (ou nenhum) não filtra nada — some junto com a barra de chips.
+    sel.hidden = box.hidden || chips.length < 2;
+    const ativo = (chips.find((c) => c.getAttribute("aria-pressed") === "true") || chips[0] || { dataset: {} })
+      .dataset.gameFilter || "all";
+    sel.innerHTML = chips.map((c) =>
+      `<option value="${escapeAttribute(c.dataset.gameFilter)}">${escapeHtml(c.textContent.trim())}</option>`).join("");
+    sel.value = ativo;
+  }
+  const chipsDe = (box) => [...box.querySelectorAll("[data-game-filter]")];
+
+  // Os chips são reconstruídos o tempo todo (troca de idioma, setGameFilterScope,
+  // clique do usuário). Um observer POR CAIXA — pequena, nunca a grade de cartas —
+  // mantém o select em dia sem cada página ter de avisar. Não há laço: o select é
+  // irmão da caixa, então mexer nele não dispara o observer de novo.
+  function initGameFilterSelects(raiz) {
+    (raiz || document).querySelectorAll(".game-filter").forEach((box) => {
+      if (box.dataset.gfSelect) return;
+      box.dataset.gfSelect = "1";
+      syncGameFilterSelect(box);
+      new MutationObserver(() => syncGameFilterSelect(box)).observe(box, {
+        childList: true, subtree: true, attributes: true, attributeFilter: ["aria-pressed", "hidden"]
+      });
+    });
+  }
 
   function initSearchShortcutHint() {
     try {
@@ -4599,6 +4652,7 @@
     hasConsent,
     setConsent,
     setGameFilterScope,
+    initGameFilterSelects,
     listShares,
     listMyShares,
     updateShare,
@@ -6341,6 +6395,7 @@
   });
   initCommandPalette();
   initGameFilterChips();   // ANTES do applyTranslations não: os rótulos usam t()
+  initGameFilterSelects(); // depois dos chips: o select é espelho deles
   initSearchShortcutHint(); // depois do applyTranslations (placeholders já traduzidos)
   initFilterToggle();
   initAuth();

@@ -5592,6 +5592,10 @@ html:not([data-cardlang="all"]) #setRegionChips {
   margin: 0 0 16px;
 }
 .game-filter { margin: 0; }
+/* Espelho do filtro de jogo pra tela estreita (criado pelo shared.js). No
+   desktop os chips cabem e mostram tudo de uma vez, então o select fica fora;
+   abaixo de 600px eles trocam de lugar. */
+.game-filter-select { display: none; }
 /* Título ↔ filtro de jogo: o .page-head tem 20px embaixo, mas a barra separa as
    próprias linhas com o gap de 10px do flex — dava 20 em cima e 10 embaixo, e a
    fileira de chips parecia solta do título. 10px nos dois lados fecha o bloco.
@@ -6397,15 +6401,26 @@ html:not([data-cardlang="all"]) #setRegionChips {
   .page-head { margin-bottom: 10px; }
   .page-head h1 { font-size: 26px; }
 
-  /* Toolbar do topo (filtro de jogo + ações): empilha em 2 faixas full-width.
-     Os chips de jogo rolam na horizontal em vez de quebrar pra 2 linhas. */
+  /* Toolbar do topo (filtro de jogo + ações): empilha em 2 faixas full-width. */
   .collection-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
-  .game-filter, .collection-tabs {
+  /* Filtro de JOGO vira dropdown. A fileira de chips rolando na horizontal só
+     funcionava com 5 jogos; com 12 cabem ~3 na tela e o resto fica escondido
+     atrás de um scroll que não se anuncia. O <select> mostra o valor atual e
+     abre a lista inteira no seletor nativo do sistema — que é, de quebra, o
+     mesmo controle do "Ordenar" logo abaixo. Os chips continuam no DOM (só
+     ocultos): são eles que guardam o estado e recebem o clique. */
+  .game-filter { display: none; }
+  /* 44px = o piso de alvo de toque adotado no site (ver o bloco TOQUE); o
+     `select` global é 42px, e este aqui é o controle mais tocado da página. */
+  .game-filter-select { display: block; width: 100%; min-height: 44px; margin: 0 0 12px; }
+  .game-filter-select[hidden] { display: none; }
+  /* As abas de seção seguem rolando: são poucas e fixas. */
+  .collection-tabs {
     flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
     scrollbar-width: none; padding-bottom: 2px; margin-bottom: 12px;
   }
-  .game-filter::-webkit-scrollbar, .collection-tabs::-webkit-scrollbar { display: none; }
-  .game-filter .chip, .collection-tabs .chip { flex: 0 0 auto; }
+  .collection-tabs::-webkit-scrollbar { display: none; }
+  .collection-tabs .chip { flex: 0 0 auto; }
   /* Abas-retângulo: largura mínima legível + rolagem horizontal (o grid
      continua; só as colunas param de espremer). */
   .collection-tabs { grid-auto-columns: minmax(112px, 1fr); }
