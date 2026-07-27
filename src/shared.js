@@ -1742,6 +1742,12 @@
   }
   function logPageview() {
     if (!AUTH_ENABLED || !hasConsent("analytics")) return;
+    // Só PRODUÇÃO. O logClientError já tinha esta guarda; aqui faltava, então
+    // cada página aberta em localhost durante o desenvolvimento entrava como
+    // visita real — inflando DAU/MAU e as páginas mais vistas com tráfego de
+    // quem está construindo o site. Métrica que mistura dev com usuário não
+    // serve pra decidir nada.
+    if (!/(^|\.)sleevu\.app$/i.test(location.hostname)) return;
     try {
       fetch(`${SUPABASE_URL}/rest/v1/events`, {
         method: "POST",
@@ -1851,6 +1857,9 @@
   // é via RPC validada no servidor. Nunca quebra a página.
   function logCardView(card) {
     if (!AUTH_ENABLED || !card || !card.id) return;
+    // Só produção, mesma razão do logPageview: abrir cartas em localhost
+    // testando empurrava elas pro ranking de "mais vistas" do site real.
+    if (!/(^|\.)sleevu\.app$/i.test(location.hostname)) return;
     try {
       const game = normalizeGame(card.game || currentGame());
       const k = `tcg-viewed:${game}:${card.id}`;
