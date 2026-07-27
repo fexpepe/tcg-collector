@@ -11,7 +11,15 @@
 -- "este deck, esta pasta e esta coleção são da MESMA pessoa" e contar quantos
 -- usuários o site tem. Não é dado pessoal direto, mas é exposição sem uso.
 --
--- RLS é row-level, não column-level — o corte certo é privilégio de COLUNA.
+-- ATENÇÃO — a primeira versão deste arquivo NÃO FUNCIONAVA. Ela fazia só
+--   revoke select (user_id) ... from anon;
+-- e no PostgreSQL isso é um NO-OP quando o papel já tem SELECT no nível da
+-- TABELA: o privilégio amplo continua valendo e o privilégio de coluna nem é
+-- consultado. É preciso derrubar o SELECT da tabela ANTES e então conceder
+-- coluna a coluna. Se você aplicou a versão antiga, aplique esta por cima —
+-- é idempotente.
+--
+-- RLS não resolve isto: RLS é row-level; o corte por coluna é privilégio.
 --
 -- Por que `authenticated` mantém o acesso: a tela "Publicados por você"
 -- (listMyShares no shared.js) filtra por user_id=eq.<uid>, e filtrar exige
@@ -21,23 +29,28 @@
 -- Aplicar no SQL Editor do Supabase (projeto dlnalopazitfdgnmdguu).
 -- ============================================================================
 
--- Anon perde a coluna, mas segue lendo o resto (galeria pública intacta).
-revoke select (user_id) on public.shares from anon;
+-- 1) Derruba o SELECT AMPLO do anônimo. Sem este passo, o grant por coluna
+--    abaixo não muda nada.
+revoke select on public.shares from anon;
 
--- Garante explicitamente as colunas que a galeria pública consome.
+-- 2) Devolve só o que a galeria pública precisa. `user_id` fica de fora.
 grant select (id, kind, game, title, data, created_at) on public.shares to anon;
 
+-- 3) O PostgREST guarda o schema (e os privilégios) em cache; sem o reload a
+--    mudança só valeria no próximo restart do serviço.
+notify pgrst, 'reload schema';
+
 -- ============================================================================
--- Verificação:
+-- Verificação (rodar DEPOIS de aplicar):
 --
---   # deve falhar com 42501 (permissão negada na coluna)
+--   # 1) deve FALHAR agora (permission denied for column user_id / 42501)
 --   curl -s "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/shares?select=id,user_id&limit=1" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"
 --
---   # deve continuar funcionando (é o que a galeria pede)
+--   # 2) deve CONTINUAR funcionando (é exatamente o que a galeria pede)
 --   curl -s "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/shares?kind=eq.deck&select=id,title,game,created_at&limit=5" \
 --     -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"
 --
--- E no site, logado: Meus Decks → "Publicados por você" tem que continuar
+-- E no site, logado: Meus Decks -> "Publicados por você" tem que continuar
 -- listando (é a tela que depende do filtro por user_id).
 -- ============================================================================
