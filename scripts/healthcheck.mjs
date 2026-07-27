@@ -16,13 +16,22 @@ const failures = [];
 const ok = (name) => console.log(`  ✓ ${name}`);
 const fail = (name, why) => { console.error(`  ✗ ${name}: ${why}`); failures.push(`${name}: ${why}`); };
 
+// Cabeçalho que o WAF da Cloudflare usa pra PULAR o Bot Fight Mode neste robô.
+// Sem ele o healthcheck toma 403: o Bot Fight Mode bloqueia IP de datacenter sem
+// navegador, e o runner do GitHub é isso. Ausente = segue sem o cabeçalho (em
+// máquina local o probe passa normalmente).
+const PROBE_TOKEN = process.env.UPTIME_PROBE_TOKEN || "";
+
 // path relativo = produção; URL absoluta = usada como veio (Supabase leva a apikey).
 async function get(path) {
   const url = /^https?:\/\//.test(path) ? path : PROD + path;
+  const headers = url.startsWith(SUPABASE_URL)
+    ? { apikey: ANON_KEY }
+    : (PROBE_TOKEN ? { "x-sleevu-probe": PROBE_TOKEN } : undefined);
   return fetch(url, {
     redirect: "manual",
     signal: AbortSignal.timeout(30000),
-    headers: url.startsWith(SUPABASE_URL) ? { apikey: ANON_KEY } : undefined
+    headers
   });
 }
 

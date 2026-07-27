@@ -19,5 +19,9 @@ jobs:
         with:
           node-version: 22
       # Falhou = job vermelho -> e-mail do GitHub pro dono do repo.
+      # UPTIME_PROBE_TOKEN: cabeçalho que o WAF usa pra pular o Bot Fight Mode
+      # (que bloqueia IP de datacenter). Ver o comentário no uptime.yml.
       - name: Valida produção (páginas, catálogos, preços, Supabase)
+        env:
+          UPTIME_PROBE_TOKEN: ${{ secrets.UPTIME_PROBE_TOKEN }}
         run: node scripts/healthcheck.mjs

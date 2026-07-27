@@ -25,8 +25,28 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      # O Bot Fight Mode da Cloudflare (ligado em 2026-07-27) passou a devolver
+      # 403 pra este job: ele bloqueia IP de datacenter sem navegador, e o runner
+      # do GitHub é exatamente isso — o monitor virou falso alarme de queda.
+      #
+      # Solução: o probe manda um cabeçalho secreto e uma regra no WAF pula o Bot
+      # Fight Mode só pra quem o traz. Cabeçalho (e não User-Agent) porque UA
+      # qualquer um forja; o segredo fica em GitHub Secrets.
+      #   Cloudflare > Security > WAF > Custom rules:
+      #     Se  (http.request.headers["x-sleevu-probe"][0] eq "<mesmo valor>")
+      #     Então  Skip > Bot Fight Mode (e Super Bot Fight Mode, se houver)
+      # Sem o secret configurado o job segue rodando sem o cabeçalho — volta a
+      # falhar, mas não quebra por falta de variável.
       - name: Home + catálogo + Supabase respondem?
+        env:
+          PROBE_TOKEN: ${{ secrets.UPTIME_PROBE_TOKEN }}
         run: |
+          PROBE_HEADER=()
+          if [ -n "$PROBE_TOKEN" ]; then
+            PROBE_HEADER=(-H "x-sleevu-probe: $PROBE_TOKEN")
+          else
+            echo "AVISO: UPTIME_PROBE_TOKEN não configurado — o Bot Fight Mode pode barrar este probe."
+          fi
           check() {
             local label="$1"; shift
             if curl -fsS --max-time 20 -o /dev/null "$@"; then
@@ -37,7 +57,7 @@ jobs:
               curl -fsS --max-time 20 -o /dev/null "$@" && echo "ok na 2a: $label" || { echo "FALHOU 2x: $label"; return 1; }
             fi
           }
-          check "home"     "https://sleevu.app/"
-          check "catalogo" "https://sleevu.app/data/manifest.generated.js"
+          check "home"     "https://sleevu.app/" "${PROBE_HEADER[@]}"
+          check "catalogo" "https://sleevu.app/data/manifest.generated.js" "${PROBE_HEADER[@]}"
           check "supabase" "https://dlnalopazitfdgnmdguu.supabase.co/rest/v1/card_views?select=views&limit=1" \
             -H "apikey: sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"
