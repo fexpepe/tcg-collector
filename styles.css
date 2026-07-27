@@ -7197,6 +7197,21 @@ select,
    engano ao lado do "Salvar público". Sem cor permanente — só ao mirar. */
 .deck-unpub:hover { border-color: var(--danger, #ef4444); color: var(--danger, #ef4444); }
 
+/* "Publicados por você": lista as linhas de `shares` do usuário (não os decks
+   locais), pra dar controle sobre publicação que ficou órfã. */
+.deck-pub-head { margin-top: 32px; }
+.deck-pub-list { display: grid; gap: 6px; margin-top: 12px; }
+.deck-pub-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 12px; border: 1px solid var(--line); background: var(--panel); }
+.deck-pub-name { font-weight: 800; font-size: 14.5px; color: var(--text); text-decoration: none; }
+.deck-pub-name:hover { color: var(--accent); }
+.deck-pub-meta { display: inline-flex; align-items: center; gap: 9px; font-size: 12px; color: var(--subtle); font-weight: 700; }
+.deck-pub-row .deck-unpub { margin-left: auto; }
+/* Etiqueta do órfão: é exatamente a linha que o usuário precisa achar. */
+.deck-pub-orphan {
+  font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3px;
+  color: var(--danger, #ef4444); border: 1px solid currentColor; padding: 2px 7px;
+}
+
 .dkc-lays .deck-lay { flex: none; width: 40px; padding: 0; }
 .dkc-lays .deck-lay svg { flex: none; }
 

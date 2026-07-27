@@ -637,7 +637,50 @@
           <button type="button" class="deck-mini danger" data-deck-del="${escA(d.id)}">${esc(t("decks.delete"))}</button>
         </div>
       </article>`;
-    }).join("") + `</div>`;
+    }).join("") + `</div>` + `<div id="deckPublished"></div>`;
+    renderPublished();
+  }
+
+  // ── Meus decks PUBLICADOS ────────────────────────────────────────────────
+  // Lista as linhas de `shares` do usuário, não os decks locais. Existe porque
+  // uma publicação pode ficar ÓRFÃ: antes da policy de UPDATE, republicar criava
+  // uma linha nova e o publishedId do deck passava a apontar só pra ela — a
+  // anterior seguia pública e sem nenhum botão que a alcançasse. Aqui ela
+  // aparece e pode ser despublicada.
+  async function renderPublished() {
+    const box = document.getElementById("deckPublished");
+    if (!box || !(shared.getSession && shared.getSession())) return;
+    const rows = await shared.listMyShares("deck");
+    if (!rows.length) { box.innerHTML = ""; return; }
+    // Marca as publicações que nenhum deck local referencia.
+    const ligados = new Set(list().map((d) => d.publishedId).filter(Boolean));
+    box.innerHTML = `
+      <h2 class="dash-section-head deck-pub-head">${esc(t("decks.publishedMine"))}</h2>
+      <p class="deck-hint">${esc(t("decks.publishedMineHint"))}</p>
+      <div class="deck-pub-list">` + rows.map((r) => {
+        const orfao = !ligados.has(r.id);
+        const quando = r.created_at ? new Date(r.created_at).toLocaleDateString(shared.getLocale()) : "";
+        return `<div class="deck-pub-row">
+          <a class="deck-pub-name" href="decks.html?s=${encodeURIComponent(r.id)}">${esc(String(r.title || t("decks.untitled")))}</a>
+          <span class="deck-pub-meta">${shared.gameTagHtml(shared.normalizeGame(r.game || "pokemon"))}${r.total ? `<span>${esc(t("decks.cardsCount", { n: Number(r.total) }))}</span>` : ""}<span>${esc(quando)}</span></span>
+          ${orfao ? `<span class="deck-pub-orphan" title="${escA(t("decks.orphanHint"))}">${esc(t("decks.orphan"))}</span>` : ""}
+          <button type="button" class="deck-mini deck-unpub" data-pub-del="${escA(r.id)}">${esc(t("decks.unpublish"))}</button>
+        </div>`;
+      }).join("") + `</div>`;
+    box.querySelectorAll("[data-pub-del]").forEach((b) => b.addEventListener("click", async () => {
+      if (!confirm(t("decks.confirmUnpublish").replace("{name}", b.closest(".deck-pub-row").querySelector(".deck-pub-name").textContent))) return;
+      b.disabled = true;
+      const r = await shared.deleteShare(b.dataset.pubDel);
+      b.disabled = false;
+      if (r && r.ok) {
+        // Solta o vínculo do deck local que apontava pra este share.
+        list().forEach((d) => { if (d.publishedId === b.dataset.pubDel) { d.publishedId = null; d.publishedAt = null; touch(d); } });
+        save();
+        renderGallery();
+      } else {
+        alert(t(r && r.error === "auth" ? "decks.publishAuth" : "decks.unpublishFail"));
+      }
+    }));
   }
 
   // ---------------------------------------------------------------------------

@@ -4507,6 +4507,7 @@
     createShare,
     fetchShare,
     listShares,
+    listMyShares,
     updateShare,
     deleteShare,
     cardValue,
@@ -5161,18 +5162,48 @@
     } catch (e) { return { error: "net" }; }
   }
 
+  // Shares publicados PELO usuário logado. Existe pra dar controle sobre
+  // publicações que nenhum deck local referencia mais — o "órfão": republicar
+  // sem a policy de UPDATE criava uma linha nova e o publishedId do deck
+  // passava a apontar só pra ela, deixando a anterior pública e inalcançável
+  // pela interface.
+  async function listMyShares(kind) {
+    const s = getSession();
+    if (!s || !s.user || !s.user.id) return [];
+    try {
+      const k = kind ? `&kind=eq.${encodeURIComponent(kind)}` : "";
+      const sel = "id,title,game,created_at,data->>total,data->>cover";
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/shares?user_id=eq.${encodeURIComponent(s.user.id)}${k}&select=${encodeURIComponent(sel)}&order=created_at.desc&limit=100`, { headers: authHeaders(s.access_token) });
+      return r.ok ? await r.json() : [];
+    } catch (e) { return []; }
+  }
+
   // Despublica: apaga a linha do share. Só o dono (RLS).
   async function deleteShare(id) {
     let s = getSession();
     if (!s) return { error: "auth" };
     if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
+    // Prefer: return=representation é OBRIGATÓRIO aqui. Sem ele o PostgREST
+    // devolve 204 tanto pra "apaguei" quanto pra "o RLS filtrou tudo e não
+    // apaguei nada" — e o cliente dizia "despublicado" com a linha intacta no
+    // banco. Com representation, a resposta traz as linhas afetadas: vazio =
+    // não apagou (não é dono, ou falta a policy de DELETE).
     const del = (tok) => fetch(`${SUPABASE_URL}/rest/v1/shares?id=eq.${encodeURIComponent(id)}`, {
-      method: "DELETE", headers: authHeaders(tok)
+      method: "DELETE",
+      headers: Object.assign(authHeaders(tok), { Prefer: "return=representation" })
     });
     try {
       let r = await del(s.access_token);
       if (r.status === 401) { const ns = await refreshSession(); if (ns) r = await del(ns.access_token); }
-      return r.ok ? { ok: true } : { error: "http", status: r.status };
+      if (!r.ok) {
+        let code = "", message = "";
+        try { const b = await r.json(); code = b.code || ""; message = b.message || b.msg || ""; } catch (e) { /* corpo não-JSON */ }
+        console.warn("deleteShare falhou:", r.status, code, message);
+        return { error: "http", status: r.status, code: code, message: message };
+      }
+      let rows = [];
+      try { rows = await r.json(); } catch (e) { rows = []; }
+      return (rows && rows.length) ? { ok: true } : { error: "notOwner" };
     } catch (e) { return { error: "net" }; }
   }
 
