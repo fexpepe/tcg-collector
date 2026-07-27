@@ -1794,11 +1794,27 @@ input::placeholder {
   object-fit: contain;
 }
 
+/* Nome do set no lugar do logo, pros sets que não têm logo próprio (Gundam,
+   Yu-Gi-Oh, Digimon, DBFW, Riftbound e os promos dos demais). Tipografia de
+   TÍTULO do site (Outfit 800, entrelinha curta), em preto sobre o chip claro
+   do .set-art — que continua o mesmo de sempre.
+   Preto puro e não var(--text): o chip é branco FIXO nos dois temas, então a
+   cor do texto também tem que ser fixa, senão some no tema escuro. */
 .set-logo-placeholder {
-  color: #3a3f47; /* legível no chip branco fixo do .set-art */
-  font-size: 20px;
-  font-weight: 900;
+  color: #0a0c10;
+  font-size: clamp(15px, 1.5vw, 19px);
+  font-weight: 800;
+  line-height: 1.15;
   text-align: center;
+  text-wrap: balance; /* quebra em linhas parelhas em vez de deixar 1 órfã */
+  /* Nome comprido ("Starter Deck 09: Destiny Ignition") não pode empurrar a
+     altura do tile e desalinhar a grade: corta em 3 linhas com reticências. */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .set-symbol {

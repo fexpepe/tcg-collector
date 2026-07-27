@@ -654,12 +654,16 @@
     // Set sem logo próprio: usa o logo do JOGO no lugar do texto (e, quando o
     // set tem logo, o do jogo vira o último fallback se ele quebrar). Jogo sem
     // arquivo de logo (fab/jump) cai no placeholder de texto, como antes.
+    // Sem logo próprio -> NOME DO SET como título preto sobre o chip claro.
+    // Antes caía no logo do JOGO, e aí todo set de Gundam/YGO/Digimon ficava
+    // com a mesma figura: a tela virava uma parede de tiles idênticos, sem nada
+    // que diferenciasse um set do outro. O nome identifica de verdade.
+    // (O logo do jogo continua como fallback de ERRO do <img>: se o arquivo do
+    // logo existir mas quebrar no carregamento, é melhor que um ícone quebrado.)
     const gameLogo = gameLogoUrl((window.SLEEVU && window.SLEEVU.game) || "pokemon");
     const logo = item.logo
       ? localizedImg(item.logo, { alt: item.name, className: "set-logo", loading: "lazy", fallback: gameLogo })
-      : gameLogo
-        ? localizedImg(gameLogo, { alt: item.name, className: "set-logo", loading: "lazy" })
-        : `<span class="set-logo-placeholder">${escapeHtml(item.name)}</span>`;
+      : `<span class="set-logo-placeholder">${escapeHtml(item.name)}</span>`;
     const symbol = item.symbol
       ? localizedImg(item.symbol, { className: "set-symbol", loading: "lazy" })
       : "";

@@ -149,9 +149,11 @@ async function run() {
     const code = winSafeName(String(setId).toUpperCase());
     return existsSync(new URL(`set-logos/${code}.webp`, OUT)) ? `data/fab/set-logos/${code}.webp` : null;
   };
-  const coverBySet = {};
-  for (const c of merged) { if (!coverBySet[c.setId]) coverBySet[c.setId] = c.image; }
-  for (const c of merged) { c.setLogo = localLogo(c.setId) || coverBySet[c.setId] || ""; }
+  // setLogo: VAZIO quando o set nao tem logo proprio. Antes caia na arte da
+  // 1a carta, o que dava um "logo" arbitrario (Freedom Ascension aparecia como
+  // uma carta de token) e enganava mais do que ajudava. Sem logo, o site desenha
+  // o NOME do set como titulo (.set-logo-placeholder no app.js).
+  for (const c of merged) { c.setLogo = localLogo(c.setId) || ""; }
 
   // Índices { name, cardIds } (página Sets; Artistas fica vazio como no OP).
   const bySet = new Map();

@@ -79,18 +79,6 @@ async function fetchSetLogo(code) {
   return null;
 }
 
-// Logo genérico do jogo (fallback dos sets sem logo próprio, igual _lorcana.png).
-async function fetchBrandLogo() {
-  try {
-    const r = await fetch("https://en.onepiece-cardgame.com/images/common/logo_op.png", { headers: UA_HEADERS });
-    if (!r.ok) return null;
-    const buf = Buffer.from(await r.arrayBuffer());
-    if (buf.length < 500) return null;
-    await mkdir(LOGOS_DIR, { recursive: true });
-    await writeFile(new URL("_onepiece.png", LOGOS_DIR), buf);
-    return "data/onepiece/set-logos/_onepiece.png";
-  } catch (e) { return null; }
-}
 
 // Baixa o logo 1x por código base e devolve o caminho local no site.
 const downloadedLogos = new Map(); // baseCode -> caminho relativo (ou null)
@@ -205,12 +193,9 @@ async function run() {
   cards.sort((a, b) => a.setId.localeCompare(b.setId) || a.number.localeCompare(b.number, undefined, { numeric: true }) || a.id.localeCompare(b.id));
   console.log(`Total: ${cards.length} cartas, ${Object.keys(pricing).length} com preço.`);
 
-  // setLogo: logo TRANSPARENTE do set (Bandai) quando existe; senão o logo
-  // genérico do One Piece Card Game (igual o Lorcana faz com promos); e só em
-  // último caso a arte da 1ª carta.
+  // setLogo: logo TRANSPARENTE do set (Bandai) quando existe; sem logo próprio
+  // o site desenha o NOME do set como título.
   console.log("One Piece: buscando logos de set (Bandai EN/JP/Asia)…");
-  const brandLogo = await fetchBrandLogo();
-  console.log(brandLogo ? "  logo genérico do jogo ✓ (fallback)" : "  logo genérico indisponível (fallback = arte da carta)");
   const logoBySet = {};
   const setIds = [...new Set(cards.map((c) => c.setId))];
   for (const setId of setIds) {
@@ -220,10 +205,11 @@ async function run() {
     if (rel) { logoBySet[setId] = rel; console.log(`  ${setId}: logo ✓`); }
     await sleep(80);
   }
-  console.log(`  ${Object.keys(logoBySet).length}/${setIds.length} sets com logo próprio (resto: logo do jogo).`);
-  const coverBySet = {};
-  for (const c of cards) { if (!coverBySet[c.setId]) coverBySet[c.setId] = c.image; }
-  for (const c of cards) { c.setLogo = logoBySet[c.setId] || brandLogo || coverBySet[c.setId] || ""; }
+  console.log(`  ${Object.keys(logoBySet).length}/${setIds.length} sets com logo próprio (resto: nome do set).`);
+  // Sem logo PRÓPRIO do set -> vazio, e o site desenha o nome do set como
+  // título (ver .set-logo-placeholder no app.js). Saíram a marca genérica e a
+  // arte da 1ª carta: nenhuma das duas identifica O SET.
+  for (const c of cards) { c.setLogo = logoBySet[c.setId] || ""; }
 
   // Índices no formato { name, cardIds } (páginas Sets/Artistas). Sem artistas:
   // o TCGplayer não expõe ilustrador, então o índice fica vazio e a página de

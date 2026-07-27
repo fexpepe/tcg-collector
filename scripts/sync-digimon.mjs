@@ -113,9 +113,11 @@ async function run() {
     || a.id.localeCompare(b.id));
   console.log(`Total: ${merged.length} cartas, ${Object.keys(pricing).length} com preço.`);
 
-  const coverBySet = {};
-  for (const c of merged) { if (!coverBySet[c.setId]) coverBySet[c.setId] = c.image; }
-  for (const c of merged) { c.setLogo = coverBySet[c.setId] || ""; }
+  // setLogo: VAZIO quando o set nao tem logo proprio. Antes caia na arte da
+  // 1a carta, o que dava um "logo" arbitrario (Freedom Ascension aparecia como
+  // uma carta de token) e enganava mais do que ajudava. Sem logo, o site desenha
+  // o NOME do set como titulo (.set-logo-placeholder no app.js).
+  for (const c of merged) { c.setLogo = ""; }
 
   const bySet = new Map();
   for (const c of merged) { if (!bySet.has(c.set)) bySet.set(c.set, []); bySet.get(c.set).push(c.id); }
