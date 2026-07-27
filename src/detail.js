@@ -394,9 +394,13 @@
 
     if (detailType === "set") {
       elements.hero.classList.remove("has-featured");
+      // Vintage japonês: o título vai em inglês (igual à lista) e o nome
+      // ORIGINAL aparece logo abaixo — é aqui, ao abrir o set, que ele importa.
+      const nomeExibido = shared.setDisplayName(sample.setId, sample.set);
+      const nomeOriginal = shared.setOriginalName(sample.setId, sample.set);
       const logo = sample.setLogo
-        ? localizedImg(sample.setLogo, { alt: sample.set, className: "set-logo" })
-        : `<strong>${escapeHtml(sample.set)}</strong>`;
+        ? localizedImg(sample.setLogo, { alt: nomeExibido, className: "set-logo" })
+        : `<span class="set-logo-placeholder">${escapeHtml(nomeExibido)}</span>`;
       const symbol = sample.setSymbol
         ? localizedImg(sample.setSymbol, { className: "set-symbol" })
         : "";
@@ -416,7 +420,8 @@
       elements.hero.innerHTML = `
         <div class="set-art detail-set-art">${logo}${symbol}</div>
         <div>
-          <h2>${escapeHtml(sample.set)}</h2>
+          <h2>${escapeHtml(nomeExibido)}</h2>
+          ${nomeOriginal ? `<p class="set-original-name" lang="ja">${escapeHtml(nomeOriginal)}</p>` : ""}
           <p>${escapeHtml(`${t("set.officialCards", { n: sample.setTotal || pageCards.length })} · ${t("set.inLocalCatalog", { n: pageCards.length })}`)}</p>
           ${missingHtml}
         </div>

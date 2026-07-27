@@ -1751,24 +1751,6 @@ input::placeholder {
   position: relative;
 }
 
-/* Título em inglês dos sets VINTAGE, acima da arte: nessas linhas o logo é
-   genérico (o mesmo pra todos os sets de Miracle Battle, por exemplo) ou nem
-   existe, então é ele que identifica o tile. Mesmo corpo do selo de data. */
-.set-en-title {
-  /* UMA linha fixa: tile de altura homogênea em todos os sets — o nome
-     completo aparece no hover (title=). */
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin: 0;
-  padding: 9px 10px 7px;
-  font-size: 10.5px;
-  font-weight: 800;
-  line-height: 1.3;
-  color: var(--muted);
-  text-align: center;
-}
 
 .set-release {
   position: absolute;
@@ -1800,6 +1782,16 @@ input::placeholder {
    do .set-art — que continua o mesmo de sempre.
    Preto puro e não var(--text): o chip é branco FIXO nos dois temas, então a
    cor do texto também tem que ser fixa, senão some no tema escuro. */
+/* Nome ORIGINAL (japonês) do set vintage, na página do set logo abaixo do
+   título em inglês. lang="ja" no HTML pro navegador escolher a fonte CJK certa
+   — sem isso o Windows renderiza kanji com fallback feio e desalinhado. */
+.set-original-name {
+  margin: 2px 0 8px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
 .set-logo-placeholder {
   color: #0a0c10;
   font-size: clamp(15px, 1.5vw, 19px);
@@ -1815,6 +1807,15 @@ input::placeholder {
   overflow: hidden;
   max-width: 100%;
   overflow-wrap: anywhere;
+  /* O selo de data flutua no canto superior direito do chip: sem esta faixa
+     reservada, nome de 3 linhas passava POR BAIXO dele (medido em
+     "Vol. 5 — Evenly Matched! Preliminary Death Match" e afins). */
+  padding-top: 18px;
+}
+/* Chip um pouco mais alto só onde há nome no lugar do logo — cabe o padding de
+   cima sem espremer a 3ª linha. Tiles com logo seguem nos 96px de sempre. */
+.set-art:has(.set-logo-placeholder) {
+  min-height: 108px;
 }
 
 .set-symbol {
