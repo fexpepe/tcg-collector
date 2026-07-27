@@ -287,15 +287,163 @@ function setPageHtml(page, canonical, otherSets, lang) {
 `;
 }
 
-function buildSitemap(setPages, cardPages) {
+function buildSitemap(setPages, cardPages, deckPages) {
   const urls = [
     ...STATIC_URLS.map((p) => (p === "/" ? ORIGIN + "/" : ORIGIN + p)),
     ...setPages.map((s) => `${ORIGIN}/set/${s.slug}`),
     ...setPages.map((s) => `${ORIGIN}/set/${s.slug}-en`),
-    ...(cardPages || []).map((c) => `${ORIGIN}/card/${c.slug}`)
+    ...(cardPages || []).map((c) => `${ORIGIN}/card/${c.slug}`),
+    ...(deckPages || []).map((d) => `${ORIGIN}/deck/${d.slug}`)
   ];
   const body = urls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+}
+
+// ── Páginas de DECK da comunidade (/deck/<slug>.html) ────────────────────────
+// Busca de deck ("mickey minnie deck lorcana", "dragapult ex deck list") é o
+// tráfego mais recorrente de TCG — Limitless e Dreamborn vivem disso. A galeria
+// da comunidade (tabela shares, kind=deck, SELECT anônimo) é dinâmica, mas o
+// Google não roda a SPA: aqui viram páginas estáticas com a LISTA DE CARTAS em
+// HTML (qtd × nome, o texto que as buscas casam), meta/OG e JSON-LD, apontando
+// pro viewer interativo (/decks?s=<id>). Regeradas a cada build — deck novo
+// entra no próximo deploy (cron 2×/semana + todo push), removido some junto.
+const DECK_OUT_DIR = "deck";
+const MAX_DECK_PAGES = 500;
+const DECK_GAME_LABELS = {
+  pokemon: "Pokémon TCG", lorcana: "Disney Lorcana", onepiece: "One Piece Card Game",
+  magic: "Magic: The Gathering", fab: "Flesh and Blood", gundam: "Gundam Card Game",
+  dbfw: "Dragon Ball Fusion World", ygo: "Yu-Gi-Oh!", digimon: "Digimon Card Game",
+  riftbound: "Riftbound", naruto: "Naruto Card Game", hxh: "Hunter × Hunter"
+};
+
+async function fetchPublicDecks() {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/shares?kind=eq.deck&select=id,game,title,created_at,data&order=created_at.desc&limit=${MAX_DECK_PAGES}`, {
+      headers: { apikey: SUPABASE_ANON }, signal: AbortSignal.timeout(15000)
+    });
+    return r.ok ? await r.json() : [];
+  } catch { return []; }
+}
+
+// id -> nome, por jogo, a partir dos chunks que o build já tem no disco (data/
+// sets/<lang>/*.json no Pokémon; data/<jogo>/sets/*.json nos demais). Carregado
+// UMA vez por jogo que realmente aparece nos decks.
+const deckNameCache = {};
+function cardNamesFor(game) {
+  if (deckNameCache[game]) return deckNameCache[game];
+  const map = new Map();
+  const dirs = game === "pokemon"
+    ? (existsSync(SETS_DIR) ? readdirSync(SETS_DIR).map((l) => join(SETS_DIR, l)) : [])
+    : [join("data", game, "sets")];
+  for (const dir of dirs) {
+    if (!existsSync(dir)) continue;
+    for (const f of readdirSync(dir)) {
+      if (!f.endsWith(".json")) continue;
+      try {
+        for (const c of JSON.parse(readFileSync(join(dir, f), "utf8"))) {
+          if (c && c.id && !map.has(c.id)) map.set(c.id, c);
+        }
+      } catch { /* chunk corrompido: segue */ }
+    }
+  }
+  deckNameCache[game] = map;
+  return map;
+}
+
+function deckPageHtml(dp) {
+  const { deck, slug, cardsList, total } = dp;
+  const gameLabel = DECK_GAME_LABELS[deck.game] || deck.game;
+  const canonical = `${ORIGIN}/deck/${slug}`;
+  const title = `${deck.name} — deck de ${gameLabel} (${total} cartas) | Sleevu`;
+  const topNames = cardsList.slice(0, 6).map((c) => c.name).join(", ");
+  const desc = `Lista completa do deck "${deck.name}" de ${gameLabel}: ${topNames}${cardsList.length > 6 ? "…" : ""} Veja o custo total, a curva e copie pra sua conta no Sleevu.`;
+  const appUrl = `/decks.html?s=${encodeURIComponent(deck.shareId)}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: `${deck.name} — deck de ${gameLabel}`,
+    datePublished: deck.createdAt || undefined,
+    author: deck.author ? { "@type": "Person", name: deck.author } : undefined,
+    publisher: { "@type": "Organization", name: "Sleevu" },
+    url: canonical
+  };
+  const rows = cardsList.map((c) => `<li>${c.qty}× ${escapeHtml(c.name)}${c.meta ? ` <small>${escapeHtml(c.meta)}</small>` : ""}</li>`).join("\n            ");
+  return `<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>${escapeHtml(title)}</title>
+    <meta name="description" content="${escapeAttr(desc)}">
+    <link rel="canonical" href="${escapeAttr(canonical)}">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="${escapeAttr(canonical)}">
+    <meta property="og:title" content="${escapeAttr(title)}">
+    <meta property="og:description" content="${escapeAttr(desc)}">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
+    <style>
+      body { font-family: system-ui, sans-serif; background: #101218; color: #e8eaf0; margin: 0; padding: 24px 16px; }
+      main { max-width: 720px; margin: 0 auto; }
+      a { color: #ff6b6b; }
+      .cta { display: inline-block; background: #e23030; color: #fff; text-decoration: none; font-weight: 700; padding: 12px 22px; margin: 14px 0; }
+      ul { columns: 2; gap: 32px; padding-left: 20px; } li { margin: 3px 0; break-inside: avoid; }
+      small { color: #9aa3b2; }
+      @media (max-width: 560px) { ul { columns: 1; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p><a href="/decks">← Decks da comunidade</a></p>
+      <h1>${escapeHtml(deck.name)}</h1>
+      <p>Deck de <strong>${escapeHtml(gameLabel)}</strong> · ${total} cartas${deck.author ? ` · por @${escapeHtml(deck.author)}` : ""}</p>
+      <a class="cta" href="${escapeAttr(appUrl)}">Abrir no Sleevu — valor, curva de custo e copiar o deck</a>
+      <h2>Lista de cartas</h2>
+      <ul>
+            ${rows}
+      </ul>
+      <p><a href="${escapeAttr(appUrl)}">Ver este deck com preços e análise no Sleevu →</a></p>
+    </main>
+  </body>
+</html>
+`;
+}
+
+async function buildDeckPages() {
+  const rowsRaw = await fetchPublicDecks();
+  if (existsSync(DECK_OUT_DIR)) rmSync(DECK_OUT_DIR, { recursive: true, force: true });
+  mkdirSync(DECK_OUT_DIR, { recursive: true });
+  const used = new Set();
+  const out = [];
+  for (const row of rowsRaw) {
+    const d = row && row.data;
+    if (!d || d.v !== 1 || !d.zones || !DECK_GAME_LABELS[d.game]) continue;
+    const names = cardNamesFor(d.game);
+    const cardsList = [];
+    let total = 0;
+    Object.values(d.zones).forEach((list) => (Array.isArray(list) ? list : []).forEach((e) => {
+      if (!e || !e.id) return;
+      const qty = Math.max(1, Math.min(99, Number(e.qty) || 1));
+      total += qty;
+      const c = names.get(String(e.id));
+      cardsList.push({ qty, name: c ? c.name : String(e.id), meta: c ? `${c.set || ""} ${c.number || ""}`.trim() : "" });
+    }));
+    if (!total) continue;
+    const deck = {
+      shareId: row.id, game: d.game, author: d.author ? String(d.author).slice(0, 30) : null,
+      name: String(d.name || row.title || "Deck").slice(0, 60), createdAt: row.created_at || null
+    };
+    let base = slugify(`${deck.name}-${d.game}`) || "deck";
+    // Sufixo curto do id: dois decks "Mickey Aggro" não podem disputar o slug.
+    base = `${base}-${String(row.id).slice(0, 8)}`;
+    let s = base, i = 2;
+    while (used.has(s)) s = `${base}-${i++}`;
+    used.add(s);
+    writeFileSync(join(DECK_OUT_DIR, `${s}.html`), deckPageHtml({ deck, slug: s, cardsList, total }), "utf8");
+    out.push({ slug: s });
+  }
+  return out;
 }
 
 // ── Páginas de CARTA individual (top por preço + mais vistas) ────────────────
@@ -520,9 +668,13 @@ async function main() {
     cardPages.push({ slug: s });
   }
 
-  writeFileSync("sitemap.xml", buildSitemap(pages, cardPages), "utf8");
+  // Decks da comunidade: nunca derruba o build (galeria fora do ar = 0 páginas).
+  let deckPages = [];
+  try { deckPages = await buildDeckPages(); } catch (e) { console.warn(`decks: pulado (${e.message})`); }
+
+  writeFileSync("sitemap.xml", buildSitemap(pages, cardPages, deckPages), "utf8");
   const perGame = GAMES.map((g) => `${g.slug} ${pages.filter((p) => p.game === g.slug).length}`).join(" · ");
-  console.log(`prerender-catalog: ${pages.length} páginas de set em /${OUT_DIR}/ (${perGame}) + ${cardPages.length} páginas de carta em /${CARD_OUT_DIR}/ + sitemap.xml (${STATIC_URLS.length + pages.length * 2 + cardPages.length} URLs).`);
+  console.log(`prerender-catalog: ${pages.length} páginas de set em /${OUT_DIR}/ (${perGame}) + ${cardPages.length} páginas de carta em /${CARD_OUT_DIR}/ + ${deckPages.length} páginas de deck em /${DECK_OUT_DIR}/ + sitemap.xml (${STATIC_URLS.length + pages.length * 2 + cardPages.length + deckPages.length} URLs).`);
 }
 
 await main();

@@ -4025,7 +4025,15 @@
   // INTEIRO daquele jogo (usado pelo seletor do Binder).
   async function loadGameCatalog(game, dataDir, ids) {
     const run = () => (ids == null ? loadCatalog() : loadCatalogForCardIds(ids));
-    if ((window.SLEEVU && window.SLEEVU.game) === game) {
+    // Caminho rápido só quando a página REALMENTE tem o catálogo da sessão.
+    // decks.html tem data-catalog VAZIO: um deck do mesmo jogo da sessão caía
+    // aqui, run() não achava nem TCG_CARDS nem TCG_MANIFEST e o viewer abria
+    // sem nome/imagem/valor — visitante de sessão Lorcana via um deck de
+    // Lorcana quebrado, enquanto o de sessão Pokémon via perfeito (o caminho
+    // de injeção abaixo funciona pra qualquer combinação, inclusive esta).
+    const temCatalogo = (Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length)
+      || (window.TCG_MANIFEST && Array.isArray(window.TCG_MANIFEST.sets));
+    if ((window.SLEEVU && window.SLEEVU.game) === game && temCatalogo) {
       const r = await run();
       return { cards: r.cards, indexes: r.indexes, pricing: window.TCG_PRICING || null };
     }

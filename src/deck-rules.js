@@ -354,11 +354,25 @@
     const dist = pack.dist ? tally((c) => multi(c[pack.dist])).sort((a, b) => b.n - a.n) : null;
     const rarity = tally((c) => (c.rarity ? [String(c.rarity)] : [])).sort((a, b) => b.n - a.n);
 
+    // Custo médio (padrão dos deck builders — Piltover Archive mostra "Avg.
+    // cost: 1.8"): média ponderada pela quantidade, só das cartas com custo
+    // numérico. null quando o jogo não tem curva (vintage etc.).
+    let avgCost = null;
+    if (pack.curve) {
+      let soma = 0, n = 0;
+      rows.forEach(({ card, qty }) => {
+        const v = Number(card[pack.curve]);
+        if (Number.isFinite(v)) { soma += v * qty; n += qty; }
+      });
+      if (n) avgCost = Math.round((soma / n) * 10) / 10;
+    }
+
     return {
       curve: curve,
       dist: (dist && dist.length) ? dist : null,
       rarity: rarity.length ? rarity : null,
-      distField: pack.dist || null
+      distField: pack.dist || null,
+      avgCost: avgCost
     };
   }
 

@@ -7155,6 +7155,37 @@ select,
 .dkc-view-head .cta { margin-left: auto; }
 .dkc-author { font-size: 13px; color: var(--subtle); font-weight: 700; }
 
+/* Cabeçalho do deck publicado: título + linha de metadados (jogo, formato,
+   nº de cartas, custo médio, autor, data) e as ações à direita. Os metadados
+   são o "cartão de visita" do deck — o que os builders de referência põem
+   acima da dobra. Separador por ponto médio via CSS, não no texto. */
+.dkc-view-title { flex: 1; min-width: 240px; }
+.dkc-view-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 6px; }
+.dkc-meta-item { font-size: 13px; color: var(--muted); font-weight: 700; }
+.dkc-meta-item + .dkc-meta-item::before,
+.dkc-meta-item + .dkc-author::before,
+.dkc-author + .dkc-meta-item::before { content: "·"; margin-right: 10px; color: var(--subtle); }
+.dkc-meta-date { color: var(--subtle); }
+.dkc-view-acts { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.dkc-lays { display: flex; gap: 6px; }
+.dkc-lays .deck-lay { flex: none; width: 40px; }
+
+/* Lista do deck publicado (padrão Dreamborn/Limitless): qtd × miniatura × nome
+   + set·nº, selo de posse e o PREÇO UNITÁRIO à direita — o formato de quem vai
+   comprar as cartas. A grade continua sendo a vitrine da arte. */
+.dkc-list { display: grid; gap: 4px; }
+.dkc-row { display: flex; align-items: center; gap: 10px; padding: 5px 8px; border: 1px solid var(--line); background: var(--panel); }
+.dkc-row:hover { background: var(--panel-strong); }
+.dkc-row-thumb { flex: none; width: 26px; }
+.dkc-row-thumb img { width: 100%; aspect-ratio: 63/88; object-fit: cover; display: block; }
+.dkc-row-thumb .deck-noimg { width: 26px; }
+.dkc-row-body { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 8px; }
+.dkc-row-meta { font-size: 11.5px; color: var(--subtle); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dkc-row-price { flex: none; font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--money); }
+@media (max-width: 560px) {
+  .dkc-row-meta { display: none; } /* tela estreita: nome e preço são o essencial */
+}
+
 /* Deck publicado: cartas à esquerda, contexto (valor + análise) numa coluna à
    direita — mesma divisão do editor, pra quem vê o deck de outra pessoa ter as
    MESMAS informações de quem o montou na hora de decidir se copia.
@@ -7163,6 +7194,9 @@ select,
 .dkc-view-side { display: grid; gap: 14px; position: sticky; top: 74px; }
 .dkc-value { margin: 0; }
 .dkc-value h3, .dkc-analysis h3 { margin: 0 0 10px; font-size: 15px; }
+/* "Custo médio: 2,4" ao lado do título da Análise — número pequeno, tom de
+   apoio; referência direta do "Avg. cost" dos builders de torneio. */
+.deck-avg { font-size: 12.5px; font-weight: 700; color: var(--muted); margin-left: 8px; }
 @media (max-width: 900px) {
   .dkc-view-cols { grid-template-columns: minmax(0, 1fr); }
   .dkc-view-side { position: static; }

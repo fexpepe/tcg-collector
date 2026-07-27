@@ -220,6 +220,70 @@
   // disso); publicar/copiar é que exigem conta.
   // ATENÇÃO: título/autor/nomes vêm de USUÁRIO — escapar TUDO ao renderizar.
   // ---------------------------------------------------------------------------
+  // Estes helpers de GRÁFICO (cores, curva, barras) precisam viver ANTES do
+  // early-return da página pública logo abaixo: o viewer público também os
+  // usa, e como o módulo RETORNA cedo em decks.html, qualquer const declarada
+  // depois fica em TDZ pra sempre — foi exatamente o crash 'Cannot access
+  // inkColor before initialization' que pendurava o deck publicado no
+  // "Carregando…".
+  // Cor de cada tinta/cor pra pintar a curva e a distribuição. Chave em minúscula
+  // porque os catálogos variam ("Amber", "W", "Red"). Fora da tabela cai no
+  // accent do tema — jogo novo nunca fica sem cor.
+  const INK_HEX = {
+    // Lorcana
+    amber: "#f0b84b", amethyst: "#a78bfa", emerald: "#34a06a", ruby: "#e05252", sapphire: "#60a5fa", steel: "#9ba4b3",
+    // Magic (letras do color identity)
+    w: "#efe3bd", u: "#4a9ff0", b: "#7d7f89", r: "#e05252", g: "#34a06a",
+    // Bandai/Riot (Digimon, Gundam, DBFW, One Piece)
+    red: "#e05252", blue: "#4a9ff0", green: "#34a06a", yellow: "#f0b84b", purple: "#a78bfa",
+    black: "#6b7280", white: "#e3e7ee",
+    // Pokémon (types)
+    fire: "#f0803c", water: "#4a9ff0", grass: "#34a06a", lightning: "#f0c93c", psychic: "#c77dd6",
+    fighting: "#c56a3a", darkness: "#5b6270", metal: "#9ba4b3", fairy: "#e77fb3", dragon: "#b8933c", colorless: "#c8ccd4",
+    // Buckets sintéticos da curva
+    multi: "#d4a017", none: "#4a5160"
+  };
+  const inkColor = (key) => INK_HEX[String(key || "").toLowerCase()] || "var(--accent)";
+  // Rótulo legível: os catálogos trazem valores crus ("Super_rare" no Lorcana,
+  // "double_faced" etc.) — underscore vira espaço e a 1ª letra sobe.
+  function prettyLabel(key) {
+    if (key === "multi") return t("decks.multicolor");
+    if (key === "none") return t("decks.colorless");
+    const s = String(key || "").replace(/[_-]+/g, " ").trim();
+    return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+  }
+  const inkLabel = prettyLabel;
+
+  // Curva de custo: COLUNAS verticais empilhadas por cor (padrão dos deck
+  // builders). Sem lib — altura em % via flex.
+  function curveHtml(rows) {
+    if (!rows || !rows.length) return "";
+    const max = Math.max(...rows.map((r) => r.n)) || 1;
+    const cols = rows.map((r) => {
+      const stack = (r.parts || []).map((p) =>
+        `<span class="deck-cv-seg" style="height:${(p.n / r.n) * 100}%;background:${escA(inkColor(p.key))}" title="${escA(inkLabel(p.key) + ": " + p.n)}"></span>`).join("");
+      return `<div class="deck-cv-col">
+        <span class="deck-cv-n">${esc(String(r.n))}</span>
+        <span class="deck-cv-bar" style="height:${(r.n / max) * 100}%">${stack}</span>
+        <span class="deck-cv-x">${esc(r.label)}</span>
+      </div>`;
+    }).join("");
+    return `<div class="deck-an-block"><h4>${esc(t("decks.curve"))}</h4><div class="deck-cv">${cols}</div></div>`;
+  }
+
+  // Barras simples (distribuição / raridade). Sem lib: largura em %.
+  function barsHtml(title, rows, colored) {
+    if (!rows || !rows.length) return "";
+    const max = Math.max(...rows.map((r) => r.n)) || 1;
+    return `<div class="deck-an-block"><h4>${esc(title)}</h4>` + rows.map((r) => {
+      const bg = colored ? `;background:${escA(inkColor(r.label))}` : "";
+      return `<div class="deck-bar"><span class="deck-bar-lbl">${esc(inkLabel(r.label))}</span>
+        <span class="deck-bar-track"><span class="deck-bar-fill" style="width:${Math.round((r.n / max) * 100)}%${bg}"></span></span>
+        <span class="deck-bar-n">${esc(String(r.n))}</span></div>`;
+    }).join("") + `</div>`;
+  }
+
+
   // Declarada ANTES da chamada: initPublicPage roda já na linha de baixo, e um
   // `let` depois dela ficaria em TDZ — a exceção travava o "Carregando…".
   let communityGame = "";                       // filtro ativo ("" = todos)
@@ -294,6 +358,15 @@
 
   // ---------- Viewer de um deck publicado ----------
   async function renderPublicDeck(box, id, logged) {
+    try { await renderPublicDeckInner(box, id, logged); }
+    catch (e) {
+      // Erro aqui era rejection MUDA: a página ficava pendurada no "Carregando…"
+      // pra sempre, sem pista. Agora loga e mostra o estado de erro.
+      console.error("renderPublicDeck:", e);
+      box.innerHTML = `<section class="empty-state"><p>${esc(t("decks.loadError"))}</p></section>`;
+    }
+  }
+  async function renderPublicDeckInner(box, id, logged) {
     box.innerHTML = `<p class="deck-hint">${esc(t("decks.loading"))}</p>`;
     const row = await shared.fetchShare(id);
     const deck = row && row.kind === "deck" ? sanitizeDeckPayload(row.data) : null;
@@ -338,30 +411,88 @@
         </section>`
       : "";
 
-    const zonesHtml = Object.keys(deck.zones).map((zk) => {
+    // O nome do deck vira o título da aba — é o que aparece no histórico e em
+    // quem cola o link em chat (as páginas /deck/ pré-renderizadas cuidam do OG).
+    try { document.title = `${deck.name} — Sleevu`; } catch (e) { /* ignora */ }
+
+    const totalCartas = Object.values(deck.zones).flat().reduce((s, e) => s + e.qty, 0);
+    const unitOf = (e) => {
+      const card = byId[e.id];
+      return card ? ((shared.cardValue(card, shared.defaultVariant(card), prices) || {}).value || 0) : 0;
+    };
+    const haveOf = (e) => (owned.totalForCard ? owned.totalForCard(e.id) : 0);
+
+    // ── Grade × Lista ──────────────────────────────────────────────────────
+    // A grade mostra a ARTE; a lista mostra os DADOS (qtd, set·nº, preço
+    // unitário, se você já tem) — padrão Dreamborn/Limitless, e o formato que
+    // quem vai comprar as cartas realmente usa. Preferência lembrada.
+    const VIEW_KEY = "tcg-deck-public-view";
+    let pubView = "grid";
+    try { if (localStorage.getItem(VIEW_KEY) === "list") pubView = "list"; } catch (e) { /* ignora */ }
+
+    const zonesHtml = () => Object.keys(deck.zones).map((zk) => {
       const list = deck.zones[zk];
       if (!list.length) return "";
       const label = t("decks.zone." + zk);
-      return `<section class="deck-zone"><h3>${esc(label === "decks.zone." + zk ? zk : label)} <span class="deck-zone-n">${esc(String(list.reduce((s, e) => s + e.qty, 0)))}</span></h3>
-        <div class="deck-tiles">` + list.map((e) => {
+      const head = `<h3>${esc(label === "decks.zone." + zk ? zk : label)} <span class="deck-zone-n">${esc(String(list.reduce((s, e) => s + e.qty, 0)))}</span></h3>`;
+      if (pubView === "list") {
+        return `<section class="deck-zone">${head}<ul class="deck-list dkc-list">` + list.map((e) => {
           const card = byId[e.id];
-          const img = card && card.image ? `<img src="${escA(card.image)}" alt="${escA(card.name || "")}" loading="lazy">` : `<span class="deck-noimg"></span>`;
-          return `<div class="deck-tile" title="${escA((card && card.name) || e.id)}">
-            <span class="deck-tile-img">${img}</span>
-            <span class="deck-tile-qty">${esc(String(e.qty))}×</span>
-          </div>`;
-        }).join("") + `</div></section>`;
+          const unit = unitOf(e);
+          const have = haveOf(e);
+          const thumb = card && card.image ? `<img src="${escA(card.image)}" alt="" loading="lazy">` : `<span class="deck-noimg"></span>`;
+          return `<li class="deck-row dkc-row">
+            <span class="deck-qty">${esc(String(e.qty))}×</span>
+            <span class="dkc-row-thumb">${thumb}</span>
+            <span class="dkc-row-body">
+              <span class="deck-row-name">${esc((card && card.name) || e.id)}</span>
+              <span class="dkc-row-meta">${esc(card ? `${card.set || ""} ${card.number || ""}`.trim() : "")}</span>
+            </span>
+            ${logged && have >= e.qty ? `<span class="deck-own ok">${esc(t("decks.ownHave"))}</span>` : logged && have > 0 ? `<span class="deck-own part">${esc(t("decks.ownPartial").replace("{n}", String(have)))}</span>` : ""}
+            ${unit > 0 ? `<span class="dkc-row-price">${esc(money(unit))}</span>` : ""}
+          </li>`;
+        }).join("") + `</ul></section>`;
+      }
+      return `<section class="deck-zone">${head}<div class="deck-tiles">` + list.map((e) => {
+        const card = byId[e.id];
+        const img = card && card.image ? `<img src="${escA(card.image)}" alt="${escA(card.name || "")}" loading="lazy">` : `<span class="deck-noimg"></span>`;
+        return `<div class="deck-tile" title="${escA((card && card.name) || e.id)}">
+          <span class="deck-tile-img">${img}</span>
+          <span class="deck-tile-qty">${esc(String(e.qty))}×</span>
+        </div>`;
+      }).join("") + `</div></section>`;
     }).join("");
 
-    box.innerHTML = `
+    // Data de publicação (created_at do share) — contexto de "quão atual é isto".
+    let quando = "";
+    try { if (row.created_at) quando = new Date(row.created_at).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }); } catch (e) { /* ignora */ }
+    const formatLabel = deck.format ? `<span class="dkc-meta-item">${esc(t("decks.format." + deck.format))}</span>` : "";
+
+    const paint = () => {
+      box.innerHTML = `
       <div class="dkc-view-head">
         <a href="decks.html" class="serie-back">${esc(t("decks.backCommunity"))}</a>
-        <h2 class="dkc-view-name">${esc(deck.name)}</h2>
-        <span class="deck-ed-game">${shared.gameTagHtml(deck.game)}${deck.author ? `<span class="dkc-author">${esc(t("decks.byAuthor", { author: deck.author }))}</span>` : ""}</span>
-        <button type="button" class="cta" data-dkc-copy>${esc(t(logged ? "decks.copyToMine" : "decks.loginToCopy"))}</button>
+        <div class="dkc-view-title">
+          <h2 class="dkc-view-name">${esc(deck.name)}</h2>
+          <div class="dkc-view-meta">
+            ${shared.gameTagHtml(deck.game)}
+            ${formatLabel}
+            <span class="dkc-meta-item">${esc(t("decks.cardsCount", { n: totalCartas }))}</span>
+            ${an.avgCost != null ? `<span class="dkc-meta-item">${esc(t("decks.avgCost"))}: ${esc(String(an.avgCost))}</span>` : ""}
+            ${deck.author ? `<span class="dkc-author">${esc(t("decks.byAuthor", { author: deck.author }))}</span>` : ""}
+            ${quando ? `<span class="dkc-meta-item dkc-meta-date">${esc(quando)}</span>` : ""}
+          </div>
+        </div>
+        <div class="dkc-view-acts">
+          <div class="deck-lays dkc-lays" role="group" aria-label="Layout">
+            <button type="button" class="deck-lay${pubView === "grid" ? " on" : ""}" data-dkc-view="grid" aria-pressed="${pubView === "grid"}" title="${escA(t("decks.layout.grid"))}"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></button>
+            <button type="button" class="deck-lay${pubView === "list" ? " on" : ""}" data-dkc-view="list" aria-pressed="${pubView === "list"}" title="${escA(t("decks.layout.list"))}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+          </div>
+          <button type="button" class="cta" data-dkc-copy>${esc(t(logged ? "decks.copyToMine" : "decks.loginToCopy"))}</button>
+        </div>
       </div>
       <div class="dkc-view-cols">
-        <div class="dkc-view-main">${zonesHtml}</div>
+        <div class="dkc-view-main">${zonesHtml()}</div>
         <aside class="dkc-view-side">
           ${priceOk ? `<section class="deck-value dkc-value">
             <h3>${esc(t("decks.value"))}</h3>
@@ -372,19 +503,34 @@
           ${analiseHtml}
         </aside>
       </div>`;
+      bind();
+    };
 
-    box.querySelector("[data-dkc-copy]").addEventListener("click", () => {
-      if (!logged) { location.href = "login.html"; return; }
-      // Fork: entra no MEU store local com id novo (o sync sobe no próximo ciclo).
-      const zones = {};
-      Object.keys(deck.zones).forEach((k) => { zones[k] = deck.zones[k].map((e) => ({ id: e.id, qty: e.qty, variant: "Normal" })); });
-      const novo = {
-        id: newId(), game: deck.game, format: deck.format, name: deck.name,
-        zones, forkedFrom: id, createdAt: Date.now(), updatedAt: Date.now()
-      };
-      data.decks.unshift(novo);
-      if (save()) location.href = "my-decks.html?id=" + encodeURIComponent(novo.id);
-    });
+    function bind() {
+      box.querySelectorAll("[data-dkc-view]").forEach((b) => b.addEventListener("click", () => {
+        pubView = b.dataset.dkcView === "list" ? "list" : "grid";
+        try { localStorage.setItem(VIEW_KEY, pubView); } catch (e) { /* ignora */ }
+        paint();
+      }));
+      bindCopy();
+    }
+
+    paint();
+
+    function bindCopy() {
+      box.querySelector("[data-dkc-copy]").addEventListener("click", () => {
+        if (!logged) { location.href = "login.html"; return; }
+        // Fork: entra no MEU store local com id novo (o sync sobe no próximo ciclo).
+        const zones = {};
+        Object.keys(deck.zones).forEach((k) => { zones[k] = deck.zones[k].map((e) => ({ id: e.id, qty: e.qty, variant: "Normal" })); });
+        const novo = {
+          id: newId(), game: deck.game, format: deck.format, name: deck.name,
+          zones, forkedFrom: id, createdAt: Date.now(), updatedAt: Date.now()
+        };
+        data.decks.unshift(novo);
+        if (save()) location.href = "my-decks.html?id=" + encodeURIComponent(novo.id);
+      });
+    }
   }
 
   const el = {
@@ -668,63 +814,6 @@
       .replace("{list}", v.list || "");
   }
 
-  // Cor de cada tinta/cor pra pintar a curva e a distribuição. Chave em minúscula
-  // porque os catálogos variam ("Amber", "W", "Red"). Fora da tabela cai no
-  // accent do tema — jogo novo nunca fica sem cor.
-  const INK_HEX = {
-    // Lorcana
-    amber: "#f0b84b", amethyst: "#a78bfa", emerald: "#34a06a", ruby: "#e05252", sapphire: "#60a5fa", steel: "#9ba4b3",
-    // Magic (letras do color identity)
-    w: "#efe3bd", u: "#4a9ff0", b: "#7d7f89", r: "#e05252", g: "#34a06a",
-    // Bandai/Riot (Digimon, Gundam, DBFW, One Piece)
-    red: "#e05252", blue: "#4a9ff0", green: "#34a06a", yellow: "#f0b84b", purple: "#a78bfa",
-    black: "#6b7280", white: "#e3e7ee",
-    // Pokémon (types)
-    fire: "#f0803c", water: "#4a9ff0", grass: "#34a06a", lightning: "#f0c93c", psychic: "#c77dd6",
-    fighting: "#c56a3a", darkness: "#5b6270", metal: "#9ba4b3", fairy: "#e77fb3", dragon: "#b8933c", colorless: "#c8ccd4",
-    // Buckets sintéticos da curva
-    multi: "#d4a017", none: "#4a5160"
-  };
-  const inkColor = (key) => INK_HEX[String(key || "").toLowerCase()] || "var(--accent)";
-  // Rótulo legível: os catálogos trazem valores crus ("Super_rare" no Lorcana,
-  // "double_faced" etc.) — underscore vira espaço e a 1ª letra sobe.
-  function prettyLabel(key) {
-    if (key === "multi") return t("decks.multicolor");
-    if (key === "none") return t("decks.colorless");
-    const s = String(key || "").replace(/[_-]+/g, " ").trim();
-    return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
-  }
-  const inkLabel = prettyLabel;
-
-  // Curva de custo: COLUNAS verticais empilhadas por cor (padrão dos deck
-  // builders). Sem lib — altura em % via flex.
-  function curveHtml(rows) {
-    if (!rows || !rows.length) return "";
-    const max = Math.max(...rows.map((r) => r.n)) || 1;
-    const cols = rows.map((r) => {
-      const stack = (r.parts || []).map((p) =>
-        `<span class="deck-cv-seg" style="height:${(p.n / r.n) * 100}%;background:${escA(inkColor(p.key))}" title="${escA(inkLabel(p.key) + ": " + p.n)}"></span>`).join("");
-      return `<div class="deck-cv-col">
-        <span class="deck-cv-n">${esc(String(r.n))}</span>
-        <span class="deck-cv-bar" style="height:${(r.n / max) * 100}%">${stack}</span>
-        <span class="deck-cv-x">${esc(r.label)}</span>
-      </div>`;
-    }).join("");
-    return `<div class="deck-an-block"><h4>${esc(t("decks.curve"))}</h4><div class="deck-cv">${cols}</div></div>`;
-  }
-
-  // Barras simples (distribuição / raridade). Sem lib: largura em %.
-  function barsHtml(title, rows, colored) {
-    if (!rows || !rows.length) return "";
-    const max = Math.max(...rows.map((r) => r.n)) || 1;
-    return `<div class="deck-an-block"><h4>${esc(title)}</h4>` + rows.map((r) => {
-      const bg = colored ? `;background:${escA(inkColor(r.label))}` : "";
-      return `<div class="deck-bar"><span class="deck-bar-lbl">${esc(inkLabel(r.label))}</span>
-        <span class="deck-bar-track"><span class="deck-bar-fill" style="width:${Math.round((r.n / max) * 100)}%${bg}"></span></span>
-        <span class="deck-bar-n">${esc(String(r.n))}</span></div>`;
-    }).join("") + `</div>`;
-  }
-
   // ---------------------------------------------------------------------------
   // View: layout (grade/lista/pilha), agrupamento e ordenação. Preferência é do
   // USUÁRIO, não do deck — vale pra todos, então vive na própria chave.
@@ -875,9 +964,13 @@
       }
       return `<ul class="deck-list">` + list.map((e) => {
         const card = cat.byId[e.id];
+        // Preço unitário na linha (padrão Dreamborn): quem monta já vê o custo
+        // de cada escolha sem abrir o card.
+        const unit = card ? ((shared.cardValue(card, shared.defaultVariant(card), pricesFor(deck.game)) || {}).value || 0) : 0;
         return `<li class="deck-row" data-zone="${escA(zoneKey)}" data-card="${escA(e.id)}">
           <span class="deck-qty">${esc(String(e.qty))}×</span>
           <span class="deck-row-name">${esc((card && card.name) || e.id)}</span>
+          ${unit > 0 ? `<span class="dkc-row-price">${esc(money(unit))}</span>` : ""}
           ${ownBadge(e)}
           <span class="deck-row-btns">
             <button type="button" class="deck-mini" data-dec>−</button>
@@ -955,7 +1048,7 @@
             <p class="deck-value-note">${esc(t("decks.missingCount").replace("{n}", String(val.missingCards)))}</p>
           </section>
           ${(an.curve || an.dist || an.rarity) ? `<section class="deck-analysis">
-            <h3>${esc(t("decks.analysis"))}</h3>
+            <h3>${esc(t("decks.analysis"))}${an.avgCost != null ? ` <span class="deck-avg">${esc(t("decks.avgCost"))}: ${esc(String(an.avgCost))}</span>` : ""}</h3>
             ${curveHtml(an.curve)}
             ${barsHtml(t("decks.dist"), an.dist, true)}
             ${barsHtml(t("decks.rarity"), an.rarity)}
