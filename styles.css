@@ -4103,6 +4103,10 @@ a.progress-row:hover {
 /* Cabeçalho do Portfólio: título + Exportar CSV na mesma linha. */
 .pf-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .pf-head h1 { margin: 0; }
+/* "← Dashboard" ocupa a linha inteira e vai pra baixo do título, igual às
+   demais telas pessoais (onde o .page-head é bloco e o link cai embaixo
+   naturalmente). Sem isto o space-between o jogaria pro meio da fileira. */
+.pf-head .serie-back { flex-basis: 100%; margin: 0; }
 
 /* "Ver todas / top 15" embaixo da tabela de mais valiosas. */
 .pf-top-more { margin-top: 12px; text-align: center; }
@@ -7150,7 +7154,19 @@ select,
 .dkc-view-name { margin: 0; font-size: 22px; letter-spacing: -0.01em; }
 .dkc-view-head .cta { margin-left: auto; }
 .dkc-author { font-size: 13px; color: var(--subtle); font-weight: 700; }
-.dkc-value { max-width: 420px; margin-bottom: 18px; }
+
+/* Deck publicado: cartas à esquerda, contexto (valor + análise) numa coluna à
+   direita — mesma divisão do editor, pra quem vê o deck de outra pessoa ter as
+   MESMAS informações de quem o montou na hora de decidir se copia.
+   Empilha no mobile: as cartas primeiro, o contexto embaixo. */
+.dkc-view-cols { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 18px; align-items: start; }
+.dkc-view-side { display: grid; gap: 14px; position: sticky; top: 74px; }
+.dkc-value { margin: 0; }
+.dkc-value h3, .dkc-analysis h3 { margin: 0 0 10px; font-size: 15px; }
+@media (max-width: 900px) {
+  .dkc-view-cols { grid-template-columns: minmax(0, 1fr); }
+  .dkc-view-side { position: static; }
+}
 
 /* Leitura do histórico de preço (crosshair + tooltip do sparkline do preview).
    Overlay em HTML sobre o SVG; posições em % seguem qualquer largura. */

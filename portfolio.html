@@ -51,9 +51,14 @@
     </header>
 
     <main>
-      <div class="page-head pf-head">
+      <div class="page-head pf-head dash-head">
         <h1 data-i18n="nav.portfolio">Portfólio</h1>
         <button type="button" id="pfExport" class="secondary" data-i18n="portfolio.export" hidden>Exportar CSV</button>
+        <!-- Por ÚLTIMO de propósito: o .pf-head é flex com space-between, então
+             o link precisa quebrar pra própria linha (flex-basis no CSS) pra
+             cair embaixo do título, como nas outras telas — no meio da linha
+             ele ficaria espremido entre o título e o "Exportar CSV". -->
+        <a href="dashboard.html" class="serie-back" data-i18n="nav.backDashboard">← Dashboard</a>
       </div>
 
       <p class="collection-subtitle" data-i18n="portfolio.subtitle">Visão financeira da sua coleção: tudo o que você tem (cartas + graded), por jogo, com a progressão de valor no tempo.</p>

@@ -323,6 +323,21 @@
     });
     const money = (v) => shared.formatMoney(shared.getCurrency(), v);
 
+    // ANÁLISE (curva de custo, cores, raridade) pra quem VÊ o deck publicado —
+    // é o contexto que decide se vale copiar. Calculada aqui no cliente, a
+    // partir do catálogo que esta página já baixou: não vai no payload do
+    // publicar, então não incha a linha da tabela nem congela num retrato
+    // velho — deck antigo passa a exibir a análise sem republicar.
+    const an = rules.analyze({ game: deck.game, format: deck.format, zones: deck.zones }, byId);
+    const analiseHtml = (an.curve || an.dist || an.rarity)
+      ? `<section class="deck-analysis dkc-analysis">
+          <h3>${esc(t("decks.analysis"))}</h3>
+          ${curveHtml(an.curve)}
+          ${barsHtml(t("decks.dist"), an.dist, true)}
+          ${barsHtml(t("decks.rarity"), an.rarity)}
+        </section>`
+      : "";
+
     const zonesHtml = Object.keys(deck.zones).map((zk) => {
       const list = deck.zones[zk];
       if (!list.length) return "";
@@ -345,11 +360,18 @@
         <span class="deck-ed-game">${shared.gameTagHtml(deck.game)}${deck.author ? `<span class="dkc-author">${esc(t("decks.byAuthor", { author: deck.author }))}</span>` : ""}</span>
         <button type="button" class="cta" data-dkc-copy>${esc(t(logged ? "decks.copyToMine" : "decks.loginToCopy"))}</button>
       </div>
-      ${priceOk ? `<section class="deck-value dkc-value">
-        <div class="deck-value-row"><span>${esc(t("decks.valueTotal"))}</span><strong>${esc(money(total))}</strong></div>
-        <div class="deck-value-row missing"><span>${esc(t("decks.valueMissingYou"))}</span><strong>${esc(money(missing))}</strong></div>
-      </section>` : ""}
-      ${zonesHtml}`;
+      <div class="dkc-view-cols">
+        <div class="dkc-view-main">${zonesHtml}</div>
+        <aside class="dkc-view-side">
+          ${priceOk ? `<section class="deck-value dkc-value">
+            <h3>${esc(t("decks.value"))}</h3>
+            <div class="deck-value-row"><span>${esc(t("decks.valueTotal"))}</span><strong>${esc(money(total))}</strong></div>
+            <div class="deck-value-row"><span>${esc(t("decks.valueHave"))}</span><strong class="have">${esc(money(total - missing))}</strong></div>
+            <div class="deck-value-row missing"><span>${esc(t("decks.valueMissingYou"))}</span><strong>${esc(money(missing))}</strong></div>
+          </section>` : ""}
+          ${analiseHtml}
+        </aside>
+      </div>`;
 
     box.querySelector("[data-dkc-copy]").addEventListener("click", () => {
       if (!logged) { location.href = "login.html"; return; }
