@@ -287,6 +287,13 @@
   // Declarada ANTES da chamada: initPublicPage roda já na linha de baixo, e um
   // `let` depois dela ficaria em TDZ — a exceção travava o "Carregando…".
   let communityGame = "";                       // filtro ativo ("" = todos)
+  // Ordenação da galeria (preferência do usuário, lembrada).
+  let communitySort = (function () {
+    try {
+      const v = localStorage.getItem("tcg-deck-community-sort");
+      return ["recent", "cards", "name"].includes(v) ? v : "recent";
+    } catch (e) { return "recent"; }
+  })();
   const pubBox = document.getElementById("deckCommunity");
   if (pubBox) { initPublicPage(pubBox); return; }
 
@@ -325,6 +332,11 @@
   async function renderCommunity(box, logged) {
     box.innerHTML = `<p class="deck-hint">${esc(t("decks.loading"))}</p>`;
     const rows = await shared.listShares("deck", communityGame || null, 60);
+    // Ordenação no CLIENTE: a lista vem limitada a 60 do servidor (mais
+    // recentes), então reordenar aqui é barato e não gasta round-trip.
+    const nCards = (r) => Number(r.total) || 0;
+    if (communitySort === "cards") rows.sort((a, b) => nCards(b) - nCards(a));
+    else if (communitySort === "name") rows.sort((a, b) => String(a.title || "").localeCompare(String(b.title || "")));
     // Filtros: chips por jogo — sempre TODOS os jogos com a cor deles (o
     // usuário pediu filtros; jogo sem deck fica com o chip mesmo assim, senão
     // o filtro "some" conforme o conteúdo).
@@ -335,6 +347,10 @@
     const topCta = logged
       ? `<a class="cta secondary-cta" href="my-decks.html">${esc(t("decks.goMine"))}</a>`
       : `<a class="cta" href="login.html">${esc(t("decks.publicCta"))}</a>`;
+    const sortSel = `<label class="dkc-sort"><span>${esc(t("decks.sortBy"))}</span>
+      <select class="deck-view-sel" data-dkc-sort>
+        ${["recent", "cards", "name"].map((s) => `<option value="${escA(s)}"${communitySort === s ? " selected" : ""}>${esc(t("decks.sortCom." + s))}</option>`).join("")}
+      </select></label>`;
     let body;
     if (!rows.length) {
       body = `<section class="empty-state"><h2>${esc(t("decks.emptyCommunityTitle"))}</h2>
@@ -343,17 +359,40 @@
       body = `<div class="dkc-grid">` + rows.map((r) => {
         const g = shared.normalizeGame(r.game || "pokemon");
         const quando = r.created_at ? new Date(r.created_at).toLocaleDateString(shared.getLocale()) : "";
+        const n = Number(r.total) || 0;
+        // Capa: a URL vem no payload (gravada no publicar), então o card não
+        // precisa do catálogo do jogo. Deck antigo sem capa mostra o tile vazio
+        // no lugar — sem buraco no layout.
+        const capa = r.cover
+          ? `<img src="${escA(r.cover)}" alt="" loading="lazy">`
+          : `<span class="deck-noimg"></span>`;
         return `<a class="dkc-card" href="decks.html?s=${encodeURIComponent(r.id)}">
-          <span class="dkc-card-name">${esc(String(r.title || t("decks.untitled")).slice(0, 60))}</span>
-          <span class="dkc-card-meta">${shared.gameTagHtml(g)}<span>${esc(quando)}</span></span>
+          <span class="dkc-card-cover">${capa}</span>
+          <span class="dkc-card-body">
+            <span class="dkc-card-name">${esc(String(r.title || t("decks.untitled")).slice(0, 60))}</span>
+            <span class="dkc-card-meta">
+              ${shared.gameTagHtml(g)}
+              ${n ? `<span class="dkc-card-n">${esc(t("decks.cardsCount", { n: n }))}</span>` : ""}
+            </span>
+            <span class="dkc-card-sub">
+              ${r.author ? `<span class="dkc-author">${esc(t("decks.byAuthor", { author: String(r.author).slice(0, 30) }))}</span>` : ""}
+              <span class="dkc-meta-date">${esc(quando)}</span>
+            </span>
+          </span>
         </a>`;
       }).join("") + `</div>`;
     }
-    box.innerHTML = `<div class="dkc-head">${chips}${topCta}</div>${body}`;
+    box.innerHTML = `<div class="dkc-head">${chips}<div class="dkc-head-right">${sortSel}${topCta}</div></div>${body}`;
     box.querySelectorAll("[data-dkc-game]").forEach((b) => b.addEventListener("click", () => {
       communityGame = b.dataset.dkcGame;
       renderCommunity(box, logged);
     }));
+    const sel = box.querySelector("[data-dkc-sort]");
+    if (sel) sel.addEventListener("change", () => {
+      communitySort = sel.value;
+      try { localStorage.setItem("tcg-deck-community-sort", communitySort); } catch (e) { /* ignora */ }
+      renderCommunity(box, logged);
+    });
   }
 
   // ---------- Viewer de um deck publicado ----------
@@ -1309,7 +1348,19 @@
           zones[k] = (current.zones[k] || []).map((e) => ({ id: e.id, qty: e.qty }));
         });
         const handle = (shared.getProfile && (shared.getProfile() || {}).handle) || null;
-        const payload = { v: 1, name: current.name, game: current.game, format: current.format || null, author: handle, zones };
+        // `total` e `cover` vão GRAVADOS no payload pra galeria mostrar contagem
+        // e capa sem baixar a lista de cartas de cada deck (o listShares pede só
+        // estes campos via JSON path). Sem eles, a galeria teria que puxar as
+        // zonas de 60 decks — dezenas de KB pra desenhar um card.
+        // A capa é a URL da imagem, não o id: assim a galeria não precisa do
+        // catálogo de cada jogo só pra resolver uma miniatura.
+        const capa = current.coverCardId && cat.byId[current.coverCardId];
+        const payload = {
+          v: 1, name: current.name, game: current.game, format: current.format || null,
+          author: handle, zones,
+          total: totalCards(current),
+          cover: (capa && capa.image) || null
+        };
         const res = await shared.createShare("deck", current.name, payload, current.game);
         pub.disabled = false;
         if (res && res.id) {

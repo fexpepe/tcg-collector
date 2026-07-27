@@ -351,12 +351,13 @@ function cardNamesFor(game) {
 }
 
 function deckPageHtml(dp) {
-  const { deck, slug, cardsList, total } = dp;
+  const { deck, slug, cardsList, total, priceUSD } = dp;
   const gameLabel = DECK_GAME_LABELS[deck.game] || deck.game;
   const canonical = `${ORIGIN}/deck/${slug}`;
-  const title = `${deck.name} — deck de ${gameLabel} (${total} cartas) | Sleevu`;
+  const priceBit = priceUSD > 0 ? ` — US$ ${priceUSD.toFixed(2)}` : "";
+  const title = `${deck.name} — deck de ${gameLabel} (${total} cartas)${priceBit} | Sleevu`;
   const topNames = cardsList.slice(0, 6).map((c) => c.name).join(", ");
-  const desc = `Lista completa do deck "${deck.name}" de ${gameLabel}: ${topNames}${cardsList.length > 6 ? "…" : ""} Veja o custo total, a curva e copie pra sua conta no Sleevu.`;
+  const desc = `Lista completa do deck "${deck.name}" de ${gameLabel}: ${topNames}${cardsList.length > 6 ? "…" : ""}${priceUSD > 0 ? ` Custo de referência: US$ ${priceUSD.toFixed(2)}.` : ""} Veja a curva, o que falta na sua coleção e copie pra sua conta no Sleevu.`;
   const appUrl = `/decks.html?s=${encodeURIComponent(deck.shareId)}`;
   const jsonLd = {
     "@context": "https://schema.org",
@@ -367,7 +368,7 @@ function deckPageHtml(dp) {
     publisher: { "@type": "Organization", name: "Sleevu" },
     url: canonical
   };
-  const rows = cardsList.map((c) => `<li>${c.qty}× ${escapeHtml(c.name)}${c.meta ? ` <small>${escapeHtml(c.meta)}</small>` : ""}</li>`).join("\n            ");
+  const rows = cardsList.map((c) => `<li>${c.qty}× ${escapeHtml(c.name)}${c.meta ? ` <small>${escapeHtml(c.meta)}</small>` : ""}${c.usd > 0 ? ` <b>US$ ${(c.usd * c.qty).toFixed(2)}</b>` : ""}</li>`).join("\n            ");
   return `<!doctype html>
 <html lang="pt-BR">
   <head>
@@ -397,7 +398,7 @@ function deckPageHtml(dp) {
     <main>
       <p><a href="/decks">← Decks da comunidade</a></p>
       <h1>${escapeHtml(deck.name)}</h1>
-      <p>Deck de <strong>${escapeHtml(gameLabel)}</strong> · ${total} cartas${deck.author ? ` · por @${escapeHtml(deck.author)}` : ""}</p>
+      <p>Deck de <strong>${escapeHtml(gameLabel)}</strong> · ${total} cartas${deck.author ? ` · por @${escapeHtml(deck.author)}` : ""}${priceUSD > 0 ? ` · custo de referência <strong>US$ ${priceUSD.toFixed(2)}</strong>` : ""}</p>
       <a class="cta" href="${escapeAttr(appUrl)}">Abrir no Sleevu — valor, curva de custo e copiar o deck</a>
       <h2>Lista de cartas</h2>
       <ul>
@@ -410,6 +411,23 @@ function deckPageHtml(dp) {
 `;
 }
 
+// Tabela de preços por jogo, carregada sob demanda (só dos jogos que aparecem
+// nos decks). Pokémon mora em data/, os demais em data/<jogo>/.
+const deckPriceCache = {};
+async function pricingFor(game) {
+  if (deckPriceCache[game]) return deckPriceCache[game];
+  const dir = game === "pokemon" ? "data/" : `data/${game}/`;
+  let table = {};
+  try { table = await loadPricingTable(dir); } catch { /* jogo sem pricing */ }
+  // O .generated é artefato de build: vazio no dev e em build cujo sync do jogo
+  // falhou. Cai no pricing.js versionado pra a página não sair sem preço.
+  if (!Object.keys(table).length) {
+    try { table = (await readGlobalVar(new URL(`../${dir}pricing.js`, import.meta.url), "TCG_PRICING")) || {}; } catch { /* sem preço mesmo */ }
+  }
+  deckPriceCache[game] = table;
+  return table;
+}
+
 async function buildDeckPages() {
   const rowsRaw = await fetchPublicDecks();
   if (existsSync(DECK_OUT_DIR)) rmSync(DECK_OUT_DIR, { recursive: true, force: true });
@@ -420,16 +438,23 @@ async function buildDeckPages() {
     const d = row && row.data;
     if (!d || d.v !== 1 || !d.zones || !DECK_GAME_LABELS[d.game]) continue;
     const names = cardNamesFor(d.game);
+    const precos = await pricingFor(d.game);
     const cardsList = [];
-    let total = 0;
+    let total = 0, priceUSD = 0;
     Object.values(d.zones).forEach((list) => (Array.isArray(list) ? list : []).forEach((e) => {
       if (!e || !e.id) return;
       const qty = Math.max(1, Math.min(99, Number(e.qty) || 1));
       total += qty;
       const c = names.get(String(e.id));
-      cardsList.push({ qty, name: c ? c.name : String(e.id), meta: c ? `${c.set || ""} ${c.number || ""}`.trim() : "" });
+      // Preço de REFERÊNCIA em USD (o mesmo campo que as páginas de carta usam):
+      // é o número que aparece na busca — "quanto custa montar este deck" é a
+      // pergunta que traz o clique.
+      const usd = refPriceUSD(precos[String(e.id)]);
+      priceUSD += usd * qty;
+      cardsList.push({ qty, usd, name: c ? c.name : String(e.id), meta: c ? `${c.set || ""} ${c.number || ""}`.trim() : "" });
     }));
     if (!total) continue;
+    priceUSD = Math.round(priceUSD * 100) / 100;
     const deck = {
       shareId: row.id, game: d.game, author: d.author ? String(d.author).slice(0, 30) : null,
       name: String(d.name || row.title || "Deck").slice(0, 60), createdAt: row.created_at || null
@@ -440,7 +465,7 @@ async function buildDeckPages() {
     let s = base, i = 2;
     while (used.has(s)) s = `${base}-${i++}`;
     used.add(s);
-    writeFileSync(join(DECK_OUT_DIR, `${s}.html`), deckPageHtml({ deck, slug: s, cardsList, total }), "utf8");
+    writeFileSync(join(DECK_OUT_DIR, `${s}.html`), deckPageHtml({ deck, slug: s, cardsList, total, priceUSD }), "utf8");
     out.push({ slug: s });
   }
   return out;
