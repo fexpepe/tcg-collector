@@ -25,18 +25,21 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      # O Bot Fight Mode da Cloudflare (ligado em 2026-07-27) passou a devolver
+      # O Bot Fight Mode da Cloudflare (ligado e DESLIGADO em 2026-07-27) devolvia
       # 403 pra este job: ele bloqueia IP de datacenter sem navegador, e o runner
-      # do GitHub é exatamente isso — o monitor virou falso alarme de queda.
+      # do GitHub é exatamente isso — o monitor virava falso alarme de queda.
       #
-      # Solução: o probe manda um cabeçalho secreto e uma regra no WAF pula o Bot
-      # Fight Mode só pra quem o traz. Cabeçalho (e não User-Agent) porque UA
-      # qualquer um forja; o segredo fica em GitHub Secrets.
-      #   Cloudflare > Security > WAF > Custom rules:
-      #     Se  (http.request.headers["x-sleevu-probe"][0] eq "<mesmo valor>")
-      #     Então  Skip > Bot Fight Mode (e Super Bot Fight Mode, se houver)
-      # Sem o secret configurado o job segue rodando sem o cabeçalho — volta a
-      # falhar, mas não quebra por falta de variável.
+      # ATENÇÃO pra quem for reativar: no plano FREE o Bot Fight Mode NÃO roda no
+      # Ruleset Engine, então regra de WAF com ação Skip é ignorada — não existe
+      # como abrir exceção pro próprio monitor. Só o Super Bot Fight Mode (Pro+)
+      # aceita Skip. Ou seja: no free é Bot Fight Mode OU monitoramento, não os dois.
+      #
+      # O cabeçalho abaixo fica preparado pro dia em que houver Pro; aí basta criar
+      # em Cloudflare > Security > WAF > Custom rules:
+      #     Se  (any(http.request.headers["x-sleevu-probe"][*] eq "<valor do secret>"))
+      #     Então  Skip > All Super Bot Fight Mode Rules
+      # Sem o secret configurado o job roda sem o cabeçalho — que é o estado normal
+      # hoje, com o Bot Fight Mode desligado.
       - name: Home + catálogo + Supabase respondem?
         env:
           PROBE_TOKEN: ${{ secrets.UPTIME_PROBE_TOKEN }}

@@ -16,10 +16,11 @@ const failures = [];
 const ok = (name) => console.log(`  ✓ ${name}`);
 const fail = (name, why) => { console.error(`  ✗ ${name}: ${why}`); failures.push(`${name}: ${why}`); };
 
-// Cabeçalho que o WAF da Cloudflare usa pra PULAR o Bot Fight Mode neste robô.
-// Sem ele o healthcheck toma 403: o Bot Fight Mode bloqueia IP de datacenter sem
-// navegador, e o runner do GitHub é isso. Ausente = segue sem o cabeçalho (em
-// máquina local o probe passa normalmente).
+// Cabeçalho preparado pra uma regra de WAF pular o bot protection neste robô —
+// necessário porque o Bot Fight Mode bloqueia IP de datacenter sem navegador, e o
+// runner do GitHub é isso. Só funciona com Super Bot Fight Mode (Pro+): no plano
+// free a ação Skip é ignorada. Ver o comentário longo no uptime.yml.
+// Ausente = segue sem o cabeçalho (estado normal hoje).
 const PROBE_TOKEN = process.env.UPTIME_PROBE_TOKEN || "";
 
 // path relativo = produção; URL absoluta = usada como veio (Supabase leva a apikey).
