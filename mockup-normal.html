@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sleevu — variação Normal (polida)</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <script src="src/theme.js"></script>
+    <!-- A fonte só seria descoberta depois de baixar e parsear o styles.css
+         (o @font-face mora lá). O preload a coloca na fila junto com o CSS.
+         crossorigin é OBRIGATORIO mesmo sendo mesma origem: fonte é sempre
+         buscada em modo CORS, e sem o atributo o preload nao casa com a
+         requisicao do CSS e o arquivo desce DUAS vezes.
+         Só o latin: pt-BR e en cabem inteiros em U+0000-00FF; o latin-ext
+         (14 KB) fica sob demanda, como o unicode-range ja define. -->
+    <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      body.home { background: radial-gradient(1200px 500px at 50% -120px, rgba(var(--accent-rgb),0.10), transparent), var(--bg); }
+      .nm-head-in { max-width: 1080px; margin: 0 auto; padding: 18px 26px; display: flex; align-items: center; gap: 26px; }
+      .nm-nav { display: flex; gap: 22px; margin: 0 auto 0 6px; }
+      .nm-nav a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; }
+      .nm-nav a:hover { color: var(--text); }
+      .nm-signin { min-height: 38px; padding: 0 16px; border-radius: 999px; font-size: 14px; }
+
+      .nm-main { max-width: 1080px; margin: 0 auto; padding: 0 26px 60px; }
+      .nm-hero { text-align: center; padding: 84px 0 44px; }
+      .nm-pill { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--muted); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; }
+      .nm-pill i { width: 8px; height: 8px; border-radius: 99px; background: var(--accent); display: inline-block; }
+      .nm-hero h1 { font-size: clamp(34px, 5vw, 56px); line-height: 1.06; letter-spacing: -0.03em; font-weight: 800; margin: 24px auto 0; max-width: 760px; }
+      .nm-hero h1 span { color: var(--accent); }
+      .nm-hero p { color: var(--muted); font-size: 18.5px; line-height: 1.55; margin: 22px auto 0; max-width: 580px; }
+      .nm-ctas { display: flex; gap: 12px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
+      .nm-round { border-radius: 999px; }
+
+      .nm-bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 44px; }
+      .nm-tile { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 22px; transition: transform .2s ease, box-shadow .2s ease; }
+      .nm-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+      .nm-tile.wide { grid-column: span 2; display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; align-items: center; }
+      .nm-tile h3 { margin: 14px 0 6px; font-size: 18px; font-weight: 800; letter-spacing: -0.01em; }
+      .nm-tile p { margin: 0; color: var(--subtle); font-size: 14px; line-height: 1.55; }
+      .nm-shot { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+      .nm-shot .lbl { font-size: 11px; font-weight: 700; letter-spacing: .04em; color: var(--subtle); }
+      .nm-shot .val { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin: 2px 0 0; }
+      .nm-shot .dl { font-size: 12.5px; font-weight: 800; color: var(--money); }
+      .nm-shot svg { display: block; width: 100%; height: 66px; margin-top: 8px; }
+      .nm-mini { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--accent-soft); color: var(--accent); font-weight: 900; }
+      .nm-binder { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; }
+      .nm-binder img { width: 100%; aspect-ratio: 63/88; object-fit: cover; border-radius: 8px; }
+      .nm-slab { display: flex; align-items: center; gap: 12px; }
+      .nm-slab .g { font-weight: 900; font-size: 16px; border: 2px solid var(--line); border-radius: 10px; padding: 8px 11px; }
+      .nm-slab img { width: 46px; aspect-ratio: 63/88; object-fit: cover; border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,.35); }
+
+      @media (max-width: 820px) {
+        .nm-bento { grid-template-columns: repeat(2, 1fr); }
+        .nm-tile.wide { grid-column: span 2; grid-template-columns: 1fr; }
+      }
+      @media (max-width: 540px) { .nm-bento { grid-template-columns: 1fr; } .nm-tile.wide { grid-column: span 1; } }
+    </style>
+  </head>
+  <body class="home">
+    <header class="app-header">
+      <div class="nm-head-in">
+        <a class="brand" href="#" aria-label="Sleevu">Sleevu</a>
+        <nav class="nm-nav"><a href="#">Explorar</a><a href="#">Coleção</a><a href="#">Portfólio</a><a href="#">Novidades</a></nav>
+        <a class="cta nm-signin" href="#">Entrar</a>
+      </div>
+    </header>
+
+    <main class="nm-main">
+      <section class="nm-hero">
+        <span class="nm-pill"><i></i> 12 jogos · modernos e vintage</span>
+        <h1>Sua coleção de cartas, com <span>valor de mercado</span> em tempo real.</h1>
+        <p>Catalogue por variante e condição, acompanhe o patrimônio e sincronize em todos os aparelhos.</p>
+        <div class="nm-ctas">
+          <a class="cta nm-round" href="#">Começar grátis</a>
+          <a class="cta secondary-cta nm-round" href="#">Já tenho conta</a>
+        </div>
+      </section>
+
+      <section class="nm-bento">
+        <div class="nm-tile wide">
+          <div>
+            <span class="nm-mini">↗</span>
+            <h3>Portfólio de verdade</h3>
+            <p>Valor da coleção no tempo, custo médio e lucro em vendas — como uma corretora, só que de cartas.</p>
+          </div>
+          <div class="nm-shot" aria-hidden="true">
+            <div class="lbl">PATRIMÔNIO</div>
+            <div class="val">R$ 12.480</div>
+            <div class="dl">▲ 4,2% na semana</div>
+            <svg viewBox="0 0 300 66" preserveAspectRatio="none"><path d="M0 52 C34 48,54 40,84 40 S150 30,180 22 S250 14,300 8" fill="none" stroke="var(--accent)" stroke-width="2.5"/><path d="M0 52 C34 48,54 40,84 40 S150 30,180 22 S250 14,300 8 L300 66 L0 66 Z" fill="var(--accent-soft)"/></svg>
+          </div>
+        </div>
+
+        <div class="nm-tile">
+          <div class="nm-binder" aria-hidden="true">
+            <img src="https://assets.tcgdex.net/en/base/base1/4/low.webp" alt="" loading="lazy">
+            <img src="https://assets.tcgdex.net/en/base/base1/2/low.webp" alt="" loading="lazy">
+            <img src="https://assets.tcgdex.net/en/base/base1/15/low.webp" alt="" loading="lazy">
+          </div>
+          <h3>Binders visuais</h3>
+          <p>Fichários página a página, com fotos das suas cartas e compartilhamento.</p>
+        </div>
+
+        <div class="nm-tile">
+          <div class="nm-slab" aria-hidden="true">
+            <span class="g">PSA 10</span>
+            <img src="https://assets.tcgdex.net/en/base/base1/16/low.webp" alt="" loading="lazy">
+          </div>
+          <h3>Graded &amp; slabs</h3>
+          <p>PSA, BGS, CGC — nota, certificado e valor de mercado.</p>
+        </div>
+
+        <div class="nm-tile">
+          <span class="nm-mini">♥</span>
+          <h3>Wishlist que avisa</h3>
+          <p>Receba notificação quando o preço de mercado da carta que falta cair.</p>
+        </div>
+
+        <div class="nm-tile">
+          <span class="nm-mini">⇄</span>
+          <h3>Seus dados são seus</h3>
+          <p>Sincroniza na nuvem, funciona offline e exporta em JSON/CSV quando quiser.</p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

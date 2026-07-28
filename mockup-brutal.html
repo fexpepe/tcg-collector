@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sleevu — variação Brutalista</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <script src="src/theme.js"></script>
+    <!-- A fonte só seria descoberta depois de baixar e parsear o styles.css
+         (o @font-face mora lá). O preload a coloca na fila junto com o CSS.
+         crossorigin é OBRIGATORIO mesmo sendo mesma origem: fonte é sempre
+         buscada em modo CORS, e sem o atributo o preload nao casa com a
+         requisicao do CSS e o arquivo desce DUAS vezes.
+         Só o latin: pt-BR e en cabem inteiros em U+0000-00FF; o latin-ext
+         (14 KB) fica sob demanda, como o unicode-range ja define. -->
+    <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      body.home { background: var(--bg); }
+      .br-mono { font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; }
+      .br-head { border-bottom: 2px solid var(--text); }
+      .br-head-in { max-width: 1160px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; gap: 18px; }
+      .br-logo { font-weight: 900; font-size: 22px; letter-spacing: -0.04em; color: var(--text); text-decoration: none; text-transform: uppercase; }
+      .br-head nav { display: flex; gap: 0; margin-left: auto; }
+      .br-head nav a { font-family: ui-monospace, monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text); text-decoration: none; padding: 8px 14px; border-left: 2px solid var(--text); }
+      .br-head nav a:hover { background: var(--accent); color: var(--on-accent); }
+
+      .br-main { max-width: 1160px; margin: 0 auto; padding: 0 24px 56px; }
+      .br-label { font-family: ui-monospace, monospace; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin: 0; }
+      .br-hero { display: grid; grid-template-columns: 1.15fr 0.85fr; border-bottom: 2px solid var(--text); }
+      .br-hero-l { padding: 46px 34px 40px 0; border-right: 2px solid var(--text); }
+      .br-hero-l h1 { font-size: clamp(44px, 6.6vw, 92px); line-height: 0.92; letter-spacing: -0.04em; font-weight: 900; text-transform: uppercase; margin: 18px 0 0; color: var(--text); }
+      .br-hero-l h1 em { font-style: normal; color: var(--accent); }
+      .br-hero-l p { font-family: ui-monospace, monospace; font-size: 14px; line-height: 1.6; color: var(--muted); margin: 22px 0 0; max-width: 460px; }
+      .br-btns { display: flex; gap: 0; margin-top: 30px; }
+      .br-btn { display: inline-flex; align-items: center; min-height: 52px; padding: 0 26px; font-weight: 900; text-transform: uppercase; font-size: 14px; letter-spacing: 0.02em; text-decoration: none; border: 2px solid var(--text); background: var(--accent); color: var(--on-accent); box-shadow: 6px 6px 0 var(--text); }
+      .br-btn.ghost { background: var(--bg); color: var(--text); margin-left: 22px; box-shadow: 6px 6px 0 var(--accent); }
+      .br-hero-r { display: grid; grid-template-columns: 1fr 1fr; }
+      .br-frame { border-left: 2px solid var(--text); border-bottom: 2px solid var(--text); padding: 12px; display: flex; align-items: center; justify-content: center; background: var(--panel); }
+      .br-frame:nth-child(-n+2) { border-top: 0; }
+      .br-frame img { width: 100%; aspect-ratio: 63/88; object-fit: cover; display: block; }
+
+      .br-marquee { border-bottom: 2px solid var(--text); overflow: hidden; white-space: nowrap; background: var(--accent); }
+      .br-marquee span { display: inline-block; font-family: ui-monospace, monospace; font-weight: 800; text-transform: uppercase; font-size: 14px; letter-spacing: 0.06em; color: var(--on-accent); padding: 12px 0; animation: brslide 22s linear infinite; }
+      .br-marquee b { padding: 0 22px; }
+      @keyframes brslide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+      @media (prefers-reduced-motion: reduce) { .br-marquee span { animation: none; } }
+
+      .br-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-left: 2px solid var(--text); }
+      .br-cell { border-right: 2px solid var(--text); border-bottom: 2px solid var(--text); padding: 24px; }
+      .br-cell .n { font-family: ui-monospace, monospace; font-size: 12px; font-weight: 700; color: var(--subtle); }
+      .br-cell h3 { font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; margin: 12px 0 8px; }
+      .br-cell p { font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.55; color: var(--muted); margin: 0; }
+
+      @media (max-width: 780px) {
+        .br-hero { grid-template-columns: 1fr; }
+        .br-hero-l { border-right: 0; padding-right: 0; }
+        .br-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body class="home">
+    <header class="br-head">
+      <div class="br-head-in">
+        <a class="br-logo" href="#">Sleevu</a>
+        <nav><a href="#">Explorar</a><a href="#">Coleção</a><a href="#">Portfólio</a><a href="#">Entrar</a></nav>
+      </div>
+    </header>
+
+    <main class="br-main">
+      <section class="br-hero">
+        <div class="br-hero-l">
+          <p class="br-label">[ Coleção // Portfólio // 12 jogos ]</p>
+          <h1>Cartas<br>com <em>valor</em><br>de mercado.</h1>
+          <p>&gt; Catalogue por variante e condição. Acompanhe o patrimônio no tempo. Sincronize em todos os aparelhos.</p>
+          <div class="br-btns">
+            <a class="br-btn" href="#">Começar grátis</a>
+            <a class="br-btn ghost" href="#">Entrar</a>
+          </div>
+        </div>
+        <div class="br-hero-r" aria-hidden="true">
+          <div class="br-frame"><img src="https://assets.tcgdex.net/en/base/base1/4/low.webp" alt=""></div>
+          <div class="br-frame"><img src="https://assets.tcgdex.net/en/base/base1/2/low.webp" alt=""></div>
+          <div class="br-frame"><img src="https://assets.tcgdex.net/en/base/base1/15/low.webp" alt=""></div>
+          <div class="br-frame"><img src="https://assets.tcgdex.net/en/base/base1/16/low.webp" alt=""></div>
+        </div>
+      </section>
+
+      <div class="br-marquee" aria-hidden="true">
+        <span><b>Pokémon</b>/<b>Lorcana</b>/<b>One Piece</b>/<b>Magic</b>/<b>Yu-Gi-Oh!</b>/<b>Digimon</b>/<b>Naruto</b>/<b>Hunter × Hunter</b>/<b>Gundam</b>/<b>Flesh and Blood</b>/<b>Pokémon</b>/<b>Lorcana</b>/<b>One Piece</b>/<b>Magic</b>/<b>Yu-Gi-Oh!</b>/<b>Digimon</b>/<b>Naruto</b>/<b>Hunter × Hunter</b>/<b>Gundam</b>/<b>Flesh and Blood</b>/</span>
+      </div>
+
+      <section class="br-grid">
+        <div class="br-cell"><span class="n">01</span><h3>Portfólio</h3><p>Valor no tempo, custo médio, lucro em vendas. Uma corretora de cartas.</p></div>
+        <div class="br-cell"><span class="n">02</span><h3>Binders</h3><p>Fichários página a página, com fotos das suas cartas e link de compartilhamento.</p></div>
+        <div class="br-cell"><span class="n">03</span><h3>Wishlist</h3><p>Notifica quando o preço de mercado cai. Antes de todo mundo.</p></div>
+        <div class="br-cell"><span class="n">04</span><h3>Graded</h3><p>PSA / BGS / CGC. Nota, certificado e valor das suas graduadas.</p></div>
+        <div class="br-cell"><span class="n">05</span><h3>Preços reais</h3><p>TCGplayer, Cardmarket, Liga. Nada inventado. Em R$, US$ e €.</p></div>
+        <div class="br-cell"><span class="n">06</span><h3>Seus dados</h3><p>Nuvem grátis, offline, export JSON/CSV. Sem plano pro. Sem cartão.</p></div>
+      </section>
+    </main>
+  </body>
+</html>

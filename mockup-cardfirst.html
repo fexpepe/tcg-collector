@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sleevu — variação Card-first</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <script src="src/theme.js"></script>
+    <!-- A fonte só seria descoberta depois de baixar e parsear o styles.css
+         (o @font-face mora lá). O preload a coloca na fila junto com o CSS.
+         crossorigin é OBRIGATORIO mesmo sendo mesma origem: fonte é sempre
+         buscada em modo CORS, e sem o atributo o preload nao casa com a
+         requisicao do CSS e o arquivo desce DUAS vezes.
+         Só o latin: pt-BR e en cabem inteiros em U+0000-00FF; o latin-ext
+         (14 KB) fica sob demanda, como o unicode-range ja define. -->
+    <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      body.home { background: var(--bg); }
+      .cf-head-in { max-width: 1240px; margin: 0 auto; padding: 16px 26px; display: flex; align-items: center; gap: 18px; }
+      .cf-head .sp { margin-left: auto; }
+      .cf-ghost { min-height: 38px; padding: 0 15px; border-radius: 9px; font-size: 14px; color: var(--text); text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; }
+      .cf-solid { min-height: 38px; padding: 0 16px; border-radius: 9px; font-size: 14px; }
+
+      .cf-main { max-width: 1240px; margin: 0 auto; padding: 0 26px 60px; }
+      .cf-intro { padding: 34px 0 18px; }
+      .cf-intro h1 { font-size: clamp(24px, 3vw, 34px); font-weight: 800; letter-spacing: -0.02em; margin: 0; }
+      .cf-intro p { color: var(--muted); font-size: 16px; margin: 8px 0 0; }
+
+      .cf-search { display: flex; align-items: center; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 0 16px; height: 52px; max-width: 640px; margin: 18px 0 0; }
+      .cf-search svg { flex: none; color: var(--subtle); }
+      .cf-search input { border: 0; background: transparent; color: var(--text); font-size: 16px; width: 100%; outline: none; }
+      .cf-search .k { font-size: 12px; color: var(--subtle); border: 1px solid var(--line); border-radius: 6px; padding: 3px 7px; font-weight: 700; }
+
+      .cf-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; }
+      .cf-chip { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 999px; padding: 8px 14px; font-size: 13.5px; font-weight: 700; cursor: pointer; }
+      .cf-chip i { width: 9px; height: 9px; border-radius: 99px; }
+      .cf-chip.on { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+      .cf-sechead { display: flex; align-items: baseline; justify-content: space-between; margin: 34px 0 14px; }
+      .cf-sechead h2 { font-size: 17px; font-weight: 800; margin: 0; }
+      .cf-sechead a { font-size: 13.5px; font-weight: 700; color: var(--accent); text-decoration: none; }
+
+      .cf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; }
+      .cf-card { text-decoration: none; color: var(--text); }
+      .cf-thumb { position: relative; border-radius: 10px; overflow: hidden; aspect-ratio: 63/88; background: var(--panel-strong); border: 1px solid var(--line); }
+      .cf-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .2s ease; }
+      .cf-card:hover .cf-thumb { border-color: var(--accent); box-shadow: 0 8px 22px rgba(0,0,0,.3); }
+      .cf-card:hover .cf-thumb img { transform: scale(1.05); }
+      .cf-badge { position: absolute; top: 8px; left: 8px; font-size: 10.5px; font-weight: 800; background: rgba(0,0,0,.62); color: #fff; border-radius: 6px; padding: 3px 7px; backdrop-filter: blur(2px); }
+      .cf-nm { font-size: 13.5px; font-weight: 700; margin: 9px 0 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .cf-meta { display: flex; justify-content: space-between; margin-top: 2px; }
+      .cf-meta .set { font-size: 11.5px; color: var(--subtle); }
+      .cf-meta .price { font-size: 12px; font-weight: 800; color: var(--money); }
+
+      .cf-banner { margin-top: 40px; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(90deg, rgba(var(--accent-rgb),.10), transparent); padding: 24px 26px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+      .cf-banner b { font-size: 18px; font-weight: 800; }
+      .cf-banner p { margin: 3px 0 0; color: var(--muted); font-size: 14px; }
+      .cf-banner .cta { margin-left: auto; }
+    </style>
+  </head>
+  <body class="home">
+    <header class="app-header">
+      <div class="cf-head-in">
+        <a class="brand" href="#" aria-label="Sleevu">Sleevu</a>
+        <a class="cf-ghost sp" href="#">Entrar</a>
+        <a class="cta cf-solid" href="#">Criar conta grátis</a>
+      </div>
+    </header>
+
+    <main class="cf-main">
+      <section class="cf-intro">
+        <h1>Explore 66.000+ cartas de 12 jogos.</h1>
+        <p>Busque, monte sua coleção e acompanhe o valor — grátis.</p>
+        <div class="cf-search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input placeholder="Buscar carta, set ou jogo — ex.: Charizard, Base Set, Lorcana" aria-label="Buscar">
+          <span class="k">/</span>
+        </div>
+        <div class="cf-chips">
+          <span class="cf-chip on">Todos</span>
+          <span class="cf-chip"><i style="background:#ef4444"></i>Pokémon</span>
+          <span class="cf-chip"><i style="background:#a78bfa"></i>Lorcana</span>
+          <span class="cf-chip"><i style="background:#facc15"></i>One Piece</span>
+          <span class="cf-chip"><i style="background:#60a5fa"></i>Magic</span>
+          <span class="cf-chip"><i style="background:#c084fc"></i>Yu-Gi-Oh!</span>
+          <span class="cf-chip"><i style="background:#38bdf8"></i>Digimon</span>
+          <span class="cf-chip"><i style="background:#4ade80"></i>Hunter × Hunter</span>
+        </div>
+      </section>
+
+      <div class="cf-sechead">
+        <h2>Mais vistas pela comunidade</h2>
+        <a href="#">Ver tudo →</a>
+      </div>
+
+      <section class="cf-grid">
+        <a class="cf-card" href="#"><div class="cf-thumb"><span class="cf-badge">#1</span><img src="https://assets.tcgdex.net/en/base/base1/4/low.webp" alt="Charizard"></div><p class="cf-nm">Charizard</p><div class="cf-meta"><span class="set">Base · 4/102</span><span class="price">R$ 3.900</span></div></a>
+        <a class="cf-card" href="#"><div class="cf-thumb"><span class="cf-badge">#2</span><img src="https://assets.tcgdex.net/en/base/base1/2/low.webp" alt="Blastoise"></div><p class="cf-nm">Blastoise</p><div class="cf-meta"><span class="set">Base · 2/102</span><span class="price">R$ 620</span></div></a>
+        <a class="cf-card" href="#"><div class="cf-thumb"><span class="cf-badge">#3</span><img src="https://assets.tcgdex.net/en/base/base1/15/low.webp" alt="Venusaur"></div><p class="cf-nm">Venusaur</p><div class="cf-meta"><span class="set">Base · 15/102</span><span class="price">R$ 480</span></div></a>
+        <a class="cf-card" href="#"><div class="cf-thumb"><span class="cf-badge">#4</span><img src="https://assets.tcgdex.net/en/base/base1/10/low.webp" alt="Mewtwo"></div><p class="cf-nm">Mewtwo</p><div class="cf-meta"><span class="set">Base · 10/102</span><span class="price">R$ 210</span></div></a>
+        <a class="cf-card" href="#"><div class="cf-thumb"><span class="cf-badge">#5</span><img src="https://assets.tcgdex.net/en/base/base1/16/low.webp" alt="Zapdos"></div><p class="cf-nm">Zapdos</p><div class="cf-meta"><span class="set">Base · 16/102</span><span class="price">R$ 190</span></div></a>
+        <a class="cf-card" href="#"><div class="cf-thumb"><span class="cf-badge">#6</span><img src="https://assets.tcgdex.net/en/base/base1/1/low.webp" alt="Alakazam"></div><p class="cf-nm">Alakazam</p><div class="cf-meta"><span class="set">Base · 1/102</span><span class="price">R$ 160</span></div></a>
+        <a class="cf-card" href="#"><div class="cf-thumb"><img src="https://assets.tcgdex.net/en/base/base1/6/low.webp" alt="Gyarados"></div><p class="cf-nm">Gyarados</p><div class="cf-meta"><span class="set">Base · 6/102</span><span class="price">R$ 140</span></div></a>
+        <a class="cf-card" href="#"><div class="cf-thumb"><img src="https://assets.tcgdex.net/en/base/base1/8/low.webp" alt="Machamp"></div><p class="cf-nm">Machamp</p><div class="cf-meta"><span class="set">Base · 8/102</span><span class="price">R$ 90</span></div></a>
+        <a class="cf-card" href="#"><div class="cf-thumb"><img src="https://assets.tcgdex.net/en/base/base1/9/low.webp" alt="Magneton"></div><p class="cf-nm">Magneton</p><div class="cf-meta"><span class="set">Base · 9/102</span><span class="price">R$ 85</span></div></a>
+        <a class="cf-card" href="#"><div class="cf-thumb"><img src="https://assets.tcgdex.net/en/base/base1/11/low.webp" alt="Nidoking"></div><p class="cf-nm">Nidoking</p><div class="cf-meta"><span class="set">Base · 11/102</span><span class="price">R$ 80</span></div></a>
+        <a class="cf-card" href="#"><div class="cf-thumb"><img src="https://assets.tcgdex.net/en/base/base1/12/low.webp" alt="Ninetales"></div><p class="cf-nm">Ninetales</p><div class="cf-meta"><span class="set">Base · 12/102</span><span class="price">R$ 120</span></div></a>
+        <a class="cf-card" href="#"><div class="cf-thumb"><img src="https://assets.tcgdex.net/en/base/base1/14/low.webp" alt="Raichu"></div><p class="cf-nm">Raichu</p><div class="cf-meta"><span class="set">Base · 14/102</span><span class="price">R$ 110</span></div></a>
+      </section>
+
+      <section class="cf-banner">
+        <div>
+          <b>Achou o que colecionar?</b>
+          <p>Crie sua conta grátis e comece a registrar — por variante, condição e quantidade.</p>
+        </div>
+        <a class="cta" href="#">Criar coleção grátis</a>
+      </section>
+    </main>
+  </body>
+</html>

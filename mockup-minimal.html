@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sleevu — variação Minimalista</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <script src="src/theme.js"></script>
+    <!-- A fonte só seria descoberta depois de baixar e parsear o styles.css
+         (o @font-face mora lá). O preload a coloca na fila junto com o CSS.
+         crossorigin é OBRIGATORIO mesmo sendo mesma origem: fonte é sempre
+         buscada em modo CORS, e sem o atributo o preload nao casa com a
+         requisicao do CSS e o arquivo desce DUAS vezes.
+         Só o latin: pt-BR e en cabem inteiros em U+0000-00FF; o latin-ext
+         (14 KB) fica sob demanda, como o unicode-range ja define. -->
+    <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      body.home { background: var(--bg); }
+      .mn-head { border-bottom: 1px solid var(--line); }
+      .mn-head-in { max-width: 1120px; margin: 0 auto; padding: 20px 28px; display: flex; align-items: center; gap: 28px; }
+      .mn-nav { display: flex; gap: 24px; margin-left: 8px; }
+      .mn-nav a { color: var(--subtle); text-decoration: none; font-size: 14px; font-weight: 600; }
+      .mn-nav a:hover { color: var(--text); }
+      .mn-head .mn-cta { margin-left: auto; font-size: 14px; font-weight: 700; color: var(--text); text-decoration: none; }
+
+      .mn-main { max-width: 1120px; margin: 0 auto; padding: 0 28px 60px; }
+      .mn-kicker { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--subtle); font-weight: 700; margin: 0 0 22px; }
+      .mn-hero { padding: 108px 0 40px; max-width: 640px; }
+      .mn-hero h1 { font-size: clamp(34px, 4.6vw, 52px); line-height: 1.08; letter-spacing: -0.025em; font-weight: 600; margin: 0; color: var(--text); }
+      .mn-hero p { color: var(--muted); font-size: 18px; line-height: 1.6; margin: 24px 0 0; max-width: 520px; }
+      .mn-actions { display: flex; align-items: center; gap: 24px; margin-top: 34px; }
+      .mn-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 22px; border-radius: 8px; background: var(--text); color: var(--bg); font-weight: 700; font-size: 15px; text-decoration: none; }
+      .mn-link { color: var(--text); text-decoration: none; font-weight: 600; font-size: 15px; border-bottom: 1px solid var(--line); padding-bottom: 2px; }
+      .mn-link:hover { border-color: var(--accent); color: var(--accent); }
+
+      .mn-cards { display: flex; gap: 14px; padding: 46px 0 8px; overflow: hidden; }
+      .mn-cards img { width: 15%; aspect-ratio: 63/88; object-fit: cover; border-radius: 6px; box-shadow: 0 2px 10px rgba(0,0,0,.25); }
+      .mn-cards img:first-child { transform: translateY(-10px); }
+      .mn-cards img:last-child { opacity: .55; }
+
+      .mn-stats { display: flex; flex-wrap: wrap; gap: 6px 30px; padding: 22px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-top: 40px; color: var(--subtle); font-size: 14px; }
+      .mn-stats b { color: var(--text); font-weight: 700; }
+      .mn-stats span { color: var(--line); }
+
+      .mn-list { margin-top: 8px; }
+      .mn-row { display: grid; grid-template-columns: 210px 1fr; gap: 30px; padding: 26px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+      .mn-row h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+      .mn-row .mn-dot { color: var(--accent); }
+      .mn-row p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; max-width: 560px; }
+
+      .mn-foot { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: center; padding: 30px 0 0; margin-top: 8px; color: var(--subtle); font-size: 13.5px; }
+      .mn-foot a { color: var(--subtle); text-decoration: none; font-weight: 600; }
+      .mn-foot a:hover { color: var(--text); }
+      .mn-foot .sep { margin-left: auto; }
+
+      @media (max-width: 640px) {
+        .mn-row { grid-template-columns: 1fr; gap: 6px; }
+        .mn-cards img { width: 30%; }
+      }
+    </style>
+  </head>
+  <body class="home">
+    <header class="mn-head">
+      <div class="mn-head-in">
+        <a class="brand" href="#" aria-label="Sleevu">Sleevu</a>
+        <nav class="mn-nav"><a href="#">Explorar</a><a href="#">Coleção</a><a href="#">Portfólio</a></nav>
+        <a class="mn-cta" href="#">Entrar →</a>
+      </div>
+    </header>
+
+    <main class="mn-main">
+      <section class="mn-hero">
+        <p class="mn-kicker">Coleção · Portfólio · 12 jogos</p>
+        <h1>Sua coleção de cartas, organizada e avaliada.</h1>
+        <p>Catalogue por variante e condição, acompanhe o valor no tempo e sincronize em todos os aparelhos. Do Carddass de 1999 ao lançamento de ontem.</p>
+        <div class="mn-actions">
+          <a class="mn-btn" href="#">Começar grátis</a>
+          <a class="mn-link" href="#">Ver os 12 jogos</a>
+        </div>
+      </section>
+
+      <section class="mn-cards" aria-hidden="true">
+        <img src="https://assets.tcgdex.net/en/base/base1/4/low.webp" alt="">
+        <img src="https://assets.tcgdex.net/en/base/base1/2/low.webp" alt="">
+        <img src="https://assets.tcgdex.net/en/base/base1/15/low.webp" alt="">
+        <img src="https://assets.tcgdex.net/en/base/base1/10/low.webp" alt="">
+        <img src="https://assets.tcgdex.net/en/base/base1/16/low.webp" alt="">
+        <img src="https://assets.tcgdex.net/en/base/base1/1/low.webp" alt="">
+      </section>
+
+      <section class="mn-stats">
+        <span style="color:inherit"><b>66.000+</b> cartas</span><span>·</span>
+        <span><b>12</b> jogos</span><span>·</span>
+        <span><b>500+</b> sets</span><span>·</span>
+        <span>preços <b>R$ · $ · €</b></span>
+      </section>
+
+      <section class="mn-list">
+        <div class="mn-row"><h3><span class="mn-dot">—</span> Portfólio</h3><p>Valor da coleção no tempo, custo médio e lucro em vendas. Como uma corretora, só que de cartas.</p></div>
+        <div class="mn-row"><h3><span class="mn-dot">—</span> Binders visuais</h3><p>Monte fichários página a página, com fotos das suas cartas físicas e link de compartilhamento.</p></div>
+        <div class="mn-row"><h3><span class="mn-dot">—</span> Wishlist que avisa</h3><p>Marque o que falta e receba notificação quando o preço de mercado cair.</p></div>
+        <div class="mn-row"><h3><span class="mn-dot">—</span> Graded &amp; slabs</h3><p>PSA, BGS, CGC — nota, certificado e valor de mercado das suas graduadas.</p></div>
+      </section>
+
+      <footer class="mn-foot">
+        <a href="#">Sobre</a><a href="#">FAQ</a><a href="#">Termos</a><a href="#">Privacidade</a>
+        <span class="sep">Grátis, sem cartão, exporte quando quiser.</span>
+      </footer>
+    </main>
+  </body>
+</html>

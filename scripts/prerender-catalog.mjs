@@ -239,6 +239,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
     <meta name="twitter:description" content="${escapeAttr(desc)}">
     <meta name="twitter:image" content="${escapeAttr(ogImage)}">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
     <link rel="preconnect" href="https://assets.tcgdex.net">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -387,6 +388,7 @@ function deckPageHtml(dp) {
     <meta property="og:title" content="${escapeAttr(title)}">
     <meta property="og:description" content="${escapeAttr(desc)}">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
     <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
     <style>
       body { font-family: system-ui, sans-serif; background: #101218; color: #e8eaf0; margin: 0; padding: 24px 16px; }
@@ -546,6 +548,7 @@ function cardPageHtml(cp) {
     ${img ? `<meta property="og:image" content="${escapeAttr(img)}">` : ""}
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#101218">
     <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>

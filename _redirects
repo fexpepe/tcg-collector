@@ -5,3 +5,12 @@
 # pra os assets resolverem na raiz. NÃO usamos placeholder na query: o CF Pages não
 # substitui :handle dentro da query string (só no caminho).
 /users/*    /collection    200
+
+# /favicon.ico: caminho por CONVENÇÃO. O site declara os ícones por <link> (SVG
+# + PNG), mas muito consumidor não lê o HTML e vai direto nesta URL — o robô de
+# favicon do Google, leitores de feed, prévias de link. Antes ela dava 404 e o
+# ícone ficava a cargo só do que estivesse em cache.
+# Rewrite (200) pro PNG em vez de um arquivo .ico de verdade: entrega os mesmos
+# bytes com o Content-Type honesto (image/png), sem manter um segundo binário
+# no repo pra sair de sincronia com a marca.
+/favicon.ico   /icon-192.png   200
