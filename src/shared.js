@@ -4672,6 +4672,7 @@
     deletePublicProfile,
     publishProfile,
     sendMagicLink,
+    oauthSignIn,
     getSession,
     createShare,
     fetchShare,
@@ -4902,6 +4903,23 @@
     let code = "", msg = "";
     try { const b = await res.json(); code = b.error_code || ""; msg = b.msg || b.message || ""; } catch (e) { /* corpo não-JSON */ }
     return { ok: false, status: res.status, code, msg };
+  }
+  // Login social (hoje só Google). O Supabase faz o trabalho todo: /authorize
+  // manda pro consentimento do provedor e, na volta, devolve os tokens no MESMO
+  // formato do link mágico — #access_token=…&refresh_token=… — que o
+  // consumeAuthRedirect logo abaixo já sabe ler. Por isso não há nenhum
+  // tratamento de sessão novo aqui: é uma navegação e mais nada.
+  //
+  // Sem captcha de propósito: a proteção do Turnstile no Supabase cobre otp/
+  // signup, não o /authorize — quem valida o usuário é o Google.
+  //
+  // É `location.href` (navegação de topo), não fetch: o fluxo OAuth precisa
+  // trocar de origem duas vezes e depende dos cookies do Google. A CSP não
+  // atrapalha — `form-action 'self'` vale pra <form>, não pra navegação.
+  function oauthSignIn(provider) {
+    const redirect = window.location.origin + window.location.pathname;
+    window.location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=${encodeURIComponent(provider)}` +
+      `&redirect_to=${encodeURIComponent(redirect)}`;
   }
   async function fetchAuthUser(token) {
     try { const r = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: authHeaders(token) }); return r.ok ? r.json() : null; } catch (e) { return null; }

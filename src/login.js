@@ -46,6 +46,19 @@
     return;
   }
 
+  // Google: uma navegação e mais nada. O Supabase devolve os tokens no mesmo
+  // hash do link mágico, e o initAuth do shared.js consome na volta — por isso
+  // não há callback nem tratamento de sessão aqui. Desabilita o botão porque a
+  // navegação leva um instante e o segundo clique só atrapalharia.
+  const googleBtn = document.getElementById("loginGoogle");
+  if (googleBtn) {
+    googleBtn.addEventListener("click", () => {
+      googleBtn.disabled = true;
+      showMsg(t("login.redirecting"), "ok");
+      shared.oauthSignIn("google");
+    });
+  }
+
   if (form) {
     form.addEventListener("submit", async (event) => {
       event.preventDefault();

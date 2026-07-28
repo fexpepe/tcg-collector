@@ -3402,6 +3402,45 @@ a.hub-tile:hover {
 .login-form { display: flex; flex-direction: column; gap: 10px; text-align: left; }
 .login-field span { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
 .login-submit { width: 100%; min-height: 46px; }
+
+/* Botão do Google. Fica com o visual de botão SECUNDÁRIO (fundo do painel,
+   borda da linha) e não o .primary: o link mágico continua sendo o caminho da
+   casa, e dois botões cheios brigando pela atenção deixariam a escolha pior.
+   A altura casa com a do .login-submit pros dois formarem uma pilha regular. */
+.login-oauth {
+  width: 100%;
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  color: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+.login-oauth:hover:not(:disabled) { border-color: var(--accent-dark); background: var(--panel-strong); }
+.login-oauth:disabled { opacity: 0.6; cursor: default; }
+/* O "G" mantém as cores oficiais nos dois temas — é marca de terceiro, não
+   segue o accent do site. flex:none pra não ser espremido pelo texto. */
+.login-oauth-icon { width: 18px; height: 18px; flex: none; }
+
+/* Separador "ou": a linha é feita com os pseudo-elementos pra não precisar de
+   markup extra e pra acompanhar a largura do cartão sozinha. */
+.login-sep {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  color: var(--subtle);
+  font-size: 12.5px;
+}
+.login-sep::before,
+.login-sep::after { content: ""; flex: 1 1 0; height: 1px; background: var(--line); }
 .login-msg { margin: 16px 0 0; font-size: 14px; line-height: 1.5; }
 .login-msg.ok { color: var(--accent); }
 .login-msg.err { color: #f87171; }
