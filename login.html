@@ -71,8 +71,13 @@
             <input id="loginEmail" type="email" required autocomplete="email" inputmode="email" data-i18n-placeholder="login.emailPlaceholder" placeholder="voce@email.com">
           </label>
           <!-- Turnstile (Cloudflare): verificação anti-bot, quase sempre invisível.
-               O Supabase valida o token no siteverify (Attack Protection). -->
-          <div class="cf-turnstile login-turnstile" data-sitekey="0x4AAAAAAD5d9S3IBkZHZ2-G" data-action="turnstile-spin-v2" data-theme="auto"></div>
+               O Supabase valida o token no siteverify (Attack Protection).
+               data-size="flexible": o widget acompanha a largura do formulário
+               em vez dos 300px fixos do tamanho "normal" — é o que alinha a
+               caixa com o campo de e-mail e com o botão. Como o flexible tem
+               MÍNIMO de 300px (e no celular o cartão tem menos que isso), o
+               login.js ainda encolhe o que sobrar. -->
+          <div class="cf-turnstile login-turnstile" data-sitekey="0x4AAAAAAD5d9S3IBkZHZ2-G" data-action="turnstile-spin-v2" data-theme="auto" data-size="flexible"></div>
           <button type="submit" class="primary login-submit" data-i18n="login.submit">Enviar link de acesso</button>
         </form>
 

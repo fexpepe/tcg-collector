@@ -94,4 +94,34 @@
       }
     });
   }
+
+  // Encaixa a caixa do Turnstile na largura do formulário. O iframe do widget
+  // tem largura fixa (300px, e o "flexible" tem esse valor como mínimo), então
+  // no celular ele nascia mais largo que o campo de e-mail e vazava pela borda
+  // do cartão. A conta é feita aqui, e não no CSS, porque só o navegador sabe
+  // quanto o cartão realmente tem: o CSS sozinho não consegue transformar
+  // "largura do contêiner ÷ 300px" num fator de escala.
+  const tsBox = document.querySelector(".login-turnstile");
+  if (tsBox && window.ResizeObserver && window.MutationObserver) {
+    const fit = () => {
+      const frame = tsBox.querySelector("iframe");
+      if (!frame) return;
+      // Zera a escala ANTES de medir. Não dá pra dividir a medida atual pela
+      // escala em vigor: no tamanho flexible o widget acompanha o contêiner,
+      // então essa conta devolveria sempre a escala anterior e o widget ficaria
+      // preso no tamanho pequeno depois de girar a tela pra paisagem.
+      // A leitura força o layout, então o valor abaixo já é sem zoom.
+      tsBox.style.setProperty("--ts-scale", "1");
+      const natural = frame.getBoundingClientRect().width;
+      const espaco = tsBox.clientWidth;
+      if (!natural || !espaco) return;
+      // Nunca AUMENTA o widget: onde couber, quem manda é o próprio flexible.
+      const escala = Math.min(1, espaco / natural);
+      tsBox.style.setProperty("--ts-scale", String(Math.round(escala * 1000) / 1000));
+    };
+    // O iframe chega depois (o api.js é async e o reset troca o widget), daí o
+    // MutationObserver; o ResizeObserver cobre giro de tela e janela redimensionada.
+    new MutationObserver(fit).observe(tsBox, { childList: true, subtree: true });
+    new ResizeObserver(fit).observe(tsBox);
+  }
 })();

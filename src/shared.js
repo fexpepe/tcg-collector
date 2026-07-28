@@ -1378,31 +1378,50 @@
     marca();
   }
 
-  // Bottom-bar fixa no MOBILE (feel de app/PWA): 5 destinos de dedo — Início,
-  // Explorar (sets), Coleção, Busca (paleta) e Portfólio. Só aparece ≤700px
-  // (CSS); o body ganha padding-bottom pra nada ficar escondido atrás dela.
+  // Bottom-bar fixa no MOBILE (feel de app/PWA). A ESTRUTURA é a do app da
+  // Collectr: uma cápsula FLUTUANTE, descolada das bordas e levantada do fundo
+  // da tela. Colada embaixo (como era antes) o PWA do iOS punha a barrinha do
+  // gesto de home por cima dos rótulos e o alvo de toque morria na quina da
+  // tela — o polegar tinha que mirar no último milímetro. A pintura é a do
+  // Sleevu (vidro do header, linha, accent), não a da Collectr.
+  //
+  // Seis destinos, na MESMA ordem e nos mesmos destinos do menu de desktop:
+  // Início · Busca (paleta) · Jogos (hub) · Decks · Coleção · Portfólio.
+  // Coleção aponta pro dashboard (o hub PESSOAL), como no desktop — ia pra
+  // collection.html, que é só uma das visões de dentro dele.
+  // Só aparece ≤700px (CSS); o body ganha padding-bottom pra nada ficar
+  // escondido atrás dela.
   function buildMobileTabbar(active, exploreActive, collectionActive) {
     if (document.querySelector(".mobile-tabbar")) return;
     const ic = {
       home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>',
-      explore: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg>',
-      collection: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="12" height="16" rx="2" transform="rotate(-8 10 14)"/><rect x="9" y="4" width="12" height="16" rx="2" transform="rotate(6 15 12)"/></svg>',
       search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>',
+      games: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg>',
+      // Mesmo desenho de deck do Dashboard (dashboard.js), pro ícone significar
+      // a mesma coisa nos dois lugares.
+      decks: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="12" height="16" rx="2"/><path d="M4.5 6.5v12a2 2 0 0 0 2 2h9"/></svg>',
+      collection: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="12" height="16" rx="2" transform="rotate(-8 10 14)"/><rect x="9" y="4" width="12" height="16" rx="2" transform="rotate(6 15 12)"/></svg>',
       portfolio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="m4 15 5-6 4 3 6-8"/></svg>'
     };
+    // aria-current="page" (e não aria-pressed, que só vale em role=button): é o
+    // que o leitor de tela anuncia como "página atual" num <a> de navegação.
     const tab = (href, label, icon, isActive) =>
-      `<a class="mtab${isActive ? " active" : ""}" href="${href}"><span class="mtab-ic" aria-hidden="true">${ic[icon]}</span><span class="mtab-label">${escapeHtml(label)}</span></a>`;
+      `<a class="mtab${isActive ? " active" : ""}" href="${href}"${isActive ? ' aria-current="page"' : ""}><span class="mtab-ic" aria-hidden="true">${ic[icon]}</span><span class="mtab-label">${escapeHtml(label)}</span></a>`;
     const bar = document.createElement("nav");
     bar.className = "mobile-tabbar";
     bar.setAttribute("aria-label", t("nav.menu"));
     // Coleção e Portfólio são pessoais: as abas só existem com login (espelha
-    // o menu do header — deslogado fica Início / Explorar / Busca).
+    // o menu do header — deslogado fica Início / Busca / Jogos / Decks).
     const logged = !!getSession();
+    // Explorar não tem aba própria (a Busca ocupa esse papel no dedo), então
+    // acende Jogos: as duas são o caminho do CATÁLOGO.
+    const gamesActive = exploreActive || active === "explore";
     bar.innerHTML =
-      tab("index.html", t("nav.home"), "home", active === "home" || active === "hub")
-      + tab("explore.html", t("tabbar.explore"), "explore", active === "explore" || (exploreActive && active !== "hub"))
-      + (logged ? tab("collection.html", t("tabbar.collection"), "collection", collectionActive) : "")
+      tab("index.html", t("nav.home"), "home", active === "home")
       + `<button type="button" class="mtab" data-mtab-search><span class="mtab-ic" aria-hidden="true">${ic.search}</span><span class="mtab-label">${escapeHtml(t("tabbar.search"))}</span></button>`
+      + tab("hub.html", t("nav.games"), "games", gamesActive)
+      + tab("decks.html", t("nav.decks"), "decks", active === "decks")
+      + (logged ? tab("dashboard.html", t("tabbar.collection"), "collection", collectionActive) : "")
       + (logged ? tab("portfolio.html", t("nav.portfolio"), "portfolio", active === "portfolio") : "");
     document.body.appendChild(bar);
     bar.querySelector("[data-mtab-search]").addEventListener("click", () => { if (cmdkOpen) cmdkOpen(); });
