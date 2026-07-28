@@ -4265,31 +4265,72 @@ a.progress-row:hover {
 .cmdk-add:hover { border-color: var(--accent); color: var(--accent); }
 .cmdk-add.done { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 
-/* Bottom-bar mobile (feel de app/PWA): fixa, 5 destinos, ativa na cor accent.
-   Fica ABAIXO dos overlays (modais/cmdk/toast usam z-index 50–70). */
+/* Bottom-bar mobile (feel de app/PWA): CÁPSULA FLUTUANTE, 6 destinos, ativa na
+   cor accent. Fica ABAIXO dos overlays (modais/cmdk/toast usam z-index 50–70).
+
+   Por que flutuante e levantada, e não colada embaixo como antes: no PWA do
+   iOS a barra do gesto de home passava POR CIMA dos rótulos e o alvo de toque
+   terminava na quina da tela. O --tabbar-lift levanta a cápsula pra fora dessa
+   faixa; o max() é o que salva o caso real, porque o env(safe-area-inset-*) só
+   devolve valor com viewport-fit=cover e aqui ele vem ZERO — sem o piso, a
+   conta daria 0 e a barra voltaria pro chão.
+
+   As três medidas moram em variáveis porque o padding do body e os toasts
+   precisam da MESMA conta pra nada nascer escondido atrás da cápsula. */
 .mobile-tabbar { display: none; }
 @media (max-width: 700px) {
+  :root {
+    --tabbar-h: 60px;      /* altura medida da cápsula: 48 + 5+5 de padding + borda */
+    --tabbar-lift: max(env(safe-area-inset-bottom, 0px), 10px);
+  }
   .mobile-tabbar {
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
-    display: flex;
-    background: var(--panel);
-    border-top: 1px solid var(--line);
-    padding-bottom: env(safe-area-inset-bottom);
-    box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.12);
+    position: fixed; left: 10px; right: 10px; z-index: 40;
+    bottom: var(--tabbar-lift);
+    display: flex; gap: 2px;
+    padding: 5px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    /* Mesmo vidro do header (--header-bg + blur): a cápsula deixa entrever o
+       conteúdo que passa por baixo, como no app da Collectr, sem inventar uma
+       cor que não existe na paleta. */
+    background: var(--header-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.38);
   }
   .mtab {
-    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
-    padding: 8px 0 7px; min-height: 0; border: 0; border-radius: 0; background: none;
-    font-size: 10.5px; font-weight: 700; color: var(--muted);
+    flex: 1 1 0; min-width: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    padding: 6px 2px; min-height: 48px; border: 0; border-radius: 999px; background: none;
+    font-size: 10px; font-weight: 700; color: var(--muted);
     text-decoration: none; cursor: pointer;
   }
   /* --accent-ink (tom claro) e não --accent: como TEXTO sobre a barra escura o
-     accent de fundo dava 3.57:1 (reprovado pelo Lighthouse). */
-  .mtab.active { color: var(--accent-ink); }
-  .mtab-ic svg { width: 22px; height: 22px; display: block; }
-  /* Nada escondido atrás da barra (nem o toast de desfazer). */
-  body { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
-  .undo-toast { bottom: calc(72px + env(safe-area-inset-bottom)); }
+     accent de fundo dava 3.57:1 (reprovado pelo Lighthouse). A pastilha atrás
+     do item ativo é a estrutura da Collectr, pintada com o --accent-soft que o
+     site já usa nos chips ativos. */
+  .mtab.active { color: var(--accent-ink); background: var(--accent-soft); }
+  .mtab-ic svg { width: 21px; height: 21px; display: block; }
+  /* Rótulo de 6 abas num celular de 320px: cada uma fica com ~48px, então o
+     texto não pode empurrar a aba — corta com reticências em vez de quebrar. */
+  .mtab-label { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* Nada escondido atrás da cápsula (nem os toasts, nem a barra de seleção). */
+  body { padding-bottom: calc(var(--tabbar-h) + var(--tabbar-lift) + 12px); }
+  .undo-toast { bottom: calc(var(--tabbar-h) + var(--tabbar-lift) + 12px); }
+  .bulk-bar { bottom: calc(var(--tabbar-h) + var(--tabbar-lift) + 12px); }
+}
+/* No PWA instalado a faixa do gesto de home é maior que a folga de navegador
+   (onde a barra do Safari já empurra a página pra cima), então a cápsula sobe
+   mais. É a distância que o app da Collectr usa. */
+@media (max-width: 700px) and (display-mode: standalone) {
+  :root { --tabbar-lift: max(env(safe-area-inset-bottom, 0px), 24px); }
+}
+/* Celular estreito (≤360px): as 6 abas ficam com menos de 50px cada e o
+   "Portfólio" nascia cortado. A cápsula encosta um pouco mais nas bordas e o
+   rótulo cede meio ponto — o alvo de toque (48px de altura) não muda. */
+@media (max-width: 360px) {
+  .mobile-tabbar { left: 6px; right: 6px; padding: 5px 3px; gap: 0; }
+  .mtab { font-size: 9.5px; padding: 6px 1px; }
 }
 
 /* Skeletons: cards fantasma enquanto os chunks do catálogo baixam. Pulso de
