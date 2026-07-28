@@ -4314,10 +4314,10 @@ a.progress-row:hover {
   /* Rótulo de 6 abas num celular de 320px: cada uma fica com ~48px, então o
      texto não pode empurrar a aba — corta com reticências em vez de quebrar. */
   .mtab-label { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  /* Nada escondido atrás da cápsula (nem os toasts, nem a barra de seleção). */
+  /* Nada de conteúdo escondido atrás da cápsula. Quem é ANCORADO no rodapé
+     (toasts, barra de seleção, pill de carregamento) sobe num bloco lá
+     embaixo — ver "acima da bottom-bar". */
   body { padding-bottom: calc(var(--tabbar-h) + var(--tabbar-lift) + 12px); }
-  .undo-toast { bottom: calc(var(--tabbar-h) + var(--tabbar-lift) + 12px); }
-  .bulk-bar { bottom: calc(var(--tabbar-h) + var(--tabbar-lift) + 12px); }
 }
 /* No PWA instalado a faixa do gesto de home é maior que a folga de navegador
    (onde a barra do Safari já empurra a página pra cima), então a cápsula sobe
@@ -4435,10 +4435,13 @@ a.progress-row:hover {
 .bdg-done-tag { font-size: 12px; font-weight: 800; color: var(--accent); }
 @media (max-width: 560px) { .bdg-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .bdg-fun-x { min-width: 110px; } }
 
-/* Pill global de carregamento (sync da conta / download de catálogo). */
+/* Pill global de carregamento (sync da conta / download de catálogo). Fica
+   EMBAIXO: no topo ela cobria o header e a busca justo quando a página estava
+   nascendo. No celular sobe pra cima da bottom-bar (regra junto das outras
+   coisas ancoradas no rodapé, mais abaixo). */
 .page-loading {
   position: fixed;
-  top: 64px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 300;
@@ -4644,6 +4647,20 @@ a.progress-row:hover {
   box-shadow: 0 12px 32px rgba(0,0,0,0.45);
 }
 .undo-toast-btn { min-height: 0; padding: 5px 12px; border: 0; border-radius: 8px; background: var(--accent); color: var(--on-accent); font-weight: 800; font-size: 12.5px; cursor: pointer; }
+
+/* Acima da bottom-bar: tudo que é ANCORADO no rodapé no mobile.
+   Mora AQUI, e não junto da .mobile-tabbar, por causa da cascata: media query
+   não soma especificidade, então a regra do bloco da tabbar (que vem antes no
+   arquivo) perdia para o `bottom` da definição-base de cada elemento, mais
+   abaixo. Era por isso que o toast de "desfazer" continuava nascendo ATRÁS da
+   barra no celular, mesmo com a regra escrita lá em cima. Depois da definição
+   de todos eles, o mesmo seletor ganha — e a conta é a mesma do padding do
+   body, então nada encosta no menu. */
+@media (max-width: 700px) {
+  .undo-toast,
+  .bulk-bar,
+  .page-loading { bottom: calc(var(--tabbar-h) + var(--tabbar-lift) + 12px); }
+}
 
 /* Aviso de backup (local-first sem conta/export): faixa discreta sob o header. */
 .backup-banner {
