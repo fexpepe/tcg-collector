@@ -457,6 +457,22 @@ main {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
 }
 
+/* Contorno no hover. Os outros controles do header (moeda, idioma de carta,
+   tema) nascem com a borda desenhada; os itens do menu eram os únicos sem
+   nenhum retorno de "isto é clicável". Usa a MESMA cor de borda deles
+   (--line), e não o accent: o accent muda por jogo e o header é global.
+   Não desloca nada — o repouso já é `border: 1px solid transparent`.
+   `> a` (filho direto) de propósito: sem isso a regra pegaria também os links
+   DENTRO do dropdown/mega-menu, e cada linha da lista ganharia um contorno.
+   :focus-visible junto pro teclado ter o mesmo retorno do mouse. */
+.page-nav > a,
+.nav-group-toggle { transition: border-color 120ms ease, color 120ms ease; }
+.page-nav > a:hover,
+.page-nav > a:focus-visible {
+  border-color: var(--line);
+  color: var(--text);
+}
+
 .header-actions,
 .toolbar {
   display: flex;
@@ -5069,7 +5085,10 @@ a.progress-row:hover {
   font-weight: 800;
 }
 
-.nav-group-toggle:hover {
+/* Mesmo contorno dos itens simples do menu (ver .page-nav > a:hover). */
+.nav-group-toggle:hover,
+.nav-group-toggle:focus-visible {
+  border-color: var(--line);
   color: var(--text);
 }
 
