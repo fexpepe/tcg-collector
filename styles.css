@@ -3403,6 +3403,19 @@ a.hub-tile:hover {
 .login-field span { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
 .login-submit { width: 100%; min-height: 46px; }
 
+/* Caixa do Turnstile. O widget é um <iframe> de largura FIXA (300px no tamanho
+   normal, e o "flexible" também não desce abaixo de 300) que a Cloudflare não
+   deixa estilizar por dentro. O conteúdo do cartão de login tem 264px num
+   celular de 402px — e menos ainda nos menores —, então a caixa saía mais
+   larga que o campo de e-mail e passava da borda direita do cartão.
+   O login.js mede o espaço real e grava --ts-scale aqui; o `zoom` encolhe o
+   widget INCLUSIVE no layout (com `transform: scale` a caixa continuaria
+   ocupando 300x65 e sobraria um buraco embaixo). Quando cabe, a escala é 1 e
+   nada muda — e num navegador sem `zoom` a declaração é ignorada, voltando ao
+   comportamento de hoje em vez de quebrar. */
+.login-turnstile { display: flex; justify-content: center; }
+.login-turnstile > iframe { zoom: var(--ts-scale, 1); }
+
 /* Botão do Google. Fica com o visual de botão SECUNDÁRIO (fundo do painel,
    borda da linha) e não o .primary: o link mágico continua sendo o caminho da
    casa, e dois botões cheios brigando pela atenção deixariam a escolha pior.

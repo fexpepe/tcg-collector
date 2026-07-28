@@ -15,6 +15,9 @@
 //     "desfixa" com rolagem lateral.
 //   - aria-pressed num <a>: inválido (só vale em role=button); o Lighthouse
 //     acusa e o leitor de tela anuncia um botão que não existe.
+//   - caixa do Turnstile: o iframe tem 300px fixos e o cartão de login tem
+//     264px de conteúdo num celular de 402px — sem o zoom de --ts-scale a
+//     caixa nasce mais larga que o campo de e-mail e vaza pela borda.
 import { readFile, readdir } from "node:fs/promises";
 
 const ROOT = new URL("../", import.meta.url);
@@ -27,11 +30,16 @@ const css = await readFile(new URL("styles.css", ROOT), "utf8");
 const invariantes = [
   [/img,\s*svg,\s*video[^{]*\{[^}]*max-width:\s*100%/, "reset de mídia (img/svg/video { max-width: 100% })"],
   [/body\s*\{[^}]*overflow-x:\s*clip/, "overflow-x: clip no body"],
-  [/@media\s*\(pointer:\s*coarse\),\s*\(max-width:\s*700px\)\s*\{[\s\S]{0,400}?font-size:\s*16px/, "fonte de 16px nos inputs em toque (anti-zoom do iOS)"]
+  [/@media\s*\(pointer:\s*coarse\),\s*\(max-width:\s*700px\)\s*\{[\s\S]{0,400}?font-size:\s*16px/, "fonte de 16px nos inputs em toque (anti-zoom do iOS)"],
+  [/\.login-turnstile\s*>\s*iframe\s*\{[^}]*zoom:\s*var\(--ts-scale/, "zoom do widget do Turnstile (--ts-scale) — sem ele a caixa vaza no celular"]
 ];
 for (const [re, nome] of invariantes) {
   if (!re.test(css)) erros.push(`regra-guarda REMOVIDA: ${nome}`);
 }
+
+// A regra de CSS acima só serve com o JS que mede o espaço e grava a variável.
+const loginJs = await readFile(new URL("src/login.js", ROOT), "utf8");
+if (!/--ts-scale/.test(loginJs)) erros.push("src/login.js: parou de calcular --ts-scale (a caixa do Turnstile volta a vazar)");
 
 // --- 2) Padrões que já causaram bug ----------------------------------------
 // width/max-width em vw dentro do conteúdo: ignora o padding do contêiner.
