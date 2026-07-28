@@ -1350,6 +1350,32 @@
     // O placeholder já nasce na posição certa no HTML; só insere quando a nav
     // foi criada aqui (páginas que ainda não têm o placeholder no markup).
     if (!existing) head.insertAdjacentElement("afterend", nav);
+    initSubnavScrollHint(nav);
+  }
+
+  // A subnav é UMA linha que rola (ver o comentário longo no styles.css: quebrar
+  // em duas tornaria a altura dependente do idioma, e ela precisa ser previsível
+  // pro CLS). O preço disso é que no Pokémon — único jogo com 5 abas — as duas
+  // últimas nascem fora da tela no celular. Aqui a gente conserta a DESCOBERTA:
+  //   1. marca em qual ponta a rolagem está, e o CSS desbota o lado que ainda tem
+  //      conteúdo (a máscara sai ao chegar no fim, então nunca promete o que não há);
+  //   2. se a aba ATIVA nasceu fora da vista, rola até ela — senão a página abre
+  //      parecendo que a seção em que você está nem consta na lista.
+  function initSubnavScrollHint(nav) {
+    if (!nav) return;
+    const marca = () => {
+      const sobra = nav.scrollWidth - nav.clientWidth;
+      if (sobra < 4) { nav.removeAttribute("data-scroll"); return; }  // cabe inteira
+      const x = nav.scrollLeft;
+      nav.dataset.scroll = x < 4 ? "start" : (x >= sobra - 4 ? "end" : "middle");
+    };
+    nav.addEventListener("scroll", marca, { passive: true });
+    window.addEventListener("resize", marca);
+    const ativo = nav.querySelector('[aria-current="page"]');
+    if (ativo && ativo.offsetLeft + ativo.offsetWidth > nav.clientWidth) {
+      nav.scrollLeft = ativo.offsetLeft + ativo.offsetWidth - nav.clientWidth + 12;
+    }
+    marca();
   }
 
   // Bottom-bar fixa no MOBILE (feel de app/PWA): 5 destinos de dedo — Início,

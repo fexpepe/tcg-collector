@@ -7106,6 +7106,34 @@ select,
   /* A reserva da subnav acompanha o chip engordado — senão a página pula 6px
      no toque, exatamente o que a reserva existe pra evitar. */
   .explore-subnav[data-placeholder] { min-height: 44px; }
+
+  /* SUBNAV: uma linha só, com AVISO de que continua (ver data-scroll no
+     shared.js). Dos 12 jogos só o Pokémon tem 5 abas — Lorcana e Magic têm 3, o
+     resto tem 2, e essas sobram numa linha. Quebrar as 5 em duas fileiras foi
+     medido e descartado: a altura da subnav passaria a depender da LARGURA do
+     rótulo, e português e inglês caem em contagens de linha diferentes a 320,
+     480 e 520px. Como o nav é preenchido por JS depois do primeiro paint, a
+     reserva de altura teria de acertar essa contagem — impossível de fazer certo
+     em todos os idiomas, e o site vai ganhar mais. Uma linha mantém a altura
+     constante em qualquer língua; o degradê abaixo resolve a descoberta. */
+  /* Máscara (e não um degradê sobreposto): ela se aplica à CAIXA do elemento,
+     então fica presa na borda visível em vez de rolar junto com os chips — e
+     não precisa saber a cor do fundo, o que a mantém certa no claro e no
+     escuro. O lado que desbota é o lado que ainda tem conteúdo: no fim da
+     rolagem a máscara sai, então ela nunca promete aba que não existe.
+     -webkit- junto pro Safari mais velho, que é justamente o caso de uso. */
+  .explore-subnav[data-scroll="start"] {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+  }
+  .explore-subnav[data-scroll="middle"] {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent);
+  }
+  .explore-subnav[data-scroll="end"] {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 32px);
+    mask-image: linear-gradient(to right, transparent, #000 32px);
+  }
   /* Ícones de ação que são quadrados (fechar, editar pasta): vira 44 no dedo. */
   .folder-act,
   .preview-close {
