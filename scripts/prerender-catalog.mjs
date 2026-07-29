@@ -550,7 +550,63 @@ function cardTitle(nome, numero, code, setName) {
   return ((comSet + sufixo).length <= TITULO_MAX ? comSet : base) + sufixo;
 }
 
-function cardPageHtml(cp) {
+// Data de lançamento em pt-BR ("2024-11-08" -> "8 de novembro de 2024"). Só
+// aceita o formato ISO que os catálogos usam; qualquer outra coisa vira "".
+const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho",
+  "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+function dataPtBr(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso || ""));
+  if (!m) return "";
+  const mes = MESES[Number(m[2]) - 1];
+  return mes ? `${Number(m[3])} de ${mes} de ${m[1]}` : "";
+}
+
+// FICHA TÉCNICA. Cada jogo traz um subconjunto diferente de campos (Magic tem
+// custo de mana, Pokémon tem HP, One Piece tem cor), então a lista é montada do
+// que EXISTE — linha sem valor não entra, em vez de virar "Ilustrador: —".
+// Isto é o que separa uma página de catálogo de uma página de conteúdo raso: os
+// dados são específicos daquela carta, não texto de molde repetido.
+function fichaTecnica(card, setPage, sCode) {
+  const linhas = [
+    ["Jogo", setPage.gameLabel],
+    ["Set", sCode ? `${setPage.name} (${sCode})` : setPage.name],
+    ["Número", card.number],
+    ["Raridade", card.rarity && card.rarity !== "None" ? card.rarity : ""],
+    ["Ilustrador", card.artist],
+    ["Tipo", card.cardType || card.category],
+    ["Estágio", card.stage],
+    ["Tipos", Array.isArray(card.types) ? card.types.join(", ") : card.types],
+    ["Custo", card.manaCost || (card.cost != null && card.cost !== "" ? String(card.cost) : "")],
+    ["Poder", card.power],
+    ["Cor", card.color || card.colorId || card.ink || card.opColor],
+    ["HP", card.hp],
+    ["Série", card.setSerieName],
+    ["Nº na Pokédex", card.dexId],
+    // Acabamento é o que separa duas cópias da MESMA carta em preço (foil,
+    // reverse, 1ª edição) — dado que o colecionador procura e que quase nenhum
+    // agregador mostra junto do preço.
+    ["Acabamentos", Array.isArray(card.variants) ? card.variants.join(", ") : ""],
+    ["Lançamento do set", dataPtBr(card.setReleaseDate || setPage.releaseDate)],
+    ["Cartas no set", card.setTotal ? String(card.setTotal) : (setPage.cards ? String(setPage.cards.length) : "")]
+  ].filter(([, v]) => v != null && String(v).trim() !== "");
+  if (!linhas.length) return "";
+  return `<h2>Ficha técnica</h2>
+      <dl class="prc-ficha">${linhas.map(([k, v]) =>
+    `<div><dt>${escapeHtml(k)}</dt><dd>${escapeHtml(String(v))}</dd></div>`).join("")}</dl>`;
+}
+
+// Lista de links pra outras páginas de carta. Vale por dois motivos: dá ao
+// leitor o próximo passo óbvio, e amarra as 1.298 páginas numa teia em vez de
+// deixá-las ilhadas (link interno é o que faz o rastreador achar e ranquear as
+// que não estão no sitemap por acaso).
+function listaDeCartas(titulo, itens) {
+  if (!itens || !itens.length) return "";
+  return `<h2>${escapeHtml(titulo)}</h2>
+      <ul class="prc-lista">${itens.map((it) =>
+    `<li><a href="/card/${escapeAttr(it.slug)}">${escapeHtml(it.rotulo)}</a></li>`).join("")}</ul>`;
+}
+
+function cardPageHtml(cp, ctx = {}) {
   const { card, setPage, slug, priceUSD } = cp;
   const gameLabel = setPage.gameLabel;
   const canonical = `${ORIGIN}/card/${slug}`;
@@ -570,6 +626,40 @@ function cardPageHtml(cp) {
   // — quem acha a carta no Google cai direto nela, não na página do set pra
   // procurar de novo.
   const appUrl = `/detail.html?type=set&name=${encodeURIComponent(setPage.name)}&game=${setPage.game}&card=${encodeURIComponent(card.id)}`;
+  // PARÁGRAFO DE ABERTURA. Frases curtas, montadas só com o que a carta tem —
+  // frase sem dado não é escrita, em vez de sair com buraco ("ilustrada por
+  // undefined"). O que faz este texto valer pra busca é que cada fato VARIA por
+  // carta (raridade, número, ilustrador, data do set, quantas impressões
+  // existem); texto de molde igual em 1.298 páginas seria conteúdo raso.
+  const frases = [];
+  // Nos vintage japoneses o campo `rarity` não guarda raridade: vem com os
+  // glifos de TIPO da carta (剣 民 武). Escrever "carta de raridade 剣 民 武" é
+  // frase sem sentido pra quem lê e ruído pra quem indexa, então a menção só
+  // sai quando o valor parece mesmo uma raridade (curto e sem CJK).
+  const rarOk = card.rarity && card.rarity !== "None" &&
+    !/[^\x00-\x7F]/.test(card.rarity) && String(card.rarity).length <= 24;
+  const rarBit = rarOk ? ` de raridade ${card.rarity}` : "";
+  const setBit = sCode ? `${setPage.name} (${sCode})` : setPage.name;
+  frases.push(`${card.name} é uma carta${rarBit} do set ${setBit}, de ${gameLabel}${card.number ? `, numerada ${card.number}` : ""}.`);
+  if (card.artist) frases.push(`A ilustração é de ${card.artist}.`);
+  const acab = Array.isArray(card.variants) ? card.variants.filter(Boolean) : [];
+  if (acab.length > 1) {
+    frases.push(`Sai em ${acab.length} acabamentos (${acab.join(", ")}), que são cotados separadamente no mercado.`);
+  }
+  const dtSet = dataPtBr(card.setReleaseDate || setPage.releaseDate);
+  const totalSet = Number(card.setTotal) || (setPage.cards ? setPage.cards.length : 0);
+  if (dtSet || totalSet) {
+    frases.push(`O set ${setPage.name}${dtSet ? ` foi lançado em ${dtSet}` : ""}${dtSet && totalSet ? " e" : ""}${totalSet ? ` reúne ${totalSet} cartas` : ""}.`);
+  }
+  const nVers = (ctx.versoes || []).length;
+  if (nVers) {
+    frases.push(`Esta carta também aparece ${nVers === 1 ? "em outra versão" : `em outras ${nVers} versões`} no catálogo — arte alternativa, promocional e reimpressão costumam ter valores de mercado bem diferentes entre si.`);
+  }
+  if (priceUSD > 0) {
+    frases.push("O preço de referência acima é apurado no mercado internacional e atualizado semanalmente; no Sleevu ele aparece convertido em reais, junto do histórico de variação.");
+  }
+  frases.push(`Marque a carta na sua coleção para acompanhar o preço e ver quanto falta para completar ${setPage.name}.`);
+  const intro = frases.join(" ");
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -582,6 +672,20 @@ function cardPageHtml(cp) {
   if (priceUSD > 0) {
     jsonLd.offers = { "@type": "AggregateOffer", priceCurrency: "USD", lowPrice: priceUSD.toFixed(2), offerCount: 1, availability: "https://schema.org/InStock" };
   }
+  // Trilha (jogo > set > carta). Vale nos dois lados: dá ao leitor a saída pra
+  // cima — que numa página de carta é o set, não a home — e o BreadcrumbList faz
+  // o Google trocar a URL crua do resultado por "Sleevu > Sets > The Time of
+  // Battle", que é mais clicável.
+  const trilha = [
+    { nome: "Sets", url: `${ORIGIN}/sets?game=${setPage.game}` },
+    { nome: setPage.name, url: `${ORIGIN}/set/${setPage.slug}` },
+    { nome: `${card.name}${codeBit}`, url: canonical }
+  ];
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: trilha.map((t, i) => ({ "@type": "ListItem", position: i + 1, name: t.nome, item: t.url }))
+  };
   return `<!doctype html>
 <html lang="pt-BR">
   <head>
@@ -602,6 +706,7 @@ function cardPageHtml(cp) {
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#101218">
     <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
+    <script type="application/ld+json">${JSON.stringify(breadcrumbLd)}</script>
     <script src="/src/theme.js"></script>
     <link rel="stylesheet" href="/styles.css">
     <style>
@@ -615,6 +720,18 @@ function cardPageHtml(cp) {
       .prc-cta { display: inline-block; margin-top: 8px; padding: 10px 18px; border-radius: 10px; background: var(--accent, #e63946); color: var(--on-accent, #fff); font-weight: 600; text-decoration: none; }
       .prc-setlink { margin-top: 22px; }
       .prc-setlink a { color: var(--accent, #e63946); }
+      .prc-trilha { margin-top: 18px; font-size: 13px; color: var(--muted, #9aa0aa); }
+      .prc-trilha a { color: var(--muted, #9aa0aa); text-decoration: none; }
+      .prc-trilha a:hover { text-decoration: underline; }
+      .prc-corpo { margin-top: 34px; max-width: 720px; line-height: 1.7; }
+      .prc-corpo h2 { font-size: 1.05rem; margin: 30px 0 10px; }
+      .prc-ficha { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px 20px; margin: 0; }
+      .prc-ficha div { display: flex; gap: 8px; border-bottom: 1px solid var(--line, #2d333f); padding-bottom: 6px; }
+      .prc-ficha dt { color: var(--muted, #9aa0aa); flex: none; }
+      .prc-ficha dd { margin: 0; font-weight: 600; }
+      .prc-lista { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 6px 20px; }
+      .prc-lista a { color: var(--accent, #e63946); text-decoration: none; }
+      .prc-lista a:hover { text-decoration: underline; }
     </style>
   </head>
   <body>
@@ -628,6 +745,10 @@ function cardPageHtml(cp) {
       </div>
     </header>
     <main class="prc-wrap">
+      <nav class="prc-trilha" aria-label="Trilha de navegação">${trilha.map((t, i) =>
+        i === trilha.length - 1
+          ? `<span aria-current="page">${escapeHtml(t.nome)}</span>`
+          : `<a href="${escapeAttr(t.url)}">${escapeHtml(t.nome)}</a> <span aria-hidden="true">›</span> `).join("")}</nav>
       <div class="prc-hero">
         ${img ? `<img class="prc-img" src="${escapeAttr(img)}" alt="${escapeAttr(`${card.name}${codeBit}${codeBitDesc} — ${setPage.name}`)}" loading="eager" width="320" height="447">` : ""}
         <div class="prc-info">
@@ -638,6 +759,12 @@ function cardPageHtml(cp) {
           <p class="prc-setlink">Ver o set completo: <a href="/set/${escapeAttr(setPage.slug)}">${escapeHtml(setPage.name)}</a></p>
         </div>
       </div>
+      <section class="prc-corpo">
+        <p>${escapeHtml(intro)}</p>
+        ${fichaTecnica(card, setPage, sCode)}
+        ${listaDeCartas("Outras versões desta carta", ctx.versoes)}
+        ${listaDeCartas(`Mais cartas de ${setPage.name}`, ctx.irmas)}
+      </section>
     </main>
   </body>
 </html>
@@ -746,8 +873,39 @@ async function main() {
     while (cardSlugs.has(s)) s = `${base}-${i++}`;
     cardSlugs.add(s);
     cp.slug = s;
-    writeFileSync(join(CARD_OUT_DIR, `${s}.html`), cardPageHtml(cp), "utf8");
     cardPages.push({ slug: s });
+  }
+
+  // DUAS PASSAGENS de propósito. A escrita do HTML só pode acontecer depois que
+  // TODOS os slugs existem: uma página linka pras outras versões da mesma carta
+  // e pras vizinhas de set, e no meio da primeira passagem metade desses slugs
+  // ainda não tinha sido decidida — os links sairiam quebrados.
+  const porNome = new Map();  // jogo|nome -> [cp]
+  const porSet = new Map();   // slug do set -> [cp]
+  for (const cp of ranked) {
+    const kn = `${cp.setPage.game}|${String(cp.card.name || "").toLowerCase()}`;
+    if (!porNome.has(kn)) porNome.set(kn, []);
+    porNome.get(kn).push(cp);
+    if (!porSet.has(cp.setPage.slug)) porSet.set(cp.setPage.slug, []);
+    porSet.get(cp.setPage.slug).push(cp);
+  }
+  // Rótulo que DIFERENCIA: repetir o nome da carta em 8 links seguidos não
+  // ajuda ninguém (nem leitor, nem buscador). Aqui o que muda é o que aparece.
+  const rotuloVersao = (o) => [o.setPage.name, o.card.number].filter(Boolean).join(" · ");
+  const rotuloIrma = (o) => [o.card.name, o.card.number].filter(Boolean).join(" ");
+  for (const cp of ranked) {
+    const kn = `${cp.setPage.game}|${String(cp.card.name || "").toLowerCase()}`;
+    const versoes = (porNome.get(kn) || [])
+      .filter((o) => o !== cp)
+      .slice(0, 12)
+      .map((o) => ({ slug: o.slug, rotulo: rotuloVersao(o) }));
+    // As mais valiosas do set primeiro (ranked já vem ordenado por preço), sem
+    // a própria carta. 12 é o teto pra lista não virar um paredão de links.
+    const irmas = (porSet.get(cp.setPage.slug) || [])
+      .filter((o) => o !== cp)
+      .slice(0, 12)
+      .map((o) => ({ slug: o.slug, rotulo: rotuloIrma(o) }));
+    writeFileSync(join(CARD_OUT_DIR, `${cp.slug}.html`), cardPageHtml(cp, { versoes, irmas }), "utf8");
   }
 
   // Decks da comunidade: nunca derruba o build (galeria fora do ar = 0 páginas).
