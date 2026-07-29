@@ -78,6 +78,23 @@ function fmtDatePt(iso) {
   if (!m) return "";
   return `${Number(m[3])} de ${MONTHS_PT[Number(m[2]) - 1]} de ${m[1]}`;
 }
+// ORÇAMENTO DE TÍTULO. O Google mostra ~60-65 caracteres e corta o resto com
+// "…": título de 116 (o maior que havia aqui) desperdiçava metade e diluía o
+// peso dos termos que importam. A regra em todo o arquivo: o NOME (do set ou da
+// carta) nunca é truncado — é o que a pessoa digitou; quem sai são as partes
+// descritivas, da menos importante pra mais.
+const TITULO_MAX = 65;
+// Recebe as variantes da parte descritiva em ordem decrescente de informação e
+// devolve a primeira que couber; se nenhuma couber, fica só o nome + a marca.
+function tituloSet(nome, variantes) {
+  const sufixo = " | Sleevu";
+  for (const v of variantes) {
+    const t = `${nome} — ${v}${sufixo}`;
+    if (t.length <= TITULO_MAX) return t;
+  }
+  return nome + sufixo;
+}
+
 // Ordena "4/102" < "10/102" pelo primeiro inteiro (localeCompare erraria).
 function cmpNumber(a, b) {
   const na = parseInt(String(a || "").match(/\d+/), 10);
@@ -136,7 +153,7 @@ const SET_L10N = {
   pt: {
     htmlLang: "pt-BR",
     fmtDate: fmtDatePt,
-    title: (name, gameLabel) => `${name} — cartas do set ${gameLabel} | Sleevu`,
+    title: (name, gameLabel) => tituloSet(name, [`cartas do set ${gameLabel}`, gameLabel]),
     desc: (n, name, gameLabel, dateHuman) => `Lista completa das ${n} cartas do set ${name} de ${gameLabel}${dateHuman ? `, lançado em ${dateHuman}` : ""}. Veja imagens, números e raridades e monte sua coleção no Sleevu.`,
     sub: (gameLabel, total, dateHuman, n) => `${gameLabel} · ${total} cartas oficiais${dateHuman ? ` · lançado em ${dateHuman}` : ""} · ${n} no catálogo do Sleevu`,
     cta: "Abrir o set no Sleevu",
@@ -147,7 +164,7 @@ const SET_L10N = {
   en: {
     htmlLang: "en",
     fmtDate: fmtDateEn,
-    title: (name, gameLabel) => `${name} — ${gameLabel} card list | Sleevu`,
+    title: (name, gameLabel) => tituloSet(name, [`${gameLabel} card list`, gameLabel]),
     desc: (n, name, gameLabel, dateHuman) => `Complete list of all ${n} cards in the ${name} set of ${gameLabel}${dateHuman ? `, released on ${dateHuman}` : ""}. See images, numbers and rarities and build your collection on Sleevu.`,
     sub: (gameLabel, total, dateHuman, n) => `${gameLabel} · ${total} official cards${dateHuman ? ` · released ${dateHuman}` : ""} · ${n} in Sleevu's catalog`,
     cta: "Open this set on Sleevu",
@@ -505,6 +522,34 @@ async function fetchTopViews() {
   } catch { return []; }
 }
 
+// CÓDIGO DO SET como o jogador digita na busca ("Ms. All Sunday OP16"). Nem todo
+// jogo tem um: o One Piece usa OP16/EB-01, mas o Lorcana numera os sets ("1"), o
+// Naruto usa slug interno ("nrt-s01") e o Pokémon usa o id da TCGdex ("base1",
+// "2011bw"). Jogar o setId no título sem filtrar encheria metade do catálogo de
+// ruído, então o discriminador é a MAIÚSCULA: código de verdade é escrito em
+// caixa alta pelo fabricante, id interno não.
+//
+// Também não repete o que já está no número da carta: em OP01-079 o "OP01" já
+// aparece, e "Luffy OP01-079 OP01" só desperdiça caracteres do título.
+function setCode(card) {
+  const raw = String(card.setId || "").trim();
+  if (!/[A-Z]/.test(raw)) return "";            // base1, sv1, 2011bw, nrt-s01, "10"
+  const code = raw.replace(/_.*$/, "");         // Gundam: GD01_b -> GD01
+  const semTraco = (s) => s.toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (semTraco(String(card.number || "")).includes(semTraco(code))) return "";
+  return code;
+}
+
+// Título da CARTA, mesmo orçamento (ver TITULO_MAX). Ordem = valor de busca
+// decrescente: nome > número > código do set > nome do set. O nome do set é o
+// primeiro a cair quando não cabe.
+function cardTitle(nome, numero, code, setName) {
+  const base = [nome, numero, code].filter(Boolean).join(" ");
+  const sufixo = " | Sleevu";
+  const comSet = setName ? `${base} · ${setName}` : base;
+  return ((comSet + sufixo).length <= TITULO_MAX ? comSet : base) + sufixo;
+}
+
 function cardPageHtml(cp) {
   const { card, setPage, slug, priceUSD } = cp;
   const gameLabel = setPage.gameLabel;
@@ -512,9 +557,14 @@ function cardPageHtml(cp) {
   const codeBit = card.number ? ` ${card.number}` : "";
   // Nome CJK ganha a espécie EN entre parênteses (busca em pt/en acha igual).
   const enBit = card.pokemonName && !/^[\x00-\x7F]/.test(card.name) ? ` (${card.pokemonName})` : "";
-  const title = `${card.name}${enBit}${codeBit} — ${setPage.name} (${gameLabel}) | preço e coleção | Sleevu`;
+  const sCode = setCode(card);
+  const title = cardTitle(`${card.name}${enBit}`, card.number, sCode, setPage.name);
   const priceBit = priceUSD > 0 ? ` Preço de referência: US$ ${priceUSD.toFixed(2)}.` : "";
-  const desc = `${card.name}${codeBit} do set ${setPage.name} de ${gameLabel}.${priceBit} Veja a imagem, acompanhe o preço e marque na sua coleção grátis no Sleevu.`;
+  // A descrição não tem o aperto do título (o Google mostra ~155), então aqui o
+  // código do set entra sempre que existir — é a segunda chance de casar com a
+  // busca quando ele não coube lá em cima.
+  const codeBitDesc = sCode ? ` (${sCode})` : "";
+  const desc = `${card.name}${codeBit}${codeBitDesc} do set ${setPage.name} de ${gameLabel}.${priceBit} Veja a imagem, acompanhe o preço e marque na sua coleção grátis no Sleevu.`;
   const img = absUrl(card.image) || "";
   // &card=<id>: o detail.js reabre o POPUP da carta ao aterrissar (openFromUrl)
   // — quem acha a carta no Google cai direto nela, não na página do set pra
@@ -543,7 +593,7 @@ function cardPageHtml(cp) {
     <meta property="og:site_name" content="Sleevu">
     <meta property="og:type" content="website">
     <meta property="og:url" content="${escapeAttr(canonical)}">
-    <meta property="og:title" content="${escapeAttr(`${card.name}${codeBit} — ${setPage.name}`)}">
+    <meta property="og:title" content="${escapeAttr(`${card.name}${codeBit}${codeBitDesc} — ${setPage.name}`)}">
     <meta property="og:description" content="${escapeAttr(desc)}">
     ${img ? `<meta property="og:image" content="${escapeAttr(img)}">` : ""}
     <meta name="twitter:card" content="summary_large_image">
@@ -579,9 +629,9 @@ function cardPageHtml(cp) {
     </header>
     <main class="prc-wrap">
       <div class="prc-hero">
-        ${img ? `<img class="prc-img" src="${escapeAttr(img)}" alt="${escapeAttr(`${card.name}${codeBit} — ${setPage.name}`)}" loading="eager" width="320" height="447">` : ""}
+        ${img ? `<img class="prc-img" src="${escapeAttr(img)}" alt="${escapeAttr(`${card.name}${codeBit}${codeBitDesc} — ${setPage.name}`)}" loading="eager" width="320" height="447">` : ""}
         <div class="prc-info">
-          <h1>${escapeHtml(card.name)}${codeBit ? ` <small>${escapeHtml(card.number)}</small>` : ""}</h1>
+          <h1>${escapeHtml(card.name)}${codeBit ? ` <small>${escapeHtml(card.number)}${sCode ? ` · ${escapeHtml(sCode)}` : ""}</small>` : ""}</h1>
           <p class="prc-sub">${escapeHtml(`${gameLabel} · ${setPage.name}${card.rarity && card.rarity !== "None" ? ` · ${card.rarity}` : ""}`)}</p>
           ${priceUSD > 0 ? `<p class="prc-price">US$ ${priceUSD.toFixed(2)}</p><p class="prc-price-note">Preço de referência de mercado (atualizado semanalmente). No Sleevu você vê em reais e acompanha o histórico.</p>` : ""}
           <a class="prc-cta" href="${escapeAttr(appUrl)}">Marcar na minha coleção</a>

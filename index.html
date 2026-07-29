@@ -80,7 +80,13 @@
 </g>
 </g>
 </svg>
-        <p class="lp-tagline" data-i18n="home.lp.tagline">Sua coleção de cartas, levada a sério.</p>
+        <!-- É H1 e não <p>: a home não tinha NENHUM h1, e ele é um dos sinais
+             mais fortes de "sobre o que é esta página". O wordmark acima é um
+             SVG (bonito, mas o buscador só lê o aria-label "Sleevu", que não
+             diz o que o site faz). A troca é visualmente neutra: a .lp-tagline
+             já declara tamanho, peso e margem próprios, então nada do estilo
+             padrão de h1 aparece. -->
+        <h1 class="lp-tagline" data-i18n="home.lp.tagline">Sua coleção de cartas, levada a sério.</h1>
         <p class="lp-sub" data-i18n="home.lp.sub">Catalogue por variante e condição, acompanhe o valor no tempo e sincronize em todos os seus aparelhos. Pokémon, Lorcana, One Piece, Naruto e Hunter × Hunter — do lançamento de ontem ao Carddass de 1999.</p>
         <div class="lp-ctas">
           <a class="cta" href="hub.html" data-i18n="home.lp.cta">Começar agora, é grátis</a>
