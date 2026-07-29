@@ -4262,6 +4262,12 @@
     const mergedPricing = {};
     for (const { game, dataDir } of DATA_GAMES) {
       const ids = idsByGame ? (idsByGame[game] || []) : null; // null = catálogo inteiro
+      // Carga DIRECIONADA e sem nenhum id deste jogo: não há o que baixar.
+      // Sem esta saída, um jogo em que você não tem carta nenhuma ainda pagava
+      // os 4 round-trips do loadGameCatalog (cards + indexes + pricing +
+      // set-id-map) — com 12 jogos no ar, ~44 requisições em série jogadas
+      // fora em toda abertura de Coleção/Portfólio/Dashboard.
+      if (ids && !ids.length) { indexesByGame[game] = null; continue; }
       // Resiliência: um jogo falhar (soluço de rede num chunk) não pode derrubar a
       // página toda — cai vazio só pra aquele jogo e segue.
       let r;
@@ -5300,6 +5306,23 @@
       return rows && rows[0] ? rows[0].data : {};
     } catch (e) { recordSync("pull", false, e && e.message); return null; }
   }
+  // Os 12 jogos numa requisição SÓ. O pullRemote acima é por jogo, e o boot
+  // chamava um por vez, em série: 12 round-trips ao Supabase em TODA abertura
+  // de página, mesmo sem nada ter mudado — 1,5–3s de "Carregando informações"
+  // antes de a página poder desenhar qualquer coisa.
+  // Devolve { jogo: dados } (jogo sem linha simplesmente não aparece, que é o
+  // mesmo que o {} do pullRemote) ou null se a requisição falhou.
+  async function pullAllRemote(token, uid) {
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?user_id=eq.${uid}&select=game,data`, { headers: authHeaders(token) });
+      if (!r.ok) { recordSync("pull", false, `HTTP ${r.status}`); return null; }
+      const rows = await r.json();
+      recordSync("pull", true);
+      const out = {};
+      (rows || []).forEach((row) => { if (row && row.game) out[row.game] = row.data || {}; });
+      return out;
+    } catch (e) { recordSync("pull", false, e && e.message); return null; }
+  }
   async function pushRemote(token, uid, data, keepalive, game) {
     try {
       const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?on_conflict=user_id,game`, {
@@ -5311,6 +5334,42 @@
       recordSync("push", r.ok, r.ok ? "" : `HTTP ${r.status}`);
       return r.ok;
     } catch (e) { recordSync("push", false, e && e.message); return false; /* tenta de novo no próximo ciclo */ }
+  }
+
+  // Vários jogos num POST só. O PostgREST aceita um ARRAY no mesmo upsert, e o
+  // on_conflict continua valendo linha a linha. Usado onde se grava o pacote
+  // inteiro — o sync que roda logo depois do login (a tela de "Entrando…") e o
+  // "Forçar sincronização" —, que eram 12 POSTs em série. O push avulso do laço
+  // de sync (uma carta mudou num jogo) segue no pushRemote acima.
+  async function pushAllRemote(token, uid, byGame) {
+    const linhas = Object.keys(byGame).map((game) => ({
+      user_id: uid, game, data: byGame[game], updated_at: new Date().toISOString()
+    }));
+    if (!linhas.length) return true;
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?on_conflict=user_id,game`, {
+        method: "POST",
+        headers: Object.assign(authHeaders(token), { Prefer: "resolution=merge-duplicates,return=minimal" }),
+        body: JSON.stringify(linhas)
+      });
+      if (r.ok) { recordSync("push", true); return true; }
+      // Rede de segurança: se o upsert em lote for recusado (uma versão do
+      // PostgREST que implique algo diferente do array, um limite de corpo),
+      // cai no caminho antigo — um POST por jogo. Vale a redundância: falhar
+      // aqui em silêncio seria a coleção parando de subir pra nuvem.
+      recordSync("push", false, `HTTP ${r.status} (lote) — caindo pro envio por jogo`);
+      return await pushOneByOne(token, uid, byGame);
+    } catch (e) {
+      recordSync("push", false, e && e.message);
+      return await pushOneByOne(token, uid, byGame);
+    }
+  }
+  async function pushOneByOne(token, uid, byGame) {
+    let ok = true;
+    for (const game of Object.keys(byGame)) {
+      if (!(await pushRemote(token, uid, byGame[game], false, game))) ok = false;
+    }
+    return ok;
   }
 
   // --- Compartilhamento por link público (tabela `shares`) ---
@@ -5758,16 +5817,15 @@
     const fail = (msg) => { if (btn) { btn.disabled = false; btn.textContent = label; } window.alert(msg); };
     session = (await refreshSession()) || session;
     if (!getSession()) { fail(t("ts.syncNeedsLogin")); return; }
-    let anyOk = false;
+    const remoteAll = await pullAllRemote(session.access_token, session.user.id);
+    if (!remoteAll) { fail(t("ts.syncError")); return; }
+    const mesclado = {};
     for (const g of GAME_SLUGS) {
-      const remote = await pullRemote(session.access_token, session.user.id, g);
-      if (remote == null) continue; // um jogo falhar não trava os outros
-      anyOk = true;
-      const merged = mergeData(localSnapshot(g), remote);
+      const merged = mergeData(localSnapshot(g), remoteAll[g] || {});
       writeSnapshot(merged, g);
-      await pushRemote(session.access_token, session.user.id, merged, false, g);
+      mesclado[g] = merged;
     }
-    if (!anyOk) { fail(t("ts.syncError")); return; }
+    if (!(await pushAllRemote(session.access_token, session.user.id, mesclado))) { fail(t("ts.syncError")); return; }
     window.location.reload();
   }
 
@@ -6241,12 +6299,16 @@
       if (fresh) {
         renderLoggedIn(fresh);
         pageLoading(true); // sync inicial da conta (a página recarrega no fim)
+        const remoteAll = await pullAllRemote(fresh.access_token, fresh.user.id);
+        const mesclado = {};
         for (const g of GAME_SLUGS) {
-          const remote = await pullRemote(fresh.access_token, fresh.user.id, g);
-          const merged = mergeData(localSnapshot(g), remote);
+          // remoteAll null = a requisição falhou; passa null adiante pro
+          // mergeData tratar igual ao que o pullRemote por jogo devolvia.
+          const merged = mergeData(localSnapshot(g), remoteAll ? (remoteAll[g] || {}) : null);
           writeSnapshot(merged, g);
-          await pushRemote(fresh.access_token, fresh.user.id, merged, false, g);
+          mesclado[g] = merged;
         }
+        await pushAllRemote(fresh.access_token, fresh.user.id, mesclado);
         await pullProfile();
         // O reload abaixo chega SEM o #access_token, então a página de login
         // não teria como saber que ainda é uma volta de login e mostraria o
@@ -6256,29 +6318,34 @@
         window.location.reload();
         return;
       }
-      // 2) Sessão existente: renova, puxa o remoto de CADA jogo e mescla
-      // (recarrega se algum mudou).
+      // 2) Sessão existente: renova, puxa o remoto dos jogos numa requisição só
+      // e mescla (recarrega se algum mudou).
       let session = getSession();
       if (!session) { renderLoggedOut(); return; }
       session = await refreshSession() || session;
       if (!getSession()) { renderLoggedOut(); return; }
       renderLoggedIn(session);
       let changed = false;
+      const aSubir = {};
       pageLoading(true); // puxando a coleção da nuvem (1º acesso pode demorar)
-      for (const g of GAME_SLUGS) {
-        const remote = await pullRemote(session.access_token, session.user.id, g);
-        if (!remote) continue;
+      const remoteAll = await pullAllRemote(session.access_token, session.user.id);
+      // remoteAll null = a requisição falhou (não mexe em nada). Jogo sem linha
+      // na nuvem vale {} — é o que o pullRemote por jogo devolvia, e é o que
+      // mantém o `lastPushedByGame` carimbado pro laço de sync.
+      for (const g of remoteAll ? GAME_SLUGS : []) {
+        const remote = remoteAll[g] || {};
         const before = JSON.stringify(localSnapshot(g));
         const merged = mergeData(localSnapshot(g), remote);
         const after = JSON.stringify(merged);
         if (after !== before) {
           writeSnapshot(merged, g);
-          await pushRemote(session.access_token, session.user.id, merged, false, g);
+          aSubir[g] = merged; // sobe tudo de uma vez depois do laço
           changed = true;
         } else {
           lastPushedByGame[g] = before;
         }
       }
+      if (Object.keys(aSubir).length) await pushAllRemote(session.access_token, session.user.id, aSubir);
       pageLoading(false);
       if (changed) { window.location.reload(); return; }
       pullProfile(); // sincroniza o perfil (handle/visibilidade) sem bloquear

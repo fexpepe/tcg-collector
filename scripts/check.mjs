@@ -24,13 +24,24 @@ for (const f of [...srcFiles, "sw.js"]) {
   catch (e) { fail(`Sintaxe inválida em ${f}: ${String(e.stderr || e).split("\n")[0]}`); }
 }
 
-// 2) Carrega a tabela i18n (src/i18n.js define window.TCG_MESSAGES).
+// 2) Carrega a tabela i18n. São VÁRIOS arquivos: o src/i18n.js (núcleo, que
+//    toda página carrega) e os pacotes por página — hoje só o src/i18n-docs.js
+//    (privacidade/termos/sobre/ajuda/faq). Todos mesclam em window.TCG_MESSAGES.
+const I18N_FILES = srcFiles.filter((f) => /^src\/i18n(-[a-z]+)?\.js$/.test(f));
+const I18N_EXTRAS = I18N_FILES.filter((f) => f !== "src/i18n.js");
 let MESSAGES = {};
+const keysOf = (file) => {
+  try {
+    const sandbox = { window: {} };
+    new Function("window", read(file))(sandbox.window);
+    return Object.keys((sandbox.window.TCG_MESSAGES || {}).pt || {});
+  } catch (e) { fail(`Não consegui carregar ${file}: ${e.message}`); return []; }
+};
 try {
   const sandbox = { window: {} };
-  new Function("window", read("src/i18n.js"))(sandbox.window);
+  for (const f of I18N_FILES) new Function("window", read(f))(sandbox.window);
   MESSAGES = sandbox.window.TCG_MESSAGES || {};
-} catch (e) { fail(`Não consegui carregar src/i18n.js: ${e.message}`); }
+} catch (e) { fail(`Não consegui carregar a tabela i18n: ${e.message}`); }
 
 const ptKeys = new Set(Object.keys(MESSAGES.pt || {}));
 const enKeys = new Set(Object.keys(MESSAGES.en || {}));
@@ -82,6 +93,28 @@ for (const f of htmlFiles) {
   const s = html.indexOf("src/shared.js");
   if (i < 0) fail(`${f}: carrega shared.js mas não carrega i18n.js`);
   else if (i > s) fail(`${f}: i18n.js precisa vir ANTES de shared.js`);
+}
+
+// 7) Pacotes i18n por página: nenhuma chave de um pacote pode ser usada numa
+//    página que NÃO o carrega — senão a página mostra a chave crua na tela.
+//    É a guarda que torna a divisão segura: dividir de novo (decks, binders…)
+//    é só criar o src/i18n-<nome>.js e apontar as páginas que o carregam.
+//    Um .js do src conta como "usado" por toda página que carrega aquele .js.
+const htmlPorScript = (js) => htmlFiles.filter((h) => read(h).includes(js));
+for (const bundle of I18N_EXTRAS) {
+  const donas = htmlFiles.filter((h) => read(h).includes(bundle.replace("src/", "src/")));
+  if (!donas.length) { warn(`${bundle}: nenhuma página carrega este pacote`); continue; }
+  const chaves = new Set(keysOf(bundle));
+  for (const f of [...srcFiles.filter((s2) => !I18N_FILES.includes(s2)), ...htmlFiles]) {
+    const txt = read(f);
+    const usadas = [...chaves].filter((k) => txt.includes(`"${k}"`) || txt.includes(`'${k}'`));
+    if (!usadas.length) continue;
+    const paginas = f.endsWith(".html") ? [f] : htmlPorScript(f);
+    const orfas = paginas.filter((p) => !donas.includes(p));
+    if (orfas.length) {
+      fail(`${f}: usa ${usadas.slice(0, 2).map((k) => `"${k}"`).join(", ")} do ${bundle}, mas ${orfas.join(", ")} não carrega esse arquivo`);
+    }
+  }
 }
 
 // Relatório. Avisos só listam com --verbose (senão poluem o uso diário).

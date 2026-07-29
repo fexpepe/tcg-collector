@@ -8,12 +8,12 @@
 //    da rede quando online (assim um deploy novo é sempre pego, sem o app ficar
 //    preso numa versão velha) e caem no cache quando offline — fazendo o app
 //    abrir e a coleção já vista funcionar sem internet (PWA instalável).
-// v227: as páginas passaram a pedir FATIAS do índice (indexes-sets.json etc.)
-// em vez do indexes.js inteiro, o pricing saiu do data-catalog (agora sob
-// demanda), e o <label> da busca + o placeholder da subnav foram pro HTML.
-// Bump obrigatório: o HTML antigo em cache pediria o índice junto, baixaria o
-// preço no boot e injetaria o rótulo por JS de novo (voltando o CLS).
-const SHELL_CACHE = "tcg-shell-v227";
+// v228: o catálogo (data/) saiu do network-first e virou stale-while-revalidate
+// (ver staleWhileRevalidate lá embaixo), e a página de login ganhou um script
+// novo no <head> (src/login-boot.js). Bump obrigatório por causa do login: o
+// HTML antigo em cache não pede esse arquivo, e é ele que evita o formulário
+// piscar na volta do link mágico.
+const SHELL_CACHE = "tcg-shell-v228";
 // IMAGE_CACHE vai a v2: a versão anterior do SW podia cravar um erro 404/timeout
 // como imagem "opaca" por 7 dias (imagem quebrada presa até um hard refresh).
 // Renomear o cache faz o activate apagar o antigo UMA vez — limpa os erros
@@ -46,7 +46,7 @@ const SHELL_ASSETS = [
   // Fonte da marca (auto-hospedada): precisa estar no shell pra o app abrir
   // offline com a tipografia certa, sem "trocar de fonte" ao reconectar.
   "assets/fonts/outfit-latin.woff2", "assets/fonts/outfit-latin-ext.woff2",
-  "src/theme.js", "src/game.js", "src/login-boot.js", "src/i18n.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js", "src/explore.js", "src/dashboard.js", "src/badges.js",
+  "src/theme.js", "src/game.js", "src/login-boot.js", "src/i18n.js", "src/i18n-docs.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js", "src/explore.js", "src/dashboard.js", "src/badges.js",
   "src/home.js", "src/wishlist.js", "src/portfolio.js", "src/binders.js",
   "src/backup.js", "src/graded-ui.js", "src/cards.js", "src/sales.js", "src/graded.js", "src/login.js", "src/hub.js", "src/settings.js", "src/profile.js", "src/admin.js",
   "src/deck-rules.js", "src/decks.js"
@@ -89,6 +89,11 @@ self.addEventListener("fetch", (event) => {
     return;
   }
   if (url.origin === self.location.origin) {
+    // Catálogo (data/): stale-while-revalidate. Ver a função pra o porquê.
+    if (url.pathname.includes("/data/") && event.request.mode !== "navigate") {
+      event.respondWith(staleWhileRevalidate(event));
+      return;
+    }
     event.respondWith(networkFirst(event.request, url));
     return;
   }
@@ -158,6 +163,36 @@ async function cacheFirst(url) {
 
 // App shell e dados: rede primeiro (sempre fresco quando online), cache como
 // rede de segurança offline.
+// Catálogo (data/): responde do CACHE na hora e revalida em segundo plano.
+//
+// Por que não network-first como o resto: a Coleção/Portfólio/Dashboard pedem
+// dezenas de arquivos de catálogo por abertura, e network-first paga o
+// round-trip de TODOS eles mesmo quando nada mudou (o 304 é barato em bytes,
+// não em latência — no celular são ~40-150ms cada, em fila de 6 por host).
+// Como o catálogo só muda no build (semanal pros preços), servir a cópia local
+// e atualizar atrás é a troca certa: a 2ª visita abre instantânea e o dado
+// fica, no pior caso, UMA visita atrasado.
+//
+// A revalidação roda mesmo quando o cache respondeu (waitUntil segura o SW
+// vivo até ela terminar); falha de rede é silenciosa — já respondemos.
+async function staleWhileRevalidate(event) {
+  const request = event.request;
+  const cache = await caches.open(DATA_CACHE);
+  const cached = await cache.match(request);
+  const rede = fetch(request, { cache: "no-cache" }).then((response) => {
+    if (response && response.ok) {
+      cache.put(request, response.clone());
+      trim(DATA_CACHE, MAX_DATA);
+    }
+    return response;
+  }).catch(() => null);
+  if (cached) {
+    event.waitUntil(rede);
+    return cached;
+  }
+  return (await rede) || Response.error();
+}
+
 async function networkFirst(request, url) {
   const cacheName = url.pathname.includes("/data/") ? DATA_CACHE : SHELL_CACHE;
   // Recursos do app (CSS/JS/dados) têm cache HTTP de 4h e URL sem versão; ao
