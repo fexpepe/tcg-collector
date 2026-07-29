@@ -32,6 +32,28 @@
     if (event.persisted) window.location.reload();
   });
 
+  // Volta do provedor COM ERRO. O Supabase devolve na URL (no hash quando a
+  // recusa vem do OAuth, na query quando vem antes dele):
+  //   #error=server_error&error_code=…&error_description=…
+  // Sem ler isso, a página renascia limpa e o clique no "Continuar com Google"
+  // parecia não fazer nada — o motivo real (provedor Google desligado no painel
+  // do Supabase, redirect_to fora da allow-list, consentimento negado) ficava
+  // escondido na barra de endereço. Mostrar o texto do provedor é o que
+  // transforma "não funciona" em algo acionável.
+  (function mostraErroOauth() {
+    const url = new URL(window.location.href);
+    const doHash = new URLSearchParams(url.hash.slice(1));
+    const fonte = doHash.get("error") ? doHash : (url.searchParams.get("error") ? url.searchParams : null);
+    if (!fonte) return;
+    const motivo = fonte.get("error_description") || fonte.get("error_code") || fonte.get("error");
+    // Limpa a URL: um F5 não pode repetir a mensagem (nem deixar o erro colado
+    // no endereço que o usuário eventualmente compartilha).
+    ["error", "error_code", "error_description"].forEach((k) => { doHash.delete(k); url.searchParams.delete(k); });
+    const sobra = doHash.toString();
+    history.replaceState(null, "", url.pathname + url.search + (sobra ? `#${sobra}` : ""));
+    showMsg(`${t("login.oauthFailed")} ${motivo}`, "err");
+  })();
+
   // Voltando do e-mail (#access_token): o shared.js (initAuth) consome e recarrega;
   // aqui só mostra "entrando…" para não piscar o formulário.
   if (window.location.hash.indexOf("access_token") >= 0) {
