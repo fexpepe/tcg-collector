@@ -4974,6 +4974,9 @@
     try { await pushWishlist.disable(); } catch (e) { /* best-effort */ }
     if (s) { try { await fetch(`${SUPABASE_URL}/auth/v1/logout`, { method: "POST", headers: authHeaders(s.access_token) }); } catch (e) { /* ignora */ } }
     setSession(null);
+    // Saiu: a marca de "entrando" não pode sobreviver ao logout (senão a página
+    // de login abriria travada na tela de carregamento).
+    try { sessionStorage.removeItem("sleevu-entrando"); } catch (e) { /* ignora */ }
     window.location.reload();
   }
   // Volta do e-mail: tokens vêm no hash (#access_token=...&refresh_token=...).
@@ -6245,6 +6248,11 @@
           await pushRemote(fresh.access_token, fresh.user.id, merged, false, g);
         }
         await pullProfile();
+        // O reload abaixo chega SEM o #access_token, então a página de login
+        // não teria como saber que ainda é uma volta de login e mostraria o
+        // formulário por um instante. A marca mantém a tela de "entrando" de
+        // pé até o redirect; o login.js a apaga quando mostra o formulário.
+        try { sessionStorage.setItem("sleevu-entrando", "1"); } catch (e) { /* ignora */ }
         window.location.reload();
         return;
       }

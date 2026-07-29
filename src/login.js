@@ -13,6 +13,14 @@
     msg.className = "login-msg" + (kind ? " " + kind : "");
     msg.textContent = text;
   }
+  // A tela de "entrando" é acesa pelo login-boot.js (no <head>, antes da
+  // primeira pintura). Aqui só se APAGA: no instante em que esta página decide
+  // mostrar o formulário, a marca tem que sumir — senão um logout, ou um sinal
+  // frouxo do boot, deixaria a página presa em "Entrando…" pra sempre.
+  function mostraFormulario() {
+    document.documentElement.removeAttribute("data-entering");
+    try { sessionStorage.removeItem("sleevu-entrando"); } catch (e) { /* ignora */ }
+  }
   function returnTarget() {
     let ret = null;
     try { ret = localStorage.getItem("tcg-login-return"); localStorage.removeItem("tcg-login-return"); } catch (e) { /* ignora */ }
@@ -45,6 +53,7 @@
     const doHash = new URLSearchParams(url.hash.slice(1));
     const fonte = doHash.get("error") ? doHash : (url.searchParams.get("error") ? url.searchParams : null);
     if (!fonte) return;
+    mostraFormulario(); // deu errado: ninguém está entrando
     const motivo = fonte.get("error_description") || fonte.get("error_code") || fonte.get("error");
     // Limpa a URL: um F5 não pode repetir a mensagem (nem deixar o erro colado
     // no endereço que o usuário eventualmente compartilha).
@@ -54,18 +63,38 @@
     showMsg(`${t("login.oauthFailed")} ${motivo}`, "err");
   })();
 
-  // Voltando do e-mail (#access_token): o shared.js (initAuth) consome e recarrega;
-  // aqui só mostra "entrando…" para não piscar o formulário.
-  if (window.location.hash.indexOf("access_token") >= 0) {
-    if (form) form.hidden = true;
-    showMsg(t("login.entering"), "ok");
+  // NÃO dá pra olhar o #access_token aqui: o shared.js roda antes deste arquivo
+  // e limpa o hash logo no começo do boot (history.replaceState), então a esta
+  // altura a URL já está limpa — era por isso que a volta do e-mail caía no
+  // formulário como se nada tivesse acontecido. Quem viu o hash a tempo foi o
+  // login-boot.js, no <head>: é o atributo dele que manda aqui.
+  const entrando = document.documentElement.hasAttribute("data-entering");
+
+  // Já logado: redireciona pra onde veio (ou home). Segue "entrando" na tela —
+  // é um pulo instantâneo, e o formulário aqui só piscaria.
+  if (shared.getSession && shared.getSession()) {
+    document.documentElement.setAttribute("data-entering", "1");
+    window.location.replace(returnTarget());
     return;
   }
 
-  // Já logado: redireciona pra onde veio (ou home).
-  if (shared.getSession && shared.getSession()) {
-    window.location.replace(returnTarget());
-    return;
+  if (entrando) {
+    // Login em andamento: o shared.js está criando a sessão e sincronizando a
+    // coleção (o trecho mais demorado), e recarrega a página no fim. A sessão é
+    // gravada ANTES do sync, então a checagem lá embaixo distingue "ainda
+    // sincronizando" (tem sessão: continua esperando) de "o token foi recusado"
+    // — link mágico expirado, o caso em que ninguém viria salvar a tela e o
+    // usuário ficaria presto no spinner pra sempre.
+    if (form) form.hidden = true;
+    setTimeout(() => {
+      if (shared.getSession && shared.getSession()) return; // sync longo: deixa rolar
+      mostraFormulario();
+      if (form) form.hidden = false;
+      showMsg(t("login.enteringFailed"), "err");
+    }, 20000);
+  } else {
+    // Página de login de verdade: formulário à vista.
+    mostraFormulario();
   }
 
   // Google: uma navegação e mais nada. O Supabase devolve os tokens no mesmo

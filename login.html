@@ -17,6 +17,9 @@
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script src="src/theme.js"></script>
     <script src="src/game.js"></script>
+    <!-- Sem defer de propósito: decide ANTES da primeira pintura se esta visita
+         é uma volta de login (e mostra "entrando" no lugar do formulário). -->
+    <script src="src/login-boot.js"></script>
     <!-- A fonte só seria descoberta depois de baixar e parsear o styles.css
          (o @font-face mora lá). O preload a coloca na fila junto com o CSS.
          crossorigin é OBRIGATORIO mesmo sendo mesma origem: fonte é sempre
@@ -45,50 +48,62 @@
         <div class="login-logo login-logo-mark">Sleevu</div>
         <p class="login-tagline" data-i18n="login.tagline">Colecione · Sincronize · Grátis</p>
 
-        <h1 data-i18n="login.heading">Entrar</h1>
-        <p class="login-sub" data-i18n="login.sub">Sincronize sua coleção entre dispositivos. Grátis e sem senha.</p>
+        <!-- Tela de ENTRANDO: é o que aparece na volta do link mágico e do
+             Google, no lugar do formulário (o login-boot.js marca o <html>
+             antes da primeira pintura). role=status faz o leitor de tela
+             anunciar sozinho que está carregando. -->
+        <div class="login-entering" role="status">
+          <span class="login-entering-spin" aria-hidden="true"></span>
+          <h1 data-i18n="login.entering">Entrando…</h1>
+          <p data-i18n="login.enteringSub">Carregando sua coleção. Leva alguns segundos — não feche esta página.</p>
+        </div>
 
-        <!-- Login social primeiro: quem tem conta Google entra em dois toques,
-             sem trocar de app nem esperar e-mail chegar. O link mágico segue
-             logo abaixo pra quem não usa Google. O "G" é SVG inline (e não uma
-             imagem do CDN do Google) porque a CSP do site é img-src 'self' —
-             uma <img> externa seria bloqueada. -->
-        <button type="button" id="loginGoogle" class="login-oauth">
-          <svg class="login-oauth-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-          </svg>
-          <span data-i18n="login.google">Continuar com Google</span>
-        </button>
+        <div class="login-panel">
+          <h1 data-i18n="login.heading">Entrar</h1>
+          <p class="login-sub" data-i18n="login.sub">Sincronize sua coleção entre dispositivos. Grátis e sem senha.</p>
 
-        <div class="login-sep"><span data-i18n="login.or">ou</span></div>
+          <!-- Login social primeiro: quem tem conta Google entra em dois toques,
+               sem trocar de app nem esperar e-mail chegar. O link mágico segue
+               logo abaixo pra quem não usa Google. O "G" é SVG inline (e não uma
+               imagem do CDN do Google) porque a CSP do site é img-src 'self' —
+               uma <img> externa seria bloqueada. -->
+          <button type="button" id="loginGoogle" class="login-oauth">
+            <svg class="login-oauth-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            <span data-i18n="login.google">Continuar com Google</span>
+          </button>
 
-        <form id="loginForm" class="login-form">
-          <label class="login-field">
-            <span data-i18n="login.emailLabel">E-mail</span>
-            <input id="loginEmail" type="email" required autocomplete="email" inputmode="email" data-i18n-placeholder="login.emailPlaceholder" placeholder="voce@email.com">
-          </label>
-          <!-- Turnstile (Cloudflare): verificação anti-bot, quase sempre invisível.
-               O Supabase valida o token no siteverify (Attack Protection).
-               data-size="flexible": o widget acompanha a largura do formulário
-               em vez dos 300px fixos do tamanho "normal" — é o que alinha a
-               caixa com o campo de e-mail e com o botão. Como o flexible tem
-               MÍNIMO de 300px (e no celular o cartão tem menos que isso), o
-               login.js ainda encolhe o que sobrar. -->
-          <div class="cf-turnstile login-turnstile" data-sitekey="0x4AAAAAAD5d9S3IBkZHZ2-G" data-action="turnstile-spin-v2" data-theme="auto" data-size="flexible"></div>
-          <button type="submit" class="primary login-submit" data-i18n="login.submit">Enviar link de acesso</button>
-        </form>
+          <div class="login-sep"><span data-i18n="login.or">ou</span></div>
 
-        <p id="loginMsg" class="login-msg" role="status" hidden></p>
+          <form id="loginForm" class="login-form">
+            <label class="login-field">
+              <span data-i18n="login.emailLabel">E-mail</span>
+              <input id="loginEmail" type="email" required autocomplete="email" inputmode="email" data-i18n-placeholder="login.emailPlaceholder" placeholder="voce@email.com">
+            </label>
+            <!-- Turnstile (Cloudflare): verificação anti-bot, quase sempre invisível.
+                 O Supabase valida o token no siteverify (Attack Protection).
+                 data-size="flexible": o widget acompanha a largura do formulário
+                 em vez dos 300px fixos do tamanho "normal" — é o que alinha a
+                 caixa com o campo de e-mail e com o botão. Como o flexible tem
+                 MÍNIMO de 300px (e no celular o cartão tem menos que isso), o
+                 login.js ainda encolhe o que sobrar. -->
+            <div class="cf-turnstile login-turnstile" data-sitekey="0x4AAAAAAD5d9S3IBkZHZ2-G" data-action="turnstile-spin-v2" data-theme="auto" data-size="flexible"></div>
+            <button type="submit" class="primary login-submit" data-i18n="login.submit">Enviar link de acesso</button>
+          </form>
 
-        <p class="login-how" data-i18n="login.how">Enviamos um link mágico pro seu e-mail (sem senha). Clique nele para entrar — vale por alguns minutos. Confira o spam, se não chegar.</p>
+          <p id="loginMsg" class="login-msg" role="status" hidden></p>
 
-        <div class="login-foot">
-          <a href="index.html" data-i18n="login.back">← Voltar ao site</a>
-          <span aria-hidden="true">·</span>
-          <a href="privacy.html" data-i18n="footer.privacy">Privacidade</a>
+          <p class="login-how" data-i18n="login.how">Enviamos um link mágico pro seu e-mail (sem senha). Clique nele para entrar — vale por alguns minutos. Confira o spam, se não chegar.</p>
+
+          <div class="login-foot">
+            <a href="index.html" data-i18n="login.back">← Voltar ao site</a>
+            <span aria-hidden="true">·</span>
+            <a href="privacy.html" data-i18n="footer.privacy">Privacidade</a>
+          </div>
         </div>
       </div>
     </main>
