@@ -43,12 +43,88 @@ jobs:
         with:
           node-version: 22
 
+      # ── CAMINHO RÁPIDO ────────────────────────────────────────────────────
+      # A sincronização dos catálogos é ~10 min e fala com uma dúzia de APIs.
+      # Rodar isso a cada push de CSS era esperar 10 minutos pra ver uma cor
+      # mudar — e, num repo privado, estouraria sozinha a cota do Actions.
+      #
+      # Push = SÓ BUILD: reaproveita os artefatos do último build completo, que
+      # é o mesmo byte que está em produção agora (não há como divergir).
+      # Schedule/manual = build COMPLETO, com todos os syncs.
+      #
+      # O que NÃO é gated de propósito: lint, prerender, fatias de índice,
+      # minificação e deploy rodam sempre. O prerender em especial — ele muda
+      # junto com o código (título, H1, JSON-LD), então um push de SEO precisa
+      # regerar as 2.673 páginas mesmo sem catálogo novo.
+      - name: Restaura catálogo construído (artefatos do último build)
+        uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          # Espelha o .gitignore: só o que o build PRODUZ e o git não guarda.
+          # As pastas sets/ do Magic e do Yu-Gi-Oh ficam DE FORA — essas são
+          # versionadas, e restaurá-las por cima do checkout arriscaria voltar
+          # o catálogo pra uma versão mais velha que a do repo.
+          path: |
+            data/*.generated.js
+            data/*.generated.json
+            data/search-index.json
+            data/*/*.generated.js
+            data/*/*.generated.json
+            data/*/search-index.json
+            data/lorcana/sets
+            data/onepiece/sets
+            data/fab/sets
+            data/gundam/sets
+            data/dbfw/sets
+            data/digimon/sets
+            data/riftbound/sets
+            data/naruto/sets
+            data/hxh/sets
+            data/jump/sets
+            data/magic/cards.js
+            data/magic/indexes.js
+            data/magic/pricing.js
+            data/magic/indexes-*.json
+            data/ygo/cards.js
+            data/ygo/indexes.js
+            data/ygo/pricing.js
+            data/ygo/indexes-*.json
+          key: catalogo-build-${{ github.run_id }}
+          restore-keys: catalogo-build-
+
+      # A GUARDA. Sem ela, um cache expirado (o GitHub descarta o que fica 7
+      # dias sem uso) publicaria um site sem catálogo nenhum — pior que esperar
+      # 10 minutos. Se qualquer peça essencial faltar, o build volta a ser
+      # completo, e o log diz por quê.
+      - name: Decide o modo do build (rápido ou completo)
+        run: |
+          if [ "${{ github.event_name }}" != "push" ]; then
+            echo "Evento '${{ github.event_name }}': build COMPLETO."
+            echo "RODA_SYNC=true" >> $GITHUB_ENV
+            exit 0
+          fi
+          faltando=""
+          for f in data/manifest.generated.js data/pricing.generated.js \
+                   data/onepiece/pricing.generated.js data/lorcana/pricing.generated.js \
+                   data/magic/pricing.generated.js data/ygo/pricing.generated.js; do
+            [ -s "$f" ] || faltando="$faltando $f"
+          done
+          if [ -n "$faltando" ]; then
+            echo "Cache incompleto ($faltando) — caindo pro build COMPLETO."
+            echo "RODA_SYNC=true" >> $GITHUB_ENV
+          else
+            echo "Catálogo veio do cache: build RÁPIDO (sem sincronização)."
+            echo "RODA_SYNC=false" >> $GITHUB_ENV
+          fi
+
       # O cache incremental do sync (payloads brutos da TCGdex + preços por set
       # da PPT) faz os deploys levarem minutos em vez de refazer tudo. Restore e
       # save SÃO SEPARADOS de proposito: o save roda ANTES da limpeza que apaga
       # data/.cache (com o actions/cache combinado, o save automatico rodava no
       # POST, depois do rm, e salvava vazio — o cache nunca persistia).
+      # Só no build completo: num build rápido nenhum sync lê este cache, e
+      # ele é grande — restaurá-lo seria justamente o tempo que queremos cortar.
       - name: Restaura cache (TCGdex + PPT)
+        if: env.RODA_SYNC == 'true'
         uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: data/.cache
@@ -58,6 +134,7 @@ jobs:
       # zh-cn (simplificado) é o CHINÊS PADRÃO do site; zh-tw (tradicional) é
       # fundido dentro do mesmo "Chinês" — por isso o zh-cn vem antes no merge.
       - name: Sincroniza catálogos (en, ja, zh-cn, zh-tw, pt)
+        if: env.RODA_SYNC == 'true'
         run: |
           node scripts/sync-tcgdex.mjs en
           node scripts/sync-tcgdex.mjs ja
@@ -66,6 +143,7 @@ jobs:
           node scripts/sync-tcgdex.mjs pt
 
       - name: Atualiza mapas de tipos e nomes de Pokémon
+        if: env.RODA_SYNC == 'true'
         run: |
           node scripts/sync-pokemon-types.mjs
           node scripts/sync-pokemon-names.mjs
@@ -74,6 +152,7 @@ jobs:
       # existir — o script sai com sucesso e o merge segue só com a referencia
       # internacional. Quando o token chegar, o BR passa a ter prioridade no valor.
       - name: Sincroniza preços BR (MYP)
+        if: env.RODA_SYNC == 'true'
         env:
           MYP_API_TOKEN: ${{ secrets.MYP_API_TOKEN }}
         run: node scripts/sync-myp.mjs pokemon
@@ -83,11 +162,13 @@ jobs:
       # Incremental: cacheia por set em data/.cache/ppt (preservado entre runs) e
       # respeita um orçamento de créditos/run pra nunca estourar o limite do plano.
       - name: Sincroniza preços/imagens JP (PPT)
+        if: env.RODA_SYNC == 'true'
         env:
           PPT_API_TOKEN: ${{ secrets.PPT_API_TOKEN }}
         run: node scripts/sync-ppt.mjs --budget 8000 --graded
 
       - name: Mescla catálogos num manifest unificado
+        if: env.RODA_SYNC == 'true'
         run: node scripts/merge-catalogs.mjs en ja zh-cn zh-tw pt
 
       # Espelha logos/símbolos de SET do Pokémon localmente (independência da
@@ -96,47 +177,56 @@ jobs:
       # Idempotente: baixa só o que falta (versionado) e re-localiza as URLs que
       # o sync trouxe de volta remotas. Não derruba o build se o CDN estiver fora.
       - name: Espelha logos de set (Pokémon)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/mirror-set-logos.mjs || echo "mirror-set-logos falhou; segue com as URLs da TCGdex"
 
       # Histórico de preços SEM servidor: busca o acumulador publicado no deploy
       # anterior (a produção é o "banco"), anexa o snapshot de hoje e re-publica
       # (+ deltas ▲▼ e maiores altas/quedas). Backup em data/.cache.
       - name: Snapshot de preços (histórico Pokémon)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data
 
       # Catálogo do Lorcana (Lorcast). Independente do Pokémon; gera data/lorcana/
       # cards/indexes/pricing + .generated (modo prod). Não derruba o build se a
       # API comunitária estiver fora (mantém o cards.js versionado).
       - name: Sincroniza catálogo do Lorcana (Lorcast)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-lorcana.mjs || echo "sync-lorcana falhou; mantém o catalogo versionado"
 
       - name: Snapshot de preços (histórico Lorcana)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/lorcana
 
       # Catálogo do One Piece (TCGCSV, espelho público do TCGplayer — cat. 68).
       # Gera data/onepiece/ cards/indexes/pricing + .generated com preços USD.
       # Não derruba o build se o espelho estiver fora (mantém o catálogo versionado).
       - name: Sincroniza catálogo do One Piece (TCGCSV)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-onepiece.mjs || echo "sync-onepiece falhou; mantém o catalogo versionado"
 
       # One Piece VINTAGE: Carddass Hyper Battle (1999–2002). Sem API/preço aberto;
       # a checklist vem do Grand Line Wiki (cache em data/.cache). ANEXA as cartas
       # vintage ao catálogo do One Piece (roda DEPOIS do sync-onepiece). Sem preço.
       - name: Anexa catálogo vintage do One Piece (Carddass)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-onepiece-vintage.mjs || echo "sync-onepiece-vintage falhou; segue sem o vintage"
 
       # Espelha as imagens vintage localmente (1x; reuso via data/.cache entre
       # builds). Se espelhar algo novo, refaz o build vintage pra apontar pro local.
       - name: Espelha imagens vintage (Carddass)
+        if: env.RODA_SYNC == 'true'
         run: (node scripts/mirror-vintage-images.mjs && node scripts/sync-onepiece-vintage.mjs --no-fetch) || echo "mirror falhou; segue com wsrv"
 
       # One Piece VINTAGE #2: o One Piece Card Game de 2002–2005 (verso madeira),
       # ~1330 cartas em 22 sets, da mesma checklist do Grand Line Wiki. Anexa ao
       # catálogo (dedupe pelo prefixo op2002-, coexiste com o Carddass). Sem preço.
       - name: Anexa catálogo One Piece Card Game 2002 (vintage)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-onepiece-2002.mjs || echo "sync-onepiece-2002 falhou; segue sem o 2002"
 
       - name: Snapshot de preços (histórico One Piece)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/onepiece
 
       # Catálogo do Magic (Scryfall): catálogo + preços TCGplayer USD/Cardmarket
@@ -145,9 +235,11 @@ jobs:
       # POKÉMON de durabilidade: os chunks data/magic/sets/ são versionados pelo
       # snapshot; o script congela neles se o Scryfall estiver fora.
       - name: Sincroniza catálogo do Magic (Scryfall)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-magic.mjs || echo "sync-magic falhou; mantém os chunks versionados"
 
       - name: Snapshot de preços (histórico Magic)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/magic
 
       # Símbolos de set do Magic (Scryfall SVG, svgs.scryfall.io sem rate limit):
@@ -157,64 +249,79 @@ jobs:
       # ser a palavra final, senão os símbolos ficam remotos (dependentes de CDN
       # instável) apesar do espelho existir. Idempotente; não derruba o build.
       - name: Espelha símbolos de set (Magic) e reaponta os chunks
+        if: env.RODA_SYNC == 'true'
         run: node scripts/mirror-magic-set-logos.mjs || echo "mirror-magic-set-logos falhou; segue com o ícone remoto"
 
       # Logos de set do FAB (the-fab-cube -> PNG oficial da LSS, redimensionado
       # via wsrv.nl). ANTES do sync pra ele já apontar setLogo pro webp local.
       # ~41 sets principais; o resto cai na arte da carta. Idempotente.
       - name: Espelha logos de set (FAB)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/mirror-fab-set-logos.mjs || echo "mirror-fab-set-logos falhou; segue com a arte da carta"
 
       # Catálogo do Flesh and Blood (TCGCSV cat. 62, mesmo espelho do One
       # Piece). Padrão One Piece: cards.js versionado é a durabilidade.
       - name: Sincroniza catálogo do FAB (TCGCSV)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-fab.mjs || echo "sync-fab falhou; mantém o catalogo versionado"
 
       - name: Snapshot de preços (histórico FAB)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/fab
 
       # Gundam Card Game (TCGCSV cat. 86, Bandai). Padrão One Piece/FAB:
       # cards.js versionado é a durabilidade; chunks regenerados no build.
       - name: Sincroniza catálogo do Gundam (TCGCSV)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-gundam.mjs || echo "sync-gundam falhou; mantém o catalogo versionado"
 
       - name: Snapshot de preços (histórico Gundam)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/gundam
 
       # Dragon Ball Super FUSION WORLD (TCGCSV cat. 80, Bandai). Fusion World
       # (2024+), distinto do classico "Masters" (cat 27) e do DBZ TCG (cat 23).
       - name: Sincroniza catálogo do Dragon Ball Fusion World (TCGCSV)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-dbfw.mjs || echo "sync-dbfw falhou; mantém o catalogo versionado"
 
       - name: Snapshot de preços (histórico Dragon Ball Fusion)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/dbfw
 
       # Yu-Gi-Oh! (TCGCSV cat. 2, Konami): o MAIOR catalogo (~46k impressoes).
       # Padrao MAGIC: chunks versionados, monolito cards.js fora do deploy (ver
       # gitignore e o passo "Remove arquivos"). Nao derruba o build se cair.
       - name: Sincroniza catálogo do Yu-Gi-Oh! (TCGCSV)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-ygo.mjs || echo "sync-ygo falhou; mantém os chunks versionados"
 
       - name: Snapshot de preços (histórico Yu-Gi-Oh)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/ygo
 
       # Digimon Card Game (TCGCSV cat. 63, Bandai 2020+). Padrao One Piece/FAB.
       - name: Sincroniza catálogo do Digimon (TCGCSV)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-digimon.mjs || echo "sync-digimon falhou; mantém o catalogo versionado"
 
       - name: Snapshot de preços (histórico Digimon)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/digimon
 
       # Riftbound (TCGCSV cat. 89, Riot — League of Legends, 2025). Padrao FAB.
       - name: Sincroniza catálogo do Riftbound (TCGCSV)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-riftbound.mjs || echo "sync-riftbound falhou; mantém o catalogo versionado"
 
       - name: Snapshot de preços (histórico Riftbound)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/riftbound
 
       # Naruto (TCGCSV): só sincroniza quando a categoria existir (secret/var
       # NARUTO_TCGCSV_CATEGORY). Sem categoria, o script sai sem mexer em nada.
       - name: Sincroniza catálogo do Naruto (TCGCSV, se configurado)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-naruto.mjs || echo "sync-naruto falhou; mantém o catalogo versionado"
         env:
           NARUTO_TCGCSV_CATEGORY: ${{ vars.NARUTO_TCGCSV_CATEGORY }}
@@ -223,6 +330,7 @@ jobs:
       # tcg-db.nikita.jp (snapshot versionado, não regride). ANEXA ao catálogo do
       # Naruto (roda DEPOIS do sync-naruto). Imagens via wsrv.nl. Sem preço.
       - name: Anexa catálogo vintage do Naruto (Bandai 2003)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-naruto-vintage.mjs || echo "sync-naruto-vintage falhou; segue com o snapshot versionado"
 
       # Miracle Battle Carddass (2009-2015): linhas ONE PIECE, NARUTO e
@@ -230,27 +338,32 @@ jobs:
       # catalogos de cada jogo (roda DEPOIS dos syncs deles). O catalogo do
       # HUNTER x HUNTER nasce AQUI (data/hxh/). Fonte tcg-db, sem preco.
       - name: Anexa Miracle Battle Carddass (One Piece + Naruto + Hunter x Hunter)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-miracle-battle.mjs || echo "sync-miracle-battle falhou; segue com o snapshot versionado"
 
       # Carddass Hyper Battle HUNTER x HUNTER (1999-2001): linha PRINCIPAL do
       # jogo hxh. Fonte: Hunterpedia (API MediaWiki) - unica com scan carta a
       # carta. Roda DEPOIS do miracle-battle (que cria data/hxh/). Sem preco.
       - name: Anexa Carddass Hyper Battle (Hunter x Hunter)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-hxh-hyper-battle.mjs || echo "sync-hxh-hyper-battle falhou; segue com o snapshot versionado"
 
       # Data Carddass NARUTO (arcade, 2005-2008): checklist do noihjp (fa site),
       # sem imagens. Anexa ao catalogo do Naruto (roda DEPOIS dos outros).
       - name: Anexa Data Carddass NARUTO (arcade)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-naruto-datacarddass.mjs || echo "sync-naruto-datacarddass falhou; segue com o snapshot versionado"
 
       # Data Carddass NARUTO — Formation (2007-08) e Cross (2009-10): snapshot
       # versionado do catalogo do Suruga-ya (re-coleta manual; anti-bot barra
       # fetch em CI). Anexa as duas linhas ao catalogo do Naruto.
       - name: Anexa Data Carddass Formation + Cross
+        if: env.RODA_SYNC == 'true'
         run: node scripts/sync-naruto-dc-cross-formation.mjs || echo "sync formation/cross falhou; segue com o snapshot versionado"
 
       # JUMP: compila os sets curados versionados (data/jump/curated/*.json).
       - name: Compila catálogo JUMP (curadoria)
+        if: env.RODA_SYNC == 'true'
         run: node scripts/build-jump.mjs || echo "build-jump falhou; mantém o catalogo versionado"
 
       # Lint dos catálogos: FALHA o deploy em corrupção dura (ids duplicados,
@@ -266,8 +379,9 @@ jobs:
       # some. Só na main; o marcador skip-ci na mensagem evita loop de deploy.
       # Push direto, sem rebase (o workspace do build fica sujo de propósito):
       # numa race com push manual, pula — o próximo build versiona.
+      # (build rápido não sincronizou nada, então não há snapshot a versionar)
       - name: Versiona snapshot do catálogo
-        if: github.ref == 'refs/heads/main'
+        if: env.RODA_SYNC == 'true' && github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -290,10 +404,46 @@ jobs:
 
       # Salva o cache AGORA (data/.cache ainda existe; a limpeza apaga depois).
       - name: Salva cache (TCGdex + PPT)
+        if: env.RODA_SYNC == 'true'
         uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: data/.cache
           key: tcgdex-cache-${{ github.run_id }}
+
+      # Guarda os artefatos do build COMPLETO pros próximos pushes reaproveitarem
+      # (é o que faz o build rápido existir). Só depois do lint: cache de
+      # catálogo corrompido se propagaria por todos os deploys seguintes.
+      # ANTES do passo "Remove arquivos", que apaga data/magic/cards.js e cia.
+      - name: Salva catálogo construído (pro build rápido)
+        if: env.RODA_SYNC == 'true'
+        uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: |
+            data/*.generated.js
+            data/*.generated.json
+            data/search-index.json
+            data/*/*.generated.js
+            data/*/*.generated.json
+            data/*/search-index.json
+            data/lorcana/sets
+            data/onepiece/sets
+            data/fab/sets
+            data/gundam/sets
+            data/dbfw/sets
+            data/digimon/sets
+            data/riftbound/sets
+            data/naruto/sets
+            data/hxh/sets
+            data/jump/sets
+            data/magic/cards.js
+            data/magic/indexes.js
+            data/magic/pricing.js
+            data/magic/indexes-*.json
+            data/ygo/cards.js
+            data/ygo/indexes.js
+            data/ygo/pricing.js
+            data/ygo/indexes-*.json
+          key: catalogo-build-${{ github.run_id }}
 
       # Rede de segurança das FATIAS de índice (indexes-sets.js etc.), que é o
       # que as páginas carregam de verdade. Os syncs já as geram, mas cada sync
