@@ -3376,6 +3376,30 @@ a.hub-tile:hover {
   box-shadow: var(--shadow);
   text-align: center;
 }
+/* Tela de "entrando": o que aparece na volta do link mágico e do Google, no
+   lugar do formulário. O data-entering é posto no <html> pelo login-boot.js
+   ANTES da primeira pintura — é isso que evita o cartão de login piscar (com
+   título "Entrar" e botão do Google) na volta do e-mail, que dava toda a
+   impressão de que o login tinha falhado. Sem o atributo, nada muda. */
+.login-entering { display: none; }
+[data-entering] .login-panel { display: none; }
+[data-entering] .login-entering {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 30px 0 16px;
+}
+.login-entering h1 { font-size: 21px; margin: 0; }
+.login-entering p { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0; max-width: 30ch; }
+/* Mesma animação da pill global de carregamento (page-loading-spin). */
+.login-entering-spin {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 3px solid var(--line);
+  border-top-color: var(--accent);
+  animation: page-loading-spin 0.8s linear infinite;
+}
 .login-logo { font-size: 22px; font-weight: 800; letter-spacing: 0.14em; }
 /* Wordmark Sleevu no cartão de login (mesma técnica do .brand do header:
    SVG via mask pintado com currentColor — acompanha o tema). Centrado porque

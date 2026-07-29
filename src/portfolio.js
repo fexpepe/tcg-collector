@@ -117,34 +117,60 @@
 
   const inGameId = (g) => gameFilter === "all" || (g || "pokemon") === gameFilter;
 
-  // Maiores altas/quedas do MERCADO (price-movers do build semanal). Busca antes
-  // do catálogo pra incluir os ids dos movers no carregamento (podem não ser seus).
+  // Maiores altas/quedas do MERCADO (price-movers do build semanal).
   const moversByGame = Object.fromEntries(GAMES.map((g) => [g, null]));
   const fetchMovers = (dir) => fetch(dir + "price-movers.generated.json").then((r) => (r.ok ? r.json() : null)).catch(() => null);
 
-  Promise.all(GAMES.map((g) => fetchMovers(shared.gameDataDir(g))))
-    .then((movers) => {
-      GAMES.forEach((g, i) => { moversByGame[g] = movers[i]; });
-      const idsOf = (m) => m ? (m.up || []).concat(m.down || []).map((x) => x.id) : [];
-      return Promise.all([
-        shared.loadOwnedAcrossGames(Object.fromEntries(GAMES.map((g, i) => [g, ownedByGame[g].knownCardIds().concat(idsOf(movers[i]))]))),
-        shared.loadFxRates()
-      ]);
-    })
+  // O patrimônio PRIMEIRO, só com as suas cartas. Antes esta página buscava os
+  // movers dos 12 jogos ANTES de tudo e somava os ids deles à carga — o que
+  // arrastava chunks de sets de jogos onde você não tem carta nenhuma, e
+  // segurava o número que a pessoa abriu a página pra ver. Agora o mercado é
+  // uma segunda etapa: quando chega, só re-renderiza a própria seção.
+  const idsOwned = Object.fromEntries(GAMES.map((g) => [g, ownedByGame[g].knownCardIds()]));
+  Promise.all([shared.loadOwnedAcrossGames(idsOwned), shared.loadFxRates()])
     .then(([catalog]) => {
-      cards = catalog.cards;
-      cards.forEach((card) => cardGameMap.set(card.id, card.game));
-      cardsById = new Map(cards.map((card) => [card.id, card]));
+      indexaCartas(catalog.cards);
       GAMES.forEach((g) => ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
       bindGameFilter();
       bindBreakdown();
       bindExport();
       render();
+      hidrataMovers();
     })
     .catch((error) => {
       elements.empty.textContent = t("error.catalog", { message: error.message });
       elements.empty.hidden = false;
     });
+
+  function indexaCartas(lista) {
+    // Dedupe por id: a carga dos movers traz o CHUNK INTEIRO do set, então pode
+    // repetir carta que já veio na carga das suas — e carta repetida na lista
+    // seria valor contado duas vezes nos totais.
+    const porId = new Map();
+    (lista || []).forEach((card) => { if (!porId.has(card.id)) porId.set(card.id, card); });
+    cards = Array.from(porId.values());
+    cards.forEach((card) => cardGameMap.set(card.id, card.game));
+    cardsById = porId;
+  }
+
+  // Segunda etapa: busca os movers e, se algum deles for carta que você não
+  // tem, carrega SÓ esses ids antes de desenhar. Falhar aqui não pode estragar
+  // a página — a seção simplesmente não aparece (o renderMovers já descarta
+  // mover sem carta no catálogo).
+  function hidrataMovers() {
+    return Promise.all(GAMES.map((g) => fetchMovers(shared.gameDataDir(g))))
+      .then((movers) => {
+        GAMES.forEach((g, i) => { moversByGame[g] = movers[i]; });
+        const idsOf = (m) => m ? (m.up || []).concat(m.down || []).map((x) => x.id) : [];
+        const faltando = Object.fromEntries(GAMES.map((g, i) => [g, idsOf(movers[i]).filter((id) => !cardsById.has(id))]));
+        if (!Object.values(faltando).some((ids) => ids.length)) { renderMovers(); return; }
+        return shared.loadOwnedAcrossGames(faltando).then((extra) => {
+          indexaCartas(cards.concat(extra.cards || []));
+          renderMovers();
+        });
+      })
+      .catch(() => { /* mercado é acessório: sem ele a página segue inteira */ });
+  }
 
   function bindGameFilter() {
     if (!elements.gameFilter) return;

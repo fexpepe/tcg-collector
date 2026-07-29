@@ -61,6 +61,48 @@ create policy "own row - update" on public.collections
    salvar com debounce ao mudar). Manter o modo local como padrão.
 4. CSP: liberar `connect-src` para `https://*.supabase.co`.
 
+## Login com Google (o que precisa estar configurado)
+
+O botão "Continuar com Google" só navega para o endpoint do Supabase:
+
+```
+https://<projeto>.supabase.co/auth/v1/authorize?provider=google&redirect_to=<pagina de login>
+```
+
+Não há SDK nem callback próprio: o Supabase devolve os tokens no **hash**
+(`#access_token=…`) e o `initAuth` do `shared.js` consome na volta — o mesmo
+caminho do link mágico. Ou seja, quando o Google não funciona, o problema está
+em **configuração**, não no código do site. São três lugares, e todos os três
+precisam bater:
+
+**1. Google Cloud Console** (console.cloud.google.com → APIs e serviços)
+- Tela de consentimento OAuth configurada e **publicada** (em "Testing" só
+  entram os e-mails da lista de testadores).
+- Credenciais → Criar credencial → **ID do cliente OAuth** → *Aplicativo da Web*.
+- **Origens JavaScript autorizadas**: `https://sleevu.app`
+- **URIs de redirecionamento autorizados**: `https://<projeto>.supabase.co/auth/v1/callback`
+  (é o Supabase que recebe a volta do Google, **não** o sleevu.app — este é o
+  campo que mais se erra).
+
+**2. Supabase → Authentication → Providers → Google**
+- Ligar o provedor e colar o **Client ID** e o **Client Secret** do passo 1.
+- Provedor desligado é o que produz `error_description=Unsupported provider:
+  provider is not enabled` na volta.
+
+**3. Supabase → Authentication → URL Configuration**
+- **Site URL**: `https://sleevu.app`
+- **Redirect URLs** (allow-list) precisa cobrir a página de login: use
+  `https://sleevu.app/**`. O `redirect_to` é montado com
+  `location.origin + location.pathname`, e no Cloudflare Pages a URL limpa é
+  `/login` (sem `.html`) — em desenvolvimento local vira `/login.html`, então
+  vale acrescentar `http://localhost:*/**` para testar.
+- Fora da allow-list o Supabase **não dá erro visível**: ele redireciona para o
+  Site URL, e a impressão é a de um login que "não fez nada".
+
+Erro na volta aparece na própria tela de login (`login.js` lê `error` e
+`error_description` da URL e mostra o texto do provedor) — é por onde começar o
+diagnóstico.
+
 ## Por que não tudo de uma vez
 Construir auth+sync especulativo adiciona manutenção e risco (migração de dados,
 RLS, conflito local×nuvem). Faz-se quando houver a necessidade real (multi-
