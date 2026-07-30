@@ -23,16 +23,16 @@
   // "detectado" viraria indistinguível de "escolhido" e a detecção nunca mais
   // acompanharia uma troca de idioma do navegador.
   try {
-    var LANGS = { pt: "pt-BR", en: "en" };
+    var LANGS = { pt: "pt-BR", en: "en", es: "es" };
     var savedLang = localStorage.getItem("tcg-collector-ui-lang-v1");
     var lang = LANGS[savedLang] ? savedLang : detectLang();
     window.SLEEVU_LANG = lang;
     document.documentElement.setAttribute("lang", LANGS[lang]);
   } catch (e) { /* ignora: fica o lang do HTML */ }
 
-  // Varre a lista NA ORDEM de preferência do usuário: ["es","pt"] cai em pt
-  // (temos português), ["en-US","pt-BR"] cai em inglês (ele prefere inglês).
-  // Idioma que não é pt nem en -> inglês, que é a versão internacional.
+  // Varre a lista NA ORDEM de preferência do usuário: ["es","pt"] cai em
+  // espanhol (temos), ["en-US","pt-BR"] cai em inglês (ele prefere inglês).
+  // Idioma que não temos -> inglês, que é a versão internacional.
   function detectLang() {
     var list = (navigator.languages && navigator.languages.length)
       ? navigator.languages
@@ -41,6 +41,7 @@
       var code = String(list[i] || "").toLowerCase();
       if (code.indexOf("pt") === 0) return "pt";
       if (code.indexOf("en") === 0) return "en";
+      if (code.indexOf("es") === 0) return "es";
     }
     return "en";
   }

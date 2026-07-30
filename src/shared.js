@@ -482,7 +482,10 @@
   // ---------------------------------------------------------------------------
   const UI_LANGUAGES = [
     { code: "pt", label: "Português (BR)", htmlLang: "pt-BR", locale: "pt-BR" },
-    { code: "en", label: "English", htmlLang: "en", locale: "en-US" }
+    { code: "en", label: "English", htmlLang: "en", locale: "en-US" },
+    // es-ES como locale de FORMATO (datas/números); o texto serve LatAm igual —
+    // a tradução evita regionalismos de propósito.
+    { code: "es", label: "Español", htmlLang: "es", locale: "es-ES" }
   ];
   const languageStorageKey = "tcg-collector-ui-lang-v1";
   const currentLanguage = (function () {
@@ -1932,7 +1935,7 @@
         const r = await pushAuthedFetch("/rest/v1/push_subs?on_conflict=user_id,endpoint", {
           method: "POST",
           headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
-          body: JSON.stringify({ user_id: s.user.id, endpoint: sub.endpoint, p256dh: j.keys.p256dh, auth: j.keys.auth, lang: getLanguage() === "en" ? "en" : "pt" })
+          body: JSON.stringify({ user_id: s.user.id, endpoint: sub.endpoint, p256dh: j.keys.p256dh, auth: j.keys.auth, lang: getLanguage() === "pt" ? "pt" : "en" })
         });
         return r && r.ok ? "ok" : "error";
       } catch (e) { return "error"; }
@@ -2116,7 +2119,7 @@
   function initLanguageSwitcher() {
     const select = document.getElementById("languageSwitcher");
     if (!select) return;
-    const SITE_SIGLA = { pt: "PT-BR", en: "EN" };
+    const SITE_SIGLA = { pt: "PT-BR", en: "EN", es: "ES" };
     const items = UI_LANGUAGES.map(({ code }) => ({ value: code, flag: cardFlag(code), sigla: SITE_SIGLA[code] || code.toUpperCase() }));
     const dd = createFlagDropdown({
       id: "siteLangDd",
@@ -2155,7 +2158,9 @@
     en: '<svg viewBox="0 0 20 14"><rect width="20" height="14" fill="#b22234"/><g fill="#fff"><rect y="2" width="20" height="2"/><rect y="6" width="20" height="2"/><rect y="10" width="20" height="2"/></g><rect width="9" height="8" fill="#3c3b6e"/><g fill="#fff"><circle cx="2" cy="2" r=".7"/><circle cx="4.5" cy="2" r=".7"/><circle cx="7" cy="2" r=".7"/><circle cx="3.2" cy="4" r=".7"/><circle cx="5.7" cy="4" r=".7"/><circle cx="2" cy="6" r=".7"/><circle cx="4.5" cy="6" r=".7"/><circle cx="7" cy="6" r=".7"/></g></svg>',
     ja: '<svg viewBox="0 0 20 14"><rect width="20" height="14" fill="#fff"/><circle cx="10" cy="7" r="4" fill="#bc002d"/></svg>',
     zh: '<svg viewBox="0 0 20 14"><rect width="20" height="14" fill="#de2910"/><polygon points="10,3 10.94,5.71 13.8,5.76 11.52,7.49 12.35,10.24 10,8.6 7.65,10.24 8.48,7.49 6.2,5.76 9.06,5.71" fill="#ffde00"/></svg>',
-    pt: '<svg viewBox="0 0 20 14"><rect width="20" height="14" fill="#009b3a"/><polygon points="10,1.6 18.4,7 10,12.4 1.6,7" fill="#fedf00"/><circle cx="10" cy="7" r="2.6" fill="#002776"/></svg>'
+    pt: '<svg viewBox="0 0 20 14"><rect width="20" height="14" fill="#009b3a"/><polygon points="10,1.6 18.4,7 10,12.4 1.6,7" fill="#fedf00"/><circle cx="10" cy="7" r="2.6" fill="#002776"/></svg>',
+    // Espanha (só idioma do SITE; não existe "es" como idioma de carta).
+    es: '<svg viewBox="0 0 20 14"><rect width="20" height="14" fill="#aa151b"/><rect y="3.5" width="20" height="7" fill="#f1bf00"/></svg>'
   };
 
   // Emoji da bandeira (pra usar em <option>, que não aceita SVG/HTML). Casa com
