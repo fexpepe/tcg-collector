@@ -829,6 +829,21 @@ input::placeholder {
    coleção de alguém) em duas telas, tinham de ter a mesma forma.
    grid-auto-flow: column + auto-columns 1fr serve qualquer contagem de abas —
    e a contagem varia mesmo (aba só aparece se a pessoa tem aquele conteúdo). */
+/* Respiro entre o painel do perfil e as abas. Estava ZERO — o cartão do
+   dashboard encostava na fileira de abas e as duas coisas liam como um bloco
+   só. O valor é o MESMO 16px que separa as abas da barra de filtros logo
+   abaixo, então a pilha (painel → abas → filtros → cartas) fica com um ritmo
+   único em vez de um vão apertado no meio.
+   Fica no .prof-dash (que é persistente) e não no margin-top das abas: o bloco
+   de abas é re-renderizado a cada troca de aba, e espaçamento de layout não
+   deve depender do que está sendo trocado. */
+.prof-dash { margin-bottom: 16px; }
+/* O .collection-dashboard tem margem própria que ATRAVESSA o .prof-dash (ele
+   não tem borda nem padding, então as margens colapsam e a MAIOR vence). Isso
+   fazia o espaçamento no celular ficar 16px em cima e 12 embaixo, mesmo com a
+   regra do wrapper dizendo 12. Zerando a de dentro, quem manda é o wrapper —
+   um número só por breakpoint, sem colapso escondido no meio. */
+.prof-dash > .collection-dashboard { margin-bottom: 0; }
 .prof-tabs {
   display: grid;
   grid-auto-flow: column;
@@ -6763,6 +6778,9 @@ html:not([data-cardlang="all"]) #setRegionChips {
      continua; só as colunas param de espremer). */
   .collection-tabs,
   .prof-tabs { grid-auto-columns: minmax(112px, 1fr); }
+  /* Acompanha o 12px que as abas usam aqui embaixo, pro ritmo acima e abaixo
+     continuar igual no celular (no desktop os dois são 16px). */
+  .prof-dash { margin-bottom: 12px; }
   .collection-toolbar-actions { width: 100%; }
   .collection-toolbar-actions .secondary { flex: 1 1 0; }
 
