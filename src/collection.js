@@ -2329,6 +2329,17 @@
 
     function tabsHtml() {
       const tab = (m, label, on) => on ? `<button type="button" class="prof-tab${mode === m ? " is-active" : ""}" data-profile-tab="${m}">${escapeHtml(label)}</button>` : "";
+      // O seletor de ordenação sai da fileira das abas e vai pra uma linha
+      // própria, alinhado à direita. Dentro do .prof-tabs ele virava mais uma
+      // coluna da grade — e com colunas de largura IGUAL (que é o que alinha as
+      // abas de ponta a ponta) um <select> do tamanho de uma aba fica estranho
+      // e ainda rouba espaço dos rótulos.
+      const sortHtml = (mode !== "collection" && PROGRESS_MODES.indexOf(mode) < 0)
+        ? `<div class="prof-sortrow"><select class="prof-sort" data-profile-sort aria-label="${escapeAttribute(t("sort.label"))}">
+            <option value="value-desc"${cardSort === "value-desc" ? " selected" : ""}>${escapeHtml(t("sort.valueDesc"))}</option>
+            <option value="value-asc"${cardSort === "value-asc" ? " selected" : ""}>${escapeHtml(t("sort.valueAsc"))}</option>
+          </select></div>`
+        : "";
       return `<div class="prof-tabs">
         ${tab("collection", t("nav.collection"), true)}
         ${tab("vitrine", t("collection.tab.folders"), hasFolders)}
@@ -2338,11 +2349,7 @@
         ${tab("artists", t("collection.tab.artists"), hasArtists)}
         ${tab("sets", t("collection.tab.sets"), hasSets)}
         ${tab("sale", t("nav.sales"), hasSales)}
-        ${(mode !== "collection" && PROGRESS_MODES.indexOf(mode) < 0) ? `<select class="prof-sort" data-profile-sort aria-label="${escapeAttribute(t("sort.label"))}">
-          <option value="value-desc"${cardSort === "value-desc" ? " selected" : ""}>${escapeHtml(t("sort.valueDesc"))}</option>
-          <option value="value-asc"${cardSort === "value-asc" ? " selected" : ""}>${escapeHtml(t("sort.valueAsc"))}</option>
-        </select>` : ""}
-      </div>`;
+      </div>${sortHtml}`;
     }
 
     // Barra de filtros da aba "Toda Coleção" — MESMOS filtros da tela de Coleção

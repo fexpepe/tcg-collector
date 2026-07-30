@@ -822,11 +822,39 @@ input::placeholder {
 
 /* Vitrine pública + abas do perfil */
 .coll-vitrine { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
-.prof-tabs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 16px; }
-.prof-tab { border: 1px solid var(--line); background: var(--panel); color: var(--text); padding: 8px 15px; border-radius: 999px; font-weight: 700; font-size: 13px; cursor: pointer; min-height: 0; }
-/* Ordenação por valor: compacta e ancorada à direita, na MESMA fileira das abas.
-   width/flex sobrescrevem o "select { width:100% }" global (senão estoura a linha). */
-.prof-sort { width: auto; flex: 0 0 auto; margin-left: auto; align-self: center; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 999px; padding: 7px 13px; font-weight: 700; font-size: 12px; cursor: pointer; }
+/* Abas do perfil PÚBLICO: mesma grade da Coleção pessoal (.collection-tabs) —
+   colunas de largura igual que preenchem a linha inteira, de ponta a ponta.
+   Eram cápsulas em flex-wrap: com 8 abas elas quebravam em duas fileiras
+   desalinhadas e sobrava um vão morto à direita. Sendo a MESMA visão (a
+   coleção de alguém) em duas telas, tinham de ter a mesma forma.
+   grid-auto-flow: column + auto-columns 1fr serve qualquer contagem de abas —
+   e a contagem varia mesmo (aba só aparece se a pessoa tem aquele conteúdo). */
+.prof-tabs {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.prof-tab {
+  border: 0;
+  border-radius: 0; /* retângulo reto, como as abas da Coleção */
+  min-height: 44px;
+  padding: 0 14px;
+  background: var(--panel);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  text-align: center;
+  min-width: 0; /* rótulo longo ("Vendas e Trocas") não estica a coluna */
+}
+.prof-tab:hover { background: var(--accent-soft); }
+/* Linha própria pro seletor de ordenação (ver o comentário no collection.js:
+   dentro da grade ele viraria uma coluna do tamanho de uma aba). */
+.prof-sortrow { display: flex; justify-content: flex-end; margin: -6px 0 16px; }
+.prof-sort { width: auto; flex: 0 0 auto; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 999px; padding: 7px 13px; font-weight: 700; font-size: 12px; cursor: pointer; }
 /* Cetinha custom DENTRO da cápsula (a nativa fica colada na borda / fora do pill).
    Vale pros filtros da coleção (.toolbar/.detail-toolbar) e pro seletor de ordenação
    do perfil público (.prof-sort). */
@@ -838,7 +866,7 @@ input::placeholder {
   background-size: 12px 12px;
   padding-right: 34px;
 }
-.prof-tab.is-active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.prof-tab.is-active { background: var(--accent); color: var(--on-accent); }
 /* Cabeçalho da coleção aberta no perfil público (Voltar + nome). */
 .coll-open-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
 .coll-open-name { font-size: 18px; font-weight: 800; }
@@ -6714,16 +6742,21 @@ html:not([data-cardlang="all"]) #setRegionChips {
      `select` global é 42px, e este aqui é o controle mais tocado da página. */
   .game-filter-select { display: block; width: 100%; min-height: 44px; margin: 0 0 12px; }
   .game-filter-select[hidden] { display: none; }
-  /* As abas de seção seguem rolando: são poucas e fixas. */
-  .collection-tabs {
+  /* As abas de seção seguem rolando: são poucas e fixas. O perfil público
+     (.prof-tabs) usa a MESMA grade, então recebe a mesma regra — sem isto, 8
+     abas em 390px espremeriam pra ~40px cada e o rótulo sumiria. */
+  .collection-tabs,
+  .prof-tabs {
     flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
     scrollbar-width: none; padding-bottom: 2px; margin-bottom: 12px;
   }
-  .collection-tabs::-webkit-scrollbar { display: none; }
+  .collection-tabs::-webkit-scrollbar,
+  .prof-tabs::-webkit-scrollbar { display: none; }
   .collection-tabs .chip { flex: 0 0 auto; }
   /* Abas-retângulo: largura mínima legível + rolagem horizontal (o grid
      continua; só as colunas param de espremer). */
-  .collection-tabs { grid-auto-columns: minmax(112px, 1fr); }
+  .collection-tabs,
+  .prof-tabs { grid-auto-columns: minmax(112px, 1fr); }
   .collection-toolbar-actions { width: 100%; }
   .collection-toolbar-actions .secondary { flex: 1 1 0; }
 
