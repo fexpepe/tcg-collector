@@ -2769,29 +2769,65 @@ input::placeholder {
      menu principal; à esquerda é só no desktop. */
   .app-header-inner .page-nav .nav-dropdown a { justify-content: flex-end; text-align: right; }
 
+  /* Moeda, idioma, tema e conta: uma FILEIRA no rodapé do drawer, dividindo a
+     largura em partes iguais. Empilhados em coluna eles viravam quatro pílulas
+     de tamanhos diferentes encostadas à esquerda, desalinhadas do menu (que é
+     alinhado à direita) — muito espaço gasto e alvos pequenos.
+     Lado a lado eles ganham ~25% da largura cada, ficam com a mesma forma e
+     saem de 38px para 44px de altura. A borda em cima separa "preferências" de
+     "navegação": são coisas de natureza diferente e mereciam a divisão. */
   .app-header-inner .header-actions {
-    flex-direction: column;
+    position: relative; /* âncora dos menus (ver abaixo) */
+    /* GRADE e não flex: o botão de tema é o próprio item (tem borda de 1px),
+       enquanto moeda/idioma/conta são wrappers sem borda. Em flex com basis 0 a
+       borda desequilibrava e ele saía 2px mais largo que os outros três. Colunas
+       de grade são exatamente iguais, borda ou não.
+       auto-flow column serve qualquer quantidade de controles (hoje 4; se um
+       sumir por estar deslogado, os demais reequilibram sozinhos). */
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
     align-items: stretch;
     width: 100%;
     gap: 8px;
-    padding: 0;
-    margin: 0;
+    padding: 12px 0 0;
+    margin: 4px 0 0;
+    border-top: 1px solid var(--line);
+  }
+  .app-header-inner .header-actions > * { min-width: 0; }
+  /* O controle preenche a célula: sem isto a pílula fica pequena no canto da
+     sua fatia e a fileira volta a parecer desalinhada. */
+  .app-header-inner .header-actions .lang-dd-toggle,
+  .app-header-inner .header-actions .theme-toggle,
+  .app-header-inner .header-actions .auth-slot > button,
+  .app-header-inner .header-actions .auth-avatar {
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
   }
 
-  /* Submenus flutuantes do drawer (moeda, idioma, Conta): no mobile os toggles
-     ficam à esquerda e o menu (.lang-dd-menu { right: 0 }) abria para fora da
-     tela à esquerda. O wrapper ocupa a largura toda para o menu ancorar na
-     borda DIREITA do drawer (visível), com a largura limitada à viewport. O
-     toggle (pill) continua pequeno e à esquerda. */
+  /* Submenus flutuantes (moeda, idioma, Conta). Com os wrappers estreitos, um
+     menu ancorado no PRÓPRIO controle sairia da tela — o de moeda abre para a
+     esquerda a partir de ~25% da largura. Então a âncora passa a ser a fileira
+     inteira: wrapper vira static e o menu se estica de borda a borda do drawer.
+     De quebra vira uma lista larga, mais fácil de acertar com o dedo. */
   .app-header-inner .header-actions .lang-dd,
-  .app-header-inner .header-actions .auth-slot,
-  .app-header-inner .header-actions .auth-slot .lang-dd {
-    width: 100%;
-  }
-  .app-header-inner .header-actions .lang-dd-menu {
+  .app-header-inner .header-actions .auth-slot { position: static; }
+  .app-header-inner .header-actions .lang-dd-menu,
+  .app-header-inner .header-actions .auth-menu {
+    left: 0;
     right: 0;
-    left: auto;
-    max-width: calc(100vw - 40px);
+    width: auto;
+    min-width: 0;
+    max-width: none;
+  }
+  /* Itens do menu no piso de toque do site. Eram 32px — no desktop o alvo é o
+     ponteiro, aqui é o dedo, e a lista agora é larga justamente pra ser fácil
+     de acertar; altura pequena desperdiçaria isso. */
+  .app-header-inner .header-actions .lang-dd-option,
+  .app-header-inner .header-actions .auth-menu button,
+  .app-header-inner .header-actions .auth-menu a {
+    min-height: 44px;
   }
 }
 
