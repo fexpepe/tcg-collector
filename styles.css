@@ -2713,6 +2713,32 @@ input::placeholder {
     transform: rotate(-45deg);
   }
 
+  /* BUSCA NO HEADER (ver initHeaderSearch no shared.js).
+     A seção original, dentro do <main>, some já no primeiro paint — o JS só
+     MOVE o elemento pra cá; se ele também a escondesse, o conteúdo abaixo
+     subiria depois da página pintada e isso seria CLS.
+     `main >` de propósito: quando o elemento chega ao header ele deixa de casar
+     com este seletor e volta a aparecer, sem precisar de uma segunda regra
+     brigando por especificidade. */
+  main > .page-search,
+  main > .page-search-label { display: none; }
+  /* No header ela entra NA MESMA fileira (marca | busca | menu), então a altura
+     do header não muda — nenhum deslocamento quando o JS a insere. */
+  .page-search.page-search-inheader {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0 10px 0 12px;
+  }
+  .page-search.page-search-inheader input {
+    height: 38px;              /* igual aos demais controles do header */
+    padding-left: 38px;        /* espaço do ícone */
+    padding-right: 12px;
+    border-radius: 999px;
+    background: var(--panel);
+  }
+  .page-search.page-search-inheader .page-search-icon { left: 13px; width: 16px; height: 16px; }
+
   /* Painel suspenso abaixo do header. */
   .nav-drawer {
     display: none;

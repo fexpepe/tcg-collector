@@ -987,6 +987,43 @@
     });
   }
 
+  // BUSCA NO HEADER — só no celular. As 10 telas de catálogo (cartas, sets,
+  // Pokédex, artistas, coleção, wishlist...) trazem uma seção de busca no topo
+  // do <main>: no celular ela custa uma faixa inteira da tela e some assim que
+  // a pessoa rola. Movida pro header (que é sticky), fica sempre à mão e a tela
+  // ganha o espaço de volta.
+  //
+  // MOVE o elemento, não clona: cada página guarda o input por getElementById e
+  // pendura os próprios listeners nele. Um clone criaria um segundo campo, mudo
+  // — e o id duplicado quebraria o <label for>. Movendo, nada nas telas precisa
+  // saber que isto existe.
+  //
+  // Quem ESCONDE a seção original é o CSS, desde o primeiro paint (ver
+  // .page-search no bloco de 700px): se o JS a removesse, o conteúdo abaixo
+  // subiria depois da página já pintada — CLS de graça.
+  function initHeaderSearch() {
+    const inner = document.querySelector(".app-header-inner");
+    const busca = document.querySelector("main .page-search, .app-header-inner .page-search");
+    if (!inner || !busca) return;
+    const toggle = inner.querySelector(".menu-toggle");
+    // Onde ela mora no desktop, pra devolver no lugar exato ao girar a tela.
+    const casa = busca.parentElement;
+    const irmao = busca.nextElementSibling;
+    const mq = window.matchMedia("(max-width: 700px)");
+    const aplicar = () => {
+      const noHeader = busca.parentElement === inner;
+      if (mq.matches && !noHeader) {
+        inner.insertBefore(busca, toggle);
+        busca.classList.add("page-search-inheader");
+      } else if (!mq.matches && noHeader) {
+        casa.insertBefore(busca, irmao);
+        busca.classList.remove("page-search-inheader");
+      }
+    };
+    aplicar();
+    mq.addEventListener("change", aplicar);
+  }
+
   function initSearchShortcutHint() {
     try {
       if (window.matchMedia("(pointer: coarse)").matches) return;
@@ -6540,6 +6577,7 @@
   initGameFilterChips();   // ANTES do applyTranslations não: os rótulos usam t()
   initGameFilterSelects(); // depois dos chips: o select é espelho deles
   initSearchShortcutHint(); // depois do applyTranslations (placeholders já traduzidos)
+  initHeaderSearch();
   initFilterToggle();
   initAuth();
 
