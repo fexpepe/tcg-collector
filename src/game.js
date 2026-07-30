@@ -75,10 +75,19 @@
   // qualquer render — a URL já está certa quando a página aparece.
   // As <link rel="canonical"> são fixas e sem query, então o Google continua
   // consolidando tudo numa URL só.
+  //
+  // EXCEÇÃO: /users/<handle>. O perfil público é a vitrine da PESSOA, não de um
+  // jogo — ele já abre em "Todos". Carimbar ali fazia dois estragos: o dono
+  // copiava um link sujo (/users/fexpepe?game=onepiece) achando que o perfil
+  // estava preso num jogo, e o jogo carimbado era o da sessão de QUEM VISITA —
+  // então cada visitante via um sufixo diferente na mesma página.
+  // Só o carimbo é suprimido: a detecção de jogo segue igual, então o catálogo
+  // carrega como antes e a página não muda de comportamento.
   function stampGame(slug) {
     try {
       var url = new URL(location.href);
       if (url.searchParams.get("game")) return;
+      if (/^\/users\//i.test(url.pathname)) return;
       url.searchParams.set("game", slug);
       history.replaceState(history.state, "", url);
     } catch (e) { /* history bloqueado: segue sem carimbar */ }

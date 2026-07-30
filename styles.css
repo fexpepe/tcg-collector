@@ -5763,6 +5763,9 @@ html:not([data-cardlang="all"]) #setRegionChips {
   background: var(--panel); color: var(--text);
   font-size: 17px; font-weight: 800; line-height: 1;
 }
+/* Avatar + nome andam juntos; o space-between do .dash-profile separa ESTE
+   grupo do botão de navegação, não o avatar do nome. */
+.dash-profile-who { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .dash-profile-id { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
 .dash-profile-name { font-size: 27px; font-weight: 800; letter-spacing: -0.4px; line-height: 1.12; }
 .dash-profile-handle { font-size: 14px; font-weight: 700; color: var(--accent); }

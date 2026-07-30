@@ -2611,11 +2611,17 @@
     // de foto: não existe essa infraestrutura, e a inicial já identifica.
     const inicial = (profileNav && profileNav.name || "").trim().charAt(0).toUpperCase();
     const profHead = (profileNav && profileNav.name)
+      // Avatar e nome vão num grupo. O .dash-profile é space-between (identidade
+      // à esquerda, botão de navegação à direita); soltar o avatar como irmão
+      // fazia o space-between separar avatar e nome pras pontas opostas — era o
+      // buraco no meio do cabeçalho do perfil compartilhado.
       ? `<div class="dash-profile">
-          ${inicial ? `<span class="dash-avatar" aria-hidden="true"><span class="dash-avatar-in">${escapeHtml(inicial)}</span></span>` : ""}
-          <div class="dash-profile-id">
-            <strong class="dash-profile-name">${escapeHtml(profileNav.name)}</strong>
-            <span class="dash-profile-handle">@${escapeHtml(profileNav.handle)}</span>
+          <div class="dash-profile-who">
+            ${inicial ? `<span class="dash-avatar" aria-hidden="true"><span class="dash-avatar-in">${escapeHtml(inicial)}</span></span>` : ""}
+            <div class="dash-profile-id">
+              <strong class="dash-profile-name">${escapeHtml(profileNav.name)}</strong>
+              <span class="dash-profile-handle">@${escapeHtml(profileNav.handle)}</span>
+            </div>
           </div>
           ${profileNav.label ? `<button type="button" class="secondary dash-profile-nav" data-profile-nav>${escapeHtml(profileNav.label)}</button>` : ""}
         </div>`
