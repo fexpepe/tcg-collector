@@ -4376,13 +4376,34 @@ a.progress-row:hover {
   .dash-main .stats-grid .stat-grand { grid-column: 1 / -1; }
 }
 .dash-games { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 6px; }
+/* Cápsula por jogo: a peça inteira veste a cor da marca, em vez de uma cápsula
+   cinza com uma etiqueta colorida dentro. Tudo deriva do --gc que o JS injeta
+   (GAME_COLOR), então jogo novo entra sem tocar aqui.
+   As proporções do color-mix são baixas de propósito: o fundo é uma INSINUAÇÃO
+   da cor, não a cor cheia — com 12 jogos lado a lado, cor saturada em todos
+   vira ruído e o texto perde contraste. Quem carrega a identidade é a BORDA,
+   que aguenta saturação alta sem atrapalhar a leitura.
+   Misturar com --panel/--bg (e não com preto/branco fixos) é o que faz a mesma
+   regra servir aos dois temas. */
 .dash-game-chip {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 7px 12px; border-radius: 999px;
-  background: var(--panel); border: 1px solid var(--line);
-  color: var(--text); font-size: 13px; font-weight: 600; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 7px 7px 7px 13px; border-radius: 11px;
+  background: color-mix(in srgb, var(--gc, var(--accent)) 14%, var(--panel));
+  border: 1px solid color-mix(in srgb, var(--gc, var(--accent)) 55%, var(--line));
+  color: var(--text); font-size: 13.5px; font-weight: 700; text-decoration: none;
+  transition: background 120ms ease, border-color 120ms ease;
 }
-.dash-game-chip strong { font-weight: 800; }
+.dash-game-chip:hover { background: color-mix(in srgb, var(--gc, var(--accent)) 24%, var(--panel)); }
+.dash-game-name { white-space: nowrap; }
+/* Contagem embutida: fundo mais fechado que a cápsula, pro número virar um
+   segundo nível de leitura em vez de competir com o nome. Tabular pra fileira
+   não dançar quando os números mudam de largura. */
+.dash-game-count {
+  padding: 2px 9px; border-radius: 7px; font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  background: color-mix(in srgb, var(--gc, var(--accent)) 22%, var(--bg));
+  color: var(--text);
+}
 .dash-game-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--chip, var(--accent)); flex: none; }
 .dash-section-head { font-size: 17px; margin: 26px 0 12px; }
 /* Cápsulas detalhadas: respiro claro depois da grade de atalhos. */
@@ -7301,10 +7322,13 @@ select,
   /* A etiqueta do jogo acompanha a altura dos botões do cabeçalho — senão a
      fileira desuniformiza de novo no celular. */
   .deck-ed-head .game-tag { min-height: 44px; }
-  /* Chips e abas do site (filtros do Explorar, abas do perfil). */
+  /* Chips e abas do site (filtros do Explorar, abas do perfil). A cápsula de
+     jogo do Hub entra aqui porque é LINK — é o atalho pra coleção daquele jogo,
+     e vinha com 38px. */
   .chip,
   .prof-tab,
-  .explore-subnav .chip {
+  .explore-subnav .chip,
+  .dash-game-chip {
     min-height: 44px;
   }
   /* A reserva da subnav acompanha o chip engordado — senão a página pula 6px

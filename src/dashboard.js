@@ -77,8 +77,16 @@
     .filter((x) => x.n > 0);
   el.games.innerHTML = dist.length
     ? dist.map(({ g, n }) =>
-        // Etiqueta preenchida na cor do jogo (mesmo padrão dos decks e da Coleção).
-        `<a class="dash-game-chip" href="collection.html">${shared.gameTagHtml(g)}<strong>${n}</strong></a>`).join("")
+        // A cápsula INTEIRA veste a cor do jogo (antes era uma cápsula neutra com
+        // uma etiqueta colorida dentro — a cor ficava restrita a um retângulo de
+        // 60px e a fileira lia como uma lista cinza). A cor sai de GAME_COLOR, a
+        // mesma fonte dos decks e da Coleção; o CSS deriva fundo, borda e o
+        // fundo da contagem dela via color-mix, então um jogo novo entra aqui
+        // sem tocar em CSS.
+        `<a class="dash-game-chip" href="collection.html" style="--gc:${shared.GAME_COLOR[g] || shared.GAME_COLOR.pokemon}">
+          <span class="dash-game-name">${escapeHtml(shared.gameLabel(g))}</span>
+          <span class="dash-game-count">${n}</span>
+        </a>`).join("")
     : `<p class="empty-state">${escapeHtml(t("dash.empty"))}</p>`;
 
   // ── Atalhos (HUB) ───────────────────────────────────────────────────────────
