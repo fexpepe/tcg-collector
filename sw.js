@@ -18,7 +18,8 @@ const SHELL_CACHE = "tcg-shell-v228";
 // como imagem "opaca" por 7 dias (imagem quebrada presa até um hard refresh).
 // Renomear o cache faz o activate apagar o antigo UMA vez — limpa os erros
 // cacheados; as imagens boas são re-baixadas sob demanda.
-const IMAGE_CACHE = "tcg-images-v2";
+// v3: limpa de uma vez as imagens presas de sets NOVOS (ver MUTABLE_IMAGE_HOSTS).
+const IMAGE_CACHE = "tcg-images-v3";
 const DATA_CACHE = "tcg-data-v1";
 const OPAQUE_TS_CACHE = "tcg-images-opaque-ts-v2"; // TTL das entradas opacas do IMAGE_CACHE
 const CACHES = [SHELL_CACHE, IMAGE_CACHE, DATA_CACHE, OPAQUE_TS_CACHE];
@@ -33,6 +34,17 @@ const IMAGE_HOSTS = new Set([
   "svgs.scryfall.io",             // ícones de set do Magic (Scryfall)
   "wsrv.nl"                       // proxy de resize (scans vintage do One Piece Carddass)
 ]);
+
+// Hosts onde a URL NÃO é imutável. O TCGplayer publica a carta assim que ela
+// entra no catálogo, muitas vezes com uma arte provisória (a da carta base), e
+// TROCA o arquivo na MESMA URL quando o scan real chega. Com cache-first puro
+// isso congela a arte errada pra sempre — foi o que aconteceu com uma alt art
+// de Gundam de um set de 2026: a miniatura (400x400, vista cedo) ficou com a
+// arte da carta base, enquanto o popup (1000x1000, buscado depois) mostrava a
+// certa. Duas URLs, dois momentos, duas artes.
+// Aqui elas passam a valer pelo mesmo TTL das respostas opacas: servem do cache
+// (rápido e offline), mas depois de 7 dias são conferidas de novo.
+const MUTABLE_IMAGE_HOSTS = new Set(["tcgplayer-cdn.tcgplayer.com"]);
 
 // Esqueleto do app: arquivos que existem tanto local quanto em produção
 // (os JS de src e o styles não são trocados pelo deploy; o HTML é, mas a
@@ -131,7 +143,11 @@ async function markOpaque(href) {
 async function cacheFirst(url) {
   const cache = await caches.open(IMAGE_CACHE);
   const cached = await cache.match(url.href);
-  if (cached && (cached.type !== "opaque" || await opaqueFresh(url.href))) return cached;
+  // Host de URL mutável (TCGplayer): mesma regra de validade das opacas. Sem o
+  // carimbo (entrada antiga, de antes desta regra) trata como vencida — é uma
+  // requisição a mais UMA vez, e é justamente a que conserta a arte errada.
+  const revalidar = MUTABLE_IMAGE_HOSTS.has(url.hostname) && !(await opaqueFresh(url.href));
+  if (cached && !revalidar && (cached.type !== "opaque" || await opaqueFresh(url.href))) return cached;
   // 1) cors PRIMEIRO: se o host responde (mesmo com erro), o status é VISÍVEL.
   //    - ok         -> cacheia (imutável por URL) e retorna;
   //    - erro (404/5xx) -> devolve pro <img> (onerror/fallback) e NÃO cacheia,
@@ -141,6 +157,10 @@ async function cacheFirst(url) {
     const res = await fetch(url.href, { mode: "cors", credentials: "omit" });
     if (res && res.ok) {
       cache.put(url.href, res.clone());
+      // Carimba a hora só nos hosts mutáveis — é o que dá a validade de 7 dias.
+      // Os demais (TCGdex, Scryfall, Lorcast) são imutáveis de verdade e seguem
+      // sem carimbo, então nunca voltam à rede.
+      if (MUTABLE_IMAGE_HOSTS.has(url.hostname)) markOpaque(url.href);
       trim(IMAGE_CACHE, MAX_IMAGES);
       return res;
     }

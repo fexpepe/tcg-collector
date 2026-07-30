@@ -2804,15 +2804,14 @@ input::placeholder {
      "navegação": são coisas de natureza diferente e mereciam a divisão. */
   .app-header-inner .header-actions {
     position: relative; /* âncora dos menus (ver abaixo) */
-    /* GRADE e não flex: o botão de tema é o próprio item (tem borda de 1px),
-       enquanto moeda/idioma/conta são wrappers sem borda. Em flex com basis 0 a
-       borda desequilibrava e ele saía 2px mais largo que os outros três. Colunas
-       de grade são exatamente iguais, borda ou não.
-       auto-flow column serve qualquer quantidade de controles (hoje 4; se um
-       sumir por estar deslogado, os demais reequilibram sozinhos). */
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(0, 1fr);
+    /* Moeda, idioma e tema ocupam o que PRECISAM; o botão de conta fica com
+       todo o resto. Colunas iguais soavam certas na teoria, mas o de conta é o
+       único com identidade (avatar + nome) e o mais visitado — e, quando é só
+       um avatar circular de largura fixa, ele não estica pra preencher a fatia
+       e sobra um buraco. Dando a sobra a ele, os três primeiros ficam
+       compactos e o de perfil vira o alvo grande da fileira. */
+    display: flex;
+    flex-direction: row;
     align-items: stretch;
     width: 100%;
     gap: 8px;
@@ -2820,16 +2819,31 @@ input::placeholder {
     margin: 4px 0 0;
     border-top: 1px solid var(--line);
   }
-  .app-header-inner .header-actions > * { min-width: 0; }
-  /* O controle preenche a célula: sem isto a pílula fica pequena no canto da
-     sua fatia e a fileira volta a parecer desalinhada. */
+  .app-header-inner .header-actions > * { flex: 0 0 auto; }
+  /* O slot da conta (logado = avatar, deslogado = "Entrar") abocanha a sobra. */
+  .app-header-inner .header-actions > .auth-slot,
+  .app-header-inner .header-actions > .auth-avatar { flex: 1 1 auto; min-width: 0; }
   .app-header-inner .header-actions .lang-dd-toggle,
   .app-header-inner .header-actions .theme-toggle,
   .app-header-inner .header-actions .auth-slot > button,
   .app-header-inner .header-actions .auth-avatar {
-    width: 100%;
     min-height: 44px;
     justify-content: center;
+  }
+  /* Tema: QUADRADO (é só um ícone, texto nenhum pra acomodar). */
+  .app-header-inner .header-actions .theme-toggle {
+    width: 44px;
+    flex: 0 0 44px;
+    padding: 0;
+  }
+  /* O botão de conta preenche a fatia que sobrou — inclusive o avatar, que fora
+     daqui é um círculo de 38px fixo (flex/width próprios precisam ser vencidos,
+     por isso a regra é específica e vem depois). */
+  .app-header-inner .header-actions .auth-slot > button,
+  .app-header-inner .header-actions .auth-avatar {
+    width: 100%;
+    flex: 1 1 auto;
+    border-radius: 999px;
   }
 
   /* Submenus flutuantes (moeda, idioma, Conta). Com os wrappers estreitos, um
