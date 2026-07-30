@@ -77,16 +77,21 @@
     .filter((x) => x.n > 0);
   el.games.innerHTML = dist.length
     ? dist.map(({ g, n }) =>
-        // A cápsula INTEIRA veste a cor do jogo (antes era uma cápsula neutra com
-        // uma etiqueta colorida dentro — a cor ficava restrita a um retângulo de
-        // 60px e a fileira lia como uma lista cinza). A cor sai de GAME_COLOR, a
-        // mesma fonte dos decks e da Coleção; o CSS deriva fundo, borda e o
-        // fundo da contagem dela via color-mix, então um jogo novo entra aqui
-        // sem tocar em CSS.
-        `<a class="dash-game-chip" href="collection.html" style="--gc:${shared.GAME_COLOR[g] || shared.GAME_COLOR.pokemon}">
-          <span class="dash-game-name">${escapeHtml(shared.gameLabel(g))}</span>
-          <span class="dash-game-count">${n}</span>
-        </a>`).join("")
+        // CHAPADO na cor do jogo, mesmo idioma visual do .game-tag da Coleção:
+        // cor cheia, canto reto, texto escolhido por textOnColor (que garante
+        // 4.5:1 nos 12 jogos, inclusive nos claros como o prata do DBFW).
+        //
+        // O "véu" da contagem é o INVERSO do texto, não uma cor fixa: sobre um
+        // jogo escuro escurece (e o texto branco ganha contraste), sobre um jogo
+        // claro clareia (e o texto preto ganha). Um rgba(0,0,0,…) fixo faria a
+        // contagem sumir justamente nos jogos claros.
+        ((cor, fg) =>
+          `<a class="dash-game-chip" href="collection.html" style="--gc:${cor};--gc-fg:${fg};--gc-veil:${fg === "#000000" ? "rgba(255,255,255,.5)" : "rgba(0,0,0,.26)"}">
+            <span class="dash-game-name">${escapeHtml(shared.gameLabel(g))}</span>
+            <span class="dash-game-count">${n}</span>
+          </a>`
+        )(shared.GAME_COLOR[g] || shared.GAME_COLOR.pokemon,
+          shared.textOnColor(shared.GAME_COLOR[g] || shared.GAME_COLOR.pokemon))).join("")
     : `<p class="empty-state">${escapeHtml(t("dash.empty"))}</p>`;
 
   // ── Atalhos (HUB) ───────────────────────────────────────────────────────────

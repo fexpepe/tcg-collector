@@ -4376,46 +4376,54 @@ a.progress-row:hover {
   .dash-main .stats-grid .stat-grand { grid-column: 1 / -1; }
 }
 .dash-games { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 6px; }
-/* Cápsula por jogo: a peça inteira veste a cor da marca, em vez de uma cápsula
-   cinza com uma etiqueta colorida dentro. Tudo deriva do --gc que o JS injeta
-   (GAME_COLOR), então jogo novo entra sem tocar aqui.
-   As proporções do color-mix são baixas de propósito: o fundo é uma INSINUAÇÃO
-   da cor, não a cor cheia — com 12 jogos lado a lado, cor saturada em todos
-   vira ruído e o texto perde contraste. Quem carrega a identidade é a BORDA,
-   que aguenta saturação alta sem atrapalhar a leitura.
-   Misturar com --panel/--bg (e não com preto/branco fixos) é o que faz a mesma
-   regra servir aos dois temas. */
+/* Cápsula por jogo: CHAPADA na cor da marca, mesmo idioma visual do .game-tag
+   da Coleção — cor cheia, canto reto, sem borda. O --gc e o --gc-fg vêm do JS
+   (GAME_COLOR + textOnColor, que garante 4,5:1 nos 12 jogos), então jogo novo
+   entra sem tocar aqui.
+   Sem color-mix com --panel: chapado é a mesma cor nos dois temas, e é
+   justamente isso que faz a fileira ser reconhecida de relance. */
 .dash-game-chip {
-  display: inline-flex; align-items: center; gap: 9px;
-  padding: 7px 7px 7px 13px; border-radius: 11px;
-  background: color-mix(in srgb, var(--gc, var(--accent)) 14%, var(--panel));
-  border: 1px solid color-mix(in srgb, var(--gc, var(--accent)) 55%, var(--line));
-  color: var(--text); font-size: 13.5px; font-weight: 700; text-decoration: none;
-  transition: background 120ms ease, border-color 120ms ease;
+  display: inline-flex; align-items: center; gap: 0;
+  padding: 0 0 0 13px;
+  background: var(--gc, var(--accent));
+  color: var(--gc-fg, #fff);
+  border: 0;
+  font-size: 13.5px; font-weight: 800; letter-spacing: -0.01em;
+  text-decoration: none; overflow: hidden;
+  transition: filter 120ms ease;
 }
-.dash-game-chip:hover { background: color-mix(in srgb, var(--gc, var(--accent)) 24%, var(--panel)); }
-.dash-game-name { white-space: nowrap; }
-/* Contagem embutida: fundo mais fechado que a cápsula, pro número virar um
-   segundo nível de leitura em vez de competir com o nome. Tabular pra fileira
-   não dançar quando os números mudam de largura. */
+.dash-game-chip:hover { filter: brightness(1.12); }
+.dash-game-name { white-space: nowrap; padding-right: 12px; }
+/* Contagem: bloco colado na borda direita, no véu que o JS calcula (o INVERSO
+   do texto). align-self stretch pra ele ocupar a altura toda da cápsula — meio
+   termo com padding deixaria uma sobra de cor em cima e embaixo. */
 .dash-game-count {
-  padding: 2px 9px; border-radius: 7px; font-weight: 800;
-  font-variant-numeric: tabular-nums;
-  background: color-mix(in srgb, var(--gc, var(--accent)) 22%, var(--bg));
-  color: var(--text);
+  align-self: stretch; display: inline-flex; align-items: center;
+  padding: 0 11px; font-weight: 800; font-variant-numeric: tabular-nums;
+  background: var(--gc-veil, rgba(0, 0, 0, 0.26));
+  color: inherit;
 }
 .dash-game-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--chip, var(--accent)); flex: none; }
 .dash-section-head { font-size: 17px; margin: 26px 0 12px; }
 /* Cápsulas detalhadas: respiro claro depois da grade de atalhos. */
 .dash-main #dhCaps { margin-top: 26px; gap: 12px; }
+/* Atalhos: 4 COLUNAS FIXAS, não auto-fill. São exatamente 8 itens (lista fixa
+   no dashboard.js), então 4 colunas fecham duas fileiras cheias — com auto-fill
+   a tela larga cabia 5 e sobrava uma fileira de 3 solta, que é o que fazia o
+   bloco parecer desalinhado. Se um item novo entrar, o número aqui tem de
+   acompanhar a conta (8 -> 4 col; 9 -> 3 col). */
 .dash-links {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
 }
+/* Abaixo de ~1000px quatro colunas espremeriam o texto ("110 à venda · 10
+   vendidas" não cabe em 200px): cai pra 2, que mantém as fileiras cheias. */
+@media (max-width: 1000px) { .dash-links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .dash-links { grid-template-columns: minmax(0, 1fr); } }
 .dash-link {
   display: flex; align-items: center; gap: 12px;
-  padding: 14px; border-radius: 12px;
+  padding: 17px 16px; border-radius: 12px;
   background: var(--panel); border: 1px solid var(--line);
   color: var(--text); text-decoration: none;
   transition: border-color .15s ease, transform .15s ease;
