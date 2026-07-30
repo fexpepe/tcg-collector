@@ -2592,8 +2592,27 @@
         </div>`).join("")
       : "";
 
+    // Ícones da barra: SVG inline com currentColor. Inline e não sprite/arquivo
+    // porque a CSP é 'self' e porque são 4 ícones — um request a mais no boot da
+    // Coleção custaria mais do que os ~600 bytes que eles ocupam aqui.
+    // O ícone não é enfeite: é o que deixa o olho achar "valor de mercado" sem
+    // ler o rótulo de 11px, que é o problema da barra achatada de hoje.
+    const svg = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+    const IC = {
+      // cópias = cartas empilhadas; distintas = uma carta; sets = grade de sets
+      copies: svg('<rect x="8" y="3" width="12" height="16" rx="2"/><path d="M4 7v12a2 2 0 0 0 2 2h9"/>'),
+      distinct: svg('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8.5h6M9 12h6M9 15.5h3"/>'),
+      sets: svg('<rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/>'),
+      money: svg('<circle cx="12" cy="12" r="9"/><path d="M12 7.2v9.6M14.4 9.6c0-1-1.1-1.6-2.4-1.6s-2.4.6-2.4 1.6 1 1.5 2.4 1.9 2.5 1 2.5 2-1.1 1.7-2.5 1.7-2.5-.7-2.5-1.7"/>')
+    };
+    const stat = (icone, valor, rotulo, extra = "") =>
+      `<div${extra}><span class="dash-stat-ic">${icone}</span><span class="dash-stat-txt"><span class="dash-stat-val">${valor}</span><span class="dash-stat-label">${escapeHtml(rotulo)}</span></span></div>`;
+    // Monograma como avatar — mesmo padrão do .auth-avatar do header. Sem upload
+    // de foto: não existe essa infraestrutura, e a inicial já identifica.
+    const inicial = (profileNav && profileNav.name || "").trim().charAt(0).toUpperCase();
     const profHead = (profileNav && profileNav.name)
       ? `<div class="dash-profile">
+          ${inicial ? `<span class="dash-avatar" aria-hidden="true"><span class="dash-avatar-in">${escapeHtml(inicial)}</span></span>` : ""}
           <div class="dash-profile-id">
             <strong class="dash-profile-name">${escapeHtml(profileNav.name)}</strong>
             <span class="dash-profile-handle">@${escapeHtml(profileNav.handle)}</span>
@@ -2605,11 +2624,11 @@
       <article class="dash-card dash-stats">
         ${profHead}
         <div class="dash-stats-counts">
-          <div><span class="dash-stat-val">${copies}</span><span class="dash-stat-label">${escapeHtml(t("stats.copies"))}</span></div>
-          <div><span class="dash-stat-val">${distinct}</span><span class="dash-stat-label">${escapeHtml(t("stats.distinct"))}</span></div>
-          <div><span class="dash-stat-val">${sets}</span><span class="dash-stat-label">${escapeHtml(t("stats.setsCovered"))}</span></div>
+          ${stat(IC.copies, copies, t("stats.copies"))}
+          ${stat(IC.distinct, distinct, t("stats.distinct"))}
+          ${stat(IC.sets, sets, t("stats.setsCovered"))}
         </div>
-        <div class="dash-stat-money"><span class="dash-stat-val">${escapeHtml(total > 0 ? shared.formatMoney(shared.getCurrency(), total) : "—")}</span><span class="dash-stat-label">${escapeHtml(t("dash.value"))}</span></div>
+        ${stat(IC.money, escapeHtml(total > 0 ? shared.formatMoney(shared.getCurrency(), total) : "—"), t("dash.value"), ' class="dash-stat-money"')}
       </article>
       <article class="dash-card dash-top">
         <h3>${escapeHtml(t("dash.topTitle"))}</h3>

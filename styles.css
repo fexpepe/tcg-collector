@@ -5617,8 +5617,19 @@ html:not([data-cardlang="all"]) #setRegionChips {
 #collectionDashboard .dash-stats-counts > div:nth-child(3) { grid-column: 4; }
 #collectionDashboard .dash-stat-val { font-size: 20px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 #collectionDashboard .dash-stat-label { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-#collectionDashboard .dash-stat-money { grid-column: 5; border: 0; padding: 0; justify-self: end; text-align: right; min-width: 0; max-width: 100%; }
+#collectionDashboard .dash-stat-money { grid-column: 5; border: 0; padding: 0; justify-self: end; min-width: 0; max-width: 100%; }
 #collectionDashboard .dash-stat-money .dash-stat-val { font-size: 22px; }
+/* Divisória entre os slots. Ela faz o trabalho que o espaço em branco não fazia:
+   com cinco blocos numa faixa só, sem separador o olho lê "726 575 124" como uma
+   sequência, não como três medidas diferentes. É `border-left` nos slots 2..5 —
+   o primeiro (perfil) não leva, senão sobraria um traço solto na borda. */
+#collectionDashboard .dash-stats-counts > div,
+#collectionDashboard .dash-stat-money { border-left: 1px solid var(--line); padding-left: 18px; }
+/* A barra é mais baixa que o cartão do dashboard: o ícone acompanha. */
+#collectionDashboard .dash-stat-ic { width: 32px; height: 32px; border-radius: 9px; }
+#collectionDashboard .dash-stat-ic svg { width: 17px; height: 17px; }
+#collectionDashboard .dash-avatar-in { width: 34px; height: 34px; font-size: 14px; }
+#collectionDashboard .dash-profile { gap: 10px; }
 /* Mobile: a barra troca a esteira de cards por 2 linhas compactas (identidade +
    valor em cima, contagens embaixo), full-bleed e ainda fixa sob o header. */
 @media (max-width: 720px) {
@@ -5646,6 +5657,16 @@ html:not([data-cardlang="all"]) #setRegionChips {
   #collectionDashboard .dash-stats-counts > div:nth-child(3) { grid-column: 3; grid-row: 2; }
   #collectionDashboard .dash-stat-val { font-size: 17px; }
   #collectionDashboard .dash-stat-money .dash-stat-val { font-size: 18px; }
+  /* No celular a barra vira 2 fileiras de 3 colunas estreitas: ícone de 32px ao
+     lado do número não caberia sem espremer o rótulo. Some o ícone das
+     contagens e fica só o do valor, que é o que precisa se destacar.
+     As divisórias também saem — em grade de 3 colunas elas viram um xadrez. */
+  #collectionDashboard .dash-stats-counts .dash-stat-ic { display: none; }
+  #collectionDashboard .dash-stats-counts > div,
+  #collectionDashboard .dash-stat-money { border-left: 0; padding-left: 0; }
+  #collectionDashboard .dash-stat-ic { width: 28px; height: 28px; border-radius: 8px; }
+  #collectionDashboard .dash-stat-ic svg { width: 15px; height: 15px; }
+  #collectionDashboard .dash-avatar-in { width: 30px; height: 30px; font-size: 13px; }
 }
 @media (max-width: 1080px) { .collection-dashboard { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .dash-carousel { grid-column: 1 / -1; } }
 /* Perfil público: são 3 cards fixos (sem carrossel). Em 2 colunas o terceiro
@@ -5701,16 +5722,46 @@ html:not([data-cardlang="all"]) #setRegionChips {
 .dash-stats { display: flex; flex-direction: column; gap: 14px; justify-content: center; }
 /* Cabeçalho do perfil público no card de stats: nome + @ */
 .dash-profile { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-bottom: 14px; margin-bottom: 2px; border-bottom: 1px solid var(--line); }
+/* Avatar em monograma (mesmo princípio do .auth-avatar do header: sem upload de
+   foto, a inicial já identifica). O anel de gradiente é um wrapper com padding —
+   `border` não aceita gradiente, e `background-clip` daria um contorno que some
+   no tema claro. As duas cores são as da marca, não do accent: o accent muda por
+   jogo, e a identidade da PESSOA não deve piscar ao trocar o filtro. */
+.dash-avatar { flex: none; padding: 2px; border-radius: 50%; background: linear-gradient(135deg, #35d0c0, #7a5cff); display: inline-flex; }
+.dash-avatar-in {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--panel); color: var(--text);
+  font-size: 17px; font-weight: 800; line-height: 1;
+}
 .dash-profile-id { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
 .dash-profile-name { font-size: 27px; font-weight: 800; letter-spacing: -0.4px; line-height: 1.12; }
 .dash-profile-handle { font-size: 14px; font-weight: 700; color: var(--accent); }
 .dash-profile-nav { flex: none; white-space: nowrap; }
 .dash-stats-counts { display: flex; flex-wrap: wrap; gap: 12px 22px; }
-.dash-stats-counts > div { display: flex; flex-direction: column; gap: 2px; }
+/* Ícone À ESQUERDA do número (era coluna: número em cima, rótulo embaixo). O
+   ícone não é enfeite — com quatro números do mesmo tamanho em fila, era o
+   rótulo de 11px que tinha de ser lido pra saber qual é qual. */
+.dash-stats-counts > div { display: flex; flex-direction: row; align-items: center; gap: 10px; min-width: 0; }
+.dash-stat-txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dash-stat-ic {
+  flex: none; width: 36px; height: 36px; border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line); background: var(--panel-strong);
+  color: var(--accent);
+}
+.dash-stat-ic svg { width: 19px; height: 19px; }
+/* Dinheiro em verde — o mesmo #2ecc71 das altas de preço, pra "valor" ter uma
+   cor só no site inteiro. Fora do accent de propósito: se seguisse o accent, o
+   valor ficaria vermelho no Pokémon e marrom no Magic. */
+.dash-stat-money .dash-stat-ic { color: var(--money); border-color: color-mix(in srgb, var(--money) 35%, var(--line)); background: color-mix(in srgb, var(--money) 10%, transparent); }
+.dash-stat-money .dash-stat-val { color: var(--money); }
 .dash-stat-val { font-size: 24px; font-weight: 800; letter-spacing: -0.3px; }
 .dash-stat-label { font-size: 12px; color: var(--muted); }
-/* Valor de mercado: linha própria embaixo, número grande sem quebrar. */
-.dash-stat-money { display: flex; flex-direction: column; gap: 2px; padding-top: 12px; border-top: 1px solid var(--line); }
+/* Valor de mercado: linha própria embaixo, número grande sem quebrar. Agora é
+   ícone + texto lado a lado, como as contagens (era coluna, o que empilhava o
+   ícone ACIMA do número e fazia esta célula ter o dobro da altura das outras). */
+.dash-stat-money { display: flex; flex-direction: row; align-items: center; gap: 10px; padding-top: 12px; border-top: 1px solid var(--line); }
 .dash-stat-money .dash-stat-val { font-size: 30px; letter-spacing: -0.5px; white-space: nowrap; }
 .dash-top-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 /* Dashboard do DONO (#collectionDashboard): altura-piso nos cards que variam com
