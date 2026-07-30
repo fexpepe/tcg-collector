@@ -5265,6 +5265,12 @@ a.progress-row:hover {
 .pf-chart-rel { position: relative; width: 100%; }
 .pf-svg { width: 100%; height: auto; display: block; }
 .pf-line { fill: none; stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; }
+/* Marcador de dia: bolinha VAZADA (miolo na cor do cartão, anel na cor da
+   série). Vazada e não cheia porque são muitas numa linha só — cheias
+   engrossariam a curva e competiriam com a ponta, que é o valor de hoje.
+   O miolo usa --surface (o fundo do cartão do gráfico), então o furo continua
+   parecendo furo no tema claro e no escuro. */
+.pf-dot { fill: var(--surface); stroke-width: 2; }
 .pf-area { stroke: none; }
 .pf-grid { stroke: var(--line); stroke-width: 1; opacity: 0.5; }
 .pf-axis { fill: var(--subtle); font-size: 11px; }

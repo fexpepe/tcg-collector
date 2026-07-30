@@ -762,6 +762,9 @@
       const x = X(i), anchor = j === 0 ? "start" : (j === T - 1 ? "end" : "middle");
       xaxis += `<text class="pf-xaxis" x="${x.toFixed(1)}" y="${(H - 8).toFixed(1)}" text-anchor="${anchor}">${escapeHtml(fmtDay(pts[i].d))}</text>`;
     }
+    // Distância entre dois dias vizinhos, em unidades do viewBox. Decide se cabe
+    // marcador por ponto (ver o uso logo abaixo).
+    const dotSpacing = pts.length > 1 ? plotW / (pts.length - 1) : plotW;
     // Área (gradiente) + linha + ponta de cada série.
     let defs = "", areas = "", lines = "";
     active.forEach((k) => {
@@ -770,6 +773,17 @@
       const linePts = pts.map((p, i) => `${X(i).toFixed(1)},${Y(fromBRL(SERIES[k].get(p))).toFixed(1)}`).join(" ");
       areas += `<polygon class="pf-area" points="${X(0).toFixed(1)},${baseY.toFixed(1)} ${linePts} ${X(pts.length - 1).toFixed(1)},${baseY.toFixed(1)}" fill="url(#${gid})"/>`;
       lines += `<polyline class="pf-line" points="${linePts}" stroke="${SERIES[k].color}"/>`;
+      // Marcador por DIA (bolinha vazada). Só quando os pontos têm folga entre
+      // si: o espaçamento vai de 135px em "7D" a 4,5px em "6M", e a partir de
+      // certo ponto as bolinhas se encostam e a linha vira um borrão. O corte é
+      // pelo espaço REAL (não pela faixa escolhida), porque o histórico pode ter
+      // buracos — 90 dias de faixa com 12 pontos medidos cabe bolinha à vontade.
+      if (dotSpacing >= 12) {
+        lines += pts.map((p, i) =>
+          `<circle class="pf-dot" cx="${X(i).toFixed(1)}" cy="${Y(fromBRL(SERIES[k].get(p))).toFixed(1)}" r="3" stroke="${SERIES[k].color}"/>`).join("");
+      }
+      // Ponta da série: bolinha CHEIA, desenhada depois pra cobrir a vazada —
+      // é o valor de hoje, o único que merece destaque na linha.
       lines += `<circle cx="${X(pts.length - 1).toFixed(1)}" cy="${Y(fromBRL(SERIES[k].get(pts[pts.length - 1]))).toFixed(1)}" r="3.5" fill="${SERIES[k].color}"/>`;
     });
     // Alta/Baixa da série principal (combinada, se ativa).
