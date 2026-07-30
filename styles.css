@@ -4417,7 +4417,19 @@ a.progress-row:hover {
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.38);
+    /* Trava de segurança: nada de filho escapa da cápsula. Sem isto, a pastilha
+       do item ATIVO (primeiro/último) vazava pelos cantos arredondados — e
+       qualquer coisa que a gente adicione aqui dentro no futuro vazaria igual.
+       Não afeta a sombra: overflow recorta filhos, não o box-shadow do próprio
+       elemento. */
+    overflow: hidden;
   }
+  /* Seletor com DOIS níveis de propósito (0,2,0): a lista global de "cantos
+     retos" do site inclui .mtab e vem depois no arquivo, então empatar em
+     especificidade perderia. Aqui o retângulo reto é errado — a aba vive dentro
+     de uma cápsula de 999px, e canto vivo dentro de canto redondo é justamente
+     o que estava feio nas pontas. */
+  .mobile-tabbar .mtab { border-radius: 999px; }
   .mtab {
     flex: 1 1 0; min-width: 0;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
