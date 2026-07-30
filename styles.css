@@ -198,8 +198,10 @@
   --accent-soft: rgba(251, 146, 60, 0.16); --on-accent: #0a0c10;
 }
 [data-theme="light"][data-game-accent="naruto"] {
-  --accent: #ea580c; --accent-dark: #c2410c; --accent-rgb: 234, 88, 12;
-  --accent-soft: rgba(234, 88, 12, 0.1); --on-accent: #ffffff;
+  /* #c2410c e não #ea580c: com texto branco o laranja claro dava 3.56:1 —
+     reprovado (o mínimo é 4.5). Um degrau abaixo dá 5.18 e segue laranja. */
+  --accent: #c2410c; --accent-dark: #9a3412; --accent-rgb: 194, 65, 12;
+  --accent-soft: rgba(194, 65, 12, 0.1); --on-accent: #ffffff;
 }
 /* Hunter × Hunter: verde (o verde do Gon / da licença de Hunter). Verde claro
    com texto escuro no tema escuro; verde fechado com texto branco no claro. */
@@ -210,6 +212,57 @@
 [data-theme="light"][data-game-accent="hxh"] {
   --accent: #15803d; --accent-dark: #166534; --accent-rgb: 21, 128, 61;
   --accent-soft: rgba(21, 128, 61, 0.1); --on-accent: #ffffff;
+}
+/* Gundam: AZUL (herdou o tom que era do Magic antes do marrom). Azul claro com
+   texto escuro no escuro; azul fechado com texto branco no claro. */
+[data-game-accent="gundam"] {
+  --accent: #60a5fa; --accent-dark: #3b82f6; --accent-rgb: 96, 165, 250;
+  --accent-soft: rgba(96, 165, 250, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="gundam"] {
+  --accent: #2563eb; --accent-dark: #1d4ed8; --accent-rgb: 37, 99, 235;
+  --accent-soft: rgba(37, 99, 235, 0.1); --on-accent: #ffffff;
+}
+/* Dragon Ball Fusion World: PRATA. Prata claro no escuro (texto escuro); no
+   claro o prata não segura texto nenhum, então fecha pra um aço #55606e com
+   texto branco (6.4:1) — mesma manobra do Magic marrom. */
+[data-game-accent="dbfw"] {
+  --accent: #b7c0cb; --accent-dark: #9aa3ae; --accent-rgb: 183, 192, 203;
+  --accent-soft: rgba(183, 192, 203, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="dbfw"] {
+  --accent: #55606e; --accent-dark: #434c58; --accent-rgb: 85, 96, 110;
+  --accent-soft: rgba(85, 96, 110, 0.1); --on-accent: #ffffff;
+}
+/* Yu-Gi-Oh!: ROXO VIVO — um degrau mais magenta que o violeta do Lorcana
+   (#a78bfa), pros dois roxos não se confundirem lado a lado. */
+[data-game-accent="ygo"] {
+  --accent: #c084fc; --accent-dark: #a855f7; --accent-rgb: 192, 132, 252;
+  --accent-soft: rgba(192, 132, 252, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="ygo"] {
+  --accent: #7c3aed; --accent-dark: #6d28d9; --accent-rgb: 124, 58, 237;
+  --accent-soft: rgba(124, 58, 237, 0.1); --on-accent: #ffffff;
+}
+/* Digimon: AZUL-MARINHO. Azul-aço claro no escuro (texto escuro); o marinho
+   fechado da marca (#123f6d) só funciona no claro, com texto branco (10.7:1). */
+[data-game-accent="digimon"] {
+  --accent: #6ea8dc; --accent-dark: #4a8cc9; --accent-rgb: 110, 168, 220;
+  --accent-soft: rgba(110, 168, 220, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="digimon"] {
+  --accent: #123f6d; --accent-dark: #0d2f52; --accent-rgb: 18, 63, 109;
+  --accent-soft: rgba(18, 63, 109, 0.1); --on-accent: #ffffff;
+}
+/* Riftbound: OURO. Como o amarelo do One Piece: texto escuro nos DOIS temas
+   (branco sobre ouro dá 3.8:1, reprovado; escuro dá 5.1:1). */
+[data-game-accent="riftbound"] {
+  --accent: #e3b341; --accent-dark: #d19d1f; --accent-rgb: 227, 179, 65;
+  --accent-soft: rgba(227, 179, 65, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="riftbound"] {
+  --accent: #a67c00; --accent-dark: #8a6700; --accent-rgb: 166, 124, 0;
+  --accent-soft: rgba(166, 124, 0, 0.12); --on-accent: #0a0c10;
 }
 [data-game-accent="all"] {
   --accent: #e3e7ee; --accent-dark: #c3c9d4; --accent-rgb: 227, 231, 238;
@@ -4385,6 +4438,15 @@ a.progress-row:hover {
 .dash-game-chip {
   display: inline-flex; align-items: center; gap: 0;
   padding: 0 0 0 13px;
+  /* Mesma altura do .chip da Coleção (38px): as duas fileiras aparecem uma
+     sobre a outra na navegação Hub -> Coleção, e alturas diferentes liam como
+     dois componentes sem parentesco. */
+  min-height: 38px;
+  /* flex 1 1 auto: cada fileira estica até as DUAS bordas do card (justificado),
+     em vez de amontoar tudo à esquerda com um vão morto à direita. O que
+     absorve o crescimento é o miolo entre nome e contagem — nome fica na
+     esquerda, número na direita, como na barra de referência. */
+  flex: 1 1 auto;
   background: var(--gc, var(--accent));
   color: var(--gc-fg, #fff);
   border: 0;
@@ -4394,10 +4456,12 @@ a.progress-row:hover {
 }
 .dash-game-chip:hover { filter: brightness(1.12); }
 .dash-game-name { white-space: nowrap; padding-right: 12px; }
-/* Contagem: bloco colado na borda direita, no véu que o JS calcula (o INVERSO
-   do texto). align-self stretch pra ele ocupar a altura toda da cápsula — meio
-   termo com padding deixaria uma sobra de cor em cima e embaixo. */
+/* Contagem: bloco colado na borda direita (margin-left auto engole a folga do
+   flex 1), no véu que o JS calcula (o INVERSO do texto). align-self stretch pra
+   ocupar a altura toda da cápsula — meio termo com padding deixaria uma sobra
+   de cor em cima e embaixo. */
 .dash-game-count {
+  margin-left: auto;
   align-self: stretch; display: inline-flex; align-items: center;
   padding: 0 11px; font-weight: 800; font-variant-numeric: tabular-nums;
   background: var(--gc-veil, rgba(0, 0, 0, 0.26));
