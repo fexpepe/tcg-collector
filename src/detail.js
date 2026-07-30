@@ -148,6 +148,19 @@
   const RARITY_BUCKET_ORDER = ["base", "special"];
   const RARITY_BASE = new Set(["", "common", "uncommon", "rare", "none", "comum", "incomum", "rara"]);
 
+  // Jogos cujo filtro lista as raridades REAIS do catálogo em vez dos dois
+  // baldes. Os baldes existem por causa do Pokémon (~30 strings de raridade,
+  // listar tudo vira um select-quilômetro) — mas no Gundam são 11 valores
+  // limpos e o colecionador pensa "quero só as LR+", não "quero especiais".
+  // NÃO é global de propósito: o One Piece tem 147 strings (glifos vintage
+  // japoneses); entrar aqui é decisão por jogo, medida no catálogo.
+  // A ordem é a escada de raridade do jogo (o select sai nessa ordem; valor
+  // fora da lista vai pro fim, em ordem alfabética).
+  const RARITY_LISTED_GAMES = {
+    gundam: ["Common", "C+", "C++", "Uncommon", "U+", "Rare", "R+", "Legend Rare", "LR+", "LR++", "Promo"]
+  };
+  const rarityListOrder = RARITY_LISTED_GAMES[(window.SLEEVU && window.SLEEVU.game) || ""] || null;
+
   // Carta "secreta": número acima do total oficial do set (full art, SAR, SR,
   // hiper/rainbow...). Em sets japoneses essas cartas frequentemente vêm sem
   // raridade ("None"/""), então sem isto cairiam em "Comuns e raras".
@@ -606,10 +619,32 @@
     renderRarityFilter();
   }
 
-  // Raridade como lista suspensa (Todas / Comuns e raras / Especiais). Mostra só
-  // os grupos presentes nesta página e esconde o filtro se houver menos de 2.
+  // Raridade como lista suspensa. Dois modos:
+  //   - baldes (padrão): Todas / Comuns e raras / Especiais;
+  //   - lista real (jogos em RARITY_LISTED_GAMES): cada raridade do catálogo
+  //     vira uma opção, na escada do jogo. O rótulo é a string crua do catálogo
+  //     (como a página Todas as cartas já faz) — é vocabulário do JOGO, não da
+  //     interface, então não passa pelo i18n.
+  // Nos dois modos: só o que está presente nesta página, e o filtro some com
+  // menos de 2 opções (filtro de opção única não filtra nada).
   function renderRarityFilter() {
     if (!elements.rarityFilter || !elements.rarityField) return;
+    if (rarityListOrder) {
+      const present = [...new Set(pageCards.map((card) => String(card.rarity || "")).filter((r) => r && r !== "None"))];
+      const pos = (r) => { const i = rarityListOrder.indexOf(r); return i < 0 ? rarityListOrder.length : i; };
+      present.sort((a, b) => (pos(a) - pos(b)) || a.localeCompare(b));
+      if (present.length < 2) {
+        elements.rarityField.hidden = true;
+        selectedRarity = "";
+        return;
+      }
+      elements.rarityField.hidden = false;
+      elements.rarityFilter.innerHTML = `<option value="">${escapeHtml(t("filter.all.f"))}</option>`
+        + present.map((r) => `<option value="${escapeAttribute(r)}">${escapeHtml(r)}</option>`).join("");
+      if (!present.includes(selectedRarity)) selectedRarity = "";
+      elements.rarityFilter.value = selectedRarity;
+      return;
+    }
     const present = new Set(pageCards.map((card) => rarityBucket(card)));
     const buckets = RARITY_BUCKET_ORDER.filter((key) => present.has(key));
     if (buckets.length < 2) {
@@ -809,7 +844,9 @@
         || (ownedValue === "owned" && isOwned)
         || (ownedValue === "missing" && !isOwned)
         || (ownedValue === "wanted" && wishlist.hasCard(card.id));
-      const matchesRarity = !selectedRarity || rarityBucket(card) === selectedRarity;
+      const matchesRarity = !selectedRarity || (rarityListOrder
+        ? String(card.rarity || "") === selectedRarity
+        : rarityBucket(card) === selectedRarity);
 
       return matchesQuery && matchesLanguage && matchesOwned && matchesRarity;
     });
