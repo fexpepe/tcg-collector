@@ -7627,6 +7627,18 @@ select,
   .deck-ed-right .deck-value { margin-top: 0; }
 }
 
+/* Barra de filtros SEM filtro nenhum não deve desenhar nada. Sets, Artistas e
+   Treinadores trazem a <section class="toolbar"> vazia no HTML (sobra de quando
+   essas telas tinham filtros próprios) e ela aparecia como uma cápsula vazia de
+   34px, com fundo e borda, entre os números e a lista.
+   `:not(:has(*))` e NÃO `:empty`: o :empty não casa com elemento que contenha
+   espaço em branco, e essas seções têm quebra de linha entre as tags — a regra
+   simplesmente não pegava. O :has olha só por filhos-ELEMENTO, que é o critério
+   certo aqui ("não tem filtro nenhum dentro").
+   Em CSS e não removendo do HTML: cobre as três telas de uma vez e continua
+   valendo se alguma vier a ter filtros condicionais que não rendam nada. */
+.toolbar:not(:has(*)) { display: none; }
+
 /* --- Filtros colapsáveis no mobile ---------------------------------------- */
 /* No desktop o botão não existe e a toolbar fica sempre aberta. */
 .filters-toggle { display: none; }

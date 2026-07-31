@@ -882,6 +882,10 @@
     let open = false;
     try { open = localStorage.getItem(FILTERS_OPEN_KEY) === "1"; } catch (e) { /* ignora */ }
     bars.forEach((bar) => {
+      // Barra sem filtro nenhum (Sets/Artistas/Treinadores trazem a section
+      // vazia no HTML): não cria o botão. Um "Filtros" que abre uma caixa vazia
+      // é pior que não ter botão — some junto com a barra (ver .toolbar:empty).
+      if (!bar.children.length) return;
       if (bar.previousElementSibling && bar.previousElementSibling.classList.contains("filters-toggle")) return;
       const btn = document.createElement("button");
       btn.type = "button";
