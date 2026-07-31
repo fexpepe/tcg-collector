@@ -196,8 +196,10 @@
           <h2 data-i18n="home.support.title">Gostou? Me paga um café ☕</h2>
           <p class="support-body" data-i18n="home.support.body">Se o app te ajudou, um cafezinho ajuda a manter o site no ar.</p>
           <div class="support-actions">
-            <!-- TODO: trocar data-pix pela sua chave Pix real -->
-            <button type="button" id="pixButton" class="cta" data-pix="SUA-CHAVE-PIX-AQUI" data-i18n="home.support.pix">Copiar chave Pix</button>
+            <!-- Chave Pix ALEATÓRIA (formato UUID). É pública por natureza: serve
+                 pra receber, não dá acesso a nada — por isso vive no HTML, e o
+                 botão só a copia pra área de transferência. -->
+            <button type="button" id="pixButton" class="cta" data-pix="cbac5cce-4c48-4553-ae90-40bea883cd2f" data-i18n="home.support.pix">Copiar chave Pix</button>
             <a class="cta secondary-cta" id="kofiButton" href="https://ko-fi.com/fernandopepe" target="_blank" rel="noopener" data-i18n="home.support.kofi">Ko-fi · café internacional</a>
           </div>
           <p class="support-note" data-i18n="home.support.note">Apoiar é opcional — o app é e vai continuar grátis.</p>
