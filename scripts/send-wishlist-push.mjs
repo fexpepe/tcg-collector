@@ -19,7 +19,7 @@ const DROP_PCT = -5; // só quedas relevantes
 if (!SENDER_KEY || !VAPID_PRIVATE) { console.log("[push] sem secrets — no-op."); process.exit(0); }
 // Import dinâmico DEPOIS do guard: o no-op (sem secrets) não exige o pacote.
 const webpush = (await import("web-push")).default;
-webpush.setVapidDetails("mailto:fernandopepe.pereira@gmail.com", VAPID_PUBLIC, VAPID_PRIVATE);
+webpush.setVapidDetails("mailto:sleevuapp@gmail.com", VAPID_PUBLIC, VAPID_PRIVATE);
 
 const rpc = (fn, body) => fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
   method: "POST",
