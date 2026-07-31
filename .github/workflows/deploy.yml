@@ -9,12 +9,23 @@ on:
       - "docs/**"
       - "LICENSE"
   schedule:
-    # toda segunda às 06:00 UTC — atualiza o catálogo com sets novos (na main).
+    # DUAS cadências, porque as fontes têm custos diferentes:
+    #
+    # COMPLETA (inclui as APIs por crédito: PPT e MYP) — 2x/semana. É o teto que
+    # o plano pago comporta com folga.
+    #   segunda 06:00 UTC: catálogo da semana, sets novos.
+    #   sexta 21:00 UTC: dia de lançamento de set do Pokémon TCG; pega o set novo
+    #   assim que a TCGdex publica, sem esperar segunda.
     - cron: "0 6 * * 1"
-    # sexta às 21:00 UTC — dia de lançamento de set do Pokémon TCG; pega o set
-    # novo (ex.: Pitch Black, 17/07/2026) assim que a TCGdex publica, sem
-    # esperar segunda nem depender de um push manual.
     - cron: "0 21 * * 5"
+    #
+    # GRÁTIS (TCGdex, TCGCSV, Scryfall, Lorcast e os vintage) — a cada 2 dias, às
+    # 07:00. Essas fontes não cobram, então o preço dos 11 jogos que dependem
+    # delas fica bem mais fresco sem gastar um crédito.
+    # 07:00 (e não 06:00) pra nunca coincidir no mesmo minuto com a completa de
+    # segunda: dois runs simultâneos na mesma branch cairiam na regra de
+    # concorrência e um cancelaria o outro.
+    - cron: "0 7 */2 * *"
   workflow_dispatch:
 
 permissions:
@@ -116,6 +127,23 @@ jobs:
             echo "RODA_SYNC=false" >> $GITHUB_ENV
           fi
 
+      # As APIs por CRÉDITO (PPT e MYP) só nas cadências completas. O cron de 2
+      # em 2 dias existe pra atualizar as fontes grátis com mais frequência — se
+      # ele também gastasse crédito, o consumo subiria ~67% e o ganho seria só
+      # nos preços JP do Pokémon, que mudam devagar.
+      # Pular é seguro: o merge-catalogs lê data/ppt-prices.generated.json num
+      # try/catch ("no-op sem o arquivo") e esse artefato está no cache de build,
+      # então o run grátis reaproveita o resultado da última rodada paga.
+      - name: Decide se usa as APIs pagas
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ github.event.schedule }}" = "0 7 */2 * *" ]; then
+            echo "Cadência de 2 dias: só fontes GRÁTIS (PPT/MYP pulados)."
+            echo "RODA_PAGO=false" >> $GITHUB_ENV
+          else
+            echo "Cadência completa: inclui as APIs por crédito."
+            echo "RODA_PAGO=true" >> $GITHUB_ENV
+          fi
+
       # O cache incremental do sync (payloads brutos da TCGdex + preços por set
       # da PPT) faz os deploys levarem minutos em vez de refazer tudo. Restore e
       # save SÃO SEPARADOS de proposito: o save roda ANTES da limpeza que apaga
@@ -152,7 +180,7 @@ jobs:
       # existir — o script sai com sucesso e o merge segue só com a referencia
       # internacional. Quando o token chegar, o BR passa a ter prioridade no valor.
       - name: Sincroniza preços BR (MYP)
-        if: env.RODA_SYNC == 'true'
+        if: env.RODA_SYNC == 'true' && env.RODA_PAGO == 'true'
         env:
           MYP_API_TOKEN: ${{ secrets.MYP_API_TOKEN }}
         run: node scripts/sync-myp.mjs pokemon
@@ -162,7 +190,7 @@ jobs:
       # Incremental: cacheia por set em data/.cache/ppt (preservado entre runs) e
       # respeita um orçamento de créditos/run pra nunca estourar o limite do plano.
       - name: Sincroniza preços/imagens JP (PPT)
-        if: env.RODA_SYNC == 'true'
+        if: env.RODA_SYNC == 'true' && env.RODA_PAGO == 'true'
         env:
           PPT_API_TOKEN: ${{ secrets.PPT_API_TOKEN }}
         run: node scripts/sync-ppt.mjs --budget 8000 --graded

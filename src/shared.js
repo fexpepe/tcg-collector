@@ -2624,7 +2624,12 @@
     const cells = cell(t("graded.smart"), g.s, "med") + cell(t("graded.recent"), g.r) + cell(t("graded.median"), g.m);
     const trend = g.t === 1 ? ' <span class="graded-trend up" aria-hidden="true">▲</span>' : g.t === -1 ? ' <span class="graded-trend down" aria-hidden="true">▼</span>' : "";
     const sales = g.n ? ` · ${tn("graded.sales", g.n)}` : "";
-    return `<div class="market-card graded-card"><span class="market-card-cur">PSA ${grade}${trend}${sales}</span><div class="market-cells">${cells}</div></div>`;
+    // "eBay" no cabeçalho do card, e não só no texto explicativo embaixo: estes
+    // números são vendas REAIS de um marketplace específico, diferentes em
+    // natureza do preço de referência do TCGplayer que aparece logo acima. Sem
+    // a fonte à vista, os dois blocos parecem duas medidas da mesma coisa.
+    // Nome próprio: não passa pelo i18n.
+    return `<div class="market-card graded-card"><span class="market-card-cur">PSA ${grade}${trend} · eBay${sales}</span><div class="market-cells">${cells}</div></div>`;
   }
   function gradedHtml(card, fx) {
     const table = window.TCG_PRICING;
