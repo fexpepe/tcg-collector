@@ -67,3 +67,15 @@ Thumbs.db
 
 # MCP local (config de ferramenta, nao versionar)
 .mcp.json
+
+# Mockups de design do Fernando: rascunhos que vivem na raiz enquanto uma tela
+# esta sendo desenhada. Ja entraram num commit por acidente (um `git add *.html`
+# amplo os levou junto) e, como o Cloudflare Pages publica QUALQUER .html da
+# raiz, foram parar no ar como paginas reais. Ficam so no disco.
+mockup-*.html
+
+# sitemap.xml e GERADO pelo prerender a cada build. Rodar o gerador localmente
+# reescreve o arquivo com um catalogo parcial (ja caiu de 2.673 para 1.504 URLs
+# aqui) -- e o proximo `git add` amplo comitaria a versao truncada logo depois
+# de o Search Console te-lo lido. O CI regenera sempre; a copia local nao serve.
+sitemap.xml
