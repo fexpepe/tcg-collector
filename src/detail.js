@@ -812,24 +812,46 @@
     updateValueStats();
   }
 
-  // Valor total da página (set/artista/pokémon), o já gasto (cartas que tenho) e
-  // o que falta (a comprar). Um valor representativo por carta (variante padrão).
+  // Três números com naturezas DIFERENTES — e é isso que explica por que eles
+  // não somam mais um no outro:
+  //   Valor total  = quanto vale o set COMPLETO (uma de cada, variante padrão);
+  //   Falta        = quanto vale o que ainda não tenho (uma de cada);
+  //   Já gasto     = quanto valem AS MINHAS cartas de verdade.
+  //
+  // O "já gasto" contava 1 por carta, na variante padrão: 10 cópias de R$ 10
+  // apareciam como R$ 10. Agora usa a mesma conta da Coleção (ownedMarketValue):
+  // percorre variante × condição × QUANTIDADE, então duplicata soma e a foil
+  // vale o que a foil vale.
+  //
+  // "Falta" passa a ser calculado das cartas que faltam, e não como
+  // total − já gasto: com duplicatas o "já gasto" pode passar do valor do set
+  // inteiro, e a subtração daria zero (ou negativo) num set longe de completo.
   function updateValueStats() {
     if (!elements.detailValues) return;
     let total = 0;
+    let toBuy = 0;
     let ownedValue = 0;
     pageCards.forEach((card) => {
-      const v = shared.cardValue(card, shared.defaultVariant(card), prices).value;
-      if (!v) return;
-      total += v;
-      if (owned.has(card.id)) ownedValue += v;
+      const ref = shared.cardValue(card, shared.defaultVariant(card), prices).value || 0;
+      total += ref;
+      // Posse pelo id exato, como antes. O modo "qualquer idioma" não entra
+      // aqui de propósito: a quantidade vive por id, então a cópia em outra
+      // língua está sob outro id — misturar daria um "já gasto" que não bate
+      // com o que a Coleção mostra.
+      if (!owned.has(card.id)) { toBuy += ref; return; }
+      (card.variants || [shared.defaultVariant(card)]).forEach((variant) => {
+        owned.conditionBreakdown(card.id, variant).forEach(({ condition, quantity }) => {
+          const v = shared.cardValue(card, variant, prices, condition).value;
+          if (v) ownedValue += v * quantity;
+        });
+      });
     });
     if (total <= 0) { elements.detailValues.hidden = true; return; }
     const cur = shared.getCurrency();
     elements.detailValues.hidden = false;
     elements.valueTotal.textContent = shared.formatMoney(cur, total);
     elements.valueOwned.textContent = shared.formatMoney(cur, ownedValue);
-    elements.valueToBuy.textContent = shared.formatMoney(cur, Math.max(0, total - ownedValue));
+    elements.valueToBuy.textContent = shared.formatMoney(cur, toBuy);
   }
 
   function filterCards() {
