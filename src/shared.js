@@ -3184,6 +3184,9 @@
                 <div><dt>${escapeHtml(t("modal.rarity"))}</dt><dd>${escapeHtml(activeCard.rarity || "-")}</dd></div>
                 <div><dt>${escapeHtml(t("modal.artist"))}</dt><dd>${escapeHtml(activeCard.artist || t("card.unknownArtist"))}</dd></div>
                 <div><dt>${escapeHtml(t("modal.set"))}</dt><dd>${escapeHtml(activeCard.set || "-")}</dd></div>
+                ${activeCard.nameJp && activeCard.nameJp !== activeCard.name
+                  ? `<div><dt>${escapeHtml(t("modal.nameJp"))}</dt><dd lang="ja" class="modal-name-jp">${escapeHtml(activeCard.nameJp)}</dd></div>`
+                  : ""}
                 <div><dt>${escapeHtml(t("modal.cardId"))}</dt><dd>${escapeHtml(activeCard.id)}</dd></div>
               </dl>
             </div>

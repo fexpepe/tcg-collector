@@ -391,6 +391,13 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-naruto-dc-cross-formation.mjs || echo "sync formation/cross falhou; segue com o snapshot versionado"
 
+      # Nomes das cartas de Naruto: japonês -> inglês. DEPOIS dos quatro syncs
+      # que alimentam esse catálogo (o mapa fica num lugar só em vez de repetido
+      # nos quatro). Idempotente e sem rede — ver o cabeçalho do script.
+      - name: Traduz nomes das cartas de Naruto
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/translate-naruto-names.mjs || echo "translate-naruto-names falhou; catalogo segue com os nomes originais"
+
       # JUMP: compila os sets curados versionados (data/jump/curated/*.json).
       - name: Compila catálogo JUMP (curadoria)
         if: env.RODA_SYNC == 'true'
