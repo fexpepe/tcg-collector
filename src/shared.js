@@ -1003,7 +1003,7 @@
   // saber que isto existe.
   //
   // Quem ESCONDE a seção original é o CSS, desde o primeiro paint (ver
-  // .page-search no bloco de 700px): se o JS a removesse, o conteúdo abaixo
+  // .page-search no bloco mobile): se o JS a removesse, o conteúdo abaixo
   // subiria depois da página já pintada — CLS de graça.
   function initHeaderSearch() {
     const inner = document.querySelector(".app-header-inner");
@@ -1013,7 +1013,12 @@
     // Onde ela mora no desktop, pra devolver no lugar exato ao girar a tela.
     const casa = busca.parentElement;
     const irmao = busca.nextElementSibling;
-    const mq = window.matchMedia("(max-width: 700px)");
+    // 860px = o MESMO corte do bloco mobile do CSS, e tem que continuar sendo:
+    // o CSS esconde a busca do corpo até 860, e este mq é quem a leva pro
+    // header. Quando os dois divergiram (CSS foi a 860, aqui ficou 700), toda
+    // largura entre 701 e 860 — iPad em RETRATO incluso — ficou sem busca
+    // nenhuma: sumia do corpo e não chegava ao header.
+    const mq = window.matchMedia("(max-width: 860px)");
     const aplicar = () => {
       const noHeader = busca.parentElement === inner;
       if (mq.matches && !noHeader) {
