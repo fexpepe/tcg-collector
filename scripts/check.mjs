@@ -51,20 +51,11 @@ const esKeys = new Set(Object.keys(MESSAGES.es || {}));
 for (const k of ptKeys) if (!enKeys.has(k)) fail(`i18n: "${k}" existe em pt mas falta em en`);
 for (const k of enKeys) if (!ptKeys.has(k)) fail(`i18n: "${k}" existe em en mas falta em pt`);
 
-// 3b) Espanhol. O NÚCLEO (src/i18n.js) exige paridade total — feature nova sem
-//     a chave es QUEBRA o CI aqui, que é o mecanismo que mantém a tradução em
-//     dia. Os pacotes extras (i18n-docs.js etc.) ainda não têm es: chave deles
-//     faltando é AVISO (o t() cai pro pt), não erro — vira erro quando o es
-//     desses pacotes for escrito e entrar na tabela.
-const coreKeys = new Set(keysOf("src/i18n.js"));
+// 3b) Espanhol: paridade TOTAL, núcleo e pacotes extras. Era aviso enquanto os
+//     pacotes (i18n-docs.js) não tinham tradução; agora que têm, chave sem es é
+//     ERRO — é o que mantém o espanhol em dia sem depender de alguém lembrar.
 for (const k of esKeys) if (!ptKeys.has(k)) fail(`i18n: "${k}" existe em es mas falta em pt`);
-let esDocsPendentes = 0;
-for (const k of ptKeys) {
-  if (esKeys.has(k)) continue;
-  if (coreKeys.has(k)) fail(`i18n: "${k}" existe em pt mas falta em es (núcleo)`);
-  else esDocsPendentes++;
-}
-if (esDocsPendentes) warn(`i18n: ${esDocsPendentes} chave(s) dos pacotes extras sem es (caem no pt) — docs pendentes de tradução`);
+for (const k of ptKeys) if (!esKeys.has(k)) fail(`i18n: "${k}" existe em pt mas falta em es`);
 
 // 4) Chaves usadas DIRETO — t("x"), tn("x"), data-i18n*="x" — que não existem.
 //    (Pega o bug clássico: t("set.officialCards") sem a chave definida.)

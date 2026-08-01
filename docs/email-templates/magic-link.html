@@ -1,0 +1,107 @@
+<!-- Template do e-mail de LINK MÁGICO do Supabase.
+     Onde colar: Supabase → Authentication → Emails → "Magic Link".
+     A variável {{ .ConfirmationURL }} é do próprio Supabase — não trocar.
+
+     Por que este HTML é "antiquado" de propósito (tabelas, estilo inline,
+     nada de flexbox/grid): cliente de e-mail não é navegador. Outlook usa o
+     motor do Word, Gmail remove <style> em parte dos casos e o Yahoo ignora
+     seletores modernos. Tabela aninhada com width fixo é o único layout que
+     chega igual nos três.
+
+     Sem imagem externa: logo desenhado em texto/CSS. Cliente de e-mail
+     bloqueia imagem por padrão, e um logo quebrado no topo de um e-mail de
+     login parece phishing — que é justamente o que não pode parecer.
+
+     Modo escuro: o fundo claro é fixo (color-scheme não é confiável entre
+     clientes); as cores foram escolhidas pra ler bem mesmo se o cliente
+     inverter. -->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f1f3f7;margin:0;padding:32px 12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <tr>
+    <td align="center">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="480" style="width:480px;max-width:100%;background-color:#ffffff;border:1px solid #e2e6ed;border-radius:14px;">
+
+        <!-- Marca -->
+        <tr>
+          <td align="center" style="padding:32px 32px 0 32px;">
+            <div style="font-size:26px;font-weight:800;letter-spacing:-0.5px;color:#11141a;">
+              <span style="display:inline-block;border:2px solid #11141a;border-radius:6px;padding:0 7px;margin-right:2px;">s</span>leevu
+            </div>
+            <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6b7280;padding-top:8px;">
+              Colecione &middot; Sincronize &middot; Grátis
+            </div>
+          </td>
+        </tr>
+
+        <!-- Chamada -->
+        <tr>
+          <td style="padding:28px 32px 0 32px;">
+            <h1 style="margin:0;font-size:21px;line-height:1.3;color:#11141a;font-weight:700;">Seu link de acesso</h1>
+            <p style="margin:12px 0 0 0;font-size:15px;line-height:1.6;color:#4b5563;">
+              Clique no botão abaixo para entrar no Sleevu. Não precisa de senha.
+            </p>
+          </td>
+        </tr>
+
+        <!-- Botão. bgcolor na <td> + display:block no <a> é o que faz o botão
+             aparecer inteiro no Outlook, que ignora background em <a>. -->
+        <tr>
+          <td style="padding:24px 32px 0 32px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td align="center" bgcolor="#11141a" style="border-radius:8px;">
+                  <a href="{{ .ConfirmationURL }}" style="display:block;padding:15px 24px;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:8px;">
+                    Entrar no Sleevu
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Validade e alternativa. O link em texto existe porque alguns
+             clientes corporativos removem o href do botão. -->
+        <tr>
+          <td style="padding:20px 32px 0 32px;">
+            <p style="margin:0;font-size:13px;line-height:1.6;color:#6b7280;">
+              O link vale por poucos minutos e só pode ser usado uma vez.
+            </p>
+            <p style="margin:14px 0 0 0;font-size:12px;line-height:1.5;color:#9aa1ad;">
+              Se o botão não funcionar, copie e cole este endereço no navegador:<br>
+              <span style="color:#4b5563;word-break:break-all;">{{ .ConfirmationURL }}</span>
+            </p>
+          </td>
+        </tr>
+
+        <!-- Aviso de segurança: quem NÃO pediu precisa saber que não há o que fazer. -->
+        <tr>
+          <td style="padding:24px 32px 0 32px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f6f8fb;border-radius:10px;">
+              <tr>
+                <td style="padding:14px 16px;font-size:12.5px;line-height:1.6;color:#6b7280;">
+                  Não foi você que pediu? Pode ignorar este e-mail — sem clicar no link, nada acontece e sua conta continua intacta.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Rodapé -->
+        <tr>
+          <td align="center" style="padding:26px 32px 30px 32px;">
+            <p style="margin:0;font-size:12px;line-height:1.6;color:#9aa1ad;">
+              <a href="https://sleevu.app" style="color:#6b7280;text-decoration:none;">sleevu.app</a>
+              &nbsp;&middot;&nbsp;
+              <a href="https://sleevu.app/privacy" style="color:#6b7280;text-decoration:none;">Privacidade</a>
+              &nbsp;&middot;&nbsp;
+              <a href="https://sleevu.app/help" style="color:#6b7280;text-decoration:none;">Ajuda</a>
+            </p>
+            <p style="margin:10px 0 0 0;font-size:11px;line-height:1.5;color:#b6bcc7;">
+              Sleevu é um projeto independente, sem afiliação com Nintendo, The Pokémon Company, Disney, Ravensburger, Bandai ou Shueisha.
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>

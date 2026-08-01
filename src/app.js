@@ -479,7 +479,7 @@
           <h3 title="${escapeAttribute(item.name)}">${escapeHtml(item.name)}</h3>
           <p>${escapeHtml(t("card.generation", { g: item.generation || "-" }))}</p>
         </div>
-        <div class="progress-bar" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
+        <div class="progress-bar" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
           <span style="width: ${progress}%"></span>
         </div>
         <div class="set-footer">
@@ -510,7 +510,7 @@
           <h3>${escapeHtml(item.name)}</h3>
         </div>
         <p>${escapeHtml(`${tn("count.cards", item.totalCount)} · ${tn("count.marked", item.ownedCount)}`)}</p>
-        <div class="progress-bar" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
+        <div class="progress-bar" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
           <span style="width: ${progress}%"></span>
         </div>
         <div class="set-footer">
@@ -580,7 +580,7 @@
           <h3>${escapeHtml(item.displayName)}</h3>
           ${item.languageLabel ? `<span class="tag">${escapeHtml(item.languageLabel)}</span>` : ""}
         </div>
-        <div class="progress-bar" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
+        <div class="progress-bar" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
           <span style="width: ${progress}%"></span>
         </div>
         <div class="set-footer">

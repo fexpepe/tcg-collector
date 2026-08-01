@@ -6385,15 +6385,25 @@
       // mantém o `lastPushedByGame` carimbado pro laço de sync.
       for (const g of remoteAll ? GAME_SLUGS : []) {
         const remote = remoteAll[g] || {};
-        const before = JSON.stringify(localSnapshot(g));
-        const merged = mergeData(localSnapshot(g), remote);
-        const after = JSON.stringify(merged);
-        if (after !== before) {
+        const local = localSnapshot(g);
+        const localJson = JSON.stringify(local);
+        // Compara MAÇÃ COM MAÇÃ. O localSnapshot só traz as chaves que existem
+        // no localStorage; o mergeData SEMPRE devolve as 18 (com objetos vazios
+        // onde não há nada). Comparar os dois crus dava "mudou" pra todo jogo
+        // sem dados — ou seja, pra 11 dos 12 jogos de quase todo mundo —, e o
+        // `changed` recarregava a PÁGINA INTEIRA no primeiro boot de cada
+        // navegador. Justo no login novo, em cima da tela de "Entrando…".
+        // A base é o local passado pelo MESMO mergeData: assim a pergunta vira
+        // a certa — "a nuvem trouxe alguma coisa nova?".
+        const base = JSON.stringify(mergeData(local, {}));
+        const merged = mergeData(local, remote);
+        if (JSON.stringify(merged) !== base) {
           writeSnapshot(merged, g);
           aSubir[g] = merged; // sobe tudo de uma vez depois do laço
           changed = true;
         } else {
-          lastPushedByGame[g] = before;
+          // Snapshot CRU (não o normalizado): é o que o syncPush compara.
+          lastPushedByGame[g] = localJson;
         }
       }
       if (Object.keys(aSubir).length) await pushAllRemote(session.access_token, session.user.id, aSubir);

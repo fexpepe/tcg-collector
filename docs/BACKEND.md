@@ -103,6 +103,36 @@ Erro na volta aparece na própria tela de login (`login.js` lê `error` e
 `error_description` da URL e mostra o texto do provedor) — é por onde começar o
 diagnóstico.
 
+## E-mail do link mágico (SMTP próprio) — obrigatório antes de divulgar
+
+O Supabase manda os e-mails de login por um SMTP **compartilhado** de cortesia,
+limitado a poucos e-mails por hora e com reputação de domínio que não é sua. Nas
+palavras do painel, é "for testing only". Num dia de lançamento isso quebra de
+duas formas ao mesmo tempo: quem se cadastra depois do limite **não recebe o
+link**, e o que chega tende a cair no spam.
+
+Trocar por um SMTP próprio (Resend, Postmark, Brevo — todos com um nível grátis
+que cobre o começo com folga):
+
+1. Crie a conta no provedor e **verifique o domínio `sleevu.app`** — na prática,
+   colar os registros **SPF**, **DKIM** e (idealmente) **DMARC** no DNS do
+   Cloudflare. Sem isso o Gmail marca como spam mesmo com SMTP próprio.
+2. Supabase → **Project Settings → Authentication → SMTP Settings** → ligar
+   *Enable Custom SMTP* e preencher host, porta, usuário e senha do provedor.
+   - *Sender email*: algo como `login@sleevu.app` (não use um Gmail pessoal —
+     quebra o DKIM do domínio).
+   - *Sender name*: `Sleevu`.
+3. Supabase → **Authentication → Rate Limits**: com SMTP próprio dá pra subir o
+   teto de e-mails/hora. Deixe folga pro pico do lançamento.
+4. Supabase → **Authentication → Emails → Magic Link**: cole o template de
+   `docs/email-templates/magic-link.html`. Ele é montado com tabelas e estilo
+   inline de propósito (cliente de e-mail não é navegador: o Outlook usa o motor
+   do Word) e **não tem imagem externa** — cliente de e-mail bloqueia imagem por
+   padrão, e um logo quebrado no topo de um e-mail de login parece phishing.
+   A variável `{{ .ConfirmationURL }}` é do Supabase; não trocar.
+5. Teste real: peça um link pra um endereço **Gmail** e um **Outlook**, e
+   confira se cai na caixa de entrada (não no spam/promoções).
+
 ## Por que não tudo de uma vez
 Construir auth+sync especulativo adiciona manutenção e risco (migração de dados,
 RLS, conflito local×nuvem). Faz-se quando houver a necessidade real (multi-

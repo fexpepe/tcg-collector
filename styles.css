@@ -3197,24 +3197,31 @@ input::placeholder {
 /* Verde fixo pra "disponível" (convenção universal) — independente do accent do
    tema, que é amarelo no escuro e vermelho no claro, e ficaria igual ao dourado
    de "em breve" / com semântica ruim. */
+/* Os dois tons são o mínimo que passa em AA (4.5:1) SOBRE O PRÓPRIO FUNDO da
+   cápsula — que é o verde a 16% por cima do painel, não o painel puro. O
+   #15a06f dava 4.17 no escuro e o #0f7a52 dava 4.47 no claro: reprovavam por
+   pouco, e são 12 cápsulas na tela do HUB. Medido com o axe-core. */
 .game-badge.available {
   background: rgba(31, 157, 119, 0.16);
-  color: #15a06f;
+  color: #16a874;
 }
 [data-theme="light"] .game-badge.available {
-  color: #0f7a52;
+  color: #0f7750;
 }
 .game-badge.soon {
   background: rgba(176, 125, 16, 0.16);
   color: var(--gold);
 }
 /* Etiqueta VINTAGE fixa (sépia/âmbar) — distingue as linhas clássicas. */
+/* Mesma história do .available: o tom precisa passar em AA sobre o PRÓPRIO
+   fundo da cápsula (o marrom a 18%), não sobre o painel. #a67c46 dava 3.69 no
+   escuro e #8a6a3a dava 4.07 no claro. */
 .game-badge.vintage {
   background: rgba(159, 122, 66, 0.18);
-  color: #a67c46;
+  color: #ba8b4e;
   border: 1px solid rgba(159, 122, 66, 0.3);
 }
-[data-theme="light"] .game-badge.vintage { color: #8a6a3a; }
+[data-theme="light"] .game-badge.vintage { color: #806336; }
 .game-tile.is-soon strong { color: var(--muted); }
 
 /* Seção VINTAGE do hub: cabeçalho + subtítulo acima da grade das linhas clássicas. */
@@ -3739,13 +3746,19 @@ a.hub-tile:hover {
 .setting-info strong { font-size: 15px; }
 .setting-info > span { font-size: 13px; color: var(--muted); line-height: 1.5; }
 .setting-preview { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+/* A tinta de cada cápsula segue a MESMA regra do resto do site (o textOnColor
+   do shared.js: preto ou branco, o que der maior contraste real). Aqui estava
+   fixo em branco, e branco sobre o laranja do Naruto dá 3.56:1 — reprovado.
+   O preto é PURO pelo mesmo motivo documentado lá: com o quase-preto do tema o
+   vermelho do Pokémon parava em 4.47. E o roxo do Lorcana estava #6d28d9, que
+   não é a cor do jogo (#3f3d96) — o preview mostrava um roxo que não existe. */
 .setting-swatch { padding: 2px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; color: #fff; }
-.sw-pokemon { background: #e23030; }
-.sw-lorcana { background: #6d28d9; }
-.sw-onepiece { background: #d9a400; color: #0a0c10; }
-.sw-naruto { background: #ea580c; color: #ffffff; }
+.sw-pokemon { background: #e23030; color: #000000; }
+.sw-lorcana { background: #3f3d96; color: #ffffff; }
+.sw-onepiece { background: #d9a400; color: #000000; }
+.sw-naruto { background: #ea580c; color: #000000; }
 .sw-hxh { background: #15803d; color: #ffffff; }
-.sw-neutral { background: #1b1f27; }
+.sw-neutral { background: #1b1f27; color: #ffffff; }
 .settings.colors-off .setting-swatch { background: var(--line); color: var(--subtle); }
 /* Switch (toggle) iOS-like */
 /* Switch estilo iOS/Collectr: trilho pílula, botão branco com folga igual dos dois
@@ -7147,8 +7160,14 @@ select,
 
 /* Zona de perigo (Configurações): destaque vermelho contido. */
 .settings-danger h2 { color: #d8443c; }
-.setting-danger-btn { color: #d8443c; border-color: rgba(216, 68, 60, 0.5); }
-.setting-danger-btn:hover { background: rgba(216, 68, 60, 0.12); border-color: #d8443c; color: #d8443c; }
+/* O botão é texto NORMAL de 16px (bold só vira "texto grande" no WCAG a partir
+   de 18.7px), então precisa de 4.5:1 sobre o fundo do .secondary. O #d8443c do
+   título dava 2.9 no escuro e 3.85 no claro. Um tom por tema; o h2 acima segue
+   no vermelho da seção porque texto grande só pede 3:1. */
+.setting-danger-btn { color: #ff6b5e; border-color: rgba(216, 68, 60, 0.5); }
+.setting-danger-btn:hover { background: rgba(216, 68, 60, 0.12); border-color: #d8443c; color: #ff6b5e; }
+[data-theme="light"] .setting-danger-btn,
+[data-theme="light"] .setting-danger-btn:hover { color: #bb3a33; }
 
 /* ============================================================================
    LANDING (index.html) — home redesenhada: wordmark em alta + leque de cartas
@@ -7229,7 +7248,10 @@ select,
 .lp-mock-chart svg { display: block; width: 100%; height: 72px; }
 .lp-mock-chart-row { display: flex; align-items: baseline; gap: 10px; padding: 8px 12px 10px; font-size: 12px; color: var(--subtle); }
 .lp-mock-chart-row strong { font-size: 16px; color: var(--text); }
+/* O verde do "+4,2%" passa folgado no escuro (5.4:1), mas dava 2.9:1 sobre o
+   painel claro. Tom próprio no claro, em vez de baixar o do escuro. */
 .lp-mock-chart-row em { font-style: normal; color: #34a06a; font-weight: 600; margin-left: auto; }
+[data-theme="light"] .lp-mock-chart-row em { color: #287a51; }
 /* binder: grade 3×2 de cartas */
 .lp-mock-binder { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 10px; max-height: 224px; overflow: hidden; }
 .lp-mock-binder img { width: 100%; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 4px; }
