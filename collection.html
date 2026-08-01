@@ -56,15 +56,22 @@
     </header>
 
     <main>
-      <label class="page-search-label" for="searchInput" data-i18n="search.title">Procurar:</label>
-      <section class="page-search">
-        <svg class="page-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
-        <input id="searchInput" type="search" data-i18n-placeholder="search.placeholder.detail" placeholder="Carta, set, artista, número...">
-      </section>
-
-      <div class="page-head dash-head">
-        <h1 data-i18n="nav.collection">Coleção</h1>
-        <a href="dashboard.html" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
+      <!-- Título e busca numa FAIXA só (o rótulo "Procurar:" segue no DOM pro
+           leitor de tela; visualmente, a lupa + placeholder já dizem tudo).
+           Antes eram duas faixas empilhadas e alinhadas à esquerda — no iPad
+           (1180px) o topo virava uma escada. O shared.js continua movendo a
+           .page-search pro header no celular: ele guarda o pai na hora de
+           devolver, então o aninhamento não muda nada pra ele. -->
+      <div class="page-head dash-head collection-head">
+        <div class="collection-head-text">
+          <h1 data-i18n="nav.collection">Coleção</h1>
+          <a href="dashboard.html" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
+        </div>
+        <label class="page-search-label" for="searchInput" data-i18n="search.title">Procurar:</label>
+        <section class="page-search">
+          <svg class="page-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+          <input id="searchInput" type="search" data-i18n-placeholder="search.placeholder.detail" placeholder="Carta, set, artista, número...">
+        </section>
       </div>
 
       <section id="collectionOnboarding" class="onboarding" aria-label="Primeiros passos" hidden>
@@ -152,7 +159,7 @@
       </section>
 
       <div id="cardsView" hidden>
-        <section class="toolbar" aria-label="Filtros">
+        <section class="toolbar collection-filters" aria-label="Filtros">
           <div>
             <label for="pokemonFilter" data-i18n="toolbar.pokemon">Pokémon</label>
             <select id="pokemonFilter">

@@ -82,7 +82,10 @@
         </div>
       </div>
 
-      <section id="gradedDashboard" class="collection-dashboard" aria-label="Resumo das cartas graded" hidden>
+      <!-- tabindex="0": no celular esta seção vira uma esteira com rolagem
+           horizontal, e região rolável precisa ser alcançável por teclado
+           (axe: scrollable-region-focusable). -->
+      <section id="gradedDashboard" class="collection-dashboard" aria-label="Resumo das cartas graded" tabindex="0" hidden>
         <article class="dash-card dash-stats">
           <div class="dash-stats-counts">
             <div><span class="dash-stat-val" id="gradedDashCount">0</span><span class="dash-stat-label" data-i18n="graded.dash.count">cartas graded</span></div>

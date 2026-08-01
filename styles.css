@@ -677,6 +677,30 @@ button {
 }
 
 
+/* Filtros da Coleção: GRADE de colunas iguais em vez do flex com larguras
+   soltas. No flex, "Ordenar" (flex:0 + margin-left:auto) e "Visualização"
+   caíam pra 2ª linha deixando um buraco à direita — o estado permanente do
+   iPad. Na grade, toda célula tem a mesma largura e as linhas fecham
+   alinhadas; auto-fill decide quantas colunas cabem (8 no monitor = uma linha;
+   6 no iPad paisagem; 4 no retrato = 2 linhas cheias). Ordenar ocupa 2 células
+   (as opções são longas — "Valor (maior → menor)" não cabe em 160px); `dense`
+   deixa a Visualização voltar pra preencher célula vaga. Só ≥701px: no celular
+   vale a regra global que empilha a .toolbar em 1 coluna. */
+@media (min-width: 701px) {
+  .collection-filters {
+    display: grid;
+    /* 150px e não 160: com a barra de rolagem, um monitor de 1440 tem ~1350px
+       úteis — a 160 fecham 7 colunas e a Visualização cai sozinha na 2ª linha;
+       a 150 fecham 8 e a barra inteira vira UMA linha. */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-auto-flow: row dense;
+    align-items: end;
+  }
+  .collection-filters > div { min-width: 0; }
+  .collection-filters select { width: 100%; }
+  .collection-filters > .sort-select { grid-column: span 2; margin-left: 0; }
+}
+
 /* Barra de filtros da página de cartas: cada item com sua largura natural (a
    Coleção não corta mais), Ordenar + Visualização ancorados à direita e a
    Raridade ocupando a linha de baixo. */
@@ -2717,11 +2741,12 @@ input::placeholder {
      A seção original, dentro do <main>, some já no primeiro paint — o JS só
      MOVE o elemento pra cá; se ele também a escondesse, o conteúdo abaixo
      subiria depois da página pintada e isso seria CLS.
-     `main >` de propósito: quando o elemento chega ao header ele deixa de casar
-     com este seletor e volta a aparecer, sem precisar de uma segunda regra
-     brigando por especificidade. */
-  main > .page-search,
-  main > .page-search-label { display: none; }
+     Descendente de `main` de propósito: quando o elemento chega ao header ele
+     deixa de casar com este seletor e volta a aparecer, sem precisar de uma
+     segunda regra brigando por especificidade. (Era `main >`, mas na Coleção a
+     busca agora mora DENTRO do .page-head — o mecanismo continua o mesmo.) */
+  main .page-search,
+  main .page-search-label { display: none; }
   /* No header ela entra NA MESMA fileira (marca | busca | menu), então a altura
      do header não muda — nenhum deslocamento quando o JS a insere. */
   .page-search.page-search-inheader {
@@ -4001,13 +4026,16 @@ a.hub-tile:hover {
   margin: -6px 0 16px;
 }
 
-/* Abas da coleção (Cartas/Showcase/Graded/…): régua de QUADRADOS chapados lado
-   a lado ocupando a largura toda — sem stroke e sem adornos (decisão de
-   design). A ativa preenche com a cor do jogo (texto no --on-accent). */
+/* Abas da coleção (Cartas/Showcase/Graded/…): QUADRADOS chapados, sem stroke e
+   sem adornos, ativa preenchida com a cor do jogo — o visual segue o mesmo.
+   O que mudou: cada aba tem o TAMANHO DO RÓTULO, alinhadas à esquerda, em vez
+   de esticarem pra dividir a largura em 7. Esticadas, viravam banners de
+   ~200px num monitor e, no iPad (1180px), eram a faixa mais larga de um topo
+   em que cada linha terminava num ponto — aba dimensionada pelo conteúdo fica
+   correta em QUALQUER largura, que é como aba se comporta em todo lugar. */
 .collection-tabs {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 18px;
 }
@@ -4015,7 +4043,7 @@ a.hub-tile:hover {
   border: 0;
   border-radius: 0; /* retângulo reto, sem curvatura */
   min-height: 44px;
-  padding: 0 14px;
+  padding: 0 22px;
   color: var(--text);
   background: var(--panel-strong);
 }
@@ -6032,6 +6060,22 @@ html:not([data-cardlang="all"]) #setRegionChips {
 .dash-dist-n { font-weight: 700; font-size: 13px; }
 .dash-empty { color: var(--muted); font-size: 13px; }
 
+/* Cabeçalho da Coleção numa FAIXA só: título + "← Hub" à esquerda, busca à
+   direita. Eram duas faixas empilhadas ("Procurar:" + barra, e o título
+   embaixo) — em 1180px (iPad paisagem) o topo virava uma escada de linhas que
+   começam juntas e terminam cada uma num ponto. A busca cresce e o título não;
+   quando faltar largura (retrato), a busca quebra pra linha de baixo inteira. */
+.collection-head { display: flex; align-items: center; gap: 8px 28px; flex-wrap: wrap; }
+.collection-head .collection-head-text { flex: 0 0 auto; }
+.collection-head .page-search { flex: 1 1 340px; min-width: 260px; margin: 0; }
+.collection-head .page-search input { height: 46px; }
+/* O rótulo "Procurar:" era uma faixa inteira dizendo o que a lupa + placeholder
+   já dizem. Fica só pro leitor de tela (padrão visually-hidden). */
+.collection-head .page-search-label {
+  position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
 /* Barra: filtro de jogo (Todos/Pokémon/Lorcana) + botão de compartilhar. */
 .collection-toolbar {
   display: flex;
@@ -6058,7 +6102,11 @@ html:not([data-cardlang="all"]) #setRegionChips {
 #pfGameFilter { margin: 6px 0 18px; }
 .binder-editor-gamefilter { margin: 0 0 10px; }
 .collection-share-btn { margin: 0; }
-.collection-toolbar-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+/* margin-left:auto além do space-between do pai: quando os chips estouram e as
+   ações caem pra 2ª linha, elas continuam ANCORADAS à direita (sem isso a 2ª
+   linha nascia à esquerda e parecia uma fileira solta — o iPad vivia nesse
+   estado). */
+.collection-toolbar-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-left: auto; }
 .collection-toolbar-actions .bulk-toggle { margin: 0; }
 /* Banner do binder compartilhado (somente leitura) + CTA pro visitante. */
 .binder-shared-banner {
