@@ -58,7 +58,7 @@ const SHELL_ASSETS = [
   // Fonte da marca (auto-hospedada): precisa estar no shell pra o app abrir
   // offline com a tipografia certa, sem "trocar de fonte" ao reconectar.
   "assets/fonts/outfit-latin.woff2", "assets/fonts/outfit-latin-ext.woff2",
-  "src/theme.js", "src/game.js", "src/login-boot.js", "src/i18n.js", "src/i18n-docs.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js", "src/explore.js", "src/dashboard.js", "src/badges.js",
+  "src/theme.js", "src/game.js", "src/login-boot.js", "src/i18n.js", "src/i18n-docs.js", "src/i18n-decks.js", "src/i18n-binders.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js", "src/explore.js", "src/dashboard.js", "src/badges.js",
   "src/home.js", "src/wishlist.js", "src/portfolio.js", "src/binders.js",
   "src/backup.js", "src/graded-ui.js", "src/cards.js", "src/sales.js", "src/graded.js", "src/login.js", "src/hub.js", "src/settings.js", "src/profile.js", "src/admin.js",
   "src/deck-rules.js", "src/decks.js"
