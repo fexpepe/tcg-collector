@@ -1837,7 +1837,7 @@
           ${dexTag}
           <span class="row-count">${group.ownedCount}/${group.totalCount}</span>
         </div>
-        <div class="progress-bar" aria-label="${escapeAttribute(t("progress.aria", { name: group.name }))}">
+        <div class="progress-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="${escapeAttribute(t("progress.aria", { name: group.name }))}">
           <span style="width: ${Math.min(100, (group.ownedCount / group.totalCount) * 100)}%"></span>
         </div>
         <p class="progress-row-meta">${escapeHtml(`${tn("count.cards", group.totalCount)} · ${pct}%`)}</p>
