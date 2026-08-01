@@ -52,15 +52,17 @@
     </header>
 
     <main>
-      <label class="page-search-label" for="searchInput" data-i18n="search.title">Procurar:</label>
-      <section class="page-search">
+
+      <div class="page-head dash-head page-head-bar">
+        <div class="page-head-bar-text">
+          <h1 data-i18n="nav.wishlist">Lista de Desejo</h1>
+          <a href="dashboard.html" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
+        </div>
+        <label class="page-search-label" for="searchInput" data-i18n="search.title">Procurar:</label>
+        <section class="page-search">
         <svg class="page-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
         <input id="searchInput" type="search" data-i18n-placeholder="search.placeholder.detail" placeholder="Carta, set, artista, número...">
-      </section>
-
-      <div class="page-head dash-head">
-        <h1 data-i18n="nav.wishlist">Lista de Desejo</h1>
-        <a href="dashboard.html" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
+        </section>
       </div>
 
       <section id="wishDrops" class="wish-drops" aria-label="Quedas de preço na wishlist" hidden></section>

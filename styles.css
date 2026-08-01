@@ -4270,6 +4270,10 @@ a.progress-row:hover {
   font-weight: 700;
   color: #7aa2ff;
 }
+/* O azul do nome da variante passa folgado no escuro (6.7:1), mas dava 2.48
+   sobre o painel branco do tema claro — reprovado em TODO tile de carta. Tom
+   próprio no claro (4.71), mantendo a mesma família de azul. */
+[data-theme="light"] .tile-variant { color: #5672b4; }
 
 .variant-holo,
 .variant-holofoil {
@@ -6060,18 +6064,19 @@ html:not([data-cardlang="all"]) #setRegionChips {
 .dash-dist-n { font-weight: 700; font-size: 13px; }
 .dash-empty { color: var(--muted); font-size: 13px; }
 
-/* Cabeçalho da Coleção numa FAIXA só: título + "← Hub" à esquerda, busca à
-   direita. Eram duas faixas empilhadas ("Procurar:" + barra, e o título
-   embaixo) — em 1180px (iPad paisagem) o topo virava uma escada de linhas que
-   começam juntas e terminam cada uma num ponto. A busca cresce e o título não;
-   quando faltar largura (retrato), a busca quebra pra linha de baixo inteira. */
-.collection-head { display: flex; align-items: center; gap: 8px 28px; flex-wrap: wrap; }
-.collection-head .collection-head-text { flex: 0 0 auto; }
-.collection-head .page-search { flex: 1 1 340px; min-width: 260px; margin: 0; }
-.collection-head .page-search input { height: 46px; }
+/* Cabeçalho das páginas com busca numa FAIXA só: título (e o que o acompanhe)
+   à esquerda, busca à direita. Eram duas faixas empilhadas ("Procurar:" +
+   barra, e o título embaixo) — em 1180px (iPad paisagem) o topo virava uma
+   escada de linhas que começam juntas e terminam cada uma num ponto. A busca
+   cresce e o título não; quando faltar largura (iPad retrato), ela quebra pra
+   uma linha de baixo inteira. Usada nas 9 páginas com .page-search no corpo. */
+.page-head-bar { display: flex; align-items: center; gap: 8px 28px; flex-wrap: wrap; }
+.page-head-bar .page-head-bar-text { flex: 0 0 auto; }
+.page-head-bar .page-search { flex: 1 1 340px; min-width: 260px; margin: 0; }
+.page-head-bar .page-search input { height: 46px; }
 /* O rótulo "Procurar:" era uma faixa inteira dizendo o que a lupa + placeholder
    já dizem. Fica só pro leitor de tela (padrão visually-hidden). */
-.collection-head .page-search-label {
+.page-head-bar .page-search-label {
   position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden;
   clip-path: inset(50%); white-space: nowrap;
 }
