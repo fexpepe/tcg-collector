@@ -161,7 +161,12 @@
       back.className = "serie-back";
       back.href = "sets.html";
       back.textContent = `← ${t("nav.sets")}`;
-      head.insertBefore(back, h1);
+      // No PAI DO H1, não no .page-head: desde que o título dividiu a faixa com
+      // a busca, o h1 vive dentro de .page-head-bar-text e não é mais filho
+      // direto do .page-head. insertBefore com um nó que não é filho LANÇA, e a
+      // exceção subia até o .catch() do boot — a página da série (e a da linha
+      // vintage) ficava em branco com "não foi possível carregar o catálogo".
+      h1.parentElement.insertBefore(back, h1);
     }
   }
 
@@ -177,7 +182,12 @@
       back.className = "serie-back";
       back.href = `sets.html?game=${(window.SLEEVU && window.SLEEVU.game) || "pokemon"}`;
       back.textContent = `← ${(window.SLEEVU && window.SLEEVU.name) || ""}`;
-      head.insertBefore(back, h1);
+      // No PAI DO H1, não no .page-head: desde que o título dividiu a faixa com
+      // a busca, o h1 vive dentro de .page-head-bar-text e não é mais filho
+      // direto do .page-head. insertBefore com um nó que não é filho LANÇA, e a
+      // exceção subia até o .catch() do boot — a página da série (e a da linha
+      // vintage) ficava em branco com "não foi possível carregar o catálogo".
+      h1.parentElement.insertBefore(back, h1);
     }
   }
 
@@ -543,7 +553,16 @@
 
   function manifestSetItems() {
     const query = normalize(elements.search.value);
-    const porRegiao = isPokemonGame() && elements.setRegionChips && !elements.setRegionChips.hidden;
+    // O eixo de idioma vale SEMPRE que a página tem os chips de região — mesmo
+    // quando eles estão escondidos. Escondidos é o caso de quem tem preferência
+    // de idioma de carta: aí quem governa é a preferência (o selectedLangRegion
+    // já nasce dela), e não o chip. Testar `.hidden` aqui desligava o filtro
+    // justamente nesse caso, e a tela de Sets do Pokémon virava 453 entradas em
+    // quatro idiomas — cada set repetido em EN e PT, mais as séries japonesas e
+    // chinesas. Enquanto a lista saía das CARTAS isso não aparecia: o catálogo
+    // já vinha só no idioma escolhido. Do manifest vêm todos, então o corte tem
+    // de ser explícito.
+    const porRegiao = isPokemonGame() && elements.setRegionChips;
     return manifest.sets
       .filter((entry) => (!porRegiao || shared.cardLanguageRegion(entry.language) === selectedLangRegion)
         && lineScope.includes(entry.id)
