@@ -2455,6 +2455,23 @@
     return u;
   }
 
+  // Mesma carta na OUTRA língua do par EN/PT. A TCGdex publica os scans por
+  // língua, e não no mesmo dia: um set novo pode já ter as artes em pt e ainda
+  // não em en — foi o caso do Pitch Black (me05, jul/2026), que abriu com as
+  // cartas EN no verso cinza enquanto as PT apareciam normalmente. EN e PT
+  // dividem o MESMO setId e a MESMA numeração, e a ilustração é a mesma (só o
+  // texto da carta muda), então a URL da outra língua é esta trocando um
+  // segmento. JA/ZH ficam de fora: numeração própria, a URL não casaria.
+  // Só assets da TCGdex; qualquer outra URL passa batido.
+  function tcgdexSiblingLangUrl(url) {
+    if (!url || url.indexOf("assets.tcgdex.net") < 0) return "";
+    const swapped = url.replace(
+      /(\/\/assets\.tcgdex\.net)\/(en|pt)\//,
+      (match, host, lang) => `${host}/${lang === "en" ? "pt" : "en"}/`
+    );
+    return swapped === url ? "" : swapped;
+  }
+
   function localizedImg(url, options) {
     if (!url) return "";
     const { alt = "", className = "", loading = "", thumb = false, fallback = "" } = options || {};
@@ -2468,6 +2485,13 @@
     }
     if (src !== url && chain.indexOf(url) < 0) chain.push(url); // webp -> png original (mesmo host)
     (Array.isArray(fallback) ? fallback : [fallback]).forEach((entry) => { if (entry) chain.push(entry); });
+    // Última tentativa antes do verso cinza: a mesma carta na outra língua do
+    // par EN/PT (ver tcgdexSiblingLangUrl). Fica no FIM da cadeia de propósito
+    // — só entra quando a língua certa e o espelho da pokemontcg.io falharam —
+    // e some sozinha quando a TCGdex publicar o scan que falta, porque a URL
+    // original continua sendo a primeira tentativa a cada carregamento.
+    const sibling = tcgdexSiblingLangUrl(url);
+    if (sibling && chain.indexOf(sibling) < 0) chain.push(sibling);
     const fallbackAttr = chain.length
       ? ` data-img-fallbacks="${escapeAttribute(chain.join("|"))}"`
       : "";
