@@ -3,7 +3,7 @@
 // subdomínio. Quem escolhe um jogo no HUB grava a escolha; as páginas de jogo
 // leem essa sessão. Ordem de decisão:
 //
-//   Início (/) e HUB (hub.html)        -> "hub" (sem jogo, sem catálogo)
+//   página neutra (ver isNeutralPage)  -> "hub" (sem jogo, sem catálogo)
 //   ?game=<slug> (deep-link / troca)   -> usa e GRAVA a sessão
 //   sessão guardada (localStorage)     -> último jogo escolhido
 //   página de jogo sem sessão          -> "pokemon" (padrão)
@@ -40,11 +40,18 @@
   function writeSession(g) {
     try { localStorage.setItem(GAME_KEY, g); } catch (e) { /* storage bloqueado: ignora */ }
   }
-  // Páginas neutras (sem jogo): a Início e o HUB. Cobre URL limpa do Cloudflare
-  // (/, /index, /hub) e o .html.
+  // Páginas neutras: as que NÃO são de um jogo só. A Início e o HUB (que são a
+  // porta de entrada), as visões pessoais que já leem os 12 jogos de uma vez
+  // (Dashboard, Badges, Backup), a busca global (Explorar) e os Decks — tanto a
+  // galeria da comunidade quanto "Meus decks" mostram deck de qualquer jogo, e
+  // cada deck carrega o próprio `game`. Aqui a sessão não é usada pra nada, e
+  // carimbar ?game= (ver stampGame) só sujava o link que a pessoa copia: abrir
+  // /decks e ver "?game=pokemon" na barra dá a entender que a galeria está
+  // filtrada em Pokémon, quando o filtro da página começa em "Todos".
+  // Cobre URL limpa do Cloudflare (/, /index, /decks) e o .html.
   function isNeutralPage() {
     var p = (location.pathname || "").replace(/\/+$/, "");
-    return p === "" || /\/(index|hub|explore|dashboard|badges|backup)(\.html)?$/i.test(p);
+    return p === "" || /\/(index|hub|explore|dashboard|badges|backup|decks|my-decks)(\.html)?$/i.test(p);
   }
 
   function detectGame() {
