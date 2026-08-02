@@ -5,6 +5,7 @@
   let cards = [];
   let cardsById = new Map();
   let indexes = null;
+  let manifest = null;
   let totalCatalogCount = 0;
   const owned = shared.createCollectionStore();
   const wishlist = shared.createWishlistStore();
@@ -40,7 +41,7 @@
     grid: elements.grid,
     pageSize: 60,
     // Scroll infinito: reaplica o estado recolhido aos cards recém-inseridos.
-    onAppend: () => { if (view === "sets") applyCollapsed(); }
+    onAppend: () => { if (view === "sets") { applyCollapsed(); refineVisibleSets(); } }
   });
   let selectedGeneration = "";
   // Região padrão segue a preferência de idioma de carta; sem preferência ("all")
@@ -67,6 +68,9 @@
     onOwnedChange: () => {
       setValueMemo.clear();
       setMissingMemo.clear();
+      ownedCountMemo.clear();
+      refinedSets.clear();
+      refining.clear();
       // Se a grade tem tiles de carta, atualiza posse in-place (re-renderizar
       // tudo fazia as imagens piscarem/recarregarem a cada +/− no preview).
       const tiles = elements.grid.querySelectorAll(".card-tile");
@@ -82,10 +86,11 @@
   const cardLang = shared.getCardLang();
   const langMatch = (value) => cardLang === "all" || shared.normalizeCardLanguage(value) === cardLang;
 
-  // A Pokédex roda só com índices (não baixa os chunks de carta); as outras
-  // visões (sets/artistas/treinadores) baixam só os chunks do idioma escolhido
-  // (corta o download quando há preferência de idioma de carta).
-  const catalogPromise = view === "pokedex"
+  // Pokédex e SETS rodam só com índices + manifest: nenhuma das duas telas
+  // mostra dado de carta, e baixar o catálogo pra elas era o gargalo da tela de
+  // sets (43 MB no Magic). As demais visões (artistas/treinadores/cartas) ainda
+  // precisam das cartas e baixam só os chunks do idioma escolhido.
+  const catalogPromise = (view === "pokedex" || view === "sets")
     ? Promise.resolve(shared.loadIndexesOnly())
     : shared.loadCatalog(cardLang);
   // Skeletons enquanto os chunks baixam (a Pokédex é instantânea: só índices).
@@ -98,10 +103,14 @@
       cards = catalog.cards;
       cardsById = new Map(cards.map((card) => [card.id, card]));
       indexes = catalog.indexes || buildIndexes(cards);
+      manifest = catalog.manifest || null;
       totalCatalogCount = cards.length
         ? cards.filter((card) => langMatch(card.language)).length
         : (catalog.manifest ? catalog.manifest.sets.filter((set) => langMatch(set.language)).reduce((sum, set) => sum + (set.count || 0), 0) : 0);
-      owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
+      // Só com as cartas em mãos a migração acerta a variante padrão; sem elas
+      // (sets/pokedex, que rodam por índice) fica pra outra página do jogo.
+      if (cards.length) owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
+      if (view === "sets") indexAmbiguousSetNames();
       init();
       preview.openFromUrl(); // ?card=<id> compartilhado: reabre o popup
     })
@@ -118,6 +127,19 @@
     // e filtrar por região esconderia o vintage por baixo do padrão "english".
     if (elements.setRegionChips && (shared.getCardLang() !== "all" || !isPokemonGame())) {
       elements.setRegionChips.hidden = true;
+    }
+    // Índice nome→cardIds: só serve pra contar quantas cartas SUAS estão em cada
+    // set, então é buscado DEPOIS do primeiro paint e só se houver coleção neste
+    // jogo. Quem chega sem coleção não paga o download (1,3 MB no Magic).
+    if (manifestMode() && owned.size > 0) {
+      shared.loadIndexSlice("sets").then((slice) => {
+        if (!slice) return;
+        indexes = indexes || {};
+        indexes.sets = slice;
+        indexCardIdsByEntry();
+        ownedCountMemo.clear();
+        render();
+      });
     }
     if (view === "sets" && serieParam) applySerieTitle();
     if (view === "sets" && linePrefix) applyLineTitle();
@@ -295,8 +317,12 @@
   function render({ resetCount = false } = {}) {
     // Pokédex não filtra cartas (roda por espécie via índices); as outras
     // visões partem das cartas visíveis após os filtros.
-    const items = view === "pokedex" ? pokedexViewItems() : getViewItems(filterCards());
+    // filterCards() varre o catálogo; sets e pokedex não têm catálogo carregado
+    // (e não precisam) — passam direto.
+    const items = view === "pokedex" ? pokedexViewItems()
+      : getViewItems(manifestMode() ? [] : filterCards());
     pager.render(items, createViewItem, { resetCount }); // onAppend reaplica o recolhido
+    if (view === "sets") { applyCollapsed(); refineVisibleSets(); }
 
     // Cabeçalhos de série não contam como resultado.
     const realCount = items.filter((item) => item.type !== "series-head" && item.type !== "category-head").length;
@@ -315,7 +341,10 @@
     if (view === "sets") {
       // Escopo da linha: página de linha mostra SÓ os sets dela; o jogo
       // principal exclui as linhas (cada uma tem página própria via hub).
-      const setItems = indexedGroupsToItems(indexes.sets, visibleIds, toSetItem).filter((set) => lineScope.includes(set.setId));
+      // Com manifest, os tiles saem dele (sem baixar carta) — ver manifestSetItems.
+      const setItems = manifestMode()
+        ? manifestSetItems()
+        : indexedGroupsToItems(indexes.sets, visibleIds, toSetItem, null, splitGroupsBySetId).filter((set) => lineScope.includes(set.setId));
       // Linha vintage (?line=): sempre do mais antigo pro mais novo.
       if (linePrefix) return setItems.sort(sortByReleaseAsc);
       // Página de uma série (?serie=id): só os sets dela, sem cabeçalhos.
@@ -386,15 +415,227 @@
       .map(toPokedexItem);
   }
 
-  function indexedGroupsToItems(indexGroups, visibleIds, mapper, sortFn) {
-    return (indexGroups || [])
+  // ── LISTA de sets a partir do MANIFEST ─────────────────────────────────────
+  // Um tile de set mostra logo, símbolo, nome, data, série, quantas cartas o set
+  // tem, quantas são suas e quanto ele vale. Nada disso é dado de CARTA: ou é
+  // metadado do set (igual em todas) ou é uma soma. Mesmo assim a lista baixava
+  // o catálogo inteiro do jogo pra montar os tiles — 647 chunks e 43 MB no
+  // Magic, 452 e 29 MB no Pokémon, ANTES do primeiro tile aparecer. Era o motivo
+  // de "a tela de sets demora demais".
+  //
+  // Agora o metadado e a soma de preço viajam no próprio manifest (~100 KB, que
+  // a página já baixa) — ver setManifestMeta em scripts/lib/sync-common.mjs. O
+  // que sobra de específico seu:
+  //   · quantas cartas você tem no set — interseção do índice nome→cardIds com
+  //     a sua coleção, memoizada;
+  //   · o custo pra completar, que precisa saber QUAIS faltam. É o único número
+  //     que ainda pede o chunk, e ele é buscado depois do primeiro paint, só
+  //     pros sets em que você já tem alguma carta (o tile nem mostra o custo nos
+  //     outros) e só pros que estão na tela.
+  //
+  // Sem manifest (modo local, window.TCG_CARDS de amostra) nada disso vale: o
+  // caminho antigo, por cartas, continua inteiro logo abaixo.
+  const manifestMode = () => Boolean(view === "sets" && manifest && Array.isArray(manifest.sets) && manifest.sets.length);
+  const entryKey = (entry) => `${entry.id}|${entry.language}`;
+  // Idioma EXATO do id (zh-cn e zh-tw são entradas distintas do manifest, então
+  // aqui não pode normalizar pra "zh" como o cardLanguageFromId faz).
+  const langFromId = (id) => (String(id).match(/-(pt|ja|zh-cn|zh-tw)$/) || [null, "en"])[1];
+
+  // cardIds do índice (que agrupa por NOME) distribuídos entre as entradas do
+  // manifest com aquele nome. Um nome = uma entrada é o caso de quase todo set:
+  // atalho direto. Quando o nome tem várias entradas, decide pelo idioma do id;
+  // e só quando duas edições do MESMO idioma dividem o nome (レイジングサーフ =
+  // SV3a e SV4a) é que o setId embutido no id entra pra desempatar — jogos cujo
+  // id não carrega o setId ("mtg-msc-1") nunca chegam nesse ramo.
+  let cardIdsByEntry = new Map();
+  function indexCardIdsByEntry() {
+    cardIdsByEntry = new Map();
+    const byName = new Map();
+    manifest.sets.forEach((entry) => {
+      if (!byName.has(entry.name)) byName.set(entry.name, []);
+      byName.get(entry.name).push(entry);
+    });
+    const setIds = manifest.sets.map((entry) => entry.id);
+    const push = (entry, id) => {
+      const key = entryKey(entry);
+      if (!cardIdsByEntry.has(key)) cardIdsByEntry.set(key, []);
+      cardIdsByEntry.get(key).push(id);
+    };
+    (indexes && indexes.sets ? indexes.sets : []).forEach((group) => {
+      const entries = byName.get(group.name);
+      if (!entries || !entries.length) return;
+      if (entries.length === 1) { cardIdsByEntry.set(entryKey(entries[0]), group.cardIds || []); return; }
+      (group.cardIds || []).forEach((id) => {
+        const lang = langFromId(id);
+        const sameLang = entries.filter((entry) => entry.language === lang);
+        if (!sameLang.length) return;
+        if (sameLang.length === 1) { push(sameLang[0], id); return; }
+        const setId = shared.setIdForCard(id, setIds);
+        push(sameLang.find((entry) => entry.id === setId) || sameLang[0], id);
+      });
+    });
+  }
+
+  // Quantas cartas do set você tem. Memoizado: a busca re-renderiza a cada
+  // tecla e isso varre os cardIds de TODOS os sets do jogo.
+  const ownedCountMemo = new Map();
+  function entryOwnedCount(entry) {
+    const key = entryKey(entry);
+    if (!ownedCountMemo.has(key)) {
+      const ids = cardIdsByEntry.get(key) || [];
+      let n = 0;
+      ids.forEach((id) => { if (owned.has(id)) n++; });
+      ownedCountMemo.set(key, n);
+    }
+    return ownedCountMemo.get(key);
+  }
+
+  // Soma de preço do manifest (por moeda de ORIGEM) convertida pra moeda atual.
+  // Sem câmbio, convertMoney devolve null e a parcela fica de fora — mesmo
+  // comportamento do cardValue carta a carta.
+  function entryRefValue(entry) {
+    const cur = shared.getCurrency();
+    let total = 0;
+    [["vb", "BRL"], ["vu", "USD"], ["ve", "EUR"]].forEach(([field, from]) => {
+      if (!entry[field]) return;
+      const value = shared.convertMoney(entry[field], from, cur);
+      if (value != null) total += value;
+    });
+    return total;
+  }
+
+  // Valor/custo EXATOS de um set já refinado (chunk baixado): entram no lugar
+  // dos números do manifest, que não conhecem preço manual seu.
+  const refinedSets = new Map();
+
+  function toManifestSetItem(entry) {
+    const key = entryKey(entry);
+    const refined = refinedSets.get(key);
+    const serieId = entry.serieId || deriveSerieId(entry.id);
+    return {
+      type: "set",
+      name: entry.name,
+      setId: entry.id,
+      entryKey: key,
+      cards: [],
+      totalCount: entry.count,
+      ownedCount: entryOwnedCount(entry),
+      officialTotal: entry.total || entry.count,
+      value: refined ? refined.value : entryRefValue(entry),
+      missing: refined ? refined.missing : null,
+      logo: entry.logo || "",
+      displayName: shared.setDisplayName(entry.id, entry.name),
+      symbol: entry.symbol || "",
+      releaseDate: entry.release || "",
+      serieId,
+      serieName: entry.serieName || serieDisplayName(serieId),
+      languageLabel: shared.cardLangSigla(entry.language)
+    };
+  }
+
+  // Busca da tela de Sets filtra SETS (nome, sigla do id e série) — procurar
+  // CARTA é papel do Buscar/Explorar. Antes ela varria as cartas do jogo
+  // inteiro, o que só era possível porque a página baixava tudo.
+  function entryMatchesQuery(entry, query) {
+    if (!query) return true;
+    return normalize(`${entry.name} ${shared.setDisplayName(entry.id, entry.name)} ${entry.id} ${entry.serieName || ""}`).includes(query);
+  }
+
+  function manifestSetItems() {
+    const query = normalize(elements.search.value);
+    const porRegiao = isPokemonGame() && elements.setRegionChips && !elements.setRegionChips.hidden;
+    return manifest.sets
+      .filter((entry) => (!porRegiao || shared.cardLanguageRegion(entry.language) === selectedLangRegion)
+        && lineScope.includes(entry.id)
+        && entryMatchesQuery(entry, query))
+      .map(toManifestSetItem)
+      .sort(sortByName);
+  }
+
+  // Custo pra completar dos sets VISÍVEIS em que você já tem alguma carta — o
+  // único número que ainda precisa das cartas. Roda depois do paint, um chunk
+  // por set, e re-renderiza quando termina. Set sem carta sua não entra: o tile
+  // não mostra custo nesse caso.
+  const refining = new Set();
+  async function refineVisibleSets() {
+    if (!manifestMode()) return;
+    const visiveis = new Set(Array.from(elements.grid.querySelectorAll(".set-card"))
+      .map((node) => node.dataset.entryKey).filter(Boolean));
+    const pendentes = manifest.sets.filter((entry) => {
+      const key = entryKey(entry);
+      return visiveis.has(key) && !refinedSets.has(key) && !refining.has(key) && entryOwnedCount(entry) > 0;
+    });
+    if (!pendentes.length) return;
+    pendentes.forEach((entry) => refining.add(entryKey(entry)));
+    let mudou = false;
+    for (const entry of pendentes) {
+      try {
+        const chunk = await shared.fetchSetChunks([entry]);
+        const missing = chunk.filter((card) => !owned.has(card.id));
+        const somaTudo = shared.sumCardsValue(chunk, prices);
+        const somaFalta = shared.sumCardsValue(missing, prices);
+        refinedSets.set(entryKey(entry), {
+          value: somaTudo.value,
+          missing: { count: missing.length, value: somaFalta.value, unpriced: somaFalta.unpriced }
+        });
+        mudou = true;
+      } catch (error) {
+        refining.delete(entryKey(entry)); // rede caiu: tenta de novo no próximo render
+      }
+    }
+    if (mudou) render();
+  }
+
+  function indexedGroupsToItems(indexGroups, visibleIds, mapper, sortFn, splitFn) {
+    const groups = (indexGroups || [])
       .map((group) => ({
         name: group.name,
         cards: group.cardIds.map((id) => cardsById.get(id)).filter((card) => card && visibleIds.has(card.id))
       }))
-      .filter((group) => group.cards.length > 0)
+      .filter((group) => group.cards.length > 0);
+    return (splitFn ? splitFn(groups) : groups)
       .map(mapper)
       .sort(sortFn || sortByName);
+  }
+
+  // O índice agrupa sets por NOME, e nome não é chave única: レイジングサーフ é
+  // SV3a E SV4a, "Pokémon GO" é swsh10.5 e S10b. Fundidos, viravam um tile só
+  // com a soma das duas edições (452 cartas) e um valor total somando as duas.
+  // O eixo de língua já é resolvido antes, pelo filtro de REGIÃO; aqui sobra
+  // separar por setId. Set de nome único devolve um grupo só — nada muda.
+  function splitGroupsBySetId(groups) {
+    const out = [];
+    groups.forEach((group) => {
+      const bySetId = new Map();
+      group.cards.forEach((card) => {
+        const key = card.setId || "";
+        if (!bySetId.has(key)) bySetId.set(key, []);
+        bySetId.get(key).push(card);
+      });
+      bySetId.forEach((list) => out.push({ name: group.name, cards: list }));
+    });
+    return out;
+  }
+
+  // Nomes de set que casam com mais de uma edição (setId × região) no catálogo
+  // carregado. Só nesses o link precisa carregar ?setId=/?region= — o resto
+  // continua com a URL limpa de sempre. Calculado uma vez, depois da carga.
+  let ambiguousSetNames = new Set();
+  function indexAmbiguousSetNames() {
+    const byName = new Map();
+    const add = (name, key) => {
+      if (!name) return;
+      if (!byName.has(name)) byName.set(name, new Set());
+      byName.get(name).add(key);
+    };
+    if (manifestMode()) manifest.sets.forEach((entry) => add(entry.name, `${entry.id}|${shared.cardLanguageRegion(entry.language)}`));
+    else cards.forEach((card) => add(card.set, `${card.setId || ""}|${shared.cardLanguageRegion(card.language)}`));
+    ambiguousSetNames = new Set(Array.from(byName).filter(([, keys]) => keys.size > 1).map(([name]) => name));
+  }
+
+  function setDetailUrl(item) {
+    if (!ambiguousSetNames.has(item.name)) return detailUrl("set", item.name);
+    return detailUrl("set", item.name, "", "", { setId: item.setId, region: selectedLangRegion });
   }
 
   function createViewItem(item) {
@@ -526,7 +767,8 @@
   function createSetCard(item) {
     const article = document.createElement("article");
     article.className = "set-card";
-    article.dataset.href = detailUrl("set", item.name);
+    article.dataset.href = setDetailUrl(item);
+    if (item.entryKey) article.dataset.entryKey = item.entryKey;
     const progress = item.totalCount ? Math.round((item.ownedCount / item.totalCount) * 100) : 0;
     // Set sem logo próprio: usa o logo do JOGO no lugar do texto (e, quando o
     // set tem logo, o do jogo vira o último fallback se ele quebrar). Jogo sem
@@ -568,7 +810,7 @@
     // o título — duas linhas dizendo a mesma coisa, uma delas ilegível pra
     // maioria). O nome original aparece ao abrir o set.
     article.innerHTML = `
-      <a class="set-art-link" href="${escapeAttribute(detailUrl("set", item.name))}" aria-label="${escapeAttribute(item.displayName)}">
+      <a class="set-art-link" href="${escapeAttribute(setDetailUrl(item))}" aria-label="${escapeAttribute(item.displayName)}">
         <div class="set-art">
           ${releaseBadge}
           ${logo}
@@ -660,6 +902,9 @@
     const sortedCards = group.cards.slice().sort((a, b) => shared.compareCardNumbers(a.number, b.number));
     const sample = sortedCards[0] || {};
     const serieId = sample.setSerieId || deriveSerieId(sample.setId);
+    // Chave do memo = EDIÇÃO (setId + região), não o nome: com sets homônimos o
+    // nome fazia o segundo devolver o valor já calculado do primeiro.
+    const memoKey = `${sample.setId || group.name}|${selectedLangRegion}`;
     return {
       type: "set",
       name: group.name,
@@ -668,8 +913,8 @@
       totalCount: sortedCards.length,
       ownedCount: sortedCards.filter((card) => owned.has(card.id)).length,
       officialTotal: sample.setTotal || sortedCards.length,
-      value: memoSetValue(group.name, sortedCards),
-      missing: memoSetMissing(group.name, sortedCards),
+      value: memoSetValue(memoKey, sortedCards),
+      missing: memoSetMissing(memoKey, sortedCards),
       logo: sample.setLogo || "",
       // Nome de EXIBIÇÃO: tradução em inglês nos vintages japoneses, original no
       // resto. `name` (acima) continua sendo o original — é a chave de link,

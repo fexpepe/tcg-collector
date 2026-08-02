@@ -487,6 +487,22 @@ jobs:
       - name: Ativa modo manifest (flag no game.js)
         run: sed -i 's|var MANIFEST = false|var MANIFEST = true|' src/game.js
 
+      # Mesma razão do passo acima (o esbuild dobra `false` em `!1`, e o padrão
+      # com espaços some). Diz ao install do service worker que os arquivos do
+      # shell vão ter hash no nome, então ele para de furar o cache do navegador
+      # com cache:"reload" — e um deploy passa a baixar só o que mudou, em vez dos
+      # ~345 KB do shell inteiro. O hash-assets.mjs confere que isto rodou.
+      - name: Avisa o service worker que o shell terá hash
+        run: sed -i 's|const HASHED_ASSETS = false|const HASHED_ASSETS = true|' sw.js
+
+      # Reparte o styles.css: núcleo (o que toda página usa) + folhas por área
+      # (landing, login, decks, portfólio, conta, wishlist, vendas, ajuda), ligadas
+      # só nas páginas delas. ANTES da minificação — o script remove os comentários
+      # pra parsear em segurança, e é a minificação que os descartaria de qualquer
+      # forma. O repositório segue com um styles.css só.
+      - name: Reparte o CSS por área
+        run: node scripts/split-css.mjs --write
+
       # Minifica JS/CSS servidos, IN PLACE (as URLs não mudam; o repo fica intacto —
       # isso só existe no workspace do runner). Corta ~50% do transfer e acelera o
       # parse no mobile. Bônus: o esbuild FALHA em erro de sintaxe, então este passo
@@ -498,6 +514,13 @@ jobs:
           npx --yes esbuild --minify --sourcemap --charset=utf8 --allow-overwrite --outdir=src src/*.js
           npx --yes esbuild --minify --charset=utf8 --allow-overwrite --outfile=styles.css styles.css
           npx --yes esbuild --minify --sourcemap --charset=utf8 --allow-overwrite --outfile=sw.js sw.js
+
+      # Hash do conteúdo no nome do app shell (src/*.js, styles.css) e troca do
+      # Cache-Control pra um ano `immutable`. DEPOIS da minificação (o hash tem
+      # de ser dos bytes finais) e ANTES do "Remove arquivos", que apaga
+      # scripts/. Falha o build se sobrar referência ao nome sem hash.
+      - name: Versiona o app shell pelo hash (cache imutável)
+        run: node scripts/hash-assets.mjs
 
       # data/magic/cards.js: o monolito do Magic (~37 MiB no build completo)
       # estoura o teto de 25 MiB/arquivo do Cloudflare Pages. Em produção NADA o

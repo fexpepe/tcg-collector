@@ -5,7 +5,7 @@
 //   - gera data/indexes.generated.js e data/manifest.generated.js mesclados.
 // Uso: node scripts/merge-catalogs.mjs en ja zh-tw pt
 import { readdir, readFile, writeFile } from "node:fs/promises";
-import { writeSplitIndexes } from "./lib/sync-common.mjs";
+import { writeSplitIndexes, setManifestMeta } from "./lib/sync-common.mjs";
 
 const langs = process.argv.slice(2).filter((arg) => !arg.startsWith("-"));
 if (!langs.length) {
@@ -250,6 +250,28 @@ for (const [id, p] of Object.entries(pptData)) {
   if (p.g) ref.g = p.g;
 }
 if (Object.keys(pptData).length) console.log(`Preços PPT aplicados: ${pptApplied} (de ${Object.keys(pptData).length} no artefato)`);
+
+// Metadados de set + soma de preço em cada entrada do manifest, pra LISTA de
+// sets não precisar dos chunks de carta (ver setManifestMeta). Roda AQUI, no
+// fim: o `pricing` só está completo depois do MYP e da PPT, e um valor somado
+// com a tabela pela metade sairia menor que o real.
+{
+  const cardsByEntry = new Map();
+  for (const card of allCards) {
+    const key = `${card.setId || ""}|${card.language || "en"}`;
+    if (!cardsByEntry.has(key)) cardsByEntry.set(key, []);
+    cardsByEntry.get(key).push(card);
+  }
+  let semGrupo = 0;
+  for (const entry of manifestSets) {
+    const group = cardsByEntry.get(`${entry.id}|${entry.language}`);
+    // Sem grupo (não deveria acontecer): a entrada segue válida e o cliente cai
+    // no caminho antigo — baixa o chunk daquele set pra desenhar o tile.
+    if (!group) { semGrupo++; continue; }
+    Object.assign(entry, setManifestMeta(group, pricing));
+  }
+  if (semGrupo) console.warn(`  [merge] ${semGrupo} entrada(s) de manifest sem cartas casadas — tile cai no chunk`);
+}
 
 const manifest = {
   languages: langs,

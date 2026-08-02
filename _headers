@@ -25,9 +25,15 @@
   Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
   Cross-Origin-Opener-Policy: same-origin
 
-# App shell sem versão na URL (src/*.js e styles.css): revalida sempre em vez de
-# ficar 4h preso numa versão antiga após um deploy. ETag → 304 barato quando não
-# mudou; 200 fresco quando muda. (O HTML já é dinâmico; as imagens seguem cacheadas.)
+# App shell (src/*.js e styles.css). Estes valores são os do REPOSITÓRIO, onde
+# os arquivos não têm versão na URL: revalidar sempre é o que evita ficar preso
+# numa versão antiga depois de um deploy.
+#
+# No DEPLOY o scripts/hash-assets.mjs põe o hash do conteúdo no nome
+# (src/shared.<hash>.js) e troca estas duas linhas por um ano de `immutable` —
+# com a URL mudando a cada versão, revalidar deixa de ser necessário e as ~6
+# requisições condicionais por navegação somem. Se algum dia o passo de hash sair
+# do build, estes valores precisam VOLTAR ao no-cache.
 /src/*
   Cache-Control: no-cache
 /styles.css

@@ -13,7 +13,7 @@
 // novo no <head> (src/login-boot.js). Bump obrigatório por causa do login: o
 // HTML antigo em cache não pede esse arquivo, e é ele que evita o formulário
 // piscar na volta do link mágico.
-const SHELL_CACHE = "tcg-shell-v229";
+const SHELL_CACHE = "tcg-shell-v232";
 // IMAGE_CACHE vai a v2: a versão anterior do SW podia cravar um erro 404/timeout
 // como imagem "opaca" por 7 dias (imagem quebrada presa até um hard refresh).
 // Renomear o cache faz o activate apagar o antigo UMA vez — limpa os erros
@@ -49,6 +49,10 @@ const MUTABLE_IMAGE_HOSTS = new Set(["tcgplayer-cdn.tcgplayer.com"]);
 // Esqueleto do app: arquivos que existem tanto local quanto em produção
 // (os JS de src e o styles não são trocados pelo deploy; o HTML é, mas a
 // estratégia network-first sempre busca a versão fresca quando há rede).
+// Virada pra true no deploy (scripts/hash-assets.mjs), junto com o hash nos
+// nomes. Ver o uso no install.
+const HASHED_ASSETS = false; /* SLEEVU_HASHED */
+
 const SHELL_ASSETS = [
   "./", "index.html", "hub.html", "pokedex.html", "sets.html", "artists.html",
   "trainers.html", "collection.html", "wishlist.html", "portfolio.html", "explore.html", "dashboard.html", "badges.html",
@@ -71,10 +75,20 @@ const MAX_DATA = 600;
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(SHELL_CACHE);
-    // allSettled: um arquivo ausente não derruba a instalação inteira. cache:reload
-    // fura o cache HTTP do navegador, pra a instalação pegar a versão FRESCA do
-    // deploy (e não uma cópia de 4h presa no cache).
-    await Promise.allSettled(SHELL_ASSETS.map((asset) => cache.add(new Request(asset, { cache: "reload" }))));
+    // allSettled: um arquivo ausente não derruba a instalação inteira.
+    //
+    // cache:reload fura o cache HTTP do navegador. Isso era OBRIGATÓRIO enquanto
+    // os arquivos não tinham versão na URL: sem furar, a instalação podia gravar
+    // uma cópia velha do deploy anterior. O custo é que TODO deploy re-baixava os
+    // 69 itens do shell (~345 KB) do zero, porque o SHELL_CACHE muda e o install
+    // roda de novo.
+    // Com hash no nome (scripts/hash-assets.mjs, só em produção) a URL É a versão:
+    // não existe cópia velha pra furar, e o install passa a reaproveitar o cache
+    // do navegador — num deploy que mexe em 3 arquivos, só esses 3 saem da rede.
+    // A flag é virada pelo mesmo passo que põe o hash; em dev, sem hash, o
+    // reload continua sendo o comportamento certo.
+    const req = (asset) => (HASHED_ASSETS ? new Request(asset) : new Request(asset, { cache: "reload" }));
+    await Promise.allSettled(SHELL_ASSETS.map((asset) => cache.add(req(asset))));
     self.skipWaiting();
   })());
 });

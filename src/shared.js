@@ -2235,6 +2235,48 @@
     return "english";
   }
 
+  // Escolhe UMA edição de set dentro de uma lista de cartas que só foi filtrada
+  // pelo NOME. O nome não é chave única no catálogo, em dois casos reais:
+  //   · MESMA edição em línguas diferentes — "151" tem 207 cartas em EN e 207
+  //     em PT, sob o mesmo setId (sv03.5); idem XY, Black & White, os Black
+  //     Star Promos e os sets chineses (zh-cn + zh-tw);
+  //   · edições DIFERENTES de nome igual — レイジングサーフ é SV3a E SV4a;
+  //     "Pokémon GO" é swsh10.5 (EN/PT) e S10b (JA/ZH).
+  // Sem isto a página do set juntava tudo: o "151" abria com 414 cartas, o
+  // progresso corria sobre o dobro dos slots e — o sintoma que apareceu
+  // primeiro — "Valor total" e "Falta comprar" saíam no DOBRO, porque a carta
+  // PT não tem preço próprio e reaproveita a referência da EN (basePricingId).
+  // A LISTA de sets nunca teve isso (ela filtra por região, Inglês por padrão),
+  // então lista e detalhe do mesmo set discordavam.
+  //
+  // Edição = setId + região de idioma. `wantedSetId`/`wantedRegion` vêm do link
+  // da lista, que sabe qual edição está mostrando; sem eles (link compartilhado,
+  // favorito antigo) vale a preferência de idioma de carta, ou Inglês — e, se
+  // não houver edição nessa região, a maior que houver. Set de nome único
+  // devolve a lista intacta.
+  function pickSetEdition(cardsOfName, wantedSetId, wantedRegion) {
+    const all = cardsOfName || [];
+    if (all.length < 2) return all;
+    const editions = new Map();
+    all.forEach((card) => {
+      const key = `${card.setId || ""}|${cardLanguageRegion(card.language)}`;
+      if (!editions.has(key)) editions.set(key, []);
+      editions.get(key).push(card);
+    });
+    if (editions.size === 1) return all;
+    const pref = getCardLang();
+    const region = wantedRegion || (pref !== "all" ? cardLanguageRegion(pref) : "english");
+    // setId pedido > região pedida > edição mais completa. A última parcela é
+    // sempre < 1, então só desempata — nunca vence um critério pedido.
+    const score = (entry) => {
+      const parts = entry[0].split("|");
+      return (wantedSetId && parts[0] === wantedSetId ? 4 : 0)
+        + (parts[1] === region ? 2 : 0)
+        + entry[1].length / (all.length + 1);
+    };
+    return Array.from(editions.entries()).sort((a, b) => score(b) - score(a))[0][1];
+  }
+
   function cardLanguageLabel(language) {
     const code = normalizeCardLanguage(language);
     const translated = t(`cardLang.${code}`);
@@ -2413,6 +2455,23 @@
     return u;
   }
 
+  // Mesma carta na OUTRA língua do par EN/PT. A TCGdex publica os scans por
+  // língua, e não no mesmo dia: um set novo pode já ter as artes em pt e ainda
+  // não em en — foi o caso do Pitch Black (me05, jul/2026), que abriu com as
+  // cartas EN no verso cinza enquanto as PT apareciam normalmente. EN e PT
+  // dividem o MESMO setId e a MESMA numeração, e a ilustração é a mesma (só o
+  // texto da carta muda), então a URL da outra língua é esta trocando um
+  // segmento. JA/ZH ficam de fora: numeração própria, a URL não casaria.
+  // Só assets da TCGdex; qualquer outra URL passa batido.
+  function tcgdexSiblingLangUrl(url) {
+    if (!url || url.indexOf("assets.tcgdex.net") < 0) return "";
+    const swapped = url.replace(
+      /(\/\/assets\.tcgdex\.net)\/(en|pt)\//,
+      (match, host, lang) => `${host}/${lang === "en" ? "pt" : "en"}/`
+    );
+    return swapped === url ? "" : swapped;
+  }
+
   function localizedImg(url, options) {
     if (!url) return "";
     const { alt = "", className = "", loading = "", thumb = false, fallback = "" } = options || {};
@@ -2426,6 +2485,13 @@
     }
     if (src !== url && chain.indexOf(url) < 0) chain.push(url); // webp -> png original (mesmo host)
     (Array.isArray(fallback) ? fallback : [fallback]).forEach((entry) => { if (entry) chain.push(entry); });
+    // Última tentativa antes do verso cinza: a mesma carta na outra língua do
+    // par EN/PT (ver tcgdexSiblingLangUrl). Fica no FIM da cadeia de propósito
+    // — só entra quando a língua certa e o espelho da pokemontcg.io falharam —
+    // e some sozinha quando a TCGdex publicar o scan que falta, porque a URL
+    // original continua sendo a primeira tentativa a cada carregamento.
+    const sibling = tcgdexSiblingLangUrl(url);
+    if (sibling && chain.indexOf(sibling) < 0) chain.push(sibling);
     const fallbackAttr = chain.length
       ? ` data-img-fallbacks="${escapeAttribute(chain.join("|"))}"`
       : "";
@@ -3965,6 +4031,32 @@
   // com isto — espécies, contadores e progresso saem dos índices + coleção,
   // sem o custo de baixar dezenas de MB de cartas. No modo local o
   // window.TCG_CARDS (amostra pequena) já está presente e é reaproveitado.
+  // Baixa UMA fatia de índice sob demanda. O game.js só carrega as declaradas
+  // no data-catalog da página, e há fatia que só faz falta em certas condições:
+  // a lista de Sets precisa do índice nome→cardIds APENAS pra contar quantas
+  // cartas suas estão em cada set — quem não tem coleção no jogo não paga o
+  // download (1,3 MB no Magic, 0,7 MB no Pokémon). Falha vira null: o chamador
+  // segue sem o índice, como se a fatia não existisse.
+  const indexSlicePromises = new Map();
+  function loadIndexSlice(key) {
+    if (window.TCG_INDEXES && window.TCG_INDEXES[key]) return Promise.resolve(window.TCG_INDEXES[key]);
+    if (indexSlicePromises.has(key)) return indexSlicePromises.get(key);
+    const sleevu = window.SLEEVU || {};
+    if (!sleevu.dataDir) return Promise.resolve(null);
+    const file = `indexes-${key}${sleevu.manifest ? ".generated" : ""}.json`;
+    const promise = fetch(sleevu.dataDir + file)
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => {
+        if (!data) return null;
+        window.TCG_INDEXES = window.TCG_INDEXES || {};
+        window.TCG_INDEXES[key] = data;
+        return data;
+      })
+      .catch(() => null);
+    indexSlicePromises.set(key, promise);
+    return promise;
+  }
+
   async function loadIndexesOnly() {
     await awaitCatalog();
     return {
@@ -4547,9 +4639,14 @@
     });
   }
 
-  function detailUrl(type, name, scope, game) {
+  function detailUrl(type, name, scope, game, extra) {
     const params = new URLSearchParams({ type, name });
     if (scope) params.set("scope", scope);
+    // `extra` (setId/region): desambiguação de SET. O nome não é chave única —
+    // o mesmo set existe em várias línguas e há sets homônimos com ids
+    // diferentes. Quem monta o link sabe qual edição está mostrando e carrega
+    // isso junto; ver scopeToEdition() no detail.js.
+    if (extra) Object.keys(extra).forEach((key) => { if (extra[key]) params.set(key, extra[key]); });
     // Multi-jogo: o detail é página de SESSÃO — sem ?game= ele abre no último
     // jogo visitado e resolve o set/artista errado. Páginas mescladas
     // (Coleção/Portfólio/Graded) passam o jogo da carta; as páginas de um jogo
@@ -4806,6 +4903,7 @@
     normalizeCardLanguage,
     cardLangSigla,
     cardLanguageRegion,
+    pickSetEdition,
     localizedImg,
     cardImageSources,
     pokemontcgImageUrl,
@@ -4830,6 +4928,7 @@
     mergedWishlistStore,
     mergedPriceStore,
     loadIndexesOnly,
+    loadIndexSlice,
     fetchSetChunks,
     setIdForCard,
     createPager,
