@@ -134,6 +134,55 @@ export async function writeSplitIndexes(outDirUrl, idx, { only } = {}) {
   }
 }
 
+// ── Manifest ENRIQUECIDO ────────────────────────────────────────────────────
+// A LISTA de sets precisa, por set: logo, símbolo, data, série, total oficial e
+// o valor de mercado. Tudo isso ou é METADADO DE SET (idêntico em toda carta do
+// set) ou é uma SOMA. Enquanto viveu só dentro das cartas, desenhar a lista
+// custava baixar o catálogo inteiro do jogo — 43 MB e 647 requisições no Magic,
+// 29 MB e 452 no Pokémon, antes do primeiro tile aparecer. Passa a viajar no
+// manifest, que a página já baixa de qualquer jeito (~100 KB).
+//
+// O valor vai SEPARADO POR MOEDA DE ORIGEM (vb=BRL/MYP, vu=USD, ve=EUR) porque
+// é assim que o cliente converte: cada carta escolhe sua fonte pela MESMA
+// precedência do cardValue (BR > USD > EUR) e o câmbio entra depois, na moeda
+// que a pessoa escolheu. `vn` = quantas cartas do set ficaram sem preço nenhum.
+const basePricingId = (id) => String(id || "").replace(/-(pt|ja|zh-cn|zh-tw|zh)$/, "");
+
+export function setValueBuckets(cards, pricing) {
+  const table = pricing || {};
+  let vb = 0, vu = 0, ve = 0, vn = 0;
+  for (const card of cards) {
+    const ref = table[card.id] || table[basePricingId(card.id)];
+    if (!ref) { vn++; continue; }
+    const variant = (card.variants && card.variants[0]) || "Normal";
+    const usd = /foil/i.test(variant) && ref.uf > 0 ? ref.uf : ref.u;
+    if (ref.b && ref.b.md > 0) vb += ref.b.md;
+    else if (usd > 0) vu += usd;
+    else if (ref.e > 0) ve += ref.e;
+    else vn++;
+  }
+  const round = (n) => Math.round(n * 100) / 100;
+  const out = {};
+  if (vb) out.vb = round(vb);
+  if (vu) out.vu = round(vu);
+  if (ve) out.ve = round(ve);
+  if (vn) out.vn = vn;
+  return out;
+}
+
+// Metadados de set + somas, a partir das cartas do próprio chunk. `sample` é
+// qualquer carta dele (os campos set* se repetem em todas).
+export function setManifestMeta(chunkCards, pricing) {
+  const sample = chunkCards[0] || {};
+  const meta = { total: sample.setTotal || chunkCards.length };
+  if (sample.setLogo) meta.logo = sample.setLogo;
+  if (sample.setSymbol) meta.symbol = sample.setSymbol;
+  if (sample.setReleaseDate) meta.release = sample.setReleaseDate;
+  if (sample.setSerieId) meta.serieId = sample.setSerieId;
+  if (sample.setSerieName) meta.serieName = sample.setSerieName;
+  return Object.assign(meta, setValueBuckets(chunkCards, pricing));
+}
+
 export async function writeGameCatalog(outDirUrl, { cards, indexes, pricing, webDir }) {
   await mkdir(outDirUrl, { recursive: true });
   const w = (name, varName, value) => writeFile(new URL(name, outDirUrl), `window.${varName} = ${JSON.stringify(value)};\n`, "utf8");
@@ -176,10 +225,10 @@ export async function writeGameCatalog(outDirUrl, { cards, indexes, pricing, web
     while (used.has(f)) f = `${base}-${i++}`;
     used.add(f);
     await writeFile(new URL(`${f}.json`, setsDir), JSON.stringify(chunk), "utf8");
-    manifestSets.push({
+    manifestSets.push(Object.assign({
       id: setId, name: chunk[0].set || String(setId), count: chunk.length,
       language: chunk[0].language || "en", file: `${dir}sets/${f}.json`
-    });
+    }, setManifestMeta(chunk, pricing)));
   }
   await w("manifest.generated.js", "TCG_MANIFEST", { generatedAt: new Date().toISOString(), sets: manifestSets });
 

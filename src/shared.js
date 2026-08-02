@@ -4031,6 +4031,32 @@
   // com isto — espécies, contadores e progresso saem dos índices + coleção,
   // sem o custo de baixar dezenas de MB de cartas. No modo local o
   // window.TCG_CARDS (amostra pequena) já está presente e é reaproveitado.
+  // Baixa UMA fatia de índice sob demanda. O game.js só carrega as declaradas
+  // no data-catalog da página, e há fatia que só faz falta em certas condições:
+  // a lista de Sets precisa do índice nome→cardIds APENAS pra contar quantas
+  // cartas suas estão em cada set — quem não tem coleção no jogo não paga o
+  // download (1,3 MB no Magic, 0,7 MB no Pokémon). Falha vira null: o chamador
+  // segue sem o índice, como se a fatia não existisse.
+  const indexSlicePromises = new Map();
+  function loadIndexSlice(key) {
+    if (window.TCG_INDEXES && window.TCG_INDEXES[key]) return Promise.resolve(window.TCG_INDEXES[key]);
+    if (indexSlicePromises.has(key)) return indexSlicePromises.get(key);
+    const sleevu = window.SLEEVU || {};
+    if (!sleevu.dataDir) return Promise.resolve(null);
+    const file = `indexes-${key}${sleevu.manifest ? ".generated" : ""}.json`;
+    const promise = fetch(sleevu.dataDir + file)
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => {
+        if (!data) return null;
+        window.TCG_INDEXES = window.TCG_INDEXES || {};
+        window.TCG_INDEXES[key] = data;
+        return data;
+      })
+      .catch(() => null);
+    indexSlicePromises.set(key, promise);
+    return promise;
+  }
+
   async function loadIndexesOnly() {
     await awaitCatalog();
     return {
@@ -4902,6 +4928,7 @@
     mergedWishlistStore,
     mergedPriceStore,
     loadIndexesOnly,
+    loadIndexSlice,
     fetchSetChunks,
     setIdForCard,
     createPager,

@@ -368,7 +368,16 @@
     }
 
     if (detailType === "set") {
-      const entries = manifest.sets.filter((set) => set.name === detailName);
+      let entries = manifest.sets.filter((set) => set.name === detailName);
+      // O link da lista já diz QUAL edição abrir (?setId=/?region=): baixa só o
+      // chunk dela. Sem isso, um nome que existe em duas línguas puxava os dois
+      // chunks pra usar um. Link solto (sem os parâmetros) segue trazendo os
+      // candidatos — é o pickSetEdition que escolhe, e ele precisa vê-los.
+      if (entries.length > 1 && (detailSetId || detailRegion)) {
+        const daEdicao = entries.filter((set) => (!detailSetId || set.id === detailSetId)
+          && (!detailRegion || shared.cardLanguageRegion(set.language) === detailRegion));
+        if (daEdicao.length) entries = daEdicao;
+      }
       return entries.length ? shared.fetchSetChunks(entries) : [];
     }
 
