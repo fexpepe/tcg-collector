@@ -1,6 +1,10 @@
 name: Build e deploy (Cloudflare Pages)
 
 on:
+  # Disparo manual (aba Actions -> Build e deploy -> Run workflow): existe pro
+  # caso "o deploy falhou por credencial/infra e o código está certo" — sem
+  # ele, redisparar exigia um commit vazio (aconteceu na ativação do D1).
+  workflow_dispatch:
   push:
     # main -> produção; qualquer outra branch -> preview (URL própria).
     # Mudanças só de documentação não disparam build/deploy.
