@@ -39,6 +39,31 @@ const leManifest = (dir) => leGlobal(`${dir}manifest.generated.js`);
 const aspas = (v) => `'${String(v).replace(/'/g, "''")}'`;
 const AGORA = new Date().toISOString();
 
+// O D1 recusa statement acima de ~100 KB (SQLITE_TOOBIG) — e foi exatamente
+// isso que derrubou a primeira carga com os campos novos: um lote fixo de 400
+// cartas cabia quando a linha só tinha nome e número, e estourou quando ganhou
+// URL de imagem, artista e variantes. Fatiar por BYTES em vez de por contagem
+// resolve de uma vez: qualquer campo que cresça no futuro só faz o lote ficar
+// menor, nunca inválido.
+const TETO_STATEMENT = 60 * 1024;   // folga generosa sobre o limite do D1
+function insertsEmLotes(prefixo, valores) {
+  const out = [];
+  let lote = [], tamanho = 0;
+  const fecha = () => {
+    if (!lote.length) return;
+    out.push(`${prefixo} VALUES\n${lote.join(",\n")};`);
+    lote = []; tamanho = 0;
+  };
+  for (const v of valores) {
+    // +2 pela vírgula e quebra de linha entre valores.
+    if (tamanho && tamanho + v.length + 2 > TETO_STATEMENT) fecha();
+    lote.push(v);
+    tamanho += v.length + 2;
+  }
+  fecha();
+  return out;
+}
+
 // ── Cartas + palavras ───────────────────────────────────────────────────────
 const linhas = [];
 linhas.push("PRAGMA defer_foreign_keys = on;");
@@ -73,15 +98,14 @@ for (const [game, dir] of JOGOS) {
   if (!cards.length) continue;
   // INSERTs em lote (multi-values): o d1 execute processa statement a
   // statement — um INSERT por carta seriam 200k round-trips de parse.
-  for (let i = 0; i < cards.length; i += 400) {
-    const lote = cards.slice(i, i + 400)
-      .map((c) => `(${COLUNAS.map((k) => aspas(c[k])).join(",")})`);
-    linhas.push(`INSERT INTO cards (${COLUNAS.join(",")}) VALUES\n${lote.join(",\n")};`);
-  }
-  for (let i = 0; i < words.length; i += 800) {
-    const lote = words.slice(i, i + 800).map((w) => `(${aspas(w.game)},${aspas(w.word)},${aspas(w.id)})`);
-    linhas.push(`INSERT INTO card_words (game,word,id) VALUES\n${lote.join(",\n")};`);
-  }
+  linhas.push(...insertsEmLotes(
+    `INSERT INTO cards (${COLUNAS.join(",")})`,
+    cards.map((c) => `(${COLUNAS.map((k) => aspas(c[k])).join(",")})`)
+  ));
+  linhas.push(...insertsEmLotes(
+    "INSERT INTO card_words (game,word,id)",
+    words.map((w) => `(${aspas(w.game)},${aspas(w.word)},${aspas(w.id)})`)
+  ));
   totalCartas += cards.length;
   totalPalavras += words.length;
   jogosOk++;
@@ -116,16 +140,30 @@ await writeFile(new URL("out/d1-cards.sql", RAIZ), sqlCards, "utf8");
 const pl = [];
 pl.push("DROP TABLE IF EXISTS prices;");
 pl.push(SCHEMA_PRICES.trim());
-for (let i = 0; i < precos.length; i += 500) {
-  const lote = precos.slice(i, i + 500).map((p) => `(${aspas(p.game)},${aspas(p.id)},${aspas(p.j)})`);
-  pl.push(`INSERT INTO prices (game,id,j) VALUES\n${lote.join(",\n")};`);
-}
+pl.push(...insertsEmLotes(
+  "INSERT INTO prices (game,id,j)",
+  precos.map((p) => `(${aspas(p.game)},${aspas(p.id)},${aspas(p.j)})`)
+));
 const corpoP = pl.join("\n");
 const hashP = createHash("sha256").update(corpoP).digest("hex").slice(0, 16);
 const sqlPrices = `CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT);\n${corpoP}\n`
   + `INSERT INTO meta (k, v) VALUES ('hashPrices', ${aspas(hashP)}), ('precosEm', ${aspas(AGORA)})\n`
   + `  ON CONFLICT(k) DO UPDATE SET v = excluded.v;\n`;
 await writeFile(new URL("out/d1-prices.sql", RAIZ), sqlPrices, "utf8");
+
+// Guarda: statement grande demais é recusado pelo D1 (SQLITE_TOOBIG) — e a
+// carga falha DEPOIS de subir o arquivo, no meio do deploy. Falhar aqui, no
+// build, é barato e não deixa a API meio carregada.
+const LIMITE_D1 = 100 * 1024;
+for (const [nome, sql] of [["d1-cards.sql", sqlCards], ["d1-prices.sql", sqlPrices]]) {
+  let pior = 0;
+  for (const stmt of sql.split(";\n")) if (stmt.length > pior) pior = stmt.length;
+  if (pior > LIMITE_D1) {
+    console.error(`build-d1: ${nome} tem statement de ${(pior / 1024).toFixed(0)} KB — acima do limite de ${LIMITE_D1 / 1024} KB do D1.`);
+    process.exit(1);
+  }
+  console.log(`build-d1: ${nome} — maior statement ${(pior / 1024).toFixed(0)} KB (limite ${LIMITE_D1 / 1024} KB).`);
+}
 
 console.log(`build-d1: ${jogosOk} jogos · ${totalCartas} cartas · ${totalPalavras} palavras · ${(sqlCards.length / 1048576).toFixed(1)} MB · hash ${hash}`);
 console.log(`build-d1: ${precos.length} preços · ${(sqlPrices.length / 1048576).toFixed(1)} MB · hash ${hashP}`);
