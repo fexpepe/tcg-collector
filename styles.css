@@ -3226,13 +3226,6 @@ input::placeholder {
    cápsula — que é o verde a 16% por cima do painel, não o painel puro. O
    #15a06f dava 4.17 no escuro e o #0f7a52 dava 4.47 no claro: reprovavam por
    pouco, e são 12 cápsulas na tela do HUB. Medido com o axe-core. */
-.game-badge.available {
-  background: rgba(31, 157, 119, 0.16);
-  color: #16a874;
-}
-[data-theme="light"] .game-badge.available {
-  color: #0f7750;
-}
 .game-badge.soon {
   background: rgba(176, 125, 16, 0.16);
   color: var(--gold);
@@ -3306,6 +3299,7 @@ a.hub-tile:hover {
   box-shadow: var(--shadow);
 }
 .hub-logo-box {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3337,6 +3331,26 @@ a.hub-tile:hover {
    (Sem :has, cai no visual escuro de antes — degrada bem.) */
 .hub-tile.is-soon:has(.hub-logo) { opacity: 1; }
 .hub-tile.is-soon:has(.hub-logo) .hub-logo-box { background: #fff; }
+/* "Em breve" POR CIMA do slot do logo. Os tiles dos jogos disponíveis ficaram
+   só com o logo (sem rodapé), então o aviso não tem mais onde morar embaixo —
+   ele sobe pro slot. O véu escurece o logo o bastante pro chip ter contraste
+   sem esconder de que jogo se trata. Cores fixas (não as do tema): o fundo do
+   véu é o mesmo nos dois temas, então o chip também precisa ser. */
+.hub-soon-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: inherit;
+  background: rgba(12, 14, 19, 0.36);
+}
+.hub-soon-overlay .game-badge.soon {
+  background: #15171d;
+  color: #f0b84b;
+  border: 1px solid rgba(240, 184, 75, 0.45);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
 
 .home-sources {
   margin-top: 44px;
