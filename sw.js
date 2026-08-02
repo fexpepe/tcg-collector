@@ -13,7 +13,7 @@
 // novo no <head> (src/login-boot.js). Bump obrigatório por causa do login: o
 // HTML antigo em cache não pede esse arquivo, e é ele que evita o formulário
 // piscar na volta do link mágico.
-const SHELL_CACHE = "tcg-shell-v235";
+const SHELL_CACHE = "tcg-shell-v236";
 // IMAGE_CACHE vai a v2: a versão anterior do SW podia cravar um erro 404/timeout
 // como imagem "opaca" por 7 dias (imagem quebrada presa até um hard refresh).
 // Renomear o cache faz o activate apagar o antigo UMA vez — limpa os erros
@@ -120,6 +120,27 @@ self.addEventListener("fetch", (event) => {
       event.respondWith(staleWhileRevalidate(event));
       return;
     }
+    // NAVEGAÇÃO: cache primeiro, rede por trás. O network-first de antes fazia
+    // TODA troca de tela esperar a rede responder (sem timeout) mesmo com o
+    // site inteiro no cache — em 4G fraco, cada toque em aba travava segundos
+    // com o HTML já no aparelho. Agora a página cacheada aparece na hora e a
+    // resposta fresca da rede atualiza o cache pra PRÓXIMA navegação. O custo é
+    // ficar no máximo uma navegação atrás de um deploy — e é seguro porque os
+    // assets têm hash no nome: o HTML antigo referencia arquivos imutáveis que
+    // o cache HTTP guarda por um ano.
+    if (event.request.mode === "navigate") {
+      event.respondWith(navigationFast(event));
+      return;
+    }
+    // Assets IMUTÁVEIS POR URL: o hash no nome (produção) e o rename-por-versão
+    // das fontes tornam revalidação desperdício — o conteúdo de uma URL nunca
+    // muda. cache-first zera os round-trips que o networkFirst (cache:no-cache)
+    // fazia em toda carga, um por arquivo do shell. Em dev não há hash, o
+    // padrão não casa e tudo segue no networkFirst (revalidar é o certo lá).
+    if (HASHED_URL_RE.test(url.pathname) || url.pathname.includes("/assets/fonts/")) {
+      event.respondWith(assetCacheFirst(event.request));
+      return;
+    }
     event.respondWith(networkFirst(event.request, url));
     return;
   }
@@ -209,6 +230,45 @@ async function cacheFirst(url) {
 //
 // A revalidação roda mesmo quando o cache respondeu (waitUntil segura o SW
 // vivo até ela terminar); falha de rede é silenciosa — já respondemos.
+// src/<nome>.<8 hex>.js|css(.map) — o formato que o hash-assets.mjs produz.
+const HASHED_URL_RE = /\.[0-9a-f]{8}\.(?:js|css)(?:\.map)?$/;
+
+async function assetCacheFirst(request) {
+  const cached = await caches.match(request);
+  if (cached) return cached;
+  const response = await fetch(request);
+  if (response && response.ok) {
+    const cache = await caches.open(SHELL_CACHE);
+    cache.put(request, response.clone());
+  }
+  return response;
+}
+
+// Navegações: cache -> resposta imediata; rede -> atualiza o cache por trás.
+// A chave IGNORA a query (detail.html?type=X é a MESMA página) — senão cada set
+// visitado viraria uma entrada nova e o primeiro acesso a qualquer set nunca
+// daria hit. Miss com URL limpa do Cloudflare (/detail) ainda tenta /detail.html,
+// que é como o precache do install guarda as páginas.
+async function navigationFast(event) {
+  const request = event.request;
+  const cache = await caches.open(SHELL_CACHE);
+  const key = new URL(request.url);
+  key.search = "";
+  let cached = await cache.match(key.href);
+  if (!cached && !/\.html$/.test(key.pathname) && key.pathname !== "/") {
+    cached = await cache.match(key.href.replace(/\/?$/, "") + ".html");
+  }
+  const rede = fetch(request).then((response) => {
+    if (response && response.ok) cache.put(key.href, response.clone());
+    return response;
+  }).catch(() => null);
+  if (cached) {
+    event.waitUntil(rede);
+    return cached;
+  }
+  return (await rede) || (await caches.match(request, { ignoreSearch: true })) || Response.error();
+}
+
 async function staleWhileRevalidate(event) {
   const request = event.request;
   const cache = await caches.open(DATA_CACHE);
