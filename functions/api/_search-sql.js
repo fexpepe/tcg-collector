@@ -26,6 +26,7 @@ export function palavras(texto) {
     .filter(Boolean);
 }
 
+// Esquema das CARTAS (recarregado só quando o catálogo muda).
 export const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT);
 CREATE TABLE IF NOT EXISTS cards (
@@ -38,6 +39,12 @@ CREATE TABLE IF NOT EXISTS cards (
   cost TEXT,
   rarity TEXT,
   color TEXT,
+  set_id TEXT,
+  artist TEXT,
+  language TEXT,
+  image TEXT,
+  variants TEXT,
+  released TEXT,
   PRIMARY KEY (game, id)
 );
 CREATE TABLE IF NOT EXISTS card_words (
@@ -47,6 +54,23 @@ CREATE TABLE IF NOT EXISTS card_words (
 );
 CREATE INDEX IF NOT EXISTS idx_card_words ON card_words (game, word, id);
 CREATE INDEX IF NOT EXISTS idx_words_global ON card_words (word, game, id);
+`;
+
+// Esquema dos PREÇOS — tabela SEPARADA de propósito: o preço muda a cada sync
+// (a cada 2 dias) e o catálogo quase nunca. Juntos, um ajuste de preço obrigaria
+// a reescrever as 236 mil cartas e os 2,3 milhões de palavras; separados, cada
+// um tem seu hash em `meta` e só recarrega o que mudou.
+// `j` é a entrada de preço INTEIRA em JSON, verbatim do pricing.generated.js —
+// não uma projeção coluna a coluna. É o que garante que o cliente receba
+// exatamente o que receberia de um chunk (u, uf, e, b.md, g por nota…) e que a
+// fórmula do valor (cardValue) continue existindo em UM lugar só.
+export const SCHEMA_PRICES = `
+CREATE TABLE IF NOT EXISTS prices (
+  game TEXT NOT NULL,
+  id TEXT NOT NULL,
+  j TEXT NOT NULL,
+  PRIMARY KEY (game, id)
+);
 `;
 
 // Query de busca: interseção dos conjuntos de ids de cada palavra-prefixo,
@@ -74,6 +98,49 @@ FROM cards WHERE ${alvo} (\n${sub}\n) LIMIT ${Math.max(1, Math.min(100, limite |
   return { sql, params };
 }
 
+// Mesma régua do shared.js: a carta localizada (-pt, -ja, -zh-tw…) não tem
+// preço próprio e cai na referência da carta BASE. Repetido aqui (e não
+// importado) porque a Function roda na borda, sem o bundle do cliente — o
+// teste tests/collection-api.test.mjs trava as duas cópias no mesmo resultado.
+export function basePricingId(cardId) {
+  return String(cardId || "").replace(/-(pt|ja|zh-cn|zh-tw|zh)$/, "");
+}
+
+// D1 aceita no máximo 100 parâmetros por statement: o chamador fatia os ids
+// nesse tamanho e junta as respostas. Fatia menor que o teto de propósito —
+// sobra pro parâmetro do jogo.
+export const LOTE_IDS = 90;
+
+const COLUNAS_CARTA = "id, name, set_name, number, card_type, cost, rarity, color, set_id, artist, language, image, variants, released";
+
+// Cartas de uma lista de ids (um jogo). Sem LIKE nem varredura: PK (game, id).
+export function buildCards(game, ids) {
+  if (!ids || !ids.length) return null;
+  const marcas = ids.map(() => "?").join(",");
+  return {
+    sql: `SELECT ${COLUNAS_CARTA} FROM cards WHERE game = ? AND id IN (${marcas})`,
+    params: [game, ...ids]
+  };
+}
+
+// Ids que o preço precisa: os pedidos MAIS os ids BASE — a mesma inclusão que
+// o split-pricing faz nos chunks. Sem os base, a carta -pt voltaria sem preço e
+// o total sairia menor que o da tela que usa chunk. A expansão acontece ANTES
+// do fatiamento (senão um lote de 90 viraria 180 parâmetros e estouraria).
+export function idsComBase(ids) {
+  return [...new Set((ids || []).flatMap((id) => [id, basePricingId(id)]))];
+}
+
+// Preços de uma lista de ids JÁ expandida por idsComBase.
+export function buildPrices(game, ids) {
+  if (!ids || !ids.length) return null;
+  const marcas = ids.map(() => "?").join(",");
+  return {
+    sql: `SELECT id, j FROM prices WHERE game = ? AND id IN (${marcas})`,
+    params: [game, ...ids]
+  };
+}
+
 // Linhas de uma carta pro banco (usado pelo build do SQL e pelos testes).
 // Espelha os campos do search-index.json (i/n/s/u/t/c/r/k) — é o contrato que
 // o editor de decks já consome, então a troca do cliente não muda forma.
@@ -88,7 +155,14 @@ export function cardRows(game, card) {
     set_name: card.set || "", number: String(card.number || ""),
     card_type: card.cardType != null ? String(card.cardType) : "",
     cost: card.cost != null ? String(card.cost) : "",
-    rarity: card.rarity || "", color
+    rarity: card.rarity || "", color,
+    // Campos que a COLEÇÃO precisa (não a busca): sem eles a carta volta do
+    // /api/collection sem imagem, sem variante e sem agrupamento por artista —
+    // e a variante é o que decide de qual preço a cópia vale (foil × normal).
+    set_id: card.setId || "", artist: card.artist || "",
+    language: card.language || "", image: card.image || "",
+    variants: JSON.stringify(card.variants || []),
+    released: card.setReleaseDate || ""
   };
   // Palavras de busca: nome + SET + NÚMERO + ARTISTA — o mesmo alcance do
   // haystack do cliente (cardSearchHaystack), pra "pika 58", "pikachu jungle"

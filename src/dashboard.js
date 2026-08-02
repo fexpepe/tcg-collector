@@ -145,7 +145,9 @@
   const gameOf = (id) => cardGameMap.get(id) || "pokemon";
   const prices = shared.mergedPriceStore(pricesByGame, gameOf);
 
-  Promise.all([shared.loadOwnedAcrossGames(idsByGame), shared.loadFxRates()]).then(([catalog]) => {
+  // Mesma carga do Portfólio: a borda devolve só as cartas que você tem, em
+  // vez dos chunks inteiros dos sets delas (esta tela usa apenas catalog.cards).
+  Promise.all([shared.loadOwnedFast(idsByGame), shared.loadFxRates()]).then(([catalog]) => {
     const cards = catalog.cards || [];
     cards.forEach((c) => cardGameMap.set(c.id, c.game));
     const owned = shared.mergedCollectionStore(ownedByGame, gameOf);

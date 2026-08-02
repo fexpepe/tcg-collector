@@ -4,13 +4,13 @@
 // produção é só o motor (D1 é SQLite) e o transporte.
 //
 // Uso: sirva nada, rode: node scripts/test-d1-search.mjs
-// Pré-requisito: out/d1.sql gerado (node scripts/build-d1.mjs).
+// Pré-requisito: out/d1-cards.sql gerado (node scripts/build-d1.mjs).
 import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { buildSearch } from "../functions/api/_search-sql.js";
 
 const db = new DatabaseSync(":memory:");
-db.exec(readFileSync(new URL("../out/d1.sql", import.meta.url), "utf8"));
+db.exec(readFileSync(new URL("../out/d1-cards.sql", import.meta.url), "utf8"));
 
 const conta = (t) => db.prepare(`SELECT COUNT(*) AS n FROM ${t}`).get().n;
 console.log(`carregado: ${conta("cards")} cartas · ${conta("card_words")} palavras`);

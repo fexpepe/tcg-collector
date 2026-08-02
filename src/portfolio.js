@@ -143,8 +143,11 @@
   // arrastava chunks de sets de jogos onde você não tem carta nenhuma, e
   // segurava o número que a pessoa abriu a página pra ver. Agora o mercado é
   // uma segunda etapa: quando chega, só re-renderiza a própria seção.
+  // loadOwnedFast: pede à borda (/api/collection) exatamente as cartas que você
+  // tem, em vez de baixar os chunks INTEIROS de cada set em que tem alguma —
+  // era o download que segurava esta página. Sem a borda, cai nos chunks.
   const idsOwned = Object.fromEntries(GAMES.map((g) => [g, ownedByGame[g].knownCardIds()]));
-  Promise.all([shared.loadOwnedAcrossGames(idsOwned), shared.loadFxRates()])
+  Promise.all([shared.loadOwnedFast(idsOwned), shared.loadFxRates()])
     .then(([catalog]) => {
       indexaCartas(catalog.cards);
       GAMES.forEach((g) => ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));

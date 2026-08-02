@@ -89,27 +89,39 @@ if (!resposta.ok || corpo.success === false) {
   console.log("deploy-d1: binding DB ligado no projeto (production + preview).");
 }
 
-// ── 4. Carga (só quando o catálogo mudou) ───────────────────────────────────
-const sql = readFileSync(new URL("../out/d1.sql", import.meta.url), "utf8");
-const hashLocal = (sql.match(/VALUES \('hash', '([0-9a-f]+)'\)/) || [])[1];
-if (!hashLocal) { console.error("deploy-d1: out/d1.sql sem o hash — rode o build-d1 antes."); process.exit(1); }
-
-let hashRemoto = null;
-try {
-  const r = JSON.parse(wrangler(["d1", "execute", BANCO, "--remote", "--json", "--command", "SELECT v FROM meta WHERE k='hash'"]));
-  hashRemoto = r && r[0] && r[0].results && r[0].results[0] && r[0].results[0].v || null;
-} catch (e) { /* banco novo/vazio: importa */ }
-
-if (hashRemoto === hashLocal) {
-  console.log(`deploy-d1: catálogo remoto já está no hash ${hashLocal} — carga pulada.`);
-  process.exit(0);
+// ── 4. Carga (cada parte só quando ELA mudou) ───────────────────────────────
+// Duas cargas independentes: o catálogo muda raramente e os preços mudam a
+// cada sync. Com um arquivo só, um ajuste de preço reescreveria as 236 mil
+// cartas e os 2,3 milhões de palavras de dois em dois dias.
+function hashRemoto(chave) {
+  try {
+    const r = JSON.parse(wrangler(["d1", "execute", BANCO, "--remote", "--json", "--command", `SELECT v FROM meta WHERE k='${chave}'`]));
+    return (r && r[0] && r[0].results && r[0].results[0] && r[0].results[0].v) || null;
+  } catch (e) { return null; }   // banco novo/vazio (ou meta ainda sem a chave): carrega
 }
-console.log(`deploy-d1: carregando catálogo (${(sql.length / 1048576).toFixed(1)} MB, hash ${hashLocal}; remoto era ${hashRemoto || "vazio"})…`);
-try {
-  wrangler(["d1", "execute", BANCO, "--remote", "--file", new URL("../out/d1.sql", import.meta.url).pathname, "-y"], { stdio: ["ignore", "inherit", "inherit"] });
-  console.log("deploy-d1: carga concluída.");
-} catch (e) {
-  // A API sem dados responde 503 e o cliente cai no estático — um site novo
-  // parado na esteira por causa disso seria trocar o certo pelo duvidoso.
-  console.log("deploy-d1: CARGA FALHOU (a API segue desligada; o deploy do site continua):", String(e).slice(0, 300));
+
+function carrega(rotulo, arquivo, chaveHash, marcador) {
+  const url = new URL(`../out/${arquivo}`, import.meta.url);
+  let sql;
+  try { sql = readFileSync(url, "utf8"); }
+  catch (e) { console.log(`deploy-d1: ${arquivo} não existe — rode o build-d1 antes. (${rotulo} não carregado)`); return; }
+  const local = (sql.match(marcador) || [])[1];
+  if (!local) { console.log(`deploy-d1: ${arquivo} sem o hash — ${rotulo} não carregado.`); return; }
+  const remoto = hashRemoto(chaveHash);
+  if (remoto === local) {
+    console.log(`deploy-d1: ${rotulo} remoto já está no hash ${local} — carga pulada.`);
+    return;
+  }
+  console.log(`deploy-d1: carregando ${rotulo} (${(sql.length / 1048576).toFixed(1)} MB, hash ${local}; remoto era ${remoto || "vazio"})…`);
+  try {
+    wrangler(["d1", "execute", BANCO, "--remote", "--file", url.pathname, "-y"], { stdio: ["ignore", "inherit", "inherit"] });
+    console.log(`deploy-d1: ${rotulo} carregado.`);
+  } catch (e) {
+    // A API sem dados responde 503 e o cliente cai no estático — um site novo
+    // parado na esteira por causa disso seria trocar o certo pelo duvidoso.
+    console.log(`deploy-d1: CARGA DE ${rotulo.toUpperCase()} FALHOU (a API degrada; o deploy do site continua):`, String(e).slice(0, 300));
+  }
 }
+
+carrega("catálogo", "d1-cards.sql", "hash", /VALUES \('hash', '([0-9a-f]+)'\)/);
+carrega("preços", "d1-prices.sql", "hashPrices", /VALUES \('hashPrices', '([0-9a-f]+)'\)/);
