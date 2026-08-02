@@ -3996,8 +3996,10 @@
   // os globais ainda não existem. Fallback p/ páginas sem game.js (ex.: login).
   // Tabela de preços SOB DEMANDA. Saiu do data-catalog (onde o game.js a baixava
   // no boot de 9 páginas) porque ela só é lida quando algum VALOR é desenhado —
-  // e valor só aparece depois de as cartas chegarem. São 306KB brotli / 1,4MB
-  // decodificados no Pokémon, fora do caminho crítico do primeiro paint.
+  // e valor só aparece depois de as cartas chegarem. O monólito tem 306KB
+  // brotli / 1,4MB decodificados no Pokémon; desde os chunks de preço (`pc` no
+  // manifest — ver fetchSetChunks) ele nem é baixado em produção: os preços
+  // chegam por set, junto das cartas.
   // Enganchada no awaitCatalog, que é o ponto de espera de TODOS os carregadores
   // (loadCatalog, loadCatalogForCardIds, loadIndexesOnly): quem espera cartas
   // passa a esperar as duas coisas juntas, então nenhum consumidor muda — o
@@ -4010,7 +4012,20 @@
       const sleevu = window.SLEEVU || {};
       // Hub não tem dataDir; e se alguém já carregou a tabela, não repete.
       if (!sleevu.dataDir || window.TCG_PRICING) pricingPromise = Promise.resolve();
-      else pricingPromise = injectScript(sleevu.dataDir + (sleevu.manifest ? "pricing.generated.js" : "pricing.js"));
+      else {
+        // Espera o manifest (catalogReady) ANTES de decidir: com `pc` no
+        // manifest, os preços viajam POR SET junto dos chunks de carta
+        // (fetchSetChunks) e o monólito nem é pedido — a tabela nasce vazia e
+        // vai enchendo com o que a tela realmente carrega. Sem a flag (dev, ou
+        // produção antiga), o monólito de sempre.
+        pricingPromise = Promise.resolve(sleevu.catalogReady).then(() => {
+          if (sleevu.manifest && window.TCG_MANIFEST && window.TCG_MANIFEST.pc) {
+            window.TCG_PRICING = window.TCG_PRICING || {};
+            return;
+          }
+          return injectScript(sleevu.dataDir + (sleevu.manifest ? "pricing.generated.js" : "pricing.js"));
+        });
+      }
     }
     return pricingPromise;
   }
@@ -4446,9 +4461,17 @@
     window.TCG_CARDS = window.TCG_INDEXES = window.TCG_MANIFEST = window.TCG_PRICING = undefined;
     const manifestMode = !!(window.SLEEVU && window.SLEEVU.manifest);
     const files = manifestMode
-      ? ["manifest.generated.js", "indexes.generated.js", "pricing.generated.js", "set-id-map.js"]
-      : ["cards.js", "indexes.js", "pricing.js", "set-id-map.js"];
+      ? ["manifest.generated.js", "indexes.generated.js", "set-id-map.js"]
+      : ["cards.js", "indexes.js", "set-id-map.js"];
     for (const f of files) await injectScript(dataDir + f);
+    // O monólito de preços DESTE jogo só entra se o manifest dele não anunciar
+    // chunks de preço (pc) — com a flag, o fetchSetChunks logo abaixo traz os
+    // preços por set, só dos sets que os ids pedem. É o que faz o Portfólio
+    // parar de baixar a tabela INTEIRA de cada jogo em que você tem carta.
+    if (!(manifestMode && window.TCG_MANIFEST && window.TCG_MANIFEST.pc)) {
+      await injectScript(dataDir + (manifestMode ? "pricing.generated.js" : "pricing.js"));
+    }
+    window.TCG_PRICING = window.TCG_PRICING || {};
     let r, pricing;
     try {
       r = await run();
@@ -4556,14 +4579,31 @@
   async function fetchSetChunks(entries, concurrency = 8) {
     const list = entries.slice();
     const chunks = [];
+    // Preços POR SET: com `pc` no manifest ATIVO (os globals são trocados por
+    // jogo no loadGameCatalog, então este é sempre o manifest de quem pediu),
+    // cada chunk de carta tem um irmão em /pricing-chunks/ com as entradas do
+    // set — inclusive as dos ids BASE, de que as cartas localizadas dependem.
+    // Mescla no window.TCG_PRICING ANTES de resolver: os consumidores leem a
+    // tabela de forma síncrona logo depois que as cartas chegam.
+    // Falha no preço não derruba o chunk — carta sem valor é melhor que tela
+    // sem carta (e o cardValue já trata entrada ausente como "sem preço").
+    const pc = window.TCG_MANIFEST && window.TCG_MANIFEST.pc;
     async function worker() {
       while (list.length) {
         const entry = list.shift();
+        const buscaPreco = pc && entry.file.includes("/sets/")
+          ? fetch(entry.file.replace("/sets/", "/pricing-chunks/"))
+              .then((r) => (r.ok ? r.json() : null)).catch(() => null)
+          : null;
         const response = await fetch(entry.file);
         if (!response.ok) {
           throw new Error(`Falha ao carregar ${entry.file}: ${response.status}`);
         }
         chunks.push(...(await response.json()));
+        if (buscaPreco) {
+          const tabela = await buscaPreco;
+          if (tabela) Object.assign(window.TCG_PRICING = window.TCG_PRICING || {}, tabela);
+        }
       }
     }
     await Promise.all(Array.from({ length: Math.min(concurrency, list.length) }, worker));

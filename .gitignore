@@ -13,6 +13,10 @@ data/*/*.generated.json
 # snapshot validado de volta (carta indexada nunca some, mesmo se a TCGdex sumir).
 # Chunks por set dos outros jogos (gerados por writeGameCatalog no build)
 data/*/sets/
+# Chunks de PREÇO por set (gerados pelo split-pricing.mjs em todo deploy;
+# derivados do pricing.generated + chunks — nunca versionados)
+data/pricing-chunks/
+data/*/pricing-chunks/
 # Magic segue o padrão POKÉMON: chunks versionados (delta pequeno por set no
 # git), e o cards.js monolítico (~30MB, mudaria toda semana = blob novo gigante)
 # fica de fora — é regenerado dos chunks no build (sync-magic.mjs --no-fetch).

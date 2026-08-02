@@ -146,7 +146,7 @@ export async function writeSplitIndexes(outDirUrl, idx, { only } = {}) {
 // é assim que o cliente converte: cada carta escolhe sua fonte pela MESMA
 // precedência do cardValue (BR > USD > EUR) e o câmbio entra depois, na moeda
 // que a pessoa escolheu. `vn` = quantas cartas do set ficaram sem preço nenhum.
-const basePricingId = (id) => String(id || "").replace(/-(pt|ja|zh-cn|zh-tw|zh)$/, "");
+export const basePricingId = (id) => String(id || "").replace(/-(pt|ja|zh-cn|zh-tw|zh)$/, "");
 
 export function setValueBuckets(cards, pricing) {
   const table = pricing || {};
