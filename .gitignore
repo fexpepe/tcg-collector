@@ -83,3 +83,4 @@ mockup-*.html
 # aqui) -- e o proximo `git add` amplo comitaria a versao truncada logo depois
 # de o Search Console te-lo lido. O CI regenera sempre; a copia local nao serve.
 sitemap.xml
+out/

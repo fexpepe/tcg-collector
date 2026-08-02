@@ -497,6 +497,19 @@ jobs:
       - name: Reparte os preços por set
         run: node scripts/split-pricing.mjs
 
+      # API na borda (Fase 2): gera o banco de busca a partir do MESMO catálogo
+      # e, SE o token tiver permissão de D1, cria/carrega o banco e liga o
+      # binding no projeto Pages. Sem a permissão, o passo explica o que falta
+      # e sai com sucesso — o site continua saindo igual e a /api/search
+      # responde "desligada" (o cliente usa o caminho estático de sempre).
+      - name: Prepara a API na borda (D1)
+        run: |
+          node scripts/build-d1.mjs
+          node scripts/deploy-d1.mjs
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
       # O game.js injeta o catálogo em runtime por jogo; em produção ele carrega
       # os arquivos .generated mesclados em vez dos crus. Basta flipar a flag.
       # PRECISA rodar antes da minificação (o padrão com espaços some no minify).
@@ -553,7 +566,7 @@ jobs:
       # data/cards.generated.js. (One Piece/FAB têm cards.js menor, mas vão bater
       # no mesmo teto quando crescerem — candidatos ao mesmo tratamento.)
       - name: Remove arquivos que não vão para o site
-        run: rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js data/ygo/cards.js scripts
+        run: rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js data/ygo/cards.js scripts out
 
       # Deploy no Cloudflare Pages. main = produção; outras branches = preview
       # (URL única <hash>.tcg-collector.pages.dev). Pulado se o secret faltar.

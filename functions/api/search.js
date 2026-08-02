@@ -1,0 +1,54 @@
+// GET /api/search?game=<slug>&q=<termo>[&limit=40]
+//
+// Busca de cartas no jogo INTEIRO respondida pela borda (D1), em poucos KB.
+// Substitui, quando disponível, o search-index.json que o editor de decks
+// baixa inteiro — 8 MB no Magic — pra buscar no cliente. O cliente trata
+// qualquer resposta não-ok (inclusive o 503 de "API desligada") como sinal
+// pra cair no caminho estático de sempre, então esta função pode existir em
+// produção ANTES de o banco existir sem quebrar nada.
+//
+// Resposta: { c: [ { i, n, s, u, t, c, r, k } ] } — os MESMOS campos do
+// search-index.json, pra troca no cliente ser só a origem dos dados.
+import { buildSearch } from "./_search-sql.js";
+
+// Jogos válidos (espelho do registro do game.js). Barra consulta arbitrária.
+const GAMES = new Set(["pokemon", "lorcana", "onepiece", "magic", "fab", "gundam",
+  "dbfw", "ygo", "digimon", "riftbound", "naruto", "hxh", "jump"]);
+
+export async function onRequestGet(context) {
+  const { env, request } = context;
+  const url = new URL(request.url);
+  const game = String(url.searchParams.get("game") || "");
+  const q = String(url.searchParams.get("q") || "");
+  const limit = Number(url.searchParams.get("limit")) || 40;
+
+  const json = (corpo, status, cacheSeg) => new Response(JSON.stringify(corpo), {
+    status,
+    headers: {
+      "Content-Type": "application/json",
+      // Busca é cacheável: mesma consulta = mesma resposta até o próximo
+      // build. s-maxage curto na borda tira as consultas repetidas do banco.
+      "Cache-Control": cacheSeg ? `public, max-age=${cacheSeg}, s-maxage=${cacheSeg * 4}` : "no-store"
+    }
+  });
+
+  // Sem o binding (banco ainda não criado/ligado): 503 dizendo "desligada".
+  // O cliente cai no índice estático — a API escura não pode ser um erro.
+  if (!env.DB) return json({ off: 1 }, 503, 0);
+  if (!GAMES.has(game)) return json({ erro: "game" }, 400, 0);
+
+  const query = buildSearch(game, q, limit);
+  if (!query) return json({ c: [] }, 200, 60);
+
+  try {
+    const r = await env.DB.prepare(query.sql).bind(...query.params).all();
+    const cartas = (r.results || []).map((linha) => ({
+      i: linha.id, n: linha.name, s: linha.set_name, u: linha.number,
+      t: linha.card_type, c: linha.cost, r: linha.rarity, k: linha.color
+    }));
+    return json({ c: cartas }, 200, 300);
+  } catch (e) {
+    // Tabela ainda não importada, ou soluço do D1: mesma degradação do 503.
+    return json({ off: 1 }, 503, 0);
+  }
+}
