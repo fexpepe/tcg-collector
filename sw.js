@@ -13,7 +13,9 @@
 // novo no <head> (src/login-boot.js). Bump obrigatório por causa do login: o
 // HTML antigo em cache não pede esse arquivo, e é ele que evita o formulário
 // piscar na volta do link mágico.
-const SHELL_CACHE = "tcg-shell-v236";
+// v237: descarta os caches envenenados por resposta REDIRECIONADA (ver
+// semRedirect) — era a tela de "site não existe" ao navegar depois de deploy.
+const SHELL_CACHE = "tcg-shell-v237";
 // IMAGE_CACHE vai a v2: a versão anterior do SW podia cravar um erro 404/timeout
 // como imagem "opaca" por 7 dias (imagem quebrada presa até um hard refresh).
 // Renomear o cache faz o activate apagar o antigo UMA vez — limpa os erros
@@ -88,7 +90,13 @@ self.addEventListener("install", (event) => {
     // A flag é virada pelo mesmo passo que põe o hash; em dev, sem hash, o
     // reload continua sendo o comportamento certo.
     const req = (asset) => (HASHED_ASSETS ? new Request(asset) : new Request(asset, { cache: "reload" }));
-    await Promise.allSettled(SHELL_ASSETS.map((asset) => cache.add(req(asset))));
+    // NÃO usar cache.add: em produção o Pages redireciona hub.html -> /hub e o
+    // add guardaria a resposta com a marca de redirect — que envenena o cache
+    // (ver semRedirect). Busca, limpa a marca e grava sob o nome pedido.
+    await Promise.allSettled(SHELL_ASSETS.map(async (asset) => {
+      const res = await fetch(req(asset));
+      if (res && res.ok) await cache.put(asset, semRedirect(res));
+    }));
     self.skipWaiting();
   })());
 });
@@ -249,6 +257,18 @@ async function assetCacheFirst(request) {
 // visitado viraria uma entrada nova e o primeiro acesso a qualquer set nunca
 // daria hit. Miss com URL limpa do Cloudflare (/detail) ainda tenta /detail.html,
 // que é como o precache do install guarda as páginas.
+// Resposta com a marca `redirected` NÃO PODE responder uma navegação: o
+// navegador a troca por erro de rede (regra de segurança contra redirect
+// escondido), e o usuário vê a tela de "site fora do ar". Em produção o Pages
+// redireciona hub.html -> /hub, então qualquer resposta que seguiu esse
+// redirect carrega a marca — o precache guardava exatamente isso, e a PRIMEIRA
+// navegação depois de cada deploy dava erro até um F5 regravar a cópia limpa.
+// Regravar o corpo numa Response nova derruba a marca; o resto é idêntico.
+function semRedirect(res) {
+  if (!res || !res.redirected) return res;
+  return new Response(res.body, { status: res.status, statusText: res.statusText, headers: res.headers });
+}
+
 async function navigationFast(event) {
   const request = event.request;
   const cache = await caches.open(SHELL_CACHE);
@@ -259,14 +279,16 @@ async function navigationFast(event) {
     cached = await cache.match(key.href.replace(/\/?$/, "") + ".html");
   }
   const rede = fetch(request).then((response) => {
-    if (response && response.ok) cache.put(key.href, response.clone());
+    if (response && response.ok) cache.put(key.href, semRedirect(response.clone()));
     return response;
   }).catch(() => null);
   if (cached) {
     event.waitUntil(rede);
-    return cached;
+    // semRedirect também na SAÍDA: sara na hora um cache antigo já envenenado,
+    // sem esperar o bump de versão descartá-lo.
+    return semRedirect(cached);
   }
-  return (await rede) || (await caches.match(request, { ignoreSearch: true })) || Response.error();
+  return (await rede) || semRedirect(await caches.match(request, { ignoreSearch: true })) || Response.error();
 }
 
 async function staleWhileRevalidate(event) {
@@ -304,7 +326,7 @@ async function networkFirst(request, url) {
   } catch (error) {
     // Offline: navegações ignoram a query (detail.html?type=... → detail.html).
     const cached = await caches.match(request, { ignoreSearch: request.mode === "navigate" });
-    return cached || Response.error();
+    return (request.mode === "navigate" ? semRedirect(cached) : cached) || Response.error();
   }
 }
 
