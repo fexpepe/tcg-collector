@@ -46,20 +46,31 @@ CREATE TABLE IF NOT EXISTS card_words (
   id TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_card_words ON card_words (game, word, id);
+CREATE INDEX IF NOT EXISTS idx_words_global ON card_words (word, game, id);
 `;
 
 // Query de busca: interseção dos conjuntos de ids de cada palavra-prefixo,
 // depois as cartas. `escape`: % e _ são curingas do LIKE — um "100%" digitado
 // não pode virar curinga. LIMIT no chamador via parâmetro.
+//
+// game "all" = busca GLOBAL (o Explorar): a interseção passa a ser por
+// (game, id) — id sozinho poderia colidir entre jogos — usando o índice
+// idx_words_global (word na frente). Uma consulta só pros 13 jogos, em vez de
+// 13 requisições por tecla digitada.
 export function buildSearch(game, consulta, limite) {
   const termos = palavras(consulta).slice(0, 5); // 5 palavras bastam; mais = abuso
   if (!termos.length) return null;
+  const global = game === "all";
   const sub = termos
-    .map(() => `SELECT id FROM card_words WHERE game = ?1 AND word LIKE ? ESCAPE '\\'`)
+    .map(() => global
+      ? `SELECT game, id FROM card_words WHERE word LIKE ? ESCAPE '\\'`
+      : `SELECT id FROM card_words WHERE game = ?1 AND word LIKE ? ESCAPE '\\'`)
     .join("\nINTERSECT\n");
-  const sql = `SELECT id, name, set_name, number, card_type, cost, rarity, color
-FROM cards WHERE game = ?1 AND id IN (\n${sub}\n) LIMIT ${Math.max(1, Math.min(100, limite | 0 || 40))}`;
-  const params = [game, ...termos.map((t) => t.replace(/([%_\\])/g, "\\$1") + "%")];
+  const alvo = global ? `(game, id) IN` : `game = ?1 AND id IN`;
+  const sql = `SELECT game, id, name, set_name, number, card_type, cost, rarity, color
+FROM cards WHERE ${alvo} (\n${sub}\n) LIMIT ${Math.max(1, Math.min(100, limite | 0 || 40))}`;
+  const likes = termos.map((t) => t.replace(/([%_\\])/g, "\\$1") + "%");
+  const params = global ? likes : [game, ...likes];
   return { sql, params };
 }
 
@@ -79,7 +90,16 @@ export function cardRows(game, card) {
     cost: card.cost != null ? String(card.cost) : "",
     rarity: card.rarity || "", color
   };
-  // Dedupe de palavras por carta ("Mega Mega Punch" não precisa de duas linhas).
-  const unicas = [...new Set(palavras(card.name))];
-  return { linha, words: unicas.map((w) => ({ game, word: w, id: card.id })) };
+  // Palavras de busca: nome + SET + NÚMERO + ARTISTA — o mesmo alcance do
+  // haystack do cliente (cardSearchHaystack), pra "pika 58", "pikachu jungle"
+  // e "arita" acharem pela borda igual acham pelo caminho estático. O número
+  // ganha a forma compacta pela mesma regra do shared ("H01" -> "h1").
+  // Dedupe por carta ("Mega Mega Punch" não precisa de duas linhas).
+  const num = String(card.number || "");
+  const numCompact = num.replace(/([a-zA-Z]+)0+(\d)/, "$1$2");
+  const unicas = new Set();
+  for (const fonte of [card.name, card.set, num, numCompact === num ? "" : numCompact, card.artist]) {
+    for (const w of palavras(fonte)) unicas.add(w);
+  }
+  return { linha, words: [...unicas].map((w) => ({ game, word: w, id: card.id })) };
 }

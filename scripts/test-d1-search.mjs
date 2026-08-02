@@ -20,19 +20,13 @@ function busca(game, q, limite) {
   if (!query) return [];
   // node:sqlite não repete parâmetro posicional ?1 como o D1: troca por ? e
   // repete o valor — só no TESTE; a Function usa a query como está.
-  let i = 0;
-  const sql = query.sql.replace(/\?1/g, () => "?");
-  const usos = (query.sql.match(/\?1/g) || []).length;
-  const params = [];
-  let pos = 1;
-  // reconstrói a lista: cada ?1 vira o game; os demais ? seguem a ordem
-  const restantes = query.params.slice(1);
-  for (const ch of sql.matchAll(/\?/g)) params.push(null);
-  // mais simples e à prova de erro: monta de novo com game repetido
-  const finais = [];
-  let r = 0;
-  let ordem = query.sql.match(/\?1|\?(?!\d)/g) || [];
-  for (const token of ordem) finais.push(token === "?1" ? query.params[0] : restantes[r++]);
+  // A query GLOBAL (game=all) não tem ?1 nenhum: a fila então são TODOS os
+  // parâmetros, na ordem.
+  const temGame = query.sql.includes("?1");
+  const sql = query.sql.replace(/\?1/g, "?");
+  const fila = temGame ? query.params.slice(1) : query.params.slice();
+  const ordem = query.sql.match(/\?1|\?(?!\d)/g) || [];
+  const finais = ordem.map((token) => (token === "?1" ? query.params[0] : fila.shift()));
   return db.prepare(sql).all(...finais);
 }
 
@@ -70,9 +64,23 @@ espera("consulta vazia devolve vazio", buildSearch("pokemon", "   ", 40) === nul
 // Limite respeitado
 espera("limite 5 corta em 5", busca("pokemon", "e", 5).length <= 5);
 
-// Contrato de campos (o que o editor de decks espera re-mapear)
+// Set, número e artista também são palavras (o alcance do haystack do cliente)
+const pele = busca("pokemon", "pikachu jungle");
+espera("'pikachu jungle' acha pelo NOME DO SET", pele.length > 0 && pele.every((c) => /jungle/i.test(c.set_name)), `${pele.length} resultados`);
+const pnum = busca("pokemon", "pikachu 58");
+espera("'pikachu 58' acha pelo NÚMERO", pnum.length > 0 && pnum.some((c) => String(c.number).startsWith("58")), `${pnum.length} resultados`);
+const arita = busca("pokemon", "arita");
+espera("'arita' acha pelo ARTISTA", arita.length > 0, `${arita.length} resultados, 1º: ${arita[0] && arita[0].name}`);
+
+// Busca GLOBAL (game=all, o Explorar): acha e diz o jogo de cada resultado
+const global = busca("all", "pikachu");
+espera("global 'pikachu' acha e carimba o jogo", global.length > 0 && global.every((c) => c.game === "pokemon"), `${global.length} resultados`);
+const globalDupla = busca("all", "ex charizard");
+espera("global com duas palavras intersecta por (game,id)", globalDupla.some((c) => /charizard/i.test(c.name)), `${globalDupla.length} resultados`);
+
+// Contrato de campos (o que o editor de decks e o Explorar re-mapeiam)
 const campos = pika[0] && Object.keys(pika[0]).sort().join(",");
-espera("colunas do contrato", campos === "card_type,color,cost,id,name,number,rarity,set_name", campos);
+espera("colunas do contrato", campos === "card_type,color,cost,game,id,name,number,rarity,set_name", campos);
 
 if (falhas) { console.error(`\n${falhas} falha(s)`); process.exit(1); }
 console.log("\nbusca D1 conferida no SQLite local.");
