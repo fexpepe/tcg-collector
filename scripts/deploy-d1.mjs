@@ -74,10 +74,20 @@ const resposta = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CO
 });
 const corpo = await resposta.json().catch(() => ({}));
 if (!resposta.ok || corpo.success === false) {
-  console.error(`deploy-d1: falha ao ligar o binding no projeto Pages (HTTP ${resposta.status}):`, JSON.stringify(corpo.errors || corpo).slice(0, 400));
-  process.exit(1);
+  // NÃO derruba o build (na primeira execução real derrubou — o site ficou um
+  // deploy sem sair por causa de config de binding). Binding e CARGA são
+  // independentes: a carga segue abaixo, e a API só fica escura até o binding
+  // existir. O 403 aqui com um token que cria banco e faz deploy indica que a
+  // permissão do endpoint de settings do projeto é outra — o caminho manual é
+  // um clique único e definitivo:
+  console.log(`deploy-d1: não consegui ligar o binding via API (HTTP ${resposta.status}: ${JSON.stringify(corpo.errors || {}).slice(0, 200)}).`);
+  console.log("  Ligue UMA VEZ no painel: dash.cloudflare.com -> Workers & Pages -> tcg-collector ->");
+  console.log("  Settings -> Bindings (ou Functions) -> Add -> D1 database ->");
+  console.log(`  variável: DB · banco: ${BANCO} — em Production E Preview -> Save.`);
+  console.log("  (Depois disso a /api/search liga no deploy seguinte; a carga de dados abaixo já vale.)");
+} else {
+  console.log("deploy-d1: binding DB ligado no projeto (production + preview).");
 }
-console.log("deploy-d1: binding DB ligado no projeto (production + preview).");
 
 // ── 4. Carga (só quando o catálogo mudou) ───────────────────────────────────
 const sql = readFileSync(new URL("../out/d1.sql", import.meta.url), "utf8");
@@ -95,5 +105,11 @@ if (hashRemoto === hashLocal) {
   process.exit(0);
 }
 console.log(`deploy-d1: carregando catálogo (${(sql.length / 1048576).toFixed(1)} MB, hash ${hashLocal}; remoto era ${hashRemoto || "vazio"})…`);
-wrangler(["d1", "execute", BANCO, "--remote", "--file", new URL("../out/d1.sql", import.meta.url).pathname, "-y"], { stdio: ["ignore", "inherit", "inherit"] });
-console.log("deploy-d1: carga concluída.");
+try {
+  wrangler(["d1", "execute", BANCO, "--remote", "--file", new URL("../out/d1.sql", import.meta.url).pathname, "-y"], { stdio: ["ignore", "inherit", "inherit"] });
+  console.log("deploy-d1: carga concluída.");
+} catch (e) {
+  // A API sem dados responde 503 e o cliente cai no estático — um site novo
+  // parado na esteira por causa disso seria trocar o certo pelo duvidoso.
+  console.log("deploy-d1: CARGA FALHOU (a API segue desligada; o deploy do site continua):", String(e).slice(0, 300));
+}
