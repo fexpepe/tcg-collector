@@ -121,6 +121,23 @@
   const moversByGame = Object.fromEntries(GAMES.map((g) => [g, null]));
   const fetchMovers = (dir) => fetch(dir + "price-movers.generated.json").then((r) => (r.ok ? r.json() : null)).catch(() => null);
 
+  // RETRATO INSTANTÂNEO antes de qualquer rede (estilo Collectr): o último
+  // valor conhecido (histórico sincronizado ou cookie, via shared.valueSnapshot)
+  // pinta os cartões NA HORA, esmaecido de leve; o cálculo fresco do render()
+  // troca os números e tira o esmaecido quando os chunks chegam. Quem abre o
+  // Portfólio abre pra ver o número — ele não pode esperar 50 requisições.
+  const SNAP_ELS = ["grandTotal", "rawValue", "gradedValue", "wishlistValue"];
+  (function paintSnapshot() {
+    const snap = shared.valueSnapshot();
+    if (!snap) return;
+    const fromBRL = (v) => { const r = shared.convertMoney(v, "BRL", shared.getCurrency()); return r == null ? v : r; };
+    const pinta = (el, v) => { if (el) { el.textContent = money(fromBRL(v)); el.style.opacity = "0.55"; } };
+    pinta(elements.grandTotal, snap.total);
+    pinta(elements.rawValue, snap.raw);
+    pinta(elements.gradedValue, snap.graded);
+    pinta(elements.wishlistValue, snap.wish);
+  })();
+
   // O patrimônio PRIMEIRO, só com as suas cartas. Antes esta página buscava os
   // movers dos 12 jogos ANTES de tudo e somava os ids deles à carga — o que
   // arrastava chunks de sets de jogos onde você não tem carta nenhuma, e
@@ -298,6 +315,8 @@
     const networth = rawTotal + gradedTotal;
     const wish = wishlistTotal(gameFilter) + binderWishTotal(gameFilter);
 
+    // Números frescos: substituem o retrato instantâneo e tiram o esmaecido.
+    SNAP_ELS.forEach((k) => { if (elements[k]) elements[k].style.opacity = ""; });
     if (elements.grandTotal) elements.grandTotal.textContent = money(networth);
     if (elements.rawValue) elements.rawValue.textContent = money(rawTotal);
     if (elements.gradedValue) elements.gradedValue.textContent = money(gradedTotal);

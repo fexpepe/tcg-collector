@@ -212,6 +212,7 @@
       writeFiltersToUrl();
       render({ resetCount: true });
       if (!catalogPronto && isSearching()) {
+        apiBridge(); // resultados JÁ, pela borda, enquanto o catálogo desce
         ensureCatalog().then(() => render({ resetCount: true })).catch(() => { /* erro já exibido */ });
       }
     };
@@ -266,6 +267,31 @@
     });
   }
 
+  // PONTE pela borda enquanto o catálogo completo (15MB no Pokémon) desce: a
+  // /api/search do jogo da sessão responde a busca digitada em poucos KB, os
+  // ≤60 resultados são hidratados pelos chunks dos sets deles e entram como
+  // BASE do filterCards — os filtros de set/idioma/raridade/preço e a
+  // ordenação valem igual. Quando o catálogo chega, o render de sempre assume.
+  // API desligada/sem resultado: nada muda — o fluxo atual já cobre.
+  let apiResultado = null;
+  let apiSeq = 0;
+  async function apiBridge() {
+    const q = elements.search.value.trim();
+    if (q.length < 2) return; // filtro sem texto: só o catálogo inteiro responde
+    const seq = ++apiSeq;
+    const game = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
+    const hits = await shared.searchApi(game, q, 60);
+    if (seq !== apiSeq || catalogPronto || !hits || !hits.length) return;
+    let r;
+    try { r = await shared.loadCatalogForCardIds(hits.map((h) => h.i)); } catch (e) { return; }
+    if (seq !== apiSeq || catalogPronto) return;
+    // Mesmo escopo de linha da página (vintage não vaza pro jogo principal).
+    const scope = shared.lineScope(game, shared.lineParamOf());
+    apiResultado = (r.cards || []).filter((card) => scope.includes(card.setId));
+    apiResultado.forEach((card) => cardsById.set(card.id, card));
+    render({ resetCount: true });
+  }
+
   // Só busca quando há texto na busca ou um filtro de set/raridade ativo. Sem
   // isso, a página fica "vazia" (placeholder do futuro "em alta").
   function isSearching() {
@@ -279,7 +305,12 @@
     const rarityValue = elements.rarityFilter.value;
     const pMin = parsePrice(elements.priceMin);
     const pMax = parsePrice(elements.priceMax);
-    return cards.filter((card) => {
+    // Enquanto o catálogo completo não chegou, a base é o que a API da borda
+    // trouxe (apiBridge) — os filtros e a ordenação valem IGUAL sobre ela, só
+    // que sobre ≤60 cartas em vez de 48k. Com o catálogo pronto, a base volta a
+    // ser tudo e a ponte é ignorada.
+    const base = (!catalogPronto && apiResultado) || cards;
+    return base.filter((card) => {
       if (!shared.matchesCardQuery(card, elements.search.value)) return false;
       if (setValue && card.set !== setValue) return false;
       if (languageValue && shared.normalizeCardLanguage(card.language) !== languageValue) return false;
@@ -381,13 +412,21 @@
     elements.intro.hidden = true;
     elements.resultsHeader.hidden = false;
     if (elements.resultsTitle) elements.resultsTitle.textContent = t("results.heading.cards");
-    // Buscando com o catálogo ainda a caminho: skeletons em vez de "nenhum
-    // resultado". Sem isto a página afirmaria que a carta não existe só porque
-    // os chunks não chegaram — o `render` é chamado de novo quando chegam.
+    // Buscando com o catálogo ainda a caminho: a PONTE da borda (apiBridge)
+    // renderiza o que já achou; sem ela, skeletons em vez de "nenhum
+    // resultado" — a página não pode afirmar que a carta não existe só porque
+    // os chunks não chegaram. O `render` é chamado de novo quando eles chegam,
+    // e aí a base volta a ser o catálogo inteiro.
     if (!catalogPronto) {
       elements.empty.hidden = true;
-      elements.resultCount.textContent = "";
-      shared.showSkeletons(elements.grid, "card", 12);
+      const ponte = apiResultado ? tilePairs() : [];
+      if (!ponte.length) {
+        elements.resultCount.textContent = "";
+        shared.showSkeletons(elements.grid, "card", 12);
+        return;
+      }
+      pager.render(ponte, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true }), options || {});
+      elements.resultCount.textContent = tn("results.count", ponte.length);
       return;
     }
     const tiles = tilePairs();
