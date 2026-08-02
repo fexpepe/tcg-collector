@@ -481,6 +481,15 @@ jobs:
       - name: Deriva fatias de índice que faltarem
         run: node scripts/split-indexes.mjs
 
+      # Metadados de set (logo, símbolo, data, série, total) e soma de preço em
+      # cada entrada do manifest — é o que a lista de Sets desenha sem baixar
+      # carta. Roda SEMPRE, inclusive no build rápido: ali os syncs são pulados e
+      # o manifest vem do cache do build anterior, então sem este passo ele fica
+      # no formato velho e a tela de Sets perde logo, data e valor. Roda também
+      # DEPOIS dos espelhos de logo, pra o manifest apontar pro arquivo local.
+      - name: Completa o manifest com metadados de set
+        run: node scripts/enrich-manifest.mjs
+
       # O game.js injeta o catálogo em runtime por jogo; em produção ele carrega
       # os arquivos .generated mesclados em vez dos crus. Basta flipar a flag.
       # PRECISA rodar antes da minificação (o padrão com espaços some no minify).
