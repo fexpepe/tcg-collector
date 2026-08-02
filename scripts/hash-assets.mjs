@@ -42,7 +42,12 @@ const assets = [];
 for (const arquivo of readdirSync(join(ROOT, "src")).sort()) {
   if (extname(arquivo) === ".js") assets.push({ path: `src/${arquivo}`, base: `src/${arquivo.slice(0, -3)}`, ext: ".js" });
 }
-if (existsSync(join(ROOT, "styles.css"))) assets.push({ path: "styles.css", base: "styles", ext: ".css" });
+// styles.css E as folhas por área (styles-decks.css…, criadas pelo split-css no
+// mesmo build). Todas precisam de hash: a regra /styles.* do _headers marca as
+// duas como immutable, e immutable SEM hash no nome prende o arquivo pra sempre.
+for (const arquivo of readdirSync(ROOT).sort()) {
+  if (/^styles(-[\w-]+)?\.css$/.test(arquivo)) assets.push({ path: arquivo, base: arquivo.slice(0, -4), ext: ".css" });
+}
 if (!assets.length) morra("nada em src/ nem styles.css — abortando.");
 
 const original = new Map(assets.map((a) => [a.path, readFileSync(join(ROOT, a.path), "utf8")]));

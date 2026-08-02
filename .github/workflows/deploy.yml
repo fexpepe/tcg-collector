@@ -495,6 +495,14 @@ jobs:
       - name: Avisa o service worker que o shell terá hash
         run: sed -i 's|const HASHED_ASSETS = false|const HASHED_ASSETS = true|' sw.js
 
+      # Reparte o styles.css: núcleo (o que toda página usa) + folhas por área
+      # (landing, login, decks, portfólio, conta, wishlist, vendas, ajuda), ligadas
+      # só nas páginas delas. ANTES da minificação — o script remove os comentários
+      # pra parsear em segurança, e é a minificação que os descartaria de qualquer
+      # forma. O repositório segue com um styles.css só.
+      - name: Reparte o CSS por área
+        run: node scripts/split-css.mjs --write
+
       # Minifica JS/CSS servidos, IN PLACE (as URLs não mudam; o repo fica intacto —
       # isso só existe no workspace do runner). Corta ~50% do transfer e acelera o
       # parse no mobile. Bônus: o esbuild FALHA em erro de sintaxe, então este passo
