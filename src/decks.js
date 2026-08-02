@@ -144,34 +144,72 @@
 
   // Índice de busca: só id/nome/set/número + facetas (gerado no build por
   // writeGameCatalog). É o que permite buscar no jogo inteiro sem baixá-lo.
+  // Cacheia a PROMESSA (não o resultado): o download em segundo plano e um
+  // await do fallback no meio dele não podem baixar o índice duas vezes —
+  // no Magic são 8 MB cada.
   const indexCache = {};
-  async function searchIndexFor(game) {
+  const indexReady = {};   // jogo -> true quando o índice JÁ está na memória
+  function searchIndexFor(game) {
     if (indexCache[game]) return indexCache[game];
+    const p = (async () => {
+      try {
+        const r = await fetch(shared.gameDataDir(game) + "search-index.json");
+        if (r.ok) {
+          const raw = await r.json();
+          // Formato compacto: { d: dicionários, c: cartas com índices }. Re-expande
+          // aqui (uma vez) pra o resto do código ver strings normais.
+          const d = raw.d || {};
+          const back = (key, i) => (i == null ? "" : ((d[key] || [])[i] || ""));
+          return (raw.c || []).map((e) => ({
+            i: e.i, n: e.n, u: e.u, c: e.c,
+            s: back("s", e.s), t: back("t", e.t), r: back("r", e.r), k: back("k", e.k)
+          }));
+        }
+      } catch (e) { /* sem índice: cai no fallback abaixo */ }
+      // Local/dev (o índice é gerado no build): monta a partir do catálogo, que
+      // aqui é a amostra pequena. Mesma forma de dado, então a busca não sabe a
+      // diferença.
+      const cat = await ensureCards(game, null);
+      return Object.values(cat.byId).map((c) => ({
+        i: c.id, n: c.name, s: c.set, u: c.number,
+        t: c.cardType, c: c.cost, r: c.rarity,
+        k: c.ink || c.opColor || c.color || c.colorId || c.types || c.attribute
+      }));
+    })();
+    indexCache[game] = p;
+    p.then(
+      () => { indexReady[game] = true; },
+      () => { if (indexCache[game] === p) delete indexCache[game]; }  // erro: a próxima busca tenta de novo
+    );
+    return p;
+  }
+
+  // Busca na borda (/api/search, D1): responde os MESMOS campos do índice em
+  // poucos KB. Só é consultada ENQUANTO o índice do jogo não chegou — depois a
+  // busca local é instantânea e sem rede. Qualquer resposta não-ok (404 no dev,
+  // 503 {off:1} de "banco ainda não ligado") desliga a API pra sessão inteira:
+  // o contrato é degradar pro caminho estático, nunca errar na cara do usuário.
+  let apiOff = false;
+  async function searchApiFor(game, q) {
+    if (apiOff) return null;
     try {
-      const r = await fetch(shared.gameDataDir(game) + "search-index.json");
-      if (r.ok) {
-        const raw = await r.json();
-        // Formato compacto: { d: dicionários, c: cartas com índices }. Re-expande
-        // aqui (uma vez) pra o resto do código ver strings normais.
-        const d = raw.d || {};
-        const back = (key, i) => (i == null ? "" : ((d[key] || [])[i] || ""));
-        indexCache[game] = (raw.c || []).map((e) => ({
-          i: e.i, n: e.n, u: e.u, c: e.c,
-          s: back("s", e.s), t: back("t", e.t), r: back("r", e.r), k: back("k", e.k)
-        }));
-        return indexCache[game];
-      }
-    } catch (e) { /* sem índice: cai no fallback abaixo */ }
-    // Local/dev (o índice é gerado no build): monta a partir do catálogo, que
-    // aqui é a amostra pequena. Mesma forma de dado, então a busca não sabe a
-    // diferença.
-    const cat = await ensureCards(game, null);
-    indexCache[game] = Object.values(cat.byId).map((c) => ({
-      i: c.id, n: c.name, s: c.set, u: c.number,
-      t: c.cardType, c: c.cost, r: c.rarity,
-      k: c.ink || c.opColor || c.color || c.colorId || c.types || c.attribute
-    }));
-    return indexCache[game];
+      const r = await fetch("/api/search?game=" + encodeURIComponent(game) + "&q=" + encodeURIComponent(q) + "&limit=60");
+      if (!r.ok) { apiOff = true; return null; }
+      const j = await r.json();
+      return Array.isArray(j.c) ? j.c : null;
+    } catch (e) { return null; }               // rede oscilou: a próxima tecla tenta de novo
+  }
+
+  // Dispara o download do índice SEM esperar por ele; quando chegar, liga a UI
+  // de facetas (as opções saem do índice inteiro — a API não as fornece).
+  function preloadIndexFor(game) {
+    searchIndexFor(game).then((idx) => {
+      if (!current || current.game !== game) return;
+      const had = !!facetOptsCache[game];
+      facetOptions(game, idx);
+      const fbox = document.getElementById("deckFacets");
+      if (fbox && !had) fbox.innerHTML = facetsHtml(game);
+    }).catch(() => { /* o próximo renderResults reporta o erro se precisar */ });
   }
 
   // ---------------------------------------------------------------------------
@@ -1271,29 +1309,47 @@
     const q = query.trim();
     if (q.length < 2) { box.innerHTML = `<p class="deck-hint">${esc(t("decks.searchHint"))}</p>`; return; }
     const seq = ++searchSeq;                    // descarta resposta de busca velha
-    let index;
-    try { index = await searchIndexFor(deck.game); }
-    catch (e) { box.innerHTML = `<p class="deck-hint">${esc(t("decks.loadError"))}</p>`; return; }
-    if (seq !== searchSeq) return;
-    // As opções de filtro saem do índice; ele chega assíncrono, então a UI de
-    // facetas só existe a partir daqui.
-    const hadOpts = !!facetOptsCache[deck.game];
-    facetOptions(deck.game, index);
-    const fbox = document.getElementById("deckFacets");
-    if (fbox && !hadOpts) fbox.innerHTML = facetsHtml(deck.game);
+    // Índice do jogo ainda não chegou (8 MB no Magic numa 3G): a API na borda
+    // responde JÁ, e o índice desce em paralelo — facetas e busca por
+    // set/número continuam vindo dele. Com o índice na memória a busca local é
+    // instantânea e sem rede, então a borda só serve o começo frio. As facetas
+    // nunca estão ativas neste caminho: a UI delas nasce do próprio índice.
+    let found = null;
+    if (!indexReady[deck.game]) {
+      const pApi = searchApiFor(deck.game, q);
+      preloadIndexFor(deck.game);
+      const daApi = await pApi;
+      if (seq !== searchSeq) return;
+      if (daApi && daApi.length) found = daApi.filter(passesFacets).slice(0, 60);
+    }
+    // Caminho estático: índice já presente, API desligada, ou zero resultados
+    // dela (a borda busca por prefixo de palavra do NOME; número de
+    // colecionador e nome do set só o índice acha).
+    if (!found || !found.length) {
+      let index;
+      try { index = await searchIndexFor(deck.game); }
+      catch (e) { box.innerHTML = `<p class="deck-hint">${esc(t("decks.loadError"))}</p>`; return; }
+      if (seq !== searchSeq) return;
+      // As opções de filtro saem do índice; ele chega assíncrono, então a UI de
+      // facetas só existe a partir daqui.
+      const hadOpts = !!facetOptsCache[deck.game];
+      facetOptions(deck.game, index);
+      const fbox = document.getElementById("deckFacets");
+      if (fbox && !hadOpts) fbox.innerHTML = facetsHtml(deck.game);
 
-    const terms = norm(q).split(/\s+/).filter(Boolean);
-    // Candidatos pelo ÍNDICE DE PREFIXO em vez de varrer as 97k entradas do
-    // Magic a cada tecla (2,5s no desktop, pior no celular). O prefixo de 3
-    // letras do termo mais longo corta a busca pra algumas centenas.
-    const pool = prefixCandidates(deck.game, index, terms);
-    const found = [];
-    for (const e of pool) {
-      // O haystack normalizado é memoizado no próprio item (`_h`): sem isso a
-      // normalização (NFD + regex) rodava de novo a cada tecla digitada.
-      const hay = e._h || (e._h = norm(e.n + " " + (e.s || "") + " " + (e.u || "")));
-      if (terms.every((tm) => hay.includes(tm)) && passesFacets(e)) found.push(e);
-      if (found.length >= 60) break;            // teto: o índice tem o jogo inteiro
+      const terms = norm(q).split(/\s+/).filter(Boolean);
+      // Candidatos pelo ÍNDICE DE PREFIXO em vez de varrer as 97k entradas do
+      // Magic a cada tecla (2,5s no desktop, pior no celular). O prefixo de 3
+      // letras do termo mais longo corta a busca pra algumas centenas.
+      const pool = prefixCandidates(deck.game, index, terms);
+      found = [];
+      for (const e of pool) {
+        // O haystack normalizado é memoizado no próprio item (`_h`): sem isso a
+        // normalização (NFD + regex) rodava de novo a cada tecla digitada.
+        const hay = e._h || (e._h = norm(e.n + " " + (e.s || "") + " " + (e.u || "")));
+        if (terms.every((tm) => hay.includes(tm)) && passesFacets(e)) found.push(e);
+        if (found.length >= 60) break;          // teto: o índice tem o jogo inteiro
+      }
     }
     if (!found.length) { box.innerHTML = `<p class="deck-hint">${esc(t("decks.noResults"))}</p>`; return; }
 
