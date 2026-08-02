@@ -1,10 +1,6 @@
 name: Build e deploy (Cloudflare Pages)
 
 on:
-  # Disparo manual (aba Actions -> Build e deploy -> Run workflow): existe pro
-  # caso "o deploy falhou por credencial/infra e o código está certo" — sem
-  # ele, redisparar exigia um commit vazio (aconteceu na ativação do D1).
-  workflow_dispatch:
   push:
     # main -> produção; qualquer outra branch -> preview (URL própria).
     # Mudanças só de documentação não disparam build/deploy.
@@ -30,6 +26,8 @@ on:
     # segunda: dois runs simultâneos na mesma branch cairiam na regra de
     # concorrência e um cancelaria o outro.
     - cron: "0 7 */2 * *"
+  # Disparo manual (aba Actions -> Run workflow): redispara sem inventar commit
+  # quando o deploy falhou por credencial/infra e o código está certo.
   workflow_dispatch:
 
 permissions:
