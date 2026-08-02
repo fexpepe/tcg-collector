@@ -504,6 +504,14 @@ jobs:
       - name: Avisa o service worker que o shell terá hash
         run: sed -i 's|const HASHED_ASSETS = false|const HASHED_ASSETS = true|' sw.js
 
+      # Reparte cada src/i18n*.js em um arquivo POR IDIOMA e liga as páginas pra
+      # carregar só o idioma ativo (via data-i18n no <html> + loader do theme.js).
+      # O core viaja em toda página: ~46 KB comprimidos com os três idiomas
+      # dentro, ~16 KB com um. ANTES da minificação e do hash (os nomes novos
+      # entram como literais no theme.js e são reescritos pelo hash-assets).
+      - name: Reparte as traduções por idioma
+        run: node scripts/split-i18n.mjs --write
+
       # Reparte o styles.css: núcleo (o que toda página usa) + folhas por área
       # (landing, login, decks, portfólio, conta, wishlist, vendas, ajuda), ligadas
       # só nas páginas delas. ANTES da minificação — o script remove os comentários
