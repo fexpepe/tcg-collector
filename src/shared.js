@@ -2167,18 +2167,39 @@
     });
     return { copies, distinct };
   }
-  // Valor total do portfólio (coleção+binders) somando os jogos, lido do cookie
-  // sleevu_pf_<game> (escrito pelo Portfólio) — sem catálogo. Na moeda atual.
-  function portfolioValueTotal() {
-    let brl = 0; let has = false;
+  // Retrato instantâneo do patrimônio, SEM catálogo e SEM rede: soma por jogo
+  // o último ponto do histórico do portfólio (history-v2 — que SINCRONIZA na
+  // nuvem, então num aparelho recém-logado ele já chegou com o sync do boot) e
+  // cai pro cookie sleevu_pf_<game> onde não houver histórico local. Valores
+  // em BRL — quem pinta converte pra moeda do header. É o que deixa Hub,
+  // Dashboard e Portfólio abrirem com número NA HORA (estilo Collectr): o
+  // retrato pinta primeiro, o cálculo fresco troca quando os chunks chegam.
+  function valueSnapshot() {
+    let raw = 0, graded = 0, wish = 0, has = false;
     GAME_SLUGS.forEach((g) => {
-      const m = document.cookie.match(new RegExp("(?:^|; )sleevu_pf_" + g + "=([^;]*)"));
-      if (!m) return;
-      try { const d = JSON.parse(decodeURIComponent(m[1])); brl += (d.c || 0) + (d.b || 0); has = true; } catch (e) { /* ignora */ }
+      let p = null;
+      try {
+        const h = JSON.parse(localStorage.getItem(gameKey("history-v2", g)) || "null");
+        if (Array.isArray(h) && h.length) p = h[h.length - 1];
+      } catch (e) { /* histórico ilegível: tenta o cookie */ }
+      if (!p) {
+        const m = String(document.cookie || "").match(new RegExp("(?:^|; )sleevu_pf_" + g + "=([^;]*)"));
+        if (m) { try { p = JSON.parse(decodeURIComponent(m[1])); } catch (e) { /* ignora */ } }
+      }
+      if (!p) return;
+      raw += p.c || 0; graded += p.b || 0; wish += p.w || 0; has = true;
     });
-    if (!has) return null;
-    const v = convertMoney(brl, "BRL", getCurrency());
-    return v == null ? brl : v;
+    return has ? { raw, graded, wish, total: raw + graded } : null;
+  }
+  // Valor total do portfólio somando os jogos, na moeda atual — atalho antigo
+  // (só cookies) agora em cima do valueSnapshot, que prefere o histórico
+  // sincronizado: num aparelho novo o número aparece sem nunca ter aberto o
+  // Portfólio nele.
+  function portfolioValueTotal() {
+    const snap = valueSnapshot();
+    if (!snap) return null;
+    const v = convertMoney(snap.total, "BRL", getCurrency());
+    return v == null ? snap.total : v;
   }
 
   // Dropdown de bandeira reutilizável: colapsado mostra só a bandeira do item
@@ -4990,6 +5011,7 @@
     gradedTotalValue,
     collectionValueLines,
     collectionNetWorth,
+    valueSnapshot,
     currencySymbol: saleCurrencySymbol,
     distBarsHtml,
     memoValue,
