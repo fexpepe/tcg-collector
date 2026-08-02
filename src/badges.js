@@ -256,7 +256,7 @@
     const mine = cards.filter((card) => {
       if (seenIds.has(card.id)) return false;
       seenIds.add(card.id);
-      return (card.variants || ["Normal"]).some((v) => owned.variantTotal(card.id, v) > 0);
+      return shared.cardVariants(card).some((v) => owned.variantTotal(card.id, v) > 0);
     });
 
     // Sets 100%: cartas possuídas por set vs total oficial do set (qualquer jogo)

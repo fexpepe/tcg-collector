@@ -855,7 +855,7 @@
       // língua está sob outro id — misturar daria um "já gasto" que não bate
       // com o que a Coleção mostra.
       if (!owned.has(card.id)) { toBuy += ref; return; }
-      (card.variants || [shared.defaultVariant(card)]).forEach((variant) => {
+      shared.cardVariants(card).forEach((variant) => {
         owned.conditionBreakdown(card.id, variant).forEach(({ condition, quantity }) => {
           const v = shared.cardValue(card, variant, prices, condition).value;
           if (v) ownedValue += v * quantity;

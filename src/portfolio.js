@@ -252,24 +252,9 @@
   // ---- Fontes de valor (moeda atual), filtráveis por jogo --------------------
 
   // Cada linha é um lote carta×variante×condição da coleção, com valor unitário.
+  // A conta vive no shared (collectionValueLines): é a MESMA da Coleção e do Hub.
   function collectionLines(gf) {
-    const lines = [];
-    let totalCopies = 0, pricedCopies = 0;
-    cards.forEach((card) => {
-      if (gf && gf !== "all" && card.game !== gf) return;
-      const variants = card.variants && card.variants.length ? card.variants : [shared.defaultVariant(card)];
-      variants.forEach((variant) => {
-        owned.conditionBreakdown(card.id, variant).forEach(({ condition, quantity }) => {
-          totalCopies += quantity;
-          const val = shared.cardValue(card, variant, prices, condition);
-          if (val.value > 0) {
-            pricedCopies += quantity;
-            lines.push({ card, variant, condition, quantity, unit: val.value, total: val.value * quantity, estimated: val.estimated, source: val.source });
-          }
-        });
-      });
-    });
-    return { lines, totalCopies, pricedCopies };
+    return shared.collectionValueLines(cards, owned, prices, { gameFilter: gf });
   }
 
   function gradedSlabs(gf) {
@@ -307,8 +292,7 @@
   // ---- Render ---------------------------------------------------------------
 
   function render() {
-    const { lines, totalCopies, pricedCopies } = collectionLines(gameFilter);
-    const rawTotal = lines.reduce((sum, line) => sum + line.total, 0);
+    const { lines, totalCopies, pricedCopies, total: rawTotal } = collectionLines(gameFilter);
     const slabs = gradedSlabs(gameFilter);
     const gradedTotal = slabs.reduce((sum, s) => sum + (s.value || 0), 0);
     const networth = rawTotal + gradedTotal;
@@ -501,7 +485,7 @@
       const byGame = GAMES.map((g) => ({
         label: shared.gameLabel(g),
         color: GAME_COLOR[g],
-        value: collectionLines(g).lines.reduce((s, l) => s + l.total, 0) + gradedSlabs(g).reduce((s, x) => s + (x.value || 0), 0)
+        value: collectionLines(g).total + gradedSlabs(g).reduce((s, x) => s + (x.value || 0), 0)
       }));
       if (byGame.filter((r) => r.value > 0).length > 1) html += bars(t("portfolio.comp.game"), byGame);
     }
@@ -637,7 +621,7 @@
     section.hidden = false;
     // Snapshot de CADA jogo (não só o filtrado) -> cookies/hist do hub corretos.
     GAMES.forEach((g) => {
-      const raw = collectionLines(g).lines.reduce((s, l) => s + l.total, 0);
+      const raw = collectionLines(g).total;
       const graded = gradedSlabs(g).reduce((s, x) => s + (x.value || 0), 0);
       const wish = wishlistTotal(g) + binderWishTotal(g);
       if (raw <= 0 && graded <= 0 && wish <= 0 && !loadHist(g).length) return; // jogo vazio: não polui
