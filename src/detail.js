@@ -25,6 +25,11 @@
   const params = new URLSearchParams(window.location.search);
   const detailType = params.get("type") || "";
   const detailName = params.get("name") || "";
+  // Desambiguação da página de SET (ver scopeToEdition): o nome sozinho pode
+  // casar com mais de uma edição. A lista de Sets carrega estes dois no link
+  // quando precisa; ausentes, valem os padrões.
+  const detailSetId = params.get("setId") || "";
+  const detailRegion = params.get("region") || "";
   // scope=collection: versão "dentro da sua coleção" (cartas que você não tem
   // aparecem em preto e branco; o resto da página funciona igual ao catálogo).
   const collectionScope = params.get("scope") === "collection";
@@ -383,7 +388,9 @@
 
   function getPageCards() {
     if (detailType === "set") {
-      return cards.filter((card) => card.set === detailName);
+      // O NOME do set não é chave única no catálogo — ver pickSetEdition no
+      // shared.js. A página abre UMA edição (setId + região de idioma).
+      return shared.pickSetEdition(cards.filter((card) => card.set === detailName), detailSetId, detailRegion);
     }
 
     if (detailType === "artist") {

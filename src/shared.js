@@ -2235,6 +2235,48 @@
     return "english";
   }
 
+  // Escolhe UMA edição de set dentro de uma lista de cartas que só foi filtrada
+  // pelo NOME. O nome não é chave única no catálogo, em dois casos reais:
+  //   · MESMA edição em línguas diferentes — "151" tem 207 cartas em EN e 207
+  //     em PT, sob o mesmo setId (sv03.5); idem XY, Black & White, os Black
+  //     Star Promos e os sets chineses (zh-cn + zh-tw);
+  //   · edições DIFERENTES de nome igual — レイジングサーフ é SV3a E SV4a;
+  //     "Pokémon GO" é swsh10.5 (EN/PT) e S10b (JA/ZH).
+  // Sem isto a página do set juntava tudo: o "151" abria com 414 cartas, o
+  // progresso corria sobre o dobro dos slots e — o sintoma que apareceu
+  // primeiro — "Valor total" e "Falta comprar" saíam no DOBRO, porque a carta
+  // PT não tem preço próprio e reaproveita a referência da EN (basePricingId).
+  // A LISTA de sets nunca teve isso (ela filtra por região, Inglês por padrão),
+  // então lista e detalhe do mesmo set discordavam.
+  //
+  // Edição = setId + região de idioma. `wantedSetId`/`wantedRegion` vêm do link
+  // da lista, que sabe qual edição está mostrando; sem eles (link compartilhado,
+  // favorito antigo) vale a preferência de idioma de carta, ou Inglês — e, se
+  // não houver edição nessa região, a maior que houver. Set de nome único
+  // devolve a lista intacta.
+  function pickSetEdition(cardsOfName, wantedSetId, wantedRegion) {
+    const all = cardsOfName || [];
+    if (all.length < 2) return all;
+    const editions = new Map();
+    all.forEach((card) => {
+      const key = `${card.setId || ""}|${cardLanguageRegion(card.language)}`;
+      if (!editions.has(key)) editions.set(key, []);
+      editions.get(key).push(card);
+    });
+    if (editions.size === 1) return all;
+    const pref = getCardLang();
+    const region = wantedRegion || (pref !== "all" ? cardLanguageRegion(pref) : "english");
+    // setId pedido > região pedida > edição mais completa. A última parcela é
+    // sempre < 1, então só desempata — nunca vence um critério pedido.
+    const score = (entry) => {
+      const parts = entry[0].split("|");
+      return (wantedSetId && parts[0] === wantedSetId ? 4 : 0)
+        + (parts[1] === region ? 2 : 0)
+        + entry[1].length / (all.length + 1);
+    };
+    return Array.from(editions.entries()).sort((a, b) => score(b) - score(a))[0][1];
+  }
+
   function cardLanguageLabel(language) {
     const code = normalizeCardLanguage(language);
     const translated = t(`cardLang.${code}`);
@@ -4547,9 +4589,14 @@
     });
   }
 
-  function detailUrl(type, name, scope, game) {
+  function detailUrl(type, name, scope, game, extra) {
     const params = new URLSearchParams({ type, name });
     if (scope) params.set("scope", scope);
+    // `extra` (setId/region): desambiguação de SET. O nome não é chave única —
+    // o mesmo set existe em várias línguas e há sets homônimos com ids
+    // diferentes. Quem monta o link sabe qual edição está mostrando e carrega
+    // isso junto; ver scopeToEdition() no detail.js.
+    if (extra) Object.keys(extra).forEach((key) => { if (extra[key]) params.set(key, extra[key]); });
     // Multi-jogo: o detail é página de SESSÃO — sem ?game= ele abre no último
     // jogo visitado e resolve o set/artista errado. Páginas mescladas
     // (Coleção/Portfólio/Graded) passam o jogo da carta; as páginas de um jogo
@@ -4806,6 +4853,7 @@
     normalizeCardLanguage,
     cardLangSigla,
     cardLanguageRegion,
+    pickSetEdition,
     localizedImg,
     cardImageSources,
     pokemontcgImageUrl,

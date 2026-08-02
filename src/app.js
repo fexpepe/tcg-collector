@@ -102,6 +102,7 @@
         ? cards.filter((card) => langMatch(card.language)).length
         : (catalog.manifest ? catalog.manifest.sets.filter((set) => langMatch(set.language)).reduce((sum, set) => sum + (set.count || 0), 0) : 0);
       owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
+      if (view === "sets") indexAmbiguousSetNames();
       init();
       preview.openFromUrl(); // ?card=<id> compartilhado: reabre o popup
     })
@@ -315,7 +316,7 @@
     if (view === "sets") {
       // Escopo da linha: página de linha mostra SÓ os sets dela; o jogo
       // principal exclui as linhas (cada uma tem página própria via hub).
-      const setItems = indexedGroupsToItems(indexes.sets, visibleIds, toSetItem).filter((set) => lineScope.includes(set.setId));
+      const setItems = indexedGroupsToItems(indexes.sets, visibleIds, toSetItem, null, splitGroupsBySetId).filter((set) => lineScope.includes(set.setId));
       // Linha vintage (?line=): sempre do mais antigo pro mais novo.
       if (linePrefix) return setItems.sort(sortByReleaseAsc);
       // Página de uma série (?serie=id): só os sets dela, sem cabeçalhos.
@@ -386,15 +387,55 @@
       .map(toPokedexItem);
   }
 
-  function indexedGroupsToItems(indexGroups, visibleIds, mapper, sortFn) {
-    return (indexGroups || [])
+  function indexedGroupsToItems(indexGroups, visibleIds, mapper, sortFn, splitFn) {
+    const groups = (indexGroups || [])
       .map((group) => ({
         name: group.name,
         cards: group.cardIds.map((id) => cardsById.get(id)).filter((card) => card && visibleIds.has(card.id))
       }))
-      .filter((group) => group.cards.length > 0)
+      .filter((group) => group.cards.length > 0);
+    return (splitFn ? splitFn(groups) : groups)
       .map(mapper)
       .sort(sortFn || sortByName);
+  }
+
+  // O índice agrupa sets por NOME, e nome não é chave única: レイジングサーフ é
+  // SV3a E SV4a, "Pokémon GO" é swsh10.5 e S10b. Fundidos, viravam um tile só
+  // com a soma das duas edições (452 cartas) e um valor total somando as duas.
+  // O eixo de língua já é resolvido antes, pelo filtro de REGIÃO; aqui sobra
+  // separar por setId. Set de nome único devolve um grupo só — nada muda.
+  function splitGroupsBySetId(groups) {
+    const out = [];
+    groups.forEach((group) => {
+      const bySetId = new Map();
+      group.cards.forEach((card) => {
+        const key = card.setId || "";
+        if (!bySetId.has(key)) bySetId.set(key, []);
+        bySetId.get(key).push(card);
+      });
+      bySetId.forEach((list) => out.push({ name: group.name, cards: list }));
+    });
+    return out;
+  }
+
+  // Nomes de set que casam com mais de uma edição (setId × região) no catálogo
+  // carregado. Só nesses o link precisa carregar ?setId=/?region= — o resto
+  // continua com a URL limpa de sempre. Calculado uma vez, depois da carga.
+  let ambiguousSetNames = new Set();
+  function indexAmbiguousSetNames() {
+    const byName = new Map();
+    cards.forEach((card) => {
+      const name = card.set;
+      if (!name) return;
+      if (!byName.has(name)) byName.set(name, new Set());
+      byName.get(name).add(`${card.setId || ""}|${shared.cardLanguageRegion(card.language)}`);
+    });
+    ambiguousSetNames = new Set(Array.from(byName).filter(([, keys]) => keys.size > 1).map(([name]) => name));
+  }
+
+  function setDetailUrl(item) {
+    if (!ambiguousSetNames.has(item.name)) return detailUrl("set", item.name);
+    return detailUrl("set", item.name, "", "", { setId: item.setId, region: selectedLangRegion });
   }
 
   function createViewItem(item) {
@@ -526,7 +567,7 @@
   function createSetCard(item) {
     const article = document.createElement("article");
     article.className = "set-card";
-    article.dataset.href = detailUrl("set", item.name);
+    article.dataset.href = setDetailUrl(item);
     const progress = item.totalCount ? Math.round((item.ownedCount / item.totalCount) * 100) : 0;
     // Set sem logo próprio: usa o logo do JOGO no lugar do texto (e, quando o
     // set tem logo, o do jogo vira o último fallback se ele quebrar). Jogo sem
@@ -568,7 +609,7 @@
     // o título — duas linhas dizendo a mesma coisa, uma delas ilegível pra
     // maioria). O nome original aparece ao abrir o set.
     article.innerHTML = `
-      <a class="set-art-link" href="${escapeAttribute(detailUrl("set", item.name))}" aria-label="${escapeAttribute(item.displayName)}">
+      <a class="set-art-link" href="${escapeAttribute(setDetailUrl(item))}" aria-label="${escapeAttribute(item.displayName)}">
         <div class="set-art">
           ${releaseBadge}
           ${logo}
@@ -660,6 +701,9 @@
     const sortedCards = group.cards.slice().sort((a, b) => shared.compareCardNumbers(a.number, b.number));
     const sample = sortedCards[0] || {};
     const serieId = sample.setSerieId || deriveSerieId(sample.setId);
+    // Chave do memo = EDIÇÃO (setId + região), não o nome: com sets homônimos o
+    // nome fazia o segundo devolver o valor já calculado do primeiro.
+    const memoKey = `${sample.setId || group.name}|${selectedLangRegion}`;
     return {
       type: "set",
       name: group.name,
@@ -668,8 +712,8 @@
       totalCount: sortedCards.length,
       ownedCount: sortedCards.filter((card) => owned.has(card.id)).length,
       officialTotal: sample.setTotal || sortedCards.length,
-      value: memoSetValue(group.name, sortedCards),
-      missing: memoSetMissing(group.name, sortedCards),
+      value: memoSetValue(memoKey, sortedCards),
+      missing: memoSetMissing(memoKey, sortedCards),
       logo: sample.setLogo || "",
       // Nome de EXIBIÇÃO: tradução em inglês nos vintages japoneses, original no
       // resto. `name` (acima) continua sendo o original — é a chave de link,
