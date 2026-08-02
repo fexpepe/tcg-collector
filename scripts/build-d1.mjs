@@ -2,19 +2,22 @@
 // catálogo que o build já monta (manifest + chunks por set, de cada jogo).
 // Não existe segunda fonte de verdade: o banco é uma projeção dos chunks.
 //
-// Saída: out/d1.sql (recria as tabelas do zero — a carga é sempre total, e o
-// deploy-d1.mjs decide SE carrega comparando o hash gravado em `meta`).
+// Saídas SEPARADAS, cada uma com seu hash em `meta`:
+//   out/d1-cards.sql  — cartas + palavras de busca (muda quando o catálogo muda)
+//   out/d1-prices.sql — tabela de preços (muda a cada sync, de 2 em 2 dias)
+// Separar não é capricho: juntos, um ajuste de preço obrigaria a reescrever as
+// 236 mil cartas e os 2,3 milhões de palavras a cada dois dias. O deploy-d1
+// compara os dois hashes e recarrega só o que mudou.
 //
-// Campos por carta: os do search-index.json (id/nome/set/número/tipo/custo/
-// raridade/cor) — o contrato que o editor de decks já consome. Imagem e preço
-// ficam FORA de propósito: o cliente já hidrata os resultados exibidos pelos
-// chunks (≤60 cartas), e preço muda toda semana — recarregar o banco inteiro
-// por causa dele multiplicaria as cargas sem servir à busca.
+// A carta leva o que a BUSCA usa (nome/set/número/tipo/custo/raridade/cor) e o
+// que a COLEÇÃO usa (setId/artista/idioma/imagem/variantes/lançamento) — é o
+// que permite o /api/collection devolver as cartas de quem coleciona sem o
+// cliente baixar os chunks inteiros dos sets.
 //
-// Uso: node scripts/build-d1.mjs   (escreve out/d1.sql e imprime o hash)
+// Uso: node scripts/build-d1.mjs
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { createHash } from "node:crypto";
-import { cardRows, SCHEMA } from "../functions/api/_search-sql.js";
+import { cardRows, SCHEMA, SCHEMA_PRICES } from "../functions/api/_search-sql.js";
 
 const RAIZ = new URL("../", import.meta.url);
 const JOGOS = [
@@ -25,22 +28,56 @@ const JOGOS = [
   ["jump", "data/jump/"]
 ];
 
-async function leManifest(dir) {
+async function leGlobal(caminho) {
   try {
-    const t = await readFile(new URL(`${dir}manifest.generated.js`, RAIZ), "utf8");
+    const t = await readFile(new URL(caminho, RAIZ), "utf8");
     return JSON.parse(t.slice(t.indexOf("=") + 1).trim().replace(/;\s*$/, ""));
   } catch { return null; }
 }
+const leManifest = (dir) => leGlobal(`${dir}manifest.generated.js`);
 
 const aspas = (v) => `'${String(v).replace(/'/g, "''")}'`;
+const AGORA = new Date().toISOString();
 
+// O D1 recusa statement acima de ~100 KB (SQLITE_TOOBIG) — e foi exatamente
+// isso que derrubou a primeira carga com os campos novos: um lote fixo de 400
+// cartas cabia quando a linha só tinha nome e número, e estourou quando ganhou
+// URL de imagem, artista e variantes. Fatiar por BYTES em vez de por contagem
+// resolve de uma vez: qualquer campo que cresça no futuro só faz o lote ficar
+// menor, nunca inválido.
+const TETO_STATEMENT = 60 * 1024;   // folga generosa sobre o limite do D1
+function insertsEmLotes(prefixo, valores) {
+  const out = [];
+  let lote = [], tamanho = 0;
+  const fecha = () => {
+    if (!lote.length) return;
+    out.push(`${prefixo} VALUES\n${lote.join(",\n")};`);
+    lote = []; tamanho = 0;
+  };
+  for (const v of valores) {
+    // +2 pela vírgula e quebra de linha entre valores.
+    if (tamanho && tamanho + v.length + 2 > TETO_STATEMENT) fecha();
+    lote.push(v);
+    tamanho += v.length + 2;
+  }
+  fecha();
+  return out;
+}
+
+// ── Cartas + palavras ───────────────────────────────────────────────────────
 const linhas = [];
 linhas.push("PRAGMA defer_foreign_keys = on;");
-// Recria do zero: catálogo é substituição total, nunca merge.
-linhas.push("DROP TABLE IF EXISTS cards;", "DROP TABLE IF EXISTS card_words;", "DROP TABLE IF EXISTS meta;");
+// Recria do zero: catálogo é substituição total, nunca merge. `meta` NÃO é
+// derrubada aqui — ela guarda também o hash dos preços, que tem vida própria.
+linhas.push("DROP TABLE IF EXISTS cards;", "DROP TABLE IF EXISTS card_words;");
 linhas.push(SCHEMA.trim());
 
+const COLUNAS = ["game", "id", "name", "set_name", "number", "card_type", "cost", "rarity",
+  "color", "set_id", "artist", "language", "image", "variants", "released"];
+
 let totalCartas = 0, totalPalavras = 0, jogosOk = 0;
+// Preços coletados no MESMO passeio (o manifest e os chunks já estão abertos).
+const precos = [];
 for (const [game, dir] of JOGOS) {
   const manifest = await leManifest(dir);
   if (!manifest || !Array.isArray(manifest.sets) || !manifest.sets.length) continue;
@@ -61,19 +98,26 @@ for (const [game, dir] of JOGOS) {
   if (!cards.length) continue;
   // INSERTs em lote (multi-values): o d1 execute processa statement a
   // statement — um INSERT por carta seriam 200k round-trips de parse.
-  for (let i = 0; i < cards.length; i += 400) {
-    const lote = cards.slice(i, i + 400)
-      .map((c) => `(${[c.game, c.id, c.name, c.set_name, c.number, c.card_type, c.cost, c.rarity, c.color].map(aspas).join(",")})`);
-    linhas.push(`INSERT INTO cards (game,id,name,set_name,number,card_type,cost,rarity,color) VALUES\n${lote.join(",\n")};`);
-  }
-  for (let i = 0; i < words.length; i += 800) {
-    const lote = words.slice(i, i + 800).map((w) => `(${aspas(w.game)},${aspas(w.word)},${aspas(w.id)})`);
-    linhas.push(`INSERT INTO card_words (game,word,id) VALUES\n${lote.join(",\n")};`);
-  }
+  linhas.push(...insertsEmLotes(
+    `INSERT INTO cards (${COLUNAS.join(",")})`,
+    cards.map((c) => `(${COLUNAS.map((k) => aspas(c[k])).join(",")})`)
+  ));
+  linhas.push(...insertsEmLotes(
+    "INSERT INTO card_words (game,word,id)",
+    words.map((w) => `(${aspas(w.game)},${aspas(w.word)},${aspas(w.id)})`)
+  ));
   totalCartas += cards.length;
   totalPalavras += words.length;
   jogosOk++;
   console.log(`  ${game}: ${cards.length} cartas, ${words.length} palavras`);
+
+  // Preços: o monólito do jogo, entrada por entrada, guardado como JSON
+  // verbatim — o cliente recebe o mesmo objeto que um chunk daria.
+  const tabela = (await leGlobal(`${dir}pricing.generated.js`)) || (await leGlobal(`${dir}pricing.js`)) || {};
+  for (const id of Object.keys(tabela)) {
+    if (tabela[id] == null) continue;
+    precos.push({ game, id, j: JSON.stringify(tabela[id]) });
+  }
 }
 
 if (!jogosOk) {
@@ -81,12 +125,45 @@ if (!jogosOk) {
   process.exit(1);
 }
 
+await mkdir(new URL("out/", RAIZ), { recursive: true });
+
 // O hash entra no PRÓPRIO SQL (tabela meta): quem importa grava junto, e o
 // deploy-d1 compara com o remoto pra pular cargas idênticas.
 const corpo = linhas.join("\n");
 const hash = createHash("sha256").update(corpo).digest("hex").slice(0, 16);
-const sql = `${corpo}\nINSERT INTO meta (k, v) VALUES ('hash', ${aspas(hash)}), ('geradoEm', ${aspas(new Date().toISOString())});\n`;
+const sqlCards = `CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT);\n${corpo}\n`
+  + `INSERT INTO meta (k, v) VALUES ('hash', ${aspas(hash)}), ('geradoEm', ${aspas(AGORA)})\n`
+  + `  ON CONFLICT(k) DO UPDATE SET v = excluded.v;\n`;
+await writeFile(new URL("out/d1-cards.sql", RAIZ), sqlCards, "utf8");
 
-await mkdir(new URL("out/", RAIZ), { recursive: true });
-await writeFile(new URL("out/d1.sql", RAIZ), sql, "utf8");
-console.log(`build-d1: ${jogosOk} jogos · ${totalCartas} cartas · ${totalPalavras} palavras · ${(sql.length / 1048576).toFixed(1)} MB · hash ${hash}`);
+// ── Preços (arquivo e hash próprios) ────────────────────────────────────────
+const pl = [];
+pl.push("DROP TABLE IF EXISTS prices;");
+pl.push(SCHEMA_PRICES.trim());
+pl.push(...insertsEmLotes(
+  "INSERT INTO prices (game,id,j)",
+  precos.map((p) => `(${aspas(p.game)},${aspas(p.id)},${aspas(p.j)})`)
+));
+const corpoP = pl.join("\n");
+const hashP = createHash("sha256").update(corpoP).digest("hex").slice(0, 16);
+const sqlPrices = `CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT);\n${corpoP}\n`
+  + `INSERT INTO meta (k, v) VALUES ('hashPrices', ${aspas(hashP)}), ('precosEm', ${aspas(AGORA)})\n`
+  + `  ON CONFLICT(k) DO UPDATE SET v = excluded.v;\n`;
+await writeFile(new URL("out/d1-prices.sql", RAIZ), sqlPrices, "utf8");
+
+// Guarda: statement grande demais é recusado pelo D1 (SQLITE_TOOBIG) — e a
+// carga falha DEPOIS de subir o arquivo, no meio do deploy. Falhar aqui, no
+// build, é barato e não deixa a API meio carregada.
+const LIMITE_D1 = 100 * 1024;
+for (const [nome, sql] of [["d1-cards.sql", sqlCards], ["d1-prices.sql", sqlPrices]]) {
+  let pior = 0;
+  for (const stmt of sql.split(";\n")) if (stmt.length > pior) pior = stmt.length;
+  if (pior > LIMITE_D1) {
+    console.error(`build-d1: ${nome} tem statement de ${(pior / 1024).toFixed(0)} KB — acima do limite de ${LIMITE_D1 / 1024} KB do D1.`);
+    process.exit(1);
+  }
+  console.log(`build-d1: ${nome} — maior statement ${(pior / 1024).toFixed(0)} KB (limite ${LIMITE_D1 / 1024} KB).`);
+}
+
+console.log(`build-d1: ${jogosOk} jogos · ${totalCartas} cartas · ${totalPalavras} palavras · ${(sqlCards.length / 1048576).toFixed(1)} MB · hash ${hash}`);
+console.log(`build-d1: ${precos.length} preços · ${(sqlPrices.length / 1048576).toFixed(1)} MB · hash ${hashP}`);

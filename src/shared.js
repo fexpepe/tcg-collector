@@ -4545,6 +4545,76 @@
 
   // Só as cartas que você tem (Coleção/Wishlist): carga direcionada por jogo.
   function loadOwnedAcrossGames(idsByGame) { return withPageLoading(loadAcrossGames(idsByGame || {})); }
+
+  // ── Coleção pela BORDA (/api/collection) ───────────────────────────────────
+  // Mesma carga direcionada acima, mas em vez de baixar os CHUNKS INTEIROS dos
+  // sets em que você tem carta (dezenas de MB pra usar algumas centenas de
+  // linhas), pede à borda exatamente os ids que você tem. A borda devolve DADO
+  // — carta no formato do chunk e preço verbatim —, nunca um total calculado:
+  // a fórmula do valor continua num lugar só (cardValue), que é o que impede
+  // Coleção, Portfólio e Hub de voltarem a discordar.
+  //
+  // Devolve { cards } no mesmo contrato do loadAcrossGames (e escreve
+  // window.TCG_PRICING igual), ou null quando a borda não pode servir — aí
+  // quem chama usa o caminho de chunks de sempre, sem o usuário perceber.
+  const COLLECTION_LOTE = 1000;   // teto do endpoint é 1200; folga de propósito
+  let collectionApiOff = false;
+  async function fetchCollectionApi(idsByGame) {
+    if (collectionApiOff) return null;
+    // Fatia por REQUISIÇÃO respeitando o teto do endpoint, sem misturar jogos
+    // num lote maior que ele.
+    const lotes = [];
+    let atual = {}, n = 0;
+    for (const game of Object.keys(idsByGame || {})) {
+      const ids = (idsByGame[game] || []).filter(Boolean);
+      for (let i = 0; i < ids.length; i += COLLECTION_LOTE) {
+        const pedaco = ids.slice(i, i + COLLECTION_LOTE);
+        if (n && n + pedaco.length > COLLECTION_LOTE) { lotes.push(atual); atual = {}; n = 0; }
+        atual[game] = (atual[game] || []).concat(pedaco);
+        n += pedaco.length;
+      }
+    }
+    if (n) lotes.push(atual);
+    if (!lotes.length) return { cards: [], pricing: {} };
+
+    const cards = [], pricing = {};
+    for (const lote of lotes) {
+      let r;
+      try {
+        r = await fetch("/api/collection", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(lote)
+        });
+      } catch (e) { return null; }                 // rede caiu: chunks assumem
+      if (!r.ok) { collectionApiOff = true; return null; }  // 503/404: desliga pra sessão
+      let j;
+      try { j = await r.json(); } catch (e) { return null; }
+      Object.keys(j.c || {}).forEach((game) => {
+        (j.c[game] || []).forEach((card) => { card.game = game; cards.push(card); });
+      });
+      Object.keys(j.p || {}).forEach((game) => Object.assign(pricing, j.p[game]));
+    }
+    // Pedimos ids e não veio carta nenhuma: banco vazio ou fora de sincronia —
+    // não dá pra afirmar patrimônio zero, então o caminho de chunks decide.
+    const pedidos = Object.keys(idsByGame || {}).reduce((s, g) => s + (idsByGame[g] || []).length, 0);
+    if (pedidos && !cards.length) return null;
+    return { cards, pricing };
+  }
+
+  // Carga direcionada PREFERINDO a borda, com os chunks como rede de segurança.
+  async function loadOwnedFast(idsByGame) {
+    const pedido = idsByGame || {};
+    const viaApi = await withPageLoading(fetchCollectionApi(pedido));
+    if (viaApi) {
+      // Mesmo efeito colateral do loadAcrossGames: a tabela de preços da sessão
+      // passa a ser a UNIÃO dos jogos, que é onde o cardValue procura.
+      window.TCG_PRICING = viaApi.pricing || {};
+      return { cards: viaApi.cards, indexesByGame: {}, viaApi: true };
+    }
+    const r = await loadOwnedAcrossGames(pedido);
+    return Object.assign({ viaApi: false }, r);
+  }
   // Catálogo INTEIRO dos dois jogos (seletor do Binder).
   function loadAllGamesCatalog() { return withPageLoading(loadAcrossGames(null)); }
 
@@ -5060,6 +5130,7 @@
     loadCatalog,
     loadCatalogForCardIds,
     loadOwnedAcrossGames,
+    loadOwnedFast,
     // Catálogo de UM jogo (pode ser diferente do jogo da sessão) — o construtor
     // de decks precisa disto: um deck de Lorcana aberto numa sessão Pokémon.
     loadGameCatalog,
