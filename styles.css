@@ -7244,7 +7244,11 @@ select,
 .lp-main { max-width: 1080px; margin: 0 auto; padding: 0 20px 64px; }
 
 /* --- Hero ---------------------------------------------------------------- */
-.lp-hero { position: relative; text-align: center; padding: 152px 0 100px; }
+/* Espaçamentos FLUIDOS (clamp), não um valor fixo com um breakpoint no fim: o
+   herói é wordmark + título + subtítulo + botões empilhados, e num 360x640 a
+   soma das folgas de desktop empurrava os botões pra baixo da dobra. Com clamp
+   cada folga encolhe junto com a tela, em vez de dar um salto só aos 560px. */
+.lp-hero { position: relative; text-align: center; padding: clamp(40px, 8.5vw, 120px) 0 clamp(52px, 7vw, 100px); }
 /* glow discreto atrás do wordmark, na cor da marca */
 .lp-hero::before {
   content: ""; position: absolute; inset: 0 8% auto; height: 390px;
@@ -7254,10 +7258,10 @@ select,
 /* 100% (do contêiner), não 90vw: vw ignora o padding de 20px da .lp-main, então
    o wordmark encostava/cortava na borda direita no celular. */
 .lp-wordmark { width: min(575px, 100%); height: auto; color: var(--text); display: inline-block; }
-.lp-tagline { font-size: clamp(24px, 3.3vw, 31px); font-weight: 650; margin: 48px 0 0; letter-spacing: -0.01em; }
-.lp-sub { max-width: 720px; margin: 25px auto 0; color: var(--subtle); font-size: 18px; line-height: 1.65; }
-.lp-ctas { display: flex; gap: 16px; justify-content: center; margin-top: 50px; flex-wrap: wrap; }
-.lp-hero-note { margin-top: 23px; font-size: 13px; color: var(--subtle); }
+.lp-tagline { font-size: clamp(24px, 3.3vw, 31px); font-weight: 650; margin: clamp(20px, 3.4vw, 48px) 0 0; letter-spacing: -0.01em; }
+.lp-sub { max-width: 720px; margin: clamp(12px, 1.8vw, 25px) auto 0; color: var(--subtle); font-size: clamp(15.5px, 1.4vw, 18px); line-height: 1.6; }
+.lp-ctas { display: flex; gap: 12px; justify-content: center; margin-top: clamp(22px, 3.5vw, 50px); flex-wrap: wrap; }
+.lp-hero-note { margin-top: clamp(14px, 1.7vw, 23px); font-size: 13px; color: var(--subtle); }
 
 /* --- Números ------------------------------------------------------------- */
 .lp-stats {
@@ -7351,7 +7355,13 @@ select,
   .lp-card, .lp-card-wide { grid-column: span 3; }
 }
 @media (max-width: 560px) {
-  .lp-hero { padding-top: 84px; }
+  /* Empilhados, os dois CTAs tinham larguras diferentes ("Começar agora, é
+     grátis" contra "Já tenho conta") e ficavam escalonados no meio da tela.
+     Mesma largura resolve o desalinho e dá dois alvos de toque iguais. */
+  .lp-ctas { flex-direction: column; align-items: stretch; gap: 10px; }
+  /* .cta é inline-flex: esticado, o conteúdo encosta na esquerda se ninguém
+     centralizar (o text-align do herói não governa item de flex). */
+  .lp-ctas .cta { width: 100%; box-sizing: border-box; justify-content: center; }
   .lp-stats { grid-template-columns: repeat(2, 1fr); row-gap: 18px; }
   .lp-card, .lp-card-wide { grid-column: span 6; }
 }

@@ -132,6 +132,16 @@
     return (card && card.variants && card.variants[0]) || "Normal";
   }
 
+  // Variantes de uma carta, NUNCA vazio. Existe porque `card.variants || [...]`
+  // parece seguro e não é: array vazio é truthy, e o catálogo tem cartas com
+  // `variants: []` (pop2-9, pop6-1…). Quem escrevia assim iterava zero variantes
+  // e a carta sumia da conta — foi o que fez a Coleção mostrar um valor MENOR
+  // que o Portfólio. A carta está guardada sob defaultVariant(), então é ele que
+  // tem de aparecer aqui.
+  function cardVariants(card) {
+    return (card && card.variants && card.variants.length) ? card.variants : [defaultVariant(card)];
+  }
+
   // Condições no padrão LigaPokémon (melhor -> pior). NM é o default ao adicionar.
   const CARD_CONDITIONS = ["M", "NM", "SP", "MP", "HP", "D"];
   const DEFAULT_CONDITION = "NM";
@@ -1187,6 +1197,56 @@
   function gradedTotalValue(gameOf, gameFilter) {
     return gradedSlabsValued(gameOf).reduce((s, x) =>
       ((!gameFilter || gameFilter === "all" || x.game === gameFilter) ? s + (x.value || 0) : s), 0);
+  }
+
+  // ── Quanto vale a sua coleção ──────────────────────────────────────────────
+  // UMA conta, usada por toda tela que mostra esse número: Coleção, Portfólio e
+  // Hub. Antes cada uma tinha a sua e elas discordavam:
+  //
+  //   · a Coleção fazia `card.variants || [defaultVariant(card)]`. Array VAZIO é
+  //     truthy em JS, então carta que vem do catálogo com `variants: []` (existe:
+  //     pop2-9, pop6-1…) não iterava variante nenhuma e entrava valendo ZERO. O
+  //     Portfólio testava o `.length` e caía na variante padrão — que é onde a
+  //     carta de fato está guardada, porque quem adiciona usa defaultVariant().
+  //     Quem tinha uma dessas via a Coleção MENOR que o Portfólio.
+  //   · o Hub não calculava nada: lia um retrato que só o Portfólio grava em
+  //     cookie. Ou seja, mostrava o valor de quando você abriu o Portfólio pela
+  //     última vez — e nada para o jogo cujo Portfólio você nunca abriu.
+  //
+  // `cards` pode conter repetido (a carga por chunk traz o set inteiro): a
+  // dedupe por id é feita aqui, senão a mesma carta entraria duas vezes.
+  function collectionValueLines(cards, owned, prices, options) {
+    const { gameFilter } = options || {};
+    const lines = [];
+    let totalCopies = 0, pricedCopies = 0, total = 0;
+    const vistos = new Set();
+    (cards || []).forEach((card) => {
+      if (!card || vistos.has(card.id)) return;
+      vistos.add(card.id);
+      if (gameFilter && gameFilter !== "all" && card.game !== gameFilter) return;
+      const variants = cardVariants(card);
+      variants.forEach((variant) => {
+        owned.conditionBreakdown(card.id, variant).forEach(({ condition, quantity }) => {
+          totalCopies += quantity;
+          const val = cardValue(card, variant, prices, condition);
+          if (val.value > 0) {
+            pricedCopies += quantity;
+            total += val.value * quantity;
+            lines.push({ card, variant, condition, quantity, unit: val.value, total: val.value * quantity, estimated: val.estimated, source: val.source });
+          }
+        });
+      });
+    });
+    return { lines, totalCopies, pricedCopies, total };
+  }
+
+  // Patrimônio = cartas soltas + slabs graded. É o número grande da Coleção, do
+  // Portfólio e do Hub.
+  function collectionNetWorth(cards, owned, prices, options) {
+    const { gameOf, gameFilter } = options || {};
+    const raw = collectionValueLines(cards, owned, prices, { gameFilter }).total;
+    const graded = gradedTotalValue(gameOf, gameFilter);
+    return { raw, graded, total: raw + graded };
   }
 
   // Soma o valor (variante padrão, NM) de uma lista de cartas, na moeda atual.
@@ -4787,6 +4847,7 @@
     createPriceStore,
     brMarketplaceLinks,
     defaultVariant,
+    cardVariants,
     CARD_CONDITIONS,
     CONDITION_MULTIPLIERS,
     DEFAULT_CONDITION,
@@ -4868,6 +4929,8 @@
     gradedBadgeHtml,
     gradedSlabsValued,
     gradedTotalValue,
+    collectionValueLines,
+    collectionNetWorth,
     currencySymbol: saleCurrencySymbol,
     distBarsHtml,
     memoValue,

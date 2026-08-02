@@ -13,7 +13,7 @@
 // novo no <head> (src/login-boot.js). Bump obrigatório por causa do login: o
 // HTML antigo em cache não pede esse arquivo, e é ele que evita o formulário
 // piscar na volta do link mágico.
-const SHELL_CACHE = "tcg-shell-v232";
+const SHELL_CACHE = "tcg-shell-v235";
 // IMAGE_CACHE vai a v2: a versão anterior do SW podia cravar um erro 404/timeout
 // como imagem "opaca" por 7 dias (imagem quebrada presa até um hard refresh).
 // Renomear o cache faz o activate apagar o antigo UMA vez — limpa os erros

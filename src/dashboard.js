@@ -55,6 +55,12 @@
   const slabs = gradedCount();
   el.slabs.textContent = String(slabs);
 
+  // Valor: o cookie do Portfólio é só o PRIMEIRO PAINT (ele existe pra o número
+  // aparecer sem esperar catálogo). É um retrato da última vez que você abriu o
+  // Portfólio daquele jogo — e não existe pro jogo que você nunca abriu lá, que
+  // era exatamente por que o Hub discordava da Coleção. Logo abaixo, quando as
+  // cartas chegam, ele é substituído pela MESMA conta que a Coleção e o
+  // Portfólio fazem (shared.collectionNetWorth).
   const pf = shared.portfolioValueTotal();
   el.value.textContent = pf != null ? shared.formatMoney(shared.getCurrency(), pf) : "—";
   if (pf == null) el.value.parentElement.title = t("dash.pfHint");
@@ -147,9 +153,15 @@
     const myCards = cards.filter((card) => {
       if (seen.has(card.id)) return false;
       seen.add(card.id);
-      return (card.variants || ["Normal"]).some((v) => owned.variantTotal(card.id, v) > 0);
+      return shared.cardVariants(card).some((v) => owned.variantTotal(card.id, v) > 0);
     });
     if (!myCards.length) return;
+
+    // Valor de verdade, no lugar do retrato do cookie: mesma função da Coleção e
+    // do Portfólio, sobre as mesmas cartas e a mesma tabela de preço.
+    const patrimonio = shared.collectionNetWorth(myCards, owned, prices, { gameOf }).total;
+    el.value.textContent = patrimonio > 0 ? shared.formatMoney(shared.getCurrency(), patrimonio) : "—";
+    el.value.parentElement.removeAttribute("title");
 
     // Mais valiosas (top 3 por valor unitário, como era na Coleção)
     const top = myCards.map((card) => {

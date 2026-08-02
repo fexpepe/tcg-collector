@@ -822,9 +822,10 @@
     elements.dashCopies.textContent = copies;
     elements.dashDistinct.textContent = myCards.length;
     elements.dashSets.textContent = unique(myCards.map((card) => card.set)).length;
-    // Valor de mercado = coleção raw + slabs graded (o que você TEM), respeitando
-    // o filtro de jogo. Mesma fórmula do Portfólio, pros dois baterem.
-    const value = ownedMarketValue(myCards) + shared.gradedTotalValue(gameOf, gameFilter);
+    // Valor de mercado = cartas soltas + slabs graded, respeitando o filtro de
+    // jogo. A conta vive no shared (collectionNetWorth) e é a MESMA do Portfólio
+    // e do Hub — antes cada tela tinha a sua e elas discordavam.
+    const value = shared.collectionNetWorth(myCards, owned, prices, { gameOf, gameFilter }).total;
     elements.dashValue.textContent = value > 0 ? shared.formatMoney(shared.getCurrency(), value) : "—";
 
     // Mais valiosas (top 3 por valor unitário)
@@ -891,19 +892,6 @@
 
   // Valor de mercado das cartas que você tem (na moeda atual): soma cada cópia
   // pela condição que ela tem.
-  function ownedMarketValue(myCards) {
-    let total = 0;
-    myCards.forEach((card) => {
-      (card.variants || [shared.defaultVariant(card)]).forEach((variant) => {
-        owned.conditionBreakdown(card.id, variant).forEach(({ condition, quantity }) => {
-          const v = shared.cardValue(card, variant, prices, condition).value;
-          if (v) total += v * quantity;
-        });
-      });
-    });
-    return total;
-  }
-
   // --- Aba de cartas (grade com filtros) ---
 
   // Mesmo ícone de compartilhar dos tiles (shared.TILE_ICONS.share).
