@@ -148,8 +148,10 @@
     elements.resultsHeader.hidden = false;
     if (elements.resultsTitle) elements.resultsTitle.textContent = t("results.heading.cards");
     // Filtra ANTES de gerar pares carta×variante (barato mesmo com ~60k cartas).
+    // options.list = resultados já resolvidos pela API da borda (apiApply):
+    // vêm filtrados por jogo e casados por palavra, só entram no funil daqui.
     const q = term();
-    const matched = cards.filter((card) =>
+    const matched = (options && options.list) || cards.filter((card) =>
       (gameFilter === "all" || card.game === gameFilter) && matchesCardQuery(card, q));
     const pairs = shared.cardVariantPairs(matched);
     const cmp = sortComparator();
@@ -174,7 +176,46 @@
     try { history.replaceState(null, "", `${window.location.pathname}${sp.toString() ? `?${sp}` : ""}`); } catch (e) { /* ignora */ }
   }
 
-  const apply = () => { writeUrl(); ensureCatalog().then(() => render({ resetCount: true })); };
+  // Busca pela BORDA enquanto o catálogo completo não desceu: a /api/search
+  // responde nome/set/número/artista de TODOS os jogos em poucos KB e só as
+  // ≤60 cartas exibidas são hidratadas (os chunks dos sets delas). O catálogo
+  // inteiro — o maior download do site, dezenas de MB — só desce se a API
+  // estiver desligada. Depois que ele chegou (catalogPromise existe), a busca
+  // local de sempre segue valendo: instantânea, sem rede e sem teto de 60.
+  let apiSeq = 0;
+  async function apiApply() {
+    const seq = ++apiSeq;
+    if (!elements.grid.querySelector(".card-tile")) shared.showSkeletons(elements.grid, "card", 8);
+    const hits = await shared.searchApi(gameFilter === "all" ? "all" : gameFilter, term(), 60);
+    if (seq !== apiSeq) return;
+    if (!hits) { ensureCatalog().then(() => render({ resetCount: true })); return; } // API desligada: caminho de sempre
+    const idsByGame = {};
+    hits.forEach((h) => { const g = h.g || "pokemon"; (idsByGame[g] = idsByGame[g] || []).push(h.i); });
+    let catalog = { cards: [] };
+    if (hits.length) {
+      try { catalog = await shared.loadOwnedAcrossGames(idsByGame); }
+      catch (e) { ensureCatalog().then(() => render({ resetCount: true })); return; }
+    }
+    if (seq !== apiSeq) return;
+    const byId = new Map((catalog.cards || []).map((c) => [c.id, c]));
+    const found = [];
+    hits.forEach((h) => {
+      const card = byId.get(h.i);
+      if (!card) return;
+      // registra pro preview/posse/preço funcionarem igual ao caminho completo
+      cardGameMap.set(card.id, card.game);
+      cardsById.set(card.id, card);
+      found.push(card);
+    });
+    render({ resetCount: true, list: found });
+  }
+
+  const apply = () => {
+    writeUrl();
+    if (catalogPromise) { ensureCatalog().then(() => render({ resetCount: true })); return; }
+    if (!isSearching()) { render({ resetCount: true }); return; }
+    apiApply();
+  };
   elements.search.addEventListener("input", debounce(apply, 250));
 
   elements.gameFilter.addEventListener("click", (event) => {
@@ -200,7 +241,7 @@
     elements.search.value = q0;
     if (isSearching()) {
       shared.showSkeletons(elements.grid, "card", 12);
-      ensureCatalog().then(() => render({ resetCount: true }));
+      apply(); // mesma régua da digitação: borda primeiro, catálogo só se precisar
     }
   }
 })();

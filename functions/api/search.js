@@ -12,7 +12,8 @@
 import { buildSearch } from "./_search-sql.js";
 
 // Jogos válidos (espelho do registro do game.js). Barra consulta arbitrária.
-const GAMES = new Set(["pokemon", "lorcana", "onepiece", "magic", "fab", "gundam",
+// "all" = busca global (o Explorar): todos os jogos numa consulta só.
+const GAMES = new Set(["all", "pokemon", "lorcana", "onepiece", "magic", "fab", "gundam",
   "dbfw", "ygo", "digimon", "riftbound", "naruto", "hxh", "jump"]);
 
 export async function onRequestGet(context) {
@@ -42,9 +43,11 @@ export async function onRequestGet(context) {
 
   try {
     const r = await env.DB.prepare(query.sql).bind(...query.params).all();
+    // g (jogo) na resposta: na busca global é o que diz de qual catálogo
+    // hidratar cada resultado; nas por jogo é redundância inofensiva.
     const cartas = (r.results || []).map((linha) => ({
       i: linha.id, n: linha.name, s: linha.set_name, u: linha.number,
-      t: linha.card_type, c: linha.cost, r: linha.rarity, k: linha.color
+      t: linha.card_type, c: linha.cost, r: linha.rarity, k: linha.color, g: linha.game
     }));
     return json({ c: cartas }, 200, 300);
   } catch (e) {

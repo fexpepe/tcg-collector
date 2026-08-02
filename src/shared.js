@@ -4880,6 +4880,25 @@
     return map[dexId] || [];
   }
 
+  // Busca de cartas pela BORDA (/api/search, D1): responde os mesmos campos do
+  // search-index (i/n/s/u/t/c/r/k) + g (jogo), em poucos KB — indexa nome, set,
+  // número e artista por prefixo de palavra. game "all" busca em TODOS os
+  // jogos numa consulta só (o Explorar). Qualquer resposta não-ok desliga a
+  // API pra sessão inteira (503 {off:1} = banco ainda não ligado; 404 = dev):
+  // quem chama trata null como "use o caminho estático de sempre" — a borda
+  // acelera, nunca erra na cara do usuário.
+  let searchApiOff = false;
+  async function searchApi(game, consulta, limite) {
+    if (searchApiOff) return null;
+    try {
+      const r = await fetch("/api/search?game=" + encodeURIComponent(game)
+        + "&q=" + encodeURIComponent(consulta) + "&limit=" + (limite || 60));
+      if (!r.ok) { searchApiOff = true; return null; }
+      const j = await r.json();
+      return Array.isArray(j.c) ? j.c : null;
+    } catch (e) { return null; }               // rede oscilou: a próxima tecla tenta de novo
+  }
+
   window.TCGShared = {
     createCollectionStore,
     createFavoritesStore,
@@ -5014,6 +5033,7 @@
     cardCode,
     cardLabel,
     matchesCardQuery,
+    searchApi,
     awaitCatalog,
     loadCatalog,
     loadCatalogForCardIds,

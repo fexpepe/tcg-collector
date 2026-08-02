@@ -184,21 +184,8 @@
     return p;
   }
 
-  // Busca na borda (/api/search, D1): responde os MESMOS campos do índice em
-  // poucos KB. Só é consultada ENQUANTO o índice do jogo não chegou — depois a
-  // busca local é instantânea e sem rede. Qualquer resposta não-ok (404 no dev,
-  // 503 {off:1} de "banco ainda não ligado") desliga a API pra sessão inteira:
-  // o contrato é degradar pro caminho estático, nunca errar na cara do usuário.
-  let apiOff = false;
-  async function searchApiFor(game, q) {
-    if (apiOff) return null;
-    try {
-      const r = await fetch("/api/search?game=" + encodeURIComponent(game) + "&q=" + encodeURIComponent(q) + "&limit=60");
-      if (!r.ok) { apiOff = true; return null; }
-      const j = await r.json();
-      return Array.isArray(j.c) ? j.c : null;
-    } catch (e) { return null; }               // rede oscilou: a próxima tecla tenta de novo
-  }
+  // A busca na borda em si (shared.searchApi) é compartilhada com o Explorar:
+  // mesmos campos do índice, mesma regra de desligar no primeiro não-ok.
 
   // Dispara o download do índice SEM esperar por ele; quando chegar, liga a UI
   // de facetas (as opções saem do índice inteiro — a API não as fornece).
@@ -1316,7 +1303,7 @@
     // nunca estão ativas neste caminho: a UI delas nasce do próprio índice.
     let found = null;
     if (!indexReady[deck.game]) {
-      const pApi = searchApiFor(deck.game, q);
+      const pApi = shared.searchApi(deck.game, q, 60);
       preloadIndexFor(deck.game);
       const daApi = await pApi;
       if (seq !== searchSeq) return;
