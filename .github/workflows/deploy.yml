@@ -490,6 +490,13 @@ jobs:
       - name: Completa o manifest com metadados de set
         run: node scripts/enrich-manifest.mjs
 
+      # Reparte o monólito de preços de cada jogo em chunks POR SET (espelhando
+      # os chunks de carta) e liga a flag `pc` no manifest. Roda em TODO deploy
+      # pela mesma razão do enrich-manifest: no build rápido os syncs são
+      # pulados e um passo dentro do sync deixaria a produção sem os chunks.
+      - name: Reparte os preços por set
+        run: node scripts/split-pricing.mjs
+
       # O game.js injeta o catálogo em runtime por jogo; em produção ele carrega
       # os arquivos .generated mesclados em vez dos crus. Basta flipar a flag.
       # PRECISA rodar antes da minificação (o padrão com espaços some no minify).
