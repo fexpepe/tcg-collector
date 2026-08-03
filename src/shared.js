@@ -6019,7 +6019,7 @@
       // precisa de contagem/autor/capa pra desenhar o card, e baixar as zonas de
       // 60 decks só pra isso custaria dezenas de KB. Decks publicados antes
       // destes campos voltam null — o card degrada sem eles.
-      const sel = "id,title,game,created_at,data->>author,data->>format,data->>total,data->>cover";
+      const sel = "id,title,game,created_at,data->>author,data->>format,data->>total,data->>cover,data->>cost";
       const r = await fetch(`${SUPABASE_URL}/rest/v1/shares?kind=eq.${encodeURIComponent(kind)}${g}&select=${encodeURIComponent(sel)}&order=created_at.desc&limit=${Math.min(Number(limit) || 60, 100)}`, { headers: authHeaders() });
       return r.ok ? await r.json() : [];
     } catch (e) { return []; }

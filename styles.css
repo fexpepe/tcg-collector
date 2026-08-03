@@ -7942,6 +7942,67 @@ select,
 .dkc-filter .game-tag { min-height: 0; padding: 2px 8px; }
 .dkc-filter.on { border-color: var(--accent); background: var(--accent-soft); }
 .dkc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+
+/* ── Galeria em DUAS COLUNAS: lista à esquerda, filtros + atalhos à direita ──
+   Mesma estética do resto do site (painéis com --panel/--line, cantos retos,
+   sem sombra colorida): o que veio da referência é a ESTRUTURA — destaque em
+   cima, lista compacta embaixo, coluna de apoio ao lado.
+   A coluna da direita é sticky, como a do editor de deck. */
+.dkc-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; align-items: start; }
+.dkc-main { min-width: 0; }
+.dkc-aside { display: grid; gap: 14px; position: sticky; top: var(--header-h, 56px); }
+.dkc-panel { border: 1px solid var(--line); background: var(--panel); padding: 16px; }
+.dkc-panel-h { display: flex; align-items: center; gap: 9px; margin: 0 0 12px; font-size: 15px; }
+.dkc-panel-h svg { flex: none; color: var(--accent); }
+.dkc-panel .dkc-sort { display: flex; flex-direction: column; align-items: stretch; gap: 6px; margin: 0; }
+.dkc-panel .dkc-sort span { font-size: 12px; font-weight: 700; color: var(--muted); }
+.dkc-panel .deck-view-sel { width: 100%; }
+.dkc-mine p { margin: 0 0 12px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+.dkc-mine .cta { width: 100%; justify-content: center; }
+
+/* Seções da coluna principal: título com ícone + subtítulo, como no conceito. */
+.dkc-sec { margin-bottom: 26px; }
+.dkc-sec-h { display: flex; align-items: center; gap: 9px; margin: 0 0 2px; font-size: 17px; }
+.dkc-sec-h svg { flex: none; color: var(--accent); }
+.dkc-sec-sub { margin: 0 0 12px; font-size: 13px; color: var(--muted); }
+
+/* DESTAQUE: capa grande + nome + tags + metadados em fileira. */
+.dkc-hero { display: flex; gap: 16px; padding: 16px; border: 1px solid var(--line); background: var(--panel); color: var(--text); text-decoration: none; }
+.dkc-hero:hover { background: var(--panel-strong); border-color: var(--accent); }
+.dkc-hero-cover { flex: none; width: 132px; }
+.dkc-hero-cover img, .dkc-hero-cover .deck-noimg { width: 100%; aspect-ratio: 63/88; object-fit: cover; display: block; border: 1px solid var(--line); }
+.dkc-hero-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+.dkc-hero-name { font-size: 21px; font-weight: 800; letter-spacing: -0.3px; line-height: 1.2; }
+.dkc-hero-tags, .dkc-row-tags { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dkc-fmt { font-size: 12px; font-weight: 700; color: var(--muted); }
+/* Metadados em pares rótulo/valor separados por divisória — o padrão que o
+   cartão-herói da Coleção já usa, então a leitura é a mesma no site inteiro. */
+.dkc-hero-meta, .dkc-row-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: auto; }
+.dkc-meta-item { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.dkc-meta-item + .dkc-meta-item { border-left: 1px solid var(--line); padding-left: 18px; }
+.dkc-meta-k { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; font-weight: 700; }
+.dkc-meta-item strong { font-size: 14px; font-weight: 800; white-space: nowrap; }
+
+/* Lista compacta: uma linha por deck (capa pequena, nome+tags, metadados). */
+.dkc-rows { display: grid; gap: 8px; }
+.dkc-row { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border: 1px solid var(--line); background: var(--panel); color: var(--text); text-decoration: none; }
+.dkc-row:hover { background: var(--panel-strong); border-color: var(--accent); }
+.dkc-row-cover { flex: none; width: 44px; }
+.dkc-row-cover img, .dkc-row-cover .deck-noimg { width: 100%; aspect-ratio: 63/88; object-fit: cover; display: block; border: 1px solid var(--line); }
+.dkc-row-main { flex: 1 1 40%; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.dkc-row-name { font-size: 15px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dkc-row .dkc-row-meta { flex: 0 1 auto; margin-top: 0; justify-content: flex-end; }
+@media (max-width: 1080px) {
+  .dkc-layout { grid-template-columns: minmax(0, 1fr); }
+  .dkc-aside { position: static; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+}
+@media (max-width: 620px) {
+  .dkc-hero { flex-direction: column; }
+  .dkc-hero-cover { width: 108px; }
+  .dkc-row { flex-wrap: wrap; }
+  .dkc-row .dkc-row-meta { flex-basis: 100%; justify-content: flex-start; gap: 6px 14px; }
+  .dkc-meta-item + .dkc-meta-item { padding-left: 14px; }
+}
 /* Card da galeria: CAPA à esquerda (arte da 1ª carta que entrou no deck) +
    nome, jogo, nº de cartas, autor e data. Antes era só nome + tag + data num
    retângulo vazio — nada pra bater o olho e decidir se vale abrir. A capa é o

@@ -392,38 +392,92 @@
       <select class="deck-view-sel" data-dkc-sort>
         ${["recent", "cards", "name"].map((s) => `<option value="${escA(s)}"${communitySort === s ? " selected" : ""}>${esc(t("decks.sortCom." + s))}</option>`).join("")}
       </select></label>`;
+    // Ícones das seções (SVG inline: a CSP é 'self' e são dois).
+    const IC_STAR = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8L3.6 9.7l5.8-.8z"/></svg>';
+    const IC_CLOCK = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3.2 2"/></svg>';
+    const IC_FILTER = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg>';
+
+    // Linha de metadados de um deck. Só entra o que o registro TEM: a galeria lê
+    // campos por path (sem baixar as zonas), então cada número aqui existe de
+    // verdade — nada de placeholder. `cost` é retrato do publicar (decks antigos
+    // não têm) e vem em BRL: converte pra moeda do header.
+    const metaHtml = (r) => {
+      const n = Number(r.total) || 0;
+      const custoBRL = Number(r.cost) || 0;
+      const custo = custoBRL > 0
+        ? (shared.convertMoney(custoBRL, "BRL", shared.getCurrency()) == null ? custoBRL : shared.convertMoney(custoBRL, "BRL", shared.getCurrency()))
+        : 0;
+      const quando = r.created_at ? new Date(r.created_at).toLocaleDateString(shared.getLocale()) : "";
+      return [
+        n ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.cardsWord"))}</span><strong>${esc(String(n))}</strong></span>` : "",
+        custo > 0 ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.costEstimated"))}</span><strong>${esc(shared.formatMoney(shared.getCurrency(), custo))}</strong></span>` : "",
+        r.author ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.authorWord"))}</span><strong>${esc(String(r.author).slice(0, 30))}</strong></span>` : "",
+        quando ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.publishedWord"))}</span><strong>${esc(quando)}</strong></span>` : ""
+      ].filter(Boolean).join("");
+    };
+    const capaHtml = (r) => r.cover
+      ? `<img src="${escA(r.cover)}" alt="" loading="lazy">`
+      : `<span class="deck-noimg"></span>`;
+
     let body;
     if (!rows.length) {
       body = `<section class="empty-state"><h2>${esc(t("decks.emptyCommunityTitle"))}</h2>
         <p>${esc(t(communityGame ? "decks.emptyCommunityGame" : "decks.emptyCommunity"))}</p></section>`;
     } else {
-      body = `<div class="dkc-grid">` + rows.map((r) => {
-        const g = shared.normalizeGame(r.game || "pokemon");
-        const quando = r.created_at ? new Date(r.created_at).toLocaleDateString(shared.getLocale()) : "";
-        const n = Number(r.total) || 0;
-        // Capa: a URL vem no payload (gravada no publicar), então o card não
-        // precisa do catálogo do jogo. Deck antigo sem capa mostra o tile vazio
-        // no lugar — sem buraco no layout.
-        const capa = r.cover
-          ? `<img src="${escA(r.cover)}" alt="" loading="lazy">`
-          : `<span class="deck-noimg"></span>`;
-        return `<a class="dkc-card" href="decks.html?s=${encodeURIComponent(r.id)}">
-          <span class="dkc-card-cover">${capa}</span>
-          <span class="dkc-card-body">
-            <span class="dkc-card-name">${esc(String(r.title || t("decks.untitled")).slice(0, 60))}</span>
-            <span class="dkc-card-meta">
-              ${shared.gameTagHtml(g)}
-              ${n ? `<span class="dkc-card-n">${esc(t("decks.cardsCount", { n: n }))}</span>` : ""}
-            </span>
-            <span class="dkc-card-sub">
-              ${r.author ? `<span class="dkc-author">${esc(t("decks.byAuthor", { author: String(r.author).slice(0, 30) }))}</span>` : ""}
-              <span class="dkc-meta-date">${esc(quando)}</span>
-            </span>
+      // DESTAQUE = o primeiro da ordem escolhida (o mais recente por padrão).
+      // O rótulo diz exatamente isso: não existe sinal de popularidade em deck
+      // (não contamos visita nem voto), e chamar de "em destaque" um deck que é
+      // só o mais novo seria inventar ranking.
+      const hero = rows[0];
+      const resto = rows.slice(1);
+      const gHero = shared.normalizeGame(hero.game || "pokemon");
+      const heroHtml = `<section class="dkc-sec">
+        <h2 class="dkc-sec-h">${IC_STAR}<span>${esc(t("decks.spotlight"))}</span></h2>
+        <p class="dkc-sec-sub">${esc(t("decks.spotlightSub"))}</p>
+        <a class="dkc-hero" href="decks.html?s=${encodeURIComponent(hero.id)}">
+          <span class="dkc-hero-cover">${capaHtml(hero)}</span>
+          <span class="dkc-hero-body">
+            <span class="dkc-hero-name">${esc(String(hero.title || t("decks.untitled")).slice(0, 60))}</span>
+            <span class="dkc-hero-tags">${shared.gameTagHtml(gHero)}${hero.format ? `<span class="dkc-fmt">${esc(t("decks.format." + hero.format))}</span>` : ""}</span>
+            <span class="dkc-hero-meta">${metaHtml(hero)}</span>
           </span>
-        </a>`;
-      }).join("") + `</div>`;
+        </a>
+      </section>`;
+
+      const listaHtml = resto.length ? `<section class="dkc-sec">
+        <h2 class="dkc-sec-h">${IC_CLOCK}<span>${esc(t("decks.recentTitle"))}</span></h2>
+        <p class="dkc-sec-sub">${esc(t("decks.recentSub"))}</p>
+        <div class="dkc-rows">` + resto.map((r) => {
+          const g = shared.normalizeGame(r.game || "pokemon");
+          return `<a class="dkc-row" href="decks.html?s=${encodeURIComponent(r.id)}">
+            <span class="dkc-row-cover">${capaHtml(r)}</span>
+            <span class="dkc-row-main">
+              <span class="dkc-row-name">${esc(String(r.title || t("decks.untitled")).slice(0, 60))}</span>
+              <span class="dkc-row-tags">${shared.gameTagHtml(g)}${r.format ? `<span class="dkc-fmt">${esc(t("decks.format." + r.format))}</span>` : ""}</span>
+            </span>
+            <span class="dkc-row-meta">${metaHtml(r)}</span>
+          </a>`;
+        }).join("") + `</div></section>` : "";
+      body = heroHtml + listaHtml;
     }
-    box.innerHTML = `<div class="dkc-head">${chips}<div class="dkc-head-right">${sortSel}${topCta}</div></div>${body}`;
+
+    // Coluna da direita: filtros/ordenação + atalho pros decks do usuário.
+    // O filtro por JOGO fica nos chips lá em cima (padrão do site) — repetir
+    // como select aqui daria dois controles pra mesma coisa.
+    const aside = `<aside class="dkc-aside">
+      <section class="dkc-panel">
+        <h2 class="dkc-panel-h">${IC_FILTER}<span>${esc(t("decks.filtersTitle"))}</span></h2>
+        ${sortSel}
+      </section>
+      <section class="dkc-panel dkc-mine">
+        <h2 class="dkc-panel-h"><span>${esc(t("decks.mineTitle"))}</span></h2>
+        <p>${esc(t(logged ? "decks.mineSub" : "decks.mineSubOut"))}</p>
+        ${topCta}
+      </section>
+    </aside>`;
+
+    box.innerHTML = `<div class="dkc-head">${chips}</div>
+      <div class="dkc-layout"><div class="dkc-main">${body}</div>${aside}</div>`;
     box.querySelectorAll("[data-dkc-game]").forEach((b) => b.addEventListener("click", () => {
       communityGame = b.dataset.dkcGame;
       renderCommunity(box, logged);
@@ -1529,10 +1583,18 @@
         // A capa é a URL da imagem, não o id: assim a galeria não precisa do
         // catálogo de cada jogo só pra resolver uma miniatura.
         const capa = current.coverCardId && cat.byId[current.coverCardId];
+        // `cost`: RETRATO do valor do deck no momento de publicar. A galeria lê
+        // por path (data->>cost), do mesmo jeito que total/cover — ela NÃO baixa
+        // as zonas dos 60 decks (seriam dezenas de KB só pra desenhar cards), e
+        // sem o retrato não teria como mostrar "custo estimado" na lista.
+        // Em BRL, a moeda-base dos preços; quem lê converte pra moeda do header.
+        // Deck publicado antes disto volta sem o campo e o card omite a linha.
+        const custo = computeValue(current, cat.byId);
         const payload = {
           v: 1, name: current.name, game: current.game, format: current.format || null,
           author: handle, zones,
           total: totalCards(current),
+          cost: Math.round((custo.total || 0) * 100) / 100,
           cover: (capa && capa.image) || null
         };
         // Já publicado -> ATUALIZA a mesma linha ("salvar público"): o id do
