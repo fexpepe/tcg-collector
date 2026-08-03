@@ -5870,9 +5870,12 @@ html:not([data-cardlang="all"]) #setRegionChips {
 #collectionDashboard .collection-toolbar-actions { flex: none; margin-left: auto; }
 #collectionDashboard .collection-toolbar-actions button { display: inline-flex; align-items: center; gap: 7px; }
 #collectionDashboard .collection-toolbar-actions svg { width: 16px; height: 16px; flex: none; }
-/* Visualização (▦/≣) compacta na ponta, na altura dos botões vizinhos. */
+/* Visualização (▦/≣) e Compartilhar QUADRADOS (1:1), na MESMA altura dos
+   botões vizinhos (42px do button base). A moldura do .view-toggle tem 1px de
+   borda em volta: os botões internos ficam 40px pra caixa fechar em 42. */
 #collectionDashboard .view-toggle { border-radius: 10px; }
-#collectionDashboard .view-toggle-btn { min-width: 38px; min-height: 34px; font-size: 1.02rem; }
+#collectionDashboard .view-toggle-btn { width: 40px; min-width: 40px; height: 40px; min-height: 40px; padding: 0; font-size: 1.05rem; }
+#collectionDashboard .icon-btn { width: 42px; min-width: 42px; padding: 0; justify-content: center; }
 /* "Filtros" aberto = destacado (o estado mora no aria-expanded). */
 #collectionDashboard .collection-toolbar-actions button[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
 /* Botão SÓ-ÍCONE (ex.: Compartilhar): o rótulo continua no DOM pro leitor de

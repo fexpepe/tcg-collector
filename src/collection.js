@@ -767,22 +767,16 @@
     updateCarousel();
   }
 
-  // Aba "Pokémon"/"Personagens" (agrupa por espécie/personagem) segue o filtro de
-  // jogo: vira "Personagens" no Lorcana e SOME no "Todos" (misturar espécies de
-  // Pokémon com personagens de Lorcana não faz sentido). Se a aba ativa sumir,
-  // volta pra "Cartas".
+  // Aba "Pokémon"/"Personagens" (agrupa por espécie/personagem) segue o filtro
+  // de jogo: "Pokémon" só no filtro Pokémon; "Personagens" nos demais E no
+  // "Todos" — antes ela SUMIA no Todos, e o menu mudava de proporção em relação
+  // ao do perfil público (Fernando preferiu a fileira estável; o agrupamento
+  // funciona por carta, então misturar jogos só muda o rótulo).
   function syncGameTabs() {
     const tab = elements.tabs.querySelector('[data-tab="pokemon"]');
     if (!tab) return;
-    const hide = gameFilter === "all";
-    tab.hidden = hide;
-    if (!hide) tab.textContent = gameFilter !== "pokemon" && gameFilter !== "all" ? t("toolbar.characters") : t("toolbar.pokemon");
-    if (hide && activeTab === "pokemon") {
-      activeTab = "cards";
-      Array.from(elements.tabs.children).forEach((n) => {
-        if (n.dataset && n.dataset.tab) n.setAttribute("aria-pressed", n.dataset.tab === "cards" ? "true" : "false");
-      });
-    }
+    tab.hidden = false;
+    tab.textContent = gameFilter === "pokemon" ? t("toolbar.pokemon") : t("toolbar.characters");
   }
 
   function render(options) {
