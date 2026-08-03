@@ -5861,7 +5861,19 @@ html:not([data-cardlang="all"]) #setRegionChips {
    profile/.dash-stat-money vêm DEPOIS neste arquivo, e sem o reforço de
    especificidade elas venceriam. Números tabulares: trocar o filtro muda os
    NÚMEROS, nunca as posições. */
-.dash-card.dash-stats-hero { padding: 18px 20px; gap: 0; box-shadow: var(--shadow); }
+/* container-type: o número de colunas das contagens tem de seguir a largura do
+   CARTÃO, não a da janela. No perfil público este mesmo cartão divide a grade
+   com "Mais valiosas" e as distribuições: numa janela de 1280px ele tem 445px,
+   e as 4 colunas do desktop faziam o valor vazar 119px por cima da vizinha.
+   As @media abaixo continuam existindo como camada de reserva (navegador sem
+   @container cai nelas); as @container vêm depois e ganham onde há suporte. */
+.dash-card.dash-stats-hero {
+  padding: 18px 20px;
+  gap: 0;
+  box-shadow: var(--shadow);
+  container-type: inline-size;
+  container-name: hero;
+}
 .dash-stats-hero .dash-stats-head { display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; padding-bottom: 16px; }
 .dash-stats-hero .dash-profile { border: 0; padding: 0; margin: 0; flex: 1 1 auto; min-width: 0; gap: 10px; }
 .dash-stats-hero .dash-profile-name { font-size: 22px; letter-spacing: -0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -5873,7 +5885,7 @@ html:not([data-cardlang="all"]) #setRegionChips {
 /* Visualização (▦/≣) e Compartilhar QUADRADOS (1:1), na MESMA altura dos
    botões vizinhos (42px do button base). A moldura do .view-toggle tem 1px de
    borda em volta: os botões internos ficam 40px pra caixa fechar em 42. */
-#collectionDashboard .view-toggle { border-radius: 10px; }
+#collectionDashboard .view-toggle { border-radius: 0; } /* canto reto, como o resto do site */
 #collectionDashboard .view-toggle-btn { width: 40px; min-width: 40px; height: 40px; min-height: 40px; padding: 0; font-size: 1.05rem; }
 #collectionDashboard .icon-btn { width: 42px; min-width: 42px; padding: 0; justify-content: center; }
 /* "Filtros" aberto = destacado (o estado mora no aria-expanded). */
@@ -5916,28 +5928,91 @@ html:not([data-cardlang="all"]) #setRegionChips {
    própria que ele tem no layout base do cartão compartilhado. */
 .dash-stats-hero .dash-stat-money { border-top: 0; padding-top: 0; }
 .dash-stats-hero .dash-stat-money .dash-stat-val { font-size: 22px; }
+/* REDE DE SEGURANÇA do valor: ele é `nowrap` (dígito não pode quebrar no meio),
+   então sem isto um "R$ 110.451,64" numa célula estreita VAZAVA por cima da
+   divisória e da célula vizinha. Os breakpoints abaixo garantem largura pra 7
+   dígitos em toda faixa de tela; este clipe só age em caso extremo (moeda com
+   prefixo longo, 8+ dígitos) — e corta os centavos, que é degradação melhor
+   que texto sobreposto. */
+.dash-stats-hero .dash-stat-money .dash-stat-val { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 /* Divisória entre as colunas — sem ela o olho lê "898 627 125" como uma
    sequência, não como medidas diferentes. A primeira não leva. */
 .dash-stats-hero .dash-stats-counts > div + div { border-left: 1px solid var(--line); padding-left: 18px; }
+/* Faixa INTERMEDIÁRIA (tablet/janela estreita): 4 colunas só cabem a partir de
+   ~1080px — em 800px a coluna do valor ficava com 98px pra um número de 142px.
+   Aqui vira 2×2, que dá ~260px por célula. Media query com min-width pro bloco
+   de ≤720 (mais abaixo) não depender da ordem no arquivo. */
+@media (max-width: 1079px) and (min-width: 721px) {
+  .dash-stats-hero .dash-stats-counts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 /* Mobile: herói compacto, contagens 2×2 (divisória só entre as colunas) e as
    ações quebram pra linha própria sob a identidade. O full-bleed (sem borda
    lateral) é SÓ da Minha Coleção — no perfil público o cartão divide a grade
    com os outros cards. */
 @media (max-width: 720px) {
-  #collectionDashboard.collection-dashboard { margin: 0 -16px 14px; }
-  #collectionDashboard .dash-card.dash-stats-hero { border-radius: 0; border-left: 0; border-right: 0; }
+  /* A Minha Coleção tem UM cartão: não pode virar a ESTEIRA horizontal do
+     @media 600px (que serve ao Dashboard e ao perfil público, com 4 caixas).
+     Sem isto o cartão herdava `flex: 0 0 84%` e ficava 282px numa tela de
+     375px — indentado, com 73px de vão à direita e o valor apertado. Seletor
+     com id de propósito: as regras da esteira vêm depois no arquivo. */
+  #collectionDashboard.collection-dashboard {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    overflow: visible;
+    scroll-snap-type: none;
+    margin: 0 -16px 14px;
+    padding: 0;
+  }
+  #collectionDashboard .dash-card.dash-stats-hero { flex: none; border-radius: 0; border-left: 0; border-right: 0; }
   .dash-card.dash-stats-hero { padding: 14px 16px; }
   .dash-stats-hero .dash-stats-head { padding-bottom: 12px; }
   .dash-stats-hero .dash-profile-name { font-size: 17px; }
   .dash-stats-hero .dash-avatar-in { width: 40px; height: 40px; font-size: 16px; }
-  .dash-stats-hero .dash-stats-counts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; }
+  /* Celular: as 3 CONTAGENS numa fileira e o VALOR na linha inteira embaixo.
+     Em 2×2 a célula do valor ficava com 63px pra um número de 131px — e aqui
+     nem diminuir a fonte resolveria (daria ~9px). Na linha cheia ele tem
+     ~270px. As contagens perdem o ícone: com 3 colunas de ~98px, 30px de
+     ícone comeriam o rótulo; o ícone que importa (o do valor) fica. */
+  .dash-stats-hero .dash-stats-counts { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 12px; }
   .dash-stats-hero .dash-stats-head + .dash-stats-counts { padding-top: 12px; }
-  .dash-stats-hero .dash-stats-counts > div + div { border-left: 0; padding-left: 0; }
-  .dash-stats-hero .dash-stats-counts > div:nth-child(even) { border-left: 1px solid var(--line); padding-left: 14px; }
+  .dash-stats-hero .dash-stats-counts > div + div:not(.dash-stat-money) { border-left: 1px solid var(--line); padding-left: 12px; }
+  .dash-stats-hero .dash-stats-counts > div:not(.dash-stat-money) .dash-stat-ic { display: none; }
+  .dash-stats-hero .dash-stat-money {
+    grid-column: 1 / -1;
+    border-left: 0;
+    padding-left: 0;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
   .dash-stats-hero .dash-stat-val { font-size: 18px; }
-  .dash-stats-hero .dash-stat-money .dash-stat-val { font-size: 18px; }
+  /* 20px em telefone normal; em 320px cai pra ~17px, senão um valor de 7
+     dígitos encostava na borda da linha (medido: faltavam 2px). */
+  .dash-stats-hero .dash-stat-money .dash-stat-val { font-size: clamp(17px, 5.4vw, 20px); }
   .dash-stats-hero .dash-stat-ic { width: 30px; height: 30px; border-radius: 9px; }
   .dash-stats-hero .dash-stat-ic svg { width: 16px; height: 16px; }
+}
+/* --- Colunas por largura do CARTÃO (ver container-name: hero acima) --------
+   Os limites saíram de medição, não de chute: o valor precisa de ~161px (7
+   dígitos, 22px) + 40px de ícone + 18px da divisória. Vêm DEPOIS das @media
+   de propósito — mesma especificidade, então a container query ganha quando o
+   navegador a suporta. */
+@container hero (max-width: 999px) {
+  /* 4 colunas só num cartão largo; abaixo disso, 2×2 (célula ~200px+). */
+  .dash-stats-hero .dash-stats-counts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@container hero (max-width: 519px) {
+  /* Cartão estreito (celular OU a coluna do perfil público): as 3 contagens
+     numa fileira, sem ícone, e o valor na linha inteira embaixo. */
+  .dash-stats-hero .dash-stats-counts { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .dash-stats-hero .dash-stats-counts > div + div:not(.dash-stat-money) { border-left: 1px solid var(--line); padding-left: 12px; }
+  .dash-stats-hero .dash-stats-counts > div:not(.dash-stat-money) .dash-stat-ic { display: none; }
+  .dash-stats-hero .dash-stat-money {
+    grid-column: 1 / -1;
+    border-left: 0;
+    padding-left: 0;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
 }
 @media (max-width: 1080px) { .collection-dashboard { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .dash-carousel { grid-column: 1 / -1; } }
 /* Perfil público: são 3 cards fixos (sem carrossel). Em 2 colunas o terceiro
@@ -6117,7 +6192,7 @@ a.dash-profile-handle:hover, a.shared-kind:hover,
   flex: 1 1 100%;
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 0; /* canto reto, como as abas e os chips que ela embala */
   padding: 8px;
   box-shadow: var(--shadow);
 }
