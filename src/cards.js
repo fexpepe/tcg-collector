@@ -260,6 +260,7 @@
         return;
       }
       if (shared.handleWantTileClick(event, wishlist)) { refreshOwnership(); return; }
+      if (shared.handleRemoveOneTileClick(event, owned)) { refreshOwnership(); return; }
       // Na busca, o "+" soma +1 a cada clique e pisca "✓ Adicionada!" por 2s,
       // pra cadastrar várias cópias da mesma carta sem abrir o card.
       const addButton = shared.handleAddTileClick(event, owned, wishlist);

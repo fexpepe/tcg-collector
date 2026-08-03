@@ -62,6 +62,7 @@
     const opener = event.target.closest("[data-preview-card-id]");
     if (opener) { preview.open(opener.dataset.previewCardId, opener.dataset.previewVariant); return; }
     if (shared.handleWantTileClick(event, wishlist)) { refreshOwnership(); return; }
+    if (shared.handleRemoveOneTileClick(event, owned)) { refreshOwnership(); return; }
     // Como na busca por jogo: "+" soma +1 por clique com o feedback ✓ de 2s.
     const addButton = shared.handleAddTileClick(event, owned, wishlist);
     if (addButton) { refreshOwnership(); shared.flashTileAdded(addButton, owned); }

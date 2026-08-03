@@ -15,7 +15,7 @@
 // piscar na volta do link mágico.
 // v237: descarta os caches envenenados por resposta REDIRECIONADA (ver
 // semRedirect) — era a tela de "site não existe" ao navegar depois de deploy.
-const SHELL_CACHE = "tcg-shell-v242";
+const SHELL_CACHE = "tcg-shell-v243";
 // IMAGE_CACHE vai a v2: a versão anterior do SW podia cravar um erro 404/timeout
 // como imagem "opaca" por 7 dias (imagem quebrada presa até um hard refresh).
 // Renomear o cache faz o activate apagar o antigo UMA vez — limpa os erros

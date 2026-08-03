@@ -284,8 +284,10 @@
       }
 
       // Remover do desejo (♥) ou marcar como tenho ("comprei!") — ambos tiram
-      // a variante da lista, então o tile sai da grade.
-      if (shared.handleWantTileClick(event, wishlist) || shared.handleOwnedTileClick(event, owned, wishlist)) {
+      // a variante da lista, então o tile sai da grade. O − desfaz o "comprei!".
+      if (shared.handleWantTileClick(event, wishlist)
+        || shared.handleRemoveOneTileClick(event, owned)
+        || shared.handleOwnedTileClick(event, owned, wishlist)) {
         refresh();
       }
     });

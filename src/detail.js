@@ -779,8 +779,10 @@
         return;
       }
 
+      if (shared.handleRemoveOneTileClick(event, owned)) { refreshOwnership(); return; }
+
       // Quick-add: cada clique no "+" soma +1 e pisca "✓ Adicionada!" por 2s
-      // (igual ao Explorar). Remover é no preview da carta.
+      // (igual ao Explorar).
       const addButton = shared.handleAddTileClick(event, owned, wishlist);
       if (addButton) {
         refreshOwnership();

@@ -604,9 +604,14 @@
         refreshOwnershipCards();
         return;
       }
+      // O − tira uma cópia (antes do +, senão o clique cairia no quick-add).
+      if (shared.handleRemoveOneTileClick(event, owned)) {
+        refreshOwnershipCards();
+        renderDashboard();
+        return;
+      }
       // Quick-add: o "+" soma +1 a cada clique e pisca "✓ Adicionada!" por 2s,
-      // pra cadastrar várias cópias sem abrir o card (igual ao Explorar). Pra
-      // remover, é no preview da carta (clique na imagem).
+      // pra cadastrar várias cópias sem abrir o card (igual ao Explorar).
       const addButton = shared.handleAddTileClick(event, owned, wishlist);
       if (addButton) {
         refreshOwnershipCards();
@@ -942,13 +947,12 @@
 
   // variantTile devolve um NÓ do DOM (não string) — usado tanto no pager (flat)
   // quanto via appendChild nas seções de pasta.
+  // Sem `tags`: o rodapé do tile agora é só pasta/coração/−/+ (as tags saíram
+  // da grade em 2026-08-03 — etiquetar é dentro do card, que já tem a seção).
   function makeTile({ card, variant }) {
-    const cardTags = tags.tagsOf(card.id);
     return shared.variantTile(card, variant, owned, wishlist, prices, {
       addMode: true,
-      folders: true, inFolder: !!folders.folderOf(card.id),
-      tags: true, tagActive: cardTags.length > 0,
-      cardTags: cardTags.map((tg) => ({ id: tg.id, name: tg.name || t("tags.untitled"), color: tg.color }))
+      folders: true, inFolder: !!folders.folderOf(card.id)
     });
   }
 
@@ -1087,19 +1091,9 @@
     pop.addEventListener("mouseleave", () => { tagListTimer = setTimeout(closeTagListPopover, 150); });
     pop.addEventListener("click", (event) => { const it = event.target.closest("[data-tag-goto]"); if (it) goToTag(it.dataset.tagGoto); });
   }
-  // Atualiza in place os chips do tile (sem re-render). A linha é o próprio ponto
-  // de adicionar (chip "+ Tag" no fim), então sempre existe — só troca o conteúdo.
+  // O tile não mostra mais chips de tag (a etiquetagem vive dentro do card), então
+  // aqui só resta manter o resumo do topo em dia quando uma tag muda.
   function updateTileTags(tile, cardId) {
-    const row = tile && tile.querySelector(".tile-tags");
-    if (row) {
-      const list = tags.tagsOf(cardId);
-      const chip = (tg) => `<span class="tile-tag-chip" style="--tag:${shared.safeColor(tg.color)}" data-tag-goto="${escapeAttribute(tg.id)}" role="button" tabindex="0" title="${escapeAttribute(tg.name || t("tags.untitled"))}">${escapeHtml(tg.name || t("tags.untitled"))}</span>`;
-      row.innerHTML = list.length
-        ? chip(list[0])
-          + (list.length > 1 ? `<span class="tile-tag-more" data-tag-more role="button" tabindex="0" title="${escapeAttribute(t("tile.tags"))}">+${list.length - 1}</span>` : "")
-          + `<span class="tile-tag-add tile-tag-add-mini" data-tag-manage role="button" tabindex="0" aria-label="${escapeAttribute(t("tile.tags"))}" title="${escapeAttribute(t("tile.tags"))}">+</span>`
-        : `<span class="tile-tag-add" data-tag-manage role="button" tabindex="0" aria-label="${escapeAttribute(t("tile.tags"))}" title="${escapeAttribute(t("tile.tags"))}">+ ${escapeHtml(t("tags.addShort"))}</span>`;
-    }
     renderDashboard();
   }
 

@@ -3729,6 +3729,7 @@
   const TILE_ICONS = {
     binder: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
     plus: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+    minus: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
     check: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
     heart: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
     heartFilled: '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
@@ -3782,18 +3783,11 @@
       ? `<button type="button" class="tile-btn tile-want${isWanted ? " active" : ""}" data-want-card-id="${escapeAttribute(card.id)}" data-want-variant="${escapeAttribute(variant)}" aria-pressed="${isWanted}" aria-label="${escapeAttribute(isWanted ? t("tile.unwantAria", { variant }) : t("tile.wantAria", { variant }))}" title="${escapeAttribute(isWanted ? t("tile.wanted") : t("tile.want"))}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}</button>`
       : `<button type="button" class="tile-btn" disabled title="${escapeAttribute(t("tile.binder"))}" aria-label="${escapeAttribute(t("tile.binder"))}">${TILE_ICONS.binder}</button>`;
 
-    // Tags no rodapé (à esquerda dos botões): mostra só 1 chip + indicador "+N"
-    // se houver mais; sem tags, o chip fantasma "+ Tag". A linha toda abre o menu.
-    const tagsFootHtml = (opts && opts.tags) ? (function () {
-      const list = opts.cardTags || [];
-      const chip = (tg) => `<span class="tile-tag-chip" style="--tag:${tg.color}" data-tag-goto="${escapeAttribute(tg.id)}" role="button" tabindex="0" title="${escapeAttribute(tg.name)}">${escapeHtml(tg.name)}</span>`;
-      const inner = list.length
-        ? chip(list[0])
-          + (list.length > 1 ? `<span class="tile-tag-more" data-tag-more role="button" tabindex="0" title="${escapeAttribute(t("tile.tags"))}">+${list.length - 1}</span>` : "")
-          + `<span class="tile-tag-add tile-tag-add-mini" data-tag-manage role="button" tabindex="0" aria-label="${escapeAttribute(t("tile.tags"))}" title="${escapeAttribute(t("tile.tags"))}">+</span>`
-        : `<span class="tile-tag-add" data-tag-manage role="button" tabindex="0" aria-label="${escapeAttribute(t("tile.tags"))}" title="${escapeAttribute(t("tile.tags"))}">+ ${escapeHtml(t("tags.addShort"))}</span>`;
-      return `<div class="tile-tags" data-tag-card="${escapeAttribute(card.id)}">${inner}</div>`;
-    })() : "";
+    // Botão de REMOVER uma cópia (−), à esquerda do +: desfaz um clique errado
+    // sem ter de abrir o preview. Fica no DOM sempre e o refreshTileOwnership só
+    // liga/desliga o `hidden` — recriar o tile faria a imagem piscar. Sem cópia
+    // não há o que remover, então ele nasce escondido.
+    const minusButton = `<button type="button" class="tile-btn tile-minus" data-minus-card-id="${escapeAttribute(card.id)}" data-minus-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.removeOneAria", { variant }))}" title="${escapeAttribute(t("tile.removeOne"))}"${quantity > 0 ? "" : " hidden"}>${TILE_ICONS.minus}</button>`;
 
     article.innerHTML = `
       <div class="card-image">${image}</div>
@@ -3803,10 +3797,15 @@
         <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
         ${tilePriceHtml(card, variant, prices)}
         <div class="tile-foot">
-          ${tagsFootHtml}
+          <!-- Ordem: pasta, coração, −, +. O − precisa colar no + (é o par de
+               ajuste de quantidade), e o coração cedeu esse lugar. As TAGS
+               saíram daqui: com quatro botões não cabia o chip "+ Tag" sem
+               sobrepor, e etiquetar é tarefa de dentro do card (o preview tem
+               a seção de tags). -->
           <div class="tile-actions">
           ${opts && opts.folders ? `<button type="button" class="tile-btn tile-folder${opts.inFolder ? " active" : ""}" data-folder-card-id="${escapeAttribute(card.id)}" data-folder-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.collection"))}" title="${escapeAttribute(t("tile.collection"))}">${TILE_ICONS.folder}</button>` : ""}
           ${wantButton}
+          ${minusButton}
           <button type="button" class="tile-btn tile-own${ownActive}" data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}" aria-pressed="${!addMode && isOwned}" aria-label="${escapeAttribute(ownAria)}">
             ${ownIcon}${qtyBadge}
           </button>
@@ -3828,6 +3827,13 @@
     const quantity = store.variantTotal(cardId, variant);
     const isOwned = quantity > 0;
     tile.classList.toggle("owned", isOwned);
+
+    // O − só existe quando há cópia pra tirar (nasce hidden no variantTile).
+    const minusButton = tile.querySelector(".tile-minus");
+    if (minusButton) {
+      minusButton.hidden = !isOwned;
+      minusButton.setAttribute("aria-label", t("tile.removeOneAria", { variant }));
+    }
 
     const button = tile.querySelector(".tile-own");
     // Em addMode, não toca num botão em pleno feedback de "✓ Adicionada!" (a flag
@@ -3861,6 +3867,21 @@
 
     const summaryEl = tile.querySelector("[data-tile-conditions]");
     if (summaryEl) summaryEl.textContent = conditionSummary(store, cardId, variant);
+  }
+
+  // Clique no − do tile: tira UMA cópia. Prefere tirar da condição PADRÃO (NM),
+  // que é a que o + adiciona; se não houver NM, tira da última condição da lista
+  // (quem tem só cartas jogadas também precisa desfazer). Devolve true se mexeu.
+  function handleRemoveOneTileClick(event, store) {
+    const button = event.target.closest("[data-minus-card-id]");
+    if (!button) return false;
+    const cardId = button.dataset.minusCardId;
+    const variant = button.dataset.minusVariant;
+    const breakdown = store.conditionBreakdown(cardId, variant);
+    if (!breakdown.length) return false;
+    const alvo = breakdown.find((x) => x.condition === DEFAULT_CONDITION) || breakdown[breakdown.length - 1];
+    store.add(cardId, variant, alvo.condition, -1);
+    return true;
   }
 
   // Trata o clique no botão +/✓ de um tile (liga/desliga a variante; default NM).
@@ -5022,6 +5043,7 @@
     refreshTileOwnership,
     gameKey,
     handleOwnedTileClick,
+    handleRemoveOneTileClick,
     handleAddTileClick,
     flashTileAdded,
     handleWantTileClick,
