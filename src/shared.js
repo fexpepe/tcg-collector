@@ -1863,7 +1863,12 @@
   // backend (unicidade do @ + leitura pública da coleção) entra na etapa 2.
   // updatedAt já carimbado pra futuro sync LWW.
   const PROFILE_KEY = "tcg-collector-profile-v1";
-  const PROFILE_DEFAULTS = { displayName: "", handle: "", isPublic: false, showValues: false };
+  // isPublic nasce LIGADO (decisão de produto, 2026-08-02): quem cria conta já
+  // sai com perfil público; desligar fica nas Configurações. Seguro pras contas
+  // existentes: sem @ nada é publicado (publishProfile exige handle), e quem já
+  // salvou o perfil alguma vez tem isPublic explícito no localStorage/nuvem —
+  // o default só alcança perfil virgem.
+  const PROFILE_DEFAULTS = { displayName: "", handle: "", isPublic: true, showValues: false };
   function getProfile() {
     try { return Object.assign({}, PROFILE_DEFAULTS, JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}")); }
     catch (e) { return Object.assign({}, PROFILE_DEFAULTS); }
@@ -5059,6 +5064,7 @@
     pushProfile,
     pullProfile,
     handleAvailable,
+    promptHandleOnboarding,
     fetchPublicProfile,
     pushPublicProfile,
     deletePublicProfile,
@@ -5933,6 +5939,89 @@
       return await r.json();
     } catch (e) { return null; }
   }
+  // --- Onboarding do @ (primeiro login) ---
+  // Aparece na volta do login, POR CIMA da tela "Entrando…", quando o perfil
+  // ainda não tem @: cadastro novo, ou conta antiga que nunca escolheu um. O
+  // perfil já nasce público (PROFILE_DEFAULTS), mas sem @ nada é publicado —
+  // é aqui que a conta ganha o endereço público dela. "Agora não" segue sem @
+  // (na prática, perfil privado); a pergunta volta no próximo login.
+  // Resolve sempre (salvou, pulou ou Escape) — o boot do login espera por ela.
+  function promptHandleOnboarding() {
+    return new Promise((resolve) => {
+      let modal = document.getElementById("handleOnboardModal");
+      if (!modal) { modal = document.createElement("div"); modal.id = "handleOnboardModal"; modal.className = "ts-modal"; document.body.appendChild(modal); }
+      modal.innerHTML = `
+        <div class="ts-backdrop"></div>
+        <section class="ts-panel" role="dialog" aria-modal="true" aria-labelledby="obTitle">
+          <h2 id="obTitle">${escapeHtml(t("onboard.title"))}</h2>
+          <p class="ts-intro">${escapeHtml(t("onboard.intro"))}</p>
+          <span class="setting-handle"><span class="setting-handle-at" aria-hidden="true">@</span><input type="text" id="obHandle" class="setting-input" maxlength="24" placeholder="fexpepe" autocomplete="off" spellcheck="false" aria-label="${escapeAttribute(t("settings.handle"))}"></span>
+          <span class="setting-field-status" id="obStatus" aria-live="polite"></span>
+          <p class="ts-hint">${escapeHtml(t("onboard.publicNote"))}</p>
+          <div class="onboard-actions">
+            <button type="button" data-ob-save disabled>${escapeHtml(t("onboard.save"))}</button>
+            <button type="button" class="secondary" data-ob-skip>${escapeHtml(t("onboard.skip"))}</button>
+          </div>
+        </section>`;
+      document.body.classList.add("preview-open");
+      const input = modal.querySelector("#obHandle");
+      const status = modal.querySelector("#obStatus");
+      const saveBtn = modal.querySelector("[data-ob-save]");
+      function setStatus(key, kind) {
+        status.textContent = key ? t(key) : "";
+        status.className = "setting-field-status" + (kind ? " is-" + kind : "");
+      }
+      const esc = (e) => { if (e.key === "Escape") close(); };
+      const close = () => {
+        document.removeEventListener("keydown", esc);
+        modal.remove();
+        document.body.classList.remove("preview-open");
+        resolve();
+      };
+      document.addEventListener("keydown", esc);
+
+      // Mesma dança do settings.js: normaliza no input, checa no servidor com
+      // debounce, e só habilita o salvar com o veredito do valor ATUAL.
+      let checkT = null;
+      let usable = false;
+      input.addEventListener("input", () => {
+        const norm = normalizeHandle(input.value);
+        if (input.value !== norm) input.value = norm;
+        usable = false; saveBtn.disabled = true;
+        clearTimeout(checkT);
+        if (!norm) { setStatus("", ""); return; }
+        if (norm.length < 3) { setStatus("settings.handleShort", "warn"); return; }
+        setStatus("settings.handleChecking", "");
+        checkT = setTimeout(async () => {
+          const avail = await handleAvailable(norm);
+          if (input.value !== norm) return; // já digitou outra coisa
+          if (avail === false) { setStatus("settings.handleTaken", "bad"); return; }
+          // null = erro de rede na checagem: deixa tentar — o 409 do push decide.
+          usable = true; saveBtn.disabled = false;
+          setStatus(avail === true ? "settings.handleAvailable" : "", avail === true ? "good" : "");
+        }, 500);
+      });
+      input.addEventListener("keydown", (e) => { if (e.key === "Enter" && !saveBtn.disabled) saveBtn.click(); });
+
+      saveBtn.addEventListener("click", async () => {
+        if (!usable) return;
+        const h = normalizeHandle(input.value);
+        if (h.length < 3) return;
+        saveBtn.disabled = true;
+        setProfile({ handle: h, isPublic: true });
+        const res = await pushProfile();
+        if (res && res.ok) { close(); return; }
+        // Falhou: desfaz o @ local — senão fica um @ NÃO reservado no aparelho,
+        // aparentando salvo (e o dono de verdade dele ficaria bloqueado aqui).
+        setProfile({ handle: "" });
+        if (res && res.error === "taken") { usable = false; setStatus("settings.handleTaken", "bad"); }
+        else { saveBtn.disabled = false; setStatus("onboard.error", "warn"); }
+      });
+      modal.querySelector("[data-ob-skip]").addEventListener("click", close);
+      input.focus();
+    });
+  }
+
   // Lê um perfil público pelo handle (anon). {handle,display_name,show_values,data}|null.
   // Via RPC get_public_profile (leitura PONTUAL — a tabela não é mais paginável
   // por anon, anti-scraping). Fallback pro SELECT direto enquanto a RPC não
@@ -6684,6 +6773,11 @@
         }
         await pushAllRemote(fresh.access_token, fresh.user.id, mesclado);
         await pullProfile();
+        // Sem @ depois de puxar o perfil = primeiro login (ou conta antiga que
+        // nunca escolheu um): pergunta AQUI, em cima da tela "Entrando…" — o
+        // único ponto em que todo usuário passa, uma vez por login. O timeout
+        // do login.js não atropela: com sessão gravada, ele deixa a tela quieta.
+        if (!getProfile().handle) await promptHandleOnboarding();
         // O reload abaixo chega SEM o #access_token, então a página de login
         // não teria como saber que ainda é uma volta de login e mostraria o
         // formulário por um instante. A marca mantém a tela de "entrando" de

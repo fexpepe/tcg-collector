@@ -3773,6 +3773,13 @@ a.hub-tile:hover {
 .ts-contact { color: var(--subtle); font-size: 13px; margin: 4px 0 0; border-top: 1px solid var(--line); padding-top: 14px; }
 .ts-contact a { color: var(--accent); }
 
+/* Onboarding do @ (primeiro login, shared.js): reusa o modal ts-* e os campos
+   do settings. */
+#handleOnboardModal .setting-handle { margin: 4px 0 6px; }
+#handleOnboardModal .setting-input { flex: 1; min-width: 0; }
+.onboard-actions { display: flex; gap: 10px; margin-top: 16px; }
+.onboard-actions button { flex: 1; justify-content: center; }
+
 /* Página de Configurações */
 .settings { max-width: 720px; }
 .settings-group { margin-bottom: 26px; }
