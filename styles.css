@@ -906,6 +906,9 @@ input::placeholder {
   padding-right: 34px;
 }
 .prof-tab.is-active { background: var(--accent); color: var(--on-accent); }
+/* A Coleção pessoal usa as MESMAS abas, mas marca a ativa por aria-pressed
+   (é o que o collection.js já escrevia nos chips antigos). */
+.prof-tab[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
 /* Cabeçalho da coleção aberta no perfil público (Voltar + nome). */
 .coll-open-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
 .coll-open-name { font-size: 18px; font-weight: 800; }
@@ -4052,22 +4055,8 @@ a.hub-tile:hover {
    ~200px num monitor e, no iPad (1180px), eram a faixa mais larga de um topo
    em que cada linha terminava num ponto — aba dimensionada pelo conteúdo fica
    correta em QUALQUER largura, que é como aba se comporta em todo lugar. */
-.collection-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 18px;
-}
-.collection-tabs .chip {
-  border: 0;
-  border-radius: 0; /* retângulo reto, sem curvatura */
-  min-height: 44px;
-  padding: 0 22px;
-  color: var(--text);
-  background: var(--panel-strong);
-}
-.collection-tabs .chip:hover { color: var(--text); background: var(--accent-soft); }
-.collection-tabs .chip[aria-pressed="true"] { color: var(--on-accent); background: var(--accent); }
+/* .collection-tabs virou a MESMA .prof-tabs do perfil público (a classe fica
+   no elemento só pras regras compartilhadas do mobile, lá embaixo). */
 
 .group-summary {
   background: var(--panel);
@@ -5983,6 +5972,12 @@ html:not([data-cardlang="all"]) #setRegionChips {
 .dash-profile-id { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
 .dash-profile-name { font-size: 27px; font-weight: 800; letter-spacing: -0.4px; line-height: 1.12; }
 .dash-profile-handle { font-size: 14px; font-weight: 700; color: var(--accent); }
+/* @handle clicável -> perfil público: mantém a cor do contexto, sublinha só no
+   hover (o cabeçalho não deve parecer um mar de links). */
+a.dash-profile-handle, a.shared-kind { text-decoration: none; }
+.dkc-author-link, .profile-handle a { color: inherit; text-decoration: none; }
+a.dash-profile-handle:hover, a.shared-kind:hover,
+.dkc-author-link:hover, .profile-handle a:hover { text-decoration: underline; }
 .dash-profile-nav { flex: none; white-space: nowrap; }
 .dash-stats-counts { display: flex; flex-wrap: wrap; gap: 12px 22px; }
 /* Ícone À ESQUERDA do número (era coluna: número em cima, rótulo embaixo). O
@@ -6038,10 +6033,31 @@ html:not([data-cardlang="all"]) #setRegionChips {
    escada de linhas que começam juntas e terminam cada uma num ponto. A busca
    cresce e o título não; quando faltar largura (iPad retrato), ela quebra pra
    uma linha de baixo inteira. Usada nas 9 páginas com .page-search no corpo. */
-.page-head-bar { display: flex; align-items: center; gap: 8px 28px; flex-wrap: wrap; }
-.page-head-bar .page-head-bar-text { flex: 0 0 auto; }
-.page-head-bar .page-search { flex: 1 1 340px; min-width: 260px; margin: 0; }
+.page-head-bar {
+  display: grid;
+  /* Busca CENTRAL na página: 3 colunas com as laterais IGUAIS — a 3ª é um
+     fantasma que espelha a do título; sem ela a busca gruda no título e o
+     centro visual fica torto. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 720px) minmax(0, 1fr);
+  align-items: center;
+  gap: 8px 28px;
+}
+/* Título GRANDE com o "← voltar" numa linha própria EMBAIXO. O `order` é o que
+   garante o embaixo nas páginas de detalhe: lá o JS insere o link ANTES do h1
+   (insertBefore) — sem tocar em página nenhuma, o flex reordena. */
+.page-head-bar .page-head-bar-text { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+.page-head-bar h1 { font-size: 34px; letter-spacing: -0.6px; line-height: 1.1; }
+.page-head-bar .page-head-bar-text h1 { order: 0; }
+.page-head-bar .page-head-bar-text .serie-back { order: 1; margin: 3px 0 0; }
+.page-head-bar .page-search { grid-column: 2; margin: 0; min-width: 0; }
 .page-head-bar .page-search input { height: 46px; }
+/* Sem largura pras 3 colunas: título numa linha, busca na linha inteira de
+   baixo (no celular o shared.js já move a busca pro header). */
+@media (max-width: 1080px) {
+  .page-head-bar { grid-template-columns: minmax(0, 1fr); }
+  .page-head-bar .page-search { grid-column: 1; }
+  .page-head-bar h1 { font-size: 28px; }
+}
 /* O rótulo "Procurar:" era uma faixa inteira dizendo o que a lupa + placeholder
    já dizem. Fica só pro leitor de tela (padrão visually-hidden). */
 .page-head-bar .page-search-label {

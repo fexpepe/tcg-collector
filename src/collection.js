@@ -528,7 +528,8 @@
         sortMode = GROUP_TABS[activeTab].defaultSort;
       }
       Array.from(elements.tabs.children).forEach((node) => {
-        node.setAttribute("aria-pressed", node === chip ? "true" : "false");
+        // O link "Vendas e Trocas" (sem data-tab) não é aba: fica sem aria-pressed.
+        if (node.dataset && node.dataset.tab) node.setAttribute("aria-pressed", node === chip ? "true" : "false");
       });
       render();
     });
@@ -539,8 +540,9 @@
     if (wantTab && VALID_TABS.includes(wantTab) && wantTab !== activeTab) {
       activeTab = wantTab;
       if (GROUP_TABS[activeTab]) sortMode = GROUP_TABS[activeTab].defaultSort;
-      Array.from(elements.tabs.children).forEach((node) =>
-        node.setAttribute("aria-pressed", String(node.dataset && node.dataset.tab === activeTab)));
+      Array.from(elements.tabs.children).forEach((node) => {
+        if (node.dataset && node.dataset.tab) node.setAttribute("aria-pressed", String(node.dataset.tab === activeTab));
+      });
     }
 
     elements.sortChips.addEventListener("click", (event) => {
@@ -777,7 +779,9 @@
     if (!hide) tab.textContent = gameFilter !== "pokemon" && gameFilter !== "all" ? t("toolbar.characters") : t("toolbar.pokemon");
     if (hide && activeTab === "pokemon") {
       activeTab = "cards";
-      Array.from(elements.tabs.children).forEach((n) => n.setAttribute("aria-pressed", n.dataset.tab === "cards" ? "true" : "false"));
+      Array.from(elements.tabs.children).forEach((n) => {
+        if (n.dataset && n.dataset.tab) n.setAttribute("aria-pressed", n.dataset.tab === "cards" ? "true" : "false");
+      });
     }
   }
 
@@ -837,10 +841,17 @@
       const showId = nm || p.handle;
       const inicial = (nm || p.handle || "").trim().charAt(0).toUpperCase();
       elements.dashProfile.hidden = !showId;
+      // @ clicável -> perfil público (prático pra abrir e copiar o link). Só
+      // quando o perfil É público — link pra página "não encontrado" confunde.
+      const handleHtml = p.handle
+        ? (p.isPublic
+          ? `<a class="dash-profile-handle" href="/users/${escapeAttribute(p.handle)}" title="${escapeAttribute(t("dash.publicProfile"))}">@${escapeHtml(p.handle)}</a>`
+          : `<span class="dash-profile-handle">@${escapeHtml(p.handle)}</span>`)
+        : "";
       elements.dashProfile.innerHTML = showId
         ? `<div class="dash-profile-who">
             ${inicial ? `<span class="dash-avatar" aria-hidden="true"><span class="dash-avatar-in">${escapeHtml(inicial)}</span></span>` : ""}
-            <div class="dash-profile-id"><strong class="dash-profile-name">${escapeHtml(nm || ("@" + p.handle))}</strong>${p.handle ? `<span class="dash-profile-handle">@${escapeHtml(p.handle)}</span>` : ""}</div>
+            <div class="dash-profile-id"><strong class="dash-profile-name">${escapeHtml(nm || ("@" + p.handle))}</strong>${handleHtml}</div>
           </div>`
         : "";
     }
@@ -2180,7 +2191,7 @@
       <div class="binder-shared-banner">
         <div class="binder-shared-info">
           ${kindLabel ? `<span class="shared-kind">${escapeHtml(kindLabel)}</span>` : ""}
-          ${profileNav ? `<span class="shared-kind">@${escapeHtml(profileNav.handle)}</span>` : ""}
+          ${profileNav ? `<a class="shared-kind" href="/users/${escapeAttribute(profileNav.handle)}">@${escapeHtml(profileNav.handle)}</a>` : ""}
           ${profileNav ? "" : `<strong>${isTag && share.data.color ? `<span class="tag-dot" style="--tag:${shared.safeColor(share.data.color)}"></span> ` : ""}${escapeHtml(share.title || t("collection.shared.title"))}</strong>`}
           <span>${escapeHtml(tn("collection.shared.banner", allItems.length))} · ${escapeHtml(bannerMoney)}</span>
         </div>
@@ -2650,7 +2661,7 @@
             ${inicial ? `<span class="dash-avatar" aria-hidden="true"><span class="dash-avatar-in">${escapeHtml(inicial)}</span></span>` : ""}
             <div class="dash-profile-id">
               <strong class="dash-profile-name">${escapeHtml(profileNav.name)}</strong>
-              <span class="dash-profile-handle">@${escapeHtml(profileNav.handle)}</span>
+              <a class="dash-profile-handle" href="/users/${escapeAttribute(profileNav.handle)}">@${escapeHtml(profileNav.handle)}</a>
             </div>
           </div>
           ${profileNav.label ? `<button type="button" class="secondary dash-profile-nav" data-profile-nav>${escapeHtml(profileNav.label)}</button>` : ""}

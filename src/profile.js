@@ -57,7 +57,9 @@
           <div class="profile-avatar" aria-hidden="true">${esc(initial)}</div>
           <div class="profile-id-text">
             <strong class="profile-name">${name ? esc(name) : "—"}</strong>
-            <span class="profile-handle">${handle ? "@" + esc(handle) : esc(t("profile.noHandle"))}</span>
+            <span class="profile-handle">${handle
+              ? (isPublic ? `<a href="/users/${esc(handle)}">@${esc(handle)}</a>` : "@" + esc(handle))
+              : esc(t("profile.noHandle"))}</span>
             <span class="profile-email">${esc(user.email)}</span>
           </div>
           <span class="profile-badge ${isPublic ? "is-public" : "is-private"}">${esc(isPublic ? t("profile.public") : t("profile.private"))}</span>

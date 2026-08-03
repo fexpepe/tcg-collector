@@ -329,6 +329,17 @@
     renderCommunity(box, logged);
   }
 
+  // "por @{author}" com o autor clicável -> perfil público. O marcador \u0001
+  // preserva a posição do placeholder em qualquer idioma. Usado só no VIEWER:
+  // o card da galeria é um <a> inteiro, e <a> dentro de <a> é HTML inválido.
+  function authorHtml(author) {
+    const raw = t("decks.byAuthor", { author: "\u0001" });
+    const i = raw.indexOf("\u0001");
+    const h = String(author).slice(0, 30);
+    if (i < 0) return esc(t("decks.byAuthor", { author: h }));
+    return `${esc(raw.slice(0, i))}<a class="dkc-author-link" href="/users/${escA(h)}">${esc(h)}</a>${esc(raw.slice(i + 1))}`;
+  }
+
   // Payload de share pode vir adulterado: só aceita o shape v1 e com limites.
   function sanitizeDeckPayload(raw) {
     if (!raw || typeof raw !== "object" || raw.v !== 1) return null;
@@ -543,7 +554,7 @@
             ${formatLabel}
             <span class="dkc-meta-item">${esc(t("decks.cardsCount", { n: totalCartas }))}</span>
             ${an.avgCost != null ? `<span class="dkc-meta-item">${esc(t("decks.avgCost"))}: ${esc(String(an.avgCost))}</span>` : ""}
-            ${deck.author ? `<span class="dkc-author">${esc(t("decks.byAuthor", { author: deck.author }))}</span>` : ""}
+            ${deck.author ? `<span class="dkc-author">${authorHtml(deck.author)}</span>` : ""}
             ${quando ? `<span class="dkc-meta-item dkc-meta-date">${esc(quando)}</span>` : ""}
           </div>
         </div>
