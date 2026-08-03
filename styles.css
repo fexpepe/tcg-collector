@@ -66,8 +66,10 @@
   --content-w: min(1440px, calc(100% - 40px));
   --bg: #101218;
   --surface: #13151b;
-  --panel: #181b22;
-  --panel-strong: #20242d;
+  /* Cápsulas ~10% mais claras (e um tico mais azuis) que a rodada anterior
+     (#181b22/#20242d): no escuro elas sumiam contra o fundo. */
+  --panel: #1d212b;
+  --panel-strong: #262b36;
   --text: #f3f5f7;
   --muted: #9ba4b3;
   --subtle: #8891a1; /* AA 4.5+: era #747d8d (4.15 sobre o panel) */
@@ -108,7 +110,9 @@
    (theme.js no <head> evita o flash; o toggle vive no shared.js). */
 [data-theme="light"] {
   color-scheme: light;
-  --bg: #e8ecf1;
+  /* Fundo ~5% mais escuro que a rodada anterior (#e8ecf1): as cápsulas
+     BRANCAS da UI precisam de contraste com a página. */
+  --bg: #dce1e8;
   --surface: #ffffff;
   --panel: #ffffff;
   --panel-strong: #eef1f6;
@@ -5885,6 +5889,15 @@ html:not([data-cardlang="all"]) #setRegionChips {
 /* A barra de filtros da Coleção colapsa em QUALQUER largura (no resto do site
    o .is-collapsed só vale no mobile, via .filters-toggle do shared.js). */
 .collection-filters.is-collapsed { display: none; }
+/* Detalhe (sets de todos os jogos): Filtros e Adição rápida atrás de dois
+   botões lado a lado, mesmo padrão da Coleção. */
+.detail-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+.detail-actions button { display: inline-flex; align-items: center; gap: 7px; }
+.detail-actions svg { width: 16px; height: 16px; flex: none; }
+.detail-actions button[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
+.detail-toolbar.is-collapsed, .quick-add.is-collapsed { display: none; }
+/* Modos de contagem DENTRO da caixa de Adição rápida (ajustes da mesma tarefa). */
+.quick-add .progress-modes { margin: 10px 0 0; }
 .dash-stats-hero .dash-stats-counts {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -6072,6 +6085,11 @@ a.dash-profile-handle:hover, a.shared-kind:hover,
 .page-head-bar h1 { font-size: 34px; letter-spacing: -0.6px; line-height: 1.1; }
 .page-head-bar .page-head-bar-text h1 { order: 0; }
 .page-head-bar .page-head-bar-text .serie-back { order: 1; margin: 3px 0 0; }
+/* Detalhe usa .detail-back-link (foco primeiro no DOM) e um eyebrow com o tipo
+   ("Set", "Artista"): eyebrow em cima, título, e o voltar EMBAIXO — o mesmo
+   padrão visual das outras telas. */
+.page-head-bar .page-head-bar-text .eyebrow { order: -1; }
+.page-head-bar .page-head-bar-text .detail-back-link { order: 2; margin: 3px 0 0; }
 .page-head-bar .page-search { grid-column: 2; margin: 0; min-width: 0; }
 .page-head-bar .page-search input { height: 46px; }
 /* Sem largura pras 3 colunas: título numa linha, busca na linha inteira de

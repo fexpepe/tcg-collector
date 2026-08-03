@@ -267,8 +267,33 @@
     bindEvents();
     initQuickAdd();
     initProgressModes();
+    initCollapsibles(); // depois do initQuickAdd: espelha a visibilidade da caixa
     applyGridView();
     render();
+  }
+
+  // Filtros e Adição rápida atrás de botões (mesmo padrão da Coleção). Filtros
+  // compartilha a pref do colapso mobile (quem abre quer manter aberto);
+  // Adição rápida tem a própria — é ferramenta de mutirão, começa fechada.
+  function initCollapsibles() {
+    const wire = (btnId, el, key) => {
+      const btn = document.getElementById(btnId);
+      if (!btn || !el) return null;
+      let open = false;
+      try { open = localStorage.getItem(key) === "1"; } catch (e) { /* ignora */ }
+      const paint = () => { el.classList.toggle("is-collapsed", !open); btn.setAttribute("aria-expanded", String(open)); };
+      btn.addEventListener("click", () => {
+        open = !open;
+        try { localStorage.setItem(key, open ? "1" : "0"); } catch (e) { /* ignora */ }
+        paint();
+      });
+      paint();
+      return btn;
+    };
+    wire("detailFiltersBtn", document.getElementById("detailFilters"), "tcg-collector-filters-open");
+    const qBtn = wire("quickAddBtn", elements.quickAdd, "tcg-collector-quickadd-open");
+    // O botão segue a disponibilidade da caixa (só páginas de set com catálogo).
+    if (qBtn && elements.quickAdd) qBtn.hidden = elements.quickAdd.hidden;
   }
 
   // ---------------------------------------------------------------------------

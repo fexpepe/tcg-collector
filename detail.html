@@ -73,24 +73,6 @@
         </section>
         <div id="completionBar" class="completion-bar" role="progressbar" aria-label="Progresso do set" aria-valuemin="0" aria-valuemax="100"><span id="completionFill" class="completion-fill"></span></div>
 
-        <!-- Modos de contagem do progresso (páginas de set): master set conta
-             CADA variante como slot; "qualquer idioma" casa a carta base
-             (EN/PT do mesmo set contam juntas — quem mistura línguas fecha o
-             set numa progressão só). -->
-        <div id="progressModes" class="progress-modes" hidden>
-          <label class="progress-mode"><input type="checkbox" id="modeMaster"> <span data-i18n="master.toggle">Master set (contar variantes)</span></label>
-          <label class="progress-mode"><input type="checkbox" id="modeAnyLang"> <span data-i18n="master.anyLang">Contar qualquer idioma</span></label>
-        </div>
-
-        <section id="quickAdd" class="quick-add" aria-label="Adição rápida por número" hidden>
-          <div class="quick-add-row">
-            <label for="quickAddInput" class="quick-add-label" data-i18n="quickadd.label">Adição rápida</label>
-            <input id="quickAddInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
-            <span id="quickAddLog" class="quick-add-log" aria-live="polite"></span>
-          </div>
-          <p class="quick-add-hint" data-i18n="quickadd.hint">Digite o número da carta e Enter (4, 23, TG05…) — cada entrada adiciona 1 cópia. Cole uma lista ("4, 7, 23") pra marcar tudo de uma vez. Toque num chip pra desfazer.</p>
-        </section>
-
         <section id="detailValues" class="stats-grid detail-values" aria-label="Valores" hidden>
           <article>
             <span id="valueTotal">—</span>
@@ -107,7 +89,34 @@
         </section>
       </div>
 
-      <section class="toolbar detail-toolbar" aria-label="Filtros">
+      <!-- Filtros e Adição rápida atrás de dois botões lado a lado (mesmo
+           padrão da Coleção). data-own-toggle: o shared.js não injeta o
+           toggle automático do mobile. O de Adição rápida só aparece nas
+           páginas de set (segue a caixa; ver initQuickAdd no detail.js). -->
+      <div class="detail-actions">
+        <button type="button" id="detailFiltersBtn" class="secondary" aria-expanded="false" aria-controls="detailFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span data-i18n="filters.show">Filtros</span></button>
+        <button type="button" id="quickAddBtn" class="secondary" aria-expanded="false" aria-controls="quickAdd" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span data-i18n="quickadd.label">Adição rápida</span></button>
+      </div>
+
+      <!-- Adição rápida nasce RECOLHIDA atrás do botão acima. Os modos de
+           contagem (master set / qualquer idioma) moram DENTRO da caixa: são
+           ajustes da mesma tarefa de conferir o set. Master set conta CADA
+           variante como slot; "qualquer idioma" casa a carta base (EN/PT do
+           mesmo set contam juntas). -->
+      <section id="quickAdd" class="quick-add is-collapsed" aria-label="Adição rápida por número" hidden>
+        <div class="quick-add-row">
+          <label for="quickAddInput" class="quick-add-label" data-i18n="quickadd.label">Adição rápida</label>
+          <input id="quickAddInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+          <span id="quickAddLog" class="quick-add-log" aria-live="polite"></span>
+        </div>
+        <p class="quick-add-hint" data-i18n="quickadd.hint">Digite o número da carta e Enter (4, 23, TG05…) — cada entrada adiciona 1 cópia. Cole uma lista ("4, 7, 23") pra marcar tudo de uma vez. Toque num chip pra desfazer.</p>
+        <div id="progressModes" class="progress-modes" hidden>
+          <label class="progress-mode"><input type="checkbox" id="modeMaster"> <span data-i18n="master.toggle">Master set (contar variantes)</span></label>
+          <label class="progress-mode"><input type="checkbox" id="modeAnyLang"> <span data-i18n="master.anyLang">Contar qualquer idioma</span></label>
+        </div>
+      </section>
+
+      <section id="detailFilters" class="toolbar detail-toolbar is-collapsed" aria-label="Filtros" data-own-toggle>
         <div>
           <label data-i18n="toolbar.collection">Coleção</label>
           <div id="ownedChips" class="segmented" role="group" aria-label="Coleção"></div>
