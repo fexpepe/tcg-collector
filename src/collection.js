@@ -153,7 +153,8 @@
     if (!on) bulkSel.clear();
     if (elements.bulkBtn) {
       elements.bulkBtn.setAttribute("aria-pressed", String(on));
-      elements.bulkBtn.textContent = t(on ? "bulk.exit" : "bulk.enter");
+      // No span, não no botão: escrever no textContent do botão apagaria o ícone.
+      (elements.bulkBtn.querySelector("span") || elements.bulkBtn).textContent = t(on ? "bulk.exit" : "bulk.enter");
     }
     if (elements.grid) elements.grid.classList.toggle("bulk-mode", on);
     updateBulkBar();
@@ -807,11 +808,16 @@
       const p = shared.getProfile ? shared.getProfile() : {};
       const nm = (p.displayName || "").trim();
       // Identidade (nome + @) no dashboard em TODA a coleção (Toda Coleção, Coleções,
-      // e em qualquer filtro de jogo) — não só no perfil público.
+      // e em qualquer filtro de jogo) — não só no perfil público. Avatar em
+      // monograma, o MESMO do cabeçalho compartilhado (dash-avatar).
       const showId = nm || p.handle;
+      const inicial = (nm || p.handle || "").trim().charAt(0).toUpperCase();
       elements.dashProfile.hidden = !showId;
       elements.dashProfile.innerHTML = showId
-        ? `<div class="dash-profile-id"><strong class="dash-profile-name">${escapeHtml(nm || ("@" + p.handle))}</strong>${p.handle ? `<span class="dash-profile-handle">@${escapeHtml(p.handle)}</span>` : ""}</div>`
+        ? `<div class="dash-profile-who">
+            ${inicial ? `<span class="dash-avatar" aria-hidden="true"><span class="dash-avatar-in">${escapeHtml(inicial)}</span></span>` : ""}
+            <div class="dash-profile-id"><strong class="dash-profile-name">${escapeHtml(nm || ("@" + p.handle))}</strong>${p.handle ? `<span class="dash-profile-handle">@${escapeHtml(p.handle)}</span>` : ""}</div>
+          </div>`
         : "";
     }
     const myCards = ownedCards();
@@ -1944,8 +1950,10 @@
     const top = [];
     for (const p of pairs) { if (!seen.has(p.card.id)) { seen.add(p.card.id); top.push(p); if (top.length === 9) break; } }
 
-    const label = button ? button.textContent : "";
-    if (button) { button.disabled = true; button.textContent = "…"; }
+    // O rótulo vive num <span> ao lado do ícone (ver collection.html).
+    const labelEl = button ? (button.querySelector("span") || button) : null;
+    const label = labelEl ? labelEl.textContent : "";
+    if (button) { button.disabled = true; labelEl.textContent = "…"; }
     const cols = 3, rows = Math.ceil(top.length / cols);
     const CARD_W = 300, CARD_H = Math.round(CARD_W * 1.396), GAP = 20, MARGIN = 40, HEADER_H = 120, FOOTER_H = 52, RADIUS = 14;
     const width = MARGIN * 2 + cols * CARD_W + (cols - 1) * GAP;
@@ -2002,7 +2010,7 @@
     ctx.fillStyle = "#747d8d"; ctx.font = `700 22px ${FONT}`; ctx.textBaseline = "alphabetic";
     ctx.fillText("Sleevu · sleevu.app", MARGIN, height - MARGIN + 6);
 
-    const finish = () => { if (button) { button.disabled = false; button.textContent = label; } };
+    const finish = () => { if (button) { button.disabled = false; labelEl.textContent = label; } };
     try {
       canvas.toBlob(async (blob) => {
         if (!blob) { alert(t("sales.exportTainted")); finish(); return; }
@@ -2032,27 +2040,30 @@
     btn.hidden = ownedCards().length === 0;
     btn.addEventListener("click", async () => {
       const original = t("collection.share");
+      // Rótulo vive num <span> ao lado do ícone: escrever no textContent do
+      // botão apagaria o svg.
+      const setLabel = (txt) => { (btn.querySelector("span") || btn).textContent = txt; };
       // Perfil público: compartilha o link VIVO (sempre atualizado) em vez de um
       // snapshot. Sem perfil público, cai no snapshot de sempre.
       const live = shared.publicProfileUrl();
       if (live) {
-        try { await navigator.clipboard.writeText(live); btn.textContent = t("collection.share.copiedLive"); }
+        try { await navigator.clipboard.writeText(live); setLabel(t("collection.share.copiedLive")); }
         catch (e) { window.prompt(t("collection.share.copyManual"), live); }
-        setTimeout(() => { btn.textContent = original; }, 2500);
+        setTimeout(() => { setLabel(original); }, 2500);
         return;
       }
-      btn.disabled = true; btn.textContent = t("collection.share.creating");
+      btn.disabled = true; setLabel(t("collection.share.creating"));
       const res = await shared.createShare("collection", null, buildShareData());
       btn.disabled = false;
       if (res && res.id) {
         const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection.html?s=${res.id}`;
-        try { await navigator.clipboard.writeText(link); btn.textContent = t("collection.share.copied"); }
-        catch (e) { window.prompt(t("collection.share.copyManual"), link); btn.textContent = original; }
+        try { await navigator.clipboard.writeText(link); setLabel(t("collection.share.copied")); }
+        catch (e) { window.prompt(t("collection.share.copyManual"), link); setLabel(original); }
       } else {
         alert(res && res.error === "auth" ? t("collection.share.needLogin") : t("collection.share.error"));
-        btn.textContent = original;
+        setLabel(original);
       }
-      setTimeout(() => { btn.textContent = original; }, 2500);
+      setTimeout(() => { setLabel(original); }, 2500);
     });
   }
 

@@ -5851,88 +5851,57 @@ html:not([data-cardlang="all"]) #setRegionChips {
      valor (R$ …) muda de largura entre Todos/Pokémon/Lorcana e desloca tudo. */
   grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr) minmax(0, 1.4fr);
 }
-/* Minha Coleção pós-limpeza: só o card de stats sobra -> vira uma BARRA de
-   UMA linha, fixada logo abaixo do header enquanto a página rola (--header-h
-   vem do collection.js com a altura real do header). O Dashboard (/dashboard)
-   usa o grid completo com as cápsulas. */
+/* Minha Coleção: cartão-herói (identidade + ações em cima, contagens embaixo),
+   mesma cara do cabeçalho do perfil compartilhado. Deixou de ser barra fixa
+   (sticky): o cartão é alto — fixado, comeria a tela ao rolar. */
 #collectionDashboard.collection-dashboard {
   grid-template-columns: minmax(0, 1fr);
   gap: 14px;
   margin: 0 0 18px;
-  position: sticky;
-  top: var(--header-h, 53px);
-  z-index: 4; /* abaixo do header (5), acima das grades/preview de tile */
 }
-/* Slots FIXOS: perfil | cópias | distintas | sets | valor. Colunas travadas por
-   fração do espaço + números tabulares: trocar o filtro Todos/Pokémon/… muda os
-   NÚMEROS, nunca as posições. Perfil ausente deixa o slot vazio (não desloca). */
-#collectionDashboard .dash-stats {
+/* Cabeçalho: identidade à esquerda, ações à direita; contagens numa fileira de
+   4 colunas iguais, com divisória. Números tabulares: trocar o filtro
+   Todos/Pokémon/… muda os NÚMEROS, nunca as posições. */
+#collectionDashboard .dash-stats { padding: 18px 20px; gap: 0; box-shadow: var(--shadow); }
+#collectionDashboard .dash-stats-head { display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; padding-bottom: 16px; }
+#collectionDashboard .dash-profile { border: 0; padding: 0; margin: 0; flex: 1 1 auto; min-width: 0; flex-wrap: nowrap; gap: 10px; }
+#collectionDashboard .dash-profile-name { font-size: 22px; letter-spacing: -0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#collectionDashboard .dash-avatar-in { width: 52px; height: 52px; font-size: 21px; }
+/* Ações dentro do cartão (vieram da faixa do filtro): ícone + rótulo. */
+#collectionDashboard .collection-toolbar-actions { flex: none; margin-left: auto; }
+#collectionDashboard .collection-toolbar-actions button { display: inline-flex; align-items: center; gap: 7px; }
+#collectionDashboard .collection-toolbar-actions svg { width: 16px; height: 16px; flex: none; }
+#collectionDashboard .dash-stats-counts {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.4fr);
-  align-items: center;
-  gap: 2px 18px;
-  padding: 10px 18px;
-  box-shadow: var(--shadow);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px 18px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
 }
-#collectionDashboard .dash-profile { grid-column: 1; border: 0; padding: 0; margin: 0; flex-wrap: nowrap; }
-#collectionDashboard .dash-profile-name { font-size: 18px; letter-spacing: -0.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-#collectionDashboard .dash-profile-handle { font-size: 12px; }
-#collectionDashboard .dash-stats-counts { display: contents; }
-#collectionDashboard .dash-stats-counts > div:nth-child(1) { grid-column: 2; }
-#collectionDashboard .dash-stats-counts > div:nth-child(2) { grid-column: 3; }
-#collectionDashboard .dash-stats-counts > div:nth-child(3) { grid-column: 4; }
-#collectionDashboard .dash-stat-val { font-size: 20px; font-variant-numeric: tabular-nums; white-space: nowrap; }
-#collectionDashboard .dash-stat-label { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-#collectionDashboard .dash-stat-money { grid-column: 5; border: 0; padding: 0; justify-self: end; min-width: 0; max-width: 100%; }
+#collectionDashboard .dash-stat-val { font-size: 22px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+#collectionDashboard .dash-stat-label { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* O valor entra na MESMA fileira das contagens (4ª coluna): zera a linha
+   própria que ele tem no layout base do cartão compartilhado. */
+#collectionDashboard .dash-stat-money { border-top: 0; padding-top: 0; }
 #collectionDashboard .dash-stat-money .dash-stat-val { font-size: 22px; }
-/* Divisória entre os slots. Ela faz o trabalho que o espaço em branco não fazia:
-   com cinco blocos numa faixa só, sem separador o olho lê "726 575 124" como uma
-   sequência, não como três medidas diferentes. É `border-left` nos slots 2..5 —
-   o primeiro (perfil) não leva, senão sobraria um traço solto na borda. */
-#collectionDashboard .dash-stats-counts > div,
-#collectionDashboard .dash-stat-money { border-left: 1px solid var(--line); padding-left: 18px; }
-/* A barra é mais baixa que o cartão do dashboard: o ícone acompanha. */
-#collectionDashboard .dash-stat-ic { width: 32px; height: 32px; border-radius: 9px; }
-#collectionDashboard .dash-stat-ic svg { width: 17px; height: 17px; }
-#collectionDashboard .dash-avatar-in { width: 34px; height: 34px; font-size: 14px; }
-#collectionDashboard .dash-profile { gap: 10px; }
-/* Mobile: a barra troca a esteira de cards por 2 linhas compactas (identidade +
-   valor em cima, contagens embaixo), full-bleed e ainda fixa sob o header. */
+/* Divisória entre as colunas — sem ela o olho lê "898 627 125" como uma
+   sequência, não como medidas diferentes. A primeira não leva. */
+#collectionDashboard .dash-stats-counts > div + div { border-left: 1px solid var(--line); padding-left: 18px; }
+/* Mobile: cartão full-bleed, contagens 2×2 (divisória só entre as colunas) e
+   as ações quebram pra linha própria sob a identidade. */
 @media (max-width: 720px) {
-  #collectionDashboard.collection-dashboard {
-    display: grid;
-    overflow: visible; /* sticky morre com overflow-x da esteira */
-    scroll-snap-type: none;
-    margin: 0 -16px 14px;
-    padding: 0;
-  }
-  #collectionDashboard .dash-card.dash-stats {
-    flex: none;
-    border-radius: 0;
-    border-left: 0;
-    border-right: 0;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 4px 12px;
-    padding: 8px 16px;
-  }
-  #collectionDashboard .dash-profile { grid-column: 1 / 3; grid-row: 1; }
-  #collectionDashboard .dash-profile-name { font-size: 16px; }
-  #collectionDashboard .dash-stat-money { grid-column: 3; grid-row: 1; }
-  #collectionDashboard .dash-stats-counts > div:nth-child(1) { grid-column: 1; grid-row: 2; }
-  #collectionDashboard .dash-stats-counts > div:nth-child(2) { grid-column: 2; grid-row: 2; }
-  #collectionDashboard .dash-stats-counts > div:nth-child(3) { grid-column: 3; grid-row: 2; }
-  #collectionDashboard .dash-stat-val { font-size: 17px; }
+  #collectionDashboard.collection-dashboard { margin: 0 -16px 14px; }
+  #collectionDashboard .dash-card.dash-stats { border-radius: 0; border-left: 0; border-right: 0; padding: 14px 16px; }
+  #collectionDashboard .dash-stats-head { padding-bottom: 12px; }
+  #collectionDashboard .dash-profile-name { font-size: 17px; }
+  #collectionDashboard .dash-avatar-in { width: 40px; height: 40px; font-size: 16px; }
+  #collectionDashboard .dash-stats-counts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; padding-top: 12px; }
+  #collectionDashboard .dash-stats-counts > div + div { border-left: 0; padding-left: 0; }
+  #collectionDashboard .dash-stats-counts > div:nth-child(even) { border-left: 1px solid var(--line); padding-left: 14px; }
+  #collectionDashboard .dash-stat-val { font-size: 18px; }
   #collectionDashboard .dash-stat-money .dash-stat-val { font-size: 18px; }
-  /* No celular a barra vira 2 fileiras de 3 colunas estreitas: ícone de 32px ao
-     lado do número não caberia sem espremer o rótulo. Some o ícone das
-     contagens e fica só o do valor, que é o que precisa se destacar.
-     As divisórias também saem — em grade de 3 colunas elas viram um xadrez. */
-  #collectionDashboard .dash-stats-counts .dash-stat-ic { display: none; }
-  #collectionDashboard .dash-stats-counts > div,
-  #collectionDashboard .dash-stat-money { border-left: 0; padding-left: 0; }
-  #collectionDashboard .dash-stat-ic { width: 28px; height: 28px; border-radius: 8px; }
-  #collectionDashboard .dash-stat-ic svg { width: 15px; height: 15px; }
-  #collectionDashboard .dash-avatar-in { width: 30px; height: 30px; font-size: 13px; }
+  #collectionDashboard .dash-stat-ic { width: 30px; height: 30px; border-radius: 9px; }
+  #collectionDashboard .dash-stat-ic svg { width: 16px; height: 16px; }
 }
 @media (max-width: 1080px) { .collection-dashboard { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .dash-carousel { grid-column: 1 / -1; } }
 /* Perfil público: são 3 cards fixos (sem carrossel). Em 2 colunas o terceiro
@@ -6073,6 +6042,17 @@ html:not([data-cardlang="all"]) #setRegionChips {
 }
 
 /* Barra: filtro de jogo (Todos/Pokémon/Lorcana) + botão de compartilhar. */
+/* Moldura do filtro de jogo da Coleção: os chips ganham um painel próprio,
+   acima do cartão-herói (opt-in via classe — o #gameFilter existe em 4 páginas
+   e as outras seguem com a faixa nua por enquanto). */
+.game-filter-panel {
+  flex: 1 1 100%;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: var(--shadow);
+}
 .collection-toolbar {
   display: flex;
   flex-wrap: wrap;
