@@ -170,13 +170,15 @@
     }
   }
 
-  // Atalho vintage (?line=): título com a etiqueta VINTAGE + link de volta ao One Piece.
+  // Atalho de linha (?line=): título com a etiqueta da linha + link de volta ao
+  // jogo. A etiqueta padrão é VINTAGE (todas as linhas clássicas); uma linha
+  // pode trocar via tagKey — ex.: o NARUTO CARD GAME novo usa "Em breve".
   function applyLineTitle() {
     const head = document.querySelector(".page-head");
     const h1 = head && head.querySelector("h1");
     if (!h1) return;
     h1.removeAttribute("data-i18n");
-    h1.innerHTML = `${escapeHtml(t(lineDef.titleKey))} <span class="line-tag">${escapeHtml(t("hub.vintageTagShort"))}</span>`;
+    h1.innerHTML = `${escapeHtml(t(lineDef.titleKey))} <span class="line-tag">${escapeHtml(t(lineDef.tagKey || "hub.vintageTagShort"))}</span>`;
     if (!head.querySelector(".serie-back")) {
       const back = document.createElement("a");
       back.className = "serie-back";

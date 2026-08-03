@@ -4423,7 +4423,11 @@
       "nrt-mb": { prefix: "nrt-mb-", label: "Miracle Battle", titleKey: "sets.category.mbnr" },
       "nrt-dc": { prefix: "nrt-dc-", label: "Data Carddass (arcade)", titleKey: "sets.category.dcnr" },
       "nrt-nf": { prefix: "nrt-nf-", label: "Narutimate Formation", titleKey: "sets.category.nrtnf" },
-      "nrt-nx": { prefix: "nrt-nx-", label: "Narutimate Cross", titleKey: "sets.category.nrtnx" }
+      "nrt-nx": { prefix: "nrt-nx-", label: "Narutimate Cross", titleKey: "sets.category.nrtnx" },
+      // O jogo NOVO (lançamento mundial 2027) como linha da marca: hoje só as
+      // promos de evento (Gen Con 2026); tagKey troca a etiqueta "vintage" do
+      // título por "Em breve" até o jogo sair.
+      "nrt-ncg": { prefix: "nrt-ncg-", label: "NARUTO CARD GAME (2027)", titleKey: "sets.category.nrtncg", tagKey: "home.games.soon" }
     }
   };
   function lineParamOf() {
