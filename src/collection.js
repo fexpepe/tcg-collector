@@ -1968,6 +1968,9 @@
   // Gera um PNG "vitrine" pra postar em grupo/rede: top 9 cartas por valor +
   // stats + @handle + marca. Mesmo motor do export de Vendas: Lorcana/One Piece
   // não mandam CORS -> roteia pela wsrv.nl senão o canvas fica tainted.
+  // SEM GATILHO NA UI hoje: o botão "Gerar imagem" saiu do cartão-herói
+  // (2026-08-03, a pedido). A função fica pronta pra um re-homing futuro
+  // (ex.: dentro de um menu de compartilhar).
   async function exportCollectionImage(button) {
     const pairs = [];
     ownedCards().forEach((card) => {
@@ -2065,26 +2068,22 @@
   }
 
   function bindShareButton() {
-    const imgBtn = document.getElementById("collectionImageBtn");
-    if (imgBtn) {
-      imgBtn.hidden = ownedCards().length === 0;
-      imgBtn.addEventListener("click", () => exportCollectionImage(imgBtn));
-    }
     const btn = document.getElementById("collectionShareBtn");
     if (!btn) return;
     btn.hidden = ownedCards().length === 0;
     btn.addEventListener("click", async () => {
       const original = t("collection.share");
-      // Rótulo vive num <span> ao lado do ícone: escrever no textContent do
-      // botão apagaria o svg.
+      // Botão SÓ-ÍCONE: o rótulo vive num <span> escondido (leitor de tela +
+      // aria-live); o feedback VISUAL de sucesso é o ✓ no lugar do ícone.
       const setLabel = (txt) => { (btn.querySelector("span") || btn).textContent = txt; };
+      const setOk = (on) => btn.classList.toggle("is-ok", !!on);
       // Perfil público: compartilha o link VIVO (sempre atualizado) em vez de um
       // snapshot. Sem perfil público, cai no snapshot de sempre.
       const live = shared.publicProfileUrl();
       if (live) {
-        try { await navigator.clipboard.writeText(live); setLabel(t("collection.share.copiedLive")); }
+        try { await navigator.clipboard.writeText(live); setLabel(t("collection.share.copiedLive")); setOk(true); }
         catch (e) { window.prompt(t("collection.share.copyManual"), live); }
-        setTimeout(() => { setLabel(original); }, 2500);
+        setTimeout(() => { setLabel(original); setOk(false); }, 2500);
         return;
       }
       btn.disabled = true; setLabel(t("collection.share.creating"));
@@ -2092,13 +2091,13 @@
       btn.disabled = false;
       if (res && res.id) {
         const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection.html?s=${res.id}`;
-        try { await navigator.clipboard.writeText(link); setLabel(t("collection.share.copied")); }
+        try { await navigator.clipboard.writeText(link); setLabel(t("collection.share.copied")); setOk(true); }
         catch (e) { window.prompt(t("collection.share.copyManual"), link); setLabel(original); }
       } else {
         alert(res && res.error === "auth" ? t("collection.share.needLogin") : t("collection.share.error"));
         setLabel(original);
       }
-      setTimeout(() => { setLabel(original); }, 2500);
+      setTimeout(() => { setLabel(original); setOk(false); }, 2500);
     });
   }
 
@@ -2667,15 +2666,19 @@
           ${profileNav.label ? `<button type="button" class="secondary dash-profile-nav" data-profile-nav>${escapeHtml(profileNav.label)}</button>` : ""}
         </div>`
       : "";
+    // MESMO cartão-herói da Minha Coleção (.dash-stats-hero): identidade em
+    // cima, contagens numa fileira de 4 com o valor na última coluna. Sem
+    // identidade (share anônimo, ?s=), o cabeçalho nem entra — e sem ele as
+    // contagens não ganham a divisória de cima (regra head + counts no CSS).
     return `<section class="collection-dashboard">
-      <article class="dash-card dash-stats">
-        ${profHead}
+      <article class="dash-card dash-stats dash-stats-hero">
+        ${profHead ? `<div class="dash-stats-head">${profHead}</div>` : ""}
         <div class="dash-stats-counts">
           ${stat(IC.copies, copies, t("stats.copies"))}
           ${stat(IC.distinct, distinct, t("stats.distinct"))}
           ${stat(IC.sets, sets, t("stats.setsCovered"))}
+          ${stat(IC.money, escapeHtml(total > 0 ? shared.formatMoney(shared.getCurrency(), total) : "—"), t("dash.value"), ' class="dash-stat-money"')}
         </div>
-        ${stat(IC.money, escapeHtml(total > 0 ? shared.formatMoney(shared.getCurrency(), total) : "—"), t("dash.value"), ' class="dash-stat-money"')}
       </article>
       <article class="dash-card dash-top">
         <h3>${escapeHtml(t("dash.topTitle"))}</h3>

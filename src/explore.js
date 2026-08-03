@@ -13,7 +13,7 @@
     resultsHeader: document.getElementById("exploreResultsHeader"),
     resultsTitle: document.querySelector("#exploreResultsHeader h2"),
     resultCount: document.getElementById("exploreResultCount"),
-    gameFilter: document.getElementById("exploreGameFilter"),
+    gameFilter: document.getElementById("exploreGameSelect"),
     sortSelect: document.getElementById("exploreSortSelect"),
     topViewed: document.getElementById("exploreTopViewed"),
     topViewedRow: document.getElementById("exploreTopViewedRow")
@@ -218,15 +218,19 @@
   };
   elements.search.addEventListener("input", debounce(apply, 250));
 
-  elements.gameFilter.addEventListener("click", (event) => {
-    const chip = event.target.closest("[data-game-filter]");
-    if (!chip) return;
-    gameFilter = chip.dataset.gameFilter;
-    elements.gameFilter.querySelectorAll(".chip").forEach((b) =>
-      b.setAttribute("aria-pressed", String(b === chip)));
-    shared.applyGameAccent(gameFilter);
-    if (isSearching()) apply();
-  });
+  // Jogo é um <select> ao lado do Ordenar (eram 13 chips numa faixa inteira).
+  // Opções reconstruídas de GAME_SLUGS: jogo novo no registro aparece sozinho,
+  // mesma garantia que os chips antigos tinham via initGameFilterChips.
+  if (elements.gameFilter) {
+    elements.gameFilter.innerHTML = `<option value="all">${shared.escapeHtml(shared.t("filter.gameAll"))}</option>`
+      + shared.GAME_SLUGS.map((g) => `<option value="${g}">${shared.escapeHtml(shared.gameLabel(g))}</option>`).join("");
+    elements.gameFilter.value = gameFilter;
+    elements.gameFilter.addEventListener("change", () => {
+      gameFilter = shared.GAME_SLUGS.includes(elements.gameFilter.value) ? elements.gameFilter.value : "all";
+      shared.applyGameAccent(gameFilter);
+      if (isSearching()) apply();
+    });
+  }
 
   elements.sortSelect.value = sort;
   elements.sortSelect.addEventListener("change", () => {
