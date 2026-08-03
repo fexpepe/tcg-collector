@@ -46,6 +46,7 @@
     viewToggle: document.getElementById("viewToggle"),
     rarityField: document.getElementById("rarityField"),
     rarityFilter: document.getElementById("rarityFilter"),
+    facets: document.getElementById("detailFacets"),
     sortSelect: document.getElementById("sortSelect"),
     ownedCount: document.getElementById("ownedCount"),
     totalCount: document.getElementById("totalCount"),
@@ -165,6 +166,16 @@
     gundam: ["Common", "C+", "C++", "Uncommon", "U+", "Rare", "R+", "Legend Rare", "LR+", "LR++", "Promo"]
   };
   const rarityListOrder = RARITY_LISTED_GAMES[(window.SLEEVU && window.SLEEVU.game) || ""] || null;
+
+  // Facetas do jogo (Cor, Tipo, Seleção… — ver GAME_FACETS no shared.js) e a
+  // seleção do usuário: { chaveDaFaceta: Set(valores) }. Dentro de uma faceta
+  // vale OU (marcar Azul e Verde mostra os dois); entre facetas, E.
+  const facetDefs = (shared.gameFacets && shared.gameFacets((window.SLEEVU && window.SLEEVU.game) || "")) || [];
+  const facetSel = {};
+  facetDefs.forEach((f) => { facetSel[f.key] = new Set(); });
+  // Quando o jogo tem faceta de raridade, o <select> de raridade sai de cena —
+  // dois controles pra mesma coisa é armadilha.
+  const rarityAsFacet = facetDefs.some((f) => f.key === "rarity");
 
   // Carta "secreta": número acima do total oficial do set (full art, SAR, SR,
   // hiper/rainbow...). Em sets japoneses essas cartas frequentemente vêm sem
@@ -658,6 +669,7 @@
     ], selectedOwned);
 
     renderRarityFilter();
+    renderFacets();
   }
 
   // Raridade como lista suspensa. Dois modos:
@@ -668,8 +680,54 @@
   //     interface, então não passa pelo i18n.
   // Nos dois modos: só o que está presente nesta página, e o filtro some com
   // menos de 2 opções (filtro de opção única não filtra nada).
+  // Painel de facetas do jogo. As opções e as CONTAGENS saem das cartas desta
+  // página: faceta sem valor (ou com um só) não aparece — filtro de opção única
+  // não filtra nada. A contagem de cada opção respeita as OUTRAS facetas (como
+  // em loja: marcar "Criaturas" recalcula quantas são azuis), mas não a própria,
+  // senão marcar uma opção zeraria as irmãs.
+  function renderFacets() {
+    const box = elements.facets;
+    if (!box) return;
+    if (!facetDefs.length) { box.hidden = true; return; }
+
+    const passaFacetas = (card, exceto) => facetDefs.every((f) => {
+      if (f.key === exceto) return true;
+      const sel = facetSel[f.key];
+      if (!sel.size) return true;
+      return f.of(card).some((v) => sel.has(v));
+    });
+
+    const grupos = facetDefs.map((f) => {
+      const contagem = new Map();
+      pageCards.forEach((card) => {
+        if (!passaFacetas(card, f.key)) return;
+        f.of(card).forEach((v) => contagem.set(v, (contagem.get(v) || 0) + 1));
+      });
+      // Valor marcado que zerou continua na lista (senão a pessoa não consegue
+      // desmarcar o filtro que ela mesma pôs).
+      facetSel[f.key].forEach((v) => { if (!contagem.has(v)) contagem.set(v, 0); });
+      const ordem = f.order || [];
+      const pos = (v) => { const i = ordem.indexOf(v); return i < 0 ? ordem.length : i; };
+      const valores = [...contagem.keys()].sort((a, b) => (pos(a) - pos(b)) || String(a).localeCompare(String(b)));
+      if (valores.length < 2) return "";
+      const itens = valores.map((v) => {
+        const marcado = facetSel[f.key].has(v);
+        return `<label class="facet-opt${marcado ? " on" : ""}">`
+          + `<input type="checkbox" data-facet="${escapeAttribute(f.key)}" value="${escapeAttribute(v)}"${marcado ? " checked" : ""}>`
+          + `<span class="facet-opt-label">${escapeHtml(f.label(v))}</span>`
+          + `<span class="facet-opt-n">${contagem.get(v)}</span></label>`;
+      }).join("");
+      return `<fieldset class="facet-group"><legend>${escapeHtml(t(f.labelKey))}</legend>${itens}</fieldset>`;
+    }).filter(Boolean).join("");
+
+    box.innerHTML = grupos;
+    box.hidden = !grupos;
+  }
+
   function renderRarityFilter() {
     if (!elements.rarityFilter || !elements.rarityField) return;
+    // Jogo com faceta de raridade (Magic): o select some — quem manda é a faceta.
+    if (rarityAsFacet) { elements.rarityField.hidden = true; selectedRarity = ""; return; }
     if (rarityListOrder) {
       const present = [...new Set(pageCards.map((card) => String(card.rarity || "")).filter((r) => r && r !== "None"))];
       const pos = (r) => { const i = rarityListOrder.indexOf(r); return i < 0 ? rarityListOrder.length : i; };
@@ -735,6 +793,17 @@
     const applyFilters = () => render({ resetCount: true });
     elements.search.addEventListener("input", debounce(applyFilters, 200));
     elements.languageFilter.addEventListener("input", () => { selectedLanguage = elements.languageFilter.value; applyFilters(); });
+    // Facetas: delegação (o painel é reescrito a cada render). Depois de marcar,
+    // re-renderiza o painel pras contagens das outras facetas acompanharem.
+    if (elements.facets) elements.facets.addEventListener("change", (event) => {
+      const cb = event.target.closest("[data-facet]");
+      if (!cb) return;
+      const sel = facetSel[cb.dataset.facet];
+      if (!sel) return;
+      if (cb.checked) sel.add(cb.value); else sel.delete(cb.value);
+      applyFilters();
+      renderFacets();
+    });
     bindSegmented(elements.ownedChips, (value) => { selectedOwned = value; });
 
     if (elements.viewToggle) {
@@ -912,8 +981,14 @@
       const matchesRarity = !selectedRarity || (rarityListOrder
         ? String(card.rarity || "") === selectedRarity
         : rarityBucket(card) === selectedRarity);
+      // Facetas do jogo: OU dentro de cada uma, E entre elas.
+      const matchesFacets = facetDefs.every((f) => {
+        const sel = facetSel[f.key];
+        if (!sel.size) return true;
+        return f.of(card).some((v) => sel.has(v));
+      });
 
-      return matchesQuery && matchesLanguage && matchesOwned && matchesRarity;
+      return matchesQuery && matchesLanguage && matchesOwned && matchesRarity && matchesFacets;
     });
   }
 

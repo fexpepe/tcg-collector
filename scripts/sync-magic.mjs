@@ -39,7 +39,10 @@ const CACHE = new URL("data/.cache/magic/", ROOT);
 // invalidar deixaria os sets estáveis (card_count igual) presos no formato
 // antigo pra sempre. Bump obrigatório a cada campo novo/renomeado.
 //   v2: campos de deck (cardType, manaCost, cost, color, colorId).
-const CACHE_VERSION = 2;
+//   v3: `treat` — tratamento/acabamento da impressão (o "sub-set" que o
+//       TCGplayer mostra: Extended Art, Borderless, Showcase, Surge Foil…),
+//       usado pela faceta "Seleção" na página do set.
+const CACHE_VERSION = 3;
 
 const argv = process.argv.slice(2);
 const NO_FETCH = argv.includes("--no-fetch");
@@ -171,6 +174,27 @@ function makeCard(c, set, usedIds, pricing) {
   if (typeof c.cmc === "number") card.cost = c.cmc;
   if (colors.length) card.color = colors.join(";");
   if (colorId.length) card.colorId = colorId.join(";");
+
+  // TRATAMENTO da impressão — é o que o TCGplayer vende como "sub-set" do set
+  // ("The Hobbit (Extended Art)", "(Borderless)", "(Surge Foil)"…). No Scryfall
+  // não existe um campo só: sai de frame_effects + borda + arte cheia +
+  // promo_types. Guardamos os tokens CRUS do Scryfall, ";"-joined: a UI traduz
+  // os que conhece e prettifica os que não conhece — então um efeito NOVO num
+  // set futuro aparece na faceta sozinho, sem mexer no código.
+  // DENYLIST: promo_types traz também marcas de EVENTO (prerelease, promo
+  // datestamped/stamped…), que não são tratamento visual — virariam lixo na
+  // lista. frame_effects e os demais entram inteiros.
+  const PROMO_NOISE = new Set(["boosterfun", "prerelease", "datestamped", "stamped", "promo", "setpromo", "buyabox", "planeswalkerdeck", "beginnerbox", "starterdeck", "release", "jpwalker"]);
+  const treats = [];
+  (Array.isArray(c.frame_effects) ? c.frame_effects : []).forEach((f) => treats.push(String(f)));
+  if (c.border_color === "borderless") treats.push("borderless");
+  if (c.full_art) treats.push("fullart");
+  (Array.isArray(c.promo_types) ? c.promo_types : []).forEach((p) => {
+    const tok = String(p);
+    if (!PROMO_NOISE.has(tok)) treats.push(tok);
+  });
+  const treat = [...new Set(treats)].filter(Boolean);
+  if (treat.length) card.treat = treat.join(";");
 
   return card;
 }

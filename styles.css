@@ -5925,6 +5925,23 @@ html:not([data-cardlang="all"]) #setRegionChips {
 .detail-actions svg { width: 16px; height: 16px; flex: none; }
 .detail-actions button[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
 .detail-toolbar.is-collapsed, .quick-add.is-collapsed { display: none; }
+/* Facetas por jogo (Cor, Tipo, Seleção…): grupos com título e caixinhas com a
+   contagem à direita. Ocupam a linha inteira da toolbar de filtros e quebram em
+   colunas conforme a largura. */
+.detail-facets { flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 14px 26px; }
+.facet-group { border: 0; margin: 0; padding: 0; min-width: 168px; display: flex; flex-direction: column; gap: 2px; }
+.facet-group legend { padding: 0 0 4px; font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
+.facet-opt {
+  display: flex; align-items: center; gap: 8px;
+  padding: 3px 6px 3px 2px; border-radius: 6px;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.facet-opt:hover { background: var(--accent-soft); }
+.facet-opt input { flex: none; width: 15px; height: 15px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+.facet-opt-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Contagem em tabular pra coluna de números não dançar entre as linhas. */
+.facet-opt-n { flex: none; color: var(--subtle); font-size: 12px; font-variant-numeric: tabular-nums; }
+.facet-opt.on .facet-opt-label { color: var(--accent); }
 /* Modos de contagem DENTRO da caixa de Adição rápida (ajustes da mesma tarefa). */
 .quick-add .progress-modes { margin: 10px 0 0; }
 .dash-stats-hero .dash-stats-counts {

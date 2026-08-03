@@ -4432,6 +4432,79 @@
   // (?line= define o escopo; sem line = só o jogo principal, excluindo as
   // linhas). A CONTA (Coleção/Portfólio/Wishlist) soma tudo pela marca — sem
   // filtro por linha lá, por decisão de produto.
+  // ── Facetas da página de SET, por jogo ─────────────────────────────────────
+  // Configurado UMA vez por jogo e valendo pra todo set dele — presente e
+  // futuro: a lista de opções de cada faceta sai das cartas que a página
+  // carregou, não de uma lista fixa. Set novo do Magic já nasce filtrável, e
+  // uma raridade/cor/tratamento inédito aparece sozinho.
+  //
+  // Contrato de cada faceta:
+  //   key      identificador (vai pro estado da página)
+  //   labelKey chave i18n do título do grupo
+  //   of(card) valores DA CARTA nessa faceta (array; várias = a carta conta em
+  //            todas — ex.: "Artifact Creature" é Artefato E Criatura)
+  //   label(v) rótulo de uma opção
+  //   order    ordem fixa das opções conhecidas; o que não está aqui vai pro
+  //            fim, em ordem alfabética (é o que faz token novo aparecer)
+  //
+  // Magic: os quatro campos abaixo existem no catálogo (sync-magic.mjs) —
+  // rarity/cardType em 100% das cartas, color ausente = incolor, e `treat`
+  // (tratamento) só nas impressões especiais. "Impressões"
+  // (lançamento/relançamento) NÃO entra: o Scryfall tem `reprint`, mas a gente
+  // não grava, e o Fernando dispensou.
+  const MTG_COLOR = { W: "white", U: "blue", B: "black", R: "red", G: "green" };
+  function mtgColorBucket(card) {
+    const cores = String(card.color || "").split(";").filter(Boolean);
+    if (cores.length > 1) return "multi";
+    if (cores.length === 1) return MTG_COLOR[cores[0]] || "colorless";
+    // Sem cor: terreno é categoria própria (é o que o jogador procura), o resto
+    // é incolor (artefatos, Eldrazi…).
+    return /\bland\b/i.test(String(card.cardType || "")) ? "land" : "colorless";
+  }
+  const MTG_TYPES = ["creature", "instant", "sorcery", "artifact", "enchantment", "land", "planeswalker", "battle"];
+  function mtgTypeBuckets(card) {
+    const linha = String(card.cardType || "").toLowerCase();
+    // Uma carta pode ser vários tipos ("Artifact Creature", "Land Creature").
+    const achados = MTG_TYPES.filter((tipo) => new RegExp(`\\b${tipo}\\b`).test(linha));
+    return achados.length ? achados : [];
+  }
+  // Rótulo de um token de tratamento: traduzido quando conhecido; senão o
+  // próprio token com a primeira letra maiúscula (surgefoil -> "Surgefoil").
+  function treatLabel(token) {
+    const chave = `mtg.treat.${token}`;
+    const traduzido = t(chave);
+    return traduzido === chave ? token.charAt(0).toUpperCase() + token.slice(1) : traduzido;
+  }
+  const GAME_FACETS = {
+    magic: [
+      {
+        key: "rarity", labelKey: "toolbar.rarity",
+        of: (c) => (c.rarity ? [String(c.rarity)] : []),
+        label: (v) => { const k = `mtg.rarity.${v}`; const r = t(k); return r === k ? v : r; },
+        order: ["common", "uncommon", "rare", "mythic", "special", "bonus"]
+      },
+      {
+        key: "color", labelKey: "facet.color",
+        of: (c) => [mtgColorBucket(c)],
+        label: (v) => t(`mtg.color.${v}`),
+        order: ["white", "blue", "black", "red", "green", "multi", "colorless", "land"]
+      },
+      {
+        key: "type", labelKey: "facet.cardType",
+        of: mtgTypeBuckets,
+        label: (v) => t(`mtg.type.${v}`),
+        order: MTG_TYPES
+      },
+      {
+        key: "treat", labelKey: "facet.treatment",
+        of: (c) => String(c.treat || "").split(";").filter(Boolean),
+        label: treatLabel,
+        order: ["borderless", "extendedart", "showcase", "fullart", "etched", "inverted", "surgefoil"]
+      }
+    ]
+  };
+  function gameFacets(game) { return GAME_FACETS[game] || []; }
+
   const GAME_LINES = {
     onepiece: {
       "opcd": { prefix: "opcd-", label: "Carddass Hyper Battle", titleKey: "sets.category.vintage" },
@@ -5070,6 +5143,7 @@
     gameTagHtml,
     textOnColor,
     gameLabel,
+    gameFacets,
     gameLogoUrl,
     setDisplayName,
     setOriginalName,
