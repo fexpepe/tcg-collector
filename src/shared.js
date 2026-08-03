@@ -892,6 +892,9 @@
     let open = false;
     try { open = localStorage.getItem(FILTERS_OPEN_KEY) === "1"; } catch (e) { /* ignora */ }
     bars.forEach((bar) => {
+      // Página com botão PRÓPRIO de filtros (ex.: Coleção, no cartão-herói):
+      // não cria o automático — seriam dois toggles brigando pela mesma barra.
+      if (bar.hasAttribute("data-own-toggle")) return;
       // Barra sem filtro nenhum (Sets/Artistas/Treinadores trazem a section
       // vazia no HTML): não cria o botão. Um "Filtros" que abre uma caixa vazia
       // é pior que não ter botão — some junto com a barra (ver .toolbar:empty).

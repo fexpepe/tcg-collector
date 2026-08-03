@@ -5871,6 +5871,14 @@ html:not([data-cardlang="all"]) #setRegionChips {
 #collectionDashboard .collection-toolbar-actions { flex: none; margin-left: auto; }
 #collectionDashboard .collection-toolbar-actions button { display: inline-flex; align-items: center; gap: 7px; }
 #collectionDashboard .collection-toolbar-actions svg { width: 16px; height: 16px; flex: none; }
+/* Visualização (▦/≣) compacta na ponta, na altura dos botões vizinhos. */
+#collectionDashboard .view-toggle { border-radius: 10px; }
+#collectionDashboard .view-toggle-btn { min-width: 38px; min-height: 34px; font-size: 1.02rem; }
+/* "Filtros" aberto = destacado (o estado mora no aria-expanded). */
+#collectionDashboard .collection-toolbar-actions button[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
+/* A barra de filtros da Coleção colapsa em QUALQUER largura (no resto do site
+   o .is-collapsed só vale no mobile, via .filters-toggle do shared.js). */
+.collection-filters.is-collapsed { display: none; }
 #collectionDashboard .dash-stats-counts {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

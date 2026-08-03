@@ -283,6 +283,7 @@
     valueFilter: document.getElementById("valueFilter"),
     cardsSortSelect: document.getElementById("cardsSortSelect"),
     cardsViewToggle: document.getElementById("cardsViewToggle"),
+    filtersBtn: document.getElementById("collectionFiltersBtn"),
     resultCount: document.getElementById("resultCount"),
     dashboard: document.getElementById("collectionDashboard"),
     dashCopies: document.getElementById("dashCopies"),
@@ -487,6 +488,25 @@
         localStorage.setItem("tcg-collection-view", cardsView);
         applyCardsView();
       });
+    }
+    // Barra de filtros recolhível: o botão vive no cartão-herói e vale em
+    // QUALQUER largura (no resto do site o colapso é só mobile, via
+    // initFilterToggle do shared.js — aqui a barra tem data-own-toggle).
+    // Mesma chave de preferência: quem abre costuma querer manter aberto.
+    if (elements.filtersBtn) {
+      const bar = document.getElementById("collectionFilters");
+      let filtersOpen = false;
+      try { filtersOpen = localStorage.getItem("tcg-collector-filters-open") === "1"; } catch (e) { /* ignora */ }
+      const paintFilters = () => {
+        if (bar) bar.classList.toggle("is-collapsed", !filtersOpen);
+        elements.filtersBtn.setAttribute("aria-expanded", String(filtersOpen));
+      };
+      elements.filtersBtn.addEventListener("click", () => {
+        filtersOpen = !filtersOpen;
+        try { localStorage.setItem("tcg-collector-filters-open", filtersOpen ? "1" : "0"); } catch (e) { /* ignora */ }
+        paintFilters();
+      });
+      paintFilters();
     }
 
     elements.gameFilter.addEventListener("click", (event) => {
@@ -787,6 +807,10 @@
       if (activeTab !== "cards" && bulkMode) setBulkMode(false);
     }
     if (elements.tagsNewBtn) elements.tagsNewBtn.hidden = !isTags || !!openTagId;
+    // Visualização (▦/≣) e Filtros, no cartão-herói, comandam a toolbar do
+    // cardsView: somem nas abas de progresso (Pokémon/Artistas/Sets).
+    if (elements.cardsViewToggle) elements.cardsViewToggle.hidden = !isCardsLike;
+    if (elements.filtersBtn) elements.filtersBtn.hidden = !isCardsLike;
 
     renderDashboard();
     updatePokemonFilterLabel();
