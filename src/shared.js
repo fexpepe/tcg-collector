@@ -4461,12 +4461,22 @@
     // é incolor (artefatos, Eldrazi…).
     return /\bland\b/i.test(String(card.cardType || "")) ? "land" : "colorless";
   }
-  const MTG_TYPES = ["creature", "instant", "sorcery", "artifact", "enchantment", "land", "planeswalker", "battle"];
+  // Tipos de carta do Magic, em ordem canônica (os oito primeiros são o que
+  // aparece num deck de verdade; o resto existe em produto de brincadeira/
+  // suplemento e entra só pra não sobrar type_line crua na lista).
+  const MTG_TYPES = [
+    "creature", "instant", "sorcery", "artifact", "enchantment", "land", "planeswalker", "battle",
+    "kindred", "tribal", "conspiracy", "dungeon", "phenomenon", "plane", "scheme", "vanguard", "emblem"
+  ];
   function mtgTypeBuckets(card) {
     const linha = String(card.cardType || "").toLowerCase();
     // Uma carta pode ser vários tipos ("Artifact Creature", "Land Creature").
     const achados = MTG_TYPES.filter((tipo) => new RegExp(`\\b${tipo}\\b`).test(linha));
-    return achados.length ? achados : [];
+    if (achados.length) return achados;
+    // "Summon — Dinosaur" / "Summon Wolf": grafia dos anos 90 (Legends/The Dark)
+    // pro que hoje é Creature. Sem isto cada Summon virava um tipo só dele.
+    if (/^summon\b/.test(linha)) return ["creature"];
+    return [];
   }
   // Rótulo de um token de tratamento: traduzido quando conhecido; senão o
   // próprio token com a primeira letra maiúscula (surgefoil -> "Surgefoil").
@@ -4504,6 +4514,31 @@
     ]
   };
   function gameFacets(game) { return GAME_FACETS[game] || []; }
+
+  // TIPO PRINCIPAL da carta, pra AGRUPAR (lista do deck, facetas…). No Magic o
+  // `cardType` é a type_line INTEIRA ("Artifact Creature — Golem"), então
+  // agrupar pelo campo cru separava cada subtipo num grupo: Golem de um lado,
+  // Goblin Sorcerer de outro, e a lista virava uma escada. Aqui volta o tipo de
+  // verdade (Criatura), com o mesmo vocabulário da faceta.
+  // Carta de vários tipos entra no PRIMEIRO da ordem canônica — a lista precisa
+  // de um grupo só por carta (diferente da faceta, onde ela conta em todos).
+  // Jogos sem regra própria seguem com o campo cru, que já é o tipo deles.
+  function cardTypeGroup(game, card) {
+    if (!card) return { key: "", label: "" };
+    if (game === "magic") {
+      const b = mtgTypeBuckets(card);
+      // Rótulo tolerante: tipo sem tradução (os de suplemento) mostra o próprio
+      // token capitalizado, então dá pra estender MTG_TYPES sem 3 traduções.
+      if (b.length) {
+        const chave = `mtg.type.${b[0]}`;
+        const rot = t(chave);
+        return { key: b[0], label: rot === chave ? b[0].charAt(0).toUpperCase() + b[0].slice(1) : rot };
+      }
+      return { key: "", label: "" };
+    }
+    const cru = String(card.cardType || card.category || "");
+    return { key: cru, label: cru };
+  }
 
   const GAME_LINES = {
     onepiece: {
@@ -5144,6 +5179,7 @@
     textOnColor,
     gameLabel,
     gameFacets,
+    cardTypeGroup,
     gameLogoUrl,
     setDisplayName,
     setOriginalName,

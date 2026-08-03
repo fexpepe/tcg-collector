@@ -96,28 +96,29 @@
     touch(deck);
   }
 
-  // Adiciona 1 cópia SE a regra do jogo permitir. Barrado, pisca a carta em
-  // vermelho no lugar de adicionar em silêncio — antes dava pra passar de 60/60
-  // e o deck só acusava o erro depois, no painel de validação.
-  // `alvo` é o elemento que recebe o feedback (o resultado da busca ou a carta
+  // Adiciona 1 cópia — SEMPRE. Quando a jogada sai do comum (2º comandante,
+  // cópia além do limite, zona cheia) a carta é adicionada e o aviso aparece:
+  // barrar era pior, porque o Magic tem carta que autoriza justamente isso
+  // (Partner, Relentless Rats) e o site brigava com quem estava certo. O painel
+  // de validação continua descrevendo o deck pronto.
+  // `alvo` é o elemento que recebe o destaque (o resultado da busca ou a carta
   // já no deck); o motivo vai no title, então quem parar o mouse lê o porquê.
   function tryAdd(deck, zoneKey, card, alvo) {
     const r = rules.canAdd(deck, zoneKey, card, cat.byId);
-    if (r.ok) { addCard(deck, zoneKey, card, 1); return true; }
-    // Mensagem de BLOQUEIO (não a do validate, que descreve um deck já fora da
-    // regra): aqui o deck está certo e a ação é que foi recusada. A zona vai
-    // traduzida ("Principal"), não com a chave crua ("main").
-    const vals = Object.assign({}, r.vals || {});
+    addCard(deck, zoneKey, card, 1);
+    if (!r.warn) return true;
+    // A zona vai traduzida ("Principal"), não com a chave crua ("main").
+    const vals = Object.assign({}, r.warn.vals || {});
     if (vals.zone) vals.zone = t("decks.zone." + vals.zone);
-    const motivo = t("decks.blocked." + r.code, vals);
+    const motivo = t("decks.blocked." + r.warn.code, vals);
     if (alvo) {
-      alvo.classList.remove("deck-blocked");
+      alvo.classList.remove("deck-warned");
       void alvo.offsetWidth;              // reinicia a animação em cliques seguidos
-      alvo.classList.add("deck-blocked");
+      alvo.classList.add("deck-warned");
       alvo.setAttribute("title", motivo);
-      setTimeout(() => alvo.classList.remove("deck-blocked"), 1000);
+      setTimeout(() => alvo.classList.remove("deck-warned"), 1400);
     }
-    return false;
+    return true;
   }
 
   // ---------------------------------------------------------------------------
@@ -988,7 +989,10 @@
   function groupKeyOf(deck, entry) {
     const card = cat.byId[entry.id] || {};
     const pack = packOf(deck);
-    if (view.group === "type") return String(card.cardType || card.category || "");
+    // TIPO principal, não a type_line crua: no Magic ela traz os subtipos
+    // ("Artifact Creature — Golem"), então cada criatura virava um grupo só
+    // dela. O rótulo já vem traduzido e serve de chave (é único por tipo).
+    if (view.group === "type") return shared.cardTypeGroup(deck.game, card).label;
     if (view.group === "cost") return card.cost == null || card.cost === "" ? "" : String(card.cost);
     if (view.group === "color") return pack.dist ? String(card[pack.dist] || "") : "";
     if (view.group === "rarity") return String(card.rarity || "");
@@ -1250,7 +1254,10 @@
     index.forEach((e) => {
       rules.multi(e.k).forEach((v) => uniq.k.add(v));            // "Amber/Steel" -> 2 cores
       if (e.c != null && e.c !== "") uniq.c.add(String(e.c));
-      if (e.t) uniq.t.add(String(e.t));
+      // TIPO: no Magic o campo é a type_line inteira, então a lista crua virava
+      // CENTENAS de opções ("Artifact // Artifact Creature — Golem"). O balde do
+      // shared.js devolve o tipo de verdade (Criatura, Feitiço…).
+      if (e.t) uniq.t.add(typeFacetValue(game, e.t));
       if (e.r) uniq.r.add(String(e.r));
     });
     const opts = {
@@ -1264,10 +1271,15 @@
     facetOptsCache[game] = opts;
     return opts;
   }
+  // Valor da faceta TIPO pra uma type_line — mesmo balde do agrupamento, então
+  // a opção escolhida no filtro casa com o grupo mostrado na lista.
+  function typeFacetValue(game, typeLine) {
+    return shared.cardTypeGroup(game, { cardType: typeLine }).label || String(typeLine || "");
+  }
   function passesFacets(e) {
     if (facetSel.k && !rules.multi(e.k).includes(facetSel.k)) return false;
     if (facetSel.c && String(e.c) !== facetSel.c) return false;
-    if (facetSel.t && String(e.t || "") !== facetSel.t) return false;
+    if (facetSel.t && typeFacetValue(curGame(), e.t) !== facetSel.t) return false;
     if (facetSel.r && String(e.r || "") !== facetSel.r) return false;
     return true;
   }
@@ -1378,12 +1390,40 @@
         <span class="deck-hit-img">${img}</span>
         <span class="deck-hit-body">
           <span class="deck-hit-name">${esc(c.name)}</span>
-          <span class="deck-hit-meta">${esc(c.set || "")} ${esc(c.number || "")}</span>
+          <span class="deck-hit-meta">${esc(c.set || "")} ${esc(c.number || "")}${printTags(c)}</span>
         </span>
         ${have ? `<span class="deck-own ok">${esc(t("decks.ownHave"))} ${esc(String(have))}</span>` : ""}
         <span class="deck-hit-btns">${btns}</span>
       </div>`;
     }).join("");
+  }
+
+  // Etiquetas da IMPRESSÃO no resultado da busca. Sem elas, procurar "Kuja" no
+  // Magic devolvia cinco linhas idênticas ("Final Fantasy 232", "…399", "…497")
+  // e não havia como saber qual é a versão que a pessoa tem na mão.
+  // Só usa dado que EXISTE no catálogo:
+  //   raridade  — 100% das cartas do Magic (e a maioria dos outros jogos);
+  //   foil      — a variante Foil está na lista de variantes da carta;
+  //   promo     — número com sufixo de letra (o "252s" do Scryfall é promo/
+  //               special; número puro é a impressão normal do set);
+  //   tratamento— `treat` (Extended Art, Borderless, Surge Foil…), que aparece
+  //               depois do primeiro build completo do Magic.
+  function printTags(card) {
+    const tags = [];
+    const r = String(card.rarity || "");
+    if (r) {
+      const k = `mtg.rarity.${r}`;
+      const rot = t(k);
+      tags.push(`<span class="deck-hit-tag rar-${escA(r)}">${esc(rot === k ? r : rot)}</span>`);
+    }
+    String(card.treat || "").split(";").filter(Boolean).forEach((tok) => {
+      const k = `mtg.treat.${tok}`;
+      const rot = t(k);
+      tags.push(`<span class="deck-hit-tag is-treat">${esc(rot === k ? tok.charAt(0).toUpperCase() + tok.slice(1) : rot)}</span>`);
+    });
+    if (/[a-z]$/i.test(String(card.number || ""))) tags.push(`<span class="deck-hit-tag is-promo">${esc(t("decks.tag.promo"))}</span>`);
+    if ((card.variants || []).some((v) => /foil/i.test(v))) tags.push(`<span class="deck-hit-tag is-foil">${esc(t("decks.tag.foil"))}</span>`);
+    return tags.length ? ` ${tags.join("")}` : "";
   }
 
   // ---------------------------------------------------------------------------

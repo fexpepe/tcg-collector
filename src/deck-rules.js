@@ -44,6 +44,18 @@
   // "Special" é a energia especial, que obedece o limite de 4.
   const isBasicEnergy = (c) => c.category === "Energy" && c.energyType === "Normal";
 
+  // Zonas dos formatos CONSTRUÍDOS do Magic (Standard/Pioneer/Modern/Legacy/
+  // Vintage/Pauper): 60+ no deck, sideboard de 15, e o MAYBEBOARD — rascunho de
+  // "penso em jogar" que não conta pra tamanho nem pra limite de cópias
+  // (scratch), como no Moxfield. Função, e não constante compartilhada, porque
+  // cada formato tem de receber o SEU array (objeto compartilhado entre packs
+  // viraria estado cruzado no dia em que alguma regra mudar um campo).
+  const BUILT_ZONES = () => [
+    { key: "main", min: 60, max: null },
+    { key: "side", min: 0, max: 15, manual: true },
+    { key: "maybe", min: 0, max: null, manual: true, scratch: true }
+  ];
+
   const RULES = {
     lorcana: {
       zones: [{ key: "main", min: 60, max: null }],
@@ -116,29 +128,48 @@
     },
 
     magic: {
+      // Os formatos de mesa mais jogados. Os cinco "construídos" (60 cartas, 4
+      // cópias, sideboard de 15) só diferem na lista de sets legais — que a
+      // gente NÃO valida (exigiria a legalidade por carta do Scryfall, que não
+      // gravamos): o que muda aqui é o nome que a pessoa escolhe, e os limites
+      // de tamanho/cópia, que valem pra todos. Pauper acrescenta a regra que dá
+      // pra checar com o nosso dado: só cartas comuns.
       formats: [
-        {
-          slug: "standard",
-          zones: [
-            { key: "main", min: 60, max: null },
-            { key: "side", min: 0, max: 15, manual: true }
-          ],
-          copyLimit: 4
-        },
+        { slug: "standard", zones: BUILT_ZONES(), copyLimit: 4 },
+        { slug: "pioneer", zones: BUILT_ZONES(), copyLimit: 4 },
+        { slug: "modern", zones: BUILT_ZONES(), copyLimit: 4 },
+        { slug: "legacy", zones: BUILT_ZONES(), copyLimit: 4 },
+        { slug: "vintage", zones: BUILT_ZONES(), copyLimit: 4 },
+        { slug: "pauper", zones: BUILT_ZONES(), copyLimit: 4, onlyRarity: ["common"] },
         {
           slug: "commander",
           zones: [
             // manual: quase toda carta lendária serviria de filtro — deixar
             // automático mandaria todo lendário pro comando em vez do deck.
-            { key: "commander", min: 1, max: 1, manual: true, filter: (c) => /Legendary/i.test(c.cardType || "") },
-            { key: "main", min: 99, max: 99 }
+            // max 2: Partner / Friends forever / Background / Doctor's companion
+            // fazem DOIS comandantes — e o cEDH vive disso (Rograkh+Thrasios).
+            { key: "commander", min: 1, max: 2, manual: true, filter: (c) => /Legendary/i.test(c.cardType || "") },
+            // 100 no total, comandantes inclusos: com 1 são 99 no deck, com 2 são 98.
+            { key: "main", sizeWith: { zone: "commander", total: 100 } },
+            { key: "side", min: 0, max: null, manual: true, scratch: true },
+            { key: "maybe", min: 0, max: null, manual: true, scratch: true }
           ],
           copyLimit: 1,                                  // singleton
+          identityFrom: { zone: "commander", field: "colorId" }
+        },
+        {
+          slug: "brawl",
+          zones: [
+            { key: "commander", min: 1, max: 1, manual: true, filter: (c) => /Legendary/i.test(c.cardType || "") },
+            { key: "main", sizeWith: { zone: "commander", total: 60 } },
+            { key: "maybe", min: 0, max: null, manual: true, scratch: true }
+          ],
+          copyLimit: 1,
           identityFrom: { zone: "commander", field: "colorId" }
         }
       ],
       copyKey: (card) => card.name,
-      exempt: isBasicLand,             // terreno básico é ilimitado nos dois formatos
+      exempt: isBasicLand,             // terreno básico é ilimitado em todo formato
       facets: ["cardType", "color", "cost", "rarity"],
       curve: "cost", dist: "color"
     }
@@ -177,33 +208,34 @@
     return ((deck.zones && deck.zones[zoneKey]) || []).reduce((sum, e) => sum + (e.qty || 0), 0);
   }
 
-  // Pode somar mais UMA cópia desta carta nesta zona? É a checagem PRÉVIA que o
-  // editor usa pra barrar o clique — o `validate` continua avaliando o deck
-  // pronto (deck importado/antigo pode estar fora da regra, e aí o aviso é dele).
-  // Devolve { ok, code, vals } com o mesmo vocabulário de código do validate,
-  // pra reaproveitar as traduções `decks.issue.<code>`.
+  // Checagem PRÉVIA do "+" — que NÃO BARRA MAIS NADA. Devolve
+  // { ok: true, warn?: { code, vals } }: o editor sempre adiciona e, quando vem
+  // `warn`, mostra o aviso.
   //
-  // Barra os dois limites que são "cheios de verdade":
-  //   zoneMax   — a zona atingiu o máximo (é o "59/60" do cabeçalho);
-  //   copyLimit — já tem o máximo de cópias da mesma carta (4, ou 1 no
-  //               singleton do Commander). Conta em TODAS as zonas, porque o
-  //               limite é do deck inteiro, e respeita as isenções (energia
-  //               básica, terreno básico) e o copyKey de cada jogo.
-  // Regras de identidade (tinta/cor) NÃO barram: elas dependem do conjunto e o
-  // usuário pode estar trocando o líder/comandante no meio da montagem.
+  // Por que deixou de barrar (pedido do Fernando, 2026-08-03): a regra escrita
+  // no pacote é a do caso GERAL, e o Magic vive de cartas que a rompem —
+  // Partner faz DOIS comandantes, e Relentless Rats / Nazgûl / Shadowborn
+  // Apostle pedem CÓPIAS num formato singleton. Cada exceção dessas viraria uma
+  // lista pra manter (e um bug pra quem monta o deck certo). Melhor deixar
+  // montar e sinalizar: o `validate` já descreve o deck pronto, e o aviso do
+  // clique diz na hora o que está fora do comum.
+  // O vocabulário de código é o MESMO do validate, pra reaproveitar as
+  // traduções `decks.issue.<code>`.
+  // Zona `scratch` (maybeboard) não avisa nada: é rascunho.
   function canAdd(deck, zoneKey, card, cardById) {
     const pack = packFor(deck.game, deck.format);
     if (pack.free) return { ok: true };
 
     const zone = (pack.zones || []).find((z) => z.key === zoneKey);
+    if (zone && zone.scratch) return { ok: true };
     if (zone && zone.max && countIn(deck, zoneKey) >= zone.max) {
-      return { ok: false, code: "zoneMax", vals: { zone: zoneKey, n: countIn(deck, zoneKey), max: zone.max } };
+      return { ok: true, warn: { code: "zoneMax", vals: { zone: zoneKey, n: countIn(deck, zoneKey) + 1, max: zone.max } } };
     }
 
     if (pack.copyLimit && card && !(pack.exempt && pack.exempt(card))) {
       const key = pack.copyKey ? pack.copyKey(card) : card.name;
       let qty = 0;
-      (pack.zones || []).forEach((z) => {
+      (pack.zones || []).filter((z) => !z.scratch).forEach((z) => {
         ((deck.zones && deck.zones[z.key]) || []).forEach((e) => {
           const c = e.id === card.id ? card : (cardById && cardById[e.id]);
           if (!c) return;                                  // fora do catálogo carregado
@@ -213,9 +245,11 @@
       });
       if (qty >= pack.copyLimit) {
         return {
-          ok: false,
-          code: pack.copyLimit === 1 ? "singleton" : "copyLimit",
-          vals: { name: card.name, qty: qty, max: pack.copyLimit }
+          ok: true,
+          warn: {
+            code: pack.copyLimit === 1 ? "singleton" : "copyLimit",
+            vals: { name: card.name, qty: qty + 1, max: pack.copyLimit }
+          }
         };
       }
     }
@@ -233,17 +267,25 @@
     const entries = (zoneKey) => ((deck.zones && deck.zones[zoneKey]) || []);
     const cardOf = (entry) => cardById && cardById[entry.id];
 
-    // 1) Tamanho de cada zona.
+    // 1) Tamanho de cada zona. `sizeWith` = tamanho que depende de OUTRA zona:
+    // no Commander o deck é 100 no total, então 1 comandante pede 99 e dois
+    // comandantes (Partner) pedem 98 — número fixo acusaria erro em deck legal.
     (pack.zones || []).forEach((z) => {
       const n = countIn(deck, z.key);
-      if (z.min && n < z.min) issues.push({ level: "error", code: "zoneMin", vals: { zone: z.key, n: n, min: z.min } });
-      if (z.max && n > z.max) issues.push({ level: "error", code: "zoneMax", vals: { zone: z.key, n: n, max: z.max } });
+      let min = z.min, max = z.max;
+      if (z.sizeWith) {
+        const alvo = Math.max(0, z.sizeWith.total - countIn(deck, z.sizeWith.zone));
+        min = alvo; max = alvo;
+      }
+      if (min && n < min) issues.push({ level: "error", code: "zoneMin", vals: { zone: z.key, n: n, min: min } });
+      if (max && n > max) issues.push({ level: "error", code: "zoneMax", vals: { zone: z.key, n: n, max: max } });
     });
 
-    // 2) Limite de cópias — soma TODAS as zonas (o limite é do deck inteiro).
+    // 2) Limite de cópias — soma as zonas que CONTAM (maybeboard fica fora: é
+    // rascunho, e ter lá a 5ª cópia de um Bolt não é ilegalidade nenhuma).
     if (pack.copyLimit) {
       const byKey = new Map();
-      (pack.zones || []).forEach((z) => entries(z.key).forEach((e) => {
+      (pack.zones || []).filter((z) => !z.scratch).forEach((z) => entries(z.key).forEach((e) => {
         const card = cardOf(e);
         if (!card) return;                       // carta fora do catálogo carregado
         if (pack.exempt && pack.exempt(card)) return;
@@ -257,6 +299,19 @@
           issues.push({ level: "error", code: code, cardId: v.id, vals: { name: v.name, qty: v.qty, max: pack.copyLimit } });
         }
       });
+    }
+
+    // 2b) Pauper: só cartas comuns. É a única restrição de "lista legal" que o
+    // nosso dado permite conferir — `rarity` vem em 100% das cartas do Magic.
+    if (pack.onlyRarity) {
+      const permitido = new Set(pack.onlyRarity);
+      const fora = new Map();
+      (pack.zones || []).filter((z) => !z.scratch).forEach((z) => entries(z.key).forEach((e) => {
+        const card = cardOf(e);
+        if (!card || !card.rarity) return;      // sem raridade no catálogo: não acusa
+        if (!permitido.has(String(card.rarity))) fora.set(card.id, card.name);
+      }));
+      fora.forEach((name, id) => issues.push({ level: "error", code: "rarityNotAllowed", cardId: id, vals: { name: name } }));
     }
 
     // 3) Identidade PRÓPRIA do deck (Lorcana: no máximo 2 tintas).
