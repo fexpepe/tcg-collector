@@ -888,6 +888,7 @@ input::placeholder {
   display: inline-flex; align-items: center; justify-content: center;
   text-align: center;
   min-width: 0; /* rótulo longo ("Vendas e Trocas") não estica a coluna */
+  text-decoration: none; /* a aba-LINK (Vendas e Trocas) não pode vir sublinhada */
 }
 .prof-tab:hover { background: var(--accent-soft); }
 /* Linha própria pro seletor de ordenação (ver o comentário no collection.js:
