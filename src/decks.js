@@ -373,11 +373,18 @@
   async function renderCommunity(box, logged) {
     box.innerHTML = `<p class="deck-hint">${esc(t("decks.loading"))}</p>`;
     const rows = await shared.listShares("deck", communityGame || null, 60);
+    // Visitas dos decks listados, numa chamada só (tabela deck_views). Sem a
+    // migration aplicada volta {} — e aí a popularidade simplesmente não existe:
+    // o destaque cai pro primeiro da ordem e a opção "mais vistos" não aparece.
+    const views = await shared.fetchDeckViews(rows.map((r) => r.id));
+    const nViews = (r) => Number(views[r.id]) || 0;
+    const temViews = Object.keys(views).length > 0;
     // Ordenação no CLIENTE: a lista vem limitada a 60 do servidor (mais
     // recentes), então reordenar aqui é barato e não gasta round-trip.
     const nCards = (r) => Number(r.total) || 0;
     if (communitySort === "cards") rows.sort((a, b) => nCards(b) - nCards(a));
     else if (communitySort === "name") rows.sort((a, b) => String(a.title || "").localeCompare(String(b.title || "")));
+    else if (communitySort === "views") rows.sort((a, b) => nViews(b) - nViews(a));
     // Filtros: chips por jogo — sempre TODOS os jogos com a cor deles (o
     // usuário pediu filtros; jogo sem deck fica com o chip mesmo assim, senão
     // o filtro "some" conforme o conteúdo).
@@ -388,9 +395,12 @@
     const topCta = logged
       ? `<a class="cta secondary-cta" href="my-decks.html">${esc(t("decks.goMine"))}</a>`
       : `<a class="cta" href="login.html">${esc(t("decks.publicCta"))}</a>`;
+    // "Mais vistos" só entra quando HÁ contagem: sem a tabela de visitas a opção
+    // ordenaria por nada e pareceria quebrada.
+    const sortOpts = ["recent", "cards", "name"].concat(temViews ? ["views"] : []);
     const sortSel = `<label class="dkc-sort"><span>${esc(t("decks.sortBy"))}</span>
       <select class="deck-view-sel" data-dkc-sort>
-        ${["recent", "cards", "name"].map((s) => `<option value="${escA(s)}"${communitySort === s ? " selected" : ""}>${esc(t("decks.sortCom." + s))}</option>`).join("")}
+        ${sortOpts.map((s) => `<option value="${escA(s)}"${communitySort === s ? " selected" : ""}>${esc(t("decks.sortCom." + s))}</option>`).join("")}
       </select></label>`;
     // Ícones das seções (SVG inline: a CSP é 'self' e são dois).
     const IC_STAR = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8L3.6 9.7l5.8-.8z"/></svg>';
@@ -408,8 +418,10 @@
         ? (shared.convertMoney(custoBRL, "BRL", shared.getCurrency()) == null ? custoBRL : shared.convertMoney(custoBRL, "BRL", shared.getCurrency()))
         : 0;
       const quando = r.created_at ? new Date(r.created_at).toLocaleDateString(shared.getLocale()) : "";
+      const vis = nViews(r);
       return [
         n ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.cardsWord"))}</span><strong>${esc(String(n))}</strong></span>` : "",
+        vis > 0 ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.viewsWord"))}</span><strong>${esc(String(vis))}</strong></span>` : "",
         custo > 0 ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.costEstimated"))}</span><strong>${esc(shared.formatMoney(shared.getCurrency(), custo))}</strong></span>` : "",
         r.author ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.authorWord"))}</span><strong>${esc(String(r.author).slice(0, 30))}</strong></span>` : "",
         quando ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.publishedWord"))}</span><strong>${esc(quando)}</strong></span>` : ""
@@ -424,16 +436,21 @@
       body = `<section class="empty-state"><h2>${esc(t("decks.emptyCommunityTitle"))}</h2>
         <p>${esc(t(communityGame ? "decks.emptyCommunityGame" : "decks.emptyCommunity"))}</p></section>`;
     } else {
-      // DESTAQUE = o primeiro da ordem escolhida (o mais recente por padrão).
-      // O rótulo diz exatamente isso: não existe sinal de popularidade em deck
-      // (não contamos visita nem voto), e chamar de "em destaque" um deck que é
-      // só o mais novo seria inventar ranking.
-      const hero = rows[0];
-      const resto = rows.slice(1);
+      // DESTAQUE = o mais VISITADO (tabela deck_views) — destaque de verdade,
+      // por engajamento. Sem contagem nenhuma (migration não aplicada, ou
+      // galeria recém-nascida), cai pro primeiro da ordem escolhida e o rótulo
+      // muda pra "Último publicado": prefiro dizer o que é a mostrar um ranking
+      // inventado. O hero SAI da lista de baixo pra não aparecer duas vezes.
+      const popular = temViews
+        ? rows.slice().sort((a, b) => nViews(b) - nViews(a))[0]
+        : null;
+      const hero = (popular && nViews(popular) > 0) ? popular : rows[0];
+      const destaqueReal = hero === popular && nViews(hero) > 0;
+      const resto = rows.filter((r) => r.id !== hero.id);
       const gHero = shared.normalizeGame(hero.game || "pokemon");
       const heroHtml = `<section class="dkc-sec">
-        <h2 class="dkc-sec-h">${IC_STAR}<span>${esc(t("decks.spotlight"))}</span></h2>
-        <p class="dkc-sec-sub">${esc(t("decks.spotlightSub"))}</p>
+        <h2 class="dkc-sec-h">${IC_STAR}<span>${esc(t(destaqueReal ? "decks.featured" : "decks.spotlight"))}</span></h2>
+        <p class="dkc-sec-sub">${esc(t(destaqueReal ? "decks.featuredSub" : "decks.spotlightSub"))}</p>
         <a class="dkc-hero" href="decks.html?s=${encodeURIComponent(hero.id)}">
           <span class="dkc-hero-cover">${capaHtml(hero)}</span>
           <span class="dkc-hero-body">
@@ -445,8 +462,8 @@
       </section>`;
 
       const listaHtml = resto.length ? `<section class="dkc-sec">
-        <h2 class="dkc-sec-h">${IC_CLOCK}<span>${esc(t("decks.recentTitle"))}</span></h2>
-        <p class="dkc-sec-sub">${esc(t("decks.recentSub"))}</p>
+        <h2 class="dkc-sec-h">${IC_CLOCK}<span>${esc(t(communitySort === "recent" ? "decks.recentTitle" : "decks.allTitle"))}</span></h2>
+        <p class="dkc-sec-sub">${esc(t(communitySort === "recent" ? "decks.recentSub" : "decks.allSub"))}</p>
         <div class="dkc-rows">` + resto.map((r) => {
           const g = shared.normalizeGame(r.game || "pokemon");
           return `<a class="dkc-row" href="decks.html?s=${encodeURIComponent(r.id)}">
@@ -505,6 +522,10 @@
     const row = await shared.fetchShare(id);
     const deck = row && row.kind === "deck" ? sanitizeDeckPayload(row.data) : null;
     if (!deck) { box.innerHTML = `<section class="empty-state"><p>${esc(t("decks.sharedGone"))}</p></section>`; return; }
+    // Conta a visita (1 por deck por sessão, só em produção): é o que alimenta
+    // o "Em destaque" da galeria. Depois de confirmar que o deck EXISTE, senão
+    // link quebrado inflaria o contador.
+    shared.logDeckView(id);
 
     // Catálogo + preços do jogo do deck, só das cartas dele.
     const ids = [...new Set(Object.values(deck.zones).flat().map((e) => e.id))];

@@ -21,6 +21,13 @@ colando cada arquivo inteiro no SQL Editor.
    todas as publicações com o UUID do dono e correlaciona deck+pasta+coleção da
    mesma pessoa. `authenticated` mantém (a tela "Publicados por você" filtra por
    essa coluna).
+3. **`20260804a_deck_views.sql`** — destrava o "Em destaque" da galeria.
+   Tabela `deck_views` + RPC `increment_deck_view` (escrita) e `deck_views_for`
+   (leitura em lote), no mesmo molde do `card_views`. Sem ela a galeria funciona
+   igual, só sem popularidade: o destaque continua sendo "Último publicado" e a
+   ordenação "Mais vistos" não aparece. Com ela aplicada, o site começa a contar
+   visita (1 por deck por sessão, só em produção) e o destaque passa a ser o deck
+   mais visitado — sem precisar de deploy novo.
 
 ### Já aplicadas (verificado em produção, 2026-07-27)
 

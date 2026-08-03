@@ -2088,6 +2088,42 @@
       });
     } catch (e) { /* contador é opcional */ }
   }
+  // Views por DECK publicado (tabela deck_views, migration 20260804a) — é o
+  // sinal que faz o "Em destaque" da galeria ser destaque de verdade, e não só
+  // "o mais recente". Mesmo desenho do logCardView: 1 view por deck por sessão,
+  // escrita via RPC validada, só em produção (abrir deck em localhost não pode
+  // mexer no ranking do site real) e falha em silêncio.
+  function logDeckView(shareId) {
+    if (!AUTH_ENABLED || !shareId) return;
+    if (!/(^|\.)sleevu\.app$/i.test(location.hostname)) return;
+    try {
+      const k = `tcg-deckviewed:${shareId}`;
+      if (sessionStorage.getItem(k)) return;
+      sessionStorage.setItem(k, "1");
+      fetch(`${SUPABASE_URL}/rest/v1/rpc/increment_deck_view`, {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify({ p_share_id: shareId }),
+        keepalive: true
+      });
+    } catch (e) { /* contador é opcional */ }
+  }
+  // Contagem de views de VÁRIOS decks numa chamada (a galeria lista até 60).
+  // Devolve { shareId: views }. Sem a migration aplicada a RPC não existe (404)
+  // e isto devolve {} — a galeria então segue sem ordenar por popularidade.
+  async function fetchDeckViews(ids) {
+    if (!AUTH_ENABLED || !Array.isArray(ids) || !ids.length) return {};
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/deck_views_for`, {
+        method: "POST", headers: authHeaders(), body: JSON.stringify({ p_ids: ids.slice(0, 200) })
+      });
+      if (!r.ok) return {};
+      const rows = await r.json();
+      const out = {};
+      (rows || []).forEach((x) => { if (x && x.share_id) out[x.share_id] = Number(x.views) || 0; });
+      return out;
+    } catch (e) { return {}; }
+  }
   // Top de views de um jogo (leitura pública do agregado).
   async function fetchTopViewed(game, limit) {
     if (!AUTH_ENABLED) return [];
@@ -5245,6 +5281,8 @@
     loadPriceDeltas,
     basePricingId,
     logCardView,
+    logDeckView,
+    fetchDeckViews,
     fetchTopViewed,
     findSellers,
     pushWishlist,
