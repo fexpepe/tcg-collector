@@ -41,17 +41,17 @@
     try { localStorage.setItem(GAME_KEY, g); } catch (e) { /* storage bloqueado: ignora */ }
   }
   // Páginas neutras: as que NÃO são de um jogo só. A Início e o HUB (que são a
-  // porta de entrada), as visões pessoais que já leem os 12 jogos de uma vez
-  // (Dashboard, Badges, Backup), a busca global (Explorar) e os Decks — tanto a
-  // galeria da comunidade quanto "Meus decks" mostram deck de qualquer jogo, e
-  // cada deck carrega o próprio `game`. Aqui a sessão não é usada pra nada, e
+  // porta de entrada), a busca global (Explorar), os Decks (galeria e "Meus
+  // decks" mostram deck de qualquer jogo) e TODAS as páginas pessoais — elas
+  // leem os 12 jogos de uma vez (stores mesclados + loadOwnedAcrossGames) e
+  // filtram por jogo DENTRO da página. Aqui a sessão não é usada pra nada, e
   // carimbar ?game= (ver stampGame) só sujava o link que a pessoa copia: abrir
-  // /decks e ver "?game=pokemon" na barra dá a entender que a galeria está
-  // filtrada em Pokémon, quando o filtro da página começa em "Todos".
+  // /collection e ver "?game=pokemon" na barra dá a entender que a página está
+  // presa no Pokémon, quando o filtro dela começa em "Todos".
   // Cobre URL limpa do Cloudflare (/, /index, /decks) e o .html.
   function isNeutralPage() {
     var p = (location.pathname || "").replace(/\/+$/, "");
-    return p === "" || /\/(index|hub|explore|dashboard|badges|backup|decks|my-decks)(\.html)?$/i.test(p);
+    return p === "" || /\/(index|hub|explore|dashboard|badges|backup|decks|my-decks|collection|portfolio|sales|binders|wishlist|graded)(\.html)?$/i.test(p);
   }
   // Porta de entrada (Início/HUB): a única neutra onde ?game= grava a sessão.
   function isEntryPage() {
@@ -70,7 +70,7 @@
       if (q && GAMES[q] && !GAMES[q].isHub && isEntryPage()) writeSession(q);
       return "hub";
     }
-    if (q === "hub") return "hub";                              // portfólio combinado
+    if (q === "hub") return "hub";                              // deep-link legado (?game=hub): sessão neutra
     if (q && GAMES[q] && !GAMES[q].isHub) { writeSession(q); return q; } // troca/deep-link
     var s = readSession();
     if (s) { stampGame(s); return s; }                          // sessão atual

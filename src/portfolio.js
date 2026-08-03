@@ -7,77 +7,19 @@
     return shared.formatMoney(shared.getCurrency(), value > 0 ? value : 0);
   }
 
-  // No HUB (apex) não há catálogo próprio. O portfólio COMBINADO soma os jogos a
-  // partir do resumo que cada jogo grava num cookie .sleevu.app
-  // (writePortfolioCookie): total por jogo + linha de valor, sem iframe nem
-  // cross-origin. Jogo sem cookie ainda não teve o portfólio aberto -> atalho.
-  if ((window.SLEEVU && window.SLEEVU.game) === "hub") {
-    // Site único: o portfólio de cada jogo é a mesma página com ?game= (entra na
-    // sessão daquele jogo). O combinado lê o resumo que cada jogo grava em cookie.
-    const pfUrl = (g) => "portfolio.html?game=" + g;
-    const readPf = (g) => {
-      const m = document.cookie.match(new RegExp("(?:^|; )sleevu_pf_" + g + "=([^;]*)"));
-      if (!m) return null;
-      try { return JSON.parse(decodeURIComponent(m[1])); } catch (e) { return null; }
-    };
-    const fromBRL = (v) => { const r = shared.convertMoney(v, "BRL", shared.getCurrency()); return r == null ? v : r; };
-    const COLORS = shared.GAME_COLOR;
-    const NAMES = { pokemon: "Pokémon TCG", lorcana: "Disney Lorcana", onepiece: "One Piece Card Game", naruto: "Naruto Card Game (2002~2006)", hxh: "Hunter × Hunter" };
-    const games = shared.GAME_SLUGS.map((g) => ({ g, name: NAMES[g] || g, data: readPf(g) }));
-    games.forEach((x) => {
-      x.color = COLORS[x.g];
-      x.total = x.data ? fromBRL((x.data.c || 0) + (x.data.b || 0)) : null;
-      x.pts = ((x.data && x.data.h) || []).map((p) => [p[0], fromBRL(p[1])]);
-    });
-    const combined = games.reduce((s, x) => s + (x.total || 0), 0);
-
-    // Gráfico: uma linha por jogo (valor coleção+graded no tempo, moeda do header).
-    const hubChart = () => {
-      const withPts = games.filter((x) => x.pts && x.pts.length >= 2);
-      if (!withPts.length) return "";
-      const dates = Array.from(new Set([].concat.apply([], withPts.map((x) => x.pts.map((p) => p[0]))))).sort();
-      if (dates.length < 2) return "";
-      const allV = [].concat.apply([1], withPts.map((x) => x.pts.map((p) => p[1])));
-      const maxV = Math.max.apply(null, allV);
-      const W = 720, H = 200, P = 10;
-      const X = (d) => P + (dates.indexOf(d) / (dates.length - 1)) * (W - 2 * P);
-      const Y = (v) => H - P - (v / maxV) * (H - 2 * P);
-      const lines = withPts.map((x) => {
-        const pts = x.pts.map((p) => X(p[0]).toFixed(1) + "," + Y(p[1]).toFixed(1)).join(" ");
-        return `<polyline points="${pts}" fill="none" stroke="${x.color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
-      }).join("");
-      const legend = withPts.map((x) => `<span class="pf-hub-leg"><span class="pf-hub-dot" style="background:${x.color}"></span>${escapeHtml(x.name)}</span>`).join("");
-      return `<div class="pf-hub-chart"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${escapeAttribute(t("portfolio.hubChart"))}">${lines}</svg><div class="pf-hub-legend">${legend}</div></div>`;
-    };
-
-    const card = (x) => {
-      const body = x.data
-        ? `<span class="pf-hub-card-val">${money(x.total)}</span>`
-        : `<span class="game-tile-desc">${escapeHtml(t("portfolio.hubVisit"))}</span>`;
-      return `<li><a class="game-tile pf-hub-card" href="${escapeAttribute(pfUrl(x.g))}">`
-        + `<span class="pf-hub-card-head"><span class="pf-hub-dot" style="background:${x.color}"></span>`
-        + `<strong class="game-name">${escapeHtml(x.name)}</strong></span>${body}</a></li>`;
-    };
-
-    const main = document.querySelector("main");
-    if (main) {
-      main.innerHTML = `<div class="page-head"><h1>${escapeHtml(t("nav.portfolio"))}</h1></div>`
-        + `<section class="pf-hub">`
-        + `<div class="pf-hub-total"><span>${escapeHtml(t("portfolio.hubCombined"))}</span><strong>${money(combined)}</strong></div>`
-        + `<ul class="home-games-grid pf-hub-games">${games.map(card).join("")}</ul>`
-        + hubChart()
-        + `<p class="portfolio-note">${escapeHtml(t("portfolio.hubNote"))}</p>`
-        + `</section>`;
-    }
-    return;
-  }
-
   // ===========================================================================
-  // Portfólio por jogo (não-hub): visão FINANCEIRA da Minha Coleção. O total tem
-  // que BATER com a Coleção -> mesma fonte e mesma fórmula:
+  // Portfólio: visão FINANCEIRA da Minha Coleção — TODOS os jogos, com filtro
+  // por jogo dentro da página (data-pf-game). O total tem que BATER com a
+  // Coleção -> mesma fonte e mesma fórmula:
   //   patrimônio = cartas raw (todos os jogos) + slabs graded.
   // Binders e wishlist são VISÕES (filtros), não somam ao patrimônio.
   // Coleção unificada igual à collection.js (stores por jogo + facades).
+  // A página é NEUTRA (sessão "hub", ver isNeutralPage no game.js): nada aqui
+  // depende do jogo da sessão. Já houve um "portfólio combinado" separado que
+  // somava por cookie sleevu_pf_<g> quando a sessão era hub — removido: esta
+  // visão É a combinada, com dado real em vez de resumo de cookie. Os cookies
+  // continuam sendo GRAVADOS (writePortfolioCookie): o valueSnapshot do
+  // shared.js ainda os lê como fallback do retrato instantâneo.
   // ===========================================================================
   const GAMES = shared.GAME_SLUGS;
   const GAME_COLOR = shared.GAME_COLOR;
