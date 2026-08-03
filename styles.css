@@ -7609,6 +7609,24 @@ select,
 .deck-hit-tag.is-promo { color: #9b6dd6; border-color: color-mix(in srgb, #9b6dd6 45%, var(--line)); }
 .deck-hit-tag.is-foil { color: #35d0c0; border-color: color-mix(in srgb, #35d0c0 45%, var(--line)); }
 
+/* PROXY: a pessoa marca a carta que vai jogar com proxy, monta o deck inteiro e
+   vê o que realmente falta comprar. Roxo (não é erro nem posse — é uma terceira
+   coisa), e a linha inteira fica esmaecida pro olho separar na lista. */
+.deck-proxy { font-weight: 800; letter-spacing: 0.02em; }
+.deck-proxy.on { color: #9b6dd6; border-color: #9b6dd6; background: color-mix(in srgb, #9b6dd6 14%, transparent); }
+.deck-own.proxy { color: #9b6dd6; }
+.deck-row.is-proxy { opacity: 0.72; }
+.deck-row.is-proxy .deck-row-name { text-decoration: underline dotted color-mix(in srgb, #9b6dd6 70%, transparent); text-underline-offset: 3px; }
+.deck-tile.is-proxy .deck-tile-img { opacity: 0.6; }
+/* Canto superior DIREITO: o esquerdo é do selo de quantidade (.deck-tile-qty). */
+.deck-tile-proxy {
+  position: absolute; top: 4px; right: 4px; z-index: 1;
+  padding: 0 5px; border-radius: 4px;
+  background: #9b6dd6; color: #fff;
+  font-size: 9.5px; font-weight: 800; text-transform: uppercase;
+}
+.deck-value-note.is-proxy { color: #9b6dd6; }
+
 /* Adição FORA DO COMUM (2º comandante, cópia além do limite, zona cheia): a
    carta ENTRA e pisca em âmbar — o site não barra mais, porque o Magic tem
    carta que autoriza justamente isso (Partner, Relentless Rats). Âmbar e não

@@ -212,22 +212,26 @@
   function computeValue(deck, byId) {
     const owned = ownedFor(deck.game);
     const prices = pricesFor(deck.game);
-    let total = 0, have = 0, missing = 0, missingCards = 0;
+    let total = 0, have = 0, missing = 0, missingCards = 0, proxyCards = 0;
     allEntries(deck).forEach(({ entry }) => {
       const card = byId[entry.id];
       if (!card) return;
       const variant = entry.variant || shared.defaultVariant(card);
       const unit = (shared.cardValue(card, variant, prices) || {}).value || 0;
       const qty = entry.qty || 0;
+      total += qty * unit;
+      // Marcada como PROXY: sai da conta de "falta comprar" — é justamente o
+      // que a pessoa decidiu NÃO comprar. Continua no total (o deck vale
+      // aquilo) e vira uma linha própria no painel.
+      if (entry.px) { proxyCards += qty; return; }
       // Posse conta QUALQUER variante: uma Charizard foil joga como Charizard.
       const inColl = owned.totalForCard ? owned.totalForCard(entry.id) : 0;
       const hv = Math.min(qty, inColl);
-      total += qty * unit;
       have += hv * unit;
       missing += (qty - hv) * unit;
       missingCards += (qty - hv);
     });
-    return { total, have, missing, missingCards };
+    return { total, have, missing, missingCards, proxyCards };
   }
   function ownedCountOf(deck, cardId) {
     const owned = ownedFor(deck.game);
@@ -1056,8 +1060,15 @@
     const issues = rules.validate(deck, cat.byId);
     const an = rules.analyze(deck, cat.byId);
 
+    // PROXY (`px` na entrada): "vou jogar esta com proxy". Serve pra montar o
+    // deck inteiro e enxergar o que ainda falta comprar de verdade — o selo de
+    // posse diz o que você TEM, o proxy diz o que você decidiu não comprar
+    // agora. Some do cálculo de "falta" no painel de valor.
+    const proxyBtn = (e) => `<button type="button" class="deck-mini deck-proxy${e.px ? " on" : ""}" data-proxy aria-pressed="${!!e.px}" title="${escA(t(e.px ? "decks.proxyOff" : "decks.proxyOn"))}" aria-label="${escA(t(e.px ? "decks.proxyOff" : "decks.proxyOn"))}">P</button>`;
+
     // Selo de posse — compartilhado pelos 3 layouts.
     const ownBadge = (e) => {
+      if (e.px) return `<span class="deck-own proxy">${esc(t("decks.proxyTag"))}</span>`;
       const have = ownedCountOf(deck, e.id);
       return have >= (e.qty || 0)
         ? `<span class="deck-own ok">${esc(t("decks.ownHave"))}</span>`
@@ -1074,11 +1085,13 @@
         const cls = view.layout === "grid" ? "deck-tiles" : "deck-pile";
         return `<div class="${cls}">` + list.map((e) => {
           const card = cat.byId[e.id];
-          return `<div class="deck-tile" data-zone="${escA(zoneKey)}" data-card="${escA(e.id)}" title="${escA((card && card.name) || e.id)}">
+          return `<div class="deck-tile${e.px ? " is-proxy" : ""}" data-zone="${escA(zoneKey)}" data-card="${escA(e.id)}" title="${escA((card && card.name) || e.id)}">
             <span class="deck-tile-img">${imgOf(card)}</span>
             <span class="deck-tile-qty">${esc(String(e.qty))}×</span>
+            ${e.px ? `<span class="deck-tile-proxy">${esc(t("decks.proxyTag"))}</span>` : ""}
             <span class="deck-tile-btns">
               <button type="button" class="deck-mini" data-dec>−</button>
+              ${proxyBtn(e)}
               <button type="button" class="deck-mini" data-inc>+</button>
             </span>
           </div>`;
@@ -1089,13 +1102,14 @@
         // Preço unitário na linha (padrão Dreamborn): quem monta já vê o custo
         // de cada escolha sem abrir o card.
         const unit = card ? ((shared.cardValue(card, shared.defaultVariant(card), pricesFor(deck.game)) || {}).value || 0) : 0;
-        return `<li class="deck-row" data-zone="${escA(zoneKey)}" data-card="${escA(e.id)}">
+        return `<li class="deck-row${e.px ? " is-proxy" : ""}" data-zone="${escA(zoneKey)}" data-card="${escA(e.id)}">
           <span class="deck-qty">${esc(String(e.qty))}×</span>
           <span class="deck-row-name">${esc((card && card.name) || e.id)}</span>
           ${unit > 0 ? `<span class="dkc-row-price">${esc(money(unit))}</span>` : ""}
           ${ownBadge(e)}
           <span class="deck-row-btns">
             <button type="button" class="deck-mini" data-dec>−</button>
+            ${proxyBtn(e)}
             <button type="button" class="deck-mini" data-inc>+</button>
           </span>
         </li>`;
@@ -1169,6 +1183,7 @@
             <div class="deck-value-row"><span>${esc(t("decks.valueHave"))}</span><strong class="have">${esc(money(val.have))}</strong></div>
             <div class="deck-value-row missing"><span>${esc(t("decks.valueMissing"))}</span><strong>${esc(money(val.missing))}</strong></div>
             <p class="deck-value-note">${esc(t("decks.missingCount").replace("{n}", String(val.missingCards)))}</p>
+            ${val.proxyCards ? `<p class="deck-value-note is-proxy">${esc(t("decks.proxyCount").replace("{n}", String(val.proxyCards)))}</p>` : ""}
           </section>
           ${(an.curve || an.dist || an.rarity) ? `<section class="deck-analysis">
             <h3>${esc(t("decks.analysis"))}${an.avgCost != null ? ` <span class="deck-avg">${esc(t("decks.avgCost"))}: ${esc(String(an.avgCost))}</span>` : ""}</h3>
@@ -1594,6 +1609,16 @@
       renderEditor();
     }
     else if (ev.target.closest("[data-dec]")) { addCard(current, item.dataset.zone, card, -1); renderEditor(); }
+    else if (ev.target.closest("[data-proxy]")) {
+      // Liga/desliga o proxy da entrada. `px` só existe quando true — entrada
+      // sem a marca é o caso normal e não paga bytes no payload sincronizado.
+      const entry = (current.zones[item.dataset.zone] || []).find((e) => e.id === card.id);
+      if (entry) {
+        if (entry.px) delete entry.px; else entry.px = 1;
+        touch(current);
+        renderEditor();
+      }
+    }
     else {
       // Clique fora do +/−: abre o card completo (texto, preço, marcar posse).
       hideHover();                                   // senão o preview de hover fica por cima
