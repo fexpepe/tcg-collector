@@ -53,14 +53,21 @@
     var p = (location.pathname || "").replace(/\/+$/, "");
     return p === "" || /\/(index|hub|explore|dashboard|badges|backup|decks|my-decks)(\.html)?$/i.test(p);
   }
+  // Porta de entrada (Início/HUB): a única neutra onde ?game= grava a sessão.
+  function isEntryPage() {
+    var p = (location.pathname || "").replace(/\/+$/, "");
+    return p === "" || /\/(index|hub)(\.html)?$/i.test(p);
+  }
 
   function detectGame() {
     var q = null;
     try { q = new URLSearchParams(location.search).get("game"); } catch (e) { /* ignora */ }
     if (isNeutralPage()) {
-      // Início/HUB são sempre o hub; mas se vier ?game= (de um link), já grava a
-      // sessão pra próxima navegação entrar no jogo certo.
-      if (q && GAMES[q] && !GAMES[q].isHub) writeSession(q);
+      // Na porta de entrada, ?game= é intenção ("vim de um link daquele jogo"):
+      // grava a sessão pra próxima navegação entrar no jogo certo. Nas DEMAIS
+      // neutras (Decks etc.) o ?game= é sobra do carimbo antigo, em links que
+      // ainda circulam — trocar a sessão de quem abre seria efeito colateral.
+      if (q && GAMES[q] && !GAMES[q].isHub && isEntryPage()) writeSession(q);
       return "hub";
     }
     if (q === "hub") return "hub";                              // portfólio combinado

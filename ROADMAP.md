@@ -13,8 +13,8 @@ todo o resto continua livre.
 
 ## ✅ Já implementado
 
-- **Home** com manifesto ("por que existe"), seção de roadmap, apoio (café/Pix/Ko-fi)
-  e rodapé com aviso de marcas. ⚠️ Pix e Ko-fi ainda são placeholders (ver pendências).
+- **Home** com manifesto ("por que existe"), seção de roadmap, apoio (café/Pix/Ko-fi,
+  chave e link reais) e rodapé com aviso de marcas.
 - **Wishlist "Eu quero"** (`tcg-collector-wishlist-v1`): coração por variante nos tiles,
   página `wishlist.html`, e "comprei!" (marcar como tenho move da wishlist pra coleção).
 - **Preço BR manual + Portfólio**: campos de preço em R$ por condição no preview da carta,
@@ -57,17 +57,13 @@ todo o resto continua livre.
 
 ## 🔜 Próximos passos (em ordem de prioridade)
 
-### 1. Plugar Pix e Ko-fi reais na home — trivial
-Em `index.html`, seção de apoio: trocar `data-pix="SUA-CHAVE-PIX-AQUI"` pela chave Pix real
-e o `href` do Ko-fi (`https://ko-fi.com/fexpepe`) pelo link real. Marcados com `<!-- TODO -->`.
-
-### 2. Polimento dos binders — médio/baixo
+### 1. Polimento dos binders — médio/baixo
 - Ligar o botão "Adicionar a um binder" dos tiles (hoje placeholder "em breve") a um
   seletor de binder, pra mandar a carta direto da listagem pro fichário.
 - Arrastar pra reordenar slots; múltiplas páginas por binder.
 - Incluir as fotos dos binders no export/import (hoje o JSON não leva o IndexedDB).
 
-### 3. Polimento — médio/baixo
+### 2. Polimento — médio/baixo
 - Realce de "completo" (100%) nos cards de set/artista, como o dourado da Pokédex.
 - A **Quero** (wishlist) ainda baixa o catálogo inteiro (`loadCatalog`) só pra mostrar o
   subconjunto desejado — dá pra baixar só os sets das cartas marcadas (a **Coleção** já faz
