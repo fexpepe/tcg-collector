@@ -8,19 +8,8 @@ poucos.)
 
 ## Pendentes de aplicar
 
-Todas são aditivas e independentes entre si — pode aplicar na ordem abaixo,
-colando cada arquivo inteiro no SQL Editor.
-
-1. **`20260727b_shares_update_policy.sql`** — **a mais urgente.**
-   `shares` nunca teve policy de UPDATE, então "republicar" um deck criava uma
-   linha NOVA em vez de atualizar: o mesmo deck ficava duplicado na galeria e a
-   versão antiga sem como remover. Também recria a policy de DELETE (é o que faz
-   o botão "Despublicar" funcionar de verdade).
-2. **`20260727c_shares_hide_user_id.sql`** — endurecimento.
-   Tira o `user_id` da leitura ANÔNIMA de `shares`. Sem isso, qualquer um lista
-   todas as publicações com o UUID do dono e correlaciona deck+pasta+coleção da
-   mesma pessoa. `authenticated` mantém (a tela "Publicados por você" filtra por
-   essa coluna).
+Nenhuma. Todas as migrações deste diretório estão aplicadas em produção
+(verificado por curl — ver a lista abaixo).
 
 ### Já aplicadas (verificado em produção)
 
@@ -37,6 +26,17 @@ colando cada arquivo inteiro no SQL Editor.
   devolve `[]`.
 - `20260724a` — slugs de YGO/Digimon/Riftbound no CHECK de `card_views`.
 - `20260727a` — `kind='deck'` liberado em `shares` (destravou o publicar).
+- `20260727b` — policy de UPDATE (e DELETE) do dono em `shares`. Aplicada em
+  2026-08-04; republicar deixa de duplicar o deck na galeria. O teste de
+  comportamento é logado (curl anônimo não exercita policy de
+  `authenticated`): republicar um deck deve manter UMA linha por deck.
+- `20260727c` — `user_id` fora da leitura ANÔNIMA de `shares`. Aplicada e
+  verificada em 2026-08-04: pedir `user_id` devolve 42501, e as duas queries
+  REAIS do app seguem funcionando pra visitante sem conta — o select da
+  galeria (com os `data->>`) e o do viewer de deck (`data` inteiro). Conferir
+  essas duas importa: o `revoke select` derruba o acesso amplo, então uma
+  coluna esquecida no `grant` quebraria a galeria sem que o teste do
+  `user_id` percebesse.
 
 Como aplicar: SQL Editor do dashboard (colar o arquivo inteiro) ou
 `supabase db push` com o CLI ligado ao projeto `dlnalopazitfdgnmdguu`.
