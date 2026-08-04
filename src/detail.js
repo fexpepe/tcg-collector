@@ -173,6 +173,10 @@
   const facetDefs = (shared.gameFacets && shared.gameFacets((window.SLEEVU && window.SLEEVU.game) || "")) || [];
   const facetSel = {};
   facetDefs.forEach((f) => { facetSel[f.key] = new Set(); });
+  // Quais caixas estão ABERTAS. Marcar uma opção re-renderiza o painel inteiro
+  // (as contagens das outras facetas mudam), e sem guardar isto a caixa fechava
+  // a cada clique — impossível marcar duas cores seguidas.
+  const facetOpen = new Set();
   // Quando o jogo tem faceta de raridade, o <select> de raridade sai de cena —
   // dois controles pra mesma coisa é armadilha.
   const rarityAsFacet = facetDefs.some((f) => f.key === "rarity");
@@ -717,7 +721,17 @@
           + `<span class="facet-opt-label">${escapeHtml(f.label(v))}</span>`
           + `<span class="facet-opt-n">${contagem.get(v)}</span></label>`;
       }).join("");
-      return `<fieldset class="facet-group"><legend>${escapeHtml(t(f.labelKey))}</legend>${itens}</fieldset>`;
+      // Caixa com DROPDOWN, igual aos outros filtros da barra — a diferença é
+      // que dentro dela dá pra MARCAR várias. <details> nativo: abre/fecha e
+      // navega por teclado sem JS (mesmo padrão do menu "View" dos decks).
+      // O resumo mostra quantas estão marcadas, senão o filtro ativo ficaria
+      // escondido dentro da caixa fechada.
+      const n = facetSel[f.key].size;
+      const resumo = escapeHtml(t(f.labelKey)) + (n ? ` <span class="facet-sum-n">${n}</span>` : "");
+      return `<details class="facet-drop${n ? " has-sel" : ""}"${facetOpen.has(f.key) ? " open" : ""} data-facet-drop="${escapeAttribute(f.key)}">
+        <summary>${resumo}</summary>
+        <div class="facet-pop">${itens}</div>
+      </details>`;
     }).filter(Boolean).join("");
 
     box.innerHTML = grupos;
@@ -803,6 +817,32 @@
       if (cb.checked) sel.add(cb.value); else sel.delete(cb.value);
       applyFilters();
       renderFacets();
+    });
+    // Estado aberto/fechado de cada caixa (o `toggle` do <details> não borbulha,
+    // então escuta na fase de captura). Uma caixa aberta FECHA as outras: duas
+    // gavetas abertas se sobrepõem.
+    if (elements.facets) elements.facets.addEventListener("toggle", (event) => {
+      const d = event.target.closest ? event.target.closest("[data-facet-drop]") : null;
+      if (!d) return;
+      const key = d.dataset.facetDrop;
+      if (d.open) {
+        facetOpen.clear();
+        facetOpen.add(key);
+        elements.facets.querySelectorAll("[data-facet-drop]").forEach((o) => { if (o !== d) o.open = false; });
+      } else {
+        facetOpen.delete(key);
+      }
+    }, true);
+    // Fecha ao clicar fora e no Esc — <details> não faz nenhum dos dois sozinho.
+    document.addEventListener("click", (event) => {
+      if (!elements.facets || event.target.closest("[data-facet-drop]")) return;
+      facetOpen.clear();
+      elements.facets.querySelectorAll("[data-facet-drop][open]").forEach((d) => { d.open = false; });
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || !elements.facets) return;
+      facetOpen.clear();
+      elements.facets.querySelectorAll("[data-facet-drop][open]").forEach((d) => { d.open = false; });
     });
     bindSegmented(elements.ownedChips, (value) => { selectedOwned = value; });
 

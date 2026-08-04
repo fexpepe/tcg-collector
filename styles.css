@@ -5925,12 +5925,47 @@ html:not([data-cardlang="all"]) #setRegionChips {
 .detail-actions svg { width: 16px; height: 16px; flex: none; }
 .detail-actions button[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
 .detail-toolbar.is-collapsed, .quick-add.is-collapsed { display: none; }
-/* Facetas por jogo (Cor, Tipo, Seleção…): grupos com título e caixinhas com a
-   contagem à direita. Ocupam a linha inteira da toolbar de filtros e quebram em
-   colunas conforme a largura. */
-.detail-facets { flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 14px 26px; }
-.facet-group { border: 0; margin: 0; padding: 0; min-width: 168px; display: flex; flex-direction: column; gap: 2px; }
-.facet-group legend { padding: 0 0 4px; font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
+/* Facetas por jogo (Raridade, Cor, Tipo, Seleção…): cada uma é uma CAIXA com
+   dropdown, do tamanho e do jeito dos outros filtros da barra — a diferença é
+   que dentro dela dá pra marcar várias. Antes as listas ficavam abertas por
+   fora e a barra virava uma parede de caixinhas.
+   <details> nativo (mesmo padrão do menu "View" dos decks): abre/fecha e navega
+   por teclado sem JS. */
+.detail-facets { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
+.facet-drop { position: relative; }
+.facet-drop > summary {
+  list-style: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 42px; padding: 0 34px 0 13px;
+  border: 1px solid var(--line); border-radius: 10px;
+  background: var(--panel-strong); color: var(--text);
+  font-size: 14px; font-weight: 700;
+  /* Mesma cetinha dos <select> da barra (ver .toolbar select). */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a93a3' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; background-size: 12px 12px;
+}
+.facet-drop > summary::-webkit-details-marker { display: none; }
+.facet-drop > summary:hover { border-color: var(--accent); }
+/* Caixa COM filtro marcado se destaca (o valor escolhido está escondido dentro
+   dela, então a caixa fechada precisa dizer que está filtrando). */
+.facet-drop.has-sel > summary { border-color: var(--accent); color: var(--accent); }
+.facet-sum-n {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px;
+  background: var(--accent); color: var(--on-accent);
+  font-size: 11px; font-weight: 800;
+}
+/* Gaveta: absoluta pra não empurrar a barra ao abrir; rola quando a lista é
+   longa (Tipo do card no Magic tem 8+ opções). */
+.facet-pop {
+  position: absolute; left: 0; top: calc(100% + 6px); z-index: 30;
+  min-width: 218px; max-height: 320px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 10px; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--surface); box-shadow: var(--shadow);
+}
+/* Perto da borda direita a gaveta abriria fora da tela: a última alinha à direita. */
+.facet-drop:last-child .facet-pop { left: auto; right: 0; }
 .facet-opt {
   display: flex; align-items: center; gap: 8px;
   padding: 3px 6px 3px 2px; border-radius: 6px;
