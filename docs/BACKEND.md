@@ -1,139 +1,201 @@
-# Backend — plano (preço agora, login depois)
+# Backend — o que existe hoje
 
-O app é **local-first e estático** (Cloudflare Pages). Backend entra como **camada
-opcional**, nunca como requisito: o site continua funcionando 100% sem conta.
+O site é **local-first e estático** (Cloudflare Pages). O backend é uma camada
+**opcional**: quem não cria conta continua com tudo no `localStorage`, e nenhum
+recurso do app depende de login. São três peças independentes:
 
-## Fase 1 — Preço BR (MYP), via build-time
+1. **Supabase** — Auth, Postgres e RLS: conta, sync da coleção, perfil público,
+   decks publicados, contadores, push e analytics.
+2. **Cloudflare Pages Functions** — API na borda (`functions/`): busca em D1,
+   "só as minhas cartas" e o Open Graph do perfil público.
+3. **Build-time** — preços e catálogo entram no site como arquivo estático,
+   gerados pelo GitHub Actions. Nenhum preço é servido por backend em runtime.
 
-**Decisão:** não usar backend em runtime para preço. O preço BR é puxado **no
-build** (GitHub Actions) e gravado em `data/pricing.generated.js`. Mantém o site
-estático, o token seguro (secret do CI) e o preço atualiza no cron semanal.
+O SQL novo é versionado em [`supabase/migrations/`](../supabase/migrations/) —
+o repo é a fonte da verdade, o SQL Editor é só o meio de aplicar. Ver o
+[README de lá](../supabase/migrations/README.md) pro que está aplicado.
 
-**Já pronto:** `scripts/sync-myp.mjs` (lê `MYP_API_TOKEN`, pagina `/{jogo}/precos`,
-salva `data/myp-prices.generated.json`). O front já lê `TCG_PRICING.b = {mn,md,mx}`
-(BRL) e mostra a linha "Brasil · MYP" na cotação; `cardValue` prioriza o BR.
+Projeto: `dlnalopazitfdgnmdguu`. As chaves do front (URL + publishable) são
+públicas por design — quem protege é a RLS.
 
-**Falta (destrava com o token do MYP):**
-1. Solicitar o `X-Api-Token` ao suporte do MYP.
-2. Rodar `MYP_API_TOKEN=… node scripts/sync-myp.mjs pokemon` uma vez e inspecionar
-   a resposta real (nomes de campos / paginação).
-3. Finalizar o **matching** carta↔MYP (por `edition_code`+número e/ou nome) e o
-   merge que injeta `b` em `pricing.generated.js`.
-4. Adicionar o secret `MYP_API_TOKEN` no GitHub e o passo no `deploy.yml`
-   (gated: roda só se o secret existir).
+---
 
-## Fase 2 — Login + sync da coleção (Supabase)
+## 1. Supabase
 
-**Decisão:** Supabase (Auth + Postgres + RLS). Login é **opcional**; quem não
-entra continua no `localStorage`. Ao entrar, a coleção sincroniza na nuvem.
-Sem imagens — só os dados (cardId → variante → quantidade/condição), que são leves.
+### Tabelas
 
-**Dados que migram para a nuvem (hoje no localStorage):**
-`tcg-collector-collection-v3`, `tcg-collector-wishlist-v1`, `tcg-collector-prices-v1`,
-`tcg-collector-binders-v1`. Estratégia: ao logar pela 1ª vez, **mesclar** o local
-com o da nuvem (sem sobrescrever/perder), depois manter a nuvem como fonte.
+| Tabela | O que guarda | Leitura |
+|---|---|---|
+| `collections` | PK (`user_id`, `game`); `data` jsonb = o "save" daquele jogo | só o dono |
+| `profiles` | identidade e preferências: `handle`, `display_name`, `is_public`, `show_values`, `is_admin` | só o dono |
+| `public_profiles` | payload **curado** do perfil público: coleção + vendas (+ preços se `show_values`) | pontual, via RPC |
+| `shares` | links publicados: `kind` ∈ {collection, binder, deck} | pública (colunas liberadas) |
+| `card_views` | PK (game, card_id); contador de visitas por carta | pública |
+| `deck_views` | PK `share_id` → `shares`; visitas por deck | pública |
+| `events` | analytics first-party: `name`, `path`, `anon`, `game`, `props` | **nenhuma** (só insert) |
+| `rate_limits` | janela por IP usada pelas RPCs | interna |
+| `push_subs` | PK (user_id, endpoint); assinaturas de web push | só o dono |
+| `push_sender_key` | só o **SHA-256** da chave do robô | nenhuma (sem policy, de propósito) |
 
-**Schema (colar no SQL Editor do Supabase quando criar o projeto):**
+Regras que valem em todas: RLS ligada, escrita do dono via `auth.uid() = user_id`,
+`anon` nunca insere onde há dono. Limites de abuso: 5 MB em `collections.data`,
+2 MB em `shares.data` e `public_profiles.data`, e no máximo 100 shares por
+usuário (trigger).
 
-```sql
--- Uma linha por usuário guardando o "save" inteiro como JSON (simples e suficiente).
-create table public.collections (
-  user_id    uuid primary key references auth.users (id) on delete cascade,
-  data       jsonb not null default '{}'::jsonb,  -- { collection, wishlist, prices, binders }
-  updated_at timestamptz not null default now()
-);
+**Privacidade do perfil público**: `profiles` (privado) e `public_profiles`
+(curado) são tabelas separadas de propósito. O cliente só escreve na segunda
+quando `is_public`, e **deleta** a linha quando o perfil volta a privado.
+Binders, pastas, histórico e custos nunca entram nela. Desde a migração
+`20260727c`, a leitura anônima de `shares` é liberada **coluna a coluna** — o
+`user_id` fica de fora.
 
-alter table public.collections enable row level security;
+### RPCs
 
--- Cada usuário só enxerga/edita a própria linha.
-create policy "own row - select" on public.collections
-  for select using (auth.uid() = user_id);
-create policy "own row - insert" on public.collections
-  for insert with check (auth.uid() = user_id);
-create policy "own row - update" on public.collections
-  for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
-```
+| RPC | Pra quê |
+|---|---|
+| `handle_available(p_handle)` | valida formato, lista de reservados e unicidade do @ |
+| `get_public_profile(p_handle)` | leitura pontual do perfil público (substituiu o SELECT amplo) |
+| `find_sellers(p_card_ids)` | cruza a wishlist com quem tem à venda, sobre dados já públicos |
+| `increment_card_view(...)` | +1 visita numa carta, com whitelist de jogo e throttle por IP |
+| `increment_deck_view(uuid)` | +1 visita num deck; exige share existente com `kind='deck'` |
+| `deck_views_for(uuid[])` | lê até 200 contagens numa chamada (ordenação "Mais vistos") |
+| `analytics_summary(days)` | números do `/admin`; devolve null pra quem não é admin |
+| `error_summary(...)` | erros de JS agregados, no mesmo painel |
+| `delete_account()` | apaga shares + collections + o usuário, filtrando por `auth.uid()` |
 
-**Passos quando for construir a Fase 2:**
-1. Criar projeto no Supabase (free tier), rodar o SQL acima.
-2. Habilitar Auth (e-mail mágico e/ou Google).
-3. No front: incluir o supabase-js, botão "Entrar", e sync (carregar ao logar,
-   salvar com debounce ao mudar). Manter o modo local como padrão.
-4. CSP: liberar `connect-src` para `https://*.supabase.co`.
+Contadores **nunca** aceitam insert direto: escrever é privilégio da RPC
+(`security definer`), com throttle por IP no servidor e 1 view/sessão no cliente.
+Sem a tabela ou a RPC, a galeria degrada sozinha em vez de quebrar.
 
-## Login com Google (o que precisa estar configurado)
+### O que sincroniza
 
-O botão "Continuar com Google" só navega para o endpoint do Supabase:
+O blob de cada linha de `collections` é montado a partir de `SYNC_KEYS`
+([src/shared.js](../src/shared.js)): as chaves **por jogo** (coleção, wishlist,
+preços, histórico) mais as **globais** (binders, decks, pastas, vendas, graded,
+tags, vendidos, custos, preço-alvo, favoritos). As globais são gravadas
+redundantemente em cada linha de jogo e reconciliadas no merge.
 
-```
-https://<projeto>.supabase.co/auth/v1/authorize?provider=google&redirect_to=<pagina de login>
-```
+O sync é **multi-jogo**: todo pull/push percorre os slugs, não só o jogo da
+sessão — senão carta marcada no PC num jogo não chegava no celular. O merge é
+last-write-wins por bloco, com tombstones. No primeiro login o local é
+**mesclado** com a nuvem, nunca sobrescrito.
 
-Não há SDK nem callback próprio: o Supabase devolve os tokens no **hash**
-(`#access_token=…`) e o `initAuth` do `shared.js` consome na volta — o mesmo
-caminho do link mágico. Ou seja, quando o Google não funciona, o problema está
-em **configuração**, não no código do site. São três lugares, e todos os três
-precisam bater:
+Fotos de binder (IndexedDB) **não** sobem: o blob leva só metadados.
 
-**1. Google Cloud Console** (console.cloud.google.com → APIs e serviços)
-- Tela de consentimento OAuth configurada e **publicada** (em "Testing" só
-  entram os e-mails da lista de testadores).
-- Credenciais → Criar credencial → **ID do cliente OAuth** → *Aplicativo da Web*.
-- **Origens JavaScript autorizadas**: `https://sleevu.app`
-- **URIs de redirecionamento autorizados**: `https://<projeto>.supabase.co/auth/v1/callback`
-  (é o Supabase que recebe a volta do Google, **não** o sleevu.app — este é o
-  campo que mais se erra).
+---
 
-**2. Supabase → Authentication → Providers → Google**
-- Ligar o provedor e colar o **Client ID** e o **Client Secret** do passo 1.
-- Provedor desligado é o que produz `error_description=Unsupported provider:
-  provider is not enabled` na volta.
+## 2. API na borda (Cloudflare Pages Functions)
 
-**3. Supabase → Authentication → URL Configuration**
-- **Site URL**: `https://sleevu.app`
-- **Redirect URLs** (allow-list) precisa cobrir a página de login: use
-  `https://sleevu.app/**`. O `redirect_to` é montado com
-  `location.origin + location.pathname`, e no Cloudflare Pages a URL limpa é
-  `/login` (sem `.html`) — em desenvolvimento local vira `/login.html`, então
-  vale acrescentar `http://localhost:*/**` para testar.
-- Fora da allow-list o Supabase **não dá erro visível**: ele redireciona para o
-  Site URL, e a impressão é a de um login que "não fez nada".
+| Rota | O que faz |
+|---|---|
+| `GET /api/search` | busca no jogo inteiro (ou `game=all`) respondida por D1, em poucos KB — no lugar de baixar o `search-index.json` inteiro (8 MB no Magic) |
+| `POST /api/collection` | devolve as cartas e os preços **exatamente dos ids** que a pessoa tem, no lugar dos chunks inteiros dos sets |
+| `GET /users/<handle>` | serve a SPA com Open Graph, título e canonical dinâmicos do perfil |
 
-Erro na volta aparece na própria tela de login (`login.js` lê `error` e
-`error_description` da URL e mostra o texto do provedor) — é por onde começar o
-diagnóstico.
+Duas regras de projeto:
 
-## E-mail do link mágico (SMTP próprio) — obrigatório antes de divulgar
+- **A borda devolve dado, não total.** A fórmula do valor vive só no cliente. Se
+  a borda somasse por conta própria existiriam duas fórmulas, e mais cedo ou mais
+  tarde elas discordariam — é exatamente o bug de "o valor da Coleção não bate
+  com o do Hub" que já custou caro.
+- **Degradar, nunca quebrar.** O cliente trata qualquer resposta não-ok
+  (inclusive o 503 de "API desligada") como sinal pra cair no caminho estático de
+  sempre. Por isso a função pode existir em produção antes do banco.
 
-O Supabase manda os e-mails de login por um SMTP **compartilhado** de cortesia,
-limitado a poucos e-mails por hora e com reputação de domínio que não é sua. Nas
-palavras do painel, é "for testing only". Num dia de lançamento isso quebra de
-duas formas ao mesmo tempo: quem se cadastra depois do limite **não recebe o
-link**, e o que chega tende a cair no spam.
+O D1 é criado e carregado pelo próprio deploy (`build-d1.mjs` + `deploy-d1.mjs`)
+a partir do **mesmo** catálogo do site. Sem permissão de D1 no token, o passo
+explica o que falta e sai com sucesso.
 
-Trocar por um SMTP próprio (Resend, Postmark, Brevo — todos com um nível grátis
-que cobre o começo com folga):
+---
 
-1. Crie a conta no provedor e **verifique o domínio `sleevu.app`** — na prática,
-   colar os registros **SPF**, **DKIM** e (idealmente) **DMARC** no DNS do
-   Cloudflare. Sem isso o Gmail marca como spam mesmo com SMTP próprio.
-2. Supabase → **Project Settings → Authentication → SMTP Settings** → ligar
-   *Enable Custom SMTP* e preencher host, porta, usuário e senha do provedor.
-   - *Sender email*: algo como `login@sleevu.app` (não use um Gmail pessoal —
-     quebra o DKIM do domínio).
-   - *Sender name*: `Sleevu`.
-3. Supabase → **Authentication → Rate Limits**: com SMTP próprio dá pra subir o
-   teto de e-mails/hora. Deixe folga pro pico do lançamento.
-4. Supabase → **Authentication → Emails → Magic Link**: cole o template de
-   `docs/email-templates/magic-link.html`. Ele é montado com tabelas e estilo
-   inline de propósito (cliente de e-mail não é navegador: o Outlook usa o motor
-   do Word) e **não tem imagem externa** — cliente de e-mail bloqueia imagem por
-   padrão, e um logo quebrado no topo de um e-mail de login parece phishing.
-   A variável `{{ .ConfirmationURL }}` é do Supabase; não trocar.
-5. Teste real: peça um link pra um endereço **Gmail** e um **Outlook**, e
-   confira se cai na caixa de entrada (não no spam/promoções).
+## 3. Preço
 
-## Por que não tudo de uma vez
-Construir auth+sync especulativo adiciona manutenção e risco (migração de dados,
-RLS, conflito local×nuvem). Faz-se quando houver a necessidade real (multi-
-dispositivo / contas). O preço (Fase 1) entrega valor antes e sem login.
+Preço nunca passa por backend em runtime: é puxado no build e gravado em
+`data/**/pricing*.js`, servido estático. Mantém o site estático, o token seguro
+como secret do CI e o custo previsível.
+
+Fontes: TCGplayer (USD) e Cardmarket (EUR) vindas do sync de cada jogo,
+PokemonPriceTracker (preços JP e graded, por crédito) e AwesomeAPI (câmbio).
+
+**MYP (Brasil) — pendente do token.** `scripts/sync-myp.mjs` já lê
+`MYP_API_TOKEN` e pagina `/{jogo}/precos`; o front já lê `TCG_PRICING.b` e mostra
+a linha "Brasil · MYP", com o BR tendo prioridade no valor. O passo do deploy é
+no-op enquanto o secret não existir. O que falta está no [ROADMAP](../ROADMAP.md).
+
+---
+
+## 4. Web push (queda de preço)
+
+`push_subs` guarda as assinaturas; `push_sender_key` guarda **só o hash** da
+chave do robô, e as RPCs `push_targets`/`push_prune` são gated por esse hash
+(chave errada devolve zero linhas). O sender é `scripts/send-wishlist-push.mjs`,
+disparado pelo workflow `push-wishlist.yml` (segunda, 09:00 UTC): cruza quedas
+≥5% dos deltas de preço com a wishlist sincronizada, respeita o idioma da
+assinatura e limpa endpoints 404/410. VAPID: chave pública no front, privada em
+secret.
+
+---
+
+## 5. Analytics e /admin
+
+Anônimo e first-party: `logPageview` manda 1 evento por carregamento com um uuid
+de primeira parte do `localStorage`. A tabela `events` **não tem select** — nem o
+dono lê evento cru; o que existe é o agregado das RPCs, e só pra quem tem
+`is_admin`. Erros de JS entram como `name='jserror'` no mesmo lugar e aparecem no
+painel. A política de privacidade divulga essas estatísticas.
+
+---
+
+## Runbooks
+
+### Login com Google
+
+O botão só navega pro endpoint do Supabase; os tokens voltam no hash e o
+`initAuth` do `shared.js` consome — mesmo caminho do link mágico. Quando o Google
+não funciona, o problema é **configuração**, em um destes três lugares:
+
+1. **Google Cloud Console** — tela de consentimento publicada (em "Testing" só
+   entram os testadores); credencial de *Aplicativo da Web*; origens autorizadas
+   `https://sleevu.app`; **URI de redirecionamento**
+   `https://dlnalopazitfdgnmdguu.supabase.co/auth/v1/callback` (é o Supabase que
+   recebe a volta do Google, **não** o sleevu.app — o campo que mais se erra).
+2. **Supabase → Authentication → Providers → Google** — provedor ligado com o
+   Client ID e o Secret. Desligado produz `Unsupported provider` na volta.
+3. **Supabase → Authentication → URL Configuration** — Site URL
+   `https://sleevu.app` e Redirect URLs cobrindo `https://sleevu.app/**` (mais
+   `http://localhost:*/**` pra testar). Fora da allow-list o Supabase **não dá
+   erro visível**: redireciona pro Site URL, e parece um login que não fez nada.
+
+O `login.js` mostra o motivo real (captcha, rate-limit, genérico) — é por onde
+começar o diagnóstico.
+
+### E-mail do link mágico (SMTP próprio)
+
+Ativo via **Resend** (`login@sleevu.app`, `smtp.resend.com:465`, domínio
+verificado com SPF/DKIM). O runbook completo — DNS, credenciais, rate limits e
+teste de deliverability — está em
+[`supabase/email-templates/README.md`](../supabase/email-templates/README.md).
+
+Pendência: o template de `magic-link.html` está colado no **Confirm signup**, mas
+não na aba **Magic Link** — quem já tem conta ainda recebe o padrão em inglês.
+
+Armadilha conhecida: endereço `@example.com` é **recusado pelo Resend** e vira um
+`500 Error sending confirmation email`, que parece SMTP quebrado e não é. Testar
+com um alias `+algo` de um e-mail real.
+
+### Turnstile
+
+Widget `sleevu-login` na conta Cloudflare, sitekey pública no `login.html`,
+secret no Supabase (**Authentication → Attack Protection**). Já houve um
+incidente em que o secret salvo era inválido e **todo** login falhava com
+`captcha_failed` mascarado por mensagem genérica — o diagnóstico foi chamar
+`/auth/v1/otp` direto e ler o `error_code`.
+
+---
+
+## Escala e custo
+
+O free do Supabase segura ~1–2k usuários sincronizando; o free do Resend, ~100
+logins/dia. Passando disso com folga: Resend Pro (US$ 20/mês) e Supabase Pro
+(US$ 25/mês), subindo o rate limit de e-mail junto. Nada disso muda o modelo —
+conta e sync continuam grátis pro usuário.
