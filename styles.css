@@ -2057,44 +2057,23 @@ input::placeholder {
 }
 
 /* Layout COMPACTO com áreas explícitas (o auto-placement embaralhava: barra na
-   coluna da direita, adição rápida esticando a linha dos toggles, valores em
-   cartões gigantes). Meta: o mínimo de altura antes da grade de cartas. */
+   coluna da direita, valores em cartões gigantes). Meta: o mínimo de altura
+   antes da grade de cartas.
+   Coluna ÚNICA como base — a segunda coluna já foi da "Adição rápida", que
+   depois saiu do .detail-summary pro botão próprio: a área `quick` ficou
+   reservada e VAZIA, deixando o hero espremido e um buraco de 300px à direita
+   em toda página com hero. Quem quiser a segunda coluna pede (ver o set). */
 .detail-summary.has-hero {
-  grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
-  /* A adição rápida sobe pra LINHA DO HERO: lá já sobra espaço horizontal (o
-     hero é logo + título + stats), enquanto embaixo ela esticava a fileira dos
-     toggles e abria um vão morto de ~75px antes da grade de cartas. */
+  grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
-    "hero quick"
-    "bar bar"
-    "values values"
-    "modes modes";
+    "hero"
+    "bar"
+    "values";
   align-items: start;
 }
-.detail-summary.has-hero .detail-hero { grid-area: hero; }
+.detail-summary.has-hero .detail-hero { grid-area: hero; align-self: stretch; }
 .detail-summary.has-hero .completion-bar { grid-area: bar; margin: 0; }
 .detail-summary.has-hero .detail-values { grid-area: values; }
-.detail-summary.has-hero .progress-modes { grid-area: modes; margin: 0; }
-.detail-summary.has-hero .quick-add { grid-area: quick; margin: 0; align-self: stretch; }
-/* Sem adição rápida a coluna da direita some e o hero volta a ocupar tudo. */
-/* Sem adição rápida (pokémon/artista/coleção): coluna única, sem vão à direita. */
-.detail-summary.has-hero:has(.quick-add[hidden]) {
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: "hero" "bar" "values" "modes";
-}
-/* Sem VALORES (linhas vintage, que não têm preço): a fileira de valores sai do
-   grid. Sem isto, a adição rápida — que ocupa as duas linhas — tem a altura
-   dividida entre elas e joga os toggles pro meio de um vão enorme. */
-.detail-summary.has-hero:has(.detail-values[hidden]) {
-  grid-template-areas:
-    "hero quick"
-    "bar bar"
-    "modes modes";
-}
-.detail-summary.has-hero:has(.detail-values[hidden]):has(.quick-add[hidden]) {
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: "hero" "bar" "modes";
-}
 
 /* Valores em R$ (total / gasto / a comprar): UMA fileira compacta, não três
    cartões gigantes — o usuário quer chegar nas cartas. */
@@ -2104,6 +2083,38 @@ input::placeholder {
   margin: 0;
 }
 .detail-summary.has-hero .detail-values article { padding: 10px 14px; }
+
+/* Página de SET em tela larga: os valores sobem pra LINHA DO HERO, na coluna que
+   sobrava à direita — o hero de set é logo + título + stats e não usa a largura
+   toda. Como faixa embaixo eles custavam ~55px de altura antes da grade.
+   Só no hero de SET (:has(.detail-set-art)): o de Pokémon tem a fileira "em
+   destaque" e fica alto demais: os três valores esticariam em caixotes vazios.
+   As três linhas dividem a altura do hero, então os dois blocos terminam
+   alinhados. */
+@media (min-width: 1001px) {
+  .detail-summary.has-hero:has(.detail-set-art) {
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
+    grid-template-areas:
+      "hero values"
+      "bar  bar";
+  }
+  .detail-summary.has-hero:has(.detail-set-art) .detail-values {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    align-self: stretch;
+  }
+  .detail-summary.has-hero:has(.detail-set-art) .detail-values article {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  /* Sem VALORES (linhas vintage, que não têm preço): coluna única de novo, senão
+     volta o mesmo buraco à direita. */
+  .detail-summary.has-hero:has(.detail-set-art):has(.detail-values[hidden]) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "hero" "bar";
+  }
+}
 .detail-summary.has-hero .detail-values span { font-size: 20px; white-space: nowrap; }
 .detail-summary.has-hero .detail-values p { margin-top: 3px; font-size: 12px; }
 
@@ -2135,6 +2146,9 @@ input::placeholder {
   .detail-summary .detail-hero {
     grid-template-columns: minmax(200px, 300px) 1fr;
   }
+  /* (Os valores já voltam a ser faixa embaixo por baixo de 1001px — a coluna da
+     direita é uma regra de min-width lá em cima. Aqui os 300px dela sairiam do
+     hero, que é o que menos pode encolher.) */
   .detail-hero .detail-stats {
     grid-column: 1 / -1;
     flex-direction: row;
@@ -2166,13 +2180,8 @@ input::placeholder {
   margin-bottom: 0;
 }
 
-@media (max-width: 760px) {
-  /* No mobile empilha tudo (áreas em coluna única, adição rápida por último). */
-  .detail-summary.has-hero {
-    grid-template-columns: 1fr;
-    grid-template-areas: "hero" "bar" "values" "modes" "quick";
-  }
-}
+/* (O empilhamento de mobile já vem da regra de ≤1000px acima — hero, barra e
+   valores em coluna única, com os valores como faixa de 3.) */
 
 .detail-hero h2 {
   margin-bottom: 8px;
