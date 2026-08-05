@@ -46,6 +46,7 @@
     rawValue: document.getElementById("rawValue"),
     gradedValue: document.getElementById("gradedValue"),
     pricedCopies: document.getElementById("pricedCopies"),
+    investedValue: document.getElementById("investedValue"),
     wishlistValue: document.getElementById("wishlistValue"),
     composition: document.getElementById("pfComposition"),
     breakdown: document.getElementById("pfBreakdown"),
@@ -267,6 +268,13 @@
     if (elements.gradedValue) elements.gradedValue.textContent = money(gradedTotal);
     if (elements.pricedCopies) elements.pricedCopies.textContent = `${pricedCopies}/${totalCopies}`;
     if (elements.wishlistValue) elements.wishlistValue.textContent = money(wish);
+    // Total investido: mesma soma da seção "Investimento" lá embaixo (uma
+    // fórmula só). Sem nenhum custo preenchido fica "—" em vez de "R$ 0,00":
+    // zero investido e "não registrei custo" são coisas diferentes.
+    if (elements.investedValue) {
+      const { invested } = investPositions();
+      elements.investedValue.textContent = invested > 0 ? money(invested) : "—";
+    }
 
     renderComposition(rawTotal, gradedTotal);
     renderBreakdown(lines, slabs);
@@ -318,11 +326,12 @@
   // Posições = cartas COM custo que você ainda tem: pago (unitário × qtd) vs
   // valor atual, com lucro/prejuízo não realizado. Vendas realizadas entram como
   // resultado REALIZADO (vendido − pago; só registros com custo contam no P&L).
-  function renderInvest() {
-    const sec = document.getElementById("pfInvest");
-    if (!sec) return;
+  // Posições abertas (custo preenchido + carta ainda na coleção). Fica FORA do
+  // renderInvest porque o resumo lá em cima também mostra o total investido:
+  // duas somas separadas divergiriam mais cedo ou mais tarde — é a mesma razão
+  // de o patrimônio ter uma fórmula só.
+  function investPositions() {
     const inG = (id) => gameFilter === "all" || gameOf(id) === gameFilter;
-    // Posições abertas (custo preenchido + ainda na coleção).
     const positions = [];
     let invested = 0, currentTotal = 0;
     costsStore.entries().forEach((e) => {
@@ -339,6 +348,14 @@
       positions.push({ card, variant: e.variant, qty, paid, now, delta: now - paid });
       invested += paid; currentTotal += now;
     });
+    return { positions, invested, currentTotal };
+  }
+
+  function renderInvest() {
+    const sec = document.getElementById("pfInvest");
+    if (!sec) return;
+    const inG = (id) => gameFilter === "all" || gameOf(id) === gameFilter;
+    const { positions, invested, currentTotal } = investPositions();
     // Realizado (vendas): total vendido + resultado das que têm custo.
     const soldItems = soldStore.list().filter((it) => inG(it.cardId));
     let soldTotal = 0, realized = 0, realizedCount = 0;
