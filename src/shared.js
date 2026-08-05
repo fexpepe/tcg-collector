@@ -5268,6 +5268,7 @@
     setGameFilterScope,
     initGameFilterSelects,
     listShares,
+    listShareZones,
     listMyShares,
     updateShare,
     deleteShare,
@@ -6075,6 +6076,27 @@
       const r = await fetch(`${SUPABASE_URL}/rest/v1/shares?kind=eq.${encodeURIComponent(kind)}${g}&select=${encodeURIComponent(sel)}&order=created_at.desc&limit=${Math.min(Number(limit) || 60, 100)}`, { headers: authHeaders() });
       return r.ok ? await r.json() : [];
     } catch (e) { return []; }
+  }
+  // Só as ZONAS (a lista de cartas) de vários shares, numa chamada. Exceção
+  // deliberada à regra do listShares acima: é o mínimo que dá pra pedir pra
+  // saber quantas cartas de cada deck FALTAM na coleção de quem está olhando —
+  // ~2 KB por deck, e a galeria só chama quando o visitante tem coleção.
+  // Devolve { [id]: zones }; deck sem zonas legíveis simplesmente não entra.
+  async function listShareZones(ids) {
+    if (!AUTH_ENABLED || !Array.isArray(ids) || !ids.length) return {};
+    // Os ids entram CRUS no in.(...) — o encodeURIComponent do parâmetro inteiro
+    // quebraria a sintaxe da lista. Então filtra pelo formato antes: o que não
+    // for id de share fica de fora em vez de virar injeção na query.
+    const limpos = ids.filter((id) => /^[0-9a-zA-Z_-]{8,64}$/.test(String(id))).slice(0, 100);
+    if (!limpos.length) return {};
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/shares?id=in.(${limpos.join(",")})&select=${encodeURIComponent("id,zones:data->zones")}&limit=${limpos.length}`, { headers: authHeaders() });
+      if (!r.ok) return {};
+      const rows = await r.json();
+      const out = {};
+      (rows || []).forEach((x) => { if (x && x.id && x.zones && typeof x.zones === "object") out[x.id] = x.zones; });
+      return out;
+    } catch (e) { return {}; }
   }
   // --- Perfil na nuvem (tabelas `profiles` + `public_profiles`) ---
   // Sobe o perfil (handle/nome/visibilidade). Exige login. 409 = @ já em uso.

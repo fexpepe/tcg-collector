@@ -324,6 +324,25 @@
       return ["recent", "cards", "name"].includes(v) ? v : "recent";
     } catch (e) { return "recent"; }
   })();
+  // ── Filtros da galeria ────────────────────────────────────────────────────
+  // Só a ordenação é LEMBRADA. Os filtros abaixo nascem desligados de propósito:
+  // voltar na página e não achar deck nenhum por causa de um teto de custo posto
+  // semanas atrás não tem como ser entendido por quem chega.
+  // Faixa de custo em BRL — a moeda-base do `cost` gravado no publicar (quem lê
+  // converte pra moeda do header). O topo da régua é ABERTO: COM_COST_MAX quer
+  // dizer "sem teto", senão deck caro nenhum apareceria.
+  const COM_COST_MAX = 1000, COM_COST_STEP = 25;
+  const COM_MISS_OPTS = [5, 10, 15, 20, 30, 50];
+  let communityCostMin = 0, communityCostMax = COM_COST_MAX;
+  let communityOnlyComplete = false;             // só decks que dá pra montar hoje
+  let communityMaxMissing = null;                // teto de cartas faltando (null = off)
+  // Cache da listagem. Filtros e ordenação rodam todos no CLIENTE, então trocar
+  // qualquer um deles NÃO refaz a chamada — só o jogo, que filtra no servidor.
+  let comCache = null;                           // { game, rows, views }
+  // Cartas faltando por deck, contra a coleção local do visitante.
+  let comMissing = null;                         // { [shareId]: n }
+  let comMissState = "idle";                     // idle | loading | ready | off
+  let comFocus = null;                           // polegar da régua a refocar
   const pubBox = document.getElementById("deckCommunity");
   if (pubBox) { initPublicPage(pubBox); return; }
 
@@ -369,39 +388,130 @@
     };
   }
 
-  // ---------- Galeria da comunidade (com filtro por jogo) ----------
+  // ---------- Galeria da comunidade (filtros + ordenação) ----------
   async function renderCommunity(box, logged) {
-    box.innerHTML = `<p class="deck-hint">${esc(t("decks.loading"))}</p>`;
-    const rows = await shared.listShares("deck", communityGame || null, 60);
-    // Visitas dos decks listados, numa chamada só (tabela deck_views). Sem a
-    // migration aplicada volta {} — e aí a popularidade simplesmente não existe:
-    // o destaque cai pro primeiro da ordem e a opção "mais vistos" não aparece.
-    const views = await shared.fetchDeckViews(rows.map((r) => r.id));
+    // Uma chamada por JOGO, não por interação: custo, cartas faltando e
+    // ordenação rodam no cliente sobre estas mesmas 60 linhas. Antes, mudar a
+    // ordenação refazia a listagem inteira no servidor.
+    if (!comCache || comCache.game !== communityGame) {
+      box.innerHTML = `<p class="deck-hint">${esc(t("decks.loading"))}</p>`;
+      // O câmbio vai junto (localStorage na volta, fetch só na 1ª visita): a
+      // galeria mostra custo em BRL convertido, e sem taxa o número saía em
+      // real com o símbolo da moeda escolhida.
+      const [novas] = await Promise.all([
+        shared.listShares("deck", communityGame || null, 60),
+        shared.loadFxRates()
+      ]);
+      // Visitas dos decks listados, numa chamada só (tabela deck_views). Sem a
+      // migration aplicada volta {} — e aí a popularidade simplesmente não existe:
+      // o destaque cai pro primeiro da ordem e a opção "mais vistos" não aparece.
+      const views = await shared.fetchDeckViews(novas.map((r) => r.id));
+      comCache = { game: communityGame, rows: novas, views };
+      comMissing = null;
+      comMissState = "idle";
+    }
+    const views = comCache.views;
     const nViews = (r) => Number(views[r.id]) || 0;
     const temViews = Object.keys(views).length > 0;
+    const nCards = (r) => Number(r.total) || 0;
+    // Custo do publicar, em BRL. `null` = deck publicado antes do campo existir:
+    // não é "de graça", é DESCONHECIDO — a diferença decide o filtro abaixo.
+    const custoDe = (r) => (r.cost == null || r.cost === "" ? null : Number(r.cost) || 0);
+    const faltamEm = (r) => (comMissing && comMissing[r.id] != null ? comMissing[r.id] : null);
+    const costOn = communityCostMin > 0 || communityCostMax < COM_COST_MAX;
+    const missOn = comMissState === "ready" && (communityOnlyComplete || communityMaxMissing != null);
+    const filtrando = costOn || missOn;
+
+    // Passo 1 — custo. Deck sem custo registrado sai da lista quando a régua
+    // está mexida (não dá pra afirmar que ele cabe na faixa) e é CONTADO, pra
+    // virar aviso embaixo do controle: sumiço silencioso parece bug.
+    let semCusto = 0;
+    const porCusto = comCache.rows.filter((r) => {
+      if (!costOn) return true;
+      const c = custoDe(r);
+      if (c == null) { semCusto++; return false; }
+      if (c < communityCostMin) return false;
+      return communityCostMax >= COM_COST_MAX || c <= communityCostMax;
+    });
+    // Passo 2 — cartas faltando (contagem contra a coleção local do visitante).
+    const completos = comMissState === "ready" ? porCusto.filter((r) => faltamEm(r) === 0).length : null;
+    const rows = porCusto.filter((r) => {
+      if (!missOn) return true;
+      const f = faltamEm(r);
+      if (f == null) return false;
+      if (communityOnlyComplete) return f === 0;
+      return communityMaxMissing == null || f <= communityMaxMissing;
+    });
     // Ordenação no CLIENTE: a lista vem limitada a 60 do servidor (mais
     // recentes), então reordenar aqui é barato e não gasta round-trip.
-    const nCards = (r) => Number(r.total) || 0;
     if (communitySort === "cards") rows.sort((a, b) => nCards(b) - nCards(a));
     else if (communitySort === "name") rows.sort((a, b) => String(a.title || "").localeCompare(String(b.title || "")));
     else if (communitySort === "views") rows.sort((a, b) => nViews(b) - nViews(a));
-    // Filtros: chips por jogo — sempre TODOS os jogos com a cor deles (o
-    // usuário pediu filtros; jogo sem deck fica com o chip mesmo assim, senão
-    // o filtro "some" conforme o conteúdo).
-    const chips = `<div class="dkc-filters">
-      <button type="button" class="dkc-filter${communityGame === "" ? " on" : ""}" data-dkc-game="">${esc(t("decks.filterAll"))}</button>
-      ${shared.GAME_SLUGS.map((g) => `<button type="button" class="dkc-filter${communityGame === g ? " on" : ""}" data-dkc-game="${escA(g)}">${shared.gameTagHtml(g)}</button>`).join("")}
-    </div>`;
+
     const topCta = logged
       ? `<a class="cta secondary-cta" href="my-decks.html">${esc(t("decks.goMine"))}</a>`
       : `<a class="cta" href="login.html">${esc(t("decks.publicCta"))}</a>`;
     // "Mais vistos" só entra quando HÁ contagem: sem a tabela de visitas a opção
     // ordenaria por nada e pareceria quebrada.
     const sortOpts = ["recent", "cards", "name"].concat(temViews ? ["views"] : []);
-    const sortSel = `<label class="dkc-sort"><span>${esc(t("decks.sortBy"))}</span>
+    const sortSel = `<label class="dkc-field"><span class="dkc-field-lbl">${esc(t("decks.sortBy"))}</span>
       <select class="deck-view-sel" data-dkc-sort>
         ${sortOpts.map((s) => `<option value="${escA(s)}"${communitySort === s ? " selected" : ""}>${esc(t("decks.sortCom." + s))}</option>`).join("")}
       </select></label>`;
+    // Jogo: select em vez dos chips coloridos que ficavam no topo. Um controle
+    // só, no mesmo lugar dos outros filtros — e no celular não empurra mais a
+    // lista pra baixo com 13 botões.
+    const gameSel = `<label class="dkc-field"><span class="dkc-field-lbl">${esc(t("decks.gameWord"))}</span>
+      <select class="deck-view-sel" data-dkc-game>
+        <option value=""${communityGame === "" ? " selected" : ""}>${esc(t("decks.allGames"))}</option>
+        ${shared.GAME_SLUGS.map((g) => `<option value="${escA(g)}"${communityGame === g ? " selected" : ""}>${esc(shared.gameLabel(g))}</option>`).join("")}
+      </select></label>`;
+    // Rótulo curto da régua: sem centavos (o passo é de R$ 25) e na moeda do
+    // header. O fmtMoney do shared devolveria "R$ 1.000,00" — e "—" no zero.
+    const SIMB = { BRL: "R$", USD: "US$", EUR: "€" };
+    const custoLabel = (brl) => {
+      const cur = shared.getCurrency();
+      const conv = cur === "BRL" ? brl : shared.convertMoney(brl, "BRL", cur);
+      // Sem câmbio, mostra o valor em real com o símbolo do real: rotular BRL
+      // como US$ seria mentira, e a régua filtra em BRL de qualquer jeito.
+      const usa = conv == null ? "BRL" : cur;
+      return `${SIMB[usa]} ${Math.round(conv == null ? brl : conv).toLocaleString(shared.getLocale())}`;
+    };
+    const pct = (v) => Math.round((v / COM_COST_MAX) * 100);
+    // Faixa de custo: dois <input type=range> no mesmo trilho (HTML não tem
+    // range de dois valores). O topo é ABERTO — em COM_COST_MAX o rótulo ganha
+    // "+" e o filtro para de olhar teto, senão deck caro nenhum apareceria.
+    const costBox = `<div class="dkc-field">
+      <span class="dkc-field-lbl">${esc(t("decks.costRange"))}</span>
+      <div class="dkc-range">
+        <span class="dkc-range-v" data-dkc-cost-lbl="min">${esc(custoLabel(communityCostMin))}</span>
+        <span class="dkc-range-track" style="--a:${pct(communityCostMin)}%;--b:${pct(communityCostMax)}%">
+          <input type="range" min="0" max="${COM_COST_MAX}" step="${COM_COST_STEP}" value="${communityCostMin}" data-dkc-cost="min" aria-label="${escA(t("decks.costMin"))}">
+          <input type="range" min="0" max="${COM_COST_MAX}" step="${COM_COST_STEP}" value="${communityCostMax}" data-dkc-cost="max" aria-label="${escA(t("decks.costMax"))}">
+        </span>
+        <span class="dkc-range-v" data-dkc-cost-lbl="max">${esc(custoLabel(communityCostMax))}${communityCostMax >= COM_COST_MAX ? "+" : ""}</span>
+      </div>
+      ${costOn && semCusto ? `<p class="dkc-field-hint">${esc(t("decks.costNoData", { n: semCusto }))}</p>` : ""}
+    </div>`;
+    // Cartas faltando só existe pra quem TEM coleção: sem nenhuma carta, todo
+    // deck estaria 100% faltando e os dois controles seriam decorativos. O
+    // cálculo roda depois do primeiro paint (loadMissing) e o bloco entra aí.
+    const missBox = comMissState === "ready" ? `<div class="dkc-field">
+      <span class="dkc-field-lbl">${esc(t("decks.missingLabel"))}</span>
+      <label class="dkc-check">
+        <input type="checkbox" data-dkc-complete${communityOnlyComplete ? " checked" : ""}>
+        <span>${esc(t("decks.onlyComplete"))} <b>(${esc(String(completos))})</b></span>
+      </label>
+      <div class="dkc-miss-row">
+        <label class="dkc-check${communityOnlyComplete ? " off" : ""}">
+          <input type="checkbox" data-dkc-maxmiss${communityMaxMissing != null ? " checked" : ""}${communityOnlyComplete ? " disabled" : ""}>
+          <span>${esc(t("decks.maxMissing"))}</span>
+        </label>
+        <select class="deck-view-sel" data-dkc-maxmiss-n${communityOnlyComplete || communityMaxMissing == null ? " disabled" : ""}>
+          ${COM_MISS_OPTS.map((n) => `<option value="${n}"${(communityMaxMissing == null ? 10 : communityMaxMissing) === n ? " selected" : ""}>${n}</option>`).join("")}
+        </select>
+      </div>
+    </div>` : "";
     // Ícones das seções (SVG inline: a CSP é 'self' e são dois).
     const IC_STAR = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8L3.6 9.7l5.8-.8z"/></svg>';
     const IC_CLOCK = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3.2 2"/></svg>';
@@ -419,8 +529,14 @@
         : 0;
       const quando = r.created_at ? new Date(r.created_at).toLocaleDateString(shared.getLocale()) : "";
       const vis = nViews(r);
+      // Quanto FALTA na coleção de quem está olhando. Só aparece depois do
+      // loadMissing (e só pra quem tem coleção) — é o número que o filtro ao
+      // lado usa, então mostrá-lo no card evita o "por que este deck sumiu?".
+      const falta = faltamEm(r);
       return [
         n ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.cardsWord"))}</span><strong>${esc(String(n))}</strong></span>` : "",
+        falta === 0 ? `<span class="dkc-meta-item is-ok"><strong>${esc(t("decks.completeWord"))}</strong></span>`
+          : falta > 0 ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.missingWord"))}</span><strong>${esc(String(falta))}</strong></span>` : "",
         vis > 0 ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.viewsWord"))}</span><strong>${esc(String(vis))}</strong></span>` : "",
         custo > 0 ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.costEstimated"))}</span><strong>${esc(shared.formatMoney(shared.getCurrency(), custo))}</strong></span>` : "",
         r.author ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.authorWord"))}</span><strong>${esc(String(r.author).slice(0, 30))}</strong></span>` : "",
@@ -432,7 +548,13 @@
       : `<span class="deck-noimg"></span>`;
 
     let body;
-    if (!rows.length) {
+    if (!rows.length && filtrando) {
+      // Vazio POR FILTRO é outra história que vazio de verdade: aqui existe deck,
+      // só não bate com o que está marcado ao lado. O botão desfaz tudo de uma vez.
+      body = `<section class="empty-state"><h2>${esc(t("decks.emptyFiltersTitle"))}</h2>
+        <p>${esc(t("decks.emptyFilters"))}</p>
+        <button type="button" class="cta secondary-cta" data-dkc-clear>${esc(t("decks.clearFilters"))}</button></section>`;
+    } else if (!rows.length) {
       body = `<section class="empty-state"><h2>${esc(t("decks.emptyCommunityTitle"))}</h2>
         <p>${esc(t(communityGame ? "decks.emptyCommunityGame" : "decks.emptyCommunity"))}</p></section>`;
     } else {
@@ -478,13 +600,16 @@
       body = heroHtml + listaHtml;
     }
 
-    // Coluna da direita: filtros/ordenação + atalho pros decks do usuário.
-    // O filtro por JOGO fica nos chips lá em cima (padrão do site) — repetir
-    // como select aqui daria dois controles pra mesma coisa.
+    // Coluna da direita: TODOS os filtros + ordenação, no mesmo painel, e o
+    // atalho pros decks do usuário embaixo.
     const aside = `<aside class="dkc-aside">
       <section class="dkc-panel">
         <h2 class="dkc-panel-h">${IC_FILTER}<span>${esc(t("decks.filtersTitle"))}</span></h2>
         ${sortSel}
+        ${gameSel}
+        ${costBox}
+        ${missBox}
+        ${filtrando ? `<button type="button" class="dkc-clear" data-dkc-clear>${esc(t("decks.clearFilters"))}</button>` : ""}
       </section>
       <section class="dkc-panel dkc-mine">
         <h2 class="dkc-panel-h"><span>${esc(t("decks.mineTitle"))}</span></h2>
@@ -493,18 +618,115 @@
       </section>
     </aside>`;
 
-    box.innerHTML = `<div class="dkc-head">${chips}</div>
-      <div class="dkc-layout"><div class="dkc-main">${body}</div>${aside}</div>`;
-    box.querySelectorAll("[data-dkc-game]").forEach((b) => b.addEventListener("click", () => {
-      communityGame = b.dataset.dkcGame;
-      renderCommunity(box, logged);
-    }));
+    box.innerHTML = `<div class="dkc-layout"><div class="dkc-main">${body}</div>${aside}</div>`;
+    const redraw = () => renderCommunity(box, logged);
     const sel = box.querySelector("[data-dkc-sort]");
     if (sel) sel.addEventListener("change", () => {
       communitySort = sel.value;
       try { localStorage.setItem("tcg-deck-community-sort", communitySort); } catch (e) { /* ignora */ }
-      renderCommunity(box, logged);
+      redraw();
     });
+    const gsel = box.querySelector("[data-dkc-game]");
+    if (gsel) gsel.addEventListener("change", () => { communityGame = gsel.value; redraw(); });
+
+    // Régua de custo: arrastar só repinta o rótulo e a faixa cheia (barato); a
+    // lista só é refeita no `change` (dedo/mouse soltos). Sem isso, cada pixel
+    // de arrasto redesenharia 60 cards.
+    const trilho = box.querySelector(".dkc-range-track");
+    const rmin = box.querySelector('[data-dkc-cost="min"]');
+    const rmax = box.querySelector('[data-dkc-cost="max"]');
+    if (trilho && rmin && rmax) {
+      const lmin = box.querySelector('[data-dkc-cost-lbl="min"]');
+      const lmax = box.querySelector('[data-dkc-cost-lbl="max"]');
+      const sync = (alvo) => {
+        let a = Number(rmin.value) || 0, b = Number(rmax.value) || 0;
+        // Polegares não se cruzam: quem está sendo arrastado empurra o outro.
+        if (a > b) { if (alvo === rmin) b = a; else a = b; rmin.value = a; rmax.value = b; }
+        communityCostMin = a; communityCostMax = b;
+        trilho.style.setProperty("--a", pct(a) + "%");
+        trilho.style.setProperty("--b", pct(b) + "%");
+        if (lmin) lmin.textContent = custoLabel(a);
+        if (lmax) lmax.textContent = custoLabel(b) + (b >= COM_COST_MAX ? "+" : "");
+      };
+      [rmin, rmax].forEach((inp) => {
+        inp.addEventListener("input", () => sync(inp));
+        inp.addEventListener("change", () => {
+          sync(inp);
+          // Teclado dispara change a cada seta: devolve o foco pro mesmo
+          // polegar depois do redesenho, senão a régua "solta" no 1º toque.
+          comFocus = inp.dataset.dkcCost;
+          redraw();
+        });
+      });
+    }
+
+    const chkOk = box.querySelector("[data-dkc-complete]");
+    if (chkOk) chkOk.addEventListener("change", () => { communityOnlyComplete = chkOk.checked; redraw(); });
+    const chkMax = box.querySelector("[data-dkc-maxmiss]");
+    const selMax = box.querySelector("[data-dkc-maxmiss-n]");
+    if (chkMax) chkMax.addEventListener("change", () => {
+      communityMaxMissing = chkMax.checked ? (Number(selMax && selMax.value) || 10) : null;
+      redraw();
+    });
+    if (selMax) selMax.addEventListener("change", () => { communityMaxMissing = Number(selMax.value) || 10; redraw(); });
+    box.querySelectorAll("[data-dkc-clear]").forEach((b) => b.addEventListener("click", () => {
+      communityCostMin = 0; communityCostMax = COM_COST_MAX;
+      communityOnlyComplete = false; communityMaxMissing = null;
+      redraw();
+    }));
+    if (comFocus) {
+      const alvo = box.querySelector(`[data-dkc-cost="${comFocus}"]`);
+      comFocus = null;
+      if (alvo) alvo.focus();
+    }
+
+    // Cartas faltando: só depois do primeiro paint, e uma vez por listagem.
+    if (comMissState === "idle") loadMissing(box, logged);
+  }
+
+  // Conta quantas cartas de cada deck listado FALTAM na coleção local de quem
+  // está olhando. Roda fora do caminho do primeiro paint porque precisa das
+  // zonas (a lista de cartas) dos decks — o único pedido pesado desta página.
+  // Sem coleção nenhuma o cálculo é inútil (todo deck estaria 100% faltando) e
+  // o bloco de filtro nem chega a aparecer: comMissState = "off".
+  async function loadMissing(box, logged) {
+    comMissState = "loading";
+    // Trocar o jogo no meio do caminho zera o cache e dispara OUTRO loadMissing:
+    // este aqui tem que se descartar na volta, senão o mapa da listagem velha
+    // sobrescreve o da nova (ids diferentes, contagem sumida).
+    const alvo = comCache;
+    const rows = comCache ? comCache.rows : [];
+    if (!rows.length) { comMissState = "off"; return; }
+    // Um store por JOGO presente na listagem: o id de carta só faz sentido
+    // dentro do catálogo do jogo dele.
+    const stores = {};
+    let temColecao = 0;
+    [...new Set(rows.map((r) => shared.normalizeGame(r.game || "pokemon")))].forEach((g) => {
+      stores[g] = shared.createCollectionStore(g);
+      temColecao += stores[g].size || 0;
+    });
+    if (!temColecao) { comMissState = "off"; return; }
+    const zonas = await shared.listShareZones(rows.map((r) => r.id));
+    if (comCache !== alvo) return;          // a listagem trocou: quem manda é a nova
+    const mapa = {};
+    rows.forEach((r) => {
+      const z = zonas[r.id];
+      if (!z) return;                       // deck sem zonas legíveis: fica de fora
+      const store = stores[shared.normalizeGame(r.game || "pokemon")];
+      let falta = 0;
+      Object.keys(z).forEach((k) => {
+        (Array.isArray(z[k]) ? z[k] : []).forEach((e) => {
+          const id = String((e && e.id) || "");
+          if (!id) return;
+          const qty = Math.max(1, Math.min(99, Math.floor(Number(e && e.qty) || 1)));
+          falta += Math.max(0, qty - (store.totalForCard ? store.totalForCard(id) : 0));
+        });
+      });
+      mapa[r.id] = falta;
+    });
+    comMissing = mapa;
+    comMissState = Object.keys(mapa).length ? "ready" : "off";
+    if (comMissState === "ready") renderCommunity(box, logged);
   }
 
   // ---------- Viewer de um deck publicado ----------
