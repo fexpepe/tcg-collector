@@ -2972,11 +2972,13 @@
     section.insertAdjacentHTML("beforeend",
       `<div class="market-finish price-history"><span class="market-finish-label">${escapeHtml(t("market.history", { n: pts.length }))}</span>
         <div class="price-history-chart">
-          <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${escapeAttribute(t("market.history", { n: pts.length }))}">
-            <defs><linearGradient id="phg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.25"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
-            <polygon points="${X(0).toFixed(1)},${(H - P).toFixed(1)} ${line} ${X(vals.length - 1).toFixed(1)},${(H - P).toFixed(1)}" fill="url(#phg)"/>
-            <polyline points="${line}" fill="none" stroke="${color}" stroke-width="2"/>
-          </svg>
+          <div class="price-history-plot">
+            <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${escapeAttribute(t("market.history", { n: pts.length }))}">
+              <defs><linearGradient id="phg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.25"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
+              <polygon points="${X(0).toFixed(1)},${(H - P).toFixed(1)} ${line} ${X(vals.length - 1).toFixed(1)},${(H - P).toFixed(1)}" fill="url(#phg)"/>
+              <polyline points="${line}" fill="none" stroke="${color}" stroke-width="2"/>
+            </svg>
+          </div>
           <div class="price-history-meta"><span>${escapeHtml(`${fmtDay(pts[0][0])} · ${fmtMoney(cur, first)}`)}</span><span>${escapeHtml(`${fmtDay(pts[pts.length - 1][0])} · ${fmtMoney(cur, last)}`)}</span></div>
         </div></div>`);
     // Leitura ponto a ponto: mouse no desktop, dedo no celular. Os dados ficam
@@ -2988,14 +2990,20 @@
   // Crosshair + tooltip do sparkline. Overlay em HTML (não dentro do SVG): o
   // viewBox estica com preserveAspectRatio=none e distorceria o raio do ponto;
   // posições em % ficam corretas em qualquer largura.
+  // O overlay mora no .price-history-plot, que envolve SÓ o svg — não no
+  // .price-history-chart, que também contém a linha de datas embaixo. Antes ia
+  // no chart: o `top` em % era fração da altura do svg (viewBox 120) mas caía
+  // sobre uma caixa ~22px mais alta, então a bolinha ficava abaixo da linha,
+  // errando mais quanto mais baixo o ponto.
   function attachPriceHistoryPointer(chart, data) {
     const { pts, vals, cur, W, H, X, Y, fmtDay } = data;
-    chart.insertAdjacentHTML("beforeend",
+    const plot = chart.querySelector(".price-history-plot") || chart;
+    plot.insertAdjacentHTML("beforeend",
       `<div class="ph-cross" hidden></div><div class="ph-dot" hidden></div><div class="ph-tip" hidden></div>`);
-    const cross = chart.querySelector(".ph-cross");
-    const dot = chart.querySelector(".ph-dot");
-    const tip = chart.querySelector(".ph-tip");
-    const svg = chart.querySelector("svg");
+    const cross = plot.querySelector(".ph-cross");
+    const dot = plot.querySelector(".ph-dot");
+    const tip = plot.querySelector(".ph-tip");
+    const svg = plot.querySelector("svg");
 
     function show(clientX) {
       const r = svg.getBoundingClientRect();
