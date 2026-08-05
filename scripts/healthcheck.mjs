@@ -127,6 +127,11 @@ await checkCatalog("pricing Riftbound", "/data/riftbound/pricing.generated.js", 
 for (const [label, dir] of [["Pokémon", "/data/"], ["Lorcana", "/data/lorcana/"], ["One Piece", "/data/onepiece/"], ["Magic", "/data/magic/"], ["FAB", "/data/fab/"], ["Gundam", "/data/gundam/"], ["Dragon Ball Fusion", "/data/dbfw/"], ["Yu-Gi-Oh", "/data/ygo/"], ["Digimon", "/data/digimon/"], ["Riftbound", "/data/riftbound/"]]) {
   await checkJson(`deltas ${label}`, `${dir}price-deltas.generated.json`,
     (j) => j && typeof j === "object" && "c" in j ? null : "sem campo c");
+  // Janela de 7 dias: é a que o aviso de queda da wishlist lê. Sem ela o push
+  // cai no arquivo de 24h e passa a avisar muito menos, sem erro nenhum — o
+  // tipo de quebra silenciosa que só um check pega.
+  await checkJson(`deltas 7d ${label}`, `${dir}price-deltas-7d.generated.json`,
+    (j) => j && typeof j === "object" && "c" in j ? null : "sem campo c");
 }
 
 console.log("\n[backend]");

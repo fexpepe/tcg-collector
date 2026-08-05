@@ -9,23 +9,24 @@ on:
       - "docs/**"
       - "LICENSE"
   schedule:
-    # DUAS cadências, porque as fontes têm custos diferentes:
+    # DIÁRIO, 06:20 UTC = 03:20 de Brasília. Todo dia o catálogo e os preços das
+    # fontes GRÁTIS (TCGdex, TCGCSV, Scryfall, Lorcast e os vintage) são
+    # atualizados — elas cobrem 11 dos 12 jogos e não custam nada, então não há
+    # motivo pra esperar 2 dias. O snapshot de preço é 1 por dia (o
+    # sync-price-history substitui o ponto quando roda de novo no mesmo dia).
     #
-    # COMPLETA (inclui as APIs por crédito: PPT e MYP) — 2x/semana. É o teto que
-    # o plano pago comporta com folga.
-    #   segunda 06:00 UTC: catálogo da semana, sets novos.
-    #   sexta 21:00 UTC: dia de lançamento de set do Pokémon TCG; pega o set novo
-    #   assim que a TCGdex publica, sem esperar segunda.
-    - cron: "0 6 * * 1"
+    # 06:20 e não 06:00: o cron do GitHub é BEST-EFFORT e a fila fica mais cheia
+    # na hora cheia. Mesmo assim atrasa — as duas últimas execuções agendadas
+    # saíram ~3h30 depois do horário. Não dá pra tratar como horário garantido.
+    - cron: "20 6 * * *"
+    #
+    # Sexta 21:00 UTC: dia de lançamento de set do Pokémon TCG. Existe pra pegar
+    # o set novo assim que a TCGdex publica, em vez de só na manhã seguinte.
     - cron: "0 21 * * 5"
     #
-    # GRÁTIS (TCGdex, TCGCSV, Scryfall, Lorcast e os vintage) — a cada 2 dias, às
-    # 07:00. Essas fontes não cobram, então o preço dos 11 jogos que dependem
-    # delas fica bem mais fresco sem gastar um crédito.
-    # 07:00 (e não 06:00) pra nunca coincidir no mesmo minuto com a completa de
-    # segunda: dois runs simultâneos na mesma branch cairiam na regra de
-    # concorrência e um cancelaria o outro.
-    - cron: "0 7 */2 * *"
+    # As APIs por CRÉDITO (PPT e MYP) NÃO rodam todo dia — ver o passo "Decide se
+    # usa as APIs pagas". Preço JP/graded muda devagar, e limitar a 3x/semana
+    # deixa a cota diária livre pra um build manual.
   # Disparo manual (aba Actions -> Run workflow): redispara sem inventar commit
   # quando o deploy falhou por credencial/infra e o código está certo.
   workflow_dispatch:
@@ -129,21 +130,36 @@ jobs:
             echo "RODA_SYNC=false" >> $GITHUB_ENV
           fi
 
-      # As APIs por CRÉDITO (PPT e MYP) só nas cadências completas. O cron de 2
-      # em 2 dias existe pra atualizar as fontes grátis com mais frequência — se
-      # ele também gastasse crédito, o consumo subiria ~67% e o ganho seria só
-      # nos preços JP do Pokémon, que mudam devagar.
+      # As APIs por CRÉDITO (PPT e MYP) rodam 3x/semana, não todo dia: segunda e
+      # quarta pelo cron diário, sexta pelo da noite. O plano da PPT dá 20.000
+      # créditos POR DIA e um run gasta no máximo 8.000 (--budget abaixo), então
+      # o limite não é o problema — é que preço JP/graded muda devagar e não
+      # compensa queimar cota diária pra reprocessar o mesmo número.
       # Pular é seguro: o merge-catalogs lê data/ppt-prices.generated.json num
       # try/catch ("no-op sem o arquivo") e esse artefato está no cache de build,
       # então o run grátis reaproveita o resultado da última rodada paga.
       - name: Decide se usa as APIs pagas
         run: |
-          if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ github.event.schedule }}" = "0 7 */2 * *" ]; then
-            echo "Cadência de 2 dias: só fontes GRÁTIS (PPT/MYP pulados)."
-            echo "RODA_PAGO=false" >> $GITHUB_ENV
-          else
-            echo "Cadência completa: inclui as APIs por crédito."
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "Evento '${{ github.event_name }}': inclui as APIs por crédito."
             echo "RODA_PAGO=true" >> $GITHUB_ENV
+            exit 0
+          fi
+          if [ "${{ github.event.schedule }}" = "0 21 * * 5" ]; then
+            echo "Cron de sexta (lançamento): inclui as APIs por crédito."
+            echo "RODA_PAGO=true" >> $GITHUB_ENV
+            exit 0
+          fi
+          # %u: 1=segunda … 7=domingo. Lido na HORA DO RUN — com o atraso da fila
+          # do GitHub o dia continua o mesmo (o cron é 06:20 UTC; atrasos vistos
+          # foram de horas, não de um dia).
+          dia=$(date -u +%u)
+          if [ "$dia" = "1" ] || [ "$dia" = "3" ]; then
+            echo "Cron diário em dia pago (dia $dia): inclui as APIs por crédito."
+            echo "RODA_PAGO=true" >> $GITHUB_ENV
+          else
+            echo "Cron diário (dia $dia): só fontes GRÁTIS (PPT/MYP pulados)."
+            echo "RODA_PAGO=false" >> $GITHUB_ENV
           fi
 
       # O cache incremental do sync (payloads brutos da TCGdex + preços por set

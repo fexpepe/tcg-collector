@@ -7,8 +7,15 @@
 //   price-history.generated.json  acumulador completo (uso interno do próximo build)
 //   price-deltas.generated.json   { from, to, c: { id: pct } } — variação % vs o
 //                                  snapshot anterior (mesma fonte), |pct| >= 1
+//   price-deltas-7d.generated.json  idem, mas contra o snapshot de ~7 DIAS atrás
 //   price-movers.generated.json   { from, to, up: [...], down: [...] } — maiores
 //                                  altas/quedas ({ id, pct, v }), só cartas >= MIN_MOVER
+//
+// Por que DOIS arquivos de delta: desde que o build passou a ser diário
+// (2026-08-05), o delta "vs snapshot anterior" virou variação de 24h — bom pro
+// "maiores altas e quedas" do portfólio, ruim pro aviso semanal da wishlist, que
+// perderia a carta que caiu 20% na semana em passos de 3%/dia. O de 7 dias existe
+// pra esse aviso (ver scripts/send-wishlist-push.mjs).
 //
 // Preço de referência = MESMA prioridade do cardValue (b.md BR > u USD > e EUR),
 // com a FONTE gravada — deltas só comparam pontos da mesma fonte (moedas diferem).
@@ -19,7 +26,8 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 
 const PROD = "https://tcg-collector.pages.dev";
-const MAX_POINTS = 26;   // ~6 meses de snapshots semanais
+const MAX_POINTS = 60;   // ~2 meses de snapshots diários (era 26 = 6 meses semanais)
+const WINDOW_7D = 7;     // dias da janela longa (aviso de queda da wishlist)
 const MIN_DELTA_PCT = 1; // abaixo disso é ruído, não entra no arquivo de deltas
 const MIN_MOVER = 1;     // valor mínimo (na moeda da fonte) pra rankear nos movers
 const MOVERS_N = 30;
@@ -29,6 +37,7 @@ const slug = dir.replace(/[\\/]/g, "-");
 const cacheDir = new URL("../data/.cache/", import.meta.url);
 const outHistory = new URL(`../${dir}/price-history.generated.json`, import.meta.url);
 const outDeltas = new URL(`../${dir}/price-deltas.generated.json`, import.meta.url);
+const outDeltas7d = new URL(`../${dir}/price-deltas-7d.generated.json`, import.meta.url);
 const outMovers = new URL(`../${dir}/price-movers.generated.json`, import.meta.url);
 const cacheFile = new URL(`price-history-${slug}.json`, cacheDir);
 
@@ -121,9 +130,33 @@ const up = movers.filter((m) => m.pct > 0).slice(0, MOVERS_N);
 const down = movers.filter((m) => m.pct < 0).slice(0, MOVERS_N);
 const from = hist.d.length >= 2 ? hist.d[hist.d.length - 2] : null;
 
+// Janela LONGA (~7 dias), pro aviso de queda da wishlist. Ancora por DATA, não
+// por número de pontos: um dia sem build (cron atrasado, deploy que falhou) não
+// pode encolher a janela em silêncio. Sem ponto velho o bastante, usa o mais
+// antigo que existir — na primeira semana a janela nasce curta e vai crescendo.
+const alvo7d = new Date(Date.parse(today + "T00:00:00Z") - WINDOW_7D * 86400000)
+  .toISOString().slice(0, 10);
+let idx7d = -1;
+for (let i = hist.d.length - 2; i >= 0; i--) { idx7d = i; if (hist.d[i] <= alvo7d) break; }
+const deltas7d = {};
+if (idx7d >= 0) {
+  Object.entries(hist.c).forEach(([id, c]) => {
+    const now = c.p[hist.d.length - 1];
+    if (now == null) return;
+    let prev = null;
+    for (let i = idx7d; i >= 0; i--) { if (c.p[i] != null) { prev = c.p[i]; break; } }
+    if (prev == null || prev <= 0) return;
+    const pct = ((now - prev) / prev) * 100;
+    if (Math.abs(pct) < MIN_DELTA_PCT) return;
+    deltas7d[id] = Math.round(pct * 10) / 10;
+  });
+}
+const from7d = idx7d >= 0 ? hist.d[idx7d] : null;
+
 await mkdir(cacheDir, { recursive: true });
 await writeFile(outHistory, JSON.stringify(hist), "utf8");
 await writeFile(cacheFile, JSON.stringify(hist), "utf8");
 await writeFile(outDeltas, JSON.stringify({ from, to: today, c: deltas }), "utf8");
+await writeFile(outDeltas7d, JSON.stringify({ from: from7d, to: today, c: deltas7d }), "utf8");
 await writeFile(outMovers, JSON.stringify({ from, to: today, up, down }), "utf8");
-console.log(`[price-history] ${dir}: ${tracked} cartas, ${hist.d.length} snapshot(s) (${hist.d[0]}..${today})${replacing ? " [substituiu hoje]" : ""}; deltas ${Object.keys(deltas).length}, movers +${up.length}/-${down.length}`);
+console.log(`[price-history] ${dir}: ${tracked} cartas, ${hist.d.length} snapshot(s) (${hist.d[0]}..${today})${replacing ? " [substituiu hoje]" : ""}; deltas ${Object.keys(deltas).length} (desde ${from}), 7d ${Object.keys(deltas7d).length} (desde ${from7d}), movers +${up.length}/-${down.length}`);

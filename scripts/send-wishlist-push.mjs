@@ -27,9 +27,19 @@ const rpc = (fn, body) => fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
   body: JSON.stringify(body)
 });
 
-// Deltas da semana (gerados no build) por jogo: { from, to, c: { id: pct } }.
+// Deltas da SEMANA (gerados no build) por jogo: { from, to, c: { id: pct } }.
+// Lê a janela de 7 DIAS, não a de 24h: o build é diário, então o arquivo curto
+// mostraria só o movimento de ontem e perderia a carta que caiu 20% na semana
+// em passos de 3%/dia — justo o caso que este aviso existe pra pegar.
+// Fallback pro arquivo curto enquanto o de 7d não tiver sido publicado (deploy
+// mais velho que esta mudança); assim a ordem entre deploy e cron não importa.
 async function loadDeltas(dir) {
-  try { const r = await fetch(`${PROD}/${dir}price-deltas.generated.json`); return r.ok ? await r.json() : null; } catch { return null; }
+  const get = async (arquivo) => {
+    try { const r = await fetch(`${PROD}/${dir}${arquivo}`); return r.ok ? await r.json() : null; } catch { return null; }
+  };
+  const semana = await get("price-deltas-7d.generated.json");
+  if (semana && semana.c) return semana;
+  return get("price-deltas.generated.json");
 }
 
 const [pkDeltas, lcDeltas, opDeltas] = await Promise.all([

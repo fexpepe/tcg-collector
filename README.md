@@ -213,12 +213,19 @@ Moeda: BRL (padrão), USD e EUR, com câmbio do dia da AwesomeAPI.
 ## Deploy
 
 [.github/workflows/deploy.yml](.github/workflows/deploy.yml) publica no
-Cloudflare Pages (`main` = produção, outras branches = preview). Duas cadências,
-porque as fontes têm custos diferentes:
+Cloudflare Pages (`main` = produção, outras branches = preview). O agendamento é
+**diário às 06:20 UTC** (03:20 de Brasília), mais um extra na sexta 21:00 UTC —
+dia de lançamento de set do Pokémon, pra pegar o set novo sem esperar a manhã
+seguinte. As fontes têm custos diferentes:
 
-- **completa** (inclui as APIs por crédito, PPT e MYP): segunda 06:00 UTC e
-  sexta 21:00 UTC (dia de lançamento de set do Pokémon);
-- **grátis** (TCGdex, TCGCSV, Scryfall, Lorcast e os vintage): a cada 2 dias.
+- **grátis** (TCGdex, TCGCSV, Scryfall, Lorcast e os vintage): **todo dia**.
+  Cobrem 11 dos 12 jogos e não custam nada.
+- **por crédito** (PPT e MYP): 3x/semana — segunda e quarta pelo cron diário,
+  sexta pelo da noite. Cabem na cota diária (o plano da PPT dá 20.000 créditos
+  por dia e um run gasta no máximo 8.000), mas preço JP/graded muda devagar.
+
+O cron do GitHub é **best-effort**: atrasos de algumas horas são normais, então
+06:20 é alvo, não garantia.
 
 **Push é só build**: reaproveita os artefatos do último build completo (cache do
 Actions), porque sincronizar uma dúzia de APIs custa ~10 min e não faz sentido a
