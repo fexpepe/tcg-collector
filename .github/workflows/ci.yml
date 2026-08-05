@@ -48,6 +48,15 @@ jobs:
       - name: Fatias de índice em dia
         run: node scripts/split-indexes.mjs --check
 
+      # Integridade do catálogo VERSIONADO (id duplicado, carta sem id/nome/set).
+      # Passou a valer pro Pokémon também, que é o maior catálogo do site e
+      # justamente o que estava de fora — o lint lia o cards.js, que pro Pokémon
+      # é uma amostra de 13 cartas. Aqui a trava de ESTABILIDADE de id não tem o
+      # que comparar (nada mudou na árvore de trabalho); ela morde no deploy,
+      # onde o lint roda depois dos syncs.
+      - name: Catálogo íntegro (ids duplicados, carta quebrada)
+        run: node scripts/lint-catalog.mjs
+
       - name: Sintaxe dos scripts de build
         run: for f in scripts/*.mjs scripts/lib/*.mjs; do node --check "$f"; done
 

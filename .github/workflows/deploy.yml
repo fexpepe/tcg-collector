@@ -421,7 +421,16 @@ jobs:
 
       # Lint dos catálogos: FALHA o deploy em corrupção dura (ids duplicados,
       # catálogo zerado) — contrapeso dos "|| echo" de resiliência acima.
-      - name: Lint dos catálogos
+      #
+      # E, desde a trava de ESTABILIDADE DE ID, falha também quando o catálogo
+      # recém-sincronizado PERDE um id que já estava publicado ou aponta um id
+      # existente pra outra carta. Roda aqui de propósito: é o último ponto
+      # ANTES do commit do snapshot, então o HEAD ainda é o catálogo que está no
+      # ar — a comparação é exatamente "o que vou publicar" × "o que a conta das
+      # pessoas conhece". Coleção, wishlist, decks e binders são indexados por
+      # cardId; id que some tira a carta da conta de quem tem, e id repontado
+      # troca a carta por outra (foi assim que carta de outro idioma apareceu).
+      - name: Lint dos catálogos (integridade + estabilidade de id)
         run: node scripts/lint-catalog.mjs
 
       # Durabilidade: versiona o catálogo VALIDADO de volta no repo (chunks do
