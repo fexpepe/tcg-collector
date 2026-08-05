@@ -1647,6 +1647,11 @@
     // Rodapé institucional SÓ na Início e nas páginas de apoio (sobre, FAQ,
     // ajuda, configurações...). As telas de uso contínuo — Explorar, Coleção,
     // Portfólio — ficam limpas (decisão de produto, 2026-07-12).
+    // O rodapé é UMA linha: o aviso de que o projeto é independente (que precisa
+    // aparecer em toda página) + dois links. A lista completa de marcas e a de
+    // fontes de dados saíram daqui em 2026-08-05 — as duas já viviam, mais
+    // completas e nos três idiomas, em Termos § Marcas e Sobre § De onde vêm os
+    // dados. Repetidas no rodapé viravam um paredão de texto no pé da Início.
     const FOOTER_PAGES = ["", "index", "about", "novidades", "faq", "help", "settings", "backup", "privacy", "terms", "login", "404"];
     const page = (window.location.pathname.split("/").pop() || "").replace(/\.html$/, "");
     if (!FOOTER_PAGES.includes(page)) return;
@@ -1664,8 +1669,9 @@
           <a href="privacy.html">${escapeHtml(t("footer.privacy"))}</a>
           <a href="terms.html">${escapeHtml(t("footer.terms"))}</a>
         </nav>
-        <p>${escapeHtml(t("footer.rights", { year: new Date().getFullYear() }))}</p>
-        <p>${t("footer.credits")}</p>
+        <p>${escapeHtml(t("footer.rights", { year: new Date().getFullYear() }))}
+          <a href="terms.html#marcas">${escapeHtml(t("footer.brands"))}</a> ·
+          <a href="about.html#fontes">${escapeHtml(t("footer.sources"))}</a></p>
       </div>
     `;
     document.body.appendChild(footer);
