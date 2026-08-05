@@ -7171,6 +7171,45 @@ a.dash-profile-handle:hover, a.shared-kind:hover,
   .detail-values article { padding: 11px 10px; }
   .detail-values article span { font-size: 17px; }
   .detail-values article p { font-size: 11px; margin-top: 3px; }
+
+  /* Página de SET no celular: os valores entram no HERO, à direita do logo (o
+     detail.js move o nó nesta mesma largura — ver placeValues). A faixa de
+     largura cheia custava ~90px de altura, e as cápsulas saíam DESIGUAIS: com
+     `1fr` a largura mínima é a do conteúdo, então a do meio encolhia quando
+     "Já gasto" está vazio (—) e as outras esticavam pro tamanho do número.
+     Aqui elas dividem uma coluna só: mesma largura e mesma altura (1fr). */
+  .detail-hero:has(.detail-set-art) {
+    grid-template-columns: minmax(0, 132px) minmax(0, 1fr);
+    grid-template-areas:
+      "art   values"
+      "info  info"
+      "stats stats";
+    gap: 10px 12px;
+  }
+  .detail-hero .detail-set-art { grid-area: art; }
+  .detail-hero .detail-set-info { grid-area: info; }
+  /* No celular o h2 do set some (o cabeçalho da página já mostra o nome), então
+     sem nenhum <p> o bloco fica vazio — mas ainda ocuparia linha e gap. */
+  .detail-hero .detail-set-info:not(:has(p)) { display: none; }
+  .detail-hero:has(.detail-set-art) .detail-stats { grid-area: stats; }
+  /* Sem preço (linhas vintage): sem coluna de valores, o logo ocupa tudo. */
+  .detail-hero:has(.detail-set-art):has(.detail-values[hidden]) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "art" "info" "stats";
+  }
+  /* Especificidade acima de `.detail-summary.has-hero .detail-values` (0,3,0),
+     que também casa aqui — o hero é descendente do resumo. */
+  .detail-summary.has-hero .detail-hero .detail-values {
+    grid-area: values;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 6px;
+    margin: 0;
+    align-self: stretch;
+  }
+  .detail-summary.has-hero .detail-hero .detail-values article { padding: 6px 10px; }
+  .detail-summary.has-hero .detail-hero .detail-values span { font-size: 16px; }
+  .detail-summary.has-hero .detail-hero .detail-values p { font-size: 10px; margin-top: 1px; }
 }
 
 /* ── Passe FLAT (decisão de design, 2026-07): a faixa de CONTROLES — chips de

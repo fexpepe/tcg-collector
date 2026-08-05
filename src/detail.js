@@ -275,6 +275,7 @@
       if (summary) summary.classList.add("has-hero");
       const stats = document.querySelector(".detail-stats");
       if (stats) elements.hero.appendChild(stats);
+      placeValues(summary);
     }
     initBackLink();
     hydrateFilters();
@@ -285,6 +286,28 @@
     initCollapsibles(); // depois do initQuickAdd: espelha a visibilidade da caixa
     applyGridView();
     render();
+  }
+
+  // Onde moram os VALORES (R$) na página de SET, por largura de tela:
+  //   desktop -> irmãos do hero, na coluna própria à direita dele;
+  //   celular -> DENTRO do hero, à direita do logo do set.
+  // No celular a faixa de largura cheia custava ~90px de altura e as três
+  // cápsulas saíam com larguras desiguais (a do meio encolhe quando "Já gasto"
+  // está vazio). Ao lado do logo elas ficam iguais e o resumo encurta ~65px.
+  // Mover o NÓ (em vez de duplicar) mantém uma fonte só pros ids de valor.
+  // Só no set: o hero de Pokémon tem a fileira "em destaque" e já é alto.
+  // Seguro porque renderHero() roda uma vez e os valores são atualizados por
+  // textContent — nada reescreve o innerHTML do hero depois daqui.
+  const VALUES_MQ = "(max-width: 600px)";
+  function placeValues(summary) {
+    if (detailType !== "set" || !elements.detailValues || !summary) return;
+    const mq = window.matchMedia(VALUES_MQ);
+    const place = () => {
+      const alvo = mq.matches ? elements.hero : summary;
+      if (alvo && elements.detailValues.parentElement !== alvo) alvo.appendChild(elements.detailValues);
+    };
+    place();
+    mq.addEventListener("change", place);
   }
 
   // Filtros e Adição rápida atrás de botões (mesmo padrão da Coleção). Filtros
@@ -486,12 +509,19 @@
           missingHtml = `<p class="set-missing" title="${escapeAttribute(hint)}">${escapeHtml(t("set.missingCost", { n: missing.length, v: cost }))}</p>`;
         }
       }
+      // "N cartas oficiais · N no catálogo local" só aparece quando os dois
+      // números DIVERGEM — aí ele informa que o catálogo está incompleto (ex.:
+      // vintage com 66 de 80). Iguais, era a mesma contagem que o stat "cartas
+      // nessa página" já dá logo ao lado: repetição ocupando uma linha inteira.
+      const totalOficial = sample.setTotal || pageCards.length;
+      const contagemHtml = totalOficial === pageCards.length ? "" :
+        `<p>${escapeHtml(`${t("set.officialCards", { n: totalOficial })} · ${t("set.inLocalCatalog", { n: pageCards.length })}`)}</p>`;
       elements.hero.innerHTML = `
         <div class="set-art detail-set-art">${logo}${symbol}</div>
-        <div>
+        <div class="detail-set-info">
           <h2>${escapeHtml(nomeExibido)}</h2>
           ${nomeOriginal ? `<p class="set-original-name" lang="ja">${escapeHtml(nomeOriginal)}</p>` : ""}
-          <p>${escapeHtml(`${t("set.officialCards", { n: sample.setTotal || pageCards.length })} · ${t("set.inLocalCatalog", { n: pageCards.length })}`)}</p>
+          ${contagemHtml}
           ${missingHtml}
         </div>
       `;
