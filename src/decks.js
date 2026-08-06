@@ -264,6 +264,7 @@
     amber: "#f0b84b", amethyst: "#a78bfa", emerald: "#34a06a", ruby: "#e05252", sapphire: "#60a5fa", steel: "#9ba4b3",
     // Magic (letras do color identity)
     w: "#efe3bd", u: "#4a9ff0", b: "#7d7f89", r: "#e05252", g: "#34a06a",
+    c: "#c8ccd4",                                       // incolor (símbolo {C})
     // Bandai/Riot (Digimon, Gundam, DBFW, One Piece)
     red: "#e05252", blue: "#4a9ff0", green: "#34a06a", yellow: "#f0b84b", purple: "#a78bfa",
     black: "#6b7280", white: "#e3e7ee",
@@ -311,6 +312,27 @@
         <span class="deck-bar-track"><span class="deck-bar-fill" style="width:${Math.round((r.n / max) * 100)}%${bg}"></span></span>
         <span class="deck-bar-n">${esc(String(r.n))}</span></div>`;
     }).join("") + `</div>`;
+  }
+
+  // SÍMBOLOS de mana — uma linha por cor, com as duas metades da pergunta que
+  // toda base de mana responde: quanto o deck PEDE daquela cor (pips do custo)
+  // e quanto ele TEM pra pagar (terrenos que produzem). Cores diferentes na
+  // mesma linha porque, num painel de 320px, seis colunas viram seis colunas
+  // ilegíveis — a informação é a mesma da referência, o arranjo é o que cabe.
+  function pipsHtml(p) {
+    if (!p || !p.rows || !p.rows.length) return "";
+    const linha = (k, pct, txt) => `<span class="deck-pip-line">
+      <span class="deck-pip-k">${esc(k)}</span>
+      <span class="deck-pip-track"><span class="deck-pip-fill" style="width:${pct}%"></span></span>
+      <span class="deck-pip-n">${esc(txt)}</span></span>`;
+    return `<div class="deck-an-block"><h4>${esc(t("decks.pips"))}</h4>` + p.rows.map((r) => `
+      <div class="deck-pip" style="--pip:${escA(inkColor(r.key))}">
+        <span class="deck-pip-sym">${esc(r.key)}</span>
+        <span class="deck-pip-body">
+          ${linha(t("decks.pipsNeed"), r.pct, `${r.n} · ${r.pct}%`)}
+          ${p.lands ? linha(t("decks.pipsLands"), r.landPct, `${r.lands} · ${r.landPct}%`) : ""}
+        </span>
+      </div>`).join("") + `</div>`;
   }
 
 
@@ -779,10 +801,11 @@
     // publicar, então não incha a linha da tabela nem congela num retrato
     // velho — deck antigo passa a exibir a análise sem republicar.
     const an = rules.analyze({ game: deck.game, format: deck.format, zones: deck.zones }, byId);
-    const analiseHtml = (an.curve || an.dist || an.rarity)
+    const analiseHtml = (an.curve || an.dist || an.rarity || an.pips)
       ? `<section class="deck-analysis dkc-analysis">
           <h3>${esc(t("decks.analysis"))}</h3>
           ${curveHtml(an.curve)}
+          ${pipsHtml(an.pips)}
           ${barsHtml(t("decks.dist"), an.dist, true)}
           ${barsHtml(t("decks.rarity"), an.rarity)}
         </section>`
@@ -807,37 +830,73 @@
     let pubView = "grid";
     try { if (localStorage.getItem(VIEW_KEY) === "list") pubView = "list"; } catch (e) { /* ignora */ }
 
+    // Dentro da ZONA, quebra por CATEGORIA de carta (Criaturas, Instantâneas,
+    // Terrenos…). É como um deck de Magic é lido em qualquer lugar, e o
+    // cardTypeGroup já devolve o tipo principal de cada jogo (categoria no
+    // Pokémon, tipo no Lorcana) — então isto vale pros 12, não só pro Magic.
+    // A ordem é a CANÔNICA do jogo (a mesma da faceta de tipo), com o que não
+    // estiver na lista caindo no fim por quantidade; zona de uma categoria só
+    // volta a ser lista simples, sem cabeçalho redundante.
+    // A faceta de TIPO do jogo já carrega a ordem canônica (no Magic: criatura,
+    // instantânea, feitiço, artefato, encantamento, terreno…) — é a mesma que a
+    // busca usa, então lista e filtro não discordam.
+    const ordemTipo = ((shared.gameFacets(deck.game) || []).find((f) => f.key === "type") || {}).order || null;
+    const qtdDe = (list) => list.reduce((s, e) => s + e.qty, 0);
+    const categorias = (list) => {
+      const map = new Map();
+      list.forEach((e) => {
+        const card = byId[e.id];
+        const g = (card && shared.cardTypeGroup(deck.game, card)) || null;
+        const k = (g && g.key) || "";
+        if (!map.has(k)) map.set(k, { key: k, label: (g && g.label) || "", entries: [] });
+        map.get(k).entries.push(e);
+      });
+      const idx = (k) => { const i = ordemTipo ? ordemTipo.indexOf(k) : -1; return i < 0 ? 999 : i; };
+      return [...map.values()].sort((a, b) => (idx(a.key) - idx(b.key)) || (qtdDe(b.entries) - qtdDe(a.entries)));
+    };
+
+    const linhaHtml = (e) => {
+      const card = byId[e.id];
+      const unit = unitOf(e);
+      const have = haveOf(e);
+      const thumb = card && card.image ? `<img src="${escA(card.image)}" alt="" loading="lazy">` : `<span class="deck-noimg"></span>`;
+      // data-art: fonte do preview que segue o cursor (ver hoverPreview).
+      return `<li class="deck-row dkc-row"${card && card.image ? ` data-art="${escA(card.image)}"` : ""}>
+        <span class="deck-qty">${esc(String(e.qty))}×</span>
+        <span class="dkc-row-thumb">${thumb}</span>
+        <span class="dkc-row-body">
+          <span class="deck-row-name">${esc((card && card.name) || e.id)}</span>
+          <span class="dkc-row-meta">${esc(card ? `${card.set || ""} ${card.number || ""}`.trim() : "")}</span>
+        </span>
+        ${logged && have >= e.qty ? `<span class="deck-own ok">${esc(t("decks.ownHave"))}</span>` : logged && have > 0 ? `<span class="deck-own part">${esc(t("decks.ownPartial").replace("{n}", String(have)))}</span>` : ""}
+        ${unit > 0 ? `<span class="dkc-row-price">${esc(money(unit))}</span>` : ""}
+      </li>`;
+    };
+    const tileHtml = (e) => {
+      const card = byId[e.id];
+      const img = card && card.image ? `<img src="${escA(card.image)}" alt="${escA(card.name || "")}" loading="lazy">` : `<span class="deck-noimg"></span>`;
+      return `<div class="deck-tile" title="${escA((card && card.name) || e.id)}">
+        <span class="deck-tile-img">${img}</span>
+        <span class="deck-tile-qty">${esc(String(e.qty))}×</span>
+      </div>`;
+    };
+    const corpoHtml = (list) => (pubView === "list"
+      ? `<ul class="deck-list dkc-list">${list.map(linhaHtml).join("")}</ul>`
+      : `<div class="deck-tiles">${list.map(tileHtml).join("")}</div>`);
+
     const zonesHtml = () => Object.keys(deck.zones).map((zk) => {
       const list = deck.zones[zk];
       if (!list.length) return "";
       const label = t("decks.zone." + zk);
-      const head = `<h3>${esc(label === "decks.zone." + zk ? zk : label)} <span class="deck-zone-n">${esc(String(list.reduce((s, e) => s + e.qty, 0)))}</span></h3>`;
-      if (pubView === "list") {
-        return `<section class="deck-zone">${head}<ul class="deck-list dkc-list">` + list.map((e) => {
-          const card = byId[e.id];
-          const unit = unitOf(e);
-          const have = haveOf(e);
-          const thumb = card && card.image ? `<img src="${escA(card.image)}" alt="" loading="lazy">` : `<span class="deck-noimg"></span>`;
-          return `<li class="deck-row dkc-row">
-            <span class="deck-qty">${esc(String(e.qty))}×</span>
-            <span class="dkc-row-thumb">${thumb}</span>
-            <span class="dkc-row-body">
-              <span class="deck-row-name">${esc((card && card.name) || e.id)}</span>
-              <span class="dkc-row-meta">${esc(card ? `${card.set || ""} ${card.number || ""}`.trim() : "")}</span>
-            </span>
-            ${logged && have >= e.qty ? `<span class="deck-own ok">${esc(t("decks.ownHave"))}</span>` : logged && have > 0 ? `<span class="deck-own part">${esc(t("decks.ownPartial").replace("{n}", String(have)))}</span>` : ""}
-            ${unit > 0 ? `<span class="dkc-row-price">${esc(money(unit))}</span>` : ""}
-          </li>`;
-        }).join("") + `</ul></section>`;
-      }
-      return `<section class="deck-zone">${head}<div class="deck-tiles">` + list.map((e) => {
-        const card = byId[e.id];
-        const img = card && card.image ? `<img src="${escA(card.image)}" alt="${escA(card.name || "")}" loading="lazy">` : `<span class="deck-noimg"></span>`;
-        return `<div class="deck-tile" title="${escA((card && card.name) || e.id)}">
-          <span class="deck-tile-img">${img}</span>
-          <span class="deck-tile-qty">${esc(String(e.qty))}×</span>
-        </div>`;
-      }).join("") + `</div></section>`;
+      const head = `<h3>${esc(label === "decks.zone." + zk ? zk : label)} <span class="deck-zone-n">${esc(String(qtdDe(list)))}</span></h3>`;
+      const cats = categorias(list);
+      const corpo = (cats.length > 1)
+        ? cats.map((c) => `<div class="deck-cat">
+            <h4 class="deck-cat-h">${esc(c.label || t("decks.groupNone"))} <span class="deck-cat-n">${esc(String(qtdDe(c.entries)))}</span></h4>
+            ${corpoHtml(c.entries)}
+          </div>`).join("")
+        : corpoHtml(list);
+      return `<section class="deck-zone">${head}${corpo}</section>`;
     }).join("");
 
     // Data de publicação (created_at do share) — contexto de "quão atual é isto".
@@ -893,6 +952,7 @@
     }
 
     paint();
+    hoverPreview(box);
 
     function bindCopy() {
       box.querySelector("[data-dkc-copy]").addEventListener("click", () => {
@@ -908,6 +968,42 @@
         if (save()) location.href = "my-decks.html?id=" + encodeURIComponent(novo.id);
       });
     }
+  }
+
+  // Na LISTA, o nome sozinho não diz o que a carta faz — e abrir o modal por
+  // carta pra descobrir é caro. Passar o mouse mostra a arte colada no cursor,
+  // que é o gesto padrão de deck builder. Um <img> só, reaproveitado, ligado
+  // por delegação (a lista é repintada a cada troca de layout, então prender
+  // handler em cada linha vazaria). Fora no toque: sem cursor, sem hover — lá
+  // o tile da grade já mostra a arte.
+  function hoverPreview(box) {
+    if (!window.matchMedia || !window.matchMedia("(hover: hover)").matches) return;
+    const cx = document.createElement("div");
+    cx.className = "dkc-hover";
+    cx.hidden = true;
+    cx.innerHTML = '<img alt="">';
+    document.body.appendChild(cx);
+    const img = cx.querySelector("img");
+    let atual = "";
+    const mover = (ev) => {
+      // Prende na janela: perto da borda direita/baixo, a arte vira pro outro
+      // lado em vez de sair da tela.
+      const L = 240, A = 335, m = 16;
+      const x = ev.clientX + m + L > window.innerWidth ? ev.clientX - m - L : ev.clientX + m;
+      const y = Math.max(m, Math.min(ev.clientY - A / 2, window.innerHeight - A - m));
+      cx.style.left = `${Math.max(m, x)}px`;
+      cx.style.top = `${y}px`;
+    };
+    box.addEventListener("mousemove", (ev) => {
+      const row = ev.target.closest("[data-art]");
+      const art = row ? row.dataset.art : "";
+      if (art !== atual) {
+        atual = art;
+        if (art) { img.src = art; cx.hidden = false; } else { cx.hidden = true; img.removeAttribute("src"); }
+      }
+      if (art) mover(ev);
+    });
+    box.addEventListener("mouseleave", () => { atual = ""; cx.hidden = true; img.removeAttribute("src"); });
   }
 
   const el = {
@@ -1482,9 +1578,10 @@
             <p class="deck-value-note">${esc(t("decks.missingCount").replace("{n}", String(val.missingCards)))}</p>
             ${val.proxyCards ? `<p class="deck-value-note is-proxy">${esc(t("decks.proxyCount").replace("{n}", String(val.proxyCards)))}</p>` : ""}
           </section>
-          ${(an.curve || an.dist || an.rarity) ? `<section class="deck-analysis">
+          ${(an.curve || an.dist || an.rarity || an.pips) ? `<section class="deck-analysis">
             <h3>${esc(t("decks.analysis"))}${an.avgCost != null ? ` <span class="deck-avg">${esc(t("decks.avgCost"))}: ${esc(String(an.avgCost))}</span>` : ""}</h3>
             ${curveHtml(an.curve)}
+            ${pipsHtml(an.pips)}
             ${barsHtml(t("decks.dist"), an.dist, true)}
             ${barsHtml(t("decks.rarity"), an.rarity)}
           </section>` : ""}

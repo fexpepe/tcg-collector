@@ -171,7 +171,9 @@
       copyKey: (card) => card.name,
       exempt: isBasicLand,             // terreno básico é ilimitado em todo formato
       facets: ["cardType", "color", "cost", "rarity"],
-      curve: "cost", dist: "color"
+      curve: "cost", dist: "color",
+      // Campo com os símbolos de mana ("{2}{G}{U}") — liga a conta de pips.
+      pips: "manaCost"
     }
   };
 
@@ -422,12 +424,63 @@
       if (n) avgCost = Math.round((soma / n) * 10) / 10;
     }
 
+    // ── Símbolos de mana (Magic) ────────────────────────────────────────────
+    // Não é a mesma coisa que a distribuição por cor, e é por isso que os deck
+    // builders mostram as duas: um deck pode ter 20 cartas verdes e mesmo assim
+    // apertar no azul, porque o que trava a mão é o SÍMBOLO, não a carta.
+    //
+    // Conta cada pip COLORIDO do custo × quantidade. Genérico ({3}, {X}) fica
+    // de fora de propósito: qualquer terreno paga, então não diz nada sobre
+    // cor. Híbrido conta pros DOIS lados ({G/U} pode ser pago por qualquer um);
+    // monocolor híbrido ({2/W}) e phyrexiano ({U/P}) contam só pra letra, que é
+    // a única cor envolvida.
+    //
+    // `lands`/`landPct` são o outro lado da conta: quantos terrenos do deck
+    // produzem aquela cor (colorId do terreno, que no Scryfall é justamente o
+    // que ele adiciona). Junto, a leitura vira "o que o deck PEDE × o que ele
+    // TEM pra pagar" — que é a pergunta real de quem monta a base de mana.
+    let pips = null;
+    if (pack.pips) {
+      const pede = new Map(), produz = new Map();
+      let totalPips = 0, totalLands = 0;
+      rows.forEach(({ card, qty }) => {
+        if (/\bland\b/i.test(String(card.cardType || ""))) {
+          totalLands += qty;
+          multi(card.colorId).forEach((c) => {
+            const k = c.toUpperCase();
+            if (/^[WUBRGC]$/.test(k)) produz.set(k, (produz.get(k) || 0) + qty);
+          });
+        }
+        String(card[pack.pips] || "").replace(/\{([^}]+)\}/g, (_, token) => {
+          token.split("/").forEach((parte) => {
+            const k = parte.trim().toUpperCase();
+            if (!/^[WUBRGC]$/.test(k)) return;
+            pede.set(k, (pede.get(k) || 0) + qty);
+            totalPips += qty;
+          });
+          return "";
+        });
+      });
+      const ORDEM = ["W", "U", "B", "R", "G", "C"];
+      const linhas = ORDEM
+        .filter((c) => (pede.get(c) || 0) > 0 || (produz.get(c) || 0) > 0)
+        .map((c) => ({
+          key: c,
+          n: pede.get(c) || 0,
+          pct: totalPips ? Math.round(((pede.get(c) || 0) / totalPips) * 100) : 0,
+          lands: produz.get(c) || 0,
+          landPct: totalLands ? Math.round(((produz.get(c) || 0) / totalLands) * 100) : 0
+        }));
+      if (linhas.length) pips = { rows: linhas, total: totalPips, lands: totalLands };
+    }
+
     return {
       curve: curve,
       dist: (dist && dist.length) ? dist : null,
       rarity: rarity.length ? rarity : null,
       distField: pack.dist || null,
-      avgCost: avgCost
+      avgCost: avgCost,
+      pips: pips
     };
   }
 
