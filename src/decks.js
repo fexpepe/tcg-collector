@@ -839,7 +839,9 @@
     // volta a ser lista simples, sem cabeçalho redundante.
     // A faceta de TIPO do jogo já carrega a ordem canônica (no Magic: criatura,
     // instantânea, feitiço, artefato, encantamento, terreno…) — é a mesma que a
-    // busca usa, então lista e filtro não discordam.
+    // busca usa, então lista e filtro não discordam. Quem ARRASTA uma categoria
+    // sobrescreve isso: a ordem escolhida é lembrada por jogo e vale em todas as
+    // zonas (arrastar "Terreno" pro topo no Deck sobe também no Sideboard).
     const ordemTipo = ((shared.gameFacets(deck.game) || []).find((f) => f.key === "type") || {}).order || null;
     const qtdDe = (list) => list.reduce((s, e) => s + e.qty, 0);
     const categorias = (list) => {
@@ -851,7 +853,16 @@
         if (!map.has(k)) map.set(k, { key: k, label: (g && g.label) || "", entries: [] });
         map.get(k).entries.push(e);
       });
-      const idx = (k) => { const i = ordemTipo ? ordemTipo.indexOf(k) : -1; return i < 0 ? 999 : i; };
+      const minha = lerOrdemCat(deck.game);
+      // Categoria arrastada vem primeiro, na ordem escolhida; o que o jogador
+      // nunca tocou (categoria de outro deck, tipo novo) entra depois, na ordem
+      // canônica — nunca some nem embaralha.
+      const idx = (k) => {
+        const meu = minha.indexOf(k);
+        if (meu >= 0) return meu;
+        const can = ordemTipo ? ordemTipo.indexOf(k) : -1;
+        return 1000 + (can < 0 ? 999 : can);
+      };
       return [...map.values()].sort((a, b) => (idx(a.key) - idx(b.key)) || (qtdDe(b.entries) - qtdDe(a.entries)));
     };
 
@@ -884,15 +895,27 @@
       ? `<ul class="deck-list dkc-list">${list.map(linhaHtml).join("")}</ul>`
       : `<div class="deck-tiles">${list.map(tileHtml).join("")}</div>`);
 
+    // Alça de arrastar (o "⠿" que todo reordenável usa). É <button> pra pegar
+    // foco e responder às setas — arrastar não pode ser o ÚNICO jeito.
+    const IC_GRIP = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
+
     const zonesHtml = () => Object.keys(deck.zones).map((zk) => {
       const list = deck.zones[zk];
       if (!list.length) return "";
       const label = t("decks.zone." + zk);
-      const head = `<h3>${esc(label === "decks.zone." + zk ? zk : label)} <span class="deck-zone-n">${esc(String(qtdDe(list)))}</span></h3>`;
+      // "Ordem original" só aparece quando HÁ ordem própria: botão que não faz
+      // nada é ruído, e sem ele uma arrastada infeliz não teria volta.
+      const reset = lerOrdemCat(deck.game).length
+        ? `<button type="button" class="deck-cat-reset" data-dkc-cat-reset>${esc(t("decks.catReset"))}</button>`
+        : "";
+      const head = `<h3>${esc(label === "decks.zone." + zk ? zk : label)} <span class="deck-zone-n">${esc(String(qtdDe(list)))}</span>${reset}</h3>`;
       const cats = categorias(list);
       const corpo = (cats.length > 1)
-        ? cats.map((c) => `<div class="deck-cat">
-            <h4 class="deck-cat-h">${esc(c.label || t("decks.groupNone"))} <span class="deck-cat-n">${esc(String(qtdDe(c.entries)))}</span></h4>
+        ? cats.map((c) => `<div class="deck-cat" data-cat="${escA(c.key)}">
+            <h4 class="deck-cat-h">
+              <button type="button" class="deck-cat-grip" aria-label="${escA(t("decks.catDrag"))}" title="${escA(t("decks.catDrag"))}">${IC_GRIP}</button>
+              <span>${esc(c.label || t("decks.groupNone"))}</span> <span class="deck-cat-n">${esc(String(qtdDe(c.entries)))}</span>
+            </h4>
             ${corpoHtml(c.entries)}
           </div>`).join("")
         : corpoHtml(list);
@@ -948,6 +971,11 @@
         try { localStorage.setItem(VIEW_KEY, pubView); } catch (e) { /* ignora */ }
         paint();
       }));
+      bindCatDrag(box, deck.game, paint);
+      box.querySelectorAll("[data-dkc-cat-reset]").forEach((b) => b.addEventListener("click", () => {
+        limparOrdemCat(deck.game);
+        paint();
+      }));
       bindCopy();
     }
 
@@ -968,6 +996,77 @@
         if (save()) location.href = "my-decks.html?id=" + encodeURIComponent(novo.id);
       });
     }
+  }
+
+  // Ordem das categorias escolhida ARRASTANDO, por jogo. Declaradas como
+  // function (não const): o módulo retorna cedo em decks.html e o viewer chama
+  // estas daqui de cima — `const` depois do return ficaria em TDZ pra sempre.
+  function catOrderKey(game) { return `tcg-deck-cat-order-${game}`; }
+  function lerOrdemCat(game) {
+    try {
+      const v = JSON.parse(localStorage.getItem(catOrderKey(game)) || "[]");
+      return Array.isArray(v) ? v.filter((x) => typeof x === "string") : [];
+    } catch (e) { return []; }
+  }
+  function salvarOrdemCat(game, arr) {
+    try { localStorage.setItem(catOrderKey(game), JSON.stringify((arr || []).filter(Boolean))); } catch (e) { /* cota cheia: segue na ordem canônica */ }
+  }
+  function limparOrdemCat(game) {
+    try { localStorage.removeItem(catOrderKey(game)); } catch (e) { /* ignora */ }
+  }
+
+  // Arrastar categoria pra reordenar. Pointer Events (não HTML5 drag-and-drop)
+  // porque o mesmo código atende mouse E toque — o DnD nativo simplesmente não
+  // existe no touch. O feedback é ao vivo: a categoria muda de lugar no DOM
+  // enquanto o dedo/cursor passa pela metade da vizinha, e só no soltar é que a
+  // ordem é gravada e a página repintada (pra valer nas OUTRAS zonas também).
+  function bindCatDrag(box, game, repaint) {
+    box.querySelectorAll(".deck-cat-grip").forEach((grip) => {
+      grip.addEventListener("pointerdown", (ev) => {
+        const cat = grip.closest(".deck-cat");
+        const zona = cat && cat.parentElement;
+        if (!cat || !zona) return;
+        ev.preventDefault();                       // não seleciona texto ao arrastar
+        try { grip.setPointerCapture(ev.pointerId); } catch (e) { /* navegador sem captura */ }
+        cat.classList.add("is-dragging");
+        const mover = (e) => {
+          const irmas = [...zona.querySelectorAll(":scope > .deck-cat")];
+          for (const alvo of irmas) {
+            if (alvo === cat) continue;
+            const r = alvo.getBoundingClientRect();
+            if (e.clientY < r.top || e.clientY > r.bottom) continue;
+            const antes = e.clientY < r.top + r.height / 2;
+            zona.insertBefore(cat, antes ? alvo : alvo.nextSibling);
+            break;
+          }
+        };
+        const soltar = () => {
+          grip.removeEventListener("pointermove", mover);
+          cat.classList.remove("is-dragging");
+          salvarOrdemCat(game, [...zona.querySelectorAll(":scope > .deck-cat")].map((el) => el.dataset.cat));
+          repaint();
+        };
+        grip.addEventListener("pointermove", mover);
+        grip.addEventListener("pointerup", soltar, { once: true });
+        grip.addEventListener("pointercancel", soltar, { once: true });
+      });
+      // Sem mouse e sem toque também dá: seta move a categoria uma casa.
+      grip.addEventListener("keydown", (ev) => {
+        const passo = ev.key === "ArrowUp" ? -1 : ev.key === "ArrowDown" ? 1 : 0;
+        if (!passo) return;
+        ev.preventDefault();
+        const cat = grip.closest(".deck-cat");
+        const zona = cat && cat.parentElement;
+        if (!zona) return;
+        const irmas = [...zona.querySelectorAll(":scope > .deck-cat")];
+        const i = irmas.indexOf(cat);
+        const j = i + passo;
+        if (j < 0 || j >= irmas.length) return;
+        zona.insertBefore(passo < 0 ? cat : irmas[j], passo < 0 ? irmas[j] : cat);
+        salvarOrdemCat(game, [...zona.querySelectorAll(":scope > .deck-cat")].map((el) => el.dataset.cat));
+        repaint();
+      });
+    });
   }
 
   // Na LISTA, o nome sozinho não diz o que a carta faz — e abrir o modal por
