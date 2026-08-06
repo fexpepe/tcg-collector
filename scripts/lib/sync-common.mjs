@@ -148,6 +148,31 @@ export async function writeSplitIndexes(outDirUrl, idx, { only } = {}) {
 // que a pessoa escolheu. `vn` = quantas cartas do set ficaram sem preço nenhum.
 export const basePricingId = (id) => String(id || "").replace(/-(pt|ja|zh-cn|zh-tw|zh)$/, "");
 
+// ── Número de carta: chave de casamento e número que vai no ID ───────────────
+// Chave PRESERVANDO o prefixo alfabético: "TG08/TG30" -> "tg8", "077/071" ->
+// "77", "199" -> "199", "GG05" -> "gg5". Crucial pros sets que a TCGdex junta a
+// Trainer/Galarian Gallery no chunk principal: o "TG08" não pode colidir com o
+// regular "8" (um numOf simples daria 8 pros dois → preço trocado).
+export function normNum(s) {
+  const t = String(s || "").split("/")[0].trim().toLowerCase();
+  const m = t.match(/^([a-z]*)0*(\d+)([a-z]*)$/);
+  return m ? m[1] + m[2] + m[3] : t;
+}
+
+// Número que vai DENTRO do id de uma carta NOVA: o cru sem zeros à esquerda
+// ("005" -> "5", "TG08" -> "TG8"), mantendo a caixa que a fonte usa (a TCGdex
+// escreve "bwp-BW01"; id de carta irmã em minúscula no mesmo set ficaria torto).
+//
+// Existe por causa de uma armadilha real: as fontes têm VÁRIAS impressões no
+// mesmo número ("5" e "005"), a gente fica com a de maior preço, e o preço muda
+// todo dia — então um id derivado do número CRU trocava sozinho de um build pro
+// outro. Id de carta é chave de coleção, deck, wishlist e binder de quem já
+// coleciona: id que muda faz a carta sumir da conta e voltar como se fosse
+// outra. numDoId dá o mesmo número pra qualquer impressão do mesmo normNum.
+export function numDoId(s) {
+  return String(s || "").split("/")[0].trim().replace(/^(\D*)0+(\d)/, "$1$2");
+}
+
 export function setValueBuckets(cards, pricing) {
   const table = pricing || {};
   let vb = 0, vu = 0, ve = 0, vn = 0;

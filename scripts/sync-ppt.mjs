@@ -22,6 +22,7 @@
 // Sem PPT_API_TOKEN, é no-op (sai com sucesso) — o deploy não quebra.
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { normNum, numDoId } from "./lib/sync-common.mjs";
 
 const TOKEN = process.env.PPT_API_TOKEN;
 const BASE = "https://www.pokemonpricetracker.com/api/v2";
@@ -72,14 +73,40 @@ function setCodeFromName(name) {
 }
 // "349/190" -> 349 (inteiro, pra casar com o número do nosso card id).
 function numOf(s) { const m = String(s || "").match(/(\d+)/); return m ? Number(m[1]) : null; }
-// Chave de número PRESERVANDO o prefixo alfabético: "TG08/TG30" -> "tg8",
-// "077/071" -> "77", "199" -> "199", "GG05" -> "gg5". Crucial pros sets que a
-// TCGdex junta a Trainer/Galarian Gallery no chunk principal: o "TG08" não pode
-// colidir com o regular "8" (numOf daria 8 pros dois → preço trocado).
-function normNum(s) {
-  const t = String(s || "").split("/")[0].trim().toLowerCase();
-  const m = t.match(/^([a-z]*)0*(\d+)([a-z]*)$/);
-  return m ? m[1] + m[2] + m[3] : t;
+// normNum (chave de casamento) e numDoId (número estável pro id) moram no
+// sync-common: são a regra que impede id de carta de mudar entre builds, e o
+// tests/sync-common.test.mjs trava as duas.
+
+// Ids JÁ PUBLICADOS de um set+idioma, por número normalizado. É o PINO das
+// cartas que a PPT inventa (add-on-miss): o id delas não pode mudar entre
+// builds, porque já está na coleção, no deck e na wishlist de quem tem a carta
+// — id que troca faz a carta sumir da conta e voltar como se fosse outra.
+// Lê PRODUÇÃO de propósito (o resultado do build anterior): o chunk local desta
+// rodada acabou de ser regravado pelo sync-tcgdex e pode ter vindo sem as
+// cartas que o merge injetou da vez passada. Sem rede, devolve mapa vazio e o
+// id cai no derivado — que é estável por si só.
+const pubIdCache = new Map();
+async function idsPublicados(setId, lang) {
+  const chave = `${lang}/${setId}`;
+  if (pubIdCache.has(chave)) return pubIdCache.get(chave);
+  const mapa = new Map();
+  try {
+    const r = await fetch(`${PROD}/data/sets/${lang}/${setId}.json`);
+    if (r.ok) {
+      const t = await r.text();
+      // Mesmo cuidado do ourChunk: path inexistente volta 200 + HTML.
+      if (t.trim().startsWith("[")) {
+        for (const c of JSON.parse(t)) {
+          if (!c || !c.id) continue;
+          const local = String(c.id).replace(`${setId}-`, "").replace(/-(pt|ja|zh-cn|zh-tw|zh)$/, "");
+          const k = normNum(local);
+          if (k && !mapa.has(k)) mapa.set(k, c.id);
+        }
+      }
+    }
+  } catch { /* sem rede: mapa vazio */ }
+  pubIdCache.set(chave, mapa);
+  return mapa;
 }
 
 // Nosso chunk JP do set: tenta local (gerado no build); senão produção (pra
@@ -421,12 +448,19 @@ async function syncSet(ourSetId, pptSetId, lang = "japanese", withGraded = GRADE
   }
 
   const newCards = [];
-  for (const [, m] of misses) {
+  // Pino dos ids já publicados + ordem ESTÁVEL. A ordem importa por causa do
+  // MAX_NEW_PER_SET: iterar na ordem que a PPT respondeu faria o corte pegar 30
+  // cartas diferentes a cada build — as que ficassem de fora sumiriam do
+  // catálogo, e some da coleção de quem tem. Ordenado por número, o corte é
+  // sempre o mesmo conjunto.
+  const pub = await idsPublicados(ourSetId, ourLang);
+  for (const [key, m] of [...misses.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
     if (newCards.length >= MAX_NEW_PER_SET) break;
     const name = cleanName(m.c.name);
     if (!name) continue;
     const num = m.rawNum;
-    const id = ourLang === "en" ? `${ourSetId}-${num}` : `${ourSetId}-${num}-${ourLang}`;
+    const sufixo = ourLang === "en" ? "" : `-${ourLang}`;
+    const id = pub.get(key) || `${ourSetId}-${numDoId(num)}${sufixo}`;
     const dexId = rev[speciesOf(name).toLowerCase()] || "";
     const card = {
       id, name, pokemonName: dexId ? null : speciesOf(name),
@@ -484,13 +518,18 @@ async function importJpSet(code, pptSetId) {
     if (!prev || (u || 0) > (prev._u || 0)) best.set(key, { c, _u: u || 0, img, rawNum });
   }
   const newCards = [];
-  for (const [, m] of best) {
+  // Mesmo pino do add-on-miss: set só-PPT não tem chunk local nenhum, então o
+  // id publicado (produção) é a ÚNICA memória de qual id essas cartas já têm na
+  // conta das pessoas. Sem ele, o id sairia do número cru da impressão que
+  // ganhou no preço do dia e mudaria sozinho de um build pro outro.
+  const pub = await idsPublicados(code, "ja");
+  for (const [key, m] of best) {
     const name = cleanName(m.c.name);
     if (!name) continue;
     const num = m.rawNum;
     const dexId = rev[speciesOf(name).toLowerCase()] || "";
     const card = {
-      id: `${code}-${num}-ja`, name, pokemonName: dexId ? "" : speciesOf(name),
+      id: pub.get(key) || `${code}-${numDoId(num)}-ja`, name, pokemonName: dexId ? "" : speciesOf(name),
       category: "", dexId, generation: genOf(dexId),
       pokemonImage: dexId ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexId}.png` : "",
       number: String(num), set: setName, setId: code,
