@@ -1089,8 +1089,11 @@ input::placeholder {
 }
 
 /* Coleção + Tags lado a lado (metade/metade) dentro do preview da carta. */
-.preview-org-row { display: flex; gap: 10px; align-items: flex-start; flex-wrap: wrap; margin-top: 8px; }
-.preview-org-row > * { flex: 1 1 calc(50% - 5px); min-width: 0; margin-top: 0; }
+/* GRADE de 2 colunas, não flex-wrap: com 3 controles (Coleção, Tags, Graded) o
+   wrap deixava o terceiro solto numa linha de largura arbitrária. Em grade ele
+   cai embaixo do primeiro, na mesma coluna — as caixas alinham nos dois eixos. */
+.preview-org-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; align-items: start; margin-top: 8px; }
+.preview-org-row > * { min-width: 0; margin-top: 0; }
 .preview-org-row .preview-folder-row { flex-direction: column; align-items: stretch; gap: 4px; }
 .preview-tags-row { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--subtle); font-weight: 700; }
 /* Caixa de Tags com o MESMO tamanho do select de Coleção (mesma altura/largura):
@@ -1256,6 +1259,15 @@ input::placeholder {
 .cond-badge { margin-left: 6px; padding: 1px 6px; border-radius: 6px; background: var(--line); color: var(--text); font-size: 11px; font-weight: 800; }
 
 /* Campo "Vender por" no preview */
+/* Vender por · Paguei · Preço NM: três linhas rótulo + moeda + input que têm que
+   ler como uma tabela. As colunas vivem no container e cada linha as HERDA por
+   subgrid — é o que faz os inputs começarem no mesmo x sem cravar largura de
+   rótulo (que quebraria em en/es, onde as palavras têm outro tamanho). */
+   O gap do EIXO subgridado vem do container, não da linha — por isso as duas
+   distâncias (entre colunas e entre linhas) são declaradas aqui, e a linha zera
+   o próprio margin-top pra não somar com o row-gap. */
+.preview-money { display: grid; grid-template-columns: max-content max-content minmax(0, 1fr); column-gap: 8px; row-gap: 8px; margin-top: 8px; }
+.preview-money > .preview-sale-row { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: center; margin-top: 0; }
 .preview-sale-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13px; color: var(--subtle); font-weight: 700; }
 .preview-sale-cur { font-weight: 800; color: var(--text); flex: none; }
 .preview-sale-price { flex: 1; min-width: 0; font: inherit; font-weight: 700; padding: 7px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--text); }
@@ -2579,17 +2591,41 @@ input::placeholder {
 .preview-close::before, .ts-close::before { transform: translate(-50%, -50%) rotate(45deg); }
 .preview-close::after, .ts-close::after { transform: translate(-50%, -50%) rotate(-45deg); }
 
+/* Coluna da esquerda do preview: carta + "Detalhes da carta" embaixo dela.
+   Os detalhes moraram na coluna da direita até 2026-08-07; passaram pra cá
+   porque são leitura de ficha, não ação — e a direita já tinha coleção, tags,
+   graded, dois campos de preço e três blocos de valor. Rola só esta coluna se
+   a ficha aberta passar da altura do painel. */
 .preview-image-wrap {
   display: grid;
-  align-items: start;
+  grid-auto-rows: min-content;
+  align-content: start;
+  gap: 14px;
   min-height: 0;
+  overflow-y: auto;
+  /* Goteira reservada SEMPRE: senão a carta mede 400px quando a ficha fechada
+     cabe e 385px quando a aberta não cabe — voltaria a ter dois tamanhos, que é
+     exatamente o que esta mudança veio consertar. */
+  scrollbar-gutter: stable;
 }
 
+/* TAMANHO PADRÃO DA CARTA — não depende da resolução da fonte.
+   Antes era `width: auto; max-width: 100%`: a carta renderizava no tamanho
+   NATURAL da imagem, então cada jogo abria num tamanho diferente (Lorcana serve
+   674px de largura, Magic 488, o scan vintage do HxH 440 — e o painel mostrava
+   exatamente isso). Agora a moldura é 63/88 (a proporção física da carta, a
+   mesma dos tiles) e a imagem preenche com `cover`: fonte grande escala pra
+   baixo, fonte pequena escala pra cima, e o recorte fica em fração de por cento
+   porque as fontes ficam todas entre 0,68 e 0,73 de proporção.
+   Se a altura disponível apertar (viewport baixa), o max-height corta a moldura
+   e o `cover` recentraliza — nunca distorce. */
 .preview-image-wrap img {
-  width: auto;
-  max-width: 100%;
-  margin: 0 auto;
+  width: 100%;
+  aspect-ratio: 63 / 88;
+  height: auto;
   max-height: 100%;
+  object-fit: cover;
+  margin: 0 auto;
   border-radius: 4.8% / 3.4%;
   filter: drop-shadow(0 20px 34px rgba(0, 0, 0, 0.42));
 }
@@ -3003,8 +3039,11 @@ input::placeholder {
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
   }
 
+  /* Cap por LARGURA, não por altura: com a moldura em 63/88, limitar a altura
+     encolheria a moldura e o `cover` cortaria mais a carta. Derivando a largura
+     do teto de 58vh a proporção se mantém e a carta sai inteira. */
   .preview-image-wrap img {
-    max-height: 58vh;
+    width: min(100%, calc(58vh * 63 / 88));
   }
 
   .preview-details div {
@@ -3544,6 +3583,40 @@ a.hub-tile:hover {
   color: var(--accent);
 }
 
+/* Assinatura + frase + redes, só na Início (ver initSiteFooter). Fica acima da
+   linha de links, separado por uma régua, no molde do rodapé do Collectr que o
+   Fernando trouxe como referência — com a diferença de listar só as redes que
+   existem de verdade. */
+.site-footer-brand {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  margin: 0 auto 22px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+  max-width: 460px;
+}
+.site-footer-mark { width: 120px; height: auto; opacity: 0.9; }
+.site-footer-tagline {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--muted);
+  text-wrap: balance;
+}
+.site-footer-social { display: flex; gap: 10px; }
+.site-footer-social a {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--muted);
+  background: var(--panel);
+}
+.site-footer-social a:hover { border-color: var(--accent); color: var(--accent); background: var(--panel-strong); }
+
 /* Linha de links do rodapé (About / FAQ / Help / Privacidade / Termos) */
 .site-footer-links {
   display: flex;
@@ -3840,7 +3913,10 @@ a.hub-tile:hover {
 
 /* "+ Graded" no card: reusa o chip do "+ Tag" e abre uma linha por graduadora
    com as notas. Grid pra as notas ficarem alinhadas entre as linhas. */
-.preview-graded-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+/* Mesma caixa do controle de Tags (borda, altura mínima, padding): os três
+   controles de "minha cópia" ficam do mesmo tamanho em vez de um botãozinho
+   solto ao lado de dois campos. */
+.preview-graded-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; box-sizing: border-box; width: 100%; min-height: 35px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
 .preview-graded-panel { flex: 1 1 100%; display: grid; gap: 4px; margin-top: 6px; }
 .pg-line { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
 .pg-co { min-width: 38px; font-size: 11px; font-weight: 800; color: var(--muted); }

@@ -265,6 +265,32 @@ Imagens EN do Pokémon têm cadeia de fallback: `low.webp` → `high.png` (TCGde
 `images.pokemontcg.io`. Cartas sem imagem em nenhuma fonte vão pro fim da lista
 pra não furar o layout.
 
+### Imagem de carta: contrato pra jogo novo
+
+**A moldura manda, não a imagem.** Onde a carta é exibida grande (o preview do
+card) a moldura é fixa em **63/88** — a proporção física da carta, a mesma dos
+tiles — e a imagem preenche com `object-fit: cover`. Isso vale pra qualquer jogo
+que entre depois, **sem CSS novo**.
+
+Por que existe essa regra: cada fonte entrega numa proporção própria (Pokémon
+0,727 · Magic 0,7176 · Lorcana 0,7170 · Naruto 0,7018 · HxH 0,6801) e o preview
+antes dimensionava pela imagem — a mesma coluna de 400px abria cartas de 550px a
+588px de altura, e cada jogo parecia ter um tamanho diferente. Com a moldura
+fixa, fonte "alta" escala pra baixo, fonte "baixa" escala pra cima e o recorte
+fica em fração de por cento.
+
+O que isso pede de quem adiciona um jogo:
+
+- **não** tente casar a proporção na fonte nem recortar a imagem no sync — a
+  moldura resolve na exibição;
+- prefira a variante de **maior resolução** que a fonte oferecer (a moldura
+  escala pra baixo sem custo; pra cima, borra);
+- largura útil mínima ~**440px**, que é o que as fontes vintage entregam via
+  proxy de resize (`wsrv.nl`) e o que a moldura de 385px de largura consome;
+- proporção muito fora de 63/88 (um scan quadrado, com borda branca sobrando)
+  perde as pontas no `cover` — nesse caso o recorte é no **sync**, uma vez, e não
+  no CSS.
+
 Segurança: CSP e demais cabeçalhos vivem no [_headers](_headers) (via header, não
 `<meta>`, pra cobrir também as páginas pré-renderizadas e valer dentro do service
 worker).

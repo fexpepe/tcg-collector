@@ -1668,6 +1668,13 @@
     }).catch(() => { /* offline: sem bolinha */ });
   }
 
+  // Redes oficiais do Sleevu. Uma só por enquanto — de propósito: ícone de rede
+  // que não existe é link morto, e o rodapé de referência (Collectr) tem cinco
+  // porque tem cinco contas. Quando abrir outra, é só somar aqui e no HTML.
+  const SOCIAL_ICONS = {
+    instagram: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"></circle></svg>'
+  };
+
   function initSiteFooter() {
     // Rodapé institucional SÓ na Início e nas páginas de apoio (sobre, FAQ,
     // ajuda, configurações...). As telas de uso contínuo — Explorar, Coleção,
@@ -1681,10 +1688,25 @@
     const page = (window.location.pathname.split("/").pop() || "").replace(/\.html$/, "");
     if (!FOOTER_PAGES.includes(page)) return;
     if (document.querySelector(".site-footer")) return;
+    // Bloco de marca (assinatura + frase + redes) SÓ na Início: é a página em que
+    // alguém chega sem saber o que o site é. Nas de apoio (Configurações,
+    // Backup, Termos) uma frase de divulgação no pé só faria ruído — mesma razão
+    // que já mantém as telas de uso contínuo sem rodapé nenhum.
+    const isHome = page === "" || page === "index";
     const footer = document.createElement("footer");
     footer.className = "site-footer";
     footer.innerHTML = `
       <div class="site-footer-inner">
+        ${isHome ? `<div class="site-footer-brand">
+          <!-- Sem loading="lazy": a assinatura tem 7,6 KB e JÁ vem precacheada
+               no SHELL_ASSETS do service worker, então "adiar" não economiza
+               requisição nenhuma — só adiciona um jeito de ela não aparecer. -->
+          <img class="site-footer-mark" src="assets/brand/sleevu-wordmark.svg" alt="Sleevu" width="120" height="32">
+          <p class="site-footer-tagline">${escapeHtml(t("footer.tagline"))}</p>
+          <nav class="site-footer-social" aria-label="${escapeAttribute(t("footer.socialLabel"))}">
+            <a href="https://www.instagram.com/sleevu.app" target="_blank" rel="me noopener noreferrer" aria-label="Instagram" title="Instagram">${SOCIAL_ICONS.instagram}</a>
+          </nav>
+        </div>` : ""}
         <nav class="site-footer-links" aria-label="${escapeAttribute(t("footer.linksLabel"))}">
           <a href="about.html">${escapeHtml(t("footer.about"))}</a>
           <a href="novidades.html" data-news-link>${escapeHtml(t("news.heading"))}</a>
@@ -3458,6 +3480,26 @@
                 ? localizedImg(img.url, { alt: activeCard.name, fallback: img.fallback })
                 : cardBackPlaceholder();
             })()}
+            <!-- DETALHES embaixo da CARTA (moraram na coluna da direita até
+                 2026-08-07). São a ficha da carta — raridade, artista, set, id —,
+                 ou seja, leitura, não ação: pertencem ao lado da imagem. A
+                 direita fica só com o que se FAZ (ter, querer, precificar) e com
+                 os valores. Continua <details> com abrir/fechar: aberto no
+                 desktop (open) e fechado no celular por JS, porque na vertical
+                 cada linha vira duas e o bloco custava ~10 linhas de rolagem
+                 antes do preço. -->
+            <details class="preview-details" data-preview-details open>
+              <summary><h3>${escapeHtml(t("modal.details"))}</h3></summary>
+              <dl>
+                <div><dt>${escapeHtml(t("modal.rarity"))}</dt><dd>${escapeHtml(activeCard.rarity || "-")}</dd></div>
+                <div><dt>${escapeHtml(t("modal.artist"))}</dt><dd>${escapeHtml(activeCard.artist || t("card.unknownArtist"))}</dd></div>
+                <div><dt>${escapeHtml(t("modal.set"))}</dt><dd>${escapeHtml(activeCard.set || "-")}</dd></div>
+                ${activeCard.nameJp && activeCard.nameJp !== activeCard.name
+                  ? `<div><dt>${escapeHtml(t("modal.nameJp"))}</dt><dd lang="ja" class="modal-name-jp">${escapeHtml(activeCard.nameJp)}</dd></div>`
+                  : ""}
+                <div><dt>${escapeHtml(t("modal.cardId"))}</dt><dd>${escapeHtml(activeCard.id)}</dd></div>
+              </dl>
+            </details>
           </div>
           <div class="preview-content">
             <div>
@@ -3490,6 +3532,12 @@
                 ${graded && isOwned ? `<div class="preview-tags-row"><span>${escapeHtml(t("nav.graded"))}</span>
                   <div class="preview-graded-ctl" data-preview-graded>${previewGradedCtlHtml(false)}</div></div>` : ""}
               </div>` : ""}
+              <!-- Os campos de dinheiro num container SÓ pra alinharem entre si:
+                   como cada rótulo tem largura diferente ("Paguei" 41px, "Preço
+                   NM" 58px), com cada linha sendo seu próprio flex os inputs
+                   começavam em x diferentes — 16px de degrau, bem visível. O
+                   container define as colunas e as linhas herdam por subgrid. -->
+              <div class="preview-money">
               ${sale ? `<label class="preview-sale-row"><span>${escapeHtml(t("sales.sell"))}</span><span class="preview-sale-cur">${escapeHtml(saleCurrencySymbol())}</span>
                 <input type="text" inputmode="decimal" class="preview-sale-price" data-preview-sale value="${escapeAttribute((function () { const p = sale.priceOf(activeCard.id, activeVariant || defaultVariant(activeCard)); return p > 0 ? String(p).replace(".", ",") : ""; })())}" placeholder="0,00"></label>` : ""}
               ${isOwned ? `<label class="preview-sale-row preview-cost-row" title="${escapeAttribute(t("cost.hint"))}"><span>${escapeHtml(t("cost.label"))}</span><span class="preview-sale-cur">${escapeHtml(saleCurrencySymbol())}</span>
@@ -3516,6 +3564,7 @@
                     data-price-card-id="${escapeAttribute(activeCard.id)}" data-price-variant="${escapeAttribute(v)}" data-price-condition="${DEFAULT_CONDITION}"
                     aria-label="${escapeAttribute(t("price.inputAria", { variant: v, condition: t(`condition.${DEFAULT_CONDITION}`) }))}"></label>`;
               })() : ""}
+              </div>
             </div>
             <div class="variant-quantities">${variantQuantityRows(activeCard, store, prices, activeVariant)}</div>
             <section class="market-quote" data-market-quote><p class="market-loading">${escapeHtml(t("market.loading"))}</p></section>
@@ -3532,26 +3581,6 @@
                  template literal e fecharia a string.) -->
             <section class="graded-price" data-graded-price hidden></section>
             ${prices ? brMarketplaceLinks(activeCard, gradedSearchTag(activeGraded)) : ""}
-            <!-- DETALHES por ÚLTIMO (era logo depois de "minha cópia", antes dos
-                 valores). Ordem do painel agora: identidade -> ações -> minha
-                 cópia -> VALORES (mercado/comunidade/graded) -> comprar ->
-                 detalhes. Quem abre um card quer saber quanto vale; raridade,
-                 artista e id da carta são consulta, não a resposta.
-                 <details> aberto no desktop (open) e FECHADO no celular por JS:
-                 na vertical cada linha vira duas (rótulo em cima do valor) e o
-                 bloco custava ~10 linhas de rolagem antes do preço. -->
-            <details class="preview-details" data-preview-details open>
-              <summary><h3>${escapeHtml(t("modal.details"))}</h3></summary>
-              <dl>
-                <div><dt>${escapeHtml(t("modal.rarity"))}</dt><dd>${escapeHtml(activeCard.rarity || "-")}</dd></div>
-                <div><dt>${escapeHtml(t("modal.artist"))}</dt><dd>${escapeHtml(activeCard.artist || t("card.unknownArtist"))}</dd></div>
-                <div><dt>${escapeHtml(t("modal.set"))}</dt><dd>${escapeHtml(activeCard.set || "-")}</dd></div>
-                ${activeCard.nameJp && activeCard.nameJp !== activeCard.name
-                  ? `<div><dt>${escapeHtml(t("modal.nameJp"))}</dt><dd lang="ja" class="modal-name-jp">${escapeHtml(activeCard.nameJp)}</dd></div>`
-                  : ""}
-                <div><dt>${escapeHtml(t("modal.cardId"))}</dt><dd>${escapeHtml(activeCard.id)}</dd></div>
-              </dl>
-            </details>
           </div>
         </section>
       `;
