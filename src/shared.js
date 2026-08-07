@@ -3326,7 +3326,14 @@
       if (costInput && activeCard) {
         const text = String(costInput.value).trim();
         const amount = parseMoney(text);
-        previewCosts.set(activeCard.id, activeVariant || defaultVariant(activeCard), amount, getCurrency());
+        const variant = activeVariant || defaultVariant(activeCard);
+        previewCosts.set(activeCard.id, variant, amount, getCurrency());
+        // Reescreve com duas casas na hora, igual ao atalho "Preço NM": o valor
+        // gravado JÁ era 0,00 (o render usa toFixed(2)), mas só aparecia assim
+        // no próximo paint do painel — digitar "12" e ver "12" dava a impressão
+        // de que o campo aceita formato diferente do outro.
+        const salvo = previewCosts.get(activeCard.id, variant);
+        costInput.value = salvo && salvo.v > 0 ? salvo.v.toFixed(2).replace(".", ",") : "";
         return;
       }
       const folderSelect = event.target.closest("#cardPreviewModal [data-preview-folder]");

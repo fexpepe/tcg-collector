@@ -8191,11 +8191,19 @@ select,
 .dkc-fmt { font-size: 12px; font-weight: 700; color: var(--muted); }
 /* Metadados em pares rótulo/valor separados por divisória — o padrão que o
    cartão-herói da Coleção já usa, então a leitura é a mesma no site inteiro. */
+/* ESCOPADAS nos containers da galeria: o cabeçalho do deck publicado
+   (.dkc-view-meta) usa a MESMA classe .dkc-meta-item numa linha corrida
+   separada por "·". Sem escopo, o `flex-direction: column` daqui vazava pra lá
+   e empilhava o "·" ACIMA do texto (item de 33px em vez de 16px), e a borda
+   de separação aparecia solta no meio do cabeçalho. */
 .dkc-hero-meta, .dkc-row-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: auto; }
-.dkc-meta-item { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
-.dkc-meta-item + .dkc-meta-item { border-left: 1px solid var(--line); padding-left: 18px; }
+.dkc-hero-meta .dkc-meta-item,
+.dkc-row-meta .dkc-meta-item { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.dkc-hero-meta .dkc-meta-item + .dkc-meta-item,
+.dkc-row-meta .dkc-meta-item + .dkc-meta-item { border-left: 1px solid var(--line); padding-left: 18px; }
 .dkc-meta-k { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; font-weight: 700; }
-.dkc-meta-item strong { font-size: 14px; font-weight: 800; white-space: nowrap; }
+.dkc-hero-meta .dkc-meta-item strong,
+.dkc-row-meta .dkc-meta-item strong { font-size: 14px; font-weight: 800; white-space: nowrap; }
 /* "Dá pra montar": único metadado sem rótulo em cima — é um veredito, não um
    número. Verde de valores pra ler de relance no meio dos outros. */
 .dkc-meta-item.is-ok { justify-content: center; }
@@ -8219,7 +8227,15 @@ select,
   .dkc-hero-cover { width: 108px; }
   .dkc-row { flex-wrap: wrap; }
   .dkc-row .dkc-row-meta { flex-basis: 100%; justify-content: flex-start; gap: 6px 14px; }
-  .dkc-meta-item + .dkc-meta-item { padding-left: 14px; }
+  .dkc-hero-meta .dkc-meta-item + .dkc-meta-item,
+  .dkc-row-meta .dkc-meta-item + .dkc-meta-item { padding-left: 14px; }
+  /* GRADE, não flex-wrap: com wrap, o 1º item da 2ª linha herdava o
+     `padding-left` do separador e a linha inteira ficava 14px pra dentro em
+     relação à de cima. Em 3 colunas fixas o :nth-child(3n+1) é sempre o começo
+     de linha, então dá pra tirar a borda dele e as duas linhas batem. */
+  .dkc-hero-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 0; }
+  .dkc-hero-meta .dkc-meta-item:nth-child(3n + 1) { border-left: none; padding-left: 0; }
+  .dkc-hero-meta .dkc-meta-item strong { overflow: hidden; text-overflow: ellipsis; }
 }
 /* Card da galeria: CAPA à esquerda (arte da 1ª carta que entrou no deck) +
    nome, jogo, nº de cartas, autor e data. Antes era só nome + tag + data num
@@ -8253,10 +8269,15 @@ select,
    acima da dobra. Separador por ponto médio via CSS, não no texto. */
 .dkc-view-title { flex: 1; min-width: 240px; }
 .dkc-view-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 6px; }
-.dkc-meta-item { font-size: 13px; color: var(--muted); font-weight: 700; }
-.dkc-meta-item + .dkc-meta-item::before,
-.dkc-meta-item + .dkc-author::before,
-.dkc-author + .dkc-meta-item::before { content: "·"; margin-right: 10px; color: var(--subtle); }
+/* ESCOPADAS no .dkc-view-meta de propósito: a galeria usa a MESMA classe
+   .dkc-meta-item, só que empilhada (rótulo em cima, valor embaixo) e separada
+   por borda. Sem o escopo, estas regras vazavam pra lá e o "·" — sendo um
+   ::before dentro de um flex COLUNA — virava uma linha própria acima do
+   rótulo, jogando cada item pra uma altura diferente. */
+.dkc-view-meta .dkc-meta-item { font-size: 13px; color: var(--muted); font-weight: 700; }
+.dkc-view-meta .dkc-meta-item + .dkc-meta-item::before,
+.dkc-view-meta .dkc-meta-item + .dkc-author::before,
+.dkc-view-meta .dkc-author + .dkc-meta-item::before { content: "·"; margin-right: 10px; color: var(--subtle); }
 .dkc-meta-date { color: var(--subtle); }
 .dkc-view-acts { display: flex; align-items: center; gap: 10px; margin-left: auto; }
 .dkc-lays { display: flex; gap: 6px; }
