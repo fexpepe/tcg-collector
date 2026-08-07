@@ -140,9 +140,24 @@ Mobile: mesma ordem numa coluna; blocos 4-6 como `<details>` recolhíveis
 - **F2 — contribuição:** `contributePrice()` + ganchos + toggle de privacidade
   + política atualizada.
 - **F3 — gráfico Comunidade** no card (hide-if-empty).
-- **F4 — graded no card:** bloco PSA + botão "+ Graded" no preview.
-- **F5 — painel reorganizado** + market tags + passe mobile.
-- **F6 (futuro) — histórico graded** no pipeline de snapshots.
+- **F4a — valores graded (PSA) no card — FEITA (2026-08-07).** Tabela nota→valor
+  do `TCG_PRICING.g`, nota mais alta primeiro, com o `n` de vendas. Título diz
+  "PSA" porque a fonte (PPT) só cobre PSA.
+- **F4b — "+ Graded" de dentro do card — PENDENTE, com motivo.** O
+  `createCardPreview` recebe `store/prices/wishlist/folders/sale/tags` e **não**
+  recebe `graded`; o `createGradedStore` vive no `graded-ui.js`, que não é
+  carregado em toda página que abre preview. Fazer certo = novo hook + threading
+  nos chamadores (collection, detail, cards, explore, wishlist, graded) ou mover
+  o store pro shared. Não penduramos botão meio ligado.
+- **F5 — painel reorganizado: PARCIAL.** Feito o que dá pra verificar por
+  medição: os três blocos de valores (Mercado · Comunidade · Graded) leem como
+  um grupo, com traço e espaçamento iguais. **Falta** (precisa de revisão
+  VISUAL, com screenshot, que a sessão do agente não tinha): reordenar os blocos
+  na ordem proposta, recolher os de valores em `<details>` no celular e os
+  "market tags" com ícone por loja.
+- **F6 (futuro) — histórico graded** no pipeline de snapshots
+  (`sync-price-history.mjs` fotografando `g` por nota) — aí o card ganha o
+  gráfico graded estilo Collectr.
 
 Riscos assumidos: série da comunidade começa vazia (semanas até n≥3 nas cartas
 populares); mediana≠média pode confundir quem compara com Collectr; graded

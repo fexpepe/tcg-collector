@@ -3812,6 +3812,19 @@ a.hub-tile:hover {
 .cp-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
 .cp-n { color: var(--subtle); font-weight: 700; }
 
+/* Os TRÊS blocos de valores do card (Mercado, Comunidade, Graded) são irmãos e
+   agora leem como um grupo: mesmo título, mesma separação e um traço entre eles.
+   Antes o de mercado tinha um espaçamento e os novos outro — pareciam avulsos.
+   Só o PRIMEIRO visível ganha borda de cima; :not(:has()) evitaria isso mas o
+   irmão anterior pode estar hidden, então a regra usa o irmão-visível. */
+/* Nada de font-size aqui: os três títulos já saem iguais (15px) pela regra de
+   .market-quote-head h3, que os três blocos usam. Tentei redefinir e a regra
+   morreu em especificidade — CSS morto é pior que nenhum. */
+.community-price, .graded-price { padding-top: 12px; border-top: 1px solid var(--line); }
+/* Bloco escondido não deixa traço órfão (o [hidden] já não pinta, mas o irmão
+   seguinte não deve dobrar o espaçamento por causa dele). */
+.community-price[hidden] + .graded-price { border-top: 1px solid var(--line); }
+
 /* Valores graded (PSA) no card: lista nota → valor, a nota mais alta primeiro.
    Números tabulares pra coluna de preço não dançar entre as linhas. */
 .graded-price { margin-top: 14px; }
