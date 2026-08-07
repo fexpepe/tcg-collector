@@ -8,15 +8,22 @@ poucos.)
 
 ## Pendentes de aplicar
 
-1. **`20260807a_community_prices.sql`** — base do Preço da Comunidade
-   (plano em `docs/COMMUNITY-PRICES.md`). Tabela `community_prices` (RLS sem
-   NENHUMA policy: só as RPCs tocam nela) + `contribute_price` (só logado,
-   upsert = 1 voto por usuário, clamp e throttle) + `community_price_for`
-   (agregado com mediana e média aparada, só bucket com n ≥ 3). Sem ela o site
-   funciona igual: as RPCs dão 404 e o bloco Comunidade não aparece. Os curls
-   de verificação estão no rodapé do próprio arquivo.
+1. **`20260807b_community_prices_revoke_public.sql`** — correção pequena da
+   `a`, que já foi aplicada. Função nova no PostgreSQL nasce com EXECUTE pra
+   PUBLIC, então o `grant ... to authenticated` da `a` não restringiu nada:
+   chamada anônima de `contribute_price` respondia 204 (executava e caía na
+   guarda de `auth.uid()`, sem escrever). Esta revoga de PUBLIC/anon. Risco
+   baixo — nunca houve escrita anônima — mas privilégio aberto sem querer é
+   dívida. Corrige também, nos comentários, duas expectativas erradas da `a`.
 
 ### Já aplicadas (verificado em produção)
+
+- `20260807a` — base do Preço da Comunidade (`community_prices` +
+  `contribute_price` + `community_price_for`). Aplicada em 2026-08-07:
+  o agregado anônimo responde `[]`, a tabela crua devolve `[]` (RLS sem policy
+  filtra tudo — é o comportamento certo, apesar de o comentário do arquivo
+  dizer "negado") e a escrita anônima não grava. Ver a `b`, que fecha o EXECUTE
+  que o PostgreSQL dá a PUBLIC por padrão.
 
 - `20260804a` — visitas por deck (`deck_views` + `increment_deck_view` +
   `deck_views_for`). Aplicada e testada em 2026-08-04: a RPC de leitura
