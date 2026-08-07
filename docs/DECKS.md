@@ -310,12 +310,40 @@ Aprendizados da Fase 2, pra quem for mexer:
   nos 110 tipos do catálogo: Ritual e Pendulum ficam no main, e
   "Xyz/Pendulum/Effect Monster" vai pro Extra, como manda a regra.
 
-**Fase 3**: export/import em texto (colar lista do Moxfield/Limitless/Dreamborn),
-duplicar, "usada em N decks".
+**Fase 3** ✅ (menos um item): import em texto (colar lista do
+Moxfield/Limitless/Dreamborn), copiar a lista, duplicar. **Falta** "usada em N
+decks" — exige varrer todos os decks por carta, e ninguém pediu ainda.
 
-**Fase 4**: decks públicos + comunidade (seção 12).
+**Fase 4** ✅: decks públicos + comunidade (seção 12).
 
-**Fase 5**: sync na nuvem junto com o resto do save.
+**Fase 5** ✅: sync na nuvem junto com o resto do save (`SYNC_KEYS.decks`, global
+— cada deck carrega seu próprio `game`).
+
+**Fase 6** ✅ — **o que o Moxfield tem e faltava aqui** (pedido do Fernando com o
+Moxfield como referência):
+- **Sideboard e Maybeboard** como zonas de verdade (o "maybe" é `scratch`: conta
+  no valor, não conta no tamanho legal do deck);
+- **8 formatos de Magic** (os mais jogados), não só Standard × Commander;
+- **mais de um comandante e mais de uma cópia** quando o jogador quiser — Partner
+  e Relentless Rats existem, e o site bloqueava jogada correta. Virou **aviso**:
+  `canAdd` devolve `{ok: true, warn}`. Regra geral do projeto: "deixa errar e
+  sinaliza" (seção 5);
+- **agrupamento por TIPO, não subtipo** (`shared.cardTypeGroup`) — antes "Human
+  Wizard" e "Elf Druid" viravam dois grupos;
+- **PROXY / carta faltando**: marcar a carta como proxy tira ela do "falta
+  comprar" sem tirar do deck. Nenhuma das referências faz isso;
+- **impressão nos resultados de busca** (foil/promo/tratamento), porque em Magic
+  duas linhas idênticas podem ser cartas de preço muito diferente;
+- **painel de busca fixo** ao rolar a lista;
+- **galeria em 2 colunas** com deck em destaque + filtros na lateral, e o "Em
+  destaque" por **visitas** (`deck_views`), não por data — vitrine por
+  popularidade real. Consequência operacional: a vitrine não pode nascer vazia
+  (ver "Lançar" no [ROADMAP.md](../ROADMAP.md)).
+
+Aprendizado da Fase 6: `.dkc-meta-item` era usada por DUAS telas com layouts
+opostos (galeria empilhada × cabeçalho em linha com "·") e **nenhuma das regras
+estava escopada** — o CSS vazava nos dois sentidos e desalinhava as duas. Se for
+criar mais um bloco de metadados de deck, escope no container.
 
 ---
 

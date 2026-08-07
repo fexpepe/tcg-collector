@@ -32,6 +32,7 @@ públicas por design — quem protege é a RLS.
 | `shares` | links publicados: `kind` ∈ {collection, binder, deck} | pública (colunas liberadas) |
 | `card_views` | PK (game, card_id); contador de visitas por carta | pública |
 | `deck_views` | PK `share_id` → `shares`; visitas por deck | pública |
+| `community_prices` | 1 ponto por usuário×carta×variante×condição×tipo×[graduadora+nota]×mês, em BRL | **nenhuma** (RLS sem policy; só RPC agrega) |
 | `events` | analytics first-party: `name`, `path`, `anon`, `game`, `props` | **nenhuma** (só insert) |
 | `rate_limits` | janela por IP usada pelas RPCs | interna |
 | `push_subs` | PK (user_id, endpoint); assinaturas de web push | só o dono |
@@ -49,6 +50,16 @@ Binders, pastas, histórico e custos nunca entram nela. Desde a migração
 `20260727c`, a leitura anônima de `shares` é liberada **coluna a coluna** — o
 `user_id` fica de fora.
 
+**Privacidade do Preço da Comunidade**: `community_prices` é a tabela mais
+fechada do banco — RLS ligada e **nenhuma policy**, nem SELECT pro próprio dono.
+A escrita exige `auth.uid()` (anônimo não contribui) e o `anon` não tem EXECUTE
+na RPC: o `grant execute ... to authenticated` da `20260807a` **não** era uma
+restrição, porque o Postgres já concede EXECUTE a PUBLIC por padrão — foi por
+isso que a `20260807b` teve que fazer `revoke ... from public, anon`. A
+contribuição manda só (carta, valor, mês); nunca quem, quantidade ou coleção. O
+preço pago ("Paguei") **não** é contribuído — é o dado mais sensível dos três,
+porque revela o que a pessoa negociou, e ficaria atrás de um opt-in próprio.
+
 ### RPCs
 
 | RPC | Pra quê |
@@ -59,6 +70,8 @@ Binders, pastas, histórico e custos nunca entram nela. Desde a migração
 | `increment_card_view(...)` | +1 visita numa carta, com whitelist de jogo e throttle por IP |
 | `increment_deck_view(uuid)` | +1 visita num deck; exige share existente com `kind='deck'` |
 | `deck_views_for(uuid[])` | lê até 200 contagens numa chamada (ordenação "Mais vistos") |
+| `contribute_price(...)` | grava/atualiza o ponto do usuário em `community_prices` (upsert pela PK = 1 voto por pessoa) |
+| `community_price_for(game, card_id)` | mediana + média aparada por (variante, tipo, nota, mês), **só bucket com n ≥ 3** |
 | `analytics_summary(days)` | números do `/admin`; devolve null pra quem não é admin |
 | `error_summary(...)` | erros de JS agregados, no mesmo painel |
 | `delete_account()` | apaga shares + collections + o usuário, filtrando por `auth.uid()` |

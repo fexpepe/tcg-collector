@@ -90,6 +90,13 @@ Catálogo e navegação: `index` (landing), `hub` (grade de jogos), `sets`,
 `detail` (set/artista/Pokémon), `cards`, `explore` (busca global em todos os
 jogos), `pokedex`, `artists`, `trainers`.
 
+As facetas da página de set (Raridade, Cor, Tipo, Seleção…) são declaradas **uma
+vez por jogo** em `GAME_FACETS` ([src/shared.js](src/shared.js)) e derivadas dos
+campos que o sync já grava na carta — então **set novo herda os filtros sem
+código novo**. Cada faceta só aparece se as cartas daquele set tiverem o dado, e
+uma opção presente em 100% das cartas é descartada (filtro que não filtra nada
+é ruído). Vale a mesma regra do card: bloco sem dado não aparece.
+
 Pessoais: `collection`, `portfolio`, `wishlist`, `binders`, `graded` (slabs
 PSA/BGS/CGC/SGC/TAG, com valor automático da PPT), `sales` (vendas e trocas),
 `my-decks` (galeria + editor), `decks` (galeria pública da comunidade),
@@ -116,7 +123,7 @@ scripts/    sync de cada fonte + build (merge, split, prerender, hash, lint, D1)
 functions/  Cloudflare Pages Functions (API na borda).
 supabase/   migrações SQL versionadas + templates de e-mail.
 tests/      node:test (sem framework externo).
-docs/       BACKEND.md e DECKS.md.
+docs/       BACKEND.md, DECKS.md e COMMUNITY-PRICES.md.
 ```
 
 Não há `package.json`: as ferramentas do build (esbuild, wrangler) são chamadas

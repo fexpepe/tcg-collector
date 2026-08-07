@@ -10,7 +10,7 @@ Collectr — é a alternativa livre: sem cartão, sem plano "pro", sem limite de
 cartas, com export a qualquer momento. A sincronização na nuvem, que noutro
 produto seria o extra pago, aqui é grátis.
 
-Última revisão: 2026-08-04.
+Última revisão: 2026-08-07.
 
 ---
 
@@ -71,19 +71,22 @@ Turnstile no login, SMTP próprio (Resend), CI com testes e guardas de mobile.
 
 ## 🔜 Próximos passos (em ordem)
 
-### 0. Preço da Comunidade + graded no card — **F0 a F4a no ar; falta F4b e o visual da F5**
+### 0. Preço da Comunidade + graded no card — **F0 a F5 no ar; só falta a F6**
 Plano e estado por fase em `docs/COMMUNITY-PRICES.md`. Prontas: F0 (merge de
-preço por condição), F1 (SQL aplicado e verificado), F2 (contribuição + toggle
-em Configurações → Privacidade + política), F3 (gráfico com Cadastrados ×
-Vendas, mediana e n) e F4a (valores PSA no card). Faltam:
-- **F4b** "+ Graded" de dentro do card — precisa do hook `graded` no
-  `createCardPreview` (hoje ele não recebe) ou o store no shared;
-- **F5 visual** — reordenar os blocos, recolher os de valores no celular e os
-  market tags com ícone: exige revisão com screenshot;
-- **F6** histórico graded no pipeline de snapshots.
+preço por condição), F1 (SQL aplicado e verificado), F2 (contribuição + toggle em
+Configurações → Privacidade + política), F3 (gráfico com Cadastrados × Vendas,
+mediana e n), F4a (valores PSA no card), F4b ("+ Graded" de dentro do card, via
+hook opcional no `createCardPreview`) e F5 (painel reorganizado; "Detalhes" virou
+`<details>` no fim e abre fechado no celular). Falta:
+- **F6** histórico graded — precisa o `sync-price-history.mjs` fotografar `g` por
+  nota; sem snapshots acumulados não há gráfico pra fazer.
 
 O gráfico só aparece quando uma carta tem 3+ contribuições — então ele nasce
 invisível e enche com o uso.
+
+Fora de escopo por decisão: os "market tags" com ícone por loja (exigiria asset
+curado por loja) e contribuir o preço **pago** (ver a nota de privacidade em
+[docs/BACKEND.md](docs/BACKEND.md)).
 
 ### 1. Preço BR de verdade (MYP) — **a tese do projeto, travada num e-mail**
 "Valores localizados pro Brasil" é a promessa central, e hoje o preço BR só
