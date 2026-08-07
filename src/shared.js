@@ -3116,6 +3116,93 @@
     svg.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") hide(); });
   }
 
+  // ── Preço da Comunidade no card (F3 de docs/COMMUNITY-PRICES.md) ───────────
+  // Uma chamada por carta aberta, com cache por sessão: reabrir o mesmo card
+  // (ou trocar de variante) não repete round-trip.
+  const communityByCard = {};
+  function loadCommunityPrice(game, cardId) {
+    const g = normalizeGame(game);
+    const k = `${g}:${cardId}`;
+    if (!communityByCard[k]) {
+      communityByCard[k] = (!AUTH_ENABLED ? Promise.resolve([]) : fetch(`${SUPABASE_URL}/rest/v1/rpc/community_price_for`, {
+        method: "POST", headers: authHeaders(), body: JSON.stringify({ p_game: g, p_card_id: cardId })
+      }).then((r) => (r.ok ? r.json() : [])).catch(() => []));
+    }
+    return communityByCard[k];
+  }
+
+  // Desenha as DUAS séries mensais (cadastrados × vendas) da variante aberta.
+  // O número exibido é a MEDIANA (decisão do Fernando): resiste a troll e a
+  // dedo gordo, diferente da média. Só entram linhas RAW (company vazio) —
+  // graded tem bloco próprio, e misturar slab com carta solta no mesmo gráfico
+  // seria comparar coisas diferentes.
+  // Some inteiro sem dado: o servidor já corta bucket com menos de 3 pontos.
+  async function fillCommunityPrice(card, variant) {
+    const section = document.querySelector("#cardPreviewModal [data-community-price]");
+    if (!section || !card) return;
+    const rows = await loadCommunityPrice(card.game || currentGame(), card.id);
+    if (!section.isConnected) return;
+    const v = variant || defaultVariant(card);
+    const mine = (rows || []).filter((r) => r && !r.company && r.variant === v);
+    if (!mine.length) { section.hidden = true; return; }
+
+    const cur = getCurrency();
+    const conv = (brl) => { const r = convertMoney(brl, "BRL", cur); return r == null ? brl : r; };
+    const serie = (kind) => {
+      const byMonth = new Map();
+      mine.filter((r) => r.kind === kind).forEach((r) => {
+        // Mesma variante pode ter várias condições no mês; a série do card é a
+        // NM quando existe, senão a de mais contribuições (mais representativa).
+        const prev = byMonth.get(r.month);
+        const melhor = !prev || r.cond === DEFAULT_CONDITION || (prev.cond !== DEFAULT_CONDITION && r.n > prev.n);
+        if (melhor) byMonth.set(r.month, r);
+      });
+      return [...byMonth.entries()].sort((a, b) => String(a[0]).localeCompare(String(b[0])))
+        .map(([month, r]) => ({ month, v: conv(Number(r.median) || 0), n: Number(r.n) || 0 }));
+    };
+    const listed = serie("listed");
+    const sold = serie("sold");
+    if (!listed.length && !sold.length) { section.hidden = true; return; }
+
+    const meses = [...new Set([].concat(listed, sold).map((p) => p.month))].sort();
+    const todos = [].concat(listed, sold).map((p) => p.v).filter((x) => x > 0);
+    let mn = Math.min.apply(null, todos), mx = Math.max.apply(null, todos);
+    if (!(mx > 0)) { section.hidden = true; return; }
+    if (mn === mx) { mn *= 0.95; mx = mx * 1.05 || 1; }
+    const W = 560, H = 120, P = 6;
+    const X = (m) => P + (meses.length < 2 ? (W - 2 * P) / 2 : (meses.indexOf(m) / (meses.length - 1)) * (W - 2 * P));
+    const Y = (val) => H - P - ((val - mn) / (mx - mn)) * (H - 2 * P);
+    // Um ponto só não vira linha: marca com círculo pra não sumir do gráfico.
+    const path = (pts, color) => {
+      if (!pts.length) return "";
+      if (pts.length === 1) return `<circle cx="${X(pts[0].month).toFixed(1)}" cy="${Y(pts[0].v).toFixed(1)}" r="4" fill="${color}"/>`;
+      return `<polyline points="${pts.map((p) => `${X(p.month).toFixed(1)},${Y(p.v).toFixed(1)}`).join(" ")}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round"/>`;
+    };
+    const C_LISTED = "#7aa2ff", C_SOLD = "#34d399";
+    const fmtMonth = (s) => { const m = /^(\d{4})-(\d{2})/.exec(s); return m ? `${m[2]}/${m[1].slice(2)}` : s; };
+    const ultimo = (pts) => (pts.length ? pts[pts.length - 1] : null);
+    const legenda = (rot, color, pts) => {
+      const u = ultimo(pts);
+      if (!u) return "";
+      return `<span class="cp-leg"><span class="cp-dot" style="background:${color}"></span>${escapeHtml(rot)}`
+        + `<strong>${escapeHtml(fmtMoney(cur, u.v))}</strong>`
+        + `<span class="cp-n">${escapeHtml(t("community.fromN", { n: u.n }))}</span></span>`;
+    };
+
+    section.innerHTML = `<div class="market-quote-head"><h3>${escapeHtml(t("community.title"))}</h3>
+        <span class="cp-hint" title="${escapeAttribute(t("community.hint"))}">?</span></div>
+      <div class="price-history-chart">
+        <div class="price-history-plot">
+          <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${escapeAttribute(t("community.title"))}">
+            ${path(listed, C_LISTED)}${path(sold, C_SOLD)}
+          </svg>
+        </div>
+        <div class="price-history-meta"><span>${escapeHtml(fmtMonth(meses[0]))}</span><span>${escapeHtml(fmtMonth(meses[meses.length - 1]))}</span></div>
+      </div>
+      <div class="cp-legend">${legenda(t("community.listed"), C_LISTED, listed)}${legenda(t("community.sold"), C_SOLD, sold)}</div>`;
+    section.hidden = false;
+  }
+
   // Busca cotação + câmbio e preenche a seção no modal (some se não houver).
   async function fillMarketQuote(card) {
     const section = document.querySelector("#cardPreviewModal [data-market-quote]");
@@ -3356,6 +3443,12 @@
             </div>
             <div class="variant-quantities">${variantQuantityRows(activeCard, store, prices, activeVariant)}</div>
             <section class="market-quote" data-market-quote><p class="market-loading">${escapeHtml(t("market.loading"))}</p></section>
+            <!-- Preço da Comunidade: container PRÓPRIO, não dentro do bloco de
+                 mercado — aquele se esconde quando a carta não tem cotação, e
+                 carta sem preço de mercado (vintage, por exemplo) é justamente
+                 onde a comunidade mais importa. Nasce hidden: aparece só quando
+                 a RPC devolve bucket (o servidor já exige n>=3). -->
+            <section class="community-price" data-community-price hidden></section>
             ${prices ? brMarketplaceLinks(activeCard, gradedSearchTag(activeGraded)) : ""}
           </div>
         </section>
@@ -3388,6 +3481,9 @@
 
       // Cotação de mercado (TCGdex ao vivo + câmbio): carrega assíncrono.
       fillMarketQuote(activeCard);
+      // Preço da Comunidade: independente do de mercado (container próprio), pra
+      // carta sem cotação também mostrar o que a comunidade anotou.
+      fillCommunityPrice(activeCard, activeVariant);
     }
 
     function close() {

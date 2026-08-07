@@ -3794,6 +3794,24 @@ a.hub-tile:hover {
 .ts-contact { color: var(--subtle); font-size: 13px; margin: 4px 0 0; border-top: 1px solid var(--line); padding-top: 14px; }
 .ts-contact a { color: var(--accent); }
 
+/* Preço da Comunidade no card: reusa o gráfico do histórico de mercado
+   (.price-history-chart) e acrescenta a legenda das DUAS séries — com 2 séries a
+   legenda é obrigatória, senão a cor não diz nada. Container próprio (não dentro
+   do bloco de mercado), então tem a margem dele. */
+.community-price { margin-top: 14px; }
+.community-price .market-quote-head { display: flex; align-items: center; gap: 8px; }
+.cp-hint {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--panel);
+  color: var(--muted); font-size: 10px; font-weight: 800; cursor: help;
+}
+.cp-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 8px; }
+.cp-leg { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); font-weight: 700; }
+.cp-leg strong { color: var(--text); font-size: 13px; font-variant-numeric: tabular-nums; }
+.cp-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.cp-n { color: var(--subtle); font-weight: 700; }
+
 /* Onboarding do @ (primeiro login, shared.js): reusa o modal ts-* e os campos
    do settings. */
 #handleOnboardModal .setting-handle { margin: 4px 0 6px; }
