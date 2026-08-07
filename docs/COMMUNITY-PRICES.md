@@ -60,9 +60,9 @@ valor monetário derivado de dado privado):
   disso é (a) estatística ruim e (b) vazamento do preço de 1-2 pessoas.
 
 Sobre "average": média pura é manipulável e sensível a erro de digitação (um
-R$ 99.999 por engano arrasta tudo). Exibir a **mediana** com rótulo "média da
-comunidade" é o padrão do mercado; a média aparada é o meio-termo. Decisão de
-produto — o RPC devolve as duas, a UI escolhe.
+R$ 99.999 por engano arrasta tudo). **DECIDIDO (Fernando, 2026-08-07): a UI
+exibe a MEDIANA**, rotulada "preço da comunidade"; o RPC também devolve a média
+aparada, pra depuração e comparação.
 
 ## 2. Contribuição no cliente
 
@@ -77,11 +77,10 @@ função só, `contributePrice()` no shared.js):
 Condições: logado, produção (`sleevu.app`, como o logCardView), fire-and-forget
 com `keepalive` (falha em silêncio — contador é acessório).
 
-**Privacidade — decisão do Fernando:** contribuição derivada de dado privado
-precisa estar dita. Proposta: toggle nas Configurações ("Contribuir com o preço
-da comunidade", padrão LIGADO, no mesmo padrão do opt-out de analytics) +
-parágrafo na política de privacidade deixando claro que sobe só (carta, valor,
-mês), nunca quem/quantidade/coleção.
+**Privacidade — DECIDIDO (Fernando, 2026-08-07):** toggle nas Configurações
+("Contribuir com o preço da comunidade"), **padrão LIGADO**, no mesmo padrão do
+opt-out de analytics, + parágrafo na política de privacidade deixando claro que
+sobe só (carta, valor, mês), nunca quem/quantidade/coleção. Entra na F2.
 
 ## 3. Gráfico "Comunidade" no card
 
@@ -131,12 +130,13 @@ Mobile: mesma ordem numa coluna; blocos 4-6 como `<details>` recolhíveis
 
 ## 6. Fases de execução (cada uma shippável sozinha)
 
-- **F0 — higiene de merge (pré-requisito barato):** `updatedAt` do preço manual
-  com hora (hoje é só data: editar em 2 aparelhos no mesmo dia perde um lado) e
-  mesclagem por condição em vez de por variante. Migração de leitura tolerante
-  aos dois formatos.
-- **F1 — backend:** migração `community_prices` + 2 RPCs + README. Testes por
-  curl (escrita anônima negada, clamp, n<3 não sai).
+- **F0 — higiene de merge — FEITA (2026-08-07, commit "F0: merge de preço
+  manual por CONDIÇÃO"):** carimbo `at` por condição com hora, tombstones de
+  exclusão, merge por "opinião" (só disputa a condição quem tem preço ou
+  tombstone nela), tolerante ao formato legado. Validada com 5 cenários.
+- **F1 — backend — SQL PRONTO (2026-08-07, aguardando o Fernando aplicar):**
+  `supabase/migrations/20260807a_community_prices.sql` + README. Curls de
+  verificação no rodapé do arquivo.
 - **F2 — contribuição:** `contributePrice()` + ganchos + toggle de privacidade
   + política atualizada.
 - **F3 — gráfico Comunidade** no card (hide-if-empty).

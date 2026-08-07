@@ -71,13 +71,13 @@ Turnstile no login, SMTP próprio (Resend), CI com testes e guardas de mobile.
 
 ## 🔜 Próximos passos (em ordem)
 
-### 0. Preço da Comunidade + graded no card — **plano pronto, aguardando decisões**
-Plano completo em `docs/COMMUNITY-PRICES.md` (2026-08-07): gráfico "Comunidade"
-(preços cadastrados + vendas, agregados com 1 voto por usuário e mínimo de 3
-pontos), valores graded PSA no card, "+ Graded" de dentro do preview e o painel
-do card reorganizado. Duas decisões pendentes do Fernando: mediana × média
-aparada no rótulo, e contribuição padrão ligada × desligada (com toggle e
-política de privacidade em qualquer caso).
+### 0. Preço da Comunidade + graded no card — **em execução (F0 e F1 prontas)**
+Plano completo em `docs/COMMUNITY-PRICES.md`. Decidido: mediana rotulada
+"preço da comunidade"; contribuição padrão LIGADA com toggle + política.
+F0 (merge de preço por condição, com hora e tombstone) está no ar; F1 (SQL da
+`community_prices`) está em `supabase/migrations/20260807a` aguardando o
+Fernando aplicar no SQL Editor. Próximas: F2 contribuição + toggle, F3 gráfico
+no card, F4 graded no card, F5 painel reorganizado.
 
 ### 1. Preço BR de verdade (MYP) — **a tese do projeto, travada num e-mail**
 "Valores localizados pro Brasil" é a promessa central, e hoje o preço BR só

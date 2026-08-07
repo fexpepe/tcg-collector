@@ -8,8 +8,13 @@ poucos.)
 
 ## Pendentes de aplicar
 
-Nenhuma. Todas as migrações deste diretório estão aplicadas em produção
-(verificado por curl — ver a lista abaixo).
+1. **`20260807a_community_prices.sql`** — base do Preço da Comunidade
+   (plano em `docs/COMMUNITY-PRICES.md`). Tabela `community_prices` (RLS sem
+   NENHUMA policy: só as RPCs tocam nela) + `contribute_price` (só logado,
+   upsert = 1 voto por usuário, clamp e throttle) + `community_price_for`
+   (agregado com mediana e média aparada, só bucket com n ≥ 3). Sem ela o site
+   funciona igual: as RPCs dão 404 e o bloco Comunidade não aparece. Os curls
+   de verificação estão no rodapé do próprio arquivo.
 
 ### Já aplicadas (verificado em produção)
 
