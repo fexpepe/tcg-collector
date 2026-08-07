@@ -3054,6 +3054,11 @@
   function saleCurrencySymbol() {
     return fmtMoney(getCurrency(), 1).replace(/[\d.,\s ]/g, "") || getCurrency();
   }
+  // Preço MANUAL é sempre em BRL (a grade de condições se chama "Preço BR"), e
+  // não na moeda do header: quem vê em dólar continua digitando reais aqui.
+  function brCurrencySymbol() {
+    return fmtMoney("BRL", 1).replace(/[\d.,\s ]/g, "") || "R$";
+  }
 
   // Barras de distribuição dos dashboards (label + barra proporcional + n).
   // `label` pode trazer HTML — quem chama escapa o que for dinâmico. Antes vivia
@@ -3235,6 +3240,23 @@
                 <input type="text" inputmode="decimal" class="preview-sale-price" data-preview-sale value="${escapeAttribute((function () { const p = sale.priceOf(activeCard.id, activeVariant || defaultVariant(activeCard)); return p > 0 ? String(p).replace(".", ",") : ""; })())}" placeholder="0,00"></label>` : ""}
               ${isOwned ? `<label class="preview-sale-row preview-cost-row" title="${escapeAttribute(t("cost.hint"))}"><span>${escapeHtml(t("cost.label"))}</span><span class="preview-sale-cur">${escapeHtml(saleCurrencySymbol())}</span>
                 <input type="text" inputmode="decimal" class="preview-sale-price" data-preview-cost value="${escapeAttribute((function () { const c = previewCosts.get(activeCard.id, activeVariant || defaultVariant(activeCard)); if (!c) return ""; const v = moneyToCurrent(c.v, c.cur); return v > 0 ? v.toFixed(2).replace(".", ",") : ""; })())}" placeholder="0,00"></label>` : ""}
+              ${prices ? (function () {
+                // ATALHO do preço de MERCADO na condição padrão (NM) da variante
+                // aberta: antes só existia dentro da gaveta de condições lá
+                // embaixo — pra anotar o valor de uma carta era preciso abrir o
+                // acordeão e achar a célula certa. Quem tem carta em OUTRA
+                // condição continua usando a grade completa de lá (o campo aqui
+                // é o caso comum, não a substituição dela).
+                // Sem handler novo: os mesmos data-price-* que a grade usa, então
+                // o listener de preço já existente grava e reformata isto.
+                const v = activeVariant || defaultVariant(activeCard);
+                const atual = prices.getPrice(activeCard.id, v, DEFAULT_CONDITION);
+                const display = atual > 0 ? String(atual).replace(".", ",") : "";
+                return `<label class="preview-sale-row preview-price-row" title="${escapeAttribute(t("price.nmHint"))}"><span>${escapeHtml(t("price.nmLabel"))}</span><span class="preview-sale-cur">${escapeHtml(brCurrencySymbol())}</span>
+                  <input type="text" inputmode="decimal" class="preview-sale-price" placeholder="0,00" value="${escapeAttribute(display)}"
+                    data-price-card-id="${escapeAttribute(activeCard.id)}" data-price-variant="${escapeAttribute(v)}" data-price-condition="${DEFAULT_CONDITION}"
+                    aria-label="${escapeAttribute(t("price.inputAria", { variant: v, condition: t(`condition.${DEFAULT_CONDITION}`) }))}"></label>`;
+              })() : ""}
             </div>
             <div class="preview-details">
               <h3>${escapeHtml(t("modal.details"))}</h3>
