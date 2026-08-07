@@ -19,7 +19,7 @@
 import { buildCards, buildPrices, idsComBase, LOTE_IDS } from "./_search-sql.js";
 
 const GAMES = new Set(["pokemon", "lorcana", "onepiece", "magic", "fab", "gundam",
-  "dbfw", "ygo", "digimon", "riftbound", "naruto", "hxh", "jump"]);
+  "dbfw", "ygo", "digimon", "riftbound", "unionarena", "naruto", "hxh", "jump"]);
 
 // Teto por requisição: uma coleção gigante vira várias chamadas do cliente, em
 // vez de uma consulta que varre o banco inteiro (no D1, linha lida é linha

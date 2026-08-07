@@ -107,6 +107,7 @@ await checkCatalog("cards Gundam", "/data/gundam/cards.js", "TCG_CARDS", 800);
 await checkCatalog("cards Dragon Ball Fusion", "/data/dbfw/cards.js", "TCG_CARDS", 1800);
 await checkCatalog("cards Digimon", "/data/digimon/cards.js", "TCG_CARDS", 4000);
 await checkCatalog("cards Riftbound", "/data/riftbound/cards.js", "TCG_CARDS", 600);
+await checkCatalog("cards Union Arena", "/data/unionarena/cards.js", "TCG_CARDS", 3000);
 // Yu-Gi-Oh! não tem cards.js em produção (chunk-only, padrão Magic) — só o pricing.
 await checkJson("chunk Pokémon (base1)", "/data/sets/en/base1.json",
   (j) => Array.isArray(j) && j.length >= 100 ? null : "chunk vazio/curto");
@@ -124,7 +125,8 @@ await checkCatalog("pricing Dragon Ball Fusion", "/data/dbfw/pricing.generated.j
 await checkCatalog("pricing Yu-Gi-Oh", "/data/ygo/pricing.generated.js", "TCG_PRICING", 15000);
 await checkCatalog("pricing Digimon", "/data/digimon/pricing.generated.js", "TCG_PRICING", 4000);
 await checkCatalog("pricing Riftbound", "/data/riftbound/pricing.generated.js", "TCG_PRICING", 600);
-for (const [label, dir] of [["Pokémon", "/data/"], ["Lorcana", "/data/lorcana/"], ["One Piece", "/data/onepiece/"], ["Magic", "/data/magic/"], ["FAB", "/data/fab/"], ["Gundam", "/data/gundam/"], ["Dragon Ball Fusion", "/data/dbfw/"], ["Yu-Gi-Oh", "/data/ygo/"], ["Digimon", "/data/digimon/"], ["Riftbound", "/data/riftbound/"]]) {
+await checkCatalog("pricing Union Arena", "/data/unionarena/pricing.generated.js", "TCG_PRICING", 3000);
+for (const [label, dir] of [["Pokémon", "/data/"], ["Lorcana", "/data/lorcana/"], ["One Piece", "/data/onepiece/"], ["Magic", "/data/magic/"], ["FAB", "/data/fab/"], ["Gundam", "/data/gundam/"], ["Dragon Ball Fusion", "/data/dbfw/"], ["Yu-Gi-Oh", "/data/ygo/"], ["Digimon", "/data/digimon/"], ["Riftbound", "/data/riftbound/"], ["Union Arena", "/data/unionarena/"]]) {
   await checkJson(`deltas ${label}`, `${dir}price-deltas.generated.json`,
     (j) => j && typeof j === "object" && "c" in j ? null : "sem campo c");
   // Janela de 7 dias: é a que o aviso de queda da wishlist lê. Sem ela o push

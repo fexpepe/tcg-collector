@@ -335,7 +335,8 @@ const DECK_GAME_LABELS = {
   pokemon: "Pokémon TCG", lorcana: "Disney Lorcana", onepiece: "One Piece Card Game",
   magic: "Magic: The Gathering", fab: "Flesh and Blood", gundam: "Gundam Card Game",
   dbfw: "Dragon Ball Fusion World", ygo: "Yu-Gi-Oh!", digimon: "Digimon Card Game",
-  riftbound: "Riftbound", naruto: "Naruto Card Game", hxh: "Hunter × Hunter"
+  riftbound: "Riftbound", unionarena: "Union Arena", naruto: "Naruto Card Game",
+  hxh: "Hunter × Hunter"
 };
 
 async function fetchPublicDecks() {

@@ -5,28 +5,28 @@
   "imgPct": 79
  },
  "lorcana": {
-  "cards": 3165,
-  "sets": 20,
+  "cards": 3192,
+  "sets": 22,
   "imgPct": 100
  },
  "onepiece": {
-  "cards": 8899,
-  "sets": 141,
+  "cards": 8957,
+  "sets": 143,
   "imgPct": 85
  },
  "magic": {
-  "cards": 1295,
-  "sets": 2,
+  "cards": 97533,
+  "sets": 648,
   "imgPct": 100
  },
  "fab": {
-  "cards": 9871,
-  "sets": 102,
+  "cards": 10035,
+  "sets": 103,
   "imgPct": 100
  },
  "naruto": {
-  "cards": 1798,
-  "sets": 67,
+  "cards": 1799,
+  "sets": 68,
   "imgPct": 49
  },
  "hxh": {
@@ -38,5 +38,35 @@
   "cards": 0,
   "sets": 0,
   "imgPct": 0
+ },
+ "gundam": {
+  "cards": 1833,
+  "sets": 22,
+  "imgPct": 100
+ },
+ "dbfw": {
+  "cards": 4099,
+  "sets": 50,
+  "imgPct": 100
+ },
+ "ygo": {
+  "cards": 45793,
+  "sets": 608,
+  "imgPct": 100
+ },
+ "digimon": {
+  "cards": 9106,
+  "sets": 98,
+  "imgPct": 100
+ },
+ "riftbound": {
+  "cards": 1472,
+  "sets": 8,
+  "imgPct": 100
+ },
+ "unionarena": {
+  "cards": 6485,
+  "sets": 72,
+  "imgPct": 100
  }
 }

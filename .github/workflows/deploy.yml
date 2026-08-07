@@ -91,6 +91,7 @@ jobs:
             data/dbfw/sets
             data/digimon/sets
             data/riftbound/sets
+            data/unionarena/sets
             data/naruto/sets
             data/hxh/sets
             data/jump/sets
@@ -364,6 +365,15 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data/riftbound
 
+      # Union Arena (TCGCSV cat. 81, Bandai 2024 — um anime por set). Padrao FAB.
+      - name: Sincroniza catálogo do Union Arena (TCGCSV)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-unionarena.mjs || echo "sync-unionarena falhou; mantém o catalogo versionado"
+
+      - name: Snapshot de preços (histórico Union Arena)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-price-history.mjs data/unionarena
+
       # Naruto (TCGCSV): só sincroniza quando a categoria existir (secret/var
       # NARUTO_TCGCSV_CATEGORY). Sem categoria, o script sai sem mexer em nada.
       - name: Sincroniza catálogo do Naruto (TCGCSV, se configurado)
@@ -494,6 +504,7 @@ jobs:
             data/dbfw/sets
             data/digimon/sets
             data/riftbound/sets
+            data/unionarena/sets
             data/naruto/sets
             data/hxh/sets
             data/jump/sets

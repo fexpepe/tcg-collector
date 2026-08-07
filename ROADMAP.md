@@ -18,9 +18,9 @@ produto seria o extra pago, aqui é grátis.
 
 Detalhe técnico de cada item está no README; aqui é só o mapa.
 
-**Catálogo — 12 jogos + JUMP em preparação.** Pokémon (5 idiomas, via TCGdex),
+**Catálogo — 13 jogos + JUMP em preparação.** Pokémon (5 idiomas, via TCGdex),
 Lorcana, One Piece, Magic, Flesh and Blood, Gundam, Dragon Ball Fusion World,
-Yu-Gi-Oh!, Digimon, Riftbound, Naruto e Hunter × Hunter — do lançamento de
+Yu-Gi-Oh!, Digimon, Riftbound, Union Arena, Naruto e Hunter × Hunter — do lançamento de
 ontem ao Carddass de 1999. Os vintage japoneses (Carddass Hyper Battle, Miracle
 Battle, Data Carddass, Formation/Cross) foram levantados carta a carta de fontes
 que não têm API, e ficam versionados como snapshot pra nunca regredir.

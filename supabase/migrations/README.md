@@ -8,8 +8,11 @@ poucos.)
 
 ## Pendentes de aplicar
 
-Nenhuma. Todas as migrações deste diretório estão aplicadas em produção
-(verificado por curl — ver a lista abaixo).
+- `20260807c` — libera o slug `unionarena` (Union Arena, 13º jogo) nas DUAS
+  whitelists de jogo: `card_views`/`increment_card_view` e `contribute_price`.
+  Sem ela o site funciona inteiro, mas no Union Arena a contagem de views e a
+  contribuição de preço são descartadas **em silêncio** (as funções só dão
+  `return`). O arquivo traz os curl de verificação no rodapé.
 
 ### Já aplicadas (verificado em produção)
 

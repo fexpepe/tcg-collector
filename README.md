@@ -47,6 +47,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 | `ygo` | Yu-Gi-Oh! | TCGCSV cat. 2 (~46k impressões — o maior) | USD |
 | `digimon` | Digimon Card Game | TCGCSV cat. 63 | USD |
 | `riftbound` | Riftbound | TCGCSV cat. 89 (Riot) | USD |
+| `unionarena` | Union Arena | TCGCSV cat. 81 (Bandai; um anime por set) | USD |
 | `naruto` | Naruto Card Game | vintage Bandai 2002–2006 (tcg-db + TV Tokyo + cardcheckbox), Data Carddass, Formation/Cross, Miracle Battle | sem preço |
 | `hxh` | Hunter × Hunter | Carddass Hyper Battle 1999–2001 (Hunterpedia) + Miracle Battle | sem preço |
 | `jump` | JUMP | curadoria versionada em `data/jump/curated/` | — |
@@ -75,7 +76,7 @@ Ordem de decisão do jogo:
 
 Páginas **neutras** são as que não pertencem a um jogo só: Início, HUB, Explorar,
 Decks, e todas as pessoais (Coleção, Portfólio, Vendas, Binders, Wishlist,
-Graded, Hub pessoal, Badges, Backup). Elas leem os 12 jogos de uma vez e filtram
+Graded, Hub pessoal, Badges, Backup). Elas leem os 13 jogos de uma vez e filtram
 por jogo *dentro* da página — por isso **não** carimbam `?game=` na URL (link
 copiado de `/collection` não deve parecer preso ao Pokémon). Nas demais, o jogo
 resolvido é carimbado com `replaceState`, senão compartilhar "os sets do Gundam"
@@ -226,7 +227,7 @@ dia de lançamento de set do Pokémon, pra pegar o set novo sem esperar a manhã
 seguinte. As fontes têm custos diferentes:
 
 - **grátis** (TCGdex, TCGCSV, Scryfall, Lorcast e os vintage): **todo dia**.
-  Cobrem 11 dos 12 jogos e não custam nada.
+  Cobrem 12 dos 13 jogos e não custam nada.
 - **por crédito** (PPT e MYP): 3x/semana — segunda e quarta pelo cron diário,
   sexta pelo da noite. Cabem na cota diária (o plano da PPT dá 20.000 créditos
   por dia e um run gasta no máximo 8.000), mas preço JP/graded muda devagar.

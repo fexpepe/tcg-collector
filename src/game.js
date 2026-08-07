@@ -27,6 +27,7 @@
     ygo: { slug: "ygo", name: "Yu-Gi-Oh!", dataDir: "data/ygo/" }, // TCGCSV cat. 2 (Konami, EN; ~46k cartas, padrão Magic: chunks versionados)
     digimon: { slug: "digimon", name: "Digimon Card Game", dataDir: "data/digimon/" }, // TCGCSV cat. 63 (Bandai 2020+, EN)
     riftbound: { slug: "riftbound", name: "Riftbound", dataDir: "data/riftbound/" }, // TCGCSV cat. 89 (Riot — League of Legends, EN)
+    unionarena: { slug: "unionarena", name: "Union Arena", dataDir: "data/unionarena/" }, // TCGCSV cat. 81 (Bandai, EN; um set por anime)
     naruto: { slug: "naruto", name: "Naruto Card Game", dataDir: "data/naruto/" },   // vintage Bandai 2003–2006 (+ moderno TCGCSV no futuro)
     hxh: { slug: "hxh", name: "Hunter × Hunter", dataDir: "data/hxh/" },             // vintage Bandai: Miracle Battle (2011–12); Hyper Battle 1999–2001 em curadoria
     // Em preparação (catálogo ainda vazio; tile "Em breve" no hub):
@@ -43,7 +44,7 @@
   // Páginas neutras: as que NÃO são de um jogo só. A Início e o HUB (que são a
   // porta de entrada), a busca global (Explorar), os Decks (galeria e "Meus
   // decks" mostram deck de qualquer jogo) e TODAS as páginas pessoais — elas
-  // leem os 12 jogos de uma vez (stores mesclados + loadOwnedAcrossGames) e
+  // leem os 13 jogos de uma vez (stores mesclados + loadOwnedAcrossGames) e
   // filtram por jogo DENTRO da página. Aqui a sessão não é usada pra nada, e
   // carimbar ?game= (ver stampGame) só sujava o link que a pessoa copia: abrir
   // /collection e ver "?game=pokemon" na barra dá a entender que a página está

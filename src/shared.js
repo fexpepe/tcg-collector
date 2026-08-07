@@ -3772,6 +3772,10 @@
     gundam:    { liga: ["LigaGundam", "https://www.ligagundam.com.br"], myp: "gundam", tcgLine: "gundam-card-game", usText: "gundam card game" },
     dbfw:      { liga: ["LigaDragonBall", "https://fusion.ligadragonball.com.br"], tcgLine: "dragon-ball-super-fusion-world", usText: "dragon ball fusion world" },
     riftbound: { liga: ["LigaRiftbound", "https://www.ligariftbound.com.br"], myp: "riftbound", tcgLine: "riftbound-league-of-legends-trading-card-game", usText: "riftbound" },
+    // Union Arena (conferido em 07/08/2026): SEM loja BR. ligaunionarena.com.br
+    // não existe (o DNS nem resolve) e mypcards.com/unionarena dá 404 — então
+    // nada de liga/myp aqui, só o mercado internacional.
+    unionarena: { tcgLine: "union-arena", usText: "union arena" },
     naruto:    { usText: "naruto card game", noTcgplayer: true },
     hxh:       { usText: "hunter x hunter carddass", noTcgplayer: true }
   };
@@ -4583,6 +4587,7 @@
     { game: "ygo", dataDir: "data/ygo/" },
     { game: "digimon", dataDir: "data/digimon/" },
     { game: "riftbound", dataDir: "data/riftbound/" },
+    { game: "unionarena", dataDir: "data/unionarena/" },
     { game: "naruto", dataDir: "data/naruto/" },
     { game: "hxh", dataDir: "data/hxh/" }
   ];
@@ -4592,7 +4597,7 @@
   // Cor de cada marca. Escolhidas pelo Fernando; os tons exatos foram calibrados
   // em dois eixos antes de entrar:
   //   1. CONTRASTE — o textOnColor abaixo escolhe preto ou branco pelo maior
-  //      contraste real; as 12 passam em AA (≥4.5:1) com a cor escolhida.
+  //      contraste real; as 13 passam em AA (≥4.5:1) com a cor escolhida.
   //   2. DISTINÇÃO — as etiquetas aparecem lado a lado na galeria e nos filtros,
   //      então cores muito próximas se confundem. O ouro do Riftbound começou em
   //      #b8860b e virou #a67c00: a 46 de distância RGB ele empatava com o
@@ -4610,6 +4615,7 @@
     ygo: "#7c3aed",        // roxo-violeta
     digimon: "#123f6d",    // azul escuro
     riftbound: "#a67c00",  // ouro
+    unionarena: "#0891b2", // ciano
     naruto: "#ea580c",     // laranja
     hxh: "#15803d"         // verde
   };
@@ -4630,7 +4636,7 @@
     const vsWhite = 1.05 / (L + 0.05);   // contraste com #fff
     const vsBlack = (L + 0.05) / 0.05;   // contraste com preto
     // Preto PURO (não o quase-preto do tema): com #0a0c10 o vermelho do Pokémon
-    // parava em 4.47; com #000 os 12 jogos passam de 4.5 (AA).
+    // parava em 4.47; com #000 os 13 jogos passam de 4.5 (AA).
     return vsBlack >= vsWhite ? "#000000" : "#ffffff";
   }
   // Etiqueta do jogo: retângulo PREENCHIDO na cor do jogo (mesmo idioma visual
@@ -4649,17 +4655,19 @@
     onepiece: "filter.gameOnePiece", magic: "filter.gameMagic",
     fab: "filter.gameFab", gundam: "filter.gameGundam", dbfw: "filter.gameDbfw",
     ygo: "filter.gameYgo", digimon: "filter.gameDigimon", riftbound: "filter.gameRiftbound",
-    naruto: "filter.gameNaruto", hxh: "filter.gameHxh"
+    unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", hxh: "filter.gameHxh"
   };
   function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }
   // Logo do jogo (assets/games/game_<slug>.webp): usado como stand-in do logo de
   // set quando o set não tem um próprio, e como último fallback quando o logo do
-  // set quebra. "" pros jogos sem arquivo de logo (fab/jump) — aí cai no texto.
+  // set quebra. "" pros jogos sem arquivo de logo (jump/unionarena) — aí cai no
+  // texto. Entrou o arquivo em assets/games/? Basta preencher aqui e pôr o <img>
+  // no tile do hub.html (o hub revela o logo sozinho quando ele carrega).
   const GAME_LOGO = {
     pokemon: "game_pokemon.webp", lorcana: "game_lorcana.webp", onepiece: "game_onepiece.webp",
     magic: "game_magic.webp", fab: "game_fab.webp", gundam: "game_gundam.webp", dbfw: "game_dbfw.webp",
     ygo: "game_ygo.webp", digimon: "game_digimon.webp", riftbound: "game_riftbound.webp",
-    naruto: "game_naruto.webp", hxh: "game_hxh.webp"
+    unionarena: "", naruto: "game_naruto.webp", hxh: "game_hxh.webp"
   };
   const VINTAGE_SET_EN = {
     // ---- One Piece · Miracle Battle Carddass

@@ -24,7 +24,8 @@ const JOGOS = [
   ["pokemon", "data/"], ["lorcana", "data/lorcana/"], ["onepiece", "data/onepiece/"],
   ["magic", "data/magic/"], ["fab", "data/fab/"], ["gundam", "data/gundam/"],
   ["dbfw", "data/dbfw/"], ["ygo", "data/ygo/"], ["digimon", "data/digimon/"],
-  ["riftbound", "data/riftbound/"], ["naruto", "data/naruto/"], ["hxh", "data/hxh/"],
+  ["riftbound", "data/riftbound/"], ["unionarena", "data/unionarena/"],
+  ["naruto", "data/naruto/"], ["hxh", "data/hxh/"],
   ["jump", "data/jump/"]
 ];
 

@@ -290,7 +290,7 @@ Reusa pronto: `createCollectionStore`, `createPriceStore`, `cardValue`,
 **Fase 0 — enriquecer catálogo** (Magic + Pokémon). Barato, destrava o resto.
 
 **Fase 1 — MVP**: store + galeria + criar/editar/salvar + busca por jogo + valor
-(total/tenho/falta) + **modo livre em todos os 12 jogos** + rule packs de
+(total/tenho/falta) + **modo livre em todos os 13 jogos** + rule packs de
 **Lorcana, One Piece e Digimon** (os de dado mais limpo).
 
 **Fase 2** ✅: rule packs de Pokémon, Magic (Standard × Commander), Yu-Gi-Oh! e

@@ -14,7 +14,7 @@ import { buildSearch } from "./_search-sql.js";
 // Jogos válidos (espelho do registro do game.js). Barra consulta arbitrária.
 // "all" = busca global (o Explorar): todos os jogos numa consulta só.
 const GAMES = new Set(["all", "pokemon", "lorcana", "onepiece", "magic", "fab", "gundam",
-  "dbfw", "ygo", "digimon", "riftbound", "naruto", "hxh", "jump"]);
+  "dbfw", "ygo", "digimon", "riftbound", "unionarena", "naruto", "hxh", "jump"]);
 
 export async function onRequestGet(context) {
   const { env, request } = context;

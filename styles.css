@@ -268,6 +268,19 @@
   --accent: #a67c00; --accent-dark: #8a6700; --accent-rgb: 166, 124, 0;
   --accent-soft: rgba(166, 124, 0, 0.12); --on-accent: #0a0c10;
 }
+/* Union Arena: CIANO. O azul do Gundam e o marinho do Digimon já ocupam a
+   família azul, então este puxa pro turquesa (79 de distância RGB do Gundam, o
+   vizinho mais perto — acima da régua de 65 que o ouro do Riftbound fixou).
+   Ciano claro no escuro com texto escuro (10.8:1); no claro fecha pro #0e7490,
+   que segura texto branco (5.4:1) — o tom claro sozinho reprovaria. */
+[data-game-accent="unionarena"] {
+  --accent: #22d3ee; --accent-dark: #06b6d4; --accent-rgb: 34, 211, 238;
+  --accent-soft: rgba(34, 211, 238, 0.16); --on-accent: #0a0c10;
+}
+[data-theme="light"][data-game-accent="unionarena"] {
+  --accent: #0e7490; --accent-dark: #155e75; --accent-rgb: 14, 116, 144;
+  --accent-soft: rgba(14, 116, 144, 0.1); --on-accent: #ffffff;
+}
 [data-game-accent="all"] {
   --accent: #e3e7ee; --accent-dark: #c3c9d4; --accent-rgb: 227, 231, 238;
   --accent-soft: rgba(227, 231, 238, 0.12); --on-accent: #0a0c10;
