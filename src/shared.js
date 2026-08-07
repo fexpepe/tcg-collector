@@ -462,17 +462,22 @@
         const amount = Number(value);
         const card = prices[cardId] || (prices[cardId] = {});
         const entry = card[variant] || (card[variant] = { prices: {}, source: source || "manual", updatedAt: "" });
+        // `at` = carimbo POR CONDIÇÃO, com hora (ISO completo). O `updatedAt` da
+        // entrada é só a DATA (é o que a UI mostra em "atualizado em") e por isso
+        // não desempata edições do mesmo dia em dois aparelhos: o sync ficava com
+        // um lado e descartava o outro em silêncio. O merge (mergePrices) decide
+        // condição a condição por este mapa; entrada antiga sem `at` cai no
+        // updatedAt de sempre. Apagar um preço MANTÉM o carimbo (tombstone):
+        // sem ele, a exclusão feita aqui ressuscitava do outro aparelho.
+        const at = entry.at || (entry.at = {});
         if (amount > 0) {
           entry.prices[condition] = Math.round(amount * 100) / 100;
         } else {
           delete entry.prices[condition];
         }
+        at[condition] = new Date().toISOString();
         entry.source = source || "manual";
         entry.updatedAt = new Date().toISOString().slice(0, 10);
-        if (!Object.keys(entry.prices).length) {
-          delete card[variant];
-          if (!Object.keys(card).length) delete prices[cardId];
-        }
         save();
       },
       replace(next) {
@@ -5307,6 +5312,7 @@
     distBarsHtml,
     memoValue,
     createSoldStore,
+    mergePrices, // exportado pra teste (o sync usa via mergeData)
     createCostsStore,
     createWishTargetsStore,
     readSoldList,
@@ -5698,14 +5704,58 @@
     });
     return { wishlist, meta: { mod, del: pruneTombstones(del) } };
   }
+  // Merge de preços manuais: LWW POR CONDIÇÃO, não por variante. A versão
+  // antiga trocava a entrada inteira pelo updatedAt (só data) — anotar o NM no
+  // PC e o SP no celular em dias diferentes fazia o dia mais novo engolir o
+  // bloco todo, e edições do mesmo dia em dois aparelhos empatavam (um lado era
+  // descartado em silêncio). Agora cada condição decide pelo seu carimbo `at`
+  // (ISO com hora, ver setPrice); entrada antiga sem `at` cai no updatedAt — e
+  // o ISO completo do mesmo dia vence o só-data lexicograficamente, que é o
+  // desempate certo (quem tem hora é a edição mais nova). O `at` também é
+  // tombstone: condição apagada num aparelho não ressuscita do outro.
   function mergePrices(a, b) {
-    const out = JSON.parse(JSON.stringify(a || {}));
-    Object.entries(b || {}).forEach(([cardId, variants]) => {
-      out[cardId] = out[cardId] || {};
-      Object.entries(variants || {}).forEach(([variant, entry]) => {
-        const cur = out[cardId][variant];
-        // Mantém o registro com updatedAt mais recente.
-        if (!cur || String(entry && entry.updatedAt) > String(cur.updatedAt)) out[cardId][variant] = entry;
+    const out = {};
+    const cardIds = new Set([...Object.keys(a || {}), ...Object.keys(b || {})]);
+    cardIds.forEach((cardId) => {
+      const va = (a || {})[cardId] || {};
+      const vb = (b || {})[cardId] || {};
+      const variants = new Set([...Object.keys(va), ...Object.keys(vb)]);
+      variants.forEach((variant) => {
+        const ea = va[variant];
+        const eb = vb[variant];
+        if (!ea || !eb) {
+          const only = ea || eb;
+          if (only) (out[cardId] = out[cardId] || {})[variant] = JSON.parse(JSON.stringify(only));
+          return;
+        }
+        const tsOf = (e, c) => String((e.at && e.at[c]) || e.updatedAt || "");
+        // "Opinião" sobre a condição = tem preço nela OU tombstone dela. Sem
+        // isso, o fallback pro updatedAt fazia um lado VENCER uma condição que
+        // nunca tocou, só porque a entrada dele foi mexida (noutra condição)
+        // mais recentemente — e o preço do outro aparelho sumia. Foi exatamente
+        // o caso que o teste pegou: NM no PC engolia o SP do celular.
+        const claims = (e, c) => !!((e.prices && e.prices[c] > 0) || (e.at && e.at[c]));
+        const conds = new Set([]
+          .concat(Object.keys(ea.prices || {}), Object.keys(eb.prices || {}))
+          .concat(Object.keys(ea.at || {}), Object.keys(eb.at || {})));
+        const prices = {}, at = {};
+        conds.forEach((c) => {
+          const inA = claims(ea, c), inB = claims(eb, c);
+          if (!inA && !inB) return;
+          // Só um lado opina -> ele leva. Os dois -> carimbo mais novo; empate
+          // fica com `a` (o lado local), como o merge antigo fazia.
+          const win = !inA ? eb : (!inB ? ea : (tsOf(eb, c) > tsOf(ea, c) ? eb : ea));
+          const v = win.prices && win.prices[c];
+          if (v > 0) prices[c] = v;
+          const t = tsOf(win, c);
+          if (t) at[c] = t;
+        });
+        const newer = String(eb.updatedAt || "") > String(ea.updatedAt || "") ? eb : ea;
+        (out[cardId] = out[cardId] || {})[variant] = {
+          prices, at,
+          source: newer.source || "manual",
+          updatedAt: newer.updatedAt || ""
+        };
       });
     });
     return out;
