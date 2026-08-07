@@ -8,15 +8,15 @@ poucos.)
 
 ## Pendentes de aplicar
 
-1. **`20260807b_community_prices_revoke_public.sql`** — correção pequena da
-   `a`, que já foi aplicada. Função nova no PostgreSQL nasce com EXECUTE pra
-   PUBLIC, então o `grant ... to authenticated` da `a` não restringiu nada:
-   chamada anônima de `contribute_price` respondia 204 (executava e caía na
-   guarda de `auth.uid()`, sem escrever). Esta revoga de PUBLIC/anon. Risco
-   baixo — nunca houve escrita anônima — mas privilégio aberto sem querer é
-   dívida. Corrige também, nos comentários, duas expectativas erradas da `a`.
+Nenhuma. Todas as migrações deste diretório estão aplicadas em produção
+(verificado por curl — ver a lista abaixo).
 
 ### Já aplicadas (verificado em produção)
+
+- `20260807b` — revoga de PUBLIC/anon o EXECUTE de `contribute_price`.
+  Aplicada em 2026-08-07: chamada anônima passou de HTTP 204 (executava e
+  caía na guarda) pra **401 / 42501 permission denied**; a RPC de leitura
+  continua 200 `[]` pra visitante sem conta.
 
 - `20260807a` — base do Preço da Comunidade (`community_prices` +
   `contribute_price` + `community_price_for`). Aplicada em 2026-08-07:
