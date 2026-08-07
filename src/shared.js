@@ -3298,7 +3298,12 @@
       return v;
     };
   }
-  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders, sale, tags }) {
+  // `graded` é OPCIONAL: { add(cardId, variant, company, grade), onChange() }.
+  // Quem passa é a página que JÁ tem um store de graded (a Coleção); as outras
+  // não passam e o botão nem aparece. De propósito não criamos um store aqui:
+  // ele guarda o blob inteiro em memória e grava tudo de uma vez, então uma
+  // segunda instância sobrescreveria o que a instância da página tem.
+  function createCardPreview({ getCard, store, onOwnedChange, prices, wishlist, folders, sale, tags, graded }) {
     let activeCard = null;
     let activeVariant = null;
     let activeGraded = null; // { company, grade, pristine } quando aberto de uma carta GRADUADA
@@ -3335,7 +3340,11 @@
       const amount = parseMoney(text);
       prices.setPrice(input.dataset.priceCardId, input.dataset.priceVariant, input.dataset.priceCondition, amount, "manual");
       const saved = prices.getPrice(input.dataset.priceCardId, input.dataset.priceVariant, input.dataset.priceCondition);
-      input.value = saved > 0 ? String(saved).replace(".", ",") : "";
+      // data-price-fmt="2": campo largo (o atalho "Preço NM") mostra duas casas
+      // pra casar com o "Paguei" ao lado. Célula da grade fica compacta.
+      input.value = saved > 0
+        ? (input.dataset.priceFmt === "2" ? saved.toFixed(2) : String(saved)).replace(".", ",")
+        : "";
     });
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
@@ -3357,6 +3366,29 @@
         : `<span class="preview-tags-empty">${escapeHtml(t("tags.menuEmpty"))}</span>`}<button type="button" class="preview-tag-opt preview-tag-new" data-preview-tag-new>+ ${escapeHtml(t("tags.new"))}</button></div>` : "";
       return `${chips}<button type="button" class="preview-tags-add" data-preview-tag-open aria-expanded="${expanded ? "true" : "false"}">+ ${escapeHtml(t("tags.addShort"))}</button>${panel}`;
     }
+    // Caixa "+ Graded" no preview: registra um slab sem sair do card (antes só
+    // pelo picker da aba Graded / página /graded). Mesmo desenho do "+ Tag":
+    // chip que expande a escolha de graduadora × nota.
+    // Notas: as do PSA/BGS/CGC, que é o que o mercado usa. Pristine e certificado
+    // ficam pra edição na lista (o card é o caminho RÁPIDO: marca e segue).
+    const GRADE_OPTS = ["10", "9.5", "9", "8.5", "8", "7", "6", "5"];
+    function previewGradedCtlHtml(expanded) {
+      if (!graded || !activeCard) return "";
+      const gr = (window.TCGGradedUI && window.TCGGradedUI.GRADERS) || [{ code: "psa", label: "PSA" }];
+      const jaTem = graded.countOf ? graded.countOf(activeCard.id, activeVariant || defaultVariant(activeCard)) : 0;
+      const panel = expanded
+        ? `<div class="preview-graded-panel">${gr.map((g) => `<div class="pg-line"><span class="pg-co">${escapeHtml(g.label)}</span>`
+            + GRADE_OPTS.map((n) => `<button type="button" class="pg-grade" data-preview-graded-add="${escapeAttribute(g.code)}" data-grade="${escapeAttribute(n)}">${escapeHtml(n)}</button>`).join("")
+            + `</div>`).join("")}</div>`
+        : "";
+      return `${jaTem ? `<span class="pg-have">${escapeHtml(t("graded.haveN", { n: jaTem }))}</span>` : ""}`
+        + `<button type="button" class="preview-tags-add" data-preview-graded-open aria-expanded="${expanded ? "true" : "false"}">+ ${escapeHtml(t("graded.addShort"))}</button>${panel}`;
+    }
+    function refreshPreviewGraded(expanded) {
+      const ctl = document.querySelector("#cardPreviewModal [data-preview-graded]");
+      if (ctl) ctl.innerHTML = previewGradedCtlHtml(expanded);
+    }
+
     function refreshPreviewTags(expanded) {
       const ctl = document.querySelector("#cardPreviewModal [data-preview-tags]");
       if (ctl) ctl.innerHTML = previewTagsCtlHtml(expanded);
@@ -3448,6 +3480,8 @@
                   </select></label>` : ""}
                 ${tags ? `<div class="preview-tags-row"><span>${escapeHtml(t("collection.tab.tags"))}</span>
                   <div class="preview-tags-ctl" data-preview-tags>${previewTagsCtlHtml(false)}</div></div>` : ""}
+                ${graded && isOwned ? `<div class="preview-tags-row"><span>${escapeHtml(t("nav.graded"))}</span>
+                  <div class="preview-graded-ctl" data-preview-graded>${previewGradedCtlHtml(false)}</div></div>` : ""}
               </div>` : ""}
               ${sale ? `<label class="preview-sale-row"><span>${escapeHtml(t("sales.sell"))}</span><span class="preview-sale-cur">${escapeHtml(saleCurrencySymbol())}</span>
                 <input type="text" inputmode="decimal" class="preview-sale-price" data-preview-sale value="${escapeAttribute((function () { const p = sale.priceOf(activeCard.id, activeVariant || defaultVariant(activeCard)); return p > 0 ? String(p).replace(".", ",") : ""; })())}" placeholder="0,00"></label>` : ""}
@@ -3464,24 +3498,17 @@
                 // o listener de preço já existente grava e reformata isto.
                 const v = activeVariant || defaultVariant(activeCard);
                 const atual = prices.getPrice(activeCard.id, v, DEFAULT_CONDITION);
-                const display = atual > 0 ? String(atual).replace(".", ",") : "";
+                // Duas casas, como o "Paguei" logo acima: reusando o formato da
+                // GRADE de condições este campo mostrava "12000" ao lado de um
+                // "7000,00" — mesma linha, dois formatos. data-price-fmt diz ao
+                // listener compartilhado pra reformatar assim depois de gravar
+                // (as células da grade são estreitas e seguem compactas).
+                const display = atual > 0 ? atual.toFixed(2).replace(".", ",") : "";
                 return `<label class="preview-sale-row preview-price-row" title="${escapeAttribute(t("price.nmHint"))}"><span>${escapeHtml(t("price.nmLabel"))}</span><span class="preview-sale-cur">${escapeHtml(brCurrencySymbol())}</span>
-                  <input type="text" inputmode="decimal" class="preview-sale-price" placeholder="0,00" value="${escapeAttribute(display)}"
+                  <input type="text" inputmode="decimal" class="preview-sale-price" placeholder="0,00" value="${escapeAttribute(display)}" data-price-fmt="2"
                     data-price-card-id="${escapeAttribute(activeCard.id)}" data-price-variant="${escapeAttribute(v)}" data-price-condition="${DEFAULT_CONDITION}"
                     aria-label="${escapeAttribute(t("price.inputAria", { variant: v, condition: t(`condition.${DEFAULT_CONDITION}`) }))}"></label>`;
               })() : ""}
-            </div>
-            <div class="preview-details">
-              <h3>${escapeHtml(t("modal.details"))}</h3>
-              <dl>
-                <div><dt>${escapeHtml(t("modal.rarity"))}</dt><dd>${escapeHtml(activeCard.rarity || "-")}</dd></div>
-                <div><dt>${escapeHtml(t("modal.artist"))}</dt><dd>${escapeHtml(activeCard.artist || t("card.unknownArtist"))}</dd></div>
-                <div><dt>${escapeHtml(t("modal.set"))}</dt><dd>${escapeHtml(activeCard.set || "-")}</dd></div>
-                ${activeCard.nameJp && activeCard.nameJp !== activeCard.name
-                  ? `<div><dt>${escapeHtml(t("modal.nameJp"))}</dt><dd lang="ja" class="modal-name-jp">${escapeHtml(activeCard.nameJp)}</dd></div>`
-                  : ""}
-                <div><dt>${escapeHtml(t("modal.cardId"))}</dt><dd>${escapeHtml(activeCard.id)}</dd></div>
-              </dl>
             </div>
             <div class="variant-quantities">${variantQuantityRows(activeCard, store, prices, activeVariant)}</div>
             <section class="market-quote" data-market-quote><p class="market-loading">${escapeHtml(t("market.loading"))}</p></section>
@@ -3498,6 +3525,26 @@
                  template literal e fecharia a string.) -->
             <section class="graded-price" data-graded-price hidden></section>
             ${prices ? brMarketplaceLinks(activeCard, gradedSearchTag(activeGraded)) : ""}
+            <!-- DETALHES por ÚLTIMO (era logo depois de "minha cópia", antes dos
+                 valores). Ordem do painel agora: identidade -> ações -> minha
+                 cópia -> VALORES (mercado/comunidade/graded) -> comprar ->
+                 detalhes. Quem abre um card quer saber quanto vale; raridade,
+                 artista e id da carta são consulta, não a resposta.
+                 <details> aberto no desktop (open) e FECHADO no celular por JS:
+                 na vertical cada linha vira duas (rótulo em cima do valor) e o
+                 bloco custava ~10 linhas de rolagem antes do preço. -->
+            <details class="preview-details" data-preview-details open>
+              <summary><h3>${escapeHtml(t("modal.details"))}</h3></summary>
+              <dl>
+                <div><dt>${escapeHtml(t("modal.rarity"))}</dt><dd>${escapeHtml(activeCard.rarity || "-")}</dd></div>
+                <div><dt>${escapeHtml(t("modal.artist"))}</dt><dd>${escapeHtml(activeCard.artist || t("card.unknownArtist"))}</dd></div>
+                <div><dt>${escapeHtml(t("modal.set"))}</dt><dd>${escapeHtml(activeCard.set || "-")}</dd></div>
+                ${activeCard.nameJp && activeCard.nameJp !== activeCard.name
+                  ? `<div><dt>${escapeHtml(t("modal.nameJp"))}</dt><dd lang="ja" class="modal-name-jp">${escapeHtml(activeCard.nameJp)}</dd></div>`
+                  : ""}
+                <div><dt>${escapeHtml(t("modal.cardId"))}</dt><dd>${escapeHtml(activeCard.id)}</dd></div>
+              </dl>
+            </details>
           </div>
         </section>
       `;
@@ -3533,6 +3580,11 @@
       // carta sem cotação também mostrar o que a comunidade anotou.
       fillCommunityPrice(activeCard, activeVariant);
       fillGradedPrice(activeCard); // valores PSA, quando o catálogo tem
+      // Detalhes fechados no CELULAR (aberto no desktop, onde é um dl de 2
+      // colunas e custa pouco). Em JS e não em CSS porque <details> abre/fecha
+      // por atributo — CSS não desmarca `open`.
+      const det = document.querySelector("#cardPreviewModal [data-preview-details]");
+      if (det && window.matchMedia && window.matchMedia("(max-width: 720px)").matches) det.open = false;
     }
 
     function close() {
@@ -3556,6 +3608,19 @@
       if (event.target.closest("[data-preview-share]")) {
         shareCard();
         return;
+      }
+
+      // Caixa "+ Graded" do preview: expandir e registrar o slab.
+      if (graded && activeCard && event.target.closest("#cardPreviewModal [data-preview-graded]")) {
+        const open = event.target.closest("[data-preview-graded-open]");
+        if (open) { refreshPreviewGraded(open.getAttribute("aria-expanded") !== "true"); return; }
+        const add = event.target.closest("[data-preview-graded-add]");
+        if (add) {
+          graded.add(activeCard.id, activeVariant || defaultVariant(activeCard), add.dataset.previewGradedAdd, add.dataset.grade);
+          if (graded.onChange) graded.onChange(activeCard.id);
+          refreshPreviewGraded(false); // fecha e mostra o "tem N"
+          return;
+        }
       }
 
       // Caixa de tags do preview: expandir, marcar/desmarcar, remover, criar.
@@ -4781,6 +4846,13 @@
   }
   // Rótulo de um token de tratamento: traduzido quando conhecido; senão o
   // próprio token com a primeira letra maiúscula (surgefoil -> "Surgefoil").
+  // Tokens de `treat` que NÃO são tratamento visual: moldura (legendary),
+  // marca de linha do set (universesbeyond) e marcas de evento/produto. Ver o
+  // comentário da faceta `treat` pra medição que motivou cada um.
+  const TREAT_NOISE = new Set([
+    "legendary", "universesbeyond", "bundle", "playpromo", "storechampionship",
+    "tourney", "convention", "gameday", "judgegift", "league", "openhouse", "draftweekend"
+  ]);
   function treatLabel(token) {
     const chave = `mtg.treat.${token}`;
     const traduzido = t(chave);
@@ -4808,7 +4880,15 @@
       },
       {
         key: "treat", labelKey: "facet.treatment",
-        of: (c) => String(c.treat || "").split(";").filter(Boolean),
+        // Filtra o RUÍDO que o sync deixou passar. Medido no LTR:
+        // `universesbeyond` marcava as 854 cartas do set (opção que não filtra
+        // nada), `legendary` (398) é MOLDURA e não tratamento, e bundle/
+        // playpromo/storechampionship/tourney são marcas de EVENTO. Sobram os
+        // que a pessoa procura: showcase, scroll, silverfoil, borderless,
+        // fullart, extendedart, surgefoil, inverted, poster…
+        // Aqui no CLIENTE de propósito: mexer na denylist do sync exigiria
+        // rebuild completo do Magic (648 sets no Scryfall) a cada ajuste.
+        of: (c) => String(c.treat || "").split(";").filter((tk) => tk && !TREAT_NOISE.has(tk)),
         label: treatLabel,
         order: ["borderless", "extendedart", "showcase", "fullart", "etched", "inverted", "surgefoil"]
       }

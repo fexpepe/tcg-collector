@@ -3825,6 +3825,28 @@ a.hub-tile:hover {
    seguinte não deve dobrar o espaçamento por causa dele). */
 .community-price[hidden] + .graded-price { border-top: 1px solid var(--line); }
 
+/* "+ Graded" no card: reusa o chip do "+ Tag" e abre uma linha por graduadora
+   com as notas. Grid pra as notas ficarem alinhadas entre as linhas. */
+.preview-graded-ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.preview-graded-panel { flex: 1 1 100%; display: grid; gap: 4px; margin-top: 6px; }
+.pg-line { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.pg-co { min-width: 38px; font-size: 11px; font-weight: 800; color: var(--muted); }
+.pg-grade {
+  min-width: 34px; min-height: 28px; padding: 0 6px;
+  border: 1px solid var(--line); border-radius: 6px;
+  background: var(--panel); color: var(--text);
+  font-size: 12px; font-weight: 800; cursor: pointer;
+}
+.pg-grade:hover { border-color: var(--accent); color: var(--accent); }
+.pg-have { font-size: 11.5px; font-weight: 700; color: var(--muted); }
+/* Detalhes recolhível: no desktop nasce aberto, no celular fechado (JS). O
+   marcador nativo sai — o h3 dentro do summary já é a afordância. */
+.preview-details > summary { list-style: none; cursor: pointer; }
+.preview-details > summary::-webkit-details-marker { display: none; }
+.preview-details > summary h3 { display: inline; }
+.preview-details > summary::after { content: " ▾"; color: var(--subtle); font-size: 11px; }
+.preview-details[open] > summary::after { content: " ▴"; }
+
 /* Valores graded (PSA) no card: lista nota → valor, a nota mais alta primeiro.
    Números tabulares pra coluna de preço não dançar entre as linhas. */
 .graded-price { margin-top: 14px; }

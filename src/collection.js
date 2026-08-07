@@ -311,6 +311,15 @@
     prices,
     wishlist,
     onOwnedChange: () => refreshOwnershipCards(),
+    // "+ Graded" dentro do card. Passa o MESMO store da página (gradedStore) —
+    // criar outro no preview sobrescreveria o blob, porque cada instância grava
+    // a cópia que tem em memória. Sem store (graded-ui não carregado), nada é
+    // passado e o botão não aparece.
+    graded: gradedStore ? {
+      add: (cardId, variant, company, grade) => gradedStore.add(cardId, variant, company, grade),
+      countOf: (cardId, variant) => gradedStore.countOf(cardId, variant),
+      onChange: () => { renderCards(); renderDashboard(); }
+    } : null,
     // Seletor de pasta dentro do preview (atribui a carta a uma pasta).
     folders: {
       list: () => folders.list(),

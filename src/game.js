@@ -160,6 +160,11 @@
     // pokedex.html declaram os dois pra qualquer jogo, e em Lorcana/Magic/etc.
     // isso virava um 404 por pageview — round-trip jogado fora.
     if (token.slice(0, 8) === "pokemon-" && cfg.slug !== "pokemon") return null;
+    // set-id-map é a MESMA história e faltava a guarda: o de-para de id de set
+    // pro fallback de imagem EN só existe no Pokémon (build-set-id-map.mjs), mas
+    // detail/sets/cards declaram o token pra todo jogo — 11 dos 12 pagavam um
+    // 404 por pageview.
+    if (token === "set-id-map" && cfg.slug !== "pokemon") return null;
     return FILE[token] || null;
   }
 

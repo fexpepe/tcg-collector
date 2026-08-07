@@ -742,7 +742,17 @@
       facetSel[f.key].forEach((v) => { if (!contagem.has(v)) contagem.set(v, 0); });
       const ordem = f.order || [];
       const pos = (v) => { const i = ordem.indexOf(v); return i < 0 ? ordem.length : i; };
-      const valores = [...contagem.keys()].sort((a, b) => (pos(a) - pos(b)) || String(a).localeCompare(String(b)));
+      // Opção que casa com TODAS as cartas da página não filtra nada — marcar
+      // deixa a grade igual. Vale pra qualquer faceta e resolve sozinha o caso
+      // que apareceu no Magic: `universesbeyond` está nas 854 cartas do LTR, e
+      // um set inteiro de raridade única faria o mesmo. Só some quando NÃO está
+      // marcada (senão a pessoa não conseguiria desmarcar o próprio filtro) e
+      // quando há mais de uma opção — se é a única, sumir esconderia a faceta.
+      const inutil = (v) => contagem.get(v) === pageCards.length
+        && contagem.size > 1
+        && !facetSel[f.key].has(v);
+      const valores = [...contagem.keys()].filter((v) => !inutil(v))
+        .sort((a, b) => (pos(a) - pos(b)) || String(a).localeCompare(String(b)));
       if (valores.length < 2) return "";
       const itens = valores.map((v) => {
         const marcado = facetSel[f.key].has(v);
@@ -990,7 +1000,13 @@
     if (ownedLabel) ownedLabel.textContent = t(masterMode && detailType === "set" ? "master.slotsOwned" : "stats.owned");
     if (totalLabel) totalLabel.textContent = t(masterMode && detailType === "set" ? "master.slotsTotal" : "stats.pageTotal");
     if (elements.completionFill) elements.completionFill.style.width = `${pct}%`;
-    if (elements.completionBar) elements.completionBar.setAttribute("aria-valuenow", String(pct));
+    if (elements.completionBar) {
+      elements.completionBar.setAttribute("aria-valuenow", String(pct));
+      // A 0% a barra é uma cápsula vazia sem rótulo nenhum entre duas seções —
+      // parecia enfeite quebrado (o Fernando perguntou o que era). Sem nada
+      // marcado ela não informa, então some; volta no primeiro registro.
+      elements.completionBar.hidden = pct <= 0;
+    }
     updateValueStats();
   }
 
