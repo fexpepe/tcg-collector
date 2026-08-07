@@ -124,7 +124,24 @@
       const gr = event.target.closest("[data-graded-grade]");
       if (gr) { graded.setGrade(gid, gr.value.trim().replace(",", ".")); ctx.onChange(); return; }
       const val = event.target.closest("[data-graded-value]");
-      if (val) { graded.setValue(gid, shared.parseMoney(String(val.value).trim())); ctx.onChange(); }
+      if (val) {
+        const amount = shared.parseMoney(String(val.value).trim());
+        graded.setValue(gid, amount);
+        // Preço da Comunidade, série CADASTRADOS com graduadora+nota: é o único
+        // caminho pra existir preço graded de BGS/CGC/SGC/TAG no site (a fonte
+        // automática só cobre PSA). O valor do slab é digitado na moeda do
+        // header, então converte — sem câmbio, desiste.
+        const it = (graded.list() || []).find((x) => x.gid === gid);
+        const card = it && ctx.cardsById().get(it.cardId); // cardsById é um Map
+        const brl = shared.toBrl && shared.toBrl(amount, shared.getCurrency());
+        if (it && card && brl != null && shared.contributePrice) {
+          shared.contributePrice({
+            game: card.game, cardId: it.cardId, variant: it.variant || "Normal",
+            cond: "NM", kind: "listed", company: it.company, grade: it.grade, valueBrl: brl
+          });
+        }
+        ctx.onChange();
+      }
     });
   }
 

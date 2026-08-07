@@ -479,6 +479,13 @@
         entry.source = source || "manual";
         entry.updatedAt = new Date().toISOString().slice(0, 10);
         save();
+        // Preço da Comunidade: só o que a PESSOA digitou (source manual) e só
+        // valor positivo — apagar não é opinião de preço. Preço vindo de fonte
+        // automática (ppt/auto) não entra: o agregado é da comunidade, e somar
+        // o que já veio de fora seria contar a mesma fonte duas vezes.
+        if ((source || "manual") === "manual" && amount > 0) {
+          contributePrice({ game, cardId, variant, cond: condition, kind: "listed", valueBrl: amount });
+        }
       },
       replace(next) {
         prices = next && typeof next === "object" && !Array.isArray(next) ? next : {};
@@ -1131,14 +1138,27 @@
       }),
       add(rec) {
         const sid = uid();
+        const cur = rec.cur || getCurrency();
         data.items[sid] = {
           cardId: rec.cardId, variant: rec.variant || "Normal", cond: rec.cond || "NM",
           price: Math.round((Number(rec.price) || 0) * 100) / 100,
           paid: Math.round((Number(rec.paid) || 0) * 100) / 100,
-          cur: rec.cur || getCurrency(), date: rec.date || new Date().toISOString().slice(0, 10)
+          cur: cur, date: rec.date || new Date().toISOString().slice(0, 10)
         };
         data.order.unshift(sid);
         save();
+        // Preço da Comunidade, série VENDAS: é o sinal mais valioso do agregado
+        // (preço que alguém realmente pagou, não pedida). Convertido pra BRL —
+        // sem câmbio carregado a gente DESISTE em vez de mandar número errado.
+        // `rec.game` vem de quem registra (a venda é global, então a store não
+        // sabe o jogo); sem ele cai no jogo da sessão.
+        const brl = toBrl(rec.price, cur);
+        if (brl != null) {
+          contributePrice({
+            game: rec.game, cardId: rec.cardId, variant: rec.variant || "Normal",
+            cond: rec.cond || "NM", kind: "sold", valueBrl: brl
+          });
+        }
         return sid;
       },
       remove(sid) { if (data.items[sid]) { delete data.items[sid]; data.order = data.order.filter((x) => x !== sid); save(); } }
@@ -2099,6 +2119,65 @@
       });
     } catch (e) { /* contador é opcional */ }
   }
+  // ── Preço da Comunidade: contribuição (F2 de docs/COMMUNITY-PRICES.md) ──────
+  // Pref LOCAL (não sincroniza: é escolha do APARELHO, como o tema). Padrão
+  // LIGADO, no mesmo desenho do opt-out de analytics — decisão do Fernando.
+  const COMMUNITY_PREF = "tcg-collector-pref-community-prices";
+  function communityPricesEnabled() {
+    try { return localStorage.getItem(COMMUNITY_PREF) !== "off"; } catch (e) { return true; }
+  }
+  function setCommunityPrices(on) {
+    try { localStorage.setItem(COMMUNITY_PREF, on ? "on" : "off"); } catch (e) { /* ignora */ }
+  }
+
+  // Manda UM ponto pro agregado da comunidade. Fire-and-forget: contador é
+  // acessório e nunca pode atrapalhar quem está anotando preço.
+  //
+  // As guardas, todas necessárias:
+  //   pref off      — o usuário desligou nas Configurações;
+  //   sem login     — a RPC exige auth.uid() (e desde a 20260807b nem executa);
+  //   fora de prod  — anotar preço em localhost não pode sujar o agregado real,
+  //                   mesma regra do logCardView/logDeckView;
+  //   valor inválido— clamp igual ao do servidor, pra não gastar round-trip.
+  //
+  // `value` chega SEMPRE em BRL: o preço manual já é BRL por definição (a grade
+  // se chama "Preço BR") e a venda é convertida por quem chama. O servidor
+  // também normaliza o mês (date_trunc), então o cliente não manda data.
+  function contributePrice(opts) {
+    const o = opts || {};
+    if (!AUTH_ENABLED || !communityPricesEnabled() || !getSession()) return;
+    if (!/(^|\.)sleevu\.app$/i.test(location.hostname)) return;
+    const v = Number(o.valueBrl);
+    if (!(v > 0) || v > 1000000) return;
+    if (!o.cardId || !o.variant || !o.cond) return;
+    try {
+      fetch(`${SUPABASE_URL}/rest/v1/rpc/contribute_price`, {
+        method: "POST",
+        headers: authHeaders((getSession() || {}).access_token),
+        body: JSON.stringify({
+          p_game: normalizeGame(o.game || currentGame()),
+          p_card_id: String(o.cardId),
+          p_variant: String(o.variant),
+          p_cond: String(o.cond),
+          p_kind: o.kind === "sold" ? "sold" : "listed",
+          p_company: o.company ? String(o.company).toLowerCase() : "",
+          p_grade: o.grade ? String(o.grade) : "",
+          p_value_brl: Math.round(v * 100) / 100
+        }),
+        keepalive: true
+      });
+    } catch (e) { /* contribuição é acessória */ }
+  }
+  // Converte pra BRL (moeda-base do agregado). Sem câmbio carregado devolve
+  // null — e quem chama desiste em vez de mandar número errado pro agregado.
+  function toBrl(value, currency) {
+    const v = Number(value);
+    if (!(v > 0)) return null;
+    if (!currency || currency === "BRL") return v;
+    const r = convertMoney(v, currency, "BRL");
+    return r == null ? null : r;
+  }
+
   // Views por DECK publicado (tabela deck_views, migration 20260804a) — é o
   // sinal que faz o "Em destaque" da galeria ser destaque de verdade, e não só
   // "o mais recente". Mesmo desenho do logCardView: 1 view por deck por sessão,
@@ -5324,6 +5403,10 @@
     loadPriceDeltas,
     basePricingId,
     logCardView,
+    contributePrice,
+    toBrl,
+    communityPricesEnabled,
+    setCommunityPrices,
     logDeckView,
     fetchDeckViews,
     fetchTopViewed,

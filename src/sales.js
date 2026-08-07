@@ -359,7 +359,11 @@
       // Corrigiu/informou o custo aqui? Guarda na carta também: as cópias que
       // sobraram passam a ter o custo certo, e não se digita de novo na próxima.
       if (paidAmount > 0 && paidAmount !== paidNow) costs.set(cardId, variant, paidAmount, shared.getCurrency());
-      sold.add({ cardId, variant, cond, price: amount, paid: paidAmount, cur: shared.getCurrency(), date });
+      // `game` da CARTA (não o da sessão): a venda é global e o Preço da
+      // Comunidade agrega por jogo — vender uma carta de Magic numa sessão
+      // Pokémon mandaria o ponto pro jogo errado.
+      const cardGame = (cardsById.get(cardId) || {}).game;
+      sold.add({ cardId, variant, cond, price: amount, paid: paidAmount, cur: shared.getCurrency(), date, game: cardGame });
       sales.remove(cardId, variant, idx);
       removeCopyFromCollection(cardId, variant, cond);
       close();

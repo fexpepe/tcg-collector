@@ -160,6 +160,18 @@
     });
   }
 
+  // Preço da Comunidade — opt-out do envio anônimo (padrão ligado). Sem reload:
+  // a próxima anotação de preço já respeita a escolha.
+  const community = document.getElementById("communityToggle");
+  if (community) {
+    const sync = () => community.setAttribute("aria-checked", String(shared.communityPricesEnabled()));
+    sync();
+    community.addEventListener("click", () => {
+      shared.setCommunityPrices(!shared.communityPricesEnabled());
+      sync();
+    });
+  }
+
   // Modo sensível — borra os valores de portfólio/coleção.
   const sensitive = document.getElementById("sensitiveToggle");
   if (sensitive) {
