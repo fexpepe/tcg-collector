@@ -71,6 +71,14 @@ Turnstile no login, SMTP próprio (Resend), CI com testes e guardas de mobile.
 
 ## 🔜 Próximos passos (em ordem)
 
+### 0. Preço da Comunidade + graded no card — **plano pronto, aguardando decisões**
+Plano completo em `docs/COMMUNITY-PRICES.md` (2026-08-07): gráfico "Comunidade"
+(preços cadastrados + vendas, agregados com 1 voto por usuário e mínimo de 3
+pontos), valores graded PSA no card, "+ Graded" de dentro do preview e o painel
+do card reorganizado. Duas decisões pendentes do Fernando: mediana × média
+aparada no rótulo, e contribuição padrão ligada × desligada (com toggle e
+política de privacidade em qualquer caso).
+
 ### 1. Preço BR de verdade (MYP) — **a tese do projeto, travada num e-mail**
 "Valores localizados pro Brasil" é a promessa central, e hoje o preço BR só
 existe como registro manual. O lado do código está pronto: `sync-myp.mjs` existe,
