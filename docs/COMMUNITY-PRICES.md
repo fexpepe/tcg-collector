@@ -134,7 +134,7 @@ Mobile: mesma ordem numa coluna; blocos 4-6 como `<details>` recolhíveis
   manual por CONDIÇÃO"):** carimbo `at` por condição com hora, tombstones de
   exclusão, merge por "opinião" (só disputa a condição quem tem preço ou
   tombstone nela), tolerante ao formato legado. Validada com 5 cenários.
-- **F1 — backend — SQL PRONTO (2026-08-07, aguardando o Fernando aplicar):**
+- **F1 — backend — APLICADA (2026-08-07):**
   `supabase/migrations/20260807a_community_prices.sql` + README. Curls de
   verificação no rodapé do arquivo.
 - **F2 — contribuição:** `contributePrice()` + ganchos + toggle de privacidade
@@ -143,18 +143,18 @@ Mobile: mesma ordem numa coluna; blocos 4-6 como `<details>` recolhíveis
 - **F4a — valores graded (PSA) no card — FEITA (2026-08-07).** Tabela nota→valor
   do `TCG_PRICING.g`, nota mais alta primeiro, com o `n` de vendas. Título diz
   "PSA" porque a fonte (PPT) só cobre PSA.
-- **F4b — "+ Graded" de dentro do card — PENDENTE, com motivo.** O
-  `createCardPreview` recebe `store/prices/wishlist/folders/sale/tags` e **não**
-  recebe `graded`; o `createGradedStore` vive no `graded-ui.js`, que não é
-  carregado em toda página que abre preview. Fazer certo = novo hook + threading
-  nos chamadores (collection, detail, cards, explore, wishlist, graded) ou mover
-  o store pro shared. Não penduramos botão meio ligado.
-- **F5 — painel reorganizado: PARCIAL.** Feito o que dá pra verificar por
-  medição: os três blocos de valores (Mercado · Comunidade · Graded) leem como
-  um grupo, com traço e espaçamento iguais. **Falta** (precisa de revisão
-  VISUAL, com screenshot, que a sessão do agente não tinha): reordenar os blocos
-  na ordem proposta, recolher os de valores em `<details>` no celular e os
-  "market tags" com ícone por loja.
+- **F4b — "+ Graded" de dentro do card — FEITA (2026-08-07).** `createCardPreview`
+  ganhou o hook **opcional** `graded`: quem passa mostra o botão, quem não passa
+  não mostra nada (o `createGradedStore` vive no `graded-ui.js`, que não é
+  carregado em toda página com preview). Hoje só a Coleção passa, e passa a
+  **mesma** instância de store da página — segunda instância sobrescreveria o
+  blob. Painel: 5 graduadoras × 8 notas, um clique registra o slab.
+- **F5 — painel reorganizado: FEITA (2026-08-07).** Os três blocos de valores
+  (Mercado · Comunidade · Graded) leem como um grupo; "Detalhes" virou
+  `<details>` no fim do painel e abre fechado em `(max-width: 720px)`. Medido a
+  375px: zero estouro horizontal, e os blocos sem dado somem (altura 0).
+  **Não feito, de propósito:** os "market tags" com ícone por loja — cada loja
+  exigiria um asset curado e a linha de chips já lê bem sem eles.
 - **F6 (futuro) — histórico graded** no pipeline de snapshots
   (`sync-price-history.mjs` fotografando `g` por nota) — aí o card ganha o
   gráfico graded estilo Collectr.
