@@ -3812,6 +3812,15 @@ a.hub-tile:hover {
 .cp-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
 .cp-n { color: var(--subtle); font-weight: 700; }
 
+/* Valores graded (PSA) no card: lista nota → valor, a nota mais alta primeiro.
+   Números tabulares pra coluna de preço não dançar entre as linhas. */
+.graded-price { margin-top: 14px; }
+.gp-rows { display: grid; gap: 4px; }
+.gp-row { display: flex; align-items: baseline; gap: 10px; }
+.gp-grade { flex: 1 1 auto; font-size: 13px; font-weight: 700; color: var(--muted); }
+.gp-val { flex: none; font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.gp-n { flex: none; font-size: 11.5px; color: var(--subtle); font-weight: 700; }
+
 /* Onboarding do @ (primeiro login, shared.js): reusa o modal ts-* e os campos
    do settings. */
 #handleOnboardModal .setting-handle { margin: 4px 0 6px; }

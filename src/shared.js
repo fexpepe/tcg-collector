@@ -3203,6 +3203,48 @@
     section.hidden = false;
   }
 
+  // ── Valores GRADED no card (F4a de docs/COMMUNITY-PRICES.md) ───────────────
+  // Tabela nota→valor a partir do TCG_PRICING.g, que o sync da PPT já traz
+  // (3.132 cartas no Pokémon hoje). O nó é { "9": {s,m,n,t}, "10": {...} }:
+  // s = último preço de venda em USD, n = quantas vendas, t = tendência.
+  //
+  // SÓ PSA, e isso é uma limitação da FONTE, não uma escolha de UI: a PPT só
+  // publica PSA. Por isso o título diz "PSA" em vez de "Graded" — prometer
+  // BGS/CGC e mostrar só PSA seria pior que dizer o que é. BGS/CGC/SGC/TAG
+  // passam a existir por outro caminho: o Preço da Comunidade (F2 manda
+  // company+grade quando alguém anota o valor do próprio slab).
+  function fillGradedPrice(card) {
+    const section = document.querySelector("#cardPreviewModal [data-graded-price]");
+    if (!section || !card) return;
+    const tbl = window.TCG_PRICING;
+    const own = tbl && tbl[card.id];
+    const base = tbl && tbl[basePricingId(card.id)];
+    const g = (own && own.g) || (base && base.g);
+    if (!g) { section.hidden = true; return; }
+    const cur = getCurrency();
+    // Nota DESC: PSA 10 primeiro, que é o que a pessoa procura.
+    const notas = Object.keys(g)
+      .filter((k) => g[k] && Number(g[k].s) > 0)
+      .sort((a, b) => parseFloat(b) - parseFloat(a));
+    if (!notas.length) { section.hidden = true; return; }
+    const linhas = notas.map((nota) => {
+      const node = g[nota];
+      const v = convertMoney(Number(node.s), "USD", cur);
+      if (v == null) return "";
+      const n = Number(node.n) || 0;
+      return `<div class="gp-row">
+        <span class="gp-grade">PSA ${escapeHtml(nota)}</span>
+        <strong class="gp-val">${escapeHtml(fmtMoney(cur, v))}</strong>
+        ${n ? `<span class="gp-n">${escapeHtml(t("community.fromN", { n: n }))}</span>` : ""}
+      </div>`;
+    }).filter(Boolean).join("");
+    if (!linhas) { section.hidden = true; return; }
+    section.innerHTML = `<div class="market-quote-head"><h3>${escapeHtml(t("graded.priceTitle"))}</h3></div>
+      <div class="gp-rows">${linhas}</div>
+      <p class="market-source">${escapeHtml(t("graded.priceSource"))}</p>`;
+    section.hidden = false;
+  }
+
   // Busca cotação + câmbio e preenche a seção no modal (some se não houver).
   async function fillMarketQuote(card) {
     const section = document.querySelector("#cardPreviewModal [data-market-quote]");
@@ -3449,6 +3491,12 @@
                  onde a comunidade mais importa. Nasce hidden: aparece só quando
                  a RPC devolve bucket (o servidor já exige n>=3). -->
             <section class="community-price" data-community-price hidden></section>
+            <!-- Valores GRADED (PSA): tabela nota-valor do TCG_PRICING.g, que o
+                 sync já traz. Container próprio pelo mesmo motivo do de
+                 comunidade, e nasce hidden: carta sem nó graded não mostra
+                 nada. (Sem backtick neste comentário: ele vive DENTRO de um
+                 template literal e fecharia a string.) -->
+            <section class="graded-price" data-graded-price hidden></section>
             ${prices ? brMarketplaceLinks(activeCard, gradedSearchTag(activeGraded)) : ""}
           </div>
         </section>
@@ -3484,6 +3532,7 @@
       // Preço da Comunidade: independente do de mercado (container próprio), pra
       // carta sem cotação também mostrar o que a comunidade anotou.
       fillCommunityPrice(activeCard, activeVariant);
+      fillGradedPrice(activeCard); // valores PSA, quando o catálogo tem
     }
 
     function close() {
