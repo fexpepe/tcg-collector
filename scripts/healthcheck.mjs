@@ -82,6 +82,10 @@ await checkPage("sitemap", "/sitemap.xml", { contains: "<urlset" });
 await checkPage("página de set (SEO)", "/set/base-set", { contains: "Base Set" });
 // 404 de verdade (anti soft-404): sem isto o Google indexa URL quebrada como 200.
 await checkPage("404 real", "/healthcheck-caminho-inexistente", { status: 404 });
+// /users/<handle> tem 404 PRÓPRIO (a Pages Function serve a shell da coleção, não
+// o asset 404.html), então escapava da guarda acima: por meses respondeu 200 com
+// casca vazia e o Search Console reportou soft 404. Esta linha é a guarda de volta.
+await checkPage("404 real em /users", "/users/healthcheck-handle-inexistente", { status: 404 });
 
 console.log("\n[catálogos]");
 // Manifest: o que importa é a LISTA de sets dentro dele (Pokémon tem centenas

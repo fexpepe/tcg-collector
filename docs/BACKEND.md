@@ -103,7 +103,7 @@ Fotos de binder (IndexedDB) **não** sobem: o blob leva só metadados.
 |---|---|
 | `GET /api/search` | busca no jogo inteiro (ou `game=all`) respondida por D1, em poucos KB — no lugar de baixar o `search-index.json` inteiro (8 MB no Magic) |
 | `POST /api/collection` | devolve as cartas e os preços **exatamente dos ids** que a pessoa tem, no lugar dos chunks inteiros dos sets |
-| `GET /users/<handle>` | serve a SPA com Open Graph, título e canonical dinâmicos do perfil |
+| `GET /users/<handle>` | serve a SPA com Open Graph, título e canonical dinâmicos do perfil. Handle inexistente devolve **404 de verdade**; se a consulta ao Supabase falhar, serve a shell com `noindex` (indisponibilidade temporária não pode apagar perfis reais do índice) |
 
 Duas regras de projeto:
 
