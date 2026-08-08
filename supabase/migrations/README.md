@@ -8,13 +8,23 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20260807c` — libera o slug `unionarena` (Union Arena, 13º jogo) nas DUAS
-  whitelists de jogo: `card_views`/`increment_card_view` e `contribute_price`.
-  Sem ela o site funciona inteiro, mas no Union Arena a contagem de views e a
-  contribuição de preço são descartadas **em silêncio** (as funções só dão
-  `return`). O arquivo traz os curl de verificação no rodapé.
+Nenhuma. Todas as migrações deste diretório estão aplicadas em produção
+(verificado por curl — ver a lista abaixo).
 
 ### Já aplicadas (verificado em produção)
+
+- `20260807c` — libera o slug `unionarena` (Union Arena, 13º jogo) nas DUAS
+  whitelists de jogo: `card_views`/`increment_card_view` e `contribute_price`.
+  Aplicada em 2026-08-07. Verificado: `increment_card_view` com
+  `p_game=unionarena` responde 204 **e cria a linha** (`{"game":"unionarena",
+  "card_id":"ua-576966","views":1}`); o controle com um jogo inventado também
+  responde 204 mas **não** cria linha nenhuma — é isso que prova que a whitelist
+  está filtrando, e não que a função virou passa-tudo. A contribuição anônima
+  segue **401**, então o fechamento da `20260807b` sobreviveu ao
+  `create or replace` (como esperado: replace preserva a ACL).
+  O que ficou SEM prova direta: a whitelist do `contribute_price` para
+  `unionarena` — testá-la exige um JWT de usuário logado. Fecha contribuindo um
+  preço em qualquer carta do Union Arena pelo site.
 
 - `20260807b` — revoga de PUBLIC/anon o EXECUTE de `contribute_price`.
   Aplicada em 2026-08-07: chamada anônima passou de HTTP 204 (executava e
