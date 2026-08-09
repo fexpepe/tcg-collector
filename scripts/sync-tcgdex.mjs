@@ -170,8 +170,14 @@ console.log(`Sets: ${stats.fetched} baixados, ${stats.fromCache} do cache · car
 
 // Decide se um set cacheado deve ser re-baixado: sets recentes (a TCGdex ainda
 // preenche) ou que parecem incompletos (menos cartas que o total oficial) e
-// ainda não são velhos demais. Sets antigos e completos ficam no cache.
-function shouldRefreshCache(cached) {
+// ainda não são velhos demais. Sets antigos e completos entram numa ROTAÇÃO
+// semanal: o PREÇO vem embutido no card da TCGdex (compactPrice), então um set
+// que nunca sai do cache é um set com preço congelado no dia do primeiro fetch
+// (o CI restaura data/.cache entre builds — os sets EN antigos passaram meses
+// com o preço parado; só JP e a lista EN da PPT escapavam). ~1/7 dos sets por
+// idioma re-baixa por dia (determinístico pelo id do set, sem estado extra):
+// todo preço fica no máximo 7 dias defasado e o run diário segue rápido.
+function shouldRefreshCache(cached, setId) {
   const set = cached && cached.set;
   if (!set) return true;
   const release = set.releaseDate ? new Date(set.releaseDate).getTime() : NaN;
@@ -181,7 +187,9 @@ function shouldRefreshCache(cached) {
   const official = set.cardCount && set.cardCount.official;
   const have = Array.isArray(cached.cards) ? cached.cards.length : 0;
   if (official && have < official && ageDays <= 730) return true; // incompleto e novo-ish
-  return false;
+  let h = 0;
+  for (const ch of String(setId)) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return h % 7 === Math.floor(Date.now() / 86400000) % 7; // rotação semanal de preço
 }
 
 async function loadSetCards(setId, label) {
@@ -192,14 +200,14 @@ async function loadSetCards(setId, label) {
       const cached = JSON.parse(await readFile(cacheFile, "utf8"));
       // A TCGdex COMPLETA os sets aos poucos (secret rares/promos entram semanas
       // depois do lançamento). Sem isto, um set baixado cedo ficaria incompleto
-      // pra sempre. Então re-baixa sets recentes/incompletos; os antigos e
-      // completos seguem do cache (rápido).
-      if (!shouldRefreshCache(cached)) {
+      // pra sempre. Então re-baixa sets recentes/incompletos (e os antigos na
+      // rotação semanal de preço); o resto segue do cache (rápido).
+      if (!shouldRefreshCache(cached, setId)) {
         stats.fromCache++;
         console.log(`${label} — ${cached.cards.length} cartas (cache)`);
         return cached;
       }
-      console.log(`${label} — cache desatualizado (recente/incompleto), re-baixando`);
+      console.log(`${label} — cache desatualizado (recente/incompleto/rotação), re-baixando`);
     } catch {
       // sem cache ou cache corrompido: baixa de novo
     }

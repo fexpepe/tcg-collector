@@ -278,7 +278,9 @@ jobs:
 
       # Catálogo do Magic (Scryfall): catálogo + preços TCGplayer USD/Cardmarket
       # EUR + imagens numa fonte só, grátis. Cache incremental por set em
-      # data/.cache/magic (invalida quando o card_count do set muda). Padrão
+      # data/.cache/magic (invalida quando o card_count muda, quando o set é
+      # recente (<120d, preço diário) ou na rotação semanal de preço — ~1/7 dos
+      # sets antigos por dia, pro preço nunca passar de 7 dias defasado). Padrão
       # POKÉMON de durabilidade: os chunks data/magic/sets/ são versionados pelo
       # snapshot; o script congela neles se o Scryfall estiver fora.
       - name: Sincroniza catálogo do Magic (Scryfall)

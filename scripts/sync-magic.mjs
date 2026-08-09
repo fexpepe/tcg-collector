@@ -130,7 +130,10 @@ function makeCard(c, set, usedIds, pricing) {
   const foil = num(p.usd_foil) || num(p.usd_etched);
   if (foil) pr.uf = foil;
   if (!pr.u && pr.uf) pr.u = pr.uf; // só-foil: foil vira a referência
-  if (num(p.eur)) pr.e = num(p.eur);
+  // eur_foil como fallback do EUR: serializadas caras (borderless/box topper)
+  // muitas vezes SÓ têm cotação foil no Cardmarket — sem isto ficavam sem
+  // preço nenhum (ex.: Smaug borderless €450 aparecia como "—").
+  if (num(p.eur) || num(p.eur_foil)) pr.e = num(p.eur) || num(p.eur_foil);
   if (Object.keys(pr).length) pricing[id] = pr;
 
   // Campos de DECK (construtor de decks). O Scryfall já mandou tudo isto na mesma
@@ -199,13 +202,31 @@ function makeCard(c, set, usedIds, pricing) {
   return card;
 }
 
+// VALIDADE do cache: o card_count pega mudança de ESTRUTURA, mas preço muda
+// todo dia com o count parado — só ele deixava o preço congelado no dia do
+// primeiro fetch (o CI restaura data/.cache entre builds; o Hobbit ficou
+// semanas com preço de pré-venda). Regra: set lançado há <120 dias (ou
+// pré-venda) re-busca SEMPRE (preço de spoiler despenca na primeira semana);
+// os demais entram numa rotação semanal determinística por código do set —
+// ~1/7 dos sets por dia, todo preço fica no máximo 7 dias defasado e o cron
+// diário segue leve (~115 sets em vez de ~800). Sem estado extra: perder um
+// build só adia aquele 1/7 pra semana seguinte.
+const hashCode = (s) => { let h = 0; for (const ch of String(s)) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; };
+function cacheStillFresh(set) {
+  const rel = Date.parse(set.released_at || "");
+  const ageDays = Number.isNaN(rel) ? Infinity : (Date.now() - rel) / 86400000;
+  if (ageDays < 120) return false; // pré-venda/recém-lançado: preço diário
+  return hashCode(set.code) % 7 !== Math.floor(Date.now() / 86400000) % 7;
+}
+
 // Busca as cartas de UM set (paginado), com cache incremental: o cache vale
-// enquanto o card_count do set não mudar (sets de promo crescem com o tempo).
+// enquanto o card_count não mudar E o preço não estiver vencido (ver
+// cacheStillFresh — o cache guarda cartas e preços juntos).
 async function fetchSetCards(set, pricing, usedIds) {
   const cacheFile = new URL(`${set.code}.json`, CACHE);
   try {
     const cached = JSON.parse(await readFile(cacheFile, "utf8"));
-    if (cached && cached.v === CACHE_VERSION && cached.count === set.card_count && Array.isArray(cached.cards)) {
+    if (cached && cached.v === CACHE_VERSION && cached.count === set.card_count && Array.isArray(cached.cards) && cacheStillFresh(set)) {
       for (const c of cached.cards) usedIds.add(c.id);
       Object.assign(pricing, cached.pricing || {});
       return cached.cards;
