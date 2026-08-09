@@ -27,6 +27,11 @@ export async function onRequestGet(context) {
     status,
     headers: {
       "Content-Type": "application/json",
+      // Respostas montadas do zero não herdam o _headers do site: sem isto saíam
+      // sem nosniff nem CSP. Não é explorável hoje (nada de input é refletido),
+      // mas trava a regressão se algum dia um eco de input entrar aqui.
+      "X-Content-Type-Options": "nosniff",
+      "Content-Security-Policy": "default-src 'none'",
       // Busca é cacheável: mesma consulta = mesma resposta até o próximo
       // build. s-maxage curto na borda tira as consultas repetidas do banco.
       "Cache-Control": cacheSeg ? `public, max-age=${cacheSeg}, s-maxage=${cacheSeg * 4}` : "no-store"

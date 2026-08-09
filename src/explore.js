@@ -44,9 +44,26 @@
         cards.forEach((card) => cardGameMap.set(card.id, card.game));
         cardsById = new Map(cards.map((card) => [card.id, card]));
         return cards;
+      }).catch((error) => {
+        // Era a ÚNICA página de catálogo sem catch: a promise memoizada rejeitava
+        // e os esqueletos ficavam na tela pra sempre. Espelha o cards.js — limpa,
+        // mostra o erro e zera a promise pra permitir nova tentativa.
+        catalogPromise = null;
+        elements.intro.hidden = true;
+        elements.grid.innerHTML = "";
+        elements.empty.textContent = shared.t("error.catalog", { message: error.message });
+        elements.empty.hidden = false;
+        if (elements.resultsHeader) elements.resultsHeader.hidden = true;
+        throw error;
       });
     }
     return catalogPromise;
+  }
+
+  // Carrega o catálogo e redesenha; o catch existe só pra não vazar a rejeição
+  // (o ensureCatalog já pintou o erro na tela).
+  function renderFromCatalog() {
+    ensureCatalog().then(() => render({ resetCount: true })).catch(() => { /* erro já exibido */ });
   }
 
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
@@ -189,13 +206,13 @@
     if (!elements.grid.querySelector(".card-tile")) shared.showSkeletons(elements.grid, "card", 8);
     const hits = await shared.searchApi(gameFilter === "all" ? "all" : gameFilter, term(), 60);
     if (seq !== apiSeq) return;
-    if (!hits) { ensureCatalog().then(() => render({ resetCount: true })); return; } // API desligada: caminho de sempre
-    const idsByGame = {};
+    if (!hits) { renderFromCatalog(); return; } // API desligada: caminho de sempre
+    const idsByGame = Object.create(null); // g vem do D1, mas null-proto evita surpresa com "constructor" etc.
     hits.forEach((h) => { const g = h.g || "pokemon"; (idsByGame[g] = idsByGame[g] || []).push(h.i); });
     let catalog = { cards: [] };
     if (hits.length) {
       try { catalog = await shared.loadOwnedAcrossGames(idsByGame); }
-      catch (e) { ensureCatalog().then(() => render({ resetCount: true })); return; }
+      catch (e) { renderFromCatalog(); return; }
     }
     if (seq !== apiSeq) return;
     const byId = new Map((catalog.cards || []).map((c) => [c.id, c]));
@@ -213,7 +230,7 @@
 
   const apply = () => {
     writeUrl();
-    if (catalogPromise) { ensureCatalog().then(() => render({ resetCount: true })); return; }
+    if (catalogPromise) { renderFromCatalog(); return; }
     if (!isSearching()) { render({ resetCount: true }); return; }
     apiApply();
   };

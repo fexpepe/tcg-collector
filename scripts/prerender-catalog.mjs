@@ -71,7 +71,11 @@ function slugify(name) {
 function absUrl(u) {
   const s = String(u || "");
   if (!s) return s;
-  return /^https?:\/\//.test(s) ? s : "/" + s.replace(/^\/+/, "");
+  // ABSOLUTA de verdade (com origem), não só root-relative: og:image e o campo
+  // `image` do JSON-LD são IGNORADOS pelos crawlers quando relativos — a prévia
+  // de compartilhamento (WhatsApp/Facebook/Slack) sumia em ~685 páginas e o
+  // Product perdia o rich result. Em <img src> a URL absoluta funciona igual.
+  return /^https?:\/\//.test(s) ? s : `${ORIGIN}/` + s.replace(/^\/+/, "");
 }
 function fmtDatePt(iso) {
   const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || "");

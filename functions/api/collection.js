@@ -30,11 +30,25 @@ export async function onRequestPost(context) {
   const { env, request } = context;
   const json = (corpo, status) => new Response(JSON.stringify(corpo), {
     status,
-    // Dado do usuário: nunca em cache compartilhado.
-    headers: { "Content-Type": "application/json", "Cache-Control": "no-store" }
+    // Dado do usuário: nunca em cache compartilhado. nosniff + CSP porque a
+    // resposta é montada do zero e não herda o _headers do site.
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store",
+      "X-Content-Type-Options": "nosniff",
+      "Content-Security-Policy": "default-src 'none'"
+    }
   });
 
   if (!env.DB) return json({ off: 1 }, 503);
+
+  // Teto de tamanho ANTES de materializar o corpo. Sem isto, o request.json()
+  // lia o payload inteiro e só depois o MAX_IDS o rejeitava — e como o endpoint
+  // é anônimo e sem preflight (simple request), qualquer site podia mandar os
+  // navegadores dos visitantes postarem corpos enormes. 1200 ids ≈ 20 KB; 64 KB
+  // dá folga e ainda barra o abuso cedo. content-length ausente cai no MAX_IDS.
+  const tam = Number(request.headers.get("content-length"));
+  if (tam > 65536) return json({ erro: "grande", max: MAX_IDS }, 413);
 
   let pedido;
   try { pedido = await request.json(); } catch (e) { return json({ erro: "json" }, 400); }

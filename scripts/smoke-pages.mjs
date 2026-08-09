@@ -11,9 +11,13 @@
 // página de toda série e de toda linha vintage ficava em branco. Nenhum teste de
 // unidade nem guarda estática pega isso: só abrindo a página.
 //
-// Uso: sirva o site (python3 -m http.server 8899) e rode
+// Uso: sirva o site (npx http-server -p 8899 .) e rode
+//   npx --yes playwright install chromium   # uma vez
 //   node scripts/smoke-pages.mjs [porta]
-import { chromium } from "/opt/node22/lib/node_modules/playwright/index.mjs";
+// Antes o import era um caminho ABSOLUTO de uma máquina só (/opt/node22/…), o que
+// deixava a guarda inrodável em qualquer outro lugar — inclusive no CI. Especifier
+// normal resolve onde o playwright estiver instalado.
+import { chromium } from "playwright";
 
 const PORTA = process.argv[2] || "8899";
 const BASE = `http://localhost:${PORTA}/`;

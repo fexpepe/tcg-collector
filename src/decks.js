@@ -382,7 +382,12 @@
     const raw = t("decks.byAuthor", { author: "\u0001" });
     const i = raw.indexOf("\u0001");
     const h = String(author).slice(0, 30);
-    if (i < 0) return esc(t("decks.byAuthor", { author: h }));
+    // Só vira link se for handle DE VERDADE (letras/dígitos/_, 3–24). No share
+    // publicado o author já é o handle normalizado, mas um payload adulterado
+    // podia trazer qualquer coisa e gerar um /users/<lixo> morto. Fora do padrão,
+    // mostra só o texto (o escA já contém a aspa; isto tira o link quebrado).
+    const isHandle = /^[a-z0-9_]{3,24}$/i.test(h);
+    if (i < 0 || !isHandle) return esc(t("decks.byAuthor", { author: h }));
     return `${esc(raw.slice(0, i))}<a class="dkc-author-link" href="/users/${escA(h)}">${esc(h)}</a>${esc(raw.slice(i + 1))}`;
   }
 

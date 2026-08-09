@@ -34,9 +34,16 @@
     jump: { slug: "jump", name: "JUMP", dataDir: "data/jump/" }            // promos curadas (Jump Festa, V-Jump…)
   };
 
+  // Allowlist REAL: `GAMES[q]` sozinho deixa passar chave de protótipo
+  // (?game=constructor, toString, __proto__…) — truthy, isHub undefined, e o
+  // valor ia parar no localStorage e travava toda visita futura com "0 cartas".
+  // indexOf num array de slugs não tem esse furo.
+  var GAME_SLUGS = Object.keys(GAMES);
+  function isRealGame(g) { return GAME_SLUGS.indexOf(g) >= 0 && !GAMES[g].isHub; }
+
   var GAME_KEY = "tcg-collector-game-v1"; // sessão: jogo escolhido por último
   function readSession() {
-    try { var g = localStorage.getItem(GAME_KEY); return (g && GAMES[g] && !GAMES[g].isHub) ? g : null; } catch (e) { return null; }
+    try { var g = localStorage.getItem(GAME_KEY); return isRealGame(g) ? g : null; } catch (e) { return null; }
   }
   function writeSession(g) {
     try { localStorage.setItem(GAME_KEY, g); } catch (e) { /* storage bloqueado: ignora */ }
@@ -68,11 +75,11 @@
       // grava a sessão pra próxima navegação entrar no jogo certo. Nas DEMAIS
       // neutras (Decks etc.) o ?game= é sobra do carimbo antigo, em links que
       // ainda circulam — trocar a sessão de quem abre seria efeito colateral.
-      if (q && GAMES[q] && !GAMES[q].isHub && isEntryPage()) writeSession(q);
+      if (isRealGame(q) && isEntryPage()) writeSession(q);
       return "hub";
     }
     if (q === "hub") return "hub";                              // deep-link legado (?game=hub): sessão neutra
-    if (q && GAMES[q] && !GAMES[q].isHub) { writeSession(q); return q; } // troca/deep-link
+    if (isRealGame(q)) { writeSession(q); return q; }           // troca/deep-link
     var s = readSession();
     if (s) { stampGame(s); return s; }                          // sessão atual
     stampGame("pokemon");
@@ -109,7 +116,7 @@
   }
 
   var game = detectGame();
-  var cfg = GAMES[game] || GAMES.pokemon;
+  var cfg = (GAME_SLUGS.indexOf(game) >= 0 && GAMES[game]) || GAMES.pokemon;
   document.documentElement.setAttribute("data-game", cfg.slug);
 
   // Idioma de CARTA no <html>, ainda no <head>. Não é usado pra traduzir nada

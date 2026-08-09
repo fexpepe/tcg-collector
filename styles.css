@@ -8442,3 +8442,27 @@ select,
   white-space: nowrap; pointer-events: none; box-shadow: var(--shadow);
 }
 .ph-tip.is-flip { transform: translateX(calc(-100% - 8px)); }
+
+/* Skip link: primeiro tabstop de toda página. Pula o header + nav direto pro
+   conteúdo (o shared.js injeta o <a> e marca o <main id="main">). Fica fora da
+   tela até receber foco por teclado — invisível ao mouse, presente pro Tab. */
+.skip-link {
+  position: absolute; left: 8px; top: -80px; z-index: 1000;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--line); border-radius: 8px;
+  padding: 10px 16px; font-weight: 700; text-decoration: none;
+  transition: top 0.15s ease;
+}
+.skip-link:focus { top: 8px; }
+
+/* Movimento reduzido: rede geral pra transições/animações não cobertas caso a
+   caso acima. Duração ~0 (não `none`) preserva os eventos transitionend/animationend
+   de que algum JS depende. Respeita a preferência do sistema. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

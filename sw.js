@@ -295,10 +295,14 @@ async function staleWhileRevalidate(event) {
   const request = event.request;
   const cache = await caches.open(DATA_CACHE);
   const cached = await cache.match(request);
-  const rede = fetch(request, { cache: "no-cache" }).then((response) => {
+  // Sem cache:"no-cache": agora que o _headers dá /data/* um Cache-Control real
+  // (max-age=3600, swr=86400), forçar revalidação anulava esse cache HTTP e cada
+  // chunk pagava uma requisição condicional em toda revisita. Deixar o padrão
+  // permite o navegador servir do próprio cache enquanto fresco.
+  const rede = fetch(request).then((response) => {
     if (response && response.ok) {
       cache.put(request, response.clone());
-      trim(DATA_CACHE, MAX_DATA);
+      maybeTrim(DATA_CACHE, MAX_DATA);
     }
     return response;
   }).catch(() => null);
@@ -320,7 +324,7 @@ async function networkFirst(request, url) {
     if (response && response.ok) {
       const cache = await caches.open(cacheName);
       cache.put(request, response.clone());
-      trim(cacheName, cacheName === DATA_CACHE ? MAX_DATA : Infinity);
+      maybeTrim(cacheName, cacheName === DATA_CACHE ? MAX_DATA : Infinity);
     }
     return response;
   } catch (error) {
@@ -344,13 +348,31 @@ self.addEventListener("push", (event) => {
 });
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
-  const url = new URL((event.notification.data && event.notification.data.url) || "wishlist.html", self.location.href).href;
+  // Clamp de origem: data.url vem do payload do push. A assinatura VAPID já barra
+  // remetente forjado, mas um destino cross-origin aqui não teria motivo — cai na
+  // wishlist. openWindow abriria qualquer origem; navigate recusa, mas melhor não depender disso.
+  let alvo = new URL((event.notification.data && event.notification.data.url) || "wishlist.html", self.location.href);
+  if (alvo.origin !== self.location.origin) alvo = new URL("wishlist.html", self.location.href);
+  const url = alvo.href;
   event.waitUntil((async () => {
     const wins = await clients.matchAll({ type: "window", includeUncontrolled: true });
     for (const w of wins) { if (w.url.startsWith(self.location.origin)) { w.navigate(url); return w.focus(); } }
     return clients.openWindow(url);
   })());
 });
+
+// A poda enumera o cache INTEIRO (cache.keys() materializa até MAX_DATA
+// Requests). Chamada a cada put, uma grade de 60 tiles com cache frio = 60
+// varreduras completas na thread do SW, que é a mesma que responde todo fetch.
+// O contador amortiza: enumera só a cada ~50 gravações. Entre podas o cache
+// pode passar do teto por até ~50 entradas — irrelevante com MAX_DATA=600.
+let putsDesdePoda = 0;
+function maybeTrim(cacheName, maxEntries) {
+  if (!Number.isFinite(maxEntries)) return;
+  if (++putsDesdePoda < 50) return;
+  putsDesdePoda = 0;
+  trim(cacheName, maxEntries);
+}
 
 async function trim(cacheName, maxEntries) {
   if (!Number.isFinite(maxEntries)) return;

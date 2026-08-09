@@ -1344,6 +1344,21 @@
   // Constrói a navegação das páginas: Início | Pokémon ▾ (Pokédex, Sets,
   // Artistas) | Coleção. O HTML só informa a página ativa via data-active-page.
   function initPageNav() {
+    // Skip link (a11y): primeiro tabstop de toda página, pula header + nav direto
+    // pro conteúdo. Injetado aqui em vez de repetido em 31 HTMLs. tabindex=-1 no
+    // <main> deixa o foco pousar nele de fato (o :focus-visible não morde foco
+    // programático, então não pinta outline no clique).
+    const main = document.querySelector("main");
+    if (main && !document.querySelector(".skip-link")) {
+      if (!main.id) main.id = "main";
+      if (!main.hasAttribute("tabindex")) main.setAttribute("tabindex", "-1");
+      const skip = document.createElement("a");
+      skip.className = "skip-link";
+      skip.href = "#" + main.id;
+      skip.textContent = t("a11y.skip");
+      document.body.insertBefore(skip, document.body.firstChild);
+    }
+
     const nav = document.querySelector(".page-nav[data-active-page]");
     if (!nav) return;
 
@@ -7570,10 +7585,12 @@
     try { localStorage.setItem(UI_EDITOR_PREF, on ? "on" : "off"); } catch (e) { /* ignora */ }
   }
   function initUiEditor() {
-    try {
-      if (new URLSearchParams(location.search).get("uieditor") === "1") setUiEditor(true);
-    } catch (e) { /* ignora */ }
-    if (!uiEditorEnabled()) return;
+    let urlOn = false;
+    try { urlOn = new URLSearchParams(location.search).get("uieditor") === "1"; } catch (e) { /* ignora */ }
+    // ?uieditor=1 liga o editor só NESTA carga — não grava mais a pref. Antes
+    // persistia, e um link ?uieditor=1 deixava o painel de dev flutuando na tela
+    // da vítima pra sempre. A pref durável só vem do toggle das Configurações.
+    if (!urlOn && !uiEditorEnabled()) return;
     const sc = document.createElement("script");
     sc.src = "src/ui-editor.js";
     sc.defer = true;

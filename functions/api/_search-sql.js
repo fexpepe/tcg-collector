@@ -84,11 +84,18 @@ CREATE TABLE IF NOT EXISTS prices (
 export function buildSearch(game, consulta, limite) {
   const termos = palavras(consulta).slice(0, 5); // 5 palavras bastam; mais = abuso
   if (!termos.length) return null;
+  // Gate de 2 caracteres, espelhando o cliente (que já não busca com menos).
+  // Sem ele, ?q=a caía no ramo de 1 char e o LIKE 'a%' varria o índice; iterar
+  // a..z com game=all esgotava a cota de leitura do D1. Aqui a borda também barra.
+  if (termos.join("").length < 2) return null;
   const global = game === "all";
+  // Cada operando do INTERSECT é embrulhado num LIMIT 2000: teto de linhas LIDAS
+  // por termo (no D1 linha lida é linha COBRADA — não a devolvida). Não muda o
+  // resultado prático: o INTERSECT já afunila e o SELECT externo corta em ~40.
   const sub = termos
     .map(() => global
-      ? `SELECT game, id FROM card_words WHERE word LIKE ? ESCAPE '\\'`
-      : `SELECT id FROM card_words WHERE game = ?1 AND word LIKE ? ESCAPE '\\'`)
+      ? `SELECT game, id FROM (SELECT game, id FROM card_words WHERE word LIKE ? ESCAPE '\\' LIMIT 2000)`
+      : `SELECT id FROM (SELECT id FROM card_words WHERE game = ?1 AND word LIKE ? ESCAPE '\\' LIMIT 2000)`)
     .join("\nINTERSECT\n");
   const alvo = global ? `(game, id) IN` : `game = ?1 AND id IN`;
   const sql = `SELECT game, id, name, set_name, number, card_type, cost, rarity, color

@@ -61,8 +61,12 @@ espera("'リザードン' acha carta japonesa", ja.length > 0, `${ja.length} res
 // Consulta vazia
 espera("consulta vazia devolve vazio", buildSearch("pokemon", "   ", 40) === null);
 
-// Limite respeitado
-espera("limite 5 corta em 5", busca("pokemon", "e", 5).length <= 5);
+// Limite respeitado (termo de 2+ chars: a borda agora recusa 1 char)
+espera("limite 5 corta em 5", busca("pokemon", "pi", 5).length <= 5);
+
+// Gate de 2 caracteres: consulta de 1 char é recusada (protege a cota do D1)
+espera("1 caractere devolve vazio", buildSearch("pokemon", "e", 40) === null);
+espera("2 caracteres passam", buildSearch("pokemon", "pi", 40) !== null);
 
 // Set, número e artista também são palavras (o alcance do haystack do cliente)
 const pele = busca("pokemon", "pikachu jungle");

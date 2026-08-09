@@ -7,10 +7,14 @@
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#e8ecf1",
-  "theme_color": "#ffffff",
+  "background_color": "#101218",
+  "theme_color": "#101218",
   "categories": ["utilities", "productivity"],
+  "shortcuts": [
+    { "name": "Coleção", "short_name": "Coleção", "url": "/collection", "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Explorar", "short_name": "Explorar", "url": "/explore", "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Wishlist", "short_name": "Wishlist", "url": "/wishlist", "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }] }
+  ],
   "icons": [
     {
       "src": "icon.svg",

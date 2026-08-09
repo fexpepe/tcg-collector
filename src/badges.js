@@ -292,7 +292,10 @@
     set("seasonYear", thisYear);
     render(); finish();
   }).catch(() => {
-    defs.forEach((d) => { if (d.cur == null) d.cur = 0; });
+    // Catálogo não veio (soluço de rede/CDN): NÃO zerar. Zerar pintava todas as
+    // medalhas de catálogo como "0/target" e o usuário via progresso PERDIDO. Deixar
+    // cur == null as mantém no estado pending ("…", barra vazia) — "ainda não calculado",
+    // que é a verdade. As medalhas que não dependem de catálogo já têm cur e aparecem.
     render(); finish();
   });
 })();

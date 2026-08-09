@@ -2271,7 +2271,10 @@
       });
     }
     sv._profileNav = profileNav && profileNav.onNav ? profileNav.onNav : null;
-    const idsByGame = {};
+    // null-proto: `it.g` vem do share de OUTRO usuário. Com {} um g="constructor"
+    // fazia idsByGame[g] cair no Object.prototype.constructor (função), o `.push`
+    // dava TypeError FORA do try abaixo e o preview parava de abrir. Aqui não há proto.
+    const idsByGame = Object.create(null);
     allItems.forEach((it) => { const g = it.g || "pokemon"; (idsByGame[g] = idsByGame[g] || []).push(it.id); });
     try {
       const catalog = await shared.loadOwnedAcrossGames(idsByGame);
