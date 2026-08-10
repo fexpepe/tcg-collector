@@ -61,9 +61,17 @@ for (const pagina of PAGINAS) {
   });
   await page.goto(BASE + pagina, { waitUntil: "domcontentloaded" });
   await page.waitForTimeout(4000);
+  // Só a mensagem de ERRO do boot (i18n `error.catalog`), não o estado vazio.
+  // O /catálogo|catalog/ de antes acusava a Coleção e a Wishlist de quebradas
+  // sempre que a conta não tinha dados: o texto de lista vazia convida a
+  // "Explorar o catálogo", e a palavra bastava pra casar. Duas falhas fixas
+  // deixavam a guarda inútil — quem roda aprende a ignorar o vermelho.
   const erroDeCatalogo = await page.evaluate(() => {
     const vazio = document.getElementById("emptyState");
-    return vazio && !vazio.hidden && /catálogo|catalog/i.test(vazio.textContent) ? vazio.textContent.trim().slice(0, 160) : "";
+    if (!vazio || vazio.hidden) return "";
+    const texto = vazio.textContent || "";
+    return /(não foi possível carregar o catálogo|could not load the catalog|no se pudo cargar el catálogo)/i.test(texto)
+      ? texto.trim().slice(0, 160) : "";
   });
   const problemas = [...erros.map((e) => `js: ${e}`), ...quebrados.map((e) => `http: ${e}`)];
   if (erroDeCatalogo) problemas.push(`boot: ${erroDeCatalogo}`);
