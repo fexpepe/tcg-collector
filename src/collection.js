@@ -379,21 +379,42 @@
     // só Pokémon não precisa ver 12 chips (e o filtro some de vez com 1 jogo).
     // Roda aqui, antes dos catálogos: a posse vem do localStorage, não da rede.
     shared.setGameFilterScope(shared.GAME_SLUGS.filter((g) => ownedByGame[g].size > 0));
+    // loadOwnedFast: pede à BORDA (/api/collection) só as cartas que você tem —
+    // sem baixar os chunks INTEIROS dos sets nem o índice inteiro do jogo (2,86 MB
+    // no Magic), que era o que fazia a Coleção demorar e esquentar o celular. As
+    // cartas já vêm com setId, então nem o setIdForCard O(n²) roda. É o mesmo
+    // caminho que o Portfólio e o Dashboard já usam. Se a borda estiver fora, cai
+    // sozinho no caminho de chunks de sempre (viaApi=false), sem o usuário notar.
+    const gamesComCarta = shared.GAME_SLUGS.filter((g) => ownedByGame[g].size > 0);
     Promise.all([
-      shared.loadOwnedAcrossGames(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, ownedByGame[g].knownCardIds()]))),
+      shared.loadOwnedFast(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, ownedByGame[g].knownCardIds()]))),
       shared.loadFxRates()
     ])
-      .then(([catalog]) => {
-        cards = catalog.cards;
+      .then(([result]) => {
+        cards = result.cards;
         cards.forEach((card) => cardGameMap.set(card.id, card.game));
-        indexes = mergeIndexes(catalog.indexesByGame);
         cardsById = new Map(cards.map((card) => [card.id, card]));
         Object.keys(ownedByGame).forEach((g) =>
           ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
         hydrateFilters();
         bindShareButton();
-        render();
-        shared.publishProfile(cards, owned, prices); // publica o perfil público se for o caso
+        if (result.viaApi) {
+          // Cartas na tela JÁ; os denominadores de progresso (X/Y por set/artista)
+          // vêm das FATIAS de índice em 2º plano — sem esse índice, totalsForTab
+          // cai no total das cartas carregadas (número válido, só sem o "de Y").
+          render();
+          shared.publishProfile(cards, owned, prices);
+          shared.loadCollectionIndexes(gamesComCarta).then((byGame) => {
+            indexes = mergeIndexes(byGame);
+            render();
+            shared.publishProfile(cards, owned, prices); // agora com os totais no payload
+          });
+        } else {
+          // Fallback (borda fora): o caminho de chunks já trouxe o índice inteiro.
+          indexes = mergeIndexes(result.indexesByGame);
+          render();
+          shared.publishProfile(cards, owned, prices);
+        }
       })
       .catch((error) => {
         elements.groupsEmpty.textContent = t("error.catalog", { message: error.message });

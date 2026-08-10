@@ -5202,6 +5202,56 @@
   // Catálogo INTEIRO dos dois jogos (seletor do Binder).
   function loadAllGamesCatalog() { return withPageLoading(loadAcrossGames(null)); }
 
+  // ── Fatias de índice POR JOGO (denominadores de progresso da Coleção) ──────
+  // A Coleção via borda (loadOwnedFast) recebe só as SUAS cartas — não o índice
+  // inteiro (2,86 MB no Magic) que o caminho de chunks baixava. Mas os totais de
+  // progresso (X/Y por set/artista) precisam do denominador. Estas fatias
+  // (indexes-sets/artists/pokemonTotals) são um subconjunto do índice, uma por
+  // jogo, baixadas SÓ dos jogos em que você tem carta e EM PARALELO — sem tocar
+  // os globais da sessão (window.TCG_INDEXES é single-game).
+  const DATA_DIR_BY_GAME = Object.fromEntries(DATA_GAMES.map((d) => [d.game, d.dataDir]));
+  const gameSlicePromises = new Map();
+  function loadGameIndexSlice(game, key) {
+    const ck = `${game}:${key}`;
+    if (gameSlicePromises.has(ck)) return gameSlicePromises.get(ck);
+    const dataDir = DATA_DIR_BY_GAME[game];
+    if (!dataDir) return Promise.resolve(null);
+    const manifest = !!(window.SLEEVU && window.SLEEVU.manifest);
+    const file = `indexes-${key}${manifest ? ".generated" : ""}.json`;
+    const promise = fetch(dataDir + file)
+      .then((r) => (r.ok ? r.json() : null))
+      .catch(() => null);
+    gameSlicePromises.set(ck, promise);
+    return promise;
+  }
+
+  // Monta o indexesByGame que a Coleção mescla (mesmo formato do caminho de
+  // chunks) a partir das fatias, e espelha o global TCG_INDEXES_MERGED que o
+  // buildPublicPayload lê pros denominadores do PERFIL público. Nunca rejeita:
+  // fatia que falhar cai em vazio (o total daquele grupo usa as cartas carregadas).
+  async function loadCollectionIndexes(games) {
+    const byGame = {};
+    await Promise.all((games || []).map(async (g) => {
+      const [sets, artists, pokemonTotals] = await Promise.all([
+        loadGameIndexSlice(g, "sets"),
+        loadGameIndexSlice(g, "artists"),
+        g === "pokemon" ? loadGameIndexSlice(g, "pokemonTotals") : Promise.resolve(null)
+      ]);
+      byGame[g] = (sets || artists || pokemonTotals)
+        ? { sets: sets || [], artists: artists || [], pokemonTotals: pokemonTotals || {} }
+        : null;
+    }));
+    const merged = { sets: [], artists: [], pokemonTotals: {} };
+    Object.keys(byGame).forEach((g) => {
+      const idx = byGame[g]; if (!idx) return;
+      (idx.sets || []).forEach((s) => merged.sets.push(Object.assign({ game: g }, s)));
+      (idx.artists || []).forEach((a) => merged.artists.push(Object.assign({ game: g }, a)));
+      Object.assign(merged.pokemonTotals, idx.pokemonTotals);
+    });
+    window.TCG_INDEXES_MERGED = merged;
+    return byGame;
+  }
+
   // Facade que despacha cada método por jogo (resolvido por gameOf(cardId));
   // agregados (size/totalQuantity/...) somam os jogos. Deixa Coleção/Wishlist/
   // Binders usarem variantTile/preview/handlers sem saber que há vários jogos.
@@ -5727,6 +5777,7 @@
     loadCatalogForCardIds,
     loadOwnedAcrossGames,
     loadOwnedFast,
+    loadCollectionIndexes,
     // Catálogo de UM jogo (pode ser diferente do jogo da sessão) — o construtor
     // de decks precisa disto: um deck de Lorcana aberto numa sessão Pokémon.
     loadGameCatalog,
