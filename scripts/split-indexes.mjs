@@ -13,7 +13,7 @@
 //
 // --check não escreve nada; sai com código 1 se alguma fatia estiver faltando
 // ou desatualizada (é o que o CI roda).
-import { readdir, readFile, stat } from "node:fs/promises";
+import { readdir, readFile, stat, writeFile } from "node:fs/promises";
 import { parseArgs } from "node:util";
 import { writeSplitIndexes, INDEX_KEYS, indexSliceFile, indexSliceBody } from "./lib/sync-common.mjs";
 
@@ -40,6 +40,32 @@ async function gameDirs() {
     } catch { /* sem indexes.js: não é diretório de jogo */ }
   }
   return out;
+}
+
+// ── Índice de NOMES da paleta de comandos (Ctrl+K) ──────────────────────────
+// A paleta lista espécies, sets e artistas de TODOS os jogos. Ela fazia isso
+// baixando o indexes.generated.js inteiro de cada um — 4,5 MB somados, o do
+// Magic sozinho com 2,8 MB — e jogava fora tudo menos os nomes: o peso daqueles
+// arquivos é o array `cardIds` de cada entrada, que a paleta nunca lê.
+// Aqui sobram só os nomes. O arquivo resultante é ~2% do original, e o cliente
+// passa a poder buscar os 13 jogos em paralelo (ver loadCmdkIndex).
+async function writeCmdkNames(dir, gen) {
+  const nomes = (lista) => {
+    const vistos = new Set();
+    for (const item of lista || []) {
+      const n = item && item.name;
+      if (n) vistos.add(n);
+    }
+    return [...vistos];
+  };
+  // Espécies: o índice da Pokédex quando existe; senão as chaves de
+  // pokemonTotals (mesma escolha que o cliente fazia).
+  const species = (gen.pokedex && gen.pokedex.length)
+    ? nomes(gen.pokedex)
+    : Object.keys(gen.pokemonTotals || {});
+  const corpo = JSON.stringify({ species, sets: nomes(gen.sets), artists: nomes(gen.artists) });
+  await writeFile(new URL("cmdk-names.generated.json", dir), corpo, "utf8");
+  return corpo.length;
 }
 
 let missing = 0;
@@ -70,8 +96,9 @@ for (const { name, dir } of await gameDirs()) {
   // cada família sai da SUA fonte.
   await writeSplitIndexes(dir, idx, { only: "dev" });
   await writeSplitIndexes(dir, gen, { only: "generated" });
+  const cmdk = await writeCmdkNames(dir, gen);
   const sizes = INDEX_KEYS.map((k) => `${k}=${JSON.stringify(gen[k] ?? "").length >> 10}KB`).join(" ");
-  console.log(`${name.padEnd(12)} ${sizes}`);
+  console.log(`${name.padEnd(12)} ${sizes} cmdk=${cmdk >> 10}KB`);
 }
 
 if (values.check) {

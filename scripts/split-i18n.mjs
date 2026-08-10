@@ -100,6 +100,26 @@ for (const caminho of htmls(".")) {
   }
   if (!usados.length) continue;
   if (!/<html[^>]*>/.test(html)) { console.error(`split-i18n: ${caminho} sem <html>?`); process.exit(1); }
+
+  // PRELOAD do pacote em português. Sem isto o arquivo de tradução é invisível
+  // pro preload scanner: ele só existe como literal DENTRO do theme.js, então a
+  // rede fica ociosa esperando "baixa o theme.js → executa → agora sim pede o
+  // i18n" — um round-trip inteiro em série antes de qualquer texto na tela, e o
+  // shared.js (quem desenha) executa depois dele. Com a dica aqui, o navegador
+  // começa os dois downloads junto.
+  // Só o PT: o idioma é do usuário e só se sabe em runtime (localStorage /
+  // navigator), então a dica tem que apostar numa língua — e o site é pt por
+  // padrão e por maioria. Quem usa en/es baixa este arquivo à toa UMA vez (o
+  // theme.js pede o certo em seguida, e a partir da segunda visita o service
+  // worker serve tudo do cache). Nome literal de propósito: é assim que o
+  // hash-assets.mjs consegue reescrever a URL depois (mesma razão do mapa
+  // SLEEVU_I18N no theme.js).
+  const preloads = usados
+    .map((base) => `    <link rel="preload" as="script" href="${mapa[base].pt}">`)
+    .join("\n");
+  const tagTheme = '<script src="src/theme.js"></script>';
+  if (!html.includes(tagTheme)) { console.error(`split-i18n: ${caminho} sem a tag do theme.js — não dá pra ancorar o preload.`); process.exit(1); }
+  html = html.replace(tagTheme, `${preloads.trim()}\n    ${tagTheme}`);
   // data-i18n-PACKS, não data-i18n: data-i18n puro é o marcador de elemento
   // traduzível — o aplicador do shared.js faria textContent = t("i18n") no
   // <html> inteiro e apagaria a página (aconteceu na primeira versão).

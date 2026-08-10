@@ -34,8 +34,18 @@ const ESCREVER = process.argv.includes("--write");
 const AREAS = [
   { nome: "landing",   prefixos: ["lp-"],                          paginas: ["index.html"] },
   { nome: "login",     prefixos: ["login-"],                       paginas: ["login.html"] },
-  { nome: "decks",     prefixos: ["deck"],                         paginas: ["decks.html", "my-decks.html"] },
+  // dkc- é o CONSTRUTOR de deck (10 KB), e o prefixo "deck" não o alcança —
+  // eram 10 KB do editor de decks em TODAS as ~30 páginas. Mesmas páginas da
+  // área: as classes só existem no src/decks.js, que só decks/my-decks carregam.
+  { nome: "decks",     prefixos: ["deck", "dkc-"],                 paginas: ["decks.html", "my-decks.html"] },
   { nome: "portfolio", prefixos: ["pf-"],                          paginas: ["portfolio.html"] },
+  // binder- são 19 KB (a maior fatia solta do núcleo). Além da própria página,
+  // a Coleção precisa: o collection.js desenha .binder-shared-banner/-info.
+  { nome: "binders",   prefixos: ["binder-"],                      paginas: ["binders.html", "collection.html"] },
+  { nome: "badges",    prefixos: ["bdg-"],                         paginas: ["badges.html"] },
+  // hub- só existe no hub.html/hub.js. (O "hub-vs-jogo" que aparece no
+  // shared.js é texto de comentário, não classe — conferido.)
+  { nome: "hub",       prefixos: ["hub-"],                         paginas: ["hub.html"] },
   // sw- (as pastilhas de cor por jogo) só existe no settings.html e vive LOGO
   // DEPOIS do .setting-swatch, sobrescrevendo a cor do texto dele. Se um sai e o
   // outro fica, a ordem inverte e a pastilha muda de cor — por isso viajam juntos.
@@ -90,7 +100,16 @@ function blocos(texto) {
 // um dos dois inverte a ordem e muda o layout do cabeçalho.
 // Esta lista é o resultado do diff de estilo computado (scratchpad/diffstyle.mjs)
 // entre antes e depois: qualquer classe que apareça lá entra aqui.
-const FICA_NO_NUCLEO = new Set(["pf-head"]);
+// As `setting-*` da lista são o campo de @handle do modal de onboarding, que o
+// shared.js (não o settings.js) desenha — ele abre na VOLTA DO LOGIN, em cima
+// da tela "Entrando…", e o login.html não carrega a folha de conta. Ficavam sem
+// estilo nenhum: o "@" descolado do campo e o aviso de disponibilidade sem cor.
+// São ~500 bytes; ficam no núcleo em vez de arrastar os 8 KB da folha de conta
+// pra dentro do login.
+const FICA_NO_NUCLEO = new Set([
+  "pf-head",
+  "setting-handle", "setting-input", "setting-field-status"
+]);
 
 // Um seletor "é da área" quando cita alguma das classes dela.
 const daArea = (seletor, prefixos) => {

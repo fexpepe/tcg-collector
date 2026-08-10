@@ -94,7 +94,18 @@
   // mostra dado de carta, e baixar o catálogo pra elas era o gargalo da tela de
   // sets (43 MB no Magic). As demais visões (artistas/treinadores/cartas) ainda
   // precisam das cartas e baixam só os chunks do idioma escolhido.
-  const catalogPromise = (view === "pokedex" || view === "sets")
+  // Artistas e Treinadores entram na mesma lista: a cápsula deles mostra só
+  // nome, total e quantas você tem (createGroupCard nem imagem usa), e as três
+  // coisas saem do índice `{ name, cardIds }` — mas a página baixava o catálogo
+  // INTEIRO pra depois jogar as cartas fora. No Magic isso eram 238 requisições
+  // e 2,4 MB comprimidos (8 MB depois de descomprimir) pra desenhar 60 cápsulas.
+  //
+  // O catálogo não some: a busca daqui casa contra as CARTAS de propósito
+  // ("Artista, carta, set, número…"), então ele é carregado no primeiro caractere
+  // digitado — ver garanteCartas(). Quem só abre a página e clica num artista
+  // não paga nada disso; quem busca paga o mesmo de antes, uma vez.
+  const soIndices = view === "pokedex" || view === "sets" || view === "artists" || view === "trainers";
+  const catalogPromise = soIndices
     ? Promise.resolve(shared.loadIndexesOnly())
     : shared.loadCatalog(cardLang);
   // Skeletons enquanto os chunks baixam (a Pokédex é instantânea: só índices).
@@ -122,6 +133,25 @@
       elements.empty.textContent = t("error.catalog", { message: error.message });
       elements.empty.hidden = false;
     });
+
+  // Traz as CARTAS pra uma tela que abriu só com índices (artistas/treinadores).
+  // Chamada no primeiro caractere digitado na busca — é ali que os campos de
+  // carta (nome, set, número) passam a ser necessários. Uma vez só por sessão de
+  // página; enquanto baixa, a tela segue mostrando o resultado por índice.
+  let cartasPromise = null;
+  function garanteCartas() {
+    if (cards.length) return Promise.resolve(true);
+    if (!cartasPromise) {
+      cartasPromise = shared.loadCatalog(cardLang).then((catalog) => {
+        cards = catalog.cards || [];
+        cardsById = new Map(cards.map((card) => [card.id, card]));
+        if (catalog.indexes) indexes = catalog.indexes;
+        if (cards.length) owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
+        return true;
+      }).catch(() => false);
+    }
+    return cartasPromise;
+  }
 
   function init() {
     // Com preferência de idioma de carta, o filtro de região vira redundante
@@ -255,7 +285,16 @@
 
   function bindEvents() {
     const applyFilters = () => render({ resetCount: true });
-    elements.search.addEventListener("input", debounce(applyFilters, 200));
+    elements.search.addEventListener("input", debounce(() => {
+      // Artistas/Treinadores abrem sem as cartas (ver soIndices). A busca aqui
+      // procura também por nome de carta, set e número, então o primeiro texto
+      // digitado é o gatilho pra buscá-las. Desenha o que já dá pra desenhar e
+      // repinta quando elas chegam — sem isto, a primeira busca ficaria muda.
+      if (soIndices && view !== "sets" && view !== "pokedex" && elements.search.value.trim() && !cards.length) {
+        garanteCartas().then(() => render({ resetCount: true }));
+      }
+      applyFilters();
+    }, 200));
     [elements.typeFilter, elements.setFilter, elements.languageFilter, elements.ownedFilter].filter(Boolean).forEach((element) => {
       element.addEventListener("input", applyFilters);
     });
@@ -397,12 +436,19 @@
       return groupSetsBySeries(setItems);
     }
 
+    // Sem as cartas em mãos (abertura da página — ver soIndices), as cápsulas
+    // saem direto dos ids do índice. Assim que a busca traz o catálogo, o
+    // caminho volta a ser o de sempre, com os filtros todos valendo.
     if (view === "artists") {
-      return indexedGroupsToItems(indexes.artists, visibleIds, toGroupItem);
+      return cards.length
+        ? indexedGroupsToItems(indexes.artists, visibleIds, toGroupItem)
+        : groupItemsFromIds(indexes.artists);
     }
 
     if (view === "trainers") {
-      return indexedGroupsToItems(indexes.trainers, visibleIds, toGroupItem);
+      return cards.length
+        ? indexedGroupsToItems(indexes.trainers, visibleIds, toGroupItem)
+        : groupItemsFromIds(indexes.trainers);
     }
 
     return pokedexViewItems();
@@ -631,6 +677,41 @@
       }
     }
     if (mudou) render();
+  }
+
+  // Cápsulas de artista/treinador a partir SÓ do índice `{ name, cardIds }`.
+  // Tudo que createGroupCard desenha (nome, total, quantas você tem, barra de
+  // progresso) sai daqui — nenhum campo de carta é lido.
+  // O idioma vem do SUFIXO do id (cardLanguageFromId: -pt/-ja/-zh; en não tem),
+  // que é a mesma verdade que o card.language traria. O filtro de busca não é
+  // aplicado neste caminho de propósito: digitar carrega as cartas e a próxima
+  // renderização já usa o caminho completo (ver bindEvents).
+  function groupItemsFromIds(indexGroups) {
+    const filtraLingua = cardLang !== "all";
+    // Chips de região (Treinadores no Pokémon): o mesmo recorte que o
+    // matchesLangRegion do filterCards faz, só que a partir do id.
+    const porRegiao = isPokemonGame() && elements.setRegionChips && !elements.setRegionChips.hidden;
+    const passa = (id) => {
+      const lingua = shared.cardLanguageFromId(id);
+      if (filtraLingua && lingua !== cardLang) return false;
+      if (porRegiao && shared.cardLanguageRegion(lingua) !== selectedLangRegion) return false;
+      return true;
+    };
+    return (indexGroups || [])
+      .map((group) => {
+        const ids = (filtraLingua || porRegiao)
+          ? (group.cardIds || []).filter(passa)
+          : (group.cardIds || []);
+        return {
+          type: "group",
+          name: group.name,
+          cards: [],
+          totalCount: ids.length,
+          ownedCount: ids.reduce((n, id) => n + (owned.has(id) ? 1 : 0), 0)
+        };
+      })
+      .filter((item) => item.totalCount > 0)
+      .sort(sortByName);
   }
 
   function indexedGroupsToItems(indexGroups, visibleIds, mapper, sortFn, splitFn) {

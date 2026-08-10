@@ -1,0 +1,17 @@
+{
+  "prefetch": [
+    {
+      "where": {
+        "and": [
+          { "href_matches": "/*" },
+          { "not": { "href_matches": "/login*" } },
+          { "not": { "href_matches": "/admin*" } },
+          { "not": { "href_matches": "/backup*" } },
+          { "not": { "selector_matches": "[rel~=nofollow]" } },
+          { "not": { "selector_matches": "[download]" } }
+        ]
+      },
+      "eagerness": "moderate"
+    }
+  ]
+}
