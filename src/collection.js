@@ -1520,7 +1520,9 @@
     const isNone = !folder;
     const isOpen = !isNone && folder.id === openFolderId; // aberta (foco) vs card
     const value = folderValue(pairs);
-    const meta = `${pairs.length}${value > 0 ? " · " + shared.formatMoney(shared.getCurrency(), value) : ""}`;
+    // Valor embrulhado em .cm-val: o Modo Colecionador esconde só o "· R$ X"
+    // e a contagem fica (é dado de coleção, não de preço).
+    const meta = `${pairs.length}${value > 0 ? `<span class="cm-val"> · ${escapeHtml(shared.formatMoney(shared.getCurrency(), value))}</span>` : ""}`;
     const listCls = cardsView === "list" ? " is-list" : "";
 
     // CARD de coleção (vitrine): capa + nome + meta + estrelas. (Tudo que não é a
@@ -1535,7 +1537,7 @@
         <button type="button" class="coll-card-cover" data-folder-collapse aria-label="${escapeAttribute(t("folders.toggle"))}">${coverImg}</button>
         <div class="coll-card-body">
           <div class="coll-card-meta-row">
-            <span class="coll-card-meta">${escapeHtml(meta)}</span>
+            <span class="coll-card-meta">${meta}</span>
             ${folderTagHtml(games)}
           </div>
           <div class="coll-card-foot">
@@ -1569,7 +1571,7 @@
         ${backBtn}
         ${nameHtml}
         ${isNone ? "" : folderTagHtml(games)}
-        <span class="folder-meta">${escapeHtml(meta)}</span>
+        <span class="folder-meta">${meta}</span>
         ${actions}
       </header>
       ${pickHint}
@@ -2508,7 +2510,7 @@
     function groupCard(gp, mode) {
       const copies = gp.items.reduce((s, it) => s + (it.q || 1), 0);
       const val = gp.items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
-      const metaTxt = `${copies}${val > 0 ? " · " + shared.formatMoney(shared.getCurrency(), val) : ""}`;
+      const metaTxt = `${copies}${val > 0 ? `<span class="cm-val"> · ${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</span>` : ""}`;
       let cover = gp.cover ? gp.items.find((it) => it.id === gp.cover) : null;
       if (!cover) cover = gp.items.slice().sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q))[0];
       const coverImg = cover ? shared.localizedImg(cover.img, { alt: "", fallback: cover.fb, loading: "lazy", thumb: true }) : `<span class="coll-card-empty">—</span>`;
@@ -2520,7 +2522,7 @@
         <span class="coll-card-title${gc ? " coll-card-title-game" : ""}"${gc ? ` style="background:${gc}"` : ""}>${dot}<strong class="coll-card-name">${escapeHtml(gp.name)}</strong></span>
         <span class="coll-card-cover">${coverImg}</span>
         <span class="coll-card-body">
-          <span class="coll-card-meta-row"><span class="coll-card-meta">${escapeHtml(metaTxt)}</span>${folderTagHtml(gset)}</span>
+          <span class="coll-card-meta-row"><span class="coll-card-meta">${metaTxt}</span>${folderTagHtml(gset)}</span>
           ${gp.stars != null ? `<span class="coll-stars">${stars}</span>` : ""}
         </span>
       </button>`;

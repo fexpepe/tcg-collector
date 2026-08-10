@@ -109,7 +109,7 @@
           const card = cardsById.get(id);
           const label = card ? card.name : id;
           const price = it.price > 0 ? ` · ${shared.formatMoney(it.cur || "BRL", it.price)}` : "";
-          return `<span class="wish-seller-chip">${shared.escapeHtml(label)}${shared.escapeHtml(price)}</span>`;
+          return `<span class="wish-seller-chip">${shared.escapeHtml(label)}<span class="cm-val">${shared.escapeHtml(price)}</span></span>`;
         }).join("");
         return `<a class="wish-seller" href="collection.html?u=${shared.escapeAttribute(s.handle)}&t=sales">
           <strong>${shared.escapeHtml(s.name)}</strong>

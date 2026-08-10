@@ -4200,6 +4200,42 @@ a.hub-tile:hover {
   color: var(--accent);
 }
 .theme-toggle svg { width: 20px; height: 20px; flex: none; }
+.collector-toggle[aria-pressed="true"] { color: var(--accent); border-color: var(--accent-dark); background: var(--accent-soft); }
+
+/* ── MODO COLECIONADOR ("limpa preço" global; olhinho no header) ────────────
+   Esconde valores/preços do site inteiro quando html[data-collector-mode].
+   Fica DE FORA de propósito: o preço dentro do preview da carta (quem quiser
+   saber, abre a carta) e o câmbio/seletor de moeda. theme.js carimba o atributo
+   síncrono no <head> pra nada piscar no boot. */
+.collector-badge { display: none; }
+html[data-collector-mode] .collector-badge { display: flex; }
+html[data-collector-mode] .tile-price,          /* preço na cápsula da carta */
+html[data-collector-mode] .set-value,           /* valor no tile de set */
+html[data-collector-mode] .set-missing,         /* custo pra completar (tile de set) */
+html[data-collector-mode] .cm-val,              /* "· R$ X" na meta de pasta/coleção */
+html[data-collector-mode] #detailValues,        /* bloco de valores da página de set */
+html[data-collector-mode] .pkmn-feat-price,     /* preço no destaque da página de set */
+html[data-collector-mode] .deck-value-row,      /* total/tenho/falta no deck */
+html[data-collector-mode] .dkc-row-price,       /* preço por carta no deck */
+html[data-collector-mode] .deck-value,          /* custo do deck (editor) */
+html[data-collector-mode] #wishDrops,           /* alertas de queda de preço */
+html[data-collector-mode] #wishTargets,         /* alvos de preço atingidos */
+html[data-collector-mode] .dash-top-val,        /* valor nas "mais valiosas" */
+html[data-collector-mode] a[href="portfolio.html"] {  /* menu Portfólio (header + tabbar + card do dash) */
+  display: none !important;
+}
+/* Patrimônio (Dashboard e Coleção): some o número + rótulo, entra o badge. */
+html[data-collector-mode] #dhValue,
+html[data-collector-mode] .stat-grand > p,
+html[data-collector-mode] #dashValue,
+html[data-collector-mode] .dash-stat-money:not(.collector-badge) { display: none; }
+/* Badge no lugar do patrimônio grande do Dashboard: mesmo peso visual do valor. */
+html[data-collector-mode] .stat-grand .collector-badge {
+  font-size: clamp(1.1rem, 0.9rem + 1.2vw, 1.6rem);
+  font-weight: 800;
+  color: var(--accent);
+  align-items: baseline;
+}
 
 .lang-dd-caret {
   font-size: 11px;

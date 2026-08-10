@@ -14,6 +14,16 @@
     }
   } catch (e) { /* ignora */ }
 
+  // --- Modo Colecionador: esconde valores/preços no site todo -------------
+  // Carimbado AQUI (síncrono) pra CSS já nascer escondendo — se ficasse só no
+  // shared.js (defer), os preços piscariam na tela antes de sumir a cada
+  // navegação. O toggle (olhinho no header) vive no shared.js.
+  try {
+    if (localStorage.getItem("tcg-collector-pref-collector-mode") === "on") {
+      document.documentElement.setAttribute("data-collector-mode", "on");
+    }
+  } catch (e) { /* ignora */ }
+
   // --- Idioma da interface: salvo > idioma do navegador -------------------
   // Roda AQUI (e não só no shared.js) pra o <html lang> já nascer certo: o
   // shared.js é `defer`, então até ele rodar o documento anunciaria pt-BR mesmo

@@ -1893,6 +1893,46 @@
     btn.addEventListener("click", () => setTheme(getTheme() === "light" ? "dark" : "light"));
     actions.appendChild(btn);
   }
+
+  // ── Modo Colecionador: "limpa preço" global (olhinho no header) ────────────
+  // Esconde valores/preços do site inteiro via CSS (html[data-collector-mode]);
+  // o preço DENTRO do preview da carta fica — quem quiser saber, abre a carta.
+  // Padrão dos apps de banco: o olho liga/desliga na hora, sem recarregar.
+  // theme.js carimba o atributo síncrono no <head> pra não piscar preço no boot.
+  const COLLECTOR_KEY = "tcg-collector-pref-collector-mode";
+  const EYE_OPEN = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.8"/></svg>';
+  const EYE_OFF = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 4.5l15 15"/><path d="M9.9 5.9A10.4 10.4 0 0 1 12 5.5c6.5 0 10 6.5 10 6.5a17.3 17.3 0 0 1-3.2 3.9M6.1 6.7A16.6 16.6 0 0 0 2 12s3.5 6.5 10 6.5a10.7 10.7 0 0 0 4-.8"/><path d="M9.9 10.1a2.8 2.8 0 0 0 4 4"/></svg>';
+  function collectorModeEnabled() {
+    try { return localStorage.getItem(COLLECTOR_KEY) === "on"; } catch (e) { return false; }
+  }
+  function setCollectorMode(on) {
+    try { localStorage.setItem(COLLECTOR_KEY, on ? "on" : "off"); } catch (e) { /* ignora */ }
+    if (on) document.documentElement.setAttribute("data-collector-mode", "on");
+    else document.documentElement.removeAttribute("data-collector-mode");
+    document.dispatchEvent(new CustomEvent("sleevu:collector"));
+  }
+  function initCollectorToggle() {
+    const actions = document.querySelector(".header-actions");
+    if (!actions || document.getElementById("collectorToggle")) return;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.id = "collectorToggle";
+    btn.className = "theme-toggle collector-toggle"; // mesmo tamanho/visual do botão de tema
+    const render = () => {
+      const on = collectorModeEnabled();
+      btn.innerHTML = on ? EYE_OFF : EYE_OPEN;
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      btn.setAttribute("aria-label", t("collector.toggle"));
+      btn.title = t("collector.toggle");
+    };
+    render();
+    document.addEventListener("sleevu:collector", render);
+    btn.addEventListener("click", () => setCollectorMode(!collectorModeEnabled()));
+    // Antes do botão de tema: preferências de CONTEÚDO à esquerda das de aparência.
+    const themeBtn = document.getElementById("themeToggle");
+    if (themeBtn) actions.insertBefore(btn, themeBtn);
+    else actions.appendChild(btn);
+  }
   // Troca o tema e avisa quem reflete o estado (botão do topo + Configurações).
   // "auto" LIMPA a escolha salva (volta a seguir o sistema); claro/escuro salvam.
   function setTheme(theme) {
@@ -5778,6 +5818,8 @@
     loadOwnedAcrossGames,
     loadOwnedFast,
     loadCollectionIndexes,
+    collectorModeEnabled,
+    setCollectorMode,
     // Catálogo de UM jogo (pode ser diferente do jogo da sessão) — o construtor
     // de decks precisa disto: um deck de Lorcana aberto numa sessão Pokémon.
     loadGameCatalog,
@@ -7702,6 +7744,7 @@
   initNewsBadge(); // bolinha "novo" nos links de Novidades (footer + menu)
   initPartnerBanner();
   initThemeToggle();
+  initCollectorToggle(); // depois do tema: insere o olhinho ANTES do botão de tema
   initTroubleshootTriggers();
   // A11y: spans/divs com role="button" (chips de tag, slots, etc.) ativam com
   // Enter/Espaço como um <button> real — um listener global cobre o site todo.

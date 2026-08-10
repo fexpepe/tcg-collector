@@ -565,7 +565,7 @@
         falta === 0 ? `<span class="dkc-meta-item is-ok"><strong>${esc(t("decks.completeWord"))}</strong></span>`
           : falta > 0 ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.missingWord"))}</span><strong>${esc(String(falta))}</strong></span>` : "",
         vis > 0 ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.viewsWord"))}</span><strong>${esc(String(vis))}</strong></span>` : "",
-        custo > 0 ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.costEstimated"))}</span><strong>${esc(shared.formatMoney(shared.getCurrency(), custo))}</strong></span>` : "",
+        custo > 0 ? `<span class="dkc-meta-item cm-val"><span class="dkc-meta-k">${esc(t("decks.costEstimated"))}</span><strong>${esc(shared.formatMoney(shared.getCurrency(), custo))}</strong></span>` : "",
         r.author ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.authorWord"))}</span><strong>${esc(String(r.author).slice(0, 30))}</strong></span>` : "",
         quando ? `<span class="dkc-meta-item"><span class="dkc-meta-k">${esc(t("decks.publishedWord"))}</span><strong>${esc(quando)}</strong></span>` : ""
       ].filter(Boolean).join("");
