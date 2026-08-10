@@ -1968,6 +1968,22 @@
   function setGroupVariants(on) {
     try { localStorage.setItem(GROUP_VARIANTS_KEY, on ? "on" : "off"); } catch (e) { /* ignora */ }
   }
+  // Chip "Agrupar" na barra de filtros das grades de catálogo (cards/detail/
+  // explore) — o mesmo liga-desliga das Configurações, só que onde o efeito
+  // aparece. A página passa o onChange e religa a grade na hora, sem reload;
+  // a chave é uma só, então o switch das Configurações reflete na próxima
+  // visita a ela. Página sem o chip no HTML: no-op.
+  function initGroupVariantsChip(onChange) {
+    const chip = document.getElementById("groupVariantsChip");
+    if (!chip) return;
+    const sync = () => chip.setAttribute("aria-pressed", String(groupVariantsEnabled()));
+    sync();
+    chip.addEventListener("click", () => {
+      setGroupVariants(!groupVariantsEnabled());
+      sync();
+      if (onChange) onChange(groupVariantsEnabled());
+    });
+  }
 
   function initCollectorToggle() {
     const actions = document.querySelector(".header-actions");
@@ -5973,6 +5989,7 @@
     setCollectorMode,
     groupVariantsEnabled,
     setGroupVariants,
+    initGroupVariantsChip,
     // Catálogo de UM jogo (pode ser diferente do jogo da sessão) — o construtor
     // de decks precisa disto: um deck de Lorcana aberto numa sessão Pokémon.
     loadGameCatalog,

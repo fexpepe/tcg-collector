@@ -104,6 +104,12 @@
               <option value="num-asc" data-i18n="sort.numAsc">Nº da carta (menor → maior)</option>
             </select>
           </div>
+          <!-- Mesmo liga-desliga de Configurações → "Agrupar versões da carta"
+               (ver o chip no cards.html). Religa a grade sem reload. -->
+          <div class="sort-select">
+            <label for="groupVariantsChip" data-i18n="toolbar.variants">Versões</label>
+            <button type="button" id="groupVariantsChip" class="chip" aria-pressed="false" data-i18n="filter.groupVariants" data-i18n-title="settings.groupVariantsDesc" title="Nas listas de cartas e na busca, mostra uma carta só em vez de uma entrada por versão (Normal, Foil, Reverse…). O + abre a carta pra você escolher qual versão adicionar. A Coleção e a Wishlist continuam mostrando cada versão que você tem.">Agrupar</button>
+          </div>
         </div>
       </div>
 

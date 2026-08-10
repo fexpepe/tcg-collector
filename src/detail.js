@@ -11,7 +11,8 @@
   const prices = shared.createPriceStore();
   // Preferência "agrupar versões" (ver cardVariantPairs no shared.js):
   // uma carta = um tile nas grades de catálogo; o + abre o card pra escolher.
-  const agrupaVersoes = shared.groupVariantsEnabled();
+  let agrupaVersoes = shared.groupVariantsEnabled();
+  shared.initGroupVariantsChip((on) => { agrupaVersoes = on; render({ resetCount: true }); });
 
   const TYPE_COLORS = shared.TYPE_COLORS;
   const REGION_BY_GENERATION = shared.REGION_BY_GENERATION;

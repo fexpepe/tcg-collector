@@ -35,7 +35,8 @@
   const prices = shared.mergedPriceStore(pricesByGame, gameOf);
   // Preferência "agrupar versões" (ver cardVariantPairs no shared.js):
   // uma carta = um tile nas grades de catálogo; o + abre o card pra escolher.
-  const agrupaVersoes = shared.groupVariantsEnabled();
+  let agrupaVersoes = shared.groupVariantsEnabled();
+  shared.initGroupVariantsChip((on) => { agrupaVersoes = on; render({ resetCount: true }); });
 
   let cards = [];
   let cardsById = new Map();

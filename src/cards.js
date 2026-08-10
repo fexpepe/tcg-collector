@@ -326,9 +326,11 @@
   }
 
   // Preferência "agrupar versões": nas grades de catálogo, uma carta = um tile
-  // (o + abre o card pra escolher Normal/Foil…). Lida uma vez por carga — quem
-  // troca a preferência nas Configurações volta pra cá com a página nova.
-  const agrupaVersoes = shared.groupVariantsEnabled();
+  // (o + abre o card pra escolher Normal/Foil…). O chip "Versões: Agrupar" da
+  // barra de filtros religa ao vivo; o switch das Configurações grava a mesma
+  // chave e vale na próxima carga.
+  let agrupaVersoes = shared.groupVariantsEnabled();
+  shared.initGroupVariantsChip((on) => { agrupaVersoes = on; render({ resetCount: true }); });
 
   function tilePairs() {
     const pairs = shared.cardVariantPairs(filterCards(), { group: agrupaVersoes });
