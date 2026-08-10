@@ -4446,6 +4446,20 @@ a.progress-row:hover {
   transition: border-color 120ms ease, box-shadow 120ms ease;
   display: flex;
   flex-direction: column;
+  /* Cada tile tem ~25 nós (a imagem, a ficha e quatro botões com SVG dentro), e
+     a paginação por rolagem só ACRESCENTA: depois de dez páginas são ~18 mil
+     nós vivos, todos entrando em cada cálculo de estilo e de layout — inclusive
+     os que estão a três telas de distância. Com content-visibility o navegador
+     pula layout e pintura de quem está fora da viewport; o trabalho passa a ser
+     proporcional ao que se vê, não ao que já se rolou.
+     O `auto` do contain-intrinsic-size guarda a altura real medida na primeira
+     vez que o tile apareceu, então a barra de rolagem não dança ao subir de
+     volta; os 380px são só o palpite inicial (imagem ~307px + ficha ~75px), e
+     valem só pros tiles que ainda não foram vistos nenhuma vez.
+     Conteúdo pulado continua achável no Ctrl+F e visível pro leitor de tela —
+     o navegador renderiza a seção sob demanda nesses casos. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 380px;
 }
 
 .card-tile.owned {

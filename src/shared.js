@@ -14,8 +14,16 @@
     });
     pendingWrites.clear();
   }
+  // Chaves de dado tocadas desde o último push pro servidor. O laço de sync usa
+  // isto pra saber que NÃO precisa refazer o snapshot de 13 jogos quando nada
+  // foi editado — ver syncPush. É só um acelerador: quem decide o que sobe
+  // continua sendo a comparação com o último JSON enviado, e uma varredura
+  // completa periódica cobre qualquer escrita que não passe por aqui.
+  const chavesSujas = new Set();
+  function marcaSuja(key) { chavesSujas.add(key); }
   function scheduleWrite(key, getString) {
     pendingWrites.set(key, getString);
+    marcaSuja(key);
     if (!writeScheduled) {
       writeScheduled = true;
       setTimeout(flushWrites, 250);
@@ -663,30 +671,53 @@
   // Resultados carregam &game= na URL — clicar num set de Lorcana TROCA a sessão.
   // Cartas por nome ficam a um Enter: "buscar no Explorar" de cada jogo (?q=).
   let cmdkIndex = null, cmdkIndexPromise = null, cmdkOpen = null;
+  // A paleta precisa só de NOMES (espécie, set, artista) dos 13 jogos. O build
+  // publica exatamente isso em cmdk-names.generated.json — 122 KB somando todos,
+  // contra os 4,5 MB dos indexes.generated.js completos, cujo peso é o `cardIds`
+  // de cada entrada (que a paleta nunca abre). E os 13 são buscados JUNTOS: o
+  // laço com `await` dentro empilhava 13 idas ao servidor em fila indiana.
+  // O caminho antigo continua aí como reserva, por jogo, pro arquivo de nomes
+  // que ainda não existir (deploy antigo, ou dev sem o passo de build).
+  async function fetchCmdkNames(dataDir) {
+    try {
+      const r = await fetch(dataDir + "cmdk-names.generated.json");
+      if (r.ok) {
+        const j = await r.json();
+        if (j && (j.species || j.sets || j.artists)) return j;
+      }
+    } catch (err) { /* cai no índice completo abaixo */ }
+    for (const f of ["indexes.generated.js", "indexes.js"]) {
+      try {
+        const r = await fetch(dataDir + f);
+        if (!r.ok) continue;
+        const text = await r.text();
+        const s = text.indexOf("{"), e = text.lastIndexOf("}");
+        if (s < 0 || e <= s) continue;
+        const idx = JSON.parse(text.slice(s, e + 1));
+        const species = (idx.pokedex || []).map((p) => p.name).filter(Boolean);
+        return {
+          species: species.length ? species : Object.keys(idx.pokemonTotals || {}),
+          sets: unique((idx.sets || []).map((x) => x.name)),
+          artists: unique((idx.artists || []).map((x) => x.name))
+        };
+      } catch (err) { /* tenta o próximo */ }
+    }
+    return null;
+  }
   function loadCmdkIndex() {
     if (cmdkIndexPromise) return cmdkIndexPromise;
     cmdkIndexPromise = (async () => {
       const merged = { species: [], sets: [], artists: [] };
-      for (const { game, dataDir } of DATA_GAMES) {
-        let idx = null;
-        // Produção usa o gerado; dev usa o cru — tenta os dois formatos.
-        for (const f of ["indexes.generated.js", "indexes.js"]) {
-          try {
-            const r = await fetch(dataDir + f);
-            if (!r.ok) continue;
-            const text = await r.text();
-            const s = text.indexOf("{"), e = text.lastIndexOf("}");
-            if (s < 0 || e <= s) continue;
-            idx = JSON.parse(text.slice(s, e + 1));
-            break;
-          } catch (err) { /* tenta o próximo */ }
-        }
-        if (!idx) continue;
-        const species = (idx.pokedex || []).map((p) => p.name).filter(Boolean);
-        (species.length ? species : Object.keys(idx.pokemonTotals || {})).forEach((n) => merged.species.push({ name: n, game }));
-        unique((idx.sets || []).map((x) => x.name)).forEach((n) => merged.sets.push({ name: n, game }));
-        unique((idx.artists || []).map((x) => x.name)).forEach((n) => merged.artists.push({ name: n, game }));
-      }
+      const porJogo = await Promise.all(DATA_GAMES.map(({ dataDir }) => fetchCmdkNames(dataDir)));
+      // A ordem do Promise.all espelha a de DATA_GAMES, então o jogo de cada
+      // resultado é o do mesmo índice — a lista sai na mesma ordem de antes.
+      DATA_GAMES.forEach(({ game }, i) => {
+        const nomes = porJogo[i];
+        if (!nomes) return;
+        (nomes.species || []).forEach((n) => { if (n) merged.species.push({ name: n, game }); });
+        (nomes.sets || []).forEach((n) => { if (n) merged.sets.push({ name: n, game }); });
+        (nomes.artists || []).forEach((n) => { if (n) merged.artists.push({ name: n, game }); });
+      });
       cmdkIndex = merged;
       return merged;
     })();
@@ -1513,6 +1544,13 @@
   //      conteúdo (a máscara sai ao chegar no fim, então nunca promete o que não há);
   //   2. se a aba ATIVA nasceu fora da vista, rola até ela — senão a página abre
   //      parecendo que a seção em que você está nem consta na lista.
+  // As LEITURAS de geometria (scrollWidth/offsetLeft/clientWidth) ficam num
+  // requestAnimationFrame. Elas vinham logo depois do innerHTML que monta os
+  // chips, e ler geometria com o estilo invalidado força o browser a fazer o
+  // layout ali mesmo, na hora — um reflow síncrono medido em 127 ms com CPU 4x
+  // no celular, em TODA página do Explorar (é o boot inteiro esperando o
+  // navegador diagramar chips que ainda nem foram pintados). Dentro do rAF o
+  // layout já aconteceu naturalmente, e a leitura sai de graça.
   function initSubnavScrollHint(nav) {
     if (!nav) return;
     const marca = () => {
@@ -1523,11 +1561,14 @@
     };
     nav.addEventListener("scroll", marca, { passive: true });
     window.addEventListener("resize", marca);
-    const ativo = nav.querySelector('[aria-current="page"]');
-    if (ativo && ativo.offsetLeft + ativo.offsetWidth > nav.clientWidth) {
-      nav.scrollLeft = ativo.offsetLeft + ativo.offsetWidth - nav.clientWidth + 12;
-    }
-    marca();
+    requestAnimationFrame(() => {
+      if (!nav.isConnected) return;
+      const ativo = nav.querySelector('[aria-current="page"]');
+      if (ativo && ativo.offsetLeft + ativo.offsetWidth > nav.clientWidth) {
+        nav.scrollLeft = ativo.offsetLeft + ativo.offsetWidth - nav.clientWidth + 12;
+      }
+      marca();
+    });
   }
 
   // Bottom-bar fixa no MOBILE (feel de app/PWA). A ESTRUTURA é a do app da
@@ -4287,6 +4328,22 @@
     if (!cardId) return;
     const quantity = store.variantTotal(cardId, variant);
     const isOwned = quantity > 0;
+
+    // SAÍDA ANTECIPADA quando este tile não mudou. Marcar UMA carta faz a página
+    // varrer a grade inteira chamando esta função (as grades só crescem ao
+    // rolar: dez páginas = 600 tiles), e cada passagem reescrevia o innerHTML do
+    // botão de posse E do de desejo — 1.200 parses de HTML pra refletir a
+    // mudança de um tile só. Era o caminho quente da interação principal do app.
+    // A assinatura cobre tudo que o corpo abaixo escreve; se ela bate, não há
+    // nada a fazer. O botão em pleno flash de "✓ Adicionada!" entra na conta
+    // (classe `added`), senão o tile ficaria preso no estado do flash.
+    const querido = wishlist ? wishlist.has(cardId, variant) : false;
+    const flash = addMode && tile.querySelector(".tile-own.added") ? "1" : "0";
+    const resumo = conditionSummary(store, cardId, variant);
+    const assinatura = `${quantity}|${querido ? 1 : 0}|${addMode ? 1 : 0}|${flash}|${resumo}`;
+    if (tile.dataset.tileState === assinatura) return;
+    tile.dataset.tileState = assinatura;
+
     tile.classList.toggle("owned", isOwned);
 
     // O − só existe quando há cópia pra tirar (nasce hidden no variantTile).
@@ -4327,7 +4384,7 @@
     }
 
     const summaryEl = tile.querySelector("[data-tile-conditions]");
-    if (summaryEl) summaryEl.textContent = conditionSummary(store, cardId, variant);
+    if (summaryEl) summaryEl.textContent = resumo;
   }
 
   // Clique no − do tile: tira UMA cópia. Prefere tirar da condição PADRÃO (NM),
@@ -5105,9 +5162,15 @@
     };
     window.TCG_CARDS = window.TCG_INDEXES = window.TCG_MANIFEST = window.TCG_PRICING = undefined;
     const manifestMode = !!(window.SLEEVU && window.SLEEVU.manifest);
+    // set-id-map SÓ no Pokémon: o de-para de id de set (build-set-id-map.mjs)
+    // não existe pros outros jogos, e pedi-lo era um 404 por jogo carregado —
+    // o Explorar, que passa por vários, colecionava três ou quatro por
+    // pageview. O game.js já tinha exatamente esta guarda pro data-catalog;
+    // aqui, no caminho de carga cruzada, ela faltava.
     const files = manifestMode
-      ? ["manifest.generated.js", "indexes.generated.js", "set-id-map.js"]
-      : ["cards.js", "indexes.js", "set-id-map.js"];
+      ? ["manifest.generated.js", "indexes.generated.js"]
+      : ["cards.js", "indexes.js"];
+    if (game === "pokemon") files.push("set-id-map.js");
     for (const f of files) await injectScript(dataDir + f);
     // O monólito de preços DESTE jogo só entra se o manifest dele não anunciar
     // chunks de preço (pc) — com a flag, o fetchSetChunks logo abaixo traz os
@@ -6061,11 +6124,21 @@
   }
 
   // --- Sync (merge sem perder dados) ---
-  function localSnapshot(game) {
+  // `cache` opcional: Map storageKey -> valor já parseado, compartilhado por
+  // várias chamadas seguidas. Das 18 chaves de um snapshot, 12 são GLOBAIS
+  // (binders, decks, pastas, vendas, graded, tags, custos…) — as mesmas em todo
+  // jogo. Sem o cache, uma passada pelos 13 jogos reparseava esses 12 blobs 13
+  // vezes: 156 JSON.parse redundantes por rodada, e o de decks/binders não é
+  // pequeno. Quem passa o cache é o syncPush; o resto chama sem ele e nada muda.
+  function localSnapshot(game, cache) {
     const keys = game ? syncKeysFor(game) : SYNC_KEYS;
     const out = {};
     Object.entries(keys).forEach(([k, key]) => {
-      try { const v = JSON.parse(localStorage.getItem(key) || "null"); if (v) out[k] = v; } catch (e) { /* ignora */ }
+      if (cache && cache.has(key)) { const v = cache.get(key); if (v) out[k] = v; return; }
+      let v = null;
+      try { v = JSON.parse(localStorage.getItem(key) || "null"); } catch (e) { /* ignora */ }
+      if (cache) cache.set(key, v);
+      if (v) out[k] = v;
     });
     return out;
   }
@@ -6079,6 +6152,9 @@
       // regravaria o snapshot antigo por cima do mesclado — a perda propagaria
       // no próximo push. Perder o clique dos últimos ~250ms é o custo aceitável.
       pendingWrites.delete(key);
+      // Escrita DIRETA (não passa pelo scheduleWrite): marca a chave à mão pro
+      // laço de sync não dormir sobre um dado que acabou de mudar no disco.
+      marcaSuja(key);
       localStorage.setItem(key, JSON.stringify(data[k]));
     });
   }
@@ -6107,6 +6183,25 @@
     if (delTs > 0 && delTs > presentTs) return null; // exclusão vence
     return { live: true, mod: presentTs };
   }
+  // Cópia isolada de uma entrada de coleção. A forma é sempre a mesma e tem
+  // dois níveis — { variante: { condição: quantidade } } —, então o
+  // JSON.parse(JSON.stringify(...)) que estava aqui era serializar e reparsear
+  // um objeto de três chaves. Parece pouco; multiplicado pelas cartas de uma
+  // coleção grande vira o custo dominante do merge, e o merge roda DUAS vezes
+  // (base + mesclado) em TODA navegação de quem está logado.
+  // A cópia continua profunda no que importa: mexer no resultado não altera o
+  // objeto de origem, que é o que o passo de empate abaixo depende.
+  function copiaEntrada(entry) {
+    const out = {};
+    for (const variante in entry) {
+      const conds = entry[variante];
+      if (!conds || typeof conds !== "object") { out[variante] = conds; continue; }
+      const copia = {};
+      for (const cond in conds) copia[cond] = conds[cond];
+      out[variante] = copia;
+    }
+    return out;
+  }
   function mergeCollection(aCol, aMeta, bCol, bMeta) {
     aCol = aCol || {}; bCol = bCol || {};
     aMeta = normalizeMeta(aMeta); bMeta = normalizeMeta(bMeta);
@@ -6124,11 +6219,11 @@
           // LWW por carta: o lado com a mudança MAIS RECENTE vence inteiro —
           // assim reduzir quantidade/vender uma cópia propaga entre devices
           // (o max por condição revertia qualquer redução pra sempre).
-          entry = JSON.parse(JSON.stringify(aTs > bTs ? aCol[id] : bCol[id]));
+          entry = copiaEntrada(aTs > bTs ? aCol[id] : bCol[id]);
         } else {
           // Empate/sem timestamp (dados antigos): união com max por condição
           // — nunca perde carta na migração.
-          entry = JSON.parse(JSON.stringify(aCol[id]));
+          entry = copiaEntrada(aCol[id]);
           Object.entries(bCol[id]).forEach(([variant, conds]) => {
             entry[variant] = entry[variant] || {};
             Object.entries(conds || {}).forEach(([cond, qty]) => {
@@ -6137,7 +6232,7 @@
           });
         }
       } else {
-        entry = JSON.parse(JSON.stringify(aHas ? aCol[id] : bCol[id]));
+        entry = copiaEntrada(aHas ? aCol[id] : bCol[id]);
       }
       if (entry && Object.keys(entry).length) { collection[id] = entry; if (r.mod > 0) mod[id] = r.mod; }
     });
@@ -6974,6 +7069,10 @@
   // preguiçosa antes de expirar (token do Supabase dura ~1h) — sem isso o sync
   // morre silenciosamente depois de uma hora. Percorre TODOS os jogos (páginas
   // unificadas editam qualquer jogo, não só o da sessão); só empurra o que mudou.
+  // Rodadas do laço desde a última varredura COMPLETA (ver syncPush).
+  let rodadasDesdeVarredura = 0;
+  let pushPendente = false; // algum push não confirmou: reter na próxima rodada
+  const RODADAS_ATE_VARREDURA = 15; // 15 x 20 s = 5 min
   async function syncPush(keepalive) {
     let s = getSession();
     if (!s) return;
@@ -6981,14 +7080,41 @@
       s = (await refreshSession()) || getSession();
       if (!s) return;
     }
+    // NADA FOI EDITADO: não há o que empurrar. Sem esta saída, o laço refazia a
+    // cada 20 segundos, pra sempre, o snapshot dos 13 jogos — dezenas de
+    // JSON.parse do localStorage e 13 JSON.stringify — só pra concluir que o
+    // resultado era igual ao da rodada anterior. Numa coleção de 5 mil cartas
+    // isso media ~18 ms por rodada no desktop (uns 70 ms num celular), e o pico
+    // caía em cima de qualquer toque que acontecesse junto.
+    //
+    // A saída é conservadora de propósito:
+    //  · vale só pro laço automático — o push de saída (pagehide / aba oculta,
+    //    keepalive=true) sempre varre tudo, que é a hora de não deixar nada pra trás;
+    //  · a cada 5 minutos uma rodada varre tudo mesmo assim, então uma escrita
+    //    que não passe pelo scheduleWrite atrasa no máximo isso (antes desta
+    //    guarda ela seria pega em 20 s — é o preço, e é pequeno perto de um push
+    //    que só acontece quando algo muda);
+    //  · quem decide o que sobe continua sendo a comparação com o último JSON
+    //    enviado, logo abaixo. Isto aqui só evita CALCULAR esse JSON à toa.
+    const varreduraCompleta = keepalive || ++rodadasDesdeVarredura >= RODADAS_ATE_VARREDURA;
+    if (varreduraCompleta) rodadasDesdeVarredura = 0;
+    // `pushPendente` mantém a rodada acordada enquanto houver push que não
+    // confirmou (offline, 5xx). Sem ele, o retry de 20 segundos viraria um
+    // retry de 5 minutos: a edição que falhou já teria limpado as chaves sujas.
+    else if (!chavesSujas.size && !pushPendente) return;
+    chavesSujas.clear();
+
+    const cacheLeitura = new Map(); // ver localSnapshot: as 12 chaves globais
+    pushPendente = false;
     for (const g of GAME_SLUGS) {
-      const snap = localSnapshot(g);
+      const snap = localSnapshot(g, cacheLeitura);
       const json = JSON.stringify(snap);
       if (json === lastPushedByGame[g]) continue;
       // Só marca como enviado APÓS o push confirmar (r.ok) — marcar antes fazia
       // um push falho (offline/5xx) nunca ser retentado até a PRÓXIMA edição.
       pushRemote(s.access_token, s.user.id, snap, keepalive, g).then((ok) => {
         if (ok) lastPushedByGame[g] = json;
+        else pushPendente = true; // tenta de novo na próxima rodada
       });
     }
   }
@@ -7545,10 +7671,22 @@
       // remoteAll null = a requisição falhou (não mexe em nada). Jogo sem linha
       // na nuvem vale {} — é o que o pullRemote por jogo devolvia, e é o que
       // mantém o `lastPushedByGame` carimbado pro laço de sync.
+      const cacheBoot = new Map(); // ver localSnapshot: não reparseia as globais
       for (const g of remoteAll ? GAME_SLUGS : []) {
         const remote = remoteAll[g] || {};
-        const local = localSnapshot(g);
+        const local = localSnapshot(g, cacheBoot);
         const localJson = JSON.stringify(local);
+        // ATALHO pro jogo que a nuvem não conhece. Sem linha remota não há o que
+        // a nuvem possa trazer, então `mergeData(local, {})` e
+        // `mergeData(local, remote)` são a MESMA conta — o resultado da
+        // comparação abaixo é sempre "não mudou". Fazer os dois merges e os dois
+        // JSON.stringify pra chegar nisso era o grosso do trabalho deste laço:
+        // ele roda pros 13 jogos em toda navegação, e quase ninguém tem carta em
+        // mais de dois ou três.
+        if (!remote || !Object.keys(remote).length) {
+          lastPushedByGame[g] = localJson;
+          continue;
+        }
         // Compara MAÇÃ COM MAÇÃ. O localSnapshot só traz as chaves que existem
         // no localStorage; o mergeData SEMPRE devolve as 18 (com objetos vazios
         // onde não há nada). Comparar os dois crus dava "mudou" pra todo jogo
@@ -7767,9 +7905,19 @@
 
   // Service worker: cacheia as imagens já vistas para sobreviverem a um outage
   // do CDN. Caminho relativo funciona tanto na raiz local quanto sob /tcg-collector/.
+  // No `load` o navegador ainda está baixando as imagens da primeira tela, e a
+  // instalação do SW dispara de uma vez as ~70 requisições do shell (~380 KB
+  // comprimidos, os 3 idiomas inclusos — os três precisam estar lá pra trocar de
+  // idioma offline não virar tela de chaves cruas). Essa rajada disputa banda e
+  // conexões justamente com as cartas que a pessoa está esperando ver.
+  // O idle adia a rajada pro primeiro respiro do aparelho; o timeout de 3 s é a
+  // garantia de que ela acontece mesmo numa página que nunca fica ociosa
+  // (requestIdleCallback não existe no Safari — lá cai direto no setTimeout).
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("sw.js").catch(() => { /* SW é só otimização: ignora falha */ });
+      const instala = () => navigator.serviceWorker.register("sw.js").catch(() => { /* SW é só otimização: ignora falha */ });
+      if (typeof requestIdleCallback === "function") requestIdleCallback(instala, { timeout: 3000 });
+      else setTimeout(instala, 1200);
     });
   }
 })();
