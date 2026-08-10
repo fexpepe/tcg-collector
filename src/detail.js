@@ -741,7 +741,10 @@
   function renderFacets() {
     const box = elements.facets;
     if (!box) return;
-    if (!facetDefs.length) { box.hidden = true; return; }
+    // Some/aparece pelo WRAPPER (#facetsField): é ele que carrega o título
+    // "Filtros" — esconder só o miolo deixaria o rótulo sozinho na barra.
+    const campo = document.getElementById("facetsField") || box;
+    if (!facetDefs.length) { campo.hidden = true; return; }
 
     const passaFacetas = (card, exceto) => facetDefs.every((f) => {
       if (f.key === exceto) return true;
@@ -794,7 +797,7 @@
     }).filter(Boolean).join("");
 
     box.innerHTML = grupos;
-    box.hidden = !grupos;
+    campo.hidden = !grupos;
   }
 
   function renderRarityFilter() {

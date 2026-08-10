@@ -116,10 +116,20 @@
         </div>
       </section>
 
+      <!-- Ordem pedida pelo Fernando (2026-08-10): Coleção → Versões (Agrupar) →
+           Filtros (título sobre as facetas, como o "Coleção" tem) → Ordenar →
+           Visualização. Decisões de ESCOPO primeiro (o que entra na lista),
+           apresentação por último. -->
       <section id="detailFilters" class="toolbar detail-toolbar is-collapsed" aria-label="Filtros" data-own-toggle>
         <div>
           <label data-i18n="toolbar.collection">Coleção</label>
           <div id="ownedChips" class="segmented" role="group" aria-label="Coleção"></div>
+        </div>
+        <!-- Mesmo liga-desliga de Configurações → "Agrupar versões da carta"
+             (ver o chip no cards.html). Religa a grade sem reload. -->
+        <div class="view-toggle-field">
+          <label for="groupVariantsChip" data-i18n="toolbar.variants">Versões</label>
+          <button type="button" id="groupVariantsChip" class="chip" aria-pressed="false" data-i18n="filter.groupVariants" data-i18n-title="settings.groupVariantsDesc" title="Nas listas de cartas e na busca, mostra uma carta só em vez de uma entrada por versão (Normal, Foil, Reverse…). O + abre a carta pra você escolher qual versão adicionar. A Coleção e a Wishlist continuam mostrando cada versão que você tem.">Agrupar</button>
         </div>
         <div>
           <label for="languageFilter" data-i18n="toolbar.language">Idioma</label>
@@ -133,6 +143,15 @@
             <option value="" data-i18n="filter.all.f">Todas</option>
           </select>
         </div>
+        <!-- Facetas por JOGO (GAME_FACETS no shared.js): grupos de caixinhas com
+             contagem, preenchidos a partir das cartas desta página — set novo do
+             mesmo jogo já vem filtrável. O TÍTULO fica no wrapper: é ele que o
+             renderFacets esconde quando o jogo não tem faceta (esconder só o
+             miolo deixaria um "Filtros" órfão na barra). -->
+        <div id="facetsField" hidden>
+          <label data-i18n="filters.show">Filtros</label>
+          <div id="detailFacets" class="detail-facets"></div>
+        </div>
         <div class="sort-select">
           <label for="sortSelect" data-i18n="sort.label">Ordenar:</label>
           <select id="sortSelect">
@@ -145,22 +164,12 @@
             <option value="num-asc" data-i18n="sort.numAsc">Nº da carta (menor → maior)</option>
           </select>
         </div>
-        <!-- Facetas por JOGO (GAME_FACETS no shared.js): grupos de caixinhas com
-             contagem, preenchidos a partir das cartas desta página — set novo do
-             mesmo jogo já vem filtrável. Vazio nos jogos sem facetas. -->
-        <div id="detailFacets" class="detail-facets" hidden></div>
         <div class="view-toggle-field">
           <label data-i18n="toolbar.view">Visualização</label>
           <div id="viewToggle" class="view-toggle" role="group" aria-label="Visualização">
             <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" aria-label="Grade" title="Grade">▦</button>
             <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" aria-label="Lista" title="Lista">≣</button>
           </div>
-        </div>
-        <!-- Mesmo liga-desliga de Configurações → "Agrupar versões da carta"
-             (ver o chip no cards.html). Religa a grade sem reload. -->
-        <div class="view-toggle-field">
-          <label for="groupVariantsChip" data-i18n="toolbar.variants">Versões</label>
-          <button type="button" id="groupVariantsChip" class="chip" aria-pressed="false" data-i18n="filter.groupVariants" data-i18n-title="settings.groupVariantsDesc" title="Nas listas de cartas e na busca, mostra uma carta só em vez de uma entrada por versão (Normal, Foil, Reverse…). O + abre a carta pra você escolher qual versão adicionar. A Coleção e a Wishlist continuam mostrando cada versão que você tem.">Agrupar</button>
         </div>
       </section>
 
