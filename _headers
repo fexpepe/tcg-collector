@@ -24,6 +24,11 @@
   X-Frame-Options: DENY
   Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
   Cross-Origin-Opener-Policy: same-origin
+  # Speculation Rules por HEADER, não por <script inline>: a CSP acima é
+  # script-src 'self' SEM 'unsafe-inline', então regra inline exigiria afrouxar
+  # a política (com 'inline-speculation-rules') em 30 páginas. Pelo header, o
+  # arquivo é UM só e vale pro site inteiro. Ignorado por quem não suporta.
+  Speculation-Rules: "/speculation-rules.json"
 
 # App shell (src/*.js e styles.css). Estes valores são os do REPOSITÓRIO, onde
 # os arquivos não têm versão na URL: revalidar sempre é o que evita ficar preso
@@ -53,3 +58,20 @@
 # (HTML/JS com hash) continua network-first, então só o dado atrasa até 1h.
 /data/*
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+# Regras de especulação (ver o header Speculation-Rules lá em cima). O
+# Content-Type É OBRIGATÓRIO e específico: com application/json o Chrome
+# descarta o arquivo calado.
+#
+# É PREFETCH, não prerender, de propósito. Prerender executaria o boot inteiro
+# da página apontada — e o boot ESCREVE: o game.js grava o jogo da sessão
+# (writeSession) e o shared.js grava os snapshots mesclados no localStorage.
+# Como o prerender divide a origem com a aba de verdade, passar o mouse por
+# "Magic" sem clicar trocaria o jogo ativo da pessoa. Prefetch só busca o HTML,
+# não roda script nenhum.
+# `moderate` = só quando o ponteiro para em cima do link (ou no pointerdown);
+# o Chrome ainda limita quantos ficam em voo. O ganho é na PRIMEIRA sessão:
+# depois dela o service worker já serve navegação do cache (navigationFast).
+/speculation-rules.json
+  Content-Type: application/speculationrules+json
+  Cache-Control: public, max-age=3600
