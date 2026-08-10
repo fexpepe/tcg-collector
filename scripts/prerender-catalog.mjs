@@ -82,6 +82,36 @@ function fmtDatePt(iso) {
   if (!m) return "";
   return `${Number(m[3])} de ${MONTHS_PT[Number(m[2]) - 1]} de ${m[1]}`;
 }
+// Miniatura da GRADE. O catálogo guarda a URL do scan grande — no Pokémon é o
+// `high.png`, que tem 288 KB por carta. Numa página de set com 200 cartas isso
+// é ~57 MB pra desenhar quadradinhos de 245px. O `low.webp` da mesma carta tem
+// 14 KB (20x menos) e é exatamente a variante que o app usa na grade
+// (gridThumbUrl no shared.js). A carta em tamanho grande continua no
+// high.png — quem abre a página da CARTA (prc-img) recebe o scan bom.
+// Só a TCGdex expõe esse esquema de qualidade no caminho; as outras fontes
+// (TCGplayer, Scryfall, Lorcast) passam direto, sem alteração.
+function thumbUrl(u) {
+  const s = String(u || "");
+  if (!s.includes("assets.tcgdex.net")) return s;
+  return s.replace(/(?:\/(?:low|high))?\.(?:png|webp|jpg)$/, "/low.webp");
+}
+// Uma carta por NÚMERO, na língua da variante da página. Os chunks do Pokémon
+// são por idioma (data/sets/<lang>/<id>.json) e o agrupamento é pelo NOME do
+// set, então "151" chega aqui com as 207 cartas em inglês MAIS as 207 em
+// português: a página listava a mesma carta duas vezes, dobrava as imagens e
+// ainda anunciava "todas as 415 cartas" de um set que tem 207.
+// Preferência: a língua da página → inglês → o que houver.
+function cardsForLang(cards, lang) {
+  const porNumero = new Map();
+  const peso = (c) => (c.language === lang ? 0 : c.language === "en" ? 1 : 2);
+  for (const c of cards) {
+    // Sem número não dá pra parear impressões: entra sempre (chave própria).
+    const chave = c.number ? `${c.setId || ""}|${c.number}` : `id|${c.id}`;
+    const atual = porNumero.get(chave);
+    if (!atual || peso(c) < peso(atual)) porNumero.set(chave, c);
+  }
+  return [...porNumero.values()];
+}
 // ORÇAMENTO DE TÍTULO. O Google mostra ~60-65 caracteres e corta o resto com
 // "…": título de 116 (o maior que havia aqui) desperdiçava metade e diluía o
 // peso dos termos que importam. A regra em todo o arquivo: o NOME (do set ou da
@@ -181,7 +211,11 @@ const SET_L10N = {
 function setPageHtml(page, canonical, otherSets, lang) {
   const L = SET_L10N[lang] || SET_L10N.pt;
   const isEn = L === SET_L10N.en;
-  const { name, cards, rep, game, gameLabel } = page;
+  const { name, rep, game, gameLabel } = page;
+  // A LISTA da página é uma carta por número, na língua desta variante (ver
+  // cardsForLang). O page.cards cru segue intacto pro resto do script — o
+  // ranking de cartas top precisa de cada impressão, que tem página própria.
+  const cards = cardsForLang(page.cards, isEn ? "en" : "pt");
   const total = rep.setTotal || cards.length;
   const dateHuman = L.fmtDate(rep.setReleaseDate);
   const title = L.title(name, gameLabel);
@@ -217,11 +251,20 @@ function setPageHtml(page, canonical, otherSets, lang) {
     }
   };
 
-  const cardsHtml = cards.map((c) => {
+  // As primeiras cartas são as que aparecem sem rolar — e uma delas costuma ser
+  // o LCP desta página. `lazy` nelas atrasa a descoberta pro fim do parse do
+  // HTML (medido: 244 ms de load delay no LCP em 4G); daqui pra frente elas
+  // nascem `eager`, e a primeira ainda pede prioridade alta. O resto da grade
+  // segue lazy — são 200+ imagens que ninguém vê de imediato.
+  const ACIMA_DA_DOBRA = 6;
+  const cardsHtml = cards.map((c, i) => {
     const num = c.number ? `#${escapeHtml(c.number)}` : "";
     const alt = `${c.name}${c.number ? ` ${c.number}/${total}` : ""} — ${name}`;
+    const prioridade = i < ACIMA_DA_DOBRA
+      ? ` loading="eager"${i === 0 ? ' fetchpriority="high"' : ""}`
+      : ` loading="lazy"`;
     const img = c.image
-      ? `<img class="pr-card-img" src="${escapeAttr(absUrl(c.image))}" alt="${escapeAttr(alt)}" loading="lazy" width="245" height="342">`
+      ? `<img class="pr-card-img" src="${escapeAttr(absUrl(thumbUrl(c.image)))}" alt="${escapeAttr(alt)}"${prioridade} decoding="async" width="245" height="342">`
       : `<span class="pr-card-noimg">${escapeHtml(c.name)}</span>`;
     return `<li class="pr-card"><a href="${escapeAttr(appUrl)}">${img}<span class="pr-card-meta"><span class="pr-card-num">${num}</span> <span class="pr-card-name">${escapeHtml(c.name)}</span></span></a></li>`;
   }).join("");
@@ -277,6 +320,11 @@ function setPageHtml(page, canonical, otherSets, lang) {
       .pr-sub { color: var(--muted, #9aa0aa); margin: 0; }
       .pr-cta { display: inline-block; margin: 14px 0 4px; padding: 10px 18px; border-radius: 10px; background: var(--accent, #e63946); color: var(--on-accent, #fff); font-weight: 600; text-decoration: none; }
       .pr-grid { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+      /* Mesma razão do .card-tile no styles.css: são 200+ cartas numa página só
+         e o navegador não precisa diagramar as que estão fora da tela. Aqui o
+         palpite de altura é firme (a imagem é 245x342 numa coluna de ~150px,
+         mais a linha do nome), então a rolagem não estica nem encolhe. */
+      .pr-card { content-visibility: auto; contain-intrinsic-size: auto 240px; }
       .pr-card a { text-decoration: none; color: inherit; display: block; }
       .pr-card-img { width: 100%; height: auto; border-radius: 8px; display: block; background: var(--surface-2, #1a1c22); }
       .pr-card-noimg { display: block; padding: 20px 8px; text-align: center; }
