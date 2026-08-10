@@ -24,9 +24,13 @@
     ownedCount: document.getElementById("ownedCount"),
     totalCount: document.getElementById("totalCount"),
     completionRate: document.getElementById("completionRate"),
-    resultCount: document.getElementById("resultCount")
+    resultCount: document.getElementById("resultCount"),
+    setsViewToggle: document.getElementById("setsViewToggle")
   };
   const view = elements.grid.dataset.view || "pokedex";
+  // Visão grade/lista dos Sets (só na página de Sets). Mesma UI e persistência
+  // da página de Cartas; a classe .is-list na grade faz o CSS virar linhas.
+  let setsView = localStorage.getItem("tcg-sets-view") === "list" ? "list" : "grid";
   // Página de Sets filtrada por uma série específica (?serie=id).
   const serieParam = new URLSearchParams(window.location.search).get("serie") || "";
   // ?line=opcd|op2002 (atalho vintage do hub): mostra SÓ os sets daquela linha do
@@ -238,12 +242,34 @@
     });
   }
 
+  // Grade ↔ lista dos Sets: só alterna a classe .is-list na grade (CSS faz o
+  // resto), reflete nos botões e persiste. Sem re-render — é layout puro.
+  function applySetsView() {
+    if (elements.grid) elements.grid.classList.toggle("is-list", setsView === "list");
+    if (elements.setsViewToggle) {
+      elements.setsViewToggle.querySelectorAll("[data-grid-view]").forEach((b) => {
+        b.setAttribute("aria-pressed", b.dataset.gridView === setsView ? "true" : "false");
+      });
+    }
+  }
+
   function bindEvents() {
     const applyFilters = () => render({ resetCount: true });
     elements.search.addEventListener("input", debounce(applyFilters, 200));
     [elements.typeFilter, elements.setFilter, elements.languageFilter, elements.ownedFilter].filter(Boolean).forEach((element) => {
       element.addEventListener("input", applyFilters);
     });
+
+    if (elements.setsViewToggle) {
+      applySetsView(); // estado inicial (antes do primeiro render) a partir da pref salva
+      elements.setsViewToggle.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-grid-view]");
+        if (!button) return;
+        setsView = button.dataset.gridView === "list" ? "list" : "grid";
+        localStorage.setItem("tcg-sets-view", setsView);
+        applySetsView();
+      });
+    }
 
     if (elements.generationChips) {
       elements.generationChips.addEventListener("click", (event) => {
@@ -849,6 +875,7 @@
         <div class="set-footer">
           <span class="set-count">${item.ownedCount}/${item.totalCount} · ${progress}%</span>
           ${valueHtml}
+          ${item.releaseDate ? `<span class="set-date-list" title="${escapeAttribute(formatReleaseDate(item.releaseDate, "long"))}">${escapeHtml(formatReleaseDate(item.releaseDate))}</span>` : ""}
         </div>
         ${missingHtml}
       </div>

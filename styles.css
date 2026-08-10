@@ -1393,6 +1393,54 @@ input::placeholder {
   grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
 }
 
+/* ── Sets em LISTA (toggle grade/lista, igual à página de Cartas) ────────────
+   Uma coluna só; cada .set-card vira uma linha (arte pequena à esquerda; nome,
+   barra de progresso, contagem, valor e data à direita). Só CSS — a grade
+   ganha .is-list e nada é re-renderizado. Os cabeçalhos de série/categoria
+   (grid-column:1/-1) seguem full-width. A data, escondida no rodapé no modo
+   grade (lá ela é o badge sobre a arte), aparece aqui como coluna à direita. */
+.group-grid[data-view="sets"].is-list {
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+.group-grid[data-view="sets"].is-list .set-card {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  align-items: stretch;
+}
+.group-grid[data-view="sets"].is-list .set-card:hover { transform: none; }
+.is-list .set-art { min-height: 0; height: 100%; padding: 8px; }
+.is-list .set-logo { max-height: 42px; }
+.is-list .set-logo-placeholder { font-size: 12px; line-height: 1.15; -webkit-line-clamp: 2; }
+.is-list .set-symbol,
+.is-list .set-release { display: none; }
+.is-list .set-body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 14px;
+}
+.is-list .set-title-row { flex: 1 1 auto; min-width: 0; margin: 0; }
+.is-list .set-title-row h3 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.is-list .progress-bar { flex: 0 0 110px; margin: 0; }
+.is-list .set-footer { flex: 0 0 auto; margin: 0; gap: 14px; }
+.is-list .set-missing { display: none; }
+/* Data à direita só na lista (no grid é o badge .set-release sobre a arte). */
+.set-date-list { display: none; }
+.is-list .set-date-list { display: inline; color: var(--muted); font-weight: 700; white-space: nowrap; }
+/* Tela estreita (mesmo limiar ~700px que a grade já usa pra cair pra 2 colunas):
+   a barra de progresso sai e o corpo EMPILHA (nome em cima, números + valor +
+   data embaixo, com wrap) — a linha horizontal única não cabe sem cortar a data
+   em telas médias. Vira um item de lista de duas linhas, padrão no mobile. */
+@media (max-width: 700px) {
+  .group-grid[data-view="sets"].is-list .set-card { grid-template-columns: 72px 1fr; }
+  .is-list .progress-bar { display: none; }
+  .is-list .set-body { flex-direction: column; align-items: stretch; gap: 3px; padding: 8px 12px; }
+  .is-list .set-title-row { flex: none; }
+  .is-list .set-title-row h3 { white-space: normal; }
+  .is-list .set-footer { flex-wrap: wrap; justify-content: flex-start; gap: 4px 12px; }
+}
+
 .pokedex-card {
   background: var(--panel);
   border: 1px solid var(--line);
