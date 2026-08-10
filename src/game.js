@@ -119,6 +119,32 @@
   var cfg = (GAME_SLUGS.indexOf(game) >= 0 && GAMES[game]) || GAMES.pokemon;
   document.documentElement.setAttribute("data-game", cfg.slug);
 
+  // Handshake do CDN de imagem ADIANTADO. O <head> das páginas é o mesmo pra
+  // todos os jogos, então ele só consegue pré-conectar os dois hosts do Pokémon
+  // e do TCGplayer — quem abre Magic ou Lorcana descobre o host da imagem só
+  // quando a primeira carta é desenhada, e paga DNS + TCP + TLS inteiros dentro
+  // do caminho do LCP. Aqui o jogo já é conhecido (isto roda síncrono no head,
+  // antes do CSS), então dá pra abrir a conexão junto com o resto.
+  // Só os hosts que NÃO estão no HTML: tcgdex e tcgplayer-cdn já têm a tag.
+  // Todos estão no img-src/connect-src da CSP (ver _headers).
+  var IMG_HOST = {
+    magic: ["https://cards.scryfall.io", "https://svgs.scryfall.io"],
+    lorcana: ["https://cards.lorcast.io"],
+    naruto: ["https://wsrv.nl"],
+    hxh: ["https://wsrv.nl"]
+  };
+  // SEM crossorigin, igual às tags que já existem no HTML: na PRIMEIRA visita —
+  // a única em que o handshake pesa — o service worker ainda não controla a
+  // página (ele só é registrado no evento load), então as imagens saem pelo
+  // <img> comum, que não é CORS. Marcar `anonymous` aqui prepararia um pool de
+  // conexão que essa requisição não reusaria, e o TLS sairia duas vezes.
+  (IMG_HOST[cfg.slug] || []).forEach(function (host) {
+    var l = document.createElement("link");
+    l.rel = "preconnect";
+    l.href = host;
+    (document.head || document.documentElement).appendChild(l);
+  });
+
   // Idioma de CARTA no <html>, ainda no <head>. Não é usado pra traduzir nada
   // aqui — serve pro CSS decidir, ANTES do primeiro paint, se os chips de
   // região (#setRegionChips) aparecem. Antes quem escondia era o app.js depois
