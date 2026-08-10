@@ -9,6 +9,9 @@
   const favorites = shared.createFavoritesStore();
   const wishlist = shared.createWishlistStore();
   const prices = shared.createPriceStore();
+  // Preferência "agrupar versões" (ver cardVariantPairs no shared.js):
+  // uma carta = um tile nas grades de catálogo; o + abre o card pra escolher.
+  const agrupaVersoes = shared.groupVariantsEnabled();
 
   const TYPE_COLORS = shared.TYPE_COLORS;
   const REGION_BY_GENERATION = shared.REGION_BY_GENERATION;
@@ -942,10 +945,10 @@
 
   function render({ resetCount = false } = {}) {
     const visibleCards = filterCards();
-    const tiles = sortTiles(shared.cardVariantPairs(visibleCards));
+    const tiles = sortTiles(shared.cardVariantPairs(visibleCards, { group: agrupaVersoes }));
     // Cartas sem imagem vão para o fim (sort estável preserva a ordem da ordenação escolhida).
     tiles.sort((a, b) => Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card)));
-    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true }), { resetCount });
+    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes }), { resetCount });
 
     elements.empty.hidden = tiles.length > 0;
     elements.resultCount.textContent = tn("results.count", tiles.length);

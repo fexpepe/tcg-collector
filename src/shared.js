@@ -1952,6 +1952,23 @@
     else document.documentElement.removeAttribute("data-collector-mode");
     document.dispatchEvent(new CustomEvent("sleevu:collector"));
   }
+  // ── Agrupar versões (Normal/Foil/Reverse…) nas grades de catálogo ─────────
+  // Metade do Magic (49k cartas) existe em Normal E Foil, e cada versão era um
+  // tile: o set e a busca mostravam tudo em dobro. Com a preferência ligada, as
+  // grades de CATÁLOGO (Todas as cartas, página de set, Explorar) mostram UMA
+  // carta só; o + do tile abre o card, onde as versões sempre foram geridas uma
+  // a uma. A Coleção/Wishlist/Binders continuam por versão SEMPRE — lá cada
+  // tile é uma coisa que você tem (ou quer), e fundi-las mentiria a lista.
+  // Global e não por jogo: quem liga pro Magic também se beneficia no Pokémon
+  // (Normal+Reverse) e no Lorcana; jogo sem versão múltipla nem nota.
+  const GROUP_VARIANTS_KEY = "tcg-collector-pref-group-variants";
+  function groupVariantsEnabled() {
+    try { return localStorage.getItem(GROUP_VARIANTS_KEY) === "on"; } catch (e) { return false; }
+  }
+  function setGroupVariants(on) {
+    try { localStorage.setItem(GROUP_VARIANTS_KEY, on ? "on" : "off"); } catch (e) { /* ignora */ }
+  }
+
   function initCollectorToggle() {
     const actions = document.querySelector(".header-actions");
     if (!actions || document.getElementById("collectorToggle")) return;
@@ -4221,7 +4238,16 @@
   }
 
   // Expande as cartas em pares carta×variante — cada par vira um tile na grade.
-  function cardVariantPairs(sourceCards) {
+  // `opts.group` (preferência "agrupar versões", só nas grades de CATÁLOGO):
+  // devolve UM par por carta, na variante padrão. O tile sabe que representa a
+  // carta inteira (grouped, ver variantTile) e o + abre o card pra escolher.
+  // Quem NÃO passa opts (Coleção, Wishlist, Binders, Vendas, Graded) continua
+  // por versão — nessas listas cada tile é um item seu, não uma entrada de
+  // catálogo, e o flag não chega até aqui de propósito.
+  function cardVariantPairs(sourceCards, opts) {
+    if (opts && opts.group) {
+      return sourceCards.map((card) => ({ card, variant: defaultVariant(card) }));
+    }
     return sourceCards.flatMap((card) => {
       const variants = card.variants && card.variants.length ? card.variants : [defaultVariant(card)];
       return variants.map((variant) => ({ card, variant }));
@@ -4261,41 +4287,77 @@
     // addMode (página de busca): o botão sempre é "+" e cada clique soma +1 (com
     // feedback de ✓ por 2s). Fora dele, o botão alterna posse (liga/desliga).
     const addMode = !!(opts && opts.addMode);
-    const quantity = store.variantTotal(card.id, variant);
+    // AGRUPADO (preferência "agrupar versões", grades de catálogo): este tile
+    // representa a carta INTEIRA, não uma versão. Só muda algo quando a carta
+    // tem mais de uma versão — Normal-só fica idêntica ao modo normal.
+    // Posse/quantidade/desejo somam TODAS as versões, e +/− /coração viram
+    // "abrir o card": adicionar às cegas teria que chutar entre Normal e Foil,
+    // e chutar errado no Foil é errar o valor da coleção. Os botões carregam
+    // data-preview-card-id — o MESMO atributo da imagem, que toda página de
+    // grade já escuta antes dos handlers de posse, então nenhum listener muda.
+    const variants = cardVariants(card);
+    const grouped = !!(opts && opts.grouped) && variants.length > 1;
+    const quantity = grouped
+      ? variants.reduce((sum, v) => sum + store.variantTotal(card.id, v), 0)
+      : store.variantTotal(card.id, variant);
     const isOwned = quantity > 0;
-    const isWanted = wishlist ? wishlist.has(card.id, variant) : false;
+    const isWanted = wishlist
+      ? (grouped ? variants.some((v) => wishlist.has(card.id, v)) : wishlist.has(card.id, variant))
+      : false;
     const article = document.createElement("article");
     article.className = `card-tile${isOwned ? " owned" : ""}${isWanted ? " wanted" : ""}`;
     article.dataset.tileCardId = card.id;
     article.dataset.tileVariant = variant;
+    if (grouped) article.dataset.tileGrouped = variants.join("|");
     const img = cardImageSources(card, false);
     const imageInner = img.url
       ? localizedImg(img.url, { alt: card.name, loading: "lazy", thumb: true, fallback: img.fallback })
       : cardBackPlaceholder();
-    const image = `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${imageInner}</button>`;
-    const ownAria = addMode
-      ? (isOwned ? t("tile.addAnotherAria", { variant }) : t("tile.addAria", { variant }))
-      : (isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant }));
+    // Agrupado, o preview abre SEM variante: com ela, o modal restringe a
+    // gestão àquela versão só (o `only` do variantQuantityRows) — e a graça do
+    // tile agrupado é justamente ver Normal E Foil lado a lado ao abrir.
+    const previewVariantAttr = grouped ? "" : ` data-preview-variant="${escapeAttribute(variant)}"`;
+    const image = `<button class="image-open" data-preview-card-id="${escapeAttribute(card.id)}"${previewVariantAttr} aria-label="${escapeAttribute(t("card.zoom", { name: card.name }))}">${imageInner}</button>`;
+    const ownAria = grouped
+      ? t("tile.chooseVersion")
+      : addMode
+        ? (isOwned ? t("tile.addAnotherAria", { variant }) : t("tile.addAria", { variant }))
+        : (isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant }));
     // No addMode, mostra a contagem assim que tem 1 (o botão é sempre "+", então
     // o badge é o sinal de posse); fora dele, só destaca quando há mais de uma.
     const qtyBadge = quantity > (addMode ? 0 : 1) ? `<span class="tile-qty">×${quantity}</span>` : "";
     const ownIcon = addMode ? TILE_ICONS.plus : (isOwned ? TILE_ICONS.check : TILE_ICONS.plus);
     const ownActive = !addMode && isOwned ? " active" : "";
-    const wantButton = wishlist
-      ? `<button type="button" class="tile-btn tile-want${isWanted ? " active" : ""}" data-want-card-id="${escapeAttribute(card.id)}" data-want-variant="${escapeAttribute(variant)}" aria-pressed="${isWanted}" aria-label="${escapeAttribute(isWanted ? t("tile.unwantAria", { variant }) : t("tile.wantAria", { variant }))}" title="${escapeAttribute(isWanted ? t("tile.wanted") : t("tile.want"))}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}</button>`
-      : `<button type="button" class="tile-btn" disabled title="${escapeAttribute(t("tile.binder"))}" aria-label="${escapeAttribute(t("tile.binder"))}">${TILE_ICONS.binder}</button>`;
+    // Agrupado: + e coração abrem o card (data-preview-card-id) em vez de agir
+    // numa versão adivinhada. aria-pressed sai do botão de desejo — ele deixa
+    // de ser um toggle e vira um "abrir pra escolher".
+    const ownData = grouped
+      ? `data-preview-card-id="${escapeAttribute(card.id)}"`
+      : `data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}"`;
+    const wantButton = !wishlist
+      ? `<button type="button" class="tile-btn" disabled title="${escapeAttribute(t("tile.binder"))}" aria-label="${escapeAttribute(t("tile.binder"))}">${TILE_ICONS.binder}</button>`
+      : grouped
+        ? `<button type="button" class="tile-btn tile-want${isWanted ? " active" : ""}" data-preview-card-id="${escapeAttribute(card.id)}" aria-label="${escapeAttribute(t("tile.chooseVersion"))}" title="${escapeAttribute(t("tile.chooseVersion"))}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}</button>`
+        : `<button type="button" class="tile-btn tile-want${isWanted ? " active" : ""}" data-want-card-id="${escapeAttribute(card.id)}" data-want-variant="${escapeAttribute(variant)}" aria-pressed="${isWanted}" aria-label="${escapeAttribute(isWanted ? t("tile.unwantAria", { variant }) : t("tile.wantAria", { variant }))}" title="${escapeAttribute(isWanted ? t("tile.wanted") : t("tile.want"))}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}</button>`;
 
     // Botão de REMOVER uma cópia (−), à esquerda do +: desfaz um clique errado
     // sem ter de abrir o preview. Fica no DOM sempre e o refreshTileOwnership só
     // liga/desliga o `hidden` — recriar o tile faria a imagem piscar. Sem cópia
     // não há o que remover, então ele nasce escondido.
-    const minusButton = `<button type="button" class="tile-btn tile-minus" data-minus-card-id="${escapeAttribute(card.id)}" data-minus-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.removeOneAria", { variant }))}" title="${escapeAttribute(t("tile.removeOne"))}"${quantity > 0 ? "" : " hidden"}>${TILE_ICONS.minus}</button>`;
+    // Agrupado, o − some de vez: tirar "uma cópia" sem dizer de QUAL versão
+    // apagaria a errada. O ajuste fino é no card, versão a versão.
+    const minusButton = grouped
+      ? ""
+      : `<button type="button" class="tile-btn tile-minus" data-minus-card-id="${escapeAttribute(card.id)}" data-minus-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.removeOneAria", { variant }))}" title="${escapeAttribute(t("tile.removeOne"))}"${quantity > 0 ? "" : " hidden"}>${TILE_ICONS.minus}</button>`;
 
+    // Rótulo agrupado: as versões existentes, na ordem do catálogo
+    // ("Normal · Foil") — informa o que há sem ocupar mais que a linha de sempre.
+    const variantLabel = grouped ? variants.join(" · ") : variant;
     article.innerHTML = `
       <div class="card-image">${image}</div>
       <div class="tile-info">
         <h3>${escapeHtml(cardLabel(card))}</h3>
-        <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${cardFlag(card.language)}<span>${escapeHtml(variant)}</span></p>
+        <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${cardFlag(card.language)}<span>${escapeHtml(variantLabel)}</span></p>
         <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
         ${tilePriceHtml(card, variant, prices)}
         <div class="tile-foot">
@@ -4308,7 +4370,7 @@
           ${opts && opts.folders ? `<button type="button" class="tile-btn tile-folder${opts.inFolder ? " active" : ""}" data-folder-card-id="${escapeAttribute(card.id)}" data-folder-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.collection"))}" title="${escapeAttribute(t("tile.collection"))}">${TILE_ICONS.folder}</button>` : ""}
           ${wantButton}
           ${minusButton}
-          <button type="button" class="tile-btn tile-own${ownActive}" data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}" aria-pressed="${!addMode && isOwned}" aria-label="${escapeAttribute(ownAria)}">
+          <button type="button" class="tile-btn tile-own${ownActive}" ${ownData}${grouped ? "" : ` aria-pressed="${!addMode && isOwned}"`} aria-label="${escapeAttribute(ownAria)}">
             ${ownIcon}${qtyBadge}
           </button>
         </div>
@@ -4326,6 +4388,32 @@
     const cardId = tile.dataset.tileCardId;
     const variant = tile.dataset.tileVariant;
     if (!cardId) return;
+
+    // Tile AGRUPADO (ver variantTile): representa a carta inteira. O que muda
+    // por fora (fechar o preview depois de mexer nas versões) se resume a
+    // posse somada, desejo em qualquer versão e o badge de quantidade — os
+    // botões dele não trocam de papel (continuam abrindo o card), então o
+    // refresh completo lá de baixo, que reescreve aria/ícones por versão, não
+    // se aplica e faria os botões voltarem ao modo por-versão.
+    const versoes = tile.dataset.tileGrouped ? tile.dataset.tileGrouped.split("|") : null;
+    if (versoes) {
+      const total = versoes.reduce((sum, v) => sum + store.variantTotal(cardId, v), 0);
+      const querida = wishlist ? versoes.some((v) => wishlist.has(cardId, v)) : false;
+      const assinaturaG = `g|${total}|${querida ? 1 : 0}`;
+      if (tile.dataset.tileState === assinaturaG) return;
+      tile.dataset.tileState = assinaturaG;
+      tile.classList.toggle("owned", total > 0);
+      tile.classList.toggle("wanted", querida);
+      const own = tile.querySelector(".tile-own");
+      if (own) own.innerHTML = `${TILE_ICONS.plus}${total > 0 ? `<span class="tile-qty">×${total}</span>` : ""}`;
+      const want = tile.querySelector(".tile-want");
+      if (want) {
+        want.classList.toggle("active", querida);
+        want.innerHTML = querida ? TILE_ICONS.heartFilled : TILE_ICONS.heart;
+      }
+      return;
+    }
+
     const quantity = store.variantTotal(cardId, variant);
     const isOwned = quantity > 0;
 
@@ -5883,6 +5971,8 @@
     loadCollectionIndexes,
     collectorModeEnabled,
     setCollectorMode,
+    groupVariantsEnabled,
+    setGroupVariants,
     // Catálogo de UM jogo (pode ser diferente do jogo da sessão) — o construtor
     // de decks precisa disto: um deck de Lorcana aberto numa sessão Pokémon.
     loadGameCatalog,

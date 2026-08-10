@@ -33,6 +33,9 @@
   const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
   const wishlist = shared.mergedWishlistStore(wishlistByGame, gameOf);
   const prices = shared.mergedPriceStore(pricesByGame, gameOf);
+  // Preferência "agrupar versões" (ver cardVariantPairs no shared.js):
+  // uma carta = um tile nas grades de catálogo; o + abre o card pra escolher.
+  const agrupaVersoes = shared.groupVariantsEnabled();
 
   let cards = [];
   let cardsById = new Map();
@@ -155,7 +158,7 @@
       if (showTop) {
         elements.resultsHeader.hidden = false;
         if (elements.resultsTitle) elements.resultsTitle.textContent = t("home.topViewed");
-        pager.render(topViewedPairs, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true }), { resetCount: true });
+        pager.render(topViewedPairs, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes }), { resetCount: true });
       } else {
         elements.resultsHeader.hidden = true;
         pager.render([], () => document.createComment(""), { resetCount: true });
@@ -171,11 +174,11 @@
     const q = term();
     const matched = (options && options.list) || cards.filter((card) =>
       (gameFilter === "all" || card.game === gameFilter) && matchesCardQuery(card, q));
-    const pairs = shared.cardVariantPairs(matched);
+    const pairs = shared.cardVariantPairs(matched, { group: agrupaVersoes });
     const cmp = sortComparator();
     pairs.sort((a, b) =>
       (Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card))) || cmp(a, b));
-    pager.render(pairs, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true }), options || {});
+    pager.render(pairs, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes }), options || {});
     elements.empty.hidden = pairs.length > 0;
     elements.resultCount.textContent = tn("results.count", pairs.length);
   }

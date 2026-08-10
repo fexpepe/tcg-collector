@@ -325,8 +325,13 @@
     });
   }
 
+  // Preferência "agrupar versões": nas grades de catálogo, uma carta = um tile
+  // (o + abre o card pra escolher Normal/Foil…). Lida uma vez por carga — quem
+  // troca a preferência nas Configurações volta pra cá com a página nova.
+  const agrupaVersoes = shared.groupVariantsEnabled();
+
   function tilePairs() {
-    const pairs = shared.cardVariantPairs(filterCards());
+    const pairs = shared.cardVariantPairs(filterCards(), { group: agrupaVersoes });
     const cmp = sortComparator();
     // Critério primário: carta com imagem antes (sem-imagem sempre por último);
     // secundário: a ordenação escolhida pelo usuário.
@@ -403,7 +408,7 @@
       if (showTop) {
         elements.resultsHeader.hidden = false;
         if (elements.resultsTitle) elements.resultsTitle.textContent = t("home.topViewed");
-        pager.render(topViewedPairs, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true }), { resetCount: true });
+        pager.render(topViewedPairs, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes }), { resetCount: true });
       } else {
         elements.resultsHeader.hidden = true;
         pager.render([], () => document.createComment(""), { resetCount: true });
@@ -426,12 +431,12 @@
         shared.showSkeletons(elements.grid, "card", 12);
         return;
       }
-      pager.render(ponte, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true }), options || {});
+      pager.render(ponte, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes }), options || {});
       elements.resultCount.textContent = tn("results.count", ponte.length);
       return;
     }
     const tiles = tilePairs();
-    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true }), options || {});
+    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes }), options || {});
     elements.empty.hidden = tiles.length > 0;
     elements.resultCount.textContent = tn("results.count", tiles.length);
   }

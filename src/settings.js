@@ -148,6 +148,16 @@
     document.addEventListener("sleevu:collector", sync); // reflete a troca feita pelo olho do header
   }
 
+  // Agrupar versões — uma carta = um tile nas grades de catálogo (o + abre o
+  // card pra escolher Normal/Foil…). As páginas leem a preferência no boot;
+  // quem estiver numa grade aberta vê o efeito na próxima navegação.
+  const groupVariants = document.getElementById("groupVariantsToggle");
+  if (groupVariants) {
+    const sync = () => groupVariants.setAttribute("aria-checked", String(shared.groupVariantsEnabled()));
+    sync();
+    groupVariants.addEventListener("click", () => { shared.setGroupVariants(!shared.groupVariantsEnabled()); sync(); });
+  }
+
   // UI Editor (experimental) — liga/desliga e recarrega (o script é injetado no boot).
   const uiEditor = document.getElementById("uiEditorToggle");
   if (uiEditor) {
