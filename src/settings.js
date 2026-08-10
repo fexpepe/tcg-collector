@@ -138,6 +138,16 @@
     gameColors.addEventListener("click", () => { shared.setGameColors(!shared.gameColorsEnabled()); sync(); });
   }
 
+  // Modo Colecionador — esconde valores/preços no site todo (o mesmo do olho no
+  // header). Fica em sincronia com ele pelo evento "sleevu:collector".
+  const collector = document.getElementById("collectorModeToggle");
+  if (collector) {
+    const sync = () => collector.setAttribute("aria-checked", String(shared.collectorModeEnabled()));
+    sync();
+    collector.addEventListener("click", () => { shared.setCollectorMode(!shared.collectorModeEnabled()); sync(); });
+    document.addEventListener("sleevu:collector", sync); // reflete a troca feita pelo olho do header
+  }
+
   // UI Editor (experimental) — liga/desliga e recarrega (o script é injetado no boot).
   const uiEditor = document.getElementById("uiEditorToggle");
   if (uiEditor) {
