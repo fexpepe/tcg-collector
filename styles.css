@@ -4207,7 +4207,16 @@ a.hub-tile:hover {
    Fica DE FORA de propósito: o preço dentro do preview da carta (quem quiser
    saber, abre a carta) e o câmbio/seletor de moeda. theme.js carimba o atributo
    síncrono no <head> pra nada piscar no boot. */
-.collector-badge { display: none; }
+/* O badge só existe COM o modo ligado. A âncora no html:not(...) não é
+   preciosismo: `.collector-badge { display: none }` sozinho tem a mesma força
+   de qualquer outra classe e perdia duas vezes — na Coleção pra
+   `.dash-stat-money { display: flex }`, que casa no MESMO elemento e vem
+   depois no arquivo; no Dashboard pra `.stats-grid span { display: block }`,
+   que é mais específica. O resultado era "Modo Colecionador" escrito embaixo
+   dos valores justamente para quem tem o modo DESLIGADO.
+   Com o seletor abaixo a regra ganha os dois casos, e o estado ligado (que já
+   funcionava) continua igual. */
+html:not([data-collector-mode]) .collector-badge { display: none; }
 html[data-collector-mode] .collector-badge { display: flex; }
 html[data-collector-mode] .tile-price,          /* preço na cápsula da carta */
 html[data-collector-mode] .set-value,           /* valor no tile de set */
