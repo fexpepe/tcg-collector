@@ -691,13 +691,28 @@
 
   function hydrateFilters() {
     // Idioma: lista suspensa (igual à Coleção), em vez de botões por língua.
-    addOptions(elements.languageFilter, unique(pageCards.map((card) => shared.normalizeCardLanguage(card.language))), (value) => shared.cardLanguageLabel(value));
-    // Idioma de carta preferido vira o filtro padrão (se houver cartas dele aqui).
-    const pref = shared.getCardLang();
-    if (pref !== "all" && Array.from(elements.languageFilter.options).some((option) => option.value === pref)) {
-      elements.languageFilter.value = pref;
+    const linguas = unique(pageCards.map((card) => shared.normalizeCardLanguage(card.language)));
+    addOptions(elements.languageFilter, linguas, (value) => shared.cardLanguageLabel(value));
+    // Com UMA língua só, o campo é peso morto e SOME. É o caso de toda página
+    // de set — ela abre uma edição só (pickSetEdition), então o idioma já foi
+    // decidido na LISTA de sets (chips de região) antes de chegar aqui — e das
+    // páginas de artista/espécie nos jogos só-inglês (Magic, Lorcana…). Onde
+    // línguas se misturam de verdade (um Pokémon com impressões EN/PT/JA, com
+    // preferência "todos"), o filtro continua aparecendo. Escondê-lo abre
+    // espaço na barra pro chip "Versões: Agrupar" respirar.
+    const campoIdioma = elements.languageFilter.closest("div");
+    if (campoIdioma) campoIdioma.hidden = linguas.length <= 1;
+    if (linguas.length <= 1) {
+      elements.languageFilter.value = "";
+      selectedLanguage = "";
+    } else {
+      // Idioma de carta preferido vira o filtro padrão (se houver cartas dele aqui).
+      const pref = shared.getCardLang();
+      if (pref !== "all" && Array.from(elements.languageFilter.options).some((option) => option.value === pref)) {
+        elements.languageFilter.value = pref;
+      }
+      selectedLanguage = elements.languageFilter.value;
     }
-    selectedLanguage = elements.languageFilter.value;
 
     renderSegmented(elements.ownedChips, [
       { value: "all", label: t("filter.all.f") },
