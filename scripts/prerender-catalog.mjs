@@ -84,16 +84,31 @@ function fmtDatePt(iso) {
 }
 // Miniatura da GRADE. O catálogo guarda a URL do scan grande — no Pokémon é o
 // `high.png`, que tem 288 KB por carta. Numa página de set com 200 cartas isso
-// é ~57 MB pra desenhar quadradinhos de 245px. O `low.webp` da mesma carta tem
-// 14 KB (20x menos) e é exatamente a variante que o app usa na grade
-// (gridThumbUrl no shared.js). A carta em tamanho grande continua no
+// é ~57 MB pra desenhar quadradinhos. A carta em tamanho grande continua no
 // high.png — quem abre a página da CARTA (prc-img) recebe o scan bom.
 // Só a TCGdex expõe esse esquema de qualidade no caminho; as outras fontes
 // (TCGplayer, Scryfall, Lorcast) passam direto, sem alteração.
+//
+// São DUAS variantes, num srcset, porque uma só não serve as duas telas:
+// low.webp tem 245x337 (14 KB) e high.webp tem 600x825 (48 KB). No desktop a
+// coluna da grade tem ~150-245 px em tela 1x, e o low é exatamente do tamanho;
+// no celular a coluna fica em ~150 px mas com DPR 3, então o low apareceria
+// esticado (foi o que a medição em produção mostrou: 3,8x de escala, borrado).
+// Com o srcset quem escolhe é o navegador, pela largura real e pela densidade.
+const QUALIDADE_RE = /(?:\/(?:low|high))?\.(?:png|webp|jpg)$/;
+const daTcgdex = (u) => String(u || "").includes("assets.tcgdex.net");
 function thumbUrl(u) {
   const s = String(u || "");
-  if (!s.includes("assets.tcgdex.net")) return s;
-  return s.replace(/(?:\/(?:low|high))?\.(?:png|webp|jpg)$/, "/low.webp");
+  return daTcgdex(s) ? s.replace(QUALIDADE_RE, "/low.webp") : s;
+}
+// srcset/sizes do thumb. Fora da TCGdex devolve vazio (a fonte não tem
+// variantes) e o <img> fica só com o src, como antes.
+function thumbSrcset(u) {
+  const s = String(u || "");
+  if (!daTcgdex(s)) return "";
+  const low = s.replace(QUALIDADE_RE, "/low.webp");
+  const high = s.replace(QUALIDADE_RE, "/high.webp");
+  return `${escapeAttr(low)} 245w, ${escapeAttr(high)} 600w`;
 }
 // Uma carta por NÚMERO, na língua da variante da página. Os chunks do Pokémon
 // são por idioma (data/sets/<lang>/<id>.json) e o agrupamento é pelo NOME do
@@ -263,8 +278,12 @@ function setPageHtml(page, canonical, otherSets, lang) {
     const prioridade = i < ACIMA_DA_DOBRA
       ? ` loading="eager"${i === 0 ? ' fetchpriority="high"' : ""}`
       : ` loading="lazy"`;
+    // sizes casa com a grade (ver .pr-grid no CSS): uma coluna de ~50vw no
+    // celular, ~150px de largura fixa a partir do tablet.
+    const srcset = thumbSrcset(c.image);
+    const srcsetAttr = srcset ? ` srcset="${srcset}" sizes="(max-width: 640px) 50vw, 150px"` : "";
     const img = c.image
-      ? `<img class="pr-card-img" src="${escapeAttr(absUrl(thumbUrl(c.image)))}" alt="${escapeAttr(alt)}"${prioridade} decoding="async" width="245" height="342">`
+      ? `<img class="pr-card-img" src="${escapeAttr(absUrl(thumbUrl(c.image)))}"${srcsetAttr} alt="${escapeAttr(alt)}"${prioridade} decoding="async" width="245" height="342">`
       : `<span class="pr-card-noimg">${escapeHtml(c.name)}</span>`;
     return `<li class="pr-card"><a href="${escapeAttr(appUrl)}">${img}<span class="pr-card-meta"><span class="pr-card-num">${num}</span> <span class="pr-card-name">${escapeHtml(c.name)}</span></span></a></li>`;
   }).join("");
@@ -319,7 +338,10 @@ function setPageHtml(page, canonical, otherSets, lang) {
       .pr-hero h1 { margin: 0 0 4px; font-size: 1.7rem; }
       .pr-sub { color: var(--muted, #9aa0aa); margin: 0; }
       .pr-cta { display: inline-block; margin: 14px 0 4px; padding: 10px 18px; border-radius: 10px; background: var(--accent, #e63946); color: var(--on-accent, #fff); font-weight: 600; text-decoration: none; }
-      .pr-grid { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+      /* minmax de 130px, não 150: num celular de 390px a coluna útil fica em
+         ~310px, e 150+16+150 = 316 estourava por SEIS pixels — a grade caía pra
+         uma carta por linha, gigante e esticada. Com 130 cabem duas. */
+      .pr-grid { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 16px; }
       /* Mesma razão do .card-tile no styles.css: são 200+ cartas numa página só
          e o navegador não precisa diagramar as que estão fora da tela. Aqui o
          palpite de altura é firme (a imagem é 245x342 numa coluna de ~150px,
