@@ -506,6 +506,236 @@
   }
 
   // ---------------------------------------------------------------------------
+  // LISTAS — coleções nomeadas de cartas (sucessoras das tags). Ver docs/LISTAS.md.
+  //
+  // GLOBAL (cross-game): uma lista só, cada lista carrega o próprio `game` — o
+  // mesmo desenho dos decks e dos binders. O store vive AQUI (e não na página)
+  // de propósito: o botão de lista do tile e o bloco do popup do card são de
+  // shared.js, e foi justamente ter o store das tags dentro de collection.js que
+  // obrigou a uma segunda leitura do mesmo blob (readTagsData) — duas
+  // implementações que podiam divergir.
+  //
+  // Instância ÚNICA por página (ao contrário de collection/wishlist, que são por
+  // jogo): o popover do tile e a página de listas precisam enxergar a mesma
+  // memória, senão um sobrescreve o outro no próximo save.
+  //
+  // Entrada = { id, v, q, c, at }: variante, quantidade e condição. `v` nulo é
+  // "marcador" — a carta está na lista sem dizer qual versão. É o que a migração
+  // das tags produz (tag não tinha variante), e um marcador casa com qualquer
+  // variante perguntada.
+  // ---------------------------------------------------------------------------
+  const LISTS_KEY = "tcg-collector-lists-all-v1";
+  const LIST_LIMIT = 100;          // tetos de sanidade: o blob divide 5MB com o resto
+  const LIST_ENTRIES_LIMIT = 5000;
+  const LIST_NAME_MAX = 40;
+
+  function entryKey(cardId, variant) {
+    return String(cardId) + "|" + (variant == null ? "" : String(variant));
+  }
+
+  let listsCache = null;
+  function readLists() {
+    if (listsCache) return listsCache;
+    let parsed = null;
+    try { parsed = JSON.parse(localStorage.getItem(LISTS_KEY) || "null"); } catch (e) { /* corrompido: começa limpo */ }
+    if (parsed && typeof parsed === "object" && Array.isArray(parsed.lists)) {
+      if (!parsed.deleted || typeof parsed.deleted !== "object") parsed.deleted = {};
+      parsed.lists.forEach((l) => { if (!Array.isArray(l.entries)) l.entries = []; });
+      listsCache = parsed;
+    } else {
+      listsCache = { lists: [], deleted: {} };
+    }
+    return listsCache;
+  }
+
+  function createListStore() {
+    const data = readLists();
+
+    function save() {
+      scheduleWrite(LISTS_KEY, () => JSON.stringify(data));
+    }
+    function touch(list) {
+      if (!list) return;
+      list.updatedAt = Date.now();
+      save();
+    }
+    function newId() {
+      return "ls_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    }
+    function get(id) {
+      return data.lists.find((l) => l.id === id) || null;
+    }
+    function entriesOf(listId) {
+      const l = get(listId);
+      return l ? l.entries : [];
+    }
+    function findEntry(list, cardId, variant) {
+      const k = entryKey(cardId, variant);
+      return list.entries.find((e) => entryKey(e.id, e.v) === k) || null;
+    }
+
+    return {
+      LIST_LIMIT,
+      LIST_ENTRIES_LIMIT,
+      list() { return data.lists; },
+      get,
+      entriesOf,
+      any() { return data.lists.length > 0; },
+      atLimit() { return data.lists.length >= LIST_LIMIT; },
+
+      // `linked`: cada carta adicionada entra TAMBÉM na coleção do jogo. Quem
+      // orquestra isso é a UI (a coleção é por jogo, este store é global) — aqui
+      // fica só a intenção registrada.
+      create(opts) {
+        if (data.lists.length >= LIST_LIMIT) return null;
+        const o = opts || {};
+        const list = {
+          id: newId(),
+          name: String(o.name || "").trim().slice(0, LIST_NAME_MAX),
+          color: safeColor(o.color) || "#3b6fe0",
+          game: o.game || null,
+          setId: o.setId || null,
+          linked: !!o.linked,
+          entries: [],
+          createdAt: Date.now(),
+          updatedAt: Date.now()
+        };
+        if (o.fromTag) list.fromTag = o.fromTag;
+        data.lists.unshift(list);
+        save();
+        return list;
+      },
+      rename(id, name) {
+        const l = get(id);
+        if (!l) return;
+        l.name = String(name || "").trim().slice(0, LIST_NAME_MAX);
+        touch(l);
+      },
+      setColor(id, color) {
+        const l = get(id);
+        if (!l) return;
+        l.color = safeColor(color) || l.color;
+        touch(l);
+      },
+      setLinked(id, linked) {
+        const l = get(id);
+        if (!l) return;
+        l.linked = !!linked;
+        touch(l);
+      },
+      // Exclusão deixa tombstone: sem ele, a lista apagada no celular volta do PC
+      // no próximo merge (a união por id não distingue "não existe" de "apagada").
+      remove(id) {
+        const i = data.lists.findIndex((l) => l.id === id);
+        if (i < 0) return null;
+        const [gone] = data.lists.splice(i, 1);
+        data.deleted[id] = Date.now();
+        save();
+        return gone;
+      },
+
+      // Soma `q` quando o par (carta, variante) já está na lista. Devolve a
+      // entrada resultante, ou null se a lista não existe / estourou o teto.
+      addEntry(listId, cardId, opts) {
+        const l = get(listId);
+        if (!l || !cardId) return null;
+        const o = opts || {};
+        const variant = o.v == null ? null : String(o.v);
+        const qty = o.q == null ? 1 : Math.max(1, Math.round(Number(o.q) || 1));
+        const found = findEntry(l, cardId, variant);
+        if (found) {
+          found.q = (found.q == null ? 1 : found.q) + qty;
+          if (o.c) found.c = o.c;
+          touch(l);
+          return found;
+        }
+        if (l.entries.length >= LIST_ENTRIES_LIMIT) return null;
+        const entry = {
+          id: String(cardId),
+          v: variant,
+          q: qty,
+          c: o.c || DEFAULT_CONDITION,
+          at: Date.now()
+        };
+        l.entries.push(entry);
+        touch(l);
+        return entry;
+      },
+      setEntryQty(listId, cardId, variant, qty) {
+        const l = get(listId);
+        if (!l) return;
+        const found = findEntry(l, cardId, variant);
+        if (!found) return;
+        const n = Math.round(Number(qty) || 0);
+        if (n <= 0) l.entries.splice(l.entries.indexOf(found), 1);
+        else found.q = n;
+        touch(l);
+      },
+      setEntryCondition(listId, cardId, variant, condition) {
+        const l = get(listId);
+        if (!l) return;
+        const found = findEntry(l, cardId, variant);
+        if (!found || !CARD_CONDITIONS.includes(condition)) return;
+        found.c = condition;
+        touch(l);
+      },
+      removeEntry(listId, cardId, variant) {
+        const l = get(listId);
+        if (!l) return;
+        const found = findEntry(l, cardId, variant);
+        if (!found) return;
+        l.entries.splice(l.entries.indexOf(found), 1);
+        touch(l);
+      },
+      entry(listId, cardId, variant) {
+        const l = get(listId);
+        return l ? findEntry(l, cardId, variant) : null;
+      },
+      // Uma variante nula na LISTA (marcador vindo das tags) casa com qualquer
+      // variante perguntada — senão a carta marcada por tag apareceria "fora" da
+      // própria lista no popover do tile.
+      has(listId, cardId, variant) {
+        const l = get(listId);
+        if (!l) return false;
+        if (findEntry(l, cardId, variant)) return true;
+        return variant != null && !!findEntry(l, cardId, null);
+      },
+      // Toggle do popover: liga/desliga o par na lista. Devolve true se ficou.
+      toggleEntry(listId, cardId, opts) {
+        const l = get(listId);
+        if (!l) return false;
+        const o = opts || {};
+        const variant = o.v == null ? null : String(o.v);
+        if (findEntry(l, cardId, variant)) { this.removeEntry(listId, cardId, variant); return false; }
+        // Desmarcar uma carta que entrou como marcador (v nulo) também precisa
+        // funcionar quando o clique vem de um tile com variante.
+        if (variant != null && findEntry(l, cardId, null)) { this.removeEntry(listId, cardId, null); return false; }
+        return !!this.addEntry(listId, cardId, o);
+      },
+      // Ids das listas que contêm a carta (para o popover marcar os checks).
+      listsWith(cardId, variant) {
+        return data.lists.filter((l) => this.has(l.id, cardId, variant)).map((l) => l.id);
+      },
+      // Total de CÓPIAS da lista (marcador conta 1). O nº de linhas é entries.length.
+      countOf(listId) {
+        return entriesOf(listId).reduce((s, e) => s + (e.q == null ? 1 : e.q), 0);
+      },
+      cardIdsOf(listId) {
+        return [...new Set(entriesOf(listId).map((e) => e.id))];
+      },
+      // Import de backup / restore. Aceita o blob inteiro { lists, deleted }.
+      replace(next) {
+        const ok = next && typeof next === "object" && Array.isArray(next.lists);
+        data.lists = ok ? next.lists : [];
+        data.deleted = (ok && next.deleted && typeof next.deleted === "object") ? next.deleted : {};
+        data.lists.forEach((l) => { if (!Array.isArray(l.entries)) l.entries = []; });
+        save();
+      },
+      toObject() { return data; }
+    };
+  }
+
+  // ---------------------------------------------------------------------------
   // Idioma do site: controla os textos da interface e o idioma das imagens das
   // cartas (assets da TCGdex levam o idioma na URL; se a imagem não existir no
   // idioma escolhido, um onerror volta para a URL original do catálogo).
@@ -5977,6 +6207,7 @@
     createFavoritesStore,
     createWishlistStore,
     createPriceStore,
+    createListStore,
     brMarketplaceLinks,
     defaultVariant,
     cardVariants,
@@ -6184,6 +6415,7 @@
     prices: gameKey("prices-v1"),
     binders: "tcg-collector-binders-all-v1", // binders são globais (cross-game)
     decks: "tcg-collector-decks-all-v1", // decks são globais (cada deck tem seu `game`)
+    lists: "tcg-collector-lists-all-v1", // listas são globais (cada lista tem seu `game`)
     folders: "tcg-collector-collection-folders-v1", // pastas da coleção (globais)
     sales: "tcg-collector-collection-sales-v1", // cartas à venda (globais)
     graded: "tcg-collector-collection-graded-v1", // cartas graduadas/slabs (globais)
@@ -6591,6 +6823,40 @@
     return { decks, deleted };
   }
 
+  // Listas ({ lists, deleted }): união por id com LWW POR LISTA — e não do bloco
+  // inteiro, como nas tags. A diferença importa: com LWW de bloco, editar a lista
+  // A no PC e a lista B no celular fazia o device que sincronizasse por último
+  // apagar o trabalho do outro. Aqui só a MESMA lista entra em conflito (aí sim
+  // vence a mais nova, entradas inclusive). Tombstones no padrão dos decks, com
+  // a poda de TTL que eles não têm — lista é objeto de vida curta (criar pra uma
+  // compra, apagar depois), então o mapa de apagadas cresceria sem parar.
+  function mergeLists(a, b) {
+    // Ausente dos DOIS lados → undefined (não {} vazio): o writeSnapshot grava
+    // tudo que não é null, e devolver objeto criaria a chave no localStorage de
+    // quem nunca abriu a página de listas — bytes a mais em todo push.
+    if (!a && !b) return undefined;
+    const al = (a && Array.isArray(a.lists)) ? a.lists : [];
+    const bl = (b && Array.isArray(b.lists)) ? b.lists : [];
+    const deleted = {};
+    [a, b].forEach((side) => {
+      const d = side && side.deleted;
+      if (d && typeof d === "object") Object.keys(d).forEach((id) => {
+        const ts = Number(d[id]) || 0;
+        if (ts > (deleted[id] || 0)) deleted[id] = ts;
+      });
+    });
+    const byId = new Map();
+    al.concat(bl).forEach((ls) => {
+      if (!ls || !ls.id) return;
+      const prev = byId.get(ls.id);
+      if (!prev || (Number(ls.updatedAt) || 0) > (Number(prev.updatedAt) || 0)) byId.set(ls.id, ls);
+    });
+    // Edição posterior à exclusão "revive" a lista (editei no PC depois de apagar
+    // no celular = quis manter).
+    const lists = Array.from(byId.values()).filter((ls) => (deleted[ls.id] || 0) < (Number(ls.updatedAt) || 0));
+    return { lists, deleted: pruneTombstones(deleted) };
+  }
+
   function mergeBinders(a, b) {
     const al = (a && Array.isArray(a.binders)) ? a.binders : [];
     const bl = (b && Array.isArray(b.binders)) ? b.binders : [];
@@ -6715,6 +6981,7 @@
       prices: mergePrices(a.prices, b.prices),
       binders: mergeBinders(a.binders, b.binders),
       decks: mergeDecks(a.decks, b.decks),
+      lists: mergeLists(a.lists, b.lists),
       folders: mergeFolders(a.folders, b.folders),
       sales: mergeSales(a.sales, b.sales),
       graded: mergeGraded(a.graded, b.graded),
@@ -7489,6 +7756,7 @@
       try { const sa = JSON.parse(localStorage.getItem(SYNC_KEYS.sales) || "null"); if (sa) payload.sales = sa; } catch (e) { /* ignora */ }
       try { const gr = JSON.parse(localStorage.getItem(SYNC_KEYS.graded) || "null"); if (gr) payload.graded = gr; } catch (e) { /* ignora */ }
       try { const tg = JSON.parse(localStorage.getItem(SYNC_KEYS.tags) || "null"); if (tg) payload.tags = tg; } catch (e) { /* ignora */ }
+      try { const li = JSON.parse(localStorage.getItem(SYNC_KEYS.lists) || "null"); if (li) payload.lists = li; } catch (e) { /* ignora */ }
       try { const sd = JSON.parse(localStorage.getItem(SYNC_KEYS.sold) || "null"); if (sd) payload.sold = sd; } catch (e) { /* ignora */ }
       try { const co = JSON.parse(localStorage.getItem(SYNC_KEYS.costs) || "null"); if (co) payload.costs = co; } catch (e) { /* ignora */ }
       try { const wt = JSON.parse(localStorage.getItem(SYNC_KEYS.wishTargets) || "null"); if (wt) payload.wishTargets = wt; } catch (e) { /* ignora */ }
@@ -7520,6 +7788,7 @@
         if (payload.sales && typeof payload.sales === "object") localStorage.setItem(SYNC_KEYS.sales, JSON.stringify(payload.sales));
         if (payload.graded && typeof payload.graded === "object") localStorage.setItem(SYNC_KEYS.graded, JSON.stringify(payload.graded));
         if (payload.tags && typeof payload.tags === "object") localStorage.setItem(SYNC_KEYS.tags, JSON.stringify(payload.tags));
+        if (payload.lists && typeof payload.lists === "object") localStorage.setItem(SYNC_KEYS.lists, JSON.stringify(payload.lists));
         if (payload.sold && typeof payload.sold === "object") localStorage.setItem(SYNC_KEYS.sold, JSON.stringify(payload.sold));
         if (payload.costs && typeof payload.costs === "object") localStorage.setItem(SYNC_KEYS.costs, JSON.stringify(payload.costs));
         if (payload.wishTargets && typeof payload.wishTargets === "object") localStorage.setItem(SYNC_KEYS.wishTargets, JSON.stringify(payload.wishTargets));
