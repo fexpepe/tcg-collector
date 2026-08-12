@@ -8,6 +8,8 @@
   const M = (window.TCG_MESSAGES = window.TCG_MESSAGES || {});
 
   M.pt = Object.assign(M.pt || {}, {
+    "lists.makeDeck": "Criar deck",
+    "lists.keysHint": "Dica: / busca, ↑ ↓ andam pelas cartas, Enter adiciona.",
     "lists.export": "Exportar",
     "lists.format.liga": "Liga (Compra por Lista)",
     "lists.format.liga.hint": "Cole no campo de lista da Liga para comprar tudo de uma vez.",
@@ -87,6 +89,8 @@
   });
 
   M.en = Object.assign(M.en || {}, {
+    "lists.makeDeck": "Create deck",
+    "lists.keysHint": "Tip: / searches, ↑ ↓ move through cards, Enter adds.",
     "lists.export": "Export",
     "lists.format.liga": "Liga (buy by list)",
     "lists.format.liga.hint": "Paste into Liga's list field to buy everything at once.",
@@ -163,6 +167,8 @@
   });
 
   M.es = Object.assign(M.es || {}, {
+    "lists.makeDeck": "Crear deck",
+    "lists.keysHint": "Consejo: / busca, ↑ ↓ recorren las cartas, Enter agrega.",
     "lists.export": "Exportar",
     "lists.format.liga": "Liga (compra por lista)",
     "lists.format.liga.hint": "Pégalo en el campo de lista de Liga para comprar todo de una vez.",

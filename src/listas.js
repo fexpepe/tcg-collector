@@ -396,6 +396,7 @@
           <footer class="lst-panel-foot">
             <button type="button" class="deck-mini" data-list-export>${esc(t("lists.export"))}</button>
             ${list.linked ? "" : `<button type="button" class="deck-mini" data-list-apply>${esc(t("lists.applyToCollection"))}</button>`}
+            <button type="button" class="deck-mini" data-list-deck>${esc(t("lists.makeDeck"))}</button>
             <button type="button" class="deck-mini danger" data-list-del>${esc(t("lists.delete"))}</button>
           </footer>
         </section>
@@ -408,6 +409,7 @@
                  placeholder="${escA(list.set ? t("lists.setFilter") : t("lists.searchPlaceholder", { listGame: shared.gameLabel(list.game) }))}"
                  value="${escA(query)}">
           <div class="lst-rows" data-source></div>
+          <p class="lst-keys">${esc(t("lists.keysHint"))}</p>
         </section>
       </div>
       <img class="lst-thumb" alt="" hidden>`;
@@ -605,6 +607,46 @@
     });
   }
 
+  // ===========================================================================
+  // "Criar deck desta lista" — a lista como ponto de partida do construtor.
+  // Escreve direto no store dos decks (mesma chave global, formato do decks.js);
+  // as REGRAS dizem em que zona cada carta entra, senão um líder de One Piece
+  // cairia no deck principal e o deck nasceria inválido.
+  // ===========================================================================
+  const DECKS_KEY = "tcg-collector-decks-all-v1";
+  function criarDeckDaLista() {
+    const rules = window.TCGDeckRules;
+    const pack = rules ? rules.packFor(current.game, null) : null;
+    const zones = {};
+    if (pack) (pack.zones || []).forEach((z) => { zones[z.key] = []; });
+    else zones.main = [];
+
+    current.entries.forEach((e) => {
+      const card = cat.byId[e.id];
+      const zona = (pack && card && rules.zoneForCard(pack, card)) || "main";
+      if (!zones[zona]) zones[zona] = [];
+      zones[zona].push({ id: e.id, qty: e.q == null ? 1 : e.q, variant: e.v || (card ? shared.defaultVariant(card) : "Normal") });
+    });
+
+    let data;
+    try { data = JSON.parse(localStorage.getItem(DECKS_KEY) || "null"); } catch (err) { data = null; }
+    if (!data || !Array.isArray(data.decks)) data = { decks: [], deleted: {} };
+    const deck = {
+      id: "dk_" + Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-3),
+      game: current.game,
+      format: null,
+      name: listName(current),
+      coverCardId: current.entries.length ? current.entries[0].id : undefined,
+      zones: zones,
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    };
+    data.decks.unshift(deck);
+    try { localStorage.setItem(DECKS_KEY, JSON.stringify(data)); }
+    catch (err) { if (shared.notifyStorageFull) shared.notifyStorageFull(); return; }
+    location.href = `my-decks.html?id=${encodeURIComponent(deck.id)}`;
+  }
+
   // --- Eventos do editor (delegação) ----------------------------------------
   el.editor.addEventListener("click", (ev) => {
     if (!current) return;
@@ -671,6 +713,7 @@
 
     if (ev.target.closest("[data-list-export]")) { openExportModal(); return; }
     if (ev.target.closest("[data-list-apply]")) { openApplyModal(); return; }
+    if (ev.target.closest("[data-list-deck]")) { criarDeckDaLista(); return; }
 
     if (ev.target.closest("[data-list-del]")) {
       // Toast com desfazer, como o resto do site — nada de confirm() bloqueante.
@@ -699,6 +742,54 @@
   el.editor.addEventListener("change", (ev) => {
     if (!current) return;
     if (ev.target.matches("[data-list-linked]")) store.setLinked(current.id, ev.target.checked);
+  });
+
+  // Teclado: cadastrar um set inteiro é uma tarefa de duas mãos — uma na busca,
+  // outra adicionando. Sem isto, cada carta custa um movimento até o mouse.
+  //   /     foca a busca      ↑ ↓   anda pelas linhas da fonte
+  //   Enter adiciona a linha em foco (com 1 versão) ou abre o seletor
+  //   Esc   fecha o seletor aberto / devolve o foco à busca
+  el.editor.addEventListener("keydown", (ev) => {
+    if (!current) return;
+    const busca = el.editor.querySelector("#lstSearch");
+
+    // "/" não pode roubar a tecla de quem está digitando (inclusive um nome de
+    // carta que tenha barra).
+    const digitando = /^(INPUT|TEXTAREA|SELECT)$/.test(ev.target.tagName);
+    if (ev.key === "/" && !digitando) { ev.preventDefault(); if (busca) busca.focus(); return; }
+
+    if (ev.key === "Escape") {
+      if (openPicker) { openPicker = null; renderSource(); ev.preventDefault(); }
+      else if (busca) busca.focus();
+      return;
+    }
+
+    if (ev.key !== "ArrowDown" && ev.key !== "ArrowUp" && ev.key !== "Enter") return;
+    // Enter dentro de um campo do seletor confirma aquele seletor, não a linha.
+    if (ev.key === "Enter" && digitando && ev.target.closest(".lst-picker")) {
+      const btn = ev.target.closest(".lst-picker").querySelector("[data-pick-confirm]");
+      if (btn) { ev.preventDefault(); btn.click(); }
+      return;
+    }
+
+    const linhas = [...el.editor.querySelectorAll("[data-source] .lst-row")];
+    if (!linhas.length) return;
+    const atual = linhas.findIndex((l) => l.classList.contains("is-focus"));
+
+    if (ev.key === "Enter") {
+      if (atual < 0) return;
+      ev.preventDefault();
+      const btn = linhas[atual].querySelector("[data-src-add]");
+      if (btn) btn.click();
+      return;
+    }
+    ev.preventDefault();
+    const proximo = ev.key === "ArrowDown"
+      ? Math.min(linhas.length - 1, atual + 1)
+      : Math.max(0, atual <= 0 ? 0 : atual - 1);
+    linhas.forEach((l) => l.classList.remove("is-focus"));
+    linhas[proximo].classList.add("is-focus");
+    linhas[proximo].scrollIntoView({ block: "nearest" });
   });
 
   // Miniatura no hover: a linha não tem imagem (é o ponto do modo), mas passar o
