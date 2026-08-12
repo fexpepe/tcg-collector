@@ -10,7 +10,7 @@
   // próprias da wishlist.
   const CARDS_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "rarity-desc", "rarity-asc", "release"];
   let cardsSort = CARDS_SORTS.includes(localStorage.getItem("tcg-wishlist-sort")) ? localStorage.getItem("tcg-wishlist-sort") : "value-desc";
-  let cardsView = localStorage.getItem("tcg-wishlist-view") === "list" ? "list" : "grid";
+  let cardsView = shared.gridViewValue(localStorage.getItem("tcg-wishlist-view"));
 
   // Wishlist UNIFICADA: stores por jogo + facades que despacham por jogo (cardGameMap).
   const ownedByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createCollectionStore(g)]));
@@ -250,9 +250,14 @@
       elements.cardsViewToggle.addEventListener("click", (event) => {
         const button = event.target.closest("[data-grid-view]");
         if (!button) return;
-        cardsView = button.dataset.gridView === "list" ? "list" : "grid";
+        // Compacto muda o HTML do tile (sem <img>), não só a classe da grade:
+        // entrar ou sair dele exige reconstruir a grade. grid<->lista é só CSS.
+        const eraCompacto = cardsView === "compact";
+        cardsView = shared.gridViewValue(button.dataset.gridView);
         localStorage.setItem("tcg-wishlist-view", cardsView);
+        const virouCompacto = cardsView === "compact";
         applyCardsView();
+        if (eraCompacto !== virouCompacto) render();
       });
     }
 
@@ -321,7 +326,7 @@
 
   // Alterna grade/lista (mesma classe .is-list) e reflete nos botões.
   function applyCardsView() {
-    if (elements.grid) elements.grid.classList.toggle("is-list", cardsView === "list");
+    shared.applyGridViewClasses(elements.grid, cardsView);
     if (elements.cardsViewToggle) {
       elements.cardsViewToggle.querySelectorAll("[data-grid-view]").forEach((b) => {
         b.setAttribute("aria-pressed", String(b.dataset.gridView === cardsView));
@@ -332,7 +337,7 @@
   function render({ resetCount = false } = {}) {
     updatePokemonFilterLabel();
     const tiles = wantedPairs();
-    pager.render(tiles, ({ card, variant }) => decorateTile(shared.variantTile(card, variant, owned, wishlist, prices), card), { resetCount });
+    pager.render(tiles, ({ card, variant }) => decorateTile(shared.variantTile(card, variant, owned, wishlist, prices, { lists: true, compact: cardsView === "compact" }), card), { resetCount });
     updateStats(tiles.length);
   }
 

@@ -506,6 +506,297 @@
   }
 
   // ---------------------------------------------------------------------------
+  // LISTAS — coleções nomeadas de cartas (sucessoras das tags). Ver docs/LISTAS.md.
+  //
+  // GLOBAL (cross-game): uma lista só, cada lista carrega o próprio `game` — o
+  // mesmo desenho dos decks e dos binders. O store vive AQUI (e não na página)
+  // de propósito: o botão de lista do tile e o bloco do popup do card são de
+  // shared.js, e foi justamente ter o store das tags dentro de collection.js que
+  // obrigou a uma segunda leitura do mesmo blob (readTagsData) — duas
+  // implementações que podiam divergir.
+  //
+  // Instância ÚNICA por página (ao contrário de collection/wishlist, que são por
+  // jogo): o popover do tile e a página de listas precisam enxergar a mesma
+  // memória, senão um sobrescreve o outro no próximo save.
+  //
+  // Entrada = { id, v, q, c, at }: variante, quantidade e condição. `v` nulo é
+  // "marcador" — a carta está na lista sem dizer qual versão. É o que a migração
+  // das tags produz (tag não tinha variante), e um marcador casa com qualquer
+  // variante perguntada.
+  // ---------------------------------------------------------------------------
+  // Uma constante só pra chave (o SYNC_KEYS lá embaixo aponta pra ela): a das
+  // tags acabou literal em quatro arquivos, e renomear virou caça ao tesouro.
+  const LISTS_KEY = "tcg-collector-lists-all-v1";
+  const TAGS_KEY = "tcg-collector-collection-tags-v1";  // legado, lido pela migração
+  const LIST_LIMIT = 100;          // tetos de sanidade: o blob divide 5MB com o resto
+  const LIST_ENTRIES_LIMIT = 5000;
+  const LIST_NAME_MAX = 40;
+
+  function entryKey(cardId, variant) {
+    return String(cardId) + "|" + (variant == null ? "" : String(variant));
+  }
+
+  // Migração TAGS -> LISTAS (one-time, por navegador). Uma tag vira uma lista
+  // VINCULADA (a tag marcava carta que a pessoa tem) com entradas MARCADORAS:
+  // `v`/`q` nulos, porque tag não tinha versão nem quantidade — inventar "1
+  // cópia Normal NM" seria fabricar dado de coleção que ninguém digitou.
+  //
+  // O blob de tags NÃO é apagado: um device que ainda não atualizou continua
+  // lendo dele, e o merge do sync não pode ver a chave sumir. Ele simplesmente
+  // congela; a limpeza fica pra quando a feature tiver rodado alguns ciclos.
+  // Idempotente: `fromTag` marca o que já veio, então rodar de novo não duplica.
+  function migrateTagsToLists(data) {
+    let raw = null;
+    try { raw = JSON.parse(localStorage.getItem(TAGS_KEY) || "null"); } catch (e) { return false; }
+    const tags = raw && Array.isArray(raw.tags) ? raw.tags : [];
+    if (!tags.length) return false;
+    const assign = (raw.assign && typeof raw.assign === "object") ? raw.assign : {};
+    const jaVeio = new Set(data.lists.map((l) => l.fromTag).filter(Boolean));
+    // Uma lista apagada de propósito não volta: o tombstone é a memória disso.
+    const apagadas = new Set(Object.keys(data.deleted || {}));
+    let mudou = false;
+    tags.forEach((tg) => {
+      if (!tg || !tg.id || jaVeio.has(tg.id)) return;
+      const entries = Object.keys(assign)
+        .filter((cardId) => (assign[cardId] || []).includes(tg.id))
+        .map((cardId) => ({ id: cardId, v: null, q: null, c: null, at: 0 }));
+      const id = "ls_t_" + String(tg.id).replace(/^t_/, "");
+      if (apagadas.has(id)) return;
+      data.lists.push({
+        id: id,
+        name: String(tg.name || "").slice(0, LIST_NAME_MAX),
+        color: safeColor(tg.color) || "#3b6fe0",
+        game: null,               // tags eram cross-game
+        set: null,
+        linked: true,
+        entries: entries,
+        fromTag: tg.id,
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      });
+      mudou = true;
+    });
+    return mudou;
+  }
+
+  let listsCache = null;
+  function readLists() {
+    if (listsCache) return listsCache;
+    let parsed = null;
+    try { parsed = JSON.parse(localStorage.getItem(LISTS_KEY) || "null"); } catch (e) { /* corrompido: começa limpo */ }
+    if (parsed && typeof parsed === "object" && Array.isArray(parsed.lists)) {
+      if (!parsed.deleted || typeof parsed.deleted !== "object") parsed.deleted = {};
+      parsed.lists.forEach((l) => { if (!Array.isArray(l.entries)) l.entries = []; });
+      listsCache = parsed;
+    } else {
+      listsCache = { lists: [], deleted: {} };
+    }
+    if (migrateTagsToLists(listsCache)) {
+      try { localStorage.setItem(LISTS_KEY, JSON.stringify(listsCache)); } catch (e) { /* cota: fica só em memória */ }
+    }
+    return listsCache;
+  }
+
+  function createListStore() {
+    const data = readLists();
+
+    function save() {
+      scheduleWrite(LISTS_KEY, () => JSON.stringify(data));
+    }
+    // Escrita SÍNCRONA, pras operações que o usuário pode desfazer. O toast de
+    // desfazer restaura um snapshot do localStorage; com a escrita adiada, o
+    // flush pendente disparava DEPOIS do restore e regravava o estado já
+    // desfeito por cima — a lista "voltava" e sumia de novo no reload.
+    function saveNow() {
+      pendingWrites.delete(LISTS_KEY);
+      marcaSuja(LISTS_KEY);
+      try { localStorage.setItem(LISTS_KEY, JSON.stringify(data)); } catch (e) { notifyStorageFull(); }
+    }
+    function touch(list) {
+      if (!list) return;
+      list.updatedAt = Date.now();
+      save();
+    }
+    function newId() {
+      return "ls_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    }
+    function get(id) {
+      return data.lists.find((l) => l.id === id) || null;
+    }
+    function entriesOf(listId) {
+      const l = get(listId);
+      return l ? l.entries : [];
+    }
+    function findEntry(list, cardId, variant) {
+      const k = entryKey(cardId, variant);
+      return list.entries.find((e) => entryKey(e.id, e.v) === k) || null;
+    }
+
+    return {
+      LIST_LIMIT,
+      LIST_ENTRIES_LIMIT,
+      STORAGE_KEY: LISTS_KEY,   // pro snapshot do desfazer, sem repetir a literal
+      list() { return data.lists; },
+      get,
+      entriesOf,
+      any() { return data.lists.length > 0; },
+      atLimit() { return data.lists.length >= LIST_LIMIT; },
+
+      // `linked`: cada carta adicionada entra TAMBÉM na coleção do jogo. Quem
+      // orquestra isso é a UI (a coleção é por jogo, este store é global) — aqui
+      // fica só a intenção registrada.
+      create(opts) {
+        if (data.lists.length >= LIST_LIMIT) return null;
+        const o = opts || {};
+        const list = {
+          id: newId(),
+          name: String(o.name || "").trim().slice(0, LIST_NAME_MAX),
+          color: safeColor(o.color) || "#3b6fe0",
+          game: o.game || null,
+          // NOME do set (não id): é o que o índice indexes-sets.json traz, e o
+          // que a página de set usa na URL (detail.html?type=set&name=).
+          set: o.set || null,
+          linked: !!o.linked,
+          entries: [],
+          createdAt: Date.now(),
+          updatedAt: Date.now()
+        };
+        if (o.fromTag) list.fromTag = o.fromTag;
+        data.lists.unshift(list);
+        save();
+        return list;
+      },
+      rename(id, name) {
+        const l = get(id);
+        if (!l) return;
+        l.name = String(name || "").trim().slice(0, LIST_NAME_MAX);
+        touch(l);
+      },
+      setColor(id, color) {
+        const l = get(id);
+        if (!l) return;
+        l.color = safeColor(color) || l.color;
+        touch(l);
+      },
+      setLinked(id, linked) {
+        const l = get(id);
+        if (!l) return;
+        l.linked = !!linked;
+        touch(l);
+      },
+      // Exclusão deixa tombstone: sem ele, a lista apagada no celular volta do PC
+      // no próximo merge (a união por id não distingue "não existe" de "apagada").
+      remove(id) {
+        const i = data.lists.findIndex((l) => l.id === id);
+        if (i < 0) return null;
+        const [gone] = data.lists.splice(i, 1);
+        data.deleted[id] = Date.now();
+        saveNow();
+        return gone;
+      },
+
+      // Soma `q` quando o par (carta, variante) já está na lista. Devolve a
+      // entrada resultante, ou null se a lista não existe / estourou o teto.
+      addEntry(listId, cardId, opts) {
+        const l = get(listId);
+        if (!l || !cardId) return null;
+        const o = opts || {};
+        const variant = o.v == null ? null : String(o.v);
+        const qty = o.q == null ? 1 : Math.max(1, Math.round(Number(o.q) || 1));
+        const found = findEntry(l, cardId, variant);
+        if (found) {
+          found.q = (found.q == null ? 1 : found.q) + qty;
+          if (o.c) found.c = o.c;
+          touch(l);
+          return found;
+        }
+        if (l.entries.length >= LIST_ENTRIES_LIMIT) return null;
+        const entry = {
+          id: String(cardId),
+          v: variant,
+          q: qty,
+          c: o.c || DEFAULT_CONDITION,
+          at: Date.now()
+        };
+        l.entries.push(entry);
+        touch(l);
+        return entry;
+      },
+      setEntryQty(listId, cardId, variant, qty) {
+        const l = get(listId);
+        if (!l) return;
+        const found = findEntry(l, cardId, variant);
+        if (!found) return;
+        const n = Math.round(Number(qty) || 0);
+        if (n <= 0) l.entries.splice(l.entries.indexOf(found), 1);
+        else found.q = n;
+        touch(l);
+      },
+      setEntryCondition(listId, cardId, variant, condition) {
+        const l = get(listId);
+        if (!l) return;
+        const found = findEntry(l, cardId, variant);
+        if (!found || !CARD_CONDITIONS.includes(condition)) return;
+        found.c = condition;
+        touch(l);
+      },
+      removeEntry(listId, cardId, variant) {
+        const l = get(listId);
+        if (!l) return;
+        const found = findEntry(l, cardId, variant);
+        if (!found) return;
+        l.entries.splice(l.entries.indexOf(found), 1);
+        touch(l);
+      },
+      entry(listId, cardId, variant) {
+        const l = get(listId);
+        return l ? findEntry(l, cardId, variant) : null;
+      },
+      // Uma variante nula na LISTA (marcador vindo das tags) casa com qualquer
+      // variante perguntada — senão a carta marcada por tag apareceria "fora" da
+      // própria lista no popover do tile.
+      has(listId, cardId, variant) {
+        const l = get(listId);
+        if (!l) return false;
+        if (findEntry(l, cardId, variant)) return true;
+        return variant != null && !!findEntry(l, cardId, null);
+      },
+      // Toggle do popover: liga/desliga o par na lista. Devolve true se ficou.
+      toggleEntry(listId, cardId, opts) {
+        const l = get(listId);
+        if (!l) return false;
+        const o = opts || {};
+        const variant = o.v == null ? null : String(o.v);
+        if (findEntry(l, cardId, variant)) { this.removeEntry(listId, cardId, variant); return false; }
+        // Desmarcar uma carta que entrou como marcador (v nulo) também precisa
+        // funcionar quando o clique vem de um tile com variante.
+        if (variant != null && findEntry(l, cardId, null)) { this.removeEntry(listId, cardId, null); return false; }
+        return !!this.addEntry(listId, cardId, o);
+      },
+      // Ids das listas que contêm a carta (para o popover marcar os checks).
+      listsWith(cardId, variant) {
+        return data.lists.filter((l) => this.has(l.id, cardId, variant)).map((l) => l.id);
+      },
+      // Total de CÓPIAS da lista (marcador conta 1). O nº de linhas é entries.length.
+      countOf(listId) {
+        return entriesOf(listId).reduce((s, e) => s + (e.q == null ? 1 : e.q), 0);
+      },
+      cardIdsOf(listId) {
+        return [...new Set(entriesOf(listId).map((e) => e.id))];
+      },
+      // Import de backup / restore. Aceita o blob inteiro { lists, deleted }.
+      replace(next) {
+        const ok = next && typeof next === "object" && Array.isArray(next.lists);
+        data.lists = ok ? next.lists : [];
+        data.deleted = (ok && next.deleted && typeof next.deleted === "object") ? next.deleted : {};
+        data.lists.forEach((l) => { if (!Array.isArray(l.entries)) l.entries = []; });
+        save();
+      },
+      toObject() { return data; }
+    };
+  }
+
+  // ---------------------------------------------------------------------------
   // Idioma do site: controla os textos da interface e o idioma das imagens das
   // cartas (assets da TCGdex levam o idioma na URL; se a imagem não existir no
   // idioma escolhido, um onerror volta para a URL original do catálogo).
@@ -1406,7 +1697,7 @@
     const exploreActive = ["pokedex", "trainers", "sets", "artists", "cards", "hub"].includes(active);
     // "Meus Decks" é página PESSOAL (entra pelo Dashboard), então acende a
     // Coleção — diferente de "Decks", que é a galeria PÚBLICA e tem item próprio.
-    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "graded", "mydecks"].includes(active);
+    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "graded", "mydecks", "listas"].includes(active);
 
     const link = (href, key, page) => `<a href="${escapeAttribute(href)}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
     const group = (key, isActive, links) => `
@@ -4395,11 +4686,26 @@
     heartFilled: '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
     share: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>',
     folder: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
-    tag: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 2.8 11.8V4.8a2 2 0 0 1 2-2h7a2 2 0 0 1 1.4.6l7.4 7.4a2 2 0 0 1 0 2.6z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor"/></svg>'
+    tag: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 2.8 11.8V4.8a2 2 0 0 1 2-2h7a2 2 0 0 1 1.4.6l7.4 7.4a2 2 0 0 1 0 2.6z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor"/></svg>',
+    // Listas: três linhas + um "mais". Linhas (e não uma etiqueta) porque a
+    // lista é a visão em texto — o mesmo ícone da entrada no Hub.
+    list: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h11"/><path d="M4 12h11"/><path d="M4 18h7"/><path d="M17.5 15v6"/><path d="M14.5 18h6"/></svg>'
   };
 
   function variantSlug(variant) {
     return normalize(variant).replace(/\s+/g, "-");
+  }
+
+  // Modos de visualização das grades. "compact" é o 3º: linha sem imagem, pra
+  // cadastrar rápido (ver docs/LISTAS.md). Cada página guarda o valor na própria
+  // chave (tcg-cards-view, tcg-detail-view...), e um valor desconhecido — de uma
+  // versão futura ou de storage mexido à mão — cai em "grid".
+  const GRID_VIEWS = ["grid", "list", "compact"];
+  function gridViewValue(v) { return GRID_VIEWS.includes(v) ? v : "grid"; }
+  function applyGridViewClasses(el, view) {
+    if (!el) return;
+    el.classList.toggle("is-list", view === "list");
+    el.classList.toggle("is-compact", view === "compact");
   }
 
   // Tile minimalista (imagem em destaque + nome, variante, set·número e ações).
@@ -4485,6 +4791,54 @@
     // Rótulo agrupado: as versões existentes, na ordem do catálogo
     // ("Normal · Foil") — informa o que há sem ocupar mais que a linha de sempre.
     const variantLabel = grouped ? variants.join(" · ") : variant;
+
+    // Botão "+ Lista" (≡+), no canto OPOSTO ao +: opt-in por página (opts.lists),
+    // como o de pasta — Binders/Vendas/Graded não ganham um botão que ali não
+    // faz sentido. É STATELESS de propósito (ícone fixo, o estado vive no
+    // popover): assim ele não entra na assinatura do refreshTileOwnership, e não
+    // há como o tile congelar por causa dele.
+    const listButton = opts && opts.lists
+      ? `<button type="button" class="tile-btn tile-list" data-list-card-id="${escapeAttribute(card.id)}" data-list-variant="${escapeAttribute(grouped ? "" : variant)}" aria-label="${escapeAttribute(t("tile.addToList"))}" title="${escapeAttribute(t("tile.addToList"))}">${TILE_ICONS.list}</button>`
+      : "";
+
+    // Ordem: lista, pasta, coração, −, +. O − precisa colar no + (é o par de
+    // ajuste de quantidade), e o coração cedeu esse lugar. As TAGS saíram daqui:
+    // com quatro botões não cabia o chip "+ Tag" sem sobrepor, e etiquetar é
+    // tarefa de dentro do card (o preview tem a seção de tags).
+    const actionsHtml = `
+      <div class="tile-actions">
+        ${listButton}
+        ${opts && opts.folders ? `<button type="button" class="tile-btn tile-folder${opts.inFolder ? " active" : ""}" data-folder-card-id="${escapeAttribute(card.id)}" data-folder-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.collection"))}" title="${escapeAttribute(t("tile.collection"))}">${TILE_ICONS.folder}</button>` : ""}
+        ${wantButton}
+        ${minusButton}
+        <button type="button" class="tile-btn tile-own${ownActive}" ${ownData}${grouped ? "" : ` aria-pressed="${!addMode && isOwned}"`} aria-label="${escapeAttribute(ownAria)}">
+          ${ownIcon}${qtyBadge}
+        </button>
+      </div>`;
+
+    // MODO COMPACTO: uma linha por carta, SEM imagem. O <img> não é escondido
+    // com CSS — ele nem entra no DOM, senão o navegador baixaria a imagem de
+    // qualquer jeito e o modo perderia a razão de existir (é o modo de quem quer
+    // cadastrar rápido, muitas vezes no celular). A carta continua acessível:
+    // o nome carrega a URL em data-hover-thumb (miniatura flutuante no mouse) e
+    // clicar abre o card, como a imagem faria.
+    // Os BOTÕES são exatamente os mesmos do tile normal — mesmas classes, mesmos
+    // data-*: o refreshTileOwnership e os handlers das páginas seguem valendo
+    // sem saber que existe um modo novo.
+    if (opts && opts.compact) {
+      article.classList.add("tile-compact");
+      article.innerHTML = `
+        <button class="tile-name" data-preview-card-id="${escapeAttribute(card.id)}"${previewVariantAttr} data-hover-thumb="${escapeAttribute(img.url || "")}">
+          ${cardFlag(card.language)}<span>${escapeHtml(card.name)}</span>
+        </button>
+        <span class="tile-c-num">${escapeHtml(card.number || "")}</span>
+        <span class="tile-c-set">${escapeHtml(card.set || "")}</span>
+        <span class="tile-c-var variant-${escapeAttribute(variantSlug(variant))}">${escapeHtml(variantLabel)}</span>
+        <span class="tile-c-price">${tilePriceHtml(card, variant, prices)}</span>
+        ${actionsHtml}`;
+      return article;
+    }
+
     article.innerHTML = `
       <div class="card-image">${image}</div>
       <div class="tile-info">
@@ -4493,19 +4847,7 @@
         <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
         ${tilePriceHtml(card, variant, prices)}
         <div class="tile-foot">
-          <!-- Ordem: pasta, coração, −, +. O − precisa colar no + (é o par de
-               ajuste de quantidade), e o coração cedeu esse lugar. As TAGS
-               saíram daqui: com quatro botões não cabia o chip "+ Tag" sem
-               sobrepor, e etiquetar é tarefa de dentro do card (o preview tem
-               a seção de tags). -->
-          <div class="tile-actions">
-          ${opts && opts.folders ? `<button type="button" class="tile-btn tile-folder${opts.inFolder ? " active" : ""}" data-folder-card-id="${escapeAttribute(card.id)}" data-folder-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.collection"))}" title="${escapeAttribute(t("tile.collection"))}">${TILE_ICONS.folder}</button>` : ""}
-          ${wantButton}
-          ${minusButton}
-          <button type="button" class="tile-btn tile-own${ownActive}" ${ownData}${grouped ? "" : ` aria-pressed="${!addMode && isOwned}"`} aria-label="${escapeAttribute(ownAria)}">
-            ${ownIcon}${qtyBadge}
-          </button>
-        </div>
+          ${actionsHtml}
         </div>
       </div>
     `;
@@ -4605,6 +4947,114 @@
 
     const summaryEl = tile.querySelector("[data-tile-conditions]");
     if (summaryEl) summaryEl.textContent = resumo;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Popover "+ Lista" do tile (e do card). Ver docs/LISTAS.md.
+  //
+  // Listener GLOBAL, montado uma vez: diferente dos outros botões do tile, este
+  // não precisa de nada da página (nem store por jogo, nem re-render da grade),
+  // então pedir a cada página que fizesse a própria delegação só criaria cinco
+  // cópias do mesmo handler — e a chance de esquecer uma.
+  // ---------------------------------------------------------------------------
+  let listMenuEl = null;
+  function closeListMenu() {
+    if (listMenuEl) { listMenuEl.remove(); listMenuEl = null; }
+  }
+  function openListMenu(anchor, cardId, variant) {
+    closeListMenu();
+    const store = createListStore();
+    const lists = store.list();
+    const marcadas = new Set(store.listsWith(cardId, variant || null));
+    const box = document.createElement("div");
+    box.className = "list-menu";
+    box.setAttribute("role", "dialog");
+    box.setAttribute("aria-label", t("tile.addToList"));
+    box.innerHTML = `
+      ${lists.length ? lists.map((l) => `
+        <button type="button" class="list-menu-item${marcadas.has(l.id) ? " is-on" : ""}" data-lm-toggle="${escapeAttribute(l.id)}">
+          <span class="list-menu-dot" style="background:${escapeAttribute(safeColor(l.color) || "#3b6fe0")}"></span>
+          <span class="list-menu-name">${escapeHtml(l.name || t("lists.untitled"))}</span>
+          <span class="list-menu-check" aria-hidden="true">${marcadas.has(l.id) ? "✓" : ""}</span>
+        </button>`).join("")
+        : `<p class="list-menu-empty">${escapeHtml(t("lists.menuEmpty"))}</p>`}
+      <a class="list-menu-new" href="listas.html">+ ${escapeHtml(t("lists.new"))}</a>`;
+    document.body.appendChild(box);
+    listMenuEl = box;
+
+    // Ancorado no botão, preso na tela: no fim da grade o popover sairia embaixo.
+    const r = anchor.getBoundingClientRect();
+    const w = box.offsetWidth || 220;
+    box.style.left = Math.max(8, Math.min(window.innerWidth - w - 8, r.left)) + "px";
+    const abaixo = r.bottom + 6;
+    box.style.top = (abaixo + (box.offsetHeight || 200) > window.innerHeight
+      ? Math.max(8, r.top - (box.offsetHeight || 200) - 6)
+      : abaixo) + "px";
+
+    box.addEventListener("click", (ev) => {
+      const item = ev.target.closest("[data-lm-toggle]");
+      if (!item) return;
+      const listId = item.dataset.lmToggle;
+      const lista = store.get(listId);
+      const ficou = store.toggleEntry(listId, cardId, { v: variant || null, c: DEFAULT_CONDITION });
+      // Lista VINCULADA: entrar na lista é entrar na coleção. Sair NÃO remove da
+      // coleção — tirar da lista não é dizer que não tenho mais a carta.
+      // Sem variante (tile agrupado) a coleção NÃO é tocada: chutar entre Normal
+      // e Foil erra o valor da coleção, que é a mesma razão de o + agrupado abrir
+      // o card em vez de adicionar. A entrada fica na lista como marcador.
+      if (ficou && variant && lista && lista.linked && lista.game) {
+        createCollectionStore(lista.game).add(cardId, variant, DEFAULT_CONDITION, 1);
+      }
+      item.classList.toggle("is-on", ficou);
+      const check = item.querySelector(".list-menu-check");
+      if (check) check.textContent = ficou ? "✓" : "";
+    });
+  }
+  // Miniatura flutuante do modo compacto. A linha não tem imagem de propósito;
+  // parar o mouse no nome mostra a carta, que é como se confere "é essa mesmo?"
+  // sem perder a densidade. Um listener só no document (as grades trocam de
+  // conteúdo o tempo todo — pendurar em cada tile vazaria handler a cada render).
+  let hoverThumbEl = null;
+  function initCompactHoverThumb() {
+    document.addEventListener("mouseover", (ev) => {
+      const alvo = ev.target.closest("[data-hover-thumb]");
+      const url = alvo && alvo.dataset.hoverThumb;
+      if (!url) {
+        if (hoverThumbEl) { hoverThumbEl.hidden = true; }
+        return;
+      }
+      if (!hoverThumbEl) {
+        hoverThumbEl = document.createElement("img");
+        hoverThumbEl.className = "tile-hover-thumb";
+        hoverThumbEl.alt = "";
+        document.body.appendChild(hoverThumbEl);
+      }
+      hoverThumbEl.src = url;
+      hoverThumbEl.hidden = false;
+      const r = alvo.getBoundingClientRect();
+      hoverThumbEl.style.top = Math.max(8, Math.min(window.innerHeight - 300, r.top - 40)) + "px";
+      hoverThumbEl.style.left = Math.min(window.innerWidth - 220, r.right + 14) + "px";
+    });
+  }
+
+  function initListTileMenu() {
+    document.addEventListener("click", (ev) => {
+      const btn = ev.target.closest("[data-list-card-id]");
+      if (btn) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        // Segundo clique no mesmo botão fecha (é um toggle, como todo popover).
+        if (listMenuEl && listMenuEl.dataset.anchorId === btn.dataset.listCardId + "|" + (btn.dataset.listVariant || "")) {
+          closeListMenu();
+          return;
+        }
+        openListMenu(btn, btn.dataset.listCardId, btn.dataset.listVariant || null);
+        if (listMenuEl) listMenuEl.dataset.anchorId = btn.dataset.listCardId + "|" + (btn.dataset.listVariant || "");
+        return;
+      }
+      if (listMenuEl && !ev.target.closest(".list-menu")) closeListMenu();
+    });
+    document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") closeListMenu(); });
   }
 
   // Clique no − do tile: tira UMA cópia. Prefere tirar da condição PADRÃO (NM),
@@ -5972,11 +6422,59 @@
     } catch (e) { return null; }               // rede oscilou: a próxima tecla tenta de novo
   }
 
+  // Índice de busca ESTÁTICO do jogo (data/<jogo>/search-index.json): só
+  // id/nome/set/número + facetas, gerado no build. É o caminho de baixo quando a
+  // borda não responde — e a fonte das facetas, que a API não fornece.
+  // Cacheia a PROMESSA, não o resultado: um segundo pedido no meio do download
+  // não pode baixar de novo (no Magic são 8 MB). Erro descarta o cache pra
+  // próxima busca tentar outra vez.
+  // Vive aqui (e não no editor de decks, de onde saiu) porque a página de listas
+  // precisa do mesmo índice — duas cópias divergiriam na primeira correção.
+  const searchIndexCache = {};
+  const searchIndexReady = {};
+  function loadSearchIndex(game) {
+    if (searchIndexCache[game]) return searchIndexCache[game];
+    const p = (async () => {
+      try {
+        const r = await fetch(gameDataDir(game) + "search-index.json");
+        if (r.ok) {
+          const raw = await r.json();
+          // Formato compacto ({ d: dicionários, c: cartas com índices }):
+          // re-expande uma vez, pra quem consome ver strings normais.
+          const d = raw.d || {};
+          const back = (key, i) => (i == null ? "" : ((d[key] || [])[i] || ""));
+          return (raw.c || []).map((e) => ({
+            i: e.i, n: e.n, u: e.u, c: e.c,
+            s: back("s", e.s), t: back("t", e.t), r: back("r", e.r), k: back("k", e.k)
+          }));
+        }
+      } catch (e) { /* sem índice: monta do catálogo abaixo */ }
+      // Local/dev (o índice é gerado no build): monta a partir do catálogo, que
+      // aqui é a amostra pequena. Mesma forma de dado — quem busca não vê diferença.
+      try {
+        const cat = await loadGameCatalog(game, gameDataDir(game), null);
+        return (cat.cards || []).map((c) => ({
+          i: c.id, n: c.name, s: c.set, u: c.number,
+          t: c.cardType, c: c.cost, r: c.rarity,
+          k: c.ink || c.opColor || c.color || c.colorId || c.types || c.attribute
+        }));
+      } catch (e) { return []; }
+    })();
+    searchIndexCache[game] = p;
+    p.then(
+      () => { searchIndexReady[game] = true; },
+      () => { if (searchIndexCache[game] === p) delete searchIndexCache[game]; }
+    );
+    return p;
+  }
+  function searchIndexLoaded(game) { return !!searchIndexReady[game]; }
+
   window.TCGShared = {
     createCollectionStore,
     createFavoritesStore,
     createWishlistStore,
     createPriceStore,
+    createListStore,
     brMarketplaceLinks,
     defaultVariant,
     cardVariants,
@@ -5986,6 +6484,8 @@
     variantQuantityRows,
     cardVariantPairs,
     variantTile,
+    gridViewValue,
+    applyGridViewClasses,
     refreshTileOwnership,
     gameKey,
     handleOwnedTileClick,
@@ -6080,6 +6580,10 @@
     moneyToCurrent,
     snapshotKeys,
     toastUndo,
+    // Materializa as escritas adiadas AGORA. Quem tira um snapshot pra desfazer
+    // precisa disto: sem o flush, o timer do scheduleWrite dispara depois do
+    // restore e regrava por cima o que o usuário acabou de desfazer.
+    flushPendingWrites: flushWrites,
     notifyStorageFull,
     errorSummary,
     loadPriceDeltas,
@@ -6126,6 +6630,9 @@
     loadOwnedAcrossGames,
     loadOwnedFast,
     loadCollectionIndexes,
+    loadGameIndexSlice,
+    loadSearchIndex,
+    searchIndexLoaded,
     collectorModeEnabled,
     setCollectorMode,
     groupVariantsEnabled,
@@ -6184,10 +6691,11 @@
     prices: gameKey("prices-v1"),
     binders: "tcg-collector-binders-all-v1", // binders são globais (cross-game)
     decks: "tcg-collector-decks-all-v1", // decks são globais (cada deck tem seu `game`)
+    lists: LISTS_KEY, // listas são globais (cada lista tem seu `game`)
     folders: "tcg-collector-collection-folders-v1", // pastas da coleção (globais)
     sales: "tcg-collector-collection-sales-v1", // cartas à venda (globais)
     graded: "tcg-collector-collection-graded-v1", // cartas graduadas/slabs (globais)
-    tags: "tcg-collector-collection-tags-v1", // tags custom (multi por carta, globais)
+    tags: TAGS_KEY, // tags custom (legado; migradas pras listas — ver migrateTagsToLists)
     sold: "tcg-collector-collection-sold-v1", // vendas realizadas (globais)
     costs: "tcg-collector-collection-costs-v1", // custo pago por carta×variante (globais)
     wishTargets: "tcg-collector-wishlist-targets-v1", // preço-alvo por carta da wishlist (globais)
@@ -6591,6 +7099,40 @@
     return { decks, deleted };
   }
 
+  // Listas ({ lists, deleted }): união por id com LWW POR LISTA — e não do bloco
+  // inteiro, como nas tags. A diferença importa: com LWW de bloco, editar a lista
+  // A no PC e a lista B no celular fazia o device que sincronizasse por último
+  // apagar o trabalho do outro. Aqui só a MESMA lista entra em conflito (aí sim
+  // vence a mais nova, entradas inclusive). Tombstones no padrão dos decks, com
+  // a poda de TTL que eles não têm — lista é objeto de vida curta (criar pra uma
+  // compra, apagar depois), então o mapa de apagadas cresceria sem parar.
+  function mergeLists(a, b) {
+    // Ausente dos DOIS lados → undefined (não {} vazio): o writeSnapshot grava
+    // tudo que não é null, e devolver objeto criaria a chave no localStorage de
+    // quem nunca abriu a página de listas — bytes a mais em todo push.
+    if (!a && !b) return undefined;
+    const al = (a && Array.isArray(a.lists)) ? a.lists : [];
+    const bl = (b && Array.isArray(b.lists)) ? b.lists : [];
+    const deleted = {};
+    [a, b].forEach((side) => {
+      const d = side && side.deleted;
+      if (d && typeof d === "object") Object.keys(d).forEach((id) => {
+        const ts = Number(d[id]) || 0;
+        if (ts > (deleted[id] || 0)) deleted[id] = ts;
+      });
+    });
+    const byId = new Map();
+    al.concat(bl).forEach((ls) => {
+      if (!ls || !ls.id) return;
+      const prev = byId.get(ls.id);
+      if (!prev || (Number(ls.updatedAt) || 0) > (Number(prev.updatedAt) || 0)) byId.set(ls.id, ls);
+    });
+    // Edição posterior à exclusão "revive" a lista (editei no PC depois de apagar
+    // no celular = quis manter).
+    const lists = Array.from(byId.values()).filter((ls) => (deleted[ls.id] || 0) < (Number(ls.updatedAt) || 0));
+    return { lists, deleted: pruneTombstones(deleted) };
+  }
+
   function mergeBinders(a, b) {
     const al = (a && Array.isArray(a.binders)) ? a.binders : [];
     const bl = (b && Array.isArray(b.binders)) ? b.binders : [];
@@ -6715,6 +7257,7 @@
       prices: mergePrices(a.prices, b.prices),
       binders: mergeBinders(a.binders, b.binders),
       decks: mergeDecks(a.decks, b.decks),
+      lists: mergeLists(a.lists, b.lists),
       folders: mergeFolders(a.folders, b.folders),
       sales: mergeSales(a.sales, b.sales),
       graded: mergeGraded(a.graded, b.graded),
@@ -7186,11 +7729,40 @@
     } catch (e) { return { folders: [], assign: {} }; }
   }
   // Tags (multi por carta) p/ a vitrine de tags do perfil público.
+  // Tags do PERFIL PÚBLICO, no formato { tags, assign } que o payload e o viewer
+  // esperam. Depois da migração (ver migrateTagsToLists) a fonte são as LISTAS —
+  // este adaptador existe pra o payload e o viewer não precisarem saber disso.
+  // O blob antigo de tags entra junto, pra quem tem um device que ainda não
+  // migrou não ver o perfil esvaziar.
   function readTagsData() {
+    const tags = [];
+    const assign = {};
+    const juntar = (id, listaId) => {
+      if (!assign[id]) assign[id] = [];
+      if (!assign[id].includes(listaId)) assign[id].push(listaId);
+    };
+    const jaMigradas = new Set();
+    try {
+      createListStore().list().forEach((l) => {
+        tags.push({ id: l.id, name: l.name || "", color: l.color });
+        if (l.fromTag) jaMigradas.add(l.fromTag);
+        l.entries.forEach((e) => juntar(e.id, l.id));
+      });
+    } catch (e) { /* sem listas: cai só no legado abaixo */ }
     try {
       const d = JSON.parse(localStorage.getItem(SYNC_KEYS.tags) || "{}");
-      return { tags: Array.isArray(d.tags) ? d.tags : [], assign: (d.assign && typeof d.assign === "object") ? d.assign : {} };
-    } catch (e) { return { tags: [], assign: {} }; }
+      const legado = Array.isArray(d.tags) ? d.tags : [];
+      legado.forEach((tg) => {
+        // Tag já virada lista não entra de novo (sairia duplicada no perfil).
+        if (jaMigradas.has(tg.id) || tags.some((x) => x.id === tg.id)) return;
+        tags.push(tg);
+      });
+      const at = (d.assign && typeof d.assign === "object") ? d.assign : {};
+      Object.keys(at).forEach((cardId) => (at[cardId] || []).forEach((tid) => {
+        if (!jaMigradas.has(tid)) juntar(cardId, tid);
+      }));
+    } catch (e) { /* blob corrompido: só as listas */ }
+    return { tags, assign };
   }
   // Slabs graded p/ a aba Graded do perfil público.
   function readGradedList() {
@@ -7477,6 +8049,16 @@
       a.href = url; a.download = filename; a.click();
       URL.revokeObjectURL(url);
     }
+    // O que fica de FORA, de propósito:
+    //  • `collectionMeta`/`favoritesMeta` (carimbos de LWW do sync). Restaurar um
+    //    backup tem que VENCER, e é o que acontece sem eles: o replace() carimba
+    //    tudo como "agora", e favoritos sem meta empatam no merge — empate faz
+    //    união, então nada se perde. Trazer o carimbo velho junto faria o
+    //    remoto ganhar do arquivo que a pessoa acabou de restaurar.
+    //  • `history2` (histórico do portfólio): é POR JOGO, e este backup só cobre
+    //    o jogo da sessão nas chaves por jogo — salvar o histórico de um jogo só
+    //    seria mais confuso do que não salvar. Ele também se reconstrói sozinho
+    //    com o uso.
     function backupObject() {
       const payload = {
         version: 3, exportedAt: new Date().toISOString(),
@@ -7485,10 +8067,17 @@
         prices: createPriceStore().toObject()
       };
       try { const b = JSON.parse(localStorage.getItem(SYNC_KEYS.binders) || "null"); if (b) payload.binders = b; } catch (e) { /* ignora */ }
+      // Decks estavam de FORA deste backup desde que a feature nasceu: eles
+      // sincronizam na nuvem (SYNC_KEYS.decks), então o buraco só aparecia pra
+      // quem usa sem conta — exportava o backup "completo", restaurava noutro
+      // navegador e os decks não vinham. São dado autoral, o mais caro de
+      // reconstruir do site.
+      try { const dk = JSON.parse(localStorage.getItem(SYNC_KEYS.decks) || "null"); if (dk) payload.decks = dk; } catch (e) { /* ignora */ }
       try { const f = JSON.parse(localStorage.getItem(SYNC_KEYS.folders) || "null"); if (f) payload.folders = f; } catch (e) { /* ignora */ }
       try { const sa = JSON.parse(localStorage.getItem(SYNC_KEYS.sales) || "null"); if (sa) payload.sales = sa; } catch (e) { /* ignora */ }
       try { const gr = JSON.parse(localStorage.getItem(SYNC_KEYS.graded) || "null"); if (gr) payload.graded = gr; } catch (e) { /* ignora */ }
       try { const tg = JSON.parse(localStorage.getItem(SYNC_KEYS.tags) || "null"); if (tg) payload.tags = tg; } catch (e) { /* ignora */ }
+      try { const li = JSON.parse(localStorage.getItem(SYNC_KEYS.lists) || "null"); if (li) payload.lists = li; } catch (e) { /* ignora */ }
       try { const sd = JSON.parse(localStorage.getItem(SYNC_KEYS.sold) || "null"); if (sd) payload.sold = sd; } catch (e) { /* ignora */ }
       try { const co = JSON.parse(localStorage.getItem(SYNC_KEYS.costs) || "null"); if (co) payload.costs = co; } catch (e) { /* ignora */ }
       try { const wt = JSON.parse(localStorage.getItem(SYNC_KEYS.wishTargets) || "null"); if (wt) payload.wishTargets = wt; } catch (e) { /* ignora */ }
@@ -7516,10 +8105,15 @@
         createWishlistStore().replace(parseImportedWishlist(payload, byId));
         createPriceStore().replace(parseImportedPrices(payload, byId));
         if (payload.binders && typeof payload.binders === "object") localStorage.setItem(SYNC_KEYS.binders, JSON.stringify(payload.binders));
+        // Backup antigo (feito antes de os decks entrarem aqui) simplesmente não
+        // traz a chave, e aí os decks locais ficam como estão — restaurar não
+        // pode APAGAR deck que o arquivo nunca teve.
+        if (payload.decks && typeof payload.decks === "object") localStorage.setItem(SYNC_KEYS.decks, JSON.stringify(payload.decks));
         if (payload.folders && typeof payload.folders === "object") localStorage.setItem(SYNC_KEYS.folders, JSON.stringify(payload.folders));
         if (payload.sales && typeof payload.sales === "object") localStorage.setItem(SYNC_KEYS.sales, JSON.stringify(payload.sales));
         if (payload.graded && typeof payload.graded === "object") localStorage.setItem(SYNC_KEYS.graded, JSON.stringify(payload.graded));
         if (payload.tags && typeof payload.tags === "object") localStorage.setItem(SYNC_KEYS.tags, JSON.stringify(payload.tags));
+        if (payload.lists && typeof payload.lists === "object") localStorage.setItem(SYNC_KEYS.lists, JSON.stringify(payload.lists));
         if (payload.sold && typeof payload.sold === "object") localStorage.setItem(SYNC_KEYS.sold, JSON.stringify(payload.sold));
         if (payload.costs && typeof payload.costs === "object") localStorage.setItem(SYNC_KEYS.costs, JSON.stringify(payload.costs));
         if (payload.wishTargets && typeof payload.wishTargets === "object") localStorage.setItem(SYNC_KEYS.wishTargets, JSON.stringify(payload.wishTargets));
@@ -8149,6 +8743,8 @@
   initSearchShortcutHint(); // depois do applyTranslations (placeholders já traduzidos)
   initHeaderSearch();
   initFilterToggle();
+  initListTileMenu();      // botão "+ Lista" dos tiles (delegação global)
+  initCompactHoverThumb(); // miniatura no hover do modo compacto
   initAuth();
 
   // Service worker: cacheia as imagens já vistas para sobreviverem a um outage

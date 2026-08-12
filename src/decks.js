@@ -143,47 +143,10 @@
     return entry;
   }
 
-  // Índice de busca: só id/nome/set/número + facetas (gerado no build por
-  // writeGameCatalog). É o que permite buscar no jogo inteiro sem baixá-lo.
-  // Cacheia a PROMESSA (não o resultado): o download em segundo plano e um
-  // await do fallback no meio dele não podem baixar o índice duas vezes —
-  // no Magic são 8 MB cada.
-  const indexCache = {};
-  const indexReady = {};   // jogo -> true quando o índice JÁ está na memória
-  function searchIndexFor(game) {
-    if (indexCache[game]) return indexCache[game];
-    const p = (async () => {
-      try {
-        const r = await fetch(shared.gameDataDir(game) + "search-index.json");
-        if (r.ok) {
-          const raw = await r.json();
-          // Formato compacto: { d: dicionários, c: cartas com índices }. Re-expande
-          // aqui (uma vez) pra o resto do código ver strings normais.
-          const d = raw.d || {};
-          const back = (key, i) => (i == null ? "" : ((d[key] || [])[i] || ""));
-          return (raw.c || []).map((e) => ({
-            i: e.i, n: e.n, u: e.u, c: e.c,
-            s: back("s", e.s), t: back("t", e.t), r: back("r", e.r), k: back("k", e.k)
-          }));
-        }
-      } catch (e) { /* sem índice: cai no fallback abaixo */ }
-      // Local/dev (o índice é gerado no build): monta a partir do catálogo, que
-      // aqui é a amostra pequena. Mesma forma de dado, então a busca não sabe a
-      // diferença.
-      const cat = await ensureCards(game, null);
-      return Object.values(cat.byId).map((c) => ({
-        i: c.id, n: c.name, s: c.set, u: c.number,
-        t: c.cardType, c: c.cost, r: c.rarity,
-        k: c.ink || c.opColor || c.color || c.colorId || c.types || c.attribute
-      }));
-    })();
-    indexCache[game] = p;
-    p.then(
-      () => { indexReady[game] = true; },
-      () => { if (indexCache[game] === p) delete indexCache[game]; }  // erro: a próxima busca tenta de novo
-    );
-    return p;
-  }
+  // Índice de busca (só id/nome/set/número + facetas, gerado no build): é o que
+  // permite buscar no jogo inteiro sem baixá-lo. O carregador vive no shared.js
+  // — a página de listas usa o mesmo, e duas cópias divergiriam na 1ª correção.
+  const searchIndexFor = shared.loadSearchIndex;
 
   // A busca na borda em si (shared.searchApi) é compartilhada com o Explorar:
   // mesmos campos do índice, mesma regra de desligar no primeiro não-ok.
@@ -1838,7 +1801,7 @@
     // instantânea e sem rede, então a borda só serve o começo frio. As facetas
     // nunca estão ativas neste caminho: a UI delas nasce do próprio índice.
     let found = null;
-    if (!indexReady[deck.game]) {
+    if (!shared.searchIndexLoaded(deck.game)) {
       const pApi = shared.searchApi(deck.game, q, 60);
       preloadIndexFor(deck.game);
       const daApi = await pApi;

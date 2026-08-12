@@ -140,7 +140,7 @@
   // Aba "Cartas": ordenação + grade/lista (preferências guardadas).
   const CARDS_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "rarity-desc", "rarity-asc", "release", "added-desc", "added-asc"];
   let cardsSort = CARDS_SORTS.includes(localStorage.getItem("tcg-collection-sort")) ? localStorage.getItem("tcg-collection-sort") : "value-desc";
-  let cardsView = localStorage.getItem("tcg-collection-view") === "list" ? "list" : "grid";
+  let cardsView = shared.gridViewValue(localStorage.getItem("tcg-collection-view"));
 
   // --- Seleção em massa (aba Cartas): toque marca/desmarca; barra fixa aplica
   // showcase/tag/venda a tudo de uma vez. Seleção por carta×variante (tiles). ---
@@ -514,9 +514,14 @@
       elements.cardsViewToggle.addEventListener("click", (event) => {
         const button = event.target.closest("[data-grid-view]");
         if (!button) return;
-        cardsView = button.dataset.gridView === "list" ? "list" : "grid";
+        // Compacto muda o HTML do tile (sem <img>), não só a classe da grade:
+        // entrar ou sair dele exige reconstruir a grade. grid<->lista é só CSS.
+        const eraCompacto = cardsView === "compact";
+        cardsView = shared.gridViewValue(button.dataset.gridView);
         localStorage.setItem("tcg-collection-view", cardsView);
+        const virouCompacto = cardsView === "compact";
         applyCardsView();
+        if (eraCompacto !== virouCompacto) renderCards();
       });
     }
     // Barra de filtros recolhível: o botão vive no cartão-herói e vale em
@@ -977,11 +982,12 @@
 
   // variantTile devolve um NÓ do DOM (não string) — usado tanto no pager (flat)
   // quanto via appendChild nas seções de pasta.
-  // Sem `tags`: o rodapé do tile agora é só pasta/coração/−/+ (as tags saíram
-  // da grade em 2026-08-03 — etiquetar é dentro do card, que já tem a seção).
+  // Sem `tags`: o rodapé do tile agora é só lista/pasta/coração/−/+ (as tags
+  // saíram da grade em 2026-08-03 — etiquetar é dentro do card, que já tem a
+  // seção; o "+ Lista" entrou no canto oposto ao +, ver docs/LISTAS.md).
   function makeTile({ card, variant }) {
     return shared.variantTile(card, variant, owned, wishlist, prices, {
-      addMode: true,
+      addMode: true, lists: true, compact: cardsView === "compact",
       folders: true, inFolder: !!folders.folderOf(card.id)
     });
   }
@@ -1133,16 +1139,18 @@
     return tags.cardsWith(tagId).map((id) => cardsById.get(id)).filter((c) => c && owned.has(c.id) && inGameFilter(c));
   }
 
+  // A aba Tags virou um AVISO: as tags são migradas pra Listas na primeira vez
+  // que o store de listas é lido (migrateTagsToLists, no shared.js), e manter
+  // aqui uma segunda UI editando o blob antigo faria as duas telas discordarem —
+  // editar a tag aqui não apareceria na lista, e vice-versa. O caminho antigo
+  // (?tab=tags, links guardados) continua respondendo, só que apontando pra lá.
   function renderTags() {
-    const open = openTagId ? tags.get(openTagId) : null;
-    if (openTagId && !open) openTagId = null;
-    if (open) { renderTagFocus(open); return; }
     updateCardsStats(tags.count());
-    if (!tags.any()) {
-      elements.folderSections.innerHTML = `<p class="empty-state" data-tags-empty>${escapeHtml(t("tags.empty"))}</p>`;
-      return;
-    }
-    elements.folderSections.innerHTML = tags.list().map(tagCardHtml).join("");
+    elements.folderSections.innerHTML = `
+      <p class="empty-state">
+        ${escapeHtml(t("tags.movedToLists"))}<br>
+        <a class="cta" href="listas.html">${escapeHtml(t("nav.lists"))}</a>
+      </p>`;
   }
 
   // Card da tag na vitrine (mesmo formato das Coleções, com a cor da tag).
@@ -1726,9 +1734,9 @@
 
   // Alterna grade/lista (mesma classe .is-list do detalhe) e reflete nos botões.
   function applyCardsView() {
-    if (elements.grid) elements.grid.classList.toggle("is-list", cardsView === "list");
+    shared.applyGridViewClasses(elements.grid, cardsView);
     // Em modo pastas, cada seção tem sua própria grade.
-    if (elements.folderSections) elements.folderSections.querySelectorAll(".card-grid").forEach((g) => g.classList.toggle("is-list", cardsView === "list"));
+    if (elements.folderSections) elements.folderSections.querySelectorAll(".card-grid").forEach((g) => shared.applyGridViewClasses(g, cardsView));
     if (elements.cardsViewToggle) {
       elements.cardsViewToggle.querySelectorAll("[data-grid-view]").forEach((b) => {
         b.setAttribute("aria-pressed", String(b.dataset.gridView === cardsView));
