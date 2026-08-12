@@ -3460,7 +3460,10 @@
       const inner = `<span class="print-set">${escapeHtml(x.s || "")}</span><span class="print-meta">${escapeHtml(meta)}</span>`;
       // A impressão ABERTA entra na lista (situa a carta entre as irmãs), mas
       // como texto marcado, não link — navegar pra si mesma é um não-clique.
-      if (x.i === card.id) return `<span class="preview-print is-current" data-print-img="${escapeAttribute(x.m || "")}">${inner}</span>`;
+      // Comparação por id BASE: com a carta -pt aberta, a linha (deduplicada
+      // pra base EN) é a MESMA impressão e tem que aparecer marcada, não como
+      // link pra edição inglesa do próprio set.
+      if (basePricingId(x.i) === basePricingId(card.id)) return `<span class="preview-print is-current" data-print-img="${escapeAttribute(x.m || "")}">${inner}</span>`;
       const extra = { card: x.i };
       const sid = setIds ? setIdForCard(x.i, setIds) : "";
       if (sid) extra.setId = sid;
