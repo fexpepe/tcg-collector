@@ -113,7 +113,7 @@
   let selectedLanguage = "";
   let selectedOwned = "all";
   let selectedSort = "value-desc";
-  let gridView = localStorage.getItem("tcg-detail-view") === "list" ? "list" : "grid";
+  let gridView = shared.gridViewValue(localStorage.getItem("tcg-detail-view"));
   let selectedRarity = ""; // "" = todas; senão "base" | "special"
 
   // Ordena os pares carta×variante conforme o select de ordenação. Diferente
@@ -414,7 +414,7 @@
 
   // Alterna a grade entre grade (cards) e lista (linhas), guardando a preferência.
   function applyGridView() {
-    if (elements.grid) elements.grid.classList.toggle("is-list", gridView === "list");
+    shared.applyGridViewClasses(elements.grid, gridView);
     if (elements.viewToggle) {
       elements.viewToggle.querySelectorAll("[data-grid-view]").forEach((button) => {
         button.setAttribute("aria-pressed", String(button.dataset.gridView === gridView));
@@ -912,9 +912,14 @@
       elements.viewToggle.addEventListener("click", (event) => {
         const button = event.target.closest("[data-grid-view]");
         if (!button) return;
-        gridView = button.dataset.gridView === "list" ? "list" : "grid";
+        // Compacto muda o HTML do tile (sem <img>), não só a classe da grade:
+        // entrar ou sair dele exige reconstruir a grade. grid<->lista é só CSS.
+        const eraCompacto = gridView === "compact";
+        gridView = shared.gridViewValue(button.dataset.gridView);
         localStorage.setItem("tcg-detail-view", gridView);
+        const virouCompacto = gridView === "compact";
         applyGridView();
+        if (eraCompacto !== virouCompacto) render();
       });
     }
 
@@ -967,7 +972,7 @@
     const tiles = sortTiles(shared.cardVariantPairs(visibleCards, { group: agrupaVersoes }));
     // Cartas sem imagem vão para o fim (sort estável preserva a ordem da ordenação escolhida).
     tiles.sort((a, b) => Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card)));
-    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes }), { resetCount });
+    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes, compact: gridView === "compact", lists: true }), { resetCount });
 
     elements.empty.hidden = tiles.length > 0;
     elements.resultCount.textContent = tn("results.count", tiles.length);

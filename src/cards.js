@@ -12,7 +12,7 @@
   // busca — independentes da Coleção). Mesmas opções dos dois lugares.
   const CARDS_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "rarity-desc", "rarity-asc", "release"];
   let cardsSort = CARDS_SORTS.includes(localStorage.getItem("tcg-cards-sort")) ? localStorage.getItem("tcg-cards-sort") : "value-desc";
-  let cardsView = localStorage.getItem("tcg-cards-view") === "list" ? "list" : "grid";
+  let cardsView = shared.gridViewValue(localStorage.getItem("tcg-cards-view"));
 
   const elements = {
     grid: document.getElementById("cardGrid"),
@@ -247,9 +247,14 @@
       elements.cardsViewToggle.addEventListener("click", (event) => {
         const button = event.target.closest("[data-grid-view]");
         if (!button) return;
-        cardsView = button.dataset.gridView === "list" ? "list" : "grid";
+        // Compacto muda o HTML do tile (sem <img>), não só a classe da grade:
+        // entrar ou sair dele exige reconstruir a grade. grid<->lista é só CSS.
+        const eraCompacto = cardsView === "compact";
+        cardsView = shared.gridViewValue(button.dataset.gridView);
         localStorage.setItem("tcg-cards-view", cardsView);
+        const virouCompacto = cardsView === "compact";
         applyCardsView();
+        if (eraCompacto !== virouCompacto) render({ resetCount: false });
       });
     }
 
@@ -361,7 +366,7 @@
 
   // Alterna grade/lista (mesma classe .is-list do detalhe/coleção) e reflete nos botões.
   function applyCardsView() {
-    if (elements.grid) elements.grid.classList.toggle("is-list", cardsView === "list");
+    shared.applyGridViewClasses(elements.grid, cardsView);
     if (elements.cardsViewToggle) {
       elements.cardsViewToggle.querySelectorAll("[data-grid-view]").forEach((b) => {
         b.setAttribute("aria-pressed", String(b.dataset.gridView === cardsView));
@@ -410,7 +415,7 @@
       if (showTop) {
         elements.resultsHeader.hidden = false;
         if (elements.resultsTitle) elements.resultsTitle.textContent = t("home.topViewed");
-        pager.render(topViewedPairs, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes }), { resetCount: true });
+        pager.render(topViewedPairs, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes, compact: cardsView === "compact", lists: true }), { resetCount: true });
       } else {
         elements.resultsHeader.hidden = true;
         pager.render([], () => document.createComment(""), { resetCount: true });
@@ -433,12 +438,12 @@
         shared.showSkeletons(elements.grid, "card", 12);
         return;
       }
-      pager.render(ponte, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes }), options || {});
+      pager.render(ponte, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes, compact: cardsView === "compact", lists: true }), options || {});
       elements.resultCount.textContent = tn("results.count", ponte.length);
       return;
     }
     const tiles = tilePairs();
-    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes }), options || {});
+    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes, compact: cardsView === "compact", lists: true }), options || {});
     elements.empty.hidden = tiles.length > 0;
     elements.resultCount.textContent = tn("results.count", tiles.length);
   }

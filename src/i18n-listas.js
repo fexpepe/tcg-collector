@@ -10,8 +10,6 @@
   M.pt = Object.assign(M.pt || {}, {
     "title.lists": "Listas - Sleevu",
     "lists.intro": "Junte cartas numa lista: pra comprar, pra cadastrar na coleção ou só pra lembrar.",
-    "lists.new": "Nova lista",
-    "lists.untitled": "Lista sem nome",
     "lists.empty": "Você ainda não tem listas.",
     "lists.emptyHint": "Crie uma pra cadastrar um set inteiro rápido, montar uma lista de compras ou separar cartas pra depois.",
     "lists.count.one": "{n} carta",
@@ -72,8 +70,6 @@
   M.en = Object.assign(M.en || {}, {
     "title.lists": "Lists - Sleevu",
     "lists.intro": "Gather cards into a list: to buy, to log into your collection, or just to remember.",
-    "lists.new": "New list",
-    "lists.untitled": "Untitled list",
     "lists.empty": "You don't have any lists yet.",
     "lists.emptyHint": "Create one to log a whole set quickly, build a shopping list, or set cards aside for later.",
     "lists.count.one": "{n} card",
@@ -131,8 +127,6 @@
   M.es = Object.assign(M.es || {}, {
     "title.lists": "Listas - Sleevu",
     "lists.intro": "Reúne cartas en una lista: para comprar, para registrar en tu colección o solo para recordar.",
-    "lists.new": "Nueva lista",
-    "lists.untitled": "Lista sin nombre",
     "lists.empty": "Todavía no tienes listas.",
     "lists.emptyHint": "Crea una para registrar un set entero rápido, armar una lista de compras o apartar cartas para después.",
     "lists.count.one": "{n} carta",

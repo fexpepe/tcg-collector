@@ -4639,11 +4639,26 @@
     heartFilled: '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
     share: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>',
     folder: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
-    tag: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 2.8 11.8V4.8a2 2 0 0 1 2-2h7a2 2 0 0 1 1.4.6l7.4 7.4a2 2 0 0 1 0 2.6z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor"/></svg>'
+    tag: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 2.8 11.8V4.8a2 2 0 0 1 2-2h7a2 2 0 0 1 1.4.6l7.4 7.4a2 2 0 0 1 0 2.6z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor"/></svg>',
+    // Listas: três linhas + um "mais". Linhas (e não uma etiqueta) porque a
+    // lista é a visão em texto — o mesmo ícone da entrada no Hub.
+    list: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h11"/><path d="M4 12h11"/><path d="M4 18h7"/><path d="M17.5 15v6"/><path d="M14.5 18h6"/></svg>'
   };
 
   function variantSlug(variant) {
     return normalize(variant).replace(/\s+/g, "-");
+  }
+
+  // Modos de visualização das grades. "compact" é o 3º: linha sem imagem, pra
+  // cadastrar rápido (ver docs/LISTAS.md). Cada página guarda o valor na própria
+  // chave (tcg-cards-view, tcg-detail-view...), e um valor desconhecido — de uma
+  // versão futura ou de storage mexido à mão — cai em "grid".
+  const GRID_VIEWS = ["grid", "list", "compact"];
+  function gridViewValue(v) { return GRID_VIEWS.includes(v) ? v : "grid"; }
+  function applyGridViewClasses(el, view) {
+    if (!el) return;
+    el.classList.toggle("is-list", view === "list");
+    el.classList.toggle("is-compact", view === "compact");
   }
 
   // Tile minimalista (imagem em destaque + nome, variante, set·número e ações).
@@ -4729,6 +4744,54 @@
     // Rótulo agrupado: as versões existentes, na ordem do catálogo
     // ("Normal · Foil") — informa o que há sem ocupar mais que a linha de sempre.
     const variantLabel = grouped ? variants.join(" · ") : variant;
+
+    // Botão "+ Lista" (≡+), no canto OPOSTO ao +: opt-in por página (opts.lists),
+    // como o de pasta — Binders/Vendas/Graded não ganham um botão que ali não
+    // faz sentido. É STATELESS de propósito (ícone fixo, o estado vive no
+    // popover): assim ele não entra na assinatura do refreshTileOwnership, e não
+    // há como o tile congelar por causa dele.
+    const listButton = opts && opts.lists
+      ? `<button type="button" class="tile-btn tile-list" data-list-card-id="${escapeAttribute(card.id)}" data-list-variant="${escapeAttribute(grouped ? "" : variant)}" aria-label="${escapeAttribute(t("tile.addToList"))}" title="${escapeAttribute(t("tile.addToList"))}">${TILE_ICONS.list}</button>`
+      : "";
+
+    // Ordem: lista, pasta, coração, −, +. O − precisa colar no + (é o par de
+    // ajuste de quantidade), e o coração cedeu esse lugar. As TAGS saíram daqui:
+    // com quatro botões não cabia o chip "+ Tag" sem sobrepor, e etiquetar é
+    // tarefa de dentro do card (o preview tem a seção de tags).
+    const actionsHtml = `
+      <div class="tile-actions">
+        ${listButton}
+        ${opts && opts.folders ? `<button type="button" class="tile-btn tile-folder${opts.inFolder ? " active" : ""}" data-folder-card-id="${escapeAttribute(card.id)}" data-folder-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.collection"))}" title="${escapeAttribute(t("tile.collection"))}">${TILE_ICONS.folder}</button>` : ""}
+        ${wantButton}
+        ${minusButton}
+        <button type="button" class="tile-btn tile-own${ownActive}" ${ownData}${grouped ? "" : ` aria-pressed="${!addMode && isOwned}"`} aria-label="${escapeAttribute(ownAria)}">
+          ${ownIcon}${qtyBadge}
+        </button>
+      </div>`;
+
+    // MODO COMPACTO: uma linha por carta, SEM imagem. O <img> não é escondido
+    // com CSS — ele nem entra no DOM, senão o navegador baixaria a imagem de
+    // qualquer jeito e o modo perderia a razão de existir (é o modo de quem quer
+    // cadastrar rápido, muitas vezes no celular). A carta continua acessível:
+    // o nome carrega a URL em data-hover-thumb (miniatura flutuante no mouse) e
+    // clicar abre o card, como a imagem faria.
+    // Os BOTÕES são exatamente os mesmos do tile normal — mesmas classes, mesmos
+    // data-*: o refreshTileOwnership e os handlers das páginas seguem valendo
+    // sem saber que existe um modo novo.
+    if (opts && opts.compact) {
+      article.classList.add("tile-compact");
+      article.innerHTML = `
+        <button class="tile-name" data-preview-card-id="${escapeAttribute(card.id)}"${previewVariantAttr} data-hover-thumb="${escapeAttribute(img.url || "")}">
+          ${cardFlag(card.language)}<span>${escapeHtml(card.name)}</span>
+        </button>
+        <span class="tile-c-num">${escapeHtml(card.number || "")}</span>
+        <span class="tile-c-set">${escapeHtml(card.set || "")}</span>
+        <span class="tile-c-var variant-${escapeAttribute(variantSlug(variant))}">${escapeHtml(variantLabel)}</span>
+        <span class="tile-c-price">${tilePriceHtml(card, variant, prices)}</span>
+        ${actionsHtml}`;
+      return article;
+    }
+
     article.innerHTML = `
       <div class="card-image">${image}</div>
       <div class="tile-info">
@@ -4737,19 +4800,7 @@
         <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
         ${tilePriceHtml(card, variant, prices)}
         <div class="tile-foot">
-          <!-- Ordem: pasta, coração, −, +. O − precisa colar no + (é o par de
-               ajuste de quantidade), e o coração cedeu esse lugar. As TAGS
-               saíram daqui: com quatro botões não cabia o chip "+ Tag" sem
-               sobrepor, e etiquetar é tarefa de dentro do card (o preview tem
-               a seção de tags). -->
-          <div class="tile-actions">
-          ${opts && opts.folders ? `<button type="button" class="tile-btn tile-folder${opts.inFolder ? " active" : ""}" data-folder-card-id="${escapeAttribute(card.id)}" data-folder-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.collection"))}" title="${escapeAttribute(t("tile.collection"))}">${TILE_ICONS.folder}</button>` : ""}
-          ${wantButton}
-          ${minusButton}
-          <button type="button" class="tile-btn tile-own${ownActive}" ${ownData}${grouped ? "" : ` aria-pressed="${!addMode && isOwned}"`} aria-label="${escapeAttribute(ownAria)}">
-            ${ownIcon}${qtyBadge}
-          </button>
-        </div>
+          ${actionsHtml}
         </div>
       </div>
     `;
@@ -4849,6 +4900,114 @@
 
     const summaryEl = tile.querySelector("[data-tile-conditions]");
     if (summaryEl) summaryEl.textContent = resumo;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Popover "+ Lista" do tile (e do card). Ver docs/LISTAS.md.
+  //
+  // Listener GLOBAL, montado uma vez: diferente dos outros botões do tile, este
+  // não precisa de nada da página (nem store por jogo, nem re-render da grade),
+  // então pedir a cada página que fizesse a própria delegação só criaria cinco
+  // cópias do mesmo handler — e a chance de esquecer uma.
+  // ---------------------------------------------------------------------------
+  let listMenuEl = null;
+  function closeListMenu() {
+    if (listMenuEl) { listMenuEl.remove(); listMenuEl = null; }
+  }
+  function openListMenu(anchor, cardId, variant) {
+    closeListMenu();
+    const store = createListStore();
+    const lists = store.list();
+    const marcadas = new Set(store.listsWith(cardId, variant || null));
+    const box = document.createElement("div");
+    box.className = "list-menu";
+    box.setAttribute("role", "dialog");
+    box.setAttribute("aria-label", t("tile.addToList"));
+    box.innerHTML = `
+      ${lists.length ? lists.map((l) => `
+        <button type="button" class="list-menu-item${marcadas.has(l.id) ? " is-on" : ""}" data-lm-toggle="${escapeAttribute(l.id)}">
+          <span class="list-menu-dot" style="background:${escapeAttribute(safeColor(l.color) || "#3b6fe0")}"></span>
+          <span class="list-menu-name">${escapeHtml(l.name || t("lists.untitled"))}</span>
+          <span class="list-menu-check" aria-hidden="true">${marcadas.has(l.id) ? "✓" : ""}</span>
+        </button>`).join("")
+        : `<p class="list-menu-empty">${escapeHtml(t("lists.menuEmpty"))}</p>`}
+      <a class="list-menu-new" href="listas.html">+ ${escapeHtml(t("lists.new"))}</a>`;
+    document.body.appendChild(box);
+    listMenuEl = box;
+
+    // Ancorado no botão, preso na tela: no fim da grade o popover sairia embaixo.
+    const r = anchor.getBoundingClientRect();
+    const w = box.offsetWidth || 220;
+    box.style.left = Math.max(8, Math.min(window.innerWidth - w - 8, r.left)) + "px";
+    const abaixo = r.bottom + 6;
+    box.style.top = (abaixo + (box.offsetHeight || 200) > window.innerHeight
+      ? Math.max(8, r.top - (box.offsetHeight || 200) - 6)
+      : abaixo) + "px";
+
+    box.addEventListener("click", (ev) => {
+      const item = ev.target.closest("[data-lm-toggle]");
+      if (!item) return;
+      const listId = item.dataset.lmToggle;
+      const lista = store.get(listId);
+      const ficou = store.toggleEntry(listId, cardId, { v: variant || null, c: DEFAULT_CONDITION });
+      // Lista VINCULADA: entrar na lista é entrar na coleção. Sair NÃO remove da
+      // coleção — tirar da lista não é dizer que não tenho mais a carta.
+      // Sem variante (tile agrupado) a coleção NÃO é tocada: chutar entre Normal
+      // e Foil erra o valor da coleção, que é a mesma razão de o + agrupado abrir
+      // o card em vez de adicionar. A entrada fica na lista como marcador.
+      if (ficou && variant && lista && lista.linked && lista.game) {
+        createCollectionStore(lista.game).add(cardId, variant, DEFAULT_CONDITION, 1);
+      }
+      item.classList.toggle("is-on", ficou);
+      const check = item.querySelector(".list-menu-check");
+      if (check) check.textContent = ficou ? "✓" : "";
+    });
+  }
+  // Miniatura flutuante do modo compacto. A linha não tem imagem de propósito;
+  // parar o mouse no nome mostra a carta, que é como se confere "é essa mesmo?"
+  // sem perder a densidade. Um listener só no document (as grades trocam de
+  // conteúdo o tempo todo — pendurar em cada tile vazaria handler a cada render).
+  let hoverThumbEl = null;
+  function initCompactHoverThumb() {
+    document.addEventListener("mouseover", (ev) => {
+      const alvo = ev.target.closest("[data-hover-thumb]");
+      const url = alvo && alvo.dataset.hoverThumb;
+      if (!url) {
+        if (hoverThumbEl) { hoverThumbEl.hidden = true; }
+        return;
+      }
+      if (!hoverThumbEl) {
+        hoverThumbEl = document.createElement("img");
+        hoverThumbEl.className = "tile-hover-thumb";
+        hoverThumbEl.alt = "";
+        document.body.appendChild(hoverThumbEl);
+      }
+      hoverThumbEl.src = url;
+      hoverThumbEl.hidden = false;
+      const r = alvo.getBoundingClientRect();
+      hoverThumbEl.style.top = Math.max(8, Math.min(window.innerHeight - 300, r.top - 40)) + "px";
+      hoverThumbEl.style.left = Math.min(window.innerWidth - 220, r.right + 14) + "px";
+    });
+  }
+
+  function initListTileMenu() {
+    document.addEventListener("click", (ev) => {
+      const btn = ev.target.closest("[data-list-card-id]");
+      if (btn) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        // Segundo clique no mesmo botão fecha (é um toggle, como todo popover).
+        if (listMenuEl && listMenuEl.dataset.anchorId === btn.dataset.listCardId + "|" + (btn.dataset.listVariant || "")) {
+          closeListMenu();
+          return;
+        }
+        openListMenu(btn, btn.dataset.listCardId, btn.dataset.listVariant || null);
+        if (listMenuEl) listMenuEl.dataset.anchorId = btn.dataset.listCardId + "|" + (btn.dataset.listVariant || "");
+        return;
+      }
+      if (listMenuEl && !ev.target.closest(".list-menu")) closeListMenu();
+    });
+    document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") closeListMenu(); });
   }
 
   // Clique no − do tile: tira UMA cópia. Prefere tirar da condição PADRÃO (NM),
@@ -6278,6 +6437,8 @@
     variantQuantityRows,
     cardVariantPairs,
     variantTile,
+    gridViewValue,
+    applyGridViewClasses,
     refreshTileOwnership,
     gameKey,
     handleOwnedTileClick,
@@ -8482,6 +8643,8 @@
   initSearchShortcutHint(); // depois do applyTranslations (placeholders já traduzidos)
   initHeaderSearch();
   initFilterToggle();
+  initListTileMenu();      // botão "+ Lista" dos tiles (delegação global)
+  initCompactHoverThumb(); // miniatura no hover do modo compacto
   initAuth();
 
   // Service worker: cacheia as imagens já vistas para sobreviverem a um outage
