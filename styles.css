@@ -7926,11 +7926,9 @@ select,
 .deck-mini.danger:hover { border-color: var(--accent); color: var(--accent); }
 
 /* --- Modal de novo deck --- */
-/* O wizard das Listas usa a MESMA caixa (mesmo peso visual, mesmo z-index);
-   só o nome da classe muda, pra não pendurar a página de listas no CSS de deck. */
-.deck-modal, .list-modal { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: grid; place-items: center; z-index: 60; padding: 20px; }
-.deck-modal-box, .list-modal-box { background: var(--surface); border: 1px solid var(--line); max-width: 520px; width: 100%; padding: 22px; max-height: 86vh; overflow: auto; }
-.deck-modal-box h2, .list-modal-box h2 { margin: 0 0 16px; font-size: 19px; }
+.deck-modal { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: grid; place-items: center; z-index: 60; padding: 20px; }
+.deck-modal-box { background: var(--surface); border: 1px solid var(--line); max-width: 520px; width: 100%; padding: 22px; max-height: 86vh; overflow: auto; }
+.deck-modal-box h2 { margin: 0 0 16px; font-size: 19px; }
 .deck-game-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-bottom: 16px; }
 .deck-game-pick { display: flex; align-items: center; min-height: 42px; padding: 0 13px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 13.5px; font-weight: 700; cursor: pointer; text-align: left; }
 .deck-game-pick:hover { border-color: var(--accent); background: var(--panel-strong); }
@@ -8631,7 +8629,21 @@ select,
    A tela é uma LINHA por carta, sem imagem: é o modo rápido de cadastrar. Tudo
    aqui é medido pra caber muita linha na tela sem virar planilha ilegível.
    =========================================================================== */
+/* Nada aqui reaproveita classe `deck-*`, e não é por gosto: o split-css do
+   deploy manda todo bloco que cita `.deck…` pro styles-decks.css, que só
+   decks.html e my-decks.html carregam — a página de listas ficaria sem estilo
+   nenhum nos botões e no modal, e só em produção. As classes daqui (`lst-`,
+   `list-`) não são de nenhuma área, então ficam no núcleo. */
 .page-head-sub { margin: 4px 0 0; color: var(--muted); font-size: 13.5px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.list-modal { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: grid; place-items: center; z-index: 60; padding: 20px; }
+.list-modal-box { background: var(--surface); border: 1px solid var(--line); max-width: 520px; width: 100%; padding: 22px; max-height: 86vh; overflow: auto; }
+.list-modal-box h2 { margin: 0 0 16px; font-size: 19px; }
+.lst-mini { min-height: 34px; padding: 0 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 12.5px; font-weight: 700; cursor: pointer; }
+.lst-mini:hover { background: var(--panel-strong); }
+.lst-mini.danger:hover { border-color: var(--accent); color: var(--accent); }
+.lst-game-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-bottom: 16px; }
+.lst-game-pick { display: flex; align-items: center; justify-content: flex-start; min-height: 42px; padding: 0 13px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 13.5px; font-weight: 700; cursor: pointer; text-align: left; }
+.lst-game-pick:hover { border-color: var(--accent); background: var(--panel-strong); }
 .empty-hint { display: inline-block; margin-top: 6px; color: var(--muted); font-size: 13px; }
 .list-actions { margin: 0 0 18px; }
 .list-input { width: 100%; min-height: 42px; padding: 0 13px; margin-bottom: 14px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 15px; }

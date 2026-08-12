@@ -59,15 +59,15 @@ const SHELL_ASSETS = [
   "./", "index.html", "hub.html", "pokedex.html", "sets.html", "artists.html",
   "trainers.html", "collection.html", "wishlist.html", "portfolio.html", "explore.html", "dashboard.html", "badges.html",
   "backup.html", "detail.html", "binders.html", "cards.html", "sales.html", "graded.html", "about.html", "novidades.html", "faq.html", "help.html", "privacy.html", "terms.html", "login.html", "settings.html", "profile.html", "admin.html",
-  "decks.html", "my-decks.html",
+  "decks.html", "my-decks.html", "listas.html",
   "styles.css", "favicon.svg", "icon.svg", "assets/brand/sleevu-wordmark.svg", "manifest.json",
   // Fonte da marca (auto-hospedada): precisa estar no shell pra o app abrir
   // offline com a tipografia certa, sem "trocar de fonte" ao reconectar.
   "assets/fonts/outfit-latin.woff2", "assets/fonts/outfit-latin-ext.woff2",
-  "src/theme.js", "src/game.js", "src/login-boot.js", "src/i18n.js", "src/i18n-docs.js", "src/i18n-decks.js", "src/i18n-binders.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js", "src/explore.js", "src/dashboard.js", "src/badges.js",
+  "src/theme.js", "src/game.js", "src/login-boot.js", "src/i18n.js", "src/i18n-docs.js", "src/i18n-decks.js", "src/i18n-binders.js", "src/i18n-listas.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js", "src/explore.js", "src/dashboard.js", "src/badges.js",
   "src/home.js", "src/wishlist.js", "src/portfolio.js", "src/binders.js",
   "src/backup.js", "src/graded-ui.js", "src/cards.js", "src/sales.js", "src/graded.js", "src/login.js", "src/hub.js", "src/settings.js", "src/profile.js", "src/admin.js",
-  "src/deck-rules.js", "src/decks.js"
+  "src/deck-rules.js", "src/decks.js", "src/listas.js", "src/export-liga.js"
 ];
 
 // Tetos por cache (FIFO): imagens ~17KB cada; chunks de set são o catálogo.

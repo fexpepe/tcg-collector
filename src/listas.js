@@ -125,7 +125,7 @@
 
     function box(inner) {
       wrap.innerHTML = `<div class="list-modal-box" role="dialog" aria-modal="true" aria-label="${escA(t("lists.new"))}">${inner}
-        <div class="list-modal-foot"><button type="button" class="deck-mini" data-wz-cancel>${esc(t("lists.cancel"))}</button></div>
+        <div class="list-modal-foot"><button type="button" class="lst-mini" data-wz-cancel>${esc(t("lists.cancel"))}</button></div>
       </div>`;
     }
 
@@ -160,8 +160,8 @@
       // SESSÃO, e um closest("[data-game]") casaria com ele — qualquer clique no
       // modal viraria "escolheu o jogo da sessão".
       const games = shared.GAME_SLUGS.map((g) =>
-        `<button type="button" class="deck-game-pick" data-wz-game="${escA(g)}">${shared.gameTagHtml(g)}</button>`).join("");
-      box(`<h2>${esc(t("lists.wizard.game"))}</h2><div class="deck-game-list">${games}</div>`);
+        `<button type="button" class="lst-game-pick" data-wz-game="${escA(g)}">${shared.gameTagHtml(g)}</button>`).join("");
+      box(`<h2>${esc(t("lists.wizard.game"))}</h2><div class="lst-game-list">${games}</div>`);
     }
 
     async function stepSet(game) {
@@ -169,7 +169,7 @@
         <p class="list-modal-hint">${esc(t("lists.wizard.setHint"))}</p>
         <input type="search" id="wzSetSearch" class="list-input" placeholder="${escA(t("lists.wizard.setSearch"))}">
         <div class="list-set-picks" id="wzSets"><p class="empty-state">${esc(t("lists.loading"))}</p></div>
-        <button type="button" class="deck-mini" data-wz-skipset>${esc(t("lists.wizard.setSkip"))}</button>`);
+        <button type="button" class="lst-mini" data-wz-skipset>${esc(t("lists.wizard.setSkip"))}</button>`);
       const sets = await setsOf(game);
       const box2 = wrap.querySelector("#wzSets");
       if (!box2) return;                                  // fechou o modal enquanto carregava
@@ -394,10 +394,10 @@
               : `<p class="empty-state">${esc(t("lists.editorEmpty"))}</p>`}
           </div>
           <footer class="lst-panel-foot">
-            <button type="button" class="deck-mini" data-list-export>${esc(t("lists.export"))}</button>
-            ${list.linked ? "" : `<button type="button" class="deck-mini" data-list-apply>${esc(t("lists.applyToCollection"))}</button>`}
-            <button type="button" class="deck-mini" data-list-deck>${esc(t("lists.makeDeck"))}</button>
-            <button type="button" class="deck-mini danger" data-list-del>${esc(t("lists.delete"))}</button>
+            <button type="button" class="lst-mini" data-list-export>${esc(t("lists.export"))}</button>
+            ${list.linked ? "" : `<button type="button" class="lst-mini" data-list-apply>${esc(t("lists.applyToCollection"))}</button>`}
+            <button type="button" class="lst-mini" data-list-deck>${esc(t("lists.makeDeck"))}</button>
+            <button type="button" class="lst-mini danger" data-list-del>${esc(t("lists.delete"))}</button>
           </footer>
         </section>
 
@@ -498,8 +498,8 @@
           <textarea class="lst-export" readonly rows="12">${esc(textoExportado())}</textarea>
           <div class="list-modal-foot">
             <button type="button" class="cta" data-ex-copy>${esc(t("lists.copy"))}</button>
-            <button type="button" class="deck-mini" data-ex-dl>${esc(t("lists.download"))}</button>
-            <button type="button" class="deck-mini" data-wz-cancel>${esc(t("lists.cancel"))}</button>
+            <button type="button" class="lst-mini" data-ex-dl>${esc(t("lists.download"))}</button>
+            <button type="button" class="lst-mini" data-wz-cancel>${esc(t("lists.cancel"))}</button>
           </div>
         </div>`;
     }
@@ -577,7 +577,7 @@
           <div class="lst-apply-list">${corpo || `<p class="empty-state">${esc(t("lists.editorEmpty"))}</p>`}</div>
           <div class="list-modal-foot">
             <button type="button" class="cta" data-ap-go>${esc(tn("lists.applyConfirm", linhas.length))}</button>
-            <button type="button" class="deck-mini" data-wz-cancel>${esc(t("lists.cancel"))}</button>
+            <button type="button" class="lst-mini" data-wz-cancel>${esc(t("lists.cancel"))}</button>
           </div>
         </div>`;
     }
