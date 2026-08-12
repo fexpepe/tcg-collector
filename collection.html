@@ -164,7 +164,10 @@
         <button type="button" class="prof-tab" data-tab="cards" aria-pressed="true" data-i18n="nav.collection">Coleção</button>
         <button type="button" class="prof-tab" data-tab="folders" aria-pressed="false" data-i18n="collection.tab.folders">Showcase</button>
         <button type="button" class="prof-tab" data-tab="graded" aria-pressed="false" data-i18n="nav.graded">Cartas Graded</button>
-        <button type="button" class="prof-tab" data-tab="tags" aria-pressed="false" data-i18n="collection.tab.tags">Tags</button>
+        <!-- A aba "Tags" saiu da barra: as tags viraram Listas (docs/LISTAS.md).
+             A visão continua existindo em ?tab=tags só pra links antigos, e ali
+             mostra o aviso da mudança em vez de uma segunda UI editável. -->
+        <a class="prof-tab" href="listas.html" data-i18n="nav.lists">Listas</a>
         <button type="button" class="prof-tab" data-tab="pokemon" aria-pressed="false" data-i18n="collection.tab.pokemon">Pokémon</button>
         <button type="button" class="prof-tab" data-tab="artists" aria-pressed="false" data-i18n="collection.tab.artists">Artistas</button>
         <button type="button" class="prof-tab" data-tab="sets" aria-pressed="false" data-i18n="collection.tab.sets">Sets</button>

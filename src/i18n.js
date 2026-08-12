@@ -606,6 +606,7 @@ window.TCG_MESSAGES = window.TCG_MESSAGES || {};
       // porque o menu e a dashboard (que não carregam aquele pacote) precisam.
       "nav.lists": "Listas",
       "dash.listsHint": "cadastro rápido e listas de compra",
+      "tags.movedToLists": "Suas tags agora são Listas — com quantidade, versão e export pra comprar.",
       // Usadas pelo shared.js (botão do tile, popover, modo compacto), que TODA
       // página carrega — por isso aqui, e não no pacote i18n-listas.js.
       "lists.new": "Nova lista",
@@ -1594,6 +1595,7 @@ window.TCG_MESSAGES = window.TCG_MESSAGES || {};
       "dash.decksHint": "your decks and the ones you saved",
       "nav.lists": "Lists",
       "dash.listsHint": "quick logging and shopping lists",
+      "tags.movedToLists": "Your tags are now Lists — with quantity, version and export for buying.",
       "lists.new": "New list",
       "lists.untitled": "Untitled list",
       "lists.menuEmpty": "You don't have any lists yet.",
@@ -2579,6 +2581,7 @@ window.TCG_MESSAGES = window.TCG_MESSAGES || {};
       "dash.decksHint": "tus decks y los que guardaste",
       "nav.lists": "Listas",
       "dash.listsHint": "registro rápido y listas de compra",
+      "tags.movedToLists": "Tus etiquetas ahora son Listas — con cantidad, versión y exportación para comprar.",
       "lists.new": "Nueva lista",
       "lists.untitled": "Lista sin nombre",
       "lists.menuEmpty": "Todavía no tienes listas.",

@@ -527,12 +527,56 @@
   // Uma constante só pra chave (o SYNC_KEYS lá embaixo aponta pra ela): a das
   // tags acabou literal em quatro arquivos, e renomear virou caça ao tesouro.
   const LISTS_KEY = "tcg-collector-lists-all-v1";
+  const TAGS_KEY = "tcg-collector-collection-tags-v1";  // legado, lido pela migração
   const LIST_LIMIT = 100;          // tetos de sanidade: o blob divide 5MB com o resto
   const LIST_ENTRIES_LIMIT = 5000;
   const LIST_NAME_MAX = 40;
 
   function entryKey(cardId, variant) {
     return String(cardId) + "|" + (variant == null ? "" : String(variant));
+  }
+
+  // Migração TAGS -> LISTAS (one-time, por navegador). Uma tag vira uma lista
+  // VINCULADA (a tag marcava carta que a pessoa tem) com entradas MARCADORAS:
+  // `v`/`q` nulos, porque tag não tinha versão nem quantidade — inventar "1
+  // cópia Normal NM" seria fabricar dado de coleção que ninguém digitou.
+  //
+  // O blob de tags NÃO é apagado: um device que ainda não atualizou continua
+  // lendo dele, e o merge do sync não pode ver a chave sumir. Ele simplesmente
+  // congela; a limpeza fica pra quando a feature tiver rodado alguns ciclos.
+  // Idempotente: `fromTag` marca o que já veio, então rodar de novo não duplica.
+  function migrateTagsToLists(data) {
+    let raw = null;
+    try { raw = JSON.parse(localStorage.getItem(TAGS_KEY) || "null"); } catch (e) { return false; }
+    const tags = raw && Array.isArray(raw.tags) ? raw.tags : [];
+    if (!tags.length) return false;
+    const assign = (raw.assign && typeof raw.assign === "object") ? raw.assign : {};
+    const jaVeio = new Set(data.lists.map((l) => l.fromTag).filter(Boolean));
+    // Uma lista apagada de propósito não volta: o tombstone é a memória disso.
+    const apagadas = new Set(Object.keys(data.deleted || {}));
+    let mudou = false;
+    tags.forEach((tg) => {
+      if (!tg || !tg.id || jaVeio.has(tg.id)) return;
+      const entries = Object.keys(assign)
+        .filter((cardId) => (assign[cardId] || []).includes(tg.id))
+        .map((cardId) => ({ id: cardId, v: null, q: null, c: null, at: 0 }));
+      const id = "ls_t_" + String(tg.id).replace(/^t_/, "");
+      if (apagadas.has(id)) return;
+      data.lists.push({
+        id: id,
+        name: String(tg.name || "").slice(0, LIST_NAME_MAX),
+        color: safeColor(tg.color) || "#3b6fe0",
+        game: null,               // tags eram cross-game
+        set: null,
+        linked: true,
+        entries: entries,
+        fromTag: tg.id,
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      });
+      mudou = true;
+    });
+    return mudou;
   }
 
   let listsCache = null;
@@ -546,6 +590,9 @@
       listsCache = parsed;
     } else {
       listsCache = { lists: [], deleted: {} };
+    }
+    if (migrateTagsToLists(listsCache)) {
+      try { localStorage.setItem(LISTS_KEY, JSON.stringify(listsCache)); } catch (e) { /* cota: fica só em memória */ }
     }
     return listsCache;
   }
@@ -6648,7 +6695,7 @@
     folders: "tcg-collector-collection-folders-v1", // pastas da coleção (globais)
     sales: "tcg-collector-collection-sales-v1", // cartas à venda (globais)
     graded: "tcg-collector-collection-graded-v1", // cartas graduadas/slabs (globais)
-    tags: "tcg-collector-collection-tags-v1", // tags custom (multi por carta, globais)
+    tags: TAGS_KEY, // tags custom (legado; migradas pras listas — ver migrateTagsToLists)
     sold: "tcg-collector-collection-sold-v1", // vendas realizadas (globais)
     costs: "tcg-collector-collection-costs-v1", // custo pago por carta×variante (globais)
     wishTargets: "tcg-collector-wishlist-targets-v1", // preço-alvo por carta da wishlist (globais)
@@ -7682,11 +7729,40 @@
     } catch (e) { return { folders: [], assign: {} }; }
   }
   // Tags (multi por carta) p/ a vitrine de tags do perfil público.
+  // Tags do PERFIL PÚBLICO, no formato { tags, assign } que o payload e o viewer
+  // esperam. Depois da migração (ver migrateTagsToLists) a fonte são as LISTAS —
+  // este adaptador existe pra o payload e o viewer não precisarem saber disso.
+  // O blob antigo de tags entra junto, pra quem tem um device que ainda não
+  // migrou não ver o perfil esvaziar.
   function readTagsData() {
+    const tags = [];
+    const assign = {};
+    const juntar = (id, listaId) => {
+      if (!assign[id]) assign[id] = [];
+      if (!assign[id].includes(listaId)) assign[id].push(listaId);
+    };
+    const jaMigradas = new Set();
+    try {
+      createListStore().list().forEach((l) => {
+        tags.push({ id: l.id, name: l.name || "", color: l.color });
+        if (l.fromTag) jaMigradas.add(l.fromTag);
+        l.entries.forEach((e) => juntar(e.id, l.id));
+      });
+    } catch (e) { /* sem listas: cai só no legado abaixo */ }
     try {
       const d = JSON.parse(localStorage.getItem(SYNC_KEYS.tags) || "{}");
-      return { tags: Array.isArray(d.tags) ? d.tags : [], assign: (d.assign && typeof d.assign === "object") ? d.assign : {} };
-    } catch (e) { return { tags: [], assign: {} }; }
+      const legado = Array.isArray(d.tags) ? d.tags : [];
+      legado.forEach((tg) => {
+        // Tag já virada lista não entra de novo (sairia duplicada no perfil).
+        if (jaMigradas.has(tg.id) || tags.some((x) => x.id === tg.id)) return;
+        tags.push(tg);
+      });
+      const at = (d.assign && typeof d.assign === "object") ? d.assign : {};
+      Object.keys(at).forEach((cardId) => (at[cardId] || []).forEach((tid) => {
+        if (!jaMigradas.has(tid)) juntar(cardId, tid);
+      }));
+    } catch (e) { /* blob corrompido: só as listas */ }
+    return { tags, assign };
   }
   // Slabs graded p/ a aba Graded do perfil público.
   function readGradedList() {

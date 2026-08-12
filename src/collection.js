@@ -1139,16 +1139,18 @@
     return tags.cardsWith(tagId).map((id) => cardsById.get(id)).filter((c) => c && owned.has(c.id) && inGameFilter(c));
   }
 
+  // A aba Tags virou um AVISO: as tags são migradas pra Listas na primeira vez
+  // que o store de listas é lido (migrateTagsToLists, no shared.js), e manter
+  // aqui uma segunda UI editando o blob antigo faria as duas telas discordarem —
+  // editar a tag aqui não apareceria na lista, e vice-versa. O caminho antigo
+  // (?tab=tags, links guardados) continua respondendo, só que apontando pra lá.
   function renderTags() {
-    const open = openTagId ? tags.get(openTagId) : null;
-    if (openTagId && !open) openTagId = null;
-    if (open) { renderTagFocus(open); return; }
     updateCardsStats(tags.count());
-    if (!tags.any()) {
-      elements.folderSections.innerHTML = `<p class="empty-state" data-tags-empty>${escapeHtml(t("tags.empty"))}</p>`;
-      return;
-    }
-    elements.folderSections.innerHTML = tags.list().map(tagCardHtml).join("");
+    elements.folderSections.innerHTML = `
+      <p class="empty-state">
+        ${escapeHtml(t("tags.movedToLists"))}<br>
+        <a class="cta" href="listas.html">${escapeHtml(t("nav.lists"))}</a>
+      </p>`;
   }
 
   // Card da tag na vitrine (mesmo formato das Coleções, com a cor da tag).

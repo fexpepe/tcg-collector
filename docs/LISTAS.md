@@ -1,8 +1,15 @@
 # Listas — cadastro em massa, listas nomeadas e export pra Liga
 
-Plano da feature. Complementa o [ROADMAP.md](../ROADMAP.md); segue o formato de
-[DECKS.md](DECKS.md) e [COMMUNITY-PRICES.md](COMMUNITY-PRICES.md) (fases F0–F5,
-cada uma entregável sozinha).
+Plano da feature **e** registro do que foi construído. Complementa o
+[ROADMAP.md](../ROADMAP.md); segue o formato de [DECKS.md](DECKS.md) e
+[COMMUNITY-PRICES.md](COMMUNITY-PRICES.md) (fases F0–F5, cada uma entregável
+sozinha).
+
+> **Estado: F0–F5 implementadas** (branch `feat/listas`, 2026-08-12). As
+> decisões da seção 11 foram batidas pelo Fernando: nome "Listas", tags migradas
+> de verdade, default avulso no wizard, e os 4 itens do export da Liga ficam
+> como teste manual antes de anunciar. O que mudou do plano durante a execução
+> está na seção 12; o que ficou de fora, na 13.
 
 **Tese:** hoje adicionar 200 cartas de um set é clique por clique numa grade de
 imagens. A feature cria (1) um **modo de visualização compacto** sem imagem,
@@ -420,14 +427,57 @@ F1–F4 estiverem assentadas.
 
 ---
 
-## 11. Decisões pro Fernando bater o martelo
+## 11. Decisões batidas (2026-08-12)
 
-1. **Nome da feature**: "Listas" (recomendado) — e o modo de visualização novo
-   chama "Compacta" pra não colidir com o modo "Lista" atual.
-2. **Migrar Tags de verdade (F5)** ou manter as duas pra sempre? Recomendo
-   migrar — duas features de "agrupar cartas com nome e cor" confundem.
-3. **Lista vinculada como default** no wizard? Recomendo o default ser
-   **avulsa** (ação destrutiva zero) com o toggle bem visível — o fluxo
-   "cadastrar coleção" liga na criação e o site lembra a última escolha.
-4. Export Liga: **manter os 4 itens "a verificar"** da seção 6.1 como teste
-   manual no site da Liga antes de anunciar a feature.
+1. **Nome**: "Listas"; o modo de visualização novo chama **"Compacta"**, pra não
+   colidir com o modo "Lista" atual (que tem miniatura).
+2. **Migrar as Tags de verdade** — feito na F5.
+3. **Default avulso** no wizard (ação destrutiva zero), com o toggle visível.
+4. Export da Liga: os 4 itens "a verificar" da seção 6.1 seguem como **teste
+   manual** antes de anunciar.
+
+---
+
+## 12. O que mudou do plano na execução
+
+Cinco desvios, todos por motivo encontrado no código:
+
+1. **O store das Listas vive no `shared.js`, não em `listas.js`.** O plano o
+   colocava na página. Mas o botão do tile e o bloco do popup do card são de
+   `shared.js` — e foi exatamente por o store das tags estar em `collection.js`
+   que nasceu o `readTagsData`, uma segunda leitura do mesmo blob que podia
+   divergir. Instância ÚNICA por página, senão o popover e a página de listas
+   sobrescrevem um ao outro no próximo save.
+2. **`setId` virou `set` (nome do set).** O índice `indexes-sets.json` traz
+   `{name, cardIds}` — não tem id de set. O nome é também o que a página de set
+   usa na URL.
+3. **`nav.lists`, `lists.new`, `lists.untitled`, `tile.addToList` e
+   `view.compact` ficaram no `i18n.js` core**, não no pacote da página: quem as
+   usa é o `shared.js` (todas as páginas) e a dashboard. O check #7 pegou isso
+   na hora.
+4. **O carregador do índice de busca saiu do `decks.js` pro `shared.js`**
+   (`loadSearchIndex`) — o refactor que o plano previa, feito porque agora são
+   dois consumidores. O índice de prefixo e as facetas ficaram no editor de
+   decks, que é onde são usados.
+5. **Duas correções de durabilidade que o plano não previa**, ambas do mesmo
+   tipo: o snapshot do desfazer é lido do `localStorage`, mas as escritas são
+   adiadas em 250ms (`scheduleWrite`) — então o flush pendente disparava DEPOIS
+   do restore e regravava por cima o que o usuário acabara de desfazer. Excluir
+   lista passou a gravar síncrono (`saveNow`), e "aplicar à coleção" tira o
+   snapshot antes e chama `shared.flushPendingWrites()` depois.
+
+## 13. O que ficou de fora (e por quê)
+
+- **Compartilhar lista por link.** Tem precedente pronto (`shares` com
+  `data.scope`), mas o viewer `?s=` é uma tela própria — fazer de raspão
+  entregaria um link que abre uma coleção mal rotulada. Fica como próximo passo
+  natural da feature.
+- **"Criar pasta desta lista".** O store de pastas vive dentro de
+  `collection.js` e não é compartilhado; extrair sem necessidade seria mexer no
+  Showcase por tabela.
+- **Filtro por lista na barra da Coleção.** Mesma pendência que as tags já
+  tinham.
+- **Limpeza final do código morto das tags** (`openTileTagMenu`, CSS órfão em
+  `styles.css`, a chave `tags.deleteConfirm`): o blob de tags foi mantido de
+  propósito por um ciclo, e limpar a UI antiga junto com a migração aumentaria a
+  superfície de um commit que já mexe em dado de usuário.

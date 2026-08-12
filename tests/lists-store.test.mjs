@@ -12,7 +12,7 @@ const arr = (x) => Array.from(x || []);
 function fresh(seed) {
   const ls = makeLocalStorage(seed);
   const sb = loadShared(
-    "window.__test = { createListStore, mergeLists, mergeData };",
+    "window.__test = { createListStore, mergeLists, mergeData, readTagsData };",
     { localStorage: ls }
   );
   return { ls, api: sb.window.__test, flush: sb.__flushTimers };
@@ -160,6 +160,83 @@ test("mergeLists: ausente dos dois lados vira undefined (não cria a chave à to
   // E pelo caminho real do sync, junto do resto do snapshot.
   const merged = api.mergeData({ collection: {} }, { collection: {} });
   assert.ok(!("lists" in merged) || merged.lists === undefined, "mergeData não inventa lists");
+});
+
+// --- Migração das tags (F5) -------------------------------------------------
+const TAGS_KEY = "tcg-collector-collection-tags-v1";
+const TAGS_SEED = JSON.stringify({
+  tags: [{ id: "t_abc", name: "Favoritas", color: "#e23030" },
+         { id: "t_def", name: "Trocar", color: "#3fae5a" }],
+  assign: { "swsh5-1": ["t_abc"], "base1-4": ["t_abc", "t_def"] },
+  updatedAt: 1
+});
+
+test("migração: cada tag vira lista vinculada com entradas marcadoras", () => {
+  const { api } = fresh({ [TAGS_KEY]: TAGS_SEED });
+  const st = api.createListStore();
+  const nomes = arr(st.list()).map((l) => l.name).sort();
+  assert.deepEqual(nomes, ["Favoritas", "Trocar"]);
+
+  const fav = arr(st.list()).find((l) => l.name === "Favoritas");
+  assert.equal(fav.linked, true, "tag marcava carta que a pessoa TEM");
+  assert.equal(fav.fromTag, "t_abc", "proveniência registrada (é o que evita duplicar)");
+  assert.equal(fav.game, null, "tags eram cross-game");
+  assert.deepEqual(arr(fav.entries).map((e) => e.id).sort(), ["base1-4", "swsh5-1"]);
+  // v/q nulos: tag não tinha versão nem quantidade, e inventar "1 Normal NM"
+  // seria fabricar dado de coleção que ninguém digitou.
+  assert.equal(fav.entries[0].v, null);
+  assert.equal(fav.entries[0].q, null);
+});
+
+test("migração: marcador conta 1 cópia e casa com qualquer variante", () => {
+  const { api } = fresh({ [TAGS_KEY]: TAGS_SEED });
+  const st = api.createListStore();
+  const fav = arr(st.list()).find((l) => l.name === "Favoritas");
+  assert.equal(st.countOf(fav.id), 2, "duas cartas, uma cópia cada");
+  assert.equal(st.has(fav.id, "swsh5-1", "Reverse"), true);
+});
+
+test("migração é idempotente — reler não duplica", () => {
+  const ls = makeLocalStorage({ [TAGS_KEY]: TAGS_SEED });
+  const sb1 = loadShared("window.__test = { createListStore };", { localStorage: ls });
+  sb1.window.__test.createListStore();
+  sb1.__flushTimers();
+  // Segunda "visita" (outro carregamento de página) sobre o mesmo storage.
+  const sb2 = loadShared("window.__test = { createListStore };", { localStorage: ls });
+  const st2 = sb2.window.__test.createListStore();
+  assert.equal(st2.list().length, 2, "continuam duas listas, não quatro");
+});
+
+test("migração não ressuscita lista apagada de propósito", () => {
+  const ls = makeLocalStorage({ [TAGS_KEY]: TAGS_SEED });
+  const sb1 = loadShared("window.__test = { createListStore };", { localStorage: ls });
+  const st1 = sb1.window.__test.createListStore();
+  const alvo = arr(st1.list()).find((l) => l.name === "Favoritas");
+  st1.remove(alvo.id);
+  sb1.__flushTimers();
+
+  const sb2 = loadShared("window.__test = { createListStore };", { localStorage: ls });
+  const nomes = arr(sb2.window.__test.createListStore().list()).map((l) => l.name);
+  assert.deepEqual(nomes, ["Trocar"], "o tombstone é a memória de que foi apagada");
+});
+
+test("migração preserva o blob de tags (device antigo continua lendo)", () => {
+  const ls = makeLocalStorage({ [TAGS_KEY]: TAGS_SEED });
+  const sb = loadShared("window.__test = { createListStore };", { localStorage: ls });
+  sb.window.__test.createListStore();
+  sb.__flushTimers();
+  assert.equal(ls._dump()[TAGS_KEY], TAGS_SEED, "o legado congela, não some");
+});
+
+test("perfil público: readTagsData enxerga listas E tags não migradas, sem duplicar", () => {
+  const { api } = fresh({ [TAGS_KEY]: TAGS_SEED });
+  const st = api.createListStore();
+  st.create({ name: "Lista nova", game: "magic" });
+  const d = api.readTagsData();
+  const nomes = arr(d.tags).map((x) => x.name).sort();
+  assert.deepEqual(nomes, ["Favoritas", "Lista nova", "Trocar"], "sem a tag original duplicando a lista migrada");
+  // A carta aponta para as listas migradas, não para os ids de tag antigos.
+  assert.ok(arr(d.assign["base1-4"]).every((id) => String(id).startsWith("ls_")));
 });
 
 test("mergeData: passa lists adiante quando existe de um lado só", () => {
