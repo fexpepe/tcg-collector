@@ -5520,6 +5520,19 @@
     // Falha no preço não derruba o chunk — carta sem valor é melhor que tela
     // sem carta (e o cardValue já trata entrada ausente como "sem preço").
     const pc = window.TCG_MANIFEST && window.TCG_MANIFEST.pc;
+    // Falha na CARTA também não derruba mais a carga inteira: era um throw no
+    // primeiro chunk ruim — tudo-ou-nada em 234 fetches, e em rede móvel um
+    // soluço no 200º jogava fora os 199 que já tinham chegado (a página ficava
+    // sem NENHUMA carta até uns F5 aquecerem o cache). Agora: 1 retry e, se
+    // persistir, segue sem o set. Só quando TUDO falhou (queda de verdade) o
+    // erro sobe, senão o catálogo resolveria vazio e a busca afirmaria
+    // "nenhum resultado" — mentira pior que a tela de erro.
+    let falhas = 0;
+    const baixa = async (url) => {
+      const r = await fetch(url);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json();
+    };
     async function worker() {
       while (list.length) {
         const entry = list.shift();
@@ -5527,11 +5540,13 @@
           ? fetch(entry.file.replace("/sets/", "/pricing-chunks/"))
               .then((r) => (r.ok ? r.json() : null)).catch(() => null)
           : null;
-        const response = await fetch(entry.file);
-        if (!response.ok) {
-          throw new Error(`Falha ao carregar ${entry.file}: ${response.status}`);
+        let dados = null;
+        try { dados = await baixa(entry.file); }
+        catch (e) {
+          try { dados = await baixa(entry.file); }
+          catch (e2) { falhas++; console.warn(`Sleevu: chunk pulado (${entry.file})`, e2); }
         }
-        chunks.push(...(await response.json()));
+        if (dados) chunks.push(...dados);
         if (buscaPreco) {
           const tabela = await buscaPreco;
           if (tabela) Object.assign(window.TCG_PRICING = window.TCG_PRICING || {}, tabela);
@@ -5539,6 +5554,7 @@
       }
     }
     await Promise.all(Array.from({ length: Math.min(concurrency, list.length) }, worker));
+    if (falhas && !chunks.length) throw new Error(`Falha ao carregar o catálogo (${falhas} sets)`);
     return chunks;
   }
 
@@ -5815,17 +5831,26 @@
   // Busca de cartas pela BORDA (/api/search, D1): responde os mesmos campos do
   // search-index (i/n/s/u/t/c/r/k) + g (jogo), em poucos KB — indexa nome, set,
   // número e artista por prefixo de palavra. game "all" busca em TODOS os
-  // jogos numa consulta só (o Explorar). Qualquer resposta não-ok desliga a
-  // API pra sessão inteira (503 {off:1} = banco ainda não ligado; 404 = dev):
-  // quem chama trata null como "use o caminho estático de sempre" — a borda
+  // jogos numa consulta só (o Explorar).
+  // Erro NÃO desliga mais a sessão inteira: era um kill-switch — um único
+  // 500/429 transitório calava a ponte até um F5, e o fallback é baixar o
+  // catálogo COMPLETO (minutos de skeleton no celular). Agora é pausa com
+  // prazo: soluço (5xx/429) = 30s; desligada de propósito (503 {off:1} = banco
+  // ainda não ligado; 404 = dev sem Function) = 5min e re-sonda sozinha. Quem
+  // chama trata null como "use o caminho estático de sempre" — a borda
   // acelera, nunca erra na cara do usuário.
-  let searchApiOff = false;
+  let searchApiPausaAte = 0;
   async function searchApi(game, consulta, limite) {
-    if (searchApiOff) return null;
+    if (Date.now() < searchApiPausaAte) return null;
     try {
       const r = await fetch("/api/search?game=" + encodeURIComponent(game)
         + "&q=" + encodeURIComponent(consulta) + "&limit=" + (limite || 60));
-      if (!r.ok) { searchApiOff = true; return null; }
+      if (!r.ok) {
+        let off = 0;
+        try { off = (await r.json()).off; } catch (e) { /* corpo não-JSON (ex.: 404 do dev) */ }
+        searchApiPausaAte = Date.now() + (off || r.status === 404 ? 300e3 : 30e3);
+        return null;
+      }
       const j = await r.json();
       return Array.isArray(j.c) ? j.c : null;
     } catch (e) { return null; }               // rede oscilou: a próxima tecla tenta de novo

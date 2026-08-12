@@ -66,12 +66,31 @@ function insertsEmLotes(prefixo, valores) {
 }
 
 // ── Cartas + palavras ───────────────────────────────────────────────────────
+// Carga em tabelas SOMBRA (cards_new/card_words_new) + troca atômica no fim.
+// O DROP-e-reinsere de antes deixava a busca respondendo VAZIO (200 {c:[]})
+// pelos minutos que a carga leva — e o cliente mostrava "nenhum resultado"
+// pra qualquer pessoa que buscasse durante um deploy. Com a sombra, quem
+// consulta vê a geração ANTERIOR inteira até o último instante; a janela sem
+// tabela são os 4 statements de metadados da troca lá no fim.
+//
+// O SCHEMA continua a fonte única (Function e testes leem dele): aqui ele é
+// reescrito pra apontar pras sombras. Índices ficam pra DEPOIS dos INSERTs
+// (carga em massa sem manutenção de índice) e ganham sufixo de GERAÇÃO: nome
+// de índice é global no SQLite e sobrevive ao RENAME da tabela — um nome fixo
+// colidiria com o da geração anterior (ainda vivo na tabela em produção) e o
+// IF NOT EXISTS pularia a criação em silêncio, deixando a tabela nova SEM
+// índice (busca virando varredura de 2,3M linhas, cobrada linha a linha no D1).
+// O sufixo sai do hash dos DADOS: catálogo igual = SQL byte a byte igual, e o
+// deploy-d1 continua pulando cargas idênticas.
+const stmtsSchema = SCHEMA.trim().split(";").map((s) => s.trim()).filter(Boolean);
+const paraSombra = (s) => s.replace(/\bcards\b/g, "cards_new").replace(/\bcard_words\b/g, "card_words_new");
 const linhas = [];
 linhas.push("PRAGMA defer_foreign_keys = on;");
-// Recria do zero: catálogo é substituição total, nunca merge. `meta` NÃO é
-// derrubada aqui — ela guarda também o hash dos preços, que tem vida própria.
-linhas.push("DROP TABLE IF EXISTS cards;", "DROP TABLE IF EXISTS card_words;");
-linhas.push(SCHEMA.trim());
+// Sobra de uma carga interrompida: dropar a sombra derruba junto os índices dela.
+linhas.push("DROP TABLE IF EXISTS cards_new;", "DROP TABLE IF EXISTS card_words_new;");
+// `meta` NÃO é derrubada em canto nenhum — ela guarda também o hash dos
+// preços, que tem vida própria. Aqui entram só as tabelas (índices no fim).
+linhas.push(...stmtsSchema.filter((s) => !/^CREATE INDEX/i.test(s)).map((s) => `${paraSombra(s)};`));
 
 const COLUNAS = ["game", "id", "name", "set_name", "number", "card_type", "cost", "rarity",
   "color", "set_id", "artist", "language", "image", "variants", "released"];
@@ -100,11 +119,11 @@ for (const [game, dir] of JOGOS) {
   // INSERTs em lote (multi-values): o d1 execute processa statement a
   // statement — um INSERT por carta seriam 200k round-trips de parse.
   linhas.push(...insertsEmLotes(
-    `INSERT INTO cards (${COLUNAS.join(",")})`,
+    `INSERT INTO cards_new (${COLUNAS.join(",")})`,
     cards.map((c) => `(${COLUNAS.map((k) => aspas(c[k])).join(",")})`)
   ));
   linhas.push(...insertsEmLotes(
-    "INSERT INTO card_words (game,word,id)",
+    "INSERT INTO card_words_new (game,word,id)",
     words.map((w) => `(${aspas(w.game)},${aspas(w.word)},${aspas(w.id)})`)
   ));
   totalCartas += cards.length;
@@ -128,6 +147,28 @@ if (!jogosOk) {
 
 await mkdir(new URL("out/", RAIZ), { recursive: true });
 
+// Índices da sombra (ver o bloco lá em cima): depois dos INSERTs, com o
+// sufixo de geração derivado dos dados.
+const geracao = createHash("sha256").update(linhas.join("\n")).digest("hex").slice(0, 8);
+const indicesSombra = stmtsSchema.filter((s) => /^CREATE INDEX/i.test(s))
+  .map((s) => paraSombra(s).replace(/(idx_\w+?) ON/, `$1_${geracao} ON`));
+// Recarga MANUAL do mesmo catálogo (mesma geração): o índice homônimo ainda
+// vive na tabela em produção e o IF NOT EXISTS pularia a criação — a sombra
+// entraria em produção SEM índice. Dropar antes garante; no fluxo normal
+// (geração nova) é no-op, e no manual a produção só fica sem índice pelos
+// segundos entre este DROP e a troca.
+indicesSombra.forEach((s) => linhas.push(`DROP INDEX IF EXISTS ${s.match(/(idx_\w+) ON/)[1]};`));
+linhas.push(...indicesSombra.map((s) => `${s};`));
+// A TROCA: a única janela sem tabela `cards`/`card_words` são estes 4
+// statements. O RENAME leva os índices junto (com o nome da geração — por isso
+// o sufixo). As tabelas da geração anterior morrem aqui, índices e tudo.
+linhas.push(
+  "DROP TABLE IF EXISTS cards;",
+  "DROP TABLE IF EXISTS card_words;",
+  "ALTER TABLE cards_new RENAME TO cards;",
+  "ALTER TABLE card_words_new RENAME TO card_words;"
+);
+
 // O hash entra no PRÓPRIO SQL (tabela meta): quem importa grava junto, e o
 // deploy-d1 compara com o remoto pra pular cargas idênticas.
 const corpo = linhas.join("\n");
@@ -138,13 +179,17 @@ const sqlCards = `CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT);\
 await writeFile(new URL("out/d1-cards.sql", RAIZ), sqlCards, "utf8");
 
 // ── Preços (arquivo e hash próprios) ────────────────────────────────────────
+// Mesma sombra + troca das cartas: sem ela, o /api/collection respondia
+// coleção SEM preço durante os minutos da recarga. Só a PK, sem índice extra —
+// a troca dispensa o sufixo de geração.
 const pl = [];
-pl.push("DROP TABLE IF EXISTS prices;");
-pl.push(SCHEMA_PRICES.trim());
+pl.push("DROP TABLE IF EXISTS prices_new;");
+pl.push(SCHEMA_PRICES.trim().replace(/\bprices\b/g, "prices_new"));
 pl.push(...insertsEmLotes(
-  "INSERT INTO prices (game,id,j)",
+  "INSERT INTO prices_new (game,id,j)",
   precos.map((p) => `(${aspas(p.game)},${aspas(p.id)},${aspas(p.j)})`)
 ));
+pl.push("DROP TABLE IF EXISTS prices;", "ALTER TABLE prices_new RENAME TO prices;");
 const corpoP = pl.join("\n");
 const hashP = createHash("sha256").update(corpoP).digest("hex").slice(0, 16);
 const sqlPrices = `CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT);\n${corpoP}\n`

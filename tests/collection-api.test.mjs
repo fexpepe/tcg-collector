@@ -5,7 +5,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { DatabaseSync } from "node:sqlite";
 import {
-  SCHEMA, SCHEMA_PRICES, buildCards, buildPrices, idsComBase,
+  SCHEMA, SCHEMA_PRICES, buildCards, buildPrices, buildSearch, idsComBase,
   basePricingId, LOTE_IDS
 } from "../functions/api/_search-sql.js";
 import { loadShared } from "./lib/shared-sandbox.mjs";
@@ -91,4 +91,36 @@ test("um lote cabe no teto de parâmetros do D1", () => {
 test("lista vazia não vira query (nem SELECT sem filtro)", () => {
   assert.equal(buildCards("pokemon", []), null);
   assert.equal(buildPrices("pokemon", []), null);
+});
+
+// Palavras de busca pro banco de teste (o banco() só põe as cartas).
+function comPalavras(db) {
+  const w = db.prepare("INSERT INTO card_words (game,word,id) VALUES (?,?,?)");
+  [["pokemon", "charizard", "base1-4"], ["pokemon", "base", "base1-4"],
+    ["pokemon", "charizard", "base1-4-pt"], ["pokemon", "base", "base1-4-pt"],
+    ["lorcana", "ariel", "tfc-1"], ["lorcana", "chapter", "tfc-1"]].forEach((l) => w.run(...l));
+  return db;
+}
+
+test("busca por prefixo USA o índice — NOCASE + sem ESCAPE travados no plano", () => {
+  // As duas condições da otimização do LIKE (word COLLATE NOCASE no SCHEMA e
+  // query sem cláusula ESCAPE) degradam pra VARREDURA em silêncio se alguém
+  // desfizer qualquer uma — foi assim que a global passou a ler 1,7M linhas
+  // por palavra e estourou a cota do D1. Este teste quebra na hora.
+  const db = comPalavras(banco());
+  for (const q of [buildSearch("pokemon", "chari", 10), buildSearch("all", "chari", 10)]) {
+    const plano = db.prepare("EXPLAIN QUERY PLAN " + q.sql).all(...q.params).map((r) => r.detail).join(" | ");
+    assert.match(plano, /word>\?/, `plano sem range de prefixo: ${plano}`);
+    assert.doesNotMatch(plano, /SCAN card_words/, `varredura completa: ${plano}`);
+  }
+});
+
+test("busca acha por prefixo e interseção de palavras", () => {
+  const db = comPalavras(banco());
+  // "chari base" = charizard* ∩ base* — as DUAS versões (en e -pt) da carta
+  const hits = roda(db, buildSearch("pokemon", "chari base", 10));
+  assert.deepEqual(hits.map((h) => h.id).sort(), ["base1-4", "base1-4-pt"]);
+  // global: acha em qualquer jogo e diz de qual veio (g na resposta da Function)
+  const g = roda(db, buildSearch("all", "ariel", 10));
+  assert.deepEqual(g.map((h) => [h.game, h.id]), [["lorcana", "tfc-1"]]);
 });

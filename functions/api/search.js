@@ -34,6 +34,7 @@ export async function onRequestGet(context) {
       "Content-Security-Policy": "default-src 'none'",
       // Busca é cacheável: mesma consulta = mesma resposta até o próximo
       // build. s-maxage curto na borda tira as consultas repetidas do banco.
+      // Só resposta COM carta: um vazio cacheado é veneno (ver o chamador).
       "Cache-Control": cacheSeg ? `public, max-age=${cacheSeg}, s-maxage=${cacheSeg * 4}` : "no-store"
     }
   });
@@ -44,7 +45,7 @@ export async function onRequestGet(context) {
   if (!GAMES.has(game)) return json({ erro: "game" }, 400, 0);
 
   const query = buildSearch(game, q, limit);
-  if (!query) return json({ c: [] }, 200, 60);
+  if (!query) return json({ c: [] }, 200, 0);
 
   try {
     const r = await env.DB.prepare(query.sql).bind(...query.params).all();
@@ -54,7 +55,10 @@ export async function onRequestGet(context) {
       i: linha.id, n: linha.name, s: linha.set_name, u: linha.number,
       t: linha.card_type, c: linha.cost, r: linha.rarity, k: linha.color, g: linha.game
     }));
-    return json({ c: cartas }, 200, 300);
+    // Vazio NUNCA cacheia: durante a recarga do catálogo no D1 a busca responde
+    // vazio, e um {c:[]} com max-age=300 grudava "nenhum resultado" no
+    // navegador por 5 minutos DEPOIS de o banco já ter voltado ao normal.
+    return json({ c: cartas }, 200, cartas.length ? 300 : 0);
   } catch (e) {
     // Tabela ainda não importada, ou soluço do D1: mesma degradação do 503.
     return json({ off: 1 }, 503, 0);

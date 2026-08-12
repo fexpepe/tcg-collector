@@ -41,12 +41,14 @@
   let cards = [];
   let cardsById = new Map();
   let catalogPromise = null;
+  let catalogPronto = false; // resolvido de verdade (a promise existir só diz que está DESCENDO)
   function ensureCatalog() {
     if (!catalogPromise) {
       catalogPromise = shared.loadAllGamesCatalog().then((catalog) => {
         cards = catalog.cards || [];
         cards.forEach((card) => cardGameMap.set(card.id, card.game));
         cardsById = new Map(cards.map((card) => [card.id, card]));
+        catalogPronto = true;
         return cards;
       }).catch((error) => {
         // Era a ÚNICA página de catálogo sem catch: a promise memoizada rejeitava
@@ -209,16 +211,19 @@
     const seq = ++apiSeq;
     if (!elements.grid.querySelector(".card-tile")) shared.showSkeletons(elements.grid, "card", 8);
     const hits = await shared.searchApi(gameFilter === "all" ? "all" : gameFilter, term(), 60);
-    if (seq !== apiSeq) return;
-    if (!hits) { renderFromCatalog(); return; } // API desligada: caminho de sempre
+    if (seq !== apiSeq || catalogPronto) return; // o catálogo chegou no meio: o render dele já cobre
+    // VAZIO não é resposta final — só o catálogo local pode afirmar "essa
+    // carta não existe". A borda responde vazio quando o banco está em recarga
+    // (deploy) ou quando um vazio antigo ficou preso em cache; antes isto
+    // virava um "nenhum resultado" definitivo na cara do usuário, sem nunca
+    // consultar o catálogo. null (desligada/soluço) cai no mesmo caminho.
+    if (!hits || !hits.length) { renderFromCatalog(); return; }
     const idsByGame = Object.create(null); // g vem do D1, mas null-proto evita surpresa com "constructor" etc.
     hits.forEach((h) => { const g = h.g || "pokemon"; (idsByGame[g] = idsByGame[g] || []).push(h.i); });
     let catalog = { cards: [] };
-    if (hits.length) {
-      try { catalog = await shared.loadOwnedAcrossGames(idsByGame); }
-      catch (e) { renderFromCatalog(); return; }
-    }
-    if (seq !== apiSeq) return;
+    try { catalog = await shared.loadOwnedAcrossGames(idsByGame); }
+    catch (e) { renderFromCatalog(); return; }
+    if (seq !== apiSeq || catalogPronto) return;
     const byId = new Map((catalog.cards || []).map((c) => [c.id, c]));
     const found = [];
     hits.forEach((h) => {
@@ -229,14 +234,22 @@
       cardsById.set(card.id, card);
       found.push(card);
     });
+    // Hits sem carta na hidratação (índice da borda à frente dos chunks, ou
+    // vice-versa): mesma regra do vazio — o catálogo decide.
+    if (!found.length) { renderFromCatalog(); return; }
     render({ resetCount: true, list: found });
   }
 
   const apply = () => {
     writeUrl();
-    if (catalogPromise) { renderFromCatalog(); return; }
+    if (catalogPronto) { render({ resetCount: true }); return; }
     if (!isSearching()) { render({ resetCount: true }); return; }
+    // Catálogo ainda descendo (ou nem começou): a ponte responde JÁ — antes,
+    // qualquer busca depois da primeira ficava presa esperando o download
+    // inteiro (`if (catalogPromise)` mandava pro caminho lento). Se o download
+    // está em andamento, religa o re-render de quando ele chegar.
     apiApply();
+    if (catalogPromise) renderFromCatalog();
   };
   elements.search.addEventListener("input", debounce(apply, 250));
 

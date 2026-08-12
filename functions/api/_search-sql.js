@@ -7,6 +7,15 @@
 // acha Charizard via char* ∩ liz*). LIKE 'x%' usa o índice; um LIKE '%x%'
 // varreria a tabela inteira, e no D1 linha varrida é linha COBRADA — 150k
 // linhas por tecla digitada estourava a cota grátis em minutos.
+//
+// CUIDADO (aprendido na prática): a otimização de prefixo do LIKE só liga com
+// as DUAS condições — coluna `word` COLLATE NOCASE (o LIKE é case-insensitive
+// por padrão, e sobre coluna BINARY o SQLite se recusa a virar range de
+// índice) e SEM cláusula ESCAPE (ela desliga a otimização por completo).
+// Faltando qualquer uma, o plano degrada em silêncio pra varredura: a global
+// lia 1,7M linhas POR PALAVRA digitada — ~5 buscas estouravam a cota diária
+// grátis do D1 (5M leituras), a API passava a responder erro e o site inteiro
+// caía no caminho lento. O teste do plano em tests/ trava as duas condições.
 
 // Mesma régua do normalize do shared.js (minúsculas, sem acento latino) dos
 // DOIS lados da busca. Divide por qualquer coisa que não seja letra OU dígito
@@ -49,7 +58,7 @@ CREATE TABLE IF NOT EXISTS cards (
 );
 CREATE TABLE IF NOT EXISTS card_words (
   game TEXT NOT NULL,
-  word TEXT NOT NULL,
+  word TEXT NOT NULL COLLATE NOCASE,
   id TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_card_words ON card_words (game, word, id);
@@ -74,8 +83,10 @@ CREATE TABLE IF NOT EXISTS prices (
 `;
 
 // Query de busca: interseção dos conjuntos de ids de cada palavra-prefixo,
-// depois as cartas. `escape`: % e _ são curingas do LIKE — um "100%" digitado
-// não pode virar curinga. LIMIT no chamador via parâmetro.
+// depois as cartas. SEM cláusula ESCAPE, de propósito (ver o aviso lá em
+// cima): ela desligava o índice, e é dispensável porque palavras() só deixa
+// passar letra/dígito/marca — nenhum termo contém %, _ ou \ pra escapar.
+// LIMIT no chamador via parâmetro.
 //
 // game "all" = busca GLOBAL (o Explorar): a interseção passa a ser por
 // (game, id) — id sozinho poderia colidir entre jogos — usando o índice
@@ -94,13 +105,13 @@ export function buildSearch(game, consulta, limite) {
   // resultado prático: o INTERSECT já afunila e o SELECT externo corta em ~40.
   const sub = termos
     .map(() => global
-      ? `SELECT game, id FROM (SELECT game, id FROM card_words WHERE word LIKE ? ESCAPE '\\' LIMIT 2000)`
-      : `SELECT id FROM (SELECT id FROM card_words WHERE game = ?1 AND word LIKE ? ESCAPE '\\' LIMIT 2000)`)
+      ? `SELECT game, id FROM (SELECT game, id FROM card_words WHERE word LIKE ? LIMIT 2000)`
+      : `SELECT id FROM (SELECT id FROM card_words WHERE game = ?1 AND word LIKE ? LIMIT 2000)`)
     .join("\nINTERSECT\n");
   const alvo = global ? `(game, id) IN` : `game = ?1 AND id IN`;
   const sql = `SELECT game, id, name, set_name, number, card_type, cost, rarity, color
 FROM cards WHERE ${alvo} (\n${sub}\n) LIMIT ${Math.max(1, Math.min(100, limite | 0 || 40))}`;
-  const likes = termos.map((t) => t.replace(/([%_\\])/g, "\\$1") + "%");
+  const likes = termos.map((t) => t + "%");
   const params = global ? likes : [game, ...likes];
   return { sql, params };
 }
