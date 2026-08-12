@@ -6533,6 +6533,10 @@
     moneyToCurrent,
     snapshotKeys,
     toastUndo,
+    // Materializa as escritas adiadas AGORA. Quem tira um snapshot pra desfazer
+    // precisa disto: sem o flush, o timer do scheduleWrite dispara depois do
+    // restore e regrava por cima o que o usuário acabou de desfazer.
+    flushPendingWrites: flushWrites,
     notifyStorageFull,
     errorSummary,
     loadPriceDeltas,

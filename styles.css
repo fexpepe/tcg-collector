@@ -8708,6 +8708,17 @@ select,
 .lst-field input { width: 58px; }
 .lst-confirm { min-height: 28px; padding: 0 14px; font-size: 12.5px; }
 
+/* Export e "aplicar à coleção" */
+.lst-export { width: 100%; margin: 12px 0 0; padding: 10px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; line-height: 1.5; resize: vertical; white-space: pre; overflow-wrap: normal; overflow-x: auto; }
+.list-modal-foot { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.lst-apply-list { max-height: 340px; overflow-y: auto; margin: 12px 0; border: 1px solid var(--line); }
+.lst-apply-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 10px; padding: 7px 10px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.lst-apply-row:last-child { border-bottom: 0; }
+.lst-apply-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lst-apply-var { color: var(--muted); font-size: 11.5px; }
+.lst-apply-delta { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lst-apply-delta b { color: var(--accent-ink); }
+
 /* Miniatura do hover: a linha não tem imagem de propósito — passar o mouse no
    nome mostra a carta. Mesmo mecanismo da seção Impressões do popup. */
 .lst-thumb { position: fixed; width: 200px; z-index: 70; pointer-events: none; border: 1px solid var(--line); background: var(--surface); box-shadow: 0 10px 30px rgba(0,0,0,.45); }

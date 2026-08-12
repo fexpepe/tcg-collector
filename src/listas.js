@@ -394,7 +394,9 @@
               : `<p class="empty-state">${esc(t("lists.editorEmpty"))}</p>`}
           </div>
           <footer class="lst-panel-foot">
-            <button type="button" class="deck-mini" data-list-del>${esc(t("lists.delete"))}</button>
+            <button type="button" class="deck-mini" data-list-export>${esc(t("lists.export"))}</button>
+            ${list.linked ? "" : `<button type="button" class="deck-mini" data-list-apply>${esc(t("lists.applyToCollection"))}</button>`}
+            <button type="button" class="deck-mini danger" data-list-del>${esc(t("lists.delete"))}</button>
           </footer>
         </section>
 
@@ -466,6 +468,143 @@
     setTimeout(() => node.classList.remove("is-added"), 900);
   }
 
+  // ===========================================================================
+  // Export (Liga / texto / CSV) — ver docs/LISTAS.md §6
+  // ===========================================================================
+  const FORMATOS = ["liga", "texto", "csv"];
+  let formatoAtual = "liga";
+
+  function textoExportado() {
+    const ex = window.TCGExportLiga;
+    if (!ex) return "";
+    return ex.exportar(formatoAtual, current.entries, cat.byId, current.game);
+  }
+
+  function openExportModal() {
+    const wrap = document.createElement("div");
+    wrap.className = "list-modal";
+    document.body.appendChild(wrap);
+
+    function pinta() {
+      const abas = FORMATOS.map((f) =>
+        `<button type="button" class="lst-chip${f === formatoAtual ? " is-on" : ""}" data-fmt="${escA(f)}">${esc(t("lists.format." + f))}</button>`).join("");
+      wrap.innerHTML = `
+        <div class="list-modal-box" role="dialog" aria-modal="true" aria-label="${escA(t("lists.export"))}">
+          <h2>${esc(t("lists.export"))}</h2>
+          <div class="lst-chips">${abas}</div>
+          <p class="list-modal-hint">${esc(t("lists.format." + formatoAtual + ".hint"))}</p>
+          <textarea class="lst-export" readonly rows="12">${esc(textoExportado())}</textarea>
+          <div class="list-modal-foot">
+            <button type="button" class="cta" data-ex-copy>${esc(t("lists.copy"))}</button>
+            <button type="button" class="deck-mini" data-ex-dl>${esc(t("lists.download"))}</button>
+            <button type="button" class="deck-mini" data-wz-cancel>${esc(t("lists.cancel"))}</button>
+          </div>
+        </div>`;
+    }
+    pinta();
+
+    wrap.addEventListener("click", (ev) => {
+      if (ev.target === wrap || ev.target.closest("[data-wz-cancel]")) { wrap.remove(); return; }
+      const f = ev.target.closest("[data-fmt]");
+      if (f) { formatoAtual = f.dataset.fmt; pinta(); return; }
+
+      if (ev.target.closest("[data-ex-copy]")) {
+        const ta = wrap.querySelector(".lst-export");
+        // navigator.clipboard exige contexto seguro; o fallback do textarea
+        // cobre http:// e navegador antigo (mesmo caminho do copyDeckText).
+        const done = () => { const b = wrap.querySelector("[data-ex-copy]"); if (b) b.textContent = t("lists.copied"); };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(ta.value).then(done, () => { ta.select(); document.execCommand("copy"); done(); });
+        } else { ta.select(); document.execCommand("copy"); done(); }
+        return;
+      }
+
+      if (ev.target.closest("[data-ex-dl]")) {
+        const ext = formatoAtual === "csv" ? "csv" : "txt";
+        const tipo = formatoAtual === "csv" ? "text/csv;charset=utf-8" : "text/plain;charset=utf-8";
+        // BOM só no CSV (é o que faz o Excel pt-BR abrir com acento certo).
+        const conteudo = (formatoAtual === "csv" ? "﻿" : "") + textoExportado();
+        const blob = new Blob([conteudo], { type: tipo });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${(listName(current) || "lista").replace(/[^\w-]+/g, "-").toLowerCase()}.${ext}`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    });
+  }
+
+  // "Aplicar à coleção" (só nas avulsas): mostra o delta ANTES de gravar, no
+  // mesmo espírito da prévia do import de CSV — escrever na coleção de alguém
+  // sem mostrar o que vai mudar é o tipo de coisa que não dá pra desfazer no olho.
+  function openApplyModal() {
+    const owned = ownedFor(current.game);
+    const linhas = current.entries.map((e) => {
+      const card = cat.byId[e.id];
+      const variant = e.v || (card ? shared.defaultVariant(card) : "Normal");
+      const cond = e.c || shared.DEFAULT_CONDITION;
+      return {
+        e, card, variant, cond,
+        q: e.q == null ? 1 : e.q,
+        atual: owned.getQuantity(e.id, variant, cond)
+      };
+    });
+    const wrap = document.createElement("div");
+    wrap.className = "list-modal";
+    document.body.appendChild(wrap);
+    let modo = "somar";   // somar = +q; definir = deixa exatamente q (idempotente)
+
+    function pinta() {
+      const corpo = linhas.map((l) => {
+        const fim = modo === "somar" ? l.atual + l.q : l.q;
+        return `<div class="lst-apply-row">
+          <span class="lst-apply-name">${esc(l.card ? l.card.name : l.e.id)}</span>
+          <span class="lst-apply-var">${esc(l.variant)} · ${esc(l.cond)}</span>
+          <span class="lst-apply-delta">${l.atual} → <b>${fim}</b></span>
+        </div>`;
+      }).join("");
+      wrap.innerHTML = `
+        <div class="list-modal-box" role="dialog" aria-modal="true" aria-label="${escA(t("lists.applyToCollection"))}">
+          <h2>${esc(t("lists.applyToCollection"))}</h2>
+          <div class="lst-chips">
+            <button type="button" class="lst-chip${modo === "somar" ? " is-on" : ""}" data-mode="somar">${esc(t("lists.applyAdd"))}</button>
+            <button type="button" class="lst-chip${modo === "definir" ? " is-on" : ""}" data-mode="definir">${esc(t("lists.applySet"))}</button>
+          </div>
+          <p class="list-modal-hint">${esc(t(modo === "somar" ? "lists.applyAddHint" : "lists.applySetHint"))}</p>
+          <div class="lst-apply-list">${corpo || `<p class="empty-state">${esc(t("lists.editorEmpty"))}</p>`}</div>
+          <div class="list-modal-foot">
+            <button type="button" class="cta" data-ap-go>${esc(tn("lists.applyConfirm", linhas.length))}</button>
+            <button type="button" class="deck-mini" data-wz-cancel>${esc(t("lists.cancel"))}</button>
+          </div>
+        </div>`;
+    }
+    pinta();
+
+    wrap.addEventListener("click", (ev) => {
+      if (ev.target === wrap || ev.target.closest("[data-wz-cancel]")) { wrap.remove(); return; }
+      const m = ev.target.closest("[data-mode]");
+      if (m) { modo = m.dataset.mode; pinta(); return; }
+      if (ev.target.closest("[data-ap-go]")) {
+        // Snapshot ANTES de escrever (senão o desfazer restauraria o estado já
+        // alterado) e flush logo depois: sem ele, a escrita adiada dispararia
+        // após o restore e regravaria por cima o que o usuário acabou de desfazer.
+        const desfazer = shared.snapshotKeys([
+          shared.gameKey("collection-v3", current.game),
+          shared.gameKey("collection-meta-v1", current.game)
+        ]);
+        linhas.forEach((l) => {
+          const delta = modo === "somar" ? l.q : l.q - l.atual;
+          if (delta) owned.add(l.e.id, l.variant, l.cond, delta);
+        });
+        shared.flushPendingWrites();
+        wrap.remove();
+        renderSource();
+        shared.toastUndo(tn("lists.applied", linhas.length), desfazer);
+      }
+    });
+  }
+
   // --- Eventos do editor (delegação) ----------------------------------------
   el.editor.addEventListener("click", (ev) => {
     if (!current) return;
@@ -529,6 +668,9 @@
       if (ev.target.closest("[data-entry-dec]")) { store.setEntryQty(current.id, id, variant, q - 1); renderEntries(); renderSource(); return; }
       if (ev.target.closest("[data-entry-del]")) { store.removeEntry(current.id, id, variant); renderEntries(); renderSource(); return; }
     }
+
+    if (ev.target.closest("[data-list-export]")) { openExportModal(); return; }
+    if (ev.target.closest("[data-list-apply]")) { openApplyModal(); return; }
 
     if (ev.target.closest("[data-list-del]")) {
       // Toast com desfazer, como o resto do site — nada de confirm() bloqueante.
