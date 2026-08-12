@@ -8049,6 +8049,16 @@
       a.href = url; a.download = filename; a.click();
       URL.revokeObjectURL(url);
     }
+    // O que fica de FORA, de propósito:
+    //  • `collectionMeta`/`favoritesMeta` (carimbos de LWW do sync). Restaurar um
+    //    backup tem que VENCER, e é o que acontece sem eles: o replace() carimba
+    //    tudo como "agora", e favoritos sem meta empatam no merge — empate faz
+    //    união, então nada se perde. Trazer o carimbo velho junto faria o
+    //    remoto ganhar do arquivo que a pessoa acabou de restaurar.
+    //  • `history2` (histórico do portfólio): é POR JOGO, e este backup só cobre
+    //    o jogo da sessão nas chaves por jogo — salvar o histórico de um jogo só
+    //    seria mais confuso do que não salvar. Ele também se reconstrói sozinho
+    //    com o uso.
     function backupObject() {
       const payload = {
         version: 3, exportedAt: new Date().toISOString(),
@@ -8057,6 +8067,12 @@
         prices: createPriceStore().toObject()
       };
       try { const b = JSON.parse(localStorage.getItem(SYNC_KEYS.binders) || "null"); if (b) payload.binders = b; } catch (e) { /* ignora */ }
+      // Decks estavam de FORA deste backup desde que a feature nasceu: eles
+      // sincronizam na nuvem (SYNC_KEYS.decks), então o buraco só aparecia pra
+      // quem usa sem conta — exportava o backup "completo", restaurava noutro
+      // navegador e os decks não vinham. São dado autoral, o mais caro de
+      // reconstruir do site.
+      try { const dk = JSON.parse(localStorage.getItem(SYNC_KEYS.decks) || "null"); if (dk) payload.decks = dk; } catch (e) { /* ignora */ }
       try { const f = JSON.parse(localStorage.getItem(SYNC_KEYS.folders) || "null"); if (f) payload.folders = f; } catch (e) { /* ignora */ }
       try { const sa = JSON.parse(localStorage.getItem(SYNC_KEYS.sales) || "null"); if (sa) payload.sales = sa; } catch (e) { /* ignora */ }
       try { const gr = JSON.parse(localStorage.getItem(SYNC_KEYS.graded) || "null"); if (gr) payload.graded = gr; } catch (e) { /* ignora */ }
@@ -8089,6 +8105,10 @@
         createWishlistStore().replace(parseImportedWishlist(payload, byId));
         createPriceStore().replace(parseImportedPrices(payload, byId));
         if (payload.binders && typeof payload.binders === "object") localStorage.setItem(SYNC_KEYS.binders, JSON.stringify(payload.binders));
+        // Backup antigo (feito antes de os decks entrarem aqui) simplesmente não
+        // traz a chave, e aí os decks locais ficam como estão — restaurar não
+        // pode APAGAR deck que o arquivo nunca teve.
+        if (payload.decks && typeof payload.decks === "object") localStorage.setItem(SYNC_KEYS.decks, JSON.stringify(payload.decks));
         if (payload.folders && typeof payload.folders === "object") localStorage.setItem(SYNC_KEYS.folders, JSON.stringify(payload.folders));
         if (payload.sales && typeof payload.sales === "object") localStorage.setItem(SYNC_KEYS.sales, JSON.stringify(payload.sales));
         if (payload.graded && typeof payload.graded === "object") localStorage.setItem(SYNC_KEYS.graded, JSON.stringify(payload.graded));
