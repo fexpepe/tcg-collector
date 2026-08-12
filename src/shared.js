@@ -3426,9 +3426,19 @@
     const box = document.querySelector("#cardPreviewModal [data-preview-prints]");
     if (!box || !card || !card.name) return;
     const game = currentGame();
+    // A busca da borda é interseção por PREFIXO com teto de 2000 linhas lidas
+    // por palavra (custo do D1). Palavra hiper-comum estoura o teto e a
+    // interseção perde a carta: "The One Ring" voltava VAZIO porque the%
+    // casa com milhares de nomes do Magic e as linhas da própria carta ficavam
+    // fora das 2000 lidas. Artigos/preposições saem da CONSULTA — a precisão
+    // quem garante é o filtro de nome EXATO logo abaixo. Sobrando nada
+    // (nome só de artigos), vai o nome inteiro mesmo.
+    const STOP = new Set(["the", "of", "a", "an", "and", "to", "de", "da", "do", "la", "el"]);
+    const termos = String(card.name).toLowerCase().split(/[^\p{L}\p{N}]+/u).filter((w) => w && !STOP.has(w));
+    const consulta = termos.length ? termos.slice(0, 5).join(" ") : card.name;
     let rows = [];
     try {
-      const r = await fetch(`/api/search?game=${encodeURIComponent(game)}&q=${encodeURIComponent(card.name)}&limit=100&img=1`);
+      const r = await fetch(`/api/search?game=${encodeURIComponent(game)}&q=${encodeURIComponent(consulta)}&limit=100&img=1`);
       if (!r.ok) return;
       rows = ((await r.json()).c || []).filter((x) => x.n === card.name);
     } catch (e) { return; }
