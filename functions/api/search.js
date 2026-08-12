@@ -1,4 +1,4 @@
-// GET /api/search?game=<slug>&q=<termo>[&limit=40]
+// GET /api/search?game=<slug>&q=<termo>[&limit=40][&img=1]
 //
 // Busca de cartas no jogo INTEIRO respondida pela borda (D1), em poucos KB.
 // Substitui, quando disponível, o search-index.json que o editor de decks
@@ -22,6 +22,11 @@ export async function onRequestGet(context) {
   const game = String(url.searchParams.get("game") || "");
   const q = String(url.searchParams.get("q") || "");
   const limit = Number(url.searchParams.get("limit")) || 40;
+  // &img=1 (lista de impressões do popup): acrescenta imagem (m) e data de
+  // lançamento (d) a cada carta. Opt-in porque a busca por tecla digitada do
+  // editor de decks não usa nenhum dos dois — seriam ~4KB de URL de imagem por
+  // resposta à toa.
+  const img = url.searchParams.get("img") === "1";
 
   const json = (corpo, status, cacheSeg) => new Response(JSON.stringify(corpo), {
     status,
@@ -51,10 +56,14 @@ export async function onRequestGet(context) {
     const r = await env.DB.prepare(query.sql).bind(...query.params).all();
     // g (jogo) na resposta: na busca global é o que diz de qual catálogo
     // hidratar cada resultado; nas por jogo é redundância inofensiva.
-    const cartas = (r.results || []).map((linha) => ({
-      i: linha.id, n: linha.name, s: linha.set_name, u: linha.number,
-      t: linha.card_type, c: linha.cost, r: linha.rarity, k: linha.color, g: linha.game
-    }));
+    const cartas = (r.results || []).map((linha) => {
+      const c = {
+        i: linha.id, n: linha.name, s: linha.set_name, u: linha.number,
+        t: linha.card_type, c: linha.cost, r: linha.rarity, k: linha.color, g: linha.game
+      };
+      if (img) { c.m = linha.image || ""; c.d = linha.released || ""; }
+      return c;
+    });
     // Vazio NUNCA cacheia: durante a recarga do catálogo no D1 a busca responde
     // vazio, e um {c:[]} com max-age=300 grudava "nenhum resultado" no
     // navegador por 5 minutos DEPOIS de o banco já ter voltado ao normal.

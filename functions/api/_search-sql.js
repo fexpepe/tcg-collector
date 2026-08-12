@@ -109,7 +109,12 @@ export function buildSearch(game, consulta, limite) {
       : `SELECT id FROM (SELECT id FROM card_words WHERE game = ?1 AND word LIKE ? LIMIT 2000)`)
     .join("\nINTERSECT\n");
   const alvo = global ? `(game, id) IN` : `game = ?1 AND id IN`;
-  const sql = `SELECT game, id, name, set_name, number, card_type, cost, rarity, color
+  // image/released no SELECT: a lista de IMPRESSÕES do popup da carta precisa
+  // dos dois (miniatura no hover e ordenação por lançamento). Ler as colunas a
+  // mais não custa linha no D1 (a cobrança é por linha lida, e a linha já era
+  // lida pela PK) — quem decide se elas VÃO na resposta é o &img=1 do search.js,
+  // pra busca do editor de decks seguir nos poucos KB de sempre.
+  const sql = `SELECT game, id, name, set_name, number, card_type, cost, rarity, color, image, released
 FROM cards WHERE ${alvo} (\n${sub}\n) LIMIT ${Math.max(1, Math.min(100, limite | 0 || 40))}`;
   const likes = termos.map((t) => t + "%");
   const params = global ? likes : [game, ...likes];

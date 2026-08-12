@@ -3413,6 +3413,65 @@
     }
   }
 
+  // Outras IMPRESSÕES da mesma carta (painel "Prints" do Scryfall): em que
+  // sets do jogo uma carta com ESTE nome foi impressa. A fonte é o /api/search
+  // (D1, indexado por palavra; &img=1 acrescenta imagem e data de lançamento —
+  // hover e ordenação) com filtro de nome EXATO aqui: a busca é por prefixo de
+  // palavra e devolveria também "One Ring to Rule Them All" etc. Sem D1 (dev
+  // estático, API fora), a seção simplesmente não aparece — mesmo contrato de
+  // degradação da busca global. Nada de fallback pro catálogo da página: ele
+  // só tem os sets já baixados, e uma lista "de outros sets" pela metade
+  // informa errado.
+  async function fillPrints(card) {
+    const box = document.querySelector("#cardPreviewModal [data-preview-prints]");
+    if (!box || !card || !card.name) return;
+    const game = currentGame();
+    let rows = [];
+    try {
+      const r = await fetch(`/api/search?game=${encodeURIComponent(game)}&q=${encodeURIComponent(card.name)}&limit=100&img=1`);
+      if (!r.ok) return;
+      rows = ((await r.json()).c || []).filter((x) => x.n === card.name);
+    } catch (e) { return; }
+    if (!box.isConnected) return; // o usuário já abriu outra carta
+    // Uma linha por IMPRESSÃO: a versão localizada (-pt/-ja…) compartilha o id
+    // base com a EN — mostrar as duas duplicaria cada set do Pokémon. Fica a
+    // base (referência) quando existe; a localizada só se for a única.
+    const porBase = new Map();
+    rows.forEach((x) => {
+      const b = basePricingId(x.i);
+      if (!porBase.has(b) || x.i === b) porBase.set(b, x);
+    });
+    rows = [...porBase.values()];
+    if (rows.length < 2) return; // só a própria carta: seção viraria ruído
+    // Mais recente primeiro (como o "all prints" do Scryfall); sem data (cache
+    // de resposta antiga, sem &img=1), cai pra set e número.
+    rows.sort((a, b) => String(b.d || "").localeCompare(String(a.d || ""))
+      || String(a.s || "").localeCompare(String(b.s || ""))
+      || compareCardNumbers(a.u, b.u));
+    // ?setId= no link quando dá pra derivar do manifest: desambigua sets
+    // homônimos (edições EN/PT) — sem manifest o nome + ?card= já resolve.
+    const setIds = (window.TCG_MANIFEST && Array.isArray(window.TCG_MANIFEST.sets))
+      ? window.TCG_MANIFEST.sets.map((s) => s.id) : null;
+    const list = box.querySelector("[data-preview-prints-list]");
+    if (!list) return;
+    list.innerHTML = rows.map((x) => {
+      const yr = /^\d{4}/.test(String(x.d || "")) ? String(x.d).slice(0, 4) : "";
+      const meta = `#${x.u || "?"}${yr ? ` · ${yr}` : ""}`;
+      const inner = `<span class="print-set">${escapeHtml(x.s || "")}</span><span class="print-meta">${escapeHtml(meta)}</span>`;
+      // A impressão ABERTA entra na lista (situa a carta entre as irmãs), mas
+      // como texto marcado, não link — navegar pra si mesma é um não-clique.
+      if (x.i === card.id) return `<span class="preview-print is-current" data-print-img="${escapeAttribute(x.m || "")}">${inner}</span>`;
+      const extra = { card: x.i };
+      const sid = setIds ? setIdForCard(x.i, setIds) : "";
+      if (sid) extra.setId = sid;
+      const href = detailUrl("set", x.s || "", "", x.g || game, extra);
+      return `<a class="preview-print" href="${escapeAttribute(href)}" data-print-img="${escapeAttribute(x.m || "")}">${inner}</a>`;
+    }).join("");
+    box.hidden = false;
+    // Fechada no celular, como os Detalhes: lista longa empurraria as ações.
+    if (window.matchMedia && window.matchMedia("(max-width: 720px)").matches) box.open = false;
+  }
+
   // Símbolo da moeda atual (R$/$/€…). Valor != 0 de propósito: fmtMoney(cur, 0)
   // devolve "—" e o símbolo sairia "—" (bug que existia no campo "Vender por").
   function saleCurrencySymbol() {
@@ -3621,6 +3680,15 @@
               <summary><h3>${escapeHtml(t("modal.details"))}</h3></summary>
               <dl>
                 <div><dt>${escapeHtml(t("modal.rarity"))}</dt><dd>${escapeHtml(activeCard.rarity || "-")}</dd></div>
+                ${(function () {
+                  // TRATAMENTO da impressão (Magic: Surge Foil, Borderless…). O
+                  // badge "Foil" do tile vem do finishes do Scryfall, que não
+                  // distingue foil comum de Surge/Galaxy/Halo — o nome especial
+                  // vive no `treat`, que até aqui só a faceta da página do set
+                  // mostrava. Mesmo filtro de ruído da faceta.
+                  const ts = String(activeCard.treat || "").split(";").filter((tk) => tk && !TREAT_NOISE.has(tk));
+                  return ts.length ? `<div><dt>${escapeHtml(t("facet.treatment"))}</dt><dd>${escapeHtml(ts.map(treatLabel).join(" · "))}</dd></div>` : "";
+                })()}
                 <div><dt>${escapeHtml(t("modal.artist"))}</dt><dd>${escapeHtml(activeCard.artist || t("card.unknownArtist"))}</dd></div>
                 <div><dt>${escapeHtml(t("modal.set"))}</dt><dd>${escapeHtml(activeCard.set || "-")}</dd></div>
                 ${activeCard.nameJp && activeCard.nameJp !== activeCard.name
@@ -3628,6 +3696,15 @@
                   : ""}
                 <div><dt>${escapeHtml(t("modal.cardId"))}</dt><dd>${escapeHtml(activeCard.id)}</dd></div>
               </dl>
+            </details>
+            <!-- IMPRESSÕES (estilo Scryfall): todos os sets do jogo em que uma
+                 carta com este nome saiu, cada linha linkando pra página do set
+                 com o popup dela já aberto (?card=). Nasce hidden: quem enche é
+                 o fillPrints, e SÓ quando o /api/search responde 2+ impressões —
+                 sem D1 a seção nem aparece (mesma degradação da busca global). -->
+            <details class="preview-prints" data-preview-prints hidden open>
+              <summary><h3>${escapeHtml(t("modal.prints"))}</h3></summary>
+              <div class="preview-prints-list" data-preview-prints-list></div>
             </details>
           </div>
           <div class="preview-content">
@@ -3712,6 +3789,10 @@
             ${prices ? brMarketplaceLinks(activeCard, gradedSearchTag(activeGraded)) : ""}
           </div>
         </section>
+        <!-- Prévia da impressão sob o mouse (fillPrints posiciona). pointer-events
+             none no CSS: se o cursor alcançasse a prévia, o mouseover esconderia
+             e o hover por baixo reabriria — pisca-pisca infinito. -->
+        <img class="preview-print-thumb" data-print-thumb hidden alt="">
       `;
 
       // Focus trap: guarda quem abriu (só na primeira abertura, não nos
@@ -3745,6 +3826,28 @@
       // carta sem cotação também mostrar o que a comunidade anotou.
       fillCommunityPrice(activeCard, activeVariant);
       fillGradedPrice(activeCard); // valores PSA, quando o catálogo tem
+      fillPrints(activeCard); // outras impressões do mesmo nome (via /api/search)
+      // Hover numa impressão mostra a IMAGEM dela ao lado da linha (desktop; no
+      // touch não há hover — o toque navega direto). Propriedade em vez de
+      // addEventListener de propósito: open() roda de novo a cada carta e
+      // empilharia um handler por abertura.
+      modal.onmouseover = (event) => {
+        const thumb = modal.querySelector("[data-print-thumb]");
+        if (!thumb) return;
+        const row = event.target.closest("[data-print-img]");
+        const src = row && row.dataset.printImg;
+        if (!src) { thumb.hidden = true; return; }
+        if (thumb.getAttribute("src") !== src) thumb.setAttribute("src", src);
+        // À direita da linha (à esquerda se não couber), presa à janela.
+        const rect = row.getBoundingClientRect();
+        const w = 230, h = Math.round(w * 88 / 63); // proporção 63×88 da carta
+        let left = rect.right + 10;
+        if (left + w > window.innerWidth - 8) left = rect.left - w - 10;
+        const top = Math.max(8, Math.min(rect.top + rect.height / 2 - h / 2, window.innerHeight - h - 8));
+        thumb.style.left = `${Math.max(8, left)}px`;
+        thumb.style.top = `${top}px`;
+        thumb.hidden = false;
+      };
       // Detalhes fechados no CELULAR (aberto no desktop, onde é um dl de 2
       // colunas e custa pouco). Em JS e não em CSS porque <details> abre/fecha
       // por atributo — CSS não desmarca `open`.
