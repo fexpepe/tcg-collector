@@ -8694,9 +8694,12 @@ select,
 .lst-row { display: grid; grid-template-columns: minmax(0, 1fr) 58px 74px 32px; align-items: center; gap: 8px; min-height: 34px; border-bottom: 1px solid var(--line); }
 .lst-row:last-child { border-bottom: 0; }
 .lst-row.is-in { background: var(--accent-soft); }
+/* text-align explícito: <button> nasce centralizado pelo user-agent, e numa
+   coluna elástica o nome acabaria boiando no meio da linha. */
 .lst-name { min-width: 0; padding: 0; border: 0; background: none; color: var(--text); font: inherit; font-size: 13.5px; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
 .lst-name:hover { color: var(--accent-ink); text-decoration: underline; }
 .lst-num, .lst-rar, .lst-var, .lst-cond, .lst-val { color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.lst-val { text-align: right; }   /* valor se compara entre linhas: dígitos alinhados */
 .lst-add, .lst-del { min-height: 26px; border: 1px solid var(--line); background: var(--panel-strong); color: var(--text); font-size: 15px; font-weight: 700; line-height: 1; cursor: pointer; }
 .lst-add:hover { border-color: var(--accent); color: var(--accent-ink); }
 .lst-del:hover { border-color: var(--accent); color: var(--accent); }
@@ -8760,9 +8763,15 @@ select,
    miniatura flutuante do hover e ao clicar no nome.
    =========================================================================== */
 .card-grid.is-compact { grid-template-columns: 1fr; gap: 0; }
+/* Colunas de largura FIXA (só o nome é elástico): a leitura aqui é vertical —
+   se ler o número de uma carta exige procurar onde a coluna caiu naquela linha,
+   a densidade não serve pra nada. A última é fixa também, e não `auto`, porque
+   o − aparece e some conforme a carta é possuída: em `auto` a coluna mudava de
+   largura e empurrava TODAS as anteriores, e a linha da carta que você tem
+   ficava deslocada das outras. */
 .card-tile.tile-compact {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 66px minmax(0, 150px) 92px 96px auto;
+  grid-template-columns: minmax(0, 1fr) 66px minmax(0, 150px) 92px 104px 122px;
   align-items: center;
   gap: 10px;
   min-height: 38px;
@@ -8773,14 +8782,26 @@ select,
 }
 .card-tile.tile-compact:hover { background: var(--panel); }
 .card-tile.tile-compact.owned { background: var(--accent-soft); }
-.tile-name { display: flex; align-items: center; gap: 6px; min-width: 0; padding: 0; border: 0; background: none; color: var(--text); font: inherit; font-size: 13.5px; font-weight: 600; text-align: left; cursor: pointer; }
+/* justify-content explícito: <button> vem com `center` do user-agent, e sem
+   isto o nome flutuava no meio da coluna elástica — quanto mais larga a tela,
+   mais longe da esquerda ele ia. */
+.tile-name { display: flex; justify-content: flex-start; align-items: center; gap: 6px; min-width: 0; padding: 0; border: 0; background: none; color: var(--text); font: inherit; font-size: 13.5px; font-weight: 600; text-align: left; cursor: pointer; }
 .tile-name > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tile-name:hover { color: var(--accent-ink); text-decoration: underline; }
 .tile-c-num, .tile-c-set, .tile-c-var, .tile-c-price { color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+/* Preço à DIREITA: é o único valor que se compara entre linhas, e com
+   tabular-nums os dígitos caem na mesma coluna (R$ 9,58 embaixo de R$ 5.988,30). */
+.tile-c-price { text-align: right; }
 /* O preço vem do mesmo tilePriceHtml do tile normal, que devolve um <p>. */
 .tile-c-price .tile-price { margin: 0; font-size: 12px; }
-.card-tile.tile-compact .tile-actions { display: flex; gap: 4px; }
+/* Botões colados à direita, e o de lista no canto oposto (o "outro canto" do
+   pedido). Como a célula tem largura fixa, o + fica sempre no mesmo lugar —
+   é o botão que se clica em série. */
+.card-tile.tile-compact .tile-actions { display: flex; justify-content: flex-end; align-items: center; gap: 4px; }
 .card-tile.tile-compact .tile-btn { min-height: 26px; min-width: 26px; }
+/* O − continua reservando o lugar dele quando está escondido: sem isto, marcar
+   uma carta empurrava os outros botões daquela linha só. */
+.card-tile.tile-compact .tile-minus[hidden] { display: inline-flex; visibility: hidden; }
 
 /* O "+ Lista" fica no canto OPOSTO ao +, como pediram: primeiro da fileira,
    empurrando os outros pra direita. No tile normal ele é o 1º do rodapé. */
@@ -8803,8 +8824,11 @@ select,
 .tile-hover-thumb { position: fixed; width: 200px; z-index: 70; pointer-events: none; border: 1px solid var(--line); background: var(--surface); box-shadow: 0 10px 30px rgba(0,0,0,.45); }
 
 @media (max-width: 700px) {
-  /* Numa tela estreita sobra o essencial: nome, número e as ações. */
-  .card-tile.tile-compact { grid-template-columns: minmax(0, 1fr) 56px auto; gap: 8px; }
+  /* Numa tela estreita sobra o essencial: nome, número e as ações. A coluna das
+     ações é fixa aqui pelo mesmo motivo do desktop, e ainda por outro: o badge
+     "×N" alarga o + da carta que você tem, e em `auto` só aquela linha ficava
+     fora de esquadro com as vizinhas. */
+  .card-tile.tile-compact { grid-template-columns: minmax(0, 1fr) 56px 122px; gap: 8px; }
   .tile-c-set, .tile-c-var, .tile-c-price { display: none; }
   .tile-hover-thumb { display: none; }   /* sem hover no toque */
 }
