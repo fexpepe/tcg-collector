@@ -138,6 +138,14 @@
   // Skeleton só no deep-link de verdade: com o catálogo em memória não há espera.
   if (temDeepLink && elements.grid) shared.showSkeletons(elements.grid, "card", 12);
 
+  // Declarada ANTES do boot de propósito: hydrateFiltersDoManifest() (logo
+  // abaixo) chama reidratando(), que lê esta lista. Como `const` não é hoisted,
+  // deixá-la lá embaixo junto da função estourava ReferenceError (TDZ) e matava
+  // o módulo inteiro — a página ficava sem NENHUM listener.
+  // O erro só aparecia em PRODUÇÃO: sem manifest (dev), hydrateFiltersDoManifest
+  // volta na primeira linha e nunca chega no reidratando.
+  const FILTER_SELECTS = ["setFilter", "languageFilter", "rarityFilter"];
+
   // Ordem importa: as opções primeiro, o valor da URL depois. Um <select> não
   // aceita um value cuja <option> ainda não existe.
   hydrateFiltersDoManifest(); // set/idioma saem do manifest (46KB, já carregado)
@@ -161,7 +169,7 @@
   // primeira vez (é lida antes de existir qualquer opção).
   // A reposição sai da URL, não do estado do select: writeFiltersToUrl grava lá
   // a cada mudança, então a URL é sempre o espelho fiel da escolha atual.
-  const FILTER_SELECTS = ["setFilter", "languageFilter", "rarityFilter"];
+  // (FILTER_SELECTS vive lá em cima, antes do boot — ver o comentário de lá.)
   function reidratando(fn) {
     FILTER_SELECTS.forEach((k) => {
       const select = elements[k];
