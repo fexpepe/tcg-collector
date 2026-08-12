@@ -602,6 +602,10 @@ window.TCG_MESSAGES = window.TCG_MESSAGES || {};
       "nav.myDecks": "Meus Decks",
       "title.myDecks": "Meus Decks - Sleevu",
       "dash.decksHint": "seus decks e os que você salvou",
+      // Listas: o resto dos textos vive em i18n-listas.js. Estes dois ficam aqui
+      // porque o menu e a dashboard (que não carregam aquele pacote) precisam.
+      "nav.lists": "Listas",
+      "dash.listsHint": "cadastro rápido e listas de compra",
       "filters.show": "Filtros",
       "filters.hide": "Ocultar filtros",
       "nav.sales": "Vendas e Trocas",
@@ -1581,6 +1585,8 @@ window.TCG_MESSAGES = window.TCG_MESSAGES || {};
       "nav.myDecks": "My Decks",
       "title.myDecks": "My Decks - Sleevu",
       "dash.decksHint": "your decks and the ones you saved",
+      "nav.lists": "Lists",
+      "dash.listsHint": "quick logging and shopping lists",
       "filters.show": "Filters",
       "filters.hide": "Hide filters",
       "nav.sales": "Sales & Trades",
@@ -2559,6 +2565,8 @@ window.TCG_MESSAGES = window.TCG_MESSAGES || {};
       "nav.myDecks": "Mis Decks",
       "title.myDecks": "Mis Decks - Sleevu",
       "dash.decksHint": "tus decks y los que guardaste",
+      "nav.lists": "Listas",
+      "dash.listsHint": "registro rápido y listas de compra",
       "filters.show": "Filtros",
       "filters.hide": "Ocultar filtros",
       "nav.sales": "Ventas y Cambios",

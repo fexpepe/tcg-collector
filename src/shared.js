@@ -524,6 +524,8 @@
   // das tags produz (tag não tinha variante), e um marcador casa com qualquer
   // variante perguntada.
   // ---------------------------------------------------------------------------
+  // Uma constante só pra chave (o SYNC_KEYS lá embaixo aponta pra ela): a das
+  // tags acabou literal em quatro arquivos, e renomear virou caça ao tesouro.
   const LISTS_KEY = "tcg-collector-lists-all-v1";
   const LIST_LIMIT = 100;          // tetos de sanidade: o blob divide 5MB com o resto
   const LIST_ENTRIES_LIMIT = 5000;
@@ -554,6 +556,15 @@
     function save() {
       scheduleWrite(LISTS_KEY, () => JSON.stringify(data));
     }
+    // Escrita SÍNCRONA, pras operações que o usuário pode desfazer. O toast de
+    // desfazer restaura um snapshot do localStorage; com a escrita adiada, o
+    // flush pendente disparava DEPOIS do restore e regravava o estado já
+    // desfeito por cima — a lista "voltava" e sumia de novo no reload.
+    function saveNow() {
+      pendingWrites.delete(LISTS_KEY);
+      marcaSuja(LISTS_KEY);
+      try { localStorage.setItem(LISTS_KEY, JSON.stringify(data)); } catch (e) { notifyStorageFull(); }
+    }
     function touch(list) {
       if (!list) return;
       list.updatedAt = Date.now();
@@ -577,6 +588,7 @@
     return {
       LIST_LIMIT,
       LIST_ENTRIES_LIMIT,
+      STORAGE_KEY: LISTS_KEY,   // pro snapshot do desfazer, sem repetir a literal
       list() { return data.lists; },
       get,
       entriesOf,
@@ -594,7 +606,9 @@
           name: String(o.name || "").trim().slice(0, LIST_NAME_MAX),
           color: safeColor(o.color) || "#3b6fe0",
           game: o.game || null,
-          setId: o.setId || null,
+          // NOME do set (não id): é o que o índice indexes-sets.json traz, e o
+          // que a página de set usa na URL (detail.html?type=set&name=).
+          set: o.set || null,
           linked: !!o.linked,
           entries: [],
           createdAt: Date.now(),
@@ -630,7 +644,7 @@
         if (i < 0) return null;
         const [gone] = data.lists.splice(i, 1);
         data.deleted[id] = Date.now();
-        save();
+        saveNow();
         return gone;
       },
 
@@ -1636,7 +1650,7 @@
     const exploreActive = ["pokedex", "trainers", "sets", "artists", "cards", "hub"].includes(active);
     // "Meus Decks" é página PESSOAL (entra pelo Dashboard), então acende a
     // Coleção — diferente de "Decks", que é a galeria PÚBLICA e tem item próprio.
-    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "graded", "mydecks"].includes(active);
+    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "graded", "mydecks", "listas"].includes(active);
 
     const link = (href, key, page) => `<a href="${escapeAttribute(href)}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
     const group = (key, isActive, links) => `
@@ -6202,6 +6216,53 @@
     } catch (e) { return null; }               // rede oscilou: a próxima tecla tenta de novo
   }
 
+  // Índice de busca ESTÁTICO do jogo (data/<jogo>/search-index.json): só
+  // id/nome/set/número + facetas, gerado no build. É o caminho de baixo quando a
+  // borda não responde — e a fonte das facetas, que a API não fornece.
+  // Cacheia a PROMESSA, não o resultado: um segundo pedido no meio do download
+  // não pode baixar de novo (no Magic são 8 MB). Erro descarta o cache pra
+  // próxima busca tentar outra vez.
+  // Vive aqui (e não no editor de decks, de onde saiu) porque a página de listas
+  // precisa do mesmo índice — duas cópias divergiriam na primeira correção.
+  const searchIndexCache = {};
+  const searchIndexReady = {};
+  function loadSearchIndex(game) {
+    if (searchIndexCache[game]) return searchIndexCache[game];
+    const p = (async () => {
+      try {
+        const r = await fetch(gameDataDir(game) + "search-index.json");
+        if (r.ok) {
+          const raw = await r.json();
+          // Formato compacto ({ d: dicionários, c: cartas com índices }):
+          // re-expande uma vez, pra quem consome ver strings normais.
+          const d = raw.d || {};
+          const back = (key, i) => (i == null ? "" : ((d[key] || [])[i] || ""));
+          return (raw.c || []).map((e) => ({
+            i: e.i, n: e.n, u: e.u, c: e.c,
+            s: back("s", e.s), t: back("t", e.t), r: back("r", e.r), k: back("k", e.k)
+          }));
+        }
+      } catch (e) { /* sem índice: monta do catálogo abaixo */ }
+      // Local/dev (o índice é gerado no build): monta a partir do catálogo, que
+      // aqui é a amostra pequena. Mesma forma de dado — quem busca não vê diferença.
+      try {
+        const cat = await loadGameCatalog(game, gameDataDir(game), null);
+        return (cat.cards || []).map((c) => ({
+          i: c.id, n: c.name, s: c.set, u: c.number,
+          t: c.cardType, c: c.cost, r: c.rarity,
+          k: c.ink || c.opColor || c.color || c.colorId || c.types || c.attribute
+        }));
+      } catch (e) { return []; }
+    })();
+    searchIndexCache[game] = p;
+    p.then(
+      () => { searchIndexReady[game] = true; },
+      () => { if (searchIndexCache[game] === p) delete searchIndexCache[game]; }
+    );
+    return p;
+  }
+  function searchIndexLoaded(game) { return !!searchIndexReady[game]; }
+
   window.TCGShared = {
     createCollectionStore,
     createFavoritesStore,
@@ -6357,6 +6418,9 @@
     loadOwnedAcrossGames,
     loadOwnedFast,
     loadCollectionIndexes,
+    loadGameIndexSlice,
+    loadSearchIndex,
+    searchIndexLoaded,
     collectorModeEnabled,
     setCollectorMode,
     groupVariantsEnabled,
@@ -6415,7 +6479,7 @@
     prices: gameKey("prices-v1"),
     binders: "tcg-collector-binders-all-v1", // binders são globais (cross-game)
     decks: "tcg-collector-decks-all-v1", // decks são globais (cada deck tem seu `game`)
-    lists: "tcg-collector-lists-all-v1", // listas são globais (cada lista tem seu `game`)
+    lists: LISTS_KEY, // listas são globais (cada lista tem seu `game`)
     folders: "tcg-collector-collection-folders-v1", // pastas da coleção (globais)
     sales: "tcg-collector-collection-sales-v1", // cartas à venda (globais)
     graded: "tcg-collector-collection-graded-v1", // cartas graduadas/slabs (globais)

@@ -7926,9 +7926,11 @@ select,
 .deck-mini.danger:hover { border-color: var(--accent); color: var(--accent); }
 
 /* --- Modal de novo deck --- */
-.deck-modal { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: grid; place-items: center; z-index: 60; padding: 20px; }
-.deck-modal-box { background: var(--surface); border: 1px solid var(--line); max-width: 520px; width: 100%; padding: 22px; max-height: 86vh; overflow: auto; }
-.deck-modal-box h2 { margin: 0 0 16px; font-size: 19px; }
+/* O wizard das Listas usa a MESMA caixa (mesmo peso visual, mesmo z-index);
+   só o nome da classe muda, pra não pendurar a página de listas no CSS de deck. */
+.deck-modal, .list-modal { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: grid; place-items: center; z-index: 60; padding: 20px; }
+.deck-modal-box, .list-modal-box { background: var(--surface); border: 1px solid var(--line); max-width: 520px; width: 100%; padding: 22px; max-height: 86vh; overflow: auto; }
+.deck-modal-box h2, .list-modal-box h2 { margin: 0 0 16px; font-size: 19px; }
 .deck-game-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-bottom: 16px; }
 .deck-game-pick { display: flex; align-items: center; min-height: 42px; padding: 0 13px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 13.5px; font-weight: 700; cursor: pointer; text-align: left; }
 .deck-game-pick:hover { border-color: var(--accent); background: var(--panel-strong); }
@@ -8623,6 +8625,104 @@ select,
   transition: top 0.15s ease;
 }
 .skip-link:focus { top: 8px; }
+
+/* ===========================================================================
+   LISTAS (listas.html) — ver docs/LISTAS.md
+   A tela é uma LINHA por carta, sem imagem: é o modo rápido de cadastrar. Tudo
+   aqui é medido pra caber muita linha na tela sem virar planilha ilegível.
+   =========================================================================== */
+.page-head-sub { margin: 4px 0 0; color: var(--muted); font-size: 13.5px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.empty-hint { display: inline-block; margin-top: 6px; color: var(--muted); font-size: 13px; }
+.list-actions { margin: 0 0 18px; }
+.list-input { width: 100%; min-height: 42px; padding: 0 13px; margin-bottom: 14px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 15px; }
+
+/* --- Galeria --- */
+.list-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.list-card { display: grid; grid-template-columns: 6px 1fr auto; align-items: center; gap: 12px; min-height: 74px; padding-right: 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text); text-decoration: none; }
+.list-card:hover { border-color: var(--accent); background: var(--panel-strong); }
+.list-card-bar { align-self: stretch; background: var(--lc, var(--accent)); }
+.list-card-body { display: flex; flex-direction: column; gap: 5px; padding: 10px 0; min-width: 0; }
+.list-card-body strong { font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.list-card-meta { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.list-card-count { color: var(--muted); font-size: 12.5px; }
+.list-card-badge { font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.list-card-badge.is-linked { color: var(--accent-ink); }
+
+/* --- Wizard --- */
+.list-modal-box h3 { margin: 18px 0 8px; font-size: 14px; color: var(--muted); }
+.list-modal-hint { margin: -8px 0 14px; color: var(--muted); font-size: 13px; }
+.list-modal-foot { margin-top: 16px; }
+.list-type-pick { display: grid; gap: 8px; margin-bottom: 18px; }
+.list-type { display: flex; flex-direction: column; gap: 3px; padding: 12px 14px; border: 1px solid var(--line); background: var(--panel); color: var(--text); text-align: left; cursor: pointer; }
+.list-type strong { font-size: 14px; }
+.list-type span { color: var(--muted); font-size: 12.5px; }
+.list-type.is-on { border-color: var(--accent); background: var(--accent-soft); }
+.list-set-picks { display: grid; gap: 6px; max-height: 320px; overflow-y: auto; margin-bottom: 14px; }
+.list-set-pick { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 40px; padding: 0 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 13.5px; font-weight: 600; text-align: left; cursor: pointer; }
+.list-set-pick:hover { border-color: var(--accent); background: var(--panel-strong); }
+.list-set-pick small { color: var(--muted); font-weight: 400; white-space: nowrap; }
+
+/* --- Editor --- */
+.lst-head { border-left: 5px solid var(--lc, var(--accent)); padding-left: 12px; }
+.lst-title { width: 100%; max-width: 460px; padding: 2px 6px; border: 1px solid transparent; background: transparent; color: inherit; font: inherit; }
+.lst-title:hover, .lst-title:focus { border-color: var(--line); background: var(--panel); }
+.lst-setname { font-weight: 700; }
+.lst-linked { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.lst-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+.lst-panel { border: 1px solid var(--line); background: var(--panel); padding: 14px; min-width: 0; }
+.lst-panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.lst-panel-head h2 { margin: 0; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lst-totals { color: var(--muted); font-size: 12.5px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.lst-rows { max-height: 62vh; overflow-y: auto; }
+.lst-panel-foot { margin-top: 12px; }
+
+/* A linha. grid-template com colunas fixas nas pontas e o nome elástico no meio:
+   o nome é o único que pode encolher, então números e botões nunca dançam de
+   linha pra linha (é o que faz a coluna de + ficar clicável em série). */
+.lst-row { display: grid; grid-template-columns: minmax(0, 1fr) 58px 74px 32px; align-items: center; gap: 8px; min-height: 34px; border-bottom: 1px solid var(--line); }
+.lst-row:last-child { border-bottom: 0; }
+.lst-row.is-in { background: var(--accent-soft); }
+.lst-name { min-width: 0; padding: 0; border: 0; background: none; color: var(--text); font: inherit; font-size: 13.5px; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+.lst-name:hover { color: var(--accent-ink); text-decoration: underline; }
+.lst-num, .lst-rar, .lst-var, .lst-cond, .lst-val { color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.lst-add, .lst-del { min-height: 26px; border: 1px solid var(--line); background: var(--panel-strong); color: var(--text); font-size: 15px; font-weight: 700; line-height: 1; cursor: pointer; }
+.lst-add:hover { border-color: var(--accent); color: var(--accent-ink); }
+.lst-del:hover { border-color: var(--accent); color: var(--accent); }
+.lst-row.is-added { animation: lstAdded .9s ease-out; }
+@keyframes lstAdded { 0% { background: var(--accent); } 100% { background: transparent; } }
+
+/* Linha da lista: mais colunas (versão, condição, quantidade, valor). */
+.lst-entry { grid-template-columns: minmax(0, 1fr) 52px 68px 40px 84px 60px 28px; }
+.lst-qty { display: inline-flex; align-items: center; gap: 5px; font-variant-numeric: tabular-nums; }
+.lst-step { width: 20px; min-height: 20px; border: 1px solid var(--line); background: var(--panel-strong); color: var(--text); font-size: 12px; line-height: 1; cursor: pointer; }
+.lst-step:hover { border-color: var(--accent); }
+
+/* Seletor de versão inline: ocupa a largura toda da linha (grid-column: 1/-1),
+   então abre logo abaixo da carta clicada em vez de virar um modal. */
+.lst-picker { grid-column: 1 / -1; display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; padding: 10px 4px 12px; }
+.lst-chips { display: flex; gap: 5px; flex-wrap: wrap; }
+.lst-chip { min-height: 26px; padding: 0 9px; border: 1px solid var(--line); background: var(--panel-strong); color: var(--text); font-size: 12px; font-weight: 600; cursor: pointer; }
+.lst-chip.is-on { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-ink); }
+.lst-field { display: flex; flex-direction: column; gap: 3px; color: var(--muted); font-size: 11px; }
+.lst-field select, .lst-field input { min-height: 28px; padding: 0 6px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 13px; }
+.lst-field input { width: 58px; }
+.lst-confirm { min-height: 28px; padding: 0 14px; font-size: 12.5px; }
+
+/* Miniatura do hover: a linha não tem imagem de propósito — passar o mouse no
+   nome mostra a carta. Mesmo mecanismo da seção Impressões do popup. */
+.lst-thumb { position: fixed; width: 200px; z-index: 70; pointer-events: none; border: 1px solid var(--line); background: var(--surface); box-shadow: 0 10px 30px rgba(0,0,0,.45); }
+
+@media (max-width: 880px) {
+  .lst-panels { grid-template-columns: 1fr; }
+  .lst-rows { max-height: none; }
+  /* Some com raridade e valor: numa tela estreita o que importa é nome, número
+     e o botão de adicionar. */
+  .lst-row { grid-template-columns: minmax(0, 1fr) 52px 32px; }
+  .lst-rar { display: none; }
+  .lst-entry { grid-template-columns: minmax(0, 1fr) 60px 84px 28px; }
+  .lst-num, .lst-var, .lst-cond, .lst-val { display: none; }
+  .lst-thumb { display: none; }        /* sem hover no toque */
+}
 
 /* Movimento reduzido: rede geral pra transições/animações não cobertas caso a
    caso acima. Duração ~0 (não `none`) preserva os eventos transitionend/animationend

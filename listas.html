@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="title.lists">Listas - Sleevu</title>
+    <meta name="description" content="Suas listas de cartas: cadastre um set inteiro rápido, monte listas de compra e leve para onde quiser.">
+    <!-- Área pessoal: fora do índice de busca (como my-decks). -->
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <link rel="preconnect" href="https://assets.tcgdex.net">
+    <link rel="preconnect" href="https://tcgplayer-cdn.tcgplayer.com">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#101218">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <!-- data-catalog vazio: cada lista carrega só o catálogo do SEU jogo (e só
+         as cartas que ela usa), como no editor de decks. -->
+    <script src="src/game.js" data-catalog=""></script>
+    <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="index.html">Sleevu</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page="listas"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Galeria (sem ?id=) e editor (com ?id=) — listas.js alterna. -->
+      <div id="listGallery"></div>
+      <div id="listEditor" hidden></div>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <!-- Textos das listas: fora do i18n.js pra as outras páginas não carregarem à toa. -->
+    <script defer src="src/i18n-listas.js"></script>
+    <script defer src="src/shared.js"></script>
+    <script defer src="src/listas.js"></script>
+  </body>
+</html>
