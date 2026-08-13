@@ -161,7 +161,21 @@
   // Coleção v3: cardId -> variante -> condição -> quantidade. Cada cópia é
   // distinguida por condição (para o futuro cálculo de valor do portfólio).
   // Migra do v2 (cardId -> variante -> quantidade; cópias viram NM) e do v1.
+  //
+  // UMA instância por chave, compartilhada por todo caller do mesmo jogo. Cada
+  // instância mantém a coleção em MEMÓRIA e save() serializa essa cópia inteira
+  // por cima da chave — duas instâncias vivas do mesmo jogo (a da página + a do
+  // popover "+ Lista", por ex.) sobrescreviam em silêncio a escrita uma da
+  // outra: o clique seguinte no tile regravava o blob sem a carta que o popover
+  // tinha acabado de adicionar.
+  const collectionStoreCache = new Map();
   function createCollectionStore(game) {
+    const cacheKey = gameKey("collection-v3", game);
+    let st = collectionStoreCache.get(cacheKey);
+    if (!st) { st = buildCollectionStore(game); collectionStoreCache.set(cacheKey, st); }
+    return st;
+  }
+  function buildCollectionStore(game) {
     const storageKey = gameKey("collection-v3", game);
     const metaKey = gameKey("collection-meta-v1", game);
     const v2Key = gameKey("collection-v2", game);
