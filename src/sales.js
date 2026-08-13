@@ -622,22 +622,7 @@
     ctx.fillStyle = "#111111"; ctx.font = `800 30px ${FONT}`; ctx.textBaseline = "top";
     ctx.fillText(t("sales.shared.label"), MARGIN, MARGIN);
 
-    // Cache-buster: o tile/preview pode ter carregado a MESMA imagem SEM
-    // crossOrigin, poluindo o cache — e aí a carga com crossOrigin reusa a versão
-    // poluída e "taint"a o canvas. Uma query nova força um fetch CORS limpo.
-    const bust = (u) => u ? u + (u.indexOf("?") >= 0 ? "&" : "?") + "sx=1" : u;
-    const loadImage = (url, cross) => new Promise((res) => {
-      if (!url) return res(null);
-      const im = new Image(); if (cross) im.crossOrigin = "anonymous";
-      im.onload = () => res(im); im.onerror = () => res(null); im.src = url;
-    });
-    const drawCover = (img, x, y, w, h) => {
-      const ir = img.width / img.height, rr = w / h; let sw, sh, sx, sy;
-      if (ir > rr) { sh = img.height; sw = sh * rr; sx = (img.width - sw) / 2; sy = 0; }
-      else { sw = img.width; sh = sw / rr; sx = 0; sy = (img.height - sh) / 2; }
-      ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
-    };
-    const roundRect = (x, y, w, h, r) => { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); };
+    const { drawCover, roundRect, imagemDaCarta } = shared.canvasCardHelpers(ctx);
 
     for (let i = 0; i < list.length; i++) {
       const { it, card } = list[i];
@@ -646,19 +631,7 @@
       // Carta (arte inteira, sem barra por cima)
       ctx.save();
       roundRect(x, y, CARD_W, CARD_H, RADIUS); ctx.fillStyle = "#eceff3"; ctx.fill(); ctx.clip();
-      const src = shared.cardImageSources(card);
-      // Lorcana (cards.lorcast.io) e One Piece (tcgplayer-cdn) NÃO mandam CORS →
-      // o crossOrigin falhava e caía no fallback (que é uma URL de Pokémon!).
-      // Roteia pela wsrv.nl (proxy com CORS) e NÃO usa o fallback de Pokémon.
-      // Pokémon segue direto pela tcgdex (tem CORS).
-      const lor = card.game === "lorcana" || card.game === "onepiece";
-      let img;
-      if (lor) {
-        img = await loadImage(`https://wsrv.nl/?url=${encodeURIComponent(src.url)}&output=webp`, true);
-      } else {
-        img = await loadImage(bust(src.url), true);
-        if (!img && src.fallback) img = await loadImage(bust(src.fallback), true);
-      }
+      const img = await imagemDaCarta(card);
       if (img) drawCover(img, x, y, CARD_W, CARD_H);
       ctx.restore();
       ctx.save(); roundRect(x, y, CARD_W, CARD_H, RADIUS); ctx.strokeStyle = "#d0d7e0"; ctx.lineWidth = 1.5; ctx.stroke(); ctx.restore();
@@ -684,18 +657,10 @@
     ctx.fillStyle = "#9aa3b0"; ctx.font = `600 18px ${FONT}`; ctx.textBaseline = "alphabetic";
     ctx.fillText("Sleevu · sleevu.app", MARGIN, height - MARGIN + 4);
 
-    const finish = () => { if (button) { button.disabled = false; button.textContent = label; } };
-    try {
-      canvas.toBlob((blob) => {
-        if (!blob) { alert(t("sales.exportTainted")); finish(); return; }
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url; a.download = "vendas-sleevu.png";
-        document.body.appendChild(a); a.click(); a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-        finish();
-      }, "image/png");
-    } catch (e) { alert(t("sales.exportTainted")); finish(); }
+    shared.baixarCanvasPng(canvas, "vendas-sleevu.png", {
+      onFinish: () => { if (button) { button.disabled = false; button.textContent = label; } },
+      onTainted: () => alert(t("sales.exportTainted"))
+    });
   }
 
   function bindEvents() {

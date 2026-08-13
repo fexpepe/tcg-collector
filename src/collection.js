@@ -1704,19 +1704,7 @@
     ctx.fillStyle = "#9ba4b3"; ctx.font = `600 22px ${FONT}`;
     ctx.fillText(`${tn("count.cards", copies)} · ${shared.formatMoney(shared.getCurrency(), totalValue)}`, MARGIN, MARGIN + 52);
 
-    const bust = (u) => u ? u + (u.indexOf("?") >= 0 ? "&" : "?") + "sx=1" : u;
-    const loadImage = (url, cross) => new Promise((res) => {
-      if (!url) return res(null);
-      const im = new Image(); if (cross) im.crossOrigin = "anonymous";
-      im.onload = () => res(im); im.onerror = () => res(null); im.src = url;
-    });
-    const drawCover = (img, x, y, w, h) => {
-      const ir = img.width / img.height, rr = w / h; let sw, sh, sx, sy;
-      if (ir > rr) { sh = img.height; sw = sh * rr; sx = (img.width - sw) / 2; sy = 0; }
-      else { sw = img.width; sh = sw / rr; sx = 0; sy = (img.height - sh) / 2; }
-      ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
-    };
-    const roundRect = (x, y, w, h, r) => { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); };
+    const { drawCover, roundRect, imagemDaCarta } = shared.canvasCardHelpers(ctx);
 
     for (let i = 0; i < top.length; i++) {
       const { card } = top[i];
@@ -1724,15 +1712,7 @@
       const y = MARGIN + HEADER_H + Math.floor(i / cols) * (CARD_H + GAP);
       ctx.save();
       roundRect(x, y, CARD_W, CARD_H, RADIUS); ctx.fillStyle = "#1d2028"; ctx.fill(); ctx.clip();
-      const src = shared.cardImageSources(card);
-      const noCors = card.game === "lorcana" || card.game === "onepiece";
-      let img;
-      if (noCors) {
-        img = await loadImage(`https://wsrv.nl/?url=${encodeURIComponent(src.url)}&output=webp`, true);
-      } else {
-        img = await loadImage(bust(src.url), true);
-        if (!img && src.fallback) img = await loadImage(bust(src.fallback), true);
-      }
+      const img = await imagemDaCarta(card);
       if (img) drawCover(img, x, y, CARD_W, CARD_H);
       ctx.restore();
       ctx.save(); roundRect(x, y, CARD_W, CARD_H, RADIUS); ctx.strokeStyle = "#2d333f"; ctx.lineWidth = 1.5; ctx.stroke(); ctx.restore();
@@ -1740,23 +1720,12 @@
     ctx.fillStyle = "#747d8d"; ctx.font = `700 22px ${FONT}`; ctx.textBaseline = "alphabetic";
     ctx.fillText("Sleevu · sleevu.app", MARGIN, height - MARGIN + 6);
 
-    const finish = () => { if (button) { button.disabled = false; labelEl.textContent = label; } };
-    try {
-      canvas.toBlob(async (blob) => {
-        if (!blob) { alert(t("sales.exportTainted")); finish(); return; }
-        // navigator.share (celular) manda direto pro WhatsApp/rede; senão baixa.
-        const file = new File([blob], "colecao-sleevu.png", { type: "image/png" });
-        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-          try { await navigator.share({ files: [file] }); finish(); return; } catch (e) { /* cancelou: baixa */ }
-        }
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url; a.download = "colecao-sleevu.png";
-        document.body.appendChild(a); a.click(); a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-        finish();
-      }, "image/png");
-    } catch (e) { alert(t("sales.exportTainted")); finish(); }
+    // share: no celular manda direto pro WhatsApp/rede em vez de baixar.
+    shared.baixarCanvasPng(canvas, "colecao-sleevu.png", {
+      share: true,
+      onFinish: () => { if (button) { button.disabled = false; labelEl.textContent = label; } },
+      onTainted: () => alert(t("sales.exportTainted"))
+    });
   }
 
   function bindShareButton() {

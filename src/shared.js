@@ -6653,6 +6653,8 @@
     // Materializa as escritas adiadas AGORA. Quem tira um snapshot pra desfazer
     // precisa disto: sem o flush, o timer do scheduleWrite dispara depois do
     // restore e regrava por cima o que o usuário acabou de desfazer.
+    canvasCardHelpers,
+    baixarCanvasPng,
     flushPendingWrites: flushWrites,
     // Stores que gravam chave SINCRONIZADA com localStorage.setItem direto
     // (decks/binders/vendas/graded/pastas/histórico) precisam avisar o laço de
@@ -7430,6 +7432,81 @@
       if (!(await pushRemote(token, uid, byGame[game], !!keepalive, game))) ok = false;
     }
     return ok;
+  }
+
+  // --- Vitrines em PNG (canvas): helpers comuns ------------------------------
+  // Três telas geram imagem de cartas — Coleção (vitrine), Vendas e Graded — e
+  // cada uma tinha a MESMA cozinha copiada: cache-buster, carregador com
+  // crossOrigin, recorte "cover", retângulo arredondado e o download. O que
+  // muda de verdade entre elas é o LAYOUT de cada célula, que fica em cada
+  // página. Aqui mora só o que era idêntico nas três.
+  function canvasCardHelpers(ctx) {
+    // Cache-buster: o tile/preview pode ter carregado a MESMA imagem SEM
+    // crossOrigin, poluindo o cache — e aí a carga com crossOrigin reusa a
+    // versão poluída e "taint"a o canvas. Uma query nova força um fetch CORS limpo.
+    const bust = (u) => (u ? u + (u.indexOf("?") >= 0 ? "&" : "?") + "sx=1" : u);
+    const loadImage = (url, cross) => new Promise((res) => {
+      if (!url) return res(null);
+      const im = new Image();
+      if (cross) im.crossOrigin = "anonymous";
+      im.onload = () => res(im);
+      im.onerror = () => res(null);
+      im.src = url;
+    });
+    const drawCover = (img, x, y, w, h) => {
+      const ir = img.width / img.height, rr = w / h;
+      let sw, sh, sx, sy;
+      if (ir > rr) { sh = img.height; sw = sh * rr; sx = (img.width - sw) / 2; sy = 0; }
+      else { sw = img.width; sh = sw / rr; sx = 0; sy = (img.height - sh) / 2; }
+      ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+    };
+    const roundRect = (x, y, w, h, r) => {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    };
+    // Lorcana (cards.lorcast.io) e One Piece (tcgplayer-cdn) NÃO mandam CORS →
+    // o crossOrigin falhava e caía no fallback (que é uma URL de Pokémon!).
+    // Roteia pela wsrv.nl (proxy com CORS) e NÃO usa o fallback nesses casos.
+    const imagemDaCarta = async (card) => {
+      const src = cardImageSources(card);
+      if (card.game === "lorcana" || card.game === "onepiece") {
+        return loadImage(`https://wsrv.nl/?url=${encodeURIComponent(src.url)}&output=webp`, true);
+      }
+      const img = await loadImage(bust(src.url), true);
+      if (img || !src.fallback) return img;
+      return loadImage(bust(src.fallback), true);
+    };
+    return { bust, loadImage, drawCover, roundRect, imagemDaCarta };
+  }
+  // Fecha a vitrine: blob → compartilhar (celular) ou baixar. `onTainted` cobre
+  // o caso de uma imagem sem CORS ter sujado o canvas (toBlob devolve null).
+  function baixarCanvasPng(canvas, filename, opts) {
+    const o = opts || {};
+    const fim = () => { if (typeof o.onFinish === "function") o.onFinish(); };
+    const falhou = () => { if (typeof o.onTainted === "function") o.onTainted(); fim(); };
+    try {
+      canvas.toBlob(async (blob) => {
+        if (!blob) return falhou();
+        if (o.share && navigator.share && navigator.canShare) {
+          const file = new File([blob], filename, { type: "image/png" });
+          if (navigator.canShare({ files: [file] })) {
+            try { await navigator.share({ files: [file] }); fim(); return; }
+            catch (e) { /* cancelou: cai no download */ }
+          }
+        }
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = filename;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        fim();
+      }, "image/png");
+    } catch (e) { falhou(); }
   }
 
   // --- Compartilhamento por link público (tabela `shares`) ---
