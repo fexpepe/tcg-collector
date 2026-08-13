@@ -31,7 +31,7 @@ catálogo completo só existe no build de produção.
 
 ## Os jogos
 
-O registro central é o `GAMES` em [src/game.js](src/game.js): **13 slugs**, 12 com
+O registro central é o `GAMES` em [src/game.js](src/game.js): **14 slugs**, 13 com
 catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do Pokémon
 é a raiz `data/` por motivo histórico (não movemos nada).
 
@@ -100,8 +100,10 @@ uma opção presente em 100% das cartas é descartada (filtro que não filtra na
 
 Pessoais: `collection`, `portfolio`, `wishlist`, `binders`, `graded` (slabs
 PSA/BGS/CGC/SGC/TAG, com valor automático da PPT), `sales` (vendas e trocas),
-`my-decks` (galeria + editor), `decks` (galeria pública da comunidade),
-`dashboard` (hub pessoal), `badges`, `backup`, `profile`, `settings`, `login`.
+`listas` (checklists de set ou avulsas, com export pra Liga — ver
+[docs/LISTAS.md](docs/LISTAS.md)), `my-decks` (galeria + editor), `decks`
+(galeria pública da comunidade), `dashboard` (hub pessoal), `badges`, `backup`,
+`profile`, `settings`, `login`.
 
 Conteúdo/institucional: `about`, `help`, `faq`, `privacy`, `terms`, `novidades`
 (renderiza `data/changelog.json`), `admin` (só o dono).
@@ -124,7 +126,7 @@ scripts/    sync de cada fonte + build (merge, split, prerender, hash, lint, D1)
 functions/  Cloudflare Pages Functions (API na borda).
 supabase/   migrações SQL versionadas + templates de e-mail.
 tests/      node:test (sem framework externo).
-docs/       BACKEND.md, DECKS.md e COMMUNITY-PRICES.md.
+docs/       BACKEND.md, DECKS.md, LISTAS.md e COMMUNITY-PRICES.md.
 ```
 
 Não há `package.json`: as ferramentas do build (esbuild, wrangler) são chamadas
@@ -188,17 +190,21 @@ globais quando o dado é cross-game:
 
 | Por jogo | Global |
 |---|---|
-| `collection-v3`, `collection-meta-v1` | `binders-all-v1`, `decks-all-v1` |
+| `collection-v3`, `collection-meta-v1` | `binders-all-v1`, `decks-all-v1`, `lists-all-v1` |
 | `wishlist-v1`, `wishlist-meta-v1` | `collection-folders-v1`, `collection-tags-v1` |
 | `prices-v1`, `history-v2` | `collection-sales-v1`, `collection-sold-v1`, `collection-costs-v1` |
-| | `collection-graded-v1`, `wishlist-targets-v1`, `favorites-v1` |
+| | `collection-graded-v1`, `wishlist-targets-v1`, `favorites-v1`, `favorites-meta-v1` |
 
 Fotos dos binders ficam no **IndexedDB** (WebP comprimido, com teto) e nunca
 sobem a servidor — nem para a nuvem, nem para o perfil público.
 
 Export/import em JSON e CSV pela página `backup.html`, incluindo importação de
-CSV do TCGplayer/Collectr com prévia. Com conta, tudo isso sincroniza (ver
-[docs/BACKEND.md](docs/BACKEND.md)); sem conta, o app funciona igual.
+CSV do TCGplayer/Collectr com prévia. Tudo isso sincroniza entre aparelhos (ver
+[docs/BACKEND.md](docs/BACKEND.md)). As páginas pessoais **exigem login** desde
+2026-07-14 (`enforceLoginGate` no shared.js) — o dado continua vivendo no
+aparelho (local-first), mas o cadastro não existe mais "sem conta". Aberto sem
+login: catálogo, busca, sets, decks públicos, perfis (`/users/<handle>`) e os
+links compartilhados (`?s=`).
 
 ---
 

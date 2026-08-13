@@ -25,8 +25,8 @@ o que é **viável** hoje:
 | **Yu-Gi-Oh!** | `cardType` (dá pra derivar Extra Deck), `attribute`, `monsterType` | 🟡 parcial |
 | **Flesh and Blood** | `cardType` (tem `Hero`), `pitch`, `talent` | 🟡 parcial (falta `class`) |
 | **Riftbound** | `cardType`, `domain`, `tag` | 🟡 parcial (regras do jogo ainda novas) |
-| **Pokémon** | só `category` (`Trainer`/vazio) | 🔴 modo livre |
-| **Magic** | **nenhum** (sem cor, custo ou tipo) | 🔴 modo livre |
+| **Pokémon** | `category`, `types`, `stage` | 🟢 pack próprio |
+| **Magic** | `type_line`, `mana_cost`, `cmc`, `colors`, `color_identity` | 🟢 pack próprio (8 formatos) |
 | **Naruto / HxH** | nenhum (vintage) | 🔴 modo livre — e tudo bem |
 
 **A ironia:** os dois jogos mais pedidos (Pokémon e Magic) são os mais pobres em
@@ -34,7 +34,12 @@ dados. Mas o conserto é barato — ver Fase 0.
 
 ---
 
-## 2. Fase 0 — enriquecer o catálogo (destrava tudo)
+## 2. Fase 0 — enriquecer o catálogo (destrava tudo) — ✅ FEITA
+
+> **Status (2026-08-13):** implementada. `sync-magic.mjs` grava `type_line`,
+> `mana_cost`, `cmc`, `colors` e `color_identity`; `sync-tcgdex.mjs` grava
+> `types` e `stage`. Os rule packs de Pokémon, Magic e Yu-Gi-Oh! estão em
+> `src/deck-rules.js`. O texto abaixo fica como registro do plano.
 
 Nenhuma fonte nova é necessária: **os dados já vêm na resposta da API e são
 descartados na hora de montar o objeto da carta.**
@@ -348,6 +353,16 @@ criar mais um bloco de metadados de deck, escope no container.
 ---
 
 ## 12. Decks públicos e comunidade
+
+> **Status (2026-08-13):** a galeria pública está NO AR, mas com uma
+> arquitetura diferente da desenhada aqui. O que foi construído: publicação
+> via `shares` com `kind='deck'` (migração 20260727a) e contagem de visitas
+> em `deck_views` (20260804a) — o destaque é por VISITAS. **Não existem**
+> tabela `decks` própria, `copies`/`likes`/`hot`, cron de recálculo, RPC
+> `copy_deck` com crédito de fork (o `forkedFrom` é só local) nem a camada
+> de moderação (`hidden` + reportar) que esta seção tratava como
+> pré-requisito — ela segue PENDENTE, com a galeria pública já aberta.
+> O texto abaixo é o plano original.
 
 Referências que o Fernando trouxe: [riftbound.gg/builder](https://riftbound.gg/builder/),
 [archidekt](https://archidekt.com/), [dreamborn.ink/decks](https://dreamborn.ink/decks).

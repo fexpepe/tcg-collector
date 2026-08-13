@@ -131,7 +131,7 @@ não se perdem). Entra em `SYNC_KEYS` e no backup JSON desde F0.
   o merge por chave (`a || b`) preserva o valor remoto — mesmo comportamento
   já validado com `tags`/`decks`. Nada quebra em rollout gradual.
 - **Backup**: incluir `lists` em `backupObject()`/`importJson()`
-  (`src/shared.js:7480/7508`). Obs.: `decks` está fora do backup hoje — bug
+  (`src/shared.js:7480/7508`). Obs.: ~~`decks` está fora do backup hoje~~ (CORRIGIDO em 2eb8ed4: decks entram no backup) — bug
   separado, já registrado como tarefa própria.
 
 ---
@@ -341,8 +341,8 @@ Uma lista exportada assim **importa num deck do site** sem conversão.
 
 `tests/liga-export.test.mjs`: linhas douradas por jogo (Magic com foil+treat,
 Pokémon com pad, One Piece com sufixo removido, entrada `v:null`, `q` nulo).
-**Atenção**: adicionar o teste novo ao workflow do CI explicitamente — hoje o
-CI roda só parte dos testes da pasta.
+(O CI roda `node --test tests/*.test.mjs` — a pasta inteira —, então teste novo
+entra pelo glob, sem mexer no workflow.)
 
 ---
 

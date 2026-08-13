@@ -10,7 +10,7 @@ Collectr — é a alternativa livre: sem cartão, sem plano "pro", sem limite de
 cartas, com export a qualquer momento. A sincronização na nuvem, que noutro
 produto seria o extra pago, aqui é grátis.
 
-Última revisão: 2026-08-07.
+Última revisão: 2026-08-13.
 
 ---
 
@@ -28,7 +28,13 @@ que não têm API, e ficam versionados como snapshot pra nunca regredir.
 **Coleção.** Por variante **e condição** (escala LigaPokémon: M/NM/SP/MP/HP/D),
 com quantidade por cópia. Páginas unificadas: a Coleção, o Portfólio, a Wishlist
 e as demais pessoais leem todos os jogos de uma vez e filtram por jogo dentro da
-página. Pastas, tags custom, custo pago por cópia e histórico de vendas.
+página. Pastas, custo pago por cópia e histórico de vendas.
+
+**Listas.** Checklist de um set ou lista avulsa, com modo compacto (uma linha
+por carta, sem imagem — a tela de cadastro em série), export pra LigaPokémon /
+texto / CSV, "aplicar à coleção" com prévia do delta e criar deck a partir da
+lista. As **tags custom viraram listas** (migração automática por navegador).
+Ver [docs/LISTAS.md](docs/LISTAS.md).
 
 **Portfólio.** Visão financeira da coleção: patrimônio (raw + graded, todos os
 jogos), valor no tempo, custo médio, lucro nas vendas realizadas, maiores altas
@@ -112,12 +118,13 @@ limits, uptime, analytics, zero migração pendente. Antes de divulgar:
 - semear conteúdo: o "Em destaque" da galeria é por visitas, então a vitrine não
   pode nascer vazia.
 
-### 3. Fase 0 dos decks — enriquecer o catálogo
-Os dois jogos mais pedidos (Pokémon e Magic) são os mais pobres em dados de deck,
-e **os campos já vêm na resposta da API e são descartados** ao montar a carta:
-`type_line`/`mana_cost`/`cmc`/`colors` no Scryfall, `types`/`stage` no TCGdex.
-São ~4 linhas em cada sync + re-sync, e tiram os dois do modo livre. Ver a seção
-"Fase 0" de [docs/DECKS.md](docs/DECKS.md).
+### 3. Regras de deck além de Pokémon, Magic e Yu-Gi-Oh!
+A "Fase 0" (enriquecer o catálogo) **está feita**: `sync-magic.mjs` grava
+`type_line`/`mana_cost`/`cmc`/`colors`/`color_identity` e o `sync-tcgdex.mjs`
+grava `types`/`stage`, e os rule packs de Pokémon, Magic (8 formatos) e
+Yu-Gi-Oh! vivem em [src/deck-rules.js](src/deck-rules.js). O que falta é o
+mesmo tratamento nos outros jogos, que seguem em modo livre — cada um precisa
+do seu pack (zonas, limite por carta, formatos).
 
 ### 4. Magic em português
 O catálogo está em EN v1 e o Scryfall já traz nome e imagem impressos em pt —

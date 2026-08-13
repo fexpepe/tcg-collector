@@ -84,8 +84,8 @@ Sem a tabela ou a RPC, a galeria degrada sozinha em vez de quebrar.
 
 O blob de cada linha de `collections` é montado a partir de `SYNC_KEYS`
 ([src/shared.js](../src/shared.js)): as chaves **por jogo** (coleção, wishlist,
-preços, histórico) mais as **globais** (binders, decks, pastas, vendas, graded,
-tags, vendidos, custos, preço-alvo, favoritos). As globais são gravadas
+preços, histórico) mais as **globais** (binders, decks, listas, pastas, vendas,
+graded, tags, vendidos, custos, preço-alvo, favoritos). As globais são gravadas
 redundantemente em cada linha de jogo e reconciliadas no merge.
 
 O sync é **multi-jogo**: todo pull/push percorre os slugs, não só o jogo da
