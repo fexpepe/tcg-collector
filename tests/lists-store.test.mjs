@@ -78,6 +78,27 @@ test("toggleEntry: liga e desliga o par exato", () => {
   assert.equal(st.entriesOf(l.id).length, 0);
 });
 
+test("sem variante (tile agrupado) opera no nível da CARTA — direção inversa do marcador", () => {
+  const { api } = fresh();
+  const st = api.createListStore();
+  const l = st.create({ name: "x" });
+  st.addEntry(l.id, "base1-4", { v: "Foil", q: 2 });
+
+  // Pergunta sem variante enxerga a entrada Foil (antes: desmarcado no popover
+  // agrupado, e o clique criava um marcador DUPLICADO — countOf virava 3).
+  assert.equal(st.has(l.id, "base1-4", null), true, "entrada com variante conta no nível da carta");
+  assert.deepEqual(arr(st.listsWith("base1-4", null)), [l.id]);
+
+  // Desmarcar sem variante remove TODAS as entradas da carta (é o que o
+  // checkbox afirma), não cria segundo registro.
+  assert.equal(st.toggleEntry(l.id, "base1-4", { v: null }), false);
+  assert.equal(st.entriesOf(l.id).length, 0, "Foil saiu junto — nada de marcador extra");
+
+  // E marcar de novo sem variante cria o marcador normalmente.
+  assert.equal(st.toggleEntry(l.id, "base1-4", { v: null }), true);
+  assert.equal(st.countOf(l.id), 1);
+});
+
 test("remove: deixa tombstone e persiste no localStorage", () => {
   const { ls, api, flush } = fresh();
   const st = api.createListStore();

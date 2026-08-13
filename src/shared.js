@@ -829,7 +829,12 @@
         const l = get(listId);
         if (!l) return false;
         if (findEntry(l, cardId, variant)) return true;
-        return variant != null && !!findEntry(l, cardId, null);
+        // Pergunta SEM variante (tile agrupado): "a carta está na lista?" —
+        // QUALQUER entrada dela conta, não só o marcador de v nulo. Sem isso,
+        // a carta guardada como Foil aparecia desmarcada no popover agrupado e
+        // o clique criava um marcador duplicado (countOf passava a contar 2).
+        if (variant == null) return l.entries.some((e) => e.id === String(cardId));
+        return !!findEntry(l, cardId, null);
       },
       // Toggle do popover: liga/desliga o par na lista. Devolve true se ficou.
       toggleEntry(listId, cardId, opts) {
@@ -837,10 +842,24 @@
         if (!l) return false;
         const o = opts || {};
         const variant = o.v == null ? null : String(o.v);
+        if (variant == null) {
+          // Toggle SEM variante (tile agrupado) opera no nível da CARTA, o
+          // mesmo nível da pergunta do has(): desmarcar remove TODAS as
+          // entradas dela — é o que o checkbox afirma — e marcar cria o
+          // marcador. Antes, só o marcador exato era visto: a carta guardada
+          // como Foil ganhava um segundo registro em vez de ser desmarcada.
+          const cid = String(cardId);
+          if (l.entries.some((e) => e.id === cid)) {
+            l.entries = l.entries.filter((e) => e.id !== cid);
+            touch(l);
+            return false;
+          }
+          return !!this.addEntry(listId, cardId, o);
+        }
         if (findEntry(l, cardId, variant)) { this.removeEntry(listId, cardId, variant); return false; }
         // Desmarcar uma carta que entrou como marcador (v nulo) também precisa
         // funcionar quando o clique vem de um tile com variante.
-        if (variant != null && findEntry(l, cardId, null)) { this.removeEntry(listId, cardId, null); return false; }
+        if (findEntry(l, cardId, null)) { this.removeEntry(listId, cardId, null); return false; }
         return !!this.addEntry(listId, cardId, o);
       },
       // Ids das listas que contêm a carta (para o popover marcar os checks).
