@@ -130,7 +130,19 @@ docs/       BACKEND.md, DECKS.md, LISTAS.md e COMMUNITY-PRICES.md.
 ```
 
 Não há `package.json`: as ferramentas do build (esbuild, wrangler) são chamadas
-via `npx --yes` no CI.
+via `npx --yes` no CI, e o cron do push usa `npm install --no-save web-push@3`.
+**Pegadinha ao instalar algo localmente:** sem `package.json`, um `npm install
+<pacote>` na raiz PODA o que já estava em `node_modules` — instale sempre com
+`--no-save` e reinstale o que sumir.
+
+Ferramentas que rodam à mão (não estão em workflow nenhum):
+
+| Script | Para quê | Pré-requisito |
+|---|---|---|
+| `scripts/smoke-pages.mjs` | abre 24 páginas em navegador real e acusa erro de console/página vazia | `npm install playwright --no-save` + servidor local |
+| `scripts/diff-computed-style.mjs` | confere que o `split-css.mjs` não mudou nenhum estilo computado (antes × depois, em duas portas) | idem |
+| `scripts/test-d1-search.mjs` | prova a busca da borda contra um SQLite real | `node scripts/build-d1.mjs` (gera `out/d1-cards.sql`); com o dump desatualizado ele acusa falhas que não são do código |
+| `scripts/seo-meta.mjs` | codemod de `<head>` do rebrand — **destrutivo, reescreve todos os HTML** | commit limpo e revisar o diff depois |
 
 ---
 

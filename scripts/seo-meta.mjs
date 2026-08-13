@@ -1,3 +1,9 @@
+// ATENÇÃO — CODEMOD DESTRUTIVO, RODADA ÚNICA: este script REESCREVE o <head> de
+// TODOS os .html da raiz de uma vez (readdir + writeFile), sem backup e sem
+// --dry-run. Foi usado no rebrand (8dcfb4c) e não faz parte de nenhum workflow.
+// Antes de rodar de novo: commit limpo, e confira o `git diff` arquivo a
+// arquivo depois — as páginas ganharam <meta> desde então (viewport-fit,
+// theme-color por esquema) que ele não conhece.
 // Injetor de meta tags de SEO/social nas paginas HTML. Como o site e um MPA
 // estatico sem template, cada <head> e independente — este script mantem o
 // bloco de canonical/OpenGraph/Twitter uniforme em todas as paginas.

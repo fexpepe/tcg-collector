@@ -5,7 +5,11 @@
 // ou um espaçamento diferente numa tela que ninguém abriu.
 // Uso: sirva o antes na 8899 e o depois na 8866, e rode `node scripts/diff-computed-style.mjs`.
 // Meta: "nenhum estilo mudou".
-import { chromium } from "/opt/node22/lib/node_modules/playwright/index.mjs";
+// O import é resolvido normalmente (node_modules): o caminho absoluto que
+// estava aqui era o de uma máquina Linux específica e quebrava no Windows, que
+// é justamente onde este script é rodado à mão. Precisa de `npm install
+// playwright --no-save` antes (ver README).
+import { chromium } from "playwright";
 const paginas = ["index.html", "login.html", "decks.html", "my-decks.html", "portfolio.html",
   "settings.html", "profile.html", "admin.html", "wishlist.html", "sales.html", "help.html",
   "hub.html", "sets.html?game=pokemon", "collection.html", "faq.html", "binders.html", "graded.html"];
