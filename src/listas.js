@@ -42,6 +42,29 @@
     return entry;
   }
 
+  // Hidratação que aceita lista SEM jogo (migrada de tag cross-game, game null).
+  // O jogo de cada id sai da coleção local (a tag marcava carta que a pessoa
+  // tem); id que não está em coleção nenhuma fica sem carta — a linha mostra o
+  // id cru, porque chutar um catálogo era o bug (carregava o do Pokémon e, pior,
+  // a adição vinculada gravava na coleção do jogo da SESSÃO).
+  // Devolve sempre a MESMA entrada mutável (`__mista` no cache) pra carta achada
+  // depois — pela busca, por ex. — aparecer no painel de entradas sem re-hidratar.
+  async function hydrateList(game, ids) {
+    if (game) return ensureCards(game, ids);
+    const entry = catalogCache.__mista || (catalogCache.__mista = { byId: {} });
+    const porJogo = {};
+    (ids || []).forEach((id) => {
+      if (entry.byId[id]) return;
+      const g = shared.GAME_SLUGS.find((s) => ownedFor(s).has(id));
+      if (g) (porJogo[g] = porJogo[g] || []).push(id);
+    });
+    await Promise.all(Object.keys(porJogo).map(async (g) => {
+      const c = await ensureCards(g, porJogo[g]);
+      porJogo[g].forEach((id) => { if (c.byId[id]) entry.byId[id] = c.byId[id]; });
+    }));
+    return entry;
+  }
+
   // Índice de sets do jogo ([{ name, cardIds }]): leve, e é o que dá a lista de
   // sets do wizard E os ids do checklist, sem tocar o catálogo.
   const setsCache = {};
@@ -66,7 +89,9 @@
   function entryValue(list, entry, card) {
     if (!card) return 0;
     const variant = entry.v || shared.defaultVariant(card);
-    const unit = (shared.cardValue(card, variant, pricesFor(list.game), entry.c) || {}).value || 0;
+    // Jogo da CARTA primeiro: lista migrada de tag pode não ter jogo (null
+    // cairia no store de preços manuais do jogo da sessão).
+    const unit = (shared.cardValue(card, variant, pricesFor(card.game || list.game), entry.c) || {}).value || 0;
     return unit * (entry.q == null ? 1 : entry.q);
   }
   function listValue(list, byId) {
@@ -238,7 +263,7 @@
       // convertMoney devolve null e cardValue cai pra 0 — o painel sairia zerado
       // mesmo com preço no catálogo.
       const [c] = await Promise.all([
-        ensureCards(list.game, store.cardIdsOf(list.id)),
+        hydrateList(list.game, store.cardIdsOf(list.id)),
         shared.loadFxRates()
       ]);
       cat = c;
@@ -278,23 +303,50 @@
     sourceLoading = true;
     renderSource();
     let hits = null;
-    // Caminho frio: a borda responde em KB enquanto o índice (8 MB no Magic)
-    // baixa em segundo plano. Depois que ele está na memória, a busca local é
-    // instantânea e sem rede.
-    if (!shared.searchIndexLoaded(current.game)) {
-      const pApi = shared.searchApi(current.game, q, 60);
-      shared.loadSearchIndex(current.game).catch(() => { /* o local reporta */ });
-      hits = await pApi;
+    const jogo = current.game;
+    if (!jogo) {
+      // Lista sem jogo (migrada de tag cross-game): só a borda busca em todos
+      // os catálogos de uma vez (game=all, cada hit traz o jogo em h.g). O
+      // índice local é por jogo — usar um seria chutar o catálogo errado, que
+      // era exatamente o bug (mandava game=null: 400 + pausa da bridge).
+      hits = (await shared.searchApi("all", q, 60)) || [];
       if (seq !== searchSeq) return;
-    }
-    if (!hits) {
-      const idx = await shared.loadSearchIndex(current.game).catch(() => []);
-      if (seq !== searchSeq) return;
-      const nq = norm(q);
-      hits = idx.filter((e) => norm(e.n).includes(nq) || norm(e.u) === nq).slice(0, 60);
+    } else {
+      // Caminho frio: a borda responde em KB enquanto o índice (8 MB no Magic)
+      // baixa em segundo plano. Depois que ele está na memória, a busca local é
+      // instantânea e sem rede.
+      if (!shared.searchIndexLoaded(jogo)) {
+        const pApi = shared.searchApi(jogo, q, 60);
+        shared.loadSearchIndex(jogo).catch(() => { /* o local reporta */ });
+        hits = await pApi;
+        if (seq !== searchSeq) return;
+      }
+      // VAZIO não é resposta final (mesma regra do explore.js): a borda devolve
+      // [] com o banco em recarga de deploy, e um vazio antigo pode ficar preso
+      // em cache — só o índice local pode afirmar "essa carta não existe".
+      if (!hits || !hits.length) {
+        const idx = await shared.loadSearchIndex(jogo).catch(() => []);
+        if (seq !== searchSeq) return;
+        const nq = norm(q);
+        hits = idx.filter((e) => norm(e.n).includes(nq) || norm(e.u) === nq).slice(0, 60);
+      }
     }
     try {
-      const c = await ensureCards(current.game, hits.map((h) => h.i));
+      let c;
+      if (jogo) {
+        c = await ensureCards(jogo, hits.map((h) => h.i));
+      } else {
+        // Hidrata por jogo (h.g vem do D1) e acumula na mesma entrada mista da
+        // hidratação inicial — o painel de entradas enxerga a carta na hora.
+        const porJogo = {};
+        hits.forEach((h) => { const g = h.g || "pokemon"; (porJogo[g] = porJogo[g] || []).push(h.i); });
+        const mista = catalogCache.__mista || (catalogCache.__mista = { byId: {} });
+        await Promise.all(Object.keys(porJogo).map(async (g) => {
+          const cg = await ensureCards(g, porJogo[g]);
+          porJogo[g].forEach((id) => { if (cg.byId[id]) mista.byId[id] = cg.byId[id]; });
+        }));
+        c = mista;
+      }
       if (seq !== searchSeq) return;
       sourceCards = hits.map((h) => c.byId[h.i]).filter(Boolean);
     } catch (e) { sourceCards = []; }
@@ -398,7 +450,7 @@
           <footer class="lst-panel-foot">
             <button type="button" class="lst-mini" data-list-export>${esc(t("lists.export"))}</button>
             ${list.linked ? "" : `<button type="button" class="lst-mini" data-list-apply>${esc(t("lists.applyToCollection"))}</button>`}
-            <button type="button" class="lst-mini" data-list-deck>${esc(t("lists.makeDeck"))}</button>
+            ${list.game ? `<button type="button" class="lst-mini" data-list-deck>${esc(t("lists.makeDeck"))}</button>` : ""}
             <button type="button" class="lst-mini danger" data-list-del>${esc(t("lists.delete"))}</button>
           </footer>
         </section>
@@ -458,7 +510,9 @@
   function addToList(card, variant, condition, qty) {
     const entry = store.addEntry(current.id, card.id, { v: variant, c: condition, q: qty });
     if (!entry) { alert(t("lists.entryLimit", { n: store.LIST_ENTRIES_LIMIT })); return; }
-    if (current.linked) ownedFor(current.game).add(card.id, variant, condition, qty);
+    // O jogo vem da CARTA, não da lista: lista migrada de tag pode não ter jogo
+    // (null caía no jogo da sessão via gameKey e gravava na coleção errada).
+    if (current.linked) ownedFor(card.game || current.game).add(card.id, variant, condition, qty);
     lastCondition = condition;
     renderEntries();
     renderSource();
@@ -617,6 +671,9 @@
   // ===========================================================================
   const DECKS_KEY = "tcg-collector-decks-all-v1";
   function criarDeckDaLista() {
+    // Deck tem UM jogo; lista migrada mista (game null) não vira deck — o botão
+    // nem é renderizado nesse caso, isto é só o cinto de segurança.
+    if (!current || !current.game) return;
     const rules = window.TCGDeckRules;
     const pack = rules ? rules.packFor(current.game, null) : null;
     const zones = {};

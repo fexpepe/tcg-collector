@@ -550,7 +550,7 @@
     return String(cardId) + "|" + (variant == null ? "" : String(variant));
   }
 
-  // Migração TAGS -> LISTAS (one-time, por navegador). Uma tag vira uma lista
+  // Migração TAGS -> LISTAS (por navegador). Uma tag vira uma lista
   // VINCULADA (a tag marcava carta que a pessoa tem) com entradas MARCADORAS:
   // `v`/`q` nulos, porque tag não tinha versão nem quantidade — inventar "1
   // cópia Normal NM" seria fabricar dado de coleção que ninguém digitou.
@@ -559,37 +559,90 @@
   // lendo dele, e o merge do sync não pode ver a chave sumir. Ele simplesmente
   // congela; a limpeza fica pra quando a feature tiver rodado alguns ciclos.
   // Idempotente: `fromTag` marca o que já veio, então rodar de novo não duplica.
+  //
+  // INCREMENTAL: a UI nova não grava mais tags (os escritores foram removidos),
+  // mas um device com app-shell antigo em CACHE continua gravando no blob
+  // legado — e o assign sincroniza. Cada passada também puxa assigns NOVOS de
+  // tags já migradas pra lista correspondente; sem isso a escrita do device
+  // antigo não aparecia em lugar nenhum (nem na Lista, nem no perfil — o
+  // readTagsData pula tags migradas de propósito). Remoção NÃO propaga: apagar
+  // no device antigo vs. ter editado a lista aqui é ambíguo, e perder entrada
+  // por engano é pior do que sobrar um marcador.
+  // O fast-path por updatedAt (chave local, fora do sync) evita re-diffar em
+  // toda leitura — o diff só roda quando o blob de tags realmente mudou.
+  const TAGS_SEEN_KEY = "tcg-collector-tags-migrated-seen-v1";
   function migrateTagsToLists(data) {
     let raw = null;
     try { raw = JSON.parse(localStorage.getItem(TAGS_KEY) || "null"); } catch (e) { return false; }
     const tags = raw && Array.isArray(raw.tags) ? raw.tags : [];
     if (!tags.length) return false;
+    const stamp = String(Number(raw.updatedAt) || 0);
+    let seen = null;
+    try { seen = localStorage.getItem(TAGS_SEEN_KEY); } catch (e) { /* sem fast-path */ }
+    if (seen === stamp) return false;
     const assign = (raw.assign && typeof raw.assign === "object") ? raw.assign : {};
-    const jaVeio = new Set(data.lists.map((l) => l.fromTag).filter(Boolean));
+    const porTag = new Map(data.lists.filter((l) => l.fromTag).map((l) => [l.fromTag, l]));
     // Uma lista apagada de propósito não volta: o tombstone é a memória disso.
     const apagadas = new Set(Object.keys(data.deleted || {}));
+    // Jogo de uma carta SEM catálogo carregado: os blobs de coleção locais
+    // sabem (tag marcava carta que a pessoa tem). Prefixo de id não serve —
+    // Pokémon (base1-4) e Lorcana (1-1) são ambos sem prefixo. Falhou = null,
+    // e o editor de listas trata null buscando via borda (game=all).
+    const gameOfLocal = (cardId) => GAME_SLUGS.find((g) => createCollectionStore(g).has(cardId)) || null;
+    const deriveGame = (entries) => {
+      let game = null;
+      for (const e of entries) {
+        const g = gameOfLocal(e.id);
+        if (!g) continue;
+        if (game && game !== g) return null; // mista de verdade: fica sem jogo
+        game = g;
+      }
+      return game;
+    };
     let mudou = false;
     tags.forEach((tg) => {
-      if (!tg || !tg.id || jaVeio.has(tg.id)) return;
-      const entries = Object.keys(assign)
+      if (!tg || !tg.id) return;
+      const querEntradas = Object.keys(assign)
         .filter((cardId) => (assign[cardId] || []).includes(tg.id))
         .map((cardId) => ({ id: cardId, v: null, q: null, c: null, at: 0 }));
+      const lista = porTag.get(tg.id);
+      if (lista) {
+        // Já migrada: só entra o que a lista ainda não tem (por id — carta
+        // presente com variante concreta não ganha marcador duplicado).
+        const temIds = new Set(lista.entries.map((e) => e.id));
+        const novos = querEntradas.filter((e) => !temIds.has(e.id));
+        if (novos.length && lista.entries.length + novos.length <= LIST_ENTRIES_LIMIT) {
+          lista.entries = lista.entries.concat(novos);
+          lista.updatedAt = Date.now();
+          mudou = true;
+        }
+        return;
+      }
       const id = "ls_t_" + String(tg.id).replace(/^t_/, "");
       if (apagadas.has(id)) return;
       data.lists.push({
         id: id,
         name: String(tg.name || "").slice(0, LIST_NAME_MAX),
         color: safeColor(tg.color) || "#3b6fe0",
-        game: null,               // tags eram cross-game
+        game: deriveGame(querEntradas), // tag de um jogo só ganha o jogo; mista fica null
         set: null,
         linked: true,
-        entries: entries,
+        entries: querEntradas,
         fromTag: tg.id,
         createdAt: Date.now(),
         updatedAt: Date.now()
       });
       mudou = true;
     });
+    // Reparo das listas migradas ANTES do carimbo de jogo (nasciam com null e
+    // o editor assumia jogo de verdade — chegou a gravar coleção do jogo da
+    // sessão). Idempotente: quem ganhou jogo não volta aqui.
+    data.lists.forEach((l) => {
+      if (!l.fromTag || l.game || !l.entries.length) return;
+      const g = deriveGame(l.entries);
+      if (g) { l.game = g; l.updatedAt = Date.now(); mudou = true; }
+    });
+    try { localStorage.setItem(TAGS_SEEN_KEY, stamp); } catch (e) { /* sem fast-path, segue */ }
     return mudou;
   }
 
@@ -606,7 +659,10 @@
       listsCache = { lists: [], deleted: {} };
     }
     if (migrateTagsToLists(listsCache)) {
-      try { localStorage.setItem(LISTS_KEY, JSON.stringify(listsCache)); } catch (e) { /* cota: fica só em memória */ }
+      try {
+        localStorage.setItem(LISTS_KEY, JSON.stringify(listsCache));
+        marcaSuja(LISTS_KEY); // escrita direta: o que a migração puxou precisa subir no sync
+      } catch (e) { /* cota: fica só em memória */ }
     }
     return listsCache;
   }
