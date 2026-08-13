@@ -856,11 +856,20 @@
       ? `<span class="binder-slot-info" role="button" tabindex="0" data-slot-info="${index}" aria-label="${escapeAttribute(t("binders.slot.info"))}">${escapeHtml(t("binders.slot.info"))}</span>`
       : "";
 
+    // Setas ‹ › de reordenação — alternativa de TOQUE ao arrastar (HTML5 drag
+    // não dispara em touch; ver o comentário do dragstart). Só aparecem em
+    // @media (hover: none), via CSS. Reusa as chaves de i18n das setas da
+    // Coleção (folders.moveBack/moveFwd), que já existem nos 3 idiomas.
+    const moveBtns = `<span class="binder-slot-move">
+        <span role="button" tabindex="0" data-slot-move="-1" aria-label="${escapeAttribute(t("folders.moveBack"))}">‹</span>
+        <span role="button" tabindex="0" data-slot-move="1" aria-label="${escapeAttribute(t("folders.moveFwd"))}">›</span>
+      </span>`;
     return `<button type="button" class="binder-slot binder-slot-filled${ownable && !owned ? " not-owned" : ""}" data-slot-index="${index}" draggable="true" title="${escapeAttribute(title)}">
       <span class="binder-slot-media">${media}</span>
       ${flagHtml}
       <span class="binder-slot-actions">${ownBtn}${infoBtn}</span>
       ${wantBtn}
+      ${moveBtns}
       ${priceTag}
     </button>`;
   }
@@ -1707,6 +1716,17 @@
       if (slot && slot.cardId) {
         ensureCatalog().then(() => cardPreview.open(slot.cardId, slot.variant || "Normal"));
       }
+      return;
+    }
+    // Setas ‹ ›: troca com o vizinho (mesma conta do drop do arrastar). Precisa
+    // vir ANTES do branch do slot — o toque na seta não pode abrir o editor.
+    const mv = event.target.closest("[data-slot-move]");
+    if (mv) {
+      event.stopPropagation();
+      const slotEl = mv.closest("[data-slot-index]");
+      const binder = eventBinder(mv);
+      const from = slotEl ? Number(slotEl.dataset.slotIndex) : -1;
+      if (binder && from >= 0) { moveSlot(binder, from, from + Number(mv.dataset.slotMove)); render(); }
       return;
     }
     const slotBtn = event.target.closest("[data-slot-index]");

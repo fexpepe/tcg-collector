@@ -6935,6 +6935,12 @@ a.dash-profile-handle:hover, a.shared-kind:hover,
   justify-content: center;
   gap: 18px;
 }
+/* Celular: as páginas EMPILHAM. Lado a lado, um binder 3×3 aberto virava 6
+   colunas de ~48px numa tela de 360px (4×3 → 8 colunas de ~35px) — cartas
+   ilegíveis e alvos intocáveis. Uma página por vez, largura toda. */
+@media (max-width: 700px) {
+  .binder-spread { flex-direction: column; align-items: stretch; }
+}
 .binder-spread .binder-page {
   flex: 1 1 0;
   min-width: 0;
@@ -7011,6 +7017,50 @@ a.dash-profile-handle:hover, a.shared-kind:hover,
 .binder-slot:focus-within .binder-slot-actions {
   opacity: 1;
   pointer-events: auto;
+}
+/* Setas ‹ › de reordenação por TOQUE (alternativa ao arrastar, que é só
+   desktop — HTML5 drag não dispara em touch). Escondidas por padrão; o bloco
+   @media (hover: none) abaixo as liga. O contêiner não captura toque
+   (pointer-events: none) pro miolo do slot continuar abrindo o editor. */
+.binder-slot-move {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  justify-content: space-between;
+  z-index: 3;
+  pointer-events: none;
+}
+.binder-slot-move [data-slot-move] {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 44px;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  opacity: 0.88;
+}
+/* TOQUE (sem hover): ações do slot SEMPRE visíveis. Com opacity:0 +
+   pointer-events:none reveladas só no :hover, "Tenho"/"Info" eram inalcançáveis
+   no celular — o fallback que .binder-card-acts já tinha faltava aqui. */
+@media (hover: none) {
+  .binder-slot-actions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .binder-slot-want,
+  .binder-slot-flag {
+    opacity: 1;
+  }
+  .binder-slot-move { display: flex; }
 }
 .binder-slot-own,
 .binder-slot-info {
