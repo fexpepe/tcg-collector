@@ -315,7 +315,7 @@ img, svg, video, canvas {
    celular. `min-width: 0` devolve o controle ao grid.
    :where() = especificidade ZERO: qualquer regra específica continua vencendo. */
 :where(.card-grid, .group-grid, .deck-grid, .deck-tiles, .deck-ed-cols, .deck-facets,
-       .dash-links, .dash-main, .backup-grid, .bdg-grid, .home-top-row,
+       .dash-links, .dash-main, .backup-grid, .bdg-grid,
        .lp-grid, .lp-stats, .detail-summary, .detail-hero, .help-layout) > * {
   min-width: 0;
 }
@@ -998,13 +998,6 @@ input::placeholder {
   margin-bottom: 12px;
   border-bottom: 1px solid var(--line);
 }
-.folder-collapse {
-  border: 0; background: transparent; color: var(--text);
-  cursor: pointer; font-size: 14px; line-height: 1;
-  padding: 2px 4px; border-radius: 6px;
-  transition: transform 120ms ease;
-}
-.folder-section.is-collapsed .folder-collapse { transform: rotate(-90deg); }
 .folder-section.is-collapsed .card-grid { display: none; }
 
 .folder-name { font-size: 16px; font-weight: 800; }
@@ -1053,7 +1046,6 @@ input::placeholder {
 /* "+ Adicionar cartas" (cabeçalho da tag aberta): rótulo de texto — largura
    automática (o .folder-act base é 30px pra ícones e o texto vazava por baixo
    do botão Compartilhar). */
-.tag-add-btn { width: auto; padding: 0 11px; font-size: 12.5px; font-weight: 700; white-space: nowrap; }
 .folder-share-btn:hover { background: var(--accent); color: #fff; }
 /* "Trocar capa": pill com rótulo (largura automática), igual o compartilhar, pra
    o texto não vazar do botão de 30px e encavalar nos vizinhos. */
@@ -1117,26 +1109,11 @@ input::placeholder {
 .preview-tags-row { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--subtle); font-weight: 700; }
 /* Caixa de Tags com o MESMO tamanho do select de Coleção (mesma altura/largura):
    vira um campo com borda; chips e "+ Tag" ficam dentro. */
-.preview-tags-ctl { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; box-sizing: border-box; width: 100%; min-height: 35px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
-.preview-tag-chip {
-  display: inline-flex; align-items: center; gap: 4px; min-height: 0; cursor: pointer;
-  font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px;
-  background: color-mix(in srgb, var(--tag) 16%, transparent);
-  color: var(--tag); border: 1px solid color-mix(in srgb, var(--tag) 40%, transparent);
-}
 .preview-tags-add {
   min-height: 0; cursor: pointer; font-size: 11px; font-weight: 800; padding: 3px 8px;
   border-radius: 6px; border: 1px dashed var(--line); color: var(--subtle); background: transparent;
 }
 .preview-tags-add:hover { border-color: var(--accent); color: var(--accent); }
-.preview-tags-panel { flex-basis: 100%; display: flex; flex-direction: column; gap: 2px; margin-top: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
-.preview-tag-opt { display: flex; align-items: center; gap: 8px; min-height: 0; text-align: left; padding: 6px 8px; border: 0; border-radius: 6px; background: transparent; color: var(--text); font: inherit; font-weight: 600; font-size: 13px; cursor: pointer; }
-.preview-tag-opt:hover { background: var(--panel); }
-.preview-tag-opt.on { color: var(--accent); font-weight: 800; }
-.preview-tag-opt.on::after { content: "✓"; margin-left: auto; }
-.preview-tag-sw { width: 12px; height: 12px; border-radius: 3px; flex: none; }
-.preview-tag-new { color: var(--accent); font-weight: 800; border-top: 1px solid var(--line); border-radius: 0; margin-top: 2px; }
-.preview-tags-empty { padding: 4px 8px; color: var(--subtle); font-size: 12px; }
 
 /* --- Vendas (cartas à venda com preço) --- */
 .sales-toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
@@ -1187,15 +1164,6 @@ input::placeholder {
   border-color: rgba(var(--accent-rgb), 0.55);
   box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.25), var(--shadow);
 }
-.graded-label {
-  position: absolute; top: 0; left: 0; right: 0; z-index: 3;
-  display: flex; align-items: center; gap: 6px;
-  padding: 4px 10px; border-radius: 11px 11px 0 0;
-  background: var(--slab-bg, #c8102e); color: var(--slab-fg, #fff);
-  font-weight: 800; letter-spacing: .02em; box-shadow: 0 1px 5px rgba(0,0,0,.3);
-}
-.graded-label-co { font-size: 13px; }
-.graded-label-grade { font-size: 15px; }
 /* Badge da graduadora+nota (ex.: "PSA 9") na linha da variante do tile graded —
    no lugar do "Foil"/variante, com a cor da graduadora. Diferencia das cartas
    normais sem mudar o formato do card (imagem limpa em cima, infos embaixo). */
@@ -1235,11 +1203,6 @@ input::placeholder {
 }
 .graded-cert:focus { outline: none; border-color: var(--accent); color: var(--text); }
 /* Etiqueta de graduadora na view compartilhada (?s= / perfil): banda escura sobre o topo. */
-.graded-tile-shared .card-image { position: relative; }
-.graded-label-shared {
-  position: absolute; top: 0; left: 0; right: 0; z-index: 3; justify-content: flex-start;
-  background: rgba(17,19,24,.92); color: #fff; border-radius: 11px 11px 0 0;
-}
 .sales-picker-hint { margin: 0 0 8px; font-size: 12px; color: var(--subtle); }
 
 /* Grade de Vendas: cartas um pouco menores que a coleção. */
@@ -1633,9 +1596,6 @@ input::placeholder {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-.card-body {
-  padding: 14px;
-}
 
 .card h3 {
   margin: 0;
@@ -1712,11 +1672,6 @@ input::placeholder {
 }
 .variant-conditions[open] .variant-chevron { transform: rotate(180deg); }
 
-.variant-total {
-  color: var(--accent);
-  font-weight: 800;
-  font-size: 13px;
-}
 
 .condition-grid {
   display: grid;
@@ -1800,24 +1755,7 @@ input::placeholder {
   border: 1px solid rgba(var(--accent-rgb), 0.28);
 }
 
-.details-link {
-  min-height: 38px;
-  margin-top: 12px;
-  border-radius: 7px;
-  background: var(--panel-strong);
-  color: var(--text);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 800;
-}
 
-.details-link:hover {
-  background: #2c3441;
-}
 
 .group-card {
   background: var(--panel);
@@ -2090,28 +2028,6 @@ input::placeholder {
 }
 .set-title-row .tag { flex: none; }
 
-.set-meta {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-.set-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 11px;
-  border-radius: 999px;
-  background: var(--panel-strong);
-  border: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 12.5px;
-  font-weight: 600;
-}
-.set-pill strong { color: var(--text); font-weight: 700; }
-.set-pill .set-value { color: var(--money); }
 
 .set-footer {
   display: flex;
@@ -2348,7 +2264,6 @@ input::placeholder {
   text-decoration: none;
 }
 .pokemon-step:hover { border-color: var(--accent-dark); }
-.pokemon-step-next { flex-direction: row-reverse; text-align: right; }
 .pokemon-step-sprite { width: 40px; height: 40px; flex: none; object-fit: contain; }
 .pokemon-step-text { display: flex; flex-direction: column; min-width: 0; }
 .pokemon-step-num { font-size: 11px; font-weight: 700; color: var(--subtle); }
@@ -3012,12 +2927,6 @@ a.preview-print:hover { background: var(--panel); }
     margin-top: 4px;
   }
 
-  /* Mega-menu no drawer: largura total e colunas empilhadas. No mobile os itens
-     ficam à DIREITA (igual ao menu principal do drawer); à esquerda é só no
-     desktop. */
-  .app-header-inner .nav-dropdown.nav-mega { min-width: 0; width: 100%; }
-  .app-header-inner .nav-mega-cols { grid-template-columns: 1fr; }
-  .app-header-inner .nav-mega-head { text-align: right; }
   /* No drawer mobile TODO dropdown (Explorar e Coleção) fica à direita, igual ao
      menu principal; à esquerda é só no desktop. */
   .app-header-inner .page-nav .nav-dropdown a { justify-content: flex-end; text-align: right; }
@@ -3196,61 +3105,8 @@ a.preview-print:hover { background: var(--panel); }
   min-height: 100dvh; /* ver o comentário do body */
 }
 
-.button-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 38px;
-  padding: 0 18px;
-  border-radius: 7px;
-  background: var(--accent);
-  color: var(--on-accent);
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.button-link:hover {
-  background: var(--accent-dark);
-  color: var(--on-accent);
-}
-
-.home-main {
-  width: var(--content-w);
-  margin: 22px auto 0;
-  flex: 1;
-}
-
-.hero {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 36px;
-  align-items: center;
-  padding: 44px 0 36px;
-}
-
-.hero h1 {
-  font-size: clamp(32px, 5vw, 46px);
-  line-height: 1.12;
-  margin: 10px 0 16px;
-}
-
 .accent {
   color: var(--accent);
-}
-
-.hero-sub {
-  color: var(--muted);
-  font-size: 17px;
-  line-height: 1.6;
-  max-width: 52ch;
-  margin: 0;
-}
-
-.hero-actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin: 24px 0 12px;
 }
 
 .cta {
@@ -3280,143 +3136,8 @@ a.preview-print:hover { background: var(--panel); }
   color: var(--accent);
 }
 
-.hero-note {
-  color: var(--subtle);
-  font-size: 13px;
-  margin: 0;
-}
-
-.hero-cards {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 12px 0;
-}
-
-.hero-cards img {
-  width: clamp(120px, 13vw, 160px);
-  border-radius: 4.8% / 3.4%;
-  box-shadow: var(--shadow);
-}
-
-.hero-cards img:nth-child(1) {
-  transform: rotate(-9deg) translateX(20px) translateY(8px);
-}
-
-.hero-cards img:nth-child(2) {
-  position: relative;
-  z-index: 1;
-  transform: translateY(-10px);
-}
-
-.hero-cards img:nth-child(3) {
-  transform: rotate(9deg) translateX(-20px) translateY(8px);
-}
-
-.home-steps h2 {
-  font-size: 24px;
-  margin: 44px 0 18px;
-}
-
-.steps {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
-  margin: 0;
-  padding: 0;
-}
-
-.steps li {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 18px;
-}
-
-.steps li span {
-  display: inline-grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-weight: 800;
-  margin-bottom: 10px;
-}
-
-.steps h3 {
-  margin: 0 0 6px;
-  font-size: 16px;
-}
-
-.steps p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.55;
-}
-
-
 /* Home: apoie o projeto (café / Pix / GitHub) */
 /* Seção "marketplaces/fontes" da home — credibilidade dos preços. */
-/* "Escolha seu jogo": grid dos TCGs do Sleevu (Pokémon ativo, Lorcana em breve).
-   Tiles tipográficos (sem logos oficiais — marca registrada + CSP). */
-.home-games {
-  margin-top: 44px;
-  text-align: center;
-}
-.home-games-lead {
-  max-width: 640px;
-  margin: 8px auto 0;
-  color: var(--muted);
-}
-.home-games-grid {
-  list-style: none;
-  margin: 20px 0 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 16px;
-}
-.game-tile {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 7px;
-  width: 264px;
-  padding: 20px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--panel);
-  text-align: left;
-  text-decoration: none;
-  color: var(--text);
-  transition: border-color 120ms ease, transform 120ms ease;
-}
-.game-tile:hover {
-  border-color: var(--accent-dark);
-  transform: translateY(-2px);
-}
-.game-tile strong { font-size: 18px; }
-.game-tile-desc { font-size: 13px; color: var(--muted); }
-/* Logo do jogo (quando o arquivo existe em assets/games/). Sem logo, fica o
-   nome em texto. Revelado pelo home.js ao carregar (começa hidden). Fundo branco
-   (chip) pra garantir contraste nos dois temas — alguns logos têm texto escuro
-   que sumiria no tema escuro. */
-.game-logo {
-  align-self: stretch;
-  width: 100%;
-  height: 64px;
-  object-fit: contain;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 10px 14px;
-  box-sizing: border-box;
-}
 .game-badge {
   padding: 3px 9px;
   border-radius: 999px;
@@ -3446,7 +3167,6 @@ a.preview-print:hover { background: var(--panel); }
   border: 1px solid rgba(159, 122, 66, 0.3);
 }
 [data-theme="light"] .game-badge.vintage { color: #806336; }
-.game-tile.is-soon strong { color: var(--muted); }
 
 /* Seção VINTAGE do hub: cabeçalho + subtítulo acima da grade das linhas clássicas. */
 /* Respiro maior entre os jogos principais e a seção VINTAGE (separação clara
@@ -3542,21 +3262,6 @@ a.hub-tile:hover {
    ele sobe pro slot. O véu escurece o logo o bastante pro chip ter contraste
    sem esconder de que jogo se trata. Cores fixas (não as do tema): o fundo do
    véu é o mesmo nos dois temas, então o chip também precisa ser. */
-.hub-soon-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: inherit;
-  background: rgba(12, 14, 19, 0.36);
-}
-.hub-soon-overlay .game-badge.soon {
-  background: #15171d;
-  color: #f0b84b;
-  border: 1px solid rgba(240, 184, 75, 0.45);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
-}
 
 .home-sources {
   margin-top: 44px;
@@ -3567,42 +3272,6 @@ a.hub-tile:hover {
   margin: 8px auto 0;
   color: var(--muted);
 }
-.home-sources-label {
-  margin: 24px 0 0;
-  font-size: 11px;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  color: var(--subtle);
-}
-.home-sources-grid {
-  list-style: none;
-  margin: 12px 0 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-}
-.source-chip {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  min-width: 140px;
-  padding: 14px 18px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--panel);
-  text-decoration: none;
-  color: var(--text);
-  transition: border-color 120ms ease, transform 120ms ease;
-}
-.source-chip:hover {
-  border-color: var(--accent-dark);
-  transform: translateY(-2px);
-}
-.source-chip strong { font-size: 15px; }
-.source-chip span { font-size: 12px; color: var(--subtle); }
 .home-sources-foot {
   margin-top: 18px;
   font-size: 12.5px;
@@ -3672,7 +3341,6 @@ a.hub-tile:hover {
   text-align: center;
   text-decoration: none;
 }
-.partner-ad-top { margin: 16px auto 8px; }
 .partner-ad-label {
   display: block;
   font-size: 10.5px;
@@ -3945,10 +3613,6 @@ a.hub-tile:hover {
 .login-foot a:hover { text-decoration: underline; }
 /* Ação destrutiva: fundo avermelhado fixo pra destacar (apagar conta/dados). A
    especificidade dupla vence o .lang-dd-option (que define a cor padrão). */
-.lang-dd-option.auth-danger { color: #d8443c; background: rgba(226, 48, 48, 0.1); }
-.lang-dd-option.auth-danger:hover { background: rgba(226, 48, 48, 0.18); color: #c5362f; }
-[data-theme="dark"] .lang-dd-option.auth-danger { color: #f87171; background: rgba(248, 113, 113, 0.12); }
-[data-theme="dark"] .lang-dd-option.auth-danger:hover { background: rgba(248, 113, 113, 0.2); color: #fca5a5; }
 .auth-sync { padding: 2px 14px 6px; font-size: 11px; color: var(--subtle); cursor: default; }
 .auth-sync.ok { color: var(--accent); }
 .auth-sync.fail { color: #f87171; }
@@ -4748,23 +4412,6 @@ a.progress-row:hover {
 .tile-folder-new { color: var(--accent); font-weight: 800; margin-top: 2px; border-top: 1px solid var(--line); border-radius: 0; }
 
 /* ===== Tags ===== */
-.tile-tag.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
-/* Chips coloridos das tags no tile (fundo tingido + texto na cor, lê em qualquer cor/tema).
-   A linha inteira é o ponto de adicionar/gerenciar (abre o menu), com um chip "+ Tag". */
-.tile-tags { display: flex; align-items: center; gap: 4px; min-width: 0; flex: 0 1 auto; overflow: hidden; cursor: pointer; }
-.tile-tag-add {
-  font-size: 10.5px; font-weight: 800; padding: 1px 7px; border-radius: 5px;
-  border: 1px dashed var(--line); color: var(--subtle); background: transparent; white-space: nowrap;
-}
-.tile-tags:hover .tile-tag-add, .tile-tags:focus-visible .tile-tag-add { border-color: var(--accent); color: var(--accent); }
-/* Indicador de "tem mais tags" (ex.: +2): hover abre o popover com todas (clicáveis). */
-.tile-tag-more { flex: none; font-size: 10.5px; font-weight: 800; padding: 1px 6px; border-radius: 5px; background: var(--line); color: var(--subtle); cursor: pointer; }
-.tile-tag-more:hover { color: var(--text); }
-.tile-tag-chip { cursor: pointer; }
-.tile-tag-chip:hover { filter: brightness(1.08); }
-.tile-tag-add-mini { padding: 1px 6px; }
-/* Popover das tags da carta (hover no "+N") — reusa o visual do menu. */
-.tag-list-pop .tile-tag-item { cursor: pointer; }
 
 /* Barra de progresso de conclusão do set (detalhe). */
 .completion-bar { height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; margin: 2px 0 6px; }
@@ -5031,7 +4678,6 @@ a.progress-row:hover {
   background: var(--gc-veil, rgba(0, 0, 0, 0.26));
   color: inherit;
 }
-.dash-game-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--chip, var(--accent)); flex: none; }
 .dash-section-head { font-size: 17px; margin: 26px 0 12px; }
 /* Cápsulas detalhadas: respiro claro depois da grade de atalhos. */
 .dash-main #dhCaps { margin-top: 26px; gap: 12px; }
@@ -5188,7 +4834,6 @@ a.progress-row:hover {
 .sold-confirm-field { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700; color: var(--subtle); }
 .sold-confirm-field .sale-price-field { display: flex; }
 .sold-confirm-field input[type="date"] { height: 38px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); color: var(--text); padding: 0 10px; font: inherit; }
-.sold-confirm-paid { margin: 0; font-size: 12.5px; color: var(--muted); }
 .sold-confirm-note { margin: 0; font-size: 12.5px; font-weight: 700; color: #e8553c; }
 /* Histórico de vendas realizadas: linhas compactas. */
 .sold-header { display: flex; align-items: baseline; gap: 12px; margin-top: 26px; }
@@ -5235,19 +4880,6 @@ a.progress-row:hover {
 .pf-invest { margin: 6px 0 18px; }
 .pf-invest-title { margin: 0 0 10px; font-size: 17px; }
 .pf-pnl-pct { font-size: 11.5px; font-weight: 700; opacity: .85; }
-
-/* Home: cartas mais vistas pela comunidade. */
-.home-top-viewed { margin: 34px 0; }
-.home-top-viewed h2 { margin: 0 0 14px; }
-/* Mesma régua da .card-grid (minmax 220px): as "mais vistas" do Explorar têm
-   cartas do MESMO tamanho das outras grades do site (6 no desktop largo). */
-.home-top-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
-.home-top-card { display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: var(--text); }
-.home-top-img { display: block; border-radius: 8px; overflow: hidden; aspect-ratio: 63 / 88; background: var(--panel-strong); }
-.home-top-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .15s ease; }
-.home-top-card:hover .home-top-img img { transform: scale(1.04); }
-.home-top-card strong { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.home-top-views { font-size: 11.5px; color: var(--subtle); font-weight: 700; }
 
 /* Wishlist: cartas desejadas à venda por outros colecionadores (trade matching). */
 .wish-sellers { margin: 4px 0 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
@@ -5382,19 +5014,6 @@ a.progress-row:hover {
 .pf-mover-info span { font-size: 11.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pf-mover-owned { color: var(--accent); font-weight: 800; font-size: 10.5px !important; text-transform: uppercase; letter-spacing: .03em; }
 .pf-mover-pct { flex: none; font-size: 12.5px; font-weight: 800; padding: 2px 8px; border-radius: 999px; }
-.tile-tag-chip {
-  max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  font-size: 10.5px; font-weight: 800; padding: 1px 7px; border-radius: 5px;
-  background: color-mix(in srgb, var(--tag) 16%, transparent);
-  color: var(--tag); border: 1px solid color-mix(in srgb, var(--tag) 40%, transparent);
-}
-/* Menu de tags do tile (multi): item com swatch + ✓ à direita (sem o ✓ do folder-item). */
-.tile-tag-item { display: flex; align-items: center; gap: 8px; }
-.tile-tag-item.on::before { content: none; }
-.tile-tag-item.on { background: var(--surface); }
-.tile-tag-item.on::after { content: "✓"; margin-left: auto; color: var(--accent); font-weight: 900; }
-.tile-tag-swatch { width: 12px; height: 12px; border-radius: 3px; flex: none; }
-.tile-tag-empty { padding: 8px 10px; margin: 0; color: var(--subtle); font-size: 12px; }
 /* Card da tag na vitrine: faixa colorida no topo + bolinha da cor antes do nome. */
 .tag-card { box-shadow: inset 0 4px 0 var(--tag), var(--shadow); }
 .tag-card .coll-card-title { display: flex; align-items: center; gap: 6px; }
@@ -5403,17 +5022,7 @@ a.progress-row:hover {
 .binder-shared-info .tag-dot { display: inline-block; vertical-align: -1px; }
 /* Chip grande da tag (cabeçalho do foco + picker): pílula sólida na cor. */
 .tag-chip { display: inline-flex; align-items: center; padding: 3px 12px; border-radius: 999px; background: var(--tag); color: #fff; font-weight: 800; font-size: 13px; }
-.tag-open-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 /* Editor de tag (criar/editar): nome + paleta. */
-.tag-editor { position: fixed; z-index: 75; width: 244px; padding: 10px; display: flex; flex-direction: column; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
-.tag-editor-name { width: 100%; box-sizing: border-box; height: 38px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--text); font: inherit; font-weight: 700; }
-.tag-editor-name:focus { outline: none; border-color: var(--accent); }
-.tag-editor-colors { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
-.tag-swatch { width: 100%; aspect-ratio: 1; min-height: 0; padding: 0; border-radius: 6px; border: 2px solid transparent; cursor: pointer; }
-.tag-swatch.on { border-color: var(--text); }
-.tag-editor-actions { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
-.tag-editor-del { min-height: 0; margin-right: auto; border: 0; background: transparent; color: #d8443c; font: inherit; font-weight: 700; cursor: pointer; }
-.tag-editor-save { min-height: 0; padding: 8px 16px; }
 
 /* Feedback de "Adicionada!" no quick-add da busca: ✓ preenchido + pop. */
 .tile-own.added {
@@ -5906,58 +5515,6 @@ a.progress-row:hover {
   color: var(--text);
 }
 
-/* Mega-menu do "Explorar": atalho pra grade + uma coluna por jogo. */
-.nav-dropdown.nav-mega {
-  min-width: 230px;
-  gap: 6px;
-}
-.nav-mega-all {
-  display: block;
-  padding: 7px 10px;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: -0.2px;
-  color: var(--accent-dark);
-  text-decoration: none;
-  text-align: left;
-  background: var(--panel);
-}
-.nav-mega-all:hover { color: var(--accent); }
-/* Vertical: jogos empilhados (não em colunas). */
-.nav-mega-cols {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 8px;
-}
-.nav-mega-col { display: grid; gap: 1px; align-content: start; }
-/* Nome do jogo em destaque (maior), submenu menor — fontes invertidas. */
-.nav-mega-head {
-  padding: 6px 10px 2px;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: -0.2px;
-  color: var(--text);
-  text-align: left;
-}
-.page-nav .nav-mega-col a {
-  justify-content: flex-start;
-  text-align: left;
-  white-space: nowrap;
-  /* Sublinks 10% menores que o padrão: realça a diferença pro nome do jogo
-     (.nav-mega-head, 15px/800) que é a categoria-mãe. */
-  font-size: 12.6px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-}
-/* Desktop: o mega-menu do "Explorar" alinha à ESQUERDA (mesma especificidade
-   de `.page-nav .nav-dropdown a`, que alinha à direita, mas vem depois → vence).
-   Cobre o "Ver todos os jogos" e os links de cada jogo. */
-.page-nav .nav-mega a {
-  justify-content: flex-start;
-  text-align: left;
-}
-
 /* Bandeira de idioma da carta */
 .card-flag {
   display: inline-flex;
@@ -6029,17 +5586,6 @@ html:not([data-cardlang="all"]) #setRegionChips {
 }
 
 /* Resumo de condições no tile (ex.: "NM ×2 · M ×1") */
-.tile-conditions {
-  margin: 6px 0 0;
-  min-height: 14px;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--subtle);
-  letter-spacing: 0.2px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 
 /* ===== Binders (Coleção / Venda) ============================================ */
 .primary {
@@ -6441,50 +5987,12 @@ html:not([data-cardlang="all"]) #setRegionChips {
     padding-top: 12px;
   }
 }
-@media (max-width: 1080px) { .collection-dashboard { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .dash-carousel { grid-column: 1 / -1; } }
+@media (max-width: 1080px) { .collection-dashboard { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
 /* Perfil público: são 3 cards fixos (sem carrossel). Em 2 colunas o terceiro
    ficava sozinho na 2ª linha, com metade da faixa vazia do lado. */
 @media (max-width: 1080px) { .prof-dash .dash-card.dash-dist { grid-column: 1 / -1; } }
 @media (max-width: 560px) { .collection-dashboard { grid-template-columns: minmax(0, 1fr); } }
 
-/* Carrossel das distribuições (por jogo / região / pasta / …): cada card tem a
-   MESMA largura (~metade do carrossel = 2 visíveis) e a MESMA altura dos cards
-   fixos (o track estica na altura do grid). A seta rola pra ver mais. */
-.dash-carousel { position: relative; min-width: 0; display: flex; }
-.dash-carousel-track {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  scrollbar-width: none; /* Firefox */
-}
-.dash-carousel-track::-webkit-scrollbar { display: none; }
-.dash-carousel .dash-card {
-  flex: 0 0 calc(50% - 6px);
-  min-width: 0;
-  padding: 14px 15px; /* um pouco mais compacto que os fixos */
-}
-.dash-carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 30px; height: 30px;
-  display: flex; align-items: center; justify-content: center;
-  border: 1px solid var(--line);
-  background: var(--panel);
-  color: var(--text);
-  border-radius: 50%;
-  font-size: 18px; line-height: 1;
-  cursor: pointer;
-  box-shadow: var(--shadow);
-  z-index: 2;
-}
-.dash-carousel-arrow:hover { border-color: var(--accent); color: var(--accent); }
-.dash-carousel-next { right: -8px; }
-.dash-carousel-prev { left: -8px; }
-.dash-carousel-arrow[hidden] { display: none; }
-@media (max-width: 560px) { .dash-carousel .dash-card { flex-basis: calc(100% - 0px); } }
 .dash-card {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -7550,8 +7058,6 @@ a.dash-profile-handle:hover, a.shared-kind:hover,
   .collection-dashboard .dash-card {
     flex: 0 0 84%; min-width: 0; scroll-snap-align: start; margin: 0;
   }
-  .dash-carousel, .dash-carousel-track { display: contents; }
-  .dash-carousel-arrow { display: none; }
   #collectionDashboard .dash-top-list, #collectionDashboard .dash-dist-bars { min-height: 0; }
 
   /* Filtros da aba Cartas: de 6 selects empilhados (~700px) pra grade 2×.
@@ -7657,7 +7163,6 @@ select,
 .prof-tab,
 .prof-sort,
 .folder-section.is-cover-pick .card-grid,
-.folder-collapse,
 .folder-name-input,
 .folder-tag,
 .folder-act,
@@ -7665,12 +7170,10 @@ select,
 .sales-batch-chip,
 .sales-batch-custom input,
 .dash-markup-badge,
-.graded-label,
 .graded-badge,
 .graded-company,
 .graded-grade,
 .graded-cert,
-.graded-label-shared,
 .sale-price-field,
 .sale-cond,
 .cond-badge,
@@ -7692,14 +7195,12 @@ select,
 .variant-conditions,
 .condition-stepper,
 .qty-stepper button,
-.details-link,
 .group-card,
 .group-card-initial,
 .set-category-head,
 .cat-toggle,
 .set-card,
 .set-release,
-.set-pill,
 .price-history-plot,
 .detail-hero .detail-stats article,
 .detail-hero,
@@ -7804,23 +7305,18 @@ select,
 .pf-mover-thumb,
 .pf-mover-pct,
 .tag-chip,
-.tag-editor,
 .tag-editor-name,
-.tag-swatch,
 .price-cell,
 .price-cell input,
 .market-card,
 .br-link,
 .portfolio-table,
-.pf-hub-total,
-.pf-hub-chart,
 .pf-chart,
 .pf-series-chip,
 .pf-ranges,
 .pf-tip,
 .nav-group-toggle,
 .nav-dropdown,
-.nav-mega-all,
 #collectionDashboard .dash-card.dash-stats,
 .dash-card,
 .dash-top-thumb img,
@@ -8469,7 +7965,6 @@ select,
 /* ============================================================================
    DECKS DA COMUNIDADE (decks.html) — galeria pública + viewer de deck.
    ========================================================================= */
-.dkc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
 
 /* ── Galeria em DUAS COLUNAS: lista à esquerda, filtros + atalhos à direita ──
    Mesma estética do resto do site (painéis com --panel/--line, cantos retos,
@@ -8593,23 +8088,9 @@ select,
    nome, jogo, nº de cartas, autor e data. Antes era só nome + tag + data num
    retângulo vazio — nada pra bater o olho e decidir se vale abrir. A capa é o
    que os builders de referência usam pra dar identidade a cada deck na lista. */
-.dkc-card { display: flex; align-items: stretch; gap: 12px; padding: 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text); text-decoration: none; }
-.dkc-card:hover { background: var(--panel-strong); border-color: var(--accent); }
-.dkc-card-cover { flex: none; width: 52px; }
-.dkc-card-cover img { width: 100%; aspect-ratio: 63/88; object-fit: cover; display: block; }
-.dkc-card-cover .deck-noimg { width: 52px; }
-.dkc-card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; justify-content: center; }
 /* Nome em até 2 LINHAS: com a capa ocupando 52px, uma linha só cortava quase
    todo nome de deck ("Mickey and Minnie ..."), que é justamente o que
    identifica o card na galeria. */
-.dkc-card-name {
-  font-weight: 800; font-size: 15.5px; letter-spacing: -0.01em; line-height: 1.2;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-}
-.dkc-card-meta { display: inline-flex; align-items: center; gap: 9px; font-size: 12px; color: var(--subtle); font-weight: 700; }
-.dkc-card-n { font-variant-numeric: tabular-nums; }
-.dkc-card-sub { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--subtle); font-weight: 700; overflow: hidden; white-space: nowrap; }
-.dkc-card-sub .dkc-author { font-size: 12px; overflow: hidden; text-overflow: ellipsis; }
 .dkc-view-head { display: flex; align-items: center; gap: 13px; flex-wrap: wrap; margin-bottom: 16px; }
 .dkc-view-name { margin: 0; font-size: 22px; letter-spacing: -0.01em; }
 .dkc-view-head .cta { margin-left: auto; }

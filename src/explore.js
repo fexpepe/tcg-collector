@@ -14,9 +14,7 @@
     resultsTitle: document.querySelector("#exploreResultsHeader h2"),
     resultCount: document.getElementById("exploreResultCount"),
     gameFilter: document.getElementById("exploreGameSelect"),
-    sortSelect: document.getElementById("exploreSortSelect"),
-    topViewed: document.getElementById("exploreTopViewed"),
-    topViewedRow: document.getElementById("exploreTopViewedRow")
+    sortSelect: document.getElementById("exploreSortSelect")
   };
 
   const SORTS = ["value-desc", "value-asc", "rarity-desc", "rarity-asc", "release", "num-asc"];
@@ -107,7 +105,6 @@
   let topViewedPairs = [];
   (async function loadTopViewed() {
     if (!shared.fetchTopViewed) return;
-    if (elements.topViewed) elements.topViewed.hidden = true;
     try {
       const games = shared.GAME_SLUGS || ["pokemon", "lorcana"];
       const perGame = await Promise.all(games.map((g) => shared.fetchTopViewed(g, 6)));
@@ -152,7 +149,6 @@
 
   function render(options) {
     const searching = isSearching();
-    if (elements.topViewed) elements.topViewed.hidden = true; // mini-row aposentado: vai no grid
     if (!searching) {
       const showTop = topViewedReady && topViewedPairs.length >= 4;
       elements.intro.hidden = showTop;
