@@ -123,9 +123,11 @@
 
     const draft = { name: "", linked: false, game: null, set: null };
 
-    function box(inner) {
+    // A ação primária do passo entra no rodapé, junto do Cancelar — mesmo
+    // arranjo dos modais de exportar/aplicar, pra ação nunca boiar no corpo.
+    function box(inner, foot = "") {
       wrap.innerHTML = `<div class="list-modal-box" role="dialog" aria-modal="true" aria-label="${escA(t("lists.new"))}">${inner}
-        <div class="list-modal-foot"><button type="button" class="lst-mini" data-wz-cancel>${esc(t("lists.cancel"))}</button></div>
+        <div class="list-modal-foot">${foot}<button type="button" class="lst-mini" data-wz-cancel>${esc(t("lists.cancel"))}</button></div>
       </div>`;
     }
 
@@ -144,8 +146,8 @@
           <button type="button" class="list-type${draft.linked ? " is-on" : ""}" data-wz-linked="1">
             <strong>${esc(t("lists.linked"))}</strong><span>${esc(t("lists.linkedHint"))}</span>
           </button>
-        </div>
-        <button type="button" class="cta" data-wz-next>${esc(t("lists.next"))}</button>`);
+        </div>`,
+        `<button type="button" class="cta" data-wz-next>${esc(t("lists.next"))}</button>`);
       const input = wrap.querySelector("#wzName");
       if (input) {
         input.focus();
@@ -168,8 +170,8 @@
       box(`<h2>${esc(t("lists.wizard.set"))}</h2>
         <p class="list-modal-hint">${esc(t("lists.wizard.setHint"))}</p>
         <input type="search" id="wzSetSearch" class="list-input" placeholder="${escA(t("lists.wizard.setSearch"))}">
-        <div class="list-set-picks" id="wzSets"><p class="empty-state">${esc(t("lists.loading"))}</p></div>
-        <button type="button" class="lst-mini" data-wz-skipset>${esc(t("lists.wizard.setSkip"))}</button>`);
+        <div class="list-set-picks" id="wzSets"><p class="empty-state">${esc(t("lists.loading"))}</p></div>`,
+        `<button type="button" class="lst-mini" data-wz-skipset>${esc(t("lists.wizard.setSkip"))}</button>`);
       const sets = await setsOf(game);
       const box2 = wrap.querySelector("#wzSets");
       if (!box2) return;                                  // fechou o modal enquanto carregava

@@ -8663,7 +8663,11 @@ select,
 /* --- Wizard --- */
 .list-modal-box h3 { margin: 18px 0 8px; font-size: 14px; color: var(--muted); }
 .list-modal-hint { margin: -8px 0 14px; color: var(--muted); font-size: 13px; }
-.list-modal-foot { margin-top: 16px; }
+/* Rodapé de TODOS os modais de lista (wizard, exportar, aplicar): ações lado a
+   lado e centralizadas, com alturas casadas pra lerem como um par. */
+.list-modal-foot { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.list-modal-foot .cta { min-height: 40px; padding: 0 26px; font-size: 14px; }
+.list-modal-foot .lst-mini { min-height: 40px; padding: 0 18px; }
 .list-type-pick { display: grid; gap: 8px; margin-bottom: 18px; }
 .list-type { display: flex; flex-direction: column; gap: 3px; padding: 12px 14px; border: 1px solid var(--line); background: var(--panel); color: var(--text); text-align: left; cursor: pointer; }
 .list-type strong { font-size: 14px; }
@@ -8679,7 +8683,10 @@ select,
 .lst-title { width: 100%; max-width: 460px; padding: 2px 6px; border: 1px solid transparent; background: transparent; color: inherit; font: inherit; }
 .lst-title:hover, .lst-title:focus { border-color: var(--line); background: var(--panel); }
 .lst-setname { font-weight: 700; }
-.lst-linked { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.lst-linked { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap; }
+/* Sem isto o checkbox herda o input global (width 100%, height 42px) e vira um
+   quadradão no header — mesmo antídoto do .facet-opt e do .dkc-check. */
+.lst-linked input { flex: none; width: 15px; height: 15px; margin: 0; accent-color: var(--accent); cursor: pointer; }
 .lst-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
 .lst-panel { border: 1px solid var(--line); background: var(--panel); padding: 14px; min-width: 0; }
 .lst-panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
@@ -8731,7 +8738,6 @@ select,
 
 /* Export e "aplicar à coleção" */
 .lst-export { width: 100%; margin: 12px 0 0; padding: 10px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; line-height: 1.5; resize: vertical; white-space: pre; overflow-wrap: normal; overflow-x: auto; }
-.list-modal-foot { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .lst-apply-list { max-height: 340px; overflow-y: auto; margin: 12px 0; border: 1px solid var(--line); }
 .lst-apply-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 10px; padding: 7px 10px; border-bottom: 1px solid var(--line); font-size: 13px; }
 .lst-apply-row:last-child { border-bottom: 0; }
