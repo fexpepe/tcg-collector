@@ -263,6 +263,9 @@
       // loadFxRates é OBRIGATÓRIO antes de calcular valor: sem as taxas,
       // convertMoney devolve null e cardValue cai pra 0 — o painel sairia zerado
       // mesmo com preço no catálogo.
+      // Lista de set: dispara o índice de sets JÁ (o loadSource espera o cache
+      // — antes eram 3 idas à rede em série no primeiro abrir).
+      if (list.set) setsOf(list.game);
       const [c] = await Promise.all([
         hydrateList(list.game, store.cardIdsOf(list.id)),
         shared.loadFxRates()
@@ -363,9 +366,14 @@
 
   // Linha do painel direito: SEM imagem (é o ponto do modo). O nome carrega a URL
   // da carta em data-thumb; o hover mostra a miniatura flutuante.
-  function sourceRowHtml(card) {
-    const naLista = store.has(current.id, card.id, null)
-      || shared.cardVariants(card).some((v) => store.has(current.id, card.id, v));
+  // Pertencimento no nível da CARTA, calculado UMA vez por render (o has() do
+  // store é uma varredura linear das entradas — chamado por linha, o painel
+  // virava O(linhas × entradas) a cada repintura).
+  function idsNaLista() {
+    return new Set(store.entriesOf(current.id).map((e) => e.id));
+  }
+  function sourceRowHtml(card, dentro) {
+    const naLista = dentro.has(card.id);
     const variants = shared.cardVariants(card);
     const img = (shared.cardImageSources(card) || {}).url || "";
     const picker = openPicker === card.id ? variantPickerHtml(card, variants) : "";
@@ -471,18 +479,53 @@
     renderSource();
   }
 
-  // Re-render só do painel esquerdo (o direito não muda ao mexer nas entradas).
-  function renderEntries() {
+  // Painéis atualizados por LINHA: cada +/−/adicionar repintava os DOIS painéis
+  // inteiros — 250 linhas de set + até 5000 entradas, com preço, conversão e
+  // imagem por linha, a cada clique. É a tela de cadastro em série, o custo
+  // aparecia exatamente onde não podia (e o re-render derrubava o foco do
+  // teclado, que recomeçava do topo depois de cada adição).
+  function updateTotals() {
+    const tot = el.editor.querySelector(".lst-totals");
+    if (!tot) return;
+    const val = listValue(current, cat.byId);
+    tot.textContent = tn("lists.count", store.countOf(current.id))
+      + (val ? " · " + shared.formatMoney(shared.getCurrency(), val) : "");
+  }
+  // Repinta/insere/remove UMA linha do painel de entradas e atualiza o total.
+  function patchEntryRow(id, variant) {
     const box = el.editor.querySelector("[data-entries]");
     if (!box) return;
-    box.innerHTML = current.entries.length
-      ? current.entries.map(entryRowHtml).join("")
-      : `<p class="empty-state">${esc(t("lists.editorEmpty"))}</p>`;
-    const tot = el.editor.querySelector(".lst-totals");
-    if (tot) {
-      const val = listValue(current, cat.byId);
-      tot.textContent = tn("lists.count", store.countOf(current.id))
-        + (val ? " · " + shared.formatMoney(shared.getCurrency(), val) : "");
+    const sel = `[data-entry="${CSS.escape(id)}"][data-entry-variant="${CSS.escape(variant || "")}"]`;
+    const row = box.querySelector(sel);
+    const entry = store.entry(current.id, id, variant || null);
+    if (entry) {
+      const html = entryRowHtml(entry);
+      if (row) { row.outerHTML = html; }
+      else {
+        const vazio = box.querySelector(".empty-state");
+        if (vazio) vazio.remove();
+        box.insertAdjacentHTML("beforeend", html); // addEntry põe no FIM — mesma ordem do render cheio
+      }
+    } else if (row) {
+      row.remove();
+      if (!current.entries.length) box.innerHTML = `<p class="empty-state">${esc(t("lists.editorEmpty"))}</p>`;
+    }
+    updateTotals();
+  }
+  // Repinta UMA linha da fonte (seletor abriu/fechou, carta entrou/saiu da
+  // lista). O painel inteiro só re-renderiza quando a PRÓPRIA lista de cartas
+  // muda (busca, troca de fonte, aplicar em massa).
+  function patchSourceRow(cardId) {
+    if (!cardId) return;
+    const box = el.editor.querySelector("[data-source]");
+    const row = box && box.querySelector(`[data-src-card="${CSS.escape(cardId)}"]`);
+    const card = (cat.byId || {})[cardId];
+    if (!row || !card) return;
+    const tinhaFoco = row.classList.contains("is-focus");
+    row.outerHTML = sourceRowHtml(card, idsNaLista());
+    if (tinhaFoco) {
+      const novo = box.querySelector(`[data-src-card="${CSS.escape(cardId)}"]`);
+      if (novo) novo.classList.add("is-focus");
     }
   }
 
@@ -501,7 +544,8 @@
       box.innerHTML = `<p class="empty-state">${esc(msg)}</p>`;
       return;
     }
-    box.innerHTML = cards.map(sourceRowHtml).join("");
+    const dentro = idsNaLista();
+    box.innerHTML = cards.map((c) => sourceRowHtml(c, dentro)).join("");
   }
 
   // --- Adicionar -------------------------------------------------------------
@@ -515,8 +559,8 @@
     // (null caía no jogo da sessão via gameKey e gravava na coleção errada).
     if (current.linked) ownedFor(card.game || current.game).add(card.id, variant, condition, qty);
     lastCondition = condition;
-    renderEntries();
-    renderSource();
+    patchEntryRow(card.id, variant);
+    patchSourceRow(card.id);
   }
 
   function flash(node) {
@@ -720,8 +764,10 @@
       if (!card) return;
       const variants = shared.cardVariants(card);
       if (variants.length > 1) {
-        openPicker = openPicker === card.id ? null : card.id;
-        renderSource();
+        const prev = openPicker;
+        openPicker = prev === card.id ? null : card.id;
+        if (prev && prev !== card.id) patchSourceRow(prev); // fecha o que estava aberto
+        patchSourceRow(card.id);
         return;
       }
       addToList(card, variants[0], lastCondition, 1);
@@ -733,8 +779,10 @@
     // escolher condição/quantidade sem sair da linha).
     const openRow = ev.target.closest("[data-src-open]");
     if (openRow) {
-      openPicker = openPicker === openRow.dataset.srcOpen ? null : openRow.dataset.srcOpen;
-      renderSource();
+      const prev = openPicker;
+      openPicker = prev === openRow.dataset.srcOpen ? null : openRow.dataset.srcOpen;
+      if (prev && prev !== openRow.dataset.srcOpen) patchSourceRow(prev);
+      patchSourceRow(openRow.dataset.srcOpen);
       return;
     }
 
@@ -768,9 +816,9 @@
       const entry = store.entry(current.id, id, variant);
       if (!entry) return;
       const q = entry.q == null ? 1 : entry.q;
-      if (ev.target.closest("[data-entry-inc]")) { store.setEntryQty(current.id, id, variant, q + 1); renderEntries(); return; }
-      if (ev.target.closest("[data-entry-dec]")) { store.setEntryQty(current.id, id, variant, q - 1); renderEntries(); renderSource(); return; }
-      if (ev.target.closest("[data-entry-del]")) { store.removeEntry(current.id, id, variant); renderEntries(); renderSource(); return; }
+      if (ev.target.closest("[data-entry-inc]")) { store.setEntryQty(current.id, id, variant, q + 1); patchEntryRow(id, variant); return; }
+      if (ev.target.closest("[data-entry-dec]")) { store.setEntryQty(current.id, id, variant, q - 1); patchEntryRow(id, variant); patchSourceRow(id); return; }
+      if (ev.target.closest("[data-entry-del]")) { store.removeEntry(current.id, id, variant); patchEntryRow(id, variant); patchSourceRow(id); return; }
     }
 
     if (ev.target.closest("[data-list-export]")) { openExportModal(); return; }
@@ -821,7 +869,7 @@
     if (ev.key === "/" && !digitando) { ev.preventDefault(); if (busca) busca.focus(); return; }
 
     if (ev.key === "Escape") {
-      if (openPicker) { openPicker = null; renderSource(); ev.preventDefault(); }
+      if (openPicker) { const prev = openPicker; openPicker = null; patchSourceRow(prev); ev.preventDefault(); }
       else if (busca) busca.focus();
       return;
     }

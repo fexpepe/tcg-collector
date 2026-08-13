@@ -864,7 +864,15 @@
       },
       // Ids das listas que contêm a carta (para o popover marcar os checks).
       listsWith(cardId, variant) {
-        return data.lists.filter((l) => this.has(l.id, cardId, variant)).map((l) => l.id);
+        // Uma passada só, sem get() por lista — has() re-acha a lista pelo id
+        // e isto virava O(listas²) com alocação de string por entrada a CADA
+        // abertura do popover "+ Lista". Mesma semântica do has(): sem
+        // variante = nível da carta; com variante = par exato ou marcador.
+        const cid = String(cardId);
+        const v = variant == null ? null : String(variant);
+        return data.lists
+          .filter((l) => l.entries.some((e) => e.id === cid && (v == null || e.v == null || String(e.v) === v)))
+          .map((l) => l.id);
       },
       // Total de CÓPIAS da lista (marcador conta 1). O nº de linhas é entries.length.
       countOf(listId) {
