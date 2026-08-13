@@ -6060,7 +6060,12 @@
     const dataDir = DATA_DIR_BY_GAME[game];
     if (!dataDir) return Promise.resolve(null);
     const manifest = !!(window.SLEEVU && window.SLEEVU.manifest);
-    const file = `indexes-${key}${manifest ? ".generated" : ""}.json`;
+    // MESMO remap do build (sync-common.mjs indexSliceFile): a fatia
+    // pokemonTotals é gravada como indexes-totals*.json. Sem ele, era 404
+    // garantido em toda visita e o progresso por espécie ficava sem denominador
+    // no caminho rápido da Coleção (o game.js remapeia na leitura; aqui não
+    // remapeava).
+    const file = `indexes-${key === "pokemonTotals" ? "totals" : key}${manifest ? ".generated" : ""}.json`;
     const promise = fetch(dataDir + file)
       .then((r) => (r.ok ? r.json() : null))
       .catch(() => null);
@@ -6141,6 +6146,10 @@
     };
   }
 
+  // Algum chunk de set foi PULADO nesta sessão (falhou 2x)? O catálogo em
+  // memória está incompleto — quem publica dado derivado dele (publishProfile)
+  // precisa saber. Não reseta: só um reload recomeça do zero.
+  let catalogoIncompleto = false;
   // Baixa os chunks de set com concorrência limitada (não 400+ fetches de uma
   // vez): o navegador serializa em ~6 por host de qualquer forma, e o limite
   // evita estourar memória/conexões em catálogos grandes.
@@ -6191,6 +6200,12 @@
     }
     await Promise.all(Array.from({ length: Math.min(concurrency, list.length) }, worker));
     if (falhas && !chunks.length) throw new Error(`Falha ao carregar o catálogo (${falhas} sets)`);
+    // Catálogo PARCIAL passa (mostrar 90% dos sets é melhor que uma página
+    // morta), mas fica marcado na sessão: o publishProfile se recusa a
+    // republicar o perfil público com ele — o payload é filtrado do catálogo
+    // carregado, e um soluço de CDN não pode APAGAR cartas de um dado
+    // persistido e publicamente visível.
+    if (falhas) catalogoIncompleto = true;
     return chunks;
   }
 
@@ -6521,14 +6536,17 @@
       } catch (e) { /* sem índice: monta do catálogo abaixo */ }
       // Local/dev (o índice é gerado no build): monta a partir do catálogo, que
       // aqui é a amostra pequena. Mesma forma de dado — quem busca não vê diferença.
-      try {
-        const cat = await loadGameCatalog(game, gameDataDir(game), null);
-        return (cat.cards || []).map((c) => ({
-          i: c.id, n: c.name, s: c.set, u: c.number,
-          t: c.cardType, c: c.cost, r: c.rarity,
-          k: c.ink || c.opColor || c.color || c.colorId || c.types || c.attribute
-        }));
-      } catch (e) { return []; }
+      // Se ATÉ o catálogo falhar (blip de rede), deixa REJEITAR: o handler lá
+      // embaixo descarta o cache e a próxima busca tenta de novo. Um catch que
+      // resolvia [] aqui marcava o índice como "pronto e vazio" — decks/listas
+      // passavam a pular a API da borda (searchIndexLoaded === true) e TODA
+      // busca voltava zerada até recarregar a página.
+      const cat = await loadGameCatalog(game, gameDataDir(game), null);
+      return (cat.cards || []).map((c) => ({
+        i: c.id, n: c.name, s: c.set, u: c.number,
+        t: c.cardType, c: c.cost, r: c.rarity,
+        k: c.ink || c.opColor || c.color || c.colorId || c.types || c.attribute
+      }));
     })();
     searchIndexCache[game] = p;
     p.then(
@@ -7930,6 +7948,11 @@
   function publishProfile(cards, owned, prices) {
     clearTimeout(publishT);
     publishT = setTimeout(async () => {
+      // Catálogo incompleto nesta sessão (chunk de set pulado por falha de
+      // rede): NÃO republica. buildPublicPayload filtra o catálogo carregado
+      // por posse — publicar agora reescreveria o perfil público sem as cartas
+      // do set que faltou. O próximo carregamento completo publica normalmente.
+      if (catalogoIncompleto) { console.warn("Sleevu: perfil não republicado (catálogo incompleto nesta sessão)"); return; }
       const p = getProfile();
       if (!getSession() || !p.handle || p.handle.length < 3) return;
       if (!p.isPublic) {

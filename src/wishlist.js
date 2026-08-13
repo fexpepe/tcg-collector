@@ -185,7 +185,12 @@
     return `<button type="button" class="wish-target-btn${cur ? " has-target" : ""}" data-wish-target="${shared.escapeAttribute(card.id)}" title="${shared.escapeAttribute(label)}" aria-label="${shared.escapeAttribute(label)}">🔔</button>`;
   }
   function decorateTile(node, card) {
-    const info = node.querySelector(".tile-info") || node;
+    // Modo compacto (sem .tile-info): SEM sino. O .wish-target-btn é absoluto
+    // (top/left) pra pousar sobre a IMAGEM do tile normal; na linha compacta
+    // ele caía por cima da bandeira/nome. O alvo de preço continua na visão
+    // normal — o compacto é o modo de cadastro rápido.
+    const info = node.querySelector(".tile-info");
+    if (!info) return node;
     info.insertAdjacentHTML("beforeend", targetBellHtml(card));
     return node;
   }
