@@ -177,12 +177,6 @@
           render();
           return;
         }
-        const tg = event.target.closest("[data-bulk-tag]");
-        if (tg && tg.value) {
-          bulkCardIds().forEach((id) => { if (!tags.has(id, tg.value)) tags.toggle(id, tg.value); });
-          tg.value = "";
-          render();
-        }
       });
       bar.addEventListener("click", (event) => {
         if (event.target.closest("[data-bulk-done]")) { setBulkMode(false); render(); return; }
@@ -196,11 +190,10 @@
     const dis = n ? "" : " disabled";
     const folderOpts = `<option value="">${escapeHtml(t("bulk.toFolder"))}</option><option value="__none__">${escapeHtml(t("folders.none"))}</option>`
       + folders.list().map((f) => `<option value="${escapeAttribute(f.id)}">${escapeHtml(f.name || t("folders.untitled"))}</option>`).join("");
-    const tagOpts = `<option value="">${escapeHtml(t("bulk.addTag"))}</option>`
-      + tags.list().map((tg) => `<option value="${escapeAttribute(tg.id)}">${escapeHtml(tg.name || t("tags.untitled"))}</option>`).join("");
+    // O select de tag saiu da barra: tags viraram Listas e o assign pós-migração
+    // era um buraco negro (ver comentário na caixa de tags do preview, acima).
     bar.innerHTML = `<strong class="bulk-count">${escapeHtml(tn("bulk.count", n))}</strong>
       <select data-bulk-folder${dis}>${folderOpts}</select>
-      <select data-bulk-tag${dis}>${tagOpts}</select>
       <button type="button" class="bulk-bar-btn" data-bulk-sale${dis}>${escapeHtml(t("bulk.sale"))}</button>
       <button type="button" class="bulk-bar-btn is-primary" data-bulk-done>${escapeHtml(t("bulk.done"))}</button>`;
   }
@@ -325,21 +318,12 @@
       list: () => folders.list(),
       currentOf: (cardId) => folders.folderOf(cardId),
       onChange: (cardId, folderId) => { folders.assign(cardId, folderId); renderDashboard(); renderCards(); }
-    },
-    // Caixa de tags dentro do preview (marca/remove/cria — multi). Atualiza o tile
-    // da carta na grade in place (sem re-render) + o dashboard.
-    tags: {
-      list: () => tags.list(),
-      has: (cardId, id) => tags.has(cardId, id),
-      toggle: (cardId, id) => tags.toggle(cardId, id),
-      create: (name) => tags.create(name),
-      atLimit: () => tags.atLimit(),
-      limit: TAG_LIMIT,
-      onChange: (cardId) => {
-        const tile = document.querySelector(`#cardGrid .card-tile[data-tile-card-id="${cardId}"]`) || document.querySelector(`#folderSections .card-tile[data-tile-card-id="${cardId}"]`);
-        if (tile) updateTileTags(tile, cardId); else renderDashboard();
-      }
     }
+    // A caixa de tags do preview FOI REMOVIDA de propósito: tags viraram Listas
+    // (migrateTagsToLists) e a migração é one-shot por tag — marcar uma tag já
+    // migrada aqui gravava no blob legado e não aparecia em lugar NENHUM (nem na
+    // Lista, nem no perfil público, nem na aba Tags, que hoje é só um aviso).
+    // Organização de carta no preview agora é pasta (acima) e "+ Lista" no tile.
   });
 
   // ?s=<id>: visualização pública (somente leitura) de uma coleção compartilhada.
@@ -718,7 +702,8 @@
       if (event.key === "Enter" && event.target.closest("[data-folder-rename]")) event.target.blur();
     });
 
-    if (elements.tagsNewBtn) elements.tagsNewBtn.addEventListener("click", () => openTagEditor(null, elements.tagsNewBtn));
+    // O "Nova tag" NÃO ganha listener: a aba Tags é só o aviso da migração e
+    // criar tag nova aqui alimentaria o blob legado (buraco negro pós-migração).
     // Graded na própria aba: "+ Adicionar graded" abre o MESMO picker da página
     // dedicada, e os tiles editáveis usam os eventos do módulo compartilhado.
     if (elements.gradedAddBtn) elements.gradedAddBtn.addEventListener("click", () => { if (window.TCGGradedUI) window.TCGGradedUI.openPicker(gradedUiCtx()); });
@@ -844,7 +829,7 @@
       wrap.hidden = activeTab !== "cards";
       if (activeTab !== "cards" && bulkMode) setBulkMode(false);
     }
-    if (elements.tagsNewBtn) elements.tagsNewBtn.hidden = !isTags || !!openTagId;
+    if (elements.tagsNewBtn) elements.tagsNewBtn.hidden = true; // tags viraram Listas; criar aqui era buraco negro
     // Visualização (▦/≣) e Filtros, no cartão-herói, comandam a toolbar do
     // cardsView: somem nas abas de progresso (Pokémon/Artistas/Sets).
     if (elements.cardsViewToggle) elements.cardsViewToggle.hidden = !isCardsLike;
