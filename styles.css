@@ -8331,6 +8331,15 @@ select,
      no toque, exatamente o que a reserva existe pra evitar. */
   .explore-subnav[data-placeholder] { min-height: 44px; }
 
+  /* Steppers de quantidade do popup da carta (28px) e setas de reordenação da
+     Coleção (30px — o controle que EXISTE pro toque, já que o arrastar é só
+     desktop): a interação central de marcar cópias merece o mesmo piso de 44px
+     dos botões acima. As colunas do .condition-grid são minmax(118px, 1fr) e
+     absorvem a largura extra. */
+  .qty-stepper { gap: 8px; }
+  .qty-stepper button { min-height: 44px; width: 44px; }
+  .tile-reorder-btn { width: 44px; height: 44px; }
+
   /* SUBNAV: uma linha só, com AVISO de que continua (ver data-scroll no
      shared.js). Dos 12 jogos só o Pokémon tem 5 abas — Lorcana e Magic têm 3, o
      resto tem 2, e essas sobram numa linha. Quebrar as 5 em duas fileiras foi
@@ -8777,6 +8786,21 @@ select,
 .lst-step { width: 20px; min-height: 20px; border: 1px solid var(--line); background: var(--panel-strong); color: var(--text); font-size: 12px; line-height: 1; cursor: pointer; }
 .lst-step:hover { border-color: var(--accent); }
 
+/* Alvos de TOQUE da tela de cadastro em série (auditoria 2026-08-13): os
+   controles mais tocados tinham os MENORES alvos do site — +/− de 20px em
+   linhas de 34px, adicionar/remover de 26px. Piso de ~44px de altura e
+   colunas fixas dos grids acompanhando. Este bloco fica DEPOIS das
+   regras-base de propósito (mesmo peso de seletor, a ordem decide); as
+   variantes ≤880px logo abaixo re-declaram as colunas e valem no celular. */
+@media (pointer: coarse), (max-width: 700px) {
+  .lst-add, .lst-del { min-height: 44px; min-width: 42px; }
+  .lst-step { width: 38px; min-height: 44px; font-size: 16px; }
+  .lst-confirm { min-height: 44px; }
+  .lst-field select, .lst-field input { min-height: 40px; }
+  .lst-row { grid-template-columns: minmax(0, 1fr) 58px 74px 46px; min-height: 48px; }
+  .lst-entry { grid-template-columns: minmax(0, 1fr) 52px 68px 40px 112px 60px 46px; }
+}
+
 /* Seletor de versão inline: ocupa a largura toda da linha (grid-column: 1/-1),
    então abre logo abaixo da carta clicada em vez de virar um modal. */
 .lst-picker { grid-column: 1 / -1; display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; padding: 10px 4px 12px; }
@@ -8812,10 +8836,12 @@ select,
   .lst-panels { grid-template-columns: 1fr; }
   .lst-rows { max-height: none; }
   /* Some com raridade e valor: numa tela estreita o que importa é nome, número
-     e o botão de adicionar. */
-  .lst-row { grid-template-columns: minmax(0, 1fr) 52px 32px; }
+     e o botão de adicionar. Colunas dimensionadas pros alvos de 44px do bloco
+     de toque acima (itens display:none saem do grid: na entrada, a col. 2 é o
+     qty com os dois steppers e a 3 é o ×). */
+  .lst-row { grid-template-columns: minmax(0, 1fr) 52px 46px; }
   .lst-rar { display: none; }
-  .lst-entry { grid-template-columns: minmax(0, 1fr) 60px 84px 28px; }
+  .lst-entry { grid-template-columns: minmax(0, 1fr) 116px 46px; }
   .lst-num, .lst-var, .lst-cond, .lst-val { display: none; }
   .lst-thumb { display: none; }        /* sem hover no toque */
 }
@@ -8872,6 +8898,20 @@ select,
 .tile-list { margin-right: auto; }
 .card-tile.tile-compact .tile-list { margin-right: 4px; }
 
+/* Alvos de TOQUE do modo compacto (auditoria 2026-08-13): o modo de quem
+   cadastra MUITAS cartas tinha botões de 26px em linhas de 38px. Piso de
+   44px; a coluna fixa de ações e a linha acompanham (o template estreito de
+   ≤700px, mais abaixo, re-declara as colunas e vale no celular). DEPOIS das
+   regras-base de propósito — mesmo peso de seletor, a ordem decide. */
+@media (pointer: coarse), (max-width: 700px) {
+  .card-tile.tile-compact {
+    grid-template-columns: minmax(0, 1fr) 66px minmax(0, 150px) 92px 104px 152px;
+    min-height: 48px;
+  }
+  .card-tile.tile-compact .tile-actions { gap: 6px; }
+  .card-tile.tile-compact .tile-btn { min-height: 44px; min-width: 42px; }
+}
+
 /* Popover de listas (tile e card) */
 .list-menu { position: fixed; z-index: 65; min-width: 210px; max-width: 260px; max-height: 320px; overflow-y: auto; padding: 6px; border: 1px solid var(--line); background: var(--surface); box-shadow: 0 12px 34px rgba(0,0,0,.4); }
 .list-menu-item { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 32px; padding: 0 8px; border: 0; background: none; color: var(--text); font-size: 13px; text-align: left; cursor: pointer; }
@@ -8892,9 +8932,16 @@ select,
      ações é fixa aqui pelo mesmo motivo do desktop, e ainda por outro: o badge
      "×N" alarga o + da carta que você tem, e em `auto` só aquela linha ficava
      fora de esquadro com as vizinhas. */
-  .card-tile.tile-compact { grid-template-columns: minmax(0, 1fr) 56px 122px; gap: 8px; }
+  .card-tile.tile-compact { grid-template-columns: minmax(0, 1fr) 56px 152px; gap: 8px; }
   .tile-c-set, .tile-c-var, .tile-c-price { display: none; }
   .tile-hover-thumb { display: none; }   /* sem hover no toque */
+}
+
+/* Itens do popover "+ Lista" no toque: 32px entre listas vizinhas era erro de
+   dedo garantido. Depois das regras-base do .list-menu (ordem decide). */
+@media (pointer: coarse), (max-width: 700px) {
+  .list-menu-item { min-height: 44px; }
+  .list-menu-new { padding: 12px 8px; }
 }
 
 /* Movimento reduzido: rede geral pra transições/animações não cobertas caso a
