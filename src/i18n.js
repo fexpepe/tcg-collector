@@ -610,6 +610,7 @@ window.TCG_MESSAGES = window.TCG_MESSAGES || {};
       // Usadas pelo shared.js (botão do tile, popover, modo compacto), que TODA
       // página carrega — por isso aqui, e não no pacote i18n-listas.js.
       "lists.new": "Nova lista",
+      "lists.limit": "Você chegou ao limite de {n} listas.",
       "lists.untitled": "Lista sem nome",
       "lists.menuEmpty": "Você ainda não tem listas.",
       "tile.addToList": "Adicionar a uma lista",
@@ -1597,6 +1598,7 @@ window.TCG_MESSAGES = window.TCG_MESSAGES || {};
       "dash.listsHint": "quick logging and shopping lists",
       "tags.movedToLists": "Your tags are now Lists — with quantity, version and export for buying.",
       "lists.new": "New list",
+      "lists.limit": "You've reached the limit of {n} lists.",
       "lists.untitled": "Untitled list",
       "lists.menuEmpty": "You don't have any lists yet.",
       "tile.addToList": "Add to a list",
@@ -2583,6 +2585,7 @@ window.TCG_MESSAGES = window.TCG_MESSAGES || {};
       "dash.listsHint": "registro rápido y listas de compra",
       "tags.movedToLists": "Tus etiquetas ahora son Listas — con cantidad, versión y exportación para comprar.",
       "lists.new": "Nueva lista",
+      "lists.limit": "Llegaste al límite de {n} listas.",
       "lists.untitled": "Lista sin nombre",
       "lists.menuEmpty": "Todavía no tienes listas.",
       "tile.addToList": "Agregar a una lista",

@@ -82,7 +82,6 @@
     "lists.deleted": "Lista excluída.",
     "lists.backToLists": "← Listas",
     "lists.openSet": "Ver o set no site",
-    "lists.limit": "Você chegou ao limite de {n} listas.",
     "lists.entryLimit": "Esta lista chegou ao limite de {n} cartas.",
     "lists.notFound": "Lista não encontrada.",
     "lists.addedToCollection": "Também foi pra sua coleção."
@@ -160,7 +159,6 @@
     "lists.deleted": "List deleted.",
     "lists.backToLists": "← Lists",
     "lists.openSet": "View this set on the site",
-    "lists.limit": "You've reached the limit of {n} lists.",
     "lists.entryLimit": "This list reached the limit of {n} cards.",
     "lists.notFound": "List not found.",
     "lists.addedToCollection": "It went into your collection too."
@@ -238,7 +236,6 @@
     "lists.deleted": "Lista eliminada.",
     "lists.backToLists": "← Listas",
     "lists.openSet": "Ver el set en el sitio",
-    "lists.limit": "Llegaste al límite de {n} listas.",
     "lists.entryLimit": "Esta lista llegó al límite de {n} cartas.",
     "lists.notFound": "Lista no encontrada.",
     "lists.addedToCollection": "También fue a tu colección."
