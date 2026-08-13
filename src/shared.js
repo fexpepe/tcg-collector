@@ -7398,7 +7398,7 @@
   // inteiro — o sync que roda logo depois do login (a tela de "Entrando…") e o
   // "Forçar sincronização" —, que eram 12 POSTs em série. O push avulso do laço
   // de sync (uma carta mudou num jogo) segue no pushRemote acima.
-  async function pushAllRemote(token, uid, byGame) {
+  async function pushAllRemote(token, uid, byGame, keepalive) {
     const linhas = Object.keys(byGame).map((game) => ({
       user_id: uid, game, data: byGame[game], updated_at: new Date().toISOString()
     }));
@@ -7407,7 +7407,10 @@
       const r = await fetch(`${SUPABASE_URL}/rest/v1/collections?on_conflict=user_id,game`, {
         method: "POST",
         headers: Object.assign(authHeaders(token), { Prefer: "resolution=merge-duplicates,return=minimal" }),
-        body: JSON.stringify(linhas)
+        body: JSON.stringify(linhas),
+        // keepalive: o laço de sync também usa este caminho no pagehide/aba
+        // escondida, e sem isto o navegador mataria o POST ao fechar.
+        keepalive: !!keepalive
       });
       if (r.ok) { recordSync("push", true); return true; }
       // Rede de segurança: se o upsert em lote for recusado (uma versão do
@@ -7415,16 +7418,16 @@
       // cai no caminho antigo — um POST por jogo. Vale a redundância: falhar
       // aqui em silêncio seria a coleção parando de subir pra nuvem.
       recordSync("push", false, `HTTP ${r.status} (lote) — caindo pro envio por jogo`);
-      return await pushOneByOne(token, uid, byGame);
+      return await pushOneByOne(token, uid, byGame, keepalive);
     } catch (e) {
       recordSync("push", false, e && e.message);
-      return await pushOneByOne(token, uid, byGame);
+      return await pushOneByOne(token, uid, byGame, keepalive);
     }
   }
-  async function pushOneByOne(token, uid, byGame) {
+  async function pushOneByOne(token, uid, byGame, keepalive) {
     let ok = true;
     for (const game of Object.keys(byGame)) {
-      if (!(await pushRemote(token, uid, byGame[game], false, game))) ok = false;
+      if (!(await pushRemote(token, uid, byGame[game], !!keepalive, game))) ok = false;
     }
     return ok;
   }
@@ -7998,16 +8001,32 @@
 
     const cacheLeitura = new Map(); // ver localSnapshot: as 12 chaves globais
     pushPendente = false;
+    const aSubir = {}, jsonPorJogo = {};
     for (const g of GAME_SLUGS) {
       const snap = localSnapshot(g, cacheLeitura);
       const json = JSON.stringify(snap);
       if (json === lastPushedByGame[g]) continue;
-      // Só marca como enviado APÓS o push confirmar (r.ok) — marcar antes fazia
-      // um push falho (offline/5xx) nunca ser retentado até a PRÓXIMA edição.
-      pushRemote(s.access_token, s.user.id, snap, keepalive, g).then((ok) => {
-        if (ok) lastPushedByGame[g] = json;
-        else pushPendente = true; // tenta de novo na próxima rodada
-      });
+      aSubir[g] = snap;
+      jsonPorJogo[g] = json;
+    }
+    const jogos = Object.keys(aSubir);
+    if (!jogos.length) return;
+    // Só marca como enviado APÓS o push confirmar (r.ok) — marcar antes fazia
+    // um push falho (offline/5xx) nunca ser retentado até a PRÓXIMA edição.
+    const confirma = (ok) => {
+      if (ok) jogos.forEach((g) => { lastPushedByGame[g] = jsonPorJogo[g]; });
+      else pushPendente = true; // tenta de novo na próxima rodada
+    };
+    // UM POST pros vários jogos (o PostgREST faz upsert de um array, linha a
+    // linha). Qualquer edição numa chave GLOBAL (decks, listas, binders,
+    // graded…) muda o snapshot dos 13 jogos de uma vez: era um POST por jogo,
+    // 13 round-trips em série no celular por um "+1" de quantidade. Um jogo só
+    // continua indo pelo caminho simples.
+    if (jogos.length === 1) {
+      const g = jogos[0];
+      pushRemote(s.access_token, s.user.id, aSubir[g], keepalive, g).then(confirma);
+    } else {
+      pushAllRemote(s.access_token, s.user.id, aSubir, keepalive).then(confirma);
     }
   }
   function startSyncLoop() {
