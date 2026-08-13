@@ -23,14 +23,7 @@
 
   // Stores por jogo + fachadas mescladas (mesmo padrão da Coleção): posse,
   // desejo e preços funcionam pra qualquer carta de qualquer jogo.
-  const ownedByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createCollectionStore(g)]));
-  const wishlistByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createWishlistStore(g)]));
-  const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
-  const cardGameMap = new Map();
-  const gameOf = (id) => cardGameMap.get(id) || "pokemon";
-  const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
-  const wishlist = shared.mergedWishlistStore(wishlistByGame, gameOf);
-  const prices = shared.mergedPriceStore(pricesByGame, gameOf);
+  const { cardGameMap, owned, wishlist, prices } = shared.createCrossGameStores();
   // Preferência "agrupar versões" (ver cardVariantPairs no shared.js):
   // uma carta = um tile nas grades de catálogo; o + abre o card pra escolher.
   let agrupaVersoes = shared.groupVariantsEnabled();

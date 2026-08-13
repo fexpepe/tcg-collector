@@ -17,15 +17,8 @@
 
   // Stores por jogo + facades (despacham por jogo pelo cardGameMap). Igual às
   // outras páginas: a página de vendas só lê cartas que você TEM.
-  const ownedByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createCollectionStore(g)]));
-  const wishlistByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createWishlistStore(g)]));
-  const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
-  const cardGameMap = new Map();
-  const gameOf = (id) => cardGameMap.get(id) || "pokemon";
+  const { ownedByGame, cardGameMap, owned, wishlist, prices } = shared.createCrossGameStores();
   const gameLabelOf = (g) => shared.gameLabel(g);
-  const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
-  const wishlist = shared.mergedWishlistStore(wishlistByGame, gameOf);
-  const prices = shared.mergedPriceStore(pricesByGame, gameOf);
 
   // Vendas: cartas à venda, cada uma com um PREÇO DE VENDA + condição. Global
   // cross-game, por cardId|variant. Local + sync (carimba updatedAt p/ merge LWW).

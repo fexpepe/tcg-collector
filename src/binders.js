@@ -28,14 +28,7 @@
   // qualquer jogo. As stores de coleção/desejo/preços (resumo Tenho/Faltando,
   // "marcar tudo", busca) viram facades que despacham por jogo (cardGameMap,
   // populado quando o catálogo dos dois jogos carrega).
-  const ownedByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createCollectionStore(g)]));
-  const wishlistByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createWishlistStore(g)]));
-  const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
-  const cardGameMap = new Map();
-  const gameOf = (id) => cardGameMap.get(id) || "pokemon";
-  const ownedStore = shared.mergedCollectionStore(ownedByGame, gameOf);
-  const wishlistStore = shared.mergedWishlistStore(wishlistByGame, gameOf);
-  const pricesStore = shared.mergedPriceStore(pricesByGame, gameOf);
+  const { cardGameMap, owned: ownedStore, wishlist: wishlistStore, prices: pricesStore } = shared.createCrossGameStores();
   let editorGameFilter = "all"; // filtro do seletor de cartas (ALL/Pokémon/Lorcana)
 
   const GRIDS = {

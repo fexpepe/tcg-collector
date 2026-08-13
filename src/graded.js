@@ -26,14 +26,7 @@
 
   // Stores por jogo + facades (despacham por jogo pelo cardGameMap). A página só
   // lê cartas que você TEM (pra o picker), igual à de Vendas.
-  const ownedByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createCollectionStore(g)]));
-  const wishlistByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createWishlistStore(g)]));
-  const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
-  const cardGameMap = new Map();
-  const gameOf = (id) => cardGameMap.get(id) || "pokemon";
-  const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
-  const wishlist = shared.mergedWishlistStore(wishlistByGame, gameOf);
-  const prices = shared.mergedPriceStore(pricesByGame, gameOf);
+  const { ownedByGame, cardGameMap, owned, wishlist, prices } = shared.createCrossGameStores();
 
   // Graded: cada slab é um item ÚNICO (id gerado) — dá pra ter dois PSA 10 da
   // mesma carta. Global cross-game, sincronizado via collections.data (LWW do

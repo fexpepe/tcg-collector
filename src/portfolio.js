@@ -23,14 +23,7 @@
   // ===========================================================================
   const GAMES = shared.GAME_SLUGS;
   const GAME_COLOR = shared.GAME_COLOR;
-  const ownedByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createCollectionStore(g)]));
-  const wishlistByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createWishlistStore(g)]));
-  const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
-  const cardGameMap = new Map();
-  const gameOf = (id) => cardGameMap.get(id) || "pokemon";
-  const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
-  const wishlist = shared.mergedWishlistStore(wishlistByGame, gameOf);
-  const prices = shared.mergedPriceStore(pricesByGame, gameOf);
+  const { ownedByGame, cardGameMap, gameOf, owned, wishlist, prices } = shared.createCrossGameStores();
   // Modo investidor (opcional): custo pago por carta + vendas realizadas.
   const costsStore = shared.createCostsStore();
   const soldStore = shared.createSoldStore();

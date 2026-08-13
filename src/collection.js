@@ -10,15 +10,8 @@
   // Coleção UNIFICADA: stores por jogo + facades que despacham por jogo (resolvido
   // pelo cardGameMap, populado quando o catálogo carrega). Assim variantTile/
   // preview/handlers funcionam sem saber que há vários jogos.
-  const ownedByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createCollectionStore(g)]));
-  const wishlistByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createWishlistStore(g)]));
-  const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
-  const cardGameMap = new Map();
-  const gameOf = (id) => cardGameMap.get(id) || "pokemon";
+  const { ownedByGame, cardGameMap, gameOf, owned, wishlist, prices } = shared.createCrossGameStores();
   const gameLabelOf = (g) => shared.gameLabel(g);
-  const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
-  const wishlist = shared.mergedWishlistStore(wishlistByGame, gameOf);
-  const prices = shared.mergedPriceStore(pricesByGame, gameOf);
 
   // Pastas: organização leve (seções colapsáveis) DENTRO da coleção. GLOBAL
   // cross-game (uma pasta pode misturar Pokémon e Lorcana). Exclusivo: cada carta

@@ -13,14 +13,7 @@
   let cardsView = shared.gridViewValue(localStorage.getItem("tcg-wishlist-view"));
 
   // Wishlist UNIFICADA: stores por jogo + facades que despacham por jogo (cardGameMap).
-  const ownedByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createCollectionStore(g)]));
-  const wishlistByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createWishlistStore(g)]));
-  const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
-  const cardGameMap = new Map();
-  const gameOf = (id) => cardGameMap.get(id) || "pokemon";
-  const owned = shared.mergedCollectionStore(ownedByGame, gameOf);
-  const wishlist = shared.mergedWishlistStore(wishlistByGame, gameOf);
-  const prices = shared.mergedPriceStore(pricesByGame, gameOf);
+  const { ownedByGame, wishlistByGame, cardGameMap, owned, wishlist, prices } = shared.createCrossGameStores();
   // Preço-alvo por carta ("me avisa quando chegar a R$X") — global, sincronizado.
   const targets = shared.createWishTargetsStore();
 

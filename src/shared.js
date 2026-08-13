@@ -6097,6 +6097,24 @@
   // Facade que despacha cada método por jogo (resolvido por gameOf(cardId));
   // agregados (size/totalQuantity/...) somam os jogos. Deixa Coleção/Wishlist/
   // Binders usarem variantTile/preview/handlers sem saber que há vários jogos.
+  // Stores dos 13 jogos + as facades que despacham por carta. Toda página
+  // pessoal (Coleção, Vendas, Explorar, Graded, Portfólio, Wishlist, Binders)
+  // abria com as MESMAS 8 linhas; agora é uma chamada. O `cardGameMap` vem
+  // vazio de propósito: quem carrega o catálogo é que sabe de que jogo é cada
+  // carta, e preenche conforme hidrata.
+  function createCrossGameStores() {
+    const ownedByGame = Object.fromEntries(GAME_SLUGS.map((g) => [g, createCollectionStore(g)]));
+    const wishlistByGame = Object.fromEntries(GAME_SLUGS.map((g) => [g, createWishlistStore(g)]));
+    const pricesByGame = Object.fromEntries(GAME_SLUGS.map((g) => [g, createPriceStore(g)]));
+    const cardGameMap = new Map();
+    const gameOf = (id) => cardGameMap.get(id) || "pokemon";
+    return {
+      ownedByGame, wishlistByGame, pricesByGame, cardGameMap, gameOf,
+      owned: mergedCollectionStore(ownedByGame, gameOf),
+      wishlist: mergedWishlistStore(wishlistByGame, gameOf),
+      prices: mergedPriceStore(pricesByGame, gameOf)
+    };
+  }
   function mergedCollectionStore(byGame, gameOf) {
     const list = () => Object.keys(byGame).map((g) => byGame[g]);
     const pick = (id) => byGame[gameOf(id)] || list()[0];
@@ -6717,6 +6735,7 @@
     uiEditorEnabled,
     setUiEditor,
     loadAllGamesCatalog,
+    createCrossGameStores,
     mergedCollectionStore,
     mergedWishlistStore,
     mergedPriceStore,
