@@ -145,6 +145,7 @@
     const wrap = document.createElement("div");
     wrap.className = "list-modal";
     document.body.appendChild(wrap);
+    document.body.classList.add("preview-open"); // trava a rolagem do fundo (body+html)
 
     const draft = { name: "", linked: false, game: null, set: null };
 
@@ -216,14 +217,14 @@
 
     function go() {
       const list = store.create(draft);
-      wrap.remove();
+      wrap.remove(); document.body.classList.remove("preview-open");
       if (!list) { alert(t("lists.limit", { n: store.LIST_LIMIT })); return; }
       location.href = `listas.html?id=${encodeURIComponent(list.id)}`;
     }
 
     stepName();
     wrap.addEventListener("click", (ev) => {
-      if (ev.target === wrap || ev.target.closest("[data-wz-cancel]")) { wrap.remove(); return; }
+      if (ev.target === wrap || ev.target.closest("[data-wz-cancel]")) { wrap.remove(); document.body.classList.remove("preview-open"); return; }
       const ty = ev.target.closest("[data-wz-linked]");
       if (ty) {
         const input = wrap.querySelector("#wzName");
@@ -542,6 +543,7 @@
     const wrap = document.createElement("div");
     wrap.className = "list-modal";
     document.body.appendChild(wrap);
+    document.body.classList.add("preview-open"); // trava a rolagem do fundo (body+html)
 
     function pinta() {
       const abas = FORMATOS.map((f) =>
@@ -562,7 +564,7 @@
     pinta();
 
     wrap.addEventListener("click", (ev) => {
-      if (ev.target === wrap || ev.target.closest("[data-wz-cancel]")) { wrap.remove(); return; }
+      if (ev.target === wrap || ev.target.closest("[data-wz-cancel]")) { wrap.remove(); document.body.classList.remove("preview-open"); return; }
       const f = ev.target.closest("[data-fmt]");
       if (f) { formatoAtual = f.dataset.fmt; pinta(); return; }
 
@@ -611,6 +613,7 @@
     const wrap = document.createElement("div");
     wrap.className = "list-modal";
     document.body.appendChild(wrap);
+    document.body.classList.add("preview-open"); // trava a rolagem do fundo (body+html)
     let modo = "somar";   // somar = +q; definir = deixa exatamente q (idempotente)
 
     function pinta() {
@@ -640,7 +643,7 @@
     pinta();
 
     wrap.addEventListener("click", (ev) => {
-      if (ev.target === wrap || ev.target.closest("[data-wz-cancel]")) { wrap.remove(); return; }
+      if (ev.target === wrap || ev.target.closest("[data-wz-cancel]")) { wrap.remove(); document.body.classList.remove("preview-open"); return; }
       const m = ev.target.closest("[data-mode]");
       if (m) { modo = m.dataset.mode; pinta(); return; }
       if (ev.target.closest("[data-ap-go]")) {
@@ -656,7 +659,7 @@
           if (delta) owned.add(l.e.id, l.variant, l.cond, delta);
         });
         shared.flushPendingWrites();
-        wrap.remove();
+        wrap.remove(); document.body.classList.remove("preview-open");
         renderSource();
         shared.toastUndo(tn("lists.applied", linhas.length), desfazer);
       }

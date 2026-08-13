@@ -1277,15 +1277,16 @@
         </div>
       </div>`;
     document.body.appendChild(wrap);
+    document.body.classList.add("preview-open"); // trava a rolagem do fundo (body+html)
     wrap.addEventListener("click", async (ev) => {
-      if (ev.target === wrap || ev.target.closest("[data-deck-cancel]")) { wrap.remove(); return; }
+      if (ev.target === wrap || ev.target.closest("[data-deck-cancel]")) { wrap.remove(); document.body.classList.remove("preview-open"); return; }
       if (!ev.target.closest("[data-import-go]")) return;
       const msg = wrap.querySelector("#deckImportMsg");
       msg.textContent = t("decks.loading");
       try {
         const res = await importText(current, wrap.querySelector("#deckImportText").value);
         if (!res.added && !res.missing.length) { msg.textContent = t("decks.importEmpty"); return; }
-        wrap.remove();
+        wrap.remove(); document.body.classList.remove("preview-open");
         renderEditor();
         if (res.missing.length) {
           alert(t("decks.importMissing", { n: res.missing.length }) + "\n\n" + res.missing.slice(0, 20).join("\n"));
@@ -1315,6 +1316,7 @@
     const wrap = document.createElement("div");
     wrap.className = "deck-modal";
     document.body.appendChild(wrap);
+    document.body.classList.add("preview-open"); // trava a rolagem do fundo (body+html)
 
     function stepGame() {
       // data-pick-game (e não data-game): o <html> carrega data-game com o jogo
@@ -1341,14 +1343,14 @@
     }
     function go(game, format) {
       const deck = createDeck(game, format, "");
-      wrap.remove();
+      wrap.remove(); document.body.classList.remove("preview-open");
       location.href = `my-decks.html?id=${encodeURIComponent(deck.id)}`;
     }
 
     let chosenGame = null;
     stepGame();
     wrap.addEventListener("click", (ev) => {
-      if (ev.target === wrap || ev.target.closest("[data-deck-cancel]")) { wrap.remove(); return; }
+      if (ev.target === wrap || ev.target.closest("[data-deck-cancel]")) { wrap.remove(); document.body.classList.remove("preview-open"); return; }
       const g = ev.target.closest("[data-pick-game]");
       if (g) {
         chosenGame = g.dataset.pickGame;

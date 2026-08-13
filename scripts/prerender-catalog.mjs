@@ -307,7 +307,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
 <html lang="${L.htmlLang}">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>${escapeHtml(title)}</title>
     <meta name="description" content="${escapeAttr(desc)}">
     <link rel="canonical" href="${escapeAttr(canonical)}">${hreflangs}
@@ -470,7 +470,7 @@ function deckPageHtml(dp) {
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>${escapeHtml(title)}</title>
     <meta name="description" content="${escapeAttr(desc)}">
     <link rel="canonical" href="${escapeAttr(canonical)}">
@@ -765,7 +765,7 @@ function cardPageHtml(cp, ctx = {}) {
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>${escapeHtml(title)}</title>
     <meta name="description" content="${escapeAttr(desc)}">
     <link rel="canonical" href="${escapeAttr(canonical)}">
