@@ -92,8 +92,18 @@ CREATE TABLE IF NOT EXISTS prices (
 // (game, id) — id sozinho poderia colidir entre jogos — usando o índice
 // idx_words_global (word na frente). Uma consulta só pros 13 jogos, em vez de
 // 13 requisições por tecla digitada.
+// Palavras-função caem ANTES da consulta: "the%" tem mais de 2000 linhas, o
+// LIMIT do operando devolve um subconjunto ARBITRÁRIO delas e a interseção
+// perde cartas que existem — "The One Ring" voltava VAZIO da borda. O cliente
+// já fazia isso só no fillPrints (shared.js); aqui TODO chamador herda (decks,
+// listas, cards, explore). Mesmo conjunto do cliente. Se a consulta é SÓ de
+// stopwords ("the"), segue com elas — é o que a pessoa digitou.
+const STOP = new Set(["the", "of", "a", "an", "and", "to", "de", "da", "do", "la", "el"]);
+
 export function buildSearch(game, consulta, limite) {
-  const termos = palavras(consulta).slice(0, 5); // 5 palavras bastam; mais = abuso
+  const todas = palavras(consulta);
+  const uteis = todas.filter((w) => !STOP.has(w));
+  const termos = (uteis.length ? uteis : todas).slice(0, 5); // 5 palavras bastam; mais = abuso
   if (!termos.length) return null;
   // Gate de 2 caracteres, espelhando o cliente (que já não busca com menos).
   // Sem ele, ?q=a caía no ramo de 1 char e o LIKE 'a%' varria o índice; iterar
