@@ -326,7 +326,8 @@ function setPageHtml(page, canonical, otherSets, lang) {
     <link rel="preconnect" href="https://assets.tcgdex.net">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <meta name="theme-color" content="#101218">
+    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
     <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
     <script src="/src/theme.js"></script>
     <link rel="stylesheet" href="/styles.css">
@@ -779,7 +780,8 @@ function cardPageHtml(cp, ctx = {}) {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#101218">
+    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
     <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
     <script type="application/ld+json">${JSON.stringify(breadcrumbLd)}</script>
     <script src="/src/theme.js"></script>

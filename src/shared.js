@@ -952,10 +952,6 @@
     return dexId ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${dexId}.png` : "";
   }
 
-  function matchesCardLang(language) {
-    return currentCardLang === "all" || normalizeCardLanguage(language) === currentCardLang;
-  }
-
   // Moeda de exibição dos valores (global, ao lado da bandeira de idioma).
   const CURRENCIES = ["BRL", "USD", "EUR"];
   const currencyStorageKey = "tcg-collector-currency-v1";
@@ -2300,8 +2296,18 @@
     const root = document.documentElement;
     if (theme === "light") root.setAttribute("data-theme", "light");
     else root.removeAttribute("data-theme");
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", theme === "light" ? "#e8ecf1" : "#101218");
+    // O HTML traz DUAS tags theme-color com `media` (light/dark), pra barra do
+    // navegador já nascer certa antes deste script rodar. Uma tag SEM media
+    // vence as duas (o navegador usa a primeira cujo media casa, e "sem media"
+    // casa sempre) — então ela só entra quando a pessoa ESCOLHEU um tema.
+    // Em "auto" ela é removida de propósito: aí quem manda são as media
+    // queries, e trocar o tema do sistema com a página aberta muda a barra
+    // sozinho. (Mexer só na PRIMEIRA tag, como era antes, pintava a barra de
+    // claro num tema escuro.)
+    const fixa = document.querySelector('meta[name="theme-color"]:not([media])');
+    if (getThemePref() === "auto") { if (fixa) fixa.remove(); return; }
+    const meta = fixa || document.head.appendChild(Object.assign(document.createElement("meta"), { name: "theme-color" }));
+    meta.setAttribute("content", theme === "light" ? "#e8ecf1" : "#101218");
   }
   // Botão de tema ao lado do perfil (mostra o ícone do tema PRA ONDE vai trocar).
   function initThemeToggle() {
@@ -6551,13 +6557,10 @@
     createWishlistStore,
     createPriceStore,
     createListStore,
-    brMarketplaceLinks,
     defaultVariant,
     cardVariants,
     CARD_CONDITIONS,
-    CONDITION_MULTIPLIERS,
     DEFAULT_CONDITION,
-    variantQuantityRows,
     cardVariantPairs,
     variantTile,
     gridViewValue,
@@ -6569,7 +6572,6 @@
     handleAddTileClick,
     flashTileAdded,
     handleWantTileClick,
-    handleQuantityClick,
     fetchPokemonMeta,
     createCardPreview,
     t,
@@ -6599,7 +6601,6 @@
     setOriginalName,
     normalizeGame,
     gameDataDir,
-    getTheme,
     getThemePref,
     setTheme,
     setLanguage,
@@ -6615,12 +6616,8 @@
     publicProfileUrl,
     analyticsSummary,
     pushProfile,
-    pullProfile,
     handleAvailable,
-    promptHandleOnboarding,
     fetchPublicProfile,
-    pushPublicProfile,
-    deletePublicProfile,
     publishProfile,
     sendMagicLink,
     oauthSignIn,
@@ -6630,7 +6627,6 @@
     hasConsent,
     setConsent,
     setGameFilterScope,
-    initGameFilterSelects,
     listShares,
     listShareZones,
     listMyShares,
@@ -6641,7 +6637,6 @@
     gradedGradeText,
     gradedBadgeHtml,
     gradedSlabsValued,
-    gradedTotalValue,
     collectionValueLines,
     collectionNetWorth,
     valueSnapshot,
@@ -6649,7 +6644,6 @@
     distBarsHtml,
     memoValue,
     createSoldStore,
-    mergePrices, // exportado pra teste (o sync usa via mergeData)
     createCostsStore,
     createWishTargetsStore,
     readSoldList,
@@ -6668,7 +6662,6 @@
     errorSummary,
     loadPriceDeltas,
     basePricingId,
-    logCardView,
     contributePrice,
     toBrl,
     communityPricesEnabled,
@@ -6680,8 +6673,6 @@
     pushWishlist,
     cardLanguageFromId,
     spriteUrl,
-    matchesCardLang,
-    applyTranslations,
     POKEMON_TYPES,
     TYPE_COLORS,
     REGION_BY_GENERATION,
@@ -6698,7 +6689,6 @@
     pickSetEdition,
     localizedImg,
     cardImageSources,
-    pokemontcgImageUrl,
     cardHasImage,
     cardCode,
     cardLabel,
@@ -6722,10 +6712,8 @@
     // de decks precisa disto: um deck de Lorcana aberto numa sessão Pokémon.
     loadGameCatalog,
     showSkeletons,
-    pageLoading,
     uiEditorEnabled,
     setUiEditor,
-    withPageLoading,
     loadAllGamesCatalog,
     mergedCollectionStore,
     mergedWishlistStore,
@@ -6741,7 +6729,6 @@
     unique,
     compareCardNumbers,
     rarityRank,
-    GAME_LINES,
     lineScope,
     lineParamOf,
     normalize,
