@@ -348,15 +348,27 @@ body {
   overflow-x: clip;
 }
 
+button,
+input,
+select {
+  font: inherit;
+}
+
 /* Controles em tela de TOQUE: fonte mínima de 16px. Abaixo disso o Safari do
    iOS dá ZOOM automático ao focar o campo — a página "desfixa", ganha rolagem
    lateral e só volta com pinça. É a causa nº 1 de "o mobile desconfigurou".
-   Só em ponteiro grosso pra não engordar os controles no desktop. */
+   Só em ponteiro grosso pra não engordar os controles no desktop.
+   O !important é DELIBERADO: sem ele, qualquer classe de área com font-size
+   menor (.setting-select: 14px, .graded-grade: 14px, .sale-cond, .deck-view-sel,
+   .prof-sort: 12px…) vence o seletor de elemento e o zoom volta — foi exatamente
+   o que aconteceu com todo <select> do site quando o `font: inherit` acima
+   morava DEPOIS deste bloco e o desfazia. Fonte menor que 16px num campo de
+   toque nunca é intencional aqui. */
 @media (pointer: coarse), (max-width: 700px) {
   input:not([type="checkbox"]):not([type="radio"]),
   select,
   textarea {
-    font-size: 16px;
+    font-size: 16px !important;
   }
 }
 
@@ -366,12 +378,6 @@ main {
 
 body.preview-open {
   overflow: hidden;
-}
-
-button,
-input,
-select {
-  font: inherit;
 }
 
 .app-header {
