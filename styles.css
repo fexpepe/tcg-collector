@@ -7056,8 +7056,10 @@ a.dash-profile-handle:hover, a.shared-kind:hover,
     opacity: 1;
     pointer-events: auto;
   }
-  .binder-slot-want,
-  .binder-slot-flag {
+  /* Seletor composto de propósito: as regras-base de want/flag (opacity: 0)
+     vêm DEPOIS deste bloco no arquivo e empatariam em especificidade. */
+  .binder-slot .binder-slot-want,
+  .binder-slot .binder-slot-flag {
     opacity: 1;
   }
   .binder-slot-move { display: flex; }
