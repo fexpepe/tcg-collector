@@ -35,7 +35,7 @@
     } catch (e) { /* corrompido: começa vazio */ }
     if (!data.order || typeof data.order !== "object") data.order = {}; // ordem manual por bucket (folderId|"__none__")
     // Carimbo pra sincronização (LWW do bloco todo): toda mudança atualiza o ts.
-    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { /* quota: ignora */ } };
+    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(data)); shared.marcaSuja(KEY); } catch (e) { /* quota: ignora */ } };
     const uid = () => "f_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
     const byId = (id) => data.folders.find((f) => f.id === id) || null;
     return {
@@ -98,7 +98,7 @@
     let data = { tags: [], assign: {} };
     try { const raw = JSON.parse(localStorage.getItem(KEY) || "null"); if (raw && Array.isArray(raw.tags) && raw.assign && typeof raw.assign === "object") data = raw; } catch (e) { /* corrompido */ }
     if (!data.assign || typeof data.assign !== "object") data.assign = {};
-    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { /* quota */ } };
+    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(data)); shared.marcaSuja(KEY); } catch (e) { /* quota */ } };
     const uid = () => "t_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
     const byId = (id) => data.tags.find((x) => x.id === id) || null;
     return {
@@ -230,7 +230,7 @@
       }
     });
     data.updatedAt = Date.now();
-    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { /* quota: ignora */ }
+    try { localStorage.setItem(KEY, JSON.stringify(data)); shared.marcaSuja(KEY); } catch (e) { /* quota: ignora */ }
     return added;
   }
 

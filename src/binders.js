@@ -279,6 +279,7 @@
   function save() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      shared.marcaSuja(STORAGE_KEY); // escrita direta: acorda o laço de sync
     } catch (error) {
       // QuotaExceededError: avisa em vez de perder dados em silêncio.
       alert(t("binders.storageFull"));

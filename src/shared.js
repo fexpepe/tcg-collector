@@ -6584,6 +6584,10 @@
     // precisa disto: sem o flush, o timer do scheduleWrite dispara depois do
     // restore e regrava por cima o que o usuário acabou de desfazer.
     flushPendingWrites: flushWrites,
+    // Stores que gravam chave SINCRONIZADA com localStorage.setItem direto
+    // (decks/binders/vendas/graded/pastas/histórico) precisam avisar o laço de
+    // sync — sem isto a edição espera a varredura de 5 min em vez dos 20 s.
+    marcaSuja,
     notifyStorageFull,
     errorSummary,
     loadPriceDeltas,
@@ -8541,6 +8545,11 @@
         const merged = mergeData(local, remote);
         if (JSON.stringify(merged) !== base) {
           writeSnapshot(merged, g);
+          // O writeSnapshot acabou de mudar chaves GLOBAIS no localStorage; o
+          // cacheBoot ainda guarda a versão pré-merge. Sem limpar, o merge do
+          // jogo seguinte parte do global velho e pode regravar (e re-subir)
+          // um blob SEM o que este jogo acabou de puxar da nuvem.
+          cacheBoot.clear();
           aSubir[g] = merged; // sobe tudo de uma vez depois do laço
           changed = true;
         } else {

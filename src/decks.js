@@ -36,6 +36,7 @@
   function save() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      shared.marcaSuja(STORAGE_KEY); // escrita direta: acorda o laço de sync
       return true;
     } catch (e) {
       // Cota estourada: avisa em vez de perder o deck em silêncio.

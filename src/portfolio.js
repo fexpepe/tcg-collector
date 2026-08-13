@@ -567,6 +567,7 @@
       if (Array.isArray(old) && old.length) {
         const v2 = old.map((p) => ({ d: p.d, c: p.c || 0, b: 0, w: p.w || 0 }));
         localStorage.setItem(histKey(g), JSON.stringify(v2));
+        shared.marcaSuja(histKey(g)); // escrita direta: acorda o laço de sync
       }
     } catch (e) { /* ignora */ }
   }
@@ -580,7 +581,7 @@
     if (hist.length && hist[hist.length - 1].d === d) hist[hist.length - 1] = point;
     else hist.push(point);
     if (hist.length > 800) hist.splice(0, hist.length - 800);
-    try { localStorage.setItem(histKey(g), JSON.stringify(hist)); } catch (e) { shared.notifyStorageFull(); }
+    try { localStorage.setItem(histKey(g), JSON.stringify(hist)); shared.marcaSuja(histKey(g)); } catch (e) { shared.notifyStorageFull(); }
     return hist;
   }
 

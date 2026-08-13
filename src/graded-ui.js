@@ -27,7 +27,7 @@
     } catch (e) { /* corrompido: começa vazio */ }
     if (!Array.isArray(data.order)) data.order = [];
     const newId = () => "g" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { /* quota */ } };
+    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(data)); window.TCGShared.marcaSuja(KEY); } catch (e) { /* quota */ } };
     return {
       any: () => Object.keys(data.items).length > 0,
       countOf: (cardId, variant) => data.order.reduce((n, gid) => { const e = data.items[gid]; return n + (e && e.cardId === cardId && e.variant === variant ? 1 : 0); }, 0),

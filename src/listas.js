@@ -644,7 +644,7 @@
       updatedAt: Date.now()
     };
     data.decks.unshift(deck);
-    try { localStorage.setItem(DECKS_KEY, JSON.stringify(data)); }
+    try { localStorage.setItem(DECKS_KEY, JSON.stringify(data)); shared.marcaSuja(DECKS_KEY); }
     catch (err) { if (shared.notifyStorageFull) shared.notifyStorageFull(); return; }
     location.href = `my-decks.html?id=${encodeURIComponent(deck.id)}`;
   }
