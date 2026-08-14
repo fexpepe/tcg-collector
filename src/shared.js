@@ -4161,7 +4161,7 @@
               <button class="owned-toggle preview-owned" data-card-id="${escapeAttribute(activeCard.id)}"${activeVariant ? ` data-variant="${escapeAttribute(activeVariant)}"` : ""} aria-pressed="${isOwned}">
                 ${isOwned ? t("card.inCollection") : t("card.markOwned")}
               </button>
-              ${((folders && folders.list().length) || tags) ? `<div class="preview-org-row">
+              ${((folders && folders.list().length) || (graded && isOwned)) ? `<div class="preview-org-row">
                 ${(folders && folders.list().length) ? `<label class="preview-folder-row"><span>${escapeHtml(t("folders.assign"))}</span>
                   <select class="preview-folder" data-preview-folder>
                     <option value="">${escapeHtml(t("folders.none"))}</option>
