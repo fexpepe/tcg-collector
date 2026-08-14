@@ -227,6 +227,15 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/mirror-set-logos.mjs || echo "mirror-set-logos falhou; segue com as URLs da TCGdex"
 
+      # Sets JAPONESES: a TCGdex não tem logo em ja (o payload vem sem o campo e
+      # o CDN dá 404), então os arquivos vêm do Bulbagarden e estão VERSIONADOS
+      # em data/set-logos/ja/. Aqui só o carimbo (--no-fetch, zero rede): o sync
+      # acabou de reescrever os chunks com setLogo:"" e é isto que devolve o
+      # caminho local. Baixar logo novo é passo LOCAL (rode sem --no-fetch).
+      - name: Carimba logos de set japoneses
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/mirror-ja-set-logos.mjs --no-fetch || echo "mirror-ja-set-logos falhou; sets JP seguem com o nome no lugar do logo"
+
       # Histórico de preços SEM servidor: busca o acumulador publicado no deploy
       # anterior (a produção é o "banco"), anexa o snapshot de hoje e re-publica
       # (+ deltas ▲▼ e maiores altas/quedas). Backup em data/.cache.
