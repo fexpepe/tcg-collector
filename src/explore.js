@@ -73,6 +73,8 @@
     onOwnedChange: () => refreshOwnership()
   });
   elements.grid.addEventListener("click", (event) => {
+    // + de tile agrupado: menu de versões (adicionar direto, sem abrir o card).
+    if (shared.handleGroupedAddClick(event, owned, wishlist, refreshOwnership)) return;
     const opener = event.target.closest("[data-preview-card-id]");
     if (opener) { preview.open(opener.dataset.previewCardId, opener.dataset.previewVariant); return; }
     if (shared.handleWantTileClick(event, wishlist)) { refreshOwnership(); return; }

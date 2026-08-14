@@ -150,6 +150,35 @@
     return (card && card.variants && card.variants.length) ? card.variants : [defaultVariant(card)];
   }
 
+  // FOIL ESPECIAL (Magic): o finishes do Scryfall só sabe dizer "foil", mas o
+  // acabamento de verdade (Surge, Galaxy, Halo…) vive nos promo_types, que o
+  // sync guarda em `card.treat`. A variante ARMAZENADA continua "Foil" — mudar a
+  // chave órfanaria toda coleção já marcada (o import descarta variante que a
+  // carta não conhece) — então a distinção é SÓ de exibição: onde a UI mostraria
+  // "Foil", mostra o nome comercial. Preço já está certo por construção (cada
+  // impressão surge é uma carta própria no catálogo, com `uf` próprio).
+  // Nomes próprios de produto da WotC, iguais nos três idiomas — por isso não
+  // passam pelo i18n. Lista fechada, medida no catálogo real (2026-08-14);
+  // token novo do Scryfall cai no "Foil" comum até entrar aqui.
+  const SPECIAL_FOILS = {
+    surgefoil: "Surge Foil", galaxyfoil: "Galaxy Foil", halofoil: "Halo Foil",
+    texturedfoil: "Textured Foil", textured: "Textured Foil", oilslick: "Oil Slick Foil",
+    stepandcompleat: "Step-and-Compleat Foil", ripplefoil: "Ripple Foil",
+    raisedfoil: "Raised Foil", silverfoil: "Silver Foil", gilded: "Gilded Foil",
+    neonink: "Neon Ink", doublerainbow: "Double Rainbow Foil", rainbowfoil: "Rainbow Foil",
+    manafoil: "Mana Foil", dragonscalefoil: "Dragonscale Foil", singularityfoil: "Singularity Foil",
+    fracturefoil: "Fracture Foil", confettifoil: "Confetti Foil", invisibleink: "Invisible Ink",
+    firstplacefoil: "First Place Foil", chocobotrackfoil: "Chocobo Track Foil",
+    dazzlefoil: "Dazzle Foil", facetfoil: "Facet Foil", cosmicfoil: "Cosmic Foil"
+  };
+  function variantDisplayLabel(card, variant) {
+    if (variant !== "Foil" || !card || !card.treat) return variant;
+    for (const tok of String(card.treat).split(";")) {
+      if (SPECIAL_FOILS[tok]) return SPECIAL_FOILS[tok];
+    }
+    return variant;
+  }
+
   // Condições no padrão LigaPokémon (melhor -> pior). NM é o default ao adicionar.
   const CARD_CONDITIONS = ["M", "NM", "SP", "MP", "HP", "D"];
   const DEFAULT_CONDITION = "NM";
@@ -3508,15 +3537,32 @@
     }
     const data = pricing ? marketQuoteData(pricing, card) : { nonfoil: null, foil: null, updated: "" };
     let tcgdex = marketFinishRow(t("market.nonfoil"), data.nonfoil, fx) + marketFinishRow(t("market.foil"), data.foil, fx);
-    // Fallback do RAW: carta sem cotação na TCGdex (só-PPT/curada, ex.: Ancient Mew)
-    // usa o preço baked do TCG_PRICING (u = TCGplayer USD, e = Cardmarket EUR).
+    // Fallback do RAW: carta sem cotação na TCGdex (só-PPT/curada, ex.: Ancient
+    // Mew — e TODO o Magic/FAB/etc., que só têm o preço baked) usa o TCG_PRICING
+    // (u = não-foil TCGplayer USD, uf = foil, e = Cardmarket EUR).
+    // Antes era UMA linha rotulada pelo teste /holo|revers/ (vocabulário
+    // Pokémon): carta Magic só-foil saía como "Não-foil" e a dual (Normal+Foil)
+    // nunca mostrava o preço do foil. Agora: uma linha por acabamento que a
+    // carta tem, e o rótulo do foil usa o nome ESPECIAL quando houver (a
+    // impressão Surge mostra "Surge Foil" — é onde o preço muda de verdade).
     if (!tcgdex) {
       const tbl = window.TCG_PRICING;
       const ref2 = tbl && card && card.id && (tbl[card.id] || tbl[basePricingId(card.id)]);
       if (ref2 && (ref2.u > 0 || ref2.e > 0)) {
-        const finish = { usd: ref2.u > 0 ? { min: null, med: ref2.u, max: null } : null, eur: ref2.e > 0 ? { min: null, med: ref2.e, max: null } : null };
-        const isFoil = (card.variants || []).some((v) => /holo|revers/i.test(v));
-        tcgdex = marketFinishRow(isFoil ? t("market.foil") : t("market.nonfoil"), finish, fx);
+        const med = (v) => (v > 0 ? { min: null, med: v, max: null } : null);
+        const vars2 = cardVariants(card);
+        const foilish = (v) => /holo|revers|foil/i.test(v);
+        const soFoil = vars2.every(foilish);
+        const especial = variantDisplayLabel(card, "Foil");
+        const foilLabel = especial !== "Foil" ? especial : t("market.foil");
+        if (soFoil) {
+          tcgdex = marketFinishRow(foilLabel, { usd: med(ref2.u), eur: med(ref2.e) }, fx);
+        } else {
+          // O `e` (Cardmarket) é um preço único por carta: fica na linha do
+          // não-foil, como o marketQuoteData faz com a "base" da TCGdex.
+          tcgdex = marketFinishRow(t("market.nonfoil"), { usd: med(ref2.u), eur: med(ref2.e) }, fx)
+            + (vars2.some(foilish) && ref2.uf > 0 ? marketFinishRow(foilLabel, { usd: med(ref2.uf), eur: null }, fx) : "");
+        }
       }
     }
     const br = marketBrRow(card, fx);
@@ -4285,6 +4331,26 @@
         return;
       }
 
+      // +/− rápidos da LINHA da variante (fora do details). preventDefault:
+      // o botão vive dentro do <summary> — sem ele, além de mexer na
+      // quantidade, o clique abriria/fecharia o "gerenciar" junto.
+      const vq = event.target.closest("#cardPreviewModal [data-vq-card-id]");
+      if (vq && activeCard) {
+        event.preventDefault();
+        if (vq.dataset.vqAction === "inc") {
+          store.add(vq.dataset.vqCardId, vq.dataset.vqVariant, DEFAULT_CONDITION, 1);
+          if (wishlist && store.variantTotal(vq.dataset.vqCardId, vq.dataset.vqVariant) > 0) {
+            wishlist.remove(vq.dataset.vqCardId, vq.dataset.vqVariant);
+          }
+        } else {
+          removeOneCopy(store, vq.dataset.vqCardId, vq.dataset.vqVariant);
+        }
+        onOwnedChange();
+        refreshQuantities();
+        refreshWishlistButton();
+        return;
+      }
+
       // Stepper de condição: atualiza só a seção de quantidades (não recria a
       // imagem grande, evitando o flicker a cada clique).
       if (event.target.closest("#cardPreviewModal") && handleQuantityClick(event, store)) {
@@ -4701,13 +4767,22 @@
       // ("NM ×2 · M ×1"); expandir revela os steppers por condição + o Preço BR.
       // Economiza muito espaço vertical no preview.
       const breakdown = total > 0 ? conditionSummary(store, card.id, variant) : "";
+      // Rótulo de EXIBIÇÃO (Surge Foil etc.) — a chave de dados segue `variant`.
+      const rotulo = variantDisplayLabel(card, variant);
+      // +/− RÁPIDOS na própria linha: soma/tira 1 NM sem expandir o "tocar para
+      // gerenciar" (que continua existindo pro ajuste fino por condição).
+      const quick = `<span class="variant-quick">
+            <button type="button" class="vq-btn" data-vq-action="dec" data-vq-card-id="${escapeAttribute(card.id)}" data-vq-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.removeOneAria", { variant: rotulo }))}"${total > 0 ? "" : " disabled"}>−</button>
+            <button type="button" class="vq-btn" data-vq-action="inc" data-vq-card-id="${escapeAttribute(card.id)}" data-vq-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.addAria", { variant: rotulo }))}">+</button>
+          </span>`;
       return `
         <details class="variant-conditions${total > 0 ? " owned" : ""}">
           <summary class="variant-conditions-head">
-            <span class="variant-row-name variant-${escapeAttribute(variantSlug(variant))}">${escapeHtml(variant)}</span>
+            <span class="variant-row-name variant-${escapeAttribute(variantSlug(variant))}">${escapeHtml(rotulo)}</span>
             ${breakdown
               ? `<span class="variant-breakdown">${escapeHtml(breakdown)}</span>`
               : `<span class="variant-breakdown variant-breakdown-empty">${escapeHtml(t("variant.manage"))}</span>`}
+            ${quick}
             <span class="variant-chevron" aria-hidden="true">▾</span>
           </summary>
           <div class="condition-grid">${conditions}</div>
@@ -4810,7 +4885,12 @@
     article.className = `card-tile${isOwned ? " owned" : ""}${isWanted ? " wanted" : ""}`;
     article.dataset.tileCardId = card.id;
     article.dataset.tileVariant = variant;
-    if (grouped) article.dataset.tileGrouped = variants.join("|");
+    if (grouped) {
+      article.dataset.tileGrouped = variants.join("|");
+      // Rótulos de exibição (Surge Foil…) pro menu de versões do +, que lê o
+      // tile em vez de precisar do catálogo da página.
+      article.dataset.tileGroupedLabels = variants.map((v) => variantDisplayLabel(card, v)).join("|");
+    }
     const img = cardImageSources(card, false);
     const imageInner = img.url
       ? localizedImg(img.url, { alt: card.name, loading: "lazy", thumb: true, fallback: img.fallback })
@@ -4830,11 +4910,13 @@
     const qtyBadge = quantity > (addMode ? 0 : 1) ? `<span class="tile-qty">×${quantity}</span>` : "";
     const ownIcon = addMode ? TILE_ICONS.plus : (isOwned ? TILE_ICONS.check : TILE_ICONS.plus);
     const ownActive = !addMode && isOwned ? " active" : "";
-    // Agrupado: + e coração abrem o card (data-preview-card-id) em vez de agir
-    // numa versão adivinhada. aria-pressed sai do botão de desejo — ele deixa
-    // de ser um toggle e vira um "abrir pra escolher".
+    // Agrupado: o + abre o MENU DE VERSÕES (popover com uma linha por versão,
+    // +1 direto na que escolher) — adicionar às cegas continuaria errado, mas
+    // abrir o card inteiro pra somar 1 Normal era burocracia. O coração segue
+    // abrindo o card (desejo por versão mora lá). aria-pressed sai do botão de
+    // desejo — ele deixa de ser um toggle e vira um "abrir pra escolher".
     const ownData = grouped
-      ? `data-preview-card-id="${escapeAttribute(card.id)}"`
+      ? `data-varmenu-card-id="${escapeAttribute(card.id)}"`
       : `data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}"`;
     const wantButton = !wishlist
       ? `<button type="button" class="tile-btn" disabled title="${escapeAttribute(t("tile.binder"))}" aria-label="${escapeAttribute(t("tile.binder"))}">${TILE_ICONS.binder}</button>`
@@ -4852,9 +4934,15 @@
       ? ""
       : `<button type="button" class="tile-btn tile-minus" data-minus-card-id="${escapeAttribute(card.id)}" data-minus-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.removeOneAria", { variant }))}" title="${escapeAttribute(t("tile.removeOne"))}"${quantity > 0 ? "" : " hidden"}>${TILE_ICONS.minus}</button>`;
 
-    // Rótulo agrupado: as versões existentes, na ordem do catálogo
-    // ("Normal · Foil") — informa o que há sem ocupar mais que a linha de sempre.
-    const variantLabel = grouped ? variants.join(" · ") : variant;
+    // Rótulo das versões, um <span> por variante: o texto usa o nome de
+    // EXIBIÇÃO (Surge Foil…) e a classe is-have acende, na cor do jogo, a
+    // versão que você TEM — no agrupado é o que diz "tenho a Foil, falta a
+    // Normal" sem abrir o card. data-vn guarda a chave real da variante pro
+    // refreshTileOwnership re-acender sem re-render.
+    const vnSpan = (v) => `<span class="tile-vn${store.variantTotal(card.id, v) > 0 ? " is-have" : ""}" data-vn="${escapeAttribute(v)}">${escapeHtml(variantDisplayLabel(card, v))}</span>`;
+    const variantLabel = grouped
+      ? variants.map(vnSpan).join(`<span class="tile-vn-sep"> · </span>`)
+      : vnSpan(variant);
 
     // Botão "+ Lista" (≡+), no canto OPOSTO ao +: opt-in por página (opts.lists),
     // como o de pasta — Binders/Vendas/Graded não ganham um botão que ali não
@@ -4897,7 +4985,7 @@
         </button>
         <span class="tile-c-num">${escapeHtml(card.number || "")}</span>
         <span class="tile-c-set">${escapeHtml(card.set || "")}</span>
-        <span class="tile-c-var variant-${escapeAttribute(variantSlug(variant))}">${escapeHtml(variantLabel)}</span>
+        <span class="tile-c-var variant-${escapeAttribute(variantSlug(variant))}">${variantLabel}</span>
         <span class="tile-c-price">${tilePriceHtml(card, variant, prices)}</span>
         ${actionsHtml}`;
       return article;
@@ -4907,7 +4995,7 @@
       <div class="card-image">${image}</div>
       <div class="tile-info">
         <h3>${escapeHtml(cardLabel(card))}</h3>
-        <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${cardFlag(card.language)}<span>${escapeHtml(variantLabel)}</span></p>
+        <p class="tile-variant variant-${escapeAttribute(variantSlug(variant))}">${cardFlag(card.language)}<span>${variantLabel}</span></p>
         <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
         ${tilePriceHtml(card, variant, prices)}
         <div class="tile-foot">
@@ -4937,11 +5025,17 @@
     if (versoes) {
       const total = versoes.reduce((sum, v) => sum + store.variantTotal(cardId, v), 0);
       const querida = wishlist ? versoes.some((v) => wishlist.has(cardId, v)) : false;
-      const assinaturaG = `g|${total}|${querida ? 1 : 0}`;
+      // O bitmap de posse POR VERSÃO entra na assinatura: trocar 1 Normal por
+      // 1 Foil mantém o total e mesmo assim precisa re-acender o rótulo.
+      const possuidas = versoes.map((v) => (store.variantTotal(cardId, v) > 0 ? "1" : "0")).join("");
+      const assinaturaG = `g|${total}|${querida ? 1 : 0}|${possuidas}`;
       if (tile.dataset.tileState === assinaturaG) return;
       tile.dataset.tileState = assinaturaG;
       tile.classList.toggle("owned", total > 0);
       tile.classList.toggle("wanted", querida);
+      tile.querySelectorAll(".tile-vn").forEach((el) => {
+        el.classList.toggle("is-have", store.variantTotal(cardId, el.dataset.vn) > 0);
+      });
       const own = tile.querySelector(".tile-own");
       if (own) own.innerHTML = `${TILE_ICONS.plus}${total > 0 ? `<span class="tile-qty">×${total}</span>` : ""}`;
       const want = tile.querySelector(".tile-want");
@@ -4971,6 +5065,10 @@
     tile.dataset.tileState = assinatura;
 
     tile.classList.toggle("owned", isOwned);
+    // Rótulo da variante acende na cor do jogo quando ela é possuída (o tile
+    // não-agrupado só tem um <span> — a própria variante do tile).
+    const vn = tile.querySelector(".tile-vn");
+    if (vn) vn.classList.toggle("is-have", isOwned);
 
     // O − só existe quando há cópia pra tirar (nasce hidden no variantTile).
     const minusButton = tile.querySelector(".tile-minus");
@@ -5074,6 +5172,121 @@
       if (check) check.textContent = ficou ? "✓" : "";
     });
   }
+  // ---------------------------------------------------------------------------
+  // Menu de VERSÕES do + agrupado. O tile agrupado representa a carta inteira e
+  // o + abria o card — três toques pra tarefa mais comum do app (somar 1 cópia
+  // de uma versão). Agora abre este popover: uma linha por versão (nome de
+  // exibição + ×N), clique na linha soma +1 NM, o − tira 1 (NM preferido).
+  // Fica ABERTO depois do clique (dá pra somar várias em sequência) e fecha em
+  // clique fora, Esc ou rolagem. Diferente do "+ Lista", este precisa do store
+  // do jogo e do refresh da grade — por isso quem o liga é o handler de clique
+  // de cada página (handleGroupedAddClick), não um listener global.
+  // ---------------------------------------------------------------------------
+  let variantMenuEl = null;
+  function closeVariantMenu() {
+    if (!variantMenuEl) return;
+    variantMenuEl.remove();
+    variantMenuEl = null;
+    document.removeEventListener("click", onVariantMenuDocClick);
+    document.removeEventListener("keydown", onVariantMenuKey);
+    document.removeEventListener("scroll", onVariantMenuScroll, true);
+  }
+  function onVariantMenuDocClick(ev) {
+    if (!ev.target.closest(".variant-menu")) closeVariantMenu();
+  }
+  function onVariantMenuKey(ev) { if (ev.key === "Escape") closeVariantMenu(); }
+  // Rolagem fecha (o popover é fixed e descolaria do tile) — MENOS a rolagem de
+  // dentro do próprio menu, que é como se chega nas versões de uma lista longa.
+  function onVariantMenuScroll(ev) {
+    if (variantMenuEl && ev.target instanceof Node && variantMenuEl.contains(ev.target)) return;
+    closeVariantMenu();
+  }
+
+  function openVariantMenu(anchor, tile, store, wishlist, onChange) {
+    closeVariantMenu();
+    closeListMenu();
+    const cardId = tile.dataset.tileCardId;
+    const versoes = (tile.dataset.tileGrouped || "").split("|").filter(Boolean);
+    const rotulos = (tile.dataset.tileGroupedLabels || "").split("|");
+    if (!cardId || !versoes.length) return;
+    const box = document.createElement("div");
+    box.className = "list-menu variant-menu";
+    box.setAttribute("role", "dialog");
+    box.setAttribute("aria-label", t("tile.chooseVersion"));
+    box.dataset.anchorId = cardId;
+    box.innerHTML = versoes.map((v, i) => {
+      const rotulo = rotulos[i] || v;
+      const qtd = store.variantTotal(cardId, v);
+      return `<div class="vm-row">
+        <button type="button" class="vm-add" data-vm-add="${escapeAttribute(v)}" aria-label="${escapeAttribute(t("tile.addAria", { variant: rotulo }))}">
+          <span class="vm-name${qtd > 0 ? " is-have" : ""}">${escapeHtml(rotulo)}</span>
+          <span class="vm-qty">${qtd > 0 ? `×${qtd}` : ""}</span>
+          <span class="vm-plus" aria-hidden="true">+</span>
+        </button>
+        <button type="button" class="vm-minus" data-vm-minus="${escapeAttribute(v)}" aria-label="${escapeAttribute(t("tile.removeOneAria", { variant: rotulo }))}"${qtd > 0 ? "" : " hidden"}>−</button>
+      </div>`;
+    }).join("");
+    document.body.appendChild(box);
+    variantMenuEl = box;
+
+    // Mesmo posicionamento do "+ Lista": ancorado no botão, preso na tela.
+    const r = anchor.getBoundingClientRect();
+    const w = box.offsetWidth || 220;
+    box.style.left = Math.max(8, Math.min(window.innerWidth - w - 8, r.left)) + "px";
+    const abaixo = r.bottom + 6;
+    box.style.top = (abaixo + (box.offsetHeight || 160) > window.innerHeight
+      ? Math.max(8, r.top - (box.offsetHeight || 160) - 6)
+      : abaixo) + "px";
+
+    // Pós-clique: re-pinta ×N/−/cor por índice (a ordem das linhas é a ordem
+    // de `versoes` — não dá pra usar seletor por valor, variante tem espaço).
+    const refreshRows = () => {
+      box.querySelectorAll(".vm-row").forEach((row, i) => {
+        const qtd = store.variantTotal(cardId, versoes[i]);
+        row.querySelector(".vm-name").classList.toggle("is-have", qtd > 0);
+        row.querySelector(".vm-qty").textContent = qtd > 0 ? `×${qtd}` : "";
+        row.querySelector(".vm-minus").hidden = qtd <= 0;
+      });
+    };
+    box.addEventListener("click", (ev) => {
+      const addBtn = ev.target.closest("[data-vm-add]");
+      const minusBtn = ev.target.closest("[data-vm-minus]");
+      if (addBtn) {
+        store.add(cardId, addBtn.dataset.vmAdd, DEFAULT_CONDITION, 1);
+        // Comprei: sai da lista de desejos (mesmo contrato do + de sempre).
+        if (wishlist && store.variantTotal(cardId, addBtn.dataset.vmAdd) > 0) wishlist.remove(cardId, addBtn.dataset.vmAdd);
+      } else if (minusBtn) {
+        removeOneCopy(store, cardId, minusBtn.dataset.vmMinus);
+      } else return;
+      refreshRows();
+      if (onChange) onChange();
+    });
+  }
+
+  // Clique no + de um tile AGRUPADO: abre/fecha o menu de versões. Cada página
+  // de grade chama isto no próprio handler de clique (antes do preview) e passa
+  // o store do jogo + o refresh da grade. Devolve true se consumiu o clique.
+  function handleGroupedAddClick(event, store, wishlist, onChange) {
+    const btn = event.target.closest("[data-varmenu-card-id]");
+    if (!btn) return false;
+    event.preventDefault();
+    // O clique que ABRE não pode borbulhar até o document: o listener de
+    // fechar-ao-clicar-fora (adicionado logo abaixo) ainda receberia ESTE mesmo
+    // evento e fecharia o menu no ato.
+    event.stopPropagation();
+    const tile = btn.closest(".card-tile");
+    if (!tile) return true;
+    if (variantMenuEl && variantMenuEl.dataset.anchorId === tile.dataset.tileCardId) {
+      closeVariantMenu();
+      return true;
+    }
+    openVariantMenu(btn, tile, store, wishlist, onChange);
+    document.addEventListener("click", onVariantMenuDocClick);
+    document.addEventListener("keydown", onVariantMenuKey);
+    document.addEventListener("scroll", onVariantMenuScroll, true);
+    return true;
+  }
+
   // Miniatura flutuante do modo compacto. A linha não tem imagem de propósito;
   // parar o mouse no nome mostra a carta, que é como se confere "é essa mesmo?"
   // sem perder a densidade. Um listener só no document (as grades trocam de
@@ -5121,19 +5334,23 @@
     document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") closeListMenu(); });
   }
 
-  // Clique no − do tile: tira UMA cópia. Prefere tirar da condição PADRÃO (NM),
-  // que é a que o + adiciona; se não houver NM, tira da última condição da lista
-  // (quem tem só cartas jogadas também precisa desfazer). Devolve true se mexeu.
-  function handleRemoveOneTileClick(event, store) {
-    const button = event.target.closest("[data-minus-card-id]");
-    if (!button) return false;
-    const cardId = button.dataset.minusCardId;
-    const variant = button.dataset.minusVariant;
+  // Tira UMA cópia. Prefere tirar da condição PADRÃO (NM), que é a que o +
+  // adiciona; se não houver NM, tira da última condição da lista (quem tem só
+  // cartas jogadas também precisa desfazer). Devolve true se mexeu. Usado pelo
+  // − do tile, pelo − rápido do modal e pelo − do menu de versões.
+  function removeOneCopy(store, cardId, variant) {
     const breakdown = store.conditionBreakdown(cardId, variant);
     if (!breakdown.length) return false;
     const alvo = breakdown.find((x) => x.condition === DEFAULT_CONDITION) || breakdown[breakdown.length - 1];
     store.add(cardId, variant, alvo.condition, -1);
     return true;
+  }
+
+  // Clique no − do tile: tira UMA cópia (ver removeOneCopy).
+  function handleRemoveOneTileClick(event, store) {
+    const button = event.target.closest("[data-minus-card-id]");
+    if (!button) return false;
+    return removeOneCopy(store, button.dataset.minusCardId, button.dataset.minusVariant);
   }
 
   // Trata o clique no botão +/✓ de um tile (liga/desliga a variante; default NM).
@@ -6588,6 +6805,8 @@
     handleOwnedTileClick,
     handleRemoveOneTileClick,
     handleAddTileClick,
+    handleGroupedAddClick,
+    variantDisplayLabel,
     flashTileAdded,
     handleWantTileClick,
     fetchPokemonMeta,

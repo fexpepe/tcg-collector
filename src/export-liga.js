@@ -64,7 +64,12 @@
     const out = [];
     const v = String(entry.v || "").toLowerCase();
     if (v) {
-      const achou = EXTRAS_POR_VARIANTE[v] || (/foil/.test(v) ? "foil" : "");
+      let achou = EXTRAS_POR_VARIANTE[v] || (/foil/.test(v) ? "foil" : "");
+      // Magic: a variante armazenada é "Foil" mesmo quando a impressão é Surge
+      // (o acabamento real vive no `treat` — ver variantDisplayLabel no shared).
+      // "surge foil" é o único foil especial que a Liga entende; os demais
+      // (Galaxy, Halo…) seguem como "foil", que é o que casa lá.
+      if (achou === "foil" && /(^|;)surgefoil(;|$)/.test(String((card && card.treat) || ""))) achou = "surge foil";
       if (achou) out.push(achou);
     }
     const trat = tratamentoDoNome(card && card.name).toLowerCase();

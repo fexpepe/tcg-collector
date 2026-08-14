@@ -944,6 +944,8 @@
     });
 
     elements.grid.addEventListener("click", (event) => {
+      // + de tile agrupado: menu de versões (adicionar direto, sem abrir o card).
+      if (shared.handleGroupedAddClick(event, owned, wishlist, refreshOwnership)) return;
       const imageButton = event.target.closest("[data-preview-card-id]");
       if (imageButton) {
         preview.open(imageButton.dataset.previewCardId, imageButton.dataset.previewVariant);

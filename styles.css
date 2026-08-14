@@ -1672,6 +1672,20 @@ input::placeholder {
 }
 .variant-conditions[open] .variant-chevron { transform: rotate(180deg); }
 
+/* +/− RÁPIDOS na linha da variante do card: soma/tira 1 NM sem expandir o
+   "tocar para gerenciar" (que segue existindo pro ajuste por condição). Vivem
+   dentro do <summary>; o JS dá preventDefault pro details não abrir junto. */
+.variant-quick { display: inline-flex; gap: 4px; flex: 0 0 auto; }
+.vq-btn {
+  width: 30px; height: 30px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line); background: var(--panel-strong);
+  color: var(--text); font-size: 15px; font-weight: 700; line-height: 1;
+  cursor: pointer;
+}
+.vq-btn:hover { border-color: var(--accent); color: var(--accent-ink); }
+.vq-btn[disabled] { opacity: .35; cursor: default; }
+
 
 .condition-grid {
   display: grid;
@@ -4312,6 +4326,14 @@ a.progress-row:hover {
    sobre o painel branco do tema claro — reprovado em TODO tile de carta. Tom
    próprio no claro (4.71), mantendo a mesma família de azul. */
 [data-theme="light"] .tile-variant { color: #5672b4; }
+
+/* Versão POSSUÍDA acesa na cor do jogo: no rótulo agrupado ("Normal · Foil")
+   é o que diz de longe QUAL versão você tem, sem abrir o card — vale na grade,
+   na lista e no modo compacto (os três usam o mesmo <span class="tile-vn">).
+   --accent-ink é o tom do accent calibrado pra TEXTO (o accent cru de alguns
+   jogos, ex. o marrom do Magic, reprova contraste no escuro). */
+.tile-vn.is-have { color: var(--accent-ink); font-weight: 700; }
+.tile-vn-sep { color: var(--subtle); }
 
 .variant-holo,
 .variant-holofoil {
@@ -8432,6 +8454,19 @@ select,
 .list-menu-new { display: block; margin-top: 4px; padding: 8px; border-top: 1px solid var(--line); color: var(--accent-ink); font-size: 12.5px; font-weight: 700; text-decoration: none; }
 .list-menu-new:hover { background: var(--panel-strong); }
 
+/* Menu de VERSÕES do + agrupado: reusa a caixa do .list-menu; cada linha é
+   [nome ×N +] (clicar soma 1 NM) com um − separado quando há o que tirar. */
+.variant-menu { min-width: 180px; }
+.vm-row { display: flex; align-items: stretch; gap: 2px; }
+.vm-add { flex: 1 1 auto; display: flex; align-items: center; gap: 8px; min-height: 34px; padding: 0 8px; border: 0; background: none; color: var(--text); font-size: 13px; text-align: left; cursor: pointer; }
+.vm-add:hover { background: var(--panel-strong); }
+.vm-name { flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.vm-name.is-have { color: var(--accent-ink); font-weight: 700; }
+.vm-qty { flex: 0 0 auto; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.vm-plus { flex: 0 0 auto; width: 22px; text-align: center; color: var(--accent-ink); font-weight: 700; }
+.vm-minus { flex: 0 0 auto; width: 30px; border: 0; background: none; color: var(--muted); font-size: 15px; font-weight: 700; cursor: pointer; }
+.vm-minus:hover { background: var(--panel-strong); color: var(--text); }
+
 /* Miniatura do hover no modo compacto: mesma ideia da do editor de listas. */
 .tile-hover-thumb { position: fixed; width: 200px; z-index: 70; pointer-events: none; border: 1px solid var(--line); background: var(--surface); box-shadow: 0 10px 30px rgba(0,0,0,.45); }
 
@@ -8450,6 +8485,10 @@ select,
 @media (pointer: coarse), (max-width: 700px) {
   .list-menu-item { min-height: 44px; }
   .list-menu-new { padding: 12px 8px; }
+  /* Menu de versões no toque: mesma régua de 44px do "+ Lista". */
+  .vm-add { min-height: 44px; }
+  .vm-minus { width: 42px; }
+  .vq-btn { width: 38px; height: 38px; }
 }
 
 /* Movimento reduzido: rede geral pra transições/animações não cobertas caso a
