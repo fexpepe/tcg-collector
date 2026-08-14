@@ -1563,15 +1563,20 @@
     const dexTag = activeTab === "pokemon" && group.sample.dexId
       ? `<span class="dex-tag">#${group.sample.dexId}</span>`
       : "";
+    // Aba de sets: mesma regra da tela de Sets — japonês aparece traduzido. Só o
+    // RÓTULO muda; group.name segue sendo a chave do link (detailUrl abaixo).
+    const nome = activeTab === "sets" && group.sample
+      ? shared.setDisplayName(group.sample.setId, group.name, group.sample.language)
+      : group.name;
     const body = `
       <div class="progress-row-art">${art}</div>
       <div class="progress-row-body">
         <div class="progress-row-title">
-          <strong>${escapeHtml(group.name)}</strong>
+          <strong>${escapeHtml(nome)}</strong>
           ${dexTag}
           <span class="row-count">${group.ownedCount}/${group.totalCount}</span>
         </div>
-        <div class="progress-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="${escapeAttribute(t("progress.aria", { name: group.name }))}">
+        <div class="progress-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="${escapeAttribute(t("progress.aria", { name: nome }))}">
           <span style="width: ${Math.min(100, (group.ownedCount / group.totalCount) * 100)}%"></span>
         </div>
         <p class="progress-row-meta">${escapeHtml(`${tn("count.cards", group.totalCount)} · ${pct}%`)}</p>

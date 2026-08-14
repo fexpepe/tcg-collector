@@ -608,11 +608,11 @@
       value: refined ? refined.value : entryRefValue(entry),
       missing: refined ? refined.missing : null,
       logo: entry.logo || "",
-      displayName: shared.setDisplayName(entry.id, entry.name),
+      displayName: shared.setDisplayName(entry.id, entry.name, entry.language),
       symbol: entry.symbol || "",
       releaseDate: entry.release || "",
       serieId,
-      serieName: entry.serieName || serieDisplayName(serieId),
+      serieName: shared.setSerieDisplayName(entry.serieName, entry.language) || serieDisplayName(serieId),
       languageLabel: shared.cardLangSigla(entry.language)
     };
   }
@@ -622,7 +622,7 @@
   // inteiro, o que só era possível porque a página baixava tudo.
   function entryMatchesQuery(entry, query) {
     if (!query) return true;
-    return normalize(`${entry.name} ${shared.setDisplayName(entry.id, entry.name)} ${entry.id} ${entry.serieName || ""}`).includes(query);
+    return normalize(`${entry.name} ${shared.setDisplayName(entry.id, entry.name, entry.language)} ${entry.id} ${entry.serieName || ""}`).includes(query);
   }
 
   function manifestSetItems() {
@@ -1048,11 +1048,11 @@
       // Nome de EXIBIÇÃO: tradução em inglês nos vintages japoneses, original no
       // resto. `name` (acima) continua sendo o original — é a chave de link,
       // busca e agrupamento; só o que aparece na tela muda.
-      displayName: shared.setDisplayName(sample.setId, group.name),
+      displayName: shared.setDisplayName(sample.setId, group.name, sample.language),
       symbol: sample.setSymbol || "",
       releaseDate: sample.setReleaseDate || "",
       serieId,
-      serieName: sample.setSerieName || serieDisplayName(serieId),
+      serieName: shared.setSerieDisplayName(sample.setSerieName, sample.language) || serieDisplayName(serieId),
       languageLabel: unique(sortedCards.map((card) => shared.cardLangSigla(card.language))).join("/")
     };
   }

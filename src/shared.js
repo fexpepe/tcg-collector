@@ -5878,22 +5878,141 @@
     "hxh-mb-hh": "Promotional Cards"
   };
 
+  // Sets JAPONESES do Pokémon: mesma regra dos vintages acima, mas aqui o mapa
+  // PRECISA do idioma pra ser consultado — estes setIds NÃO são exclusivos do
+  // catálogo ja. `neo1`..`neo4` existem em en (Neo Genesis, Neo Discovery…) e
+  // meia dúzia de SV são compartilhados com o chinês; sem o corte por idioma,
+  // traduzir o japonês renomearia o set inglês junto.
+  // Fonte: a coluna "Translated name" do "List of Japanese Pokémon Trading Card
+  // Game expansions" da Bulbapedia — uma fonte só, verbatim, de propósito. Ela
+  // diverge em alguns casos do apelido que a comunidade usa ("Rocket Gang" e
+  // não "Team Rocket", "Terastal Fest ex" e não "…Festival ex"): preferir o
+  // apelido caso a caso criaria um nome sem procedência, que é justamente o que
+  // o comentário acima evita.
+  // Fora do mapa de propósito: MBG e svpj, que a TCGdex já entrega em inglês.
+  const JA_SET_EN = {
+    // ---- ポケットモンスターカードゲーム (1996-1999)
+    PMCG1: "Expansion Pack",
+    PMCG2: "Pokémon Jungle",
+    PMCG3: "Mystery of the Fossils",
+    PMCG4: "Rocket Gang",
+    PMCG5: "Leaders' Stadium",
+    PMCG6: "Challenge from the Darkness",
+    // ---- neo (2000-2001)
+    neo1: "Gold, Silver, to a New World...",
+    neo2: "Crossing the Ruins...",
+    neo3: "Awakening Legends",
+    neo4: "Darkness, and to Light...",
+    // ---- VS / web (2001)
+    VS1: "Pokémon VS",
+    web1: "Pokémon Web",
+    // ---- ポケモンカードe (2001-2002)
+    E1: "Base Expansion Pack",
+    E2: "The Town on No Map",
+    E3: "Wind from the Sea",
+    E4: "Split Earth",
+    E5: "Mysterious Mountains",
+    // ---- PCG (2004-2006)
+    PCG1: "Flight of Legends",
+    PCG2: "Clash of the Blue Sky",
+    PCG3: "Rocket Gang Strikes Back",
+    PCG4: "Golden Sky, Silvery Ocean",
+    PCG5: "Mirage Forest",
+    PCG6: "Holon Research Tower",
+    PCG7: "Holon Phantom",
+    PCG8: "Miracle Crystal",
+    PCG9: "Offense and Defense of the Furthest Ends",
+    // ---- Concept Pack (2015)
+    CP1: "Magma Gang VS Aqua Gang: Double Crisis",
+    // ---- サン＆ムーン (2019)
+    SM10: "Double Blaze",
+    SM11b: "Dream League",
+    SM12: "Alter Genesis",
+    SM12a: "Tag All Stars",
+    // ---- 剣と盾 (2022)
+    S9: "Star Birth",
+    S9a: "Battle Region",
+    S12: "Paradigm Trigger",
+    S12a: "VSTAR Universe",
+    // ---- スカーレット&バイオレット (2023-2025)
+    SV1S: "Scarlet ex",
+    SV1V: "Violet ex",
+    SV1a: "Triplet Beat",
+    SV2D: "Clay Burst",
+    SV2P: "Snow Hazard",
+    SV2a: "Pokémon Card 151",
+    SV3: "Ruler of the Black Flame",
+    SV3a: "Raging Surf",
+    SV4K: "Ancient Roar",
+    SV4M: "Future Flash",
+    // A TCGdex manda SV4a com o nome do SV3a (レイジングサーフ) — bug da fonte.
+    // Aqui o certo já aparece; o dia em que eles corrigirem, nada muda.
+    SV4a: "Shiny Treasure ex",
+    SV5K: "Wild Force",
+    SV5a: "Crimson Haze",
+    SV6: "Transformation Mask",
+    SV7: "Stellar Miracle",
+    SV7a: "Paradise Dragona",
+    SV8: "Super Electric Breaker",
+    SV8a: "Terastal Fest ex",
+    SV9: "Battle Partners",
+    SV9a: "Hot Wind Arena",
+    SV10: "Glory of the Rocket Gang",
+    SV11B: "Black Bolt",
+    SV11W: "White Flare",
+    SVK: "Stellar Miracle Deck Build Box",
+    SVLN: "Starter Set Tera Type: Stellar Sylveon ex",
+    SVLS: "Starter Set Tera Type: Stellar Ceruledge ex",
+    // ---- ポケモンカードゲーム MEGA (2025-2026)
+    "M-P": "Mega Promo Card",
+    M1S: "Mega Symphonia",
+    M1L: "Mega Brave",
+    M2: "Inferno X",
+    M2a: "MEGA Dream ex",
+    M3: "Nihil Zero",
+    M4: "Ninja Spinner",
+    M5: "Abyss Eye",
+    MC: "Start Deck 100 Battle Collection"
+  };
+
+  // Nome da SÉRIE, pelo original japonês (não pelo id: `neo`/`SV` colidem com o
+  // en igual aos sets). Sem isto o cabeçalho de grupo da tela de Sets continuava
+  // em japonês por cima de uma lista já traduzida. As séries que a TCGdex já
+  // entrega em latim (PCG, VS, web) não precisam de entrada.
+  const JA_SERIE_EN = {
+    "ポケットモンスターカードゲーム": "Pocket Monsters Card Game",
+    "ポケモンカード★neo": "Pokémon Card Neo",
+    "ポケモンカードe": "Pokémon Card e",
+    "サン＆ムーン": "Sun & Moon",
+    "剣と盾": "Sword & Shield",
+    "ポケモンカードゲーム スカーレット&バイオレット": "Scarlet & Violet",
+    "ポケモンカードゲーム MEGA": "MEGA"
+  };
+
   // Nome de EXIBIÇÃO do set. Os vintages japoneses (Naruto 2003-06, Miracle
   // Battle de One Piece/HxH) só existem com nome em japonês — nunca tiveram
   // lançamento ocidental, então não há nome oficial em outra língua. Na lista de
-  // sets isso virava uma parede de kanji ilegível pra quase todo mundo.
+  // sets isso virava uma parede de kanji ilegível pra quase todo mundo. O mesmo
+  // vale pro catálogo japonês do Pokémon (JA_SET_EN, acima).
   // Regra: a LISTA mostra a tradução em inglês; o nome ORIGINAL aparece só ao
   // abrir o set. Inglês inclusive no pt-BR de propósito — é o nome pelo qual a
   // comunidade conhece esses sets, e traduzir de novo pro português criaria um
   // terceiro nome que não existe em lugar nenhum.
   // O `name` do catálogo (original) segue sendo a CHAVE de link/busca; só a
   // apresentação muda.
-  function setDisplayName(setId, name) {
-    return VINTAGE_SET_EN[setId] || name || "";
+  function setEnName(setId, language) {
+    return VINTAGE_SET_EN[setId] || (language === "ja" ? JA_SET_EN[setId] : "") || "";
+  }
+  function setDisplayName(setId, name, language) {
+    return setEnName(setId, language) || name || "";
   }
   // O original só quando difere do que está sendo exibido (senão repetiria).
-  function setOriginalName(setId, name) {
-    return VINTAGE_SET_EN[setId] && name && VINTAGE_SET_EN[setId] !== name ? name : "";
+  function setOriginalName(setId, name, language) {
+    const en = setEnName(setId, language);
+    return en && name && en !== name ? name : "";
+  }
+  function setSerieDisplayName(serieName, language) {
+    return (language === "ja" && JA_SERIE_EN[serieName]) || serieName || "";
   }
 
   function gameLogoUrl(game) {
@@ -6836,6 +6955,7 @@
     gameLogoUrl,
     setDisplayName,
     setOriginalName,
+    setSerieDisplayName,
     normalizeGame,
     gameDataDir,
     getThemePref,

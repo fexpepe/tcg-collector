@@ -187,6 +187,13 @@ execução for interrompida, rodar de novo só busca o que falta.
 Depois do sync do Pokémon, o `merge-catalogs.mjs` funde os cinco idiomas num
 catálogo só (ids com sufixo de idioma, espécies canonizadas pelo `dexId`).
 
+Sets JAPONESES não têm logo na TCGdex — o payload de `/v2/ja/sets/<id>` vem sem
+o campo e o CDN dá 404. O `mirror-ja-set-logos.mjs` traz esses logos do
+Bulbagarden Archives (de-para de arquivo CURADO dentro do script), guarda em
+`data/set-logos/ja/` e carimba o `setLogo` dos chunks. O carimbo roda em todo
+build (`--no-fetch`, sem rede); baixar logo novo é passo local. O nome do set em
+inglês é assunto separado, do `JA_SET_EN` no `shared.js`.
+
 Utilitários: `lint-catalog.mjs` (falha em corrupção dura — ids duplicados,
 catálogo zerado), `mirror-*-set-logos.mjs` (espelha logos de set localmente),
 `build-set-id-map.mjs` (de-para TCGdex→pokemontcg.io pras imagens EN que faltam),
