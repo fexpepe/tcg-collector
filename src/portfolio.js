@@ -134,6 +134,7 @@
         shared.applyGameAccent(pedido);
       }
       bindGameFilter();
+      bindComposition();
       bindBreakdown();
       bindExport();
       render();
@@ -203,6 +204,29 @@
         });
       })
       .catch(() => { /* mercado é acessório: sem ele a página segue inteira */ });
+  }
+
+  // Barra da composição -> aplica o filtro do jogo (ver renderComposition).
+  // Delegado no container, que é reescrito a cada render.
+  function bindComposition() {
+    if (!elements.composition) return;
+    elements.composition.addEventListener("click", (event) => {
+      const btn = event.target.closest("[data-comp-game]");
+      if (!btn) return;
+      aplicaFiltroDeJogo(btn.dataset.compGame);
+    });
+  }
+
+  // Um caminho só pra trocar o filtro de jogo — o clique no chip, a barra da
+  // composição e o ?filter= da URL fazem exatamente a mesma coisa.
+  function aplicaFiltroDeJogo(slug) {
+    if (!slug || slug === gameFilter) return;
+    gameFilter = slug;
+    shared.markGameFilterChip(slug);
+    shared.applyGameAccent(slug);
+    shared.stampGameFilter(slug);
+    render();
+    if (elements.gameFilter) elements.gameFilter.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }
 
   function bindGameFilter() {
@@ -893,10 +917,20 @@
       return;
     }
     const max = Math.max(1, ...shown.map((r) => r.value));
-    elements.breakdownBody.innerHTML = shown.map((r) =>
-      `<div class="pf-comp-row"><span class="pf-comp-label pf-bd-name" title="${escapeAttribute(r.label)}">${escapeHtml(r.label)}</span>
+    // No modo SET a linha vira link pra Coleção já filtrada naquele set (e no
+    // jogo do filtro atual): "meus R$ 800 em Destined Rivals" leva às cartas
+    // que somam esse valor, em vez de ser um número sem saída. Raridade e
+    // artista não têm filtro equivalente na Coleção, então seguem estáticos.
+    elements.breakdownBody.innerHTML = shown.map((r) => {
+      const miolo = `<span class="pf-comp-label pf-bd-name" title="${escapeAttribute(r.label)}">${escapeHtml(r.label)}</span>
         <span class="pf-comp-track"><span class="pf-comp-fill" style="width:${Math.round((r.value / max) * 100)}%;background:var(--accent)"></span></span>
-        <span class="pf-comp-val">${escapeHtml(money(r.value))}</span></div>`).join("");
+        <span class="pf-comp-val">${escapeHtml(money(r.value))}</span>`;
+      if (breakdownMode !== "set") return `<div class="pf-comp-row">${miolo}</div>`;
+      const params = new URLSearchParams({ set: r.label });
+      if (gameFilter && gameFilter !== "all") params.set("filter", gameFilter);
+      return `<a class="pf-comp-row pf-comp-row-link" href="collection?${params.toString()}"
+        title="${escapeAttribute(t("portfolio.bd.openSet", { set: r.label }))}">${miolo}</a>`;
+    }).join("");
     sec.hidden = false;
   }
 
@@ -904,12 +938,20 @@
   function renderComposition(rawTotal, gradedTotal) {
     const sec = elements.composition;
     if (!sec) return;
+    // `game` na linha: a barra vira BOTÃO que aplica o filtro daquele jogo — a
+    // pergunta seguinte a "quanto é Magic?" é sempre "me mostra o Magic", e a
+    // barra era inerte. Sem jogo (a divisão cartas × graded), segue estática.
     const bars = (title, rows) => {
       const max = Math.max(1, ...rows.map((r) => r.value));
-      const body = rows.filter((r) => r.value > 0).map((r) =>
-        `<div class="pf-comp-row"><span class="pf-comp-label">${escapeHtml(r.label)}</span>
+      const body = rows.filter((r) => r.value > 0).map((r) => {
+        const miolo = `<span class="pf-comp-label">${escapeHtml(r.label)}</span>
           <span class="pf-comp-track"><span class="pf-comp-fill" style="width:${Math.round((r.value / max) * 100)}%;background:${r.color}"></span></span>
-          <span class="pf-comp-val">${escapeHtml(money(r.value))}</span></div>`).join("");
+          <span class="pf-comp-val">${escapeHtml(money(r.value))}</span>`;
+        return r.game
+          ? `<button type="button" class="pf-comp-row pf-comp-row-btn" data-comp-game="${escapeAttribute(r.game)}"
+              title="${escapeAttribute(t("portfolio.comp.filterHint", { game: r.label }))}">${miolo}</button>`
+          : `<div class="pf-comp-row">${miolo}</div>`;
+      }).join("");
       return body ? `<div class="pf-comp-block"><h3>${escapeHtml(title)}</h3>${body}</div>` : "";
     };
     let html = bars(t("portfolio.comp.type"), [
@@ -920,6 +962,7 @@
       const byGame = GAMES.map((g) => ({
         label: shared.gameLabel(g),
         color: GAME_COLOR[g],
+        game: g,
         value: collectionLines(g).total + gradedSlabs(g).reduce((s, x) => s + (x.value || 0), 0)
       }));
       if (byGame.filter((r) => r.value > 0).length > 1) html += bars(t("portfolio.comp.game"), byGame);

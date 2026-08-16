@@ -208,6 +208,12 @@
             <select class="sales-picker-select" id="gradedPickerSort">${sortOpts}</select></label>
         </div>
         <p class="sales-picker-hint">${escapeHtml(t("graded.pickerHint"))}</p>
+        <!-- Graduar a carta não decrementava a cópia solta, então o MESMO objeto
+             físico passava a contar duas vezes no patrimônio (raw + graded) até
+             a pessoa lembrar de tirar a raw na mão. Marcado por padrão porque é
+             o que acontece de verdade: a carta saiu da caixa e virou slab. -->
+        <label class="sales-picker-move"><input type="checkbox" id="gradedMoveFromCollection" checked>
+          <span>${escapeHtml(t("graded.moveFromCollection"))}</span></label>
         <div class="sales-picker-results"></div>
         <footer class="sales-picker-foot">
           <span class="sales-picker-count"></span>
@@ -235,6 +241,16 @@
       if (pick) {
         const id = pick.dataset.pickCard, v = pick.dataset.pickVariant;
         graded.add(id, v, "psa", "10");
+        // "Mover da coleção": tira UMA cópia solta (a de melhor condição, que é
+        // a que se manda graduar) — sem isso o mesmo card conta em raw e em
+        // graded ao mesmo tempo. Só desce enquanto houver cópia: quem já tirou
+        // na mão, ou quem graduou uma carta que não tem solta, não fica
+        // negativo. Ver o checkbox no cabeçalho do picker.
+        const mover = modal.querySelector("#gradedMoveFromCollection");
+        if (mover && mover.checked) {
+          const cond = (owned.conditionBreakdown(id, v) || []).find((c) => c.quantity > 0);
+          if (cond) owned.add(id, v, cond.condition, -1);
+        }
         const n = graded.countOf(id, v);
         pick.classList.add("is-partial");
         let countEl = pick.querySelector(".sales-pick-cond");

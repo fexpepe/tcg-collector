@@ -439,6 +439,22 @@
     fillFilter(elements.setFilter, unique(myCards.map((card) => card.set)));
     fillFilter(elements.languageFilter, unique(myCards.map((card) => shared.normalizeCardLanguage(card.language))), (value) => langOptionLabel(value));
     fillFilter(elements.rarityFilter, unique(myCards.map((card) => card.rarity).filter(Boolean)).sort());
+    aplicaSetDaUrl();
+  }
+
+  // ?set=<nome> na URL: o detalhamento "Por set" do Portfólio manda pra cá com
+  // o set já escolhido — antes a linha era um número morto e a pessoa tinha que
+  // reencontrar o set no <select>. Roda depois de preencher o filtro (a opção
+  // precisa existir) e uma vez só, pra não reimpor o set a cada troca de aba.
+  let setDaUrlAplicado = false;
+  function aplicaSetDaUrl() {
+    if (setDaUrlAplicado || !elements.setFilter) return;
+    const alvo = collParams.get("set");
+    if (!alvo) { setDaUrlAplicado = true; return; }
+    const existe = Array.from(elements.setFilter.options).some((o) => o.value === alvo);
+    if (!existe) return; // o catálogo ainda não trouxe esse set: tenta no próximo refresh
+    setDaUrlAplicado = true;
+    elements.setFilter.value = alvo;
   }
 
   // Rótulo do filtro de idioma com a bandeirinha (emoji) antes do nome.

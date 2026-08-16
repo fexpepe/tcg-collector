@@ -631,6 +631,52 @@ button {
   outline-offset: 2px;
 }
 
+/* Variação de 7 dias + sparkline no cartão de patrimônio do Hub. Verde/vermelho
+   pelas MESMAS variáveis das cápsulas do Portfólio, pra alta ser a mesma cor nas
+   duas telas. A seta acompanha o texto: não é a cor sozinha carregando o sinal. */
+.dash-delta {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 2px;
+  color: var(--muted);
+}
+.dash-delta.is-up { color: #2ecc71; }   /* mesmos tons do .pf-head-delta */
+.dash-delta.is-down { color: #e8553c; }
+.dash-spark {
+  margin-top: 8px;
+  height: 28px;
+}
+/* preserveAspectRatio=none no SVG: a linha estica na largura do cartão. O
+   vector-effect mantém a espessura do traço mesmo com o eixo X esticado. */
+.dash-spark-svg {
+  display: block;
+  width: 100%;
+  height: 28px;
+  overflow: visible;
+}
+/* A COR carrega o sinal, como no delta acima: subiu no período = verde, caiu =
+   vermelho. Sem direção definida fica no accent — que no modo "Todos" é neutro
+   de propósito (ver [data-game-accent="all"]), e aí a linha ficaria sem
+   significado nenhum. Mesmos tons do .pf-head-delta e do .dash-delta. */
+.dash-spark-svg .spark-line {
+  fill: none;
+  stroke: var(--spark-cor, var(--accent));
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  stroke-linejoin: round;
+}
+.dash-spark-svg .spark-area {
+  fill: color-mix(in srgb, var(--spark-cor, var(--accent)) 14%, transparent);
+  stroke: none;
+}
+.dash-spark-svg .spark-dot {
+  fill: var(--spark-cor, var(--accent));
+}
+.dash-spark.is-up { --spark-cor: #2ecc71; }
+.dash-spark.is-down { --spark-cor: #e8553c; }
+
+
 .stats-grid span {
   display: block;
   font-size: 28px;
@@ -2640,6 +2686,25 @@ input::placeholder {
    porque as fontes ficam todas entre 0,68 e 0,73 de proporção.
    Se a altura disponível apertar (viewport baixa), o max-height corta a moldura
    e o `cover` recentraliza — nunca distorce. */
+/* Miniatura (já em cache, veio do tile) por baixo da imagem grande: o modal
+   abre com a carta visível em vez de um retângulo cinza esperando o high-res,
+   que é ~10x maior. As duas ocupam a mesma caixa; a grande cobre a pequena
+   quando termina de carregar (antes disso, um <img> ainda vazio não pinta). */
+.preview-image-stack {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+.preview-image-stack .preview-image-thumb {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.preview-image-stack img:not(.preview-image-thumb) {
+  position: relative;
+  z-index: 1;
+}
+
 .preview-image-wrap img {
   width: 100%;
   aspect-ratio: 63 / 88;
@@ -4497,6 +4562,43 @@ a.progress-row:hover {
 .pf-comp-track { height: 8px; border-radius: 999px; background: var(--panel-strong); overflow: hidden; }
 .pf-comp-fill { display: block; height: 100%; border-radius: 999px; }
 .pf-comp-val { font-size: 13px; font-weight: 800; color: var(--text); }
+/* Linha CLICÁVEL da composição (barra do jogo -> aplica o filtro) e do
+   detalhamento por set (-> Coleção já filtrada naquele set). Fica logo depois
+   da .pf-comp-row de propósito: ela é quem define o grid e o margin-bottom, e
+   estas regras só tiram a aparência de botão/link. O alvo é a linha inteira. */
+.pf-comp-row-btn,
+.pf-comp-row-link {
+  width: 100%;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 2px 4px;
+  margin-left: -4px;
+  margin-right: -4px;
+}
+.pf-comp-row-btn:hover,
+.pf-comp-row-link:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.pf-comp-row-btn:focus-visible,
+.pf-comp-row-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+/* "Mover da coleção" no picker de graded: linha própria acima da lista, alvo de
+   toque de 44px como o resto dos controles em tela estreita. */
+.sales-picker-move {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 2px;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+}
+.sales-picker-move input { width: 18px; height: 18px; accent-color: var(--accent); }
 /* Etiqueta da graduadora na tabela de mais valiosas. */
 .pf-graded-tag { display: inline-block; font-size: 11px; font-weight: 800; padding: 1px 7px; border-radius: 6px; background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--text); border: 1px solid var(--line); }
 /* Detalhamento (por set / por raridade): tabs + barras rankeadas. */

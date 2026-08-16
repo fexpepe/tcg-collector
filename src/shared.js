@@ -3202,6 +3202,75 @@
     });
   }
 
+  // ── Série do patrimônio somando os jogos (history-v2) ─────────────────────
+  // Mesma fonte do gráfico do Portfólio, achatada num vetor [{d, v}] — o Hub
+  // usa pro sparkline e pra variação. Zero rede: já está tudo no localStorage
+  // (e sincronizado, então um aparelho novo também tem).
+  //
+  // CARRY-FORWARD por jogo: cada jogo só ganha ponto no dia em que uma tela
+  // dele foi aberta, então somar "o que existe naquela data" criaria vales
+  // falsos — no dia em que só o Pokémon gravou, o patrimônio despencaria pro
+  // valor do Pokémon. Cada data usa o ÚLTIMO valor conhecido de cada jogo.
+  function networthSeries(dias) {
+    const series = [];
+    const datas = new Set();
+    GAME_SLUGS.forEach((g) => {
+      const h = valueHistory(g).filter((p) => p && p.d);
+      if (!h.length) return;
+      series.push(h);
+      h.forEach((p) => datas.add(p.d));
+    });
+    if (!series.length) return [];
+    const ordenadas = [...datas].sort();
+    const ponteiros = series.map(() => -1);
+    const ultimos = series.map(() => 0);
+    const saida = [];
+    ordenadas.forEach((d) => {
+      series.forEach((h, i) => {
+        while (ponteiros[i] + 1 < h.length && h[ponteiros[i] + 1].d <= d) {
+          ponteiros[i] += 1;
+          const p = h[ponteiros[i]];
+          ultimos[i] = (Number(p.c) || 0) + (Number(p.b) || 0);
+        }
+      });
+      saida.push({ d, v: ultimos.reduce((s, v) => s + v, 0) });
+    });
+    return dias > 0 ? saida.slice(-dias) : saida;
+  }
+
+  // Variação do patrimônio na janela de N dias: { pct, abs } em BRL, ou null
+  // quando não há dois pontos pra comparar (conta nova).
+  function networthChange(dias) {
+    const serie = networthSeries(dias);
+    if (serie.length < 2) return null;
+    const de = serie[0].v;
+    const ate = serie[serie.length - 1].v;
+    if (!de) return null;
+    return { pct: ((ate - de) / de) * 100, abs: ate - de };
+  }
+
+  // Sparkline: uma linha e um preenchimento, sem eixo nem rótulo. É resumo de
+  // relance — o número exato e a leitura ponto a ponto moram no Portfólio.
+  // preserveAspectRatio="none" deixa a largura ser 100% do cartão.
+  function sparklineSvg(valores, options) {
+    const { largura = 100, altura = 28, classe = "spark" } = options || {};
+    const vals = (valores || []).map(Number).filter((v) => isFinite(v));
+    if (vals.length < 2) return "";
+    const min = Math.min(...vals);
+    const max = Math.max(...vals);
+    const span = (max - min) || Math.abs(max) || 1;
+    const px = (i) => (i / (vals.length - 1)) * largura;
+    const py = (v) => altura - 1 - ((v - min) / span) * (altura - 2);
+    const linha = vals.map((v, i) => `${i ? "L" : "M"}${px(i).toFixed(1)} ${py(v).toFixed(1)}`).join(" ");
+    const area = `${linha} L${largura} ${altura} L0 ${altura} Z`;
+    const fim = `${px(vals.length - 1).toFixed(1)} ${py(vals[vals.length - 1]).toFixed(1)}`.split(" ");
+    return `<svg class="${escapeAttribute(classe)}" viewBox="0 0 ${largura} ${altura}" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <path class="spark-area" d="${area}"/>
+      <path class="spark-line" d="${linha}"/>
+      <circle class="spark-dot" cx="${fim[0]}" cy="${fim[1]}" r="1.6"/>
+    </svg>`;
+  }
+
   // Retrato instantâneo do patrimônio, SEM catálogo e SEM rede: soma por jogo
   // o último ponto do histórico do portfólio (history-v2 — que SINCRONIZA na
   // nuvem, então num aparelho recém-logado ele já chegou com o sync do boot) e
@@ -3776,9 +3845,14 @@
     return Number(s) || 0;
   }
 
+  // O separador segue o IDIOMA da interface, não o "pt-BR" fixo de antes: quem
+  // usa o site em inglês via "US$ 1.234,56", com os separadores trocados. O
+  // SÍMBOLO continua explícito (R$/US$/€) porque a moeda é escolha do usuário,
+  // independente do idioma — em en-US, "BRL" sairia como "R$" mesmo, mas em
+  // outras combinações o Intl escreveria códigos ("BRL 1,234.56").
   function fmtMoney(currency, value) {
     if (!value) return "—";
-    const n = value.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const n = value.toLocaleString(getLocale(), { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     return currency === "BRL" ? `R$ ${n}` : currency === "USD" ? `US$ ${n}` : `€ ${n}`;
   }
 
@@ -4455,9 +4529,20 @@
           <div class="preview-image-wrap">
             ${(function () {
               const img = cardImageSources(activeCard, true);
-              return img.url
-                ? localizedImg(img.url, { alt: activeCard.name, fallback: img.fallback })
-                : cardBackPlaceholder();
+              if (!img.url) return cardBackPlaceholder();
+              // A MINIATURA entra por baixo da imagem grande. Ela quase sempre
+              // já está na tela (é o tile que a pessoa tocou) e no cache do
+              // service worker, então aparece no mesmo quadro — antes o modal
+              // abria cinza até o high-res chegar, que é ~10x maior (no
+              // fallback da pokemontcg.io, mais de 1 MB). Quando o grande
+              // carrega, o fade `is-loaded` que já existe o revela por cima.
+              const grande = localizedImg(img.url, { alt: activeCard.name, fallback: img.fallback });
+              const thumb = localizedImg(img.url, { alt: "", className: "preview-image-thumb", thumb: true });
+              // As duas na MESMA célula: o wrap é um grid com gap, então sem o
+              // stack elas virariam duas linhas (carta pequena em cima da
+              // grande). Enquanto a grande não carrega ela não pinta nada, e a
+              // miniatura atrás é o que se vê.
+              return `<div class="preview-image-stack">${thumb}${grande}</div>`;
             })()}
             <!-- DETALHES embaixo da CARTA (moraram na coluna da direita até
                  2026-08-07). São a ficha da carta — raridade, artista, set, id —,
@@ -7411,6 +7496,9 @@
     collectionNetWorth,
     valueSnapshot,
     valueHistory,
+    networthSeries,
+    networthChange,
+    sparklineSvg,
     recordValueSnapshot,
     currencySymbol: saleCurrencySymbol,
     distBarsHtml,

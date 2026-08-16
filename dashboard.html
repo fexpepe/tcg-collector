@@ -63,6 +63,11 @@
         <article class="stat-grand">
           <span id="dhValue">—</span>
           <span class="collector-badge" data-i18n="collector.badge">Modo Colecionador</span>
+          <!-- Variação de 7 dias + sparkline: saem do history-v2 que já está no
+               localStorage (e sincroniza), então é custo zero de rede. Ficam
+               escondidos até haver dois pontos pra comparar. -->
+          <span id="dhDelta" class="dash-delta" hidden></span>
+          <div id="dhSpark" class="dash-spark" hidden></div>
           <p id="dhValueLabel" data-i18n="portfolio.networth">patrimônio (cartas + graded)</p>
           <a class="stat-link" href="portfolio" aria-labelledby="dhValueLabel"></a>
         </article>
