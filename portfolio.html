@@ -4,19 +4,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title data-i18n="title.portfolio">Portfólio - Sleevu</title>
-    <meta name="description" content="Valor estimado da sua coleção de Pokémon TCG em reais, calculado a partir dos preços registrados por carta, variante e condição.">
+    <meta name="description" content="Visão financeira da sua coleção de card games: patrimônio em cartas e graded, por jogo, com a progressão de valor no tempo.">
     <link rel="canonical" href="https://sleevu.app/portfolio">
     <meta property="og:site_name" content="Sleevu">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://sleevu.app/portfolio">
     <meta property="og:title" content="Portfólio - Sleevu">
-    <meta property="og:description" content="Valor estimado da sua coleção de Pokémon TCG em reais, calculado a partir dos preços registrados por carta, variante e condição.">
+    <meta property="og:description" content="Visão financeira da sua coleção de card games: patrimônio em cartas e graded, por jogo, com a progressão de valor no tempo.">
     <meta property="og:image" content="https://sleevu.app/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Portfólio - Sleevu">
-    <meta name="twitter:description" content="Valor estimado da sua coleção de Pokémon TCG em reais, calculado a partir dos preços registrados por carta, variante e condição.">
+    <meta name="twitter:description" content="Visão financeira da sua coleção de card games: patrimônio em cartas e graded, por jogo, com a progressão de valor no tempo.">
     <meta name="twitter:image" content="https://sleevu.app/og-image.png">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
@@ -68,24 +68,30 @@
 
       <p class="collection-subtitle" data-i18n="portfolio.subtitle">Visão financeira da sua coleção: tudo o que você tem (cartas + graded), por jogo, com a progressão de valor no tempo.</p>
 
-      <div id="pfGameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
-        <button type="button" class="chip" data-pf-game="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
-        <button type="button" class="chip" data-pf-game="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
-        <button type="button" class="chip" data-pf-game="lorcana" aria-pressed="false" data-i18n="filter.gameLorcana">Lorcana</button>
-        <button type="button" class="chip" data-pf-game="onepiece" aria-pressed="false" data-i18n="filter.gameOnePiece">One Piece</button>
-        <button type="button" class="chip" data-pf-game="naruto" aria-pressed="false" data-i18n="filter.gameNaruto">Naruto</button>
-        <button type="button" class="chip" data-pf-game="hxh" aria-pressed="false" data-i18n="filter.gameHxh">Hunter × Hunter</button>
+      <!-- Os chips saem do GAME_SLUGS (shared.initGameFilterChips) e depois são
+           reduzidos aos jogos em que você tem alguma coisa (setGameFilterScope),
+           como na Coleção/Graded/Vendas. Antes eram CINCO fixos aqui: quem tinha
+           Magic, YGO, Gundam, FAB, DBFW, Digimon, Riftbound ou Union Arena não
+           conseguia filtrar por eles, e o <select> da gaveta mobile ficava vazio
+           porque procura por [data-game-filter]. -->
+      <div id="gameFilter" class="chip-filter game-filter pf-game-filter" role="group" aria-label="Jogo">
+        <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
       </div>
 
       <section id="portfolioChart" class="pf-chart" aria-label="Progressão do portfólio" hidden>
+        <!-- Cabeçalho: valor da série principal + variação da faixa escolhida.
+             Ao arrastar no gráfico, os dois passam a mostrar o dia sob o dedo. -->
+        <div class="pf-chart-head">
+          <strong id="pfChartValue" class="pf-head-value">—</strong>
+          <span id="pfChartDelta" class="pf-head-delta"></span>
+          <span id="pfChartWhen" class="pf-head-when"></span>
+        </div>
         <div class="pf-chart-controls">
           <div id="pfSeries" class="pf-series" role="group" aria-label="Séries"></div>
           <div id="pfRanges" class="pf-ranges" role="group" aria-label="Período"></div>
         </div>
         <div id="pfChartBody" class="pf-chart-body"></div>
       </section>
-
-      <section id="portfolioInsights" class="pf-insights" aria-label="Variação do portfólio" hidden></section>
 
       <section class="stats-grid" aria-label="Resumo do portfólio">
         <article class="stat-grand">

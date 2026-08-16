@@ -2846,6 +2846,81 @@
     });
     return { copies, distinct };
   }
+  // ── Histórico de valor (history-v2), por jogo ──────────────────────────────
+  // Ponto do dia: {d, c, b, w} = raw, graded, desejos — sempre em BRL, porque a
+  // moeda do header muda e o histórico não pode mudar junto.
+  //
+  // Isto morava no portfolio.js, e por isso o ponto do dia só era gravado por
+  // quem ABRIA o Portfólio: quem usa o site pelo Hub e pela Coleção — que
+  // calculam o MESMO patrimônio — deixava buracos no histórico, e o gráfico
+  // depois mostrava uma reta entre duas datas distantes. Aqui em cima, qualquer
+  // tela que já tenha a conta na mão grava o ponto.
+  const histKeyOf = (g) => gameKey("history-v2", g);
+  function valueHistory(game) {
+    try {
+      const a = JSON.parse(localStorage.getItem(histKeyOf(game)) || "[]");
+      return Array.isArray(a) ? a : [];
+    } catch (e) { return []; }
+  }
+  // Migra o histórico antigo (v1: c=coleção, b=binders, w=wishlist) pro v2 do
+  // mesmo jogo, mapeando c e w; graded (b) começa do zero (antes nem existia).
+  function migrateHistoryV1(g) {
+    if (valueHistory(g).length) return;
+    try {
+      const old = JSON.parse(localStorage.getItem(gameKey("history-v1", g)) || "[]");
+      if (!Array.isArray(old) || !old.length) return;
+      const v2 = old.map((p) => ({ d: p.d, c: p.c || 0, b: 0, w: p.w || 0 }));
+      localStorage.setItem(histKeyOf(g), JSON.stringify(v2));
+      marcaSuja(histKeyOf(g)); // escrita direta: acorda o laço de sync
+    } catch (e) { /* ignora */ }
+  }
+  // Espelha o resumo de UM jogo num cookie .sleevu.app pro HUB somar sem iframe.
+  // c=raw, b=graded, w=desejos (BRL). h = histórico do patrimônio (c+b) do jogo.
+  function writePortfolioCookie(g, hist) {
+    const last = hist[hist.length - 1] || {};
+    const h = hist.slice(-50).map((p) => [p.d, Math.round(((p.c || 0) + (p.b || 0)) * 100) / 100]);
+    const payload = { c: last.c || 0, b: last.b || 0, w: last.w || 0, ts: Date.now(), h: h };
+    try {
+      let c = "sleevu_pf_" + g + "=" + encodeURIComponent(JSON.stringify(payload)) + "; Path=/; Max-Age=" + (180 * 24 * 3600) + "; SameSite=Lax";
+      if (/(^|\.)sleevu\.app$/i.test(location.hostname)) c += "; Secure; Domain=.sleevu.app";
+      document.cookie = c;
+    } catch (e) { /* ignora */ }
+  }
+  // Grava o ponto de hoje de um ou mais jogos e atualiza os cookies do hub.
+  //   perGame = { pokemon: { raw, graded, wish }, lorcana: {…} }  (valores na
+  //   moeda ATUAL — a conversão pra BRL é feita aqui).
+  //
+  // Campo AUSENTE (undefined/null) preserva o que já está gravado, em vez de
+  // zerar: o Hub e a Coleção sabem o patrimônio mas não calculam os desejos, e
+  // gravar w:0 de lá apagaria o valor que o Portfólio tinha registrado no mesmo
+  // dia. Zero EXPLÍCITO continua sendo gravado (vendeu tudo é um dado real).
+  function recordValueSnapshot(perGame) {
+    const hoje = new Date().toISOString().slice(0, 10);
+    const paraBRL = (v) => { const r = convertMoney(v, currentCurrency, "BRL"); return r == null ? v : Math.round(r * 100) / 100; };
+    Object.keys(perGame || {}).forEach((g) => {
+      const dados = perGame[g] || {};
+      migrateHistoryV1(g);
+      const hist = valueHistory(g);
+      const doDia = hist.length && hist[hist.length - 1].d === hoje ? hist[hist.length - 1] : null;
+      const anterior = doDia || hist[hist.length - 1] || {};
+      const campo = (novo, antigo) => (novo == null ? (Number(antigo) || 0) : paraBRL(novo));
+      const ponto = {
+        d: hoje,
+        c: campo(dados.raw, anterior.c),
+        b: campo(dados.graded, anterior.b),
+        w: campo(dados.wish, anterior.w)
+      };
+      // Jogo sem nada e sem histórico não entra: 13 jogos × um ponto de zeros
+      // por dia poluiria o localStorage e o sync de quem coleciona um só.
+      if (!hist.length && !ponto.c && !ponto.b && !ponto.w) return;
+      if (doDia) hist[hist.length - 1] = ponto; else hist.push(ponto);
+      if (hist.length > 800) hist.splice(0, hist.length - 800);
+      try { localStorage.setItem(histKeyOf(g), JSON.stringify(hist)); marcaSuja(histKeyOf(g)); }
+      catch (e) { notifyStorageFull(); }
+      writePortfolioCookie(g, hist);
+    });
+  }
+
   // Retrato instantâneo do patrimônio, SEM catálogo e SEM rede: soma por jogo
   // o último ponto do histórico do portfólio (history-v2 — que SINCRONIZA na
   // nuvem, então num aparelho recém-logado ele já chegou com o sync do boot) e
@@ -6775,9 +6850,12 @@
     gradedGradeText,
     gradedBadgeHtml,
     gradedSlabsValued,
+    gradedTotalValue,
     collectionValueLines,
     collectionNetWorth,
     valueSnapshot,
+    valueHistory,
+    recordValueSnapshot,
     currencySymbol: saleCurrencySymbol,
     distBarsHtml,
     memoValue,

@@ -5323,6 +5323,28 @@ a.progress-row:hover {
   margin-bottom: 18px;
   box-shadow: var(--shadow);
 }
+/* Cabeçalho do gráfico: valor grande + variação da faixa + rótulo do período.
+   baseline e não center: os três têm tamanhos bem diferentes e alinhar pelo
+   meio deixava o "(3,4%)" flutuando acima da base do número grande. */
+.pf-chart-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin-bottom: 10px;
+}
+.pf-head-value {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  /* O scrub troca este número a cada pixel do arrasto: sem largura fixa por
+     dígito, o texto ao lado dança horizontalmente enquanto o dedo anda. */
+  font-variant-numeric: tabular-nums;
+}
+.pf-head-delta { font-size: 14px; font-weight: 800; color: var(--muted); font-variant-numeric: tabular-nums; }
+.pf-head-delta.is-up { color: #2ecc71; }
+.pf-head-delta.is-down { color: #e8553c; }
+.pf-head-when { font-size: 12.5px; color: var(--subtle); font-weight: 600; margin-left: auto; }
 .pf-chart-controls {
   display: flex;
   flex-wrap: wrap;
@@ -6152,8 +6174,13 @@ a.dash-profile-handle:hover, a.shared-kind:hover,
 .page-head:has(~ .collection-toolbar) { margin-bottom: 10px; }
 /* No Portfólio o filtro de jogo fica colado no box do gráfico (o .game-filter é
    margin:0 e o .pf-chart não tem margin-top) — dá respiro em cima e embaixo pra
-   as cápsulas não encavalarem, inclusive quando quebram pra 2 linhas. */
-#pfGameFilter { margin: 6px 0 18px; }
+   as cápsulas não encavalarem, inclusive quando quebram pra 2 linhas.
+   Era #pfGameFilter; o id virou #gameFilter (o mesmo das outras telas, pra herdar
+   os 13 jogos e a gaveta do mobile), então a marca de "é o do Portfólio" passou a
+   ser esta classe. Dupla classe de propósito: vence o margin:0 do .game-filter
+   sem depender de vir depois dele no arquivo — e, por citar um seletor fora do
+   prefixo pf-, o split-css deixa a regra no núcleo, que é onde ela funciona. */
+.game-filter.pf-game-filter { margin: 6px 0 18px; }
 .binder-editor-gamefilter { margin: 0 0 10px; }
 .collection-share-btn { margin: 0; }
 /* margin-left:auto além do space-between do pai: quando os chips estouram e as

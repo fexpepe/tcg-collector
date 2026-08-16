@@ -9,7 +9,8 @@
 
   // ===========================================================================
   // Portfólio: visão FINANCEIRA da Minha Coleção — TODOS os jogos, com filtro
-  // por jogo dentro da página (data-pf-game). O total tem que BATER com a
+  // por jogo dentro da página (#gameFilter, o mesmo das outras telas, pra herdar
+  // os 13 jogos e a gaveta do mobile). O total tem que BATER com a
   // Coleção -> mesma fonte e mesma fórmula:
   //   patrimônio = cartas raw (todos os jogos) + slabs graded.
   // Binders e wishlist são VISÕES (filtros), não somam ao patrimônio.
@@ -18,12 +19,12 @@
   // depende do jogo da sessão. Já houve um "portfólio combinado" separado que
   // somava por cookie sleevu_pf_<g> quando a sessão era hub — removido: esta
   // visão É a combinada, com dado real em vez de resumo de cookie. Os cookies
-  // continuam sendo GRAVADOS (writePortfolioCookie): o valueSnapshot do
+  // continuam sendo GRAVADOS (shared.recordValueSnapshot): o valueSnapshot do
   // shared.js ainda os lê como fallback do retrato instantâneo.
   // ===========================================================================
   const GAMES = shared.GAME_SLUGS;
   const GAME_COLOR = shared.GAME_COLOR;
-  const { ownedByGame, cardGameMap, gameOf, owned, wishlist, prices } = shared.createCrossGameStores();
+  const { ownedByGame, wishlistByGame, cardGameMap, gameOf, owned, wishlist, prices } = shared.createCrossGameStores();
   // Modo investidor (opcional): custo pago por carta + vendas realizadas.
   const costsStore = shared.createCostsStore();
   const soldStore = shared.createSoldStore();
@@ -45,7 +46,7 @@
     breakdown: document.getElementById("pfBreakdown"),
     breakdownTabs: document.getElementById("pfBreakdownTabs"),
     breakdownBody: document.getElementById("pfBreakdownBody"),
-    gameFilter: document.getElementById("pfGameFilter"),
+    gameFilter: document.getElementById("gameFilter"),
     topCards: document.getElementById("topCards"),
     export: document.getElementById("pfExport"),
     empty: document.getElementById("emptyState")
@@ -87,6 +88,7 @@
     .then(([catalog]) => {
       indexaCartas(catalog.cards);
       GAMES.forEach((g) => ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
+      shared.setGameFilterScope(escopoDeJogos());
       bindGameFilter();
       bindBreakdown();
       bindExport();
@@ -131,14 +133,27 @@
   function bindGameFilter() {
     if (!elements.gameFilter) return;
     elements.gameFilter.addEventListener("click", (event) => {
-      const chip = event.target.closest("[data-pf-game]");
-      if (!chip || chip.dataset.pfGame === gameFilter) return;
-      gameFilter = chip.dataset.pfGame;
+      const chip = event.target.closest("[data-game-filter]");
+      if (!chip || chip.dataset.gameFilter === gameFilter) return;
+      gameFilter = chip.dataset.gameFilter;
       Array.from(elements.gameFilter.children).forEach((node) =>
         node.setAttribute("aria-pressed", String(node === chip)));
       shared.applyGameAccent(gameFilter);
       render();
     });
+  }
+
+  // Reduz os chips aos jogos em que você TEM alguma coisa — cartas, slabs,
+  // desejos ou histórico já gravado. Com menos de dois, o shared esconde a barra
+  // inteira (um jogo só e "Todos" são o mesmo conjunto). O histórico entra na
+  // conta pra um jogo que você zerou não sumir do filtro enquanto a linha dele
+  // ainda aparece no gráfico.
+  function escopoDeJogos() {
+    return GAMES.filter((g) =>
+      ownedByGame[g].size > 0
+      || gradedSlabs(g).length > 0
+      || wishlistByGame[g].knownCardIds().length > 0
+      || loadHist(g).length > 0);
   }
 
   function bindBreakdown() {
@@ -539,44 +554,19 @@
     wishlist: { color: "#f5a524", get: (p) => p.w || 0 }
   };
   const SERIES_ORDER = ["combined", "collection", "graded", "wishlist"];
-  const RANGES = [["1d", 1], ["7d", 7], ["1m", 30], ["3m", 90], ["6m", 180], ["max", 1e9]];
+  // "1D" saiu: o ponto é DIÁRIO, então um dia de faixa nunca tem os 2 pontos que
+  // o gráfico exige pra desenhar — o botão só sabia mostrar "o histórico começa
+  // hoje". No lugar entrou "1A", que faltava entre 6M e MÁX.
+  const RANGES = [["7d", 7], ["1m", 30], ["3m", 90], ["6m", 180], ["1a", 365], ["max", 1e9]];
   let activeSeries = new Set(["combined"]);
   let activeRange = "1m";
   let controlsBound = false;
 
-  const toBRL = (v) => { const r = shared.convertMoney(v, shared.getCurrency(), "BRL"); return r == null ? v : Math.round(r * 100) / 100; };
   const fromBRL = (v) => { const r = shared.convertMoney(v, "BRL", shared.getCurrency()); return r == null ? v : r; };
-  const histKey = (g) => shared.gameKey("history-v2", g);
-
-  function loadHist(g) {
-    try { const a = JSON.parse(localStorage.getItem(histKey(g)) || "[]"); return Array.isArray(a) ? a : []; } catch (e) { return []; }
-  }
-  // Migra o histórico antigo (v1, por jogo de sessão: c=coleção, b=binders, w=wishlist)
-  // pro v2 do mesmo jogo, mapeando c e w; graded (b) começa do zero (antes nem existia).
-  function migrateV1(g) {
-    if (loadHist(g).length) return;
-    try {
-      const old = JSON.parse(localStorage.getItem(shared.gameKey("history-v1", g)) || "[]");
-      if (Array.isArray(old) && old.length) {
-        const v2 = old.map((p) => ({ d: p.d, c: p.c || 0, b: 0, w: p.w || 0 }));
-        localStorage.setItem(histKey(g), JSON.stringify(v2));
-        shared.marcaSuja(histKey(g)); // escrita direta: acorda o laço de sync
-      }
-    } catch (e) { /* ignora */ }
-  }
-
-  // Grava o ponto de hoje de UM jogo (substitui se já houver hoje).
-  function recordSnapshot(g, raw, graded, wish) {
-    migrateV1(g);
-    const hist = loadHist(g);
-    const d = new Date().toISOString().slice(0, 10);
-    const point = { d, c: toBRL(raw), b: toBRL(graded), w: toBRL(wish) };
-    if (hist.length && hist[hist.length - 1].d === d) hist[hist.length - 1] = point;
-    else hist.push(point);
-    if (hist.length > 800) hist.splice(0, hist.length - 800);
-    try { localStorage.setItem(histKey(g), JSON.stringify(hist)); shared.marcaSuja(histKey(g)); } catch (e) { shared.notifyStorageFull(); }
-    return hist;
-  }
+  // O histórico (leitura, gravação, migração do v1 e o cookie do hub) vive no
+  // shared: o Hub e a Coleção também gravam o ponto do dia, então quem nunca
+  // abre esta tela não fica mais com buracos no gráfico.
+  const loadHist = (g) => shared.valueHistory(g);
 
   // Série do gráfico conforme o filtro: "all" soma os jogos por data; senão um só.
   function chartHistory() {
@@ -595,64 +585,23 @@
     if (!section) return;
     section.hidden = false;
     // Snapshot de CADA jogo (não só o filtrado) -> cookies/hist do hub corretos.
-    GAMES.forEach((g) => {
-      const raw = collectionLines(g).total;
-      const graded = gradedSlabs(g).reduce((s, x) => s + (x.value || 0), 0);
-      const wish = wishlistTotal(g) + binderWishTotal(g);
-      if (raw <= 0 && graded <= 0 && wish <= 0 && !loadHist(g).length) return; // jogo vazio: não polui
-      const hist = recordSnapshot(g, raw, graded, wish);
-      writePortfolioCookie(g, hist);
-    });
+    // Esta é a única tela que sabe os DESEJOS (wishlist + faltantes de binder),
+    // então é a única que manda o `w`.
+    shared.recordValueSnapshot(Object.fromEntries(GAMES.map((g) => [g, {
+      raw: collectionLines(g).total,
+      graded: gradedSlabs(g).reduce((s, x) => s + (x.value || 0), 0),
+      wish: wishlistTotal(g) + binderWishTotal(g)
+    }])));
     if (!controlsBound) { bindControls(); controlsBound = true; }
     renderControls();
-    const hist = chartHistory();
-    renderChart(hist);
-    renderInsights(hist);
+    renderChart(chartHistory());
   }
 
-  // Insights: variação do patrimônio (c+b) em 7d / 30d / desde o início (BRL).
-  function renderInsights(hist) {
-    const sec = document.getElementById("portfolioInsights");
-    if (!sec) return;
-    if (!hist || hist.length < 2) { sec.hidden = true; return; }
-    const valOf = (p) => (p.c || 0) + (p.b || 0);
-    const last = hist[hist.length - 1];
-    const now = valOf(last);
-    const todayMs = new Date(last.d + "T00:00:00").getTime();
-    const valueDaysAgo = (n) => {
-      const cutoff = todayMs - n * 864e5;
-      let chosen = null;
-      for (const p of hist) { if (new Date(p.d + "T00:00:00").getTime() <= cutoff) chosen = p; else break; }
-      return chosen ? valOf(chosen) : valOf(hist[0]);
-    };
-    const card = (key, then) => {
-      const deltaBRL = now - then;
-      const pct = then > 0 ? (deltaBRL / then) * 100 : 0;
-      const dir = deltaBRL > 0.005 ? "up" : (deltaBRL < -0.005 ? "down" : "flat");
-      const sign = dir === "up" ? "+" : (dir === "down" ? "−" : "");
-      const arrow = dir === "up" ? "▲" : (dir === "down" ? "▼" : "→");
-      return `<article class="pf-insight pf-insight-${dir}">
-        <span class="pf-insight-label">${escapeHtml(t("portfolio.delta." + key))}</span>
-        <span class="pf-insight-pct">${arrow} ${sign}${Math.abs(pct).toFixed(1)}%</span>
-        <span class="pf-insight-abs">${sign}${escapeHtml(money(Math.abs(fromBRL(deltaBRL))))}</span>
-      </article>`;
-    };
-    sec.innerHTML = card("7d", valueDaysAgo(7)) + card("30d", valueDaysAgo(30)) + card("total", valOf(hist[0]));
-    sec.hidden = false;
-  }
-
-  // Espelha o resumo de UM jogo num cookie .sleevu.app pro HUB somar sem iframe.
-  // c=raw, b=graded, w=desejos (BRL). h = histórico do patrimônio (c+b) do jogo.
-  function writePortfolioCookie(g, hist) {
-    const last = hist[hist.length - 1] || {};
-    const h = hist.slice(-50).map((p) => [p.d, Math.round(((p.c || 0) + (p.b || 0)) * 100) / 100]);
-    const payload = { c: last.c || 0, b: last.b || 0, w: last.w || 0, ts: Date.now(), h: h };
-    try {
-      let c = "sleevu_pf_" + g + "=" + encodeURIComponent(JSON.stringify(payload)) + "; Path=/; Max-Age=" + (180 * 24 * 3600) + "; SameSite=Lax";
-      if (/(^|\.)sleevu\.app$/i.test(location.hostname)) c += "; Secure; Domain=.sleevu.app";
-      document.cookie = c;
-    } catch (e) { /* ignora */ }
-  }
+  // As três cápsulas de variação (7d / 30d / desde o início) saíram daqui: o
+  // cabeçalho do gráfico agora mostra a variação da FAIXA escolhida, e as faixas
+  // já incluem 7D e 1M. Eram o mesmo número duas vezes na mesma tela — e, pior,
+  // calculado por outro caminho, que é como dois números que deveriam bater
+  // começam a divergir.
 
   function bindControls() {
     const seriesEl = document.getElementById("pfSeries");
@@ -681,6 +630,22 @@
       `<button type="button" class="pf-range-btn${k === activeRange ? " active" : ""}" data-range="${k}">${escapeHtml(t(`portfolio.range.${k}`))}</button>`).join("");
   }
 
+  // Escreve (ou apaga, sem argumento) o cabeçalho do gráfico. Fica fora do
+  // renderChart porque o caminho "histórico curto demais" também precisa dele —
+  // pra não deixar o número da faixa anterior pendurado sobre um gráfico vazio.
+  function setChartHead(d) {
+    const elValor = document.getElementById("pfChartValue");
+    const elDelta = document.getElementById("pfChartDelta");
+    const elQuando = document.getElementById("pfChartWhen");
+    if (!elValor) return;
+    elValor.textContent = d ? d.valor : "—";
+    if (elDelta) {
+      elDelta.textContent = d ? d.delta : "";
+      elDelta.className = "pf-head-delta" + (d ? " is-" + d.dir : "");
+    }
+    if (elQuando) elQuando.textContent = d ? d.quando : "";
+  }
+
   function renderChart(history) {
     const body = document.getElementById("pfChartBody");
     if (!body) return;
@@ -689,6 +654,7 @@
     const pts = days >= 1e9 ? history.slice() : history.filter((p) => new Date(p.d + "T00:00:00").getTime() >= cutoff);
     if (pts.length < 2) {
       body.innerHTML = `<p class="pf-chart-empty">${escapeHtml(t("portfolio.chart.startsToday"))}</p>`;
+      setChartHead(null);
       return;
     }
     const active = SERIES_ORDER.filter((k) => activeSeries.has(k));
@@ -700,11 +666,26 @@
     const padY = (yMax - yMin) * 0.12; yMin -= padY; yMax += padY;
     const plotW = W - PL - PR, plotH = H - PT - PB;
     const baseY = PT + plotH;
-    const X = (i) => PL + (pts.length === 1 ? plotW / 2 : (i / (pts.length - 1)) * plotW);
+    // Eixo X pelo TEMPO, não pela posição na lista. Os pontos eram equidistantes:
+    // quem passava 20 dias sem abrir o site via esse intervalo ocupar a mesma
+    // largura de um dia, e a linha mentia sobre quando as coisas aconteceram.
+    // A escala vai do primeiro ao último ponto MEDIDO (e não à borda da faixa),
+    // pra não sobrar uma calha vazia em quem tem histórico curto.
+    const msDe = (p) => new Date(p.d + "T00:00:00").getTime();
+    const t0 = msDe(pts[0]), t1 = msDe(pts[pts.length - 1]);
+    const spanMs = t1 - t0;
+    const X = (i) => PL + (spanMs <= 0 ? plotW / 2 : ((msDe(pts[i]) - t0) / spanMs) * plotW);
     const Y = (v) => PT + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
     const loc = getLocale();
     const money = (v) => shared.formatMoney(shared.getCurrency(), v);
     const fmtDay = (s) => { const dt = new Date(s + "T00:00:00"); return ("0" + dt.getDate()).slice(-2) + "/" + ("0" + (dt.getMonth() + 1)).slice(-2); };
+    // Ponto mais próximo de um x do viewBox. Com o eixo temporal os pontos não
+    // são mais equidistantes, então não dá pra achar o índice por regra de três.
+    const pontoEmX = (vx) => {
+      let melhor = 0, dist = Infinity;
+      for (let i = 0; i < pts.length; i++) { const d = Math.abs(X(i) - vx); if (d < dist) { dist = d; melhor = i; } }
+      return melhor;
+    };
 
     // Grade horizontal + rótulos do eixo Y.
     let grid = "";
@@ -713,17 +694,27 @@
       grid += `<line class="pf-grid" x1="${PL}" y1="${y.toFixed(1)}" x2="${W - PR}" y2="${y.toFixed(1)}"/>`;
       grid += `<text class="pf-axis" x="${PL + 2}" y="${(y - 4).toFixed(1)}">${escapeHtml(Math.round(v).toLocaleString(loc))}</text>`;
     }
-    // Régua de datas (eixo X): ~6 marcações.
+    // Régua de datas (eixo X): ~6 marcações espaçadas no TEMPO (não de N em N
+    // pontos — com o eixo temporal, pontos vizinhos podem estar colados e dois
+    // rótulos sairiam um por cima do outro). Cada marca pega o ponto medido mais
+    // próximo do instante alvo; repetidos entram uma vez só.
     const T = Math.min(6, pts.length);
     let xaxis = "";
+    const marcados = new Set();
     for (let j = 0; j < T; j++) {
-      const i = Math.round((j / (T - 1)) * (pts.length - 1));
+      const alvo = PL + (T === 1 ? plotW / 2 : (j / (T - 1)) * plotW);
+      const i = pontoEmX(alvo);
+      if (marcados.has(i)) continue;
+      marcados.add(i);
       const x = X(i), anchor = j === 0 ? "start" : (j === T - 1 ? "end" : "middle");
       xaxis += `<text class="pf-xaxis" x="${x.toFixed(1)}" y="${(H - 8).toFixed(1)}" text-anchor="${anchor}">${escapeHtml(fmtDay(pts[i].d))}</text>`;
     }
-    // Distância entre dois dias vizinhos, em unidades do viewBox. Decide se cabe
-    // marcador por ponto (ver o uso logo abaixo).
-    const dotSpacing = pts.length > 1 ? plotW / (pts.length - 1) : plotW;
+    // MENOR distância entre dois pontos vizinhos, em unidades do viewBox — decide
+    // se cabe marcador por ponto (ver o uso logo abaixo). É o mínimo, e não a
+    // média, porque com o eixo temporal o espaçamento é irregular: uma média
+    // folgada esconderia um trecho de dias seguidos todo grudado.
+    let dotSpacing = plotW;
+    for (let i = 1; i < pts.length; i++) dotSpacing = Math.min(dotSpacing, X(i) - X(i - 1));
     // Área (gradiente) + linha + ponta de cada série.
     let defs = "", areas = "", lines = "";
     active.forEach((k) => {
@@ -761,6 +752,34 @@
     };
     const hilo = maxI !== minI ? pill(maxI, t("portfolio.chart.high"), "#a78bfa", true) + pill(minI, t("portfolio.chart.low"), "#f0883e", false) : "";
 
+    // Cabeçalho: o valor da série principal + a variação DA FAIXA escolhida.
+    // Sem argumento pinta a ponta (hoje) e o rótulo do período; com um índice,
+    // pinta o dia sob o cursor — é o scrub do Robinhood, onde arrastar no gráfico
+    // move o número grande junto. A variação vai no formato combinado
+    // "+R$ 120,00 (3,4%)": o Collectr mostra os dois juntos em vez de oferecer um
+    // toggle %/absoluto, e num cartão estreito isso economiza um controle.
+    function pintaCabecalho(i) {
+      const idx = i == null ? vals.length - 1 : i;
+      const base = vals[0];
+      const delta = vals[idx] - base;
+      const pct = base > 0 ? (delta / base) * 100 : 0;
+      const dir = delta > 0.005 ? "up" : (delta < -0.005 ? "down" : "flat");
+      // Seta ALÉM da cor: verde/vermelho sozinho não serve a quem não distingue
+      // as duas (a mesma regra das cápsulas de variação).
+      const seta = dir === "up" ? "▲" : (dir === "down" ? "▼" : "→");
+      const sinal = dir === "up" ? "+" : (dir === "down" ? "−" : "");
+      // Porcentagem pelo locale (vírgula em pt/es, ponto em en) — toFixed(1)
+      // escreveria "28.6%" no site inteiro em português.
+      const pctTxt = Math.abs(pct).toLocaleString(loc, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+      setChartHead({
+        valor: money(vals[idx]),
+        delta: `${seta} ${sinal}${money(Math.abs(delta))} (${sinal}${pctTxt}%)`,
+        dir,
+        quando: i == null ? t("portfolio.chart.win." + activeRange) : fmtDay(pts[idx].d)
+      });
+    }
+    pintaCabecalho();
+
     body.innerHTML = `<div class="pf-chart-rel">
       <svg viewBox="0 0 ${W} ${H}" class="pf-svg" role="img" aria-label="${escapeAttribute(t("portfolio.chart.title"))}">
         <defs>${defs}</defs>${grid}${areas}${lines}${xaxis}${hilo}
@@ -778,9 +797,9 @@
       if (!r.width) return;
       const clientX = ev.touches && ev.touches[0] ? ev.touches[0].clientX : ev.clientX;
       const vx = (clientX - r.left) * (W / r.width);
-      let i = Math.round((vx - PL) / plotW * (pts.length - 1));
-      i = Math.max(0, Math.min(pts.length - 1, i));
+      const i = pontoEmX(vx);
       const x = X(i);
+      pintaCabecalho(i); // scrub: o número grande acompanha o dia sob o dedo
       let g = `<line class="pf-guide" x1="${x.toFixed(1)}" y1="${PT}" x2="${x.toFixed(1)}" y2="${baseY.toFixed(1)}"/>`;
       active.forEach((k) => { g += `<circle class="pf-hover-dot" cx="${x.toFixed(1)}" cy="${Y(fromBRL(SERIES[k].get(pts[i]))).toFixed(1)}" r="3.6" fill="${SERIES[k].color}"/>`; });
       hoverG.innerHTML = g; hoverG.style.display = "";
@@ -792,7 +811,7 @@
       const topPx = (Y(vals[i]) / H) * r.height - tip.offsetHeight - 12;
       tip.style.top = Math.max(0, topPx) + "px";
     }
-    function onLeave() { hoverG.style.display = "none"; tip.hidden = true; }
+    function onLeave() { hoverG.style.display = "none"; tip.hidden = true; pintaCabecalho(); }
     svg.addEventListener("mousemove", onMove);
     svg.addEventListener("mouseleave", onLeave);
     svg.addEventListener("touchstart", onMove, { passive: true });
