@@ -116,6 +116,9 @@
         <article>
           <span id="wishlistValue">R$ 0,00</span>
           <p data-i18n="portfolio.desejos">desejos (wishlist + binder)</p>
+          <!-- Abre o número em wishlist × faltantes de binder: as duas metades
+               levam a ações diferentes. Só aparece quando as duas existem. -->
+          <small id="wishlistSplit" class="pf-stat-split" hidden></small>
         </article>
         <article>
           <span id="pricedCopies">0/0</span>
@@ -133,6 +136,8 @@
         </div>
         <div id="pfBreakdownBody" class="pf-comp-block"></div>
       </section>
+
+      <section id="pfLists" class="pf-invest" aria-label="Valor das listas e binders" hidden></section>
 
       <section id="pfInvest" class="pf-invest" aria-label="Investimento (custo, lucro e vendas)" hidden></section>
 

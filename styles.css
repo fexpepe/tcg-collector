@@ -5446,6 +5446,36 @@ a.progress-row:hover {
 .pf-tip-date { display: block; font-weight: 800; margin-bottom: 3px; opacity: 0.85; }
 .pf-tip-row { display: block; }
 .pf-tip-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+/* Listas & Binders: uma linha por visão, clicável, com o valor à direita. */
+.pf-list-note { margin: 0 0 10px; font-size: 12.5px; color: var(--subtle); }
+.pf-list-rows { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--panel); }
+.pf-list-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--text);
+  font-size: 14px;
+}
+.pf-list-row:last-child { border-bottom: none; }
+.pf-list-row:hover { background: var(--surface); }
+.pf-list-dot { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.pf-list-name { font-weight: 650; }
+/* O nome cede espaço antes de tudo: numa lista com nome longo, é ele que deve
+   truncar, não o valor (que é o dado da tela). */
+.pf-list-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pf-list-meta { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.pf-list-gap { margin-left: auto; font-size: 12.5px; color: #96700f; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pf-list-val { margin-left: auto; font-weight: 750; font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* Com "completar" na linha, ele já empurrou tudo pra direita — o valor não pode
+   empurrar de novo, senão os dois se separam nas pontas. */
+.pf-list-gap + .pf-list-val { margin-left: 0; }
+.pf-list-floor { color: var(--subtle); font-weight: 700; cursor: help; }
+[data-theme="dark"] .pf-list-gap { color: #e8c46a; }
+/* Abertura do card de desejos (wishlist × binder). */
+.pf-stat-split { display: block; margin-top: 2px; font-size: 11.5px; color: var(--subtle); font-weight: 600; }
 .pf-chart-empty {
   margin: 0;
   padding: 40px 12px;

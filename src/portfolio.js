@@ -28,6 +28,7 @@
   // Modo investidor (opcional): custo pago por carta + vendas realizadas.
   const costsStore = shared.createCostsStore();
   const soldStore = shared.createSoldStore();
+  const listStore = shared.createListStore();
 
   let cards = [];
   let cardsById = new Map();
@@ -83,7 +84,13 @@
   // loadOwnedFast: pede à borda (/api/collection) exatamente as cartas que você
   // tem, em vez de baixar os chunks INTEIROS de cada set em que tem alguma —
   // era o download que segurava esta página. Sem a borda, cai nos chunks.
-  const idsOwned = Object.fromEntries(GAMES.map((g) => [g, ownedByGame[g].knownCardIds()]));
+  // Possuídas + DESEJADAS. As desejadas entravam na conta de "desejos" mas nunca
+  // eram carregadas — e wishlistTotal varre `cards`, então a carta que você quer
+  // (e por definição não tem) não estava lá pra ser somada: o número saía quase
+  // sempre só com os faltantes de binder. A wishlist.js já carregava as duas
+  // listas juntas; aqui faltava. Mesma requisição, sem ida extra à rede.
+  const idsOwned = Object.fromEntries(GAMES.map((g) =>
+    [g, [...new Set(ownedByGame[g].knownCardIds().concat(wishlistByGame[g].knownCardIds()))]]));
   Promise.all([shared.loadOwnedFast(idsOwned), shared.loadFxRates()])
     .then(([catalog]) => {
       indexaCartas(catalog.cards);
@@ -93,6 +100,7 @@
       bindBreakdown();
       bindExport();
       render();
+      hidrataListas();
       hidrataMovers();
     })
     .catch((error) => {
@@ -115,6 +123,34 @@
   // tem, carrega SÓ esses ids antes de desenhar. Falhar aqui não pode estragar
   // a página — a seção simplesmente não aparece (o renderMovers já descarta
   // mover sem carta no catálogo).
+  // 2ª etapa das Listas/Binders: as cartas de uma lista de COMPRA não estão na
+  // sua coleção, então não vieram na carga inicial — sem elas a lista valeria
+  // zero. Buscamos só os ids que faltam, como o hidrataMovers faz.
+  //
+  // O jogo de um id desconhecido não dá pra adivinhar (o id não carrega a marca),
+  // então: usa o `game` da lista quando ele existe e, no resto, pede o id a todos
+  // os jogos — id de outro jogo é no-op no loader (mesmo padrão do sales.js).
+  // O TETO existe porque esse "no resto" multiplica por 13: uma lista gigante sem
+  // jogo viraria uma carga maior que a da própria coleção.
+  const TETO_IDS_SEM_JOGO = 300;
+  function hidrataListas() {
+    const porJogo = Object.fromEntries(GAMES.map((g) => [g, []]));
+    const semJogo = [];
+    const querido = (id, jogo) => {
+      if (!id || cardsById.has(id)) return;           // já veio na carga inicial
+      if (jogo && porJogo[jogo]) porJogo[jogo].push(id);
+      else semJogo.push(id);
+    };
+    listStore.list().forEach((l) => (l.entries || []).forEach((e) => querido(e && e.id, l.game)));
+    lerBinders().forEach((b) => (b.slots || []).forEach((s) => querido(s && s.cardId, null)));
+    const orfaos = [...new Set(semJogo)].slice(0, TETO_IDS_SEM_JOGO);
+    GAMES.forEach((g) => { porJogo[g] = [...new Set(porJogo[g].concat(orfaos))]; });
+    if (!Object.values(porJogo).some((ids) => ids.length)) { renderListas(); return Promise.resolve(); }
+    return shared.loadOwnedAcrossGames(porJogo)
+      .then((extra) => { indexaCartas(cards.concat(extra.cards || [])); renderListas(); })
+      .catch(() => { renderListas(); }); // sem as extras a seção ainda mostra o que dá
+  }
+
   function hidrataMovers() {
     return Promise.all(GAMES.map((g) => fetchMovers(shared.gameDataDir(g))))
       .then((movers) => {
@@ -241,23 +277,56 @@
     return total;
   }
 
-  // "Desejos do binder": slots de cartas que você NÃO tem (faltantes), por jogo.
-  function binderWishTotal(gf) {
-    let total = 0;
+  // Binders vivos (chave unificada multi-jogo; a antiga fica de reserva pra quem
+  // ainda não abriu a página de binders, que é quem faz a migração).
+  function lerBinders() {
     try {
-      // Chave atual (unificada multi-jogo); a antiga fica como fallback pra quem
-      // ainda não abriu a página de binders (que faz a migração).
       const data = JSON.parse(localStorage.getItem("tcg-collector-binders-all-v1") || localStorage.getItem("tcg-collector-binders-v1") || "null");
       const deleted = (data && data.deleted) || {};
-      const binders = (data && Array.isArray(data.binders) ? data.binders : []).filter((b) => b && !deleted[b.id]);
-      binders.forEach((binder) => (binder.slots || []).forEach((slot) => {
-        if (!slot || !slot.cardId) return;
-        if (owned.has(slot.cardId)) return; // já é da coleção -> não é desejo
-        if (gf && gf !== "all" && gameOf(slot.cardId) !== gf) return;
-        total += shared.cardValue({ id: slot.cardId }, slot.variant || "Normal", prices).value;
-      }));
-    } catch (error) { /* sem binders */ }
-    return total;
+      return (data && Array.isArray(data.binders) ? data.binders : []).filter((b) => b && !deleted[b.id]);
+    } catch (error) { return []; }
+  }
+
+  // Valor de um binder em duas metades, que respondem perguntas diferentes:
+  //   `tem`    = o que as cartas que você JÁ tem naquele binder valem;
+  //   `falta`  = quanto custa comprar os slots vazios (o "custo pra completar",
+  //              que no TCG Collector é recurso pago).
+  // `semPreco` conta as cartas que ficaram de fora por não ter cotação — é o que
+  // faz a soma virar um piso "≥" na tela em vez de fingir precisão.
+  function valorDoBinder(binder, gf) {
+    let tem = 0, falta = 0, nTem = 0, nFalta = 0, semPreco = 0;
+    (binder.slots || []).forEach((slot) => {
+      if (!slot || !slot.cardId) return;
+      if (gf && gf !== "all" && gameOf(slot.cardId) !== gf) return;
+      const card = cardsById.get(slot.cardId) || { id: slot.cardId };
+      const v = shared.cardValue(card, slot.variant || "Normal", prices).value || 0;
+      if (owned.has(slot.cardId)) { tem += v; nTem++; } else { falta += v; nFalta++; }
+      if (!v) semPreco++;
+    });
+    return { tem, falta, nTem, nFalta, semPreco, slots: nTem + nFalta };
+  }
+
+  // "Desejos do binder": só a metade que FALTA, somada. Mesma função do painel
+  // de binders — uma conta só, pra os dois números não divergirem.
+  function binderWishTotal(gf) {
+    return lerBinders().reduce((s, b) => s + valorDoBinder(b, gf).falta, 0);
+  }
+
+  // Valor de uma lista: cada entrada é carta×variante×condição×quantidade, os
+  // mesmos quatro eixos da Coleção — então a conta é a MESMA (shared.cardValue).
+  function valorDaLista(lista, gf) {
+    let total = 0, itens = 0, semPreco = 0;
+    (lista.entries || []).forEach((e) => {
+      if (!e || !e.id) return;
+      if (gf && gf !== "all" && gameOf(e.id) !== gf) return;
+      const card = cardsById.get(e.id) || { id: e.id };
+      const q = e.q == null ? 1 : Math.max(1, Number(e.q) || 1);
+      const variante = e.v || shared.defaultVariant(card);
+      const v = shared.cardValue(card, variante, prices, e.c || undefined).value || 0;
+      itens += q;
+      if (v > 0) total += v * q; else semPreco += q;
+    });
+    return { total, itens, semPreco };
   }
 
   // ---- Render ---------------------------------------------------------------
@@ -267,7 +336,12 @@
     const slabs = gradedSlabs(gameFilter);
     const gradedTotal = slabs.reduce((sum, s) => sum + (s.value || 0), 0);
     const networth = rawTotal + gradedTotal;
-    const wish = wishlistTotal(gameFilter) + binderWishTotal(gameFilter);
+    // Desejos vinham somados num número só e ninguém sabia o que era o quê —
+    // "R$ 890" pode ser wishlist inteira ou buraco de binder, e as duas coisas
+    // levam a ações diferentes. Agora o card mostra a soma e abre embaixo.
+    const wishOnly = wishlistTotal(gameFilter);
+    const binderGap = binderWishTotal(gameFilter);
+    const wish = wishOnly + binderGap;
 
     // Números frescos: substituem o retrato instantâneo e tiram o esmaecido.
     SNAP_ELS.forEach((k) => { if (elements[k]) elements[k].style.opacity = ""; });
@@ -276,6 +350,16 @@
     if (elements.gradedValue) elements.gradedValue.textContent = money(gradedTotal);
     if (elements.pricedCopies) elements.pricedCopies.textContent = `${pricedCopies}/${totalCopies}`;
     if (elements.wishlistValue) elements.wishlistValue.textContent = money(wish);
+    // A abertura só aparece quando as duas metades existem — com uma só, repetir
+    // o mesmo número embaixo do card não informa nada.
+    const wishSplit = document.getElementById("wishlistSplit");
+    if (wishSplit) {
+      const mostra = wishOnly > 0 && binderGap > 0;
+      wishSplit.hidden = !mostra;
+      wishSplit.textContent = mostra
+        ? `${t("portfolio.wish.list")} ${money(wishOnly)} · ${t("portfolio.wish.binder")} ${money(binderGap)}`
+        : "";
+    }
     // Total investido: mesma soma da seção "Investimento" lá embaixo (uma
     // fórmula só). Sem nenhum custo preenchido fica "—" em vez de "R$ 0,00":
     // zero investido e "não registrei custo" são coisas diferentes.
@@ -286,6 +370,7 @@
 
     renderComposition(rawTotal, gradedTotal);
     renderBreakdown(lines, slabs);
+    renderListas();
     renderInvest();
     renderMovers();
     renderTop(lines, slabs);
@@ -419,6 +504,59 @@
         </tr></thead><tbody>${rows}</tbody></table></div>`;
     }
     sec.innerHTML = html;
+    sec.hidden = false;
+  }
+
+  // ---- Listas & Binders: quanto valem as suas VISÕES -------------------------
+  // Continuam fora do patrimônio (o total tem que bater com a Coleção) — a seção
+  // diz isso na própria tela, porque é a primeira pergunta de quem vê os números.
+  // O "custo pra completar" de um binder é o recurso que o TCG Collector cobra
+  // US$ 3,99/mês; aqui sai junto e ainda serve as listas de compra da Liga.
+  function renderListas() {
+    const sec = document.getElementById("pfLists");
+    if (!sec) return;
+    const linhas = [];
+    listStore.list().forEach((l) => {
+      const { total, itens, semPreco } = valorDaLista(l, gameFilter);
+      if (!itens) return; // lista vazia, ou toda de outro jogo que o filtro cortou
+      linhas.push({
+        tipo: "lista", nome: l.name || t("lists.untitled"), cor: l.color || "var(--accent)",
+        href: `lists.html#${encodeURIComponent(l.id)}`,
+        meta: tn("portfolio.lists.cards", itens), total, semPreco
+      });
+    });
+    lerBinders().forEach((b) => {
+      const v = valorDoBinder(b, gameFilter);
+      if (!v.slots) return;
+      linhas.push({
+        // `lists.untitled` e não `binders.new`: aquela vive no pacote i18n dos
+        // binders, que esta página não carrega (o check.mjs pega isso).
+        tipo: "binder", nome: b.name || t("lists.untitled"), cor: b.color || "#8b5cf6",
+        href: `binders.html#${encodeURIComponent(b.id)}`,
+        meta: t("portfolio.lists.slots", { tem: v.nTem, total: v.slots }),
+        total: v.tem, semPreco: v.semPreco, completar: v.falta
+      });
+    });
+    if (!linhas.length) { sec.hidden = true; sec.innerHTML = ""; return; }
+    linhas.sort((a, b) => b.total - a.total);
+    const corpo = linhas.map((r) => {
+      // "≥" quando alguma carta ficou sem cotação: a soma é um PISO. Dizer isso é
+      // mais útil que um número redondo que o usuário não consegue auditar.
+      const piso = r.semPreco > 0
+        ? `<span class="pf-list-floor" title="${escapeAttribute(tn("portfolio.lists.noPrice", r.semPreco))}">≥</span> ` : "";
+      const completar = r.completar > 0
+        ? `<span class="pf-list-gap">${escapeHtml(t("portfolio.lists.toComplete", { v: money(r.completar) }))}</span>` : "";
+      return `<a class="pf-list-row" href="${escapeAttribute(r.href)}">
+        <span class="pf-list-dot" style="background:${escapeAttribute(r.cor)}"></span>
+        <span class="pf-list-name">${escapeHtml(r.nome)}</span>
+        <span class="pf-list-meta">${escapeHtml(r.meta)}</span>
+        ${completar}
+        <span class="pf-list-val sensitive-value">${piso}${escapeHtml(money(r.total))}</span>
+      </a>`;
+    }).join("");
+    sec.innerHTML = `<h2 class="pf-invest-title">${escapeHtml(t("portfolio.lists.title"))}</h2>
+      <p class="pf-list-note">${escapeHtml(t("portfolio.lists.note"))}</p>
+      <div class="pf-list-rows">${corpo}</div>`;
     sec.hidden = false;
   }
 
