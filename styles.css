@@ -3888,7 +3888,13 @@ a.hub-tile:hover {
 .admin-note { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
 /* Modo sensível: borra os totais de valor (portfólio/coleção/vendas) pra dar
-   print sem revelar quanto vale. Mira os totais por id + a classe .sensitive-value. */
+   print sem revelar quanto vale. Mira os totais por id + a classe .sensitive-value.
+
+   A REGRA (a mesma do "Visual Privacy Mode" do Trading 212): some o DINHEIRO,
+   ficam as PORCENTAGENS e o formato do gráfico. Quem grava vídeo ou posta print
+   ainda consegue falar do desempenho da coleção sem expor o patrimônio — se a
+   variação sumisse junto, não sobraria conversa. Por isso o #pfChartDelta não
+   está aqui: ele é borrado em pedaços (só a parte em R$), no seletor abaixo. */
 [data-sensitive="on"] #totalValue,
 [data-sensitive="on"] #wishlistValue,
 [data-sensitive="on"] #bindersValue,
@@ -3896,10 +3902,26 @@ a.hub-tile:hover {
 [data-sensitive="on"] #dashValue,
 [data-sensitive="on"] #salesDashValue,
 [data-sensitive="on"] #topCards .num,
+[data-sensitive="on"] #rawValue,
+[data-sensitive="on"] #gradedValue,
+[data-sensitive="on"] #investedValue,
+[data-sensitive="on"] #wishlistSplit,
+[data-sensitive="on"] #pfChartValue,
+[data-sensitive="on"] .pf-head-delta .pf-cash,
+[data-sensitive="on"] .pf-comp-val,
+[data-sensitive="on"] .pf-list-val,
+[data-sensitive="on"] .pf-list-gap,
+[data-sensitive="on"] .pf-axis,
+[data-sensitive="on"] .pf-hilo text,
+[data-sensitive="on"] .pf-tip strong,
 [data-sensitive="on"] .sensitive-value {
   filter: blur(8px); -webkit-filter: blur(8px);
   user-select: none; pointer-events: none;
 }
+/* O botão de privacidade fica na cabeça da página, ao lado do "Exportar CSV" —
+   o efeito aparece ali, e é ali que a pessoa lembra de ligar antes do print. */
+.pf-privacy { display: inline-flex; align-items: center; gap: 6px; }
+.pf-privacy[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
 .auth-email { color: var(--subtle); font-size: 12px; cursor: default; word-break: break-all; }
 .auth-email:hover { background: transparent; color: var(--subtle); }
 /* Deslogado: botão "Conta ▾" abre o mesmo menu (entrar + exportar/importar). */
@@ -5432,6 +5454,10 @@ a.progress-row:hover {
    parecendo furo no tema claro e no escuro. */
 .pf-dot { fill: var(--surface); stroke-width: 2; }
 .pf-area { stroke: none; }
+/* Linha do MERCADO (benchmark): tracejada e mais fina — é referência, não uma
+   coleção sua, e a diferença precisa aparecer sem depender da cor. */
+.pf-line-bench { stroke-width: 1.8; stroke-dasharray: 5 4; opacity: 0.85; }
+.pf-mode-bench { border-left: 1px solid var(--line); }
 .pf-grid { stroke: var(--line); stroke-width: 1; opacity: 0.5; }
 .pf-axis { fill: var(--subtle); font-size: 11px; }
 .pf-xaxis { fill: var(--subtle); font-size: 11px; }

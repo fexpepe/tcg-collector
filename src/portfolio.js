@@ -58,6 +58,22 @@
   // Maiores altas/quedas do MERCADO (price-movers do build semanal).
   const moversByGame = Object.fromEntries(GAMES.map((g) => [g, null]));
   const fetchMovers = (dir) => fetch(dir + "price-movers.generated.json").then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  // ÍNDICE DE MERCADO por jogo (build): { d: [datas], i: [valores base 1000] }.
+  // É o benchmark do gráfico — a resposta pra "isso é a minha coleção ou é o
+  // mercado inteiro?". Arquivo minúsculo (centenas de bytes), buscado só quando
+  // o modo % está ligado, que é o único em que ele faz sentido.
+  const indexByGame = Object.fromEntries(GAMES.map((g) => [g, null]));
+  let indexPedido = false;
+  function hidrataIndices() {
+    if (indexPedido) return Promise.resolve();
+    indexPedido = true;
+    return Promise.all(GAMES.map((g) =>
+      fetch(shared.gameDataDir(g) + "market-index.generated.json")
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null)
+        .then((j) => { indexByGame[g] = j && Array.isArray(j.d) && Array.isArray(j.i) ? j : null; })
+    )).then(() => { renderControls(); renderChart(chartHistory()); });
+  }
 
   // RETRATO INSTANTÂNEO antes de qualquer rede (estilo Collectr): o último
   // valor conhecido (histórico sincronizado ou cookie, via shared.valueSnapshot)
@@ -243,7 +259,32 @@
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 5000);
   }
+  // Liga-desliga do modo privacidade. A preferência é a MESMA das Configurações
+  // (shared.setSensitive), não uma segunda: dois interruptores pro mesmo estado
+  // é como se descobre, no print, que só um deles estava ligado.
+  function bindPrivacy() {
+    const btn = document.getElementById("pfPrivacy");
+    if (!btn) return;
+    const pinta = () => {
+      const on = shared.sensitiveEnabled();
+      btn.hidden = false;
+      btn.setAttribute("aria-pressed", String(on));
+      btn.textContent = on ? t("portfolio.privacy.on") : t("portfolio.privacy.off");
+      btn.title = t("portfolio.privacy.hint");
+    };
+    pinta();
+    btn.addEventListener("click", () => { shared.setSensitive(!shared.sensitiveEnabled()); pinta(); });
+  }
+
   function bindExport() {
+    bindPrivacy();
+    const recap = document.getElementById("pfRecap");
+    if (recap) {
+      // Só oferece quando há histórico pra contar uma história (2+ pontos).
+      recap.hidden = chartHistory().length < 2;
+      recap.textContent = t("portfolio.recap.button");
+      recap.addEventListener("click", () => exportRetrospectiva(recap));
+    }
     if (!elements.export) return;
     elements.export.hidden = false;
     elements.export.addEventListener("click", exportPortfolioCsv);
@@ -253,6 +294,110 @@
       if (!event.target.closest("[data-pf-top-toggle]")) return;
       topShowAll = !topShowAll;
       render();
+    });
+    // Abas Minhas/Mercado dos movers (mesma delegação: a seção é re-renderizada).
+    const movers = document.getElementById("pfMovers");
+    if (movers) movers.addEventListener("click", (event) => {
+      const aba = event.target.closest("[data-movers-tab]");
+      if (!aba) return;
+      event.preventDefault();
+      moversTab = aba.dataset.moversTab;
+      renderMovers();
+    });
+  }
+
+  // ---- Retrospectiva do ano (PNG pra compartilhar) ---------------------------
+  // O "Unpacked" do Dragon Shield mostrou que retrospectiva é o conteúdo que o
+  // colecionador posta sozinho. Aqui ela sai do dado que a tela já tem: o
+  // histórico por jogo, as vendas e a coleção. Canvas puro (CSP: sem lib) e sem
+  // rede — nenhuma imagem de carta entra, então nunca "taint"a o canvas nem
+  // depende de CDN. Só aparece com histórico suficiente pra dizer algo.
+  function dadosDaRetrospectiva() {
+    const ano = new Date().getFullYear();
+    const inicioAno = `${ano}-01-01`;
+    const hist = chartHistory();
+    if (hist.length < 2) return null;
+    const noAno = hist.filter((p) => p.d >= inicioAno);
+    const base = noAno.length >= 2 ? noAno[0] : hist[0];
+    const fim = hist[hist.length - 1];
+    const valOf = (p) => fromBRL((p.c || 0) + (p.b || 0));
+    const de = valOf(base), para = valOf(fim);
+    const vendas = soldStore.list().filter((it) => String(it.date || "").slice(0, 4) === String(ano));
+    let vendido = 0, resultado = 0;
+    vendas.forEach((it) => { const v = shared.soldValues(it); vendido += v.net; if (v.hasCost) resultado += v.pnl; });
+    // Jogo com maior patrimônio hoje (o "seu jogo do ano").
+    const porJogo = GAMES.map((g) => ({ g, v: collectionLines(g).total + gradedSlabs(g).reduce((s, x) => s + (x.value || 0), 0) }))
+      .filter((x) => x.v > 0).sort((a, b) => b.v - a.v);
+    const { totalCopies } = collectionLines("all");
+    return {
+      ano, de, para, cresceu: para - de, pct: de > 0 ? ((para - de) / de) * 100 : 0,
+      vendas: vendas.length, vendido, resultado,
+      jogoTop: porJogo[0] ? shared.gameLabel(porJogo[0].g) : "",
+      corTop: porJogo[0] ? GAME_COLOR[porJogo[0].g] : "#34d399",
+      copias: totalCopies, desde: base.d
+    };
+  }
+
+  function exportRetrospectiva(btn) {
+    const d = dadosDaRetrospectiva();
+    if (!d) { alert(t("portfolio.recap.tooEarly")); return; }
+    const rotulo = btn ? btn.textContent : "";
+    if (btn) { btn.disabled = true; btn.textContent = "…"; }
+    const W = 1080, H = 1350; // 4:5, o formato que rende no feed
+    const canvas = document.createElement("canvas");
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext("2d");
+    const FONT = "system-ui, -apple-system, Segoe UI, Roboto, sans-serif";
+    // Fundo escuro fixo (não segue o tema do site): a imagem vai viver fora
+    // daqui, onde o tema de quem vê não tem nada a ver com o seu.
+    ctx.fillStyle = "#101218"; ctx.fillRect(0, 0, W, H);
+    const faixa = ctx.createLinearGradient(0, 0, W, 420);
+    faixa.addColorStop(0, d.corTop); faixa.addColorStop(1, "#101218");
+    ctx.globalAlpha = 0.22; ctx.fillStyle = faixa; ctx.fillRect(0, 0, W, 420); ctx.globalAlpha = 1;
+
+    const texto = (s, x, y, size, weight, cor, align) => {
+      ctx.font = `${weight} ${size}px ${FONT}`;
+      ctx.fillStyle = cor; ctx.textAlign = align || "left"; ctx.textBaseline = "alphabetic";
+      ctx.fillText(s, x, y);
+    };
+    texto(t("portfolio.recap.title", { ano: d.ano }), 80, 150, 40, 700, "#99a3b2");
+    texto(t("portfolio.recap.headline"), 80, 220, 62, 800, "#ffffff");
+
+    // O número grande: quanto o patrimônio cresceu (ou caiu) no ano.
+    const subiu = d.cresceu >= 0;
+    const corDelta = subiu ? "#4ade80" : "#f87171";
+    texto(money(d.para), 80, 380, 92, 800, "#ffffff");
+    texto(`${subiu ? "▲" : "▼"} ${subiu ? "+" : "−"}${money(Math.abs(d.cresceu))} (${subiu ? "+" : "−"}${Math.abs(d.pct).toFixed(1)}%)`,
+      80, 440, 40, 800, corDelta);
+    texto(t("portfolio.recap.since", { data: d.desde }), 80, 486, 26, 600, "#7c8698");
+
+    // Cartões de número. Só entram os que têm o que dizer — um bloco vazio num
+    // print é pior do que não existir.
+    const cartoes = [
+      { rot: t("portfolio.recap.copies"), val: String(d.copias) },
+      { rot: t("portfolio.recap.topGame"), val: d.jogoTop }
+    ];
+    if (d.vendas > 0) cartoes.push({ rot: tn("portfolio.invest.soldCount", d.vendas), val: money(d.vendido) });
+    if (d.resultado !== 0) cartoes.push({ rot: t("portfolio.sales.realized"), val: `${d.resultado >= 0 ? "+" : "−"}${money(Math.abs(d.resultado))}`, cor: d.resultado >= 0 ? "#4ade80" : "#f87171" });
+
+    const CW = (W - 160 - 30) / 2, CH = 190;
+    cartoes.slice(0, 4).forEach((c, i) => {
+      const x = 80 + (i % 2) * (CW + 30), y = 580 + Math.floor(i / 2) * (CH + 30);
+      ctx.fillStyle = "#181c25";
+      ctx.beginPath(); ctx.roundRect(x, y, CW, CH, 22); ctx.fill();
+      texto(c.rot.toUpperCase(), x + 32, y + 62, 22, 700, "#7c8698");
+      // Encolhe a fonte até o valor caber — nome de jogo longo e patrimônio de 7
+      // dígitos não podem vazar do cartão.
+      let fs = 52;
+      ctx.font = `800 ${fs}px ${FONT}`;
+      while (fs > 24 && ctx.measureText(c.val).width > CW - 64) { fs -= 2; ctx.font = `800 ${fs}px ${FONT}`; }
+      texto(c.val, x + 32, y + 132, fs, 800, c.cor || "#ffffff");
+    });
+
+    texto("Sleevu · sleevu.app", 80, H - 70, 30, 700, "#7c8698");
+    shared.baixarCanvasPng(canvas, `sleevu-retrospectiva-${d.ano}.png`, {
+      share: true,
+      onFinish: () => { if (btn) { btn.disabled = false; btn.textContent = rotulo; } }
     });
   }
 
@@ -378,8 +523,15 @@
     updateChart();
   }
 
-  // Maiores altas e quedas da semana (mercado — do histórico de preços do build).
-  // Só aparece quando há >= 2 snapshots (a partir da 2ª semana no ar).
+  // Maiores altas e quedas da semana, em DUAS abas:
+  //   "Minhas"  — só cartas suas, ordenadas pelo IMPACTO no seu bolso
+  //               (variação × quantidade que você tem), não pelo % puro. Uma
+  //               carta de R$ 2 que subiu 80% mexe menos no seu patrimônio que
+  //               uma de R$ 900 que subiu 5%, e é essa a pergunta aqui.
+  //   "Mercado" — a visão de sempre (o que se moveu no mercado, tenha você ou não).
+  // Dragon Shield, Delta e CoinStats convergem no mesmo ponto: o mover que
+  // importa é o SEU. Por isso "Minhas" é a aba padrão quando você tem alguma.
+  let moversTab = "mine";
   function renderMovers() {
     const sec = document.getElementById("pfMovers");
     if (!sec) return;
@@ -391,27 +543,56 @@
       if (m.from) from = from || m.from;
       up = up.concat(m.up || []); down = down.concat(m.down || []);
     });
-    const resolve = (arr) => arr
-      .map((x) => ({ x, card: cardsById.get(x.id) }))
-      .filter((r) => r.card)
-      .sort((a, b) => Math.abs(b.x.pct) - Math.abs(a.x.pct))
-      .slice(0, 8);
-    const ups = resolve(up), downs = resolve(down);
-    if (!ups.length && !downs.length) { sec.hidden = true; sec.innerHTML = ""; return; }
+    // Quantas cópias você tem da carta (todas as variantes) — o peso do impacto.
+    const copias = (card) => shared.cardVariants(card).reduce((n, v) => n + owned.variantTotal(card.id, v), 0);
+    const resolve = (arr, minhas) => {
+      const linhas = arr
+        .map((x) => ({ x, card: cardsById.get(x.id) }))
+        .filter((r) => r.card && (!minhas || owned.has(r.card.id)));
+      if (!minhas) return linhas.sort((a, b) => Math.abs(b.x.pct) - Math.abs(a.x.pct)).slice(0, 8);
+      // Impacto em dinheiro: o valor de hoje × a variação × as cópias. O valor
+      // atual já embute o preço da carta, então isto é "quanto do seu patrimônio
+      // essa carta moveu na semana".
+      linhas.forEach((r) => {
+        const v = shared.cardValue(r.card, shared.defaultVariant(r.card), prices).value || 0;
+        r.qtd = copias(r.card);
+        r.impacto = v * r.qtd * (r.x.pct / 100);
+      });
+      return linhas.sort((a, b) => Math.abs(b.impacto) - Math.abs(a.impacto)).slice(0, 8);
+    };
+    const temMinhas = up.concat(down).some((x) => { const c = cardsById.get(x.id); return c && owned.has(c.id); });
+    if (moversTab === "mine" && !temMinhas) moversTab = "market";
+    const minhas = moversTab === "mine";
+    const ups = resolve(up, minhas), downs = resolve(down, minhas);
+    if (!ups.length && !downs.length && !temMinhas) { sec.hidden = true; sec.innerHTML = ""; return; }
     const loc = getLocale();
-    const row = ({ x, card }) => {
+    const row = ({ x, card, impacto, qtd }) => {
       const src = shared.cardImageSources(card);
       const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
-      const ownedTag = owned.has(card.id) ? `<span class="pf-mover-owned">${escapeHtml(t("portfolio.movers.owned"))}</span>` : "";
+      // Na aba "Minhas" o selo vira a QUANTIDADE (×3) — "você tem" já é dado.
+      const tag = minhas
+        ? (qtd > 1 ? `<span class="pf-mover-owned">×${qtd}</span>` : "")
+        : (owned.has(card.id) ? `<span class="pf-mover-owned">${escapeHtml(t("portfolio.movers.owned"))}</span>` : "");
       const pct = `${x.pct > 0 ? "+" : "−"}${Math.abs(x.pct).toLocaleString(loc, { maximumFractionDigits: 1 })}%`;
+      // Na aba "Minhas", o que a variação fez com o SEU dinheiro, embaixo do %.
+      const emReais = minhas && Math.abs(impacto || 0) >= 0.01
+        ? `<span class="pf-mover-cash sensitive-value">${impacto > 0 ? "+" : "−"}${escapeHtml(money(Math.abs(impacto)))}</span>` : "";
       return `<a class="pf-mover" href="${escapeAttribute(detailUrl("set", card.set, "", card.game))}">
         <span class="pf-mover-thumb">${thumb}</span>
-        <span class="pf-mover-info"><strong>${escapeHtml(card.name)}</strong><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span>${ownedTag}</span>
-        <span class="pf-mover-pct ${x.pct > 0 ? "is-up" : "is-down"}">${x.pct > 0 ? "▲" : "▼"} ${escapeHtml(pct)}</span>
+        <span class="pf-mover-info"><strong>${escapeHtml(card.name)}</strong><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span>${tag}</span>
+        <span class="pf-mover-pct ${x.pct > 0 ? "is-up" : "is-down"}">${x.pct > 0 ? "▲" : "▼"} ${escapeHtml(pct)}${emReais}</span>
       </a>`;
     };
     const col = (title, arr) => arr.length ? `<div class="pf-movers-col"><h3>${escapeHtml(title)}</h3>${arr.map(row).join("")}</div>` : "";
+    const aba = (k, rotulo, ativa) =>
+      `<button type="button" class="pf-bd-tab${ativa ? " active" : ""}" data-movers-tab="${k}">${escapeHtml(rotulo)}</button>`;
+    const abas = temMinhas
+      ? `<div class="pf-bd-tabs pf-movers-tabs">${aba("mine", t("portfolio.movers.mine"), minhas)}${aba("market", t("portfolio.movers.market"), !minhas)}</div>`
+      : "";
+    const vazio = !ups.length && !downs.length
+      ? `<p class="pf-bd-empty">${escapeHtml(t("portfolio.movers.noneMine"))}</p>` : "";
     sec.innerHTML = `<h2 class="pf-invest-title">${escapeHtml(t("portfolio.movers.title"))}${from ? ` <span class="pf-movers-since">${escapeHtml(t("market.deltaSince", { date: from }))}</span>` : ""}</h2>
+      ${abas}${vazio}
       <div class="pf-movers-grid">${col(t("portfolio.movers.up"), ups)}${col(t("portfolio.movers.down"), downs)}</div>`;
     sec.hidden = false;
   }
@@ -789,8 +970,10 @@
   const MODE_KEY = "tcg-pf-chart-mode", PCT_KEY = "tcg-pf-chart-pct";
   const lePref = (k, def) => { try { return localStorage.getItem(k) || def; } catch (e) { return def; } };
   const gravaPref = (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* ignora */ } };
+  const BENCH_KEY = "tcg-pf-chart-bench";
   let chartMode = lePref(MODE_KEY, "series") === "games" ? "games" : "series";
   let pctMode = lePref(PCT_KEY, "off") === "on";
+  let benchOn = lePref(BENCH_KEY, "on") === "on"; // nasce ligado: é o contexto
   let activeGames = null; // Set de jogos ligados; null = ainda não inicializado
 
   const fromBRL = (v) => { const r = shared.convertMoney(v, "BRL", shared.getCurrency()); return r == null ? v : r; };
@@ -858,6 +1041,7 @@
     if (!controlsBound) { bindControls(); controlsBound = true; }
     renderControls();
     renderChart(chartHistory());
+    if (pctMode) hidrataIndices(); // preferência já vinha ligada de outra visita
   }
 
   // As três cápsulas de variação (7d / 30d / desde o início) saíram daqui: o
@@ -917,7 +1101,15 @@
       const m = e.target.closest("[data-chart-mode]");
       if (m) { chartMode = m.dataset.chartMode; gravaPref(MODE_KEY, chartMode); redesenha(); return; }
       const p = e.target.closest("[data-chart-pct]");
-      if (p) { pctMode = !pctMode; gravaPref(PCT_KEY, pctMode ? "on" : "off"); redesenha(); }
+      if (p) {
+        pctMode = !pctMode;
+        gravaPref(PCT_KEY, pctMode ? "on" : "off");
+        redesenha();
+        if (pctMode) hidrataIndices(); // o benchmark só existe aqui: busca sob demanda
+        return;
+      }
+      const b = e.target.closest("[data-chart-bench]");
+      if (b) { benchOn = !benchOn; gravaPref(BENCH_KEY, benchOn ? "on" : "off"); redesenha(); }
     });
   }
 
@@ -954,8 +1146,41 @@
       modeEl.innerHTML = modeEl.hidden ? "" :
         `<button type="button" class="pf-mode-btn${emJogos ? "" : " active"}" data-chart-mode="series">${escapeHtml(t("portfolio.chart.modeSeries"))}</button>
          <button type="button" class="pf-mode-btn${emJogos ? " active" : ""}" data-chart-mode="games">${escapeHtml(t("portfolio.chart.modeGames"))}</button>
-         <button type="button" class="pf-mode-btn pf-mode-pct${pctMode ? " active" : ""}" data-chart-pct aria-pressed="${pctMode}" title="${escapeAttribute(t("portfolio.chart.pctHint"))}">%</button>`;
+         <button type="button" class="pf-mode-btn pf-mode-pct${pctMode ? " active" : ""}" data-chart-pct aria-pressed="${pctMode}" title="${escapeAttribute(t("portfolio.chart.pctHint"))}">%</button>`
+        // O benchmark só aparece com o % ligado — é lá que ele é comparável.
+        + (pctMode ? `<button type="button" class="pf-mode-btn pf-mode-bench${benchOn ? " active" : ""}" data-chart-bench aria-pressed="${benchOn}" title="${escapeAttribute(t("portfolio.chart.marketHint"))}">${escapeHtml(t("portfolio.chart.market"))}</button>` : "");
     }
+  }
+
+  // Índice do mercado alinhado às datas do gráfico. O índice tem a régua de
+  // datas DELE (os dias de build), então cada ponto do gráfico pega o último
+  // valor do índice até aquela data — carregar pra frente é o tratamento certo
+  // pra um índice: entre duas medições ele não "vale zero", vale a última.
+  // Buraco no meio (build que falhou) também é carregado; buraco no COMEÇO fica
+  // null e a linha só nasce quando o índice nasce.
+  function serieDoMercado(pts) {
+    const jogos = (gameFilter === "all" ? GAMES : [gameFilter]).filter((g) => indexByGame[g]);
+    if (!jogos.length) return null;
+    const serieDe = (g) => {
+      const src = indexByGame[g];
+      let cursor = 0, ultimo = null;
+      return pts.map((p) => {
+        while (cursor < src.d.length && src.d[cursor] <= p.d) {
+          if (src.i[cursor] != null) ultimo = src.i[cursor];
+          cursor++;
+        }
+        return ultimo;
+      });
+    };
+    const series = jogos.map(serieDe);
+    if (series.length === 1) return series[0];
+    // Vários jogos: média simples dos índices disponíveis em cada data — cada
+    // mercado pesa igual, senão o índice do jogo com mais cartas viraria "o
+    // mercado" sozinho.
+    return pts.map((_, i) => {
+      const vs = series.map((s) => s[i]).filter((v) => v != null);
+      return vs.length ? vs.reduce((a, b) => a + b, 0) / vs.length : null;
+    });
   }
 
   // Escreve (ou apaga, sem argumento) o cabeçalho do gráfico. Fica fora do
@@ -968,7 +1193,12 @@
     if (!elValor) return;
     elValor.textContent = d ? d.valor : "—";
     if (elDelta) {
-      elDelta.textContent = d ? d.delta : "";
+      // O dinheiro vai num <span> próprio pro modo privacidade borrar SÓ ele: a
+      // porcentagem continua legível, que é o ponto do modo (dá pra mostrar o
+      // desempenho num print sem mostrar o patrimônio).
+      elDelta.innerHTML = d
+        ? `${escapeHtml(d.seta)} <span class="pf-cash">${escapeHtml(d.cash)}</span> <span class="pf-pct">(${escapeHtml(d.pct)})</span>`
+        : "";
       elDelta.className = "pf-head-delta" + (d ? " is-" + d.dir : "");
     }
     if (elQuando) elQuando.textContent = d ? d.quando : "";
@@ -1025,6 +1255,14 @@
     const money = (v) => shared.formatMoney(shared.getCurrency(), v);
     const loc = getLocale();
     const fmtPct = (v) => v.toLocaleString(loc, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "%";
+    // BENCHMARK: a linha do mercado, só no modo % (comparar um índice base 1000
+    // com reais não diz nada). É o enquadramento que a literatura de UX de
+    // investimento recomenda pra queda — "o mercado caiu 10%, você caiu 7%" põe
+    // o resultado em perspectiva em vez de parecer erro seu.
+    if (pctMode && benchOn) {
+      const serie = serieDoMercado(pts);
+      if (serie) traces.push({ key: "bench", label: t("portfolio.chart.market"), color: "#8b93a7", bench: true, vals: serie, from: serie.findIndex((v) => v != null) });
+    }
     if (pctMode) {
       traces.forEach((tr) => {
         const base = tr.vals[tr.from];
@@ -1099,23 +1337,25 @@
     // A área embaixo da linha só ajuda quando há POUCAS linhas: com 13 jogos
     // ligados, treze gradientes empilhados viram uma sopa onde não se enxerga
     // linha nenhuma. Acima de 4, fica só o traço.
-    const comArea = traces.length <= 4;
+    const comArea = traces.filter((tr) => !tr.bench).length <= 4;
     traces.forEach((tr) => {
       const gid = "pfg-" + tr.key;
       // Começa no 1º ponto real do traço (tr.from), não no início do eixo.
       const linePts = tr.vals.slice(tr.from)
         .map((v, j) => `${X(tr.from + j).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
-      if (comArea) {
+      if (comArea && !tr.bench) {
         defs += `<linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${tr.color}" stop-opacity="0.28"/><stop offset="100%" stop-color="${tr.color}" stop-opacity="0"/></linearGradient>`;
         areas += `<polygon class="pf-area" points="${X(tr.from).toFixed(1)},${baseY.toFixed(1)} ${linePts} ${X(pts.length - 1).toFixed(1)},${baseY.toFixed(1)}" fill="url(#${gid})"/>`;
       }
-      lines += `<polyline class="pf-line" points="${linePts}" stroke="${tr.color}"/>`;
+      // O mercado vai TRACEJADO: é referência, não uma coleção sua — a diferença
+      // precisa ser visível também pra quem não distingue as cores.
+      lines += `<polyline class="pf-line${tr.bench ? " pf-line-bench" : ""}" points="${linePts}" stroke="${tr.color}"/>`;
       // Marcador por DIA (bolinha vazada). Só quando os pontos têm folga entre
       // si: o espaçamento vai de 135px em "7D" a 4,5px em "6M", e a partir de
       // certo ponto as bolinhas se encostam e a linha vira um borrão. O corte é
       // pelo espaço REAL (não pela faixa escolhida), porque o histórico pode ter
       // buracos — 90 dias de faixa com 12 pontos medidos cabe bolinha à vontade.
-      if (dotSpacing >= 12 && comArea) {
+      if (dotSpacing >= 12 && comArea && !tr.bench) {
         lines += tr.vals.map((v, i) => (v == null ? "" :
           `<circle class="pf-dot" cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="3" stroke="${tr.color}"/>`)).join("");
       }
@@ -1129,8 +1369,11 @@
     // normalizadas e "a maior" viraria "a que mais subiu", que não é a linha que
     // o olho segue no gráfico.
     const ultimoBruto = (tr) => { const a = tr.brutos || tr.vals; return a[a.length - 1] || 0; };
-    const principal = traces.find((tr) => tr.key === "combined")
-      || traces.slice().sort((a, b) => ultimoBruto(b) - ultimoBruto(a))[0];
+    // O mercado nunca é o traço principal: o número grande é o SEU dinheiro, e
+    // o benchmark está ali só como régua.
+    const meus = traces.filter((tr) => !tr.bench);
+    const principal = meus.find((tr) => tr.key === "combined")
+      || meus.slice().sort((a, b) => ultimoBruto(b) - ultimoBruto(a))[0] || traces[0];
     const vals = principal.vals;
     let maxI = principal.from, minI = principal.from;
     vals.forEach((v, i) => {
@@ -1174,7 +1417,9 @@
       const pctTxt = Math.abs(pct).toLocaleString(loc, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
       setChartHead({
         valor: money(valsHead[idx]),
-        delta: `${seta} ${sinal}${money(Math.abs(delta))} (${sinal}${pctTxt}%)`,
+        seta,
+        cash: `${sinal}${money(Math.abs(delta))}`,
+        pct: `${sinal}${pctTxt}%`,
         dir,
         // No modo por jogo, dizer QUAL linha o número grande está seguindo —
         // senão "R$ 6.015,00" sobre 5 linhas coloridas é um número órfão.

@@ -153,10 +153,48 @@ if (idx7d >= 0) {
 }
 const from7d = idx7d >= 0 ? hist.d[idx7d] : null;
 
+// ── ÍNDICE DE MERCADO ───────────────────────────────────────────────────────
+// Uma linha só: "como o mercado deste jogo se moveu", pro Portfólio comparar a
+// coleção da pessoa contra ele ("o mercado subiu 4%, você subiu 7%"). É o papel
+// que o CL50 cumpre no Card Ladder, e o enquadramento que a literatura de UX de
+// investimento recomenda pra perda: sem referência, cair 7% parece erro seu; com
+// ela, dá pra ver que o mercado caiu 10%.
+//
+// EQUAL-WEIGHTED (média das variações relativas), não a soma dos preços: somando,
+// uma Charizard de US$ 900 mandaria no índice sozinha e ele viraria o gráfico
+// daquela carta. Normalizado em 1000 na primeira data, como o CL50.
+//
+// Só entram cartas com preço >= MIN_INDEX na base e da MESMA fonte no par
+// comparado: 0,01 -> 0,02 numa comum é +100% e faria o índice tremer à toa.
+// O arquivo é minúsculo (uma série de ~60 números), então o Portfólio pode
+// baixar o dos 13 jogos sem pesar.
+const MIN_INDEX = 1;
+const idxBase = [];
+Object.values(hist.c).forEach((c) => {
+  const base = c.p.findIndex((v) => v != null && v >= MIN_INDEX);
+  if (base >= 0) idxBase.push({ p: c.p, base });
+});
+const serie = hist.d.map((_, i) => {
+  let soma = 0, n = 0;
+  idxBase.forEach(({ p, base }) => {
+    if (i < base) return;                  // carta ainda não tinha preço
+    const v = p[i], b = p[base];
+    if (v == null || !(b > 0)) return;
+    soma += v / b; n++;
+  });
+  return n ? Math.round((soma / n) * 1000 * 100) / 100 : null;
+});
+// Re-ancora em 1000: cartas entram no índice em datas diferentes, então a média
+// do 1º dia raramente é exatamente 1000 — sem isso a linha nasce torta.
+const primeiro = serie.find((v) => v != null);
+const indice = primeiro > 0 ? serie.map((v) => (v == null ? null : Math.round((v / primeiro) * 1000 * 100) / 100)) : serie;
+const outIndex = new URL(`../${dir}/market-index.generated.json`, import.meta.url);
+
 await mkdir(cacheDir, { recursive: true });
 await writeFile(outHistory, JSON.stringify(hist), "utf8");
 await writeFile(cacheFile, JSON.stringify(hist), "utf8");
 await writeFile(outDeltas, JSON.stringify({ from, to: today, c: deltas }), "utf8");
 await writeFile(outDeltas7d, JSON.stringify({ from: from7d, to: today, c: deltas7d }), "utf8");
 await writeFile(outMovers, JSON.stringify({ from, to: today, up, down }), "utf8");
-console.log(`[price-history] ${dir}: ${tracked} cartas, ${hist.d.length} snapshot(s) (${hist.d[0]}..${today})${replacing ? " [substituiu hoje]" : ""}; deltas ${Object.keys(deltas).length} (desde ${from}), 7d ${Object.keys(deltas7d).length} (desde ${from7d}), movers +${up.length}/-${down.length}`);
+await writeFile(outIndex, JSON.stringify({ v: 1, d: hist.d, i: indice, n: idxBase.length }), "utf8");
+console.log(`[price-history] ${dir}: ${tracked} cartas, ${hist.d.length} snapshot(s) (${hist.d[0]}..${today})${replacing ? " [substituiu hoje]" : ""}; deltas ${Object.keys(deltas).length} (desde ${from}), 7d ${Object.keys(deltas7d).length} (desde ${from7d}), movers +${up.length}/-${down.length}, índice ${idxBase.length} cartas -> ${indice[indice.length - 1]}`);
