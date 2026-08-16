@@ -289,11 +289,16 @@
   // BASE do filterCards — os filtros de set/idioma/raridade/preço e a
   // ordenação valem igual. Quando o catálogo chega, o render de sempre assume.
   // API desligada/sem resultado: nada muda — o fluxo atual já cobre.
-  let apiResultado = null;
+  // Guarda a CONSULTA junto do resultado: sem isso, apagar "pikachu" pra "p" (ou
+  // limpar o texto e deixar só um filtro de set) continuava filtrando sobre os
+  // 60 hits de "pikachu" e mostrando a contagem como se fosse a resposta certa,
+  // até o catálogo inteiro chegar — o que em 4G demora.
+  let apiResultado = null;   // { q, cards }
   let apiSeq = 0;
+  const ponteValida = () => !!(apiResultado && apiResultado.q === elements.search.value.trim());
   async function apiBridge() {
     const q = elements.search.value.trim();
-    if (q.length < 2) return; // filtro sem texto: só o catálogo inteiro responde
+    if (q.length < 2) { apiResultado = null; return; } // filtro sem texto: só o catálogo inteiro responde
     const seq = ++apiSeq;
     const game = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
     const hits = await shared.searchApi(game, q, 60);
@@ -303,8 +308,9 @@
     if (seq !== apiSeq || catalogPronto) return;
     // Mesmo escopo de linha da página (vintage não vaza pro jogo principal).
     const scope = shared.lineScope(game, shared.lineParamOf());
-    apiResultado = (r.cards || []).filter((card) => scope.includes(card.setId));
-    apiResultado.forEach((card) => cardsById.set(card.id, card));
+    const achadas = (r.cards || []).filter((card) => scope.includes(card.setId));
+    apiResultado = { q, cards: achadas };
+    achadas.forEach((card) => cardsById.set(card.id, card));
     render({ resetCount: true });
   }
 
@@ -325,7 +331,7 @@
     // trouxe (apiBridge) — os filtros e a ordenação valem IGUAL sobre ela, só
     // que sobre ≤60 cartas em vez de 48k. Com o catálogo pronto, a base volta a
     // ser tudo e a ponte é ignorada.
-    const base = (!catalogPronto && apiResultado) || cards;
+    const base = (!catalogPronto && ponteValida()) ? apiResultado.cards : cards;
     return base.filter((card) => {
       if (!shared.matchesCardQuery(card, elements.search.value)) return false;
       if (setValue && card.set !== setValue) return false;
@@ -442,7 +448,7 @@
     // e aí a base volta a ser o catálogo inteiro.
     if (!catalogPronto) {
       elements.empty.hidden = true;
-      const ponte = apiResultado ? tilePairs() : [];
+      const ponte = ponteValida() ? tilePairs() : [];
       if (!ponte.length) {
         elements.resultCount.textContent = "";
         shared.showSkeletons(elements.grid, "card", 12);

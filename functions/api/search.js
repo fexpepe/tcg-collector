@@ -17,7 +17,7 @@ const GAMES = new Set(["all", "pokemon", "lorcana", "onepiece", "magic", "fab", 
   "dbfw", "ygo", "digimon", "riftbound", "unionarena", "naruto", "hxh", "jump"]);
 
 export async function onRequestGet(context) {
-  const { env, request } = context;
+  const { env, request, waitUntil } = context;
   const url = new URL(request.url);
   const game = String(url.searchParams.get("game") || "");
   const q = String(url.searchParams.get("q") || "");
@@ -38,8 +38,11 @@ export async function onRequestGet(context) {
       "X-Content-Type-Options": "nosniff",
       "Content-Security-Policy": "default-src 'none'",
       // Busca é cacheável: mesma consulta = mesma resposta até o próximo
-      // build. s-maxage curto na borda tira as consultas repetidas do banco.
-      // Só resposta COM carta: um vazio cacheado é veneno (ver o chamador).
+      // build. Só resposta COM carta: um vazio cacheado é veneno (ver o
+      // chamador). O s-maxage sozinho NÃO tirava consulta nenhuma do banco:
+      // resposta de Pages Function não entra no cache da Cloudflare por conta
+      // própria — quem faz isso é o caches.default lá embaixo. Ele fica porque
+      // descreve a intenção pra qualquer cache intermediário.
       "Cache-Control": cacheSeg ? `public, max-age=${cacheSeg}, s-maxage=${cacheSeg * 4}` : "no-store"
     }
   });
@@ -51,6 +54,17 @@ export async function onRequestGet(context) {
 
   const query = buildSearch(game, q, limit);
   if (!query) return json({ c: [] }, 200, 0);
+
+  // Cache DE BORDA de verdade. Cada consulta lê até 5 termos × 2.000 linhas no
+  // D1 (~10 mil leituras cobradas), e sem isto a MESMA busca vinda de outra
+  // pessoa pagava tudo de novo — o `s-maxage` do header não guarda resposta de
+  // Function. Guardado por URL, então já separa game/q/limit/img.
+  const cache = caches.default;
+  const chaveCache = new Request(url.toString(), { method: "GET" });
+  try {
+    const guardada = await cache.match(chaveCache);
+    if (guardada) return guardada;
+  } catch (e) { /* sem cache disponível: segue pro banco */ }
 
   try {
     const r = await env.DB.prepare(query.sql).bind(...query.params).all();
@@ -66,10 +80,22 @@ export async function onRequestGet(context) {
     });
     // Vazio NUNCA cacheia: durante a recarga do catálogo no D1 a busca responde
     // vazio, e um {c:[]} com max-age=300 grudava "nenhum resultado" no
-    // navegador por 5 minutos DEPOIS de o banco já ter voltado ao normal.
-    return json({ c: cartas }, 200, cartas.length ? 300 : 0);
+    // navegador por 5 minutos DEPOIS de o banco já ter voltado ao normal. Vale
+    // pro cache de borda pelo mesmo motivo — lá seria pior, valendo pra todo
+    // mundo de uma vez.
+    const resposta = json({ c: cartas }, 200, cartas.length ? 300 : 0);
+    if (cartas.length && waitUntil) {
+      try { waitUntil(cache.put(chaveCache, resposta.clone())); } catch (e) { /* sem cache: só não guarda */ }
+    }
+    return resposta;
   } catch (e) {
-    // Tabela ainda não importada, ou soluço do D1: mesma degradação do 503.
-    return json({ off: 1 }, 503, 0);
+    // "no such table" = catálogo ainda não importado: a API está DESLIGADA de
+    // propósito e o cliente deve parar de tentar por um tempo longo. Qualquer
+    // outro erro é soluço do D1, e aí o `off` seria mentira: o cliente
+    // interpretava os dois como "desligada" e ficava 5 MINUTOS sem borda (com
+    // toda busca do Explorar baixando catálogo) por causa de uma falha de
+    // segundos. Sem `off`, o cliente usa a pausa curta.
+    const semTabela = /no such table|no such column/i.test(String((e && e.message) || e));
+    return semTabela ? json({ off: 1 }, 503, 0) : json({ erro: "db" }, 500, 0);
   }
 }

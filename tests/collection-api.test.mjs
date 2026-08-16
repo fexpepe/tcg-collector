@@ -124,3 +124,15 @@ test("busca acha por prefixo e interseção de palavras", () => {
   const g = roda(db, buildSearch("all", "ariel", 10));
   assert.deepEqual(g.map((h) => [h.game, h.id]), [["lorcana", "tfc-1"]]);
 });
+
+test("termo repetido não vira operando duplicado (linha lida é linha cobrada)", () => {
+  const db = comPalavras(banco());
+  // "chari chari" descreve a MESMA restrição de "chari": mesmo resultado, mas
+  // sem o dedupe eram dois operandos idênticos no INTERSECT — o dobro de
+  // linhas lidas no D1 por uma repetição que o usuário nem percebe que digitou.
+  const uma = buildSearch("pokemon", "chari", 10);
+  const duas = buildSearch("pokemon", "chari chari", 10);
+  assert.equal(duas.params.length, uma.params.length);
+  assert.equal((duas.sql.match(/INTERSECT/g) || []).length, 0);
+  assert.deepEqual(roda(db, duas).map((h) => h.id).sort(), roda(db, uma).map((h) => h.id).sort());
+});

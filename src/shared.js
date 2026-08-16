@@ -6511,7 +6511,31 @@
   // outro jogo em globals temporários, lê, e restaura os da sessão no fim.
   // `ids`: array de cardIds a carregar (carga direcionada) — ou null pro catálogo
   // INTEIRO daquele jogo (usado pelo seletor do Binder).
-  async function loadGameCatalog(game, dataDir, ids) {
+  // FILA: o caminho de baixo troca os globais do catálogo (TCG_CARDS,
+  // TCG_MANIFEST, TCG_PRICING…) pelos do jogo pedido e restaura no fim, com
+  // `await` no meio. Duas cargas concorrentes — e existem: a hidratação
+  // cross-game do listas.js dispara os jogos em Promise.all, e no Explorar a
+  // fileira "mais vistas" e a busca do ?q= saem na mesma janela — se
+  // entrelaçavam: a segunda salvava o estado JÁ ZERADO pela primeira e o
+  // "restaurava" no fim, apagando os globais da sessão; ou lia o manifest do
+  // jogo errado e hidratava chunk vazio. Dava busca global que "às vezes"
+  // voltava sem carta ou sem preço.
+  //
+  // Serializar não custa desempenho real aqui: o gargalo é a rede de cada
+  // carga, e elas disputariam os mesmos globais de qualquer forma.
+  let filaCatalogo = Promise.resolve();
+  function loadGameCatalog(game, dataDir, ids) {
+    const proxima = filaCatalogo.then(
+      () => loadGameCatalogAgora(game, dataDir, ids),
+      () => loadGameCatalogAgora(game, dataDir, ids) // falha anterior não trava a fila
+    );
+    // A fila segue mesmo se ESTA carga falhar (o catch é só pra não deixar
+    // rejeição sem tratamento; quem chamou continua recebendo o erro).
+    filaCatalogo = proxima.catch(() => {});
+    return proxima;
+  }
+
+  async function loadGameCatalogAgora(game, dataDir, ids) {
     const run = () => (ids == null ? loadCatalog() : loadCatalogForCardIds(ids));
     // Caminho rápido só quando a página REALMENTE tem o catálogo da sessão.
     // decks.html tem data-catalog VAZIO: um deck do mesmo jogo da sessão caía

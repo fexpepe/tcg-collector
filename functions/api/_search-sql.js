@@ -103,7 +103,10 @@ const STOP = new Set(["the", "of", "a", "an", "and", "to", "de", "da", "do", "la
 export function buildSearch(game, consulta, limite) {
   const todas = palavras(consulta);
   const uteis = todas.filter((w) => !STOP.has(w));
-  const termos = (uteis.length ? uteis : todas).slice(0, 5); // 5 palavras bastam; mais = abuso
+  // Set: termo REPETIDO ("mega mega", ou o nome que aparece no nome e no set)
+  // virava dois operandos idênticos no INTERSECT — mesmo resultado, o DOBRO de
+  // linhas lidas (e linha lida é linha cobrada no D1).
+  const termos = [...new Set(uteis.length ? uteis : todas)].slice(0, 5); // 5 palavras bastam; mais = abuso
   if (!termos.length) return null;
   // Gate de 2 caracteres, espelhando o cliente (que já não busca com menos).
   // Sem ele, ?q=a caía no ramo de 1 char e o LIKE 'a%' varria o índice; iterar

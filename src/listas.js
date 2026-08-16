@@ -249,6 +249,9 @@
   let cat = null;          // { byId } do jogo da lista
   let sourceCards = [];    // cartas do painel direito (set inteiro ou busca)
   let sourceLoading = false;
+  // Busca cross-game (lista sem jogo) que não pôde ser feita: a ponte é o único
+  // caminho aqui, então "não deu" precisa aparecer diferente de "não achei".
+  let buscaIndisponivel = false;
   let query = "";
   let openPicker = null;   // cardId com o seletor de variante aberto
   let lastCondition = shared.DEFAULT_CONDITION;  // lembrada na sessão: cadastrar
@@ -305,6 +308,7 @@
     if (q.length < 2) { sourceCards = []; renderSource(); return; }
     const seq = ++searchSeq;
     sourceLoading = true;
+    buscaIndisponivel = false;
     renderSource();
     let hits = null;
     const jogo = current.game;
@@ -313,8 +317,15 @@
       // os catálogos de uma vez (game=all, cada hit traz o jogo em h.g). O
       // índice local é por jogo — usar um seria chutar o catálogo errado, que
       // era exatamente o bug (mandava game=null: 400 + pausa da bridge).
-      hits = (await shared.searchApi("all", q, 60)) || [];
+      // Este é o ÚNICO caminho de busca do site que depende 100% da borda (o
+      // índice local é por jogo e a lista não tem um). searchApi devolve null
+      // quando a ponte falhou ou está em pausa — diferente de [], que é
+      // "procurei e não achei". Sem separar os dois, a lista dizia "nada
+      // encontrado" com a busca simplesmente fora do ar.
+      const resposta = await shared.searchApi("all", q, 60);
       if (seq !== searchSeq) return;
+      buscaIndisponivel = resposta == null;
+      hits = resposta || [];
     } else {
       // Caminho frio: a borda responde em KB enquanto o índice (8 MB no Magic)
       // baixa em segundo plano. Depois que ele está na memória, a busca local é
@@ -540,7 +551,10 @@
       cards = cards.filter((c) => norm(c.name).includes(nq) || String(c.number || "").includes(query.trim()));
     }
     if (!cards.length) {
-      const msg = (!current.set && query.trim().length < 2) ? t("lists.searchHint") : t("lists.searchEmpty");
+      let msg;
+      if (!current.set && query.trim().length < 2) msg = t("lists.searchHint");
+      else if (buscaIndisponivel) msg = t("lists.searchOffline");
+      else msg = t("lists.searchEmpty");
       box.innerHTML = `<p class="empty-state">${esc(msg)}</p>`;
       return;
     }
