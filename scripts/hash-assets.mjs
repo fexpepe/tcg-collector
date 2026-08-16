@@ -171,7 +171,11 @@ if (existsSync(headersPath)) {
   const trocas = [
     ["/src/*\n  Cache-Control: no-cache\n", `/src/*\n  Cache-Control: ${UM_ANO}\n`],
     // O CSS vira styles.<hash>.css na raiz, então a regra precisa do curinga.
-    ["/styles.css\n  Cache-Control: no-cache\n", `/styles.*\n  Cache-Control: ${UM_ANO}\n`]
+    // `/styles*` e não `/styles.*`: o split-css gera também as folhas por área
+    // (styles-landing.<hash>.css, styles-decks…), e o ponto literal não casava
+    // com o hífen — elas ficavam com o padrão de 4h do Pages, revalidando a
+    // cada revisita apesar de terem hash no nome (= imutáveis por construção).
+    ["/styles.css\n  Cache-Control: no-cache\n", `/styles*\n  Cache-Control: ${UM_ANO}\n`]
   ];
   for (const [de, para] of trocas) {
     if (!depois.includes(de)) morra(`não achei o bloco "${de.split("\n")[0]}" com no-cache no _headers.`);

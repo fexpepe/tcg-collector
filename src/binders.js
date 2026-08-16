@@ -1626,7 +1626,7 @@
       if (template) applyTemplate(binder, template);
       elements.nameInput.value = "";
       // Abre o binder recém-criado direto.
-      window.location.href = `binders.html?id=${encodeURIComponent(binder.id)}`;
+      window.location.href = `binders?id=${encodeURIComponent(binder.id)}`;
     });
   }
   if (elements.nameInput) {
@@ -1643,7 +1643,7 @@
       const del = event.target.closest("[data-delete-id]");
       if (del) { event.stopPropagation(); if (confirm(t("binders.deleteConfirm"))) { removeBinder(del.dataset.deleteId); render(); } return; }
       const open = event.target.closest("[data-open-id]");
-      if (open) { window.location.href = `binders.html?id=${encodeURIComponent(open.dataset.openId)}`; }
+      if (open) { window.location.href = `binders?id=${encodeURIComponent(open.dataset.openId)}`; }
     });
   }
   if (elements.viewToggle) {
@@ -1808,7 +1808,7 @@
     if (deleteBtn) {
       if (confirm(t("binders.deleteConfirm"))) {
         removeBinder(deleteBtn.closest("[data-binder-id]").dataset.binderId);
-        window.location.href = "binders.html"; // volta para a galeria
+        window.location.href = "binders"; // volta para a galeria
       }
     }
   });
@@ -1993,7 +1993,7 @@
       const res = await shared.createShare("binder", binder.name, binder);
       shareBtn.disabled = false;
       if (res && res.id) {
-        const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}binders.html?s=${res.id}`;
+        const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}binders?s=${res.id}`;
         try { await navigator.clipboard.writeText(link); shareBtn.textContent = t("binders.share.copied"); }
         catch (e) { window.prompt(t("binders.share.copyManual"), link); shareBtn.textContent = original; }
       } else {
@@ -2070,7 +2070,7 @@
           <strong>${escapeHtml(binder.name || share.title || "Binder")}</strong>
           <span>${escapeHtml(t("binders.shared.banner", { n: filled }))}</span>
         </div>
-        <a class="primary" href="binders.html">${escapeHtml(t("binders.shared.cta"))}</a>
+        <a class="primary" href="binders">${escapeHtml(t("binders.shared.cta"))}</a>
       </div>
       ${sharedSpreadsHtml(binder)}`;
   }

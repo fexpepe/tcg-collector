@@ -245,7 +245,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
     <link rel="alternate" hreflang="x-default" href="${escapeAttr(altPt)}">`;
   // ?game= grava a sessão do jogo no app — sem ele, quem estivesse com outro
   // jogo ativo cairia no detail do jogo errado e não acharia o set.
-  const appUrl = `/detail.html?type=set&name=${encodeURIComponent(name)}&game=${game}`;
+  const appUrl = `/detail?type=set&name=${encodeURIComponent(name)}&game=${game}`;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -456,7 +456,7 @@ function deckPageHtml(dp) {
   const title = `${deck.name} — deck de ${gameLabel} (${total} cartas)${priceBit} | Sleevu`;
   const topNames = cardsList.slice(0, 6).map((c) => c.name).join(", ");
   const desc = `Lista completa do deck "${deck.name}" de ${gameLabel}: ${topNames}${cardsList.length > 6 ? "…" : ""}${priceUSD > 0 ? ` Custo de referência: US$ ${priceUSD.toFixed(2)}.` : ""} Veja a curva, o que falta na sua coleção e copie pra sua conta no Sleevu.`;
-  const appUrl = `/decks.html?s=${encodeURIComponent(deck.shareId)}`;
+  const appUrl = `/decks?s=${encodeURIComponent(deck.shareId)}`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -701,7 +701,7 @@ function cardPageHtml(cp, ctx = {}) {
   // &card=<id>: o detail.js reabre o POPUP da carta ao aterrissar (openFromUrl)
   // — quem acha a carta no Google cai direto nela, não na página do set pra
   // procurar de novo.
-  const appUrl = `/detail.html?type=set&name=${encodeURIComponent(setPage.name)}&game=${setPage.game}&card=${encodeURIComponent(card.id)}`;
+  const appUrl = `/detail?type=set&name=${encodeURIComponent(setPage.name)}&game=${setPage.game}&card=${encodeURIComponent(card.id)}`;
   // PARÁGRAFO DE ABERTURA. Frases curtas, montadas só com o que a carta tem —
   // frase sem dado não é escrita, em vez de sair com buraco ("ilustrada por
   // undefined"). O que faz este texto valer pra busca é que cada fato VARIA por

@@ -27,7 +27,7 @@
     return `<section class="profile-card ach-card" aria-label="${esc(t("dash.badges"))}">
       <h2 class="ach-heading">${esc(t("dash.badges"))}${count}</h2>
       ${body}
-      <div class="profile-actions"><a class="primary" href="badges.html">${esc(t("profile.badgesCta"))}</a></div>
+      <div class="profile-actions"><a class="primary" href="badges">${esc(t("profile.badgesCta"))}</a></div>
     </section>`;
   }
 
@@ -37,7 +37,7 @@
       // Local-first: as conquistas valem mesmo sem conta.
       root.innerHTML = `<section class="profile-card profile-empty">
         <p>${esc(t("profile.loggedOut"))}</p>
-        <a class="primary" href="login.html">${esc(t("profile.signIn"))}</a>
+        <a class="primary" href="login">${esc(t("profile.signIn"))}</a>
       </section>` + achievementsHtml();
       return;
     }
@@ -72,7 +72,7 @@
         </div>
 
         <div class="profile-actions">
-          <a class="primary" href="settings.html">${esc(t("profile.edit"))}</a>
+          <a class="primary" href="settings">${esc(t("profile.edit"))}</a>
           ${isPublic ? `<a class="secondary" href="/users/${encodeURIComponent(handle)}" target="_blank" rel="noopener">${esc(t("profile.viewPublic"))}</a>` : ""}
         </div>
 

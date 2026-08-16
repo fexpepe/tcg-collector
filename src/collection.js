@@ -976,7 +976,7 @@
     elements.folderSections.innerHTML = `
       <p class="empty-state">
         ${escapeHtml(t("tags.movedToLists"))}<br>
-        <a class="cta" href="listas.html">${escapeHtml(t("nav.lists"))}</a>
+        <a class="cta" href="listas">${escapeHtml(t("nav.lists"))}</a>
       </p>`;
   }
 
@@ -1660,7 +1660,7 @@
     const res = await shared.createShare("collection", folder.name || t("folders.untitled"), data);
     if (btn) btn.disabled = false;
     if (res && res.id) {
-      const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection.html?s=${res.id}`;
+      const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection?s=${res.id}`;
       try { await navigator.clipboard.writeText(link); alert(t("collection.share.copied")); }
       catch (e) { window.prompt(t("collection.share.copyManual"), link); }
     } else {
@@ -1764,7 +1764,7 @@
       const res = await shared.createShare("collection", null, buildShareData());
       btn.disabled = false;
       if (res && res.id) {
-        const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection.html?s=${res.id}`;
+        const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection?s=${res.id}`;
         try { await navigator.clipboard.writeText(link); setLabel(t("collection.share.copied")); setOk(true); }
         catch (e) { window.prompt(t("collection.share.copyManual"), link); setLabel(original); }
       } else {
@@ -1888,7 +1888,7 @@
           folders.assign(it.id, f.id);
         });
         alert(t("folders.shared.saved"));
-        window.location.href = "collection.html"; // abre a coleção da pessoa
+        window.location.href = "collection"; // abre a coleção da pessoa
       });
     }
 
@@ -1913,7 +1913,7 @@
           listas.addEntry(lista.id, it.id, { v: it.v, q: it.q || 1 });
         });
         alert(t("tags.shared.saved"));
-        window.location.href = `listas.html?id=${encodeURIComponent(lista.id)}`;
+        window.location.href = `listas?id=${encodeURIComponent(lista.id)}`;
       });
     }
 

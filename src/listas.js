@@ -105,7 +105,7 @@
     const n = store.countOf(list.id);
     const badge = list.linked ? t("lists.linkedBadge") : t("lists.standaloneBadge");
     return `
-      <a class="list-card" href="listas.html?id=${encodeURIComponent(list.id)}" style="--lc:${escA(list.color)}">
+      <a class="list-card" href="listas?id=${encodeURIComponent(list.id)}" style="--lc:${escA(list.color)}">
         <span class="list-card-bar" aria-hidden="true"></span>
         <span class="list-card-body">
           <strong>${esc(listName(list))}</strong>
@@ -127,7 +127,7 @@
           <h1>${esc(t("nav.lists"))}</h1>
           <p class="page-head-sub">${esc(t("lists.intro"))}</p>
         </div>
-        <a href="dashboard.html" class="serie-back">${esc(t("nav.backDashboard"))}</a>
+        <a href="dashboard" class="serie-back">${esc(t("nav.backDashboard"))}</a>
       </div>
       <div class="list-actions">
         <button type="button" class="cta" data-list-new>+ ${esc(t("lists.new"))}</button>
@@ -219,7 +219,7 @@
       const list = store.create(draft);
       wrap.remove(); document.body.classList.remove("preview-open");
       if (!list) { alert(t("lists.limit", { n: store.LIST_LIMIT })); return; }
-      location.href = `listas.html?id=${encodeURIComponent(list.id)}`;
+      location.href = `listas?id=${encodeURIComponent(list.id)}`;
     }
 
     stepName();
@@ -442,7 +442,7 @@
             <label class="lst-linked"><input type="checkbox" data-list-linked${list.linked ? " checked" : ""}> ${esc(t("lists.linked"))}</label>
           </p>
         </div>
-        <a href="listas.html" class="serie-back">${esc(t("lists.backToLists"))}</a>
+        <a href="listas" class="serie-back">${esc(t("lists.backToLists"))}</a>
       </div>
 
       <div class="lst-panels">
@@ -750,7 +750,7 @@
     data.decks.unshift(deck);
     try { localStorage.setItem(DECKS_KEY, JSON.stringify(data)); shared.marcaSuja(DECKS_KEY); }
     catch (err) { if (shared.notifyStorageFull) shared.notifyStorageFull(); return; }
-    location.href = `my-decks.html?id=${encodeURIComponent(deck.id)}`;
+    location.href = `my-decks?id=${encodeURIComponent(deck.id)}`;
   }
 
   // --- Eventos do editor (delegação) ----------------------------------------
@@ -832,7 +832,7 @@
       const undo = shared.snapshotKeys([store.STORAGE_KEY]);
       store.remove(current.id);
       current = null;
-      history.replaceState(null, "", "listas.html");
+      history.replaceState(null, "", "listas");
       renderGallery();
       shared.toastUndo(t("lists.deleted"), undo);
     }

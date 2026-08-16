@@ -6,6 +6,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["-y", "http-server", "-p", "4173", "-c-1", "."],
       "port": 4173
+    },
+    {
+      "name": "static-foil-ux",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["-y", "http-server", "-p", "4198", "-c-1", ".claude/worktrees/foil-ux"],
+      "port": 4198
     }
   ]
 }

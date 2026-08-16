@@ -92,7 +92,7 @@
         // claro clareia (e o texto preto ganha). Um rgba(0,0,0,…) fixo faria a
         // contagem sumir justamente nos jogos claros.
         ((cor, fg) =>
-          `<a class="dash-game-chip" href="collection.html" style="--gc:${cor};--gc-fg:${fg};--gc-veil:${fg === "#000000" ? "rgba(255,255,255,.5)" : "rgba(0,0,0,.26)"}">
+          `<a class="dash-game-chip" href="collection" style="--gc:${cor};--gc-fg:${fg};--gc-veil:${fg === "#000000" ? "rgba(255,255,255,.5)" : "rgba(0,0,0,.26)"}">
             <span class="dash-game-name">${escapeHtml(shared.gameLabel(g))}</span>
             <span class="dash-game-count">${n}</span>
           </a>`
@@ -120,15 +120,15 @@
   };
   const soldTotal = shared.readSoldList().length;
   const links = [
-    { href: "collection.html", icon: "collection", key: "nav.collectionMine", stat: tn("count.cards", counts.distinct) },
-    { href: "graded.html", icon: "graded", key: "nav.graded", stat: tn("dash.slabsCount", slabs) },
-    { href: "wishlist.html", icon: "wishlist", key: "nav.wishlist", stat: tn("dash.wishCount", wishTotal) },
-    { href: "binders.html", icon: "binders", key: "nav.binders", stat: "" },
-    { href: "my-decks.html", icon: "decks", key: "nav.myDecks", stat: t("dash.decksHint") },
-    { href: "listas.html", icon: "lists", key: "nav.lists", stat: t("dash.listsHint") },
-    { href: "sales.html", icon: "sales", key: "nav.sales", stat: tn("dash.salesCount", salesCount()) + (soldTotal ? ` · ${tn("dash.soldCount", soldTotal)}` : "") },
-    { href: "portfolio.html", icon: "portfolio", key: "nav.portfolio", stat: pf != null ? shared.formatMoney(shared.getCurrency(), pf) : "" },
-    { href: "badges.html", icon: "badges", key: "dash.badges", stat: t("dash.badgesHint") }
+    { href: "collection", icon: "collection", key: "nav.collectionMine", stat: tn("count.cards", counts.distinct) },
+    { href: "graded", icon: "graded", key: "nav.graded", stat: tn("dash.slabsCount", slabs) },
+    { href: "wishlist", icon: "wishlist", key: "nav.wishlist", stat: tn("dash.wishCount", wishTotal) },
+    { href: "binders", icon: "binders", key: "nav.binders", stat: "" },
+    { href: "my-decks", icon: "decks", key: "nav.myDecks", stat: t("dash.decksHint") },
+    { href: "listas", icon: "lists", key: "nav.lists", stat: t("dash.listsHint") },
+    { href: "sales", icon: "sales", key: "nav.sales", stat: tn("dash.salesCount", salesCount()) + (soldTotal ? ` · ${tn("dash.soldCount", soldTotal)}` : "") },
+    { href: "portfolio", icon: "portfolio", key: "nav.portfolio", stat: pf != null ? shared.formatMoney(shared.getCurrency(), pf) : "" },
+    { href: "badges", icon: "badges", key: "dash.badges", stat: t("dash.badgesHint") }
     // Explorar e Jogos saíram daqui: já são itens fixos do menu do header, então
     // repetir na dashboard era redundante.
   ];

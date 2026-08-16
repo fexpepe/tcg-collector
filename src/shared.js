@@ -1085,8 +1085,25 @@
       return cached && cached.r ? cached.r : null;
     } catch (error) { return null; }
   })();
+  let fxRetryFeito = false;
   function loadFxRates() {
-    return fetchFxRatesBRL().then((rates) => { if (rates) fxRates = rates; return fxRates; }).catch(() => fxRates);
+    return fetchFxRatesBRL().then((rates) => {
+      if (rates) { fxRates = rates; return fxRates; }
+      // Estourou o tempo (ou a API falhou) e a página vai renderizar sem
+      // conversão. Tenta UMA vez fora do caminho crítico, sem prazo: quando
+      // chega, grava o cache de 24h e avisa quem quiser redesenhar os valores.
+      if (!fxRetryFeito) {
+        fxRetryFeito = true;
+        setTimeout(() => {
+          fetchFxRatesSemPrazo().then((tardias) => {
+            if (!tardias) return;
+            fxRates = tardias;
+            try { document.dispatchEvent(new CustomEvent("sleevu:fx-updated")); } catch (e) { /* sem DOM */ }
+          });
+        }, 1500);
+      }
+      return fxRates;
+    }).catch(() => fxRates);
   }
   // Converte um valor entre BRL/USD/EUR. Sem as taxas (1ª visita) devolve null
   // quando a conversão exige câmbio (BRL->BRL sempre funciona).
@@ -1317,7 +1334,7 @@
       }
       if (nq) {
         for (const g of GAME_SLUGS) {
-          out.push({ group: "", name: `${t("cmdk.explore", { q })} · ${gameLabel(g)}`, url: `cards.html?game=${g}&q=${encodeURIComponent(q)}`, explore: true });
+          out.push({ group: "", name: `${t("cmdk.explore", { q })} · ${gameLabel(g)}`, url: `cards?game=${g}&q=${encodeURIComponent(q)}`, explore: true });
         }
       }
       return out;
@@ -2027,12 +2044,12 @@
     // Site único (sleevu.app): tudo é relativo. Menu ÚNICO e idêntico em todas as
     // páginas (sem ramo hub-vs-jogo). O jogo é a sessão do site; os links de
     // Explorar carregam ?game= pra ENTRAR no jogo escolhido.
-    const apexUrl = "index.html";
+    const apexUrl = "/";
     const brand = document.querySelector(".brand");
     if (brand) brand.setAttribute("href", apexUrl);
 
     // "Jogos" = grade de jogos (hub); "Explorar" = busca GLOBAL multi-jogo.
-    const exploreMega = `<a href="hub.html"${exploreActive ? ' class="active"' : ""}>${escapeHtml(t("nav.games"))}</a><a href="explore.html"${active === "explore" ? ' class="active"' : ""}>${escapeHtml(t("nav.explore"))}</a>`;
+    const exploreMega = `<a href="hub"${exploreActive ? ' class="active"' : ""}>${escapeHtml(t("nav.games"))}</a><a href="explore"${active === "explore" ? ' class="active"' : ""}>${escapeHtml(t("nav.explore"))}</a>`;
 
     // Toda Coleção e Portfólio são páginas PESSOAIS: só existem no menu com
     // login (deslogado, o "Entrar" do header é o caminho — sem atalhos mortos).
@@ -2043,9 +2060,9 @@
     nav.innerHTML = `
       ${link(apexUrl, "nav.home", "home")}
       ${exploreMega}
-      ${link("decks.html", "nav.decks", "decks")}
-      ${loggedIn ? `<a href="dashboard.html"${collectionActive ? ' class="active"' : ""}>${escapeHtml(t("nav.collection"))}</a>
-      ${link("portfolio.html", "nav.portfolio", "portfolio")}` : ""}
+      ${link("decks", "nav.decks", "decks")}
+      ${loggedIn ? `<a href="dashboard"${collectionActive ? ' class="active"' : ""}>${escapeHtml(t("nav.collection"))}</a>
+      ${link("portfolio", "nav.portfolio", "portfolio")}` : ""}
     `;
 
     const groups = Array.from(nav.querySelectorAll(".nav-group")).map((groupEl) => ({
@@ -2092,10 +2109,10 @@
   // Artistas só onde há dado de ilustrador (pokemon, lorcana, magic). O default
   // (jogo não listado) é o mínimo seguro — NUNCA o do Pokémon, senão jogos como
   // Gundam/DBFW ganhariam abas de Pokédex/Treinadores que não existem pra eles.
-  const SUBNAV_MIN = [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"]];
-  const SUBNAV_ARTISTS = SUBNAV_MIN.concat([["artists.html", "nav.artists", "artists"]]);
+  const SUBNAV_MIN = [["cards", "nav.allCards", "cards"], ["sets", "nav.sets", "sets"]];
+  const SUBNAV_ARTISTS = SUBNAV_MIN.concat([["artists", "nav.artists", "artists"]]);
   const EXPLORE_SUBNAV = {
-    pokemon: [["cards.html", "nav.allCards", "cards"], ["sets.html", "nav.sets", "sets"], ["pokedex.html", "nav.pokedex", "pokedex"], ["trainers.html", "nav.trainers", "trainers"], ["artists.html", "nav.artists", "artists"]],
+    pokemon: [["cards", "nav.allCards", "cards"], ["sets", "nav.sets", "sets"], ["pokedex", "nav.pokedex", "pokedex"], ["trainers", "nav.trainers", "trainers"], ["artists", "nav.artists", "artists"]],
     lorcana: SUBNAV_ARTISTS,
     magic: SUBNAV_ARTISTS,
     onepiece: SUBNAV_MIN,
@@ -2217,12 +2234,12 @@
     // acende Jogos: as duas são o caminho do CATÁLOGO.
     const gamesActive = exploreActive || active === "explore";
     bar.innerHTML =
-      tab("index.html", t("nav.home"), "home", active === "home")
+      tab("/", t("nav.home"), "home", active === "home")
       + `<button type="button" class="mtab" data-mtab-search><span class="mtab-ic" aria-hidden="true">${ic.search}</span><span class="mtab-label">${escapeHtml(t("tabbar.search"))}</span></button>`
-      + tab("hub.html", t("nav.games"), "games", gamesActive)
-      + tab("decks.html", t("nav.decks"), "decks", active === "decks")
-      + (logged ? tab("dashboard.html", t("tabbar.collection"), "collection", collectionActive) : "")
-      + (logged ? tab("portfolio.html", t("nav.portfolio"), "portfolio", active === "portfolio") : "");
+      + tab("hub", t("nav.games"), "games", gamesActive)
+      + tab("decks", t("nav.decks"), "decks", active === "decks")
+      + (logged ? tab("dashboard", t("tabbar.collection"), "collection", collectionActive) : "")
+      + (logged ? tab("portfolio", t("nav.portfolio"), "portfolio", active === "portfolio") : "");
     document.body.appendChild(bar);
     bar.querySelector("[data-mtab-search]").addEventListener("click", () => { if (cmdkOpen) cmdkOpen(); });
   }
@@ -2371,17 +2388,17 @@
           </nav>
         </div>` : ""}
         <nav class="site-footer-links" aria-label="${escapeAttribute(t("footer.linksLabel"))}">
-          <a href="about.html">${escapeHtml(t("footer.about"))}</a>
-          <a href="novidades.html" data-news-link>${escapeHtml(t("news.heading"))}</a>
-          <a href="faq.html">${escapeHtml(t("footer.faq"))}</a>
-          <a href="help.html">${escapeHtml(t("footer.help"))}</a>
-          <a href="settings.html">${escapeHtml(t("footer.settings"))}</a>
-          <a href="privacy.html">${escapeHtml(t("footer.privacy"))}</a>
-          <a href="terms.html">${escapeHtml(t("footer.terms"))}</a>
+          <a href="about">${escapeHtml(t("footer.about"))}</a>
+          <a href="novidades" data-news-link>${escapeHtml(t("news.heading"))}</a>
+          <a href="faq">${escapeHtml(t("footer.faq"))}</a>
+          <a href="help">${escapeHtml(t("footer.help"))}</a>
+          <a href="settings">${escapeHtml(t("footer.settings"))}</a>
+          <a href="privacy">${escapeHtml(t("footer.privacy"))}</a>
+          <a href="terms">${escapeHtml(t("footer.terms"))}</a>
         </nav>
         <p>${escapeHtml(t("footer.rights", { year: new Date().getFullYear() }))}
-          <a href="terms.html#marcas">${escapeHtml(t("footer.brands"))}</a> ·
-          <a href="about.html#fontes">${escapeHtml(t("footer.sources"))}</a></p>
+          <a href="terms#marcas">${escapeHtml(t("footer.brands"))}</a> ·
+          <a href="about#fontes">${escapeHtml(t("footer.sources"))}</a></p>
       </div>
     `;
     document.body.appendChild(footer);
@@ -3532,9 +3549,13 @@
 
   function localizedImg(url, options) {
     if (!url) return "";
-    const { alt = "", className = "", loading = "", thumb = false, fallback = "" } = options || {};
+    const { alt = "", className = "", loading = "", thumb = false, fallback = "", priority = "" } = options || {};
     const classAttr = className ? ` class="${escapeAttribute(className)}"` : "";
     const loadingAttr = loading ? ` loading="${loading}"` : "";
+    // priority: "high" pra imagem que costuma ser o LCP da tela (o logo do set
+    // no hero). Sem isso ela entra na fila com prioridade baixa, atrás das
+    // dezenas de miniaturas da grade que nem estão na primeira dobra.
+    const priorityAttr = priority ? ` fetchpriority="${escapeAttribute(priority)}"` : "";
     let src = tcgdexAssetUrl(url, thumb ? "low" : "");
     const chain = [];
     if (thumb) {
@@ -3553,7 +3574,7 @@
     const fallbackAttr = chain.length
       ? ` data-img-fallbacks="${escapeAttribute(chain.join("|"))}"`
       : "";
-    return `<img${classAttr}${loadingAttr} decoding="async" data-card-img src="${escapeAttribute(src)}" alt="${escapeAttribute(alt)}"${fallbackAttr}>`;
+    return `<img${classAttr}${loadingAttr}${priorityAttr} decoding="async" data-card-img src="${escapeAttribute(src)}" alt="${escapeAttribute(alt)}"${fallbackAttr}>`;
   }
 
   // Busca tipos e formas de um Pokémon na PokéAPI (por dexId), com cache em localStorage.
@@ -3623,6 +3644,21 @@
   }
 
   // Câmbio USD/EUR -> BRL (AwesomeAPI, sem chave), cache diário. { USD, EUR }.
+  // Retentativa de fundo (ver loadFxRates): mesma busca, sem prazo, e grava o
+  // cache de 24h — mesmo que ninguém escute o evento, a próxima página já abre
+  // com o câmbio na mão.
+  async function fetchFxRatesSemPrazo() {
+    try {
+      const response = await fetch("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL");
+      if (!response.ok) return null;
+      const json = await response.json();
+      const rates = { USD: Number(json.USDBRL && json.USDBRL.bid) || 0, EUR: Number(json.EURBRL && json.EURBRL.bid) || 0 };
+      if (!rates.USD && !rates.EUR) return null;
+      try { localStorage.setItem("tcg-fx-brl-v1", JSON.stringify({ t: Date.now(), r: rates })); } catch (e) { /* ignora */ }
+      return rates;
+    } catch (error) { return null; }
+  }
+
   async function fetchFxRatesBRL() {
     const cacheKey = "tcg-fx-brl-v1";
     try {
@@ -3630,7 +3666,14 @@
       if (cached && Date.now() - cached.t < 86400000) return cached.r;
     } catch (error) { /* ignora */ }
     try {
-      const response = await fetch("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL");
+      // TIMEOUT obrigatório: as páginas de catálogo esperam este fetch junto com
+      // o catálogo (Promise.all) antes do primeiro render. Sem limite, uma API
+      // de terceiro LENTA (não caída — o catch já cobre a caída) segurava a
+      // grade inteira, com as cartas já baixadas. Como o cache local vale 24h,
+      // isso acontecia uma vez por dia, logo na primeira abertura.
+      const response = await fetch("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL", {
+        signal: AbortSignal.timeout ? AbortSignal.timeout(2500) : undefined
+      });
       if (!response.ok) return null;
       const json = await response.json();
       const rates = { USD: Number(json.USDBRL && json.USDBRL.bid) || 0, EUR: Number(json.EURBRL && json.EURBRL.bid) || 0 };
@@ -5409,7 +5452,7 @@
           <span class="list-menu-check" aria-hidden="true">${marcadas.has(l.id) ? "✓" : ""}</span>
         </button>`).join("")
         : `<p class="list-menu-empty">${escapeHtml(t("lists.menuEmpty"))}</p>`}
-      <a class="list-menu-new" href="listas.html">+ ${escapeHtml(t("lists.new"))}</a>`;
+      <a class="list-menu-new" href="listas">+ ${escapeHtml(t("lists.new"))}</a>`;
     document.body.appendChild(box);
     listMenuEl = box;
 
@@ -6903,9 +6946,23 @@
     }
 
     function appendUpTo(target) {
+      const primeiroAppend = renderedCount === 0;
       const fragment = document.createDocumentFragment();
       for (; renderedCount < target; renderedCount++) {
         fragment.appendChild(renderItem(items[renderedCount]));
+      }
+      // As primeiras imagens da grade são a PRIMEIRA DOBRA — normalmente o LCP
+      // da tela. Nascendo `lazy`, o navegador só as pede depois de calcular o
+      // layout, e ainda com prioridade baixa; como a descoberta já é tardia
+      // (HTML -> shared -> chunk -> render), esse era o único pedaço do atraso
+      // grátis de recuperar. O prerender de /set/ e /card/ já fazia assim.
+      // Só no primeiro append: no scroll infinito, lazy é o comportamento certo.
+      if (primeiroAppend) {
+        const acimaDaDobra = fragment.querySelectorAll("img");
+        for (let i = 0; i < Math.min(8, acimaDaDobra.length); i++) {
+          acimaDaDobra[i].loading = "eager";
+          acimaDaDobra[i].setAttribute("fetchpriority", i < 4 ? "high" : "auto");
+        }
       }
       grid.appendChild(fragment);
       // Callback pós-append (ex.: reaplicar categorias recolhidas aos cards que
@@ -6968,7 +7025,7 @@
     // o que está na barra de endereço).
     const slug = game || currentGame();
     if (slug && GAME_SLUGS.includes(slug)) params.set("game", slug);
-    return `detail.html?${params.toString()}`;
+    return `detail?${params.toString()}`;
   }
 
   function unique(values) {
@@ -9070,7 +9127,7 @@
         flushWrites();
         wrap.remove();
         alert(t("csvimport.done", { cards: agg.size, copies }));
-        window.location.href = "collection.html";
+        window.location.href = "collection";
       });
     }
     const gameShortLabel = gameLabel;
@@ -9130,7 +9187,7 @@
         });
         flushWrites(); // garante a persistência antes de navegar
         alert(t("dex.done", { cards: ids.length, copies }));
-        window.location.href = "collection.html?game=pokemon";
+        window.location.href = "collection?game=pokemon";
       } catch (e) { alert(t("error.import")); }
     }
 
@@ -9159,15 +9216,15 @@
     // Dados: um item só — a página backup.html concentra export/import com
     // explicação de cada formato (o menu tinha 5 itens crípticos).
     const dataItems = `<li class="auth-sep" aria-hidden="true"></li>
-      <a class="lang-dd-option auth-link" role="menuitem" href="backup.html">${escapeHtml(t("auth.transfer"))}</a>`;
+      <a class="lang-dd-option auth-link" role="menuitem" href="backup">${escapeHtml(t("auth.transfer"))}</a>`;
     // Sobre (ajuda + troubleshooting + privacidade/termos).
     const aboutItems = `<li class="auth-sep" aria-hidden="true"></li>
-      <a class="lang-dd-option auth-link" role="menuitem" href="novidades.html" data-news-link>${escapeHtml(t("news.heading"))}</a>
-      <a class="lang-dd-option auth-link" role="menuitem" href="settings.html">${escapeHtml(t("footer.settings"))}</a>
-      <a class="lang-dd-option auth-link" role="menuitem" href="help.html">${escapeHtml(t("footer.help"))}</a>
+      <a class="lang-dd-option auth-link" role="menuitem" href="novidades" data-news-link>${escapeHtml(t("news.heading"))}</a>
+      <a class="lang-dd-option auth-link" role="menuitem" href="settings">${escapeHtml(t("footer.settings"))}</a>
+      <a class="lang-dd-option auth-link" role="menuitem" href="help">${escapeHtml(t("footer.help"))}</a>
       <li class="lang-dd-option" role="menuitem" data-troubleshoot>${escapeHtml(t("ts.title"))}</li>
-      <a class="lang-dd-option auth-link" role="menuitem" href="privacy.html">${escapeHtml(t("footer.privacy"))}</a>
-      <a class="lang-dd-option auth-link" role="menuitem" href="terms.html">${escapeHtml(t("footer.terms"))}</a>`;
+      <a class="lang-dd-option auth-link" role="menuitem" href="privacy">${escapeHtml(t("footer.privacy"))}</a>
+      <a class="lang-dd-option auth-link" role="menuitem" href="terms">${escapeHtml(t("footer.terms"))}</a>`;
     // Apagar dados (zona de perigo).
     // "Apagar conta e dados" saiu do menu — mora nas Configurações (zona de
     // perigo), via window.TCGShared.deleteAccountFlow.
@@ -9211,7 +9268,7 @@
       const email = (session.user && session.user.email) || "conta";
       const initial = (email.trim().charAt(0) || "?").toUpperCase();
       // Atalho pro hub de perfil do dono (profile.html). De lá se vê o perfil público.
-      const profileItem = `<a class="lang-dd-option auth-link" role="menuitem" href="profile.html">${escapeHtml(t("profile.heading"))}</a>`;
+      const profileItem = `<a class="lang-dd-option auth-link" role="menuitem" href="profile">${escapeHtml(t("profile.heading"))}</a>`;
       slot.innerHTML = `<div class="lang-dd auth-dd" id="authDd">
         <button type="button" class="auth-avatar" aria-haspopup="menu" aria-expanded="false" aria-label="${escapeAttribute(email)}" title="${escapeAttribute(email)}">${escapeHtml(initial)}</button>
         <ul class="lang-dd-menu auth-menu" role="menu" hidden>
@@ -9245,8 +9302,8 @@
     slot.addEventListener("click", async (event) => {
       if (event.target.closest("[data-auth-login]")) {
         // Página de login dedicada; guarda de onde veio pra voltar depois.
-        try { localStorage.setItem("tcg-login-return", window.location.pathname); } catch (e) { /* ignora */ }
-        window.location.href = "login.html";
+        try { localStorage.setItem("tcg-login-return", window.location.pathname + window.location.search); } catch (e) { /* ignora */ }
+        window.location.href = "login";
         return;
       }
       if (event.target.closest("[data-pwa-install]")) { pwaInstall(); return; }
@@ -9391,8 +9448,8 @@
         header.insertAdjacentElement("afterend", bar);
         bar.addEventListener("click", (event) => {
           if (event.target.closest("[data-backup-login]")) {
-            try { localStorage.setItem("tcg-login-return", window.location.pathname); } catch (e) { /* ignora */ }
-            window.location.href = "login.html";
+            try { localStorage.setItem("tcg-login-return", window.location.pathname + window.location.search); } catch (e) { /* ignora */ }
+            window.location.href = "login";
             return;
           }
           if (event.target.closest("[data-backup-export]")) { exportJson(); bar.remove(); return; }
@@ -9506,8 +9563,8 @@
     if (!AUTH_PAGES.includes(page) || getSession()) return false;
     if (new URLSearchParams(window.location.search).get("s")) return false;
     if (/^\/users\//.test(window.location.pathname)) return false;
-    try { localStorage.setItem("tcg-login-return", window.location.pathname); } catch (e) { /* ignora */ }
-    window.location.replace("login.html");
+    try { localStorage.setItem("tcg-login-return", window.location.pathname + window.location.search); } catch (e) { /* ignora */ }
+    window.location.replace("login");
     return true;
   }
   if (enforceLoginGate()) return; // já está indo pro login; não monta a página

@@ -731,7 +731,7 @@
     // um custo em silêncio, nunca deixar o usuário achar que o número cobre tudo.
     if (comCusto < vendas.length) {
       html += `<p class="pf-coverage">${escapeHtml(t("portfolio.sales.coverage", { n: comCusto, total: vendas.length }))}
-        <a href="sales.html">${escapeHtml(t("portfolio.sales.fixCosts"))}</a></p>`;
+        <a href="sales">${escapeHtml(t("portfolio.sales.fixCosts"))}</a></p>`;
     }
     html += renderVendasPorMes(vendas);
     sec.innerHTML = html;
@@ -801,7 +801,7 @@
         // `lists.untitled` e não `binders.new`: aquela vive no pacote i18n dos
         // binders, que esta página não carrega (o check.mjs pega isso).
         tipo: "binder", nome: b.name || t("lists.untitled"), cor: b.color || "#8b5cf6",
-        href: `binders.html#${encodeURIComponent(b.id)}`,
+        href: `binders#${encodeURIComponent(b.id)}`,
         meta: t("portfolio.lists.slots", { tem: v.nTem, total: v.slots }),
         total: v.tem, semPreco: v.semPreco, completar: v.falta
       });

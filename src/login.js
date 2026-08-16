@@ -25,8 +25,10 @@
     let ret = null;
     try { ret = localStorage.getItem("tcg-login-return"); localStorage.removeItem("tcg-login-return"); } catch (e) { /* ignora */ }
     // Só caminhos internos (evita open-redirect); "//host" é URL absoluta
-    // protocolo-relativa, então a 2ª barra é proibida. Senão, home.
-    return ret && /^\/(?!\/)[a-zA-Z0-9._\/-]*$/.test(ret) ? ret : "index.html";
+    // protocolo-relativa, então a 2ª barra é proibida. A query entra na regra
+    // (o destino é gravado com ela): quem foi barrado em `collection?game=magic`
+    // voltava pra Coleção sem o jogo. Senão, home.
+    return ret && /^\/(?!\/)[a-zA-Z0-9._\/-]*(\?[a-zA-Z0-9._~%!$&'()*+,;=:@/?-]*)?$/.test(ret) ? ret : "/";
   }
 
   // Volta pelo bfcache (botão VOLTAR depois de logar): o navegador restaura a

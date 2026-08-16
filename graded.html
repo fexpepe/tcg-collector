@@ -47,7 +47,7 @@
   <body>
     <header class="app-header">
       <div class="app-header-inner">
-        <a class="brand" href="index.html">Sleevu</a>
+        <a class="brand" href="/">Sleevu</a>
         <nav class="page-nav" aria-label="Páginas" data-active-page="graded"></nav>
         <div class="header-actions">
           <select id="languageSwitcher" class="lang-select"></select>
@@ -58,19 +58,19 @@
     <main>
       <div class="page-head dash-head">
         <h1 data-i18n="nav.graded">Cartas Graded</h1>
-        <a href="dashboard.html" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
+        <a href="dashboard" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
       </div>
 
       <div class="chip-filter collection-tabs" role="group" aria-label="Visões da coleção">
-        <a class="chip" href="collection.html?tab=cards" data-i18n="collection.tab.cards">Cartas</a>
-        <a class="chip" href="collection.html?tab=folders" data-i18n="collection.tab.folders">Showcase</a>
+        <a class="chip" href="collection?tab=cards" data-i18n="collection.tab.cards">Cartas</a>
+        <a class="chip" href="collection?tab=folders" data-i18n="collection.tab.folders">Showcase</a>
         <!-- aria-current (não aria-pressed): é um LINK. aria-pressed só vale em
              role=button — o leitor de tela anunciava um botão inexistente. -->
-        <a class="chip" href="graded.html" aria-current="page" data-i18n="collection.tab.graded">Graded</a>
-        <a class="chip" href="collection.html?tab=tags" data-i18n="collection.tab.tags">Tags</a>
-        <a class="chip" href="collection.html?tab=pokemon" data-i18n="collection.tab.pokemon">Pokémon</a>
-        <a class="chip" href="collection.html?tab=artists" data-i18n="collection.tab.artists">Artistas</a>
-        <a class="chip" href="collection.html?tab=sets" data-i18n="collection.tab.sets">Sets</a>
+        <a class="chip" href="graded" aria-current="page" data-i18n="collection.tab.graded">Graded</a>
+        <a class="chip" href="collection?tab=tags" data-i18n="collection.tab.tags">Tags</a>
+        <a class="chip" href="collection?tab=pokemon" data-i18n="collection.tab.pokemon">Pokémon</a>
+        <a class="chip" href="collection?tab=artists" data-i18n="collection.tab.artists">Artistas</a>
+        <a class="chip" href="collection?tab=sets" data-i18n="collection.tab.sets">Sets</a>
       </div>
 
       <p class="collection-subtitle" data-i18n="graded.pageSubtitle">Catalogue suas cartas graduadas com a graduadora e a nota — o valor de mercado vem automático para PSA 9 e 10 (vendas do eBay); as demais você preenche na mão.</p>

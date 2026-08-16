@@ -104,7 +104,7 @@
           const price = it.price > 0 ? ` · ${shared.formatMoney(it.cur || "BRL", it.price)}` : "";
           return `<span class="wish-seller-chip">${shared.escapeHtml(label)}<span class="cm-val">${shared.escapeHtml(price)}</span></span>`;
         }).join("");
-        return `<a class="wish-seller" href="collection.html?u=${shared.escapeAttribute(s.handle)}&t=sales">
+        return `<a class="wish-seller" href="collection?u=${shared.escapeAttribute(s.handle)}&t=sales">
           <strong>${shared.escapeHtml(s.name)}</strong>
           <span class="wish-seller-n">${shared.escapeHtml(tn("wish.sellers.count", s.items.size))}</span>
           <span class="wish-seller-chips">${chips}</span>

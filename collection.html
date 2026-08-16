@@ -51,7 +51,7 @@
   <body>
     <header class="app-header">
       <div class="app-header-inner">
-        <a class="brand" href="index.html">Sleevu</a>
+        <a class="brand" href="/">Sleevu</a>
         <nav class="page-nav" aria-label="Páginas" data-active-page="collection"></nav>
         <div class="header-actions">
           <select id="languageSwitcher" class="lang-select"></select>
@@ -69,7 +69,7 @@
       <div class="page-head dash-head page-head-bar">
         <div class="page-head-bar-text">
           <h1 data-i18n="nav.collection">Coleção</h1>
-          <a href="dashboard.html" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
+          <a href="dashboard" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
         </div>
         <label class="page-search-label" for="searchInput" data-i18n="search.title">Procurar:</label>
         <section class="page-search">
@@ -86,7 +86,7 @@
             <div class="onb-body">
               <strong data-i18n="onb.s1t">Explore e marque o que você tem</strong>
               <p data-i18n="onb.s1p">Abra a Pokédex ou os sets e toque no + das cartas que você possui. Nos sets, use a Adição rápida pra marcar por número.</p>
-              <span class="onb-ctas"><a class="cta" href="pokedex.html" data-i18n="onb.s1a">Abrir a Pokédex</a><a class="cta secondary-cta" href="sets.html" data-i18n="onb.s1b">Explorar sets</a></span>
+              <span class="onb-ctas"><a class="cta" href="pokedex" data-i18n="onb.s1a">Abrir a Pokédex</a><a class="cta secondary-cta" href="sets" data-i18n="onb.s1b">Explorar sets</a></span>
             </div>
           </div>
           <div class="onb-step">
@@ -171,11 +171,11 @@
         <!-- A aba "Tags" saiu da barra: as tags viraram Listas (docs/LISTAS.md).
              A visão continua existindo em ?tab=tags só pra links antigos, e ali
              mostra o aviso da mudança em vez de uma segunda UI editável. -->
-        <a class="prof-tab" href="listas.html" data-i18n="nav.lists">Listas</a>
+        <a class="prof-tab" href="listas" data-i18n="nav.lists">Listas</a>
         <button type="button" class="prof-tab" data-tab="pokemon" aria-pressed="false" data-i18n="collection.tab.pokemon">Pokémon</button>
         <button type="button" class="prof-tab" data-tab="artists" aria-pressed="false" data-i18n="collection.tab.artists">Artistas</button>
         <button type="button" class="prof-tab" data-tab="sets" aria-pressed="false" data-i18n="collection.tab.sets">Sets</button>
-        <a class="prof-tab" href="sales.html" data-i18n="nav.sales">Vendas e Trocas</a>
+        <a class="prof-tab" href="sales" data-i18n="nav.sales">Vendas e Trocas</a>
       </div>
 
       <section id="groupsView">
@@ -191,7 +191,7 @@
           <div id="sortChips" class="chip-filter"></div>
         </div>
         <div id="groupList" class="progress-row-list"></div>
-        <p id="groupsEmpty" class="empty-state" data-i18n-html="empty.collection" hidden>Nenhuma carta da sua coleção com esses filtros. <a href="explore.html">Explore o catálogo</a> e marque o que você tem.</p>
+        <p id="groupsEmpty" class="empty-state" data-i18n-html="empty.collection" hidden>Nenhuma carta da sua coleção com esses filtros. <a href="explore">Explore o catálogo</a> e marque o que você tem.</p>
       </section>
 
       <div id="cardsView" hidden>
@@ -259,7 +259,7 @@
 
         <div id="folderSections"></div>
         <section id="cardGrid" class="card-grid" aria-live="polite"></section>
-        <p id="emptyState" class="empty-state" data-i18n-html="empty.collection" hidden>Nenhuma carta da sua coleção com esses filtros. <a href="explore.html">Explore o catálogo</a> e marque o que você tem.</p>
+        <p id="emptyState" class="empty-state" data-i18n-html="empty.collection" hidden>Nenhuma carta da sua coleção com esses filtros. <a href="explore">Explore o catálogo</a> e marque o que você tem.</p>
       </div>
 
     </main>

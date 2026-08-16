@@ -145,6 +145,22 @@
     (document.head || document.documentElement).appendChild(l);
   });
 
+  // Hosts de DADO das páginas com dinheiro/coleção: o câmbio (awesomeapi, que o
+  // primeiro render espera) e o Supabase (a carga /api/collection e o pull do
+  // sync). Os dois eram descobertos só quando o shared.js já tinha carregado e
+  // pagavam DNS+TCP+TLS inteiros dentro do caminho crítico. Só nessas páginas —
+  // preconnect é aposta: em página que não usa, é conexão aberta à toa.
+  var PAGINAS_COM_DADO = /\/(collection|portfolio|dashboard|sales|graded|wishlist|binders|cards|detail|explore|my-decks|listas)(\.html)?$/i;
+  if (PAGINAS_COM_DADO.test(location.pathname) || /^\/users\//i.test(location.pathname)) {
+    ["https://economia.awesomeapi.com.br", "https://dlnalopazitfdgnmdguu.supabase.co"].forEach(function (host) {
+      var l = document.createElement("link");
+      l.rel = "preconnect";
+      l.href = host;
+      l.crossOrigin = "anonymous"; // fetch()/XHR: CORS, ao contrário do <img>
+      (document.head || document.documentElement).appendChild(l);
+    });
+  }
+
   // Idioma de CARTA no <html>, ainda no <head>. Não é usado pra traduzir nada
   // aqui — serve pro CSS decidir, ANTES do primeiro paint, se os chips de
   // região (#setRegionChips) aparecem. Antes quem escondia era o app.js depois

@@ -440,8 +440,8 @@
     else if (communitySort === "views") rows.sort((a, b) => nViews(b) - nViews(a));
 
     const topCta = logged
-      ? `<a class="cta secondary-cta" href="my-decks.html">${esc(t("decks.goMine"))}</a>`
-      : `<a class="cta" href="login.html">${esc(t("decks.publicCta"))}</a>`;
+      ? `<a class="cta secondary-cta" href="my-decks">${esc(t("decks.goMine"))}</a>`
+      : `<a class="cta" href="login">${esc(t("decks.publicCta"))}</a>`;
     // "Mais vistos" só entra quando HÁ contagem: sem a tabela de visitas a opção
     // ordenaria por nada e pareceria quebrada.
     const sortOpts = ["recent", "cards", "name"].concat(temViews ? ["views"] : []);
@@ -564,7 +564,7 @@
       const heroHtml = `<section class="dkc-sec">
         <h2 class="dkc-sec-h">${IC_STAR}<span>${esc(t(destaqueReal ? "decks.featured" : "decks.spotlight"))}</span></h2>
         <p class="dkc-sec-sub">${esc(t(destaqueReal ? "decks.featuredSub" : "decks.spotlightSub"))}</p>
-        <a class="dkc-hero" href="decks.html?s=${encodeURIComponent(hero.id)}">
+        <a class="dkc-hero" href="decks?s=${encodeURIComponent(hero.id)}">
           <span class="dkc-hero-cover">${capaHtml(hero)}</span>
           <span class="dkc-hero-body">
             <span class="dkc-hero-name">${esc(String(hero.title || t("decks.untitled")).slice(0, 60))}</span>
@@ -579,7 +579,7 @@
         <p class="dkc-sec-sub">${esc(t(communitySort === "recent" ? "decks.recentSub" : "decks.allSub"))}</p>
         <div class="dkc-rows">` + resto.map((r) => {
           const g = shared.normalizeGame(r.game || "pokemon");
-          return `<a class="dkc-row" href="decks.html?s=${encodeURIComponent(r.id)}">
+          return `<a class="dkc-row" href="decks?s=${encodeURIComponent(r.id)}">
             <span class="dkc-row-cover">${capaHtml(r)}</span>
             <span class="dkc-row-main">
               <span class="dkc-row-name">${esc(String(r.title || t("decks.untitled")).slice(0, 60))}</span>
@@ -899,7 +899,7 @@
     const paint = () => {
       box.innerHTML = `
       <div class="dkc-view-head">
-        <a href="decks.html" class="serie-back">${esc(t("decks.backCommunity"))}</a>
+        <a href="decks" class="serie-back">${esc(t("decks.backCommunity"))}</a>
         <div class="dkc-view-title">
           <h2 class="dkc-view-name">${esc(deck.name)}</h2>
           <div class="dkc-view-meta">
@@ -953,7 +953,7 @@
 
     function bindCopy() {
       box.querySelector("[data-dkc-copy]").addEventListener("click", () => {
-        if (!logged) { location.href = "login.html"; return; }
+        if (!logged) { location.href = "login"; return; }
         // Fork: entra no MEU store local com id novo (o sync sobe no próximo ciclo).
         const zones = {};
         Object.keys(deck.zones).forEach((k) => { zones[k] = deck.zones[k].map((e) => ({ id: e.id, qty: e.qty, variant: "Normal" })); });
@@ -962,7 +962,7 @@
           zones, forkedFrom: id, createdAt: Date.now(), updatedAt: Date.now()
         };
         data.decks.unshift(novo);
-        if (save()) location.href = "my-decks.html?id=" + encodeURIComponent(novo.id);
+        if (save()) location.href = "my-decks?id=" + encodeURIComponent(novo.id);
       });
     }
   }
@@ -1130,7 +1130,7 @@
     el.gallery.innerHTML = head + `<div class="deck-grid">` + decks.map((d) => {
       const n = totalCards(d);
       return `<article class="deck-card" data-deck-id="${escA(d.id)}">
-        <a class="deck-card-open" href="my-decks.html?id=${encodeURIComponent(d.id)}">
+        <a class="deck-card-open" href="my-decks?id=${encodeURIComponent(d.id)}">
           <span class="deck-card-name">${esc(d.name)}</span>
           <span class="deck-card-meta">${gameTag(d.game)}${d.format ? "<span>" + esc(t("decks.format." + d.format)) + "</span>" : ""}<span>${esc(String(n))} ${esc(t("decks.cardsWord"))}</span></span>
         </a>
@@ -1163,7 +1163,7 @@
         const orfao = !ligados.has(r.id);
         const quando = r.created_at ? new Date(r.created_at).toLocaleDateString(shared.getLocale()) : "";
         return `<div class="deck-pub-row">
-          <a class="deck-pub-name" href="decks.html?s=${encodeURIComponent(r.id)}">${esc(String(r.title || t("decks.untitled")))}</a>
+          <a class="deck-pub-name" href="decks?s=${encodeURIComponent(r.id)}">${esc(String(r.title || t("decks.untitled")))}</a>
           <span class="deck-pub-meta">${shared.gameTagHtml(shared.normalizeGame(r.game || "pokemon"))}${r.total ? `<span>${esc(t("decks.cardsCount", { n: Number(r.total) }))}</span>` : ""}<span>${esc(quando)}</span></span>
           ${orfao ? `<span class="deck-pub-orphan" title="${escA(t("decks.orphanHint"))}">${esc(t("decks.orphan"))}</span>` : ""}
           <button type="button" class="deck-mini deck-unpub" data-pub-del="${escA(r.id)}">${esc(t("decks.unpublish"))}</button>
@@ -1344,7 +1344,7 @@
     function go(game, format) {
       const deck = createDeck(game, format, "");
       wrap.remove(); document.body.classList.remove("preview-open");
-      location.href = `my-decks.html?id=${encodeURIComponent(deck.id)}`;
+      location.href = `my-decks?id=${encodeURIComponent(deck.id)}`;
     }
 
     let chosenGame = null;
@@ -1608,7 +1608,7 @@
 
     el.editor.innerHTML = `
       <div class="deck-ed-head">
-        <a href="my-decks.html" class="serie-back">${esc(t("decks.backList"))}</a>
+        <a href="my-decks" class="serie-back">${esc(t("decks.backList"))}</a>
         <input id="deckName" class="deck-name-input" value="${escA(deck.name)}" aria-label="${escA(t("decks.nameLabel"))}">
         <span class="deck-ed-game">${gameTag(deck.game)}${pack.format ? "<span>" + esc(t("decks.format." + pack.format)) + "</span>" : ""}</span>
         <button type="button" class="deck-mini" data-deck-import>${esc(t("decks.import"))}</button>
@@ -2024,7 +2024,7 @@
           current.publishedId = res.id;
           current.publishedAt = Date.now();
           touch(current);
-          const url = `${location.origin}${location.pathname.replace(/[^/]*$/, "")}decks.html?s=${res.id}`;
+          const url = `${location.origin}${location.pathname.replace(/[^/]*$/, "")}decks?s=${res.id}`;
           try { await navigator.clipboard.writeText(url); } catch (e) { /* sem clipboard: o prompt abaixo cobre */ }
           window.prompt(t("decks.publishOk"), url);
           renderEditor();

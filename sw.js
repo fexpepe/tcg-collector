@@ -15,7 +15,12 @@
 // piscar na volta do link mágico.
 // v237: descarta os caches envenenados por resposta REDIRECIONADA (ver
 // semRedirect) — era a tela de "site não existe" ao navegar depois de deploy.
-const SHELL_CACHE = "tcg-shell-v260";
+// v261: os links internos perderam o `.html` (o Pages redirecionava /x.html ->
+// /x, 615ms por navegação no 4G). O navigationFast já casa os dois formatos —
+// URL limpa cai no fallback que procura "<caminho>.html" no shell —, então o
+// cache antigo continua servindo; o bump é pra o HTML novo (com os links
+// limpos) entrar de uma vez, em vez de uma navegação atrás.
+const SHELL_CACHE = "tcg-shell-v261";
 // IMAGE_CACHE vai a v2: a versão anterior do SW podia cravar um erro 404/timeout
 // como imagem "opaca" por 7 dias (imagem quebrada presa até um hard refresh).
 // Renomear o cache faz o activate apagar o antigo UMA vez — limpa os erros
@@ -71,8 +76,17 @@ const SHELL_ASSETS = [
 ];
 
 // Tetos por cache (FIFO): imagens ~17KB cada; chunks de set são o catálogo.
+//
+// MAX_DATA precisa caber um CATÁLOGO INTEIRO, senão o FIFO come o começo da
+// carga antes de ela terminar e o stale-while-revalidate nunca entrega a 2ª
+// visita instantânea — que é a razão de ele existir. Os maiores hoje: Magic
+// 648 chunks (1.296 com os pricing-chunks irmãos), YGO 1.182, Pokémon 906 em
+// todas as línguas. Somam-se a isso os ~400 logos/símbolos de set, que moram no
+// mesmo cache. 3.000 dá folga pro maior jogo + o que já estiver guardado; os
+// chunks são pequenos comprimidos (dezenas de KB), então o pior caso fica na
+// casa das dezenas de MB de Cache Storage.
 const MAX_IMAGES = 1500;
-const MAX_DATA = 600;
+const MAX_DATA = 3000;
 
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
@@ -103,6 +117,15 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil((async () => {
+    // Navigation preload: o navegador dispara a requisição da navegação EM
+    // PARALELO com o boot do service worker, em vez de a página esperar o SW
+    // acordar (50-300ms num Android médio, mais se o processo estava frio) pra
+    // só então o fetch sair. Aqui é ganho puro, sem requisição extra: o
+    // navigationFast já busca a rede em toda navegação — o preload só antecipa
+    // essa mesma busca. Ignorado por quem não suporta.
+    if (self.registration.navigationPreload) {
+      try { await self.registration.navigationPreload.enable(); } catch (e) { /* segue sem */ }
+    }
     const keys = await caches.keys();
     await Promise.all(keys.filter((key) => !CACHES.includes(key)).map((key) => caches.delete(key)));
     await self.clients.claim();
@@ -204,7 +227,7 @@ async function cacheFirst(url) {
       // Os demais (TCGdex, Scryfall, Lorcast) são imutáveis de verdade e seguem
       // sem carimbo, então nunca voltam à rede.
       if (MUTABLE_IMAGE_HOSTS.has(url.hostname)) markOpaque(url.href);
-      trim(IMAGE_CACHE, MAX_IMAGES);
+      maybeTrim(IMAGE_CACHE, MAX_IMAGES);
       return res;
     }
     if (res) return res; // erro visível: não polui o cache
@@ -217,7 +240,7 @@ async function cacheFirst(url) {
     if (res && res.type === "opaque") {
       cache.put(url.href, res.clone());
       markOpaque(url.href);
-      trim(IMAGE_CACHE, MAX_IMAGES);
+      maybeTrim(IMAGE_CACHE, MAX_IMAGES);
       return res;
     }
   } catch (e) { /* falhou de vez */ }
@@ -278,10 +301,14 @@ async function navigationFast(event) {
   if (!cached && !/\.html$/.test(key.pathname) && key.pathname !== "/") {
     cached = await cache.match(key.href.replace(/\/?$/, "") + ".html");
   }
-  const rede = fetch(request).then((response) => {
-    if (response && response.ok) cache.put(key.href, semRedirect(response.clone()));
-    return response;
-  }).catch(() => null);
+  // preloadResponse: a resposta que o navegador já começou a buscar enquanto o
+  // SW acordava (ver navigationPreload no activate). Quando não houver (browser
+  // sem suporte, ou preload desligado), busca normalmente.
+  const rede = (async () => (await event.preloadResponse) || fetch(request))()
+    .then((response) => {
+      if (response && response.ok) cache.put(key.href, semRedirect(response.clone()));
+      return response;
+    }).catch(() => null);
   if (cached) {
     event.waitUntil(rede);
     // semRedirect também na SAÍDA: sara na hora um cache antigo já envenenado,
@@ -365,7 +392,10 @@ self.addEventListener("notificationclick", (event) => {
 // Requests). Chamada a cada put, uma grade de 60 tiles com cache frio = 60
 // varreduras completas na thread do SW, que é a mesma que responde todo fetch.
 // O contador amortiza: enumera só a cada ~50 gravações. Entre podas o cache
-// pode passar do teto por até ~50 entradas — irrelevante com MAX_DATA=600.
+// pode passar do teto por até ~50 entradas — irrelevante nos tetos atuais.
+//
+// O caminho das IMAGENS chamava trim() direto e era o pior caso justamente: a
+// grade fria é exatamente a hora em que o SW mais precisa responder rápido.
 let putsDesdePoda = 0;
 function maybeTrim(cacheName, maxEntries) {
   if (!Number.isFinite(maxEntries)) return;

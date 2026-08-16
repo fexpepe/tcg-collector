@@ -193,7 +193,7 @@
     if (!head.querySelector(".serie-back")) {
       const back = document.createElement("a");
       back.className = "serie-back";
-      back.href = "sets.html";
+      back.href = "sets";
       back.textContent = `← ${t("nav.sets")}`;
       // No PAI DO H1, não no .page-head: desde que o título dividiu a faixa com
       // a busca, o h1 vive dentro de .page-head-bar-text e não é mais filho
@@ -216,7 +216,7 @@
     if (!head.querySelector(".serie-back")) {
       const back = document.createElement("a");
       back.className = "serie-back";
-      back.href = `sets.html?game=${(window.SLEEVU && window.SLEEVU.game) || "pokemon"}`;
+      back.href = `sets?game=${(window.SLEEVU && window.SLEEVU.game) || "pokemon"}`;
       back.textContent = `← ${(window.SLEEVU && window.SLEEVU.name) || ""}`;
       // No PAI DO H1, não no .page-head: desde que o título dividiu a faixa com
       // a busca, o h1 vive dentro de .page-head-bar-text e não é mais filho
@@ -333,6 +333,30 @@
         applyFilters();
       });
     }
+
+    // O chunk do set é o maior item do caminho até a primeira carta, e hoje ele
+    // só começa a baixar DEPOIS de: navegação -> HTML -> game.js -> manifest ->
+    // shared/detail. O toque antecede a navegação em ~100-300ms; começar por
+    // aqui adianta o chunk (e o irmão de preços) nesse intervalo. O SW guarda
+    // no DATA_CACHE, então a página seguinte já encontra tudo pronto.
+    const prefetchados = new Set();
+    function prefetchChunk(card) {
+      const file = card && card.dataset.chunk;
+      if (!file || prefetchados.has(file)) return;
+      prefetchados.add(file);
+      [file, file.includes("/sets/") ? file.replace("/sets/", "/pricing-chunks/") : ""].forEach((url) => {
+        if (!url) return;
+        const l = document.createElement("link");
+        l.rel = "prefetch";
+        l.as = "fetch";
+        l.href = url;
+        document.head.appendChild(l);
+      });
+    }
+    elements.grid.addEventListener("pointerdown", (event) => {
+      const card = event.target.closest(".set-card");
+      if (card) prefetchChunk(card);
+    }, { passive: true });
 
     elements.grid.addEventListener("click", (event) => {
       const imageButton = event.target.closest("[data-preview-card-id]");
@@ -613,7 +637,9 @@
       releaseDate: entry.release || "",
       serieId,
       serieName: shared.setSerieDisplayName(entry.serieName, entry.language) || serieDisplayName(serieId),
-      languageLabel: shared.cardLangSigla(entry.language)
+      languageLabel: shared.cardLangSigla(entry.language),
+      // Caminho do chunk deste set: usado pra prefetch no toque (ver createSetCard).
+      chunkFile: entry.file || ""
     };
   }
 
@@ -793,7 +819,7 @@
     const head = document.createElement("div");
     head.className = "set-series-head";
     head.dataset.cat = item.name;
-    head.innerHTML = `<button type="button" class="cat-toggle" aria-expanded="${!isCategoryCollapsed(item.name)}"><span class="cat-caret" aria-hidden="true">▾</span><span class="set-series-name">${escapeHtml(item.name)}</span></button><a class="set-series-count" href="sets.html?serie=${escapeAttribute(item.serieId)}">${item.count} sets →</a>`;
+    head.innerHTML = `<button type="button" class="cat-toggle" aria-expanded="${!isCategoryCollapsed(item.name)}"><span class="cat-caret" aria-hidden="true">▾</span><span class="set-series-name">${escapeHtml(item.name)}</span></button><a class="set-series-count" href="sets?serie=${escapeAttribute(item.serieId)}">${item.count} sets →</a>`;
     return head;
   }
 
@@ -897,6 +923,7 @@
     article.className = "set-card";
     article.dataset.href = setDetailUrl(item);
     if (item.entryKey) article.dataset.entryKey = item.entryKey;
+    if (item.chunkFile) article.dataset.chunk = item.chunkFile;
     const progress = item.totalCount ? Math.round((item.ownedCount / item.totalCount) * 100) : 0;
     // Set sem logo próprio: usa o logo do JOGO no lugar do texto (e, quando o
     // set tem logo, o do jogo vira o último fallback se ele quebrar). Jogo sem

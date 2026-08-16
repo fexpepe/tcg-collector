@@ -622,7 +622,7 @@
     const res = await shared.createShare("collection", t("sales.shared.label"), data);
     if (btn) btn.disabled = false;
     if (res && res.id) {
-      const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection.html?s=${res.id}`;
+      const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection?s=${res.id}`;
       try { await navigator.clipboard.writeText(link); alert(t("collection.share.copied")); }
       catch (e) { window.prompt(t("collection.share.copyManual"), link); }
     } else {

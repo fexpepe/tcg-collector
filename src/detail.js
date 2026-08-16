@@ -212,6 +212,11 @@
     onOwnedChange: () => refreshOwnership()
   });
 
+  // Esqueleto enquanto o chunk do set desce: esta é a tela mais aberta do
+  // catálogo e era a ÚNICA grade sem ele — no 4G a pessoa via o hero com os
+  // números zerados e a grade vazia por segundos, que lê como "set sem cartas".
+  if (elements.grid) shared.showSkeletons(elements.grid, "card", 12);
+
   Promise.all([resolveCards(), shared.loadFxRates()])
     .then(([resolvedCards]) => {
       cards = resolvedCards;
@@ -407,9 +412,9 @@
   function initBackLink() {
     const back = document.getElementById("detailBack");
     if (!back) return;
-    if (collectionScope) { back.href = "collection.html"; return; }
-    const map = { pokemon: "pokedex.html", set: "sets.html", artist: "artists.html", trainer: "trainers.html" };
-    back.href = map[detailType] || "pokedex.html";
+    if (collectionScope) { back.href = "collection"; return; }
+    const map = { pokemon: "pokedex", set: "sets", artist: "artists", trainer: "trainers" };
+    back.href = map[detailType] || "pokedex";
   }
 
   // Alterna a grade entre grade (cards) e lista (linhas), guardando a preferência.
@@ -495,7 +500,7 @@
       const nomeExibido = shared.setDisplayName(sample.setId, sample.set, sample.language);
       const nomeOriginal = shared.setOriginalName(sample.setId, sample.set, sample.language);
       const logo = sample.setLogo
-        ? localizedImg(sample.setLogo, { alt: nomeExibido, className: "set-logo" })
+        ? localizedImg(sample.setLogo, { alt: nomeExibido, className: "set-logo", priority: "high" })
         : `<span class="set-logo-placeholder">${escapeHtml(nomeExibido)}</span>`;
       const symbol = sample.setSymbol
         ? localizedImg(sample.setSymbol, { className: "set-symbol" })
