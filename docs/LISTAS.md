@@ -5,7 +5,9 @@ Plano da feature **e** registro do que foi construído. Complementa o
 [COMMUNITY-PRICES.md](COMMUNITY-PRICES.md) (fases F0–F5, cada uma entregável
 sozinha).
 
-> **Estado: F0–F5 implementadas** (branch `feat/listas`, 2026-08-12). As
+> **Estado: F0–F5 implementadas e na `main`** (originalmente na branch
+> `feat/listas`, 2026-08-12; a limpeza da UI antiga das tags veio depois, no
+> commit `fd25071`, −900 linhas). As
 > decisões da seção 11 foram batidas pelo Fernando: nome "Listas", tags migradas
 > de verdade, default avulso no wizard, e os 4 itens do export da Liga ficam
 > como teste manual antes de anunciar. O que mudou do plano durante a execução

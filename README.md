@@ -10,7 +10,8 @@ Online: <https://sleevu.app/>
 Este arquivo documenta a **arquitetura** (como o site é feito e como se roda).
 O **plano** e as **decisões** ficam no [ROADMAP.md](ROADMAP.md); o backend em
 [docs/BACKEND.md](docs/BACKEND.md); os decks em [docs/DECKS.md](docs/DECKS.md); o
-SQL do Supabase em [supabase/migrations/README.md](supabase/migrations/README.md).
+portfólio em [docs/PORTFOLIO.md](docs/PORTFOLIO.md); o SQL do Supabase em
+[supabase/migrations/README.md](supabase/migrations/README.md).
 
 ---
 
@@ -98,7 +99,9 @@ código novo**. Cada faceta só aparece se as cartas daquele set tiverem o dado,
 uma opção presente em 100% das cartas é descartada (filtro que não filtra nada
 é ruído). Vale a mesma regra do card: bloco sem dado não aparece.
 
-Pessoais: `collection`, `portfolio`, `wishlist`, `binders`, `graded` (slabs
+Pessoais: `collection`, `portfolio` (visão financeira: patrimônio no tempo, uma
+linha por jogo, valor de listas/binders, vendas realizadas — ver
+[docs/PORTFOLIO.md](docs/PORTFOLIO.md)), `wishlist`, `binders`, `graded` (slabs
 PSA/BGS/CGC/SGC/TAG, com valor automático da PPT), `sales` (vendas e trocas),
 `listas` (checklists de set ou avulsas, com export pra Liga — ver
 [docs/LISTAS.md](docs/LISTAS.md)), `my-decks` (galeria + editor), `decks`
@@ -117,7 +120,7 @@ lista já dentro, pra o Google indexar conteúdo em vez da casca da SPA.
 ## Estrutura
 
 ```
-src/        app shell (JS global, sem bundler). shared.js é o núcleo (~7k linhas):
+src/        app shell (JS global, sem bundler). shared.js é o núcleo (~9,4k linhas):
             stores, i18n, render, preview, busca, imagens, sync, service worker.
             game.js resolve o jogo; theme.js carrega tema e traduções.
 data/       catálogos por jogo (data/ = Pokémon; data/<jogo>/ pros demais),
@@ -126,7 +129,7 @@ scripts/    sync de cada fonte + build (merge, split, prerender, hash, lint, D1)
 functions/  Cloudflare Pages Functions (API na borda).
 supabase/   migrações SQL versionadas + templates de e-mail.
 tests/      node:test (sem framework externo).
-docs/       BACKEND.md, DECKS.md, LISTAS.md e COMMUNITY-PRICES.md.
+docs/       BACKEND.md, DECKS.md, LISTAS.md, PORTFOLIO.md e COMMUNITY-PRICES.md.
 ```
 
 Não há `package.json`: as ferramentas do build (esbuild, wrangler) são chamadas
@@ -198,7 +201,9 @@ Utilitários: `lint-catalog.mjs` (falha em corrupção dura — ids duplicados,
 catálogo zerado), `mirror-*-set-logos.mjs` (espelha logos de set localmente),
 `build-set-id-map.mjs` (de-para TCGdex→pokemontcg.io pras imagens EN que faltam),
 `sync-price-history.mjs` (histórico de preços sem servidor: lê o acumulador do
-deploy anterior, anexa o snapshot de hoje e republica).
+deploy anterior, anexa o snapshot de hoje e republica — e emite também os deltas,
+os "maiores altas e quedas" e o **índice de mercado** de cada jogo, que é o
+benchmark do gráfico do Portfólio).
 
 ---
 

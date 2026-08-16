@@ -10,7 +10,7 @@ Collectr — é a alternativa livre: sem cartão, sem plano "pro", sem limite de
 cartas, com export a qualquer momento. A sincronização na nuvem, que noutro
 produto seria o extra pago, aqui é grátis.
 
-Última revisão: 2026-08-13.
+Última revisão: 2026-08-16.
 
 ---
 
@@ -36,10 +36,15 @@ texto / CSV, "aplicar à coleção" com prévia do delta e criar deck a partir d
 lista. As **tags custom viraram listas** (migração automática por navegador).
 Ver [docs/LISTAS.md](docs/LISTAS.md).
 
-**Portfólio.** Visão financeira da coleção: patrimônio (raw + graded, todos os
-jogos), valor no tempo, custo médio, lucro nas vendas realizadas, maiores altas
-e quedas da semana. O total bate com a Coleção porque a fórmula vive num lugar
-só — a borda devolve dado, nunca o total calculado.
+**Portfólio 2.0.** Visão financeira da coleção: patrimônio (raw + graded, todos
+os jogos) com **uma linha por jogo** no gráfico e um modo **%** que compara
+desempenho em vez de tamanho; valor das **listas e binders** (com "custo pra
+completar"); **vendas realizadas** em seção própria — taxas/frete, câmbio
+congelado na data, resultado por mês e nota de cobertura ("considera N de M
+vendas"); movers das **suas** cartas por impacto no bolso; **benchmark** contra o
+índice de mercado do jogo; modo privacidade e retrospectiva anual. O total bate
+com a Coleção porque a fórmula vive num lugar só — a borda devolve dado, nunca o
+total calculado. Ver [docs/PORTFOLIO.md](docs/PORTFOLIO.md).
 
 **Preços.** TCGplayer (USD) e Cardmarket (EUR) por carta, PokemonPriceTracker
 pros preços JP e graded, câmbio do dia da AwesomeAPI, moeda escolhida pelo
@@ -61,10 +66,12 @@ visitas e páginas pré-renderizadas pra SEO. Ver [docs/DECKS.md](docs/DECKS.md)
 **Vendas e trocas.** Lista com preço e condição, valor total, link público ou
 imagem pros grupos. A wishlist cruza com quem tem à venda (RPC `find_sellers`).
 
-**Conta (opcional).** Login por link mágico ou Google, sync multi-jogo na nuvem,
-perfil público em `/users/<handle>` (nasce público, com escolha do @ no primeiro
-login), badges, notificação de queda de preço por web push. Sem conta, o app
-funciona igual — tudo no `localStorage`.
+**Conta.** Login por link mágico ou Google, sync multi-jogo na nuvem, perfil
+público em `/users/<handle>` (nasce público, com escolha do @ no primeiro login),
+badges, notificação de queda de preço por web push. As **páginas pessoais exigem
+login** desde 2026-07-14 (`enforceLoginGate`); o dado continua vivendo no
+aparelho (local-first), mas o cadastro não existe mais "sem conta". Catálogo,
+busca, decks públicos, perfis e links `?s=` seguem abertos.
 
 **Infra.** PWA instalável e offline, API na borda com D1 (busca global e "só as
 minhas cartas"), páginas de set/carta/deck pré-renderizadas, CSP e cabeçalhos de
@@ -174,4 +181,8 @@ reforça a tese "em português" no segundo jogo mais popular do site.
   em vez de esvaziá-lo; nenhum item de portfólio pode sumir.
 - **Chinês é um só.** zh-cn (simplificado) é o padrão, com zh-tw fundido dentro
   do mesmo eixo "ZH".
-- **Conta é opcional, pra sempre.** Todo recurso tem que funcionar sem login.
+- **O dado é do usuário, sempre.** O `localStorage` é a fonte da verdade e o
+  export está a um clique — a nuvem sincroniza, não aprisiona. (Esta linha já
+  disse "conta é opcional, pra sempre"; deixou de valer em 2026-07-14, quando as
+  páginas pessoais passaram a exigir login por decisão do Fernando — "tá confuso
+  elas existirem sem logar". O que permanece é o local-first, não o anonimato.)
