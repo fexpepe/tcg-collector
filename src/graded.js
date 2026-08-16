@@ -277,7 +277,10 @@
 
   bindEvents();
   Promise.all([
-    shared.loadOwnedAcrossGames(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, ownedByGame[g].knownCardIds()]))),
+    // collectionLoadIds inclui os ids em slab, e não só os possuídos: sem isso
+    // esta página perdia justamente o slab de quem tirou a cópia raw depois de
+    // graduar (o `x.card` do gradedItems ficava vazio e o item sumia da lista).
+    shared.loadOwnedAcrossGames(shared.collectionLoadIds(ownedByGame)),
     shared.loadFxRates()
   ])
     .then(([catalog]) => {

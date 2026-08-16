@@ -34,7 +34,7 @@ export function loadShared(expose, { localStorage } = {}) {
   const documentStub = {
     querySelector: () => null, querySelectorAll: () => [],
     getElementById: () => null, createElement: makeEl,
-    addEventListener: noop, removeEventListener: noop,
+    addEventListener: noop, removeEventListener: noop, dispatchEvent: noop,
     documentElement: makeEl(), body: makeEl(), head: makeEl(), title: ""
   };
   const sandbox = {

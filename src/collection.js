@@ -330,7 +330,7 @@
     // sozinho no caminho de chunks de sempre (viaApi=false), sem o usuário notar.
     const gamesComCarta = shared.GAME_SLUGS.filter((g) => ownedByGame[g].size > 0);
     Promise.all([
-      shared.loadOwnedFast(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, ownedByGame[g].knownCardIds()]))),
+      shared.loadOwnedFast(shared.collectionLoadIds(ownedByGame)),
       shared.loadFxRates()
     ])
       .then(([result]) => {
@@ -821,9 +821,15 @@
     elements.dashValue.textContent = value > 0 ? shared.formatMoney(shared.getCurrency(), value) : "—";
 
     // Mais valiosas (top 3 por valor unitário)
+    // A variante MAIS VALIOSA entre as suas (não a primeira da lista): quem tem
+    // Normal + Foil era rankeado pela Normal e este top discordava do Portfólio.
     const top = myCards.map((card) => {
-      const variant = (card.variants || []).find((v) => owned.variantTotal(card.id, v) > 0) || shared.defaultVariant(card);
-      return { card, variant, val: shared.cardValue(card, variant, prices).value || 0 };
+      const minhas = shared.cardVariants(card).filter((v) => owned.variantTotal(card.id, v) > 0);
+      const melhor = minhas.reduce((best, v) => {
+        const val = shared.cardValue(card, v, prices).value || 0;
+        return val > best.val ? { variant: v, val } : best;
+      }, { variant: shared.defaultVariant(card), val: 0 });
+      return { card, variant: melhor.variant, val: melhor.val };
     }).filter((x) => x.val > 0).sort((a, b) => b.val - a.val).slice(0, 3);
     if (elements.dashTopList) elements.dashTopList.innerHTML = top.length
       ? top.map(({ card, val }) => {

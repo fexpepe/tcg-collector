@@ -32,6 +32,38 @@
   window.addEventListener("pagehide", flushWrites);
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushWrites(); });
 
+  // ── A mesma coleção aberta em DUAS ABAS ────────────────────────────────────
+  // Cada store guarda o blob em MEMÓRIA e save() grava a cópia inteira por cima
+  // da chave. A aba aberta ANTES não sabia da carta que a outra tinha acabado
+  // de adicionar e a apagava no primeiro clique — e o push seguinte levava esse
+  // estado pra nuvem (o upsert substitui o `data` inteiro da linha), então nem
+  // o pull do próximo boot recuperava: a carta sumia dos dois lados.
+  //
+  // Quem sabe se mesclar (coleção e wishlist têm merge por carta, puro, o mesmo
+  // que o sync usa) se registra aqui. Remescla ao ver escrita de outra aba
+  // (evento `storage`) e ao voltar do background — aba congelada no celular não
+  // recebe o evento. NÃO grava nada: se gravasse, duas abas ficariam se
+  // acordando em looping; a memória mesclada já é o que o próximo save leva.
+  const crossTabStores = new Map(); // storageKey -> () => boolean (mudou?)
+  function registerCrossTabStore(key, rehydrate) { crossTabStores.set(key, rehydrate); }
+  function rehydrateCrossTab(key) {
+    let mudou = false;
+    crossTabStores.forEach((fn, k) => {
+      if (key && k !== key) return;
+      try { if (fn()) mudou = true; } catch (e) { /* store corrompido: mantém a memória */ }
+    });
+    // Avisa a página pra ela se redesenhar (quem não escuta, ao menos não perde
+    // o dado — que é o ponto principal deste bloco).
+    if (mudou) document.dispatchEvent(new CustomEvent("sleevu:data-rehydrated", { detail: { key: key || null } }));
+  }
+  window.addEventListener("storage", (event) => {
+    if (event.storageArea && event.storageArea !== localStorage) return;
+    rehydrateCrossTab(event.key || null); // key null = clear() em outra aba
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") rehydrateCrossTab(null);
+  });
+
   // ── Dados POR JOGO ─────────────────────────────────────────────────────────
   // Site único (sleevu.app): Pokémon e Lorcana dividem o MESMO localStorage, então
   // coleção/wishlist/preços/binders/histórico de cada jogo precisam de prefixo do
@@ -183,6 +215,16 @@
   const CARD_CONDITIONS = ["M", "NM", "SP", "MP", "HP", "D"];
   const DEFAULT_CONDITION = "NM";
 
+  // Chaves perigosas num arquivo importado: bloqueia prototype pollution ao usar
+  // o cardId/variante (vindos de fonte não confiável) como chave de objeto.
+  // Fica AQUI no topo, e não junto do importador de backup, porque o próprio
+  // store da coleção usa a guarda no add() — um `const` definido depois cairia
+  // na zona morta (TDZ) se algum caminho de boot chegasse antes.
+  const UNSAFE_KEYS = new Set(["__proto__", "prototype", "constructor"]);
+  function isUnsafeKey(key) {
+    return UNSAFE_KEYS.has(key);
+  }
+
   // Desconto padrão sobre o preço NM quando a condição não tem preço próprio
   // (aproximação usual do mercado; o valor exato sempre pode ser digitado).
   const CONDITION_MULTIPLIERS = { M: 1, NM: 1, SP: 0.85, MP: 0.7, HP: 0.5, D: 0.3 };
@@ -230,6 +272,21 @@
     function persistMeta() {
       scheduleWrite(metaKey, () => JSON.stringify(meta));
     }
+
+    // Outra aba gravou nesta chave: remescla disco + memória com o MESMO merge
+    // por carta do sync (LWW + tombstone), pra o próximo save não apagar o que
+    // ela adicionou. Ver registerCrossTabStore.
+    registerCrossTabStore(storageKey, () => {
+      const disco = load();
+      if (!disco) return false;
+      const antes = JSON.stringify(collection);
+      const r = mergeCollection(collection, meta, disco, normalizeMeta(readObject(metaKey)));
+      collection = r.collection;
+      meta = r.meta;
+      initialized = true;
+      return JSON.stringify(collection) !== antes;
+    });
+
     // Carimba o estado atual da carta: presente -> mod=agora; ausente -> del=agora.
     function stamp(cardId) {
       const now = Date.now();
@@ -317,6 +374,10 @@
           .map((condition) => ({ condition, quantity: conditions[condition] }));
       },
       add(cardId, variant, condition, delta) {
+        // Rede de segurança pra qualquer chamador (importadores leem id de
+        // arquivo): sem isso, collection["__proto__"] resolveria pro
+        // Object.prototype e a gravação vazaria pra toda a sessão.
+        if (isUnsafeKey(cardId)) return;
         const entry = collection[cardId] || (collection[cardId] = {});
         const conditions = entry[variant] || (entry[variant] = {});
         const quantity = Math.max(0, (conditions[condition] || 0) + delta);
@@ -405,7 +466,20 @@
   // Lista "Eu quero": cardId -> [variantes desejadas]. Sem condição nem
   // quantidade — é só uma lista de desejos por variante, guardada à parte da
   // coleção. Quando a carta passa a ser possuída, ela sai daqui ("comprei!").
+  //
+  // UMA instância por chave, pela mesma razão da coleção (ver
+  // collectionStoreCache): a paleta Ctrl+K cria store próprio por jogo enquanto
+  // a página mantém o dela, e save() serializa a memória inteira por cima da
+  // chave — marcar "quero" pela paleta e tocar o coração de um tile em seguida
+  // apagava a entrada recém-criada (aqui e, no push seguinte, na nuvem).
+  const wishlistStoreCache = new Map();
   function createWishlistStore(game) {
+    const cacheKey = gameKey("wishlist-v1", game);
+    let st = wishlistStoreCache.get(cacheKey);
+    if (!st) { st = buildWishlistStore(game); wishlistStoreCache.set(cacheKey, st); }
+    return st;
+  }
+  function buildWishlistStore(game) {
     const storageKey = gameKey("wishlist-v1", game);
     const metaKey = gameKey("wishlist-meta-v1", game);
     let wishlist = readObject(storageKey) || {};
@@ -418,6 +492,18 @@
     function persistMeta() {
       scheduleWrite(metaKey, () => JSON.stringify(meta));
     }
+
+    // Mesma proteção multi-aba da coleção (ver registerCrossTabStore).
+    registerCrossTabStore(storageKey, () => {
+      const disco = readObject(storageKey);
+      if (!disco) return false;
+      const antes = JSON.stringify(wishlist);
+      const r = mergeWishlist(wishlist, meta, disco, normalizeMeta(readObject(metaKey)));
+      wishlist = r.wishlist;
+      meta = r.meta;
+      return JSON.stringify(wishlist) !== antes;
+    });
+
     function stamp(cardId) {
       const now = Date.now();
       if (variantsOf(cardId).length > 0) { meta.mod[cardId] = now; delete meta.del[cardId]; }
@@ -1041,12 +1127,21 @@
     const table = window.TCG_PRICING;
     const ref = cardId && table && (table[cardId] || table[basePricingId(cardId)]);
     if (ref) {
+      // A referência de mercado descreve uma cópia NM; condição pior vale uma
+      // fração dela — a MESMA tabela que o preço manual já usava. Sem isso um
+      // HP contava como NM e o patrimônio saía superestimado nas três páginas,
+      // apesar de o Portfólio prometer "estimadas a partir do NM".
+      const mult = CONDITION_MULTIPLIERS[cond] || 1;
+      const byCondition = (raw, from, source) => {
+        const v = convertMoney(raw * mult, from, cur);
+        return v == null ? null : { value: v, currency: cur, source, estimated: true };
+      };
       // Preço BR (MYP) tem prioridade sobre a referência internacional.
-      if (ref.b && ref.b.md > 0) { const v = convertMoney(ref.b.md, "BRL", cur); if (v != null) return { value: v, currency: cur, source: "myp", estimated: true }; }
+      if (ref.b && ref.b.md > 0) { const r = byCondition(ref.b.md, "BRL", "myp"); if (r) return r; }
       // Acabamento: Foil tem preço próprio (ex.: Lorcana ref.uf); senão o normal.
       const usd = /foil/i.test(variant || "") && ref.uf > 0 ? ref.uf : ref.u;
-      if (usd > 0) { const v = convertMoney(usd, "USD", cur); if (v != null) return { value: v, currency: cur, source: "ref", estimated: true }; }
-      if (ref.e > 0) { const v = convertMoney(ref.e, "EUR", cur); if (v != null) return { value: v, currency: cur, source: "ref", estimated: true }; }
+      if (usd > 0) { const r = byCondition(usd, "USD", "ref"); if (r) return r; }
+      if (ref.e > 0) { const r = byCondition(ref.e, "EUR", "ref"); if (r) return r; }
     }
     return { value: 0, currency: cur, source: null, estimated: false };
   }
@@ -1567,11 +1662,24 @@
   // Vendas realizadas: cada registro é um FATO histórico (carta, variante,
   // condição, valor, moeda em que foi digitado, custo pago na época e data).
   // Vender remove a cópia da coleção — o registro é o que resta dela.
+  // UMA instância por store global (sold/costs/wishTargets), pela mesma razão do
+  // collectionStoreCache lá em cima: cada instância guarda o blob em MEMÓRIA e
+  // save() grava a cópia inteira por cima da chave. Dois stores vivos do mesmo
+  // dado — o da página de Vendas e o que o popup da carta cria pra "Paguei" —
+  // faziam a última escrita apagar a anterior em silêncio.
+  let soldStoreInstance = null;
   function createSoldStore() {
+    if (!soldStoreInstance) soldStoreInstance = buildSoldStore();
+    return soldStoreInstance;
+  }
+  function buildSoldStore() {
     let data = { items: {}, order: [], updatedAt: 0 };
     try { const raw = JSON.parse(localStorage.getItem(SOLD_KEY) || "null"); if (raw && raw.items) data = raw; } catch (e) { /* começa vazio */ }
     if (!Array.isArray(data.order)) data.order = [];
-    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(SOLD_KEY, JSON.stringify(data)); } catch (e) { /* quota: ignora */ } };
+    // Quota estourada aqui é grave: quem chama (sales.js) REMOVE a cópia da
+    // coleção depois de add() retornar, então engolir o erro apagava a carta
+    // sem deixar o registro da venda no lugar dela.
+    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(SOLD_KEY, JSON.stringify(data)); } catch (e) { notifyStorageFull(); } };
     const uid = () => "v_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
     return {
       any: () => data.order.some((k) => data.items[k]),
@@ -1662,10 +1770,15 @@
   // Custo pago por carta×variante (UNITÁRIO, na moeda em que foi digitado).
   // Simplificação deliberada (vs. lotes por cópia do Collectr): 1 custo médio
   // por variante é o 80/20 de "fácil de usar".
+  let costsStoreInstance = null;
   function createCostsStore() {
+    if (!costsStoreInstance) costsStoreInstance = buildCostsStore();
+    return costsStoreInstance;
+  }
+  function buildCostsStore() {
     let data = { costs: {}, updatedAt: 0 };
     try { const raw = JSON.parse(localStorage.getItem(COSTS_KEY) || "null"); if (raw && raw.costs) data = raw; } catch (e) { /* começa vazio */ }
-    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(COSTS_KEY, JSON.stringify(data)); } catch (e) { /* quota: ignora */ } };
+    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(COSTS_KEY, JSON.stringify(data)); } catch (e) { notifyStorageFull(); } };
     const keyOf = (cardId, variant) => `${cardId}|${variant}`;
     return {
       get(cardId, variant) { const e = data.costs[keyOf(cardId, variant)]; return e ? { v: Number(e.v) || 0, cur: e.cur || "BRL" } : null; },
@@ -1684,7 +1797,12 @@
   }
   // Preço-alvo da wishlist (por carta, global): "me avisa quando chegar a R$X".
   // v:0 fica gravado como tombstone (remoção que não ressuscita no merge).
+  let wishTargetsStoreInstance = null;
   function createWishTargetsStore() {
+    if (!wishTargetsStoreInstance) wishTargetsStoreInstance = buildWishTargetsStore();
+    return wishTargetsStoreInstance;
+  }
+  function buildWishTargetsStore() {
     let data = { targets: {}, updatedAt: 0 };
     try { const raw = JSON.parse(localStorage.getItem(SYNC_KEYS.wishTargets) || "null"); if (raw && raw.targets) data = raw; } catch (e) { /* começa vazio */ }
     const save = () => { data.updatedAt = Date.now(); scheduleWrite(SYNC_KEYS.wishTargets, () => JSON.stringify(data)); };
@@ -1718,6 +1836,33 @@
   function gradedTotalValue(gameOf, gameFilter) {
     return gradedSlabsValued(gameOf).reduce((s, x) =>
       ((!gameFilter || gameFilter === "all" || x.game === gameFilter) ? s + (x.value || 0) : s), 0);
+  }
+
+  // Ids das cartas que estão em slab. Quem carrega o catálogo precisa somá-los
+  // aos ids possuídos: graduar e TIRAR a cópia raw (o caminho certo, senão a
+  // carta conta duas vezes) fazia o id sumir de knownCardIds — e aí nenhuma
+  // página carregava a carta. O slab então desaparecia da Graded, o valor
+  // automático PSA virava zero e o `gameOf` sem carta jogava o slab no jogo
+  // errado (caía no padrão) na composição do Portfólio.
+  //
+  // A store de graded é GLOBAL e não guarda o jogo, então esses ids são pedidos
+  // a todos os jogos — id de outro jogo é no-op no loader (mesmo padrão que o
+  // portfolio.js já usa pros ids de lista sem jogo).
+  function gradedCardIds() {
+    return [...new Set(readGradedList().map((it) => it && it.cardId).filter(Boolean))];
+  }
+
+  // Mapa {jogo: [ids]} pra carga do catálogo nas páginas que mostram a coleção:
+  // o que você TEM + o que está em slab + o que o chamador pedir a mais (a
+  // wishlist, no Portfólio). UMA função pras quatro páginas (Hub, Coleção,
+  // Portfólio, Graded) não voltarem a divergir sobre o que entra na carga.
+  function collectionLoadIds(ownedByGame, extraByGame) {
+    const graded = gradedCardIds();
+    return Object.fromEntries(GAME_SLUGS.map((g) => {
+      const owned = (ownedByGame && ownedByGame[g]) ? ownedByGame[g].knownCardIds() : [];
+      const extra = (extraByGame && extraByGame[g]) || [];
+      return [g, [...new Set(owned.concat(extra, graded))]];
+    }));
   }
 
   // ── Quanto vale a sua coleção ──────────────────────────────────────────────
@@ -5539,13 +5684,6 @@
     return true;
   }
 
-  // Chaves perigosas num backup importado: bloqueia prototype pollution ao usar
-  // o cardId/variante (vindos de arquivo não confiável) como chave de objeto.
-  const UNSAFE_KEYS = new Set(["__proto__", "prototype", "constructor"]);
-  function isUnsafeKey(key) {
-    return UNSAFE_KEYS.has(key);
-  }
-
   // Preços BR do backup: mantém só valores numéricos positivos de cartas conhecidas.
   function parseImportedPrices(payload, cardsById) {
     const source = payload && payload.prices;
@@ -7119,6 +7257,8 @@
     gradedBadgeHtml,
     gradedSlabsValued,
     gradedTotalValue,
+    gradedCardIds,
+    collectionLoadIds,
     collectionValueLines,
     collectionNetWorth,
     valueSnapshot,
@@ -8968,7 +9108,10 @@
           if (iType >= 0 && String(r[iType] || "").trim().toLowerCase() !== "collection") return;
           const id = String(r[iId] || "").trim();
           const qty = parseInt(String(r[iQty] || "0").trim(), 10) || 0;
-          if (!id || qty <= 0) return;
+          // isUnsafeKey: o id vem CRU do arquivo (aqui, ao contrário do CSV
+          // genérico, não passa por match com o catálogo) e vira chave de
+          // objeto — uma linha "__proto__;…" poluiria o Object.prototype.
+          if (!id || isUnsafeKey(id) || qty <= 0) return;
           const variant = mapDexVariant(r[iVar]);
           agg[id] = agg[id] || {};
           agg[id][variant] = (agg[id][variant] || 0) + qty;

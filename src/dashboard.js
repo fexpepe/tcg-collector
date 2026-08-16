@@ -142,7 +142,10 @@
   // ── Cápsulas detalhadas (hidratam depois; só as cartas que você tem) ───────
   // Mesmo visual da antiga dashboard da Coleção (que ficou só com os stats):
   // Mais valiosas (top 3 por valor unitário) + distribuição por jogo e região.
-  const idsByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, ownedByGame[g].knownCardIds()]));
+  // Inclui os ids em slab (ver shared.collectionLoadIds): quem tem só cartas
+  // graduadas — raw zerada — não tinha carta nenhuma pra carregar aqui e ficava
+  // com o valor congelado do cookie pra sempre.
+  const idsByGame = shared.collectionLoadIds(ownedByGame);
   if (!Object.values(idsByGame).some((ids) => ids.length)) return;
   const pricesByGame = Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, shared.createPriceStore(g)]));
   const cardGameMap = new Map();
@@ -161,7 +164,10 @@
       seen.add(card.id);
       return shared.cardVariants(card).some((v) => owned.variantTotal(card.id, v) > 0);
     });
-    if (!myCards.length) return;
+    // Quem só tem carta GRADUADA (raw zerada) não tem `myCards` — mas tem
+    // patrimônio. Sair aqui deixava essa pessoa com o retrato velho do cookie
+    // pra sempre; o collectionNetWorth abaixo já soma os slabs.
+    if (!myCards.length && !shared.gradedCardIds().length) return;
 
     // Valor de verdade, no lugar do retrato do cookie: mesma função da Coleção e
     // do Portfólio, sobre as mesmas cartas e a mesma tabela de preço.
@@ -180,9 +186,13 @@
     }])));
 
     // Mais valiosas (top 3 por valor unitário, como era na Coleção)
+    // A variante MAIS VALIOSA entre as que você tem, não a primeira da lista:
+    // quem tem a Normal e a Foil era rankeado pela Normal, e o "top" daqui
+    // discordava do da tabela do Portfólio (que ranqueia por lote).
     const top = myCards.map((card) => {
-      const variant = (card.variants || []).find((v) => owned.variantTotal(card.id, v) > 0) || shared.defaultVariant(card);
-      return { card, val: shared.cardValue(card, variant, prices).value || 0 };
+      const minhas = shared.cardVariants(card).filter((v) => owned.variantTotal(card.id, v) > 0);
+      const val = minhas.reduce((max, v) => Math.max(max, shared.cardValue(card, v, prices).value || 0), 0);
+      return { card, val };
     }).filter((x) => x.val > 0).sort((a, b) => b.val - a.val).slice(0, 3);
     el.topList.innerHTML = top.length
       ? top.map(({ card, val }) => {

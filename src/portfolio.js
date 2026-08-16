@@ -105,8 +105,14 @@
   // (e por definição não tem) não estava lá pra ser somada: o número saía quase
   // sempre só com os faltantes de binder. A wishlist.js já carregava as duas
   // listas juntas; aqui faltava. Mesma requisição, sem ida extra à rede.
-  const idsOwned = Object.fromEntries(GAMES.map((g) =>
-    [g, [...new Set(ownedByGame[g].knownCardIds().concat(wishlistByGame[g].knownCardIds()))]]));
+  // collectionLoadIds soma ainda os ids que estão em SLAB: graduar e tirar a
+  // cópia raw (o certo — senão a carta conta duas vezes) tirava o id de
+  // knownCardIds, e o slab ficava sem carta: sumia da Graded, perdia o valor
+  // automático PSA e caía no jogo errado na composição.
+  const idsOwned = shared.collectionLoadIds(
+    ownedByGame,
+    Object.fromEntries(GAMES.map((g) => [g, wishlistByGame[g].knownCardIds()]))
+  );
   Promise.all([shared.loadOwnedFast(idsOwned), shared.loadFxRates()])
     .then(([catalog]) => {
       indexaCartas(catalog.cards);
