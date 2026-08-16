@@ -1549,25 +1549,45 @@
       // Mais recente primeiro (ordem de registro).
       list: () => data.order.filter((k) => data.items[k]).map((k) => {
         const e = data.items[k];
-        return { sid: k, cardId: e.cardId, variant: e.variant || "Normal", cond: e.cond || "NM", price: Number(e.price) || 0, paid: Number(e.paid) || 0, cur: e.cur || "BRL", date: e.date || "" };
+        return {
+          sid: k, cardId: e.cardId, variant: e.variant || "Normal", cond: e.cond || "NM",
+          price: Number(e.price) || 0, paid: Number(e.paid) || 0, cur: e.cur || "BRL", date: e.date || "",
+          // `fee` = taxa/frete que saiu do seu bolso na venda (mesma moeda do
+          // preço). `brl` = o valor em reais NA DATA da venda; ver o add().
+          fee: Number(e.fee) || 0, brl: Number(e.brl) || 0, paidBrl: Number(e.paidBrl) || 0, feeBrl: Number(e.feeBrl) || 0
+        };
       }),
       add(rec) {
         const sid = uid();
         const cur = rec.cur || getCurrency();
+        // CÂMBIO CONGELADO: guarda também o valor em BRL do dia da venda. Sem
+        // isso, uma venda em dólar mudava de resultado toda vez que o câmbio
+        // mexia — e resultado REALIZADO não flutua: o dinheiro já entrou. O
+        // campo em moeda original fica pra exibir na moeda em que foi feita.
+        const brl = toBrl(rec.price, cur);
+        const paidBrl = toBrl(rec.paid, cur);
+        const feeBrl = toBrl(rec.fee, cur);
         data.items[sid] = {
           cardId: rec.cardId, variant: rec.variant || "Normal", cond: rec.cond || "NM",
           price: Math.round((Number(rec.price) || 0) * 100) / 100,
           paid: Math.round((Number(rec.paid) || 0) * 100) / 100,
+          fee: Math.round((Number(rec.fee) || 0) * 100) / 100,
           cur: cur, date: rec.date || new Date().toISOString().slice(0, 10)
         };
+        // Só grava o congelado quando o câmbio estava carregado — número errado
+        // é pior que número ausente (quem lê cai no valor em moeda original).
+        if (brl != null) data.items[sid].brl = Math.round(brl * 100) / 100;
+        if (paidBrl != null) data.items[sid].paidBrl = Math.round(paidBrl * 100) / 100;
+        if (feeBrl != null) data.items[sid].feeBrl = Math.round(feeBrl * 100) / 100;
         data.order.unshift(sid);
         save();
         // Preço da Comunidade, série VENDAS: é o sinal mais valioso do agregado
         // (preço que alguém realmente pagou, não pedida). Convertido pra BRL —
         // sem câmbio carregado a gente DESISTE em vez de mandar número errado.
         // `rec.game` vem de quem registra (a venda é global, então a store não
-        // sabe o jogo); sem ele cai no jogo da sessão.
-        const brl = toBrl(rec.price, cur);
+        // sabe o jogo); sem ele cai no jogo da sessão. Vai o preço CHEIO: o que
+        // interessa ao agregado é por quanto a carta saiu, não quanto sobrou pro
+        // vendedor depois da comissão do site.
         if (brl != null) {
           contributePrice({
             game: rec.game, cardId: rec.cardId, variant: rec.variant || "Normal",
@@ -1580,6 +1600,35 @@
     };
   }
   function readSoldList() { return createSoldStore().list(); }
+
+  // Taxa padrão de venda (%), lembrada entre vendas: quem vende pela Liga informa
+  // a comissão uma vez e ela vem pré-preenchida nas próximas. Global (não por
+  // jogo) — é uma característica de ONDE você vende, não do que você vende.
+  const SALE_FEE_KEY = "tcg-collector-pref-sale-fee";
+  function getSaleFeePct() {
+    try { const v = Number(localStorage.getItem(SALE_FEE_KEY)); return v > 0 && v < 100 ? v : 0; } catch (e) { return 0; }
+  }
+  function setSaleFeePct(pct) {
+    const v = Math.max(0, Math.min(99, Number(pct) || 0));
+    try { if (v > 0) localStorage.setItem(SALE_FEE_KEY, String(v)); else localStorage.removeItem(SALE_FEE_KEY); } catch (e) { /* ignora */ }
+  }
+
+  // Os números de UMA venda na moeda atual. Uma fórmula só pras duas telas que
+  // mostram vendas (Vendas e Portfólio) — foi ter duas contas do patrimônio que
+  // já fez Coleção e Portfólio discordarem.
+  //
+  // Prefere o BRL CONGELADO na data da venda; cai na moeda original quando o
+  // registro é anterior a esse campo (ou o câmbio não tinha carregado). Assim o
+  // resultado de uma venda antiga em dólar não muda quando o dólar muda.
+  //   liquido = preço − taxa      (o que de fato entrou no bolso)
+  //   pnl     = líquido − pago    (o resultado realizado; só com custo)
+  function soldValues(it) {
+    const conv = (brl, orig) => (brl > 0 ? moneyToCurrent(brl, "BRL") : moneyToCurrent(orig, it.cur));
+    const price = conv(it.brl, it.price);
+    const paid = conv(it.paidBrl, it.paid);
+    const fee = conv(it.feeBrl, it.fee);
+    return { price, paid, fee, net: price - fee, pnl: price - fee - paid, hasCost: (Number(it.paid) || 0) > 0 };
+  }
 
   // Custo pago por carta×variante (UNITÁRIO, na moeda em que foi digitado).
   // Simplificação deliberada (vs. lotes por cópia do Collectr): 1 custo médio
@@ -6863,6 +6912,9 @@
     createCostsStore,
     createWishTargetsStore,
     readSoldList,
+    soldValues,
+    getSaleFeePct,
+    setSaleFeePct,
     moneyToCurrent,
     snapshotKeys,
     toastUndo,

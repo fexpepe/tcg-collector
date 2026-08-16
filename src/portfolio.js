@@ -372,6 +372,7 @@
     renderBreakdown(lines, slabs);
     renderListas();
     renderInvest();
+    renderVendas();
     renderMovers();
     renderTop(lines, slabs);
     updateChart();
@@ -444,44 +445,33 @@
     return { positions, invested, currentTotal };
   }
 
+  // Posições (o que você TEM, com lucro potencial) e Vendas (o que já virou
+  // dinheiro, com resultado realizado) viraram duas seções. Misturar as duas num
+  // bloco só é o que tornava a leitura confusa — e "potencial" × "realizado" é a
+  // distinção que todo app de investimento separa (o Card Ladder chama a primeira
+  // de "Potential Profit" justamente pra fugir de "não realizado").
+  const sign = (v) => (v >= 0 ? "+" : "−");
+  const cls = (v) => (v > 0.005 ? "is-up" : (v < -0.005 ? "is-down" : ""));
+  const statCard = (label, value, extra, klass) =>
+    `<article class="pf-insight ${klass || ""}"><span class="pf-insight-label">${escapeHtml(label)}</span>
+      <span class="pf-insight-pct sensitive-value">${value}</span>${extra ? `<span class="pf-insight-abs">${extra}</span>` : ""}</article>`;
+
   function renderInvest() {
     const sec = document.getElementById("pfInvest");
     if (!sec) return;
-    const inG = (id) => gameFilter === "all" || gameOf(id) === gameFilter;
     const { positions, invested, currentTotal } = investPositions();
-    // Realizado (vendas): total vendido + resultado das que têm custo.
-    const soldItems = soldStore.list().filter((it) => inG(it.cardId));
-    let soldTotal = 0, realized = 0, realizedCount = 0;
-    soldItems.forEach((it) => {
-      const price = shared.moneyToCurrent(it.price, it.cur);
-      soldTotal += price;
-      if (it.paid > 0) { realized += price - shared.moneyToCurrent(it.paid, it.cur); realizedCount++; }
-    });
-    if (!positions.length && !soldItems.length) { sec.hidden = true; sec.innerHTML = ""; return; }
+    if (!positions.length) { sec.hidden = true; sec.innerHTML = ""; return; }
 
     const unreal = currentTotal - invested;
     const pct = invested > 0 ? (unreal / invested) * 100 : 0;
-    const sign = (v) => (v >= 0 ? "+" : "−");
-    const cls = (v) => (v > 0.005 ? "is-up" : (v < -0.005 ? "is-down" : ""));
-    const statCard = (label, value, extra, klass) =>
-      `<article class="pf-insight ${klass || ""}"><span class="pf-insight-label">${escapeHtml(label)}</span>
-        <span class="pf-insight-pct">${value}</span>${extra ? `<span class="pf-insight-abs">${extra}</span>` : ""}</article>`;
     let html = `<h2 class="pf-invest-title">${escapeHtml(t("portfolio.invest.title"))}</h2><div class="pf-insights">`;
-    if (positions.length) {
-      html += statCard(t("portfolio.invest.paid"), escapeHtml(money(invested)));
-      html += statCard(t("portfolio.invest.now"), escapeHtml(money(currentTotal)));
-      html += statCard(t("portfolio.invest.unreal"),
-        `${sign(unreal)}${escapeHtml(money(Math.abs(unreal)))}`,
-        `${sign(unreal)}${Math.abs(pct).toFixed(1)}%`, `pf-insight-${cls(unreal) === "is-up" ? "up" : cls(unreal) === "is-down" ? "down" : "flat"}`);
-    }
-    if (soldItems.length) {
-      html += statCard(t("portfolio.invest.soldTotal"), escapeHtml(money(soldTotal)), escapeHtml(tn("portfolio.invest.soldCount", soldItems.length)));
-      if (realizedCount) html += statCard(t("portfolio.invest.realized"),
-        `${sign(realized)}${escapeHtml(money(Math.abs(realized)))}`,
-        escapeHtml(tn("portfolio.invest.realizedNote", realizedCount)), `pf-insight-${realized >= 0 ? "up" : "down"}`);
-    }
+    html += statCard(t("portfolio.invest.paid"), escapeHtml(money(invested)));
+    html += statCard(t("portfolio.invest.now"), escapeHtml(money(currentTotal)));
+    html += statCard(t("portfolio.invest.unreal"),
+      `${sign(unreal)}${escapeHtml(money(Math.abs(unreal)))}`,
+      `${sign(unreal)}${Math.abs(pct).toFixed(1)}%`, `pf-insight-${cls(unreal) === "is-up" ? "up" : cls(unreal) === "is-down" ? "down" : "flat"}`);
     html += `</div>`;
-    if (positions.length) {
+    {
       positions.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
       const rows = positions.slice(0, 12).map((p) => {
         const dPct = p.paid > 0 ? (p.delta / p.paid) * 100 : 0;
@@ -505,6 +495,98 @@
     }
     sec.innerHTML = html;
     sec.hidden = false;
+  }
+
+  // ---- Vendas (realizado) ----------------------------------------------------
+  // O Sleevu tem o que o líder da categoria não tem: o Collectr (~4M usuários)
+  // não registra venda realizada, e o PriceCharting só ganhou isso em mar/2026.
+  // Estava enterrado no fim de um bloco compartilhado — agora é seção própria.
+  function renderVendas() {
+    const sec = document.getElementById("pfSales");
+    if (!sec) return;
+    const inG = (id) => gameFilter === "all" || gameOf(id) === gameFilter;
+    const vendas = soldStore.list().filter((it) => inG(it.cardId));
+    if (!vendas.length) { sec.hidden = true; sec.innerHTML = ""; return; }
+
+    let bruto = 0, taxas = 0, realizado = 0, comCusto = 0, melhor = null;
+    vendas.forEach((it) => {
+      const v = shared.soldValues(it);
+      bruto += v.price; taxas += v.fee;
+      if (v.hasCost) {
+        realizado += v.pnl; comCusto++;
+        if (!melhor || v.pnl > melhor.pnl) melhor = { pnl: v.pnl, it };
+      }
+    });
+    const liquido = bruto - taxas;
+    // ROI sobre o que foi PAGO nas vendas com custo — só faz sentido nesse
+    // subconjunto, que é o mesmo do resultado realizado.
+    const pagoNasComCusto = vendas.reduce((s, it) => { const v = shared.soldValues(it); return s + (v.hasCost ? v.paid : 0); }, 0);
+    const roi = pagoNasComCusto > 0 ? (realizado / pagoNasComCusto) * 100 : 0;
+
+    let html = `<h2 class="pf-invest-title">${escapeHtml(t("portfolio.sales.title"))}</h2><div class="pf-insights">`;
+    html += statCard(t("portfolio.sales.gross"), escapeHtml(money(bruto)), escapeHtml(tn("portfolio.invest.soldCount", vendas.length)));
+    if (taxas > 0) html += statCard(t("portfolio.sales.fees"), `− ${escapeHtml(money(taxas))}`, escapeHtml(t("portfolio.sales.net", { v: money(liquido) })));
+    if (comCusto) {
+      html += statCard(t("portfolio.sales.realized"),
+        `${sign(realizado)}${escapeHtml(money(Math.abs(realizado)))}`,
+        escapeHtml(t("portfolio.sales.roi", { pct: `${sign(roi)}${Math.abs(roi).toFixed(0)}` })),
+        `pf-insight-${realizado >= 0 ? "up" : "down"}`);
+    }
+    if (melhor) {
+      const card = cardsById.get(melhor.it.cardId);
+      html += statCard(t("portfolio.sales.best"), `+${escapeHtml(money(melhor.pnl))}`,
+        escapeHtml(card ? card.name : ""), "pf-insight-up");
+    }
+    html += `</div>`;
+
+    // COBERTURA: dizer quantas vendas entram no resultado, e dar o caminho pra
+    // corrigir. É o padrão "flag-then-fix" (Quicken, CoinLedger): nunca chutar
+    // um custo em silêncio, nunca deixar o usuário achar que o número cobre tudo.
+    if (comCusto < vendas.length) {
+      html += `<p class="pf-coverage">${escapeHtml(t("portfolio.sales.coverage", { n: comCusto, total: vendas.length }))}
+        <a href="sales.html">${escapeHtml(t("portfolio.sales.fixCosts"))}</a></p>`;
+    }
+    html += renderVendasPorMes(vendas);
+    sec.innerHTML = html;
+    sec.hidden = false;
+  }
+
+  // Barras de venda por mês (12 meses) — responde "quanto eu vendi este ano?"
+  // sem exportar CSV. Usa o LÍQUIDO, que é o que entrou de verdade.
+  function renderVendasPorMes(vendas) {
+    const agora = new Date();
+    const meses = [];
+    for (let i = 11; i >= 0; i--) {
+      const d = new Date(agora.getFullYear(), agora.getMonth() - i, 1);
+      meses.push({ chave: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`, d, v: 0 });
+    }
+    const porChave = new Map(meses.map((m) => [m.chave, m]));
+    let noAno = 0;
+    vendas.forEach((it) => {
+      const chave = String(it.date || "").slice(0, 7);
+      const alvo = porChave.get(chave);
+      const v = shared.soldValues(it);
+      if (alvo) alvo.v += v.net;
+      if (String(it.date || "").slice(0, 4) === String(agora.getFullYear())) noAno += v.net;
+    });
+    if (!meses.some((m) => m.v > 0)) return "";
+    const max = Math.max(...meses.map((m) => m.v));
+    const loc = getLocale();
+    const nomeMes = (d) => d.toLocaleDateString(loc, { month: "short" }).replace(".", "");
+    // Barras em HTML (não SVG): são 12 blocos com rótulo, e o CSS já sabe
+    // posicionar isso melhor do que coordenadas fixas num viewBox.
+    const barras = meses.map((m) => {
+      const alt = max > 0 ? Math.max(2, Math.round((m.v / max) * 100)) : 2;
+      const titulo = `${nomeMes(m.d)} · ${money(m.v)}`;
+      return `<span class="pf-mbar" title="${escapeAttribute(titulo)}">
+        <span class="pf-mbar-fill" style="height:${alt}%"></span>
+        <span class="pf-mbar-lbl">${escapeHtml(nomeMes(m.d))}</span></span>`;
+    }).join("");
+    return `<div class="pf-months">
+        <div class="pf-months-head"><strong>${escapeHtml(t("portfolio.sales.byMonth"))}</strong>
+          <span class="sensitive-value">${escapeHtml(t("portfolio.sales.thisYear", { v: money(noAno) }))}</span></div>
+        <div class="pf-mbars">${barras}</div>
+      </div>`;
   }
 
   // ---- Listas & Binders: quanto valem as suas VISÕES -------------------------
