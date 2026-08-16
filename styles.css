@@ -611,6 +611,24 @@ button {
 
 .stats-grid article {
   padding: 16px;
+  position: relative; /* âncora do .stat-link, que cobre o cartão inteiro */
+}
+
+/* Cartão de número que LEVA à tela dele (Hub): o link cobre o cartão inteiro em
+   vez de virar um "ver mais" espremido no canto — alvo de toque do tamanho do
+   card, e o texto continua selecionável porque o link fica por cima sem
+   conteúdo. Só o Hub tem os .stat-link; nas outras telas o bloco segue igual. */
+.stats-grid .stat-link {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+.stats-grid article:has(> .stat-link):hover {
+  border-color: var(--accent);
+}
+.stats-grid .stat-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .stats-grid span {

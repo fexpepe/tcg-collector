@@ -91,8 +91,11 @@
         // jogo escuro escurece (e o texto branco ganha contraste), sobre um jogo
         // claro clareia (e o texto preto ganha). Um rgba(0,0,0,…) fixo faria a
         // contagem sumir justamente nos jogos claros.
+        // ?filter=<jogo>: o chip leva pra Coleção JÁ FILTRADA naquele jogo.
+        // Clicar em "Lorcana · 42" e cair numa Coleção em "Todos" obrigava a
+        // pessoa a refazer na mão o filtro que ela acabou de escolher.
         ((cor, fg) =>
-          `<a class="dash-game-chip" href="collection" style="--gc:${cor};--gc-fg:${fg};--gc-veil:${fg === "#000000" ? "rgba(255,255,255,.5)" : "rgba(0,0,0,.26)"}">
+          `<a class="dash-game-chip" href="collection?filter=${escapeAttribute(g)}" style="--gc:${cor};--gc-fg:${fg};--gc-veil:${fg === "#000000" ? "rgba(255,255,255,.5)" : "rgba(0,0,0,.26)"}">
             <span class="dash-game-name">${escapeHtml(shared.gameLabel(g))}</span>
             <span class="dash-game-count">${n}</span>
           </a>`
@@ -180,10 +183,14 @@
     // raw e graded SEPARADOS (as duas séries do gráfico) e omite `wish`: esta
     // tela não carrega as cartas desejadas, e mandar 0 apagaria o valor que o
     // Portfólio gravou hoje — campo ausente preserva o que já está lá.
-    shared.recordValueSnapshot(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, {
-      raw: shared.collectionValueLines(myCards, owned, prices, { gameFilter: g }).total,
-      graded: shared.gradedTotalValue(gameOf, g)
-    }])));
+    // `parcial` (a borda devolveu menos carta do que se pediu): o total está
+    // subestimado e gravá-lo marcaria no gráfico uma queda que não aconteceu.
+    if (!catalog.parcial) {
+      shared.recordValueSnapshot(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, {
+        raw: shared.collectionValueLines(myCards, owned, prices, { gameFilter: g }).total,
+        graded: shared.gradedTotalValue(gameOf, g)
+      }])));
+    }
 
     // Mais valiosas (top 3 por valor unitário, como era na Coleção)
     // A variante MAIS VALIOSA entre as que você tem, não a primeira da lista:
@@ -198,7 +205,7 @@
       ? top.map(({ card, val }) => {
           const src = shared.cardImageSources(card);
           const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
-          return `<li><a href="${escapeAttribute(shared.detailUrl("set", card.set, "", card.game))}"><span class="dash-top-thumb">${thumb}</span>
+          return `<li><a href="${escapeAttribute(shared.detailUrl("set", card.set, "", card.game, { card: card.id, setId: card.setId }))}"><span class="dash-top-thumb">${thumb}</span>
             <span class="dash-top-info"><strong>${escapeHtml(card.name)}</strong><span class="dash-top-set">${escapeHtml(card.set)}</span></span>
             <span class="dash-top-val">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</span></a></li>`;
         }).join("")

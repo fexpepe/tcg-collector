@@ -1523,6 +1523,39 @@
   // Graded = slabs, Vendas = vendas) — o boot não tem como saber.
   function setGameFilterScope(games) { initGameFilterChips(games || []); }
 
+  // ── Filtro de jogo que sobrevive à URL ─────────────────────────────────────
+  // Parâmetro PRÓPRIO (?filter=), e não o ?game=: aquele é a SESSÃO de jogo do
+  // site inteiro e o game.js já o carimba em toda URL — ler o mesmo parâmetro
+  // faria a Coleção abrir sempre presa ao jogo da sessão, quando ela abre em
+  // "Todos" de propósito. Com um parâmetro só do filtro, o Hub consegue mandar
+  // "abre a Coleção já em Magic", o refresh não perde o filtro e a URL do
+  // Portfólio filtrado pode ser compartilhada.
+  function gameFilterFromUrl() {
+    try {
+      const v = new URLSearchParams(location.search).get("filter");
+      return v && GAME_SLUGS.includes(v) ? v : "";
+    } catch (e) { return ""; }
+  }
+  function stampGameFilter(slug) {
+    try {
+      const url = new URL(location.href);
+      if (!slug || slug === "all") url.searchParams.delete("filter");
+      else url.searchParams.set("filter", slug);
+      history.replaceState(history.state, "", url);
+    } catch (e) { /* history bloqueado: o filtro segue valendo na sessão */ }
+  }
+  // Marca o chip do jogo como ativo (e sincroniza o <select> da gaveta mobile),
+  // pra a página poder ABRIR já filtrada em vez de só reagir a clique.
+  function markGameFilterChip(slug) {
+    document.querySelectorAll("#gameFilter").forEach((box) => {
+      const chips = [...box.querySelectorAll("[data-game-filter]")];
+      const alvo = chips.find((c) => c.dataset.gameFilter === slug);
+      if (!alvo) return;
+      chips.forEach((c) => c.setAttribute("aria-pressed", String(c === alvo)));
+      syncGameFilterSelect(box);
+    });
+  }
+
   // Em tela estreita a fileira de chips vira uma gaveta: com 12 jogos cabem uns
   // 3 na largura e os outros ficam atrás de um scroll horizontal que ninguém
   // adivinha que existe. Aqui cada .game-filter ganha um <select> IRMÃO com as
@@ -3114,16 +3147,24 @@
       marcaSuja(histKeyOf(g)); // escrita direta: acorda o laço de sync
     } catch (e) { /* ignora */ }
   }
-  // Espelha o resumo de UM jogo num cookie .sleevu.app pro HUB somar sem iframe.
-  // c=raw, b=graded, w=desejos (BRL). h = histórico do patrimônio (c+b) do jogo.
-  function writePortfolioCookie(g, hist) {
-    const last = hist[hist.length - 1] || {};
-    const h = hist.slice(-50).map((p) => [p.d, Math.round(((p.c || 0) + (p.b || 0)) * 100) / 100]);
-    const payload = { c: last.c || 0, b: last.b || 0, w: last.w || 0, ts: Date.now(), h: h };
+  // O cookie sleevu_pf_<jogo> foi APOSENTADO. Ele existia pro Hub somar o
+  // patrimônio de outro SUBDOMÍNIO sem iframe — plano abandonado: o site é
+  // único. O que sobrou dele era custo puro: o payload carregava 50 pontos de
+  // histórico que NENHUM leitor usava (o valueSnapshot lê só c/b/w) e ia
+  // anexado a toda requisição do domínio, inclusive as centenas de chunks do
+  // catálogo e as imagens locais. O history-v2 no localStorage tem o mesmo
+  // alcance (mesmo navegador) e ainda sincroniza entre aparelhos.
+  //
+  // Esta função agora só APAGA o que já foi gravado nos navegadores — sem ela,
+  // o cookie de 180 dias continuaria viajando em cada requisição de quem já
+  // abriu o Portfólio alguma vez.
+  function clearPortfolioCookie(g) {
     try {
-      let c = "sleevu_pf_" + g + "=" + encodeURIComponent(JSON.stringify(payload)) + "; Path=/; Max-Age=" + (180 * 24 * 3600) + "; SameSite=Lax";
-      if (/(^|\.)sleevu\.app$/i.test(location.hostname)) c += "; Secure; Domain=.sleevu.app";
-      document.cookie = c;
+      const expira = "=; Path=/; Max-Age=0; SameSite=Lax";
+      document.cookie = "sleevu_pf_" + g + expira;
+      if (/(^|\.)sleevu\.app$/i.test(location.hostname)) {
+        document.cookie = "sleevu_pf_" + g + expira + "; Secure; Domain=.sleevu.app";
+      }
     } catch (e) { /* ignora */ }
   }
   // Grava o ponto de hoje de um ou mais jogos e atualiza os cookies do hub.
@@ -3157,7 +3198,7 @@
       if (hist.length > 800) hist.splice(0, hist.length - 800);
       try { localStorage.setItem(histKeyOf(g), JSON.stringify(hist)); marcaSuja(histKeyOf(g)); }
       catch (e) { notifyStorageFull(); }
-      writePortfolioCookie(g, hist);
+      clearPortfolioCookie(g); // aposentado — ver clearPortfolioCookie
     });
   }
 
@@ -3176,6 +3217,10 @@
         const h = JSON.parse(localStorage.getItem(gameKey("history-v2", g)) || "null");
         if (Array.isArray(h) && h.length) p = h[h.length - 1];
       } catch (e) { /* histórico ilegível: tenta o cookie */ }
+      // Cookie: só LEITURA, e transitória. Ninguém mais grava (ver
+      // clearPortfolioCookie) — isto cobre quem ainda tem um gravado e perdeu o
+      // localStorage, pra o Hub não voltar a "—" por causa da limpeza. Some
+      // sozinho: o Max-Age=0 apaga no primeiro snapshot novo de cada jogo.
       if (!p) {
         const m = String(document.cookie || "").match(new RegExp("(?:^|; )sleevu_pf_" + g + "=([^;]*)"));
         if (m) { try { p = JSON.parse(decodeURIComponent(m[1])); } catch (e) { /* ignora */ } }
@@ -6683,9 +6728,25 @@
     }
     // Pedimos ids e não veio carta nenhuma: banco vazio ou fora de sincronia —
     // não dá pra afirmar patrimônio zero, então o caminho de chunks decide.
+    //
     const pedidos = Object.keys(idsByGame || {}).reduce((s, g) => s + (idsByGame[g] || []).length, 0);
     if (pedidos && !cards.length) return null;
-    return { cards, pricing };
+    // Resposta PARCIAL não invalida a carga — mas invalida o RETRATO dela. Um
+    // id que o D1 ainda não tem (catálogo recém-atualizado) faz o total sair
+    // menor; como o ponto do dia SUBSTITUI o de hoje, o gráfico do Portfólio e
+    // o valor do Hub registravam uma queda que nunca aconteceu. Cair pros
+    // chunks seria pior: ids órfãos de verdade existem (carta removida do
+    // catálogo, import antigo) e condenariam essa pessoa a baixar o catálogo
+    // inteiro pra sempre. Então segue com o que veio e só não grava histórico.
+    //
+    // Os ids em SLAB são pedidos a TODOS os jogos de propósito (o registro do
+    // slab não guarda o jogo), então cada um conta como faltante em 12 dos 13
+    // jogos — descontar isso evita marcar parcial quem só tem graded.
+    const slabs = gradedCardIds().length;
+    const jogosPedidos = Object.keys(idsByGame || {}).filter((g) => (idsByGame[g] || []).length).length;
+    const esperados = Math.max(0, pedidos - slabs * Math.max(0, jogosPedidos - 1));
+    const parcial = esperados > 20 && cards.length < esperados * 0.98;
+    return { cards, pricing, parcial };
   }
 
   // Carga direcionada PREFERINDO a borda, com os chunks como rede de segurança.
@@ -6696,7 +6757,10 @@
       // Mesmo efeito colateral do loadAcrossGames: a tabela de preços da sessão
       // passa a ser a UNIÃO dos jogos, que é onde o cardValue procura.
       window.TCG_PRICING = viaApi.pricing || {};
-      return { cards: viaApi.cards, indexesByGame: {}, viaApi: true };
+      // `parcial`: veio menos carta do que se pediu (ver fetchCollectionApi).
+      // Quem grava o ponto do dia no histórico deve PULAR nesse caso, senão
+      // registra uma queda de patrimônio que não existiu.
+      return { cards: viaApi.cards, indexesByGame: {}, viaApi: true, parcial: !!viaApi.parcial };
     }
     const r = await loadOwnedAcrossGames(pedido);
     return Object.assign({ viaApi: false }, r);
@@ -7327,6 +7391,9 @@
     hasConsent,
     setConsent,
     setGameFilterScope,
+    gameFilterFromUrl,
+    stampGameFilter,
+    markGameFilterChip,
     listShares,
     listShareZones,
     listMyShares,

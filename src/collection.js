@@ -322,6 +322,13 @@
     // só Pokémon não precisa ver 12 chips (e o filtro some de vez com 1 jogo).
     // Roda aqui, antes dos catálogos: a posse vem do localStorage, não da rede.
     shared.setGameFilterScope(shared.GAME_SLUGS.filter((g) => ownedByGame[g].size > 0));
+    // ?filter=<jogo>: o chip do Hub abre a Coleção já no jogo clicado, e o
+    // refresh não perde o filtro. Aplicado ANTES do primeiro render.
+    const filtroPedido = shared.gameFilterFromUrl();
+    if (filtroPedido && ownedByGame[filtroPedido] && ownedByGame[filtroPedido].size > 0) {
+      gameFilter = filtroPedido;
+      shared.markGameFilterChip(filtroPedido);
+    }
     // loadOwnedFast: pede à BORDA (/api/collection) só as cartas que você tem —
     // sem baixar os chunks INTEIROS dos sets nem o índice inteiro do jogo (2,86 MB
     // no Magic), que era o que fazia a Coleção demorar e esquentar o celular. As
@@ -346,10 +353,14 @@
         // INTEIRA, não o ownedCards() da tela: aquele já vem filtrado pelo chip
         // de jogo, e gravar por ele zeraria os outros jogos no dia. `wish` fica
         // de fora aqui: a tela não carrega as cartas desejadas.
-        shared.recordValueSnapshot(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, {
-          raw: shared.collectionValueLines(cards, owned, prices, { gameFilter: g }).total,
-          graded: shared.gradedTotalValue(gameOf, g)
-        }])));
+        // `parcial`: a borda devolveu menos carta do que se pediu, então este
+        // total está subestimado — gravá-lo marcaria uma queda que não houve.
+        if (!result.parcial) {
+          shared.recordValueSnapshot(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, {
+            raw: shared.collectionValueLines(cards, owned, prices, { gameFilter: g }).total,
+            graded: shared.gradedTotalValue(gameOf, g)
+          }])));
+        }
         if (result.viaApi) {
           // Cartas na tela JÁ; os denominadores de progresso (X/Y por set/artista)
           // vêm das FATIAS de índice em 2º plano — sem esse índice, totalsForTab
@@ -503,6 +514,7 @@
       Array.from(elements.gameFilter.children).forEach((node) => {
         node.setAttribute("aria-pressed", node === chip ? "true" : "false");
       });
+      shared.stampGameFilter(gameFilter); // sobrevive ao refresh e ao compartilhamento
       refreshFilters(); // Pokémon/Set/Idioma/Raridade do jogo escolhido (todos no "Todos")
       render({ resetCount: true });
     });
@@ -835,7 +847,7 @@
       ? top.map(({ card, val }) => {
           const src = shared.cardImageSources(card);
           const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
-          return `<li><a href="${escapeAttribute(detailUrl("set", card.set, "", card.game))}"><span class="dash-top-thumb">${thumb}</span>
+          return `<li><a href="${escapeAttribute(detailUrl("set", card.set, "", card.game, { card: card.id, setId: card.setId }))}"><span class="dash-top-thumb">${thumb}</span>
             <span class="dash-top-info"><strong>${escapeHtml(card.name)}</strong><span class="dash-top-set">${escapeHtml(card.set)}</span></span>
             <span class="dash-top-val">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</span></a></li>`;
         }).join("")

@@ -116,8 +116,23 @@
   Promise.all([shared.loadOwnedFast(idsOwned), shared.loadFxRates()])
     .then(([catalog]) => {
       indexaCartas(catalog.cards);
+      // Carga incompleta (ver fetchCollectionApi): os totais desta sessão estão
+      // subestimados, então NÃO grava o ponto do dia — ele substituiria o de
+      // hoje e o gráfico mostraria uma queda que não houve. Vale pra sessão
+      // inteira: as cargas seguintes (listas, binders, movers) não completam o
+      // que faltou aqui.
+      if (catalog.parcial) cargaParcial = true;
       GAMES.forEach((g) => ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
-      shared.setGameFilterScope(escopoDeJogos());
+      const escopo = escopoDeJogos();
+      shared.setGameFilterScope(escopo);
+      // ?filter=<jogo> na URL: abre já filtrado (o chip do Hub manda assim, e é
+      // o que faz o refresh/compartilhamento não perderem o filtro).
+      const pedido = shared.gameFilterFromUrl();
+      if (pedido && escopo.includes(pedido)) {
+        gameFilter = pedido;
+        shared.markGameFilterChip(pedido);
+        shared.applyGameAccent(pedido);
+      }
       bindGameFilter();
       bindBreakdown();
       bindExport();
@@ -137,6 +152,8 @@
     const porId = new Map();
     (lista || []).forEach((card) => { if (!porId.has(card.id)) porId.set(card.id, card); });
     cards = Array.from(porId.values());
+    limpaMemo(); // as cartas mudaram: as contas memoizadas do render anterior morrem
+    snapshotGravado = false; // com carta nova, o ponto do dia merece ser regravado
     cards.forEach((card) => cardGameMap.set(card.id, card.game));
     cardsById = porId;
   }
@@ -197,6 +214,9 @@
       Array.from(elements.gameFilter.children).forEach((node) =>
         node.setAttribute("aria-pressed", String(node === chip)));
       shared.applyGameAccent(gameFilter);
+      // Na URL: refresh mantém o filtro e o link do Portfólio filtrado pode ser
+      // compartilhado (ver shared.stampGameFilter).
+      shared.stampGameFilter(gameFilter);
       render();
     });
   }
@@ -409,14 +429,32 @@
 
   // ---- Fontes de valor (moeda atual), filtráveis por jogo --------------------
 
+  // MEMO POR RENDER. collectionValueLines varre a coleção inteira e
+  // gradedSlabsValued re-parseia o blob de graded do localStorage — e um único
+  // render chamava os dois UMA VEZ POR JOGO em três lugares (composição,
+  // gráfico e snapshot), ~27 varreduras completas a cada clique de filtro ou
+  // troca de aba do detalhamento. Com 5 mil cartas isso é centenas de ms no
+  // celular pra recalcular exatamente o mesmo número. O cache é zerado no
+  // começo de cada render (e quando as cartas mudam), então nada envelhece.
+  let memoLinhas = new Map();
+  let memoSlabs = null;
+  let snapshotGravado = false; // ponto do dia: uma vez por carga, ver updateChart
+  let cargaParcial = false;    // borda devolveu menos carta do que se pediu
+  function limpaMemo() { memoLinhas = new Map(); memoSlabs = null; }
+
   // Cada linha é um lote carta×variante×condição da coleção, com valor unitário.
   // A conta vive no shared (collectionValueLines): é a MESMA da Coleção e do Hub.
   function collectionLines(gf) {
-    return shared.collectionValueLines(cards, owned, prices, { gameFilter: gf });
+    const chave = gf || "all";
+    if (!memoLinhas.has(chave)) {
+      memoLinhas.set(chave, shared.collectionValueLines(cards, owned, prices, { gameFilter: gf }));
+    }
+    return memoLinhas.get(chave);
   }
 
   function gradedSlabs(gf) {
-    return shared.gradedSlabsValued(gameOf).filter((s) => !gf || gf === "all" || s.game === gf);
+    if (!memoSlabs) memoSlabs = shared.gradedSlabsValued(gameOf);
+    return memoSlabs.filter((s) => !gf || gf === "all" || s.game === gf);
   }
 
   function wishlistTotal(gf) {
@@ -483,6 +521,7 @@
   // ---- Render ---------------------------------------------------------------
 
   function render() {
+    limpaMemo(); // ver collectionLines: um render inteiro reusa as mesmas contas
     const { lines, totalCopies, pricedCopies, total: rawTotal } = collectionLines(gameFilter);
     const slabs = gradedSlabs(gameFilter);
     const gradedTotal = slabs.reduce((sum, s) => sum + (s.value || 0), 0);
@@ -583,7 +622,7 @@
       // Na aba "Minhas", o que a variação fez com o SEU dinheiro, embaixo do %.
       const emReais = minhas && Math.abs(impacto || 0) >= 0.01
         ? `<span class="pf-mover-cash sensitive-value">${impacto > 0 ? "+" : "−"}${escapeHtml(money(Math.abs(impacto)))}</span>` : "";
-      return `<a class="pf-mover" href="${escapeAttribute(detailUrl("set", card.set, "", card.game))}">
+      return `<a class="pf-mover" href="${escapeAttribute(detailUrl("set", card.set, "", card.game, { card: card.id, setId: card.setId }))}">
         <span class="pf-mover-thumb">${thumb}</span>
         <span class="pf-mover-info"><strong>${escapeHtml(card.name)}</strong><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span>${tag}</span>
         <span class="pf-mover-pct ${x.pct > 0 ? "is-up" : "is-down"}">${x.pct > 0 ? "▲" : "▼"} ${escapeHtml(pct)}${emReais}</span>
@@ -905,7 +944,7 @@
       if (!card || !(s.value > 0)) return;
       rows.push({
         name: `${card.name} · ${card.set} ${card.number}`,
-        href: detailUrl("set", card.set, "", card.game),
+        href: detailUrl("set", card.set, "", card.game, { card: card.id, setId: card.setId }),
         kind: `${String(s.company || "").toUpperCase()} ${shared.gradedGradeText(s.grade, s.pristine)}`,
         cond: t("nav.graded"), graded: true,
         estimated: false, qty: 1, unit: s.value, total: s.value
@@ -1036,14 +1075,23 @@
     const section = document.getElementById("portfolioChart");
     if (!section) return;
     section.hidden = false;
-    // Snapshot de CADA jogo (não só o filtrado) -> cookies/hist do hub corretos.
+    // Snapshot de CADA jogo (não só o filtrado) -> histórico do hub correto.
     // Esta é a única tela que sabe os DESEJOS (wishlist + faltantes de binder),
     // então é a única que manda o `w`.
-    shared.recordValueSnapshot(Object.fromEntries(GAMES.map((g) => [g, {
-      raw: collectionLines(g).total,
-      graded: gradedSlabs(g).reduce((s, x) => s + (x.value || 0), 0),
-      wish: wishlistTotal(g) + binderWishTotal(g)
-    }])));
+    //
+    // UMA VEZ por carga, não a cada render: os números não mudam quando você
+    // troca o chip de jogo ou a aba do detalhamento, e gravar de novo custava 13
+    // varreduras da coleção + escrita no localStorage (que ainda acorda o sync)
+    // em todo clique. Se chegarem cartas novas (listas, binders, movers), o
+    // indexaCartas libera outro registro.
+    if (!snapshotGravado && !cargaParcial) {
+      snapshotGravado = true;
+      shared.recordValueSnapshot(Object.fromEntries(GAMES.map((g) => [g, {
+        raw: collectionLines(g).total,
+        graded: gradedSlabs(g).reduce((s, x) => s + (x.value || 0), 0),
+        wish: wishlistTotal(g) + binderWishTotal(g)
+      }])));
+    }
     if (!controlsBound) { bindControls(); controlsBound = true; }
     renderControls();
     renderChart(chartHistory());

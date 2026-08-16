@@ -53,28 +53,38 @@
         <div id="dashProfileLine" class="dash-profile-line" hidden></div>
       </div>
 
-      <!-- Resumo instantâneo (localStorage + cookie do Portfólio; sem catálogo) -->
+      <!-- Resumo instantâneo (localStorage + cookie do Portfólio; sem catálogo)
+           Cada cartão LEVA à tela que explica o número (o link cobre o cartão
+           inteiro, ver .stat-link). Antes eram números mortos: a pessoa via
+           "12 slabs" no Hub e tinha que achar a página Graded pelo menu.
+           O rótulo acessível é o próprio <p> do cartão (aria-labelledby), então
+           ele já vem traduzido junto com o resto da tela. -->
       <section class="stats-grid" aria-label="Resumo do colecionador">
         <article class="stat-grand">
           <span id="dhValue">—</span>
           <span class="collector-badge" data-i18n="collector.badge">Modo Colecionador</span>
-          <p data-i18n="portfolio.networth">patrimônio (cartas + graded)</p>
+          <p id="dhValueLabel" data-i18n="portfolio.networth">patrimônio (cartas + graded)</p>
+          <a class="stat-link" href="portfolio" aria-labelledby="dhValueLabel"></a>
         </article>
         <article>
           <span id="dhCopies">0</span>
-          <p data-i18n="stats.copies">cópias no total</p>
+          <p id="dhCopiesLabel" data-i18n="stats.copies">cópias no total</p>
+          <a class="stat-link" href="collection" aria-labelledby="dhCopiesLabel"></a>
         </article>
         <article>
           <span id="dhDistinct">0</span>
-          <p data-i18n="stats.distinct">cartas distintas</p>
+          <p id="dhDistinctLabel" data-i18n="stats.distinct">cartas distintas</p>
+          <a class="stat-link" href="collection" aria-labelledby="dhDistinctLabel"></a>
         </article>
         <article>
           <span id="dhWish">0</span>
-          <p data-i18n="dash.wish">na lista de desejos</p>
+          <p id="dhWishLabel" data-i18n="dash.wish">na lista de desejos</p>
+          <a class="stat-link" href="wishlist" aria-labelledby="dhWishLabel"></a>
         </article>
         <article>
           <span id="dhSlabs">0</span>
-          <p data-i18n="dash.slabs">slabs graded</p>
+          <p id="dhSlabsLabel" data-i18n="dash.slabs">slabs graded</p>
+          <a class="stat-link" href="graded" aria-labelledby="dhSlabsLabel"></a>
         </article>
       </section>
 

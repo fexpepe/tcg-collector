@@ -127,15 +127,17 @@ test("recordValueSnapshot: jogo vazio e sem histórico não cria entrada", () =>
   assert.equal(ls.getItem("tcg-collector-ygo-history-v2"), null);
 });
 
-test("recordValueSnapshot: grava o cookie do hub com o ponto do dia", () => {
+// O cookie sleevu_pf_<jogo> foi APOSENTADO (ver clearPortfolioCookie no
+// shared.js): ele nasceu pro Hub somar o patrimônio de outro SUBDOMÍNIO, plano
+// que morreu, e carregava 50 pontos de histórico que nenhum leitor usava — em
+// TODA requisição do domínio, chunks e imagens inclusive. Agora o snapshot só
+// grava o history-v2 (que ainda sincroniza) e manda apagar o cookie antigo.
+test("recordValueSnapshot: NÃO grava mais cookie — só apaga o que existir", () => {
   const { api, sb } = freshWriter({});
   api.recordValueSnapshot({ pokemon: { raw: 90, graded: 10, wish: 5 } });
-  const m = String(sb.document.cookie).match(/sleevu_pf_pokemon=([^;]*)/);
-  assert.ok(m, "o hub soma pelos cookies; sem ele o Hub mostra valor velho");
-  const payload = JSON.parse(decodeURIComponent(m[1]));
-  assert.equal(payload.c, 90);
-  assert.equal(payload.b, 10);
-  assert.equal(payload.h[payload.h.length - 1][1], 100, "a série do cookie é o patrimônio (c+b)");
+  const cookie = String(sb.document.cookie);
+  assert.doesNotMatch(cookie, /sleevu_pf_pokemon=[^;]+;?\s*Path/, "não pode voltar a gravar valor no cookie");
+  assert.match(cookie, /sleevu_pf_pokemon=; Path=\/; Max-Age=0/, "manda o navegador apagar o cookie antigo");
 });
 
 test("recordValueSnapshot: histórico v1 é migrado antes de receber o ponto novo", () => {
