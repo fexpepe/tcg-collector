@@ -37,6 +37,7 @@
     "lists.count.other": "{n} cartas",
 
     // Tipo da lista (a decisão que muda o comportamento de cada clique)
+    "lists.color": "Cor da lista",
     "lists.linked": "Adicionar também na coleção",
     "lists.linkedHint": "Cada carta que entrar na lista entra na sua coleção também.",
     "lists.standalone": "Só uma lista",
@@ -117,6 +118,7 @@
     "lists.count.one": "{n} card",
     "lists.count.other": "{n} cards",
 
+    "lists.color": "List color",
     "lists.linked": "Add to my collection too",
     "lists.linkedHint": "Every card added to the list also goes into your collection.",
     "lists.standalone": "Just a list",
@@ -195,6 +197,7 @@
     "lists.count.one": "{n} carta",
     "lists.count.other": "{n} cartas",
 
+    "lists.color": "Color de la lista",
     "lists.linked": "Agregar también a la colección",
     "lists.linkedHint": "Cada carta que entre en la lista entra también en tu colección.",
     "lists.standalone": "Solo una lista",

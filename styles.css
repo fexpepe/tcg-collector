@@ -675,6 +675,15 @@ button {
 }
 .dash-spark.is-up { --spark-cor: #2ecc71; }
 .dash-spark.is-down { --spark-cor: #e8553c; }
+/* "X/Y com preço": nota de rodapé do patrimônio, discreta de propósito — é
+   ressalva, não manchete. */
+.dash-priced {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--subtle);
+  font-variant-numeric: tabular-nums;
+}
 
 
 .stats-grid span {
@@ -4607,6 +4616,17 @@ a.progress-row:hover {
 .pf-bd-tab { border: 1px solid var(--line); background: var(--panel); color: var(--muted); padding: 6px 13px; border-radius: 999px; font-size: 12px; font-weight: 700; cursor: pointer; }
 .pf-bd-tab.active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 #pfBreakdown .pf-comp-row { grid-template-columns: minmax(110px, 30%) 1fr auto; }
+/* Aba Desejos: no lugar da barra vai o set/variante (e o preço-alvo quando há),
+   então a coluna do meio é texto, não gráfico. */
+.pf-wish-meta {
+  font-size: 12.5px;
+  color: var(--subtle);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pf-wish-target { color: var(--muted); font-weight: 700; }
+.pf-wish-hit { color: #2ecc71; font-weight: 800; }
 .pf-bd-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pf-bd-empty { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
 
@@ -8534,6 +8554,36 @@ select,
 /* Sem isto o checkbox herda o input global (width 100%, height 42px) e vira um
    quadradão no header — mesmo antídoto do .facet-opt e do .dkc-check. */
 .lst-linked input { flex: none; width: 15px; height: 15px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+/* Paleta da lista no cabeçalho: bolinhas pequenas, a escolhida com anel. Cabem
+   na mesma linha do resto do sub-header e quebram junto em tela estreita. */
+.lst-colors { display: inline-flex; align-items: center; gap: 6px; }
+.lst-color {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--c);
+  cursor: pointer;
+}
+.lst-color.is-on { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--c); }
+.lst-color:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* Dedo: alvo de 44px sem inchar a bolinha (o padding entra por fora do círculo,
+   como nos demais controles pequenos desta tela). */
+@media (pointer: coarse) {
+  .lst-colors { gap: 2px; }
+  .lst-color { width: 44px; height: 44px; border: 0; background: none; position: relative; }
+  .lst-color::after {
+    content: "";
+    position: absolute;
+    inset: 13px;
+    border-radius: 50%;
+    background: var(--c);
+    border: 1px solid var(--line);
+  }
+  .lst-color.is-on { box-shadow: none; }
+  .lst-color.is-on::after { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--c); }
+}
 .lst-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
 .lst-panel { border: 1px solid var(--line); background: var(--panel); padding: 14px; min-width: 0; }
 .lst-panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }

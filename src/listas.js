@@ -13,6 +13,11 @@
   const escA = shared.escapeAttribute;
   const store = shared.createListStore();
 
+  // Paleta da lista: o azul da primeira posição é o padrão de quem nasce sem
+  // cor (ver createListStore). São tons que funcionam nos dois temas e se
+  // distinguem entre si na bolinha pequena da galeria.
+  const LIST_COLORS = ["#3b6fe0", "#8b5cf6", "#ec4899", "#e8553c", "#f59e0b", "#2ecc71", "#14b8a6", "#64748b"];
+
   const el = {
     gallery: document.getElementById("listGallery"),
     editor: document.getElementById("listEditor")
@@ -451,6 +456,15 @@
             ${list.game ? shared.gameTagHtml(list.game) : ""}
             ${list.set ? `<span class="lst-setname">${esc(list.set)}</span>` : ""}
             <label class="lst-linked"><input type="checkbox" data-list-linked${list.linked ? " checked" : ""}> ${esc(t("lists.linked"))}</label>
+            <!-- COR da lista: a store já tinha setColor desde o começo e nada
+                 chamava, então toda lista nascia e morria no azul padrão —
+                 mesmo com a cor aparecendo na galeria e neste cabeçalho, que é
+                 justamente o que faz uma lista se distinguir da outra. -->
+            <span class="lst-colors" role="group" aria-label="${escA(t("lists.color"))}">
+              ${LIST_COLORS.map((c) => `<button type="button" class="lst-color${c === list.color ? " is-on" : ""}"
+                data-list-color="${escA(c)}" style="--c:${escA(c)}" aria-label="${escA(c)}"
+                aria-pressed="${c === list.color}"></button>`).join("")}
+            </span>
           </p>
         </div>
         <a href="listas" class="serie-back">${esc(t("lists.backToLists"))}</a>
@@ -770,6 +784,24 @@
   // --- Eventos do editor (delegação) ----------------------------------------
   el.editor.addEventListener("click", (ev) => {
     if (!current) return;
+
+    // Cor da lista: repinta o cabeçalho e os marcadores na hora (o --lc mora no
+    // .lst-head), sem redesenhar o editor inteiro — a lista de cartas pode ter
+    // centenas de linhas e a pessoa está só escolhendo uma cor.
+    const cor = ev.target.closest("[data-list-color]");
+    if (cor) {
+      const nova = cor.dataset.listColor;
+      store.setColor(current.id, nova);
+      current.color = nova;
+      const head = el.editor.querySelector(".lst-head");
+      if (head) head.style.setProperty("--lc", nova);
+      el.editor.querySelectorAll("[data-list-color]").forEach((b) => {
+        const on = b.dataset.listColor === nova;
+        b.classList.toggle("is-on", on);
+        b.setAttribute("aria-pressed", String(on));
+      });
+      return;
+    }
 
     // Adicionar: 1 variante entra direto; várias abrem o seletor na linha.
     const add = ev.target.closest("[data-src-add]");

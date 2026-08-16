@@ -19,7 +19,8 @@
     dist: document.getElementById("dhDist"),
     region: document.getElementById("dhRegion"),
     delta: document.getElementById("dhDelta"),
-    spark: document.getElementById("dhSpark")
+    spark: document.getElementById("dhSpark"),
+    priced: document.getElementById("dhPriced")
   };
 
   // ── Leituras locais (read-only, defensivas) ─────────────────────────────────
@@ -202,6 +203,16 @@
     const patrimonio = shared.collectionNetWorth(myCards, owned, prices, { gameOf }).total;
     el.value.textContent = patrimonio > 0 ? shared.formatMoney(shared.getCurrency(), patrimonio) : "—";
     el.value.parentElement.removeAttribute("title");
+
+    // Quanto do número grande é preço real e quanto é buraco: o Portfólio já
+    // mostrava isso e o Hub não, então o mesmo patrimônio parecia ter precisões
+    // diferentes nas duas telas. Só aparece quando falta preço em alguma cópia
+    // — com tudo precificado, o aviso seria ruído.
+    const contagem = shared.collectionValueLines(myCards, owned, prices, {});
+    if (el.priced && contagem.totalCopies > 0 && contagem.pricedCopies < contagem.totalCopies) {
+      el.priced.textContent = `${contagem.pricedCopies}/${contagem.totalCopies} ${t("dash.priced")}`;
+      el.priced.hidden = false;
+    }
 
     // Ponto do dia no histórico do Portfólio. O Hub já tem a conta na mão, então
     // quem nunca abre o Portfólio não fica mais com buracos no gráfico. Manda

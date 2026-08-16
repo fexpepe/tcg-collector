@@ -25,6 +25,9 @@
   const GAMES = shared.GAME_SLUGS;
   const GAME_COLOR = shared.GAME_COLOR;
   const { ownedByGame, wishlistByGame, cardGameMap, gameOf, owned, wishlist, prices } = shared.createCrossGameStores();
+  // Preço-alvo da wishlist ("me avisa quando chegar a R$X"): global, anotado na
+  // página de Wishlist. Aqui ele vira a coluna que diz o quanto falta cair.
+  const wishTargets = shared.createWishTargetsStore();
   // Modo investidor (opcional): custo pago por carta + vendas realizadas.
   const costsStore = shared.createCostsStore();
   const soldStore = shared.createSoldStore();
@@ -33,7 +36,7 @@
   let cards = [];
   let cardsById = new Map();
   let gameFilter = "all";
-  let breakdownMode = "set"; // set | rarity | artist
+  let breakdownMode = "set"; // set | rarity | artist | wish
   let topShowAll = false; // "mais valiosas": top 15 ou a lista inteira
 
   const elements = {
@@ -906,6 +909,7 @@
   function renderBreakdown(lines, slabs) {
     const sec = elements.breakdown;
     if (!sec) return;
+    if (breakdownMode === "wish") { renderWishBreakdown(); return; }
     const rows = breakdownMode === "rarity" ? breakdownBy(lines, slabs, (c) => c.rarity)
       : breakdownMode === "artist" ? breakdownBy(lines, slabs, (c) => c.artist)
       : breakdownBy(lines, slabs, (c) => c.set);
@@ -930,6 +934,47 @@
       if (gameFilter && gameFilter !== "all") params.set("filter", gameFilter);
       return `<a class="pf-comp-row pf-comp-row-link" href="collection?${params.toString()}"
         title="${escapeAttribute(t("portfolio.bd.openSet", { set: r.label }))}">${miolo}</a>`;
+    }).join("");
+    sec.hidden = false;
+  }
+
+  // Desejos, carta a carta: o que você quer, quanto custa hoje e — quando você
+  // anotou um preço-alvo na Wishlist — o quanto falta o mercado cair pra chegar
+  // lá. O cartão lá em cima dá o total; esta aba responde "de onde ele vem".
+  // Ordenado pelo mais caro, que é onde a decisão de compra costuma travar.
+  function renderWishBreakdown() {
+    const sec = elements.breakdown;
+    const linhas = [];
+    cards.forEach((card) => {
+      if (gameFilter !== "all" && card.game !== gameFilter) return;
+      wishlist.variants(card.id).forEach((variante) => {
+        const valor = shared.cardValue(card, variante, prices).value || 0;
+        const alvo = wishTargets.get(card.id);
+        linhas.push({ card, variante, valor, alvo: alvo ? shared.convertMoney(alvo.v, alvo.cur || "BRL", shared.getCurrency()) : null });
+      });
+    });
+    if (!linhas.length) {
+      elements.breakdownBody.innerHTML = `<p class="pf-bd-empty">${escapeHtml(t("portfolio.bd.wishNone"))}</p>`;
+      sec.hidden = false;
+      return;
+    }
+    linhas.sort((a, b) => b.valor - a.valor);
+    elements.breakdownBody.innerHTML = linhas.slice(0, 30).map((r) => {
+      // Alvo já batido = oportunidade agora; senão mostra a distância que falta.
+      let alvoHtml = "";
+      if (r.alvo != null && r.alvo > 0) {
+        const bateu = r.valor > 0 && r.valor <= r.alvo;
+        const falta = r.valor > 0 ? ((r.valor - r.alvo) / r.valor) * 100 : 0;
+        alvoHtml = bateu
+          ? `<span class="pf-wish-hit">${escapeHtml(t("portfolio.bd.wishHit", { v: money(r.alvo) }))}</span>`
+          : `<span class="pf-wish-target">${escapeHtml(t("portfolio.bd.wishTarget", { v: money(r.alvo), pct: Math.round(falta) }))}</span>`;
+      }
+      const url = detailUrl("set", r.card.set, "", r.card.game, { card: r.card.id, setId: r.card.setId });
+      return `<a class="pf-comp-row pf-comp-row-link" href="${escapeAttribute(url)}">
+        <span class="pf-comp-label pf-bd-name" title="${escapeAttribute(r.card.name)}">${escapeHtml(r.card.name)}</span>
+        <span class="pf-wish-meta">${escapeHtml(r.card.set)} · ${escapeHtml(r.variante)}${alvoHtml ? " · " : ""}${alvoHtml}</span>
+        <span class="pf-comp-val">${escapeHtml(r.valor > 0 ? money(r.valor) : "—")}</span>
+      </a>`;
     }).join("");
     sec.hidden = false;
   }
