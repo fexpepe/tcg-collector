@@ -25,13 +25,34 @@ const OUT_DIR = "set";
 
 // Jogos prerenderizados, na ordem (a ordem fixa mantém os slugs estáveis entre
 // builds quando dois sets de jogos diferentes têm o mesmo nome).
+// TODOS os jogos com catálogo entram. O app (detail.html) é `noindex` de
+// propósito — quem indexa é a página estática daqui, com o conteúdo já no HTML.
+// Só que ela existia para 5 jogos: pra Magic, YGO, Digimon, FAB, Gundam, DBFW,
+// Riftbound e Union Arena o catálogo inteiro do site era invisível pro Google,
+// justamente os jogos onde "lista de cartas do set X" é a busca mais comum.
+// O loadGameSets é genérico (lê data/<slug>/cards.js), então cada linha aqui é
+// literalmente o jogo ganhando SEO.
 const GAMES = [
   { slug: "pokemon", label: "Pokémon TCG" },
+  { slug: "magic", label: "Magic: The Gathering" },
   { slug: "lorcana", label: "Disney Lorcana" },
   { slug: "onepiece", label: "One Piece Card Game" },
+  { slug: "ygo", label: "Yu-Gi-Oh!" },
+  { slug: "digimon", label: "Digimon Card Game" },
+  { slug: "fab", label: "Flesh and Blood" },
+  { slug: "unionarena", label: "Union Arena" },
+  { slug: "dbfw", label: "Dragon Ball Fusion World" },
+  { slug: "gundam", label: "Gundam Card Game" },
+  { slug: "riftbound", label: "Riftbound" },
   { slug: "naruto", label: "Naruto Card Game (2002~2006)" },
   { slug: "hxh", label: "Hunter × Hunter Carddass" }
 ];
+
+// SEM piso de cartas por set, de propósito. Um piso (mesmo baixo, tipo 3)
+// tiraria a página de ~20 sets promo do Pokémon e do One Piece que já estão no
+// ar há meses — URL indexada que some vira 404, e isso custa mais do que
+// ganharia evitando página fina. Set de 2 cartas é conteúdo legítimo pra quem
+// procura por ele pelo nome.
 
 // A CSP vem do header em _headers (política única do site inteiro) — estas
 // páginas não levam <meta> de CSP, como as demais.
