@@ -3902,7 +3902,13 @@ a.hub-tile:hover {
 .admin-note { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
 /* Modo sensível: borra os totais de valor (portfólio/coleção/vendas) pra dar
-   print sem revelar quanto vale. Mira os totais por id + a classe .sensitive-value. */
+   print sem revelar quanto vale. Mira os totais por id + a classe .sensitive-value.
+
+   A REGRA (a mesma do "Visual Privacy Mode" do Trading 212): some o DINHEIRO,
+   ficam as PORCENTAGENS e o formato do gráfico. Quem grava vídeo ou posta print
+   ainda consegue falar do desempenho da coleção sem expor o patrimônio — se a
+   variação sumisse junto, não sobraria conversa. Por isso o #pfChartDelta não
+   está aqui: ele é borrado em pedaços (só a parte em R$), no seletor abaixo. */
 [data-sensitive="on"] #totalValue,
 [data-sensitive="on"] #wishlistValue,
 [data-sensitive="on"] #bindersValue,
@@ -3910,10 +3916,26 @@ a.hub-tile:hover {
 [data-sensitive="on"] #dashValue,
 [data-sensitive="on"] #salesDashValue,
 [data-sensitive="on"] #topCards .num,
+[data-sensitive="on"] #rawValue,
+[data-sensitive="on"] #gradedValue,
+[data-sensitive="on"] #investedValue,
+[data-sensitive="on"] #wishlistSplit,
+[data-sensitive="on"] #pfChartValue,
+[data-sensitive="on"] .pf-head-delta .pf-cash,
+[data-sensitive="on"] .pf-comp-val,
+[data-sensitive="on"] .pf-list-val,
+[data-sensitive="on"] .pf-list-gap,
+[data-sensitive="on"] .pf-axis,
+[data-sensitive="on"] .pf-hilo text,
+[data-sensitive="on"] .pf-tip strong,
 [data-sensitive="on"] .sensitive-value {
   filter: blur(8px); -webkit-filter: blur(8px);
   user-select: none; pointer-events: none;
 }
+/* O botão de privacidade fica na cabeça da página, ao lado do "Exportar CSV" —
+   o efeito aparece ali, e é ali que a pessoa lembra de ligar antes do print. */
+.pf-privacy { display: inline-flex; align-items: center; gap: 6px; }
+.pf-privacy[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
 .auth-email { color: var(--subtle); font-size: 12px; cursor: default; word-break: break-all; }
 .auth-email:hover { background: transparent; color: var(--subtle); }
 /* Deslogado: botão "Conta ▾" abre o mesmo menu (entrar + exportar/importar). */
@@ -5345,6 +5367,28 @@ a.progress-row:hover {
   margin-bottom: 18px;
   box-shadow: var(--shadow);
 }
+/* Cabeçalho do gráfico: valor grande + variação da faixa + rótulo do período.
+   baseline e não center: os três têm tamanhos bem diferentes e alinhar pelo
+   meio deixava o "(3,4%)" flutuando acima da base do número grande. */
+.pf-chart-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin-bottom: 10px;
+}
+.pf-head-value {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  /* O scrub troca este número a cada pixel do arrasto: sem largura fixa por
+     dígito, o texto ao lado dança horizontalmente enquanto o dedo anda. */
+  font-variant-numeric: tabular-nums;
+}
+.pf-head-delta { font-size: 14px; font-weight: 800; color: var(--muted); font-variant-numeric: tabular-nums; }
+.pf-head-delta.is-up { color: #2ecc71; }
+.pf-head-delta.is-down { color: #e8553c; }
+.pf-head-when { font-size: 12.5px; color: var(--subtle); font-weight: 600; margin-left: auto; }
 .pf-chart-controls {
   display: flex;
   flex-wrap: wrap;
@@ -5353,7 +5397,28 @@ a.progress-row:hover {
   gap: 10px;
   margin-bottom: 12px;
 }
+/* Seletor de modo do gráfico (Séries | Por jogo | %). Mesmo idioma visual do
+   .pf-ranges — são os dois controles do mesmo cartão. */
+.pf-modes { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+.pf-mode-btn {
+  min-height: 32px;
+  padding: 0 12px;
+  border: none;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pf-mode-btn.active { background: var(--accent-soft); color: var(--accent); }
+/* O % é um liga-desliga, não uma 3ª opção do grupo: a divisória separa ele dos
+   dois modos, que são exclusivos entre si. */
+.pf-mode-pct { border-left: 1px solid var(--line); min-width: 38px; }
 .pf-series { display: flex; flex-wrap: wrap; gap: 6px; }
+/* "Todos os jogos": o quadradinho ☑/☐ no lugar da bolinha de cor — não é uma
+   série, é um atalho que liga/desliga as outras. */
+.pf-games-all .pf-tick { font-size: 13px; line-height: 1; }
+.pf-games-all.active { color: var(--text); border-color: var(--accent); background: var(--accent-soft); }
 .pf-series-chip {
   display: inline-flex;
   align-items: center;
@@ -5411,6 +5476,10 @@ a.progress-row:hover {
    parecendo furo no tema claro e no escuro. */
 .pf-dot { fill: var(--surface); stroke-width: 2; }
 .pf-area { stroke: none; }
+/* Linha do MERCADO (benchmark): tracejada e mais fina — é referência, não uma
+   coleção sua, e a diferença precisa aparecer sem depender da cor. */
+.pf-line-bench { stroke-width: 1.8; stroke-dasharray: 5 4; opacity: 0.85; }
+.pf-mode-bench { border-left: 1px solid var(--line); }
 .pf-grid { stroke: var(--line); stroke-width: 1; opacity: 0.5; }
 .pf-axis { fill: var(--subtle); font-size: 11px; }
 .pf-xaxis { fill: var(--subtle); font-size: 11px; }
@@ -5425,6 +5494,62 @@ a.progress-row:hover {
 .pf-tip-date { display: block; font-weight: 800; margin-bottom: 3px; opacity: 0.85; }
 .pf-tip-row { display: block; }
 .pf-tip-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+/* Vendas: nota de cobertura ("o resultado considera N de M vendas") + barras por
+   mês. A nota é informação, não erro — daí o tom neutro com destaque só no link. */
+.pf-coverage {
+  margin: 10px 0 0;
+  padding: 9px 12px;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.pf-coverage a { color: var(--accent); font-weight: 700; margin-left: 6px; }
+.pf-months { margin-top: 14px; }
+.pf-months-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-size: 12.5px; color: var(--muted); margin-bottom: 6px; }
+.pf-months-head strong { color: var(--text); font-size: 13px; }
+.pf-mbars { display: flex; align-items: flex-end; gap: 4px; height: 90px; }
+/* Cada barra é uma coluna que cresce de baixo: flex-end no pai + altura em % no
+   preenchimento. O rótulo fica FORA da área que escala, senão encolhe junto. */
+.pf-mbar { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; gap: 3px; }
+.pf-mbar-fill { display: block; width: 100%; background: var(--accent); opacity: 0.55; border-radius: 3px 3px 0 0; }
+.pf-mbar:hover .pf-mbar-fill { opacity: 0.9; }
+.pf-mbar-lbl { font-size: 10px; color: var(--subtle); text-align: center; white-space: nowrap; overflow: hidden; }
+/* Taxa descontada, ao lado do preço bruto no histórico de vendas. */
+.sold-fee { display: block; font-size: 10.5px; color: var(--subtle); font-weight: 700; cursor: help; }
+/* Os dois campos de taxa (% e dinheiro) dividem a linha no modal "Vendi". */
+.sold-fee-fields { display: flex; gap: 8px; }
+.sold-fee-pct { flex: 0 0 78px; }
+/* Listas & Binders: uma linha por visão, clicável, com o valor à direita. */
+.pf-list-note { margin: 0 0 10px; font-size: 12.5px; color: var(--subtle); }
+.pf-list-rows { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--panel); }
+.pf-list-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--text);
+  font-size: 14px;
+}
+.pf-list-row:last-child { border-bottom: none; }
+.pf-list-row:hover { background: var(--surface); }
+.pf-list-dot { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.pf-list-name { font-weight: 650; }
+/* O nome cede espaço antes de tudo: numa lista com nome longo, é ele que deve
+   truncar, não o valor (que é o dado da tela). */
+.pf-list-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pf-list-meta { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.pf-list-gap { margin-left: auto; font-size: 12.5px; color: #96700f; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pf-list-val { margin-left: auto; font-weight: 750; font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* Com "completar" na linha, ele já empurrou tudo pra direita — o valor não pode
+   empurrar de novo, senão os dois se separam nas pontas. */
+.pf-list-gap + .pf-list-val { margin-left: 0; }
+.pf-list-floor { color: var(--subtle); font-weight: 700; cursor: help; }
+[data-theme="dark"] .pf-list-gap { color: #e8c46a; }
+/* Abertura do card de desejos (wishlist × binder). */
+.pf-stat-split { display: block; margin-top: 2px; font-size: 11.5px; color: var(--subtle); font-weight: 600; }
 .pf-chart-empty {
   margin: 0;
   padding: 40px 12px;
@@ -6174,8 +6299,13 @@ a.dash-profile-handle:hover, a.shared-kind:hover,
 .page-head:has(~ .collection-toolbar) { margin-bottom: 10px; }
 /* No Portfólio o filtro de jogo fica colado no box do gráfico (o .game-filter é
    margin:0 e o .pf-chart não tem margin-top) — dá respiro em cima e embaixo pra
-   as cápsulas não encavalarem, inclusive quando quebram pra 2 linhas. */
-#pfGameFilter { margin: 6px 0 18px; }
+   as cápsulas não encavalarem, inclusive quando quebram pra 2 linhas.
+   Era #pfGameFilter; o id virou #gameFilter (o mesmo das outras telas, pra herdar
+   os 13 jogos e a gaveta do mobile), então a marca de "é o do Portfólio" passou a
+   ser esta classe. Dupla classe de propósito: vence o margin:0 do .game-filter
+   sem depender de vir depois dele no arquivo — e, por citar um seletor fora do
+   prefixo pf-, o split-css deixa a regra no núcleo, que é onde ela funciona. */
+.game-filter.pf-game-filter { margin: 6px 0 18px; }
 .binder-editor-gamefilter { margin: 0 0 10px; }
 .collection-share-btn { margin: 0; }
 /* margin-left:auto além do space-between do pai: quando os chips estouram e as

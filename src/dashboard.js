@@ -169,6 +169,16 @@
     el.value.textContent = patrimonio > 0 ? shared.formatMoney(shared.getCurrency(), patrimonio) : "—";
     el.value.parentElement.removeAttribute("title");
 
+    // Ponto do dia no histórico do Portfólio. O Hub já tem a conta na mão, então
+    // quem nunca abre o Portfólio não fica mais com buracos no gráfico. Manda
+    // raw e graded SEPARADOS (as duas séries do gráfico) e omite `wish`: esta
+    // tela não carrega as cartas desejadas, e mandar 0 apagaria o valor que o
+    // Portfólio gravou hoje — campo ausente preserva o que já está lá.
+    shared.recordValueSnapshot(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, {
+      raw: shared.collectionValueLines(myCards, owned, prices, { gameFilter: g }).total,
+      graded: shared.gradedTotalValue(gameOf, g)
+    }])));
+
     // Mais valiosas (top 3 por valor unitário, como era na Coleção)
     const top = myCards.map((card) => {
       const variant = (card.variants || []).find((v) => owned.variantTotal(card.id, v) > 0) || shared.defaultVariant(card);

@@ -4,19 +4,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title data-i18n="title.portfolio">Portfólio - Sleevu</title>
-    <meta name="description" content="Valor estimado da sua coleção de Pokémon TCG em reais, calculado a partir dos preços registrados por carta, variante e condição.">
+    <meta name="description" content="Visão financeira da sua coleção de card games: patrimônio em cartas e graded, por jogo, com a progressão de valor no tempo.">
     <link rel="canonical" href="https://sleevu.app/portfolio">
     <meta property="og:site_name" content="Sleevu">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://sleevu.app/portfolio">
     <meta property="og:title" content="Portfólio - Sleevu">
-    <meta property="og:description" content="Valor estimado da sua coleção de Pokémon TCG em reais, calculado a partir dos preços registrados por carta, variante e condição.">
+    <meta property="og:description" content="Visão financeira da sua coleção de card games: patrimônio em cartas e graded, por jogo, com a progressão de valor no tempo.">
     <meta property="og:image" content="https://sleevu.app/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Portfólio - Sleevu">
-    <meta name="twitter:description" content="Valor estimado da sua coleção de Pokémon TCG em reais, calculado a partir dos preços registrados por carta, variante e condição.">
+    <meta name="twitter:description" content="Visão financeira da sua coleção de card games: patrimônio em cartas e graded, por jogo, com a progressão de valor no tempo.">
     <meta name="twitter:image" content="https://sleevu.app/og-image.png">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
@@ -58,6 +58,12 @@
     <main>
       <div class="page-head pf-head dash-head">
         <h1 data-i18n="nav.portfolio">Portfólio</h1>
+        <!-- Modo privacidade: borra os valores em dinheiro e MANTÉM as
+             porcentagens, pra dar print/stream sem expor o patrimônio. É o
+             mesmo data-sensitive das Configurações, com o liga-desliga aqui,
+             que é onde o efeito acontece. -->
+        <button type="button" id="pfPrivacy" class="secondary pf-privacy" aria-pressed="false" hidden></button>
+        <button type="button" id="pfRecap" class="secondary" hidden></button>
         <button type="button" id="pfExport" class="secondary" data-i18n="portfolio.export" hidden>Exportar CSV</button>
         <!-- Por ÚLTIMO de propósito: o .pf-head é flex com space-between, então
              o link precisa quebrar pra própria linha (flex-basis no CSS) pra
@@ -68,24 +74,33 @@
 
       <p class="collection-subtitle" data-i18n="portfolio.subtitle">Visão financeira da sua coleção: tudo o que você tem (cartas + graded), por jogo, com a progressão de valor no tempo.</p>
 
-      <div id="pfGameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
-        <button type="button" class="chip" data-pf-game="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
-        <button type="button" class="chip" data-pf-game="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
-        <button type="button" class="chip" data-pf-game="lorcana" aria-pressed="false" data-i18n="filter.gameLorcana">Lorcana</button>
-        <button type="button" class="chip" data-pf-game="onepiece" aria-pressed="false" data-i18n="filter.gameOnePiece">One Piece</button>
-        <button type="button" class="chip" data-pf-game="naruto" aria-pressed="false" data-i18n="filter.gameNaruto">Naruto</button>
-        <button type="button" class="chip" data-pf-game="hxh" aria-pressed="false" data-i18n="filter.gameHxh">Hunter × Hunter</button>
+      <!-- Os chips saem do GAME_SLUGS (shared.initGameFilterChips) e depois são
+           reduzidos aos jogos em que você tem alguma coisa (setGameFilterScope),
+           como na Coleção/Graded/Vendas. Antes eram CINCO fixos aqui: quem tinha
+           Magic, YGO, Gundam, FAB, DBFW, Digimon, Riftbound ou Union Arena não
+           conseguia filtrar por eles, e o <select> da gaveta mobile ficava vazio
+           porque procura por [data-game-filter]. -->
+      <div id="gameFilter" class="chip-filter game-filter pf-game-filter" role="group" aria-label="Jogo">
+        <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
       </div>
 
       <section id="portfolioChart" class="pf-chart" aria-label="Progressão do portfólio" hidden>
+        <!-- Cabeçalho: valor da série principal + variação da faixa escolhida.
+             Ao arrastar no gráfico, os dois passam a mostrar o dia sob o dedo. -->
+        <div class="pf-chart-head">
+          <strong id="pfChartValue" class="pf-head-value">—</strong>
+          <span id="pfChartDelta" class="pf-head-delta"></span>
+          <span id="pfChartWhen" class="pf-head-when"></span>
+        </div>
+        <!-- Séries × Por jogo (+ o % que normaliza as linhas). Só aparece com 2+
+             jogos com histórico — ver renderControls. -->
+        <div id="pfChartModes" class="pf-modes" role="group" aria-label="Modo do gráfico" hidden></div>
         <div class="pf-chart-controls">
           <div id="pfSeries" class="pf-series" role="group" aria-label="Séries"></div>
           <div id="pfRanges" class="pf-ranges" role="group" aria-label="Período"></div>
         </div>
         <div id="pfChartBody" class="pf-chart-body"></div>
       </section>
-
-      <section id="portfolioInsights" class="pf-insights" aria-label="Variação do portfólio" hidden></section>
 
       <section class="stats-grid" aria-label="Resumo do portfólio">
         <article class="stat-grand">
@@ -107,6 +122,9 @@
         <article>
           <span id="wishlistValue">R$ 0,00</span>
           <p data-i18n="portfolio.desejos">desejos (wishlist + binder)</p>
+          <!-- Abre o número em wishlist × faltantes de binder: as duas metades
+               levam a ações diferentes. Só aparece quando as duas existem. -->
+          <small id="wishlistSplit" class="pf-stat-split" hidden></small>
         </article>
         <article>
           <span id="pricedCopies">0/0</span>
@@ -125,7 +143,11 @@
         <div id="pfBreakdownBody" class="pf-comp-block"></div>
       </section>
 
-      <section id="pfInvest" class="pf-invest" aria-label="Investimento (custo, lucro e vendas)" hidden></section>
+      <section id="pfLists" class="pf-invest" aria-label="Valor das listas e binders" hidden></section>
+
+      <section id="pfInvest" class="pf-invest" aria-label="Posições (custo e lucro potencial)" hidden></section>
+
+      <section id="pfSales" class="pf-invest" aria-label="Vendas realizadas" hidden></section>
 
       <section id="pfMovers" class="pf-invest" aria-label="Maiores altas e quedas da semana" hidden></section>
 

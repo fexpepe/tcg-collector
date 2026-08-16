@@ -227,7 +227,9 @@
       elements.dashMarkup.classList.toggle("is-up", mk > 0);
     }
     if (elements.dashSold) {
-      const soldTotal = sold.list().reduce((sum, it) => sum + shared.moneyToCurrent(it.price, it.cur), 0);
+      // LÍQUIDO (já sem taxa/frete): é o que de fato entrou. O bruto continua
+      // visível no histórico, linha a linha.
+      const soldTotal = sold.list().reduce((sum, it) => sum + shared.soldValues(it).net, 0);
       elements.dashSold.textContent = soldTotal > 0 ? shared.formatMoney(cur, soldTotal) : "—";
     }
   }
@@ -308,6 +310,8 @@
     const cond = sales.condOf(cardId, variant, idx);
     const cost = costs.get(cardId, variant);
     const paidNow = cost ? shared.moneyToCurrent(cost.v, cost.cur) : 0;
+    const feePct = shared.getSaleFeePct();
+    const feeInicial = feePct > 0 ? Math.round(price * (feePct / 100) * 100) / 100 : 0;
     const src = shared.cardImageSources(card);
     const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, thumb: true });
     modal.innerHTML = `<div class="sales-picker-backdrop" data-sold-close></div>
@@ -325,6 +329,16 @@
             <input type="text" inputmode="decimal" class="sale-price" id="soldPriceInput" value="${escapeAttribute(price > 0 ? price.toFixed(2).replace(".", ",") : "")}" placeholder="0,00"></span></label>
           <label class="sold-confirm-field"><span>${escapeHtml(t("sales.sold.date"))}</span>
             <input type="date" id="soldDateInput" value="${new Date().toISOString().slice(0, 10)}"></label>
+          <!-- Taxa/frete: a comissão do marketplace (a Liga fica com ~10%) e o
+               envio saem do SEU bolso, então sem eles o "resultado" é bruto e
+               otimista. O % é lembrado (shared.getSaleFeePct) e recalcula o
+               valor sozinho; quem preferir digita direto em dinheiro. -->
+          <label class="sold-confirm-field"><span>${escapeHtml(t("sales.sold.fee"))}</span>
+            <span class="sold-fee-fields">
+              <span class="sale-price-field sold-fee-pct"><input type="text" inputmode="decimal" class="sale-price" id="soldFeePctInput" value="${escapeAttribute(feePct > 0 ? String(feePct).replace(".", ",") : "")}" placeholder="0"><span class="sale-cur">%</span></span>
+              <span class="sale-price-field"><span class="sale-cur">${escapeHtml(sym)}</span>
+              <input type="text" inputmode="decimal" class="sale-price" id="soldFeeInput" value="${escapeAttribute(feeInicial > 0 ? feeInicial.toFixed(2).replace(".", ",") : "")}" placeholder="0,00"></span>
+            </span></label>
           <!-- Custo EDITÁVEL na hora da venda. Antes era só um texto informativo:
                quem não tinha preenchido o custo na Coleção vendia com paid=0 e a
                venda sumia do lucro do Portfólio sem avisar. Vem pré-preenchido
@@ -342,6 +356,23 @@
       </section>`;
     document.body.classList.add("preview-open");
     const close = () => { modal.remove(); document.body.classList.remove("preview-open"); };
+    // Os dois campos de taxa são a MESMA taxa em unidades diferentes: mexer no %
+    // recalcula o dinheiro; mexer no dinheiro recalcula o %. Sem esse espelho,
+    // um dos dois fica mentindo na tela até o usuário fechar o modal.
+    const lerPreco = () => shared.parseMoney(String(modal.querySelector("#soldPriceInput").value).trim());
+    modal.addEventListener("input", (event) => {
+      const pctEl = modal.querySelector("#soldFeePctInput");
+      const feeEl = modal.querySelector("#soldFeeInput");
+      if (!pctEl || !feeEl) return;
+      const preco = lerPreco();
+      if (event.target === pctEl || event.target.id === "soldPriceInput") {
+        const pct = shared.parseMoney(String(pctEl.value).trim());
+        if (pct > 0 && preco > 0) feeEl.value = (preco * (pct / 100)).toFixed(2).replace(".", ",");
+      } else if (event.target === feeEl) {
+        const fee = shared.parseMoney(String(feeEl.value).trim());
+        pctEl.value = preco > 0 && fee > 0 ? (Math.round((fee / preco) * 1000) / 10).toString().replace(".", ",") : "";
+      }
+    });
     modal.addEventListener("click", (event) => {
       if (event.target.closest("[data-sold-close]")) { close(); return; }
       if (!event.target.closest("[data-sold-confirm]")) return;
@@ -349,6 +380,11 @@
       const amount = shared.parseMoney(text);
       const date = modal.querySelector("#soldDateInput").value || new Date().toISOString().slice(0, 10);
       const paidAmount = shared.parseMoney(String(modal.querySelector("#soldPaidInput").value).trim());
+      const feeAmount = shared.parseMoney(String(modal.querySelector("#soldFeeInput").value).trim());
+      // Lembra o % pra próxima venda (é sempre o mesmo marketplace, na prática).
+      const pctDigitado = shared.parseMoney(String(modal.querySelector("#soldFeePctInput").value).trim());
+      if (pctDigitado > 0) shared.setSaleFeePct(pctDigitado);
+      else if (feeAmount > 0 && amount > 0) shared.setSaleFeePct((feeAmount / amount) * 100);
       // Corrigiu/informou o custo aqui? Guarda na carta também: as cópias que
       // sobraram passam a ter o custo certo, e não se digita de novo na próxima.
       if (paidAmount > 0 && paidAmount !== paidNow) costs.set(cardId, variant, paidAmount, shared.getCurrency());
@@ -356,7 +392,7 @@
       // Comunidade agrega por jogo — vender uma carta de Magic numa sessão
       // Pokémon mandaria o ponto pro jogo errado.
       const cardGame = (cardsById.get(cardId) || {}).game;
-      sold.add({ cardId, variant, cond, price: amount, paid: paidAmount, cur: shared.getCurrency(), date, game: cardGame });
+      sold.add({ cardId, variant, cond, price: amount, paid: paidAmount, fee: feeAmount, cur: shared.getCurrency(), date, game: cardGame });
       sales.remove(cardId, variant, idx);
       removeCopyFromCollection(cardId, variant, cond);
       close();
@@ -387,13 +423,15 @@
     if (!items.length) { listEl.innerHTML = ""; if (sumEl) sumEl.textContent = ""; return; }
     const cur = shared.getCurrency();
     const fmtDate = (s) => { const m = String(s).match(/^(\d{4})-(\d{2})-(\d{2})$/); return m ? `${m[3]}/${m[2]}/${m[1].slice(2)}` : s; };
-    let totalSold = 0, totalPnl = 0, pnlCount = 0;
+    let totalSold = 0, totalPnl = 0, pnlCount = 0, totalFee = 0;
     const rows = items.map(({ it, card }) => {
-      const price = shared.moneyToCurrent(it.price, it.cur);
-      const paid = shared.moneyToCurrent(it.paid, it.cur);
-      totalSold += price;
-      const hasPnl = it.paid > 0;
-      const pnl = price - paid;
+      // shared.soldValues: mesma fórmula do Portfólio, com o câmbio congelado na
+      // data e a taxa descontada (líquido = preço − taxa; pnl = líquido − pago).
+      const v = shared.soldValues(it);
+      const price = v.price, paid = v.paid;
+      totalSold += price; totalFee += v.fee;
+      const hasPnl = v.hasCost;
+      const pnl = v.pnl;
       if (hasPnl) { totalPnl += pnl; pnlCount++; }
       const src = shared.cardImageSources(card);
       const thumb = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
@@ -405,7 +443,8 @@
         <span class="sold-thumb">${thumb}</span>
         <span class="sold-info"><strong>${escapeHtml(card.name)}</strong><span>${escapeHtml(card.set)} · ${escapeHtml(it.variant)} · ${escapeHtml(it.cond)}</span></span>
         <span class="sold-paid">${it.paid > 0 ? escapeHtml(shared.formatMoney(cur, paid)) : "—"}</span>
-        <span class="sold-price">${escapeHtml(shared.formatMoney(cur, price))}</span>
+        <span class="sold-price">${escapeHtml(shared.formatMoney(cur, price))}${v.fee > 0
+          ? `<small class="sold-fee" title="${escapeAttribute(t("sales.sold.feeHint", { v: shared.formatMoney(cur, v.fee) }))}">−${escapeHtml(shared.formatMoney(cur, v.fee))}</small>` : ""}</span>
         ${pnlHtml}
         <button type="button" class="sale-remove sold-del" data-sold-del title="${escapeAttribute(t("sales.sold.delete"))}" aria-label="${escapeAttribute(t("sales.sold.delete"))}">✕</button>
       </div>`;
@@ -418,6 +457,7 @@
       </div>` + rows;
     if (sumEl) {
       let s = `${items.length} · ${shared.formatMoney(cur, totalSold)}`;
+      if (totalFee > 0) s += ` · ${t("sales.sold.feeShort")} −${shared.formatMoney(cur, totalFee)}`;
       if (pnlCount) s += ` · ${t("sales.sold.result")} ${totalPnl >= 0 ? "+" : "−"}${shared.formatMoney(cur, Math.abs(totalPnl))}`;
       sumEl.textContent = s;
     }

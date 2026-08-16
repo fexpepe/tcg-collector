@@ -1578,25 +1578,45 @@
       // Mais recente primeiro (ordem de registro).
       list: () => data.order.filter((k) => data.items[k]).map((k) => {
         const e = data.items[k];
-        return { sid: k, cardId: e.cardId, variant: e.variant || "Normal", cond: e.cond || "NM", price: Number(e.price) || 0, paid: Number(e.paid) || 0, cur: e.cur || "BRL", date: e.date || "" };
+        return {
+          sid: k, cardId: e.cardId, variant: e.variant || "Normal", cond: e.cond || "NM",
+          price: Number(e.price) || 0, paid: Number(e.paid) || 0, cur: e.cur || "BRL", date: e.date || "",
+          // `fee` = taxa/frete que saiu do seu bolso na venda (mesma moeda do
+          // preço). `brl` = o valor em reais NA DATA da venda; ver o add().
+          fee: Number(e.fee) || 0, brl: Number(e.brl) || 0, paidBrl: Number(e.paidBrl) || 0, feeBrl: Number(e.feeBrl) || 0
+        };
       }),
       add(rec) {
         const sid = uid();
         const cur = rec.cur || getCurrency();
+        // CÂMBIO CONGELADO: guarda também o valor em BRL do dia da venda. Sem
+        // isso, uma venda em dólar mudava de resultado toda vez que o câmbio
+        // mexia — e resultado REALIZADO não flutua: o dinheiro já entrou. O
+        // campo em moeda original fica pra exibir na moeda em que foi feita.
+        const brl = toBrl(rec.price, cur);
+        const paidBrl = toBrl(rec.paid, cur);
+        const feeBrl = toBrl(rec.fee, cur);
         data.items[sid] = {
           cardId: rec.cardId, variant: rec.variant || "Normal", cond: rec.cond || "NM",
           price: Math.round((Number(rec.price) || 0) * 100) / 100,
           paid: Math.round((Number(rec.paid) || 0) * 100) / 100,
+          fee: Math.round((Number(rec.fee) || 0) * 100) / 100,
           cur: cur, date: rec.date || new Date().toISOString().slice(0, 10)
         };
+        // Só grava o congelado quando o câmbio estava carregado — número errado
+        // é pior que número ausente (quem lê cai no valor em moeda original).
+        if (brl != null) data.items[sid].brl = Math.round(brl * 100) / 100;
+        if (paidBrl != null) data.items[sid].paidBrl = Math.round(paidBrl * 100) / 100;
+        if (feeBrl != null) data.items[sid].feeBrl = Math.round(feeBrl * 100) / 100;
         data.order.unshift(sid);
         save();
         // Preço da Comunidade, série VENDAS: é o sinal mais valioso do agregado
         // (preço que alguém realmente pagou, não pedida). Convertido pra BRL —
         // sem câmbio carregado a gente DESISTE em vez de mandar número errado.
         // `rec.game` vem de quem registra (a venda é global, então a store não
-        // sabe o jogo); sem ele cai no jogo da sessão.
-        const brl = toBrl(rec.price, cur);
+        // sabe o jogo); sem ele cai no jogo da sessão. Vai o preço CHEIO: o que
+        // interessa ao agregado é por quanto a carta saiu, não quanto sobrou pro
+        // vendedor depois da comissão do site.
         if (brl != null) {
           contributePrice({
             game: rec.game, cardId: rec.cardId, variant: rec.variant || "Normal",
@@ -1609,6 +1629,35 @@
     };
   }
   function readSoldList() { return createSoldStore().list(); }
+
+  // Taxa padrão de venda (%), lembrada entre vendas: quem vende pela Liga informa
+  // a comissão uma vez e ela vem pré-preenchida nas próximas. Global (não por
+  // jogo) — é uma característica de ONDE você vende, não do que você vende.
+  const SALE_FEE_KEY = "tcg-collector-pref-sale-fee";
+  function getSaleFeePct() {
+    try { const v = Number(localStorage.getItem(SALE_FEE_KEY)); return v > 0 && v < 100 ? v : 0; } catch (e) { return 0; }
+  }
+  function setSaleFeePct(pct) {
+    const v = Math.max(0, Math.min(99, Number(pct) || 0));
+    try { if (v > 0) localStorage.setItem(SALE_FEE_KEY, String(v)); else localStorage.removeItem(SALE_FEE_KEY); } catch (e) { /* ignora */ }
+  }
+
+  // Os números de UMA venda na moeda atual. Uma fórmula só pras duas telas que
+  // mostram vendas (Vendas e Portfólio) — foi ter duas contas do patrimônio que
+  // já fez Coleção e Portfólio discordarem.
+  //
+  // Prefere o BRL CONGELADO na data da venda; cai na moeda original quando o
+  // registro é anterior a esse campo (ou o câmbio não tinha carregado). Assim o
+  // resultado de uma venda antiga em dólar não muda quando o dólar muda.
+  //   liquido = preço − taxa      (o que de fato entrou no bolso)
+  //   pnl     = líquido − pago    (o resultado realizado; só com custo)
+  function soldValues(it) {
+    const conv = (brl, orig) => (brl > 0 ? moneyToCurrent(brl, "BRL") : moneyToCurrent(orig, it.cur));
+    const price = conv(it.brl, it.price);
+    const paid = conv(it.paidBrl, it.paid);
+    const fee = conv(it.feeBrl, it.fee);
+    return { price, paid, fee, net: price - fee, pnl: price - fee - paid, hasCost: (Number(it.paid) || 0) > 0 };
+  }
 
   // Custo pago por carta×variante (UNITÁRIO, na moeda em que foi digitado).
   // Simplificação deliberada (vs. lotes por cópia do Collectr): 1 custo médio
@@ -2875,6 +2924,81 @@
     });
     return { copies, distinct };
   }
+  // ── Histórico de valor (history-v2), por jogo ──────────────────────────────
+  // Ponto do dia: {d, c, b, w} = raw, graded, desejos — sempre em BRL, porque a
+  // moeda do header muda e o histórico não pode mudar junto.
+  //
+  // Isto morava no portfolio.js, e por isso o ponto do dia só era gravado por
+  // quem ABRIA o Portfólio: quem usa o site pelo Hub e pela Coleção — que
+  // calculam o MESMO patrimônio — deixava buracos no histórico, e o gráfico
+  // depois mostrava uma reta entre duas datas distantes. Aqui em cima, qualquer
+  // tela que já tenha a conta na mão grava o ponto.
+  const histKeyOf = (g) => gameKey("history-v2", g);
+  function valueHistory(game) {
+    try {
+      const a = JSON.parse(localStorage.getItem(histKeyOf(game)) || "[]");
+      return Array.isArray(a) ? a : [];
+    } catch (e) { return []; }
+  }
+  // Migra o histórico antigo (v1: c=coleção, b=binders, w=wishlist) pro v2 do
+  // mesmo jogo, mapeando c e w; graded (b) começa do zero (antes nem existia).
+  function migrateHistoryV1(g) {
+    if (valueHistory(g).length) return;
+    try {
+      const old = JSON.parse(localStorage.getItem(gameKey("history-v1", g)) || "[]");
+      if (!Array.isArray(old) || !old.length) return;
+      const v2 = old.map((p) => ({ d: p.d, c: p.c || 0, b: 0, w: p.w || 0 }));
+      localStorage.setItem(histKeyOf(g), JSON.stringify(v2));
+      marcaSuja(histKeyOf(g)); // escrita direta: acorda o laço de sync
+    } catch (e) { /* ignora */ }
+  }
+  // Espelha o resumo de UM jogo num cookie .sleevu.app pro HUB somar sem iframe.
+  // c=raw, b=graded, w=desejos (BRL). h = histórico do patrimônio (c+b) do jogo.
+  function writePortfolioCookie(g, hist) {
+    const last = hist[hist.length - 1] || {};
+    const h = hist.slice(-50).map((p) => [p.d, Math.round(((p.c || 0) + (p.b || 0)) * 100) / 100]);
+    const payload = { c: last.c || 0, b: last.b || 0, w: last.w || 0, ts: Date.now(), h: h };
+    try {
+      let c = "sleevu_pf_" + g + "=" + encodeURIComponent(JSON.stringify(payload)) + "; Path=/; Max-Age=" + (180 * 24 * 3600) + "; SameSite=Lax";
+      if (/(^|\.)sleevu\.app$/i.test(location.hostname)) c += "; Secure; Domain=.sleevu.app";
+      document.cookie = c;
+    } catch (e) { /* ignora */ }
+  }
+  // Grava o ponto de hoje de um ou mais jogos e atualiza os cookies do hub.
+  //   perGame = { pokemon: { raw, graded, wish }, lorcana: {…} }  (valores na
+  //   moeda ATUAL — a conversão pra BRL é feita aqui).
+  //
+  // Campo AUSENTE (undefined/null) preserva o que já está gravado, em vez de
+  // zerar: o Hub e a Coleção sabem o patrimônio mas não calculam os desejos, e
+  // gravar w:0 de lá apagaria o valor que o Portfólio tinha registrado no mesmo
+  // dia. Zero EXPLÍCITO continua sendo gravado (vendeu tudo é um dado real).
+  function recordValueSnapshot(perGame) {
+    const hoje = new Date().toISOString().slice(0, 10);
+    const paraBRL = (v) => { const r = convertMoney(v, currentCurrency, "BRL"); return r == null ? v : Math.round(r * 100) / 100; };
+    Object.keys(perGame || {}).forEach((g) => {
+      const dados = perGame[g] || {};
+      migrateHistoryV1(g);
+      const hist = valueHistory(g);
+      const doDia = hist.length && hist[hist.length - 1].d === hoje ? hist[hist.length - 1] : null;
+      const anterior = doDia || hist[hist.length - 1] || {};
+      const campo = (novo, antigo) => (novo == null ? (Number(antigo) || 0) : paraBRL(novo));
+      const ponto = {
+        d: hoje,
+        c: campo(dados.raw, anterior.c),
+        b: campo(dados.graded, anterior.b),
+        w: campo(dados.wish, anterior.w)
+      };
+      // Jogo sem nada e sem histórico não entra: 13 jogos × um ponto de zeros
+      // por dia poluiria o localStorage e o sync de quem coleciona um só.
+      if (!hist.length && !ponto.c && !ponto.b && !ponto.w) return;
+      if (doDia) hist[hist.length - 1] = ponto; else hist.push(ponto);
+      if (hist.length > 800) hist.splice(0, hist.length - 800);
+      try { localStorage.setItem(histKeyOf(g), JSON.stringify(hist)); marcaSuja(histKeyOf(g)); }
+      catch (e) { notifyStorageFull(); }
+      writePortfolioCookie(g, hist);
+    });
+  }
+
   // Retrato instantâneo do patrimônio, SEM catálogo e SEM rede: soma por jogo
   // o último ponto do histórico do portfólio (history-v2 — que SINCRONIZA na
   // nuvem, então num aparelho recém-logado ele já chegou com o sync do boot) e
@@ -6994,9 +7118,12 @@
     gradedGradeText,
     gradedBadgeHtml,
     gradedSlabsValued,
+    gradedTotalValue,
     collectionValueLines,
     collectionNetWorth,
     valueSnapshot,
+    valueHistory,
+    recordValueSnapshot,
     currencySymbol: saleCurrencySymbol,
     distBarsHtml,
     memoValue,
@@ -7004,6 +7131,9 @@
     createCostsStore,
     createWishTargetsStore,
     readSoldList,
+    soldValues,
+    getSaleFeePct,
+    setSaleFeePct,
     moneyToCurrent,
     snapshotKeys,
     toastUndo,

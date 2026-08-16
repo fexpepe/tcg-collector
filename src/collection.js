@@ -341,6 +341,15 @@
           ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
         hydrateFilters();
         bindShareButton();
+        // Ponto do dia no histórico do Portfólio (mesmo motivo do Hub: quem vive
+        // na Coleção não deixa mais buraco no gráfico). Sobre `cards` — a lista
+        // INTEIRA, não o ownedCards() da tela: aquele já vem filtrado pelo chip
+        // de jogo, e gravar por ele zeraria os outros jogos no dia. `wish` fica
+        // de fora aqui: a tela não carrega as cartas desejadas.
+        shared.recordValueSnapshot(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, {
+          raw: shared.collectionValueLines(cards, owned, prices, { gameFilter: g }).total,
+          graded: shared.gradedTotalValue(gameOf, g)
+        }])));
         if (result.viaApi) {
           // Cartas na tela JÁ; os denominadores de progresso (X/Y por set/artista)
           // vêm das FATIAS de índice em 2º plano — sem esse índice, totalsForTab
