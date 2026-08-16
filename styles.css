@@ -5353,7 +5353,28 @@ a.progress-row:hover {
   gap: 10px;
   margin-bottom: 12px;
 }
+/* Seletor de modo do gráfico (Séries | Por jogo | %). Mesmo idioma visual do
+   .pf-ranges — são os dois controles do mesmo cartão. */
+.pf-modes { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+.pf-mode-btn {
+  min-height: 32px;
+  padding: 0 12px;
+  border: none;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pf-mode-btn.active { background: var(--accent-soft); color: var(--accent); }
+/* O % é um liga-desliga, não uma 3ª opção do grupo: a divisória separa ele dos
+   dois modos, que são exclusivos entre si. */
+.pf-mode-pct { border-left: 1px solid var(--line); min-width: 38px; }
 .pf-series { display: flex; flex-wrap: wrap; gap: 6px; }
+/* "Todos os jogos": o quadradinho ☑/☐ no lugar da bolinha de cor — não é uma
+   série, é um atalho que liga/desliga as outras. */
+.pf-games-all .pf-tick { font-size: 13px; line-height: 1; }
+.pf-games-all.active { color: var(--text); border-color: var(--accent); background: var(--accent-soft); }
 .pf-series-chip {
   display: inline-flex;
   align-items: center;

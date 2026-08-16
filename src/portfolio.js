@@ -561,23 +561,66 @@
   let activeSeries = new Set(["combined"]);
   let activeRange = "1m";
   let controlsBound = false;
+  // Modo do gráfico: "series" (patrimônio/cartas/graded/desejos) ou "games" (uma
+  // LINHA POR JOGO). Nenhum concorrente tem o segundo — e o dado já estava aqui,
+  // porque o histórico sempre foi gravado por jogo. `pctMode` normaliza cada
+  // linha a 100 no início da faixa: sem isso um jogo grande achata os pequenos e
+  // o gráfico só conta quem é maior, não quem está subindo.
+  const MODE_KEY = "tcg-pf-chart-mode", PCT_KEY = "tcg-pf-chart-pct";
+  const lePref = (k, def) => { try { return localStorage.getItem(k) || def; } catch (e) { return def; } };
+  const gravaPref = (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* ignora */ } };
+  let chartMode = lePref(MODE_KEY, "series") === "games" ? "games" : "series";
+  let pctMode = lePref(PCT_KEY, "off") === "on";
+  let activeGames = null; // Set de jogos ligados; null = ainda não inicializado
 
   const fromBRL = (v) => { const r = shared.convertMoney(v, "BRL", shared.getCurrency()); return r == null ? v : r; };
   // O histórico (leitura, gravação, migração do v1 e o cookie do hub) vive no
   // shared: o Hub e a Coleção também gravam o ponto do dia, então quem nunca
   // abre esta tela não fica mais com buracos no gráfico.
   const loadHist = (g) => shared.valueHistory(g);
+  const jogosComHistorico = () => GAMES.filter((g) => loadHist(g).length > 0);
 
-  // Série do gráfico conforme o filtro: "all" soma os jogos por data; senão um só.
+  // Linha do tempo unificada de um conjunto de jogos: a UNIÃO das datas, com o
+  // último ponto conhecido de cada jogo CARREGADO PRA FRENTE.
+  //
+  // O "carregar pra frente" conserta um erro silencioso do somatório antigo, que
+  // agrupava os pontos por data e somava só quem tinha ponto naquele dia: se o
+  // Pokémon registrou na terça e o Lorcana não, a terça saía valendo só o
+  // Pokémon — e a linha do patrimônio DESPENCAVA num dia em que nada aconteceu.
+  // Não ter medido não é valer zero: é continuar valendo o que valia.
+  // ANTES do primeiro ponto de um jogo o valor é `null`, não zero. São coisas
+  // diferentes: zero é "não tenho nada", null é "ainda não media isso". Quem
+  // começou a acompanhar Lorcana um mês depois do Pokémon não teve a coleção
+  // valendo zero naquele mês — e desenhar a linha no chão inventaria uma alta
+  // gigante no dia em que ela começou a ser medida.
+  function serieUnificada(games) {
+    const datas = [...new Set(games.flatMap((g) => loadHist(g).map((p) => p.d)))].sort();
+    const cursor = Object.fromEntries(games.map((g) => [g, 0]));
+    const ultimo = Object.fromEntries(games.map((g) => [g, null]));
+    return datas.map((d) => {
+      const porJogo = {};
+      games.forEach((g) => {
+        const h = loadHist(g);
+        while (cursor[g] < h.length && h[cursor[g]].d <= d) { ultimo[g] = h[cursor[g]]; cursor[g]++; }
+        porJogo[g] = ultimo[g];
+      });
+      return { d, porJogo };
+    });
+  }
+
+  // Pontos do gráfico no formato {d, c, b, w} (soma dos jogos do filtro) + o
+  // detalhe por jogo pendurado, que o modo "por jogo" usa. No SOMATÓRIO o jogo
+  // ainda não medido entra como 0 — o patrimônio da época de fato não o incluía.
   function chartHistory() {
-    if (gameFilter !== "all") return loadHist(gameFilter);
-    const byDate = new Map();
-    GAMES.forEach((g) => loadHist(g).forEach((p) => {
-      const cur = byDate.get(p.d) || { d: p.d, c: 0, b: 0, w: 0 };
-      cur.c += p.c || 0; cur.b += p.b || 0; cur.w += p.w || 0;
-      byDate.set(p.d, cur);
-    }));
-    return Array.from(byDate.values()).sort((a, b) => a.d.localeCompare(b.d));
+    const games = gameFilter === "all" ? jogosComHistorico() : [gameFilter];
+    return serieUnificada(games).map(({ d, porJogo }) => {
+      const p = { d, c: 0, b: 0, w: 0, porJogo };
+      games.forEach((g) => {
+        const q = porJogo[g];
+        if (q) { p.c += q.c || 0; p.b += q.b || 0; p.w += q.w || 0; }
+      });
+      return p;
+    });
   }
 
   function updateChart() {
@@ -603,31 +646,96 @@
   // calculado por outro caminho, que é como dois números que deveriam bater
   // começam a divergir.
 
+  // O modo "por jogo" só existe no filtro "Todos": com um jogo escolhido lá em
+  // cima, a linha por jogo e a do patrimônio seriam a MESMA linha.
+  const podeModoJogos = () => gameFilter === "all" && jogosComHistorico().length > 1;
+
+  // Jogos ligados no modo "por jogo". Começa com todos os que têm histórico.
+  function gamesAtivos() {
+    const disponiveis = jogosComHistorico();
+    if (!activeGames) activeGames = new Set(disponiveis);
+    const vivos = disponiveis.filter((g) => activeGames.has(g));
+    return vivos.length ? vivos : disponiveis;
+  }
+
+  function redesenha() { renderControls(); renderChart(chartHistory()); }
+
   function bindControls() {
     const seriesEl = document.getElementById("pfSeries");
     const rangeEl = document.getElementById("pfRanges");
+    const modeEl = document.getElementById("pfChartModes");
     if (seriesEl) seriesEl.addEventListener("click", (e) => {
-      const b = e.target.closest("[data-series]"); if (!b) return;
-      const k = b.dataset.series;
-      if (activeSeries.has(k)) { if (activeSeries.size > 1) activeSeries.delete(k); } else activeSeries.add(k);
-      renderControls(); renderChart(chartHistory());
+      const s = e.target.closest("[data-series]");
+      if (s) {
+        const k = s.dataset.series;
+        if (activeSeries.has(k)) { if (activeSeries.size > 1) activeSeries.delete(k); } else activeSeries.add(k);
+        redesenha(); return;
+      }
+      // "Todos os jogos": liga tudo; se já estava tudo ligado, é um jeito rápido
+      // de voltar a UMA linha só (o 1º jogo) em vez de desligar 12 chips na mão.
+      const todos = e.target.closest("[data-games-all]");
+      if (todos) {
+        const disponiveis = jogosComHistorico();
+        const tudoLigado = disponiveis.every((g) => activeGames && activeGames.has(g));
+        activeGames = new Set(tudoLigado ? disponiveis.slice(0, 1) : disponiveis);
+        redesenha(); return;
+      }
+      const chip = e.target.closest("[data-game-series]");
+      if (chip) {
+        const g = chip.dataset.gameSeries;
+        gamesAtivos(); // garante o Set inicializado
+        if (activeGames.has(g)) { if (activeGames.size > 1) activeGames.delete(g); } else activeGames.add(g);
+        redesenha();
+      }
     });
     if (rangeEl) rangeEl.addEventListener("click", (e) => {
       const b = e.target.closest("[data-range]"); if (!b) return;
       activeRange = b.dataset.range;
-      renderControls(); renderChart(chartHistory());
+      redesenha();
+    });
+    if (modeEl) modeEl.addEventListener("click", (e) => {
+      const m = e.target.closest("[data-chart-mode]");
+      if (m) { chartMode = m.dataset.chartMode; gravaPref(MODE_KEY, chartMode); redesenha(); return; }
+      const p = e.target.closest("[data-chart-pct]");
+      if (p) { pctMode = !pctMode; gravaPref(PCT_KEY, pctMode ? "on" : "off"); redesenha(); }
     });
   }
 
   function renderControls() {
     const seriesEl = document.getElementById("pfSeries");
     const rangeEl = document.getElementById("pfRanges");
-    if (seriesEl) seriesEl.innerHTML = SERIES_ORDER.map((k) =>
-      `<button type="button" class="pf-series-chip${activeSeries.has(k) ? " active" : ""}" data-series="${k}" style="--pf-color:${SERIES[k].color}">
-         <span class="pf-dot"></span>${escapeHtml(t(`portfolio.series.${k}`))}
-       </button>`).join("");
+    const modeEl = document.getElementById("pfChartModes");
+    const emJogos = chartMode === "games" && podeModoJogos();
+    if (seriesEl) {
+      if (emJogos) {
+        const disponiveis = jogosComHistorico();
+        const ligados = new Set(gamesAtivos());
+        const tudo = disponiveis.every((g) => ligados.has(g));
+        seriesEl.innerHTML =
+          `<button type="button" class="pf-series-chip pf-games-all${tudo ? " active" : ""}" data-games-all aria-pressed="${tudo}">
+             <span class="pf-tick" aria-hidden="true">${tudo ? "☑" : "☐"}</span>${escapeHtml(t("portfolio.series.allGames"))}
+           </button>`
+          + disponiveis.map((g) =>
+            `<button type="button" class="pf-series-chip${ligados.has(g) ? " active" : ""}" data-game-series="${escapeAttribute(g)}" style="--pf-color:${GAME_COLOR[g]}">
+               <span class="pf-dot"></span>${escapeHtml(shared.gameLabel(g))}
+             </button>`).join("");
+      } else {
+        seriesEl.innerHTML = SERIES_ORDER.map((k) =>
+          `<button type="button" class="pf-series-chip${activeSeries.has(k) ? " active" : ""}" data-series="${k}" style="--pf-color:${SERIES[k].color}">
+             <span class="pf-dot"></span>${escapeHtml(t(`portfolio.series.${k}`))}
+           </button>`).join("");
+      }
+    }
     if (rangeEl) rangeEl.innerHTML = RANGES.map(([k]) =>
       `<button type="button" class="pf-range-btn${k === activeRange ? " active" : ""}" data-range="${k}">${escapeHtml(t(`portfolio.range.${k}`))}</button>`).join("");
+    if (modeEl) {
+      // Sem 2 jogos com histórico o seletor de modo não tem o que oferecer.
+      modeEl.hidden = !podeModoJogos();
+      modeEl.innerHTML = modeEl.hidden ? "" :
+        `<button type="button" class="pf-mode-btn${emJogos ? "" : " active"}" data-chart-mode="series">${escapeHtml(t("portfolio.chart.modeSeries"))}</button>
+         <button type="button" class="pf-mode-btn${emJogos ? " active" : ""}" data-chart-mode="games">${escapeHtml(t("portfolio.chart.modeGames"))}</button>
+         <button type="button" class="pf-mode-btn pf-mode-pct${pctMode ? " active" : ""}" data-chart-pct aria-pressed="${pctMode}" title="${escapeAttribute(t("portfolio.chart.pctHint"))}">%</button>`;
+    }
   }
 
   // Escreve (ou apaga, sem argumento) o cabeçalho do gráfico. Fica fora do
@@ -657,13 +765,63 @@
       setChartHead(null);
       return;
     }
-    const active = SERIES_ORDER.filter((k) => activeSeries.has(k));
+    // TRAÇOS: o gráfico não conhece mais "séries" nem "jogos", só uma lista de
+    // linhas {chave, rótulo, cor, vals[]} sobre o mesmo eixo de datas. Foi o que
+    // permitiu o modo por jogo caber sem um segundo renderizador.
+    const emJogos = chartMode === "games" && podeModoJogos();
+    const traces = emJogos
+      ? gamesAtivos().map((g) => ({
+          key: g, label: shared.gameLabel(g), color: GAME_COLOR[g],
+          // null antes do 1º ponto do jogo (ver serieUnificada): a linha nasce
+          // onde a medição nasceu, em vez de vir rastejando pelo chão.
+          vals: pts.map((p) => {
+            const q = p.porJogo && p.porJogo[g];
+            return q ? fromBRL((q.c || 0) + (q.b || 0)) : null;
+          })
+        }))
+      : SERIES_ORDER.filter((k) => activeSeries.has(k)).map((k) => ({
+          key: k, label: t("portfolio.series." + k), color: SERIES[k].color,
+          vals: pts.map((p) => fromBRL(SERIES[k].get(p)))
+        }));
+    // `from` = índice do 1º valor real do traço. Os nulos só aparecem no COMEÇO
+    // (depois do 1º ponto o valor é sempre carregado pra frente), então guardar
+    // um índice basta — não é preciso quebrar a linha em pedaços.
+    traces.forEach((tr) => {
+      tr.from = tr.vals.findIndex((v) => v != null);
+      if (tr.from < 0) tr.from = tr.vals.length; // traço sem dado nenhum na faixa
+    });
+    // Traço sem nenhum ponto na faixa escolhida não vira linha invisível: sai.
+    const vivos = traces.filter((tr) => tr.from < tr.vals.length);
+    traces.length = 0; vivos.forEach((tr) => traces.push(tr));
+    if (!traces.length) {
+      body.innerHTML = `<p class="pf-chart-empty">${escapeHtml(t("portfolio.chart.startsToday"))}</p>`;
+      setChartHead(null);
+      return;
+    }
+    // Modo %: cada linha vira "quanto rendeu desde o início da faixa" (base 100).
+    // Sem isso, comparar YGO (46 mil cartas) com HxH (38) é comparar o tamanho
+    // das coleções, não o desempenho delas. A base é o 1º valor REAL do traço
+    // (não o do eixo), senão um jogo que entrou depois normalizaria por zero.
+    const money = (v) => shared.formatMoney(shared.getCurrency(), v);
+    const loc = getLocale();
+    const fmtPct = (v) => v.toLocaleString(loc, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "%";
+    if (pctMode) {
+      traces.forEach((tr) => {
+        const base = tr.vals[tr.from];
+        tr.brutos = tr.vals;                        // guarda o R$ pro cabeçalho
+        tr.vals = tr.vals.map((v) => (v == null ? null : (base > 0 ? (v / base) * 100 : 100)));
+      });
+    }
+    const fmtVal = (v) => (v == null ? "—" : (pctMode ? fmtPct(v) : money(v)));
     const W = 820, H = 252, PL = 6, PR = 6, PT = 14, PB = 28;
     let yMin = Infinity, yMax = -Infinity;
-    pts.forEach((p) => active.forEach((k) => { const v = fromBRL(SERIES[k].get(p)); if (v < yMin) yMin = v; if (v > yMax) yMax = v; }));
+    traces.forEach((tr) => tr.vals.forEach((v) => { if (v == null) return; if (v < yMin) yMin = v; if (v > yMax) yMax = v; }));
     if (!isFinite(yMin)) { yMin = 0; yMax = 1; }
     if (yMin === yMax) { yMin -= 1; yMax += 1; }
     const padY = (yMax - yMin) * 0.12; yMin -= padY; yMax += padY;
+    // A folga de 12% embaixo puxava o eixo pra baixo de zero em coleção pequena,
+    // e "−1.134" num eixo de dinheiro é um valor que não existe.
+    if (yMin < 0) yMin = 0;
     const plotW = W - PL - PR, plotH = H - PT - PB;
     const baseY = PT + plotH;
     // Eixo X pelo TEMPO, não pela posição na lista. Os pontos eram equidistantes:
@@ -676,8 +834,6 @@
     const spanMs = t1 - t0;
     const X = (i) => PL + (spanMs <= 0 ? plotW / 2 : ((msDe(pts[i]) - t0) / spanMs) * plotW);
     const Y = (v) => PT + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
-    const loc = getLocale();
-    const money = (v) => shared.formatMoney(shared.getCurrency(), v);
     const fmtDay = (s) => { const dt = new Date(s + "T00:00:00"); return ("0" + dt.getDate()).slice(-2) + "/" + ("0" + (dt.getMonth() + 1)).slice(-2); };
     // Ponto mais próximo de um x do viewBox. Com o eixo temporal os pontos não
     // são mais equidistantes, então não dá pra achar o índice por regra de três.
@@ -692,7 +848,10 @@
     for (let g = 0; g <= 3; g++) {
       const v = yMin + (g / 3) * (yMax - yMin), y = Y(v);
       grid += `<line class="pf-grid" x1="${PL}" y1="${y.toFixed(1)}" x2="${W - PR}" y2="${y.toFixed(1)}"/>`;
-      grid += `<text class="pf-axis" x="${PL + 2}" y="${(y - 4).toFixed(1)}">${escapeHtml(Math.round(v).toLocaleString(loc))}</text>`;
+      // No modo % o eixo é em pontos-base 100, não em dinheiro — sem o sufixo,
+      // "112" ao lado de uma linha normalizada se lê como R$ 112.
+      const rotulo = pctMode ? Math.round(v).toLocaleString(loc) + "%" : Math.round(v).toLocaleString(loc);
+      grid += `<text class="pf-axis" x="${PL + 2}" y="${(y - 4).toFixed(1)}">${escapeHtml(rotulo)}</text>`;
     }
     // Régua de datas (eixo X): ~6 marcações espaçadas no TEMPO (não de N em N
     // pontos — com o eixo temporal, pontos vizinhos podem estar colados e dois
@@ -715,34 +874,52 @@
     // folgada esconderia um trecho de dias seguidos todo grudado.
     let dotSpacing = plotW;
     for (let i = 1; i < pts.length; i++) dotSpacing = Math.min(dotSpacing, X(i) - X(i - 1));
-    // Área (gradiente) + linha + ponta de cada série.
+    // Área (gradiente) + linha + ponta de cada traço.
     let defs = "", areas = "", lines = "";
-    active.forEach((k) => {
-      const gid = "pfg-" + k;
-      defs += `<linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${SERIES[k].color}" stop-opacity="0.28"/><stop offset="100%" stop-color="${SERIES[k].color}" stop-opacity="0"/></linearGradient>`;
-      const linePts = pts.map((p, i) => `${X(i).toFixed(1)},${Y(fromBRL(SERIES[k].get(p))).toFixed(1)}`).join(" ");
-      areas += `<polygon class="pf-area" points="${X(0).toFixed(1)},${baseY.toFixed(1)} ${linePts} ${X(pts.length - 1).toFixed(1)},${baseY.toFixed(1)}" fill="url(#${gid})"/>`;
-      lines += `<polyline class="pf-line" points="${linePts}" stroke="${SERIES[k].color}"/>`;
+    // A área embaixo da linha só ajuda quando há POUCAS linhas: com 13 jogos
+    // ligados, treze gradientes empilhados viram uma sopa onde não se enxerga
+    // linha nenhuma. Acima de 4, fica só o traço.
+    const comArea = traces.length <= 4;
+    traces.forEach((tr) => {
+      const gid = "pfg-" + tr.key;
+      // Começa no 1º ponto real do traço (tr.from), não no início do eixo.
+      const linePts = tr.vals.slice(tr.from)
+        .map((v, j) => `${X(tr.from + j).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
+      if (comArea) {
+        defs += `<linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${tr.color}" stop-opacity="0.28"/><stop offset="100%" stop-color="${tr.color}" stop-opacity="0"/></linearGradient>`;
+        areas += `<polygon class="pf-area" points="${X(tr.from).toFixed(1)},${baseY.toFixed(1)} ${linePts} ${X(pts.length - 1).toFixed(1)},${baseY.toFixed(1)}" fill="url(#${gid})"/>`;
+      }
+      lines += `<polyline class="pf-line" points="${linePts}" stroke="${tr.color}"/>`;
       // Marcador por DIA (bolinha vazada). Só quando os pontos têm folga entre
       // si: o espaçamento vai de 135px em "7D" a 4,5px em "6M", e a partir de
       // certo ponto as bolinhas se encostam e a linha vira um borrão. O corte é
       // pelo espaço REAL (não pela faixa escolhida), porque o histórico pode ter
       // buracos — 90 dias de faixa com 12 pontos medidos cabe bolinha à vontade.
-      if (dotSpacing >= 12) {
-        lines += pts.map((p, i) =>
-          `<circle class="pf-dot" cx="${X(i).toFixed(1)}" cy="${Y(fromBRL(SERIES[k].get(p))).toFixed(1)}" r="3" stroke="${SERIES[k].color}"/>`).join("");
+      if (dotSpacing >= 12 && comArea) {
+        lines += tr.vals.map((v, i) => (v == null ? "" :
+          `<circle class="pf-dot" cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="3" stroke="${tr.color}"/>`)).join("");
       }
-      // Ponta da série: bolinha CHEIA, desenhada depois pra cobrir a vazada —
+      // Ponta do traço: bolinha CHEIA, desenhada depois pra cobrir a vazada —
       // é o valor de hoje, o único que merece destaque na linha.
-      lines += `<circle cx="${X(pts.length - 1).toFixed(1)}" cy="${Y(fromBRL(SERIES[k].get(pts[pts.length - 1]))).toFixed(1)}" r="3.5" fill="${SERIES[k].color}"/>`;
+      lines += `<circle cx="${X(pts.length - 1).toFixed(1)}" cy="${Y(tr.vals[tr.vals.length - 1]).toFixed(1)}" r="3.5" fill="${tr.color}"/>`;
     });
-    // Alta/Baixa da série principal (combinada, se ativa).
-    const primary = active.indexOf("combined") >= 0 ? "combined" : active[0];
-    const vals = pts.map((p) => fromBRL(SERIES[primary].get(p)));
-    let maxI = 0, minI = 0;
-    vals.forEach((v, i) => { if (v > vals[maxI]) maxI = i; if (v < vals[minI]) minI = i; });
+    // Alta/Baixa do traço PRINCIPAL: o patrimônio quando ele está na tela; no
+    // modo por jogo, o de maior valor hoje (a linha que o olho segue).
+    // Comparação pelo valor em DINHEIRO mesmo no modo % — lá as linhas foram
+    // normalizadas e "a maior" viraria "a que mais subiu", que não é a linha que
+    // o olho segue no gráfico.
+    const ultimoBruto = (tr) => { const a = tr.brutos || tr.vals; return a[a.length - 1] || 0; };
+    const principal = traces.find((tr) => tr.key === "combined")
+      || traces.slice().sort((a, b) => ultimoBruto(b) - ultimoBruto(a))[0];
+    const vals = principal.vals;
+    let maxI = principal.from, minI = principal.from;
+    vals.forEach((v, i) => {
+      if (v == null) return;
+      if (v > vals[maxI]) maxI = i;
+      if (v < vals[minI]) minI = i;
+    });
     const pill = (i, label, color, above) => {
-      const x = X(i), y = Y(vals[i]), txt = `${label} ${money(vals[i])}`;
+      const x = X(i), y = Y(vals[i]), txt = `${label} ${fmtVal(vals[i])}`;
       const w = 14 + txt.length * 6.1, h = 19;
       let bx = Math.max(PL, Math.min(W - PR - w, x - w / 2));
       const by = above ? y - h - 10 : y + 10;
@@ -758,10 +935,14 @@
     // move o número grande junto. A variação vai no formato combinado
     // "+R$ 120,00 (3,4%)": o Collectr mostra os dois juntos em vez de oferecer um
     // toggle %/absoluto, e num cartão estreito isso economiza um controle.
+    // O cabeçalho é SEMPRE em dinheiro, inclusive no modo %: quem normalizou as
+    // linhas quer comparar desempenho no gráfico, não parar de saber quanto tem.
+    // (No modo %, `vals` está em base 100 — daí os `brutos` guardados.)
+    const valsHead = principal.brutos || vals;
     function pintaCabecalho(i) {
-      const idx = i == null ? vals.length - 1 : i;
-      const base = vals[0];
-      const delta = vals[idx] - base;
+      const idx = i == null ? valsHead.length - 1 : Math.max(i, principal.from);
+      const base = valsHead[principal.from];
+      const delta = valsHead[idx] - base;
       const pct = base > 0 ? (delta / base) * 100 : 0;
       const dir = delta > 0.005 ? "up" : (delta < -0.005 ? "down" : "flat");
       // Seta ALÉM da cor: verde/vermelho sozinho não serve a quem não distingue
@@ -772,10 +953,14 @@
       // escreveria "28.6%" no site inteiro em português.
       const pctTxt = Math.abs(pct).toLocaleString(loc, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
       setChartHead({
-        valor: money(vals[idx]),
+        valor: money(valsHead[idx]),
         delta: `${seta} ${sinal}${money(Math.abs(delta))} (${sinal}${pctTxt}%)`,
         dir,
-        quando: i == null ? t("portfolio.chart.win." + activeRange) : fmtDay(pts[idx].d)
+        // No modo por jogo, dizer QUAL linha o número grande está seguindo —
+        // senão "R$ 6.015,00" sobre 5 linhas coloridas é um número órfão.
+        quando: i == null
+          ? (emJogos ? `${principal.label} · ${t("portfolio.chart.win." + activeRange)}` : t("portfolio.chart.win." + activeRange))
+          : fmtDay(pts[idx].d)
       });
     }
     pintaCabecalho();
@@ -801,14 +986,22 @@
       const x = X(i);
       pintaCabecalho(i); // scrub: o número grande acompanha o dia sob o dedo
       let g = `<line class="pf-guide" x1="${x.toFixed(1)}" y1="${PT}" x2="${x.toFixed(1)}" y2="${baseY.toFixed(1)}"/>`;
-      active.forEach((k) => { g += `<circle class="pf-hover-dot" cx="${x.toFixed(1)}" cy="${Y(fromBRL(SERIES[k].get(pts[i]))).toFixed(1)}" r="3.6" fill="${SERIES[k].color}"/>`; });
+      traces.forEach((tr) => {
+        if (tr.vals[i] == null) return; // jogo ainda não medido nessa data
+        g += `<circle class="pf-hover-dot" cx="${x.toFixed(1)}" cy="${Y(tr.vals[i]).toFixed(1)}" r="3.6" fill="${tr.color}"/>`;
+      });
       hoverG.innerHTML = g; hoverG.style.display = "";
-      const rows = active.map((k) => `<span class="pf-tip-row"><span class="pf-tip-dot" style="background:${SERIES[k].color}"></span>${escapeHtml(t("portfolio.series." + k))}: <strong>${escapeHtml(money(fromBRL(SERIES[k].get(pts[i]))))}</strong></span>`).join("");
+      // Linhas ordenadas por valor DESCENDO: com 13 jogos, achar o seu na lista
+      // alfabética é procurar; no topo está sempre quem mais pesa naquele dia.
+      const rows = traces.filter((tr) => tr.vals[i] != null)
+        .sort((a, b) => b.vals[i] - a.vals[i])
+        .map((tr) => `<span class="pf-tip-row"><span class="pf-tip-dot" style="background:${tr.color}"></span>${escapeHtml(tr.label)}: <strong>${escapeHtml(fmtVal(tr.vals[i]))}</strong></span>`).join("");
       tip.innerHTML = `<span class="pf-tip-date">${escapeHtml(fmtDay(pts[i].d))}</span>${rows}`;
       tip.hidden = false;
       const leftPx = (x / W) * r.width;
       tip.style.left = Math.max(0, Math.min(r.width - tip.offsetWidth, leftPx - tip.offsetWidth / 2)) + "px";
-      const topPx = (Y(vals[i]) / H) * r.height - tip.offsetHeight - 12;
+      // Ancora no traço principal; antes de ele existir (nulo), no topo da área.
+      const topPx = (Y(vals[i] == null ? yMax : vals[i]) / H) * r.height - tip.offsetHeight - 12;
       tip.style.top = Math.max(0, topPx) + "px";
     }
     function onLeave() { hoverG.style.display = "none"; tip.hidden = true; pintaCabecalho(); }
