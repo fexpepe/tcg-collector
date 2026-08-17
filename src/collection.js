@@ -378,6 +378,11 @@
           render();
           shared.publishProfile(cards, owned, prices);
         }
+        // ?card=<id>: reabre o popup da carta. A Coleção ESTAMPAVA o param (todo
+        // popup faz) e nunca o lia — então nem o próprio dono reabria a carta
+        // dando F5. Carta que não é sua não chega aqui: o rescueSharedCard do
+        // shared.js já a mandou pra página canônica antes desta página montar.
+        preview.openFromUrl();
       })
       .catch((error) => {
         elements.groupsEmpty.textContent = t("error.catalog", { message: error.message });

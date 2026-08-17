@@ -70,6 +70,7 @@
       renderDropNotice(); // quedas de preço da semana (histórico do build; async)
       renderTargetNotice(); // cartas que atingiram o preço-alvo do usuário
       renderSellers();    // trade matching: quem tem suas desejadas à venda (async)
+      preview.openFromUrl(); // ?card=<id>: reabre o popup (ver collection.js)
     })
     .catch((error) => {
       elements.empty.textContent = t("error.catalog", { message: error.message });

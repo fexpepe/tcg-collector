@@ -294,6 +294,7 @@
       shared.setGameFilterScope([...new Set(graded.list()
         .map((it) => cardGameMap.get(it.cardId)).filter(Boolean))]);
       render();
+      preview.openFromUrl(); // ?card=<id>: reabre o popup (ver collection.js)
     })
     .catch((error) => {
       if (elements.empty) { elements.empty.textContent = t("error.catalog", { message: error.message }); elements.empty.hidden = false; }

@@ -40,6 +40,10 @@
         cards.forEach((card) => cardGameMap.set(card.id, card.game));
         cardsById = new Map(cards.map((card) => [card.id, card]));
         catalogPronto = true;
+        // ?card=<id>: reabre o popup da carta (ver collection.js). Aqui e não no
+        // renderFromCatalog porque a promise é MEMOIZADA — roda uma vez só, então
+        // buscar de novo depois de fechar o popup não o traz de volta.
+        preview.openFromUrl();
         return cards;
       }).catch((error) => {
         // Era a ÚNICA página de catálogo sem catch: a promise memoizada rejeitava

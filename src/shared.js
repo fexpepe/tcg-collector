@@ -4856,7 +4856,9 @@
       if (!activeCard) return;
       const label = cardLabel(activeCard);
       const text = `${label} · ${activeCard.set} ${activeCard.number}`;
-      const url = location.href;
+      // NÃO é location.href: numa página pessoal aquilo compartilha a SUA
+      // Coleção, não a carta (ver cardShareUrl).
+      const url = cardShareUrl(activeCard);
       if (navigator.share) {
         navigator.share({ title: label, text, url }).catch(() => {});
         return;
@@ -7201,6 +7203,28 @@
     return `detail?${params.toString()}`;
   }
 
+  // URL CANÔNICA E ABSOLUTA de uma carta: a página do set com ?card=<id>, que é
+  // a única que abre pra QUALQUER PESSOA (o detail.js chama openFromUrl e não
+  // exige login). Mesmo formato que as listas de "mais valiosas" e a lista de
+  // impressões do popup já montam, e o mesmo destino das páginas /card/<slug>.html.
+  //
+  // Existe porque compartilhar location.href estava quebrado do mesmo jeito que
+  // os links de set estavam antes do ?game= (ver detailUrl acima): a URL da
+  // Coleção/Desejos/Graded é a da SUA página pessoal. Ela abria pra você — a
+  // sessão e o localStorage resolviam — e chegava morta pra quem recebia:
+  // sleevu.app/collection.html?card=mep-070-pt manda o visitante pro /login e,
+  // logado, o catálogo daquela página só tem as cartas DELE. A carta compartilhada
+  // não pode depender de quem clica; o link tem que se descrever inteiro.
+  //
+  // Âncora no ORIGIN, não em location.href: o perfil público mora em
+  // /users/<handle> (servido pela collection.html via _redirects), e resolver
+  // "detail?…" relativo lá dava /users/detail?… — 404.
+  function cardShareUrl(card) {
+    if (!card || !card.set) return location.href; // carta sem set: nada melhor a oferecer
+    const rel = detailUrl("set", card.set, "", card.game, { card: card.id, setId: card.setId });
+    try { return new URL(`/${rel}`, location.origin).href; } catch (e) { return location.href; }
+  }
+
   function unique(values) {
     return Array.from(new Set(values.filter(Boolean))).sort((a, b) => String(a).localeCompare(String(b)));
   }
@@ -7592,6 +7616,7 @@
     debounce,
     addOptions,
     detailUrl,
+    cardShareUrl,
     unique,
     compareCardNumbers,
     rarityRank,
@@ -9746,6 +9771,116 @@
     window.location.replace("login");
     return true;
   }
+  // ── Resgate do ?card=<id> órfão ────────────────────────────────────────────
+  // Toda página com popup estampa ?card=<id> na URL (stampCardUrl), mas nas
+  // páginas PESSOAIS o catálogo é só o SEU — loadOwnedAcrossGames pede
+  // exatamente os ids que você marcou — ou desce sob demanda (Binders,
+  // Explorar). Então o link que sai delas chegava MORTO pra quem recebe: sem
+  // sessão o portão de login o intercepta e o param se perde; com sessão,
+  // getCard(id) devolve null porque a carta não está na coleção de quem clicou.
+  //
+  // Aqui o link é resolvido e mandado pro destino canônico (cardShareUrl), que
+  // abre pra qualquer um. RODA ANTES do enforceLoginGate de propósito: o
+  // visitante anônimo é o caso principal, e o login o expulsaria antes.
+  //
+  // A decisão é SÍNCRONA (só localStorage): carta que é SUA fica onde está e a
+  // própria página a abre (openFromUrl), pra quem é dono não perder a tela por
+  // dar F5. Só sai daqui o que a página não tem como abrir.
+  const RESCUE_PAGES = ["collection", "wishlist", "graded", "sales", "binders", "explore"];
+  function rescueSharedCard() {
+    const nav = document.querySelector(".page-nav[data-active-page]");
+    const page = nav ? nav.dataset.activePage : "";
+    if (!RESCUE_PAGES.includes(page)) return false;
+    let params;
+    try { params = new URLSearchParams(window.location.search); } catch (e) { return false; }
+    const cardId = params.get("card");
+    // Regex: nenhum id de carta foge disso (mep-070-pt, op-12345, base1-4, 1-1)
+    // e lixo da barra de endereço não vira corpo de POST.
+    if (!cardId || !/^[a-zA-Z0-9_.-]{1,64}$/.test(cardId)) return false;
+    // Views PÚBLICAS trazem o catálogo desnormalizado junto e abrem a carta
+    // sozinhas — mesma exceção do portão de login logo abaixo.
+    if (params.get("s") || /^\/users\//.test(window.location.pathname)) return false;
+    // Explorar COM busca na URL: o catálogo vai descer de qualquer jeito e o
+    // openFromUrl reabre no lugar. Redirecionar aqui jogaria a busca fora.
+    if (page === "explore" && params.get("q")) return false;
+    // Páginas que já pedem AS SUAS cartas no load: se a carta é sua, elas a
+    // abrem no lugar e tirar a pessoa da tela seria pior. Binders e Explorar
+    // ficam de fora — o catálogo delas é sob demanda, e baixar o catálogo
+    // INTEIRO dos 14 jogos só pra reabrir um popup custa mais que mandar a
+    // carta pra página canônica dela.
+    if (["collection", "wishlist", "graded", "sales"].includes(page)) {
+      const gradadas = new Set(gradedCardIds());
+      const minha = gradadas.has(cardId) || GAME_SLUGS.some((g) =>
+        createCollectionStore(g).has(cardId) || createWishlistStore(g).hasCard(cardId));
+      if (minha) return false;
+    }
+    goToCanonicalCard(cardId);
+    return true;
+  }
+
+  // Onde procurar o id, em DUAS ONDAS. O prefixo resolve o jogo na maioria dos
+  // casos (mtg-, ygo-, op-…), mas não em todos: Pokémon usa <set>-<número>, que
+  // é uma lista ABERTA de 163 prefixos, e Lorcana usa número puro ("1-1") — o
+  // comentário do migrateTags já dizia que prefixo de id não serve como regra.
+  // Então isto é ATALHO, não regra: a 1ª onda vai nos candidatos e a 2ª no
+  // resto. O jogo novo (o 15º) continua resolvendo — só gasta as duas ondas —
+  // em vez de virar link morto quando este mapa envelhecer. Auditado: nenhum
+  // dos 163 prefixos do Pokémon colide com um destes.
+  const ID_PREFIX_GAME = {
+    mtg: "magic", fab: "fab", gcg: "gundam", dbfw: "dbfw", ygo: "ygo",
+    dgm: "digimon", rb: "riftbound", ua: "unionarena", nrt: "naruto",
+    hxh: "hxh", op: "onepiece", opcd: "onepiece", op2002: "onepiece", cp: "lorcana"
+  };
+  function cardIdProbeWaves(cardId) {
+    const certo = ID_PREFIX_GAME[String(cardId).split("-")[0]];
+    const primeiros = certo ? [certo] : ["pokemon", "lorcana"];
+    const onda1 = primeiros.filter((g) => GAME_SLUGS.includes(g));
+    return [onda1, GAME_SLUGS.filter((g) => !onda1.includes(g))];
+  }
+
+  // Descobre o jogo e o set do id pela BORDA e redireciona. Cada jogo pedido é
+  // uma busca por PK (não varredura), porque a PK de `cards` é (game, id) e não
+  // existe índice de id sozinho. O endpoint percorre os jogos do pedido em
+  // SÉRIE (~140 ms cada), e é por isso que as ondas importam: 1 jogo ≈ 150 ms e
+  // os 14 de uma vez ≈ 2 s — tempo em que esta página fica parada.
+  function goToCanonicalCard(cardId) {
+    // Não deu: segue pra própria página SEM o ?card=. Não vira laço (o param
+    // que dispara o resgate deixou de existir) e a pessoa cai onde cairia antes.
+    const desiste = () => {
+      try {
+        const u = new URL(location.href);
+        u.searchParams.delete("card");
+        window.location.replace(u.href);
+      } catch (e) { window.location.reload(); }
+    };
+    let acabou = false;
+    let timer = 0;
+    const fim = (fn) => { if (acabou) return; acabou = true; clearTimeout(timer); fn(); };
+    // Teto de espera: a página está PARADA esperando isto (o return do
+    // rescueSharedCard impede o resto de montar). Borda pendurada não pode
+    // deixar o visitante numa tela em branco pra sempre; estourando, ele cai
+    // onde cairia antes desta função existir.
+    timer = setTimeout(() => fim(desiste), 5000);
+    const sonda = (games) => (games.length
+      ? fetchCollectionApi(Object.fromEntries(games.map((g) => [g, [cardId]])))
+      : Promise.resolve(null));
+    const [onda1, onda2] = cardIdProbeWaves(cardId);
+    // Id igual em dois jogos é possível (Pokémon e Lorcana são ambos sem
+    // prefixo de jogo): o da sessão ganha, senão o primeiro que voltou.
+    const escolher = (r) => {
+      const achadas = (r && r.cards) || [];
+      const atual = currentGame();
+      return achadas.find((c) => c.game === atual) || achadas[0] || null;
+    };
+    sonda(onda1)
+      .then((r) => escolher(r) || (acabou ? null : sonda(onda2).then(escolher)))
+      .then((card) => fim(() => {
+        if (!card || !card.set) { desiste(); return; }
+        window.location.replace(cardShareUrl(card));
+      }))
+      .catch(() => fim(desiste));
+  }
+  if (rescueSharedCard()) return; // resolvendo a carta compartilhada; não monta a página
   if (enforceLoginGate()) return; // já está indo pro login; não monta a página
 
   applyTranslations();

@@ -789,6 +789,7 @@
           .filter(Boolean))]);
       render();
       shared.publishProfile(cards, owned, prices); // republica o perfil público (vendas atualizadas)
+      preview.openFromUrl(); // ?card=<id>: reabre o popup (ver collection.js)
     })
     .catch((error) => {
       if (elements.salesEmpty) { elements.salesEmpty.textContent = t("error.catalog", { message: error.message }); elements.salesEmpty.hidden = false; }

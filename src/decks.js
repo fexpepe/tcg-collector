@@ -1389,6 +1389,10 @@
       return;
     }
     renderEditor();
+    // ?card=<id>: reabre o popup (ver collection.js). Aqui o catálogo é o do
+    // DECK aberto, então id de fora dele é no-op — que é o certo: um link de
+    // deck compartilhado não deve sair do deck.
+    cardPreview.openFromUrl();
   }
 
   function issueText(iss) {
