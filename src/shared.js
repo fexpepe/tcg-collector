@@ -7500,6 +7500,7 @@
     hasConsent,
     setConsent,
     setGameFilterScope,
+    initGameFilterSelects,
     gameFilterFromUrl,
     stampGameFilter,
     markGameFilterChip,

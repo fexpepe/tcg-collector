@@ -20,7 +20,7 @@
 // URL limpa cai no fallback que procura "<caminho>.html" no shell —, então o
 // cache antigo continua servindo; o bump é pra o HTML novo (com os links
 // limpos) entrar de uma vez, em vez de uma navegação atrás.
-const SHELL_CACHE = "tcg-shell-v261";
+const SHELL_CACHE = "tcg-shell-v262";
 // IMAGE_CACHE vai a v2: a versão anterior do SW podia cravar um erro 404/timeout
 // como imagem "opaca" por 7 dias (imagem quebrada presa até um hard refresh).
 // Renomear o cache faz o activate apagar o antigo UMA vez — limpa os erros

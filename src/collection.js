@@ -2025,9 +2025,13 @@
     const hasGraded = gradedList.length > 0;
     const hasTags = tagDefs.length > 0 && col.items.some((it) => (it.tg || []).length);
     const hasArtists = col.items.some((it) => it.a);
-    const hasPokemon = col.items.some((it) => (it.g || "pokemon") === "pokemon");
+    // A aba de espécie fica SEMPRE na fileira (como na Minha Coleção): o
+    // agrupamento é por personagem e funciona em qualquer jogo — o que muda é o
+    // rótulo ("Pokémon" no filtro Pokémon, "Personagens" nos demais). Antes ela
+    // só existia com carta de Pokémon, e a fileira mudava de proporção entre as duas telas.
+    const hasPokemon = col.items.length > 0;
     const hasSets = col.items.length > 0;
-    const gamesPresent = [...new Set(col.items.map((it) => it.g).filter(Boolean))];
+    const gamesPresent = [...new Set(col.items.map((it) => it.g || "pokemon"))];
     const GROUPED = ["vitrine", "tags", "pokemon", "artists", "sets"]; // abas de grupos
     const PROGRESS_MODES = ["pokemon", "artists", "sets"]; // grupos em linha de progresso
     // ?t= abre direto numa aba (links "ver no perfil" de Vendas/Graded).
@@ -2038,9 +2042,14 @@
     let openId = null; // grupo aberto (coleção/tag/artista/set)
     let gFilter = "all";
     let cardSort = "value-desc"; // ordenação (em memória)
-    // Filtros da aba "Toda Coleção" (mesmos da tela de Coleção): espécie, set,
-    // idioma, raridade + visualização (grade/lista). Em memória.
-    let fPokemon = "", fSet = "", fLang = "", fRarity = "", cardView = "grid";
+    // Filtros da aba "Toda Coleção" (os MESMOS da tela de Coleção): espécie,
+    // set, idioma, raridade e faixa de valor. Em memória.
+    let fPokemon = "", fSet = "", fLang = "", fRarity = "", fValue = "", cardView = "grid";
+    // Barra de filtros RECOLHÍVEL atrás do botão "Filtros" do cartão-herói —
+    // mesmo desenho da Minha Coleção, e a MESMA chave de preferência (quem
+    // gosta de ver os filtros abertos vê nas duas telas).
+    let filtersOpen = false;
+    try { filtersOpen = localStorage.getItem("tcg-collector-filters-open") === "1"; } catch (e) { /* ignora */ }
     let groupSort = "name"; // abas de progresso (Sets/Pokémon/Artistas): "name" | "progress"
     // Valor por item (na moeda atual): coleção em BRL (vbrl), graded/venda já na
     // moeda do dono (gv/sp). Dentro de cada modo os itens são homogêneos.
@@ -2061,13 +2070,22 @@
     }
     // Espécie/personagem do item (igual à Coleção): pokemonName ou derivado do nome.
     const speciesOf = (it) => it.pk || speciesName(it.n);
+    // Faixa de valor ("min-max" na moeda atual; max vazio = sem teto), igual à
+    // da Minha Coleção — só que sobre o valor do item do payload, não do catálogo.
+    function matchesValueRange(it) {
+      if (!fValue) return true;
+      const [min, max] = fValue.split("-").map((x) => (x === "" ? null : Number(x)));
+      const v = itemVal(it);
+      return (min == null || v >= min) && (max == null || v <= max);
+    }
     // Aplica os filtros da barra (só na aba Toda Coleção).
     function applyColFilters(items) {
       return items.filter((it) =>
         (!fPokemon || speciesOf(it) === fPokemon) &&
         (!fSet || it.s === fSet) &&
         (!fLang || (it.lang || "") === fLang) &&
-        (!fRarity || (it.r || "") === fRarity));
+        (!fRarity || (it.r || "") === fRarity) &&
+        matchesValueRange(it));
     }
     function sortGroupsByValue(groups) {
       // Soma do grupo pré-computada 1x (o reduce por comparação era O(n·g log g)).
@@ -2088,20 +2106,27 @@
             <option value="value-asc"${cardSort === "value-asc" ? " selected" : ""}>${escapeHtml(t("sort.valueAsc"))}</option>
           </select></div>`
         : "";
-      return `<div class="prof-tabs">
+      // Rótulos IGUAIS aos da Minha Coleção: as tags viraram "Listas"
+      // (docs/LISTAS.md) e a aba de espécie segue o filtro de jogo — "Pokémon"
+      // só no filtro Pokémon, "Personagens" nos demais e no Todos (a mesma
+      // regra do syncGameTabs()). A classe .collection-tabs entra junto: é ela
+      // que dá às abas a rolagem horizontal do celular.
+      return `<div class="prof-tabs collection-tabs">
         ${tab("collection", t("nav.collection"), true)}
         ${tab("vitrine", t("collection.tab.folders"), hasFolders)}
         ${tab("graded", t("nav.graded"), hasGraded)}
-        ${tab("tags", t("collection.tab.tags"), hasTags)}
-        ${tab("pokemon", t("collection.tab.pokemon"), hasPokemon)}
+        ${tab("tags", t("nav.lists"), hasTags)}
+        ${tab("pokemon", gFilter === "pokemon" ? t("toolbar.pokemon") : t("toolbar.characters"), hasPokemon)}
         ${tab("artists", t("collection.tab.artists"), hasArtists)}
         ${tab("sets", t("collection.tab.sets"), hasSets)}
         ${tab("sale", t("nav.sales"), hasSales)}
       </div>${sortHtml}`;
     }
 
-    // Barra de filtros da aba "Toda Coleção" — MESMOS filtros da tela de Coleção
-    // (Pokémon/Personagem, Set, Idioma, Raridade, Ordenar, Visualização).
+    // Barra de filtros da aba "Toda Coleção" — MESMOS campos, MESMA ordem e
+    // MESMA moldura da tela de Coleção (Pokémon/Personagem, Set, Idioma,
+    // Raridade, Valor, Ordenar), recolhida atrás do botão "Filtros" do cartão-
+    // herói. A Visualização (▦/≣) saiu daqui e foi pro canto do cartão, como lá.
     function filterBarHtml() {
       if (mode !== "collection") return "";
       const pool = col.items.filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter);
@@ -2114,21 +2139,45 @@
       const langs = uniq(pool.map((it) => it.lang));
       const rarities = uniq(pool.map((it) => it.r)).sort((a, b) => a.localeCompare(b));
       const sortOpt = (v, k) => `<option value="${v}"${cardSort === v ? " selected" : ""}>${escapeHtml(t(k))}</option>`;
-      return `<section class="toolbar prof-toolbar" aria-label="${escapeAttribute(t("sort.label"))}">
+      // Faixas de valor com o símbolo da moeda atual, como no hydrateFilters().
+      const sym = shared.currencySymbol();
+      const faixas = [["0-10", `≤ ${sym} 10`], ["10-50", `${sym} 10–50`], ["50-200", `${sym} 50–200`], ["200-", `${sym} 200+`]];
+      return `<section id="profileFilters" class="toolbar collection-filters${filtersOpen ? "" : " is-collapsed"}" aria-label="${escapeAttribute(t("filters.show"))}" data-own-toggle>
         <div><label>${escapeHtml(pkLabel)}</label><select data-pf-filter="pokemon">${opts(species, fPokemon)}</select></div>
         <div><label>${escapeHtml(t("toolbar.set"))}</label><select data-pf-filter="set">${opts(sets, fSet)}</select></div>
         <div><label>${escapeHtml(t("toolbar.language"))}</label><select data-pf-filter="lang">${opts(langs, fLang, langOptionLabel)}</select></div>
         <div><label>${escapeHtml(t("toolbar.rarity"))}</label><select data-pf-filter="rarity">${(`<option value="">${escapeHtml(t("filter.all.f"))}</option>` + rarities.map((v) => `<option value="${escapeAttribute(v)}"${v === fRarity ? " selected" : ""}>${escapeHtml(v)}</option>`).join(""))}</select></div>
+        <div><label>${escapeHtml(t("toolbar.value"))}</label><select data-pf-filter="value">${`<option value="">${escapeHtml(t("filter.all.m"))}</option>` + faixas.map(([v, l]) => `<option value="${v}"${v === fValue ? " selected" : ""}>${escapeHtml(l)}</option>`).join("")}</select></div>
         <div class="sort-select"><label>${escapeHtml(t("sort.label"))}</label><select data-profile-sort>
           ${sortOpt("value-desc", "sort.valueDesc")}${sortOpt("value-asc", "sort.valueAsc")}${sortOpt("num-asc", "sort.numAsc")}${sortOpt("num-desc", "sort.numDesc")}
         </select></div>
-        <div class="view-toggle-field"><label>${escapeHtml(t("toolbar.view"))}</label>
-          <div class="view-toggle" role="group">
-            <button type="button" class="view-toggle-btn" data-pf-view="grid" aria-pressed="${cardView === "grid"}" title="${escapeAttribute(t("toolbar.view"))}">▦</button>
-            <button type="button" class="view-toggle-btn" data-pf-view="list" aria-pressed="${cardView === "list"}" title="${escapeAttribute(t("toolbar.view"))}">≣</button>
-          </div>
-        </div>
       </section>`;
+    }
+
+    // Ações no canto do cartão-herói: as MESMAS da Minha Coleção, menos as que
+    // só o dono pode fazer (Selecionar em massa e Compartilhar). Visualização
+    // (▦/≣) nas abas de grade plana; "Filtros" só onde existe barra pra abrir.
+    // Ícone do Filtros idêntico ao do collection.html — é o mesmo botão.
+    function actionsHtml() {
+      return `<div class="collection-toolbar-actions">
+        <div class="view-toggle" role="group" aria-label="${escapeAttribute(t("toolbar.view"))}"${flatGrid() ? "" : " hidden"}>
+          <button type="button" class="view-toggle-btn" data-pf-view="grid" aria-pressed="${cardView === "grid"}" title="${escapeAttribute(t("toolbar.view"))}">▦</button>
+          <button type="button" class="view-toggle-btn" data-pf-view="list" aria-pressed="${cardView === "list"}" title="${escapeAttribute(t("toolbar.view"))}">≣</button>
+        </div>
+        <button type="button" class="secondary" data-pf-filters aria-expanded="${filtersOpen}" aria-controls="profileFilters"${mode === "collection" ? "" : " hidden"}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span>${escapeHtml(t("filters.show"))}</span></button>
+      </div>`;
+    }
+    // Abas de GRADE PLANA (uma fileira de cartas): são as que a Visualização
+    // grade/lista comanda. As de grupo (vitrine/listas) e as de progresso
+    // (Personagens/Artistas/Sets) têm layout próprio e não usam o toggle.
+    function flatGrid() { return mode === "collection" || mode === "graded" || mode === "sale"; }
+    // O cartão-herói é PERSISTENTE (não entra no .prof-swap), então trocar de
+    // aba não o redesenha — quem esconde/mostra as ações é isto, na mão.
+    function syncActions() {
+      const vt = sv.querySelector(".collection-toolbar-actions .view-toggle");
+      if (vt) vt.hidden = !flatGrid();
+      const fb = sv.querySelector("[data-pf-filters]");
+      if (fb) fb.hidden = mode !== "collection";
     }
     // Dashboard SEMPRE da coleção (visão geral do perfil); reage ao filtro de jogo.
     function dashHtml() {
@@ -2140,13 +2189,18 @@
       const gradedTotal = gradedList
         .filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter)
         .reduce((s, it) => { const v = shared.convertMoney(it.gv || 0, it.cur || "BRL", cur); return s + (v == null ? (it.gv || 0) : v); }, 0);
-      return sharedDashboardHtml(items, rawTotal + gradedTotal, { name, handle: prof.handle });
+      return sharedDashboardHtml(items, rawTotal + gradedTotal, { name, handle: prof.handle }, { hero: true, actions: actionsHtml() });
     }
     function gameFilterHtml() {
       if (gamesPresent.length <= 1) return "";
       const chip = (g, label) => `<button type="button" class="chip" data-game-filter="${g}" aria-pressed="${gFilter === g}">${escapeHtml(label)}</button>`;
-      return `<div class="collection-toolbar"><div id="sharedGameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
-        ${chip("all", t("filter.gameAll"))}${shared.GAME_SLUGS.map((g) => chip(g, gameLabelOf(g))).join("")}
+      // Só os jogos que ESTÃO no perfil (era GAME_SLUGS inteiro — 13 chips, a
+      // maioria sem uma carta sequer), na ordem de GAME_SLUGS, e dentro da
+      // MESMA moldura da Coleção (.game-filter-panel). É o setGameFilterScope
+      // da tela do dono, escrito à mão: aqui os chips não vêm do HTML.
+      const lista = shared.GAME_SLUGS.filter((g) => gamesPresent.indexOf(g) >= 0);
+      return `<div class="collection-toolbar"><div id="sharedGameFilter" class="chip-filter game-filter game-filter-panel" role="group" aria-label="Jogo">
+        ${chip("all", t("filter.gameAll"))}${lista.map((g) => chip(g, gameLabelOf(g))).join("")}
       </div></div>`;
     }
     // Grupos das abas-vitrine (Coleções/Tags/Artistas/Sets): {id,name,color?,stars?,cover?,items}.
@@ -2220,13 +2274,14 @@
       </button>`;
     }
     function contentHtml() {
+      const listClass = cardView === "list" ? " is-list" : "";
       if (mode === "graded") {
         const items = gradedList.filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter);
-        return `<div class="card-grid">${sortItems(items).map(sharedTile).join("")}</div>`;
+        return `<div class="card-grid${listClass}">${sortItems(items).map(sharedTile).join("")}</div>`;
       }
       if (mode === "sale") {
         const items = sale.items.filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter);
-        return `<div class="card-grid">${sortItems(items).map(sharedTile).join("")}</div>`;
+        return `<div class="card-grid${listClass}">${sortItems(items).map(sharedTile).join("")}</div>`;
       }
       if (GROUPED.indexOf(mode) >= 0) {
         const groups = groupsFor(mode);
@@ -2239,7 +2294,7 @@
       const grid = items.length
         ? sortItems(items).map(sharedTile).join("")
         : `<p class="empty-state">${escapeHtml(t("collection.noResults"))}</p>`;
-      return `<div class="card-grid${cardView === "list" ? " is-list" : ""}">${grid}</div>`;
+      return `<div class="card-grid${listClass}">${grid}</div>`;
     }
 
     // "Voltar" (dentro de um grupo aberto: coleção/tag/artista/set).
@@ -2256,14 +2311,21 @@
     }
     function render() {
       shared.applyGameAccent(gFilter); // o filtro de jogo muda as cores (accent), por isso fica no topo
-      // Topo PERSISTENTE (filtro de jogo + dashboard) + bloco trocável (.prof-swap).
-      sv.innerHTML = `${gameFilterHtml()}<div class="prof-dash">${dashHtml()}</div><div class="prof-swap">${swapHtml()}</div>`;
+      // Topo PERSISTENTE (filtro de jogo + cartão-herói) + bloco trocável
+      // (.prof-swap). Sem wrapper em volta do cartão: ele traz a própria margem
+      // (inclusive o full-bleed do celular), exatamente como na Minha Coleção.
+      sv.innerHTML = `${gameFilterHtml()}${dashHtml()}<div class="prof-swap">${swapHtml()}</div>`;
+      // Espelho <select> do filtro de jogo pro celular: abaixo de 600px o CSS
+      // esconde os chips, e o boot do shared.js só alcança as caixas que já
+      // existiam no HTML — esta nasce aqui, a cada render.
+      if (shared.initGameFilterSelects) shared.initGameFilterSelects(sv);
     }
     // Troca de aba / abrir grupo / voltar: reconstrói só o bloco abaixo do dashboard
     // (abas+conteúdo), mantendo o dashboard e o filtro de jogo fixos no lugar.
     function renderSwap() {
       const el = sv.querySelector(".prof-swap");
       if (el) el.innerHTML = swapHtml(); else render();
+      syncActions();
     }
     // Re-render PARCIAL: filtro/ordenação/visualização só trocam as cartas — não
     // reconstrói dashboard/abas/barra (mais rápido e preserva o foco nos selects).
@@ -2280,7 +2342,18 @@
       if (open) { openId = open.dataset.vitrineOpen; renderSwap(); return; }
       if (event.target.closest("[data-vitrine-back]")) { openId = null; renderSwap(); return; }
       const chip = event.target.closest("[data-game-filter]");
-      if (chip) { gFilter = chip.dataset.gameFilter; fPokemon = fSet = fLang = fRarity = ""; render(); return; }
+      if (chip) { gFilter = chip.dataset.gameFilter; fPokemon = fSet = fLang = fRarity = fValue = ""; render(); return; }
+      // "Filtros": abre/fecha a barra sem redesenhar nada (o estado visual é
+      // uma classe). Mesma chave de preferência da Minha Coleção.
+      const ft = event.target.closest("[data-pf-filters]");
+      if (ft) {
+        filtersOpen = !filtersOpen;
+        try { localStorage.setItem("tcg-collector-filters-open", filtersOpen ? "1" : "0"); } catch (err) { /* ignora */ }
+        ft.setAttribute("aria-expanded", String(filtersOpen));
+        const bar = sv.querySelector("#profileFilters");
+        if (bar) bar.classList.toggle("is-collapsed", !filtersOpen);
+        return;
+      }
       const vw = event.target.closest("[data-pf-view]");
       if (vw) {
         cardView = vw.dataset.pfView === "list" ? "list" : "grid";
@@ -2300,6 +2373,7 @@
         const k = ff.dataset.pfFilter;
         if (k === "pokemon") fPokemon = ff.value; else if (k === "set") fSet = ff.value;
         else if (k === "lang") fLang = ff.value; else if (k === "rarity") fRarity = ff.value;
+        else if (k === "value") fValue = ff.value;
         renderContent(); // as opções da barra não dependem dos filtros escolhidos
       }
     });
@@ -2317,7 +2391,10 @@
   // Mesmo dashboard da coleção, porém a partir dos itens desnormalizados do share
   // (sem catálogo). Distribuição por jogo só aparece se o share trouxe `g`
   // (shares antigos não têm — degrada sem quebrar).
-  function sharedDashboardHtml(items, total, profileNav) {
+  // `opts.hero`: só o cartão-herói, de ponta a ponta, com as ações no canto —
+  // é o topo da Minha Coleção, e é o que o PERFIL PÚBLICO usa. O share anônimo
+  // (?s=) segue com os três cards: lá não há abas nem filtros, o resumo é a tela.
+  function sharedDashboardHtml(items, total, profileNav, opts) {
     const copies = items.reduce((s, it) => s + (it.q || 1), 0);
     const distinct = new Set(items.map((it) => it.id)).size;
     const sets = new Set(items.map((it) => it.s)).size;
@@ -2385,9 +2462,10 @@
     // cima, contagens numa fileira de 4 com o valor na última coluna. Sem
     // identidade (share anônimo, ?s=), o cabeçalho nem entra — e sem ele as
     // contagens não ganham a divisória de cima (regra head + counts no CSS).
-    return `<section class="collection-dashboard">
+    const o = opts || {};
+    return `<section class="collection-dashboard${o.hero ? " collection-dashboard-hero" : ""}">
       <article class="dash-card dash-stats dash-stats-hero">
-        ${profHead ? `<div class="dash-stats-head">${profHead}</div>` : ""}
+        ${(profHead || o.actions) ? `<div class="dash-stats-head">${profHead}${o.actions || ""}</div>` : ""}
         <div class="dash-stats-counts">
           ${stat(IC.copies, copies, t("stats.copies"))}
           ${stat(IC.distinct, distinct, t("stats.distinct"))}
@@ -2395,11 +2473,11 @@
           ${stat(IC.money, escapeHtml(total > 0 ? shared.formatMoney(shared.getCurrency(), total) : "—"), t("dash.value"), ' class="dash-stat-money"')}
         </div>
       </article>
-      <article class="dash-card dash-top">
+      ${o.hero ? "" : `<article class="dash-card dash-top">
         <h3>${escapeHtml(t("dash.topTitle"))}</h3>
         <ol class="dash-top-list">${top || `<li class="dash-empty">—</li>`}</ol>
       </article>
-      ${distHtml ? `<article class="dash-card dash-dist"><h3>${escapeHtml(t("dash.distTitle"))}</h3><div class="dash-dist-bars">${distHtml}</div></article>` : ""}
+      ${distHtml ? `<article class="dash-card dash-dist"><h3>${escapeHtml(t("dash.distTitle"))}</h3><div class="dash-dist-bars">${distHtml}</div></article>` : ""}`}
     </section>`;
   }
 })();
