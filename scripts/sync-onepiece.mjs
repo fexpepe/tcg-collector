@@ -124,6 +124,15 @@ const ext = (p, key) => {
 // sufixos informativos tipo "(Alternate Art)"/"(Manga)" ficam no nome).
 const cleanName = (name) => String(name).replace(/\s*\(\d{2,4}\)\s*/g, " ").replace(/\s{2,}/g, " ").trim();
 
+// A ABREVIAÇÃO do grupo não é estável na fonte: em 18/08/2026 a TCGplayer
+// trocou "EB-03" por "EB-03-04" no groupId 24545 — mesmas 94 cartas, mesmo
+// nome — e o build parou na régua de estabilidade de id (lint-catalog), certo
+// em parar: setId é slug de URL (o link de set carrega setId=) e é a chave do
+// logo local (set-logos/eb03.webp). Rename da fonte não pode reescrever o que
+// já foi publicado, então o setId é fixado pelo groupId, que é o que de fato
+// não muda. Entrada nova aqui só quando a fonte renomear um set JÁ publicado.
+const ABREV_FIXA = { 24545: "EB-03" };
+
 async function run() {
   console.log("One Piece: buscando sets (TCGCSV cat. 68)…");
   const groups = listOf(await api("/groups"));
@@ -154,7 +163,7 @@ async function run() {
     const setCards = products.filter((p) => ext(p, "Number"));
     if (!setCards.length) { console.log(`  ${g.abbreviation || g.groupId} ${g.name}: 0 cartas (só selados)`); continue; }
 
-    const setId = g.abbreviation || String(g.groupId);
+    const setId = ABREV_FIXA[g.groupId] || g.abbreviation || String(g.groupId);
     const release = (g.publishedOn || "").slice(0, 10);
     for (const p of setCards) {
       const id = `op-${p.productId}`;
