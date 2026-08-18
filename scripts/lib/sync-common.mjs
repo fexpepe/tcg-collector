@@ -208,8 +208,53 @@ export function setManifestMeta(chunkCards, pricing) {
   return Object.assign(meta, setValueBuckets(chunkCards, pricing));
 }
 
+// ── setId estável sob RENAME da fonte ───────────────────────────────────────
+// A TCGplayer troca a abreviação de um grupo às vezes (18/08/2026: "EB-03" →
+// "EB-03-04" no One Piece — mesmo groupId, mesmas 94 cartas), e a abreviação é
+// o setId de toda a família TCGCSV. setId publicado não pode mudar: é slug de
+// URL (link de set carrega setId=), chave de logo local e a assinatura da
+// régua de estabilidade de id do lint-catalog — que barra o deploy inteiro
+// (foi o que aconteceu: 2 noites de build derrubadas até alguém abrir o log).
+// Então, antes de escrever: se TODAS as cartas de um set novo que JÁ estavam
+// publicadas vinham de UM MESMO setId (mesmo idioma) e esse setId sumiu do
+// catálogo novo, é rename — volta pro setId publicado, automaticamente.
+// Split/merge/troca de idioma NÃO caem aqui de propósito: histórico misto ou
+// setId antigo ainda vivo é mudança de verdade, e quem decide é a régua (erro
+// duro + humano). Um pin manual no sync do jogo (ex.: ABREV_FIXA do One Piece)
+// continua valendo mais: ele age antes do logo ser resolvido — aqui o sync já
+// pode ter procurado o logo pelo nome novo e não achado (cosmético, o log avisa).
+async function repinSetIdsRenomeados(cards, outDirUrl) {
+  if (!cards || !cards.length) return;
+  const prev = await readGlobalVar(new URL("cards.js", outDirUrl), "TCG_CARDS");
+  if (!prev || !prev.length) return;
+  const sigDe = (c) => `${c.language || "en"}|${c.setId || ""}`;
+  const antigo = new Map();
+  for (const c of prev) if (c && c.id) antigo.set(c.id, sigDe(c));
+  const grupos = new Map();
+  for (const c of cards) {
+    const sig = sigDe(c);
+    if (!grupos.has(sig)) grupos.set(sig, []);
+    grupos.get(sig).push(c);
+  }
+  for (const [sig, grupo] of grupos) {
+    const anteriores = new Set();
+    for (const c of grupo) { const a = antigo.get(c.id); if (a !== undefined) anteriores.add(a); }
+    if (anteriores.size !== 1) continue;                        // sem histórico, ou misto (split/merge)
+    const sigAntiga = anteriores.values().next().value;
+    if (sigAntiga === sig || grupos.has(sigAntiga)) continue;   // nada mudou / setId antigo ainda existe
+    const corte = sigAntiga.indexOf("|");
+    if (sigAntiga.slice(0, corte) !== sig.slice(0, sig.indexOf("|"))) continue; // idioma mudou: régua decide
+    const setIdAntigo = sigAntiga.slice(corte + 1);
+    const setIdNovo = grupo[0].setId;
+    for (const c of grupo) c.setId = setIdAntigo;
+    console.log(`  setId re-fixado (a fonte renomeou o set): "${setIdNovo}" -> "${setIdAntigo}" (${grupo.length} cartas; se o set tem logo local, confira — e considere um pin manual no sync)`);
+  }
+}
+
 export async function writeGameCatalog(outDirUrl, { cards, indexes, pricing, webDir }) {
   await mkdir(outDirUrl, { recursive: true });
+  // setId estável: rename de abreviação na fonte não reescreve o que já foi publicado.
+  await repinSetIdsRenomeados(cards, outDirUrl);
   const w = (name, varName, value) => writeFile(new URL(name, outDirUrl), `window.${varName} = ${JSON.stringify(value)};\n`, "utf8");
   const idx = indexes || buildSetIndexes(cards);
   await w("cards.js", "TCG_CARDS", cards);
