@@ -6600,6 +6600,8 @@
       "nrt-dc": { prefix: "nrt-dc-", label: "Data Carddass (arcade)", titleKey: "sets.category.dcnr" },
       "nrt-nf": { prefix: "nrt-nf-", label: "Narutimate Formation", titleKey: "sets.category.nrtnf" },
       "nrt-nx": { prefix: "nrt-nx-", label: "Narutimate Cross", titleKey: "sets.category.nrtnx" },
+      // O CCG americano (Bandai USA, 2006–2013) — o jogo EN, linha vintage.
+      "nrt-ccg": { prefix: "nrt-ccg-", label: "Naruto CCG (2006–2013)", titleKey: "sets.category.nrtccg" },
       // O jogo NOVO (lançamento mundial 2027) como linha da marca: hoje só as
       // promos de evento (Gen Con 2026); tagKey troca a etiqueta "vintage" do
       // título por "Em breve" até o jogo sair.

@@ -428,7 +428,13 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-naruto-dc-cross-formation.mjs || echo "sync formation/cross falhou; segue com o snapshot versionado"
 
-      # Nomes das cartas de Naruto: japonês -> inglês. DEPOIS dos quatro syncs
+      # Naruto CCG americano (Bandai USA 2006–2013): checklist + scans do
+      # narutocards.ca, snapshot versionado. Anexa a linha nrt-ccg-.
+      - name: Anexa Naruto CCG (Bandai USA)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-naruto-ccg.mjs || echo "sync-naruto-ccg falhou; segue com o snapshot versionado"
+
+      # Nomes das cartas de Naruto: japonês -> inglês. DEPOIS dos syncs
       # que alimentam esse catálogo (o mapa fica num lugar só em vez de repetido
       # nos quatro). Idempotente e sem rede — ver o cabeçalho do script.
       - name: Traduz nomes das cartas de Naruto
