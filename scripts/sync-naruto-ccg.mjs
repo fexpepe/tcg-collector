@@ -39,47 +39,61 @@ function curatedImg(id) {
 }
 
 // Os 38 subsets, na ordem de numeração da fonte. História encerrada (jogo
-// cancelado em 2013) — a lista é fixa. `date` é CURADORIA (a fonte não expõe
-// data); ordenação cronológica do front usa isso, com fallback pro setId.
+// cancelado em maio/2013) — a lista é fixa.
+//
+// `date` é CURADORIA (a fonte não expõe data): dia exato quando documentado
+// (Wikipedia rev. 251396543 pré-deleção, PreviewsWorld In-Shops, ICv2),
+// dia 01 quando a fonte só dá o mês (ToyWiz) ou é estimativa por cadência
+// (a Bandai manteve ritmo trimestral fev/mai/ago/nov de 2008 a 2013).
+//
+// `skip`: fica no snapshot (espelho fiel da fonte) mas NÃO entra no catálogo.
+// O "set 29" (Shinobi's Dream) é criação FÃ da comunidade de Organized Play
+// pós-cancelamento (~2018) — a Bandai nunca o anunciou; catalogá-lo como set
+// real poluiria coleção/progresso. Reativar = tirar o skip.
+//
+// Fora da fonte (sem checklist lá): as tins #1–#5 (2007–2009); os packs
+// delas eram de sets normais e as promos exclusivas moram na série PR.
 const SETS = [
-  { key: "s01",   slug: "bandai-ccg-01",    name: "The Path to Hokage",        date: "" },
-  { key: "s02",   slug: "bandai-ccg-02",    name: "Coils of the Snake",        date: "" },
-  { key: "s03",   slug: "bandai-ccg-03",    name: "Curse of the Sand",         date: "" },
-  { key: "s04",   slug: "bandai-ccg-04",    name: "Revenge and Rebirth",       date: "" },
-  { key: "s05",   slug: "bandai-ccg-05",    name: "Dream Legacy",              date: "" },
-  { key: "s06",   slug: "bandai-ccg-06",    name: "Eternal Rivalry",           date: "" },
-  { key: "s07",   slug: "bandai-ccg-07",    name: "Quest for Power",           date: "" },
-  { key: "s08",   slug: "bandai-ccg-08",    name: "Battle of Destiny",         date: "" },
-  { key: "s09",   slug: "bandai-ccg-09",    name: "The Chosen",                date: "" },
-  { key: "s10",   slug: "bandai-ccg-10",    name: "Lineage of Legends",        date: "" },
-  { key: "s11",   slug: "bandai-ccg-11",    name: "Approaching Wind",          date: "" },
-  { key: "s12",   slug: "bandai-ccg-12",    name: "A New Chronicle",           date: "" },
-  { key: "s13",   slug: "bandai-ccg-13",    name: "Fateful Reunion",           date: "" },
-  { key: "s14",   slug: "bandai-ccg-14",    name: "Emerging Alliance",         date: "" },
-  { key: "s15",   slug: "bandai-ccg-15",    name: "Foretold Prophecy",         date: "" },
-  { key: "s16",   slug: "bandai-ccg-16",    name: "Broken Promises",           date: "" },
-  { key: "s17",   slug: "bandai-ccg-17",    name: "Will of Fire",              date: "" },
-  { key: "s18",   slug: "bandai-ccg-18",    name: "Fangs of the Snake",        date: "" },
-  { key: "s19",   slug: "bandai-ccg-19",    name: "Path of Pain",              date: "" },
-  { key: "s20",   slug: "bandai-ccg-20",    name: "Tales of the Gallant Sage", date: "" },
-  { key: "s21",   slug: "bandai-ccg-21",    name: "Shattered Truths",          date: "" },
-  { key: "s22",   slug: "bandai-ccg-22",    name: "Weapons of War",            date: "" },
-  { key: "s23",   slug: "bandai-ccg-23",    name: "Invasion",                  date: "" },
-  { key: "s24",   slug: "bandai-ccg-24",    name: "Sage's Legacy",             date: "" },
-  { key: "s25",   slug: "bandai-ccg-25",    name: "Kage Summit",               date: "" },
-  { key: "s26",   slug: "bandai-ccg-26",    name: "Avenger's Wrath",           date: "" },
-  { key: "s27",   slug: "bandai-ccg-27",    name: "Hero's Ascension",          date: "" },
-  { key: "s28",   slug: "bandai-ccg-28",    name: "Ultimate Ninja Storm 3",    date: "" },
-  { key: "s29",   slug: "bandai-ccg-29",    name: "Shinobi's Dream",           date: "" },
-  { key: "tp1",   slug: "bandai-ccg-tp1",   name: "Tournament Pack 1",         date: "" },
-  { key: "tp2",   slug: "bandai-ccg-tp2",   name: "Tournament Pack 2",         date: "" },
-  { key: "tp3",   slug: "bandai-ccg-tp3",   name: "Tournament Pack 3",         date: "" },
-  { key: "tp4",   slug: "bandai-ccg-tp4",   name: "Tournament Pack 4",         date: "" },
-  { key: "tin1",  slug: "bandai-ccg-tin1",  name: "Fierce Ambitions (Tin)",    date: "" },
-  { key: "tin2",  slug: "bandai-ccg-tin2",  name: "Untouchables (Tin)",        date: "" },
-  { key: "tin3",  slug: "bandai-ccg-tin3",  name: "Ultimate Battle (Tin)",     date: "" },
-  { key: "tin4",  slug: "bandai-ccg-tin4",  name: "Rebirth (Tin)",             date: "" },
-  { key: "promo", slug: "bandai-ccg-promo", name: "Promotional Cards",         date: "" }
+  { key: "s01",   slug: "bandai-ccg-01",    name: "The Path to Hokage",        date: "2006-04-28" },
+  { key: "s02",   slug: "bandai-ccg-02",    name: "Coils of the Snake",        date: "2006-07-28" },
+  { key: "s03",   slug: "bandai-ccg-03",    name: "Curse of the Sand",         date: "2006-10-01" },
+  { key: "s04",   slug: "bandai-ccg-04",    name: "Revenge and Rebirth",       date: "2007-02-16" },
+  { key: "s05",   slug: "bandai-ccg-05",    name: "Dream Legacy",              date: "2007-05-11" },
+  { key: "s06",   slug: "bandai-ccg-06",    name: "Eternal Rivalry",           date: "2007-07-27" },
+  { key: "s07",   slug: "bandai-ccg-07",    name: "Quest for Power",           date: "2007-10-26" },
+  { key: "s08",   slug: "bandai-ccg-08",    name: "Battle of Destiny",         date: "2008-01-25" },
+  { key: "s09",   slug: "bandai-ccg-09",    name: "The Chosen",                date: "2008-05-16" },
+  { key: "s10",   slug: "bandai-ccg-10",    name: "Lineage of Legends",        date: "2008-08-29" },
+  { key: "s11",   slug: "bandai-ccg-11",    name: "Approaching Wind",          date: "2008-11-28" },
+  { key: "s12",   slug: "bandai-ccg-12",    name: "A New Chronicle",           date: "2009-02-20" },
+  { key: "s13",   slug: "bandai-ccg-13",    name: "Fateful Reunion",           date: "2009-05-01" },
+  { key: "s14",   slug: "bandai-ccg-14",    name: "Emerging Alliance",         date: "2009-08-01" },
+  { key: "s15",   slug: "bandai-ccg-15",    name: "Foretold Prophecy",         date: "2009-11-11" },
+  { key: "s16",   slug: "bandai-ccg-16",    name: "Broken Promises",           date: "2010-02-24" },
+  { key: "s17",   slug: "bandai-ccg-17",    name: "Will of Fire",              date: "2010-05-26" },
+  { key: "s18",   slug: "bandai-ccg-18",    name: "Fangs of the Snake",        date: "2010-08-01" },
+  { key: "s19",   slug: "bandai-ccg-19",    name: "Path of Pain",              date: "2010-11-10" },
+  { key: "s20",   slug: "bandai-ccg-20",    name: "Tales of the Gallant Sage", date: "2011-02-01" },
+  { key: "s21",   slug: "bandai-ccg-21",    name: "Shattered Truths",          date: "2011-05-01" },
+  { key: "s22",   slug: "bandai-ccg-22",    name: "Weapons of War",            date: "2011-08-01" },
+  { key: "s23",   slug: "bandai-ccg-23",    name: "Invasion",                  date: "2011-11-18" },
+  { key: "s24",   slug: "bandai-ccg-24",    name: "Sage's Legacy",             date: "2012-02-01" },
+  { key: "s25",   slug: "bandai-ccg-25",    name: "Kage Summit",               date: "2012-05-01" },
+  { key: "s26",   slug: "bandai-ccg-26",    name: "Avenger's Wrath",           date: "2012-09-01" },
+  { key: "s27",   slug: "bandai-ccg-27",    name: "Hero's Ascension",          date: "2012-12-01" },
+  { key: "s28",   slug: "bandai-ccg-28",    name: "Ultimate Ninja Storm 3",    date: "2013-03-01" },
+  { key: "s29",   slug: "bandai-ccg-29",    name: "Shinobi's Dream",           date: "", skip: true },
+  { key: "tp1",   slug: "bandai-ccg-tp1",   name: "Tournament Pack 1",         date: "2010-07-07" },
+  { key: "tp2",   slug: "bandai-ccg-tp2",   name: "Tournament Pack 2",         date: "2011-01-05" },
+  { key: "tp3",   slug: "bandai-ccg-tp3",   name: "Tournament Pack 3",         date: "2011-07-01" },
+  { key: "tp4",   slug: "bandai-ccg-tp4",   name: "Tournament Pack 4",         date: "2012-01-01" },
+  { key: "tin1",  slug: "bandai-ccg-tin1",  name: "Fierce Ambitions (Tin)",    date: "2010-03-01" },
+  { key: "tin2",  slug: "bandai-ccg-tin2",  name: "Untouchables (Tin)",        date: "2010-10-01" },
+  { key: "tin3",  slug: "bandai-ccg-tin3",  name: "Ultimate Battle (Tin)",     date: "2011-03-01" },
+  { key: "tin4",  slug: "bandai-ccg-tin4",  name: "Rebirth (Tin)",             date: "2011-11-01" },
+  // Série PR corrente (2006–2013, revistas/tins/torneios/jogos): sem data
+  // única possível; ancora no lançamento do jogo pra ordenação estável.
+  { key: "promo", slug: "bandai-ccg-promo", name: "Promotional Cards",         date: "2006-04-28" }
 ];
 
 async function fetchPage(url) {
@@ -156,7 +170,7 @@ async function run() {
   const line = [];
   for (const s of snap.sets) {
     const def = defByKey.get(s.key);
-    if (!def) continue;
+    if (!def || def.skip) continue;
     const setId = `nrt-ccg-${def.key}`;
     for (const c of s.cards) {
       const cardId = idByNum.get(c.code) || `nrt-ccg-${c.code.toLowerCase()}`;
