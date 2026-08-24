@@ -119,7 +119,8 @@
   Promise.all([shared.loadOwnedFast(idsOwned), shared.loadFxRates()])
     .then(([catalog]) => {
       indexaCartas(catalog.cards);
-      // Carga incompleta (ver fetchCollectionApi): os totais desta sessão estão
+      // Carga incompleta (ver fetchCollectionApi e loadAcrossGames — os dois
+      // caminhos marcam `parcial`): os totais desta sessão estão
       // subestimados, então NÃO grava o ponto do dia — ele substituiria o de
       // hoje e o gráfico mostraria uma queda que não houve. Vale pra sessão
       // inteira: as cargas seguintes (listas, binders, movers) não completam o
@@ -1174,11 +1175,19 @@
     // indexaCartas libera outro registro.
     if (!snapshotGravado && !cargaParcial) {
       snapshotGravado = true;
-      shared.recordValueSnapshot(Object.fromEntries(GAMES.map((g) => [g, {
-        raw: collectionLines(g).total,
-        graded: gradedSlabs(g).reduce((s, x) => s + (x.value || 0), 0),
-        wish: wishlistTotal(g) + binderWishTotal(g)
-      }])));
+      shared.recordValueSnapshot(Object.fromEntries(GAMES.map((g) => {
+        const linhas = collectionLines(g);
+        return [g, {
+          raw: linhas.total,
+          graded: gradedSlabs(g).reduce((s, x) => s + (x.value || 0), 0),
+          wish: wishlistTotal(g) + binderWishTotal(g),
+          // Cobertura da avaliação (cópias precificadas/total): é com ela que o
+          // recordValueSnapshot separa "o mercado caiu" de "o preço não veio"
+          // — ver a guarda de queda falsa no shared.js.
+          priced: linhas.pricedCopies,
+          copies: linhas.totalCopies
+        }];
+      })));
     }
     if (!controlsBound) { bindControls(); controlsBound = true; }
     renderControls();

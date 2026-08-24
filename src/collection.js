@@ -353,13 +353,22 @@
         // INTEIRA, não o ownedCards() da tela: aquele já vem filtrado pelo chip
         // de jogo, e gravar por ele zeraria os outros jogos no dia. `wish` fica
         // de fora aqui: a tela não carrega as cartas desejadas.
-        // `parcial`: a borda devolveu menos carta do que se pediu, então este
+        // `parcial`: a carga veio incompleta (borda devolveu menos carta que o
+        // pedido, ou — no caminho de chunks — um jogo/chunk falhou), então este
         // total está subestimado — gravá-lo marcaria uma queda que não houve.
+        // priced/copies: cobertura de preços, pra guarda de queda falsa do
+        // recordValueSnapshot (o furo que o `parcial` não vê: carta que veio
+        // sem cotação).
         if (!result.parcial) {
-          shared.recordValueSnapshot(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, {
-            raw: shared.collectionValueLines(cards, owned, prices, { gameFilter: g }).total,
-            graded: shared.gradedTotalValue(gameOf, g)
-          }])));
+          shared.recordValueSnapshot(Object.fromEntries(shared.GAME_SLUGS.map((g) => {
+            const linhas = shared.collectionValueLines(cards, owned, prices, { gameFilter: g });
+            return [g, {
+              raw: linhas.total,
+              graded: shared.gradedTotalValue(gameOf, g),
+              priced: linhas.pricedCopies,
+              copies: linhas.totalCopies
+            }];
+          })));
         }
         if (result.viaApi) {
           // Cartas na tela JÁ; os denominadores de progresso (X/Y por set/artista)

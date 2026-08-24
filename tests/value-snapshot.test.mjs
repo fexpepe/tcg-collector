@@ -140,6 +140,96 @@ test("recordValueSnapshot: NÃO grava mais cookie — só apaga o que existir", 
   assert.match(cookie, /sleevu_pf_pokemon=; Path=\/; Max-Age=0/, "manda o navegador apagar o cookie antigo");
 });
 
+// ── Guarda de QUEDA FALSA ───────────────────────────────────────────────────
+// O vale fantasma do gráfico: a carga veio incompleta (preços que não
+// desceram), o patrimônio computou pela metade e o ponto do dia gravou uma
+// queda que não houve. A guarda exige queda >50% E cobertura de preços
+// desabando JUNTAS pra segurar o ponto — mercado muda preço, não faz preço
+// sumir. Ver quedaSuspeita no shared.js.
+const KEY_HOLD_PK = "tcg-collector-pokemon-history-hold";
+const ONTEM_40K = [{ d: "2026-08-01", c: 40000, b: 0, w: 0, n: 90, q: 100 }];
+
+test("guarda: queda >50% com cobertura desabada NÃO grava (preço que não veio)", () => {
+  const { api, ls } = freshWriter({ [KEY_PK]: JSON.stringify(ONTEM_40K) });
+  api.recordValueSnapshot({ pokemon: { raw: 15000, graded: 0, wish: 0, priced: 10, copies: 100 } });
+  const hist = JSON.parse(ls.getItem(KEY_PK));
+  assert.equal(hist.length, 1, "o ponto suspeito não pode entrar");
+  assert.equal(hist[0].c, 40000, "o último ponto bom segue valendo");
+  const hold = JSON.parse(ls.getItem(KEY_HOLD_PK));
+  assert.equal(hold.v, 15000, "a observação suprimida fica anotada pra confirmação");
+});
+
+test("guarda: queda >50% com cobertura ESTÁVEL grava (mercado/condição, não falha)", () => {
+  const { api, ls } = freshWriter({ [KEY_PK]: JSON.stringify(ONTEM_40K) });
+  api.recordValueSnapshot({ pokemon: { raw: 15000, graded: 0, wish: 0, priced: 88, copies: 100 } });
+  const ponto = JSON.parse(ls.getItem(KEY_PK)).find((p) => p.d === HOJE);
+  assert.equal(ponto.c, 15000, "queda real de preço não pode ser censurada");
+});
+
+test("guarda: o mesmo valor persistindo num dia SEGUINTE é real e grava", () => {
+  // Falso positivo (vendeu só as cartas precificadas) não trava o histórico:
+  // ontem a guarda segurou e anotou; hoje o valor se repete — então persiste.
+  const { api, ls } = freshWriter({
+    [KEY_PK]: JSON.stringify(ONTEM_40K),
+    [KEY_HOLD_PK]: JSON.stringify({ d: "2026-08-02", v: 15000 })
+  });
+  api.recordValueSnapshot({ pokemon: { raw: 15000, graded: 0, wish: 0, priced: 10, copies: 100 } });
+  const ponto = JSON.parse(ls.getItem(KEY_PK)).find((p) => p.d === HOJE);
+  assert.equal(ponto.c, 15000, "estado que sobrevive à noite não é soluço de carga");
+  assert.equal(ls.getItem(KEY_HOLD_PK), null, "confirmou: a anotação é consumida");
+});
+
+test("guarda: repetir a queda no MESMO dia não confirma (duas cargas mancas)", () => {
+  const { api, ls } = freshWriter({ [KEY_PK]: JSON.stringify(ONTEM_40K) });
+  api.recordValueSnapshot({ pokemon: { raw: 15000, graded: 0, wish: 0, priced: 10, copies: 100 } });
+  api.recordValueSnapshot({ pokemon: { raw: 15000, graded: 0, wish: 0, priced: 10, copies: 100 } });
+  const hist = JSON.parse(ls.getItem(KEY_PK));
+  assert.equal(hist.length, 1, "a mesma sessão falhando duas vezes não é evidência independente");
+});
+
+test("guarda: gravação saudável limpa a anotação pendente", () => {
+  // O vale fantasma clássico: dia ruim segurado, dia seguinte carrega inteiro.
+  const { api, ls } = freshWriter({
+    [KEY_PK]: JSON.stringify(ONTEM_40K),
+    [KEY_HOLD_PK]: JSON.stringify({ d: "2026-08-02", v: 15000 })
+  });
+  api.recordValueSnapshot({ pokemon: { raw: 41000, graded: 0, wish: 0, priced: 91, copies: 100 } });
+  const ponto = JSON.parse(ls.getItem(KEY_PK)).find((p) => p.d === HOJE);
+  assert.equal(ponto.c, 41000);
+  assert.equal(ls.getItem(KEY_HOLD_PK), null, "recuperou: a suspeita antiga morre");
+});
+
+test("guarda: histórico antigo sem cobertura (n/q) não ativa — compatibilidade", () => {
+  // Pontos gravados antes do campo existir não têm régua de comparação; a
+  // guarda se arma sozinha a partir do primeiro ponto novo.
+  const { api, ls } = freshWriter({
+    [KEY_PK]: JSON.stringify([{ d: "2026-08-01", c: 40000, b: 0, w: 0 }])
+  });
+  api.recordValueSnapshot({ pokemon: { raw: 15000, graded: 0, wish: 0, priced: 10, copies: 100 } });
+  const ponto = JSON.parse(ls.getItem(KEY_PK)).find((p) => p.d === HOJE);
+  assert.equal(ponto.c, 15000, "sem cobertura anterior não há como suspeitar");
+  assert.deepEqual([ponto.n, ponto.q], [10, 100], "o ponto novo arma a guarda pros próximos");
+});
+
+test("guarda: dia em que NENHUMA carta desceu (copies:0 informado) também segura", () => {
+  // Coleção pequena (≤20 ids) passa batida pelo `parcial` da borda; o zero
+  // explícito de um dia sem carga não pode virar despenca no gráfico. "Vendi
+  // tudo" de verdade entra amanhã, pela confirmação de persistência.
+  const { api, ls } = freshWriter({ [KEY_PK]: JSON.stringify(ONTEM_40K) });
+  api.recordValueSnapshot({ pokemon: { raw: 0, graded: 0, wish: 0, priced: 0, copies: 0 } });
+  const hist = JSON.parse(ls.getItem(KEY_PK));
+  assert.equal(hist.length, 1, "o zero de carga vazia não entra no mesmo dia");
+  assert.equal(hist[0].c, 40000);
+});
+
+test("guarda: chamador sem cobertura (priced/copies ausentes) grava como sempre", () => {
+  const { api, ls } = freshWriter({ [KEY_PK]: JSON.stringify(ONTEM_40K) });
+  api.recordValueSnapshot({ pokemon: { raw: 15000, graded: 0, wish: 0 } });
+  const ponto = JSON.parse(ls.getItem(KEY_PK)).find((p) => p.d === HOJE);
+  assert.equal(ponto.c, 15000);
+  assert.equal(ponto.n, undefined, "sem contagem não se inventa cobertura");
+});
+
 test("recordValueSnapshot: histórico v1 é migrado antes de receber o ponto novo", () => {
   const { api, ls } = freshWriter({
     "tcg-collector-pokemon-history-v1": JSON.stringify([{ d: "2026-07-01", c: 500, w: 40 }])

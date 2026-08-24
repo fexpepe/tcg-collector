@@ -3168,15 +3168,74 @@
     } catch (e) { /* ignora */ }
   }
   // Grava o ponto de hoje de um ou mais jogos e atualiza os cookies do hub.
-  //   perGame = { pokemon: { raw, graded, wish }, lorcana: {…} }  (valores na
-  //   moeda ATUAL — a conversão pra BRL é feita aqui).
+  //   perGame = { pokemon: { raw, graded, wish, priced, copies }, lorcana: {…} }
+  //   (raw/graded/wish na moeda ATUAL — a conversão pra BRL é feita aqui;
+  //   priced/copies são CONTAGENS: cópias raw com preço e cópias raw totais, a
+  //   COBERTURA da avaliação, que alimenta a guarda de queda falsa abaixo).
   //
   // Campo AUSENTE (undefined/null) preserva o que já está gravado, em vez de
   // zerar: o Hub e a Coleção sabem o patrimônio mas não calculam os desejos, e
   // gravar w:0 de lá apagaria o valor que o Portfólio tinha registrado no mesmo
   // dia. Zero EXPLÍCITO continua sendo gravado (vendeu tudo é um dado real).
+  //
+  // ── Guarda de QUEDA FALSA ──────────────────────────────────────────────────
+  // O vale fantasma no gráfico (despenca num dia, volta no seguinte) nunca foi
+  // o mercado: foi um dia em que a carga veio incompleta, o total saiu pela
+  // metade e o ponto do dia — que SUBSTITUI o de hoje — registrou a queda. O
+  // `parcial` das cargas pega carta que não veio; esta guarda, no próprio ato
+  // de gravar, pega o furo que ele não vê: as cartas chegam (a contagem bate)
+  // mas a tabela de PREÇOS vem manca — borda com o D1 de preços defasado,
+  // chunk de preço que falhou — e cada cópia sem cotação vira R$ 0. Daí o
+  // critério exigir as duas coisas JUNTAS: patrimônio caindo além da metade E
+  // cobertura de preços desabando. Mercado muda preço; não faz preço sumir.
+  // Queda real de preço mantém a cobertura e grava; correção de condição
+  // (NM→HP) idem. Slabs ficam fora da cobertura de propósito: valor manual
+  // mora no localStorage (imune à carga) e o automático PSA é minoria.
+  //
+  // O falso positivo (raro: vender só as cartas precificadas e ficar com o
+  // resto sem cotação) não pode travar o histórico pra sempre: a observação
+  // suprimida fica anotada (history-hold, local — não sincroniza) e, se o
+  // MESMO valor reaparecer num dia seguinte, persistiu — então é real e grava.
+  // Falha de carga é transitória; patrimônio de verdade se repete amanhã.
+  const holdKeyOf = (g) => gameKey("history-hold", g);
+  function quedaSuspeita(g, anterior, ponto) {
+    const valAntes = (Number(anterior.c) || 0) + (Number(anterior.b) || 0);
+    const valNovo = (ponto.c || 0) + (ponto.b || 0);
+    // Cobertura só compara quando os DOIS lados a têm: histórico gravado antes
+    // deste campo existir não ativa a guarda (ela se arma sozinha no dia
+    // seguinte ao primeiro ponto com n/q).
+    const cobAntes = anterior.q > 0 && anterior.n != null ? anterior.n / anterior.q : null;
+    // q:0 INFORMADO (≠ ausente) é cobertura zero: o dia em que a carga não
+    // trouxe carta nenhuma de um jogo pequeno passa batido pelo `parcial` da
+    // borda (que só checa acima de 20 ids) e computaria um zero explícito.
+    // "Vendi tudo" também cai aqui — e entra amanhã, pela confirmação.
+    const cobNova = ponto.q == null ? null : (ponto.q > 0 ? (ponto.n || 0) / ponto.q : 0);
+    const suspeita = valAntes > 0 && valNovo < valAntes * 0.5
+      && cobAntes > 0 && cobNova != null && cobNova < cobAntes * 0.5;
+    if (!suspeita) {
+      try { localStorage.removeItem(holdKeyOf(g)); } catch (e) { /* ignora */ }
+      return false;
+    }
+    let hold = null;
+    try { hold = JSON.parse(localStorage.getItem(holdKeyOf(g)) || "null"); } catch (e) { /* ignora */ }
+    // O mesmo valor (±15%) visto num dia ANTERIOR: persistiu, é real — grava.
+    // Mesmo dia não confirma: duas cargas mancas na mesma sessão são o caso
+    // comum de falha, não uma evidência independente.
+    if (hold && hold.d < ponto.d && Math.abs(valNovo - hold.v) <= Math.max(1, hold.v * 0.15)) {
+      try { localStorage.removeItem(holdKeyOf(g)); } catch (e) { /* ignora */ }
+      return false;
+    }
+    try { localStorage.setItem(holdKeyOf(g), JSON.stringify({ d: ponto.d, v: Math.round(valNovo * 100) / 100 })); } catch (e) { /* ignora */ }
+    return true;
+  }
+
   function recordValueSnapshot(perGame) {
     const hoje = new Date().toISOString().slice(0, 10);
+    // Sem a tabela de câmbio (1ª visita com a rede ruim), um valor em USD/EUR
+    // não tem como virar BRL — o fallback antigo gravava o número CRU, e quem
+    // usa o header em dólar registrava uma "queda" de 5x. Sem câmbio, sem
+    // ponto: o de ontem segue valendo.
+    if (currentCurrency !== "BRL" && convertMoney(1, currentCurrency, "BRL") == null) return;
     const paraBRL = (v) => { const r = convertMoney(v, currentCurrency, "BRL"); return r == null ? v : Math.round(r * 100) / 100; };
     Object.keys(perGame || {}).forEach((g) => {
       const dados = perGame[g] || {};
@@ -3191,9 +3250,19 @@
         b: campo(dados.graded, anterior.b),
         w: campo(dados.wish, anterior.w)
       };
+      // Cobertura no ponto (n = cópias precificadas, q = totais): é o que dá ao
+      // snapshot SEGUINTE a régua de comparação. q:0 informado também entra —
+      // "não tenho cópia raw" é dado, e é o que deixa a guarda ver o dia em que
+      // a carga não trouxe carta nenhuma. (O ruído dos 12 jogos vazios de quem
+      // coleciona um já morre no filtro de jogo-sem-nada logo abaixo.)
+      if (dados.copies != null) {
+        ponto.n = Math.max(0, Math.round(Number(dados.priced) || 0));
+        ponto.q = Math.max(0, Math.round(Number(dados.copies) || 0));
+      }
       // Jogo sem nada e sem histórico não entra: 13 jogos × um ponto de zeros
       // por dia poluiria o localStorage e o sync de quem coleciona um só.
       if (!hist.length && !ponto.c && !ponto.b && !ponto.w) return;
+      if (quedaSuspeita(g, anterior, ponto)) return; // ver a guarda lá em cima
       if (doDia) hist[hist.length - 1] = ponto; else hist.push(ponto);
       if (hist.length > 800) hist.splice(0, hist.length - 800);
       try { localStorage.setItem(histKeyOf(g), JSON.stringify(hist)); marcaSuja(histKeyOf(g)); }
@@ -6731,7 +6800,20 @@
     await awaitCatalog(); // garante os globals do jogo da sessão antes de salvar/restaurar
     const cards = [];
     const indexesByGame = {};
-    const mergedPricing = {};
+    // A união NASCE da tabela que a sessão já tem, não do zero. Esta função
+    // roda mais de uma vez na mesma página (Portfólio: carga inicial pela
+    // borda, depois movers/listas buscando meia dúzia de ids) e o replace
+    // apagava a tabela inteira que a primeira carga montou — com `pc` no
+    // manifest sobrava SÓ o preço dos sets recém-pedidos, o resto da coleção
+    // passava a computar R$ 0 e o clique seguinte de filtro re-gravava o ponto
+    // do dia despencado. Preço não colide entre jogos (ids próprios), então
+    // mesclar por cima é seguro; entrada repetida sai atualizada.
+    const mergedPricing = Object.assign({}, window.TCG_PRICING);
+    // Espelho do `parcial` da borda (fetchCollectionApi), que este caminho não
+    // tinha: um jogo que cai INTEIRO num soluço de rede virava silenciosamente
+    // "zero cartas", o total saía subestimado e o ponto do dia gravava no
+    // gráfico uma queda que não aconteceu.
+    let jogoCaiu = false;
     for (const { game, dataDir } of DATA_GAMES) {
       const ids = idsByGame ? (idsByGame[game] || []) : null; // null = catálogo inteiro
       // Carga DIRECIONADA e sem nenhum id deste jogo: não há o que baixar.
@@ -6744,7 +6826,7 @@
       // página toda — cai vazio só pra aquele jogo e segue.
       let r;
       try { r = await loadGameCatalog(game, dataDir, ids); }
-      catch (e) { r = { cards: [], indexes: null, pricing: null }; }
+      catch (e) { r = { cards: [], indexes: null, pricing: null }; jogoCaiu = true; }
       (r.cards || []).forEach((c) => { c.game = game; cards.push(c); });
       indexesByGame[game] = r.indexes || null;
       if (r.pricing) Object.assign(mergedPricing, r.pricing);
@@ -6760,7 +6842,12 @@
       if (idx.pokemonTotals) Object.assign(mergedIdx.pokemonTotals, idx.pokemonTotals);
     });
     window.TCG_INDEXES_MERGED = mergedIdx;
-    return { cards, indexesByGame };
+    // `parcial` = este total não representa a coleção: um jogo caiu inteiro,
+    // ou algum chunk de carta/preço foi pulado nesta sessão (flags pegajosas,
+    // de propósito — carga seguinte nenhuma completa o que faltou). Os
+    // gravadores do ponto do dia (Portfólio/Coleção/Hub) já pulam quando
+    // parcial, seja a carga da borda ou esta.
+    return { cards, indexesByGame, parcial: jogoCaiu || catalogoIncompleto || precosIncompletos };
   }
 
   // Só as cartas que você tem (Coleção/Wishlist): carga direcionada por jogo.
@@ -6851,6 +6938,8 @@
       // registra uma queda de patrimônio que não existiu.
       return { cards: viaApi.cards, indexesByGame: {}, viaApi: true, parcial: !!viaApi.parcial };
     }
+    // O caminho de chunks também devolve `parcial` (ver loadAcrossGames): os
+    // dois caminhos falham diferente, mas o contrato pro gravador é um só.
     const r = await loadOwnedAcrossGames(pedido);
     return Object.assign({ viaApi: false }, r);
   }
@@ -6980,6 +7069,13 @@
   // memória está incompleto — quem publica dado derivado dele (publishProfile)
   // precisa saber. Não reseta: só um reload recomeça do zero.
   let catalogoIncompleto = false;
+  // Irmão do de cima, pros chunks de PREÇO (pc): a falha deles não derruba a
+  // carga (carta sem valor é melhor que tela sem carta), mas deixa o patrimônio
+  // calculado SUBESTIMADO — quem grava o ponto do dia no histórico precisa
+  // saber, senão o gráfico registra uma queda que não houve (ver o `parcial`
+  // do loadAcrossGames). Também não reseta: as cargas seguintes da sessão não
+  // completam a tabela que ficou manca.
+  let precosIncompletos = false;
   // Baixa os chunks de set com concorrência limitada (não 400+ fetches de uma
   // vez): o navegador serializa em ~6 por host de qualquer forma, e o limite
   // evita estourar memória/conexões em catálogos grandes.
@@ -7025,6 +7121,10 @@
         if (buscaPreco) {
           const tabela = await buscaPreco;
           if (tabela) Object.assign(window.TCG_PRICING = window.TCG_PRICING || {}, tabela);
+          // Com `pc` no manifest todo chunk de set tem o irmão de preço: vir
+          // null é falha (rede ou build), e as cartas deste set vão computar
+          // R$ 0. A carga segue; o RETRATO dela é que fica inválido.
+          else precosIncompletos = true;
         }
       }
     }

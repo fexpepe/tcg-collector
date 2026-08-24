@@ -219,13 +219,20 @@
     // raw e graded SEPARADOS (as duas séries do gráfico) e omite `wish`: esta
     // tela não carrega as cartas desejadas, e mandar 0 apagaria o valor que o
     // Portfólio gravou hoje — campo ausente preserva o que já está lá.
-    // `parcial` (a borda devolveu menos carta do que se pediu): o total está
-    // subestimado e gravá-lo marcaria no gráfico uma queda que não aconteceu.
+    // `parcial` (a carga veio incompleta — borda com menos carta que o pedido,
+    // ou jogo/chunk que falhou no caminho de chunks): o total está subestimado
+    // e gravá-lo marcaria no gráfico uma queda que não aconteceu. priced/copies:
+    // cobertura de preços, pra guarda de queda falsa do recordValueSnapshot.
     if (!catalog.parcial) {
-      shared.recordValueSnapshot(Object.fromEntries(shared.GAME_SLUGS.map((g) => [g, {
-        raw: shared.collectionValueLines(myCards, owned, prices, { gameFilter: g }).total,
-        graded: shared.gradedTotalValue(gameOf, g)
-      }])));
+      shared.recordValueSnapshot(Object.fromEntries(shared.GAME_SLUGS.map((g) => {
+        const linhas = shared.collectionValueLines(myCards, owned, prices, { gameFilter: g });
+        return [g, {
+          raw: linhas.total,
+          graded: shared.gradedTotalValue(gameOf, g),
+          priced: linhas.pricedCopies,
+          copies: linhas.totalCopies
+        }];
+      })));
     }
 
     // Mais valiosas (top 3 por valor unitário, como era na Coleção)
