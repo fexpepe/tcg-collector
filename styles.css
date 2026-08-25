@@ -1295,6 +1295,16 @@ input::placeholder {
 .preview-sale-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13px; color: var(--subtle); font-weight: 700; }
 .preview-sale-cur { font-weight: 800; color: var(--text); flex: none; }
 .preview-sale-price { flex: 1; min-width: 0; font: inherit; font-weight: 700; padding: 7px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--text); }
+/* Foco dos campos de dinheiro do preview (Vender/Paguei/Preço NM): o anel
+   global (outline 2px FORA da caixa) era cortado à esquerda pelo overflow do
+   popup — o campo encosta na borda do conteúdo. Mesmo padrão dos outros inputs
+   com borda (.price-cell, .setting-input): o contorno vira a própria borda no
+   accent, que nunca vaza da caixa. */
+.preview-sale-price:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--panel-strong);
+}
 
 /* Preço de venda no share (?s= de uma lista de vendas) */
 .tile-price.sale-price-tag { color: var(--gold); font-weight: 800; }
@@ -5300,7 +5310,7 @@ a.progress-row:hover {
 }
 
 .market-finish + .market-finish {
-  margin-top: 10px;
+  margin-top: 14px;
 }
 
 .market-finish-label {
@@ -5310,7 +5320,7 @@ a.progress-row:hover {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--subtle);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .market-cards {
@@ -5377,40 +5387,49 @@ a.progress-row:hover {
 .graded-trend.down { color: #d4574e; }
 
 .market-source {
-  margin: 8px 0 0;
+  margin: 12px 0 0;
   font-size: 11px;
   color: var(--subtle);
-  line-height: 1.5;
+  line-height: 1.6;
+}
+
+/* Respiro entre os blocos do rodapé do mercado (nota de fontes → HISTÓRICO →
+   lojas): a nota colada no título seguinte dava a "encavalada" do pedido de
+   2026-08-25. O irmão direto cobre a nota antes do histórico; a regra
+   .market-finish + .market-finish logo acima cuida de bloco após bloco. */
+.market-source + .market-finish {
+  margin-top: 14px;
 }
 
 /* Mercado BR / EUA: grade rótulo | chips para os chips alinharem entre as
    linhas (a coluna do rótulo tem a largura do maior rótulo). */
-/* Seção de marketplaces ~10% maior (fontes, padding e gaps). */
+/* Seção de marketplaces maior (fontes, padding e gaps ~20% acima do resto do
+   rodapé): é o call-to-action da carta — "onde eu compro/vendo isto?". */
 .market-links {
   display: grid;
   grid-template-columns: max-content 1fr;
   align-items: center;
-  gap: 9px 13px;
-  margin-top: 11px;
+  gap: 11px 14px;
+  margin-top: 16px;
 }
 
 .br-links-label {
-  font-size: 13.2px;
+  font-size: 14px;
   color: var(--subtle);
 }
 
 .br-links-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 9px;
+  gap: 10px;
 }
 
 .br-link {
-  font-size: 13.2px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--muted);
   text-decoration: none;
-  padding: 4.4px 11px;
+  padding: 6px 13px;
   border: 1px solid var(--line);
   border-radius: 999px;
 }
