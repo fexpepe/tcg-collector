@@ -18,8 +18,6 @@
     topList: document.getElementById("dhTopList"),
     dist: document.getElementById("dhDist"),
     region: document.getElementById("dhRegion"),
-    delta: document.getElementById("dhDelta"),
-    spark: document.getElementById("dhSpark"),
     priced: document.getElementById("dhPriced")
   };
 
@@ -68,28 +66,10 @@
   el.value.textContent = pf != null ? shared.formatMoney(shared.getCurrency(), pf) : "—";
   if (pf == null) el.value.parentElement.title = t("dash.pfHint");
 
-  // Como o patrimônio andou: variação de 7 dias + o desenho dos últimos 30.
-  // Tudo do history-v2 local (sem rede, sem catálogo), então aparece junto com
-  // o primeiro paint. Só o Portfólio mostrava progressão; o Hub dava um número
-  // solto, que não responde "isso subiu ou desceu?".
-  const serie = shared.networthSeries(30);
-  if (serie.length >= 2) {
-    el.spark.innerHTML = shared.sparklineSvg(serie.map((p) => p.v), { classe: "dash-spark-svg" });
-    el.spark.hidden = false;
-    const mudanca = shared.networthChange(7);
-    if (mudanca && Math.abs(mudanca.pct) >= 0.05) {
-      const sobe = mudanca.pct > 0;
-      const pct = Math.abs(mudanca.pct).toLocaleString(shared.getLocale(), { maximumFractionDigits: 1 });
-      el.delta.textContent = `${sobe ? "▲" : "▼"} ${pct}% ${t("dash.delta7d")}`;
-      el.delta.classList.toggle("is-up", sobe);
-      el.delta.classList.toggle("is-down", !sobe);
-      el.delta.hidden = false;
-      // A linha do sparkline acompanha a direção (ver .dash-spark.is-up): no
-      // modo "Todos" o accent é neutro, e uma linha cinza não diria nada.
-      el.spark.classList.toggle("is-up", sobe);
-      el.spark.classList.toggle("is-down", !sobe);
-    }
-  }
+  // A variação de 7 dias + sparkline que moravam aqui saíram (pedido de
+  // 2026-08-25): a progressão do patrimônio vive no Portfólio, com gráfico de
+  // verdade — no cartão do Hub o desenho miniatura mais atrapalhava o número
+  // grande do que respondia alguma coisa.
 
   // Perfil (nome/handle + link do perfil público quando existe)
   const profile = shared.getProfile();

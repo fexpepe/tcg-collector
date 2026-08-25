@@ -2065,7 +2065,10 @@
     // Coleção — diferente de "Decks", que é a galeria PÚBLICA e tem item próprio.
     const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "graded", "mydecks", "listas"].includes(active);
 
-    const link = (href, key, page) => `<a href="${escapeAttribute(href)}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}</a>`;
+    // `beta`: selo pequeno sobrescrito no rótulo — recurso ainda em construção
+    // (pedido de 2026-08-25 pra Decks e Portfólio). "beta" é literal de
+    // propósito: é a mesma palavra nos três idiomas do site.
+    const link = (href, key, page, beta) => `<a href="${escapeAttribute(href)}"${page === active ? ' class="active"' : ""}>${escapeHtml(t(key))}${beta ? '<sup class="nav-beta">beta</sup>' : ""}</a>`;
     const group = (key, isActive, links) => `
       <div class="nav-group">
         <button type="button" class="nav-group-toggle${isActive ? " active" : ""}" aria-expanded="false" aria-haspopup="true">
@@ -2093,9 +2096,9 @@
     nav.innerHTML = `
       ${link(apexUrl, "nav.home", "home")}
       ${exploreMega}
-      ${link("decks", "nav.decks", "decks")}
+      ${link("decks", "nav.decks", "decks", true)}
       ${loggedIn ? `<a href="dashboard"${collectionActive ? ' class="active"' : ""}>${escapeHtml(t("nav.collection"))}</a>
-      ${link("portfolio", "nav.portfolio", "portfolio")}` : ""}
+      ${link("portfolio", "nav.portfolio", "portfolio", true)}` : ""}
     `;
 
     const groups = Array.from(nav.querySelectorAll(".nav-group")).map((groupEl) => ({
@@ -3272,74 +3275,10 @@
     });
   }
 
-  // ── Série do patrimônio somando os jogos (history-v2) ─────────────────────
-  // Mesma fonte do gráfico do Portfólio, achatada num vetor [{d, v}] — o Hub
-  // usa pro sparkline e pra variação. Zero rede: já está tudo no localStorage
-  // (e sincronizado, então um aparelho novo também tem).
-  //
-  // CARRY-FORWARD por jogo: cada jogo só ganha ponto no dia em que uma tela
-  // dele foi aberta, então somar "o que existe naquela data" criaria vales
-  // falsos — no dia em que só o Pokémon gravou, o patrimônio despencaria pro
-  // valor do Pokémon. Cada data usa o ÚLTIMO valor conhecido de cada jogo.
-  function networthSeries(dias) {
-    const series = [];
-    const datas = new Set();
-    GAME_SLUGS.forEach((g) => {
-      const h = valueHistory(g).filter((p) => p && p.d);
-      if (!h.length) return;
-      series.push(h);
-      h.forEach((p) => datas.add(p.d));
-    });
-    if (!series.length) return [];
-    const ordenadas = [...datas].sort();
-    const ponteiros = series.map(() => -1);
-    const ultimos = series.map(() => 0);
-    const saida = [];
-    ordenadas.forEach((d) => {
-      series.forEach((h, i) => {
-        while (ponteiros[i] + 1 < h.length && h[ponteiros[i] + 1].d <= d) {
-          ponteiros[i] += 1;
-          const p = h[ponteiros[i]];
-          ultimos[i] = (Number(p.c) || 0) + (Number(p.b) || 0);
-        }
-      });
-      saida.push({ d, v: ultimos.reduce((s, v) => s + v, 0) });
-    });
-    return dias > 0 ? saida.slice(-dias) : saida;
-  }
-
-  // Variação do patrimônio na janela de N dias: { pct, abs } em BRL, ou null
-  // quando não há dois pontos pra comparar (conta nova).
-  function networthChange(dias) {
-    const serie = networthSeries(dias);
-    if (serie.length < 2) return null;
-    const de = serie[0].v;
-    const ate = serie[serie.length - 1].v;
-    if (!de) return null;
-    return { pct: ((ate - de) / de) * 100, abs: ate - de };
-  }
-
-  // Sparkline: uma linha e um preenchimento, sem eixo nem rótulo. É resumo de
-  // relance — o número exato e a leitura ponto a ponto moram no Portfólio.
-  // preserveAspectRatio="none" deixa a largura ser 100% do cartão.
-  function sparklineSvg(valores, options) {
-    const { largura = 100, altura = 28, classe = "spark" } = options || {};
-    const vals = (valores || []).map(Number).filter((v) => isFinite(v));
-    if (vals.length < 2) return "";
-    const min = Math.min(...vals);
-    const max = Math.max(...vals);
-    const span = (max - min) || Math.abs(max) || 1;
-    const px = (i) => (i / (vals.length - 1)) * largura;
-    const py = (v) => altura - 1 - ((v - min) / span) * (altura - 2);
-    const linha = vals.map((v, i) => `${i ? "L" : "M"}${px(i).toFixed(1)} ${py(v).toFixed(1)}`).join(" ");
-    const area = `${linha} L${largura} ${altura} L0 ${altura} Z`;
-    const fim = `${px(vals.length - 1).toFixed(1)} ${py(vals[vals.length - 1]).toFixed(1)}`.split(" ");
-    return `<svg class="${escapeAttribute(classe)}" viewBox="0 0 ${largura} ${altura}" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-      <path class="spark-area" d="${area}"/>
-      <path class="spark-line" d="${linha}"/>
-      <circle class="spark-dot" cx="${fim[0]}" cy="${fim[1]}" r="1.6"/>
-    </svg>`;
-  }
+  // networthSeries/networthChange/sparklineSvg moravam aqui: alimentavam a
+  // variação de 7 dias + sparkline do cartão de patrimônio do Hub, removidas a
+  // pedido (2026-08-25) — a progressão vive no Portfólio, com gráfico de
+  // verdade. Sem outro consumidor, saíram junto (export órfão é dívida).
 
   // Retrato instantâneo do patrimônio, SEM catálogo e SEM rede: soma por jogo
   // o último ponto do histórico do portfólio (history-v2 — que SINCRONIZA na
@@ -7624,9 +7563,6 @@
     collectionNetWorth,
     valueSnapshot,
     valueHistory,
-    networthSeries,
-    networthChange,
-    sparklineSvg,
     recordValueSnapshot,
     currencySymbol: saleCurrencySymbol,
     distBarsHtml,

@@ -546,6 +546,25 @@ main {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
 }
 
+/* Selo "beta" nos itens do menu ainda em construção (Decks, Portfólio). Os
+   links são inline-flex, então o sobrescrito sai por align-self (vertical-align
+   não vale em item de flex). Neutro por tokens de tema, e não pelo accent —
+   o accent muda por jogo e o header é global (mesma regra do hover abaixo). */
+.page-nav .nav-beta {
+  align-self: flex-start;
+  margin: 3px 0 0 4px;
+  padding: 1px 4px;
+  border: 1px solid var(--line);
+  /* sem raio: FLAT GLOBAL (ver a lista de cantos zerados no fim do arquivo) */
+  font-size: 8.5px;
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--panel-strong);
+  color: var(--muted);
+}
+
 /* Contorno no hover. Os outros controles do header (moeda, idioma de carta,
    tema) nascem com a borda desenhada; os itens do menu eram os únicos sem
    nenhum retorno de "isto é clicável". Usa a MESMA cor de borda deles
@@ -631,50 +650,6 @@ button {
   outline-offset: 2px;
 }
 
-/* Variação de 7 dias + sparkline no cartão de patrimônio do Hub. Verde/vermelho
-   pelas MESMAS variáveis das cápsulas do Portfólio, pra alta ser a mesma cor nas
-   duas telas. A seta acompanha o texto: não é a cor sozinha carregando o sinal. */
-.dash-delta {
-  display: inline-block;
-  font-size: 13px;
-  font-weight: 700;
-  margin-top: 2px;
-  color: var(--muted);
-}
-.dash-delta.is-up { color: #2ecc71; }   /* mesmos tons do .pf-head-delta */
-.dash-delta.is-down { color: #e8553c; }
-.dash-spark {
-  margin-top: 8px;
-  height: 28px;
-}
-/* preserveAspectRatio=none no SVG: a linha estica na largura do cartão. O
-   vector-effect mantém a espessura do traço mesmo com o eixo X esticado. */
-.dash-spark-svg {
-  display: block;
-  width: 100%;
-  height: 28px;
-  overflow: visible;
-}
-/* A COR carrega o sinal, como no delta acima: subiu no período = verde, caiu =
-   vermelho. Sem direção definida fica no accent — que no modo "Todos" é neutro
-   de propósito (ver [data-game-accent="all"]), e aí a linha ficaria sem
-   significado nenhum. Mesmos tons do .pf-head-delta e do .dash-delta. */
-.dash-spark-svg .spark-line {
-  fill: none;
-  stroke: var(--spark-cor, var(--accent));
-  stroke-width: 1.5;
-  vector-effect: non-scaling-stroke;
-  stroke-linejoin: round;
-}
-.dash-spark-svg .spark-area {
-  fill: color-mix(in srgb, var(--spark-cor, var(--accent)) 14%, transparent);
-  stroke: none;
-}
-.dash-spark-svg .spark-dot {
-  fill: var(--spark-cor, var(--accent));
-}
-.dash-spark.is-up { --spark-cor: #2ecc71; }
-.dash-spark.is-down { --spark-cor: #e8553c; }
 /* "X/Y com preço": nota de rodapé do patrimônio, discreta de propósito — é
    ressalva, não manchete. */
 .dash-priced {
