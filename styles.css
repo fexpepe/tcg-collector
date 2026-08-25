@@ -3358,6 +3358,22 @@ a.hub-tile:hover {
    pra emparelhar com os outros. Vale no tile do hub e no leque da home. */
 .hub-logo[src*="game_magic"], .lp-games-caps img[src*="game_magic"] { transform: scale(1.2); }
 .hub-logo-text { font-size: 19px; font-weight: 800; color: #4b4b4b; text-align: center; }
+/* Nome do jogo (em inglês) entre o logo e o ano dos tiles VINTAGE: o logo
+   sozinho pode não dizer nada pra quem não conhece a linha. No máximo duas
+   linhas (clamp) e altura RESERVADA de duas mesmo quando o nome cabe numa —
+   é o que mantém os anos alinhados entre os tiles da grade. */
+.hub-tile-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.6em;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text);
+}
+
 .hub-tile-foot {
   display: flex;
   align-items: center;
