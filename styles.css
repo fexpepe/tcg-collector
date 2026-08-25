@@ -652,10 +652,16 @@ button {
 
 /* "X/Y com preço": nota de rodapé do patrimônio, discreta de propósito — é
    ressalva, não manchete. */
-.dash-priced {
+/* Seletor composto de propósito: o genérico `.stats-grid span` (28px, peso
+   800) e o `.stat-grand span` (cor do accent) venciam `.dash-priced` sozinho
+   por especificidade — o "865/1197 com preço" saía do MESMO tamanho e cor do
+   patrimônio, disputando com o número que ele só anota. */
+.stats-grid .dash-priced {
   display: block;
   font-size: 12px;
   font-weight: 600;
+  line-height: 1.35;
+  margin-top: 4px;
   color: var(--subtle);
   font-variant-numeric: tabular-nums;
 }
