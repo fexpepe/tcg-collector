@@ -4908,16 +4908,25 @@ a.progress-row:hover {
   color: inherit;
 }
 .dash-section-head { font-size: 17px; margin: 26px 0 12px; }
-/* Cápsulas detalhadas: respiro claro depois da grade de atalhos. */
-.dash-main #dhCaps { margin-top: 26px; gap: 12px; }
-/* Atalhos: 4 COLUNAS FIXAS, não auto-fill. São exatamente 8 itens (lista fixa
-   no dashboard.js), então 4 colunas fecham duas fileiras cheias — com auto-fill
-   a tela larga cabia 5 e sobrava uma fileira de 3 solta, que é o que fazia o
-   bloco parecer desalinhado. Se um item novo entrar, o número aqui tem de
-   acompanhar a conta (8 -> 4 col; 9 -> 3 col). */
+/* O patrimônio é o único número de DINHEIRO do resumo, mas saía nos mesmos
+   28px dos contadores — só a cor e a largura o distinguiam. 34px é o tamanho
+   que o placar de Conquistas (.bdg-score-num) já usa: hierarquia sem elemento
+   novo (proposta de 2026-08-25). */
+.dash-main .stat-grand > #dhValue { font-size: 34px; }
+/* Cápsulas detalhadas: respiro claro depois da grade de atalhos. Duas colunas
+   ("Mais valiosas" + "Por região"): o card "por jogo" saiu — repetia a
+   contagem da fileira de chips — e a base .collection-dashboard ainda declara
+   as 3 colunas de quem a usa com 3 cards. */
+.dash-main #dhCaps { margin-top: 26px; gap: 12px; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+/* Atalhos: 3 COLUNAS FIXAS, não auto-fill. São exatamente 9 itens (lista fixa
+   no dashboard.js), então 3 colunas fecham três fileiras cheias — a regra já
+   estava escrita aqui ("9 -> 3 col") e não foi acompanhada quando Conquistas
+   entrou: 4 colunas deixavam uma fileira órfã com 1 cartão solto. Se um item
+   novo entrar, o número aqui tem de acompanhar a conta (8 -> 4 col;
+   9 -> 3 col). */
 .dash-links {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 /* Abaixo de ~1000px quatro colunas espremeriam o texto ("110 à venda · 10
