@@ -3497,7 +3497,20 @@ a.hub-tile:hover {
   border-bottom: 1px solid var(--line);
   max-width: 460px;
 }
-.site-footer-mark { width: 120px; height: auto; opacity: 0.9; }
+/* Wordmark do rodapé: MESMA técnica do .brand do header e do .login-logo-mark
+   (SVG via mask pintado com currentColor) — segue o tema. O <img> do SVG cru
+   ficava preto (fill="currentColor" dentro de <img> não herda cor nenhuma) e
+   sumia no fundo do tema escuro. */
+.site-footer-mark {
+  font-size: 0;
+  width: 120px;
+  height: 32px;
+  color: var(--text);
+  background: currentColor;
+  opacity: 0.9;
+  -webkit-mask: url("assets/brand/sleevu-wordmark.svg") no-repeat center / contain;
+  mask: url("assets/brand/sleevu-wordmark.svg") no-repeat center / contain;
+}
 .site-footer-tagline {
   margin: 0;
   font-size: 13.5px;

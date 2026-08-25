@@ -2411,10 +2411,11 @@
     footer.innerHTML = `
       <div class="site-footer-inner">
         ${isHome ? `<div class="site-footer-brand">
-          <!-- Sem loading="lazy": a assinatura tem 7,6 KB e JÁ vem precacheada
-               no SHELL_ASSETS do service worker, então "adiar" não economiza
-               requisição nenhuma — só adiciona um jeito de ela não aparecer. -->
-          <img class="site-footer-mark" src="assets/brand/sleevu-wordmark.svg" alt="Sleevu" width="120" height="32">
+          <!-- MESMA técnica do .brand do header: texto "Sleevu" (a11y) com o
+               SVG via CSS mask pintado com currentColor, seguindo o tema. Era
+               um <img> do SVG cru — que tem fill="currentColor" e dentro de
+               <img> resolve pra PRETO: no tema escuro a marca sumia no fundo. -->
+          <span class="site-footer-mark">Sleevu</span>
           <p class="site-footer-tagline">${escapeHtml(t("footer.tagline"))}</p>
           <nav class="site-footer-social" aria-label="${escapeAttribute(t("footer.socialLabel"))}">
             <a href="https://www.instagram.com/sleevu.app" target="_blank" rel="me noopener noreferrer" aria-label="Instagram" title="Instagram">${SOCIAL_ICONS.instagram}</a>
