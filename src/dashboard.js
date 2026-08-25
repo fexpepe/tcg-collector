@@ -16,7 +16,6 @@
     links: document.getElementById("dhLinks"),
     caps: document.getElementById("dhCaps"),
     topList: document.getElementById("dhTopList"),
-    dist: document.getElementById("dhDist"),
     region: document.getElementById("dhRegion"),
     priced: document.getElementById("dhPriced")
   };
@@ -83,7 +82,6 @@
   }
 
   // ── Distribuição por marca (chips) ─────────────────────────────────────────
-  const gameLabel = (g) => shared.gameLabel(g);
   const dist = shared.GAME_SLUGS
     .map((g) => ({ g, n: distinctOf(g) }))
     .filter((x) => x.n > 0);
@@ -234,10 +232,8 @@
         }).join("")
       : `<li class="dash-empty">${escapeHtml(t("dash.empty"))}</li>`;
 
-    // Distribuição por jogo
-    const byGame = {};
-    myCards.forEach((card) => { byGame[card.game] = (byGame[card.game] || 0) + 1; });
-    el.dist.innerHTML = shared.distBarsHtml(shared.GAME_SLUGS.map((g) => ({ label: gameLabel(g), n: byGame[g] || 0, color: shared.GAME_COLOR[g] })));
+    // A "Distribuição por jogo" que morava aqui saiu (proposta de 2026-08-25):
+    // era a MESMA contagem da fileira de chips #dhGames, repetida na tela.
 
     // Distribuição por região/idioma (flag SVG como na Coleção)
     const byRegion = {};

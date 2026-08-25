@@ -91,7 +91,10 @@
         </article>
       </section>
 
-      <!-- Distribuição por marca (contagem de cartas distintas) -->
+      <!-- Distribuição por marca (contagem de cartas distintas). O rótulo tem o
+           MESMO estilo do "Ir para": as três zonas da página (resumo, jogos,
+           atalhos) ficam com o mesmo ritmo de título (proposta de 2026-08-25). -->
+      <h2 class="dash-section-head" data-i18n="dash.byGame">Por jogo</h2>
       <section id="dhGames" class="dash-games" aria-label="Coleções por jogo"></section>
 
       <!-- Atalhos: o HUB do jogador -->
@@ -104,10 +107,10 @@
           <h3 data-i18n="dash.topTitle">Mais valiosas</h3>
           <ol id="dhTopList" class="dash-top-list"></ol>
         </article>
-        <article class="dash-card dash-dist">
-          <h3 data-i18n="dash.distTitle">Distribuição por jogo</h3>
-          <div id="dhDist" class="dash-dist-bars"></div>
-        </article>
+        <!-- "Distribuição por jogo" saiu (proposta de 2026-08-25): repetia
+             exatamente a contagem da fileira de chips coloridos, na mesma tela.
+             Os chips ficam (assinatura visual, espelham a Coleção); estes dois
+             cards ganham a largura. -->
         <article class="dash-card dash-dist">
           <h3 data-i18n="dash.regionTitle">Distribuição por região</h3>
           <div id="dhRegion" class="dash-dist-bars"></div>
