@@ -30,4 +30,24 @@
       }, 2000);
     });
   }
+
+  // Logos das MARKETPLACES: mesmo padrão do hub.js — o <img> fica invisível
+  // por opacity (nunca `hidden`: display:none tira a caixa e um loading="lazy"
+  // sem caixa não é baixado nunca) e é revelado quando o arquivo carrega; sem
+  // arquivo em assets/shops/, fica o nome em texto, sem ícone quebrado.
+  document.querySelectorAll(".lp-shop-logo").forEach((img) => {
+    const reveal = () => {
+      if (img.naturalWidth > 0) {
+        img.classList.add("is-loaded");
+        const box = img.closest(".lp-shop-box");
+        if (box) {
+          box.classList.add("has-logo");
+          const text = box.querySelector(".lp-shop-text");
+          if (text) text.hidden = true;
+        }
+      }
+    };
+    img.addEventListener("load", reveal);
+    if (img.complete) reveal();
+  });
 })();
