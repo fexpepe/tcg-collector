@@ -60,9 +60,6 @@
   // catálogo INTEIRO a cada tecla). Invalidado quando algo muda no preview
   // (posse/preço manual) — o único caminho de edição nesta página.
   const setValueMemo = new Map();
-  // Custo pra completar (valor das cartas que FALTAM): depende da posse, então
-  // é invalidado junto no onOwnedChange.
-  const setMissingMemo = new Map();
 
   const preview = shared.createCardPreview({
     getCard: (cardId) => cardsById.get(cardId),
@@ -71,7 +68,6 @@
     wishlist,
     onOwnedChange: () => {
       setValueMemo.clear();
-      setMissingMemo.clear();
       ownedCountMemo.clear();
       refinedSets.clear();
       refining.clear();
@@ -612,8 +608,8 @@
     return total;
   }
 
-  // Valor/custo EXATOS de um set já refinado (chunk baixado): entram no lugar
-  // dos números do manifest, que não conhecem preço manual seu.
+  // Valor EXATO de um set já refinado (chunk baixado): entra no lugar do
+  // número do manifest, que não conhece preço manual seu.
   const refinedSets = new Map();
 
   function toManifestSetItem(entry) {
@@ -630,7 +626,6 @@
       ownedCount: entryOwnedCount(entry),
       officialTotal: entry.total || entry.count,
       value: refined ? refined.value : entryRefValue(entry),
-      missing: refined ? refined.missing : null,
       logo: entry.logo || "",
       displayName: shared.setDisplayName(entry.id, entry.name, entry.language),
       symbol: entry.symbol || "",
@@ -671,10 +666,10 @@
       .sort(sortByName);
   }
 
-  // Custo pra completar dos sets VISÍVEIS em que você já tem alguma carta — o
-  // único número que ainda precisa das cartas. Roda depois do paint, um chunk
-  // por set, e re-renderiza quando termina. Set sem carta sua não entra: o tile
-  // não mostra custo nesse caso.
+  // Valor exato dos sets VISÍVEIS em que você já tem alguma carta — o único
+  // número que ainda precisa das cartas (o manifest não conhece preço manual
+  // seu). Roda depois do paint, um chunk por set, e re-renderiza quando
+  // termina. Set sem carta sua não entra: não há preço manual pra corrigir.
   const refining = new Set();
   async function refineVisibleSets() {
     if (!manifestMode()) return;
@@ -690,13 +685,7 @@
     for (const entry of pendentes) {
       try {
         const chunk = await shared.fetchSetChunks([entry]);
-        const missing = chunk.filter((card) => !owned.has(card.id));
-        const somaTudo = shared.sumCardsValue(chunk, prices);
-        const somaFalta = shared.sumCardsValue(missing, prices);
-        refinedSets.set(entryKey(entry), {
-          value: somaTudo.value,
-          missing: { count: missing.length, value: somaFalta.value, unpriced: somaFalta.unpriced }
-        });
+        refinedSets.set(entryKey(entry), { value: shared.sumCardsValue(chunk, prices).value });
         mudou = true;
       } catch (error) {
         refining.delete(entryKey(entry)); // rede caiu: tenta de novo no próximo render
@@ -948,18 +937,12 @@
     // Layout COMPACTO (estilo Collectr): logo, nome, uma linha de progresso
     // (possuídas/total + %) e o valor só quando houver. O card inteiro navega
     // (handler na grade); a arte segue como <a> pra middle-click/acessibilidade.
+    // O custo pra completar ("Faltam N · completar V") NÃO aparece no tile —
+    // aqui a barra de progresso já conta a história; o detalhe fica na página
+    // do set (detail.js), pra quem clicar.
     const valueHtml = item.value > 0
       ? `<span class="set-value">${escapeHtml(shared.formatMoney(shared.getCurrency(), item.value))}</span>`
       : "";
-    // Custo pra completar: só em set INCOMPLETO com faltante precificado. Com
-    // cartas sem preço na conta, o valor é um piso ("≥").
-    const m = item.missing;
-    let missingHtml = "";
-    if (m && m.count > 0 && item.ownedCount > 0 && m.value > 0) {
-      const cost = `${m.unpriced > 0 ? "≥ " : "≈ "}${shared.formatMoney(shared.getCurrency(), m.value)}`;
-      const hint = t("set.missingHint", { n: m.count }) + (m.unpriced > 0 ? " " + t("set.missingUnpriced", { u: m.unpriced }) : "");
-      missingHtml = `<div class="set-missing" title="${escapeAttribute(hint)}">${escapeHtml(t("set.missingCost", { n: m.count, v: cost }))}</div>`;
-    }
     // Nos vintages japoneses o título em inglês SUBSTITUI o japonês na lista
     // (antes vinha numa linha extra acima da arte, e o japonês continuava sendo
     // o título — duas linhas dizendo a mesma coisa, uma delas ilegível pra
@@ -985,7 +968,6 @@
           ${valueHtml}
           ${item.releaseDate ? `<span class="set-date-list" title="${escapeAttribute(formatReleaseDate(item.releaseDate, "long"))}">${escapeHtml(formatReleaseDate(item.releaseDate))}</span>` : ""}
         </div>
-        ${missingHtml}
       </div>
     `;
 
@@ -1044,16 +1026,6 @@
     return setValueMemo.get(name);
   }
 
-  // Custo pra completar: soma do mercado das cartas que você NÃO tem no set.
-  function memoSetMissing(name, sortedCards) {
-    if (!setMissingMemo.has(name)) {
-      const missing = sortedCards.filter((card) => !owned.has(card.id));
-      const sum = shared.sumCardsValue(missing, prices);
-      setMissingMemo.set(name, { count: missing.length, value: sum.value, unpriced: sum.unpriced });
-    }
-    return setMissingMemo.get(name);
-  }
-
   function toSetItem(group) {
     const sortedCards = group.cards.slice().sort((a, b) => shared.compareCardNumbers(a.number, b.number));
     const sample = sortedCards[0] || {};
@@ -1070,7 +1042,6 @@
       ownedCount: sortedCards.filter((card) => owned.has(card.id)).length,
       officialTotal: sample.setTotal || sortedCards.length,
       value: memoSetValue(memoKey, sortedCards),
-      missing: memoSetMissing(memoKey, sortedCards),
       logo: sample.setLogo || "",
       // Nome de EXIBIÇÃO: tradução em inglês nos vintages japoneses, original no
       // resto. `name` (acima) continua sendo o original — é a chave de link,
