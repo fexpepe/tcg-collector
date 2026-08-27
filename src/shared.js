@@ -2430,6 +2430,7 @@
           <a href="faq">${escapeHtml(t("footer.faq"))}</a>
           <a href="help">${escapeHtml(t("footer.help"))}</a>
           <a href="settings">${escapeHtml(t("footer.settings"))}</a>
+          ${getSession() ? `<a href="backup">${escapeHtml(t("auth.transfer"))}</a>` : ""}
           <a href="privacy">${escapeHtml(t("footer.privacy"))}</a>
           <a href="terms">${escapeHtml(t("footer.terms"))}</a>
         </nav>
@@ -4954,6 +4955,10 @@
     const g = gradedTag ? " " + gradedTag : "";
     return [
       { key: "ebay", label: "eBay", url: (card) => `https://www.ebay.com/sch/i.html?_nkw=${enc(usSearchText(card, game) + g)}` },
+      // Vendas CONCLUÍDAS do eBay (LH_Sold): preço pedido é opinião, vendido é
+      // fato — é a checagem de realidade da cotação, e a única referência pros
+      // vintage/graded que nenhuma fonte de preço cobre.
+      { key: "ebaysold", label: t("price.ebaySold"), url: (card) => `https://www.ebay.com/sch/i.html?_nkw=${enc(usSearchText(card, game) + g)}&LH_Sold=1&LH_Complete=1` },
       { key: "tcgplayer", label: "TCGplayer", url: (card) => `https://www.tcgplayer.com/search/${line}/product?productLineName=${line}&q=${enc(usSearchText(card, game))}` },
       { key: "pricecharting", label: "PriceCharting", url: (card) => `https://www.pricecharting.com/search-products?type=prices&q=${enc(usSearchText(card, game) + g)}` }
     ].filter((entry) => !(noTcgplayer && entry.key === "tcgplayer"));
@@ -5270,7 +5275,6 @@
   }
 
   const TILE_ICONS = {
-    binder: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
     plus: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
     minus: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
     check: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
@@ -5371,8 +5375,11 @@
     const ownData = grouped
       ? `data-varmenu-card-id="${escapeAttribute(card.id)}"`
       : `data-own-card-id="${escapeAttribute(card.id)}" data-own-variant="${escapeAttribute(variant)}"`;
+    // Página sem wishlist (perfil público, vitrines): o coração não existe e o
+    // slot fica vazio, como os botões opt-in de lista/pasta — nada de botão
+    // desabilitado ocupando lugar em grade nobre.
     const wantButton = !wishlist
-      ? `<button type="button" class="tile-btn" disabled title="${escapeAttribute(t("tile.binder"))}" aria-label="${escapeAttribute(t("tile.binder"))}">${TILE_ICONS.binder}</button>`
+      ? ""
       : grouped
         ? `<button type="button" class="tile-btn tile-want${isWanted ? " active" : ""}" data-preview-card-id="${escapeAttribute(card.id)}" aria-label="${escapeAttribute(t("tile.chooseVersion"))}" title="${escapeAttribute(t("tile.chooseVersion"))}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}</button>`
         : `<button type="button" class="tile-btn tile-want${isWanted ? " active" : ""}" data-want-card-id="${escapeAttribute(card.id)}" data-want-variant="${escapeAttribute(variant)}" aria-pressed="${isWanted}" aria-label="${escapeAttribute(isWanted ? t("tile.unwantAria", { variant }) : t("tile.wantAria", { variant }))}" title="${escapeAttribute(isWanted ? t("tile.wanted") : t("tile.want"))}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}</button>`;

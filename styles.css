@@ -3974,6 +3974,14 @@ a.hub-tile:hover {
   background: var(--panel-strong); color: var(--text); cursor: pointer; font-size: 16px;
 }
 .setting-copy:hover { border-color: var(--accent); color: var(--accent); }
+/* Link-botão numa linha de Configurações (ex.: "Abrir" do Exportar/Importar):
+   âncora só herda as CORES do .secondary — a forma vem da regra base de button,
+   que não alcança <a>. Espelha min-height/padding/radius de lá. */
+a.setting-open {
+  flex: none; min-height: 42px; padding: 0 16px; border-radius: 7px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 700; text-decoration: none;
+}
 
 /* --- Página de perfil do dono (profile.html) --- */
 .profile-page { max-width: 640px; }

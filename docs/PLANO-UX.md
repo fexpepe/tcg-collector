@@ -308,6 +308,34 @@ Pacotes pequenos, cada um mesclável sozinho:
 6. **Apostas de diferenciação (projetos):** F1, F4, M8, F7, F5 — nessa ordem;
    F5 depende de F1 pra fechar o ciclo.
 
+## 4b. Estado de execução
+
+**Pacote 1 — entregue em 2026-08-27**, com três ajustes descobertos no código
+(o plano foi escrito sobre a auditoria; o código tem a palavra final):
+
+- **M6a** ✔ — o botão desabilitado "binder (em breve)" saiu do tile (slot
+  vazio, como os botões opt-in); ícone e chaves i18n órfãos removidos.
+- **F6** ✔ — chip "eBay (vendidos)" (`LH_Sold=1&LH_Complete=1`) entre os
+  marketplaces internacionais do card, com o mesmo tag "PSA 9" das graduadas.
+- **M10a/b** ✔ — hint obsoleto do perfil alinhado ao i18n; as duas seções
+  "Privacidade" (id duplicado) viraram uma; comentário em `news.js` declara o
+  fallback es→pt como deliberado.
+- **M10c** ✖ *adiado* — os logos das lojas são curadoria manual por decisão
+  registrada no próprio `assets/shops/README.md` (fundo transparente, receita
+  dos logos de jogo), e o proxy do agente confirma: os sites das lojas são
+  inalcançáveis daqui. O fallback de texto é deliberado e não quebra nada —
+  mas atenção: os 404 dos `.webp` fazem o `smoke-pages.mjs` acusar FALHA em
+  `index` e `login` até os arquivos entrarem. Fica com o Fernando.
+- **M9c** ✔ — Backup ganhou porta visível: seção "Seus dados" nas
+  Configurações + link "Exportar / Importar" no rodapé (só logado, seguindo a
+  regra "deslogado não vê atalho morto" do `initPageNav`).
+- **M9a** ✖ *não se faz* — o rodapé fora das telas de uso contínuo é decisão
+  de produto datada (2026-07-12, comentário do `initSiteFooter`); "Início"
+  está sempre no menu e leva ao rodapé completo. Reabrir só com motivo novo.
+- **M9b** ✖ *não se aplica* — os `indexes-artists.json` de Digimon/YGO/
+  Riftbound/Union Arena estão **vazios** (`[]`); a subnav atual já segue a
+  regra "Artistas só onde há dado". A auditoria errou nesse ponto.
+
 ## 5. Como implementar sem quebrar (vale pra todos os itens)
 
 - **Rodar sempre:** `node --test tests/*.test.mjs`, `node scripts/check.mjs`
