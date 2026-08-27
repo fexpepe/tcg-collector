@@ -667,6 +667,9 @@ button {
   line-height: 1;
   font-weight: 800;
   color: var(--text);
+  /* Dígitos de largura fixa: o número não "dança" quando o valor troca
+     (assentamento do patrimônio, scrub, atualização de moeda). */
+  font-variant-numeric: tabular-nums;
 }
 
 .stats-grid p {
@@ -4061,6 +4064,7 @@ a.setting-open {
 [data-sensitive="on"] #wishlistSplit,
 [data-sensitive="on"] #pfChartValue,
 [data-sensitive="on"] .pf-head-delta .pf-cash,
+[data-sensitive="on"] .pf-grand-delta .pf-cash,
 [data-sensitive="on"] .pf-comp-val,
 [data-sensitive="on"] .pf-list-val,
 [data-sensitive="on"] .pf-list-gap,
@@ -5584,6 +5588,22 @@ a.progress-row:hover {
 .pf-head-delta { font-size: 14px; font-weight: 800; color: var(--muted); font-variant-numeric: tabular-nums; }
 .pf-head-delta.is-up { color: #2ecc71; }
 .pf-head-delta.is-down { color: #e8553c; }
+
+/* Variação do DIA no cartão do patrimônio (padrão corretora). Os spans de
+   dentro (.pf-cash/.pf-pct) precisam DESFAZER o `.stats-grid span` (28px,
+   block) — aqui é chip de apoio, não manchete. */
+.pf-grand-delta {
+  display: block; margin-top: 7px;
+  font-size: 13px; font-weight: 800; color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.pf-grand-delta span { display: inline; font-size: inherit; line-height: inherit; font-weight: inherit; color: inherit; }
+.pf-grand-delta.is-up { color: #2ecc71; }
+.pf-grand-delta.is-down { color: #e8553c; }
+.pf-grand-delta .pf-grand-when { color: var(--subtle); font-weight: 600; }
+
+/* Dinheiro tabular no resto da tela (mesma razão do .stats-grid span). */
+.pf-comp-val, .pf-insight-pct, .pf-insight-abs, .pf-mover-pct, .pf-mover-cash { font-variant-numeric: tabular-nums; }
 .pf-head-when { font-size: 12.5px; color: var(--subtle); font-weight: 600; margin-left: auto; }
 .pf-chart-controls {
   display: flex;

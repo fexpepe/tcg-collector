@@ -105,6 +105,10 @@
       <section class="stats-grid" aria-label="Resumo do portfólio">
         <article class="stat-grand">
           <span id="grandTotal">—</span>
+          <!-- Variação do DIA (padrão corretora): pintada pelo updateChart a
+               partir dos MESMOS pontos do gráfico — nunca por uma segunda
+               fórmula (ver o aviso das cápsulas removidas no portfolio.js). -->
+          <small id="grandDelta" class="pf-grand-delta" hidden></small>
           <p data-i18n="portfolio.networth">patrimônio (cartas + graded)</p>
         </article>
         <article>

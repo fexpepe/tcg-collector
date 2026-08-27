@@ -336,6 +336,32 @@ Pacotes pequenos, cada um mesclável sozinho:
   Riftbound/Union Arena estão **vazios** (`[]`); a subnav atual já segue a
   regra "Artistas só onde há dado". A auditoria errou nesse ponto.
 
+**Pacote 2 — entregue em 2026-08-27**, com um redirecionamento do Fernando:
+**nada de movers/finanças no Hub pessoal** — a visão financeira fica
+concentrada no Portfólio. O pacote inteiro mudou de endereço:
+
+- **M1** ✔ — variação do DIA no cartão do patrimônio do **Portfólio**
+  (`#grandDelta`): seta + R$ + % calculados dos MESMOS pontos do gráfico
+  (`chartHistory`, uma fórmula só), pintados depois do snapshot do dia. Diz
+  "hoje" quando o ponto anterior é de ontem; visita espaçada mostra
+  "variação desde {data}". Modo privacidade borra só o R$ e preserva o %.
+- **M2** ✔ *reescopo* — a auditoria supunha movers semanais; o
+  `price-movers.generated.json` **já é diário** (vs snapshot anterior) e a
+  seção do Portfólio já abre em "Minhas cartas" por impacto no bolso — ou
+  seja, o "movers de hoje" do Collectr já existia. Feito: comentários
+  desatualizados ("build semanal", "da semana") corrigidos; nada de seção
+  nova no Hub.
+- **F10** ✔ — números vivos no Portfólio: o patrimônio "assenta" animando do
+  retrato instantâneo até o valor fresco (600 ms, 1× por carga; troca seca
+  com `prefers-reduced-motion`, sem retrato ou em troca de filtro — contar a
+  partir do zero animaria um número que nunca foi verdade), e
+  `font-variant-numeric: tabular-nums` nos valores (stat cards, composição,
+  insights, movers) — o número não "dança" no scrub nem na atualização.
+- Validação: 151 testes, check/check-mobile, smoke de 24 páginas e teste
+  visual com dado semeado (chip verde "▲ +R$ 71,40 (+2,1%) hoje" ao lado da
+  variação de faixa do gráfico, sem duplicar; blur do modo privacidade
+  conferido por computed style).
+
 ## 5. Como implementar sem quebrar (vale pra todos os itens)
 
 - **Rodar sempre:** `node --test tests/*.test.mjs`, `node scripts/check.mjs`
