@@ -86,7 +86,7 @@
               <input type="text" id="profileUrl" class="setting-input" readonly aria-label="Link do seu perfil">
               <button type="button" class="setting-copy" id="profileUrlCopy" data-i18n-title="settings.copy" title="Copiar" aria-label="Copiar">⧉</button>
             </div>
-            <span class="setting-field-hint" data-i18n="settings.profileUrlSoon">O perfil público entra no ar em breve — seu @ já fica reservado.</span>
+            <span class="setting-field-hint" data-i18n="settings.profileUrlSoon">Publicado ao abrir a Coleção ou Vendas (logado). Compartilhe este link.</span>
           </div>
         </section>
 
@@ -166,6 +166,13 @@
             </div>
             <button type="button" class="setting-switch" id="communityToggle" role="switch" aria-checked="true" aria-label="Contribuir com o preço da comunidade"><span class="setting-switch-knob"></span></button>
           </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <strong data-i18n="settings.sensitive">Modo sensível</strong>
+              <span data-i18n="settings.sensitiveDesc">Borra os valores de portfólio e coleção, pra dar print ou compartilhar a tela sem revelar quanto sua coleção vale.</span>
+            </div>
+            <button type="button" class="setting-switch" id="sensitiveToggle" role="switch" aria-checked="false" aria-label="Modo sensível"><span class="setting-switch-knob"></span></button>
+          </div>
         </section>
 
         <section class="settings-group" aria-labelledby="settingsNotif">
@@ -206,15 +213,16 @@
           </div>
         </section>
 
-        <section class="settings-group" aria-labelledby="settingsPrivacy">
-          <h2 id="settingsPrivacy" data-i18n="settings.privacy">Privacidade</h2>
-
+        <!-- Seus dados: a promessa "export a um clique" precisa de porta visível —
+             o menu da conta tem o atalho, mas quem procura é aqui que procura. -->
+        <section class="settings-group" aria-labelledby="settingsData">
+          <h2 id="settingsData" data-i18n="settings.dataTitle">Seus dados</h2>
           <div class="setting-row">
             <div class="setting-info">
-              <strong data-i18n="settings.sensitive">Modo sensível</strong>
-              <span data-i18n="settings.sensitiveDesc">Borra os valores de portfólio e coleção, pra dar print ou compartilhar a tela sem revelar quanto sua coleção vale.</span>
+              <strong data-i18n="auth.transfer">Exportar / Importar</strong>
+              <span data-i18n="settings.dataDesc">Backup completo em JSON, planilha CSV e importação de CSV do TCGplayer/Collectr — seus dados saem quando você quiser.</span>
             </div>
-            <button type="button" class="setting-switch" id="sensitiveToggle" role="switch" aria-checked="false" aria-label="Modo sensível"><span class="setting-switch-knob"></span></button>
+            <a class="secondary setting-open" href="backup" data-i18n="settings.dataOpen">Abrir</a>
           </div>
         </section>
 

@@ -20,6 +20,8 @@
         list.innerHTML = `<p class="empty-state">${t("news.empty")}</p>`;
         return;
       }
+      // O changelog é curado só em pt/en — quem usa o site em espanhol cai no
+      // pt de propósito (idioma-irmão; manter cada nota em 3 línguas não se paga).
       const lang = shared.getLanguage && shared.getLanguage() === "en" ? "en" : "pt";
       const byDay = new Map();
       items.forEach((it) => {

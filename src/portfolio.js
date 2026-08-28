@@ -58,7 +58,7 @@
 
   const inGameId = (g) => gameFilter === "all" || (g || "pokemon") === gameFilter;
 
-  // Maiores altas/quedas do MERCADO (price-movers do build semanal).
+  // Maiores altas/quedas do MERCADO (price-movers do build diário).
   const moversByGame = Object.fromEntries(GAMES.map((g) => [g, null]));
   const fetchMovers = (dir) => fetch(dir + "price-movers.generated.json").then((r) => (r.ok ? r.json() : null)).catch(() => null);
   // ÍNDICE DE MERCADO por jogo (build): { d: [datas], i: [valores base 1000] }.
@@ -84,11 +84,16 @@
   // troca os números e tira o esmaecido quando os chunks chegam. Quem abre o
   // Portfólio abre pra ver o número — ele não pode esperar 50 requisições.
   const SNAP_ELS = ["grandTotal", "rawValue", "gradedValue", "wishlistValue"];
+  // Ponto de partida do patrimônio "assentando" (ver pintaPatrimonio): é o
+  // valor do retrato que o usuário JÁ está vendo — contar a partir do zero
+  // animaria um número que nunca foi verdade.
+  let snapStart = null;
   (function paintSnapshot() {
     const snap = shared.valueSnapshot();
     if (!snap) return;
     const fromBRL = (v) => { const r = shared.convertMoney(v, "BRL", shared.getCurrency()); return r == null ? v : r; };
     const pinta = (el, v) => { if (el) { el.textContent = money(fromBRL(v)); el.style.opacity = "0.55"; } };
+    snapStart = fromBRL(snap.total);
     pinta(elements.grandTotal, snap.total);
     pinta(elements.rawValue, snap.raw);
     pinta(elements.gradedValue, snap.graded);
@@ -563,7 +568,7 @@
 
     // Números frescos: substituem o retrato instantâneo e tiram o esmaecido.
     SNAP_ELS.forEach((k) => { if (elements[k]) elements[k].style.opacity = ""; });
-    if (elements.grandTotal) elements.grandTotal.textContent = money(networth);
+    if (elements.grandTotal) pintaPatrimonio(networth);
     if (elements.rawValue) elements.rawValue.textContent = money(rawTotal);
     if (elements.gradedValue) elements.gradedValue.textContent = money(gradedTotal);
     if (elements.pricedCopies) elements.pricedCopies.textContent = `${pricedCopies}/${totalCopies}`;
@@ -596,7 +601,57 @@
     updateChart();
   }
 
-  // Maiores altas e quedas da semana, em DUAS abas:
+  // O patrimônio ASSENTA no valor fresco em vez de trocar seco: anima do
+  // retrato instantâneo (que o usuário já estava vendo) até o número novo, uma
+  // vez por carga. Iguais, sem retrato ou com prefers-reduced-motion: troca
+  // direta — a animação é tempero, nunca requisito.
+  let patrimonioAssentou = false;
+  const podeAnimar = !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  function pintaPatrimonio(alvo) {
+    const el = elements.grandTotal;
+    const de = patrimonioAssentou ? null : snapStart;
+    patrimonioAssentou = true; // trocas de filtro pintam direto: não é o mercado se mexendo
+    if (de == null || !podeAnimar || Math.abs(alvo - de) < 0.01) { el.textContent = money(alvo); return; }
+    const t0 = performance.now(), dur = 600;
+    const passo = (agora) => {
+      const p = Math.min(1, (agora - t0) / dur);
+      el.textContent = money(de + (alvo - de) * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(passo);
+    };
+    requestAnimationFrame(passo);
+  }
+
+  // Variação do DIA no cartão do patrimônio — o gancho diário da corretora
+  // (valor grande + quanto mexeu hoje, o padrão que o Collectr consagrou).
+  // Calculada dos MESMOS pontos do gráfico (chartHistory), nunca por um segundo
+  // caminho — ver o aviso das cápsulas removidas, mais abaixo. O rótulo só diz
+  // "hoje" quando o ponto anterior é de ontem; visita mais espaçada mostra a
+  // data ("variação desde …") — o número não finge ser mais fresco do que é.
+  function pintaDeltaDoDia(pts) {
+    const el = document.getElementById("grandDelta");
+    if (!el) return;
+    const hoje = pts[pts.length - 1];
+    const antes = pts[pts.length - 2];
+    const v0 = antes ? (antes.c || 0) + (antes.b || 0) : 0;
+    if (!antes || !(v0 > 0)) { el.hidden = true; el.innerHTML = ""; return; }
+    const delta = ((hoje.c || 0) + (hoje.b || 0)) - v0;
+    const pct = (delta / v0) * 100;
+    const dir = delta > 0.005 ? "up" : (delta < -0.005 ? "down" : "flat");
+    const seta = dir === "up" ? "▲" : (dir === "down" ? "▼" : "→");
+    const sinal = dir === "up" ? "+" : (dir === "down" ? "−" : "");
+    const pctTxt = Math.abs(pct).toLocaleString(getLocale(), { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    const ontem = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
+    const quando = antes.d >= ontem ? t("portfolio.deltaToday") : t("market.deltaSince", { date: antes.d });
+    // Dinheiro no .pf-cash próprio (o modo privacidade borra SÓ ele e preserva
+    // a porcentagem), como no cabeçalho do gráfico. O histórico é gravado em
+    // BRL — converte pra moeda do header como o renderChart faz (fromBRL).
+    el.innerHTML = `${seta} <span class="pf-cash">${escapeHtml(sinal + money(Math.abs(fromBRL(delta))))}</span> <span class="pf-pct">(${escapeHtml(sinal + pctTxt + "%")})</span> <span class="pf-grand-when">${escapeHtml(quando)}</span>`;
+    el.className = "pf-grand-delta is-" + dir;
+    el.hidden = false;
+  }
+
+  // Maiores altas e quedas entre o snapshot anterior e o de hoje (builds
+  // diários — o "desde {data}" do título diz a janela real), em DUAS abas:
   //   "Minhas"  — só cartas suas, ordenadas pelo IMPACTO no seu bolso
   //               (variação × quantidade que você tem), não pelo % puro. Uma
   //               carta de R$ 2 que subiu 80% mexe menos no seu patrimônio que
@@ -625,7 +680,7 @@
       if (!minhas) return linhas.sort((a, b) => Math.abs(b.x.pct) - Math.abs(a.x.pct)).slice(0, 8);
       // Impacto em dinheiro: o valor de hoje × a variação × as cópias. O valor
       // atual já embute o preço da carta, então isto é "quanto do seu patrimônio
-      // essa carta moveu na semana".
+      // essa carta moveu no período".
       linhas.forEach((r) => {
         const v = shared.cardValue(r.card, shared.defaultVariant(r.card), prices).value || 0;
         r.qtd = copias(r.card);
@@ -1191,7 +1246,12 @@
     }
     if (!controlsBound) { bindControls(); controlsBound = true; }
     renderControls();
-    renderChart(chartHistory());
+    // Uma leitura só do histórico pro gráfico E pro chip do dia — o chip é
+    // pintado aqui (não no render) porque o ponto de HOJE acabou de ser gravado
+    // logo acima; pintá-lo antes compararia contra um histórico defasado.
+    const pts = chartHistory();
+    pintaDeltaDoDia(pts);
+    renderChart(pts);
     if (pctMode) hidrataIndices(); // preferência já vinha ligada de outra visita
   }
 
