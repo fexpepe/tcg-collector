@@ -109,6 +109,63 @@
     });
   }
 
+  // --- "Continuar de onde parou" (Hub pessoal) + celebração de set 100% ---
+  // O Hub lê tcg-recent-sets-v1 e mostra os últimos sets visitados com o
+  // progresso DA VISITA (recalcular lá exigiria os índices dos 13 jogos; a
+  // próxima visita atualiza o número de graça). Local-only: é conveniência de
+  // navegação, não dado de coleção.
+  const RECENT_KEY = "tcg-recent-sets-v1";
+  const CELEBRATED_KEY = "tcg-set-celebrated-v1";
+  const paginaGame = () => (window.SLEEVU && window.SLEEVU.game) || "pokemon";
+  const setChave = () => `${paginaGame()}:${detailSetId || detailName}`;
+  function registraRecente(ownedN, totalN, pct) {
+    try {
+      const sp = new URLSearchParams(window.location.search);
+      sp.delete("card"); // o ?card= carimbado abriria um popup, não o set
+      const u = `${window.location.pathname}?${sp.toString()}`;
+      const chave = setChave();
+      const lista = (JSON.parse(localStorage.getItem(RECENT_KEY) || "[]") || [])
+        .filter((r) => r && r.k !== chave);
+      lista.unshift({ k: chave, u, g: paginaGame(), n: detailName, own: ownedN, tot: totalN, pct, t: Date.now() });
+      localStorage.setItem(RECENT_KEY, JSON.stringify(lista.slice(0, 8)));
+    } catch (e) { /* storage cheio/negado: conveniência, não dado */ }
+  }
+
+  // Completar um set é O momento do hobby e passava em silêncio (as badges dão
+  // o prêmio durável; isto é o instante). Uma vez por set POR NAVEGADOR — a
+  // festa repetida vira ruído — e nada além do estado dourado com
+  // prefers-reduced-motion. A transição compara CONTAGEM exata (ownedN/totalN),
+  // não o % arredondado: 149/150 arredonda pra 100 e engoliria a festa real.
+  let estavaCompleto = null;
+  function celebraSetCompleto() {
+    let vistos = {};
+    try { vistos = JSON.parse(localStorage.getItem(CELEBRATED_KEY) || "{}") || {}; } catch (e) { /* recomeça */ }
+    const chave = setChave();
+    if (vistos[chave]) return;
+    vistos[chave] = 1;
+    try { localStorage.setItem(CELEBRATED_KEY, JSON.stringify(vistos)); } catch (e) { /* ignora */ }
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (elements.completionBar) {
+      elements.completionBar.classList.remove("celebrate");
+      void elements.completionBar.offsetWidth; // reinicia a animação do pulso
+      elements.completionBar.classList.add("celebrate");
+    }
+    const cores = ["var(--gold)", "#2ecc71", "#5aa9e6", "#e8553c", "#d98fd9"];
+    const caixa = document.createElement("div");
+    caixa.className = "confetti";
+    caixa.setAttribute("aria-hidden", "true");
+    for (let i = 0; i < 28; i++) {
+      const p = document.createElement("i");
+      p.style.left = `${Math.random() * 100}%`;
+      p.style.background = cores[i % cores.length];
+      p.style.animationDelay = `${Math.random() * 0.5}s`;
+      p.style.animationDuration = `${1 + Math.random() * 0.8}s`;
+      caixa.appendChild(p);
+    }
+    document.body.appendChild(caixa);
+    setTimeout(() => caixa.remove(), 2600);
+  }
+
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
   let selectedLanguage = "";
   let selectedOwned = "all";
@@ -1040,6 +1097,18 @@
       // parecia enfeite quebrado (o Fernando perguntou o que era). Sem nada
       // marcado ela não informa, então some; volta no primeiro registro.
       elements.completionBar.hidden = pct <= 0;
+      // Set fechado: a barra fica DOURADA (o mesmo ouro da Pokédex e dos
+      // cards de set 100%) — completo por contagem exata, não pelo arredondado.
+      elements.completionBar.classList.toggle("complete", totalN > 0 && ownedN >= totalN);
+    }
+    // Página de SET do catálogo: registra a visita pro "Continuar de onde
+    // parou" do Hub e celebra a TRANSIÇÃO pra 100% (nunca a página que já abre
+    // completa — pctAnterior null cobre o primeiro render).
+    if (detailType === "set" && !collectionScope && totalN > 0) {
+      registraRecente(ownedN, totalN, pct);
+      const completo = ownedN >= totalN;
+      if (estavaCompleto === false && completo) celebraSetCompleto();
+      estavaCompleto = completo;
     }
     updateValueStats();
   }

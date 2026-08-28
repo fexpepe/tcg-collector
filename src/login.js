@@ -27,8 +27,9 @@
     // Só caminhos internos (evita open-redirect); "//host" é URL absoluta
     // protocolo-relativa, então a 2ª barra é proibida. A query entra na regra
     // (o destino é gravado com ela): quem foi barrado em `collection?game=magic`
-    // voltava pra Coleção sem o jogo. Senão, home.
-    return ret && /^\/(?!\/)[a-zA-Z0-9._\/-]*(\?[a-zA-Z0-9._~%!$&'()*+,;=:@/?-]*)?$/.test(ret) ? ret : "/";
+    // voltava pra Coleção sem o jogo. Senão, o Hub pessoal — quem acabou de
+    // logar quer as SUAS coisas, e a home é a landing de quem ainda não entrou.
+    return ret && /^\/(?!\/)[a-zA-Z0-9._\/-]*(\?[a-zA-Z0-9._~%!$&'()*+,;=:@/?-]*)?$/.test(ret) ? ret : "/dashboard";
   }
 
   // Volta pelo bfcache (botão VOLTAR depois de logar): o navegador restaura a

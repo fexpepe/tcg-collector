@@ -1983,6 +1983,23 @@ input::placeholder {
   transform: translateY(-2px);
 }
 
+/* Set/artista 100%: o mesmo dourado da Pokédex (.pokedex-card.owned), agora
+   pro conjunto COMPLETO — contorno + barra de progresso em ouro. O hover
+   precisa repetir a cor, senão o #414a58 genérico apaga o realce no mouse. */
+.set-card.complete,
+.group-card.complete {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold), var(--shadow);
+}
+.set-card.complete:hover,
+.group-card.complete:hover {
+  border-color: var(--gold);
+}
+.set-card.complete .progress-bar > span,
+.group-card.complete .progress-bar > span {
+  background: var(--gold);
+}
+
 .set-art-link {
   display: block;
   text-decoration: none;
@@ -4609,6 +4626,28 @@ a.progress-row:hover {
 /* Barra de progresso de conclusão do set (detalhe). */
 .completion-bar { height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; margin: 2px 0 6px; }
 .completion-fill { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .3s ease; }
+/* Set fechado: a barra do hero fica dourada, como os cards de set 100%. */
+.completion-bar.complete .completion-fill { background: var(--gold); }
+/* Pulso único no instante em que o set fecha (a classe é re-aplicada pelo
+   detail.js com reflow no meio, pra animação reiniciar). */
+.completion-bar.celebrate { animation: completion-pop 900ms ease-out 1; }
+@keyframes completion-pop {
+  0% { box-shadow: 0 0 0 0 rgba(240, 184, 75, 0.75); }
+  100% { box-shadow: 0 0 0 14px rgba(240, 184, 75, 0); }
+}
+
+/* Confete da celebração de set 100% (detail.js): tira fina no topo da tela,
+   partículas caem e o contêiner inteiro é removido pelo JS. pointer-events
+   none — festa não pode roubar clique. */
+.confetti { position: fixed; inset: 0 0 auto 0; height: 62vh; pointer-events: none; z-index: 120; overflow: hidden; }
+.confetti i {
+  position: absolute; top: -14px; width: 8px; height: 13px; border-radius: 2px;
+  opacity: 0; animation: confetti-fall 1.4s ease-in forwards;
+}
+@keyframes confetti-fall {
+  0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+  100% { opacity: 0; transform: translateY(62vh) rotate(540deg); }
+}
 
 /* Insights do portfólio: variação 7d / 30d / desde o início. */
 .pf-insights { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
@@ -4880,6 +4919,27 @@ a.progress-row:hover {
   .dash-main .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dash-main .stats-grid .stat-grand { grid-column: 1 / -1; }
 }
+/* Continuar de onde parou (Hub pessoal): cartões com o último progresso visto.
+   A barra reusa a .progress-bar global; a margem padrão dela (14px) é demais
+   dentro do cartão compacto. */
+.dash-recent { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin: 0 0 6px; }
+.dash-recent-card {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px;
+  background: var(--panel); box-shadow: var(--shadow);
+  color: inherit; text-decoration: none;
+}
+.dash-recent-card:hover { border-color: var(--accent); }
+.dash-recent-top { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.dash-recent-top strong { font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dash-recent-game {
+  flex: none; padding: 2px 8px; border-radius: 999px;
+  font-size: 11px; font-weight: 800;
+  background: var(--gc); color: var(--gc-fg);
+}
+.dash-recent-card .progress-bar { margin-bottom: 0; }
+.dash-recent-count { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
 .dash-games { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 6px; }
 /* Cápsula por jogo: CHAPADA na cor da marca, mesmo idioma visual do .game-tag
    da Coleção — cor cheia, canto reto, sem borda. O --gc e o --gc-fg vêm do JS
@@ -6530,6 +6590,27 @@ a.dash-profile-handle:hover, a.shared-kind:hover,
   margin: 0 0 16px;
 }
 .game-filter { margin: 0; }
+/* Fileira de jogos numa LINHA que rola, com setas ‹ › quando transborda
+   (initChipRowScroll). O nowrap vale só dentro do .chip-scroll — as outras
+   .chip-filter (regiões, master) seguem quebrando linha como sempre. */
+.chip-scroll { position: relative; flex: 1 1 100%; min-width: 0; }
+.chip-scroll > .chip-filter { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+.chip-scroll > .chip-filter::-webkit-scrollbar { display: none; }
+.chip-scroll-btn {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
+  width: 28px; height: 28px; min-height: 28px; padding: 0;
+  border: 1px solid var(--line); border-radius: 50%;
+  background: var(--surface); color: var(--text);
+  box-shadow: var(--shadow); font-size: 17px; line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.chip-scroll-btn:hover { border-color: var(--accent); color: var(--accent); }
+.chip-scroll-btn.is-left { left: 0; }
+.chip-scroll-btn.is-right { right: 0; }
+/* No toque o dedo rola a fileira (mesma regra da subnav do Explorar) e abaixo
+   de 600px o filtro vira o select suspenso — seta só atrapalharia. */
+@media (pointer: coarse) { .chip-scroll-btn { display: none; } }
+@media (max-width: 600px) { .chip-scroll-btn { display: none; } }
 /* Espelho do filtro de jogo pra tela estreita (criado pelo shared.js). No
    desktop os chips cabem e mostram tudo de uma vez, então o select fica fora;
    abaixo de 600px eles trocam de lugar. */
@@ -8826,13 +8907,15 @@ select,
 .card-grid.is-compact { grid-template-columns: 1fr; gap: 0; }
 /* Colunas de largura FIXA (só o nome é elástico): a leitura aqui é vertical —
    se ler o número de uma carta exige procurar onde a coluna caiu naquela linha,
-   a densidade não serve pra nada. A última é fixa também, e não `auto`, porque
-   o − aparece e some conforme a carta é possuída: em `auto` a coluna mudava de
-   largura e empurrava TODAS as anteriores, e a linha da carta que você tem
-   ficava deslocada das outras. */
+   a densidade não serve pra nada. A ÚLTIMA (ações) é max-content: o nº de
+   botões varia POR PÁGINA (a Coleção soma o de pasta; a busca não), e um valor
+   fixo pro caso menor fazia os 5 botões da Coleção vazarem por cima do preço.
+   As linhas continuam alinhadas entre si porque o conteúdo é uniforme na
+   página: o − escondido reserva o lugar (visibility, logo abaixo) e o badge
+   ×N é absoluto — não alarga o +. */
 .card-tile.tile-compact {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 66px minmax(0, 150px) 92px 104px 122px;
+  grid-template-columns: minmax(0, 1fr) 66px minmax(0, 150px) 92px 104px max-content;
   align-items: center;
   gap: 10px;
   min-height: 38px;
@@ -8876,7 +8959,7 @@ select,
    regras-base de propósito — mesmo peso de seletor, a ordem decide. */
 @media (pointer: coarse), (max-width: 700px) {
   .card-tile.tile-compact {
-    grid-template-columns: minmax(0, 1fr) 66px minmax(0, 150px) 92px 104px 152px;
+    grid-template-columns: minmax(0, 1fr) 66px minmax(0, 150px) 92px 104px max-content;
     min-height: 48px;
   }
   .card-tile.tile-compact .tile-actions { gap: 6px; }
@@ -8912,11 +8995,11 @@ select,
 .tile-hover-thumb { position: fixed; width: 200px; z-index: 70; pointer-events: none; border: 1px solid var(--line); background: var(--surface); box-shadow: 0 10px 30px rgba(0,0,0,.45); }
 
 @media (max-width: 700px) {
-  /* Numa tela estreita sobra o essencial: nome, número e as ações. A coluna das
-     ações é fixa aqui pelo mesmo motivo do desktop, e ainda por outro: o badge
-     "×N" alarga o + da carta que você tem, e em `auto` só aquela linha ficava
-     fora de esquadro com as vizinhas. */
-  .card-tile.tile-compact { grid-template-columns: minmax(0, 1fr) 56px 152px; gap: 8px; }
+  /* Numa tela estreita sobra o essencial: nome, número e as ações — que são
+     max-content pelo mesmo motivo do desktop (a Coleção tem mais botões que a
+     busca, e um fixo pro caso menor fazia vazarem). O ×N é absoluto e não
+     alarga o +, então as linhas seguem em esquadro. */
+  .card-tile.tile-compact { grid-template-columns: minmax(0, 1fr) 56px max-content; gap: 8px; }
   .tile-c-set, .tile-c-var, .tile-c-price { display: none; }
   .tile-hover-thumb { display: none; }   /* sem hover no toque */
 }
@@ -8942,4 +9025,18 @@ select,
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ============================================================================
+   NAVEGAÇÃO COM TRANSIÇÃO (View Transitions cross-document). O site é
+   multi-página e a troca "piscava" a tela inteira; o crossfade curto dá a
+   sensação de app com CSS puro. Progressive enhancement por construção:
+   navegador sem suporte ignora o bloco inteiro. O desligamento no movimento
+   reduzido precisa ser EXPLÍCITO — a rede `*` logo acima não alcança os
+   pseudo-elementos ::view-transition-*. */
+@view-transition { navigation: auto; }
+::view-transition-old(root),
+::view-transition-new(root) { animation-duration: 150ms; }
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
 }

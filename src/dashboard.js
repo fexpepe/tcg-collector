@@ -81,6 +81,42 @@
     el.profile.hidden = false;
   }
 
+  // ── Continuar de onde parou ────────────────────────────────────────────────
+  // Últimos sets visitados, gravados pelo detail.js com o progresso DA VISITA
+  // (recalcular aqui exigiria os índices dos 13 jogos; a próxima visita
+  // atualiza o número de graça). Só links internos de /detail entram — a chave
+  // é local, mas render de URL gravada pede a mesma desconfiança do login.
+  (function renderRecentes() {
+    const sec = document.getElementById("dhRecent");
+    const head = document.getElementById("dhRecentHead");
+    if (!sec) return;
+    const lista = rawJson("tcg-recent-sets-v1");
+    if (!Array.isArray(lista)) return;
+    // O pathname gravado é "/detail" em produção (URL bonita) e "/detail.html"
+    // no http-server local — as duas formas valem.
+    const linhas = lista.filter((r) => r && typeof r.u === "string" && /^\/detail(\.html)?\?/.test(r.u) && r.n).slice(0, 4);
+    if (!linhas.length) return;
+    sec.innerHTML = linhas.map((r) => {
+      const pct = Math.max(0, Math.min(100, Number(r.pct) || 0));
+      const cor = shared.GAME_COLOR[r.g] || shared.GAME_COLOR.pokemon;
+      // Cor CHAPADA + textOnColor, o mesmo idioma do .game-tag/.dash-game-chip:
+      // texto colorido sobre o painel falharia contraste nos jogos claros.
+      const fg = shared.textOnColor(cor);
+      return `<a class="dash-recent-card" href="${escapeAttribute(r.u)}">
+        <span class="dash-recent-top">
+          <span class="dash-recent-game" style="--gc:${cor};--gc-fg:${fg}">${escapeHtml(shared.gameLabel(r.g))}</span>
+          <strong>${escapeHtml(r.n)}</strong>
+        </span>
+        <div class="progress-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="${escapeAttribute(t("progress.aria", { name: r.n }))}">
+          <span style="width: ${pct}%"></span>
+        </div>
+        <span class="dash-recent-count">${Number(r.own) || 0}/${Number(r.tot) || 0} · ${pct}%</span>
+      </a>`;
+    }).join("");
+    sec.hidden = false;
+    if (head) head.hidden = false;
+  })();
+
   // ── Distribuição por marca (chips) ─────────────────────────────────────────
   const dist = shared.GAME_SLUGS
     .map((g) => ({ g, n: distinctOf(g) }))

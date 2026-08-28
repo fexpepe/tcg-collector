@@ -880,7 +880,9 @@
   // as cartas filtradas — sem listar todas as cartas aqui dentro.
   function createGroupCard(item) {
     const link = document.createElement("a");
-    link.className = "group-card";
+    // 100%: o mesmo dourado da Pokédex, agora pro grupo COMPLETO — por
+    // contagem exata, não pelo % arredondado (149/150 mostra 99→100%).
+    link.className = `group-card${item.totalCount > 0 && item.ownedCount >= item.totalCount ? " complete" : ""}`;
     const type = view === "artists" ? "artist" : view === "trainers" ? "trainer" : view;
     link.href = detailUrl(type, item.name);
     const progress = item.totalCount ? Math.round((item.ownedCount / item.totalCount) * 100) : 0;
@@ -909,7 +911,8 @@
 
   function createSetCard(item) {
     const article = document.createElement("article");
-    article.className = "set-card";
+    // 100%: contorno + barra dourados (o realce que a Pokédex já tinha).
+    article.className = `set-card${item.totalCount > 0 && item.ownedCount >= item.totalCount ? " complete" : ""}`;
     article.dataset.href = setDetailUrl(item);
     if (item.entryKey) article.dataset.entryKey = item.entryKey;
     if (item.chunkFile) article.dataset.chunk = item.chunkFile;

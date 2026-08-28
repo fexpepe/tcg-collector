@@ -362,6 +362,41 @@ concentrada no Portfólio. O pacote inteiro mudou de endereço:
   variação de faixa do gráfico, sem duplicar; blur do modo privacidade
   conferido por computed style).
 
+**Pacote 3 — entregue em 2026-08-28** (M7, F9, F8 + pedidos do Fernando no
+caminho):
+
+- **M7** ✔ — realce dourado nos cards de set/artista 100% (`.complete`, o
+  mesmo ouro da `.pokedex-card.owned`, por contagem exata — 149/150 arredonda
+  pra 100% e não vale) + celebração na TRANSIÇÃO pra 100% na página do set:
+  pulso dourado na barra + confete de ~1,5s, uma vez por set por navegador
+  (`tcg-set-celebrated-v1`), nada além do estado dourado com
+  `prefers-reduced-motion`.
+- **F8** ✔ — "Continuar de onde parou" no Hub pessoal: o detail.js grava os
+  últimos sets visitados (`tcg-recent-sets-v1`, teto 8, local-only) com o
+  progresso DA VISITA, e o Hub mostra até 4 cartões (chip do jogo, barra,
+  N/M · %). Sem histórico, a seção não existe.
+- **F9** ✔ — View Transitions cross-document (crossfade de 150ms), com
+  desligamento explícito no movimento reduzido (a rede `*` do fim do CSS não
+  alcança os pseudo-elementos `::view-transition-*`).
+- **Extra (pedido)** ✔ — logar leva pro Hub pessoal: o fallback do
+  `returnTarget` (login.js) virou `/dashboard`, e o link mágico que aterrissa
+  na home segue pro Hub (boot do shared.js); quem foi barrado numa página
+  específica continua voltando pra ela.
+- **Extra (pedido)** ✔ — fora o h2 "Sets" duplicado da página de sets (o
+  título da página já diz Sets; chave i18n órfã removida).
+- **Extra (pedido)** ✔ — modo compacto parou de encavalar preço × botões: a
+  coluna de ações virou `max-content` nos três templates (o nº de botões varia
+  por página — a Coleção tem 5, a busca 4 — e o fixo de 122px vazava). As
+  linhas seguem alinhadas: o − escondido reserva o lugar e o ×N é absoluto.
+- **Extra (pedido)** ✔ — fileira de jogos do desktop em UMA linha com setas
+  ‹ › de rolagem quando transborda (`initChipRowScroll`), só no ponteiro fino
+  (no toque o dedo rola; ≤600px usa o select suspenso).
+- Validação: 151 testes, check/check-mobile, smoke 23/24 (a falha é o 404
+  pré-existente dos logos de loja) e testes de navegador dirigidos: login→Hub,
+  celebração 75%→100% (28 partículas, sem repetir no reload), set dourado na
+  lista, "Continuar" visível no Hub, zero sobreposição no compacto e setas
+  aparecendo/rolando com 13 jogos.
+
 ## 5. Como implementar sem quebrar (vale pra todos os itens)
 
 - **Rodar sempre:** `node --test tests/*.test.mjs`, `node scripts/check.mjs`

@@ -1506,7 +1506,7 @@
       // Com 0 ou 1 jogo o filtro não filtra nada — "Todos" e o único jogo são o
       // mesmo conjunto. Esconde a barra inteira em vez de deixar um controle
       // decorativo ocupando espaço.
-      if (Array.isArray(games) && lista.length < 2) { box.hidden = true; return; }
+      if (Array.isArray(games) && lista.length < 2) { box.hidden = true; initChipRowScroll(box); return; }
       box.hidden = false;
       const atual = (box.querySelector('[data-game-filter][aria-pressed="true"]') || {}).dataset;
       let ativo = (atual && atual.gameFilter) || "all";
@@ -1516,7 +1516,53 @@
       const chip = (g, label) =>
         `<button type="button" class="chip" data-game-filter="${escapeAttribute(g)}" aria-pressed="${g === ativo}">${escapeHtml(label)}</button>`;
       box.innerHTML = chip("all", t("filter.gameAll")) + lista.map((g) => chip(g, gameLabel(g))).join("");
+      initChipRowScroll(box);
     });
+  }
+
+  // Fileira de jogos em UMA linha com setas de rolagem (desktop). Com muitos
+  // jogos os chips quebravam em várias linhas ou transbordavam sem aviso; agora
+  // a linha rola e as setas ‹ › aparecem SÓ quando há conteúdo escondido
+  // daquele lado (pedido de 2026-08-28). Só no ponteiro fino: no toque o dedo
+  // já rola, e abaixo de 600px o filtro vira o select suspenso.
+  // As setas entram ANTES do box no DOM de propósito: o select-espelho do
+  // celular é criado com insertAdjacentElement("afterend") e reencontrado por
+  // nextElementSibling (syncGameFilterSelect) — uma seta depois do box o faria
+  // ser recriado a cada sync.
+  function initChipRowScroll(box) {
+    let wrap = box.parentElement;
+    if (!wrap || !wrap.classList.contains("chip-scroll")) {
+      wrap = document.createElement("div");
+      wrap.className = "chip-scroll";
+      box.parentNode.insertBefore(wrap, box);
+      wrap.appendChild(box);
+      const seta = (lado) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = `chip-scroll-btn is-${lado}`;
+        b.setAttribute("aria-label", t(lado === "left" ? "chips.scrollLeft" : "chips.scrollRight"));
+        b.innerHTML = lado === "left" ? "&lsaquo;" : "&rsaquo;";
+        b.hidden = true;
+        b.addEventListener("click", () =>
+          box.scrollBy({ left: (lado === "left" ? -1 : 1) * Math.max(120, box.clientWidth * 0.7), behavior: "smooth" }));
+        wrap.insertBefore(b, box);
+        return b;
+      };
+      wrap._setaEsq = seta("left");
+      wrap._setaDir = seta("right");
+      // Leituras de geometria em rAF, como no initSubnavScrollHint: medir logo
+      // após o innerHTML força layout síncrono.
+      box.addEventListener("scroll", () => requestAnimationFrame(() => atualizaChipSetas(box)), { passive: true });
+      if (window.ResizeObserver) new ResizeObserver(() => atualizaChipSetas(box)).observe(box);
+    }
+    requestAnimationFrame(() => atualizaChipSetas(box));
+  }
+  function atualizaChipSetas(box) {
+    const wrap = box.parentElement;
+    if (!wrap || !wrap.classList.contains("chip-scroll") || !wrap._setaDir) return;
+    const sobra = box.scrollWidth - box.clientWidth;
+    wrap._setaEsq.hidden = !(sobra > 4 && box.scrollLeft > 4);
+    wrap._setaDir.hidden = !(sobra > 4 && box.scrollLeft < sobra - 4);
   }
   // Reconstrói os chips com o escopo real da página. Cada tela chama depois de
   // carregar os dados dela (Coleção = cartas marcadas, Wishlist = desejadas,
@@ -9603,7 +9649,14 @@
         // formulário por um instante. A marca mantém a tela de "entrando" de
         // pé até o redirect; o login.js a apaga quando mostra o formulário.
         try { sessionStorage.setItem("sleevu-entrando", "1"); } catch (e) { /* ignora */ }
-        window.location.reload();
+        // Link mágico que aterrissa na HOME (Site URL do Supabase) segue pro
+        // Hub pessoal: quem acabou de logar quer as suas coisas, não a landing.
+        // /login recarrega em si (o login.js redireciona honrando o
+        // tcg-login-return de quem foi barrado numa página); página funda
+        // recarrega nela mesma — link profundo continua valendo.
+        const pousou = (window.location.pathname.split("/").pop() || "").replace(/\.html$/, "");
+        if (pousou === "" || pousou === "index") window.location.replace("/dashboard");
+        else window.location.reload();
         return;
       }
       // 2) Sessão existente: renova, puxa o remoto dos jogos numa requisição só

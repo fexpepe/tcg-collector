@@ -94,6 +94,12 @@
       <!-- Distribuição por marca (contagem de cartas distintas). O rótulo tem o
            MESMO estilo do "Ir para": as três zonas da página (resumo, jogos,
            atalhos) ficam com o mesmo ritmo de título (proposta de 2026-08-25). -->
+      <!-- Continuar de onde parou: últimos sets visitados (tcg-recent-sets-v1,
+           gravado pela página de set com o progresso da visita). Nasce
+           escondido; sem histórico a seção não existe. -->
+      <h2 class="dash-section-head" id="dhRecentHead" data-i18n="dash.continue" hidden>Continuar de onde parou</h2>
+      <section id="dhRecent" class="dash-recent" aria-label="Continuar de onde parou" hidden></section>
+
       <h2 class="dash-section-head" data-i18n="dash.byGame">Por jogo</h2>
       <section id="dhGames" class="dash-games" aria-label="Coleções por jogo"></section>
 
