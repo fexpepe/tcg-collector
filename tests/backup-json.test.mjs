@@ -30,7 +30,7 @@ function corpoDe(nome) {
 // comentário do backupObject — se algum dia entrarem, este teste avisa.
 const ESPERADAS = [
   "binders", "decks", "folders", "sales", "graded", "tags", "lists",
-  "sold", "costs", "wishTargets", "favorites"
+  "sold", "costs", "wishTargets", "favorites", "manual"
 ];
 const FORA = ["collectionMeta", "favoritesMeta", "history2"];
 

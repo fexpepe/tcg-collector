@@ -1904,11 +1904,11 @@
   // ── Itens MANUAIS/SELADOS (booster box, ETB, lata, item fora do catálogo) ──
   // F4 do PLANO-UX: a reclamação nº 1 de catálogo no Collectr é item faltando
   // SEM opção de criar manual. Escopo fiel às decisões do projeto: preço
-  // MANUAL (nada de backend de preço em runtime) e sem foto. Store GLOBAL e
-  // por ora LOCAL-ONLY — entrar no payload de sync é a mesma decisão das
-  // pastas (PLANO-UX M8). NÃO soma ao patrimônio: o invariante "Portfólio
-  // bate com a Coleção no centavo" tem uma fórmula só, e mexer nela é decisão
-  // do Fernando (a seção diz isso na tela).
+  // MANUAL (nada de backend de preço em runtime) e sem foto. Store GLOBAL,
+  // SINCRONIZADO (SYNC_KEYS.manual, LWW de bloco como as pastas) e no backup
+  // JSON. NÃO soma ao patrimônio: o invariante "Portfólio bate com a Coleção
+  // no centavo" tem uma fórmula só, e mexer nela é decisão do Fernando (a
+  // seção diz isso na tela).
   // Item: { n: nome, g: jogo|"" (geral), q, v: valor unit., cur, c: pago
   // unit. opcional, ccur, t: criado em }.
   const MANUAL_ITEMS_KEY = "tcg-collector-manual-items-v1";
@@ -1920,7 +1920,9 @@
   function buildManualItemsStore() {
     let data = { order: [], items: {}, updatedAt: 0 };
     try { const raw = JSON.parse(localStorage.getItem(MANUAL_ITEMS_KEY) || "null"); if (raw && raw.items) data = raw; } catch (e) { /* começa vazio */ }
-    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(MANUAL_ITEMS_KEY, JSON.stringify(data)); } catch (e) { notifyStorageFull(); } };
+    // marcaSuja: sem ela o laço de push dorme sobre a escrita direta (mesmo
+    // carimbo que o folder store da Coleção faz).
+    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(MANUAL_ITEMS_KEY, JSON.stringify(data)); marcaSuja(MANUAL_ITEMS_KEY); } catch (e) { notifyStorageFull(); } };
     return {
       list: () => data.order.map((id) => Object.assign({ id }, data.items[id])).filter((x) => x && x.n),
       get: (id) => data.items[id] || null,
@@ -7982,6 +7984,7 @@
     sold: "tcg-collector-collection-sold-v1", // vendas realizadas (globais)
     costs: "tcg-collector-collection-costs-v1", // custo pago por carta×variante (globais)
     wishTargets: "tcg-collector-wishlist-targets-v1", // preço-alvo por carta da wishlist (globais)
+    manual: MANUAL_ITEMS_KEY, // selados/itens manuais do Portfólio (globais)
     favorites: "tcg-collector-favorites-v1", // Pokémon favoritados (globais)
     favoritesMeta: "tcg-collector-favorites-meta-v1", // updatedAt p/ LWW dos favoritos
     // Histórico do portfólio (v2: c=raw, b=graded, w=desejos). Campo NOVO no blob
@@ -8451,6 +8454,11 @@
     if (a && b) return ((Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0)) ? b : a;
     return a || b || undefined;
   }
+  // Itens manuais/selados ({ order, items, updatedAt }): mesmo LWW de bloco.
+  function mergeManual(a, b) {
+    if (a && b) return ((Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0)) ? b : a;
+    return a || b || undefined;
+  }
   // Vendas ({ sales, order, updatedAt }): mesmo LWW do bloco que as pastas.
   function mergeSales(a, b) {
     if (a && b) return ((Number(b.updatedAt) || 0) > (Number(a.updatedAt) || 0)) ? b : a;
@@ -8548,6 +8556,7 @@
       sold: mergeSold(a.sold, b.sold),   // união por sid (histórico financeiro não se perde)
       costs: mergeCosts(a.costs, b.costs), // união por carta×variante
       wishTargets: mergeWishTargets(a.wishTargets, b.wishTargets), // preço-alvo da wishlist
+      manual: mergeManual(a.manual, b.manual), // selados/itens manuais
       favorites: fav.favorites,
       favoritesMeta: fav.meta,
       history2: mergeHistory(a.history2, b.history2)
@@ -9464,6 +9473,7 @@
       try { const co = JSON.parse(localStorage.getItem(SYNC_KEYS.costs) || "null"); if (co) payload.costs = co; } catch (e) { /* ignora */ }
       try { const wt = JSON.parse(localStorage.getItem(SYNC_KEYS.wishTargets) || "null"); if (wt) payload.wishTargets = wt; } catch (e) { /* ignora */ }
       try { const fav = JSON.parse(localStorage.getItem(SYNC_KEYS.favorites) || "null"); if (Array.isArray(fav)) payload.favorites = fav; } catch (e) { /* ignora */ }
+      try { const mi = JSON.parse(localStorage.getItem(SYNC_KEYS.manual) || "null"); if (mi) payload.manual = mi; } catch (e) { /* ignora */ }
       return payload;
     }
     function exportJson() {
@@ -9500,6 +9510,7 @@
         if (payload.costs && typeof payload.costs === "object") localStorage.setItem(SYNC_KEYS.costs, JSON.stringify(payload.costs));
         if (payload.wishTargets && typeof payload.wishTargets === "object") localStorage.setItem(SYNC_KEYS.wishTargets, JSON.stringify(payload.wishTargets));
         if (Array.isArray(payload.favorites)) localStorage.setItem(SYNC_KEYS.favorites, JSON.stringify(payload.favorites));
+        if (payload.manual && typeof payload.manual === "object") localStorage.setItem(SYNC_KEYS.manual, JSON.stringify(payload.manual));
         window.location.reload();
       } catch (e) { alert(t("error.import")); }
     }

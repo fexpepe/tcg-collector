@@ -15,9 +15,10 @@
 
   // Pastas: organização leve (seções colapsáveis) DENTRO da coleção. GLOBAL
   // cross-game (uma pasta pode misturar Pokémon e Lorcana). Exclusivo: cada carta
-  // fica em no máximo 1 pasta; o resto cai em "Sem pasta". Local-only por ora
-  // (não sincroniza entre dispositivos). Escreve direto no localStorage — são
-  // ações pontuais do usuário, sem necessidade de coalescer.
+  // fica em no máximo 1 pasta; o resto cai em "Sem pasta". SINCRONIZA entre
+  // aparelhos (SYNC_KEYS.folders, LWW de bloco — o save carimba updatedAt e
+  // marcaSuja). Escreve direto no localStorage — são ações pontuais do
+  // usuário, sem necessidade de coalescer.
   const folders = createFolderStore();
   function createFolderStore() {
     const KEY = "tcg-collector-collection-folders-v1";
