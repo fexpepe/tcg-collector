@@ -1901,6 +1901,41 @@
       })
     };
   }
+  // ── Itens MANUAIS/SELADOS (booster box, ETB, lata, item fora do catálogo) ──
+  // F4 do PLANO-UX: a reclamação nº 1 de catálogo no Collectr é item faltando
+  // SEM opção de criar manual. Escopo fiel às decisões do projeto: preço
+  // MANUAL (nada de backend de preço em runtime) e sem foto. Store GLOBAL e
+  // por ora LOCAL-ONLY — entrar no payload de sync é a mesma decisão das
+  // pastas (PLANO-UX M8). NÃO soma ao patrimônio: o invariante "Portfólio
+  // bate com a Coleção no centavo" tem uma fórmula só, e mexer nela é decisão
+  // do Fernando (a seção diz isso na tela).
+  // Item: { n: nome, g: jogo|"" (geral), q, v: valor unit., cur, c: pago
+  // unit. opcional, ccur, t: criado em }.
+  const MANUAL_ITEMS_KEY = "tcg-collector-manual-items-v1";
+  let manualItemsStoreInstance = null;
+  function createManualItemsStore() {
+    if (!manualItemsStoreInstance) manualItemsStoreInstance = buildManualItemsStore();
+    return manualItemsStoreInstance;
+  }
+  function buildManualItemsStore() {
+    let data = { order: [], items: {}, updatedAt: 0 };
+    try { const raw = JSON.parse(localStorage.getItem(MANUAL_ITEMS_KEY) || "null"); if (raw && raw.items) data = raw; } catch (e) { /* começa vazio */ }
+    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(MANUAL_ITEMS_KEY, JSON.stringify(data)); } catch (e) { notifyStorageFull(); } };
+    return {
+      list: () => data.order.map((id) => Object.assign({ id }, data.items[id])).filter((x) => x && x.n),
+      get: (id) => data.items[id] || null,
+      add(item) {
+        const id = "mi" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        data.items[id] = item;
+        data.order.unshift(id);
+        save();
+        return id;
+      },
+      update(id, patch) { if (!data.items[id]) return; Object.assign(data.items[id], patch); save(); },
+      remove(id) { delete data.items[id]; data.order = data.order.filter((x) => x !== id); save(); }
+    };
+  }
+
   // Preço-alvo da wishlist (por carta, global): "me avisa quando chegar a R$X".
   // v:0 fica gravado como tombstone (remoção que não ressuscita no merge).
   let wishTargetsStoreInstance = null;
@@ -7818,6 +7853,7 @@
     memoValue,
     createSoldStore,
     createCostsStore,
+    createManualItemsStore,
     createWishTargetsStore,
     readSoldList,
     soldValues,

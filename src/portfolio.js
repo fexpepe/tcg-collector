@@ -594,6 +594,7 @@
     renderComposition(rawTotal, gradedTotal);
     renderBreakdown(lines, slabs);
     renderListas();
+    renderManual();
     renderInvest();
     renderVendas();
     renderMovers();
@@ -950,6 +951,119 @@
       <div class="pf-list-rows">${corpo}</div>`;
     sec.hidden = false;
   }
+
+  // ── Selados e itens MANUAIS (F4 do PLANO-UX) ───────────────────────────────
+  // Booster box, ETB, lata ou item fora do catálogo, com preço 100% manual.
+  // FORA do patrimônio de propósito (a nota na tela diz): somar tocaria a
+  // fórmula única "Portfólio = Coleção no centavo", decisão do Fernando.
+  const manualStore = shared.createManualItemsStore();
+  // Aceita "1.234,56" (pt) e "1234.56" (en): vírgula presente decide o papel
+  // do ponto.
+  const numDeTexto = (s) => {
+    let x = String(s || "").trim();
+    if (x.includes(",")) x = x.replace(/\./g, "").replace(",", ".");
+    const v = parseFloat(x);
+    return isFinite(v) && v > 0 ? Math.round(v * 100) / 100 : 0;
+  };
+  function renderManual() {
+    const sec = document.getElementById("pfManual");
+    if (!sec) return;
+    const todos = manualStore.list();
+    const itens = gameFilter === "all" ? todos : todos.filter((x) => (x.g || "") === gameFilter);
+    const linha = (x) => {
+      const cor = GAME_COLOR[x.g] || "#8b93a7";
+      const unit = shared.moneyToCurrent(x.v, x.cur);
+      const total = unit * (Number(x.q) || 1);
+      const jogo = x.g
+        ? `<span class="pf-mi-game" style="--gc:${cor};--gc-fg:${shared.textOnColor(cor)}">${escapeHtml(shared.gameLabel(x.g))}</span>`
+        : "";
+      const pago = Number(x.c) > 0
+        ? `<span class="pf-mi-cost sensitive-value">${escapeHtml(t("pfmi.paid", { v: money(shared.moneyToCurrent(x.c, x.ccur) * (Number(x.q) || 1)) }))}</span>`
+        : "";
+      return `<div class="pf-mi-row" data-mi-id="${escapeAttribute(x.id)}">
+        <span class="pf-mi-name"><strong>${escapeHtml(x.n)}</strong>${jogo}${pago}</span>
+        <span class="pf-mi-qty">×${Number(x.q) || 1}</span>
+        <strong class="pf-mi-val sensitive-value">${escapeHtml(money(total))}</strong>
+        <span class="pf-mi-actions">
+          <button type="button" class="pf-mi-btn" data-mi-edit title="${escapeAttribute(t("pfmi.edit"))}" aria-label="${escapeAttribute(t("pfmi.edit"))}">✎</button>
+          <button type="button" class="pf-mi-btn" data-mi-remove title="${escapeAttribute(t("pfmi.remove"))}" aria-label="${escapeAttribute(t("pfmi.remove"))}">×</button>
+        </span>
+      </div>`;
+    };
+    const totalGeral = itens.reduce((s, x) => s + shared.moneyToCurrent(x.v, x.cur) * (Number(x.q) || 1), 0);
+    sec.innerHTML = `<h2 class="pf-invest-title pf-mi-head">${escapeHtml(t("pfmi.title"))}
+        <button type="button" class="secondary pf-mi-add" data-mi-add>${escapeHtml(t("pfmi.add"))}</button></h2>
+      ${itens.length
+        ? `<div class="pf-mi-rows">${itens.map(linha).join("")}</div>
+           <p class="pf-mi-total">${escapeHtml(t("pfmi.total"))} <strong class="sensitive-value">${escapeHtml(money(totalGeral))}</strong></p>`
+        : `<p class="pf-bd-empty">${escapeHtml(t("pfmi.empty"))}</p>`}
+      <p class="pf-mi-note">${escapeHtml(t("pfmi.note"))}</p>`;
+  }
+  function abreManualModal(id) {
+    const it = id ? manualStore.get(id) : null;
+    const old = document.querySelector(".pfmi-modal");
+    if (old) old.remove();
+    const wrap = document.createElement("div");
+    wrap.className = "ts-modal pfmi-modal";
+    const fmtNum = (v) => (Number(v) > 0 ? String(Math.round(Number(v) * 100) / 100).replace(".", ",") : "");
+    const opcoes = ['<option value="">—</option>']
+      .concat(GAMES.map((g) => `<option value="${g}"${it && it.g === g ? " selected" : ""}>${escapeHtml(shared.gameLabel(g))}</option>`)).join("");
+    const cur = shared.getCurrency();
+    wrap.innerHTML = `<div class="ts-backdrop" data-pfmi-close></div>
+      <div class="ts-panel">
+        <h3>${escapeHtml(t(it ? "pfmi.edit" : "pfmi.add2"))}</h3>
+        <div class="pf-mi-form">
+          <label>${escapeHtml(t("pfmi.name"))}<input type="text" id="pfmiName" maxlength="80" value="${escapeAttribute(it ? it.n : "")}"></label>
+          <label>${escapeHtml(t("pfmi.game"))}<select id="pfmiGame">${opcoes}</select></label>
+          <label>${escapeHtml(t("pfmi.qty"))}<input type="number" id="pfmiQty" min="1" step="1" value="${it ? Number(it.q) || 1 : 1}"></label>
+          <label>${escapeHtml(t("pfmi.value", { cur }))}<input type="text" inputmode="decimal" id="pfmiVal" value="${escapeAttribute(it ? fmtNum(shared.moneyToCurrent(it.v, it.cur)) : "")}"></label>
+          <label>${escapeHtml(t("pfmi.cost", { cur }))}<input type="text" inputmode="decimal" id="pfmiCost" value="${escapeAttribute(it && Number(it.c) > 0 ? fmtNum(shared.moneyToCurrent(it.c, it.ccur)) : "")}"></label>
+        </div>
+        <div class="ts-actions">
+          <button type="button" class="secondary" data-pfmi-close>${escapeHtml(t("pfmi.cancel"))}</button>
+          <button type="button" class="primary" data-pfmi-save>${escapeHtml(t("pfmi.save"))}</button>
+        </div>
+      </div>`;
+    document.body.appendChild(wrap);
+    wrap.addEventListener("click", (e) => {
+      if (e.target.closest("[data-pfmi-close]")) { wrap.remove(); return; }
+      if (!e.target.closest("[data-pfmi-save]")) return;
+      const nome = (document.getElementById("pfmiName").value || "").trim();
+      const valor = numDeTexto(document.getElementById("pfmiVal").value);
+      if (!nome || !(valor > 0)) return; // nome + valor são o mínimo de um item
+      // Editar regrava na moeda ATUAL (o campo mostra o valor já convertido) —
+      // mesmo contrato do custo pago por carta.
+      const patch = {
+        n: nome,
+        g: document.getElementById("pfmiGame").value || "",
+        q: Math.max(1, parseInt(document.getElementById("pfmiQty").value, 10) || 1),
+        v: valor, cur,
+        c: numDeTexto(document.getElementById("pfmiCost").value), ccur: cur
+      };
+      if (it && id) manualStore.update(id, patch);
+      else manualStore.add(Object.assign({ t: Date.now() }, patch));
+      wrap.remove();
+      renderManual();
+    });
+  }
+  (function bindManual() {
+    const sec = document.getElementById("pfManual");
+    if (!sec) return;
+    sec.addEventListener("click", (e) => {
+      if (e.target.closest("[data-mi-add]")) { abreManualModal(null); return; }
+      const row = e.target.closest("[data-mi-id]");
+      if (!row) return;
+      if (e.target.closest("[data-mi-edit]")) { abreManualModal(row.dataset.miId); return; }
+      if (e.target.closest("[data-mi-remove]")) {
+        const item = manualStore.get(row.dataset.miId);
+        if (item && window.confirm(t("pfmi.confirmRemove", { n: item.n }))) {
+          manualStore.remove(row.dataset.miId);
+          renderManual();
+        }
+      }
+    });
+    renderManual(); // independe do catálogo: aparece já no primeiro paint
+  })();
 
   // Agrega valor (cartas raw + slabs graded) por uma chave da carta (set, raridade…).
   function breakdownBy(lines, slabs, keyFn) {

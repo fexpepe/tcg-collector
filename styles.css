@@ -5685,6 +5685,34 @@ a.progress-row:hover {
 
 /* Dinheiro tabular no resto da tela (mesma razão do .stats-grid span). */
 .pf-comp-val, .pf-insight-pct, .pf-insight-abs, .pf-mover-pct, .pf-mover-cash { font-variant-numeric: tabular-nums; }
+
+/* Selados e itens manuais (F4): lista simples + modal de cadastro. */
+.pf-mi-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.pf-mi-add { flex: 0 0 auto; padding: 6px 14px; min-height: 34px; font-size: 13px; }
+.pf-mi-rows { display: grid; gap: 6px; }
+.pf-mi-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel);
+}
+.pf-mi-name { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.pf-mi-name strong { font-size: 14px; }
+.pf-mi-game { flex: none; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; background: var(--gc); color: var(--gc-fg); }
+.pf-mi-cost { font-size: 12px; color: var(--subtle); }
+.pf-mi-qty { flex: none; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.pf-mi-val { flex: none; font-size: 14px; font-variant-numeric: tabular-nums; }
+.pf-mi-actions { flex: none; display: flex; gap: 4px; }
+.pf-mi-btn { min-height: 30px; min-width: 30px; padding: 0; border: 1px solid var(--line); border-radius: 8px; background: none; color: var(--muted); font-size: 14px; }
+.pf-mi-btn:hover { border-color: var(--accent); color: var(--accent); }
+.pf-mi-total { margin: 10px 0 0; font-size: 14px; }
+.pf-mi-total strong { font-variant-numeric: tabular-nums; }
+.pf-mi-note { margin: 6px 0 0; font-size: 12px; color: var(--subtle); }
+.pf-mi-form { display: grid; gap: 10px; margin: 12px 0; }
+.pf-mi-form label { display: grid; gap: 4px; font-size: 13px; font-weight: 700; color: var(--muted); }
+.pf-mi-form input, .pf-mi-form select {
+  min-height: 42px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--panel-strong); color: var(--text); font-size: 16px;
+}
+@media (pointer: coarse) { .pf-mi-btn { min-height: 44px; min-width: 42px; } }
 .pf-head-when { font-size: 12.5px; color: var(--subtle); font-weight: 600; margin-left: auto; }
 .pf-chart-controls {
   display: flex;
