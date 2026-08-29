@@ -2563,13 +2563,26 @@
     if (s.indexOf("chin") >= 0 || s.indexOf("zh") >= 0) return "zh-cn"; // Chinês padrão = simplificado
     return "en";
   }
+  // Nome de jogo dos exports (coluna "Game"/"Product Line" do Collectr e do
+  // TCGplayer) → slug. Compara ACHATADO (sem espaço/pontuação) porque cada
+  // fonte escreve de um jeito: "Yu-Gi-Oh!", "YuGiOh", "Dragon Ball Super:
+  // Fusion World"… O "pok" fica por último — é o mais genérico dos prefixos.
   function mapCsvGame(g) {
-    const s = String(g || "").toLowerCase();
-    if (s.indexOf("lorcana") >= 0) return "lorcana";
-    if (s.indexOf("one piece") >= 0 || s.indexOf("onepiece") >= 0) return "onepiece";
-    if (s.indexOf("naruto") >= 0) return "naruto";
-    if (s.indexOf("hunter") >= 0 || s.indexOf("hxh") >= 0) return "hxh";
-    if (s.indexOf("pok") >= 0) return "pokemon";
+    const flat = String(g || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (!flat) return "";
+    if (flat.includes("lorcana")) return "lorcana";
+    if (flat.includes("onepiece")) return "onepiece";
+    if (flat.includes("magic") || flat === "mtg") return "magic";
+    if (flat.includes("yugioh") || flat === "ygo") return "ygo";
+    if (flat.includes("digimon")) return "digimon";
+    if (flat.includes("flesh") || flat === "fab") return "fab";
+    if (flat.includes("gundam")) return "gundam";
+    if (flat.includes("dragonball") || flat.includes("fusionworld") || flat === "dbfw") return "dbfw";
+    if (flat.includes("riftbound") || flat.includes("leagueoflegends")) return "riftbound";
+    if (flat.includes("unionarena")) return "unionarena";
+    if (flat.includes("naruto")) return "naruto";
+    if (flat.includes("hunter") || flat === "hxh") return "hxh";
+    if (flat.includes("pok")) return "pokemon";
     return ""; // desconhecido: tenta todos
   }
   const csvNorm = (s) => normalize(String(s || "")).replace(/[^a-z0-9]/g, "");
@@ -2584,7 +2597,17 @@
     if (noCode !== raw) keys.add(csvNorm(noCode));
     return keys;
   }
-  function mapCsvVariant(v) { return mapDexVariant(v); } // mesma tabela (Holo/Reverse/1st Ed)
+  // Printing dos exports: a tabela do Dex + o "Foil" dos jogos TCGCSV (Magic,
+  // One Piece, YGO…). "Holofoil" do Pokémon cai em Holo ANTES da checagem de
+  // foil, então o comportamento antigo não muda; "Non-Foil"/"Nonfoil" é Normal.
+  function mapCsvVariant(v) {
+    const s = String(v || "").toLowerCase();
+    if (s.indexOf("1st edition") >= 0) return "1st Edition";
+    if (s.indexOf("reverse") >= 0) return "Reverse";
+    if (s.indexOf("holo") >= 0) return "Holo";
+    if (s.indexOf("foil") >= 0 && s.indexOf("non") < 0) return "Foil";
+    return "Normal";
+  }
 
   // --- Tema (claro/escuro) ---
   const THEME_KEY = "tcg-collector-theme-v1";
@@ -9326,7 +9349,12 @@
 
         // Match: por jogo, acha os sets citados no manifest e baixa SÓ esses
         // chunks; dentro do chunk casa por número (antes da "/") ou nome exato.
-        const games = ["pokemon", "lorcana", "onepiece"];
+        // TODOS os jogos do registro, na ordem dele (Pokémon primeiro — em
+        // linha sem coluna de jogo, o primeiro que casar leva). Antes eram 3
+        // fixos e planilha de Magic/YGO não casava nada. Manifests sob demanda
+        // e memoizados: linha com jogo declarado só baixa o daquele jogo, e
+        // jogo sem manifest (dev, JUMP vazio) devolve null e é pulado.
+        const games = GAME_SLUGS;
         const matched = []; const unmatched = [];
         const chunkCache = new Map();
         const fetchChunk = (fileUrl) => {
@@ -9335,14 +9363,17 @@
           }
           return chunkCache.get(fileUrl);
         };
-        const manifests = {};
-        for (const g of games) manifests[g] = await csvGameManifest(g);
+        const manifests = new Map();
+        const manifestDe = (g) => {
+          if (!manifests.has(g)) manifests.set(g, csvGameManifest(g));
+          return manifests.get(g);
+        };
 
         for (const it of items) {
           const tryGames = it.game ? [it.game] : games;
           let hit = null;
           for (const g of tryGames) {
-            const mf = manifests[g];
+            const mf = await manifestDe(g);
             if (!mf) continue;
             const setKeys = csvSetKeys(it.set);
             let pool;
@@ -9370,8 +9401,14 @@
             }) || null;
             if (hit) { hit = { card: hit, game: g }; break; }
           }
-          if (hit) matched.push({ ...it, cardId: hit.card.id, cardName: hit.card.name, game: hit.game });
-          else unmatched.push(it);
+          if (hit) {
+            // Variante que a carta não tem (ex.: "Foil" numa carta só-Holo)
+            // cai na padrão da carta — chave alienígena no store não aparece
+            // em tile nenhum e viraria cópia invisível.
+            const vs = cardVariants(hit.card);
+            const variant = vs.includes(it.variant) ? it.variant : defaultVariant(hit.card);
+            matched.push({ ...it, variant, cardId: hit.card.id, cardName: hit.card.name, game: hit.game });
+          } else unmatched.push(it);
         }
 
         showCsvImportPreview(items.length, matched, unmatched);
@@ -9388,7 +9425,7 @@
         ? `<details class="csvimport-miss"><summary>${escapeHtml(t("csvimport.unmatched", { n: unmatched.length }))}</summary>
              <ul>${unmatched.slice(0, 60).map((u) => `<li>${escapeHtml(`${u.name || "?"} · ${u.set || "?"} ${u.number || ""}`)}</li>`).join("")}</ul></details>`
         : "";
-      const perGame = ["pokemon", "lorcana", "onepiece"]
+      const perGame = GAME_SLUGS
         .map((g) => [g, matched.filter((m) => m.game === g).length])
         .filter(([, n]) => n > 0)
         .map(([g, n]) => `${gameShortLabel(g)}: ${n}`).join(" · ");

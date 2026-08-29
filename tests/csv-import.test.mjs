@@ -46,6 +46,11 @@ test("mapCsvVariant: printings do TCGplayer", () => {
   assert.equal(api.mapCsvVariant("1st Edition Holofoil"), "1st Edition");
   assert.equal(api.mapCsvVariant("Normal"), "Normal");
   assert.equal(api.mapCsvVariant(""), "Normal");
+  // Jogos TCGCSV (Magic, One Piece, YGO): Foil é variante própria, e
+  // "Non-Foil" NÃO pode cair nela.
+  assert.equal(api.mapCsvVariant("Foil"), "Foil");
+  assert.equal(api.mapCsvVariant("Non-Foil"), "Normal");
+  assert.equal(api.mapCsvVariant("Nonfoil"), "Normal");
 });
 
 test("mapCsvCondition: nomes longos e siglas", () => {
@@ -65,6 +70,22 @@ test("mapCsvLanguage/mapCsvGame", () => {
   assert.equal(api.mapCsvGame("Disney Lorcana"), "lorcana");
   assert.equal(api.mapCsvGame("One Piece Card Game"), "onepiece");
   assert.equal(api.mapCsvGame("Sports"), "");
+});
+
+test("mapCsvGame: os 13 jogos, nas grafias do Collectr/TCGplayer", () => {
+  assert.equal(api.mapCsvGame("Magic: The Gathering"), "magic");
+  assert.equal(api.mapCsvGame("MTG"), "magic");
+  assert.equal(api.mapCsvGame("Yu-Gi-Oh!"), "ygo");
+  assert.equal(api.mapCsvGame("YuGiOh"), "ygo");
+  assert.equal(api.mapCsvGame("Digimon Card Game"), "digimon");
+  assert.equal(api.mapCsvGame("Flesh and Blood TCG"), "fab");
+  assert.equal(api.mapCsvGame("Flesh & Blood"), "fab");
+  assert.equal(api.mapCsvGame("Gundam Card Game"), "gundam");
+  assert.equal(api.mapCsvGame("Dragon Ball Super: Fusion World"), "dbfw");
+  assert.equal(api.mapCsvGame("Riftbound: League of Legends TCG"), "riftbound");
+  assert.equal(api.mapCsvGame("Union Arena"), "unionarena");
+  assert.equal(api.mapCsvGame("Naruto Kayou"), "naruto");
+  assert.equal(api.mapCsvGame("Hunter x Hunter"), "hxh");
 });
 
 test("csvSetKeys: nome cru e sem o prefixo de código", () => {
