@@ -59,7 +59,7 @@
   // Cobre URL limpa do Cloudflare (/, /index, /decks) e o .html.
   function isNeutralPage() {
     var p = (location.pathname || "").replace(/\/+$/, "");
-    return p === "" || /\/(index|hub|explore|dashboard|badges|backup|decks|my-decks|collection|portfolio|sales|binders|wishlist|graded)(\.html)?$/i.test(p);
+    return p === "" || /\/(index|hub|explore|dashboard|badges|backup|decks|my-decks|collection|portfolio|sales|binders|wishlist|graded|troca)(\.html)?$/i.test(p);
   }
   // Porta de entrada (Início/HUB): a única neutra onde ?game= grava a sessão.
   function isEntryPage() {

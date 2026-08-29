@@ -2156,7 +2156,7 @@
     const exploreActive = ["pokedex", "trainers", "sets", "artists", "cards", "hub"].includes(active);
     // "Meus Decks" é página PESSOAL (entra pelo Dashboard), então acende a
     // Coleção — diferente de "Decks", que é a galeria PÚBLICA e tem item próprio.
-    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "graded", "mydecks", "listas"].includes(active);
+    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "graded", "mydecks", "listas", "troca"].includes(active);
 
     // `beta`: selo pequeno sobrescrito no rótulo — recurso ainda em construção
     // (pedido de 2026-08-25 pra Decks e Portfólio). "beta" é literal de
@@ -10118,7 +10118,7 @@
   // servidas pelas mesmas páginas ficam de fora: ?s= (links compartilhados de
   // coleção/pasta/tag/binder/vendas/graded) e /users/<handle> (perfil público).
   function enforceLoginGate() {
-    const AUTH_PAGES = ["dashboard", "collection", "graded", "wishlist", "binders", "sales", "portfolio", "badges", "backup"];
+    const AUTH_PAGES = ["dashboard", "collection", "graded", "wishlist", "binders", "sales", "portfolio", "badges", "backup", "troca"];
     const nav = document.querySelector(".page-nav[data-active-page]");
     const page = nav ? nav.dataset.activePage : "";
     if (!AUTH_PAGES.includes(page) || getSession()) return false;

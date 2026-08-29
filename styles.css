@@ -9062,6 +9062,59 @@ select,
 }
 
 /* ============================================================================
+   ANALISADOR DE TROCA (troca.html): dois painéis (Eu dou / Eu recebo), linhas
+   com condição × quantidade × valor editável, veredito e histórico local. */
+.trade-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.trade-panel { border: 1px solid var(--line); border-radius: 14px; background: var(--panel); padding: 14px; box-shadow: var(--shadow); }
+.trade-panel h2 { margin: 0 0 10px; font-size: 17px; }
+.trade-search { position: relative; margin-bottom: 10px; }
+.trade-search input { width: 100%; min-height: 42px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel-strong); color: var(--text); font-size: 16px; }
+.trade-results { position: absolute; z-index: 60; inset: 100% 0 auto 0; max-height: 300px; overflow-y: auto; overscroll-behavior: contain; border: 1px solid var(--line); background: var(--surface); box-shadow: 0 12px 34px rgba(0, 0, 0, .4); }
+.trade-hit { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; width: 100%; min-height: 44px; padding: 8px 10px; border: 0; background: none; color: var(--text); text-align: left; cursor: pointer; }
+.trade-hit:hover { background: var(--panel-strong); }
+.trade-hit-name { font-weight: 700; font-size: 13.5px; }
+.trade-hit-meta { font-size: 12px; color: var(--muted); }
+.trade-hit-meta em { font-style: normal; color: var(--accent-ink); font-weight: 700; }
+.trade-none, .trade-empty { margin: 8px 0; color: var(--muted); font-size: 13px; }
+.trade-items { display: grid; gap: 6px; }
+.trade-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-strong); }
+.trade-item-name { flex: 1 1 auto; min-width: 0; display: grid; }
+.trade-item-name strong { font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.trade-item-name span { font-size: 11.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* width/height explícitos: vencem o input,select{width:100%;height:42px}
+   global, que senão esticava o select de condição e estourava a linha. */
+.trade-cond { flex: none; width: auto; height: 36px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 16px; }
+.trade-qty { flex: none; width: 58px; height: 36px; padding: 0 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--text); font-size: 16px; }
+.trade-val { flex: none; width: 96px; height: 36px; padding: 0 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--text); font-size: 16px; text-align: right; font-variant-numeric: tabular-nums; }
+.trade-rm { flex: none; min-height: 30px; min-width: 30px; padding: 0; border: 1px solid var(--line); border-radius: 8px; background: none; color: var(--muted); }
+.trade-rm:hover { border-color: #d8443c; color: #ff6b5e; }
+.trade-total { display: flex; justify-content: space-between; margin: 12px 0 0; font-size: 14px; color: var(--muted); }
+.trade-total strong { font-size: 18px; color: var(--text); font-variant-numeric: tabular-nums; }
+/* O veredito é a resposta da página — cor + texto (a seta do histórico cobre
+   quem não distingue verde/vermelho, mesma regra das setas do Portfólio). */
+.trade-verdict { margin: 16px 0 0; padding: 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); font-weight: 800; text-align: center; }
+.trade-verdict.is-fair, .trade-verdict.is-you { color: #2ecc71; border-color: color-mix(in srgb, #2ecc71 40%, transparent); }
+.trade-verdict.is-them { color: #e8553c; border-color: color-mix(in srgb, #e8553c 40%, transparent); }
+.trade-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 0; }
+.trade-history { margin-top: 26px; }
+.trade-history h2 { font-size: 17px; }
+.trade-hrow { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.trade-hdate { color: var(--muted); flex: none; }
+.trade-hsum { flex: 1 1 auto; }
+.trade-hvals { color: var(--muted); font-variant-numeric: tabular-nums; }
+@media (max-width: 700px) {
+  .trade-panels { grid-template-columns: 1fr; }
+  /* Linha em duas "andas": nome inteiro em cima, controles embaixo — senão o
+     nome encolhe a uma letra pra caber junto de condição × qtde × valor. */
+  .trade-item { flex-wrap: wrap; }
+  .trade-item-name { flex: 1 1 100%; }
+}
+@media (pointer: coarse) {
+  .trade-rm { min-height: 44px; min-width: 42px; }
+  .trade-cond, .trade-qty, .trade-val { height: 44px; }
+}
+
+/* ============================================================================
    NAVEGAÇÃO COM TRANSIÇÃO (View Transitions cross-document). O site é
    multi-página e a troca "piscava" a tela inteira; o crossfade curto dá a
    sensação de app com CSS puro. Progressive enhancement por construção:

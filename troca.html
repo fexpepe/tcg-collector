@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title data-i18n="title.troca">Analisador de troca - Sleevu</title>
+    <meta name="description" content="Some os dois lados de uma troca de cartas, com condição e quantidade, e veja se ela está equilibrada.">
+    <!-- Ferramenta pessoal (histórico local, exige login): fora do índice,
+         como my-decks. -->
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <!-- Página NEUTRA (cross-game): a busca acha carta de qualquer jogo pela
+         borda; sem catálogo no boot. -->
+    <script src="src/game.js" data-catalog=""></script>
+    <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="/">Sleevu</a>
+        <nav class="page-nav" aria-label="Páginas" data-active-page="troca"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-head">
+        <h1 data-i18n="trade.title">Analisador de troca</h1>
+        <a href="dashboard" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
+      </div>
+      <p class="collection-subtitle" data-i18n="trade.subtitle">Some os dois lados de uma troca — com condição e quantidade — e veja se ela está equilibrada. Os valores vêm da cotação de mercado e são editáveis.</p>
+
+      <section class="trade-panels">
+        <div class="trade-panel" data-side="give">
+          <h2 data-i18n="trade.give">Eu dou</h2>
+          <div class="trade-search">
+            <input type="search" id="tradeSearchGive" autocomplete="off" data-i18n-placeholder="trade.searchPh" placeholder="Nome da carta, número…" aria-label="Buscar carta">
+            <div class="trade-results" id="tradeResultsGive" hidden></div>
+          </div>
+          <div class="trade-items" id="tradeItemsGive"></div>
+          <p class="trade-total"><span data-i18n="trade.total">Total</span> <strong id="tradeTotalGive" class="sensitive-value">—</strong></p>
+        </div>
+        <div class="trade-panel" data-side="get">
+          <h2 data-i18n="trade.get">Eu recebo</h2>
+          <div class="trade-search">
+            <input type="search" id="tradeSearchGet" autocomplete="off" data-i18n-placeholder="trade.searchPh" placeholder="Nome da carta, número…" aria-label="Buscar carta">
+            <div class="trade-results" id="tradeResultsGet" hidden></div>
+          </div>
+          <div class="trade-items" id="tradeItemsGet"></div>
+          <p class="trade-total"><span data-i18n="trade.total">Total</span> <strong id="tradeTotalGet" class="sensitive-value">—</strong></p>
+        </div>
+      </section>
+
+      <section id="tradeVerdict" class="trade-verdict" hidden aria-live="polite"></section>
+
+      <div class="trade-actions">
+        <button type="button" id="tradeSave" class="secondary" data-i18n="trade.save" disabled>Salvar análise</button>
+        <button type="button" id="tradeExport" class="secondary" data-i18n="trade.export" disabled>Exportar imagem</button>
+        <button type="button" id="tradeClear" class="secondary" data-i18n="trade.clear" disabled>Limpar</button>
+      </div>
+
+      <section id="tradeHistory" class="trade-history" hidden>
+        <h2 data-i18n="trade.history">Análises salvas</h2>
+        <div id="tradeHistoryList"></div>
+      </section>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/shared.js"></script>
+    <script defer src="src/troca.js"></script>
+  </body>
+</html>

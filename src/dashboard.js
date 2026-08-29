@@ -159,7 +159,9 @@
     decks: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="12" height="16" rx="2"/><path d="M4.5 6.5v12a2 2 0 0 0 2 2h9"/></svg>',
     // Listas: linhas com marcador — o oposto visual do binder/deck (que são
     // cartas), porque a lista é justamente a visão sem imagem.
-    lists: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12"/><path d="M8 12h12"/><path d="M8 18h12"/><path d="M4 6h.01"/><path d="M4 12h.01"/><path d="M4 18h.01"/></svg>'
+    lists: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12"/><path d="M8 12h12"/><path d="M8 18h12"/><path d="M4 6h.01"/><path d="M4 12h.01"/><path d="M4 18h.01"/></svg>',
+    // Troca: duas setas em sentidos opostos (dou ⇄ recebo).
+    trade: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h13"/><path d="m14 4 3 3-3 3"/><path d="M20 17H7"/><path d="m10 14-3 3 3 3"/></svg>'
   };
   const soldTotal = shared.readSoldList().length;
   const links = [
@@ -170,6 +172,7 @@
     { href: "my-decks", icon: "decks", key: "nav.myDecks", stat: t("dash.decksHint") },
     { href: "listas", icon: "lists", key: "nav.lists", stat: t("dash.listsHint") },
     { href: "sales", icon: "sales", key: "nav.sales", stat: tn("dash.salesCount", salesCount()) + (soldTotal ? ` · ${tn("dash.soldCount", soldTotal)}` : "") },
+    { href: "troca", icon: "trade", key: "trade.title", stat: t("dash.tradeHint") },
     { href: "portfolio", icon: "portfolio", key: "nav.portfolio", stat: pf != null ? shared.formatMoney(shared.getCurrency(), pf) : "" },
     { href: "badges", icon: "badges", key: "dash.badges", stat: t("dash.badgesHint") }
     // Explorar e Jogos saíram daqui: já são itens fixos do menu do header, então
