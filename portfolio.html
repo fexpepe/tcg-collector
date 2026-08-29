@@ -58,13 +58,18 @@
     <main>
       <div class="page-head pf-head dash-head">
         <h1 data-i18n="nav.portfolio">Portfólio</h1>
-        <!-- Modo privacidade: borra os valores em dinheiro e MANTÉM as
-             porcentagens, pra dar print/stream sem expor o patrimônio. É o
-             mesmo data-sensitive das Configurações, com o liga-desliga aqui,
-             que é onde o efeito acontece. -->
-        <button type="button" id="pfPrivacy" class="secondary pf-privacy" aria-pressed="false" hidden></button>
-        <button type="button" id="pfRecap" class="secondary" hidden></button>
-        <button type="button" id="pfExport" class="secondary" data-i18n="portfolio.export" hidden>Exportar CSV</button>
+        <!-- Agrupados num container pra ficarem juntos, colados à direita:
+             soltos no .pf-head (space-between) eles se espalhavam pela linha
+             quando quebravam pra baixo do título. -->
+        <div class="pf-head-actions">
+          <!-- Modo privacidade: borra os valores em dinheiro e MANTÉM as
+               porcentagens, pra dar print/stream sem expor o patrimônio. É o
+               mesmo data-sensitive das Configurações, com o liga-desliga aqui,
+               que é onde o efeito acontece. -->
+          <button type="button" id="pfPrivacy" class="secondary pf-privacy" aria-pressed="false" hidden></button>
+          <button type="button" id="pfRecap" class="secondary" hidden></button>
+          <button type="button" id="pfExport" class="secondary" data-i18n="portfolio.export" hidden>Exportar CSV</button>
+        </div>
         <!-- Por ÚLTIMO de propósito: o .pf-head é flex com space-between, então
              o link precisa quebrar pra própria linha (flex-basis no CSS) pra
              cair embaixo do título, como nas outras telas — no meio da linha
