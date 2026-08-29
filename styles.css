@@ -3913,6 +3913,12 @@ a.hub-tile:hover {
    Números tabulares pra coluna de preço não dançar entre as linhas. */
 .graded-price { margin-top: 14px; }
 .gp-rows { display: grid; gap: 4px; }
+/* Botão "carta como imagem" do preview: só ícone, não disputa com o Share. */
+.preview-story { flex: 0 0 auto; min-width: 46px; padding: 0 12px; }
+
+/* "Vale a pena gradear?": o prêmio da melhor nota sobre a carta crua. */
+.gp-premium { margin: 8px 0 0; font-size: 12.5px; font-weight: 700; color: var(--gold); }
+.gp-premium-note { font-weight: 400; color: var(--subtle); }
 .gp-row { display: flex; align-items: baseline; gap: 10px; }
 .gp-grade { flex: 1 1 auto; font-size: 13px; font-weight: 700; color: var(--muted); }
 .gp-val { flex: none; font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums; }
