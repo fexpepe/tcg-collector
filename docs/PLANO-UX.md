@@ -397,6 +397,30 @@ caminho):
   lista, "Continuar" visível no Hub, zero sobreposição no compacto e setas
   aparecendo/rolando com 13 jogos.
 
+**Pacote 4 — entregue em 2026-08-29** (M5, M3, M4 — um commit por item):
+
+- **M5** ✔ — import CSV pros 13 jogos: `mapCsvGame` reconhece as grafias do
+  Collectr/TCGplayer (comparação achatada), a lista de match vem do registro
+  `GAME_SLUGS` com manifests sob demanda/memoizados, e `mapCsvVariant` ganhou
+  o "Foil" dos jogos TCGCSV (com "Non-Foil" → Normal e snap pra variante que
+  a carta de fato tem). Testes novos pros 13 + Foil.
+- **M3** ✔ — o idioma das cartas ganhou interface: `setCardLang` no shared +
+  select "Idioma das cartas" em Configurações → Idioma e moeda (Todas/PT/EN/
+  JA/ZH, recarrega como idioma/moeda). Padrão "Todas" preserva todo mundo.
+  Validado em navegador: chave gravada, `data-cardlang` carimbado, páginas
+  sem erro em JA, volta pra Todas restaura.
+- **M4** ◐ — facetas declaradas pra **6 jogos** com dado conferido campo a
+  campo no catálogo local: Lorcana (Tinta com dual-ink dividido, Tipo), One
+  Piece (Cor multi ";", Tipo), Digimon (Cor, Nível, Tipo), Gundam (Cor,
+  Nível, Tipo), DBFW (Cor, Tipo) e FAB (Pitch, Talento, Tipo). Rótulos no
+  inglês da fonte (o texto impresso na carta, como os tratamentos do Magic);
+  raridade fica no select existente de propósito (só o Magic a declara como
+  faceta). Validado nos 6 em navegador real — interação conferida (Amber no
+  Lorcana: 470 → 86 resultados). **Pokémon fica pendente**: `types`/`stage`
+  só existem no catálogo de produção, que o ambiente do agente não alcança —
+  ligar às cegas é contra a regra. YGO/Riftbound/Union Arena: conferir campos
+  quando houver amostra local.
+
 ## 5. Como implementar sem quebrar (vale pra todos os itens)
 
 - **Rodar sempre:** `node --test tests/*.test.mjs`, `node scripts/check.mjs`

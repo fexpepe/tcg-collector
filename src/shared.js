@@ -6616,7 +6616,83 @@
     const traduzido = t(chave);
     return traduzido === chave ? token.charAt(0).toUpperCase() + token.slice(1) : traduzido;
   }
+  // Helpers das facetas fora do Magic. Valor multi vira uma opção POR PARTE
+  // ("Green;Red" do One Piece/Digimon, "Amber/Steel" dos dual-ink do Lorcana):
+  // quem procura "as verdes" espera achar a Green;Red lá dentro. Os RÓTULOS
+  // ficam no inglês da fonte de propósito (Amber, Leader, Digi-Egg…) — é o
+  // texto impresso na carta, como os tratamentos do Magic.
+  const facetSplit = (v, sep) => String(v || "").split(sep).map((s) => s.trim()).filter(Boolean);
+  const FACET_COLOR_ORDER = ["Red", "Green", "Blue", "Purple", "Black", "Yellow", "White"];
+  const facetColor = (field) => ({
+    key: "color", labelKey: "facet.color",
+    of: (c) => facetSplit(c[field], ";"),
+    label: (v) => v,
+    order: FACET_COLOR_ORDER
+  });
+  const facetType = (order) => ({
+    key: "type", labelKey: "facet.cardType",
+    of: (c) => (c.cardType ? [String(c.cardType)] : []),
+    label: (v) => v,
+    order: order || []
+  });
+  // Nível (Digimon/Gundam): só dígito limpo — a fonte deixa passar "—"/"-".
+  const facetLevel = {
+    key: "level", labelKey: "facet.level",
+    of: (c) => (/^\d+$/.test(String(c.level)) ? [String(c.level)] : []),
+    label: (v) => v,
+    order: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+  };
+
+  // Facetas por jogo, derivadas dos campos que o sync já grava — as guardas do
+  // renderFacets fazem o resto (faceta sem dado não aparece; opção presente em
+  // 100% das cartas é descartada). Raridade fica FORA de propósito nos jogos
+  // novos: o select de raridade deles já funciona e tem tratamento próprio
+  // (rarityAsFacet só esconde o select de quem declara a faceta, como o Magic).
+  // Pokémon segue fora: o types/stage só existe no catálogo de produção, que
+  // este ambiente não alcança pra conferir — ligar às cegas é contra a regra.
   const GAME_FACETS = {
+    lorcana: [
+      {
+        key: "ink", labelKey: "facet.ink",
+        of: (c) => facetSplit(c.ink, "/"),
+        label: (v) => v,
+        order: ["Amber", "Amethyst", "Emerald", "Ruby", "Sapphire", "Steel"]
+      },
+      facetType(["Character", "Action", "Action/Song", "Item", "Location"])
+    ],
+    onepiece: [
+      facetColor("opColor"),
+      facetType(["Leader", "Character", "Event", "Stage"])
+    ],
+    digimon: [
+      facetColor("color"),
+      facetLevel,
+      facetType(["Digi-Egg", "Digimon", "Tamer", "Option"])
+    ],
+    gundam: [
+      facetColor("color"),
+      facetLevel,
+      facetType(["Unit", "Pilot", "Command", "Base", "Resource", "EX Base", "EX Resource"])
+    ],
+    dbfw: [
+      facetColor("color"),
+      facetType(["Leader", "Battle", "Extra"])
+    ],
+    fab: [
+      {
+        key: "pitch", labelKey: "facet.pitch",
+        of: (c) => (/^\d+$/.test(String(c.pitch)) ? [String(c.pitch)] : []),
+        label: (v) => v,
+        order: ["0", "1", "2", "3", "4"]
+      },
+      {
+        key: "talent", labelKey: "facet.talent",
+        of: (c) => facetSplit(c.talent, ";"),
+        label: (v) => v,
+        order: []
+      },
+      facetType(["Hero", "Weapon", "Equipment", "Action", "Attack Reaction", "Defense Reaction", "Instant"])
+    ],
     magic: [
       {
         key: "rarity", labelKey: "toolbar.rarity",
