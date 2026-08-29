@@ -1048,6 +1048,16 @@
   function getCardLang() {
     return currentCardLang;
   }
+  // Muda o idioma das cartas e RECARREGA, como o idioma do site e a moeda: o
+  // valor decide quais chunks o game.js injeta no <head>, então não dá pra
+  // trocar ao vivo. (A chave existia desde o começo e era lida em seis
+  // arquivos, mas nada a escrevia — o eixo Todas/PT/EN/JA/ZH não tinha
+  // controle nenhum na interface até 2026-08-28.)
+  function setCardLang(value) {
+    const v = value === "all" || CARD_LANGUAGES.includes(value) ? value : "all";
+    try { localStorage.setItem(cardLangStorageKey, v); } catch (e) { /* ignora */ }
+    window.location.reload();
+  }
 
   // Idioma de uma carta a partir do id (en não tem sufixo; demais terminam em
   // -pt / -ja / -zh-cn / -zh-tw / -zh). Devolve o código NORMALIZADO do eixo
@@ -7569,6 +7579,7 @@
     getLanguage,
     getLocale,
     getCardLang,
+    setCardLang,
     getCurrency,
     loadFxRates,
     sumCardsValue,

@@ -200,6 +200,23 @@
             </select>
           </div>
 
+          <!-- Idioma das CARTAS ≠ idioma do site: é o eixo das listas e do
+               progresso, e decide quais chunks de catálogo baixar. Nomes de
+               língua ficam na própria língua (como no select do site acima). -->
+          <div class="setting-row">
+            <div class="setting-info">
+              <strong data-i18n="settings.cardLang">Idioma das cartas</strong>
+              <span data-i18n="settings.cardLangDesc">Mostra só as cartas dessa língua nas páginas de catálogo — é o eixo das listas e do progresso de set. "Todas" mistura tudo, como sempre foi.</span>
+            </div>
+            <select id="settingCardLang" class="setting-select" aria-label="Idioma das cartas">
+              <option value="all" data-i18n="settings.cardLangAll">Todas</option>
+              <option value="pt">Português</option>
+              <option value="en">English</option>
+              <option value="ja">日本語</option>
+              <option value="zh">中文</option>
+            </select>
+          </div>
+
           <div class="setting-row">
             <div class="setting-info">
               <strong data-i18n="settings.currency">Moeda</strong>

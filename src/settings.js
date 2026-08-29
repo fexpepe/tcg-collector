@@ -125,6 +125,13 @@
     currency.value = shared.getCurrency();
     currency.addEventListener("change", () => shared.setCurrency(currency.value));
   }
+  // Idioma das CARTAS (eixo Todas/PT/EN/JA/ZH) — também recarrega: o valor
+  // decide quais chunks de catálogo o game.js injeta.
+  const cardLang = document.getElementById("settingCardLang");
+  if (cardLang) {
+    cardLang.value = shared.getCardLang();
+    cardLang.addEventListener("change", () => shared.setCardLang(cardLang.value));
+  }
 
   // Cores por jogo — liga/desliga o accent por jogo (pref local).
   const gameColors = document.getElementById("gameColorsToggle");
