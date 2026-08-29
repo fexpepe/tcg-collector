@@ -421,6 +421,56 @@ caminho):
   ligar às cegas é contra a regra. YGO/Riftbound/Union Arena: conferir campos
   quando houver amostra local.
 
+**Pacote 5 — entregue em 2026-08-29** (F2, F3):
+
+- **F2** ✔ *já existia* — a auditoria errou: o `fillPriceHistory` do preview
+  já entrega o histórico de preço da carta (sparkline por variante, com faixa
+  e datas) exatamente como o F2 pedia. Nada a fazer; o plano registra o
+  reescopo.
+- **F3** ✔ — prêmio de grading no card: quando a maior nota (PSA 10 etc.)
+  vale mais que a carta crua, a seção de graduadas do preview mostra
+  "+X% sobre a crua" (dourado, `.gp-premium`), calculado dos MESMOS números
+  já exibidos (topo da tabela de notas vs cotação raw, ambos em USD — sem
+  fórmula nova). Sem as duas pontas, a linha não nasce (regra do bloco sem
+  dado).
+
+**Pacote 6 — entregue em 2026-08-29** (F1, F4, M8, F7; **F5 adiado**):
+
+- **F1** ✔ — Analisador de troca (`troca.html`, página neutra, exige login):
+  dois painéis "Eu dou"/"Eu recebo", busca cross-game pela borda (fallback
+  dev/soluço: índice estático do jogo da sessão — carregar o índice de todos
+  os jogos custaria 8 MB só de Magic), linha com condição × quantidade ×
+  valor SEMPRE editável (valor manual manda; mudar condição só recalcula quem
+  não foi editado — troca se fecha no preço combinado, não no teórico),
+  veredito de equilíbrio (diferença até 5% do lado maior = justa), histórico
+  local (`tcg-trade-checks-v1`, teto 20) e export texto-puro 1080×1350 pros
+  grupos (nunca tainta o canvas). Entradas: card no Hub, atalho em Vendas.
+  Valores pela MESMA `cardValue` do site (fator de condição incluso).
+- **F4** ✔ — "Selados e itens manuais" no Portfólio: ETBs, caixas e o que não
+  tem cotação entram com valor manual (nome, jogo, qtde, valor, custo pago),
+  gravados na moeda corrente e convertidos na leitura. **Fora do patrimônio
+  por ora** (nota visível na seção): somar valor manual ao total quebraria o
+  invariante Portfólio == Coleção. Seção visível mesmo vazia — exceção
+  deliberada à regra do bloco sem dado, senão ninguém descobre a porta.
+- **M8** ✔ *reescopo* — a auditoria supunha pastas local-only; elas **já
+  sincronizavam** (o comentário desatualizado no collection.js é que mentia —
+  corrigido). Feito de verdade: itens manuais entraram no sync LWW
+  (`SYNC_KEYS.manual` + merger idêntico ao das pastas) e no backup/import
+  JSON (teste cobre a chave nova).
+- **F7** ✔ — "Compartilhar como imagem" no preview da carta: story 1080×1350
+  com a foto da carta, nome, set·número e valor (mesma `cardValue`), via
+  Web Share quando há, senão download. Se o canvas taintar (CDN sem CORS),
+  refaz sem foto em vez de falhar mudo.
+- **F5** ✖ *adiado* — troca casada (matching de wishlist × vendas entre
+  usuários) precisa de migração Supabase aplicada à mão no painel (tabela +
+  RLS) e de uma decisão de produto: wishlist pública é opt-in? Fica com o
+  Fernando; o F1 já entrega o ciclo local de troca sem servidor.
+- Validação do pacote: 152 testes, check/check-mobile, smoke 23/24 (a falha
+  é o 404 pré-existente dos logos de loja) e E2E de navegador do troca.html
+  (busca→adição nos dois lados, edição de valor/quantidade, veredito,
+  salvar/histórico com reload, export baixando PNG, remoção) em desktop e
+  390px.
+
 ## 5. Como implementar sem quebrar (vale pra todos os itens)
 
 - **Rodar sempre:** `node --test tests/*.test.mjs`, `node scripts/check.mjs`
