@@ -118,6 +118,7 @@
     salesAddBtn: document.getElementById("salesAddBtn"),
     salesShareBtn: document.getElementById("salesShareBtn"),
     salesExportBtn: document.getElementById("salesExportBtn"),
+    salesTextBtn: document.getElementById("salesTextBtn"),
     salesSort: document.getElementById("salesSortSelect"),
     batch: document.querySelector(".sales-batch"),
     batchInput: document.getElementById("salesBatchPct"),
@@ -243,6 +244,7 @@
     const hasPriced = all.some((x) => x.it.price > 0);
     if (elements.salesShareBtn) elements.salesShareBtn.disabled = !hasPriced;
     if (elements.salesExportBtn) elements.salesExportBtn.disabled = !hasPriced;
+    if (elements.salesTextBtn) elements.salesTextBtn.disabled = !hasPriced;
   }
 
   // Tile de venda: imagem (→ preview) + campo de preço editável + condição + ✕ remover.
@@ -608,6 +610,78 @@
     return { items, scope: "sale", cur };
   }
 
+  // ===========================================================================
+  // Texto pro WhatsApp
+  //
+  // A imagem (exportSalesImage) e o link (shareSales) ja existiam, e nenhum dos
+  // dois e o que se manda num grupo de troca: la a lista vai em TEXTO, pra
+  // pessoa poder responder "quero a 3 e a 7". Este e o formato que faltava — e
+  // os dados ja estavam prontos no saleItems.
+  //
+  // Tudo local e instantaneo: nao cria share nem chama a rede. O link so entra
+  // na mensagem quando o perfil publico JA existe (publicProfileUrl) — o OG
+  // dele ja e desenhado pro WhatsApp desenrolar bonito.
+  // ===========================================================================
+  function whatsTexto() {
+    const cur = shared.getCurrency();
+    const lista = sortSaleItems(sales.list()
+      .map((it) => ({ it, card: cardsById.get(it.cardId) }))
+      .filter((x) => x.card && x.it.price > 0));
+    if (!lista.length) return "";
+    const linhas = lista.map(({ it, card }) => {
+      // Set e numero entre parenteses: e como a pessoa confere se e a carta
+      // certa antes de perguntar o preco.
+      const ref = [card.set, card.number].filter(Boolean).join(" ");
+      const partes = [card.name];
+      if (ref) partes.push(`(${ref})`);
+      const detalhe = [shared.variantDisplayLabel(card, it.variant), it.cond || "NM"].filter(Boolean).join(" · ");
+      return `• ${partes.join(" ")}${detalhe ? ` · ${detalhe}` : ""} — ${shared.formatMoney(cur, it.price)}`;
+    });
+    const total = lista.reduce((sum, x) => sum + x.it.price, 0);
+    const partes = [t("sales.text.head"), "", linhas.join("\n"), "",
+      t("sales.text.total", { n: lista.length, v: shared.formatMoney(cur, total) })];
+    const link = shared.publicProfileUrl("sales");
+    if (link) partes.push(link);
+    return partes.join("\n");
+  }
+
+  function openWhatsComposer() {
+    const texto = whatsTexto();
+    if (!texto) { alert(t("sales.shareEmpty")); return; }
+    const wrap = document.createElement("div");
+    wrap.className = "list-modal";
+    document.body.appendChild(wrap);
+    document.body.classList.add("preview-open");
+    // Ancora de verdade, e nao window.open: popup em clique ate passa, mas o
+    // link funciona igual no desktop (web.whatsapp) e no celular (app), e nao
+    // depende de bloqueador nenhum.
+    wrap.innerHTML = `
+      <div class="list-modal-box" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("sales.text.title"))}">
+        <h2>${escapeHtml(t("sales.text.title"))}</h2>
+        <p class="list-modal-hint">${escapeHtml(t("sales.text.hint"))}</p>
+        <textarea class="lst-export" readonly rows="12">${escapeHtml(texto)}</textarea>
+        <div class="list-modal-foot">
+          <button type="button" class="cta" data-wa-copy>${escapeHtml(t("export.copy"))}</button>
+          <a class="lst-mini" data-wa-open href="https://wa.me/?text=${encodeURIComponent(texto)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("sales.text.whats"))}</a>
+          <button type="button" class="lst-mini" data-wa-close>${escapeHtml(t("export.close"))}</button>
+        </div>
+      </div>`;
+
+    const fechar = () => { wrap.remove(); document.body.classList.remove("preview-open"); document.removeEventListener("keydown", noEsc); };
+    const noEsc = (ev) => { if (ev.key === "Escape") fechar(); };
+    document.addEventListener("keydown", noEsc);
+    wrap.addEventListener("click", (ev) => {
+      if (ev.target === wrap || ev.target.closest("[data-wa-close]")) { fechar(); return; }
+      if (ev.target.closest("[data-wa-copy]")) {
+        const ta = wrap.querySelector(".lst-export");
+        const ok = () => { const b = wrap.querySelector("[data-wa-copy]"); if (b) b.textContent = t("export.copied"); };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(ta.value).then(ok, () => { ta.select(); document.execCommand("copy"); ok(); });
+        } else { ta.select(); document.execCommand("copy"); ok(); }
+      }
+    });
+  }
+
   async function shareSales(btn) {
     // Perfil público: link VIVO da aba Vendas (sempre atualizado) no lugar do snapshot.
     const live = shared.publicProfileUrl("sales");
@@ -755,6 +829,7 @@
     if (dupBtn) dupBtn.addEventListener("click", addDuplicatesToSale);
     if (elements.salesShareBtn) elements.salesShareBtn.addEventListener("click", () => shareSales(elements.salesShareBtn));
     if (elements.salesExportBtn) elements.salesExportBtn.addEventListener("click", () => exportSalesImage(elements.salesExportBtn));
+    if (elements.salesTextBtn) elements.salesTextBtn.addEventListener("click", openWhatsComposer);
     if (elements.salesSort) {
       elements.salesSort.value = salesSort;
       elements.salesSort.addEventListener("change", () => {
