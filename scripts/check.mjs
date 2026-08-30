@@ -57,6 +57,35 @@ for (const k of enKeys) if (!ptKeys.has(k)) fail(`i18n: "${k}" existe em en mas 
 for (const k of esKeys) if (!ptKeys.has(k)) fail(`i18n: "${k}" existe em es mas falta em pt`);
 for (const k of ptKeys) if (!esKeys.has(k)) fail(`i18n: "${k}" existe em pt mas falta em es`);
 
+// 3c) O FALLBACK do HTML tem que dizer a mesma coisa que o i18n(pt).
+//     Por que isto virou guarda: o subtítulo do Portfólio passou semanas
+//     dizendo, EM RUNTIME e nos três idiomas, que o valor da coleção vinha
+//     "dos preços que você registrou" — negando o preço automático de mercado
+//     na página mais vitrine do site. O HTML tinha a copy nova; o dicionário
+//     tinha a velha; e como o applyTranslations sobrescreve o HTML, quem
+//     mandava era o dicionário. Ninguém percebeu porque os dois lados existem
+//     em arquivos diferentes e nada os comparava.
+//
+//     O fallback importa por si: é o que o Google indexa e o que aparece no
+//     primeiro paint, antes de o i18n aplicar. Divergir é sempre bug — de um
+//     lado ou do outro.
+//
+//     Fallback com MARKUP dentro fica de fora: ali o HTML é estrutura, não
+//     texto (o data-i18n-html tem outro contrato).
+const semTags = (t) => t.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+for (const arquivo of htmlFiles) {
+  const txt = read(arquivo);
+  for (const m of txt.matchAll(/<([a-z0-9]+)[^>]*\sdata-i18n="([^"]+)"[^>]*>([\s\S]*?)<\/\1>/g)) {
+    const [, , chave, dentro] = m;
+    if (dentro.includes("<")) continue;
+    const valor = (MESSAGES.pt || {})[chave];
+    if (!valor || !dentro.trim()) continue;
+    if (semTags(dentro) !== semTags(valor)) {
+      fail(`${arquivo}: o fallback de "${chave}" diverge do i18n(pt)\n      HTML: ${semTags(dentro).slice(0, 60)}…\n      i18n: ${semTags(valor).slice(0, 60)}…`);
+    }
+  }
+}
+
 // 4) Chaves usadas DIRETO — t("x"), tn("x"), data-i18n*="x" — que não existem.
 //    (Pega o bug clássico: t("set.officialCards") sem a chave definida.)
 const haystack = [...srcFiles, ...htmlFiles].map(read).join("\n");
