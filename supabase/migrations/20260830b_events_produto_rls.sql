@@ -22,6 +22,20 @@
 -- expressão e deixa nome, comando e papéis intactos — recriar do zero seria
 -- adivinhar duas coisas que ninguém aqui sabe.
 --
+-- ATUALIZAÇÃO 2026-08-30, depois de rodar: a única política que este SELECT
+-- mostrou foi `events_insert_anyone`, INSERT, com checagem `true` — ou seja,
+-- ela NÃO barra nada, e o bloco se recusou a mexer nela (certo: `true` não
+-- menciona `name`). Mas o 42501 continua. Como o BEFORE trigger roda ANTES do
+-- RLS, e o nome inválido morre no trigger (201 []) enquanto o `export_done`
+-- chega ao RLS e é barrado, sobra uma política que este SELECT não enxergava:
+-- ele filtrava `polwithcheck is not null`, e uma política `FOR ALL` que só tem
+-- USING (sem WITH CHECK) usa o USING como checagem do INSERT — e tem
+-- `polwithcheck` NULL. Política RESTRICTIVE também precisa aparecer: ela é
+-- ANDada com as permissivas, então uma sozinha reprova tudo.
+-- O SELECT no fim do arquivo passou a mostrar TODAS, com USING, WITH CHECK e o
+-- tipo permissive/restrictive. Filtro em consulta de diagnóstico é como se
+-- perde o suspeito.
+--
 -- E o bloco se RECUSA a mexer numa política cuja checagem olhe qualquer coisa
 -- além do `name`: sobrescrever cegamente uma regra de segurança é exatamente
 -- como se perde uma. Nesse caso ele só avisa, com a expressão atual no aviso,
@@ -59,10 +73,13 @@ end $$;
 -- a coluna `checagem` tem que listar os 7 nomes. Se listar só pageview/jserror,
 -- o bloco acima se recusou a mexer — e o motivo está no notice.
 select
-  polname                                  as politica,
-  pg_get_expr(polwithcheck, polrelid)      as checagem,
-  case polcmd when 'a' then 'INSERT' when '*' then 'ALL' else polcmd::text end as comando,
-  (select string_agg(rolname, ', ') from pg_roles where oid = any (polroles)) as papeis
+  polname                                              as politica,
+  case polcmd when 'r' then 'SELECT' when 'a' then 'INSERT' when 'w' then 'UPDATE'
+              when 'd' then 'DELETE' when '*' then 'ALL' else polcmd::text end as comando,
+  case when polpermissive then 'PERMISSIVE' else 'RESTRICTIVE' end             as tipo,
+  coalesce((select string_agg(rolname, ', ') from pg_roles where oid = any (polroles)), 'PUBLIC') as papeis,
+  pg_get_expr(polqual, polrelid)                       as usando,
+  pg_get_expr(polwithcheck, polrelid)                  as checagem
 from pg_policy
 where polrelid = 'public.events'::regclass
 order by polname;
