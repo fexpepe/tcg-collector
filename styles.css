@@ -9325,3 +9325,10 @@ select,
   .mkt-card { flex-basis: 74px; }
   .mkt-card .mkt-img { width: 74px; }
 }
+
+/* Chip de tendência do set (src/app.js, dado do build-set-trends.mjs). Mesmos
+   verde/vermelho do trilho de mercado — a cor é a única coisa que ele diz além
+   do número, e ela precisa significar o mesmo nos dois lugares. */
+.set-trend { font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.set-trend.is-up { color: #1a9d5a; }
+.set-trend.is-down { color: #d13d3d; }

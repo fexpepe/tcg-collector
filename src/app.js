@@ -637,6 +637,9 @@
       displayName: shared.setDisplayName(entry.id, entry.name, entry.language),
       symbol: entry.symbol || "",
       releaseDate: entry.release || "",
+      // Tendência agregada do set (scripts/build-set-trends.mjs). Ausente
+      // quando o set tem poucas cartas com cotação ou a variação é ruído.
+      dv7: entry.dv7, dv30: entry.dv30, dvn: entry.dvn,
       serieId,
       serieName: shared.setSerieDisplayName(entry.serieName, entry.language) || serieDisplayName(serieId),
       languageLabel: shared.cardLangSigla(entry.language),
@@ -944,6 +947,15 @@
       ? `<span class="set-release" title="${escapeAttribute(formatReleaseDate(item.releaseDate, "long"))}">${escapeHtml(formatReleaseDate(item.releaseDate))}</span>`
       : "";
 
+    // Tendência do set: prefere a semana (é a leitura que interessa a quem
+    // acompanha) e cai pro mês quando o histórico ainda não tem 7 dias. Some
+    // quando não há chip — set pequeno ou variação abaixo do ruído.
+    const dv = item.dv7 != null ? item.dv7 : item.dv30;
+    const dvDias = item.dv7 != null ? 7 : 30;
+    const trendChip = dv != null
+      ? `<span class="set-trend ${dv >= 0 ? "is-up" : "is-down"}" title="${escapeAttribute(t("trend.title", { d: dvDias, n: item.dvn || 0 }))}">${escapeHtml(`${dv >= 0 ? "▲" : "▼"} ${Math.abs(dv).toLocaleString(shared.getLocale(), { maximumFractionDigits: 1 })}%`)}</span>`
+      : "";
+
     // Layout COMPACTO (estilo Collectr): logo, nome, uma linha de progresso
     // (possuídas/total + %) e o valor só quando houver. O card inteiro navega
     // (handler na grade); a arte segue como <a> pra middle-click/acessibilidade.
@@ -975,6 +987,7 @@
         </div>
         <div class="set-footer">
           <span class="set-count">${item.ownedCount}/${item.totalCount} · ${progress}%</span>
+          ${trendChip}
           ${valueHtml}
           ${item.releaseDate ? `<span class="set-date-list" title="${escapeAttribute(formatReleaseDate(item.releaseDate, "long"))}">${escapeHtml(formatReleaseDate(item.releaseDate))}</span>` : ""}
         </div>

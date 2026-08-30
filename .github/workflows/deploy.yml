@@ -581,6 +581,16 @@ jobs:
       - name: Reparte os preços por set
         run: node scripts/split-pricing.mjs
 
+      # Tendencia por set ("▲ 3,2% na semana"): agrega a serie diaria POR CARTA
+      # do price-history com o set de cada carta (dos chunks) e escreve dv7/dv30
+      # direto no manifest — que a tela de Sets ja baixa, entao nao ha requisicao
+      # nova. Media equal-weighted das variacoes RELATIVAS, a mesma do indice de
+      # mercado: somar precos faria uma carta de US$ 900 mandar no set inteiro.
+      # POR ULTIMO entre os passos que tocam o manifest (enrich-manifest e
+      # split-pricing reescrevem ele): assim nada apaga os campos novos.
+      - name: Tendência por set (chip de variação)
+        run: node scripts/build-set-trends.mjs
+
       # API na borda (Fase 2): gera o banco de busca a partir do MESMO catálogo
       # e, SE o token tiver permissão de D1, cria/carrega o banco e liga o
       # binding no projeto Pages. Sem a permissão, o passo explica o que falta
