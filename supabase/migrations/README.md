@@ -8,8 +8,16 @@ poucos.)
 
 ## Pendentes de aplicar
 
-Nenhuma. Todas as migrações deste diretório estão aplicadas em produção
-(verificado por curl — ver a lista abaixo).
+- **`20260830a_events_produto.sql`** — amplia a whitelist do trigger
+  `events_guard` com cinco eventos de produto (E6 do `docs/PLANO-UX-2.md`).
+  ADITIVA: só aceita nomes novos, não muda nada do que já grava. **Aplicar
+  ANTES do JS que dispara os eventos** — sem ela o `events_guard` faz
+  `return null` e o INSERT some sem erro nenhum, o que daria a impressão de um
+  analytics funcionando e medindo zero. O JS ainda não existe justamente por
+  isso.
+
+As demais estão todas aplicadas em produção (verificado por curl — ver a lista
+abaixo).
 
 ### Já aplicadas (verificado em produção)
 
