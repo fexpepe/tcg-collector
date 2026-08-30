@@ -1998,7 +1998,7 @@
           shareBtn.textContent = t("binders.share.copied");
         } else {
           try { await navigator.clipboard.writeText(link); shareBtn.textContent = t("binders.share.copied"); }
-          catch (e) { window.prompt(t("binders.share.copyManual"), link); shareBtn.textContent = original; }
+          catch (e) { shared.caixaDeTexto({ titulo: t("binders.share.copyManual"), valor: link, leitura: true }); shareBtn.textContent = original; }
         }
       } else {
         alert(res && res.error === "auth" ? t("binders.share.needLogin") : t("binders.share.error"));

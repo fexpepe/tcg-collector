@@ -80,6 +80,21 @@ for (const arquivo of I18N_FILES) {
   });
 }
 
+// 2c) window.prompt está BANIDO. Ele é suprimido em webview de Instagram e
+//     Facebook — de onde vem boa parte do tráfego brasileiro —, e lá o clique
+//     não faz nada: nenhum diálogo, nenhum erro, nenhum jeito de a pessoa saber
+//     que o site não quebrou. Batia em criar coleção, marcar alvo de preço e no
+//     plano B de toda cópia de link. O substituto é shared.caixaDeTexto (mesma
+//     coisa, em HTML). Sem esta guarda, o próximo `prompt` volta em silêncio.
+for (const arquivo of srcFiles) {
+  const texto = read(arquivo);
+  texto.split("\n").forEach((linha, i) => {
+    if (/(^|[^.\w])(window\.)?prompt\s*\(/.test(linha.replace(/\/\/.*$/, ""))) {
+      fail(`${arquivo}:${i + 1}: window.prompt é suprimido em webview de rede social — use shared.caixaDeTexto`);
+    }
+  });
+}
+
 // 3) Paridade pt/en — toda chave deve existir nos dois idiomas.
 for (const k of ptKeys) if (!enKeys.has(k)) fail(`i18n: "${k}" existe em pt mas falta em en`);
 for (const k of enKeys) if (!ptKeys.has(k)) fail(`i18n: "${k}" existe em en mas falta em pt`);

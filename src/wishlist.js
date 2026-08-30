@@ -199,18 +199,22 @@
     const cardId = btn.dataset.wishTarget;
     const card = cardsById.get(cardId);
     const cur = targets.get(cardId);
-    const raw = window.prompt(
-      t("wish.target.prompt", { name: card ? card.name : cardId, cur: shared.getCurrency() }),
-      cur ? String(cur.v).replace(".", ",") : ""
-    );
-    if (raw === null) return; // cancelou
-    const v = parseFloat(String(raw).replace(/[^\d.,]/g, "").replace(",", "."));
-    targets.set(cardId, Number.isFinite(v) && v > 0 ? v : 0, shared.getCurrency());
-    const fresh = targets.get(cardId);
-    btn.classList.toggle("has-target", !!fresh);
-    const label = fresh ? t("wish.target.editAria", { v: shared.formatMoney(fresh.cur, fresh.v) }) : t("wish.target.setAria");
-    btn.title = label; btn.setAttribute("aria-label", label);
-    renderTargetNotice();
+    // Caixa inline, e não window.prompt: em webview de Instagram/Facebook o
+    // prompt é suprimido, e o sino de alvo de preço falhava MUDO — justamente
+    // pro público que mais chega por link de rede social (ver caixaDeTexto).
+    shared.caixaDeTexto({
+      titulo: t("wish.target.prompt", { name: card ? card.name : cardId, cur: shared.getCurrency() }),
+      valor: cur ? String(cur.v).replace(".", ",") : ""
+    }).then((raw) => {
+      if (raw === null) return; // cancelou
+      const v = parseFloat(String(raw).replace(/[^\d.,]/g, "").replace(",", "."));
+      targets.set(cardId, Number.isFinite(v) && v > 0 ? v : 0, shared.getCurrency());
+      const fresh = targets.get(cardId);
+      btn.classList.toggle("has-target", !!fresh);
+      const label = fresh ? t("wish.target.editAria", { v: shared.formatMoney(fresh.cur, fresh.v) }) : t("wish.target.setAria");
+      btn.title = label; btn.setAttribute("aria-label", label);
+      renderTargetNotice();
+    });
   }
 
   function inGameFilter(card) {

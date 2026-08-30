@@ -987,9 +987,16 @@
     menu.addEventListener("click", (event) => {
       const newBtn = event.target.closest("[data-assign-new]");
       if (newBtn) {
-        const name = (window.prompt(t("folders.new")) || "").trim().slice(0, 24);
         closeTileFolderMenu();
-        if (name) { const f = folders.create(name); folders.assign(cardId, f.id); afterFolderAssign(anchor, cardId); }
+        // Caixa inline, e não window.prompt: em webview de Instagram/Facebook o
+        // prompt é suprimido e este clique não fazia NADA (ver caixaDeTexto).
+        shared.caixaDeTexto({ titulo: t("folders.new") }).then((bruto) => {
+          const name = (bruto || "").trim().slice(0, 24);
+          if (!name) return;
+          const f = folders.create(name);
+          folders.assign(cardId, f.id);
+          afterFolderAssign(anchor, cardId);
+        });
         return;
       }
       const pick = event.target.closest("[data-assign]");
@@ -1723,7 +1730,7 @@
     if (res && res.id) {
       const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection?s=${res.id}`;
       try { await navigator.clipboard.writeText(link); alert(t("collection.share.copied")); }
-      catch (e) { window.prompt(t("collection.share.copyManual"), link); }
+      catch (e) { shared.caixaDeTexto({ titulo: t("collection.share.copyManual"), valor: link, leitura: true }); }
     } else {
       alert(res && res.error === "auth" ? t("collection.share.needLogin") : t("collection.share.error"));
     }
@@ -1960,7 +1967,7 @@
       const live = shared.publicProfileUrl();
       if (live) {
         try { await navigator.clipboard.writeText(live); setLabel(t("collection.share.copiedLive")); setOk(true); }
-        catch (e) { window.prompt(t("collection.share.copyManual"), live); }
+        catch (e) { shared.caixaDeTexto({ titulo: t("collection.share.copyManual"), valor: live, leitura: true }); }
         setTimeout(() => { setLabel(original); setOk(false); }, 2500);
         return;
       }
@@ -1970,7 +1977,7 @@
       if (res && res.id) {
         const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection?s=${res.id}`;
         try { await navigator.clipboard.writeText(link); setLabel(t("collection.share.copied")); setOk(true); }
-        catch (e) { window.prompt(t("collection.share.copyManual"), link); setLabel(original); }
+        catch (e) { shared.caixaDeTexto({ titulo: t("collection.share.copyManual"), valor: link, leitura: true }); setLabel(original); }
       } else {
         alert(res && res.error === "auth" ? t("collection.share.needLogin") : t("collection.share.error"));
         setLabel(original);

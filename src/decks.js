@@ -2032,7 +2032,7 @@
           try { await navigator.clipboard.writeText(url); } catch (e) { /* sem clipboard: o prompt abaixo cobre */ }
           // No celular o link vai direto pro grupo pelo sheet do sistema; sem
           // suporte (desktop, webview), segue o prompt de sempre com a URL.
-          if (!shared.compartilharLink(t("decks.publishOk"), url)) window.prompt(t("decks.publishOk"), url);
+          if (!shared.compartilharLink(t("decks.publishOk"), url)) shared.caixaDeTexto({ titulo: t("decks.publishOk"), valor: url, leitura: true });
           renderEditor();
         } else if (res && res.error === "auth") {
           alert(t("decks.publishAuth"));

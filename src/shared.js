@@ -4135,6 +4135,69 @@
     agenda();
   }
 
+  // ── Entrada de texto e cópia manual, SEM window.prompt ────────────────────
+  //
+  // `window.prompt` é SUPRIMIDO em webview de Instagram e Facebook — e webview
+  // de rede social é de onde vem boa parte do tráfego brasileiro. Lá o clique
+  // simplesmente não fazia nada: nenhum diálogo, nenhum erro, nenhum jeito de a
+  // pessoa saber que o site não estava quebrado. Batia em criar coleção nova,
+  // marcar alvo de preço na wishlist, e no plano B de TODA cópia de link.
+  //
+  // Caixa inline nas classes .list-modal, que já são do núcleo do CSS (nenhum
+  // byte novo de estilo). Devolve Promise: string no OK, null no cancelar.
+  // `leitura` vira a caixa em "copie daqui" — o texto já vem selecionado.
+  function caixaDeTexto(opts) {
+    const { titulo = "", valor = "", placeholder = "", leitura = false, ok = null } = opts || {};
+    return new Promise((resolve) => {
+      const wrap = document.createElement("div");
+      wrap.className = "list-modal";
+      wrap.innerHTML = `
+        <div class="list-modal-box" role="dialog" aria-modal="true" aria-label="${escapeAttribute(titulo)}">
+          <h2>${escapeHtml(titulo)}</h2>
+          <input class="txt-input" type="text" value="${escapeAttribute(valor)}"${placeholder ? ` placeholder="${escapeAttribute(placeholder)}"` : ""}${leitura ? " readonly" : ""}>
+          <div class="list-modal-foot">
+            ${leitura ? "" : `<button type="button" class="cta" data-txt-ok>${escapeHtml(ok || t("action.ok"))}</button>`}
+            <button type="button" class="lst-mini" data-txt-cancel>${escapeHtml(leitura ? t("export.close") : t("action.cancel"))}</button>
+          </div>
+        </div>`;
+      document.body.appendChild(wrap);
+      document.body.classList.add("preview-open");
+      const input = wrap.querySelector(".txt-input");
+      // Sem foco a caixa é inútil no celular: o teclado não sobe. No modo
+      // leitura o select() é o que permite "segurar e copiar" sem digitar.
+      setTimeout(() => { input.focus(); input.select(); }, 30);
+
+      let pronto = false;
+      const fecha = (v) => {
+        if (pronto) return;
+        pronto = true;
+        wrap.remove();
+        document.body.classList.remove("preview-open");
+        document.removeEventListener("keydown", tecla);
+        resolve(v);
+      };
+      const confirma = () => fecha(leitura ? null : input.value);
+      const tecla = (ev) => {
+        if (ev.key === "Escape") fecha(null);
+        else if (ev.key === "Enter" && !leitura) { ev.preventDefault(); confirma(); }
+      };
+      document.addEventListener("keydown", tecla);
+      wrap.addEventListener("click", (ev) => {
+        if (ev.target === wrap || ev.target.closest("[data-txt-cancel]")) fecha(null);
+        else if (ev.target.closest("[data-txt-ok]")) confirma();
+      });
+    });
+  }
+
+  // Copia pro clipboard; se não der (contexto inseguro, permissão negada,
+  // navegador antigo), mostra o texto pra copiar à mão — nunca um prompt.
+  // Devolve Promise<boolean>: true = foi pro clipboard sozinho.
+  function copiaTexto(texto, titulo) {
+    const manual = () => caixaDeTexto({ titulo: titulo || t("collection.share.copyManual"), valor: texto, leitura: true }).then(() => false);
+    if (!navigator.clipboard || !navigator.clipboard.writeText) return manual();
+    return navigator.clipboard.writeText(texto).then(() => true, manual);
+  }
+
   function localizedImg(url, options) {
     if (!url) return "";
     const { alt = "", className = "", loading = "", thumb = false, fallback = "", priority = "", sizes = "" } = options || {};
@@ -8377,6 +8440,8 @@
     cardLanguageRegion,
     pickSetEdition,
     localizedImg,
+    caixaDeTexto,
+    copiaTexto,
     prewarmLazyImages,
     toastSimples,
     SIZES_CARD_TILE,

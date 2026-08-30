@@ -687,7 +687,7 @@
     const live = shared.publicProfileUrl("sales");
     if (live) {
       try { await navigator.clipboard.writeText(live); alert(t("collection.share.copiedLive")); }
-      catch (e) { window.prompt(t("collection.share.copyManual"), live); }
+      catch (e) { shared.caixaDeTexto({ titulo: t("collection.share.copyManual"), valor: live, leitura: true }); }
       return;
     }
     const data = buildSaleShareData();
@@ -698,7 +698,7 @@
     if (res && res.id) {
       const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection?s=${res.id}`;
       try { await navigator.clipboard.writeText(link); alert(t("collection.share.copied")); }
-      catch (e) { window.prompt(t("collection.share.copyManual"), link); }
+      catch (e) { shared.caixaDeTexto({ titulo: t("collection.share.copyManual"), valor: link, leitura: true }); }
     } else {
       alert(res && res.error === "auth" ? t("collection.share.needLogin") : t("collection.share.error"));
     }
