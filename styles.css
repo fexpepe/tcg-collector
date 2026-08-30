@@ -9216,3 +9216,5 @@ select,
   display: grid; place-items: center; font-size: 12px; font-weight: 800;
 }
 .ios-sheet-icon { font-size: 17px; color: var(--accent); }
+.trade-balance { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
+.trade-balance strong { color: var(--text); font-size: 15px; font-variant-numeric: tabular-nums; }
