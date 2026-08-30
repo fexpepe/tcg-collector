@@ -1307,7 +1307,7 @@
             <span class="coll-card-acts">
               <button type="button" class="folder-act" data-folder-move="-1" title="${escapeAttribute(t("folders.moveUp"))}" aria-label="${escapeAttribute(t("folders.moveUp"))}">↑</button>
               <button type="button" class="folder-act" data-folder-move="1" title="${escapeAttribute(t("folders.moveDown"))}" aria-label="${escapeAttribute(t("folders.moveDown"))}">↓</button>
-              <button type="button" class="folder-act folder-share-btn" data-folder-share title="${escapeAttribute(t("folders.share"))}" aria-label="${escapeAttribute(t("folders.share"))}">${SHARE_ICON}</button>
+              ${pairs.length ? `<button type="button" class="folder-act folder-share-btn" data-folder-share title="${escapeAttribute(t("folders.share"))}" aria-label="${escapeAttribute(t("folders.share"))}">${SHARE_ICON}</button>` : ""}
               <button type="button" class="folder-act folder-act-danger" data-folder-delete title="${escapeAttribute(t("folders.delete"))}" aria-label="${escapeAttribute(t("folders.delete"))}">✕</button>
             </span>
           </div>
@@ -1323,7 +1323,7 @@
     const actions = isNone ? "" : `<span class="folder-actions">
         ${starsHtml(folder.stars || 0)}
         ${pairs.length ? `<button type="button" class="folder-act folder-cover-btn" data-folder-cover title="${escapeAttribute(t("folders.cover"))}" aria-label="${escapeAttribute(t("folders.cover"))}">${COVER_ICON}<span>${escapeHtml(t("folders.cover"))}</span></button>` : ""}
-        <button type="button" class="folder-act folder-share-btn" data-folder-share title="${escapeAttribute(t("folders.share"))}" aria-label="${escapeAttribute(t("folders.share"))}">${SHARE_ICON}<span>${escapeHtml(t("folders.shareBtn"))}</span></button>
+        ${pairs.length ? `<button type="button" class="folder-act folder-share-btn" data-folder-share title="${escapeAttribute(t("folders.share"))}" aria-label="${escapeAttribute(t("folders.share"))}">${SHARE_ICON}<span>${escapeHtml(t("folders.shareBtn"))}</span></button>` : ""}
         <button type="button" class="folder-act folder-act-danger folder-del-btn" data-folder-delete title="${escapeAttribute(t("folders.deleteBtn"))}" aria-label="${escapeAttribute(t("folders.deleteBtn"))}">${TRASH_ICON}<span>${escapeHtml(t("folders.deleteBtn"))}</span></button>
       </span>`;
     const pickHint = (!isNone && coverPickId === folder.id) ? `<p class="coll-cover-hint">${escapeHtml(t("folders.coverPick"))}</p>` : "";
@@ -1722,7 +1722,11 @@
     const folder = folders.get(folderId);
     if (!folder) return;
     const data = buildShareData((card) => folders.folderOf(card.id) === folderId);
-    if (!data.items.length) { alert(t("folders.shareEmpty")); return; }
+    // Rede de segurança: o botão nem existe num showcase vazio (ver o
+    // ${pairs.length ? …} no cabeçalho), então chegar aqui só é possível por
+    // corrida — a carta saiu da pasta entre o render e o clique. Toast em vez
+    // de alert: o alert bloqueava a página por um caso que a pessoa não causou.
+    if (!data.items.length) { shared.toastSimples(t("folders.shareEmpty")); return; }
     data.scope = "folder"; // marca como pasta (a view ?s= mostra rótulo + "salvar")
     if (btn) btn.disabled = true;
     const res = await shared.createShare("collection", folder.name || t("folders.untitled"), data);

@@ -1946,11 +1946,18 @@
     const del = ev.target.closest("[data-deck-del]");
     if (del) {
       const d = getDeck(del.dataset.deckDel);
-      if (d && confirm(t("decks.confirmDelete").replace("{name}", d.name))) {
-        data.decks.splice(data.decks.indexOf(d), 1);
-        data.deleted[d.id] = Date.now();     // tombstone: a exclusão precisa propagar
-        save(); renderGallery();
-      }
+      if (!d) return;
+      // Desfazer em vez de confirm(): o padrão da casa pra destrutivo QUE VOLTA
+      // — e este volta, porque o snapshot restaura a chave inteira, tombstone
+      // incluso. O confirm() bloqueante pedia certeza ANTES de a pessoa ver o
+      // que ia acontecer; o toast deixa ela ver e voltar atrás em 6s.
+      // (Despublicar continua com confirm: republicar gera um id NOVO e os
+      // links que já circularam morrem — isso não volta.)
+      const undo = shared.snapshotKeys([STORAGE_KEY]);
+      data.decks.splice(data.decks.indexOf(d), 1);
+      data.deleted[d.id] = Date.now();     // tombstone: a exclusão precisa propagar
+      save(); renderGallery();
+      shared.toastUndo(t("undo.deckDeleted"), undo);
     }
   });
 

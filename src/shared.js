@@ -2141,6 +2141,9 @@
     // carimbo que o folder store da Coleção faz).
     const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(MANUAL_ITEMS_KEY, JSON.stringify(data)); marcaSuja(MANUAL_ITEMS_KEY); } catch (e) { notifyStorageFull(); } };
     return {
+      // A chave, pra quem precisa tirar snapshot antes de apagar (toastUndo).
+      // Mesmo padrão do store de listas, que expõe STORAGE_KEY.
+      STORAGE_KEY: MANUAL_ITEMS_KEY,
       list: () => data.order.map((id) => Object.assign({ id }, data.items[id])).filter((x) => x && x.n),
       get: (id) => data.items[id] || null,
       add(item) {

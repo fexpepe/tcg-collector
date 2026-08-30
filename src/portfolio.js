@@ -1056,10 +1056,14 @@
       if (e.target.closest("[data-mi-edit]")) { abreManualModal(row.dataset.miId); return; }
       if (e.target.closest("[data-mi-remove]")) {
         const item = manualStore.get(row.dataset.miId);
-        if (item && window.confirm(t("pfmi.confirmRemove", { n: item.n }))) {
-          manualStore.remove(row.dataset.miId);
-          renderManual();
-        }
+        if (!item) return;
+        // Mesmo raciocínio do deck: apaga na hora e dá 6s pra voltar. O item
+        // manual é digitado à mão, então perdê-lo por engano custa retrabalho —
+        // e é justamente por isso que o desfazer serve melhor que o confirm.
+        const undo = shared.snapshotKeys([manualStore.STORAGE_KEY]);
+        manualStore.remove(row.dataset.miId);
+        renderManual();
+        shared.toastUndo(t("undo.manualRemoved"), undo);
       }
     });
     renderManual(); // independe do catálogo: aparece já no primeiro paint
