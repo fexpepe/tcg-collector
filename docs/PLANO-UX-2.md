@@ -966,6 +966,62 @@ e o CSS em **95%** (40,7 KB de 43,0). O E1 e o F10 da 8b são código
 considerável — cada um precisa nascer em **arquivo próprio**, como o
 `src/mercado.js` desta etapa, ou o CI barra.
 
+**Etapa 8b — entregue em 2026-08-30.** Três commits, um por item. O aviso de
+orçamento acima foi seguido à risca: **nada** desta etapa entrou no `shared.js`
+além de dez linhas que não tinham outro lugar possível.
+
+- **M8b** ✔ — o `confirm()` do apagar deck e do remover item manual virou
+  desfazer (`snapshotKeys` + `toastUndo`), e o botão de compartilhar pasta
+  passou a **não existir** quando não há o que compartilhar, em vez de existir e
+  responder com um alerta. Mas o `confirm()` do **despublicar deck ficou**: ele
+  não é reversível de verdade — republicar cunha um id novo, e todo link que a
+  pessoa espalhou morre. Tratar como desfazível seria a mentira que o M8 queria
+  eliminar. Um bug que nenhum guarda pegaria: eu tinha escrito
+  `shared.SYNC_KEYS.manual`, e `SYNC_KEYS` não é exportado — TypeError em
+  produção, na tela que fala de dinheiro. O store de itens manuais agora expõe
+  o próprio `STORAGE_KEY`, como o de listas já fazia.
+- **F10** ✔ — "testar mão" no editor de decks, em `src/goldfish.js`. A parte que
+  erra **calada** é a pilha: se o Leader do One Piece, o Digi-Egg do Digimon ou
+  o side/maybe entrassem no baralho, a mão sairia errada e nada acusaria — a
+  pessoa só concluiria que o simulador é ruim. Por isso a pilha exclui **toda**
+  zona que não seja `main` e sete testes fixam exatamente isso; o tamanho da
+  mão inicial virou dado do `deck-rules.js` (7 no Pokémon/Magic/Lorcana, 5 no
+  One Piece/Digimon/Yu-Gi-Oh, 6 no DBFW).
+- **E1** ✔ — medidor de centralização na página de Graded (`src/centering.js`).
+  O argumento não é o medidor, é **onde a foto fica**: object URL local,
+  revogado ao fechar, sem canvas, sem IndexedDB, sem rede. Shiny e
+  PriceCharting cobram por isso. Guias guardadas em **fração** da imagem, não em
+  pixel, pra sobreviverem a rotação e resize — conferido em três viewports que a
+  caixa das guias coincide com a foto. Dois defeitos que só o navegador pegou:
+  repintar o `innerHTML` a cada `pointermove` fazia a **foto piscar** (agora
+  repinta só guias e números), e soltar uma guia **fora** da caixa gerava um
+  `click` cujo alvo era o fundo do modal — o gesto de medir **fechava a janela e
+  jogava a foto fora**. Cinco testes na conta: o segundo lado é 100 menos o
+  primeiro, nunca um arredondamento próprio, senão 1/6 sai 17/83 ou 17/84
+  conforme a sorte, e um número que não fecha em 100 destrói a confiança na
+  ferramenta inteira.
+- **E3** ✔ — primeiros passos guiados no Dashboard, que é onde o login cai e
+  onde o recém-chegado vê uma parede de zeros. A regra do arquivo é a
+  honestidade da marcação: um passo só risca sozinho quando dá pra **verificar**
+  que aconteceu — o de CSV depende de marca gravada pelo próprio import (nos
+  dois fluxos, genérico e Dex), não de visita à tela de backup, porque checklist
+  que se marca à toa é pior que checklist nenhum. O passo do app dispara o
+  `pwaInstallFlow` que já existia (prompt nativo no Android, folha de dois
+  passos no iOS) e só é observável de dentro do standalone, então a marca fica
+  gravada pra continuar riscada na aba do navegador. Some sozinho quando
+  dispensado **ou** completo, e passo feito perde a dica: a lista encolhe
+  conforme a pessoa avança.
+- **Validação:** 183 testes (12 novos), os três checks, `bundle-boot --check`,
+  orçamento de peso e smoke 24/25 (a falha é o 404 pré-existente dos logos de
+  loja); e teste de navegador por item — a mão do goldfish, o medidor com uma
+  carta sintética de centralização conhecida (67/33 e 63/37, conferidos contra
+  a conta), e o checklist nos quatro estados: zerado, parcial, dispensado
+  (persistindo no reload) e completo (some).
+
+**O orçamento não mudou:** `shared.js` segue em **97%** e o CSS em **95%**. O
+próximo item que precise de código no `shared.js` provavelmente não cabe — a
+saída já testada quatro vezes nesta etapa é arquivo próprio por página.
+
 ---
 
 ## 7. O que a verificação corrigiu (pra não repetir o erro do plano 1)
