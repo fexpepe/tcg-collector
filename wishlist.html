@@ -48,7 +48,7 @@
     <header class="app-header">
       <div class="app-header-inner">
         <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" aria-label="Páginas" data-active-page="wishlist"></nav>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="wishlist"></nav>
         <div class="header-actions">
           <select id="languageSwitcher" class="lang-select"></select>
         </div>
@@ -69,15 +69,15 @@
         </section>
       </div>
 
-      <section id="wishDrops" class="wish-drops" aria-label="Quedas de preço na wishlist" hidden></section>
+      <section id="wishDrops" class="wish-drops" data-i18n-aria="aria.wishDrops" aria-label="Quedas de preço na wishlist" hidden></section>
 
       <!-- Preço-alvo atingido: "me avisa quando chegar a R$X" (alvo por carta). -->
-      <section id="wishTargets" class="wish-drops wish-targets" aria-label="Cartas que atingiram o preço-alvo" hidden></section>
+      <section id="wishTargets" class="wish-drops wish-targets" data-i18n-aria="aria.targetHit" aria-label="Cartas que atingiram o preço-alvo" hidden></section>
 
-      <section id="wishSellers" class="wish-sellers" aria-label="Cartas desejadas à venda por outros colecionadores" hidden></section>
+      <section id="wishSellers" class="wish-sellers" data-i18n-aria="aria.wantedForSale" aria-label="Cartas desejadas à venda por outros colecionadores" hidden></section>
 
       <div class="collection-toolbar">
-        <div id="gameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
+        <div id="gameFilter" class="chip-filter game-filter" role="group" data-i18n-aria="pfmi.game" aria-label="Jogo">
           <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
           <button type="button" class="chip" data-game-filter="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
           <button type="button" class="chip" data-game-filter="lorcana" aria-pressed="false" data-i18n="filter.gameLorcana">Lorcana</button>
@@ -87,7 +87,7 @@
         </div>
       </div>
 
-      <section class="stats-grid" aria-label="Resumo da lista de desejos">
+      <section class="stats-grid" data-i18n-aria="aria.sumWishlist" aria-label="Resumo da lista de desejos">
         <article>
           <span id="distinctCount">0</span>
           <p data-i18n="wishlist.stats.distinct">cartas na lista</p>
@@ -102,7 +102,7 @@
         </article>
       </section>
 
-      <section class="toolbar" aria-label="Filtros">
+      <section class="toolbar" data-i18n-aria="filters.show" aria-label="Filtros">
         <div>
           <label for="pokemonFilter" data-i18n="toolbar.pokemon">Pokémon</label>
           <select id="pokemonFilter">
@@ -135,10 +135,10 @@
         </div>
         <div class="view-toggle-field">
           <label data-i18n="toolbar.view">Visualização</label>
-          <div id="cardsViewToggle" class="view-toggle" role="group" aria-label="Visualização">
-            <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" aria-label="Grade" title="Grade">▦</button>
-            <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" aria-label="Lista" title="Lista">≣</button>
-            <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" aria-label="Compacta" title="Compacta">☰</button>
+          <div id="cardsViewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
+            <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>
+            <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista">≣</button>
+            <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" data-i18n-aria="view.compact" aria-label="Compacta" title="Compacta">☰</button>
           </div>
         </div>
       </section>

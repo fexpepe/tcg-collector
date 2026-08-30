@@ -36,7 +36,7 @@
     <header class="app-header">
       <div class="app-header-inner">
         <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" aria-label="Páginas" data-active-page="detail"></nav>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="detail"></nav>
         <div class="header-actions">
           <select id="languageSwitcher" class="lang-select"></select>
         </div>
@@ -61,7 +61,7 @@
       <div class="detail-summary">
         <section id="detailHero" class="detail-hero" hidden></section>
 
-        <section class="stats-grid detail-stats" aria-label="Resumo da coleção">
+        <section class="stats-grid detail-stats" data-i18n-aria="aria.sumCollection" aria-label="Resumo da coleção">
           <article>
             <span id="ownedCount">0</span>
             <p data-i18n="stats.owned">cartas marcadas</p>
@@ -75,9 +75,9 @@
             <p data-i18n="stats.progress">progresso</p>
           </article>
         </section>
-        <div id="completionBar" class="completion-bar" role="progressbar" aria-label="Progresso do set" aria-valuemin="0" aria-valuemax="100"><span id="completionFill" class="completion-fill"></span></div>
+        <div id="completionBar" class="completion-bar" role="progressbar" data-i18n-aria="aria.setProgress" aria-label="Progresso do set" aria-valuemin="0" aria-valuemax="100"><span id="completionFill" class="completion-fill"></span></div>
 
-        <section id="detailValues" class="stats-grid detail-values" aria-label="Valores" hidden>
+        <section id="detailValues" class="stats-grid detail-values" data-i18n-aria="aria.values" aria-label="Valores" hidden>
           <article>
             <span id="valueTotal">—</span>
             <p data-i18n="value.total">Valor total</p>
@@ -107,7 +107,7 @@
            ajustes da mesma tarefa de conferir o set. Master set conta CADA
            variante como slot; "qualquer idioma" casa a carta base (EN/PT do
            mesmo set contam juntas). -->
-      <section id="quickAdd" class="quick-add is-collapsed" aria-label="Adição rápida por número" hidden>
+      <section id="quickAdd" class="quick-add is-collapsed" data-i18n-aria="aria.quickAddNumber" aria-label="Adição rápida por número" hidden>
         <div class="quick-add-row">
           <label for="quickAddInput" class="quick-add-label" data-i18n="quickadd.label">Adição rápida</label>
           <input id="quickAddInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
@@ -124,10 +124,10 @@
            Filtros (título sobre as facetas, como o "Coleção" tem) → Ordenar →
            Visualização. Decisões de ESCOPO primeiro (o que entra na lista),
            apresentação por último. -->
-      <section id="detailFilters" class="toolbar detail-toolbar is-collapsed" aria-label="Filtros" data-own-toggle>
+      <section id="detailFilters" class="toolbar detail-toolbar is-collapsed" data-i18n-aria="filters.show" aria-label="Filtros" data-own-toggle>
         <div>
           <label data-i18n="toolbar.collection">Coleção</label>
-          <div id="ownedChips" class="segmented" role="group" aria-label="Coleção"></div>
+          <div id="ownedChips" class="segmented" role="group" data-i18n-aria="nav.collection" aria-label="Coleção"></div>
         </div>
         <!-- Mesmo liga-desliga de Configurações → "Agrupar versões da carta"
              (ver o chip no cards.html). Religa a grade sem reload. -->
@@ -170,10 +170,10 @@
         </div>
         <div class="view-toggle-field">
           <label data-i18n="toolbar.view">Visualização</label>
-          <div id="viewToggle" class="view-toggle" role="group" aria-label="Visualização">
-            <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" aria-label="Grade" title="Grade">▦</button>
-            <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" aria-label="Lista" title="Lista">≣</button>
-            <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" aria-label="Compacta" title="Compacta">☰</button>
+          <div id="viewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
+            <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>
+            <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista">≣</button>
+            <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" data-i18n-aria="view.compact" aria-label="Compacta" title="Compacta">☰</button>
           </div>
         </div>
       </section>

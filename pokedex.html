@@ -48,7 +48,7 @@
     <header class="app-header">
       <div class="app-header-inner">
         <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" aria-label="Páginas" data-active-page="pokedex"></nav>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="pokedex"></nav>
         <div class="header-actions">
           <select id="languageSwitcher" class="lang-select"></select>
         </div>
@@ -70,9 +70,9 @@
       <!-- Preenchido por buildExploreSubnav (shared.js). Vem VAZIO e com a
            altura reservada no CSS pra pagina nao pular quando os chips
            entram — ver .explore-subnav[data-placeholder] no styles.css. -->
-      <nav class="explore-subnav chip-filter" data-placeholder aria-label="Explorar"></nav>
+      <nav class="explore-subnav chip-filter" data-placeholder data-i18n-aria="nav.explore" aria-label="Explorar"></nav>
 
-      <section class="stats-grid" aria-label="Resumo da coleção">
+      <section class="stats-grid" data-i18n-aria="aria.sumCollection" aria-label="Resumo da coleção">
         <article>
           <span id="ownedCount">0</span>
           <p data-i18n="stats.owned">cartas marcadas</p>
@@ -87,8 +87,8 @@
         </article>
       </section>
 
-      <section class="toolbar pokedex-toolbar" aria-label="Filtros">
-        <div id="generationChips" class="chip-filter" role="group" aria-label="Geração e local"></div>
+      <section class="toolbar pokedex-toolbar" data-i18n-aria="filters.show" aria-label="Filtros">
+        <div id="generationChips" class="chip-filter" role="group" data-i18n-aria="aria.genLocation" aria-label="Geração e local"></div>
         <div class="toolbar-selects">
           <div>
             <label for="typeFilter" data-i18n="toolbar.type">Tipo</label>

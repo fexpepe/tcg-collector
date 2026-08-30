@@ -2295,6 +2295,13 @@
     scope.querySelectorAll("[data-i18n-title]").forEach((element) => {
       element.setAttribute("title", t(element.dataset.i18nTitle));
     });
+    // aria-label: o rótulo que o leitor de tela ANUNCIA. Os construídos por JS
+    // já saíam traduzidos (passam por t()); os escritos direto no HTML ficavam
+    // em português fixo — 148 deles — então quem usa o site em inglês ou
+    // espanhol ouvia "Páginas" e "Resumo da coleção" no meio da navegação.
+    scope.querySelectorAll("[data-i18n-aria]").forEach((element) => {
+      element.setAttribute("aria-label", t(element.dataset.i18nAria));
+    });
   }
 
   // Constrói a navegação das páginas: Início | Pokémon ▾ (Pokédex, Sets,

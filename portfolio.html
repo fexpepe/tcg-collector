@@ -48,7 +48,7 @@
     <header class="app-header">
       <div class="app-header-inner">
         <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" aria-label="Páginas" data-active-page="portfolio"></nav>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="portfolio"></nav>
         <div class="header-actions">
           <select id="languageSwitcher" class="lang-select"></select>
         </div>
@@ -80,11 +80,11 @@
            Magic, YGO, Gundam, FAB, DBFW, Digimon, Riftbound ou Union Arena não
            conseguia filtrar por eles, e o <select> da gaveta mobile ficava vazio
            porque procura por [data-game-filter]. -->
-      <div id="gameFilter" class="chip-filter game-filter pf-game-filter" role="group" aria-label="Jogo">
+      <div id="gameFilter" class="chip-filter game-filter pf-game-filter" role="group" data-i18n-aria="pfmi.game" aria-label="Jogo">
         <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
       </div>
 
-      <section id="portfolioChart" class="pf-chart" aria-label="Progressão do portfólio" hidden>
+      <section id="portfolioChart" class="pf-chart" data-i18n-aria="portfolio.chart.title" aria-label="Progressão do portfólio" hidden>
         <!-- Cabeçalho: valor da série principal + variação da faixa escolhida.
              Ao arrastar no gráfico, os dois passam a mostrar o dia sob o dedo. -->
         <div class="pf-chart-head">
@@ -94,15 +94,15 @@
         </div>
         <!-- Séries × Por jogo (+ o % que normaliza as linhas). Só aparece com 2+
              jogos com histórico — ver renderControls. -->
-        <div id="pfChartModes" class="pf-modes" role="group" aria-label="Modo do gráfico" hidden></div>
+        <div id="pfChartModes" class="pf-modes" role="group" data-i18n-aria="aria.chartMode" aria-label="Modo do gráfico" hidden></div>
         <div class="pf-chart-controls">
-          <div id="pfSeries" class="pf-series" role="group" aria-label="Séries"></div>
-          <div id="pfRanges" class="pf-ranges" role="group" aria-label="Período"></div>
+          <div id="pfSeries" class="pf-series" role="group" data-i18n-aria="portfolio.chart.modeSeries" aria-label="Séries"></div>
+          <div id="pfRanges" class="pf-ranges" role="group" data-i18n-aria="aria.period" aria-label="Período"></div>
         </div>
         <div id="pfChartBody" class="pf-chart-body"></div>
       </section>
 
-      <section class="stats-grid" aria-label="Resumo do portfólio">
+      <section class="stats-grid" data-i18n-aria="aria.sumPortfolio" aria-label="Resumo do portfólio">
         <article class="stat-grand">
           <span id="grandTotal">—</span>
           <!-- Variação do DIA (padrão corretora): pintada pelo updateChart a
@@ -136,10 +136,10 @@
         </article>
       </section>
 
-      <section id="pfComposition" class="pf-composition" aria-label="Composição do portfólio" hidden></section>
+      <section id="pfComposition" class="pf-composition" data-i18n-aria="aria.portfolioMix" aria-label="Composição do portfólio" hidden></section>
 
-      <section id="pfBreakdown" class="pf-breakdown" aria-label="Detalhamento por categoria" hidden>
-        <div id="pfBreakdownTabs" class="pf-bd-tabs" role="group" aria-label="Detalhar por">
+      <section id="pfBreakdown" class="pf-breakdown" data-i18n-aria="aria.breakdownCategory" aria-label="Detalhamento por categoria" hidden>
+        <div id="pfBreakdownTabs" class="pf-bd-tabs" role="group" data-i18n-aria="aria.breakdownBy" aria-label="Detalhar por">
           <button type="button" class="pf-bd-tab active" data-bd="set" data-i18n="portfolio.bd.set">Por set</button>
           <button type="button" class="pf-bd-tab" data-bd="rarity" data-i18n="portfolio.bd.rarity">Por raridade</button>
           <button type="button" class="pf-bd-tab" data-bd="artist" data-i18n="portfolio.bd.artist">Por artista</button>
@@ -151,20 +151,20 @@
         <div id="pfBreakdownBody" class="pf-comp-block"></div>
       </section>
 
-      <section id="pfLists" class="pf-invest" aria-label="Valor das listas e binders" hidden></section>
+      <section id="pfLists" class="pf-invest" data-i18n-aria="aria.listsBindersValue" aria-label="Valor das listas e binders" hidden></section>
 
       <!-- Selados e itens MANUAIS (F4 do PLANO-UX): booster box, ETB, lata ou
            qualquer item fora do catálogo, com preço manual. Visível mesmo
            vazio DE PROPÓSITO (exceção à regra do bloco-sem-dado): a seção é o
            único ponto de entrada — escondida, ninguém descobriria que existe.
            FORA do patrimônio por ora; somar é decisão registrada no plano. -->
-      <section id="pfManual" class="pf-invest pf-manual" aria-label="Selados e itens manuais"></section>
+      <section id="pfManual" class="pf-invest pf-manual" data-i18n-aria="pfmi.title" aria-label="Selados e itens manuais"></section>
 
-      <section id="pfInvest" class="pf-invest" aria-label="Posições (custo e lucro potencial)" hidden></section>
+      <section id="pfInvest" class="pf-invest" data-i18n-aria="aria.positions" aria-label="Posições (custo e lucro potencial)" hidden></section>
 
-      <section id="pfSales" class="pf-invest" aria-label="Vendas realizadas" hidden></section>
+      <section id="pfSales" class="pf-invest" data-i18n-aria="sales.sold.heading" aria-label="Vendas realizadas" hidden></section>
 
-      <section id="pfMovers" class="pf-invest" aria-label="Maiores altas e quedas da semana" hidden></section>
+      <section id="pfMovers" class="pf-invest" data-i18n-aria="aria.weekMovers" aria-label="Maiores altas e quedas da semana" hidden></section>
 
       <section class="results-header">
         <h2 data-i18n="portfolio.topCards">Cartas mais valiosas</h2>

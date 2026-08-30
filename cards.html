@@ -48,7 +48,7 @@
     <header class="app-header">
       <div class="app-header-inner">
         <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" aria-label="Páginas" data-active-page="cards"></nav>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="cards"></nav>
         <div class="header-actions">
           <select id="languageSwitcher" class="lang-select"></select>
         </div>
@@ -70,11 +70,11 @@
       <!-- Preenchido por buildExploreSubnav (shared.js). Vem VAZIO e com a
            altura reservada no CSS pra pagina nao pular quando os chips
            entram — ver .explore-subnav[data-placeholder] no styles.css. -->
-      <nav class="explore-subnav chip-filter" data-placeholder aria-label="Explorar"></nav>
+      <nav class="explore-subnav chip-filter" data-placeholder data-i18n-aria="nav.explore" aria-label="Explorar"></nav>
 
       <p class="collection-subtitle" data-i18n="cards.subtitle">Busque em todo o catálogo de cartas, com os filtros de sempre.</p>
 
-      <section class="toolbar" aria-label="Filtros">
+      <section class="toolbar" data-i18n-aria="filters.show" aria-label="Filtros">
         <div>
           <label for="setFilter" data-i18n="toolbar.set">Set</label>
           <select id="setFilter">
@@ -96,9 +96,9 @@
         <div class="price-range-field">
           <label for="priceMin" data-i18n="toolbar.priceRange">Preço</label>
           <div class="price-range">
-            <input id="priceMin" type="text" inputmode="decimal" placeholder="mín" aria-label="Preço mínimo">
+            <input id="priceMin" type="text" inputmode="decimal" placeholder="mín" data-i18n-aria="aria.priceMin" aria-label="Preço mínimo">
             <span aria-hidden="true">–</span>
-            <input id="priceMax" type="text" inputmode="decimal" placeholder="máx" aria-label="Preço máximo">
+            <input id="priceMax" type="text" inputmode="decimal" placeholder="máx" data-i18n-aria="aria.priceMax" aria-label="Preço máximo">
           </div>
         </div>
         <div class="sort-select">
@@ -115,10 +115,10 @@
         </div>
         <div class="view-toggle-field">
           <label data-i18n="toolbar.view">Visualização</label>
-          <div id="cardsViewToggle" class="view-toggle" role="group" aria-label="Visualização">
-            <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" aria-label="Grade" title="Grade">▦</button>
-            <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" aria-label="Lista" title="Lista">≣</button>
-            <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" aria-label="Compacta" title="Compacta">☰</button>
+          <div id="cardsViewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
+            <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>
+            <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista">≣</button>
+            <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" data-i18n-aria="view.compact" aria-label="Compacta" title="Compacta">☰</button>
           </div>
         </div>
         <!-- O mesmo liga-desliga de Configurações → "Agrupar versões da carta",

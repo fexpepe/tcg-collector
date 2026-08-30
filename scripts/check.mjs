@@ -86,6 +86,20 @@ for (const arquivo of htmlFiles) {
   }
 }
 
+// 3d) aria-label estático precisa de data-i18n-aria.
+//     Rótulo de leitor de tela escrito direto no HTML fica em português fixo:
+//     quem usa o site em inglês ou espanhol ouvia "Páginas" e "Resumo da
+//     coleção" no meio da navegação, enquanto TODO o resto da interface já
+//     estava traduzido (os aria-label construídos por JS passam por t()).
+//     Eram 148 quando isto entrou; a guarda existe pra não voltarem um a um.
+for (const arquivo of htmlFiles) {
+  for (const m of read(arquivo).matchAll(/<[^>]*\saria-label="([^"]+)"[^>]*>/g)) {
+    if (!m[0].includes("data-i18n-aria")) {
+      fail(`${arquivo}: aria-label="${m[1]}" sem data-i18n-aria (fica em pt pra quem usa en/es)`);
+    }
+  }
+}
+
 // 4) Chaves usadas DIRETO — t("x"), tn("x"), data-i18n*="x" — que não existem.
 //    (Pega o bug clássico: t("set.officialCards") sem a chave definida.)
 const haystack = [...srcFiles, ...htmlFiles].map(read).join("\n");

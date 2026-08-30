@@ -40,7 +40,7 @@
     <header class="app-header">
       <div class="app-header-inner">
         <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" aria-label="Páginas" data-active-page="dashboard"></nav>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="dashboard"></nav>
         <div class="header-actions">
           <select id="languageSwitcher" class="lang-select"></select>
         </div>
@@ -59,7 +59,7 @@
            "12 slabs" no Hub e tinha que achar a página Graded pelo menu.
            O rótulo acessível é o próprio <p> do cartão (aria-labelledby), então
            ele já vem traduzido junto com o resto da tela. -->
-      <section class="stats-grid" aria-label="Resumo do colecionador">
+      <section class="stats-grid" data-i18n-aria="aria.sumCollector" aria-label="Resumo do colecionador">
         <article class="stat-grand">
           <span id="dhValue">—</span>
           <span class="collector-badge" data-i18n="collector.badge">Modo Colecionador</span>
@@ -98,17 +98,17 @@
            gravado pela página de set com o progresso da visita). Nasce
            escondido; sem histórico a seção não existe. -->
       <h2 class="dash-section-head" id="dhRecentHead" data-i18n="dash.continue" hidden>Continuar de onde parou</h2>
-      <section id="dhRecent" class="dash-recent" aria-label="Continuar de onde parou" hidden></section>
+      <section id="dhRecent" class="dash-recent" data-i18n-aria="dash.continue" aria-label="Continuar de onde parou" hidden></section>
 
       <h2 class="dash-section-head" data-i18n="dash.byGame">Por jogo</h2>
-      <section id="dhGames" class="dash-games" aria-label="Coleções por jogo"></section>
+      <section id="dhGames" class="dash-games" data-i18n-aria="aria.collectionsByGame" aria-label="Coleções por jogo"></section>
 
       <!-- Atalhos: o HUB do jogador -->
       <h2 class="dash-section-head" data-i18n="dash.shortcuts">Ir para</h2>
-      <section id="dhLinks" class="dash-links" aria-label="Atalhos"></section>
+      <section id="dhLinks" class="dash-links" data-i18n-aria="aria.shortcuts" aria-label="Atalhos"></section>
 
       <!-- Cápsulas detalhadas (hidratam carregando só as suas cartas) -->
-      <section id="dhCaps" class="collection-dashboard" aria-label="Resumo detalhado" hidden>
+      <section id="dhCaps" class="collection-dashboard" data-i18n-aria="aria.sumDetailed" aria-label="Resumo detalhado" hidden>
         <article class="dash-card dash-top">
           <h3 data-i18n="dash.topTitle">Mais valiosas</h3>
           <ol id="dhTopList" class="dash-top-list"></ol>

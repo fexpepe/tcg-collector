@@ -52,7 +52,7 @@
     <header class="app-header">
       <div class="app-header-inner">
         <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" aria-label="Páginas" data-active-page="collection"></nav>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="collection"></nav>
         <div class="header-actions">
           <select id="languageSwitcher" class="lang-select"></select>
         </div>
@@ -78,7 +78,7 @@
         </section>
       </div>
 
-      <section id="collectionOnboarding" class="onboarding" aria-label="Primeiros passos" hidden>
+      <section id="collectionOnboarding" class="onboarding" data-i18n-aria="aria.firstSteps" aria-label="Primeiros passos" hidden>
         <h2 data-i18n="onb.title">Comece sua coleção em 3 passos</h2>
         <div class="onb-steps">
           <div class="onb-step">
@@ -110,7 +110,7 @@
            mesmo desenho do cabeçalho do perfil compartilhado. As AÇÕES moram
            dentro do cartão (canto do topo), não mais nesta faixa. -->
       <div class="collection-toolbar">
-        <div id="gameFilter" class="chip-filter game-filter game-filter-panel" role="group" aria-label="Jogo">
+        <div id="gameFilter" class="chip-filter game-filter game-filter-panel" role="group" data-i18n-aria="pfmi.game" aria-label="Jogo">
           <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
           <button type="button" class="chip" data-game-filter="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
           <button type="button" class="chip" data-game-filter="lorcana" aria-pressed="false" data-i18n="filter.gameLorcana">Lorcana</button>
@@ -126,7 +126,7 @@
            Nos botões o texto vive num <span data-i18n>: o re-translate reescreve
            só o textContent do span e o ícone sobrevive (o JS que troca o rótulo
            também escreve no span — ver setBulkMode/share/exportCollectionImage). -->
-      <section id="collectionDashboard" class="collection-dashboard" aria-label="Resumo da coleção" hidden>
+      <section id="collectionDashboard" class="collection-dashboard" data-i18n-aria="aria.sumCollection" aria-label="Resumo da coleção" hidden>
         <article class="dash-card dash-stats dash-stats-hero">
           <div class="dash-stats-head">
             <div id="dashProfile" class="dash-profile" hidden></div>
@@ -136,10 +136,10 @@
                    filtros embaixo começa recolhida e o botão abre/fecha
                    (aria-expanded; mesma pref do colapso mobile do shared.js).
                    Ambos somem nas abas de progresso (ver render()). -->
-              <div id="cardsViewToggle" class="view-toggle" role="group" aria-label="Visualização">
-                <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" aria-label="Grade" title="Grade">▦</button>
-                <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" aria-label="Lista" title="Lista">≣</button>
-                <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" aria-label="Compacta" title="Compacta">☰</button>
+              <div id="cardsViewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
+                <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>
+                <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista">≣</button>
+                <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" data-i18n-aria="view.compact" aria-label="Compacta" title="Compacta">☰</button>
               </div>
               <button type="button" id="collectionFiltersBtn" class="secondary" aria-expanded="false" aria-controls="collectionFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span data-i18n="filters.show">Filtros</span></button>
               <!-- Compartilhar é SÓ-ÍCONE: o rótulo fica no <span> escondido pro
@@ -164,7 +164,7 @@
            rótulos do perfil público — é a mesma visão (a coleção) em duas
            telas. "Vendas e Trocas" é um LINK pra página de Vendas vestido de
            aba (sem data-tab: o handler e os laços de aria-pressed o ignoram). -->
-      <div id="collectionTabs" class="prof-tabs collection-tabs" role="group" aria-label="Visões da coleção">
+      <div id="collectionTabs" class="prof-tabs collection-tabs" role="group" data-i18n-aria="aria.collectionViews" aria-label="Visões da coleção">
         <button type="button" class="prof-tab" data-tab="cards" aria-pressed="true" data-i18n="nav.collection">Coleção</button>
         <button type="button" class="prof-tab" data-tab="folders" aria-pressed="false" data-i18n="collection.tab.folders">Showcase</button>
         <button type="button" class="prof-tab" data-tab="graded" aria-pressed="false" data-i18n="nav.graded">Cartas Graded</button>
@@ -198,7 +198,7 @@
         <!-- data-own-toggle: o botão de abrir/fechar é o "Filtros" do cartão-herói
              (o shared.js não injeta o toggle automático do mobile). Nasce
              recolhida (is-collapsed) pra não piscar aberta antes do JS. -->
-        <section id="collectionFilters" class="toolbar collection-filters is-collapsed" aria-label="Filtros" data-own-toggle>
+        <section id="collectionFilters" class="toolbar collection-filters is-collapsed" data-i18n-aria="filters.show" aria-label="Filtros" data-own-toggle>
           <div>
             <label for="pokemonFilter" data-i18n="toolbar.pokemon">Pokémon</label>
             <select id="pokemonFilter">

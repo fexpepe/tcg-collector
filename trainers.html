@@ -48,7 +48,7 @@
     <header class="app-header">
       <div class="app-header-inner">
         <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" aria-label="Páginas" data-active-page="trainers"></nav>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="trainers"></nav>
         <div class="header-actions">
           <select id="languageSwitcher" class="lang-select"></select>
         </div>
@@ -70,16 +70,16 @@
       <!-- Preenchido por buildExploreSubnav (shared.js). Vem VAZIO e com a
            altura reservada no CSS pra pagina nao pular quando os chips
            entram — ver .explore-subnav[data-placeholder] no styles.css. -->
-      <nav class="explore-subnav chip-filter" data-placeholder aria-label="Explorar"></nav>
+      <nav class="explore-subnav chip-filter" data-placeholder data-i18n-aria="nav.explore" aria-label="Explorar"></nav>
 
-      <div id="setRegionChips" class="chip-filter master-filter" role="group" aria-label="Origem das cartas">
+      <div id="setRegionChips" class="chip-filter master-filter" role="group" data-i18n-aria="aria.cardOrigin" aria-label="Origem das cartas">
         <button type="button" class="chip" data-lang-region="english" aria-pressed="true" data-i18n="setRegion.english">Inglês</button>
         <button type="button" class="chip" data-lang-region="portuguese" aria-pressed="false" data-i18n="setRegion.portuguese">Português</button>
         <button type="button" class="chip" data-lang-region="japanese" aria-pressed="false" data-i18n="setRegion.japanese">Japonês</button>
         <button type="button" class="chip" data-lang-region="chinese" aria-pressed="false" data-i18n="setRegion.chinese">Chinês</button>
       </div>
 
-      <section class="stats-grid" aria-label="Resumo da coleção">
+      <section class="stats-grid" data-i18n-aria="aria.sumCollection" aria-label="Resumo da coleção">
         <article>
           <span id="ownedCount">0</span>
           <p data-i18n="stats.owned">cartas marcadas</p>
@@ -94,7 +94,7 @@
         </article>
       </section>
 
-      <section class="toolbar" aria-label="Filtros">
+      <section class="toolbar" data-i18n-aria="filters.show" aria-label="Filtros">
       </section>
 
       <section class="results-header">

@@ -48,7 +48,7 @@
     <header class="app-header">
       <div class="app-header-inner">
         <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" aria-label="Páginas" data-active-page="binders"></nav>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="binders"></nav>
         <div class="header-actions">
           <select id="languageSwitcher" class="lang-select"></select>
         </div>
@@ -64,7 +64,7 @@
 
       <!-- Galeria: criar + lista/grid de binders -->
       <div id="binderGallery">
-        <section class="binder-toolbar" aria-label="Novo binder">
+        <section class="binder-toolbar" data-i18n-aria="aria.newBinder" aria-label="Novo binder">
           <input id="binderName" type="text" data-i18n-placeholder="binders.namePlaceholder" placeholder="Nome do binder">
           <label class="binder-grid-label"><span data-i18n="binders.template">Template</span>
             <select id="binderTemplate"></select>
@@ -79,9 +79,9 @@
         </section>
 
         <div class="binder-gallery-controls">
-          <div class="binder-view-toggle" role="group" aria-label="Visualização">
-            <button type="button" data-view="grid" class="binder-view-btn" aria-label="Grade" aria-pressed="true">▦</button>
-            <button type="button" data-view="list" class="binder-view-btn" aria-label="Lista" aria-pressed="false">≣</button>
+          <div class="binder-view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
+            <button type="button" data-view="grid" class="binder-view-btn" data-i18n-aria="aria.viewGrid" aria-label="Grade" aria-pressed="true">▦</button>
+            <button type="button" data-view="list" class="binder-view-btn" data-i18n-aria="aria.viewList" aria-label="Lista" aria-pressed="false">≣</button>
           </div>
           <label class="binder-sort-label"><span data-i18n="binders.sort">Ordenar</span>
             <select id="binderSort"></select>

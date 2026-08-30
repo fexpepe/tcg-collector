@@ -48,7 +48,7 @@
     <header class="app-header">
       <div class="app-header-inner">
         <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" aria-label="Páginas" data-active-page="sales"></nav>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="sales"></nav>
         <div class="header-actions">
           <select id="languageSwitcher" class="lang-select"></select>
         </div>
@@ -70,7 +70,7 @@
       </div>
 
       <div class="collection-toolbar">
-        <div id="gameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
+        <div id="gameFilter" class="chip-filter game-filter" role="group" data-i18n-aria="pfmi.game" aria-label="Jogo">
           <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
           <button type="button" class="chip" data-game-filter="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
           <button type="button" class="chip" data-game-filter="lorcana" aria-pressed="false" data-i18n="filter.gameLorcana">Lorcana</button>
@@ -80,7 +80,7 @@
         </div>
       </div>
 
-      <section id="salesDashboard" class="stats-grid" aria-label="Resumo das vendas" hidden>
+      <section id="salesDashboard" class="stats-grid" data-i18n-aria="aria.sumSales" aria-label="Resumo das vendas" hidden>
         <article>
           <span id="salesDashCount">0</span>
           <p data-i18n="sales.dash.count">cartas à venda</p>
@@ -97,7 +97,7 @@
       </section>
 
       <div id="salesView">
-        <section class="sales-batch" aria-label="Precificar em lote">
+        <section class="sales-batch" data-i18n-aria="aria.bulkPricing" aria-label="Precificar em lote">
           <span class="sales-batch-label" data-i18n="sales.batch.label">Precificar todas pela referência:</span>
           <div class="sales-batch-chips">
             <button type="button" class="sales-batch-chip" data-batch-pct="-15">−15%</button>
@@ -108,7 +108,7 @@
             <button type="button" class="sales-batch-chip" data-batch-pct="10">+10%</button>
           </div>
           <span class="sales-batch-custom">
-            <input type="number" id="salesBatchPct" step="1" inputmode="numeric" placeholder="0" aria-label="Percentual"><span class="sales-batch-pct">%</span>
+            <input type="number" id="salesBatchPct" step="1" inputmode="numeric" placeholder="0" data-i18n-aria="aria.percent" aria-label="Percentual"><span class="sales-batch-pct">%</span>
             <button type="button" id="salesBatchApply" class="primary" data-i18n="sales.batch.apply">Aplicar</button>
           </span>
           <span class="sales-batch-hint" data-i18n="sales.batch.hint">Define o preço de TODAS pela cotação de mercado (referência) ± o percentual. Ex.: −10 = 10% abaixo do mercado.</span>
@@ -138,7 +138,7 @@
         <section id="salesGrid" class="card-grid"></section>
         <p id="salesEmpty" class="empty-state" data-i18n-html="sales.empty" hidden>Nenhuma carta à venda. Use <strong>Adicionar cartas</strong> ou abra uma carta e toque em “Pôr à venda”.</p>
 
-        <section id="soldSection" aria-label="Vendas realizadas" hidden>
+        <section id="soldSection" data-i18n-aria="sales.sold.heading" aria-label="Vendas realizadas" hidden>
           <header class="results-header sold-header">
             <h2 data-i18n="sales.sold.heading">Vendas realizadas</h2>
             <span id="soldSummary" class="sold-summary"></span>

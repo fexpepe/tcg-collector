@@ -48,7 +48,7 @@
     <header class="app-header">
       <div class="app-header-inner">
         <a class="brand" href="/">Sleevu</a>
-        <nav class="page-nav" aria-label="Páginas" data-active-page="graded"></nav>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="graded"></nav>
         <div class="header-actions">
           <select id="languageSwitcher" class="lang-select"></select>
         </div>
@@ -61,7 +61,7 @@
         <a href="dashboard" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
       </div>
 
-      <div class="chip-filter collection-tabs" role="group" aria-label="Visões da coleção">
+      <div class="chip-filter collection-tabs" role="group" data-i18n-aria="aria.collectionViews" aria-label="Visões da coleção">
         <a class="chip" href="collection?tab=cards" data-i18n="collection.tab.cards">Cartas</a>
         <a class="chip" href="collection?tab=folders" data-i18n="collection.tab.folders">Showcase</a>
         <!-- aria-current (não aria-pressed): é um LINK. aria-pressed só vale em
@@ -76,7 +76,7 @@
       <p class="collection-subtitle" data-i18n="graded.pageSubtitle">Catalogue suas cartas graduadas com a graduadora e a nota — o valor de mercado vem automático para PSA 9 e 10 (vendas do eBay; por enquanto, só Pokémon); as demais você preenche na mão.</p>
 
       <div class="collection-toolbar">
-        <div id="gameFilter" class="chip-filter game-filter" role="group" aria-label="Jogo">
+        <div id="gameFilter" class="chip-filter game-filter" role="group" data-i18n-aria="pfmi.game" aria-label="Jogo">
           <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
           <button type="button" class="chip" data-game-filter="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
           <button type="button" class="chip" data-game-filter="lorcana" aria-pressed="false" data-i18n="filter.gameLorcana">Lorcana</button>
@@ -89,7 +89,7 @@
       <!-- tabindex="0": no celular esta seção vira uma esteira com rolagem
            horizontal, e região rolável precisa ser alcançável por teclado
            (axe: scrollable-region-focusable). -->
-      <section id="gradedDashboard" class="collection-dashboard" aria-label="Resumo das cartas graded" tabindex="0" hidden>
+      <section id="gradedDashboard" class="collection-dashboard" data-i18n-aria="aria.sumGraded" aria-label="Resumo das cartas graded" tabindex="0" hidden>
         <article class="dash-card dash-stats">
           <div class="dash-stats-counts">
             <div><span class="dash-stat-val" id="gradedDashCount">0</span><span class="dash-stat-label" data-i18n="graded.dash.count">cartas graded</span></div>
