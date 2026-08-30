@@ -46,6 +46,17 @@
     const d = rawJson(`tcg-collector-${g}-binders-v1`);
     return s + (d && Array.isArray(d.folders) ? d.folders.length : (d && Array.isArray(d.list) ? d.list.length : 0));
   }, 0);
+  // Decks, listas, trocas e favoritos: quatro stores que o usuário já enche e
+  // que nenhuma medalha olhava. Contam só o que existe de fato — deck apagado
+  // vira tombstone em `deleted` e não pode continuar valendo medalha.
+  const decksData = rawJson("tcg-collector-decks-all-v1");
+  const decksCount = decksData && Array.isArray(decksData.decks)
+    ? decksData.decks.filter((d) => d && d.id && !(decksData.deleted || {})[d.id]).length : 0;
+  const listsData = rawJson("tcg-collector-lists-all-v1");
+  const listsCount = listsData && Array.isArray(listsData.lists)
+    ? listsData.lists.filter((l) => l && l.id && !(listsData.deleted || {})[l.id]).length : 0;
+  const trades = (() => { const t = rawJson("tcg-trade-checks-v1"); return Array.isArray(t) ? t.length : 0; })();
+  const favs = (() => { const f = rawJson("tcg-collector-favorites-v1"); return Array.isArray(f) ? f.length : 0; })();
   const value = shared.portfolioValueTotal() || 0;
   const valueBRL = Math.floor(shared.convertMoney(value, shared.getCurrency(), "BRL") ?? value);
 
@@ -80,6 +91,15 @@
     { id: "sold10", emoji: "📈", cur: sold, target: 10, tier: "epic" },
     // Organização
     { id: "binder1", emoji: "📒", cur: bindersCount, target: 1, tier: "common" },
+    { id: "list1", emoji: "📋", cur: listsCount, target: 1, tier: "common" },
+    // Decks
+    { id: "deck1", emoji: "🛠️", cur: decksCount, target: 1, tier: "common" },
+    { id: "deck5", emoji: "⚔️", cur: decksCount, target: 5, tier: "rare" },
+    // Trocas (o histórico é deste aparelho — ver troca.html)
+    { id: "trade1", emoji: "🔄", cur: trades, target: 1, tier: "common" },
+    { id: "trade10", emoji: "⚖️", cur: trades, target: 10, tier: "rare" },
+    // Pokédex
+    { id: "fav10", emoji: "💛", cur: favs, target: 10, tier: "common" },
     // Patrimônio (BRL)
     { id: "v1k", emoji: "💰", cur: valueBRL, target: 1000, tier: "rare" },
     { id: "v10k", emoji: "🪙", cur: valueBRL, target: 10000, tier: "epic" },

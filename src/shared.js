@@ -4682,9 +4682,48 @@
       section.hidden = false;
       fillPriceDelta(section, card); // ▲▼ % da semana, quando o histórico existir
       fillPriceHistory(section, card, fx); // gráfico da série diária, se houver
+      fillSellers(section, card); // quem tem esta carta à venda (bloco some se ninguém tem)
     } else {
       section.hidden = true;
     }
+  }
+
+  // "À venda na comunidade": quem, entre as pessoas com perfil público, tem
+  // ESTA carta à venda. A RPC find_sellers existia e era usada em UMA tela (a
+  // wishlist, cruzando a lista inteira) — no card, que é exatamente onde a
+  // pessoa está decidindo comprar, o dado não aparecia.
+  //
+  // Uma chamada por carta aberta, com cache por sessão (reabrir a mesma carta
+  // não repete). Bloco some se ninguém tem — a mesma regra do resto do card.
+  const sellersCache = new Map();
+  async function fillSellers(section, card) {
+    if (!findSellers || !card || !card.id) return;
+    let linhas = sellersCache.get(card.id);
+    if (linhas === undefined) {
+      linhas = await findSellers([card.id]).catch(() => []);
+      sellersCache.set(card.id, linhas);
+    }
+    if (!section.isConnected || !linhas || !linhas.length) return;
+    const meu = (getProfile && getProfile().handle) || "";
+    // Um vendedor por linha, o menor preço de cada um, os 3 mais baratos.
+    const porVendedor = new Map();
+    linhas.forEach((r) => {
+      if (!r || !r.handle || r.handle === meu) return;
+      const atual = porVendedor.get(r.handle);
+      if (!atual || Number(r.price) < Number(atual.price)) porVendedor.set(r.handle, r);
+    });
+    const top = [...porVendedor.values()].sort((a, b) => Number(a.price) - Number(b.price)).slice(0, 3);
+    if (!top.length || section.querySelector(".market-sellers")) return;
+    const itens = top.map((r) => {
+      const preco = fmtMoney(r.cur || "BRL", Number(r.price) || 0);
+      const cond = r.cond ? ` · ${escapeHtml(String(r.cond))}` : "";
+      return `<a class="market-seller" href="/users/${escapeAttribute(r.handle)}?t=sales">
+        <span class="market-seller-who">@${escapeHtml(r.handle)}${cond}</span>
+        <span class="market-seller-price">${escapeHtml(preco)}</span>
+      </a>`;
+    }).join("");
+    section.insertAdjacentHTML("beforeend",
+      `<div class="market-sellers"><h4>${escapeHtml(t("market.sellers"))}</h4>${itens}</div>`);
   }
 
   // Outras IMPRESSÕES da mesma carta (painel "Prints" do Scryfall): em que

@@ -41,6 +41,7 @@
     export: document.getElementById("tradeExport"),
     clear: document.getElementById("tradeClear"),
     history: document.getElementById("tradeHistory"),
+    balance: document.getElementById("tradeBalance"),
     historyList: document.getElementById("tradeHistoryList")
   };
   if (!el.itens.give) return;
@@ -237,6 +238,17 @@
     el.history.hidden = !lista.length;
     if (!lista.length) return;
     const loc = shared.getLocale();
+    // Saldo acumulado: o histórico guardava os dois totais de cada troca e só
+    // pintava linha por linha — a soma, que é a pergunta óbvia ("no fim das
+    // contas eu saí ganhando?"), ninguém fazia. Rotulado como "neste aparelho"
+    // porque a chave é local (não entra no sync).
+    if (el.balance) {
+      const saldo = lista.reduce((s2, h) => s2 + ((Number(h.tr) || 0) - (Number(h.tg) || 0)), 0);
+      const sinal = saldo > 0 ? "+" : "";
+      el.balance.innerHTML = `<strong class="sensitive-value">${escapeHtml(sinal + money(Math.abs(saldo) < 0.005 ? 0 : saldo))}</strong> `
+        + escapeHtml(tn("trade.balance", lista.length));
+      el.balance.hidden = false;
+    }
     el.historyList.innerHTML = lista.map((h, i) => {
       const data = new Date(h.t).toLocaleDateString(loc, { day: "2-digit", month: "2-digit", year: "2-digit" });
       const diff = (Number(h.tr) || 0) - (Number(h.tg) || 0);

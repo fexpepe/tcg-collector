@@ -9216,3 +9216,17 @@ select,
   display: grid; place-items: center; font-size: 12px; font-weight: 800;
 }
 .ios-sheet-icon { font-size: 17px; color: var(--accent); }
+.trade-balance { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
+.trade-balance strong { color: var(--text); font-size: 15px; font-variant-numeric: tabular-nums; }
+.dash-fresh { margin: -4px 0 18px; color: var(--muted); font-size: 13px; }
+.dash-fresh strong { color: var(--accent); font-size: 16px; font-variant-numeric: tabular-nums; margin-right: 2px; }
+
+/* "À venda na comunidade" no card: quem tem esta carta anunciada. O bloco só
+   nasce quando alguém tem (mesma regra do resto do preview). */
+.market-sellers { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.market-sellers h4 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .4px; color: var(--muted); }
+.market-seller { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 0; font-size: 13px; color: var(--text); text-decoration: none; }
+.market-seller + .market-seller { border-top: 1px solid var(--line); }
+.market-seller:hover .market-seller-who { color: var(--accent); }
+.market-seller-who { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.market-seller-price { font-variant-numeric: tabular-nums; font-weight: 700; flex: none; }

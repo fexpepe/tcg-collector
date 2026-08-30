@@ -91,6 +91,13 @@
         <div id="generationChips" class="chip-filter" role="group" data-i18n-aria="aria.genLocation" aria-label="Geração e local"></div>
         <div class="toolbar-selects">
           <div>
+            <label for="favFilter" data-i18n="toolbar.favorites">Favoritos</label>
+            <select id="favFilter">
+              <option value="" data-i18n="filter.all.m">Todos</option>
+              <option value="fav" data-i18n="filter.onlyFavorites">Só favoritos</option>
+            </select>
+          </div>
+          <div>
             <label for="typeFilter" data-i18n="toolbar.type">Tipo</label>
             <select id="typeFilter">
               <option value="" data-i18n="filter.all.m">Todos</option>

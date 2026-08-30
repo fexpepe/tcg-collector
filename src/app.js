@@ -18,6 +18,7 @@
     generationChips: document.getElementById("generationChips"),
     setRegionChips: document.getElementById("setRegionChips"),
     typeFilter: document.getElementById("typeFilter"),
+    favFilter: document.getElementById("favFilter"),
     setFilter: document.getElementById("setFilter"),
     languageFilter: document.getElementById("languageFilter"),
     ownedFilter: document.getElementById("ownedFilter"),
@@ -291,7 +292,7 @@
       }
       applyFilters();
     }, 200));
-    [elements.typeFilter, elements.setFilter, elements.languageFilter, elements.ownedFilter].filter(Boolean).forEach((element) => {
+    [elements.typeFilter, elements.favFilter, elements.setFilter, elements.languageFilter, elements.ownedFilter].filter(Boolean).forEach((element) => {
       element.addEventListener("input", applyFilters);
     });
 
@@ -509,9 +510,15 @@
   function pokedexViewItems() {
     const query = normalize(elements.search.value);
     const typeValue = elements.typeFilter ? elements.typeFilter.value : "";
+    // O coração da Pokédex sincroniza entre aparelhos desde sempre — e nada
+    // lia o store: os cliques não voltavam em forma de nada. Aqui eles viram
+    // filtro. O store é de dexIds (o herói da espécie, não a carta).
+    const soFavoritos = elements.favFilter && elements.favFilter.value === "fav";
+    const favoritos = soFavoritos ? shared.createFavoritesStore() : null;
 
     return pokedexEntries()
       .filter((entry) => {
+        if (favoritos && !favoritos.has(String(entry.dexId))) return false;
         if (selectedGeneration && String(generationFromDexId(entry.dexId)) !== selectedGeneration) return false;
         if (typeValue && !shared.typesForDex(entry.dexId).includes(typeValue)) return false;
         return !query || normalize(`${entry.name} ${entry.dexId}`).includes(query);

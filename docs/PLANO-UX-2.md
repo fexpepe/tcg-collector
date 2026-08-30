@@ -716,6 +716,32 @@ nomenclatura foi do Fernando: fica **Showcase**.
   fora da tela; 16 tópicos na Ajuda com as 5 seções novas preenchidas e
   traduzidas.
 
+**Etapa 5 — "o dado que já existe" — entregue em 2026-08-30.** Quatro commits,
+todos sobre store ou RPC que já existia e nenhuma tela lia.
+
+- **F6** ✔ — eram 31 medalhas e **nenhuma** olhava decks, listas, trocas ou
+  favoritos: quatro features entregues sem momento de celebração. Sete novas
+  (list1, deck1, deck5, trade1, trade10, fav10), respeitando os tombstones —
+  deck apagado não vale medalha (conferido: 3 decks com 1 apagado dão 2/5). E o
+  histórico da Troca ganhou o **saldo acumulado**, a pergunta óbvia que ele
+  guardava dados pra responder e nunca respondia.
+- **F7** ✔ — o `favorites-v1` sincroniza entre aparelhos, tem merge LWW
+  próprio, e o único código que o tocava era o toggle do coração: os cliques
+  não voltavam em nada. Agora é filtro "Só favoritos" na Pokédex.
+- **F5** ✔ — cada add carimba `meta.mod[cardId]` desde a era v3 e o único
+  leitor era o merge de sync. Vira "Novidades na sua coleção" no Hub: quantas
+  entraram no mês (somando os 13 jogos) e há quanto tempo foi a última.
+  Agregado e não lista de nomes **porque o Hub é página neutra e não carrega
+  catálogo** — mostrar nome custaria os chunks dos 13 jogos.
+- **F4** ✔ — a RPC `find_sellers` era usada em uma tela só (a wishlist). Agora
+  o card mostra quem tem **aquela** carta à venda, onde a pessoa está decidindo
+  comprar: sem o próprio usuário, um preço por vendedor (o menor), top 3, uma
+  chamada por carta com cache de sessão, e o bloco não nasce se ninguém vende.
+- **Validação:** 156 testes, os três checks, smoke 23/24, e um teste de
+  navegador por item — inclusive a RPC interceptada devolvendo 6 linhas
+  (uma do próprio usuário, duas do mesmo vendedor) pra provar as três regras
+  de filtragem de uma vez.
+
 ---
 
 ## 7. O que a verificação corrigiu (pra não repetir o erro do plano 1)
