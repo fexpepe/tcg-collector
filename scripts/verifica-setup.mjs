@@ -77,6 +77,15 @@ const CONTA = process.env.CLOUDFLARE_ACCOUNT_ID || "";
 const BUCKET = process.env.R2_BUCKET || "sleevu-img";
 const CHAVE = "_verifica-setup.txt";
 
+// O wrangler despeja o HELP inteiro depois do erro, e a mensagem que interessa
+// fica no topo. Cortar pelo fim (o reflexo) escondia exatamente a linha útil —
+// foi o que aconteceu na primeira tentativa deste teste.
+function relevante(saida) {
+  const linhas = saida.split("\n");
+  const uteis = linhas.filter((l) => /✘|\[ERROR\]|error|Error|denied|not found|não/i.test(l) && !/^\s*--/.test(l));
+  return (uteis.length ? uteis : linhas).slice(0, 8).map((l) => "      " + l.trim()).join("\n");
+}
+
 function wrangler(args) {
   return new Promise((resolve) => {
     const p = spawn("npx", ["--yes", "wrangler@3", ...args], {
@@ -95,11 +104,11 @@ if (R2_TOKEN && CONTA) {
   const arquivo = join(tmpdir(), CHAVE);
   const carimbo = `verifica-setup ${new Date().toISOString()}\n`;
   writeFileSync(arquivo, carimbo);
-  const put = await wrangler(["r2", "object", "put", `${BUCKET}/${CHAVE}`, "--file", arquivo, "--remote", "--content-type", "text/plain"]);
+  const put = await wrangler(["r2", "object", "put", `${BUCKET}/${CHAVE}`, "--file", arquivo, "--content-type", "text/plain"]);
   if (put.code !== 0) {
     erro(`o token não conseguiu ESCREVER em ${BUCKET} (wrangler saiu ${put.code}). `
       + `Confira o escopo (Object Read & Write) e o nome do bucket — este teste usou "${BUCKET}", `
-      + `mude com o campo "bucket" ao disparar o workflow. Saída:\n      ${put.saida.split("\n").slice(-6).join("\n      ")}`);
+      + `mude com o campo "bucket" ao disparar o workflow. Saída:\n${relevante(put.saida)}`);
   } else {
     ok(`escrita no bucket ${BUCKET} funcionou`);
     // Leitura pelo domínio público: é assim que o site vai buscar as imagens.
@@ -115,7 +124,7 @@ if (R2_TOKEN && CONTA) {
         else erro(`objeto real veio SEM CORS pra ${ORIGEM} (recebido: ${cors || "nenhum"}) — é isso que faz o "exportar imagem" sair sem foto`);
       }
     } catch (e) { erro(`img.sleevu.app inacessível depois do upload: ${e.message}`); }
-    const del = await wrangler(["r2", "object", "delete", `${BUCKET}/${CHAVE}`, "--remote"]);
+    const del = await wrangler(["r2", "object", "delete", `${BUCKET}/${CHAVE}`]);
     if (del.code !== 0) nota(`o objeto de teste ${CHAVE} ficou no bucket (o delete saiu ${del.code}) — apague pelo painel`);
     else ok("objeto de teste apagado");
   }
