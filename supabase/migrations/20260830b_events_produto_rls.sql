@@ -53,6 +53,16 @@ begin
   end loop;
 end $$;
 
--- Confere o resultado (deve listar os 7 nomes na checagem):
---   select polname, pg_get_expr(polwithcheck, polrelid)
---     from pg_policy where polrelid = 'public.events'::regclass;
+-- O RESULTADO, como tabela — não como RAISE NOTICE. O painel do Supabase mostra
+-- notice num painel lateral fácil de não ver, e "rodei e não olhei o aviso" é
+-- indistinguível de "rodei e funcionou". Isto aparece na grade de resultados, e
+-- a coluna `checagem` tem que listar os 7 nomes. Se listar só pageview/jserror,
+-- o bloco acima se recusou a mexer — e o motivo está no notice.
+select
+  polname                                  as politica,
+  pg_get_expr(polwithcheck, polrelid)      as checagem,
+  case polcmd when 'a' then 'INSERT' when '*' then 'ALL' else polcmd::text end as comando,
+  (select string_agg(rolname, ', ') from pg_roles where oid = any (polroles)) as papeis
+from pg_policy
+where polrelid = 'public.events'::regclass
+order by polname;

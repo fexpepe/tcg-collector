@@ -101,13 +101,38 @@ function wrangler(args) {
 }
 
 if (R2_TOKEN && CONTA) {
+  // Primeiro: o segredo é sequer um token de API da Cloudflare? Este endpoint
+  // não exige permissão NENHUMA — só responde se o token é válido e está ativo.
+  // É o que separa os dois diagnósticos que de fora parecem o mesmo 403:
+  //   token inválido        → o segredo guardado não é um token de API
+  //                           (o par Access Key/Secret do S3 cai aqui)
+  //   token válido + 403     → é token de API, mas falta escopo (ou o bucket
+  //                           tem outro nome)
+  // Sem esta separação a mensagem viraria "confira tudo", que é o mesmo que não
+  // dizer nada.
+  let tokenValido = null;
+  try {
+    const r = await pega("https://api.cloudflare.com/client/v4/user/tokens/verify",
+      { headers: { Authorization: `Bearer ${R2_TOKEN}` } });
+    const j = await r.json().catch(() => null);
+    tokenValido = !!(j && j.success);
+    if (tokenValido) ok(`o segredo É um token de API da Cloudflare, e está ${j.result && j.result.status ? j.result.status : "ativo"}`);
+    else erro("o segredo guardado em R2_TOKEN NÃO é um token de API da Cloudflare "
+      + `(verify devolveu HTTP ${r.status}${j && j.errors ? ` — ${j.errors.map((e) => e.message).join("; ")}` : ""}). `
+      + "Na tela do token do R2 há duas coisas diferentes: o par Access Key ID/Secret Access Key, "
+      + "que serve pra API S3, e o \"Token value\", que é o que o wrangler e o deploy usam. É o Token value que vai aqui.");
+  } catch (e) { nota(`não deu pra validar o formato do token: ${e.message}`); }
+
   const arquivo = join(tmpdir(), CHAVE);
   const carimbo = `verifica-setup ${new Date().toISOString()}\n`;
   writeFileSync(arquivo, carimbo);
   const put = await wrangler(["r2", "object", "put", `${BUCKET}/${CHAVE}`, "--file", arquivo, "--content-type", "text/plain"]);
   if (put.code !== 0) {
     erro(`o token não conseguiu ESCREVER em ${BUCKET} (wrangler saiu ${put.code}). `
-      + `Confira o escopo (Object Read & Write) e o nome do bucket — este teste usou "${BUCKET}", `
+      + (tokenValido
+        ? "O token é válido, então sobrou: falta o escopo de escrita (Object Read & Write) OU o bucket tem outro nome. "
+        : "Provavelmente é consequência do problema acima — o segredo não é um token de API. ")
+      + `Este teste usou o bucket "${BUCKET}", `
       + `mude com o campo "bucket" ao disparar o workflow. Saída:\n${relevante(put.saida)}`);
   } else {
     ok(`escrita no bucket ${BUCKET} funcionou`);
