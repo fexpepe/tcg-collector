@@ -9163,3 +9163,14 @@ select,
     transition: scale 60ms ease;
   }
 }
+
+/* Pull-to-refresh só na aba do navegador, nunca no app instalado. No PWA em
+   pé de tela cheia, puxar o topo de uma grade recarregava a página inteira —
+   e levava junto o scroll e os filtros escolhidos. Na aba isso é convenção do
+   navegador e fica; em standalone é acidente, porque não existe barra de
+   endereço pra explicar o que aconteceu. Com o aviso de versão nova (o toast
+   do controllerchange), o gesto também deixou de ser o único jeito de buscar
+   atualização. */
+@media (display-mode: standalone) {
+  html, body { overscroll-behavior-y: contain; }
+}

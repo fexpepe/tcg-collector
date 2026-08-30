@@ -1771,6 +1771,26 @@
     } catch (e) { /* toast é açúcar: nunca quebra o fluxo de apagar */ }
   }
 
+  // --- Versão nova disponível ---
+  // O site publica todo dia às 06:20. O service worker faz skipWaiting, então a
+  // troca acontece sozinha — só que a PÁGINA aberta segue rodando o código
+  // velho, e ninguém avisa. Quem deixa o PWA aberto numa tela podia passar dias
+  // numa versão antiga sem saber. O evento já dispara há tempos; faltava
+  // alguém escutar.
+  function toastVersaoNova() {
+    try {
+      if (document.querySelector(".undo-toast[data-update]")) return;
+      const el = document.createElement("div");
+      el.className = "undo-toast";
+      el.dataset.update = "1";
+      el.setAttribute("role", "status");
+      el.innerHTML = `<span>${escapeHtml(t("update.available"))}</span><button type="button" class="undo-toast-btn">${escapeHtml(t("update.action"))}</button>`;
+      document.body.appendChild(el);
+      el.querySelector("button").addEventListener("click", () => window.location.reload());
+      setTimeout(() => { el.remove(); }, 12000);
+    } catch (e) { /* aviso é cortesia: nunca atrapalha a página */ }
+  }
+
   // --- Aviso de armazenamento cheio ---
   // Quota do localStorage estourada = a escrita FALHOU e a mudança do usuário não
   // persistiu. Isso nunca pode ser silencioso: mostra um toast (1x por página,
@@ -10370,11 +10390,30 @@
   // O idle adia a rajada pro primeiro respiro do aparelho; o timeout de 3 s é a
   // garantia de que ela acontece mesmo numa página que nunca fica ociosa
   // (requestIdleCallback não existe no Safari — lá cai direto no setTimeout).
-  if ("serviceWorker" in navigator) {
+  // Guarda pelo OBJETO, não por `"serviceWorker" in navigator`: a chave pode
+  // existir valendo undefined (é o caso do sandbox dos testes), e aí o `in`
+  // passa e a leitura logo abaixo explode. O registro em si só acontece no
+  // load, mas o estado do controlador é lido agora — antes de o SW novo assumir.
+  if (navigator.serviceWorker) {
+    // Havia service worker no comando quando esta página carregou? Se NÃO, o
+    // controllerchange que vier é a primeira instalação — não é "versão nova",
+    // e avisar ali seria mentira na primeira visita de todo mundo.
+    const jaTinhaControle = !!navigator.serviceWorker.controller;
     window.addEventListener("load", () => {
-      const instala = () => navigator.serviceWorker.register("sw.js").catch(() => { /* SW é só otimização: ignora falha */ });
+      const instala = () => navigator.serviceWorker.register("sw.js").then((reg) => {
+        if (!reg) return;
+        // App voltando do segundo plano é o momento natural de conferir se saiu
+        // versão nova: sem isto, uma sessão parada numa tela (o Portfólio
+        // aberto o dia todo) nunca pede atualização nenhuma.
+        document.addEventListener("visibilitychange", () => {
+          if (document.visibilityState === "visible") reg.update().catch(() => { /* offline: tenta na próxima */ });
+        });
+      }).catch(() => { /* SW é só otimização: ignora falha */ });
       if (typeof requestIdleCallback === "function") requestIdleCallback(instala, { timeout: 3000 });
       else setTimeout(instala, 1200);
+    });
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (jaTinhaControle) toastVersaoNova();
     });
   }
 })();
