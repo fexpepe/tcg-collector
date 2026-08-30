@@ -249,7 +249,7 @@
   // idx = índice da cópia (várias cópias da mesma carta podem estar à venda).
   function saleTileHtml(card, variant, idx, price, sym, cond, auto) {
     const src = shared.cardImageSources(card);
-    const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
+    const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE });
     const priceStr = price > 0 ? String(price).replace(".", ",") : "";
     const current = cond || "NM";
     const condOpts = shared.CARD_CONDITIONS.map((c) => `<option value="${c}"${c === current ? " selected" : ""}>${c}</option>`).join("");

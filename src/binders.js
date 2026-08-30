@@ -816,7 +816,7 @@
     if (slot.photoId) {
       media = `<img class="binder-slot-img" data-photo-id="${escapeAttribute(slot.photoId)}" alt="${escapeAttribute(title)}">`;
     } else if (slot.image) {
-      media = localizedImg(slot.image, { className: "binder-slot-img", alt: title, fallback: slot.fallback || "", loading: "lazy", thumb: true });
+      media = localizedImg(slot.image, { className: "binder-slot-img", alt: title, fallback: slot.fallback || "", loading: "lazy", thumb: true, sizes: shared.SIZES_BINDER_SLOT });
     } else {
       media = `<span class="binder-slot-free">${escapeHtml(title || "—")}</span>`;
     }
@@ -2028,7 +2028,7 @@
     }
     const title = slot.cardId ? cardLabelFromSlot(slot) : (slot.label || "");
     const media = slot.image
-      ? localizedImg(slot.image, { className: "binder-slot-img", alt: title, fallback: slot.fallback || "", loading: "lazy", thumb: true })
+      ? localizedImg(slot.image, { className: "binder-slot-img", alt: title, fallback: slot.fallback || "", loading: "lazy", thumb: true, sizes: shared.SIZES_BINDER_SLOT })
       : `<span class="binder-slot-free">${escapeHtml(title || "—")}</span>`;
     return `<div class="binder-slot binder-slot-filled" title="${escapeAttribute(title)}">${media}</div>`;
   }

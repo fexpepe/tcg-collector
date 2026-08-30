@@ -62,7 +62,7 @@
     const { shared } = ctx;
     const { t, escapeHtml, escapeAttribute } = shared;
     const src = shared.cardImageSources(card);
-    const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
+    const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE });
     const eff = effectiveValue(shared, it, card);
     const isAuto = eff.auto && eff.value > 0;
     const autoCls = isAuto ? " is-auto" : "";

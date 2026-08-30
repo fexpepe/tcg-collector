@@ -1047,7 +1047,7 @@
     }
     const [bg, fg] = GRADED_COLORS[it.company] || GRADED_COLORS.psa;
     const src = shared.cardImageSources(card);
-    const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
+    const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE });
     const val = it.value > 0 ? it.value : (shared.gradedValue(card, it.company, it.grade).value || 0);
     const priceHtml = val > 0 ? `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>` : "";
     const badge = `<span class="graded-badge" style="--slab-bg:${bg};--slab-fg:${fg}">${escapeHtml((it.company || "").toUpperCase())} ${escapeHtml(shared.gradedGradeText(it.grade, it.pristine))}</span>`;
@@ -1098,9 +1098,20 @@
     if (!useFolders) {
       elements.folderSections.innerHTML = "";
       pager.render(tiles, makeAnyTile, { resetCount });
+      prewarmColecao();
       return;
     }
     renderFolderSections(ownedPairs);
+    prewarmColecao();
+  }
+
+  // Esta pagina E a colecao da pessoa: o lugar certo pra encher o cache de
+  // imagens no ocioso, pra ela abrir inteira offline depois. Os tiles ja estao
+  // no DOM com loading="lazy" — sem isto, so entra no cache o que ela rolou.
+  // Todas as guardas (service worker no comando, economia de dados, orcamento)
+  // moram no helper; aqui e so o gatilho.
+  function prewarmColecao() {
+    if (shared.prewarmLazyImages) shared.prewarmLazyImages(document);
   }
 
   // Agrupa os pares carta×variante por pasta (folderOf por cardId) e renderiza
@@ -1649,8 +1660,14 @@
 
   function groupArt(group, tab) {
     const sample = group.sample;
-    if (activeTab === "pokemon" && sample.pokemonImage) {
-      return `<img loading="lazy" src="${escapeAttribute(sample.pokemonImage)}" alt="">`;
+    // Tile de 48px: o SPRITE (~1,3 KB, 96x96 — exatamente 2x o tile) e nao a
+    // official-artwork, que e um PNG de 475px e 100-300 KB. A arte grande fica
+    // onde ela e vista grande: o hero do detalhe. E a mesma escolha que a
+    // Pokedex (app.js) e o showcase (groupCard, aqui embaixo) ja faziam — esta
+    // linha era a unica sobrando. Sem dexId, segue a arte, como antes.
+    if (activeTab === "pokemon") {
+      const art = (sample.dexId ? shared.spriteUrl(sample.dexId) : "") || sample.pokemonImage;
+      if (art) return `<img loading="lazy" width="48" height="48" src="${escapeAttribute(art)}" alt="">`;
     }
     if (activeTab === "sets" && (sample.setSymbol || sample.setLogo)) {
       return shared.localizedImg(sample.setSymbol || sample.setLogo, { loading: "lazy" });
