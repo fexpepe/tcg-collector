@@ -47,6 +47,39 @@ const ptKeys = new Set(Object.keys(MESSAGES.pt || {}));
 const enKeys = new Set(Object.keys(MESSAGES.en || {}));
 const esKeys = new Set(Object.keys(MESSAGES.es || {}));
 
+// 2b) Chave DUPLICADA dentro do mesmo idioma. Num objeto literal a última
+//     definição vence e a primeira some — sem erro, sem aviso, sem o objeto
+//     "parecer" diferente. Foi exatamente o que aconteceu com "market.title":
+//     ele já existia ("Cotação de mercado", no preview da carta) e uma chave
+//     nova com o mesmo nome ficou morta; a página nova saiu com o texto errado
+//     e nenhuma guarda acusou. A paridade pt/en/es também não pega: duplicar
+//     nos três idiomas mantém os três "iguais".
+//
+//     Varre o TEXTO do arquivo, e não o objeto (que já perdeu a informação).
+//     A indentação dos blocos e das chaves varia entre os arquivos (o i18n.js
+//     usa 4/6 espaços, o i18n-listas.js usa 2/4), então o bloco é achado por
+//     regex frouxa e a indentação das CHAVES é a da primeira chave dele — o que
+//     também evita descer em objeto aninhado, se algum dia houver um.
+for (const arquivo of I18N_FILES) {
+  const texto = read(arquivo);
+  const blocos = [...texto.matchAll(/\n\s*(pt|en|es):\s*\{/g)];
+  if (!blocos.length) { warn(`${arquivo}: não achei os blocos de idioma pra checar chave duplicada`); continue; }
+  blocos.forEach((abre, i) => {
+    const fim = i + 1 < blocos.length ? blocos[i + 1].index : texto.length;
+    const corpo = texto.slice(abre.index, fim);
+    const primeira = /\n([ \t]+)"[^"]+":/.exec(corpo);
+    if (!primeira) return; // bloco vazio
+    const re = new RegExp(`^${primeira[1]}"([^"]+)":`, "gm");
+    const vistas = new Set();
+    for (const m of corpo.matchAll(re)) {
+      if (vistas.has(m[1])) {
+        const linha = texto.slice(0, abre.index + m.index).split("\n").length;
+        fail(`i18n: "${m[1]}" está DUPLICADA no bloco ${abre[1]} de ${arquivo} (linha ${linha}) — a primeira definição morre em silêncio`);
+      } else vistas.add(m[1]);
+    }
+  });
+}
+
 // 3) Paridade pt/en — toda chave deve existir nos dois idiomas.
 for (const k of ptKeys) if (!enKeys.has(k)) fail(`i18n: "${k}" existe em pt mas falta em en`);
 for (const k of enKeys) if (!ptKeys.has(k)) fail(`i18n: "${k}" existe em en mas falta em pt`);
