@@ -1,0 +1,28 @@
+name: Verifica dependências externas
+
+# Só sob demanda. Não entra em cron: metade do que ele olha ainda não está
+# ligada no produto, e um vermelho diário por algo que ainda nem existe treina
+# todo mundo a ignorar o vermelho.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verifica:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 22
+      # Os segredos entram como env pro script dizer se CHEGARAM. Ele nunca
+      # imprime valor nenhum — só presença e tamanho; o log do Actions é
+      # público em repositório público.
+      - name: Verifica R2, segredos e Supabase
+        env:
+          R2_TOKEN: ${{ secrets.R2_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          MYP_API_TOKEN: ${{ secrets.MYP_API_TOKEN }}
+        run: node scripts/verifica-setup.mjs
