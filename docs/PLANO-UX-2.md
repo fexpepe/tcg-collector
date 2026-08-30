@@ -535,7 +535,56 @@ Pacotes pequenos, cada um mesclável e testável sozinho:
 
 ## 6b. Estado de execução
 
-*(preencher a cada pacote entregue, no padrão do PLANO-UX.md §4b)*
+**Etapa 1 — "o invisível" — entregue em 2026-08-30.** Seis commits, nenhuma
+tela muda de aparência. A ordem executada foi a natural (dependência), não a
+temática: P8 primeiro porque é ele que protege o resto.
+
+- **P8** ✔ — contagem de arquivos no deploy (avisa em 16k, falha em 18k, e
+  imprime o número real em todo build — o dado que faltava pra decidir quanta
+  imagem cabe no Pages e quanta vai pro R2); orçamento de peso no CI
+  (`scripts/check-size.mjs`: shared.js 69,6 KB de 75, styles 39,2 de 43);
+  577 KB de matéria-prima de `assets/brand` fora do publish (conferido caminho
+  a caminho — só o `sleevu-wordmark.svg` é referenciado e fica); e o
+  curto-circuito do `detail.js`, que parou de baixar o catálogo inteiro
+  (507+ chunks) pra terminar numa página vazia — agora o estado vazio diz que
+  o nome não existe neste jogo e leva pra busca (chave `empty.detailUnknown`
+  nos 3 idiomas). A varredura sobrou só pro caso de o índice não ter chegado.
+- **P3** ✔ — `/assets/*` e as ~2.238 imagens espelhadas ganharam um ano de
+  `immutable`; as imagens locais saíram do DATA_CACHE (onde disputavam 3.000
+  slots com os chunks) pro IMAGE_CACHE; `/assets/` entrou no cache-first do SW
+  **só em produção** (`HASHED_ASSETS`), pra não atrapalhar edição de arte em
+  dev. A contrapartida ficou escrita no `_headers`: trocar arte é por RENAME.
+- **P6** ✔ — Early Hints (o `hash-assets` passou a escrever o header `Link` do
+  CSS núcleo + fonte, com `crossorigin`); os 4 caps da landing viraram lazy;
+  `fetchpriority=high` no 1º tile do hub. E o **boot.js**: `theme.js`+`game.js`
+  fundidos por `scripts/bundle-boot.mjs` no deploy — dois scripts síncronos no
+  head viraram um. Seguro porque os dois são IIFE e só o game.js lê
+  `currentScript` (pro `data-catalog`, preservado byte a byte nos 11 valores
+  distintos). O script PARA se o par sair do formato, o comentário HTML entre
+  as tags é preservado, e o mesmo `--check` roda no CI.
+- **P7** ✔ — câmbio vira stale-while-revalidate (até 48h responde na hora e
+  atualiza por trás; acima disso, o caminho de sempre). No caminho, um bug que
+  já existia: com a cotação vencida em uso, o ponto do dia do histórico era
+  gravado com ela — e como quase toda carta é cotada em USD/EUR, o valor passa
+  pelo câmbio até pra quem usa BRL, então o gráfico registrava ruído de dólar
+  como se fosse mercado. Agora o snapshot pula com câmbio vencido (entra na
+  carga seguinte), com válvula acima de 7 dias. 4 testes novos.
+- **M7** ✔ *(promovido do pacote 5 pra cá)* — o robô de push passou de 3 pra
+  os 11 jogos com histórico publicado (quem tinha Magic ou YGO na wishlist
+  nunca recebia aviso, sem erro nenhum: jogo fora do mapa virava `{}`);
+  espanhol deixou de virar inglês na assinatura; e o aviso na página passou a
+  usar a janela de 7 dias — que já era publicada e nenhuma tela usava —
+  com o mesmo corte de -5% do robô (eram -3% na página e -5% no push).
+- **Fora de escopo por decisão:** a linha de 7 dias no chip do preview da
+  carta (é mudança visível; vai com a etapa de UI).
+- **Validação:** 156 testes (4 novos), `check.mjs`, `check-mobile.mjs`,
+  orçamento de peso, e o smoke de navegador real 23/24 — a única falha é o 404
+  pré-existente dos logos de loja (M10c do plano 1, curadoria do Fernando). O
+  `bundle-boot` e os Early Hints foram provados num sandbox com o pipeline
+  real do deploy (split-i18n → bundle → minify → hash).
+- **A conferir no primeiro preview** (só se prova servido): `curl -I` num logo
+  de set deve dizer `max-age=31536000`; o header `Link` deve aparecer; e o
+  `boot.<hash>.js` deve carregar como script único no `<head>`.
 
 ---
 
