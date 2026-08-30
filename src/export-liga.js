@@ -50,6 +50,11 @@
   }
   function numeroPokemon(card) {
     if (!card || !card.number) return "";
+    // Numero que JA vem "4/102" (fonte que grava o total junto) nao pode ganhar
+    // o total de novo: "(4/102/102)" nao casa com nada na Liga. O catalogo de
+    // producao grava so "4", mas basta uma fonte fazer diferente pra a linha
+    // inteira virar lixo — e o proprio fixture de dev do repo e assim.
+    if (String(card.number).indexOf("/") >= 0) return `(${String(card.number).trim()})`;
     const total = card.setTotal ? pad3(card.setTotal) : "";
     return total ? `(${pad3(card.number)}/${total})` : `(${pad3(card.number)})`;
   }

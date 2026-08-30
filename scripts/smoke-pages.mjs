@@ -30,7 +30,8 @@ const PAGINAS = [
   "cards.html?game=pokemon", "detail.html?type=set&name=Base+Set&game=pokemon",
   "explore.html", "collection.html", "portfolio.html", "wishlist.html", "binders.html",
   "decks.html", "my-decks.html", "dashboard.html", "graded.html", "sales.html",
-  "settings.html", "profile.html", "login.html", "faq.html", "help.html", "badges.html"
+  "settings.html", "profile.html", "login.html", "faq.html", "help.html", "badges.html",
+  "lancamentos.html", "comparar.html"
 ];
 
 const SESSAO = {
@@ -54,8 +55,11 @@ for (const pagina of PAGINAS) {
   const quebrados = [];
   page.on("pageerror", (e) => erros.push(e.message.slice(0, 140)));
   page.on("response", (r) => {
-    // Artefato de preço só existe depois do build completo — ausente localmente.
-    if (r.status() >= 400 && r.url().startsWith(BASE) && !/price-(movers|deltas)/.test(r.url())) {
+    // Artefatos de BUILD só existem depois do build completo — ausentes
+    // localmente: os chunks de preço e o calendário de lançamentos
+    // (scripts/build-releases.mjs). Nos dois casos a página tem estado
+    // vazio próprio, que é o comportamento certo sem o arquivo.
+    if (r.status() >= 400 && r.url().startsWith(BASE) && !/price-(movers|deltas)|releases\.generated/.test(r.url())) {
       quebrados.push(`${r.status()} ${new URL(r.url()).pathname}`);
     }
   });

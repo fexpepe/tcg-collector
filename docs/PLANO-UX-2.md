@@ -357,7 +357,13 @@ allowlist.
 
 ## 4. As 10 features (F1–F10)
 
-### F1 — Preço BR: destravar via API pública da MYP · M
+### F1 — Preço BR: destravar via API pública da MYP · M — **ADIADO**
+> **Decisão do Fernando (2026-08-30): adiado.** Ele não tem acesso à API da
+> MYP, e este ambiente não alcança o host pra conferir o Swagger na prática
+> (o proxy nega CONNECT — mesma barreira que travou o P1). Sem poder
+> confirmar a resposta real da API, escrever o sync seria fiação às cegas.
+> Volta à mesa quando houver token ou acesso.
+
 **O quê.** O item nº 1 do ROADMAP ("a tese do projeto, travada num e-mail")
 pode não estar mais travado: a pesquisa achou a **API pública da MYP com
 Swagger, mantida e atualizada em 25/08/2026**
@@ -528,10 +534,17 @@ Pacotes pequenos, cada um mesclável e testável sozinho:
 5. **Push e dados que já existem (1-2 sessões):** M7, F4, F5, F6, F7.
 6. **Imagens no servidor (incremental):** P4, P5 → P1 (com o guarda-corpo do
    P8 já no ar) → P9 → P2 (R2, por jogo).
-7. **Brasil (2-3 sessões):** F9, F8, E2 — e F1 assim que a leitura do Swagger
-   da MYP confirmar o caminho.
-8. **Apostas e polimento (projetos):** F3, F10, M8, E1, E3, E4, E5; F2 e E6
-   aguardam aval/migração do Fernando.
+7. **Brasil (2-3 sessões):** F9, F8, E2. **F1 saiu** — adiado por decisão do
+   Fernando (sem acesso à API da MYP); ver a nota no próprio item.
+8. **Apostas e polimento (projetos):** F3, F10, E1, E4, E5 — "aposta" aqui
+   quer dizer *item sem lastro prévio*: não conserta defeito medido nem
+   revela dado que já existe, então o risco não é técnico, é ninguém usar —
+   e isso só se verifica depois de construir. Mais E3 (polimento de
+   onboarding). **M8 saiu daqui:** foi classificado errado. `window.prompt`
+   é suprimido em webview de Instagram/Facebook, então o alvo de preço da
+   wishlist e o "nome de pasta nova" falham MUDOS justamente pro tráfego BR
+   de grupo — é conserto da classe do M5, não aposta. Fazer antes.
+   F2 e E6 seguem aguardando aval/migração do Fernando.
 
 ## 6b. Estado de execução
 
@@ -813,6 +826,73 @@ ficaram bloqueados, com número.** Três commits.
 etapa (o P4 custou 204 B; o resto veio das etapas 2-5), mas a próxima feature
 grande no shared.js estoura o CI. Ou o teto sobe com justificativa, ou algo sai
 do shared.js pra um arquivo por página.
+
+**Etapa 7 — "Brasil" — entregue em 2026-08-30.** Cinco commits. F1 saiu por
+decisão do Fernando (sem acesso à API da MYP) — ver a nota no próprio item.
+
+- **F9b** ✔ — o plano dizia "duas arestas". Medido, uma delas **não era
+  aresta**: o CSV do **Dragon Shield MV não importava nada**. Ele abre o arquivo
+  com a linha `sep=,` (convenção do Excel), o parser lia essa linha como
+  cabeçalho, o mapeamento voltava **tudo −1** e nenhuma carta entrava — sem
+  erro, sem aviso, só uma prévia vazia. Agora o preâmbulo é reconhecido e o
+  separador que ele **declara** vence a heurística (que erraria justamente
+  quando há vírgula no nome da carta). A outra aresta era real: o ManaBox
+  escreve `etched` seco na coluna Foil, e "etched" não contém "foil" — a carta
+  entrava como **não-foil**, na impressão mais cara do Magic moderno. O resto
+  dos dois formatos já casava e agora está preso por teste (cabeçalhos
+  inteiros, `Quantity` ganhando de `Trade Quantity`, `Set Name` de `Set Code`,
+  as duas grafias de condição, "Portuguese (Brazil)"). Cabeçalhos conferidos
+  contra a documentação pública de cada app — **não tenho arquivo real dos
+  dois**, e isso fica dito. E a metade que era documentação: o cartão da página
+  Exportar/Importar deixou de se chamar só "TCGplayer / Collectr" (quem
+  escaneou no ManaBox não tinha como adivinhar que aquele botão servia).
+- **F9a** ✔ — o gerador da Liga já existia e já era testado linha a linha, mas
+  só uma **lista** montada à mão chegava nele: quem tem a coleção cadastrada,
+  que é a maioria, não tinha como levar nada pra lá. Agora o botão Exportar
+  fica na barra da Coleção. **Escopo = o que está na tela** — filtros, busca e
+  showcase aberto valem, e "exportar esta pasta" sai de graça daí. Uma entrada
+  por **condição** (a linha da Liga carrega `[QUALIDADE=..]`), e o seletor de
+  jogo só aparece quando muda algo (formato Liga **e** 2+ jogos). Achado ao
+  rodar: `numeroPokemon` somava o total a um número que já vinha "4/102",
+  produzindo `(4/102/102)` — corrigido com teste.
+- **F9c** ✔ — a página de Vendas sabia mandar **imagem** e **link**, e nenhum
+  dos dois é o que se posta num grupo de troca: lá a lista vai em **texto**,
+  pra pessoa poder responder "quero a 3 e a 7". Composer local e instantâneo
+  (nem share nem rede), com o link do perfil público entrando só quando ele já
+  existe. O botão do WhatsApp é uma **âncora** `wa.me`, não `window.open`.
+- **F8** ✔ — todo sync grava `release` por set, o `setManifestMeta` põe isso em
+  toda entrada de manifest, e a única coisa que o site fazia com essa data era
+  escrever "SET 2023" num canto. Um passo de build (`build-releases.mjs`) lê os
+  manifests e publica **os dois formatos da mesma fonte**: o JSON que a página
+  `/lancamentos` desenha e o `lancamentos.ics` pra assinar. Separá-los faria os
+  dois divergirem no primeiro build em que um jogo falhasse. Decisões que o
+  dado obrigou: **um set por (jogo, id)** — o mesmo set aparece em vários
+  idiomas e três linhas iguais seriam ruído, então os nomes por idioma viajam
+  juntos e a página escolhe o da pessoa; **só data ISO pura** entra (timestamp,
+  `2026/09/01` e `2026-02-31` são descartados — data errada num calendário é
+  pior que data ausente); eventos de **dia inteiro com DTEND no dia seguinte**
+  (no iCalendar o fim é exclusivo — sem isso o Google desenha no dia anterior
+  pra quem está a oeste); **UID estável** (sem ele cada deploy duplicaria o
+  calendário de quem assinou); e **nenhum alarme** por padrão. Um bug meu,
+  achado na validação: escrevi `"\;"` no escape do RFC 5545, que em JS é só
+  `";"` — ficou uma validação própria do arquivo (75 octetos por linha, CRLF,
+  dobra que corta por **byte** e não por caractere, escapes, DTEND, UID único).
+- **E2** ✔ — página `/comparar` nos 3 idiomas, e ela **diz que o Sleevu não tem
+  scanner de câmera**, em linha própria da tabela e numa seção inteira chamada
+  "Onde o Collectr é melhor". Não é modéstia: comparativo que só elogia o
+  próprio lado não convence quem já usa o outro produto, e admitir o scanner, a
+  base de milhões e o app nativo é o que compra a credibilidade das outras onze
+  linhas. E vira **ponte**: a seção "Vindo do Collectr?" ensina o caminho do
+  CSV e lembra que quem não tem o plano pago pra exportar de lá pode escanear
+  no ManaBox ou no Dragon Shield — que é o que o F9b acabou de consertar. A
+  página leva data e manda conferir no site deles; as linhas sobre o Collectr
+  ficam no estável e verificável, e as do Sleevu foram conferidas no código.
+  **Não afirmei nada sobre profundidade de histórico**: aqui são 60 pontos
+  (~2 meses, `MAX_POINTS`), e vender isso como vantagem seria mentira.
+- **Validação:** 164 testes (8 novos), os três checks, orçamento de peso e
+  smoke 24/25 (a falha é o 404 pré-existente dos logos de loja); e teste de
+  navegador por item, inclusive manifests de mentira cobrindo os casos chatos
+  do calendário e a tabela do comparativo em 360px nos 3 idiomas.
 
 ---
 

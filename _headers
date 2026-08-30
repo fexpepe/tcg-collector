@@ -72,6 +72,14 @@
 /data/*
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 
+# Calendário de lançamentos (.ics). Content-Type explícito porque é ele que faz
+# o celular abrir no app de calendário em vez de baixar como texto solto. Cache
+# curto: o arquivo é regerado a cada deploy, e um cliente de calendário que
+# reassina a cada 12h (X-PUBLISHED-TTL) não pode receber a versão de ontem.
+/lancamentos.ics
+  Content-Type: text/calendar; charset=utf-8
+  Cache-Control: public, max-age=3600
+
 # IMAGENS espelhadas dentro de data/ (logos de set baixados pelos mirror-*.mjs
 # e os scans vintage). Vêm DEPOIS da regra /data/* de propósito: quando duas
 # regras casam a mesma URL, vale a última — aqui isso troca 1h+revalidação por

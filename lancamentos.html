@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title data-i18n="rel.title">Próximos lançamentos - Sleevu</title>
+    <meta name="description" content="Calendário de lançamentos de TCG: as datas dos próximos sets de Pokémon, Magic, Lorcana, One Piece e mais — com arquivo .ics pra assinar no seu calendário.">
+    <link rel="canonical" href="https://sleevu.app/lancamentos">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sleevu.app/lancamentos">
+    <meta property="og:title" content="Próximos lançamentos - Sleevu">
+    <meta property="og:description" content="As datas dos próximos sets de TCG, com arquivo .ics pra assinar no seu calendário.">
+    <meta property="og:image" content="https://sleevu.app/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Próximos lançamentos - Sleevu">
+    <meta name="twitter:description" content="As datas dos próximos sets de TCG, com arquivo .ics pra assinar no seu calendário.">
+    <meta name="twitter:image" content="https://sleevu.app/og-image.png">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Duas tags com media: o primeiro paint ja acerta a barra do navegador
+         pelo tema do SISTEMA. Quando a pessoa ESCOLHE um tema, o applyTheme
+         (shared.js) troca por uma tag unica sem media, que vence as duas. -->
+    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <script src="src/game.js"></script>
+    <!-- A fonte só seria descoberta depois de baixar e parsear o styles.css
+         (o @font-face mora lá). O preload a coloca na fila junto com o CSS.
+         crossorigin é OBRIGATORIO mesmo sendo mesma origem: fonte é sempre
+         buscada em modo CORS, e sem o atributo o preload nao casa com a
+         requisicao do CSS e o arquivo desce DUAS vezes.
+         Só o latin: pt-BR e en cabem inteiros em U+0000-00FF; o latin-ext
+         (14 KB) fica sob demanda, como o unicode-range ja define. -->
+    <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="/">Sleevu</a>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page=""></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-head">
+        <h1 data-i18n="rel.heading">Próximos lançamentos</h1>
+        <p class="page-head-sub" data-i18n="rel.sub">As datas dos sets que ainda vão sair, de todos os jogos que o Sleevu acompanha.</p>
+      </div>
+
+      <!-- O .ics é ESTÁTICO, gerado no build (scripts/build-releases.mjs). Link
+           direto: assinar calendário não precisa de JS nenhum. -->
+      <p class="rel-subscribe">
+        <a class="cta" href="/lancamentos.ics" download data-i18n="rel.subscribe">Assinar no calendário</a>
+        <span class="rel-subscribe-hint" data-i18n="rel.subscribeHint">Baixa um arquivo .ics — abra no Google Agenda, no Apple Calendário ou no Outlook.</span>
+      </p>
+
+      <nav id="relGames" class="chip-filter" data-i18n-aria="rel.gamesAria" aria-label="Filtrar por jogo"></nav>
+
+      <section id="relList" class="rel-list" aria-live="polite">
+        <p class="empty-state" data-i18n="rel.loading">Carregando…</p>
+      </section>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/shared.js"></script>
+    <script defer src="src/lancamentos.js"></script>
+  </body>
+</html>

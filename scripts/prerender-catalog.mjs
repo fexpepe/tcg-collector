@@ -68,7 +68,7 @@ const GAMES = [
 const STATIC_URLS = [
   "/", "/hub", "/explore", "/cards", "/pokedex", "/sets", "/artists", "/trainers",
   "/decks",
-  "/about", "/novidades", "/faq", "/help", "/privacy", "/terms"
+  "/about", "/novidades", "/lancamentos", "/comparar", "/faq", "/help", "/privacy", "/terms"
 ];
 
 const MONTHS_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];

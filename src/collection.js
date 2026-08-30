@@ -349,6 +349,7 @@
           ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
         hydrateFilters();
         bindShareButton();
+        bindExportButton();
         // Ponto do dia no histórico do Portfólio (mesmo motivo do Hub: quem vive
         // na Coleção não deixa mais buraco no gráfico). Sobre `cards` — a lista
         // INTEIRA, não o ownedCards() da tela: aquele já vem filtrado pelo chip
@@ -1801,6 +1802,149 @@
     });
   }
 
+  // ===========================================================================
+  // Exportar a coleção (Liga / texto / CSV)
+  //
+  // O gerador é o MESMO das listas (src/export-liga.js, lógica pura com testes
+  // dourados) — aqui só entra a origem dos dados. Até hoje o "Compra por Lista"
+  // da Liga só saía de uma lista montada à mão; quem já tem a coleção
+  // cadastrada não tinha como levá-la pra lá.
+  //
+  // ESCOPO = o que está na tela. Os filtros (jogo, set, idioma, raridade,
+  // busca) e o showcase aberto valem pro export: exportar algo diferente do que
+  // a pessoa está vendo seria surpresa. A escala de condição do site é a MESMA
+  // da Liga (M/NM/SP/MP/HP/D), então não há de-para a fazer.
+  // ===========================================================================
+  const EXPORT_FORMATOS = ["liga", "texto", "csv"];
+  let exportFormato = "liga";
+  let exportJogo = "";
+
+  function exportPares() {
+    const pares = ownedTilePairs();
+    // Showcase aberto: só as cartas dele (é o "exportar esta pasta").
+    if (openFolderId) return pares.filter(({ card }) => folders.folderOf(card.id) === openFolderId);
+    return pares;
+  }
+
+  // Um par carta×variante pode ter cópias em condições diferentes; cada condição
+  // vira uma entrada própria, porque a linha da Liga carrega [QUALIDADE=..].
+  function exportEntradas(pares, jogo) {
+    const out = [];
+    pares.forEach(({ card, variant }) => {
+      if (jogo && card.game !== jogo) return;
+      const porCond = owned.conditionBreakdown(card.id, variant);
+      if (!porCond.length) return;
+      porCond.forEach(({ condition, quantity }) => {
+        out.push({ id: card.id, q: quantity, c: condition, v: variant });
+      });
+    });
+    return out;
+  }
+
+  function exportJogosDisponiveis(pares) {
+    return shared.GAME_SLUGS.filter((g) => pares.some(({ card }) => card.game === g));
+  }
+
+  function exportTexto(pares, jogos) {
+    const ex = window.TCGExportLiga;
+    if (!ex) return "";
+    // Liga é POR JOGO (ligamagic, ligapokemon, ligaonepiece…): um texto só com
+    // dois jogos misturados não casa em lugar nenhum. Texto e CSV não têm essa
+    // restrição e saem com tudo que está na tela.
+    const jogo = exportFormato === "liga" ? (exportJogo || jogos[0] || "") : "";
+    const byId = {};
+    cardsById.forEach((card, id) => { byId[id] = card; });
+    return ex.exportar(exportFormato, exportEntradas(pares, jogo), byId, jogo || (jogos.length === 1 ? jogos[0] : ""));
+  }
+
+  function openExportModal() {
+    const pares = exportPares();
+    const jogos = exportJogosDisponiveis(pares);
+    if (!pares.length) { shared.toastSimples(t("export.empty")); return; }
+    if (!jogos.includes(exportJogo)) exportJogo = jogos[0] || "";
+
+    const wrap = document.createElement("div");
+    wrap.className = "list-modal";
+    document.body.appendChild(wrap);
+    document.body.classList.add("preview-open"); // trava a rolagem do fundo
+
+    function pinta() {
+      const abas = EXPORT_FORMATOS.map((f) =>
+        `<button type="button" class="lst-chip${f === exportFormato ? " is-on" : ""}" data-ex-fmt="${escapeAttribute(f)}">${escapeHtml(t("export.fmt." + f))}</button>`).join("");
+      // O seletor de jogo só existe quando ele muda alguma coisa: formato Liga
+      // E mais de um jogo na tela.
+      const seletorJogo = (exportFormato === "liga" && jogos.length > 1)
+        ? `<p class="list-modal-hint">${escapeHtml(t("export.gameHint"))}</p>
+           <div class="lst-chips">${jogos.map((g) =>
+             `<button type="button" class="lst-chip${g === exportJogo ? " is-on" : ""}" data-ex-game="${escapeAttribute(g)}">${escapeHtml(gameLabelOf(g))}</button>`).join("")}</div>`
+        : "";
+      const texto = exportTexto(pares, jogos);
+      const nLinhas = texto ? texto.split("\n").filter(Boolean).length : 0;
+      const escopo = openFolderId
+        ? t("export.scopeFolder", { n: nLinhas })
+        : t("export.scope", { n: nLinhas });
+      wrap.innerHTML = `
+        <div class="list-modal-box" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("export.title"))}">
+          <h2>${escapeHtml(t("export.title"))}</h2>
+          <div class="lst-chips">${abas}</div>
+          ${seletorJogo}
+          <p class="list-modal-hint">${escapeHtml(t("export.hint." + exportFormato))}</p>
+          <textarea class="lst-export" readonly rows="12">${escapeHtml(texto)}</textarea>
+          <p class="list-modal-hint">${escapeHtml(escopo)}</p>
+          <div class="list-modal-foot">
+            <button type="button" class="cta" data-ex-copy>${escapeHtml(t("export.copy"))}</button>
+            <button type="button" class="lst-mini" data-ex-dl>${escapeHtml(t("export.download"))}</button>
+            <button type="button" class="lst-mini" data-ex-close>${escapeHtml(t("export.close"))}</button>
+          </div>
+        </div>`;
+    }
+    pinta();
+
+    const fechar = () => { wrap.remove(); document.body.classList.remove("preview-open"); document.removeEventListener("keydown", noEsc); };
+    const noEsc = (ev) => { if (ev.key === "Escape") fechar(); };
+    document.addEventListener("keydown", noEsc);
+
+    wrap.addEventListener("click", (ev) => {
+      if (ev.target === wrap || ev.target.closest("[data-ex-close]")) { fechar(); return; }
+      const f = ev.target.closest("[data-ex-fmt]");
+      if (f) { exportFormato = f.dataset.exFmt; pinta(); return; }
+      const g = ev.target.closest("[data-ex-game]");
+      if (g) { exportJogo = g.dataset.exGame; pinta(); return; }
+
+      if (ev.target.closest("[data-ex-copy]")) {
+        const ta = wrap.querySelector(".lst-export");
+        // navigator.clipboard exige contexto seguro; o fallback do textarea
+        // cobre http:// e navegador antigo (mesmo caminho das listas).
+        const ok = () => { const b = wrap.querySelector("[data-ex-copy]"); if (b) b.textContent = t("export.copied"); };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(ta.value).then(ok, () => { ta.select(); document.execCommand("copy"); ok(); });
+        } else { ta.select(); document.execCommand("copy"); ok(); }
+        return;
+      }
+
+      if (ev.target.closest("[data-ex-dl]")) {
+        const ext = exportFormato === "csv" ? "csv" : "txt";
+        const tipo = exportFormato === "csv" ? "text/csv;charset=utf-8" : "text/plain;charset=utf-8";
+        // BOM só no CSV (é o que faz o Excel pt-BR abrir com acento certo).
+        const conteudo = (exportFormato === "csv" ? "﻿" : "") + wrap.querySelector(".lst-export").value;
+        const blob = new Blob([conteudo], { type: tipo });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `colecao-sleevu.${ext}`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    });
+  }
+
+  function bindExportButton() {
+    const btn = document.getElementById("collectionExportBtn");
+    if (!btn) return;
+    btn.hidden = ownedCards().length === 0;
+    btn.addEventListener("click", openExportModal);
+  }
+
   function bindShareButton() {
     const btn = document.getElementById("collectionShareBtn");
     if (!btn) return;
@@ -1875,7 +2019,7 @@
   // Prepara o container de leitura (esconde a UI normal da coleção).
   function prepareSharedView() {
     ["page-search", "collection-subtitle", "collection-toolbar", "collection-dashboard"].forEach((c) => { const el = document.querySelector("." + c); if (el) el.hidden = true; });
-    [elements.tabs, elements.groupsView, elements.cardsView, elements.dashboard, document.getElementById("collectionShareBtn"), document.getElementById("collectionOnboarding")].forEach((el) => { if (el) el.hidden = true; });
+    [elements.tabs, elements.groupsView, elements.cardsView, elements.dashboard, document.getElementById("collectionShareBtn"), document.getElementById("collectionExportBtn"), document.getElementById("collectionOnboarding")].forEach((el) => { if (el) el.hidden = true; });
     const sv = document.getElementById("sharedCollection");
     if (sv) { sv.hidden = false; sv.innerHTML = `<p class="empty-state">${escapeHtml(t("collection.shared.loading"))}</p>`; }
     return sv;
