@@ -9350,3 +9350,28 @@ select,
   .gf-card { flex-basis: 68px; }
   .gf-card img, .gf-noimg { width: 68px; }
 }
+
+/* Medidor de centralização (E1). A guia é um <button> de 1px de linha com uma
+   área de toque bem maior invisível em volta: no dedo, 1px é impossível de
+   pegar, e engordar a linha desalinharia a medida. */
+.ctr-box { max-width: 640px; }
+.ctr-palco { position: relative; margin: 0 auto 14px; width: fit-content; max-width: 100%; line-height: 0; touch-action: none; }
+.ctr-foto { display: block; max-width: 100%; max-height: 52vh; max-height: 52dvh; width: auto; }
+.ctr-guia {
+  position: absolute; margin: 0; padding: 0; border: 0; background: none; cursor: grab;
+  appearance: none; -webkit-appearance: none;
+}
+.ctr-guia::before { content: ""; position: absolute; background: #00e5ff; box-shadow: 0 0 0 1px rgba(0,0,0,.65); }
+.ctr-guia::after { content: ""; position: absolute; }
+.ctr-guia:focus-visible { outline: none; }
+.ctr-guia:focus-visible::before { background: #ff3d7f; }
+.ctr-v { top: 0; bottom: 0; width: 0; }
+.ctr-v::before { top: 0; bottom: 0; left: -1px; width: 2px; }
+.ctr-v::after { top: 0; bottom: 0; left: -14px; width: 28px; }
+.ctr-h { left: 0; right: 0; height: 0; }
+.ctr-h::before { left: 0; right: 0; top: -1px; height: 2px; }
+.ctr-h::after { left: 0; right: 0; top: -14px; height: 28px; }
+.ctr-res { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+.ctr-res strong { font-size: 20px; color: var(--text); font-variant-numeric: tabular-nums; margin-right: 4px; }
+.ctr-nota { margin: 12px 0 0; font-size: 12px; line-height: 1.5; color: var(--muted); }
+.ctr-file { cursor: pointer; }
