@@ -12,6 +12,11 @@
 // sozinho.
 //
 // Uso: node scripts/verifica-setup.mjs
+import { spawn } from "node:child_process";
+import { writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
 const SUPABASE_URL = "https://dlnalopazitfdgnmdguu.supabase.co";
 const ANON_KEY = "sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"; // pública (RLS protege)
 const IMG = "https://img.sleevu.app";
@@ -57,28 +62,65 @@ try {
   falta(`img.sleevu.app não respondeu (${e.message}) — domínio ainda não conectado, ou DNS propagando`);
 }
 
-// Token do R2: lista os buckets da conta. Prova as duas coisas de uma vez —
-// que o token vale e que o bucket existe com o nome esperado.
+// Token do R2: em vez de perguntar à API se ele existe, FAZ o que o espelho de
+// imagens vai fazer — sobe um objeto, lê pelo domínio público e apaga. É o
+// único teste que prova a coisa toda de uma vez: token, escopo, bucket,
+// domínio e CORS num objeto de verdade.
+//
+// A primeira versão deste check listava os buckets da conta
+// (GET /accounts/{id}/r2/buckets) e reprovou um token que pode estar
+// perfeitamente correto: um token com escopo "Object Read & Write" num bucket
+// só NÃO tem permissão de listar os buckets da conta. O teste é que estava
+// errado, não o token — e um verificador que acusa falso é pior que nenhum.
 const R2_TOKEN = process.env.R2_TOKEN || "";
 const CONTA = process.env.CLOUDFLARE_ACCOUNT_ID || "";
+const BUCKET = process.env.R2_BUCKET || "sleevu-img";
+const CHAVE = "_verifica-setup.txt";
+
+function wrangler(args) {
+  return new Promise((resolve) => {
+    const p = spawn("npx", ["--yes", "wrangler@3", ...args], {
+      env: { ...process.env, CLOUDFLARE_API_TOKEN: R2_TOKEN, CLOUDFLARE_ACCOUNT_ID: CONTA },
+      timeout: 120000
+    });
+    let saida = "";
+    p.stdout.on("data", (d) => { saida += d; });
+    p.stderr.on("data", (d) => { saida += d; });
+    p.on("close", (code) => resolve({ code, saida: saida.trim() }));
+    p.on("error", (e) => resolve({ code: -1, saida: e.message }));
+  });
+}
+
 if (R2_TOKEN && CONTA) {
-  try {
-    const r = await pega(`https://api.cloudflare.com/client/v4/accounts/${CONTA}/r2/buckets`,
-      { headers: { Authorization: `Bearer ${R2_TOKEN}` } });
-    const j = await r.json().catch(() => null);
-    if (!r.ok || !j || j.success !== true) {
-      // Token de S3 (Access Key + Secret) não serve pra esta API. Não é
-      // "errado", é outro formato — e é o engano mais provável aqui.
-      erro(`API do R2 recusou o token (HTTP ${r.status}${j && j.errors ? ` — ${j.errors.map((e) => e.message).join("; ")}` : ""}). `
-        + "Se o que foi guardado no R2_TOKEN foi o par Access Key ID/Secret do S3, ele não autentica nesta API: guarde o \"Token value\" do mesmo token.");
-    } else {
-      const nomes = (j.result && j.result.buckets ? j.result.buckets : []).map((b) => b.name);
-      ok(`token válido — bucket(s) visível(is): ${nomes.join(", ") || "(nenhum)"}`);
-      if (!nomes.length) erro("o token não enxerga bucket nenhum — confira o escopo dele");
-    }
-  } catch (e) { erro(`API do R2 inacessível: ${e.message}`); }
+  const arquivo = join(tmpdir(), CHAVE);
+  const carimbo = `verifica-setup ${new Date().toISOString()}\n`;
+  writeFileSync(arquivo, carimbo);
+  const put = await wrangler(["r2", "object", "put", `${BUCKET}/${CHAVE}`, "--file", arquivo, "--remote", "--content-type", "text/plain"]);
+  if (put.code !== 0) {
+    erro(`o token não conseguiu ESCREVER em ${BUCKET} (wrangler saiu ${put.code}). `
+      + `Confira o escopo (Object Read & Write) e o nome do bucket — este teste usou "${BUCKET}", `
+      + `mude com o campo "bucket" ao disparar o workflow. Saída:\n      ${put.saida.split("\n").slice(-6).join("\n      ")}`);
+  } else {
+    ok(`escrita no bucket ${BUCKET} funcionou`);
+    // Leitura pelo domínio público: é assim que o site vai buscar as imagens.
+    try {
+      const r = await pega(`${IMG}/${CHAVE}`, { headers: { Origin: ORIGEM } });
+      const cors = r.headers.get("access-control-allow-origin");
+      if (r.status !== 200) erro(`o objeto subiu mas img.sleevu.app devolveu HTTP ${r.status} — o domínio pode estar ligado a OUTRO bucket`);
+      else {
+        const corpo = await r.text();
+        if (corpo !== carimbo) erro("img.sleevu.app respondeu 200 mas com conteúdo diferente do que foi enviado");
+        else ok("leitura pública pelo img.sleevu.app confere byte a byte");
+        if (cors === ORIGEM || cors === "*") ok(`CORS no objeto real: ${cors}`);
+        else erro(`objeto real veio SEM CORS pra ${ORIGEM} (recebido: ${cors || "nenhum"}) — é isso que faz o "exportar imagem" sair sem foto`);
+      }
+    } catch (e) { erro(`img.sleevu.app inacessível depois do upload: ${e.message}`); }
+    const del = await wrangler(["r2", "object", "delete", `${BUCKET}/${CHAVE}`, "--remote"]);
+    if (del.code !== 0) nota(`o objeto de teste ${CHAVE} ficou no bucket (o delete saiu ${del.code}) — apague pelo painel`);
+    else ok("objeto de teste apagado");
+  }
 } else {
-  falta("sem R2_TOKEN + CLOUDFLARE_ACCOUNT_ID: não dá pra provar o token nem o bucket");
+  falta("sem R2_TOKEN + CLOUDFLARE_ACCOUNT_ID: não dá pra provar escrita nem leitura");
 }
 
 // ── 3. Supabase: whitelist de eventos ────────────────────────────────────────
@@ -119,7 +161,10 @@ try {
   if (novo.status === 401 && novo.corpo.includes("42501")) {
     erro("o TRIGGER já aceita 'export_done' (a 20260830a está aplicada), mas a POLÍTICA de RLS "
       + "da tabela events tem whitelist de nome PRÓPRIA e barrou a linha. "
-      + "Falta aplicar supabase/migrations/20260830b_events_produto_rls.sql");
+      + "Falta aplicar supabase/migrations/20260830b_events_produto_rls.sql — e se ela JÁ foi rodada, "
+      + "ela pode ter se RECUSADO a alterar (ela não mexe em checagem que olhe outra coluna além do name); "
+      + "o RAISE NOTICE dela diz qual foi o caso. Pra ver a expressão atual: "
+      + "select polname, pg_get_expr(polwithcheck, polrelid) from pg_policy where polrelid = 'public.events'::regclass;");
   } else if (controle.gravou === null || novo.gravou === null) {
     nota("inconclusivo: uma das respostas não veio como lista, então não dá pra ver se a linha entrou. "
       + "Confirme pelo painel: select prosrc from pg_proc where proname = 'events_guard';");
