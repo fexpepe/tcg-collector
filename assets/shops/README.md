@@ -10,10 +10,15 @@ O ambiente do agente não tem saída de rede pros sites das lojas, então os
 arquivos precisam ser baixados e colocados aqui à mão (logo oficial do site de
 imprensa/brand de cada uma).
 
-## Arquivos esperados
+## Arquivos
 
-- `shop_ligamagic.webp` — LigaMagic (o grupo Liga; cobre todos os jogos)
-- `shop_myp.webp` — MYP Cards
-- `shop_ebay.webp` — eBay
-- `shop_tcgplayer.webp` — TCGplayer
-- `shop_pricecharting.webp` — PriceCharting
+- `shop_ligamagic.webp` ✔ — LigaMagic (o grupo Liga; cobre todos os jogos).
+  Fonte de 400×400 com padding; recortada pro conteúdo (241×241). Fundo branco,
+  que é o que a cápsula usa nos dois temas.
+- `shop_ebay.webp` ✔ — eBay (fonte 1280×513 já com alfa, escalada pra 512).
+- **FALTA `shop_myp.webp`** — MYP Cards.
+- **FALTA `shop_tcgplayer.webp`** — TCGplayer.
+- **FALTA `shop_pricecharting.webp`** — PriceCharting.
+
+Enquanto faltarem, o `index.html` aponta pros três e o `home.js` deixa o nome em
+texto — sem ícone quebrado, mas com 404 no log (é o que mantém o smoke em 24/25).

@@ -7960,6 +7960,16 @@ select,
   opacity: 0;
 }
 .lp-shop-logo.is-loaded { opacity: 1; }
+/* O respiro do logo estava MORTO: `.lp-games-caps img` (0,1,1) vence
+   `.lp-shop-logo` (0,1,0) e mandava max-width/max-height 100%, colando o logo
+   nas bordas da cápsula. Não aparecia porque nenhum logo de loja existia — o
+   primeiro quadrado (LigaMagic) encostou na legenda. Mesmo respiro dos tiles
+   do hub. */
+.lp-shops-caps .lp-shop-logo { max-width: calc(100% - 44px); max-height: calc(100% - 36px); }
+/* Cápsula COM legenda ("todos os jogos", só a LigaMagic): o logo se centra na
+   faixa acima dela em vez de encolher — a legenda é uma linha, não metade da
+   cápsula. Sem :has, volta a sobrepor, que é exatamente o estado de hoje. */
+.lp-shop-box.has-logo:has(.lp-shop-note) .lp-shop-logo { bottom: 18px; }
 /* Cores fixas, não tokens: a cápsula é branca nos dois temas (como o hub). */
 .lp-shop-text { font-size: 17px; font-weight: 800; color: #4b4b4b; text-align: center; }
 .lp-shop-note { font-size: 11px; color: #8a90a0; }

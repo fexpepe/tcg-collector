@@ -20,12 +20,14 @@ quando o arquivo carrega e esconde o nome em texto (fallback sem erro).
 - `game_riftbound.webp` — Riftbound / League of Legends (fonte: `../brand/riftbound.webp`,
   1908×1908 com padding — cortado pro bbox do conteúdo antes de escalar)
 - `game_onepiece_carddass.webp` — Carddass Hyper Battle (tile vintage do OP)
-- **FALTA `game_unionarena.webp`** — Union Arena (13º jogo, entrou em 07/08/2026).
-  Sem o arquivo, o tile do hub mostra só o nome em texto e o `GAME_LOGO` do
-  `shared.js` fica `""` — funciona, mas destoa dos vizinhos. Pra fechar: pôr a
-  fonte em `../brand/`, converter com o ffmpeg abaixo, preencher
-  `unionarena: "game_unionarena.webp"` no `GAME_LOGO` e devolver o
-  `<img class="hub-logo">` no tile do `hub.html` (o comentário lá marca o lugar).
+- `game_unionarena.webp` — Union Arena (fonte enviada pelo Fernando em
+  2026-08-30, 384×384 com fundo branco e muito padding). **Único que NÃO tem 512
+  de largura**: o recorte do conteúdo dá 285×123, e esticar bitmap não inventa
+  detalhe — só infla o arquivo, já que o navegador ia reamostrar do mesmo jeito
+  numa tela 2×. Se um dia aparecer uma fonte maior, é só refazer com 512. O
+  fundo branco fica: a cápsula do hub é branca nos dois temas, e o branco aqui é
+  o PREENCHIMENTO das letras (que têm contorno preto) — transformá-lo em alfa
+  esvaziaria o logo.
 - `game_naruto.webp` — Naruto Card Game 2002~2006 (tile do jogo, tile vintage e
   `setLogo` de todos os sets do Naruto, via sync-naruto-vintage.mjs)
 - `game_naruto_2027.webp` — NARUTO CARD GAME novo (Bandai, mundial 2027; tile
