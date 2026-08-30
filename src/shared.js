@@ -1089,16 +1089,47 @@
   }
 
   // Câmbio USD/EUR -> BRL em memória (lido do cache; atualizado por loadFxRates).
+  // O carimbo (quando essa cotação foi buscada) anda junto: é ele que separa
+  // "cotação de hoje" de "cotação de três dias atrás servida enquanto atualiza".
+  const FX_FRESCO_MS = 86400000;      // 24h: dentro disso, nem vale ir na rede
+  const FX_SWR_MS = 2 * 86400000;     // até 48h: serve na hora e atualiza atrás
+  let fxCarimbo = 0;
   let fxRates = (function () {
     try {
       const cached = JSON.parse(localStorage.getItem("tcg-fx-brl-v1") || "null");
-      return cached && cached.r ? cached.r : null;
+      if (cached && cached.r) { fxCarimbo = Number(cached.t) || 0; return cached.r; }
+      return null;
     } catch (error) { return null; }
   })();
+  // "A cotação em uso é de hoje?" — usada pra decidir se o ponto do dia do
+  // histórico pode ser gravado (ver recordValueSnapshot).
+  function fxIdade() { return fxRates ? Date.now() - fxCarimbo : Infinity; }
+  let fxAtualizando = false;
+  function atualizaFxPorTras() {
+    if (fxAtualizando) return;
+    fxAtualizando = true;
+    fetchFxRatesSemPrazo().then((tardias) => {
+      fxAtualizando = false;
+      if (!tardias) return;
+      fxRates = tardias;
+      fxCarimbo = Date.now();
+      try { document.dispatchEvent(new CustomEvent("sleevu:fx-updated")); } catch (e) { /* sem DOM */ }
+    }).catch(() => { fxAtualizando = false; });
+  }
   let fxRetryFeito = false;
   function loadFxRates() {
+    // STALE-WHILE-REVALIDATE. A cotação já era usada vencida quando o fetch
+    // estourava o prazo — só que DEPOIS de segurar a tela por 2,5s. Aqui ela
+    // responde na hora e a atualização corre por trás: uma vez por dia, o
+    // primeiro render de valores deixa de esperar uma API de terceiro.
+    // Acima de 48h a cotação é velha demais pra servir sem conferir; volta o
+    // caminho de sempre (com prazo e retry).
+    if (fxRates && fxIdade() < FX_SWR_MS) {
+      if (fxIdade() >= FX_FRESCO_MS) atualizaFxPorTras();
+      return Promise.resolve(fxRates);
+    }
     return fetchFxRatesBRL().then((rates) => {
-      if (rates) { fxRates = rates; return fxRates; }
+      if (rates) { fxRates = rates; fxCarimbo = Date.now(); return fxRates; }
       // Estourou o tempo (ou a API falhou) e a página vai renderizar sem
       // conversão. Tenta UMA vez fora do caminho crítico, sem prazo: quando
       // chega, grava o cache de 24h e avisa quem quiser redesenhar os valores.
@@ -1108,6 +1139,7 @@
           fetchFxRatesSemPrazo().then((tardias) => {
             if (!tardias) return;
             fxRates = tardias;
+            fxCarimbo = Date.now();
             try { document.dispatchEvent(new CustomEvent("sleevu:fx-updated")); } catch (e) { /* sem DOM */ }
           });
         }, 1500);
@@ -3357,6 +3389,18 @@
     // usa o header em dólar registrava uma "queda" de 5x. Sem câmbio, sem
     // ponto: o de ontem segue valendo.
     if (currentCurrency !== "BRL" && convertMoney(1, currentCurrency, "BRL") == null) return;
+    // Câmbio vencido = ponto contaminado. A maioria das cartas é cotada em
+    // USD/EUR, então o valor da coleção passa pelo câmbio mesmo pra quem usa
+    // BRL — gravar o ponto de hoje com a cotação de ontem registra no gráfico
+    // uma "variação" que é só ruído de dólar, e o chip do Portfólio anuncia
+    // isso como se fosse mercado. Melhor pular: a atualização por trás já está
+    // a caminho (ver loadFxRates) e o ponto entra na carga seguinte; o
+    // histórico tolera buraco por construção (o anterior segue valendo).
+    //
+    // O teto de 7 dias é a válvula: se a API de câmbio ficar fora do ar dias
+    // seguidos, um ponto com cotação velha é melhor do que gráfico vazio.
+    const idadeFx = fxIdade();
+    if (idadeFx >= FX_FRESCO_MS && idadeFx < 7 * 86400000) return;
     const paraBRL = (v) => { const r = convertMoney(v, currentCurrency, "BRL"); return r == null ? v : Math.round(r * 100) / 100; };
     Object.keys(perGame || {}).forEach((g) => {
       const dados = perGame[g] || {};
