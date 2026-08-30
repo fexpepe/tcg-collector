@@ -181,6 +181,25 @@ if (existsSync(headersPath)) {
     if (!depois.includes(de)) morra(`não achei o bloco "${de.split("\n")[0]}" com no-cache no _headers.`);
     depois = depois.replace(de, para);
   }
+  // Early Hints (103): o Cloudflare Pages transforma um header `Link` em
+  // 103 Early Hints, que o navegador recebe ANTES do HTML. Sem isso, na
+  // primeira visita o CSS e a fonte só começam a baixar depois de o HTML
+  // chegar e ser escaneado — um round-trip inteiro parado no caminho do
+  // primeiro paint, justo pra quem está conhecendo o site.
+  //
+  // Só o que vale pra TODAS as páginas: o núcleo do CSS (styles.<hash>.css) e
+  // a fonte latin. As folhas por área têm nome por página (styles-decks…) e um
+  // preload errado desperdiçaria banda; o i18n é escolhido em runtime pelo
+  // idioma. A fonte precisa de `crossorigin` mesmo sendo same-origin — é a
+  // regra do CORS pra fontes, e sem ela o navegador baixa DUAS vezes.
+  const cssNucleo = assets.find((a) => a.path === "styles.css");
+  if (cssNucleo) {
+    const link = `</${nomeFinal(cssNucleo)}>; rel=preload; as=style, `
+      + `</assets/fonts/outfit-latin.woff2>; rel=preload; as=font; crossorigin`;
+    const marca = "  Speculation-Rules: \"/speculation-rules.json\"\n";
+    if (!depois.includes(marca)) morra("não achei o bloco /* pra pendurar o Link de Early Hints.");
+    depois = depois.replace(marca, `${marca}  Link: ${link}\n`);
+  }
   writeFileSync(headersPath, depois, "utf8");
 }
 
