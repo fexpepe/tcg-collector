@@ -37,7 +37,13 @@ const invariantes = [
   [/@media\s*\(pointer:\s*coarse\),\s*\(max-width:\s*700px\)\s*\{[\s\S]{0,400}?font-size:\s*16px/, "fonte de 16px nos inputs em toque (anti-zoom do iOS)"],
   [/\.login-turnstile\s*>\s*iframe\s*\{[^}]*zoom:\s*var\(--ts-scale/, "zoom do widget do Turnstile (--ts-scale) — sem ele a caixa vaza no celular"],
   [/--tabbar-lift:\s*max\(env\(safe-area-inset-bottom/, "piso do --tabbar-lift (a bottom-bar tem que subir mesmo com env() = 0 no PWA do iOS)"],
-  [/\.mobile-tabbar\s*\{[^}]*bottom:\s*var\(--tabbar-lift\)/, "bottom-bar levantada do chão (bottom: var(--tabbar-lift))"]
+  [/\.mobile-tabbar\s*\{[^}]*bottom:\s*var\(--tabbar-lift\)/, "bottom-bar levantada do chão (bottom: var(--tabbar-lift))"],
+  // O site deu retorno só por :hover durante muito tempo — que no dedo não
+  // existe, e fazia o app parecer lento sem ser. Um refactor de CSS que leve
+  // este bloco embora devolve o problema sem ninguém perceber (não quebra
+  // nada, só deixa de responder).
+  [/@media\s*\(pointer:\s*coarse\)\s*\{[\s\S]{0,900}?:active[^{]*\{[^}]*scale:/, "retorno visual do toque (:active com scale em ponteiro grosso)"],
+  [/touch-action:\s*manipulation/, "touch-action: manipulation nos controles (sem ele volta o double-tap-zoom no +1)"]
 ];
 for (const [re, nome] of invariantes) {
   if (!re.test(css)) erros.push(`regra-guarda REMOVIDA: ${nome}`);

@@ -9127,3 +9127,39 @@ select,
 @media (prefers-reduced-motion: reduce) {
   @view-transition { navigation: none; }
 }
+
+/* ============================================================================
+   TOQUE COM RESPOSTA (só em ponteiro grosso — o desktop não muda em nada).
+   O site inteiro dava retorno por :hover, que no dedo não existe: 156 regras
+   de hover contra ZERO de :active. O resultado era um app que parecia lento
+   no celular sem ser — o toque acontecia e a tela só reagia quando a ação
+   terminava. Aqui o retorno é imediato (<100ms), que é o que separa "parece
+   app" de "parece site".
+
+   `scale:` e não `transform: scale()` de propósito: a propriedade individual
+   COMPÕE com um transform existente em vez de sobrescrevê-lo. O
+   .chip-scroll-btn se posiciona com translateY(-50%) — com transform ele
+   pularia do lugar ao ser tocado. Navegador antigo ignora a linha e fica como
+   hoje (a mesma regra de progressive enhancement das View Transitions).
+
+   O movimento reduzido é atendido pela rede geral lá em cima, que zera a
+   duração da transição: o retorno continua existindo, só sem interpolação. */
+@media (pointer: coarse) {
+  button, .chip, .mtab, .tile-btn, .hub-tile, .qty-stepper button, [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+    /* Mata o atraso de 300ms do double-tap-zoom: tocar "+1" três vezes seguidas
+       dava zoom na página em vez de somar três cópias. */
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  button:active:not(:disabled),
+  .chip:active,
+  .mtab:active,
+  .tile-btn:active:not(:disabled),
+  .hub-tile:active,
+  [role="button"]:active {
+    scale: 0.96;
+    transition: scale 60ms ease;
+  }
+}

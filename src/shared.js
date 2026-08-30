@@ -1457,7 +1457,7 @@
       overlay = document.createElement("div");
       overlay.className = "cmdk-overlay";
       overlay.innerHTML = `<div class="cmdk-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("cmdk.placeholder"))}">
-          <input type="text" class="cmdk-input" placeholder="${escapeAttribute(t("cmdk.placeholder"))}" autocomplete="off" spellcheck="false">
+          <input type="text" class="cmdk-input" enterkeyhint="search" placeholder="${escapeAttribute(t("cmdk.placeholder"))}" autocomplete="off" spellcheck="false">
           <div class="cmdk-results"></div>
           <p class="cmdk-hint">${escapeHtml(t("cmdk.hint"))}</p>
         </div>`;
@@ -1777,6 +1777,22 @@
   // com tempo maior — é um aviso sério, não açúcar) e registra como erro no
   // rastreio first-party pra aparecer no /admin.
   let storageFullNotified = false;
+  // Retorno TÁTIL dos momentos em que algo entrou na coleção. É o detalhe que
+  // separa app nativo de site no celular: o dedo sente que a ação pegou, sem
+  // precisar procurar a confirmação na tela.
+  //
+  // Escopo honesto: Android/Chrome. O iOS não expõe a Vibration API — lá a
+  // chamada simplesmente não existe e o try/catch cobre. Também não vibra com
+  // movimento reduzido ligado: quem pede menos estímulo está pedindo menos
+  // estímulo, não só menos animação.
+  function vibrar(ms) {
+    try {
+      if (!navigator.vibrate) return;
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      navigator.vibrate(ms);
+    } catch (e) { /* sem suporte: segue sem tátil */ }
+  }
+
   function notifyStorageFull() {
     if (storageFullNotified) return;
     storageFullNotified = true;
@@ -6111,6 +6127,7 @@
     const qty = store.variantTotal(button.dataset.ownCardId, variant);
     const badge = qty > 0 ? `<span class="tile-qty">×${qty}</span>` : "";
     button.classList.add("added");
+    vibrar(10); // toque curto: a carta entrou (ver vibrar())
     button.setAttribute("title", t("tile.added"));
     button.innerHTML = `${TILE_ICONS.check}${badge}`;
     clearTimeout(button._flashTimer);
@@ -7937,6 +7954,7 @@
     // sync — sem isto a edição espera a varredura de 5 min em vez dos 20 s.
     marcaSuja,
     notifyStorageFull,
+    vibrar,
     errorSummary,
     loadPriceDeltas,
     loadPriceDeltas7d,

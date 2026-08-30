@@ -148,6 +148,7 @@
     vistos[chave] = 1;
     try { localStorage.setItem(CELEBRATED_KEY, JSON.stringify(vistos)); } catch (e) { /* ignora */ }
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    shared.vibrar(30); // o momento do hobby merece um toque mais longo que o do add
     if (elements.completionBar) {
       elements.completionBar.classList.remove("celebrate");
       void elements.completionBar.offsetWidth; // reinicia a animação do pulso
