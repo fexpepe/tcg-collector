@@ -106,10 +106,14 @@ try {
   // está filtrando nada e o resultado do teste de verdade não valeria nada.
   const controle = await tentaEvento("zzz_nome_invalido_de_teste");
   const novo = await tentaEvento("export_done");
+  // Os DOIS crus, sempre: na primeira rodada só o controle aparecia, e quando o
+  // teste deu inconclusivo não dava pra saber qual dos dois tinha se comportado
+  // de forma estranha — diagnóstico que esconde metade da evidência não serve.
+  nota(`controle 'zzz_nome_invalido_de_teste' → HTTP ${controle.status}: ${controle.corpo || "(corpo vazio)"}`);
+  nota(`teste    'export_done'                → HTTP ${novo.status}: ${novo.corpo || "(corpo vazio)"}`);
   if (controle.gravou === null || novo.gravou === null) {
-    nota(`inconclusivo: o anon não lê a tabela events, então não dá pra ver se a linha entrou `
-      + `(controle HTTP ${controle.status}: ${controle.corpo || "vazio"}). Confirme pelo painel: `
-      + `select prosrc from pg_proc where proname = 'events_guard';`);
+    nota("inconclusivo: uma das respostas não veio como lista, então não dá pra ver se a linha entrou. "
+      + "Confirme pelo painel: select prosrc from pg_proc where proname = 'events_guard';");
   } else if (controle.gravou) {
     erro("o events_guard aceitou um nome INVÁLIDO — a whitelist não está filtrando");
   } else if (novo.gravou) {
