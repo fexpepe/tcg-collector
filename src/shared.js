@@ -3051,7 +3051,7 @@
         const r = await pushAuthedFetch("/rest/v1/push_subs?on_conflict=user_id,endpoint", {
           method: "POST",
           headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
-          body: JSON.stringify({ user_id: s.user.id, endpoint: sub.endpoint, p256dh: j.keys.p256dh, auth: j.keys.auth, lang: getLanguage() === "pt" ? "pt" : "en" })
+          body: JSON.stringify({ user_id: s.user.id, endpoint: sub.endpoint, p256dh: j.keys.p256dh, auth: j.keys.auth, lang: ["pt", "en", "es"].includes(getLanguage()) ? getLanguage() : "pt" })
         });
         return r && r.ok ? "ok" : "error";
       } catch (e) { return "error"; }
@@ -4193,6 +4193,24 @@
         .then((r) => (r.ok ? r.json() : null)).catch(() => null);
     }
     return priceDeltasByGame[g];
+  }
+  // Janela de 7 DIAS do mesmo acumulador (price-deltas-7d.generated.json).
+  // O arquivo curto é a variação desde o snapshot anterior — e o build é
+  // diário, então ele mostra o movimento de ONTEM. Pra "caiu de preço nesta
+  // semana" isso perde a carta que caiu 20% em passos de 3% ao dia, que é
+  // justamente o caso que o aviso existe pra pegar. Cai pro arquivo curto
+  // enquanto o de 7d não estiver publicado (deploy mais velho que esta
+  // mudança), assim a ordem entre deploy e visita não importa.
+  const priceDeltas7dByGame = {};
+  function loadPriceDeltas7d(game) {
+    const g = normalizeGame(game);
+    if (!priceDeltas7dByGame[g]) {
+      const dataDir = gameDataDir(g);
+      priceDeltas7dByGame[g] = fetch(dataDir + "price-deltas-7d.generated.json")
+        .then((r) => (r.ok ? r.json() : null)).catch(() => null)
+        .then((d) => (d && d.c ? d : loadPriceDeltas(g)));
+    }
+    return priceDeltas7dByGame[g];
   }
   function priceDeltaChipHtml(pct, from) {
     const up = pct > 0;
@@ -7921,6 +7939,7 @@
     notifyStorageFull,
     errorSummary,
     loadPriceDeltas,
+    loadPriceDeltas7d,
     basePricingId,
     contributePrice,
     toBrl,
