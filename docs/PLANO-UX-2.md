@@ -586,6 +586,56 @@ temática: P8 primeiro porque é ele que protege o resto.
   de set deve dizer `max-age=31536000`; o header `Link` deve aparecer; e o
   `boot.<hash>.js` deve carregar como script único no `<head>`.
 
+**Etapa 2 — "o toque" — entregue em 2026-08-30.** Quatro commits. Tudo que muda
+no celular está atrás de `pointer: coarse` ou `display-mode: standalone` — o
+desktop foi conferido byte a byte.
+
+- **M1** ✔ — o número que resumia o problema: **0 regras `:active` contra 156
+  de `:hover`**. Todo o retorno do site era hover, que no dedo não existe.
+  Agora: estado de pressão (`scale .96`, 60ms) em botão/chip/tabbar/tile/
+  hub-tile, `touch-action: manipulation` (que não existia em lugar nenhum do
+  repo — sem ele, tocar "+1" três vezes dava zoom em vez de somar três
+  cópias), `-webkit-tap-highlight-color` e `user-select: none` nos controles,
+  `enterkeyhint=search` nos 12 campos de busca (existia **um** no site) e
+  retorno tátil de 10ms no add e 30ms no set 100% (Android; iOS não tem a API;
+  desligado no movimento reduzido). Decisão que fez a implementação funcionar:
+  a propriedade individual `scale` em vez de `transform: scale()` — ela
+  **compõe** com transform de layout, e o `.chip-scroll-btn` (posicionado com
+  `translateY(-50%)`) pularia do lugar ao ser tocado.
+- **M3** ✔ — o `controllerchange` já disparava e ninguém escutava: toast
+  "Versão nova · Recarregar" (só quando JÁ havia SW no comando — senão toda
+  primeira visita veria "versão nova"), `reg.update()` no `visibilitychange`
+  (sessão parada nunca pedia atualização) e `overscroll-behavior-y: contain`
+  só no app instalado, matando o pull-to-refresh que recarregava a página e
+  levava junto scroll e filtros.
+- **M9a** ✔ — `listas` e `mydecks` entraram no `AUTH_PAGES`: deslogado, as duas
+  gravavam local o que nunca sobe pra nuvem. E deck/binder ganharam o sheet
+  nativo de compartilhar (o helper devolve `true` só quando o sheet abriu, então
+  o caminho antigo de copiar+prompt segue intacto no desktop); o PNG de vendas
+  ganhou o `share: true` que a vitrine da Coleção já tinha.
+- **M9b** ✔ — `navigator.storage.persist()` quando há coleção a proteger (o
+  local-first não tinha defesa nenhuma contra eviction), `setAppBadge` no push
+  + `clearAppBadge` no boot, a bolinha de novidades propagada pro botão do
+  menu (vivia atrás de dois toques, invisível no celular) e o
+  "coleção atualizada em X" no perfil público, com o `updated_at` que já
+  chegava e era descartado.
+- **Guardas novas** no `check-mobile`: `:active` e `touch-action` presentes —
+  sumir esse bloco num refactor não quebra nada, só devolve o problema calado.
+- **Um erro pego pela suíte:** a primeira versão do M3 guardava o bloco com
+  `"serviceWorker" in navigator`, que passa quando a chave existe valendo
+  `undefined` (o sandbox dos testes) — 87 testes caíram e a guarda virou
+  `navigator.serviceWorker`. Nada disso chegou a ser publicado.
+- **Validação:** 156 testes, `check`/`check-mobile`/orçamento de peso, smoke
+  23/24 (a falha é o 404 dos logos de loja, pendência sua) e testes dirigidos
+  de navegador: 390px com pressão em `scale=0.96` e volta a `none`; desktop com
+  `touch-action: auto` e `scale: none` no clique; toast ausente na 1ª
+  instalação e presente em página controlada; deslogado barrado em listas/
+  my-decks com decks/cards/sets e `?s=` abertos; persistência pedida só com
+  coleção.
+- **Não deu pra ver aqui:** o "atualizada em" do perfil público exige dado do
+  Supabase, que o ambiente não alcança — a data cai fora quando inválida, então
+  o pior caso é a linha não nascer.
+
 ---
 
 ## 7. O que a verificação corrigiu (pra não repetir o erro do plano 1)
