@@ -9175,3 +9175,44 @@ select,
   html, body { overscroll-behavior-y: contain; }
 }
 .dash-profile-updated { display: block; font-size: 12px; color: var(--subtle); margin-top: 2px; }
+
+/* Convite pra instalar o app (aparece uma vez, no toque, pra quem já tem
+   coleção). Fica ACIMA da tabbar — cobrir a navegação com um convite é o
+   anúncio que todo mundo fecha com raiva. */
+.pwa-invite {
+  position: fixed; z-index: 60;
+  left: 10px; right: 10px;
+  bottom: calc(var(--tabbar-lift, 10px) + var(--tabbar-h, 60px) + 8px);
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 12px 14px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+.pwa-invite-txt { display: grid; gap: 2px; flex: 1 1 180px; min-width: 0; }
+.pwa-invite-txt strong { font-size: 14px; }
+.pwa-invite-txt span { font-size: 12px; color: var(--muted); }
+.pwa-invite-acts { display: flex; gap: 8px; margin-left: auto; }
+.pwa-invite-no { background: none; border: 0; color: var(--muted); font-size: 13px; padding: 8px 6px; }
+.pwa-invite-yes { background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 999px; font-size: 13px; font-weight: 700; padding: 9px 16px; }
+
+/* Folha de instalação do iOS: dois passos ilustrados no lugar do alert nativo
+   (que some em webview de Instagram/Facebook — o tráfego que vem de grupo). */
+.ios-sheet { position: fixed; inset: 0; z-index: 70; display: grid; place-items: end center; }
+.ios-sheet-backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.5); }
+.ios-sheet-panel {
+  position: relative; width: min(460px, calc(100vw - 20px));
+  margin-bottom: max(env(safe-area-inset-bottom, 0px), 12px);
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 16px; padding: 20px 18px 22px;
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.45);
+}
+.ios-sheet-panel h2 { margin: 0 0 14px; font-size: 17px; }
+.ios-sheet-x { position: absolute; top: 8px; right: 8px; width: 40px; height: 40px; background: none; border: 0; color: var(--muted); font-size: 22px; line-height: 1; }
+.ios-sheet-steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.ios-sheet-steps li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text); }
+.ios-sheet-n {
+  flex: none; width: 24px; height: 24px; border-radius: 50%;
+  background: var(--accent); color: var(--accent-ink);
+  display: grid; place-items: center; font-size: 12px; font-weight: 800;
+}
+.ios-sheet-icon { font-size: 17px; color: var(--accent); }

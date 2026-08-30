@@ -636,6 +636,45 @@ desktop foi conferido byte a byte.
   Supabase, que o ambiente não alcança — a data cai fora quando inválida, então
   o pior caso é a linha não nascer.
 
+**Etapa 3 — "voltar e instalar" — entregue em 2026-08-30.** Dois commits, os
+dois gateados no toque.
+
+- **M2** ✔ — o achado mais grave da auditoria mobile (zero `popstate` no site
+  todo): com o popup de carta aberto, o botão voltar do Android saía da página
+  inteira, e no app instalado saía do app. Agora abrir empilha uma entrada
+  (`pushState`) e o voltar fecha o popup. Três cuidados no código: empilha
+  **uma vez por sessão de popup** (trocar de carta só reescreve o `?card=`);
+  `openFromUrl` **não** empilha (a URL já chegou com `?card=` de um link
+  compartilhado — ali voltar tem que sair da página); e fechar pelo ×/Escape
+  **desfaz** a entrada, senão o voltar seguinte não faria nada visível, que é a
+  sensação de botão travado. Junto: arrastar o painel pra baixo fecha, só com
+  o conteúdo no topo e só em movimento claramente vertical.
+- **M4** ✔ — o convite de instalação saiu de dentro do menu de conta: banner
+  acima da tabbar, uma vez, só no toque e só pra quem tem 10+ cartas
+  (convidar quem acabou de chegar queima a única chance de perguntar). O iOS
+  ganhou uma folha com os dois passos no lugar do `window.alert` — que é
+  suprimido em webview de Instagram/Facebook, justo o tráfego que vem de
+  grupo. E `share_target` no manifest: compartilhar o nome de uma carta de
+  qualquer app cai na busca do Sleevu.
+- **Um bug que só o navegador pegaria:** a primeira versão do convite tentava
+  aparecer uma vez no boot — mas o `beforeinstallprompt` do Chrome chega
+  *depois* dele. O convite nunca nasceria no aparelho mais comum. Passou a
+  escutar o evento também.
+- **Fora de escopo, com motivo:** o mesmo tratamento de voltar no menu e na
+  paleta de comandos (dois overlays empilhando histórico precisam de um dono
+  único da entrada — desenho pra outro commit; os dois fecham por clique fora
+  e Escape). E os **screenshots do manifest**: gerei os quatro aqui e as
+  cartas saíram em cinza, porque este ambiente não alcança os CDNs de imagem.
+  Precisam ser capturados de produção — mesmo caminho dos logos de loja.
+- **Validação:** 156 testes, os três checks, smoke 23/24, e testes dirigidos
+  de navegador: voltar fecha o popup e **continua** na página sem `?card=`; o
+  × não deixa entrada morta (o voltar seguinte navega de verdade); desktop
+  segue saindo da página como sempre; o gesto foi testado nos quatro limites
+  (fecha pra baixo no topo; não fecha com conteúdo rolado, pra cima, nem em
+  arrasto oblíquo); convite não aparece sem coleção, aparece com 12 cartas
+  terminando em y=766 com a tabbar em 774, some pra sempre ao dispensar, e o
+  iPhone simulado recebe a folha sem nenhum alert nativo.
+
 ---
 
 ## 7. O que a verificação corrigiu (pra não repetir o erro do plano 1)

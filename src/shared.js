@@ -1787,6 +1787,97 @@
     } catch (e) { return false; }
   }
 
+  // --- Convite pra instalar (PWA) ---
+  // O beforeinstallprompt já era capturado, mas o único caminho pra usá-lo era
+  // um item escondido no menu de conta — ou seja, quem não fuça o menu nunca
+  // soube que dá pra instalar. E instalado é onde as coisas que já existem
+  // passam a valer: abre offline, os atalhos aparecem, o push chega e a
+  // bolinha no ícone (setAppBadge) faz sentido.
+  //
+  // Aparece UMA vez, no toque, e só pra quem já tem o que proteger: coleção com
+  // 10+ cartas. Convidar quem acabou de chegar a instalar um app é o anúncio
+  // que todo mundo fecha sem ler — e queima a única chance de perguntar.
+  const PWA_INVITE_KEY = "tcg-pwa-invite-v1";
+  function conviteJaResolvido() {
+    try { return !!localStorage.getItem(PWA_INVITE_KEY); } catch (e) { return true; }
+  }
+  function fechaConvite(elemento, motivo) {
+    try { localStorage.setItem(PWA_INVITE_KEY, motivo); } catch (e) { /* segue */ }
+    if (elemento) elemento.remove();
+  }
+  function initInstallInvite() {
+    // O beforeinstallprompt do Chrome costuma chegar DEPOIS do boot (ele espera
+    // um sinal de engajamento com a página). Tentar uma vez só no carregamento
+    // fazia o convite nunca nascer no aparelho mais comum — por isso a mesma
+    // função também escuta o evento que o captura.
+    document.addEventListener("sleevu:installable", tentaConvite);
+    tentaConvite();
+  }
+  function tentaConvite() {
+    if (document.querySelector(".pwa-invite")) return;
+    if (conviteJaResolvido() || !canInstallPWA()) return;
+    try { if (!(window.matchMedia && window.matchMedia("(pointer: coarse)").matches)) return; } catch (e) { return; }
+    let cartas = 0;
+    try { cartas = GAME_SLUGS.reduce((n, g) => n + createCollectionStore(g).totalQuantity(), 0); } catch (e) { return; }
+    if (cartas < 10) return;
+
+    const el = document.createElement("div");
+    el.className = "pwa-invite";
+    el.setAttribute("role", "dialog");
+    el.setAttribute("aria-label", t("pwa.invite.title"));
+    el.innerHTML = `<div class="pwa-invite-txt">
+        <strong>${escapeHtml(t("pwa.invite.title"))}</strong>
+        <span>${escapeHtml(t("pwa.invite.body"))}</span>
+      </div>
+      <div class="pwa-invite-acts">
+        <button type="button" class="pwa-invite-no">${escapeHtml(t("pwa.invite.dismiss"))}</button>
+        <button type="button" class="pwa-invite-yes">${escapeHtml(t("pwa.invite.cta"))}</button>
+      </div>`;
+    document.body.appendChild(el);
+    el.querySelector(".pwa-invite-no").addEventListener("click", () => fechaConvite(el, "no"));
+    el.querySelector(".pwa-invite-yes").addEventListener("click", () => {
+      fechaConvite(el, "yes");
+      pwaInstallFlow();
+    });
+  }
+
+  // Instalar de verdade: prompt nativo no Android, folha de instruções no iOS
+  // (que não tem prompt nenhum). Compartilhada pelo convite e pelo item do menu.
+  async function pwaInstallFlow() {
+    if (deferredInstallPrompt) {
+      deferredInstallPrompt.prompt();
+      try { await deferredInstallPrompt.userChoice; } catch (e) { /* ignora */ }
+      deferredInstallPrompt = null;
+      document.dispatchEvent(new CustomEvent("sleevu:installable"));
+      return;
+    }
+    if (isIOSDevice()) mostraFolhaIOS();
+  }
+
+  // O iOS não expõe beforeinstallprompt: instalar lá é um fluxo de dois passos
+  // dentro do Safari. Isso era um window.alert — texto corrido, sem o desenho
+  // do botão, e suprimido em webview (Instagram/Facebook), onde simplesmente
+  // não acontecia nada. Agora é uma folha com os dois passos numerados.
+  function mostraFolhaIOS() {
+    const existente = document.querySelector(".ios-sheet");
+    if (existente) existente.remove();
+    const el = document.createElement("div");
+    el.className = "ios-sheet";
+    el.innerHTML = `<div class="ios-sheet-backdrop" data-ios-close></div>
+      <section class="ios-sheet-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("pwa.ios.title"))}">
+        <button type="button" class="ios-sheet-x" data-ios-close aria-label="${escapeAttribute(t("modal.close"))}">×</button>
+        <h2>${escapeHtml(t("pwa.ios.title"))}</h2>
+        <ol class="ios-sheet-steps">
+          <li><span class="ios-sheet-n">1</span> ${escapeHtml(t("pwa.ios.step1"))} <span class="ios-sheet-icon" aria-hidden="true">&#x2934;</span></li>
+          <li><span class="ios-sheet-n">2</span> ${escapeHtml(t("pwa.ios.step2"))}</li>
+        </ol>
+      </section>`;
+    document.body.appendChild(el);
+    el.addEventListener("click", (event) => {
+      if (event.target.closest("[data-ios-close]")) el.remove();
+    });
+  }
+
   // --- Versão nova disponível ---
   // O site publica todo dia às 06:20. O service worker faz skipWaiting, então a
   // troca acontece sozinha — só que a PÁGINA aberta segue rodando o código
@@ -4668,6 +4759,31 @@
     const previewCosts = createCostsStore(); // custo "Paguei" (global, modo investidor)
 
     document.addEventListener("click", handleClick);
+    window.addEventListener("popstate", () => {
+      if (!activeCard) return; // não é nossa entrada (ou já fechamos)
+      close({ viaVolta: true });
+    });
+
+    // Arrastar o painel pra baixo fecha — o primeiro gesto que quem usa app
+    // tenta num painel desses. Só vale com o conteúdo NO TOPO (scrollTop 0),
+    // senão o gesto brigaria com a rolagem interna do painel; e exige que o
+    // movimento seja claramente vertical, pra não disparar em rolagem oblíqua.
+    let toqueY = null;
+    let toqueX = null;
+    document.addEventListener("touchstart", (event) => {
+      toqueY = null;
+      const panel = event.target.closest("#cardPreviewModal .card-preview-panel");
+      if (!panel || panel.scrollTop > 0) return;
+      toqueY = event.touches[0].clientY;
+      toqueX = event.touches[0].clientX;
+    }, { passive: true });
+    document.addEventListener("touchend", (event) => {
+      if (toqueY == null) return;
+      const dy = event.changedTouches[0].clientY - toqueY;
+      const dx = event.changedTouches[0].clientX - toqueX;
+      toqueY = null;
+      if (dy > 80 && Math.abs(dy) > 2 * Math.abs(dx)) close();
+    }, { passive: true });
     // Salva o preço BR digitado ao sair do campo (change = blur ou Enter).
     // Aceita vírgula ou ponto como decimal ("12,50", "12.50", "1.250,00").
     document.addEventListener("change", (event) => {
@@ -4747,25 +4863,45 @@
     // openFromUrl() faz o caminho de volta: cada página chama depois que o
     // catálogo dela carrega, e o popup reabre sozinho. É também onde as páginas
     // /card/<slug>.html do Google aterrissam (detail.html?...&card=<id>).
-    function stampCardUrl(cardId) {
+    //
+    // NO TOQUE a abertura vira uma ENTRADA de histórico (pushState) em vez de
+    // uma troca de URL. O motivo: com o popup aberto, o botão voltar do Android
+    // — o gesto mais treinado que existe nesse aparelho — saía da página
+    // inteira; no app instalado, saía do app. Agora ele fecha o popup, como em
+    // qualquer app. No ponteiro fino nada muda (replaceState de sempre): lá o
+    // voltar do navegador tem outro contrato, e Escape/× já resolvem.
+    const gestoDeVolta = () => {
+      try { return window.matchMedia && window.matchMedia("(pointer: coarse)").matches; } catch (e) { return false; }
+    };
+    let entradaNoHistorico = false; // empilhamos uma entrada por sessão de popup?
+
+    function stampCardUrl(cardId, empilha) {
       try {
         const url = new URL(location.href);
         if (cardId) url.searchParams.set("card", cardId); else url.searchParams.delete("card");
-        history.replaceState(history.state, "", url);
+        if (empilha) history.pushState({ sleevuPreview: 1 }, "", url);
+        else history.replaceState(history.state, "", url);
       } catch (e) { /* history bloqueado: o popup funciona igual, só não linka */ }
     }
     function openFromUrl() {
       let cardId = null;
       try { cardId = new URLSearchParams(location.search).get("card"); } catch (e) { return false; }
       if (!cardId || !getCard(cardId)) return false;
-      open(cardId);
+      open(cardId, undefined, { semHistorico: true });
       return true;
     }
 
     function open(cardId, variant, opts) {
       activeCard = getCard(cardId);
       if (!activeCard) return;
-      stampCardUrl(activeCard.id);
+      // Empilha UMA vez por sessão de popup: trocar de carta com o popup aberto
+      // (ou de variante) só reescreve o ?card=, senão um voltar por carta vista.
+      // openFromUrl não empilha — a URL JÁ chegou com ?card= (link
+      // compartilhado, página /card/<slug> do Google), e ali voltar tem que
+      // sair da página, que é de onde a pessoa veio.
+      const empilha = gestoDeVolta() && !entradaNoHistorico && !(opts && opts.semHistorico);
+      stampCardUrl(activeCard.id, empilha);
+      if (empilha) entradaNoHistorico = true;
       logCardView(activeCard); // "mais vistas": 1 view por carta por sessão (anônimo)
       // Contexto graded (opcional): muda a busca das lojas (eBay/PriceCharting já
       // vão com a graduadora+nota) e mostra o selo da nota no topo do modal.
@@ -4993,11 +5129,23 @@
       if (det && window.matchMedia && window.matchMedia("(max-width: 720px)").matches) det.open = false;
     }
 
-    function close() {
+    function close(opts) {
+      // viaVolta = quem fechou foi o botão voltar (o navegador JÁ tirou a
+      // entrada do histórico). Fechando pelo × / backdrop / Escape somos nós
+      // que precisamos tirá-la — senão o voltar seguinte não faz nada visível,
+      // que é a pior sensação possível ("o botão travou").
+      const viaVolta = !!(opts && opts.viaVolta);
       const modal = document.getElementById("cardPreviewModal");
       if (modal) modal.remove();
       activeCard = null;
-      stampCardUrl(null); // a URL volta a ser a da página, sem o ?card=
+      if (entradaNoHistorico) {
+        entradaNoHistorico = false;
+        // O history.back() dispara um popstate — mas activeCard já é null acima,
+        // então o ouvinte sai na primeira linha e não fecha nada duas vezes.
+        if (!viaVolta) { try { history.back(); } catch (e) { stampCardUrl(null); } }
+      } else if (!viaVolta) {
+        stampCardUrl(null); // a URL volta a ser a da página, sem o ?card=
+      }
       document.body.classList.remove("preview-open");
       if (openerElement && document.contains(openerElement)) {
         openerElement.focus();
@@ -9876,14 +10024,8 @@
       if (el) el.hidden = !canInstallPWA();
     }
     async function pwaInstall() {
-      if (deferredInstallPrompt) {
-        deferredInstallPrompt.prompt();
-        try { await deferredInstallPrompt.userChoice; } catch (e) { /* ignora */ }
-        deferredInstallPrompt = null;
-        updateInstallItem();
-      } else if (isIOSDevice()) {
-        window.alert(t("pwa.iosHint"));
-      }
+      await pwaInstallFlow(); // prompt no Android, folha de 2 passos no iOS
+      updateInstallItem();
     }
     document.addEventListener("sleevu:installable", updateInstallItem);
 
@@ -10403,7 +10545,8 @@
   // Abriu o app = viu o aviso: a bolinha do ícone sai (o par do setAppBadge
   // que o sw.js põe ao receber o push).
   try { if (navigator.clearAppBadge) navigator.clearAppBadge().catch(() => {}); } catch (e) { /* sem suporte */ }
-  initNewsBadge(); // bolinha "novo" nos links de Novidades (footer + menu)
+  initNewsBadge();
+  initInstallInvite(); // bolinha "novo" nos links de Novidades (footer + menu)
   initPartnerBanner();
   initThemeToggle();
   initCollectorToggle(); // depois do tema: insere o olhinho ANTES do botão de tema
