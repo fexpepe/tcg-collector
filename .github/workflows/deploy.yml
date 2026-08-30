@@ -564,6 +564,16 @@ jobs:
       - name: Calendário de lançamentos (.ics + JSON da página)
         run: node scripts/build-releases.mjs
 
+      # Mercado do jogo: recorte PUBLICO e ja hidratado das altas/quedas do dia
+      # e do indice de 30 dias, um arquivo por jogo. Os dois insumos ja eram
+      # publicados (price-movers e market-index, do sync-price-history) e so o
+      # Portfolio, atras de login, os lia. O join com nome/imagem sai AQUI pra a
+      # pagina publica fazer uma requisicao so — o Portfolio faz baixando o
+      # chunk inteiro do set de cada carta, o que nao serve pra quem vem do
+      # Google. Roda em todo deploy: no build rapido os insumos vem do cache.
+      - name: Mercado do jogo (trilho de altas e quedas)
+        run: node scripts/build-market.mjs
+
       # Reparte o monólito de preços de cada jogo em chunks POR SET (espelhando
       # os chunks de carta) e liga a flag `pc` no manifest. Roda em TODO deploy
       # pela mesma razão do enrich-manifest: no build rápido os syncs são

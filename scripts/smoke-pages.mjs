@@ -57,9 +57,10 @@ for (const pagina of PAGINAS) {
   page.on("response", (r) => {
     // Artefatos de BUILD só existem depois do build completo — ausentes
     // localmente: os chunks de preço e o calendário de lançamentos
-    // (scripts/build-releases.mjs). Nos dois casos a página tem estado
-    // vazio próprio, que é o comportamento certo sem o arquivo.
-    if (r.status() >= 400 && r.url().startsWith(BASE) && !/price-(movers|deltas)|releases\.generated/.test(r.url())) {
+    // (build-releases.mjs) e o trilho de mercado (build-market.mjs). Nos
+    // três casos a página tem estado vazio próprio, que é o comportamento
+    // certo sem o arquivo.
+    if (r.status() >= 400 && r.url().startsWith(BASE) && !/price-(movers|deltas)|releases\.generated|market\.generated/.test(r.url())) {
       quebrados.push(`${r.status()} ${new URL(r.url()).pathname}`);
     }
   });
