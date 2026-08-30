@@ -90,3 +90,8 @@ out/
 # deploy, derivados dos manifests. O .json já cai no data/*.generated.json acima;
 # o .ics mora na raiz (é a URL pública que se assina) e precisa da linha própria.
 lancamentos.ics
+
+# Symlink de node_modules (o ambiente de teste aponta pro node global). A regra
+# com barra acima NAO pega symlink: pro git ele e um arquivo, nao um diretorio —
+# e um link quebrado no runner mata o wrangler no stat.
+node_modules
