@@ -57,6 +57,13 @@ jobs:
       - name: Catálogo íntegro (ids duplicados, carta quebrada)
         run: node scripts/lint-catalog.mjs
 
+      # O deploy funde theme.js+game.js num boot.js só (bundle-boot.mjs). A fusão
+      # depende do formato exato das duas tags no <head> das 33 páginas — mexer
+      # na indentação ou pôr um script entre elas quebraria o boot do site
+      # inteiro, e só em produção. Aqui isso vira erro de CI.
+      - name: Par theme+game fundível (usado pelo deploy)
+        run: node scripts/bundle-boot.mjs --check
+
       - name: Sintaxe dos scripts de build
         run: for f in scripts/*.mjs scripts/lib/*.mjs; do node --check "$f"; done
 
@@ -64,3 +71,11 @@ jobs:
         run: |
           npx --yes esbuild --minify --charset=utf8 --outdir=/tmp/ci-min src/*.js
           npx --yes esbuild --minify --charset=utf8 --outfile=/tmp/ci-sw.js sw.js
+          npx --yes esbuild --minify --outfile=/tmp/ci-min/styles.min.css styles.css
+
+      # O shared.js e o núcleo do CSS viajam em TODA página deste site sem
+      # bundler: se engordarem sem ninguém olhar, o "parece app" some aos
+      # poucos e nenhum teste acusa. Mede o que o usuário recebe (minificado +
+      # gzip) contra tetos versionados no próprio script.
+      - name: Orçamento de peso do app shell
+        run: node scripts/check-size.mjs /tmp/ci-min

@@ -434,6 +434,11 @@ caminho):
   fórmula nova). Sem as duas pontas, a linha não nasce (regra do bloco sem
   dado).
 
+> **Este plano está concluído** (pacotes 1–6 entregues; F5 e M10c ficaram com
+> o Fernando). A segunda safra — performance sem perder qualidade + 10
+> melhorias + 10 features novas — vive em [PLANO-UX-2.md](PLANO-UX-2.md)
+> (análise de 2026-08-29).
+
 **Pacote 6 — entregue em 2026-08-29** (F1, F4, M8, F7; **F5 adiado**):
 
 - **F1** ✔ — Analisador de troca (`troca.html`, página neutra, exige login):

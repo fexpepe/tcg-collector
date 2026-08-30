@@ -117,21 +117,28 @@
     } catch (e) { el.hidden = true; /* seção é opcional */ }
   }
 
-  // "Notificação" serverless: cruza a wishlist com os deltas semanais de preço
-  // (price-deltas do build) e avisa das QUEDAS (>= 3%) — hora boa de comprar.
-  // Sem histórico ainda (primeira semana) ou sem quedas, fica invisível.
+  // "Notificação" serverless: cruza a wishlist com os deltas de preço do build e
+  // avisa das QUEDAS (>= 5%) — hora boa de comprar. Sem histórico ainda
+  // (primeira semana) ou sem quedas, fica invisível.
+  //
+  // Usa a janela de 7 DIAS, a mesma do robô de push (send-wishlist-push.mjs), e
+  // pelos dois mesmos motivos: o texto promete "esta semana", e o arquivo de 24h
+  // (que era o usado aqui, apesar do comentário dizer "semanais") só enxerga o
+  // movimento de ontem. O corte também é o mesmo -5% do robô — com dois cortes
+  // diferentes, a página e a notificação discordavam sobre o que é queda.
+  const DROP_PCT = -5; // mesmo corte do robô de push (send-wishlist-push.mjs)
   async function renderDropNotice() {
     const el = document.getElementById("wishDrops");
     if (!el) return;
     try {
-      const perGame = await Promise.all(shared.GAME_SLUGS.map((g) => shared.loadPriceDeltas(g)));
+      const perGame = await Promise.all(shared.GAME_SLUGS.map((g) => shared.loadPriceDeltas7d(g)));
       const deltas = {};
       perGame.forEach((d) => { if (d && d.c) Object.assign(deltas, d.c); });
       const drops = [];
       cards.forEach((card) => {
         if (!wishlist.hasCard(card.id)) return;
         const pct = deltas[card.id] != null ? deltas[card.id] : deltas[shared.basePricingId(card.id)];
-        if (pct != null && pct <= -3) drops.push({ card, pct });
+        if (pct != null && pct <= DROP_PCT) drops.push({ card, pct });
       });
       if (!drops.length) { el.hidden = true; return; }
       drops.sort((a, b) => a.pct - b.pct);

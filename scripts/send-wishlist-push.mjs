@@ -42,14 +42,24 @@ async function loadDeltas(dir) {
   return get("price-deltas.generated.json");
 }
 
-const [pkDeltas, lcDeltas, opDeltas] = await Promise.all([
-  loadDeltas("data/"), loadDeltas("data/lorcana/"), loadDeltas("data/onepiece/")
-]);
-const deltasByGame = {
-  pokemon: (pkDeltas && pkDeltas.c) || {},
-  lorcana: (lcDeltas && lcDeltas.c) || {},
-  onepiece: (opDeltas && opDeltas.c) || {}
+// TODO jogo que tem histórico de preço publicado. Eram três aqui (Pokémon,
+// Lorcana e One Piece) enquanto os outros já publicavam deltas fazia tempo: a
+// wishlist de Magic ou Yu-Gi-Oh! — os dois maiores catálogos do site — nunca
+// casava com queda nenhuma, e nem erro dava, porque jogo fora do mapa vira {}
+// mais abaixo. O aviso simplesmente não existia pra esses usuários.
+//
+// Naruto, HxH e JUMP ficam de fora porque não têm preço nenhum (não rodam o
+// sync-price-history no deploy) — não é esquecimento, é ausência de fonte.
+const DIRS_POR_JOGO = {
+  pokemon: "data/", lorcana: "data/lorcana/", onepiece: "data/onepiece/",
+  magic: "data/magic/", fab: "data/fab/", gundam: "data/gundam/",
+  dbfw: "data/dbfw/", ygo: "data/ygo/", digimon: "data/digimon/",
+  riftbound: "data/riftbound/", unionarena: "data/unionarena/"
 };
+const jogos = Object.keys(DIRS_POR_JOGO);
+const baixados = await Promise.all(jogos.map((g) => loadDeltas(DIRS_POR_JOGO[g])));
+const deltasByGame = Object.fromEntries(jogos.map((g, i) => [g, (baixados[i] && baixados[i].c) || {}]));
+console.log(`[push] deltas: ${jogos.map((g, i) => `${g}=${Object.keys(deltasByGame[g]).length}`).join(" ")}`);
 // Sem process.exit daqui em diante (fecha handles pendentes de fetch no Windows);
 // os "returns" são só fluxo normal — o processo termina sozinho, exit code 0.
 if (!Object.values(deltasByGame).some((d) => Object.keys(d).length)) {
@@ -79,7 +89,8 @@ async function run() {
 
   const MSG = {
     pt: (n, worst) => ({ title: "Sleevu — quedas na sua wishlist", body: `${n} carta${n > 1 ? "s" : ""} da sua wishlist caiu${n > 1 ? "ram" : ""} de preço esta semana (até ${worst}%). Toque pra ver.` }),
-    en: (n, worst) => ({ title: "Sleevu — wishlist price drops", body: `${n} card${n > 1 ? "s" : ""} on your wishlist dropped in price this week (up to ${worst}%). Tap to see.` })
+    en: (n, worst) => ({ title: "Sleevu — wishlist price drops", body: `${n} card${n > 1 ? "s" : ""} on your wishlist dropped in price this week (up to ${worst}%). Tap to see.` }),
+    es: (n, worst) => ({ title: "Sleevu — bajadas en tu lista de deseos", body: `${n} carta${n > 1 ? "s" : ""} de tu lista de deseos bajó${n > 1 ? "aron" : ""} de precio esta semana (hasta ${worst}%). Toca para ver.` })
   };
 
   let sent = 0, skipped = 0, pruned = 0;

@@ -84,6 +84,11 @@ Turnstile no login, SMTP próprio (Resend), CI com testes e guardas de mobile.
 
 ## 🔜 Próximos passos (em ordem)
 
+> A segunda análise competitiva (2026-08-29) e o plano de execução — trilha de
+> performance sem perder qualidade, 10 melhorias, 10 features e extras — estão
+> em [docs/PLANO-UX-2.md](docs/PLANO-UX-2.md). O item 1 abaixo (preço BR/MYP)
+> ganhou um caminho novo lá (F1: a API pública da MYP tem Swagger atualizado).
+
 ### 0. Preço da Comunidade + graded no card — **F0 a F5 no ar; só falta a F6**
 Plano e estado por fase em `docs/COMMUNITY-PRICES.md`. Prontas: F0 (merge de
 preço por condição), F1 (SQL aplicado e verificado), F2 (contribuição + toggle em
