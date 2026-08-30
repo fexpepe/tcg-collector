@@ -16,7 +16,8 @@ imprensa/brand de cada uma).
   Fonte de 400×400 com padding; recortada pro conteúdo (241×241). Fundo branco,
   que é o que a cápsula usa nos dois temas.
 - `shop_ebay.webp` ✔ — eBay (fonte 1280×513 já com alfa, escalada pra 512).
-- **FALTA `shop_myp.webp`** — MYP Cards.
+- **FALTA `shop_myp.webp`** — MYP Cards. Fica na fileira mesmo sem o arquivo
+  (decisão do Fernando, 2026-08-30): o ícone vem depois.
 - **FALTA `shop_tcgplayer.webp`** — TCGplayer.
 - **FALTA `shop_pricecharting.webp`** — PriceCharting.
 
