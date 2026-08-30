@@ -357,7 +357,13 @@ allowlist.
 
 ## 4. As 10 features (F1–F10)
 
-### F1 — Preço BR: destravar via API pública da MYP · M
+### F1 — Preço BR: destravar via API pública da MYP · M — **ADIADO**
+> **Decisão do Fernando (2026-08-30): adiado.** Ele não tem acesso à API da
+> MYP, e este ambiente não alcança o host pra conferir o Swagger na prática
+> (o proxy nega CONNECT — mesma barreira que travou o P1). Sem poder
+> confirmar a resposta real da API, escrever o sync seria fiação às cegas.
+> Volta à mesa quando houver token ou acesso.
+
 **O quê.** O item nº 1 do ROADMAP ("a tese do projeto, travada num e-mail")
 pode não estar mais travado: a pesquisa achou a **API pública da MYP com
 Swagger, mantida e atualizada em 25/08/2026**
@@ -528,10 +534,17 @@ Pacotes pequenos, cada um mesclável e testável sozinho:
 5. **Push e dados que já existem (1-2 sessões):** M7, F4, F5, F6, F7.
 6. **Imagens no servidor (incremental):** P4, P5 → P1 (com o guarda-corpo do
    P8 já no ar) → P9 → P2 (R2, por jogo).
-7. **Brasil (2-3 sessões):** F9, F8, E2 — e F1 assim que a leitura do Swagger
-   da MYP confirmar o caminho.
-8. **Apostas e polimento (projetos):** F3, F10, M8, E1, E3, E4, E5; F2 e E6
-   aguardam aval/migração do Fernando.
+7. **Brasil (2-3 sessões):** F9, F8, E2. **F1 saiu** — adiado por decisão do
+   Fernando (sem acesso à API da MYP); ver a nota no próprio item.
+8. **Apostas e polimento (projetos):** F3, F10, E1, E4, E5 — "aposta" aqui
+   quer dizer *item sem lastro prévio*: não conserta defeito medido nem
+   revela dado que já existe, então o risco não é técnico, é ninguém usar —
+   e isso só se verifica depois de construir. Mais E3 (polimento de
+   onboarding). **M8 saiu daqui:** foi classificado errado. `window.prompt`
+   é suprimido em webview de Instagram/Facebook, então o alvo de preço da
+   wishlist e o "nome de pasta nova" falham MUDOS justamente pro tráfego BR
+   de grupo — é conserto da classe do M5, não aposta. Fazer antes.
+   F2 e E6 seguem aguardando aval/migração do Fernando.
 
 ## 6b. Estado de execução
 
