@@ -5,6 +5,9 @@
   let cards = [];
   let cardsById = new Map();
   let pageCards = [];
+  // "o nome pedido não existe neste jogo" (ver o curto-circuito em
+  // fetchCardsForPage): muda o estado vazio de "nenhuma carta" para uma saída.
+  let nomeForaDoIndice = false;
   const owned = shared.createCollectionStore();
   const favorites = shared.createFavoritesStore();
   const wishlist = shared.createWishlistStore();
@@ -516,6 +519,21 @@
       : indexes?.pokedex;
     const group = (groups || []).find((candidate) => candidate.name === detailName);
     if (!group) {
+      // Índice CARREGADO e o nome não está nele = o nome não existe neste jogo
+      // (link antigo, grafia trocada, URL digitada à mão). O índice sai do
+      // MESMO build que os chunks, então varrer o catálogo atrás dele acharia
+      // nada — só que baixando 507+ chunks no Pokémon (dezenas de MB) pra
+      // terminar na mesma página vazia, e ainda lavando o cache de dados do
+      // service worker no caminho. Vale para o índice vazio também: ele é
+      // gerado a partir do próprio catálogo, então vazio ali = sem esse dado
+      // neste jogo (Digimon/YGO/Riftbound/Union Arena não têm artista).
+      //
+      // A varredura fica só para o caso em que o ÍNDICE é que não chegou
+      // (rede caiu no fetch da fatia) — aí ela é mesmo a única fonte.
+      if (Array.isArray(groups)) {
+        nomeForaDoIndice = true;
+        return [];
+      }
       return shared.fetchSetChunks(manifest.sets);
     }
 
@@ -1039,6 +1057,16 @@
     pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes, compact: gridView === "compact", lists: true }), { resetCount });
 
     elements.empty.hidden = tiles.length > 0;
+    // Beco sem saída vira caminho: em vez de "nenhuma carta encontrada" (que
+    // parece defeito), diz que o nome não existe aqui e leva pra busca.
+    if (!tiles.length && nomeForaDoIndice && !elements.empty.dataset.semSaida) {
+      elements.empty.dataset.semSaida = "1";
+      elements.empty.removeAttribute("data-i18n");
+      elements.empty.innerHTML = t("empty.detailUnknown", {
+        name: escapeHtml(detailName),
+        url: `explore?q=${encodeURIComponent(detailName)}`,
+      });
+    }
     elements.resultCount.textContent = tn("results.count", tiles.length);
     updateHeaderStats();
   }

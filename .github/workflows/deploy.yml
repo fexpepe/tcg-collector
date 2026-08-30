@@ -69,7 +69,9 @@ jobs:
       # O que NÃO é gated de propósito: lint, prerender, fatias de índice,
       # minificação e deploy rodam sempre. O prerender em especial — ele muda
       # junto com o código (título, H1, JSON-LD), então um push de SEO precisa
-      # regerar as 2.673 páginas mesmo sem catálogo novo.
+      # regerar as milhares de páginas mesmo sem catálogo novo. (Quantas são,
+      # exatamente, o passo "Conta arquivos" lá no fim mede a cada build — o
+      # número cresce a cada jogo/idioma e não cabe num comentário.)
       - name: Restaura catálogo construído (artefatos do último build)
         uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
@@ -627,8 +629,35 @@ jobs:
       # cards.js só serve ao dev local (MANIFEST=false). Removido daqui como o
       # data/cards.generated.js. (One Piece/FAB têm cards.js menor, mas vão bater
       # no mesmo teto quando crescerem — candidatos ao mesmo tratamento.)
+      #
+      # assets/brand/: matéria-prima dos logos (os PNG/JPG originais de onde
+      # saíram os game_*.webp de assets/games). Nenhuma página referencia esses
+      # 6 arquivos — só o sleevu-wordmark.svg é usado (styles.css e SHELL_ASSETS
+      # do sw.js), e ele FICA. Continuam versionados no repo; só não sobem.
       - name: Remove arquivos que não vão para o site
-        run: rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js data/ygo/cards.js scripts out README.md ROADMAP.md docs supabase tests .gitattributes
+        run: |
+          rm -rf .git .github .claude data/.cache data/cards.generated.js data/magic/cards.js data/ygo/cards.js scripts out README.md ROADMAP.md docs supabase tests .gitattributes
+          rm -f assets/brand/Flesh_and_Blood_TCG_Logo.png assets/brand/Magic-The-Gathering-logo.png assets/brand/digimon.webp assets/brand/logo_title_dbfwcardgame.webp assets/brand/riftbound.webp assets/brand/yugioh.jpg
+          rm -f assets/games/README.md assets/shops/README.md
+
+      # O Cloudflare Pages recusa um deploy com mais de 20.000 arquivos. O site
+      # cresce sozinho (cada set novo = 2 páginas de prerender + chunk + chunk de
+      # preço; cada idioma multiplica), e sem esta conta o estouro apareceria
+      # como deploy quebrado às 06:20, sem aviso nenhum. Aqui ele vira um AVISO
+      # com semanas de antecedência — e o número real fica no log de todo build,
+      # que é o dado que faltava pra decidir quanta imagem cabe aqui (o resto
+      # vai pro R2). Rodar DEPOIS do rm acima: conta o que de fato sobe.
+      - name: Conta arquivos (teto de 20.000 do Pages)
+        run: |
+          total=$(find . -type f | wc -l)
+          echo "Arquivos no deploy: $total (teto do Pages: 20000)"
+          if [ "$total" -gt 18000 ]; then
+            echo "::error::$total arquivos — perto demais do teto de 20.000 do Cloudflare Pages. Reduza antes de crescer mais (candidatos: MAX_CARD_PAGES do prerender, chunks de preço, imagens espelhadas → R2)."
+            exit 1
+          fi
+          if [ "$total" -gt 16000 ]; then
+            echo "::warning::$total arquivos — 80% do teto de 20.000 do Pages. Hora de planejar o corte."
+          fi
 
       # Deploy no Cloudflare Pages. main = produção; outras branches = preview
       # (URL única <hash>.tcg-collector.pages.dev). Pulado se o secret faltar.

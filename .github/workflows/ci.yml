@@ -64,3 +64,11 @@ jobs:
         run: |
           npx --yes esbuild --minify --charset=utf8 --outdir=/tmp/ci-min src/*.js
           npx --yes esbuild --minify --charset=utf8 --outfile=/tmp/ci-sw.js sw.js
+          npx --yes esbuild --minify --outfile=/tmp/ci-min/styles.min.css styles.css
+
+      # O shared.js e o núcleo do CSS viajam em TODA página deste site sem
+      # bundler: se engordarem sem ninguém olhar, o "parece app" some aos
+      # poucos e nenhum teste acusa. Mede o que o usuário recebe (minificado +
+      # gzip) contra tetos versionados no próprio script.
+      - name: Orçamento de peso do app shell
+        run: node scripts/check-size.mjs /tmp/ci-min
