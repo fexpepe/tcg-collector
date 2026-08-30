@@ -111,7 +111,16 @@ try {
   // de forma estranha — diagnóstico que esconde metade da evidência não serve.
   nota(`controle 'zzz_nome_invalido_de_teste' → HTTP ${controle.status}: ${controle.corpo || "(corpo vazio)"}`);
   nota(`teste    'export_done'                → HTTP ${novo.status}: ${novo.corpo || "(corpo vazio)"}`);
-  if (controle.gravou === null || novo.gravou === null) {
+  // As duas trancas reclamam de jeitos DIFERENTES, e é isso que as separa:
+  //   trigger recusa → 201 com corpo [] (return null: a linha some calada)
+  //   política recusa → 401 SQLSTATE 42501 (a linha atravessou o trigger)
+  // Sem essa distinção, "não gravou" seria um diagnóstico só, apontando pro
+  // arquivo errado.
+  if (novo.status === 401 && novo.corpo.includes("42501")) {
+    erro("o TRIGGER já aceita 'export_done' (a 20260830a está aplicada), mas a POLÍTICA de RLS "
+      + "da tabela events tem whitelist de nome PRÓPRIA e barrou a linha. "
+      + "Falta aplicar supabase/migrations/20260830b_events_produto_rls.sql");
+  } else if (controle.gravou === null || novo.gravou === null) {
     nota("inconclusivo: uma das respostas não veio como lista, então não dá pra ver se a linha entrou. "
       + "Confirme pelo painel: select prosrc from pg_proc where proname = 'events_guard';");
   } else if (controle.gravou) {
@@ -119,7 +128,8 @@ try {
   } else if (novo.gravou) {
     ok("migração 20260830a aplicada: 'export_done' entra e o nome inválido é descartado");
   } else {
-    erro("'export_done' foi DESCARTADO — a migração 20260830a ainda não está aplicada "
+    erro("'export_done' sumiu calado (201 com corpo vazio) — é o TRIGGER recusando: "
+      + "a migração 20260830a ainda não está aplicada "
       + "(SQL Editor → cole supabase/migrations/20260830a_events_produto.sql)");
   }
 } catch (e) { erro(`Supabase inacessível: ${e.message}`); }

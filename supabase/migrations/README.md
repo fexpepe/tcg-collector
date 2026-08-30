@@ -8,13 +8,16 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- **`20260830a_events_produto.sql`** — amplia a whitelist do trigger
-  `events_guard` com cinco eventos de produto (E6 do `docs/PLANO-UX-2.md`).
-  ADITIVA: só aceita nomes novos, não muda nada do que já grava. **Aplicar
-  ANTES do JS que dispara os eventos** — sem ela o `events_guard` faz
-  `return null` e o INSERT some sem erro nenhum, o que daria a impressão de um
-  analytics funcionando e medindo zero. O JS ainda não existe justamente por
-  isso.
+- `20260830a_events_produto.sql` — **APLICADA** (verificado em 2026-08-30 pelo
+  `scripts/verifica-setup.mjs`: `export_done` passa a atravessar o trigger, e um
+  nome inválido continua sendo descartado).
+- **`20260830b_events_produto_rls.sql`** — PENDENTE. A `a` não bastou: a tabela
+  `events` tem **duas** trancas com lista de nomes, e o plano só conhecia uma. A
+  política de RLS tem whitelist própria e barra `export_done` com 401/42501
+  mesmo depois do trigger deixar passar. Este bloco amplia a política — e se
+  **recusa** a mexer numa checagem que olhe qualquer coisa além do `name`,
+  avisando com a expressão atual: sobrescrever cegamente uma regra de segurança
+  é como se perde uma. **Aplicar antes do JS que dispara os eventos.**
 
 As demais estão todas aplicadas em produção (verificado por curl — ver a lista
 abaixo).
