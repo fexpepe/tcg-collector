@@ -8377,6 +8377,7 @@
     pickSetEdition,
     localizedImg,
     prewarmLazyImages,
+    toastSimples,
     SIZES_CARD_TILE,
     SIZES_BINDER_SLOT,
     cardImageSources,

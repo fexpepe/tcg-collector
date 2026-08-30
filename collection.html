@@ -146,6 +146,10 @@
                    leitor de tela (e o aria-live anuncia "Link copiado!"); o
                    feedback visual de sucesso é o ✓ no lugar do ícone (is-ok,
                    posta pelo fluxo no collection.js). -->
+              <!-- Exportar: mesma ideia do compartilhar (só-ícone, rótulo no span
+                   pro leitor de tela). O destino nº 1 é a Compra por Lista da
+                   Liga — ver openExportModal no collection.js. -->
+              <button type="button" id="collectionExportBtn" class="secondary icon-btn" data-i18n-title="export.title" title="Exportar coleção" hidden><svg class="icon-btn-main" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v11"/><path d="m8 10.5 4 4 4-4"/><path d="M4.5 16.5v2a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-2"/></svg><span data-i18n="collection.export">Exportar</span></button>
               <button type="button" id="collectionShareBtn" class="secondary icon-btn collection-share-btn" data-i18n-title="collection.share" title="Compartilhar coleção" hidden><svg class="icon-btn-main" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="m8.4 10.8 7.2-4M8.4 13.2l7.2 4"/></svg><svg class="icon-btn-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span data-i18n="collection.share" aria-live="polite">Compartilhar coleção</span></button>
             </div>
           </div>
@@ -267,6 +271,9 @@
     <script defer src="src/i18n.js"></script>
     <script defer src="src/shared.js"></script>
     <script defer src="src/graded-ui.js"></script>
+    <!-- Gerador do export (Liga/texto/CSV). O MESMO das listas: logica pura,
+         sem DOM, com testes dourados em tests/liga-export.test.mjs. -->
+    <script defer src="src/export-liga.js"></script>
     <script defer src="src/collection.js"></script>
   </body>
 </html>

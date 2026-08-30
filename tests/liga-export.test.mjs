@@ -122,3 +122,12 @@ test("lista vazia devolve string vazia (nao quebra o modal)", () => {
   assert.equal(X.paraLiga([], {}, "magic"), "");
   assert.equal(X.paraTexto(null, {}), "");
 });
+
+test("numeroPokemon: número que já traz o total não ganha o total de novo", () => {
+  // "(4/102/102)" não casa com nada na busca da Liga. O catálogo de produção
+  // grava só "4", mas uma fonte que grave "4/102" transformaria a linha em lixo.
+  assert.equal(X.numeroPokemon({ number: "4/102", setTotal: 102 }), "(4/102)");
+  assert.equal(X.numeroPokemon({ number: "78", setTotal: "84" }), "(078/084)");
+  assert.equal(X.numeroPokemon({ number: "78" }), "(078)");
+  assert.equal(X.numeroPokemon({}), "");
+});
