@@ -72,9 +72,10 @@
            entram — ver .explore-subnav[data-placeholder] no styles.css. -->
       <nav class="explore-subnav chip-filter" data-placeholder data-i18n-aria="nav.explore" aria-label="Explorar"></nav>
 
-      <!-- Mercado do jogo (src/mercado.js). Nasce ESCONDIDO: sem o arquivo do
-           build (jogo sem cotacao, ou build que falhou) a secao nao existe, em
-           vez de deixar um titulo orfao no meio da pagina. -->
+      <!-- Mercado do jogo (src/mercado.js). Nasce ESCONDIDO e SEM baixar nada:
+           quem abre esta pagina quase sempre quer o CATALOGO. Abre no botao
+           "Mercado", que o mercado.js poe no fim da fileira de abas acima, e a
+           requisicao so sai no primeiro clique. -->
       <section id="marketRail" class="mkt" data-i18n-aria="mkt.title" aria-label="Mercado do jogo" hidden></section>
 
       <div id="setRegionChips" class="chip-filter master-filter" role="group" data-i18n-aria="aria.setOrigin" aria-label="Origem dos sets">

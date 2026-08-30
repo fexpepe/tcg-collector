@@ -9297,6 +9297,24 @@ select,
    custo de mais um request. */
 .mkt { border: 1px solid var(--line); background: var(--surface); padding: 14px 16px; margin: 0 0 16px; }
 .mkt-tit { margin: 0 0 12px; font-size: 15px; }
+.mkt-aviso { margin: 0; color: var(--muted); font-size: 13px; }
+/* Chip de abrir o mercado, no fim da fileira de abas. Ele é um BOTÃO no meio de
+   links, então some com o herdado do <button> (font/altura) que o .chip não
+   cobre — e ganha a seta que é o único sinal de que ali abre algo, já que os
+   vizinhos navegam. Aberto ele acende como a aba ativa: é o mesmo "você está
+   vendo isto". */
+.mkt-toggle { display: inline-flex; align-items: center; gap: 6px; font-family: inherit; cursor: pointer; flex: none; }
+.mkt-toggle::after {
+  content: ""; width: 0; height: 0; margin-top: 1px;
+  border-left: 4px solid transparent; border-right: 4px solid transparent;
+  border-top: 5px solid currentColor; transition: transform .15s ease;
+}
+/* Aberto NÃO usa o preenchimento accent da aba ativa: accent cheio ali significa
+   "é esta a página em que você está", e dois chips cheios lado a lado faziam o
+   Mercado parecer uma segunda aba atual. Contorno e texto, mais a seta virada. */
+.mkt-toggle[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
+.mkt-toggle[aria-expanded="true"]::after { transform: rotate(180deg); }
+@media (prefers-reduced-motion: reduce) { .mkt-toggle::after { transition: none; } }
 .mkt-idx { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
 .mkt-idx-txt { flex: none; display: flex; flex-direction: column; gap: 2px; }
 .mkt-idx-pct { font-size: 20px; font-variant-numeric: tabular-nums; }

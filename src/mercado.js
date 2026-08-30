@@ -13,6 +13,15 @@
 // entram nas superfícies PÚBLICAS de jogo; as páginas /mercado/<jogo> ficaram
 // FORA. A visão financeira da COLEÇÃO segue concentrada no Portfólio — aqui é o
 // mercado do jogo, não o patrimônio de ninguém.
+//
+// FECHADO E SEM BAIXAR NADA até alguém pedir (pedido do Fernando, 2026-08-30):
+// o bloco nasce recolhido e a requisição só sai no primeiro clique do botão
+// "Mercado", que fica no fim da fileira de abas (Cartas · Sets · Artistas).
+// Quem abre a página de Sets quase sempre quer o CATÁLOGO; o mercado é uma
+// consulta à parte, e cobrar a requisição dela de todo mundo era pagar por
+// muitos o que poucos usam. O botão só aparece pra jogo que tem cotação — a
+// flag `mkt` do manifest, que já desceu com o catálogo, evita perguntar à rede
+// só pra descobrir se vale mostrar o botão.
 (function () {
   const shared = window.TCGShared;
   if (!shared) return;
@@ -86,17 +95,66 @@
     partes.push(fileira(t("mkt.up"), dados.up || [], "up"));
     partes.push(fileira(t("mkt.down"), dados.down || [], "down"));
     const corpo = partes.filter(Boolean).join("");
-    if (!corpo) return;
+    if (!corpo) return false;
 
     host.innerHTML = `
       <h2 class="mkt-tit">${escapeHtml(t("mkt.title"))}</h2>
       ${corpo}
       <p class="mkt-nota">${escapeHtml(t("mkt.note"))}</p>`;
-    host.hidden = false;
+    return true;
   }
 
-  fetch(dir + "market.generated.json", { cache: "no-cache" })
-    .then((r) => (r.ok ? r.json() : null))
-    .then((d) => { if (d) pinta(d); })
-    .catch(() => { /* sem arquivo: a seção simplesmente não existe */ });
+  function aviso(chave) {
+    host.innerHTML = `<p class="mkt-aviso">${escapeHtml(t(chave))}</p>`;
+  }
+
+  // ── Botão de abrir/fechar, no fim da fileira de abas ────────────────────────
+  const nav = document.querySelector(".explore-subnav:not([data-placeholder])");
+  if (!nav || !nav.children.length) return;
+  // O manifest sabe quais jogos têm cotação (flag `mkt`, do build-market). Só
+  // esconde o botão quando ele AFIRMA que não há — sem manifest, o botão
+  // aparece e o clique decide. Assim uma página que (por qualquer motivo) não
+  // carregue o manifest perde a otimização, não a funcionalidade.
+  const mf = window.TCG_MANIFEST;
+  if (mf && typeof mf === "object" && !mf.mkt) return;
+
+  const botao = document.createElement("button");
+  botao.type = "button";
+  botao.className = "chip mkt-toggle";
+  botao.setAttribute("aria-expanded", "false");
+  botao.setAttribute("aria-controls", "marketRail");
+  botao.textContent = t("mkt.toggle");
+  nav.appendChild(botao);
+  // A fileira mede a própria rolagem uma vez, num rAF, pra decidir de que lado
+  // desbotar. O chip novo chega depois dessa medida — sem este empurrão a
+  // máscara ficaria prometendo (ou escondendo) a borda errada.
+  nav.dispatchEvent(new Event("scroll"));
+
+  let dados = null;      // resposta já baixada (o segundo clique não repete)
+  let baixando = false;
+
+  function abre() {
+    host.hidden = false;
+    botao.setAttribute("aria-expanded", "true");
+    if (dados !== null || baixando) return;
+    baixando = true;
+    aviso("mkt.loading");
+    fetch(dir + "market.generated.json", { cache: "no-cache" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        baixando = false;
+        dados = d || false;
+        if (!d || !pinta(d)) aviso("mkt.empty");
+      })
+      .catch(() => { baixando = false; dados = false; aviso("mkt.empty"); });
+  }
+
+  botao.addEventListener("click", () => {
+    if (botao.getAttribute("aria-expanded") === "true") {
+      host.hidden = true;
+      botao.setAttribute("aria-expanded", "false");
+      return;
+    }
+    abre();
+  });
 })();

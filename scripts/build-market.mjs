@@ -52,6 +52,7 @@ async function leJson(caminho) {
 
 let jogosComArquivo = 0;
 const resumo = [];
+const comMercado = new Set();
 
 for (const [slug, dir] of JOGOS) {
   let movers = null;
@@ -111,7 +112,28 @@ for (const [slug, dir] of JOGOS) {
   };
   await writeFile(new URL(`${dir}market.generated.json`, RAIZ), JSON.stringify(saida), "utf8");
   jogosComArquivo++;
+  comMercado.add(slug);
   resumo.push(`${slug} +${saida.up.length}/-${saida.down.length}${indice ? ` idx${indice.i.length}` : ""}`);
+}
+
+// Carimba `mkt` no manifest de cada jogo — mesmo contrato do `pc` que o
+// split-pricing já usa. É o que deixa o botão "Mercado" da página de Sets nascer
+// SEM pedir nada à rede: o manifest já desceu com o catálogo, e o botão só
+// aparece pra jogo que de fato tem cotação. Sem esta flag o botão teria que
+// adivinhar — e um botão que abre pra "não há dados" é pior que botão nenhum.
+//
+// Roda ANTES do split-pricing e do build-set-trends, que releem e reescrevem o
+// manifest inteiro: a chave sobrevive aos dois. E APAGA quando o jogo perde a
+// cotação, senão um build ruim deixaria a flag mentindo pra sempre.
+for (const [slug, dir] of JOGOS) {
+  const url = new URL(`${dir}manifest.generated.js`, RAIZ);
+  let manifest = null;
+  try { manifest = leGlobal(await readFile(url, "utf8")); } catch { continue; }
+  if (!manifest || typeof manifest !== "object") continue;
+  const tem = comMercado.has(slug);
+  if (tem === !!manifest.mkt) continue; // já está como deveria: não reescreve
+  if (tem) manifest.mkt = 1; else delete manifest.mkt;
+  await writeFile(url, `window.TCG_MANIFEST = ${JSON.stringify(manifest)};\n`, "utf8");
 }
 
 console.log(`Mercado: ${jogosComArquivo} jogo(s) com arquivo — ${resumo.join(" · ") || "nenhum"}`);
