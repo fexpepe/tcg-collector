@@ -182,6 +182,43 @@ não funciona, o problema é **configuração**, em um destes três lugares:
 O `login.js` mostra o motivo real (captcha, rate-limit, genérico) — é por onde
 começar o diagnóstico.
 
+### Atalho da última conta ("Continuar como Fernando")
+
+Quem já entrou pelo Google **neste navegador** volta à tela de login e vê o
+próprio nome e e-mail num botão só: um clique e está dentro. É lembrança
+**local**, não uma consulta ao Google.
+
+- **Onde mora**: `localStorage["sleevu-ultima-conta-v1"]` —
+  `{ email, nome, via, ts }`. Gravada no `consumeAuthRedirect` (shared.js), que
+  é por onde TODO login passa e o único ponto em que o `user` vem inteiro (o
+  `setSession` enxuga o objeto pra caber no cookie de 4KB).
+- **`via`** sai do `app_metadata.provider`: `google` ganha o atalho, `email`
+  (link mágico) só ganha o campo de e-mail já preenchido. Oferecer o botão do
+  Google a quem nunca usou Google mandaria a pessoa pra um fluxo que pode nem
+  existir com aquele endereço.
+- **Sobrevive ao logout de propósito** — é justamente o caso que ela serve.
+  Some em três situações: "Entrar com outra conta" (o único jeito visível, e o
+  que importa em computador compartilhado), exclusão da conta
+  (`deleteAccountFlow` chama o `forgetLastAccount`; o wipe genérico varre só
+  `tcg-`) e limpeza dos dados do site.
+- **`login_hint`**: o clique manda `oauthSignIn("google", { login_hint: email })`
+  e o GoTrue repassa pro `/authorize` do Google todo parâmetro de query que não
+  seja dele. É o que faz o Google já abrir com a conta certa — e pular o seletor
+  pra quem segue logado lá. Se um dia for ignorado, cai no seletor de sempre.
+- **Sem foto**: a do Google viria de `lh3.googleusercontent.com` e a CSP é
+  `img-src 'self'` — além de virar um ping pro Google só por abrir o login. O
+  avatar é a inicial do nome.
+
+Isto **não** é o One Tap do Google (aquele balãozinho que aparece sozinho no
+canto). O One Tap exigiria, além do Client ID no front: `script-src` e
+`frame-src` liberando `accounts.google.com` na CSP, `Cross-Origin-Opener-Policy`
+em `same-origin-allow-popups` (hoje é `same-origin`, que quebra o popup dele),
+`https://sleevu.app` nas *origens JavaScript autorizadas* do Google Cloud
+Console, o Client ID na lista de *Authorized Client IDs* do provedor Google no
+Supabase e a troca do credential por sessão via
+`POST /auth/v1/token?grant_type=id_token` (com nonce). O atalho acima entrega o
+mesmo clique único sem nada disso.
+
 ### E-mail do link mágico (SMTP próprio)
 
 Ativo via **Resend** (`login@sleevu.app`, `smtp.resend.com:465`, domínio

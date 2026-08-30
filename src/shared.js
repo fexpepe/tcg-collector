@@ -8377,6 +8377,8 @@
     sendMagicLink,
     oauthSignIn,
     getSession,
+    getLastAccount,
+    forgetLastAccount,
     createShare,
     fetchShare,
     hasConsent,
@@ -8638,6 +8640,50 @@
     }
   }
 
+  // --- Última conta usada NESTE navegador -------------------------------------
+  // Guarda e-mail, primeiro nome e por onde a pessoa entrou (Google ou link
+  // mágico). É o que permite a tela de login dizer "Continuar como Fernando"
+  // com o e-mail à vista, em vez de pedir tudo de novo a cada volta.
+  //
+  // SOBREVIVE AO LOGOUT de propósito — é justamente o caso que a lembrança
+  // serve. Por isso mora numa chave só dela, e não na sessão: o cookie de
+  // sessão é apagado no logout e ainda tem teto de 4KB. Some quando a pessoa
+  // pede ("entrar com outra conta"), quando a conta é excluída, ou quando ela
+  // limpa os dados do site — é dado local, nunca sai deste navegador.
+  //
+  // Prefixo `sleevu-`: o wipe da exclusão de conta varre só `tcg-`, então esta
+  // chave é apagada EXPLICITAMENTE lá (deleteAccountFlow) — o esquecimento é
+  // uma decisão, não um efeito colateral do prefixo.
+  const LAST_ACCOUNT_KEY = "sleevu-ultima-conta-v1";
+  function rememberAccount(user) {
+    const email = user && user.email;
+    if (!email) return;
+    const meta = user.user_metadata || {};
+    const app = user.app_metadata || {};
+    // `provider` do app_metadata é o provedor da conta no Supabase: "google" em
+    // quem entrou pelo Google, "email" no link mágico. É ele que decide QUAL
+    // atalho a tela oferece — mostrar o botão do Google pra quem só usa link
+    // mágico mandaria a pessoa pra um fluxo que ela nunca fez (e que pode nem
+    // existir com aquele e-mail).
+    const via = app.provider === "google" ? "google" : "email";
+    // Só o primeiro nome, como o próprio Google faz: cabe no botão sem quebrar
+    // linha e é o que a pessoa reconhece. Sem nome (link mágico não tem), o
+    // botão mostra só o e-mail.
+    const nome = String(meta.full_name || meta.name || "").trim().split(/\s+/)[0] || "";
+    try {
+      localStorage.setItem(LAST_ACCOUNT_KEY, JSON.stringify({ email, nome, via, ts: Date.now() }));
+    } catch (e) { /* ignora */ }
+  }
+  function getLastAccount() {
+    try {
+      const c = JSON.parse(localStorage.getItem(LAST_ACCOUNT_KEY) || "null");
+      return c && c.email ? c : null;
+    } catch (e) { return null; }
+  }
+  function forgetLastAccount() {
+    try { localStorage.removeItem(LAST_ACCOUNT_KEY); } catch (e) { /* ignora */ }
+  }
+
   async function sendMagicLink(email, captchaToken) {
     const redirect = window.location.origin + window.location.pathname;
     // Turnstile (Cloudflare): com a proteção de captcha LIGADA no Supabase Auth,
@@ -8670,10 +8716,21 @@
   // É `location.href` (navegação de topo), não fetch: o fluxo OAuth precisa
   // trocar de origem duas vezes e depende dos cookies do Google. A CSP não
   // atrapalha — `form-action 'self'` vale pra <form>, não pra navegação.
-  function oauthSignIn(provider) {
+  //
+  // `extras` viaja de carona até o provedor: o GoTrue repassa pro /authorize do
+  // Google todo parâmetro de query que não seja dele (só os que ele controla —
+  // redirect_uri, state, code_challenge… — são removidos). É assim que o
+  // `login_hint` do atalho da última conta faz o Google já vir com a conta
+  // certa escolhida, pulando o seletor pra quem segue logado lá. Se algum dia
+  // o hint for ignorado, o pior que acontece é aparecer o seletor de sempre.
+  function oauthSignIn(provider, extras) {
     const redirect = window.location.origin + window.location.pathname;
-    window.location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=${encodeURIComponent(provider)}` +
+    let url = `${SUPABASE_URL}/auth/v1/authorize?provider=${encodeURIComponent(provider)}` +
       `&redirect_to=${encodeURIComponent(redirect)}`;
+    Object.entries(extras || {}).forEach(([chave, valor]) => {
+      if (valor) url += `&${encodeURIComponent(chave)}=${encodeURIComponent(valor)}`;
+    });
+    window.location.href = url;
   }
   async function fetchAuthUser(token) {
     try { const r = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: authHeaders(token) }); return r.ok ? r.json() : null; } catch (e) { return null; }
@@ -8726,6 +8783,10 @@
     if (!user) return null;
     const s = { access_token, refresh_token, user, ts: Date.now() };
     setSession(s);
+    // Único ponto por onde TODO login passa (link mágico e Google voltam pelo
+    // mesmo hash), e o único em que o user vem inteiro — o setSession enxuga o
+    // objeto pra caber no cookie e perde nome e provedor.
+    rememberAccount(user);
     return s;
   }
 
@@ -10373,6 +10434,7 @@
       try { Object.keys(localStorage).filter((k) => /^tcg-/.test(k)).forEach((k) => localStorage.removeItem(k)); } catch (e) { /* ignora */ }
       try { if (window.indexedDB) indexedDB.deleteDatabase("tcg-collector"); } catch (e) { /* fotos de binder */ }
       try { setSession(null); } catch (e) { /* cookie de sessão não pode sobreviver à exclusão da conta */ }
+      forgetLastAccount(); // conta que não existe mais não pode seguir sendo oferecida no login
       window.location.replace(window.location.pathname);
     }
     const fileInput = `<input type="file" accept="application/json" data-import-input hidden aria-label="${escapeAttribute(t("auth.import"))}">

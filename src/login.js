@@ -113,6 +113,57 @@
     });
   }
 
+  // Atalho da ÚLTIMA CONTA usada neste navegador. Sem ele, quem volta ao site
+  // depois de sair (ou depois de o refresh_token expirar) encara a mesma tela
+  // fria de sempre: "Entrar", botão genérico do Google, seletor de conta do
+  // Google, e só então a coleção. Com o e-mail à vista é UM clique — o mesmo
+  // "Continuar como fulano" que o próprio Google mostra por aí.
+  //
+  // Só aparece pra quem entrou PELO GOOGLE (o shared grava o `via`): oferecer o
+  // Google a quem só usa link mágico empurraria a pessoa pra um fluxo que ela
+  // nunca fez. Pra esses, o e-mail lembrado vai pro campo do formulário — que é
+  // a mesma ideia ("já sei quem você é"), no caminho que eles usam.
+  //
+  // É dado LOCAL: nada aqui consulta o Google nem o Supabase. Num navegador
+  // novo, ou depois de limpar os dados do site, simplesmente não aparece.
+  const lastBtn = document.getElementById("loginLast");
+  const otherBtn = document.getElementById("loginOther");
+  const conta = shared.getLastAccount ? shared.getLastAccount() : null;
+
+  if (conta && conta.via === "google" && lastBtn && otherBtn && googleBtn) {
+    // textContent (nunca innerHTML): nome e e-mail são dado de usuário.
+    lastBtn.querySelector(".login-last-avatar").textContent = (conta.nome || conta.email).charAt(0).toUpperCase();
+    lastBtn.querySelector(".login-last-name").textContent = conta.nome ? t("login.lastAs", { nome: conta.nome }) : t("login.google");
+    lastBtn.querySelector(".login-last-mail").textContent = conta.email;
+    lastBtn.hidden = false;
+    otherBtn.hidden = false;
+    googleBtn.hidden = true; // um só botão do Google na tela: o personalizado
+
+    lastBtn.addEventListener("click", () => {
+      lastBtn.disabled = true;
+      showMsg(t("login.redirecting"), "ok");
+      // login_hint: o Google já abre com esta conta escolhida e, pra quem segue
+      // logado lá, nem mostra o seletor — é o que transforma o atalho em um
+      // clique de verdade. Se o hint for ignorado, cai no seletor de sempre.
+      shared.oauthSignIn("google", { login_hint: conta.email });
+    });
+
+    // "Entrar com outra conta": ESQUECE a lembrança (é o único jeito de tirar o
+    // e-mail da tela — importa em computador compartilhado) e devolve o botão
+    // genérico, que abre o seletor do Google normalmente.
+    otherBtn.addEventListener("click", () => {
+      if (shared.forgetLastAccount) shared.forgetLastAccount();
+      lastBtn.hidden = true;
+      otherBtn.hidden = true;
+      googleBtn.hidden = false;
+      if (emailInput) emailInput.focus();
+    });
+  } else if (conta && emailInput && !emailInput.value) {
+    // Entrou por link mágico da última vez: o campo já vem preenchido, então
+    // pedir um link novo é só apertar o botão.
+    emailInput.value = conta.email;
+  }
+
   if (form) {
     form.addEventListener("submit", async (event) => {
       event.preventDefault();

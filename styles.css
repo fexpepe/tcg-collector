@@ -3763,6 +3763,81 @@ a.hub-tile:hover {
    segue o accent do site. flex:none pra não ser espremido pelo texto. */
 .login-oauth-icon { width: 18px; height: 18px; flex: none; }
 
+/* Atalho da última conta ("Continuar como Fernando" + e-mail). É o mesmo botão
+   do Google (herda .login-oauth), com o conteúdo alinhado à ESQUERDA e duas
+   linhas: nome em cima, e-mail embaixo. Mais alto que o irmão porque carrega
+   as duas linhas — não é destaque gratuito.
+   O "G" fica na ponta direita (o .login-last-who empurra, com flex:1). */
+.login-last {
+  justify-content: flex-start;
+  gap: 12px;
+  min-height: 58px;
+  padding: 10px 14px;
+  text-align: left;
+}
+/* Inicial no lugar da foto: a foto do Google viria de lh3.googleusercontent.com
+   e a CSP do site é img-src 'self' — além de virar um ping pro Google só por
+   abrir a tela de login. A letra sai do nome (ou do e-mail) que já está aqui. */
+.login-last-avatar {
+  width: 32px; height: 32px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 700;
+}
+/* min-width: 0 é o que deixa o e-mail longo virar reticências em vez de esticar
+   o botão pra fora do cartão (item de flex nasce com min-width: auto). */
+.login-last-who { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.login-last-name { font-size: 14.5px; line-height: 1.3; }
+.login-last-mail {
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* "Entrar com outra conta": <button> com cara de link. É a única saída pra tirar
+   o e-mail lembrado da tela (computador compartilhado), então precisa estar
+   visível — mas discreto, pra não competir com o atalho logo acima. */
+.login-other {
+  display: block;
+  margin: 8px auto 0;
+  padding: 4px 6px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12.5px;
+  /* Sublinhado SEMPRE, não só no :hover: na tela de login o accent é o neutro
+     (data-game-accent="all"), onde --accent-ink é a própria cor do texto — sem
+     o traço o botão ficava com cara de rótulo. E no dedo não existe hover. */
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.login-other:hover { color: var(--text); }
+
+/* Celular estreito. O cartão gastava 28px de respiro de cada lado num aparelho
+   de 360px e sobravam 103px pro texto do atalho: "Continuar como Fernando"
+   quebrava em TRÊS linhas e o e-mail virava "fernandopepe.p…". Apertar o
+   respiro lateral devolve ~95px de conteúdo — o suficiente pras duas linhas do
+   atalho caberem inteiras — e vale pro cartão todo: o campo de e-mail fica
+   maior e a caixa do Turnstile (300px naturais) passa a encolher bem menos. */
+@media (max-width: 430px) {
+  /* Sem respiro lateral PRÓPRIO: o <main> do site já entra com 20px de margem
+     de cada lado, e somar os dois é o que espremia o cartão. */
+  .login-page { padding: 24px 0 48px; }
+  .login-card { padding: 26px 18px; }
+  .login-last { gap: 10px; padding: 10px 12px; }
+}
+
 /* Separador "ou": a linha é feita com os pseudo-elementos pra não precisar de
    markup extra e pra acompanhar a largura do cartão sozinha. */
 .login-sep {
