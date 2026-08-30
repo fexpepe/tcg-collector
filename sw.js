@@ -386,12 +386,19 @@ async function networkFirst(request, url) {
 self.addEventListener("push", (event) => {
   let data = {};
   try { data = event.data ? event.data.json() : {}; } catch (e) { /* payload não-JSON */ }
-  event.waitUntil(self.registration.showNotification(data.title || "Sleevu", {
-    body: data.body || "",
-    icon: "apple-touch-icon.png",
-    badge: "apple-touch-icon.png",
-    data: { url: data.url || "wishlist.html" }
-  }));
+  // Bolinha no ÍCONE do app instalado, além da notificação. A notificação some
+  // da bandeja quando a pessoa limpa; a bolinha fica até o app ser aberto — que
+  // é o ponto de um aviso de queda de preço: ele vale enquanto a queda vale.
+  // API progressiva: onde não existe (iOS fora do PWA instalado), o `?.` cobre.
+  event.waitUntil(Promise.all([
+    self.registration.showNotification(data.title || "Sleevu", {
+      body: data.body || "",
+      icon: "apple-touch-icon.png",
+      badge: "apple-touch-icon.png",
+      data: { url: data.url || "wishlist.html" }
+    }),
+    Promise.resolve().then(() => self.navigator && self.navigator.setAppBadge && self.navigator.setAppBadge(1)).catch(() => {})
+  ]));
 });
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();

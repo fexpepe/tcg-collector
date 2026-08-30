@@ -9174,3 +9174,4 @@ select,
 @media (display-mode: standalone) {
   html, body { overscroll-behavior-y: contain; }
 }
+.dash-profile-updated { display: block; font-size: 12px; color: var(--subtle); margin-top: 2px; }

@@ -2557,6 +2557,12 @@
       try { seen = localStorage.getItem("tcg-news-seen-v1") || ""; } catch (e) { /* ignora */ }
       if (latest && latest > seen) {
         document.querySelectorAll("[data-news-link]").forEach((a) => a.classList.add("has-news"));
+        // A bolinha vivia SÓ dentro do menu de conta e no rodapé — ou seja,
+        // atrás de dois toques, e o rodapé nem existe nas telas de uso
+        // contínuo. No celular ninguém via. O botão do menu recebe o mesmo
+        // sinal: o deploy diário passa a ser visível a um toque de distância.
+        const menu = document.querySelector(".menu-toggle");
+        if (menu) menu.classList.add("has-news");
       }
     }).catch(() => { /* offline: sem bolinha */ });
   }
@@ -10377,6 +10383,26 @@
   initMobileMenu();
   initSiteFooter();
   initUiEditor();
+  // O localStorage é a FONTE DA VERDADE deste site (decisão travada), e sob
+  // pressão de disco o navegador pode descartar a origem inteira sem avisar —
+  // levando junto a coleção de quem nunca logou. Pedir persistência é a única
+  // defesa que existe, e no Chrome ela é concedida em silêncio pra origem
+  // engajada ou PWA instalado. Só pede quando há o que proteger: numa primeira
+  // visita sem coleção, o pedido não teria sentido (e no Firefox abriria um
+  // aviso do nada).
+  try {
+    if (navigator.storage && navigator.storage.persist && navigator.storage.persisted) {
+      navigator.storage.persisted().then((jaTem) => {
+        if (jaTem) return;
+        const temColecao = GAME_SLUGS.some((g) => createCollectionStore(g).totalQuantity() > 0);
+        if (temColecao) navigator.storage.persist().catch(() => { /* negado: segue igual a hoje */ });
+      }).catch(() => { /* sem suporte */ });
+    }
+  } catch (e) { /* API ausente: nada muda */ }
+
+  // Abriu o app = viu o aviso: a bolinha do ícone sai (o par do setAppBadge
+  // que o sw.js põe ao receber o push).
+  try { if (navigator.clearAppBadge) navigator.clearAppBadge().catch(() => {}); } catch (e) { /* sem suporte */ }
   initNewsBadge(); // bolinha "novo" nos links de Novidades (footer + menu)
   initPartnerBanner();
   initThemeToggle();

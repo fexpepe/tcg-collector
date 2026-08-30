@@ -2199,7 +2199,7 @@
       const gradedTotal = gradedList
         .filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter)
         .reduce((s, it) => { const v = shared.convertMoney(it.gv || 0, it.cur || "BRL", cur); return s + (v == null ? (it.gv || 0) : v); }, 0);
-      return sharedDashboardHtml(items, rawTotal + gradedTotal, { name, handle: prof.handle }, { hero: true, actions: actionsHtml() });
+      return sharedDashboardHtml(items, rawTotal + gradedTotal, { name, handle: prof.handle, updated: prof.updated_at }, { hero: true, actions: actionsHtml() });
     }
     function gameFilterHtml() {
       if (gamesPresent.length <= 1) return "";
@@ -2404,6 +2404,21 @@
   // `opts.hero`: só o cartão-herói, de ponta a ponta, com as ações no canto —
   // é o topo da Minha Coleção, e é o que o PERFIL PÚBLICO usa. O share anônimo
   // (?s=) segue com os três cards: lá não há abas nem filtros, o resumo é a tela.
+  // "coleção atualizada em X" no perfil público. O updated_at já vinha na
+  // resposta da RPC e era jogado fora — e é justamente o sinal que separa
+  // perfil vivo de perfil abandonado, que importa pra quem chega ali querendo
+  // trocar ou comprar. Data inválida não vira texto quebrado: some.
+  function dataDoPerfil(iso) {
+    if (!iso) return "";
+    let quando = "";
+    try {
+      const d = new Date(iso);
+      if (isNaN(d.getTime())) return "";
+      quando = d.toLocaleDateString(shared.getLocale(), { day: "numeric", month: "short", year: "numeric" });
+    } catch (e) { return ""; }
+    return `<span class="dash-profile-updated">${escapeHtml(t("profile.updated", { date: quando }))}</span>`;
+  }
+
   function sharedDashboardHtml(items, total, profileNav, opts) {
     const copies = items.reduce((s, it) => s + (it.q || 1), 0);
     const distinct = new Set(items.map((it) => it.id)).size;
@@ -2463,6 +2478,7 @@
             <div class="dash-profile-id">
               <strong class="dash-profile-name">${escapeHtml(profileNav.name)}</strong>
               <a class="dash-profile-handle" href="/users/${escapeAttribute(profileNav.handle)}">@${escapeHtml(profileNav.handle)}</a>
+              ${dataDoPerfil(profileNav.updated)}
             </div>
           </div>
           ${profileNav.label ? `<button type="button" class="secondary dash-profile-nav" data-profile-nav>${escapeHtml(profileNav.label)}</button>` : ""}
