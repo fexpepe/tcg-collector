@@ -4668,6 +4668,31 @@
     const previewCosts = createCostsStore(); // custo "Paguei" (global, modo investidor)
 
     document.addEventListener("click", handleClick);
+    window.addEventListener("popstate", () => {
+      if (!activeCard) return; // não é nossa entrada (ou já fechamos)
+      close({ viaVolta: true });
+    });
+
+    // Arrastar o painel pra baixo fecha — o primeiro gesto que quem usa app
+    // tenta num painel desses. Só vale com o conteúdo NO TOPO (scrollTop 0),
+    // senão o gesto brigaria com a rolagem interna do painel; e exige que o
+    // movimento seja claramente vertical, pra não disparar em rolagem oblíqua.
+    let toqueY = null;
+    let toqueX = null;
+    document.addEventListener("touchstart", (event) => {
+      toqueY = null;
+      const panel = event.target.closest("#cardPreviewModal .card-preview-panel");
+      if (!panel || panel.scrollTop > 0) return;
+      toqueY = event.touches[0].clientY;
+      toqueX = event.touches[0].clientX;
+    }, { passive: true });
+    document.addEventListener("touchend", (event) => {
+      if (toqueY == null) return;
+      const dy = event.changedTouches[0].clientY - toqueY;
+      const dx = event.changedTouches[0].clientX - toqueX;
+      toqueY = null;
+      if (dy > 80 && Math.abs(dy) > 2 * Math.abs(dx)) close();
+    }, { passive: true });
     // Salva o preço BR digitado ao sair do campo (change = blur ou Enter).
     // Aceita vírgula ou ponto como decimal ("12,50", "12.50", "1.250,00").
     document.addEventListener("change", (event) => {
@@ -4747,25 +4772,45 @@
     // openFromUrl() faz o caminho de volta: cada página chama depois que o
     // catálogo dela carrega, e o popup reabre sozinho. É também onde as páginas
     // /card/<slug>.html do Google aterrissam (detail.html?...&card=<id>).
-    function stampCardUrl(cardId) {
+    //
+    // NO TOQUE a abertura vira uma ENTRADA de histórico (pushState) em vez de
+    // uma troca de URL. O motivo: com o popup aberto, o botão voltar do Android
+    // — o gesto mais treinado que existe nesse aparelho — saía da página
+    // inteira; no app instalado, saía do app. Agora ele fecha o popup, como em
+    // qualquer app. No ponteiro fino nada muda (replaceState de sempre): lá o
+    // voltar do navegador tem outro contrato, e Escape/× já resolvem.
+    const gestoDeVolta = () => {
+      try { return window.matchMedia && window.matchMedia("(pointer: coarse)").matches; } catch (e) { return false; }
+    };
+    let entradaNoHistorico = false; // empilhamos uma entrada por sessão de popup?
+
+    function stampCardUrl(cardId, empilha) {
       try {
         const url = new URL(location.href);
         if (cardId) url.searchParams.set("card", cardId); else url.searchParams.delete("card");
-        history.replaceState(history.state, "", url);
+        if (empilha) history.pushState({ sleevuPreview: 1 }, "", url);
+        else history.replaceState(history.state, "", url);
       } catch (e) { /* history bloqueado: o popup funciona igual, só não linka */ }
     }
     function openFromUrl() {
       let cardId = null;
       try { cardId = new URLSearchParams(location.search).get("card"); } catch (e) { return false; }
       if (!cardId || !getCard(cardId)) return false;
-      open(cardId);
+      open(cardId, undefined, { semHistorico: true });
       return true;
     }
 
     function open(cardId, variant, opts) {
       activeCard = getCard(cardId);
       if (!activeCard) return;
-      stampCardUrl(activeCard.id);
+      // Empilha UMA vez por sessão de popup: trocar de carta com o popup aberto
+      // (ou de variante) só reescreve o ?card=, senão um voltar por carta vista.
+      // openFromUrl não empilha — a URL JÁ chegou com ?card= (link
+      // compartilhado, página /card/<slug> do Google), e ali voltar tem que
+      // sair da página, que é de onde a pessoa veio.
+      const empilha = gestoDeVolta() && !entradaNoHistorico && !(opts && opts.semHistorico);
+      stampCardUrl(activeCard.id, empilha);
+      if (empilha) entradaNoHistorico = true;
       logCardView(activeCard); // "mais vistas": 1 view por carta por sessão (anônimo)
       // Contexto graded (opcional): muda a busca das lojas (eBay/PriceCharting já
       // vão com a graduadora+nota) e mostra o selo da nota no topo do modal.
@@ -4993,11 +5038,23 @@
       if (det && window.matchMedia && window.matchMedia("(max-width: 720px)").matches) det.open = false;
     }
 
-    function close() {
+    function close(opts) {
+      // viaVolta = quem fechou foi o botão voltar (o navegador JÁ tirou a
+      // entrada do histórico). Fechando pelo × / backdrop / Escape somos nós
+      // que precisamos tirá-la — senão o voltar seguinte não faz nada visível,
+      // que é a pior sensação possível ("o botão travou").
+      const viaVolta = !!(opts && opts.viaVolta);
       const modal = document.getElementById("cardPreviewModal");
       if (modal) modal.remove();
       activeCard = null;
-      stampCardUrl(null); // a URL volta a ser a da página, sem o ?card=
+      if (entradaNoHistorico) {
+        entradaNoHistorico = false;
+        // O history.back() dispara um popstate — mas activeCard já é null acima,
+        // então o ouvinte sai na primeira linha e não fecha nada duas vezes.
+        if (!viaVolta) { try { history.back(); } catch (e) { stampCardUrl(null); } }
+      } else if (!viaVolta) {
+        stampCardUrl(null); // a URL volta a ser a da página, sem o ?card=
+      }
       document.body.classList.remove("preview-open");
       if (openerElement && document.contains(openerElement)) {
         openerElement.focus();
