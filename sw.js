@@ -93,7 +93,12 @@ const SHELL_ASSETS = [
 // mesmo cache. 3.000 dá folga pro maior jogo + o que já estiver guardado; os
 // chunks são pequenos comprimidos (dezenas de KB), então o pior caso fica na
 // casa das dezenas de MB de Cache Storage.
-const MAX_IMAGES = 1500;
+// 1.500 imagens era um teto que a colecao media ja estourava: o FIFO e PURO
+// (a entrada mais ANTIGA sai, mesmo sendo a carta que voce abre toda semana),
+// entao quem tem 2.000 cartas nunca tinha a colecao inteira offline — e a tese
+// local-first do site ("sua colecao funciona no busao") ficava pela metade.
+// 4.000 cobre uma colecao grande com folga.
+const MAX_IMAGES = 4000;
 const MAX_DATA = 3000;
 
 self.addEventListener("install", (event) => {
@@ -242,12 +247,15 @@ async function cacheFirst(url) {
   try {
     const res = await fetch(url.href, { mode: "cors", credentials: "omit" });
     if (res && res.ok) {
-      cache.put(url.href, res.clone());
+      // sem await de proposito (nao segurar a resposta), mas COM catch: com o
+      // teto maior, QuotaExceededError deixa de ser hipotese — e uma rejeicao
+      // solta aqui derruba o handler inteiro e a imagem nao chega na tela.
+      cache.put(url.href, res.clone()).catch(() => {});
       // Carimba a hora só nos hosts mutáveis — é o que dá a validade de 7 dias.
       // Os demais (TCGdex, Scryfall, Lorcast) são imutáveis de verdade e seguem
       // sem carimbo, então nunca voltam à rede.
       if (MUTABLE_IMAGE_HOSTS.has(url.hostname)) markOpaque(url.href);
-      maybeTrim(IMAGE_CACHE, MAX_IMAGES);
+      maybeTrimImages();
       return res;
     }
     if (res) return res; // erro visível: não polui o cache
@@ -258,9 +266,9 @@ async function cacheFirst(url) {
   try {
     const res = await fetch(url.href, { mode: "no-cors", credentials: "omit" });
     if (res && res.type === "opaque") {
-      cache.put(url.href, res.clone());
+      cache.put(url.href, res.clone()).catch(() => {});
       markOpaque(url.href);
-      maybeTrim(IMAGE_CACHE, MAX_IMAGES);
+      maybeTrimImages();
       return res;
     }
   } catch (e) { /* falhou de vez */ }
@@ -424,6 +432,31 @@ self.addEventListener("notificationclick", (event) => {
 // O caminho das IMAGENS chamava trim() direto e era o pior caso justamente: a
 // grade fria é exatamente a hora em que o SW mais precisa responder rápido.
 let putsDesdePoda = 0;
+// Teto EFETIVO das imagens. O FIFO conta entradas, nao bytes — e depois do
+// srcset (P4) uma entrada pode ser a variante de 600px (~48 KB) em vez da de
+// 245px (~14 KB), entao o mesmo 4.000 significa ~55 MB num desktop 1x e ~190 MB
+// num celular 3x. Em vez de escolher um numero que serve mal aos dois, pergunta
+// ao navegador quanto da cota ja foi: sob pressao o teto cai, e as imagens (que
+// se re-baixam) cedem lugar antes do catalogo e da colecao, que nao se re-fazem.
+// Sem storage.estimate (Safari antigo) segue o teto fixo, como antes.
+async function tetoDeImagens() {
+  try {
+    if (!self.navigator || !navigator.storage || !navigator.storage.estimate) return MAX_IMAGES;
+    const { usage, quota } = await navigator.storage.estimate();
+    if (!usage || !quota) return MAX_IMAGES;
+    const uso = usage / quota;
+    if (uso > 0.9) return Math.round(MAX_IMAGES / 4);
+    if (uso > 0.8) return Math.round(MAX_IMAGES / 2);
+  } catch (e) { /* sem estimativa: teto fixo */ }
+  return MAX_IMAGES;
+}
+
+function maybeTrimImages() {
+  if (++putsDesdePoda < 50) return;
+  putsDesdePoda = 0;
+  tetoDeImagens().then((teto) => trim(IMAGE_CACHE, teto)).catch(() => {});
+}
+
 function maybeTrim(cacheName, maxEntries) {
   if (!Number.isFinite(maxEntries)) return;
   if (++putsDesdePoda < 50) return;

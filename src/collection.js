@@ -1098,9 +1098,20 @@
     if (!useFolders) {
       elements.folderSections.innerHTML = "";
       pager.render(tiles, makeAnyTile, { resetCount });
+      prewarmColecao();
       return;
     }
     renderFolderSections(ownedPairs);
+    prewarmColecao();
+  }
+
+  // Esta pagina E a colecao da pessoa: o lugar certo pra encher o cache de
+  // imagens no ocioso, pra ela abrir inteira offline depois. Os tiles ja estao
+  // no DOM com loading="lazy" — sem isto, so entra no cache o que ela rolou.
+  // Todas as guardas (service worker no comando, economia de dados, orcamento)
+  // moram no helper; aqui e so o gatilho.
+  function prewarmColecao() {
+    if (shared.prewarmLazyImages) shared.prewarmLazyImages(document);
   }
 
   // Agrupa os pares carta×variante por pasta (folderOf por cardId) e renderiza
