@@ -125,6 +125,20 @@
   // iOS (dica manual) — e o app ainda não está instalado/aberto em standalone.
   function canInstallPWA() { return !isStandalonePWA() && (!!deferredInstallPrompt || isIOSDevice()); }
 
+  // ── Primeiros passos (E3) ───────────────────────────────────────────────────
+  // O checklist MORA no Dashboard, mas os passos ACONTECEM aqui — importar CSV
+  // é um fluxo do shared. Só a marcação fica neste arquivo; quem desenha a
+  // lista é o src/primeiros-passos.js, carregado só naquela página.
+  const PASSOS_KEY = "tcg-primeiros-passos-v1";
+  function marcaPasso(nome) {
+    try {
+      const d = JSON.parse(localStorage.getItem(PASSOS_KEY) || "{}") || {};
+      if (d[nome]) return;
+      d[nome] = 1;
+      localStorage.setItem(PASSOS_KEY, JSON.stringify(d));
+    } catch (e) { /* cota ou modo restrito: o passo só não fica marcado */ }
+  }
+
   function createIdStore(storageKey, metaKey) {
     let ids = load();
 
@@ -8289,6 +8303,11 @@
     createWishlistStore,
     createPriceStore,
     createListStore,
+    canInstallPWA,
+    isStandalonePWA,
+    pwaInstallFlow,
+    marcaPasso,
+    PASSOS_KEY,
     defaultVariant,
     cardVariants,
     CARD_CONDITIONS,
@@ -10239,6 +10258,7 @@
           copies += target;
         });
         flushWrites();
+        marcaPasso("csv");
         wrap.remove();
         alert(t("csvimport.done", { cards: agg.size, copies }));
         window.location.href = "collection";
@@ -10300,6 +10320,7 @@
           });
         });
         flushWrites(); // garante a persistência antes de navegar
+        marcaPasso("csv");
         alert(t("dex.done", { cards: ids.length, copies }));
         window.location.href = "collection?game=pokemon";
       } catch (e) { alert(t("error.import")); }

@@ -9375,3 +9375,43 @@ select,
 .ctr-res strong { font-size: 20px; color: var(--text); font-variant-numeric: tabular-nums; margin-right: 4px; }
 .ctr-nota { margin: 12px 0 0; font-size: 12px; line-height: 1.5; color: var(--muted); }
 .ctr-file { cursor: pointer; }
+
+/* Primeiros passos (E3). Fica entre o resumo e "Continuar de onde parou", que
+   é onde o olho já está depois de ler a parede de zeros. */
+.dash-steps { margin: 26px 0 0; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+.pp-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.pp-head h2 { margin: 0; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
+.pp-count { font-size: 12px; color: var(--subtle); font-variant-numeric: tabular-nums; }
+.pp-x {
+  margin-left: auto; border: 0; background: none; color: var(--subtle); cursor: pointer;
+  font-size: 20px; line-height: 1; width: 32px; height: 32px; border-radius: 8px; flex: none;
+}
+.pp-x:hover { color: var(--text); background: var(--panel-strong); }
+.pp-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.pp-go {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  padding: 12px 14px; border-radius: 12px; background: var(--panel-strong);
+  border: 1px solid transparent; color: var(--text); text-decoration: none;
+  font: inherit; cursor: pointer; transition: border-color .15s ease, transform .15s ease;
+}
+.pp-go:hover { border-color: var(--accent); transform: translateY(-1px); }
+.pp-item.is-done { display: flex; align-items: center; gap: 12px; padding: 12px 14px; opacity: .55; }
+/* O tick é a única coisa que muda entre feito e por fazer, então ele carrega o
+   contraste todo: círculo vazio virando círculo cheio com o "check" dentro. */
+.pp-tick {
+  flex: none; width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid var(--line); position: relative;
+}
+.pp-item.is-done .pp-tick { background: var(--accent); border-color: var(--accent); }
+.pp-item.is-done .pp-tick::after {
+  content: ""; position: absolute; left: 6px; top: 2px; width: 5px; height: 10px;
+  border: solid var(--bg); border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+.pp-txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.pp-txt strong { font-size: 14px; font-weight: 600; }
+.pp-item.is-done .pp-txt strong { text-decoration: line-through; }
+/* Passo feito não precisa mais da explicação de como fazer: some com a dica e
+   a lista encolhe conforme a pessoa avança, em vez de ficar do mesmo tamanho
+   com metade do texto morto. */
+.pp-item.is-done .pp-txt span { display: none; }
+.pp-txt span { font-size: 12px; color: var(--muted); line-height: 1.45; }

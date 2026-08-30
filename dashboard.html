@@ -97,6 +97,10 @@
       <!-- Continuar de onde parou: últimos sets visitados (tcg-recent-sets-v1,
            gravado pela página de set com o progresso da visita). Nasce
            escondido; sem histórico a seção não existe. -->
+      <!-- Primeiros passos (E3): nasce ESCONDIDA e só o JS a revela — quem já
+           fez tudo, ou dispensou, nunca vê nem o buraco de layout. -->
+      <section id="dhSteps" class="dash-steps" hidden></section>
+
       <h2 class="dash-section-head" id="dhRecentHead" data-i18n="dash.continue" hidden>Continuar de onde parou</h2>
       <section id="dhRecent" class="dash-recent" data-i18n-aria="dash.continue" aria-label="Continuar de onde parou" hidden></section>
 
@@ -133,5 +137,6 @@
     <script defer src="src/i18n.js"></script>
     <script defer src="src/shared.js"></script>
     <script defer src="src/dashboard.js"></script>
+    <script defer src="src/primeiros-passos.js"></script>
   </body>
 </html>
