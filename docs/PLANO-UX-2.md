@@ -894,6 +894,78 @@ decisão do Fernando (sem acesso à API da MYP) — ver a nota no próprio item.
   navegador por item, inclusive manifests de mentira cobrindo os casos chatos
   do calendário e a tabela do comparativo em 360px nos 3 idiomas.
 
+**Etapa 8a — "o que tem lastro" — entregue em 2026-08-30.** Seis commits. A
+etapa 8 foi partida em duas: aqui o que se apoia em dado ou defeito já
+existente; **8b** (E1, F10, E3) fica pra depois.
+
+- **F2** ✔ *(aval do Fernando na recomendação: níveis 1 e 2)* — os movers e o
+  índice de mercado eram publicados **todo build** e só o Portfólio, atrás de
+  login, os lia. Agora há trilho de altas/quedas + sparkline de 30 dias na
+  página de Sets. As páginas `/mercado/<jogo>` ficaram **fora**: são as únicas
+  das três que não dão pra desfazer (URL indexada), e fixar publicamente o
+  Sleevu como "site de preço" é o que a decisão anterior protegia. A decisão de
+  arquitetura: **hidratar no build** — os movers só têm `id` e `pct`, e o
+  Portfólio resolve isso baixando o chunk inteiro do set de cada carta, o que
+  não serve numa página pública. Uma requisição de alguns KB. E é **arquivo
+  próprio** (`src/mercado.js`), não mais um bloco no `shared.js`, que está em
+  97% do orçamento.
+- **Guarda de chave i18n duplicada** ✔ — descoberta do jeito ruim: criei
+  `market.title` sem saber que já existia ("Cotação de mercado", no preview da
+  carta). Num objeto literal a última definição vence e a primeira morre **em
+  silêncio**; a tela nova saiu com o título errado e os 164 testes, os três
+  checks e o smoke passaram todos. A paridade pt/en/es não pega isso: duplicar
+  nos três mantém os três "iguais". Ligada, a guarda achou **três duplicatas
+  pré-existentes** (`dash.empty` com dois textos diferentes — o melhor deles
+  estava morto —, `settings.privacy` e `hub.seeSets`, essas duas em linhas
+  adjacentes). Removi as mortas, preservando o texto que está no ar.
+- **M8a** ✔ — **onze** `window.prompt`, e nenhum funciona em webview de
+  Instagram/Facebook, que suprime o prompt: o clique não faz **nada**. Estavam
+  mudos pra esse público: criar showcase, marcar alvo de preço na wishlist, e o
+  plano B de **toda** cópia de link. Dois helpers (`caixaDeTexto`, `copiaTexto`)
+  substituem os onze — e os pontos de chamada encolheram, então parte do custo
+  volta. Guarda no `check.mjs` para o próximo voltar. Validado com o
+  `window.prompt` **sabotado**, pra o teste não passar por sorte.
+- **F3** ✔ — o `price-history` guarda a série diária **por carta** e os chunks
+  dizem o set de cada uma; ninguém tinha juntado. Chip "▲ 3,2%" no card do set,
+  com `dv7/dv30` escritos no **manifest** (que a tela já baixa: zero requisição
+  nova). Média equal-weighted das variações relativas — somar preços faria uma
+  Charizard de US$ 900 mandar no set inteiro. Piso de 8 cartas e de 0,5%: sem
+  eles o chip mentiria justamente nos sets pequenos, que são a maioria. Ficou de
+  fora o chip nas páginas `/set/*.html`: o prerender roda **antes** do
+  enrich-manifest, e reordenar o pipeline sem poder rodar o build completo aqui
+  seria mexer no escuro.
+- **E4** ✔ — o destaque da galeria era o mais visitado por contagem
+  **acumulada**, que nunca desce: o primeiro deck que viralizou ficava no topo
+  pra sempre. Agora `views / (idade + 2)^1.5`, publicado no build a partir de
+  `shares` + `deck_views` — **leitura pública conferida na migration 20260804a**,
+  não assumida. Só o destaque usa o score; a lista obedece o seletor da pessoa.
+  Sem o arquivo, volta ao comportamento de hoje. Sete testes dourados.
+- **E5** ✔ — páginas `/artist/<slug>`, e **duas correções ao plano**: (a) ele
+  dizia "Magic depois, via D1", mas o log do deploy mostra `indexes-artists`
+  populado em **três** jogos, Magic incluso e sendo o maior; (b) o plano não viu
+  o **custo de arquivo** — uma página por artista seriam milhares, contra a
+  mesma folga de 20.000 do Pages que barrou o P1. Daí o teto de 900 (os com mais
+  cartas), piso de 3 cartas e **uma** variante de idioma em vez de duas: +900
+  arquivos no pior caso, 13.791 → ~14.691. Dois bugs meus que só o navegador
+  pegou (a página saía **sem estilo** — as pré-renderizadas usam `<style>`
+  inline, não o `styles.css` do site — e o link saía com `game=undefined`), e um
+  **pré-existente**: a grade caía pra uma carta por linha em 360px, nas páginas
+  de set também. O `minmax` já tinha sido baixado de 150 pra 130 "por seis
+  pixels"; em 360px estoura por onze. Agora 120.
+- **Validação:** 171 testes (7 novos), os três checks, orçamento de peso e smoke
+  24/25 (a falha é o 404 pré-existente dos logos de loja); e teste de navegador
+  por item, inclusive os dois caminhos do E4 (com e sem o arquivo de destaque) e
+  a grade do E5 medida em 360, 390 e 1280.
+
+**Pendente da 8a:** **M8b** — `confirm()` virando desfazer no deck e no item
+manual (os dois já gravam tombstone), e os alerts de "nada pra compartilhar"
+virando botão desabilitado. Mexe em fluxo destrutivo e merece diff próprio.
+
+**Aviso de orçamento, agora nos dois:** `shared.js` em **97%** (72,5 KB de 75,0)
+e o CSS em **95%** (40,7 KB de 43,0). O E1 e o F10 da 8b são código
+considerável — cada um precisa nascer em **arquivo próprio**, como o
+`src/mercado.js` desta etapa, ou o CI barra.
+
 ---
 
 ## 7. O que a verificação corrigiu (pra não repetir o erro do plano 1)
