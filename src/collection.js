@@ -1047,7 +1047,7 @@
     }
     const [bg, fg] = GRADED_COLORS[it.company] || GRADED_COLORS.psa;
     const src = shared.cardImageSources(card);
-    const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
+    const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true, sizes: shared.SIZES_CARD_TILE });
     const val = it.value > 0 ? it.value : (shared.gradedValue(card, it.company, it.grade).value || 0);
     const priceHtml = val > 0 ? `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>` : "";
     const badge = `<span class="graded-badge" style="--slab-bg:${bg};--slab-fg:${fg}">${escapeHtml((it.company || "").toUpperCase())} ${escapeHtml(shared.gradedGradeText(it.grade, it.pristine))}</span>`;

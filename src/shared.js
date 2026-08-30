@@ -3888,6 +3888,13 @@
       if (next) {
         if (list.length) img.setAttribute("data-img-fallbacks", list.join("|"));
         else img.removeAttribute("data-img-fallbacks");
+        // srcset VENCE o src: sem tirar os dois atributos o navegador reescolhe
+        // uma candidata do srcset e a troca de URL nao acontece — a cadeia de
+        // fallback inteira viraria enfeite. Nao volta no retry de proposito: o
+        // retry existe pra recuperar a imagem, e a nitidez extra nao vale
+        // arriscar o navegador cair de novo na candidata que acabou de falhar.
+        img.removeAttribute("srcset");
+        img.removeAttribute("sizes");
         img.src = next;
         return;
       }
@@ -4029,9 +4036,36 @@
     return swapped === url ? "" : swapped;
   }
 
+  // srcset do thumb. A TCGdex publica DUAS variantes do MESMO scan no caminho —
+  // low (245x337, ~14 KB) e high (600x825, ~48 KB) — e a grade sempre serviu a
+  // low pra todo mundo: num celular DPR 3 uma coluna de ~170 px pede ~510 px
+  // reais e recebia 245 esticados (a mesma medicao que o prerender-catalog.mjs
+  // ja documenta: 3,8x de escala, borrado). Com srcset+sizes quem escolhe e o
+  // navegador: tela 1x continua baixando exatamente os bytes de hoje, tela 2x/3x
+  // passa a receber nitidez de fonte. So a TCGdex expoe esse esquema; as outras
+  // fontes (TCGplayer, Scryfall, Lorcast) devolvem "" e o <img> sai igual a antes.
+  const TCGDEX_QUALIDADE_RE = /(?:\/(?:low|high))?\.(?:png|webp|jpg)$/;
+  function tcgdexThumbSrcset(url) {
+    const s = String(url || "");
+    if (s.indexOf("assets.tcgdex.net") < 0) return "";
+    return `${s.replace(TCGDEX_QUALIDADE_RE, "/low.webp")} 245w, ${s.replace(TCGDEX_QUALIDADE_RE, "/high.webp")} 600w`;
+  }
+
+  // Largura que o tile de carta realmente ocupa, por faixa de tela. Sao valores
+  // de `sizes`, nao de CSS: servem so pro navegador escolher a candidata do
+  // srcset. Uma escada so precisa cobrir DUAS grades com ladders diferentes —
+  // a .card-grid (2 colunas ate 720px, auto-fill minmax(220px,1fr) acima) e a
+  // #salesGrid/#gradedGrid (2/3/4/6 colunas em 460/680/1000px) — entao ela e
+  // aproximada de proposito, e o erro so aparece em tela 1x: pra mais custa
+  // bytes, pra menos custa ate 1,2x de escala. Hoje o erro e 3,8x em DPR 3.
+  const SIZES_CARD_TILE = "(max-width: 460px) 46vw, (max-width: 720px) 31vw, (max-width: 1000px) 24vw, 240px";
+  // Binder: ate 700px a pagina empilha e ocupa a largura toda (3 colunas, o
+  // padrao do --cols); no desktop a pagina para em cols*230px.
+  const SIZES_BINDER_SLOT = "(max-width: 700px) 31vw, 210px";
+
   function localizedImg(url, options) {
     if (!url) return "";
-    const { alt = "", className = "", loading = "", thumb = false, fallback = "", priority = "" } = options || {};
+    const { alt = "", className = "", loading = "", thumb = false, fallback = "", priority = "", sizes = "" } = options || {};
     const classAttr = className ? ` class="${escapeAttribute(className)}"` : "";
     const loadingAttr = loading ? ` loading="${loading}"` : "";
     // priority: "high" pra imagem que costuma ser o LCP da tela (o logo do set
@@ -4056,7 +4090,13 @@
     const fallbackAttr = chain.length
       ? ` data-img-fallbacks="${escapeAttribute(chain.join("|"))}"`
       : "";
-    return `<img${classAttr}${loadingAttr}${priorityAttr} decoding="async" data-card-img src="${escapeAttribute(src)}" alt="${escapeAttribute(alt)}"${fallbackAttr}>`;
+    // srcset SO quando quem chama declara o espaco que a imagem ocupa (sizes).
+    // Sem `sizes` o navegador assume 100vw e baixaria a variante de 600px ate
+    // num thumb de 30px — por isso a opcao e opt-in por chamador, e nao um
+    // padrao. O src continua sendo a low: quem nao entende srcset ve o de hoje.
+    const ss = thumb && sizes ? tcgdexThumbSrcset(url) : "";
+    const srcsetAttr = ss ? ` srcset="${escapeAttribute(ss)}" sizes="${escapeAttribute(sizes)}"` : "";
+    return `<img${classAttr}${loadingAttr}${priorityAttr} decoding="async" data-card-img src="${escapeAttribute(src)}"${srcsetAttr} alt="${escapeAttribute(alt)}"${fallbackAttr}>`;
   }
 
   // Busca tipos e formas de um Pokémon na PokéAPI (por dexId), com cache em localStorage.
@@ -5908,7 +5948,7 @@
     }
     const img = cardImageSources(card, false);
     const imageInner = img.url
-      ? localizedImg(img.url, { alt: card.name, loading: "lazy", thumb: true, fallback: img.fallback })
+      ? localizedImg(img.url, { alt: card.name, loading: "lazy", thumb: true, fallback: img.fallback, sizes: SIZES_CARD_TILE })
       : cardBackPlaceholder();
     // Agrupado, o preview abre SEM variante: com ela, o modal restringe a
     // gestão àquela versão só (o `only` do variantQuantityRows) — e a graça do
@@ -8265,6 +8305,8 @@
     cardLanguageRegion,
     pickSetEdition,
     localizedImg,
+    SIZES_CARD_TILE,
+    SIZES_BINDER_SLOT,
     cardImageSources,
     cardHasImage,
     cardCode,
