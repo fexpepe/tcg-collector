@@ -742,6 +742,78 @@ todos sobre store ou RPC que já existia e nenhuma tela lia.
   (uma do próprio usuário, duas do mesmo vendedor) pra provar as três regras
   de filtragem de uma vez.
 
+**Etapa 6 — "imagens" — entregue em 2026-08-30 na parte que era código; P1 e P2
+ficaram bloqueados, com número.** Três commits.
+
+- **P4** ✔ — a TCGdex publica **duas** variantes do mesmo scan no caminho (low
+  245×337 ≈ 14 KB, high 600×825 ≈ 48 KB) e a grade servia a low pra todo mundo.
+  O `prerender-catalog.mjs` já media isso e já fazia o certo nas páginas
+  estáticas; o app, não. Portado pro `localizedImg` — e **opt-in por chamador**,
+  via a opção `sizes`: sem declarar o espaço ocupado o navegador assume 100vw e
+  baixaria a variante de 600px até num thumb de 30px (Hub, movers, histórico de
+  vendas). Ligado só onde a carta é desenhada grande: tile da grade (busca,
+  Coleção, graded, vendas) e slot do binder. Medido em navegador real com a CDN
+  interceptada pra registrar **qual candidata o navegador pede**:
+
+  | tela | tile | precisa | pede |
+  |---|---|---|---|
+  | celular 390 DPR 3 | 146px | 439px | **high** |
+  | celular 390 DPR 2 | 146px | 293px | **high** |
+  | desktop 1440 DPR 1 | 249px | 249px | low (zero byte a mais) |
+  | desktop 1440 DPR 2 | 249px | 499px | **high** |
+
+  A pegadinha que quase passou: **srcset vence src**. Sem remover `srcset` e
+  `sizes` no primeiro erro, a cadeia `data-img-fallbacks` inteira viraria
+  enfeite — o navegador reescolheria a mesma candidata e a carta ficaria no
+  cinza. Conferido com a high devolvendo 404: o srcset sai, o src anda e a
+  carta aparece. Custo: **+204 B** gzipados no shared.js.
+- **P5** ✔ — a aba Pokémon da Coleção pedia a official-artwork (PNG de 475px,
+  100-300 KB) pra desenhar um tile de **48px**, uma por linha. Passa a pedir o
+  sprite (~1,3 KB, 96×96 = exatamente 2x o tile) — que a Pokédex e o showcase
+  **já usavam**: essa linha era a única sobrando. O hero do detalhe, onde a arte
+  é vista grande, fica intocado.
+- **P9** ✔ — duas metades. (a) Teto do IMAGE_CACHE 1.500 → 4.000: o FIFO é puro
+  (sai a mais antiga, mesmo sendo a carta que você abre toda semana), então
+  quem tem 2.000 cartas nunca tinha a coleção inteira guardada. Como o FIFO
+  conta **entradas e não bytes** — e o P4 acabou de mudar essa conta (4.000
+  entradas ≈ 55 MB em 1x, ≈ 190 MB em 3x) — a poda agora consulta
+  `storage.estimate()`: acima de 80% da cota o teto cai pela metade, acima de
+  90% pra um quarto. Imagem se re-baixa; catálogo e coleção não. Os dois
+  `cache.put` ganharam `catch` (com teto maior, quota estourada deixa de ser
+  hipótese, e a rejeição solta derrubava o handler). (b) Pré-aquecimento no
+  ocioso na Coleção: os tiles nascem `loading="lazy"`, então só entrava no cache
+  o que a pessoa **rolou**. Aquece pelo `<img>` que já está no DOM — assim o
+  navegador escolhe a mesma candidata do srcset que a grade escolheria; aquecer
+  a low num celular 3x seria baixar arquivo que a tela nunca pede. Guardas: só
+  com service worker no comando, nada com economia de dados/2G, para com a aba
+  escondida, orçamento de 800 por carregamento. Conferido ponta a ponta com SW
+  de verdade: 30 miniaturas 20.000px abaixo da dobra → 0 pedidas pelo lazy
+  nativo, 30 pelo prewarm, IMAGE_CACHE 0 → 30; com economia de dados, 0.
+- **P1 ✖ bloqueado — não cabe no Pages, e o número é do próprio deploy.** O
+  último deploy publicou **13.785 arquivos** (log da run 807). Os ~4.600
+  vintages pendentes levariam a **~18.385** — acima do `exit 1` de 18.000 que a
+  **etapa 1 pôs justamente pra isso**. A guarda funcionou: ela existe há três
+  etapas e o primeiro uso real dela foi barrar este item. Somando: este ambiente
+  também não alcança as fontes (o proxy nega CONNECT pra `cdn.narutocards.ca`,
+  `grandlinewiki.net`, `wsrv.nl` e `tcg-db.nikita.jp`), então nem em teste dava
+  pra baixar. **P1 depende do P2** — ou de cortar arquivo em outro lugar
+  (páginas pré-renderizadas, chunks de preço), que é decisão de SEO do Fernando.
+- **P2 ✖ bloqueado — precisa de ação na conta Cloudflare.** Criar o bucket R2,
+  apontar `img.sleevu.app` e emitir o token de escrita são coisas que só o dono
+  da conta faz. O lado de código (host na CSP `img-src`/`connect-src`, em
+  `IMAGE_HOSTS` do sw.js, e a cadeia `data-img-fallbacks` invertida — espelho
+  primeiro, CDN original depois) **não foi escrito de propósito**: fiação
+  apontando pra host inexistente é bloco sem dado conferido, que é exatamente o
+  que a §8 manda não fazer.
+- **Validação:** 156 testes, `check.mjs`, `check-mobile`, orçamento de peso
+  (shared.js 72,0 KB gz de 75,0 — **96%, colado no teto**) e smoke 23/24 (a
+  falha é o 404 pré-existente dos logos de loja).
+
+**Aviso pro Fernando:** o `shared.js` está em 96% do orçamento. Não é desta
+etapa (o P4 custou 204 B; o resto veio das etapas 2-5), mas a próxima feature
+grande no shared.js estoura o CI. Ou o teto sobe com justificativa, ou algo sai
+do shared.js pra um arquivo por página.
+
 ---
 
 ## 7. O que a verificação corrigiu (pra não repetir o erro do plano 1)
