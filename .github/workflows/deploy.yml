@@ -554,6 +554,16 @@ jobs:
       - name: Completa o manifest com metadados de set
         run: node scripts/enrich-manifest.mjs
 
+      # Calendario de lancamentos: le a data `release` que o passo acima acabou
+      # de garantir em toda entrada de manifest e publica data/releases.generated
+      # .json (a pagina /lancamentos) + lancamentos.ics (assinatura no Google/
+      # Apple/Outlook). Uma fonte, dois formatos — se a pagina lesse os 13
+      # manifests no navegador e o .ics saisse de outro lugar, os dois
+      # divergiriam no primeiro build em que um jogo falhasse. DEPOIS do
+      # enrich-manifest de proposito: e ele que poe a data no build rapido.
+      - name: Calendário de lançamentos (.ics + JSON da página)
+        run: node scripts/build-releases.mjs
+
       # Reparte o monólito de preços de cada jogo em chunks POR SET (espelhando
       # os chunks de carta) e liga a flag `pc` no manifest. Roda em TODO deploy
       # pela mesma razão do enrich-manifest: no build rápido os syncs são

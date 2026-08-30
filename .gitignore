@@ -84,3 +84,8 @@ mockup-*.html
 # de o Search Console te-lo lido. O CI regenera sempre; a copia local nao serve.
 sitemap.xml
 out/
+
+# Calendário de lançamentos: os DOIS saem do scripts/build-releases.mjs em todo
+# deploy, derivados dos manifests. O .json já cai no data/*.generated.json acima;
+# o .ics mora na raiz (é a URL pública que se assina) e precisa da linha própria.
+lancamentos.ics

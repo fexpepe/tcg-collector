@@ -2723,7 +2723,7 @@
     // fontes de dados saíram daqui em 2026-08-05 — as duas já viviam, mais
     // completas e nos três idiomas, em Termos § Marcas e Sobre § De onde vêm os
     // dados. Repetidas no rodapé viravam um paredão de texto no pé da Início.
-    const FOOTER_PAGES = ["", "index", "about", "novidades", "faq", "help", "settings", "backup", "privacy", "terms", "login", "404"];
+    const FOOTER_PAGES = ["", "index", "about", "novidades", "lancamentos", "faq", "help", "settings", "backup", "privacy", "terms", "login", "404"];
     const page = (window.location.pathname.split("/").pop() || "").replace(/\.html$/, "");
     if (!FOOTER_PAGES.includes(page)) return;
     if (document.querySelector(".site-footer")) return;
@@ -2750,6 +2750,7 @@
         <nav class="site-footer-links" aria-label="${escapeAttribute(t("footer.linksLabel"))}">
           <a href="about">${escapeHtml(t("footer.about"))}</a>
           <a href="novidades" data-news-link>${escapeHtml(t("news.heading"))}</a>
+          <a href="lancamentos">${escapeHtml(t("footer.releases"))}</a>
           <a href="faq">${escapeHtml(t("footer.faq"))}</a>
           <a href="help">${escapeHtml(t("footer.help"))}</a>
           <a href="settings">${escapeHtml(t("footer.settings"))}</a>
