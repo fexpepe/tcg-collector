@@ -604,6 +604,14 @@ jobs:
       - name: Reparte o CSS por área
         run: node scripts/split-css.mjs --write
 
+      # Funde theme.js + game.js num src/boot.js só. Os dois são síncronos no
+      # <head>, antes do CSS: na primeira visita (sem cache, sem SW) eram duas
+      # paradas em série no caminho do primeiro paint; agora é uma. DEPOIS do
+      # split-i18n (que injeta o mapa de idiomas dentro do theme.js) e ANTES da
+      # minificação e do hash. O --check equivalente roda no CI.
+      - name: Funde os scripts de boot (theme + game)
+        run: node scripts/bundle-boot.mjs
+
       # Minifica JS/CSS servidos, IN PLACE (as URLs não mudam; o repo fica intacto —
       # isso só existe no workspace do runner). Corta ~50% do transfer e acelera o
       # parse no mobile. Bônus: o esbuild FALHA em erro de sintaxe, então este passo
