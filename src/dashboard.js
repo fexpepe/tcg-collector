@@ -86,6 +86,41 @@
   // (recalcular aqui exigiria os índices dos 13 jogos; a próxima visita
   // atualiza o número de graça). Só links internos de /detail entram — a chave
   // é local, mas render de URL gravada pede a mesma desconfiança do login.
+  // Novidades na coleção. Cada add/edição carimba meta.mod[cardId] desde a era
+  // v3 — e o ÚNICO leitor disso era o merge de sync. O dado estava ali,
+  // sincronizado entre aparelhos, sem nunca virar nada na tela.
+  //
+  // Agregado e não lista de cartas: o Hub é página neutra e não carrega
+  // catálogo (ver game.js), então mostrar NOME de carta custaria os chunks dos
+  // 13 jogos. A contagem responde a mesma pergunta sem baixar nada.
+  (function renderNovidades() {
+    const linha = document.getElementById("dhFresh");
+    const head = document.getElementById("dhFreshHead");
+    if (!linha) return;
+    const agora = new Date();
+    const inicioDoMes = new Date(agora.getFullYear(), agora.getMonth(), 1).getTime();
+    let noMes = 0;
+    let ultima = 0;
+    shared.GAME_SLUGS.forEach((g) => {
+      const meta = rawJson(`tcg-collector-${g}-collection-meta-v1`);
+      const mod = meta && meta.mod && typeof meta.mod === "object" ? meta.mod : null;
+      if (!mod) return;
+      Object.keys(mod).forEach((id) => {
+        const t2 = Number(mod[id]) || 0;
+        if (t2 > ultima) ultima = t2;
+        if (t2 >= inicioDoMes) noMes++;
+      });
+    });
+    if (!noMes) return;
+    const mes = agora.toLocaleDateString(shared.getLocale(), { month: "long" });
+    const dias = Math.floor((Date.now() - ultima) / 86400000);
+    const quando = dias <= 0 ? t("dash.freshToday") : tn("dash.freshDays", dias);
+    linha.innerHTML = `<strong>+${noMes.toLocaleString(shared.getLocale())}</strong> `
+      + escapeHtml(tn("dash.freshMonth", noMes, { month: mes })) + " · " + escapeHtml(quando);
+    linha.hidden = false;
+    if (head) head.hidden = false;
+  })();
+
   (function renderRecentes() {
     const sec = document.getElementById("dhRecent");
     const head = document.getElementById("dhRecentHead");

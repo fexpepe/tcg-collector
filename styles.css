@@ -9218,3 +9218,5 @@ select,
 .ios-sheet-icon { font-size: 17px; color: var(--accent); }
 .trade-balance { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
 .trade-balance strong { color: var(--text); font-size: 15px; font-variant-numeric: tabular-nums; }
+.dash-fresh { margin: -4px 0 18px; color: var(--muted); font-size: 13px; }
+.dash-fresh strong { color: var(--accent); font-size: 16px; font-variant-numeric: tabular-nums; margin-right: 2px; }
