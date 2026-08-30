@@ -62,6 +62,12 @@
   const totalDe = (side) => lados[side].reduce((s, it) => s + (Number(it.v) || 0) * (Number(it.q) || 1), 0);
 
   // ── Busca ──────────────────────────────────────────────────────────────────
+  // Devolve a lista de cartas OU o marcador INDISPONIVEL. A distinção importa:
+  // o searchApi devolve null em qualquer falha (rede, 404, pausa de rate
+  // limit), e tratar isso como lista vazia fazia a tela dizer "Nada
+  // encontrado" — a pessoa conclui que o Sleevu não TEM a carta da troca dela,
+  // quando o que houve foi a busca não ter respondido.
+  const INDISPONIVEL = Symbol("busca indisponível");
   async function busca(q) {
     const hits = await shared.searchApi("all", q, 20);
     if (hits && hits.length) {
@@ -78,18 +84,24 @@
       const bruto = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
       const jogo = bruto === "hub" ? "pokemon" : bruto;
       const idx = await shared.loadSearchIndex(jogo);
+      if (!idx) return INDISPONIVEL; // nem a borda nem o índice responderam
       const nq = shared.normalize(q);
       const achados = (idx || []).filter((e) => shared.normalize(e.n).includes(nq) || shared.normalize(e.u) === nq).slice(0, 20);
       if (!achados.length) return [];
       const catalog = await shared.loadOwnedAcrossGames({ [jogo]: achados.map((e) => e.i) });
       const byId = new Map((catalog.cards || []).map((c) => [c.id, c]));
       return achados.map((e) => byId.get(e.i)).filter(Boolean);
-    } catch (e) { return []; }
+    } catch (e) { return INDISPONIVEL; }
   }
 
   function renderResultados(side, cards) {
     const box = el.resultados[side];
     if (!box) return;
+    if (cards === INDISPONIVEL) {
+      box.innerHTML = `<p class="trade-none">${escapeHtml(t("trade.searchDown"))}</p>`;
+      box.hidden = false;
+      return;
+    }
     if (!cards.length) {
       box.innerHTML = `<p class="trade-none">${escapeHtml(t("trade.none"))}</p>`;
       box.hidden = false;

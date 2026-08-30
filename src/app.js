@@ -126,7 +126,7 @@
       preview.openFromUrl(); // ?card=<id> compartilhado: reabre o popup
     })
     .catch((error) => {
-      elements.empty.textContent = t("error.catalog", { message: error.message });
+      shared.mostraErroDeCatalogo(elements.empty, error);
       elements.empty.hidden = false;
     });
 

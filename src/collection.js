@@ -29,7 +29,7 @@
     } catch (e) { /* corrompido: começa vazio */ }
     if (!data.order || typeof data.order !== "object") data.order = {}; // ordem manual por bucket (folderId|"__none__")
     // Carimbo pra sincronização (LWW do bloco todo): toda mudança atualiza o ts.
-    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(data)); shared.marcaSuja(KEY); } catch (e) { /* quota: ignora */ } };
+    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(data)); shared.marcaSuja(KEY); } catch (e) { shared.notifyStorageFull(); } };
     const uid = () => "f_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
     const byId = (id) => data.folders.find((f) => f.id === id) || null;
     return {
@@ -183,7 +183,7 @@
       }
     });
     data.updatedAt = Date.now();
-    try { localStorage.setItem(KEY, JSON.stringify(data)); shared.marcaSuja(KEY); } catch (e) { /* quota: ignora */ }
+    try { localStorage.setItem(KEY, JSON.stringify(data)); shared.marcaSuja(KEY); } catch (e) { shared.notifyStorageFull(); }
     return added;
   }
 
@@ -395,7 +395,7 @@
         preview.openFromUrl();
       })
       .catch((error) => {
-        elements.groupsEmpty.textContent = t("error.catalog", { message: error.message });
+        shared.mostraErroDeCatalogo(elements.groupsEmpty, error);
         elements.groupsEmpty.hidden = false;
       });
   }

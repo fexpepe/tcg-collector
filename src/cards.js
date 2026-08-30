@@ -116,7 +116,7 @@
       }).catch((error) => {
         catalogPromise = null; // deixa tentar de novo na próxima interação
         elements.intro.hidden = true;
-        elements.empty.textContent = t("error.catalog", { message: error.message });
+        shared.mostraErroDeCatalogo(elements.empty, error);
         elements.empty.hidden = false;
         throw error;
       });

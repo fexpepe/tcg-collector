@@ -51,9 +51,9 @@
         if (nk !== k) { delete data.sales[k]; data.order = data.order.map((x) => (x === k ? nk : x)); }
         changed = true;
       });
-      if (changed) { localStorage.setItem(KEY, JSON.stringify(data)); shared.marcaSuja(KEY); } // persiste sem bumpar updatedAt
+      if (changed) { try { localStorage.setItem(KEY, JSON.stringify(data)); shared.marcaSuja(KEY); } catch (e) { shared.notifyStorageFull(); } } // persiste sem bumpar updatedAt
     })();
-    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(data)); shared.marcaSuja(KEY); } catch (e) { /* quota: ignora */ } };
+    const save = () => { data.updatedAt = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(data)); shared.marcaSuja(KEY); } catch (e) { shared.notifyStorageFull(); } };
     return {
       has: (cardId, variant, idx) => !!data.sales[keyOf(cardId, variant, idx)],
       priceOf: (cardId, variant, idx) => { const e = data.sales[keyOf(cardId, variant, idx)]; return e ? (Number(e.price) || 0) : 0; },
@@ -793,6 +793,6 @@
       preview.openFromUrl(); // ?card=<id>: reabre o popup (ver collection.js)
     })
     .catch((error) => {
-      if (elements.salesEmpty) { elements.salesEmpty.textContent = t("error.catalog", { message: error.message }); elements.salesEmpty.hidden = false; }
+      shared.mostraErroDeCatalogo(elements.salesEmpty, error);
     });
 })();

@@ -296,7 +296,7 @@
       preview.openFromUrl();
     })
     .catch((error) => {
-      elements.empty.textContent = t("error.cards", { message: error.message });
+      shared.mostraErroDeCatalogo(elements.empty, error);
       elements.empty.hidden = false;
     });
 

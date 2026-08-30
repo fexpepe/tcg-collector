@@ -1787,6 +1787,18 @@
     } catch (e) { return false; }
   }
 
+  // Toast de aviso, sem ação — a casca do undo-toast sem o botão.
+  function toastSimples(mensagem) {
+    try {
+      const el = document.createElement("div");
+      el.className = "undo-toast";
+      el.setAttribute("role", "status");
+      el.textContent = mensagem;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 5000);
+    } catch (e) { /* toast é cortesia */ }
+  }
+
   // --- Convite pra instalar (PWA) ---
   // O beforeinstallprompt já era capturado, mas o único caminho pra usá-lo era
   // um item escondido no menu de conta — ou seja, quem não fuça o menu nunca
@@ -1896,6 +1908,36 @@
       el.querySelector("button").addEventListener("click", () => window.location.reload());
       setTimeout(() => { el.remove(); }, 12000);
     } catch (e) { /* aviso é cortesia: nunca atrapalha a página */ }
+  }
+
+  // --- Erro de catálogo com saída ---
+  // Antes: "Não foi possível carregar o catálogo: Failed to fetch" — o texto do
+  // NAVEGADOR, em inglês, colado numa frase em português, e sem nada a fazer
+  // além de adivinhar que era pra dar F5. Quem está num 4G oscilante (a maior
+  // parte do público) lê isso como defeito do site.
+  //
+  // Agora: uma frase que diz o que aconteceu, um botão que resolve, e o detalhe
+  // técnico no title — continua acessível pra quem for investigar, sem ocupar a
+  // tela de quem só quer as cartas de volta.
+  function mostraErroDeCatalogo(elemento, erro) {
+    if (!elemento) return;
+    const semRede = typeof navigator !== "undefined" && navigator.onLine === false;
+    elemento.textContent = "";
+    const frase = document.createElement("span");
+    frase.textContent = t(semRede ? "error.offline" : "error.catalogSoft");
+    if (erro && erro.message) frase.setAttribute("title", String(erro.message));
+    const botao = document.createElement("button");
+    botao.type = "button";
+    botao.className = "secondary";
+    botao.style.marginLeft = "10px";
+    botao.textContent = t("action.retry");
+    // Recarregar e não "rechamar o loader": as seis telas que caem aqui têm
+    // caminhos de carga diferentes (algumas memoizam a promise, outras não), e
+    // um reload é a única retentativa que funciona igual em todas.
+    botao.addEventListener("click", () => window.location.reload());
+    elemento.appendChild(frase);
+    elemento.appendChild(botao);
+    elemento.hidden = false;
   }
 
   // --- Aviso de armazenamento cheio ---
@@ -7630,7 +7672,7 @@
       }
     }
     await Promise.all(Array.from({ length: Math.min(concurrency, list.length) }, worker));
-    if (falhas && !chunks.length) throw new Error(`Falha ao carregar o catálogo (${falhas} sets)`);
+    if (falhas && !chunks.length) throw new Error(`catalog chunks failed (${falhas} sets)`);
     // Catálogo PARCIAL passa (mostrar 90% dos sets é melhor que uma página
     // morta), mas fica marcado na sessão: o publishProfile se recusa a
     // republicar o perfil público com ele — o payload é filtrado do catálogo
@@ -8151,6 +8193,7 @@
     // sync — sem isto a edição espera a varredura de 5 min em vez dos 20 s.
     marcaSuja,
     notifyStorageFull,
+    mostraErroDeCatalogo,
     vibrar,
     compartilharLink,
     errorSummary,
@@ -9790,8 +9833,23 @@
         if (payload.wishTargets && typeof payload.wishTargets === "object") localStorage.setItem(SYNC_KEYS.wishTargets, JSON.stringify(payload.wishTargets));
         if (Array.isArray(payload.favorites)) localStorage.setItem(SYNC_KEYS.favorites, JSON.stringify(payload.favorites));
         if (payload.manual && typeof payload.manual === "object") localStorage.setItem(SYNC_KEYS.manual, JSON.stringify(payload.manual));
+        // Confirmação do outro lado do reload: restaurar backup é o momento de
+        // maior ansiedade do usuário (os dados dele na mão) e a única resposta
+        // era a página recarregar — indistinguível de "não fez nada".
+        try { sessionStorage.setItem("tcg-import-ok", "1"); } catch (e) { /* segue sem toast */ }
         window.location.reload();
-      } catch (e) { alert(t("error.import")); }
+      } catch (e) {
+        // Diagnóstico honesto: quota estourada no MEIO da restauração deixa o
+        // estado pela metade (a coleção já entrou, os binders não) — e a
+        // mensagem "não foi possível importar esse arquivo" culpa o arquivo,
+        // que está perfeito. São problemas diferentes e conselhos diferentes.
+        if (e && (e.name === "QuotaExceededError" || e.name === "NS_ERROR_DOM_QUOTA_REACHED")) {
+          alert(t("error.importPartial"));
+          notifyStorageFull();
+          return;
+        }
+        alert(t("error.import"));
+      }
     }
 
     // Importa o CSV exportado pelo Dex (dextcg.com). Formato: UTF-16, separado
@@ -10553,7 +10611,14 @@
   // que o sw.js põe ao receber o push).
   try { if (navigator.clearAppBadge) navigator.clearAppBadge().catch(() => {}); } catch (e) { /* sem suporte */ }
   initNewsBadge();
-  initInstallInvite(); // bolinha "novo" nos links de Novidades (footer + menu)
+  initInstallInvite();
+  // Backup restaurado: o aviso vive do outro lado do reload (ver importJson).
+  try {
+    if (sessionStorage.getItem("tcg-import-ok")) {
+      sessionStorage.removeItem("tcg-import-ok");
+      toastSimples(t("backup.restored"));
+    }
+  } catch (e) { /* sem sessionStorage: sem toast */ } // bolinha "novo" nos links de Novidades (footer + menu)
   initPartnerBanner();
   initThemeToggle();
   initCollectorToggle(); // depois do tema: insere o olhinho ANTES do botão de tema

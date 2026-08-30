@@ -52,7 +52,7 @@
         catalogPromise = null;
         elements.intro.hidden = true;
         elements.grid.innerHTML = "";
-        elements.empty.textContent = shared.t("error.catalog", { message: error.message });
+        shared.mostraErroDeCatalogo(elements.empty, error);
         elements.empty.hidden = false;
         if (elements.resultsHeader) elements.resultsHeader.hidden = true;
         throw error;

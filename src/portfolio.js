@@ -151,7 +151,7 @@
       hidrataMovers();
     })
     .catch((error) => {
-      elements.empty.textContent = t("error.catalog", { message: error.message });
+      shared.mostraErroDeCatalogo(elements.empty, error);
       elements.empty.hidden = false;
     });
 
