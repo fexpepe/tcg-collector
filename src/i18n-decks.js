@@ -5,6 +5,13 @@
 // não o carregue. Mescla (não substitui): a ordem entre os arquivos não importa.
 window.TCG_MESSAGES = window.TCG_MESSAGES || {};
 window.TCG_MESSAGES.pt = Object.assign(window.TCG_MESSAGES.pt || {}, {
+      "gf.title": "Testar mão",
+      "gf.mulligan": "Nova mão (mulligan)",
+      "gf.draw": "Comprar 1",
+      "gf.count": "{n} cartas na mão · {resto} no deck",
+      "gf.mulligans": "{n} mulligan(s)",
+      "gf.empty": "Monte o deck primeiro — não há carta pra embaralhar.",
+      "decks.goldfish": "Testar mão",
       "decks.publicHeading": "Decks da comunidade",
       "decks.publicLead": "Veja o que a comunidade está montando — lista de cartas, custo total e quanto falta pra você montar o seu.",
       "decks.publicCta": "Criar conta grátis",
@@ -183,6 +190,13 @@ window.TCG_MESSAGES.pt = Object.assign(window.TCG_MESSAGES.pt || {}, {
       "decks.blocked.singleton": "Adicionada — mas este formato é singleton, e “{name}” ficou com {qty}."
 });
 window.TCG_MESSAGES.en = Object.assign(window.TCG_MESSAGES.en || {}, {
+      "gf.title": "Test hand",
+      "gf.mulligan": "New hand (mulligan)",
+      "gf.draw": "Draw 1",
+      "gf.count": "{n} cards in hand · {resto} left in deck",
+      "gf.mulligans": "{n} mulligan(s)",
+      "gf.empty": "Build the deck first — there are no cards to shuffle.",
+      "decks.goldfish": "Test hand",
       "decks.publicHeading": "Community decks",
       "decks.publicLead": "See what the community is building — card list, total cost and how much you'd still need to build yours.",
       "decks.publicCta": "Create a free account",
@@ -361,6 +375,13 @@ window.TCG_MESSAGES.en = Object.assign(window.TCG_MESSAGES.en || {}, {
       "decks.issue.identityMismatch": "“{name}” is outside the leader's colors ({list})."
 });
 window.TCG_MESSAGES.es = Object.assign(window.TCG_MESSAGES.es || {}, {
+      "gf.title": "Probar mano",
+      "gf.mulligan": "Nueva mano (mulligan)",
+      "gf.draw": "Robar 1",
+      "gf.count": "{n} cartas en mano · {resto} en el mazo",
+      "gf.mulligans": "{n} mulligan(s)",
+      "gf.empty": "Arma el mazo primero — no hay cartas para barajar.",
+      "decks.goldfish": "Probar mano",
       "decks.publicHeading": "Decks de la comunidad",
       "decks.publicLead": "Mira lo que la comunidad está armando — lista de cartas, costo total y cuánto te falta para armar el tuyo.",
       "decks.publicCta": "Crear cuenta gratis",

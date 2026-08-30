@@ -1635,6 +1635,7 @@
         <span class="deck-ed-game">${gameTag(deck.game)}${pack.format ? "<span>" + esc(t("decks.format." + pack.format)) + "</span>" : ""}</span>
         <button type="button" class="deck-mini" data-deck-import>${esc(t("decks.import"))}</button>
         <button type="button" class="deck-mini" data-deck-copy>${esc(t("decks.copyList"))}</button>
+        <button type="button" class="deck-mini" data-deck-goldfish>${esc(t("decks.goldfish"))}</button>
         <button type="button" class="deck-mini" data-deck-publish>${esc(t(deck.publishedId ? "decks.savePublic" : "decks.publish"))}</button>
         ${deck.publishedId ? `<button type="button" class="deck-mini deck-unpub" data-deck-unpublish>${esc(t("decks.unpublish"))}</button>` : ""}
         ${viewMenuHtml()}
@@ -2074,6 +2075,12 @@
 
     // Importar / copiar lista em texto
     if (ev.target.closest("[data-deck-import]")) { openImportModal(); return; }
+    // Testar mão (goldfish): módulo próprio, carregado só nesta página (o
+    // shared.js está no teto do orçamento). Ausente = botão inerte, não erro.
+    if (ev.target.closest("[data-deck-goldfish]")) {
+      if (window.TCGGoldfish) window.TCGGoldfish.abrir(current, packOf(current), cat.byId);
+      return;
+    }
     const cp = ev.target.closest("[data-deck-copy]");
     if (cp) {
       copyDeckText().then((ok) => {

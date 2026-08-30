@@ -9332,3 +9332,21 @@ select,
 .set-trend { font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .set-trend.is-up { color: #1a9d5a; }
 .set-trend.is-down { color: #d13d3d; }
+
+/* Testar mão / goldfish (src/goldfish.js). Prefixo gf-: a área "decks" do
+   split-css pega o prefixo "deck", não este — e são poucas linhas, então elas
+   ficam no núcleo em vez de virarem uma área nova só pra elas. */
+.gf-box { max-width: 760px; }
+.gf-hand { list-style: none; margin: 0 0 4px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.gf-card { flex: 0 0 96px; }
+.gf-card img { width: 96px; aspect-ratio: 245 / 337; object-fit: cover; border-radius: 4.8% / 3.4%; background: var(--panel-strong); display: block; }
+.gf-noimg {
+  display: grid; place-items: center; width: 96px; aspect-ratio: 245 / 337; padding: 6px; text-align: center;
+  background: var(--panel-strong); border-radius: 4.8% / 3.4%; font-size: 11px; line-height: 1.2;
+}
+@media (max-width: 600px) {
+  /* Sete cartas de 96px não cabem em 360px; 68 dá quatro por linha e a mão
+     inteira aparece sem rolar — que é o ponto de "olhar a mão". */
+  .gf-card { flex-basis: 68px; }
+  .gf-card img, .gf-noimg { width: 68px; }
+}

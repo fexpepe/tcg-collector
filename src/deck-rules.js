@@ -58,6 +58,10 @@
 
   const RULES = {
     lorcana: {
+      // Mao inicial do goldfish (src/goldfish.js). Lorcana: 7 cartas, e o mulligan e "coloque quantas quiser no fundo
+      // e compre o mesmo tanto" — aqui o botao re-embaralha e compra 7 de novo,
+      // que e o que interessa pra sentir a consistencia do deck.
+      hand: 7,
       zones: [{ key: "main", min: 60, max: null }],
       copyLimit: 4,
       copyKey: (card) => card.name,
@@ -69,6 +73,8 @@
     },
 
     onepiece: {
+      // Mao inicial do goldfish (src/goldfish.js). One Piece: 5 cartas (o Leader nao conta — ele comeca em jogo).
+      hand: 5,
       zones: [
         { key: "leader", min: 1, max: 1, filter: (c) => c.cardType === "Leader" },
         { key: "main", min: 50, max: 50, filter: (c) => c.cardType !== "Leader" }
@@ -82,6 +88,8 @@
     },
 
     digimon: {
+      // Mao inicial do goldfish (src/goldfish.js). Digimon: 5 cartas (o Digi-Egg fica na pilha de ovos, fora da mao).
+      hand: 5,
       zones: [
         { key: "egg", min: 0, max: 5, filter: (c) => c.cardType === "Digi-Egg" },
         { key: "main", min: 50, max: 50, filter: (c) => c.cardType !== "Digi-Egg" }
@@ -93,6 +101,8 @@
     },
 
     dbfw: {
+      // Mao inicial do goldfish (src/goldfish.js). Dragon Ball Fusion World: 6 cartas (o Leader comeca em jogo).
+      hand: 6,
       zones: [
         { key: "leader", min: 1, max: 1, filter: (c) => /Leader/i.test(c.cardType || "") },
         { key: "main", min: 50, max: 50, filter: (c) => !/Leader/i.test(c.cardType || "") }
@@ -104,6 +114,8 @@
     },
 
     pokemon: {
+      // Mao inicial do goldfish (src/goldfish.js). Pokemon: 7 cartas.
+      hand: 7,
       // Deck de Pokémon é EXATAMENTE 60 cartas.
       zones: [{ key: "main", min: 60, max: 60 }],
       copyLimit: 4,
@@ -114,6 +126,8 @@
     },
 
     ygo: {
+      // Mao inicial do goldfish (src/goldfish.js). Yu-Gi-Oh!: 5 cartas pra quem comeca (o Extra Deck fica de fora).
+      hand: 5,
       zones: [
         { key: "main", min: 40, max: 60, filter: (c) => !YGO_EXTRA.test(c.cardType || "") },
         { key: "extra", min: 0, max: 15, filter: (c) => YGO_EXTRA.test(c.cardType || "") },
@@ -128,6 +142,8 @@
     },
 
     magic: {
+      // Mao inicial do goldfish (src/goldfish.js). Magic: 7 cartas.
+      hand: 7,
       // Os formatos de mesa mais jogados. Os cinco "construídos" (60 cartas, 4
       // cópias, sideboard de 15) só diferem na lista de sets legais — que a
       // gente NÃO valida (exigiria a legalidade por carta do Scryfall, que não
@@ -179,7 +195,10 @@
 
   // Modo livre: o que vale pros jogos sem pacote (e pros vintage, que não têm
   // formato competitivo). Sem mínimo, sem máximo, sem limite de cópias.
-  const FREE = { zones: [{ key: "main", min: 0, max: null }], free: true, facets: [], curve: null, dist: null };
+  // `hand: 7` no modo livre nao e regra de jogo nenhum: e o numero mais comum
+  // entre os TCGs modernos, e o goldfish precisa de ALGUM ponto de partida
+  // pros jogos sem pacote (e pros vintage). O botao de comprar cobre o resto.
+  const FREE = { zones: [{ key: "main", min: 0, max: null }], free: true, hand: 7, facets: [], curve: null, dist: null };
 
   // Resolve o pacote do jogo + formato. O formato herda a base e sobrescreve.
   function packFor(game, formatSlug) {
