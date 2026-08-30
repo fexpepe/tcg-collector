@@ -397,13 +397,27 @@
       // migration aplicada volta {} — e aí a popularidade simplesmente não existe:
       // o destaque cai pro primeiro da ordem e a opção "mais vistos" não aparece.
       const views = await shared.fetchDeckViews(novas.map((r) => r.id));
-      comCache = { game: communityGame, rows: novas, views };
+      // Score de destaque publicado no build. Falta do arquivo é normal (build
+      // sem rede pro Supabase, ou galeria recém-nascida) e não é erro: o hero
+      // volta pra visita acumulada.
+      const hot = await fetch("data/decks-hot.generated.json", { cache: "no-cache" })
+        .then((r) => (r.ok ? r.json() : null)).catch(() => null);
+      comCache = { game: communityGame, rows: novas, views, hot };
       comMissing = null;
       comMissState = "idle";
     }
     const views = comCache.views;
     const nViews = (r) => Number(views[r.id]) || 0;
     const temViews = Object.keys(views).length > 0;
+    // Score de DESTAQUE com decaimento (scripts/build-decks-hot.mjs). A visita
+    // acumulada só cresce, então o primeiro deck que viralizou ficava no topo
+    // pra sempre e a galeria congelava. Aqui o arquivo do build já traz
+    // views/(idade+2)^1.5. Sem ele (build que falhou, ou sem rede na hora do
+    // deploy), `hot` fica vazio e o destaque volta a ser o mais visitado — o
+    // comportamento de hoje, sem regressão.
+    const hot = (comCache.hot && comCache.hot.hot) || {};
+    const nHot = (r) => Number(hot[r.id]) || 0;
+    const temHot = Object.keys(hot).length > 0;
     const nCards = (r) => Number(r.total) || 0;
     // Custo do publicar, em BRL. `null` = deck publicado antes do campo existir:
     // não é "de graça", é DESCONHECIDO — a diferença decide o filtro abaixo.
@@ -554,11 +568,15 @@
       // galeria recém-nascida), cai pro primeiro da ordem escolhida e o rótulo
       // muda pra "Último publicado": prefiro dizer o que é a mostrar um ranking
       // inventado. O hero SAI da lista de baixo pra não aparecer duas vezes.
-      const popular = temViews
-        ? rows.slice().sort((a, b) => nViews(b) - nViews(a))[0]
-        : null;
-      const hero = (popular && nViews(popular) > 0) ? popular : rows[0];
-      const destaqueReal = hero === popular && nViews(hero) > 0;
+      // Ordem de preferência: score com decaimento > visita acumulada > o
+      // primeiro da ordem escolhida. Só o DESTAQUE usa o score — a lista de
+      // baixo obedece o seletor de ordenação, que é escolha da pessoa.
+      const popular = temHot
+        ? rows.slice().sort((a, b) => nHot(b) - nHot(a)).find((r) => nHot(r) > 0) || null
+        : (temViews ? rows.slice().sort((a, b) => nViews(b) - nViews(a))[0] : null);
+      const heroForte = !!popular && (temHot ? nHot(popular) > 0 : nViews(popular) > 0);
+      const hero = heroForte ? popular : rows[0];
+      const destaqueReal = heroForte;
       const resto = rows.filter((r) => r.id !== hero.id);
       const gHero = shared.normalizeGame(hero.game || "pokemon");
       const heroHtml = `<section class="dkc-sec">

@@ -591,6 +591,14 @@ jobs:
       - name: Tendência por set (chip de variação)
         run: node scripts/build-set-trends.mjs
 
+      # "Em destaque" da galeria de decks, com DECAIMENTO. A visita acumulada so
+      # cresce, entao o primeiro deck que viralizou ficava no topo pra sempre.
+      # Le shares + deck_views (leitura publica, conferido na migration 20260804a)
+      # e publica views/(idade+2)^1.5. Sem rede ou sem dado nao escreve arquivo, e
+      # a galeria mantem o comportamento de hoje — por isso nao derruba o build.
+      - name: Decks em destaque (score com decaimento)
+        run: node scripts/build-decks-hot.mjs
+
       # API na borda (Fase 2): gera o banco de busca a partir do MESMO catálogo
       # e, SE o token tiver permissão de D1, cria/carrega o banco e liga o
       # binding no projeto Pages. Sem a permissão, o passo explica o que falta

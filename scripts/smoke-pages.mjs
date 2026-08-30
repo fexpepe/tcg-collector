@@ -60,7 +60,7 @@ for (const pagina of PAGINAS) {
     // (build-releases.mjs) e o trilho de mercado (build-market.mjs). Nos
     // três casos a página tem estado vazio próprio, que é o comportamento
     // certo sem o arquivo.
-    if (r.status() >= 400 && r.url().startsWith(BASE) && !/price-(movers|deltas)|releases\.generated|market\.generated/.test(r.url())) {
+    if (r.status() >= 400 && r.url().startsWith(BASE) && !/price-(movers|deltas)|releases\.generated|market\.generated|decks-hot\.generated/.test(r.url())) {
       quebrados.push(`${r.status()} ${new URL(r.url()).pathname}`);
     }
   });
