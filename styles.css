@@ -4732,9 +4732,20 @@ a.progress-row:hover {
 .pf-bd-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pf-bd-empty { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
 
-/* Cabeçalho do Portfólio: título + Exportar CSV na mesma linha. */
+/* Cabeçalho do Portfólio: título + ações na mesma linha. */
 .pf-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .pf-head h1 { margin: 0; }
+/* Os três botões (privacidade, retrospectiva, exportar) andam juntos, colados
+   à direita. O margin-left:auto cobre a linha em que o grupo quebra pra baixo
+   do título: sem ele o space-between do .pf-head não teria par pra empurrar. */
+.pf-head-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-left: auto;
+}
 /* "← Dashboard" ocupa a linha inteira e vai pra baixo do título, igual às
    demais telas pessoais (onde o .page-head é bloco e o link cai embaixo
    naturalmente). Sem isto o space-between o jogaria pro meio da fileira. */
