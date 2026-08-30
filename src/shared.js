@@ -1771,6 +1771,22 @@
     } catch (e) { /* toast é açúcar: nunca quebra o fluxo de apagar */ }
   }
 
+  // Compartilhar um LINK pelo sheet nativo do sistema. Devolve `true` só quando
+  // de fato abriu o sheet — assim quem chama mantém o caminho antigo (copiar +
+  // prompt) intacto pra desktop e pra navegador sem suporte, sem perder nada.
+  //
+  // Por que importa aqui: no Brasil o link de deck/binder vai pro grupo do
+  // WhatsApp, e "copiei, agora abre o WhatsApp e cola" é atrito onde podia ser
+  // um toque. O preview de carta já fazia isso (shareCard); deck e binder
+  // tinham ficado só na área de transferência.
+  function compartilharLink(titulo, url) {
+    try {
+      if (!navigator.share) return false;
+      navigator.share({ title: titulo, url }).catch(() => { /* cancelou: nada a fazer */ });
+      return true;
+    } catch (e) { return false; }
+  }
+
   // --- Versão nova disponível ---
   // O site publica todo dia às 06:20. O service worker faz skipWaiting, então a
   // troca acontece sozinha — só que a PÁGINA aberta segue rodando o código
@@ -7975,6 +7991,7 @@
     marcaSuja,
     notifyStorageFull,
     vibrar,
+    compartilharLink,
     errorSummary,
     loadPriceDeltas,
     loadPriceDeltas7d,
@@ -10219,7 +10236,13 @@
   // servidas pelas mesmas páginas ficam de fora: ?s= (links compartilhados de
   // coleção/pasta/tag/binder/vendas/graded) e /users/<handle> (perfil público).
   function enforceLoginGate() {
-    const AUTH_PAGES = ["dashboard", "collection", "graded", "wishlist", "binders", "sales", "portfolio", "badges", "backup", "troca"];
+    // "listas" e "mydecks" entraram em 2026-08-30: as duas são páginas pessoais
+    // (estão no grupo pessoal do nav e os Termos dizem que listas exigem conta),
+    // mas ficaram de fora daqui. Deslogado, a pessoa usava as duas gravando no
+    // localStorage o que NUNCA sobe pra nuvem — e descobria isso ao abrir em
+    // outro aparelho. A galeria pública e o viewer ?s= vivem em decks.html, que
+    // segue aberta; my-decks é só o editor de quem tem conta.
+    const AUTH_PAGES = ["dashboard", "collection", "graded", "wishlist", "binders", "sales", "portfolio", "badges", "backup", "troca", "listas", "mydecks"];
     const nav = document.querySelector(".page-nav[data-active-page]");
     const page = nav ? nav.dataset.activePage : "";
     if (!AUTH_PAGES.includes(page) || getSession()) return false;

@@ -1994,8 +1994,12 @@
       shareBtn.disabled = false;
       if (res && res.id) {
         const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}binders?s=${res.id}`;
-        try { await navigator.clipboard.writeText(link); shareBtn.textContent = t("binders.share.copied"); }
-        catch (e) { window.prompt(t("binders.share.copyManual"), link); shareBtn.textContent = original; }
+        if (shared.compartilharLink(t("binders.share.copied"), link)) {
+          shareBtn.textContent = t("binders.share.copied");
+        } else {
+          try { await navigator.clipboard.writeText(link); shareBtn.textContent = t("binders.share.copied"); }
+          catch (e) { window.prompt(t("binders.share.copyManual"), link); shareBtn.textContent = original; }
+        }
       } else {
         alert(res && res.error === "auth" ? t("binders.share.needLogin") : t("binders.share.error"));
         shareBtn.textContent = original;

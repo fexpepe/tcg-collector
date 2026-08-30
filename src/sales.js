@@ -691,6 +691,7 @@
     ctx.fillText("Sleevu · sleevu.app", MARGIN, height - MARGIN + 4);
 
     shared.baixarCanvasPng(canvas, "vendas-sleevu.png", {
+      share: true, // paridade com a vitrine da Coleção: no celular abre o sheet
       onFinish: () => { if (button) { button.disabled = false; button.textContent = label; } },
       onTainted: () => alert(t("sales.exportTainted"))
     });
