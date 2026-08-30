@@ -1649,8 +1649,14 @@
 
   function groupArt(group, tab) {
     const sample = group.sample;
-    if (activeTab === "pokemon" && sample.pokemonImage) {
-      return `<img loading="lazy" src="${escapeAttribute(sample.pokemonImage)}" alt="">`;
+    // Tile de 48px: o SPRITE (~1,3 KB, 96x96 — exatamente 2x o tile) e nao a
+    // official-artwork, que e um PNG de 475px e 100-300 KB. A arte grande fica
+    // onde ela e vista grande: o hero do detalhe. E a mesma escolha que a
+    // Pokedex (app.js) e o showcase (groupCard, aqui embaixo) ja faziam — esta
+    // linha era a unica sobrando. Sem dexId, segue a arte, como antes.
+    if (activeTab === "pokemon") {
+      const art = (sample.dexId ? shared.spriteUrl(sample.dexId) : "") || sample.pokemonImage;
+      if (art) return `<img loading="lazy" width="48" height="48" src="${escapeAttribute(art)}" alt="">`;
     }
     if (activeTab === "sets" && (sample.setSymbol || sample.setLogo)) {
       return shared.localizedImg(sample.setSymbol || sample.setLogo, { loading: "lazy" });
