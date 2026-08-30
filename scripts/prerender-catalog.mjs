@@ -244,6 +244,44 @@ const SET_L10N = {
   }
 };
 
+// CSS das páginas pré-renderizadas. Inline de propósito: são páginas de
+// ENTRADA (a pessoa chega do Google), e um request bloqueante a mais antes do
+// primeiro paint custa mais que os 2 KB daqui. Compartilhado entre a página de
+// set e a de artista — separadas, elas divergiriam no primeiro ajuste.
+const PR_STYLE = `    <style>
+      .pr-wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px 48px; }
+      .pr-hero { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin: 24px 0 8px; }
+      .pr-hero-logo { max-height: 96px; max-width: 260px; width: auto; height: auto; }
+      .pr-hero-name { font-size: 1.6rem; }
+      .pr-hero h1 { margin: 0 0 4px; font-size: 1.7rem; }
+      .pr-sub { color: var(--muted, #9aa0aa); margin: 0; }
+      .pr-cta { display: inline-block; margin: 14px 0 4px; padding: 10px 18px; border-radius: 10px; background: var(--accent, #e63946); color: var(--on-accent, #fff); font-weight: 600; text-decoration: none; }
+      /* minmax de 120px, não 150 nem 130. O 130 foi calculado pra 390px, mas a
+         medição em 360px (iPhone SE, Galaxy A) mostrou a grade com 265px úteis:
+         130+16+130 = 276 estourava por ONZE pixels e a página caía pra UMA
+         carta por linha, gigante e esticada — o mesmo defeito que o 130 tinha
+         vindo consertar, uma faixa de tela abaixo. Com 120 cabem duas em 265px,
+         e no desktop o número de colunas não muda. */
+      .pr-grid { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 16px; }
+      /* Mesma razão do .card-tile no styles.css: são 200+ cartas numa página só
+         e o navegador não precisa diagramar as que estão fora da tela. Aqui o
+         palpite de altura é firme (a imagem é 245x342 numa coluna de ~150px,
+         mais a linha do nome), então a rolagem não estica nem encolhe. */
+      .pr-card { content-visibility: auto; contain-intrinsic-size: auto 240px; }
+      .pr-card a { text-decoration: none; color: inherit; display: block; }
+      .pr-card-img { width: 100%; height: auto; border-radius: 8px; display: block; background: var(--surface-2, #1a1c22); }
+      .pr-card-noimg { display: block; padding: 20px 8px; text-align: center; }
+      .pr-card-meta { display: block; margin-top: 6px; font-size: 0.85rem; }
+      .pr-card-num { color: var(--muted, #9aa0aa); }
+      .pr-others { margin-top: 40px; }
+      .pr-others ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 16px; }
+      .pr-others a { color: var(--accent, #e63946); text-decoration: none; }
+      /* Página de ARTISTA: só o que ela tem além da de set. */
+      .pr-more { margin: 20px 0 0; color: var(--muted, #9aa0aa); }
+      .pr-more a { color: var(--accent, #e63946); }
+      .pr-hero-meta { color: var(--muted, #9aa0aa); margin: 0; }
+    </style>`;
+
 function setPageHtml(page, canonical, otherSets, lang) {
   const L = SET_L10N[lang] || SET_L10N.pt;
   const isEn = L === SET_L10N.en;
@@ -352,32 +390,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
     <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
     <script src="/src/theme.js"></script>
     <link rel="stylesheet" href="/styles.css">
-    <style>
-      .pr-wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px 48px; }
-      .pr-hero { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin: 24px 0 8px; }
-      .pr-hero-logo { max-height: 96px; max-width: 260px; width: auto; height: auto; }
-      .pr-hero-name { font-size: 1.6rem; }
-      .pr-hero h1 { margin: 0 0 4px; font-size: 1.7rem; }
-      .pr-sub { color: var(--muted, #9aa0aa); margin: 0; }
-      .pr-cta { display: inline-block; margin: 14px 0 4px; padding: 10px 18px; border-radius: 10px; background: var(--accent, #e63946); color: var(--on-accent, #fff); font-weight: 600; text-decoration: none; }
-      /* minmax de 130px, não 150: num celular de 390px a coluna útil fica em
-         ~310px, e 150+16+150 = 316 estourava por SEIS pixels — a grade caía pra
-         uma carta por linha, gigante e esticada. Com 130 cabem duas. */
-      .pr-grid { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 16px; }
-      /* Mesma razão do .card-tile no styles.css: são 200+ cartas numa página só
-         e o navegador não precisa diagramar as que estão fora da tela. Aqui o
-         palpite de altura é firme (a imagem é 245x342 numa coluna de ~150px,
-         mais a linha do nome), então a rolagem não estica nem encolhe. */
-      .pr-card { content-visibility: auto; contain-intrinsic-size: auto 240px; }
-      .pr-card a { text-decoration: none; color: inherit; display: block; }
-      .pr-card-img { width: 100%; height: auto; border-radius: 8px; display: block; background: var(--surface-2, #1a1c22); }
-      .pr-card-noimg { display: block; padding: 20px 8px; text-align: center; }
-      .pr-card-meta { display: block; margin-top: 6px; font-size: 0.85rem; }
-      .pr-card-num { color: var(--muted, #9aa0aa); }
-      .pr-others { margin-top: 40px; }
-      .pr-others ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 16px; }
-      .pr-others a { color: var(--accent, #e63946); text-decoration: none; }
-    </style>
+${PR_STYLE}
   </head>
   <body>
     <header class="app-header">
@@ -405,13 +418,145 @@ function setPageHtml(page, canonical, otherSets, lang) {
 `;
 }
 
-function buildSitemap(setPages, cardPages, deckPages) {
+// ── Páginas de ARTISTA ──────────────────────────────────────────────────────
+// "Mitsuhiro Arita cards" é busca de volume real, e o site tinha a tela
+// /artists sem nenhuma página indexável por trás.
+//
+// TETO, e a razão dele: o deploy publica 13.791 arquivos de um limite de 20.000
+// no Cloudflare Pages, e a guarda do próprio workflow falha acima de 18.000.
+// Uma página por artista dos três jogos com dado (Pokémon, Magic e Lorcana —
+// os demais têm indexes-artists VAZIO) seria alguns milhares de arquivos e
+// comeria quase toda a folga que sobrou. O plano não tinha visto isso.
+//
+// Então: os ARTIST_PAGES artistas com mais cartas no catálogo. Card count é
+// proxy razoável de interesse de busca — quem ilustrou 400 cartas é procurado,
+// quem ilustrou 2 não é. E o número é ajustável num lugar só.
+//
+// Só UMA variante de idioma (pt, o padrão do site), diferente das páginas de
+// set: nome de artista é nome próprio e o título casa com a busca em qualquer
+// idioma, então a variante en dobraria o custo de arquivo sem dobrar o alcance.
+const ARTIST_PAGES = 900;
+const ARTIST_OUT_DIR = "artist";
+// Grade da página: 120 cartas cobrem a obra da maioria e mantêm o HTML leve.
+const ARTIST_CARDS = 120;
+// Artista com uma carta só não sustenta página própria (conteúdo fino é o que o
+// Google penaliza) — e são a maior parte da cauda.
+const ARTIST_MIN_CARDS = 3;
+
+function artistPageHtml(ap) {
+  const { name, slug, cards, porJogo } = ap;
+  const total = cards.length;
+  const mostra = cards.slice(0, ARTIST_CARDS);
+  const jogos = porJogo.map((x) => x.label).join(", ");
+  const title = `Cartas ilustradas por ${name} — Sleevu`;
+  const desc = `${total} carta${total === 1 ? "" : "s"} ilustrada${total === 1 ? "" : "s"} por ${name} em ${jogos}. Veja a arte, o set de cada uma e marque as que você tem.`;
+  const canonical = `${ORIGIN}/${ARTIST_OUT_DIR}/${slug}`;
+  const ogImage = absUrl(mostra[0] && mostra[0].image) || `${ORIGIN}/og-image.png`;
+  const appUrl = (c) => `/detail?type=artist&name=${encodeURIComponent(name)}&game=${c.game}`;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `Cartas ilustradas por ${name}`,
+    url: canonical,
+    description: desc,
+    isPartOf: { "@type": "WebSite", name: "Sleevu", url: ORIGIN + "/" },
+    about: { "@type": "Person", name },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: mostra.length,
+      itemListElement: mostra.map((c, i) => ({
+        "@type": "ListItem", position: i + 1,
+        name: `${c.name}${c.number ? ` #${c.number}` : ""}`,
+        image: absUrl(c.image) || undefined
+      }))
+    }
+  };
+
+  const ACIMA_DA_DOBRA = 6;
+  const cardsHtml = mostra.map((c, i) => {
+    const num = c.number ? `#${escapeHtml(c.number)}` : "";
+    const prioridade = i < ACIMA_DA_DOBRA
+      ? ` loading="eager"${i === 0 ? ' fetchpriority="high"' : ""}`
+      : ` loading="lazy"`;
+    const srcset = thumbSrcset(c.image);
+    const srcsetAttr = srcset ? ` srcset="${srcset}" sizes="(max-width: 640px) 50vw, 150px"` : "";
+    const alt = `${c.name}${c.set ? ` — ${c.set}` : ""}, arte de ${name}`;
+    const img = c.image
+      ? `<img class="pr-card-img" src="${escapeAttr(absUrl(thumbUrl(c.image)))}"${srcsetAttr} alt="${escapeAttr(alt)}"${prioridade} decoding="async" width="245" height="342">`
+      : `<span class="pr-card-noimg">${escapeHtml(c.name)}</span>`;
+    return `<li class="pr-card"><a href="${escapeAttr(appUrl(c))}">${img}<span class="pr-card-meta"><span class="pr-card-num">${num}</span> <span class="pr-card-name">${escapeHtml(c.name)}</span></span></a></li>`;
+  }).join("");
+
+  const restante = total - mostra.length;
+  const maisHtml = restante > 0
+    ? `<p class="pr-more">E mais ${restante} carta${restante === 1 ? "" : "s"} — <a href="${escapeAttr(appUrl(mostra[0] || { game: porJogo[0].game }))}">ver todas no Sleevu</a>.</p>`
+    : "";
+
+  const jogosHtml = porJogo
+    .map((x) => `<li><a href="/artists?game=${escapeAttr(x.game)}">${escapeHtml(x.label)} · ${x.n} carta${x.n === 1 ? "" : "s"}</a></li>`).join("");
+
+  return `<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>${escapeHtml(title)}</title>
+    <meta name="description" content="${escapeAttr(desc)}">
+    <link rel="canonical" href="${escapeAttr(canonical)}">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="${escapeAttr(canonical)}">
+    <meta property="og:title" content="${escapeAttr(`Cartas ilustradas por ${name}`)}">
+    <meta property="og:description" content="${escapeAttr(desc)}">
+    <meta property="og:image" content="${escapeAttr(ogImage)}">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
+    <script src="/src/theme.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+${PR_STYLE}
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="/">Sleevu</a>
+        <nav class="page-nav" aria-label="Páginas">
+          <a href="/artists">Artistas</a>
+          <a href="/sets">Sets</a>
+          <a href="/collection">Minha coleção</a>
+        </nav>
+      </div>
+    </header>
+    <main class="pr-wrap">
+      <div class="pr-hero">
+        <div>
+          <h1>Cartas ilustradas por ${escapeHtml(name)}</h1>
+          <p class="pr-hero-meta">${escapeHtml(`${total} carta${total === 1 ? "" : "s"} · ${jogos}`)}</p>
+          <a class="pr-cta" href="${escapeAttr(appUrl(mostra[0] || { game: porJogo[0].game }))}">Ver no Sleevu</a>
+        </div>
+      </div>
+      <ul class="pr-grid">${cardsHtml}</ul>
+      ${maisHtml}
+      <nav class="pr-others" aria-label="Onde este artista aparece">
+        <h2>Onde ${escapeHtml(name)} aparece</h2>
+        <ul>${jogosHtml}</ul>
+      </nav>
+    </main>
+  </body>
+</html>
+`;
+}
+
+function buildSitemap(setPages, cardPages, deckPages, artistPages) {
   const urls = [
     ...STATIC_URLS.map((p) => (p === "/" ? ORIGIN + "/" : ORIGIN + p)),
     ...setPages.map((s) => `${ORIGIN}/set/${s.slug}`),
     ...setPages.map((s) => `${ORIGIN}/set/${s.slug}-en`),
     ...(cardPages || []).map((c) => `${ORIGIN}/card/${c.slug}`),
-    ...(deckPages || []).map((d) => `${ORIGIN}/deck/${d.slug}`)
+    ...(deckPages || []).map((d) => `${ORIGIN}/deck/${d.slug}`),
+    ...(artistPages || []).map((a) => `${ORIGIN}/artist/${a.slug}`)
   ];
   const body = urls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
@@ -1006,13 +1151,60 @@ async function main() {
     writeFileSync(join(CARD_OUT_DIR, `${cp.slug}.html`), cardPageHtml(cp, { versoes, irmas }), "utf8");
   }
 
+  // ── Artistas ──────────────────────────────────────────────────────────────
+  // Agrupa pelo NOME do ilustrador, cruzando os jogos: o mesmo artista pode
+  // aparecer em mais de um catálogo, e uma página por (artista, jogo) partiria
+  // a autoridade da URL no meio.
+  const porArtista = new Map();
+  for (const page of pages) {
+    for (const c of page.cards) {
+      const nome = String((c && c.artist) || "").trim();
+      // "Artista desconhecido" é o rótulo que o índice usa pra carta SEM
+      // ilustrador — não é uma pessoa e não pode virar página.
+      if (!nome || /^artista desconhecido$/i.test(nome) || /^unknown/i.test(nome)) continue;
+      let e = porArtista.get(nome);
+      if (!e) { e = { name: nome, cards: [], jogos: new Map() }; porArtista.set(nome, e); }
+      // O jogo vive na PÁGINA, não na carta do chunk: sem carimbar aqui, o link
+      // pro app saía com `game=undefined` e caía no jogo errado da sessão.
+      e.cards.push({ ...c, game: page.game });
+      const j = e.jogos.get(page.game) || { game: page.game, label: page.gameLabel, n: 0 };
+      j.n++; e.jogos.set(page.game, j);
+    }
+  }
+
+  const artistPages = [];
+  const artistSlugs = new Set();
+  const candidatos = [...porArtista.values()]
+    .filter((a) => a.cards.length >= ARTIST_MIN_CARDS)
+    .sort((a, b) => b.cards.length - a.cards.length || a.name.localeCompare(b.name))
+    .slice(0, ARTIST_PAGES);
+  for (const a of candidatos) {
+    // Nome que sluga pra nada (só CJK) não vira URL legível — fica de fora, em
+    // vez de gerar /artist/2 e /artist/2-3.
+    const base = slugify(a.name);
+    if (base.length < 3) continue;
+    let slug = base, i = 2;
+    while (artistSlugs.has(slug)) slug = `${base}-${i++}`;
+    artistSlugs.add(slug);
+    // Mais valiosas primeiro não dá pra saber aqui (o preço vive noutro passo),
+    // então: mais recentes primeiro, que é a obra que a pessoa procura.
+    a.cards.sort((x, y) => String(y.setReleaseDate || "").localeCompare(String(x.setReleaseDate || "")));
+    artistPages.push({ name: a.name, slug, cards: a.cards, porJogo: [...a.jogos.values()].sort((x, y) => y.n - x.n) });
+  }
+
+  if (existsSync(ARTIST_OUT_DIR)) rmSync(ARTIST_OUT_DIR, { recursive: true, force: true });
+  mkdirSync(ARTIST_OUT_DIR, { recursive: true });
+  for (const ap of artistPages) {
+    writeFileSync(join(ARTIST_OUT_DIR, `${ap.slug}.html`), artistPageHtml(ap), "utf8");
+  }
+
   // Decks da comunidade: nunca derruba o build (galeria fora do ar = 0 páginas).
   let deckPages = [];
   try { deckPages = await buildDeckPages(); } catch (e) { console.warn(`decks: pulado (${e.message})`); }
 
-  writeFileSync("sitemap.xml", buildSitemap(pages, cardPages, deckPages), "utf8");
+  writeFileSync("sitemap.xml", buildSitemap(pages, cardPages, deckPages, artistPages), "utf8");
   const perGame = GAMES.map((g) => `${g.slug} ${pages.filter((p) => p.game === g.slug).length}`).join(" · ");
-  console.log(`prerender-catalog: ${pages.length} páginas de set em /${OUT_DIR}/ (${perGame}) + ${cardPages.length} páginas de carta em /${CARD_OUT_DIR}/ + ${deckPages.length} páginas de deck em /${DECK_OUT_DIR}/ + sitemap.xml (${STATIC_URLS.length + pages.length * 2 + cardPages.length + deckPages.length} URLs).`);
+  console.log(`prerender-catalog: ${pages.length} páginas de set em /${OUT_DIR}/ (${perGame}) + ${cardPages.length} páginas de carta em /${CARD_OUT_DIR}/ + ${artistPages.length} páginas de artista em /${ARTIST_OUT_DIR}/ (de ${porArtista.size} artistas no catálogo, teto ${ARTIST_PAGES}) + ${deckPages.length} páginas de deck em /${DECK_OUT_DIR}/ + sitemap.xml (${STATIC_URLS.length + pages.length * 2 + cardPages.length + deckPages.length + artistPages.length} URLs).`);
 }
 
 await main();

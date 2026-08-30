@@ -48,6 +48,7 @@ data/*/search-index.json
 set/
 card/
 deck/
+artist/
 
 # Key local da PokemonPriceTracker (só pra teste local; NUNCA versionar)
 .ppt.key
