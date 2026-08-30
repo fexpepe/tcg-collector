@@ -42,6 +42,14 @@ const IMAGE_HOSTS = new Set([
   "wsrv.nl"                       // proxy de resize (scans vintage do One Piece Carddass)
 ]);
 
+// Imagens ESPELHADAS localmente (logos de set e os scans vintage baixados pelos
+// mirror-*.mjs). Moram debaixo de /data/, então caíam na mesma rota do catálogo
+// e disputavam os 3.000 slots do DATA_CACHE com os chunks — um jogo grande
+// entrando expulsava os logos, que voltavam pra rede na visita seguinte. São
+// imagens: pertencem ao IMAGE_CACHE, e são imutáveis de verdade (carta de 1999
+// não muda; trocar um logo é subir arquivo com outro nome).
+const LOCAL_IMAGE_RE = /\/(?:set-logos|vintage-images|vintage-images-2002)\//;
+
 // Hosts onde a URL NÃO é imutável. O TCGplayer publica a carta assim que ela
 // entra no catálogo, muitas vezes com uma arte provisória (a da carta base), e
 // TROCA o arquivo na MESMA URL quando o scan real chega. Com cache-first puro
@@ -146,6 +154,12 @@ self.addEventListener("fetch", (event) => {
     return;
   }
   if (url.origin === self.location.origin) {
+    // Imagem espelhada aqui mesmo: mesmo tratamento das imagens de fora
+    // (cache-first no IMAGE_CACHE), fora da fila do catálogo. Ver LOCAL_IMAGE_RE.
+    if (LOCAL_IMAGE_RE.test(url.pathname) && event.request.mode !== "navigate") {
+      event.respondWith(cacheFirst(url));
+      return;
+    }
     // Catálogo (data/): stale-while-revalidate. Ver a função pra o porquê.
     if (url.pathname.includes("/data/") && event.request.mode !== "navigate") {
       event.respondWith(staleWhileRevalidate(event));
@@ -168,7 +182,13 @@ self.addEventListener("fetch", (event) => {
     // muda. cache-first zera os round-trips que o networkFirst (cache:no-cache)
     // fazia em toda carga, um por arquivo do shell. Em dev não há hash, o
     // padrão não casa e tudo segue no networkFirst (revalidar é o certo lá).
-    if (HASHED_URL_RE.test(url.pathname) || url.pathname.includes("/assets/fonts/")) {
+    // /assets/ (logos de jogo e de loja, ícones, wordmark): mesma natureza das
+    // fontes — imutável por URL, trocado por RENAME. Só em produção
+    // (HASHED_ASSETS), onde o _headers já os marca immutable; em dev revalidar
+    // segue certo, senão editar uma arte local não apareceria. Sem isto o hub
+    // — a porta de entrada — pagava ~20 requisições condicionais por abertura.
+    if (HASHED_URL_RE.test(url.pathname) || url.pathname.includes("/assets/fonts/")
+      || (HASHED_ASSETS && url.pathname.includes("/assets/"))) {
       event.respondWith(assetCacheFirst(event.request));
       return;
     }
