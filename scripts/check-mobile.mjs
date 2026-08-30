@@ -23,6 +23,7 @@
 //     gesto de home ficava por cima dos rótulos. O piso do max() é que
 //     garante a folga — trocar por env() puro traz o bug de volta.
 import { readFile, readdir } from "node:fs/promises";
+import { existsSync } from "node:fs";
 
 const ROOT = new URL("../", import.meta.url);
 const erros = [];
@@ -52,6 +53,48 @@ for (const [re, nome] of invariantes) {
 // A regra de CSS acima só serve com o JS que mede o espaço e grava a variável.
 const loginJs = await readFile(new URL("src/login.js", ROOT), "utf8");
 if (!/--ts-scale/.test(loginJs)) erros.push("src/login.js: parou de calcular --ts-scale (a caixa do Turnstile volta a vazar)");
+
+// --- 1b) Metas mobile em TODA página ---------------------------------------
+// viewport-fit=cover é o que faz o site desenhar sob o notch (e as regras de
+// safe-area valerem); as apple-mobile-web-app-* são o que dá tela cheia de
+// verdade no iPhone quando instalado. Página nova nasce copiada de outra, e
+// quando a cópia vem de uma que já estava incompleta o buraco se propaga.
+const METAS = [
+  [/name="viewport"[^>]*viewport-fit=cover/, "viewport-fit=cover"],
+  [/name="apple-mobile-web-app-capable"/, "apple-mobile-web-app-capable"],
+  [/name="theme-color"/, "theme-color"],
+];
+const paginas = (await readdir(ROOT)).filter((n) => n.endsWith(".html"));
+for (const arquivo of paginas) {
+  const html = await readFile(new URL(arquivo, ROOT), "utf8");
+  for (const [re, nome] of METAS) {
+    if (!re.test(html)) avisos.push(`${arquivo}: sem <meta ${nome}>`);
+  }
+}
+
+// --- 1c) SHELL_ASSETS aponta pra arquivo que existe? -----------------------
+// O install do service worker usa Promise.allSettled: um arquivo que não
+// existe falha em SILÊNCIO e simplesmente não entra no cache offline. Ou seja,
+// renomear um HTML e esquecer o sw.js tira a página do modo avião sem quebrar
+// nada visível — o tipo de regressão que só aparece no metrô.
+const swSrc = await readFile(new URL("sw.js", ROOT), "utf8");
+const lista = swSrc.match(/const SHELL_ASSETS = \[([\s\S]*?)\];/);
+if (!lista) {
+  erros.push("sw.js: não achei o SHELL_ASSETS (a guarda de precache ficou cega)");
+} else {
+  // Tira os comentários antes de varrer: eles têm aspas no texto ("trocar de
+  // fonte") e virariam nomes de arquivo inexistentes.
+  const semComentario = lista[1].replace(/\/\/[^\n]*/g, "");
+  for (const m of semComentario.matchAll(/"([^"]+)"/g)) {
+    const caminho = m[1];
+    if (caminho === "./" || caminho.startsWith("http")) continue;
+    // Os src/*.js e styles*.css do i18n/split nascem no build; aqui só valem os
+    // que devem existir no repositório.
+    if (!existsSync(new URL(caminho, ROOT))) {
+      erros.push(`sw.js: SHELL_ASSETS lista "${caminho}", que não existe no disco (o precache falharia calado)`);
+    }
+  }
+}
 
 // --- 2) Padrões que já causaram bug ----------------------------------------
 // width/max-width em vw dentro do conteúdo: ignora o padding do contêiner.
