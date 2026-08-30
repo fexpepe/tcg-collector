@@ -675,6 +675,47 @@ dois gateados no toque.
   terminando em y=766 com a tabbar em 774, some pra sempre ao dispensar, e o
   iPhone simulado recebe a folha sem nenhum alert nativo.
 
+**Etapa 4 — "confiança" — entregue em 2026-08-30.** Cinco commits. A decisão de
+nomenclatura foi do Fernando: fica **Showcase**.
+
+- **M6a** ✔ — a mesma feature tinha três nomes numa jornada só: **Showcase** na
+  aba, **"coleção"** nos botões dela (dentro da página que já se chama Minha
+  Coleção) e **"Pastas"** na Ajuda, que mandava ir numa aba que não existe com
+  esse nome. 42 strings nos 3 idiomas + Ajuda, FAQ, política de privacidade e
+  os fallbacks de HTML. Nenhum dado muda: a chave segue `collection-folders-v1`.
+- **M6b** ✔ — **20 divergências** entre o fallback do HTML e o dicionário. Como
+  o `applyTranslations` sobrescreve o HTML, quem mandava era o dicionário — e
+  o pior caso ficou meses no ar: o subtítulo do Portfólio dizia, nos 3 idiomas,
+  que o valor vinha "dos preços que você registrou", negando o preço automático
+  de mercado na página-vitrine. Resolvido caso a caso pelo que é verdade hoje
+  (15 vezes o i18n subiu, 5 vezes o HTML), mais o Sobre que dizia "10 jogos"
+  quando são 13. **O `check.mjs` ganhou a guarda** — e ela pegou na hora um
+  caso que eu tinha deixado passar.
+- **M6c** ✔ — 148 `aria-label` em português fixo: leitor de tela em EN/ES
+  navegava ouvindo "Páginas" e "Resumo da coleção" numa interface que, na tela,
+  estava toda traduzida. `data-i18n-aria` no `applyTranslations` (3 linhas),
+  102 rótulos reusando chave existente, 46 novas, e guarda no CI.
+- **M5** ✔ — quatro erros que pareciam defeito do site: quota engolida em 4
+  stores (a escrita falhava e a mudança sumia no F5 — e o write de migração do
+  `sales.js` não tinha try/catch nenhum); `Failed to fetch` cru na tela, agora
+  frase amigável + botão "Tentar de novo" + detalhe técnico no `title`, com
+  variante pra offline; busca da Troca fora do ar dizendo "Nada encontrado"
+  (a pessoa concluía que a carta não existe aqui); e restaurar backup com
+  quota no meio, que culpava o arquivo — agora tem diagnóstico próprio e o
+  sucesso deixou de ser mudo.
+- **M10** ✔ — a Ajuda tinha 11 seções e nenhuma cobria Portfólio, Graded,
+  Troca, Decks ou Listas. Cinco seções novas nos 3 idiomas (16 tópicos no
+  índice). E o `check-mobile` ganhou duas guardas: metas mobile em toda página
+  (404, admin e novidades já estavam sem, como a auditoria previu) e
+  **SHELL_ASSETS apontando pra arquivo que existe** — o install usa
+  `allSettled`, então um rename esquecido tirava a página do modo avião em
+  silêncio.
+- **Validação:** 156 testes, os três checks, smoke 23/24, e testes dirigidos de
+  navegador: os mesmos 9 rótulos aria em pt/en/es sem sobra de português; o
+  helper de erro com a frase certa, botão, e `Failed to fetch` no `title` e
+  fora da tela; 16 tópicos na Ajuda com as 5 seções novas preenchidas e
+  traduzidas.
+
 ---
 
 ## 7. O que a verificação corrigiu (pra não repetir o erro do plano 1)
