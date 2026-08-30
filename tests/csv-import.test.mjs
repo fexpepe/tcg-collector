@@ -93,3 +93,95 @@ test("csvSetKeys: nome cru e sem o prefixo de código", () => {
   assert.ok(keys.includes("sv085prismaticevolutions"));
   assert.ok(keys.includes("prismaticevolutions"));
 });
+
+// ---------------------------------------------------------------------------
+// ManaBox e Dragon Shield MV — os dois scanners grátis mais usados no Brasil.
+// O caminho de entrada do Sleevu passa por eles: quem já escaneou a coleção
+// num dos dois não deveria ter que redigitar nada aqui. Cabeçalhos conferidos
+// contra a documentação de cada app (ver docs/IMPORTAR.md).
+// ---------------------------------------------------------------------------
+
+const MANABOX_HEADER = ["Name", "Set Code", "Set Name", "Collector Number", "Foil", "Rarity",
+  "Quantity", "ManaBox ID", "Scryfall ID", "Purchase Price", "Misprint", "Altered",
+  "Condition", "Language", "Purchase Price Currency"];
+
+const DRAGONSHIELD_HEADER = ["Folder Name", "Quantity", "Trade Quantity", "Card Name", "Set Code",
+  "Set Name", "Card Number", "Condition", "Printing", "Language", "Price Bought",
+  "Date Bought", "LOW", "MID", "MARKET"];
+
+test("ManaBox: o cabeçalho inteiro cai nas colunas certas", () => {
+  const c = api.mapCsvHeader(MANABOX_HEADER);
+  assert.equal(c.name, 0);
+  assert.equal(c.set, 2);        // "Set Name" ganha de "Set Code"
+  assert.equal(c.number, 3);     // "Collector Number"
+  assert.equal(c.variant, 4);    // "Foil"
+  assert.equal(c.qty, 6);
+  assert.equal(c.condition, 12);
+  assert.equal(c.language, 13);
+});
+
+test("ManaBox: 'etched' é foil, não carta normal", () => {
+  // O ManaBox escreve etched SECO na coluna Foil, e "etched" não contém
+  // "foil": antes caía em Normal e a carta entrava na coleção como se não
+  // fosse foil — perda silenciosa, na impressão mais cara do Magic moderno.
+  assert.equal(api.mapCsvVariant("etched"), "Etched");
+  assert.equal(api.mapCsvVariant("Etched Foil"), "Etched");
+  assert.equal(api.mapCsvVariant("foil"), "Foil");
+  assert.equal(api.mapCsvVariant("normal"), "Normal");
+});
+
+test("ManaBox: as condições vêm com underscore", () => {
+  assert.equal(api.mapCsvCondition("near_mint"), "NM");
+  assert.equal(api.mapCsvCondition("excellent"), "SP");
+  assert.equal(api.mapCsvCondition("good"), "MP");
+  assert.equal(api.mapCsvCondition("light_played"), "SP");
+  assert.equal(api.mapCsvCondition("played"), "MP");
+  assert.equal(api.mapCsvCondition("poor"), "D");
+});
+
+test("Dragon Shield: o preâmbulo 'sep=,' não vira cabeçalho", () => {
+  // Sem tirar a linha, ela era lida como cabeçalho, o mapeamento voltava
+  // TUDO -1 e o arquivo inteiro não importava — nenhuma carta, sem erro.
+  const csv = "sep=,\n" + DRAGONSHIELD_HEADER.join(",") +
+    "\nMinha pasta,2,0,Lightning Bolt,2X2,Double Masters 2022,117,NearMint,Normal,English,0,,0,0,0\n";
+  const rows = api.parseCsvText(csv);
+  assert.deepEqual(Array.from(rows[0]), DRAGONSHIELD_HEADER);
+
+  const c = api.mapCsvHeader(Array.from(rows[0]));
+  assert.equal(c.qty, 1);        // "Quantity" antes de "Trade Quantity"
+  assert.equal(c.name, 3);       // "Card Name"
+  assert.equal(c.set, 5);        // "Set Name"
+  assert.equal(c.number, 6);
+  assert.equal(c.condition, 7);
+  assert.equal(c.variant, 8);    // "Printing"
+  assert.equal(c.language, 9);
+
+  const linha = Array.from(rows[1]);
+  assert.equal(linha[c.name], "Lightning Bolt");
+  assert.equal(api.mapCsvCondition(linha[c.condition]), "NM");
+  assert.equal(api.mapCsvVariant(linha[c.variant]), "Normal");
+});
+
+test("Dragon Shield: o separador declarado no preâmbulo é o que vale", () => {
+  // Um ; declarado tem que vencer a heurística, mesmo com vírgulas no meio
+  // do nome — que é justamente o caso que a heurística erraria.
+  const rows = api.parseCsvText('sep=;\nCard Name;Quantity\nErika\'s Venusaur, Holo;3\n');
+  assert.deepEqual(Array.from(rows[1]), ["Erika's Venusaur, Holo", "3"]);
+});
+
+test("Dragon Shield: condições em CamelCase e idioma por extenso", () => {
+  assert.equal(api.mapCsvCondition("NearMint"), "NM");
+  assert.equal(api.mapCsvCondition("LightPlayed"), "SP");
+  assert.equal(api.mapCsvCondition("Excellent"), "SP");
+  assert.equal(api.mapCsvCondition("Good"), "MP");
+  assert.equal(api.mapCsvCondition("Played"), "MP");
+  assert.equal(api.mapCsvCondition("Poor"), "D");
+  assert.equal(api.mapCsvLanguage("Portuguese (Brazil)"), "pt");
+});
+
+test("CSV sem preâmbulo continua igual (a heurística não foi mexida)", () => {
+  const rows = api.parseCsvText("Name;Qty\nMewtwo;2");
+  assert.deepEqual(Array.from(rows[1]), ["Mewtwo", "2"]);
+  const tab = api.parseCsvText("Name\tQty\nMewtwo\t2");
+  assert.deepEqual(Array.from(tab[1]), ["Mewtwo", "2"]);
+});

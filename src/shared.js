@@ -2780,9 +2780,17 @@
   // Detecta o separador (vírgula/;/tab) pela linha do cabeçalho.
   function parseCsvText(text) {
     text = text.replace(/^﻿/, "");
+    // Preambulo "sep=,": convencao do Excel que alguns exportadores emitem na
+    // PRIMEIRA linha — o Dragon Shield MV e um deles. Sem tirar, essa linha
+    // VIRAVA o cabecalho: o mapeamento voltava tudo -1 e o arquivo inteiro nao
+    // importava (nem uma carta, sem mensagem de erro). A linha ainda declara o
+    // separador de propria boca, entao ela e melhor fonte que a heuristica.
+    let sepDeclarado = "";
+    const preambulo = /^sep=(.)\r?\n/i.exec(text);
+    if (preambulo) { sepDeclarado = preambulo[1]; text = text.slice(preambulo[0].length); }
     const nl = text.indexOf("\n");
     const firstLine = nl >= 0 ? text.slice(0, nl + 1) : text;
-    const sep = [",", ";", "\t"].map((s) => [s, firstLine.split(s).length - 1])
+    const sep = sepDeclarado || [",", ";", "\t"].map((s) => [s, firstLine.split(s).length - 1])
       .sort((a, b) => b[1] - a[1])[0][0];
     const rows = [];
     let row = [], field = "", inQ = false;
@@ -2882,6 +2890,12 @@
     if (s.indexOf("1st edition") >= 0) return "1st Edition";
     if (s.indexOf("reverse") >= 0) return "Reverse";
     if (s.indexOf("holo") >= 0) return "Holo";
+    // ANTES do foil, porque "Etched Foil" casa nos dois. O ManaBox escreve
+    // "etched" seco na coluna Foil, e "etched" nao contem "foil": caia em
+    // Normal, ou seja, a carta entrava na colecao como se NAO fosse foil.
+    // "Etched" e variante propria do catalogo (sync-magic.mjs), e carta que
+    // nao a tem cai na variante padrao no import — nada se perde.
+    if (s.indexOf("etched") >= 0) return "Etched";
     if (s.indexOf("foil") >= 0 && s.indexOf("non") < 0) return "Foil";
     return "Normal";
   }
