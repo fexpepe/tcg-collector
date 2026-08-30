@@ -9271,3 +9271,20 @@ select,
   .rel-logo { display: none; }
   .rel-subscribe .cta { width: 100%; justify-content: center; }
 }
+
+/* ── Comparativo (comparar.html) ──────────────────────────────────────────
+   Tabela de 3 colunas com texto de verdade nas células: em 360px ela NÃO cabe,
+   e espremer transformaria cada célula numa coluna de uma palavra por linha.
+   Rola dentro da própria caixa — o corpo da página nunca rola de lado (é o que
+   o check-mobile cobra). */
+.vs-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 0 8px; }
+.vs-table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 14px; }
+.vs-table th, .vs-table td {
+  border: 1px solid var(--line); padding: 9px 11px; text-align: left; vertical-align: top;
+}
+.vs-table thead th { background: var(--panel-strong); font-size: 13px; }
+/* A 1ª coluna é o rótulo da linha: some do peso visual pra as duas colunas de
+   resposta ficarem lado a lado na leitura. */
+.vs-table tbody td:first-child { color: var(--muted); width: 26%; }
+.vs-table tbody tr:nth-child(odd) td { background: color-mix(in srgb, var(--panel-strong) 45%, transparent); }
+.vs-stamp { color: var(--muted); font-size: 13px; border-left: 3px solid var(--line); padding-left: 12px; }

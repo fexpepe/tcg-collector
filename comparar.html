@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title data-i18n="vs.title">Sleevu × Collectr: alternativa grátis em português - Sleevu</title>
+    <meta name="description" content="Comparação honesta entre o Sleevu e o Collectr: o que cada um faz melhor, o que é pago em cada lado, e como trazer sua coleção do Collectr pro Sleevu.">
+    <link rel="canonical" href="https://sleevu.app/comparar">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://sleevu.app/comparar">
+    <meta property="og:title" content="Sleevu × Collectr: alternativa grátis em português">
+    <meta property="og:description" content="O que cada um faz melhor, o que é pago em cada lado, e como trazer sua coleção do Collectr pro Sleevu.">
+    <meta property="og:image" content="https://sleevu.app/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sleevu × Collectr: alternativa grátis em português">
+    <meta name="twitter:description" content="O que cada um faz melhor, o que é pago em cada lado, e como trazer sua coleção do Collectr pro Sleevu.">
+    <meta name="twitter:image" content="https://sleevu.app/og-image.png">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Duas tags com media: o primeiro paint ja acerta a barra do navegador
+         pelo tema do SISTEMA. Quando a pessoa ESCOLHE um tema, o applyTheme
+         (shared.js) troca por uma tag unica sem media, que vence as duas. -->
+    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <script src="src/game.js"></script>
+    <!-- A fonte só seria descoberta depois de baixar e parsear o styles.css
+         (o @font-face mora lá). O preload a coloca na fila junto com o CSS.
+         crossorigin é OBRIGATORIO mesmo sendo mesma origem: fonte é sempre
+         buscada em modo CORS, e sem o atributo o preload nao casa com a
+         requisicao do CSS e o arquivo desce DUAS vezes.
+         Só o latin: pt-BR e en cabem inteiros em U+0000-00FF; o latin-ext
+         (14 KB) fica sob demanda, como o unicode-range ja define. -->
+    <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="/">Sleevu</a>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page=""></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-head">
+        <h1 data-i18n="vs.heading">Sleevu × Collectr</h1>
+      </div>
+
+      <article class="legal">
+        <section data-i18n-html="vs.s.intro"></section>
+        <section data-i18n-html="vs.s.table"></section>
+        <section data-i18n-html="vs.s.them"></section>
+        <section data-i18n-html="vs.s.us"></section>
+        <section data-i18n-html="vs.s.migrate"></section>
+      </article>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <!-- Textos longos desta pagina (privacidade/termos/sobre/ajuda/faq/comparar):
+         fora do i18n.js pra as outras paginas nao carregarem 39 KB a toa. -->
+    <script defer src="src/i18n-docs.js"></script>
+    <script defer src="src/shared.js"></script>
+  </body>
+</html>

@@ -71,7 +71,7 @@ const HASHED_ASSETS = false; /* SLEEVU_HASHED */
 const SHELL_ASSETS = [
   "./", "index.html", "hub.html", "pokedex.html", "sets.html", "artists.html",
   "trainers.html", "collection.html", "wishlist.html", "portfolio.html", "explore.html", "dashboard.html", "badges.html",
-  "backup.html", "detail.html", "binders.html", "cards.html", "sales.html", "graded.html", "about.html", "novidades.html", "lancamentos.html", "faq.html", "help.html", "privacy.html", "terms.html", "login.html", "settings.html", "profile.html", "admin.html",
+  "backup.html", "detail.html", "binders.html", "cards.html", "sales.html", "graded.html", "about.html", "novidades.html", "lancamentos.html", "comparar.html", "faq.html", "help.html", "privacy.html", "terms.html", "login.html", "settings.html", "profile.html", "admin.html",
   "decks.html", "my-decks.html", "listas.html", "troca.html",
   "styles.css", "favicon.svg", "icon.svg", "assets/brand/sleevu-wordmark.svg", "manifest.json",
   // Fonte da marca (auto-hospedada): precisa estar no shell pra o app abrir
