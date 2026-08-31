@@ -1022,6 +1022,33 @@ além de dez linhas que não tinham outro lugar possível.
 próximo item que precise de código no `shared.js` provavelmente não cabe — a
 saída já testada quatro vezes nesta etapa é arquivo próprio por página.
 
+**E6 — entregue em 2026-08-31**, depois de o Fernando aplicar a migração e
+configurar o R2. Cinco eventos (`backup_done`, `export_done`, `import_done`,
+`deck_created`, `share_created`), instrumentados nos pontos por onde cada ação
+de fato passa — `createShare` e `createDeck` são gargalo único, e os dois
+imports de CSV entraram no mesmo lugar onde o "primeiro passo" já é marcado. O
+envio foi fatorado em `mandaEvento()`, que o `pageview` passou a usar: assim a
+guarda de produção e a de consentimento valem pros eventos novos **por
+construção**, não por eu ter lembrado de repetir.
+
+O que este item ensinou, e que vale mais que ele: **o banco descarta calado o
+nome que não conhece**. `return null` no BEFORE INSERT, e o PostgREST responde
+201 do mesmo jeito. Um typo no cliente não gera erro em lugar nenhum — mede zero
+pra sempre, e só aparece meses depois num painel vazio que parece dizer "ninguém
+usa". Os quatro testes novos leem a whitelist **do SQL da migração**, não de uma
+cópia mantida à mão, e conferem contra cada chamada real de `logEvento`.
+
+E o item quase virou duas migrações desnecessárias. O teste de verificação usava
+`Prefer: return=representation`, que vira `INSERT ... RETURNING`, e o PostgreSQL
+aplica as políticas de **SELECT** à linha retornada; `events` não tem política de
+SELECT — de propósito. Então a linha entra, o RETURNING não consegue lê-la, e o
+erro é `42501 new row violates row-level security policy`: parece recusa, é o
+**oposto**. Li como "há uma segunda whitelist na política" e escrevi a
+`20260830b` pra consertar o que não estava quebrado. O que derrubou a teoria foi
+um **controle positivo** — `pageview`, que sempre funcionou, se comportando
+exatamente igual ao `export_done`. A `20260830b` foi apagada; a história ficou no
+`supabase/migrations/README.md`.
+
 ---
 
 ## 7. O que a verificação corrigiu (pra não repetir o erro do plano 1)
