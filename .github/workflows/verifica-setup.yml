@@ -28,6 +28,8 @@ jobs:
       - name: Verifica R2, segredos e Supabase
         env:
           R2_TOKEN: ${{ secrets.R2_TOKEN }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           MYP_API_TOKEN: ${{ secrets.MYP_API_TOKEN }}
           R2_BUCKET: ${{ inputs.bucket }}

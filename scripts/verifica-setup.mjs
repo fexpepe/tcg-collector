@@ -16,6 +16,7 @@ import { spawn } from "node:child_process";
 import { writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { createHash, createHmac } from "node:crypto";
 
 const SUPABASE_URL = "https://dlnalopazitfdgnmdguu.supabase.co";
 const ANON_KEY = "sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"; // pública (RLS protege)
@@ -35,7 +36,9 @@ const pega = (u, init) => fetch(u, { redirect: "manual", signal: AbortSignal.tim
 // Valor nenhum é impresso: o log do Actions é público em repo público.
 console.log("\n[segredos do GitHub]");
 const SEGREDOS = [
-  ["R2_TOKEN", "espelho de imagens no R2 (P1/P2)"],
+  ["R2_TOKEN", "wrangler/deploy (endpoint de conta do R2)"],
+  ["R2_ACCESS_KEY_ID", "API S3 do R2 — é por aqui que o espelho de imagens sobe"],
+  ["R2_SECRET_ACCESS_KEY", "API S3 do R2 (o par do anterior)"],
   ["CLOUDFLARE_ACCOUNT_ID", "conta do Cloudflare (deploy e R2)"],
   ["MYP_API_TOKEN", "preços BR da MYP (F1)"]
 ];
@@ -100,6 +103,70 @@ function wrangler(args) {
   });
 }
 
+// ── Caminho S3 (SigV4) ───────────────────────────────────────────────────────
+// É por aqui que o espelho de imagens vai subir os arquivos: são milhares, e é
+// exatamente pra isso que o escopo "Object Read & Write" do token existe. O
+// wrangler bate no endpoint DE CONTA (/accounts/{id}/r2/buckets/...), que pede
+// permissão de conta — um token de escopo Object pode ser recusado lá estando
+// perfeito, que é a mesma armadilha do "listar buckets".
+//
+// Assinatura à mão, sem SDK: o repo não tem package.json e não vai ganhar um
+// por causa de um teste. São ~20 linhas.
+const ID_S3 = process.env.R2_ACCESS_KEY_ID || "";
+const SEGREDO_S3 = process.env.R2_SECRET_ACCESS_KEY || "";
+const sha256 = (b) => createHash("sha256").update(b).digest("hex");
+const hmac = (k, d) => createHmac("sha256", k).update(d).digest();
+
+function assinaS3(metodo, host, caminho, corpo) {
+  const amzDate = new Date().toISOString().replace(/[:-]|\.\d{3}/g, "");
+  const dia = amzDate.slice(0, 8);
+  const hashCorpo = sha256(corpo || "");
+  const cab = { host, "x-amz-content-sha256": hashCorpo, "x-amz-date": amzDate };
+  const nomes = Object.keys(cab).sort();
+  const canonico = [metodo, caminho, "", nomes.map((n) => `${n}:${cab[n]}\n`).join(""),
+    nomes.join(";"), hashCorpo].join("\n");
+  const escopo = `${dia}/auto/s3/aws4_request`;
+  const paraAssinar = ["AWS4-HMAC-SHA256", amzDate, escopo, sha256(canonico)].join("\n");
+  let k = hmac("AWS4" + SEGREDO_S3, dia);
+  k = hmac(k, "auto"); k = hmac(k, "s3"); k = hmac(k, "aws4_request");
+  cab.Authorization = `AWS4-HMAC-SHA256 Credential=${ID_S3}/${escopo}, `
+    + `SignedHeaders=${nomes.join(";")}, Signature=${createHmac("sha256", k).update(paraAssinar).digest("hex")}`;
+  return cab;
+}
+
+let s3Funcionou = false;
+if (ID_S3 && SEGREDO_S3 && CONTA) {
+  const host = `${CONTA}.r2.cloudflarestorage.com`;
+  const caminho = `/${BUCKET}/${CHAVE}`;
+  const carimbo = `verifica-setup ${new Date().toISOString()}\n`;
+  try {
+    const r = await pega(`https://${host}${caminho}`, {
+      method: "PUT", body: carimbo,
+      headers: { ...assinaS3("PUT", host, caminho, carimbo), "content-type": "text/plain" }
+    });
+    if (!r.ok) {
+      const txt = (await r.text()).replace(/\s+/g, " ").slice(0, 200);
+      erro(`a API S3 recusou a escrita em ${BUCKET} (HTTP ${r.status}): ${txt}`);
+    } else {
+      s3Funcionou = true;
+      ok(`escrita pela API S3 no bucket ${BUCKET} funcionou`);
+      // Leitura pelo domínio público, que é como o site vai buscar as imagens.
+      const g = await pega(`${IMG}/${CHAVE}`, { headers: { Origin: ORIGEM } });
+      const cors = g.headers.get("access-control-allow-origin");
+      if (g.status !== 200) erro(`o objeto subiu mas img.sleevu.app devolveu HTTP ${g.status} — o domínio pode estar ligado a OUTRO bucket`);
+      else if ((await g.text()) !== carimbo) erro("img.sleevu.app respondeu 200 com conteúdo diferente do enviado");
+      else ok("leitura pública pelo img.sleevu.app confere byte a byte");
+      if (cors === ORIGEM || cors === "*") ok(`CORS no objeto real: ${cors}`);
+      else erro(`objeto real veio SEM CORS pra ${ORIGEM} (recebido: ${cors || "nenhum"}) — é isso que faz o "exportar imagem" sair sem foto`);
+      const d = await pega(`https://${host}${caminho}`, { method: "DELETE", headers: assinaS3("DELETE", host, caminho, "") });
+      if (d.ok || d.status === 204) ok("objeto de teste apagado");
+      else nota(`o objeto de teste ${CHAVE} ficou no bucket (DELETE devolveu ${d.status}) — apague pelo painel`);
+    }
+  } catch (e) { erro(`API S3 inacessível: ${e.message}`); }
+} else {
+  falta("sem R2_ACCESS_KEY_ID + R2_SECRET_ACCESS_KEY: o caminho S3 (o que o espelho vai usar) não foi testado");
+}
+
 if (R2_TOKEN && CONTA) {
   // Primeiro: o segredo é sequer um token de API da Cloudflare? Este endpoint
   // não exige permissão NENHUMA — só responde se o token é válido e está ativo.
@@ -128,7 +195,9 @@ if (R2_TOKEN && CONTA) {
   writeFileSync(arquivo, carimbo);
   const put = await wrangler(["r2", "object", "put", `${BUCKET}/${CHAVE}`, "--file", arquivo, "--content-type", "text/plain"]);
   if (put.code !== 0) {
-    erro(`o token não conseguiu ESCREVER em ${BUCKET} (wrangler saiu ${put.code}). `
+    (s3Funcionou ? nota : erro)(`o wrangler não conseguiu ESCREVER em ${BUCKET} (saiu ${put.code}). `
+      + (s3Funcionou ? "Não é problema: o caminho S3 acima funcionou, e é o que o espelho usa. "
+          + "O endpoint de CONTA que o wrangler usa pede permissão de conta, que um token de escopo Object não tem. " : "")
       + (tokenValido
         ? "O token é válido, então sobrou: falta o escopo de escrita (Object Read & Write) OU o bucket tem outro nome. "
         : "Provavelmente é consequência do problema acima — o segredo não é um token de API. ")

@@ -8,21 +8,27 @@ poucos.)
 
 ## Pendentes de aplicar
 
-- `20260830a_events_produto.sql` — **APLICADA** (verificado em 2026-08-30 pelo
-  `scripts/verifica-setup.mjs`: `export_done` passa a atravessar o trigger, e um
-  nome inválido continua sendo descartado).
-- **`20260830b_events_produto_rls.sql`** — PENDENTE. A `a` não bastou: a tabela
-  `events` tem **duas** trancas com lista de nomes, e o plano só conhecia uma. A
-  política de RLS tem whitelist própria e barra `export_done` com 401/42501
-  mesmo depois do trigger deixar passar. Este bloco amplia a política — e se
-  **recusa** a mexer numa checagem que olhe qualquer coisa além do `name`,
-  avisando com a expressão atual: sobrescrever cegamente uma regra de segurança
-  é como se perde uma. **Aplicar antes do JS que dispara os eventos.**
-
-As demais estão todas aplicadas em produção (verificado por curl — ver a lista
-abaixo).
+Nenhuma.
 
 ### Já aplicadas (verificado em produção)
+
+- `20260830a` — amplia a whitelist do trigger `events_guard` com cinco eventos
+  de produto (E6). Aplicada em 2026-08-30. **Verificado por três probes** do
+  `scripts/verifica-setup.mjs`: `export_done` grava, um nome inventado é
+  descartado, e `pageview` (que sempre funcionou) serve de controle positivo.
+
+  Fica registrado o erro que quase virou uma migração desnecessária: o teste
+  usava `Prefer: return=representation`, que vira `INSERT ... RETURNING`, e o
+  PostgreSQL aplica as políticas de **SELECT** à linha retornada. A tabela
+  `events` não tem política de SELECT — isso é o desenho, não um defeito: nem o
+  dono lê evento cru. Então a linha entra e o RETURNING não consegue lê-la de
+  volta, e o erro é `42501 new row violates row-level security policy`, que
+  parece recusa e é o **oposto**: só acontece se houve linha. Eu li isso como
+  "existe uma segunda whitelist na política de RLS" e cheguei a escrever a
+  migração `20260830b` pra consertar o que não estava quebrado. O dump completo
+  das políticas (uma só: `events_insert_anyone`, INSERT, PERMISSIVE, PUBLIC,
+  `with check (true)`) derrubou a teoria, e o controle positivo com `pageview`
+  fechou. A `20260830b` foi apagada.
 
 - `20260807c` — libera o slug `unionarena` (Union Arena, 13º jogo) nas DUAS
   whitelists de jogo: `card_views`/`increment_card_view` e `contribute_price`.
