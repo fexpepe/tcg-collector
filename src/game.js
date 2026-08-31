@@ -174,6 +174,23 @@
   } catch (e) { /* storage bloqueado: fica em "all" */ }
   document.documentElement.setAttribute("data-cardlang", cardLang);
 
+  // Tipo da página de detalhe (set / pokemon / artist / trainer), carimbado no
+  // <html> pelo MESMO motivo do data-cardlang: sai da URL, e sair daqui é sair
+  // antes do primeiro paint. Nas páginas de SET o cabeçalho de texto (eyebrow
+  // "Set" + título gigante) não existe — o hero logo abaixo já traz o nome —, e
+  // o detail.js recolhia os dois só quando executava, DEPOIS do primeiro paint:
+  // a faixa do topo pintava alta e larga e depois encolhia, levando junto as
+  // abas e a busca, que hoje moram na mesma fileira. Com o carimbo aqui o CSS
+  // resolve isso antes de haver o que mover (ver html[data-detail] no
+  // styles.css). O detail.js continua marcando `hidden` — este atributo só
+  // ganha a corrida do paint, não é a fonte da verdade.
+  if (/(^|\/)detail(\.html)?$/.test((location.pathname || "").replace(/\/+$/, ""))) {
+    try {
+      var dType = new URLSearchParams(location.search).get("type") || "";
+      if (/^[a-z]+$/.test(dType)) document.documentElement.setAttribute("data-detail", dType);
+    } catch (e) { /* URL estranha: segue sem carimbo, o detail.js recolhe depois */ }
+  }
+
   // Modo manifest (produção): o deploy flipa esta flag pra true (sed em game.js).
   // No modo manifest, cards/indexes/pricing viram os arquivos .generated mesclados.
   var MANIFEST = false; /* SLEEVU_MANIFEST */

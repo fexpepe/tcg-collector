@@ -61,17 +61,18 @@
         <div class="page-head-bar-text">
           <h1 data-i18n="nav.artists">Artistas</h1>
         </div>
+        <!-- Preenchido por buildExploreSubnav (shared.js). Vem VAZIO e com a
+             altura reservada no CSS pra pagina nao pular quando os chips
+             entram — ver .explore-subnav[data-placeholder] no styles.css.
+             Mora DENTRO da faixa: topo de UMA fileira so (titulo · abas ·
+             busca). Vem ANTES da busca no HTML porque vem antes dela na tela —
+             o TAB anda na ordem que o olho le. -->
+        <nav class="explore-subnav chip-filter" data-placeholder data-i18n-aria="nav.explore" aria-label="Explorar"></nav>
         <label class="page-search-label" for="searchInput" data-i18n="search.title">Procurar:</label>
         <section class="page-search">
         <svg class="page-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
         <input id="searchInput" type="search" enterkeyhint="search" data-i18n-placeholder="search.placeholder.artists" placeholder="Artista, carta, set, número...">
         </section>
-        <!-- Preenchido por buildExploreSubnav (shared.js). Vem VAZIO e com a
-             altura reservada no CSS pra pagina nao pular quando os chips
-             entram — ver .explore-subnav[data-placeholder] no styles.css.
-             Mora DENTRO da faixa, na 3a coluna: topo de UMA fileira so
-             (titulo · busca · abas). -->
-        <nav class="explore-subnav chip-filter" data-placeholder data-i18n-aria="nav.explore" aria-label="Explorar"></nav>
       </div>
 
       <section class="stats-grid" data-i18n-aria="aria.sumCollection" aria-label="Resumo da coleção">

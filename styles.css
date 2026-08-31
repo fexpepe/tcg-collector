@@ -4773,6 +4773,30 @@ a.progress-row:hover {
 .explore-subnav::-webkit-scrollbar { display: none; }
 .explore-subnav .chip { flex: none; }
 
+/* AVISO de que a fileira continua (o data-scroll vem do initSubnavScrollHint,
+   no shared.js). Máscara e não um degradê sobreposto: ela se aplica à CAIXA do
+   elemento, então fica presa na borda visível em vez de rolar junto com os
+   chips — e não precisa saber a cor do fundo, o que a mantém certa no claro e
+   no escuro. O lado que desbota é o lado que ainda tem conteúdo: no fim da
+   rolagem a máscara sai, então ela nunca promete aba que não existe.
+   Isto morava no bloco de TOQUE, quando rolar era coisa só de celular. Agora a
+   fileira divide a faixa do topo com o título e a busca, e um jogo com 6 abas
+   (Sets do Pokémon, com o Mercado) já rola no desktop entre ~1080 e ~1300px —
+   sem a máscara o corte batia seco na caixa da busca, parecendo defeito.
+   -webkit- junto pro Safari mais velho, que é justamente o caso de uso. */
+.explore-subnav[data-scroll="start"] {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+}
+.explore-subnav[data-scroll="middle"] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent);
+}
+.explore-subnav[data-scroll="end"] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 32px);
+  mask-image: linear-gradient(to right, transparent, #000 32px);
+}
+
 /* Altura de UMA linha de chips, reservada enquanto a subnav está vazia. As
    páginas do Explorar trazem <nav class="explore-subnav" data-placeholder>
    vazio no HTML e o shared.js o preenche; sem esta reserva a página inteira
@@ -6600,33 +6624,53 @@ a.dash-profile-handle:hover, a.shared-kind:hover,
    padrão visual das outras telas. */
 .page-head-bar .page-head-bar-text .eyebrow { order: -1; }
 .page-head-bar .page-head-bar-text .detail-back-link { order: 2; margin: 3px 0 0; }
+/* Set: sem cabeçalho de texto — o hero logo abaixo já traz o nome, e o eyebrow
+   + título gigante era o mesmo dado duas vezes. Quem decide é o detail.js
+   (`hidden`); esta regra existe só pra ganhar a corrida do PRIMEIRO PAINT, com
+   o carimbo que o game.js põe no <html> ainda no <head> — sem ela a faixa
+   nascia alta e larga e encolhia depois, arrastando as abas e a busca, que
+   agora dividem a fileira com o título. */
+html[data-detail="set"] #detailType,
+html[data-detail="set"] #detailTitle { display: none; }
 .page-head-bar .page-search { grid-column: 2; margin: 0; min-width: 0; }
 .page-head-bar .page-search input { height: 46px; }
 
-/* FILEIRA ÚNICA: quando a 3ª coluna deixa de ser fantasma e ganha conteúdo de
-   verdade — as abas do Explorar (Cartas/Sets/Pokédex/…) ou os controles do
-   Explorar (Jogo/Ordenar/Versões) —, a busca para de ser o centro da página e
-   passa a ser O QUE SOBRA entre as duas pontas. É o preço de caber tudo numa
-   linha só, e foi pedido assim: a busca encolhe pra acomodar o resto.
+/* FILEIRA ÚNICA: a 3ª coluna deixa de ser fantasma e ganha conteúdo de verdade.
+   São dois arranjos, porque o conteúdo é de naturezas diferentes.
 
-   `auto | 1fr | auto` (e não 1fr nas pontas) tem um motivo além do encaixe: o
-   shared.js só preenche as abas DEPOIS do primeiro paint, e com a busca em 1fr
-   a chegada dos chips muda a LARGURA dela sem mexer no canto superior esquerdo
-   — encolher sem mover não conta como layout shift. Com 1fr na ponta esquerda,
-   a busca escorregaria pro lado e a mesma chegada viraria CLS.
-   O `220px` de piso é o ponto em que a busca já não vale a pena espremer mais:
-   dali pra baixo quem cede é a fileira de abas, que rola sozinha. */
-.page-head-bar:has(> .explore-subnav),
+   1) EXPLORAR (Jogo/Ordenar/Versões): controles na ponta direita, busca no meio.
+   Eles vêm prontos no HTML, então a largura deles nunca muda depois do paint e
+   a busca pode ser o `1fr` que sobra entre as duas pontas. */
 .page-head-bar:has(> .page-head-bar-tools) {
   grid-template-columns: auto minmax(220px, 1fr) auto;
 }
-.page-head-bar > .explore-subnav,
 .page-head-bar > .page-head-bar-tools { grid-column: 3; margin: 0; min-width: 0; }
 /* Os controles do Explorar têm rótulo EM CIMA (Jogo:, Ordenar:, Versões), então
    a caixa deles é mais alta que a busca. Alinhados pelo centro, os campos
    ficavam ~10px fora de registro; pelo fim, a base do input casa com a base dos
    selects e a fileira lê como uma linha só de campos. */
 .page-head-bar:has(> .page-head-bar-tools) { align-items: end; }
+
+/* 2) TELAS DO EXPLORAR (abas Cartas/Sets/Pokédex/…): as abas ficam à ESQUERDA,
+   coladas no título, e a busca vai pra ponta direita. Aqui a busca NÃO pode ser
+   o `1fr`: o shared.js só preenche as abas depois do primeiro paint, e uma
+   fileira de chips que nasce com 0 e vira 148–574px (varia com o jogo e o
+   idioma) empurraria a busca de lado — foi exatamente isso que subiu o CLS
+   destas telas de 0,001 pra 0,020 quando as abas estavam na direita.
+
+   Então o `1fr` é a COLUNA DAS ABAS e a busca tem largura própria, medida em
+   vw: nada no arranjo depende do que o JS traz, o encaixe já está resolvido no
+   primeiro paint e a chegada dos chips não move nada. O `clamp` é o que dá o
+   respiro em tela larga sem espremer a fileira de abas: entre 1100 e 1600px a
+   busca fica com 330–480px e sobra o bastante pras cinco abas (461px em pt-BR).
+   Quando não sobra — jogo com 6 abas, título comprido —, quem cede é a fileira,
+   que rola sozinha, e não a página. */
+.page-head-bar:has(> .explore-subnav) { grid-template-columns: auto minmax(0, 1fr) auto; }
+.page-head-bar > .explore-subnav { grid-column: 2; margin: 0; min-width: 0; }
+.page-head-bar:has(> .explore-subnav) .page-search {
+  grid-column: 3;
+  width: clamp(240px, 30vw, 520px);
+}
 
 /* Sem largura pras 3 colunas: título numa linha, busca na linha inteira de
    baixo (no celular o shared.js já move a busca pro header). Abas e controles
@@ -6637,7 +6681,8 @@ a.dash-profile-handle:hover, a.shared-kind:hover,
   .page-head-bar,
   .page-head-bar:has(> .explore-subnav),
   .page-head-bar:has(> .page-head-bar-tools) { grid-template-columns: minmax(0, 1fr); }
-  .page-head-bar .page-search { grid-column: 1; }
+  .page-head-bar .page-search,
+  .page-head-bar:has(> .explore-subnav) .page-search { grid-column: 1; width: auto; }
   .page-head-bar > .explore-subnav,
   .page-head-bar > .page-head-bar-tools { grid-column: 1; }
   .page-head-bar h1 { font-size: 28px; }
@@ -8479,24 +8524,8 @@ select,
      reserva de altura teria de acertar essa contagem — impossível de fazer certo
      em todos os idiomas, e o site vai ganhar mais. Uma linha mantém a altura
      constante em qualquer língua; o degradê abaixo resolve a descoberta. */
-  /* Máscara (e não um degradê sobreposto): ela se aplica à CAIXA do elemento,
-     então fica presa na borda visível em vez de rolar junto com os chips — e
-     não precisa saber a cor do fundo, o que a mantém certa no claro e no
-     escuro. O lado que desbota é o lado que ainda tem conteúdo: no fim da
-     rolagem a máscara sai, então ela nunca promete aba que não existe.
-     -webkit- junto pro Safari mais velho, que é justamente o caso de uso. */
-  .explore-subnav[data-scroll="start"] {
-    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
-    mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
-  }
-  .explore-subnav[data-scroll="middle"] {
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent);
-    mask-image: linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent);
-  }
-  .explore-subnav[data-scroll="end"] {
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 32px);
-    mask-image: linear-gradient(to right, transparent, #000 32px);
-  }
+  /* O degradê que avisa que a fileira continua saiu daqui pro escopo global:
+     ver .explore-subnav[data-scroll] lá em cima. */
   /* Ícones de ação que são quadrados (fechar, editar pasta): vira 44 no dedo. */
   .folder-act,
   .preview-close {

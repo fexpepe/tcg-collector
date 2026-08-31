@@ -2525,11 +2525,13 @@
       // role" e o leitor de tela anunciava um botão que não existe.
       `<a class="chip" href="${href}?game=${game}${lineSuffix}"${page === active ? ' aria-current="page"' : ""}>${escapeHtml(t(key))}</a>`
     ).join("");
-    // O placeholder já nasce na posição certa no HTML; só insere quando a nav
-    // foi criada aqui (hoje: as páginas de detalhe). DENTRO do .page-head, não
-    // depois dele: as abas são a 3ª coluna da faixa do topo (ver .page-head-bar
-    // no styles.css), então o topo é uma fileira só.
-    if (!existing) head.appendChild(nav);
+    // O placeholder já nasce na posição certa no HTML em todas as telas que
+    // usam a subnav; este ramo é só a rede de segurança pra uma página nova que
+    // esqueça de trazê-lo. DENTRO do .page-head e
+    // ANTES da busca, que é onde ela aparece na tela: as abas são a 2ª coluna
+    // da faixa do topo (ver .page-head-bar no styles.css), então o topo é uma
+    // fileira só e o TAB anda na ordem que o olho lê.
+    if (!existing) head.insertBefore(nav, head.querySelector(".page-search-label, .page-search"));
     initSubnavScrollHint(nav);
   }
 
