@@ -158,11 +158,20 @@ if (R2_TOKEN && CONTA) {
 }
 
 // ── 3. Supabase: whitelist de eventos ────────────────────────────────────────
-// O events_guard descarta CALADO o nome que não conhece (return null), e o
-// PostgREST devolve 201 dos dois jeitos. `Prefer: return=representation` é o
-// que separa os casos: linha gravada volta no corpo, linha descartada volta [].
-// Se o anon não puder ler a tabela, o próprio erro diz isso — e aí o resultado
-// é INCONCLUSIVO, não "deu certo".
+// A tabela `events` aceita INSERT anônimo e NÃO tem política de SELECT — é o
+// desenho: nem o dono lê evento cru, só os agregados das RPCs. Isso torna a
+// verificação capciosa, e a primeira versão deste teste leu o sinal AO
+// CONTRÁRIO.
+//
+// `Prefer: return=representation` vira um INSERT ... RETURNING, e o PostgreSQL
+// aplica as políticas de SELECT à linha retornada. Sem política de SELECT, a
+// linha entra e o RETURNING não consegue lê-la de volta — e o erro que sai é
+// justamente "new row violates row-level security policy", que parece recusa e
+// é o oposto: prova de que a linha FOI gravada.
+//
+// Daí três probes, e não dois. O `pageview` é o que desempata: ele SEMPRE foi
+// aceito, desde antes de qualquer migração. Se ele também der 42501, então
+// 42501 significa "gravou", e não "recusou".
 console.log("\n[Supabase — eventos de produto (E6)]");
 async function tentaEvento(nome) {
   const r = await pega(`${SUPABASE_URL}/rest/v1/events`, {
@@ -174,41 +183,37 @@ async function tentaEvento(nome) {
     body: JSON.stringify({ name: nome, path: "/_verifica-setup", anon: "verifica-setup", game: "pokemon" })
   });
   const txt = await r.text();
+  const rls = r.status === 401 && txt.includes("42501");
   let j = null; try { j = JSON.parse(txt); } catch { /* não é JSON */ }
-  return { status: r.status, gravou: Array.isArray(j) ? j.length > 0 : null, corpo: txt.slice(0, 200) };
+  return {
+    status: r.status,
+    // "gravou" = a linha existe: ou veio no corpo, ou o RETURNING foi barrado
+    // pela falta de política de SELECT (que só acontece se houve linha).
+    gravou: rls || (Array.isArray(j) && j.length > 0),
+    vazio: Array.isArray(j) && j.length === 0,
+    corpo: txt.slice(0, 120)
+  };
 }
 try {
-  // Controle: um nome que NUNCA pode entrar. Se ele "gravar", a whitelist não
-  // está filtrando nada e o resultado do teste de verdade não valeria nada.
-  const controle = await tentaEvento("zzz_nome_invalido_de_teste");
-  const novo = await tentaEvento("export_done");
-  // Os DOIS crus, sempre: na primeira rodada só o controle aparecia, e quando o
-  // teste deu inconclusivo não dava pra saber qual dos dois tinha se comportado
-  // de forma estranha — diagnóstico que esconde metade da evidência não serve.
-  nota(`controle 'zzz_nome_invalido_de_teste' → HTTP ${controle.status}: ${controle.corpo || "(corpo vazio)"}`);
-  nota(`teste    'export_done'                → HTTP ${novo.status}: ${novo.corpo || "(corpo vazio)"}`);
-  // As duas trancas reclamam de jeitos DIFERENTES, e é isso que as separa:
-  //   trigger recusa → 201 com corpo [] (return null: a linha some calada)
-  //   política recusa → 401 SQLSTATE 42501 (a linha atravessou o trigger)
-  // Sem essa distinção, "não gravou" seria um diagnóstico só, apontando pro
-  // arquivo errado.
-  if (novo.status === 401 && novo.corpo.includes("42501")) {
-    erro("o TRIGGER já aceita 'export_done' (a 20260830a está aplicada), mas a POLÍTICA de RLS "
-      + "da tabela events tem whitelist de nome PRÓPRIA e barrou a linha. "
-      + "Falta aplicar supabase/migrations/20260830b_events_produto_rls.sql — e se ela JÁ foi rodada, "
-      + "ela pode ter se RECUSADO a alterar (ela não mexe em checagem que olhe outra coluna além do name); "
-      + "o RAISE NOTICE dela diz qual foi o caso. Pra ver a expressão atual: "
-      + "select polname, pg_get_expr(polwithcheck, polrelid) from pg_policy where polrelid = 'public.events'::regclass;");
-  } else if (controle.gravou === null || novo.gravou === null) {
-    nota("inconclusivo: uma das respostas não veio como lista, então não dá pra ver se a linha entrou. "
-      + "Confirme pelo painel: select prosrc from pg_proc where proname = 'events_guard';");
-  } else if (controle.gravou) {
-    erro("o events_guard aceitou um nome INVÁLIDO — a whitelist não está filtrando");
-  } else if (novo.gravou) {
-    ok("migração 20260830a aplicada: 'export_done' entra e o nome inválido é descartado");
+  const invalido = await tentaEvento("zzz_nome_invalido_de_teste");
+  const antigo = await tentaEvento("pageview");
+  const novoNome = await tentaEvento("export_done");
+  nota(`'zzz_nome_invalido' → HTTP ${invalido.status}: ${invalido.corpo || "(vazio)"}`);
+  nota(`'pageview' (controle positivo) → HTTP ${antigo.status}: ${antigo.corpo || "(vazio)"}`);
+  nota(`'export_done' → HTTP ${novoNome.status}: ${novoNome.corpo || "(vazio)"}`);
+
+  if (!antigo.gravou) {
+    // Sem um controle positivo confiável nenhuma conclusão vale: se o nome que
+    // SEMPRE funcionou não grava, o problema não é a whitelist.
+    erro("o controle positivo falhou: nem 'pageview' gravou. Antes de concluir qualquer coisa sobre "
+      + "os nomes novos, é isso que precisa ser entendido — a tabela events pode estar recusando tudo.");
+  } else if (invalido.gravou) {
+    erro("o events_guard aceitou um nome INVÁLIDO — a whitelist não está filtrando nada");
+  } else if (novoNome.gravou) {
+    ok("'export_done' grava e o nome inválido é descartado — a whitelist de eventos de produto está valendo");
   } else {
-    erro("'export_done' sumiu calado (201 com corpo vazio) — é o TRIGGER recusando: "
-      + "a migração 20260830a ainda não está aplicada "
+    erro("'export_done' foi descartado pelo trigger enquanto 'pageview' passou: "
+      + "a migração 20260830a não está aplicada "
       + "(SQL Editor → cole supabase/migrations/20260830a_events_produto.sql)");
   }
 } catch (e) { erro(`Supabase inacessível: ${e.message}`); }
