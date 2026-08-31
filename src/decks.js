@@ -62,6 +62,10 @@
     };
     data.decks.unshift(deck);
     save();
+    // E6: deck criado. Aqui e no fork abaixo são os DOIS únicos lugares onde um
+    // deck nasce; o `f` separa os dois, porque copiar o deck de outra pessoa e
+    // montar um do zero não são a mesma intenção.
+    if (shared.logEvento) shared.logEvento("deck_created", { g: game });
     return deck;
   }
   // Pacote do deck (jogo + formato) — um lugar só, pra não esquecer o formato.
@@ -980,7 +984,10 @@
           zones, forkedFrom: id, createdAt: Date.now(), updatedAt: Date.now()
         };
         data.decks.unshift(novo);
-        if (save()) location.href = "my-decks?id=" + encodeURIComponent(novo.id);
+        if (save()) {
+          if (shared.logEvento) shared.logEvento("deck_created", { g: deck.game, f: 1 });
+          location.href = "my-decks?id=" + encodeURIComponent(novo.id);
+        }
       });
     }
   }

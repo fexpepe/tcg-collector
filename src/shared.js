@@ -3187,22 +3187,43 @@
     const seg = location.pathname.replace(/^\/+|\/+$/g, "").split("/")[0].replace(/\.html$/, "");
     return seg || "home";
   }
-  function logPageview() {
+  // Envio de evento — o mesmo cano do pageview e dos eventos de produto (E6).
+  //
+  // Só PRODUÇÃO. O logClientError já tinha esta guarda; ao pageview faltava,
+  // então cada página aberta em localhost durante o desenvolvimento entrava
+  // como visita real — inflando DAU/MAU e as páginas mais vistas com tráfego de
+  // quem está construindo o site. Métrica que mistura dev com usuário não serve
+  // pra decidir nada.
+  //
+  // `keepalive` porque vários destes eventos acontecem em cima de uma navegação
+  // (o import recarrega a página logo depois): sem ele o navegador cancela a
+  // requisição no unload e o evento some justamente nos fluxos que a gente mais
+  // quer medir.
+  function mandaEvento(nome, props) {
     if (!AUTH_ENABLED || !hasConsent("analytics")) return;
-    // Só PRODUÇÃO. O logClientError já tinha esta guarda; aqui faltava, então
-    // cada página aberta em localhost durante o desenvolvimento entrava como
-    // visita real — inflando DAU/MAU e as páginas mais vistas com tráfego de
-    // quem está construindo o site. Métrica que mistura dev com usuário não
-    // serve pra decidir nada.
     if (!/(^|\.)sleevu\.app$/i.test(location.hostname)) return;
     try {
+      const corpo = { name: nome, path: analyticsPath(), anon: anonId(), game: currentGame() };
+      if (props) corpo.props = props;
       fetch(`${SUPABASE_URL}/rest/v1/events`, {
         method: "POST",
         headers: Object.assign(authHeaders(), { Prefer: "return=minimal" }),
-        body: JSON.stringify({ name: "pageview", path: analyticsPath(), anon: anonId(), game: currentGame() }),
+        body: JSON.stringify(corpo),
         keepalive: true
       });
     } catch (e) { /* analytics nunca quebra a página */ }
+  }
+  function logPageview() { mandaEvento("pageview"); }
+  // Eventos de PRODUTO (E6). Cada um é uma AÇÃO CONCLUÍDA que a pessoa escolheu
+  // fazer — não um clique de caminho. É o que responde "quantos importaram de
+  // fato", pergunta que hoje se responde no palpite. Os nomes têm que existir na
+  // whitelist do trigger `events_guard` (migração 20260830a): nome fora dela é
+  // descartado CALADO pelo banco, então inventar um aqui mede zero sem erro
+  // nenhum aparecer.
+  const EVENTOS = ["export_done", "import_done", "deck_created", "backup_done", "share_created"];
+  function logEvento(nome, props) {
+    if (EVENTOS.indexOf(nome) < 0) return;
+    mandaEvento(nome, props);
   }
 
   // --- Error tracking first-party: erros de JS em produção viram eventos
@@ -8307,6 +8328,7 @@
     isStandalonePWA,
     pwaInstallFlow,
     marcaPasso,
+    logEvento,
     PASSOS_KEY,
     defaultVariant,
     cardVariants,
@@ -9323,6 +9345,7 @@
         return { error: "http", status: r.status, code: code, message: message };
       }
       const rows = await r.json();
+      if (rows && rows[0] && rows[0].id) logEvento("share_created", { k: kind });
       return rows && rows[0] && rows[0].id ? { id: rows[0].id } : { error: "empty" };
     } catch (e) { return { error: "net" }; }
   }
@@ -10044,11 +10067,13 @@
       dl(JSON.stringify(backupObject(), null, 2), "tcg-collection.json", "application/json");
       // Carimbo pro aviso de backup: exportou = protegido por 30 dias.
       try { localStorage.setItem("tcg-backup-exported-at", String(Date.now())); } catch (e) { /* ignora */ }
+      logEvento("backup_done");
     }
     async function exportCsv() {
       let byId = new Map();
       try { const cat = await loadCatalog(); byId = new Map((cat.cards || []).map((c) => [c.id, c])); } catch (e) { /* CSV sem nomes */ }
       dl("﻿" + buildCollectionCsv(createCollectionStore(), createPriceStore(), byId), "tcg-collection.csv", "text/csv;charset=utf-8");
+      logEvento("export_done", { f: "csv" });
     }
     async function importJson(file) {
       if (!file) return;
@@ -10079,6 +10104,7 @@
         // maior ansiedade do usuário (os dados dele na mão) e a única resposta
         // era a página recarregar — indistinguível de "não fez nada".
         try { sessionStorage.setItem("tcg-import-ok", "1"); } catch (e) { /* segue sem toast */ }
+        logEvento("import_done", { f: "json" });
         window.location.reload();
       } catch (e) {
         // Diagnóstico honesto: quota estourada no MEIO da restauração deixa o
@@ -10259,6 +10285,7 @@
         });
         flushWrites();
         marcaPasso("csv");
+        logEvento("import_done", { f: "csv", n: agg.size });
         wrap.remove();
         alert(t("csvimport.done", { cards: agg.size, copies }));
         window.location.href = "collection";
@@ -10321,6 +10348,7 @@
         });
         flushWrites(); // garante a persistência antes de navegar
         marcaPasso("csv");
+        logEvento("import_done", { f: "dex", n: ids.length });
         alert(t("dex.done", { cards: ids.length, copies }));
         window.location.href = "collection?game=pokemon";
       } catch (e) { alert(t("error.import")); }
