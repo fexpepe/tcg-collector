@@ -12,10 +12,6 @@
 // sozinho.
 //
 // Uso: node scripts/verifica-setup.mjs
-import { spawn } from "node:child_process";
-import { writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
 import { createHash, createHmac } from "node:crypto";
 
 const SUPABASE_URL = "https://dlnalopazitfdgnmdguu.supabase.co";
@@ -80,29 +76,6 @@ const CONTA = process.env.CLOUDFLARE_ACCOUNT_ID || "";
 const BUCKET = process.env.R2_BUCKET || "sleevu-img";
 const CHAVE = "_verifica-setup.txt";
 
-// O wrangler despeja o HELP inteiro depois do erro, e a mensagem que interessa
-// fica no topo. Cortar pelo fim (o reflexo) escondia exatamente a linha útil —
-// foi o que aconteceu na primeira tentativa deste teste.
-function relevante(saida) {
-  const linhas = saida.split("\n");
-  const uteis = linhas.filter((l) => /✘|\[ERROR\]|error|Error|denied|not found|não/i.test(l) && !/^\s*--/.test(l));
-  return (uteis.length ? uteis : linhas).slice(0, 8).map((l) => "      " + l.trim()).join("\n");
-}
-
-function wrangler(args) {
-  return new Promise((resolve) => {
-    const p = spawn("npx", ["--yes", "wrangler@3", ...args], {
-      env: { ...process.env, CLOUDFLARE_API_TOKEN: R2_TOKEN, CLOUDFLARE_ACCOUNT_ID: CONTA },
-      timeout: 120000
-    });
-    let saida = "";
-    p.stdout.on("data", (d) => { saida += d; });
-    p.stderr.on("data", (d) => { saida += d; });
-    p.on("close", (code) => resolve({ code, saida: saida.trim() }));
-    p.on("error", (e) => resolve({ code: -1, saida: e.message }));
-  });
-}
-
 // ── Caminho S3 (SigV4) ───────────────────────────────────────────────────────
 // É por aqui que o espelho de imagens vai subir os arquivos: são milhares, e é
 // exatamente pra isso que o escopo "Object Read & Write" do token existe. O
@@ -134,7 +107,6 @@ function assinaS3(metodo, host, caminho, corpo) {
   return cab;
 }
 
-let s3Funcionou = false;
 if (ID_S3 && SEGREDO_S3 && CONTA) {
   const host = `${CONTA}.r2.cloudflarestorage.com`;
   const caminho = `/${BUCKET}/${CHAVE}`;
@@ -148,7 +120,6 @@ if (ID_S3 && SEGREDO_S3 && CONTA) {
       const txt = (await r.text()).replace(/\s+/g, " ").slice(0, 200);
       erro(`a API S3 recusou a escrita em ${BUCKET} (HTTP ${r.status}): ${txt}`);
     } else {
-      s3Funcionou = true;
       ok(`escrita pela API S3 no bucket ${BUCKET} funcionou`);
       // Leitura pelo domínio público, que é como o site vai buscar as imagens.
       const g = await pega(`${IMG}/${CHAVE}`, { headers: { Origin: ORIGEM } });
@@ -167,63 +138,23 @@ if (ID_S3 && SEGREDO_S3 && CONTA) {
   falta("sem R2_ACCESS_KEY_ID + R2_SECRET_ACCESS_KEY: o caminho S3 (o que o espelho vai usar) não foi testado");
 }
 
-if (R2_TOKEN && CONTA) {
-  // Primeiro: o segredo é sequer um token de API da Cloudflare? Este endpoint
-  // não exige permissão NENHUMA — só responde se o token é válido e está ativo.
-  // É o que separa os dois diagnósticos que de fora parecem o mesmo 403:
-  //   token inválido        → o segredo guardado não é um token de API
-  //                           (o par Access Key/Secret do S3 cai aqui)
-  //   token válido + 403     → é token de API, mas falta escopo (ou o bucket
-  //                           tem outro nome)
-  // Sem esta separação a mensagem viraria "confira tudo", que é o mesmo que não
-  // dizer nada.
-  let tokenValido = null;
+// O R2_TOKEN (o "Token value") segue guardado porque é o que o deploy usa no
+// wrangler pra publicar o site. Mas ele NÃO é o caminho do espelho de imagens, e
+// aqui só se confere se ele é um token válido — provado em 2026-08-31 que o
+// endpoint de CONTA do wrangler (/accounts/{id}/r2/buckets/.../objects/...)
+// recusa um token de escopo Object com 403, mesmo estando perfeito. Chegou-se a
+// testar a escrita por ele; era um teste que só sabia acusar falso, e saiu.
+if (R2_TOKEN) {
   try {
     const r = await pega("https://api.cloudflare.com/client/v4/user/tokens/verify",
       { headers: { Authorization: `Bearer ${R2_TOKEN}` } });
     const j = await r.json().catch(() => null);
-    tokenValido = !!(j && j.success);
-    if (tokenValido) ok(`o segredo É um token de API da Cloudflare, e está ${j.result && j.result.status ? j.result.status : "ativo"}`);
-    else erro("o segredo guardado em R2_TOKEN NÃO é um token de API da Cloudflare "
+    if (j && j.success) ok(`R2_TOKEN é um token de API da Cloudflare válido, e está ${j.result && j.result.status ? j.result.status : "ativo"}`);
+    else erro("o segredo guardado em R2_TOKEN não é um token de API da Cloudflare "
       + `(verify devolveu HTTP ${r.status}${j && j.errors ? ` — ${j.errors.map((e) => e.message).join("; ")}` : ""}). `
-      + "Na tela do token do R2 há duas coisas diferentes: o par Access Key ID/Secret Access Key, "
-      + "que serve pra API S3, e o \"Token value\", que é o que o wrangler e o deploy usam. É o Token value que vai aqui.");
-  } catch (e) { nota(`não deu pra validar o formato do token: ${e.message}`); }
-
-  const arquivo = join(tmpdir(), CHAVE);
-  const carimbo = `verifica-setup ${new Date().toISOString()}\n`;
-  writeFileSync(arquivo, carimbo);
-  const put = await wrangler(["r2", "object", "put", `${BUCKET}/${CHAVE}`, "--file", arquivo, "--content-type", "text/plain"]);
-  if (put.code !== 0) {
-    (s3Funcionou ? nota : erro)(`o wrangler não conseguiu ESCREVER em ${BUCKET} (saiu ${put.code}). `
-      + (s3Funcionou ? "Não é problema: o caminho S3 acima funcionou, e é o que o espelho usa. "
-          + "O endpoint de CONTA que o wrangler usa pede permissão de conta, que um token de escopo Object não tem. " : "")
-      + (tokenValido
-        ? "O token é válido, então sobrou: falta o escopo de escrita (Object Read & Write) OU o bucket tem outro nome. "
-        : "Provavelmente é consequência do problema acima — o segredo não é um token de API. ")
-      + `Este teste usou o bucket "${BUCKET}", `
-      + `mude com o campo "bucket" ao disparar o workflow. Saída:\n${relevante(put.saida)}`);
-  } else {
-    ok(`escrita no bucket ${BUCKET} funcionou`);
-    // Leitura pelo domínio público: é assim que o site vai buscar as imagens.
-    try {
-      const r = await pega(`${IMG}/${CHAVE}`, { headers: { Origin: ORIGEM } });
-      const cors = r.headers.get("access-control-allow-origin");
-      if (r.status !== 200) erro(`o objeto subiu mas img.sleevu.app devolveu HTTP ${r.status} — o domínio pode estar ligado a OUTRO bucket`);
-      else {
-        const corpo = await r.text();
-        if (corpo !== carimbo) erro("img.sleevu.app respondeu 200 mas com conteúdo diferente do que foi enviado");
-        else ok("leitura pública pelo img.sleevu.app confere byte a byte");
-        if (cors === ORIGEM || cors === "*") ok(`CORS no objeto real: ${cors}`);
-        else erro(`objeto real veio SEM CORS pra ${ORIGEM} (recebido: ${cors || "nenhum"}) — é isso que faz o "exportar imagem" sair sem foto`);
-      }
-    } catch (e) { erro(`img.sleevu.app inacessível depois do upload: ${e.message}`); }
-    const del = await wrangler(["r2", "object", "delete", `${BUCKET}/${CHAVE}`]);
-    if (del.code !== 0) nota(`o objeto de teste ${CHAVE} ficou no bucket (o delete saiu ${del.code}) — apague pelo painel`);
-    else ok("objeto de teste apagado");
-  }
-} else {
-  falta("sem R2_TOKEN + CLOUDFLARE_ACCOUNT_ID: não dá pra provar escrita nem leitura");
+      + "Na tela do token do R2 são três campos diferentes: o \"Token value\" vai aqui; "
+      + "o Access Key ID e o Secret Access Key vão nos outros dois segredos.");
+  } catch (e) { nota(`não deu pra validar o R2_TOKEN: ${e.message}`); }
 }
 
 // ── 3. Supabase: whitelist de eventos ────────────────────────────────────────
