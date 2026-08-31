@@ -6320,9 +6320,11 @@ html:not([data-cardlang="all"]) #setRegionChips {
 /* A barra de filtros da Coleção colapsa em QUALQUER largura (no resto do site
    o .is-collapsed só vale no mobile, via .filters-toggle do shared.js). */
 .collection-filters.is-collapsed { display: none; }
-/* Detalhe (sets de todos os jogos): Filtros e Adição rápida atrás de dois
-   botões lado a lado, mesmo padrão da Coleção. */
-.detail-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+/* Detalhe (sets de todos os jogos): Adição rápida e Filtros atrás de dois
+   botões lado a lado, mesmo padrão da Coleção — inclusive o canto: lá o par
+   Selecionar/Filtros vive na ponta DIREITA (.collection-toolbar-actions), e
+   aqui era o único lugar do site com esses botões à esquerda. */
+.detail-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin: 0 0 14px; }
 .detail-actions button { display: inline-flex; align-items: center; gap: 7px; }
 .detail-actions svg { width: 16px; height: 16px; flex: none; }
 .detail-actions button[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
