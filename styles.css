@@ -6602,11 +6602,44 @@ a.dash-profile-handle:hover, a.shared-kind:hover,
 .page-head-bar .page-head-bar-text .detail-back-link { order: 2; margin: 3px 0 0; }
 .page-head-bar .page-search { grid-column: 2; margin: 0; min-width: 0; }
 .page-head-bar .page-search input { height: 46px; }
+
+/* FILEIRA ÚNICA: quando a 3ª coluna deixa de ser fantasma e ganha conteúdo de
+   verdade — as abas do Explorar (Cartas/Sets/Pokédex/…) ou os controles do
+   Explorar (Jogo/Ordenar/Versões) —, a busca para de ser o centro da página e
+   passa a ser O QUE SOBRA entre as duas pontas. É o preço de caber tudo numa
+   linha só, e foi pedido assim: a busca encolhe pra acomodar o resto.
+
+   `auto | 1fr | auto` (e não 1fr nas pontas) tem um motivo além do encaixe: o
+   shared.js só preenche as abas DEPOIS do primeiro paint, e com a busca em 1fr
+   a chegada dos chips muda a LARGURA dela sem mexer no canto superior esquerdo
+   — encolher sem mover não conta como layout shift. Com 1fr na ponta esquerda,
+   a busca escorregaria pro lado e a mesma chegada viraria CLS.
+   O `220px` de piso é o ponto em que a busca já não vale a pena espremer mais:
+   dali pra baixo quem cede é a fileira de abas, que rola sozinha. */
+.page-head-bar:has(> .explore-subnav),
+.page-head-bar:has(> .page-head-bar-tools) {
+  grid-template-columns: auto minmax(220px, 1fr) auto;
+}
+.page-head-bar > .explore-subnav,
+.page-head-bar > .page-head-bar-tools { grid-column: 3; margin: 0; min-width: 0; }
+/* Os controles do Explorar têm rótulo EM CIMA (Jogo:, Ordenar:, Versões), então
+   a caixa deles é mais alta que a busca. Alinhados pelo centro, os campos
+   ficavam ~10px fora de registro; pelo fim, a base do input casa com a base dos
+   selects e a fileira lê como uma linha só de campos. */
+.page-head-bar:has(> .page-head-bar-tools) { align-items: end; }
+
 /* Sem largura pras 3 colunas: título numa linha, busca na linha inteira de
-   baixo (no celular o shared.js já move a busca pro header). */
+   baixo (no celular o shared.js já move a busca pro header). Abas e controles
+   voltam a ser uma faixa própria embaixo — a fileira única é coisa de tela
+   larga. As duas primeiras regras não são redundantes: o `:has` acima pesa
+   mais que `.page-head-bar` e venceria dentro da media query. */
 @media (max-width: 1080px) {
-  .page-head-bar { grid-template-columns: minmax(0, 1fr); }
+  .page-head-bar,
+  .page-head-bar:has(> .explore-subnav),
+  .page-head-bar:has(> .page-head-bar-tools) { grid-template-columns: minmax(0, 1fr); }
   .page-head-bar .page-search { grid-column: 1; }
+  .page-head-bar > .explore-subnav,
+  .page-head-bar > .page-head-bar-tools { grid-column: 1; }
   .page-head-bar h1 { font-size: 28px; }
 }
 /* O rótulo "Procurar:" era uma faixa inteira dizendo o que a lupa + placeholder

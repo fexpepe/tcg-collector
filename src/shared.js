@@ -2493,7 +2493,8 @@
     hxh: SUBNAV_MIN
   };
   // As páginas do Explorar trazem um <nav class="explore-subnav" data-placeholder>
-  // VAZIO no HTML, com a altura de uma linha de chips já reservada no CSS.
+  // VAZIO no HTML, dentro do .page-head-bar, com a altura de uma linha de chips
+  // já reservada no CSS.
   // Antes esta função criava o elemento do zero depois do primeiro paint, e as
   // 38px que ele passava a ocupar empurravam a página inteira pra baixo (era a
   // 2ª maior fonte de CLS). Agora ela PREENCHE o que já está lá; o espaço nunca
@@ -2525,8 +2526,10 @@
       `<a class="chip" href="${href}?game=${game}${lineSuffix}"${page === active ? ' aria-current="page"' : ""}>${escapeHtml(t(key))}</a>`
     ).join("");
     // O placeholder já nasce na posição certa no HTML; só insere quando a nav
-    // foi criada aqui (páginas que ainda não têm o placeholder no markup).
-    if (!existing) head.insertAdjacentElement("afterend", nav);
+    // foi criada aqui (hoje: as páginas de detalhe). DENTRO do .page-head, não
+    // depois dele: as abas são a 3ª coluna da faixa do topo (ver .page-head-bar
+    // no styles.css), então o topo é uma fileira só.
+    if (!existing) head.appendChild(nav);
     initSubnavScrollHint(nav);
   }
 

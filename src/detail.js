@@ -73,6 +73,22 @@
     modeAnyLang: document.getElementById("modeAnyLang")
   };
 
+  // Cabeçalho de texto: tipo e nome saem os DOIS da URL, então são escritos
+  // aqui, no boot, e não no init(). O init só roda quando o catálogo chega, e
+  // até lá a faixa pintava "Carregando" (ou, nos sets, um título gigante que
+  // depois some) — a coluna da esquerda mudava de tamanho com a página já na
+  // tela e levava a busca junto, porque agora a faixa é UMA fileira só (ver
+  // .page-head-bar no styles.css). Nos sets o hero logo abaixo já traz o nome:
+  // repetir eyebrow + título era ruído, e some antes do primeiro paint.
+  if (elements.type) elements.type.textContent = collectionScope
+    ? `${t("detail.scopeCollection")} · ${typeLabel(detailType)}`
+    : typeLabel(detailType);
+  if (elements.title) elements.title.textContent = detailName || t("detail.label");
+  if (detailType === "set") {
+    if (elements.type) elements.type.hidden = true;
+    if (elements.title) elements.title.hidden = true;
+  }
+
   // --- Modos de contagem do progresso (páginas de set) ---
   // Master set: cada VARIANTE (Normal/Reverse/Holo…) é um slot próprio, como no
   // tcgcollector.com. Qualquer idioma: a carta conta se QUALQUER versão de
@@ -325,16 +341,6 @@
   }
 
   function init() {
-    elements.type.textContent = collectionScope
-      ? `${t("detail.scopeCollection")} · ${typeLabel(detailType)}`
-      : typeLabel(detailType);
-    elements.title.textContent = detailName || t("detail.label");
-    // Páginas de SET: o hero logo abaixo já traz o nome do set — o cabeçalho
-    // duplicado (eyebrow "SET" + título gigante) sai; fica só o "← Voltar".
-    if (detailType === "set") {
-      elements.type.hidden = true;
-      elements.title.hidden = true;
-    }
     if (collectionScope) elements.grid.classList.add("scope-collection");
     renderHero();
     // Com hero (Pokémon/set): a coluna da direita passa a ser os valores (R$) e

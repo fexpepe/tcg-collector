@@ -66,11 +66,13 @@
         <svg class="page-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
         <input id="searchInput" type="search" enterkeyhint="search" data-i18n-placeholder="search.placeholder.trainers" placeholder="Treinador, set, número...">
         </section>
+        <!-- Preenchido por buildExploreSubnav (shared.js). Vem VAZIO e com a
+             altura reservada no CSS pra pagina nao pular quando os chips
+             entram — ver .explore-subnav[data-placeholder] no styles.css.
+             Mora DENTRO da faixa, na 3a coluna: topo de UMA fileira so
+             (titulo · busca · abas). -->
+        <nav class="explore-subnav chip-filter" data-placeholder data-i18n-aria="nav.explore" aria-label="Explorar"></nav>
       </div>
-      <!-- Preenchido por buildExploreSubnav (shared.js). Vem VAZIO e com a
-           altura reservada no CSS pra pagina nao pular quando os chips
-           entram — ver .explore-subnav[data-placeholder] no styles.css. -->
-      <nav class="explore-subnav chip-filter" data-placeholder data-i18n-aria="nav.explore" aria-label="Explorar"></nav>
 
       <div id="setRegionChips" class="chip-filter master-filter" role="group" data-i18n-aria="aria.cardOrigin" aria-label="Origem das cartas">
         <button type="button" class="chip" data-lang-region="english" aria-pressed="true" data-i18n="setRegion.english">Inglês</button>
