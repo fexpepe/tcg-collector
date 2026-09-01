@@ -995,8 +995,10 @@ input::placeholder {
 }
 .prof-tab.is-active { background: var(--accent); color: var(--on-accent); }
 /* A Coleção pessoal usa as MESMAS abas, mas marca a ativa por aria-pressed
-   (é o que o collection.js já escrevia nos chips antigos). */
-.prof-tab[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+   (é o que o collection.js já escrevia nos chips antigos). Nas telas onde as
+   abas são LINKS (Graded), a ativa vem marcada com aria-current="page". */
+.prof-tab[aria-pressed="true"],
+.prof-tab[aria-current="page"] { background: var(--accent); color: var(--on-accent); }
 /* Cabeçalho da coleção aberta no perfil público (Voltar + nome). */
 .coll-open-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
 .coll-open-name { font-size: 18px; font-weight: 800; }
@@ -1167,8 +1169,29 @@ input::placeholder {
 .preview-tags-add:hover { border-color: var(--accent); color: var(--accent); }
 
 /* --- Vendas (cartas à venda com preço) --- */
-.sales-toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+/* align-items: center — sem ele o flex esticava cada botão até a altura da
+   coluna do "Ordenar:" (rótulo + select), e a fileira saía com botões gigantes
+   desalinhados do select. */
+.sales-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; }
 .sales-toolbar button[disabled] { opacity: 0.5; cursor: not-allowed; }
+/* Link vestido de botão na fileira (ex.: "Analisar troca"): âncora só herda as
+   CORES do .secondary — a forma vem da regra base de button, que não alcança
+   <a>. Espelha min-height/padding de lá (mesma solução do a.setting-open). */
+.sales-toolbar a.secondary {
+  min-height: 42px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  text-decoration: none;
+}
+/* Ordenar na ponta DIREITA da fileira, rótulo e select na MESMA linha: o label
+   global é display:block (vira uma linha própria) e o select herda width:100% —
+   os dois juntos faziam o "Ordenar:" virar uma coluna mais alta que os botões. */
+.sales-sort-row { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.sales-sort-row label { margin: 0; }
+.sales-sort-row select { width: auto; }
 
 /* Precificar em lote (markup sobre a referência): chips rápidos + campo custom. */
 .sales-batch { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 14px; margin-bottom: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
@@ -1192,7 +1215,10 @@ input::placeholder {
 .sale-tile, .graded-tile { position: relative; }
 .sale-tile .sale-remove, .graded-tile .sale-remove {
   position: absolute; top: 6px; right: 6px; z-index: 4;
-  width: 26px; height: 26px; border-radius: 50%;
+  /* min-height/padding zerados: a regra base de button (42px de altura mínima,
+     padding lateral de 16px) vencia o height/width daqui e o ✕ saía OVAL
+     (34×42) em vez do círculo de 26px. */
+  width: 26px; height: 26px; min-height: 26px; padding: 0; border-radius: 50%;
   border: 1px solid var(--line); background: var(--panel); color: var(--subtle);
   display: flex; align-items: center; justify-content: center; cursor: pointer;
   font-size: 13px; line-height: 1; box-shadow: var(--shadow); opacity: 0;
@@ -6347,6 +6373,11 @@ html:not([data-cardlang="all"]) #setRegionChips {
   /* minmax(0,…fr): trava as proporções pelo espaço, NÃO pelo conteúdo — senão o
      valor (R$ …) muda de largura entre Todos/Pokémon/Lorcana e desloca tudo. */
   grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr) minmax(0, 1.4fr);
+  /* O respiro vivia só no cartão-herói e no @media do celular — a Graded, que
+     usa esta base com 3 cards no desktop, ficava com os cards COLADOS uns nos
+     outros e na fileira de ações logo abaixo. Mesmos valores do herói. */
+  gap: 14px;
+  margin: 0 0 18px;
 }
 /* Minha Coleção: cartão-herói (identidade + ações em cima, contagens embaixo),
    mesma cara do cabeçalho do perfil compartilhado. Deixou de ser barra fixa
@@ -6821,6 +6852,11 @@ html[data-detail="set"] #detailTitle { display: none; }
    :has(~ …) e não `+` porque a seção de onboarding fica entre os dois no DOM
    (mesmo quando hidden). */
 .page-head:has(~ .collection-toolbar) { margin-bottom: 10px; }
+/* …mas quando um subtítulo vem LOGO ABAIXO do título (Graded), os 10px somados
+   ao -6px do .collection-subtitle deixavam 4px — texto grudado no h1. Volta aos
+   20px padrão: quem fecha o bloco com o filtro passa a ser o subtítulo (16px
+   embaixo). Mesma especificidade (0,2,0) da regra acima; depois dela, vence. */
+.page-head:has(+ .collection-subtitle) { margin-bottom: 20px; }
 /* No Portfólio o filtro de jogo fica colado no box do gráfico (o .game-filter é
    margin:0 e o .pf-chart não tem margin-top) — dá respiro em cima e embaixo pra
    as cápsulas não encavalarem, inclusive quando quebram pra 2 linhas.

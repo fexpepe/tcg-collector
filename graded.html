@@ -61,22 +61,10 @@
         <a href="dashboard" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
       </div>
 
-      <div class="chip-filter collection-tabs" role="group" data-i18n-aria="aria.collectionViews" aria-label="Visões da coleção">
-        <a class="chip" href="collection?tab=cards" data-i18n="collection.tab.cards">Cartas</a>
-        <a class="chip" href="collection?tab=folders" data-i18n="collection.tab.folders">Showcase</a>
-        <!-- aria-current (não aria-pressed): é um LINK. aria-pressed só vale em
-             role=button — o leitor de tela anunciava um botão inexistente. -->
-        <a class="chip" href="graded" aria-current="page" data-i18n="collection.tab.graded">Graded</a>
-        <a class="chip" href="collection?tab=tags" data-i18n="collection.tab.tags">Tags</a>
-        <a class="chip" href="collection?tab=pokemon" data-i18n="collection.tab.pokemon">Pokémon</a>
-        <a class="chip" href="collection?tab=artists" data-i18n="collection.tab.artists">Artistas</a>
-        <a class="chip" href="collection?tab=sets" data-i18n="collection.tab.sets">Sets</a>
-      </div>
-
       <p class="collection-subtitle" data-i18n="graded.pageSubtitle">Catalogue suas cartas graduadas com a graduadora e a nota — o valor de mercado vem automático para PSA 9 e 10 (vendas do eBay; por enquanto, só Pokémon); as demais você preenche na mão.</p>
 
       <div class="collection-toolbar">
-        <div id="gameFilter" class="chip-filter game-filter" role="group" data-i18n-aria="pfmi.game" aria-label="Jogo">
+        <div id="gameFilter" class="chip-filter game-filter game-filter-panel" role="group" data-i18n-aria="pfmi.game" aria-label="Jogo">
           <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
           <button type="button" class="chip" data-game-filter="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
           <button type="button" class="chip" data-game-filter="lorcana" aria-pressed="false" data-i18n="filter.gameLorcana">Lorcana</button>
@@ -105,6 +93,22 @@
           <div id="gradedDashDist" class="dash-dist-bars"></div>
         </article>
       </section>
+
+      <!-- MESMAS abas-retângulo da Coleção (.prof-tabs), na MESMA posição
+           (abaixo do resumo): é a mesma visão — a coleção — em duas telas, e as
+           abas de lá viraram links aqui. aria-current (não aria-pressed): são
+           LINKS — aria-pressed só vale em role=button, e o leitor de tela
+           anunciava um botão inexistente. -->
+      <div class="prof-tabs collection-tabs" role="group" data-i18n-aria="aria.collectionViews" aria-label="Visões da coleção">
+        <a class="prof-tab" href="collection?tab=cards" data-i18n="nav.collection">Coleção</a>
+        <a class="prof-tab" href="collection?tab=folders" data-i18n="collection.tab.folders">Showcase</a>
+        <a class="prof-tab" href="graded" aria-current="page" data-i18n="nav.graded">Cartas Graded</a>
+        <a class="prof-tab" href="listas" data-i18n="nav.lists">Listas</a>
+        <a class="prof-tab" href="collection?tab=pokemon" data-i18n="collection.tab.pokemon">Pokémon</a>
+        <a class="prof-tab" href="collection?tab=artists" data-i18n="collection.tab.artists">Artistas</a>
+        <a class="prof-tab" href="collection?tab=sets" data-i18n="collection.tab.sets">Sets</a>
+        <a class="prof-tab" href="sales" data-i18n="nav.sales">Vendas e Trocas</a>
+      </div>
 
       <div id="gradedView">
         <section class="sales-toolbar">
