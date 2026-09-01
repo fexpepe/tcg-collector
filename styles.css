@@ -574,12 +574,18 @@ main {
    DENTRO do dropdown/mega-menu, e cada linha da lista ganharia um contorno.
    :focus-visible junto pro teclado ter o mesmo retorno do mouse. */
 .page-nav > a,
+.page-nav .nav-group > a,
 .nav-group-toggle { transition: border-color 120ms ease, color 120ms ease; }
 .page-nav > a:hover,
-.page-nav > a:focus-visible {
+.page-nav > a:focus-visible,
+.page-nav .nav-group > a:hover,
+.page-nav .nav-group > a:focus-visible {
   border-color: var(--line);
   color: var(--text);
 }
+/* O item-toggle do grupo-hover (Coleção) é um LINK igual aos vizinhos; o gap é
+   só pro caret ▾ não colar no rótulo. */
+.page-nav .nav-group > a { gap: 7px; }
 
 .header-actions,
 .toolbar {
@@ -3047,6 +3053,7 @@ a.preview-print:hover { background: var(--panel); }
   }
 
   .app-header-inner .page-nav > a,
+  .app-header-inner .page-nav .nav-group > a,
   .app-header-inner .nav-group-toggle {
     justify-content: flex-end;
     text-align: right;
@@ -3067,6 +3074,13 @@ a.preview-print:hover { background: var(--panel); }
   /* No drawer mobile TODO dropdown (Explorar e Coleção) fica à direita, igual ao
      menu principal; à esquerda é só no desktop. */
   .app-header-inner .page-nav .nav-dropdown a { justify-content: flex-end; text-align: right; }
+
+  /* Mega-menu dentro do drawer (aberto por foco de teclado): as colunas viram
+     LINHAS e o painel deixa de flutuar centralizado (a regra estática acima já
+     o encaixa no fluxo); a ponte de hover não serve pra nada aqui. */
+  .app-header-inner .nav-mega { grid-auto-flow: row; left: auto; transform: none; max-width: none; }
+  .app-header-inner .nav-mega::before { display: none; }
+  .app-header-inner .nav-mega-head { text-align: right; }
 
   /* Moeda, idioma, tema e conta: uma FILEIRA no rodapé do drawer, dividindo a
      largura em partes iguais. Empilhados em coluna eles viravam quatro pílulas
@@ -6121,6 +6135,40 @@ a.progress-row:hover {
 
 .page-nav .nav-dropdown a:hover {
   color: var(--text);
+}
+
+/* Mega-menu da Coleção (hover/foco no item do menu): o mesmo painel do
+   dropdown, mas em COLUNAS com cabeçalho — os atalhos do "Ir para" do Hub a um
+   toque de distância. Centralizado sob o item pra não estourar a borda direita
+   da janela em monitor estreito. */
+.nav-mega {
+  left: 50%;
+  transform: translateX(-50%);
+  grid-auto-flow: column;
+  gap: 4px 26px;
+  padding: 14px 16px;
+  max-width: calc(100vw - 24px);
+}
+/* Ponte invisível sobre o vão de 10px entre o item e o painel: sem ela o
+   mouse cruza uma faixa que não é de ninguém e o mouseleave fecha o menu no
+   meio do caminho. */
+.nav-mega::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -12px;
+  height: 12px;
+}
+.nav-mega-col { display: grid; gap: 2px; align-content: start; min-width: 160px; }
+.nav-mega-head {
+  padding: 4px 16px 6px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--subtle);
+  white-space: nowrap;
 }
 
 /* Bandeira de idioma da carta */

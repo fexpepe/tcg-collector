@@ -2424,6 +2424,19 @@
     // Toda Coleção e Portfólio são páginas PESSOAIS: só existem no menu com
     // login (deslogado, o "Entrar" do header é o caminho — sem atalhos mortos).
     const loggedIn = !!getSession();
+    // Mega-menu da Coleção: o hover/foco no item abre os MESMOS atalhos do
+    // "Ir para" do Hub (dashboard.js), com os mesmos rótulos e na mesma ordem,
+    // agrupados em colunas — o clique continua indo pro Hub, como sempre.
+    const megaCol = (headKey, links) => `<div class="nav-mega-col"><span class="nav-mega-head">${escapeHtml(t(headKey))}</span>${links}</div>`;
+    const collectionMega = `
+      <div class="nav-group nav-group-hover">
+        <a href="dashboard"${collectionActive ? ' class="active"' : ""} aria-haspopup="true" aria-expanded="false">${escapeHtml(t("nav.collection"))}<span class="nav-caret" aria-hidden="true">▾</span></a>
+        <div class="nav-dropdown nav-mega" hidden>
+          ${megaCol("nav.colCards", link("collection", "nav.collectionMine", "collection") + link("graded", "nav.graded", "graded") + link("wishlist", "nav.wishlist", "wishlist"))}
+          ${megaCol("nav.colOrganize", link("binders", "nav.binders", "binders") + link("listas", "nav.lists", "listas") + link("my-decks", "nav.myDecks", "mydecks"))}
+          ${megaCol("nav.colMore", link("sales", "nav.sales", "sales") + link("troca", "trade.title", "troca") + link("badges", "dash.badges", "badges"))}
+        </div>
+      </div>`;
     // Decks fica FORA da Coleção e aparece deslogado de propósito: a galeria da
     // comunidade é conteúdo público (e indexável) — é a porta de entrada de quem
     // ainda não tem conta. Criar/salvar deck é que exige login, dentro da página.
@@ -2431,13 +2444,15 @@
       ${link(apexUrl, "nav.home", "home")}
       ${exploreMega}
       ${link("decks", "nav.decks", "decks", true)}
-      ${loggedIn ? `<a href="dashboard"${collectionActive ? ' class="active"' : ""}>${escapeHtml(t("nav.collection"))}</a>
+      ${loggedIn ? `${collectionMega}
       ${link("portfolio", "nav.portfolio", "portfolio", true)}` : ""}
     `;
 
     const groups = Array.from(nav.querySelectorAll(".nav-group")).map((groupEl) => ({
       el: groupEl,
-      toggle: groupEl.querySelector(".nav-group-toggle"),
+      // Toggle pode ser BOTÃO (grupo de clique) ou LINK com popup (grupo de
+      // hover, ex.: Coleção — o clique nele navega).
+      toggle: groupEl.querySelector(".nav-group-toggle, a[aria-haspopup]"),
       dropdown: groupEl.querySelector(".nav-dropdown")
     }));
 
@@ -2450,12 +2465,31 @@
     }
 
     groups.forEach(({ toggle, dropdown }) => {
+      // Grupo-hover: o toggle é um LINK — clique navega, nunca abre/fecha.
+      if (toggle.tagName !== "BUTTON") return;
       toggle.addEventListener("click", () => {
         const willOpen = dropdown.hidden;
         closeAll(dropdown);
         dropdown.hidden = !willOpen;
         toggle.setAttribute("aria-expanded", String(willOpen));
       });
+    });
+
+    // Grupos de HOVER (Coleção): abre ao pousar o mouse e ao focar por teclado
+    // (tab entra nos itens — DOM em ordem); fecha ao sair, com uma tolerância
+    // curta pro trajeto diagonal até o painel. Só em ponteiro fino: no toque o
+    // tap navega direto (o drawer e a tabbar cobrem o resto do celular).
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+    nav.querySelectorAll(".nav-group-hover").forEach((groupEl) => {
+      const g = groups.find((x) => x.el === groupEl);
+      if (!g || !g.toggle || !g.dropdown) return;
+      let timer = 0;
+      const open = () => { clearTimeout(timer); closeAll(g.dropdown); g.dropdown.hidden = false; g.toggle.setAttribute("aria-expanded", "true"); };
+      const close = () => { clearTimeout(timer); g.dropdown.hidden = true; g.toggle.setAttribute("aria-expanded", "false"); };
+      groupEl.addEventListener("mouseenter", () => { if (finePointer.matches) open(); });
+      groupEl.addEventListener("mouseleave", () => { if (finePointer.matches) { clearTimeout(timer); timer = setTimeout(close, 160); } });
+      groupEl.addEventListener("focusin", open);
+      groupEl.addEventListener("focusout", (event) => { if (!groupEl.contains(event.relatedTarget)) close(); });
     });
 
     document.addEventListener("click", (event) => {
