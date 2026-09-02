@@ -3078,7 +3078,8 @@ a.preview-print:hover { background: var(--panel); }
   /* Mega-menu dentro do drawer (aberto por foco de teclado): as colunas viram
      LINHAS e o painel deixa de flutuar centralizado (a regra estática acima já
      o encaixa no fluxo); a ponte de hover não serve pra nada aqui. */
-  .app-header-inner .nav-mega { grid-auto-flow: row; left: auto; transform: none; max-width: none; }
+  .app-header-inner .nav-mega { grid-auto-flow: row; grid-template-columns: minmax(0, 1fr); left: auto; transform: none; max-width: none; }
+  .app-header-inner .page-nav .nav-dropdown a.nav-mega-hub { justify-content: flex-end; }
   .app-header-inner .nav-mega::before { display: none; }
   .app-header-inner .nav-mega-head { text-align: right; }
 
@@ -5099,6 +5100,8 @@ a.progress-row:hover {
 /* Por jogo: título + seletor da forma de ver (mosaico | cápsulas | pizza |
    barras) na primeira linha do card. Reusa o .view-toggle da Coleção (só
    ícone; o nome vai no title/aria), encolhido pro cabeçalho. */
+/* Chip "Vintage" (Coleção): borda tracejada — é um AGRUPAMENTO, não um jogo. */
+.chip-vintage { border-style: dashed; }
 .dash-games-head { display: flex; align-items: center; gap: 8px 14px; margin: 0 0 12px; }
 .dash-games-head h3 { margin: 0; }
 .dash-games-modes { margin-left: auto; flex: none; }
@@ -5111,10 +5114,12 @@ a.progress-row:hover {
    pula nem muda de proporção. O miolo rola por dentro se uma forma não
    couber (12 jogos em cápsulas de 44px no toque). */
 .dash-games {
-  box-sizing: border-box; width: 100%; aspect-ratio: 1 / 1;
+  box-sizing: border-box; width: 100%; max-width: 360px; aspect-ratio: 1 / 1;
   display: flex; flex-direction: column; overflow: hidden;
 }
 .dash-games .empty-state { margin: auto 0; }
+/* Bandeira das regiões dentro das cápsulas/azulejos/legenda: em linha com o nome. */
+.dash-game-name .card-flag, .dash-tm-tile .card-flag, .dash-pie-name .card-flag { vertical-align: -2px; margin-right: 5px; }
 .dash-gv { flex: 1; min-height: 0; overflow: auto; }
 .dash-gv-chips { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; }
 /* Pizza: rosca à esquerda, legenda (nome + contagem, cada linha um link) à
@@ -5196,6 +5201,22 @@ a.progress-row:hover {
    que o placar de Conquistas (.bdg-score-num) já usa: hierarquia sem elemento
    novo (proposta de 2026-08-25). */
 .dash-main .stat-grand > #dhValue { font-size: 34px; }
+/* Mais valiosas do Hub: 6 cartas em grade 3×2 com a imagem grande, nome e
+   valor. Cabe na altura fixa da fileira (2 × ~160px + folga) sem rolar. */
+.dash-top-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 8px; align-content: start; }
+.dash-top-grid li { min-width: 0; }
+/* .dash-top-list.dash-top-grid: mesma especificidade+1 da regra base
+   `.dash-top-list a` (que vem DEPOIS no arquivo e alinha ao centro) — sem
+   isso o nome vira shrink-to-fit e estoura pro azulejo vizinho. */
+.dash-top-list.dash-top-grid a { flex-direction: column; align-items: stretch; gap: 4px; min-width: 0; }
+/* Moldura na proporção da carta (63:88), centrada: segura o lugar mesmo com a
+   imagem ainda descendo (ou falhando), e a grade não pula. */
+.dash-top-grid .dash-top-thumb { width: auto; height: 118px; aspect-ratio: 63 / 88; margin: 0 auto; background: var(--panel-strong); }
+.dash-top-grid .dash-top-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.dash-top-grid strong { display: block; min-width: 0; font-size: 12.5px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dash-top-grid .dash-top-val { text-align: center; }
+.dash-top-grid .dash-empty { grid-column: 1 / -1; }
+.dash-top-grid a:hover strong { color: var(--accent); }
 /* Fileira de três cards: Por jogo (coluna FIXA de 398px = quadrado de 360 +
    2×18 de padding + 2×1 de borda do card) | Mais valiosas (um pouco mais
    larga: nome + set + valor) | Por região. Os dois últimos nascem escondidos e
@@ -6220,6 +6241,19 @@ a.progress-row:hover {
   top: -12px;
   height: 12px;
 }
+/* Três colunas explícitas em FILEIRAS: a primeira fileira é o Hub, ocupando
+   a largura toda (é a página-mãe de tudo que está embaixo — o próprio item
+   "Coleção" leva pra ele); as três colunas vêm certinhas na segunda. */
+.nav-mega { grid-auto-flow: row; grid-template-columns: repeat(3, minmax(160px, auto)); }
+.page-nav .nav-dropdown a.nav-mega-hub {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; gap: 10px;
+  margin: 0 0 8px; padding: 9px 16px;
+  border-bottom: 1px solid var(--line); border-radius: 0;
+  color: var(--text);
+}
+.nav-mega-hub svg { width: 18px; height: 18px; flex: none; color: var(--accent); }
+.nav-mega-hub small { font-weight: 600; font-size: 12px; color: var(--muted); white-space: nowrap; }
 .nav-mega-col { display: grid; gap: 2px; align-content: start; min-width: 160px; }
 .nav-mega-head {
   padding: 4px 16px 6px;
@@ -9093,6 +9127,11 @@ select,
 /* --- Wizard --- */
 .list-modal-box h3 { margin: 18px 0 8px; font-size: 14px; color: var(--muted); }
 .list-modal-hint { margin: -8px 0 14px; color: var(--muted); font-size: 13px; }
+/* A margem negativa acima é pra dica colar num h3. No modal de EXPORTAR ela
+   vem depois de uma fileira de chips ou do textarea — e subia por cima deles
+   (texto encavalado). Depois desses dois, respiro normal. */
+.lst-chips + .list-modal-hint, .lst-export + .list-modal-hint { margin-top: 10px; }
+.lst-chips + .lst-chips { margin-top: 8px; }
 /* Rodapé de TODOS os modais de lista (wizard, exportar, aplicar): ações lado a
    lado e centralizadas, com alturas casadas pra lerem como um par. */
 .list-modal-foot { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
@@ -9212,7 +9251,7 @@ select,
 @media (max-width: 880px) { .lst-keys { display: none; } }   /* sem teclado no toque */
 
 /* Export e "aplicar à coleção" */
-.lst-export { width: 100%; margin: 12px 0 0; padding: 10px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; line-height: 1.5; resize: vertical; white-space: pre; overflow-wrap: normal; overflow-x: auto; }
+.lst-export { width: 100%; margin: 0; padding: 10px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; line-height: 1.5; resize: vertical; white-space: pre; overflow-wrap: normal; overflow-x: auto; }
 .lst-apply-list { max-height: 340px; overflow-y: auto; overscroll-behavior: contain; margin: 12px 0; border: 1px solid var(--line); }
 .lst-apply-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 10px; padding: 7px 10px; border-bottom: 1px solid var(--line); font-size: 13px; }
 .lst-apply-row:last-child { border-bottom: 0; }

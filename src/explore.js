@@ -171,7 +171,7 @@
     // vêm filtrados por jogo e casados por palavra, só entram no funil daqui.
     const q = term();
     const matched = (options && options.list) || cards.filter((card) =>
-      (gameFilter === "all" || card.game === gameFilter) && matchesCardQuery(card, q));
+      shared.cardMatchesGameFilter(card, gameFilter) && matchesCardQuery(card, q));
     const pairs = shared.cardVariantPairs(matched, { group: agrupaVersoes });
     const cmp = sortComparator();
     pairs.sort((a, b) =>
@@ -202,10 +202,17 @@
   // estiver desligada. Depois que ele chegou (catalogPromise existe), a busca
   // local de sempre segue valendo: instantânea, sem rede e sem teto de 60.
   let apiSeq = 0;
+  const VINTAGE_GAMES = ["pokemon", "onepiece", "naruto", "hxh"]; // os que têm carta vintage (ver isVintageCard)
   async function apiApply() {
     const seq = ++apiSeq;
     if (!elements.grid.querySelector(".card-tile")) shared.showSkeletons(elements.grid, "card", 8);
-    const hits = await shared.searchApi(gameFilter === "all" ? "all" : gameFilter, term(), 60);
+    // "Vintage" não existe na borda (é corte por carta, não coluna do D1):
+    // busca nos jogos que TÊM linha vintage e peneira as cartas hidratadas
+    // com isVintageCard, mais abaixo.
+    const vintage = gameFilter === shared.VINTAGE_FILTER;
+    const hits = vintage
+      ? (await Promise.all(VINTAGE_GAMES.map((g) => shared.searchApi(g, term(), 60)))).flat().filter(Boolean)
+      : await shared.searchApi(gameFilter === "all" ? "all" : gameFilter, term(), 60);
     if (seq !== apiSeq || catalogPronto) return; // o catálogo chegou no meio: o render dele já cobre
     // VAZIO não é resposta final — só o catálogo local pode afirmar "essa
     // carta não existe". A borda responde vazio quando o banco está em recarga
@@ -223,7 +230,7 @@
     const found = [];
     hits.forEach((h) => {
       const card = byId.get(h.i);
-      if (!card) return;
+      if (!card || (vintage && !shared.isVintageCard(card))) return;
       // registra pro preview/posse/preço funcionarem igual ao caminho completo
       cardGameMap.set(card.id, card.game);
       cardsById.set(card.id, card);
@@ -253,10 +260,14 @@
   // mesma garantia que os chips antigos tinham via initGameFilterChips.
   if (elements.gameFilter) {
     elements.gameFilter.innerHTML = `<option value="all">${shared.escapeHtml(shared.t("filter.gameAll"))}</option>`
-      + shared.GAME_SLUGS.map((g) => `<option value="${g}">${shared.escapeHtml(shared.gameLabel(g))}</option>`).join("");
+      + shared.GAME_SLUGS.map((g) => `<option value="${g}">${shared.escapeHtml(shared.gameLabel(g))}</option>`).join("")
+      // "Vintage" no fim: o corte agnóstico de jogo (isVintageCard), com a
+      // explicação no title da opção.
+      + `<option value="${shared.VINTAGE_FILTER}" title="${shared.escapeAttribute(shared.t("filter.vintageHint"))}">${shared.escapeHtml(shared.t("filter.gameVintage"))}</option>`;
     elements.gameFilter.value = gameFilter;
     elements.gameFilter.addEventListener("change", () => {
-      gameFilter = shared.GAME_SLUGS.includes(elements.gameFilter.value) ? elements.gameFilter.value : "all";
+      const v = elements.gameFilter.value;
+      gameFilter = shared.GAME_SLUGS.includes(v) || v === shared.VINTAGE_FILTER ? v : "all";
       shared.applyGameAccent(gameFilter);
       if (isSearching()) apply();
     });

@@ -325,8 +325,11 @@
     shared.setGameFilterScope(shared.GAME_SLUGS.filter((g) => ownedByGame[g].size > 0));
     // ?filter=<jogo>: o chip do Hub abre a Coleção já no jogo clicado, e o
     // refresh não perde o filtro. Aplicado ANTES do primeiro render.
+    // ?filter=vintage (o tile do Hub): o chip só nasce quando o catálogo chega
+    // e confirma que há carta vintage — até lá o filtro já vale na grade.
     const filtroPedido = shared.gameFilterFromUrl();
-    if (filtroPedido && ownedByGame[filtroPedido] && ownedByGame[filtroPedido].size > 0) {
+    if (filtroPedido && (filtroPedido === shared.VINTAGE_FILTER
+      || (ownedByGame[filtroPedido] && ownedByGame[filtroPedido].size > 0))) {
       gameFilter = filtroPedido;
       shared.markGameFilterChip(filtroPedido);
     }
@@ -347,6 +350,13 @@
         cardsById = new Map(cards.map((card) => [card.id, card]));
         Object.keys(ownedByGame).forEach((g) =>
           ownedByGame[g].migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId))));
+        // Chip "Vintage": só com o catálogo na mão dá pra saber se alguma carta
+        // sua é vintage (flag/prefixo/ano). Reconstrói a fileira com o chip no
+        // fim e remarca o ativo (que pode ser o próprio vintage, vindo da URL).
+        if (cards.some((card) => owned.has(card.id) && shared.isVintageCard(card))) {
+          shared.setGameFilterScope(gamesComCarta, { vintage: true });
+          shared.markGameFilterChip(gameFilter);
+        }
         hydrateFilters();
         bindShareButton();
         bindExportButton();
@@ -418,7 +428,7 @@
   }
 
   function inGameFilter(card) {
-    return gameFilter === "all" || card.game === gameFilter;
+    return shared.cardMatchesGameFilter(card, gameFilter); // "all" | jogo | "vintage"
   }
 
   function ownedCards() {
@@ -861,7 +871,7 @@
     // Valor de mercado = cartas soltas + slabs graded, respeitando o filtro de
     // jogo. A conta vive no shared (collectionNetWorth) e é a MESMA do Portfólio
     // e do Hub — antes cada tela tinha a sua e elas discordavam.
-    const value = shared.collectionNetWorth(myCards, owned, prices, { gameOf, gameFilter }).total;
+    const value = shared.collectionNetWorth(myCards, owned, prices, { gameOf, gameFilter, cardOf: (id) => cardsById.get(id) }).total;
     elements.dashValue.textContent = value > 0 ? shared.formatMoney(shared.getCurrency(), value) : "—";
 
     // Mais valiosas (top 3 por valor unitário)
@@ -1145,7 +1155,7 @@
     } else {
       // Vitrine: todas as coleções (cards) + "Sem coleção".
       const visible = folders.list().filter((f) => {
-        if (gameFilter === "all") return true;
+        if (gameFilter === "all" || gameFilter === shared.VINTAGE_FILTER) return true;
         const gs = folderGames.get(f.id);
         return !gs || gs.size === 0 || gs.has(gameFilter);
       });
@@ -1573,7 +1583,7 @@
   // jogo). Sem índices, conta as cartas carregadas. Chaves = tab.getKey.
   function totalsForTab() {
     const map = new Map();
-    const matchGame = (g) => gameFilter === "all" || g === gameFilter;
+    const matchGame = (g) => gameFilter === "all" || gameFilter === shared.VINTAGE_FILTER || g === gameFilter;
     const hasIndex = indexes && ((indexes.sets && indexes.sets.length) || Object.keys(indexes.pokemonTotals || {}).length || (indexes.artists && indexes.artists.length));
     if (hasIndex) {
       if (activeTab === "sets") {

@@ -1549,11 +1549,15 @@
   // lista sai de GAME_SLUGS: jogo novo aparece nas três telas sozinho.
   // Mantém o markup (button.chip + data-game-filter + aria-pressed) porque a
   // delegação de clique de cada página depende dele.
-  function initGameFilterChips(games) {
+  function initGameFilterChips(games, opts) {
     // `games` = jogos que o usuário REALMENTE tem nesta tela. Sem o argumento
     // (chamada do boot, antes de os dados carregarem) mostra todos — quem tem a
     // informação é cada página, e ela chama de novo via setGameFilterScope.
     const lista = Array.isArray(games) ? GAME_SLUGS.filter((g) => games.includes(g)) : GAME_SLUGS;
+    // opts.vintage: a página viu carta vintage na tela (só dá pra saber com o
+    // catálogo na mão) e pede o chip "Vintage" no fim da fileira. Não é jogo:
+    // é o corte agnóstico de isVintageCard, com o title explicando o grupo.
+    const comVintage = !!(opts && opts.vintage);
     // #exploreGameFilter entra aqui junto: o Explorar tinha SEIS jogos fixos no
     // HTML, então Magic, FAB, Gundam, DBFW, YGO, Digimon e Riftbound não tinham
     // como ser filtrados. Ele nunca recebe escopo (setGameFilterScope é coisa das
@@ -1562,16 +1566,17 @@
       // Com 0 ou 1 jogo o filtro não filtra nada — "Todos" e o único jogo são o
       // mesmo conjunto. Esconde a barra inteira em vez de deixar um controle
       // decorativo ocupando espaço.
-      if (Array.isArray(games) && lista.length < 2) { box.hidden = true; initChipRowScroll(box); return; }
+      if (Array.isArray(games) && lista.length + (comVintage ? 1 : 0) < 2) { box.hidden = true; initChipRowScroll(box); return; }
       box.hidden = false;
       const atual = (box.querySelector('[data-game-filter][aria-pressed="true"]') || {}).dataset;
       let ativo = (atual && atual.gameFilter) || "all";
       // O jogo ativo sumiu da lista (última carta dele removida): volta pra
       // "Todos" em vez de deixar um filtro sem chip correspondente.
-      if (ativo !== "all" && !lista.includes(ativo)) ativo = "all";
-      const chip = (g, label) =>
-        `<button type="button" class="chip" data-game-filter="${escapeAttribute(g)}" aria-pressed="${g === ativo}">${escapeHtml(label)}</button>`;
-      box.innerHTML = chip("all", t("filter.gameAll")) + lista.map((g) => chip(g, gameLabel(g))).join("");
+      if (ativo !== "all" && !lista.includes(ativo) && !(ativo === VINTAGE_FILTER && comVintage)) ativo = "all";
+      const chip = (g, label, title) =>
+        `<button type="button" class="chip${g === VINTAGE_FILTER ? " chip-vintage" : ""}" data-game-filter="${escapeAttribute(g)}" aria-pressed="${g === ativo}"${title ? ` title="${escapeAttribute(title)}"` : ""}>${escapeHtml(label)}</button>`;
+      box.innerHTML = chip("all", t("filter.gameAll")) + lista.map((g) => chip(g, gameLabel(g))).join("")
+        + (comVintage ? chip(VINTAGE_FILTER, t("filter.gameVintage"), t("filter.vintageHint")) : "");
       initChipRowScroll(box);
     });
   }
@@ -1623,7 +1628,7 @@
   // Reconstrói os chips com o escopo real da página. Cada tela chama depois de
   // carregar os dados dela (Coleção = cartas marcadas, Wishlist = desejadas,
   // Graded = slabs, Vendas = vendas) — o boot não tem como saber.
-  function setGameFilterScope(games) { initGameFilterChips(games || []); }
+  function setGameFilterScope(games, opts) { initGameFilterChips(games || [], opts); }
 
   // ── Filtro de jogo que sobrevive à URL ─────────────────────────────────────
   // Parâmetro PRÓPRIO (?filter=), e não o ?game=: aquele é a SESSÃO de jogo do
@@ -1635,7 +1640,7 @@
   function gameFilterFromUrl() {
     try {
       const v = new URLSearchParams(location.search).get("filter");
-      return v && GAME_SLUGS.includes(v) ? v : "";
+      return v && (GAME_SLUGS.includes(v) || v === VINTAGE_FILTER) ? v : "";
     } catch (e) { return ""; }
   }
   function stampGameFilter(slug) {
@@ -2210,9 +2215,15 @@
       value: it.value > 0 ? it.value : (gradedValue({ id: it.cardId }, it.company, it.grade).value || 0)
     }));
   }
-  function gradedTotalValue(gameOf, gameFilter) {
-    return gradedSlabsValued(gameOf).reduce((s, x) =>
-      ((!gameFilter || gameFilter === "all" || x.game === gameFilter) ? s + (x.value || 0) : s), 0);
+  function gradedTotalValue(gameOf, gameFilter, cardOf) {
+    return gradedSlabsValued(gameOf).reduce((s, x) => {
+      // "vintage" é corte por CARTA, não por jogo: precisa da carta do slab
+      // (cardOf, o cardsById da página). Sem ela o slab fica fora da soma.
+      const entra = gameFilter === VINTAGE_FILTER
+        ? isVintageCard(cardOf ? cardOf(x.cardId) : null)
+        : (!gameFilter || gameFilter === "all" || x.game === gameFilter);
+      return entra ? s + (x.value || 0) : s;
+    }, 0);
   }
 
   // Ids das cartas que estão em slab. Quem carrega o catálogo precisa somá-los
@@ -2266,7 +2277,7 @@
     (cards || []).forEach((card) => {
       if (!card || vistos.has(card.id)) return;
       vistos.add(card.id);
-      if (gameFilter && gameFilter !== "all" && card.game !== gameFilter) return;
+      if (!cardMatchesGameFilter(card, gameFilter)) return;
       const variants = cardVariants(card);
       variants.forEach((variant) => {
         owned.conditionBreakdown(card.id, variant).forEach(({ condition, quantity }) => {
@@ -2286,9 +2297,9 @@
   // Patrimônio = cartas soltas + slabs graded. É o número grande da Coleção, do
   // Portfólio e do Hub.
   function collectionNetWorth(cards, owned, prices, options) {
-    const { gameOf, gameFilter } = options || {};
+    const { gameOf, gameFilter, cardOf } = options || {};
     const raw = collectionValueLines(cards, owned, prices, { gameFilter }).total;
-    const graded = gradedTotalValue(gameOf, gameFilter);
+    const graded = gradedTotalValue(gameOf, gameFilter, cardOf);
     return { raw, graded, total: raw + graded };
   }
 
@@ -2432,6 +2443,7 @@
       <div class="nav-group nav-group-hover">
         <a href="dashboard"${collectionActive ? ' class="active"' : ""} aria-haspopup="true" aria-expanded="false">${escapeHtml(t("nav.collection"))}<span class="nav-caret" aria-hidden="true">▾</span></a>
         <div class="nav-dropdown nav-mega" hidden>
+          <a class="nav-mega-hub${active === "dashboard" ? " active" : ""}" href="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg>${escapeHtml(t("nav.hubItem"))}<small>${escapeHtml(t("nav.hubHint"))}</small></a>
           ${megaCol("nav.colCards", link("collection", "nav.collectionMine", "collection") + link("graded", "nav.graded", "graded") + link("wishlist", "nav.wishlist", "wishlist"))}
           ${megaCol("nav.colOrganize", link("binders", "nav.binders", "binders") + link("listas", "nav.lists", "listas") + link("my-decks", "nav.myDecks", "mydecks"))}
           ${megaCol("nav.colMore", link("sales", "nav.sales", "sales") + link("troca", "trade.title", "troca") + link("badges", "dash.badges", "badges"))}
@@ -7511,6 +7523,43 @@
       "nrt-ncg": { prefix: "nrt-ncg-", label: "NARUTO CARD GAME (2027)", titleKey: "sets.category.nrtncg", tagKey: "home.games.soon" }
     }
   };
+  // ── Vintage: filtro AGNÓSTICO de jogo ──────────────────────────────────────
+  // "Vintage" não é um jogo — é um corte que atravessa as marcas: as linhas
+  // antigas (a flag `vintage` do cards.js) e, no Pokémon, tudo que saiu até
+  // 2008 (fim de Diamond & Pearl), japonês incluído. A flag só existe no
+  // catálogo estático; a borda (D1, loadOwnedFast/searchApi) não a carrega —
+  // por isso a regra também lê o PREFIXO do id, que as duas fontes têm em
+  // comum (mesma família de prefixos do GAME_LINES acima).
+  const VINTAGE_FILTER = "vintage";
+  const VINTAGE_COLOR = "#8b6b43"; // sépia de papel velho: não é a cor de marca nenhuma
+  const VINTAGE_POKEMON_UNTIL = "2008-12-31";
+  const VINTAGE_ID_PREFIX = {
+    onepiece: ["opcd-", "op2002-", "op-mb-"], // Carddass 1999–2002, OPCG 2002–05, Miracle Battle
+    hxh: ["hxh-"],                            // Hyper Battle 1999–2001 e Miracle Battle: tudo vintage
+    naruto: ["nrt-"]                          // Bandai 2003–2013 inteiro…
+  };
+  const VINTAGE_ID_EXCEPT = { naruto: ["nrt-ncg-"] }; // …menos o jogo NOVO (2027)
+  function isVintageCard(card) {
+    if (!card) return false;
+    if (card.vintage === true) return true;
+    const game = card.game || currentGame();
+    if (game === "pokemon") {
+      const d = String(card.setReleaseDate || "");
+      return d.length >= 4 && d.slice(0, 10) <= VINTAGE_POKEMON_UNTIL;
+    }
+    const id = String(card.id || "");
+    const pre = VINTAGE_ID_PREFIX[game];
+    if (!pre || !pre.some((p) => id.indexOf(p) === 0)) return false;
+    return !(VINTAGE_ID_EXCEPT[game] || []).some((p) => id.indexOf(p) === 0);
+  }
+  // Filtro de jogo que também entende "all" e "vintage". Coleção, Hub e
+  // Explorar filtram por aqui pra não divergirem sobre o que é vintage.
+  function cardMatchesGameFilter(card, filter) {
+    if (!filter || filter === "all") return true;
+    if (filter === VINTAGE_FILTER) return isVintageCard(card);
+    return !!card && card.game === filter;
+  }
+
   function lineParamOf() {
     try { return new URLSearchParams(window.location.search).get("line") || ""; } catch (e) { return ""; }
   }
@@ -8451,6 +8500,10 @@
     setGameFilterScope,
     initGameFilterSelects,
     gameFilterFromUrl,
+    VINTAGE_FILTER,
+    VINTAGE_COLOR,
+    isVintageCard,
+    cardMatchesGameFilter,
     stampGameFilter,
     markGameFilterChip,
     listShares,
