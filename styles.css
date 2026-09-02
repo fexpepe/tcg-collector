@@ -5096,26 +5096,23 @@ a.progress-row:hover {
 .dash-recent-card .progress-bar { margin-bottom: 0; }
 .dash-recent-count { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
 
-/* Por jogo: título + seletor da forma de ver (cápsulas | pizza | barras |
-   mosaico) na mesma linha, na MESMA largura do quadrado — o seletor termina
-   na borda direita do painel, não na da página. Reusa o .view-toggle da
-   Coleção (só ícone; o nome vai no title/aria), encolhido pro cabeçalho. */
-.dash-games-head { display: flex; align-items: center; gap: 8px 14px; width: min(100%, 360px); margin: 26px 0 12px; }
-.dash-games-head .dash-section-head { margin: 0; }
+/* Por jogo: título + seletor da forma de ver (mosaico | cápsulas | pizza |
+   barras) na primeira linha do card. Reusa o .view-toggle da Coleção (só
+   ícone; o nome vai no title/aria), encolhido pro cabeçalho. */
+.dash-games-head { display: flex; align-items: center; gap: 8px 14px; margin: 0 0 12px; }
+.dash-games-head h3 { margin: 0; }
 .dash-games-modes { margin-left: auto; flex: none; }
 .dash-games-modes .view-toggle-btn { min-width: 36px; min-height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
 .dash-games-modes svg { width: 17px; height: 17px; }
 @media (pointer: coarse) { .dash-games-modes .view-toggle-btn { min-width: 42px; min-height: 40px; } }
-/* O QUADRADO. Tamanho FIXO nas duas direções (360px, ou a largura toda no
-   celular — sempre 1:1): trocar a forma de ver redesenha só o miolo (.dash-gv),
-   nunca a caixa, então a página não pula nem muda de proporção. O miolo rola
-   por dentro se uma forma não couber (12 jogos em cápsulas de 44px no toque). */
+/* O QUADRADO: o miolo do card, 360×360 no desktop (a coluna do card é 360 +
+   os 2×18 de padding), largura toda no celular — sempre 1:1. Trocar a forma
+   de ver redesenha só o miolo (.dash-gv), nunca a caixa, então a página não
+   pula nem muda de proporção. O miolo rola por dentro se uma forma não
+   couber (12 jogos em cápsulas de 44px no toque). */
 .dash-games {
-  box-sizing: border-box; width: min(100%, 360px); aspect-ratio: 1 / 1;
-  display: flex; flex-direction: column;
-  padding: 12px; margin: 0 0 6px; overflow: hidden;
-  border: 1px solid var(--line); border-radius: 12px;
-  background: var(--panel); box-shadow: var(--shadow);
+  box-sizing: border-box; width: 100%; aspect-ratio: 1 / 1;
+  display: flex; flex-direction: column; overflow: hidden;
 }
 .dash-games .empty-state { margin: auto 0; }
 .dash-gv { flex: 1; min-height: 0; overflow: auto; }
@@ -5199,11 +5196,16 @@ a.progress-row:hover {
    que o placar de Conquistas (.bdg-score-num) já usa: hierarquia sem elemento
    novo (proposta de 2026-08-25). */
 .dash-main .stat-grand > #dhValue { font-size: 34px; }
-/* Cápsulas detalhadas: respiro claro depois da grade de atalhos. Duas colunas
-   ("Mais valiosas" + "Por região"): o card "por jogo" saiu — repetia a
-   contagem da fileira de chips — e a base .collection-dashboard ainda declara
-   as 3 colunas de quem a usa com 3 cards. */
-.dash-main #dhCaps { margin-top: 26px; gap: 12px; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+/* Fileira de três cards: Por jogo (coluna FIXA de 398px = quadrado de 360 +
+   2×18 de padding + 2×1 de borda do card) | Mais valiosas (um pouco mais
+   larga: nome + set + valor) | Por região. Os dois últimos nascem escondidos e
+   hidratam depois; até lá o quadrado ocupa a primeira coluna sozinho, sem
+   pular de lugar. */
+.dash-row { display: grid; grid-template-columns: 398px minmax(0, 1.15fr) minmax(0, 1fr); gap: 12px; margin-top: 26px; }
+@media (max-width: 960px) {
+  .dash-row { grid-template-columns: minmax(0, 1fr); }
+  .dash-games-card { width: min(100%, 398px); }
+}
 /* Atalhos: 3 COLUNAS FIXAS, não auto-fill. São exatamente 9 itens (lista fixa
    no dashboard.js), então 3 colunas fecham três fileiras cheias — a regra já
    estava escrita aqui ("9 -> 3 col") e não foi acompanhada quando Conquistas

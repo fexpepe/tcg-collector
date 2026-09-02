@@ -101,6 +101,12 @@
            fez tudo, ou dispensou, nunca vê nem o buraco de layout. -->
       <section id="dhSteps" class="dash-steps" hidden></section>
 
+      <!-- Atalhos: o HUB do jogador. Vêm ANTES do "Continuar de onde parou":
+           são o que a pessoa mais clica, e as seções de histórico podem nem
+           existir (nascem escondidas). -->
+      <h2 class="dash-section-head" data-i18n="dash.shortcuts">Ir para</h2>
+      <section id="dhLinks" class="dash-links" data-i18n-aria="aria.shortcuts" aria-label="Atalhos"></section>
+
       <h2 class="dash-section-head" id="dhRecentHead" data-i18n="dash.continue" hidden>Continuar de onde parou</h2>
       <section id="dhRecent" class="dash-recent" data-i18n-aria="dash.continue" aria-label="Continuar de onde parou" hidden></section>
 
@@ -110,31 +116,26 @@
       <h2 class="dash-section-head" id="dhFreshHead" data-i18n="dash.fresh" hidden>Novidades na sua coleção</h2>
       <p id="dhFresh" class="dash-fresh" hidden></p>
 
-      <!-- Por jogo: QUATRO formas de ver a mesma distribuição (cápsulas, pizza,
-           barras, mosaico), escolhidas no seletor à direita do título. O
-           painel é um QUADRADO de tamanho fixo nas duas direções: trocar a
-           forma nunca mexe no tamanho nem na proporção do que está na tela. -->
-      <div class="dash-games-head">
-        <h2 class="dash-section-head" data-i18n="dash.byGame">Por jogo</h2>
-        <div id="dhGamesModes" class="view-toggle dash-games-modes" role="group" data-i18n-aria="dash.viewAria" aria-label="Forma de ver a distribuição"></div>
-      </div>
-      <section id="dhGames" class="dash-games" data-i18n-aria="aria.collectionsByGame" aria-label="Coleções por jogo"></section>
-
-      <!-- Atalhos: o HUB do jogador -->
-      <h2 class="dash-section-head" data-i18n="dash.shortcuts">Ir para</h2>
-      <section id="dhLinks" class="dash-links" data-i18n-aria="aria.shortcuts" aria-label="Atalhos"></section>
-
-      <!-- Cápsulas detalhadas (hidratam carregando só as suas cartas) -->
-      <section id="dhCaps" class="collection-dashboard" data-i18n-aria="aria.sumDetailed" aria-label="Resumo detalhado" hidden>
-        <article class="dash-card dash-top">
+      <!-- Fileira de três cards: Por jogo | Mais valiosas | Por região.
+           O primeiro renderiza INSTANTÂNEO (só localStorage); os outros dois
+           nascem escondidos e hidratam carregando só as suas cartas. -->
+      <section id="dhCaps" class="dash-row" data-i18n-aria="aria.sumDetailed" aria-label="Resumo detalhado">
+        <!-- Por jogo: QUATRO formas de ver a mesma distribuição (mosaico,
+             cápsulas, pizza, barras), escolhidas no seletor à direita do
+             título. O miolo é um QUADRADO de tamanho fixo nas duas direções:
+             trocar a forma nunca mexe no tamanho nem na proporção na tela. -->
+        <article class="dash-card dash-games-card">
+          <div class="dash-games-head">
+            <h3 data-i18n="dash.byGame">Por jogo</h3>
+            <div id="dhGamesModes" class="view-toggle dash-games-modes" role="group" data-i18n-aria="dash.viewAria" aria-label="Forma de ver a distribuição"></div>
+          </div>
+          <section id="dhGames" class="dash-games" data-i18n-aria="aria.collectionsByGame" aria-label="Coleções por jogo"></section>
+        </article>
+        <article id="dhTop" class="dash-card dash-top" hidden>
           <h3 data-i18n="dash.topTitle">Mais valiosas</h3>
           <ol id="dhTopList" class="dash-top-list"></ol>
         </article>
-        <!-- "Distribuição por jogo" saiu (proposta de 2026-08-25): repetia
-             exatamente a contagem da fileira de chips coloridos, na mesma tela.
-             Os chips ficam (assinatura visual, espelham a Coleção); estes dois
-             cards ganham a largura. -->
-        <article class="dash-card dash-dist">
+        <article id="dhDist" class="dash-card dash-dist" hidden>
           <h3 data-i18n="dash.regionTitle">Distribuição por região</h3>
           <div id="dhRegion" class="dash-dist-bars"></div>
         </article>

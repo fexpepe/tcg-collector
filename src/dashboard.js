@@ -14,7 +14,8 @@
     slabs: document.getElementById("dhSlabs"),
     games: document.getElementById("dhGames"),
     links: document.getElementById("dhLinks"),
-    caps: document.getElementById("dhCaps"),
+    top: document.getElementById("dhTop"),
+    dist: document.getElementById("dhDist"),
     topList: document.getElementById("dhTopList"),
     region: document.getElementById("dhRegion"),
     priced: document.getElementById("dhPriced")
@@ -153,8 +154,8 @@
   })();
 
   // ── Distribuição por marca: 4 formas de ver, no MESMO quadrado ──────────
-  // Cápsulas (a fileira colorida de sempre), pizza, barras e mosaico
-  // (treemap) desenham a mesma contagem de cartas distintas por jogo. O painel
+  // Mosaico (treemap), cápsulas (a fileira colorida de sempre), pizza e
+  // barras desenham a mesma contagem de cartas distintas por jogo. O painel
   // #dhGames é um quadrado de tamanho FIXO (CSS): trocar a forma redesenha só
   // o miolo, nunca a caixa — a página não pula. A escolha fica em
   // localStorage (tcg-dash-games-view), como o modo do gráfico do Portfólio.
@@ -185,6 +186,18 @@
 
   const VIEW_KEY = "tcg-dash-games-view";
   const VIEWS = {
+    // Mosaico (treemap "squarified"): a área de cada azulejo é a fatia do jogo
+    // no total. Tudo em % do quadrado, então não depende do tamanho em px.
+    treemap: (rows) => {
+      const tiles = squarify(rows.slice().sort((a, b) => b.n - a.n).map((x) => ({ x, area: (x.n / distTotal) * 10000 })), 0, 0, 100, 100);
+      return `<div class="dash-gv dash-gv-tm">${tiles.map((tl) =>
+        // Azulejo estreito ou baixo demais pro texto: some o rótulo (o title
+        // continua contando) em vez de deixar letra cortada pela metade.
+        `<a class="dash-tm-tile${tl.w < 17 || tl.h < 10 ? " dash-tm-s" : ""}" href="${tl.x.href}" style="${distStyle(tl.x)};left:${tl.x0.toFixed(2)}%;top:${tl.y0.toFixed(2)}%;width:${tl.w.toFixed(2)}%;height:${tl.h.toFixed(2)}%" title="${distTitle(tl.x)}">
+          <span>${escapeHtml(tl.x.label)}</span><span>${tl.x.n}</span>
+        </a>`).join("")}</div>`;
+    },
+
     chips: (rows) => `<div class="dash-gv dash-gv-chips">${rows.map((x) =>
       `<a class="dash-game-chip" href="${x.href}" style="${distStyle(x)}" title="${distTitle(x)}">
         <span class="dash-game-name">${escapeHtml(x.label)}</span>
@@ -231,21 +244,9 @@
           <span class="dash-dist-track"><span class="dash-dist-fill" style="width:${Math.round((x.n / max) * 100)}%;background:${x.cor}"></span></span>
           <span class="dash-dist-n">${x.n}</span>
         </a>`).join("")}</div>`;
-    },
-
-    // Mosaico (treemap "squarified"): a área de cada azulejo é a fatia do jogo
-    // no total. Tudo em % do quadrado, então não depende do tamanho em px.
-    treemap: (rows) => {
-      const tiles = squarify(rows.slice().sort((a, b) => b.n - a.n).map((x) => ({ x, area: (x.n / distTotal) * 10000 })), 0, 0, 100, 100);
-      return `<div class="dash-gv dash-gv-tm">${tiles.map((tl) =>
-        // Azulejo estreito ou baixo demais pro texto: some o rótulo (o title
-        // continua contando) em vez de deixar letra cortada pela metade.
-        `<a class="dash-tm-tile${tl.w < 17 || tl.h < 10 ? " dash-tm-s" : ""}" href="${tl.x.href}" style="${distStyle(tl.x)};left:${tl.x0.toFixed(2)}%;top:${tl.y0.toFixed(2)}%;width:${tl.w.toFixed(2)}%;height:${tl.h.toFixed(2)}%" title="${distTitle(tl.x)}">
-          <span>${escapeHtml(tl.x.label)}</span><span>${tl.x.n}</span>
-        </a>`).join("")}</div>`;
     }
   };
-  const VIEW_LABEL = { chips: "dash.viewChips", pie: "dash.viewPie", bars: "dash.viewBars", treemap: "dash.viewTreemap" };
+  const VIEW_LABEL = { treemap: "dash.viewTreemap", chips: "dash.viewChips", pie: "dash.viewPie", bars: "dash.viewBars" };
   // Seletor SÓ-ÍCONE (o .view-toggle da Coleção): quatro rótulos escritos não
   // cabem ao lado do título na largura do quadrado. O nome vai no title/aria.
   const VIEW_ICON = {
@@ -291,7 +292,8 @@
     return out;
   }
 
-  const readView = () => { try { const v = localStorage.getItem(VIEW_KEY); return VIEWS[v] ? v : "chips"; } catch (e) { return "chips"; } };
+  // Padrão: mosaico — é a forma que preenche o quadrado inteiro.
+  const readView = () => { try { const v = localStorage.getItem(VIEW_KEY); return VIEWS[v] ? v : "treemap"; } catch (e) { return "treemap"; } };
   let view = readView();
   const modes = document.getElementById("dhGamesModes");
   function renderGames() {
@@ -460,6 +462,7 @@
       n: byRegion[r.region] || 0, color: r.color
     })));
 
-    el.caps.hidden = false;
+    el.top.hidden = false;
+    el.dist.hidden = false;
   }).catch(() => { /* rede: o resto do dashboard já está renderizado */ });
 })();
