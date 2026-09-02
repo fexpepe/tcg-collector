@@ -100,15 +100,14 @@
       </div>
 
       <!-- Linha do título, no MESMO molde da Coleção: "Cartas" + contador à
-           esquerda; na ponta direita Adição rápida (só nas páginas de set),
-           Ordenar, Visualização (▦/≣/☰) e Filtros. Adição rápida e a barra de
-           filtros nascem RECOLHIDAS logo abaixo (data-own-toggle: o shared.js
-           não injeta o toggle automático do mobile; ver initCollapsibles). -->
+           esquerda; na ponta direita Ordenar, Visualização (▦/≣/☰) e Filtros.
+           A barra de filtros nasce RECOLHIDA logo abaixo (data-own-toggle: o
+           shared.js não injeta o toggle automático do mobile; ver
+           initCollapsibles). -->
       <section class="results-header">
         <h2 data-i18n="results.heading.detail">Cartas</h2>
         <p id="resultCount">0 resultados</p>
         <div class="results-actions">
-          <button type="button" id="quickAddBtn" class="secondary" aria-expanded="false" aria-controls="quickAdd" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span data-i18n="quickadd.label">Adição rápida</span></button>
           <div class="results-sort">
             <label for="sortSelect" data-i18n="sort.label">Ordenar:</label>
             <select id="sortSelect">
@@ -130,24 +129,6 @@
         </div>
       </section>
 
-      <!-- Adição rápida nasce RECOLHIDA atrás do botão da linha do título. Os modos de
-           contagem (master set / qualquer idioma) moram DENTRO da caixa: são
-           ajustes da mesma tarefa de conferir o set. Master set conta CADA
-           variante como slot; "qualquer idioma" casa a carta base (EN/PT do
-           mesmo set contam juntas). -->
-      <section id="quickAdd" class="quick-add is-collapsed" data-i18n-aria="aria.quickAddNumber" aria-label="Adição rápida por número" hidden>
-        <div class="quick-add-row">
-          <label for="quickAddInput" class="quick-add-label" data-i18n="quickadd.label">Adição rápida</label>
-          <input id="quickAddInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
-          <span id="quickAddLog" class="quick-add-log" aria-live="polite"></span>
-        </div>
-        <p class="quick-add-hint" data-i18n="quickadd.hint">Digite o número da carta e Enter — cada entrada adiciona 1 cópia (NM, variante padrão). Cole uma lista ("4, 7, 23") pra marcar tudo de uma vez. Toque num chip ✓ pra desfazer.</p>
-        <div id="progressModes" class="progress-modes" hidden>
-          <label class="progress-mode"><input type="checkbox" id="modeMaster"> <span data-i18n="master.toggle">Master set (contar variantes)</span></label>
-          <label class="progress-mode"><input type="checkbox" id="modeAnyLang"> <span data-i18n="master.anyLang">Contar qualquer idioma</span></label>
-        </div>
-      </section>
-
       <!-- Ordem pedida pelo Fernando (2026-08-10): Coleção → Versões (Agrupar) →
            Filtros (título sobre as facetas, como o "Coleção" tem). Só decisões
            de ESCOPO aqui: Ordenar e Visualização (apresentação) subiram pra
@@ -156,6 +137,14 @@
         <div>
           <label data-i18n="toolbar.collection">Coleção</label>
           <div id="ownedChips" class="segmented" role="group" data-i18n-aria="nav.collection" aria-label="Coleção"></div>
+          <!-- Modos de contagem (só páginas de set): master set conta CADA
+               variante como slot; "qualquer idioma" casa a carta base (EN/PT do
+               mesmo set contam juntas). Moravam na caixa de Adição rápida, que
+               saiu; aqui ficam junto do filtro de Coleção, que é o mesmo assunto. -->
+          <div id="progressModes" class="progress-modes" hidden>
+            <label class="progress-mode"><input type="checkbox" id="modeMaster"> <span data-i18n="master.toggle">Master set (contar variantes)</span></label>
+            <label class="progress-mode"><input type="checkbox" id="modeAnyLang"> <span data-i18n="master.anyLang">Contar qualquer idioma</span></label>
+          </div>
         </div>
         <!-- Mesmo liga-desliga de Configurações → "Agrupar versões da carta"
              (ver o chip no cards.html). Religa a grade sem reload. -->

@@ -66,9 +66,6 @@
     completionRate: document.getElementById("completionRate"),
     completionFill: document.getElementById("completionFill"),
     completionBar: document.getElementById("completionBar"),
-    quickAdd: document.getElementById("quickAdd"),
-    quickAddInput: document.getElementById("quickAddInput"),
-    quickAddLog: document.getElementById("quickAddLog"),
     detailValues: document.getElementById("detailValues"),
     valueTotal: document.getElementById("valueTotal"),
     valueOwned: document.getElementById("valueOwned"),
@@ -364,9 +361,8 @@
     hydrateFilters();
     if (elements.sortSelect) elements.sortSelect.value = selectedSort; // padrão: maior preço
     bindEvents();
-    initQuickAdd();
     initProgressModes();
-    initCollapsibles(); // depois do initQuickAdd: espelha a visibilidade da caixa
+    initCollapsibles();
     applyGridView();
     render();
   }
@@ -393,9 +389,8 @@
     mq.addEventListener("change", place);
   }
 
-  // Filtros e Adição rápida atrás de botões (mesmo padrão da Coleção). Filtros
-  // compartilha a pref do colapso mobile (quem abre quer manter aberto);
-  // Adição rápida tem a própria — é ferramenta de mutirão, começa fechada.
+  // Filtros atrás de um botão (mesmo padrão da Coleção); compartilha a pref do
+  // colapso mobile (quem abre quer manter aberto).
   function initCollapsibles() {
     const wire = (btnId, el, key) => {
       const btn = document.getElementById(btnId);
@@ -412,73 +407,6 @@
       return btn;
     };
     wire("detailFiltersBtn", document.getElementById("detailFilters"), "tcg-collector-filters-open");
-    const qBtn = wire("quickAddBtn", elements.quickAdd, "tcg-collector-quickadd-open");
-    // O botão segue a disponibilidade da caixa (só páginas de set com catálogo).
-    if (qBtn && elements.quickAdd) qBtn.hidden = elements.quickAdd.hidden;
-  }
-
-  // ---------------------------------------------------------------------------
-  // Adição rápida por número (modo checklist, estilo TCGCollector): digite o
-  // número da carta e Enter — cada entrada adiciona 1 cópia (variante padrão,
-  // NM). Aceita lista colada ("4, 7, 23, TG05"). Só em páginas de SET (o número
-  // é único dentro do set). Cada chip de feedback desfaz a adição ao ser tocado.
-  // ---------------------------------------------------------------------------
-  function initQuickAdd() {
-    const box = elements.quickAdd, input = elements.quickAddInput, log = elements.quickAddLog;
-    if (!box || !input || !log) return;
-    if (detailType !== "set" || !pageCards.length) { box.hidden = true; return; }
-    box.hidden = false;
-    input.placeholder = t("quickadd.placeholder");
-    // "4/102" -> "4", "TG05/TG30" -> "tg5", "015a" -> "15a": prefixo/sufixo
-    // alfabético preservados, zeros à esquerda fora (mesma norma do build).
-    const norm = (s) => {
-      const p = String(s || "").split("/")[0].trim().toLowerCase();
-      const m = p.match(/^([a-z]*)0*(\d+)([a-z]*)$/);
-      return m ? m[1] + m[2] + m[3] : p;
-    };
-    const byNum = new Map();
-    pageCards.forEach((card) => { const k = norm(card.number); if (k && !byNum.has(k)) byNum.set(k, card); });
-
-    const MAX_CHIPS = 8;
-    function chip(html, cls, data) {
-      const el = document.createElement("button");
-      el.type = "button";
-      el.className = `quick-add-chip ${cls || ""}`;
-      el.innerHTML = html;
-      if (data) { el.dataset.cardId = data.cardId; el.dataset.variant = data.variant; el.title = t("quickadd.undo"); }
-      else { el.disabled = true; }
-      log.prepend(el);
-      while (log.children.length > MAX_CHIPS) log.lastElementChild.remove();
-    }
-    function addOne(token) {
-      const card = byNum.get(norm(token));
-      if (!card) { chip(`✗ ${escapeHtml(token)}`, "is-miss"); return; }
-      const variant = shared.defaultVariant(card);
-      owned.add(card.id, variant, shared.DEFAULT_CONDITION, 1);
-      const qty = owned.variantTotal(card.id, variant);
-      chip(`✓ ${escapeHtml(String(card.number).split("/")[0])} ${escapeHtml(card.name)}${qty > 1 ? ` ×${qty}` : ""}`, "is-hit", { cardId: card.id, variant });
-    }
-    function commit() {
-      const tokens = String(input.value).split(/[,;\s]+/).map((x) => x.trim()).filter(Boolean);
-      if (!tokens.length) return;
-      tokens.forEach(addOne);
-      input.value = "";
-      refreshOwnership();
-      input.focus();
-    }
-    input.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === ",") { event.preventDefault(); commit(); } });
-    // Colar uma lista: processa na hora (o change/Enter não dispara em paste).
-    input.addEventListener("paste", () => setTimeout(commit, 0));
-    // Tocar num chip ✓ desfaz aquela adição (remove 1 cópia).
-    log.addEventListener("click", (event) => {
-      const c = event.target.closest(".quick-add-chip.is-hit");
-      if (!c || !c.dataset.cardId) return;
-      owned.add(c.dataset.cardId, c.dataset.variant, shared.DEFAULT_CONDITION, -1);
-      c.classList.add("is-undone");
-      c.disabled = true;
-      refreshOwnership();
-      input.focus();
-    });
   }
 
   // "Voltar" no cabeçalho aponta para a listagem de origem (ou Coleção no modo

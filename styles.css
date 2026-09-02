@@ -5523,19 +5523,6 @@ a.progress-row:hover {
   .sold-date, .sold-paid { display: none; }
   .sold-row-head { display: none; }
 }
-/* Adição rápida por número (checklist do set). */
-.quick-add { margin: 10px 0 4px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
-.quick-add-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.quick-add-label { flex: none; font-size: 12px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--subtle); }
-#quickAddInput { flex: 0 1 220px; min-width: 150px; height: 38px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); color: var(--text); padding: 0 12px; font: inherit; font-weight: 700; }
-#quickAddInput:focus { outline: none; border-color: var(--accent); }
-.quick-add-log { display: flex; flex-wrap: wrap; gap: 5px; min-width: 0; flex: 1; }
-.quick-add-chip { min-height: 0; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel-strong); color: var(--text); font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-.quick-add-chip.is-hit { border-color: color-mix(in srgb, #2ecc71 45%, transparent); color: #2ecc71; background: color-mix(in srgb, #2ecc71 10%, transparent); }
-.quick-add-chip.is-miss { border-color: color-mix(in srgb, #e8553c 45%, transparent); color: #e8553c; background: color-mix(in srgb, #e8553c 10%, transparent); cursor: default; }
-.quick-add-chip.is-undone { text-decoration: line-through; opacity: .55; cursor: default; }
-.quick-add-hint { margin: 8px 0 0; font-size: 12px; color: var(--subtle); }
-
 /* Portfólio: seção Investimento. */
 .pf-invest { margin: 6px 0 18px; }
 .pf-invest-title { margin: 0 0 10px; font-size: 17px; }
@@ -6705,13 +6692,9 @@ html:not([data-cardlang="all"]) #setRegionChips {
 /* A barra de filtros da Coleção colapsa em QUALQUER largura (no resto do site
    o .is-collapsed só vale no mobile, via .filters-toggle do shared.js). */
 .collection-filters.is-collapsed { display: none; }
-/* Detalhe (sets de todos os jogos): Adição rápida e Filtros atrás de dois
-   botões lado a lado, mesmo padrão da Coleção — inclusive o canto: lá o par
-   Selecionar/Filtros vive na ponta DIREITA (.collection-toolbar-actions), e
-   aqui era o único lugar do site com esses botões à esquerda. */
-/* (.detail-actions saiu em 2026-09-02: Adição rápida e Filtros moram na
-   linha do título "Cartas", .results-actions, junto de Ordenar/Visualização.) */
-.detail-toolbar.is-collapsed, .quick-add.is-collapsed { display: none; }
+/* (.detail-actions saiu em 2026-09-02: Filtros mora na linha do título
+   "Cartas", .results-actions, junto de Ordenar/Visualização.) */
+.detail-toolbar.is-collapsed { display: none; }
 /* Facetas por jogo (Raridade, Cor, Tipo, Seleção…): cada uma é uma CAIXA com
    dropdown, do tamanho e do jeito dos outros filtros da barra — a diferença é
    que dentro dela dá pra marcar várias. Antes as listas ficavam abertas por
@@ -6764,8 +6747,8 @@ html:not([data-cardlang="all"]) #setRegionChips {
 /* Contagem em tabular pra coluna de números não dançar entre as linhas. */
 .facet-opt-n { flex: none; color: var(--subtle); font-size: 12px; font-variant-numeric: tabular-nums; }
 .facet-opt.on .facet-opt-label { color: var(--accent); }
-/* Modos de contagem DENTRO da caixa de Adição rápida (ajustes da mesma tarefa). */
-.quick-add .progress-modes { margin: 10px 0 0; }
+/* Modos de contagem dentro do campo "Coleção" da barra de filtros do set. */
+.detail-toolbar .progress-modes { margin: 8px 0 0; gap: 12px; }
 .dash-stats-hero .dash-stats-counts {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -8033,16 +8016,14 @@ html[data-detail="set"] #detailTitle { display: none; }
   .toolbar > .view-toggle-field { grid-column: 1 / -1; }
   .toolbar > .sort-select label, .toolbar > .view-toggle-field label { text-align: left; display: block; }
 
-  /* Detalhe (set/carta): hero enxuto. Logo menor, nome duplicado do hero some
-     (o cabeçalho da página já mostra) e a dica da Adição rápida fica só no
-     desktop — no toque o placeholder do campo já explica. */
+  /* Detalhe (set/carta): hero enxuto. Logo menor e nome duplicado do hero
+     some (o cabeçalho da página já mostra). */
   .detail-hero { grid-template-columns: 1fr; gap: 10px; padding: 12px; }
   /* Só o hero de SET tem o nome duplicado (o cabeçalho já mostra); o de Pokémon
      traz o nº da Pokédex no h2, então fica. :has escopa pra caixa do set. */
   .detail-hero:has(.detail-set-art) h2 { display: none; }
   .detail-set-art { min-height: 0; }
   .set-logo { max-height: 76px; }
-  .quick-add-hint { display: none; }
 
   /* Valores (Valor total / Já gasto / A comprar): 3 caixotes empilhados viram
      uma faixa de 3 colunas compacta. Especificidade casa a regra do has-hero. */
@@ -8246,9 +8227,6 @@ select,
 .sold-confirm-field input[type="date"],
 .sold-row,
 .sold-thumb,
-.quick-add,
-#quickAddInput,
-.quick-add-chip,
 .wish-sellers,
 .wish-seller,
 .wish-seller-chip,
