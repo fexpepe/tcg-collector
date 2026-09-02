@@ -109,7 +109,7 @@
       <!-- Filtro de jogo numa moldura própria (painel), acima do cartão-herói —
            mesmo desenho do cabeçalho do perfil compartilhado. As AÇÕES moram
            dentro do cartão (canto do topo), não mais nesta faixa. -->
-      <div class="collection-toolbar">
+      <div class="collection-toolbar collection-toolbar-centered">
         <div id="gameFilter" class="chip-filter game-filter game-filter-panel" role="group" data-i18n-aria="pfmi.game" aria-label="Jogo">
           <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
           <button type="button" class="chip" data-game-filter="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
@@ -132,16 +132,9 @@
             <div id="dashProfile" class="dash-profile" hidden></div>
             <div class="collection-toolbar-actions">
               <button type="button" id="bulkSelectBtn" class="secondary bulk-toggle" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="m8.8 12.2 2.3 2.3 4.4-4.6"/></svg><span data-i18n="bulk.enter">Selecionar</span></button>
-              <!-- Visualização (▦/≣) e Filtros moram AQUI, na ponta: a barra de
-                   filtros embaixo começa recolhida e o botão abre/fecha
-                   (aria-expanded; mesma pref do colapso mobile do shared.js).
-                   Ambos somem nas abas de progresso (ver render()). -->
-              <div id="cardsViewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
-                <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>
-                <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista">≣</button>
-                <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" data-i18n-aria="view.compact" aria-label="Compacta" title="Compacta">☰</button>
-              </div>
-              <button type="button" id="collectionFiltersBtn" class="secondary" aria-expanded="false" aria-controls="collectionFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span data-i18n="filters.show">Filtros</span></button>
+              <!-- Visualização (▦/≣) e Filtros NÃO moram mais aqui: desceram pra
+                   linha do título "Minhas Cartas" (.results-header), na ponta
+                   direita, junto do que comandam (a grade e a barra de filtros). -->
               <!-- Compartilhar é SÓ-ÍCONE: o rótulo fica no <span> escondido pro
                    leitor de tela (e o aria-live anuncia "Link copiado!"); o
                    feedback visual de sucesso é o ✓ no lugar do ícone (is-ok,
@@ -183,6 +176,17 @@
       </div>
 
       <section id="groupsView">
+        <!-- Abas de progresso (Personagens/Artistas/Sets): MESMA linha de título
+             das outras abas — o nome da aba à esquerda (o JS escreve em
+             #groupsHeading, ver render()) e, na ponta DIREITA, o Ordenar com as
+             opções, no lugar onde a Coleção põe Visualização + Filtros. -->
+        <section class="results-header">
+          <h2 id="groupsHeading">Artistas</h2>
+          <div class="results-actions results-sort">
+            <span data-i18n="sort.label">Ordenar:</span>
+            <div id="sortChips" class="chip-filter"></div>
+          </div>
+        </section>
         <div class="group-summary">
           <div class="group-summary-row">
             <strong id="groupSummaryText">–</strong>
@@ -190,18 +194,35 @@
           </div>
           <div class="progress-bar"><span id="groupSummaryBar" style="width: 0%"></span></div>
         </div>
-        <div class="sort-row">
-          <span data-i18n="sort.label">Ordenar:</span>
-          <div id="sortChips" class="chip-filter"></div>
-        </div>
         <div id="groupList" class="progress-row-list"></div>
         <p id="groupsEmpty" class="empty-state" data-i18n-html="empty.collection" hidden>Nenhuma carta da sua coleção com esses filtros. <a href="explore">Explore o catálogo</a> e marque o que você tem.</p>
       </section>
 
       <div id="cardsView" hidden>
-        <!-- data-own-toggle: o botão de abrir/fechar é o "Filtros" do cartão-herói
-             (o shared.js não injeta o toggle automático do mobile). Nasce
-             recolhida (is-collapsed) pra não piscar aberta antes do JS. -->
+        <!-- Linha do título: "Minhas Cartas" à esquerda; na ponta DIREITA a
+             Visualização (▦/≣) e o Filtros (vieram do cartão-herói), que
+             empurram pra esquerda o que já morava aqui (Novo showcase, "N
+             resultados"). Os dois somem nas abas de progresso (ver render()). -->
+        <section class="results-header">
+          <h2 data-i18n="collection.heading.cards">Minhas Cartas</h2>
+          <button type="button" id="newFolderBtn" class="secondary new-folder-btn" data-i18n="folders.new">Novo showcase</button>
+          <button type="button" id="gradedAddBtn" class="secondary new-folder-btn" data-i18n="graded.add" hidden>Adicionar cartas</button>
+          <button type="button" id="tagsNewBtn" class="secondary new-folder-btn" data-i18n="tags.new" hidden>Nova tag</button>
+          <p id="resultCount">0 resultados</p>
+          <div class="results-actions">
+            <div id="cardsViewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
+              <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>
+              <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista">≣</button>
+              <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" data-i18n-aria="view.compact" aria-label="Compacta" title="Compacta">☰</button>
+            </div>
+            <button type="button" id="collectionFiltersBtn" class="secondary" aria-expanded="false" aria-controls="collectionFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span data-i18n="filters.show">Filtros</span></button>
+          </div>
+        </section>
+
+        <!-- data-own-toggle: o botão de abrir/fechar é o "Filtros" da linha do
+             título logo acima (o shared.js não injeta o toggle automático do
+             mobile). Fica ABAIXO do título pra abrir bem embaixo do botão.
+             Nasce recolhida (is-collapsed) pra não piscar aberta antes do JS. -->
         <section id="collectionFilters" class="toolbar collection-filters is-collapsed" data-i18n-aria="filters.show" aria-label="Filtros" data-own-toggle>
           <div>
             <label for="pokemonFilter" data-i18n="toolbar.pokemon">Pokémon</label>
@@ -251,14 +272,6 @@
               <option value="added-asc" data-i18n="sort.addedAsc">Adição (primeira → última)</option>
             </select>
           </div>
-        </section>
-
-        <section class="results-header">
-          <h2 data-i18n="collection.heading.cards">Minhas Cartas</h2>
-          <button type="button" id="newFolderBtn" class="secondary new-folder-btn" data-i18n="folders.new">Novo showcase</button>
-          <button type="button" id="gradedAddBtn" class="secondary new-folder-btn" data-i18n="graded.add" hidden>Adicionar cartas</button>
-          <button type="button" id="tagsNewBtn" class="secondary new-folder-btn" data-i18n="tags.new" hidden>Nova tag</button>
-          <p id="resultCount">0 resultados</p>
         </section>
 
         <div id="folderSections"></div>

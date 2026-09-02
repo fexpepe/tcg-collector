@@ -212,6 +212,7 @@
     gameFilter: document.getElementById("gameFilter"),
     tabs: document.getElementById("collectionTabs"),
     groupsView: document.getElementById("groupsView"),
+    groupsHeading: document.getElementById("groupsHeading"),
     groupSummaryText: document.getElementById("groupSummaryText"),
     groupSummaryPct: document.getElementById("groupSummaryPct"),
     groupSummaryBar: document.getElementById("groupSummaryBar"),
@@ -807,6 +808,13 @@
     elements.cardsView.hidden = !isCardsLike;
     // Título muda conforme a aba; botões contextuais (Nova coleção / gerenciar / Nova tag).
     if (elements.heading) elements.heading.textContent = t(isFolders ? "collection.heading.folders" : isGraded ? "nav.graded" : isTags ? "tags.heading" : "collection.heading.cards");
+    // Abas de progresso: o título repete o rótulo da aba (a de Pokémon vira
+    // "Personagens" fora do filtro Pokémon, como em syncGameTabs).
+    if (elements.groupsHeading && !isCardsLike) {
+      elements.groupsHeading.textContent = activeTab === "pokemon"
+        ? t(gameFilter === "pokemon" ? "toolbar.pokemon" : "toolbar.characters")
+        : t(activeTab === "artists" ? "collection.tab.artists" : "collection.tab.sets");
+    }
     if (elements.newFolderBtn) elements.newFolderBtn.hidden = !isFolders;
     if (elements.gradedAddBtn) elements.gradedAddBtn.hidden = !isGraded || !window.TCGGradedUI;
     // Seleção em massa só na aba Cartas; trocar de aba encerra o modo.
@@ -816,8 +824,9 @@
       if (activeTab !== "cards" && bulkMode) setBulkMode(false);
     }
     if (elements.tagsNewBtn) elements.tagsNewBtn.hidden = true; // tags viraram Listas; criar aqui era buraco negro
-    // Visualização (▦/≣) e Filtros, no cartão-herói, comandam a toolbar do
-    // cardsView: somem nas abas de progresso (Pokémon/Artistas/Sets).
+    // Visualização (▦/≣) e Filtros, na linha do título "Minhas Cartas",
+    // comandam a toolbar do cardsView: somem nas abas de progresso
+    // (Pokémon/Artistas/Sets).
     if (elements.cardsViewToggle) elements.cardsViewToggle.hidden = !isCardsLike;
     if (elements.filtersBtn) elements.filtersBtn.hidden = !isCardsLike;
 

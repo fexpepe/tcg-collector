@@ -923,6 +923,23 @@ input::placeholder {
 /* --- Pastas na coleção (seções colapsáveis) --- */
 .new-folder-btn { padding: 7px 14px; font-size: 13px; white-space: nowrap; }
 .results-header h2 { margin-right: auto; }
+/* Visualização (▦/≣) + Filtros na ponta DIREITA da linha do título (Coleção):
+   o grupo é o último filho e o h2 já empurra tudo pra direita, então o
+   contador/Novo showcase ficam à esquerda dele. Altura casada com o
+   .new-folder-btn (36px) — não com os 42px do button base — pra linha não
+   crescer. A moldura do .view-toggle tem 1px: botões internos com 34px. */
+.results-header:has(> .results-actions) { align-items: center; flex-wrap: wrap; row-gap: 10px; justify-content: flex-start; }
+.results-header:has(> .results-actions) h2 { margin-right: 0; } /* o auto vai pro grupo da direita */
+.results-actions { display: flex; align-items: center; gap: 8px; flex: none; margin-left: auto; }
+.results-actions button { display: inline-flex; align-items: center; gap: 7px; min-height: 36px; padding: 0 14px; font-size: 13px; white-space: nowrap; }
+.results-actions svg { width: 16px; height: 16px; flex: none; }
+.results-actions .view-toggle { border-radius: 0; } /* canto reto, como o resto do site */
+.results-actions .view-toggle-btn { width: 34px; min-width: 34px; height: 34px; min-height: 34px; padding: 0; font-size: 1rem; justify-content: center; }
+.results-actions button[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
+/* Abas de progresso: "Ordenar:" + chips no MESMO canto (herdam o visual do
+   antigo .sort-row: rótulo cinza, chips de 32px). */
+.results-sort { gap: 10px; color: var(--muted); font-size: 13px; font-weight: 700; }
+.results-sort .chip { min-height: 32px; padding: 0 12px; font-size: 13px; }
 
 /* Vitrine: coleções abertas ocupam a linha toda; minimizadas viram cards que
    fluem lado a lado (flex-wrap). */
@@ -6954,6 +6971,9 @@ html[data-detail="set"] #detailTitle { display: none; }
 /* Moldura do filtro de jogo da Coleção: os chips ganham um painel próprio,
    acima do cartão-herói (opt-in via classe — o #gameFilter existe em 4 páginas
    e as outras seguem com a faixa nua por enquanto). */
+/* Coleção: os chips de jogo ficam CENTRALIZADOS na moldura (pedido do
+   Fernando, 2026-09-02); Vendas e Graded seguem alinhados à esquerda. */
+.collection-toolbar-centered .game-filter-panel { justify-content: center; }
 .game-filter-panel {
   flex: 1 1 100%;
   background: var(--panel);
