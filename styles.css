@@ -936,10 +936,28 @@ input::placeholder {
 .results-actions .view-toggle { border-radius: 0; } /* canto reto, como o resto do site */
 .results-actions .view-toggle-btn { width: 34px; min-width: 34px; height: 34px; min-height: 34px; padding: 0; font-size: 1rem; justify-content: center; }
 .results-actions button[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
-/* Abas de progresso: "Ordenar:" + chips no MESMO canto (herdam o visual do
-   antigo .sort-row: rótulo cinza, chips de 32px). */
-.results-sort { gap: 10px; color: var(--muted); font-size: 13px; font-weight: 700; }
+/* "Ordenar:" no MESMO canto — nas abas de progresso da Coleção são chips
+   (herdam o visual do antigo .sort-row: rótulo cinza, chips de 32px); nas
+   páginas de set (detail) e na busca de Cartas é o <select>, na altura dos
+   botões vizinhos (36px) e com largura pelo conteúdo, não 100% como o select
+   base das barras de filtro. */
+.results-sort { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; font-weight: 700; }
+.results-sort .chip-filter { display: flex; flex-wrap: wrap; gap: 8px; }
 .results-sort .chip { min-height: 32px; padding: 0 12px; font-size: 13px; }
+.results-sort label { margin: 0; white-space: nowrap; }
+.results-sort select { width: auto; max-width: 240px; height: 36px; padding: 0 30px 0 10px; font-size: 13px; font-weight: 600; }
+/* Barra de filtros da busca de Cartas: colapsa em QUALQUER largura, como a da
+   Coleção e a do set (o botão mora na linha do título). */
+.cards-filters.is-collapsed { display: none; }
+/* Celular: o grupo da direita (Ordenar + ▦/≣/☰ + Filtros) não cabe ao lado do
+   título — desce pra uma faixa própria, largura cheia, com o select do Ordenar
+   numa linha só dele (elástico) e os botões na linha de baixo. Sem isto o
+   flex:none empurrava a página pra fora da tela (rolagem lateral). */
+@media (max-width: 700px) {
+  .results-header:has(> .results-actions) .results-actions { flex: 1 1 100%; flex-wrap: wrap; margin-left: 0; justify-content: flex-end; }
+  .results-actions .results-sort { flex: 1 1 100%; }
+  .results-actions .results-sort select { flex: 1 1 auto; width: 100%; max-width: none; }
+}
 
 /* Vitrine: coleções abertas ocupam a linha toda; minimizadas viram cards que
    fluem lado a lado (flex-wrap). */
@@ -6621,10 +6639,8 @@ html:not([data-cardlang="all"]) #setRegionChips {
    botões lado a lado, mesmo padrão da Coleção — inclusive o canto: lá o par
    Selecionar/Filtros vive na ponta DIREITA (.collection-toolbar-actions), e
    aqui era o único lugar do site com esses botões à esquerda. */
-.detail-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin: 0 0 14px; }
-.detail-actions button { display: inline-flex; align-items: center; gap: 7px; }
-.detail-actions svg { width: 16px; height: 16px; flex: none; }
-.detail-actions button[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
+/* (.detail-actions saiu em 2026-09-02: Adição rápida e Filtros moram na
+   linha do título "Cartas", .results-actions, junto de Ordenar/Visualização.) */
 .detail-toolbar.is-collapsed, .quick-add.is-collapsed { display: none; }
 /* Facetas por jogo (Raridade, Cor, Tipo, Seleção…): cada uma é uma CAIXA com
    dropdown, do tamanho e do jeito dos outros filtros da barra — a diferença é
@@ -9354,6 +9370,13 @@ select,
 /* O − continua reservando o lugar dele quando está escondido: sem isto, marcar
    uma carta empurrava os outros botões daquela linha só. */
 .card-tile.tile-compact .tile-minus[hidden] { display: inline-flex; visibility: hidden; }
+/* Slab (graded) no modo compacto: mesma linha das cartas comuns. Tira a
+   moldura/sombra do tile graded (linha não tem borda), o badge "PSA 9" ocupa
+   a coluna da variante sem virar faixa, e o ✕ de remover deixa de ser o botão
+   flutuante do canto da imagem (não há imagem) e vira um botão da fileira. */
+.card-tile.graded-tile.tile-compact { border-color: var(--line); box-shadow: none; }
+.card-tile.graded-tile.tile-compact .tile-c-var .graded-badge { flex: none; margin-left: 0; padding: 1px 8px; font-size: 11px; }
+.card-tile.graded-tile.tile-compact .sale-remove { position: static; opacity: 1; width: auto; height: auto; }
 
 /* O "+ Lista" fica no canto OPOSTO ao +, como pediram: primeiro da fileira,
    empurrando os outros pra direita. No tile normal ele é o 1º do rodapé. */

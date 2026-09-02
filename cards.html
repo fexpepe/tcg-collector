@@ -77,7 +77,39 @@
 
       <p class="collection-subtitle" data-i18n="cards.subtitle">Busque em todo o catálogo de cartas, com os filtros de sempre.</p>
 
-      <section class="toolbar" data-i18n-aria="filters.show" aria-label="Filtros">
+      <!-- Linha do título, no MESMO molde da Coleção: "Cartas" + contador à
+           esquerda; Ordenar, Visualização (▦/≣/☰) e Filtros na ponta direita.
+           Sempre visível (o título troca pra "Mais vistas" antes da busca). -->
+      <section id="resultsHeader" class="results-header">
+        <h2 data-i18n="results.heading.cards">Cartas</h2>
+        <p id="resultCount">0 resultados</p>
+        <div class="results-actions">
+          <div class="results-sort">
+            <label for="cardsSortSelect" data-i18n="sort.label">Ordenar:</label>
+            <select id="cardsSortSelect">
+              <option value="value-desc" data-i18n="sort.valueDesc">Valor (maior → menor)</option>
+              <option value="value-asc" data-i18n="sort.valueAsc">Valor (menor → maior)</option>
+              <option value="num-asc" data-i18n="sort.numAsc">Nº da carta (menor → maior)</option>
+              <option value="num-desc" data-i18n="sort.numDesc">Nº da carta (maior → menor)</option>
+              <option value="rarity-desc" data-i18n="sort.rarityDesc">Raridade (maior → menor)</option>
+              <option value="rarity-asc" data-i18n="sort.rarityAsc">Raridade (menor → maior)</option>
+              <option value="release" data-i18n="sort.releaseDate">Lançamento</option>
+            </select>
+          </div>
+          <div id="cardsViewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
+            <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>
+            <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista">≣</button>
+            <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" data-i18n-aria="view.compact" aria-label="Compacta" title="Compacta">☰</button>
+          </div>
+          <button type="button" id="cardsFiltersBtn" class="secondary" aria-expanded="false" aria-controls="cardsFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span data-i18n="filters.show">Filtros</span></button>
+        </div>
+      </section>
+
+      <!-- Filtros atrás do botão da linha do título (mesmo molde da Coleção):
+           nasce recolhida, em qualquer largura. data-own-toggle: o shared.js
+           não injeta o toggle automático do mobile. Ordenar e Visualização
+           saíram daqui pra linha do título (2026-09-02). -->
+      <section id="cardsFilters" class="toolbar cards-filters is-collapsed" data-i18n-aria="filters.show" aria-label="Filtros" data-own-toggle>
         <div>
           <label for="setFilter" data-i18n="toolbar.set">Set</label>
           <select id="setFilter">
@@ -104,26 +136,6 @@
             <input id="priceMax" type="text" inputmode="decimal" placeholder="máx" data-i18n-aria="aria.priceMax" aria-label="Preço máximo">
           </div>
         </div>
-        <div class="sort-select">
-          <label for="cardsSortSelect" data-i18n="sort.label">Ordenar:</label>
-          <select id="cardsSortSelect">
-            <option value="value-desc" data-i18n="sort.valueDesc">Valor (maior → menor)</option>
-            <option value="value-asc" data-i18n="sort.valueAsc">Valor (menor → maior)</option>
-            <option value="num-asc" data-i18n="sort.numAsc">Nº da carta (menor → maior)</option>
-            <option value="num-desc" data-i18n="sort.numDesc">Nº da carta (maior → menor)</option>
-            <option value="rarity-desc" data-i18n="sort.rarityDesc">Raridade (maior → menor)</option>
-            <option value="rarity-asc" data-i18n="sort.rarityAsc">Raridade (menor → maior)</option>
-            <option value="release" data-i18n="sort.releaseDate">Lançamento</option>
-          </select>
-        </div>
-        <div class="view-toggle-field">
-          <label data-i18n="toolbar.view">Visualização</label>
-          <div id="cardsViewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
-            <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>
-            <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista">≣</button>
-            <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" data-i18n-aria="view.compact" aria-label="Compacta" title="Compacta">☰</button>
-          </div>
-        </div>
         <!-- O mesmo liga-desliga de Configurações → "Agrupar versões da carta",
              aqui porque é NESTA grade que o efeito aparece. Religa sem reload
              (initGroupVariantsChip no shared.js). -->
@@ -134,11 +146,6 @@
       </section>
 
       <p id="cardsIntro" class="empty-state" data-i18n-html="cards.intro">Use a busca ou os filtros acima para encontrar qualquer carta do catálogo.</p>
-
-      <section id="resultsHeader" class="results-header" hidden>
-        <h2 data-i18n="results.heading.cards">Cartas</h2>
-        <p id="resultCount">0 resultados</p>
-      </section>
 
       <section id="cardGrid" class="card-grid" aria-live="polite"></section>
       <p id="emptyState" class="empty-state" data-i18n="empty.pokedex" hidden>Nenhuma carta encontrada com esses filtros.</p>

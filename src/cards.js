@@ -28,7 +28,9 @@
     priceMin: document.getElementById("priceMin"),
     priceMax: document.getElementById("priceMax"),
     cardsSortSelect: document.getElementById("cardsSortSelect"),
-    cardsViewToggle: document.getElementById("cardsViewToggle")
+    cardsViewToggle: document.getElementById("cardsViewToggle"),
+    filtersBtn: document.getElementById("cardsFiltersBtn"),
+    filtersBar: document.getElementById("cardsFilters")
   };
 
   // Faixa de preço na MOEDA DO TOPO (aceita vírgula decimal). Vazio = sem limite.
@@ -250,6 +252,22 @@
         render({ resetCount: true });
       });
     }
+    // Barra de filtros recolhível atrás do botão da linha do título (mesmo
+    // padrão e mesma pref da Coleção/set: quem abre costuma manter aberto).
+    if (elements.filtersBtn && elements.filtersBar) {
+      let filtersOpen = false;
+      try { filtersOpen = localStorage.getItem("tcg-collector-filters-open") === "1"; } catch (e) { /* ignora */ }
+      const paintFilters = () => {
+        elements.filtersBar.classList.toggle("is-collapsed", !filtersOpen);
+        elements.filtersBtn.setAttribute("aria-expanded", String(filtersOpen));
+      };
+      elements.filtersBtn.addEventListener("click", () => {
+        filtersOpen = !filtersOpen;
+        try { localStorage.setItem("tcg-collector-filters-open", filtersOpen ? "1" : "0"); } catch (e) { /* ignora */ }
+        paintFilters();
+      });
+      paintFilters();
+    }
     if (elements.cardsViewToggle) {
       applyCardsView();
       elements.cardsViewToggle.addEventListener("click", (event) => {
@@ -428,12 +446,15 @@
       elements.intro.hidden = showTop;
       elements.empty.hidden = true;
       elements.resultCount.textContent = "";
+      // A linha do título fica SEMPRE visível: é nela que moram Ordenar,
+      // Visualização e o botão Filtros (sem ela a pessoa não abria os filtros
+      // antes de buscar). Só o título muda: "Mais vistas" quando há o que
+      // mostrar, "Cartas" (com o contador vazio) quando não há.
+      elements.resultsHeader.hidden = false;
+      if (elements.resultsTitle) elements.resultsTitle.textContent = t(showTop ? "home.topViewed" : "results.heading.cards");
       if (showTop) {
-        elements.resultsHeader.hidden = false;
-        if (elements.resultsTitle) elements.resultsTitle.textContent = t("home.topViewed");
         pager.render(topViewedPairs, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes, compact: cardsView === "compact", lists: true }), { resetCount: true });
       } else {
-        elements.resultsHeader.hidden = true;
         pager.render([], () => document.createComment(""), { resetCount: true });
       }
       return;

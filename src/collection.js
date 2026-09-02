@@ -1065,6 +1065,13 @@
   // da graduadora é o que diferencia das cartas comuns.
   function makeGradedNode(p, editable) {
     const { it, card } = p;
+    // MODO COMPACTO: o slab vira uma LINHA como as cartas comuns (mesmas
+    // colunas do .tile-compact: nome · nº · set · badge da graduadora no lugar
+    // da variante · preço · ações), sem imagem — antes o slab ignorava o modo
+    // e entrava na lista como uma carta inteira (o único item "gordo" no meio
+    // das linhas). Na aba Graded a edição inline fica só na grade/lista; a
+    // linha compacta traz o ✕ de remover.
+    if (cardsView === "compact") return makeGradedCompactRow(p, editable);
     // Aba Graded: tile EDITÁVEL do módulo compartilhado (mesma UI da página
     // dedicada). Na "Toda Coleção" o slab segue somente leitura.
     if (editable && window.TCGGradedUI) {
@@ -1087,6 +1094,30 @@
         <p class="tile-set"><span>${escapeHtml(card.set)} · ${escapeHtml(card.number)}</span></p>
         ${priceHtml}
       </div>
+    </article>`;
+    return wrap.firstElementChild;
+  }
+
+  function makeGradedCompactRow(p, editable) {
+    const { it, card } = p;
+    const [bg, fg] = GRADED_COLORS[it.company] || GRADED_COLORS.psa;
+    const src = shared.cardImageSources(card);
+    const val = it.value > 0 ? it.value : (shared.gradedValue(card, it.company, it.grade).value || 0);
+    const priceHtml = val > 0 ? `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>` : "";
+    const badge = `<span class="graded-badge" style="--slab-bg:${bg};--slab-fg:${fg}">${escapeHtml((it.company || "").toUpperCase())} ${escapeHtml(shared.gradedGradeText(it.grade, it.pristine))}</span>`;
+    const removeBtn = editable
+      ? `<button type="button" class="tile-btn sale-remove" data-graded-remove title="${escapeAttribute(t("graded.remove"))}" aria-label="${escapeAttribute(t("graded.remove"))}">✕</button>`
+      : "";
+    const wrap = document.createElement("div");
+    wrap.innerHTML = `<article class="card-tile graded-tile graded-grid-tile tile-compact" data-graded-gid="${escapeAttribute(it.gid)}">
+      <button type="button" class="tile-name" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(it.variant)}" data-graded-company="${escapeAttribute(it.company)}" data-graded-grade="${escapeAttribute(it.grade)}" data-graded-pristine="${it.pristine ? "1" : ""}" data-hover-thumb="${escapeAttribute(src.url || "")}">
+        ${shared.cardFlag(card.language)}<span>${escapeHtml(card.name)}</span>
+      </button>
+      <span class="tile-c-num">${escapeHtml(card.number || "")}</span>
+      <span class="tile-c-set">${escapeHtml(card.set || "")}</span>
+      <span class="tile-c-var">${badge}</span>
+      <span class="tile-c-price">${priceHtml}</span>
+      <div class="tile-actions">${removeBtn}</div>
     </article>`;
     return wrap.firstElementChild;
   }

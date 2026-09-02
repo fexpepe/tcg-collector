@@ -99,18 +99,38 @@
         </section>
       </div>
 
-      <!-- Adição rápida e Filtros atrás de dois botões lado a lado, encostados
-           na DIREITA (mesmo canto da Coleção, onde Selecionar/Filtros já moram).
-           A ordem é a da tarefa: primeiro marcar o que você tem, depois filtrar
-           o que sobrou. data-own-toggle: o shared.js não injeta o toggle
-           automático do mobile. O de Adição rápida só aparece nas páginas de
-           set (segue a caixa; ver initQuickAdd no detail.js). -->
-      <div class="detail-actions">
-        <button type="button" id="quickAddBtn" class="secondary" aria-expanded="false" aria-controls="quickAdd" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span data-i18n="quickadd.label">Adição rápida</span></button>
-        <button type="button" id="detailFiltersBtn" class="secondary" aria-expanded="false" aria-controls="detailFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span data-i18n="filters.show">Filtros</span></button>
-      </div>
+      <!-- Linha do título, no MESMO molde da Coleção: "Cartas" + contador à
+           esquerda; na ponta direita Adição rápida (só nas páginas de set),
+           Ordenar, Visualização (▦/≣/☰) e Filtros. Adição rápida e a barra de
+           filtros nascem RECOLHIDAS logo abaixo (data-own-toggle: o shared.js
+           não injeta o toggle automático do mobile; ver initCollapsibles). -->
+      <section class="results-header">
+        <h2 data-i18n="results.heading.detail">Cartas</h2>
+        <p id="resultCount">0 resultados</p>
+        <div class="results-actions">
+          <button type="button" id="quickAddBtn" class="secondary" aria-expanded="false" aria-controls="quickAdd" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span data-i18n="quickadd.label">Adição rápida</span></button>
+          <div class="results-sort">
+            <label for="sortSelect" data-i18n="sort.label">Ordenar:</label>
+            <select id="sortSelect">
+              <option value="release" data-i18n="sort.releaseDate">Lançamento</option>
+              <option value="value-desc" data-i18n="sort.valueDesc">Valor (maior → menor)</option>
+              <option value="value-asc" data-i18n="sort.valueAsc">Valor (menor → maior)</option>
+              <option value="num-desc" data-i18n="sort.numDesc">Nº da carta (maior → menor)</option>
+              <option value="rarity-desc" data-i18n="sort.rarityDesc">Raridade (maior → menor)</option>
+              <option value="rarity-asc" data-i18n="sort.rarityAsc">Raridade (menor → maior)</option>
+              <option value="num-asc" data-i18n="sort.numAsc">Nº da carta (menor → maior)</option>
+            </select>
+          </div>
+          <div id="viewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
+            <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>
+            <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista">≣</button>
+            <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" data-i18n-aria="view.compact" aria-label="Compacta" title="Compacta">☰</button>
+          </div>
+          <button type="button" id="detailFiltersBtn" class="secondary" aria-expanded="false" aria-controls="detailFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span data-i18n="filters.show">Filtros</span></button>
+        </div>
+      </section>
 
-      <!-- Adição rápida nasce RECOLHIDA atrás do botão acima. Os modos de
+      <!-- Adição rápida nasce RECOLHIDA atrás do botão da linha do título. Os modos de
            contagem (master set / qualquer idioma) moram DENTRO da caixa: são
            ajustes da mesma tarefa de conferir o set. Master set conta CADA
            variante como slot; "qualquer idioma" casa a carta base (EN/PT do
@@ -129,9 +149,9 @@
       </section>
 
       <!-- Ordem pedida pelo Fernando (2026-08-10): Coleção → Versões (Agrupar) →
-           Filtros (título sobre as facetas, como o "Coleção" tem) → Ordenar →
-           Visualização. Decisões de ESCOPO primeiro (o que entra na lista),
-           apresentação por último. -->
+           Filtros (título sobre as facetas, como o "Coleção" tem). Só decisões
+           de ESCOPO aqui: Ordenar e Visualização (apresentação) subiram pra
+           linha do título "Cartas", ao lado do botão Filtros (2026-09-02). -->
       <section id="detailFilters" class="toolbar detail-toolbar is-collapsed" data-i18n-aria="filters.show" aria-label="Filtros" data-own-toggle>
         <div>
           <label data-i18n="toolbar.collection">Coleção</label>
@@ -164,31 +184,6 @@
           <label data-i18n="filters.show">Filtros</label>
           <div id="detailFacets" class="detail-facets"></div>
         </div>
-        <div class="sort-select">
-          <label for="sortSelect" data-i18n="sort.label">Ordenar:</label>
-          <select id="sortSelect">
-            <option value="release" data-i18n="sort.releaseDate">Lançamento</option>
-            <option value="value-desc" data-i18n="sort.valueDesc">Valor (maior → menor)</option>
-            <option value="value-asc" data-i18n="sort.valueAsc">Valor (menor → maior)</option>
-            <option value="num-desc" data-i18n="sort.numDesc">Nº da carta (maior → menor)</option>
-            <option value="rarity-desc" data-i18n="sort.rarityDesc">Raridade (maior → menor)</option>
-            <option value="rarity-asc" data-i18n="sort.rarityAsc">Raridade (menor → maior)</option>
-            <option value="num-asc" data-i18n="sort.numAsc">Nº da carta (menor → maior)</option>
-          </select>
-        </div>
-        <div class="view-toggle-field">
-          <label data-i18n="toolbar.view">Visualização</label>
-          <div id="viewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
-            <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>
-            <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista">≣</button>
-            <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" data-i18n-aria="view.compact" aria-label="Compacta" title="Compacta">☰</button>
-          </div>
-        </div>
-      </section>
-
-      <section class="results-header">
-        <h2 data-i18n="results.heading.detail">Cartas</h2>
-        <p id="resultCount">0 resultados</p>
       </section>
 
       <section id="detailGrid" class="card-grid" aria-live="polite"></section>
