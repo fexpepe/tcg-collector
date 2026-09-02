@@ -1046,6 +1046,76 @@ input::placeholder {
 @media (max-width: 1000px) { .coll-card { flex-basis: calc((100% - 3 * 16px) / 4); } }
 @media (max-width: 680px)  { .coll-card { flex-basis: calc((100% - 2 * 16px) / 3); } }
 @media (max-width: 460px)  { .coll-card { flex-basis: calc((100% - 16px) / 2); } }
+
+/* --- Card de showcase em PILHA (aba Showcase do dono) ---
+   Capa HORIZONTAL com até 3 cartas em leque — lê como "um conjunto de cartas",
+   e diferencia o card de showcase dos cards de carta comum. 4 por linha (a capa
+   é mais larga que alta); o card do perfil público (.coll-card-ro) segue no
+   layout de 6. overflow visível pro menu "⋯" poder sair do card: o recorte
+   arredondado fica só na capa. */
+.coll-card-pile { flex-basis: calc((100% - 3 * 16px) / 4); overflow: visible; position: relative; }
+.coll-card-pile.is-menu-open { z-index: 2; }
+.coll-pile { position: relative; aspect-ratio: auto; height: 224px; border-radius: 13px 13px 0 0; }
+.coll-pile-card {
+  position: absolute; left: 50%; top: 22px; width: 132px; aspect-ratio: 245 / 337;
+  border-radius: 8px; overflow: hidden; background: var(--panel-strong);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+  transform: translateX(-50%);
+  transition: transform .2s ease;
+}
+.coll-pile-l { top: 34px; transform: translateX(calc(-50% - 64px)) rotate(-10deg); }
+.coll-pile-r { top: 34px; transform: translateX(calc(-50% + 64px)) rotate(10deg); }
+/* Hover: o leque abre um tico em vez do zoom da capa antiga. */
+.coll-pile:hover img { transform: none; }
+.coll-pile:hover .coll-pile-l { transform: translateX(calc(-50% - 72px)) rotate(-13deg); }
+.coll-pile:hover .coll-pile-r { transform: translateX(calc(-50% + 72px)) rotate(13deg); }
+.coll-pile:hover .coll-pile-front { transform: translateX(-50%) translateY(-4px); }
+.coll-pile-tag { position: absolute; left: 10px; top: 10px; }
+.coll-pile-count {
+  position: absolute; right: 10px; top: 10px;
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 700; color: #ffffff;
+  padding: 2px 9px; border-radius: 999px;
+  background: rgba(16, 18, 24, 0.78); border: 1px solid var(--line);
+}
+.coll-pile-count svg { width: 13px; height: 13px; flex: none; }
+.coll-card-pile .coll-card-body { padding: 12px 14px 10px; gap: 4px; }
+.coll-card-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; min-width: 0; }
+.coll-card-pile .coll-card-name { font-size: 17px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.coll-card-pile .coll-card-foot { margin-top: 0; min-height: 30px; }
+.coll-card-pile .coll-card-meta { font-size: 13px; font-weight: 700; color: var(--money); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Menu "⋯": abre pra CIMA, por dentro do próprio card (sobre a capa) — nunca
+   por cima do vizinho de baixo. */
+.coll-card-menu {
+  display: none; position: absolute; right: 8px; bottom: 44px; z-index: 3;
+  min-width: 190px; padding: 6px;
+  flex-direction: column; gap: 2px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+.coll-card.is-menu-open .coll-card-menu { display: flex; }
+.coll-card-menu .folder-act { width: 100%; height: auto; min-height: 36px; justify-content: flex-start; gap: 9px; padding: 0 10px; font-size: 13px; font-weight: 700; color: var(--text); border-radius: 7px; white-space: nowrap; }
+.coll-card-menu .folder-act-danger { color: #d8443c; }
+.coll-card-menu-sep { display: block; border-top: 1px solid var(--line); margin: 4px 4px; }
+.coll-card-acts [data-folder-menu][aria-expanded="true"] { background: var(--accent-soft); color: var(--accent); }
+@media (max-width: 1000px) {
+  .coll-card-pile { flex-basis: calc((100% - 2 * 16px) / 3); }
+}
+@media (max-width: 680px) {
+  .coll-card-pile { flex-basis: calc((100% - 16px) / 2); }
+  .coll-pile { height: 186px; }
+  .coll-pile-card { width: 108px; top: 18px; }
+  .coll-pile-l, .coll-pile:hover .coll-pile-l { top: 28px; transform: translateX(calc(-50% - 50px)) rotate(-10deg); }
+  .coll-pile-r, .coll-pile:hover .coll-pile-r { top: 28px; transform: translateX(calc(-50% + 50px)) rotate(10deg); }
+  .coll-card-pile .coll-card-name { font-size: 15.4px; }
+}
+@media (max-width: 460px) {
+  .coll-card-pile { flex-basis: 100%; }
+  .coll-pile { height: 224px; }
+  .coll-pile-card { width: 132px; top: 22px; }
+  .coll-pile-l, .coll-pile:hover .coll-pile-l { top: 34px; transform: translateX(calc(-50% - 64px)) rotate(-10deg); }
+  .coll-pile-r, .coll-pile:hover .coll-pile-r { top: 34px; transform: translateX(calc(-50% + 64px)) rotate(10deg); }
+}
 .coll-card-cover {
   border: 0; padding: 0; cursor: pointer; display: block; width: 100%;
   aspect-ratio: 245 / 337; background: var(--panel-strong); overflow: hidden;

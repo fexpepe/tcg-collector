@@ -683,8 +683,20 @@
         }
         return;
       }
+      const menuBtn = event.target.closest("[data-folder-menu]");
+      if (menuBtn) {
+        const open = !section.classList.contains("is-menu-open");
+        closeFolderMenus();
+        if (open) { section.classList.add("is-menu-open"); menuBtn.setAttribute("aria-expanded", "true"); }
+        return;
+      }
       if (event.target.closest("[data-folder-cover]")) {
-        if (fid) { coverPickId = coverPickId === fid ? null : fid; renderCards(); }
+        if (fid) {
+          // Do card fechado (menu "⋯"): abre o showcase JÁ no modo de escolher capa.
+          if (section.classList.contains("is-collapsed")) { openFolderId = fid; coverPickId = fid; }
+          else coverPickId = coverPickId === fid ? null : fid;
+          renderCards();
+        }
         return;
       }
       if (event.target.closest("[data-folder-collapse]")) { if (fid) { openFolderId = fid; coverPickId = null; renderCards(); } return; }
@@ -716,8 +728,9 @@
     // Fecha menus/popovers ao clicar fora ou apertar Esc.
     document.addEventListener("click", (event) => {
       if (tileFolderMenu && !event.target.closest(".tile-folder-menu") && !event.target.closest("[data-folder-card-id]")) closeTileFolderMenu();
+      if (!event.target.closest("[data-folder-menu]")) closeFolderMenus();
     });
-    document.addEventListener("keydown", (event) => { if (event.key === "Escape") { closeTileFolderMenu(); } });
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape") { closeTileFolderMenu(); closeFolderMenus(); } });
 
     if (elements.bulkBtn) elements.bulkBtn.addEventListener("click", () => { setBulkMode(!bulkMode); if (!bulkMode) render(); });
 
@@ -959,6 +972,11 @@
   const SHARE_ICON = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>';
   const COVER_ICON = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 15l5-4 4 3 3-2 6 5"/><circle cx="9" cy="9" r="1.4"/></svg>';
   const TRASH_ICON = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>';
+  // Card de showcase (pilha): "⋯" abre o menu de ações; ↑ ↓ moram dentro dele.
+  const MORE_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
+  const UP_ICON = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+  const DOWN_ICON = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>';
+  const CARDS_ICON = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="12" height="16" rx="2"/><path d="M4 7v12a2 2 0 0 0 2 2h9"/></svg>';
   // Coleção em "modo trocar capa": clicar numa carta da seção a define como capa.
   let coverPickId = null;
   // Coleção ABERTA (foco): mostra só ela; null = vitrine (todas como cards).
@@ -1272,12 +1290,6 @@
     else label = gameLabelOf(games.values().next().value);
     return `<span class="folder-tag" style="--tag:${gameColor(games)}">${escapeHtml(label)}</span>`;
   }
-  // Título do card de showcase pintado na cor do jogo (classe + style inline).
-  function gameTitleHtml(name, games) {
-    const c = gameColor(games);
-    return `<div class="coll-card-title${c ? " coll-card-title-game" : ""}"${c ? ` style="background:${c}"` : ""}><strong class="coll-card-name">${escapeHtml(name)}</strong></div>`;
-  }
-
   // Reordena os pares de um bucket pela ordem manual (se houver). Cards fora da
   // ordem vão pro fim, preservando a ordenação do seletor (cardsSort). Estável.
   function applyFolderOrder(bucket, pairs) {
@@ -1321,6 +1333,15 @@
     return best;
   }
 
+  // Fecha o menu "⋯" de todo card de showcase (clique fora, Esc, ou abrir outro).
+  function closeFolderMenus() {
+    elements.folderSections.querySelectorAll(".coll-card.is-menu-open").forEach((card) => {
+      card.classList.remove("is-menu-open");
+      const btn = card.querySelector("[data-folder-menu]");
+      if (btn) btn.setAttribute("aria-expanded", "false");
+    });
+  }
+
   // Estrelas de preferência (0–3), clicáveis. data-stars no container, data-star no botão.
   function starsHtml(n) {
     let h = "";
@@ -1337,29 +1358,52 @@
     const meta = `${pairs.length}${value > 0 ? `<span class="cm-val"> · ${escapeHtml(shared.formatMoney(shared.getCurrency(), value))}</span>` : ""}`;
     const listCls = cardsView === "list" ? " is-list" : "";
 
-    // CARD de coleção (vitrine): capa + nome + meta + estrelas. (Tudo que não é a
-    // coleção aberta nem a seção "Sem coleção".)
+    // CARD de coleção (vitrine) em PILHA: até 3 cartas em leque na capa (lê como
+    // "um conjunto", não como uma carta só), tag do jogo + contagem sobre a capa,
+    // nome + estrelas e valor embaixo. As ações viram Compartilhar + "⋯" (menu com
+    // mover / trocar capa / excluir) — o ✕ de excluir deixa de ficar sempre à vista.
     if (!isNone && !isOpen) {
       const cover = folderCoverCard(folder, pairs);
-      const coverImg = cover
-        ? shared.localizedImg(shared.cardImageSources(cover).url, { alt: "", fallback: shared.cardImageSources(cover).fallback, loading: "lazy", thumb: true })
+      // Leque: a capa na frente + as 2 primeiras cartas (ordem do showcase) atrás.
+      const seen = new Set();
+      const fanCards = [];
+      [cover, ...pairs.map((p) => p.card)].forEach((c) => {
+        if (!c || seen.has(c.id) || fanCards.length >= 3) return;
+        seen.add(c.id);
+        fanCards.push(c);
+      });
+      const fanImg = (c) => { const src = shared.cardImageSources(c); return shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true }); };
+      // Ordem no DOM = ordem de empilhamento: as de trás primeiro, a capa por último.
+      const pileHtml = fanCards.length
+        ? `${fanCards[1] ? `<span class="coll-pile-card coll-pile-l">${fanImg(fanCards[1])}</span>` : ""}${fanCards[2] ? `<span class="coll-pile-card coll-pile-r">${fanImg(fanCards[2])}</span>` : ""}<span class="coll-pile-card coll-pile-front">${fanImg(fanCards[0])}</span>`
         : `<span class="coll-card-empty">${escapeHtml(t("folders.empty"))}</span>`;
-      return `<section class="folder-section is-collapsed coll-card" data-folder-id="${escapeAttribute(folder.id)}" draggable="true">
-        ${gameTitleHtml(folder.name || t("folders.untitled"), games)}
-        <button type="button" class="coll-card-cover" data-folder-collapse aria-label="${escapeAttribute(t("folders.toggle"))}">${coverImg}</button>
+      const valueHtml = value > 0 ? `<span class="cm-val">${escapeHtml(shared.formatMoney(shared.getCurrency(), value))}</span>` : "";
+      const menuItem = (attr, icon, label, extra) => `<button type="button" class="folder-act${extra || ""}" ${attr} role="menuitem">${icon}<span>${escapeHtml(label)}</span></button>`;
+      return `<section class="folder-section is-collapsed coll-card coll-card-pile" data-folder-id="${escapeAttribute(folder.id)}" draggable="true">
+        <button type="button" class="coll-card-cover coll-pile" data-folder-collapse aria-label="${escapeAttribute(t("folders.toggle"))}">
+          ${pileHtml}
+          ${games && games.size ? `<span class="coll-pile-tag">${folderTagHtml(games)}</span>` : ""}
+          <span class="coll-pile-count">${CARDS_ICON}${pairs.length}</span>
+        </button>
         <div class="coll-card-body">
-          <div class="coll-card-meta-row">
-            <span class="coll-card-meta">${meta}</span>
-            ${folderTagHtml(games)}
+          <div class="coll-card-title-row">
+            <strong class="coll-card-name" title="${escapeAttribute(folder.name || t("folders.untitled"))}">${escapeHtml(folder.name || t("folders.untitled"))}</strong>
+            ${starsHtml(folder.stars || 0)}
           </div>
           <div class="coll-card-foot">
-            ${starsHtml(folder.stars || 0)}
+            <span class="coll-card-meta">${valueHtml}</span>
             <span class="coll-card-acts">
-              <button type="button" class="folder-act" data-folder-move="-1" title="${escapeAttribute(t("folders.moveUp"))}" aria-label="${escapeAttribute(t("folders.moveUp"))}">↑</button>
-              <button type="button" class="folder-act" data-folder-move="1" title="${escapeAttribute(t("folders.moveDown"))}" aria-label="${escapeAttribute(t("folders.moveDown"))}">↓</button>
-              ${pairs.length ? `<button type="button" class="folder-act folder-share-btn" data-folder-share title="${escapeAttribute(t("folders.share"))}" aria-label="${escapeAttribute(t("folders.share"))}">${SHARE_ICON}</button>` : ""}
-              <button type="button" class="folder-act folder-act-danger" data-folder-delete title="${escapeAttribute(t("folders.delete"))}" aria-label="${escapeAttribute(t("folders.delete"))}">✕</button>
+              ${pairs.length ? `<button type="button" class="folder-act" data-folder-share title="${escapeAttribute(t("folders.share"))}" aria-label="${escapeAttribute(t("folders.share"))}">${SHARE_ICON}</button>` : ""}
+              <button type="button" class="folder-act" data-folder-menu aria-haspopup="menu" aria-expanded="false" title="${escapeAttribute(t("folders.more"))}" aria-label="${escapeAttribute(t("folders.more"))}">${MORE_ICON}</button>
             </span>
+          </div>
+          <div class="coll-card-menu" role="menu">
+            ${menuItem('data-folder-move="-1"', UP_ICON, t("folders.moveUp"))}
+            ${menuItem('data-folder-move="1"', DOWN_ICON, t("folders.moveDown"))}
+            ${pairs.length ? menuItem("data-folder-cover", COVER_ICON, t("folders.cover")) : ""}
+            ${pairs.length ? menuItem("data-folder-share", SHARE_ICON, t("folders.shareBtn")) : ""}
+            <span class="coll-card-menu-sep" role="separator"></span>
+            ${menuItem("data-folder-delete", TRASH_ICON, t("folders.delete"), " folder-act-danger")}
           </div>
         </div>
       </section>`;
