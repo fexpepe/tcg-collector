@@ -23,11 +23,20 @@ import { readFileSync, existsSync } from "node:fs";
 import { gzipSync } from "node:zlib";
 import { join } from "node:path";
 
-// Tetos em BYTES do arquivo minificado+gzipado. Medidos em 2026-08-29 com
-// ~6% de folga: shared.js 70.924 e styles.css 39.970.
+// Tetos em BYTES do arquivo minificado+gzipado, com ~6% de folga sobre a
+// medida do dia em que cada um foi fixado:
+//   shared.js      70.924 em 2026-08-29
+//   styles.min.css 44.509 em 2026-09-02 (era 39.970 em 2026-08-29; os ~4,5 KB
+//                  vieram de ~25 features em 4 dias — Hub, Graded/Vendas,
+//                  Showcase, linha de título com Ordenar/Visualização/Filtros,
+//                  calendário, medalhas, analisador de troca — cada uma com
+//                  30-70 linhas de CSS, nenhuma sozinha responsável. Este
+//                  número mede o styles.css INTEIRO: o deploy ainda o reparte
+//                  por área (scripts/split-css.mjs), então o que cada página
+//                  baixa de fato é menor.)
 const TETOS = [
   { arquivo: "shared.js", teto: 76800, nota: "núcleo JS de toda página" },
-  { arquivo: "styles.min.css", teto: 44032, nota: "CSS antes do split por área" },
+  { arquivo: "styles.min.css", teto: 47104, nota: "CSS antes do split por área" },
 ];
 
 const dir = process.argv[2] || "/tmp/ci-min";
