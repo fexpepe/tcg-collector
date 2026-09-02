@@ -5799,10 +5799,28 @@
     return `<span class="graded-badge" style="--slab-bg:${bg};--slab-fg:${fg}">${escapeHtml(String(g.company).toUpperCase())} ${escapeHtml(gradedGradeText(g.grade, g.pristine))}</span>`;
   }
 
+  // Ano da carta pra busca das lojas — SÓ nas linhas vintage (flag `vintage`
+  // do cards.js: Carddass/Hyper Battle/Miracle Battle/Naruto Bandai). Nesses,
+  // os anúncios do eBay/PriceCharting trazem o ano no título ("1999 Hunter x
+  // Hunter Carddass Gon…") e "nome + código" sozinho não casa nada; o ano é
+  // o filtro que faz a busca cair na carta. Fora do vintage fica vazio: no
+  // Pokémon/One Piece atual o código ("4/102", "OP01-001") já é discriminante
+  // e o ano só esconderia anúncios sem ele no título.
+  function vintageSearchYear(card) {
+    if (!card || card.vintage !== true) return "";
+    const year = String(card.setReleaseDate || "").slice(0, 4);
+    return /^\d{4}$/.test(year) ? year : "";
+  }
+
   // Prefixo do jogo na busca do eBay/PriceCharting (sem ele, "Agumon" no eBay
-  // traz brinquedo e mangá). Vem da mesma tabela MARKETS.
+  // traz brinquedo e mangá). Vem da mesma tabela MARKETS. Vintage vai com o
+  // número PURO + ano ("hunter x hunter carddass Gon Freecss C01 1999"): o
+  // "/total" do cardCode é convenção nossa, Carddass não imprime "C01/42" e
+  // nenhum anúncio escreve assim — o ano, sim, está no título de todos.
   function usSearchText(card, game) {
-    return `${marketOf(game).usText || "pokemon"} ${card.name} ${cardCode(card)}`.trim();
+    const year = vintageSearchYear(card);
+    const code = year ? String(card.number || "").trim() : cardCode(card);
+    return `${marketOf(game).usText || "pokemon"} ${card.name} ${code} ${year}`.replace(/\s+/g, " ").trim();
   }
 
   // Separa número e total ("4/102" -> {4,102}; ou number "4" + setTotal "102").
