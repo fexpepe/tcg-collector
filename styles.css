@@ -5118,6 +5118,11 @@ a.progress-row:hover {
   display: flex; flex-direction: column; overflow: hidden;
 }
 .dash-games .empty-state { margin: auto 0; }
+/* Por região: o card é mais largo que o quadrado, e um quadrado encostado à
+   esquerda deixava um vão morto à direita. Aqui o miolo ocupa a LARGURA toda
+   do card com a mesma altura do quadrado do Por jogo — as duas caixas seguem
+   alinhadas na fileira, e mosaico/pizza/barras se espalham no retângulo. */
+.dash-dist .dash-games { max-width: none; aspect-ratio: auto; height: 360px; }
 /* Bandeira das regiões dentro das cápsulas/azulejos/legenda: em linha com o nome. */
 .dash-game-name .card-flag, .dash-tm-tile .card-flag, .dash-pie-name .card-flag { vertical-align: -2px; margin-right: 5px; }
 .dash-gv { flex: 1; min-height: 0; overflow: auto; }
@@ -5202,17 +5207,20 @@ a.progress-row:hover {
    novo (proposta de 2026-08-25). */
 .dash-main .stat-grand > #dhValue { font-size: 34px; }
 /* Mais valiosas do Hub: 6 cartas em grade 3×2 com a imagem grande, nome e
-   valor. Cabe na altura fixa da fileira (2 × ~160px + folga) sem rolar. */
-.dash-top-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 8px; align-content: start; }
-.dash-top-grid li { min-width: 0; }
+   valor. A grade tem a MESMA altura (360px) dos miolos vizinhos e as duas
+   fileiras dividem essa altura: a carta cresce até encher a célula, em vez
+   de deixar um vão morto embaixo. */
+.dash-top-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); height: 360px; gap: 10px 8px; }
+.dash-top-grid li { min-width: 0; min-height: 0; }
 /* .dash-top-list.dash-top-grid: mesma especificidade+1 da regra base
    `.dash-top-list a` (que vem DEPOIS no arquivo e alinha ao centro) — sem
    isso o nome vira shrink-to-fit e estoura pro azulejo vizinho. */
-.dash-top-list.dash-top-grid a { flex-direction: column; align-items: stretch; gap: 4px; min-width: 0; }
-/* Moldura na proporção da carta (63:88), centrada: segura o lugar mesmo com a
-   imagem ainda descendo (ou falhando), e a grade não pula. */
-.dash-top-grid .dash-top-thumb { width: auto; height: 118px; aspect-ratio: 63 / 88; margin: 0 auto; background: var(--panel-strong); }
-.dash-top-grid .dash-top-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.dash-top-list.dash-top-grid a { flex-direction: column; align-items: stretch; gap: 4px; min-width: 0; height: 100%; }
+/* A imagem toma a altura que sobra da célula (nome + valor embaixo) na
+   proporção da carta (63:88), centrada; o fundo segura o lugar enquanto a
+   imagem desce (ou se falhar). */
+.dash-top-grid .dash-top-thumb { flex: 1 1 auto; min-height: 0; width: auto; display: flex; justify-content: center; }
+.dash-top-grid .dash-top-thumb img { width: auto; height: 100%; max-width: 100%; aspect-ratio: 63 / 88; object-fit: cover; background: var(--panel-strong); }
 .dash-top-grid strong { display: block; min-width: 0; font-size: 12.5px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dash-top-grid .dash-top-val { text-align: center; }
 .dash-top-grid .dash-empty { grid-column: 1 / -1; }
