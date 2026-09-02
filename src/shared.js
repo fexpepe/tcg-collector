@@ -8117,7 +8117,11 @@
   }
 
   function detailUrl(type, name, scope, game, extra) {
-    const params = new URLSearchParams({ type, name });
+    const params = new URLSearchParams({ type });
+    // Set de nome fora do ASCII (japonês, acento) COM setId: o link nasce só
+    // com o id. O nome codificado (%E3%82%B8…) é o que o "copiar endereço do
+    // link" entregava; o detail.js resolve o nome pelo id (resolveSetNameFromId).
+    if (!(type === "set" && extra && extra.setId && /[^ -~]/.test(name))) params.set("name", name);
     if (scope) params.set("scope", scope);
     // `extra` (setId/region): desambiguação de SET. O nome não é chave única —
     // o mesmo set existe em várias línguas e há sets homônimos com ids

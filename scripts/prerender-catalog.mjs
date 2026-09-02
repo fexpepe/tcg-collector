@@ -79,6 +79,13 @@ function escapeHtml(s) {
 function escapeAttr(s) {
   return escapeHtml(s).replace(/'/g, "&#39;");
 }
+// URL do set NO APP. Nome fora do ASCII (japonês) com setId conhecido vai só
+// com o id: o detail.js resolve o nome pelo id, e a URL que a pessoa copia
+// fica legível. Mesma regra do detailUrl() do shared.js.
+function appSetUrl(name, setId, game) {
+  const ident = setId && /[^ -~]/.test(name) ? `setId=${encodeURIComponent(setId)}` : `name=${encodeURIComponent(name)}`;
+  return `/detail?type=set&${ident}&game=${game}`;
+}
 function slugify(name) {
   return String(name)
     .normalize("NFKD").replace(/[̀-ͯ]/g, "") // tira acentos
@@ -304,7 +311,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
     <link rel="alternate" hreflang="x-default" href="${escapeAttr(altPt)}">`;
   // ?game= grava a sessão do jogo no app — sem ele, quem estivesse com outro
   // jogo ativo cairia no detail do jogo errado e não acharia o set.
-  const appUrl = `/detail?type=set&name=${encodeURIComponent(name)}&game=${game}`;
+  const appUrl = appSetUrl(name, page.rep && page.rep.setId, game);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -867,7 +874,7 @@ function cardPageHtml(cp, ctx = {}) {
   // &card=<id>: o detail.js reabre o POPUP da carta ao aterrissar (openFromUrl)
   // — quem acha a carta no Google cai direto nela, não na página do set pra
   // procurar de novo.
-  const appUrl = `/detail?type=set&name=${encodeURIComponent(setPage.name)}&game=${setPage.game}&card=${encodeURIComponent(card.id)}`;
+  const appUrl = `${appSetUrl(setPage.name, setPage.rep && setPage.rep.setId, setPage.game)}&card=${encodeURIComponent(card.id)}`;
   // PARÁGRAFO DE ABERTURA. Frases curtas, montadas só com o que a carta tem —
   // frase sem dado não é escrita, em vez de sair com buraco ("ilustrada por
   // undefined"). O que faz este texto valer pra busca é que cada fato VARIA por

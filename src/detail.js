@@ -31,12 +31,18 @@
 
   const params = new URLSearchParams(window.location.search);
   const detailType = params.get("type") || "";
-  const detailName = params.get("name") || "";
+  // `let`: a página de SET aceita URL só com ?setId= (sem ?name=) — o nome é
+  // resolvido do catálogo em resolveSetNameFromId(), assim que ele chega.
+  let detailName = params.get("name") || "";
   // Desambiguação da página de SET (ver scopeToEdition): o nome sozinho pode
   // casar com mais de uma edição. A lista de Sets carrega estes dois no link
   // quando precisa; ausentes, valem os padrões.
   const detailSetId = params.get("setId") || "";
   const detailRegion = params.get("region") || "";
+  // Nome fora do ASCII imprimível (japonês, acento): na barra de endereço ele
+  // aparece bonito, mas o Ctrl+C entrega a URL codificada (%E3%82%B8…). Pra
+  // esses sets a URL passa a se identificar pelo setId — ver limpaUrlDoSet().
+  const nomeLegivelNaUrl = (nome) => /^[ -~]*$/.test(nome);
   // scope=collection: versão "dentro da sua coleção" (cartas que você não tem
   // aparecem em preto e branco; o resto da página funciona igual ao catálogo).
   const collectionScope = params.get("scope") === "collection";
@@ -300,10 +306,11 @@
       cardsById = new Map(cards.map((card) => [card.id, card]));
       owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
       pageCards = getPageCards();
+      limpaUrlDoSet();
       // Set vazio = provável link de OUTRO jogo (links antigos circulando sem
       // ?game=; o site caía no jogo da sessão e mostrava a página oca). Procura
       // o set nos outros catálogos e redireciona com o jogo certo.
-      if (!pageCards.length && detailType === "set" && detailName) {
+      if (!pageCards.length && detailType === "set" && (detailName || detailSetId)) {
         rescueWrongGame();
       }
       init();
@@ -330,7 +337,7 @@
         const r = await fetch(dir + (manifestMode ? "indexes-sets.generated.json" : "indexes-sets.json"));
         if (!r.ok) continue;
         const sets = await r.json();
-        if (!Array.isArray(sets) || !sets.some((s) => s.name === detailName)) continue;
+        if (!Array.isArray(sets) || !sets.some((s) => (detailName && s.name === detailName) || (detailSetId && s.id === detailSetId))) continue;
         const url = new URL(location.href);
         url.searchParams.set("game", slug);
         // replace, não assign: a URL quebrada não fica no histórico do "voltar".
@@ -494,9 +501,39 @@
     }
   }
 
+  // URL só com ?setId= (sem ?name=): acha o nome no catálogo já carregado —
+  // manifest (produção) ou cards.js (dev). Tudo abaixo continua chaveado pelo
+  // nome, como sempre foi; só a entrada ganhou uma porta a mais.
+  function resolveSetNameFromId() {
+    if (detailType !== "set" || detailName || !detailSetId) return;
+    const manifest = window.TCG_MANIFEST;
+    const entry = manifest && Array.isArray(manifest.sets) ? manifest.sets.find((set) => set.id === detailSetId) : null;
+    if (entry) { detailName = entry.name; return; }
+    const card = Array.isArray(window.TCG_CARDS) ? window.TCG_CARDS.find((c) => c.setId === detailSetId) : null;
+    if (card) detailName = card.set;
+  }
+
+  // Barra de endereço LIMPA pros sets de nome não-ASCII: troca ?name=<japonês>
+  // por ?setId=<id>, sem entrada no histórico (replaceState). É o que o Ctrl+C
+  // na barra copia — sleevu.app/detail?type=set&setId=hxh-hb-jf02&game=hxh em
+  // vez de 140 caracteres de %E3%82%B8. Só depois de o set resolver: uma URL
+  // trocada antes de saber se o id existe seria pior do que a feia.
+  function limpaUrlDoSet() {
+    if (detailType !== "set" || !pageCards.length || nomeLegivelNaUrl(detailName)) return;
+    const id = detailSetId || pageCards[0].setId;
+    if (!id || !params.has("name")) return;
+    try {
+      const sp = new URLSearchParams(window.location.search);
+      sp.delete("name");
+      sp.set("setId", id);
+      history.replaceState(history.state, "", `${window.location.pathname}?${sp.toString()}`);
+    } catch (e) { /* replaceState negado (iframe/sandbox): a URL feia ainda funciona */ }
+  }
+
   // No modo manifest, baixa apenas os chunks de set necessários para esta página.
   async function resolveCards() {
     await shared.awaitCatalog();
+    resolveSetNameFromId();
     if (Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length) {
       return window.TCG_CARDS;
     }

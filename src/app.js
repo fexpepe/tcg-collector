@@ -787,7 +787,10 @@
   }
 
   function setDetailUrl(item) {
-    if (!ambiguousSetNames.has(item.name)) return detailUrl("set", item.name);
+    // O setId vai SEMPRE que existe: é o que deixa o detailUrl trocar o nome
+    // não-ASCII pelo id na URL. Set de nome único não muda de comportamento
+    // (uma edição só, o id não filtra nada); só o ambíguo carrega a região.
+    if (!ambiguousSetNames.has(item.name)) return detailUrl("set", item.name, "", "", { setId: item.setId });
     return detailUrl("set", item.name, "", "", { setId: item.setId, region: selectedLangRegion });
   }
 
