@@ -5096,7 +5096,65 @@ a.progress-row:hover {
 .dash-recent-card .progress-bar { margin-bottom: 0; }
 .dash-recent-count { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
 
-.dash-games { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 6px; }
+/* Por jogo: título + seletor da forma de ver (cápsulas | pizza | barras |
+   mosaico) na mesma linha, na MESMA largura do quadrado — o seletor termina
+   na borda direita do painel, não na da página. Reusa o .view-toggle da
+   Coleção (só ícone; o nome vai no title/aria), encolhido pro cabeçalho. */
+.dash-games-head { display: flex; align-items: center; gap: 8px 14px; width: min(100%, 360px); margin: 26px 0 12px; }
+.dash-games-head .dash-section-head { margin: 0; }
+.dash-games-modes { margin-left: auto; flex: none; }
+.dash-games-modes .view-toggle-btn { min-width: 36px; min-height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+.dash-games-modes svg { width: 17px; height: 17px; }
+@media (pointer: coarse) { .dash-games-modes .view-toggle-btn { min-width: 42px; min-height: 40px; } }
+/* O QUADRADO. Tamanho FIXO nas duas direções (360px, ou a largura toda no
+   celular — sempre 1:1): trocar a forma de ver redesenha só o miolo (.dash-gv),
+   nunca a caixa, então a página não pula nem muda de proporção. O miolo rola
+   por dentro se uma forma não couber (12 jogos em cápsulas de 44px no toque). */
+.dash-games {
+  box-sizing: border-box; width: min(100%, 360px); aspect-ratio: 1 / 1;
+  display: flex; flex-direction: column;
+  padding: 12px; margin: 0 0 6px; overflow: hidden;
+  border: 1px solid var(--line); border-radius: 12px;
+  background: var(--panel); box-shadow: var(--shadow);
+}
+.dash-games .empty-state { margin: auto 0; }
+.dash-gv { flex: 1; min-height: 0; overflow: auto; }
+.dash-gv-chips { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; }
+/* Pizza: rosca à esquerda, legenda (nome + contagem, cada linha um link) à
+   direita. O texto do centro é do TEMA, não da fatia — número em tinta de texto. */
+.dash-gv-pie { display: grid; grid-template-columns: 46% minmax(0, 1fr); gap: 10px; align-items: center; }
+.dash-gv-pie svg { width: 100%; height: auto; display: block; }
+.dash-pie-total { font-size: 15px; font-weight: 800; fill: var(--text); font-variant-numeric: tabular-nums; }
+.dash-pie-sub { font-size: 5.5px; font-weight: 700; fill: var(--muted); }
+.dash-pie-legend { display: flex; flex-direction: column; gap: 3px; max-height: 100%; overflow: auto; }
+.dash-pie-row { display: flex; align-items: center; gap: 7px; min-width: 0; color: var(--text); text-decoration: none; font-size: 12.5px; line-height: 1.45; }
+.dash-pie-row:hover .dash-pie-name { color: var(--accent); }
+.dash-pie-dot { width: 10px; height: 10px; flex: none; }
+.dash-pie-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dash-pie-n { margin-left: auto; font-weight: 800; font-variant-numeric: tabular-nums; }
+/* Barras: mesma anatomia da "Distribuição por região", mais apertada pra caber
+   12 jogos no quadrado. */
+.dash-gv-bars { display: grid; gap: 7px; align-content: center; }
+.dash-gv-bars .dash-dist-row { text-decoration: none; color: inherit; }
+.dash-gv-bars .dash-dist-row:hover .dash-dist-label { color: var(--accent); }
+/* Mosaico: azulejos posicionados em % pelo JS (treemap). A borda de 1px na cor
+   do painel dá 2px de fundo entre vizinhos — cores parecidas não se colam. */
+.dash-gv-tm { position: relative; overflow: hidden; }
+.dash-tm-tile {
+  position: absolute; box-sizing: border-box; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 5px 8px; border: 1px solid var(--panel);
+  background: var(--gc); color: var(--gc-fg);
+  font-size: 12px; font-weight: 800; line-height: 1.25; letter-spacing: -0.01em;
+  text-decoration: none; transition: filter 120ms ease;
+}
+.dash-tm-tile:hover { filter: brightness(1.12); }
+.dash-tm-tile span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dash-tm-tile span + span { font-variant-numeric: tabular-nums; opacity: .85; }
+/* Sem rótulo, sem padding: com box-sizing border-box, padding + borda maiores
+   que a altura fariam o azulejo de 2% CRESCER além do quadrado. */
+.dash-tm-s { padding: 0; }
+.dash-tm-s span { display: none; }
 /* Cápsula por jogo: CHAPADA na cor da marca, mesmo idioma visual do .game-tag
    da Coleção — cor cheia, canto reto, sem borda. O --gc e o --gc-fg vêm do JS
    (GAME_COLOR + textOnColor, que garante 4,5:1 nos 12 jogos), então jogo novo

@@ -152,31 +152,169 @@
     if (head) head.hidden = false;
   })();
 
-  // ── Distribuição por marca (chips) ─────────────────────────────────────────
+  // ── Distribuição por marca: 4 formas de ver, no MESMO quadrado ──────────
+  // Cápsulas (a fileira colorida de sempre), pizza, barras e mosaico
+  // (treemap) desenham a mesma contagem de cartas distintas por jogo. O painel
+  // #dhGames é um quadrado de tamanho FIXO (CSS): trocar a forma redesenha só
+  // o miolo, nunca a caixa — a página não pula. A escolha fica em
+  // localStorage (tcg-dash-games-view), como o modo do gráfico do Portfólio.
   const dist = shared.GAME_SLUGS
     .map((g) => ({ g, n: distinctOf(g) }))
-    .filter((x) => x.n > 0);
-  el.games.innerHTML = dist.length
-    ? dist.map(({ g, n }) =>
-        // CHAPADO na cor do jogo, mesmo idioma visual do .game-tag da Coleção:
-        // cor cheia, canto reto, texto escolhido por textOnColor (que garante
-        // 4.5:1 nos 12 jogos, inclusive nos claros como o prata do DBFW).
-        //
-        // O "véu" da contagem é o INVERSO do texto, não uma cor fixa: sobre um
-        // jogo escuro escurece (e o texto branco ganha contraste), sobre um jogo
-        // claro clareia (e o texto preto ganha). Um rgba(0,0,0,…) fixo faria a
-        // contagem sumir justamente nos jogos claros.
-        // ?filter=<jogo>: o chip leva pra Coleção JÁ FILTRADA naquele jogo.
-        // Clicar em "Lorcana · 42" e cair numa Coleção em "Todos" obrigava a
-        // pessoa a refazer na mão o filtro que ela acabou de escolher.
-        ((cor, fg) =>
-          `<a class="dash-game-chip" href="collection?filter=${escapeAttribute(g)}" style="--gc:${cor};--gc-fg:${fg};--gc-veil:${fg === "#000000" ? "rgba(255,255,255,.5)" : "rgba(0,0,0,.26)"}">
-            <span class="dash-game-name">${escapeHtml(shared.gameLabel(g))}</span>
-            <span class="dash-game-count">${n}</span>
-          </a>`
-        )(shared.GAME_COLOR[g] || shared.GAME_COLOR.pokemon,
-          shared.textOnColor(shared.GAME_COLOR[g] || shared.GAME_COLOR.pokemon))).join("")
-    : `<p class="empty-state">${escapeHtml(t("dash.empty"))}</p>`;
+    .filter((x) => x.n > 0)
+    .map((x) => {
+      // Cor CHAPADA + textOnColor, o mesmo idioma do .game-tag da Coleção
+      // (4,5:1 garantido nos 12 jogos, inclusive nos claros como o prata do
+      // DBFW). O "véu" da contagem é o INVERSO do texto: sobre jogo escuro
+      // escurece, sobre jogo claro clareia — um rgba(0,0,0) fixo faria a
+      // contagem sumir justamente nos jogos claros.
+      const cor = shared.GAME_COLOR[x.g] || shared.GAME_COLOR.pokemon;
+      const fg = shared.textOnColor(cor);
+      return {
+        ...x, cor, fg,
+        veil: fg === "#000000" ? "rgba(255,255,255,.5)" : "rgba(0,0,0,.26)",
+        label: shared.gameLabel(x.g),
+        // ?filter=<jogo>: leva pra Coleção JÁ FILTRADA naquele jogo. Cair numa
+        // Coleção em "Todos" obrigava a refazer na mão o filtro recém-escolhido.
+        href: `collection?filter=${escapeAttribute(x.g)}`
+      };
+    });
+  const distTotal = dist.reduce((n, x) => n + x.n, 0);
+  const distPct = (n) => Math.round((n / Math.max(1, distTotal)) * 100);
+  const distTitle = (x) => escapeAttribute(t("dash.gameShare", { name: x.label, n: x.n, pct: distPct(x.n) }));
+  const distStyle = (x) => `--gc:${x.cor};--gc-fg:${x.fg};--gc-veil:${x.veil}`;
+
+  const VIEW_KEY = "tcg-dash-games-view";
+  const VIEWS = {
+    chips: (rows) => `<div class="dash-gv dash-gv-chips">${rows.map((x) =>
+      `<a class="dash-game-chip" href="${x.href}" style="${distStyle(x)}" title="${distTitle(x)}">
+        <span class="dash-game-name">${escapeHtml(x.label)}</span>
+        <span class="dash-game-count">${x.n}</span>
+      </a>`).join("")}</div>`,
+
+    // Rosca em SVG: cada fatia é um <circle> com stroke-dasharray (comprimento
+    // da fatia, resto do perímetro) girado até o começo dela. O 2 de folga no
+    // traço deixa o fundo do painel aparecer entre fatias vizinhas — é o
+    // "gap de superfície" que separa cores parecidas sem borda extra. Com um
+    // jogo só, a folga some e a rosca fecha inteira.
+    pie: (rows) => {
+      const R = 38, C = 2 * Math.PI * R, GAP = rows.length > 1 ? 2 : 0;
+      let off = 0;
+      const fatias = rows.map((x) => {
+        const len = (x.n / distTotal) * C;
+        const svg = `<circle r="${R}" cx="50" cy="50" fill="none" stroke="${x.cor}" stroke-width="20"
+          stroke-dasharray="${Math.max(0, len - GAP).toFixed(2)} ${C.toFixed(2)}"
+          transform="rotate(${((off / C) * 360 - 90).toFixed(2)} 50 50)"><title>${distTitle(x)}</title></circle>`;
+        off += len;
+        return svg;
+      }).join("");
+      return `<div class="dash-gv dash-gv-pie">
+        <svg viewBox="0 0 100 100" role="img" aria-label="${escapeAttribute(tn("count.cards", distTotal))}">${fatias}
+          <text x="50" y="49" text-anchor="middle" class="dash-pie-total">${distTotal}</text>
+          <text x="50" y="59" text-anchor="middle" class="dash-pie-sub">${escapeHtml(t("stats.distinct"))}</text>
+        </svg>
+        <div class="dash-pie-legend">${rows.map((x) =>
+          `<a class="dash-pie-row" href="${x.href}" title="${distTitle(x)}">
+            <span class="dash-pie-dot" style="background:${x.cor}"></span>
+            <span class="dash-pie-name">${escapeHtml(x.label)}</span>
+            <span class="dash-pie-n">${x.n}</span>
+          </a>`).join("")}</div>
+      </div>`;
+    },
+
+    // Barras: a mesma anatomia da "Distribuição por região" (.dash-dist-*),
+    // ordenada do maior pro menor, cada linha sendo o link pra Coleção.
+    bars: (rows) => {
+      const max = Math.max(1, ...rows.map((x) => x.n));
+      return `<div class="dash-gv dash-gv-bars">${rows.slice().sort((a, b) => b.n - a.n).map((x) =>
+        `<a class="dash-dist-row" href="${x.href}" title="${distTitle(x)}">
+          <span class="dash-dist-label">${escapeHtml(x.label)}</span>
+          <span class="dash-dist-track"><span class="dash-dist-fill" style="width:${Math.round((x.n / max) * 100)}%;background:${x.cor}"></span></span>
+          <span class="dash-dist-n">${x.n}</span>
+        </a>`).join("")}</div>`;
+    },
+
+    // Mosaico (treemap "squarified"): a área de cada azulejo é a fatia do jogo
+    // no total. Tudo em % do quadrado, então não depende do tamanho em px.
+    treemap: (rows) => {
+      const tiles = squarify(rows.slice().sort((a, b) => b.n - a.n).map((x) => ({ x, area: (x.n / distTotal) * 10000 })), 0, 0, 100, 100);
+      return `<div class="dash-gv dash-gv-tm">${tiles.map((tl) =>
+        // Azulejo estreito ou baixo demais pro texto: some o rótulo (o title
+        // continua contando) em vez de deixar letra cortada pela metade.
+        `<a class="dash-tm-tile${tl.w < 17 || tl.h < 10 ? " dash-tm-s" : ""}" href="${tl.x.href}" style="${distStyle(tl.x)};left:${tl.x0.toFixed(2)}%;top:${tl.y0.toFixed(2)}%;width:${tl.w.toFixed(2)}%;height:${tl.h.toFixed(2)}%" title="${distTitle(tl.x)}">
+          <span>${escapeHtml(tl.x.label)}</span><span>${tl.x.n}</span>
+        </a>`).join("")}</div>`;
+    }
+  };
+  const VIEW_LABEL = { chips: "dash.viewChips", pie: "dash.viewPie", bars: "dash.viewBars", treemap: "dash.viewTreemap" };
+  // Seletor SÓ-ÍCONE (o .view-toggle da Coleção): quatro rótulos escritos não
+  // cabem ao lado do título na largura do quadrado. O nome vai no title/aria.
+  const VIEW_ICON = {
+    chips: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="9" height="6"/><rect x="14" y="5" width="7" height="6"/><rect x="3" y="13" width="6" height="6"/><rect x="11" y="13" width="10" height="6"/></svg>',
+    pie: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5V12l6.2 5.8"/></svg>',
+    bars: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h15"/><path d="M4 12h10"/><path d="M4 18h6"/></svg>',
+    treemap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="10" height="18"/><rect x="13" y="3" width="8" height="10"/><rect x="13" y="13" width="8" height="8"/></svg>'
+  };
+
+  // Squarified treemap (Bruls, Huizing & van Wijk): preenche o retângulo em
+  // fileiras ao longo do lado MENOR, aceitando itens na fileira enquanto o pior
+  // aspecto (largura/altura) dela melhora. Itens já vêm em ordem decrescente.
+  function squarify(items, x0, y0, w, h) {
+    const out = [];
+    let list = items, rx = x0, ry = y0, rw = w, rh = h;
+    while (list.length) {
+      const coluna = rw >= rh;          // caixa larga: a fileira é uma coluna vertical
+      const lado = coluna ? rh : rw;
+      const pior = (fila) => {
+        const s = fila.reduce((n, it) => n + it.area, 0);
+        return Math.max(...fila.map((it) => Math.max((lado * lado * it.area) / (s * s), (s * s) / (lado * lado * it.area))));
+      };
+      let fila = [list[0]], melhor = pior(fila);
+      for (let i = 1; i < list.length; i++) {
+        const cand = fila.concat(list[i]);
+        const p = pior(cand);
+        if (p > melhor) break;
+        fila = cand; melhor = p;
+      }
+      const s = fila.reduce((n, it) => n + it.area, 0);
+      const esp = s / lado;             // espessura da fileira
+      let off = 0;
+      fila.forEach((it) => {
+        const len = it.area / esp;
+        out.push(coluna
+          ? { x: it.x, x0: rx, y0: ry + off, w: esp, h: len }
+          : { x: it.x, x0: rx + off, y0: ry, w: len, h: esp });
+        off += len;
+      });
+      if (coluna) { rx += esp; rw -= esp; } else { ry += esp; rh -= esp; }
+      list = list.slice(fila.length);
+    }
+    return out;
+  }
+
+  const readView = () => { try { const v = localStorage.getItem(VIEW_KEY); return VIEWS[v] ? v : "chips"; } catch (e) { return "chips"; } };
+  let view = readView();
+  const modes = document.getElementById("dhGamesModes");
+  function renderGames() {
+    el.games.innerHTML = dist.length
+      ? VIEWS[view](dist)
+      : `<p class="empty-state">${escapeHtml(t("dash.empty"))}</p>`;
+    if (modes) modes.querySelectorAll("[data-view]").forEach((b) =>
+      b.setAttribute("aria-pressed", String(b.dataset.view === view)));
+  }
+  if (modes) {
+    modes.innerHTML = Object.keys(VIEWS).map((v) =>
+      `<button type="button" class="view-toggle-btn" data-view="${v}" aria-pressed="${v === view}" aria-label="${escapeAttribute(t(VIEW_LABEL[v]))}" title="${escapeAttribute(t(VIEW_LABEL[v]))}">${VIEW_ICON[v]}</button>`).join("");
+    modes.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-view]");
+      if (!b || b.dataset.view === view) return;
+      view = b.dataset.view;
+      try { localStorage.setItem(VIEW_KEY, view); } catch (e2) { /* modo privado */ }
+      renderGames();
+    });
+    // Sem carta nenhuma não há o que alternar: o seletor sai junto.
+    modes.hidden = !dist.length;
+  }
+  renderGames();
 
   // ── Atalhos (HUB) ───────────────────────────────────────────────────────────
   const IC = {

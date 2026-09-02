@@ -110,7 +110,14 @@
       <h2 class="dash-section-head" id="dhFreshHead" data-i18n="dash.fresh" hidden>Novidades na sua coleção</h2>
       <p id="dhFresh" class="dash-fresh" hidden></p>
 
-      <h2 class="dash-section-head" data-i18n="dash.byGame">Por jogo</h2>
+      <!-- Por jogo: QUATRO formas de ver a mesma distribuição (cápsulas, pizza,
+           barras, mosaico), escolhidas no seletor à direita do título. O
+           painel é um QUADRADO de tamanho fixo nas duas direções: trocar a
+           forma nunca mexe no tamanho nem na proporção do que está na tela. -->
+      <div class="dash-games-head">
+        <h2 class="dash-section-head" data-i18n="dash.byGame">Por jogo</h2>
+        <div id="dhGamesModes" class="view-toggle dash-games-modes" role="group" data-i18n-aria="dash.viewAria" aria-label="Forma de ver a distribuição"></div>
+      </div>
       <section id="dhGames" class="dash-games" data-i18n-aria="aria.collectionsByGame" aria-label="Coleções por jogo"></section>
 
       <!-- Atalhos: o HUB do jogador -->
