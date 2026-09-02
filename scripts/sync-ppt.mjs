@@ -285,11 +285,23 @@ async function syncGradedEN(ourSetId, pptNumericId) {
 
 // Mapa setId(nosso) -> pptSetId, a partir do /sets da PPT (cacheado 7 dias).
 const SETMAP_VERSION = 4; // bump invalida o cache do mapa de sets
-const DISC_VERSION = 2;   // bump descarta o cache de descobertas (positivo+negativo)
+// v3: os NEGATIVOS ("a PPT não tem esse set") ganham data e EXPIRAM. Antes um
+// null gravado era pra sempre: o MC (Start Deck 100, dez/2025) foi procurado
+// uma vez, antes de a PPT listá-lo, e nunca mais — 774 cartas sem imagem por
+// meses, com o build dizendo "sem equivalente na PPT (pulado)" toda semana.
+// O bump descarta o cache antigo (re-descobre tudo uma vez: ~2 buscas por set).
+const DISC_VERSION = 3;
+const NEG_RETRY_DAYS = 14; // set que não estava na PPT é re-procurado a cada 2 semanas
 const discoveredFile = () => new URL("discovered.json", cacheDir);
 // Sets descobertos via cartas (ver discoverSetId) — { CODE: numericId|null }.
-async function loadDiscovered() { try { const c = JSON.parse(await readFile(discoveredFile(), "utf8")); return c.v === DISC_VERSION ? (c.e || {}) : {}; } catch { return {}; } }
-async function saveDiscovered(obj) { try { await writeFile(discoveredFile(), JSON.stringify({ v: DISC_VERSION, e: obj }), "utf8"); } catch { /* ignora */ } }
+// { e: { CODE: pptId } positivos, n: { CODE: timestamp } negativos (expiram) }
+async function loadDiscovered() {
+  try { const c = JSON.parse(await readFile(discoveredFile(), "utf8")); return c.v === DISC_VERSION ? { e: c.e || {}, n: c.n || {} } : { e: {}, n: {} }; }
+  catch { return { e: {}, n: {} }; }
+}
+async function saveDiscovered(d) { try { await writeFile(discoveredFile(), JSON.stringify({ v: DISC_VERSION, e: d.e, n: d.n }), "utf8"); } catch { /* ignora */ } }
+// Negativo ainda válido? (dentro da janela NEG_RETRY_DAYS)
+function negativeFresh(d, code) { const t = d.n && d.n[code]; return !!t && Date.now() - t < NEG_RETRY_DAYS * 864e5; }
 
 // Nome do Pokémon em INGLÊS por dexId (data/pokemon-names.js, gerado antes do
 // sync-ppt). O chunk pré-merge tem pokemonName em japonês, que não casa na
@@ -331,7 +343,7 @@ async function setMap() {
   }
   // Sets que existem nas cartas mas faltam no /sets (ex.: M3) entram aqui.
   const disc = await loadDiscovered();
-  for (const [code, id] of Object.entries(disc)) if (id != null && !map.has(code)) map.set(code, id);
+  for (const [code, id] of Object.entries(disc.e)) if (id != null && !map.has(code)) map.set(code, id);
   return map;
 }
 
@@ -344,11 +356,19 @@ async function discoverSetId(ourSetId) {
   const names = await pokemonNames();
   const code = ourSetId.toUpperCase();
   const tried = new Set();
-  for (const card of chunk) {
+  // Amostra ESPALHADA pelo chunk, não as primeiras cartas: num set grande (o MC
+  // tem 774) as primeiras são Bulbasaur/Pikachu, que a PPT devolve aos montes
+  // de outros sets — com limit=30 o set procurado nem aparece na resposta. Os
+  // Pokémon do meio/fim do set são mais raros no catálogo e casam melhor. Até
+  // 4 buscas (custo pequeno; roda no máximo a cada NEG_RETRY_DAYS por set).
+  const step = Math.max(1, Math.floor(chunk.length / 5));
+  const sample = [];
+  for (let i = step; i < chunk.length && sample.length < 12; i += step) sample.push(chunk[i]);
+  for (const card of sample.concat(chunk)) {
     const q = names[card.dexId] || card.pokemonName; // INGLÊS (chunk pré-merge é JP)
     if (!q || tried.has(q)) continue;
     tried.add(q);
-    if (tried.size > 2) break; // teto de buscas (custo); 2 basta p/ set que existe
+    if (tried.size > 4) break; // teto de buscas (custo)
     try {
       const j = await ppt(`/cards?search=${encodeURIComponent(q)}&language=japanese&limit=30`);
       const hit = (j.data || []).find((c) => { const cc = setCodeFromName(c.setName); return cc && cc.toUpperCase() === code; });
@@ -665,11 +685,17 @@ async function run() {
     const code = setId.toUpperCase();
     let pptId = map.get(code);
     // Set não listado no /sets (ex.: M3): descobre pelas cartas. Cache negativo
-    // (`code in discovered`, valor null) evita re-tentar sets que de fato não
-    // existem na PPT (E*/PCG*/neo*...). Gasta crédito, então só com orçamento/tempo.
-    if (pptId == null && !(code in discovered) && creditsUsed < BUDGET && !(TIME_CAP_MS && Date.now() - startedAt > TIME_CAP_MS)) {
+    // COM DATA (discovered.n) evita re-tentar toda semana os sets que de fato
+    // não existem na PPT (E*/PCG*/neo*...), mas expira em NEG_RETRY_DAYS — a
+    // PPT lista sets novos semanas depois do lançamento (caso do MC). Gasta
+    // crédito, então só com orçamento/tempo.
+    if (pptId == null && !(code in discovered.e) && !negativeFresh(discovered, code) && creditsUsed < BUDGET && !(TIME_CAP_MS && Date.now() - startedAt > TIME_CAP_MS)) {
       const found = await discoverSetId(setId);
-      if (!DRY) { discovered[code] = found; discDirty = true; }
+      if (!DRY) {
+        if (found != null) { discovered.e[code] = found; delete discovered.n[code]; }
+        else discovered.n[code] = Date.now(); // negativo COM data: expira em NEG_RETRY_DAYS
+        discDirty = true;
+      }
       if (found != null) { pptId = found; map.set(code, found); console.log(`  ${setId}: descoberto via cartas (ppt ${found})`); }
     }
     if (pptId == null) { console.log(`  ${setId}: sem equivalente na PPT (pulado)`); continue; }
