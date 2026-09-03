@@ -1239,7 +1239,8 @@ input::placeholder {
   padding: 0 5px;
   pointer-events: none; /* só os botões captam clique; a imagem segue clicável */
 }
-.folder-section .card-grid.is-list .tile-reorder { display: none; } /* lista: imagem pequena */
+.folder-section .card-grid.is-list .tile-reorder,
+.folder-section .card-grid.is-compact .tile-reorder { display: none; } /* lista: imagem pequena; compacto: sem imagem */
 .tile-reorder-btn {
   pointer-events: auto;
   width: 30px; height: 30px; padding: 0;

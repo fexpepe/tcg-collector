@@ -1356,7 +1356,10 @@
     // Valor embrulhado em .cm-val: o Modo Colecionador esconde só o "· R$ X"
     // e a contagem fica (é dado de coleção, não de preço).
     const meta = `${pairs.length}${value > 0 ? `<span class="cm-val"> · ${escapeHtml(shared.formatMoney(shared.getCurrency(), value))}</span>` : ""}`;
-    const listCls = cardsView === "list" ? " is-list" : "";
+    // A classe da vista já nasce na grade: applyCardsView só roda no clique do
+    // seletor, e sem isto o compacto recarregado deixava as linhas compactas
+    // espremidas em células de 220px (flag em cima do número, nome sumido).
+    const listCls = cardsView === "list" ? " is-list" : cardsView === "compact" ? " is-compact" : "";
 
     // CARD de coleção (vitrine) em PILHA: até 3 cartas em leque na capa (lê como
     // "um conjunto", não como uma carta só), tag do jogo + contagem sobre a capa,
