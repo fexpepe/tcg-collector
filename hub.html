@@ -178,7 +178,9 @@
            mas ganham um atalho e uma tag própria aqui. O link abre a página de
            Sets do jogo-pai focada só naquela linha (?line=). -->
       <section class="hub hub-vintage">
-        <h2 class="hub-section-head" data-i18n="hub.vintage">Vintage</h2>
+        <!-- "beta" fora do span traduzível: o applicador de i18n reescreve o
+             textContent do elemento com data-i18n, e apagaria o selo. -->
+        <h2 class="hub-section-head"><span data-i18n="hub.vintage">Vintage</span><sup class="nav-beta">beta</sup></h2>
         <p class="hub-section-sub" data-i18n="hub.vintageSub">Linhas clássicas de card game. Ficam dentro da coleção do jogo principal, com etiqueta própria.</p>
         <ul class="hub-grid">
           <!-- Ordem CRONOLÓGICA por início de publicação (mais antigo → mais

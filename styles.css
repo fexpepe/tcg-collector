@@ -546,11 +546,13 @@ main {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
 }
 
-/* Selo "beta" nos itens do menu ainda em construção (Decks, Portfólio). Os
+/* Selo "beta" nos itens do menu ainda em construção (Decks, Portfólio) e no
+   título da seção Vintage do Hub (linhas ainda em evolução). Os
    links são inline-flex, então o sobrescrito sai por align-self (vertical-align
    não vale em item de flex). Neutro por tokens de tema, e não pelo accent —
    o accent muda por jogo e o header é global (mesma regra do hover abaixo). */
-.page-nav .nav-beta {
+.page-nav .nav-beta,
+.hub-section-head .nav-beta {
   align-self: flex-start;
   margin: 3px 0 0 4px;
   padding: 1px 4px;
