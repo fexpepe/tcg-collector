@@ -9393,14 +9393,21 @@ select,
   grid-template-columns: minmax(0, 1fr) 66px minmax(0, 150px) 92px 104px max-content;
   align-items: center;
   gap: 10px;
-  min-height: 38px;
+  min-height: 48px;
   padding: 0 10px;
   border: 0;
   border-bottom: 1px solid var(--line);
+  border-radius: 0;
   background: none;
+  box-shadow: none;
 }
 .card-tile.tile-compact:hover { background: var(--panel); }
-.card-tile.tile-compact.owned { background: var(--accent-soft); }
+/* "Tenho" na linha compacta é SÓ o fundo tingido. O tile normal marca posse
+   com anel de sombra + borda no accent + cantos de 12px — numa fileira de
+   linhas coladas (gap 0) os anéis se sobrepunham e cada linha virava uma
+   caixinha encavalada na de baixo (a Coleção, onde TUDO é "tenho", ficava
+   inteira assim; nos Sets só as poucas linhas possuídas). */
+.card-tile.tile-compact.owned { background: var(--accent-soft); border-color: var(--line); border-radius: 0; box-shadow: none; }
 /* justify-content explícito: <button> vem com `center` do user-agent, e sem
    isto o nome flutuava no meio da coluna elástica — quanto mais larga a tela,
    mais longe da esquerda ele ia. */
@@ -9416,8 +9423,13 @@ select,
 /* Botões colados à direita, e o de lista no canto oposto (o "outro canto" do
    pedido). Como a célula tem largura fixa, o + fica sempre no mesmo lugar —
    é o botão que se clica em série. */
-.card-tile.tile-compact .tile-actions { display: flex; justify-content: flex-end; align-items: center; gap: 4px; }
-.card-tile.tile-compact .tile-btn { min-height: 26px; min-width: 26px; }
+.card-tile.tile-compact .tile-actions { display: flex; justify-content: flex-end; align-items: center; gap: 6px; }
+/* Botões REDONDOS de verdade (34×34, o tamanho-base do .tile-btn): o piso de
+   26px de altura que havia aqui, com a largura fixa de 34px, dava um oval. */
+.card-tile.tile-compact .tile-btn { width: 34px; min-height: 34px; }
+/* Na linha "tenho" o fundo tingido tem quase o tom da --line, e o círculo dos
+   botões sumia; um fio mais forte mantém os botões redondos legíveis. */
+.card-tile.tile-compact.owned .tile-btn { border-color: color-mix(in srgb, var(--text) 22%, transparent); }
 /* O − continua reservando o lugar dele quando está escondido: sem isto, marcar
    uma carta empurrava os outros botões daquela linha só. */
 .card-tile.tile-compact .tile-minus[hidden] { display: inline-flex; visibility: hidden; }
