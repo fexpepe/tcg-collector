@@ -5031,9 +5031,11 @@ a.progress-row:hover {
 .explore-subnav[data-placeholder] { min-height: 38px; }
 
 /* Preço-alvo da wishlist: sino no tile + banner das atingidas. */
-.wish-target-btn { position: absolute; top: 8px; left: 8px; z-index: 2; width: 30px; height: 30px; min-height: 0; padding: 0; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); font-size: 14px; line-height: 1; cursor: pointer; opacity: 0.55; }
-.wish-target-btn:hover { opacity: 1; border-color: var(--accent); }
-.wish-target-btn.has-target { opacity: 1; border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+/* Sino do preço-alvo (wishlist): um .tile-btn como os outros, na ponta
+   ESQUERDA do rodapé do tile (Lista/♡/+ ficam na direita). Com alvo definido
+   acende igual ao ♡/pasta ativos. */
+.wish-target-btn { flex: none; cursor: pointer; }
+.wish-target-btn.has-target { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
 .card-tile { position: relative; }
 .wish-target-now { color: var(--money); font-weight: 800; }
 .wish-targets strong { color: var(--money); }

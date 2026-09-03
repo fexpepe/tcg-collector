@@ -183,16 +183,19 @@
     const label = cur
       ? t("wish.target.editAria", { v: shared.formatMoney(cur.cur, cur.v) })
       : t("wish.target.setAria");
-    return `<button type="button" class="wish-target-btn${cur ? " has-target" : ""}" data-wish-target="${shared.escapeAttribute(card.id)}" title="${shared.escapeAttribute(label)}" aria-label="${shared.escapeAttribute(label)}">🔔</button>`;
+    // Mesmo desenho dos outros botões do rodapé (.tile-btn: círculo de 34px,
+    // ícone em traço) — antes era um 🔔 emoji solto sobre a imagem.
+    return `<button type="button" class="tile-btn wish-target-btn${cur ? " has-target" : ""}" data-wish-target="${shared.escapeAttribute(card.id)}" title="${shared.escapeAttribute(label)}" aria-label="${shared.escapeAttribute(label)}">${BELL_ICON}</button>`;
   }
+  const BELL_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>';
   function decorateTile(node, card) {
-    // Modo compacto (sem .tile-info): SEM sino. O .wish-target-btn é absoluto
-    // (top/left) pra pousar sobre a IMAGEM do tile normal; na linha compacta
-    // ele caía por cima da bandeira/nome. O alvo de preço continua na visão
-    // normal — o compacto é o modo de cadastro rápido.
-    const info = node.querySelector(".tile-info");
-    if (!info) return node;
-    info.insertAdjacentHTML("beforeend", targetBellHtml(card));
+    // O sino entra no RODAPÉ do tile, no canto oposto ao de Lista/♡/+ (o
+    // .tile-actions tem margin-left:auto, então ele fica na ponta esquerda).
+    // Modo compacto (sem .tile-foot): SEM sino — é o modo de cadastro rápido;
+    // o alvo de preço continua na visão normal.
+    const foot = node.querySelector(".tile-foot");
+    if (!foot) return node;
+    foot.insertAdjacentHTML("afterbegin", targetBellHtml(card));
     return node;
   }
   function handleTargetClick(btn) {
