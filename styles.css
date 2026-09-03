@@ -1435,7 +1435,7 @@ input::placeholder {
 /* Vender por · Paguei · Preço NM: três linhas rótulo + moeda + input que têm que
    ler como uma tabela. As colunas vivem no container e cada linha as HERDA por
    subgrid — é o que faz os inputs começarem no mesmo x sem cravar largura de
-   rótulo (que quebraria em en/es, onde as palavras têm outro tamanho). */
+   rótulo (que quebraria em en/es, onde as palavras têm outro tamanho).
    O gap do EIXO subgridado vem do container, não da linha — por isso as duas
    distâncias (entre colunas e entre linhas) são declaradas aqui, e a linha zera
    o próprio margin-top pra não somar com o row-gap. */
@@ -3754,13 +3754,6 @@ a.hub-tile:hover {
     padding-top: 24px;
   }
 
-  .hero-cards {
-    order: -1;
-  }
-
-  .hero-cards img {
-    width: clamp(96px, 24vw, 130px);
-  }
 }
 
 /* Seletor de idioma do site */
@@ -5671,7 +5664,6 @@ a.progress-row:hover {
 /* No banner do share (?s= de tag) o dot vive dentro do <strong>, fora de flex. */
 .binder-shared-info .tag-dot { display: inline-block; vertical-align: -1px; }
 /* Chip grande da tag (cabeçalho do foco + picker): pílula sólida na cor. */
-.tag-chip { display: inline-flex; align-items: center; padding: 3px 12px; border-radius: 999px; background: var(--tag); color: #fff; font-weight: 800; font-size: 13px; }
 /* Editor de tag (criar/editar): nome + paleta. */
 
 /* Feedback de "Adicionada!" no quick-add da busca: ✓ preenchido + pop. */
@@ -7082,8 +7074,7 @@ html[data-detail="set"] #detailTitle { display: none; }
 .chip-scroll-btn.is-right { right: 0; }
 /* No toque o dedo rola a fileira (mesma regra da subnav do Explorar) e abaixo
    de 600px o filtro vira o select suspenso — seta só atrapalharia. */
-@media (pointer: coarse) { .chip-scroll-btn { display: none; } }
-@media (max-width: 600px) { .chip-scroll-btn { display: none; } }
+@media (pointer: coarse), (max-width: 600px) { .chip-scroll-btn { display: none; } }
 /* Espelho do filtro de jogo pra tela estreita (criado pelo shared.js). No
    desktop os chips cabem e mostram tudo de uma vez, então o select fica fora;
    abaixo de 600px eles trocam de lugar. */
@@ -8250,7 +8241,6 @@ select,
 .pf-movers-col,
 .pf-mover-thumb,
 .pf-mover-pct,
-.tag-chip,
 .tag-editor-name,
 .price-cell,
 .price-cell input,

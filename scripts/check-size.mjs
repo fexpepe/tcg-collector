@@ -25,9 +25,18 @@ import { join } from "node:path";
 
 // Tetos em BYTES do arquivo minificado+gzipado. Medidos em 2026-08-29 com
 // ~6% de folga: shared.js 70.924 e styles.css 39.970.
+//
+// 2026-09-03: teto do CSS sobe de 44.032 pra 46.080. O CSS cresceu ~4 KB gz em
+// cinco dias de feature deliberada (showcase em pilha, modo compacto, linha de
+// título com Ordenar/Visualização/Filtros) e estourou por ~130 bytes. Antes de
+// subir, saiu o que era morto de verdade (.hero-cards, .tag-chip, um comentário
+// mal fechado que vazava prosa pro CSS, duas @media iguais fundidas); o que
+// sobrou de "duplicado" é o fallback de @media pras container queries, que é
+// intencional. O número medido aqui é o CSS INTEIRO — em produção o split-css
+// tira ~90 KB brutos do núcleo, então o que viaja por página é bem menor.
 const TETOS = [
   { arquivo: "shared.js", teto: 76800, nota: "núcleo JS de toda página" },
-  { arquivo: "styles.min.css", teto: 44032, nota: "CSS antes do split por área" },
+  { arquivo: "styles.min.css", teto: 46080, nota: "CSS antes do split por área" },
 ];
 
 const dir = process.argv[2] || "/tmp/ci-min";

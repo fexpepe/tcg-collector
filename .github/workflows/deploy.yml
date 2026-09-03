@@ -604,7 +604,17 @@ jobs:
       # binding no projeto Pages. Sem a permissão, o passo explica o que falta
       # e sai com sucesso — o site continua saindo igual e a /api/search
       # responde "desligada" (o cliente usa o caminho estático de sempre).
+      #
+      # SÓ NO MAIN. O binding aponta pro MESMO banco em production e preview, e
+      # cada push disparava dois deploys ao mesmo tempo (a branch e o main) que
+      # importavam o catálogo inteiro em paralelo no mesmo banco. Os dois
+      # colidiam na tabela sombra (UNIQUE constraint em cards_new), a meta
+      # ficava sem hash e o push seguinte importava tudo de novo — 2,3 milhões
+      # de linhas por tentativa, dezenas de tentativas por dia. Foi isso que
+      # estourou a cota diária de rows_read do D1 grátis (5M), não a busca.
+      # O preview usa o que o main carregou; ele não precisa carregar nada.
       - name: Prepara a API na borda (D1)
+        if: github.ref == 'refs/heads/main'
         run: |
           node scripts/build-d1.mjs
           node scripts/deploy-d1.mjs
