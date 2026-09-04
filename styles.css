@@ -956,9 +956,22 @@ input::placeholder {
    numa linha só dele (elástico) e os botões na linha de baixo. Sem isto o
    flex:none empurrava a página pra fora da tela (rolagem lateral). */
 @media (max-width: 700px) {
-  .results-header:has(> .results-actions) .results-actions { flex: 1 1 100%; flex-wrap: wrap; margin-left: 0; justify-content: flex-end; }
+  .results-header:has(> .results-actions) .results-actions { flex: 0 1 auto; flex-wrap: wrap; margin-left: auto; justify-content: flex-end; order: 3; }
+  /* Com o Ordenar dentro (set/Cartas) o grupo segue em faixa própria: o
+     select é elástico e ocupa a linha dele, os botões a de baixo. */
+  .results-header:has(> .results-actions) .results-actions:has(.results-sort) { flex: 1 1 100%; margin-left: 0; }
   .results-actions .results-sort { flex: 1 1 100%; }
   .results-actions .results-sort select { flex: 1 1 auto; width: 100%; max-width: none; }
+  /* A contagem cola no título (1ª linha); o botão de criar abre a 2ª linha,
+     à esquerda, e as ações fecham à direita. */
+  .results-header > p { order: 1; }
+  .results-header .new-folder-btn { order: 2; margin-right: auto; }
+}
+/* Tela bem estreita: o "Filtros" vira só o ícone pra caber ao lado de "Novo
+   showcase" + ▦/≣/☰ numa linha (mesmo recurso dos botões de pasta ≤560px). */
+@media (max-width: 480px) {
+  .results-actions button[aria-controls] span { display: none; }
+  .results-actions button[aria-controls] { padding: 0 11px; }
 }
 
 /* Vitrine: coleções abertas ocupam a linha toda; minimizadas viram cards que
@@ -1055,7 +1068,7 @@ input::placeholder {
    é mais larga que alta); o card do perfil público (.coll-card-ro) segue no
    layout de 6. overflow visível pro menu "⋯" poder sair do card: o recorte
    arredondado fica só na capa. */
-.coll-card-pile { flex-basis: calc((100% - 3 * 16px) / 4); overflow: visible; position: relative; }
+.coll-card-pile { flex-basis: calc((100% - 3 * 16px) / 4); min-width: 0; overflow: visible; position: relative; } /* min-width 0: sem isto o min-content de um card vazio (a mensagem) estourava a base e o 2º card caía pra linha de baixo no celular */
 .coll-card-pile.is-menu-open { z-index: 2; }
 .coll-pile { position: relative; aspect-ratio: auto; height: 224px; border-radius: 13px 13px 0 0; }
 .coll-pile-card {
@@ -1112,11 +1125,15 @@ input::placeholder {
   .coll-card-pile .coll-card-name { font-size: 15.4px; }
 }
 @media (max-width: 460px) {
-  .coll-card-pile { flex-basis: 100%; }
-  .coll-pile { height: 224px; }
-  .coll-pile-card { width: 132px; top: 22px; }
-  .coll-pile-l, .coll-pile:hover .coll-pile-l { top: 34px; transform: translateX(calc(-50% - 64px)) rotate(-10deg); }
-  .coll-pile-r, .coll-pile:hover .coll-pile-r { top: 34px; transform: translateX(calc(-50% + 64px)) rotate(10deg); }
+  .coll-card-pile { flex-basis: calc((100% - 16px) / 2); }
+  .coll-pile { height: 150px; }
+  .coll-pile-card { width: 84px; top: 16px; }
+  .coll-pile-l, .coll-pile:hover .coll-pile-l { top: 24px; transform: translateX(calc(-50% - 36px)) rotate(-10deg); }
+  .coll-pile-r, .coll-pile:hover .coll-pile-r { top: 24px; transform: translateX(calc(-50% + 36px)) rotate(10deg); }
+  .coll-pile-tag .folder-tag { font-size: 10px; padding: 1px 7px 1px 6px; }
+  .coll-card-pile .coll-card-body { padding: 10px 12px 8px; }
+  .coll-card-pile .coll-card-name { font-size: 14px; }
+  .coll-card-empty { font-size: 11px; }
 }
 .coll-card-cover {
   border: 0; padding: 0; cursor: pointer; display: block; width: 100%;
@@ -3564,6 +3581,21 @@ a.hub-tile:hover {
    (Sem :has, cai no visual escuro de antes — degrada bem.) */
 .hub-tile.is-soon:has(.hub-logo) { opacity: 1; }
 .hub-tile.is-soon:has(.hub-logo) .hub-logo-box { background: #fff; }
+/* CELULAR: a grade de auto-fill (220px) cabia UMA coluna em 350px úteis, e a
+   escolha de jogo virava uma lista de 13 tiles gigantes + 11 vintage (~5.600px
+   de rolagem). Duas colunas, como as cápsulas da home, mantêm a estrutura do
+   desktop (grade) na largura do celular. O tile inteiro já é o link, então o
+   "Ver sets →" pode sair da linha do ano, que não cabia ao lado do selo. */
+@media (max-width: 600px) {
+  .hub-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+  .hub-tile { padding: 10px; gap: 8px; border-radius: 12px; }
+  .hub-logo-box { height: 84px; padding: 12px; border-radius: 8px; }
+  .hub-logo { max-width: calc(100% - 20px); max-height: calc(100% - 20px); }
+  .hub-logo-text { font-size: 13px; }
+  .hub-tile-name { font-size: 12.5px; }
+  .hub-tile-foot { flex-wrap: wrap; gap: 4px 8px; }
+  .hub-tile-go { display: none; }
+}
 /* "Em breve" POR CIMA do slot do logo. Os tiles dos jogos disponíveis ficaram
    só com o logo (sem rodapé), então o aviso não tem mais onde morar embaixo —
    ele sobe pro slot. O véu escurece o logo o bastante pro chip ter contraste
@@ -7985,8 +8017,9 @@ html[data-detail="set"] #detailTitle { display: none; }
      continua; só as colunas param de espremer). */
   .collection-tabs,
   .prof-tabs { grid-auto-columns: minmax(112px, 1fr); }
-  .collection-toolbar-actions { width: 100%; }
+  .collection-toolbar-actions { width: 100%; justify-content: flex-end; }
   .collection-toolbar-actions .secondary { flex: 1 1 0; }
+  .collection-toolbar-actions .secondary.icon-btn { flex: 0 0 auto; min-width: 46px; }
 
   /* Dashboard: em vez de 4 caixas empilhadas (~600px de rolagem), vira uma
      ESTEIRA horizontal com scroll-snap — 1 card por vez, o de stats+valor
