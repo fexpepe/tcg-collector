@@ -177,6 +177,9 @@
     hydrateFilters();
     bindEvents();
     render();
+    // Outra aba mexeu na coleção (ou uma gravação falhou e o store voltou ao
+    // disco): recalcula contagens e progresso dos sets.
+    document.addEventListener("sleevu:data-rehydrated", () => { ownedCountMemo.clear(); render(); });
   }
 
   // Na página de uma série, troca o título "Sets" pelo nome da série e põe um

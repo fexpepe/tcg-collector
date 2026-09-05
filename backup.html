@@ -66,9 +66,14 @@
       <section class="backup-grid" data-i18n-aria="aria.importOptions" aria-label="Opções de importação">
         <article class="backup-card">
           <h3 data-i18n="backup.importJsonT">Backup do Sleevu (.json)</h3>
-          <p data-i18n="backup.importJsonD">Restaura um backup baixado aqui. As cartas do arquivo são somadas às atuais — nada é apagado.</p>
+          <p data-i18n="backup.importJsonD">Restaura um backup baixado aqui. Você vê um resumo antes de aplicar: por padrão as cartas do arquivo são somadas às atuais (nada é apagado), ou você escolhe substituir. Dá pra desfazer depois.</p>
           <button type="button" class="secondary" id="btnImportJson" data-i18n="backup.importJsonBtn">Escolher arquivo</button>
           <input type="file" id="fileImportJson" accept="application/json" hidden>
+        </article>
+        <article class="backup-card" id="undoImportCard" hidden>
+          <h3 data-i18n="backup.undoT">Desfazer a última importação</h3>
+          <p id="undoImportDesc"></p>
+          <button type="button" class="secondary" id="btnUndoImport" data-i18n="backup.undoBtn">Desfazer importação</button>
         </article>
         <article class="backup-card">
           <h3 data-i18n="backup.importDexT">Dex (.csv)</h3>

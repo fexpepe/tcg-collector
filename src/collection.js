@@ -731,6 +731,10 @@
       if (!event.target.closest("[data-folder-menu]")) closeFolderMenus();
     });
     document.addEventListener("keydown", (event) => { if (event.key === "Escape") { closeTileFolderMenu(); closeFolderMenus(); } });
+    // Outra aba mexeu na coleção (ou uma gravação falhou e o store voltou ao
+    // disco): atualiza posse in-place (carta nova de outra aba entra no reload —
+    // o catálogo desta página só tem o que você já tinha marcado).
+    document.addEventListener("sleevu:data-rehydrated", () => refreshOwnershipCards());
 
     if (elements.bulkBtn) elements.bulkBtn.addEventListener("click", () => { setBulkMode(!bulkMode); if (!bulkMode) render(); });
 

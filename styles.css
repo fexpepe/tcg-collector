@@ -5101,6 +5101,8 @@ a.progress-row:hover {
 .csvimport-miss ul { margin: 8px 0 0; padding-left: 18px; max-height: 180px; overflow-y: auto; color: var(--muted); }
 .csvimport-note { font-size: 12.5px; color: var(--muted); }
 .csvimport-pergame { color: var(--muted); font-size: 13px; }
+.backup-preview-list { margin: 8px 0 12px; padding-left: 18px; line-height: 1.6; }
+.backup-preview-modal .ts-actions { flex-wrap: wrap; }
 
 /* Quick-add na paleta Ctrl+K: linha de carta com thumb e botões inline. */
 .cmdk-carditem { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; cursor: pointer; }

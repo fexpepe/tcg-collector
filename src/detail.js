@@ -959,6 +959,10 @@
       elements.facets.querySelectorAll("[data-facet-drop][open]").forEach((d) => { d.open = false; });
     });
     bindSegmented(elements.ownedChips, (value) => { selectedOwned = value; });
+    // Outra aba mexeu na coleção, ou uma gravação falhou e o store voltou ao
+    // disco (ver registerCrossTabStore no shared): redesenha posse e progresso
+    // in-place, sem reconstruir a grade.
+    document.addEventListener("sleevu:data-rehydrated", () => { if (pageCards.length) refreshOwnership(); });
 
     if (elements.viewToggle) {
       elements.viewToggle.addEventListener("click", (event) => {

@@ -223,7 +223,14 @@ Fotos dos binders ficam no **IndexedDB** (WebP comprimido, com teto) e nunca
 sobem a servidor — nem para a nuvem, nem para o perfil público.
 
 Export/import em JSON e CSV pela página `backup.html`, incluindo importação de
-CSV do TCGplayer/Collectr com prévia. Tudo isso sincroniza entre aparelhos (ver
+CSV do TCGplayer/Collectr com prévia. A importação do JSON valida o arquivo
+inteiro antes de gravar (versão, estrutura, tipos), mostra um resumo e mescla
+por padrão (carta do arquivo vence a mesma carta local; o que só existe aqui
+fica) ou substitui, se pedido; ids que o catálogo não conhece são preservados.
+Antes de gravar guarda uma cópia do estado anterior
+(`tcg-collector-pre-import-v1`) — "Desfazer a última importação" na mesma
+página —, e a gravação é tudo-ou-nada (`validateBackupPayload` /
+`planBackupImport` / `applyBackupImport` no shared.js). Tudo isso sincroniza entre aparelhos (ver
 [docs/BACKEND.md](docs/BACKEND.md)). As páginas pessoais **exigem login** desde
 2026-07-14 (`enforceLoginGate` no shared.js) — o dado continua vivendo no
 aparelho (local-first), mas o cadastro não existe mais "sem conta". Aberto sem

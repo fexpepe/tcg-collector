@@ -40,27 +40,26 @@ test("backupObject exporta todas as chaves sincronizadas", () => {
   assert.deepEqual(faltando, [], "chave sincronizada fora do backup = dado que some na troca de navegador");
 });
 
-test("importJson restaura todas as chaves que o backup exporta", () => {
-  const corpo = corpoDe("importJson");
-  const faltando = ESPERADAS.filter((k) => !corpo.includes(`payload.${k}`));
+// A restauração deixou de ler `payload.x` chave por chave dentro do importJson:
+// o arquivo passa por validateBackupPayload/planBackupImport (BACKUP_BLOCKS +
+// favoritos), testados de verdade em tests/backup-import.test.mjs. Aqui só
+// fica a paridade: toda chave que o backup exporta tem que estar na lista de
+// blocos que a importação conhece.
+test("a importação conhece todas as chaves que o backup exporta", () => {
+  const i = src.indexOf("const BACKUP_BLOCKS = [");
+  assert.ok(i > 0, "BACKUP_BLOCKS não encontrada no shared.js");
+  const lista = src.slice(i, src.indexOf("]", i));
+  const faltando = ESPERADAS.filter((k) => k !== "favorites" && !lista.includes(`"${k}"`));
   assert.deepEqual(faltando, [], "exportar sem restaurar deixa o arquivo incompleto na volta");
+  // validateBackupPayload é função de módulo (2 espaços): o corpo vai até o "\n  }".
+  const v = src.indexOf("function validateBackupPayload(");
+  assert.ok(src.slice(v, src.indexOf("\n  }", v)).includes("payload.favorites"), "favoritos entram por caminho próprio");
 });
 
 test("decks entram no backup e voltam no restore (a regressão que motivou o teste)", () => {
   assert.ok(corpoDe("backupObject").includes("SYNC_KEYS.decks"));
-  assert.ok(corpoDe("importJson").includes("payload.decks"));
-});
-
-test("chave ausente no arquivo não apaga o que existe local", () => {
-  // Todo restore é condicional (`if (payload.x ...)`) — restaurar um backup
-  // antigo não pode zerar um store que ele nunca conheceu.
-  const corpo = corpoDe("importJson");
-  ESPERADAS.forEach((k) => {
-    const cond = k === "favorites"
-      ? "Array.isArray(payload.favorites)"
-      : `payload.${k} && typeof payload.${k} === "object"`;
-    assert.ok(corpo.includes(cond), `${k} deve ser restaurado sob condição`);
-  });
+  const i = src.indexOf("const BACKUP_BLOCKS = [");
+  assert.ok(src.slice(i, src.indexOf("]", i)).includes('"decks"'));
 });
 
 test("os metadados de LWW ficam fora — restaurar tem que vencer", () => {

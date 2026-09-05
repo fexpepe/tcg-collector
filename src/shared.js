@@ -9,9 +9,19 @@
   function flushWrites() {
     writeScheduled = false;
     if (dataWiped) { pendingWrites.clear(); return; }
+    const falhas = [];
     pendingWrites.forEach((getString, key) => {
-      try { localStorage.setItem(key, getString()); } catch (error) { notifyStorageFull(); }
+      try { localStorage.setItem(key, getString()); } catch (error) { falhas.push(key); }
     });
+    pendingWrites.clear();
+    if (falhas.length) revertFailedWrites(falhas);
+  }
+  // Depois de uma importação/restauração que gravou direto no localStorage os
+  // stores em memória ficaram PARA TRÁS do disco: qualquer flush (inclusive o
+  // do pagehide que o reload dispara) regravaria o estado velho por cima do
+  // que acabou de entrar. Congela as gravações até o reload.
+  function freezeWritesUntilReload() {
+    dataWiped = true;
     pendingWrites.clear();
   }
   // Chaves de dado tocadas desde o último push pro servidor. O laço de sync usa
@@ -45,7 +55,26 @@
   // recebe o evento. NÃO grava nada: se gravasse, duas abas ficariam se
   // acordando em looping; a memória mesclada já é o que o próximo save leva.
   const crossTabStores = new Map(); // storageKey -> () => boolean (mudou?)
-  function registerCrossTabStore(key, rehydrate) { crossTabStores.set(key, rehydrate); }
+  // Gravação que FALHOU (cota cheia): a memória do store ficava à frente do
+  // disco e a interface mostrava uma carta que não existia em lugar nenhum —
+  // recarregar a "desmarcava", sem aviso além do toast genérico. Quem registra
+  // um `revert` volta ao que está gravado, e a página é avisada pra redesenhar
+  // (sleevu:data-rehydrated) — a interface só mostra o que foi salvo de fato.
+  const crossTabReverts = new Map(); // storageKey -> () => void
+  function registerCrossTabStore(key, rehydrate, revert) {
+    crossTabStores.set(key, rehydrate);
+    if (revert) crossTabReverts.set(key, revert);
+  }
+  function revertFailedWrites(keys) {
+    let revertido = false;
+    keys.forEach((key) => {
+      const fn = crossTabReverts.get(key);
+      if (!fn) return;
+      try { fn(); revertido = true; } catch (e) { /* disco ilegível: mantém a memória */ }
+    });
+    notifyStorageFull(revertido);
+    if (revertido) document.dispatchEvent(new CustomEvent("sleevu:data-rehydrated", { detail: { key: keys[0] || null, failed: true } }));
+  }
   function rehydrateCrossTab(key) {
     let mudou = false;
     crossTabStores.forEach((fn, k) => {
@@ -299,6 +328,12 @@
       meta = r.meta;
       initialized = true;
       return JSON.stringify(collection) !== antes;
+    }, () => {
+      // Gravação falhou: volta ao que está no disco (ver revertFailedWrites).
+      const disco = load();
+      collection = disco || {};
+      initialized = disco !== null;
+      meta = normalizeMeta(readObject(metaKey));
     });
 
     // Carimba o estado atual da carta: presente -> mod=agora; ausente -> del=agora.
@@ -516,6 +551,9 @@
       wishlist = r.wishlist;
       meta = r.meta;
       return JSON.stringify(wishlist) !== antes;
+    }, () => {
+      wishlist = readObject(storageKey) || {};
+      meta = normalizeMeta(readObject(metaKey));
     });
 
     function stamp(cardId) {
@@ -1981,16 +2019,23 @@
     } catch (e) { /* sem suporte: segue sem tátil */ }
   }
 
-  function notifyStorageFull() {
-    if (storageFullNotified) return;
-    storageFullNotified = true;
-    try { logClientError("localStorage quota exceeded", "storage"); } catch (e) { /* segue pro toast */ }
+  // `revertido`: a alteração foi DESFEITA na interface (store registrado voltou
+  // ao disco) — a mensagem diz isso, em vez do "pode não ter sido salva". O
+  // aviso repete a cada tentativa se o toast anterior já sumiu: quem continua
+  // clicando precisa ver por que nada "pega". O erro só é logado uma vez.
+  let storageFullToast = null;
+  function notifyStorageFull(revertido) {
+    if (!storageFullNotified) {
+      storageFullNotified = true;
+      try { logClientError("localStorage quota exceeded", "storage"); } catch (e) { /* segue pro toast */ }
+    } else if (storageFullToast && storageFullToast.isConnected) return;
     try {
       const el = document.createElement("div");
       el.className = "undo-toast";
       el.setAttribute("role", "alert");
-      el.innerHTML = `<span>${escapeHtml(t("storage.full"))}</span>`;
+      el.innerHTML = `<span>${escapeHtml(t(revertido ? "storage.writeFailed" : "storage.full"))}</span>`;
       document.body.appendChild(el);
+      storageFullToast = el;
       setTimeout(() => el.remove(), 15000);
     } catch (e) { /* sem DOM (muito cedo): o flag evita loop e o erro já foi logado */ }
   }
@@ -6807,6 +6852,212 @@
     return collection;
   }
 
+  // ── Importação de backup JSON ─────────────────────────────────────────────
+  // Três passos separados de propósito: VALIDAR (lê o arquivo inteiro e rejeita
+  // sem tocar em nada), PLANEJAR (o que cada chave vai virar, no modo
+  // escolhido) e APLICAR (grava tudo ou nada, com cópia recuperável). Antes
+  // era um passo só: o arquivo ia direto pros stores, sem prévia, e
+  // SUBSTITUÍA a coleção — enquanto a página de backup prometia "as cartas do
+  // arquivo são somadas às atuais". Os ids são aceitos como vêm (sem catálogo
+  // na mão): carta de outro catálogo/jogo sobrevive à importação e à
+  // exportação seguinte, em vez de sumir em silêncio.
+  const BACKUP_VERSION_MAX = 3;
+  const BACKUP_BLOCKS = ["binders", "decks", "folders", "sales", "graded", "tags", "lists", "sold", "costs", "wishTargets", "manual"];
+  const PRE_IMPORT_KEY = "tcg-collector-pre-import-v1";
+  function isPlainObject(v) { return !!v && typeof v === "object" && !Array.isArray(v); }
+  function countBlockItems(block, field) {
+    const v = block && block[field];
+    if (Array.isArray(v)) return v.length;
+    return isPlainObject(v) ? Object.keys(v).length : 0;
+  }
+  // Lança Error("incompatible") pra versão desconhecida ou estrutura errada —
+  // nada é gravado. Devolve o conteúdo já saneado + um resumo pra prévia.
+  function validateBackupPayload(payload) {
+    if (!isPlainObject(payload)) throw new Error("incompatible");
+    if (payload.version != null) {
+      const v = Number(payload.version);
+      if (!Number.isFinite(v) || v < 1 || v > BACKUP_VERSION_MAX) throw new Error("incompatible");
+    }
+    if (!Array.isArray(payload.ownedCardIds) && !isPlainObject(payload.collection)) throw new Error("incompatible");
+    if (payload.wishlist != null && !isPlainObject(payload.wishlist)) throw new Error("incompatible");
+    if (payload.prices != null && !isPlainObject(payload.prices)) throw new Error("incompatible");
+    if (payload.favorites != null && !Array.isArray(payload.favorites)) throw new Error("incompatible");
+    BACKUP_BLOCKS.forEach((k) => { if (payload[k] != null && !isPlainObject(payload[k])) throw new Error("incompatible"); });
+    const byId = new Map(); // sem catálogo: ids desconhecidos são preservados
+    const collection = parseImportedCollection(payload, byId);
+    const wishlist = parseImportedWishlist(payload, byId);
+    const prices = parseImportedPrices(payload, byId);
+    const blocks = {};
+    BACKUP_BLOCKS.forEach((k) => { if (isPlainObject(payload[k])) blocks[k] = payload[k]; });
+    const favorites = Array.isArray(payload.favorites) ? payload.favorites.filter((x) => typeof x === "string") : null;
+    let copies = 0;
+    Object.values(collection).forEach((variants) => Object.values(variants).forEach((conds) => Object.values(conds).forEach((q) => { copies += q; })));
+    return {
+      collection, wishlist, prices, blocks, favorites,
+      summary: {
+        version: payload.version == null ? 1 : Number(payload.version),
+        exportedAt: typeof payload.exportedAt === "string" ? payload.exportedAt : "",
+        cards: Object.keys(collection).length,
+        copies,
+        wishlist: Object.keys(wishlist).length,
+        prices: Object.keys(prices).length,
+        decks: countBlockItems(blocks.decks, "decks"),
+        binders: countBlockItems(blocks.binders, "binders"),
+        lists: countBlockItems(blocks.lists, "lists"),
+        graded: countBlockItems(blocks.graded, "items"),
+        favorites: favorites ? favorites.length : 0,
+        blocks: Object.keys(blocks)
+      }
+    };
+  }
+  // Estado local que a importação vai combinar (mesmas chaves do backupObject).
+  function readLocalBackupState() {
+    const st = {
+      collection: readObject(SYNC_KEYS.collection) || {},
+      collectionMeta: normalizeMeta(readObject(SYNC_KEYS.collectionMeta)),
+      wishlist: readObject(SYNC_KEYS.wishlist) || {},
+      wishlistMeta: normalizeMeta(readObject(SYNC_KEYS.wishlistMeta)),
+      prices: readObject(SYNC_KEYS.prices) || {},
+      blocks: {},
+      favorites: null
+    };
+    BACKUP_BLOCKS.forEach((k) => { st.blocks[k] = readObject(SYNC_KEYS[k]); });
+    try { const f = JSON.parse(localStorage.getItem(SYNC_KEYS.favorites) || "null"); st.favorites = Array.isArray(f) ? f : null; } catch (e) { st.favorites = null; }
+    return st;
+  }
+  // mode "merge" (padrão): carta do arquivo vence a versão local da MESMA
+  // carta (última gravação = o arquivo, carimbado "agora"); carta que só existe
+  // aqui fica. Blocos usam o mesmo merge do sync (decks/binders/listas/vendas
+  // realizadas/custos: união por id; pastas/vendas/graded/tags/manual: bloco
+  // mais recente). mode "replace": coleção, wishlist e preços deste jogo (e os
+  // blocos presentes no arquivo) passam a ser EXATAMENTE o arquivo; bloco que o
+  // arquivo não traz não é apagado. Devolve chave -> objeto a gravar.
+  function planBackupImport(parsed, mode, local) {
+    const merge = mode !== "replace";
+    const now = Date.now();
+    const stampAll = (obj) => { const mod = {}; Object.keys(obj).forEach((id) => { mod[id] = now; }); return { mod, del: {} }; };
+    const out = {};
+    if (merge) {
+      const c = mergeCollection(local.collection, local.collectionMeta, parsed.collection, stampAll(parsed.collection));
+      out[SYNC_KEYS.collection] = c.collection; out[SYNC_KEYS.collectionMeta] = c.meta;
+      const w = mergeWishlist(local.wishlist, local.wishlistMeta, parsed.wishlist, stampAll(parsed.wishlist));
+      out[SYNC_KEYS.wishlist] = w.wishlist; out[SYNC_KEYS.wishlistMeta] = w.meta;
+      out[SYNC_KEYS.prices] = mergePrices(local.prices, parsed.prices);
+    } else {
+      out[SYNC_KEYS.collection] = parsed.collection; out[SYNC_KEYS.collectionMeta] = stampAll(parsed.collection);
+      out[SYNC_KEYS.wishlist] = parsed.wishlist; out[SYNC_KEYS.wishlistMeta] = stampAll(parsed.wishlist);
+      out[SYNC_KEYS.prices] = parsed.prices;
+    }
+    const MERGERS = {
+      binders: mergeBinders, decks: mergeDecks, lists: mergeLists, folders: mergeFolders, sales: mergeSales,
+      graded: mergeGraded, tags: mergeTags, sold: mergeSold, costs: mergeCosts, wishTargets: mergeWishTargets, manual: mergeManual
+    };
+    Object.keys(parsed.blocks).forEach((k) => {
+      const local0 = local.blocks[k];
+      out[SYNC_KEYS[k]] = (merge && local0) ? MERGERS[k](local0, parsed.blocks[k]) : parsed.blocks[k];
+    });
+    if (parsed.favorites) {
+      out[SYNC_KEYS.favorites] = (merge && local.favorites)
+        ? Array.from(new Set([].concat(local.favorites, parsed.favorites)))
+        : parsed.favorites;
+    }
+    return out;
+  }
+  // Grava o plano: tudo ou nada. Antes, uma foto do que cada chave tinha vai
+  // pro PRE_IMPORT_KEY (o "Desfazer importação" da página de backup lê daí);
+  // sem espaço nem pra foto, aborta sem tocar em nada (code "snapshot"). Se
+  // alguma gravação falhar no meio, volta todas (code "rolledback").
+  function applyBackupImport(plan) {
+    flushWrites(); // materializa o que a página tinha pendente ANTES da foto
+    const keys = Object.keys(plan);
+    const foto = { savedAt: Date.now(), game: currentGameSlug(), keys: {} };
+    keys.forEach((k) => { foto.keys[k] = localStorage.getItem(k); });
+    try { localStorage.setItem(PRE_IMPORT_KEY, JSON.stringify(foto)); }
+    catch (e) { throw Object.assign(new Error("snapshot"), { code: "snapshot" }); }
+    try {
+      keys.forEach((k) => {
+        if (plan[k] === undefined) localStorage.removeItem(k);
+        else localStorage.setItem(k, JSON.stringify(plan[k]));
+      });
+    } catch (e) {
+      // Volta o que já tinha entrado. Primeiro LIBERA o espaço das chaves novas
+      // (foram elas que estouraram a cota), depois repõe os valores antigos um
+      // a um — uma reposição que falhe não impede as outras. Se alguma não
+      // voltar, a foto FICA guardada: o "Desfazer importação" repõe tudo assim
+      // que houver espaço, e o erro diz que ficou pela metade (code "partial").
+      let intacto = true;
+      keys.forEach((k) => { try { localStorage.removeItem(k); } catch (e2) { /* segue */ } });
+      keys.forEach((k) => {
+        const v = foto.keys[k];
+        if (v == null) return;
+        try { localStorage.setItem(k, v); } catch (e2) { intacto = false; }
+      });
+      if (intacto) { try { localStorage.removeItem(PRE_IMPORT_KEY); } catch (e2) { /* a foto igual ao atual não atrapalha */ } }
+      const code = intacto ? "rolledback" : "partial";
+      throw Object.assign(new Error(code), { code });
+    }
+    freezeWritesUntilReload();
+  }
+  function lastImportSnapshot() {
+    const f = readObject(PRE_IMPORT_KEY);
+    if (!f || !isPlainObject(f.keys)) return null;
+    return { savedAt: Number(f.savedAt) || 0, game: typeof f.game === "string" ? f.game : "", keys: Object.keys(f.keys).length };
+  }
+  // Desfazer = voltar cada chave ao que era antes da importação, com carimbos
+  // NOVOS: sem eles, quem tem conta veria a nuvem (que já recebeu o importado,
+  // carimbado como mais novo) trazer tudo de volta no próximo sync. Coleção e
+  // wishlist ganham mod=agora no que volta e tombstone no que só a importação
+  // trouxe; decks/binders/listas idem por item; blocos LWW só sobem o updatedAt.
+  function restampForUndo(key, restored, current, now) {
+    const idsOf = (o) => Object.keys(isPlainObject(o) ? o : {});
+    if (key === SYNC_KEYS.collection || key === SYNC_KEYS.wishlist) {
+      const metaKey = key === SYNC_KEYS.collection ? SYNC_KEYS.collectionMeta : SYNC_KEYS.wishlistMeta;
+      const meta = { mod: {}, del: {} };
+      idsOf(restored).forEach((id) => { meta.mod[id] = now; });
+      idsOf(current).forEach((id) => { if (!meta.mod[id]) meta.del[id] = now; });
+      return { [metaKey]: meta };
+    }
+    const LISTAS = { [SYNC_KEYS.decks]: "decks", [SYNC_KEYS.binders]: "binders", [SYNC_KEYS.lists]: "lists" };
+    if (LISTAS[key]) {
+      const field = LISTAS[key];
+      const base = isPlainObject(restored) ? restored : { [field]: [] };
+      const keep = (Array.isArray(base[field]) ? base[field] : []).map((it) => (it && it.id ? Object.assign({}, it, { updatedAt: now }) : it));
+      const keepIds = new Set(keep.map((it) => it && it.id));
+      const deleted = Object.assign({}, isPlainObject(base.deleted) ? base.deleted : {});
+      const cur = isPlainObject(current) && Array.isArray(current[field]) ? current[field] : [];
+      cur.forEach((it) => { if (it && it.id && !keepIds.has(it.id)) deleted[it.id] = now; });
+      return { [key]: Object.assign({}, base, { [field]: keep, deleted }) };
+    }
+    if (isPlainObject(restored) && "updatedAt" in restored) return { [key]: Object.assign({}, restored, { updatedAt: now }) };
+    return null;
+  }
+  function undoLastImport() {
+    const f = readObject(PRE_IMPORT_KEY);
+    if (!f || !isPlainObject(f.keys)) return false;
+    flushWrites();
+    const now = Date.now();
+    const writes = {};
+    const carimbos = {};
+    Object.keys(f.keys).forEach((k) => {
+      const raw = f.keys[k];
+      let restored = null;
+      try { restored = raw == null ? null : JSON.parse(raw); } catch (e) { restored = null; }
+      writes[k] = raw == null ? undefined : raw;
+      const extra = restampForUndo(k, restored, readObject(k), now);
+      if (extra) Object.keys(extra).forEach((ek) => { carimbos[ek] = JSON.stringify(extra[ek]); });
+    });
+    // Os carimbos novos entram DEPOIS: a meta da coleção também está na foto
+    // (com os carimbos velhos), e a ordem das chaves não pode decidir qual vence.
+    Object.assign(writes, carimbos);
+    const restore = snapshotKeys(Object.keys(writes));
+    try {
+      Object.keys(writes).forEach((k) => { if (writes[k] === undefined) localStorage.removeItem(k); else localStorage.setItem(k, writes[k]); });
+      localStorage.removeItem(PRE_IMPORT_KEY);
+    } catch (e) { restore(); notifyStorageFull(); return false; }
+    freezeWritesUntilReload();
+    return true;
+  }
+
   // Espera o catálogo do jogo (window.TCG_*) terminar de carregar. O game.js
   // injeta os scripts em runtime e resolve window.SLEEVU.catalogReady — sem isto
   // os globais ainda não existem. Fallback p/ páginas sem game.js (ex.: login).
@@ -10253,46 +10504,89 @@
     async function importJson(file) {
       if (!file) return;
       if (file.size > 20 * 1024 * 1024) { alert(t("error.import")); return; }
+      let parsed;
       try {
-        const payload = JSON.parse(await file.text());
-        if (!payload || typeof payload !== "object" || Array.isArray(payload)) throw new Error("invalid");
-        const byId = new Map();
-        createCollectionStore().replace(parseImportedCollection(payload, byId));
-        createWishlistStore().replace(parseImportedWishlist(payload, byId));
-        createPriceStore().replace(parseImportedPrices(payload, byId));
-        if (payload.binders && typeof payload.binders === "object") localStorage.setItem(SYNC_KEYS.binders, JSON.stringify(payload.binders));
-        // Backup antigo (feito antes de os decks entrarem aqui) simplesmente não
-        // traz a chave, e aí os decks locais ficam como estão — restaurar não
-        // pode APAGAR deck que o arquivo nunca teve.
-        if (payload.decks && typeof payload.decks === "object") localStorage.setItem(SYNC_KEYS.decks, JSON.stringify(payload.decks));
-        if (payload.folders && typeof payload.folders === "object") localStorage.setItem(SYNC_KEYS.folders, JSON.stringify(payload.folders));
-        if (payload.sales && typeof payload.sales === "object") localStorage.setItem(SYNC_KEYS.sales, JSON.stringify(payload.sales));
-        if (payload.graded && typeof payload.graded === "object") localStorage.setItem(SYNC_KEYS.graded, JSON.stringify(payload.graded));
-        if (payload.tags && typeof payload.tags === "object") localStorage.setItem(SYNC_KEYS.tags, JSON.stringify(payload.tags));
-        if (payload.lists && typeof payload.lists === "object") localStorage.setItem(SYNC_KEYS.lists, JSON.stringify(payload.lists));
-        if (payload.sold && typeof payload.sold === "object") localStorage.setItem(SYNC_KEYS.sold, JSON.stringify(payload.sold));
-        if (payload.costs && typeof payload.costs === "object") localStorage.setItem(SYNC_KEYS.costs, JSON.stringify(payload.costs));
-        if (payload.wishTargets && typeof payload.wishTargets === "object") localStorage.setItem(SYNC_KEYS.wishTargets, JSON.stringify(payload.wishTargets));
-        if (Array.isArray(payload.favorites)) localStorage.setItem(SYNC_KEYS.favorites, JSON.stringify(payload.favorites));
-        if (payload.manual && typeof payload.manual === "object") localStorage.setItem(SYNC_KEYS.manual, JSON.stringify(payload.manual));
+        parsed = validateBackupPayload(JSON.parse(await file.text()));
+      } catch (e) {
+        // Arquivo que não é JSON, ou é de uma versão/estrutura que este site não
+        // conhece: nada foi tocado, e a mensagem diz qual dos dois foi.
+        alert(t(e && e.message === "incompatible" ? "error.importIncompatible" : "error.import"));
+        return;
+      }
+      showBackupImportPreview(parsed, (mode) => {
+        try {
+          applyBackupImport(planBackupImport(parsed, mode, readLocalBackupState()));
+        } catch (e) {
+          // Sem espaço: ou nem a cópia de segurança coube (nada mudou), ou uma
+          // chave falhou no meio e todas voltaram ao que eram ("rolledback") —
+          // e, se alguma nem conseguiu voltar ("partial"), a cópia fica guardada
+          // pro "Desfazer importação". O arquivo está íntegro em todos os casos.
+          if (e && (e.code === "snapshot" || e.code === "rolledback" || e.code === "partial")) {
+            alert(t(e.code === "snapshot" ? "error.importSnapshot" : e.code === "partial" ? "error.importPartial" : "error.importRolledBack"));
+            notifyStorageFull();
+            return;
+          }
+          alert(t("error.import"));
+          return;
+        }
         // Confirmação do outro lado do reload: restaurar backup é o momento de
         // maior ansiedade do usuário (os dados dele na mão) e a única resposta
         // era a página recarregar — indistinguível de "não fez nada".
         try { sessionStorage.setItem("tcg-import-ok", "1"); } catch (e) { /* segue sem toast */ }
-        logEvento("import_done", { f: "json" });
+        logEvento("import_done", { f: "json", mode });
         window.location.reload();
-      } catch (e) {
-        // Diagnóstico honesto: quota estourada no MEIO da restauração deixa o
-        // estado pela metade (a coleção já entrou, os binders não) — e a
-        // mensagem "não foi possível importar esse arquivo" culpa o arquivo,
-        // que está perfeito. São problemas diferentes e conselhos diferentes.
-        if (e && (e.name === "QuotaExceededError" || e.name === "NS_ERROR_DOM_QUOTA_REACHED")) {
-          alert(t("error.importPartial"));
-          notifyStorageFull();
-          return;
-        }
-        alert(t("error.import"));
-      }
+      });
+    }
+
+    // Prévia do backup: resumo do que o arquivo traz e a escolha do modo.
+    // Mesclar é o padrão (e o que a página de backup promete); substituir é
+    // explícito e pede confirmação. Nada é gravado antes do clique.
+    function showBackupImportPreview(parsed, onApply) {
+      const old = document.querySelector(".csvimport-modal");
+      if (old) old.remove();
+      const sm = parsed.summary;
+      const linhas = [
+        tn("backup.preview.cards", sm.cards) + (sm.copies > sm.cards ? ` (${tn("backup.preview.copies", sm.copies)})` : ""),
+        sm.wishlist ? tn("backup.preview.wishlist", sm.wishlist) : "",
+        sm.decks ? tn("backup.preview.decks", sm.decks) : "",
+        sm.binders ? tn("backup.preview.binders", sm.binders) : "",
+        sm.lists ? tn("backup.preview.lists", sm.lists) : "",
+        sm.graded ? tn("backup.preview.graded", sm.graded) : "",
+        sm.prices ? tn("backup.preview.prices", sm.prices) : ""
+      ].filter(Boolean);
+      const quando = sm.exportedAt ? new Date(sm.exportedAt) : null;
+      const dataTxt = quando && !isNaN(quando.getTime()) ? quando.toLocaleString(getLocale()) : "";
+      const wrap = document.createElement("div");
+      wrap.className = "ts-modal csvimport-modal backup-preview-modal";
+      wrap.innerHTML = `<div class="ts-backdrop" data-backup-close></div>
+        <div class="ts-panel" role="dialog" aria-modal="true" aria-labelledby="backupPreviewTitle">
+          <h3 id="backupPreviewTitle">${escapeHtml(t("backup.preview.title"))}</h3>
+          <p>${escapeHtml(t("backup.preview.file", { game: gameLabel(currentGameSlug()), version: sm.version }))}${dataTxt ? ` · ${escapeHtml(dataTxt)}` : ""}</p>
+          <ul class="backup-preview-list">${linhas.map((l) => `<li>${escapeHtml(l)}</li>`).join("")}</ul>
+          <p class="csvimport-note">${escapeHtml(t("backup.preview.mergeD"))}</p>
+          <p class="csvimport-note">${escapeHtml(t("backup.preview.replaceD"))}</p>
+          <p class="csvimport-note">${escapeHtml(t("backup.preview.undoNote"))}</p>
+          <div class="ts-actions">
+            <button type="button" class="secondary" data-backup-close>${escapeHtml(t("csvimport.cancel"))}</button>
+            <button type="button" class="secondary" data-backup-mode="replace">${escapeHtml(t("backup.preview.replace"))}</button>
+            <button type="button" class="primary" data-backup-mode="merge">${escapeHtml(t("backup.preview.merge"))}</button>
+          </div>
+        </div>`;
+      document.body.appendChild(wrap);
+      const fechar = () => { wrap.remove(); document.removeEventListener("keydown", onKey); };
+      const onKey = (e) => { if (e.key === "Escape") fechar(); };
+      document.addEventListener("keydown", onKey);
+      wrap.addEventListener("click", (e) => {
+        if (e.target.closest("[data-backup-close]")) { fechar(); return; }
+        const btn = e.target.closest("[data-backup-mode]");
+        if (!btn) return;
+        const mode = btn.dataset.backupMode;
+        if (mode === "replace" && !window.confirm(t("backup.preview.replaceConfirm"))) return;
+        fechar();
+        onApply(mode);
+      });
+      const primario = wrap.querySelector("[data-backup-mode=\"merge\"]");
+      if (primario) primario.focus();
     }
 
     // Importa o CSV exportado pelo Dex (dextcg.com). Formato: UTF-16, separado
@@ -10474,6 +10768,8 @@
     window.TCGShared.exportBackupJson = exportJson;
     window.TCGShared.exportBackupCsv = exportCsv;
     window.TCGShared.importBackupJson = importJson;
+    window.TCGShared.lastImportSnapshot = lastImportSnapshot;
+    window.TCGShared.undoLastImport = undoLastImport;
     window.TCGShared.importDexCsvFile = importDexCsv;
     window.TCGShared.deleteAccountFlow = deleteAccountFlow;
 
