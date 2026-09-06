@@ -67,3 +67,40 @@ test("basePricingId: tira só sufixo de idioma localizado", () => {
   assert.equal(api.basePricingId("cel25-5"), "cel25-5");
   assert.equal(api.basePricingId("op-544523"), "op-544523");
 });
+
+// Pokédex "já tenho": store de dexIds (global) com carimbo pra LWW no sync.
+function freshDex() {
+  const ls = makeLocalStorage();
+  const sb = loadShared("window.__test = { createDexOwnedStore, mergeData };", { localStorage: ls });
+  return { ls, api: sb.window.__test, flush: sb.__flushTimers };
+}
+
+test("dex owned store: toggle liga/desliga, persiste na chave global e carimba o meta", () => {
+  const { ls, api, flush } = freshDex();
+  const dex = api.createDexOwnedStore();
+  dex.toggle("25");
+  assert.equal(dex.has("25"), true);
+  dex.toggle("1");
+  dex.toggle("25");
+  assert.equal(dex.has("25"), false);
+  assert.equal(dex.size, 1);
+  flush();
+  const dump = ls._dump();
+  assert.deepEqual(JSON.parse(dump["tcg-collector-dex-owned-v1"]), ["1"], "chave global, sem jogo no nome");
+  assert.ok(JSON.parse(dump["tcg-collector-dex-owned-meta-v1"]).updatedAt > 0, "meta carimbado pro LWW");
+});
+
+test("dex owned no sync: LWW pelo meta (desmarcar propaga) e união no empate", () => {
+  const { api } = freshDex();
+  const T1 = 1000, T2 = 2000;
+  // Remoto desmarcou o 25 depois do local marcar: o remoto vence inteiro.
+  let m = api.mergeData({ dexOwned: ["1", "25"], dexOwnedMeta: { updatedAt: T1 } }, { dexOwned: ["1"], dexOwnedMeta: { updatedAt: T2 } });
+  assert.deepEqual(JSON.parse(JSON.stringify(m.dexOwned)), ["1"]);
+  assert.equal(m.dexOwnedMeta.updatedAt, T2);
+  // Sem carimbo dos dois lados (dados antigos): união, nada se perde.
+  m = api.mergeData({ dexOwned: ["1"] }, { dexOwned: ["4"] });
+  assert.deepEqual(JSON.parse(JSON.stringify(m.dexOwned)).sort(), ["1", "4"]);
+  // Ausente nos dois: fica fora do blob (sem diff eterno no push).
+  m = api.mergeData({}, {});
+  assert.equal(m.dexOwned, undefined);
+});

@@ -1674,6 +1674,48 @@ input::placeholder {
   border-color: var(--gold);
 }
 
+/* "Já tenho": checklist da Pokédex sem registrar carta. Fica FORA do <a> do
+   card (botão dentro de link é inválido), ancorado no canto superior direito,
+   na linha do número. Sempre visível — no toque não existe hover. */
+.pokedex-card {
+  position: relative;
+}
+
+.dex-have-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1;
+  min-height: 28px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dex-have-button:hover {
+  border-color: var(--gold);
+  color: var(--text);
+}
+
+.dex-have-button[aria-pressed="true"] {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #1c1605;
+}
+
+/* Mesmo botão no herói da página do Pokémon: herda o pill do favorito, só a
+   cor de "ligado" é o dourado da captura (o favorito é rosa). */
+.favorite-button.dex-hero-button[aria-pressed="true"] {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
 .pokedex-link {
   min-height: 100%;
   color: inherit;

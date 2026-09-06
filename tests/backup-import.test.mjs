@@ -41,6 +41,7 @@ test("validar: versão desconhecida, estrutura errada e tipos errados são rejei
   rejeita({ version: 3, collection: {}, decks: [] });        // bloco com tipo errado
   rejeita({ version: 3, collection: {}, wishlist: "x" });
   rejeita({ version: 3, collection: {}, favorites: {} });
+  rejeita({ version: 3, collection: {}, dexOwned: "25" });   // Pokédex "já tenho" tem que ser lista
   assert.equal(JSON.stringify(ls._dump()), antes, "validar nunca grava");
 });
 
@@ -104,6 +105,12 @@ test("planejar: cada bloco exportado tem caminho de volta, em mesclar e em subst
   const parsed = api2.validateBackupPayload(v3({}, { favorites: ["b"] }));
   assert.deepEqual(j(api2.planBackupImport(parsed, "merge", api2.readLocalBackupState())["tcg-collector-favorites-v1"]), ["a", "b"]);
   assert.deepEqual(j(api2.planBackupImport(parsed, "replace", api2.readLocalBackupState())["tcg-collector-favorites-v1"]), ["b"]);
+  // Pokédex "já tenho": mesma regra dos favoritos (união ao mesclar, arquivo ao substituir)
+  const { api: api3 } = fresh({ "tcg-collector-dex-owned-v1": JSON.stringify(["25"]) });
+  const parsedDex = api3.validateBackupPayload(v3({}, { dexOwned: ["1", 7, "25"] }));
+  assert.equal(parsedDex.summary.dexOwned, 2, "só strings contam");
+  assert.deepEqual(j(api3.planBackupImport(parsedDex, "merge", api3.readLocalBackupState())["tcg-collector-dex-owned-v1"]), ["25", "1"]);
+  assert.deepEqual(j(api3.planBackupImport(parsedDex, "replace", api3.readLocalBackupState())["tcg-collector-dex-owned-v1"]), ["1", "25"]);
 });
 
 test("aplicar: grava o plano, guarda a cópia anterior e desfazer restaura com carimbos novos", () => {

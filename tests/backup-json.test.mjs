@@ -30,9 +30,12 @@ function corpoDe(nome) {
 // comentário do backupObject — se algum dia entrarem, este teste avisa.
 const ESPERADAS = [
   "binders", "decks", "folders", "sales", "graded", "tags", "lists",
-  "sold", "costs", "wishTargets", "favorites", "manual"
+  "sold", "costs", "wishTargets", "favorites", "manual", "dexOwned"
 ];
-const FORA = ["collectionMeta", "favoritesMeta", "history2"];
+const FORA = ["collectionMeta", "favoritesMeta", "dexOwnedMeta", "history2"];
+// Listas de ids (favoritos, Pokédex "já tenho") entram por caminho próprio na
+// importação, não por BACKUP_BLOCKS (que é só de objetos).
+const LISTAS_DE_IDS = ["favorites", "dexOwned"];
 
 test("backupObject exporta todas as chaves sincronizadas", () => {
   const corpo = corpoDe("backupObject");
@@ -49,11 +52,13 @@ test("a importação conhece todas as chaves que o backup exporta", () => {
   const i = src.indexOf("const BACKUP_BLOCKS = [");
   assert.ok(i > 0, "BACKUP_BLOCKS não encontrada no shared.js");
   const lista = src.slice(i, src.indexOf("]", i));
-  const faltando = ESPERADAS.filter((k) => k !== "favorites" && !lista.includes(`"${k}"`));
+  const faltando = ESPERADAS.filter((k) => !LISTAS_DE_IDS.includes(k) && !lista.includes(`"${k}"`));
   assert.deepEqual(faltando, [], "exportar sem restaurar deixa o arquivo incompleto na volta");
   // validateBackupPayload é função de módulo (2 espaços): o corpo vai até o "\n  }".
   const v = src.indexOf("function validateBackupPayload(");
-  assert.ok(src.slice(v, src.indexOf("\n  }", v)).includes("payload.favorites"), "favoritos entram por caminho próprio");
+  const corpoValida = src.slice(v, src.indexOf("\n  }", v));
+  assert.ok(corpoValida.includes("payload.favorites"), "favoritos entram por caminho próprio");
+  assert.ok(corpoValida.includes("payload.dexOwned"), "Pokédex \"já tenho\" entra por caminho próprio");
 });
 
 test("decks entram no backup e voltam no restore (a regressão que motivou o teste)", () => {

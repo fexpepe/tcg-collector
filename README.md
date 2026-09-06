@@ -218,6 +218,7 @@ globais quando o dado é cross-game:
 | `wishlist-v1`, `wishlist-meta-v1` | `collection-folders-v1`, `collection-tags-v1` |
 | `prices-v1`, `history-v2` | `collection-sales-v1`, `collection-sold-v1`, `collection-costs-v1` |
 | | `collection-graded-v1`, `wishlist-targets-v1`, `favorites-v1`, `favorites-meta-v1` |
+| | `dex-owned-v1`, `dex-owned-meta-v1` (Pokédex "já tenho", por dexId) |
 
 Fotos dos binders ficam no **IndexedDB** (WebP comprimido, com teto) e nunca
 sobem a servidor — nem para a nuvem, nem para o perfil público.

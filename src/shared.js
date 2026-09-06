@@ -512,6 +512,14 @@
     return createIdStore("tcg-collector-favorites-v1", "tcg-collector-favorites-meta-v1");
   }
 
+  // Pokédex "já tenho": dexIds (string) que a pessoa marcou como capturados
+  // SEM registrar carta nenhuma — é a Pokédex como checklist, não como coleção.
+  // Global (a Pokédex é só do Pokémon) e sincronizado como os favoritos: lista
+  // de ids + updatedAt pra LWW (ver SYNC_KEYS.dexOwned e mergeData).
+  function createDexOwnedStore() {
+    return createIdStore("tcg-collector-dex-owned-v1", "tcg-collector-dex-owned-meta-v1");
+  }
+
   // Lista "Eu quero": cardId -> [variantes desejadas]. Sem condição nem
   // quantidade — é só uma lista de desejos por variante, guardada à parte da
   // coleção. Quando a carta passa a ser possuída, ela sai daqui ("comprei!").
@@ -6882,6 +6890,7 @@
     if (payload.wishlist != null && !isPlainObject(payload.wishlist)) throw new Error("incompatible");
     if (payload.prices != null && !isPlainObject(payload.prices)) throw new Error("incompatible");
     if (payload.favorites != null && !Array.isArray(payload.favorites)) throw new Error("incompatible");
+    if (payload.dexOwned != null && !Array.isArray(payload.dexOwned)) throw new Error("incompatible");
     BACKUP_BLOCKS.forEach((k) => { if (payload[k] != null && !isPlainObject(payload[k])) throw new Error("incompatible"); });
     const byId = new Map(); // sem catálogo: ids desconhecidos são preservados
     const collection = parseImportedCollection(payload, byId);
@@ -6890,10 +6899,11 @@
     const blocks = {};
     BACKUP_BLOCKS.forEach((k) => { if (isPlainObject(payload[k])) blocks[k] = payload[k]; });
     const favorites = Array.isArray(payload.favorites) ? payload.favorites.filter((x) => typeof x === "string") : null;
+    const dexOwned = Array.isArray(payload.dexOwned) ? payload.dexOwned.filter((x) => typeof x === "string") : null;
     let copies = 0;
     Object.values(collection).forEach((variants) => Object.values(variants).forEach((conds) => Object.values(conds).forEach((q) => { copies += q; })));
     return {
-      collection, wishlist, prices, blocks, favorites,
+      collection, wishlist, prices, blocks, favorites, dexOwned,
       summary: {
         version: payload.version == null ? 1 : Number(payload.version),
         exportedAt: typeof payload.exportedAt === "string" ? payload.exportedAt : "",
@@ -6906,6 +6916,7 @@
         lists: countBlockItems(blocks.lists, "lists"),
         graded: countBlockItems(blocks.graded, "items"),
         favorites: favorites ? favorites.length : 0,
+        dexOwned: dexOwned ? dexOwned.length : 0,
         blocks: Object.keys(blocks)
       }
     };
@@ -6919,10 +6930,12 @@
       wishlistMeta: normalizeMeta(readObject(SYNC_KEYS.wishlistMeta)),
       prices: readObject(SYNC_KEYS.prices) || {},
       blocks: {},
-      favorites: null
+      favorites: null,
+      dexOwned: null
     };
     BACKUP_BLOCKS.forEach((k) => { st.blocks[k] = readObject(SYNC_KEYS[k]); });
     try { const f = JSON.parse(localStorage.getItem(SYNC_KEYS.favorites) || "null"); st.favorites = Array.isArray(f) ? f : null; } catch (e) { st.favorites = null; }
+    try { const d = JSON.parse(localStorage.getItem(SYNC_KEYS.dexOwned) || "null"); st.dexOwned = Array.isArray(d) ? d : null; } catch (e) { st.dexOwned = null; }
     return st;
   }
   // mode "merge" (padrão): carta do arquivo vence a versão local da MESMA
@@ -6960,6 +6973,12 @@
       out[SYNC_KEYS.favorites] = (merge && local.favorites)
         ? Array.from(new Set([].concat(local.favorites, parsed.favorites)))
         : parsed.favorites;
+    }
+    // Pokédex "já tenho": mesma regra dos favoritos (união no merge, arquivo no replace).
+    if (parsed.dexOwned) {
+      out[SYNC_KEYS.dexOwned] = (merge && local.dexOwned)
+        ? Array.from(new Set([].concat(local.dexOwned, parsed.dexOwned)))
+        : parsed.dexOwned;
     }
     return out;
   }
@@ -8682,6 +8701,7 @@
   window.TCGShared = {
     createCollectionStore,
     createFavoritesStore,
+    createDexOwnedStore,
     createWishlistStore,
     createPriceStore,
     createListStore,
@@ -8940,6 +8960,8 @@
     manual: MANUAL_ITEMS_KEY, // selados/itens manuais do Portfólio (globais)
     favorites: "tcg-collector-favorites-v1", // Pokémon favoritados (globais)
     favoritesMeta: "tcg-collector-favorites-meta-v1", // updatedAt p/ LWW dos favoritos
+    dexOwned: "tcg-collector-dex-owned-v1", // Pokédex "já tenho" por dexId (global)
+    dexOwnedMeta: "tcg-collector-dex-owned-meta-v1", // updatedAt p/ LWW do "já tenho"
     // Histórico do portfólio (v2: c=raw, b=graded, w=desejos). Campo NOVO no blob
     // ("history2") de propósito: o "history" antigo (v1, b=binders) fica ignorado
     // no pull — sincronizar o velho dentro do v2 misturaria semânticas.
@@ -9552,6 +9574,7 @@
     const col = mergeCollection(a.collection, a.collectionMeta, b.collection, b.collectionMeta);
     const wl = mergeWishlist(a.wishlist, a.wishlistMeta, b.wishlist, b.wishlistMeta);
     const fav = mergeFavorites(a.favorites, a.favoritesMeta, b.favorites, b.favoritesMeta);
+    const dex = mergeFavorites(a.dexOwned, a.dexOwnedMeta, b.dexOwned, b.dexOwnedMeta); // mesma regra: lista de ids + LWW
     return {
       collection: col.collection,
       collectionMeta: col.meta,
@@ -9571,6 +9594,8 @@
       manual: mergeManual(a.manual, b.manual), // selados/itens manuais
       favorites: fav.favorites,
       favoritesMeta: fav.meta,
+      dexOwned: dex.favorites,
+      dexOwnedMeta: dex.meta,
       history2: mergeHistory(a.history2, b.history2)
     };
   }
@@ -10454,7 +10479,7 @@
       URL.revokeObjectURL(url);
     }
     // O que fica de FORA, de propósito:
-    //  • `collectionMeta`/`favoritesMeta` (carimbos de LWW do sync). Restaurar um
+    //  • `collectionMeta`/`favoritesMeta`/`dexOwnedMeta` (carimbos de LWW do sync). Restaurar um
     //    backup tem que VENCER, e é o que acontece sem eles: o replace() carimba
     //    tudo como "agora", e favoritos sem meta empatam no merge — empate faz
     //    união, então nada se perde. Trazer o carimbo velho junto faria o
@@ -10486,6 +10511,7 @@
       try { const co = JSON.parse(localStorage.getItem(SYNC_KEYS.costs) || "null"); if (co) payload.costs = co; } catch (e) { /* ignora */ }
       try { const wt = JSON.parse(localStorage.getItem(SYNC_KEYS.wishTargets) || "null"); if (wt) payload.wishTargets = wt; } catch (e) { /* ignora */ }
       try { const fav = JSON.parse(localStorage.getItem(SYNC_KEYS.favorites) || "null"); if (Array.isArray(fav)) payload.favorites = fav; } catch (e) { /* ignora */ }
+      try { const dx = JSON.parse(localStorage.getItem(SYNC_KEYS.dexOwned) || "null"); if (Array.isArray(dx)) payload.dexOwned = dx; } catch (e) { /* ignora */ }
       try { const mi = JSON.parse(localStorage.getItem(SYNC_KEYS.manual) || "null"); if (mi) payload.manual = mi; } catch (e) { /* ignora */ }
       return payload;
     }

@@ -10,6 +10,7 @@
   let nomeForaDoIndice = false;
   const owned = shared.createCollectionStore();
   const favorites = shared.createFavoritesStore();
+  const dexOwned = shared.createDexOwnedStore(); // Pokédex "já tenho" (por dexId)
   const wishlist = shared.createWishlistStore();
   const prices = shared.createPriceStore();
   // Preferência "agrupar versões" (ver cardVariantPairs no shared.js):
@@ -640,6 +641,7 @@
     const region = REGION_BY_GENERATION[Number(sample.generation)] || "";
     const generationLabel = sample.generation ? t("card.generation", { g: toRoman(sample.generation) }) : "";
     const isFavorite = favorites.has(String(dexId));
+    const isDexOwned = dexOwned.has(String(dexId));
     const pokemonImage = sample.pokemonImage
       ? `<img class="pokemon-hero-image" src="${escapeAttribute(sample.pokemonImage)}" alt="${escapeAttribute(detailName)}">`
       : "";
@@ -662,6 +664,7 @@
           ${generationLabel ? `<span class="meta-pill">${escapeHtml(generationLabel)}</span>` : ""}
         </div>
         <div class="pokemon-hero-actions">
+          <button class="favorite-button dex-hero-button" data-dex-toggle aria-pressed="${isDexOwned}">${dexHaveLabel(isDexOwned)}</button>
           <button class="favorite-button" data-favorite-toggle aria-pressed="${isFavorite}">${favoriteLabel(isFavorite)}</button>
           <button class="forms-toggle" data-forms-toggle aria-expanded="false" hidden></button>
         </div>
@@ -677,6 +680,16 @@
   }
 
   function bindHeroActions(dexId) {
+    const dexButton = elements.hero.querySelector("[data-dex-toggle]");
+    if (dexButton) {
+      dexButton.addEventListener("click", () => {
+        dexOwned.toggle(String(dexId));
+        const isDexOwned = dexOwned.has(String(dexId));
+        dexButton.setAttribute("aria-pressed", String(isDexOwned));
+        dexButton.textContent = dexHaveLabel(isDexOwned);
+      });
+    }
+
     const favButton = elements.hero.querySelector("[data-favorite-toggle]");
     if (favButton) {
       favButton.addEventListener("click", () => {
@@ -719,6 +732,10 @@
 
   function favoriteLabel(isFavorite) {
     return isFavorite ? t("favorite.active") : t("favorite.add");
+  }
+
+  function dexHaveLabel(marked) {
+    return marked ? t("dex.haveActive") : t("dex.have");
   }
 
   function typeBadge(slug) {

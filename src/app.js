@@ -10,6 +10,9 @@
   const owned = shared.createCollectionStore();
   const wishlist = shared.createWishlistStore();
   const prices = shared.createPriceStore();
+  // Pokédex "já tenho": checklist por espécie (dexId), independente de carta.
+  // Sincroniza na conta e entra no backup como os favoritos (ver shared.js).
+  const dexOwned = shared.createDexOwnedStore();
 
   const elements = {
     grid: document.getElementById("cardGrid"),
@@ -19,6 +22,7 @@
     setRegionChips: document.getElementById("setRegionChips"),
     typeFilter: document.getElementById("typeFilter"),
     favFilter: document.getElementById("favFilter"),
+    dexFilter: document.getElementById("dexFilter"),
     setFilter: document.getElementById("setFilter"),
     languageFilter: document.getElementById("languageFilter"),
     ownedFilter: document.getElementById("ownedFilter"),
@@ -295,9 +299,28 @@
       }
       applyFilters();
     }, 200));
-    [elements.typeFilter, elements.favFilter, elements.setFilter, elements.languageFilter, elements.ownedFilter].filter(Boolean).forEach((element) => {
+    [elements.typeFilter, elements.favFilter, elements.dexFilter, elements.setFilter, elements.languageFilter, elements.ownedFilter].filter(Boolean).forEach((element) => {
       element.addEventListener("input", applyFilters);
     });
+    // "Já tenho" no card da Pokédex: o botão fica FORA do <a> (botão dentro de
+    // link é HTML inválido e o clique navegaria). Atualiza o card no lugar —
+    // re-renderizar a grade inteira faria os sprites piscarem — e o resumo.
+    if (view === "pokedex") {
+      elements.grid.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-dex-toggle]");
+        if (!button) return;
+        event.preventDefault();
+        const article = button.closest(".pokedex-card");
+        const dexId = article ? article.dataset.dexId : "";
+        if (!dexId) return;
+        dexOwned.toggle(dexId);
+        const marked = dexOwned.has(dexId);
+        button.setAttribute("aria-pressed", String(marked));
+        button.textContent = dexHaveLabel(marked);
+        article.classList.toggle("owned", marked || Number(article.dataset.ownedCount) > 0);
+        updatePokedexStats();
+      });
+    }
 
     if (elements.setsViewToggle) {
       applySetsView(); // estado inicial (antes do primeiro render) a partir da pref salva
@@ -429,10 +452,28 @@
     const realCount = items.filter((item) => item.type !== "series-head" && item.type !== "category-head").length;
     elements.empty.hidden = realCount > 0;
     elements.resultCount.textContent = tn("results.count", realCount);
+    if (view === "pokedex") { updatePokedexStats(); return; }
     if (elements.ownedCount) elements.ownedCount.textContent = owned.size;
     if (elements.totalCount) elements.totalCount.textContent = totalCatalogCount;
     if (elements.completionRate) {
       elements.completionRate.textContent = totalCatalogCount ? `${Math.round((owned.size / totalCatalogCount) * 100)}%` : "0%";
+    }
+  }
+
+  // Resumo da Pokédex conta ESPÉCIES, não cartas: um Pokémon está "capturado"
+  // se foi marcado como "já tenho" OU se há ao menos uma carta dele na coleção
+  // (no idioma escolhido). É a progressão que a pessoa vê e coleciona.
+  function pokemonCaptured(entry) {
+    if (dexOwned.has(String(entry.dexId))) return true;
+    return entry.cardIds.some((id) => owned.has(id) && langMatch(shared.cardLanguageFromId(id)));
+  }
+  function updatePokedexStats() {
+    const entries = pokedexEntries();
+    const captured = entries.reduce((sum, entry) => sum + (pokemonCaptured(entry) ? 1 : 0), 0);
+    if (elements.ownedCount) elements.ownedCount.textContent = captured;
+    if (elements.totalCount) elements.totalCount.textContent = entries.length;
+    if (elements.completionRate) {
+      elements.completionRate.textContent = entries.length ? `${Math.round((captured / entries.length) * 100)}%` : "0%";
     }
   }
 
@@ -518,10 +559,14 @@
     // filtro. O store é de dexIds (o herói da espécie, não a carta).
     const soFavoritos = elements.favFilter && elements.favFilter.value === "fav";
     const favoritos = soFavoritos ? shared.createFavoritesStore() : null;
+    // "Já tenho" / "Ainda faltam": pela captura (marcado OU com carta) — é o
+    // mesmo critério do resumo e do contorno dourado do card.
+    const dexValue = elements.dexFilter ? elements.dexFilter.value : "";
 
     return pokedexEntries()
       .filter((entry) => {
         if (favoritos && !favoritos.has(String(entry.dexId))) return false;
+        if (dexValue && (dexValue === "have") !== pokemonCaptured(entry)) return false;
         if (selectedGeneration && String(generationFromDexId(entry.dexId)) !== selectedGeneration) return false;
         if (typeValue && !shared.typesForDex(entry.dexId).includes(typeValue)) return false;
         return !query || normalize(`${entry.name} ${entry.dexId}`).includes(query);
@@ -863,9 +908,12 @@
 
   function createPokedexCard(item) {
     const article = document.createElement("article");
-    // Contorno dourado quando já há ao menos uma carta desse Pokémon na coleção
-    // (feedback rápido pra quem está completando a Pokédex).
-    article.className = `pokedex-card${item.ownedCount > 0 ? " owned" : ""}`;
+    // Contorno dourado quando o Pokémon está capturado: marcado como "já tenho"
+    // ou com ao menos uma carta dele na coleção (feedback rápido pra quem está
+    // completando a Pokédex).
+    article.className = `pokedex-card${item.ownedCount > 0 || item.dexMarked ? " owned" : ""}`;
+    article.dataset.dexId = String(item.dexId || "");
+    article.dataset.ownedCount = String(item.ownedCount || 0);
     const image = item.image
       ? `<img loading="lazy" src="${escapeAttribute(item.image)}" alt="${escapeAttribute(item.name)}">`
       : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;
@@ -887,9 +935,14 @@
           <span>${escapeHtml(t("count.ofCards", { o: item.ownedCount, t: item.totalCount }))}</span>
         </div>
       </a>
+      <button type="button" class="dex-have-button" data-dex-toggle aria-pressed="${item.dexMarked ? "true" : "false"}" aria-label="${escapeAttribute(t("dex.haveAria", { name: item.name }))}">${escapeHtml(dexHaveLabel(item.dexMarked))}</button>
     `;
 
     return article;
+  }
+
+  function dexHaveLabel(marked) {
+    return marked ? t("dex.haveActive") : t("dex.have");
   }
 
   // Cápsula compacta e clicável (estilo Pokédex): abre a página do grupo com
@@ -1223,6 +1276,7 @@
       dexId: entry.dexId,
       totalCount: ids.length,
       ownedCount: ids.filter((id) => owned.has(id)).length,
+      dexMarked: dexOwned.has(String(entry.dexId)),
       generation: generationFromDexId(entry.dexId),
       image: pokemonImageUrl(entry.dexId)
     };

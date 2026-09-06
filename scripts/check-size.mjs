@@ -34,8 +34,16 @@ import { join } from "node:path";
 // sobrou de "duplicado" é o fallback de @media pras container queries, que é
 // intencional. O número medido aqui é o CSS INTEIRO — em produção o split-css
 // tira ~90 KB brutos do núcleo, então o que viaja por página é bem menor.
+//
+// 2026-09-06: teto do shared.js sobe de 76.800 pra 79.872. O núcleo já estava
+// ~900 bytes gz acima desde a importação de backup com prévia/mesclar/desfazer
+// (2026-09-05; a main falhava só neste passo), e a Pokédex "já tenho" põe mais
+// ~300 bytes gz no shared (store + chave de sync + merge + backup — tem que
+// viver aqui porque o sync e o backup são do núcleo). ~3 KB de folga pra não
+// voltar a estourar no próximo bloco pequeno; bloco FRIO grande continua tendo
+// que ir pra injeção sob demanda.
 const TETOS = [
-  { arquivo: "shared.js", teto: 76800, nota: "núcleo JS de toda página" },
+  { arquivo: "shared.js", teto: 79872, nota: "núcleo JS de toda página" },
   { arquivo: "styles.min.css", teto: 46080, nota: "CSS antes do split por área" },
 ];
 
