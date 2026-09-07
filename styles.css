@@ -1709,6 +1709,28 @@ input::placeholder {
   color: #1c1605;
 }
 
+/* Contagem capturados/total nos chips de geração da Pokédex. */
+.chip-count {
+  margin-left: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Barra de progressão dentro do cartão "progresso" do resumo da Pokédex. */
+.stats-grid .dex-progress {
+  margin-top: 10px;
+}
+
+/* "Pokédex: 412 de 1025 Pokémon" sob o @ no perfil público. */
+.dash-profile-dex {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
 /* Mesmo botão no herói da página do Pokémon: herda o pill do favorito, só a
    cor de "ligado" é o dourado da captura (o favorito é rosa). */
 .favorite-button.dex-hero-button[aria-pressed="true"] {

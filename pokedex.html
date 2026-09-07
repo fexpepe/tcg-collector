@@ -87,6 +87,7 @@
         <article>
           <span id="completionRate">0%</span>
           <p data-i18n="stats.progress">progresso</p>
+          <div class="progress-bar dex-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-i18n-aria="stats.progress" aria-label="progresso"><span id="dexProgressFill" style="width: 0%"></span></div>
         </article>
       </section>
 
@@ -120,6 +121,7 @@
       <section class="results-header">
         <h2 data-i18n="results.heading.pokedex">Pokémon</h2>
         <p id="resultCount">0 resultados</p>
+        <div class="results-actions"><button type="button" id="dexBulk" class="secondary" hidden></button></div>
       </section>
 
       <section id="cardGrid" class="card-grid" data-view="pokedex" aria-live="polite"></section>

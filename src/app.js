@@ -23,6 +23,8 @@
     typeFilter: document.getElementById("typeFilter"),
     favFilter: document.getElementById("favFilter"),
     dexFilter: document.getElementById("dexFilter"),
+    dexBulk: document.getElementById("dexBulk"),
+    dexProgressFill: document.getElementById("dexProgressFill"),
     setFilter: document.getElementById("setFilter"),
     languageFilter: document.getElementById("languageFilter"),
     ownedFilter: document.getElementById("ownedFilter"),
@@ -179,11 +181,18 @@
     if (view === "sets" && serieParam) applySerieTitle();
     if (view === "sets" && linePrefix) applyLineTitle();
     hydrateFilters();
+    // ?dex=have|missing (Hub, medalhas): abre a Pokédex já filtrada.
+    if (view === "pokedex" && elements.dexFilter) {
+      const dexParam = new URLSearchParams(window.location.search).get("dex") || "";
+      if (dexParam === "have" || dexParam === "missing") elements.dexFilter.value = dexParam;
+    }
     bindEvents();
     render();
     // Outra aba mexeu na coleção (ou uma gravação falhou e o store voltou ao
     // disco): recalcula contagens e progresso dos sets.
     document.addEventListener("sleevu:data-rehydrated", () => { ownedCountMemo.clear(); render(); });
+    // Pokédex automática marcou um Pokémon (carta adicionada pelo preview).
+    if (view === "pokedex") document.addEventListener("sleevu:dex-marked", () => render());
   }
 
   // Na página de uma série, troca o título "Sets" pelo nome da série e põe um
@@ -272,7 +281,25 @@
       chip.dataset.generation = option.value;
       chip.textContent = option.label;
       chip.setAttribute("aria-pressed", option.value === selectedGeneration ? "true" : "false");
+      // Pokédex: contagem capturados/total por geração ao lado do rótulo
+      // (preenchida por refreshGenerationCounts, junto com o resumo).
+      if (view === "pokedex") {
+        const count = document.createElement("span");
+        count.className = "chip-count";
+        chip.appendChild(count);
+      }
       elements.generationChips.appendChild(chip);
+    });
+  }
+
+  function refreshGenerationCounts(progress) {
+    if (!elements.generationChips || !progress) return;
+    elements.generationChips.querySelectorAll(".chip").forEach((chip) => {
+      const count = chip.querySelector(".chip-count");
+      if (!count) return;
+      const g = chip.dataset.generation;
+      const p = g ? progress.gen[g] : progress;
+      count.textContent = p ? `${p.c}/${p.t}` : "";
     });
   }
 
@@ -320,6 +347,25 @@
         article.classList.toggle("owned", marked || Number(article.dataset.ownedCount) > 0);
         updatePokedexStats();
       });
+      // Marcar/desmarcar em massa os Pokémon FILTRADOS (uma geração inteira,
+      // um tipo, uma busca). Com "Desfazer" no toast: o estado anterior volta
+      // pro store em memória e a página recarrega (padrão do toastUndo).
+      if (elements.dexBulk) {
+        elements.dexBulk.addEventListener("click", () => {
+          const ids = pokedexViewItems().map((item) => String(item.dexId));
+          if (!ids.length) return;
+          const before = dexOwned.toArray();
+          const faltam = ids.filter((id) => !dexOwned.has(id));
+          const marcando = faltam.length > 0;
+          const remover = new Set(ids);
+          dexOwned.replace(marcando ? before.concat(faltam) : before.filter((id) => !remover.has(id)));
+          render();
+          shared.toastUndo(
+            t(marcando ? "dex.bulkMarked" : "dex.bulkUnmarked", { n: marcando ? faltam.length : ids.length }),
+            () => dexOwned.replace(before)
+          );
+        });
+      }
     }
 
     if (elements.setsViewToggle) {
@@ -452,7 +498,7 @@
     const realCount = items.filter((item) => item.type !== "series-head" && item.type !== "category-head").length;
     elements.empty.hidden = realCount > 0;
     elements.resultCount.textContent = tn("results.count", realCount);
-    if (view === "pokedex") { updatePokedexStats(); return; }
+    if (view === "pokedex") { updatePokedexStats(); updateDexBulk(items); return; }
     if (elements.ownedCount) elements.ownedCount.textContent = owned.size;
     if (elements.totalCount) elements.totalCount.textContent = totalCatalogCount;
     if (elements.completionRate) {
@@ -469,12 +515,41 @@
   }
   function updatePokedexStats() {
     const entries = pokedexEntries();
-    const captured = entries.reduce((sum, entry) => sum + (pokemonCaptured(entry) ? 1 : 0), 0);
+    const progress = { c: 0, t: entries.length, gen: {} };
+    entries.forEach((entry) => {
+      const g = String(generationFromDexId(entry.dexId));
+      const p = progress.gen[g] || (progress.gen[g] = { c: 0, t: 0 });
+      p.t += 1;
+      if (pokemonCaptured(entry)) { p.c += 1; progress.c += 1; }
+    });
+    const captured = progress.c;
+    const pct = entries.length ? Math.round((captured / entries.length) * 100) : 0;
     if (elements.ownedCount) elements.ownedCount.textContent = captured;
     if (elements.totalCount) elements.totalCount.textContent = entries.length;
-    if (elements.completionRate) {
-      elements.completionRate.textContent = entries.length ? `${Math.round((captured / entries.length) * 100)}%` : "0%";
+    if (elements.completionRate) elements.completionRate.textContent = `${pct}%`;
+    if (elements.dexProgressFill) {
+      elements.dexProgressFill.style.width = `${pct}%`;
+      const bar = elements.dexProgressFill.parentElement;
+      if (bar) bar.setAttribute("aria-valuenow", String(pct));
     }
+    refreshGenerationCounts(progress);
+    // Hub, medalhas e perfil público leem daqui (ver readDexProgress).
+    if (entries.length) shared.writeDexProgress(progress);
+  }
+
+  // Botão de marcar em massa: só quando algum filtro estreita a lista (marcar
+  // as 1025 espécies de uma vez não é o caso de uso — e o botão inteiro some
+  // sem filtro pra não convidar). O rótulo diz o que vai acontecer e com quantos.
+  function updateDexBulk(items) {
+    if (!elements.dexBulk) return;
+    const filtrado = !!(selectedGeneration || (elements.typeFilter && elements.typeFilter.value)
+      || (elements.dexFilter && elements.dexFilter.value) || (elements.favFilter && elements.favFilter.value)
+      || elements.search.value.trim());
+    const ids = items.filter((item) => item.type === "pokedex").map((item) => String(item.dexId));
+    elements.dexBulk.hidden = !filtrado || !ids.length;
+    if (elements.dexBulk.hidden) return;
+    const faltam = ids.filter((id) => !dexOwned.has(id)).length;
+    elements.dexBulk.textContent = faltam ? t("dex.markAll", { n: faltam }) : t("dex.unmarkAll", { n: ids.length });
   }
 
   function getViewItems(visibleCards) {

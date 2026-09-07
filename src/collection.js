@@ -2472,7 +2472,7 @@
       const gradedTotal = gradedList
         .filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter)
         .reduce((s, it) => { const v = shared.convertMoney(it.gv || 0, it.cur || "BRL", cur); return s + (v == null ? (it.gv || 0) : v); }, 0);
-      return sharedDashboardHtml(items, rawTotal + gradedTotal, { name, handle: prof.handle, updated: prof.updated_at }, { hero: true, actions: actionsHtml() });
+      return sharedDashboardHtml(items, rawTotal + gradedTotal, { name, handle: prof.handle, updated: prof.updated_at, dex: prof.data.dex }, { hero: true, actions: actionsHtml() });
     }
     function gameFilterHtml() {
       if (gamesPresent.length <= 1) return "";
@@ -2752,6 +2752,7 @@
               <strong class="dash-profile-name">${escapeHtml(profileNav.name)}</strong>
               <a class="dash-profile-handle" href="/users/${escapeAttribute(profileNav.handle)}">@${escapeHtml(profileNav.handle)}</a>
               ${dataDoPerfil(profileNav.updated)}
+              ${profileNav.dex && profileNav.dex.c > 0 ? `<span class="dash-profile-dex">${escapeHtml(t("profile.dex", { c: profileNav.dex.c, t: profileNav.dex.t }))}</span>` : ""}
             </div>
           </div>
           ${profileNav.label ? `<button type="button" class="secondary dash-profile-nav" data-profile-nav>${escapeHtml(profileNav.label)}</button>` : ""}

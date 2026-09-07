@@ -55,6 +55,19 @@
   el.wish.textContent = String(wishTotal);
   const slabs = gradedCount();
   el.slabs.textContent = String(slabs);
+  // Pokédex: capturados/total do cache da página da Pokédex (marcados OU com
+  // carta). Quem marcou pelo herói do Pokémon sem abrir a Pokédex ainda conta
+  // pelo store — daí o max. Sem nada capturado, o cartão nem aparece.
+  (function renderDex() {
+    const card = document.getElementById("dhDexCard");
+    const val = document.getElementById("dhDex");
+    if (!card || !val) return;
+    const p = shared.readDexProgress();
+    const captured = Math.max(p ? p.c : 0, shared.createDexOwnedStore().size);
+    if (!captured) return;
+    val.textContent = `${captured}/${p ? p.t : 1025}`;
+    card.hidden = false;
+  })();
 
   // Valor: o cookie do Portfólio é só o PRIMEIRO PAINT (ele existe pra o número
   // aparecer sem esperar catálogo). É um retrato da última vez que você abriu o

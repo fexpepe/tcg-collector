@@ -89,6 +89,13 @@
           <p id="dhSlabsLabel" data-i18n="dash.slabs">slabs graded</p>
           <a class="stat-link" href="graded" aria-labelledby="dhSlabsLabel"></a>
         </article>
+        <!-- Pokédex: só aparece quando há Pokémon capturado (ver dashboard.js).
+             O link abre a Pokédex já no "Ainda faltam". -->
+        <article id="dhDexCard" hidden>
+          <span id="dhDex">0</span>
+          <p id="dhDexLabel" data-i18n="stats.dexTotal">Pokémon na Pokédex</p>
+          <a class="stat-link" href="pokedex?game=pokemon&amp;dex=missing" aria-labelledby="dhDexLabel"></a>
+        </article>
       </section>
 
       <!-- Distribuição por marca (contagem de cartas distintas). O rótulo tem o

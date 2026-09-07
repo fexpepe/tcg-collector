@@ -57,6 +57,14 @@
     ? listsData.lists.filter((l) => l && l.id && !(listsData.deleted || {})[l.id]).length : 0;
   const trades = (() => { const t = rawJson("tcg-trade-checks-v1"); return Array.isArray(t) ? t.length : 0; })();
   const favs = (() => { const f = rawJson("tcg-collector-favorites-v1"); return Array.isArray(f) ? f.length : 0; })();
+  // Pokédex: capturados (marcados OU com carta) pelo cache da página da
+  // Pokédex; sem ele, só os marcados à mão. Kanto = geração 1 (dex 1..151).
+  const dexProg = shared.readDexProgress();
+  const dexMarked = shared.createDexOwnedStore().toArray();
+  const dexCount = Math.max(dexProg ? dexProg.c : 0, dexMarked.length);
+  const kanto = dexProg && dexProg.gen && dexProg.gen["1"]
+    ? dexProg.gen["1"].c
+    : dexMarked.filter((id) => Number(id) >= 1 && Number(id) <= 151).length;
   const value = shared.portfolioValueTotal() || 0;
   const valueBRL = Math.floor(shared.convertMoney(value, shared.getCurrency(), "BRL") ?? value);
 
@@ -100,6 +108,10 @@
     { id: "trade10", emoji: "⚖️", cur: trades, target: 10, tier: "rare" },
     // Pokédex
     { id: "fav10", emoji: "💛", cur: favs, target: 10, tier: "common" },
+    { id: "dex50", emoji: "🔴", cur: dexCount, target: 50, tier: "common" },
+    { id: "dex151", emoji: "🗾", cur: kanto, target: 151, tier: "epic" },
+    { id: "dex500", emoji: "📕", cur: dexCount, target: 500, tier: "rare" },
+    { id: "dex1025", emoji: "🏅", cur: dexCount, target: 1025, tier: "legendary" },
     // Patrimônio (BRL)
     { id: "v1k", emoji: "💰", cur: valueBRL, target: 1000, tier: "rare" },
     { id: "v10k", emoji: "🪙", cur: valueBRL, target: 10000, tier: "epic" },

@@ -690,6 +690,15 @@
       });
     }
 
+    // Pokédex automática (carta adicionada aqui com a opção ligada): o botão
+    // do herói acompanha sem recarregar.
+    document.addEventListener("sleevu:dex-marked", () => {
+      if (!dexButton) return;
+      const on = dexOwned.has(String(dexId));
+      dexButton.setAttribute("aria-pressed", String(on));
+      dexButton.textContent = dexHaveLabel(on);
+    });
+
     const favButton = elements.hero.querySelector("[data-favorite-toggle]");
     if (favButton) {
       favButton.addEventListener("click", () => {

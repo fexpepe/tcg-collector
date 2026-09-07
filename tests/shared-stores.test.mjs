@@ -104,3 +104,47 @@ test("dex owned no sync: LWW pelo meta (desmarcar propaga) e união no empate", 
   m = api.mergeData({}, {});
   assert.equal(m.dexOwned, undefined);
 });
+
+// Pokédex automática: carta de Pokémon que PASSA A EXISTIR na coleção marca o
+// dexId dela na checklist (opção ligada); carta que só muda de quantidade, não.
+test("dex auto-mark: adicionar carta de Pokémon marca o dexId (só com a opção ligada)", async () => {
+  const ls = makeLocalStorage({ "tcg-dex-automark": "on" });
+  const sb = loadShared("window.__test = { createCollectionStore, createDexOwnedStore, dexAutoMarkEnabled, setDexAutoMark };", { localStorage: ls });
+  sb.window.TCG_INDEXES = { pokedex: [{ dexId: 6, name: "Charizard", cardIds: ["base1-4"] }, { dexId: 25, name: "Pikachu", cardIds: ["base1-58"] }] };
+  const api = sb.window.__test;
+  assert.equal(api.dexAutoMarkEnabled(), true);
+  const col = api.createCollectionStore("pokemon");
+  const dex = api.createDexOwnedStore();
+  col.add("base1-4", "Holo", "NM", 1);
+  await new Promise((r) => setImmediate(r)); // o índice resolve numa microtask
+  assert.equal(dex.has("6"), true, "Charizard entrou na Pokédex");
+  assert.equal(dex.has("25"), false);
+  // Só +1 numa carta que já existia: nada muda (e nada desmarca ao remover).
+  col.add("base1-4", "Holo", "NM", 1);
+  col.add("base1-4", "Holo", "NM", -2);
+  await new Promise((r) => setImmediate(r));
+  assert.equal(col.has("base1-4"), false);
+  assert.equal(dex.has("6"), true, "a marca fica mesmo com a carta fora");
+  // Opção desligada: adicionar não marca.
+  api.setDexAutoMark(false);
+  col.toggleVariant("base1-58", "Normal");
+  await new Promise((r) => setImmediate(r));
+  assert.equal(dex.has("25"), false);
+  // Outro jogo nunca mexe na Pokédex.
+  api.setDexAutoMark(true);
+  api.createCollectionStore("lorcana").add("base1-58", "Normal", "NM", 1);
+  await new Promise((r) => setImmediate(r));
+  assert.equal(dex.has("25"), false);
+});
+
+test("dex progress: cache válido volta, inválido vira null", () => {
+  const ls = makeLocalStorage();
+  const sb = loadShared("window.__test = { readDexProgress, writeDexProgress };", { localStorage: ls });
+  const api = sb.window.__test;
+  assert.equal(api.readDexProgress(), null);
+  api.writeDexProgress({ c: 3, t: 1025, gen: { "1": { c: 3, t: 151 } } });
+  const p = api.readDexProgress();
+  assert.equal(p.c, 3); assert.equal(p.t, 1025); assert.equal(p.gen["1"].c, 3); assert.ok(p.ts > 0);
+  ls.setItem("tcg-pokedex-progress-v1", JSON.stringify({ c: "x" }));
+  assert.equal(api.readDexProgress(), null);
+});

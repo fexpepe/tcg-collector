@@ -36,15 +36,33 @@ conta com uma progressão.
 - i18n pt/en/es, CSS (botão + dourado no herói), testes (store, merge LWW,
   backup), docs (README, BACKEND).
 
-## v2 (próximos passos, por prioridade)
+## v2 (entregue)
 
-1. **Progresso por geração** nos chips (Gen I · 120/151) e barra no topo.
-2. **Hub/Dashboard:** card "Pokédex 412/1025" com link pra "Ainda faltam".
-3. **Badges:** "Kanto completo", "100 Pokémon", "Pokédex 50%".
-4. **Marcar em massa:** "marcar todos os filtrados" (ex.: geração inteira) e
-   desfazer.
-5. **Auto-marcar ao adicionar carta** (opção): hoje a carta já conta como
-   captura no cálculo, sem gravar o `dexId`; a opção gravaria pra manter a
-   checklist explícita mesmo se a carta for vendida.
-6. **Perfil público:** mostrar progressão da Pokédex na página `@handle`.
-7. **Shiny/formas:** checklist por forma (regional, mega) como sub-lista.
+1. **Progresso por geração** nos chips (`Gen I · Kanto 120/151`) e barra de
+   progressão no cartão "progresso" do resumo.
+2. **Hub:** cartão "412/1025 Pokémon na Pokédex" (só aparece com algo
+   capturado), linkando pra Pokédex já filtrada em "Ainda faltam"
+   (`pokedex?dex=missing`).
+3. **Badges:** Primeiros 50, Kanto completo (151), Metade do caminho (500),
+   Mestre Pokémon (1025).
+4. **Marcar em massa:** botão "Marcar N como já tenho / Desmarcar N" na linha
+   de resultados, só quando algum filtro estreita a lista; toast com Desfazer.
+5. **Auto-marcar ao adicionar carta** (Configurações, desligado por padrão):
+   carta de Pokémon que passa a existir na coleção grava o `dexId` na
+   checklist — e ele fica mesmo se a carta sair. Resolve o `dexId` pela fatia
+   `indexes-pokedex` (já carregada na página ou baixada uma vez).
+6. **Perfil público:** "Pokédex: 412 de 1025 Pokémon" sob o @ no cartão-herói.
+   Só os totais viajam no payload; a lista de dexIds não sai da conta.
+
+**Cache de progressão.** A Pokédex é a única página com o índice por espécie,
+então é ela que calcula capturados/total (geral e por geração) e guarda em
+`tcg-pokedex-progress-v1`. Hub, badges e perfil público leem daí — é cache de
+primeiro paint, como o cookie do Portfólio; o `max` com o store de marcados
+cobre quem marcou pelo herói do Pokémon sem abrir a Pokédex.
+
+## v3 (fica pra depois)
+
+- **Shiny/formas:** checklist por forma (regional, mega, gigantamax) como
+  sub-lista da espécie. Precisa de dado de formas (hoje só vem do PokeAPI em
+  tempo de execução na página do Pokémon) e de um formato `dexId:forma` no
+  store — mudança de modelo, não cabe no mesmo passo.

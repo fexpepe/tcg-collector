@@ -166,6 +166,14 @@
   }
 
   // UI Editor (experimental) — liga/desliga e recarrega (o script é injetado no boot).
+  // Pokédex automática: carta de Pokémon adicionada marca o Pokémon como "já tenho".
+  const dexAuto = document.getElementById("dexAutoMarkToggle");
+  if (dexAuto) {
+    const sync = () => dexAuto.setAttribute("aria-checked", String(shared.dexAutoMarkEnabled()));
+    sync();
+    dexAuto.addEventListener("click", () => { shared.setDexAutoMark(!shared.dexAutoMarkEnabled()); sync(); });
+  }
+
   const uiEditor = document.getElementById("uiEditorToggle");
   if (uiEditor) {
     uiEditor.setAttribute("aria-checked", String(shared.uiEditorEnabled()));

@@ -294,6 +294,12 @@
     const metaKey = gameKey("collection-meta-v1", game);
     const v2Key = gameKey("collection-v2", game);
     const v1Key = gameKey("owned-v1", game);
+    // Carta que NÃO existia passou a existir: gancho da Pokédex automática
+    // (só no Pokémon — é o único jogo com Pokédex).
+    const dexGame = game || ((window.SLEEVU && window.SLEEVU.game) || "pokemon");
+    function passouATer(cardId) {
+      if (dexGame === "pokemon") autoMarkDex(cardId);
+    }
     let collection = load();
     let initialized = collection !== null;
     if (!initialized) collection = {};
@@ -427,6 +433,7 @@
         // arquivo): sem isso, collection["__proto__"] resolveria pro
         // Object.prototype e a gravação vazaria pra toda a sessão.
         if (isUnsafeKey(cardId)) return;
+        const tinha = totalForCard(cardId) > 0;
         const entry = collection[cardId] || (collection[cardId] = {});
         const conditions = entry[variant] || (entry[variant] = {});
         const quantity = Math.max(0, (conditions[condition] || 0) + delta);
@@ -438,10 +445,12 @@
         cleanup(cardId, variant);
         stamp(cardId);
         save();
+        if (!tinha && totalForCard(cardId) > 0) passouATer(cardId);
       },
       // Liga/desliga a variante inteira a partir do tile: adiciona 1 NM se vazia,
       // ou remove todas as condições daquela variante.
       toggleVariant(cardId, variant) {
+        const tinha = totalForCard(cardId) > 0;
         if (variantTotal(cardId, variant) > 0) {
           if (collection[cardId]) delete collection[cardId][variant];
           cleanup(cardId, variant);
@@ -451,15 +460,18 @@
         }
         stamp(cardId);
         save();
+        if (!tinha && totalForCard(cardId) > 0) passouATer(cardId);
       },
       toggle(card) {
-        if (this.has(card.id)) {
+        const tinha = this.has(card.id);
+        if (tinha) {
           delete collection[card.id];
         } else {
           collection[card.id] = { [defaultVariant(card)]: { [DEFAULT_CONDITION]: 1 } };
         }
         stamp(card.id);
         save();
+        if (!tinha) passouATer(card.id);
       },
       replace(newCollection) {
         collection = newCollection && typeof newCollection === "object" ? newCollection : {};
@@ -516,8 +528,64 @@
   // SEM registrar carta nenhuma — é a Pokédex como checklist, não como coleção.
   // Global (a Pokédex é só do Pokémon) e sincronizado como os favoritos: lista
   // de ids + updatedAt pra LWW (ver SYNC_KEYS.dexOwned e mergeData).
+  // UMA instância (como a coleção/wishlist): o auto-marcar ao adicionar carta
+  // roda no núcleo enquanto a página segura o store dela, e save() grava a
+  // memória inteira por cima da chave — duas instâncias se apagariam.
+  let dexOwnedStoreCache = null;
   function createDexOwnedStore() {
-    return createIdStore("tcg-collector-dex-owned-v1", "tcg-collector-dex-owned-meta-v1");
+    if (!dexOwnedStoreCache) dexOwnedStoreCache = createIdStore("tcg-collector-dex-owned-v1", "tcg-collector-dex-owned-meta-v1");
+    return dexOwnedStoreCache;
+  }
+  // Progressão da Pokédex (Pokémon capturados = marcados OU com carta), calculada
+  // pela página da Pokédex — a única que tem o índice por espécie — e guardada
+  // aqui pro Hub, pras medalhas e pro perfil público lerem sem catálogo. É
+  // cache de primeiro paint, como o cookie do Portfólio: quem lê trata como
+  // "última vez que a Pokédex foi aberta". { c, t, gen: { "1": { c, t } }, ts }
+  const DEX_PROGRESS_KEY = "tcg-pokedex-progress-v1";
+  function readDexProgress() {
+    try {
+      const p = JSON.parse(localStorage.getItem(DEX_PROGRESS_KEY) || "null");
+      return p && Number.isFinite(p.c) && Number.isFinite(p.t) && p.t > 0 ? p : null;
+    } catch (e) { return null; }
+  }
+  function writeDexProgress(p) {
+    try { localStorage.setItem(DEX_PROGRESS_KEY, JSON.stringify(Object.assign({}, p, { ts: Date.now() }))); } catch (e) { /* cache: pode falhar */ }
+  }
+  // Pokédex "já tenho" AUTOMÁTICO (Configurações, desligado por padrão): quando
+  // uma carta de Pokémon passa a existir na coleção, o dexId dela entra na
+  // checklist — e fica lá mesmo se a carta sair depois. Sem a opção, a carta
+  // já conta como captura no cálculo da Pokédex, só não grava o dexId. O dexId
+  // sai da fatia indexes-pokedex (cardIds por espécie), que a página pode já
+  // ter carregado; senão baixa uma vez por sessão.
+  const DEX_AUTOMARK_KEY = "tcg-dex-automark";
+  function dexAutoMarkEnabled() {
+    try { return localStorage.getItem(DEX_AUTOMARK_KEY) === "on"; } catch (e) { return false; }
+  }
+  function setDexAutoMark(on) {
+    try { localStorage.setItem(DEX_AUTOMARK_KEY, on ? "on" : "off"); } catch (e) { /* ignora */ }
+  }
+  let dexByCardId = null;
+  function autoMarkDex(cardId) {
+    if (!dexAutoMarkEnabled()) return;
+    const map = dexByCardId
+      ? Promise.resolve(dexByCardId)
+      : loadIndexSlice("pokedex").then((groups) => {
+        dexByCardId = new Map();
+        (groups || []).forEach((g) => {
+          const dexId = String(Math.trunc(Number(g.dexId)) || 0);
+          (g.cardIds || []).forEach((id) => dexByCardId.set(id, dexId));
+        });
+        return dexByCardId;
+      });
+    map.then((m) => {
+      const dexId = m.get(cardId);
+      if (!dexId || dexId === "0") return;
+      const store = createDexOwnedStore();
+      if (store.has(dexId)) return;
+      store.toggle(dexId);
+      // A página redesenha o que mostra desse Pokémon (card, herói, resumo).
+      try { document.dispatchEvent(new CustomEvent("sleevu:dex-marked", { detail: { dexId } })); } catch (e) { /* sem DOM */ }
+    }).catch(() => { /* índice indisponível: fica sem marcar */ });
   }
 
   // Lista "Eu quero": cardId -> [variantes desejadas]. Sem condição nem
@@ -8702,6 +8770,10 @@
     createCollectionStore,
     createFavoritesStore,
     createDexOwnedStore,
+    readDexProgress,
+    writeDexProgress,
+    dexAutoMarkEnabled,
+    setDexAutoMark,
     createWishlistStore,
     createPriceStore,
     createListStore,
@@ -10255,7 +10327,10 @@
       spSeen.forEach((sp) => { if (idx.pokemonTotals && idx.pokemonTotals[sp] != null) speciesTotals[sp] = idx.pokemonTotals[sp]; });
       arSeen.forEach((ar) => { if (artIdx[ar] != null) artistTotals[ar] = artIdx[ar]; });
     }
-    return { collection: { items: colItems }, sales: { items: saleItems, cur, scope: "sale" }, folders: pubFolders, tags: pubTags, graded: { items: gradedItems }, setsMeta, speciesTotals, artistTotals, showValues: !!showValues };
+    // Pokédex: só os totais (capturados/total), do cache que a página da
+    // Pokédex mantém — a lista de dexIds não sai daqui.
+    const dexProg = readDexProgress();
+    return { collection: { items: colItems }, sales: { items: saleItems, cur, scope: "sale" }, folders: pubFolders, tags: pubTags, graded: { items: gradedItems }, setsMeta, speciesTotals, artistTotals, showValues: !!showValues, dex: dexProg ? { c: dexProg.c, t: dexProg.t } : undefined };
   }
   // Publica/atualiza (ou apaga) o perfil público conforme is_public. Debounced e
   // só re-envia se o payload mudou. Chamado pelas páginas (coleção/vendas).
