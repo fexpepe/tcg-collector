@@ -91,8 +91,13 @@
         </article>
       </section>
 
+      <!-- Chips de geração FORA do toolbar: no celular o toolbar recolhe em
+           "Filtros ▾" e a progressão por geração (Gen I · Kanto 120/151) ficava
+           escondida. Como fileira própria (.master-filter, a mesma dos chips de
+           idioma), no celular ela rola de lado e no desktop quebra linha como
+           antes. -->
+      <div id="generationChips" class="chip-filter master-filter" role="group" data-i18n-aria="aria.genLocation" aria-label="Geração e local"></div>
       <section class="toolbar pokedex-toolbar" data-i18n-aria="filters.show" aria-label="Filtros">
-        <div id="generationChips" class="chip-filter" role="group" data-i18n-aria="aria.genLocation" aria-label="Geração e local"></div>
         <div class="toolbar-selects">
           <div>
             <label for="dexFilter" data-i18n="toolbar.dexStatus">Pokédex</label>

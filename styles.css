@@ -9984,3 +9984,91 @@ select,
    com metade do texto morto. */
 .pp-item.is-done .pp-txt span { display: none; }
 .pp-txt span { font-size: 12px; color: var(--muted); line-height: 1.45; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PARIDADE CELULAR × DESKTOP (2026-09-07) — ver docs/PLANO-MOBILE-3.md
+   Auditoria de 25 telas em 390px contra 1280px. O desktop ganhou fileira de
+   resumo, botão "Já tenho", chips com contagem, controles do Explorar numa
+   linha e ações por tile; no celular cada um desses tinha virado pilha,
+   alvo pequeno ou coisa cortada. Regras agrupadas aqui de propósito: é UM
+   passe, com um porquê por bloco, fácil de achar e de reverter.
+   ═══════════════════════════════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  /* 1) RESUMO EM FILEIRA. Os 3 cartões de número (Pokédex, Sets, Wishlist,
+     Sales…) empilhavam em 1 coluna e comiam uma tela inteira antes do
+     conteúdo — a Pokédex tinha 10.700px de altura. No desktop são uma
+     fileira; aqui viram a mesma fileira, compacta (3 × ~115px em 390px):
+     número menor, rótulo em 2 linhas. O Hub mantém as 2 colunas dele
+     (.dash-main, regra mais específica); só deixa o rótulo quebrar linha
+     em vez de cortar com reticências ("Pokémon na Pokédex" saía "Pokémon
+     in the Po…"). */
+  .stats-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .stats-grid article { padding: 12px 10px; }
+  .stats-grid span { font-size: 22px; }
+  .stats-grid p { font-size: 12px; line-height: 1.25; margin-top: 6px; }
+  .stats-grid .dex-progress { margin-top: 8px; }
+  .dash-main .stats-grid p { white-space: normal; overflow: visible; text-overflow: clip; }
+
+  /* 2) CONTROLES DO EXPLORAR. Em tela larga Jogo/Ordenar/Versões formam uma
+     linha com a busca; abaixo de 1080px viravam um flex encostado à direita,
+     flutuando sob o título com os rótulos soltos. Grade de 2 colunas, campo
+     ocupando a célula. */
+  .page-head-bar > .page-head-bar-tools {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+    margin-left: 0;
+  }
+  .page-head-bar-tools .sort-select { min-width: 0; margin: 0; }
+  .page-head-bar-tools .sort-select select,
+  .page-head-bar-tools .sort-select .chip { width: 100%; justify-content: center; }
+
+  /* 3) FILEIRAS DE CHIPS (idioma dos sets, geração da Pokédex). Com o piso de
+     44px do toque, 4–10 chips quebravam em 2–3 linhas e empurravam o
+     conteúdo. Viram UMA fileira que rola de lado, sangrando até a borda da
+     tela (mesmo padrão do .chip-scroll das regiões). */
+  .master-filter {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: 0 -16px 14px;
+    padding: 0 16px;
+    scroll-padding: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .master-filter::-webkit-scrollbar { display: none; }
+  .master-filter .chip { flex: none; }
+
+  /* 4) Medalhas: o selo de raridade era 9px — ilegível no vidro. */
+  .bdg-chip { font-size: 10px; }
+}
+
+@media (max-width: 560px) {
+  /* 5) AÇÕES DO TILE. A Coleção ganhou o 5º botão (Lista) e no tile de 2
+     colunas os 5 não cabiam: o + e o badge ×N saíam pela borda direita. Os
+     botões dividem a linha e encolhem só o necessário (teto de 34px: com 3
+     botões ficam do tamanho de sempre, à direita). Generaliza a regra que já
+     existia só pra 380px. */
+  .tile-actions { width: 100%; }
+  .tile-actions .tile-btn { flex: 1 1 0; width: auto; min-width: 0; max-width: 34px; }
+
+  /* 6) VENDAS. Seis botões de ação quebravam em fileiras desiguais; em 2
+     colunas alinham, e o Ordenar ganha a linha inteira. Os chips de
+     percentual (−15%…+10%) idem, em 3 colunas. */
+  .sales-toolbar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sales-toolbar .sales-sort-row { grid-column: 1 / -1; }
+  .sales-batch-chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+}
+
+@media (pointer: coarse), (max-width: 700px) {
+  /* 7) ALVOS DE TOQUE que nasceram no desktop com altura de texto: o "Já
+     tenho" do card da Pokédex (28px), o cabeçalho de série dos Sets
+     (▾ Scarlet & Violet, 25px) com o "2 sets →" (16px), o compartilhar da
+     medalha (26px). Piso de 36–44px, sem mudar o desenho. */
+  .dex-have-button { min-height: 36px; padding: 0 12px; font-size: 13px; }
+  .cat-toggle { min-height: 44px; }
+  .set-series-count { padding: 12px 0; }
+  .bdg-share { width: 36px; height: 36px; }
+}
