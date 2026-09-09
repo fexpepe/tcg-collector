@@ -51,6 +51,8 @@ export function cardCodeForms(card) {
   const add = (f) => { if (f && !out.includes(f)) out.push(f); };
   add(String(card.number || "").trim());
   nums.forEach(add);
+  const cauda = /\d$/.test(num) && !/^\d+$/.test(num) ? num.match(/(\d+)$/)[1] : "";
+  if (cauda) numberSearchForms(cauda, 3).forEach(add);
   if (total) {
     add(cardCode(card));
     if (totalNum) {

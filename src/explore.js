@@ -239,7 +239,12 @@
     // Hits sem carta na hidratação (índice da borda à frente dos chunks, ou
     // vice-versa): mesma regra do vazio — o catálogo decide.
     if (!found.length) { renderFromCatalog(); return; }
-    render({ resetCount: true, list: found });
+    // A borda casa por PALAVRA (número e total soltos): "009/094" traz também
+    // a EB03-009 de um set de 94 cartas. Com a carta inteira na mão, a régua
+    // do cliente (token inteiro) peneira; se ela rejeitar tudo, é gap da
+    // régua e não da borda — fica com os hits como vieram.
+    const precisos = found.filter((card) => matchesCardQuery(card, q));
+    render({ resetCount: true, list: precisos.length ? precisos : found });
   }
 
   const apply = () => {

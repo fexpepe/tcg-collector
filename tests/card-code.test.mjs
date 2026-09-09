@@ -46,7 +46,8 @@ test("cardCodeForms: todas as escritas — com/sem zeros, com/sem total", () => 
   for (const esperado of ["009", "9", "009/094", "9/94"]) assert.ok(g.includes(esperado), `${esperado} em ${g}`);
   const r = api.cardCodeForms(lillia);
   for (const esperado of ["001/003", "1/3", "1", "001"]) assert.ok(r.includes(esperado), `${esperado} em ${r}`);
-  assert.deepEqual(api.cardCodeForms(luffy), ["OP05-119", "OP5-119"]);
+  assert.deepEqual(api.cardCodeForms(luffy), ["OP05-119", "OP5-119", "119"]);
+  assert.deepEqual(api.cardCodeForms({ number: "BT1-001" }), ["BT1-001", "001", "1"]);
   assert.ok(api.cardCodeForms({ number: "H01", setTotal: 42 }).includes("H1"));   // vintage One Piece
   assert.deepEqual(api.cardCodeForms({}), []);
 });
@@ -60,13 +61,29 @@ test("numberSearchForms: número solto (índice estático de decks/listas)", () 
 });
 
 test("matchesCardQuery: código impresso, código cru, nome + código, parênteses e #", () => {
-  for (const q of ["009/094", "9/94", "009", "9", "94", "nymble 009/094", "Nymble (009/094)", "nymble #9", "009/094 nymble", "NYMBLE 9/94"]) {
+  for (const q of ["009/094", "9/94", "009", "9", "nymble 009/094", "Nymble (009/094)", "nymble #9", "009/094 nymble", "NYMBLE 9/94"]) {
     assert.ok(api.matchesCardQuery(nymble, q), `"${q}" deveria achar a Nymble guardada como 9/94`);
     assert.ok(api.matchesCardQuery(nymbleJp, q.replace(/nymble/i, "ヤミラミ")), `"${q}" deveria achar a guardada como 009/94`);
   }
   for (const q of ["10/94", "9/95", "090/094", "pikachu 9/94"]) {
     assert.ok(!api.matchesCardQuery(nymble, q), `"${q}" NÃO deveria achar a Nymble`);
   }
+  // Número e fração casam como TOKEN inteiro: "9/94" não é a Charcadet 019/094
+  // (substring de "19/94"), "009/094" não é a Makino EB03-009 de um set de 94,
+  // e "9" não é a carta de dexId 919. Texto segue por substring.
+  const charcadet = { id: "me02-019", name: "Charcadet", number: "019", setTotal: 94, dexId: 935 };
+  const makino = { id: "op-1", name: "Makino", number: "EB03-009", setTotal: 94 };
+  const nymbleDex = { id: "me02-009-x", name: "Nymble", number: "009", setTotal: 94, dexId: 919 };
+  assert.ok(!api.matchesCardQuery(charcadet, "9/94"));
+  assert.ok(!api.matchesCardQuery(charcadet, "009/094"));
+  assert.ok(api.matchesCardQuery(charcadet, "19/94"));
+  assert.ok(api.matchesCardQuery(charcadet, "char 19"));
+  assert.ok(!api.matchesCardQuery(makino, "009/094"));
+  assert.ok(api.matchesCardQuery(makino, "eb03-009"));
+  assert.ok(api.matchesCardQuery(makino, "makino 009"));
+  assert.ok(api.matchesCardQuery(nymbleDex, "919"));
+  assert.ok(api.matchesCardQuery(nymbleDex, "9"));
+  assert.ok(!api.matchesCardQuery({ id: "z", name: "Zzz", number: "919", setTotal: 999 }, "9"));
   assert.ok(api.matchesCardQuery(charizard, "charizard 004/102"));
   assert.ok(api.matchesCardQuery(charizard, "4/102"));
   assert.ok(api.matchesCardQuery(lillia, "1/3"));

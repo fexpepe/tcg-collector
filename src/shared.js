@@ -6088,6 +6088,11 @@
     const add = (f) => { if (f && !out.includes(f)) out.push(f); };
     add(String(card.number || "").trim());
     nums.forEach(add);
+    // Código com prefixo ("OP05-119", "BT1-001"): a parte numérica final vira
+    // forma própria ("119"; "001" e "1") — "luffy 119" acha a carta, como a
+    // borda (que indexa a palavra "119") já achava.
+    const cauda = /\d$/.test(num) && !/^\d+$/.test(num) ? num.match(/(\d+)$/)[1] : "";
+    if (cauda) numberSearchForms(cauda, 3).forEach(add);
     if (total) {
       add(cardCode(card));
       if (totalNum) {
@@ -6214,10 +6219,12 @@
     // com e sem o total — "9", "009", "9/94", "009/094"; e "H1" pra "H01" nos
     // vintages do One Piece. É o que faz o código impresso na carta (e lido
     // pelo scanner) achar a carta seja como for que o catálogo o guarde.
-    card._haystack = normalize([
+    // Espaço nas pontas: número e fração casam como TOKEN inteiro (" 9/94 "),
+    // ver matchesCardQuery.
+    card._haystack = " " + normalize([
       card.name, card.nameJp, card.pokemonName, card.dexId, ...cardCodeForms(card),
       card.set, card.artist, card.rarity, card.language, card.cardType, ...(card.variants || [])
-    ].join(" ") + jpNameAliases(`${card.name || ""} ${card.nameJp || ""}`));
+    ].join(" ") + jpNameAliases(`${card.name || ""} ${card.nameJp || ""}`)) + " ";
     return card._haystack;
   }
 
@@ -6225,11 +6232,23 @@
   // texto da carta. Assim funciona por nome ("bulbasaur"), por código ("95/165"
   // ou só "95") e por nome + código ("bulbasaur 95/165"). Parênteses e "#" são
   // ignorados, então colar "Bulbasaur (95/165)" ou "Charizard #4" também casa.
-  function matchesCardQuery(card, rawQuery) {
+  // Termo NUMÉRICO ou FRAÇÃO ("9", "009/094") casa como token inteiro, não
+  // como substring: "9/94" achava Charcadet 019/094 (substring de "19/94") e
+  // "009/094" achava uma Makino EB03-009 de um set de 94 cartas. Texto segue
+  // por substring ("chari" acha Charizard).
+  let queryTermsCache = { q: null, terms: [] };
+  function queryTerms(rawQuery) {
     const query = normalize(rawQuery || "").replace(/[()#]/g, " ").trim();
-    if (!query) return true;
+    if (query === queryTermsCache.q) return queryTermsCache.terms;
+    const terms = query ? query.split(/\s+/).map((t) => (/^\d+(\/\d+)?$/.test(t) ? ` ${t} ` : t)) : [];
+    queryTermsCache = { q: query, terms };
+    return terms;
+  }
+  function matchesCardQuery(card, rawQuery) {
+    const terms = queryTerms(rawQuery);
+    if (!terms.length) return true;
     const haystack = cardSearchHaystack(card);
-    return query.split(/\s+/).every((term) => haystack.includes(term));
+    return terms.every((term) => haystack.includes(term));
   }
 
   // Uma linha do grid: rótulo na 1ª coluna, chips na 2ª (os chips alinham entre

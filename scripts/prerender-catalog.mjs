@@ -343,8 +343,12 @@ function setPageHtml(page, canonical, otherSets, lang) {
   // segue lazy — são 200+ imagens que ninguém vê de imediato.
   const ACIMA_DA_DOBRA = 6;
   const cardsHtml = cards.map((c, i) => {
-    const num = c.number ? `#${escapeHtml(c.number)}` : "";
-    const alt = `${c.name}${c.number ? ` ${cardCode({ number: c.number, setTotal: c.setTotal || total })}` : ""} — ${name}`;
+    // Rótulo visível com o código IMPRESSO ("009/094"), não "#009": é o texto
+    // que a busca do Google casa quando a carta não tem página própria (só as
+    // 1.500 mais valiosas têm) — a página do set é onde "Nymble 009/094" existe.
+    const code = c.number ? cardCode({ number: c.number, setTotal: c.setTotal || total }) : "";
+    const num = code ? escapeHtml(code) : "";
+    const alt = `${c.name}${code ? ` ${code}` : ""} — ${name}`;
     const prioridade = i < ACIMA_DA_DOBRA
       ? ` loading="eager"${i === 0 ? ' fetchpriority="high"' : ""}`
       : ` loading="lazy"`;
@@ -486,7 +490,7 @@ function artistPageHtml(ap) {
 
   const ACIMA_DA_DOBRA = 6;
   const cardsHtml = mostra.map((c, i) => {
-    const num = c.number ? `#${escapeHtml(c.number)}` : "";
+    const num = c.number ? escapeHtml(cardCode(c)) : "";
     const prioridade = i < ACIMA_DA_DOBRA
       ? ` loading="eager"${i === 0 ? ' fetchpriority="high"' : ""}`
       : ` loading="lazy"`;
