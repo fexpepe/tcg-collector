@@ -35,7 +35,14 @@ export function palavras(texto) {
     .filter(Boolean);
 }
 
-// Esquema das CARTAS (recarregado só quando o catálogo muda).
+// Esquema das CARTAS. `h`/`hw` são as impressões digitais da linha e das
+// palavras (scripts/lib/d1-delta.mjs): o deploy compara as remotas com as do
+// catálogo local e grava SÓ as cartas que mudaram — no D1 grátis a cota é de
+// 100 mil linhas ESCRITAS por dia, e a recarga total (2,3M de linhas mais os
+// índices, 6,8M de escritas) estourava a cota todo santo dia. A Function não
+// lê as duas colunas. idx_words_id existe pra apagar as palavras de uma carta
+// pelo id sem varrer as palavras do jogo inteiro (varredura é linha lida, e
+// linha lida é cobrada).
 export const SCHEMA = `
 CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT);
 CREATE TABLE IF NOT EXISTS cards (
@@ -54,6 +61,8 @@ CREATE TABLE IF NOT EXISTS cards (
   image TEXT,
   variants TEXT,
   released TEXT,
+  h TEXT,
+  hw TEXT,
   PRIMARY KEY (game, id)
 );
 CREATE TABLE IF NOT EXISTS card_words (
@@ -63,6 +72,7 @@ CREATE TABLE IF NOT EXISTS card_words (
 );
 CREATE INDEX IF NOT EXISTS idx_card_words ON card_words (game, word, id);
 CREATE INDEX IF NOT EXISTS idx_words_global ON card_words (word, game, id);
+CREATE INDEX IF NOT EXISTS idx_words_id ON card_words (game, id);
 `;
 
 // Esquema dos PREÇOS — tabela SEPARADA de propósito: o preço muda a cada sync
@@ -73,11 +83,14 @@ CREATE INDEX IF NOT EXISTS idx_words_global ON card_words (word, game, id);
 // não uma projeção coluna a coluna. É o que garante que o cliente receba
 // exatamente o que receberia de um chunk (u, uf, e, b.md, g por nota…) e que a
 // fórmula do valor (cardValue) continue existindo em UM lugar só.
+// `h` é a impressão digital de `j`, pela mesma razão das cartas: o deploy grava
+// só os preços que mudaram.
 export const SCHEMA_PRICES = `
 CREATE TABLE IF NOT EXISTS prices (
   game TEXT NOT NULL,
   id TEXT NOT NULL,
   j TEXT NOT NULL,
+  h TEXT,
   PRIMARY KEY (game, id)
 );
 `;

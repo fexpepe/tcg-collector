@@ -613,6 +613,15 @@ jobs:
       # de linhas por tentativa, dezenas de tentativas por dia. Foi isso que
       # estourou a cota diária de rows_read do D1 grátis (5M), não a busca.
       # O preview usa o que o main carregou; ele não precisa carregar nada.
+      #
+      # SÓ A DIFERENÇA. A carga total (2,3M de linhas + índices = 6,8M de
+      # escritas, mais 469 mil de preços) rodava toda vez que UMA carta mudava —
+      # e o catálogo muda todo dia. A cota grátis do D1 é de 100 mil linhas
+      # ESCRITAS por dia: era o e-mail "rows_written limit exceeded" diário. O
+      # deploy-d1 agora lê as impressões digitais remotas e grava só as linhas
+      # que mudaram, dentro do orçamento diário abaixo; o que não coube sai no
+      # deploy seguinte. A variável (Settings -> Variables) é o único ajuste ao
+      # trocar de plano: vazia = 90 mil (grátis); no Workers Paid, 1000000.
       - name: Prepara a API na borda (D1)
         if: github.ref == 'refs/heads/main'
         run: |
@@ -621,6 +630,7 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          D1_ROWS_WRITTEN_BUDGET: ${{ vars.D1_ROWS_WRITTEN_BUDGET }}
 
       # O game.js injeta o catálogo em runtime por jogo; em produção ele carrega
       # os arquivos .generated mesclados em vez dos crus. Basta flipar a flag.

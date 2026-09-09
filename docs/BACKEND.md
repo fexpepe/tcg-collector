@@ -120,6 +120,22 @@ O D1 é criado e carregado pelo próprio deploy (`build-d1.mjs` + `deploy-d1.mjs
 a partir do **mesmo** catálogo do site. Sem permissão de D1 no token, o passo
 explica o que falta e sai com sucesso.
 
+**Carga incremental e orçamento de escrita.** No plano grátis o D1 dá 100 mil
+linhas *escritas* por dia (índice conta como linha). Uma carga total são ~6,8
+milhões de escritas de catálogo e ~470 mil de preços, e o catálogo muda todo
+dia — por isso ela só roda na primeira carga ou quando a versão do esquema
+(`ESQUEMA` em `scripts/lib/d1-catalogo.mjs`) sobe. No dia a dia o deploy lê as
+impressões digitais remotas (`h` da linha, `hw` das palavras; `h` do preço),
+compara com o catálogo local (`scripts/lib/d1-delta.mjs`) e grava só o que
+mudou: centenas de cartas e alguns milhares de preços por dia. Tudo dentro de um
+orçamento diário registrado em `meta.gasto` — padrão 90 mil linhas, ajustável
+pela variável `D1_ROWS_WRITTEN_BUDGET` do repositório (1000000 no Workers Paid).
+O que não coube fica pro deploy seguinte: a diferença é sempre recalculada
+contra o banco, então uma carga interrompida ou parcial nunca perde nada, só
+atrasa. Cartas têm prioridade sobre preços. `tests/d1-delta.test.mjs` prova que
+o plano incremental deixa um SQLite real idêntico a uma carga total, em rodadas
+de orçamento e retomado de interrupção em qualquer statement.
+
 ---
 
 ## 3. Preço
