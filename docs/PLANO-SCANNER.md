@@ -36,15 +36,29 @@ guarda isso em `number` (e `setId`), então achar a carta é OCR + busca local.
    códigos com hífen, Union Arena, FAB, fração `N/T`, Magic `SET NUM` e Lorcana
    `SET NUM`, com correção das confusões clássicas do OCR (O→0, I→1, S→5, B→8)
    só na parte que tem de ser numérica.
-4. **Busca**, em duas camadas, pra cada candidato até achar:
+4. **Detecção do jogo** (`detectarJogo`, função pura com teste), porque o
+   mesmo número existe em vários jogos — `4/102` é Pokémon, mas "4" é um set
+   do Lorcana e um número do Magic, e a primeira versão devolvia os três.
+   Três pistas somadas: o que a carta **imprime** no rodapé (© Pokémon /
+   Nintendo, Wizards of the Coast, Disney, Eiichiro Oda, Konami…; +3, a mais
+   forte), o **formato** do código (OP05- é One Piece, BT1- é Digimon,
+   -EN001 é Yu-Gi-Oh, fração é Pokémon/Lorcana/Riftbound; +2 por jogo
+   possível) e o jogo da **sessão** (+1, só desempate). Palavras que vários
+   jogos dividem (BANDAI, SHUEISHA) ficam de fora. Se a faixa não bastou pra
+   ter certeza, lê a carta inteira. O seletor *Jogo* do scanner mostra o
+   detectado e a pessoa corrige se errar; "Automático" busca só nos jogos
+   possíveis, e se nada sair com o filtro, tenta uma vez sem ele.
+5. **Busca**, em duas camadas, pra cada candidato até achar:
    - `cmdkCardsByCode` (a mesma da paleta Ctrl+K): set + número exatos pelo
      manifest do jogo, baixando só o chunk do set;
    - `/api/search?game=all` (D1 na borda): indexa as palavras do número, então
      `4/102` acha todo "4" de set com 102 cartas, em qualquer jogo; os hits são
      hidratados com `loadOwnedAcrossGames`.
-   O resultado é ranqueado com número exato primeiro e mostrado na hora, com
+   Com o jogo detectado a borda é consultada **por jogo** (resposta menor e
+   mais precisa). O resultado é ranqueado com número exato primeiro, depois
+   pela confiança do jogo, e mostrado na hora, com
    *+ Coleção* / *+ Desejos* (como na paleta) e toque pra abrir o set.
-5. **Fallbacks**: sem câmera (webview, permissão negada) o botão vira *Usar
+6. **Fallbacks**: sem câmera (webview, permissão negada) o botão vira *Usar
    foto* (`<input type=file capture=environment>`); código lido errado pode ser
    corrigido no campo e buscado de novo; nada achado → link pro Explorar com o
    código.
@@ -68,8 +82,9 @@ busca que a aba *Busca* da bottom-bar abre. Um botão só, dois lugares.
 **Limites conhecidos da fase 1** (medir no aparelho antes de decidir a fase 2):
 
 - Depende de luz e de segurar parado; foil e reflexo derrubam o OCR.
-- Pokémon e Lorcana voltam **vários candidatos** (o número se repete entre
-  sets com o mesmo total); a pessoa escolhe pela miniatura.
+- Pokémon e Lorcana ainda voltam **vários candidatos** dentro do jogo (o
+  número se repete entre sets com o mesmo total); a pessoa escolhe pela
+  miniatura. Ler o código do set impresso (SVI, PAL…) é a fase 1.5.
 - Vintage (Naruto, HxH, Carddass) não tem código legível — fica pra fase 2.
 - Yu-Gi-Oh: o código fica embaixo da arte, não no rodapé — cai na leitura da
   carta inteira, mais lenta.

@@ -92,9 +92,69 @@
     return out.slice(0, 6);
   }
 
+  // ── Detecção do JOGO (função PURA; testada em tests/scan-codes.test.mjs) ────
+  // O mesmo número existe em vários jogos ("4/102" é Pokémon, mas "4" é um set
+  // do Lorcana e um número do Magic), então buscar nos 13 de uma vez devolvia
+  // Lorcana pra uma carta de Pokémon. Três pistas, somadas:
+  //   1. o que a carta IMPRIME no rodapé (© Pokémon/Nintendo, Wizards of the
+  //      Coast, Disney, Eiichiro Oda…) — a pista mais forte, +3 por palavra;
+  //   2. o FORMATO do código (OP05- é One Piece, BT1- é Digimon, -EN001 é
+  //      Yu-Gi-Oh; fração é Pokémon/Lorcana/Riftbound) — +2 por jogo possível;
+  //   3. o jogo da SESSÃO (a página de onde o scanner abriu) — +1, desempate.
+  // Palavras que vários jogos dividem (BANDAI, SHUEISHA) ficam de fora.
+  const PISTAS = {
+    pokemon: [/POKEMON/, /\bILLUS\b/, /NINTENDO/, /CREATURES/, /GAME ?FREAK/, /\bHP\b/],
+    magic: [/WIZARDS/, /\bCOAST\b/],
+    lorcana: [/DISNEY/, /RAVENSBURGER/, /LORCANA/],
+    onepiece: [/EIICHIRO/, /\bODA\b/],
+    dbfw: [/BIRD ?STUDIO/, /TORIYAMA/, /DRAGON ?BALL/, /FUSION ?WORLD/],
+    digimon: [/DIGIMON/, /AKIYOSHI/, /HONGO/],
+    gundam: [/GUNDAM/, /SOTSU/, /SUNRISE/],
+    ygo: [/KONAMI/, /TAKAHASHI/, /YU-?GI-?OH/],
+    fab: [/LEGEND ?STORY/, /FLESH ?AND ?BLOOD/],
+    riftbound: [/RIOT ?GAMES/, /RIFTBOUND/, /LEAGUE ?OF ?LEGENDS/],
+    unionarena: [/UNION ?ARENA/],
+    naruto: [/NARUTO/, /KISHIMOTO/],
+    hxh: [/HUNTER/, /TOGASHI/]
+  };
+  const FORMATOS = [
+    [/^(OP|EB|PRB)\d{2}-/, ["onepiece"]],
+    [/^ST\d{2}-\d{3}$/, ["onepiece", "gundam", "digimon"]],
+    [/^ST\d{1,2}-\d{2}$/, ["digimon"]],
+    [/^(BT|EX|RB|LM)\d{1,2}-/, ["digimon"]],
+    [/^P-\d{3}$/, ["digimon", "onepiece"]],
+    [/^(GD\d{2}|EXB|EXR|EXBP|EXRP)-/, ["gundam"]],
+    [/^(FB|FS|FC|FP)\d{0,2}-/, ["dbfw"]],
+    [/^[A-Z0-9]{2,4}-[A-Z]{2}\d{3}/, ["ygo"]],
+    [/^UE\d{2}/, ["unionarena"]],
+    [/^[A-Z]{3}\d{3}$/, ["fab"]],
+    [/^\d+\/\d+$/, ["pokemon", "lorcana", "riftbound"]],
+    [/^[A-Z][A-Z0-9]{2,3} \d+$/, ["magic"]],
+    [/^\d{1,2} \d+$/, ["lorcana"]]
+  ];
+  function detectarJogo(texto, codigos, sessao) {
+    const up = String(texto || "").toUpperCase();
+    const pontos = {};
+    const soma = (g, n) => { pontos[g] = (pontos[g] || 0) + n; };
+    let impresso = false; // alguma palavra IMPRESSA bateu (formato + sessão nunca dão certeza)
+    Object.keys(PISTAS).forEach((g) => PISTAS[g].forEach((re) => { if (re.test(up)) { soma(g, 3); impresso = true; } }));
+    (codigos || []).slice(0, 2).forEach((c) => FORMATOS.forEach(([re, gs]) => { if (re.test(c)) gs.forEach((g) => soma(g, 2)); }));
+    if (sessao && sessao !== "hub") soma(sessao, 1);
+    const jogos = Object.keys(pontos).sort((a, b) => pontos[b] - pontos[a] || a.localeCompare(b));
+    // "Confiante" = alguma palavra impressa bateu (>= 3) e ninguém empata.
+    const confiante = impresso && pontos[jogos[0]] >= 3 && (jogos.length === 1 || pontos[jogos[1]] < pontos[jogos[0]]);
+    // Sem pista nenhuma: todos os jogos valem (a busca decide).
+    return { jogos, pontos, confiante, restritos: jogos.filter((g) => pontos[g] >= 2) };
+  }
+
   // ── Busca do candidato no catálogo ──────────────────────────────────────────
   const normKey = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
-  async function buscar(codigo) {
+  // `jogos`: lista ORDENADA de jogos permitidos (vazia = todos). A borda é
+  // consultada por jogo quando são poucos — resposta menor e mais precisa.
+  async function buscar(codigo, jogos) {
+    const permitidos = jogos && jogos.length ? jogos : null;
+    const permite = (g) => !permitidos || permitidos.includes(g);
+    const posicao = (g) => (permitidos ? permitidos.indexOf(g) : 0);
     const vistos = new Set();
     const out = [];
     const add = (card, game) => {
@@ -104,13 +164,19 @@
     };
     // 1) Set + número EXATOS pelo manifest do jogo (a busca por código da
     //    paleta): baixa só o chunk do set certo.
-    try { (await shared.cmdkCardsByCode(codigo)).forEach((h) => add(h.card, h.game)); }
+    try { (await shared.cmdkCardsByCode(codigo)).forEach((h) => { if (permite(h.game)) add(h.card, h.game); }); }
     catch (e) { /* sem manifest/catálogo: segue pra borda */ }
     // 2) Borda (D1): indexa as palavras do número, então acha "4/102" em
     //    qualquer set de 102 cartas e "BT1-001" mesmo quando o setId do
     //    catálogo é "BT-01". Hidrata só as cartas devolvidas.
     if (out.length < 3) {
-      const hits = await shared.searchApi("all", codigo, 12);
+      let hits;
+      if (permitidos && permitidos.length <= 3) {
+        const porG = await Promise.all(permitidos.map((g) => shared.searchApi(g, codigo, 8)));
+        hits = [].concat.apply([], porG.map((h, i) => (h || []).map((x) => Object.assign({ g: permitidos[i] }, x))));
+      } else {
+        hits = (await shared.searchApi("all", codigo, 12) || []).filter((h) => permite(h.g || "pokemon"));
+      }
       if (hits && hits.length) {
         const porJogo = Object.create(null);
         hits.forEach((h) => { const g = h.g || "pokemon"; (porJogo[g] = porJogo[g] || []).push(h.i); });
@@ -121,10 +187,11 @@
         } catch (e) { /* rede oscilou: fica com o que já tem */ }
       }
     }
-    // Número exato primeiro ("4/102" antes de um "4" solto de outro jogo).
+    // Número exato primeiro ("4/102" antes de um "4" solto), depois a ordem
+    // de confiança dos jogos.
     const alvo = normKey(codigo);
     const exato = (h) => (normKey(h.card.number) === alvo ? 0 : 1);
-    out.sort((a, b) => exato(a) - exato(b));
+    out.sort((a, b) => exato(a) - exato(b) || posicao(a.game) - posicao(b.game));
     return out.slice(0, 12);
   }
 
@@ -247,6 +314,9 @@
 .scan-codigo label { flex: none; font-size: 12.5px; font-weight: 700; color: var(--muted); }
 .scan-codigo input { flex: 1; min-width: 0; height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 9px; background: var(--panel); color: var(--text); font: inherit; font-size: 16px; font-weight: 700; text-transform: uppercase; }
 .scan-codigo .lst-mini { min-height: 40px; }
+.scan-jogo { display: flex; gap: 8px; align-items: center; }
+.scan-jogo label { flex: none; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.scan-jogo select { flex: 1; min-width: 0; height: 40px; padding: 0 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--panel); color: var(--text); font: inherit; font-size: 16px; font-weight: 700; }
 .scan-res { display: flex; flex-direction: column; gap: 2px; overflow-y: auto; overscroll-behavior: contain; min-height: 0; }
 /* Linha de resultado em GRADE: no celular a fileira única da paleta (nome +
    dois botões + jogo) esmagava o nome em "Chariza…". Ações na 2ª linha. */
@@ -302,6 +372,13 @@
           <input id="scanCodigo" type="text" data-scan-input autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="OP05-119 · 4/102">
           <button type="submit" class="lst-mini">${escapeHtml(t("scan.search"))}</button>
         </form>
+        <div class="scan-jogo">
+          <label for="scanJogo">${escapeHtml(t("scan.gameLabel"))}</label>
+          <select id="scanJogo" data-scan-jogo>
+            <option value="">${escapeHtml(t("scan.gameAuto"))}</option>
+            ${shared.GAME_SLUGS.map((g) => `<option value="${escapeAttribute(g)}">${escapeHtml(shared.gameLabel(g))}</option>`).join("")}
+          </select>
+        </div>
         <div class="scan-res" data-scan-res></div>
         <p class="scan-priv">${escapeHtml(t("scan.privacy"))}</p>
       </div>`;
@@ -315,7 +392,16 @@
     const status = $("[data-scan-status]");
     const btnLer = $("[data-scan-captura]");
     const input = $("[data-scan-input]");
+    const selJogo = $("[data-scan-jogo]");
     const res = $("[data-scan-res]");
+    let ultimoTexto = ""; // texto do último OCR: a busca manual reaproveita as pistas
+    const sessao = (window.SLEEVU && window.SLEEVU.game) || "";
+    // Jogos permitidos na busca: o escolhido no seletor, ou o que a carta diz.
+    function jogosDaBusca(codigos) {
+      if (selJogo.value) return [selJogo.value];
+      const d = detectarJogo(ultimoTexto, codigos, sessao);
+      return d.restritos.length ? d.jogos.filter((g) => d.pontos[g] >= 2) : [];
+    }
 
     const dizer = (msg) => { status.textContent = msg; };
     // Progresso do motor em linguagem de gente: só as duas fases que demoram
@@ -370,10 +456,19 @@
 
     // Lê UM candidato de cada vez até algum achar carta; devolve o vencedor.
     async function procurar(codigos) {
+      const jogos = jogosDaBusca(codigos);
       for (const c of codigos) {
         dizer(t("scan.status.searching", { q: c }));
-        const achados = await buscar(c);
+        const achados = await buscar(c, jogos);
         if (achados.length) return { codigo: c, achados };
+      }
+      // Restrito a um jogo detectado e nada achado: uma segunda chance sem o
+      // filtro (a pista pode ter vindo de um reflexo ou de um texto errado).
+      if (jogos.length && !selJogo.value) {
+        for (const c of codigos) {
+          const achados = await buscar(c, []);
+          if (achados.length) return { codigo: c, achados };
+        }
       }
       return { codigo: codigos[0] || "", achados: [] };
     }
@@ -417,10 +512,19 @@
         const faixa = preparar(carta, 0, carta.height - hFaixa, carta.width, hFaixa, LARGURA_OCR);
         let texto = await ocr(worker, faixa);
         let codigos = extrairCodigos(texto);
-        if (!codigos.length) { // Yu-Gi-Oh (código sob a arte) e enquadramento torto
-          texto = await ocr(worker, preparar(carta, 0, 0, carta.width, carta.height, LARGURA_OCR));
-          codigos = extrairCodigos(texto);
+        // Carta inteira quando a faixa não bastou: sem código (Yu-Gi-Oh imprime
+        // sob a arte; enquadramento torto) ou sem saber o JOGO (a fração
+        // "4/102" é de três jogos; o "© Pokémon" pode estar fora da faixa).
+        let deteccao = detectarJogo(texto, codigos, sessao);
+        if (!codigos.length || (!selJogo.value && !deteccao.confiante)) {
+          texto += "\n" + await ocr(worker, preparar(carta, 0, 0, carta.width, carta.height, LARGURA_OCR));
+          if (!codigos.length) codigos = extrairCodigos(texto);
+          deteccao = detectarJogo(texto, codigos, sessao);
         }
+        ultimoTexto = texto;
+        // Seletor mostra o jogo detectado (a pessoa corrige se errar); sem
+        // certeza fica em "automático" e a busca usa a lista de possíveis.
+        if (!selJogo.value && deteccao.confiante) selJogo.value = deteccao.jogos[0];
         if (!codigos.length) { mostrar("", []); dizer(t("scan.status.ready")); return; }
         const { codigo, achados } = await procurar(codigos);
         mostrar(codigo, achados);
@@ -447,6 +551,7 @@
       await ler(img, { sx: 0, sy: 0, sw: w, sh: h });
       if (img.close) img.close();
     });
+    selJogo.addEventListener("change", () => { if (input.value.trim() && !ocupado) $("[data-scan-form]").requestSubmit(); });
     $("[data-scan-form]").addEventListener("submit", async (ev) => {
       ev.preventDefault();
       const q = input.value.trim().toUpperCase();
@@ -497,5 +602,5 @@
     obterWorker(progresso).then(() => { if (stream && !ocupado) dizer(t("scan.status.ready")); }).catch(() => dizer(t("scan.error")));
   }
 
-  window.TCGScan = { abrir, extrairCodigos, soDigitos };
+  window.TCGScan = { abrir, extrairCodigos, soDigitos, detectarJogo };
 })();
