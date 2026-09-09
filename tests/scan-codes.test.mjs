@@ -49,10 +49,14 @@ test("confusão de OCR na parte numérica é corrigida; no prefixo a letra fica"
   assert.equal(codigos("BTI-OOI")[0], "BT1-001");
   // Fração: "4/1O2" -> 4/102.
   assert.equal(codigos("4/1O2")[0], "4/102");
+  assert.deepEqual(codigos("OO9/O94"), ["009/094", "9/94"]);
 });
 
-test("Pokémon e Lorcana: fração N/T (zeros à esquerda somem)", () => {
-  assert.equal(codigos("ILLUS. MITSUHIRO ARITA  004/102")[0], "4/102");
+test("Pokémon e Lorcana: fração N/T como impressa PRIMEIRO, sem zeros depois", () => {
+  // O catálogo guarda "009/094" (moderno) e "4/102" (antigo); a borda casa
+  // palavra por prefixo, então "9" não acha "009" — o bug da Nymble no celular.
+  assert.deepEqual(codigos("ILLUS. YUKO MORI  009/094"), ["009/094", "9/94"]);
+  assert.deepEqual(codigos("ILLUS. MITSUHIRO ARITA  4/102"), ["4/102"]);
   assert.equal(codigos("123/198")[0], "123/198");
 });
 
@@ -60,6 +64,7 @@ test("Lorcana: número/total · idioma · set vira 'set número' antes da fraç�
   const c = codigos("12/204 · EN · 4");
   assert.equal(c[0], "4 12");
   assert.ok(c.includes("12/204"));
+  assert.ok(!c.includes("012/204"));
 });
 
 test("Magic moderno: número e 'SET • IDIOMA' viram 'SET NÚMERO'", () => {

@@ -83,11 +83,17 @@
     // FAB: WTR001, IRA002 (3 letras + 3 dígitos colados)
     const reFab = /\b([A-Z]{3})(\d{3})\b/g;
     while ((m = reFab.exec(up))) add(m[1] + m[2]);
-    // Fração: 4/102, 123/198, 12/204 (Pokémon, Lorcana, Riftbound, Magic antigo)
+    // Fração: 4/102, 009/094, 12/204 (Pokémon, Lorcana, Riftbound, Magic antigo).
+    // COMO IMPRESSA primeiro, sem os zeros depois: o catálogo guarda o número
+    // do jeito que a carta imprime ("009/094" no Pokémon moderno, "4/102" no
+    // antigo) e a busca da borda casa palavra por prefixo — "9" não acha
+    // "009". Testado no celular: a Nymble 009/094 saía como 9/94 e não achava.
     const reFrac = /\b([0-9OILSBZ]{1,3})\s*\/\s*([0-9OILSBZ]{1,3})\b/g;
     while ((m = reFrac.exec(up))) {
       const a = soDigitos(m[1]), b = soDigitos(m[2]);
-      if (/^\d+$/.test(a) && /^\d+$/.test(b) && parseInt(b, 10) > 0) add(`${parseInt(a, 10)}/${parseInt(b, 10)}`);
+      if (!/^\d+$/.test(a) || !/^\d+$/.test(b) || parseInt(b, 10) === 0) continue;
+      add(`${a}/${b}`);
+      add(`${parseInt(a, 10)}/${parseInt(b, 10)}`);
     }
     return out.slice(0, 6);
   }
@@ -329,12 +335,12 @@
 .scan-jogo.is-auto { color: #cfd6e2; }
 .scan-dica { position: absolute; left: 12px; right: 12px; display: flex; justify-content: center; pointer-events: none; }
 .scan-dica span { padding: 6px 12px; border-radius: 999px; background: rgba(13,14,18,.62); color: #cfd6e2; font-size: 12.5px; font-weight: 600; text-align: center; }
-.scan-toast { position: absolute; left: 0; right: 0; bottom: calc(var(--scan-bot) + 118px); display: flex; justify-content: center; pointer-events: none; }
+.scan-toast { position: absolute; left: 0; right: 0; bottom: calc(var(--scan-bot) + 124px); display: flex; justify-content: center; pointer-events: none; }
 .scan-toast[hidden] { display: none; }
 .scan-toast span { display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 999px; background: rgba(29,33,43,.86); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); font-size: 14px; font-weight: 700; }
 .scan-spin { width: 16px; height: 16px; border-radius: 999px; border: 2px solid rgba(255,255,255,.25); border-top-color: #00e5ff; animation: scanGira 1.1s linear infinite; }
 .scan-semcam { position: absolute; left: 24px; right: 24px; top: 40%; margin: 0; text-align: center; color: #cfd6e2; font-size: 14px; line-height: 1.5; }
-.scan-res { position: absolute; left: 12px; right: 12px; bottom: calc(var(--scan-bot) + 104px); display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: rgba(29,33,43,.86); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 18px 45px rgba(0,0,0,.32); }
+.scan-res { position: absolute; left: 12px; right: 12px; bottom: calc(var(--scan-bot) + 110px); display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: rgba(29,33,43,.86); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 18px 45px rgba(0,0,0,.32); }
 .scan-res[hidden] { display: none; }
 .scan-res-open { flex: 1; min-width: 0; min-height: 0; display: flex; align-items: center; gap: 12px; padding: 0; border: 0; background: none; color: inherit; text-align: left; font: inherit; cursor: pointer; }
 .scan-res-thumb { flex: none; width: 46px; height: 64px; border-radius: 6px; overflow: hidden; background: #262b36; }
@@ -348,11 +354,13 @@
 .scan-res-add { height: 34px; min-height: 0; padding: 0 12px; border: 0; border-radius: 9px; background: var(--accent, #dc2626); color: var(--on-accent, #fff); font: inherit; font-size: 12.5px; font-weight: 800; white-space: nowrap; cursor: pointer; }
 .scan-res-add.done { background: #262b36; color: #7ee2b8; }
 .scan-res-alt { height: 30px; min-height: 0; padding: 0 12px; border: 1px solid #2d333f; border-radius: 9px; background: #1d212b; color: #f3f5f7; font: inherit; font-size: 11.5px; font-weight: 700; white-space: nowrap; cursor: pointer; }
-.scan-bottom { position: absolute; left: 0; right: 0; bottom: var(--scan-bot); height: 88px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; }
+.scan-bottom { position: absolute; left: 0; right: 0; bottom: var(--scan-bot); height: 96px; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; padding: 0 20px; }
+.scan-bottom > :first-child { justify-self: start; }
+.scan-bottom > :last-child { justify-self: end; }
 .scan-round { width: 52px; height: 52px; min-height: 0; flex: none; padding: 0; border: 1px solid rgba(255,255,255,.14); border-radius: 999px; background: rgba(13,14,18,.62); color: #f3f5f7; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
 .scan-round svg { width: 22px; height: 22px; }
-.scan-shutter { width: 78px; height: 78px; min-height: 0; flex: none; padding: 0; border: 4px solid rgba(255,255,255,.35); border-radius: 999px; background: transparent; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
-.scan-shutter span { width: 62px; height: 62px; border-radius: 999px; background: #fff; display: block; }
+.scan-shutter { width: 94px; height: 94px; min-height: 0; flex: none; justify-self: center; padding: 0; border: 4px solid rgba(255,255,255,.35); border-radius: 999px; background: transparent; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.scan-shutter span { width: 76px; height: 76px; border-radius: 999px; background: #fff; display: block; }
 .scan-shutter[disabled] { opacity: .55; cursor: wait; }
 .scan-shutter[hidden] { display: none; }
 .scan-lote { height: 44px; min-height: 0; flex: none; padding: 0 14px 0 12px; border: 1px solid rgba(255,255,255,.14); border-radius: 999px; background: rgba(13,14,18,.62); color: #f3f5f7; font: inherit; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
@@ -523,7 +531,7 @@
     function posicionaGuia() {
       const W = wrap.clientWidth, H = wrap.clientHeight;
       const y = topo.getBoundingClientRect().bottom + 12;
-      const reserva = 236; // resultado + controles + folgas
+      const reserva = 244; // resultado + controles + folgas
       const altMax = Math.max(200, H - y - reserva);
       let w = Math.min(W * 0.86, 440), h = w * 88 / 63;
       if (h > altMax) { h = altMax; w = h * 63 / 88; }
