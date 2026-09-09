@@ -6,6 +6,11 @@
 # inteiro — inclui blob: (export de binder) e challenges.cloudflare.com
 # (Turnstile do login), inofensivos nas demais páginas.
 #
+# script-src leva 'wasm-unsafe-eval' pro scanner de carta (Tesseract.js em
+# WASM, auto-hospedado em assets/vendor/) — é só compilar WASM, não eval de JS.
+# Pelo mesmo motivo a Permissions-Policy libera camera=(self): antes o próprio
+# site estava proibido de abrir a câmera.
+#
 # style-src mantém 'unsafe-inline' de propósito: o UI Editor e o print de
 # binders injetam <style> dinâmicos (conteúdo do usuário — nonce/hash não
 # se aplicam). Scripts continuam sem 'unsafe-inline', que é o que importa.
@@ -17,12 +22,12 @@
 # e as imagens somem no site inteiro. (Quando a CSP vivia no <meta> isso não
 # aparecia: meta-CSP não vale pro contexto do SW; via header, vale.)
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://cards.scryfall.io https://svgs.scryfall.io https://wsrv.nl; connect-src 'self' https://api.tcgdex.net https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://cards.scryfall.io https://svgs.scryfall.io https://wsrv.nl https://pokeapi.co https://economia.awesomeapi.com.br https://dlnalopazitfdgnmdguu.supabase.co https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://cards.scryfall.io https://svgs.scryfall.io https://wsrv.nl; connect-src 'self' https://api.tcgdex.net https://assets.tcgdex.net https://images.pokemontcg.io https://raw.githubusercontent.com https://tcgplayer-cdn.tcgplayer.com https://cards.lorcast.io https://cards.scryfall.io https://svgs.scryfall.io https://wsrv.nl https://pokeapi.co https://economia.awesomeapi.com.br https://dlnalopazitfdgnmdguu.supabase.co https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY
-  Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
+  Permissions-Policy: geolocation=(), microphone=(), camera=(self), interest-cohort=()
   Cross-Origin-Opener-Policy: same-origin
   # Speculation Rules por HEADER, não por <script inline>: a CSP acima é
   # script-src 'self' SEM 'unsafe-inline', então regra inline exigiria afrouxar

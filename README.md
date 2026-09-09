@@ -335,6 +335,30 @@ worker).
 
 ---
 
+## Scanner de carta (câmera)
+
+Ícone de câmera em toda busca de página (`.page-search`) e na paleta de busca
+(aba **Busca** da bottom-bar). Abre [src/scan.js](src/scan.js), injetado sob
+demanda no primeiro toque — o shared.js está no teto do orçamento de peso.
+
+Fase 1: câmera ao vivo com moldura-guia 63/88, OCR **no aparelho** (Tesseract.js
+7 em WASM, auto-hospedado em `assets/vendor/tesseract-7.0.0/` porque a CSP é
+`'self'`), leitura do **código impresso** (OP05-119, BT1-001, 4/102, MH3 123…)
+e busca em duas camadas: set + número exatos pelo manifest (`cmdkCardsByCode`,
+a mesma da paleta) e `/api/search?game=all` (D1) com hidratação dos hits. A
+foto não sai do navegador; só o código lido vai pra busca. Plano, limites e as
+fases seguintes (hash perceptual pra vintage) em
+[docs/PLANO-SCANNER.md](docs/PLANO-SCANNER.md).
+
+O que isso mudou na infra: `script-src` ganhou `'wasm-unsafe-eval'` e a
+`Permissions-Policy` liberou `camera=(self)` (ver [_headers](_headers)); o
+worker do OCR nasce por URL (`workerBlobURL: false`) pra `worker-src 'self'`
+continuar sem `blob:`. Os ~3,5 MB gz do motor só descem pra quem escaneia e
+ficam no cache HTTP (`/assets/*` é immutable), no service worker e, o modelo,
+no IndexedDB do Tesseract.
+
+---
+
 ## Testes
 
 ```bash

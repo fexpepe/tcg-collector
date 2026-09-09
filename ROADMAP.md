@@ -73,6 +73,11 @@ login** desde 2026-07-14 (`enforceLoginGate`); o dado continua vivendo no
 aparelho (local-first), mas o cadastro não existe mais "sem conta". Catálogo,
 busca, decks públicos, perfis e links `?s=` seguem abertos.
 
+**Scanner de carta.** Câmera + OCR no aparelho (Tesseract.js em WASM,
+auto-hospedado) lendo o código impresso e buscando no catálogo — fase 1 em
+2026-09-09; vintage por hash perceptual é a fase 2. Ver
+[docs/PLANO-SCANNER.md](docs/PLANO-SCANNER.md).
+
 **Infra.** PWA instalável e offline, API na borda com D1 (busca global e "só as
 minhas cartas"), páginas de set/carta/deck pré-renderizadas, CSP e cabeçalhos de
 segurança, analytics first-party anônimo com painel `/admin`, uptime probe,

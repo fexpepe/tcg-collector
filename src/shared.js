@@ -1478,6 +1478,31 @@
     return out;
   }
 
+  // ── Scanner de carta pela câmera (src/scan.js, injetado no 1º toque) ─────
+  // O ícone vive aqui porque aparece em toda busca de página e na paleta; o
+  // scanner em si (câmera + OCR em WASM, ~3,5 MB) só desce pra quem toca.
+  const SCAN_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7H8l1.4-2.1c.2-.3.5-.4.8-.4h3.6c.3 0 .6.1.8.4L16 7h2.5A1.5 1.5 0 0 1 20 8.5V18a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18z"/><circle cx="12" cy="13" r="3.5"/></svg>';
+  let scanCarregando = null;
+  function openScanner() {
+    if (!scanCarregando) scanCarregando = injectScript("/src/scan.js").then((ok) => { if (!ok) scanCarregando = null; return ok; });
+    scanCarregando.then(() => { if (window.TCGScan) window.TCGScan.abrir(); });
+  }
+  // Câmera ao lado de TODA busca de página (.page-search): achar carta é o
+  // trabalho da busca, então é onde o scanner tem que estar.
+  function initPageSearchScan() {
+    document.querySelectorAll(".page-search").forEach((sec) => {
+      if (sec.querySelector(".scan-btn")) return;
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "scan-btn";
+      b.innerHTML = SCAN_ICON;
+      b.setAttribute("aria-label", t("scan.open"));
+      b.title = t("scan.open");
+      b.addEventListener("click", openScanner);
+      sec.appendChild(b);
+    });
+  }
+
   function initCommandPalette() {
     let overlay = null, items = [], active = 0;
     let cardHits = [], cardHitsQuery = "";
@@ -1586,6 +1611,7 @@
       overlay.className = "cmdk-overlay";
       overlay.innerHTML = `<div class="cmdk-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("cmdk.placeholder"))}">
           <input type="text" class="cmdk-input" enterkeyhint="search" placeholder="${escapeAttribute(t("cmdk.placeholder"))}" autocomplete="off" spellcheck="false">
+          <button type="button" class="cmdk-scan" data-cmdk-scan aria-label="${escapeAttribute(t("scan.open"))}" title="${escapeAttribute(t("scan.open"))}">${SCAN_ICON}</button>
           <div class="cmdk-results"></div>
           <p class="cmdk-hint">${escapeHtml(t("cmdk.hint"))}</p>
         </div>`;
@@ -1595,6 +1621,7 @@
       // Baixa o índice dos 2 jogos no 1º uso; quando chegar, re-renderiza a busca atual.
       loadCmdkIndex().then(() => { if (overlay && overlay.isConnected) renderList(input.value.trim()); });
       overlay.addEventListener("click", (e) => {
+        if (e.target.closest("[data-cmdk-scan]")) { close(); openScanner(); return; } // câmera: fecha a paleta e abre o scanner
         const add = e.target.closest("[data-cmdk-add]");
         if (add) { doCmdkAdd(add); return; } // add inline: NÃO navega nem fecha
         const item = e.target.closest("[data-cmdk-i]");
@@ -8955,6 +8982,8 @@
     cardLabel,
     matchesCardQuery,
     searchApi,
+    cmdkCardsByCode,
+    openScanner,
     awaitCatalog,
     loadCatalog,
     loadCatalogForCardIds,
@@ -11480,6 +11509,7 @@
     }
   });
   initCommandPalette();
+  initPageSearchScan();
   initGameFilterChips();   // ANTES do applyTranslations não: os rótulos usam t()
   initGameFilterSelects(); // depois dos chips: o select é espelho deles
   initSearchShortcutHint(); // depois do applyTranslations (placeholders já traduzidos)
