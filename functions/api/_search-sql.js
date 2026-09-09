@@ -113,6 +113,17 @@ CREATE TABLE IF NOT EXISTS prices (
 // stopwords ("the"), segue com elas — é o que a pessoa digitou.
 const STOP = new Set(["the", "of", "a", "an", "and", "to", "de", "da", "do", "la", "el"]);
 
+// Escritas de um termo SÓ de dígitos: sem zeros à esquerda e zero-preenchido
+// a 3 (a largura impressa). "009" e "9" são o mesmo número de carta — o
+// Pokémon moderno guarda "009", o antigo "9", e quem digita usa qualquer um.
+// Mesma régua do numberSearchForms do shared.js (o teste trava as duas).
+export function formasNumericas(termo) {
+  const t = String(termo || "");
+  if (!/^\d+$/.test(t)) return [t];
+  const puro = String(parseInt(t, 10));
+  return [...new Set([t, puro, puro.padStart(3, "0")])];
+}
+
 export function buildSearch(game, consulta, limite) {
   const todas = palavras(consulta);
   const uteis = todas.filter((w) => !STOP.has(w));
@@ -126,14 +137,25 @@ export function buildSearch(game, consulta, limite) {
   // a..z com game=all esgotava a cota de leitura do D1. Aqui a borda também barra.
   if (termos.join("").length < 2) return null;
   const global = game === "all";
-  // Cada operando do INTERSECT é embrulhado num LIMIT 2000: teto de linhas LIDAS
-  // por termo (no D1 linha lida é linha COBRADA — não a devolvida). Não muda o
+  // Cada operando do INTERSECT é embrulhado num LIMIT: teto de linhas LIDAS por
+  // termo (no D1 linha lida é linha COBRADA — não a devolvida). Não muda o
   // resultado prático: o INTERSECT já afunila e o SELECT externo corta em ~40.
-  const sub = termos
-    .map(() => global
-      ? `SELECT game, id FROM (SELECT game, id FROM card_words WHERE word LIKE ? LIMIT 2000)`
-      : `SELECT id FROM (SELECT id FROM card_words WHERE game = ?1 AND word LIKE ? LIMIT 2000)`)
-    .join("\nINTERSECT\n");
+  //
+  // Termo NUMÉRICO ("009", "94", o "9" de "9/94") casa por IGUALDADE nas suas
+  // escritas (word IN ('9','009')), não por prefixo: quem digita um número
+  // quer aquele número — "9" por prefixo trazia 9, 90-99 e 900-999, milhares
+  // de linhas que estouravam o teto do operando e a interseção PERDIA a carta
+  // certa ("nymble 9" voltava vazio). Igualdade lê só as linhas iguais, e por
+  // isso o teto é maior: o "1" existe em todo set de todo jogo.
+  const operando = (t) => {
+    const numerico = /^\d+$/.test(t);
+    const cond = numerico ? `word IN (${formasNumericas(t).map(() => "?").join(",")})` : "word LIKE ?";
+    const teto = numerico ? 6000 : 2000;
+    return global
+      ? `SELECT game, id FROM (SELECT game, id FROM card_words WHERE ${cond} LIMIT ${teto})`
+      : `SELECT id FROM (SELECT id FROM card_words WHERE game = ?1 AND ${cond} LIMIT ${teto})`;
+  };
+  const sub = termos.map(operando).join("\nINTERSECT\n");
   const alvo = global ? `(game, id) IN` : `game = ?1 AND id IN`;
   // image/released no SELECT: a lista de IMPRESSÕES do popup da carta precisa
   // dos dois (miniatura no hover e ordenação por lançamento). Ler as colunas a
@@ -142,8 +164,8 @@ export function buildSearch(game, consulta, limite) {
   // pra busca do editor de decks seguir nos poucos KB de sempre.
   const sql = `SELECT game, id, name, set_name, number, card_type, cost, rarity, color, image, released
 FROM cards WHERE ${alvo} (\n${sub}\n) LIMIT ${Math.max(1, Math.min(100, limite | 0 || 40))}`;
-  const likes = termos.map((t) => t + "%");
-  const params = global ? likes : [game, ...likes];
+  const valores = termos.flatMap((t) => (/^\d+$/.test(t) ? formasNumericas(t) : [t + "%"]));
+  const params = global ? valores : [game, ...valores];
   return { sql, params };
 }
 
@@ -224,5 +246,21 @@ export function cardRows(game, card) {
   for (const fonte of [card.name, card.set, num, numCompact === num ? "" : numCompact, card.artist]) {
     for (const w of palavras(fonte)) unicas.add(w);
   }
-  return { linha, words: [...unicas].map((w) => ({ game, word: w, id: card.id })) };
+  // `extras`: as palavras que entraram DEPOIS da carga inicial — hoje o TOTAL
+  // do set ("94" da Nymble 9/94), que é o que faz o código impresso "009/094"
+  // achar a carta guardada como número "9" + setTotal 94. Separadas das
+  // `legado` (a régua original, acima) de propósito: o deploy (d1-delta) só
+  // INSERE as extras nas cartas cuja impressão remota ainda é a legada, em vez
+  // de apagar e reescrever todas as palavras do catálogo — 10× menos escritas
+  // na cota do D1. Palavra nova aqui = acrescentar em `fontesExtras`, nunca em
+  // cima; e nunca mudar a régua das legado sem aceitar a reescrita total.
+  const legado = [...unicas];
+  const total = String(card.setTotal || "");
+  const fontesExtras = [num.includes("/") || !/^\d+$/.test(total) ? "" : total];
+  const extras = [];
+  for (const fonte of fontesExtras) {
+    for (const w of palavras(fonte)) if (!unicas.has(w)) { unicas.add(w); extras.push(w); }
+  }
+  const palavra = (w) => ({ game, word: w, id: card.id });
+  return { linha, words: [...legado, ...extras].map(palavra), legado: legado.map(palavra), extras: extras.map(palavra) };
 }

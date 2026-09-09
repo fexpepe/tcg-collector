@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import { DatabaseSync } from "node:sqlite";
 import {
   SCHEMA, SCHEMA_PRICES, buildCards, buildPrices, buildSearch, idsComBase,
-  basePricingId, LOTE_IDS
+  basePricingId, LOTE_IDS, cardRows, formasNumericas
 } from "../functions/api/_search-sql.js";
 import { loadShared } from "./lib/shared-sandbox.mjs";
 
@@ -123,6 +123,74 @@ test("busca acha por prefixo e interseção de palavras", () => {
   // global: acha em qualquer jogo e diz de qual veio (g na resposta da Function)
   const g = roda(db, buildSearch("all", "ariel", 10));
   assert.deepEqual(g.map((h) => [h.game, h.id]), [["lorcana", "tfc-1"]]);
+});
+
+// Cartas com NÚMERO indexado como o cardRows faz hoje: número + total do set.
+// A Nymble é guardada como "9" + 94 (Pokémon antigo/TCGdex), a Spewpa como
+// "009" + 198 (Pokémon moderno, já zero-preenchido).
+function comNumeros(db) {
+  const carta = db.prepare(`INSERT INTO cards
+    (game,id,name,set_name,number,card_type,cost,rarity,color,set_id,artist,language,image,variants,released)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`);
+  carta.run("pokemon", "x-9", "Nymble", "Set X", "9", "", "", "Common", "", "x", "", "en", "", "[]", "2024-01-01");
+  carta.run("pokemon", "sv01-009", "Spewpa", "Scarlet & Violet", "009", "", "", "Common", "", "sv01", "", "en", "", "[]", "2023-03-31");
+  const w = db.prepare("INSERT INTO card_words (game,word,id) VALUES (?,?,?)");
+  for (const c of [{ id: "x-9", name: "Nymble", set: "Set X", number: "9", setTotal: 94 },
+    { id: "sv01-009", name: "Spewpa", set: "Scarlet & Violet", number: "009", setTotal: 198 }]) {
+    for (const p of cardRows("pokemon", c).words) w.run(p.game, p.word, p.id);
+  }
+  return db;
+}
+
+test("cardRows: o total do set entra como palavra EXTRA; número com barra não duplica", () => {
+  const r = cardRows("pokemon", { id: "x-9", name: "Nymble", set: "Set X", number: "9", setTotal: 94 });
+  assert.deepEqual(r.extras.map((w) => w.word), ["94"]);
+  assert.deepEqual(r.legado.map((w) => w.word), ["nymble", "set", "x", "9"]);
+  assert.deepEqual(r.words.map((w) => w.word), ["nymble", "set", "x", "9", "94"]);
+  const barra = cardRows("pokemon", { id: "base1-4", name: "Charizard", set: "Base Set", number: "4/102", setTotal: 102 });
+  assert.deepEqual(barra.extras, []);
+  assert.ok(barra.words.some((w) => w.word === "102"));
+  // Total repetido no nome/set não entra duas vezes (Set "2024" com total 2024 é raro, mas o dedupe é a regra).
+  const rep = cardRows("pokemon", { id: "y-1", name: "Carta 94", set: "S", number: "1", setTotal: 94 });
+  assert.deepEqual(rep.extras, []);
+});
+
+test("número casa por IGUALDADE nas suas escritas: 009/094, 9/94, nome + número", () => {
+  const db = comNumeros(banco());
+  const ids = (q) => roda(db, buildSearch("pokemon", q, 10)).map((h) => h.id).sort();
+  assert.deepEqual(ids("009/094"), ["x-9"]);          // o impresso acha a guardada como "9"
+  assert.deepEqual(ids("9/94"), ["x-9"]);
+  assert.deepEqual(ids("nymble 9"), ["x-9"]);
+  assert.deepEqual(ids("Nymble (009/094)"), ["x-9"]);
+  assert.deepEqual(ids("spewpa 9"), ["sv01-009"]);    // "9" acha a guardada como "009"
+  assert.deepEqual(ids("009"), ["sv01-009", "x-9"]);  // número solto: todas as 9/009
+  assert.deepEqual(ids("9/198"), ["sv01-009"]);
+  assert.deepEqual(ids("94"), ["x-9"]);               // "94" não vira prefixo de "940"…
+  assert.deepEqual(ids("10/94"), []);
+  // global também
+  assert.deepEqual(roda(db, buildSearch("all", "009/094", 10)).map((h) => [h.game, h.id]), [["pokemon", "x-9"]]);
+});
+
+test("termo numérico usa o índice (igualdade, sem varredura) e o teto maior", () => {
+  const db = comNumeros(banco());
+  for (const q of [buildSearch("pokemon", "009/094", 10), buildSearch("all", "nymble 9", 10)]) {
+    const plano = db.prepare("EXPLAIN QUERY PLAN " + q.sql).all(...q.params).map((r) => r.detail).join(" | ");
+    assert.doesNotMatch(plano, /SCAN card_words/, `varredura completa: ${plano}`);
+    assert.match(plano, /word=\?/, `sem igualdade no índice: ${plano}`);
+  }
+  const q = buildSearch("pokemon", "nymble 9", 10);
+  assert.match(q.sql, /word IN \(\?,\?\) LIMIT 6000/);
+  assert.match(q.sql, /word LIKE \? LIMIT 2000/);
+  assert.deepEqual(q.params, ["pokemon", "nymble%", "9", "009"]);
+  assert.deepEqual(buildSearch("pokemon", "0001", 10).params, ["pokemon", "0001", "1", "001"]);
+});
+
+test("formasNumericas da borda = numberSearchForms do cliente (mesma régua dos dois lados)", () => {
+  const sb = loadShared("window.__test = { numberSearchForms };");
+  const doCliente = sb.window.__test.numberSearchForms;
+  for (const n of ["9", "009", "94", "094", "0001", "123", "1000"]) {
+    assert.deepEqual(new Set(formasNumericas(n)), new Set(doCliente(n)), `divergiu em ${n}`);
+  }
 });
 
 test("termo repetido não vira operando duplicado (linha lida é linha cobrada)", () => {

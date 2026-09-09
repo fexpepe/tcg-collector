@@ -34,15 +34,18 @@ export const CUSTO = {
 // locais: Map id -> {h, hw}; remotos: Map id -> {h, hw} (hw pode vir null de
 // uma linha gravada pela metade — conta como "palavras mudaram").
 export function diffCartas(locais, remotos) {
-  const novos = [], linha = [], palavras = [], remover = [];
+  const novos = [], linha = [], palavras = [], acrescentar = [], remover = [];
   for (const [id, l] of locais) {
     const r = remotos.get(id);
     if (!r) novos.push(id);
+    // Remota com as palavras da régua LEGADA (ver cardRows/impressaoCarta):
+    // faltam só as `extras` — insere-as, sem apagar e reescrever as demais.
+    else if (l.hwLegado && r.hw === l.hwLegado) acrescentar.push(id);
     else if (r.hw !== l.hw) palavras.push(id);   // pode ter mudado a linha também: o upsert cobre
     else if (r.h !== l.h) linha.push(id);
   }
   for (const id of remotos.keys()) if (!locais.has(id)) remover.push(id);
-  return { novos, palavras, linha, remover };
+  return { novos, palavras, linha, acrescentar, remover };
 }
 
 // Plano de UM jogo dentro do orçamento. `cartas`: Map id -> {linha, words}.
@@ -55,12 +58,17 @@ export function planoCartas(game, diff, cartas, orcamento) {
     novos: (id) => CUSTO.carta + CUSTO.palavra * cartas.get(id).words.length,
     palavras: (id) => CUSTO.carta + CUSTO.palavra * 2 * cartas.get(id).words.length,
     linha: () => CUSTO.carta,
+    acrescentar: (id) => CUSTO.carta + CUSTO.palavra * (cartas.get(id).extras || []).length,
     remover: () => CUSTO.carta + CUSTO.palavra * CUSTO.palavrasSemDado
   };
-  const feitos = { novos: [], palavras: [], linha: [], remover: [] };
+  const feitos = { novos: [], palavras: [], linha: [], acrescentar: [], remover: [] };
   let custo = 0, pendentes = 0;
-  for (const tipo of ["novos", "palavras", "linha", "remover"]) {
-    for (const id of diff[tipo]) {
+  // `acrescentar` (palavras extras numa carta que não mudou) depois de tudo o
+  // que é mudança de verdade: é churn de uma régua nova de busca, e não pode
+  // atrasar um set novo nem uma linha corrigida. Diante do `remover` porque
+  // uma carta a mais no banco não atrapalha ninguém.
+  for (const tipo of ["novos", "palavras", "linha", "acrescentar", "remover"]) {
+    for (const id of diff[tipo] || []) {
       const c = custoDe[tipo](id);
       if (custo + c > orcamento) { pendentes++; continue; }
       custo += c;
@@ -69,9 +77,11 @@ export function planoCartas(game, diff, cartas, orcamento) {
   }
   // A ORDEM abaixo é o que torna a carga retomável (ver o cabeçalho):
   //   1. apaga as palavras velhas (das que mudaram, das que sumiram e das
-  //      novas — sobra de uma tentativa interrompida);
+  //      novas — sobra de uma tentativa interrompida); nas de `acrescentar`
+  //      apaga SÓ as extras (sobra de uma inserção interrompida antes do
+  //      passo 4 — sem isso a rodada seguinte as duplicaria);
   //   2. apaga a linha das que sumiram;
-  //   3. insere as palavras novas;
+  //   3. insere as palavras novas (todas, ou só as extras);
   //   4. por ÚLTIMO grava a linha (upsert) com h/hw novos.
   // Interrompeu entre 3 e 4? A linha remota ainda tem o hw velho e a próxima
   // rodada refaz as palavras. Interrompeu entre 1 e 3? Idem. Nunca fica uma
@@ -80,13 +90,28 @@ export function planoCartas(game, diff, cartas, orcamento) {
   const g = aspas(game);
   const semPalavras = [...feitos.novos, ...feitos.palavras, ...feitos.remover];
   statements.push(...listasEmLotes(`DELETE FROM card_words WHERE game=${g} AND id IN`, semPalavras));
+  // Extras agrupadas pelo conjunto de palavras (o total do set repete-se em
+  // todas as cartas do set): um DELETE por conjunto, com a lista de ids.
+  const porExtras = new Map();
+  for (const id of feitos.acrescentar) {
+    const k = (cartas.get(id).extras || []).map((w) => aspas(w.word)).join(",");
+    if (!k) continue;
+    if (!porExtras.has(k)) porExtras.set(k, []);
+    porExtras.get(k).push(id);
+  }
+  for (const [k, ids] of porExtras) {
+    statements.push(...listasEmLotes(`DELETE FROM card_words WHERE game=${g} AND word IN (${k}) AND id IN`, ids));
+  }
   statements.push(...listasEmLotes(`DELETE FROM cards WHERE game=${g} AND id IN`, feitos.remover));
   const comPalavras = [...feitos.novos, ...feitos.palavras];
   statements.push(...insertsEmLotes(
     "INSERT INTO card_words (game,word,id)",
-    comPalavras.flatMap((id) => cartas.get(id).words.map(valoresPalavra))
+    [
+      ...comPalavras.flatMap((id) => cartas.get(id).words.map(valoresPalavra)),
+      ...feitos.acrescentar.flatMap((id) => (cartas.get(id).extras || []).map(valoresPalavra))
+    ]
   ));
-  const gravar = [...comPalavras, ...feitos.linha];
+  const gravar = [...comPalavras, ...feitos.linha, ...feitos.acrescentar];
   const sets = COLUNAS.filter((k) => k !== "game" && k !== "id").map((k) => `${k}=excluded.${k}`).join(",");
   statements.push(...insertsEmLotes(
     `INSERT INTO cards (${COLUNAS.join(",")})`,

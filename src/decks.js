@@ -1742,7 +1742,10 @@
     const map = buildPrefix(game, index);
     let melhor = null;
     for (const tm of terms) {
-      if (tm.length < PREFIX_LEN) continue;
+      // Termo que começa com dígito é NÚMERO de carta ("009", "9/94", "058"),
+      // não nome: o balde de prefixo é dos nomes e não o teria — devolvia vazio
+      // pra "pikachu 058/102" mesmo com a carta no índice.
+      if (tm.length < PREFIX_LEN || /^\d/.test(tm)) continue;
       const arr = map.get(tm.slice(0, PREFIX_LEN));
       if (!arr) return [];                       // nenhum nome começa assim
       if (!melhor || arr.length < melhor.length) melhor = arr;
@@ -1865,7 +1868,9 @@
       for (const e of pool) {
         // O haystack normalizado é memoizado no próprio item (`_h`): sem isso a
         // normalização (NFD + regex) rodava de novo a cada tecla digitada.
-        const hay = e._h || (e._h = norm(e.n + " " + (e.s || "") + " " + (e.u || "")));
+        // O número entra em todas as escritas (shared.numberSearchForms): "9"
+        // e "009" são a mesma carta, seja como for que o índice a guarde.
+        const hay = e._h || (e._h = norm(e.n + " " + (e.s || "") + " " + shared.numberSearchForms(e.u).join(" ")));
         if (terms.every((tm) => hay.includes(tm)) && passesFacets(e)) found.push(e);
         if (found.length >= 60) break;          // teto: o índice tem o jogo inteiro
       }

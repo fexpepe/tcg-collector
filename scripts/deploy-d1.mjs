@@ -273,8 +273,8 @@ async function cargaIncremental(fazCartas, fazPrecos, hashes) {
     const remotos = lerImpressoes("cards", "id, h, hw", game, [...mapa.keys()]);
     const diff = diffCartas(mapa, remotos);
     const plano = planoCartas(game, diff, mapa, restante() - custoCartas);
-    const n = diff.novos.length + diff.palavras.length + diff.linha.length + diff.remover.length;
-    if (n) console.log(`  ${game}: ${diff.novos.length} novas, ${diff.palavras.length} com palavras mudadas, ${diff.linha.length} com linha mudada, ${diff.remover.length} sumiram → ${plano.feitos} agora (~${plano.custo} linhas), ${plano.pendentes} pendentes`);
+    const n = diff.novos.length + diff.palavras.length + diff.linha.length + diff.acrescentar.length + diff.remover.length;
+    if (n) console.log(`  ${game}: ${diff.novos.length} novas, ${diff.palavras.length} com palavras mudadas, ${diff.linha.length} com linha mudada, ${diff.acrescentar.length} só com palavras a acrescentar, ${diff.remover.length} sumiram → ${plano.feitos} agora (~${plano.custo} linhas), ${plano.pendentes} pendentes`);
     stmtsCartas.push(...plano.statements);
     custoCartas += plano.custo; feitos += plano.feitos; pendentes += plano.pendentes;
     if (plano.pendentes) incompleto = true;

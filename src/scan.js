@@ -194,9 +194,12 @@
       }
     }
     // Número exato primeiro ("4/102" antes de um "4" solto), depois a ordem
-    // de confiança dos jogos.
+    // de confiança dos jogos. "Exato" em qualquer escrita do código
+    // (cardCodeForms): "009/094" lido na carta é exato pra carta guardada
+    // como "9" + total 94.
     const alvo = normKey(codigo);
-    const exato = (h) => (normKey(h.card.number) === alvo ? 0 : 1);
+    const formas = (c) => (shared.cardCodeForms ? shared.cardCodeForms(c) : [c.number]);
+    const exato = (h) => (formas(h.card).some((f) => normKey(f) === alvo) ? 0 : 1);
     out.sort((a, b) => exato(a) - exato(b) || posicao(a.game) - posicao(b.game));
     return out.slice(0, 12);
   }

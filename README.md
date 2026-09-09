@@ -92,6 +92,30 @@ Catálogo e navegação: `index` (landing), `hub` (grade de jogos), `sets`,
 `detail` (set/artista/Pokémon), `cards`, `explore` (busca global em todos os
 jogos), `pokedex`, `artists`, `trainers`.
 
+### Busca por código de carta
+
+O código como a carta **imprime** ("009/094", "4/102", "OP05-119") acha a carta
+em toda busca do site, seja como for que o catálogo guarde o número ("9" +
+`setTotal` 94, "009" + 94, "4/102"), sozinho ou junto do nome ("Nymble
+009/094", "Charizard #4"). É o padrão de mercado de pesquisa e o que o scanner
+lê na borda da carta. Um lugar por camada, todos com a mesma régua (travada em
+[tests/card-code.test.mjs](tests/card-code.test.mjs)):
+
+- **cliente** (`matchesCardQuery`, todas as páginas): o haystack da carta leva
+  `cardCodeForms` — número e número/total, com e sem zeros à esquerda;
+  `cardCode` exibe "009/094" (o total na largura do número zero-preenchido);
+- **paleta e scanner** (`cmdkCardsByCode`): fração "número/total" filtra os sets
+  pelo `total` do manifest e baixa só esses chunks;
+- **borda D1** (`/api/search`): termo numérico casa por **igualdade** nas suas
+  escritas (`word IN ('9','009')`), não por prefixo, e o total do set é
+  indexado como palavra **extra** (`cardRows`) — o deploy só a insere nas cartas
+  que ainda estão na régua antiga (`acrescentar` no d1-delta), sem reescrever
+  todas as palavras do catálogo;
+- **índice estático** (decks/listas): `numberSearchForms` no número;
+- **SEO** (`prerender-catalog`): título, description, h1 e JSON-LD da página de
+  carta usam o código impresso e listam as outras escritas
+  (`scripts/lib/card-code.mjs`).
+
 As facetas da página de set (Raridade, Cor, Tipo, Seleção…) são declaradas **uma
 vez por jogo** em `GAME_FACETS` ([src/shared.js](src/shared.js)) e derivadas dos
 campos que o sync já grava na carta — então **set novo herda os filtros sem

@@ -74,7 +74,7 @@ test("impressões: linha e palavras têm hashes independentes", () => {
 test("diferença: classifica novas, palavras, linha e sumidas; hw nulo conta como palavras", () => {
   const db = total(V1, []);
   const d = diffCartas(mapa(V2), remotosCartas(db));
-  assert.deepEqual(d, { novos: ["base1-6"], palavras: ["base1-3"], linha: ["base1-4"], remover: ["base1-5"] });
+  assert.deepEqual(d, { novos: ["base1-6"], palavras: ["base1-3"], linha: ["base1-4"], acrescentar: [], remover: ["base1-5"] });
   db.prepare("UPDATE cards SET hw = NULL WHERE id = 'base1-1'").run();
   assert.deepEqual(diffCartas(mapa(V2), remotosCartas(db)).palavras, ["base1-1", "base1-3"]);
 });
@@ -153,6 +153,74 @@ test("preços: diferença, orçamento e idempotência", () => {
   aplica(db, planoP(db, P2).statements);
   assert.deepEqual(estado(db).prices, estado(total([], P2)).prices);
   assert.equal(planoP(db, P2).statements.length, 0);
+});
+
+// ── Palavras EXTRAS (o total do set, ver cardRows): só acréscimo ─────────────
+// O banco remoto foi carregado com a régua LEGADA de palavras (sem o total).
+// Simula isso gravando cada carta com as `legado` e o hw da régua antiga.
+const comTotal = (id, name) => carta(id, name, { setTotal: 102 });
+const VT = [comTotal("base1-1", "Alakazam"), comTotal("base1-2", "Blastoise"), comTotal("base1-4", "Charizard")];
+function legado(cards) {
+  const db = banco();
+  const ins = db.prepare(`INSERT INTO cards (${COLUNAS.join(",")}) VALUES (${COLUNAS.map(() => "?").join(",")})`);
+  const insW = db.prepare("INSERT INTO card_words (game,word,id) VALUES (?,?,?)");
+  for (const c of cards) {
+    ins.run(...COLUNAS.map((k) => (k === "hw" ? c.hwLegado : c.linha[k])));
+    for (const w of c.legado || c.words.slice(0, c.words.length - c.extras.length)) insW.run(w.game, w.word, w.id);
+  }
+  return db;
+}
+
+test("extras: carta com total tem hwLegado; sem total, não", () => {
+  const c = comTotal("x-1", "Pikachu");
+  assert.deepEqual(c.extras.map((w) => w.word), ["102"]);
+  assert.ok(c.hwLegado && c.hwLegado !== c.hw);
+  assert.equal(carta("x-1", "Pikachu").hwLegado, null);
+  // A régua legada é EXATAMENTE a de antes: mesma impressão que a carta sem total.
+  assert.equal(c.hwLegado, carta("x-1", "Pikachu").hw);
+});
+
+test("extras: banco na régua legada só recebe as palavras novas (sem reescrever as demais)", () => {
+  const db = legado(VT);
+  const d = diffCartas(mapa(VT), remotosCartas(db));
+  assert.deepEqual(d.acrescentar, VT.map((c) => c.linha.id));
+  assert.deepEqual(d.palavras, []);
+  const p = planoV(db, VT);
+  // Custo = linha + 1 palavra por carta — não 2× todas as palavras.
+  assert.equal(p.custo, VT.length * (CUSTO.carta + CUSTO.palavra));
+  assert.ok(p.custo < VT.length * (CUSTO.carta + CUSTO.palavra * 2 * VT[0].words.length) / 3);
+  // Nenhum DELETE genérico das palavras da carta (só o das extras).
+  for (const s of p.statements) {
+    if (/^DELETE FROM card_words/.test(s)) assert.match(s, /word IN \('102'\)/, s);
+  }
+  aplica(db, p.statements);
+  assert.deepEqual(estado(db).cards, estado(total(VT, [])).cards);
+  assert.deepEqual(estado(db).words, estado(total(VT, [])).words);
+  assert.equal(planoV(db, VT).statements.length, 0);
+});
+
+test("extras: interrupção em qualquer statement não duplica palavra nem deixa carta pronta sem elas", () => {
+  const completo = planoV(legado(VT), VT).statements;
+  for (let k = 0; k < completo.length; k++) {
+    const db = legado(VT);
+    aplica(db, completo.slice(0, k));
+    aplica(db, planoV(db, VT).statements);
+    assert.deepEqual(estado(db).cards, estado(total(VT, [])).cards, `parou em ${k}`);
+    assert.deepEqual(estado(db).words, estado(total(VT, [])).words, `parou em ${k}`);
+  }
+});
+
+test("extras: orçamento pequeno converge em rodadas sem perder nada", () => {
+  const db = legado(VT);
+  let rodadas = 0;
+  for (;;) {
+    const p = planoV(db, VT, CUSTO.carta + CUSTO.palavra);
+    if (!p.statements.length) break;
+    aplica(db, p.statements);
+    if (++rodadas > 10) assert.fail("não convergiu");
+  }
+  assert.equal(rodadas, VT.length);
+  assert.deepEqual(estado(db).words, estado(total(VT, [])).words);
 });
 
 test("statements ficam abaixo do teto do D1 mesmo com muitas cartas", () => {

@@ -1441,12 +1441,60 @@
     })();
     return cmdkGameMeta[g];
   }
+  function cmdkChunk(file) {
+    if (!cmdkChunkCache.has(file)) {
+      cmdkChunkCache.set(file, fetch(file).then((r) => (r.ok ? r.json() : [])).catch(() => []));
+    }
+    return cmdkChunkCache.get(file);
+  }
+  // "080" e "80" são o mesmo número (o Pokémon zero-preenche).
+  const cmdkNumEq = (a, b) => a === b || (/^\d+$/.test(a) && /^\d+$/.test(b) && parseInt(a, 10) === parseInt(b, 10));
+
+  // Fração "número/total" ("009/094", "4/102"): o total diz de QUAIS sets baixar
+  // o chunk — o manifest traz o `total` (setTotal) de cada set, então "094"
+  // filtra os sets de 94 cartas em vez do catálogo inteiro. Casa a carta pelo
+  // número sem zeros (a guardada como "9" e a guardada como "009" são a mesma)
+  // e pelo total quando a carta o tem. É o caminho que a paleta e o scanner
+  // usam pra código impresso de Pokémon/Riftbound sem depender da borda.
+  async function cmdkCardsByFraction(a, b) {
+    const num = String(parseInt(a, 10)), total = String(parseInt(b, 10));
+    if (!(parseInt(total, 10) > 0)) return [];
+    const bate = (c) => {
+      const st = splitNumberTotal(c);
+      if (!/^\d+$/.test(st.num) || String(parseInt(st.num, 10)) !== num) return false;
+      return !st.total || (/^\d+$/.test(st.total) && String(parseInt(st.total, 10)) === total);
+    };
+    const out = [];
+    for (const g of GAME_SLUGS) {
+      const meta = await cmdkLoadGameMeta(g);
+      if (!meta) continue;
+      let pool;
+      if (meta.cards) {
+        pool = meta.cards;
+      } else {
+        const sets = (meta.manifest.sets || [])
+          .filter((s) => String(parseInt(s.total, 10)) === total || String(parseInt(s.count, 10)) === total)
+          .slice(0, 8);
+        if (!sets.length) continue;
+        const chunks = await Promise.all(sets.map((s) => cmdkChunk(s.file)));
+        pool = [].concat.apply([], chunks);
+      }
+      for (const c of pool) {
+        if (bate(c)) {
+          out.push({ card: c, game: g });
+          if (out.length >= 12) return out;
+        }
+      }
+    }
+    return out;
+  }
+
   async function cmdkCardsByCode(q) {
+    const frac = String(q).trim().match(/^#?\s*(\d{1,4})\s*\/\s*(\d{1,4})$/);
+    if (frac) return cmdkCardsByFraction(frac[1], frac[2]);
     const m = String(q).trim().match(/^([a-z0-9.]+)[\s\-\/·]+([a-z0-9]+)$/i);
     if (!m) return [];
     const full = cmdkNormKey(q), pref = cmdkNormKey(m[1]), num = cmdkNormKey(m[2]);
-    // "080" e "80" são o mesmo número (o Pokémon zero-preenche).
-    const numEq = (a, b) => a === b || (/^\d+$/.test(a) && /^\d+$/.test(b) && parseInt(a, 10) === parseInt(b, 10));
     const out = [];
     for (const g of GAME_SLUGS) {
       const meta = await cmdkLoadGameMeta(g);
@@ -1457,19 +1505,14 @@
       } else {
         const sets = (meta.manifest.sets || []).filter((s) => cmdkNormKey(s.id) === pref).slice(0, 3);
         if (!sets.length) continue;
-        const chunks = await Promise.all(sets.map((s) => {
-          if (!cmdkChunkCache.has(s.file)) {
-            cmdkChunkCache.set(s.file, fetch(s.file).then((r) => (r.ok ? r.json() : [])).catch(() => []));
-          }
-          return cmdkChunkCache.get(s.file);
-        }));
+        const chunks = await Promise.all(sets.map((s) => cmdkChunk(s.file)));
         pool = [].concat.apply([], chunks);
       }
       for (const c of pool) {
         // Pokémon numera como "4/102": o número da carta é a parte antes da barra.
         const nk = cmdkNormKey(String(c.number || "").split("/")[0]);
         const inSet = meta.cards ? (cmdkNormKey(c.setId) === pref || nk === full) : true;
-        if (inSet && (numEq(nk, num) || nk === full)) {
+        if (inSet && (cmdkNumEq(nk, num) || nk === full)) {
           out.push({ card: c, game: g });
           if (out.length >= 6) return out;
         }
@@ -5999,12 +6042,66 @@
 
   // Código da carta: "4/102" (número/total do set). Alguns catálogos já trazem
   // o número como "4/102"; nesse caso não duplica o total.
+  // Número zero-preenchido ("009", como o Pokémon moderno e os catálogos JP/ZH
+  // guardam) leva o total na MESMA largura — "009/094", que é o que a carta
+  // imprime. Antes saía "009/94", forma que ninguém digita nem o Google indexa.
   function cardCode(card) {
     const number = String(card.number || "").trim();
     if (!number) return "";
     const total = String(card.setTotal || "").trim();
     if (number.includes("/") || !total) return number;
+    if (/^0\d+$/.test(number) && /^\d+$/.test(total)) return `${number}/${total.padStart(number.length, "0")}`;
     return `${number}/${total}`;
+  }
+
+  // Formas pelas quais um NÚMERO de carta é digitado: como está, sem zeros à
+  // esquerda e zero-preenchido a 3 dígitos (a largura que as impressoras usam).
+  // "009" -> ["009", "9"]; "9" -> ["9", "009"]; "H01" -> ["H01", "H1"] (o
+  // prefixo de letra segue a regra do numCompact do haystack). Serve à busca
+  // do cliente e ao índice estático de decks/listas, que só têm o número.
+  function numberSearchForms(number, width) {
+    const raw = String(number || "").trim();
+    if (!raw) return [];
+    const out = [raw];
+    const add = (f) => { if (f && !out.includes(f)) out.push(f); };
+    if (/^\d+$/.test(raw)) {
+      add(String(parseInt(raw, 10)));
+      add(String(parseInt(raw, 10)).padStart(Math.max(3, width || 0), "0"));
+    } else {
+      add(raw.replace(/([a-zA-Z]+)0+(\d)/, "$1$2"));
+    }
+    return out;
+  }
+
+  // Todas as escritas do CÓDIGO da carta que alguém pode digitar (ou que o OCR
+  // do scanner pode ler): número e número/total, cada um com e sem zeros à
+  // esquerda. A Nymble guardada como "9" + total 94 vira "9", "009", "9/94" e
+  // "009/094" — é assim que "009/094" (o impresso) acha a carta cujo catálogo
+  // diz "9". O Riftbound guarda "001/003": ganha "1/3". Códigos com hífen
+  // (OP05-119) ficam como são — já casam por substring.
+  function cardCodeForms(card) {
+    const { num, total } = splitNumberTotal(card);
+    const totalNum = /^\d+$/.test(total) ? String(parseInt(total, 10)) : "";
+    const width = totalNum ? Math.max(3, total.length) : 3;
+    const nums = numberSearchForms(num, width);
+    const out = [];
+    const add = (f) => { if (f && !out.includes(f)) out.push(f); };
+    add(String(card.number || "").trim());
+    nums.forEach(add);
+    if (total) {
+      add(cardCode(card));
+      if (totalNum) {
+        const totalPad = totalNum.padStart(width, "0");
+        nums.forEach((n) => {
+          add(`${n}/${total}`);
+          add(`${n}/${totalNum}`);
+          add(`${n}/${totalPad}`);
+        });
+      } else {
+        nums.forEach((n) => add(`${n}/${total}`));
+      }
+    }
+    return out;
   }
 
   // Nome exibido com o código: "Charizard (4/102)". Diferencia cartas com o
@@ -6113,12 +6210,12 @@
 
   function cardSearchHaystack(card) {
     if (card._haystack) return card._haystack;
-    const num = String(card.number || "");
-    // Número tolerante a zero à esquerda depois do prefixo de letra ("H01" -> "h1",
-    // "S09" -> "s9") — assim buscar "H1" acha "H01" nos vintages do One Piece.
-    const numCompact = num.replace(/([a-zA-Z]+)0+(\d)/, "$1$2");
+    // Número em TODAS as escritas (cardCodeForms): com e sem zeros à esquerda,
+    // com e sem o total — "9", "009", "9/94", "009/094"; e "H1" pra "H01" nos
+    // vintages do One Piece. É o que faz o código impresso na carta (e lido
+    // pelo scanner) achar a carta seja como for que o catálogo o guarde.
     card._haystack = normalize([
-      card.name, card.nameJp, card.pokemonName, card.dexId, card.number, numCompact, cardCode(card),
+      card.name, card.nameJp, card.pokemonName, card.dexId, ...cardCodeForms(card),
       card.set, card.artist, card.rarity, card.language, card.cardType, ...(card.variants || [])
     ].join(" ") + jpNameAliases(`${card.name || ""} ${card.nameJp || ""}`));
     return card._haystack;
@@ -6126,10 +6223,10 @@
 
   // Busca tolerante: separa a query em termos e exige que TODOS estejam no
   // texto da carta. Assim funciona por nome ("bulbasaur"), por código ("95/165"
-  // ou só "95") e por nome + código ("bulbasaur 95/165"). Parênteses são
-  // ignorados, então colar "Bulbasaur (95/165)" também casa.
+  // ou só "95") e por nome + código ("bulbasaur 95/165"). Parênteses e "#" são
+  // ignorados, então colar "Bulbasaur (95/165)" ou "Charizard #4" também casa.
   function matchesCardQuery(card, rawQuery) {
-    const query = normalize(rawQuery || "").replace(/[()]/g, " ").trim();
+    const query = normalize(rawQuery || "").replace(/[()#]/g, " ").trim();
     if (!query) return true;
     const haystack = cardSearchHaystack(card);
     return query.split(/\s+/).every((term) => haystack.includes(term));
@@ -8979,6 +9076,8 @@
     cardImageSources,
     cardHasImage,
     cardCode,
+    cardCodeForms,
+    numberSearchForms,
     cardLabel,
     matchesCardQuery,
     searchApi,

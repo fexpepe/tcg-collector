@@ -347,8 +347,13 @@
       if (!hits || !hits.length) {
         const idx = await shared.loadSearchIndex(jogo).catch(() => []);
         if (seq !== searchSeq) return;
+        // Número em todas as escritas ("9" acha "009" e vice-versa); a fração
+        // digitada ("009/094") casa pela parte antes da barra — o índice
+        // estático não guarda o total do set.
         const nq = norm(q);
-        hits = idx.filter((e) => norm(e.n).includes(nq) || norm(e.u) === nq).slice(0, 60);
+        const nqNum = nq.replace(/[()#]/g, " ").trim().split("/")[0].trim();
+        hits = idx.filter((e) => norm(e.n).includes(nq)
+          || shared.numberSearchForms(e.u).some((f) => norm(f) === nq || norm(f) === nqNum)).slice(0, 60);
       }
     }
     try {

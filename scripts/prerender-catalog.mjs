@@ -18,6 +18,10 @@
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { readGlobalVar } from "./lib/sync-common.mjs";
+// Código IMPRESSO da carta ("009/094", "4/102"), a mesma régua do cardCode do
+// site. É o que vai pro <title>/description/JSON-LD: quem procura no Google
+// digita "nome + código impresso", e o número cru do catálogo ("9") não casa.
+import { cardCode, alternateCodes } from "./lib/card-code.mjs";
 
 const ORIGIN = "https://sleevu.app";
 const SETS_DIR = "data/sets";
@@ -326,7 +330,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
       itemListElement: cards.map((c, i) => ({
         "@type": "ListItem",
         position: i + 1,
-        name: `${c.name}${c.number ? ` #${c.number}` : ""}`,
+        name: `${c.name}${c.number ? ` ${cardCode({ number: c.number, setTotal: c.setTotal || total })}` : ""}`,
         image: absUrl(c.image) || undefined
       }))
     }
@@ -340,7 +344,7 @@ function setPageHtml(page, canonical, otherSets, lang) {
   const ACIMA_DA_DOBRA = 6;
   const cardsHtml = cards.map((c, i) => {
     const num = c.number ? `#${escapeHtml(c.number)}` : "";
-    const alt = `${c.name}${c.number ? ` ${c.number}/${total}` : ""} — ${name}`;
+    const alt = `${c.name}${c.number ? ` ${cardCode({ number: c.number, setTotal: c.setTotal || total })}` : ""} — ${name}`;
     const prioridade = i < ACIMA_DA_DOBRA
       ? ` loading="eager"${i === 0 ? ' fetchpriority="high"' : ""}`
       : ` loading="lazy"`;
@@ -474,7 +478,7 @@ function artistPageHtml(ap) {
       numberOfItems: mostra.length,
       itemListElement: mostra.map((c, i) => ({
         "@type": "ListItem", position: i + 1,
-        name: `${c.name}${c.number ? ` #${c.number}` : ""}`,
+        name: `${c.name}${c.number ? ` ${cardCode(c)}` : ""}`,
         image: absUrl(c.image) || undefined
       }))
     }
@@ -819,7 +823,7 @@ function fichaTecnica(card, setPage, sCode) {
   const linhas = [
     ["Jogo", setPage.gameLabel],
     ["Set", sCode ? `${setPage.name} (${sCode})` : setPage.name],
-    ["Número", card.number],
+    ["Número", cardCode(card)],
     ["Raridade", card.rarity && card.rarity !== "None" ? card.rarity : ""],
     ["Ilustrador", card.artist],
     ["Tipo", card.cardType || card.category],
@@ -859,17 +863,24 @@ function cardPageHtml(cp, ctx = {}) {
   const { card, setPage, slug, priceUSD } = cp;
   const gameLabel = setPage.gameLabel;
   const canonical = `${ORIGIN}/card/${slug}`;
-  const codeBit = card.number ? ` ${card.number}` : "";
+  // Código IMPRESSO ("009/094", "4/102", "OP05-119"), não o número cru do
+  // catálogo ("9"): é o que a pessoa lê na carta e digita no Google junto do
+  // nome. As outras escritas ("9/94" pra quem exibe "009/094") vão na
+  // description e no alternateName do JSON-LD — a busca casa por qualquer uma.
+  const code = cardCode(card);
+  const codeBit = code ? ` ${code}` : "";
+  const altCodes = alternateCodes(card);
+  const altBit = altCodes.length ? ` (${altCodes.join(", ")})` : "";
   // Nome CJK ganha a espécie EN entre parênteses (busca em pt/en acha igual).
   const enBit = card.pokemonName && !/^[\x00-\x7F]/.test(card.name) ? ` (${card.pokemonName})` : "";
   const sCode = setCode(card);
-  const title = cardTitle(`${card.name}${enBit}`, card.number, sCode, setPage.name);
+  const title = cardTitle(`${card.name}${enBit}`, code, sCode, setPage.name);
   const priceBit = priceUSD > 0 ? ` Preço de referência: US$ ${priceUSD.toFixed(2)}.` : "";
   // A descrição não tem o aperto do título (o Google mostra ~155), então aqui o
   // código do set entra sempre que existir — é a segunda chance de casar com a
   // busca quando ele não coube lá em cima.
   const codeBitDesc = sCode ? ` (${sCode})` : "";
-  const desc = `${card.name}${codeBit}${codeBitDesc} do set ${setPage.name} de ${gameLabel}.${priceBit} Veja a imagem, acompanhe o preço e marque na sua coleção grátis no Sleevu.`;
+  const desc = `${card.name}${codeBit}${altBit}${codeBitDesc} do set ${setPage.name} de ${gameLabel}.${priceBit} Veja a imagem, acompanhe o preço e marque na sua coleção grátis no Sleevu.`;
   const img = absUrl(card.image) || "";
   // &card=<id>: o detail.js reabre o POPUP da carta ao aterrissar (openFromUrl)
   // — quem acha a carta no Google cai direto nela, não na página do set pra
@@ -889,7 +900,7 @@ function cardPageHtml(cp, ctx = {}) {
     !/[^\x00-\x7F]/.test(card.rarity) && String(card.rarity).length <= 24;
   const rarBit = rarOk ? ` de raridade ${card.rarity}` : "";
   const setBit = sCode ? `${setPage.name} (${sCode})` : setPage.name;
-  frases.push(`${card.name} é uma carta${rarBit} do set ${setBit}, de ${gameLabel}${card.number ? `, numerada ${card.number}` : ""}.`);
+  frases.push(`${card.name} é uma carta${rarBit} do set ${setBit}, de ${gameLabel}${code ? `, numerada ${code}${altCodes.length ? ` (também escrita ${altCodes.join(" ou ")})` : ""}` : ""}.`);
   if (card.artist) frases.push(`A ilustração é de ${card.artist}.`);
   const acab = Array.isArray(card.variants) ? card.variants.filter(Boolean) : [];
   if (acab.length > 1) {
@@ -913,6 +924,8 @@ function cardPageHtml(cp, ctx = {}) {
     "@context": "https://schema.org",
     "@type": "Product",
     name: `${card.name}${codeBit} — ${setPage.name}`,
+    alternateName: altCodes.length ? altCodes.map((c) => `${card.name} ${c} — ${setPage.name}`) : undefined,
+    sku: code || undefined,
     image: img || undefined,
     description: desc,
     brand: { "@type": "Brand", name: gameLabel },
@@ -1002,7 +1015,7 @@ function cardPageHtml(cp, ctx = {}) {
       <div class="prc-hero">
         ${img ? `<img class="prc-img" src="${escapeAttr(img)}" alt="${escapeAttr(`${card.name}${codeBit}${codeBitDesc} — ${setPage.name}`)}" loading="eager" width="320" height="447">` : ""}
         <div class="prc-info">
-          <h1>${escapeHtml(card.name)}${codeBit ? ` <small>${escapeHtml(card.number)}${sCode ? ` · ${escapeHtml(sCode)}` : ""}</small>` : ""}</h1>
+          <h1>${escapeHtml(card.name)}${codeBit ? ` <small>${escapeHtml(code)}${sCode ? ` · ${escapeHtml(sCode)}` : ""}</small>` : ""}</h1>
           <p class="prc-sub">${escapeHtml(`${gameLabel} · ${setPage.name}${card.rarity && card.rarity !== "None" ? ` · ${card.rarity}` : ""}`)}</p>
           ${priceUSD > 0 ? `<p class="prc-price">US$ ${priceUSD.toFixed(2)}</p><p class="prc-price-note">Preço de referência de mercado (atualizado semanalmente). No Sleevu você vê em reais e acompanha o histórico.</p>` : ""}
           <a class="prc-cta" href="${escapeAttr(appUrl)}">Marcar na minha coleção</a>
@@ -1141,8 +1154,8 @@ async function main() {
   }
   // Rótulo que DIFERENCIA: repetir o nome da carta em 8 links seguidos não
   // ajuda ninguém (nem leitor, nem buscador). Aqui o que muda é o que aparece.
-  const rotuloVersao = (o) => [o.setPage.name, o.card.number].filter(Boolean).join(" · ");
-  const rotuloIrma = (o) => [o.card.name, o.card.number].filter(Boolean).join(" ");
+  const rotuloVersao = (o) => [o.setPage.name, cardCode(o.card)].filter(Boolean).join(" · ");
+  const rotuloIrma = (o) => [o.card.name, cardCode(o.card)].filter(Boolean).join(" ");
   for (const cp of ranked) {
     const kn = `${cp.setPage.game}|${String(cp.card.name || "").toLowerCase()}`;
     const versoes = (porNome.get(kn) || [])
