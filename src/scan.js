@@ -295,44 +295,124 @@
   }
 
   // ── Interface ───────────────────────────────────────────────────────────────
+  // A CÂMERA É A TELA (2026-09-09, segunda versão): o vídeo ocupa a tela inteira
+  // e tudo flutua em vidro por cima, como num app de câmera. A moldura passa a
+  // 86 % da largura — não é só estética: no vídeo de 1920×1440 o recorte vai de
+  // ~700 pra ~1200 px de largura, e os glifos do código dobram de tamanho antes
+  // do OCR. O disparador fica embaixo, onde o polegar já está; o resultado
+  // aparece entre ele e a moldura, sem tirar o olho da carta; a correção
+  // (código, jogo, candidatos) mora numa folha que só sobe quando precisa.
+  // Tudo em cores FIXAS (escuro sobre vídeo), independentes do tema do site;
+  // só os acentos (--accent) seguem o tema.
   const ESTILO = `
-.scan-modal { align-items: stretch; padding: 0; z-index: 75; }
-.scan-box { max-width: 560px; margin: auto; padding: 16px; border-radius: 16px; display: flex; flex-direction: column; gap: 12px; max-height: 100vh; max-height: 100dvh; }
-.scan-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.scan-head h2 { margin: 0; font-size: 18px; }
-.scan-palco { position: relative; width: 100%; aspect-ratio: 3 / 4; max-height: 52vh; max-height: 52dvh; background: #0b0d12; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.scan-modal { position: fixed; inset: 0; z-index: 75; overflow: hidden; background: #0b0d12; color: #f3f5f7; --scan-top: max(env(safe-area-inset-top, 0px), 12px); --scan-bot: max(env(safe-area-inset-bottom, 0px), 16px); }
 .scan-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.scan-guia { position: absolute; left: 50%; top: 50%; height: 82%; aspect-ratio: 63 / 88; transform: translate(-50%, -50%); border: 2px solid rgba(255,255,255,.85); border-radius: 10px; box-shadow: 0 0 0 999px rgba(0,0,0,.45); pointer-events: none; }
-.scan-faixa { position: absolute; left: 0; right: 0; bottom: 0; height: ${Math.round(FAIXA * 100)}%; border-top: 1px dashed rgba(0,229,255,.9); background: rgba(0,229,255,.12); }
-.scan-semcam { position: relative; margin: 0; padding: 20px; text-align: center; color: #cfd6e2; font-size: 14px; line-height: 1.5; }
-.scan-status { margin: 0; min-height: 18px; font-size: 13px; color: var(--muted); text-align: center; }
-.scan-acoes { display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; }
-.scan-acoes .cta { min-height: 46px; padding: 0 26px; font-size: 15px; justify-content: center; }
-.scan-acoes .cta[disabled] { opacity: .55; cursor: wait; }
-.scan-file { cursor: pointer; display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; }
-.scan-codigo { display: flex; gap: 8px; align-items: center; }
-.scan-codigo label { flex: none; font-size: 12.5px; font-weight: 700; color: var(--muted); }
-.scan-codigo input { flex: 1; min-width: 0; height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 9px; background: var(--panel); color: var(--text); font: inherit; font-size: 16px; font-weight: 700; text-transform: uppercase; }
-.scan-codigo .lst-mini { min-height: 40px; }
-.scan-jogo { display: flex; gap: 8px; align-items: center; }
-.scan-jogo label { flex: none; font-size: 12.5px; font-weight: 700; color: var(--muted); }
-.scan-jogo select { flex: 1; min-width: 0; height: 40px; padding: 0 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--panel); color: var(--text); font: inherit; font-size: 16px; font-weight: 700; }
-.scan-res { display: flex; flex-direction: column; gap: 2px; overflow-y: auto; overscroll-behavior: contain; min-height: 0; }
-/* Linha de resultado em GRADE: no celular a fileira única da paleta (nome +
-   dois botões + jogo) esmagava o nome em "Chariza…". Ações na 2ª linha. */
-.scan-res .cmdk-carditem { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; grid-template-areas: "th nm gm" "th ac ac"; column-gap: 10px; row-gap: 6px; align-items: center; min-height: 52px; }
-.scan-res .cmdk-thumb { grid-area: th; width: 42px; }
-.scan-res .cmdk-thumb img { width: 42px; height: auto; }
-.scan-res .cmdk-item-name { grid-area: nm; }
-.scan-res .cmdk-game { grid-area: gm; }
-.scan-res .cmdk-actions { grid-area: ac; justify-content: flex-start; }
-.scan-vazio { margin: 0; padding: 10px 4px; font-size: 13px; color: var(--muted); line-height: 1.5; }
-.scan-vazio a { color: var(--accent); font-weight: 700; }
-.scan-priv { margin: 0; font-size: 11.5px; color: var(--subtle); text-align: center; }
-@media (max-width: 700px) {
-  .scan-box { max-width: none; width: 100%; height: 100%; max-height: none; border-radius: 0; border: 0; margin: 0; }
-  .scan-palco { max-height: 46vh; max-height: 46dvh; flex: none; }
-}`;
+.scan-guia { position: absolute; left: 50%; transform: translateX(-50%); border: 2px solid rgba(255,255,255,.9); border-radius: 14px; box-shadow: 0 0 0 200vmax rgba(6,8,12,.45); pointer-events: none; }
+.scan-guia i { position: absolute; width: 34px; height: 34px; border: 0 solid #fff; }
+.scan-guia .tl { left: -3px; top: -3px; border-left-width: 4px; border-top-width: 4px; border-top-left-radius: 16px; }
+.scan-guia .tr { right: -3px; top: -3px; border-right-width: 4px; border-top-width: 4px; border-top-right-radius: 16px; }
+.scan-guia .bl { left: -3px; bottom: -3px; border-left-width: 4px; border-bottom-width: 4px; border-bottom-left-radius: 16px; }
+.scan-guia .br { right: -3px; bottom: -3px; border-right-width: 4px; border-bottom-width: 4px; border-bottom-right-radius: 16px; }
+.scan-faixa { position: absolute; left: 10px; right: 10px; bottom: ${Math.round(FAIXA * 100)}%; border-top: 1px dashed rgba(0,229,255,.75); }
+.scan-varredura { position: absolute; left: 6px; right: 6px; top: 40%; height: 2px; background: #00e5ff; box-shadow: 0 0 14px rgba(0,229,255,.9); display: none; animation: scanVarre 1.6s ease-in-out infinite alternate; }
+.scan-guia.is-lendo { border-color: rgba(0,229,255,.9); }
+.scan-guia.is-lendo i { border-color: #00e5ff; }
+.scan-guia.is-lendo .scan-varredura { display: block; }
+@keyframes scanVarre { from { top: 8%; } to { top: 90%; } }
+@keyframes scanGira { to { transform: rotate(360deg); } }
+.scan-top { position: absolute; left: 12px; right: 12px; top: var(--scan-top); height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px; border-radius: 999px; background: rgba(13,14,18,.72); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.scan-ico { width: 44px; height: 44px; min-height: 0; flex: none; padding: 0; border: 0; border-radius: 999px; background: transparent; color: #f3f5f7; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.scan-ico svg { width: 22px; height: 22px; }
+.scan-ico[aria-pressed="true"] { background: rgba(255,255,255,.16); }
+.scan-ico[hidden] { display: none; }
+.scan-jogo { appearance: none; -webkit-appearance: none; height: 36px; min-width: 0; max-width: 62%; padding: 0 30px 0 14px; border: 1px solid rgba(255,255,255,.14); border-radius: 999px; background: rgba(255,255,255,.06) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f3f5f7' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center / 16px; color: #f3f5f7; font: inherit; font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+.scan-jogo.is-auto { color: #cfd6e2; }
+.scan-dica { position: absolute; left: 12px; right: 12px; display: flex; justify-content: center; pointer-events: none; }
+.scan-dica span { padding: 6px 12px; border-radius: 999px; background: rgba(13,14,18,.62); color: #cfd6e2; font-size: 12.5px; font-weight: 600; text-align: center; }
+.scan-toast { position: absolute; left: 0; right: 0; bottom: calc(var(--scan-bot) + 118px); display: flex; justify-content: center; pointer-events: none; }
+.scan-toast[hidden] { display: none; }
+.scan-toast span { display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 999px; background: rgba(29,33,43,.86); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); font-size: 14px; font-weight: 700; }
+.scan-spin { width: 16px; height: 16px; border-radius: 999px; border: 2px solid rgba(255,255,255,.25); border-top-color: #00e5ff; animation: scanGira 1.1s linear infinite; }
+.scan-semcam { position: absolute; left: 24px; right: 24px; top: 40%; margin: 0; text-align: center; color: #cfd6e2; font-size: 14px; line-height: 1.5; }
+.scan-res { position: absolute; left: 12px; right: 12px; bottom: calc(var(--scan-bot) + 104px); display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: rgba(29,33,43,.86); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 18px 45px rgba(0,0,0,.32); }
+.scan-res[hidden] { display: none; }
+.scan-res-open { flex: 1; min-width: 0; min-height: 0; display: flex; align-items: center; gap: 12px; padding: 0; border: 0; background: none; color: inherit; text-align: left; font: inherit; cursor: pointer; }
+.scan-res-thumb { flex: none; width: 46px; height: 64px; border-radius: 6px; overflow: hidden; background: #262b36; }
+.scan-res-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.scan-res-text { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.scan-res-name { font-size: 16px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scan-res-game { font-size: 10.5px; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; color: #8891a1; border: 1px solid #2d333f; border-radius: 999px; padding: 1px 7px; margin-left: 6px; vertical-align: 2px; }
+.scan-res-sub { font-size: 12.5px; color: #9ba4b3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scan-res-price { font-size: 14px; font-weight: 800; color: #7ee2b8; }
+.scan-res-acoes { flex: none; display: flex; flex-direction: column; gap: 6px; }
+.scan-res-add { height: 34px; min-height: 0; padding: 0 12px; border: 0; border-radius: 9px; background: var(--accent, #dc2626); color: var(--on-accent, #fff); font: inherit; font-size: 12.5px; font-weight: 800; white-space: nowrap; cursor: pointer; }
+.scan-res-add.done { background: #262b36; color: #7ee2b8; }
+.scan-res-alt { height: 30px; min-height: 0; padding: 0 12px; border: 1px solid #2d333f; border-radius: 9px; background: #1d212b; color: #f3f5f7; font: inherit; font-size: 11.5px; font-weight: 700; white-space: nowrap; cursor: pointer; }
+.scan-bottom { position: absolute; left: 0; right: 0; bottom: var(--scan-bot); height: 88px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; }
+.scan-round { width: 52px; height: 52px; min-height: 0; flex: none; padding: 0; border: 1px solid rgba(255,255,255,.14); border-radius: 999px; background: rgba(13,14,18,.62); color: #f3f5f7; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.scan-round svg { width: 22px; height: 22px; }
+.scan-shutter { width: 78px; height: 78px; min-height: 0; flex: none; padding: 0; border: 4px solid rgba(255,255,255,.35); border-radius: 999px; background: transparent; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.scan-shutter span { width: 62px; height: 62px; border-radius: 999px; background: #fff; display: block; }
+.scan-shutter[disabled] { opacity: .55; cursor: wait; }
+.scan-shutter[hidden] { display: none; }
+.scan-lote { height: 44px; min-height: 0; flex: none; padding: 0 14px 0 12px; border: 1px solid rgba(255,255,255,.14); border-radius: 999px; background: rgba(13,14,18,.62); color: #f3f5f7; font: inherit; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+.scan-lote.is-vazio { visibility: hidden; }
+.scan-lote svg { width: 16px; height: 16px; }
+.scan-lote-n { min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--accent, #dc2626); color: var(--on-accent, #fff); font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
+.scan-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.35); }
+.scan-backdrop[hidden] { display: none; }
+.scan-sheet { position: absolute; left: 0; right: 0; bottom: 0; max-height: 84%; overflow-y: auto; overscroll-behavior: contain; padding: 12px 12px calc(var(--scan-bot) + 8px); border-radius: 18px 18px 0 0; background: rgba(19,21,27,.96); border-top: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); display: flex; flex-direction: column; gap: 12px; }
+.scan-sheet[hidden] { display: none; }
+.scan-sheet-handle { width: 40px; height: 4px; border-radius: 999px; background: #2d333f; margin: 0 auto; flex: none; }
+.scan-sheet-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 0 4px; }
+.scan-sheet-head strong { font-size: 15px; font-weight: 800; }
+.scan-sheet-head span { font-size: 12.5px; color: #9ba4b3; white-space: nowrap; }
+.scan-cands { display: flex; gap: 10px; overflow-x: auto; padding: 2px 4px 4px; -webkit-overflow-scrolling: touch; }
+.scan-cands:empty { display: none; }
+.scan-cand { flex: none; width: 128px; min-height: 0; display: flex; flex-direction: column; align-items: stretch; gap: 6px; padding: 8px; border: 1px solid #2d333f; border-radius: 12px; background: #1d212b; color: #f3f5f7; font: inherit; text-align: left; cursor: pointer; }
+.scan-cand.is-on { border: 2px solid var(--accent, #dc2626); padding: 7px; }
+.scan-cand-img { height: 150px; border-radius: 8px; overflow: hidden; background: #262b36; }
+.scan-cand-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.scan-cand-name { font-size: 13px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scan-cand-sub { font-size: 11.5px; color: #9ba4b3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scan-cand-price { font-size: 13px; font-weight: 800; color: #7ee2b8; }
+.scan-form { display: flex; gap: 8px; align-items: center; }
+.scan-field { flex: 1; min-width: 0; height: 44px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid #2d333f; border-radius: 9px; background: #1d212b; }
+.scan-field span { flex: none; font-size: 12px; font-weight: 700; color: #8891a1; }
+.scan-field input { flex: 1; min-width: 0; height: 40px; padding: 0; border: 0; background: none; color: #f3f5f7; font: inherit; font-size: 16px; font-weight: 800; text-transform: uppercase; outline: none; }
+.scan-form .lst-mini { min-height: 44px; border-radius: 9px; background: #1d212b; border-color: #2d333f; color: #f3f5f7; }
+.scan-sheet-acoes { display: flex; gap: 8px; }
+.scan-sheet-acoes[hidden] { display: none; }
+.scan-sheet-acoes .cta { flex: 1; min-width: 0; justify-content: center; min-height: 46px; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scan-heart { width: 46px; height: 46px; min-height: 0; flex: none; padding: 0; border: 1px solid #2d333f; border-radius: 9px; background: #1d212b; color: #f3f5f7; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.scan-heart svg { width: 20px; height: 20px; }
+.scan-heart.done { color: var(--accent-ink, #ef4444); border-color: var(--accent-ink, #ef4444); }
+.scan-vazio { margin: 0; padding: 0 4px; font-size: 13px; color: #9ba4b3; line-height: 1.5; }
+.scan-vazio[hidden] { display: none; }
+.scan-vazio a { color: var(--accent-ink, #ef4444); font-weight: 700; }
+.scan-priv { margin: 0; font-size: 11.5px; color: #8891a1; text-align: center; }`;
+
+  const ICO = {
+    x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+    bolt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11L10 22l8.5-11.5H13L13 2z"/></svg>',
+    image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5.5-5.5L7 19"/></svg>',
+    arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>',
+    heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>'
+  };
+  // Valor de mercado da carta na moeda do site (mesma conta das grades), ou ""
+  // quando não há preço carregado pra ela.
+  function valorDe(card) {
+    try {
+      const v = shared.cardValue(card, shared.defaultVariant(card), null);
+      if (!v || !(v.value > 0)) return "";
+      const n = v.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      return (v.currency === "BRL" ? "R$ " : v.currency === "USD" ? "US$ " : "€ ") + n;
+    } catch (e) { return ""; }
+  }
+  function miniatura(card) {
+    const src = shared.cardImageSources(card);
+    return shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
+  }
 
   function abrir() {
     if (document.querySelector(".scan-modal")) return;
@@ -345,41 +425,52 @@
     let stream = null;
     let ocupado = false;
     let resultados = [];
+    let primario = 0;
+    let codigoAtual = "";
+    let lote = 0;
+    let ultimoTexto = ""; // texto do último OCR: a busca manual reaproveita as pistas
     const stores = { col: {}, wl: {} };
+    const sessao = (window.SLEEVU && window.SLEEVU.game) || "";
 
     const wrap = document.createElement("div");
-    wrap.className = "list-modal scan-modal";
+    wrap.className = "scan-modal";
+    wrap.setAttribute("role", "dialog");
+    wrap.setAttribute("aria-modal", "true");
+    wrap.setAttribute("aria-label", t("scan.title"));
     wrap.innerHTML = `
-      <div class="list-modal-box scan-box" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("scan.title"))}">
-        <div class="scan-head">
-          <h2>${escapeHtml(t("scan.title"))}</h2>
-          <button type="button" class="lst-mini" data-scan-close>${escapeHtml(t("export.close"))}</button>
-        </div>
-        <div class="scan-palco" data-scan-palco>
-          <video class="scan-video" autoplay playsinline muted data-scan-video></video>
-          <div class="scan-guia" data-scan-guia aria-hidden="true"><div class="scan-faixa"></div></div>
-          <p class="scan-semcam" data-scan-semcam hidden></p>
-        </div>
-        <p class="scan-status" data-scan-status aria-live="polite">${escapeHtml(t("scan.status.camera"))}</p>
-        <div class="scan-acoes">
-          <button type="button" class="cta" data-scan-captura disabled>${escapeHtml(t("scan.capture"))}</button>
-          <label class="lst-mini scan-file">${escapeHtml(t("scan.gallery"))}
-            <input type="file" accept="image/*" capture="environment" data-scan-file hidden>
-          </label>
-        </div>
-        <form class="scan-codigo" data-scan-form>
-          <label for="scanCodigo">${escapeHtml(t("scan.codeLabel"))}</label>
-          <input id="scanCodigo" type="text" data-scan-input autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="OP05-119 · 4/102">
+      <video class="scan-video" autoplay playsinline muted data-scan-video></video>
+      <div class="scan-guia" data-scan-guia aria-hidden="true"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i><div class="scan-faixa"></div><div class="scan-varredura"></div></div>
+      <p class="scan-semcam" data-scan-semcam hidden></p>
+      <div class="scan-top">
+        <button type="button" class="scan-ico" data-scan-close aria-label="${escapeAttribute(t("export.close"))}" title="${escapeAttribute(t("export.close"))}">${ICO.x}</button>
+        <select class="scan-jogo is-auto" data-scan-jogo aria-label="${escapeAttribute(t("scan.gameLabel"))}">
+          <option value="">${escapeHtml(t("scan.gameAuto"))}</option>
+          ${shared.GAME_SLUGS.map((g) => `<option value="${escapeAttribute(g)}">${escapeHtml(shared.gameLabel(g))}</option>`).join("")}
+        </select>
+        <button type="button" class="scan-ico" data-scan-torch aria-pressed="false" aria-label="${escapeAttribute(t("scan.torch"))}" title="${escapeAttribute(t("scan.torch"))}" hidden>${ICO.bolt}</button>
+      </div>
+      <div class="scan-dica" data-scan-dica><span data-scan-status aria-live="polite">${escapeHtml(t("scan.status.camera"))}</span></div>
+      <div class="scan-toast" data-scan-toast hidden><span><span class="scan-spin" aria-hidden="true"></span><span data-scan-toast-text></span></span></div>
+      <div class="scan-res" data-scan-res hidden></div>
+      <div class="scan-bottom">
+        <label class="scan-round" aria-label="${escapeAttribute(t("scan.gallery"))}" title="${escapeAttribute(t("scan.gallery"))}">${ICO.image}<input type="file" accept="image/*" capture="environment" data-scan-file hidden></label>
+        <button type="button" class="scan-shutter" data-scan-captura aria-label="${escapeAttribute(t("scan.capture"))}" title="${escapeAttribute(t("scan.capture"))}" disabled><span></span></button>
+        <button type="button" class="scan-lote is-vazio" data-scan-lote><span class="scan-lote-n" data-scan-lote-n>0</span><span>${escapeHtml(t("scan.batch"))}</span>${ICO.arrow}</button>
+      </div>
+      <div class="scan-backdrop" data-scan-backdrop hidden></div>
+      <div class="scan-sheet" data-scan-sheet hidden>
+        <div class="scan-sheet-handle"></div>
+        <div class="scan-sheet-head"><strong data-scan-sheet-title></strong><span data-scan-sheet-sub></span></div>
+        <div class="scan-cands" data-scan-cands></div>
+        <p class="scan-vazio" data-scan-vazio hidden></p>
+        <form class="scan-form" data-scan-form>
+          <label class="scan-field"><span>${escapeHtml(t("scan.codeLabel"))}</span><input type="text" data-scan-input autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="OP05-119 · 4/102"></label>
           <button type="submit" class="lst-mini">${escapeHtml(t("scan.search"))}</button>
         </form>
-        <div class="scan-jogo">
-          <label for="scanJogo">${escapeHtml(t("scan.gameLabel"))}</label>
-          <select id="scanJogo" data-scan-jogo>
-            <option value="">${escapeHtml(t("scan.gameAuto"))}</option>
-            ${shared.GAME_SLUGS.map((g) => `<option value="${escapeAttribute(g)}">${escapeHtml(shared.gameLabel(g))}</option>`).join("")}
-          </select>
+        <div class="scan-sheet-acoes" data-scan-sheet-acoes hidden>
+          <button type="button" class="cta" data-scan-add="col:0"></button>
+          <button type="button" class="scan-heart" data-scan-add="wl:0" aria-label="${escapeAttribute(t("cmdk.addWl"))}" title="${escapeAttribute(t("cmdk.addWl"))}">${ICO.heart}</button>
         </div>
-        <div class="scan-res" data-scan-res></div>
         <p class="scan-priv">${escapeHtml(t("scan.privacy"))}</p>
       </div>`;
     document.body.appendChild(wrap);
@@ -387,23 +478,26 @@
 
     const $ = (sel) => wrap.querySelector(sel);
     const video = $("[data-scan-video]");
-    const palco = $("[data-scan-palco]");
     const guia = $("[data-scan-guia]");
+    const topo = $(".scan-top");
+    const dica = $("[data-scan-dica]");
     const status = $("[data-scan-status]");
+    const toast = $("[data-scan-toast]");
+    const toastTexto = $("[data-scan-toast-text]");
     const btnLer = $("[data-scan-captura]");
-    const input = $("[data-scan-input]");
+    const btnTorch = $("[data-scan-torch]");
+    const btnLote = $("[data-scan-lote]");
     const selJogo = $("[data-scan-jogo]");
-    const res = $("[data-scan-res]");
-    let ultimoTexto = ""; // texto do último OCR: a busca manual reaproveita as pistas
-    const sessao = (window.SLEEVU && window.SLEEVU.game) || "";
-    // Jogos permitidos na busca: o escolhido no seletor, ou o que a carta diz.
-    function jogosDaBusca(codigos) {
-      if (selJogo.value) return [selJogo.value];
-      const d = detectarJogo(ultimoTexto, codigos, sessao);
-      return d.restritos.length ? d.jogos.filter((g) => d.pontos[g] >= 2) : [];
-    }
+    const resCard = $("[data-scan-res]");
+    const folha = $("[data-scan-sheet]");
+    const fundo = $("[data-scan-backdrop]");
+    const cands = $("[data-scan-cands]");
+    const vazio = $("[data-scan-vazio]");
+    const input = $("[data-scan-input]");
+    const acoesFolha = $("[data-scan-sheet-acoes]");
 
     const dizer = (msg) => { status.textContent = msg; };
+    const aviso = (msg) => { if (msg) { toastTexto.textContent = msg; toast.hidden = false; } else toast.hidden = true; };
     // Progresso do motor em linguagem de gente: só as duas fases que demoram
     // (baixar o núcleo e o modelo, na primeira vez) viram texto.
     const progresso = (fase, p) => {
@@ -412,6 +506,34 @@
         dizer(t("scan.status.loading") + pct);
       }
     };
+    // Jogos permitidos na busca: o escolhido no seletor, ou o que a carta diz.
+    function jogosDaBusca(codigos) {
+      if (selJogo.value) return [selJogo.value];
+      const d = detectarJogo(ultimoTexto, codigos, sessao);
+      return d.restritos.length ? d.jogos.filter((g) => d.pontos[g] >= 2) : [];
+    }
+    selJogo.addEventListener("change", () => {
+      selJogo.classList.toggle("is-auto", !selJogo.value);
+      if (codigoAtual && !ocupado) buscarManual(codigoAtual);
+    });
+
+    // Moldura: 86 % da largura (teto de 440 px), limitada pela altura que sobra
+    // entre a barra de cima e a área do resultado + disparador. Em JS porque
+    // width + aspect-ratio + max-height não fecham em CSS puro.
+    function posicionaGuia() {
+      const W = wrap.clientWidth, H = wrap.clientHeight;
+      const y = topo.getBoundingClientRect().bottom + 12;
+      const reserva = 236; // resultado + controles + folgas
+      const altMax = Math.max(200, H - y - reserva);
+      let w = Math.min(W * 0.86, 440), h = w * 88 / 63;
+      if (h > altMax) { h = altMax; w = h * 63 / 88; }
+      guia.style.width = `${Math.round(w)}px`;
+      guia.style.height = `${Math.round(h)}px`;
+      guia.style.top = `${Math.round(y)}px`;
+      dica.style.top = `${Math.round(y + h + 10)}px`;
+    }
+    posicionaGuia();
+    window.addEventListener("resize", posicionaGuia);
 
     function fechar() {
       if (stream) stream.getTracks().forEach((tr) => tr.stop());
@@ -419,8 +541,12 @@
       wrap.remove();
       document.body.classList.remove("preview-open");
       document.removeEventListener("keydown", tecla);
+      window.removeEventListener("resize", posicionaGuia);
     }
-    const tecla = (ev) => { if (ev.key === "Escape") fechar(); };
+    const tecla = (ev) => {
+      if (ev.key !== "Escape") return;
+      if (!folha.hidden) fecharFolha(); else fechar();
+    };
     document.addEventListener("keydown", tecla);
 
     function semCamera(msg) {
@@ -442,23 +568,131 @@
       } catch (e) { semCamera(t("scan.status.nocam")); return; }
       if (!wrap.isConnected) { stream.getTracks().forEach((tr) => tr.stop()); return; }
       video.srcObject = stream;
-      // Foco contínuo onde a API deixa pedir (Android/Chrome); no resto, ignora.
+      // Foco contínuo e lanterna onde a API deixa pedir (Android/Chrome); no
+      // resto, ignora — o botão da lanterna só aparece se o aparelho tem uma.
       try {
         const tr = stream.getVideoTracks()[0];
         const caps = tr.getCapabilities ? tr.getCapabilities() : {};
         if (caps.focusMode && caps.focusMode.includes("continuous")) await tr.applyConstraints({ advanced: [{ focusMode: "continuous" }] });
-      } catch (e) { /* sem controle de foco */ }
+        if (caps.torch) btnTorch.hidden = false;
+      } catch (e) { /* sem controle de foco/lanterna */ }
       await new Promise((r) => { if (video.readyState >= 1) r(); else video.onloadedmetadata = () => r(); });
       try { await video.play(); } catch (e) { /* autoplay já cuidou */ }
       btnLer.disabled = false;
       dizer(t("scan.status.ready"));
+    }
+    btnTorch.addEventListener("click", async () => {
+      if (!stream) return;
+      const on = btnTorch.getAttribute("aria-pressed") !== "true";
+      try {
+        await stream.getVideoTracks()[0].applyConstraints({ advanced: [{ torch: on }] });
+        btnTorch.setAttribute("aria-pressed", on ? "true" : "false");
+      } catch (e) { /* aparelho recusou */ }
+    });
+
+    // ── Resultado e folha ────────────────────────────────────────────────────
+    function textoAdd(h) {
+      const st = stores.col[h.game];
+      const v = shared.defaultVariant(h.card);
+      const n = st ? st.variantTotal(h.card.id, v) : 0;
+      return n > 0 ? `✓ ×${n}` : t("cmdk.addCol");
+    }
+    function pintarResultado() {
+      const h = resultados[primario];
+      if (!h) { resCard.hidden = true; return; }
+      const preco = valorDe(h.card);
+      const n = resultados.length;
+      const jaTem = textoAdd(h);
+      resCard.innerHTML = `
+        <button type="button" class="scan-res-open" data-scan-open>
+          <span class="scan-res-thumb">${miniatura(h.card)}</span>
+          <span class="scan-res-text">
+            <span class="scan-res-name">${escapeHtml(h.card.name)}<span class="scan-res-game">${escapeHtml(shared.gameLabel(h.game))}</span></span>
+            <span class="scan-res-sub">${escapeHtml(`${h.card.set || ""} · ${h.card.number || ""}`)}</span>
+            ${preco ? `<span class="scan-res-price">${escapeHtml(preco)}</span>` : ""}
+          </span>
+        </button>
+        <span class="scan-res-acoes">
+          <button type="button" class="scan-res-add${jaTem.startsWith("✓") ? " done" : ""}" data-scan-add="col:${primario}">${escapeHtml(jaTem)}</button>
+          <button type="button" class="scan-res-alt" data-scan-more>${escapeHtml(n > 1 ? t("scan.more", { n: n - 1 }) : t("scan.notThis"))}</button>
+        </span>`;
+      resCard.hidden = false;
+    }
+    function pintarFolha() {
+      const n = resultados.length;
+      $("[data-scan-sheet-title]").textContent = n > 1 ? t("scan.sheetMany", { n, q: codigoAtual }) : t("scan.sheetFix");
+      $("[data-scan-sheet-sub]").textContent = n > 1 ? t("scan.tapRight") : "";
+      cands.innerHTML = resultados.map((h, i) => {
+        const preco = valorDe(h.card);
+        return `<button type="button" class="scan-cand${i === primario ? " is-on" : ""}" data-scan-cand="${i}">
+            <span class="scan-cand-img">${miniatura(h.card)}</span>
+            <span class="scan-cand-name">${escapeHtml(h.card.name)}</span>
+            <span class="scan-cand-sub">${escapeHtml(`${h.card.set || ""} · ${h.card.number || ""}`)}</span>
+            ${preco ? `<span class="scan-cand-price">${escapeHtml(preco)}</span>` : `<span class="scan-cand-sub">${escapeHtml(shared.gameLabel(h.game))}</span>`}
+          </button>`;
+      }).join("");
+      const q = codigoAtual || input.value.trim();
+      if (!n) {
+        vazio.innerHTML = `${escapeHtml(t(q ? "scan.empty" : "scan.noCode"))}${q
+          ? ` <a href="explore?q=${encodeURIComponent(q)}">${escapeHtml(t("cmdk.explore", { q }))}</a>` : ""}`;
+        vazio.hidden = false;
+      } else vazio.hidden = true;
+      input.value = codigoAtual;
+      const h = resultados[primario];
+      acoesFolha.hidden = !h;
+      if (h) {
+        const add = acoesFolha.querySelector("[data-scan-add^='col']");
+        add.dataset.scanAdd = `col:${primario}`;
+        const jaTem = textoAdd(h);
+        add.textContent = jaTem.startsWith("✓") ? jaTem : `${t("scan.addNamed")} ${h.card.name}`;
+        add.classList.toggle("done", jaTem.startsWith("✓"));
+        const wl = acoesFolha.querySelector("[data-scan-add^='wl']");
+        wl.dataset.scanAdd = `wl:${primario}`;
+        const stw = stores.wl[h.game] || (stores.wl[h.game] = shared.createWishlistStore(h.game));
+        wl.classList.toggle("done", !!(stw.has && stw.has(h.card.id, shared.defaultVariant(h.card))));
+      }
+    }
+    function abrirFolha() {
+      pintarFolha();
+      fundo.hidden = false;
+      folha.hidden = false;
+      if (!resultados.length) { try { input.focus(); } catch (e) { /* teclado não abriu */ } }
+    }
+    function fecharFolha() { folha.hidden = true; fundo.hidden = true; }
+    function entregar(codigo, achados) {
+      codigoAtual = codigo || "";
+      resultados = achados;
+      primario = 0;
+      pintarResultado();
+      if (!achados.length) abrirFolha(); // sem carta: a folha já abre com o código pra corrigir
+      else if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) { /* sem vibração */ } }
+    }
+    function adicionar(tipo, i, btn) {
+      const h = resultados[i];
+      if (!h) return;
+      const v = shared.defaultVariant(h.card);
+      if (tipo === "wl") {
+        const st = stores.wl[h.game] || (stores.wl[h.game] = shared.createWishlistStore(h.game));
+        const on = st.toggle(h.card.id, v);
+        btn.classList.toggle("done", on);
+        if (!btn.classList.contains("scan-heart")) btn.textContent = on ? "✓ " + t("cmdk.wl") : t("cmdk.addWl");
+        return;
+      }
+      const st = stores.col[h.game] || (stores.col[h.game] = shared.createCollectionStore(h.game));
+      st.add(h.card.id, v, shared.DEFAULT_CONDITION, 1);
+      lote += 1;
+      $("[data-scan-lote-n]").textContent = String(lote);
+      btnLote.classList.remove("is-vazio");
+      if (navigator.vibrate) { try { navigator.vibrate(20); } catch (e) { /* sem vibração */ } }
+      pintarResultado();
+      if (!folha.hidden) fecharFolha();
     }
 
     // Lê UM candidato de cada vez até algum achar carta; devolve o vencedor.
     async function procurar(codigos) {
       const jogos = jogosDaBusca(codigos);
       for (const c of codigos) {
-        dizer(t("scan.status.searching", { q: c }));
+        aviso(t("scan.status.searching", { q: c }));
         const achados = await buscar(c, jogos);
         if (achados.length) return { codigo: c, achados };
       }
@@ -472,29 +706,6 @@
       }
       return { codigo: codigos[0] || "", achados: [] };
     }
-    function mostrar(codigo, achados) {
-      resultados = achados;
-      if (codigo) input.value = codigo;
-      if (!achados.length) {
-        const q = codigo || input.value.trim();
-        res.innerHTML = `<p class="scan-vazio">${escapeHtml(t(q ? "scan.empty" : "scan.noCode"))}${q
-          ? ` <a href="explore?q=${encodeURIComponent(q)}">${escapeHtml(t("cmdk.explore", { q }))}</a>` : ""}</p>`;
-        return;
-      }
-      res.innerHTML = achados.map((h, i) => {
-        const src = shared.cardImageSources(h.card);
-        const img = shared.localizedImg(src.url, { alt: "", fallback: src.fallback, loading: "lazy", thumb: true });
-        return `<div class="cmdk-item cmdk-carditem" data-scan-i="${i}">
-            <span class="cmdk-thumb">${img}</span>
-            <span class="cmdk-item-name">${escapeHtml(h.card.name)} <small class="cmdk-card-sub">${escapeHtml(`${h.card.set || ""} · ${h.card.number || ""}`)}</small></span>
-            <span class="cmdk-actions">
-              <button type="button" class="cmdk-add" data-scan-add="col:${i}">${escapeHtml(t("cmdk.addCol"))}</button>
-              <button type="button" class="cmdk-add" data-scan-add="wl:${i}">${escapeHtml(t("cmdk.addWl"))}</button>
-            </span>
-            <span class="cmdk-game">${escapeHtml(shared.gameLabel(h.game))}</span>
-          </div>`;
-      }).join("");
-    }
 
     // Pipeline de uma leitura: recorte -> OCR da faixa -> (OCR da carta) ->
     // candidatos -> busca. `fonte` é o vídeo ou uma imagem da galeria.
@@ -502,10 +713,12 @@
       if (ocupado) return;
       ocupado = true;
       btnLer.disabled = true;
-      res.innerHTML = "";
+      resCard.hidden = true;
+      fecharFolha();
+      guia.classList.add("is-lendo");
       try {
         const worker = await obterWorker(progresso);
-        dizer(t("scan.status.reading"));
+        aviso(t("scan.status.reading"));
         // Carta inteira reamostrada uma vez; a faixa sai dela.
         const carta = preparar(fonte, rec.sx, rec.sy, rec.sw, rec.sh, 1000);
         const hFaixa = Math.round(carta.height * FAIXA);
@@ -524,22 +737,37 @@
         ultimoTexto = texto;
         // Seletor mostra o jogo detectado (a pessoa corrige se errar); sem
         // certeza fica em "automático" e a busca usa a lista de possíveis.
-        if (!selJogo.value && deteccao.confiante) selJogo.value = deteccao.jogos[0];
-        if (!codigos.length) { mostrar("", []); dizer(t("scan.status.ready")); return; }
+        if (!selJogo.value && deteccao.confiante) { selJogo.value = deteccao.jogos[0]; selJogo.classList.remove("is-auto"); }
+        if (!codigos.length) { entregar("", []); return; }
         const { codigo, achados } = await procurar(codigos);
-        mostrar(codigo, achados);
-        dizer(t("scan.status.ready"));
+        entregar(codigo, achados);
       } catch (e) {
         dizer(t("scan.error"));
       } finally {
         ocupado = false;
-        if (stream) btnLer.disabled = false;
+        aviso("");
+        guia.classList.remove("is-lendo");
+        if (stream) { btnLer.disabled = false; dizer(t("scan.status.ready")); }
       }
+    }
+    async function buscarManual(q) {
+      if (!q || ocupado) return;
+      ocupado = true;
+      try {
+        const { achados } = await procurar([q]);
+        codigoAtual = q;
+        resultados = achados;
+        primario = 0;
+        pintarResultado();
+        if (!folha.hidden || !achados.length) pintarFolha();
+        if (!achados.length) abrirFolha(); else fecharFolha();
+      } catch (e) { dizer(t("scan.error")); }
+      finally { ocupado = false; aviso(""); }
     }
 
     btnLer.addEventListener("click", () => {
       if (!stream || !video.videoWidth) return;
-      ler(video, recorteDaGuia(video, palco, guia));
+      ler(video, recorteDaGuia(video, wrap, guia));
     });
     $("[data-scan-file]").addEventListener("change", async (ev) => {
       const file = ev.target.files && ev.target.files[0];
@@ -551,54 +779,39 @@
       await ler(img, { sx: 0, sy: 0, sw: w, sh: h });
       if (img.close) img.close();
     });
-    selJogo.addEventListener("change", () => { if (input.value.trim() && !ocupado) $("[data-scan-form]").requestSubmit(); });
-    $("[data-scan-form]").addEventListener("submit", async (ev) => {
+    $("[data-scan-form]").addEventListener("submit", (ev) => {
       ev.preventDefault();
-      const q = input.value.trim().toUpperCase();
-      if (!q || ocupado) return;
-      ocupado = true;
-      res.innerHTML = "";
-      try {
-        const { achados } = await procurar([q]);
-        mostrar(q, achados);
-      } catch (e) { dizer(t("scan.error")); }
-      finally { ocupado = false; dizer(t("scan.status.ready")); }
+      buscarManual(input.value.trim().toUpperCase());
     });
     wrap.addEventListener("click", (ev) => {
       if (ev.target.closest("[data-scan-close]")) { fechar(); return; }
+      if (ev.target.closest("[data-scan-backdrop]") || ev.target.closest(".scan-sheet-handle")) { fecharFolha(); return; }
+      if (ev.target.closest("[data-scan-more]")) { abrirFolha(); return; }
+      if (ev.target.closest("[data-scan-lote]")) { fechar(); window.location.href = "collection"; return; }
       const add = ev.target.closest("[data-scan-add]");
       if (add) {
         const [tipo, i] = String(add.dataset.scanAdd).split(":");
-        const h = resultados[Number(i)];
-        if (!h) return;
-        const v = shared.defaultVariant(h.card);
-        if (tipo === "wl") {
-          const st = stores.wl[h.game] || (stores.wl[h.game] = shared.createWishlistStore(h.game));
-          const on = st.toggle(h.card.id, v);
-          add.textContent = on ? "✓ " + t("cmdk.wl") : t("cmdk.addWl");
-          add.classList.toggle("done", on);
-        } else {
-          const st = stores.col[h.game] || (stores.col[h.game] = shared.createCollectionStore(h.game));
-          st.add(h.card.id, v, shared.DEFAULT_CONDITION, 1);
-          add.textContent = `✓ ×${st.variantTotal(h.card.id, v)}`;
-          add.classList.add("done");
-        }
+        adicionar(tipo, Number(i), add);
         return;
       }
-      const item = ev.target.closest("[data-scan-i]");
-      if (item) {
-        const h = resultados[Number(item.dataset.scanI)];
+      const cand = ev.target.closest("[data-scan-cand]");
+      if (cand) {
+        primario = Number(cand.dataset.scanCand);
+        pintarResultado();
+        fecharFolha();
+        return;
+      }
+      if (ev.target.closest("[data-scan-open]")) {
+        const h = resultados[primario];
         if (!h) return;
         fechar();
         window.location.href = shared.detailUrl("set", h.card.set, null, h.game, { setId: h.card.setId });
-        return;
       }
-      if (!ev.target.closest(".scan-box")) fechar();
     });
 
     abrirCamera();
     // Aquece o motor enquanto a pessoa enquadra: na primeira vez é o download
-    // dos ~3,5 MB, que assim acontece ANTES do toque em "Ler carta".
+    // dos ~3,5 MB, que assim acontece ANTES do toque no disparador.
     obterWorker(progresso).then(() => { if (stream && !ocupado) dizer(t("scan.status.ready")); }).catch(() => dizer(t("scan.error")));
   }
 

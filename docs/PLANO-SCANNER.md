@@ -22,8 +22,16 @@ guarda isso em `number` (e `setId`), então achar a carta é OCR + busca local.
 
 **Como funciona** (`src/scan.js`, injetado no primeiro uso):
 
-1. **Câmera ao vivo** (`getUserMedia`, câmera traseira) com uma **moldura-guia
-   63/88** na tela. A pessoa encaixa a carta e toca em *Ler carta*. A moldura
+1. **Câmera ao vivo** (`getUserMedia`, câmera traseira) em **tela cheia**, com
+   uma **moldura-guia 63/88 a 86 % da largura** e tudo o mais flutuando em
+   vidro por cima (segunda versão, 2026-09-09, na linha do que o Collectr
+   faz): barra de topo abaixo da safe-area com Fechar, o jogo detectado como
+   chip e lanterna; disparador redondo embaixo, galeria à esquerda e o
+   contador do **lote** à direita; o resultado aparece num cartão entre o
+   disparador e a moldura, com *+ Coleção* na hora; a correção (código, mais
+   de um candidato) vive numa folha que só sobe quando precisa. A moldura
+   maior não é só estética: o recorte passa de ~700 pra ~1200 px de largura
+   no vídeo de 1920×1440, e os glifos do código dobram antes do OCR. A moldura
    dispensa detecção de contorno (OpenCV.js pesa 8 MB); o recorte é o retângulo
    da guia, reamostrado pra ~1000 px de largura.
 2. **OCR no aparelho** com Tesseract.js 7 (WASM, Apache-2.0), auto-hospedado em
@@ -56,12 +64,13 @@ guarda isso em `number` (e `setId`), então achar a carta é OCR + busca local.
      hidratados com `loadOwnedAcrossGames`.
    Com o jogo detectado a borda é consultada **por jogo** (resposta menor e
    mais precisa). O resultado é ranqueado com número exato primeiro, depois
-   pela confiança do jogo, e mostrado na hora, com
-   *+ Coleção* / *+ Desejos* (como na paleta) e toque pra abrir o set.
-6. **Fallbacks**: sem câmera (webview, permissão negada) o botão vira *Usar
-   foto* (`<input type=file capture=environment>`); código lido errado pode ser
-   corrigido no campo e buscado de novo; nada achado → link pro Explorar com o
-   código.
+   pela confiança do jogo. O primeiro vira o cartão flutuante (miniatura, nome,
+   set · número, valor de mercado quando há, *+ Coleção*, toque abre o set);
+   "+N opções" abre a folha com os candidatos em fileira pra tocar na certa.
+6. **Fallbacks**: sem câmera (webview, permissão negada) fica o botão de
+   galeria (`<input type=file capture=environment>`); código lido errado se
+   corrige no campo da folha e busca de novo; nada achado → a folha abre
+   sozinha com o código e um link pro Explorar.
 
 **Onde aparece.** Ícone de câmera dentro de toda busca de página
 (`.page-search`: Cartas, Explorar, Sets, Coleção, Wishlist…) e na paleta de
