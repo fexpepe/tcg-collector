@@ -6017,10 +6017,17 @@
     // Só o Pokémon usa a query com número zerado à esquerda ("Nome (004/102)").
     // Nos demais, token extra faz a busca da Liga/MYP voltar VAZIA — o nome puro
     // já casa (no Lorcana ele inclusive traz a versão: "Hades - Looking for a Deal").
-    const q = (card) => (m.padded ? paddedCardQuery(card, true) : card.name);
+    //
+    // Carta JAPONESA: as lojas BR catalogam pelo nome em INGLÊS (o `name` em
+    // kana/kanji não casa com nada, e a busca "カビゴン (181/165)" da Liga
+    // caía no Dragonair 181/165 do 151 em inglês — só o número sobrava). Vai o
+    // `pokemonName`. Na Liga o produto japonês ainda leva "JP" grudado no
+    // número, antes da barra: "Snorlax (181JP/165)" — é assim que ela separa a
+    // versão JP da inglesa de mesmo número.
+    const q = (card) => (m.padded ? paddedCardQuery(card, true, ligaNumberSuffix(card)) : brSearchName(card));
     if (m.liga) out.push({ key: "liga", label: m.liga[0], url: (card) => `${m.liga[1]}/?view=cards/search&card=${enc(q(card))}` });
     if (m.ligabra) out.push({ key: "ligabra", label: "LigaBRA", url: (card) => `https://ligabra.com/filter-products/${enc(cardSearchQuery(card))}` });
-    if (m.myp) out.push({ key: "myp", label: "MYP", url: (card) => `https://mypcards.com/${m.myp}?ProdutoSearch%5Bquery%5D=${enc(m.padded ? paddedCardQuery(card, false) : card.name)}` });
+    if (m.myp) out.push({ key: "myp", label: "MYP", url: (card) => `https://mypcards.com/${m.myp}?ProdutoSearch%5Bquery%5D=${enc(m.padded ? paddedCardQuery(card, false) : brSearchName(card))}` });
     return out;
   }
 
@@ -6095,17 +6102,33 @@
     return { num, total };
   }
 
+  // Carta japonesa no catálogo? (language "ja" — os sets de data/sets/ja/.)
+  function isJapaneseCard(card) { return String(card.language || "").toLowerCase() === "ja"; }
+
+  // Nome que as lojas BR entendem: o em inglês (`pokemonName`) na carta
+  // japonesa — todo card JP do catálogo o traz, inclusive treinador e energia;
+  // o `name` fica como fallback. Nas demais cartas é o próprio `name`.
+  function brSearchName(card) {
+    return (isJapaneseCard(card) && card.pokemonName) ? card.pokemonName : card.name;
+  }
+
+  // Sufixo do número na Liga: "JP" na carta japonesa ("181JP/165"), vazio no resto.
+  function ligaNumberSuffix(card) { return isJapaneseCard(card) ? "JP" : ""; }
+
   // "Nome (001/048)" pra Liga (padTotal=true) e "Nome (001/48)" pro MYP
   // (padTotal=false): esses sites zeram à esquerda o número (e a Liga o total).
   // Largura mínima 3 dígitos (ou a do total). Números não-numéricos ficam como vêm.
-  function paddedCardQuery(card, padTotal) {
+  // numSuffix cola no número, antes da barra ("181JP/165" — carta JP na Liga).
+  function paddedCardQuery(card, padTotal, numSuffix) {
+    const name = brSearchName(card);
     const { num, total } = splitNumberTotal(card);
-    if (!num) return card.name;
-    if (!total) return `${card.name} (${num})`;
+    const suffix = numSuffix || "";
+    if (!num) return name;
+    if (!total) return `${name} (${num}${suffix})`;
     const width = Math.max(3, total.length);
     const numPadded = /^\d+$/.test(num) ? num.padStart(width, "0") : num;
     const totalOut = padTotal && /^\d+$/.test(total) ? total.padStart(width, "0") : total;
-    return `${card.name} (${numPadded}/${totalOut})`;
+    return `${name} (${numPadded}${suffix}/${totalOut})`;
   }
 
   // Código da carta: "4/102" (número/total do set). Alguns catálogos já trazem
@@ -6185,8 +6208,12 @@
     return code ? `${card.name} (${code})` : card.name;
   }
 
+  // Busca do LigaBRA: mesmo "Nome (número/total)" do rótulo, mas com o nome
+  // que a loja entende (inglês na carta japonesa).
   function cardSearchQuery(card) {
-    return cardLabel(card);
+    const code = cardCode(card);
+    const name = brSearchName(card);
+    return code ? `${name} (${code})` : name;
   }
 
   // Escapa um campo para CSV: usa ; como separador (amigável ao Excel pt-BR) e
