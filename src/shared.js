@@ -5641,7 +5641,6 @@
             <div class="preview-actions">
               <div class="preview-actions-row">
                 <button type="button" class="secondary preview-share" data-preview-share>${TILE_ICONS.share}<span>${escapeHtml(t("modal.share"))}</span></button>
-                <button type="button" class="secondary preview-story" data-preview-story title="${escapeAttribute(t("modal.shareImage"))}" aria-label="${escapeAttribute(t("modal.shareImage"))}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 15l5-4 4 3 3-2 6 5"/><circle cx="9" cy="9" r="1.4"/></svg></button>
                 ${wishlist ? `<button type="button" class="secondary preview-want${isWanted ? " active" : ""}" data-preview-want aria-pressed="${isWanted}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}<span>${escapeHtml(isWanted ? t("modal.wanted") : t("modal.want"))}</span></button>` : ""}
               </div>
               <button class="owned-toggle preview-owned" data-card-id="${escapeAttribute(activeCard.id)}"${activeVariant ? ` data-variant="${escapeAttribute(activeVariant)}"` : ""} aria-pressed="${isOwned}">
@@ -5810,12 +5809,6 @@
         return;
       }
 
-      const storyBtn = event.target.closest("[data-preview-story]");
-      if (storyBtn) {
-        exportCardStory(storyBtn);
-        return;
-      }
-
       // Caixa "+ Graded" do preview: expandir e registrar o slab.
       if (graded && activeCard && event.target.closest("#cardPreviewModal [data-preview-graded]")) {
         const open = event.target.closest("[data-preview-graded-open]");
@@ -5936,68 +5929,6 @@
           setTimeout(() => { span.textContent = original; }, 1600);
         }).catch(() => {});
       }
-    }
-
-    // F7 do PLANO-UX: a carta como IMAGEM (4:5, formato de story) — foto,
-    // nome, set, valor e a marca no rodapé. O que circula nos grupos é print,
-    // não link; cada imagem sai com o sleevu.app embaixo. CDN sem CORS suja o
-    // canvas (toBlob falha): regenera SEM a foto — layout tipográfico, como a
-    // retrospectiva do Portfólio — em vez de falhar em silêncio.
-    async function exportCardStory(btn, semFoto) {
-      if (!activeCard) return;
-      const card = activeCard;
-      if (btn) btn.disabled = true;
-      const W = 1080, H = 1350;
-      const canvas = document.createElement("canvas");
-      canvas.width = W; canvas.height = H;
-      const ctx = canvas.getContext("2d");
-      const { drawCover, roundRect, imagemDaCarta } = canvasCardHelpers(ctx);
-      // Fundo fixo escuro, não segue o tema: isto é um cartaz, não a UI.
-      const bg = ctx.createLinearGradient(0, 0, 0, H);
-      bg.addColorStop(0, "#141828"); bg.addColorStop(1, "#0b0d14");
-      ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
-      const img = semFoto ? null : await imagemDaCarta(card);
-      const FONTE = "system-ui, -apple-system, 'Segoe UI', sans-serif";
-      let y;
-      if (img) {
-        const cw = 560, ch = Math.round(cw * 88 / 63); // a moldura 63/88 de sempre
-        const cx = (W - cw) / 2, cy = 90;
-        ctx.save();
-        ctx.shadowColor = "rgba(0,0,0,0.5)"; ctx.shadowBlur = 40; ctx.shadowOffsetY = 14;
-        roundRect(cx, cy, cw, ch, 26); ctx.fillStyle = "#0b0d14"; ctx.fill();
-        ctx.restore();
-        ctx.save();
-        roundRect(cx, cy, cw, ch, 26); ctx.clip();
-        drawCover(img, cx, cy, cw, ch);
-        ctx.restore();
-        y = cy + ch + 96;
-      } else {
-        y = 480;
-      }
-      ctx.textAlign = "center";
-      ctx.fillStyle = "#f4f6fb";
-      ctx.font = `800 ${img ? 58 : 84}px ${FONTE}`;
-      // Só o NOME: o número já vai na linha de baixo (cardLabel o embutiria 2x).
-      ctx.fillText(card.name || cardLabel(card), W / 2, y, W - 120);
-      ctx.fillStyle = "#8b93a7";
-      ctx.font = `600 34px ${FONTE}`;
-      ctx.fillText(`${card.set || ""} · ${card.number || ""}`, W / 2, y + 58, W - 120);
-      const variant = activeVariant || defaultVariant(card);
-      const valor = cardValue(card, variant, prices, DEFAULT_CONDITION).value || 0;
-      if (valor > 0) {
-        ctx.fillStyle = "#2ecc71";
-        ctx.font = `800 64px ${FONTE}`;
-        ctx.fillText(fmtMoney(getCurrency(), valor), W / 2, y + 166);
-      }
-      ctx.fillStyle = "#5d6472";
-      ctx.font = `700 30px ${FONTE}`;
-      ctx.fillText("sleevu.app", W / 2, H - 64);
-      const nome = `${String(card.name || "carta").replace(/[^\w-]+/g, "-").toLowerCase()}-sleevu.png`;
-      baixarCanvasPng(canvas, nome, {
-        share: true,
-        onTainted: () => { if (!semFoto) exportCardStory(btn, true); },
-        onFinish: () => { if (btn) btn.disabled = false; }
-      });
     }
 
     return { open, close, openFromUrl };
