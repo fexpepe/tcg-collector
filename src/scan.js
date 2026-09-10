@@ -123,10 +123,35 @@
       const c = `${prefixo(m[1], !idioma)}-${idioma}${digitos}`;
       add(c, pesoHifen(c), m);
     }
-    // Magic (e quem imprime "CÓDIGO • IDIOMA"): o número vem logo antes.
-    //   "0123/0281 R" / "MH3 • EN"  ->  "MH3 123"
-    const reMagic = new RegExp(`\\b0*(\\d{1,4})(?:\\s*\\/\\s*0*\\d{1,4})?\\s*[A-Z]?\\s*\\b([A-Z][A-Z0-9]{2,3})\\s*[•·.\\-]?\\s*(?:${IDIOMAS})\\b`, "g");
-    while ((m = reMagic.exec(up))) add(`${m[2]} ${parseInt(m[1], 10)}`, 2, m);
+    // Magic (e quem imprime "CÓDIGO • IDIOMA"), em duas partes: acha o set
+    // ("HOB • EN", "MH3 EN") e casa o NÚMERO com ele.
+    //   "0123/0281 R" / "MH3 • EN"  ->  "MH3 123";  "0042 R" / "HOB • EN" -> "HOB 42"
+    // O número vem logo antes na carta, mas nem sempre no texto: o artista
+    // fica na mesma linha do número ("0042 R  JOSU SOLANO" / "HOB EN") e o
+    // modo sparse intercala os blocos. Então: número imediatamente antes
+    // (peso 2); senão, um número COM ZERO À ESQUERDA ("0042" — o Magic
+    // moderno preenche a 4 dígitos) ou uma fração de total >= 100 em qualquer
+    // lugar do texto (peso 1). Os dígitos passam pela correção de OCR
+    // ("004Z" -> 0042): antes o padrão exigia dígito puro e uma letra no fim
+    // deixava "HOB 4" — carta errada — em vez de "HOB 42".
+    const reSet = new RegExp(`\\b([A-Z][A-Z0-9]{2,3})\\s*[•·.\\-]?\\s*(?:${IDIOMAS})\\b`, "g");
+    const NUM = "[0-9OILSBZ]";
+    const reAntes = new RegExp(`\\b0*(${NUM}{1,4})(?:\\s*\\/\\s*0*(${NUM}{1,4}))?\\s*[A-Z]?\\s*$`);
+    const numero = (raw) => { const d = soDigitos(raw); return /^\d+$/.test(d) && parseInt(d, 10) > 0 ? parseInt(d, 10) : 0; };
+    while ((m = reSet.exec(up))) {
+      const set = m[1];
+      const antes = up.slice(Math.max(0, m.index - 24), m.index).match(reAntes);
+      // Fração de total pequeno logo antes é poder/resistência ("3/3"), não
+      // número de carta: set do Magic tem 100+ cartas.
+      const n = antes && !(antes[2] && numero(antes[2]) < 100) ? numero(antes[1]) : 0;
+      if (n) { add(`${set} ${n}`, 2, { index: m.index - antes[0].length, 0: antes[0] + m[0] }); continue; }
+      let solto;
+      const reSolto = new RegExp(`\\b0(${NUM}{2,3})\\b|\\b0*(${NUM}{1,4})\\s*\\/\\s*0*(${NUM}{3,4})\\b`, "g");
+      while ((solto = reSolto.exec(up))) {
+        const k = solto[1] ? numero("0" + solto[1]) : (numero(solto[3]) >= 100 ? numero(solto[2]) : 0);
+        if (k) { add(`${set} ${k}`, 1, solto); break; }
+      }
+    }
     // Lorcana: "12/204 · EN · 4"  ->  "4 12" (set 4, carta 12)
     const reLorcana = new RegExp(`\\b(\\d{1,3})\\s*\\/\\s*(\\d{3})\\s*[•·.\\-]?\\s*(?:${IDIOMAS})\\s*[•·.\\-]?\\s*(\\d{1,2})\\b`, "g");
     while ((m = reLorcana.exec(up))) add(`${m[3]} ${parseInt(m[1], 10)}`, 2, m);

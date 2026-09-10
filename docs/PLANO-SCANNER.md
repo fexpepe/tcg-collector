@@ -60,7 +60,11 @@ guarda isso em `number` (e `setId`), então achar a carta é OCR + busca local.
    pra busca antes do `OP05-119` e a borda "achava" carta errada. Formato de
    jogo conhecido vale 3, fração plausível/Magic/Lorcana/FAB 2, hífen de
    prefixo desconhecido 1, duvidoso 0; empate desempata pela confiança que o
-   Tesseract deu à palavra.
+   Tesseract deu à palavra. No Magic o set ("HOB • EN") e o número são
+   casados em duas partes: o número logo antes vale 2; se o artista se meteu
+   entre os dois no texto (fica na linha do número), um número com zero à
+   esquerda ("0042") ou uma fração de total >= 100 em qualquer lugar vale 1 —
+   e os dígitos passam pela correção de OCR ("004Z" -> 42, e não "HOB 4").
 4. **Detecção do jogo** (`detectarJogo`, função pura com teste), porque o
    mesmo número existe em vários jogos — `4/102` é Pokémon, mas "4" é um set
    do Lorcana e um número do Magic, e a primeira versão devolvia os três.

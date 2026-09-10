@@ -191,3 +191,15 @@ test("formato de um jogo só dá certeza; formato de vários, não", () => {
   // Palavra impressa de OUTRO jogo empata com o formato: sem certeza.
   assert.equal(detecta("DISNEY OP05-119", ["OP05-119"]).confiante, false);
 });
+
+test("Magic: número separado do set pelo artista, com zero à esquerda ou confusão de OCR", () => {
+  // O Hobbit: "0042 R" e o artista na mesma linha, "HOB • EN" na de baixo.
+  assert.equal(codigos("0042 R JOSU SOLANO\nHOB • EN TM 2026 WIZARDS OF THE COAST")[0], "HOB 42");
+  // Último dígito lido como letra: "004Z" -> 42, e não "HOB 4".
+  assert.equal(codigos("004Z R\nHOB • EN")[0], "HOB 42");
+  assert.equal(codigos("OO42 R HOB EN")[0], "HOB 42");
+  // Número logo antes continua valendo e vem na frente do solto.
+  assert.equal(codigos("0042/0321 R HOB EN")[0], "HOB 42");
+  // Poder/resistência ("3/3") e ano não viram número de carta.
+  assert.ok(!codigos("3/3 HOB EN 2026").some((c) => /^HOB /.test(c)));
+});

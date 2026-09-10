@@ -113,3 +113,19 @@ test("a análise detecta o caso real que quebrou o cards.js", () => {
   ].join("\n");
   assert.deepEqual(analisar(corrigido), [], "declarada antes do boot: sem problema");
 });
+
+// O explore.js quebrou de um jeito parecido, mas em TEMPO DE BUSCA, não no
+// boot: apiApply usava um `q` declarado só dentro de render(). O ReferenceError
+// acontecia no fim do caminho da borda (só com resultados na mão), a promise
+// rejeitava sem ninguém ouvir e a grade ficava como estava — a busca parecia
+// travada até um F5. Um lint de no-undef pegaria; sem ele, este teste segura o
+// caso: todo `q` usado no corpo da busca pela borda tem de ser declarado ali.
+test("explore.js: a busca pela borda declara o termo que usa", () => {
+  const texto = readFileSync(join(srcDir, "explore.js"), "utf8");
+  const corpo = corpoDaFuncao(texto, "apiApplyInner");
+  assert.ok(corpo, "apiApplyInner existe");
+  assert.match(corpo, /\bconst q = term\(\)/);
+  // e o invólucro que chama tem o catch que cai no catálogo
+  const wrap = corpoDaFuncao(texto, "apiApply");
+  assert.match(wrap, /catch \(e\) \{ renderFromCatalog\(\); \}/);
+});

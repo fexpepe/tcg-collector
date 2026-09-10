@@ -203,16 +203,27 @@
   // local de sempre segue valendo: instantânea, sem rede e sem teto de 60.
   let apiSeq = 0;
   const VINTAGE_GAMES = ["pokemon", "onepiece", "naruto", "hxh"]; // os que têm carta vintage (ver isVintageCard)
+  // Qualquer erro no caminho da borda cai no catálogo local em vez de deixar
+  // a página muda: uma exceção aqui era uma rejeição sem ninguém ouvindo, a
+  // grade ficava como estava (as "mais vistas", ou os esqueletos) e a busca
+  // parecia travada — digitar de novo, Enter, nada; só o F5 "resolvia", e
+  // resolvia por acaso. Foi um ReferenceError num `q` que não existia neste
+  // escopo (o termo é lido uma vez, no começo, e vale pro pedido inteiro).
   async function apiApply() {
+    try { await apiApplyInner(); }
+    catch (e) { renderFromCatalog(); }
+  }
+  async function apiApplyInner() {
     const seq = ++apiSeq;
+    const q = term();
     if (!elements.grid.querySelector(".card-tile")) shared.showSkeletons(elements.grid, "card", 8);
     // "Vintage" não existe na borda (é corte por carta, não coluna do D1):
     // busca nos jogos que TÊM linha vintage e peneira as cartas hidratadas
     // com isVintageCard, mais abaixo.
     const vintage = gameFilter === shared.VINTAGE_FILTER;
     const hits = vintage
-      ? (await Promise.all(VINTAGE_GAMES.map((g) => shared.searchApi(g, term(), 60)))).flat().filter(Boolean)
-      : await shared.searchApi(gameFilter === "all" ? "all" : gameFilter, term(), 60);
+      ? (await Promise.all(VINTAGE_GAMES.map((g) => shared.searchApi(g, q, 60)))).flat().filter(Boolean)
+      : await shared.searchApi(gameFilter === "all" ? "all" : gameFilter, q, 60);
     if (seq !== apiSeq || catalogPronto) return; // o catálogo chegou no meio: o render dele já cobre
     // VAZIO não é resposta final — só o catálogo local pode afirmar "essa
     // carta não existe". A borda responde vazio quando o banco está em recarga
