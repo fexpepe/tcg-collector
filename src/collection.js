@@ -506,7 +506,29 @@
     }
   }
 
+  // Celular: o "Selecionar" sai do cartão-herói e vai pra linha do título
+  // "Minhas Cartas", ao lado do Filtros (2026-09-10) — no cartão ele ocupava
+  // uma faixa inteira só pra ele, e a linha da identidade ganhou o valor de
+  // mercado no lugar. MOVE o botão (não clona): o listener e o elements.bulkBtn
+  // continuam valendo, e o render() segue escondendo-o fora da aba Cartas.
+  // Mesmo corte (720px) do bloco mobile do cartão-herói no CSS.
+  function initBulkBtnPlacement() {
+    const btn = elements.bulkBtn;
+    const row = document.querySelector("#cardsView .results-actions");
+    if (!btn || !row) return;
+    const casa = btn.parentElement;
+    const irmao = btn.nextElementSibling;
+    const mq = window.matchMedia("(max-width: 720px)");
+    const aplicar = () => {
+      if (mq.matches && btn.parentElement !== row) row.insertBefore(btn, row.firstChild);
+      else if (!mq.matches && btn.parentElement === row) casa.insertBefore(btn, irmao);
+    };
+    aplicar();
+    mq.addEventListener("change", aplicar);
+  }
+
   function bindEvents() {
+    initBulkBtnPlacement();
     if (elements.cardsSortSelect) {
       elements.cardsSortSelect.value = cardsSort;
       elements.cardsSortSelect.addEventListener("change", () => {
@@ -856,6 +878,27 @@
     }
   }
 
+  // O valor de mercado mora numa caixa de largura FIXA na linha da identidade
+  // do cartão-herói (ver .dash-stats-head > .dash-stat-money no CSS). Número
+  // maior que a caixa não pode vazar por cima das ações nem virar "R$ 188.8…":
+  // a fonte cai de 1 em 1px até caber (piso de 11px). Reaplica ao redimensionar
+  // e ao trocar moeda/filtro (quem escreve o número chama de novo).
+  function ajustaValorHero(el) {
+    if (!el) return;
+    el.style.fontSize = "";
+    if (!el.clientWidth) return; // escondido (modo colecionador) ou cartão ainda oculto
+    let size = parseFloat(getComputedStyle(el).fontSize) || 22;
+    let guard = 14;
+    while (el.scrollWidth > el.clientWidth && size > 11 && guard--) {
+      size -= 1;
+      el.style.fontSize = size + "px";
+    }
+  }
+  function ajustaValoresHero() {
+    document.querySelectorAll(".dash-stats-head .dash-stat-money .dash-stat-val").forEach(ajustaValorHero);
+  }
+  window.addEventListener("resize", shared.debounce(ajustaValoresHero, 120));
+
   // Dashboard de resumo no topo (estilo "perfil"): stats + mais valiosas +
   // distribuição por jogo. Reflete o filtro de jogo atual.
   function renderDashboard() {
@@ -899,6 +942,7 @@
     // e do Hub — antes cada tela tinha a sua e elas discordavam.
     const value = shared.collectionNetWorth(myCards, owned, prices, { gameOf, gameFilter, cardOf: (id) => cardsById.get(id) }).total;
     elements.dashValue.textContent = value > 0 ? shared.formatMoney(shared.getCurrency(), value) : "—";
+    ajustaValorHero(elements.dashValue);
 
     // Mais valiosas (top 3 por valor unitário)
     // A variante MAIS VALIOSA entre as suas (não a primeira da lista): quem tem
@@ -2241,6 +2285,7 @@
       const dash = (isSale || isGraded) ? "" : sharedDashboardHtml(items, total, profileNav);
       document.getElementById("sharedBody").innerHTML =
         `${dash}<div class="card-grid">${items.map(sharedTile).join("")}</div>`;
+      ajustaValoresHero();
     }
     paintShared();
 
@@ -2472,7 +2517,7 @@
       const gradedTotal = gradedList
         .filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter)
         .reduce((s, it) => { const v = shared.convertMoney(it.gv || 0, it.cur || "BRL", cur); return s + (v == null ? (it.gv || 0) : v); }, 0);
-      return sharedDashboardHtml(items, rawTotal + gradedTotal, { name, handle: prof.handle, updated: prof.updated_at, dex: prof.data.dex }, { hero: true, actions: actionsHtml() });
+      return sharedDashboardHtml(items, rawTotal + gradedTotal, { name, handle: prof.handle }, { hero: true, actions: actionsHtml() });
     }
     function gameFilterHtml() {
       if (gamesPresent.length <= 1) return "";
@@ -2602,6 +2647,7 @@
       // esconde os chips, e o boot do shared.js só alcança as caixas que já
       // existiam no HTML — esta nasce aqui, a cada render.
       if (shared.initGameFilterSelects) shared.initGameFilterSelects(sv);
+      ajustaValoresHero(); // o valor tem caixa fixa no cabeçalho (mesma regra do dono)
     }
     // Troca de aba / abrir grupo / voltar: reconstrói só o bloco abaixo do dashboard
     // (abas+conteúdo), mantendo o dashboard e o filtro de jogo fixos no lugar.
@@ -2677,21 +2723,6 @@
   // `opts.hero`: só o cartão-herói, de ponta a ponta, com as ações no canto —
   // é o topo da Minha Coleção, e é o que o PERFIL PÚBLICO usa. O share anônimo
   // (?s=) segue com os três cards: lá não há abas nem filtros, o resumo é a tela.
-  // "coleção atualizada em X" no perfil público. O updated_at já vinha na
-  // resposta da RPC e era jogado fora — e é justamente o sinal que separa
-  // perfil vivo de perfil abandonado, que importa pra quem chega ali querendo
-  // trocar ou comprar. Data inválida não vira texto quebrado: some.
-  function dataDoPerfil(iso) {
-    if (!iso) return "";
-    let quando = "";
-    try {
-      const d = new Date(iso);
-      if (isNaN(d.getTime())) return "";
-      quando = d.toLocaleDateString(shared.getLocale(), { day: "numeric", month: "short", year: "numeric" });
-    } catch (e) { return ""; }
-    return `<span class="dash-profile-updated">${escapeHtml(t("profile.updated", { date: quando }))}</span>`;
-  }
-
   function sharedDashboardHtml(items, total, profileNav, opts) {
     const copies = items.reduce((s, it) => s + (it.q || 1), 0);
     const distinct = new Set(items.map((it) => it.id)).size;
@@ -2751,26 +2782,27 @@
             <div class="dash-profile-id">
               <strong class="dash-profile-name">${escapeHtml(profileNav.name)}</strong>
               <a class="dash-profile-handle" href="/users/${escapeAttribute(profileNav.handle)}">@${escapeHtml(profileNav.handle)}</a>
-              ${dataDoPerfil(profileNav.updated)}
-              ${profileNav.dex && profileNav.dex.c > 0 ? `<span class="dash-profile-dex">${escapeHtml(t("profile.dex", { c: profileNav.dex.c, t: profileNav.dex.t }))}</span>` : ""}
             </div>
           </div>
           ${profileNav.label ? `<button type="button" class="secondary dash-profile-nav" data-profile-nav>${escapeHtml(profileNav.label)}</button>` : ""}
         </div>`
       : "";
-    // MESMO cartão-herói da Minha Coleção (.dash-stats-hero): identidade em
-    // cima, contagens numa fileira de 4 com o valor na última coluna. Sem
-    // identidade (share anônimo, ?s=), o cabeçalho nem entra — e sem ele as
-    // contagens não ganham a divisória de cima (regra head + counts no CSS).
+    // MESMO cartão-herói da Minha Coleção (.dash-stats-hero), com o MESMO DOM
+    // do collection.html: identidade + valor de mercado + ações na linha de
+    // cima, as 3 contagens embaixo. O perfil público era "quase igual" (tinha
+    // "atualizada em" e a Pokédex a mais, e o valor numa fileira própria) —
+    // agora é a mesma cara, com a mesma regra de CSS (2026-09-10). O texto
+    // "atualizada em"/Pokédex saiu de vez: as chaves profile.updated/profile.dex
+    // foram removidas do i18n junto.
     const o = opts || {};
+    const money = stat(IC.money, escapeHtml(total > 0 ? shared.formatMoney(shared.getCurrency(), total) : "—"), t("dash.value"), ' class="dash-stat-money"');
     return `<section class="collection-dashboard${o.hero ? " collection-dashboard-hero" : ""}">
       <article class="dash-card dash-stats dash-stats-hero">
-        ${(profHead || o.actions) ? `<div class="dash-stats-head">${profHead}${o.actions || ""}</div>` : ""}
+        <div class="dash-stats-head">${profHead}${money}${o.actions || ""}</div>
         <div class="dash-stats-counts">
           ${stat(IC.copies, copies, t("stats.copies"))}
           ${stat(IC.distinct, distinct, t("stats.distinct"))}
           ${stat(IC.sets, sets, t("stats.setsCovered"))}
-          ${stat(IC.money, escapeHtml(total > 0 ? shared.formatMoney(shared.getCurrency(), total) : "—"), t("dash.value"), ' class="dash-stat-money"')}
         </div>
       </article>
       ${o.hero ? "" : `<article class="dash-card dash-top">

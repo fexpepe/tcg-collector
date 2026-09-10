@@ -58,23 +58,27 @@
     <main>
       <div class="page-head pf-head dash-head">
         <h1 data-i18n="nav.portfolio">Portfólio</h1>
-        <!-- Agrupados num container pra ficarem juntos, colados à direita:
-             soltos no .pf-head (space-between) eles se espalhavam pela linha
-             quando quebravam pra baixo do título. -->
-        <div class="pf-head-actions">
-          <!-- Modo privacidade: borra os valores em dinheiro e MANTÉM as
-               porcentagens, pra dar print/stream sem expor o patrimônio. É o
-               mesmo data-sensitive das Configurações, com o liga-desliga aqui,
-               que é onde o efeito acontece. -->
-          <button type="button" id="pfPrivacy" class="secondary pf-privacy" aria-pressed="false" hidden></button>
-          <button type="button" id="pfRecap" class="secondary" hidden></button>
-          <button type="button" id="pfExport" class="secondary" data-i18n="portfolio.export" hidden>Exportar CSV</button>
+        <!-- Linha de baixo do cabeçalho (2026-09-10): "← Hub" à esquerda e as
+             três ações à direita, SÓ-ÍCONE (padrão .icon-btn: o rótulo fica
+             no <span> escondido pro leitor de tela e no title). Antes eram
+             três botões de texto que, no celular, empilhavam em duas linhas
+             tortas entre o título e o "← Hub". -->
+        <div class="pf-head-row">
+          <a href="dashboard" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
+          <div class="pf-head-actions">
+            <!-- Modo privacidade: borra os valores em dinheiro e MANTÉM as
+                 porcentagens, pra dar print/stream sem expor o patrimônio. É o
+                 mesmo data-sensitive das Configurações, com o liga-desliga aqui,
+                 que é onde o efeito acontece. Olho aberto = valores à mostra;
+                 olho riscado = ocultos (o CSS troca pelo aria-pressed). -->
+            <button type="button" id="pfPrivacy" class="secondary icon-btn pf-privacy" aria-pressed="false" hidden><svg class="pf-eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="2.8"/></svg><svg class="pf-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 4.5l15 15"/><path d="M9.9 5.9A10.4 10.4 0 0 1 12 5.5c6.5 0 10 6.5 10 6.5a17.3 17.3 0 0 1-3.2 3.9M6.1 6.7A16.6 16.6 0 0 0 2 12s3.5 6.5 10 6.5a10.7 10.7 0 0 0 4-.8"/><path d="M9.9 10.1a2.8 2.8 0 0 0 4 4"/></svg><span></span></button>
+            <!-- Retrospectiva (imagem do ano): estrelinhas, o ícone que os
+                 "wrapped" usam. -->
+            <button type="button" id="pfRecap" class="secondary icon-btn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9z"/><path d="M5 3.5v3M3.5 5h3M19 17.5v3M17.5 19h3"/></svg><span></span></button>
+            <!-- Exportar CSV: a mesma seta-pra-baixo do Exportar da Coleção. -->
+            <button type="button" id="pfExport" class="secondary icon-btn" data-i18n-title="portfolio.export" title="Exportar CSV" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v11"/><path d="m8 10.5 4 4 4-4"/><path d="M4.5 16.5v2a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-2"/></svg><span data-i18n="portfolio.export">Exportar CSV</span></button>
+          </div>
         </div>
-        <!-- Por ÚLTIMO de propósito: o .pf-head é flex com space-between, então
-             o link precisa quebrar pra própria linha (flex-basis no CSS) pra
-             cair embaixo do título, como nas outras telas — no meio da linha
-             ele ficaria espremido entre o título e o "Exportar CSV". -->
-        <a href="dashboard" class="serie-back" data-i18n="nav.backDashboard">← Hub</a>
       </div>
 
       <p class="collection-subtitle" data-i18n="portfolio.subtitle">Visão financeira da sua coleção: tudo o que você tem (cartas + graded), por jogo, com a progressão de valor no tempo.</p>
@@ -107,7 +111,10 @@
         <div id="pfChartBody" class="pf-chart-body"></div>
       </section>
 
-      <section class="stats-grid" data-i18n-aria="aria.sumPortfolio" aria-label="Resumo do portfólio">
+      <!-- .pf-stats: no celular estas cápsulas vão UMA por fileira (ver CSS) —
+           em 3 colunas o "R$ 186.980,60" vazava da caixa e o rótulo quebrava
+           torto. -->
+      <section class="stats-grid pf-stats" data-i18n-aria="aria.sumPortfolio" aria-label="Resumo do portfólio">
         <article class="stat-grand">
           <span id="grandTotal">—</span>
           <!-- Variação do DIA (padrão corretora): pintada pelo updateChart a

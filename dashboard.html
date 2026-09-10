@@ -59,7 +59,14 @@
            "12 slabs" no Hub e tinha que achar a página Graded pelo menu.
            O rótulo acessível é o próprio <p> do cartão (aria-labelledby), então
            ele já vem traduzido junto com o resto da tela. -->
-      <section class="stats-grid" data-i18n-aria="aria.sumCollector" aria-label="Resumo do colecionador">
+      <!-- Resumo em DOIS blocos irmãos (2026-09-10): o patrimônio (.dash-grand)
+           e os cartões de contagem (.dash-info). No desktop o .dash-summary os
+           encaixa numa fileira só (1,6fr + 4 colunas), como antes; no celular
+           o wrapper some (display: contents) e cada bloco ganha a própria
+           posição na página — o patrimônio segue no topo e as contagens vão
+           pra baixo do "Ir para", ordem que o CSS do .dash-main define. -->
+      <div class="dash-summary">
+      <section class="stats-grid dash-grand" data-i18n-aria="portfolio.networth" aria-label="patrimônio (cartas + graded)">
         <article class="stat-grand">
           <span id="dhValue">—</span>
           <span class="collector-badge" data-i18n="collector.badge">Modo Colecionador</span>
@@ -69,6 +76,8 @@
           <p id="dhValueLabel" data-i18n="portfolio.networth">patrimônio (cartas + graded)</p>
           <a class="stat-link" href="portfolio" aria-labelledby="dhValueLabel"></a>
         </article>
+      </section>
+      <section class="stats-grid dash-info" data-i18n-aria="aria.sumCollector" aria-label="Resumo do colecionador">
         <article>
           <span id="dhCopies">0</span>
           <p id="dhCopiesLabel" data-i18n="stats.copies">cópias no total</p>
@@ -97,6 +106,7 @@
           <a class="stat-link" href="pokedex?game=pokemon&amp;dex=missing" aria-labelledby="dhDexLabel"></a>
         </article>
       </section>
+      </div>
 
       <!-- Distribuição por marca (contagem de cartas distintas). O rótulo tem o
            MESMO estilo do "Ir para": as três zonas da página (resumo, jogos,

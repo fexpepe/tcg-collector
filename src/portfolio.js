@@ -328,8 +328,10 @@
       const on = shared.sensitiveEnabled();
       btn.hidden = false;
       btn.setAttribute("aria-pressed", String(on));
-      btn.textContent = on ? t("portfolio.privacy.on") : t("portfolio.privacy.off");
-      btn.title = t("portfolio.privacy.hint");
+      // Só-ícone: o rótulo vive no <span> escondido (leitor de tela) e o
+      // title diz o que o clique faz; escrever no textContent apagaria os SVGs.
+      btn.querySelector("span").textContent = on ? t("portfolio.privacy.on") : t("portfolio.privacy.off");
+      btn.title = `${on ? t("portfolio.privacy.on") : t("portfolio.privacy.off")} · ${t("portfolio.privacy.hint")}`;
     };
     pinta();
     btn.addEventListener("click", () => { shared.setSensitive(!shared.sensitiveEnabled()); pinta(); });
@@ -341,7 +343,8 @@
     if (recap) {
       // Só oferece quando há histórico pra contar uma história (2+ pontos).
       recap.hidden = chartHistory().length < 2;
-      recap.textContent = t("portfolio.recap.button");
+      recap.querySelector("span").textContent = t("portfolio.recap.button");
+      recap.title = t("portfolio.recap.button");
       recap.addEventListener("click", () => exportRetrospectiva(recap));
     }
     if (!elements.export) return;

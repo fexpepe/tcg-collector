@@ -987,12 +987,36 @@ input::placeholder {
    numa linha só dele (elástico) e os botões na linha de baixo. Sem isto o
    flex:none empurrava a página pra fora da tela (rolagem lateral). */
 @media (max-width: 700px) {
-  .results-header:has(> .results-actions) .results-actions { flex: 0 1 auto; flex-wrap: wrap; margin-left: auto; justify-content: flex-end; order: 3; }
-  /* Com o Ordenar dentro (set/Cartas) o grupo segue em faixa própria: o
-     select é elástico e ocupa a linha dele, os botões a de baixo. */
-  .results-header:has(> .results-actions) .results-actions:has(.results-sort) { flex: 1 1 100%; margin-left: 0; }
-  .results-actions .results-sort { flex: 1 1 100%; }
-  .results-actions .results-sort select { flex: 1 1 auto; width: 100%; max-width: none; }
+  .results-header:has(> .results-actions) .results-actions { flex: 0 1 auto; flex-wrap: nowrap; margin-left: auto; justify-content: flex-end; order: 3; }
+  /* Ordenar na MESMA linha da Visualização e do Filtros, à direita
+     (2026-09-10): o rótulo "Ordenar:" some da tela (fica pro leitor de tela)
+     e o <select> vira uma caixa com o ícone de ordenação, que encolhe (com
+     reticências) até caber. Antes o select tomava uma faixa inteira e os
+     botões outra — duas linhas pro que cabe numa. */
+  .results-actions { min-width: 0; max-width: 100%; }
+  /* Base de 150px (não `auto`): com auto o item media pelo max-content do
+     <select> — "Valor (maior → menor)" inteiro — e a linha estourava. */
+  .results-actions .results-sort { flex: 0 1 150px; min-width: 0; max-width: 150px; gap: 0; }
+  .results-actions .results-sort label {
+    position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden;
+    clip-path: inset(50%); white-space: nowrap;
+  }
+  .results-actions .results-sort select {
+    width: 100%; max-width: 150px; min-width: 0; height: 36px;
+    padding: 0 28px 0 32px; font-size: 13px; font-weight: 700;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    -webkit-appearance: none; appearance: none;
+    /* Ícone de ordenação à esquerda + a mesma cetinha dos selects da barra. */
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a93a3' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 4v16M4 17l3 3 3-3M17 20V4M14 7l3-3 3 3'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a93a3' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat, no-repeat;
+    background-position: left 10px center, right 10px center;
+    background-size: 16px 16px, 12px 12px;
+  }
+  /* O "Selecionar" que o collection.js traz pra cá no celular: mesma altura
+     dos vizinhos (a regra genérica de .results-actions button já dá 36px). */
+  .results-actions .bulk-toggle { flex: 0 0 auto; margin: 0; }
   /* A contagem cola no título (1ª linha); o botão de criar abre a 2ª linha,
      à esquerda, e as ações fecham à direita. */
   .results-header > p { order: 1; }
@@ -1765,14 +1789,6 @@ input::placeholder {
 /* Barra de progressão dentro do cartão "progresso" do resumo da Pokédex. */
 .stats-grid .dex-progress {
   margin-top: 10px;
-}
-
-/* "Pokédex: 412 de 1025 Pokémon" sob o @ no perfil público. */
-.dash-profile-dex {
-  display: block;
-  margin-top: 2px;
-  font-size: 12px;
-  color: var(--muted);
 }
 
 /* Mesmo botão no herói da página do Pokémon: herda o pill do favorito, só a
@@ -3369,15 +3385,23 @@ a.preview-print:hover { background: var(--panel); }
     flex: 0 0 44px;
     padding: 0;
   }
-  /* O botão de conta preenche a fatia que sobrou — inclusive o avatar, que fora
-     daqui é um círculo de 38px fixo (flex/width próprios precisam ser vencidos,
-     por isso a regra é específica e vem depois). */
-  .app-header-inner .header-actions .auth-slot > button,
+  /* Deslogado, o botão "Entrar" preenche a fatia que sobrou. */
+  .app-header-inner .header-actions .auth-slot > button.auth-signin { width: 100%; flex: 1 1 auto; }
+  /* Logado, o AVATAR é um quadrado de 44px como os botões de olho e de tema
+     ao lado dele (2026-09-10). Ele "preenchia a sobra" — e com moeda, idioma,
+     olho e tema fixos na fileira a sobra era ~28px: virava uma pílula
+     espremida e mais alta que os vizinhos. A sobra agora vai pras caixas de
+     moeda e idioma, que têm texto pra acomodar. */
+  .app-header-inner .header-actions > .auth-slot { flex: 0 0 auto; display: flex; align-items: stretch; }
+  .app-header-inner .header-actions .auth-dd { display: flex; align-items: stretch; }
   .app-header-inner .header-actions .auth-avatar {
-    width: 100%;
-    flex: 1 1 auto;
-    border-radius: 999px;
+    width: 44px; height: auto; min-height: 44px;
+    flex: 0 0 44px;
+    border-radius: 0;
+    font-size: 17px;
   }
+  .app-header-inner .header-actions > .lang-dd { flex: 1 1 auto; min-width: 0; }
+  .app-header-inner .header-actions > .lang-dd > .lang-dd-toggle { width: 100%; justify-content: center; }
 
   /* Submenus flutuantes (moeda, idioma, Conta). Com os wrappers estreitos, um
      menu ancorado no PRÓPRIO controle sairia da tela — o de moeda abre para a
@@ -4473,7 +4497,6 @@ a.setting-open {
 }
 /* O botão de privacidade fica na cabeça da página, ao lado do "Exportar CSV" —
    o efeito aparece ali, e é ali que a pessoa lembra de ligar antes do print. */
-.pf-privacy { display: inline-flex; align-items: center; gap: 6px; }
 .pf-privacy[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
 .auth-email { color: var(--subtle); font-size: 12px; cursor: default; word-break: break-all; }
 .auth-email:hover { background: transparent; color: var(--subtle); }
@@ -4949,7 +4972,10 @@ a.progress-row:hover {
   min-height: 34px;
   padding: 0;
   border-radius: 50%;
-  border: 1px solid var(--line);
+  /* Fio um pouco mais forte que a --line (2026-09-10): sobre o fundo do tile a
+     --line quase some e os círculos não liam como botão. Mistura com o texto
+     pra valer igual nos dois temas. */
+  border: 1px solid color-mix(in srgb, var(--text) 26%, transparent);
   background: transparent;
   color: var(--muted);
   display: inline-flex;
@@ -5099,24 +5125,22 @@ a.progress-row:hover {
 .pf-bd-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pf-bd-empty { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
 
-/* Cabeçalho do Portfólio: título + ações na mesma linha. */
+/* Cabeçalho do Portfólio: título em cima; embaixo o "← Hub" à esquerda e as
+   três ações (privacidade, retrospectiva, exportar) à direita, como botões
+   QUADRADOS só-ícone (2026-09-10 — eram três botões de texto que no celular
+   viravam duas linhas tortas entre o título e o link). */
 .pf-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .pf-head h1 { margin: 0; }
-/* Os três botões (privacidade, retrospectiva, exportar) andam juntos, colados
-   à direita. O margin-left:auto cobre a linha em que o grupo quebra pra baixo
-   do título: sem ele o space-between do .pf-head não teria par pra empurrar. */
-.pf-head-actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-left: auto;
-}
-/* "← Dashboard" ocupa a linha inteira e vai pra baixo do título, igual às
-   demais telas pessoais (onde o .page-head é bloco e o link cai embaixo
-   naturalmente). Sem isto o space-between o jogaria pro meio da fileira. */
-.pf-head .serie-back { flex-basis: 100%; margin: 0; }
+.pf-head-row { flex-basis: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.pf-head .serie-back { margin: 0; }
+.pf-head-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-left: auto; }
+.pf-head-actions .icon-btn { width: 40px; min-width: 40px; min-height: 40px; padding: 0; justify-content: center; }
+.pf-head-actions .icon-btn svg { width: 18px; height: 18px; flex: none; }
+/* Olho aberto = valores à mostra; olho riscado = ocultos (o estado é o aria-pressed). */
+.pf-privacy .pf-eye-off { display: none; }
+.pf-privacy[aria-pressed="true"] .pf-eye-on { display: none; }
+.pf-privacy[aria-pressed="true"] .pf-eye-off { display: inline; }
+@media (pointer: coarse) { .pf-head-actions .icon-btn { width: 44px; min-width: 44px; min-height: 44px; } }
 
 /* "Ver todas / top 15" embaixo da tabela de mais valiosas. */
 .pf-top-more { margin-top: 12px; text-align: center; }
@@ -5322,14 +5346,44 @@ a.progress-row:hover {
 /* Ritmo do Dashboard: o resumo vira UMA linha equilibrada (patrimônio um pouco
    maior), sem o 3+2 desigual do grid genérico; números tabulares e sem quebra
    pra os cards não mudarem de altura/largura entre si. */
-.dash-main .stats-grid { grid-template-columns: minmax(0, 1.6fr) repeat(4, minmax(0, 1fr)); margin-bottom: 14px; }
+/* O resumo é um wrapper (.dash-summary) com dois blocos: o patrimônio
+   (.dash-grand, 1,6fr) e as contagens (.dash-info, 4 colunas iguais) — a
+   MESMA fileira de antes, só que em dois <section> pra o celular poder
+   separá-los (ver o @media 720 abaixo). Os dois esticam à mesma altura. */
+.dash-summary { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 4fr); gap: 12px; margin-bottom: 14px; }
+.dash-main .stats-grid { margin-bottom: 0; }
+.dash-main .dash-grand { grid-template-columns: minmax(0, 1fr); }
+.dash-main .dash-info { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .dash-main .stats-grid article { display: flex; flex-direction: column; justify-content: center; }
 .dash-main .stats-grid span { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .dash-main .stats-grid p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 @media (max-width: 1080px) {
   /* Tablet: patrimônio numa linha inteira, contagens em 2×2. */
-  .dash-main .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .dash-main .stats-grid .stat-grand { grid-column: 1 / -1; }
+  .dash-summary { grid-template-columns: minmax(0, 1fr); }
+  .dash-main .dash-info { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* Celular (2026-09-10): a página vira uma coluna flex e cada seção recebe a
+   sua ORDEM — o patrimônio fica no topo, os cartões de contagem descem pra
+   uma seção logo abaixo do "Ir para" (os atalhos são o que se mais clica; os
+   números vinham antes e empurravam tudo pra baixo), e "Continuar de onde
+   parou" vai pro FIM da página, como última seção. O .dash-summary some
+   (display: contents) pra os dois blocos dele entrarem soltos na ordem. O
+   `order` não muda o DOM: o leitor de tela e o Tab seguem a ordem do HTML. */
+@media (max-width: 720px) {
+  .dash-main { display: flex; flex-direction: column; }
+  .dash-main > * { order: 20; }
+  .dash-summary { display: contents; }
+  .dash-main .dash-head { order: 0; }
+  .dash-main .dash-grand { order: 1; margin-bottom: 14px; }
+  .dash-main .dash-steps { order: 2; }
+  .dash-main .dash-section-head { order: 3; }
+  .dash-main .dash-links { order: 4; }
+  .dash-main .dash-info { order: 5; margin-top: 22px; }
+  .dash-main #dhFreshHead { order: 6; }
+  .dash-main #dhFresh { order: 7; }
+  .dash-main #dhCaps { order: 8; }
+  .dash-main #dhRecentHead { order: 30; }
+  .dash-main #dhRecent { order: 31; }
 }
 /* Continuar de onde parou (Hub pessoal): cartões com o último progresso visto.
    A barra reusa a .progress-bar global; a margem padrão dela (14px) é demais
@@ -6788,20 +6842,25 @@ html:not([data-cardlang="all"]) #setRegionChips {
   gap: 14px;
   margin: 0 0 18px;
 }
-/* Cartão-herói (.dash-stats-hero): identidade à esquerda (e ações à direita,
-   quando a tela tem), contagens numa fileira de 4 colunas iguais com
-   divisória e o VALOR na última. Compartilhado entre a Minha Coleção e o
-   cabeçalho do perfil público/compartilhado — mesma visão, mesma forma.
+/* Cartão-herói (.dash-stats-hero): UMA linha de cabeçalho — identidade à
+   esquerda, o VALOR DE MERCADO numa caixa de largura FIXA logo depois e as
+   ações (quando a tela tem) na ponta direita — e as 3 contagens embaixo, em
+   colunas iguais com divisória. Compartilhado entre a Minha Coleção e o
+   cabeçalho do perfil público/compartilhado: mesmo DOM, mesma forma.
+   2026-09-10: o valor SUBIU pra linha da identidade (que tinha um vão à
+   direita do nome) e a fileira própria dele embaixo das contagens saiu — no
+   celular era uma faixa inteira a mais. A caixa é fixa de propósito: o número
+   não empurra as ações; se não couber, o collection.js encolhe a fonte
+   (ajustaValorHero) até caber, e o clipe abaixo é só a rede de segurança.
    `.dash-card.dash-stats-hero` (0,2,0): as regras BASE de .dash-stats/.dash-
    profile/.dash-stat-money vêm DEPOIS neste arquivo, e sem o reforço de
    especificidade elas venceriam. Números tabulares: trocar o filtro muda os
    NÚMEROS, nunca as posições. */
-/* container-type: o número de colunas das contagens tem de seguir a largura do
-   CARTÃO, não a da janela. No perfil público este mesmo cartão divide a grade
-   com "Mais valiosas" e as distribuições: numa janela de 1280px ele tem 445px,
-   e as 4 colunas do desktop faziam o valor vazar 119px por cima da vizinha.
-   As @media abaixo continuam existindo como camada de reserva (navegador sem
-   @container cai nelas); as @container vêm depois e ganham onde há suporte. */
+/* container-type: o compacto das contagens segue a largura do CARTÃO, não a
+   da janela — no share anônimo (?s=) este mesmo cartão divide a grade com
+   "Mais valiosas" e as distribuições (~400px numa janela de 1280). As @media
+   abaixo são a camada de reserva (navegador sem @container); as @container
+   vêm depois e ganham onde há suporte. */
 .dash-card.dash-stats-hero {
   padding: 18px 20px;
   gap: 0;
@@ -6813,6 +6872,11 @@ html:not([data-cardlang="all"]) #setRegionChips {
 .dash-stats-hero .dash-profile { border: 0; padding: 0; margin: 0; flex: 1 1 auto; min-width: 0; gap: 10px; }
 .dash-stats-hero .dash-profile-name { font-size: 22px; letter-spacing: -0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dash-stats-hero .dash-avatar-in { width: 52px; height: 52px; font-size: 21px; }
+/* Valor na linha da identidade: caixa FIXA (ícone + número/rótulo), sem a
+   divisória de cima que ele tem no layout base (era a fileira própria). O
+   badge do Modo Colecionador ocupa a MESMA caixa quando o valor some. */
+.dash-stats-hero .dash-stats-head > .dash-stat-money { flex: 0 0 auto; width: 214px; min-width: 0; margin: 0; padding: 0; border: 0; }
+.dash-stats-hero .dash-stats-head > .dash-stat-money .dash-stat-txt { flex: 1 1 auto; min-width: 0; }
 /* Ações dentro do cartão (vieram da faixa do filtro): ícone + rótulo. */
 #collectionDashboard .collection-toolbar-actions,
 .collection-dashboard-hero .collection-toolbar-actions { flex: none; margin-left: auto; }
@@ -6905,43 +6969,35 @@ html:not([data-cardlang="all"]) #setRegionChips {
 .detail-toolbar .progress-modes { margin: 8px 0 0; gap: 12px; }
 .dash-stats-hero .dash-stats-counts {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px 18px;
 }
-/* A divisória de cima só existe quando HÁ cabeçalho de identidade em cima —
-   share anônimo (?s=) não emite o head, e uma linha solta no topo do cartão
-   parece defeito. */
+/* A divisória de cima separa o cabeçalho (identidade + valor) das contagens. */
 .dash-stats-hero .dash-stats-head + .dash-stats-counts { border-top: 1px solid var(--line); padding-top: 16px; }
 .dash-stats-hero .dash-stat-val { font-size: 22px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .dash-stats-hero .dash-stat-label { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-/* O valor entra na MESMA fileira das contagens (4ª coluna): zera a linha
-   própria que ele tem no layout base do cartão compartilhado. */
-.dash-stats-hero .dash-stat-money { border-top: 0; padding-top: 0; }
 .dash-stats-hero .dash-stat-money .dash-stat-val { font-size: 22px; }
-/* REDE DE SEGURANÇA do valor: ele é `nowrap` (dígito não pode quebrar no meio),
-   então sem isto um "R$ 110.451,64" numa célula estreita VAZAVA por cima da
-   divisória e da célula vizinha. Os breakpoints abaixo garantem largura pra 7
-   dígitos em toda faixa de tela; este clipe só age em caso extremo (moeda com
-   prefixo longo, 8+ dígitos) — e corta os centavos, que é degradação melhor
-   que texto sobreposto. */
+/* REDE DE SEGURANÇA do valor: ele é `nowrap` (dígito não pode quebrar no meio)
+   e a caixa é fixa. O JS encolhe a fonte antes; se mesmo assim não couber
+   (moeda com prefixo longo, 9+ dígitos), corta os centavos — degradação
+   melhor que texto por cima das ações. */
 .dash-stats-hero .dash-stat-money .dash-stat-val { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 /* Divisória entre as colunas — sem ela o olho lê "898 627 125" como uma
    sequência, não como medidas diferentes. A primeira não leva. */
 .dash-stats-hero .dash-stats-counts > div + div { border-left: 1px solid var(--line); padding-left: 18px; }
-/* Faixa INTERMEDIÁRIA (tablet/janela estreita): 4 colunas só cabem a partir de
-   ~1080px — em 800px a coluna do valor ficava com 98px pra um número de 142px.
-   Aqui vira 2×2, que dá ~260px por célula. Media query com min-width pro bloco
-   de ≤720 (mais abaixo) não depender da ordem no arquivo. */
-@media (max-width: 1079px) and (min-width: 721px) {
-  .dash-stats-hero .dash-stats-counts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-/* Mobile: herói compacto, contagens 2×2 (divisória só entre as colunas) e as
-   ações quebram pra linha própria sob a identidade. O full-bleed (sem borda
-   lateral) é SÓ da Minha Coleção — no perfil público o cartão divide a grade
-   com os outros cards. */
+/* Mobile: herói compacto. A linha de cima QUEBRA quando precisa: identidade
+   (que encolhe até ~100px, com reticências no nome) + valor (caixa de 128px,
+   sem ícone — o espaço é do número) ficam na 1ª linha; as ações só-ícone
+   (exportar/compartilhar no dono; ▦/≣ + Filtros no perfil público) cabem ao
+   lado em 390px e descem pra uma linha própria, à direita, em telas menores.
+   O "Selecionar" não mora mais aqui no celular: o collection.js o leva pra
+   linha do título "Minhas Cartas", ao lado do Filtros. As 3 contagens numa
+   fileira, sem ícone (com 3 colunas de ~98px, 30px de ícone comeriam o
+   rótulo). O full-bleed (sem borda lateral) é SÓ da Minha Coleção e do
+   perfil público — no share anônimo o cartão divide a grade com os outros. */
 @media (max-width: 720px) {
   /* A Minha Coleção tem UM cartão: não pode virar a ESTEIRA horizontal do
-     @media 600px (que serve ao Dashboard e ao perfil público, com 4 caixas).
+     @media 600px (que serve ao Dashboard e ao share anônimo, com 3 caixas).
      Sem isto o cartão herdava `flex: 0 0 84%` e ficava 282px numa tela de
      375px — indentado, com 73px de vão à direita e o valor apertado. Seletor
      de especificidade alta de propósito (id na Coleção, dupla classe no perfil
@@ -6958,54 +7014,46 @@ html:not([data-cardlang="all"]) #setRegionChips {
   #collectionDashboard .dash-card.dash-stats-hero,
   .collection-dashboard-hero .dash-card.dash-stats-hero { flex: none; border-radius: 0; border-left: 0; border-right: 0; }
   .dash-card.dash-stats-hero { padding: 14px 16px; }
-  .dash-stats-hero .dash-stats-head { padding-bottom: 12px; }
-  .dash-stats-hero .dash-profile-name { font-size: 17px; }
-  .dash-stats-hero .dash-avatar-in { width: 40px; height: 40px; font-size: 16px; }
-  /* Celular: as 3 CONTAGENS numa fileira e o VALOR na linha inteira embaixo.
-     Em 2×2 a célula do valor ficava com 63px pra um número de 131px — e aqui
-     nem diminuir a fonte resolveria (daria ~9px). Na linha cheia ele tem
-     ~270px. As contagens perdem o ícone: com 3 colunas de ~98px, 30px de
-     ícone comeriam o rótulo; o ícone que importa (o do valor) fica. */
-  .dash-stats-hero .dash-stats-counts { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 12px; }
+  .dash-stats-hero .dash-stats-head { padding-bottom: 12px; gap: 8px; }
+  /* Conta da 1ª linha em 390px (350px úteis): identidade ≥ 120 (avatar 36 +
+     nome ≥ ~80) + valor 124 + 2 ícones de 40 + folgas = 346. O nome é o único
+     elástico e corta com reticências (o @ inteiro fica na linha de baixo
+     dele); em 360px a conta não fecha e as ações descem pra linha própria,
+     à direita, em vez de espremer o nome a 40px. */
+  .dash-stats-hero .dash-profile { flex: 1 1 120px; }
+  .dash-stats-hero .dash-profile-who { gap: 8px; }
+  .dash-stats-hero .dash-profile-name { font-size: 16px; }
+  .dash-stats-hero .dash-avatar-in { width: 36px; height: 36px; font-size: 15px; }
+  .dash-stats-hero .dash-stats-head > .dash-stat-money { width: 124px; }
+  .dash-stats-hero .dash-stats-head > .dash-stat-money .dash-stat-ic { display: none; }
+  .dash-stats-hero .dash-stat-money .dash-stat-val { font-size: 19px; }
+  /* As ações NÃO tomam mais a linha inteira (regra de ≤600px mais abaixo,
+     de quando o "Selecionar" morava aqui e esticava): só o que os ícones
+     ocupam, pra caberem ao lado do valor. */
+  #collectionDashboard .collection-toolbar-actions,
+  .collection-dashboard-hero .collection-toolbar-actions { gap: 6px; width: auto; flex: 0 0 auto; }
+  #collectionDashboard .collection-toolbar-actions .secondary,
+  .collection-dashboard-hero .collection-toolbar-actions .secondary { flex: 0 0 auto; }
+  #collectionDashboard .icon-btn,
+  .collection-dashboard-hero .icon-btn { width: 40px; min-width: 40px; min-height: 40px; }
+  .dash-stats-hero .dash-stats-counts { gap: 12px; }
   .dash-stats-hero .dash-stats-head + .dash-stats-counts { padding-top: 12px; }
-  .dash-stats-hero .dash-stats-counts > div + div:not(.dash-stat-money) { border-left: 1px solid var(--line); padding-left: 12px; }
-  .dash-stats-hero .dash-stats-counts > div:not(.dash-stat-money) .dash-stat-ic { display: none; }
-  .dash-stats-hero .dash-stat-money {
-    grid-column: 1 / -1;
-    border-left: 0;
-    padding-left: 0;
-    border-top: 1px solid var(--line);
-    padding-top: 12px;
-  }
+  .dash-stats-hero .dash-stats-counts > div + div { padding-left: 12px; }
+  .dash-stats-hero .dash-stats-counts .dash-stat-ic { display: none; }
   .dash-stats-hero .dash-stat-val { font-size: 18px; }
-  /* 20px em telefone normal; em 320px cai pra ~17px, senão um valor de 7
-     dígitos encostava na borda da linha (medido: faltavam 2px). */
-  .dash-stats-hero .dash-stat-money .dash-stat-val { font-size: clamp(17px, 5.4vw, 20px); }
-  .dash-stats-hero .dash-stat-ic { width: 30px; height: 30px; border-radius: 9px; }
-  .dash-stats-hero .dash-stat-ic svg { width: 16px; height: 16px; }
 }
-/* --- Colunas por largura do CARTÃO (ver container-name: hero acima) --------
-   Os limites saíram de medição, não de chute: o valor precisa de ~161px (7
-   dígitos, 22px) + 40px de ícone + 18px da divisória. Vêm DEPOIS das @media
-   de propósito — mesma especificidade, então a container query ganha quando o
-   navegador a suporta. */
-@container hero (max-width: 999px) {
-  /* 4 colunas só num cartão largo; abaixo disso, 2×2 (célula ~200px+). */
-  .dash-stats-hero .dash-stats-counts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
+/* --- Compacto por largura do CARTÃO (ver container-name: hero acima) -------
+   O mesmo desenho estreito do celular, mas medido no cartão: vale pro share
+   anônimo (?s=), em que o cartão tem ~400px numa janela de desktop. Vêm
+   DEPOIS das @media de propósito — mesma especificidade, então a container
+   query ganha quando o navegador a suporta. */
 @container hero (max-width: 519px) {
-  /* Cartão estreito (celular OU a coluna do perfil público): as 3 contagens
-     numa fileira, sem ícone, e o valor na linha inteira embaixo. */
-  .dash-stats-hero .dash-stats-counts { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-  .dash-stats-hero .dash-stats-counts > div + div:not(.dash-stat-money) { border-left: 1px solid var(--line); padding-left: 12px; }
-  .dash-stats-hero .dash-stats-counts > div:not(.dash-stat-money) .dash-stat-ic { display: none; }
-  .dash-stats-hero .dash-stat-money {
-    grid-column: 1 / -1;
-    border-left: 0;
-    padding-left: 0;
-    border-top: 1px solid var(--line);
-    padding-top: 12px;
-  }
+  .dash-stats-hero .dash-stats-counts { gap: 12px; }
+  .dash-stats-hero .dash-stats-counts > div + div { padding-left: 12px; }
+  .dash-stats-hero .dash-stats-counts .dash-stat-ic { display: none; }
+  .dash-stats-hero .dash-stats-head > .dash-stat-money { width: 128px; }
+  .dash-stats-hero .dash-stats-head > .dash-stat-money .dash-stat-ic { display: none; }
+  .dash-stats-hero .dash-stat-money .dash-stat-val { font-size: 20px; }
 }
 @media (max-width: 1080px) { .collection-dashboard { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
 @media (max-width: 560px) { .collection-dashboard { grid-template-columns: minmax(0, 1fr); } }
@@ -8192,6 +8240,22 @@ html[data-detail="set"] #detailTitle { display: none; }
   .toolbar > div, .toolbar > .sort-select, .toolbar > .view-toggle-field { min-width: 0; margin-left: 0; }
   .toolbar > .view-toggle-field { grid-column: 1 / -1; }
   .toolbar > .sort-select label, .toolbar > .view-toggle-field label { text-align: left; display: block; }
+  /* Barra do SET (Coleção / Versões / Idioma / Raridade / facetas): em duas
+     colunas a fileira Todas·Tenho·Faltando·Lista de Desejo (~330px) estourava
+     a célula, e os campos caíam desalinhados (o "Filtros" das facetas
+     aparecia solto na coluna da direita). UMA coluna, cada campo de ponta a
+     ponta; a fileira de Coleção vira 2×2; as facetas, 2 por linha
+     (2026-09-10). */
+  .detail-toolbar { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .detail-toolbar > div { width: 100%; }
+  .detail-toolbar select { width: 100%; min-width: 0; }
+  .detail-toolbar .segmented { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; border-radius: 12px; }
+  .detail-toolbar .segmented-option { min-height: 40px; padding: 0 8px; white-space: normal; line-height: 1.15; }
+  .detail-toolbar .progress-modes { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .detail-toolbar .detail-facets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .detail-toolbar .facet-drop > summary { width: 100%; min-height: 44px; }
+  /* A gaveta da faceta da coluna DIREITA abre pra esquerda (senão sai da tela). */
+  .detail-toolbar .facet-drop:nth-child(even) .facet-pop { left: auto; right: 0; }
 
   /* Detalhe (set/carta): hero enxuto. Logo menor e nome duplicado do hero
      some (o cabeçalho da página já mostra). */
@@ -9807,7 +9871,6 @@ select,
 @media (display-mode: standalone) {
   html, body { overscroll-behavior-y: contain; }
 }
-.dash-profile-updated { display: block; font-size: 12px; color: var(--subtle); margin-top: 2px; }
 
 /* Convite pra instalar o app (aparece uma vez, no toque, pra quem já tem
    coleção). Fica ACIMA da tabbar — cobrir a navegação com um convite é o
@@ -10091,6 +10154,13 @@ select,
   .stats-grid p { font-size: 12px; line-height: 1.25; margin-top: 6px; }
   .stats-grid .dex-progress { margin-top: 8px; }
   .dash-main .stats-grid p { white-space: normal; overflow: visible; text-overflow: clip; }
+  /* Portfólio: UMA cápsula por fileira (2026-09-10). São valores em dinheiro
+     de 7 dígitos com rótulos longos ("desejos (wishlist + binder)"): em 3
+     colunas de ~115px o número vazava da caixa e o texto quebrava torto. Uma
+     por linha dá ~350px pra cada; o número volta ao tamanho do desktop. */
+  .stats-grid.pf-stats { grid-template-columns: minmax(0, 1fr); }
+  .stats-grid.pf-stats article { padding: 14px 16px; }
+  .stats-grid.pf-stats span { font-size: 26px; }
 
   /* 2) CONTROLES DO EXPLORAR. Em tela larga Jogo/Ordenar/Versões formam uma
      linha com a busca; abaixo de 1080px viravam um flex encostado à direita,
@@ -10135,6 +10205,13 @@ select,
      existia só pra 380px. */
   .tile-actions { width: 100%; }
   .tile-actions .tile-btn { flex: 1 1 0; width: auto; min-width: 0; max-width: 34px; }
+  /* 2026-09-10: mesmo dividindo a linha, 5 botões de 34px de altura em ~24px
+     de largura viravam OVAIS. O de pasta (showcase) sai do tile no celular —
+     a pasta continua no card da carta (preview) — e os 4 que ficam mantêm
+     largura = altura (aspect-ratio), então encolhem redondos. O − escondido
+     (carta sem cópia) não reserva lugar: os outros ocupam a linha. */
+  .tile-actions .tile-folder { display: none; }
+  .tile-actions .tile-btn { aspect-ratio: 1 / 1; min-height: 0; height: auto; align-self: center; }
 
   /* 6) VENDAS. Seis botões de ação quebravam em fileiras desiguais; em 2
      colunas alinham, e o Ordenar ganha a linha inteira. Os chips de
