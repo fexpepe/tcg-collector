@@ -5463,6 +5463,16 @@
       const isOwned = activeVariant ? store.variantTotal(activeCard.id, activeVariant) > 0 : store.has(activeCard.id);
       const wantVariant = activeVariant || defaultVariant(activeCard);
       const isWanted = wishlist ? wishlist.has(activeCard.id, wantVariant) : false;
+      // LINK DA PÁGINA DO SET: o nome do set aparece duas vezes no popup (o
+      // eyebrow em cima do nome e a linha "Set" da ficha) e as duas viram
+      // atalho pra página do set. Mesmo detailUrl das Impressões, com setId
+      // quando a carta traz (desambigua sets homônimos EN/PT).
+      const setHref = activeCard.set
+        ? detailUrl("set", activeCard.set, "", activeCard.game, { setId: activeCard.setId })
+        : "";
+      const setLink = (cls) => setHref
+        ? `<a class="${cls}" href="${escapeAttribute(setHref)}">${escapeHtml(activeCard.set)}</a>`
+        : escapeHtml(activeCard.set || "-");
 
       modal.innerHTML = `
         <div class="card-preview-backdrop" data-preview-close></div>
@@ -5508,7 +5518,7 @@
                   return ts.length ? `<div><dt>${escapeHtml(t("facet.treatment"))}</dt><dd>${escapeHtml(ts.map(treatLabel).join(" · "))}</dd></div>` : "";
                 })()}
                 <div><dt>${escapeHtml(t("modal.artist"))}</dt><dd>${escapeHtml(activeCard.artist || t("card.unknownArtist"))}</dd></div>
-                <div><dt>${escapeHtml(t("modal.set"))}</dt><dd>${escapeHtml(activeCard.set || "-")}</dd></div>
+                <div><dt>${escapeHtml(t("modal.set"))}</dt><dd>${setLink("preview-set-link")}</dd></div>
                 ${activeCard.nameJp && activeCard.nameJp !== activeCard.name
                   ? `<div><dt>${escapeHtml(t("modal.nameJp"))}</dt><dd lang="ja" class="modal-name-jp">${escapeHtml(activeCard.nameJp)}</dd></div>`
                   : ""}
@@ -5527,7 +5537,7 @@
           </div>
           <div class="preview-content">
             <div>
-              <p class="eyebrow">${escapeHtml(activeCard.set)}</p>
+              <p class="eyebrow">${setLink("preview-set-link")}</p>
               <h2>${escapeHtml(cardLabel(activeCard))}</h2>
               <p class="preview-subtitle">${(function () {
                 const year = String(activeCard.setReleaseDate || "").slice(0, 4);

@@ -2960,7 +2960,19 @@ input::placeholder {
   object-fit: cover;
   margin: 0 auto;
   border-radius: 4.8% / 3.4%;
-  filter: drop-shadow(0 20px 34px rgba(0, 0, 0, 0.42));
+  /* Sem sombra: a ficha "Detalhes da carta" mora logo abaixo da imagem e a
+     drop-shadow de 34px caía em cima dela, escurecendo o topo do bloco. */
+}
+
+/* Nome do set no popup (eyebrow e linha "Set" da ficha): atalho pra página
+   do set. Herda a cor do lugar onde está — só sublinha ao passar o mouse. */
+.preview-set-link {
+  color: inherit;
+  text-decoration: none;
+}
+.preview-set-link:hover,
+.preview-set-link:focus-visible {
+  text-decoration: underline;
 }
 
 /* Só a coluna de detalhes rola quando o conteúdo passa da altura do painel —
