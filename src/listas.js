@@ -396,11 +396,11 @@
   function sourceRowHtml(card, dentro) {
     const naLista = dentro.has(card.id);
     const variants = shared.cardVariants(card);
-    const img = (shared.cardImageSources(card) || {}).url || "";
+    const img = shared.cardImageSources(card) || {};
     const picker = openPicker === card.id ? variantPickerHtml(card, variants) : "";
     return `
       <div class="lst-row${naLista ? " is-in" : ""}" data-src-card="${escA(card.id)}">
-        <button type="button" class="lst-name" data-thumb="${escA(img)}" data-src-open="${escA(card.id)}">
+        <button type="button" class="lst-name" data-thumb="${escA(img.url || "")}" data-thumb-fb="${escA(img.fallback || "")}" data-src-open="${escA(card.id)}">
           ${esc(card.name)}
         </button>
         <span class="lst-num">${esc(card.number || "")}</span>
@@ -431,11 +431,11 @@
   function entryRowHtml(entry) {
     const card = cat.byId[entry.id];
     const name = card ? card.name : entry.id;
-    const img = card ? ((shared.cardImageSources(card) || {}).url || "") : "";
+    const img = (card && shared.cardImageSources(card)) || {};
     const val = entryValue(current, entry, card);
     return `
       <div class="lst-row lst-entry" data-entry="${escA(entry.id)}" data-entry-variant="${escA(entry.v || "")}">
-        <button type="button" class="lst-name" data-thumb="${escA(img)}">${esc(name)}</button>
+        <button type="button" class="lst-name" data-thumb="${escA(img.url || "")}" data-thumb-fb="${escA(img.fallback || "")}">${esc(name)}</button>
         <span class="lst-num">${esc(card ? (card.number || "") : "")}</span>
         <span class="lst-var">${esc(entry.v || "—")}</span>
         <span class="lst-cond">${esc(entry.c || "")}</span>
@@ -958,10 +958,12 @@
   // propriedade, não addEventListener, pra não empilhar handler a cada render.
   el.editor.onmouseover = (ev) => {
     const name = ev.target.closest("[data-thumb]");
-    const thumb = el.editor.querySelector(".lst-thumb");
+    let thumb = el.editor.querySelector(".lst-thumb");
     if (!thumb) return;
     if (!name || !name.dataset.thumb) { thumb.hidden = true; return; }
-    thumb.src = name.dataset.thumb;
+    // Cadeia de fallback da imagem (webp → png → pokemontcg.io → outra língua),
+    // e não a URL crua: carta que a TCGdex não tem saía como imagem quebrada.
+    thumb = shared.hoverThumb(thumb, name.dataset.thumb, { fallback: name.dataset.thumbFb || "" });
     thumb.hidden = false;
     const r = name.getBoundingClientRect();
     thumb.style.top = Math.max(8, Math.min(window.innerHeight - 300, r.top)) + "px";

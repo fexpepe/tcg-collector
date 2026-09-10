@@ -4478,15 +4478,16 @@
     return navigator.clipboard.writeText(texto).then(() => true, manual);
   }
 
-  function localizedImg(url, options) {
-    if (!url) return "";
-    const { alt = "", className = "", loading = "", thumb = false, fallback = "", priority = "", sizes = "" } = options || {};
-    const classAttr = className ? ` class="${escapeAttribute(className)}"` : "";
-    const loadingAttr = loading ? ` loading="${loading}"` : "";
-    // priority: "high" pra imagem que costuma ser o LCP da tela (o logo do set
-    // no hero). Sem isso ela entra na fila com prioridade baixa, atrás das
-    // dezenas de miniaturas da grade que nem estão na primeira dobra.
-    const priorityAttr = priority ? ` fetchpriority="${escapeAttribute(priority)}"` : "";
+  // src + cadeia de fallback de uma imagem de carta: webp da TCGdex (low se
+  // `thumb`), depois o png original do mesmo host, depois `fallback` (outro
+  // host, ex.: pokemontcg.io) e, por último, a mesma carta na outra língua do
+  // par EN/PT (ver tcgdexSiblingLangUrl). É o miolo do localizedImg, separado
+  // pra quem monta o <img> por DOM (hoverThumb) usar a MESMA cadeia — a
+  // miniatura de hover das Impressões carregava a URL crua e, numa carta que
+  // a TCGdex não tem (a pokemontcg.io tem), aparecia quebrada enquanto a
+  // imagem grande do mesmo popup, que passa por aqui, aparecia normal.
+  function cardImgChain(url, options) {
+    const { thumb = false, fallback = "", sizes = "" } = options || {};
     let src = tcgdexAssetUrl(url, thumb ? "low" : "");
     const chain = [];
     if (thumb) {
@@ -4502,16 +4503,58 @@
     // original continua sendo a primeira tentativa a cada carregamento.
     const sibling = tcgdexSiblingLangUrl(url);
     if (sibling && chain.indexOf(sibling) < 0) chain.push(sibling);
-    const fallbackAttr = chain.length
-      ? ` data-img-fallbacks="${escapeAttribute(chain.join("|"))}"`
-      : "";
     // srcset SO quando quem chama declara o espaco que a imagem ocupa (sizes).
     // Sem `sizes` o navegador assume 100vw e baixaria a variante de 600px ate
     // num thumb de 30px — por isso a opcao e opt-in por chamador, e nao um
     // padrao. O src continua sendo a low: quem nao entende srcset ve o de hoje.
-    const ss = thumb && sizes ? tcgdexThumbSrcset(url) : "";
-    const srcsetAttr = ss ? ` srcset="${escapeAttribute(ss)}" sizes="${escapeAttribute(sizes)}"` : "";
+    const srcset = thumb && sizes ? tcgdexThumbSrcset(url) : "";
+    return { src, chain, srcset };
+  }
+
+  function localizedImg(url, options) {
+    if (!url) return "";
+    const { alt = "", className = "", loading = "", priority = "", sizes = "" } = options || {};
+    const classAttr = className ? ` class="${escapeAttribute(className)}"` : "";
+    const loadingAttr = loading ? ` loading="${loading}"` : "";
+    // priority: "high" pra imagem que costuma ser o LCP da tela (o logo do set
+    // no hero). Sem isso ela entra na fila com prioridade baixa, atrás das
+    // dezenas de miniaturas da grade que nem estão na primeira dobra.
+    const priorityAttr = priority ? ` fetchpriority="${escapeAttribute(priority)}"` : "";
+    const { src, chain, srcset } = cardImgChain(url, options);
+    const fallbackAttr = chain.length
+      ? ` data-img-fallbacks="${escapeAttribute(chain.join("|"))}"`
+      : "";
+    const srcsetAttr = srcset ? ` srcset="${escapeAttribute(srcset)}" sizes="${escapeAttribute(sizes)}"` : "";
     return `<img${classAttr}${loadingAttr}${priorityAttr} decoding="async" data-card-img src="${escapeAttribute(src)}"${srcsetAttr} alt="${escapeAttribute(alt)}"${fallbackAttr}>`;
+  }
+
+  // Miniatura FLUTUANTE de hover (Impressões do popup, editor de listas):
+  // aponta o <img> `current` pra `url` com a cadeia de fallback do
+  // localizedImg e devolve o elemento que ficou no lugar. É sempre um <img>
+  // NOVO por carta, e não um `src` trocado no mesmo nó: o TCGImg.fallback
+  // guarda estado por elemento (data-img-orig, retries, um setTimeout de
+  // retry) e reaproveitar o nó deixava o retry da carta anterior gravar a URL
+  // dela por cima da carta que está sob o mouse. Trocar o nó mata o retry
+  // (ele checa isConnected). Mesma URL = mesmo nó, sem refetch.
+  function hoverThumb(current, url, options) {
+    if (!current || !url) return current;
+    if (current.getAttribute("data-thumb-src") === url) return current;
+    const { src, chain } = cardImgChain(url, options);
+    const next = document.createElement("img");
+    // Classe e marcadores (data-print-thumb…) do nó antigo, pra quem o procura
+    // continuar achando; o estado do TCGImg (data-img-*) fica pra trás.
+    next.className = String(current.className || "").replace(/\bis-loaded\b/g, "").trim();
+    Array.from(current.attributes || []).forEach((a) => {
+      if (/^data-/.test(a.name) && !/^data-(img-|card-img$|thumb-src$)/.test(a.name)) next.setAttribute(a.name, a.value);
+    });
+    next.setAttribute("alt", "");
+    next.setAttribute("decoding", "async");
+    next.setAttribute("data-card-img", "");
+    next.setAttribute("data-thumb-src", url);
+    if (chain.length) next.setAttribute("data-img-fallbacks", chain.join("|"));
+    next.setAttribute("src", src);
+    if (typeof current.replaceWith === "function") current.replaceWith(next);
+    return next;
   }
 
   // Busca tipos e formas de um Pokémon na PokéAPI (por dexId), com cache em localStorage.
@@ -5232,21 +5275,34 @@
       ? window.TCG_MANIFEST.sets.map((s) => s.id) : null;
     const list = box.querySelector("[data-preview-prints-list]");
     if (!list) return;
+    // Espelho da pokemontcg.io pra miniatura do hover, como a imagem grande do
+    // popup tem (cardImageSources): a TCGdex não tem scan de toda carta (as
+    // illustration rares do 151, por exemplo), e só com a URL crua do banco a
+    // miniatura saía quebrada. A linha da busca não é uma carta do catálogo —
+    // language/setId saem do id (base sem -pt = EN).
+    const printFallback = (x) => {
+      if ((x.g || game) !== "pokemon") return "";
+      const id = String(x.i || "");
+      const base = basePricingId(id);
+      const language = id === base ? "en" : (/-pt$/.test(id) ? "pt" : "");
+      return pokemontcgImageUrl({ language, setId: setIdForCard(base, setIds || []), number: x.u }, false);
+    };
     list.innerHTML = rows.map((x) => {
       const yr = /^\d{4}/.test(String(x.d || "")) ? String(x.d).slice(0, 4) : "";
       const meta = `#${x.u || "?"}${yr ? ` · ${yr}` : ""}`;
       const inner = `<span class="print-set">${escapeHtml(x.s || "")}</span><span class="print-meta">${escapeHtml(meta)}</span>`;
+      const img = ` data-print-img="${escapeAttribute(x.m || "")}" data-print-fb="${escapeAttribute(printFallback(x))}"`;
       // A impressão ABERTA entra na lista (situa a carta entre as irmãs), mas
       // como texto marcado, não link — navegar pra si mesma é um não-clique.
       // Comparação por id BASE: com a carta -pt aberta, a linha (deduplicada
       // pra base EN) é a MESMA impressão e tem que aparecer marcada, não como
       // link pra edição inglesa do próprio set.
-      if (basePricingId(x.i) === basePricingId(card.id)) return `<span class="preview-print is-current" data-print-img="${escapeAttribute(x.m || "")}">${inner}</span>`;
+      if (basePricingId(x.i) === basePricingId(card.id)) return `<span class="preview-print is-current"${img}>${inner}</span>`;
       const extra = { card: x.i };
       const sid = setIds ? setIdForCard(x.i, setIds) : "";
       if (sid) extra.setId = sid;
       const href = detailUrl("set", x.s || "", "", x.g || game, extra);
-      return `<a class="preview-print" href="${escapeAttribute(href)}" data-print-img="${escapeAttribute(x.m || "")}">${inner}</a>`;
+      return `<a class="preview-print" href="${escapeAttribute(href)}"${img}>${inner}</a>`;
     }).join("");
     box.hidden = false;
     // Fechada no celular, como os Detalhes: lista longa empurraria as ações.
@@ -5659,12 +5715,14 @@
       // addEventListener de propósito: open() roda de novo a cada carta e
       // empilharia um handler por abertura.
       modal.onmouseover = (event) => {
-        const thumb = modal.querySelector("[data-print-thumb]");
+        let thumb = modal.querySelector("[data-print-thumb]");
         if (!thumb) return;
         const row = event.target.closest("[data-print-img]");
         const src = row && row.dataset.printImg;
         if (!src) { thumb.hidden = true; return; }
-        if (thumb.getAttribute("src") !== src) thumb.setAttribute("src", src);
+        // Com a cadeia de fallback da imagem grande (webp → png → pokemontcg.io
+        // → outra língua), e não a URL crua: ver hoverThumb.
+        thumb = hoverThumb(thumb, src, { fallback: row.dataset.printFb || "" });
         // À direita da linha (à esquerda se não couber), presa à janela.
         const rect = row.getBoundingClientRect();
         const w = 230, h = Math.round(w * 88 / 63); // proporção 63×88 da carta
@@ -9096,6 +9154,8 @@
     cardLanguageRegion,
     pickSetEdition,
     localizedImg,
+    cardImgChain,
+    hoverThumb,
     caixaDeTexto,
     copiaTexto,
     prewarmLazyImages,
