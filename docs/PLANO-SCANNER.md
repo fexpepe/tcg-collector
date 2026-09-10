@@ -86,9 +86,12 @@ guarda isso em `number` (e `setId`), então achar a carta é OCR + busca local.
    cartas do One Piece em inglês não imprimem nada legível além do código) e
    o jogo da **sessão** (+1, só desempate). Palavras que vários
    jogos dividem (BANDAI, SHUEISHA) ficam de fora. Se a faixa não bastou pra
-   ter certeza, lê a carta inteira. O seletor *Jogo* do scanner mostra o
-   detectado e a pessoa corrige se errar; "Automático" busca só nos jogos
-   possíveis, e se nada sair com o filtro, tenta uma vez sem ele.
+   ter certeza, lê a carta inteira. O seletor *Jogo* do scanner fica em
+   "Automático" (busca só nos jogos possíveis e, se nada sair com o filtro,
+   tenta uma vez sem ele) até a pessoa escolher um jogo — aí a busca fica
+   presa nele. A detecção não grava no seletor: quando gravava, um Pokémon
+   lido primeiro travava a busca em Pokémon e a carta seguinte de outro jogo
+   não era achada.
 5. **Busca**, em duas camadas, pra cada candidato até achar:
    - `cmdkCardsByCode` (a mesma da paleta Ctrl+K): set + número exatos pelo
      manifest do jogo, baixando só o chunk do set;
