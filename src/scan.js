@@ -4,7 +4,10 @@
 //
 // A FOTO NUNCA SAI DO APARELHO: o OCR é o Tesseract.js rodando em WASM dentro
 // do navegador (auto-hospedado em assets/vendor/, a CSP é 'self'). Pra rede vai
-// só o CÓDIGO lido — o mesmo texto que a pessoa digitaria na busca.
+// só o CÓDIGO lido — o mesmo texto que a pessoa digitaria na busca. E a foto
+// também não fica NO aparelho: o quadro congelado no disparo vive num canvas
+// em memória só enquanto a leitura roda e é descartado no fim (nada vai pra
+// disco, localStorage, IndexedDB ou cache).
 //
 // ARQUIVO PRÓPRIO, injetado pelo shared.js no primeiro toque no ícone de
 // câmera: o shared.js está colado no teto do orçamento de peso e viaja em toda
@@ -496,7 +499,9 @@
 .scan-res[hidden] { display: none; }
 .scan-res-open { flex: 1; min-width: 0; min-height: 0; display: flex; align-items: center; gap: 12px; padding: 0; border: 0; background: none; color: inherit; text-align: left; font: inherit; cursor: pointer; }
 .scan-res-thumb { flex: none; width: 46px; height: 64px; border-radius: 6px; overflow: hidden; background: #262b36; }
-.scan-res-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.scan-res-thumb img, .scan-res-thumb canvas { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Cartão de LEITURA: a miniatura é o recorte da foto travada no disparo (como o Collectr faz), o texto é o status com o spinner do lado. */
+.scan-res.is-lendo .scan-res-sub { display: inline-flex; align-items: center; gap: 8px; white-space: normal; }
 .scan-res-text { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .scan-res-name { font-size: 16px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .scan-res-game { font-size: 10.5px; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; color: #8891a1; border: 1px solid #2d333f; border-radius: 999px; padding: 1px 7px; margin-left: 6px; vertical-align: 2px; }
@@ -663,7 +668,13 @@
     let jaLeu = false;
     const dizer = (msg) => { status.textContent = msg; dica.hidden = !msg; };
     const pronto = () => dizer(jaLeu ? "" : t("scan.status.ready"));
-    const aviso = (msg) => { if (msg) { toastTexto.textContent = msg; toast.hidden = false; } else toast.hidden = true; };
+    // Status de uma leitura em curso vai pro cartão "lendo" (miniatura da foto
+    // + texto), que ocupa o lugar do resultado; o toast fica pra busca manual.
+    let lendoTexto = null;
+    const aviso = (msg) => {
+      if (lendoTexto) { lendoTexto.textContent = msg; return; }
+      if (msg) { toastTexto.textContent = msg; toast.hidden = false; } else toast.hidden = true;
+    };
     // Progresso do motor em linguagem de gente: só as duas fases que demoram
     // (baixar o núcleo e o modelo, na primeira vez) viram texto.
     const progresso = (fase, p) => {
@@ -768,7 +779,28 @@
       const n = st ? st.variantTotal(h.card.id, v) : 0;
       return n > 0 ? `✓ ×${n}` : t("cmdk.addCol");
     }
+    // Cartão de leitura (2026-09-10, como no Collectr): no disparo a foto vai
+    // pro canto, como miniatura pequena do recorte da moldura, com o status ao
+    // lado — o vídeo continua ao vivo e a pessoa pode soltar a carta. Quando
+    // acha, o mesmo cartão vira o resultado (miniatura do catálogo), no mesmo
+    // tamanho: a foto não ocupa a tela. A miniatura é um canvas minúsculo
+    // (~92 px) e morre com o cartão; o quadro inteiro nunca aparece.
+    function pintarLendo(fonte, rec) {
+      resCard.innerHTML = `<span class="scan-res-thumb"></span><span class="scan-res-text"><span class="scan-res-sub"><span class="scan-spin" aria-hidden="true"></span><span data-scan-lendo aria-live="polite"></span></span></span>`;
+      try {
+        const c = document.createElement("canvas");
+        c.width = 92;
+        c.height = Math.max(1, Math.min(160, Math.round(92 * rec.sh / rec.sw)));
+        c.getContext("2d").drawImage(fonte, rec.sx, rec.sy, rec.sw, rec.sh, 0, 0, c.width, c.height);
+        resCard.querySelector(".scan-res-thumb").appendChild(c);
+      } catch (e) { /* sem miniatura: o cartão fica só com o status */ }
+      resCard.classList.add("is-lendo");
+      resCard.hidden = false;
+      lendoTexto = resCard.querySelector("[data-scan-lendo]");
+    }
     function pintarResultado() {
+      lendoTexto = null;
+      resCard.classList.remove("is-lendo");
       const h = resultados[primario];
       if (!h) { resCard.hidden = true; return; }
       const preco = valorDe(h.card);
@@ -894,10 +926,11 @@
       ocupado = true;
       let falhou = false;
       btnLer.disabled = true;
-      resCard.hidden = true;
       fecharFolha();
       guia.classList.add("is-lendo");
+      pintarLendo(fonte, rec);
       try {
+        aviso(t("scan.status.loading"));
         const worker = await obterWorker(progresso);
         aviso(t("scan.status.reading"));
         const leituras = [];
@@ -929,10 +962,14 @@
         entregar(codigo, achados);
       } catch (e) {
         falhou = true;
+        lendoTexto = null;
+        resCard.classList.remove("is-lendo");
+        resCard.hidden = true;
         dizer(t("scan.error"));
       } finally {
         ocupado = false;
         jaLeu = true;
+        lendoTexto = null;
         aviso("");
         guia.classList.remove("is-lendo");
         // Erro fica na tela (a dica só volta a sumir na próxima leitura).
@@ -954,9 +991,30 @@
       finally { ocupado = false; aviso(""); }
     }
 
-    btnLer.addEventListener("click", () => {
-      if (!stream || !video.videoWidth) return;
-      ler(video, recorteDaGuia(video, wrap, guia));
+    // FOTO TRAVADA NO DISPARO (2026-09-10): antes cada passo do OCR (rodapé em
+    // duas escalas, faixa, carta inteira) redesenhava do vídeo AO VIVO, então a
+    // pessoa tinha de segurar a carta imóvel pelos 2-4 passes — uns segundos —
+    // e a "votação" entre as escalas do rodapé comparava quadros diferentes.
+    // Agora o toque copia UM quadro do vídeo, em resolução nativa, pra um
+    // canvas fora da tela: a leitura inteira sai dele e a pessoa pode soltar
+    // a carta (o vídeo segue ao vivo; só a miniatura do cartão mostra a foto).
+    // Ao terminar, o canvas é zerado — só memória, só durante a leitura, nada
+    // em disco ou cache. Sem canvas (não deve acontecer), lê do vídeo como antes.
+    function congelar() {
+      try {
+        const c = document.createElement("canvas");
+        c.width = video.videoWidth;
+        c.height = video.videoHeight;
+        c.getContext("2d").drawImage(video, 0, 0);
+        return c;
+      } catch (e) { return null; }
+    }
+    btnLer.addEventListener("click", async () => {
+      if (!stream || !video.videoWidth || ocupado) return;
+      const rec = recorteDaGuia(video, wrap, guia);
+      const quadro = congelar();
+      try { await ler(quadro || video, rec); }
+      finally { if (quadro) quadro.width = quadro.height = 0; } // zerar libera o buffer (~44 MB em 4K)
     });
     $("[data-scan-file]").addEventListener("change", async (ev) => {
       const file = ev.target.files && ev.target.files[0];

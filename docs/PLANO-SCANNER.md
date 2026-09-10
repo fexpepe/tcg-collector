@@ -38,7 +38,17 @@ guarda isso em `number` (e `setId`), então achar a carta é OCR + busca local.
    dispensa detecção de contorno (OpenCV.js pesa 8 MB); cada recorte sai
    **direto da fonte, em resolução nativa** (a primeira versão reamostrava a
    carta pra 1000 px e cortava a faixa dessa cópia: jogava fora a maior parte
-   dos pixels de uma foto de 12 MP e depois ampliava o borrão).
+   dos pixels de uma foto de 12 MP e depois ampliava o borrão). O toque no
+   disparador **congela um quadro** (2026-09-10): o vídeo é copiado, em
+   resolução nativa, pra um canvas fora da tela, e todos os passes do OCR saem
+   desse quadro — antes cada passe redesenhava do vídeo ao vivo, então a
+   carta tinha de ficar imóvel por 2-4 passes e a votação entre as escalas do
+   rodapé comparava quadros diferentes. Como no Collectr, o vídeo segue ao
+   vivo e a foto vai pro canto: o cartão de resultado mostra uma miniatura
+   do recorte da moldura com o status ("Lendo…", "Procurando…") e, quando
+   acha, vira o resultado de sempre no mesmo tamanho. O quadro inteiro é
+   zerado no fim da leitura; a miniatura morre com o cartão. Nada vai pra
+   disco nem cache.
 2. **OCR no aparelho** com Tesseract.js 7 (WASM, Apache-2.0), auto-hospedado em
    `assets/vendor/tesseract-7.0.0/` — a CSP é `script-src 'self'`, então nada
    vem de CDN. Modelo `eng` do tessdata_fast (LSTM, ~2 MB gz), whitelist
