@@ -152,28 +152,33 @@ da borda fora do ar.
 ## Espelho de imagens (R2, `img.sleevu.app`)
 
 Quase toda imagem de carta era hotlink de terceiro (Scryfall, CDN do
-TCGplayer, TCGdex, Lorcast). O bucket `sleevu-img`, servido em
-`img.sleevu.app` com CORS pra `sleevu.app`, guarda uma cópia byte a byte das
-**variantes que o site pede** de cada fonte (low/high webp da TCGdex,
-400/1000 do TCGplayer, normal/large do Lorcast, normal do Scryfall) — a regra
-está em `scripts/lib/img-mirror.mjs`. A chave é host + caminho de origem, então
-a URL espelhada carrega o host original no caminho e o cliente deriva as
-variantes como sempre.
+TCGplayer, TCGdex, Lorcast, e o proxy `wsrv.nl` sobre fã-sites nos vintages),
+e cada fonte publica um tamanho diferente — nenhuma servia bem grade E popup
+em toda tela. O bucket `sleevu-img`, servido em `img.sleevu.app` com CORS pra
+`sleevu.app`, guarda **variantes geradas pelo próprio job**: a partir da
+melhor imagem de cada fonte (a "matriz", em `scripts/lib/img-mirror.mjs`),
+WebP em três larguras — 300 (grade em tela comum), 600 (grade em tela 2x/3x)
+e 1000 (popup), nunca ampliando. A chave é
+`<host><caminho da URL do catálogo>@<largura>.webp`; no `wsrv.nl` a base vem
+do parâmetro `url`.
 
 - **Job:** `scripts/mirror-r2.mjs`, diário às 14:00 UTC
-  (`.github/workflows/mirror-images.yml`), sobre o mesmo catálogo construído do
-  deploy. Guarda o índice no próprio bucket (`_index/<host>.json`) e publica
+  (`.github/workflows/mirror-images.yml`), sobre o mesmo catálogo construído
+  do deploy; o `sharp` é instalado fora do repositório pelo workflow. Guarda o
+  índice no próprio bucket (`_index/<host>.json`) e publica
   `_index/status.json` com o que está completo. Retomável, educado com as
-  fontes (concorrência e intervalo por host, 429 encerra o host), 404 na origem
-  vira "faltando" por 30 dias, e o TCGplayer (que troca a arte na mesma URL) é
-  reconferido por HEAD em cartas de set recente. Nada é apagado.
+  fontes (concorrência e intervalo por host, 429 encerra o host), 404 na
+  origem vira "faltando" por 30 dias, e o TCGplayer (que troca a arte na
+  mesma URL) é reconferido por HEAD em cartas de set recente. Nada é apagado.
 - **Deploy:** `scripts/apply-img-mirror.mjs` lê o status e injeta os hosts
-  COMPLETOS no `game.js` (`window.SLEEVU.imgMirrorHosts`). Só esses viram URL
-  espelhada no cliente (`mirrorImageUrl` no `shared.js`); a origem fica logo
-  atrás na cadeia de fallback, então carta nova de hoje continua aparecendo.
+  COMPLETOS no esquema atual no `game.js` (`window.SLEEVU.imgMirrorHosts`).
+  Só esses viram URL espelhada no cliente (`mirrorImg` no `shared.js`): grade
+  com `srcset` 300w/600w em todas as fontes, popup com a de 1000, e a origem
+  logo atrás na cadeia de fallback — carta nova de hoje continua aparecendo.
   Espelho vazio ou fora do ar = lista vazia = site como sempre.
-- **Custo:** ~25 GB no R2 (os primeiros 10 GB grátis, US$ 0,015/GB depois),
-  saída de dados grátis, leituras quase todas no cache da Cloudflare.
+- **Custo:** ~760 mil objetos, ~45 GB no R2 (os primeiros 10 GB grátis,
+  US$ 0,015/GB depois), saída de dados grátis, leituras quase todas no cache
+  da Cloudflare.
 - **Ainda na origem:** as páginas pré-renderizadas (`/set/`, `/card/`,
   `/artist/`) — são HTML estático sem a cadeia de fallback do app, então
   apontá-las pro espelho exige um tratamento de erro próprio. Fica pra depois.

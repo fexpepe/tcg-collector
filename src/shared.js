@@ -4314,25 +4314,28 @@
     return u;
   }
 
-  // Espelho das imagens no R2 (img.sleevu.app): a URL espelhada é
-  // https://img.sleevu.app/<host de origem>/<caminho>, só pros hosts que o
-  // deploy declarou COMPLETOS (window.SLEEVU.imgMirrorHosts). O host de origem
-  // fica no caminho de propósito: os indexOf() acima seguem reconhecendo a
-  // fonte. A origem continua na cadeia de fallback logo atrás do espelho —
-  // carta nova de hoje, ainda não espelhada, cai nela sem ninguém perceber.
-  // Da TCGdex só as variantes webp vivem no espelho (é o que o site pede).
-  // Mesma regra de scripts/lib/img-mirror.mjs (o teste trava as duas).
-  // wsrv.nl (vintage): a URL é toda query; a chave no espelho é
-  // wsrv.nl/w<largura>/<host e caminho de origem>, do parâmetro url.
-  function mirrorImageUrl(u) {
+  // Espelho das imagens no R2 (img.sleevu.app): o job gera WebP em três
+  // larguras (300 grade, 600 grade em tela 2x/3x, 1000 popup) a partir da
+  // melhor imagem de cada fonte, e a URL é
+  // https://img.sleevu.app/<host><caminho da URL do catálogo>@<largura>.webp
+  // — só pros hosts que o deploy declarou COMPLETOS (window.SLEEVU
+  // .imgMirrorHosts). O host de origem fica no caminho de propósito: os
+  // indexOf() acima seguem reconhecendo a fonte. No wsrv.nl (vintage) a URL é
+  // toda query e a base sai do parâmetro url. A origem continua na cadeia de
+  // fallback logo atrás do espelho — carta nova de hoje, ainda não espelhada,
+  // cai nela sem ninguém perceber. Mesma regra de scripts/lib/img-mirror.mjs
+  // (o teste trava as duas).
+  function mirrorImg(u, w) {
     const hosts = (window.SLEEVU && window.SLEEVU.imgMirrorHosts) || [];
     const m = /^https:\/\/([^/?#]+)(\/[^?#]*)/.exec(u || "");
-    if (!m || hosts.indexOf(m[1]) < 0 || (m[1] === "assets.tcgdex.net" && !/\.webp$/.test(m[2]))) return "";
+    if (!m || hosts.indexOf(m[1]) < 0) return "";
+    let base = m[1] + m[2];
     if (m[1] === "wsrv.nl") {
-      const w = /^https:\/\/wsrv\.nl\/\?url=([^&]+)&w=(\d+)(?:&we)?&output=webp$/.exec(u);
-      return w ? "https://img.sleevu.app/" + encodeURI("wsrv.nl/w" + w[2] + "/" + decodeURIComponent(w[1]).replace(/^https?:\/\//, "")) : "";
+      const q = /[?&]url=([^&]+)/.exec(u);
+      if (!q) return "";
+      base = encodeURI("wsrv.nl/" + decodeURIComponent(q[1]).replace(/^https?:\/\//, ""));
     }
-    return "https://img.sleevu.app/" + m[1] + m[2];
+    return "https://img.sleevu.app/" + base + "@" + w + ".webp";
   }
 
   // Mesma carta na OUTRA língua do par EN/PT. A TCGdex publica os scans por
@@ -4529,15 +4532,16 @@
     // num thumb de 30px — por isso a opcao e opt-in por chamador, e nao um
     // padrao. O src continua sendo a low: quem nao entende srcset ve o de hoje.
     let srcset = thumb && sizes ? tcgdexThumbSrcset(url) : "";
-    // Espelho na frente, origem logo atrás (ver mirrorImageUrl): src e srcset
-    // viram espelho; a cadeia fica [espelho das outras variantes, src de
-    // origem, cadeia de origem] — uma falha no espelho cai na origem exata.
-    const m = mirrorImageUrl(src);
+    // Espelho na frente, origem logo atrás (ver mirrorImg): grade pede a de
+    // 300 com srcset 300w/600w (tela 2x/3x recebe a 600 — em TODAS as fontes,
+    // não só na TCGdex), popup pede a de 1000. A cadeia fica [src de origem,
+    // cadeia de origem]: uma falha no espelho cai exatamente no que o site
+    // mostrava antes dele.
+    const m = mirrorImg(url, thumb ? 300 : 1000);
     if (m) {
       chain.unshift(src);
-      chain.unshift(...chain.map(mirrorImageUrl).filter((x, i, a) => x && x !== m && a.indexOf(x) === i));
       src = m;
-      srcset = srcset.replace(/https:\/\/[^ ,]+/g, (x) => mirrorImageUrl(x) || x);
+      srcset = thumb && sizes ? `${m} 300w, ${mirrorImg(url, 600)} 600w` : "";
     }
     return { src, chain, srcset };
   }
@@ -10083,7 +10087,7 @@
     // nele, é a primeira tentativa de QUALQUER jogo — sem proxy no caminho.
     const imagemDaCarta = async (card) => {
       const src = cardImageSources(card);
-      const espelho = mirrorImageUrl(src.url);
+      const espelho = mirrorImg(src.url, 1000);
       const daBorda = espelho ? await loadImage(espelho, true) : null;
       if (daBorda) return daBorda;
       if (card.game === "lorcana" || card.game === "onepiece") {

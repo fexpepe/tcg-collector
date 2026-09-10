@@ -81,8 +81,18 @@ jobs:
           key: catalogo-build-${{ github.run_id }}
           restore-keys: catalogo-build-
 
+      # O sharp (redimensionamento) mora FORA do repositório: o site não tem
+      # package.json nem bundler, e não vai ganhar um por causa do job. Versão
+      # fixa; binário pré-compilado, instala em segundos.
+      - name: Instala o sharp fora do repositório
+        run: |
+          mkdir -p "$RUNNER_TEMP/sharp" && cd "$RUNNER_TEMP/sharp"
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund sharp@0.33.5
+
       - name: Espelha as imagens
         env:
+          SHARP_DIR: ${{ runner.temp }}/sharp/node_modules/sharp
           R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

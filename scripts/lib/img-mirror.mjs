@@ -1,95 +1,98 @@
 // Espelho de imagens de carta no R2 (img.sleevu.app) — a parte PURA e
-// compartilhada: quais hosts se espelha, quais VARIANTES de cada URL o site
-// pede (é isso que vai pro bucket, byte a byte — nada é redimensionado aqui),
-// a chave no bucket e a URL espelhada. Usada pelo job (scripts/mirror-r2.mjs),
-// pelo passo do deploy (scripts/apply-img-mirror.mjs) e pelos testes. O
-// cliente (src/shared.js, mirrorImageUrl) tem a SUA cópia da regra da URL —
-// sem bundler não dá pra importar — e tests/img-mirror.test.mjs trava as duas
-// no mesmo resultado.
+// compartilhada: quais hosts se espelha, qual é a MELHOR imagem de cada fonte
+// (a "matriz"), as larguras geradas a partir dela e a URL espelhada. Usada
+// pelo job (scripts/mirror-r2.mjs), pelo passo do deploy
+// (scripts/apply-img-mirror.mjs) e pelos testes. O cliente (src/shared.js,
+// mirrorImg) tem a SUA cópia da regra da URL — sem bundler não dá pra
+// importar — e tests/img-mirror.test.mjs trava as duas no mesmo resultado.
 //
-// Por que "variantes": o cliente não exibe a URL do catálogo como está. Da
-// TCGdex ele pede low.webp (grade) e high.webp (popup); do TCGplayer, a
-// _in_400x400 na grade e a _in_1000x1000 no popup; do Lorcast, /normal/ e
-// /large/. Espelhar só a URL do catálogo deixaria a grade inteira no 404 do
-// espelho. A chave é host + caminho: a URL espelhada carrega o host de origem
-// no caminho, então os `indexOf("assets.tcgdex.net")` do cliente continuam
-// reconhecendo a fonte e derivando as variantes do jeito de sempre.
+// Esquema 2 (10/09/2026): o espelho gera as PRÓPRIAS variantes. A primeira
+// versão copiava byte a byte as variantes que cada fonte publica, e cada
+// fonte publica um tamanho diferente: o Scryfall só tinha a 488px (grande
+// demais na grade, pequena no popup), o TCGplayer pulava de 400 pra 1000, os
+// vintages tinham só 440. Agora o job baixa a matriz uma vez, gera WebP em
+// três larguras — 300 (grade em tela comum), 600 (grade em tela 2x/3x) e
+// 1000 (popup) — e o site usa srcset em TODAS as fontes, como já fazia só na
+// TCGdex. Nunca amplia: matriz menor que a largura pedida sai no tamanho
+// que tem (a chave continua a mesma, pra não haver 404 no srcset).
+//
+// Chave: <host><caminho da URL do catálogo>@<largura>.webp. A URL do catálogo
+// é a que os syncs gravam (a que o job vê em `image`), então o cliente monta
+// a chave a partir dela sem saber qual variante o job baixou como matriz.
 export const ESPELHO = "https://img.sleevu.app/";
+export const ESQUEMA_ESPELHO = 2;
+export const LARGURAS = [300, 600, 1000];
+export const QUALIDADE_WEBP = 80;
 
 const RE_TCGDEX = /(?:\/(?:low|high))?\.(?:png|webp|jpg)$/;
 
-// concorrencia/intervaloMs: educação com a fonte (o Scryfall pede no máximo
-// 10 req/s; os outros não publicam limite, mas são CDNs de terceiros que não
-// devem nada à gente). `mutavel`: a origem troca a arte NA MESMA URL — o
-// TCGplayer publica a carta com arte provisória e substitui quando o scan
-// chega (caso Gundam documentado no sw.js) — então cartas de set recente são
-// conferidas de novo por um tempo.
+// `matriz(u)`: a melhor imagem que a fonte publica pra URL do catálogo `u` —
+// é o que o job baixa. concorrencia/intervaloMs: educação com a fonte (o
+// Scryfall pede no máximo 10 req/s; os outros não publicam limite, mas são
+// CDNs de terceiros que não devem nada à gente). `mutavel`: a origem troca a
+// arte NA MESMA URL — o TCGplayer publica a carta com arte provisória e
+// substitui quando o scan chega (caso Gundam documentado no sw.js) — então
+// cartas de set recente são conferidas de novo por um tempo.
 export const FONTES = {
   // Vintage (Naruto, Hunter × Hunter, One Piece Carddass/2002, Miracle
-  // Battle): os scans vivem em fã-sites e wikis e o site os pede
-  // redimensionados pelo proxy wsrv.nl (440px webp). A URL é toda query, e a
-  // chave sai do parâmetro `url` (ver chaveWsrv). Primeiro na ordem: são ~5
-  // mil objetos, e é o caso em que o espelho mais vale — fã-site morre sem
-  // aviso, e o proxy é ponto único de falha de 3 jogos. Concorrência baixa:
-  // é um serviço gratuito de terceiro fazendo o resize por nós.
+  // Battle): scans de fã-sites e wikis, pedidos via proxy wsrv.nl. A matriz
+  // é o mesmo proxy a 1000px (ele faz o resize pesado do scan de 7 MB por
+  // nós; daí as três larguras saem daqui). Primeiro na ordem: são ~5 mil
+  // cartas, e é onde o espelho mais vale — fã-site morre sem aviso.
   "wsrv.nl": {
     concorrencia: 2, intervaloMs: 300,
-    variantes: (u) => [u]
+    matriz: (u) => { const q = /[?&]url=([^&]+)/.exec(u); return q ? `https://wsrv.nl/?url=${q[1]}&w=1000&output=webp` : ""; }
   },
   "cards.lorcast.io": {
     concorrencia: 3, intervaloMs: 100,
-    variantes: (u) => [u.replace("/card/digital/large/", "/card/digital/normal/"), u]
+    matriz: (u) => u.replace("/card/digital/normal/", "/card/digital/large/")
   },
   "tcgplayer-cdn.tcgplayer.com": {
     concorrencia: 6, intervaloMs: 50, mutavel: true,
-    variantes: (u) => [u.replace("_in_1000x1000.jpg", "_in_400x400.jpg"), u]
+    matriz: (u) => u.replace("_in_400x400.jpg", "_in_1000x1000.jpg")
   },
+  // high.webp tem 600×825, a mesma resolução do high.png com 1/6 do peso.
   "assets.tcgdex.net": {
     concorrencia: 6, intervaloMs: 50,
-    variantes: (u) => [u.replace(RE_TCGDEX, "/low.webp"), u.replace(RE_TCGDEX, "/high.webp")]
+    matriz: (u) => u.replace(RE_TCGDEX, "/high.webp")
   },
+  // large = 672×936 (o png de 745×1040 pesa 1 MB por carta e não muda nada
+  // numa saída de no máximo 1000px).
   "cards.scryfall.io": {
     concorrencia: 2, intervaloMs: 200,
-    variantes: (u) => [u]
+    matriz: (u) => u.replace("/normal/", "/large/")
   }
 };
-// Ordem do rollout (docs/PLANO-UX-2.md, P2): Lorcana e One Piece primeiro —
-// host único sem fallback, e o "exportar imagem" depende de um proxy de CORS
-// pra eles — e o Scryfall por último (o maior, e a CDN mais confiável).
+// Ordem do rollout: vintages, Lorcana e One Piece primeiro (host único sem
+// fallback, e o "exportar imagem" depende de proxy de CORS pra eles), Scryfall
+// por último (o maior, e a CDN mais confiável).
 export const ORDEM = Object.keys(FONTES);
 
 export function hostDe(u) { try { return new URL(u).host; } catch { return ""; } }
-// wsrv.nl: a chave é wsrv.nl/w<largura>/<host e caminho de ORIGEM>, tirados
-// do parâmetro `url` (os syncs o codificam com encodeURIComponent; aqui
-// decodifica de volta pra virar caminho de verdade no bucket). Só o formato
-// que os syncs produzem (url + w [+ we] + output=webp) — outra query é outra
-// imagem e fica de fora. Mesma regra no cliente (mirrorImageUrl).
-const RE_WSRV = /^https:\/\/wsrv\.nl\/\?url=([^&]+)&w=(\d+)(?:&we)?&output=webp$/;
-export function chaveWsrv(u) {
-  const m = RE_WSRV.exec(String(u || ""));
-  return m ? `wsrv.nl/w${m[2]}/${decodeURIComponent(m[1]).replace(/^https?:\/\//, "")}` : "";
+// Base da chave: host + caminho, SEM query. No wsrv.nl a URL é toda query e a
+// base sai do parâmetro `url` (host e caminho de ORIGEM, decodificados).
+export function chaveBase(u) {
+  const x = new URL(u);
+  if (x.host !== "wsrv.nl") return x.host + x.pathname;
+  const q = /[?&]url=([^&]+)/.exec(u);
+  return q ? `wsrv.nl/${decodeURIComponent(q[1]).replace(/^https?:\/\//, "")}` : "";
 }
-// Chave no bucket: host + caminho, SEM query. A query do Scryfall (?1783943085)
-// é um carimbo de versão da arte: fica no índice como `versao`, e quando muda
-// o objeto é baixado de novo.
-export function chaveDe(u) { const x = new URL(u); return x.host === "wsrv.nl" ? chaveWsrv(u) : x.host + x.pathname; }
+export const chaveDe = (u, w) => { const b = chaveBase(u); return b ? `${b}@${w}.webp` : ""; };
+// Versão: a query do Scryfall (?1783943085) é um carimbo da arte — muda,
+// baixa de novo. Os outros não têm.
 export function versaoDe(u) { const x = new URL(u); return x.host === "wsrv.nl" ? "" : x.search.replace(/^\?/, ""); }
-export function variantesDe(u) {
+export function matrizDe(u) {
   const f = FONTES[hostDe(u)];
-  if (!f) return [];
-  if (hostDe(u) === "wsrv.nl" && !chaveWsrv(u)) return [];   // query fora do formato dos syncs
-  return [...new Set(f.variantes(u))];
+  return f && chaveBase(u) ? f.matriz(u) : "";
 }
-// URL espelhada de uma URL de origem, se o host estiver na lista dos
-// COMPLETOS (o deploy injeta a lista no game.js). Mesma regra do cliente.
-export function urlEspelho(u, hosts) {
+// URL espelhada da URL do catálogo `u` na largura `w`, se o host estiver na
+// lista dos COMPLETOS (o deploy injeta a lista no game.js). Mesma regra do
+// cliente. encodeURI só no wsrv: espaço e kana dos fã-sites viram %XX (o que
+// o navegador faria com o src); os outros caminhos já são ASCII limpo.
+export function urlEspelho(u, hosts, w) {
   const m = /^https:\/\/([^/?#]+)(\/[^?#]*)/.exec(String(u || ""));
   if (!m || !hosts || hosts.indexOf(m[1]) < 0) return "";
-  // wsrv.nl: caminho no bucket vem da query (encodeURI: espaço e kana do
-  // fã-site viram %XX, barra fica — o mesmo que o navegador faria com o src).
-  if (m[1] === "wsrv.nl") { const k = chaveWsrv(u); return k ? ESPELHO + encodeURI(k) : ""; }
-  // Da TCGdex só as variantes webp moram no espelho (é o que o site pede); o
-  // png original fica na cadeia de fallback, apontando pra origem.
-  if (m[1] === "assets.tcgdex.net" && !/\.webp$/.test(m[2])) return "";
-  return ESPELHO + m[1] + m[2];
+  const b = chaveBase(u);
+  if (!b) return "";
+  return `${ESPELHO}${m[1] === "wsrv.nl" ? encodeURI(b) : b}@${w}.webp`;
 }

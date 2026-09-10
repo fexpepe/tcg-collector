@@ -7,7 +7,7 @@
 // = site igual ao de sempre. Roda ANTES da minificação (o marcador some nela).
 //   node scripts/apply-img-mirror.mjs
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { ESPELHO, ORDEM } from "./lib/img-mirror.mjs";
+import { ESPELHO, ESQUEMA_ESPELHO, ORDEM } from "./lib/img-mirror.mjs";
 
 const RAIZ = new URL("../", import.meta.url);
 let hosts = [];
@@ -15,7 +15,9 @@ try {
   const r = await fetch(`${ESPELHO}_index/status.json`, { signal: AbortSignal.timeout(15000), headers: { "cache-control": "no-cache" } });
   if (r.ok) {
     const j = await r.json();
-    hosts = ORDEM.filter((h) => j && j.hosts && j.hosts[h] && j.hosts[h].completo);
+    // Só host completo NO ESQUEMA ATUAL: status de um esquema anterior aponta
+    // pra chaves que o cliente de hoje não monta (seria 404 em toda imagem).
+    hosts = ORDEM.filter((h) => j && j.hosts && j.hosts[h] && j.hosts[h].completo && j.hosts[h].esquema === ESQUEMA_ESPELHO);
   } else {
     console.log(`apply-img-mirror: o status do espelho respondeu HTTP ${r.status} — nenhum host espelhado neste build.`);
   }
