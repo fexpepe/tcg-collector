@@ -947,16 +947,20 @@
         }
         if (!cands.length) cands = await passo(recorte(fonte, rec, 0, 1 - FAIXA, 1, FAIXA, LARGURA_OCR));
         let codigos = cands.map((c) => c.codigo);
-        let deteccao = detectarJogo(texto, codigos, sessao);
+        const deteccao = detectarJogo(texto, codigos, sessao);
         if (!codigos.length || (!selJogo.value && !deteccao.confiante)) {
           cands = await passo(recorte(fonte, rec, 0, 0, 1, 1, LARGURA_OCR));
           codigos = cands.map((c) => c.codigo);
-          deteccao = detectarJogo(texto, codigos, sessao);
         }
         ultimoTexto = texto;
-        // Seletor mostra o jogo detectado (a pessoa corrige se errar); sem
-        // certeza fica em "automático" e a busca usa a lista de possíveis.
-        if (!selJogo.value && deteccao.confiante) { selJogo.value = deteccao.jogos[0]; selJogo.classList.remove("is-auto"); }
+        // O seletor de jogo é SÓ da pessoa (2026-09-10). Antes, uma detecção
+        // confiante gravava o jogo no seletor — e o seletor preenchido vale
+        // como filtro FIXO em jogosDaBusca, sem a segunda chance sem filtro.
+        // Resultado: lia um Pokémon (achava), o seletor virava "Pokémon", e a
+        // carta seguinte de One Piece ou Magic "não existia". Em "Automático"
+        // cada leitura detecta o jogo de novo pelas pistas da própria carta
+        // (o cartão de resultado já diz qual foi); escolher um jogo no seletor
+        // é a forma de FORÇAR um só, quando a detecção errar.
         if (!codigos.length) { entregar("", []); return; }
         const { codigo, achados } = await procurar(codigos);
         entregar(codigo, achados);
