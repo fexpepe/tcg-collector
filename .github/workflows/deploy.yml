@@ -490,6 +490,15 @@ jobs:
       # de cartas já no HTML) + regenera o sitemap.xml com todas as URLs. Assim o
       # Google indexa "Base Set", "Romance Dawn" etc. em vez da casca vazia da SPA.
       # Lê os chunks data/sets/** (Pokémon) e data/{lorcana,onepiece}/cards.js.
+      # Espelho de imagens (R2, img.sleevu.app): pergunta ao status que o job
+      # mirror-images publica quais hosts de origem já estão COMPLETOS e injeta
+      # a lista no game.js — o cliente só aponta pro espelho nesses hosts, com a
+      # origem logo atrás na cadeia de fallback. Espelho vazio ou fora do ar =
+      # lista vazia = site igual ao de sempre. ANTES da minificação (o marcador
+      # some nela).
+      - name: Hosts de imagem já espelhados no R2
+        run: node scripts/apply-img-mirror.mjs
+
       - name: Pré-renderiza páginas de set (SEO)
         run: node scripts/prerender-catalog.mjs
 

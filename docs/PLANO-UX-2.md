@@ -811,6 +811,12 @@ ficaram bloqueados, com número.** Três commits.
   `grandlinewiki.net`, `wsrv.nl` e `tcg-db.nikita.jp`), então nem em teste dava
   pra baixar. **P1 depende do P2** — ou de cortar arquivo em outro lugar
   (páginas pré-renderizadas, chunks de preço), que é decisão de SEO do Fernando.
+- **P2 — desbloqueado em 2026-09-10** (bucket, domínio e token conferidos pelo
+  verifica-setup em 31/08; o código entrou junto com o Workers Paid). Ver
+  "Espelho de imagens" em `docs/BACKEND.md`: job `mirror-r2.mjs` + rollout por
+  host via `_index/status.json`, na ordem Lorcast → TCGplayer → TCGdex →
+  Scryfall. Páginas pré-renderizadas seguem na origem (sem cadeia de fallback).
+  O texto abaixo é o registro da época:
 - **P2 ✖ bloqueado — precisa de ação na conta Cloudflare.** Criar o bucket R2,
   apontar `img.sleevu.app` e emitir o token de escrita são coisas que só o dono
   da conta faz. O lado de código (host na CSP `img-src`/`connect-src`, em

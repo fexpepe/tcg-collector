@@ -4314,6 +4314,21 @@
     return u;
   }
 
+  // Espelho das imagens no R2 (img.sleevu.app): a URL espelhada é
+  // https://img.sleevu.app/<host de origem>/<caminho>, só pros hosts que o
+  // deploy declarou COMPLETOS (window.SLEEVU.imgMirrorHosts). O host de origem
+  // fica no caminho de propósito: os indexOf() acima seguem reconhecendo a
+  // fonte. A origem continua na cadeia de fallback logo atrás do espelho —
+  // carta nova de hoje, ainda não espelhada, cai nela sem ninguém perceber.
+  // Da TCGdex só as variantes webp vivem no espelho (é o que o site pede).
+  // Mesma regra de scripts/lib/img-mirror.mjs (o teste trava as duas).
+  function mirrorImageUrl(u) {
+    const hosts = (window.SLEEVU && window.SLEEVU.imgMirrorHosts) || [];
+    const m = /^https:\/\/([^/?#]+)(\/[^?#]*)/.exec(u || "");
+    if (!m || hosts.indexOf(m[1]) < 0 || (m[1] === "assets.tcgdex.net" && !/\.webp$/.test(m[2]))) return "";
+    return "https://img.sleevu.app/" + m[1] + m[2];
+  }
+
   // Mesma carta na OUTRA língua do par EN/PT. A TCGdex publica os scans por
   // língua, e não no mesmo dia: um set novo pode já ter as artes em pt e ainda
   // não em en — foi o caso do Pitch Black (me05, jul/2026), que abriu com as
@@ -4507,7 +4522,17 @@
     // Sem `sizes` o navegador assume 100vw e baixaria a variante de 600px ate
     // num thumb de 30px — por isso a opcao e opt-in por chamador, e nao um
     // padrao. O src continua sendo a low: quem nao entende srcset ve o de hoje.
-    const srcset = thumb && sizes ? tcgdexThumbSrcset(url) : "";
+    let srcset = thumb && sizes ? tcgdexThumbSrcset(url) : "";
+    // Espelho na frente, origem logo atrás (ver mirrorImageUrl): src e srcset
+    // viram espelho; a cadeia fica [espelho das outras variantes, src de
+    // origem, cadeia de origem] — uma falha no espelho cai na origem exata.
+    const m = mirrorImageUrl(src);
+    if (m) {
+      chain.unshift(src);
+      chain.unshift(...chain.map(mirrorImageUrl).filter((x, i, a) => x && x !== m && a.indexOf(x) === i));
+      src = m;
+      srcset = srcset.replace(/https:\/\/[^ ,]+/g, (x) => mirrorImageUrl(x) || x);
+    }
     return { src, chain, srcset };
   }
 
@@ -10048,8 +10073,13 @@
     // Lorcana (cards.lorcast.io) e One Piece (tcgplayer-cdn) NÃO mandam CORS →
     // o crossOrigin falhava e caía no fallback (que é uma URL de Pokémon!).
     // Roteia pela wsrv.nl (proxy com CORS) e NÃO usa o fallback nesses casos.
+    // O espelho (img.sleevu.app) manda CORS pra sleevu.app: quando a carta está
+    // nele, é a primeira tentativa de QUALQUER jogo — sem proxy no caminho.
     const imagemDaCarta = async (card) => {
       const src = cardImageSources(card);
+      const espelho = mirrorImageUrl(src.url);
+      const daBorda = espelho ? await loadImage(espelho, true) : null;
+      if (daBorda) return daBorda;
       if (card.game === "lorcana" || card.game === "onepiece") {
         return loadImage(`https://wsrv.nl/?url=${encodeURIComponent(src.url)}&output=webp`, true);
       }

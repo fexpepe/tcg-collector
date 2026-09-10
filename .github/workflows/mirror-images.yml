@@ -1,0 +1,102 @@
+name: Espelho de imagens (R2)
+
+# Copia pro bucket R2 (img.sleevu.app) as imagens de carta que o site exibe —
+# ver scripts/mirror-r2.mjs. Diário, depois do deploy da manhã (06:20 UTC mais
+# o atraso da fila do GitHub), pra pegar as cartas que entraram no catálogo
+# hoje. Retomável: cada rodada trabalha até `minutes` e salva o índice; o que
+# não coube sai na próxima. O deploy do site consulta o status publicado e só
+# aponta pro espelho os hosts já COMPLETOS.
+on:
+  schedule:
+    - cron: "0 14 * * *"
+  workflow_dispatch:
+    inputs:
+      host:
+        description: "Só este host (vazio = todos, na ordem do rollout)"
+        required: false
+        default: ""
+      limit:
+        description: "Teto de objetos nesta rodada (vazio = sem teto)"
+        required: false
+        default: ""
+      minutes:
+        description: "Minutos de trabalho antes de parar e salvar"
+        required: false
+        default: "320"
+
+# Uma rodada por vez: duas escrevendo o mesmo índice se atropelariam.
+concurrency:
+  group: mirror-images
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 22
+
+      # O MESMO catálogo construído que o deploy usa (o cache que ele salva no
+      # build completo). Sem ele não há o que espelhar — e não se sincroniza
+      # nada aqui: fonte de verdade é uma só.
+      - name: Restaura catálogo construído (cache do deploy)
+        uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: |
+            data/*.generated.js
+            data/*.generated.json
+            data/search-index.json
+            data/*/*.generated.js
+            data/*/*.generated.json
+            data/*/search-index.json
+            data/lorcana/sets
+            data/onepiece/sets
+            data/fab/sets
+            data/gundam/sets
+            data/dbfw/sets
+            data/digimon/sets
+            data/riftbound/sets
+            data/unionarena/sets
+            data/naruto/sets
+            data/hxh/sets
+            data/jump/sets
+            data/magic/cards.js
+            data/magic/indexes.js
+            data/magic/pricing.js
+            data/magic/indexes-*.json
+            data/ygo/cards.js
+            data/ygo/indexes.js
+            data/ygo/pricing.js
+            data/ygo/indexes-*.json
+          key: catalogo-build-${{ github.run_id }}
+          restore-keys: catalogo-build-
+
+      - name: Espelha as imagens
+        env:
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          R2_BUCKET: sleevu-img
+          IN_HOST: ${{ inputs.host }}
+          IN_LIMIT: ${{ inputs.limit }}
+          IN_MINUTES: ${{ inputs.minutes }}
+        run: |
+          if [ ! -s data/manifest.generated.js ]; then
+            echo "Sem catálogo construído no cache — rode o deploy do main primeiro (ele salva o cache no build completo)."
+            exit 0
+          fi
+          args=""
+          [ -n "$IN_HOST" ] && args="$args --host $IN_HOST"
+          [ -n "$IN_LIMIT" ] && args="$args --limit $IN_LIMIT"
+          [ -n "$IN_MINUTES" ] && args="$args --minutes $IN_MINUTES"
+          node scripts/mirror-r2.mjs $args

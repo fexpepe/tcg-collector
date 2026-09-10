@@ -195,6 +195,11 @@
   // No modo manifest, cards/indexes/pricing viram os arquivos .generated mesclados.
   var MANIFEST = false; /* SLEEVU_MANIFEST */
 
+  // Hosts de imagem já ESPELHADOS por completo no R2 (img.sleevu.app): o
+  // deploy preenche a lista (scripts/apply-img-mirror.mjs) com o status que o
+  // job de espelho publica. Vazia = toda imagem vem da origem, como sempre.
+  var IMG_MIRROR_HOSTS = []; /* SLEEVU_IMG_MIRROR */
+
   // dataset declarado -> arquivo real (depende do modo). set-id-map e os
   // pokemon-* não são mesclados, então são o mesmo arquivo nos dois modos.
   var FILE = {
@@ -301,6 +306,7 @@
     name: cfg.name,
     dataDir: cfg.dataDir,
     manifest: MANIFEST,
+    imgMirrorHosts: IMG_MIRROR_HOSTS,
     catalogReady: catalogReady
   };
 })();

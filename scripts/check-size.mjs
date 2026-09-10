@@ -42,8 +42,15 @@ import { join } from "node:path";
 // viver aqui porque o sync e o backup são do núcleo). ~3 KB de folga pra não
 // voltar a estourar no próximo bloco pequeno; bloco FRIO grande continua tendo
 // que ir pra injeção sob demanda.
+//
+// 2026-09-10: teto do shared.js sobe de 79.872 pra 80.896. A main já estava a
+// 148 bytes gz do teto (scanner + miniatura de hover das Impressões), e o
+// espelho de imagens no R2 (mirrorImageUrl + espelho na frente da cadeia do
+// <img>, +248 bytes gz) é bloco QUENTE — roda em toda grade — e não tem como
+// ser injetado sob demanda. 1 KB de folga; o próximo bloco frio continua
+// tendo que sair do núcleo.
 const TETOS = [
-  { arquivo: "shared.js", teto: 79872, nota: "núcleo JS de toda página" },
+  { arquivo: "shared.js", teto: 80896, nota: "núcleo JS de toda página" },
   { arquivo: "styles.min.css", teto: 46080, nota: "CSS antes do split por área" },
 ];
 

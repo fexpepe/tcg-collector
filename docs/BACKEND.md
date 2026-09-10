@@ -149,6 +149,35 @@ consciente: medida em 09/09/2026, custou 12,6 milhões de linhas lidas e 8,9
 milhões escritas num import só — subir `ESQUEMA` é aceitar um dia com a busca
 da borda fora do ar.
 
+## Espelho de imagens (R2, `img.sleevu.app`)
+
+Quase toda imagem de carta era hotlink de terceiro (Scryfall, CDN do
+TCGplayer, TCGdex, Lorcast). O bucket `sleevu-img`, servido em
+`img.sleevu.app` com CORS pra `sleevu.app`, guarda uma cópia byte a byte das
+**variantes que o site pede** de cada fonte (low/high webp da TCGdex,
+400/1000 do TCGplayer, normal/large do Lorcast, normal do Scryfall) — a regra
+está em `scripts/lib/img-mirror.mjs`. A chave é host + caminho de origem, então
+a URL espelhada carrega o host original no caminho e o cliente deriva as
+variantes como sempre.
+
+- **Job:** `scripts/mirror-r2.mjs`, diário às 14:00 UTC
+  (`.github/workflows/mirror-images.yml`), sobre o mesmo catálogo construído do
+  deploy. Guarda o índice no próprio bucket (`_index/<host>.json`) e publica
+  `_index/status.json` com o que está completo. Retomável, educado com as
+  fontes (concorrência e intervalo por host, 429 encerra o host), 404 na origem
+  vira "faltando" por 30 dias, e o TCGplayer (que troca a arte na mesma URL) é
+  reconferido por HEAD em cartas de set recente. Nada é apagado.
+- **Deploy:** `scripts/apply-img-mirror.mjs` lê o status e injeta os hosts
+  COMPLETOS no `game.js` (`window.SLEEVU.imgMirrorHosts`). Só esses viram URL
+  espelhada no cliente (`mirrorImageUrl` no `shared.js`); a origem fica logo
+  atrás na cadeia de fallback, então carta nova de hoje continua aparecendo.
+  Espelho vazio ou fora do ar = lista vazia = site como sempre.
+- **Custo:** ~25 GB no R2 (os primeiros 10 GB grátis, US$ 0,015/GB depois),
+  saída de dados grátis, leituras quase todas no cache da Cloudflare.
+- **Ainda na origem:** as páginas pré-renderizadas (`/set/`, `/card/`,
+  `/artist/`) — são HTML estático sem a cadeia de fallback do app, então
+  apontá-las pro espelho exige um tratamento de erro próprio. Fica pra depois.
+
 ---
 
 ## 3. Preço

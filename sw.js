@@ -32,6 +32,7 @@ const OPAQUE_TS_CACHE = "tcg-images-opaque-ts-v2"; // TTL das entradas opacas do
 const CACHES = [SHELL_CACHE, IMAGE_CACHE, DATA_CACHE, OPAQUE_TS_CACHE];
 
 const IMAGE_HOSTS = new Set([
+  "img.sleevu.app",               // espelho das imagens de carta no R2 (scripts/mirror-r2.mjs); imutável por URL
   "assets.tcgdex.net",            // cartas e logos do catálogo
   "images.pokemontcg.io",         // fallback de cartas EN
   "raw.githubusercontent.com",    // artes da PokéAPI (Pokédex)

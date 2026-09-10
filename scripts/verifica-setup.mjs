@@ -12,7 +12,7 @@
 // sozinho.
 //
 // Uso: node scripts/verifica-setup.mjs
-import { createHash, createHmac } from "node:crypto";
+import { assinaS3 } from "./lib/r2.mjs";
 
 const SUPABASE_URL = "https://dlnalopazitfdgnmdguu.supabase.co";
 const ANON_KEY = "sb_publishable_0Qlei5ZvRcEsr18QRdWfGg_N3aR1zyL"; // pública (RLS protege)
@@ -87,25 +87,9 @@ const CHAVE = "_verifica-setup.txt";
 // por causa de um teste. São ~20 linhas.
 const ID_S3 = process.env.R2_ACCESS_KEY_ID || "";
 const SEGREDO_S3 = process.env.R2_SECRET_ACCESS_KEY || "";
-const sha256 = (b) => createHash("sha256").update(b).digest("hex");
-const hmac = (k, d) => createHmac("sha256", k).update(d).digest();
-
-function assinaS3(metodo, host, caminho, corpo) {
-  const amzDate = new Date().toISOString().replace(/[:-]|\.\d{3}/g, "");
-  const dia = amzDate.slice(0, 8);
-  const hashCorpo = sha256(corpo || "");
-  const cab = { host, "x-amz-content-sha256": hashCorpo, "x-amz-date": amzDate };
-  const nomes = Object.keys(cab).sort();
-  const canonico = [metodo, caminho, "", nomes.map((n) => `${n}:${cab[n]}\n`).join(""),
-    nomes.join(";"), hashCorpo].join("\n");
-  const escopo = `${dia}/auto/s3/aws4_request`;
-  const paraAssinar = ["AWS4-HMAC-SHA256", amzDate, escopo, sha256(canonico)].join("\n");
-  let k = hmac("AWS4" + SEGREDO_S3, dia);
-  k = hmac(k, "auto"); k = hmac(k, "s3"); k = hmac(k, "aws4_request");
-  cab.Authorization = `AWS4-HMAC-SHA256 Credential=${ID_S3}/${escopo}, `
-    + `SignedHeaders=${nomes.join(";")}, Signature=${createHmac("sha256", k).update(paraAssinar).digest("hex")}`;
-  return cab;
-}
+// A assinatura mora em scripts/lib/r2.mjs — é a MESMA que o espelho de imagens
+// (mirror-r2.mjs) usa, então este teste prova exatamente o caminho dele.
+const assina = (metodo, host, caminho, corpo) => assinaS3({ id: ID_S3, segredo: SEGREDO_S3 }, metodo, host, caminho, corpo);
 
 if (ID_S3 && SEGREDO_S3 && CONTA) {
   const host = `${CONTA}.r2.cloudflarestorage.com`;
@@ -114,7 +98,7 @@ if (ID_S3 && SEGREDO_S3 && CONTA) {
   try {
     const r = await pega(`https://${host}${caminho}`, {
       method: "PUT", body: carimbo,
-      headers: { ...assinaS3("PUT", host, caminho, carimbo), "content-type": "text/plain" }
+      headers: { ...assina("PUT", host, caminho, carimbo), "content-type": "text/plain" }
     });
     if (!r.ok) {
       const txt = (await r.text()).replace(/\s+/g, " ").slice(0, 200);
@@ -129,7 +113,7 @@ if (ID_S3 && SEGREDO_S3 && CONTA) {
       else ok("leitura pública pelo img.sleevu.app confere byte a byte");
       if (cors === ORIGEM || cors === "*") ok(`CORS no objeto real: ${cors}`);
       else erro(`objeto real veio SEM CORS pra ${ORIGEM} (recebido: ${cors || "nenhum"}) — é isso que faz o "exportar imagem" sair sem foto`);
-      const d = await pega(`https://${host}${caminho}`, { method: "DELETE", headers: assinaS3("DELETE", host, caminho, "") });
+      const d = await pega(`https://${host}${caminho}`, { method: "DELETE", headers: assina("DELETE", host, caminho, "") });
       if (d.ok || d.status === 204) ok("objeto de teste apagado");
       else nota(`o objeto de teste ${CHAVE} ficou no bucket (DELETE devolveu ${d.status}) — apague pelo painel`);
     }

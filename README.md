@@ -222,7 +222,7 @@ build (`--no-fetch`, sem rede); baixar logo novo é passo local. O nome do set e
 inglês é assunto separado, do `JA_SET_EN` no `shared.js`.
 
 Utilitários: `lint-catalog.mjs` (falha em corrupção dura — ids duplicados,
-catálogo zerado), `mirror-*-set-logos.mjs` (espelha logos de set localmente),
+catálogo zerado), `mirror-*-set-logos.mjs` (espelha logos de set localmente), `mirror-r2.mjs` (espelha as imagens de carta no R2, ver docs/BACKEND.md),
 `build-set-id-map.mjs` (de-para TCGdex→pokemontcg.io pras imagens EN que faltam),
 `sync-price-history.mjs` (histórico de preços sem servidor: lê o acumulador do
 deploy anterior, anexa o snapshot de hoje e republica — e emite também os deltas,
