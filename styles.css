@@ -7168,6 +7168,22 @@ html[data-detail="set"] #detailTitle { display: none; }
   width: clamp(240px, 30vw, 520px);
 }
 
+/* 3) SETS (.page-head-stack): o título fica SOZINHO na 1ª linha; abas à
+   esquerda e busca à direita na 2ª. Na fileira única, um título comprido
+   ("Magic: The Gathering Sets") atropelava as abas e a busca (pedido de
+   2026-09-10). Com a linha inteira só pra elas, as abas são o `1fr` (rolam se
+   faltar) e a busca mantém a largura em vw de cima. O respiro título → abas é
+   o DOBRO do que há entre a busca e o contador (os 20px do .page-head); o
+   resto dos espaçamentos não muda. */
+.page-head-bar.page-head-stack:has(> .explore-subnav) {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "title title" "nav search";
+  row-gap: 40px;
+}
+.page-head-stack > .page-head-bar-text { grid-area: title; }
+.page-head-stack > .explore-subnav { grid-area: nav; }
+.page-head-stack:has(> .explore-subnav) .page-search { grid-area: search; }
+
 /* Sem largura pras 3 colunas: título numa linha, busca na linha inteira de
    baixo (no celular o shared.js já move a busca pro header). Abas e controles
    voltam a ser uma faixa própria embaixo — a fileira única é coisa de tela
@@ -7182,6 +7198,13 @@ html[data-detail="set"] #detailTitle { display: none; }
   .page-head-bar > .explore-subnav,
   .page-head-bar > .page-head-bar-tools { grid-column: 1; }
   .page-head-bar h1 { font-size: 28px; }
+  /* Sets: as áreas nomeadas de cima saem (a coluna é uma só) e o respiro
+     entre título e abas volta aos 8px do empilhado — em tela curta os 40px
+     custam caro. */
+  .page-head-bar.page-head-stack:has(> .explore-subnav) { grid-template-areas: none; row-gap: 8px; }
+  .page-head-stack > .page-head-bar-text,
+  .page-head-stack > .explore-subnav,
+  .page-head-stack:has(> .explore-subnav) .page-search { grid-area: auto; grid-column: 1; }
 }
 /* O rótulo "Procurar:" era uma faixa inteira dizendo o que a lupa + placeholder
    já dizem. Fica só pro leitor de tela (padrão visually-hidden). */
