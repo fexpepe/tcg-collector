@@ -138,3 +138,56 @@ test("sem pista nenhuma, ninguém é restringido", () => {
   assert.deepEqual(d.restritos, []);
   assert.equal(d.confiante, false);
 });
+
+// ── Ranqueamento: peso do formato, não posição no texto ──────────────────────
+// O bug que motivou isto: o One Piece imprime o copyright em JAPONÊS à
+// esquerda do código, na mesma linha; o modelo inglês transcreve aquilo como
+// lixo ("E-12", "3/7"), e na ordem do texto o lixo ia pra busca ANTES do
+// "OP05-119" — a borda casava qualquer coisa por prefixo e vinha carta errada.
+test("One Piece: lixo do copyright em japonês não passa na frente do código", () => {
+  const c = codigos("OBE/EEA-FYT E-12 3/7 SHUEISHA OP05-119 SR");
+  assert.equal(c[0], "OP05-119");
+  // Fração de total minúsculo e hífen de uma letra ficam no fim, se ficarem.
+  assert.ok(c.indexOf("3/7") === -1 || c.indexOf("3/7") > c.indexOf("OP05-119"));
+  assert.ok(c.indexOf("E-12") === -1 || c.indexOf("E-12") > c.indexOf("OP05-119"));
+  // Fração plausível continua valendo (Pokémon: "4/102" com lixo antes).
+  assert.equal(codigos("ABC-12 4/102")[0], "4/102");
+});
+
+test("raridade grudada no número e 'O' inicial lido como zero", () => {
+  assert.equal(codigos("OP05-119SR")[0], "OP05-119");
+  assert.equal(codigos("OP01-001L")[0], "OP01-001");
+  assert.equal(codigos("EB01-001C")[0], "EB01-001");
+  assert.equal(codigos("OP05-119SEC")[0], "OP05-119");
+  assert.equal(codigos("0P05-119")[0], "OP05-119");
+  // Yu-Gi-Oh continua com o idioma; "II9" ainda vira 119.
+  assert.equal(codigos("LOB-EN001")[0], "LOB-EN001");
+  assert.equal(codigos("OP05-II9")[0], "OP05-119");
+});
+
+test("confiança das palavras desempata; leituras repetidas votam", () => {
+  const texto = "OP05-113 OP05-119";
+  const palavras = [{ ini: 0, fim: 8, conf: 61 }, { ini: 9, fim: 17, conf: 88 }];
+  const c = S.extrair(texto, palavras);
+  assert.equal(c[0].codigo, "OP05-119");
+  assert.equal(c[0].conf, 88);
+  assert.equal(c[1].codigo, "OP05-113");
+  // Sem palavras a confiança é 0 e vale a ordem do texto.
+  assert.equal(S.extrair(texto)[0].codigo, "OP05-113");
+  // Duas leituras: quem aparece nas duas vence, mesmo com confiança menor.
+  const j = S.juntar([S.extrair("OP05-113", [{ ini: 0, fim: 8, conf: 90 }]), S.extrair("OP05-119 OP05-113")]);
+  assert.equal(j[0].codigo, "OP05-113");
+  assert.equal(j[0].votos, 2);
+  assert.equal(j[1].codigo, "OP05-119");
+});
+
+test("formato de um jogo só dá certeza; formato de vários, não", () => {
+  // Carta do One Piece em inglês: copyright em japonês, nenhuma palavra bate.
+  const d = detecta("OBE/EEA-FYT OP05-119 SR", ["OP05-119"]);
+  assert.equal(d.top, "onepiece");
+  assert.equal(d.confiante, true);
+  assert.equal(detecta("LOB-EN001", ["LOB-EN001"]).confiante, true);
+  assert.equal(detecta("ST01-001", ["ST01-001"]).confiante, false);
+  // Palavra impressa de OUTRO jogo empata com o formato: sem certeza.
+  assert.equal(detecta("DISNEY OP05-119", ["OP05-119"]).confiante, false);
+});

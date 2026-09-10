@@ -30,20 +30,37 @@ guarda isso em `number` (e `setId`), então achar a carta é OCR + busca local.
    contador do **lote** à direita; o resultado aparece num cartão entre o
    disparador e a moldura, com *+ Coleção* na hora; a correção (código, mais
    de um candidato) vive numa folha que só sobe quando precisa. A moldura
-   maior não é só estética: o recorte passa de ~700 pra ~1200 px de largura
-   no vídeo de 1920×1440, e os glifos do código dobram antes do OCR. A moldura
-   dispensa detecção de contorno (OpenCV.js pesa 8 MB); o recorte é o retângulo
-   da guia, reamostrado pra ~1000 px de largura.
+   maior não é só estética: em retrato a largura nativa do recorte é ~40 % da
+   altura do quadro, e os glifos do código crescem junto antes do OCR. Por
+   isso a câmera é pedida em **4K** (`ideal`, o navegador dá o modo mais
+   próximo que tem): a 1920×1440 a carta sobrava com ~760 px de largura e o
+   código do One Piece (~1,8 mm) com ~20 px — trocava dígito. A moldura
+   dispensa detecção de contorno (OpenCV.js pesa 8 MB); cada recorte sai
+   **direto da fonte, em resolução nativa** (a primeira versão reamostrava a
+   carta pra 1000 px e cortava a faixa dessa cópia: jogava fora a maior parte
+   dos pixels de uma foto de 12 MP e depois ampliava o borrão).
 2. **OCR no aparelho** com Tesseract.js 7 (WASM, Apache-2.0), auto-hospedado em
    `assets/vendor/tesseract-7.0.0/` — a CSP é `script-src 'self'`, então nada
    vem de CDN. Modelo `eng` do tessdata_fast (LSTM, ~2 MB gz), whitelist
-   `A-Z 0-9 / - .` e modo *sparse text*. Lê primeiro a **faixa inferior** da
-   carta (24 % da altura, onde mora o código em quase todo jogo) e, se não sair
-   código, a carta inteira.
+   `A-Z 0-9 / - .`, modo *sparse text* e `user_defined_dpi` 300 (canvas não
+   carrega DPI; sem isso o motor assume 70 e estima a fonte errado). Lê do
+   recorte mais justo pro mais largo: o **rodapé** (15 % de baixo, ampliado
+   pra 1800 px de largura), que se sair inseguro (confiança do motor < 85 na
+   palavra do código) é relido noutra escala e as duas leituras **votam**;
+   a **faixa** larga (24 %) só se o rodapé não deu código (carta menor que a
+   moldura, torta); e a carta inteira só sem código ou sem saber o jogo.
 3. **Extração de candidatos** (`extrairCodigos`, função pura com teste):
    códigos com hífen, Union Arena, FAB, fração `N/T`, Magic `SET NUM` e Lorcana
    `SET NUM`, com correção das confusões clássicas do OCR (O→0, I→1, S→5, B→8)
-   só na parte que tem de ser numérica.
+   só na parte que tem de ser numérica, raridade grudada no número
+   (`OP05-119SR`, `OP01-001L`) e `0P05-` de volta a `OP05-`. A ordem dos
+   candidatos é por **peso do formato**, não pela posição no texto: o One
+   Piece imprime o copyright em japonês à esquerda do código, o modelo inglês
+   transcreve aquilo como lixo (`E-12`, `3/7`) e, na ordem do texto, o lixo ia
+   pra busca antes do `OP05-119` e a borda "achava" carta errada. Formato de
+   jogo conhecido vale 3, fração plausível/Magic/Lorcana/FAB 2, hífen de
+   prefixo desconhecido 1, duvidoso 0; empate desempata pela confiança que o
+   Tesseract deu à palavra.
 4. **Detecção do jogo** (`detectarJogo`, função pura com teste), porque o
    mesmo número existe em vários jogos — `4/102` é Pokémon, mas "4" é um set
    do Lorcana e um número do Magic, e a primeira versão devolvia os três.
@@ -51,7 +68,9 @@ guarda isso em `number` (e `setId`), então achar a carta é OCR + busca local.
    Nintendo, Wizards of the Coast, Disney, Eiichiro Oda, Konami…; +3, a mais
    forte), o **formato** do código (OP05- é One Piece, BT1- é Digimon,
    -EN001 é Yu-Gi-Oh, fração é Pokémon/Lorcana/Riftbound; +2 por jogo
-   possível) e o jogo da **sessão** (+1, só desempate). Palavras que vários
+   possível, e formato que só um jogo usa vale como palavra impressa — as
+   cartas do One Piece em inglês não imprimem nada legível além do código) e
+   o jogo da **sessão** (+1, só desempate). Palavras que vários
    jogos dividem (BANDAI, SHUEISHA) ficam de fora. Se a faixa não bastou pra
    ter certeza, lê a carta inteira. O seletor *Jogo* do scanner mostra o
    detectado e a pessoa corrige se errar; "Automático" busca só nos jogos
@@ -102,6 +121,10 @@ busca que a aba *Busca* da bottom-bar abre. Um botão só, dois lugares.
 
 ## Fase 1.5 — afinar com dados reais
 
+- Foto em resolução plena via `ImageCapture.takePhoto()` (Android/Chrome)
+  em vez do quadro do vídeo: mais pixels e foco refeito no disparo. Fica
+  condicionado a checar no aparelho a orientação e o campo de visão do JPEG
+  contra o vídeo — quando diferem, a moldura cai no lugar errado.
 - Log local (só no aparelho) de "texto lido → código → achou?" pra medir a
   taxa de acerto por jogo e ajustar regex/whitelist/faixa.
 - Ranquear Pokémon pelo **código do set** impresso (SVI, PAL, OBF…) mapeando
