@@ -27,6 +27,8 @@ const nymbleJp = { id: "x-9-ja", name: "ヤミラミ", number: "009", setTotal: 
 const charizard = { id: "base1-4", name: "Charizard", number: "4/102", setId: "base1" };
 const lillia = { id: "rb-1", name: "Lillia", number: "001/003", setTotal: 3, setId: "SGN" };
 const luffy = { id: "op-1", name: "Monkey.D.Luffy", number: "OP05-119", setId: "OP-05" };
+// Magic moderno: guardada como "42" + total 321, impressa "0042/0321".
+const boat = { id: "mtg-hob-42", name: "Great Gilded Boat", number: "42", setTotal: 321, setId: "hob", set: "The Hobbit" };
 
 test("cardCode: total na largura do número zero-preenchido (o impresso), sem mexer no resto", () => {
   assert.equal(api.cardCode(nymbleJp), "009/094");   // antes saía "009/94"
@@ -49,6 +51,10 @@ test("cardCodeForms: todas as escritas — com/sem zeros, com/sem total", () => 
   assert.deepEqual(api.cardCodeForms(luffy), ["OP05-119", "OP5-119", "119"]);
   assert.deepEqual(api.cardCodeForms({ number: "BT1-001" }), ["BT1-001", "001", "1"]);
   assert.ok(api.cardCodeForms({ number: "H01", setTotal: 42 }).includes("H1"));   // vintage One Piece
+  // Magic: as escritas de 4 dígitos da carta, sem perder as de 3 e a crua.
+  const b = api.cardCodeForms(boat);
+  for (const esperado of ["42", "042", "0042", "42/321", "0042/0321"]) assert.ok(b.includes(esperado), `${esperado} em ${b}`);
+  assert.ok(!api.cardCodeForms(luffy).includes("0119"), "código com hífen não ganha forma de 4 dígitos");
   assert.deepEqual(api.cardCodeForms({}), []);
 });
 
@@ -78,6 +84,9 @@ test("matchesCardQuery: código impresso, código cru, nome + código, parêntes
   assert.ok(!api.matchesCardQuery(charcadet, "009/094"));
   assert.ok(api.matchesCardQuery(charcadet, "19/94"));
   assert.ok(api.matchesCardQuery(charcadet, "char 19"));
+  // Magic impresso a 4 dígitos ("hob 0042", "0042/0321") acha a guardada como "42".
+  for (const q of ["hob 0042", "0042", "0042/0321", "boat 0042", "hob 42", "42/321"]) assert.ok(api.matchesCardQuery(boat, q), `"${q}" deveria achar a Great Gilded Boat`);
+  assert.ok(!api.matchesCardQuery(boat, "hob 0043"));
   assert.ok(!api.matchesCardQuery(makino, "009/094"));
   assert.ok(api.matchesCardQuery(makino, "eb03-009"));
   assert.ok(api.matchesCardQuery(makino, "makino 009"));
@@ -105,7 +114,7 @@ test("paleta/scanner: fração 'número/total' resolve a carta pelo total do set
 });
 
 test("a cópia do build (scripts/lib/card-code.mjs) dá o mesmo resultado que o shared.js", () => {
-  const cartas = [nymble, nymbleJp, charizard, lillia, luffy,
+  const cartas = [nymble, nymbleJp, charizard, lillia, luffy, boat,
     { number: "4", setTotal: 102 }, { number: "H01", setTotal: 42 }, { number: "RC1", setTotal: 113 },
     { number: "TG09", setTotal: 30 }, { number: "0123", setTotal: 281 }, { number: "" }, {}];
   for (const c of cartas) {
