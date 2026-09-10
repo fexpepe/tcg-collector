@@ -960,6 +960,25 @@ input::placeholder {
 .results-sort .chip { min-height: 32px; padding: 0 12px; font-size: 13px; }
 .results-sort label { margin: 0; white-space: nowrap; }
 .results-sort select { width: auto; max-width: 240px; height: 36px; padding: 0 30px 0 10px; font-size: 13px; font-weight: 600; }
+/* Sets do Pokémon: a origem (EN/PT/JA/ZH) é um FILTRO, então mora na linha do
+   contador, colada à esquerda do ▦/≣ — o grupo inteiro na ponta direita — em
+   vez de uma faixa própria de 38px acima (pedido de 2026-09-10). Chips na
+   altura dos botões de visualização, que aqui descem de 44 pra 38px no mouse
+   (no toque ficam nos 44 do .view-toggle-btn base). O <select> é a versão de
+   celular (regra no @media abaixo); no desktop nem pinta. */
+.results-header-sets { align-items: center; gap: 10px; }
+.results-header-sets > p { margin-right: auto; }
+.results-header-sets .set-region { display: flex; align-items: center; }
+.results-header-sets .set-region-chips { gap: 6px; }
+.results-header-sets .set-region-chips .chip { min-height: 38px; padding: 0 14px; font-size: 13px; }
+.results-header-sets .set-region-select { display: none; margin: 0; }
+.results-header-sets .set-region-select > span {
+  position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+@media (min-width: 701px) {
+  .results-header-sets .view-toggle-btn { min-width: 38px; min-height: 38px; font-size: 1rem; }
+}
 /* Barra de filtros da busca de Cartas: colapsa em QUALQUER largura, como a da
    Coleção e a do set (o botão mora na linha do título). */
 .cards-filters.is-collapsed { display: none; }
@@ -978,6 +997,14 @@ input::placeholder {
      à esquerda, e as ações fecham à direita. */
   .results-header > p { order: 1; }
   .results-header .new-folder-btn { order: 2; margin-right: auto; }
+  /* Sets: o order:1 acima (da Coleção) jogava o contador pro FIM da linha e
+     o ▦/≣ pra esquerda — o inverso do desktop. Aqui a ordem volta a ser
+     contador · origem · visualização, e os 4 chips (que não cabem ao lado do
+     ▦/≣ em 390px) dão lugar ao <select>, na mesma altura dos botões (44px). */
+  .results-header-sets > p { order: 0; }
+  .results-header-sets .set-region-chips { display: none; }
+  .results-header-sets .set-region-select { display: block; }
+  .results-header-sets .set-region-select select { width: auto; height: 44px; font-weight: 700; }
 }
 /* Tela bem estreita: o "Filtros" vira só o ícone pra caber ao lado de "Novo
    showcase" + ▦/≣/☰ numa linha (mesmo recurso dos botões de pasta ≤560px). */
@@ -1051,9 +1078,9 @@ input::placeholder {
 .prof-sortrow { display: flex; justify-content: flex-end; margin: -6px 0 16px; }
 .prof-sort { width: auto; flex: 0 0 auto; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 999px; padding: 7px 13px; font-weight: 700; font-size: 12px; cursor: pointer; }
 /* Cetinha custom DENTRO da cápsula (a nativa fica colada na borda / fora do pill).
-   Vale pros filtros da coleção (.toolbar/.detail-toolbar) e pro seletor de ordenação
-   do perfil público (.prof-sort). */
-.toolbar select, .detail-toolbar select, .prof-sort {
+   Vale pros filtros da coleção (.toolbar/.detail-toolbar), pro seletor de ordenação
+   do perfil público (.prof-sort) e pro <select> de origem dos Sets no celular. */
+.toolbar select, .detail-toolbar select, .prof-sort, .set-region-select select {
   -webkit-appearance: none; appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a93a3' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;

@@ -392,15 +392,24 @@
     }
 
     if (elements.setRegionChips) {
+      // Na tela de Sets a origem tem DUAS caras (chips no desktop, <select> no
+      // celular — sets.html); nos Treinadores só os chips. Os dois escrevem no
+      // mesmo estado e um espelha o outro, senão trocar de largura mostraria
+      // um controle desatualizado.
+      const regionSelect = elements.setRegionChips.querySelector("[data-lang-region-select]");
+      const setLangRegion = (region) => {
+        selectedLangRegion = region;
+        elements.setRegionChips.querySelectorAll("[data-lang-region]").forEach((node) => {
+          node.setAttribute("aria-pressed", node.dataset.langRegion === region ? "true" : "false");
+        });
+        if (regionSelect && regionSelect.value !== region) regionSelect.value = region;
+        applyFilters();
+      };
       elements.setRegionChips.addEventListener("click", (event) => {
         const chip = event.target.closest("[data-lang-region]");
-        if (!chip) return;
-        selectedLangRegion = chip.dataset.langRegion;
-        Array.from(elements.setRegionChips.children).forEach((node) => {
-          node.setAttribute("aria-pressed", node === chip ? "true" : "false");
-        });
-        applyFilters();
+        if (chip) setLangRegion(chip.dataset.langRegion);
       });
+      if (regionSelect) regionSelect.addEventListener("change", () => setLangRegion(regionSelect.value));
     }
 
     // O chunk do set é o maior item do caminho até a primeira carta, e hoje ele

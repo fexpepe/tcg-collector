@@ -81,21 +81,37 @@
            requisicao so sai no primeiro clique. -->
       <section id="marketRail" class="mkt" data-i18n-aria="mkt.title" aria-label="Mercado do jogo" hidden></section>
 
-      <div id="setRegionChips" class="chip-filter master-filter" role="group" data-i18n-aria="aria.setOrigin" aria-label="Origem dos sets">
-        <button type="button" class="chip" data-lang-region="english" aria-pressed="true" data-i18n="setRegion.english">Inglês</button>
-        <button type="button" class="chip" data-lang-region="portuguese" aria-pressed="false" data-i18n="setRegion.portuguese">Português</button>
-        <button type="button" class="chip" data-lang-region="japanese" aria-pressed="false" data-i18n="setRegion.japanese">Japonês</button>
-        <button type="button" class="chip" data-lang-region="chinese" aria-pressed="false" data-i18n="setRegion.chinese">Chinês</button>
-      </div>
-
-
       <section class="toolbar" data-i18n-aria="filters.show" aria-label="Filtros">
       </section>
 
       <!-- Sem o h2 "Sets" aqui: o título da página logo acima já diz Sets —
            repetir só comia uma linha de tela (pedido de 2026-08-28). -->
-      <section class="results-header">
+      <!-- Origem dos sets (EN/PT/JA/ZH): é um FILTRO, não um cabeçalho, então
+           mora na linha do contador, colada à esquerda do ▦/≣ — e não numa faixa
+           própria acima (pedido de 2026-09-10: economiza a faixa e deixa a tela
+           mais organizada). Desktop: chips; celular: <select>, porque 4 chips
+           não cabem ao lado dos botões em 390px. O app.js mantém os dois em
+           sincronia. Segue escondido fora do Pokémon e com idioma de carta fixo
+           (regra do #setRegionChips no styles.css + hidden do app.js). -->
+      <section class="results-header results-header-sets">
         <p id="resultCount">0 resultados</p>
+        <div id="setRegionChips" class="set-region" role="group" data-i18n-aria="aria.setOrigin" aria-label="Origem dos sets">
+          <div class="chip-filter set-region-chips">
+            <button type="button" class="chip" data-lang-region="english" aria-pressed="true" data-i18n="setRegion.english">Inglês</button>
+            <button type="button" class="chip" data-lang-region="portuguese" aria-pressed="false" data-i18n="setRegion.portuguese">Português</button>
+            <button type="button" class="chip" data-lang-region="japanese" aria-pressed="false" data-i18n="setRegion.japanese">Japonês</button>
+            <button type="button" class="chip" data-lang-region="chinese" aria-pressed="false" data-i18n="setRegion.chinese">Chinês</button>
+          </div>
+          <label class="set-region-select">
+            <span data-i18n="aria.setOrigin">Origem dos sets</span>
+            <select data-lang-region-select>
+              <option value="english" selected data-i18n="setRegion.english">Inglês</option>
+              <option value="portuguese" data-i18n="setRegion.portuguese">Português</option>
+              <option value="japanese" data-i18n="setRegion.japanese">Japonês</option>
+              <option value="chinese" data-i18n="setRegion.chinese">Chinês</option>
+            </select>
+          </label>
+        </div>
         <div id="setsViewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
           <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>
           <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista">≣</button>
