@@ -12,7 +12,8 @@
 //      Igual = nada a fazer (o caso de quase todo push). Diferente = grava a
 //      DIFERENÇA: lê as impressões digitais remotas (id + hash por linha),
 //      compara com o catálogo local e escreve só as linhas que mudaram, dentro
-//      de um ORÇAMENTO diário de linhas escritas. A carga total (tabela sombra
+//      de um ORÇAMENTO diário de linhas escritas — e de linhas LIDAS: ler as
+//      impressões também é cobrado, da mesma cota da busca. A carga total (tabela sombra
 //      + troca) só roda quando o banco está numa versão de esquema anterior.
 //      Com LOCK: dois deploys nunca escrevem ao mesmo tempo, e qualquer dúvida
 //      sobre o estado remoto significa NÃO escrever (ver lá embaixo).
@@ -41,7 +42,18 @@ const BANCO = "sleevu-api";
 // variável D1_ROWS_WRITTEN_BUDGET no repositório (Settings -> Variables), sem
 // mexer em código — 1000000 dá 30M/mês com folga pra tudo sair no mesmo dia.
 const ORCAMENTO = Number(process.env.D1_ROWS_WRITTEN_BUDGET) || 90000;
-const MINIMO = 1000;   // abaixo disso não vale nem ler as impressões remotas
+// Orçamento de LEITURA do deploy. Ler as impressões remotas é linha lida, e
+// linha lida sai da MESMA cota que a /api/search gasta (5M/dia no grátis; ao
+// estourar, a busca da borda responde erro até 00:00 UTC e o site inteiro cai
+// no caminho estático). Um deploy inteiro lê ~250 mil (cartas) + ~235 mil
+// (preços), e cada push no main repete a leitura dos jogos que ainda têm
+// pendência. O teto garante que os deploys de um dia nunca comam a fatia da
+// busca: 1M = 20% da cota. Registrado em meta.leituras, no formato de meta.gasto.
+const ORCAMENTO_LEITURA = Number(process.env.D1_ROWS_READ_BUDGET) || 1000000;
+// Abaixo disto não vale ler as impressões remotas: só as de Pokémon são 57 mil
+// linhas lidas (mais 50 mil de preços) — pagar isso pra escrever mil linhas
+// era o que cada push da tarde fazia depois que o cron da manhã gastou o dia.
+const MINIMO = 5000;
 const HOJE = new Date().toISOString().slice(0, 10);
 
 if (!TOKEN || !CONTA) {
@@ -58,6 +70,9 @@ function wrangler(args, opts) {
   });
 }
 const textoErro = (e) => (String((e && e.stdout) || "") + String((e && e.stderr) || "") + String((e && e.message) || e)).replace(/\s+/g, " ");
+// Cota diária do D1 estourada (leitura ou escrita): a API responde "Your
+// account has exceeded the daily limit…". Insistir não adianta até 00:00 UTC.
+const cotaEstourada = (e) => /exceed|daily limit|Your account/i.test(textoErro(e));
 
 // ── 1. Permissão ────────────────────────────────────────────────────────────
 let bancos;
@@ -176,14 +191,23 @@ function soltaLock() {
 // Gasto do dia (linhas escritas pelos deploys de hoje, UTC — o reset da cota
 // é 00:00 UTC). Registrado DEPOIS de cada escrita, com o número que o próprio
 // D1 devolve; se ele não vier, entra a estimativa.
-let gasto = 0;
-function gastoDe(meta) {
-  const [dia, n] = String(meta.get("gasto") || "").split(":");
+// `leituras` é o mesmo contador pras linhas LIDAS (impressões remotas), em
+// meta.leituras — ver ORCAMENTO_LEITURA.
+let gasto = 0, leituras = 0;
+function contadorDe(meta, chave) {
+  const [dia, n] = String(meta.get(chave) || "").split(":");
   return dia === HOJE ? (Number(n) || 0) : 0;
 }
+// Grava os dois contadores de uma vez; pula se nada mudou desde o último
+// registro (a gravação em si é linha escrita, e quem chama grava por garantia).
+let registrado = "";
 function registraGasto() {
-  try { sqlJson(gravaMeta({ gasto: `${HOJE}:${gasto}` })); }
-  catch (e) { console.log("deploy-d1: não consegui registrar o gasto do dia:", textoErro(e).slice(0, 200)); }
+  const agora = `${gasto}/${leituras}`;
+  if (agora === registrado) return;
+  try {
+    sqlJson(gravaMeta({ gasto: `${HOJE}:${gasto}`, leituras: `${HOJE}:${leituras}` }));
+    registrado = agora;
+  } catch (e) { console.log("deploy-d1: não consegui registrar o gasto do dia:", textoErro(e).slice(0, 200)); }
 }
 
 // Executa um arquivo SQL no banco e devolve as linhas escritas que o D1
@@ -209,9 +233,14 @@ function hashLocal(rotulo, arquivo, marcador) {
 
 // Carga TOTAL (tabela sombra + troca, ver build-d1): só quando o banco está
 // numa versão de esquema anterior — a incremental precisa das colunas h/hw e
-// do índice por id, que só a total cria. Escreve 7 milhões de linhas; no plano
-// grátis é UM dia acima da cota, o último. Ignora o orçamento de propósito:
-// sem ela não há incremental nenhuma depois.
+// do índice por id, que só a total cria. Medido na carga do esquema 2
+// (09/09/2026): 8,9 milhões de linhas ESCRITAS e 12,6 milhões LIDAS num import
+// só (criar os 3 índices das palavras varre as 2,3M linhas cada um; a troca das
+// tabelas lê tudo de novo). No plano grátis é UM dia acima das DUAS cotas — a
+// de leitura inclusive, então a /api/search fica fora do ar até 00:00 UTC e o
+// site inteiro usa o caminho estático nesse dia. É o preço de subir ESQUEMA;
+// não subir à toa. Ignora o orçamento de propósito: sem ela não há incremental
+// nenhuma depois.
 function cargaTotal(rotulo, h) {
   console.log(`deploy-d1: CARGA TOTAL de ${rotulo} (${(h.sql.length / 1048576).toFixed(1)} MB, hash ${h.local}) — esquema remoto anterior a ${ESQUEMA}; é a última vez: daqui em diante só a diferença é gravada.`);
   try {
@@ -232,7 +261,6 @@ function cargaTotal(rotulo, h) {
 // jogo: ~250 mil linhas lidas no total, 5% da cota diária de leitura. Se a
 // resposta de um jogo for grande demais pro D1/wrangler, divide a faixa de ids
 // ao meio (pelos ids locais, ordenados) e tenta de novo — até 6 níveis.
-let leituras = 0;
 function lerImpressoes(tabela, colunas, game, idsLocais, lo = null, hi = null, nivel = 0) {
   const cond = [`game = ${aspas(game)}`];
   if (lo != null) cond.push(`id >= ${aspas(lo)}`);
@@ -240,6 +268,10 @@ function lerImpressoes(tabela, colunas, game, idsLocais, lo = null, hi = null, n
   let r;
   try { r = sqlJson(`SELECT ${colunas} FROM ${tabela} WHERE ${cond.join(" AND ")}`); }
   catch (e) {
+    // Cota estourada não é "resposta grande demais": dividir a faixa só
+    // multiplicaria o mesmo erro por 64 tentativas. Sobe direto; o chamador
+    // para o dia (e o site sai igual).
+    if (cotaEstourada(e)) throw e;
     const faixa = idsLocais.filter((id) => (lo == null || id >= lo) && (hi == null || id < hi)).sort();
     if (nivel >= 6 || faixa.length < 2) throw e;
     const meio = faixa[Math.floor(faixa.length / 2)];
@@ -258,11 +290,24 @@ function lerImpressoes(tabela, colunas, game, idsLocais, lo = null, hi = null, n
 // hash da tabela só é gravado quando a diferença coube inteira — senão o
 // próximo deploy recalcula e continua (é a retomada, ver d1-delta.mjs).
 async function cargaIncremental(fazCartas, fazPrecos, hashes) {
+  // O que foi lido conta mesmo que nada tenha sido escrito: registra no fim,
+  // aconteça o que acontecer (o registro é barato e pula se nada mudou).
+  try { await cargaIncrementalCorpo(fazCartas, fazPrecos, hashes); }
+  finally { registraGasto(); }
+}
+async function cargaIncrementalCorpo(fazCartas, fazPrecos, hashes) {
   const restante = () => ORCAMENTO - gasto;
   if (restante() < MINIMO) {
     console.log(`deploy-d1: orçamento do dia esgotado (${gasto} de ${ORCAMENTO} linhas escritas hoje) — o que falta fica pro próximo deploy.`);
     return;
   }
+  // Ler as impressões de um jogo (n linhas) só se cabe no orçamento de LEITURA
+  // do dia; senão o jogo fica pendente — e os seguintes também, pela ordem.
+  const podeLer = (n, rotulo) => {
+    if (ORCAMENTO_LEITURA - leituras >= n) return true;
+    console.log(`deploy-d1: orçamento de LEITURA do dia esgotado (${leituras} de ${ORCAMENTO_LEITURA} linhas lidas hoje; ${rotulo} precisaria de ${n}) — fica pro próximo deploy.`);
+    return false;
+  };
   const stmtsCartas = [], precosPorJogo = [];
   let custoCartas = 0, feitos = 0, pendentes = 0, incompleto = false;
   for await (const { game, cards, precos } of lerCatalogo()) {
@@ -270,6 +315,7 @@ async function cargaIncremental(fazCartas, fazPrecos, hashes) {
     if (!fazCartas) continue;
     if (incompleto || restante() - custoCartas < MINIMO) { incompleto = true; continue; }   // não lê o que não vai gravar
     const mapa = new Map(cards.map((c) => [c.linha.id, c]));
+    if (!podeLer(mapa.size, `cartas de ${game}`)) { incompleto = true; continue; }
     const remotos = lerImpressoes("cards", "id, h, hw", game, [...mapa.keys()]);
     const diff = diffCartas(mapa, remotos);
     const plano = planoCartas(game, diff, mapa, restante() - custoCartas);
@@ -289,6 +335,7 @@ async function cargaIncremental(fazCartas, fazPrecos, hashes) {
   let custo = 0, feitosP = 0, pendentesP = 0, incompletoP = false;
   for (const { game, precos } of precosPorJogo) {
     if (incompletoP || restante() - custo < MINIMO) { incompletoP = true; continue; }
+    if (!podeLer(precos.length, `preços de ${game}`)) { incompletoP = true; continue; }
     const mapa = new Map(precos.map((p) => [p.id, p]));
     const remotos = lerImpressoes("prices", "id, h", game, precos.map((p) => p.id));
     const diff = diffPrecos(new Map(precos.map((p) => [p.id, p.h])), new Map([...remotos].map(([id, l]) => [id, l.h])));
@@ -340,14 +387,16 @@ catch (e) {
   console.log(`deploy-d1: banco não respondeu — NÃO vou escrever nada neste deploy (o próximo tenta de novo). ${e.message}`);
   process.exit(0);
 }
-gasto = gastoDe(meta);
+gasto = contadorDe(meta, "gasto");
+leituras = contadorDe(meta, "leituras");
+registrado = `${gasto}/${leituras}`;   // o que está na meta já é isto: não regrava à toa
 const fazCartas = !!catalogo && meta.get("hash") !== catalogo.local;
 const fazPrecos = !!precos && meta.get("hashPrices") !== precos.local;
 if (!fazCartas && !fazPrecos) {
   console.log("deploy-d1: catálogo e preços já estão no hash local — nada a escrever.");
   process.exit(0);
 }
-console.log(`deploy-d1: ${fazCartas ? "catálogo mudou" : "catálogo igual"} · ${fazPrecos ? "preços mudaram" : "preços iguais"} · orçamento ${ORCAMENTO} linhas/dia, ${gasto} já gastas hoje.`);
+console.log(`deploy-d1: ${fazCartas ? "catálogo mudou" : "catálogo igual"} · ${fazPrecos ? "preços mudaram" : "preços iguais"} · orçamento ${ORCAMENTO} escritas e ${ORCAMENTO_LEITURA} leituras/dia; hoje ${gasto} escritas e ${leituras} leituras.`);
 
 let lock = false;
 try { lock = pegaLock(); }
@@ -363,10 +412,18 @@ try {
   if (totalCartas) cargaTotal("catálogo", catalogo);
   if (totalPrecos) cargaTotal("preços", precos);
   if ((fazCartas && !totalCartas) || (fazPrecos && !totalPrecos)) {
-    await cargaIncremental(fazCartas && !totalCartas, fazPrecos && !totalPrecos,
-      { catalogo: catalogo && catalogo.local, precos: precos && precos.local });
+    // Erro no meio (o D1 recusando a leitura por cota, rede): o site sai igual
+    // e a diferença é recalculada no próximo deploy. Antes o erro subia sem
+    // ninguém pegar e DERRUBAVA o build do site — por causa de um passo que
+    // existe pra degradar sem quebrar.
+    try {
+      await cargaIncremental(fazCartas && !totalCartas, fazPrecos && !totalPrecos,
+        { catalogo: catalogo && catalogo.local, precos: precos && precos.local });
+    } catch (e) {
+      console.log(`deploy-d1: carga incremental interrompida (o site continua; o próximo deploy retoma): ${textoErro(e).slice(0, 300)}`);
+    }
   }
-  console.log(`deploy-d1: ${gasto} linhas escritas hoje (orçamento ${ORCAMENTO}; leituras nesta rodada ${leituras}).`);
+  console.log(`deploy-d1: hoje ${gasto} linhas escritas (orçamento ${ORCAMENTO}) e ${leituras} lidas (orçamento ${ORCAMENTO_LEITURA}).`);
 } finally {
   soltaLock();
 }

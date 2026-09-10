@@ -136,6 +136,18 @@ atrasa. Cartas têm prioridade sobre preços. `tests/d1-delta.test.mjs` prova qu
 o plano incremental deixa um SQLite real idêntico a uma carga total, em rodadas
 de orçamento e retomado de interrupção em qualquer statement.
 
+**Orçamento de leitura.** Ler as impressões remotas também é cobrado — da
+*mesma* cota de 5 milhões de linhas lidas por dia que a `/api/search` usa.
+Estourou, a busca da borda responde erro até 00:00 UTC e o site inteiro cai no
+caminho estático (é o e-mail "D1 row read requests are temporarily blocked").
+Um deploy inteiro lê ~250 mil linhas de cartas e ~235 mil de preços, e cada
+push no `main` repete a leitura dos jogos ainda pendentes; por isso o deploy
+soma o que leu em `meta.leituras` e para em 1 milhão por dia (variável
+`D1_ROWS_READ_BUDGET`; 20000000 no Workers Paid). A carga total é a exceção
+consciente: medida em 09/09/2026, custou 12,6 milhões de linhas lidas e 8,9
+milhões escritas num import só — subir `ESQUEMA` é aceitar um dia com a busca
+da borda fora do ar.
+
 ---
 
 ## 3. Preço

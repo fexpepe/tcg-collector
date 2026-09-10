@@ -622,6 +622,12 @@ jobs:
       # que mudaram, dentro do orçamento diário abaixo; o que não coube sai no
       # deploy seguinte. A variável (Settings -> Variables) é o único ajuste ao
       # trocar de plano: vazia = 90 mil (grátis); no Workers Paid, 1000000.
+      #
+      # E SÓ A LEITURA QUE CABE. Ler as impressões remotas também é cobrado, da
+      # MESMA cota de 5M linhas lidas/dia que a /api/search usa — estourou, a
+      # busca da borda responde erro até 00:00 UTC (o e-mail "rows read
+      # temporarily blocked"). O deploy-d1 soma o que leu em meta.leituras e
+      # para em 1M/dia (D1_ROWS_READ_BUDGET; no Workers Paid, 20000000).
       - name: Prepara a API na borda (D1)
         if: github.ref == 'refs/heads/main'
         run: |
@@ -631,6 +637,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           D1_ROWS_WRITTEN_BUDGET: ${{ vars.D1_ROWS_WRITTEN_BUDGET }}
+          D1_ROWS_READ_BUDGET: ${{ vars.D1_ROWS_READ_BUDGET }}
 
       # O game.js injeta o catálogo em runtime por jogo; em produção ele carrega
       # os arquivos .generated mesclados em vez dos crus. Basta flipar a flag.
