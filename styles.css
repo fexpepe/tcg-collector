@@ -1648,9 +1648,14 @@ input::placeholder {
   align-items: stretch;
 }
 .group-grid[data-view="sets"].is-list .set-card:hover { transform: none; }
-.is-list .set-art { min-height: 0; height: 100%; padding: 8px; }
+/* Toda linha com a MESMA altura (58px = logo de 42 + 2×8 de padding), tenha
+   logo ou nome: sem o piso, a linha seguia a altura do logo (varia com a
+   proporção) e a do nome vinha maior ainda (herdava o chip alto da grade). */
+.is-list .set-art { min-height: 58px; height: 100%; padding: 8px; }
 .is-list .set-logo { max-height: 42px; }
-.is-list .set-logo-placeholder { font-size: 12px; line-height: 1.15; -webkit-line-clamp: 2; }
+/* Sem o selo de data na lista, o nome não precisa da faixa de cima; 3 linhas
+   de 12px × 1.1 = 40px, dentro dos 42 úteis. */
+.is-list .set-logo-placeholder { font-size: 12px; line-height: 1.1; -webkit-line-clamp: 3; padding-top: 0; }
 .is-list .set-symbol,
 .is-list .set-release { display: none; }
 .is-list .set-body {
@@ -2322,28 +2327,28 @@ input::placeholder {
 
 .set-logo-placeholder {
   color: #0a0c10;
-  font-size: clamp(15px, 1.5vw, 19px);
+  /* Fonte e nº de linhas dimensionados pra caber nos MESMOS 96px do chip com
+     logo (96 − 2×14 de padding = 68px úteis; 18 do selo + 2 linhas de 16px ×
+     1.15 = 55px). Antes o chip com nome crescia pra 108px e ficava fora do
+     padrão dos vizinhos com logo, na grade e na lista (pedido de 2026-09-10:
+     tamanho igual, ajustando a fonte se preciso). */
+  font-size: clamp(14px, 1.25vw, 16px);
   font-weight: 800;
   line-height: 1.15;
   text-align: center;
   text-wrap: balance; /* quebra em linhas parelhas em vez de deixar 1 órfã */
   /* Nome comprido ("Starter Deck 09: Destiny Ignition") não pode empurrar a
-     altura do tile e desalinhar a grade: corta em 3 linhas com reticências. */
+     altura do tile e desalinhar a grade: corta em 2 linhas com reticências. */
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   max-width: 100%;
   overflow-wrap: anywhere;
   /* O selo de data flutua no canto superior direito do chip: sem esta faixa
-     reservada, nome de 3 linhas passava POR BAIXO dele (medido em
+     reservada, o nome passava POR BAIXO dele (medido em
      "Vol. 5 — Evenly Matched! Preliminary Death Match" e afins). */
   padding-top: 18px;
-}
-/* Chip um pouco mais alto só onde há nome no lugar do logo — cabe o padding de
-   cima sem espremer a 3ª linha. Tiles com logo seguem nos 96px de sempre. */
-.set-art:has(.set-logo-placeholder) {
-  min-height: 108px;
 }
 
 .set-symbol {
