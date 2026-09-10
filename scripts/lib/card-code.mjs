@@ -47,10 +47,17 @@ export function cardCodeForms(card) {
   const totalNum = /^\d+$/.test(total) ? String(parseInt(total, 10)) : "";
   const width = totalNum ? Math.max(3, total.length) : 3;
   const nums = numberSearchForms(num, width);
+  // O Magic moderno imprime número E total a QUATRO dígitos ("0042/0321" na
+  // Great Gilded Boat, guardada como "42" + total 321) — largura que a régua
+  // de 3 acima não gera. "hob 0042", digitado como está na carta, não achava
+  // com o catálogo carregado, enquanto a borda e a paleta (que comparam por
+  // valor) achavam (2026-09-10). Entra como escrita a mais, número e fração.
+  const n4 = /^\d+$/.test(num) ? String(parseInt(num, 10)).padStart(4, "0") : "";
   const out = [];
   const add = (f) => { if (f && !out.includes(f)) out.push(f); };
   add(String(card.number || "").trim());
   nums.forEach(add);
+  add(n4);
   const cauda = /\d$/.test(num) && !/^\d+$/.test(num) ? num.match(/(\d+)$/)[1] : "";
   if (cauda) numberSearchForms(cauda, 3).forEach(add);
   if (total) {
@@ -62,6 +69,7 @@ export function cardCodeForms(card) {
         add(`${n}/${totalNum}`);
         add(`${n}/${totalPad}`);
       });
+      if (n4) add(`${n4}/${totalNum.padStart(4, "0")}`);
     } else {
       nums.forEach((n) => add(`${n}/${total}`));
     }
