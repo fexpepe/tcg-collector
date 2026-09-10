@@ -13,8 +13,10 @@ import { ESPELHO, ORDEM, chaveDe, urlEspelho, variantesDe, versaoDe } from "../s
 const sb = loadShared("window.__test = { mirrorImageUrl };");
 const { mirrorImageUrl } = sb.window.__test;
 const { localizedImg } = sb.window.TCGShared;
-const cadeia = (html) => { const m = html.match(/data-img-fallbacks="([^"]*)"/); return m ? m[1].split("|") : []; };
-const src = (html) => html.match(/ src="([^"]*)"/)[1];
+// Atributos saem escapados (& vira &amp;): desfaz pra comparar com a URL crua.
+const des = (s) => s.replace(/&amp;/g, "&");
+const cadeia = (html) => { const m = html.match(/data-img-fallbacks="([^"]*)"/); return m ? des(m[1]).split("|") : []; };
+const src = (html) => des(html.match(/ src="([^"]*)"/)[1]);
 const srcset = (html) => { const m = html.match(/ srcset="([^"]*)"/); return m ? m[1] : ""; };
 
 const TCGDEX = "https://assets.tcgdex.net/en/base/base1/4/high.png";
@@ -35,6 +37,29 @@ test("variantes: o que o job copia é o que o site pede de cada fonte", () => {
   assert.deepEqual(variantesDe(SCRY), [SCRY]);
   assert.deepEqual(variantesDe("https://images.pokemontcg.io/base1/4.png"), []);   // só fallback: não se espelha
   assert.deepEqual(variantesDe("assets/games/game_pokemon.webp"), []);
+});
+
+const WSRV = "https://wsrv.nl/?url=static.wikia.nocookie.net%2Fhunterxhunter%2Fimages%2Fb%2Fbe%2FHyper_battle_part_1_card_c01.png&w=440&output=webp";
+const WSRV_WE = "https://wsrv.nl/?url=www.tv-tokyo.co.jp%2Fanime%2Fnaruto2002%2Fgoods%2Fcardimg%2Fa%20b.jpg&w=440&we&output=webp";
+const WSRV_LOGO = "https://wsrv.nl/?url=https%3A%2F%2Fx.cloudfront.net%2Flogo.png&w=600&output=webp&we";   // logo de set: outro formato
+
+test("wsrv.nl (vintage): chave vem do parâmetro url, com a largura; só o formato dos syncs", () => {
+  assert.deepEqual(variantesDe(WSRV), [WSRV]);
+  assert.equal(chaveDe(WSRV), "wsrv.nl/w440/static.wikia.nocookie.net/hunterxhunter/images/b/be/Hyper_battle_part_1_card_c01.png");
+  assert.equal(chaveDe(WSRV_WE), "wsrv.nl/w440/www.tv-tokyo.co.jp/anime/naruto2002/goods/cardimg/a b.jpg");
+  assert.equal(versaoDe(WSRV), "");
+  assert.deepEqual(variantesDe(WSRV_LOGO), []);
+  const esperado = `${ESPELHO}wsrv.nl/w440/www.tv-tokyo.co.jp/anime/naruto2002/goods/cardimg/a%20b.jpg`;
+  assert.equal(urlEspelho(WSRV_WE, ["wsrv.nl"]), esperado);
+  assert.equal(urlEspelho(WSRV_LOGO, ["wsrv.nl"]), "");
+  sb.SLEEVU = { imgMirrorHosts: ["wsrv.nl"] };
+  assert.equal(mirrorImageUrl(WSRV_WE), esperado);
+  assert.equal(mirrorImageUrl(WSRV), urlEspelho(WSRV, ["wsrv.nl"]));
+  assert.equal(mirrorImageUrl(WSRV_LOGO), "");
+  const html = localizedImg(WSRV, { thumb: true });
+  assert.equal(src(html), urlEspelho(WSRV, ["wsrv.nl"]));
+  assert.deepEqual(cadeia(html), [WSRV]);   // a origem (o proxy) logo atrás
+  delete sb.SLEEVU;
 });
 
 test("chave = host + caminho; a query do Scryfall é a versão, não parte da chave", () => {

@@ -25,6 +25,17 @@ const RE_TCGDEX = /(?:\/(?:low|high))?\.(?:png|webp|jpg)$/;
 // chega (caso Gundam documentado no sw.js) — então cartas de set recente são
 // conferidas de novo por um tempo.
 export const FONTES = {
+  // Vintage (Naruto, Hunter × Hunter, One Piece Carddass/2002, Miracle
+  // Battle): os scans vivem em fã-sites e wikis e o site os pede
+  // redimensionados pelo proxy wsrv.nl (440px webp). A URL é toda query, e a
+  // chave sai do parâmetro `url` (ver chaveWsrv). Primeiro na ordem: são ~5
+  // mil objetos, e é o caso em que o espelho mais vale — fã-site morre sem
+  // aviso, e o proxy é ponto único de falha de 3 jogos. Concorrência baixa:
+  // é um serviço gratuito de terceiro fazendo o resize por nós.
+  "wsrv.nl": {
+    concorrencia: 2, intervaloMs: 300,
+    variantes: (u) => [u]
+  },
   "cards.lorcast.io": {
     concorrencia: 3, intervaloMs: 100,
     variantes: (u) => [u.replace("/card/digital/large/", "/card/digital/normal/"), u]
@@ -48,20 +59,35 @@ export const FONTES = {
 export const ORDEM = Object.keys(FONTES);
 
 export function hostDe(u) { try { return new URL(u).host; } catch { return ""; } }
+// wsrv.nl: a chave é wsrv.nl/w<largura>/<host e caminho de ORIGEM>, tirados
+// do parâmetro `url` (os syncs o codificam com encodeURIComponent; aqui
+// decodifica de volta pra virar caminho de verdade no bucket). Só o formato
+// que os syncs produzem (url + w [+ we] + output=webp) — outra query é outra
+// imagem e fica de fora. Mesma regra no cliente (mirrorImageUrl).
+const RE_WSRV = /^https:\/\/wsrv\.nl\/\?url=([^&]+)&w=(\d+)(?:&we)?&output=webp$/;
+export function chaveWsrv(u) {
+  const m = RE_WSRV.exec(String(u || ""));
+  return m ? `wsrv.nl/w${m[2]}/${decodeURIComponent(m[1]).replace(/^https?:\/\//, "")}` : "";
+}
 // Chave no bucket: host + caminho, SEM query. A query do Scryfall (?1783943085)
 // é um carimbo de versão da arte: fica no índice como `versao`, e quando muda
 // o objeto é baixado de novo.
-export function chaveDe(u) { const x = new URL(u); return x.host + x.pathname; }
-export function versaoDe(u) { return new URL(u).search.replace(/^\?/, ""); }
+export function chaveDe(u) { const x = new URL(u); return x.host === "wsrv.nl" ? chaveWsrv(u) : x.host + x.pathname; }
+export function versaoDe(u) { const x = new URL(u); return x.host === "wsrv.nl" ? "" : x.search.replace(/^\?/, ""); }
 export function variantesDe(u) {
   const f = FONTES[hostDe(u)];
-  return f ? [...new Set(f.variantes(u))] : [];
+  if (!f) return [];
+  if (hostDe(u) === "wsrv.nl" && !chaveWsrv(u)) return [];   // query fora do formato dos syncs
+  return [...new Set(f.variantes(u))];
 }
 // URL espelhada de uma URL de origem, se o host estiver na lista dos
 // COMPLETOS (o deploy injeta a lista no game.js). Mesma regra do cliente.
 export function urlEspelho(u, hosts) {
   const m = /^https:\/\/([^/?#]+)(\/[^?#]*)/.exec(String(u || ""));
   if (!m || !hosts || hosts.indexOf(m[1]) < 0) return "";
+  // wsrv.nl: caminho no bucket vem da query (encodeURI: espaço e kana do
+  // fã-site viram %XX, barra fica — o mesmo que o navegador faria com o src).
+  if (m[1] === "wsrv.nl") { const k = chaveWsrv(u); return k ? ESPELHO + encodeURI(k) : ""; }
   // Da TCGdex só as variantes webp moram no espelho (é o que o site pede); o
   // png original fica na cadeia de fallback, apontando pra origem.
   if (m[1] === "assets.tcgdex.net" && !/\.webp$/.test(m[2])) return "";

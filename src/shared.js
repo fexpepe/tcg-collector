@@ -4322,10 +4322,16 @@
   // carta nova de hoje, ainda não espelhada, cai nela sem ninguém perceber.
   // Da TCGdex só as variantes webp vivem no espelho (é o que o site pede).
   // Mesma regra de scripts/lib/img-mirror.mjs (o teste trava as duas).
+  // wsrv.nl (vintage): a URL é toda query; a chave no espelho é
+  // wsrv.nl/w<largura>/<host e caminho de origem>, do parâmetro url.
   function mirrorImageUrl(u) {
     const hosts = (window.SLEEVU && window.SLEEVU.imgMirrorHosts) || [];
     const m = /^https:\/\/([^/?#]+)(\/[^?#]*)/.exec(u || "");
     if (!m || hosts.indexOf(m[1]) < 0 || (m[1] === "assets.tcgdex.net" && !/\.webp$/.test(m[2]))) return "";
+    if (m[1] === "wsrv.nl") {
+      const w = /^https:\/\/wsrv\.nl\/\?url=([^&]+)&w=(\d+)(?:&we)?&output=webp$/.exec(u);
+      return w ? "https://img.sleevu.app/" + encodeURI("wsrv.nl/w" + w[2] + "/" + decodeURIComponent(w[1]).replace(/^https?:\/\//, "")) : "";
+    }
     return "https://img.sleevu.app/" + m[1] + m[2];
   }
 
