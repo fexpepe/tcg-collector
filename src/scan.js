@@ -507,7 +507,13 @@
     const input = $("[data-scan-input]");
     const acoesFolha = $("[data-scan-sheet-acoes]");
 
-    const dizer = (msg) => { status.textContent = msg; };
+    // A dica sob a moldura some com a mensagem vazia (o [hidden] global vence o
+    // display:flex). "Encaixe a carta na moldura…" é instrução de PRIMEIRA
+    // vez: depois da primeira leitura ela não volta — voltava a cada leitura
+    // e encavalava com o cartão de resultado, que ocupa o mesmo lugar.
+    let jaLeu = false;
+    const dizer = (msg) => { status.textContent = msg; dica.hidden = !msg; };
+    const pronto = () => dizer(jaLeu ? "" : t("scan.status.ready"));
     const aviso = (msg) => { if (msg) { toastTexto.textContent = msg; toast.hidden = false; } else toast.hidden = true; };
     // Progresso do motor em linguagem de gente: só as duas fases que demoram
     // (baixar o núcleo e o modelo, na primeira vez) viram texto.
@@ -590,7 +596,7 @@
       await new Promise((r) => { if (video.readyState >= 1) r(); else video.onloadedmetadata = () => r(); });
       try { await video.play(); } catch (e) { /* autoplay já cuidou */ }
       btnLer.disabled = false;
-      dizer(t("scan.status.ready"));
+      pronto();
     }
     btnTorch.addEventListener("click", async () => {
       if (!stream) return;
@@ -723,6 +729,7 @@
     async function ler(fonte, rec) {
       if (ocupado) return;
       ocupado = true;
+      let falhou = false;
       btnLer.disabled = true;
       resCard.hidden = true;
       fecharFolha();
@@ -753,12 +760,15 @@
         const { codigo, achados } = await procurar(codigos);
         entregar(codigo, achados);
       } catch (e) {
+        falhou = true;
         dizer(t("scan.error"));
       } finally {
         ocupado = false;
+        jaLeu = true;
         aviso("");
         guia.classList.remove("is-lendo");
-        if (stream) { btnLer.disabled = false; dizer(t("scan.status.ready")); }
+        // Erro fica na tela (a dica só volta a sumir na próxima leitura).
+        if (stream) { btnLer.disabled = false; if (!falhou) pronto(); }
       }
     }
     async function buscarManual(q) {
@@ -823,7 +833,7 @@
     abrirCamera();
     // Aquece o motor enquanto a pessoa enquadra: na primeira vez é o download
     // dos ~3,5 MB, que assim acontece ANTES do toque no disparador.
-    obterWorker(progresso).then(() => { if (stream && !ocupado) dizer(t("scan.status.ready")); }).catch(() => dizer(t("scan.error")));
+    obterWorker(progresso).then(() => { if (stream && !ocupado) pronto(); }).catch(() => dizer(t("scan.error")));
   }
 
   window.TCGScan = { abrir, extrairCodigos, soDigitos, detectarJogo };
