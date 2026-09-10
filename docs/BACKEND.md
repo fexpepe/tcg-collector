@@ -128,8 +128,9 @@ dia — por isso ela só roda na primeira carga ou quando a versão do esquema
 impressões digitais remotas (`h` da linha, `hw` das palavras; `h` do preço),
 compara com o catálogo local (`scripts/lib/d1-delta.mjs`) e grava só o que
 mudou: centenas de cartas e alguns milhares de preços por dia. Tudo dentro de um
-orçamento diário registrado em `meta.gasto` — padrão 90 mil linhas, ajustável
-pela variável `D1_ROWS_WRITTEN_BUDGET` do repositório (1000000 no Workers Paid).
+orçamento diário registrado em `meta.gasto` — padrão 1 milhão de linhas (a conta
+está no Workers Paid desde 10/09/2026); a variável `D1_ROWS_WRITTEN_BUDGET` do
+repositório existe pra voltar ao grátis (90000) sem mexer em código.
 O que não coube fica pro deploy seguinte: a diferença é sempre recalculada
 contra o banco, então uma carga interrompida ou parcial nunca perde nada, só
 atrasa. Cartas têm prioridade sobre preços. `tests/d1-delta.test.mjs` prova que
@@ -142,8 +143,8 @@ Estourou, a busca da borda responde erro até 00:00 UTC e o site inteiro cai no
 caminho estático (é o e-mail "D1 row read requests are temporarily blocked").
 Um deploy inteiro lê ~250 mil linhas de cartas e ~235 mil de preços, e cada
 push no `main` repete a leitura dos jogos ainda pendentes; por isso o deploy
-soma o que leu em `meta.leituras` e para em 1 milhão por dia (variável
-`D1_ROWS_READ_BUDGET`; 20000000 no Workers Paid). A carga total é a exceção
+soma o que leu em `meta.leituras` e para em 20 milhões por dia (variável
+`D1_ROWS_READ_BUDGET`; 1000000 no grátis). A carga total é a exceção
 consciente: medida em 09/09/2026, custou 12,6 milhões de linhas lidas e 8,9
 milhões escritas num import só — subir `ESQUEMA` é aceitar um dia com a busca
 da borda fora do ar.

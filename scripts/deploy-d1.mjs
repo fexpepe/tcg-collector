@@ -38,18 +38,22 @@ const BANCO = "sleevu-api";
 // gravado no deploy seguinte (a diferença é recalculada contra o banco, então
 // nada se perde — só atrasa). 90 mil e não 100: a estimativa é por cima, mas
 // a margem cobre uma leitura de meta a mais ou um índice que a conta esqueceu.
-// Passou pro Workers Paid (50M de escritas/mês inclusas)? É só definir a
-// variável D1_ROWS_WRITTEN_BUDGET no repositório (Settings -> Variables), sem
-// mexer em código — 1000000 dá 30M/mês com folga pra tudo sair no mesmo dia.
-const ORCAMENTO = Number(process.env.D1_ROWS_WRITTEN_BUDGET) || 90000;
+// A conta está no Workers Paid desde 10/09/2026 (50M de escritas e 25 bilhões
+// de leituras por mês inclusas): o padrão é o do plano pago — 1M de escritas
+// por dia dá 30M/mês, com folga pra tudo sair no mesmo dia. Voltou pro
+// grátis? Define D1_ROWS_WRITTEN_BUDGET=90000 (e D1_ROWS_READ_BUDGET=1000000)
+// no repositório (Settings -> Variables), sem mexer em código.
+const ORCAMENTO = Number(process.env.D1_ROWS_WRITTEN_BUDGET) || 1000000;
 // Orçamento de LEITURA do deploy. Ler as impressões remotas é linha lida, e
 // linha lida sai da MESMA cota que a /api/search gasta (5M/dia no grátis; ao
 // estourar, a busca da borda responde erro até 00:00 UTC e o site inteiro cai
 // no caminho estático). Um deploy inteiro lê ~250 mil (cartas) + ~235 mil
 // (preços), e cada push no main repete a leitura dos jogos que ainda têm
 // pendência. O teto garante que os deploys de um dia nunca comam a fatia da
-// busca: 1M = 20% da cota. Registrado em meta.leituras, no formato de meta.gasto.
-const ORCAMENTO_LEITURA = Number(process.env.D1_ROWS_READ_BUDGET) || 1000000;
+// busca. Padrão do plano pago: 20M/dia (600M/mês dos 25 bilhões); no grátis a
+// variável vale 1000000 (20% dos 5M). Registrado em meta.leituras, no formato
+// de meta.gasto.
+const ORCAMENTO_LEITURA = Number(process.env.D1_ROWS_READ_BUDGET) || 20000000;
 // Abaixo disto não vale ler as impressões remotas: só as de Pokémon são 57 mil
 // linhas lidas (mais 50 mil de preços) — pagar isso pra escrever mil linhas
 // era o que cada push da tarde fazia depois que o cron da manhã gastou o dia.
