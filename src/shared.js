@@ -2219,17 +2219,51 @@
   let storageFullNotified = false;
   // Retorno TÁTIL dos momentos em que algo entrou na coleção. É o detalhe que
   // separa app nativo de site no celular: o dedo sente que a ação pegou, sem
-  // precisar procurar a confirmação na tela.
+  // precisar procurar a confirmação na tela. É o ÚNICO ponto que toca o motor
+  // de vibração — chamador nenhum usa navigator.vibrate direto, senão a regra
+  // de movimento reduzido e o fallback do iOS abaixo ficam pela metade.
   //
-  // Escopo honesto: Android/Chrome. O iOS não expõe a Vibration API — lá a
-  // chamada simplesmente não existe e o try/catch cobre. Também não vibra com
-  // movimento reduzido ligado: quem pede menos estímulo está pedindo menos
-  // estímulo, não só menos animação.
+  // Android (Chrome, Firefox, Samsung): Vibration API, aceita duração ou
+  // padrão ([20, 50, 20]). Só dispara depois de uma interação do usuário na
+  // página — todos os chamadores estão em handlers de toque/clique.
+  //
+  // iOS não expõe a Vibration API, nem em PWA instalada (todo navegador de
+  // lá é WebKit). O que existe (set/2026) é um efeito colateral: desde o
+  // iOS 18 o Safari dá um "tick" háptico nativo quando um
+  // <input type="checkbox" switch> muda de estado por interação. Então, sem
+  // navigator.vibrate e com tela de toque, alterna-se um switch escondido
+  // dentro do mesmo gesto do usuário. É um toque fixo (sem duração nem
+  // padrão) e comportamento não documentado como API: enfeite, nunca algo
+  // de que a interface dependa. Se a Apple fechar a porta, só some o tátil.
+  //
+  // Não vibra com movimento reduzido ligado: quem pede menos estímulo está
+  // pedindo menos estímulo, não só menos animação.
+  let hapticSwitch = null;
+  function tickIOS() {
+    // Sem tela de toque não há motor pra bater (Mac, desktop) — e no iPadOS
+    // o UA se diz Mac, então a pista é maxTouchPoints, não o user-agent.
+    if (!(navigator.maxTouchPoints > 0) || !document.body) return;
+    if (!hapticSwitch) {
+      const label = document.createElement("label");
+      label.setAttribute("aria-hidden", "true");
+      label.hidden = true;
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.setAttribute("switch", "");
+      input.tabIndex = -1;
+      label.appendChild(input);
+      document.body.appendChild(label);
+      hapticSwitch = label;
+    }
+    // Clicar no label (não no input) é o que o Safari trata como toggle por
+    // interação; setar .checked direto não gera o tick.
+    hapticSwitch.click();
+  }
   function vibrar(ms) {
     try {
-      if (!navigator.vibrate) return;
       if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      navigator.vibrate(ms);
+      if (navigator.vibrate) navigator.vibrate(ms);
+      else tickIOS();
     } catch (e) { /* sem suporte: segue sem tátil */ }
   }
 
@@ -7085,7 +7119,7 @@
         const el = hoverThumbShow(url, true);
         el.style.top = "";
         el.style.left = "";
-        if (navigator.vibrate) { try { navigator.vibrate(10); } catch (e) { /* ignora */ } }
+        vibrar(10); // o long-press "pegou" (ver vibrar())
       }, LONG_PRESS_MS);
     }, { passive: true });
     document.addEventListener("touchmove", (ev) => {
