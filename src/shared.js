@@ -3849,10 +3849,46 @@
   // depois mostrava uma reta entre duas datas distantes. Aqui em cima, qualquer
   // tela que já tenha a conta na mão grava o ponto.
   const histKeyOf = (g) => gameKey("history-v2", g);
+  // Vale ISOLADO no histórico = ponto gravado com a coleção carregada pela
+  // metade (2026-09-12). Antes das guardas `parcial` e quedaSuspeita (abaixo),
+  // uma carga manca no celular gravava o dia com R$ 1.680 numa coleção de
+  // R$ 195 mil, e o ponto subia pra nuvem: o mergeHistory é UNIÃO por data,
+  // então ele voltava pra todo aparelho e o gráfico mostrava um "V" pra
+  // sempre. As guardas impedem pontos novos assim; esta função tira os que já
+  // existem, em todo caminho por onde o histórico passa (leitura, gravação e
+  // mesclagem do sync — senão o vale volta da nuvem na próxima união).
+  //
+  // Critério: patrimônio (c+b) abaixo de METADE do último ponto são, e o
+  // valor volta (≥ metade daquele) em até 14 dias. "Vendi tudo" fica — não
+  // recupera; "vendi e recomprei tudo em uma semana" cairia aqui, e é
+  // improvável o bastante pra não pagar o preço de manter o buraco. O último
+  // ponto nunca é julgado (não tem "depois") — quem cuida dele é a
+  // quedaSuspeita na hora de gravar.
+  const SANEIA_JANELA_DIAS = 14;
+  function saneiaHistorico(hist) {
+    if (!Array.isArray(hist) || hist.length < 3) return hist;
+    const val = (p) => (Number(p.c) || 0) + (Number(p.b) || 0);
+    const dias = (a, b) => (Date.parse(b.d) - Date.parse(a.d)) / 864e5;
+    const out = [];
+    let i = 0;
+    while (i < hist.length) {
+      const p = hist[i];
+      const antes = out[out.length - 1];
+      const piso = antes ? val(antes) * 0.5 : 0;
+      if (antes && piso > 0 && val(p) < piso) {
+        let j = i + 1;
+        while (j < hist.length && dias(p, hist[j]) <= SANEIA_JANELA_DIAS && val(hist[j]) < piso) j++;
+        if (j < hist.length && dias(p, hist[j]) <= SANEIA_JANELA_DIAS) { i = j; continue; } // descarta i..j-1
+      }
+      out.push(p);
+      i++;
+    }
+    return out.length === hist.length ? hist : out;
+  }
   function valueHistory(game) {
     try {
       const a = JSON.parse(localStorage.getItem(histKeyOf(game)) || "[]");
-      return Array.isArray(a) ? a : [];
+      return Array.isArray(a) ? saneiaHistorico(a) : [];
     } catch (e) { return []; }
   }
   // Migra o histórico antigo (v1: c=coleção, b=binders, w=wishlist) pro v2 do
@@ -3972,6 +4008,8 @@
     Object.keys(perGame || {}).forEach((g) => {
       const dados = perGame[g] || {};
       migrateHistoryV1(g);
+      // Já SANEADO pelo valueHistory: a regravação abaixo é o que limpa o
+      // localStorage de um vale antigo e o marcaSuja sobe a versão limpa.
       const hist = valueHistory(g);
       const doDia = hist.length && hist[hist.length - 1].d === hoje ? hist[hist.length - 1] : null;
       const anterior = doDia || hist[hist.length - 1] || {};
@@ -9263,6 +9301,7 @@
     collectionNetWorth,
     valueSnapshot,
     valueHistory,
+    saneiaHistorico,
     recordValueSnapshot,
     currencySymbol: saleCurrencySymbol,
     distBarsHtml,
@@ -10004,11 +10043,13 @@
   }
   // Histórico do portfólio ([{ d, c, b, w }]): une por dia; em conflito o local
   // vence (foi recém-calculado a partir da coleção já mesclada). Teto de 800 dias.
+  // União por data (local vence no empate) e depois o saneiaHistorico: sem
+  // ele, um vale já apagado aqui voltaria do outro lado na próxima união.
   function mergeHistory(a, b) {
     const byDate = new Map();
     (Array.isArray(b) ? b : []).forEach((p) => { if (p && p.d) byDate.set(p.d, p); });
     (Array.isArray(a) ? a : []).forEach((p) => { if (p && p.d) byDate.set(p.d, p); });
-    const out = Array.from(byDate.values()).sort((x, y) => String(x.d).localeCompare(String(y.d)));
+    const out = saneiaHistorico(Array.from(byDate.values()).sort((x, y) => String(x.d).localeCompare(String(y.d))));
     return out.length > 800 ? out.slice(out.length - 800) : out;
   }
   // Favoritos (lista de ids): LWW pelo updatedAt do meta — o lado com a mudança

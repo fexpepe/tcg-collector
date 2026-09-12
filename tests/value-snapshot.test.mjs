@@ -240,3 +240,70 @@ test("recordValueSnapshot: histórico v1 é migrado antes de receber o ponto nov
   assert.deepEqual([hist[0].c, hist[0].b, hist[0].w], [500, 0, 40]);
   assert.equal(hist[1].c, 600);
 });
+
+// ── saneiaHistorico: vale isolado (carga manca) some do histórico ──────────
+// O caso real (2026-09-12): 17/08 gravado com R$ 1.680 numa coleção de
+// R$ 195 mil, antes das guardas existirem, e sincronizado pra nuvem.
+function freshSaneia(seed) {
+  const ls = makeLocalStorage(seed || {});
+  const sb = loadShared("window.__test = { saneiaHistorico, valueHistory, mergeData };", { localStorage: ls });
+  sb.document.cookie = "";
+  return { api: sb.window.__test, ls };
+}
+const P = (d, c, b = 0) => ({ d, c, b, w: 0 });
+
+test("saneia: vale isolado entre dois pontos sãos é descartado", () => {
+  const { api } = freshSaneia();
+  const out = api.saneiaHistorico([P("2026-08-14", 190000), P("2026-08-16", 195000), P("2026-08-17", 1680), P("2026-08-24", 188000)]);
+  assert.equal(out.map((p) => p.d).join(), "2026-08-14,2026-08-16,2026-08-24");
+});
+
+test("saneia: queda que NÃO recupera fica (vendi tudo é dado real)", () => {
+  const { api } = freshSaneia();
+  const hist = [P("2026-08-14", 190000), P("2026-08-17", 1680), P("2026-08-24", 1700), P("2026-09-10", 1900)];
+  assert.equal(api.saneiaHistorico(hist), hist); // mesma referência: nada mudou
+});
+
+test("saneia: recuperação depois da janela de 14 dias não apaga o vale", () => {
+  const { api } = freshSaneia();
+  const hist = [P("2026-08-01", 190000), P("2026-08-02", 1680), P("2026-08-20", 188000)];
+  assert.equal(api.saneiaHistorico(hist).length, 3);
+});
+
+test("saneia: dois dias seguidos de carga manca caem juntos", () => {
+  const { api } = freshSaneia();
+  const out = api.saneiaHistorico([P("2026-08-14", 190000), P("2026-08-17", 1680), P("2026-08-18", 2000), P("2026-08-24", 188000)]);
+  assert.equal(out.map((p) => p.d).join(), "2026-08-14,2026-08-24");
+});
+
+test("saneia: queda de mercado de verdade (menos de 50%) passa intacta", () => {
+  const { api } = freshSaneia();
+  const hist = [P("2026-08-14", 190000), P("2026-08-17", 120000), P("2026-08-24", 188000)];
+  assert.equal(api.saneiaHistorico(hist).length, 3);
+});
+
+test("saneia: o último ponto nunca é julgado (quem cuida dele é a guarda da gravação)", () => {
+  const { api } = freshSaneia();
+  const hist = [P("2026-08-14", 190000), P("2026-08-16", 195000), P("2026-08-17", 1680)];
+  assert.equal(api.saneiaHistorico(hist).length, 3);
+});
+
+test("saneia: graded conta no patrimônio — raw zerado com graded alto não é vale", () => {
+  const { api } = freshSaneia();
+  const hist = [P("2026-08-14", 100000, 90000), P("2026-08-17", 0, 180000), P("2026-08-24", 100000, 90000)];
+  assert.equal(api.saneiaHistorico(hist).length, 3);
+});
+
+test("saneia: valueHistory devolve o histórico já sem o vale", () => {
+  const { api } = freshSaneia({
+    [KEY_PK]: JSON.stringify([P("2026-08-14", 190000), P("2026-08-17", 1680), P("2026-08-24", 188000)])
+  });
+  assert.equal(api.valueHistory("pokemon").map((p) => p.d).join(), "2026-08-14,2026-08-24");
+});
+
+test("saneia: a união do sync não traz o vale de volta da nuvem", () => {
+  const { api } = freshSaneia();
+  const local = { history2: [P("2026-08-14", 190000), P("2026-08-24", 188000)] };
+  const remote = { history2: [P("2026-08-14", 190000), P("2026-08-17", 1680), P("2026-08-24", 188000)] };
+  assert.equal(api.mergeData(local, remote).history2.map((p) => p.d).join(), "2026-08-14,2026-08-24");
+});
