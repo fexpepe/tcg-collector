@@ -6992,27 +6992,120 @@
   // parar o mouse no nome mostra a carta, que é como se confere "é essa mesmo?"
   // sem perder a densidade. Um listener só no document (as grades trocam de
   // conteúdo o tempo todo — pendurar em cada tile vazaria handler a cada render).
+  //
+  // No CELULAR não há hover: o gesto é TOQUE LONGO em qualquer ponto da linha
+  // (fora dos botões) — a miniatura aparece enquanto o dedo fica, e some ao
+  // soltar (2026-09-12). Mesmo <img> pros dois casos; a classe is-press é o
+  // que libera a exibição no CSS de ≤700px, onde a versão do hover é
+  // escondida (o toque emula mouseover e deixava a miniatura presa na tela).
+  // A imagem vai com a cadeia de fallback (webp → png → outra fonte), como a
+  // do tile normal: URL crua quebrava nas cartas que a TCGdex não tem.
   let hoverThumbEl = null;
+  const LONG_PRESS_MS = 380;      // abaixo do padrão do iOS (~500ms) pra parecer resposta, não espera
+  const LONG_PRESS_TOLERANCIA = 10; // px de movimento que ainda conta como "segurar"
+  function hoverThumbNode() {
+    if (!hoverThumbEl) {
+      hoverThumbEl = document.createElement("img");
+      hoverThumbEl.className = "tile-hover-thumb";
+      hoverThumbEl.alt = "";
+      hoverThumbEl.decoding = "async";
+      hoverThumbEl.setAttribute("data-card-img", "");
+      document.body.appendChild(hoverThumbEl);
+    }
+    return hoverThumbEl;
+  }
+  function hoverThumbShow(url, isPress) {
+    const el = hoverThumbNode();
+    if (el.getAttribute("data-thumb-src") !== url) {
+      const { src, chain } = cardImgChain(url);
+      el.removeAttribute("data-img-orig");
+      el.removeAttribute("data-img-orig-fb");
+      el.removeAttribute("data-img-retries");
+      if (chain.length) el.setAttribute("data-img-fallbacks", chain.join("|"));
+      else el.removeAttribute("data-img-fallbacks");
+      el.setAttribute("data-thumb-src", url);
+      el.src = src;
+    }
+    el.classList.toggle("is-press", !!isPress);
+    el.hidden = false;
+    return el;
+  }
+  function hoverThumbHide() {
+    if (!hoverThumbEl) return;
+    hoverThumbEl.hidden = true;
+    hoverThumbEl.classList.remove("is-press");
+  }
   function initCompactHoverThumb() {
     document.addEventListener("mouseover", (ev) => {
+      // Enquanto o dedo segura a linha, o mouseover emulado do toque não manda.
+      if (hoverThumbEl && hoverThumbEl.classList.contains("is-press")) return;
       const alvo = ev.target.closest("[data-hover-thumb]");
       const url = alvo && alvo.dataset.hoverThumb;
-      if (!url) {
-        if (hoverThumbEl) { hoverThumbEl.hidden = true; }
-        return;
-      }
-      if (!hoverThumbEl) {
-        hoverThumbEl = document.createElement("img");
-        hoverThumbEl.className = "tile-hover-thumb";
-        hoverThumbEl.alt = "";
-        document.body.appendChild(hoverThumbEl);
-      }
-      hoverThumbEl.src = url;
-      hoverThumbEl.hidden = false;
+      if (!url) { hoverThumbHide(); return; }
+      const el = hoverThumbShow(url, false);
       const r = alvo.getBoundingClientRect();
-      hoverThumbEl.style.top = Math.max(8, Math.min(window.innerHeight - 300, r.top - 40)) + "px";
-      hoverThumbEl.style.left = Math.min(window.innerWidth - 220, r.right + 14) + "px";
+      el.style.top = Math.max(8, Math.min(window.innerHeight - 300, r.top - 40)) + "px";
+      el.style.left = Math.min(window.innerWidth - 220, r.right + 14) + "px";
     });
+
+    // ── Toque longo na linha compacta ──────────────────────────────────────
+    // Estado de UM toque por vez: timer até virar "segurar", ponto inicial pra
+    // cancelar se virou rolagem, e a linha em foco (ganha .is-pressing).
+    let pressTimer = 0;
+    let pressRow = null;
+    let pressX = 0, pressY = 0;
+    let pressAtivo = false; // a miniatura chegou a aparecer neste toque
+    function pressReset() {
+      if (pressTimer) { clearTimeout(pressTimer); pressTimer = 0; }
+      if (pressRow) { pressRow.classList.remove("is-pressing"); pressRow = null; }
+      if (pressAtivo) { hoverThumbHide(); pressAtivo = false; }
+    }
+    document.addEventListener("touchstart", (ev) => {
+      pressReset();
+      if (ev.touches.length !== 1) return;
+      const row = ev.target.closest(".card-tile.tile-compact");
+      // Os botões têm ação própria (segurar o + não é "ver a carta").
+      if (!row || ev.target.closest(".tile-btn, a")) return;
+      const alvo = row.querySelector("[data-hover-thumb]");
+      const url = alvo && alvo.dataset.hoverThumb;
+      if (!url) return;
+      pressRow = row;
+      pressX = ev.touches[0].clientX;
+      pressY = ev.touches[0].clientY;
+      pressTimer = setTimeout(() => {
+        pressTimer = 0;
+        pressAtivo = true;
+        row.classList.add("is-pressing");
+        const el = hoverThumbShow(url, true);
+        el.style.top = "";
+        el.style.left = "";
+        if (navigator.vibrate) { try { navigator.vibrate(10); } catch (e) { /* ignora */ } }
+      }, LONG_PRESS_MS);
+    }, { passive: true });
+    document.addEventListener("touchmove", (ev) => {
+      if (!pressRow) return;
+      const t0 = ev.touches[0];
+      if (!t0) return;
+      // Virou rolagem: desiste do toque longo. Se a miniatura já está na tela,
+      // some junto (o dedo saiu da linha).
+      if (Math.abs(t0.clientX - pressX) > LONG_PRESS_TOLERANCIA || Math.abs(t0.clientY - pressY) > LONG_PRESS_TOLERANCIA) pressReset();
+    }, { passive: true });
+    document.addEventListener("touchend", (ev) => {
+      // Soltar depois de "segurar" NÃO pode virar clique: o nome da linha abre
+      // o card, e a pessoa só queria espiar. O preventDefault no touchend
+      // cancela o click sintetizado (e o mouseover emulado que viria com ele).
+      if (pressAtivo && ev.cancelable) ev.preventDefault();
+      pressReset();
+    });
+    document.addEventListener("touchcancel", pressReset);
+    // Android dispara contextmenu no toque longo; sobre a linha compacta a
+    // miniatura é a resposta, não o menu do navegador.
+    document.addEventListener("contextmenu", (ev) => {
+      if (pressRow || pressAtivo) ev.preventDefault();
+    });
+    // Rolagem/troca de página com o dedo parado (raro, mas acontece com o
+    // scroll por inércia): esconde pra não ficar uma carta presa na tela.
+    document.addEventListener("scroll", () => { if (pressAtivo) pressReset(); }, { passive: true, capture: true });
   }
 
   function initListTileMenu() {

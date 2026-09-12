@@ -1035,10 +1035,16 @@
   // Sem `tags`: o rodapé do tile agora é só lista/pasta/coração/−/+ (as tags
   // saíram da grade em 2026-08-03 — etiquetar é dentro do card, que já tem a
   // seção; o "+ Lista" entrou no canto oposto ao +, ver docs/LISTAS.md).
+  // No modo COMPACTO a linha é a MESMA da página de set/busca (2026-09-12):
+  // lista · ♥ · − · +, sem o botão de pasta. Com ele a Coleção tinha 5 botões
+  // onde as outras grades têm 4, e a linha "igual" deixava de ser igual — no
+  // PC a coluna de ações saía mais larga, e no celular o CSS já o escondia.
+  // A pasta continua na grade/lista e dentro do card (preview).
   function makeTile({ card, variant }) {
+    const compact = cardsView === "compact";
     return shared.variantTile(card, variant, owned, wishlist, prices, {
-      addMode: true, lists: true, compact: cardsView === "compact",
-      folders: true, inFolder: !!folders.folderOf(card.id)
+      addMode: true, lists: true, compact,
+      folders: !compact, inFolder: !compact && !!folders.folderOf(card.id)
     });
   }
 

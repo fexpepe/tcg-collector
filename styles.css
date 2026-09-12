@@ -9798,6 +9798,30 @@ select,
 
 /* Miniatura do hover no modo compacto: mesma ideia da do editor de listas. */
 .tile-hover-thumb { position: fixed; width: 200px; z-index: 70; pointer-events: none; border: 1px solid var(--line); background: var(--surface); box-shadow: 0 10px 30px rgba(0,0,0,.45); }
+/* A mesma miniatura no TOQUE LONGO (is-press, ver initCompactHoverThumb): não
+   há mouse pra posicionar ao lado do nome, então ela flutua no centro da tela,
+   maior (é pra VER a carta, não só conferir), enquanto o dedo segura a linha.
+   Largura relativa com teto: cabe em pé num celular de 320px e não vira
+   pôster num tablet. */
+.tile-hover-thumb.is-press {
+  top: 50%; left: 50%;
+  width: min(calc(100vw - 120px), 260px);
+  /* Proporção de carta desde o 1º ms: a moldura aparece na hora e a arte
+     preenche quando chega — sem isto, segurar mostrava "nada" até baixar. */
+  aspect-ratio: 5 / 7;
+  object-fit: contain;
+  translate: -50% -50%;
+  border-radius: 12px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.55);
+  animation: tile-thumb-in 120ms ease-out;
+}
+@keyframes tile-thumb-in { from { opacity: 0; scale: .92; } to { opacity: 1; scale: 1; } }
+/* Linha sendo segurada: fundo acende, e o toque longo não vira seleção de
+   texto nem o balão de "copiar/procurar" do iOS. */
+.card-tile.tile-compact.is-pressing { background: var(--panel-strong); }
+@media (pointer: coarse) {
+  .card-tile.tile-compact, .card-tile.tile-compact .tile-name { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+}
 
 @media (max-width: 700px) {
   /* Numa tela estreita sobra o essencial: nome, número e as ações — que são
@@ -9806,7 +9830,8 @@ select,
      alarga o +, então as linhas seguem em esquadro. */
   .card-tile.tile-compact { grid-template-columns: minmax(0, 1fr) 56px max-content; gap: 8px; }
   .tile-c-set, .tile-c-var, .tile-c-price { display: none; }
-  .tile-hover-thumb { display: none; }   /* sem hover no toque */
+  /* Sem hover no toque: só a versão do toque longo (is-press) aparece aqui. */
+  .tile-hover-thumb:not(.is-press) { display: none; }
 }
 
 /* Itens do popover "+ Lista" no toque: 32px entre listas vizinhas era erro de
