@@ -3474,7 +3474,10 @@ a.preview-print:hover { background: var(--panel); }
 
   /* Empilhado (imagem em cima), volta a rolar o painel inteiro. */
   .card-preview-panel {
-    width: calc(100vw - 20px);
+    /* 100% do modal (que já tem 14px de margem): antes era calc(100vw - 20px),
+       8px mais largo que a caixa, e o painel saía descentrado — 14px de folga
+       à esquerda e 6px à direita, o que também desalinhava o X do canto. */
+    width: 100%;
     /* dvh = altura real visível no mobile (desconta a barra do navegador);
        vh fica como fallback para browsers antigos. */
     max-height: calc(100vh - 28px);
@@ -3483,6 +3486,10 @@ a.preview-print:hover { background: var(--panel); }
     grid-template-rows: none;
     gap: 18px;
     padding: 18px;
+    /* Topo mais fundo (2026-09-12): o X fixo (44px, a 14px do canto do
+       painel) ficava POR CIMA da carta. 14 + 44 + 12 de respiro = a carta
+       começa logo abaixo do botão, e nada sobrepõe a arte. */
+    padding-top: 70px;
     border-radius: 14px;
     overflow: auto;
   }
@@ -3495,8 +3502,11 @@ a.preview-print:hover { background: var(--panel); }
      para continuar acessível enquanto o usuário desce até os detalhes. */
   .preview-close {
     position: fixed;
-    top: calc(14px + env(safe-area-inset-top, 0px));
-    right: 20px;
+    /* Encaixado no canto superior direito do PAINEL: 14px de margem do modal
+       + 14px pra dentro, nos dois eixos — antes o topo do botão coincidia com
+       a borda do painel e a direita ficava a 20px, e ele parecia solto. */
+    top: calc(28px + env(safe-area-inset-top, 0px));
+    right: 28px;
     z-index: 60;
     width: 44px;
     height: 44px;
