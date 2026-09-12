@@ -1525,6 +1525,10 @@
   // O ícone vive aqui porque aparece em toda busca de página e na paleta; o
   // scanner em si (câmera + OCR em WASM, ~3,5 MB) só desce pra quem toca.
   const SCAN_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7H8l1.4-2.1c.2-.3.5-.4.8-.4h3.6c.3 0 .6.1.8.4L16 7h2.5A1.5 1.5 0 0 1 20 8.5V18a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18z"/><circle cx="12" cy="13" r="3.5"/></svg>';
+  // Chevron das seções recolhíveis do popup da carta (Detalhes / Impressões):
+  // um botão redondo com a seta, que gira quando a seção abre (CSS). Antes era
+  // um "▾" de 11px em texto, que no celular ninguém via como algo que abre.
+  const PREVIEW_CARET = '<span class="preview-caret" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>';
   let scanCarregando = null;
   function openScanner() {
     if (!scanCarregando) scanCarregando = injectScript("/src/scan.js").then((ok) => { if (!ok) scanCarregando = null; return ok; });
@@ -5660,7 +5664,7 @@
                  cada linha vira duas e o bloco custava ~10 linhas de rolagem
                  antes do preço. -->
             <details class="preview-details" data-preview-details open>
-              <summary><h3>${escapeHtml(t("modal.details"))}</h3></summary>
+              <summary><h3>${escapeHtml(t("modal.details"))}</h3>${PREVIEW_CARET}</summary>
               <dl>
                 <div><dt>${escapeHtml(t("modal.rarity"))}</dt><dd>${escapeHtml(activeCard.rarity || "-")}</dd></div>
                 ${(function () {
@@ -5686,7 +5690,7 @@
                  o fillPrints, e SÓ quando o /api/search responde 2+ impressões —
                  sem D1 a seção nem aparece (mesma degradação da busca global). -->
             <details class="preview-prints" data-preview-prints hidden open>
-              <summary><h3>${escapeHtml(t("modal.prints"))}</h3></summary>
+              <summary><h3>${escapeHtml(t("modal.prints"))}</h3>${PREVIEW_CARET}</summary>
               <div class="preview-prints-list" data-preview-prints-list></div>
             </details>
           </div>
