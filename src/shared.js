@@ -1546,23 +1546,31 @@
     });
   }
 
+  // Exemplos tocáveis da tela vazia: um por tipo de busca que a paleta resolve
+  // (espécie, ilustrador e código de carta). Tocar preenche o campo.
+  const CMDK_EXAMPLES = ["Charizard", "Mitsuhiro Arita", "op05-119"];
   function initCommandPalette() {
     let overlay = null, items = [], active = 0;
     let cardHits = [], cardHitsQuery = "";
+    // Chip "jogo": "" = site inteiro (padrão de sempre); um slug restringe os
+    // resultados àquele jogo. Vive só na memória — a paleta é um atalho, não
+    // uma preferência.
+    let cmdkGame = "";
     const cmdkStores = { col: {}, wl: {} };
     const close = () => { if (overlay) { overlay.remove(); overlay = null; } };
     function results(q) {
       const out = [];
       const nq = normalize(q);
+      const inScope = (x) => !cmdkGame || x.game === cmdkGame;
       // Cartas resolvidas por código (assíncrono; ver maybeFetchCards).
       if (String(q).trim() === cardHitsQuery && cardHits.length) {
-        cardHits.forEach((h) => out.push({
+        cardHits.filter(inScope).forEach((h) => out.push({
           group: t("cmdk.cards"), card: h.card, game: h.game,
           name: h.card.name, url: `${detailUrl("set", h.card.set)}&game=${h.game}`
         }));
       }
       if (nq && cmdkIndex) {
-        const match = (x) => normalize(x.name).includes(nq);
+        const match = (x) => inScope(x) && normalize(x.name).includes(nq);
         const rank = (x) => (normalize(x.name).startsWith(nq) ? 0 : 1);
         const top = (arr) => arr.filter(match).sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name)).slice(0, 5);
         const push = (group, type, x) => out.push({ group, name: x.name, game: x.game, url: `${detailUrl(type, x.name)}&game=${x.game}` });
@@ -1572,6 +1580,7 @@
       }
       if (nq) {
         for (const g of GAME_SLUGS) {
+          if (cmdkGame && g !== cmdkGame) continue;
           out.push({ group: "", name: `${t("cmdk.explore", { q })} · ${gameLabel(g)}`, url: `cards?game=${g}&q=${encodeURIComponent(q)}`, explore: true });
         }
       }
@@ -1617,7 +1626,13 @@
       items = results(q);
       active = 0;
       const list = overlay.querySelector(".cmdk-results");
-      if (normalize(q) && !cmdkIndex) { // índice dos 2 jogos ainda baixando (1º uso)
+      // Campo vazio = tela de boas-vindas (dicas + scanner), não uma lista
+      // vazia. A lista só aparece quando há algo digitado.
+      const intro = overlay.querySelector(".cmdk-intro");
+      intro.hidden = !!normalize(q);
+      list.hidden = !normalize(q);
+      if (!normalize(q)) { list.innerHTML = ""; return; }
+      if (!cmdkIndex) { // índice dos jogos ainda baixando (1º uso)
         list.innerHTML = `<p class="cmdk-empty">${escapeHtml(t("cmdk.loading"))}</p>`;
         return;
       }
@@ -1638,7 +1653,7 @@
             </span>${badge}</div>`;
         }
         return `${head}<button type="button" class="cmdk-item${i === active ? " is-active" : ""}${it.explore ? " cmdk-explore" : ""}" data-cmdk-i="${i}"><span class="cmdk-item-name">${escapeHtml(it.name)}</span>${badge}</button>`;
-      }).join("") || `<p class="cmdk-empty">${escapeHtml(t("cmdk.empty"))}</p>`;
+      }).join("");
     }
     function setActive(i) {
       if (!items.length) return;
@@ -1652,19 +1667,63 @@
       close();
       overlay = document.createElement("div");
       overlay.className = "cmdk-overlay";
-      overlay.innerHTML = `<div class="cmdk-panel" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("cmdk.placeholder"))}">
-          <input type="text" class="cmdk-input" enterkeyhint="search" placeholder="${escapeAttribute(t("cmdk.placeholder"))}" autocomplete="off" spellcheck="false">
-          <button type="button" class="cmdk-scan" data-cmdk-scan aria-label="${escapeAttribute(t("scan.open"))}" title="${escapeAttribute(t("scan.open"))}">${SCAN_ICON}</button>
-          <div class="cmdk-results"></div>
+      // Tela de busca no molde dos apps de coleção (2026-09-12): título com
+      // botão de fechar, campo em pílula com lupa, chips (jogo · agrupar
+      // versões) e, com o campo vazio, um convite com exemplos tocáveis e o
+      // botão grande do scanner. No celular vira tela cheia (CSS); no desktop
+      // continua a paleta centralizada de sempre.
+      const gameOpts = [`<option value="">${escapeHtml(t("cmdk.allGames"))}</option>`]
+        .concat(GAME_SLUGS.map((g) => `<option value="${g}"${g === cmdkGame ? " selected" : ""}>${escapeHtml(gameLabel(g))}</option>`)).join("");
+      const introParts = escapeHtml(t("cmdk.intro")).split("{ex}");
+      const examples = CMDK_EXAMPLES.map((ex) => `<button type="button" class="cmdk-example" data-cmdk-example="${escapeAttribute(ex)}">${escapeHtml(ex)}</button>`);
+      const sep = t("cmdk.introAnd");
+      const exHtml = examples.slice(0, -1).join(", ") + (examples.length > 1 ? ` ${escapeHtml(sep)} ` : "") + examples[examples.length - 1];
+      overlay.innerHTML = `<div class="cmdk-panel" role="dialog" aria-modal="true" aria-labelledby="cmdkTitle">
+          <div class="cmdk-head">
+            <h2 class="cmdk-title" id="cmdkTitle">${escapeHtml(t("cmdk.title"))}</h2>
+            <button type="button" class="cmdk-close" data-cmdk-close aria-label="${escapeAttribute(t("modal.close"))}" title="${escapeAttribute(t("modal.close"))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+          </div>
+          <label class="cmdk-field">
+            <svg class="cmdk-field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+            <input type="text" class="cmdk-input" enterkeyhint="search" placeholder="${escapeAttribute(t("cmdk.placeholder"))}" autocomplete="off" spellcheck="false">
+          </label>
+          <div class="cmdk-chips">
+            <label class="cmdk-chip-select">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg>
+              <span class="cmdk-chip-value" data-cmdk-game-label>${escapeHtml(cmdkGame ? gameLabel(cmdkGame) : t("cmdk.allGames"))}</span>
+              <select data-cmdk-game aria-label="${escapeAttribute(t("scan.gameLabel"))}">${gameOpts}</select>
+              <svg class="cmdk-chip-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </label>
+            <button type="button" class="cmdk-chip" data-cmdk-group aria-pressed="${groupVariantsEnabled() ? "true" : "false"}" title="${escapeAttribute(t("settings.groupVariantsDesc"))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="3" width="12" height="15" rx="2"/><path d="M4 7v12a2 2 0 0 0 2 2h10"/></svg>${escapeHtml(t("cmdk.groupVariants"))}</button>
+          </div>
+          <div class="cmdk-results" hidden></div>
+          <div class="cmdk-intro">
+            <p class="cmdk-intro-text">${introParts[0]}${exHtml}${introParts[1] || ""}</p>
+            <button type="button" class="cmdk-scan" data-cmdk-scan>${SCAN_ICON}<span>${escapeHtml(t("cmdk.scanCards"))}</span></button>
+          </div>
           <p class="cmdk-hint">${escapeHtml(t("cmdk.hint"))}</p>
         </div>`;
       document.body.appendChild(overlay);
       const input = overlay.querySelector(".cmdk-input");
       renderList("");
-      // Baixa o índice dos 2 jogos no 1º uso; quando chegar, re-renderiza a busca atual.
+      // Baixa o índice dos jogos no 1º uso; quando chegar, re-renderiza a busca atual.
       loadCmdkIndex().then(() => { if (overlay && overlay.isConnected) renderList(input.value.trim()); });
+      overlay.querySelector("[data-cmdk-game]").addEventListener("change", (e) => {
+        cmdkGame = e.target.value;
+        overlay.querySelector("[data-cmdk-game-label]").textContent = cmdkGame ? gameLabel(cmdkGame) : t("cmdk.allGames");
+        renderList(input.value.trim());
+      });
       overlay.addEventListener("click", (e) => {
+        if (e.target.closest("[data-cmdk-close]")) { close(); return; }
         if (e.target.closest("[data-cmdk-scan]")) { close(); openScanner(); return; } // câmera: fecha a paleta e abre o scanner
+        const groupBtn = e.target.closest("[data-cmdk-group]");
+        if (groupBtn) { // mesmo liga-desliga de Configurações → "Agrupar versões da carta"
+          setGroupVariants(!groupVariantsEnabled());
+          groupBtn.setAttribute("aria-pressed", String(groupVariantsEnabled()));
+          return;
+        }
+        const ex = e.target.closest("[data-cmdk-example]");
+        if (ex) { input.value = ex.dataset.cmdkExample; renderList(input.value.trim()); input.focus(); return; }
         const add = e.target.closest("[data-cmdk-add]");
         if (add) { doCmdkAdd(add); return; } // add inline: NÃO navega nem fecha
         const item = e.target.closest("[data-cmdk-i]");
@@ -2845,12 +2904,17 @@
     // Explorar não tem aba própria (a Busca ocupa esse papel no dedo), então
     // acende Jogos: as duas são o caminho do CATÁLOGO.
     const gamesActive = exploreActive || active === "explore";
+    // Ordem (2026-09-12): Coleção veio pra 2ª posição e a Busca foi pra
+    // depois de Decks — a Coleção é o destino mais frequente de quem está
+    // logado e a Busca, como nos apps de referência, fica perto do polegar
+    // direito. Deslogado a Coleção não existe e a Busca fica no mesmo lugar
+    // (depois de Decks), pra não mudar de posição quando a pessoa entra.
     bar.innerHTML =
       tab("/", t("nav.home"), "home", active === "home")
-      + `<button type="button" class="mtab" data-mtab-search><span class="mtab-ic" aria-hidden="true">${ic.search}</span><span class="mtab-label">${escapeHtml(t("tabbar.search"))}</span></button>`
+      + (logged ? tab("dashboard", t("tabbar.collection"), "collection", collectionActive) : "")
       + tab("hub", t("nav.games"), "games", gamesActive)
       + tab("decks", t("nav.decks"), "decks", active === "decks")
-      + (logged ? tab("dashboard", t("tabbar.collection"), "collection", collectionActive) : "")
+      + `<button type="button" class="mtab" data-mtab-search><span class="mtab-ic" aria-hidden="true">${ic.search}</span><span class="mtab-label">${escapeHtml(t("tabbar.search"))}</span></button>`
       + (logged ? tab("portfolio", t("nav.portfolio"), "portfolio", active === "portfolio") : "");
     document.body.appendChild(bar);
     bar.querySelector("[data-mtab-search]").addEventListener("click", () => { if (cmdkOpen) cmdkOpen(); });

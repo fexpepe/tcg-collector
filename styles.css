@@ -5773,16 +5773,43 @@ a.progress-row:hover {
 .bulk-bar-btn.is-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .bulk-bar [disabled] { opacity: .5; cursor: not-allowed; }
 
-/* Busca global (Ctrl+K): paleta de comandos. */
+/* Busca global (Ctrl+K): paleta de comandos.
+   Redesenho (2026-09-12) no molde da tela de busca dos apps de coleção:
+   cabeçalho com título e fechar, campo em pílula com a lupa dentro, chips
+   (jogo · agrupar variantes) e, com o campo vazio, um convite com exemplos
+   tocáveis e o botão grande do scanner. No desktop segue sendo a paleta
+   centralizada (o cabeçalho some — Esc fecha e o hint diz isso); no celular
+   vira TELA CHEIA, ver o @media lá embaixo. */
 .cmdk-overlay { position: fixed; inset: 0; z-index: 70; background: rgba(6, 8, 12, 0.6); backdrop-filter: blur(2px); display: flex; align-items: flex-start; justify-content: center; padding: 12vh 16px 16px; }
-.cmdk-panel { width: 100%; max-width: 520px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); overflow: hidden; display: flex; flex-direction: column; }
-.cmdk-input { width: 100%; height: 48px; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: var(--surface); color: var(--text); padding: 0 16px; font: inherit; font-size: 15px; font-weight: 600; }
+.cmdk-panel { position: relative; width: 100%; max-width: 520px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 24px 64px rgba(0,0,0,0.5); overflow: hidden; display: flex; flex-direction: column; }
+.cmdk-head { display: none; }
+.cmdk-title { margin: 0; font-size: 22px; font-weight: 800; text-align: center; }
+.cmdk-close { position: absolute; right: 0; top: 50%; translate: 0 -50%; width: 44px; height: 44px; min-height: 0; padding: 0; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--text); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.cmdk-close svg { width: 20px; height: 20px; }
+/* O campo: a lupa é irmã do input dentro de um label, então clicar nela foca. */
+.cmdk-field { display: flex; align-items: center; gap: 10px; margin: 10px 10px 0; padding: 0 16px; min-height: 48px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--muted); }
+.cmdk-field:focus-within { border-color: var(--accent); }
+.cmdk-field-icon { flex: none; width: 20px; height: 20px; }
+.cmdk-input { flex: 1; min-width: 0; height: 46px; border: 0; border-radius: 0; background: transparent; color: var(--text); padding: 0; font: inherit; font-size: 15px; font-weight: 600; }
 .cmdk-input:focus { outline: none; }
-.cmdk-panel { position: relative; }
-.cmdk-input { padding-right: 52px; }
-.cmdk-scan { position: absolute; top: 5px; right: 6px; width: 38px; height: 38px; min-height: 0; padding: 0; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 9px; background: transparent; color: var(--muted); cursor: pointer; }
-.cmdk-scan:hover { color: var(--accent); background: var(--panel-strong); }
-.cmdk-scan svg { width: 22px; height: 22px; }
+.cmdk-input::placeholder { color: var(--muted); font-weight: 600; }
+/* Chips: uma fileira só; no celular rola de lado em vez de quebrar. */
+.cmdk-chips { display: flex; gap: 8px; padding: 10px 10px 4px; overflow-x: auto; scrollbar-width: none; }
+.cmdk-chips::-webkit-scrollbar { display: none; }
+.cmdk-chip, .cmdk-chip-select { flex: none; display: inline-flex; align-items: center; gap: 7px; min-height: 40px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--text); font-size: 13.5px; font-weight: 700; white-space: nowrap; cursor: pointer; }
+.cmdk-chip svg, .cmdk-chip-select svg { width: 18px; height: 18px; flex: none; }
+.cmdk-chip-caret { width: 16px !important; height: 16px !important; color: var(--muted); }
+/* O select do jogo "veste" o chip: o texto visível é o span com o jogo
+   escolhido (um <select> nu teria a largura da opção mais longa — "Dragon Ball
+   Fusion World" — mesmo mostrando "Todos os jogos"); o <select> real fica
+   invisível por cima, cobrindo o chip inteiro, pra receber o toque e abrir o
+   seletor nativo do celular. O caret é o nosso. */
+.cmdk-chip-select { position: relative; }
+.cmdk-chip-select select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; padding: 0; border: 0; cursor: pointer; }
+.cmdk-chip-select:focus-within { border-color: var(--accent); }
+/* Ligado = mesma pintura dos chips ativos do site (o chip não usa a classe
+   .chip de propósito: o passe flat a deixaria de canto reto dentro da pílula). */
+.cmdk-chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .cmdk-results { max-height: 46vh; max-height: 46dvh; overflow-y: auto; overscroll-behavior: contain; padding: 6px; }
 .cmdk-group { padding: 8px 10px 3px; font-size: 11px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--subtle); }
 .cmdk-item { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; min-height: 0; padding: 8px 10px; border: 0; border-radius: 8px; background: transparent; color: var(--text); font: inherit; font-weight: 600; font-size: 14px; cursor: pointer; }
@@ -5794,7 +5821,36 @@ a.progress-row:hover {
 .cmdk-explore { color: var(--accent); font-weight: 800; }
 .cmdk-explore.is-active { color: var(--on-accent); }
 .cmdk-empty { margin: 0; padding: 14px 12px; font-size: 13px; color: var(--subtle); }
+/* Tela vazia: convite centralizado + scanner. Os exemplos são BOTÕES com cara
+   de texto em negrito (tocar preenche o campo) — por isso o reset de botão. */
+.cmdk-intro { padding: 18px 16px 16px; text-align: center; }
+.cmdk-intro-text { margin: 0 0 16px; font-size: 15px; line-height: 1.5; color: var(--text); }
+.cmdk-example { display: inline; min-height: 0; padding: 0; border: 0; background: none; color: var(--text); font: inherit; font-weight: 800; cursor: pointer; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; }
+.cmdk-example:hover, .cmdk-example:focus-visible { text-decoration-color: currentColor; }
+.cmdk-scan { width: 100%; min-height: 48px; gap: 10px; border-radius: 12px; background: var(--accent); color: var(--on-accent); font-size: 16px; font-weight: 800; }
+.cmdk-scan:hover { background: var(--accent-dark); }
+.cmdk-scan svg { width: 22px; height: 22px; flex: none; }
 .cmdk-hint { margin: 0; padding: 8px 14px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--subtle); }
+/* Celular: a paleta vira uma TELA. Sem moldura, sem sombra, ocupando a
+   viewport inteira (dvh acompanha a barra do navegador que some e volta), com
+   o cabeçalho "Buscar + fechar" sob o notch. A lista de resultados deixa de
+   ter altura máxima: ela é o corpo da tela e rola sozinha. O hint de teclado
+   não faz sentido no dedo. */
+@media (max-width: 700px) {
+  .cmdk-overlay { padding: 0; background: var(--bg); backdrop-filter: none; }
+  .cmdk-panel { max-width: none; height: 100vh; height: 100dvh; border: 0; border-radius: 0; box-shadow: none; background: var(--bg); }
+  .cmdk-head { position: relative; display: flex; align-items: center; justify-content: center; min-height: 44px; margin: 0 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); }
+  .cmdk-close { top: calc(50% + (12px + env(safe-area-inset-top, 0px)) / 2); }
+  .cmdk-field { margin: 16px 16px 0; min-height: 52px; }
+  .cmdk-input { height: 50px; }
+  .cmdk-chips { padding: 12px 16px 4px; }
+  .cmdk-chip, .cmdk-chip-select { min-height: 44px; }
+  .cmdk-results { flex: 1; max-height: none; padding: 6px 10px calc(16px + env(safe-area-inset-bottom, 0px)); }
+  .cmdk-intro { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 16px 20px calc(24px + env(safe-area-inset-bottom, 0px)); }
+  .cmdk-intro-text { font-size: 17px; margin-bottom: 22px; }
+  .cmdk-scan { min-height: 54px; border-radius: 16px; }
+  .cmdk-hint { display: none; }
+}
 
 /* Onboarding (coleção vazia): guia de 3 passos. */
 .onboarding { margin: 4px 0 18px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
