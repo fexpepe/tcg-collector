@@ -1523,6 +1523,14 @@
     const elDelta = document.getElementById("pfChartDelta");
     const elQuando = document.getElementById("pfChartWhen");
     if (!elValor) return;
+    // Marca no <section> quando o número grande daqui É o patrimônio: no
+    // celular o CSS esconde o cartão "patrimônio (cartas + graded)" logo
+    // abaixo, que repetia este valor e a variação a um polegar de distância
+    // (2026-09-12). Com histórico curto (cabeçalho em "—") ou com o traço
+    // principal sendo outra série, o cartão volta — ele é a única fonte do
+    // número nesses casos.
+    const section = document.getElementById("portfolioChart");
+    if (section) section.classList.toggle("is-patrimonio", !!(d && d.patrimonio));
     elValor.textContent = d ? d.valor : "—";
     if (elDelta) {
       // O dinheiro vai num <span> próprio pro modo privacidade borrar SÓ ele: a
@@ -1749,6 +1757,7 @@
       const pctTxt = Math.abs(pct).toLocaleString(loc, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
       setChartHead({
         valor: money(valsHead[idx]),
+        patrimonio: principal.key === "combined",
         seta,
         cash: `${sinal}${money(Math.abs(delta))}`,
         pct: `${sinal}${pctTxt}%`,
