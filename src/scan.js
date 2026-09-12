@@ -868,7 +868,7 @@
       primario = 0;
       pintarResultado();
       if (!achados.length) abrirFolha(); // sem carta: a folha já abre com o código pra corrigir
-      else if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) { /* sem vibração */ } }
+      else shared.vibrar(30); // leu a carta: toque mais longo que o do add
     }
     function adicionar(tipo, i, btn) {
       const h = resultados[i];
@@ -886,7 +886,7 @@
       lote += 1;
       $("[data-scan-lote-n]").textContent = String(lote);
       btnLote.classList.remove("is-vazio");
-      if (navigator.vibrate) { try { navigator.vibrate(20); } catch (e) { /* sem vibração */ } }
+      shared.vibrar(20);
       pintarResultado();
       if (!folha.hidden) fecharFolha();
     }
