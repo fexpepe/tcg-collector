@@ -1667,7 +1667,12 @@
       if (el) el.scrollIntoView({ block: "nearest" });
     }
     function go(i) { const it = items[i]; if (it) { close(); window.location.href = it.url; } }
-    function open() {
+    // `opts.semFoco`: abre SEM levar o cursor pro campo. É o caso da aba Busca
+    // da tabbar do celular (2026-09-12): focar o campo já subia o teclado na
+    // hora, tapando metade da tela — inclusive o botão do scanner, que é um
+    // dos dois jeitos de buscar. Quem quer digitar toca no campo; o Ctrl+K do
+    // desktop continua focando (lá o teclado é o caminho).
+    function open(opts) {
       close();
       overlay = document.createElement("div");
       overlay.className = "cmdk-overlay";
@@ -1740,7 +1745,7 @@
         else if (e.key === "ArrowUp") { e.preventDefault(); setActive(active - 1); }
         else if (e.key === "Enter") { e.preventDefault(); go(active); }
       });
-      input.focus();
+      if (!(opts && opts.semFoco)) input.focus();
     }
     document.addEventListener("keydown", (e) => {
       if ((e.ctrlKey || e.metaKey) && String(e.key).toLowerCase() === "k") { e.preventDefault(); if (overlay) close(); else open(); return; }
@@ -2921,7 +2926,8 @@
       + `<button type="button" class="mtab" data-mtab-search><span class="mtab-ic" aria-hidden="true">${ic.search}</span><span class="mtab-label">${escapeHtml(t("tabbar.search"))}</span></button>`
       + (logged ? tab("portfolio", t("nav.portfolio"), "portfolio", active === "portfolio") : "");
     document.body.appendChild(bar);
-    bar.querySelector("[data-mtab-search]").addEventListener("click", () => { if (cmdkOpen) cmdkOpen(); });
+    // Sem foco no campo: no toque, focar = teclado aberto na hora (ver open()).
+    bar.querySelector("[data-mtab-search]").addEventListener("click", () => { if (cmdkOpen) cmdkOpen({ semFoco: true }); });
   }
 
   // Menu hambúrguer no mobile: agrupa a navegação e as ações num drawer
