@@ -2698,8 +2698,8 @@
         <a href="dashboard"${collectionActive ? ' class="active"' : ""} aria-haspopup="true" aria-expanded="false">${escapeHtml(t("nav.collection"))}<span class="nav-caret" aria-hidden="true">▾</span></a>
         <div class="nav-dropdown nav-mega" hidden>
           <a class="nav-mega-hub${active === "dashboard" ? " active" : ""}" href="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg>${escapeHtml(t("nav.hubItem"))}<small>${escapeHtml(t("nav.hubHint"))}</small></a>
-          ${megaCol("nav.colCards", link("collection", "nav.collectionMine", "collection") + link("graded", "nav.graded", "graded") + link("wishlist", "nav.wishlist", "wishlist"))}
-          ${megaCol("nav.colOrganize", link("binders", "nav.binders", "binders") + link("listas", "nav.lists", "listas") + link("my-decks", "nav.myDecks", "mydecks"))}
+          ${megaCol("nav.colCards", link("collection", "nav.collectionMine", "collection") + link("wishlist", "nav.wishlist", "wishlist") + link("graded", "nav.graded", "graded"))}
+          ${megaCol("nav.colOrganize", link("listas", "nav.lists", "listas") + link("binders", "nav.binders", "binders") + link("my-decks", "nav.myDecks", "mydecks"))}
           ${megaCol("nav.colMore", link("sales", "nav.sales", "sales") + link("troca", "trade.title", "troca") + link("badges", "dash.badges", "badges"))}
         </div>
       </div>`;

@@ -385,13 +385,17 @@
     trade: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h13"/><path d="m14 4 3 3-3 3"/><path d="M20 17H7"/><path d="m10 14-3 3 3 3"/></svg>'
   };
   const soldTotal = shared.readSoldList().length;
+  // Ordem (pedido de 2026-09-12): Lista de Desejo em 2º (é o par natural da
+  // coleção — o que tenho / o que quero) e Listas logo acima de Binders. O
+  // mega-menu da Coleção no header (shared.js) segue a MESMA ordem — os dois
+  // são o mesmo "Ir para", e divergir confundiria quem decora a posição.
   const links = [
     { href: "collection", icon: "collection", key: "nav.collectionMine", stat: tn("count.cards", counts.distinct) },
-    { href: "graded", icon: "graded", key: "nav.graded", stat: tn("dash.slabsCount", slabs) },
     { href: "wishlist", icon: "wishlist", key: "nav.wishlist", stat: tn("dash.wishCount", wishTotal) },
+    { href: "graded", icon: "graded", key: "nav.graded", stat: tn("dash.slabsCount", slabs) },
+    { href: "listas", icon: "lists", key: "nav.lists", stat: t("dash.listsHint") },
     { href: "binders", icon: "binders", key: "nav.binders", stat: "" },
     { href: "my-decks", icon: "decks", key: "nav.myDecks", stat: t("dash.decksHint") },
-    { href: "listas", icon: "lists", key: "nav.lists", stat: t("dash.listsHint") },
     { href: "sales", icon: "sales", key: "nav.sales", stat: tn("dash.salesCount", salesCount()) + (soldTotal ? ` · ${tn("dash.soldCount", soldTotal)}` : "") },
     { href: "troca", icon: "trade", key: "trade.title", stat: t("dash.tradeHint") },
     { href: "badges", icon: "badges", key: "dash.badges", stat: t("dash.badgesHint") }
