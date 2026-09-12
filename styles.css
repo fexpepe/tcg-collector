@@ -5824,7 +5824,10 @@ a.progress-row:hover {
 /* Chips: uma fileira só; no celular rola de lado em vez de quebrar. */
 .cmdk-chips { display: flex; gap: 8px; padding: 10px 10px 4px; overflow-x: auto; scrollbar-width: none; }
 .cmdk-chips::-webkit-scrollbar { display: none; }
-.cmdk-chip, .cmdk-chip-select { flex: none; display: inline-flex; align-items: center; gap: 7px; min-height: 40px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--text); font-size: 13.5px; font-weight: 700; white-space: nowrap; cursor: pointer; }
+/* margin/line-height/font explícitos: o chip de agrupar é <button> e o do jogo
+   é <label>; sem isso o botão herdava o line-height e a margem do user-agent
+   e saía mais alto e mais baixo que o vizinho (visto no iOS, 2026-09-12). */
+.cmdk-chip, .cmdk-chip-select { flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; margin: 0; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--text); font: inherit; font-size: 13.5px; font-weight: 700; line-height: 1.2; white-space: nowrap; cursor: pointer; }
 .cmdk-chip svg, .cmdk-chip-select svg { width: 18px; height: 18px; flex: none; }
 .cmdk-chip-caret { width: 16px !important; height: 16px !important; color: var(--muted); }
 /* O select do jogo "veste" o chip: o texto visível é o span com o jogo
@@ -5855,7 +5858,9 @@ a.progress-row:hover {
 .cmdk-intro-text { margin: 0 0 16px; font-size: 15px; line-height: 1.5; color: var(--text); }
 .cmdk-example { display: inline; min-height: 0; padding: 0; border: 0; background: none; color: var(--text); font: inherit; font-weight: 800; cursor: pointer; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; }
 .cmdk-example:hover, .cmdk-example:focus-visible { text-decoration-color: currentColor; }
-.cmdk-scan { width: 100%; min-height: 48px; gap: 10px; border-radius: 12px; background: var(--accent); color: var(--on-accent); font-size: 16px; font-weight: 800; }
+/* Botão do scanner CENTRALIZADO, com a largura do próprio conteúdo (pílula):
+   ocupar a linha inteira o fazia parecer o rodapé da tela, não uma ação. */
+.cmdk-scan { display: inline-flex; align-items: center; justify-content: center; width: auto; max-width: 100%; min-height: 48px; margin: 0 auto; padding: 0 26px; gap: 10px; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-size: 16px; font-weight: 800; }
 .cmdk-scan:hover { background: var(--accent-dark); }
 .cmdk-scan svg { width: 22px; height: 22px; flex: none; }
 .cmdk-hint { margin: 0; padding: 8px 14px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--subtle); }
@@ -5871,12 +5876,18 @@ a.progress-row:hover {
   .cmdk-close { top: calc(50% + (12px + env(safe-area-inset-top, 0px)) / 2); }
   .cmdk-field { margin: 16px 16px 0; min-height: 52px; }
   .cmdk-input { height: 50px; }
-  .cmdk-chips { padding: 12px 16px 4px; }
-  .cmdk-chip, .cmdk-chip-select { min-height: 44px; }
+  /* Os dois chips (jogo · agrupar) dividem a linha em partes IGUAIS, logo
+     abaixo do campo, com a mesma altura — em vez de uma fileira rolável de
+     pílulas de larguras diferentes (2026-09-12). */
+  .cmdk-chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; gap: 10px; padding: 12px 16px 0; overflow: visible; }
+  .cmdk-chip, .cmdk-chip-select { width: 100%; min-height: 46px; padding: 0 12px; font-size: 14px; }
+  .cmdk-chip-value, .cmdk-chip > span { overflow: hidden; text-overflow: ellipsis; }
   .cmdk-results { flex: 1; max-height: none; padding: 6px 10px calc(16px + env(safe-area-inset-bottom, 0px)); }
-  .cmdk-intro { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 16px 20px calc(24px + env(safe-area-inset-bottom, 0px)); }
-  .cmdk-intro-text { font-size: 17px; margin-bottom: 22px; }
-  .cmdk-scan { min-height: 54px; border-radius: 16px; }
+  /* Convite logo abaixo dos chips, no terço de cima da tela — centralizar no
+     espaço que sobrava jogava texto e botão pro rodapé, longe do campo. */
+  .cmdk-intro { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 36px 24px calc(24px + env(safe-area-inset-bottom, 0px)); }
+  .cmdk-intro-text { font-size: 16px; color: var(--muted); margin-bottom: 26px; }
+  .cmdk-scan { min-height: 54px; padding: 0 30px; }
   .cmdk-hint { display: none; }
 }
 
