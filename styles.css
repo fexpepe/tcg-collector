@@ -10281,6 +10281,13 @@ select,
   .stats-grid.pf-stats { grid-template-columns: minmax(0, 1fr); }
   .stats-grid.pf-stats article { padding: 14px 16px; }
   .stats-grid.pf-stats span { font-size: 26px; }
+  /* Sem o cartão "patrimônio (cartas + graded)" quando o cabeçalho do gráfico
+     já mostra o patrimônio (2026-09-12): no celular os dois ficam a um
+     polegar de distância, número grande sobre número grande, e o segundo só
+     dizia de novo o que o primeiro acabou de dizer. A classe vem do
+     setChartHead (portfolio.js); sem ela o cartão fica, porque aí é a única
+     fonte do número. No desktop os dois cabem lado a lado e o cartão segue. */
+  .pf-chart.is-patrimonio + .pf-stats .stat-grand { display: none; }
 
   /* 2) CONTROLES DO EXPLORAR. Em tela larga Jogo/Ordenar/Versões formam uma
      linha com a busca; abaixo de 1080px viravam um flex encostado à direita,
