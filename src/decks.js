@@ -383,13 +383,26 @@
     };
   }
 
+  // Esqueleto de carregamento da galeria e do viewer (2026-09-13). Antes era
+  // um "Carregando…" de UMA linha: a página nascia mais curta que a tela do
+  // celular (não rolava) e só crescia quando os decks chegavam. Página que não
+  // rola muda o estado da barra do navegador (Safari/Chrome), e a tabbar —
+  // que é fixa em relação a essa barra — subia e voltava a cada abertura.
+  // Cinco blocos de skeleton passam da altura de qualquer celular, então a
+  // página já nasce rolável e a barra fica quieta, como nas outras telas.
+  // O texto continua lá pro leitor de tela.
+  function skeletonHtml() {
+    const bloco = `<div class="skel"><div class="skel-art"></div><div class="skel-body"><div class="skel-line"></div><div class="skel-line short"></div></div></div>`;
+    return `<p class="deck-hint">${esc(t("decks.loading"))}</p><div class="dkc-list" aria-hidden="true">${bloco.repeat(5)}</div>`;
+  }
+
   // ---------- Galeria da comunidade (filtros + ordenação) ----------
   async function renderCommunity(box, logged) {
     // Uma chamada por JOGO, não por interação: custo, cartas faltando e
     // ordenação rodam no cliente sobre estas mesmas 60 linhas. Antes, mudar a
     // ordenação refazia a listagem inteira no servidor.
     if (!comCache || comCache.game !== communityGame) {
-      box.innerHTML = `<p class="deck-hint">${esc(t("decks.loading"))}</p>`;
+      box.innerHTML = skeletonHtml();
       // O câmbio vai junto (localStorage na volta, fetch só na 1ª visita): a
       // galeria mostra custo em BRL convertido, e sem taxa o número saía em
       // real com o símbolo da moeda escolhida.
@@ -753,7 +766,7 @@
     }
   }
   async function renderPublicDeckInner(box, id, logged) {
-    box.innerHTML = `<p class="deck-hint">${esc(t("decks.loading"))}</p>`;
+    box.innerHTML = skeletonHtml();
     const row = await shared.fetchShare(id);
     const deck = row && row.kind === "deck" ? sanitizeDeckPayload(row.data) : null;
     if (!deck) { box.innerHTML = `<section class="empty-state"><p>${esc(t("decks.sharedGone"))}</p></section>`; return; }
