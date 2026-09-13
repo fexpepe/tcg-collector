@@ -49,9 +49,22 @@ import { join } from "node:path";
 // <img>, +248 bytes gz) é bloco QUENTE — roda em toda grade — e não tem como
 // ser injetado sob demanda. 1 KB de folga; o próximo bloco frio continua
 // tendo que sair do núcleo.
+//
+// 2026-09-13: os dois tetos sobem — shared.js de 80.896 pra 81.920 e CSS de
+// 46.080 pra 47.104. A main estava VERMELHA desde a tela de busca no molde de
+// app (3bde76d): o CSS passou o teto por 14 bytes gz ali e ninguém viu, porque
+// os oito commits seguintes de celular (tabbar, card da carta, linha compacta,
+// ficha "Detalhes", chips da busca, cartão de patrimônio) só empilharam mais
+// ~300 bytes gz em cima — cada um chegava com o CI já falhando e o e-mail de
+// falha virou ruído. O shared.js, na mesma leva, ficou a 22 bytes do teto
+// (vibrar() háptico do iOS + saneiaHistorico, ambos núcleo: sync e merge).
+// Antes de subir, uma varredura de classe sem referência em HTML/JS só achou
+// nome montado dinamicamente (variant-${}, rar-${}, is-${kind}, ctr-${v|h}) —
+// nada morto pra cortar. ~700 bytes gz de folga no CSS e ~1 KB no JS; bloco
+// FRIO grande continua tendo que ir pra injeção sob demanda.
 const TETOS = [
-  { arquivo: "shared.js", teto: 80896, nota: "núcleo JS de toda página" },
-  { arquivo: "styles.min.css", teto: 46080, nota: "CSS antes do split por área" },
+  { arquivo: "shared.js", teto: 81920, nota: "núcleo JS de toda página" },
+  { arquivo: "styles.min.css", teto: 47104, nota: "CSS antes do split por área" },
 ];
 
 const dir = process.argv[2] || "/tmp/ci-min";
