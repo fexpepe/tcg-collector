@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title data-i18n="title.search">Buscar cartas - Sleevu</title>
+    <meta name="description" content="Busque qualquer carta de Pokémon, Magic, Lorcana, One Piece, Yu-Gi-Oh e mais — por nome, set, ilustrador ou código impresso — ou aponte a câmera pra ela.">
+    <link rel="canonical" href="https://sleevu.app/search">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sleevu.app/search">
+    <meta property="og:title" content="Buscar cartas — Sleevu">
+    <meta property="og:description" content="Qualquer carta, de qualquer jogo — por nome, set, ilustrador, código ou pela câmera.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <link rel="preconnect" href="https://assets.tcgdex.net">
+    <link rel="preconnect" href="https://tcgplayer-cdn.tcgplayer.com">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Duas tags com media: o primeiro paint ja acerta a barra do navegador
+         pelo tema do SISTEMA. Quando a pessoa ESCOLHE um tema, o applyTheme
+         (shared.js) troca por uma tag unica sem media, que vence as duas. -->
+    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <script src="src/game.js"></script>
+    <!-- A fonte só seria descoberta depois de baixar e parsear o styles.css
+         (o @font-face mora lá). O preload a coloca na fila junto com o CSS.
+         crossorigin é OBRIGATORIO mesmo sendo mesma origem: fonte é sempre
+         buscada em modo CORS, e sem o atributo o preload nao casa com a
+         requisicao do CSS e o arquivo desce DUAS vezes.
+         Só o latin: pt-BR e en cabem inteiros em U+0000-00FF; o latin-ext
+         (14 KB) fica sob demanda, como o unicode-range ja define. -->
+    <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="/">Sleevu</a>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="search"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-head">
+        <h1 data-i18n="cmdk.title">Buscar</h1>
+      </div>
+
+      <!-- Página de busca (2026-09-13). É a MESMA tela da paleta Ctrl+K
+           (initCommandPalette, shared.js), montada aqui dentro em vez de num
+           overlay: campo, chips de jogo/agrupar, exemplos, scanner e
+           resultados. Nasceu pro celular — a aba Busca da tabbar abria a
+           paleta em tela cheia, que cobria a própria tabbar. Sem catálogo:
+           os nomes vêm do cmdk-names de cada jogo, sob demanda. -->
+      <div id="searchPage"></div>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <script defer src="src/shared.js"></script>
+  </body>
+</html>

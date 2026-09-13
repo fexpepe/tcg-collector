@@ -5890,6 +5890,22 @@ a.progress-row:hover {
   .cmdk-scan { min-height: 54px; padding: 0 30px; }
   .cmdk-hint { display: none; }
 }
+/* Página de busca (search.html): a mesma tela, EM FLUXO na página — sem o
+   cabeçalho "Buscar + fechar" (o h1 da página faz esse papel e nada fecha),
+   sem o hint de teclado, e a lista de resultados cresce com a página em vez
+   de rolar num painel de altura fixa. Especificidade (0,2,0) de propósito:
+   as regras da paleta (inclusive a altura de 100dvh do bloco mobile) têm
+   (0,1,0) e este seletor precisa vencer nas duas larguras. */
+.cmdk-page .cmdk-panel { max-width: 640px; }
+.cmdk-page .cmdk-head, .cmdk-page .cmdk-hint { display: none; }
+.cmdk-page .cmdk-results { max-height: none; }
+@media (max-width: 700px) {
+  .cmdk-page .cmdk-panel { height: auto; border: 0; border-radius: 0; box-shadow: none; background: transparent; }
+  .cmdk-page .cmdk-field { margin: 0; }
+  .cmdk-page .cmdk-chips { padding: 12px 0 0; }
+  .cmdk-page .cmdk-results { flex: none; padding: 6px 0 0; }
+  .cmdk-page .cmdk-intro { flex: none; padding: 28px 8px 8px; }
+}
 
 /* Onboarding (coleção vazia): guia de 3 passos. */
 .onboarding { margin: 4px 0 18px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }

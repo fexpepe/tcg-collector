@@ -1365,7 +1365,7 @@
   // jogos (fetch lazy no 1º uso; ~2MB do Pokémon vem gzipado e o SW cacheia).
   // Resultados carregam &game= na URL — clicar num set de Lorcana TROCA a sessão.
   // Cartas por nome ficam a um Enter: "buscar no Explorar" de cada jogo (?q=).
-  let cmdkIndex = null, cmdkIndexPromise = null, cmdkOpen = null;
+  let cmdkIndex = null, cmdkIndexPromise = null;
   // A paleta precisa só de NOMES (espécie, set, artista) dos 13 jogos. O build
   // publica exatamente isso em cmdk-names.generated.json — 122 KB somando todos,
   // contra os 4,5 MB dos indexes.generated.js completos, cujo peso é o `cardIds`
@@ -1561,7 +1561,14 @@
     // uma preferência.
     let cmdkGame = "";
     const cmdkStores = { col: {}, wl: {} };
-    const close = () => { if (overlay) { overlay.remove(); overlay = null; } };
+    // Página de busca (search.html, 2026-09-13): a MESMA tela da paleta,
+    // montada DENTRO da página em vez de num overlay. Nasceu pro celular: a
+    // aba Busca da tabbar abria a paleta como popup em tela cheia, que cobria
+    // a própria tabbar — a navegação sumia justamente na tela de buscar. Como
+    // página, o menu de baixo fica fixo igual nas outras. Em modo página nada
+    // fecha (Esc, toque fora, X): a pessoa sai pela navegação.
+    const pagina = document.getElementById("searchPage");
+    const close = () => { if (overlay && !pagina) { overlay.remove(); overlay = null; } };
     function results(q) {
       const out = [];
       const nq = normalize(q);
@@ -1674,8 +1681,8 @@
     // desktop continua focando (lá o teclado é o caminho).
     function open(opts) {
       close();
-      overlay = document.createElement("div");
-      overlay.className = "cmdk-overlay";
+      overlay = pagina || document.createElement("div");
+      overlay.className = pagina ? "cmdk-page" : "cmdk-overlay";
       // Tela de busca no molde dos apps de coleção (2026-09-12): título com
       // botão de fechar, campo em pílula com lupa, chips (jogo · agrupar
       // versões) e, com o campo vazio, um convite com exemplos tocáveis e o
@@ -1712,7 +1719,7 @@
           </div>
           <p class="cmdk-hint">${escapeHtml(t("cmdk.hint"))}</p>
         </div>`;
-      document.body.appendChild(overlay);
+      if (!pagina) document.body.appendChild(overlay); // a página já mora dentro do <main>
       const input = overlay.querySelector(".cmdk-input");
       renderList("");
       // Baixa o índice dos jogos no 1º uso; quando chegar, re-renderiza a busca atual.
@@ -1748,10 +1755,18 @@
       if (!(opts && opts.semFoco)) input.focus();
     }
     document.addEventListener("keydown", (e) => {
-      if ((e.ctrlKey || e.metaKey) && String(e.key).toLowerCase() === "k") { e.preventDefault(); if (overlay) close(); else open(); return; }
+      if ((e.ctrlKey || e.metaKey) && String(e.key).toLowerCase() === "k") {
+        e.preventDefault();
+        if (pagina) overlay.querySelector(".cmdk-input").focus(); // na página o atalho só leva o cursor pro campo
+        else if (overlay) close();
+        else open();
+        return;
+      }
       if (e.key === "Escape" && overlay) close();
     });
-    cmdkOpen = open; // a bottom-bar mobile (e futuros botões) abre a paleta por aqui
+    // Sem foco no toque: focar = teclado aberto na hora, tapando metade da
+    // tela (inclusive o botão do scanner). No desktop o teclado é o caminho.
+    if (pagina) open({ semFoco: window.matchMedia("(pointer: coarse)").matches });
   }
 
   // Marca-d'água "Ctrl+K" nas buscas de página, pro atalho ser descoberto.
@@ -2917,7 +2932,7 @@
   // Sleevu (vidro do header, linha, accent), não a da Collectr.
   //
   // Seis destinos, na MESMA ordem e nos mesmos destinos do menu de desktop:
-  // Início · Busca (paleta) · Jogos (hub) · Decks · Coleção · Portfólio.
+  // Início · Busca (search.html) · Jogos (hub) · Decks · Coleção · Portfólio.
   // Coleção aponta pro dashboard (o hub PESSOAL), como no desktop — ia pra
   // collection.html, que é só uma das visões de dentro dele.
   // Só aparece ≤700px (CSS); o body ganha padding-bottom pra nada ficar
@@ -2952,16 +2967,16 @@
     // logado e a Busca, como nos apps de referência, fica perto do polegar
     // direito. Deslogado a Coleção não existe e a Busca fica no mesmo lugar
     // (depois de Decks), pra não mudar de posição quando a pessoa entra.
+    // Busca é uma PÁGINA (search.html), não mais a paleta em popup: o popup
+    // cobria a tabbar e a navegação sumia (2026-09-13).
     bar.innerHTML =
       tab("/", t("nav.home"), "home", active === "home")
       + (logged ? tab("dashboard", t("tabbar.collection"), "collection", collectionActive) : "")
       + tab("hub", t("nav.games"), "games", gamesActive)
       + tab("decks", t("nav.decks"), "decks", active === "decks")
-      + `<button type="button" class="mtab" data-mtab-search><span class="mtab-ic" aria-hidden="true">${ic.search}</span><span class="mtab-label">${escapeHtml(t("tabbar.search"))}</span></button>`
+      + tab("search", t("tabbar.search"), "search", active === "search")
       + (logged ? tab("portfolio", t("nav.portfolio"), "portfolio", active === "portfolio") : "");
     document.body.appendChild(bar);
-    // Sem foco no campo: no toque, focar = teclado aberto na hora (ver open()).
-    bar.querySelector("[data-mtab-search]").addEventListener("click", () => { if (cmdkOpen) cmdkOpen({ semFoco: true }); });
   }
 
   // Menu hambúrguer no mobile: agrupa a navegação e as ações num drawer
