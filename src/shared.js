@@ -4630,7 +4630,7 @@
   // de `sizes`, nao de CSS: servem so pro navegador escolher a candidata do
   // srcset. Uma escada so precisa cobrir DUAS grades com ladders diferentes —
   // a .card-grid (2 colunas ate 720px, auto-fill minmax(220px,1fr) acima) e a
-  // #salesGrid/#gradedGrid (2/3/4/6 colunas em 460/680/1000px) — entao ela e
+  // #salesGrid (2/3/4/6 colunas em 460/680/1000px) — entao ela e
   // aproximada de proposito, e o erro so aparece em tela 1x: pra mais custa
   // bytes, pra menos custa ate 1,2x de escala. Hoje o erro e 3,8x em DPR 3.
   const SIZES_CARD_TILE = "(max-width: 460px) 46vw, (max-width: 720px) 31vw, (max-width: 1000px) 24vw, 240px";

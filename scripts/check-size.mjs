@@ -62,9 +62,18 @@ import { join } from "node:path";
 // nome montado dinamicamente (variant-${}, rar-${}, is-${kind}, ctr-${v|h}) —
 // nada morto pra cortar. ~700 bytes gz de folga no CSS e ~1 KB no JS; bloco
 // FRIO grande continua tendo que ir pra injeção sob demanda.
+// 2026-09-14: teto do CSS sobe de 47.104 pra 48.128. A main ficou vermelha de
+// novo com a Lista de Desejo no molde da Coleção (c7e4b5b), o Admin 2.0
+// (267fca3) e a limpeza das abas (380bc5e): +80 linhas de CSS, ~300 bytes gz
+// acima do teto — e, como da outra vez, os commits seguintes chegaram com o
+// CI já falhando. Neste mesmo dia saíram a página /graded (com a grade
+// #gradedGrid) e a seção "Continuar de onde parou" do Hub, então o que dava
+// pra cortar de morto já foi cortado. 1 KB de folga; o próximo bloco frio
+// grande (o painel do Admin é candidato: só quem administra abre) tem que ir
+// pra uma folha por área (split-css) ou injeção sob demanda, não pro núcleo.
 const TETOS = [
   { arquivo: "shared.js", teto: 81920, nota: "núcleo JS de toda página" },
-  { arquivo: "styles.min.css", teto: 47104, nota: "CSS antes do split por área" },
+  { arquivo: "styles.min.css", teto: 48128, nota: "CSS antes do split por área" },
 ];
 
 const dir = process.argv[2] || "/tmp/ci-min";
