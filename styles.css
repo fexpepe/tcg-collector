@@ -5441,8 +5441,7 @@ a.progress-row:hover {
 /* Celular (2026-09-10): a página vira uma coluna flex e cada seção recebe a
    sua ORDEM — o patrimônio fica no topo, os cartões de contagem descem pra
    uma seção logo abaixo do "Ir para" (os atalhos são o que se mais clica; os
-   números vinham antes e empurravam tudo pra baixo), e "Continuar de onde
-   parou" vai pro FIM da página, como última seção. O .dash-summary some
+   números vinham antes e empurravam tudo pra baixo). O .dash-summary some
    (display: contents) pra os dois blocos dele entrarem soltos na ordem. O
    `order` não muda o DOM: o leitor de tela e o Tab seguem a ordem do HTML. */
 @media (max-width: 720px) {
@@ -5458,30 +5457,7 @@ a.progress-row:hover {
   .dash-main #dhFreshHead { order: 6; }
   .dash-main #dhFresh { order: 7; }
   .dash-main #dhCaps { order: 8; }
-  .dash-main #dhRecentHead { order: 30; }
-  .dash-main #dhRecent { order: 31; }
 }
-/* Continuar de onde parou (Hub pessoal): cartões com o último progresso visto.
-   A barra reusa a .progress-bar global; a margem padrão dela (14px) é demais
-   dentro do cartão compacto. */
-.dash-recent { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin: 0 0 6px; }
-.dash-recent-card {
-  display: flex; flex-direction: column; gap: 8px;
-  padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px;
-  background: var(--panel); box-shadow: var(--shadow);
-  color: inherit; text-decoration: none;
-}
-.dash-recent-card:hover { border-color: var(--accent); }
-.dash-recent-top { display: flex; align-items: center; gap: 8px; min-width: 0; }
-.dash-recent-top strong { font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.dash-recent-game {
-  flex: none; padding: 2px 8px; border-radius: 999px;
-  font-size: 11px; font-weight: 800;
-  background: var(--gc); color: var(--gc-fg);
-}
-.dash-recent-card .progress-bar { margin-bottom: 0; }
-.dash-recent-count { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
-
 /* Por jogo: título + seletor da forma de ver (mosaico | cápsulas | pizza |
    barras) na primeira linha do card. Reusa o .view-toggle da Coleção (só
    ícone; o nome vai no title/aria), encolhido pro cabeçalho. */
@@ -10274,8 +10250,8 @@ select,
 .ctr-nota { margin: 12px 0 0; font-size: 12px; line-height: 1.5; color: var(--muted); }
 .ctr-file { cursor: pointer; }
 
-/* Primeiros passos (E3). Fica entre o resumo e "Continuar de onde parou", que
-   é onde o olho já está depois de ler a parede de zeros. */
+/* Primeiros passos (E3). Fica logo depois do resumo, que é onde o olho já
+   está depois de ler a parede de zeros. */
 .dash-steps { margin: 26px 0 0; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
 .pp-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
 .pp-head h2 { margin: 0; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }

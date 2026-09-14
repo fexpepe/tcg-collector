@@ -371,10 +371,10 @@ caminho):
   pulso dourado na barra + confete de ~1,5s, uma vez por set por navegador
   (`tcg-set-celebrated-v1`), nada além do estado dourado com
   `prefers-reduced-motion`.
-- **F8** ✔ — "Continuar de onde parou" no Hub pessoal: o detail.js grava os
-  últimos sets visitados (`tcg-recent-sets-v1`, teto 8, local-only) com o
-  progresso DA VISITA, e o Hub mostra até 4 cartões (chip do jogo, barra,
-  N/M · %). Sem histórico, a seção não existe.
+- **F8** ✖ (removida em 2026-09-14) — "Continuar de onde parou" no Hub
+  pessoal: chegou a existir (o detail.js gravava os últimos sets visitados
+  em `tcg-recent-sets-v1` e o Hub mostrava até 4 cartões), mas saiu a pedido
+  do Fernando; nada mais grava nem lê essa chave.
 - **F9** ✔ — View Transitions cross-document (crossfade de 150ms), com
   desligamento explícito no movimento reduzido (a rede `*` do fim do CSS não
   alcança os pseudo-elementos `::view-transition-*`).

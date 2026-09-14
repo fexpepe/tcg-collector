@@ -132,28 +132,12 @@
     });
   }
 
-  // --- "Continuar de onde parou" (Hub pessoal) + celebração de set 100% ---
-  // O Hub lê tcg-recent-sets-v1 e mostra os últimos sets visitados com o
-  // progresso DA VISITA (recalcular lá exigiria os índices dos 13 jogos; a
-  // próxima visita atualiza o número de graça). Local-only: é conveniência de
-  // navegação, não dado de coleção.
-  const RECENT_KEY = "tcg-recent-sets-v1";
+  // --- Celebração de set 100% ---
+  // (A seção "Continuar de onde parou" do Hub, que lia os últimos sets
+  // visitados daqui, saiu em 2026-09-14 a pedido — nada mais grava a lista.)
   const CELEBRATED_KEY = "tcg-set-celebrated-v1";
   const paginaGame = () => (window.SLEEVU && window.SLEEVU.game) || "pokemon";
   const setChave = () => `${paginaGame()}:${detailSetId || detailName}`;
-  function registraRecente(ownedN, totalN, pct) {
-    try {
-      const sp = new URLSearchParams(window.location.search);
-      sp.delete("card"); // o ?card= carimbado abriria um popup, não o set
-      const u = `${window.location.pathname}?${sp.toString()}`;
-      const chave = setChave();
-      const lista = (JSON.parse(localStorage.getItem(RECENT_KEY) || "[]") || [])
-        .filter((r) => r && r.k !== chave);
-      lista.unshift({ k: chave, u, g: paginaGame(), n: detailName, own: ownedN, tot: totalN, pct, t: Date.now() });
-      localStorage.setItem(RECENT_KEY, JSON.stringify(lista.slice(0, 8)));
-    } catch (e) { /* storage cheio/negado: conveniência, não dado */ }
-  }
-
   // Completar um set é O momento do hobby e passava em silêncio (as badges dão
   // o prêmio durável; isto é o instante). Uma vez por set POR NAVEGADOR — a
   // festa repetida vira ruído — e nada além do estado dourado com
@@ -1131,11 +1115,9 @@
       // cards de set 100%) — completo por contagem exata, não pelo arredondado.
       elements.completionBar.classList.toggle("complete", totalN > 0 && ownedN >= totalN);
     }
-    // Página de SET do catálogo: registra a visita pro "Continuar de onde
-    // parou" do Hub e celebra a TRANSIÇÃO pra 100% (nunca a página que já abre
-    // completa — pctAnterior null cobre o primeiro render).
+    // Página de SET do catálogo: celebra a TRANSIÇÃO pra 100% (nunca a
+    // página que já abre completa — pctAnterior null cobre o primeiro render).
     if (detailType === "set" && !collectionScope && totalN > 0) {
-      registraRecente(ownedN, totalN, pct);
       const completo = ownedN >= totalN;
       if (estavaCompleto === false && completo) celebraSetCompleto();
       estavaCompleto = completo;
