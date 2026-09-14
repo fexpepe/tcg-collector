@@ -197,6 +197,17 @@ jobs:
           node scripts/sync-pokemon-types.mjs
           node scripts/sync-pokemon-names.mjs
 
+      # Preço do TCGplayer POR IMPRESSÃO (Normal/Holo/Reverse/1st Edition) pro
+      # Pokémon EN e JP, e os sets JP que a TCGdex não tem (promos S-P/SM-P/
+      # XY-P, eras DP/BW/XY…), via TCGCSV — o mesmo espelho grátis e diário dos
+      # outros oito jogos. Roda TODO dia (não custa crédito) e vence TCGdex e
+      # PPT no merge; a PPT segue só pro graded. Lê os chunks recém-sincronizados
+      # (data/sets/{en,ja}), então vem DEPOIS do sync-tcgdex e ANTES do merge.
+      # Não derruba o build: sem o artefato o merge segue com TCGdex + PPT.
+      - name: Sincroniza preços por impressão e sets JP (TCGCSV)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/sync-tcgcsv-pokemon.mjs || echo "sync-tcgcsv-pokemon falhou; o merge segue com TCGdex + PPT"
+
       # Preços de mercado BR (MYP). NO-OP enquanto o secret MYP_API_TOKEN nao
       # existir — o script sai com sucesso e o merge segue só com a referencia
       # internacional. Quando o token chegar, o BR passa a ter prioridade no valor.
@@ -219,6 +230,14 @@ jobs:
       - name: Mescla catálogos num manifest unificado
         if: env.RODA_SYNC == 'true'
         run: node scripts/merge-catalogs.mjs en ja zh-cn zh-tw pt
+
+      # Cobertura de preço no log (por idioma: % com cotação, fonte, cartas
+      # sintetizadas, sets sem preço nenhum, cotações acima do teto). Só
+      # informa: é o que faz um preço absurdo ou um buraco de cobertura aparecer
+      # no dia, e não meses depois numa comparação com outro site.
+      - name: Relatório de cobertura de preço (Pokémon)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/report-price-coverage.mjs || echo "relatório de cobertura falhou (só informativo)"
 
       # Espelha logos/símbolos de SET do Pokémon localmente (independência da
       # TCGdex; as CARTAS seguem remotas). Roda DEPOIS do merge (que reescreve os

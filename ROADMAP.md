@@ -46,9 +46,15 @@ vendas"); movers das **suas** cartas por impacto no bolso; **benchmark** contra 
 com a Coleção porque a fórmula vive num lugar só — a borda devolve dado, nunca o
 total calculado. Ver [docs/PORTFOLIO.md](docs/PORTFOLIO.md).
 
-**Preços.** TCGplayer (USD) e Cardmarket (EUR) por carta, PokemonPriceTracker
-pros preços JP e graded, câmbio do dia da AwesomeAPI, moeda escolhida pelo
-usuário (BRL/USD/EUR). Histórico de preços sem servidor: a produção é o banco.
+**Preços.** TCGplayer (USD) **por impressão** — Normal, Holo, Reverse, 1st
+Edition — via TCGCSV, diário, pro Pokémon EN e JP; Cardmarket (EUR) da TCGdex;
+PokemonPriceTracker pro graded; câmbio do dia da AwesomeAPI, moeda escolhida
+pelo usuário (BRL/USD/EUR). Os sets JP que a TCGdex não tem (promos S-P/SM-P/
+XY-P, eras DP/BW/XY) entram inteiros pela TCGCSV. Histórico de preços sem
+servidor: a produção é o banco. Decisão de 14/09/2026, depois da comparação com
+o TCG Collector: a tabela tinha um preço por carta (o do Normal), o preço JP
+dependia de crédito e chegava atrasado, e promos JP estavam injetadas em sets
+EN — ver "Preço do Pokémon" no README.
 
 **Graded.** Slabs PSA/BGS/CGC/SGC/TAG com nota, certificado e valor — automático
 por graduadora+nota quando a PPT tem, editável sempre. A carta do catálogo é

@@ -1,6 +1,7 @@
 // Helpers compartilhados dos scripts de sync/build de catálogo. Sem dependências.
 // Cada jogo novo deve custar ~1 arquivo pequeno usando estas peças.
 import { writeFile, readFile, mkdir, rm } from "node:fs/promises";
+import { usdForVariant, pickPricingRef } from "./pricing.mjs";
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -177,10 +178,12 @@ export function setValueBuckets(cards, pricing) {
   const table = pricing || {};
   let vb = 0, vu = 0, ve = 0, vn = 0;
   for (const card of cards) {
-    const ref = table[card.id] || table[basePricingId(card.id)];
+    // Mesma régua do cardValue (lib/pricing.mjs): própria × base pela melhor
+    // fonte, e o USD da impressão padrão da carta (v) antes do principal (u).
+    const ref = pickPricingRef(table[card.id], table[basePricingId(card.id)]);
     if (!ref) { vn++; continue; }
     const variant = (card.variants && card.variants[0]) || "Normal";
-    const usd = /foil/i.test(variant) && ref.uf > 0 ? ref.uf : ref.u;
+    const usd = usdForVariant(ref, variant);
     if (ref.b && ref.b.md > 0) vb += ref.b.md;
     else if (usd > 0) vu += usd;
     else if (ref.e > 0) ve += ref.e;

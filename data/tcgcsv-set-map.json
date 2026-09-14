@@ -1,0 +1,20 @@
+{
+  "_": "Pins do casamento set nosso ↔ grupo do TCGplayer (scripts/sync-tcgcsv-pokemon.mjs). en: setId TCGdex -> groupId (ou lista, quando a TCGdex junta a galeria TG/GG no chunk). Só entra aqui o que foi conferido à mão; o resto o sync casa pelo nome e CONFIRMA pelos números. ja.alias: código do TCGplayer -> nosso setId quando divergem; ja.skip: códigos a ignorar.",
+  "en": {
+    "base1": 604, "base2": 635, "base3": 630, "base4": 605, "base5": 1373,
+    "gym1": 1441, "gym2": 1440,
+    "neo1": 1396, "neo2": 1434, "neo3": 1389, "neo4": 1444,
+    "ecard1": 1375, "ecard2": 1397, "ecard3": 1372,
+    "sma": 2594, "cel25": 2867,
+    "swsh7": 2848, "swsh8": 2906, "swsh9": [2948, 3020], "swsh10": [3040, 3068],
+    "swsh11": [3118, 3172], "swsh12": [3170, 17674], "swsh12.5": [17688, 17689],
+    "swsh4.5": 2754,
+    "sv01": 22873, "sv03": 23228, "sv03.5": 23237, "sv04.5": 23353, "sv05": 23381,
+    "sv06": 23473, "sv06.5": 23529, "sv07": 23537, "sv08": 23651, "sv08.5": 23821, "sv09": 24073,
+    "mep": 24451, "smp": 1861, "svp": 22872, "swshp": 2545, "xyp": 1451
+  },
+  "ja": {
+    "alias": {},
+    "skip": []
+  }
+}

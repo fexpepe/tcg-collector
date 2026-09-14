@@ -1297,6 +1297,30 @@
     return String(cardId || "").replace(/-(pt|ja|zh-cn|zh-tw|zh)$/, "");
   }
 
+  // ESPELHO de scripts/lib/pricing.mjs (usdForVariant / pickPricingRef): o
+  // shared.js não importa módulo, e o manifest (setValueBuckets, no build) tem
+  // que somar com a MESMA régua que o tile mostra. tests/pricing-variants.test.mjs
+  // roda os dois lado a lado; mudou um, muda o outro.
+  function usdForVariant(ref, variant) {
+    if (!ref) return 0;
+    const v = ref.v && variant && ref.v[variant];
+    if (v > 0) return v;
+    if (/foil/i.test(variant || "") && ref.uf > 0) return ref.uf;
+    return ref.u > 0 ? ref.u : 0;
+  }
+  function pickPricingRef(own, base) {
+    if (!own) return base || null;
+    if (!base || own === base) return own;
+    const rank = (r) => (r.b && r.b.md > 0 ? 3 : (r.u > 0 ? 2 : (r.e > 0 ? 1 : 0)));
+    return rank(base) > rank(own) ? base : own;
+  }
+  // Entrada de preço que vale pra esta carta (própria × base, pela melhor fonte).
+  function pricingRefFor(cardId) {
+    const table = window.TCG_PRICING;
+    if (!table || !cardId) return null;
+    return pickPricingRef(table[cardId], table[basePricingId(cardId)]);
+  }
+
   function cardValue(card, variant, prices, condition) {
     const cur = currentCurrency;
     const cardId = card && card.id;
@@ -1309,10 +1333,12 @@
       }
     }
     // Referência de mercado (USD/EUR → moeda atual). Cartas localizadas (-pt,
-    // -ja, -zh-tw) sem preço próprio reaproveitam o preço da carta base — é a
-    // mesma "conversão do preço americano/europeu" que vale para as brasileiras.
-    const table = window.TCG_PRICING;
-    const ref = cardId && table && (table[cardId] || table[basePricingId(cardId)]);
+    // -ja, -zh-tw) reaproveitam o preço da carta base — é a mesma "conversão do
+    // preço americano/europeu" que vale para as brasileiras — e entre a entrada
+    // própria e a base vale a de MELHOR fonte (pickPricingRef): antes a PT do
+    // Van Gogh Pikachu mostrava o EUR do Cardmarket e a EN o USD do TCGplayer,
+    // dois valores pra mesma impressão conforme a bandeira.
+    const ref = cardId && pricingRefFor(cardId);
     if (ref) {
       // A referência de mercado descreve uma cópia NM; condição pior vale uma
       // fração dela — a MESMA tabela que o preço manual já usava. Sem isso um
@@ -1325,8 +1351,10 @@
       };
       // Preço BR (MYP) tem prioridade sobre a referência internacional.
       if (ref.b && ref.b.md > 0) { const r = byCondition(ref.b.md, "BRL", "myp"); if (r) return r; }
-      // Acabamento: Foil tem preço próprio (ex.: Lorcana ref.uf); senão o normal.
-      const usd = /foil/i.test(variant || "") && ref.uf > 0 ? ref.uf : ref.u;
+      // Impressão: a variante do tile tem cotação própria em `v` (Pokémon:
+      // Normal/Holo/Reverse/1st Edition, ver scripts/lib/pricing.mjs); Foil tem
+      // `uf` (Lorcana/One Piece/Magic); senão a principal `u`.
+      const usd = usdForVariant(ref, variant);
       if (usd > 0) { const r = byCondition(usd, "USD", "ref"); if (r) return r; }
       if (ref.e > 0) { const r = byCondition(ref.e, "EUR", "ref"); if (r) return r; }
     }
@@ -4973,8 +5001,7 @@
     // carta tem, e o rótulo do foil usa o nome ESPECIAL quando houver (a
     // impressão Surge mostra "Surge Foil" — é onde o preço muda de verdade).
     if (!tcgdex) {
-      const tbl = window.TCG_PRICING;
-      const ref2 = tbl && card && card.id && (tbl[card.id] || tbl[basePricingId(card.id)]);
+      const ref2 = card && card.id && pricingRefFor(card.id);
       if (ref2 && (ref2.u > 0 || ref2.e > 0)) {
         const med = (v) => (v > 0 ? { min: null, med: v, max: null } : null);
         const vars2 = cardVariants(card);
@@ -4982,7 +5009,12 @@
         const soFoil = vars2.every(foilish);
         const especial = variantDisplayLabel(card, "Foil");
         const foilLabel = especial !== "Foil" ? especial : t("market.foil");
-        if (soFoil) {
+        if (ref2.v && vars2.some((v) => ref2.v[v] > 0)) {
+          // Cotação POR IMPRESSÃO (pricing `v`, Pokémon via TCGplayer): uma
+          // linha por variante que a carta tem, com o nome dela. O EUR único do
+          // Cardmarket vai junto da primeira linha, como na TCGdex ao vivo.
+          tcgdex = vars2.map((v, i) => marketFinishRow(variantDisplayLabel(card, v), { usd: med(usdForVariant(ref2, v)), eur: i === 0 ? med(ref2.e) : null }, fx)).join("");
+        } else if (soFoil) {
           tcgdex = marketFinishRow(foilLabel, { usd: med(ref2.u), eur: med(ref2.e) }, fx);
         } else {
           // O `e` (Cardmarket) é um preço único por carta: fica na linha do
@@ -8840,6 +8872,8 @@
     updateShare,
     deleteShare,
     cardValue,
+    usdForVariant,
+    pricingRefFor,
     gradedValue,
     gradedGradeText,
     gradedBadgeHtml,

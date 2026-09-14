@@ -1,6 +1,7 @@
 import { writeFile, readFile, mkdir, readdir } from "node:fs/promises";
 import { parseArgs } from "node:util";
 import { preserveMissingCards, writeSplitIndexes } from "./lib/sync-common.mjs";
+import { compactTcgdexPrice } from "./lib/pricing.mjs";
 
 const { values: options, positionals } = parseArgs({
   allowPositionals: true,
@@ -347,27 +348,13 @@ function toAppCard(card, fallbackLanguage, fullSet) {
   return appCard;
 }
 
-// Um valor representativo por moeda do `pricing` da TCGdex: USD do TCGplayer
-// (market/mid da 1ª variante com preço), EUR do Cardmarket (avg/trend/low).
+// Preço compacto por moeda E por impressão do `pricing` da TCGdex: { u, e, v? }
+// (USD principal, EUR do Cardmarket, USD de cada impressão). A regra vive em
+// scripts/lib/pricing.mjs, compartilhada com a TCGCSV e a PPT e travada por
+// teste — antes ficava aqui, guardava só a 1ª impressão com preço e é o motivo
+// de o Reverse/1st Edition sair com o preço do Normal.
 function compactPrice(pricing) {
-  if (!pricing || typeof pricing !== "object") return null;
-  const tp = pricing.tcgplayer || {};
-  const cm = pricing.cardmarket || {};
-  const pick = (obj, keys) => {
-    for (const k of keys) { const v = obj && obj[k]; if (typeof v === "number" && v > 0) return v; }
-    return 0;
-  };
-  let usd = 0;
-  for (const key of ["normal", "holofoil", "reverseHolofoil", "reverse-holofoil", "1stEditionHolofoil", "1stEdition"]) {
-    const v = tp[key];
-    if (v && typeof v === "object") { usd = pick(v, ["marketPrice", "midPrice", "lowPrice"]); if (usd) break; }
-  }
-  const eur = pick(cm, ["avg", "trendPrice", "avg-holo", "low", "low-holo"]);
-  if (!usd && !eur) return null;
-  const out = {};
-  if (usd) out.u = Math.round(usd * 100) / 100;
-  if (eur) out.e = Math.round(eur * 100) / 100;
-  return out;
+  return compactTcgdexPrice(pricing);
 }
 
 function imageUrl(baseImageUrl, quality = "") {

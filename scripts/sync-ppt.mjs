@@ -23,6 +23,7 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { normNum, numDoId } from "./lib/sync-common.mjs";
+import { compactPptPrice, chunkNumberPrefixes, missAllowed } from "./lib/pricing.mjs";
 
 const TOKEN = process.env.PPT_API_TOKEN;
 const BASE = "https://www.pokemonpricetracker.com/api/v2";
@@ -378,12 +379,17 @@ async function discoverSetId(ourSetId) {
   return null;
 }
 
-// Extrai o melhor valor unitário (USD) e a imagem de um card da PPT.
+// Extrai o melhor valor unitário (USD) de um card da PPT (o `market` da
+// impressão principal; sem ele, a melhor condição de qualquer impressão).
 function pickPrice(c) {
-  if (c.prices && c.prices.market > 0) return c.prices.market;
-  const v = c.prices && c.prices.variants;
-  if (v) for (const variant of Object.values(v)) for (const cond of Object.values(variant)) if (cond && cond.price > 0) return cond.price;
-  return 0;
+  const p = compactPptPrice(c.prices);
+  return p ? p.u : 0;
+}
+// Preço POR IMPRESSÃO ({ Normal, Holo, Reverse, "1st Edition" } em USD), quando a
+// PPT manda `prices.variants` — vai em `v` na tabela (ver lib/pricing.mjs).
+function pickVariants(c) {
+  const p = compactPptPrice(c.prices);
+  return p && p.v ? p.v : null;
 }
 // Graded (eBay, por nota PSA). Por nota guarda: s = preço "mercado" (smartMarket
 // ponderado, com fallback mediana/7d), r = recente 7 dias, m = mediana 90 dias,
@@ -433,6 +439,10 @@ async function syncSet(ourSetId, pptSetId, lang = "japanese", withGraded = GRADE
   }
   const sib = chunk[0]; // carta-irmã: campos do set (logo/símbolo/data/série).
   const rev = await revNames();
+  // Padrão de numeração do set (prefixos que a TCGdex usa nele): é a guarda do
+  // add-on-miss abaixo. Promo JP "227/S-P" listada pelo TCGplayer dentro do set
+  // "SWSH Promo" não casa com "SWSH227" e antes virava carta EN nova.
+  const prefixes = chunkNumberPrefixes(chunk);
 
   const inc = withGraded ? "&includeEbay=true&days=90" : "";
   const pptIds = Array.isArray(pptSetId) ? pptSetId : [pptSetId];
@@ -448,6 +458,7 @@ async function syncSet(ourSetId, pptSetId, lang = "japanese", withGraded = GRADE
   }
   const entries = {};
   const misses = new Map(); // chave(normNum) -> melhor candidato (com imagem)
+  let rejectedMisses = 0;
   for (const c of arr) {
     const rawNum = String(c.cardNumber || "").split("/")[0].trim(); // "TG08", "077", "199"
     const key = normNum(rawNum);
@@ -456,9 +467,13 @@ async function syncSet(ourSetId, pptSetId, lang = "japanese", withGraded = GRADE
     if (ourId) {
       const e = {};
       if (u > 0) e.u = Math.round(u * 100) / 100;
+      const v = pickVariants(c);
+      if (v) e.v = v;
       if (img) e.img = img;
       if (withGraded) { const g = pickGraded(c); if (g) e.g = g; }
       if (Object.keys(e).length) entries[ourId] = e;
+    } else if (key && img && !missAllowed(rawNum, prefixes)) {
+      rejectedMisses++; // número fora do padrão do set: outra série (JP) ou grafia duplicada
     } else if (key && img) {
       // Add-on-miss: número que não existe no nosso chunk + tem imagem. Por número,
       // fica o de MAIOR preço (a impressão "principal", não a de erro/staff).
@@ -501,7 +516,7 @@ async function syncSet(ourSetId, pptSetId, lang = "japanese", withGraded = GRADE
     newCards.push(card);
   }
 
-  console.log(`  ${ourSetId} (ppt ${pptIds.join("+")}, ${lang}): ${Object.keys(entries).length} casadas, ${newCards.length} novas (add-on-miss)`);
+  console.log(`  ${ourSetId} (ppt ${pptIds.join("+")}, ${lang}): ${Object.keys(entries).length} casadas, ${newCards.length} novas (add-on-miss)${rejectedMisses ? `, ${rejectedMisses} fora do padrão de numeração (ignoradas)` : ""}`);
   return { entries, newCards };
 }
 

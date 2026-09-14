@@ -1,5 +1,10 @@
 [
  {
+  "d": "2026-09-14",
+  "pt": "Preço do Pokémon por impressão: Normal, Holo, Reverse e 1st Edition têm cada um a sua cotação do TCGplayer (via TCGCSV, atualizada todo dia, EN e JP) — o Reverse deixa de valer o preço do Normal no tile, na Coleção e na ordenação por valor. Sets japoneses que a TCGdex não tem (promos S-P/SM-P/XY-P, eras DP/BW/XY) passam a entrar inteiros, com preço. Promos japonesas que apareciam como cartas americanas (Pikachu de Kanazawa como \"SWSH 227\", Poncho Pikachu no XY Promos) saíram dos sets errados.",
+  "en": "Pokémon prices per printing: Normal, Holo, Reverse and 1st Edition each get their own TCGplayer quote (via TCGCSV, refreshed daily, EN and JP) — a Reverse no longer shows the Normal price on the tile, in the Collection or when sorting by value. Japanese sets missing from TCGdex (S-P/SM-P/XY-P promos, the DP/BW/XY eras) now come in whole, with prices. Japanese promos that showed up as English cards (Kanazawa Pikachu as \"SWSH 227\", Poncho Pikachu in XY Promos) were removed from the wrong sets."
+ },
+ {
   "d": "2026-08-18",
   "pt": "Naruto ganhou o CCG americano (Bandai USA, 2006–2013) como linha vintage: 3.841 cartas em 37 sets — os 28 boosters, 4 Tournament Packs, 4 tins e as promos — com scan, raridade, numeração oficial e datas de lançamento curadas. Fonte creditada na página Sobre: narutocards.ca.",
   "en": "Naruto got the American CCG (Bandai USA, 2006–2013) as a vintage line: 3,841 cards across 37 sets — all 28 boosters, 4 Tournament Packs, 4 tins and the promos — with scans, rarity, official numbering and curated release dates. Source credited on the About page: narutocards.ca."

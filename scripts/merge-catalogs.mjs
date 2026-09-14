@@ -6,6 +6,7 @@
 // Uso: node scripts/merge-catalogs.mjs en ja zh-tw pt
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import { writeSplitIndexes, setManifestMeta } from "./lib/sync-common.mjs";
+import { chunkNumberPrefixes, missAllowed, applyVariantPrices } from "./lib/pricing.mjs";
 
 const langs = process.argv.slice(2).filter((arg) => !arg.startsWith("-"));
 if (!langs.length) {
@@ -99,14 +100,25 @@ const enImageById = new Map();
 // { "<lang>/<setId>": [card, ...] }
 let pptNewCards = [];
 try { pptNewCards = JSON.parse(await readFile(new URL("ppt-newcards.generated.json", dataDir), "utf8")); } catch { /* sem novas */ }
+// Idem da TCGCSV (sync-tcgcsv-pokemon.mjs): promos EN que a TCGdex não lista e
+// sets JP inteiros que ela não tem (S-P, SM-P, XY-P…). Mesmo formato, mesma
+// injeção; a TCGCSV vem PRIMEIRO na lista porque é a fonte diária e sem crédito,
+// e o dedupe por id deixa a PPT só com o que sobrar.
+let csvNewCards = [];
+try { csvNewCards = JSON.parse(await readFile(new URL("tcgcsv-newcards.generated.json", dataDir), "utf8")); } catch { /* sem TCGCSV */ }
 const newBySet = {};
-for (const c of Array.isArray(pptNewCards) ? pptNewCards : []) {
+for (const c of [...(Array.isArray(csvNewCards) ? csvNewCards : []), ...(Array.isArray(pptNewCards) ? pptNewCards : [])]) {
   if (!c || !c.id || !c.language || !c.setId) continue;
   (newBySet[`${c.language}/${c.setId}`] = newBySet[`${c.language}/${c.setId}`] || []).push(c);
 }
+// Preços por impressão da TCGCSV (TCGplayer, diário): { cardId: { u, v?, img? } }.
+let csvData = {};
+try { csvData = JSON.parse(await readFile(new URL("tcgcsv-prices.generated.json", dataDir), "utf8")); } catch { /* sem TCGCSV */ }
 let injectedNew = 0;
+let rejectedNew = 0;
 // Sets que TÊM chunk (existem na TCGdex): marcados no loop. O que sobrar em
-// newBySet sem chunk = set só-PPT (M5/MBG…), tratado depois do loop.
+// newBySet sem chunk = set só-PPT (M5/MBG…) ou só-TCGCSV (promos JP S-P,
+// SM-P…), tratado depois do loop.
 const consumedSets = new Set();
 
 // Logo de Black Star Promo: todo set "* Black Star Promos" (SVP, MEP, SWSHP,
@@ -126,8 +138,13 @@ for (const lang of langs) {
     const news = newBySet[`${lang}/${chunk.setId}`];
     if (news && news.length) {
       const have = new Set(chunk.cards.map((c) => c.id));
+      // A MESMA guarda do sync (missAllowed): o artefato de cartas novas pode
+      // vir do cache de build de uma rodada anterior à guarda, e uma promo JP
+      // "227" em set EN "SWSH###" não pode voltar por essa porta.
+      const prefixes = chunkNumberPrefixes(chunk.cards);
       for (const nc of news) {
         if (have.has(nc.id)) continue;
+        if (!missAllowed(nc.number, prefixes)) { rejectedNew++; continue; }
         const { _new, ...card } = nc; // remove a flag interna
         chunk.cards.push(card); have.add(nc.id); injectedNew++; changed = true;
       }
@@ -153,9 +170,10 @@ for (const lang of langs) {
       if (/black star promo/i.test(card.set || "") && card.setLogo !== BLACK_STAR_PROMO_LOGO) {
         card.setLogo = BLACK_STAR_PROMO_LOGO; changed = true;
       }
-      // Imagem da PPT (TCGplayer CDN) onde a TCGdex não tem (ex.: era Mega JP).
-      const pp = pptData[card.id];
-      if (pp && pp.img && !card.image) { card.image = pp.img; changed = true; }
+      // Imagem do TCGplayer (via TCGCSV ou PPT) onde a TCGdex não tem (ex.: era Mega JP).
+      const pp = pptData[card.id], cp = csvData[card.id];
+      const img = (cp && cp.img) || (pp && pp.img);
+      if (img && !card.image) { card.image = img; changed = true; }
       // Coleta as imagens EN (já com o fill da PPT) por id, pra usar como fallback
       // nas cartas localizadas (PT/JA/ZH) que não têm imagem própria.
       if (lang === "en" && card.image) enImageById.set(card.id, card.image);
@@ -200,8 +218,8 @@ for (const [key, news] of Object.entries(newBySet)) {
     allCards.push(...cards);
     manifestSets.push({ id: setId, name: cards[0].set || setId, count: cards.length, language: lang, file: `data/sets/${lang}/${file}` });
     injectedNew += cards.length;
-    console.log(`  [merge] set só-PPT criado: ${lang}/${setId} "${cards[0].set || setId}" (${cards.length} cartas)`);
-  } catch (e) { console.warn(`  [merge] falha criando set só-PPT ${key}: ${e.message}`); }
+    console.log(`  [merge] set sem chunk na TCGdex criado da fonte de preço: ${lang}/${setId} "${cards[0].set || setId}" (${cards.length} cartas)`);
+  } catch (e) { console.warn(`  [merge] falha criando set ${key}: ${e.message}`); }
 }
 
 // Fallback de imagem por idioma: carta localizada (PT/JA/ZH) sem imagem própria
@@ -242,14 +260,30 @@ await applyMypPrices(pricing, allCards);
 // PPT é o mercado real do TCGplayer (JP + sets EN de alto valor), e sobrescreve.
 // O front (shared.js#cardValue) prioriza `u` sobre `e`, então isso já conserta
 // o valor JP. Graded (PSA 9/10) vai em `g` pra exibição no card.
+// Ordem das fontes de USD, da pior pra melhor (a última a escrever vence):
+//   TCGdex (embutido no card; pode ser só o piso do Cardmarket e fica até 7
+//   dias no cache) < PPT (mesmo mercado TCGplayer, mas por crédito, 3x/semana,
+//   com teto de tempo — chega atrasado) < TCGCSV (TCGplayer por impressão,
+//   diário, grátis). O `g` (graded PSA) é exclusivo da PPT e entra sempre.
 let pptApplied = 0;
 for (const [id, p] of Object.entries(pptData)) {
   if (!p) continue;
   const ref = pricing[id] || (pricing[id] = {});
-  if (p.u > 0) { ref.u = p.u; pptApplied++; }
+  if (p.u > 0 && !(csvData[id] && csvData[id].u > 0)) { applyVariantPrices(ref, p); pptApplied++; }
   if (p.g) ref.g = p.g;
 }
 if (Object.keys(pptData).length) console.log(`Preços PPT aplicados: ${pptApplied} (de ${Object.keys(pptData).length} no artefato)`);
+let csvApplied = 0;
+for (const [id, p] of Object.entries(csvData)) {
+  if (!p || !(p.u > 0)) continue;
+  applyVariantPrices(pricing[id] || (pricing[id] = {}), p);
+  csvApplied++;
+}
+if (Object.keys(csvData).length) console.log(`Preços TCGCSV (TCGplayer por impressão) aplicados: ${csvApplied}`);
+// Entradas sem preço nenhum (só imagem, por exemplo) não ocupam a tabela.
+for (const [id, ref] of Object.entries(pricing)) {
+  if (!(ref.u > 0 || ref.e > 0 || (ref.b && ref.b.md > 0) || ref.g)) delete pricing[id];
+}
 
 // Metadados de set + soma de preço em cada entrada do manifest, pra LISTA de
 // sets não precisar dos chunks de carta (ver setManifestMeta). Roda AQUI, no
@@ -291,7 +325,7 @@ await writeSplitIndexes(dataDir, mergedIndexes, { only: "generated" });
 await writeFile(new URL("manifest.generated.js", dataDir), `window.TCG_MANIFEST = ${JSON.stringify(manifest)};\n`, "utf8");
 await writeFile(new URL("pricing.generated.js", dataDir), `window.TCG_PRICING = ${JSON.stringify(pricing)};\n`, "utf8");
 
-if (pptNewCards.length) console.log(`Cartas novas da PPT (add-on-miss) injetadas: ${injectedNew}/${pptNewCards.length}`);
+if (pptNewCards.length || csvNewCards.length) console.log(`Cartas novas (TCGCSV ${csvNewCards.length} + PPT ${pptNewCards.length}) injetadas: ${injectedNew}${rejectedNew ? ` · ${rejectedNew} recusadas pela guarda de numeração` : ""}`);
 if (dexBackfilled) console.log(`dexId preenchido pelo nome local (secret rares JP/CN sem metadado): ${dexBackfilled}`);
 console.log(`Mesclados: ${allCards.length} cartas, ${manifestSets.length} sets (${langs.join(", ")})`);
 console.log(`Preços de referência: ${Object.keys(pricing).length} cartas`);
