@@ -340,6 +340,15 @@
       if (summary) summary.classList.add("has-hero");
       const stats = document.querySelector(".detail-stats");
       if (stats) elements.hero.appendChild(stats);
+      // Página de POKÉMON sem os valores (Valor total / Já gasto / Falta):
+      // pedido do Fernando (2026-09) — quem abre um Pokémon quer ver as cartas,
+      // e os três caixotes só empurravam a grade pra baixo. Tirar o nó (e não
+      // só esconder) evita que updateValueStats() o traga de volta a cada
+      // render. Set, artista e treinador seguem com a faixa.
+      if (detailType === "pokemon" && elements.detailValues) {
+        elements.detailValues.remove();
+        elements.detailValues = null;
+      }
       placeValues(summary);
     }
     initBackLink();
@@ -359,7 +368,7 @@
   // cápsulas saíam com larguras desiguais (a do meio encolhe quando "Já gasto"
   // está vazio). Ao lado do logo elas ficam iguais e o resumo encurta ~65px.
   // Mover o NÓ (em vez de duplicar) mantém uma fonte só pros ids de valor.
-  // Só no set: o hero de Pokémon tem a fileira "em destaque" e já é alto.
+  // Só no set: a página de Pokémon nem tem mais os valores (ver init).
   // Seguro porque renderHero() roda uma vez e os valores são atualizados por
   // textContent — nada reescreve o innerHTML do hero depois daqui.
   const VALUES_MQ = "(max-width: 600px)";
@@ -526,7 +535,6 @@
     if (!sample) return;
 
     if (detailType === "set") {
-      elements.hero.classList.remove("has-featured");
       // Vintage japonês: o título vai em inglês (igual à lista) e o nome
       // ORIGINAL aparece logo abaixo — é aqui, ao abrir o set, que ele importa.
       const nomeExibido = shared.setDisplayName(sample.setId, sample.set, sample.language);
@@ -596,30 +604,6 @@
     return `<nav class="pokemon-hero-steps" aria-label="${escapeAttribute(t("detail.navAria"))}">${pokemonStepCard(dex - 1, "prev")}${pokemonStepCard(dex + 1, "next")}</nav>`;
   }
 
-  // "Em destaque": as cartas MAIS VALIOSAS deste Pokémon (proxy de popularidade —
-  // não rastreamos visualizações). Fileira à direita do hero, clicável (preview).
-  function pokemonFeaturedHtml() {
-    const ranked = pageCards
-      .map((card) => ({ card, variant: shared.defaultVariant(card), val: shared.cardValue(card, shared.defaultVariant(card), prices, shared.DEFAULT_CONDITION).value || 0 }))
-      .filter((x) => x.val > 0)
-      .sort((a, b) => b.val - a.val)
-      .slice(0, 4);
-    if (ranked.length < 2) return ""; // pouca cotação: não vale a seção
-    const cur = shared.getCurrency();
-    const cards = ranked.map(({ card, variant, val }) => {
-      const src = shared.cardImageSources(card);
-      const img = shared.localizedImg(src.url, { alt: card.name, fallback: src.fallback, loading: "lazy", thumb: true });
-      return `<button type="button" class="pkmn-feat-card" data-preview-card-id="${escapeAttribute(card.id)}" data-preview-variant="${escapeAttribute(variant)}" title="${escapeAttribute(card.name + " · " + card.set)}">
-        <span class="pkmn-feat-img">${img}</span>
-        <span class="pkmn-feat-price">${escapeHtml(shared.formatMoney(cur, val))}</span>
-      </button>`;
-    }).join("");
-    return `<div class="pokemon-hero-featured">
-      <h3 class="pokemon-hero-featured-title">${escapeHtml(t("hero.featured"))}</h3>
-      <div class="pokemon-hero-featured-row">${cards}</div>
-    </div>`;
-  }
-
   function renderPokemonHero(sample) {
     const dexId = sample.dexId || "";
     const region = REGION_BY_GENERATION[Number(sample.generation)] || "";
@@ -630,8 +614,9 @@
       ? `<img class="pokemon-hero-image" src="${escapeAttribute(sample.pokemonImage)}" alt="${escapeAttribute(detailName)}">`
       : "";
 
-    const featuredHtml = pokemonFeaturedHtml();
-    elements.hero.classList.toggle("has-featured", !!featuredHtml);
+    // A fileira "Mais valiosas" que ficava à direita saiu (2026-09, pedido do
+    // Fernando): as mesmas cartas já aparecem na grade logo abaixo, ordenada
+    // por maior preço, e o hero volta ao layout padrão (arte | infos | stats).
     elements.hero.innerHTML = `
       <div class="pokemon-hero-left">
         <div class="pokemon-hero-art">${pokemonImage}</div>
@@ -655,7 +640,6 @@
         <div class="forms-list" data-forms-list hidden></div>
         <p class="pokemon-hero-count">${escapeHtml(tn("hero.cardsInCatalog", pageCards.length))}</p>
       </div>
-      ${featuredHtml}
     `;
     elements.hero.hidden = false;
 
@@ -1002,12 +986,6 @@
         render({ resetCount: true });
       });
     }
-
-    // Cartas em destaque (no hero) abrem o mesmo preview.
-    if (elements.hero) elements.hero.addEventListener("click", (event) => {
-      const feat = event.target.closest(".pkmn-feat-card[data-preview-card-id]");
-      if (feat) preview.open(feat.dataset.previewCardId, feat.dataset.previewVariant);
-    });
 
     elements.grid.addEventListener("click", (event) => {
       // + de tile agrupado: menu de versões (adicionar direto, sem abrir o card).
