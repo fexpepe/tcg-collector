@@ -24,7 +24,11 @@
   const BASE = location.origin + "/" + VENDOR;
   const WHITELIST = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-. ";
   const FAIXA = 0.24;        // fração INFERIOR da carta onde o código mora em quase todo jogo
-  const RODAPE = 0.15;       // fração inferior JUSTA: o rodapé de verdade quando a carta encaixa
+  const RODAPE = 0.18;       // fração inferior JUSTA: o rodapé de verdade quando a carta encaixa
+  // Folga do recorte em volta da moldura (fração da largura/altura dela, por
+  // lado). Ver recorteDaGuia: a carta encaixada NA moldura lia pior que a
+  // carta um pouco menor que ela.
+  const MARGEM_GUIA = 0.04;
   const LARGURA_OCR = 1400;  // px: o Tesseract lê melhor com ~30-50 px de altura de glifo
   const LARGURA_RODAPE = 1800;   // o rodapé justo vai mais ampliado: o código do One Piece tem ~1,8 mm
   const LARGURA_RODAPE_2 = 1250; // segunda escala do rodapé, só quando a primeira sai insegura
@@ -429,6 +433,23 @@
   // Moldura-guia -> coordenadas do vídeo. O vídeo preenche o palco em
   // object-fit: cover, então o que a tela mostra é um recorte centralizado do
   // quadro; a moldura é uma fração desse recorte.
+  //
+  // Com FOLGA em volta (2026-09-14). Em campo, a carta encaixada certinho na
+  // moldura errava, e a mesma carta ~15 % mais longe acertava sempre. Três
+  // motivos, todos do lado da foto e não do OCR:
+  //   1. distância de foco: a moldura tem 86 % da largura da tela e a tela
+  //      mostra ~metade do campo da câmera principal; pra uma carta de 63 mm
+  //      encher isso o telefone fica a ~7-8 cm, ABAIXO do foco mínimo da
+  //      câmera principal da maioria dos aparelhos (10-20 cm — o app nativo
+  //      troca pra macro, o navegador não). A foto sai suave e o "0" vira "O";
+  //   2. o código mora a 2-4 % da borda de BAIXO da carta: com a carta na
+  //      moldura, ele fica encostado na borda do recorte, e o Tesseract lê
+  //      mal texto sem respiro em volta; qualquer inclinação já corta dígito;
+  //   3. mais perto, o mesmo tremor da mão vira mais borrão.
+  // A moldura interna (scan-guia-int) orienta a carta entre as duas; aqui o
+  // recorte ganha 4 % de folga por lado, pra carta encostada na moldura ainda
+  // ter respiro no recorte, e o RODAPÉ subiu de 15 pra 18 % pra continuar
+  // alcançando o código de uma carta 15 % menor que a moldura.
   function recorteDaGuia(video, palco, guia) {
     const vw = video.videoWidth, vh = video.videoHeight;
     const pr = palco.getBoundingClientRect();
@@ -436,11 +457,13 @@
     const escala = Math.max(pr.width / vw, pr.height / vh);
     const ox = (vw * escala - pr.width) / 2;
     const oy = (vh * escala - pr.height) / 2;
+    const mx = gr.width * MARGEM_GUIA, my = gr.height * MARGEM_GUIA;
+    const sx = Math.max(0, (gr.left - pr.left + ox - mx) / escala);
+    const sy = Math.max(0, (gr.top - pr.top + oy - my) / escala);
     return {
-      sx: (gr.left - pr.left + ox) / escala,
-      sy: (gr.top - pr.top + oy) / escala,
-      sw: gr.width / escala,
-      sh: gr.height / escala
+      sx, sy,
+      sw: Math.min(vw - sx, (gr.width + 2 * mx) / escala),
+      sh: Math.min(vh - sy, (gr.height + 2 * my) / escala)
     };
   }
   async function bitmapDoArquivo(file) {
@@ -474,12 +497,13 @@
 .scan-guia .tr { right: -3px; top: -3px; border-right-width: 4px; border-top-width: 4px; border-top-right-radius: 16px; }
 .scan-guia .bl { left: -3px; bottom: -3px; border-left-width: 4px; border-bottom-width: 4px; border-bottom-left-radius: 16px; }
 .scan-guia .br { right: -3px; bottom: -3px; border-right-width: 4px; border-bottom-width: 4px; border-bottom-right-radius: 16px; }
-.scan-faixa { position: absolute; left: 10px; right: 10px; bottom: ${Math.round(FAIXA * 100)}%; border-top: 1px dashed rgba(0,229,255,.75); }
-.scan-varredura { position: absolute; left: 6px; right: 6px; top: 40%; height: 2px; background: #00e5ff; box-shadow: 0 0 14px rgba(0,229,255,.9); display: none; animation: scanVarre 1.6s ease-in-out infinite alternate; }
+/* Moldura INTERNA, 15 % menor e mais leve (2026-09-14): a carta vai ENTRE as
+   duas — encaixada na externa o telefone fica perto demais pra focar (ver
+   recorteDaGuia). Saíram a linha tracejada do rodapé e a varredura que subia
+   e descia na leitura: o cartão "lendo…" embaixo já diz que está procurando. */
+.scan-guia-int { position: absolute; inset: 7.5%; border: 1px solid rgba(255,255,255,.4); border-radius: 10px; }
 .scan-guia.is-lendo { border-color: rgba(0,229,255,.9); }
 .scan-guia.is-lendo i { border-color: #00e5ff; }
-.scan-guia.is-lendo .scan-varredura { display: block; }
-@keyframes scanVarre { from { top: 8%; } to { top: 90%; } }
 @keyframes scanGira { to { transform: rotate(360deg); } }
 .scan-top { position: absolute; left: 12px; right: 12px; top: var(--scan-top); height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px; border-radius: 999px; background: rgba(13,14,18,.72); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
 .scan-ico { width: 44px; height: 44px; min-height: 0; flex: none; padding: 0; border: 0; border-radius: 999px; background: transparent; color: #f3f5f7; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
@@ -604,7 +628,7 @@
     wrap.setAttribute("aria-label", t("scan.title"));
     wrap.innerHTML = `
       <video class="scan-video" autoplay playsinline muted data-scan-video></video>
-      <div class="scan-guia" data-scan-guia aria-hidden="true"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i><div class="scan-faixa"></div><div class="scan-varredura"></div></div>
+      <div class="scan-guia" data-scan-guia aria-hidden="true"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i><div class="scan-guia-int"></div></div>
       <p class="scan-semcam" data-scan-semcam hidden></p>
       <div class="scan-top">
         <button type="button" class="scan-ico" data-scan-close aria-label="${escapeAttribute(t("export.close"))}" title="${escapeAttribute(t("export.close"))}">${ICO.x}</button>
@@ -640,6 +664,15 @@
       </div>`;
     document.body.appendChild(wrap);
     document.body.classList.add("preview-open");
+    // A barra do Safari (e a faixa do gesto de home) se pinta com a meta
+    // theme-color do site — clara, no tema claro. Com a câmera em tela cheia
+    // sobrava uma tarja da cor do site embaixo do vídeo (2026-09-14). Enquanto
+    // o scanner está aberto a meta fica no escuro do próprio scanner; ao
+    // fechar volta o que era (ou some, se só havia as duas tags com media).
+    const metaTema = document.querySelector('meta[name="theme-color"]:not([media])');
+    const temaAntes = metaTema ? metaTema.getAttribute("content") : null;
+    const metaScan = metaTema || document.head.appendChild(Object.assign(document.createElement("meta"), { name: "theme-color" }));
+    metaScan.setAttribute("content", "#0b0d12");
 
     const $ = (sel) => wrap.querySelector(sel);
     const video = $("[data-scan-video]");
@@ -717,6 +750,7 @@
       stream = null;
       wrap.remove();
       document.body.classList.remove("preview-open");
+      if (temaAntes == null) metaScan.remove(); else metaScan.setAttribute("content", temaAntes);
       document.removeEventListener("keydown", tecla);
       window.removeEventListener("resize", posicionaGuia);
     }
@@ -912,8 +946,8 @@
 
     // Pipeline de uma leitura, do recorte mais justo pro mais largo, cada um
     // direto da fonte em resolução nativa:
-    //   1. RODAPÉ justo (15 % de baixo, ampliado): onde o código mora quando a
-    //      carta encaixa na moldura. Leitura insegura (confiança baixa) relê
+    //   1. RODAPÉ justo (18 % de baixo, ampliado): onde o código mora com a
+    //      carta entre as duas molduras. Leitura insegura (confiança baixa) relê
     //      noutra escala e os candidatos das duas votam;
     //   2. FAIXA larga (24 %), só se o rodapé não deu código: carta menor que
     //      a moldura, torta, mais alta na tela;
