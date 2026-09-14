@@ -62,7 +62,14 @@ const esKeys = new Set(Object.keys(MESSAGES.es || {}));
 //     também evita descer em objeto aninhado, se algum dia houver um.
 for (const arquivo of I18N_FILES) {
   const texto = read(arquivo);
-  const blocos = [...texto.matchAll(/\n\s*(pt|en|es):\s*\{/g)];
+  // Duas formas de abrir o bloco: `pt: {` (i18n.js, aninhado num objeto) e
+  //     `window.TCG_MESSAGES.pt = Object.assign(window.TCG_MESSAGES.pt || {}, {`
+  //     (os extras por área: binders/decks/docs/listas). Só a primeira era
+  //     reconhecida — os quatro extras ficavam sem a checagem, e o aviso de
+  //     "não achei os blocos" saía em todo check.mjs desde que existem.
+  //     (`M.pt = Object.assign(M.pt || {}, {` no i18n-listas.js é a mesma forma
+  //     com o objeto apelidado).
+  const blocos = [...texto.matchAll(/\n\s*(?:[\w.]+\.)?(pt|en|es)(?::\s*|\s*=\s*Object\.assign\([^,]+,\s*)\{/g)];
   if (!blocos.length) { warn(`${arquivo}: não achei os blocos de idioma pra checar chave duplicada`); continue; }
   blocos.forEach((abre, i) => {
     const fim = i + 1 < blocos.length ? blocos[i + 1].index : texto.length;
