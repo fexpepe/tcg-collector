@@ -1077,11 +1077,10 @@ input::placeholder {
 .prof-tabs {
   display: grid;
   grid-auto-flow: column;
-  /* max-content e não 0: com 9 abas (a Lista de Desejo entrou em 2026-09-14)
-     as colunas iguais só cabem a partir de ~1340px; abaixo disso o rótulo
-     longo ("Vendas e Trocas") quebrava em duas linhas e a barra ficava mais
-     alta que as outras. Agora cada aba tem no mínimo a largura do rótulo
-     (nowrap), iguais quando dá, e a fileira ROLA quando nem assim cabe. */
+  /* max-content e não 0: em colunas iguais o rótulo longo ("Vendas e
+     Trocas") quebrava em duas linhas nas larguras médias e a barra ficava mais
+     alta que as outras. Cada aba tem no mínimo a largura do rótulo (nowrap),
+     iguais quando dá, e a fileira ROLA quando nem assim cabe. */
   grid-auto-columns: minmax(max-content, 1fr);
   overflow-x: auto;
   gap: 10px;
