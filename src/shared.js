@@ -2197,10 +2197,59 @@
   // --- Versão nova disponível ---
   // O site publica todo dia às 06:20. O service worker faz skipWaiting, então a
   // troca acontece sozinha — só que a PÁGINA aberta segue rodando o código
-  // velho, e ninguém avisa. Quem deixa o PWA aberto numa tela podia passar dias
-  // numa versão antiga sem saber. O evento já dispara há tempos; faltava
-  // alguém escutar.
-  function toastVersaoNova() {
+  // velho. Pior: o SW novo apaga o cache da leva anterior e o Pages só serve a
+  // leva atual, então tudo que a página velha ainda fosse pedir (o editor de UI,
+  // a folha de outra área, um idioma trocado) já não existe — era o Portfólio
+  // "antigo e quebrado" antes do novo (2026-09-14). Um aviso de 12 s não
+  // resolvia isso: quem não clicava seguia numa página que só ia piorar.
+  //
+  // Agora a página pergunta ao SW novo qual é o build dele e compara com o
+  // dela (<meta name="sleevu-build">, carimbado no deploy pelo hash-assets):
+  //   - mesmo build: nada a fazer (a página já é a nova — acontece quando a
+  //     navegação foi à rede antes de o SW atualizar);
+  //   - build diferente (ou sem resposta): recarrega sozinha assim que for
+  //     seguro — ninguém digitando, nenhum modal aberto, nenhuma sincronização
+  //     no meio. Enquanto não for, o aviso fica na tela (sem sumir) e a
+  //     verificação repete até poder.
+  // Em dev (sem hash, sem meta) o build dos dois lados é vazio: igual, nada
+  // a fazer — lá a navegação já é rede-primeiro e os assets são revalidados.
+  function buildDaPagina() {
+    const meta = document.querySelector('meta[name="sleevu-build"]');
+    return (meta && meta.getAttribute("content")) || "";
+  }
+  function buildDoServiceWorker() {
+    return new Promise((resolve) => {
+      const sw = navigator.serviceWorker && navigator.serviceWorker.controller;
+      if (!sw) { resolve(null); return; }
+      const timer = setTimeout(() => resolve(null), 1500);
+      try {
+        const canal = new MessageChannel();
+        canal.port1.onmessage = (event) => {
+          clearTimeout(timer);
+          resolve(event.data && typeof event.data.build === "string" ? event.data.build : null);
+        };
+        sw.postMessage({ type: "sleevu:build" }, [canal.port2]);
+      } catch (e) { clearTimeout(timer); resolve(null); }
+    });
+  }
+  // Recarregar agora atrapalharia alguém? Campo de texto com foco (nome de
+  // deck, busca, nota), modal/diálogo aberto ou uma sincronização em curso
+  // (pageLoading) — em qualquer desses, espera.
+  function podeRecarregarSozinho() {
+    try {
+      const ativo = document.activeElement;
+      if (ativo && (ativo.tagName === "TEXTAREA" || ativo.isContentEditable
+        || (ativo.tagName === "INPUT" && !/^(button|submit|checkbox|radio|range|file|reset|hidden)$/i.test(ativo.type || "text")))) return false;
+      // Só diálogo VISÍVEL conta; a paleta em modo página (/search) tem
+      // role="dialog" por acessibilidade mas é a própria tela, não um modal.
+      const modal = Array.from(document.querySelectorAll('dialog[open], [role="dialog"], [aria-modal="true"]'))
+        .some((el) => !el.closest(".cmdk-page") && el.getClientRects().length > 0);
+      if (modal) return false;
+      if (pageLoadingCount > 0) return false;
+      return true;
+    } catch (e) { return true; }
+  }
+  function toastVersaoNova(persistente) {
     try {
       if (document.querySelector(".undo-toast[data-update]")) return;
       const el = document.createElement("div");
@@ -2210,8 +2259,21 @@
       el.innerHTML = `<span>${escapeHtml(t("update.available"))}</span><button type="button" class="undo-toast-btn">${escapeHtml(t("update.action"))}</button>`;
       document.body.appendChild(el);
       el.querySelector("button").addEventListener("click", () => window.location.reload());
-      setTimeout(() => { el.remove(); }, 12000);
+      if (!persistente) setTimeout(() => { el.remove(); }, 12000);
     } catch (e) { /* aviso é cortesia: nunca atrapalha a página */ }
+  }
+  let recarregandoVersaoNova = false;
+  async function versaoNovaAssumiu() {
+    if (recarregandoVersaoNova) return;
+    const meu = buildDaPagina();
+    const dele = await buildDoServiceWorker();
+    if (dele !== null && dele === meu) return; // a página já é desta leva (ou dev)
+    recarregandoVersaoNova = true;
+    const tenta = () => {
+      if (!podeRecarregarSozinho()) { toastVersaoNova(true); setTimeout(tenta, 3000); return; }
+      window.location.reload();
+    };
+    tenta();
   }
 
   // --- Erro de catálogo com saída ---
@@ -11084,7 +11146,7 @@
       else setTimeout(instala, 1200);
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
-      if (jaTinhaControle) toastVersaoNova();
+      if (jaTinhaControle) versaoNovaAssumiu();
     });
   }
 })();

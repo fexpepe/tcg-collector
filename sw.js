@@ -20,7 +20,26 @@
 // URL limpa cai no fallback que procura "<caminho>.html" no shell —, então o
 // cache antigo continua servindo; o bump é pra o HTML novo (com os links
 // limpos) entrar de uma vez, em vez de uma navegação atrás.
-const SHELL_CACHE = "tcg-shell-v264";
+// v265 (2026-09-14): navegação passa a ter noção de VERSÃO. O Portfólio (e
+// qualquer página) abria numa versão velha e quebrada antes da nova: o HTML
+// cacheado da leva anterior era servido na hora, e os arquivos com hash que
+// ele pedia já não existiam (o SW novo apaga o cache velho e o Pages só serve
+// a leva atual). Três mudanças, todas aqui e no shared.js:
+//   1. a chave de cache de uma página é UMA só (ver chaveDeNavegacao) — o
+//      precache do deploy e a navegação escreviam em entradas diferentes, e a
+//      da navegação (velha) ganhava da do precache (nova);
+//   2. a primeira navegação depois de um tempo parado vai à REDE primeiro
+//      (com teto de espera); dentro de uma sessão ativa segue cache-first;
+//   3. quando o SW novo assume, a página aberta compara o build dela com o
+//      dele e recarrega sozinha se for outra (antes só mostrava um aviso, e
+//      a página velha seguia rodando sem os arquivos dela).
+// O bump apaga de uma vez as entradas duplicadas (/portfolio e portfolio.html).
+const SHELL_CACHE = "tcg-shell-v265";
+// Id do build: o hash-assets.mjs (deploy) acrescenta "-<8 hex>" ao nome acima,
+// calculado do conteúdo do shell (JS, CSS E as páginas HTML). É o mesmo id que
+// ele carimba em <meta name="sleevu-build"> de todo HTML — assim a página sabe
+// se foi gerada pela mesma leva que este SW. Em dev não há id (string vazia).
+const BUILD_ID = (SHELL_CACHE.match(/^tcg-shell-v\d+-(.+)$/) || [])[1] || "";
 // IMAGE_CACHE vai a v2: a versão anterior do SW podia cravar um erro 404/timeout
 // como imagem "opaca" por 7 dias (imagem quebrada presa até um hard refresh).
 // Renomear o cache faz o activate apagar o antigo UMA vez — limpa os erros
@@ -29,7 +48,11 @@ const SHELL_CACHE = "tcg-shell-v264";
 const IMAGE_CACHE = "tcg-images-v3";
 const DATA_CACHE = "tcg-data-v1";
 const OPAQUE_TS_CACHE = "tcg-images-opaque-ts-v2"; // TTL das entradas opacas do IMAGE_CACHE
-const CACHES = [SHELL_CACHE, IMAGE_CACHE, DATA_CACHE, OPAQUE_TS_CACHE];
+// Metadados do próprio SW (hoje: a hora da última confirmação de que o shell
+// em cache é o da rede — ver confirmadoHaPouco). Cache Storage e não memória
+// porque o navegador mata o SW ocioso em ~30 s e um global zeraria toda hora.
+const META_CACHE = "tcg-meta-v1";
+const CACHES = [SHELL_CACHE, IMAGE_CACHE, DATA_CACHE, OPAQUE_TS_CACHE, META_CACHE];
 
 const IMAGE_HOSTS = new Set([
   "img.sleevu.app",               // espelho das imagens de carta no R2 (scripts/mirror-r2.mjs); imutável por URL
@@ -142,10 +165,28 @@ self.addEventListener("activate", (event) => {
     if (self.registration.navigationPreload) {
       try { await self.registration.navigationPreload.enable(); } catch (e) { /* segue sem */ }
     }
+    // Limpa TUDO que não é desta leva: o shell das versões anteriores (nome
+    // com outro build id), caches renomeados e qualquer vestígio de SW antigo.
+    // As páginas velhas ainda abertas recarregam sozinhas logo em seguida (o
+    // shared.js compara o build no controllerchange), então nada precisa
+    // sobreviver daqui.
     const keys = await caches.keys();
     await Promise.all(keys.filter((key) => !CACHES.includes(key)).map((key) => caches.delete(key)));
     await self.clients.claim();
   })());
+});
+
+// A página pergunta "qual é o seu build?" quando um SW novo assume o comando
+// (controllerchange no shared.js) e compara com o <meta name="sleevu-build">
+// dela: se for outro, recarrega — é a única forma de a versão nova entrar
+// sem deixar uma página velha rodando sem os arquivos dela. Responde pela
+// porta do MessageChannel quando vier uma; senão, direto ao cliente.
+self.addEventListener("message", (event) => {
+  const data = event.data || {};
+  if (data.type !== "sleevu:build") return;
+  const resposta = { type: "sleevu:build", build: BUILD_ID, cache: SHELL_CACHE };
+  if (event.ports && event.ports[0]) event.ports[0].postMessage(resposta);
+  else if (event.source && event.source.postMessage) event.source.postMessage(resposta);
 });
 
 self.addEventListener("fetch", (event) => {
@@ -173,14 +214,9 @@ self.addEventListener("fetch", (event) => {
       event.respondWith(staleWhileRevalidate(event));
       return;
     }
-    // NAVEGAÇÃO: cache primeiro, rede por trás. O network-first de antes fazia
-    // TODA troca de tela esperar a rede responder (sem timeout) mesmo com o
-    // site inteiro no cache — em 4G fraco, cada toque em aba travava segundos
-    // com o HTML já no aparelho. Agora a página cacheada aparece na hora e a
-    // resposta fresca da rede atualiza o cache pra PRÓXIMA navegação. O custo é
-    // ficar no máximo uma navegação atrás de um deploy — e é seguro porque os
-    // assets têm hash no nome: o HTML antigo referencia arquivos imutáveis que
-    // o cache HTTP guarda por um ano.
+    // NAVEGAÇÃO: cache primeiro dentro de uma sessão ativa, rede primeiro na
+    // primeira navegação depois de um tempo parado. Ver navigationFast — o
+    // porquê de cada lado está lá.
     if (event.request.mode === "navigate") {
       event.respondWith(navigationFast(event));
       return;
@@ -306,11 +342,50 @@ async function assetCacheFirst(request) {
   return response;
 }
 
-// Navegações: cache -> resposta imediata; rede -> atualiza o cache por trás.
-// A chave IGNORA a query (detail.html?type=X é a MESMA página) — senão cada set
-// visitado viraria uma entrada nova e o primeiro acesso a qualquer set nunca
-// daria hit. Miss com URL limpa do Cloudflare (/detail) ainda tenta /detail.html,
-// que é como o precache do install guarda as páginas.
+// Chave de cache de uma navegação: UMA por página, seja como for que ela é
+// pedida. "/portfolio", "/portfolio?tab=x" e "/portfolio.html" são a mesma
+// entrada — a que o precache do install grava ("portfolio.html", resolvida
+// contra a origem). Antes a navegação gravava em "/portfolio" (URL limpa do
+// Pages) e o precache em "/portfolio.html": duas entradas, e na leitura a da
+// navegação vinha primeiro — o deploy novo precacheava a página certa e a
+// navegação seguinte entregava a VELHA, que pedia arquivos com hash já
+// apagados. Era o Portfólio "antigo e quebrado antes do novo".
+// "/" é a raiz (o install guarda "./"); /users/<handle> é reescrito pelo
+// Pages pra collection.html, então cai na mesma entrada (uma por perfil
+// visitado não faria sentido — o conteúdo é o mesmo shell).
+function chaveDeNavegacao(url) {
+  const u = new URL(url);
+  u.search = "";
+  u.hash = "";
+  if (u.pathname.endsWith("/")) return u.href; // raiz do site (ou do escopo, em dev sob subpasta)
+  if (u.pathname.startsWith("/users/")) u.pathname = "/collection.html";
+  else if (!/\.html$/.test(u.pathname)) u.pathname += ".html";
+  return u.href;
+}
+
+// Quanto tempo uma confirmação da rede vale. Dentro desta janela a navegação
+// é cache-first (a página aparece na hora, a rede atualiza por trás — o
+// ganho do 4G que o network-first de antes não dava: toda troca de tela
+// esperava a rede, sem timeout, com o site inteiro no aparelho). Passado
+// isso, a próxima navegação vai à rede PRIMEIRO: é quase sempre a primeira
+// abertura do dia, e o site publica todo dia às 06:20 — é aí que uma versão
+// nova pode existir, e a página precisa ser a nova de cara, sem passar por
+// uma velha antes. A busca da rede já sai em paralelo (navigation preload),
+// então esperar por ela custa só o que ela demora; o teto abaixo é a
+// garantia pro 4G morto: passou, a cópia local entra e a rede atualiza atrás.
+const CONFIRMACAO_VALE_MS = 10 * 60 * 1000;
+const REDE_PRIMEIRO_TETO_MS = 2500;
+async function confirmadoHaPouco() {
+  try {
+    const meta = await (await caches.open(META_CACHE)).match("shell-confirmado");
+    if (!meta) return false;
+    return (Date.now() - Number(await meta.text())) < CONFIRMACAO_VALE_MS;
+  } catch (e) { return false; }
+}
+async function marcaConfirmacao() {
+  try { await (await caches.open(META_CACHE)).put("shell-confirmado", new Response(String(Date.now()))); } catch (e) { /* ignora */ }
+}
+
 // Resposta com a marca `redirected` NÃO PODE responder uma navegação: o
 // navegador a troca por erro de rede (regra de segurança contra redirect
 // escondido), e o usuário vê a tela de "site fora do ar". Em produção o Pages
@@ -323,30 +398,81 @@ function semRedirect(res) {
   return new Response(res.body, { status: res.status, statusText: res.statusText, headers: res.headers });
 }
 
+// Build de uma resposta HTML: o <meta name="sleevu-build"> que o hash-assets
+// carimba em toda página no deploy. null = não dá pra saber (não é HTML, corpo
+// ilegível); "" = página sem carimbo (dev).
+async function buildDoHtml(response) {
+  try {
+    if (!/html/i.test(response.headers.get("content-type") || "")) return null;
+    const texto = await response.clone().text();
+    const m = texto.match(/<meta name="sleevu-build" content="([^"]*)">/);
+    return m ? m[1] : "";
+  } catch (e) { return null; }
+}
+
+// HTML de OUTRA leva chegou da rede: saiu deploy e este SW ainda é o antigo.
+// Não guarda essa página aqui (ela pede arquivos que este cache não tem e o SW
+// novo vai precacheá-la no cache dele) e pede a atualização do SW na hora —
+// é o que faz a versão nova entrar em segundos, sem depender da checagem que
+// o navegador faz no register() (o Chrome a pula quando checou há pouco;
+// visto em 2026-09-14: uma navegação logo depois de outra ficava 30 s sem
+// perceber o deploy). Uma vez por vida deste SW basta: o novo, ao ativar,
+// assume tudo.
+let atualizacaoPedida = false;
+function pedeAtualizacao() {
+  if (atualizacaoPedida || !self.registration || !self.registration.update) return;
+  atualizacaoPedida = true;
+  try { self.registration.update().catch(() => {}); } catch (e) { /* ignora */ }
+}
+
+// Navegações. Dois modos, decididos por confirmadoHaPouco():
+//   - sessão ativa: cache -> resposta imediata; rede -> atualiza o cache por
+//     trás (e renova a confirmação);
+//   - primeira navegação depois de parado (ou dev, sem hash nos assets):
+//     rede primeiro, com teto; estourou ou falhou, vai a cópia local.
+// A chave ignora a query (detail.html?type=X é a MESMA página) e unifica os
+// formatos (ver chaveDeNavegacao). Em dev (HASHED_ASSETS=false) é sempre rede
+// primeiro: sem hash no nome, revalidar é o certo — senão editar uma página
+// local mostraria a anterior.
 async function navigationFast(event) {
   const request = event.request;
   const cache = await caches.open(SHELL_CACHE);
-  const key = new URL(request.url);
-  key.search = "";
-  let cached = await cache.match(key.href);
-  if (!cached && !/\.html$/.test(key.pathname) && key.pathname !== "/") {
-    cached = await cache.match(key.href.replace(/\/?$/, "") + ".html");
-  }
+  const chave = chaveDeNavegacao(request.url);
+  const cached = await cache.match(chave);
   // preloadResponse: a resposta que o navegador já começou a buscar enquanto o
   // SW acordava (ver navigationPreload no activate). Quando não houver (browser
   // sem suporte, ou preload desligado), busca normalmente.
   const rede = (async () => (await event.preloadResponse) || fetch(request))()
-    .then((response) => {
-      if (response && response.ok) cache.put(key.href, semRedirect(response.clone()));
+    .then(async (response) => {
+      if (response && response.ok) {
+        const build = await buildDoHtml(response);
+        if (build === null || build === BUILD_ID) {
+          cache.put(chave, semRedirect(response.clone()));
+          marcaConfirmacao();
+        } else {
+          pedeAtualizacao();
+        }
+      }
       return response;
     }).catch(() => null);
-  if (cached) {
+  const fresco = HASHED_ASSETS && cached && await confirmadoHaPouco();
+  if (fresco) {
     event.waitUntil(rede);
     // semRedirect também na SAÍDA: sara na hora um cache antigo já envenenado,
     // sem esperar o bump de versão descartá-lo.
     return semRedirect(cached);
   }
-  return (await rede) || semRedirect(await caches.match(request, { ignoreSearch: true })) || Response.error();
+  // Rede primeiro. Com cópia local, espera no máximo o teto; sem ela, espera
+  // o que for preciso (não há nada melhor pra mostrar).
+  let resposta = null;
+  if (cached) {
+    resposta = await Promise.race([rede, new Promise((resolve) => setTimeout(() => resolve(null), REDE_PRIMEIRO_TETO_MS))]);
+    if (!resposta) event.waitUntil(rede); // a rede termina por trás e grava pra próxima
+  } else {
+    resposta = await rede;
+  }
+  if (resposta) return resposta;
+  return semRedirect(cached) || semRedirect(await caches.match(request, { ignoreSearch: true })) || Response.error();
 }
 
 async function staleWhileRevalidate(event) {
