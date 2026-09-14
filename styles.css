@@ -7388,13 +7388,18 @@ html[data-detail="set"] #detailTitle { display: none; }
   width: clamp(240px, 30vw, 520px);
 }
 
-/* 3) SETS (.page-head-stack): o título fica SOZINHO na 1ª linha; abas à
-   esquerda e busca à direita na 2ª. Na fileira única, um título comprido
-   ("Magic: The Gathering Sets") atropelava as abas e a busca (pedido de
-   2026-09-10). Com a linha inteira só pra elas, as abas são o `1fr` (rolam se
-   faltar) e a busca mantém a largura em vw de cima. O respiro título → abas é
-   o DOBRO do que há entre a busca e o contador (os 20px do .page-head); o
-   resto dos espaçamentos não muda. */
+/* 3) LISTAGENS DO EXPLORAR (.page-head-stack): o título fica SOZINHO na 1ª
+   linha; abas à esquerda e busca à direita na 2ª. Nasceu na tela de Sets: na
+   fileira única, um título comprido ("Magic: The Gathering Sets") atropelava
+   as abas e a busca (pedido de 2026-09-10). Em 2026-09-14 o Fernando pediu o
+   mesmo molde em Cartas, Pokédex, Artistas e Treinadores — o título do jogo
+   é igualmente comprido lá, e as abas mudando de linha entre uma aba e outra
+   davam a impressão de telas diferentes. Com a linha inteira só pra elas, as
+   abas são o `1fr` (rolam se faltar) e a busca mantém a largura em vw de
+   cima. O respiro título → abas é o DOBRO do que há entre a busca e o
+   contador (os 20px do .page-head); o resto dos espaçamentos não muda. A
+   página de detalhe (eyebrow + "Voltar" + título que some no set) segue na
+   fileira única. */
 .page-head-bar.page-head-stack:has(> .explore-subnav) {
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas: "title title" "nav search";
@@ -7418,7 +7423,7 @@ html[data-detail="set"] #detailTitle { display: none; }
   .page-head-bar > .explore-subnav,
   .page-head-bar > .page-head-bar-tools { grid-column: 1; }
   .page-head-bar h1 { font-size: 28px; }
-  /* Sets: as áreas nomeadas de cima saem (a coluna é uma só) e o respiro
+  /* Empilhado: as áreas nomeadas de cima saem (a coluna é uma só) e o respiro
      entre título e abas volta aos 8px do empilhado — em tela curta os 40px
      custam caro. */
   .page-head-bar.page-head-stack:has(> .explore-subnav) { grid-template-areas: none; row-gap: 8px; }
