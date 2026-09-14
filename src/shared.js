@@ -1752,6 +1752,9 @@
         else if (e.key === "ArrowUp") { e.preventDefault(); setActive(active - 1); }
         else if (e.key === "Enter") { e.preventDefault(); go(active); }
       });
+      // ?q= vem da barra global do header das outras páginas (2026-09-14).
+      const q0 = pagina && new URLSearchParams(window.location.search).get("q");
+      if (q0) { input.value = q0; renderList(q0.trim()); }
       if (!(opts && opts.semFoco)) input.focus();
     }
     document.addEventListener("keydown", (e) => {
@@ -1995,8 +1998,22 @@
   // subiria depois da página já pintada — CLS de graça.
   function initHeaderSearch() {
     const inner = document.querySelector(".app-header-inner");
-    const busca = document.querySelector("main .page-search, .app-header-inner .page-search");
-    if (!inner || !busca) return;
+    if (!inner) return;
+    let busca = document.querySelector("main .page-search, .app-header-inner .page-search");
+    // Busca GLOBAL do header (2026-09-14): página sem busca própria (Hub,
+    // Decks, Dashboard, Portfólio, Perfil…) ganha no celular a MESMA barra
+    // com câmera, que leva pra página de busca com o que foi digitado
+    // (search?q=). Sem o hambúrguer, o header dessas páginas ficava só com
+    // a marca e a busca "sumia" ao sair do catálogo. Fora só a própria
+    // página de busca (o campo é o corpo da tela) e o login.
+    const global = !busca && !document.getElementById("searchPage") && !document.body.classList.contains("login-body");
+    if (global) {
+      busca = document.createElement("form");
+      busca.className = "page-search";
+      busca.action = "search";
+      busca.innerHTML = `<input type="search" name="q" enterkeyhint="search" autocomplete="off" placeholder="${escapeAttribute(t("cmdk.placeholder"))}" aria-label="${escapeAttribute(t("cmdk.title"))}">`;
+    }
+    if (!busca) return;
     const toggle = inner.querySelector(".menu-toggle");
     // Onde ela mora no desktop, pra devolver no lugar exato ao girar a tela.
     const casa = busca.parentElement;
@@ -2012,8 +2029,9 @@
       if (mq.matches && !noHeader) {
         inner.insertBefore(busca, toggle);
         busca.classList.add("page-search-inheader");
+        if (global) initPageSearchScan(); // a câmera entra na barra recém-criada
       } else if (!mq.matches && noHeader) {
-        casa.insertBefore(busca, irmao);
+        if (global) busca.remove(); else casa.insertBefore(busca, irmao); // no desktop a global não existe
         busca.classList.remove("page-search-inheader");
       }
     };
