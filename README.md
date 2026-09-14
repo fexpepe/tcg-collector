@@ -90,7 +90,9 @@ carimba.
 
 Catálogo e navegação: `index` (landing), `hub` (grade de jogos), `sets`,
 `detail` (set/artista/Pokémon), `cards`, `explore` (busca global em todos os
-jogos), `pokedex`, `artists`, `trainers`.
+jogos), `pokedex`, `artists`, `trainers`. Só no celular (abertas pela tabbar):
+`search` (a tela da paleta Ctrl+K como página, sem popup) e `account` (Perfil:
+preferências, conta e atalhos — o que era o hambúrguer do header).
 
 ### Busca por código de carta
 

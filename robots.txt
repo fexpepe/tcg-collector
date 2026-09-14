@@ -24,6 +24,7 @@ Disallow: /badges
 Disallow: /my-decks
 Disallow: /profile
 Disallow: /settings
+Disallow: /account
 
 # Conta e ferramentas internas.
 Disallow: /login

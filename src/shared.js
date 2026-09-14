@@ -2931,8 +2931,10 @@
   // tela — o polegar tinha que mirar no último milímetro. A pintura é a do
   // Sleevu (vidro do header, linha, accent), não a da Collectr.
   //
-  // Seis destinos, na MESMA ordem e nos mesmos destinos do menu de desktop:
-  // Início · Busca (search.html) · Jogos (hub) · Decks · Coleção · Portfólio.
+  // Seis destinos: Coleção · Jogos (hub) · Decks · Busca (search.html) ·
+  // Portfólio · Perfil (account.html). Início saiu (2026-09-14): a marca no
+  // header já leva pra lá, e a vaga virou o Perfil — que substitui o
+  // hambúrguer no celular (preferências, conta, Sair).
   // Coleção aponta pro dashboard (o hub PESSOAL), como no desktop — ia pra
   // collection.html, que é só uma das visões de dentro dele.
   // Só aparece ≤700px (CSS); o body ganha padding-bottom pra nada ficar
@@ -2947,7 +2949,8 @@
       // a mesma coisa nos dois lugares.
       decks: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="12" height="16" rx="2"/><path d="M4.5 6.5v12a2 2 0 0 0 2 2h9"/></svg>',
       collection: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="12" height="16" rx="2" transform="rotate(-8 10 14)"/><rect x="9" y="4" width="12" height="16" rx="2" transform="rotate(6 15 12)"/></svg>',
-      portfolio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="m4 15 5-6 4 3 6-8"/></svg>'
+      portfolio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="m4 15 5-6 4 3 6-8"/></svg>',
+      profile: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>'
     };
     // aria-current="page" (e não aria-pressed, que só vale em role=button): é o
     // que o leitor de tela anuncia como "página atual" num <a> de navegação.
@@ -2970,12 +2973,12 @@
     // Busca é uma PÁGINA (search.html), não mais a paleta em popup: o popup
     // cobria a tabbar e a navegação sumia (2026-09-13).
     bar.innerHTML =
-      tab("/", t("nav.home"), "home", active === "home")
-      + (logged ? tab("dashboard", t("tabbar.collection"), "collection", collectionActive) : "")
+      (logged ? tab("dashboard", t("tabbar.collection"), "collection", collectionActive) : "")
       + tab("hub", t("nav.games"), "games", gamesActive)
       + tab("decks", t("nav.decks"), "decks", active === "decks")
       + tab("search", t("tabbar.search"), "search", active === "search")
-      + (logged ? tab("portfolio", t("nav.portfolio"), "portfolio", active === "portfolio") : "");
+      + (logged ? tab("portfolio", t("nav.portfolio"), "portfolio", active === "portfolio") : "")
+      + tab("account", t("tabbar.profile"), "profile", active === "account");
     document.body.appendChild(bar);
   }
 

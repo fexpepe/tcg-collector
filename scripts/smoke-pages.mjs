@@ -28,7 +28,7 @@ const PAGINAS = [
   "index.html", "hub.html", "sets.html?game=pokemon", "sets.html?game=pokemon&serie=sv",
   "sets.html?game=onepiece&line=opcd", "sets.html?game=naruto&line=nrt-mb",
   "cards.html?game=pokemon", "detail.html?type=set&name=Base+Set&game=pokemon",
-  "explore.html", "search.html", "collection.html", "portfolio.html", "wishlist.html", "binders.html",
+  "explore.html", "search.html", "account.html", "collection.html", "portfolio.html", "wishlist.html", "binders.html",
   "decks.html", "my-decks.html", "dashboard.html", "graded.html", "sales.html",
   "settings.html", "profile.html", "login.html", "faq.html", "help.html", "badges.html",
   "lancamentos.html", "comparar.html"

@@ -3273,20 +3273,34 @@ a.preview-print:hover { background: var(--panel); }
   main .page-search-label { display: none; }
   /* No header ela entra NA MESMA fileira (marca | busca | menu), então a altura
      do header não muda — nenhum deslocamento quando o JS a insere. */
+  /* Câmera PRIMEIRO, redonda, e a barra SAINDO dela (2026-09-14, molde da
+     busca do app da Collectr): o botão do scanner deixa de flutuar dentro do
+     campo e vira um círculo de 44px à esquerda; a pílula da busca entra
+     por baixo dele (margem negativa), então parece uma peça só. A lupa some:
+     a câmera já diz o que a barra faz. */
   .page-search.page-search-inheader {
-    display: block;
+    display: flex;
+    align-items: center;
     flex: 1 1 auto;
     min-width: 0;
     margin: 0 10px 0 12px;
   }
   .page-search.page-search-inheader input {
+    flex: 1 1 auto;
+    min-width: 0;
     height: 38px;              /* igual aos demais controles do header */
-    padding-left: 38px;        /* espaço do ícone */
+    padding-left: 30px;        /* 16px escondidos sob a câmera + respiro */
     padding-right: 12px;
     border-radius: 999px;
     background: var(--panel);
   }
-  .page-search.page-search-inheader .page-search-icon { left: 13px; width: 16px; height: 16px; }
+  .page-search.page-search-inheader .page-search-icon { display: none; }
+  .page-search.page-search-inheader .scan-btn {
+    position: static; transform: none; order: -1; flex: none; z-index: 1;
+    width: 44px; height: 44px; margin-right: -16px;
+    border-radius: 999px; color: var(--text);
+  }
+  .page-search.page-search-inheader .scan-btn svg { width: 22px; height: 22px; }
 
   /* Painel suspenso abaixo do header. */
   .nav-drawer {
@@ -5303,6 +5317,12 @@ a.progress-row:hover {
     --tabbar-h: 60px;      /* altura medida da cápsula: 48 + 5+5 de padding + borda */
     --tabbar-lift: max(env(safe-area-inset-bottom, 0px), 10px);
   }
+  /* Sem hambúrguer no celular (2026-09-14): a tabbar já leva a toda página
+     e as preferências + conta moram na aba Perfil (account.html). A busca do
+     header fica com a largura toda. Entre 701 e 860px (tablet em pé) não há
+     tabbar, então o hambúrguer continua lá. */
+  .menu-toggle { display: none; }
+  .page-search.page-search-inheader { margin-right: 0; }
   .mobile-tabbar {
     position: fixed; left: 10px; right: 10px; z-index: 40;
     bottom: var(--tabbar-lift);
@@ -5364,6 +5384,23 @@ a.progress-row:hover {
   .mobile-tabbar { left: 6px; right: 6px; padding: 5px 3px; gap: 0; }
   .mtab { font-size: 9.5px; padding: 6px 1px; }
 }
+
+/* Página PERFIL do celular (account.html, 2026-09-14): o conteúdo do menu de
+   conta do header (e-mail, sincronização, atalhos, Sair) e a fileira de
+   preferências (moeda, idioma, olho, tema) viram uma PÁGINA, aberta pela aba
+   Perfil da tabbar. O .header-actions dela mora no <main>: os mesmos
+   construtores do shared.js montam os mesmos controles ali, e o dropdown de
+   conta fica sempre aberto, em fluxo, com alvos de 48px. O [hidden] global é
+   !important, por isso o !important aqui (especificidade maior decide). */
+.account-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; }
+.account-actions > .auth-slot { flex: 1 0 100%; display: block; margin-top: 10px; }
+.account-actions .auth-avatar { display: none; }
+.account-actions .auth-dd { position: static; }
+.account-actions .lang-dd-menu.auth-menu[hidden] { display: block !important; }
+.account-actions .lang-dd-menu.auth-menu { position: static; width: 100%; min-width: 0; max-width: none; padding: 4px; box-shadow: none; }
+.account-actions .auth-menu .lang-dd-option { min-height: 48px; font-size: 15px; white-space: normal; }
+.account-actions .auth-menu .auth-email, .account-actions .auth-menu .auth-sync { min-height: 0; }
+.account-actions .auth-signin { width: 100%; min-height: 48px; }
 
 /* Skeletons: cards fantasma enquanto os chunks do catálogo baixam. Pulso de
    opacidade (funciona igual nos temas claro/escuro, sem gradiente). */
