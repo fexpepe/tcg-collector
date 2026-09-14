@@ -5370,6 +5370,17 @@ a.progress-row:hover {
      (toasts, barra de seleção, pill de carregamento) sobe num bloco lá
      embaixo — ver "acima da bottom-bar". */
   body { padding-bottom: calc(var(--tabbar-h) + var(--tabbar-lift) + 12px); }
+  /* Toda página nasce ROLÁVEL no celular (2026-09-14). O body é border-box,
+     então o min-height de 100dvh já ABSORVIA o padding acima: uma página
+     curta (Busca vazia, Perfil, Decks carregando) fechava exatamente na
+     altura da tela e não rolava. Página que não rola faz o Safari/Chrome
+     re-expandir a barra do navegador — e a tabbar, fixa em relação a ela,
+     "subia" nessas telas e ficava mais alta que nas outras. Com a altura
+     mínima = tela + reserva da tabbar, sobra sempre a rolagem da reserva
+     (só fundo, sob a cápsula) e a barra do navegador fica quieta.
+     vh de fallback pra quem não entende dvh, como no body lá em cima. */
+  body { min-height: calc(100vh + var(--tabbar-h) + var(--tabbar-lift) + 12px); }
+  body { min-height: calc(100dvh + var(--tabbar-h) + var(--tabbar-lift) + 12px); }
 }
 /* No PWA instalado a faixa do gesto de home é maior que a folga de navegador
    (onde a barra do Safari já empurra a página pra cima), então a cápsula sobe
