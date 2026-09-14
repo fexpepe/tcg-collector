@@ -125,10 +125,13 @@
         </div>
       </section>
 
-      <section class="results-header">
+      <!-- No celular esta linha some (ver .results-header-pokedex no
+           styles.css): "Pokémon · 1025 resultados" só repetia o resumo logo
+           acima e empurrava a grade pra baixo. O #resultCount continua no DOM
+           porque o app.js escreve nele a cada render. -->
+      <section class="results-header results-header-pokedex">
         <h2 data-i18n="results.heading.pokedex">Pokémon</h2>
         <p id="resultCount">0 resultados</p>
-        <div class="results-actions"><button type="button" id="dexBulk" class="secondary" hidden></button></div>
       </section>
 
       <section id="cardGrid" class="card-grid" data-view="pokedex" aria-live="polite"></section>

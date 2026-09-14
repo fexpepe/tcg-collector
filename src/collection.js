@@ -587,6 +587,11 @@
       render({ resetCount: true });
     });
 
+    // No celular a fileira de abas rola: o hint marca em qual ponta ela está e
+    // o CSS desbota o lado que ainda tem aba (.collection-tabs[data-scroll]) —
+    // o mesmo aviso da subnav do Explorar, senão "Cartas Graded" parecia a última.
+    shared.initSubnavScrollHint(elements.tabs);
+
     elements.tabs.addEventListener("click", (event) => {
       const chip = event.target.closest("[data-tab]");
       if (!chip || chip.dataset.tab === activeTab) return;

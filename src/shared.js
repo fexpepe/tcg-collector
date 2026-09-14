@@ -2934,7 +2934,9 @@
     window.addEventListener("resize", marca);
     requestAnimationFrame(() => {
       if (!nav.isConnected) return;
-      const ativo = nav.querySelector('[aria-current="page"]');
+      // aria-current é a subnav (links); aria-pressed são as abas-botão da
+      // Coleção, que reaproveitam este hint desde 2026-09-14.
+      const ativo = nav.querySelector('[aria-current="page"], [aria-pressed="true"]');
       if (ativo && ativo.offsetLeft + ativo.offsetWidth > nav.clientWidth) {
         nav.scrollLeft = ativo.offsetLeft + ativo.offsetWidth - nav.clientWidth + 12;
       }
@@ -9463,6 +9465,7 @@
     moneyToCurrent,
     snapshotKeys,
     toastUndo,
+    initSubnavScrollHint, // abas da Coleção usam o mesmo desbotado da subnav
     // Materializa as escritas adiadas AGORA. Quem tira um snapshot pra desfazer
     // precisa disto: sem o flush, o timer do scheduleWrite dispara depois do
     // restore e regrava por cima o que o usuário acabou de desfazer.

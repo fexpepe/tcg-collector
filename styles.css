@@ -987,6 +987,11 @@ input::placeholder {
    numa linha só dele (elástico) e os botões na linha de baixo. Sem isto o
    flex:none empurrava a página pra fora da tela (rolagem lateral). */
 @media (max-width: 700px) {
+  /* Pokédex no celular: a linha "Pokémon · 1025 resultados" sai (2026-09-14).
+     Ela só repetia o "Pokémon na Pokédex" do resumo logo acima e, desde que o
+     botão de marcar em massa foi embora, não tinha mais ação nenhuma — era uma
+     faixa vazia entre os filtros e a grade. No desktop segue como está. */
+  .results-header-pokedex { display: none; }
   .results-header:has(> .results-actions) .results-actions { flex: 0 1 auto; flex-wrap: nowrap; margin-left: auto; justify-content: flex-end; order: 3; }
   /* Ordenar na MESMA linha da Visualização e do Filtros, à direita
      (2026-09-10): o rótulo "Ordenar:" some da tela (fica pro leitor de tela)
@@ -1085,6 +1090,25 @@ input::placeholder {
   overflow-x: auto;
   gap: 10px;
   margin-bottom: 16px;
+}
+/* Aviso de que a fileira de abas CONTINUA à direita (2026-09-14): a mesma
+   máscara da subnav do Explorar (.explore-subnav[data-scroll], mais abaixo),
+   pelo mesmo motivo — no celular a Coleção tem 6 abas e só 3 cabem; sem o
+   desbotado o corte batia seco na borda e "Cartas Graded" parecia a última.
+   O data-scroll vem do initSubnavScrollHint (shared.js), chamado pelo
+   collection.js; sem rolagem o atributo não existe e nada muda. Os três
+   estados desbotam só o lado que ainda tem conteúdo. */
+.collection-tabs[data-scroll="start"] {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+}
+.collection-tabs[data-scroll="middle"] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent);
+}
+.collection-tabs[data-scroll="end"] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 32px);
+  mask-image: linear-gradient(to right, transparent, #000 32px);
 }
 .prof-tab {
   border: 0;

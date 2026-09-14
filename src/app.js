@@ -23,7 +23,6 @@
     typeFilter: document.getElementById("typeFilter"),
     favFilter: document.getElementById("favFilter"),
     dexFilter: document.getElementById("dexFilter"),
-    dexBulk: document.getElementById("dexBulk"),
     dexProgressFill: document.getElementById("dexProgressFill"),
     setFilter: document.getElementById("setFilter"),
     languageFilter: document.getElementById("languageFilter"),
@@ -347,25 +346,10 @@
         article.classList.toggle("owned", marked || Number(article.dataset.ownedCount) > 0);
         updatePokedexStats();
       });
-      // Marcar/desmarcar em massa os Pokémon FILTRADOS (uma geração inteira,
-      // um tipo, uma busca). Com "Desfazer" no toast: o estado anterior volta
-      // pro store em memória e a página recarrega (padrão do toastUndo).
-      if (elements.dexBulk) {
-        elements.dexBulk.addEventListener("click", () => {
-          const ids = pokedexViewItems().map((item) => String(item.dexId));
-          if (!ids.length) return;
-          const before = dexOwned.toArray();
-          const faltam = ids.filter((id) => !dexOwned.has(id));
-          const marcando = faltam.length > 0;
-          const remover = new Set(ids);
-          dexOwned.replace(marcando ? before.concat(faltam) : before.filter((id) => !remover.has(id)));
-          render();
-          shared.toastUndo(
-            t(marcando ? "dex.bulkMarked" : "dex.bulkUnmarked", { n: marcando ? faltam.length : ids.length }),
-            () => dexOwned.replace(before)
-          );
-        });
-      }
+      // O botão "Marcar N como já tenho" (marcar em massa os Pokémon filtrados)
+      // saiu em 2026-09-14: aparecia ao tocar num chip de geração e, no
+      // celular, roubava a linha do título sem ninguém pedir por ele. O "já
+      // tenho" continua carta a carta, no botão de cada card.
     }
 
     if (elements.setsViewToggle) {
@@ -507,7 +491,7 @@
     const realCount = items.filter((item) => item.type !== "series-head" && item.type !== "category-head").length;
     elements.empty.hidden = realCount > 0;
     elements.resultCount.textContent = tn("results.count", realCount);
-    if (view === "pokedex") { updatePokedexStats(); updateDexBulk(items); return; }
+    if (view === "pokedex") { updatePokedexStats(); return; }
     if (elements.ownedCount) elements.ownedCount.textContent = owned.size;
     if (elements.totalCount) elements.totalCount.textContent = totalCatalogCount;
     if (elements.completionRate) {
@@ -544,21 +528,6 @@
     refreshGenerationCounts(progress);
     // Hub, medalhas e perfil público leem daqui (ver readDexProgress).
     if (entries.length) shared.writeDexProgress(progress);
-  }
-
-  // Botão de marcar em massa: só quando algum filtro estreita a lista (marcar
-  // as 1025 espécies de uma vez não é o caso de uso — e o botão inteiro some
-  // sem filtro pra não convidar). O rótulo diz o que vai acontecer e com quantos.
-  function updateDexBulk(items) {
-    if (!elements.dexBulk) return;
-    const filtrado = !!(selectedGeneration || (elements.typeFilter && elements.typeFilter.value)
-      || (elements.dexFilter && elements.dexFilter.value) || (elements.favFilter && elements.favFilter.value)
-      || elements.search.value.trim());
-    const ids = items.filter((item) => item.type === "pokedex").map((item) => String(item.dexId));
-    elements.dexBulk.hidden = !filtrado || !ids.length;
-    if (elements.dexBulk.hidden) return;
-    const faltam = ids.filter((id) => !dexOwned.has(id)).length;
-    elements.dexBulk.textContent = faltam ? t("dex.markAll", { n: faltam }) : t("dex.unmarkAll", { n: ids.length });
   }
 
   function getViewItems(visibleCards) {
@@ -1001,8 +970,11 @@
     const image = item.image
       ? `<img loading="lazy" src="${escapeAttribute(item.image)}" alt="${escapeAttribute(item.name)}">`
       : `<span class="image-placeholder">${escapeHtml(t("card.noImage"))}</span>`;
-    const progress = item.totalCount ? Math.round((item.ownedCount / item.totalCount) * 100) : 0;
 
+    // Rodapé só com "1/106 cartas" (2026-09-14): a barra de progresso e a
+    // porcentagem saíram — na Pokédex ninguém completa as 106 cartas de um
+    // Pokémon, então a barra vivia quase vazia e o "0%" só desanimava. O
+    // número tenho/total é o que a pessoa lê de verdade.
     article.innerHTML = `
       <a class="pokedex-link" href="${escapeAttribute(detailUrl("pokemon", item.name))}">
         <div class="pokedex-number">#${String(item.dexId || "?").padStart(4, "0")}</div>
@@ -1011,12 +983,8 @@
           <h3 title="${escapeAttribute(item.name)}">${escapeHtml(item.name)}</h3>
           <p>${escapeHtml(t("card.generation", { g: item.generation || "-" }))}</p>
         </div>
-        <div class="progress-bar" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" aria-label="${escapeAttribute(t("progress.aria", { name: item.name }))}">
-          <span style="width: ${progress}%"></span>
-        </div>
         <div class="set-footer">
-          <strong>${progress}%</strong>
-          <span>${escapeHtml(t("count.ofCards", { o: item.ownedCount, t: item.totalCount }))}</span>
+          <span class="set-count">${escapeHtml(t("count.ofCards", { o: item.ownedCount, t: item.totalCount }))}</span>
         </div>
       </a>
       <button type="button" class="dex-have-button" data-dex-toggle aria-pressed="${item.dexMarked ? "true" : "false"}" aria-label="${escapeAttribute(t("dex.haveAria", { name: item.name }))}">${escapeHtml(dexHaveLabel(item.dexMarked))}</button>
