@@ -11,6 +11,9 @@ import { dirname, join } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const src = readFileSync(join(here, "..", "src", "shared.js"), "utf8");
+// A importação (BACKUP_BLOCKS, validateBackupPayload) saiu do shared.js em
+// 2026-09-14 e vive em src/backup-import.js; o export (backupObject) ficou.
+const srcImport = readFileSync(join(here, "..", "src", "backup-import.js"), "utf8");
 
 // O backup vive dentro do initAuth (precisa de DOM e sessão pra montar o menu),
 // então em vez de executá-lo, lê-se o corpo das duas funções: é o suficiente pra
@@ -49,22 +52,22 @@ test("backupObject exporta todas as chaves sincronizadas", () => {
 // fica a paridade: toda chave que o backup exporta tem que estar na lista de
 // blocos que a importação conhece.
 test("a importação conhece todas as chaves que o backup exporta", () => {
-  const i = src.indexOf("const BACKUP_BLOCKS = [");
-  assert.ok(i > 0, "BACKUP_BLOCKS não encontrada no shared.js");
-  const lista = src.slice(i, src.indexOf("]", i));
+  const i = srcImport.indexOf("const BACKUP_BLOCKS = [");
+  assert.ok(i > 0, "BACKUP_BLOCKS não encontrada no backup-import.js");
+  const lista = srcImport.slice(i, srcImport.indexOf("]", i));
   const faltando = ESPERADAS.filter((k) => !LISTAS_DE_IDS.includes(k) && !lista.includes(`"${k}"`));
   assert.deepEqual(faltando, [], "exportar sem restaurar deixa o arquivo incompleto na volta");
   // validateBackupPayload é função de módulo (2 espaços): o corpo vai até o "\n  }".
-  const v = src.indexOf("function validateBackupPayload(");
-  const corpoValida = src.slice(v, src.indexOf("\n  }", v));
+  const v = srcImport.indexOf("function validateBackupPayload(");
+  const corpoValida = srcImport.slice(v, srcImport.indexOf("\n  }", v));
   assert.ok(corpoValida.includes("payload.favorites"), "favoritos entram por caminho próprio");
   assert.ok(corpoValida.includes("payload.dexOwned"), "Pokédex \"já tenho\" entra por caminho próprio");
 });
 
 test("decks entram no backup e voltam no restore (a regressão que motivou o teste)", () => {
   assert.ok(corpoDe("backupObject").includes("SYNC_KEYS.decks"));
-  const i = src.indexOf("const BACKUP_BLOCKS = [");
-  assert.ok(src.slice(i, src.indexOf("]", i)).includes('"decks"'));
+  const i = srcImport.indexOf("const BACKUP_BLOCKS = [");
+  assert.ok(srcImport.slice(i, srcImport.indexOf("]", i)).includes('"decks"'));
 });
 
 test("os metadados de LWW ficam fora — restaurar tem que vencer", () => {

@@ -1,5 +1,7 @@
 // Importação de backup JSON (validar → planejar → aplicar → desfazer), via
-// sandbox de vm (tests/lib/shared-sandbox.mjs). Roda com: node --test tests/
+// sandbox de vm (tests/lib/shared-sandbox.mjs). O código vive em
+// src/backup-import.js (saiu do shared.js em 2026-09-14) e lê o núcleo pelo
+// TCGShared._nucleo — o sandbox carrega os dois. Roda com: node --test tests/
 //
 // O que se prova aqui é o contrato que a página de backup promete: arquivo
 // incompatível não muda nada; mesclar soma (carta do arquivo vence a mesma
@@ -7,7 +9,7 @@
 // sobrevivem; gravação que falha no meio volta TUDO; desfazer restaura.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { loadShared, makeLocalStorage } from "./lib/shared-sandbox.mjs";
+import { loadBackupImport, makeLocalStorage } from "./lib/shared-sandbox.mjs";
 
 const EXPOSE = `window.__test = {
   validateBackupPayload, planBackupImport, applyBackupImport, readLocalBackupState,
@@ -16,7 +18,7 @@ const EXPOSE = `window.__test = {
 };`;
 function fresh(seed, ls) {
   ls = ls || makeLocalStorage(seed || {});
-  const sb = loadShared(EXPOSE, { localStorage: ls });
+  const sb = loadBackupImport(EXPOSE, { localStorage: ls });
   return { ls, api: sb.window.__test, flush: sb.__flushTimers, sb };
 }
 // Objetos vindos do sandbox são de outro realm (protótipos diferentes): o

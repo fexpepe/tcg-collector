@@ -2,6 +2,43 @@
   const shared = window.TCGShared;
   const { addOptions, unique, normalize, escapeHtml, escapeAttribute, speciesName, debounce, t, tn, localizedImg, toRoman } = shared;
 
+  // (veio do shared.js em 2026-09-14: só esta página consulta a PokéAPI.)
+  // Busca tipos e formas de um Pokémon na PokéAPI (por dexId), com cache em localStorage.
+  // Degrada silenciosamente se a rede falhar — chamador deve tratar { types: [], forms: [] }.
+  async function fetchPokemonMeta(dexId) {
+    const empty = { types: [], forms: [] };
+    if (!dexId) return empty;
+
+    const cacheKey = `tcg-pokeapi-meta-${dexId}`;
+    try {
+      const cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
+      if (cached) return cached;
+    } catch (error) {
+      // cache inválido: segue para buscar
+    }
+
+    try {
+      const [pokemon, species] = await Promise.all([
+        fetch(`https://pokeapi.co/api/v2/pokemon/${dexId}`).then((response) => (response.ok ? response.json() : null)),
+        fetch(`https://pokeapi.co/api/v2/pokemon-species/${dexId}`).then((response) => (response.ok ? response.json() : null))
+      ]);
+
+      const meta = {
+        types: pokemon ? pokemon.types.map((entry) => entry.type.name) : [],
+        forms: species ? species.varieties.filter((variety) => !variety.is_default).map((variety) => variety.pokemon.name) : []
+      };
+
+      try {
+        localStorage.setItem(cacheKey, JSON.stringify(meta));
+      } catch (error) {
+        // localStorage cheio: ok, só não cacheia
+      }
+      return meta;
+    } catch (error) {
+      return empty;
+    }
+  }
+
   let cards = [];
   let cardsById = new Map();
   let pageCards = [];
@@ -711,7 +748,7 @@
   }
 
   async function fillPokemonMeta(dexId) {
-    const meta = await shared.fetchPokemonMeta(dexId);
+    const meta = await fetchPokemonMeta(dexId);
 
     const badges = elements.hero.querySelector("[data-type-badges]");
     if (badges && meta.types.length) {

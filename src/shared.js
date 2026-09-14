@@ -3171,140 +3171,6 @@
     document.body.appendChild(footer);
   }
 
-  // --- Helpers PUROS de importação de CSV (Dex/TCGplayer/Collectr) ---
-  // No escopo do módulo de propósito: os testes (tests/csv-import.test.mjs)
-  // os capturam via sandbox. As partes com rede/UI vivem no menu da conta.
-  function mapDexVariant(v) {
-    const s = String(v || "").toLowerCase().trim();
-    if (!s || s === "normal") return "Normal";
-    if (s.indexOf("1st edition") >= 0) return "1st Edition";
-    if (s.indexOf("reverse") >= 0) return "Reverse";
-    if (s.indexOf("holo") >= 0) return "Holo";
-    return "Normal"; // promos diversos → carta base (Normal)
-  }
-  // Parser CSV com aspas (nomes têm vírgula: "Erika's Venusaur, Holo").
-  // Detecta o separador (vírgula/;/tab) pela linha do cabeçalho.
-  function parseCsvText(text) {
-    text = text.replace(/^﻿/, "");
-    // Preambulo "sep=,": convencao do Excel que alguns exportadores emitem na
-    // PRIMEIRA linha — o Dragon Shield MV e um deles. Sem tirar, essa linha
-    // VIRAVA o cabecalho: o mapeamento voltava tudo -1 e o arquivo inteiro nao
-    // importava (nem uma carta, sem mensagem de erro). A linha ainda declara o
-    // separador de propria boca, entao ela e melhor fonte que a heuristica.
-    let sepDeclarado = "";
-    const preambulo = /^sep=(.)\r?\n/i.exec(text);
-    if (preambulo) { sepDeclarado = preambulo[1]; text = text.slice(preambulo[0].length); }
-    const nl = text.indexOf("\n");
-    const firstLine = nl >= 0 ? text.slice(0, nl + 1) : text;
-    const sep = sepDeclarado || [",", ";", "\t"].map((s) => [s, firstLine.split(s).length - 1])
-      .sort((a, b) => b[1] - a[1])[0][0];
-    const rows = [];
-    let row = [], field = "", inQ = false;
-    for (let i = 0; i < text.length; i++) {
-      const ch = text[i];
-      if (inQ) {
-        if (ch === '"') { if (text[i + 1] === '"') { field += '"'; i++; } else inQ = false; }
-        else field += ch;
-      } else if (ch === '"') inQ = true;
-      else if (ch === sep) { row.push(field); field = ""; }
-      else if (ch === "\n" || ch === "\r") {
-        if (ch === "\r" && text[i + 1] === "\n") i++;
-        row.push(field); field = "";
-        if (row.some((c) => c.trim() !== "")) rows.push(row);
-        row = [];
-      } else field += ch;
-    }
-    row.push(field);
-    if (row.some((c) => c.trim() !== "")) rows.push(row);
-    return rows;
-  }
-  // Acha o índice de cada campo por SINÔNIMOS de cabeçalho (case-insensitive).
-  function mapCsvHeader(header) {
-    const h = header.map((c) => String(c || "").trim().toLowerCase());
-    const find = (...names) => {
-      for (const n of names) { const i = h.indexOf(n); if (i >= 0) return i; }
-      return -1;
-    };
-    return {
-      qty: find("quantity", "qty", "count", "quantidade", "amount"),
-      name: find("card name", "product name", "name", "card", "nome", "simple name"),
-      set: find("set name", "set", "expansion", "edition", "coleção"),
-      number: find("card number", "collector number", "number", "num", "número", "no."),
-      variant: find("printing", "variance", "variant", "finish", "foil"),
-      condition: find("condition", "cond", "condição"),
-      language: find("language", "lang", "idioma"),
-      game: find("game", "category", "tcg", "jogo")
-    };
-  }
-  function mapCsvCondition(c) {
-    const s = String(c || "").toLowerCase();
-    if (!s || s.indexOf("near") >= 0 || s === "nm") return "NM";
-    if (s.indexOf("mint") === 0 || s === "m") return "M";
-    if (s.indexOf("light") >= 0 || s === "sp" || s === "lp" || s.indexOf("slightly") >= 0 || s.indexOf("excellent") >= 0) return "SP";
-    if (s.indexOf("moderate") >= 0 || s === "mp" || s.indexOf("played") === 0 || s.indexOf("good") >= 0) return "MP";
-    if (s.indexOf("heav") >= 0 || s === "hp") return "HP";
-    if (s.indexOf("damag") >= 0 || s === "d" || s.indexOf("poor") >= 0) return "D";
-    return "NM";
-  }
-  function mapCsvLanguage(l) {
-    const s = String(l || "").toLowerCase();
-    if (s.indexOf("port") >= 0 || s === "pt") return "pt";
-    if (s.indexOf("jap") >= 0 || s === "ja" || s === "jp") return "ja";
-    if (s.indexOf("trad") >= 0 || s.indexOf("tw") >= 0) return "zh-tw";
-    if (s.indexOf("chin") >= 0 || s.indexOf("zh") >= 0) return "zh-cn"; // Chinês padrão = simplificado
-    return "en";
-  }
-  // Nome de jogo dos exports (coluna "Game"/"Product Line" do Collectr e do
-  // TCGplayer) → slug. Compara ACHATADO (sem espaço/pontuação) porque cada
-  // fonte escreve de um jeito: "Yu-Gi-Oh!", "YuGiOh", "Dragon Ball Super:
-  // Fusion World"… O "pok" fica por último — é o mais genérico dos prefixos.
-  function mapCsvGame(g) {
-    const flat = String(g || "").toLowerCase().replace(/[^a-z0-9]/g, "");
-    if (!flat) return "";
-    if (flat.includes("lorcana")) return "lorcana";
-    if (flat.includes("onepiece")) return "onepiece";
-    if (flat.includes("magic") || flat === "mtg") return "magic";
-    if (flat.includes("yugioh") || flat === "ygo") return "ygo";
-    if (flat.includes("digimon")) return "digimon";
-    if (flat.includes("flesh") || flat === "fab") return "fab";
-    if (flat.includes("gundam")) return "gundam";
-    if (flat.includes("dragonball") || flat.includes("fusionworld") || flat === "dbfw") return "dbfw";
-    if (flat.includes("riftbound") || flat.includes("leagueoflegends")) return "riftbound";
-    if (flat.includes("unionarena")) return "unionarena";
-    if (flat.includes("naruto")) return "naruto";
-    if (flat.includes("hunter") || flat === "hxh") return "hxh";
-    if (flat.includes("pok")) return "pokemon";
-    return ""; // desconhecido: tenta todos
-  }
-  const csvNorm = (s) => normalize(String(s || "")).replace(/[^a-z0-9]/g, "");
-  // Nome de set dos exports vem com prefixo de código ("SV08.5: Prismatic
-  // Evolutions", "SWSH09: ..."): compara também sem o prefixo.
-  function csvSetKeys(name) {
-    const keys = new Set();
-    const raw = String(name || "").trim();
-    if (!raw) return keys;
-    keys.add(csvNorm(raw));
-    const noCode = raw.replace(/^[A-Za-z0-9.\-]+\s*:\s*/, "");
-    if (noCode !== raw) keys.add(csvNorm(noCode));
-    return keys;
-  }
-  // Printing dos exports: a tabela do Dex + o "Foil" dos jogos TCGCSV (Magic,
-  // One Piece, YGO…). "Holofoil" do Pokémon cai em Holo ANTES da checagem de
-  // foil, então o comportamento antigo não muda; "Non-Foil"/"Nonfoil" é Normal.
-  function mapCsvVariant(v) {
-    const s = String(v || "").toLowerCase();
-    if (s.indexOf("1st edition") >= 0) return "1st Edition";
-    if (s.indexOf("reverse") >= 0) return "Reverse";
-    if (s.indexOf("holo") >= 0) return "Holo";
-    // ANTES do foil, porque "Etched Foil" casa nos dois. O ManaBox escreve
-    // "etched" seco na coluna Foil, e "etched" nao contem "foil": caia em
-    // Normal, ou seja, a carta entrava na colecao como se NAO fosse foil.
-    // "Etched" e variante propria do catalogo (sync-magic.mjs), e carta que
-    // nao a tem cai na variante padrao no import — nada se perde.
-    if (s.indexOf("etched") >= 0) return "Etched";
-    if (s.indexOf("foil") >= 0 && s.indexOf("non") < 0) return "Foil";
-    return "Normal";
-  }
 
   // --- Tema (claro/escuro) ---
   const THEME_KEY = "tcg-collector-theme-v1";
@@ -4640,62 +4506,6 @@
   // padrao do --cols); no desktop a pagina para em cols*230px.
   const SIZES_BINDER_SLOT = "(max-width: 700px) 31vw, 210px";
 
-  // Pre-aquece no OCIOSO as miniaturas que a pagina JA declarou mas o
-  // loading="lazy" so vai buscar quando a pessoa rolar ate elas. Serve a tese
-  // local-first do site: a colecao abre inteira no busao, e sobrevive a um
-  // outage de CDN sem depender de "ja ter visto aquela carta".
-  //
-  // Aquece pelo <img> que ja esta no DOM, e nao por uma lista de URLs montada a
-  // parte, de proposito: assim o navegador escolhe a MESMA candidata do srcset
-  // que a grade escolheria (mesmo sizes, mesmo DPR) — aquecer a low num celular
-  // 3x seria baixar um arquivo que a tela nunca vai pedir.
-  //
-  // Guardas, nesta ordem: sem service worker no comando nao ha cache offline pra
-  // encher (seria gastar dado da pessoa por nada); com economia de dados ligada
-  // ou em 2G, nao. Vai em lotes pequenos e para quando a aba sai de vista.
-  //
-  // Orcamento por CARREGAMENTO de pagina, nao por chamada: a Colecao pagina de
-  // 60 em 60, entao aquecer "uma vez" so cobriria a primeira pagina. Cada
-  // render aquece o que entrou de novo, o Set evita repetir a mesma URL, e o
-  // teto impede que uma colecao de 5.000 cartas puxe tudo de uma sentada.
-  const PREWARM_ORCAMENTO = 800;
-  const prewarmJaVistas = new Set();
-  function prewarmLazyImages(escopo, limite) {
-    if (prewarmJaVistas.size >= PREWARM_ORCAMENTO) return;
-    if (!navigator.serviceWorker || !navigator.serviceWorker.controller) return;
-    const conexao = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    if (conexao && (conexao.saveData || /^(slow-)?2g$/.test(conexao.effectiveType || ""))) return;
-    const raiz = escopo || document;
-    const espaco = Math.min(limite || PREWARM_ORCAMENTO, PREWARM_ORCAMENTO - prewarmJaVistas.size);
-    const alvos = [];
-    Array.from(raiz.querySelectorAll('img[data-card-img][loading="lazy"]')).some((img) => {
-      const chave = img.getAttribute("src") || "";
-      if (!chave || prewarmJaVistas.has(chave)) return false;
-      prewarmJaVistas.add(chave);
-      alvos.push(img);
-      return alvos.length >= espaco;
-    });
-    if (!alvos.length) return;
-    let i = 0;
-    const lote = () => {
-      if (document.hidden) return; // aba escondida: para, e nao reagenda
-      for (let n = 0; n < 6 && i < alvos.length; n++, i++) {
-        const alvo = alvos[i];
-        const aquecedor = new Image();
-        aquecedor.decoding = "async";
-        // srcset/sizes ANTES do src: e o par que decide a candidata.
-        const ss = alvo.getAttribute("srcset");
-        if (ss) { aquecedor.srcset = ss; aquecedor.sizes = alvo.getAttribute("sizes") || ""; }
-        aquecedor.src = alvo.getAttribute("src") || "";
-      }
-      if (i < alvos.length) agenda();
-    };
-    const agenda = () => {
-      if (typeof requestIdleCallback === "function") requestIdleCallback(lote, { timeout: 2000 });
-      else setTimeout(lote, 300);
-    };
-    agenda();
-  }
 
   // ── Entrada de texto e cópia manual, SEM window.prompt ────────────────────
   //
@@ -4850,41 +4660,6 @@
     return next;
   }
 
-  // Busca tipos e formas de um Pokémon na PokéAPI (por dexId), com cache em localStorage.
-  // Degrada silenciosamente se a rede falhar — chamador deve tratar { types: [], forms: [] }.
-  async function fetchPokemonMeta(dexId) {
-    const empty = { types: [], forms: [] };
-    if (!dexId) return empty;
-
-    const cacheKey = `tcg-pokeapi-meta-${dexId}`;
-    try {
-      const cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
-      if (cached) return cached;
-    } catch (error) {
-      // cache inválido: segue para buscar
-    }
-
-    try {
-      const [pokemon, species] = await Promise.all([
-        fetch(`https://pokeapi.co/api/v2/pokemon/${dexId}`).then((response) => (response.ok ? response.json() : null)),
-        fetch(`https://pokeapi.co/api/v2/pokemon-species/${dexId}`).then((response) => (response.ok ? response.json() : null))
-      ]);
-
-      const meta = {
-        types: pokemon ? pokemon.types.map((entry) => entry.type.name) : [],
-        forms: species ? species.varieties.filter((variety) => !variety.is_default).map((variety) => variety.pokemon.name) : []
-      };
-
-      try {
-        localStorage.setItem(cacheKey, JSON.stringify(meta));
-      } catch (error) {
-        // localStorage cheio: ok, só não cacheia
-      }
-      return meta;
-    } catch (error) {
-      return empty;
-    }
-  }
 
   // --- Cotação de mercado (preços internacionais da TCGdex, ao vivo) ----------
   // Referência da carta na API da TCGdex: id sem o sufixo de idioma + o idioma.
@@ -7404,313 +7179,6 @@
     return true;
   }
 
-  // Preços BR do backup: mantém só valores numéricos positivos de cartas conhecidas.
-  function parseImportedPrices(payload, cardsById) {
-    const source = payload && payload.prices;
-    if (!source || typeof source !== "object" || Array.isArray(source)) return {};
-    const acceptAll = cardsById.size === 0; // sem catálogo: aceita como vem
-    const result = {};
-    Object.entries(source).forEach(([cardId, variants]) => {
-      if (isUnsafeKey(cardId) || (!acceptAll && !cardsById.has(cardId)) || !variants || typeof variants !== "object") return;
-      Object.entries(variants).forEach(([variant, entry]) => {
-        if (isUnsafeKey(variant) || !entry || typeof entry !== "object" || !entry.prices) return;
-        const clean = {};
-        Object.entries(entry.prices).forEach(([condition, value]) => {
-          const amount = Number(value);
-          if (amount > 0 && CARD_CONDITIONS.includes(condition)) clean[condition] = Math.round(amount * 100) / 100;
-        });
-        if (Object.keys(clean).length) {
-          result[cardId] = result[cardId] || {};
-          result[cardId][variant] = {
-            prices: clean,
-            source: typeof entry.source === "string" ? entry.source : "manual",
-            updatedAt: typeof entry.updatedAt === "string" ? entry.updatedAt : ""
-          };
-        }
-      });
-    });
-    return result;
-  }
-
-  // Lista de desejos do backup: cardId -> [variantes válidas da carta].
-  function parseImportedWishlist(payload, cardsById) {
-    const source = payload && payload.wishlist;
-    if (!source || typeof source !== "object" || Array.isArray(source)) return {};
-    const acceptAll = cardsById.size === 0; // sem catálogo: aceita como vem
-    const wishlist = {};
-    Object.entries(source).forEach(([cardId, variants]) => {
-      if (isUnsafeKey(cardId)) return;
-      const card = cardsById.get(cardId);
-      if ((!card && !acceptAll) || !Array.isArray(variants)) return;
-      const known = card && card.variants && card.variants.length ? card.variants : null;
-      const list = known ? variants.filter((variant) => known.includes(variant)) : variants.filter(Boolean);
-      if (list.length) wishlist[cardId] = list;
-    });
-    return wishlist;
-  }
-
-  function parseImportedCollection(payload, cardsById) {
-    // Sem catálogo carregado (ex.: página Pokédex, que roda só com índices) não
-    // dá para validar contra o catálogo — aceita os ids do backup como vêm.
-    const acceptAll = cardsById.size === 0;
-
-    // Formato v1: lista de ids -> 1ª variante, NM ×1.
-    if (Array.isArray(payload.ownedCardIds)) {
-      const collection = {};
-      payload.ownedCardIds.forEach((cardId) => {
-        if (!isUnsafeKey(cardId) && (acceptAll || cardsById.has(cardId))) {
-          collection[cardId] = { [defaultVariant(cardsById.get(cardId))]: { [DEFAULT_CONDITION]: 1 } };
-        }
-      });
-      return collection;
-    }
-
-    if (!payload.collection || typeof payload.collection !== "object" || Array.isArray(payload.collection)) {
-      throw new Error("Arquivo sem collection ou ownedCardIds.");
-    }
-
-    const isV3 = payload.version >= 3;
-    const collection = {};
-    Object.entries(payload.collection).forEach(([cardId, variants]) => {
-      if (isUnsafeKey(cardId) || (!acceptAll && !cardsById.has(cardId)) || !variants || typeof variants !== "object") return;
-      const entry = {};
-      Object.entries(variants).forEach(([variant, value]) => {
-        if (isUnsafeKey(variant)) return;
-        if (isV3 && value && typeof value === "object") {
-          // v3: variante -> condição -> quantidade
-          const conditions = {};
-          Object.entries(value).forEach(([condition, quantity]) => {
-            const parsed = Math.floor(Number(quantity));
-            if (parsed > 0 && CARD_CONDITIONS.includes(condition)) conditions[condition] = parsed;
-          });
-          if (Object.keys(conditions).length) entry[variant] = conditions;
-        } else {
-          // v2: variante -> quantidade (vira NM)
-          const parsed = Math.floor(Number(value));
-          if (parsed > 0) entry[variant] = { [DEFAULT_CONDITION]: parsed };
-        }
-      });
-      if (Object.keys(entry).length) collection[cardId] = entry;
-    });
-    return collection;
-  }
-
-  // ── Importação de backup JSON ─────────────────────────────────────────────
-  // Três passos separados de propósito: VALIDAR (lê o arquivo inteiro e rejeita
-  // sem tocar em nada), PLANEJAR (o que cada chave vai virar, no modo
-  // escolhido) e APLICAR (grava tudo ou nada, com cópia recuperável). Antes
-  // era um passo só: o arquivo ia direto pros stores, sem prévia, e
-  // SUBSTITUÍA a coleção — enquanto a página de backup prometia "as cartas do
-  // arquivo são somadas às atuais". Os ids são aceitos como vêm (sem catálogo
-  // na mão): carta de outro catálogo/jogo sobrevive à importação e à
-  // exportação seguinte, em vez de sumir em silêncio.
-  const BACKUP_VERSION_MAX = 3;
-  const BACKUP_BLOCKS = ["binders", "decks", "folders", "sales", "graded", "tags", "lists", "sold", "costs", "wishTargets", "manual"];
-  const PRE_IMPORT_KEY = "tcg-collector-pre-import-v1";
-  function isPlainObject(v) { return !!v && typeof v === "object" && !Array.isArray(v); }
-  function countBlockItems(block, field) {
-    const v = block && block[field];
-    if (Array.isArray(v)) return v.length;
-    return isPlainObject(v) ? Object.keys(v).length : 0;
-  }
-  // Lança Error("incompatible") pra versão desconhecida ou estrutura errada —
-  // nada é gravado. Devolve o conteúdo já saneado + um resumo pra prévia.
-  function validateBackupPayload(payload) {
-    if (!isPlainObject(payload)) throw new Error("incompatible");
-    if (payload.version != null) {
-      const v = Number(payload.version);
-      if (!Number.isFinite(v) || v < 1 || v > BACKUP_VERSION_MAX) throw new Error("incompatible");
-    }
-    if (!Array.isArray(payload.ownedCardIds) && !isPlainObject(payload.collection)) throw new Error("incompatible");
-    if (payload.wishlist != null && !isPlainObject(payload.wishlist)) throw new Error("incompatible");
-    if (payload.prices != null && !isPlainObject(payload.prices)) throw new Error("incompatible");
-    if (payload.favorites != null && !Array.isArray(payload.favorites)) throw new Error("incompatible");
-    if (payload.dexOwned != null && !Array.isArray(payload.dexOwned)) throw new Error("incompatible");
-    BACKUP_BLOCKS.forEach((k) => { if (payload[k] != null && !isPlainObject(payload[k])) throw new Error("incompatible"); });
-    const byId = new Map(); // sem catálogo: ids desconhecidos são preservados
-    const collection = parseImportedCollection(payload, byId);
-    const wishlist = parseImportedWishlist(payload, byId);
-    const prices = parseImportedPrices(payload, byId);
-    const blocks = {};
-    BACKUP_BLOCKS.forEach((k) => { if (isPlainObject(payload[k])) blocks[k] = payload[k]; });
-    const favorites = Array.isArray(payload.favorites) ? payload.favorites.filter((x) => typeof x === "string") : null;
-    const dexOwned = Array.isArray(payload.dexOwned) ? payload.dexOwned.filter((x) => typeof x === "string") : null;
-    let copies = 0;
-    Object.values(collection).forEach((variants) => Object.values(variants).forEach((conds) => Object.values(conds).forEach((q) => { copies += q; })));
-    return {
-      collection, wishlist, prices, blocks, favorites, dexOwned,
-      summary: {
-        version: payload.version == null ? 1 : Number(payload.version),
-        exportedAt: typeof payload.exportedAt === "string" ? payload.exportedAt : "",
-        cards: Object.keys(collection).length,
-        copies,
-        wishlist: Object.keys(wishlist).length,
-        prices: Object.keys(prices).length,
-        decks: countBlockItems(blocks.decks, "decks"),
-        binders: countBlockItems(blocks.binders, "binders"),
-        lists: countBlockItems(blocks.lists, "lists"),
-        graded: countBlockItems(blocks.graded, "items"),
-        favorites: favorites ? favorites.length : 0,
-        dexOwned: dexOwned ? dexOwned.length : 0,
-        blocks: Object.keys(blocks)
-      }
-    };
-  }
-  // Estado local que a importação vai combinar (mesmas chaves do backupObject).
-  function readLocalBackupState() {
-    const st = {
-      collection: readObject(SYNC_KEYS.collection) || {},
-      collectionMeta: normalizeMeta(readObject(SYNC_KEYS.collectionMeta)),
-      wishlist: readObject(SYNC_KEYS.wishlist) || {},
-      wishlistMeta: normalizeMeta(readObject(SYNC_KEYS.wishlistMeta)),
-      prices: readObject(SYNC_KEYS.prices) || {},
-      blocks: {},
-      favorites: null,
-      dexOwned: null
-    };
-    BACKUP_BLOCKS.forEach((k) => { st.blocks[k] = readObject(SYNC_KEYS[k]); });
-    try { const f = JSON.parse(localStorage.getItem(SYNC_KEYS.favorites) || "null"); st.favorites = Array.isArray(f) ? f : null; } catch (e) { st.favorites = null; }
-    try { const d = JSON.parse(localStorage.getItem(SYNC_KEYS.dexOwned) || "null"); st.dexOwned = Array.isArray(d) ? d : null; } catch (e) { st.dexOwned = null; }
-    return st;
-  }
-  // mode "merge" (padrão): carta do arquivo vence a versão local da MESMA
-  // carta (última gravação = o arquivo, carimbado "agora"); carta que só existe
-  // aqui fica. Blocos usam o mesmo merge do sync (decks/binders/listas/vendas
-  // realizadas/custos: união por id; pastas/vendas/graded/tags/manual: bloco
-  // mais recente). mode "replace": coleção, wishlist e preços deste jogo (e os
-  // blocos presentes no arquivo) passam a ser EXATAMENTE o arquivo; bloco que o
-  // arquivo não traz não é apagado. Devolve chave -> objeto a gravar.
-  function planBackupImport(parsed, mode, local) {
-    const merge = mode !== "replace";
-    const now = Date.now();
-    const stampAll = (obj) => { const mod = {}; Object.keys(obj).forEach((id) => { mod[id] = now; }); return { mod, del: {} }; };
-    const out = {};
-    if (merge) {
-      const c = mergeCollection(local.collection, local.collectionMeta, parsed.collection, stampAll(parsed.collection));
-      out[SYNC_KEYS.collection] = c.collection; out[SYNC_KEYS.collectionMeta] = c.meta;
-      const w = mergeWishlist(local.wishlist, local.wishlistMeta, parsed.wishlist, stampAll(parsed.wishlist));
-      out[SYNC_KEYS.wishlist] = w.wishlist; out[SYNC_KEYS.wishlistMeta] = w.meta;
-      out[SYNC_KEYS.prices] = mergePrices(local.prices, parsed.prices);
-    } else {
-      out[SYNC_KEYS.collection] = parsed.collection; out[SYNC_KEYS.collectionMeta] = stampAll(parsed.collection);
-      out[SYNC_KEYS.wishlist] = parsed.wishlist; out[SYNC_KEYS.wishlistMeta] = stampAll(parsed.wishlist);
-      out[SYNC_KEYS.prices] = parsed.prices;
-    }
-    const MERGERS = {
-      binders: mergeBinders, decks: mergeDecks, lists: mergeLists, folders: mergeFolders, sales: mergeSales,
-      graded: mergeGraded, tags: mergeTags, sold: mergeSold, costs: mergeCosts, wishTargets: mergeWishTargets, manual: mergeManual
-    };
-    Object.keys(parsed.blocks).forEach((k) => {
-      const local0 = local.blocks[k];
-      out[SYNC_KEYS[k]] = (merge && local0) ? MERGERS[k](local0, parsed.blocks[k]) : parsed.blocks[k];
-    });
-    if (parsed.favorites) {
-      out[SYNC_KEYS.favorites] = (merge && local.favorites)
-        ? Array.from(new Set([].concat(local.favorites, parsed.favorites)))
-        : parsed.favorites;
-    }
-    // Pokédex "já tenho": mesma regra dos favoritos (união no merge, arquivo no replace).
-    if (parsed.dexOwned) {
-      out[SYNC_KEYS.dexOwned] = (merge && local.dexOwned)
-        ? Array.from(new Set([].concat(local.dexOwned, parsed.dexOwned)))
-        : parsed.dexOwned;
-    }
-    return out;
-  }
-  // Grava o plano: tudo ou nada. Antes, uma foto do que cada chave tinha vai
-  // pro PRE_IMPORT_KEY (o "Desfazer importação" da página de backup lê daí);
-  // sem espaço nem pra foto, aborta sem tocar em nada (code "snapshot"). Se
-  // alguma gravação falhar no meio, volta todas (code "rolledback").
-  function applyBackupImport(plan) {
-    flushWrites(); // materializa o que a página tinha pendente ANTES da foto
-    const keys = Object.keys(plan);
-    const foto = { savedAt: Date.now(), game: currentGameSlug(), keys: {} };
-    keys.forEach((k) => { foto.keys[k] = localStorage.getItem(k); });
-    try { localStorage.setItem(PRE_IMPORT_KEY, JSON.stringify(foto)); }
-    catch (e) { throw Object.assign(new Error("snapshot"), { code: "snapshot" }); }
-    try {
-      keys.forEach((k) => {
-        if (plan[k] === undefined) localStorage.removeItem(k);
-        else localStorage.setItem(k, JSON.stringify(plan[k]));
-      });
-    } catch (e) {
-      // Volta o que já tinha entrado. Primeiro LIBERA o espaço das chaves novas
-      // (foram elas que estouraram a cota), depois repõe os valores antigos um
-      // a um — uma reposição que falhe não impede as outras. Se alguma não
-      // voltar, a foto FICA guardada: o "Desfazer importação" repõe tudo assim
-      // que houver espaço, e o erro diz que ficou pela metade (code "partial").
-      let intacto = true;
-      keys.forEach((k) => { try { localStorage.removeItem(k); } catch (e2) { /* segue */ } });
-      keys.forEach((k) => {
-        const v = foto.keys[k];
-        if (v == null) return;
-        try { localStorage.setItem(k, v); } catch (e2) { intacto = false; }
-      });
-      if (intacto) { try { localStorage.removeItem(PRE_IMPORT_KEY); } catch (e2) { /* a foto igual ao atual não atrapalha */ } }
-      const code = intacto ? "rolledback" : "partial";
-      throw Object.assign(new Error(code), { code });
-    }
-    freezeWritesUntilReload();
-  }
-  function lastImportSnapshot() {
-    const f = readObject(PRE_IMPORT_KEY);
-    if (!f || !isPlainObject(f.keys)) return null;
-    return { savedAt: Number(f.savedAt) || 0, game: typeof f.game === "string" ? f.game : "", keys: Object.keys(f.keys).length };
-  }
-  // Desfazer = voltar cada chave ao que era antes da importação, com carimbos
-  // NOVOS: sem eles, quem tem conta veria a nuvem (que já recebeu o importado,
-  // carimbado como mais novo) trazer tudo de volta no próximo sync. Coleção e
-  // wishlist ganham mod=agora no que volta e tombstone no que só a importação
-  // trouxe; decks/binders/listas idem por item; blocos LWW só sobem o updatedAt.
-  function restampForUndo(key, restored, current, now) {
-    const idsOf = (o) => Object.keys(isPlainObject(o) ? o : {});
-    if (key === SYNC_KEYS.collection || key === SYNC_KEYS.wishlist) {
-      const metaKey = key === SYNC_KEYS.collection ? SYNC_KEYS.collectionMeta : SYNC_KEYS.wishlistMeta;
-      const meta = { mod: {}, del: {} };
-      idsOf(restored).forEach((id) => { meta.mod[id] = now; });
-      idsOf(current).forEach((id) => { if (!meta.mod[id]) meta.del[id] = now; });
-      return { [metaKey]: meta };
-    }
-    const LISTAS = { [SYNC_KEYS.decks]: "decks", [SYNC_KEYS.binders]: "binders", [SYNC_KEYS.lists]: "lists" };
-    if (LISTAS[key]) {
-      const field = LISTAS[key];
-      const base = isPlainObject(restored) ? restored : { [field]: [] };
-      const keep = (Array.isArray(base[field]) ? base[field] : []).map((it) => (it && it.id ? Object.assign({}, it, { updatedAt: now }) : it));
-      const keepIds = new Set(keep.map((it) => it && it.id));
-      const deleted = Object.assign({}, isPlainObject(base.deleted) ? base.deleted : {});
-      const cur = isPlainObject(current) && Array.isArray(current[field]) ? current[field] : [];
-      cur.forEach((it) => { if (it && it.id && !keepIds.has(it.id)) deleted[it.id] = now; });
-      return { [key]: Object.assign({}, base, { [field]: keep, deleted }) };
-    }
-    if (isPlainObject(restored) && "updatedAt" in restored) return { [key]: Object.assign({}, restored, { updatedAt: now }) };
-    return null;
-  }
-  function undoLastImport() {
-    const f = readObject(PRE_IMPORT_KEY);
-    if (!f || !isPlainObject(f.keys)) return false;
-    flushWrites();
-    const now = Date.now();
-    const writes = {};
-    const carimbos = {};
-    Object.keys(f.keys).forEach((k) => {
-      const raw = f.keys[k];
-      let restored = null;
-      try { restored = raw == null ? null : JSON.parse(raw); } catch (e) { restored = null; }
-      writes[k] = raw == null ? undefined : raw;
-      const extra = restampForUndo(k, restored, readObject(k), now);
-      if (extra) Object.keys(extra).forEach((ek) => { carimbos[ek] = JSON.stringify(extra[ek]); });
-    });
-    // Os carimbos novos entram DEPOIS: a meta da coleção também está na foto
-    // (com os carimbos velhos), e a ordem das chaves não pode decidir qual vence.
-    Object.assign(writes, carimbos);
-    const restore = snapshotKeys(Object.keys(writes));
-    try {
-      Object.keys(writes).forEach((k) => { if (writes[k] === undefined) localStorage.removeItem(k); else localStorage.setItem(k, writes[k]); });
-      localStorage.removeItem(PRE_IMPORT_KEY);
-    } catch (e) { restore(); notifyStorageFull(); return false; }
-    freezeWritesUntilReload();
-    return true;
-  }
 
   // Espera o catálogo do jogo (window.TCG_*) terminar de carregar. O game.js
   // injeta os scripts em runtime e resolve window.SLEEVU.catalogReady — sem isto
@@ -7949,17 +7417,6 @@
     unionarena: "filter.gameUnionArena", naruto: "filter.gameNaruto", hxh: "filter.gameHxh"
   };
   function gameLabel(g) { return t(GAME_LABEL_KEY[g] || GAME_LABEL_KEY.pokemon); }
-  // Logo do jogo (assets/games/game_<slug>.webp): usado como stand-in do logo de
-  // set quando o set não tem um próprio, e como último fallback quando o logo do
-  // set quebra. "" pros jogos sem arquivo de logo (jump/unionarena) — aí cai no
-  // texto. Entrou o arquivo em assets/games/? Basta preencher aqui e pôr o <img>
-  // no tile do hub.html (o hub revela o logo sozinho quando ele carrega).
-  const GAME_LOGO = {
-    pokemon: "game_pokemon.webp", lorcana: "game_lorcana.webp", onepiece: "game_onepiece.webp",
-    magic: "game_magic.webp", fab: "game_fab.webp", gundam: "game_gundam.webp", dbfw: "game_dbfw.webp",
-    ygo: "game_ygo.webp", digimon: "game_digimon.webp", riftbound: "game_riftbound.webp",
-    unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp"
-  };
   const VINTAGE_SET_EN = {
     // ---- One Piece · Miracle Battle Carddass
     "op-mb-ops01": "Starter Deck — Battle Begins! Luffy Pirates!!",
@@ -8214,61 +7671,11 @@
     return (language === "ja" && JA_SERIE_EN[serieName]) || serieName || "";
   }
 
-  function gameLogoUrl(game) {
-    const f = GAME_LOGO[game || currentGameSlug()];
-    return f ? "assets/games/" + f : "";
-  }
   // Jogos por MARCA: cada IP pode ter várias LINHAS de jogo (o principal e os
   // vintage). A NAVEGAÇÃO do Explorar trata cada linha como um jogo próprio
   // (?line= define o escopo; sem line = só o jogo principal, excluindo as
   // linhas). A CONTA (Coleção/Portfólio/Wishlist) soma tudo pela marca — sem
   // filtro por linha lá, por decisão de produto.
-  // ── Facetas da página de SET, por jogo ─────────────────────────────────────
-  // Configurado UMA vez por jogo e valendo pra todo set dele — presente e
-  // futuro: a lista de opções de cada faceta sai das cartas que a página
-  // carregou, não de uma lista fixa. Set novo do Magic já nasce filtrável, e
-  // uma raridade/cor/tratamento inédito aparece sozinho.
-  //
-  // Contrato de cada faceta:
-  //   key      identificador (vai pro estado da página)
-  //   labelKey chave i18n do título do grupo
-  //   of(card) valores DA CARTA nessa faceta (array; várias = a carta conta em
-  //            todas — ex.: "Artifact Creature" é Artefato E Criatura)
-  //   label(v) rótulo de uma opção
-  //   order    ordem fixa das opções conhecidas; o que não está aqui vai pro
-  //            fim, em ordem alfabética (é o que faz token novo aparecer)
-  //
-  // Magic: os quatro campos abaixo existem no catálogo (sync-magic.mjs) —
-  // rarity/cardType em 100% das cartas, color ausente = incolor, e `treat`
-  // (tratamento) só nas impressões especiais. "Impressões"
-  // (lançamento/relançamento) NÃO entra: o Scryfall tem `reprint`, mas a gente
-  // não grava, e o Fernando dispensou.
-  const MTG_COLOR = { W: "white", U: "blue", B: "black", R: "red", G: "green" };
-  function mtgColorBucket(card) {
-    const cores = String(card.color || "").split(";").filter(Boolean);
-    if (cores.length > 1) return "multi";
-    if (cores.length === 1) return MTG_COLOR[cores[0]] || "colorless";
-    // Sem cor: terreno é categoria própria (é o que o jogador procura), o resto
-    // é incolor (artefatos, Eldrazi…).
-    return /\bland\b/i.test(String(card.cardType || "")) ? "land" : "colorless";
-  }
-  // Tipos de carta do Magic, em ordem canônica (os oito primeiros são o que
-  // aparece num deck de verdade; o resto existe em produto de brincadeira/
-  // suplemento e entra só pra não sobrar type_line crua na lista).
-  const MTG_TYPES = [
-    "creature", "instant", "sorcery", "artifact", "enchantment", "land", "planeswalker", "battle",
-    "kindred", "tribal", "conspiracy", "dungeon", "phenomenon", "plane", "scheme", "vanguard", "emblem"
-  ];
-  function mtgTypeBuckets(card) {
-    const linha = String(card.cardType || "").toLowerCase();
-    // Uma carta pode ser vários tipos ("Artifact Creature", "Land Creature").
-    const achados = MTG_TYPES.filter((tipo) => new RegExp(`\\b${tipo}\\b`).test(linha));
-    if (achados.length) return achados;
-    // "Summon — Dinosaur" / "Summon Wolf": grafia dos anos 90 (Legends/The Dark)
-    // pro que hoje é Creature. Sem isto cada Summon virava um tipo só dele.
-    if (/^summon\b/.test(linha)) return ["creature"];
-    return [];
-  }
   // Rótulo de um token de tratamento: traduzido quando conhecido; senão o
   // próprio token com a primeira letra maiúscula (surgefoil -> "Surgefoil").
   // Tokens de `treat` que NÃO são tratamento visual: moldura (legendary),
@@ -8282,144 +7689,6 @@
     const chave = `mtg.treat.${token}`;
     const traduzido = t(chave);
     return traduzido === chave ? token.charAt(0).toUpperCase() + token.slice(1) : traduzido;
-  }
-  // Helpers das facetas fora do Magic. Valor multi vira uma opção POR PARTE
-  // ("Green;Red" do One Piece/Digimon, "Amber/Steel" dos dual-ink do Lorcana):
-  // quem procura "as verdes" espera achar a Green;Red lá dentro. Os RÓTULOS
-  // ficam no inglês da fonte de propósito (Amber, Leader, Digi-Egg…) — é o
-  // texto impresso na carta, como os tratamentos do Magic.
-  const facetSplit = (v, sep) => String(v || "").split(sep).map((s) => s.trim()).filter(Boolean);
-  const FACET_COLOR_ORDER = ["Red", "Green", "Blue", "Purple", "Black", "Yellow", "White"];
-  const facetColor = (field) => ({
-    key: "color", labelKey: "facet.color",
-    of: (c) => facetSplit(c[field], ";"),
-    label: (v) => v,
-    order: FACET_COLOR_ORDER
-  });
-  const facetType = (order) => ({
-    key: "type", labelKey: "facet.cardType",
-    of: (c) => (c.cardType ? [String(c.cardType)] : []),
-    label: (v) => v,
-    order: order || []
-  });
-  // Nível (Digimon/Gundam): só dígito limpo — a fonte deixa passar "—"/"-".
-  const facetLevel = {
-    key: "level", labelKey: "facet.level",
-    of: (c) => (/^\d+$/.test(String(c.level)) ? [String(c.level)] : []),
-    label: (v) => v,
-    order: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
-  };
-
-  // Facetas por jogo, derivadas dos campos que o sync já grava — as guardas do
-  // renderFacets fazem o resto (faceta sem dado não aparece; opção presente em
-  // 100% das cartas é descartada). Raridade fica FORA de propósito nos jogos
-  // novos: o select de raridade deles já funciona e tem tratamento próprio
-  // (rarityAsFacet só esconde o select de quem declara a faceta, como o Magic).
-  // Pokémon segue fora: o types/stage só existe no catálogo de produção, que
-  // este ambiente não alcança pra conferir — ligar às cegas é contra a regra.
-  const GAME_FACETS = {
-    lorcana: [
-      {
-        key: "ink", labelKey: "facet.ink",
-        of: (c) => facetSplit(c.ink, "/"),
-        label: (v) => v,
-        order: ["Amber", "Amethyst", "Emerald", "Ruby", "Sapphire", "Steel"]
-      },
-      facetType(["Character", "Action", "Action/Song", "Item", "Location"])
-    ],
-    onepiece: [
-      facetColor("opColor"),
-      facetType(["Leader", "Character", "Event", "Stage"])
-    ],
-    digimon: [
-      facetColor("color"),
-      facetLevel,
-      facetType(["Digi-Egg", "Digimon", "Tamer", "Option"])
-    ],
-    gundam: [
-      facetColor("color"),
-      facetLevel,
-      facetType(["Unit", "Pilot", "Command", "Base", "Resource", "EX Base", "EX Resource"])
-    ],
-    dbfw: [
-      facetColor("color"),
-      facetType(["Leader", "Battle", "Extra"])
-    ],
-    fab: [
-      {
-        key: "pitch", labelKey: "facet.pitch",
-        of: (c) => (/^\d+$/.test(String(c.pitch)) ? [String(c.pitch)] : []),
-        label: (v) => v,
-        order: ["0", "1", "2", "3", "4"]
-      },
-      {
-        key: "talent", labelKey: "facet.talent",
-        of: (c) => facetSplit(c.talent, ";"),
-        label: (v) => v,
-        order: []
-      },
-      facetType(["Hero", "Weapon", "Equipment", "Action", "Attack Reaction", "Defense Reaction", "Instant"])
-    ],
-    magic: [
-      {
-        key: "rarity", labelKey: "toolbar.rarity",
-        of: (c) => (c.rarity ? [String(c.rarity)] : []),
-        label: (v) => { const k = `mtg.rarity.${v}`; const r = t(k); return r === k ? v : r; },
-        order: ["common", "uncommon", "rare", "mythic", "special", "bonus"]
-      },
-      {
-        key: "color", labelKey: "facet.color",
-        of: (c) => [mtgColorBucket(c)],
-        label: (v) => t(`mtg.color.${v}`),
-        order: ["white", "blue", "black", "red", "green", "multi", "colorless", "land"]
-      },
-      {
-        key: "type", labelKey: "facet.cardType",
-        of: mtgTypeBuckets,
-        label: (v) => t(`mtg.type.${v}`),
-        order: MTG_TYPES
-      },
-      {
-        key: "treat", labelKey: "facet.treatment",
-        // Filtra o RUÍDO que o sync deixou passar. Medido no LTR:
-        // `universesbeyond` marcava as 854 cartas do set (opção que não filtra
-        // nada), `legendary` (398) é MOLDURA e não tratamento, e bundle/
-        // playpromo/storechampionship/tourney são marcas de EVENTO. Sobram os
-        // que a pessoa procura: showcase, scroll, silverfoil, borderless,
-        // fullart, extendedart, surgefoil, inverted, poster…
-        // Aqui no CLIENTE de propósito: mexer na denylist do sync exigiria
-        // rebuild completo do Magic (648 sets no Scryfall) a cada ajuste.
-        of: (c) => String(c.treat || "").split(";").filter((tk) => tk && !TREAT_NOISE.has(tk)),
-        label: treatLabel,
-        order: ["borderless", "extendedart", "showcase", "fullart", "etched", "inverted", "surgefoil"]
-      }
-    ]
-  };
-  function gameFacets(game) { return GAME_FACETS[game] || []; }
-
-  // TIPO PRINCIPAL da carta, pra AGRUPAR (lista do deck, facetas…). No Magic o
-  // `cardType` é a type_line INTEIRA ("Artifact Creature — Golem"), então
-  // agrupar pelo campo cru separava cada subtipo num grupo: Golem de um lado,
-  // Goblin Sorcerer de outro, e a lista virava uma escada. Aqui volta o tipo de
-  // verdade (Criatura), com o mesmo vocabulário da faceta.
-  // Carta de vários tipos entra no PRIMEIRO da ordem canônica — a lista precisa
-  // de um grupo só por carta (diferente da faceta, onde ela conta em todos).
-  // Jogos sem regra própria seguem com o campo cru, que já é o tipo deles.
-  function cardTypeGroup(game, card) {
-    if (!card) return { key: "", label: "" };
-    if (game === "magic") {
-      const b = mtgTypeBuckets(card);
-      // Rótulo tolerante: tipo sem tradução (os de suplemento) mostra o próprio
-      // token capitalizado, então dá pra estender MTG_TYPES sem 3 traduções.
-      if (b.length) {
-        const chave = `mtg.type.${b[0]}`;
-        const rot = t(chave);
-        return { key: b[0], label: rot === chave ? b[0].charAt(0).toUpperCase() + b[0].slice(1) : rot };
-      }
-      return { key: "", label: "" };
-    }
-    const cru = String(card.cardType || card.category || "");
-    return { key: cru, label: cru };
   }
 
   const GAME_LINES = {
@@ -8780,32 +8049,6 @@
     return promise;
   }
 
-  // Monta o indexesByGame que a Coleção mescla (mesmo formato do caminho de
-  // chunks) a partir das fatias, e espelha o global TCG_INDEXES_MERGED que o
-  // buildPublicPayload lê pros denominadores do PERFIL público. Nunca rejeita:
-  // fatia que falhar cai em vazio (o total daquele grupo usa as cartas carregadas).
-  async function loadCollectionIndexes(games) {
-    const byGame = {};
-    await Promise.all((games || []).map(async (g) => {
-      const [sets, artists, pokemonTotals] = await Promise.all([
-        loadGameIndexSlice(g, "sets"),
-        loadGameIndexSlice(g, "artists"),
-        g === "pokemon" ? loadGameIndexSlice(g, "pokemonTotals") : Promise.resolve(null)
-      ]);
-      byGame[g] = (sets || artists || pokemonTotals)
-        ? { sets: sets || [], artists: artists || [], pokemonTotals: pokemonTotals || {} }
-        : null;
-    }));
-    const merged = { sets: [], artists: [], pokemonTotals: {} };
-    Object.keys(byGame).forEach((g) => {
-      const idx = byGame[g]; if (!idx) return;
-      (idx.sets || []).forEach((s) => merged.sets.push(Object.assign({ game: g }, s)));
-      (idx.artists || []).forEach((a) => merged.artists.push(Object.assign({ game: g }, a)));
-      Object.assign(merged.pokemonTotals, idx.pokemonTotals);
-    });
-    window.TCG_INDEXES_MERGED = merged;
-    return byGame;
-  }
 
   // Facade que despacha cada método por jogo (resolvido por gameOf(cardId));
   // agregados (size/totalQuantity/...) somam os jogos. Deixa Coleção/Wishlist/
@@ -9333,8 +8576,37 @@
   }
   function searchIndexLoaded(game) { return !!searchIndexReady[game]; }
 
+  // src/backup-import.js sob demanda (ver o comentário no export). O backup.html
+  // o carrega estático (precisa do lastImportSnapshot síncrono no load); nas
+  // outras páginas ele só desce se alguém escolher um arquivo no menu da conta.
+  let backupImportCarregando = null;
+  function carregaBackupImport() {
+    if (window.TCGBackupImport) return Promise.resolve(true);
+    if (!backupImportCarregando) {
+      backupImportCarregando = injectScript("src/backup-import.js").then((ok) => { if (!ok) backupImportCarregando = null; return ok; });
+    }
+    return backupImportCarregando;
+  }
+  function viaBackupImport(nome) {
+    return function (file) {
+      return carregaBackupImport().then((ok) => {
+        const mod = ok && window.TCGBackupImport;
+        if (!mod || typeof mod[nome] !== "function") { alert(t("error.import")); return undefined; }
+        return mod[nome](file);
+      });
+    };
+  }
+
   window.TCGShared = {
     createCollectionStore,
+    // Importação de backup/CSV: bloco FRIO (só roda quando a pessoa escolhe um
+    // arquivo), então mora em src/backup-import.js e desce sob demanda. O
+    // módulo substitui estes três pelas funções de verdade ao carregar.
+    importBackupJson: viaBackupImport("importJson"),
+    importCsvFile: viaBackupImport("importGenericCsv"),
+    importDexCsvFile: viaBackupImport("importDexCsv"),
+    treatLabel,
+    TREAT_NOISE,
     createFavoritesStore,
     createDexOwnedStore,
     readDexProgress,
@@ -9367,7 +8639,6 @@
     variantDisplayLabel,
     flashTileAdded,
     handleWantTileClick,
-    fetchPokemonMeta,
     createCardPreview,
     t,
     tn,
@@ -9390,9 +8661,6 @@
     gameTagHtml,
     textOnColor,
     gameLabel,
-    gameFacets,
-    cardTypeGroup,
-    gameLogoUrl,
     setDisplayName,
     setOriginalName,
     setSerieDisplayName,
@@ -9518,7 +8786,6 @@
     hoverThumb,
     caixaDeTexto,
     copiaTexto,
-    prewarmLazyImages,
     toastSimples,
     SIZES_CARD_TILE,
     SIZES_BINDER_SLOT,
@@ -9537,7 +8804,6 @@
     loadCatalogForCardIds,
     loadOwnedAcrossGames,
     loadOwnedFast,
-    loadCollectionIndexes,
     loadGameIndexSlice,
     loadSearchIndex,
     searchIndexLoaded,
@@ -11186,329 +10452,13 @@
       dl("﻿" + buildCollectionCsv(createCollectionStore(), createPriceStore(), byId), "tcg-collection.csv", "text/csv;charset=utf-8");
       logEvento("export_done", { f: "csv" });
     }
-    async function importJson(file) {
-      if (!file) return;
-      if (file.size > 20 * 1024 * 1024) { alert(t("error.import")); return; }
-      let parsed;
-      try {
-        parsed = validateBackupPayload(JSON.parse(await file.text()));
-      } catch (e) {
-        // Arquivo que não é JSON, ou é de uma versão/estrutura que este site não
-        // conhece: nada foi tocado, e a mensagem diz qual dos dois foi.
-        alert(t(e && e.message === "incompatible" ? "error.importIncompatible" : "error.import"));
-        return;
-      }
-      showBackupImportPreview(parsed, (mode) => {
-        try {
-          applyBackupImport(planBackupImport(parsed, mode, readLocalBackupState()));
-        } catch (e) {
-          // Sem espaço: ou nem a cópia de segurança coube (nada mudou), ou uma
-          // chave falhou no meio e todas voltaram ao que eram ("rolledback") —
-          // e, se alguma nem conseguiu voltar ("partial"), a cópia fica guardada
-          // pro "Desfazer importação". O arquivo está íntegro em todos os casos.
-          if (e && (e.code === "snapshot" || e.code === "rolledback" || e.code === "partial")) {
-            alert(t(e.code === "snapshot" ? "error.importSnapshot" : e.code === "partial" ? "error.importPartial" : "error.importRolledBack"));
-            notifyStorageFull();
-            return;
-          }
-          alert(t("error.import"));
-          return;
-        }
-        // Confirmação do outro lado do reload: restaurar backup é o momento de
-        // maior ansiedade do usuário (os dados dele na mão) e a única resposta
-        // era a página recarregar — indistinguível de "não fez nada".
-        try { sessionStorage.setItem("tcg-import-ok", "1"); } catch (e) { /* segue sem toast */ }
-        logEvento("import_done", { f: "json", mode });
-        window.location.reload();
-      });
-    }
-
-    // Prévia do backup: resumo do que o arquivo traz e a escolha do modo.
-    // Mesclar é o padrão (e o que a página de backup promete); substituir é
-    // explícito e pede confirmação. Nada é gravado antes do clique.
-    function showBackupImportPreview(parsed, onApply) {
-      const old = document.querySelector(".csvimport-modal");
-      if (old) old.remove();
-      const sm = parsed.summary;
-      const linhas = [
-        tn("backup.preview.cards", sm.cards) + (sm.copies > sm.cards ? ` (${tn("backup.preview.copies", sm.copies)})` : ""),
-        sm.wishlist ? tn("backup.preview.wishlist", sm.wishlist) : "",
-        sm.decks ? tn("backup.preview.decks", sm.decks) : "",
-        sm.binders ? tn("backup.preview.binders", sm.binders) : "",
-        sm.lists ? tn("backup.preview.lists", sm.lists) : "",
-        sm.graded ? tn("backup.preview.graded", sm.graded) : "",
-        sm.prices ? tn("backup.preview.prices", sm.prices) : ""
-      ].filter(Boolean);
-      const quando = sm.exportedAt ? new Date(sm.exportedAt) : null;
-      const dataTxt = quando && !isNaN(quando.getTime()) ? quando.toLocaleString(getLocale()) : "";
-      const wrap = document.createElement("div");
-      wrap.className = "ts-modal csvimport-modal backup-preview-modal";
-      wrap.innerHTML = `<div class="ts-backdrop" data-backup-close></div>
-        <div class="ts-panel" role="dialog" aria-modal="true" aria-labelledby="backupPreviewTitle">
-          <h3 id="backupPreviewTitle">${escapeHtml(t("backup.preview.title"))}</h3>
-          <p>${escapeHtml(t("backup.preview.file", { game: gameLabel(currentGameSlug()), version: sm.version }))}${dataTxt ? ` · ${escapeHtml(dataTxt)}` : ""}</p>
-          <ul class="backup-preview-list">${linhas.map((l) => `<li>${escapeHtml(l)}</li>`).join("")}</ul>
-          <p class="csvimport-note">${escapeHtml(t("backup.preview.mergeD"))}</p>
-          <p class="csvimport-note">${escapeHtml(t("backup.preview.replaceD"))}</p>
-          <p class="csvimport-note">${escapeHtml(t("backup.preview.undoNote"))}</p>
-          <div class="ts-actions">
-            <button type="button" class="secondary" data-backup-close>${escapeHtml(t("csvimport.cancel"))}</button>
-            <button type="button" class="secondary" data-backup-mode="replace">${escapeHtml(t("backup.preview.replace"))}</button>
-            <button type="button" class="primary" data-backup-mode="merge">${escapeHtml(t("backup.preview.merge"))}</button>
-          </div>
-        </div>`;
-      document.body.appendChild(wrap);
-      const fechar = () => { wrap.remove(); document.removeEventListener("keydown", onKey); };
-      const onKey = (e) => { if (e.key === "Escape") fechar(); };
-      document.addEventListener("keydown", onKey);
-      wrap.addEventListener("click", (e) => {
-        if (e.target.closest("[data-backup-close]")) { fechar(); return; }
-        const btn = e.target.closest("[data-backup-mode]");
-        if (!btn) return;
-        const mode = btn.dataset.backupMode;
-        if (mode === "replace" && !window.confirm(t("backup.preview.replaceConfirm"))) return;
-        fechar();
-        onApply(mode);
-      });
-      const primario = wrap.querySelector("[data-backup-mode=\"merge\"]");
-      if (primario) primario.focus();
-    }
-
-    // Importa o CSV exportado pelo Dex (dextcg.com). Formato: UTF-16, separado
-    // por ";", colunas Type;Category;Locale;Series;Set;Id;Name;Variant;Rarity;
-    // Quantity;Price. Os IDs são TCGdex (iguais aos do Sleevu), então é só casar
-    // id+variante e gravar na coleção do Pokémon. Idempotente (re-importar dá o
-    // mesmo resultado): cada (id, variante) fica com a quantidade do CSV.
-    // (mapDexVariant vive no escopo do módulo, junto dos helpers de CSV.)
-    // ── Importador GENÉRICO de CSV (TCGplayer, Collectr e afins) ────────────
-    // Diferente do Dex (ids TCGdex prontos), esses exports só têm nome/set/
-    // número — o match é feito contra o NOSSO catálogo baixando apenas os
-    // chunks dos sets citados no arquivo (via manifest, igual ao quick-add).
-    // Fluxo: parse tolerante -> match -> MODAL de prévia (casadas/não casadas)
-    // -> aplicar (idempotente: seta a quantidade-alvo por carta×variante×cond).
-    // Os helpers puros (parse/mapeamentos) vivem no escopo do módulo, testáveis.
-
-    // Índice de manifests por jogo (fetch leve; cacheado por sessão de import).
-    async function csvGameManifest(game) {
-      if (currentGame() === game && window.TCG_MANIFEST) return window.TCG_MANIFEST;
-      if (currentGame() === game && Array.isArray(window.TCG_CARDS) && window.TCG_CARDS.length) {
-        // dev: sintetiza um "manifest" com um pseudo-chunk em memória
-        return { sets: [], __cards: window.TCG_CARDS };
-      }
-      try {
-        const r = await fetch(gameDataDir(game) + "manifest.generated.js");
-        if (!r.ok) return null;
-        const tx = await r.text();
-        const s = tx.indexOf("{"), e = tx.lastIndexOf("}");
-        return s >= 0 ? JSON.parse(tx.slice(s, e + 1)) : null;
-      } catch (e) { return null; }
-    }
-
-    async function importGenericCsv(file) {
-      if (!file) return;
-      if (file.size > 20 * 1024 * 1024) { alert(t("error.import")); return; }
-      try {
-        const rows = parseCsvText(await file.text());
-        if (rows.length < 2) { alert(t("csvimport.empty")); return; }
-        const cols = mapCsvHeader(rows[0]);
-        if (cols.name < 0 && (cols.set < 0 || cols.number < 0)) { alert(t("csvimport.badFormat")); return; }
-
-        // Linhas normalizadas do arquivo.
-        const items = rows.slice(1).map((r) => ({
-          name: cols.name >= 0 ? String(r[cols.name] || "").trim() : "",
-          set: cols.set >= 0 ? String(r[cols.set] || "").trim() : "",
-          number: cols.number >= 0 ? String(r[cols.number] || "").trim() : "",
-          qty: cols.qty >= 0 ? (parseInt(String(r[cols.qty] || "1"), 10) || 0) : 1,
-          variant: mapCsvVariant(cols.variant >= 0 ? r[cols.variant] : ""),
-          condition: mapCsvCondition(cols.condition >= 0 ? r[cols.condition] : ""),
-          language: mapCsvLanguage(cols.language >= 0 ? r[cols.language] : ""),
-          game: mapCsvGame(cols.game >= 0 ? r[cols.game] : "")
-        })).filter((it) => it.qty > 0 && (it.name || (it.set && it.number)));
-        if (!items.length) { alert(t("csvimport.empty")); return; }
-
-        // Match: por jogo, acha os sets citados no manifest e baixa SÓ esses
-        // chunks; dentro do chunk casa por número (antes da "/") ou nome exato.
-        // TODOS os jogos do registro, na ordem dele (Pokémon primeiro — em
-        // linha sem coluna de jogo, o primeiro que casar leva). Antes eram 3
-        // fixos e planilha de Magic/YGO não casava nada. Manifests sob demanda
-        // e memoizados: linha com jogo declarado só baixa o daquele jogo, e
-        // jogo sem manifest (dev, JUMP vazio) devolve null e é pulado.
-        const games = GAME_SLUGS;
-        const matched = []; const unmatched = [];
-        const chunkCache = new Map();
-        const fetchChunk = (fileUrl) => {
-          if (!chunkCache.has(fileUrl)) {
-            chunkCache.set(fileUrl, fetch(fileUrl).then((r) => (r.ok ? r.json() : [])).catch(() => []));
-          }
-          return chunkCache.get(fileUrl);
-        };
-        const manifests = new Map();
-        const manifestDe = (g) => {
-          if (!manifests.has(g)) manifests.set(g, csvGameManifest(g));
-          return manifests.get(g);
-        };
-
-        for (const it of items) {
-          const tryGames = it.game ? [it.game] : games;
-          let hit = null;
-          for (const g of tryGames) {
-            const mf = await manifestDe(g);
-            if (!mf) continue;
-            const setKeys = csvSetKeys(it.set);
-            let pool;
-            if (mf.__cards) {
-              pool = mf.__cards.filter((c) => !setKeys.size || setKeys.has(csvNorm(c.set)));
-            } else {
-              let sets = mf.sets.filter((s) => setKeys.has(csvNorm(s.name)));
-              // Preferência de idioma da linha; sem set na língua, tenta o resto.
-              const langSets = sets.filter((s) => (s.language || "en") === it.language);
-              if (langSets.length) sets = langSets;
-              if (!sets.length) continue;
-              const chunks = await Promise.all(sets.slice(0, 4).map((s) => fetchChunk(s.file)));
-              pool = [].concat.apply([], chunks);
-            }
-            // Número manda (zero-padding tolerado); sem número, nome exato.
-            const num = csvNorm(String(it.number).split("/")[0]);
-            const nameKey = csvNorm(it.name);
-            hit = pool.find((c) => {
-              const cNum = csvNorm(String(c.number || "").split("/")[0]);
-              if (num) {
-                return cNum === num
-                  || (/^\d+$/.test(num) && /^\d+$/.test(cNum) && parseInt(num, 10) === parseInt(cNum, 10));
-              }
-              return nameKey && csvNorm(c.name) === nameKey;
-            }) || null;
-            if (hit) { hit = { card: hit, game: g }; break; }
-          }
-          if (hit) {
-            // Variante que a carta não tem (ex.: "Foil" numa carta só-Holo)
-            // cai na padrão da carta — chave alienígena no store não aparece
-            // em tile nenhum e viraria cópia invisível.
-            const vs = cardVariants(hit.card);
-            const variant = vs.includes(it.variant) ? it.variant : defaultVariant(hit.card);
-            matched.push({ ...it, variant, cardId: hit.card.id, cardName: hit.card.name, game: hit.game });
-          } else unmatched.push(it);
-        }
-
-        showCsvImportPreview(items.length, matched, unmatched);
-      } catch (e) { alert(t("error.import")); }
-    }
-
-    // Prévia: nada é gravado antes do OK. Aplicar é idempotente (seta o alvo).
-    function showCsvImportPreview(total, matched, unmatched) {
-      const old = document.querySelector(".csvimport-modal");
-      if (old) old.remove();
-      const wrap = document.createElement("div");
-      wrap.className = "ts-modal csvimport-modal";
-      const unmatchedHtml = unmatched.length
-        ? `<details class="csvimport-miss"><summary>${escapeHtml(t("csvimport.unmatched", { n: unmatched.length }))}</summary>
-             <ul>${unmatched.slice(0, 60).map((u) => `<li>${escapeHtml(`${u.name || "?"} · ${u.set || "?"} ${u.number || ""}`)}</li>`).join("")}</ul></details>`
-        : "";
-      const perGame = GAME_SLUGS
-        .map((g) => [g, matched.filter((m) => m.game === g).length])
-        .filter(([, n]) => n > 0)
-        .map(([g, n]) => `${gameShortLabel(g)}: ${n}`).join(" · ");
-      wrap.innerHTML = `<div class="ts-backdrop" data-csvimport-close></div>
-        <div class="ts-panel">
-          <h3>${escapeHtml(t("csvimport.title"))}</h3>
-          <p>${escapeHtml(t("csvimport.summary", { total, ok: matched.length }))}${perGame ? ` <span class="csvimport-pergame">(${escapeHtml(perGame)})</span>` : ""}</p>
-          ${unmatchedHtml}
-          <p class="csvimport-note">${escapeHtml(t("csvimport.note"))}</p>
-          <div class="ts-actions">
-            <button type="button" class="secondary" data-csvimport-close>${escapeHtml(t("csvimport.cancel"))}</button>
-            <button type="button" class="primary" data-csvimport-apply ${matched.length ? "" : "disabled"}>${escapeHtml(t("csvimport.apply", { n: matched.length }))}</button>
-          </div>
-        </div>`;
-      document.body.appendChild(wrap);
-      wrap.addEventListener("click", (e) => {
-        if (e.target.closest("[data-csvimport-close]")) { wrap.remove(); return; }
-        if (!e.target.closest("[data-csvimport-apply]") || !matched.length) return;
-        // Agrega alvo por (jogo, carta, variante, condição) e SETA (idempotente).
-        const stores = {};
-        const agg = new Map();
-        matched.forEach((m) => {
-          const k = `${m.game}|${m.cardId}|${m.variant}|${m.condition}`;
-          agg.set(k, (agg.get(k) || 0) + m.qty);
-        });
-        let copies = 0;
-        agg.forEach((target, k) => {
-          const [g, id, variant, cond] = k.split("|");
-          const st = stores[g] || (stores[g] = createCollectionStore(g));
-          st.add(id, variant, cond, target - st.getQuantity(id, variant, cond));
-          copies += target;
-        });
-        flushWrites();
-        marcaPasso("csv");
-        logEvento("import_done", { f: "csv", n: agg.size });
-        wrap.remove();
-        alert(t("csvimport.done", { cards: agg.size, copies }));
-        window.location.href = "collection";
-      });
-    }
-    const gameShortLabel = gameLabel;
-    // API pública: outras telas (e testes) podem disparar a importação com um
-    // File/Blob de CSV sem depender do menu da conta (que exige login).
-    window.TCGShared.importCsvFile = importGenericCsv;
-    // Página Exportar/Importar (backup.html): usa as MESMAS rotinas do menu.
+    // A importação (backup JSON, CSV genérico, CSV do Dex) saiu daqui: vive em
+    // src/backup-import.js e desce sob demanda — ver importBackupJson no
+    // export do TCGShared. A página Exportar/Importar (backup.html) e o banner
+    // de backup usam as MESMAS rotinas de export.
     window.TCGShared.exportBackupJson = exportJson;
     window.TCGShared.exportBackupCsv = exportCsv;
-    window.TCGShared.importBackupJson = importJson;
-    window.TCGShared.lastImportSnapshot = lastImportSnapshot;
-    window.TCGShared.undoLastImport = undoLastImport;
-    window.TCGShared.importDexCsvFile = importDexCsv;
     window.TCGShared.deleteAccountFlow = deleteAccountFlow;
-
-    async function importDexCsv(file) {
-      if (!file) return;
-      if (file.size > 20 * 1024 * 1024) { alert(t("error.import")); return; }
-      try {
-        const buf = await file.arrayBuffer();
-        const b = new Uint8Array(buf);
-        let text;
-        if (b[0] === 0xFF && b[1] === 0xFE) text = new TextDecoder("utf-16le").decode(buf);
-        else if (b[0] === 0xFE && b[1] === 0xFF) text = new TextDecoder("utf-16be").decode(buf);
-        else text = new TextDecoder("utf-8").decode(buf);
-        text = text.replace(/^﻿/, "");
-        const lines = text.split(/\r?\n/).filter((l) => l.trim());
-        if (lines.length < 2) { alert(t("dex.empty")); return; }
-        const header = lines[0].split(";").map((s) => s.trim().toLowerCase());
-        const iType = header.indexOf("type"), iId = header.indexOf("id");
-        const iVar = header.indexOf("variant"), iQty = header.indexOf("quantity");
-        if (iId < 0 || iQty < 0) { alert(t("dex.badFormat")); return; }
-        const agg = {}; // id -> variante -> qty
-        let copies = 0;
-        lines.slice(1).forEach((line) => {
-          const r = line.split(";");
-          if (iType >= 0 && String(r[iType] || "").trim().toLowerCase() !== "collection") return;
-          const id = String(r[iId] || "").trim();
-          const qty = parseInt(String(r[iQty] || "0").trim(), 10) || 0;
-          // isUnsafeKey: o id vem CRU do arquivo (aqui, ao contrário do CSV
-          // genérico, não passa por match com o catálogo) e vira chave de
-          // objeto — uma linha "__proto__;…" poluiria o Object.prototype.
-          if (!id || isUnsafeKey(id) || qty <= 0) return;
-          const variant = mapDexVariant(r[iVar]);
-          agg[id] = agg[id] || {};
-          agg[id][variant] = (agg[id][variant] || 0) + qty;
-        });
-        const ids = Object.keys(agg);
-        if (!ids.length) { alert(t("dex.empty")); return; }
-        // Dex é Pokémon: grava na coleção do jogo pokemon.
-        const store = createCollectionStore("pokemon");
-        ids.forEach((id) => {
-          Object.keys(agg[id]).forEach((variant) => {
-            const target = agg[id][variant];
-            const cur = store.getQuantity(id, variant, DEFAULT_CONDITION);
-            store.add(id, variant, DEFAULT_CONDITION, target - cur); // seta = target
-            copies += target;
-          });
-        });
-        flushWrites(); // garante a persistência antes de navegar
-        marcaPasso("csv");
-        logEvento("import_done", { f: "dex", n: ids.length });
-        alert(t("dex.done", { cards: ids.length, copies }));
-        window.location.href = "collection?game=pokemon";
-      } catch (e) { alert(t("error.import")); }
-    }
 
     // Instalar como app (PWA): só aparece quando dá pra instalar.
     const installItem = `<li class="lang-dd-option auth-install" role="menuitem" data-pwa-install hidden>${escapeHtml(t("pwa.install"))}</li>`;
@@ -11632,11 +10582,11 @@
     });
     slot.addEventListener("change", (event) => {
       const inp = event.target.closest("[data-import-input]");
-      if (inp && inp.files && inp.files[0]) { importJson(inp.files[0]); inp.value = ""; return; }
+      if (inp && inp.files && inp.files[0]) { window.TCGShared.importBackupJson(inp.files[0]); inp.value = ""; return; }
       const dexInp = event.target.closest("[data-import-dex-input]");
-      if (dexInp && dexInp.files && dexInp.files[0]) { importDexCsv(dexInp.files[0]); dexInp.value = ""; }
+      if (dexInp && dexInp.files && dexInp.files[0]) { window.TCGShared.importDexCsvFile(dexInp.files[0]); dexInp.value = ""; }
       const csvInp = event.target.closest("[data-import-csv-input]");
-      if (csvInp && csvInp.files && csvInp.files[0]) { importGenericCsv(csvInp.files[0]); csvInp.value = ""; }
+      if (csvInp && csvInp.files && csvInp.files[0]) { window.TCGShared.importCsvFile(csvInp.files[0]); csvInp.value = ""; }
     });
 
     (async function boot() {
@@ -11937,72 +10887,31 @@
         createCollectionStore(g).has(cardId) || createWishlistStore(g).hasCard(cardId));
       if (minha) return false;
     }
-    goToCanonicalCard(cardId);
+    // O resolvedor (sondas na borda em duas ondas) vive em src/card-rescue.js:
+    // só desce quando um link com ?card= chega numa página pessoal, que é
+    // raro — antes eram ~150 linhas em TODA página.
+    injectScript("src/card-rescue.js").then((ok) => {
+      if (ok && typeof window.TCGCardRescue === "function") window.TCGCardRescue(cardId);
+      else desisteDoResgate();
+    });
     return true;
   }
-
-  // Onde procurar o id, em DUAS ONDAS. O prefixo resolve o jogo na maioria dos
-  // casos (mtg-, ygo-, op-…), mas não em todos: Pokémon usa <set>-<número>, que
-  // é uma lista ABERTA de 163 prefixos, e Lorcana usa número puro ("1-1") — o
-  // comentário do migrateTags já dizia que prefixo de id não serve como regra.
-  // Então isto é ATALHO, não regra: a 1ª onda vai nos candidatos e a 2ª no
-  // resto. O jogo novo (o 15º) continua resolvendo — só gasta as duas ondas —
-  // em vez de virar link morto quando este mapa envelhecer. Auditado: nenhum
-  // dos 163 prefixos do Pokémon colide com um destes.
-  const ID_PREFIX_GAME = {
-    mtg: "magic", fab: "fab", gcg: "gundam", dbfw: "dbfw", ygo: "ygo",
-    dgm: "digimon", rb: "riftbound", ua: "unionarena", nrt: "naruto",
-    hxh: "hxh", op: "onepiece", opcd: "onepiece", op2002: "onepiece", cp: "lorcana"
-  };
-  function cardIdProbeWaves(cardId) {
-    const certo = ID_PREFIX_GAME[String(cardId).split("-")[0]];
-    const primeiros = certo ? [certo] : ["pokemon", "lorcana"];
-    const onda1 = primeiros.filter((g) => GAME_SLUGS.includes(g));
-    return [onda1, GAME_SLUGS.filter((g) => !onda1.includes(g))];
+  // Não deu: segue pra própria página SEM o ?card=. Não vira laço (o param
+  // que dispara o resgate deixou de existir) e a pessoa cai onde cairia antes.
+  function desisteDoResgate() {
+    try {
+      const u = new URL(location.href);
+      u.searchParams.delete("card");
+      window.location.replace(u.href);
+    } catch (e) { window.location.reload(); }
   }
 
-  // Descobre o jogo e o set do id pela BORDA e redireciona. Cada jogo pedido é
-  // uma busca por PK (não varredura), porque a PK de `cards` é (game, id) e não
-  // existe índice de id sozinho. O endpoint percorre os jogos do pedido em
-  // SÉRIE (~140 ms cada), e é por isso que as ondas importam: 1 jogo ≈ 150 ms e
-  // os 14 de uma vez ≈ 2 s — tempo em que esta página fica parada.
-  function goToCanonicalCard(cardId) {
-    // Não deu: segue pra própria página SEM o ?card=. Não vira laço (o param
-    // que dispara o resgate deixou de existir) e a pessoa cai onde cairia antes.
-    const desiste = () => {
-      try {
-        const u = new URL(location.href);
-        u.searchParams.delete("card");
-        window.location.replace(u.href);
-      } catch (e) { window.location.reload(); }
-    };
-    let acabou = false;
-    let timer = 0;
-    const fim = (fn) => { if (acabou) return; acabou = true; clearTimeout(timer); fn(); };
-    // Teto de espera: a página está PARADA esperando isto (o return do
-    // rescueSharedCard impede o resto de montar). Borda pendurada não pode
-    // deixar o visitante numa tela em branco pra sempre; estourando, ele cai
-    // onde cairia antes desta função existir.
-    timer = setTimeout(() => fim(desiste), 5000);
-    const sonda = (games) => (games.length
-      ? fetchCollectionApi(Object.fromEntries(games.map((g) => [g, [cardId]])))
-      : Promise.resolve(null));
-    const [onda1, onda2] = cardIdProbeWaves(cardId);
-    // Id igual em dois jogos é possível (Pokémon e Lorcana são ambos sem
-    // prefixo de jogo): o da sessão ganha, senão o primeiro que voltou.
-    const escolher = (r) => {
-      const achadas = (r && r.cards) || [];
-      const atual = currentGame();
-      return achadas.find((c) => c.game === atual) || achadas[0] || null;
-    };
-    sonda(onda1)
-      .then((r) => escolher(r) || (acabou ? null : sonda(onda2).then(escolher)))
-      .then((card) => fim(() => {
-        if (!card || !card.set) { desiste(); return; }
-        window.location.replace(cardShareUrl(card));
-      }))
-      .catch(() => fim(desiste));
-  }
+  // Internos que os módulos sob demanda precisam (src/backup-import.js,
+  // src/card-rescue.js). NÃO é API pública: é o que aqueles arquivos usavam
+  // quando ainda viviam neste closure. Montado aqui, antes do boot, porque
+  // SYNC_KEYS e afins são `const` declaradas acima (TDZ se fosse no export).
+  window.TCGShared._nucleo = { SYNC_KEYS, currentGame, currentGameSlug, fetchCollectionApi, flushWrites, freezeWritesUntilReload, isUnsafeKey, mergeBinders, mergeCollection, mergeCosts, mergeDecks, mergeFolders, mergeGraded, mergeLists, mergeManual, mergePrices, mergeSales, mergeSold, mergeTags, mergeWishTargets, mergeWishlist, normalizeMeta, readObject };
+
   if (rescueSharedCard()) return; // resolvendo a carta compartilhada; não monta a página
   if (enforceLoginGate()) return; // já está indo pro login; não monta a página
 

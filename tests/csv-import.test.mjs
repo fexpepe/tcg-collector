@@ -1,10 +1,10 @@
 // Testes dos helpers PUROS do importador de CSV (TCGplayer/Collectr/Dex) do
-// src/shared.js, capturados via sandbox. Roda com: node --test tests/
+// src/backup-import.js (saíram do shared.js em 2026-09-14), capturados via sandbox. Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { loadShared } from "./lib/shared-sandbox.mjs";
+import { loadBackupImport } from "./lib/shared-sandbox.mjs";
 
-const sb = loadShared(
+const sb = loadBackupImport(
   "window.__test = { parseCsvText, mapCsvHeader, mapCsvVariant, mapCsvCondition, mapCsvLanguage, mapCsvGame, csvSetKeys };"
 );
 const api = sb.window.__test;

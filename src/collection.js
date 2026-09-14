@@ -2,6 +2,92 @@
   const shared = window.TCGShared;
   const { addOptions, detailUrl, unique, normalize, speciesName, debounce, t, tn, escapeHtml, escapeAttribute } = shared;
 
+  // (vieram do shared.js em 2026-09-14: só a Coleção aquece imagens e monta o
+  // indexesByGame a partir das fatias.)
+  // Pre-aquece no OCIOSO as miniaturas que a pagina JA declarou mas o
+  // loading="lazy" so vai buscar quando a pessoa rolar ate elas. Serve a tese
+  // local-first do site: a colecao abre inteira no busao, e sobrevive a um
+  // outage de CDN sem depender de "ja ter visto aquela carta".
+  //
+  // Aquece pelo <img> que ja esta no DOM, e nao por uma lista de URLs montada a
+  // parte, de proposito: assim o navegador escolhe a MESMA candidata do srcset
+  // que a grade escolheria (mesmo sizes, mesmo DPR) — aquecer a low num celular
+  // 3x seria baixar um arquivo que a tela nunca vai pedir.
+  //
+  // Guardas, nesta ordem: sem service worker no comando nao ha cache offline pra
+  // encher (seria gastar dado da pessoa por nada); com economia de dados ligada
+  // ou em 2G, nao. Vai em lotes pequenos e para quando a aba sai de vista.
+  //
+  // Orcamento por CARREGAMENTO de pagina, nao por chamada: a Colecao pagina de
+  // 60 em 60, entao aquecer "uma vez" so cobriria a primeira pagina. Cada
+  // render aquece o que entrou de novo, o Set evita repetir a mesma URL, e o
+  // teto impede que uma colecao de 5.000 cartas puxe tudo de uma sentada.
+  const PREWARM_ORCAMENTO = 800;
+  const prewarmJaVistas = new Set();
+  function prewarmLazyImages(escopo, limite) {
+    if (prewarmJaVistas.size >= PREWARM_ORCAMENTO) return;
+    if (!navigator.serviceWorker || !navigator.serviceWorker.controller) return;
+    const conexao = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (conexao && (conexao.saveData || /^(slow-)?2g$/.test(conexao.effectiveType || ""))) return;
+    const raiz = escopo || document;
+    const espaco = Math.min(limite || PREWARM_ORCAMENTO, PREWARM_ORCAMENTO - prewarmJaVistas.size);
+    const alvos = [];
+    Array.from(raiz.querySelectorAll('img[data-card-img][loading="lazy"]')).some((img) => {
+      const chave = img.getAttribute("src") || "";
+      if (!chave || prewarmJaVistas.has(chave)) return false;
+      prewarmJaVistas.add(chave);
+      alvos.push(img);
+      return alvos.length >= espaco;
+    });
+    if (!alvos.length) return;
+    let i = 0;
+    const lote = () => {
+      if (document.hidden) return; // aba escondida: para, e nao reagenda
+      for (let n = 0; n < 6 && i < alvos.length; n++, i++) {
+        const alvo = alvos[i];
+        const aquecedor = new Image();
+        aquecedor.decoding = "async";
+        // srcset/sizes ANTES do src: e o par que decide a candidata.
+        const ss = alvo.getAttribute("srcset");
+        if (ss) { aquecedor.srcset = ss; aquecedor.sizes = alvo.getAttribute("sizes") || ""; }
+        aquecedor.src = alvo.getAttribute("src") || "";
+      }
+      if (i < alvos.length) agenda();
+    };
+    const agenda = () => {
+      if (typeof requestIdleCallback === "function") requestIdleCallback(lote, { timeout: 2000 });
+      else setTimeout(lote, 300);
+    };
+    agenda();
+  }
+
+  // Monta o indexesByGame que a Coleção mescla (mesmo formato do caminho de
+  // chunks) a partir das fatias, e espelha o global TCG_INDEXES_MERGED que o
+  // buildPublicPayload lê pros denominadores do PERFIL público. Nunca rejeita:
+  // fatia que falhar cai em vazio (o total daquele grupo usa as cartas carregadas).
+  async function loadCollectionIndexes(games) {
+    const byGame = {};
+    await Promise.all((games || []).map(async (g) => {
+      const [sets, artists, pokemonTotals] = await Promise.all([
+        shared.loadGameIndexSlice(g, "sets"),
+        shared.loadGameIndexSlice(g, "artists"),
+        g === "pokemon" ? shared.loadGameIndexSlice(g, "pokemonTotals") : Promise.resolve(null)
+      ]);
+      byGame[g] = (sets || artists || pokemonTotals)
+        ? { sets: sets || [], artists: artists || [], pokemonTotals: pokemonTotals || {} }
+        : null;
+    }));
+    const merged = { sets: [], artists: [], pokemonTotals: {} };
+    Object.keys(byGame).forEach((g) => {
+      const idx = byGame[g]; if (!idx) return;
+      (idx.sets || []).forEach((s) => merged.sets.push(Object.assign({ game: g }, s)));
+      (idx.artists || []).forEach((a) => merged.artists.push(Object.assign({ game: g }, a)));
+      Object.assign(merged.pokemonTotals, idx.pokemonTotals);
+    });
+    window.TCG_INDEXES_MERGED = merged;
+    return byGame;
+  }
+
   let cards = [];
   let cardsById = new Map();
   let indexes = null;
@@ -392,7 +478,7 @@
           // cai no total das cartas carregadas (número válido, só sem o "de Y").
           render();
           shared.publishProfile(cards, owned, prices);
-          shared.loadCollectionIndexes(gamesComCarta).then((byGame) => {
+          loadCollectionIndexes(gamesComCarta).then((byGame) => {
             indexes = mergeIndexes(byGame);
             render();
             shared.publishProfile(cards, owned, prices); // agora com os totais no payload
@@ -1238,7 +1324,7 @@
   // Todas as guardas (service worker no comando, economia de dados, orcamento)
   // moram no helper; aqui e so o gatilho.
   function prewarmColecao() {
-    if (shared.prewarmLazyImages) shared.prewarmLazyImages(document);
+    prewarmLazyImages(document);
   }
 
   // Agrupa os pares carta×variante por pasta (folderOf por cardId) e renderiza

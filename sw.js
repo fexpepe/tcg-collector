@@ -81,7 +81,9 @@ const SHELL_ASSETS = [
   "src/theme.js", "src/game.js", "src/login-boot.js", "src/i18n.js", "src/i18n-docs.js", "src/i18n-decks.js", "src/i18n-binders.js", "src/i18n-listas.js", "src/shared.js", "src/app.js", "src/collection.js", "src/detail.js", "src/explore.js", "src/dashboard.js", "src/primeiros-passos.js", "src/badges.js", "src/lancamentos.js", "src/goldfish.js",
   "src/home.js", "src/news.js", "src/wishlist.js", "src/portfolio.js", "src/binders.js",
   "src/backup.js", "src/graded-ui.js", "src/cards.js", "src/sales.js", "src/centering.js", "src/login.js", "src/hub.js", "src/settings.js", "src/profile.js", "src/admin.js",
-  "src/deck-rules.js", "src/decks.js", "src/listas.js", "src/export-liga.js", "src/export-ui.js", "src/troca.js"
+  "src/deck-rules.js", "src/decks.js", "src/listas.js", "src/export-liga.js", "src/export-ui.js", "src/troca.js",
+  // Módulos que saíram do shared.js (2026-09-14): dois sob demanda e um por página.
+  "src/backup-import.js", "src/card-rescue.js", "src/facets.js"
 ];
 
 // Tetos por cache (FIFO): imagens ~17KB cada; chunks de set são o catálogo.

@@ -1,6 +1,24 @@
 (function () {
   const shared = window.TCGShared;
-  const { addOptions, detailUrl, unique, normalize, escapeHtml, escapeAttribute, speciesName, debounce, t, tn, localizedImg, gameLogoUrl, toRoman } = shared;
+  const { addOptions, detailUrl, unique, normalize, escapeHtml, escapeAttribute, speciesName, debounce, t, tn, localizedImg, toRoman } = shared;
+
+  // (veio do shared.js em 2026-09-14: só as páginas de explorar usam o logo
+  // do jogo como stand-in do logo de set.)
+  // Logo do jogo (assets/games/game_<slug>.webp): usado como stand-in do logo de
+  // set quando o set não tem um próprio, e como último fallback quando o logo do
+  // set quebra. "" pros jogos sem arquivo de logo (jump/unionarena) — aí cai no
+  // texto. Entrou o arquivo em assets/games/? Basta preencher aqui e pôr o <img>
+  // no tile do hub.html (o hub revela o logo sozinho quando ele carrega).
+  const GAME_LOGO = {
+    pokemon: "game_pokemon.webp", lorcana: "game_lorcana.webp", onepiece: "game_onepiece.webp",
+    magic: "game_magic.webp", fab: "game_fab.webp", gundam: "game_gundam.webp", dbfw: "game_dbfw.webp",
+    ygo: "game_ygo.webp", digimon: "game_digimon.webp", riftbound: "game_riftbound.webp",
+    unionarena: "game_unionarena.webp", naruto: "game_naruto.webp", hxh: "game_hxh.webp"
+  };
+  function gameLogoUrl(game) {
+    const f = GAME_LOGO[game];
+    return f ? "assets/games/" + f : "";
+  }
 
   let cards = [];
   let cardsById = new Map();

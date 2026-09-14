@@ -66,3 +66,17 @@ export function loadShared(expose, { localStorage } = {}) {
   vm.runInContext(src, sandbox);
   return sandbox;
 }
+
+// Carrega o shared.js E o src/backup-import.js (importação de backup/CSV, que
+// saiu do núcleo em 2026-09-14) no MESMO sandbox. `expose` é injetado logo antes
+// do marcador `window.TCGBackupImport =`, dentro do closure do módulo — captura
+// as funções puras e as de backup pelo nome, como o loadShared faz no shared.
+export function loadBackupImport(expose, opts) {
+  const sandbox = loadShared("", opts);
+  let mod = readFileSync(join(here, "..", "..", "src", "backup-import.js"), "utf8");
+  const marcador = "  window.TCGBackupImport = {";
+  if (!mod.includes(marcador)) throw new Error("backup-import.js sem o marcador dos testes");
+  mod = mod.replace(marcador, `${expose || ""}\n${marcador}`);
+  vm.runInContext(mod, sandbox);
+  return sandbox;
+}
