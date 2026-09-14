@@ -19,7 +19,6 @@ Disallow: /wishlist
 Disallow: /portfolio
 Disallow: /binders
 Disallow: /sales
-Disallow: /graded
 Disallow: /badges
 Disallow: /my-decks
 Disallow: /profile

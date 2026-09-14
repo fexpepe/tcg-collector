@@ -212,6 +212,9 @@
           <h2 data-i18n="collection.heading.cards">Minhas Cartas</h2>
           <button type="button" id="newFolderBtn" class="secondary new-folder-btn" data-i18n="folders.new">Novo showcase</button>
           <button type="button" id="gradedAddBtn" class="secondary new-folder-btn" data-i18n="graded.add" hidden>Adicionar cartas</button>
+          <!-- Medir centralização (src/centering.js) morava só na página /graded;
+               com ela removida (2026-09-14) o botão vive na aba Graded. -->
+          <button type="button" id="gradedCenteringBtn" class="secondary new-folder-btn" data-i18n="ctr.title" hidden>Medir centralização</button>
           <button type="button" id="tagsNewBtn" class="secondary new-folder-btn" data-i18n="tags.new" hidden>Nova tag</button>
           <p id="resultCount">0 resultados</p>
           <div class="results-actions">
@@ -275,6 +278,10 @@
               <option value="release" data-i18n="sort.releaseDate">Lançamento</option>
               <option value="added-desc" data-i18n="sort.addedDesc">Adição (última → primeira)</option>
               <option value="added-asc" data-i18n="sort.addedAsc">Adição (primeira → última)</option>
+              <!-- Nota do slab (2026-09-14): veio da página /graded, que saiu — a
+                   aba Graded daqui é o lugar dela. Fora da aba Graded a opção
+                   fica escondida (carta solta não tem nota). -->
+              <option value="grade-desc" data-i18n="graded.sort.gradeDesc" hidden>Nota (maior → menor)</option>
             </select>
           </div>
         </section>
@@ -289,6 +296,8 @@
     <script defer src="src/i18n.js"></script>
     <script defer src="src/shared.js"></script>
     <script defer src="src/graded-ui.js"></script>
+    <!-- Medidor de centralização (botão da aba Graded). -->
+    <script defer src="src/centering.js"></script>
     <!-- Gerador do export (Liga/texto/CSV). O MESMO das listas: logica pura,
          sem DOM, com testes dourados em tests/liga-export.test.mjs. -->
     <script defer src="src/export-liga.js"></script>

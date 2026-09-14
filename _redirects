@@ -6,6 +6,11 @@
 # substitui :handle dentro da query string (só no caminho).
 /users/*    /collection    200
 
+# /graded era a página dedicada das cartas graduadas; saiu em 2026-09-14 — a
+# aba Graded de "Minha Coleção" faz o mesmo. 301: links salvos continuam
+# chegando no lugar certo.
+/graded     /collection?tab=graded   301
+
 # /favicon.ico: caminho por CONVENÇÃO. O site declara os ícones por <link> (SVG
 # + PNG), mas muito consumidor não lê o HTML e vai direto nesta URL — o robô de
 # favicon do Google, leitores de feed, prévias de link. Antes ela dava 404 e o

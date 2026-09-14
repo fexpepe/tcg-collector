@@ -98,7 +98,9 @@
   let sortMode = "dex";
 
   // Aba "Cartas": ordenação + grade/lista (preferências guardadas).
-  const CARDS_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "rarity-desc", "rarity-asc", "release", "added-desc", "added-asc"];
+  const CARDS_SORTS = ["value-desc", "value-asc", "num-asc", "num-desc", "rarity-desc", "rarity-asc", "release", "added-desc", "added-asc", "grade-desc"];
+  // Nota do slab como número ("9.5", "10", "8,5"); carta solta = 0 (vai pro fim).
+  const gradeNum = (g) => { const n = parseFloat(String(g || "").replace(",", ".")); return isFinite(n) ? n : 0; };
   let cardsSort = CARDS_SORTS.includes(localStorage.getItem("tcg-collection-sort")) ? localStorage.getItem("tcg-collection-sort") : "value-desc";
   let cardsView = shared.gridViewValue(localStorage.getItem("tcg-collection-view"));
 
@@ -224,6 +226,7 @@
     folderSections: document.getElementById("folderSections"),
     newFolderBtn: document.getElementById("newFolderBtn"),
     gradedAddBtn: document.getElementById("gradedAddBtn"),
+    gradedCenteringBtn: document.getElementById("gradedCenteringBtn"),
     bulkBtn: document.getElementById("bulkSelectBtn"),
     tagsNewBtn: document.getElementById("tagsNewBtn"),
     heading: document.querySelector(".results-header h2"),
@@ -856,6 +859,15 @@
     }
     if (elements.newFolderBtn) elements.newFolderBtn.hidden = !isFolders;
     if (elements.gradedAddBtn) elements.gradedAddBtn.hidden = !isGraded || !window.TCGGradedUI;
+    if (elements.gradedCenteringBtn) elements.gradedCenteringBtn.hidden = !isGraded || !window.TCGCentering;
+    // "Nota" só na aba Graded (veio da página /graded, removida em 2026-09-14).
+    // Se a pessoa sai da aba com "Nota" escolhida, o seletor volta pro padrão —
+    // senão mostraria uma opção escondida.
+    if (elements.cardsSortSelect) {
+      const opt = elements.cardsSortSelect.querySelector('[value="grade-desc"]');
+      if (opt) opt.hidden = !isGraded;
+      if (!isGraded && cardsSort === "grade-desc") { cardsSort = "value-desc"; elements.cardsSortSelect.value = cardsSort; }
+    }
     // Seleção em massa só na aba Cartas; trocar de aba encerra o modo.
     if (elements.bulkBtn) {
       const wrap = elements.bulkBtn.closest(".view-toggle-field") || elements.bulkBtn;
@@ -1600,6 +1612,7 @@
     else if (cardsSort === "rarity-asc") pairs.sort((a, b) => shared.rarityRank(a.card.rarity) - shared.rarityRank(b.card.rarity) || byNum(a, b));
     else if (cardsSort === "num-asc") pairs.sort(byNum);
     else if (cardsSort === "num-desc") pairs.sort((a, b) => byNum(b, a));
+    else if (cardsSort === "grade-desc") pairs.sort((a, b) => gradeNum(b.graded && b.it.grade) - gradeNum(a.graded && a.it.grade) || priceOf(b) - priceOf(a));
     else if (cardsSort === "value-desc") pairs.sort((a, b) => priceOf(b) - priceOf(a));
     else if (cardsSort === "value-asc") pairs.sort((a, b) => {
       const pa = priceOf(a), pb = priceOf(b);

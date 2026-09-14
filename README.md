@@ -127,8 +127,7 @@ uma opção presente em 100% das cartas é descartada (filtro que não filtra na
 
 Pessoais: `collection`, `portfolio` (visão financeira: patrimônio no tempo, uma
 linha por jogo, valor de listas/binders, vendas realizadas — ver
-[docs/PORTFOLIO.md](docs/PORTFOLIO.md)), `wishlist`, `binders`, `graded` (slabs
-PSA/BGS/CGC/SGC/TAG, com valor automático da PPT), `sales` (vendas e trocas),
+[docs/PORTFOLIO.md](docs/PORTFOLIO.md)), `wishlist`, `binders`, `sales` (vendas e trocas),
 `listas` (checklists de set ou avulsas, com export pra Liga — ver
 [docs/LISTAS.md](docs/LISTAS.md)), `my-decks` (galeria + editor), `decks`
 (galeria pública da comunidade), `dashboard` (hub pessoal), `badges`, `backup`,

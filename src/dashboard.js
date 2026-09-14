@@ -357,7 +357,7 @@
   const links = [
     { href: "collection", icon: "collection", key: "nav.collectionMine", stat: tn("count.cards", counts.distinct) },
     { href: "wishlist", icon: "wishlist", key: "nav.wishlist", stat: tn("dash.wishCount", wishTotal) },
-    { href: "graded", icon: "graded", key: "nav.graded", stat: tn("dash.slabsCount", slabs) },
+    { href: "collection?tab=graded", icon: "graded", key: "nav.graded", stat: tn("dash.slabsCount", slabs) },
     { href: "listas", icon: "lists", key: "nav.lists", stat: t("dash.listsHint") },
     { href: "binders", icon: "binders", key: "nav.binders", stat: "" },
     { href: "my-decks", icon: "decks", key: "nav.myDecks", stat: t("dash.decksHint") },

@@ -12,7 +12,7 @@
 import { chromium } from "playwright";
 const paginas = ["index.html", "login.html", "decks.html", "my-decks.html", "portfolio.html",
   "settings.html", "profile.html", "admin.html", "wishlist.html", "sales.html", "help.html",
-  "hub.html", "sets.html?game=pokemon", "collection.html", "faq.html", "binders.html", "graded.html"];
+  "hub.html", "sets.html?game=pokemon", "collection.html", "faq.html", "binders.html"];
 const PROPS = ["display","position","color","background-color","border-radius","border-width","border-color",
   "font-size","font-weight","padding","margin","width","height","flex-direction","grid-template-columns",
   "gap","text-align","opacity","box-shadow","overflow","z-index","transform","line-height","letter-spacing"];
