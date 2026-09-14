@@ -319,10 +319,33 @@ compila), `healthcheck.yml`, `uptime.yml` (probe de 30 em 30 min) e
 ## PWA e resiliência
 
 O service worker ([sw.js](sw.js)) trata imagens como **cache-first** (imutáveis
-por URL; sobrevivem a um outage do CDN da TCGdex, que é comunitário), o app shell
-como **network-first** (deploy novo é sempre pego) e o catálogo como
+por URL; sobrevivem a um outage do CDN da TCGdex, que é comunitário), os assets
+com hash como **cache-first** (a URL é a versão) e o catálogo como
 **stale-while-revalidate**. Depois da primeira visita o app abre offline e a
 coleção já vista funciona sem internet.
+
+As **páginas** (navegação) têm noção de versão. No deploy, o
+`scripts/hash-assets.mjs` calcula um id do build a partir do JS, do CSS **e do
+HTML** do shell, põe esse id no nome do cache do SW e o carimba em
+`<meta name="sleevu-build">` de toda página. Com isso:
+
+- dentro de uma sessão ativa (navegação nos últimos 10 min) a página vem do
+  cache na hora e a rede atualiza por trás; na primeira navegação depois de
+  um tempo parado, a rede vem **primeiro** (com teto de 2,5 s, senão a cópia
+  local) — é quase sempre a primeira abertura do dia, quando pode haver
+  versão nova;
+- se o HTML que chega da rede é de outro build, o SW não o guarda no cache
+  dele e pede a própria atualização na hora; quando o SW novo assume, a
+  página aberta compara o build dela com o dele e **recarrega sozinha** se
+  for outro (espera se alguém está digitando ou há modal aberto, com o aviso
+  na tela até poder);
+- cada página tem **uma** entrada no cache (`/portfolio`, `/portfolio?x` e
+  `/portfolio.html` são a mesma), e ao ativar o SW novo apaga todo cache que
+  não é da leva dele.
+
+Era isso que faltava quando o Portfólio abria numa versão antiga e quebrada
+antes da nova: a página velha em cache pedia arquivos com hash que já não
+existiam.
 
 Imagens EN do Pokémon têm cadeia de fallback: `low.webp` → `high.png` (TCGdex) →
 `images.pokemontcg.io`. Cartas sem imagem em nenhuma fonte vão pro fim da lista

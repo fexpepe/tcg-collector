@@ -140,14 +140,46 @@ if (pendentes.length) {
   process.exit(1);
 }
 
-// ── 7. Nome do cache do shell ganha um id do build ──────────────────────────
-// Sem isto, cada deploy deixaria a leva ANTERIOR de arquivos com hash presa no
-// cache pra sempre: nada mais os pede e o SHELL_CACHE não tem poda por tamanho.
-// Com o sufixo, o activate do SW apaga a leva velha inteira. O `vNNN` manual
-// continua valendo na frente do nome.
+// ── 7. Id do build: no nome do cache do shell E em todo HTML ────────────────
+// Sem o sufixo no SHELL_CACHE, cada deploy deixaria a leva ANTERIOR de
+// arquivos com hash presa no cache pra sempre: nada mais os pede e o
+// SHELL_CACHE não tem poda por tamanho. Com ele, o activate do SW apaga a
+// leva velha inteira. O `vNNN` manual continua valendo na frente do nome.
+//
+// O id cobre os assets com hash E as páginas do shell (os HTML da raiz, já
+// com as referências reescritas). Antes era só dos assets: um deploy que
+// mudava só um HTML não mudava o sw.js, o navegador não via SW novo, o
+// precache não rodava e a página em cache ficava a velha até a navegação
+// seguinte — "abre antiga, depois a nova". Com o HTML no id, mudar uma
+// página é um SW novo, que precacheia a página nova e apaga a antiga.
+//
+// O mesmo id vai em <meta name="sleevu-build"> de TODO HTML (shell e
+// pré-renderizadas): quando um SW novo assume, a página aberta compara o id
+// dela com o dele (mensagem sleevu:build) e recarrega se for outro — é o que
+// impede uma página velha de seguir rodando sem os arquivos dela. O hash sai
+// do HTML SEM a meta (senão seria circular); é determinístico do mesmo jeito.
 const swPath = join(ROOT, "sw.js");
+const htmlDaRaiz = readdirSync(ROOT).filter((f) => extname(f) === ".html").sort();
+const buildId = sha8([
+  ...assets.map((a) => hashes.get(a.path)),
+  ...htmlDaRaiz.map((f) => sha8(readFileSync(join(ROOT, f), "utf8")))
+].join("-"));
+const META_BUILD = `<meta name="sleevu-build" content="${buildId}">`;
+let carimbados = 0;
+for (const caminho of alvos) {
+  if (extname(caminho) !== ".html") continue;
+  const antes = readFileSync(caminho, "utf8");
+  if (antes.includes('name="sleevu-build"')) continue;
+  // Logo depois do charset (toda página do site o declara primeiro no <head>);
+  // sem ele, logo depois do <head>. HTML sem <head> (os modelos de e-mail em
+  // supabase/) não é página do site: fica como está.
+  let depois = antes.replace(/(<meta charset="utf-8">)/i, `$1\n    ${META_BUILD}`);
+  if (depois === antes) depois = antes.replace(/(<head>)/i, `$1\n    ${META_BUILD}`);
+  if (depois === antes) continue;
+  writeFileSync(caminho, depois, "utf8");
+  carimbados++;
+}
 if (existsSync(swPath)) {
-  const buildId = sha8(assets.map((a) => hashes.get(a.path)).join("-"));
   const sw = readFileSync(swPath, "utf8");
   let novo = sw.replace(/(const SHELL_CACHE\s*=\s*")([^"]+)(")/, `$1$2-${buildId}$3`);
   if (novo === sw) morra("não achei o SHELL_CACHE no sw.js.");
@@ -203,4 +235,4 @@ if (existsSync(headersPath)) {
   writeFileSync(headersPath, depois, "utf8");
 }
 
-console.log(`hash-assets: ${assets.length} arquivos versionados, ${reescritos} arquivos reescritos.`);
+console.log(`hash-assets: ${assets.length} arquivos versionados, ${reescritos} arquivos reescritos, ${carimbados} páginas carimbadas com o build ${buildId}.`);
