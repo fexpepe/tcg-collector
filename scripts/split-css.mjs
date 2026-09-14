@@ -32,16 +32,20 @@ const ESCREVER = process.argv.includes("--write");
 // Área -> prefixos de classe. Só entram prefixos que o
 // scripts/check.mjs confere serem de uma página só (ou de um par).
 const AREAS = [
-  { nome: "landing",   prefixos: ["lp-"],                          paginas: ["index.html"] },
+  { nome: "landing",   prefixos: ["lp-", "support-"],              paginas: ["index.html"] },
   { nome: "login",     prefixos: ["login-"],                       paginas: ["login.html"] },
   // dkc- é o CONSTRUTOR de deck (10 KB), e o prefixo "deck" não o alcança —
   // eram 10 KB do editor de decks em TODAS as ~30 páginas. Mesmas páginas da
   // área: as classes só existem no src/decks.js, que só decks/my-decks carregam.
   { nome: "decks",     prefixos: ["deck", "dkc-"],                 paginas: ["decks.html", "my-decks.html"] },
-  { nome: "portfolio", prefixos: ["pf-"],                          paginas: ["portfolio.html"] },
+  // collection.html entrou em 2026-09-14: a Coleção passou a usar .pf-filter
+  // (barra de filtros no molde do Portfólio) e sem a folha ela chegava sem estilo.
+  { nome: "portfolio", prefixos: ["pf-"],                          paginas: ["portfolio.html", "collection.html"] },
   // binder- são 19 KB (a maior fatia solta do núcleo). Além da própria página,
   // a Coleção precisa: o collection.js desenha .binder-shared-banner/-info.
-  { nome: "binders",   prefixos: ["binder-"],                      paginas: ["binders.html", "collection.html"] },
+  // detail.html entrou em 2026-09-14: o fichário da página de set (binder-rail,
+  // binder-nav…) usa as classes do Binder, e sem a folha ele chegava sem estilo.
+  { nome: "binders",   prefixos: ["binder-"],                      paginas: ["binders.html", "collection.html", "detail.html"] },
   { nome: "badges",    prefixos: ["bdg-"],                         paginas: ["badges.html"] },
   // hub- só existe no hub.html/hub.js. (O "hub-vs-jogo" que aparece no
   // shared.js é texto de comentário, não classe — conferido.)
@@ -49,10 +53,25 @@ const AREAS = [
   // sw- (as pastilhas de cor por jogo) só existe no settings.html e vive LOGO
   // DEPOIS do .setting-swatch, sobrescrevendo a cor do texto dele. Se um sai e o
   // outro fica, a ordem inverte e a pastilha muda de cor — por isso viajam juntos.
-  { nome: "conta",     prefixos: ["setting-", "profile-", "admin-", "sw-"], paginas: ["settings.html", "profile.html", "admin.html"] },
+  { nome: "conta",     prefixos: ["setting-", "profile-", "admin-", "adm-", "ach-", "sw-"], paginas: ["settings.html", "profile.html", "admin.html"] },
   { nome: "wishlist",  prefixos: ["wish-"],                        paginas: ["wishlist.html"] },
   { nome: "vendas",    prefixos: ["sold-"],                        paginas: ["sales.html"] },
-  { nome: "ajuda",     prefixos: ["help-"],                        paginas: ["help.html"] }
+  { nome: "ajuda",     prefixos: ["help-"],                        paginas: ["help.html"] },
+  // 2026-09-14: segunda leva, medida com o CSS INTEIRO a 99% do teto do CI. Cada
+  // prefixo foi conferido contra os 35 HTML + os src/*.js que cada página
+  // carrega (e os módulos injetados em runtime, que valem em toda página):
+  // nenhum aparece no shared.js nem fora das páginas listadas. Juntas tiram
+  // ~60 KB brutos do núcleo, somando os prefixos novos das áreas de cima
+  // (support- na landing, adm-/ach- na conta). ctr- é o medidor de
+  // centralização, que hoje mora na aba Graded da Coleção — a página /graded
+  // saiu no mesmo dia.
+  { nome: "colecao",   prefixos: ["coll-", "prof-", "ctr-", "tag-", "cond-"], paginas: ["collection.html"] },
+  { nome: "detalhe",   prefixos: ["favorite-", "segmented-"],      paginas: ["detail.html"] },
+  { nome: "404",       prefixos: ["notfound-"],                    paginas: ["404.html"] },
+  { nome: "set",       prefixos: ["facet-", "mkt-"],               paginas: ["detail.html", "sets.html", "decks.html", "my-decks.html"] },
+  { nome: "troca",     prefixos: ["trade-"],                       paginas: ["troca.html", "badges.html"] },
+  { nome: "goldfish",  prefixos: ["gf-"],                          paginas: ["decks.html", "my-decks.html"] },
+  { nome: "faq",       prefixos: ["faq-"],                         paginas: ["faq.html"] }
 ];
 
 // Comentários SAEM antes de qualquer parsing. Não é economia — é correção:

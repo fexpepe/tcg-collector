@@ -67,6 +67,13 @@ jobs:
       - name: Sintaxe dos scripts de build
         run: for f in scripts/*.mjs scripts/lib/*.mjs; do node --check "$f"; done
 
+      # Reparte o CSS por área como o deploy faz (styles.css vira só o NÚCLEO;
+      # o resto vai pra styles-<área>.css). Aqui é o ÚLTIMO bloco de propósito:
+      # reescreve styles.css, os HTML e o sw.js do workspace, e os checks acima
+      # leem os arquivos como estão no repositório.
+      - name: Reparte o CSS por área (como no deploy)
+        run: node scripts/split-css.mjs --write
+
       - name: Minificação compila (esbuild barra JS quebrado)
         run: |
           npx --yes esbuild --minify --charset=utf8 --outdir=/tmp/ci-min src/*.js
@@ -76,6 +83,7 @@ jobs:
       # O shared.js e o núcleo do CSS viajam em TODA página deste site sem
       # bundler: se engordarem sem ninguém olhar, o "parece app" some aos
       # poucos e nenhum teste acusa. Mede o que o usuário recebe (minificado +
-      # gzip) contra tetos versionados no próprio script.
+      # gzip) contra tetos versionados no próprio script. O CSS medido é o
+      # núcleo que sobrou do split, não o arquivo inteiro do repositório.
       - name: Orçamento de peso do app shell
         run: node scripts/check-size.mjs /tmp/ci-min

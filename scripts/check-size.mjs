@@ -14,7 +14,8 @@
 // ainda, então o teto é conservador de propósito).
 //
 // Uso:  node scripts/check-size.mjs <dir-com-os-minificados>
-//       (o CI já minifica src/*.js em /tmp/ci-min; ver ci.yml)
+//       (o CI roda o split-css --write e minifica src/*.js + o núcleo do
+//       styles.css em /tmp/ci-min; ver ci.yml)
 //
 // Ao estourar: não suba o teto por reflexo. Primeiro pergunte se o código novo
 // precisa mesmo viver no shared.js — o padrão de injeção sob demanda existe
@@ -77,9 +78,23 @@ import { join } from "node:path";
 // cartões de resumo do set (barras por raridade/tipo + anel de progresso) são
 // ~1,3 KB gz de CSS novo, e a main estava a ~1 KB do teto. Tudo é regra de
 // UMA página (detail) — em produção o split-css tira do núcleo.
+//
+// 2026-09-14 (à noite): o CSS passa a ser medido DEPOIS do split por área, e o
+// teto muda de 49.152 (arquivo inteiro) pra 33.792 (núcleo medido em 30.413
+// + ~11%: a regra de origem é ~6%, mas com 6% o aviso de "95%" já nasceria
+// aceso; o dia teve três subidas de teto, então a folga é um pouco maior). O número antigo somava ~90 KB brutos de CSS de página (decks,
+// portfólio, binders, o fichário do set…) que a maioria das páginas nunca
+// baixa — e era ele que subiu três vezes num só dia. O que toda página baixa
+// é o núcleo, e é isso que este script diz medir desde a primeira linha; o
+// CI agora roda o split-css --write antes da minificação, exatamente como o
+// deploy. Na mesma leva entraram áreas e prefixos novos no split (coll-/prof-/
+// ctr-/tag-/cond-, facet-/mkt-, trade-, gf-, faq-, favorite-/segmented-,
+// notfound-, support-, adm-/ach-) e o shared.js perdeu ~7,7 KB gz pra módulos
+// por página ou sob demanda (backup-import, card-rescue, facets); o teto dele
+// NÃO muda — fica a folga.
 const TETOS = [
   { arquivo: "shared.js", teto: 81920, nota: "núcleo JS de toda página" },
-  { arquivo: "styles.min.css", teto: 49152, nota: "CSS antes do split por área" },
+  { arquivo: "styles.min.css", teto: 33792, nota: "núcleo do CSS, depois do split por área" },
 ];
 
 const dir = process.argv[2] || "/tmp/ci-min";

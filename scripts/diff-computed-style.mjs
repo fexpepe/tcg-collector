@@ -12,7 +12,12 @@
 import { chromium } from "playwright";
 const paginas = ["index.html", "login.html", "decks.html", "my-decks.html", "portfolio.html",
   "settings.html", "profile.html", "admin.html", "wishlist.html", "sales.html", "help.html",
-  "hub.html", "sets.html?game=pokemon", "collection.html", "faq.html", "binders.html"];
+  "hub.html", "sets.html?game=pokemon", "collection.html", "faq.html", "binders.html",
+  // 2026-09-14: as páginas das áreas novas do split (troca, medalhas, 404, detalhe
+  // de set/pokémon) e as que nasceram neste mês (busca, conta, listas, painel).
+  "troca.html", "badges.html", "listas.html", "search.html", "account.html", "404.html", "dashboard.html",
+  "detail.html?type=set&setId=base1&game=pokemon", "detail.html?type=set&game=lorcana&setId=1",
+  "detail.html?type=pokemon&name=Charizard&game=pokemon"];
 const PROPS = ["display","position","color","background-color","border-radius","border-width","border-color",
   "font-size","font-weight","padding","margin","width","height","flex-direction","grid-template-columns",
   "gap","text-align","opacity","box-shadow","overflow","z-index","transform","line-height","letter-spacing"];
@@ -20,6 +25,10 @@ const PROPS = ["display","position","color","background-color","border-radius","
 async function coleta(porta) {
   const b = await chromium.launch();
   const ctx = await b.newContext({ viewport: { width: 1280, height: 1100 } });
+  // Imagem externa (CDN de carta, logo de set) fora: carregar ou não dentro
+  // dos 3,5 s muda width/height do <img> e acusava "estilo diferente" que
+  // não era CSS — foi o falso positivo do detalhe de set em 2026-09-14.
+  await ctx.route(/^https?:\/\/(?!localhost)/, (r) => r.abort());
   await ctx.addInitScript(() => {
     localStorage.setItem("tcg-collector-ui-lang-v1", "pt");
     localStorage.setItem("tcg-collector-theme-v1", "dark");
