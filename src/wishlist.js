@@ -1,6 +1,7 @@
 (function () {
   const shared = window.TCGShared;
   const { addOptions, unique, normalize, speciesName, debounce, t, tn } = shared;
+  const gameLabelOf = (g) => shared.gameLabel(g);
 
   let cards = [];
   let cardsById = new Map();
@@ -25,8 +26,14 @@
     pokemonFilter: document.getElementById("pokemonFilter"),
     setFilter: document.getElementById("setFilter"),
     languageFilter: document.getElementById("languageFilter"),
+    rarityFilter: document.getElementById("rarityFilter"),
+    valueFilter: document.getElementById("valueFilter"),
     cardsSortSelect: document.getElementById("cardsSortSelect"),
     cardsViewToggle: document.getElementById("cardsViewToggle"),
+    filtersBtn: document.getElementById("wishlistFiltersBtn"),
+    dashProfile: document.getElementById("dashProfile"),
+    exportBtn: document.getElementById("wishlistExportBtn"),
+    shareBtn: document.getElementById("wishlistShareBtn"),
     distinctCount: document.getElementById("distinctCount"),
     setsCount: document.getElementById("setsCount"),
     wishlistValue: document.getElementById("wishlistValue"),
@@ -229,17 +236,42 @@
     return cards.filter((card) => inGameFilter(card) && wishlist.hasCard(card.id));
   }
 
-  function hydrateFilters() {
+  // Reconstrói um <select> de filtro mantendo a 1ª opção ("Todos") e preservando
+  // a seleção atual se ela ainda existir no novo conjunto (igual à Coleção).
+  function fillFilter(select, values, formatLabel) {
+    if (!select) return;
+    const prev = select.value;
+    while (select.options.length > 1) select.remove(1);
+    addOptions(select, values, formatLabel);
+    select.value = values.includes(prev) ? prev : "";
+  }
+
+  // Os filtros seguem o filtro de jogo: só as opções das cartas desejadas
+  // daquele jogo (wantedCards() já respeita o gameFilter). Mesmos campos da
+  // Coleção — Raridade e a faixa de Valor entraram em 2026-09-14, quando a
+  // barra passou a ser a mesma das duas telas.
+  function refreshFilters() {
     const myCards = wantedCards();
-    addOptions(elements.pokemonFilter, unique(myCards.map((card) => card.pokemonName || speciesName(card.name))));
-    addOptions(elements.setFilter, unique(myCards.map((card) => card.set)));
-    addOptions(elements.languageFilter, unique(myCards.map((card) => shared.normalizeCardLanguage(card.language))), (value) => {
+    fillFilter(elements.pokemonFilter, unique(myCards.map((card) => card.pokemonName || speciesName(card.name))));
+    fillFilter(elements.setFilter, unique(myCards.map((card) => card.set)));
+    fillFilter(elements.languageFilter, unique(myCards.map((card) => shared.normalizeCardLanguage(card.language))), (value) => {
       const emoji = shared.cardFlagEmoji(value);
       return (emoji ? emoji + " " : "") + shared.cardLanguageLabel(value);
     });
+    fillFilter(elements.rarityFilter, unique(myCards.map((card) => card.rarity).filter(Boolean)).sort());
+  }
+
+  function hydrateFilters() {
+    refreshFilters();
     const pref = shared.getCardLang();
     if (pref !== "all" && Array.from(elements.languageFilter.options).some((option) => option.value === pref)) {
       elements.languageFilter.value = pref;
+    }
+    // Rótulos da faixa de valor com o símbolo da moeda atual (R$/$/€…).
+    if (elements.valueFilter) {
+      const sym = shared.currencySymbol();
+      const labels = { "0-10": `≤ ${sym} 10`, "10-50": `${sym} 10–50`, "50-200": `${sym} 50–200`, "200-": `${sym} 200+` };
+      Array.from(elements.valueFilter.options).forEach((o) => { if (labels[o.value]) o.textContent = labels[o.value]; });
     }
   }
 
@@ -274,6 +306,25 @@
       });
     }
 
+    // Barra de filtros recolhível em QUALQUER largura, aberta pelo "Filtros"
+    // da linha do título — o mesmo desenho (e a MESMA chave de preferência)
+    // da Coleção: quem deixa a barra aberta lá quer ela aberta aqui também.
+    if (elements.filtersBtn) {
+      const bar = document.getElementById("wishlistFilters");
+      let filtersOpen = false;
+      try { filtersOpen = localStorage.getItem("tcg-collector-filters-open") === "1"; } catch (e) { /* ignora */ }
+      const paintFilters = () => {
+        if (bar) bar.classList.toggle("is-collapsed", !filtersOpen);
+        elements.filtersBtn.setAttribute("aria-expanded", String(filtersOpen));
+      };
+      elements.filtersBtn.addEventListener("click", () => {
+        filtersOpen = !filtersOpen;
+        try { localStorage.setItem("tcg-collector-filters-open", filtersOpen ? "1" : "0"); } catch (e) { /* ignora */ }
+        paintFilters();
+      });
+      paintFilters();
+    }
+
     elements.gameFilter.addEventListener("click", (event) => {
       const chip = event.target.closest("[data-game-filter]");
       if (!chip || chip.dataset.gameFilter === gameFilter) return;
@@ -281,14 +332,18 @@
       Array.from(elements.gameFilter.children).forEach((node) => {
         node.setAttribute("aria-pressed", node === chip ? "true" : "false");
       });
+      refreshFilters();
       render({ resetCount: true });
     });
 
     const applyFilters = () => render({ resetCount: true });
     elements.search.addEventListener("input", debounce(applyFilters, 200));
-    [elements.pokemonFilter, elements.setFilter, elements.languageFilter].forEach((element) => {
-      element.addEventListener("input", applyFilters);
+    [elements.pokemonFilter, elements.setFilter, elements.languageFilter, elements.rarityFilter, elements.valueFilter].forEach((element) => {
+      if (element) element.addEventListener("input", applyFilters);
     });
+
+    if (elements.exportBtn) elements.exportBtn.addEventListener("click", openExportModal);
+    if (elements.shareBtn) elements.shareBtn.addEventListener("click", shareWishlist);
 
     elements.grid.addEventListener("click", (event) => {
       // Sino do preço-alvo: antes de tudo (não abre preview nem remove desejo).
@@ -370,6 +425,14 @@
 
   function updateStats(tileCount) {
     const myCards = wantedCards();
+    // Identidade (nome + @) no cartão-herói, como na Coleção.
+    shared.renderDashProfile(elements.dashProfile);
+    // Exportar/Compartilhar só fazem sentido com carta na lista (a Coleção
+    // esconde os dela do mesmo jeito). Vale a lista TODA, não o filtro: com
+    // "Lorcana" ativo e nada de Lorcana, a lista continua existindo.
+    const temLista = shared.GAME_SLUGS.some((g) => wishlistByGame[g].knownCardIds().length > 0);
+    if (elements.exportBtn) elements.exportBtn.hidden = !temLista;
+    if (elements.shareBtn) elements.shareBtn.hidden = !temLista;
     elements.empty.hidden = tileCount > 0;
     if (!tileCount) {
       elements.empty.dataset.i18nHtml = wishlist.size ? "empty.wishlistFiltered" : "empty.wishlist";
@@ -393,14 +456,101 @@
     const pokemonValue = elements.pokemonFilter.value;
     const setValue = elements.setFilter.value;
     const languageValue = elements.languageFilter.value;
+    const rarityValue = elements.rarityFilter ? elements.rarityFilter.value : "";
+    // Faixa de valor ("min-max" na moeda atual; max vazio = sem teto) — a
+    // mesma régua da Coleção, medida na variante padrão da carta.
+    const range = (elements.valueFilter && elements.valueFilter.value) || "";
+    const [vMin, vMax] = range ? range.split("-").map((x) => (x === "" ? null : Number(x))) : [null, null];
+    const valueOf = shared.memoValue((card) => shared.cardValue(card, shared.defaultVariant(card), prices, shared.DEFAULT_CONDITION).value || 0);
 
     return wantedCards().filter((card) => {
       const matchesQuery = shared.matchesCardQuery(card, elements.search.value);
       const matchesPokemon = !pokemonValue || (card.pokemonName || speciesName(card.name)) === pokemonValue;
       const matchesSet = !setValue || card.set === setValue;
       const matchesLanguage = !languageValue || shared.normalizeCardLanguage(card.language) === languageValue;
+      const matchesRarity = !rarityValue || card.rarity === rarityValue;
+      const matchesValue = !range || (function () { const v = valueOf(card); return (vMin == null || v >= vMin) && (vMax == null || v <= vMax); })();
 
-      return matchesQuery && matchesPokemon && matchesSet && matchesLanguage;
+      return matchesQuery && matchesPokemon && matchesSet && matchesLanguage && matchesRarity && matchesValue;
     });
+  }
+
+  // ===========================================================================
+  // Exportar a lista de desejo (Liga / texto / CSV) — 2026-09-14
+  //
+  // O caso de uso nº 1 é o mesmo da Coleção, só que ao contrário: a wishlist é
+  // a lista de COMPRAS, então colar na "Compra por Lista" da Liga é o destino
+  // natural. Gerador (export-liga.js) e modal (export-ui.js) são os da Coleção;
+  // aqui só entra a origem: cada par carta×variante desejado vira UMA linha
+  // (a lista não guarda quantidade nem condição — a Liga assume NM).
+  // ESCOPO = o que está na tela (filtros e busca valem), como na Coleção.
+  // ===========================================================================
+  function exportEntradas(pares, jogo) {
+    return pares
+      .filter(({ card }) => !jogo || card.game === jogo)
+      .map(({ card, variant }) => ({ id: card.id, q: 1, v: variant }));
+  }
+  function exportJogosDisponiveis(pares) {
+    return shared.GAME_SLUGS.filter((g) => pares.some(({ card }) => card.game === g));
+  }
+  function openExportModal() {
+    const ex = window.TCGExportLiga;
+    if (!ex || !window.TCGExportUI) return;
+    const pares = wantedPairs();
+    const jogos = exportJogosDisponiveis(pares);
+    const byId = {};
+    cardsById.forEach((card, id) => { byId[id] = card; });
+    window.TCGExportUI.abrir({
+      titulo: t("wishlist.export.title"),
+      jogos,
+      rotuloJogo: gameLabelOf,
+      // `jogo` vazio = todos (texto/CSV); no formato Liga o modal manda o jogo.
+      texto: (formato, jogo) => ex.exportar(formato, exportEntradas(pares, jogo), byId, jogo || (jogos.length === 1 ? jogos[0] : "")),
+      escopo: (n) => t("export.scope", { n }),
+      arquivo: "lista-de-desejo-sleevu"
+    });
+  }
+
+  // Compartilhar por link público: o MESMO share da Coleção (kind "collection",
+  // lido pela view ?s= do collection.js), marcado com scope "wishlist" pra o
+  // banner dizer o que é. Sempre snapshot — o perfil público não mostra a lista
+  // de desejo, então não há "link vivo" pra copiar como na Coleção.
+  function buildShareData() {
+    const items = [];
+    shared.cardVariantPairs(wantedCards()).forEach(({ card, variant }) => {
+      if (!wishlist.has(card.id, variant)) return;
+      const src = shared.cardImageSources(card);
+      const unit = shared.cardValue(card, variant, prices).value || 0;
+      const vbrl = shared.convertMoney(unit, shared.getCurrency(), "BRL");
+      items.push({
+        id: card.id, n: card.name, s: card.set, num: card.number, lang: card.language,
+        g: card.game, v: variant, q: 1, vbrl: vbrl == null ? 0 : Math.round(vbrl * 100) / 100,
+        img: src.url, fb: src.fallback || ""
+      });
+    });
+    items.sort((a, b) => b.vbrl - a.vbrl);
+    return { items, scope: "wishlist" };
+  }
+  async function shareWishlist() {
+    const btn = elements.shareBtn;
+    const original = t("wishlist.share");
+    // Botão SÓ-ÍCONE: o rótulo vive num <span> escondido (leitor de tela +
+    // aria-live); o feedback VISUAL de sucesso é o ✓ no lugar do ícone.
+    const setLabel = (txt) => { (btn.querySelector("span") || btn).textContent = txt; };
+    const setOk = (on) => btn.classList.toggle("is-ok", !!on);
+    const data = buildShareData();
+    if (!data.items.length) { shared.toastSimples(t("export.empty")); return; }
+    btn.disabled = true; setLabel(t("collection.share.creating"));
+    const res = await shared.createShare("collection", t("wishlist.shared.label"), data);
+    btn.disabled = false;
+    if (res && res.id) {
+      const link = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}collection?s=${res.id}`;
+      try { await navigator.clipboard.writeText(link); setLabel(t("collection.share.copied")); setOk(true); }
+      catch (e) { shared.caixaDeTexto({ titulo: t("collection.share.copyManual"), valor: link, leitura: true }); setLabel(original); }
+    } else {
+      alert(res && res.error === "auth" ? t("collection.share.needLogin") : t("collection.share.error"));
+      setLabel(original);
+    }
+    setTimeout(() => { setLabel(original); setOk(false); }, 2500);
   }
 })();

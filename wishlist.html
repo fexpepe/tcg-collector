@@ -76,8 +76,12 @@
 
       <section id="wishSellers" class="wish-sellers" data-i18n-aria="aria.wantedForSale" aria-label="Cartas desejadas à venda por outros colecionadores" hidden></section>
 
-      <div class="collection-toolbar">
-        <div id="gameFilter" class="chip-filter game-filter" role="group" data-i18n-aria="pfmi.game" aria-label="Jogo">
+      <!-- MESMA moldura e MESMO centro do filtro de jogo da Coleção (2026-09-14):
+           a Lista de Desejo é uma página da coleção, e as duas telas tinham
+           cabeçalhos diferentes pro mesmo controle. O shared.js troca os chips
+           pelos jogos que têm carta desejada (setGameFilterScope). -->
+      <div class="collection-toolbar collection-toolbar-centered">
+        <div id="gameFilter" class="chip-filter game-filter game-filter-panel" role="group" data-i18n-aria="pfmi.game" aria-label="Jogo">
           <button type="button" class="chip" data-game-filter="all" aria-pressed="true" data-i18n="filter.gameAll">Todos</button>
           <button type="button" class="chip" data-game-filter="pokemon" aria-pressed="false" data-i18n="filter.gamePokemon">Pokémon</button>
           <button type="button" class="chip" data-game-filter="lorcana" aria-pressed="false" data-i18n="filter.gameLorcana">Lorcana</button>
@@ -87,22 +91,62 @@
         </div>
       </div>
 
-      <section class="stats-grid" data-i18n-aria="aria.sumWishlist" aria-label="Resumo da lista de desejos">
-        <article>
-          <span id="distinctCount">0</span>
-          <p data-i18n="wishlist.stats.distinct">cartas na lista</p>
-        </article>
-        <article>
-          <span id="setsCount">0</span>
-          <p data-i18n="wishlist.stats.sets">sets desejados</p>
-        </article>
-        <article>
-          <span id="wishlistValue">—</span>
-          <p data-i18n="value.toBuy">Falta (a comprar)</p>
+      <!-- Cartão-herói igual ao da Coleção: identidade + "falta (a comprar)" +
+           ações (Exportar/Compartilhar, só-ícone) em cima; as contagens embaixo.
+           Os ícones são os MESMOS do collection.html — uma cara só. Os rótulos
+           dos botões vivem num <span data-i18n> escondido (leitor de tela). -->
+      <section id="wishlistDashboard" class="collection-dashboard collection-dashboard-hero" data-i18n-aria="aria.sumWishlist" aria-label="Resumo da lista de desejos">
+        <article class="dash-card dash-stats dash-stats-hero">
+          <div class="dash-stats-head">
+            <div id="dashProfile" class="dash-profile" hidden></div>
+            <div class="dash-stat-money"><span class="dash-stat-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.2v9.6M14.4 9.6c0-1-1.1-1.6-2.4-1.6s-2.4.6-2.4 1.6 1 1.5 2.4 1.9 2.5 1 2.5 2-1.1 1.7-2.5 1.7-2.5-.7-2.5-1.7"/></svg></span><span class="dash-stat-txt"><span class="dash-stat-val" id="wishlistValue">—</span><span class="dash-stat-label" data-i18n="wishlist.stats.value">falta (a comprar)</span></span></div>
+            <div class="collection-toolbar-actions" role="group" data-i18n-aria="aria.wishlistActions" aria-label="Ações da lista de desejo">
+              <button type="button" id="wishlistExportBtn" class="secondary icon-btn" data-i18n-title="wishlist.export.title" title="Exportar lista de desejo" hidden><svg class="icon-btn-main" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v11"/><path d="m8 10.5 4 4 4-4"/><path d="M4.5 16.5v2a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-2"/></svg><span data-i18n="wishlist.export.title">Exportar lista de desejo</span></button>
+              <button type="button" id="wishlistShareBtn" class="secondary icon-btn collection-share-btn" data-i18n-title="wishlist.share" title="Compartilhar lista de desejo" hidden><svg class="icon-btn-main" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="m8.4 10.8 7.2-4M8.4 13.2l7.2 4"/></svg><svg class="icon-btn-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span data-i18n="wishlist.share" aria-live="polite">Compartilhar lista de desejo</span></button>
+            </div>
+          </div>
+          <div class="dash-stats-counts dash-stats-counts-2">
+            <div><span class="dash-stat-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8.5h6M9 12h6M9 15.5h3"/></svg></span><span class="dash-stat-txt"><span class="dash-stat-val" id="distinctCount">0</span><span class="dash-stat-label" data-i18n="wishlist.stats.distinct">cartas na lista</span></span></div>
+            <div><span class="dash-stat-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg></span><span class="dash-stat-txt"><span class="dash-stat-val" id="setsCount">0</span><span class="dash-stat-label" data-i18n="wishlist.stats.sets">sets desejados</span></span></div>
+          </div>
         </article>
       </section>
 
-      <section class="toolbar" data-i18n-aria="filters.show" aria-label="Filtros">
+      <!-- MESMAS abas-retângulo da Coleção (.prof-tabs), na MESMA posição: a
+           Lista de Desejo é uma das páginas da coleção, e as abas de lá viraram
+           links aqui (como no Graded). aria-current, não aria-pressed: são LINKS. -->
+      <div class="prof-tabs collection-tabs" role="group" data-i18n-aria="aria.collectionViews" aria-label="Visões da coleção">
+        <a class="prof-tab" href="collection?tab=cards" data-i18n="nav.collection">Coleção</a>
+        <a class="prof-tab" href="collection?tab=folders" data-i18n="collection.tab.folders">Showcase</a>
+        <a class="prof-tab" href="graded" data-i18n="nav.graded">Cartas Graded</a>
+        <a class="prof-tab" href="wishlist" aria-current="page" data-i18n="nav.wishlist">Lista de Desejo</a>
+        <a class="prof-tab" href="listas" data-i18n="nav.lists">Listas</a>
+        <a class="prof-tab" href="collection?tab=pokemon" data-i18n="collection.tab.pokemon">Pokémon</a>
+        <a class="prof-tab" href="collection?tab=artists" data-i18n="collection.tab.artists">Artistas</a>
+        <a class="prof-tab" href="collection?tab=sets" data-i18n="collection.tab.sets">Sets</a>
+        <a class="prof-tab" href="sales" data-i18n="nav.sales">Vendas e Trocas</a>
+      </div>
+
+      <!-- Linha do título como na Coleção: título + contagem à esquerda; na
+           ponta DIREITA o Filtros (abre a barra logo abaixo) e a Visualização. -->
+      <section class="results-header">
+        <h2 data-i18n="wishlist.results">Cartas que eu desejo</h2>
+        <p id="resultCount">0 resultados</p>
+        <div class="results-actions">
+          <button type="button" id="wishlistFiltersBtn" class="secondary" aria-expanded="false" aria-controls="wishlistFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span data-i18n="filters.show">Filtros</span></button>
+          <div id="cardsViewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
+            <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>
+            <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista">≣</button>
+            <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" data-i18n-aria="view.compact" aria-label="Compacta" title="Compacta">☰</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- data-own-toggle: quem abre/fecha é o "Filtros" da linha do título (o
+           shared.js não injeta o toggle automático do mobile). Nasce recolhida
+           (is-collapsed) pra não piscar aberta antes do JS. Mesmos campos da
+           Coleção (Raridade e Valor entraram junto). -->
+      <section id="wishlistFilters" class="toolbar collection-filters is-collapsed" data-i18n-aria="filters.show" aria-label="Filtros" data-own-toggle>
         <div>
           <label for="pokemonFilter" data-i18n="toolbar.pokemon">Pokémon</label>
           <select id="pokemonFilter">
@@ -121,6 +165,22 @@
             <option value="" data-i18n="filter.all.m">Todos</option>
           </select>
         </div>
+        <div>
+          <label for="rarityFilter" data-i18n="toolbar.rarity">Raridade</label>
+          <select id="rarityFilter">
+            <option value="" data-i18n="filter.all.f">Todas</option>
+          </select>
+        </div>
+        <div>
+          <label for="valueFilter" data-i18n="toolbar.value">Valor</label>
+          <select id="valueFilter">
+            <option value="" data-i18n="filter.all.m">Todos</option>
+            <option value="0-10">≤ 10</option>
+            <option value="10-50">10–50</option>
+            <option value="50-200">50–200</option>
+            <option value="200-">200+</option>
+          </select>
+        </div>
         <div class="sort-select">
           <label for="cardsSortSelect" data-i18n="sort.label">Ordenar:</label>
           <select id="cardsSortSelect">
@@ -133,19 +193,6 @@
             <option value="release" data-i18n="sort.releaseDate">Lançamento</option>
           </select>
         </div>
-        <div class="view-toggle-field">
-          <label data-i18n="toolbar.view">Visualização</label>
-          <div id="cardsViewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
-            <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>
-            <button type="button" class="view-toggle-btn" data-grid-view="list" aria-pressed="false" data-i18n-aria="aria.viewList" aria-label="Lista" title="Lista">≣</button>
-            <button type="button" class="view-toggle-btn" data-grid-view="compact" aria-pressed="false" data-i18n-title="view.compact" data-i18n-aria="view.compact" aria-label="Compacta" title="Compacta">☰</button>
-          </div>
-        </div>
-      </section>
-
-      <section class="results-header">
-        <h2 data-i18n="wishlist.results">Cartas que eu desejo</h2>
-        <p id="resultCount">0 resultados</p>
       </section>
 
       <section id="cardGrid" class="card-grid" aria-live="polite"></section>
@@ -154,6 +201,9 @@
 
     <script defer src="src/i18n.js"></script>
     <script defer src="src/shared.js"></script>
+    <!-- Export (Liga/texto/CSV): o MESMO gerador e o MESMO modal da Coleção. -->
+    <script defer src="src/export-liga.js"></script>
+    <script defer src="src/export-ui.js"></script>
     <script defer src="src/wishlist.js"></script>
   </body>
 </html>

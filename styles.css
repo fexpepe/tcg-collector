@@ -1077,7 +1077,13 @@ input::placeholder {
 .prof-tabs {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
+  /* max-content e não 0: com 9 abas (a Lista de Desejo entrou em 2026-09-14)
+     as colunas iguais só cabem a partir de ~1340px; abaixo disso o rótulo
+     longo ("Vendas e Trocas") quebrava em duas linhas e a barra ficava mais
+     alta que as outras. Agora cada aba tem no mínimo a largura do rótulo
+     (nowrap), iguais quando dá, e a fileira ROLA quando nem assim cabe. */
+  grid-auto-columns: minmax(max-content, 1fr);
+  overflow-x: auto;
   gap: 10px;
   margin-bottom: 16px;
 }
@@ -1093,7 +1099,8 @@ input::placeholder {
   cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
   text-align: center;
-  min-width: 0; /* rótulo longo ("Vendas e Trocas") não estica a coluna */
+  min-width: 0;
+  white-space: nowrap; /* o rótulo nunca quebra: a coluna cresce (ou a fileira rola) */
   text-decoration: none; /* a aba-LINK (Vendas e Trocas) não pode vir sublinhada */
 }
 .prof-tab:hover { background: var(--accent-soft); }
@@ -7107,6 +7114,10 @@ html:not([data-cardlang="all"]) #setRegionChips {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px 18px;
 }
+/* Lista de Desejo: o mesmo cartão com DUAS contagens (cartas na lista, sets
+   desejados) — o "falta a comprar" já mora na caixa do valor, em cima. Sem
+   isto a 3ª coluna ficava vazia e as duas medidas encostavam à esquerda. */
+.dash-stats-hero .dash-stats-counts.dash-stats-counts-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 /* A divisória de cima separa o cabeçalho (identidade + valor) das contagens. */
 .dash-stats-hero .dash-stats-head + .dash-stats-counts { border-top: 1px solid var(--line); padding-top: 16px; }
 .dash-stats-hero .dash-stat-val { font-size: 22px; font-variant-numeric: tabular-nums; white-space: nowrap; }
@@ -7169,8 +7180,13 @@ html:not([data-cardlang="all"]) #setRegionChips {
   .collection-dashboard-hero .collection-toolbar-actions { gap: 6px; width: auto; flex: 0 0 auto; }
   #collectionDashboard .collection-toolbar-actions .secondary,
   .collection-dashboard-hero .collection-toolbar-actions .secondary { flex: 0 0 auto; }
+  /* O 2º seletor tem 4 classes de propósito: o bloco de ≤600px mais abaixo
+     dá min-width:46px a `.collection-toolbar-actions .secondary.icon-btn`
+     (0,3,0) e vencia a versão sem id — na Lista de Desejo (e no perfil
+     compartilhado) os dois ícones somavam 98px, a 1ª linha não fechava em
+     390px e as ações caíam pra linha própria. O #id da Coleção já vencia. */
   #collectionDashboard .icon-btn,
-  .collection-dashboard-hero .icon-btn { width: 40px; min-width: 40px; min-height: 40px; }
+  .collection-dashboard-hero .collection-toolbar-actions .secondary.icon-btn { width: 40px; min-width: 40px; min-height: 40px; }
   .dash-stats-hero .dash-stats-counts { gap: 12px; }
   .dash-stats-hero .dash-stats-head + .dash-stats-counts { padding-top: 12px; }
   .dash-stats-hero .dash-stats-counts > div + div { padding-left: 12px; }
@@ -8347,7 +8363,8 @@ html[data-detail="set"] #detailTitle { display: none; }
   /* Abas-retângulo: largura mínima legível + rolagem horizontal (o grid
      continua; só as colunas param de espremer). */
   .collection-tabs,
-  .prof-tabs { grid-auto-columns: minmax(112px, 1fr); }
+  .prof-tabs { grid-auto-columns: minmax(max-content, 1fr); }
+  .prof-tab { min-width: 112px; }
   .collection-toolbar-actions { width: 100%; justify-content: flex-end; }
   .collection-toolbar-actions .secondary { flex: 1 1 0; }
   .collection-toolbar-actions .secondary.icon-btn { flex: 0 0 auto; min-width: 46px; }

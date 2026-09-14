@@ -906,29 +906,9 @@
     elements.dashboard.hidden = false;
     // Na aba "Minhas Coleções", o dashboard mostra a identidade (nome + @) no topo
     // — espelha o perfil público (é a sua vitrine pessoal).
-    if (elements.dashProfile) {
-      const p = shared.getProfile ? shared.getProfile() : {};
-      const nm = (p.displayName || "").trim();
-      // Identidade (nome + @) no dashboard em TODA a coleção (Toda Coleção, Coleções,
-      // e em qualquer filtro de jogo) — não só no perfil público. Avatar em
-      // monograma, o MESMO do cabeçalho compartilhado (dash-avatar).
-      const showId = nm || p.handle;
-      const inicial = (nm || p.handle || "").trim().charAt(0).toUpperCase();
-      elements.dashProfile.hidden = !showId;
-      // @ clicável -> perfil público (prático pra abrir e copiar o link). Só
-      // quando o perfil É público — link pra página "não encontrado" confunde.
-      const handleHtml = p.handle
-        ? (p.isPublic
-          ? `<a class="dash-profile-handle" href="/users/${escapeAttribute(p.handle)}" title="${escapeAttribute(t("dash.publicProfile"))}">@${escapeHtml(p.handle)}</a>`
-          : `<span class="dash-profile-handle">@${escapeHtml(p.handle)}</span>`)
-        : "";
-      elements.dashProfile.innerHTML = showId
-        ? `<div class="dash-profile-who">
-            ${inicial ? `<span class="dash-avatar" aria-hidden="true"><span class="dash-avatar-in">${escapeHtml(inicial)}</span></span>` : ""}
-            <div class="dash-profile-id"><strong class="dash-profile-name">${escapeHtml(nm || ("@" + p.handle))}</strong>${handleHtml}</div>
-          </div>`
-        : "";
-    }
+    // Identidade (nome + @) em TODA a coleção (qualquer filtro de jogo), não só
+    // no perfil público — a função é a mesma da Lista de Desejo (shared.js).
+    shared.renderDashProfile(elements.dashProfile);
     const myCards = ownedCards();
 
     // Stats
@@ -1977,9 +1957,6 @@
   // a pessoa está vendo seria surpresa. A escala de condição do site é a MESMA
   // da Liga (M/NM/SP/MP/HP/D), então não há de-para a fazer.
   // ===========================================================================
-  const EXPORT_FORMATOS = ["liga", "texto", "csv"];
-  let exportFormato = "liga";
-  let exportJogo = "";
 
   function exportPares() {
     const pares = ownedTilePairs();
@@ -2007,96 +1984,31 @@
     return shared.GAME_SLUGS.filter((g) => pares.some(({ card }) => card.game === g));
   }
 
-  function exportTexto(pares, jogos) {
+  // `jogo` vazio = todos os jogos da tela (texto/CSV); no formato Liga o modal
+  // manda o jogo escolhido, porque a Liga é por jogo.
+  function exportTexto(pares, formato, jogo) {
     const ex = window.TCGExportLiga;
     if (!ex) return "";
-    // Liga é POR JOGO (ligamagic, ligapokemon, ligaonepiece…): um texto só com
-    // dois jogos misturados não casa em lugar nenhum. Texto e CSV não têm essa
-    // restrição e saem com tudo que está na tela.
-    const jogo = exportFormato === "liga" ? (exportJogo || jogos[0] || "") : "";
     const byId = {};
     cardsById.forEach((card, id) => { byId[id] = card; });
-    return ex.exportar(exportFormato, exportEntradas(pares, jogo), byId, jogo || (jogos.length === 1 ? jogos[0] : ""));
+    const jogos = exportJogosDisponiveis(pares);
+    return ex.exportar(formato, exportEntradas(pares, jogo), byId, jogo || (jogos.length === 1 ? jogos[0] : ""));
   }
 
+  // O modal em si (abas de formato, copiar/baixar) mora no src/export-ui.js,
+  // dividido com a Lista de Desejo (2026-09-14). Aqui só entra a ORIGEM das
+  // linhas e o escopo (showcase aberto ou os filtros de agora).
   function openExportModal() {
     const pares = exportPares();
     const jogos = exportJogosDisponiveis(pares);
-    if (!pares.length) { shared.toastSimples(t("export.empty")); return; }
-    if (!jogos.includes(exportJogo)) exportJogo = jogos[0] || "";
-
-    const wrap = document.createElement("div");
-    wrap.className = "list-modal";
-    document.body.appendChild(wrap);
-    document.body.classList.add("preview-open"); // trava a rolagem do fundo
-
-    function pinta() {
-      const abas = EXPORT_FORMATOS.map((f) =>
-        `<button type="button" class="lst-chip${f === exportFormato ? " is-on" : ""}" data-ex-fmt="${escapeAttribute(f)}">${escapeHtml(t("export.fmt." + f))}</button>`).join("");
-      // O seletor de jogo só existe quando ele muda alguma coisa: formato Liga
-      // E mais de um jogo na tela.
-      const seletorJogo = (exportFormato === "liga" && jogos.length > 1)
-        ? `<p class="list-modal-hint">${escapeHtml(t("export.gameHint"))}</p>
-           <div class="lst-chips">${jogos.map((g) =>
-             `<button type="button" class="lst-chip${g === exportJogo ? " is-on" : ""}" data-ex-game="${escapeAttribute(g)}">${escapeHtml(gameLabelOf(g))}</button>`).join("")}</div>`
-        : "";
-      const texto = exportTexto(pares, jogos);
-      const nLinhas = texto ? texto.split("\n").filter(Boolean).length : 0;
-      const escopo = openFolderId
-        ? t("export.scopeFolder", { n: nLinhas })
-        : t("export.scope", { n: nLinhas });
-      wrap.innerHTML = `
-        <div class="list-modal-box" role="dialog" aria-modal="true" aria-label="${escapeAttribute(t("export.title"))}">
-          <h2>${escapeHtml(t("export.title"))}</h2>
-          <div class="lst-chips">${abas}</div>
-          ${seletorJogo}
-          <p class="list-modal-hint">${escapeHtml(t("export.hint." + exportFormato))}</p>
-          <textarea class="lst-export" readonly rows="12">${escapeHtml(texto)}</textarea>
-          <p class="list-modal-hint">${escapeHtml(escopo)}</p>
-          <div class="list-modal-foot">
-            <button type="button" class="cta" data-ex-copy>${escapeHtml(t("export.copy"))}</button>
-            <button type="button" class="lst-mini" data-ex-dl>${escapeHtml(t("export.download"))}</button>
-            <button type="button" class="lst-mini" data-ex-close>${escapeHtml(t("export.close"))}</button>
-          </div>
-        </div>`;
-    }
-    pinta();
-
-    const fechar = () => { wrap.remove(); document.body.classList.remove("preview-open"); document.removeEventListener("keydown", noEsc); };
-    const noEsc = (ev) => { if (ev.key === "Escape") fechar(); };
-    document.addEventListener("keydown", noEsc);
-
-    wrap.addEventListener("click", (ev) => {
-      if (ev.target === wrap || ev.target.closest("[data-ex-close]")) { fechar(); return; }
-      const f = ev.target.closest("[data-ex-fmt]");
-      if (f) { exportFormato = f.dataset.exFmt; pinta(); return; }
-      const g = ev.target.closest("[data-ex-game]");
-      if (g) { exportJogo = g.dataset.exGame; pinta(); return; }
-
-      if (ev.target.closest("[data-ex-copy]")) {
-        const ta = wrap.querySelector(".lst-export");
-        // navigator.clipboard exige contexto seguro; o fallback do textarea
-        // cobre http:// e navegador antigo (mesmo caminho das listas).
-        const ok = () => { const b = wrap.querySelector("[data-ex-copy]"); if (b) b.textContent = t("export.copied"); };
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(ta.value).then(ok, () => { ta.select(); document.execCommand("copy"); ok(); });
-        } else { ta.select(); document.execCommand("copy"); ok(); }
-        return;
-      }
-
-      if (ev.target.closest("[data-ex-dl]")) {
-        const ext = exportFormato === "csv" ? "csv" : "txt";
-        const tipo = exportFormato === "csv" ? "text/csv;charset=utf-8" : "text/plain;charset=utf-8";
-        // BOM só no CSV (é o que faz o Excel pt-BR abrir com acento certo).
-        const conteudo = (exportFormato === "csv" ? "﻿" : "") + wrap.querySelector(".lst-export").value;
-        const blob = new Blob([conteudo], { type: tipo });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `colecao-sleevu.${ext}`;
-        a.click();
-        URL.revokeObjectURL(url);
-      }
+    if (!window.TCGExportUI) return;
+    window.TCGExportUI.abrir({
+      titulo: t("export.title"),
+      jogos,
+      rotuloJogo: gameLabelOf,
+      texto: (formato, jogo) => exportTexto(pares, formato, jogo),
+      escopo: (n) => (openFolderId ? t("export.scopeFolder", { n }) : t("export.scope", { n })),
+      arquivo: "colecao-sleevu"
     });
   }
 
@@ -2202,6 +2114,7 @@
     const isTag = share.data.scope === "tag";        // lista/showcase de uma tag
     const isSale = share.data.scope === "sale";      // lista de vendas
     const isGraded = share.data.scope === "graded";  // cartas graduadas (slabs)
+    const isWish = share.data.scope === "wishlist";  // lista de desejo (q=1 por variante)
     const saleCur = share.data.cur || "BRL";
     // Total: venda/graded somam o valor (sp/gv) na moeda do dono; senão valor de mercado.
     const bannerTotal = isGraded
@@ -2210,7 +2123,7 @@
         ? allItems.reduce((s, it) => s + (Number(it.sp) || 0) * (it.q || 1), 0)
         : allItems.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
     const bannerMoney = (isSale || isGraded) ? shared.formatMoney(saleCur, bannerTotal) : shared.formatMoney(shared.getCurrency(), bannerTotal);
-    const kindLabel = isGraded ? t("graded.shared.label") : isSale ? t("sales.shared.label") : isTag ? t("tags.shared.label") : (isFolder ? t("folders.shared.label") : "");
+    const kindLabel = isWish ? t("wishlist.shared.label") : isGraded ? t("graded.shared.label") : isSale ? t("sales.shared.label") : isTag ? t("tags.shared.label") : (isFolder ? t("folders.shared.label") : "");
 
     // Filtro de jogo (Todos/Pokémon/Lorcana) — igual à página da coleção. Só
     // aparece quando o share tem MAIS DE UM jogo, pra quem está vendo conseguir

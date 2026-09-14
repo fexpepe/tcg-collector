@@ -3494,6 +3494,29 @@
     try { return Object.assign({}, PROFILE_DEFAULTS, JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}")); }
     catch (e) { return Object.assign({}, PROFILE_DEFAULTS); }
   }
+  // Identidade (avatar em monograma + nome + @) do cartão-herói. Era código da
+  // Coleção; virou função dividida quando a Lista de Desejo ganhou o mesmo
+  // cartão (2026-09-14) — uma cara só nas duas telas. O @ é link só quando o
+  // perfil É público (link pra "não encontrado" confunde).
+  function renderDashProfile(el) {
+    if (!el) return;
+    const p = getProfile();
+    const nm = (p.displayName || "").trim();
+    const showId = nm || p.handle;
+    const inicial = (nm || p.handle || "").trim().charAt(0).toUpperCase();
+    el.hidden = !showId;
+    const handleHtml = p.handle
+      ? (p.isPublic
+        ? `<a class="dash-profile-handle" href="/users/${escapeAttribute(p.handle)}" title="${escapeAttribute(t("dash.publicProfile"))}">@${escapeHtml(p.handle)}</a>`
+        : `<span class="dash-profile-handle">@${escapeHtml(p.handle)}</span>`)
+      : "";
+    el.innerHTML = showId
+      ? `<div class="dash-profile-who">
+          ${inicial ? `<span class="dash-avatar" aria-hidden="true"><span class="dash-avatar-in">${escapeHtml(inicial)}</span></span>` : ""}
+          <div class="dash-profile-id"><strong class="dash-profile-name">${escapeHtml(nm || ("@" + p.handle))}</strong>${handleHtml}</div>
+        </div>`
+      : "";
+  }
   function setProfile(patch) {
     const next = Object.assign(getProfile(), patch, { updatedAt: Date.now() });
     try { localStorage.setItem(PROFILE_KEY, JSON.stringify(next)); } catch (e) { /* ignora */ }
@@ -9325,6 +9348,7 @@
     sensitiveEnabled,
     setSensitive,
     getProfile,
+    renderDashProfile,
     setProfile,
     normalizeHandle,
     currentUser,

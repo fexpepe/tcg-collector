@@ -170,6 +170,9 @@
         <button type="button" class="prof-tab" data-tab="cards" aria-pressed="true" data-i18n="nav.collection">Coleção</button>
         <button type="button" class="prof-tab" data-tab="folders" aria-pressed="false" data-i18n="collection.tab.folders">Showcase</button>
         <button type="button" class="prof-tab" data-tab="graded" aria-pressed="false" data-i18n="nav.graded">Cartas Graded</button>
+        <!-- Lista de Desejo é uma PÁGINA da coleção (2026-09-14): link vestido
+             de aba, como Listas e Vendas — a wishlist.html traz a mesma barra. -->
+        <a class="prof-tab" href="wishlist" data-i18n="nav.wishlist">Lista de Desejo</a>
         <!-- A aba "Tags" saiu da barra: as tags viraram Listas (docs/LISTAS.md).
              A visão continua existindo em ?tab=tags só pra links antigos, e ali
              mostra o aviso da mudança em vez de uma segunda UI editável. -->
@@ -292,6 +295,8 @@
     <!-- Gerador do export (Liga/texto/CSV). O MESMO das listas: logica pura,
          sem DOM, com testes dourados em tests/liga-export.test.mjs. -->
     <script defer src="src/export-liga.js"></script>
+    <!-- Modal do export (abas de formato, copiar/baixar), dividido com a wishlist. -->
+    <script defer src="src/export-ui.js"></script>
     <script defer src="src/collection.js"></script>
   </body>
 </html>
