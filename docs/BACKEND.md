@@ -33,7 +33,7 @@ públicas por design — quem protege é a RLS.
 | `card_views` | PK (game, card_id); contador de visitas por carta | pública |
 | `deck_views` | PK `share_id` → `shares`; visitas por deck | pública |
 | `community_prices` | 1 ponto por usuário×carta×variante×condição×tipo×[graduadora+nota]×mês, em BRL | **nenhuma** (RLS sem policy; só RPC agrega) |
-| `events` | analytics first-party: `name`, `path`, `anon`, `game`, `props` | **nenhuma** (só insert) |
+| `events` | analytics first-party: `name`, `path`, `anon`, `game`, `props` + `uid`/`bot` (preenchidos pelo trigger, nunca pelo cliente) | **nenhuma** (só insert) |
 | `rate_limits` | janela por IP usada pelas RPCs | interna |
 | `push_subs` | PK (user_id, endpoint); assinaturas de web push | só o dono |
 | `push_sender_key` | só o **SHA-256** da chave do robô | nenhuma (sem policy, de propósito) |
@@ -72,7 +72,8 @@ porque revela o que a pessoa negociou, e ficaria atrás de um opt-in próprio.
 | `deck_views_for(uuid[])` | lê até 200 contagens numa chamada (ordenação "Mais vistos") |
 | `contribute_price(...)` | grava/atualiza o ponto do usuário em `community_prices` (upsert pela PK = 1 voto por pessoa) |
 | `community_price_for(game, card_id)` | mediana + média aparada por (variante, tipo, nota, mês), **só bucket com n ≥ 3** |
-| `analytics_summary(days)` | números do `/admin`; devolve null pra quem não é admin |
+| `analytics_summary(days)` | painel antigo do `/admin` (criado no dashboard, não versionado); fallback enquanto a `admin_dashboard` não existir |
+| `admin_dashboard(days)` | painel 2.0 do `/admin` (migração `20260914a`): overview, série diária, páginas, jogos, cartas, decks, audiência, produto e retenção num jsonb só; null pra quem não é admin |
 | `error_summary(...)` | erros de JS agregados, no mesmo painel |
 | `delete_account()` | apaga shares + collections + o usuário, filtrando por `auth.uid()` |
 
@@ -220,6 +221,22 @@ de primeira parte do `localStorage`. A tabela `events` **não tem select** — n
 dono lê evento cru; o que existe é o agregado das RPCs, e só pra quem tem
 `is_admin`. Erros de JS entram como `name='jserror'` no mesmo lugar e aparecem no
 painel. A política de privacidade divulga essas estatísticas.
+
+Desde a `20260914a` o pageview leva um contexto agregável em `props` (classe do
+aparelho, idioma em 2 letras, host de origem quando vem de fora, flag de
+`navigator.webdriver`) e, com sessão, o JWT vai no header. O trigger
+`events_guard` grava `uid = auth.uid()` e `bot` (user-agent de crawler/monitor,
+sem user-agent ou webdriver). É isso que separa no painel **visitante** (uuid
+anônimo), **usuário logado** (conta) e **robô** — e é o que responde "quanto do
+tráfego medido é gente". Crawler que não executa JS nunca gera evento; esse só o
+Cloudflare vê.
+
+**Quem entra no `/admin`**: a conta cuja linha em `profiles` tem `is_admin`. Não
+há tela pra isso — é `update profiles set is_admin = true where user_id = …` no
+SQL Editor. O trigger `profiles_admin_guard` devolve `is_admin` ao valor
+anterior em qualquer escrita que chegue pela API (JWT de anon/authenticated):
+sem ele, a policy "dono edita a própria linha" deixava qualquer conta se
+promover com um PATCH.
 
 ---
 

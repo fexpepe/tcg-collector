@@ -4512,6 +4512,66 @@ a.setting-open {
 .admin-empty { color: var(--muted); font-size: 13px; }
 .admin-note { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
+/* Painel admin 2.0 (2026-09-14): abas, período e gráficos SVG do admin.js.
+   Cor de dado vem das variáveis do tema (accent pra "gente", --subtle pra
+   "robô") e da cor de marca de cada jogo; as classes .adm-bar-*/.adm-swatch-*
+   existem pra barra e legenda pintarem sempre com a MESMA fonte de cor. */
+.admin-page .page-head { margin-bottom: 8px; }
+.adm-toolbar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; }
+.adm-tabs, .adm-period { display: flex; flex-wrap: wrap; gap: 6px; }
+.adm-tabs .chip[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.admin-stat-hint { font-size: 11px; color: var(--subtle); line-height: 1.3; }
+.adm-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.adm-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.adm-col { display: flex; flex-direction: column; gap: 16px; }
+.adm-sub h3 { font-size: 13px; margin: 0 0 8px; }
+/* Escala com a largura (a viewBox já é escolhida pela tela no admin.js);
+   sobrescreve a altura fixa de .admin-chart svg do painel antigo. */
+.adm-chart-tall svg, .adm-chart-short svg { height: auto; }
+.adm-grid { stroke: var(--line); stroke-width: 1; }
+.adm-axis { fill: var(--subtle); font-size: 10px; }
+.adm-bar-a { fill: var(--accent); }
+.adm-bar-b { fill: var(--subtle); opacity: 0.7; }
+.adm-swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block; flex: none; }
+.adm-swatch-a { background: var(--accent); }
+.adm-swatch-b { background: var(--subtle); opacity: 0.7; }
+.adm-legend { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+.adm-legend li { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.adm-legend-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.adm-legend-val { font-variant-numeric: tabular-nums; font-weight: 700; }
+.adm-legend-pct { color: var(--muted); min-width: 44px; text-align: right; font-variant-numeric: tabular-nums; }
+.adm-legend-row { flex-direction: row; flex-wrap: wrap; gap: 14px; color: var(--muted); font-size: 12px; }
+.adm-donut { display: flex; gap: 16px; align-items: center; }
+.adm-donut svg { width: 140px; height: 140px; flex: none; }
+.adm-donut .adm-legend { flex: 1; min-width: 0; margin: 0; }
+.adm-donut-center { fill: var(--text); font-size: 20px; font-weight: 800; }
+.adm-treemap svg { width: 100%; height: auto; display: block; }
+.adm-tm-label { font-size: 13px; font-weight: 700; }
+.adm-tm-val { font-size: 11px; opacity: 0.85; }
+.adm-hbars { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.adm-hbars li { display: grid; grid-template-columns: minmax(90px, 170px) 1fr auto; gap: 10px; align-items: center; font-size: 13px; }
+.adm-hbar-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.adm-hbar-label small { display: block; color: var(--subtle); font-size: 11px; }
+.adm-hbar-track { height: 10px; border-radius: 999px; background: var(--panel-strong); overflow: hidden; }
+.adm-hbar-fill { display: block; height: 100%; border-radius: 999px; }
+.adm-hbar-val { font-variant-numeric: tabular-nums; font-weight: 700; }
+.adm-funnel { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.adm-funnel li { position: relative; min-height: 44px; display: flex; align-items: center; }
+.adm-funnel-bar { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 8px; opacity: 0.25; }
+.adm-funnel-txt { position: relative; padding: 4px 10px; font-size: 14px; }
+.adm-funnel-txt em { color: var(--muted); font-style: normal; margin-left: 6px; }
+.adm-funnel-txt small { display: block; color: var(--subtle); font-size: 11px; }
+.adm-game { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; background: color-mix(in srgb, var(--g) 22%, transparent); border: 1px solid color-mix(in srgb, var(--g) 55%, transparent); }
+.adm-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12.5px; }
+.adm-scroll { overflow-x: auto; }
+.adm-banner { border: 1px solid var(--gold); background: color-mix(in srgb, var(--gold) 14%, transparent); border-radius: 12px; padding: 12px 14px; font-size: 13px; line-height: 1.5; }
+.adm-banner code { font-size: 12px; }
+@media (max-width: 700px) {
+  .adm-donut { flex-direction: column; align-items: stretch; }
+  .adm-donut svg { align-self: center; }
+  .adm-hbars li { grid-template-columns: minmax(70px, 110px) 1fr auto; }
+}
+
 /* Modo sensível: borra os totais de valor (portfólio/coleção/vendas) pra dar
    print sem revelar quanto vale. Mira os totais por id + a classe .sensitive-value.
 

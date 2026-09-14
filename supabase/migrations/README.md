@@ -8,7 +8,28 @@ poucos.)
 
 ## Pendentes de aplicar
 
-Nenhuma.
+- `20260914a` — painel `/admin` 2.0. Três coisas num arquivo só, todas
+  aditivas: (1) `events.uid`/`events.bot` preenchidos pelo `events_guard`
+  (mesma whitelist de nomes da `20260830a`); (2) trigger `profiles_admin_guard`,
+  que impede uma conta de marcar o próprio `is_admin` pela API; (3) RPC
+  `admin_dashboard(days)`, que alimenta as abas novas. O front já está
+  preparado pra ausência dela: sem a RPC, o `/admin` mostra o painel antigo com
+  um aviso amarelo; com ela, as abas aparecem sozinhas.
+
+  Testada em 2026-09-14 num PostgreSQL 16 local com um esqueleto do esquema
+  (auth.users, profiles, collections, shares, deck_views, card_views, events):
+  nome fora da whitelist descartado; `Googlebot/`, `HeadlessChrome` e
+  `props.wd=1` viram `bot=true` e `CUBOT_X18` (celular) não; JWT de usuário
+  preenche `uid`; UPDATE/INSERT de `is_admin` com JWT `authenticated` não sobe e
+  pelo SQL sobe; RPC devolve null pra não-admin e o jsonb completo pra admin.
+
+  Conferir depois de aplicar:
+  ```sql
+  select column_name from information_schema.columns
+   where table_name = 'events' and column_name in ('uid', 'bot');   -- 2 linhas
+  select tgname from pg_trigger where tgname in ('events_guard', 'profiles_admin_guard'); -- 2
+  ```
+  E, logado como admin, abrir `/admin`: as abas aparecem e o aviso amarelo some.
 
 ### Já aplicadas (verificado em produção)
 

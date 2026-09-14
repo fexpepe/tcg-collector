@@ -10,7 +10,7 @@
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -18,11 +18,18 @@ const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ler = (p) => readFileSync(join(raiz, p), "utf8");
 
 // A whitelist como o BANCO a conhece, lida da migração — não copiada à mão pra
-// cá, senão as duas listas divergiriam sem ninguém notar.
+// cá, senão as duas listas divergiriam sem ninguém notar. Vale a migração MAIS
+// NOVA que (re)define o events_guard: `create or replace` substitui a função
+// inteira, então a lista que está no banco é a da última que a escreveu (hoje a
+// 20260914a, que herdou os sete nomes da 20260830a).
 function nomesDaMigracao() {
-  const sql = ler("supabase/migrations/20260830a_events_produto.sql");
+  const dir = join(raiz, "supabase", "migrations");
+  const arquivos = readdirSync(dir).filter((f) => f.endsWith(".sql")).sort();
+  const define = arquivos.filter((f) => /create or replace function public\.events_guard\(\)/.test(ler(join("supabase", "migrations", f))));
+  assert.ok(define.length, "nenhuma migração define o events_guard");
+  const sql = ler(join("supabase", "migrations", define[define.length - 1]));
   const bloco = /new\.name not in \(([\s\S]*?)\)\s*\n?\s*then return null/.exec(sql);
-  assert.ok(bloco, "não achei a whitelist no SQL da migração");
+  assert.ok(bloco, `não achei a whitelist no SQL da migração ${define[define.length - 1]}`);
   return new Set([...bloco[1].matchAll(/'([a-z_]+)'/g)].map((m) => m[1]));
 }
 

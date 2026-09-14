@@ -3608,6 +3608,38 @@
   // (o import recarrega a página logo depois): sem ele o navegador cancela a
   // requisição no unload e o evento some justamente nos fluxos que a gente mais
   // quer medir.
+  //
+  // Com sessão, o JWT vai junto (2026-09-14): o trigger `events_guard` grava
+  // `uid = auth.uid()` — é o que separa, no /admin, usuário LOGADO ativo de
+  // visitante anônimo (antes DAU/MAU misturavam os dois). O cliente não manda
+  // uid no corpo; quem atribui é o banco, a partir do token. Token velho
+  // (>50min) fica de fora: viraria 401 e o evento se perderia — sem token o
+  // evento entra anônimo, que é o comportamento de sempre.
+  function tokenParaEvento() {
+    try {
+      const s = getSession();
+      if (!s || !s.access_token) return null;
+      return (Date.now() - (s.ts || 0) < 50 * 60 * 1000) ? s.access_token : null;
+    } catch (e) { return null; }
+  }
+  // Contexto do pageview, tudo agregável e nada identificável: classe do
+  // aparelho (toque/ponteiro), idioma do navegador (2 letras), o HOST de
+  // origem (só o domínio — nunca caminho nem query) quando veio de fora, e se
+  // o navegador se declara automatizado (navigator.webdriver). O último é o que
+  // deixa o /admin separar gente de robô que executa JS; o trigger cruza com o
+  // user-agent do lado do servidor.
+  function contextoPageview() {
+    const p = {};
+    try {
+      p.d = (window.matchMedia && matchMedia("(pointer: coarse)").matches) ? "m" : "d";
+      const l = String(navigator.language || "").slice(0, 2).toLowerCase();
+      if (/^[a-z]{2}$/.test(l)) p.l = l;
+      const ref = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, "") : "";
+      if (ref && !/(^|\.)sleevu\.app$/i.test(ref)) p.r = ref.slice(0, 60);
+      if (navigator.webdriver) p.wd = 1;
+    } catch (e) { /* sem contexto, o pageview vale do mesmo jeito */ }
+    return p;
+  }
   function mandaEvento(nome, props) {
     if (!AUTH_ENABLED || !hasConsent("analytics")) return;
     if (!/(^|\.)sleevu\.app$/i.test(location.hostname)) return;
@@ -3616,13 +3648,13 @@
       if (props) corpo.props = props;
       fetch(`${SUPABASE_URL}/rest/v1/events`, {
         method: "POST",
-        headers: Object.assign(authHeaders(), { Prefer: "return=minimal" }),
+        headers: Object.assign(authHeaders(tokenParaEvento()), { Prefer: "return=minimal" }),
         body: JSON.stringify(corpo),
         keepalive: true
       });
     } catch (e) { /* analytics nunca quebra a página */ }
   }
-  function logPageview() { mandaEvento("pageview"); }
+  function logPageview() { mandaEvento("pageview", contextoPageview()); }
   // Eventos de PRODUTO (E6). Cada um é uma AÇÃO CONCLUÍDA que a pessoa escolheu
   // fazer — não um clique de caminho. É o que responde "quantos importaram de
   // fato", pergunta que hoje se responde no palpite. Os nomes têm que existir na
@@ -3890,6 +3922,25 @@
       const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/analytics_summary`, {
         method: "POST", headers: authHeaders(s.access_token), body: JSON.stringify({ days: days || 30 })
       });
+      if (!r.ok) return null;
+      return await r.json();
+    } catch (e) { return null; }
+  }
+  // Painel 2.0 (migração 20260914a): tudo numa RPC só — overview, série diária,
+  // páginas, jogos, cartas, decks, audiência, produto, retenção. Mesmo gate:
+  // null pra quem não é admin. Devolve `undefined` (≠ null) quando a RPC ainda
+  // não existe no banco (404), pra página avisar que a migração está pendente
+  // em vez de dizer "acesso restrito" pra quem é admin.
+  async function adminDashboard(days) {
+    let s = getSession();
+    if (!s) return null;
+    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
+    if (!s) return null;
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/admin_dashboard`, {
+        method: "POST", headers: authHeaders(s.access_token), body: JSON.stringify({ days: days || 30 })
+      });
+      if (r.status === 404) return undefined;
       if (!r.ok) return null;
       return await r.json();
     } catch (e) { return null; }
@@ -9356,6 +9407,7 @@
     portfolioValueTotal,
     publicProfileUrl,
     analyticsSummary,
+    adminDashboard,
     pushProfile,
     handleAvailable,
     fetchPublicProfile,
