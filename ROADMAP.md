@@ -10,7 +10,7 @@ Collectr — é a alternativa livre: sem cartão, sem plano "pro", sem limite de
 cartas, com export a qualquer momento. A sincronização na nuvem, que noutro
 produto seria o extra pago, aqui é grátis.
 
-Última revisão: 2026-08-16.
+Última revisão: 2026-09-14.
 
 ---
 
@@ -94,15 +94,16 @@ Turnstile no login, SMTP próprio (Resend), CI com testes e guardas de mobile.
 > em [docs/PLANO-UX-2.md](docs/PLANO-UX-2.md). O item 1 abaixo (preço BR/MYP)
 > ganhou um caminho novo lá (F1: a API pública da MYP tem Swagger atualizado).
 
-### 0. Preço da Comunidade + graded no card — **F0 a F5 no ar; só falta a F6**
+### 0. Preço da Comunidade + graded no card — **F0 a F6 no ar**
 Plano e estado por fase em `docs/COMMUNITY-PRICES.md`. Prontas: F0 (merge de
 preço por condição), F1 (SQL aplicado e verificado), F2 (contribuição + toggle em
 Configurações → Privacidade + política), F3 (gráfico com Cadastrados × Vendas,
 mediana e n), F4a (valores PSA no card), F4b ("+ Graded" de dentro do card, via
 hook opcional no `createCardPreview`) e F5 (painel reorganizado; "Detalhes" virou
-`<details>` no fim e abre fechado no celular). Falta:
-- **F6** histórico graded — precisa o `sync-price-history.mjs` fotografar `g` por
-  nota; sem snapshots acumulados não há gráfico pra fazer.
+`<details>` no fim e abre fechado no celular) e F6 (2026-09-14: o
+`sync-price-history.mjs` fotografa o `g` por nota PSA em
+`graded-history.generated.json`, e o card desenha uma linha por nota assim que
+houver 2+ pontos — nasce invisível e enche a 1 ponto/dia, como o de mercado).
 
 O gráfico só aparece quando uma carta tem 3+ contribuições — então ele nasce
 invisível e enche com o uso.
@@ -151,11 +152,18 @@ reforça a tese "em português" no segundo jogo mais popular do site.
 - **Nomes dos 67 sets do Naruto** seguem em japonês (aparecem no seletor, no tile
   e 2× no modal). Decisão pendente do Fernando: traduzir (como já foi feito com
   os nomes das cartas, com o original guardado em `nameJp`) ou manter.
-- **Espanhol nas páginas de conteúdo**: Sobre/Ajuda/FAQ/Privacidade/Termos ainda
-  caem no fallback pt.
 - **JUMP**: o slug existe e o compilador de curadoria roda, mas o catálogo está
   vazio — decidir se entra de verdade ou sai do registro.
-- **Realce de 100%** nos cards de set/artista, como o dourado da Pokédex.
+- **Peso do núcleo**: o `shared.js` saiu de 99% pra ~89% do teto em 2026-09-14
+  (importação de backup/CSV, resgate de `?card=` e facetas de set viraram
+  módulos por página ou sob demanda) e o CSS passou a ser medido pelo NÚCLEO
+  que toda página baixa, com o split por área rodando no CI. Bloco frio novo
+  continua tendo que nascer fora do `shared.js` — o padrão está em
+  `src/backup-import.js`.
+
+(Saíram daqui em 2026-09-14, por já estarem no ar: o espanhol das páginas de
+conteúdo — `src/i18n-docs.js` cobre Sobre/Ajuda/FAQ/Privacidade/Termos nos três
+idiomas — e o realce dourado de 100% nos cards de set/artista.)
 
 ---
 
