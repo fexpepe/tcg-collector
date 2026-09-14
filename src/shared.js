@@ -5234,6 +5234,74 @@
       ${premio}
       <p class="market-source">${escapeHtml(t("graded.priceSource"))}</p>`;
     section.hidden = false;
+    fillGradedHistory(section, card); // uma linha por nota, quando o acumulador já tem 2+ pontos
+  }
+
+  // ── Histórico GRADED no card (F6 de docs/COMMUNITY-PRICES.md) ──────────────
+  // graded-history.generated.json: { d: [datas], c: { id: { "10": [usd], "9": [usd] } } }
+  // — o sync-price-history fotografa o `s` de cada nota PSA a cada build. É um
+  // arquivo à parte do price-history (que já é o maior JSON do site): só desce
+  // quando a carta aberta TEM nó graded, 1x por jogo, e o SW o guarda como os
+  // outros dados. Uma linha por nota, PSA 10 primeiro; o bloco só existe com
+  // 2+ pontos em alguma nota — o acumulador cresce 1 ponto/dia, então nasce
+  // invisível e enche com o tempo (mesma regra do gráfico de mercado).
+  const gradedHistoryByGame = {};
+  function loadGradedHistory(game) {
+    const g = normalizeGame(game);
+    if (!gradedHistoryByGame[g]) {
+      gradedHistoryByGame[g] = fetch(gameDataDir(g) + "graded-history.generated.json")
+        .then((r) => (r.ok ? r.json() : null)).catch(() => null);
+    }
+    return gradedHistoryByGame[g];
+  }
+  async function fillGradedHistory(section, card) {
+    const h = await loadGradedHistory(card.game || currentGame());
+    if (!h || !h.c || !section.isConnected || section.querySelector(".gp-history")) return;
+    const entry = h.c[card.id] || h.c[basePricingId(card.id)];
+    if (!entry) return;
+    const cur = getCurrency();
+    const conv = (usd) => { const r = convertMoney(usd, "USD", cur); return r == null ? usd : r; };
+    const datas = h.d || [];
+    const series = Object.keys(entry)
+      .sort((a, b) => parseFloat(b) - parseFloat(a))
+      .map((nota) => {
+        const pts = [];
+        (entry[nota] || []).forEach((v, i) => { if (v != null && v > 0 && datas[i]) pts.push({ i, v: conv(v) }); });
+        return { nota, pts };
+      })
+      .filter((sr) => sr.pts.length >= 2);
+    if (!series.length) return;
+    const todos = [].concat.apply([], series.map((sr) => sr.pts.map((p) => p.v)));
+    let mn = Math.min.apply(null, todos), mx = Math.max.apply(null, todos);
+    if (mn === mx) { mn *= 0.95; mx = mx * 1.05 || 1; }
+    const iMin = Math.min.apply(null, series.map((sr) => sr.pts[0].i));
+    const iMax = Math.max.apply(null, series.map((sr) => sr.pts[sr.pts.length - 1].i));
+    const W = 560, H = 120, P = 6;
+    const X = (i) => P + (iMax === iMin ? (W - 2 * P) / 2 : ((i - iMin) / (iMax - iMin)) * (W - 2 * P));
+    const Y = (v) => H - P - ((v - mn) / (mx - mn)) * (H - 2 * P);
+    // PSA 10 na cor dourada do site (é o que a pessoa procura); as demais
+    // seguem a paleta das outras séries do card.
+    const CORES = ["#f5c451", "#7aa2ff", "#34d399", "#f0883e"];
+    const fmtDay = (d) => { const m = /^\d{4}-(\d{2})-(\d{2})/.exec(d); return m ? `${m[2]}/${m[1]}` : d; };
+    const linhas = series.map((sr, k) =>
+      `<polyline points="${sr.pts.map((p) => `${X(p.i).toFixed(1)},${Y(p.v).toFixed(1)}`).join(" ")}" fill="none" stroke="${CORES[k % CORES.length]}" stroke-width="2" stroke-linejoin="round"/>`).join("");
+    const legenda = series.map((sr, k) => {
+      const u = sr.pts[sr.pts.length - 1];
+      return `<span class="cp-leg"><span class="cp-dot" style="background:${CORES[k % CORES.length]}"></span>PSA ${escapeHtml(sr.nota)}<strong>${escapeHtml(fmtMoney(cur, u.v))}</strong></span>`;
+    }).join("");
+    const n = Math.max.apply(null, series.map((sr) => sr.pts.length));
+    const rotulo = t("graded.history", { n });
+    const html = `<div class="gp-history"><span class="market-finish-label">${escapeHtml(rotulo)}</span>
+      <div class="price-history-chart">
+        <div class="price-history-plot">
+          <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${escapeAttribute(rotulo)}">${linhas}</svg>
+        </div>
+        <div class="price-history-meta"><span>${escapeHtml(fmtDay(datas[iMin]))}</span><span>${escapeHtml(fmtDay(datas[iMax]))}</span></div>
+      </div>
+      <div class="cp-legend">${legenda}</div></div>`;
+    // Antes da nota de fonte: ela vale pra tabela E pro gráfico.
+    const fonte = section.querySelector(".market-source");
+    if (fonte) fonte.insertAdjacentHTML("beforebegin", html); else section.insertAdjacentHTML("beforeend", html);
   }
 
   // Busca cotação + câmbio e preenche a seção no modal (some se não houver).

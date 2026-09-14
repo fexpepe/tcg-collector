@@ -4481,6 +4481,10 @@ a.hub-tile:hover {
 .gp-grade { flex: 1 1 auto; font-size: 13px; font-weight: 700; color: var(--muted); }
 .gp-val { flex: none; font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums; }
 .gp-n { flex: none; font-size: 11.5px; color: var(--subtle); font-weight: 700; }
+/* Histórico graded (F6): reusa o gráfico e a legenda das outras séries do card;
+   só o respiro acima e o rótulo em bloco são dele. */
+.gp-history { margin-top: 10px; }
+.gp-history .market-finish-label { display: block; margin-bottom: 6px; }
 
 /* Onboarding do @ (primeiro login, shared.js): reusa o modal ts-* e os campos
    do settings. */

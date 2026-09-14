@@ -10,6 +10,7 @@
 //   price-deltas-7d.generated.json  idem, mas contra o snapshot de ~7 DIAS atrás
 //   price-movers.generated.json   { from, to, up: [...], down: [...] } — maiores
 //                                  altas/quedas ({ id, pct, v }), só cartas >= MIN_MOVER
+//   graded-history.generated.json acumulador do valor PSA por nota (ver o fim)
 //
 // Por que DOIS arquivos de delta: desde que o build passou a ser diário
 // (2026-08-05), o delta "vs snapshot anterior" virou variação de 24h — bom pro
@@ -190,11 +191,65 @@ const primeiro = serie.find((v) => v != null);
 const indice = primeiro > 0 ? serie.map((v) => (v == null ? null : Math.round((v / primeiro) * 1000 * 100) / 100)) : serie;
 const outIndex = new URL(`../${dir}/market-index.generated.json`, import.meta.url);
 
+// ── HISTÓRICO GRADED (F6 de docs/COMMUNITY-PRICES.md) ───────────────────────
+// Mesmo mecanismo do acumulador de cima (produção primeiro, cache do runner
+// depois; ponto do dia substituído; teto de pontos), num arquivo PRÓPRIO:
+//   graded-history.generated.json  { v, d: [datas], c: { id: { "10": [usd], "9": [usd] } } }
+// Entram só as cartas com nó `g` (PSA por nota, da PPT) e o valor fotografado é
+// o `s` (smart market, USD) de cada nota. Separado do price-history porque
+// aquele já é o maior JSON do site e o card só precisa deste quando a carta
+// tem graded. Sem série acumulada não há gráfico — é isto que o card lê
+// (fillGradedHistory no shared.js), e ele nasce invisível até haver 2+ pontos.
+// A PPT roda 3x/semana; nos outros dias o `g` vem do cache do merge e o ponto
+// repete o anterior — igual ao raw quando a fonte não mexeu no preço.
+const outGraded = new URL(`../${dir}/graded-history.generated.json`, import.meta.url);
+const cacheGraded = new URL(`graded-history-${slug}.json`, cacheDir);
+async function loadPreviousGraded() {
+  try {
+    const r = await fetch(`${PROD}/${dir}/graded-history.generated.json`);
+    if (r.ok) { const j = await r.json(); if (j && Array.isArray(j.d) && j.c) return j; }
+  } catch { /* sem rede/404: cai no cache */ }
+  try { const j = JSON.parse(await readFile(cacheGraded, "utf8")); if (j && Array.isArray(j.d) && j.c) return j; } catch { /* primeira vez */ }
+  return { v: 1, d: [], c: {} };
+}
+const gh = await loadPreviousGraded();
+if (!(gh.d.length && gh.d[gh.d.length - 1] === today)) gh.d.push(today);
+const gIdx = gh.d.length - 1;
+let gradedTracked = 0;
+Object.entries(pricing).forEach(([id, entry]) => {
+  const g = entry && entry.g;
+  if (!g || typeof g !== "object") return;
+  const notas = Object.keys(g).filter((k) => g[k] && Number(g[k].s) > 0);
+  if (!notas.length) return;
+  gradedTracked++;
+  const c = gh.c[id] || (gh.c[id] = {});
+  notas.forEach((k) => {
+    const p = c[k] || (c[k] = new Array(gIdx).fill(null));
+    while (p.length < gIdx) p.push(null);
+    p[gIdx] = r2(Number(g[k].s));
+  });
+});
+// Nota que sumiu ganha null hoje; série 100% nula sai, carta sem série sai.
+Object.entries(gh.c).forEach(([id, c]) => {
+  Object.keys(c).forEach((k) => {
+    while (c[k].length < gh.d.length) c[k].push(null);
+    if (c[k].every((v) => v == null)) delete c[k];
+  });
+  if (!Object.keys(c).length) delete gh.c[id];
+});
+if (gh.d.length > MAX_POINTS) {
+  const drop = gh.d.length - MAX_POINTS;
+  gh.d.splice(0, drop);
+  Object.values(gh.c).forEach((c) => Object.values(c).forEach((p) => p.splice(0, drop)));
+}
+
 await mkdir(cacheDir, { recursive: true });
 await writeFile(outHistory, JSON.stringify(hist), "utf8");
+await writeFile(outGraded, JSON.stringify(gh), "utf8");
+await writeFile(cacheGraded, JSON.stringify(gh), "utf8");
 await writeFile(cacheFile, JSON.stringify(hist), "utf8");
 await writeFile(outDeltas, JSON.stringify({ from, to: today, c: deltas }), "utf8");
 await writeFile(outDeltas7d, JSON.stringify({ from: from7d, to: today, c: deltas7d }), "utf8");
 await writeFile(outMovers, JSON.stringify({ from, to: today, up, down }), "utf8");
 await writeFile(outIndex, JSON.stringify({ v: 1, d: hist.d, i: indice, n: idxBase.length }), "utf8");
-console.log(`[price-history] ${dir}: ${tracked} cartas, ${hist.d.length} snapshot(s) (${hist.d[0]}..${today})${replacing ? " [substituiu hoje]" : ""}; deltas ${Object.keys(deltas).length} (desde ${from}), 7d ${Object.keys(deltas7d).length} (desde ${from7d}), movers +${up.length}/-${down.length}, índice ${idxBase.length} cartas -> ${indice[indice.length - 1]}`);
+console.log(`[price-history] ${dir}: ${tracked} cartas, ${hist.d.length} snapshot(s) (${hist.d[0]}..${today})${replacing ? " [substituiu hoje]" : ""}; deltas ${Object.keys(deltas).length} (desde ${from}), 7d ${Object.keys(deltas7d).length} (desde ${from7d}), movers +${up.length}/-${down.length}, índice ${idxBase.length} cartas -> ${indice[indice.length - 1]}, graded ${gradedTracked} cartas/${gh.d.length} snapshot(s)`);
