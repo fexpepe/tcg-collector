@@ -72,6 +72,7 @@
     valueOwned: document.getElementById("valueOwned"),
     valueToBuy: document.getElementById("valueToBuy"),
     resultCount: document.getElementById("resultCount"),
+    insights: document.getElementById("setInsights"),
     progressModes: document.getElementById("progressModes"),
     modeMaster: document.getElementById("modeMaster"),
     modeAnyLang: document.getElementById("modeAnyLang")
@@ -180,6 +181,13 @@
   let selectedSort = "value-desc";
   let gridView = shared.gridViewValue(localStorage.getItem("tcg-detail-view"));
   let selectedRarity = ""; // "" = todas; senão "base" | "special"
+  // Fichário: quantos BOLSOS por página. A sequência é a de clicar de novo no
+  // botão com o modo já ativo (9 → 12 → 16 → 4 → 9…); nasce em 9 (3×3), que é
+  // o fichário mais comum. Preferência global, como o modo de visualização.
+  const BINDER_POCKETS = [9, 12, 16, 4];
+  const BINDER_KEY = "tcg-detail-binder-pockets";
+  let binderPockets = Number(localStorage.getItem(BINDER_KEY));
+  if (!BINDER_POCKETS.includes(binderPockets)) binderPockets = 9;
 
   // Ordena os pares carta×variante conforme o select de ordenação. Diferente
   // dos outros filtros: não esconde nada, só reordena a grade.
@@ -351,10 +359,12 @@
       }
       placeValues(summary);
     }
+    renderInsights();
     initBackLink();
     hydrateFilters();
     if (elements.sortSelect) elements.sortSelect.value = selectedSort; // padrão: maior preço
     bindEvents();
+    bindBinderNav();
     initProgressModes();
     initCollapsibles();
     applyGridView();
@@ -420,6 +430,18 @@
       elements.viewToggle.querySelectorAll("[data-grid-view]").forEach((button) => {
         button.setAttribute("aria-pressed", String(button.dataset.gridView === gridView));
       });
+      // O botão do fichário diz quantos bolsos tem (número no canto + título):
+      // é ele que troca o tamanho, então precisa mostrar o estado atual.
+      const binderBtn = elements.viewToggle.querySelector('[data-grid-view="binder"]');
+      if (binderBtn) {
+        const badge = binderBtn.querySelector("[data-binder-badge]");
+        if (badge) badge.textContent = String(binderPockets);
+        const rotulo = t("view.binderPockets", { n: binderPockets });
+        binderBtn.title = rotulo;
+        binderBtn.setAttribute("aria-label", rotulo);
+        binderBtn.removeAttribute("data-i18n-title");
+        binderBtn.removeAttribute("data-i18n-aria");
+      }
     }
   }
 
@@ -964,12 +986,23 @@
         if (!button) return;
         // Compacto muda o HTML do tile (sem <img>), não só a classe da grade:
         // entrar ou sair dele exige reconstruir a grade. grid<->lista é só CSS.
+        // O fichário monta a grade do seu jeito (páginas), então entrar, sair
+        // e trocar o nº de bolsos também reconstroem.
         const eraCompacto = gridView === "compact";
+        const eraBinder = gridView === "binder";
+        const querBinder = button.dataset.gridView === "binder";
+        if (querBinder && eraBinder) {
+          // Já no fichário: o clique troca o tamanho (9 → 12 → 16 → 4 → 9…).
+          binderPockets = BINDER_POCKETS[(BINDER_POCKETS.indexOf(binderPockets) + 1) % BINDER_POCKETS.length];
+          try { localStorage.setItem(BINDER_KEY, String(binderPockets)); } catch (e) { /* ignora */ }
+          delete elements.grid.dataset.binderPage; // página 2 de 9 bolsos não é a de 16: recomeça
+
+        }
         gridView = shared.gridViewValue(button.dataset.gridView);
         localStorage.setItem("tcg-detail-view", gridView);
         const virouCompacto = gridView === "compact";
         applyGridView();
-        if (eraCompacto !== virouCompacto) render();
+        if (eraCompacto !== virouCompacto || eraBinder || querBinder) render();
       });
     }
 
@@ -1018,7 +1051,9 @@
     const tiles = sortTiles(shared.cardVariantPairs(visibleCards, { group: agrupaVersoes }));
     // Cartas sem imagem vão para o fim (sort estável preserva a ordem da ordenação escolhida).
     tiles.sort((a, b) => Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card)));
-    pager.render(tiles, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes, compact: gridView === "compact", lists: true }), { resetCount });
+    const tileOf = ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes, compact: gridView === "compact", lists: true });
+    if (gridView === "binder") renderBinder(tiles, tileOf);
+    else pager.render(tiles, tileOf, { resetCount });
 
     elements.empty.hidden = tiles.length > 0;
     // Beco sem saída vira caminho: em vez de "nenhuma carta encontrada" (que
@@ -1033,6 +1068,301 @@
     }
     elements.resultCount.textContent = tn("results.count", tiles.length);
     updateHeaderStats();
+  }
+
+  // ── Fichário ─────────────────────────────────────────────────────────────
+  // A grade vira um fichário: páginas de N bolsos (2×2, 3×3, 3×4, 4×4) numa
+  // trilha que ROLA DE LADO com scroll-snap — no celular é o dedo, no desktop as
+  // setas, o <select> de página ou a rolagem horizontal. Só a imagem da carta
+  // aparece (nome, número, botões somem por CSS em .is-binder; clicar na carta
+  // abre o card, como sempre). Os tiles são os MESMOS do variantTile — o
+  // refreshOwnership e os handlers da grade seguem valendo sem saber do modo.
+  //
+  // Cada página nasce com os N bolsos VAZIOS (caixas na proporção da carta) e
+  // só recebe os tiles quando fica a 1 página de distância da atual: o set
+  // grande (YGO passa de 1000 impressões) não paga o DOM inteiro de uma vez, e
+  // a altura da trilha não pula porque os bolsos já ocupam o lugar.
+  const BINDER_ICONS = {
+    first: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>',
+    prev: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>',
+    next: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>',
+    last: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>',
+    book: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 3v18"/></svg>'
+  };
+  let binder = null; // { rail, pages, tiles, tileOf, current, per, rendered:Set }
+  function renderBinder(tiles, tileOf) {
+    // Limpa a grade pelo pager (tira também a sentinela e o botão "mais N").
+    pager.render([], () => document.createDocumentFragment());
+    const per = binderPockets;
+    const cols = per === 4 ? 2 : per === 16 ? 4 : 3;
+    // Linhas entram no CSS pra limitar a largura da trilha de modo que a
+    // PÁGINA INTEIRA caiba na altura da tela no desktop (ver .binder-rail).
+    elements.grid.style.setProperty("--binder-rows", String(per / cols));
+    const pageCount = Math.max(1, Math.ceil(tiles.length / per));
+    const grid = elements.grid;
+    grid.style.setProperty("--binder-cols", String(cols));
+    const nav = document.createElement("div");
+    nav.className = "binder-nav";
+    const opcoes = Array.from({ length: pageCount }, (_, i) => `<option value="${i}">${escapeHtml(t("binder.page", { n: i + 1 }))}</option>`).join("");
+    nav.innerHTML = `
+      <button type="button" class="binder-btn" data-binder-go="first" aria-label="${escapeAttribute(t("binder.first"))}" title="${escapeAttribute(t("binder.first"))}">${BINDER_ICONS.first}</button>
+      <button type="button" class="binder-btn" data-binder-go="prev" aria-label="${escapeAttribute(t("binder.prev"))}" title="${escapeAttribute(t("binder.prev"))}">${BINDER_ICONS.prev}</button>
+      <label class="binder-page-pick">${BINDER_ICONS.book}<span class="sr-only">${escapeHtml(t("binder.pickPage"))}</span><select data-binder-select>${opcoes}</select><span class="binder-page-total">/ ${pageCount}</span></label>
+      <button type="button" class="binder-btn" data-binder-go="next" aria-label="${escapeAttribute(t("binder.next"))}" title="${escapeAttribute(t("binder.next"))}">${BINDER_ICONS.next}</button>
+      <button type="button" class="binder-btn" data-binder-go="last" aria-label="${escapeAttribute(t("binder.last"))}" title="${escapeAttribute(t("binder.last"))}">${BINDER_ICONS.last}</button>`;
+    const rail = document.createElement("div");
+    rail.className = "binder-rail";
+    rail.setAttribute("aria-label", t("binder.railAria"));
+    const pages = [];
+    for (let p = 0; p < pageCount; p++) {
+      const page = document.createElement("section");
+      page.className = "binder-page";
+      page.dataset.binderPage = String(p);
+      page.setAttribute("aria-label", t("binder.pageOf", { n: p + 1, t: pageCount }));
+      for (let i = 0; i < per; i++) {
+        const pocket = document.createElement("div");
+        pocket.className = "binder-pocket";
+        page.appendChild(pocket);
+      }
+      rail.appendChild(page);
+      pages.push(page);
+    }
+    // Bolinhas de página (como no app Dex). Acima de 24 páginas viram ruído —
+    // o <select> e as setas já navegam; as bolinhas somem.
+    const dots = document.createElement("div");
+    dots.className = "binder-dots";
+    if (pageCount > 1 && pageCount <= 24) {
+      dots.innerHTML = Array.from({ length: pageCount }, (_, i) => `<button type="button" class="binder-dot" data-binder-dot="${i}" aria-label="${escapeAttribute(t("binder.page", { n: i + 1 }))}"></button>`).join("");
+    }
+    grid.append(nav, rail, dots);
+    binder = { rail, pages, tiles, tileOf, per, current: 0, rendered: new Set(), pageCount, nav, dots };
+    // A página lembrada sobrevive à troca de filtro/ordenação enquanto existir
+    // (mudou o nº de páginas: volta pro início).
+    const lembrada = Number(grid.dataset.binderPage || 0);
+    binder.current = lembrada < pageCount ? lembrada : 0;
+    ensureBinderPages(binder.current);
+    paintBinderNav();
+    if (binder.current > 0) {
+      // Sem animação: a página já abre no lugar certo (e o `scrollTo` com
+      // behavior instant não dispara o scroll-snap do meio do caminho).
+      requestAnimationFrame(() => { rail.scrollLeft = binder.current * rail.clientWidth; });
+    }
+    let raf = 0;
+    rail.addEventListener("scroll", () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        if (!binder || !rail.clientWidth) return;
+        const idx = Math.max(0, Math.min(binder.pageCount - 1, Math.round(rail.scrollLeft / rail.clientWidth)));
+        if (idx !== binder.current) {
+          binder.current = idx;
+          grid.dataset.binderPage = String(idx);
+          paintBinderNav();
+        }
+        // Pré-monta a vizinha pra qual o dedo está indo.
+        ensureBinderPages(idx);
+      });
+    }, { passive: true });
+  }
+  function ensureBinderPages(idx) {
+    if (!binder) return;
+    for (let p = idx - 1; p <= idx + 1; p++) {
+      if (p < 0 || p >= binder.pageCount || binder.rendered.has(p)) continue;
+      binder.rendered.add(p);
+      const pockets = binder.pages[p].children;
+      for (let i = 0; i < binder.per; i++) {
+        const item = binder.tiles[p * binder.per + i];
+        if (!item) break;
+        pockets[i].appendChild(binder.tileOf(item));
+        pockets[i].classList.add("is-filled");
+      }
+    }
+  }
+  function paintBinderNav() {
+    if (!binder) return;
+    const { current, pageCount, nav, dots } = binder;
+    const sel = nav.querySelector("[data-binder-select]");
+    if (sel && Number(sel.value) !== current) sel.value = String(current);
+    nav.querySelector('[data-binder-go="first"]').disabled = current <= 0;
+    nav.querySelector('[data-binder-go="prev"]').disabled = current <= 0;
+    nav.querySelector('[data-binder-go="next"]').disabled = current >= pageCount - 1;
+    nav.querySelector('[data-binder-go="last"]').disabled = current >= pageCount - 1;
+    dots.querySelectorAll("[data-binder-dot]").forEach((d) => {
+      d.setAttribute("aria-current", Number(d.dataset.binderDot) === current ? "page" : "false");
+    });
+  }
+  function goBinderPage(idx) {
+    if (!binder) return;
+    const alvo = Math.max(0, Math.min(binder.pageCount - 1, idx));
+    ensureBinderPages(alvo);
+    binder.rail.scrollTo({ left: alvo * binder.rail.clientWidth, behavior: "smooth" });
+    // O evento de scroll acerta current/nav quando a rolagem chegar; aqui só
+    // pra resposta imediata nos botões (clicar rápido em › › ›).
+    binder.current = alvo;
+    elements.grid.dataset.binderPage = String(alvo);
+    paintBinderNav();
+  }
+  function bindBinderNav() {
+    elements.grid.addEventListener("click", (event) => {
+      if (!binder) return;
+      const go = event.target.closest("[data-binder-go]");
+      if (go) {
+        const { current, pageCount } = binder;
+        const dir = go.dataset.binderGo;
+        goBinderPage(dir === "first" ? 0 : dir === "prev" ? current - 1 : dir === "next" ? current + 1 : pageCount - 1);
+        return;
+      }
+      const dot = event.target.closest("[data-binder-dot]");
+      if (dot) goBinderPage(Number(dot.dataset.binderDot));
+    });
+    elements.grid.addEventListener("change", (event) => {
+      const sel = event.target.closest("[data-binder-select]");
+      if (sel && binder) goBinderPage(Number(sel.value));
+    });
+    // Setas do teclado quando o foco está no fichário (ou nas setas dele).
+    elements.grid.addEventListener("keydown", (event) => {
+      if (!binder || (event.key !== "ArrowLeft" && event.key !== "ArrowRight")) return;
+      if (event.target.closest("select")) return; // o select usa as setas pra si
+      event.preventDefault();
+      goBinderPage(binder.current + (event.key === "ArrowLeft" ? -1 : 1));
+    });
+  }
+
+  // ── Resumo visual do set (cartões de insight) ────────────────────────────
+  // Três cartões, molde do app Dex (pedido de 2026-09-14): distribuição por
+  // GRUPO de raridade, distribuição por TIPO de carta e o trio conjunto /
+  // lançamento / valor de mercado com um anel de progresso. Os dois gráficos
+  // saem das cartas da página (não mudam com a coleção) e são montados uma
+  // vez; o terceiro é atualizado pelo updateHeaderStats/updateValueStats.
+  //
+  // Grupos de raridade: quatro degraus fixos (comum · rara · ultra · secreta)
+  // em cima do rarityRank, que já é a régua de raridade de TODOS os jogos —
+  // listar cada string (~30 no Pokémon) viraria um gráfico ilegível. A cor
+  // acompanha o DEGRAU (cinza → azul → roxo → laranja), como o Dex faz; o
+  // número em cima da barra fica na cor de texto.
+  const RARITY_GROUPS = ["common", "rare", "ultra", "secret"];
+  const RARITY_GROUP_ICONS = {
+    common: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="6"/></svg>',
+    rare: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1.1 5.9-5.3-2.9-5.3 2.9 1.1-5.9-4.3-4.1 5.9-.8z"/></svg>',
+    ultra: '<svg viewBox="0 0 24 24" width="22" height="18" fill="currentColor" aria-hidden="true"><path d="M8 4l1.9 3.9 4.3.6-3.1 3 .7 4.3L8 13.8l-3.8 2 .7-4.3-3.1-3 4.3-.6z"/><path d="M17 9l1.5 3 3.3.5-2.4 2.3.6 3.3-3-1.6-3 1.6.6-3.3-2.4-2.3 3.3-.5z"/></svg>',
+    secret: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1.1 5.9-5.3-2.9-5.3 2.9 1.1-5.9-4.3-4.1 5.9-.8z"/></svg>'
+  };
+  function rarityGroup(rarity) {
+    // Mítica (Magic) não casa com nenhuma régua do rarityRank (cai em
+    // "exótica", abaixo da comum) — e é o degrau acima da rara.
+    if (/mythic|mitica|mítica/.test(normalize(rarity))) return "ultra";
+    const rank = shared.rarityRank(rarity);
+    if (rank >= 60) return "secret";
+    if (rank >= 40) return "ultra";
+    if (rank >= 30) return "rare";
+    return "common";
+  }
+  // Tipo de carta: o mesmo agrupamento das listas de deck (cardTypeGroup), que
+  // no Magic reduz a type_line ao tipo principal. Pokémon/Treinador/Energia
+  // ganham tradução; o resto é vocabulário do jogo e sai cru.
+  function cardTypeLabel(key) {
+    const k = `cardType.${key}`;
+    const r = t(k);
+    return r === k ? key : r;
+  }
+  // Uma barra por valor, altura proporcional ao maior. Rótulo (contagem) em
+  // cima, ícone/nome embaixo. `min-height` no CSS garante que o 2 de 158 ainda
+  // apareça como uma linha, e não suma.
+  function barsHtml(itens, { icons } = {}) {
+    const max = Math.max(1, ...itens.map((i) => i.n));
+    return `<div class="insight-bars" role="img" aria-label="${escapeAttribute(itens.map((i) => `${i.label}: ${i.n}`).join(", "))}">${itens.map((i) => `
+      <div class="insight-bar-col" title="${escapeAttribute(`${i.label}: ${i.n}`)}">
+        <span class="insight-bar-n">${i.n}</span>
+        <span class="insight-bar" style="--h: ${Math.round((i.n / max) * 100)}%; --bar: ${i.color}"></span>
+        <span class="insight-bar-label">${icons && i.icon ? i.icon : escapeHtml(i.label)}</span>
+      </div>`).join("")}</div>`;
+  }
+  function renderInsights() {
+    const box = elements.insights;
+    if (!box || detailType !== "set" || !pageCards.length) return;
+    // Raridade — só grupos presentes; some com um grupo só (não distribui nada).
+    const porGrupo = new Map();
+    pageCards.forEach((c) => { const g = rarityGroup(c.rarity); porGrupo.set(g, (porGrupo.get(g) || 0) + 1); });
+    const cores = { common: "var(--insight-common)", rare: "var(--insight-rare)", ultra: "var(--insight-ultra)", secret: "var(--insight-secret)" };
+    const raridades = RARITY_GROUPS.filter((g) => porGrupo.has(g)).map((g) => ({
+      label: t(`rarity.group.${g}`), n: porGrupo.get(g), color: cores[g], icon: RARITY_GROUP_ICONS[g]
+    }));
+    const raridadeHtml = raridades.length > 1 ? `
+      <article class="insight-card">
+        <h3>${escapeHtml(t("insights.rarity"))}</h3>
+        ${barsHtml(raridades, { icons: true })}
+      </article>` : "";
+    // Tipo de carta — cores categóricas em ordem FIXA (a 1ª cor é sempre do
+    // tipo mais numeroso); mais de 6 tipos: os menores viram "Outros".
+    const jogo = paginaGame();
+    const porTipo = new Map();
+    pageCards.forEach((c) => {
+      let g = shared.cardTypeGroup(jogo, c);
+      // Pokémon sem `category` no catálogo (o campo só entra em algumas
+      // impressões): quem tem nº de Pokédex é carta de Pokémon.
+      if (!g.key && c.dexId) g = { key: "Pokemon", label: "Pokemon" };
+      if (!g.key) return;
+      const atual = porTipo.get(g.key) || { n: 0, label: g.label };
+      atual.n++;
+      porTipo.set(g.key, atual);
+    });
+    let tipos = [...porTipo.entries()].map(([key, v]) => ({ key, n: v.n, label: cardTypeLabel(v.label) }))
+      .sort((a, b) => b.n - a.n);
+    if (tipos.length > 6) {
+      const resto = tipos.slice(5).reduce((s, x) => s + x.n, 0);
+      tipos = tipos.slice(0, 5).concat({ key: "other", n: resto, label: t("insights.other") });
+    }
+    tipos.forEach((x, i) => { x.color = `var(--insight-cat-${i + 1})`; });
+    const tipoHtml = tipos.length ? `
+      <article class="insight-card">
+        <h3>${escapeHtml(t("insights.cardType"))}</h3>
+        ${barsHtml(tipos)}
+      </article>` : "";
+    // Conjunto / lançamento / valor + anel de progresso.
+    const lanc = pageCards[0].setReleaseDate ? formatInsightDate(pageCards[0].setReleaseDate) : t("insights.na");
+    const resumoHtml = `
+      <article class="insight-card insight-summary">
+        <dl>
+          <div><dt>${escapeHtml(t("insights.complete"))}</dt><dd data-insight-complete>—</dd></div>
+          <div><dt>${escapeHtml(t("insights.release"))}</dt><dd>${escapeHtml(lanc)}</dd></div>
+          <div><dt>${escapeHtml(t("insights.marketValue"))}</dt><dd data-insight-value>${escapeHtml(t("insights.na"))}</dd></div>
+        </dl>
+        <svg class="insight-ring" viewBox="0 0 120 120" role="img" data-insight-ring aria-label="0%">
+          <circle class="insight-ring-track" cx="60" cy="60" r="50"/>
+          <circle class="insight-ring-fill" cx="60" cy="60" r="50" pathLength="100" stroke-dasharray="0 100"/>
+          <text x="60" y="60" text-anchor="middle" dominant-baseline="central" data-insight-pct>0%</text>
+        </svg>
+      </article>`;
+    box.innerHTML = `<div class="set-insights-rail">${raridadeHtml}${tipoHtml}${resumoHtml}</div>`;
+    box.hidden = false;
+  }
+  function formatInsightDate(value) {
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return String(value);
+    return d.toLocaleDateString(shared.getLocale(), { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+  }
+  // Parte VIVA do 3º cartão: conjunto (N de T) e o anel. A contagem é a mesma
+  // dos stats (respeita master set / qualquer idioma), então vem de lá.
+  function updateInsightsProgress(ownedN, totalN, pct) {
+    const box = elements.insights;
+    if (!box || box.hidden) return;
+    const comp = box.querySelector("[data-insight-complete]");
+    if (comp) comp.textContent = t("insights.completeValue", { n: ownedN, t: totalN });
+    const fill = box.querySelector(".insight-ring-fill");
+    if (fill) fill.setAttribute("stroke-dasharray", `${Math.max(0, Math.min(100, pct))} 100`);
+    const ring = box.querySelector("[data-insight-ring]");
+    if (ring) {
+      ring.setAttribute("aria-label", `${pct}%`);
+      ring.classList.toggle("complete", totalN > 0 && ownedN >= totalN);
+    }
+    const txt = box.querySelector("[data-insight-pct]");
+    if (txt) txt.textContent = `${pct}%`;
+  }
+  function updateInsightsValue(total) {
+    const box = elements.insights;
+    if (!box || box.hidden) return;
+    const el = box.querySelector("[data-insight-value]");
+    if (el) el.textContent = total > 0 ? shared.formatMoney(shared.getCurrency(), total) : t("insights.na");
   }
 
   // Atualiza tiles e contadores no DOM existente, sem reconstruir a grade
@@ -1074,6 +1404,7 @@
       }
     }
     const pct = totalN ? Math.round((ownedN / totalN) * 100) : 0;
+    updateInsightsProgress(ownedN, totalN, pct);
     elements.ownedCount.textContent = ownedN;
     elements.totalCount.textContent = totalN;
     elements.completionRate.textContent = `${pct}%`;
@@ -1137,6 +1468,7 @@
         });
       });
     });
+    updateInsightsValue(total);
     if (total <= 0) { elements.detailValues.hidden = true; return; }
     const cur = shared.getCurrency();
     elements.detailValues.hidden = false;

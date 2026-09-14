@@ -1068,7 +1068,10 @@
       : "";
 
     // Layout COMPACTO (estilo Collectr): logo, nome, uma linha de progresso
-    // (possuídas/total + %) e o valor só quando houver. O card inteiro navega
+    // (possuídas/total + %) e o valor só quando houver. O "%" fica num <span>
+    // próprio porque no CELULAR ele some junto com a barra, a tendência e o
+    // valor (pedido de 2026-09-14: só a contagem, centralizada — ver
+    // .set-card no @media ≤700px do styles.css). O card inteiro navega
     // (handler na grade); a arte segue como <a> pra middle-click/acessibilidade.
     // O custo pra completar ("Faltam N · completar V") NÃO aparece no tile —
     // aqui a barra de progresso já conta a história; o detalhe fica na página
@@ -1097,7 +1100,7 @@
           <span style="width: ${progress}%"></span>
         </div>
         <div class="set-footer">
-          <span class="set-count">${item.ownedCount}/${item.totalCount} · ${progress}%</span>
+          <span class="set-count">${item.ownedCount}/${item.totalCount}<span class="set-pct"> · ${progress}%</span></span>
           ${trendChip}
           ${valueHtml}
           ${item.releaseDate ? `<span class="set-date-list" title="${escapeAttribute(formatReleaseDate(item.releaseDate, "long"))}">${escapeHtml(formatReleaseDate(item.releaseDate))}</span>` : ""}

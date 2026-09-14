@@ -6724,15 +6724,19 @@
   }
 
   // Modos de visualização das grades. "compact" é o 3º: linha sem imagem, pra
-  // cadastrar rápido (ver docs/LISTAS.md). Cada página guarda o valor na própria
-  // chave (tcg-cards-view, tcg-detail-view...), e um valor desconhecido — de uma
+  // cadastrar rápido (ver docs/LISTAS.md). "binder" é o 4º (2026-09-14, página
+  // de set): só as imagens, em páginas de 4/9/12/16 bolsos com rolagem lateral,
+  // como um fichário de verdade — a página monta o miolo (ver renderBinder no
+  // detail.js); aqui só a classe. Cada página guarda o valor na própria chave
+  // (tcg-cards-view, tcg-detail-view...), e um valor desconhecido — de uma
   // versão futura ou de storage mexido à mão — cai em "grid".
-  const GRID_VIEWS = ["grid", "list", "compact"];
+  const GRID_VIEWS = ["grid", "list", "compact", "binder"];
   function gridViewValue(v) { return GRID_VIEWS.includes(v) ? v : "grid"; }
   function applyGridViewClasses(el, view) {
     if (!el) return;
     el.classList.toggle("is-list", view === "list");
     el.classList.toggle("is-compact", view === "compact");
+    el.classList.toggle("is-binder", view === "binder");
   }
 
   // Tile minimalista (imagem em destaque + nome, variante, set·número e ações).

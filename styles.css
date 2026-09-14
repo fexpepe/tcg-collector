@@ -1670,6 +1670,81 @@ input::placeholder {
 .card-grid.is-list .tile-info { padding: 8px 12px 8px 0; }
 .card-grid.is-list .tile-actions { margin-top: 8px; }
 
+/* ── Fichário (página de set, 2026-09-14) ──────────────────────────────────
+   A grade vira páginas de N bolsos (--binder-cols vem do detail.js: 2, 3 ou 4
+   colunas) numa trilha com scroll-snap horizontal — o dedo passa a página, as
+   setas/select/bolinhas também. Só a IMAGEM da carta fica; infos e botões
+   somem (o card abre no clique, como sempre). Bolso vazio (fim do set) é uma
+   caixa tracejada na proporção da carta, pra página não encolher. */
+.view-toggle-btn.view-toggle-binder { position: relative; }
+.view-toggle-btn.view-toggle-binder svg { width: 18px; height: 18px; }
+.view-toggle-badge {
+  position: absolute; right: 2px; bottom: 2px;
+  min-width: 14px; height: 14px; padding: 0 3px; border-radius: 7px;
+  background: var(--accent); color: #fff;
+  font-size: 9px; font-weight: 800; line-height: 14px; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.card-grid.is-binder { display: block; }
+/* Largura da trilha: no máximo 240px por coluna E o que faz a página inteira
+   caber em ~78% da altura da tela (bolso na proporção 63:88 × linhas) — um
+   fichário que não se vê inteiro não é fichário. No celular o segundo termo
+   passa da largura da tela e a trilha fica em 100%. */
+.card-grid.is-binder {
+  --binder-w: min(calc(var(--binder-cols, 3) * 240px), calc(78vh * 63 / 88 * var(--binder-cols, 3) / var(--binder-rows, 3)));
+}
+.binder-nav {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin: 0 auto 12px; max-width: var(--binder-w);
+}
+.binder-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; min-width: 40px; height: 40px; min-height: 40px; padding: 0;
+  border-radius: 50%; border: 1px solid var(--line); background: var(--panel); color: var(--accent);
+}
+.binder-btn:disabled { opacity: 0.35; cursor: default; }
+.binder-page-pick {
+  display: inline-flex; align-items: center; gap: 6px; margin: 0 6px;
+  height: 40px; padding: 0 12px 0 14px; border-radius: 20px;
+  border: 1px solid var(--line); background: var(--panel); color: var(--text); font-weight: 700;
+}
+.binder-page-pick svg { color: var(--accent); flex: none; }
+.binder-page-pick select {
+  width: auto; height: 38px; padding: 0 22px 0 2px; border: none; background-color: transparent;
+  color: var(--text); font-weight: 800; font-size: 15px; box-shadow: none;
+}
+.binder-page-total { color: var(--muted); font-size: 13px; white-space: nowrap; }
+.binder-rail {
+  display: flex; overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory; scrollbar-width: none;
+  margin: 0 auto; max-width: var(--binder-w);
+  border-radius: 14px;
+}
+.binder-rail::-webkit-scrollbar { display: none; }
+.binder-page {
+  flex: 0 0 100%; scroll-snap-align: start; scroll-snap-stop: always;
+  display: grid; grid-template-columns: repeat(var(--binder-cols, 3), minmax(0, 1fr)); gap: 10px;
+  padding: 12px; box-sizing: border-box;
+  background: var(--panel-strong); border: 1px solid var(--line); border-radius: 14px;
+}
+.binder-page + .binder-page { margin-left: 10px; }
+.binder-pocket { aspect-ratio: 63 / 88; border-radius: 8px; border: 1px dashed var(--line); min-width: 0; }
+.binder-pocket.is-filled { border-style: solid; overflow: hidden; }
+.binder-pocket .card-tile { height: 100%; border: none; box-shadow: none; background: transparent; }
+.binder-pocket .card-tile.owned { box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.7); }
+.binder-pocket .card-tile .card-image { padding: 0; height: 100%; }
+.binder-pocket .card-tile .image-open { height: 100%; }
+.binder-pocket .card-tile .card-image img { height: 100%; width: 100%; object-fit: contain; }
+.binder-pocket .tile-info, .binder-pocket .tile-actions, .binder-pocket .tile-qty { display: none; }
+.binder-dots { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.binder-dot {
+  width: 8px; height: 8px; min-width: 8px; min-height: 8px; padding: 0; border-radius: 50%;
+  border: none; background: var(--line); cursor: pointer;
+}
+.binder-dot[aria-current="page"] { background: var(--accent); }
+/* Texto só pro leitor de tela (mesmo truque dos rótulos do Ordenar). */
+.sr-only { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
 /* Lista de Sets compacta (estilo Collectr): cards menores, mais por linha. */
 .group-grid {
   display: grid;
@@ -2611,6 +2686,53 @@ input::placeholder {
   min-height: 120px;
 }
 
+/* ── Resumo visual do set (2026-09-14) ─────────────────────────────────────
+   Fileira de cartões que ROLA de lado (scroll-snap). Cada cartão tem largura
+   fixa: no desktop os três cabem lado a lado; no celular um cartão ocupa ~86%
+   e o seguinte fica com a ponta à mostra — é a dica de que dá pra rolar
+   (pedido do Fernando, molde do app Dex). As cores dos DEGRAUS de raridade e
+   dos tipos são variáveis por tema; texto sempre na cor de texto. */
+:root {
+  --insight-common: #9aa0ab; --insight-rare: #3b82f6; --insight-ultra: #6d4df6; --insight-secret: #f0883e;
+  --insight-cat-1: #3b82f6; --insight-cat-2: #34c37a; --insight-cat-3: #f59e0b;
+  --insight-cat-4: #a855f7; --insight-cat-5: #14b8a6; --insight-cat-6: #9aa0ab;
+}
+[data-theme="light"] {
+  --insight-common: #7b8290; --insight-rare: #2563eb; --insight-ultra: #5b3fd6; --insight-secret: #d9741f;
+  --insight-cat-1: #2563eb; --insight-cat-2: #1f9d5c; --insight-cat-3: #d98a06;
+  --insight-cat-4: #8b3fd1; --insight-cat-5: #0f9a8a; --insight-cat-6: #7b8290;
+}
+.set-insights { margin: -6px 0 18px; }
+.set-insights-rail {
+  display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px;
+}
+.set-insights-rail::-webkit-scrollbar { display: none; }
+.insight-card {
+  flex: 0 0 340px; min-width: 0; scroll-snap-align: start;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow);
+  padding: 16px 18px;
+}
+.insight-card h3 { margin: 0 0 12px; font-size: 17px; line-height: 1.2; }
+.insight-bars { display: flex; align-items: flex-end; gap: 10px; height: 150px; }
+.insight-bar-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.insight-bar-n { font-size: 14px; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; margin-bottom: 4px; }
+.insight-bar { display: block; width: 100%; height: max(4px, var(--h, 0%)); border-radius: 12px; background: var(--bar, var(--accent)); transition: height 300ms ease; }
+.insight-bar-label { margin-top: 10px; height: 20px; line-height: 20px; font-size: 12px; color: var(--muted); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.insight-bar-label svg { display: block; margin: 0 auto; height: 20px; } /* alinhado ao bloco: com vertical-align o círculo saía cortado */
+.insight-summary { display: grid; grid-template-columns: minmax(0, 1fr) 96px; align-items: center; gap: 12px; }
+.insight-summary dl { margin: 0; min-width: 0; }
+.insight-summary dl > div + div { margin-top: 12px; }
+.insight-summary dt { font-size: 16px; font-weight: 800; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.insight-summary dd { margin: 2px 0 0; font-size: 15px; color: var(--muted); }
+.insight-ring { width: 96px; height: 96px; }
+.insight-ring circle { fill: none; stroke-width: 12; }
+.insight-ring-track { stroke: var(--line); }
+.insight-ring-fill { stroke: var(--accent); stroke-linecap: round; transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dasharray 400ms ease; }
+.insight-ring.complete .insight-ring-fill { stroke: var(--gold); }
+.insight-ring text { fill: var(--accent); font-size: 17px; font-weight: 700; }
+.insight-ring.complete text { fill: var(--gold); }
+
 .pokemon-hero-art {
   min-height: 160px;
   border-radius: 10px;
@@ -3461,6 +3583,16 @@ a.preview-print:hover { background: var(--panel); }
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
+  /* Cards de set no celular (2026-09-14, grade): sem a barra de progresso, a
+     tendência, o valor e a % — em 2 colunas de ~170px isso virava um rodapé
+     apertado e repetia o que a página do set mostra. Fica só a contagem
+     (tenho/total), centralizada. A LISTA (≣) não muda: lá cabe. */
+  .group-grid[data-view="sets"]:not(.is-list) .set-card .progress-bar,
+  .group-grid[data-view="sets"]:not(.is-list) .set-card .set-trend,
+  .group-grid[data-view="sets"]:not(.is-list) .set-card .set-value,
+  .group-grid[data-view="sets"]:not(.is-list) .set-card .set-pct { display: none; }
+  .group-grid[data-view="sets"]:not(.is-list) .set-footer { justify-content: center; margin-top: 4px; }
+  .group-grid[data-view="sets"]:not(.is-list) .set-footer .set-count { font-size: 14px; }
 
   /* Vence a especificidade da regra de sets (classe+atributo) no mobile. */
   .group-grid[data-view="sets"] {
@@ -8501,6 +8633,22 @@ html[data-detail="set"] #detailTitle { display: none; }
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas: "art" "info" "stats";
   }
+  /* A fileira de stats (marcadas · nessa página · progresso) SOME no celular
+     (2026-09-14): o cartão "Conjunto completo" com o anel, logo abaixo, já diz
+     N de T e a %, e a fileira custava uma linha inteira do hero. As áreas
+     perdem a linha "stats" junto, senão sobrava o gap dela. */
+  .detail-hero:has(.detail-set-art) .detail-stats { display: none; }
+  .detail-hero:has(.detail-set-art) { grid-template-areas: "art values" "info info"; }
+  .detail-hero:has(.detail-set-art):has(.detail-values[hidden]) { grid-template-areas: "art" "info"; }
+  /* Cartões do resumo: ~86% da largura, pra ponta do seguinte aparecer. */
+  .insight-card { flex-basis: 86%; }
+  .set-insights { margin-top: 0; }
+  /* Navegação do fichário: 4 setas + select cabem em 358px só encolhendo. */
+  .binder-nav { gap: 6px; }
+  .binder-btn { width: 36px; min-width: 36px; height: 36px; min-height: 36px; }
+  .binder-page-pick { margin: 0 2px; padding: 0 8px 0 10px; height: 36px; }
+  .binder-page-pick select { height: 34px; font-size: 14px; padding-right: 20px; }
+  .binder-page { padding: 8px; gap: 6px; }
   /* Especificidade acima de `.detail-summary.has-hero .detail-values` (0,3,0),
      que também casa aqui — o hero é descendente do resumo. */
   .detail-summary.has-hero .detail-hero .detail-values {
