@@ -1,6 +1,6 @@
 import { writeFile, readFile, mkdir, readdir } from "node:fs/promises";
 import { parseArgs } from "node:util";
-import { preserveMissingCards, writeSplitIndexes } from "./lib/sync-common.mjs";
+import { preserveMissingCards, writeSplitIndexes, fetchJsonRetry } from "./lib/sync-common.mjs";
 import { compactTcgdexPrice } from "./lib/pricing.mjs";
 
 const { values: options, positionals } = parseArgs({
@@ -45,9 +45,62 @@ const manifestOutFile = new URL("../data/manifest.generated.js", import.meta.url
 const chunksDir = new URL(`../data/sets/${language}/`, import.meta.url);
 
 const startedAt = Date.now();
-const stats = { fromCache: 0, fetched: 0, skippedCards: 0 };
+const stats = { fromCache: 0, fetched: 0, skippedCards: 0, frozen: 0, failedCards: 0 };
 
-const allSets = await fetchJson(`${baseUrl}/sets`);
+// Disjuntor da TCGdex. Uma URL que esgota as tentativas pode ser SÓ ela
+// (carta com 500 crônico na API) — por isso, antes de declarar a queda, uma
+// sondagem única na lista de sets confirma. Declarada a queda, todo fetchJson
+// seguinte falha na hora (sem esperar 1 min por set) e o run termina rápido
+// congelando o que falta. Fica declarada até o fim do run: a rodada seguinte
+// (diária) tenta de novo.
+let apiDown = false;
+let outageProbe = null;
+function declareOutage(reason) {
+  if (apiDown) return;
+  apiDown = true;
+  const msg = `TCGdex fora do ar (${language}): ${reason} — catálogo CONGELADO no cache/versionado, sem atualização de preço nesta rodada`;
+  console.warn(`AVISO: ${msg}`);
+  if (process.env.GITHUB_ACTIONS) console.log(`::warning title=TCGdex fora do ar::${msg}`);
+}
+async function confirmOutage(error) {
+  if (!error || !error.transient) return false;
+  if (apiDown) return true;
+  if (!outageProbe) {
+    outageProbe = fetchJsonRetry(`${baseUrl}/sets`, { retries: 1 })
+      .then(() => false, (probeError) => Boolean(probeError.transient))
+      .then((down) => { if (down) declareOutage(`sondagem falhou depois de ${error.message}`); return down; });
+  }
+  return outageProbe;
+}
+
+// Sets que já conhecemos sem perguntar à API: cache bruto + chunks versionados.
+async function listKnownSets() {
+  const ids = new Set();
+  for (const dir of [cacheDir, chunksDir]) {
+    try {
+      for (const f of await readdir(dir)) if (f.endsWith(".json")) ids.add(f.replace(/\.json$/, ""));
+    } catch { /* diretório ainda não existe */ }
+  }
+  return [...ids].sort().map((id) => ({ id }));
+}
+
+// TCGdex FORA DO AR = catálogo congela, o build segue (15/09/2026: um 503 na
+// primeira chamada derrubou o deploy diário inteiro). A lista de sets vem do
+// que já conhecemos — cache bruto restaurado pelo CI + chunks versionados — e
+// cada set cai no cache (mesmo vencido, com preço da última rodada boa) ou,
+// sem cache, no chunk versionado via união preservadora. Mesma regra dos
+// outros jogos ("API morreu = catálogo congela, nada some"). Com --sets o
+// pedido é explícito: aí falhar é a resposta certa.
+let allSets;
+try {
+  allSets = await fetchJson(`${baseUrl}/sets`);
+} catch (error) {
+  if (!error.transient || setFilter.length) throw error;
+  const known = await listKnownSets();
+  if (!known.length) throw error; // nada pra congelar: erro de verdade
+  declareOutage(`lista de sets falhou (${error.message})`);
+  allSets = known;
+}
 
 // Ids dos sets digital-only (Pokémon TCG Pocket etc.), buscados pela série,
 // para deixá-los de fora — a menos que --include-digital seja passado.
@@ -167,7 +220,8 @@ const seconds = Math.round((Date.now() - startedAt) / 1000);
 console.log(`\nGeradas ${cards.length} cartas em ${cardsOutFile.pathname}`);
 console.log(`Gerados índices em ${indexesOutFile.pathname}`);
 console.log(`Gerados manifest e ${manifestSets.length} chunks de set em data/sets/${language}/`);
-console.log(`Sets: ${stats.fetched} baixados, ${stats.fromCache} do cache · cartas puladas: ${stats.skippedCards} · ${seconds}s`);
+console.log(`Sets: ${stats.fetched} baixados, ${stats.fromCache} do cache, ${stats.frozen} congelados · cartas puladas: ${stats.skippedCards} · cartas com falha: ${stats.failedCards} · ${seconds}s`);
+if (apiDown) console.warn(`AVISO: a TCGdex ficou fora do ar durante esta rodada (${language}); o catálogo saiu congelado — confira o próximo build.`);
 
 // Decide se um set cacheado deve ser re-baixado: sets recentes (a TCGdex ainda
 // preenche) ou que parecem incompletos (menos cartas que o total oficial) e
@@ -196,9 +250,12 @@ function shouldRefreshCache(cached, setId) {
 async function loadSetCards(setId, label) {
   const cacheFile = new URL(`${setId}.json`, cacheDir);
 
+  // Cache VENCIDO fica guardado: se a TCGdex cair no meio, é o melhor que
+  // temos (set completo, com o preço da última rodada boa).
+  let cached = null;
   if (!options.force) {
     try {
-      const cached = JSON.parse(await readFile(cacheFile, "utf8"));
+      cached = JSON.parse(await readFile(cacheFile, "utf8"));
       // A TCGdex COMPLETA os sets aos poucos (secret rares/promos entram semanas
       // depois do lançamento). Sem isto, um set baixado cedo ficaria incompleto
       // pra sempre. Então re-baixa sets recentes/incompletos (e os antigos na
@@ -210,15 +267,29 @@ async function loadSetCards(setId, label) {
       }
       console.log(`${label} — cache desatualizado (recente/incompleto/rotação), re-baixando`);
     } catch {
-      // sem cache ou cache corrompido: baixa de novo
+      cached = null; // sem cache ou cache corrompido: baixa de novo
     }
   }
+
+  // Congela o set quando a API não responde: cache vencido se houver, senão
+  // vazio (o chunk versionado é preservado pelo preserveMissingCards). Nada é
+  // cacheado; a próxima rodada tenta de novo.
+  const frozen = (why) => {
+    if (cached && Array.isArray(cached.cards) && cached.cards.length) {
+      stats.frozen++;
+      console.warn(`${label} — ${why}; congelado no cache (${cached.cards.length} cartas)`);
+      return cached;
+    }
+    console.warn(`${label} — ${why}; sem cache, fica o chunk versionado`);
+    return { set: { id: setId }, cards: [] };
+  };
 
   // encodeURIComponent: ids como "SM1+" quebrariam a URL sem escape
   // 404 no DETALHE de um set que a própria lista anunciou = inconsistência
   // upstream (acontece quando a TCGdex está no meio de uma atualização). Não
   // derruba o build: pula o set — o chunk versionado é preservado pelo
-  // preserveMissingCards e a próxima rodada tenta de novo.
+  // preserveMissingCards e a próxima rodada tenta de novo. 5xx que esgotou as
+  // tentativas tem o mesmo destino (e confirma se a API caiu de vez).
   let fullSet;
   try {
     fullSet = await fetchJson(`${baseUrl}/sets/${encodeURIComponent(setId)}`);
@@ -227,10 +298,18 @@ async function loadSetCards(setId, label) {
       console.warn(`${label} — set listado mas detalhe 404 (TCGdex inconsistente), pulando`);
       return { set: { id: setId }, cards: [] };
     }
+    if (error.transient) {
+      await confirmOutage(error);
+      return frozen(`detalhe do set falhou (${error.message})`);
+    }
     throw error;
   }
   const briefs = fullSet.cards || [];
 
+  // Carta que esgota as tentativas (5xx/rede) é pulada e o set vira PARCIAL:
+  // não entra no cache (senão a carta some do cache por 7 dias) e, se havia
+  // cache vencido, ele vence o resultado parcial — é completo e consistente.
+  let partial = false;
   const fetchedCards = await mapLimit(briefs, concurrency, async (brief) => {
     try {
       return await fetchJson(`${baseUrl}/cards/${encodeURIComponent(brief.id)}`);
@@ -240,11 +319,22 @@ async function loadSetCards(setId, label) {
         console.warn(`${label} — carta ${brief.id} não encontrada (404), pulando`);
         return null;
       }
+      if (error.transient) {
+        partial = true;
+        stats.failedCards++;
+        if (!(await confirmOutage(error))) console.warn(`${label} — carta ${brief.id} falhou (${error.message}), pulando`);
+        return null;
+      }
       throw error;
     }
   });
 
   const entry = { set: fullSet, cards: fetchedCards.filter(Boolean) };
+  if (partial) {
+    if (cached && Array.isArray(cached.cards) && cached.cards.length) return frozen("set parcial (cartas falharam)");
+    console.warn(`${label} — set parcial (cartas falharam), ${entry.cards.length}/${briefs.length} baixadas; não cacheado`);
+    return entry;
+  }
   if (!entry.cards.length) {
     // não cacheia sets vazios: se a TCGdex completar o set depois, pegamos
     console.warn(`${label} — set sem cartas na TCGdex, pulando`);
@@ -271,29 +361,16 @@ async function mapLimit(items, limit, fn) {
   return results;
 }
 
-async function fetchJson(url, retries = 3) {
-  for (let attempt = 0; ; attempt++) {
-    let retryable = true;
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        retryable = response.status === 429 || response.status >= 500;
-        const error = new Error(`Falha ao buscar ${url}: ${response.status}`);
-        error.status = response.status;
-        throw error;
-      }
-      return response.json();
-    } catch (error) {
-      if (!retryable || attempt >= retries) {
-        throw error;
-      }
-      await sleep(500 * 2 ** attempt);
-    }
+// Retry/backoff vive no fetchJsonRetry (sync-common). Aqui só o disjuntor:
+// com a queda declarada, falha na hora com o mesmo formato de erro transitório.
+async function fetchJson(url) {
+  if (apiDown) {
+    const error = new Error(`TCGdex fora do ar — ${url} não tentado`);
+    error.status = 503;
+    error.transient = true;
+    throw error;
   }
-}
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return fetchJsonRetry(url);
 }
 
 function toAppCard(card, fallbackLanguage, fullSet) {

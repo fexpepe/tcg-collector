@@ -9,7 +9,7 @@ import { pathToFileURL } from "node:url";
 import {
   slug, decodeEntities, buildSetIndexes, writeGameCatalog,
   readGlobalVar, preserveMissingCards, snapshotCardCount,
-  normNum, numDoId
+  normNum, numDoId, fetchJsonRetry
 } from "../scripts/lib/sync-common.mjs";
 
 test("slug: normaliza acentos, caixa e separadores", () => {
@@ -111,4 +111,67 @@ test("numDoId: número do id não depende de qual impressão ganhou no preço", 
   assert.equal(numDoId("0"), "0");
   assert.equal(numDoId("077/071"), "77");
   assert.equal(numDoId(""), "");
+});
+
+// fetchJsonRetry: o retry que segura o sync-tcgdex quando a TCGdex cai.
+// fetch e sleep falsos: as respostas vêm de uma fila e as esperas são anotadas.
+function fakeFetch(queue) {
+  const calls = [];
+  const fetchImpl = async (url) => {
+    calls.push(url);
+    const next = queue.shift();
+    if (next instanceof Error) throw next;
+    const { status = 200, body = {}, retryAfter } = next;
+    return {
+      ok: status >= 200 && status < 300,
+      status,
+      headers: { get: (k) => (k === "retry-after" && retryAfter != null ? String(retryAfter) : null) },
+      json: async () => body
+    };
+  };
+  return { fetchImpl, calls };
+}
+function fakeSleep() {
+  const waits = [];
+  return { sleepImpl: async (ms) => { waits.push(ms); }, waits };
+}
+
+test("fetchJsonRetry: 503 e erro de rede repetem com backoff exponencial até responder", async () => {
+  const { fetchImpl, calls } = fakeFetch([{ status: 503 }, new Error("ECONNRESET"), { status: 200, body: { ok: 1 } }]);
+  const { sleepImpl, waits } = fakeSleep();
+  const out = await fetchJsonRetry("https://x/sets", { fetchImpl, sleepImpl, baseDelayMs: 100 });
+  assert.deepEqual(out, { ok: 1 });
+  assert.equal(calls.length, 3);
+  assert.deepEqual(waits, [100, 200]);
+});
+
+test("fetchJsonRetry: 404 lança na hora, sem repetir e sem marcar como transitório", async () => {
+  const { fetchImpl, calls } = fakeFetch([{ status: 404 }, { status: 200 }]);
+  const { sleepImpl, waits } = fakeSleep();
+  await assert.rejects(fetchJsonRetry("https://x/cards/nope", { fetchImpl, sleepImpl }), (e) => e.status === 404 && !e.transient);
+  assert.equal(calls.length, 1);
+  assert.deepEqual(waits, []);
+});
+
+test("fetchJsonRetry: ao esgotar as tentativas lança com transient=true e o último status", async () => {
+  const { fetchImpl, calls } = fakeFetch([{ status: 503 }, { status: 502 }, { status: 503 }]);
+  const { sleepImpl, waits } = fakeSleep();
+  await assert.rejects(fetchJsonRetry("https://x/sets", { fetchImpl, sleepImpl, retries: 2, baseDelayMs: 1000 }),
+    (e) => e.status === 503 && e.transient === true);
+  assert.equal(calls.length, 3); // 1 tentativa + 2 retries
+  assert.deepEqual(waits, [1000, 2000]);
+});
+
+test("fetchJsonRetry: respeita Retry-After (segundos) quando maior que o backoff, com teto", async () => {
+  const { fetchImpl } = fakeFetch([{ status: 429, retryAfter: 5 }, { status: 503, retryAfter: 3600 }, { status: 200, body: [] }]);
+  const { sleepImpl, waits } = fakeSleep();
+  await fetchJsonRetry("https://x/sets", { fetchImpl, sleepImpl, baseDelayMs: 1000, maxDelayMs: 60000 });
+  assert.deepEqual(waits, [5000, 60000]);
+});
+
+test("fetchJsonRetry: padrão soma ~1 min de espera (1+2+4+8+16+32 s) antes de desistir", async () => {
+  const { fetchImpl } = fakeFetch(Array.from({ length: 7 }, () => ({ status: 503 })));
+  const { sleepImpl, waits } = fakeSleep();
+  await assert.rejects(fetchJsonRetry("https://x/sets", { fetchImpl, sleepImpl }), (e) => e.transient);
+  assert.equal(waits.reduce((a, b) => a + b, 0), 63000);
 });
