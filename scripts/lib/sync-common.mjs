@@ -21,6 +21,46 @@ export async function fetchRetry(url, { headers = {}, tries = 4, timeoutMs = 300
   throw last;
 }
 
+// fetch de JSON com retry/backoff EXPONENCIAL e Retry-After. Nasceu no
+// sync-tcgdex (15/09/2026): a TCGdex devolveu 503 na primeira chamada do build
+// diário e o script, que só insistia 4x em ~3,5 s, derrubou o deploy inteiro.
+// Uma queda de API costuma durar minutos, então aqui a espera padrão soma ~1 min
+// (1+2+4+8+16+32 s) e respeita o Retry-After quando o servidor manda um.
+//   - 2xx: devolve o JSON.
+//   - 4xx (menos 429): lança na hora, `status` preenchido — repetir não ajuda.
+//   - 429/5xx/rede/timeout/JSON inválido: repete; ao esgotar lança com
+//     `transient: true`, pra quem chama saber que foi a API (não o pedido).
+// fetchImpl/sleepImpl são injetáveis só pelos testes.
+export async function fetchJsonRetry(url, {
+  retries = 6, timeoutMs = 30000, baseDelayMs = 1000, maxDelayMs = 60000,
+  headers = {}, fetchImpl = fetch, sleepImpl = sleep
+} = {}) {
+  for (let attempt = 0; ; attempt++) {
+    let retryable = true;
+    let retryAfterMs = 0;
+    try {
+      const signal = (typeof AbortSignal !== "undefined" && AbortSignal.timeout) ? AbortSignal.timeout(timeoutMs) : undefined;
+      const response = await fetchImpl(url, { headers, signal });
+      if (!response.ok) {
+        retryable = response.status === 429 || response.status >= 500;
+        const ra = Number(response.headers && response.headers.get && response.headers.get("retry-after"));
+        retryAfterMs = Number.isFinite(ra) && ra > 0 ? ra * 1000 : 0;
+        const error = new Error(`Falha ao buscar ${url}: ${response.status}`);
+        error.status = response.status;
+        throw error;
+      }
+      return await response.json();
+    } catch (error) {
+      if (!retryable) throw error;
+      if (attempt >= retries) {
+        error.transient = true;
+        throw error;
+      }
+      await sleepImpl(Math.min(maxDelayMs, Math.max(retryAfterMs, baseDelayMs * 2 ** attempt)));
+    }
+  }
+}
+
 // map com concorrência limitada (ordem preservada).
 export async function mapLimit(items, limit, fn) {
   const out = new Array(items.length);
