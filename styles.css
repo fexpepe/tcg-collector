@@ -7594,15 +7594,19 @@ html[data-detail="set"] #detailTitle { display: none; }
    davam a impressão de telas diferentes. Com a linha inteira só pra elas, as
    abas são o `1fr` (rolam se faltar) e a busca mantém a largura em vw de
    cima. O respiro título → abas é o DOBRO do que há entre a busca e o
-   contador (os 20px do .page-head); o resto dos espaçamentos não muda. A
-   página de detalhe (eyebrow + "Voltar" + título que some no set) segue na
-   fileira única. */
+   contador (os 20px do .page-head); o resto dos espaçamentos não muda. Em
+   2026-09-16 a página de detalhe entrou no mesmo molde (era a última em
+   fileira única). */
 .page-head-bar.page-head-stack:has(> .explore-subnav) {
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas: "title title" "nav search";
   row-gap: 40px;
 }
 .page-head-stack > .page-head-bar-text { grid-area: title; }
+/* Página de SET: eyebrow e título somem (o hero do set, logo abaixo, já traz o
+   nome — ver detail.js), sobra só o "← Voltar" na 1ª linha. Os 40px de respiro
+   eram pro título grande; atrás de um link de 13px viravam buraco. */
+.page-head-stack:has(> .page-head-bar-text > h1[hidden]) { row-gap: 14px; }
 .page-head-stack > .explore-subnav { grid-area: nav; }
 .page-head-stack:has(> .explore-subnav) .page-search { grid-area: search; }
 
