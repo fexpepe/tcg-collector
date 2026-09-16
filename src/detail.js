@@ -1316,7 +1316,7 @@
     return `<div class="insight-bars" role="img" aria-label="${escapeAttribute(itens.map((i) => `${i.label}: ${i.n}`).join(", "))}">${itens.map((i) => `
       <div class="insight-bar-col" title="${escapeAttribute(`${i.label}: ${i.n}`)}">
         <span class="insight-bar-n">${i.n}</span>
-        <span class="insight-bar" style="--h: ${Math.round((i.n / max) * 100)}%; --bar: ${i.color}"></span>
+        <span class="insight-bar" style="--p: ${(i.n / max).toFixed(3)}; --bar: ${i.color}"></span>
         <span class="insight-bar-label">${icons && i.icon ? i.icon : escapeHtml(i.label)}</span>
       </div>`).join("")}</div>`;
   }
