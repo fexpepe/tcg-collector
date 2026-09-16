@@ -14,8 +14,11 @@
 //   logo   {lang}/{serie}/{setId}/logo.png    -> data/set-logos/{lang}/{setId}.webp
 //   símbolo /univ/{serie}/{setId}/symbol.png  -> data/set-logos/symbol/{setId}.webp
 //
+// Logo CURADO: arquivo posto à mão em data/set-logos/<idioma>/<setId>.webp
+// também é carimbado, pra set que a TCGdex não tem (ver LOGO CURADO abaixo).
+//
 // Rodar LOCAL (rede aberta) e COMMITAR os arquivos novos.
-//   node scripts/mirror-set-logos.mjs [--force]
+//   node scripts/mirror-set-logos.mjs [--force] [--no-fetch]
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { readdir } from "node:fs/promises";
@@ -26,6 +29,10 @@ const ROOT = new URL("../", import.meta.url);
 const SETS_DIR = new URL("data/sets/", ROOT);
 const OUT = new URL("data/set-logos/", ROOT);
 const FORCE = process.argv.includes("--force");
+// --no-fetch: pula o download e só CARIMBA (o que existe em data/set-logos/).
+// Serve pra rodar sem rede — e é o único modo que funciona num ambiente que
+// bloqueia o CDN da TCGdex.
+const NO_FETCH = process.argv.includes("--no-fetch");
 
 // URL de arte de set da TCGdex -> descritor. Só logo/symbol (não as cartas).
 // Sempre terminam em .png (imageUrl() do sync-tcgdex anexa ".png" sem qualidade).
@@ -48,7 +55,8 @@ async function listChunks() {
     const dir = new URL(`${lang}/`, SETS_DIR);
     let entries;
     try { entries = await readdir(dir); } catch { continue; } // não é diretório
-    for (const f of entries) if (f.endsWith(".json")) files.push(new URL(f, dir));
+    // O idioma vem no caminho: é o diretório do logo curado (ver CURADO).
+    for (const f of entries) if (f.endsWith(".json")) files.push({ url: new URL(f, dir), lang });
   }
   return files;
 }
@@ -74,9 +82,9 @@ const chunks = await listChunks();
 // 1) Coleta as URLs distintas de logo/símbolo (são dados de SET: iguais em todas
 // as cartas do chunk, mas varremos tudo pra não depender de "a 1ª carta tem").
 const byUrl = new Map(); // url remota -> descritor
-for (const file of chunks) {
+for (const { url } of chunks) {
   let cards;
-  try { cards = JSON.parse(await readFile(file, "utf8")); } catch { continue; }
+  try { cards = JSON.parse(await readFile(url, "utf8")); } catch { continue; }
   for (const c of cards) {
     for (const key of ["setLogo", "setSymbol"]) {
       const d = parse(c[key]);
@@ -90,29 +98,44 @@ console.log(`${byUrl.size} artes de set distintas na TCGdex; baixando as que fal
 // quais URLs é seguro reescrever.
 await mkdir(OUT, { recursive: true });
 let ok = 0, skip = 0, fail = 0;
-await mapLimit([...byUrl.values()], 6, async (d) => {
-  const r = await download(d);
-  if (r === "ok") ok++; else if (r === "skip") skip++; else fail++;
-});
-console.log(`  baixadas: ${ok} · já existiam: ${skip} · falharam: ${fail}`);
+if (NO_FETCH) {
+  console.log("  --no-fetch: sem baixar nada; só carimbando o que já está em data/set-logos/.");
+} else {
+  await mapLimit([...byUrl.values()], 6, async (d) => {
+    const r = await download(d);
+    if (r === "ok") ok++; else if (r === "skip") skip++; else fail++;
+  });
+  console.log(`  baixadas: ${ok} · já existiam: ${skip} · falharam: ${fail}`);
+}
 
 const have = (webPath) => existsSync(new URL(webPath.replace(/^data\/set-logos\//, ""), OUT));
 
 // 3) Reescreve os chunks: URL remota -> caminho local, SÓ quando o arquivo local
 // existe (download que falhou fica na URL remota, degrada gracioso). Escreve o
 // chunk só se algo mudou.
-let rewritten = 0, cardsChanged = 0;
-for (const file of chunks) {
+let rewritten = 0, cardsChanged = 0, curados = 0;
+for (const { url, lang } of chunks) {
   let cards;
-  try { cards = JSON.parse(await readFile(file, "utf8")); } catch { continue; }
+  try { cards = JSON.parse(await readFile(url, "utf8")); } catch { continue; }
   let changed = false;
   for (const c of cards) {
     for (const key of ["setLogo", "setSymbol"]) {
       const d = parse(c[key]);
       if (d && have(d.webPath)) { c[key] = d.webPath; changed = true; cardsChanged++; }
     }
+    // LOGO CURADO (16/09/2026): set que a TCGdex NÃO tem não traz URL nenhuma —
+    // nasce com setLogo:"" e o tile cai no fallback de texto. É o caso dos sets
+    // EN que entram pela TCGCSV no dia do lançamento (as duas coleções de 30
+    // anos, cel30 e cel30cc). Aqui o arquivo é a fonte: existindo
+    // data/set-logos/<idioma>/<setId>.webp, ele vira o setLogo do chunk. Sem
+    // arquivo, nada muda — quem não tem logo curado segue como antes.
+    // Precisa rodar em TODO build: o sync reescreve os chunks a cada rodada e
+    // devolve setLogo:"" (mesmo papel do carimbo do mirror-ja-set-logos).
+    const curado = `data/set-logos/${lang}/${c.setId}.webp`;
+    if (!c.setLogo && c.setId && have(curado)) { c.setLogo = curado; changed = true; curados++; }
   }
-  if (changed) { await writeFile(file, JSON.stringify(cards), "utf8"); rewritten++; }
+  if (changed) { await writeFile(url, JSON.stringify(cards), "utf8"); rewritten++; }
 }
-console.log(`Chunks reescritos: ${rewritten} (${cardsChanged} campos localizados).`);
+console.log(`Chunks reescritos: ${rewritten} (${cardsChanged} campos localizados`
+  + `${curados ? `, ${curados} cartas com logo curado` : ""}).`);
 console.log(`Saída: ${fileURLToPath(OUT)} — commitar os arquivos novos.`);
