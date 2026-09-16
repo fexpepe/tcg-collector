@@ -2672,7 +2672,10 @@ input::placeholder {
      de 320 com `flex-grow`: em tela larga os quatro DIVIDEM a linha por
      igual; em tela menor ficam nos 320 e rolam, como antes. */
   flex: 1 0 320px; min-width: 0; scroll-snap-align: start;
-  background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow);
+  /* Sem sombra (pedido de 2026-09-16): quatro cartões lado a lado, cada um com
+     a sombra de 45px, viravam uma mancha escura por baixo da fileira inteira.
+     Só a borda separa do fundo — o hero do set herda, por ser .insight-card. */
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: none;
   padding: 16px 18px;
 }
 .insight-card h3 { margin: 0 0 12px; font-size: 17px; line-height: 1.2; }
