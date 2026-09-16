@@ -1359,7 +1359,8 @@ input::placeholder {
   pointer-events: none; /* só os botões captam clique; a imagem segue clicável */
 }
 .folder-section .card-grid.is-list .tile-reorder,
-.folder-section .card-grid.is-compact .tile-reorder { display: none; } /* lista: imagem pequena; compacto: sem imagem */
+.folder-section .card-grid.is-compact .tile-reorder, /* lista: imagem pequena; compacto: sem imagem */
+.folder-section .card-grid.is-binder .tile-reorder { display: none; } /* fichário: só a carta no bolso (o arraste segue) */
 .tile-reorder-btn {
   pointer-events: auto;
   width: 30px; height: 30px; padding: 0;

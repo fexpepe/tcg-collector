@@ -347,6 +347,11 @@
   let updateCarousel = function () {};
 
   const pager = shared.createPager({ grid: elements.grid, pageSize: 60 });
+  // Fichário (2026-09-16, pedido do Fernando): o mesmo modo da página de set
+  // (src/binder-view.js), na grade plana (Toda Coleção, Graded) e na grade de
+  // um showcase aberto / do "Sem coleção". `root` é a área toda das cartas
+  // porque a grade do showcase vive em folderSections, não em `grid`.
+  const binderView = window.TCGBinderView.createBinderView({ root: elements.cardsView, grid: elements.grid, storageKey: "tcg-collection-binder-pockets" });
 
   const preview = shared.createCardPreview({
     getCard: (cardId) => cardsById.get(cardId),
@@ -633,12 +638,17 @@
         if (!button) return;
         // Compacto muda o HTML do tile (sem <img>), não só a classe da grade:
         // entrar ou sair dele exige reconstruir a grade. grid<->lista é só CSS.
+        // O fichário monta a grade do seu jeito (páginas), então entrar, sair
+        // e trocar o nº de bolsos (clique com o modo já ativo) também reconstroem.
         const eraCompacto = cardsView === "compact";
+        const eraBinder = cardsView === "binder";
+        const querBinder = button.dataset.gridView === "binder";
+        if (querBinder && eraBinder) binderView.cycle();
         cardsView = shared.gridViewValue(button.dataset.gridView);
         localStorage.setItem("tcg-collection-view", cardsView);
         const virouCompacto = cardsView === "compact";
         applyCardsView();
-        if (eraCompacto !== virouCompacto) renderCards();
+        if (eraCompacto !== virouCompacto || eraBinder || querBinder) renderCards();
       });
     }
     // Barra de filtros recolhível: o botão vive no cartão-herói e vale em
@@ -1310,7 +1320,8 @@
     if (elements.newFolderBtn) elements.newFolderBtn.hidden = !useFolders || !!openFolderId;
     if (!useFolders) {
       elements.folderSections.innerHTML = "";
-      pager.render(tiles, makeAnyTile, { resetCount });
+      if (cardsView === "binder") { pager.render([], makeAnyTile); binderView.render(tiles, makeAnyTile); }
+      else pager.render(tiles, makeAnyTile, { resetCount });
       prewarmColecao();
       return;
     }
@@ -1367,13 +1378,17 @@
       const sel = folder ? `[data-folder-id="${folder.id}"]` : ".folder-none";
       const grid = elements.folderSections.querySelector(`${sel} .card-grid`);
       if (!grid) return;
-      pairs.forEach((pair) => {
+      const tileOf = (pair) => {
         const node = makeTile(pair);
         node.draggable = true; // arrastável mesmo no "Sem coleção" (pra soltar numa coleção)
         // Setas ‹ › só nas coleções (o "Sem coleção" segue o Ordenar, não tem ordem manual).
         if (folder) (node.querySelector(".card-image") || node).appendChild(reorderControl());
-        grid.appendChild(node);
-      });
+        return node;
+      };
+      // Fichário também aqui: a grade do showcase aberto (ou do "Sem coleção")
+      // vira páginas; as setas ‹ › somem por CSS (o arraste segue valendo).
+      if (cardsView === "binder") binderView.render(pairs, tileOf, { grid });
+      else pairs.forEach((pair) => grid.appendChild(tileOf(pair)));
     });
   }
 
@@ -1496,7 +1511,7 @@
     // A classe da vista já nasce na grade: applyCardsView só roda no clique do
     // seletor, e sem isto o compacto recarregado deixava as linhas compactas
     // espremidas em células de 220px (flag em cima do número, nome sumido).
-    const listCls = cardsView === "list" ? " is-list" : cardsView === "compact" ? " is-compact" : "";
+    const listCls = cardsView === "list" ? " is-list" : cardsView === "compact" ? " is-compact" : cardsView === "binder" ? " is-binder" : "";
 
     // CARD de coleção (vitrine) em PILHA: até 3 cartas em leque na capa (lê como
     // "um conjunto", não como uma carta só), tag do jogo + contagem sobre a capa,
@@ -1730,6 +1745,7 @@
       elements.cardsViewToggle.querySelectorAll("[data-grid-view]").forEach((b) => {
         b.setAttribute("aria-pressed", String(b.dataset.gridView === cardsView));
       });
+      binderView.paintToggle(elements.cardsViewToggle.querySelector('[data-grid-view="binder"]'));
     }
   }
 

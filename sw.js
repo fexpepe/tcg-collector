@@ -106,7 +106,9 @@ const SHELL_ASSETS = [
   "src/backup.js", "src/graded-ui.js", "src/cards.js", "src/sales.js", "src/centering.js", "src/login.js", "src/hub.js", "src/settings.js", "src/profile.js", "src/admin.js",
   "src/deck-rules.js", "src/decks.js", "src/listas.js", "src/export-liga.js", "src/export-ui.js", "src/troca.js",
   // Módulos que saíram do shared.js (2026-09-14): dois sob demanda e um por página.
-  "src/backup-import.js", "src/card-rescue.js", "src/facets.js"
+  "src/backup-import.js", "src/card-rescue.js", "src/facets.js",
+  // Fichário (2026-09-16): motor das páginas de bolsos, carregado pelo set e pela Coleção.
+  "src/binder-view.js"
 ];
 
 // Tetos por cache (FIFO): imagens ~17KB cada; chunks de set são o catálogo.

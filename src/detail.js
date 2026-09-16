@@ -218,13 +218,10 @@
   let selectedSort = "value-desc";
   let gridView = shared.gridViewValue(localStorage.getItem("tcg-detail-view"));
   let selectedRarity = ""; // "" = todas; senão "base" | "special"
-  // Fichário: quantos BOLSOS por página. A sequência é a de clicar de novo no
-  // botão com o modo já ativo (9 → 12 → 16 → 4 → 9…); nasce em 9 (3×3), que é
-  // o fichário mais comum. Preferência global, como o modo de visualização.
-  const BINDER_POCKETS = [9, 12, 16, 4];
-  const BINDER_KEY = "tcg-detail-binder-pockets";
-  let binderPockets = Number(localStorage.getItem(BINDER_KEY));
-  if (!BINDER_POCKETS.includes(binderPockets)) binderPockets = 9;
+  // Fichário: motor compartilhado com a Minha Coleção (src/binder-view.js). A
+  // chave guarda quantos bolsos por página (preferência global, como o modo de
+  // visualização); o motor cuida das páginas, da navegação e do teclado.
+  const binderView = window.TCGBinderView.createBinderView({ root: elements.grid, grid: elements.grid, storageKey: "tcg-detail-binder-pockets" });
 
   // Ordena os pares carta×variante conforme o select de ordenação. Diferente
   // dos outros filtros: não esconde nada, só reordena a grade.
@@ -401,7 +398,6 @@
     hydrateFilters();
     if (elements.sortSelect) elements.sortSelect.value = selectedSort; // padrão: maior preço
     bindEvents();
-    bindBinderNav();
     initProgressModes();
     initCollapsibles();
     applyGridView();
@@ -473,18 +469,8 @@
       elements.viewToggle.querySelectorAll("[data-grid-view]").forEach((button) => {
         button.setAttribute("aria-pressed", String(button.dataset.gridView === gridView));
       });
-      // O botão do fichário diz quantos bolsos tem (número no canto + título):
-      // é ele que troca o tamanho, então precisa mostrar o estado atual.
-      const binderBtn = elements.viewToggle.querySelector('[data-grid-view="binder"]');
-      if (binderBtn) {
-        const badge = binderBtn.querySelector("[data-binder-badge]");
-        if (badge) badge.textContent = String(binderPockets);
-        const rotulo = t("view.binderPockets", { n: binderPockets });
-        binderBtn.title = rotulo;
-        binderBtn.setAttribute("aria-label", rotulo);
-        binderBtn.removeAttribute("data-i18n-title");
-        binderBtn.removeAttribute("data-i18n-aria");
-      }
+      // O botão do fichário diz quantos bolsos tem (número no canto + título).
+      binderView.paintToggle(elements.viewToggle.querySelector('[data-grid-view="binder"]'));
     }
   }
 
@@ -1034,13 +1020,8 @@
         const eraCompacto = gridView === "compact";
         const eraBinder = gridView === "binder";
         const querBinder = button.dataset.gridView === "binder";
-        if (querBinder && eraBinder) {
-          // Já no fichário: o clique troca o tamanho (9 → 12 → 16 → 4 → 9…).
-          binderPockets = BINDER_POCKETS[(BINDER_POCKETS.indexOf(binderPockets) + 1) % BINDER_POCKETS.length];
-          try { localStorage.setItem(BINDER_KEY, String(binderPockets)); } catch (e) { /* ignora */ }
-          delete elements.grid.dataset.binderPage; // página 2 de 9 bolsos não é a de 16: recomeça
-
-        }
+        // Já no fichário: o clique troca o tamanho (9 → 12 → 16 → 4 → 9…).
+        if (querBinder && eraBinder) binderView.cycle();
         gridView = shared.gridViewValue(button.dataset.gridView);
         localStorage.setItem("tcg-detail-view", gridView);
         const virouCompacto = gridView === "compact";
@@ -1095,7 +1076,7 @@
     // Cartas sem imagem vão para o fim (sort estável preserva a ordem da ordenação escolhida).
     tiles.sort((a, b) => Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card)));
     const tileOf = ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes, compact: gridView === "compact", lists: true });
-    if (gridView === "binder") renderBinder(tiles, tileOf);
+    if (gridView === "binder") { pager.render([], tileOf); binderView.render(tiles, tileOf); }
     else pager.render(tiles, tileOf, { resetCount });
 
     elements.empty.hidden = tiles.length > 0;
@@ -1111,164 +1092,6 @@
     }
     elements.resultCount.textContent = tn("results.count", tiles.length);
     updateHeaderStats();
-  }
-
-  // ── Fichário ─────────────────────────────────────────────────────────────
-  // A grade vira um fichário: páginas de N bolsos (2×2, 3×3, 3×4, 4×4) numa
-  // trilha que ROLA DE LADO com scroll-snap — no celular é o dedo, no desktop as
-  // setas, o <select> de página ou a rolagem horizontal. Só a imagem da carta
-  // aparece (nome, número, botões somem por CSS em .is-binder; clicar na carta
-  // abre o card, como sempre). Os tiles são os MESMOS do variantTile — o
-  // refreshOwnership e os handlers da grade seguem valendo sem saber do modo.
-  //
-  // Cada página nasce com os N bolsos VAZIOS (caixas na proporção da carta) e
-  // só recebe os tiles quando fica a 1 página de distância da atual: o set
-  // grande (YGO passa de 1000 impressões) não paga o DOM inteiro de uma vez, e
-  // a altura da trilha não pula porque os bolsos já ocupam o lugar.
-  const BINDER_ICONS = {
-    first: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>',
-    prev: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>',
-    next: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>',
-    last: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>',
-    book: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 3v18"/></svg>'
-  };
-  let binder = null; // { rail, pages, tiles, tileOf, current, per, rendered:Set }
-  function renderBinder(tiles, tileOf) {
-    // Limpa a grade pelo pager (tira também a sentinela e o botão "mais N").
-    pager.render([], () => document.createDocumentFragment());
-    const per = binderPockets;
-    const cols = per === 4 ? 2 : per === 16 ? 4 : 3;
-    // Linhas entram no CSS pra limitar a largura da trilha de modo que a
-    // PÁGINA INTEIRA caiba na altura da tela no desktop (ver .binder-rail).
-    elements.grid.style.setProperty("--binder-rows", String(per / cols));
-    const pageCount = Math.max(1, Math.ceil(tiles.length / per));
-    const grid = elements.grid;
-    grid.style.setProperty("--binder-cols", String(cols));
-    const nav = document.createElement("div");
-    nav.className = "binder-nav";
-    const opcoes = Array.from({ length: pageCount }, (_, i) => `<option value="${i}">${escapeHtml(t("binder.page", { n: i + 1 }))}</option>`).join("");
-    nav.innerHTML = `
-      <button type="button" class="binder-btn" data-binder-go="first" aria-label="${escapeAttribute(t("binder.first"))}" title="${escapeAttribute(t("binder.first"))}">${BINDER_ICONS.first}</button>
-      <button type="button" class="binder-btn" data-binder-go="prev" aria-label="${escapeAttribute(t("binder.prev"))}" title="${escapeAttribute(t("binder.prev"))}">${BINDER_ICONS.prev}</button>
-      <label class="binder-page-pick">${BINDER_ICONS.book}<span class="sr-only">${escapeHtml(t("binder.pickPage"))}</span><select data-binder-select>${opcoes}</select><span class="binder-page-total">/ ${pageCount}</span></label>
-      <button type="button" class="binder-btn" data-binder-go="next" aria-label="${escapeAttribute(t("binder.next"))}" title="${escapeAttribute(t("binder.next"))}">${BINDER_ICONS.next}</button>
-      <button type="button" class="binder-btn" data-binder-go="last" aria-label="${escapeAttribute(t("binder.last"))}" title="${escapeAttribute(t("binder.last"))}">${BINDER_ICONS.last}</button>`;
-    const rail = document.createElement("div");
-    rail.className = "binder-rail";
-    rail.setAttribute("aria-label", t("binder.railAria"));
-    const pages = [];
-    for (let p = 0; p < pageCount; p++) {
-      const page = document.createElement("section");
-      page.className = "binder-page";
-      page.dataset.binderPage = String(p);
-      page.setAttribute("aria-label", t("binder.pageOf", { n: p + 1, t: pageCount }));
-      for (let i = 0; i < per; i++) {
-        const pocket = document.createElement("div");
-        pocket.className = "binder-pocket";
-        page.appendChild(pocket);
-      }
-      rail.appendChild(page);
-      pages.push(page);
-    }
-    // Bolinhas de página (como no app Dex). Acima de 24 páginas viram ruído —
-    // o <select> e as setas já navegam; as bolinhas somem.
-    const dots = document.createElement("div");
-    dots.className = "binder-dots";
-    if (pageCount > 1 && pageCount <= 24) {
-      dots.innerHTML = Array.from({ length: pageCount }, (_, i) => `<button type="button" class="binder-dot" data-binder-dot="${i}" aria-label="${escapeAttribute(t("binder.page", { n: i + 1 }))}"></button>`).join("");
-    }
-    grid.append(nav, rail, dots);
-    binder = { rail, pages, tiles, tileOf, per, current: 0, rendered: new Set(), pageCount, nav, dots };
-    // A página lembrada sobrevive à troca de filtro/ordenação enquanto existir
-    // (mudou o nº de páginas: volta pro início).
-    const lembrada = Number(grid.dataset.binderPage || 0);
-    binder.current = lembrada < pageCount ? lembrada : 0;
-    ensureBinderPages(binder.current);
-    paintBinderNav();
-    if (binder.current > 0) {
-      // Sem animação: a página já abre no lugar certo (e o `scrollTo` com
-      // behavior instant não dispara o scroll-snap do meio do caminho).
-      requestAnimationFrame(() => { rail.scrollLeft = binder.current * rail.clientWidth; });
-    }
-    let raf = 0;
-    rail.addEventListener("scroll", () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        if (!binder || !rail.clientWidth) return;
-        const idx = Math.max(0, Math.min(binder.pageCount - 1, Math.round(rail.scrollLeft / rail.clientWidth)));
-        if (idx !== binder.current) {
-          binder.current = idx;
-          grid.dataset.binderPage = String(idx);
-          paintBinderNav();
-        }
-        // Pré-monta a vizinha pra qual o dedo está indo.
-        ensureBinderPages(idx);
-      });
-    }, { passive: true });
-  }
-  function ensureBinderPages(idx) {
-    if (!binder) return;
-    for (let p = idx - 1; p <= idx + 1; p++) {
-      if (p < 0 || p >= binder.pageCount || binder.rendered.has(p)) continue;
-      binder.rendered.add(p);
-      const pockets = binder.pages[p].children;
-      for (let i = 0; i < binder.per; i++) {
-        const item = binder.tiles[p * binder.per + i];
-        if (!item) break;
-        pockets[i].appendChild(binder.tileOf(item));
-        pockets[i].classList.add("is-filled");
-      }
-    }
-  }
-  function paintBinderNav() {
-    if (!binder) return;
-    const { current, pageCount, nav, dots } = binder;
-    const sel = nav.querySelector("[data-binder-select]");
-    if (sel && Number(sel.value) !== current) sel.value = String(current);
-    nav.querySelector('[data-binder-go="first"]').disabled = current <= 0;
-    nav.querySelector('[data-binder-go="prev"]').disabled = current <= 0;
-    nav.querySelector('[data-binder-go="next"]').disabled = current >= pageCount - 1;
-    nav.querySelector('[data-binder-go="last"]').disabled = current >= pageCount - 1;
-    dots.querySelectorAll("[data-binder-dot]").forEach((d) => {
-      d.setAttribute("aria-current", Number(d.dataset.binderDot) === current ? "page" : "false");
-    });
-  }
-  function goBinderPage(idx) {
-    if (!binder) return;
-    const alvo = Math.max(0, Math.min(binder.pageCount - 1, idx));
-    ensureBinderPages(alvo);
-    binder.rail.scrollTo({ left: alvo * binder.rail.clientWidth, behavior: "smooth" });
-    // O evento de scroll acerta current/nav quando a rolagem chegar; aqui só
-    // pra resposta imediata nos botões (clicar rápido em › › ›).
-    binder.current = alvo;
-    elements.grid.dataset.binderPage = String(alvo);
-    paintBinderNav();
-  }
-  function bindBinderNav() {
-    elements.grid.addEventListener("click", (event) => {
-      if (!binder) return;
-      const go = event.target.closest("[data-binder-go]");
-      if (go) {
-        const { current, pageCount } = binder;
-        const dir = go.dataset.binderGo;
-        goBinderPage(dir === "first" ? 0 : dir === "prev" ? current - 1 : dir === "next" ? current + 1 : pageCount - 1);
-        return;
-      }
-      const dot = event.target.closest("[data-binder-dot]");
-      if (dot) goBinderPage(Number(dot.dataset.binderDot));
-    });
-    elements.grid.addEventListener("change", (event) => {
-      const sel = event.target.closest("[data-binder-select]");
-      if (sel && binder) goBinderPage(Number(sel.value));
-    });
-    // Setas do teclado quando o foco está no fichário (ou nas setas dele).
-    elements.grid.addEventListener("keydown", (event) => {
-      if (!binder || (event.key !== "ArrowLeft" && event.key !== "ArrowRight")) return;
-      if (event.target.closest("select")) return; // o select usa as setas pra si
-      event.preventDefault();
-      goBinderPage(binder.current + (event.key === "ArrowLeft" ? -1 : 1));
-    });
   }
 
   // ── Resumo visual do set (cartões de insight) ────────────────────────────
