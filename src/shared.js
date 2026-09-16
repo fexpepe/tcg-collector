@@ -6737,6 +6737,15 @@
       : addMode
         ? (isOwned ? t("tile.addAnotherAria", { variant }) : t("tile.addAria", { variant }))
         : (isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant }));
+    // LEGENDA do hover (2026-09-16, pedido do Fernando): o + era o único botão
+    // do tile sem `title` — passar o mouse nele não dizia nada, enquanto ♥, −,
+    // pasta e lista todos se apresentavam. Texto curto, como nos vizinhos (o
+    // aria-label é que carrega a versão, pro leitor de tela).
+    const ownTitle = grouped
+      ? t("tile.chooseVersion")
+      : addMode
+        ? (isOwned ? t("tile.addAnother") : t("tile.add"))
+        : (isOwned ? t("tile.remove") : t("tile.add"));
     // No addMode, mostra a contagem assim que tem 1 (o botão é sempre "+", então
     // o badge é o sinal de posse); fora dele, só destaca quando há mais de uma.
     const qtyBadge = quantity > (addMode ? 0 : 1) ? `<span class="tile-qty">×${quantity}</span>` : "";
@@ -6798,7 +6807,7 @@
         ${opts && opts.folders ? `<button type="button" class="tile-btn tile-folder${opts.inFolder ? " active" : ""}" data-folder-card-id="${escapeAttribute(card.id)}" data-folder-variant="${escapeAttribute(variant)}" aria-label="${escapeAttribute(t("tile.collection"))}" title="${escapeAttribute(t("tile.collection"))}">${TILE_ICONS.folder}</button>` : ""}
         ${wantButton}
         ${minusButton}
-        <button type="button" class="tile-btn tile-own${ownActive}" ${ownData}${grouped ? "" : ` aria-pressed="${!addMode && isOwned}"`} aria-label="${escapeAttribute(ownAria)}">
+        <button type="button" class="tile-btn tile-own${ownActive}" ${ownData}${grouped ? "" : ` aria-pressed="${!addMode && isOwned}"`} aria-label="${escapeAttribute(ownAria)}" title="${escapeAttribute(ownTitle)}">
           ${ownIcon}${qtyBadge}
         </button>
       </div>`;
@@ -6920,11 +6929,13 @@
         button.classList.remove("active");
         button.setAttribute("aria-pressed", "false");
         button.setAttribute("aria-label", isOwned ? t("tile.addAnotherAria", { variant }) : t("tile.addAria", { variant }));
+        button.setAttribute("title", isOwned ? t("tile.addAnother") : t("tile.add"));
         button.innerHTML = `${TILE_ICONS.plus}${quantity > 0 ? `<span class="tile-qty">×${quantity}</span>` : ""}`;
       } else {
         button.classList.toggle("active", isOwned);
         button.setAttribute("aria-pressed", String(isOwned));
         button.setAttribute("aria-label", isOwned ? t("tile.removeAria", { variant }) : t("tile.addAria", { variant }));
+        button.setAttribute("title", isOwned ? t("tile.remove") : t("tile.add"));
         button.innerHTML = `${isOwned ? TILE_ICONS.check : TILE_ICONS.plus}${quantity > 1 ? `<span class="tile-qty">×${quantity}</span>` : ""}`;
       }
     }
@@ -7321,8 +7332,10 @@
     clearTimeout(button._flashTimer);
     button._flashTimer = window.setTimeout(() => {
       button.classList.remove("added");
-      button.removeAttribute("title");
       const now = store.variantTotal(button.dataset.ownCardId, variant);
+      // Devolve a legenda do botão (era removeAttribute, de quando o + não
+      // tinha title nenhum — hoje isso apagaria a legenda de vez).
+      button.setAttribute("title", now > 0 ? t("tile.addAnother") : t("tile.add"));
       button.innerHTML = `${TILE_ICONS.plus}${now > 0 ? `<span class="tile-qty">×${now}</span>` : ""}`;
     }, 2000);
   }
