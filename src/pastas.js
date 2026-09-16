@@ -53,7 +53,9 @@
     sets: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg>',
     minus: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
     plus: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
-    remove: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l.8 12a1.5 1.5 0 0 0 1.5 1.4h6.4a1.5 1.5 0 0 0 1.5-1.4l.8-12"/></svg>'
+    remove: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l.8 12a1.5 1.5 0 0 0 1.5 1.4h6.4a1.5 1.5 0 0 0 1.5-1.4l.8-12"/></svg>',
+    // Fichário: o MESMO ícone do botão de visualização da Coleção e do set.
+    binder: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="3" width="14" height="18" rx="2"/><path d="M4 7.5h4M4 12h4M4 16.5h4"/></svg>'
   };
 
   // ---------------------------------------------------------------------------
@@ -293,6 +295,28 @@
                                                  // na mesma condição
   let preview = null;      // popup do card (createCardPreview), montado uma vez
 
+  // --- Visualização e filtros da grade (os MESMOS da Minha Coleção) ---------
+  // A pasta é "uma coleção só dela": uma pasta de set passa de 200 cartas, e
+  // sem filtro e sem modo de lista/fichário a única forma de achar uma carta
+  // era rolar. Grade/lista/compacta/fichário e a barra de filtros são os
+  // mesmos componentes da Coleção — inclusive a preferência de "filtros
+  // abertos", que é a mesma chave: quem gosta de ver a barra aberta lá quer
+  // aqui também.
+  const lerPref = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  const gravaPref = (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* ignora */ } };
+  let cardsView = shared.gridViewValue(lerPref("tcg-pastas-view"));
+  let filtrosAbertos = lerPref("tcg-collector-filters-open") === "1";
+  let fJogo = "", fSet = "", fIdioma = "", fRaridade = "", fValor = "";
+  // "added" = a ordem em que as cartas entraram na pasta. É o padrão porque a
+  // pasta costuma ser um checklist: reordenar por valor sozinha faria a carta
+  // recém-adicionada sumir do lugar onde a pessoa acabou de olhar.
+  let ordem = "added";
+  // Fichário: o mesmo módulo do set e da Coleção. `root` é o editor inteiro
+  // (a grade é recriada a cada render, os eventos do fichário não podem ser).
+  const binderView = window.TCGBinderView
+    ? window.TCGBinderView.createBinderView({ root: el.editor, grid: null, storageKey: "tcg-pastas-binder-pockets" })
+    : null;
+
   // Popup do card ao clicar na imagem do tile — o MESMO da Toda Coleção. A
   // pasta pode misturar jogos (migrada de tag), então os stores são os
   // "mesclados" por jogo da carta, como no Hub. O +/− de dentro do popup mexe
@@ -495,8 +519,38 @@
       ? shared.localizedImg(img.url, { alt: name, fallback: img.fallback || "", loading: "lazy", thumb: true })
       : "";
     const varLabel = card ? shared.variantDisplayLabel(card, variant) : variant;
+    const preco = unit ? esc(shared.formatMoney(shared.getCurrency(), unit)) : "";
+    const abre = `data-entry="${escA(entry.id)}" data-entry-variant="${escA(entry.v || "")}"`;
+    // O stepper é o MESMO nos dois modos (mesmas classes, mesmos data-*): a
+    // delegação de clique não sabe que existe um modo compacto.
+    const stepper = `
+            <div class="tile-actions pasta-qty">
+              <button type="button" class="tile-btn pasta-del" data-entry-del aria-label="${escA(t("lists.removeEntry"))}" title="${escA(t("lists.removeEntry"))}">${IC.remove}</button>
+              <button type="button" class="tile-btn" data-entry-dec aria-label="${escA(t("lists.qtyMinus"))}" title="${escA(t("lists.qtyMinus"))}">${IC.minus}</button>
+              <span class="pasta-qty-n" aria-live="polite">×${q}</span>
+              <button type="button" class="tile-btn" data-entry-inc aria-label="${escA(t("lists.qtyPlus"))}" title="${escA(t("lists.qtyPlus"))}">${IC.plus}</button>
+            </div>`;
+
+    // MODO COMPACTO: uma linha por carta, SEM <img> no DOM — o mesmo desenho
+    // (e as mesmas colunas) do tile compacto do shared.js. A carta continua
+    // acessível: o nome leva a miniatura no hover (data-hover-thumb, tratado
+    // no shared) e clicar abre o popup, como a imagem faria.
+    if (cardsView === "compact") {
+      return `
+      <article class="card-tile pasta-tile tile-compact" ${abre}>
+        <button type="button" class="tile-name"${card ? ` data-preview-card-id="${escA(card.id)}" data-preview-variant="${escA(variant)}" data-hover-thumb="${escA(img.url || "")}"` : ""}>
+          ${card ? shared.cardFlag(card.language) : ""}<span>${esc(name)}</span>
+        </button>
+        <span class="tile-c-num">${card ? esc(card.number || "") : ""}</span>
+        <span class="tile-c-set">${card ? esc(card.set || "") : ""}</span>
+        <span class="tile-c-var">${esc(varLabel)}${entry.c ? ` · ${esc(entry.c)}` : ""}</span>
+        <span class="tile-c-price">${preco ? `<p class="tile-price">${preco}</p>` : ""}</span>
+        ${stepper}
+      </article>`;
+    }
+
     return `
-      <article class="card-tile pasta-tile" data-entry="${escA(entry.id)}" data-entry-variant="${escA(entry.v || "")}">
+      <article class="card-tile pasta-tile" ${abre}>
         <div class="card-image">${card
           ? `<button class="image-open" data-preview-card-id="${escA(card.id)}" data-preview-variant="${escA(variant)}" aria-label="${escA(t("card.zoom", { name }))}">${image}</button>`
           : `<span class="pasta-noimg" aria-hidden="true"></span>`}</div>
@@ -504,17 +558,144 @@
           <h3>${esc(name)}</h3>
           <p class="tile-variant">${card ? shared.cardFlag(card.language) : ""}<span>${esc(varLabel)}${entry.c ? ` · ${esc(entry.c)}` : ""}</span></p>
           <p class="tile-set"><span>${card ? `${esc(card.set || "")} · ${esc(card.number || "")}` : ""}</span></p>
-          ${unit ? `<p class="tile-price">${esc(shared.formatMoney(shared.getCurrency(), unit))}</p>` : ""}
-          <div class="tile-foot">
-            <div class="tile-actions pasta-qty">
-              <button type="button" class="tile-btn pasta-del" data-entry-del aria-label="${escA(t("lists.removeEntry"))}" title="${escA(t("lists.removeEntry"))}">${IC.remove}</button>
-              <button type="button" class="tile-btn" data-entry-dec aria-label="${escA(t("lists.qtyMinus"))}" title="${escA(t("lists.qtyMinus"))}">${IC.minus}</button>
-              <span class="pasta-qty-n" aria-live="polite">×${q}</span>
-              <button type="button" class="tile-btn" data-entry-inc aria-label="${escA(t("lists.qtyPlus"))}" title="${escA(t("lists.qtyPlus"))}">${IC.plus}</button>
-            </div>
+          ${preco ? `<p class="tile-price">${preco}</p>` : ""}
+          <div class="tile-foot">${stepper}
           </div>
         </div>
       </article>`;
+  }
+
+  // --- Filtros e ordenação da grade -----------------------------------------
+  const cardOf = (entry) => (cat && cat.byId[entry.id]) || null;
+  const jogoDaEntrada = (entry) => { const c = cardOf(entry); return (c && c.game) || current.game || ""; };
+  const filtrosAtivos = () => !!(fJogo || fSet || fIdioma || fRaridade || fValor);
+
+  // Faixa de valor ("min-max" na moeda atual; max vazio = sem teto), a MESMA da
+  // Coleção — só que sobre o valor UNITÁRIO da entrada.
+  function naFaixa(entry) {
+    if (!fValor) return true;
+    const [min, max] = fValor.split("-").map((x) => (x === "" ? null : Number(x)));
+    const v = entryUnit(current, entry, cardOf(entry));
+    return (min == null || v >= min) && (max == null || v <= max);
+  }
+
+  function entradasVisiveis() {
+    const arr = current.entries.filter((e) => {
+      const c = cardOf(e);
+      return (!fJogo || jogoDaEntrada(e) === fJogo)
+        && (!fSet || (c && c.set) === fSet)
+        && (!fIdioma || shared.normalizeCardLanguage(c && c.language) === fIdioma)
+        && (!fRaridade || (c && c.rarity) === fRaridade)
+        && naFaixa(e);
+    });
+    if (ordem === "added") return arr;
+    const copia = arr.slice();
+    if (ordem === "num-asc" || ordem === "num-desc") {
+      const n = (e) => (cardOf(e) || {}).number || "";
+      copia.sort((a, b) => ordem === "num-asc"
+        ? shared.compareCardNumbers(n(a), n(b))
+        : shared.compareCardNumbers(n(b), n(a)));
+      return copia;
+    }
+    if (ordem === "name-asc") {
+      const nome = (e) => (cardOf(e) || {}).name || e.id;
+      copia.sort((a, b) => nome(a).localeCompare(nome(b)));
+      return copia;
+    }
+    // Valor: sem preço vai pro fim nos dois sentidos (uma carta sem cotação não
+    // é "a mais barata" — é uma que a gente não sabe).
+    const val = (e) => entryUnit(current, e, cardOf(e));
+    copia.sort((a, b) => {
+      const pa = val(a), pb = val(b);
+      if (!pa && !pb) return 0;
+      if (!pa) return 1;
+      if (!pb) return -1;
+      return ordem === "valor-asc" ? pa - pb : pb - pa;
+    });
+    return copia;
+  }
+
+  // Barra de filtros: MESMOS campos, MESMA ordem e MESMA moldura da Coleção
+  // (Set, Idioma, Raridade, Valor, Ordenar), recolhida atrás do botão
+  // "Filtros". As opções saem das cartas DESTA pasta — um <select> com o
+  // catálogo inteiro seria inútil aqui. O campo Jogo só aparece em pasta que
+  // mistura jogos (a migrada de tag); nas outras seria um seletor de uma opção.
+  function filterBarHtml() {
+    const cartas = current.entries.map(cardOf).filter(Boolean);
+    const uniq = (arr) => Array.from(new Set(arr.filter(Boolean)));
+    const opts = (valores, sel, rotulo) => `<option value="">${esc(t("filter.all.m"))}</option>`
+      + valores.map((v) => `<option value="${escA(v)}"${v === sel ? " selected" : ""}>${esc(rotulo ? rotulo(v) : v)}</option>`).join("");
+    const jogos = jogosDaPasta();
+    const sets = uniq(cartas.map((c) => c.set)).sort((a, b) => a.localeCompare(b));
+    const idiomas = uniq(cartas.map((c) => shared.normalizeCardLanguage(c.language)));
+    const raridades = uniq(cartas.map((c) => c.rarity)).sort((a, b) => a.localeCompare(b));
+    const sym = shared.currencySymbol();
+    const faixas = [["0-10", `≤ ${sym} 10`], ["10-50", `${sym} 10–50`], ["50-200", `${sym} 50–200`], ["200-", `${sym} 200+`]];
+    const ordenar = (v, k) => `<option value="${v}"${ordem === v ? " selected" : ""}>${esc(t(k))}</option>`;
+    return `<section id="pastaFilters" class="toolbar collection-filters${filtrosAbertos ? "" : " is-collapsed"}" aria-label="${escA(t("filters.show"))}" data-own-toggle>
+      ${jogos.length > 1 ? `<div><label>${esc(t("pfmi.game"))}</label><select data-pf-filter="jogo">${opts(jogos, fJogo, shared.gameLabel)}</select></div>` : ""}
+      <div><label>${esc(t("toolbar.set"))}</label><select data-pf-filter="set">${opts(sets, fSet)}</select></div>
+      <div><label>${esc(t("toolbar.language"))}</label><select data-pf-filter="idioma">${opts(idiomas, fIdioma, shared.cardLanguageLabel)}</select></div>
+      <div><label>${esc(t("toolbar.rarity"))}</label><select data-pf-filter="raridade">${`<option value="">${esc(t("filter.all.f"))}</option>` + raridades.map((v) => `<option value="${escA(v)}"${v === fRaridade ? " selected" : ""}>${esc(v)}</option>`).join("")}</select></div>
+      <div><label>${esc(t("toolbar.value"))}</label><select data-pf-filter="valor">${`<option value="">${esc(t("filter.all.m"))}</option>` + faixas.map(([v, l]) => `<option value="${v}"${v === fValor ? " selected" : ""}>${esc(l)}</option>`).join("")}</select></div>
+      <div class="sort-select"><label>${esc(t("sort.label"))}</label><select data-pasta-sort>
+        ${ordenar("added", "lists.sortAdded")}${ordenar("valor-desc", "sort.valueDesc")}${ordenar("valor-asc", "sort.valueAsc")}${ordenar("num-asc", "sort.numAsc")}${ordenar("num-desc", "sort.numDesc")}${ordenar("name-asc", "sort.name")}
+      </select></div>
+    </section>`;
+  }
+
+  // "Filtros" + Visualização (grade/lista/compacta/fichário) na ponta direita
+  // da linha "Cartas da pasta" — o MESMO lugar (e o mesmo DOM) da Coleção.
+  function viewToolbarHtml() {
+    const botao = (v, rotulo, miolo, extra) =>
+      `<button type="button" class="view-toggle-btn${extra || ""}" data-grid-view="${v}" aria-pressed="${cardsView === v}" aria-label="${escA(rotulo)}" title="${escA(rotulo)}">${miolo}</button>`;
+    return `<button type="button" class="secondary" data-pasta-filters aria-expanded="${filtrosAbertos}" aria-controls="pastaFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span>${esc(t("filters.show"))}</span></button>
+      <div class="view-toggle" role="group" aria-label="${escA(t("toolbar.view"))}">
+        ${botao("grid", t("aria.viewGrid"), "▦")}
+        ${botao("list", t("aria.viewList"), "≣")}
+        ${botao("compact", t("view.compact"), "☰")}
+        ${binderView ? botao("binder", t("view.binder"), `${IC.binder}<span class="view-toggle-badge" data-binder-badge aria-hidden="true">9</span>`, " view-toggle-binder") : ""}
+      </div>`;
+  }
+
+  // Pinta a grade no modo atual. O fichário monta a grade do seu jeito
+  // (páginas de bolsos), os outros três são a MESMA grade com a classe da
+  // vista — a classe já nasce no HTML pra o compacto recarregado não piscar
+  // como grade antes do applyGridViewClasses.
+  function renderGrid() {
+    const box = el.editor.querySelector("[data-entries]");
+    if (!box) return;
+    const visiveis = entradasVisiveis();
+    if (!visiveis.length) {
+      box.innerHTML = `<p class="empty-state">${esc(current.entries.length ? t("lists.filtersEmpty") : t("lists.editorEmpty"))}</p>`;
+    } else if (cardsView === "binder" && binderView) {
+      binderView.render(visiveis, (e) => {
+        const tmp = document.createElement("div");
+        tmp.innerHTML = entryTileHtml(e);
+        return tmp.firstElementChild;
+      }, { grid: box });
+    } else {
+      box.innerHTML = visiveis.map(entryTileHtml).join("");
+    }
+    aplicaVista();
+    atualizaContagem(visiveis);
+  }
+
+  // Classe da vista na grade + estado dos botões. Separado do renderGrid
+  // porque grade ↔ lista é só CSS: não vale reconstruir tile por tile.
+  function aplicaVista() {
+    shared.applyGridViewClasses(el.editor.querySelector("[data-entries]"), cardsView);
+    el.editor.querySelectorAll("[data-grid-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.gridView === cardsView)));
+    if (binderView) binderView.paintToggle(el.editor.querySelector('[data-grid-view="binder"]'));
+  }
+
+  // A contagem ao lado de "Cartas da pasta" conta o que está NA TELA: com
+  // filtro ligado, o total da pasta inteira ali seria mentira.
+  function atualizaContagem(visiveis) {
+    const c = el.editor.querySelector("[data-pasta-count]");
+    if (!c) return;
+    const arr = visiveis || entradasVisiveis();
+    c.textContent = tn("lists.count", arr.reduce((n, e) => n + entryQty(e), 0));
   }
 
   // Números do cartão-herói: as MESMAS três contagens da Toda Coleção (cópias,
@@ -619,21 +800,23 @@
         <p class="lst-keys">${esc(t("lists.keysHint"))}</p>
       </section>
 
+      <!-- Linha do título: contagem à esquerda; na ponta DIREITA o Filtros
+           (abre a barra logo abaixo) e a Visualização, como na Coleção. -->
       <section class="results-header pasta-results">
         <h2>${esc(t("lists.cardsTitle"))} <span class="pasta-count" data-pasta-count>${esc(tn("lists.count", s.copies))}</span></h2>
         <div class="results-actions">
           ${list.linked ? "" : `<button type="button" class="lst-mini" data-list-apply>${esc(t("lists.applyToCollection"))}</button>`}
           ${list.game ? `<button type="button" class="lst-mini" data-list-deck>${esc(t("lists.makeDeck"))}</button>` : ""}
+          ${viewToolbarHtml()}
         </div>
       </section>
-      <div class="card-grid pasta-grid" data-entries>
-        ${list.entries.length
-          ? list.entries.map(entryTileHtml).join("")
-          : `<p class="empty-state">${esc(t("lists.editorEmpty"))}</p>`}
-      </div>
+      ${filterBarHtml()}
+      <div class="card-grid pasta-grid" data-entries></div>
       <img class="lst-thumb" alt="" hidden>`;
+    distintasPintadas = -1;   // DOM novo: as cápsulas ainda não existem
+    renderGrid();
+    pintaResumo();
     renderSource();
-    pintaInsights();
     ajustaValorHero();
   }
 
@@ -653,25 +836,33 @@
 
   // Cápsulas de raridade e de tipo de carta no fim do trilho — as MESMAS da
   // Coleção e da página do set (src/insights.js), que devolvem o <article>
-  // pronto (ou "" quando não há o que distribuir).
-  //
-  // Entram DEPOIS do render (o trilho precisa estar no DOM) e são refeitas
-  // quando o conjunto de cartas distintas muda. A guarda pelo TAMANHO evita o
-  // re-parse — e a reanimação das barras — a cada +1 de quantidade, que não
-  // mexe na distribuição (ela conta carta distinta, não cópia); adicionar ou
-  // remover uma carta sempre muda esse número.
-  let insightsN = -1;
-  function pintaInsights() {
+  // pronto (ou "" quando não há o que distribuir). Entram DEPOIS do render
+  // (o trilho precisa estar no DOM).
+  function pintaInsights(cartas) {
     const rail = el.editor.querySelector("[data-rail]");
     if (!rail || !window.TCGInsights) return;
-    const cartas = cartasDaPasta();
-    if (cartas.length === insightsN && rail.querySelector("[data-insight]")) return;
-    insightsN = cartas.length;
     rail.querySelectorAll("[data-insight]").forEach((n) => n.remove());
     const tmp = document.createElement("div");
     tmp.innerHTML = window.TCGInsights.rarityCard(cartas)
       + window.TCGInsights.typeCard(cartas, (c) => c.game || current.game);
     [...tmp.children].forEach((n) => { n.dataset.insight = "1"; rail.appendChild(n); });
+  }
+
+  // Tudo que depende do CONJUNTO de cartas distintas, e não das quantidades:
+  // as cápsulas de distribuição e as opções da barra de filtros (set, idioma,
+  // raridade saem das cartas que estão na pasta — carta nova traz opção nova).
+  //
+  // A guarda pelo TAMANHO evita refazer os dois — e reanimar as barras — a
+  // cada +1 no cadastro em série, que é o caminho quente desta tela; entrar ou
+  // sair uma carta sempre muda esse número.
+  let distintasPintadas = -1;
+  function pintaResumo() {
+    const cartas = cartasDaPasta();
+    if (cartas.length === distintasPintadas) return;
+    distintasPintadas = cartas.length;
+    pintaInsights(cartas);
+    const barra = el.editor.querySelector("#pastaFilters");
+    if (barra) barra.outerHTML = filterBarHtml();
   }
 
   // O valor de mercado mora numa caixa de largura FIXA no herói (a mesma da
@@ -702,15 +893,24 @@
     put("pastaCopies", s.copies);
     put("pastaDistinct", s.distinct);
     put("pastaSets", s.sets);
-    const c = el.editor.querySelector("[data-pasta-count]");
-    if (c) c.textContent = tn("lists.count", s.copies);
-    pintaInsights();
+    atualizaContagem();
+    pintaResumo();
     ajustaValorHero();
   }
   // Repinta/insere/remove UM tile da grade e atualiza os totais.
   function patchEntryRow(id, variant) {
     const box = el.editor.querySelector("[data-entries]");
     if (!box) return;
+    // O patch por tile só vale enquanto a grade é "todas as entradas, na ordem
+    // em que entraram": com filtro ou outra ordenação a linha nova pode não
+    // caber (ou cabe em outro lugar), e no fichário quem monta a grade é o
+    // binderView, em páginas. Nesses casos repinta — o caminho rápido continua
+    // valendo no cadastro em série, que é onde o custo aparecia.
+    if (filtrosAtivos() || ordem !== "added" || cardsView === "binder") {
+      renderGrid();
+      updateTotals();
+      return;
+    }
     const sel = `[data-entry="${CSS.escape(id)}"][data-entry-variant="${CSS.escape(variant || "")}"]`;
     const row = box.querySelector(sel);
     const entry = store.entry(current.id, id, variant || null);
@@ -1021,6 +1221,35 @@
       return;
     }
 
+    // Visualização: grade ↔ lista é só a classe da grade; o compacto muda o
+    // HTML do tile (sem <img>) e o fichário monta a grade em páginas, então
+    // esses dois repintam. Clicar no fichário com ele JÁ ativo troca o número
+    // de bolsos — o mesmo gesto da Coleção e da página do set.
+    const vista = ev.target.closest("[data-grid-view]");
+    if (vista) {
+      const eraCompacto = cardsView === "compact";
+      const eraBinder = cardsView === "binder";
+      const querBinder = vista.dataset.gridView === "binder";
+      if (querBinder && eraBinder && binderView) binderView.cycle();
+      cardsView = shared.gridViewValue(vista.dataset.gridView);
+      gravaPref("tcg-pastas-view", cardsView);
+      if (eraCompacto !== (cardsView === "compact") || eraBinder || querBinder) renderGrid();
+      else aplicaVista();
+      return;
+    }
+
+    // Barra de filtros recolhível em QUALQUER largura, aberta pelo "Filtros"
+    // da linha do título (o data-own-toggle mantém o shared.js longe dela).
+    if (ev.target.closest("[data-pasta-filters]")) {
+      filtrosAbertos = !filtrosAbertos;
+      gravaPref("tcg-collector-filters-open", filtrosAbertos ? "1" : "0");
+      const barra = el.editor.querySelector("#pastaFilters");
+      if (barra) barra.classList.toggle("is-collapsed", !filtrosAbertos);
+      const btn = el.editor.querySelector("[data-pasta-filters]");
+      if (btn) btn.setAttribute("aria-expanded", String(filtrosAbertos));
+      return;
+    }
+
     // Imagem do tile: abre o popup do card (como em toda grade do site).
     const pv = ev.target.closest("[data-preview-card-id]");
     if (pv && preview) { preview.open(pv.dataset.previewCardId, pv.dataset.previewVariant || undefined); return; }
@@ -1123,6 +1352,19 @@
 
   el.editor.addEventListener("change", (ev) => {
     if (!current) return;
+    // Filtros e ordenação: em memória (não vão pra URL nem pro store — a pasta
+    // é uma tela de trabalho, não um link compartilhável com filtro).
+    if (ev.target.matches("[data-pf-filter]")) {
+      const campo = ev.target.dataset.pfFilter, v = ev.target.value;
+      if (campo === "jogo") fJogo = v;
+      else if (campo === "set") fSet = v;
+      else if (campo === "idioma") fIdioma = v;
+      else if (campo === "raridade") fRaridade = v;
+      else if (campo === "valor") fValor = v;
+      renderGrid();
+      return;
+    }
+    if (ev.target.matches("[data-pasta-sort]")) { ordem = ev.target.value; renderGrid(); return; }
     if (ev.target.matches("[data-list-linked]")) {
       store.setLinked(current.id, ev.target.checked);
       current.linked = ev.target.checked;

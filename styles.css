@@ -9996,7 +9996,13 @@ select,
 .pasta-add .lst-panel-head .lst-mini { flex: none; }
 .pasta-results h2 { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
 .pasta-count { color: var(--muted); font-size: 13px; font-weight: 600; }
-.pasta-results .results-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+/* Fileira de ações da pasta: Aplicar · Criar deck · Filtros · Visualização.
+   QUEBRA linha de propósito — a regra geral do .results-header manda nowrap
+   no celular, e com quatro controles em 390px o alternador (que tem
+   overflow: hidden) era espremido até sobrar só o ▦. O flex:none garante que
+   quem encolhe nunca é ele. */
+.results-header.pasta-results .results-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.pasta-results .view-toggle { flex: none; }
 /* Tile: o rodapé é o stepper da quantidade NA PASTA (tirar · − · ×N · +), no
    lugar dos botões de posse. Mesmo círculo .tile-btn da grade. */
 .pasta-qty { align-items: center; gap: 4px; }
