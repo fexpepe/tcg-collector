@@ -239,7 +239,9 @@ As fontes, da pior pra melhor (a última a escrever vence no merge):
    batem, senão o set fica com a TCGdex). Em JP o código do grupo ("SV4a: …",
    "S-P Promotional Cards") é o `setId`; código sem chunk nosso = set que a TCGdex
    não tem e é **importado inteiro** (ids `<CODE>-<número impresso>-ja`, como a
-   TCGdex escreve, pinados pelo chunk versionado, série pelo prefixo do código). Em EN, set inteiro só entra por
+   TCGdex escreve, pinados pelo chunk versionado, série pelo prefixo do código);
+   código repetido em vários grupos sem chunk ("SV: …" nos decks iniciais) é
+   ambíguo e fica de fora até ganhar apelido por nome de grupo em `ja.alias`. Em EN, set inteiro só entra por
    **pin** (`enImport` no mesmo JSON): o TCGplayer cria o grupo na pré-venda e
    lista os singles no lançamento, e a TCGdex leva dias — foi assim que o
    "30th Celebration" (16/09/2026) chegou no dia, como no Collectr e no Dex,

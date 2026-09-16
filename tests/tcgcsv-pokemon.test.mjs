@@ -160,7 +160,8 @@ test("speciesOf: tira sufixos de mecânica", () => {
 
 // ── Import de set EN inteiro (16/09/2026: "30th Celebration" antes da TCGdex) ──
 import {
-  jpSerieOfCode, enImportEntries, findImportGroup, importSetFields, importNumberFilter, splitByDenominator
+  jpSerieOfCode, enImportEntries, findImportGroup, importSetFields, importNumberFilter, splitByDenominator,
+  jpAliasOf, jpAmbiguousCodes
 } from "../scripts/lib/tcgcsv-pokemon.mjs";
 
 test("jpSerieOfCode: série do set JP importado pelo prefixo do código (mais longo primeiro)", () => {
@@ -260,4 +261,24 @@ test("synthesizeCard keepZeros: id com o número como impresso, convenção da T
   assert.equal(jp.setSerieId, "M");
   assert.equal(jp.setSerieName, "ポケモンカードゲーム MEGA");
   assert.equal(jp.setTotal, 103);
+});
+
+test("jpAmbiguousCodes: código repetido em grupos sem chunk é ambíguo; chunk ou apelido por nome desambiguam", () => {
+  const groups = [
+    { groupId: 1, name: "SV: Ceruledge ex Stellar Tera Type Starter Set" },
+    { groupId: 2, name: "SV: Chien-Pao ex Battle Master Deck" },
+    { groupId: 3, name: "SV: Terastal Charizard ex Battle Master Deck" },
+    { groupId: 4, name: "BW1: Black Collection" }, { groupId: 5, name: "BW1: White Collection" },
+    { groupId: 6, name: "SV4a: Shiny Treasure ex" }, { groupId: 7, name: "SV4a: Shiny Treasure ex (reprint)" },
+    { groupId: 8, name: "M6a: 30th Celebration" }, { groupId: 9, name: "Sem código" }
+  ];
+  const alias = { "SV: Ceruledge ex Stellar Tera Type Starter Set": "SVLS" };
+  const amb = jpAmbiguousCodes(groups, { codeOf: (g) => jpSetCode(g.name), hasChunk: (c) => c.toUpperCase() === "SV4A", alias }); // mesma régua do sync (byCode em maiúsculas)
+  assert.deepEqual([...amb.keys()].sort(), ["BW1", "SV"]);
+  assert.deepEqual(amb.get("SV").map((g) => g.groupId), [2, 3]); // o apelidado (1) saiu da conta
+  assert.equal(jpAliasOf(groups[0], "SV", alias), "SVLS");
+  assert.equal(jpAliasOf(groups[1], "SV", alias), null);
+  assert.equal(jpAliasOf({ name: "SVP Promo" }, "SVP", { svp: "SV-P" }), null);
+  assert.equal(jpAliasOf({ name: "SVP Promo" }, "SVP", { SVP: "SV-P" }), "SV-P");
+  assert.equal(jpAmbiguousCodes([], { codeOf: () => null, hasChunk: () => false, alias: {} }).size, 0);
 });

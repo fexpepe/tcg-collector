@@ -216,6 +216,37 @@ export function jpSetTitle(name) {
   return String(name || "").replace(/^[A-Za-z0-9.-]+\s*[:：]\s*/, "").trim() || String(name || "");
 }
 
+// Apelido de um grupo JP (data/tcgcsv-set-map.json, ja.alias): pelo NOME
+// exato do grupo ("SV: Stellar Miracle Deck Build Box" -> "SVK") ou pelo
+// código ("SVP" -> "SV-P"). O nome vem primeiro porque é o que desambigua:
+// o TCGplayer batiza dezenas de decks iniciais só com o código da era.
+export function jpAliasOf(group, code, alias) {
+  const a = alias || {};
+  const name = String(group && group.name || "").trim();
+  return a[name] || a[code] || a[String(code || "").toUpperCase()] || null;
+}
+
+// Códigos AMBÍGUOS entre os grupos JP sem chunk nosso: o mesmo código em mais
+// de um grupo (16/09/2026, 1º build do import JP em produção: 11 decks
+// "SV: …", 5 "sA: … Starter Set V", os pares BW1 Black/White Collection…).
+// Importar todos com o mesmo setId fundia decks diferentes num set só, com
+// os números colidindo (a primeira carta de cada número ficava, as outras
+// sumiam). Esses códigos são pulados até ganharem apelido por nome de grupo
+// em ja.alias; o sync lista os grupos no log pra facilitar o pin.
+//   groups: grupos do TCGplayer Japan; codeOf: grupo -> código (jpSetCode);
+//   hasChunk: código -> bool; alias: ja.alias
+// Devolve Map código -> [grupos] só dos ambíguos.
+export function jpAmbiguousCodes(groups, { codeOf, hasChunk, alias }) {
+  const byCode = new Map();
+  for (const g of groups || []) {
+    const code = codeOf(g);
+    if (!code || hasChunk(code) || jpAliasOf(g, code, alias)) continue;
+    if (!byCode.has(code)) byCode.set(code, []);
+    byCode.get(code).push(g);
+  }
+  return new Map([...byCode].filter(([, list]) => list.length > 1));
+}
+
 // Série de um set JP importado inteiro, pelo prefixo do código — os MESMOS
 // valores que a TCGdex grava nos chunks ja (setSerieId/setSerieName), pra o
 // set cair no grupo certo da tela de Sets. Sem isso um "M6a: 30th Celebration"

@@ -32,7 +32,10 @@
 //       Confirmações ficam em data/.cache/tcgcsv/set-map.json por 30 dias.
 //   JP: código no nome do grupo ("SV4a: …" → SV4a; "S-P Promotional Cards" →
 //       S-P) = nosso setId (a TCGdex usa os mesmos códigos). Código sem chunk
-//       nosso = set que a TCGdex não tem → importado inteiro.
+//       nosso = set que a TCGdex não tem → importado inteiro. Código repetido
+//       em vários grupos sem chunk (decks "SV: …", "sA: …", pares BW1 Black/
+//       White…) é AMBÍGUO e fica de fora até ganhar apelido por nome de grupo
+//       em ja.alias — importar tudo com o mesmo setId fundia os decks.
 //
 // Uso:
 //   node scripts/sync-tcgcsv-pokemon.mjs                 # tudo (EN + JP)
@@ -43,7 +46,7 @@
 import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
 import { fetchRetry, mapLimit, sleep, normNum } from "./lib/sync-common.mjs";
 import {
-  indexGroupsByName, candidateGroups, matchGroup, groupFits, jpSetCode, jpSerieOfCode, synthesizeCard,
+  indexGroupsByName, candidateGroups, matchGroup, groupFits, jpSetCode, jpSerieOfCode, jpAliasOf, jpAmbiguousCodes, synthesizeCard,
   enImportEntries, findImportGroup, importSetFields, importNumberFilter
 } from "./lib/tcgcsv-pokemon.mjs";
 
@@ -113,6 +116,12 @@ const out = {};           // cardId -> { u, v?, img }
 const newCards = [];      // cartas sintetizadas
 const rev = await revNames();
 await mkdir(CACHE, { recursive: true });
+// O artefato de cartas novas da rodada ANTERIOR sai antes de qualquer rede: ele
+// vem do cache de build, e se esta rodada morrer no meio (o deploy segue com
+// "|| echo") o merge o injetaria de novo — foi por essa porta que um set
+// fundido, já apagado do repo, poderia voltar. Sem o artefato o merge só perde
+// as cartas novas DESTA rodada; as das anteriores já estão nos chunks versionados.
+if (!DRY) await writeFile(new URL("tcgcsv-newcards.generated.json", DATA), "[]", "utf8").catch(() => {});
 
 // ── Categorias ───────────────────────────────────────────────────────────────
 // Pelo NOME, não por id fixo: o id do "Pokemon Japan" é recente e a lista é
@@ -241,18 +250,25 @@ if (catJA && !ONLY_EN) {
   const sets = await ourSets("ja");
   const byCode = new Map(sets.map((s) => [s.id.toUpperCase(), s]));
   const pins = await readJson(new URL("tcgcsv-set-map.json", DATA), {});
-  // Apelidos: código do TCGplayer -> nosso setId, quando diferem (ex.: a TCGdex
-  // escreve "SV-P"; se o TCGplayer escrever "SVP", pina aqui, em data/tcgcsv-set-map.json).
+  // Apelidos: NOME exato do grupo ou código do TCGplayer -> nosso setId, quando
+  // diferem (a TCGdex escreve "SV-P" e "SVK"; o TCGplayer, "SVP" e "SV: Stellar
+  // Miracle Deck Build Box"). Ficam em data/tcgcsv-set-map.json (ja.alias).
   const alias = (pins.ja && pins.ja.alias) || {};
   const skip = new Set(((pins.ja && pins.ja.skip) || []).map((s) => String(s).toUpperCase()));
-  console.log(`JP: ${groups.length} grupos no TCGplayer Japan · ${sets.length} sets nossos`);
+  // Código repetido em vários grupos SEM chunk nosso = ambíguo: não dá pra
+  // importar sem fundir decks diferentes num set só (ver jpAmbiguousCodes).
+  const ambiguos = jpAmbiguousCodes(groups, { codeOf: (g) => jpSetCode(g.name), hasChunk: (c) => byCode.has(c.toUpperCase()), alias });
+  console.log(`JP: ${groups.length} grupos no TCGplayer Japan · ${sets.length} sets nossos · ${ambiguos.size} código(s) ambíguo(s)`);
+  for (const [code, list] of ambiguos) {
+    stats.unmatchedJA.push(`${code}: ${list.length} grupos com o mesmo código, sem chunk — pular até pinar por nome em ja.alias: ${list.map((g) => `${g.groupId} "${g.name}"`).join(" · ")}`);
+  }
 
   await mapLimit(groups, CONCURRENCY, async (g) => {
     const code = jpSetCode(g.name);
     if (!code) { stats.unmatchedJA.push(`${g.groupId} "${g.name}" (sem código)`); return; }
     const key = code.toUpperCase();
-    if (skip.has(key)) return;
-    const ourId = alias[code] || alias[key] || (byCode.has(key) ? byCode.get(key).id : null);
+    if (skip.has(key) || ambiguos.has(code)) return;
+    const ourId = jpAliasOf(g, code, alias) || (byCode.has(key) ? byCode.get(key).id : null);
     if (ONLY_SETS.size && !ONLY_SETS.has(ourId || code)) return;
     let products, prices;
     try {
