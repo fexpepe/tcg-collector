@@ -157,3 +157,107 @@ test("speciesOf: tira sufixos de mecânica", () => {
   assert.equal(speciesOf("Pikachu VMAX"), "Pikachu");
   assert.equal(speciesOf("Umbreon"), "Umbreon");
 });
+
+// ── Import de set EN inteiro (16/09/2026: "30th Celebration" antes da TCGdex) ──
+import {
+  jpSerieOfCode, enImportEntries, findImportGroup, importSetFields, importNumberFilter, splitByDenominator
+} from "../scripts/lib/tcgcsv-pokemon.mjs";
+
+test("jpSerieOfCode: série do set JP importado pelo prefixo do código (mais longo primeiro)", () => {
+  assert.deepEqual(jpSerieOfCode("M6a"), { setSerieId: "M", setSerieName: "ポケモンカードゲーム MEGA" });
+  assert.deepEqual(jpSerieOfCode("M-P"), { setSerieId: "M", setSerieName: "ポケモンカードゲーム MEGA" });
+  assert.equal(jpSerieOfCode("SV1a").setSerieId, "SV");  // SV, não S
+  assert.equal(jpSerieOfCode("SM10").setSerieId, "SM");  // SM, não S
+  assert.equal(jpSerieOfCode("S-P").setSerieId, "S");
+  assert.equal(jpSerieOfCode("CP1").setSerieId, "XY");
+  assert.equal(jpSerieOfCode("BW1"), null);              // era que a TCGdex ja não cobre: sem série
+  assert.equal(jpSerieOfCode(""), null);
+});
+
+const IMPORT_GROUPS = [
+  { groupId: 24451, name: "ME: Black Star Promos", publishedOn: "2025-09-26T00:00:00" },
+  { groupId: 25100, name: "ME: 30th Celebration", publishedOn: "2026-09-16T00:00:00" },
+  { groupId: 25101, name: "ME: 30th Celebration Classic Collection", publishedOn: "2026-09-16T00:00:00" }
+];
+const PINS = { en: { mep: 24451 }, enImport: [
+  { group: "ME: 30th Celebration", setId: "cel30", name: "30th Celebration", serie: "me", date: "2026-09-16", total: 128 },
+  { group: 25101, setId: "cel30cc", name: "30th Celebration Classic Collection", serie: "me" },
+  { group: "Sem setId" }, null
+] };
+
+test("enImportEntries / findImportGroup: pin válido acha o grupo pelo nome normalizado ou pelo groupId", () => {
+  const entries = enImportEntries(PINS);
+  assert.deepEqual(entries.map((e) => e.setId), ["cel30", "cel30cc"]);
+  assert.equal(findImportGroup(entries[0], IMPORT_GROUPS).groupId, 25100); // "ME: 30th Celebration" ≠ "…Classic Collection"
+  assert.equal(findImportGroup(entries[1], IMPORT_GROUPS).groupId, 25101);
+  assert.equal(findImportGroup({ group: "30th celebration", setId: "x" }, IMPORT_GROUPS).groupId, 25100); // sem o "ME: " também
+  assert.equal(findImportGroup({ group: "ME: Delta Reign", setId: "x" }, IMPORT_GROUPS), null);   // ainda não existe
+  assert.deepEqual(enImportEntries({}), []);
+});
+
+test("importSetFields / importNumberFilter: campos do set vêm do pin, senão do grupo; regex sobre o número impresso", () => {
+  const [main, cc] = enImportEntries(PINS);
+  const f = importSetFields(main, IMPORT_GROUPS[1]);
+  assert.equal(f.set, "30th Celebration");
+  assert.equal(f.setSerieId, "me");
+  assert.equal(f.setSerieName, "Mega Evolution");
+  assert.equal(f.setReleaseDate, "2026-09-16");
+  assert.equal(f.setTotal, 128);
+  assert.equal(importSetFields({ setId: "x", group: 1 }, IMPORT_GROUPS[2]).set, "ME: 30th Celebration Classic Collection");
+  assert.equal(importSetFields(cc, null).setReleaseDate, "");
+  const keep = importNumberFilter({ numbers: "/\\s*128$" });
+  assert.equal(keep({ extendedData: [{ name: "Number", value: "129/128" }] }), true);
+  assert.equal(keep({ extendedData: [{ name: "Number", value: "4/102" }] }), false);
+  assert.equal(importNumberFilter(null)({}), true);
+});
+
+test("matchGroup em modo import: mesmo numerador com denominadores diferentes vira DUAS cartas, ids estáveis", () => {
+  const prods = [
+    { productId: 30, name: "Blastoise - 2/102", extendedData: [{ name: "Number", value: "2/102" }] },
+    { productId: 31, name: "Blaine's Charizard - 2/132", extendedData: [{ name: "Number", value: "2/132" }] },
+    { productId: 32, name: "Charizard - 4/102", extendedData: [{ name: "Number", value: "4/102" }] },
+    { productId: 33, name: "Pikachu (Poke Ball Pattern) - 4/102", extendedData: [{ name: "Number", value: "4/102" }] }
+  ];
+  const m = matchGroup([], prods, [], { setId: "cel30cc", lang: "en" });
+  assert.deepEqual(m.misses.map((x) => x.key).sort(), ["2", "2-132", "4"]);
+  const dup = m.misses.find((x) => x.key === "2-132");
+  assert.equal(dup.idExtra, "132");
+  assert.equal(dup.product.productId, 31);
+  assert.equal(m.misses.find((x) => x.key === "4").product.productId, 32); // padrão Poke Ball é impressão, não carta
+  const sib = importSetFields(PINS.enImport[1], IMPORT_GROUPS[2]);
+  const c = synthesizeCard({ product: dup.product, price: null, img: "I", setId: "cel30cc", lang: "en", sib, group: IMPORT_GROUPS[2], pinned: null, revNames: {}, keepZeros: true, idExtra: dup.idExtra });
+  assert.equal(c.id, "cel30cc-2-132");
+  assert.equal(c.number, "2");
+  assert.equal(c.setTotal, 132);
+  assert.equal(c.set, "30th Celebration Classic Collection");
+  assert.equal(c.setSerieId, "me");
+  // Set que JÁ existe: um numerador = uma carta (o segundo denominador é ignorado, como antes)
+  const chunk = [{ id: "cel30cc-2", number: "2", rarity: "Classic Collection" }];
+  const m2 = matchGroup(chunk, prods, [], { setId: "cel30cc", lang: "en" });
+  assert.equal(m2.matched, 1);
+  assert.deepEqual(m2.misses.map((x) => x.key), ["4"]);
+  assert.deepEqual(splitByDenominator([]), []);
+});
+
+test("synthesizeCard keepZeros: id com o número como impresso, convenção da TCGdex nas eras SV/ME", () => {
+  const product = { productId: 40, name: "Pikachu - 001/128", extendedData: [{ name: "Number", value: "001/128" }, { name: "Rarity", value: "Common" }] };
+  const group = IMPORT_GROUPS[1];
+  const sib = importSetFields(PINS.enImport[0], group);
+  const c = synthesizeCard({ product, price: { u: 1 }, img: "I", setId: "cel30", lang: "en", sib, group, pinned: null, revNames: { pikachu: 25 }, keepZeros: true });
+  assert.equal(c.id, "cel30-001");
+  assert.equal(c.number, "001");
+  assert.equal(c.setTotal, 128);
+  assert.equal(c.setReleaseDate, "2026-09-16");
+  assert.equal(c.setSerieName, "Mega Evolution");
+  assert.equal(c.dexId, 25);
+  assert.equal(c.rarity, "Common");
+  // sem keepZeros segue como antes (promo/add-on)
+  assert.equal(synthesizeCard({ product, price: null, img: "I", setId: "cel30", lang: "en", sib, group, pinned: null, revNames: {} }).id, "cel30-1");
+  // set JP importado: série pelo código, nome do grupo sem o código
+  const jp = synthesizeCard({ product: { productId: 41, name: "Pikachu - 001/103", extendedData: [{ name: "Number", value: "001/103" }] }, price: null, img: "I", setId: "M6a", lang: "ja", sib: jpSerieOfCode("M6a"), group: { groupId: 9, name: "M6a: 30th Celebration", publishedOn: "2026-09-16" }, pinned: null, revNames: {}, keepZeros: true });
+  assert.equal(jp.id, "M6a-001-ja"); // convenção da TCGdex em ja (M-P-001-ja)
+  assert.equal(jp.set, "30th Celebration");
+  assert.equal(jp.setSerieId, "M");
+  assert.equal(jp.setSerieName, "ポケモンカードゲーム MEGA");
+  assert.equal(jp.setTotal, 103);
+});

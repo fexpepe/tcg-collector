@@ -50,8 +50,12 @@ total calculado. Ver [docs/PORTFOLIO.md](docs/PORTFOLIO.md).
 Edition — via TCGCSV, diário, pro Pokémon EN e JP; Cardmarket (EUR) da TCGdex;
 PokemonPriceTracker pro graded; câmbio do dia da AwesomeAPI, moeda escolhida
 pelo usuário (BRL/USD/EUR). Os sets JP que a TCGdex não tem (promos S-P/SM-P/
-XY-P, eras DP/BW/XY) entram inteiros pela TCGCSV. Histórico de preços sem
-servidor: a produção é o banco. Decisão de 14/09/2026, depois da comparação com
+XY-P, eras DP/BW/XY) entram inteiros pela TCGCSV; set EN recém-lançado que a
+TCGdex ainda não publicou entra inteiro por pin (`enImport`) — decisão de
+16/09/2026, quando o 30th Celebration saiu no mundo todo sem PR na TCGdex e os
+concorrentes (Collectr, Dex) já o mostravam a partir do grupo do TCGplayer. PT
+e ZH continuam dependendo da TCGdex: o TCGplayer só vende EN e JP. Histórico de
+preços sem servidor: a produção é o banco. Decisão de 14/09/2026, depois da comparação com
 o TCG Collector: a tabela tinha um preço por carta (o do Normal), o preço JP
 dependia de crédito e chegava atrasado, e promos JP estavam injetadas em sets
 EN — ver "Preço do Pokémon" no README.

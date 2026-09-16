@@ -38,7 +38,7 @@ catálogo e o JUMP em preparação. Cada jogo tem um `dataDir` próprio — o do
 
 | Slug | Jogo | Fonte do catálogo | Preço |
 |---|---|---|---|
-| `pokemon` | Pokémon | TCGdex (en, ja, zh-cn, zh-tw, pt) + PokéAPI (tipos/nomes) + TCGCSV (promos EN e sets JP que a TCGdex não tem) + PokemonPriceTracker (graded) | TCGplayer USD **por impressão** (TCGCSV, diário) · Cardmarket EUR (TCGdex) · PPT (graded) · MYP (BR, pendente) |
+| `pokemon` | Pokémon | TCGdex (en, ja, zh-cn, zh-tw, pt) + PokéAPI (tipos/nomes) + TCGCSV (promos EN, sets JP que a TCGdex não tem e sets EN recém-lançados, por pin) + PokemonPriceTracker (graded) | TCGplayer USD **por impressão** (TCGCSV, diário) · Cardmarket EUR (TCGdex) · PPT (graded) · MYP (BR, pendente) |
 | `lorcana` | Lorcana | Lorcast | USD/EUR |
 | `onepiece` | One Piece | TCGCSV cat. 68 + vintage (Carddass Hyper Battle, OP Card Game 2002, Miracle Battle) | USD (moderno); vintage sem preço |
 | `magic` | Magic: The Gathering | Scryfall (catálogo EN; pt-BR é fase 2) | USD/EUR |
@@ -238,8 +238,18 @@ As fontes, da pior pra melhor (a última a escrever vence no merge):
    `data/tcgcsv-set-map.json`) e **confirma pelo conteúdo** (metade dos números
    batem, senão o set fica com a TCGdex). Em JP o código do grupo ("SV4a: …",
    "S-P Promotional Cards") é o `setId`; código sem chunk nosso = set que a TCGdex
-   não tem e é **importado inteiro** (ids `<CODE>-<n>-ja`, pinados pelo chunk
-   versionado). Roda com `--dry-run`, `--en`/`--ja`, `--set a,b`, `--no-import`.
+   não tem e é **importado inteiro** (ids `<CODE>-<número impresso>-ja`, como a
+   TCGdex escreve, pinados pelo chunk versionado, série pelo prefixo do código). Em EN, set inteiro só entra por
+   **pin** (`enImport` no mesmo JSON): o TCGplayer cria o grupo na pré-venda e
+   lista os singles no lançamento, e a TCGdex leva dias — foi assim que o
+   "30th Celebration" (16/09/2026) chegou no dia, como no Collectr e no Dex,
+   que montam o catálogo em cima do grupo do TCGplayer. O pin escolhe o `setId`
+   (o que a TCGdex deve usar depois, pra casar em vez de duplicar), nome, série
+   e data; ids levam o número como impresso (`cel30-001`, convenção SV/ME) e o
+   mesmo numerador com denominadores diferentes (Classic Collection: "2/102" e
+   "2/132") vira duas cartas. Grupo EN moderno sem set nosso nem pin sai no log
+   do deploy como candidato. Roda com `--dry-run`, `--en`/`--ja`, `--set a,b`,
+   `--no-import`.
 
 **Guarda do add-on-miss.** Carta que a fonte de preço tem e a TCGdex não só entra
 no set se o número segue o **padrão de numeração** do chunk (`missAllowed`):

@@ -7790,6 +7790,8 @@
     M3: "Nihil Zero",
     M4: "Ninja Spinner",
     M5: "Abyss Eye",
+    M6: "Storm Emeralda",
+    M6a: "30th Celebration",
     MC: "Start Deck 100 Battle Collection"
   };
 

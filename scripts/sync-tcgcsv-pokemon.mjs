@@ -18,8 +18,9 @@
 // O que sai:
 //   data/tcgcsv-prices.generated.json   { cardId: { u, v?: {Normal,Holo,Reverse,"1st Edition"}, img } }
 //   data/tcgcsv-newcards.generated.json [ carta ] — promos EN que a TCGdex não
-//       lista (mesmo padrão de numeração do set: guarda missAllowed) e sets JP
-//       INTEIROS que a TCGdex não tem (setId = código do set, ids "<CODE>-<n>-ja")
+//       lista (mesmo padrão de numeração do set: guarda missAllowed), sets EN
+//       INTEIROS pinados em `enImport` (ver abaixo) e sets JP INTEIROS que a
+//       TCGdex não tem (setId = código do set, ids "<CODE>-<número impresso>-ja")
 // O merge-catalogs aplica os dois (o preço da TCGCSV vence TCGdex e PPT; a PPT
 // fica com o graded).
 //
@@ -42,7 +43,8 @@
 import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
 import { fetchRetry, mapLimit, sleep, normNum } from "./lib/sync-common.mjs";
 import {
-  indexGroupsByName, candidateGroups, matchGroup, groupFits, jpSetCode, synthesizeCard
+  indexGroupsByName, candidateGroups, matchGroup, groupFits, jpSetCode, jpSerieOfCode, synthesizeCard,
+  enImportEntries, findImportGroup, importSetFields, importNumberFilter
 } from "./lib/tcgcsv-pokemon.mjs";
 
 const argv = process.argv.slice(2);
@@ -121,7 +123,7 @@ const catEN = cats.find((c) => /^pok[eé]mon$/i.test(String(c.name || "").trim()
 const catJA = cats.find((c) => /^pok[eé]mon\s+japan/i.test(String(c.name || "").trim()));
 console.log(`TCGCSV: categoria Pokémon EN = ${catEN ? catEN.categoryId : "NÃO ACHADA"} · Pokémon Japan = ${catJA ? catJA.categoryId : "NÃO ACHADA"}`);
 
-const stats = { enSets: 0, enPriced: 0, enNew: 0, jaSets: 0, jaPriced: 0, jaNew: 0, jaImported: 0, unmatchedEN: [], unmatchedJA: [] };
+const stats = { enSets: 0, enPriced: 0, enNew: 0, enImported: 0, jaSets: 0, jaPriced: 0, jaNew: 0, jaImported: 0, unmatchedEN: [], unmatchedJA: [], candidatesEN: [] };
 
 // ── EN: preço por impressão + promos que a TCGdex não lista ──────────────────
 if (catEN && !ONLY_JA) {
@@ -130,8 +132,11 @@ if (catEN && !ONLY_JA) {
   const byId = new Map(groups.map((g) => [g.groupId, g]));
   const pins = await readJson(new URL("tcgcsv-set-map.json", DATA), {});
   const confirmed = await readJson(new URL("set-map.json", CACHE), {}); // { "en/<setId>": { g: [ids], t } }
-  const sets = (await ourSets("en")).filter((s) => !ONLY_SETS.size || ONLY_SETS.has(s.id));
-  console.log(`EN: ${groups.length} grupos no TCGplayer · ${sets.length} sets nossos`);
+  const allOurSets = await ourSets("en");
+  const sets = allOurSets.filter((s) => !ONLY_SETS.size || ONLY_SETS.has(s.id));
+  const importBySet = new Map(enImportEntries(pins).map((e) => [e.setId, e]));
+  const matchedGroupIds = new Set(); // grupos já casados com um set nosso
+  console.log(`EN: ${groups.length} grupos no TCGplayer · ${sets.length} sets nossos · ${importBySet.size} pin(s) de import`);
 
   await mapLimit(sets, CONCURRENCY, async (set) => {
     // Candidatos: pin manual > confirmação em cache (válida) > nome.
@@ -158,9 +163,13 @@ if (catEN && !ONLY_JA) {
       // Confirmação pelo conteúdo: nome igual mas números que não batem = outro
       // set (o pin manual é a exceção — quem pinou conferiu).
       if (!pinned && !groupFits(m)) { console.log(`  ${set.id}: grupo ${g.groupId} "${g.name}" não confere (${m.matched}/${m.ourCount} números) — ignorado`); continue; }
-      usedGroups.push(g.groupId);
+      usedGroups.push(g.groupId); matchedGroupIds.add(g.groupId);
       Object.assign(entries, m.entries);
-      for (const miss of m.misses) if (!misses.has(miss.key)) misses.set(miss.key, { ...miss, group: g });
+      // Set importado por pin com filtro de número (grupo dividido em dois
+      // sets): o add-on-miss respeita o mesmo filtro, senão as cartas do
+      // set-irmão voltariam por aqui no dia seguinte.
+      const keep = importNumberFilter(importBySet.get(set.id));
+      for (const miss of m.misses) if (keep(miss.product) && !misses.has(miss.key)) misses.set(miss.key, { ...miss, group: g });
     }
     if (!usedGroups.length) { stats.unmatchedEN.push(`${set.id} "${set.name}" (nome bate, números não)`); return; }
     if (!pinned) confirmed[`en/${set.id}`] = { g: usedGroups, t: Date.now() };
@@ -182,6 +191,48 @@ if (catEN && !ONLY_JA) {
     console.log(`  ${set.id} "${set.name}": ${Object.keys(entries).length} preços (grupos ${usedGroups.join("+")})${added ? `, ${added} cartas novas` : ""}`);
   });
   if (!DRY) await writeFile(new URL("set-map.json", CACHE), JSON.stringify(confirmed), "utf8");
+
+  // ── EN: sets INTEIROS que a TCGdex ainda não tem (pins `enImport`) ──────────
+  const ourIds = new Set(allOurSets.map((s) => s.id));
+  for (const entry of importBySet.values()) {
+    if (ONLY_SETS.size && !ONLY_SETS.has(entry.setId)) continue;
+    // Chunk já existe (TCGdex publicou, ou um build anterior importou e o
+    // snapshot versionou): o casamento normal acima já cuidou dele.
+    if (ourIds.has(entry.setId)) continue;
+    const g = findImportGroup(entry, groups);
+    if (!g) { console.log(`  EN import ${entry.setId}: grupo "${entry.group}" ainda não existe no TCGplayer — nada a importar`); continue; }
+    if (matchedGroupIds.has(g.groupId)) { console.warn(`  EN import ${entry.setId}: grupo ${g.groupId} "${g.name}" já casou com outro set nosso — pin ignorado`); continue; }
+    let products, prices;
+    try {
+      products = await api(`/${catEN.categoryId}/${g.groupId}/products`);
+      prices = await api(`/${catEN.categoryId}/${g.groupId}/prices`);
+    } catch (e) { console.warn(`  EN import ${entry.setId}: grupo ${g.groupId} erro ${e.message}`); continue; }
+    await sleep(80);
+    const m = matchGroup([], products, prices, { setId: entry.setId, lang: "en" });
+    const keep = importNumberFilter(entry);
+    const misses = m.misses.filter((miss) => keep(miss.product));
+    // Na pré-venda o grupo só tem selados (ETB, booster bundle…): os singles
+    // aparecem no lançamento. Sem número, sem carta — tenta de novo amanhã.
+    if (!misses.length) { console.log(`  EN import ${entry.setId}: grupo ${g.groupId} "${g.name}" ainda sem singles (${products.length} produtos, só selados) — nada a importar`); continue; }
+    const sib = importSetFields(entry, g);
+    let added = 0;
+    for (const miss of misses.sort((a, b) => a.key.localeCompare(b.key))) {
+      const card = synthesizeCard({ product: miss.product, price: miss.price, img: miss.img, setId: entry.setId, lang: "en", sib, group: g, pinned: null, revNames: rev, variants: miss.variants, keepZeros: true, idExtra: miss.idExtra });
+      if (!card.name) continue;
+      newCards.push(card); added++;
+    }
+    stats.enImported++; stats.enNew += added;
+    console.log(`  EN import ${entry.setId} "${sib.set}": set importado inteiro do grupo ${g.groupId} "${g.name}" (${added} cartas)`);
+  }
+
+  // Grupos EN modernos que não casaram com set nenhum nem têm pin: é assim que
+  // se descobre no log do deploy que um set novo apareceu no TCGplayer antes
+  // da TCGdex (candidato a pin `enImport`).
+  const pinnedGroups = new Set([...importBySet.values()].map((e) => findImportGroup(e, groups)).filter(Boolean).map((g) => g.groupId));
+  for (const g of groups) {
+    if (matchedGroupIds.has(g.groupId) || pinnedGroups.has(g.groupId)) continue;
+    if (/^(?:me|sv|swsh)\s*\d*(?:\.\d)?\s*[:\-–—]/i.test(String(g.name || ""))) stats.candidatesEN.push(`${g.groupId} "${g.name}" (${String(g.publishedOn || "").slice(0, 10)})`);
+  }
 }
 
 // ── JP: preço por impressão nos sets que temos + import dos que faltam ───────
@@ -237,8 +288,15 @@ if (catJA && !ONLY_EN) {
     const prev = await chunkOf("ja", code);
     const pinsById = pinnedIds(prev, code);
     let added = 0;
+    // Série pelo código (M6a → MEGA), senão o set nasce sem série e a tela de
+    // Sets o joga em "Outros". O id leva o número como impresso ("M6a-001-ja"):
+    // é a convenção da TCGdex em ja (M-P-001-ja, SV1a-001-ja), e quando ela
+    // publicar o set as cartas casam em vez de duplicar. Nenhum set JP inteiro
+    // chegou a ser publicado sem zeros (o import JP entrou em 14/09/2026 e o
+    // deploy diário não completou desde então), então não há id a preservar.
+    const sib = jpSerieOfCode(code);
     for (const miss of m.misses.sort((a, b) => a.key.localeCompare(b.key))) {
-      newCards.push(synthesizeCard({ product: miss.product, price: miss.price, img: miss.img, setId: code, lang: "ja", sib: null, group: g, pinned: pinsById.get(miss.key), revNames: rev, variants: miss.variants }));
+      newCards.push(synthesizeCard({ product: miss.product, price: miss.price, img: miss.img, setId: code, lang: "ja", sib, group: g, pinned: pinsById.get(miss.key), revNames: rev, variants: miss.variants, keepZeros: true, idExtra: miss.idExtra }));
       added++;
     }
     stats.jaImported++; stats.jaNew += added;
@@ -246,8 +304,9 @@ if (catJA && !ONLY_EN) {
   });
 }
 
-console.log(`\nTCGCSV Pokémon: EN ${stats.enSets} sets · ${stats.enPriced} preços · ${stats.enNew} promos novas | JP ${stats.jaSets} sets · ${stats.jaPriced} preços · ${stats.jaImported} sets importados · ${stats.jaNew} cartas novas`);
+console.log(`\nTCGCSV Pokémon: EN ${stats.enSets} sets · ${stats.enPriced} preços · ${stats.enImported} sets importados · ${stats.enNew} cartas novas | JP ${stats.jaSets} sets · ${stats.jaPriced} preços · ${stats.jaImported} sets importados · ${stats.jaNew} cartas novas`);
 if (stats.unmatchedEN.length) console.log(`EN sem grupo confirmado (ficam com o preço da TCGdex): ${stats.unmatchedEN.length}\n  ${stats.unmatchedEN.slice(0, 40).join("\n  ")}${stats.unmatchedEN.length > 40 ? "\n  …" : ""}`);
+if (stats.candidatesEN.length) console.log(`EN grupos modernos sem set nosso nem pin (candidatos a enImport em data/tcgcsv-set-map.json): ${stats.candidatesEN.length}\n  ${stats.candidatesEN.slice(0, 40).join("\n  ")}${stats.candidatesEN.length > 40 ? "\n  …" : ""}`);
 if (stats.unmatchedJA.length) console.log(`JP grupos ignorados: ${stats.unmatchedJA.length}\n  ${stats.unmatchedJA.slice(0, 40).join("\n  ")}${stats.unmatchedJA.length > 40 ? "\n  …" : ""}`);
 
 if (DRY) { console.log("[dry-run] nada gravado."); process.exit(0); }

@@ -1,5 +1,5 @@
 {
-  "_": "Pins do casamento set nosso ↔ grupo do TCGplayer (scripts/sync-tcgcsv-pokemon.mjs). en: setId TCGdex -> groupId (ou lista, quando a TCGdex junta a galeria TG/GG no chunk). Só entra aqui o que foi conferido à mão; o resto o sync casa pelo nome e CONFIRMA pelos números. ja.alias: código do TCGplayer -> nosso setId quando divergem; ja.skip: códigos a ignorar.",
+  "_": "Pins do casamento set nosso ↔ grupo do TCGplayer (scripts/sync-tcgcsv-pokemon.mjs). en: setId TCGdex -> groupId (ou lista, quando a TCGdex junta a galeria TG/GG no chunk). Só entra aqui o que foi conferido à mão; o resto o sync casa pelo nome e CONFIRMA pelos números. ja.alias: código do TCGplayer -> nosso setId quando divergem; ja.skip: códigos a ignorar. enImport: sets EN INTEIROS que a TCGdex ainda não publicou, importados do grupo do TCGplayer — { group: nome (normalizado) ou groupId, setId (decisão editorial: o id que a TCGdex deve usar, pra casar depois), name, serie, numbers? (regex sobre o número impresso, pra dividir um grupo em dois sets), date?, total? }. Pin de set que já tem chunk é ignorado (segue o casamento normal).",
   "en": {
     "base1": 604, "base2": 635, "base3": 630, "base4": 605, "base5": 1373,
     "gym1": 1441, "gym2": 1440,
@@ -16,5 +16,9 @@
   "ja": {
     "alias": {},
     "skip": []
-  }
+  },
+  "enImport": [
+    { "group": "ME: 30th Celebration", "setId": "cel30", "name": "30th Celebration", "serie": "me", "date": "2026-09-16", "total": 128 },
+    { "group": "ME: 30th Celebration Classic Collection", "setId": "cel30cc", "name": "30th Celebration Classic Collection", "serie": "me", "date": "2026-09-16" }
+  ]
 }

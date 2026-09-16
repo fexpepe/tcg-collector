@@ -145,25 +145,50 @@ export function matchGroup(chunk, products, prices, { setId, lang }) {
   const entries = {};
   const misses = [];
   let matched = 0;
+  // Set importado INTEIRO (sem chunk): o mesmo numerador com denominadores
+  // diferentes são cartas DIFERENTES — a Classic Collection reimprime cada
+  // carta com o número original ("Blastoise 2/102" e "Blaine's Charizard
+  // 2/132" conviviam na de 2021), e escolher uma perderia a outra. A primeira
+  // (menor denominador) fica com o id simples; as demais levam o denominador
+  // no id (idExtra). Num set que já existe a régua é a de sempre: um número =
+  // uma carta, e o que sobra são impressões (Poke Ball Pattern…) da mesma.
+  const importMode = !(chunk && chunk.length);
   for (const [k, list] of byNumber) {
-    const main = pickMainProduct(list, priceOf);
-    const compact = compactTcgcsvPrice(rowsByProduct.get(main.productId));
-    const img = `https://tcgplayer-cdn.tcgplayer.com/product/${main.productId}_in_400x400.jpg`;
-    const ourId = byKey.get(k);
-    if (ourId) {
-      matched++;
-      const e = { img };
-      if (compact) Object.assign(e, compact);
-      entries[ourId] = e;
-    } else if (missAllowed(productNumber(main), prefixes)) {
-      // Impressões que o TCGplayer vende deste produto, na ordem canônica: é a
-      // lista de variantes da carta sintetizada (uma promo só-Holo tem que
-      // nascer ["Holo"], não ["Normal"], senão a Coleção oferece a versão errada).
-      const printings = VARIANTS.filter((v) => (rowsByProduct.get(main.productId) || []).some((r) => variantOfPrinting(r.subTypeName) === v));
-      misses.push({ product: main, key: k, price: compact, img, variants: printings });
-    }
+    const buckets = importMode ? splitByDenominator(list) : [{ den: "", list }];
+    buckets.forEach((b, i) => {
+      const main = pickMainProduct(b.list, priceOf);
+      const compact = compactTcgcsvPrice(rowsByProduct.get(main.productId));
+      const img = `https://tcgplayer-cdn.tcgplayer.com/product/${main.productId}_in_400x400.jpg`;
+      const ourId = byKey.get(k);
+      if (ourId) {
+        matched++;
+        const e = { img };
+        if (compact) Object.assign(e, compact);
+        entries[ourId] = e;
+      } else if (missAllowed(productNumber(main), prefixes)) {
+        // Impressões que o TCGplayer vende deste produto, na ordem canônica: é a
+        // lista de variantes da carta sintetizada (uma promo só-Holo tem que
+        // nascer ["Holo"], não ["Normal"], senão a Coleção oferece a versão errada).
+        const printings = VARIANTS.filter((v) => (rowsByProduct.get(main.productId) || []).some((r) => variantOfPrinting(r.subTypeName) === v));
+        misses.push({ product: main, key: i ? `${k}-${b.den}` : k, idExtra: i ? b.den : "", price: compact, img, variants: printings });
+      }
+    });
   }
   return { entries, misses, matched, total: byNumber.size, ourCount: byKey.size, suffix };
+}
+// Produtos do mesmo numerador agrupados pelo denominador impresso ("4/102" →
+// "102"; sem barra → ""), em ordem numérica (depois alfabética) pra o id ser
+// estável entre builds.
+export function splitByDenominator(products) {
+  const by = new Map();
+  for (const p of products) {
+    const n = productNumber(p);
+    const den = n.includes("/") ? n.split("/")[1].trim().toLowerCase() : "";
+    if (!by.has(den)) by.set(den, []);
+    by.get(den).push(p);
+  }
+  const num = (d) => (/^\d+$/.test(d) ? Number(d) : Infinity);
+  return [...by.entries()].sort((a, b) => num(a[0]) - num(b[0]) || a[0].localeCompare(b[0])).map(([den, list]) => ({ den, list }));
 }
 
 // Um grupo do TCGplayer É o set nosso quando os números batem: metade das
@@ -191,6 +216,70 @@ export function jpSetTitle(name) {
   return String(name || "").replace(/^[A-Za-z0-9.-]+\s*[:：]\s*/, "").trim() || String(name || "");
 }
 
+// Série de um set JP importado inteiro, pelo prefixo do código — os MESMOS
+// valores que a TCGdex grava nos chunks ja (setSerieId/setSerieName), pra o
+// set cair no grupo certo da tela de Sets. Sem isso um "M6a: 30th Celebration"
+// nascia sem série e ia parar em "Outros" (16/09/2026), longe dos irmãos M1–M6.
+// Prefixo mais longo primeiro ("SV1a" é SV, não S; "SM10" é SM). Código de era
+// que a TCGdex ja não cobre (DP, BW, L…) fica sem série de propósito: não há
+// nome canônico pra copiar.
+const JP_SERIES = [
+  ["SV", "ポケモンカードゲーム スカーレット&バイオレット"],
+  ["SM", "サン＆ムーン"],
+  ["XY", "XY"], ["CP", "XY"],
+  ["S", "剣と盾"],
+  ["M", "ポケモンカードゲーム MEGA"]
+].sort((a, b) => b[0].length - a[0].length);
+export function jpSerieOfCode(code) {
+  const c = String(code || "").toUpperCase();
+  const hit = JP_SERIES.find(([prefix]) => c.startsWith(prefix));
+  if (!hit) return null;
+  return { setSerieId: hit[0] === "CP" ? "XY" : hit[0], setSerieName: hit[1] };
+}
+
+// ── Import de set EN inteiro (pins `enImport` em data/tcgcsv-set-map.json) ──
+// A TCGdex demora dias pra publicar um set novo em inglês; o TCGplayer cria o
+// grupo na pré-venda e lista os singles no lançamento. O pin diz qual grupo
+// vira qual set nosso: { group: "ME: 30th Celebration" | <groupId>, setId,
+// name?, serie?, numbers?, date?, total? }. `numbers` é uma regex sobre o
+// número IMPRESSO ("001/158", "4/102") pra dividir um grupo em dois sets
+// (set principal × Classic Collection) quando o TCGplayer junta tudo.
+const EN_SERIES = {
+  me: "Mega Evolution", sv: "Scarlet & Violet", swsh: "Sword & Shield", sm: "Sun & Moon", xy: "XY"
+};
+export function enImportEntries(pins) {
+  const list = pins && Array.isArray(pins.enImport) ? pins.enImport : [];
+  return list.filter((e) => e && e.setId && e.group != null);
+}
+// Grupo do TCGplayer que o pin aponta: pelo groupId (número) ou pelo nome
+// normalizado (mesma régua do casamento por nome, então "ME: 30th Celebration"
+// e "30th Celebration" são o mesmo grupo).
+export function findImportGroup(entry, groups) {
+  if (!entry) return null;
+  if (typeof entry.group === "number") return (groups || []).find((g) => g && g.groupId === entry.group) || null;
+  const want = normalizeSetName(entry.group).full;
+  if (!want) return null;
+  return (groups || []).find((g) => g && normalizeSetName(g.name).full === want) || null;
+}
+// Campos de set das cartas sintetizadas (faz as vezes da carta-irmã): nome de
+// exibição, série, data e total vêm do pin, senão do grupo.
+export function importSetFields(entry, group) {
+  const serie = String(entry.serie || "").toLowerCase();
+  return {
+    set: entry.name || (group ? group.name : entry.setId),
+    setSerieId: serie, setSerieName: EN_SERIES[serie] || "",
+    setReleaseDate: entry.date || "",
+    setTotal: entry.total || "",
+    setLogo: "", setSymbol: ""
+  };
+}
+// Filtro de número do pin (`numbers`): sem regex, tudo passa.
+export function importNumberFilter(entry) {
+  if (!entry || !entry.numbers) return () => true;
+  const re = new RegExp(entry.numbers);
+  return (product) => re.test(productNumber(product));
+}
+
 // Espécie a partir do nome da carta (mesma régua do sync-tcgdex/PPT).
 export function speciesOf(name) {
   return String(name || "").replace(/\b(VMAX|VSTAR|ex|EX|GX|V-UNION|V|BREAK|LV\.X|Prime|LEGEND)\b/g, "").replace(/\s+/g, " ").trim();
@@ -206,7 +295,13 @@ export function genOf(dexId) {
 // do catálogo. `pinned` = id já publicado pra esse número (nunca muda id de
 // quem já tem a carta); `sib` = carta-irmã do chunk (campos do set) ou null
 // num set importado do zero (aí `group` dá nome/data).
-export function synthesizeCard({ product, price, img, setId, lang, sib, group, pinned, revNames, variants }) {
+// `keepZeros`: o id leva o número como impresso ("001", não "1") — é a
+// convenção da TCGdex nas eras SV/ME ("me05-001", "sv01-001"); um set EN
+// importado inteiro nasce assim pra, quando a TCGdex publicar o mesmo id, as
+// cartas casarem em vez de duplicar. Promo/add-on segue sem zeros (numDoId).
+// `idExtra`: sufixo do id quando o mesmo numerador aparece duas vezes num set
+// importado (o denominador — ver matchGroup).
+export function synthesizeCard({ product, price, img, setId, lang, sib, group, pinned, revNames, variants, keepZeros, idExtra }) {
   const name = cleanProductName(product.name);
   const number = productNumber(product).split("/")[0].trim();
   const suffix = lang === "en" ? "" : `-${lang}`;
@@ -219,7 +314,7 @@ export function synthesizeCard({ product, price, img, setId, lang, sib, group, p
   const den = withDen.includes("/") ? withDen.split("/")[1].trim().replace(/^[A-Za-z]+/, "") : "";
   const total = /^\d+$/.test(den) ? Number(den) : "";
   const card = {
-    id: pinned || `${setId}-${numDoId(number)}${suffix}`,
+    id: pinned || `${setId}-${keepZeros ? number : numDoId(number)}${idExtra ? `-${idExtra}` : ""}${suffix}`,
     name,
     pokemonName: dexId ? "" : species, // o merge canoniza por dexId
     category: "",
