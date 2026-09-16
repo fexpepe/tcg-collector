@@ -2685,7 +2685,10 @@ input::placeholder {
 .insight-bar { display: block; width: 100%; height: max(4px, var(--h, 0%)); border-radius: 12px; background: var(--bar, var(--accent)); transition: height 300ms ease; }
 .insight-bar-label { margin-top: 10px; height: 20px; line-height: 20px; font-size: 12px; color: var(--muted); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 .insight-bar-label svg { display: block; margin: 0 auto; height: 20px; } /* alinhado ao bloco: com vertical-align o círculo saía cortado */
-.insight-summary { display: grid; grid-template-columns: minmax(0, 1fr) 96px; align-items: center; gap: 12px; }
+.insight-summary { display: grid; grid-template-columns: minmax(0, 1fr) 96px; grid-template-rows: auto 1fr; align-items: center; gap: 0 12px; }
+/* O título atravessa as duas colunas (lista | anel); a lista e o anel dividem
+   o resto da altura, centrados. */
+.insight-summary > h3 { grid-column: 1 / -1; }
 .insight-summary dl { margin: 0; min-width: 0; }
 .insight-summary dl > div + div { margin-top: 12px; }
 .insight-summary dt { font-size: 16px; font-weight: 800; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

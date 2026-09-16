@@ -1361,10 +1361,14 @@
         <h3>${escapeHtml(t("insights.cardType"))}</h3>
         ${barsHtml(tipos)}
       </article>` : "";
-    // Conjunto / lançamento / valor + anel de progresso.
+    // Conjunto / lançamento / valor + anel de progresso. Com título, como os
+    // outros dois, e em SEGUNDO (logo depois do hero, que o placeSetHero põe
+    // na frente): pedido do Fernando, 2026-09-16 — é o cartão que responde
+    // "como estou nesse set", e vinha por último.
     const lanc = pageCards[0].setReleaseDate ? formatInsightDate(pageCards[0].setReleaseDate) : t("insights.na");
     const resumoHtml = `
       <article class="insight-card insight-summary">
+        <h3>${escapeHtml(t("insights.overview"))}</h3>
         <dl>
           <div><dt>${escapeHtml(t("insights.complete"))}</dt><dd data-insight-complete>—</dd></div>
           <div><dt>${escapeHtml(t("insights.release"))}</dt><dd>${escapeHtml(lanc)}</dd></div>
@@ -1376,7 +1380,7 @@
           <text x="60" y="60" text-anchor="middle" dominant-baseline="central" data-insight-pct>0%</text>
         </svg>
       </article>`;
-    box.innerHTML = `<div class="set-insights-rail">${raridadeHtml}${tipoHtml}${resumoHtml}</div>`;
+    box.innerHTML = `<div class="set-insights-rail">${resumoHtml}${raridadeHtml}${tipoHtml}</div>`;
     box.hidden = false;
   }
   function formatInsightDate(value) {
