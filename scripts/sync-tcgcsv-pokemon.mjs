@@ -267,8 +267,12 @@ if (catJA && !ONLY_EN) {
     const code = jpSetCode(g.name);
     if (!code) { stats.unmatchedJA.push(`${g.groupId} "${g.name}" (sem código)`); return; }
     const key = code.toUpperCase();
-    if (skip.has(key) || ambiguos.has(code)) return;
-    const ourId = jpAliasOf(g, code, alias) || (byCode.has(key) ? byCode.get(key).id : null);
+    // Apelido por nome vem ANTES da ambiguidade: "SV: Ceruledge ex…" tem
+    // apelido (SVLS) e casa mesmo com outros 17 grupos "SV: …" no ar (o 2º
+    // build de 16/09 pulou os três apelidados por conferir a ordem errada).
+    const apelido = jpAliasOf(g, code, alias);
+    if (skip.has(key) || (!apelido && ambiguos.has(code))) return;
+    const ourId = apelido || (byCode.has(key) ? byCode.get(key).id : null);
     if (ONLY_SETS.size && !ONLY_SETS.has(ourId || code)) return;
     let products, prices;
     try {
