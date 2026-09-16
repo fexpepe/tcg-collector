@@ -141,12 +141,14 @@
   --header-bg: rgba(255, 255, 255, 0.9);
 }
 
-/* Botões/abas INATIVOS no tema claro: o cinza padrão (--panel #fff dos chips e
-   --panel-strong #eef1f6 das abas) quase some no fundo claro (--bg #e8ecf1).
-   Escurece um pouco SÓ os inativos pra terem contorno. O ativo (aria-pressed)
-   fica no accent; o hover das abas continua no accent-soft (a regra do :hover
-   vem depois no arquivo e vence). Colocada cedo de propósito por causa disso. */
-[data-theme="light"] .chip:not([aria-pressed="true"]):not([aria-current="page"]) { background: #d8dee8; border-color: #cbd2dd; }
+/* Chips INATIVOS no tema claro: fundo BRANCO (--panel), como as abas da Coleção
+   (.prof-tab) — pedido do Fernando, 2026-09-16; até então eram cinza #d8dee8,
+   de quando o fundo da página era #e8ecf1 e o branco sumia nele. Com o --bg
+   atual (#dce1e8) o branco se destaca, e a borda um tom mais escura que a
+   --line dá o contorno. O ativo (aria-pressed / aria-current) fica no accent.
+   Colocada cedo de propósito: as regras específicas de cada chip vêm depois
+   no arquivo e vencem. */
+[data-theme="light"] .chip:not([aria-pressed="true"]):not([aria-current="page"]) { background: var(--panel); border-color: #cbd2dd; }
 
 /* Accent por CONTEXTO DE JOGO (data-game-accent no <html>, setado em runtime):
    - Pokémon: usa o accent base do tema (vermelho no claro / amarelo no escuro);
