@@ -21,7 +21,8 @@
 // referências (inclusive a que este script acabou de criar).
 //
 // Uso: node scripts/bundle-boot.mjs [--check]
-//   --check só confere que as 33 páginas casam o padrão, sem escrever nada.
+//   --check só confere que as páginas com boot casam o padrão, sem escrever
+//   nada (página de redirecionamento puro não tem boot — ver PÁGINA SEM BOOT).
 import { readFileSync, writeFileSync, unlinkSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
@@ -40,21 +41,36 @@ function morra(mensagem) {
 // terceiro entre as duas mudaria a ordem de execução sem ninguém notar.
 const PAR = /([ \t]*)<script src="(?:\.?\/)?src\/theme\.js"><\/script>([\s\S]*?)([ \t]*)<script src="(?:\.?\/)?src\/game\.js"( data-catalog="[^"]*")?><\/script>/;
 const SO_ESPACO_E_COMENTARIO = /^(?:\s|<!--[\s\S]*?-->)*$/;
+// Uma das duas tags, em qualquer lugar da página: é o que diz se a página TEM
+// boot pra fundir (ver PAGINA_SEM_BOOT abaixo).
+const ALGUM_BOOT = /<script src="(?:\.?\/)?src\/(?:theme|game)\.js"/;
 
 function casa(html) {
   const m = html.match(PAR);
   return !!m && SO_ESPACO_E_COMENTARIO.test(m[2]);
 }
 
+// PÁGINA SEM BOOT (2026-09-16): nem theme.js nem game.js. É um redirecionamento
+// puro — listas.html só existe pra levar link salvo até /pastas, e uma página
+// que troca de endereço no <head> não tem tema pra pintar nem jogo pra resolver.
+// Exigir o par dela derrubava o deploy inteiro no passo de fundir (e a régua do
+// CI junto), e o site parou de publicar — foi assim que os sets novos do
+// catálogo ficaram sem sair. A régua continua valendo onde importa: página com
+// UMA das duas tags (ordem trocada, indentação mexida, script de terceiro no
+// meio) segue sendo erro duro.
 const paginas = readdirSync(ROOT).filter((f) => f.endsWith(".html"));
-const semPar = paginas.filter((f) => !casa(readFileSync(join(ROOT, f), "utf8")));
+const html = new Map(paginas.map((f) => [f, readFileSync(join(ROOT, f), "utf8")]));
+const comBoot = paginas.filter((f) => ALGUM_BOOT.test(html.get(f)));
+const semBoot = paginas.filter((f) => !comBoot.includes(f));
+const semPar = comBoot.filter((f) => !casa(html.get(f)));
 if (semPar.length) {
   morra(`estas páginas não têm o par theme.js+game.js no formato esperado: ${semPar.join(", ")}.\n`
     + "Alguém mudou a indentação, a ordem ou separou as duas tags — conferir antes de fundir.");
 }
 
 if (soConfere) {
-  console.log(`bundle-boot: ${paginas.length} páginas com o par theme+game no formato esperado.`);
+  console.log(`bundle-boot: ${comBoot.length} páginas com o par theme+game no formato esperado`
+    + `${semBoot.length ? ` (${semBoot.length} sem boot, fora da régua: ${semBoot.join(", ")})` : ""}.`);
   process.exit(0);
 }
 
@@ -65,9 +81,9 @@ writeFileSync(join(ROOT, "src/boot.js"),
   + `// Editar os originais, nunca este arquivo.\n${theme}\n;\n${game}`, "utf8");
 
 let trocadas = 0;
-for (const arquivo of paginas) {
+for (const arquivo of comBoot) {
   const caminho = join(ROOT, arquivo);
-  const antes = readFileSync(caminho, "utf8");
+  const antes = html.get(arquivo);
   const depois = antes.replace(PAR, (m, indent, miolo, indentGame, catalogo) => {
     const comentarios = miolo.trim();
     const prefixo = comentarios ? `${indent}${comentarios}\n${indentGame}` : indent;
