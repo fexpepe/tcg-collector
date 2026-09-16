@@ -312,7 +312,6 @@
     folderSections: document.getElementById("folderSections"),
     newFolderBtn: document.getElementById("newFolderBtn"),
     gradedAddBtn: document.getElementById("gradedAddBtn"),
-    gradedCenteringBtn: document.getElementById("gradedCenteringBtn"),
     bulkBtn: document.getElementById("bulkSelectBtn"),
     tagsNewBtn: document.getElementById("tagsNewBtn"),
     heading: document.querySelector(".results-header h2"),
@@ -698,7 +697,6 @@
         sortMode = GROUP_TABS[activeTab].defaultSort;
       }
       Array.from(elements.tabs.children).forEach((node) => {
-        // O link "Vendas e Trocas" (sem data-tab) não é aba: fica sem aria-pressed.
         if (node.dataset && node.dataset.tab) node.setAttribute("aria-pressed", node === chip ? "true" : "false");
       });
       render();
@@ -962,7 +960,6 @@
     }
     if (elements.newFolderBtn) elements.newFolderBtn.hidden = !isFolders;
     if (elements.gradedAddBtn) elements.gradedAddBtn.hidden = !isGraded || !window.TCGGradedUI;
-    if (elements.gradedCenteringBtn) elements.gradedCenteringBtn.hidden = !isGraded || !window.TCGCentering;
     // "Nota" só na aba Graded (veio da página /graded, removida em 2026-09-14).
     // Se a pessoa sai da aba com "Nota" escolhida, o seletor volta pro padrão —
     // senão mostraria uma opção escondida.

@@ -62,10 +62,14 @@ const AREAS = [
   // carrega (e os módulos injetados em runtime, que valem em toda página):
   // nenhum aparece no shared.js nem fora das páginas listadas. Juntas tiram
   // ~60 KB brutos do núcleo, somando os prefixos novos das áreas de cima
-  // (support- na landing, adm-/ach- na conta). ctr- é o medidor de
-  // centralização, que hoje mora na aba Graded da Coleção — a página /graded
-  // saiu no mesmo dia.
-  { nome: "colecao",   prefixos: ["coll-", "prof-", "ctr-", "tag-", "cond-"], paginas: ["collection.html"] },
+  // (support- na landing, adm-/ach- na conta).
+  { nome: "colecao",   prefixos: ["coll-", "prof-", "tag-", "cond-"], paginas: ["collection.html"] },
+  // ctr- é o medidor de centralização. Morou na aba Graded da Coleção (a
+  // página /graded saiu em 2026-09-14) e em 2026-09-16 virou atalho do HUB
+  // pessoal — o modal abre por cima do dashboard, que precisa da fatia. A
+  // Coleção segue carregando: o centering.js continua nela (o preview de
+  // slab pode chamá-lo).
+  { nome: "medidor",   prefixos: ["ctr-"],                          paginas: ["collection.html", "dashboard.html"] },
   { nome: "detalhe",   prefixos: ["favorite-", "segmented-"],      paginas: ["detail.html"] },
   { nome: "404",       prefixos: ["notfound-"],                    paginas: ["404.html"] },
   { nome: "set",       prefixos: ["facet-", "mkt-"],               paginas: ["detail.html", "sets.html", "decks.html", "my-decks.html"] },

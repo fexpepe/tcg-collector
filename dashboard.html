@@ -160,6 +160,10 @@
 
     <script defer src="src/i18n.js"></script>
     <script defer src="src/shared.js"></script>
+    <!-- Medir centralização (2026-09-16): o atalho do HUB abre o medidor aqui
+         mesmo; o script precisa vir ANTES do dashboard.js, que testa
+         window.TCGCentering pra decidir se mostra o item. -->
+    <script defer src="src/centering.js"></script>
     <script defer src="src/dashboard.js"></script>
     <script defer src="src/primeiros-passos.js"></script>
   </body>

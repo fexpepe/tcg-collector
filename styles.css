@@ -945,7 +945,10 @@ input::placeholder {
 }
 
 /* --- Pastas na coleção (seções colapsáveis) --- */
-.new-folder-btn { padding: 7px 14px; font-size: 13px; white-space: nowrap; }
+/* Altura TRAVADA em 36px, a mesma dos botões de Filtros/Visualização da
+   linha (2026-09-16): com padding vertical + o min-height de 42px do button
+   base, o "Novo showcase" crescia e desalinhava a fileira no celular. */
+.new-folder-btn { height: 36px; min-height: 36px; padding: 0 14px; font-size: 13px; white-space: nowrap; }
 .results-header h2 { margin-right: auto; }
 /* Visualização (▦/≣) + Filtros na ponta DIREITA da linha do título (Coleção):
    o grupo é o último filho e o h2 já empurra tudo pra direita, então o
@@ -1036,6 +1039,13 @@ input::placeholder {
      à esquerda, e as ações fecham à direita. */
   .results-header > p { order: 1; }
   .results-header .new-folder-btn { order: 2; margin-right: auto; }
+  /* Coleção no celular (2026-09-16): "Minhas Cartas · N resultados" sai — a
+     aba ativa já nomeia a visão e a faixa só empurrava a grade pra baixo. Fica
+     a linha de botões (Novo showcase / Adicionar cartas à esquerda, Filtros e
+     Visualização à direita). No desktop segue como está. */
+  .results-header-cards > h2, .results-header-cards > p { display: none; }
+  /* "Adicionar cartas" (aba Graded) fica só com o ícone, como o Filtros. */
+  .results-actions .graded-add-btn span { display: none; }
   /* Sets: o order:1 acima (da Coleção) jogava o contador pro FIM da linha e
      o ▦/≣ pra esquerda — o inverso do desktop. Aqui a ordem volta a ser
      contador · origem · visualização, e os 4 chips (que não cabem ao lado do
@@ -5855,29 +5865,36 @@ a.progress-row:hover {
   .dash-row { grid-template-columns: minmax(0, 1fr); }
   .dash-games-card { width: min(100%, 398px); }
 }
-/* Atalhos: 3 COLUNAS FIXAS, não auto-fill. São exatamente 9 itens (lista fixa
-   no dashboard.js), então 3 colunas fecham três fileiras cheias — a regra já
-   estava escrita aqui ("9 -> 3 col") e não foi acompanhada quando Conquistas
-   entrou: 4 colunas deixavam uma fileira órfã com 1 cartão solto. Se um item
-   novo entrar, o número aqui tem de acompanhar a conta (8 -> 4 col;
-   9 -> 3 col). */
+/* Atalhos: COLUNAS FIXAS, não auto-fill, pra nenhuma fileira ficar órfã com um
+   cartão solto. São exatamente 10 itens (lista fixa no dashboard.js) desde que
+   o "Medir centralização" entrou (2026-09-16, embaixo de Conquistas): 5
+   colunas fecham duas fileiras cheias no desktop largo; abaixo de ~1200px 5
+   cartões espremeriam o texto ("110 à venda · 10 vendidas" não cabe em
+   200px), então cai pra 2 (cinco fileiras cheias) e no celular pra 1. Se um
+   item entrar ou sair, a conta aqui tem de acompanhar (9 -> 3 col; 8 -> 4). */
 .dash-links {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 12px;
 }
-/* Abaixo de ~1000px quatro colunas espremeriam o texto ("110 à venda · 10
-   vendidas" não cabe em 200px): cai pra 2, que mantém as fileiras cheias. */
-@media (max-width: 1000px) { .dash-links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 1200px) { .dash-links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .dash-links { grid-template-columns: minmax(0, 1fr); } }
 .dash-link {
   display: flex; align-items: center; gap: 12px;
+  /* Altura mínima = a de um cartão com subtítulo (17px de padding em cima e
+     embaixo + título de 14px + 2px + subtítulo de 12px): o Binders, que não
+     tem subtítulo, ficava 13px mais baixo que os vizinhos na coluna única do
+     celular (na grade do desktop a fileira já estica todos). */
+  min-height: 71px;
   padding: 17px 16px; border-radius: 12px;
   background: var(--panel); border: 1px solid var(--line);
   color: var(--text); text-decoration: none;
   transition: border-color .15s ease, transform .15s ease;
 }
 .dash-link:hover { border-color: var(--accent); transform: translateY(-1px); }
+/* O atalho que abre uma ferramenta na própria tela (Medir centralização) é um
+   <button> com a MESMA cara dos links: zera o que o button base impõe. */
+button.dash-link { width: 100%; min-height: 0; justify-content: flex-start; text-align: left; font: inherit; font-weight: inherit; line-height: inherit; cursor: pointer; }
 .dash-link-ic { width: 22px; height: 22px; flex: none; color: var(--accent); }
 .dash-link-ic svg { width: 100%; height: 100%; }
 .dash-link-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }

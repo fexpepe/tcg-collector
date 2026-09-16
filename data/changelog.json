@@ -1,6 +1,11 @@
 [
  {
   "d": "2026-09-16",
+  "pt": "Minha Coleção mais enxuta: a aba \"Vendas e Trocas\" saiu (a página continua no HUB e no menu Coleção), no celular o título \"Minhas Cartas · N resultados\" some pra sobrar espaço pra grade, e Novo showcase e Adicionar cartas ficaram na mesma fileira e altura dos botões de filtro e visualização. O Medir centralização saiu da aba Graded e virou atalho do HUB, embaixo de Badges.",
+  "en": "A leaner My Collection: the \"Sales & Trades\" tab is gone (the page stays in the Hub and in the Collection menu), on mobile the \"My Cards · N results\" line disappears to leave room for the grid, and New showcase and Add cards now sit on the same row and height as the filter and view buttons. Measure centering left the Graded tab and became a Hub shortcut, below Badges."
+ },
+ {
+  "d": "2026-09-16",
   "pt": "Minha Coleção ganhou o modo Fichário, o mesmo da página de set: as cartas em páginas de 4, 9, 12 ou 16 bolsos que rolam de lado (dedo no celular, setas e teclado no desktop), na aba Coleção, na Graded e dentro de um showcase aberto. O botão do seletor de visualização mostra o número de bolsos; clicar de novo troca o tamanho.",
   "en": "My Collection got the Binder view, the same one as the set page: cards on pages of 4, 9, 12 or 16 pockets that scroll sideways (swipe on mobile, arrows and keyboard on desktop), in the Collection tab, in Graded and inside an open showcase. The view switcher button shows the pocket count; clicking it again cycles the size."
  },

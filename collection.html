@@ -175,8 +175,9 @@
 
       <!-- Abas-retângulo de ponta a ponta (.prof-tabs): MESMA forma e MESMOS
            rótulos do perfil público — é a mesma visão (a coleção) em duas
-           telas. "Vendas e Trocas" é um LINK pra página de Vendas vestido de
-           aba (sem data-tab: o handler e os laços de aria-pressed o ignoram). -->
+           telas. "Vendas e Trocas" saiu daqui (2026-09-16): é página própria,
+           com entrada no HUB e no menu Coleção do header; vestida de aba
+           confundia (não era uma visão da coleção). -->
       <div id="collectionTabs" class="prof-tabs collection-tabs" role="group" data-i18n-aria="aria.collectionViews" aria-label="Visões da coleção">
         <button type="button" class="prof-tab" data-tab="cards" aria-pressed="true" data-i18n="nav.collection">Coleção</button>
         <button type="button" class="prof-tab" data-tab="folders" aria-pressed="false" data-i18n="collection.tab.folders">Showcase</button>
@@ -188,7 +189,6 @@
         <button type="button" class="prof-tab" data-tab="pokemon" aria-pressed="false" data-i18n="collection.tab.pokemon">Pokémon</button>
         <button type="button" class="prof-tab" data-tab="artists" aria-pressed="false" data-i18n="collection.tab.artists">Artistas</button>
         <button type="button" class="prof-tab" data-tab="sets" aria-pressed="false" data-i18n="collection.tab.sets">Sets</button>
-        <a class="prof-tab" href="sales" data-i18n="nav.sales">Vendas e Trocas</a>
       </div>
 
       <section id="groupsView">
@@ -219,16 +219,19 @@
              o Filtros e a Visualização (▦/≣) (vieram do cartão-herói), que
              empurram pra esquerda o que já morava aqui (Novo showcase, "N
              resultados"). Os dois somem nas abas de progresso (ver render()). -->
-        <section class="results-header">
+        <!-- results-header-cards: no celular o título e o contador somem (ver
+             styles.css) — a aba ativa já diz onde se está e a faixa só gastava
+             altura antes da grade (pedido de 2026-09-16). -->
+        <section class="results-header results-header-cards">
           <h2 data-i18n="collection.heading.cards">Minhas Cartas</h2>
           <button type="button" id="newFolderBtn" class="secondary new-folder-btn" data-i18n="folders.new">Novo showcase</button>
-          <button type="button" id="gradedAddBtn" class="secondary new-folder-btn" data-i18n="graded.add" hidden>Adicionar cartas</button>
-          <!-- Medir centralização (src/centering.js) morava só na página /graded;
-               com ela removida (2026-09-14) o botão vive na aba Graded. -->
-          <button type="button" id="gradedCenteringBtn" class="secondary new-folder-btn" data-i18n="ctr.title" hidden>Medir centralização</button>
           <button type="button" id="tagsNewBtn" class="secondary new-folder-btn" data-i18n="tags.new" hidden>Nova tag</button>
           <p id="resultCount">0 resultados</p>
           <div class="results-actions">
+            <!-- Adicionar cartas (aba Graded) mora na MESMA fileira e altura dos
+                 botões de visualização (2026-09-16); no celular fica só o ícone,
+                 como o Filtros. O "Medir centralização" saiu daqui pro HUB. -->
+            <button type="button" id="gradedAddBtn" class="secondary graded-add-btn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span data-i18n="graded.add">Adicionar cartas</span></button>
             <button type="button" id="collectionFiltersBtn" class="secondary" aria-expanded="false" aria-controls="collectionFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span data-i18n="filters.show">Filtros</span></button>
             <div id="cardsViewToggle" class="view-toggle" role="group" data-i18n-aria="toolbar.view" aria-label="Visualização">
               <button type="button" class="view-toggle-btn" data-grid-view="grid" aria-pressed="true" data-i18n-aria="aria.viewGrid" aria-label="Grade" title="Grade">▦</button>

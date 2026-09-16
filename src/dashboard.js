@@ -346,6 +346,8 @@
     // Listas: linhas com marcador — o oposto visual do binder/deck (que são
     // cartas), porque a lista é justamente a visão sem imagem.
     lists: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12"/><path d="M8 12h12"/><path d="M8 18h12"/><path d="M4 6h.01"/><path d="M4 12h.01"/><path d="M4 18h.01"/></svg>',
+    // Medir centralização: a carta com as guias (uma vertical, uma horizontal).
+    centering: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M5 12h14"/><path d="M12 3v18"/></svg>',
     // Troca: duas setas em sentidos opostos (dou ⇄ recebo).
     trade: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h13"/><path d="m14 4 3 3-3 3"/><path d="M20 17H7"/><path d="m10 14-3 3 3 3"/></svg>'
   };
@@ -363,17 +365,27 @@
     { href: "my-decks", icon: "decks", key: "nav.myDecks", stat: t("dash.decksHint") },
     { href: "sales", icon: "sales", key: "nav.sales", stat: tn("dash.salesCount", salesCount()) + (soldTotal ? ` · ${tn("dash.soldCount", soldTotal)}` : "") },
     { href: "troca", icon: "trade", key: "trade.title", stat: t("dash.tradeHint") },
-    { href: "badges", icon: "badges", key: "dash.badges", stat: t("dash.badgesHint") }
+    { href: "badges", icon: "badges", key: "dash.badges", stat: t("dash.badgesHint") },
+    // Medir centralização (2026-09-16): saiu da aba Graded da Coleção pra cá,
+    // embaixo de Conquistas. Não é página — abre o medidor (src/centering.js)
+    // por cima do HUB, por isso é <button>, não <a>. Sem o script (página
+    // antiga em cache) o item nem aparece. Ao mudar a contagem de itens, a
+    // grade de colunas em .dash-links (styles.css) tem de acompanhar.
+    ...(window.TCGCentering ? [{ action: "centering", icon: "centering", key: "ctr.title", stat: t("dash.ctrHint") }] : [])
     // Explorar, Jogos e Portfólio saíram daqui: já são itens fixos do menu do
     // header, então repetir na dashboard era redundante. O patrimônio continua
     // no cartão grande lá em cima, que também leva ao Portfólio.
   ];
-  el.links.innerHTML = links.map((l) =>
-    `<a class="dash-link" href="${escapeAttribute(l.href)}">
-      <span class="dash-link-ic" aria-hidden="true">${IC[l.icon]}</span>
+  const linkInner = (l) => `<span class="dash-link-ic" aria-hidden="true">${IC[l.icon]}</span>
       <span class="dash-link-body"><strong>${escapeHtml(t(l.key))}</strong>${l.stat ? `<span>${escapeHtml(l.stat)}</span>` : ""}</span>
-      <span class="dash-link-go" aria-hidden="true">→</span>
-    </a>`).join("");
+      <span class="dash-link-go" aria-hidden="true">→</span>`;
+  el.links.innerHTML = links.map((l) => l.action
+    ? `<button type="button" class="dash-link" data-dash-action="${escapeAttribute(l.action)}">${linkInner(l)}</button>`
+    : `<a class="dash-link" href="${escapeAttribute(l.href)}">${linkInner(l)}</a>`).join("");
+  el.links.addEventListener("click", (event) => {
+    const btn = event.target.closest("[data-dash-action]");
+    if (btn && btn.dataset.dashAction === "centering" && window.TCGCentering) window.TCGCentering.abrir();
+  });
 
   // ── Cápsulas detalhadas (hidratam depois; só as cartas que você tem) ───────
   // Mesmo visual da antiga dashboard da Coleção (que ficou só com os stats):
