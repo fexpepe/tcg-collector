@@ -93,7 +93,14 @@
   --accent-soft: rgba(var(--accent-rgb), 0.13);
   --on-accent: #ffffff; /* texto branco sobre o vermelho */
   --gold: #f0b84b;
-  --shadow: 0 18px 45px rgba(0, 0, 0, 0.32);
+  /* Passe FLAT total (pedido do Fernando, 2026-09-16): as cápsulas, cards,
+     barras e painéis EM FLUXO não têm mais sombra — só borda e fundo. A sombra
+     antiga sobrevive em --shadow-pop, SÓ pra quem flutua por cima do conteúdo
+     (menus, popovers, modais, tooltips, botões fixos): ali ela é o que separa
+     a camada de cima da de baixo, principalmente no tema claro (branco sobre
+     branco). Quem usar --shadow em regra nova está pedindo "sem sombra". */
+  --shadow: none;
+  --shadow-pop: 0 18px 45px rgba(0, 0, 0, 0.32);
   --header-bg: rgba(13, 14, 18, 0.92);
 }
 
@@ -137,7 +144,8 @@
   --accent-soft: rgba(var(--accent-rgb), 0.1);
   --on-accent: #ffffff; /* texto branco sobre o vermelho */
   --gold: #b07d10;
-  --shadow: 0 16px 40px rgba(20, 28, 40, 0.12);
+  --shadow: none;
+  --shadow-pop: 0 16px 40px rgba(20, 28, 40, 0.12);
   --header-bg: rgba(255, 255, 255, 0.9);
 }
 
@@ -1169,7 +1177,6 @@ input::placeholder {
 .coll-pile-card {
   position: absolute; left: 50%; top: 22px; width: 132px; aspect-ratio: 245 / 337;
   border-radius: 8px; overflow: hidden; background: var(--panel-strong);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
   transform: translateX(-50%);
   transition: transform .2s ease;
 }
@@ -1201,7 +1208,7 @@ input::placeholder {
   min-width: 190px; padding: 6px;
   flex-direction: column; gap: 2px;
   background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-pop);
 }
 .coll-card.is-menu-open .coll-card-menu { display: flex; }
 .coll-card-menu .folder-act { width: 100%; height: auto; min-height: 36px; justify-content: flex-start; gap: 9px; padding: 0 10px; font-size: 13px; font-weight: 700; color: var(--text); border-radius: 7px; white-space: nowrap; }
@@ -1462,7 +1469,7 @@ input::placeholder {
    graded é uma carta sua, então recebe o realce, ficando coeso na grade. */
 .card-tile.graded-tile {
   border-color: rgba(var(--accent-rgb), 0.55);
-  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.25), var(--shadow);
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.25);
 }
 /* Badge da graduadora+nota (ex.: "PSA 9") na linha da variante do tile graded —
    no lugar do "Foil"/variante, com a cor da graduadora. Diferencia das cartas
@@ -1574,7 +1581,7 @@ input::placeholder {
   position: relative; z-index: 1; width: min(720px, 96vw); max-height: 88vh; max-height: 88dvh;
   display: flex; flex-direction: column; gap: 12px;
   background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
-  box-shadow: var(--shadow); padding: 16px;
+  box-shadow: var(--shadow-pop); padding: 16px;
 }
 .sales-picker-head { display: flex; align-items: center; justify-content: space-between; }
 .sales-picker-head .preview-close { position: relative; box-shadow: none; }
@@ -1839,7 +1846,7 @@ input::placeholder {
 /* Já tenho ao menos uma carta desse Pokémon: contorno dourado. */
 .pokedex-card.owned {
   border-color: var(--gold);
-  box-shadow: 0 0 0 1px var(--gold), var(--shadow);
+  box-shadow: 0 0 0 1px var(--gold);
 }
 
 .pokedex-card.owned:hover {
@@ -2374,7 +2381,7 @@ input::placeholder {
 .set-card.complete,
 .group-card.complete {
   border-color: var(--gold);
-  box-shadow: 0 0 0 1px var(--gold), var(--shadow);
+  box-shadow: 0 0 0 1px var(--gold);
 }
 .set-card.complete:hover,
 .group-card.complete:hover {
@@ -2883,7 +2890,6 @@ input::placeholder {
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.4px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
 }
 
 .pokemon-meta-row {
@@ -3070,7 +3076,7 @@ input::placeholder {
   border: 1px solid var(--line);
   background: var(--panel);
   color: var(--text);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-pop);
   font-size: 0;        /* esconde o glifo "×" do HTML; o X é desenhado abaixo */
   padding: 0;
   cursor: pointer;
@@ -3461,7 +3467,7 @@ a.preview-print:hover { background: var(--panel); }
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 12px;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-pop);
     z-index: 20;
   }
 
@@ -4561,7 +4567,7 @@ a.hub-tile:hover {
 [data-theme="light"] .setting-switch { background: #cbd2dc; } /* trilho desligado (claro) */
 .setting-switch-knob {
   position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%;
-  background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); transition: transform .15s;
+  background: #fff; transition: transform .15s;
 }
 .setting-switch[aria-checked="true"] { background: #14b8a6; } /* teal ligado */
 .setting-switch[aria-checked="true"] .setting-switch-knob { transform: translateX(18px); }
@@ -4888,7 +4894,7 @@ html[data-collector-mode] .stat-grand .collector-badge {
   background: var(--panel-strong);
   border: 1px solid var(--line);
   border-radius: 10px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-pop);
 }
 
 .lang-dd-option {
@@ -5086,7 +5092,7 @@ a.progress-row:hover {
 
 .card-tile.owned {
   border-color: rgba(var(--accent-rgb), 0.55);
-  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.25), var(--shadow);
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.25);
 }
 
 /* Visão "Sua coleção": cartas que você não tem ficam em preto e branco; as
@@ -5269,7 +5275,7 @@ a.progress-row:hover {
 .tile-folder-menu {
   position: fixed; z-index: 70; min-width: 168px; max-width: 240px; max-height: 280px;
   overflow-y: auto; padding: 4px; display: flex; flex-direction: column; gap: 2px;
-  background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow);
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow-pop);
 }
 .tile-folder-item {
   min-height: 0; width: 100%; text-align: left; padding: 8px 10px; border: 0; border-radius: 7px;
@@ -5864,7 +5870,7 @@ a.progress-row:hover {
 .bdg-fun-x strong { color: var(--text); }
 .bdg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
 .bdg { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; padding: 16px 12px 14px; border-radius: 12px; background: var(--panel); border: 1px solid var(--line); opacity: .72; }
-.bdg.is-done { opacity: 1; border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-soft), 0 8px 22px rgba(0,0,0,.18); }
+.bdg.is-done { opacity: 1; border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-soft); }
 .bdg.is-new { animation: bdg-pop .5s ease; }
 @keyframes bdg-pop { 0% { transform: scale(.92); } 60% { transform: scale(1.04); } 100% { transform: scale(1); } }
 .bdg-new { position: absolute; top: 8px; right: 10px; }
@@ -5914,7 +5920,7 @@ a.progress-row:hover {
   border-radius: 999px;
   background: var(--panel);
   border: 1px solid var(--line);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-pop);
   color: var(--text);
   font-size: 13px;
   font-weight: 600;
@@ -6225,7 +6231,7 @@ a.progress-row:hover {
 .pf-mover-owned { color: var(--accent); font-weight: 800; font-size: 10.5px !important; text-transform: uppercase; letter-spacing: .03em; }
 .pf-mover-pct { flex: none; font-size: 12.5px; font-weight: 800; padding: 2px 8px; border-radius: 999px; }
 /* Card da tag na vitrine: faixa colorida no topo + bolinha da cor antes do nome. */
-.tag-card { box-shadow: inset 0 4px 0 var(--tag), var(--shadow); }
+.tag-card { box-shadow: inset 0 4px 0 var(--tag); }
 .tag-card .coll-card-title { display: flex; align-items: center; gap: 6px; }
 .tag-dot { width: 11px; height: 11px; border-radius: 3px; background: var(--tag); flex: none; }
 /* No banner do share (?s= de tag) o dot vive dentro do <strong>, fora de flex. */
@@ -6789,12 +6795,12 @@ a.progress-row:hover {
 
 .card-tile.wanted {
   border-color: rgba(240, 113, 154, 0.5);
-  box-shadow: 0 0 0 1px rgba(240, 113, 154, 0.22), var(--shadow);
+  box-shadow: 0 0 0 1px rgba(240, 113, 154, 0.22);
 }
 
 .card-tile.owned.wanted {
   border-color: rgba(var(--accent-rgb), 0.55);
-  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.25), var(--shadow);
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.25);
 }
 
 .tile-qty {
@@ -6859,7 +6865,7 @@ a.progress-row:hover {
   display: grid;
   gap: 2px;
   z-index: 20;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-pop);
 }
 
 .nav-dropdown[hidden] {
@@ -7304,7 +7310,7 @@ html:not([data-cardlang="all"]) #setRegionChips {
   min-width: 218px; max-height: 320px; overflow-y: auto; overscroll-behavior: contain;
   display: flex; flex-direction: column; gap: 2px;
   padding: 10px; border: 1px solid var(--line); border-radius: 10px;
-  background: var(--surface); box-shadow: var(--shadow);
+  background: var(--surface); box-shadow: var(--shadow-pop);
 }
 /* Perto da borda direita a gaveta abriria fora da tela: a última alinha à direita. */
 .facet-drop:last-child .facet-pop { left: auto; right: 0; }
@@ -7664,7 +7670,7 @@ html[data-detail="set"] #detailTitle { display: none; }
   width: 28px; height: 28px; min-height: 28px; padding: 0;
   border: 1px solid var(--line); border-radius: 50%;
   background: var(--surface); color: var(--text);
-  box-shadow: var(--shadow); font-size: 17px; line-height: 1;
+  box-shadow: var(--shadow-pop); font-size: 17px; line-height: 1;
   display: inline-flex; align-items: center; justify-content: center;
 }
 .chip-scroll-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -8931,7 +8937,7 @@ select,
   background: #fff; border: 1px solid var(--line); border-radius: 0;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.lp-games-caps a:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25); }
+.lp-games-caps a:hover { transform: translateY(-3px); }
 .lp-games-caps img { max-width: 100%; max-height: 100%; object-fit: contain; }
 @media (max-width: 560px) {
   /* no celular, volta a quebrar: 2 por linha (4 numa fileira ficaria minúsculo);
@@ -9024,7 +9030,7 @@ select,
 .lp-drop-tag { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--subtle); border: 1px solid var(--line); border-radius: 99px; padding: 2px 8px; margin-top: 4px; }
 /* slab */
 .lp-mock-slab { padding: 12px; gap: 10px; }
-.lp-mock-slab img { width: 52px; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.35); }
+.lp-mock-slab img { width: 52px; border-radius: 4px; }
 .lp-slab-grade { font-weight: 800; font-size: 17px; border: 2px solid var(--line); border-radius: 8px; padding: 8px 10px; background: var(--panel); }
 /* sync */
 .lp-mock-sync { gap: 14px; color: var(--subtle); font-size: 12.5px; }
@@ -9739,7 +9745,7 @@ select,
   position: absolute; top: 4px; transform: translateX(8px);
   background: var(--surface); border: 1px solid var(--line); color: var(--text);
   font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 6px;
-  white-space: nowrap; pointer-events: none; box-shadow: var(--shadow);
+  white-space: nowrap; pointer-events: none; box-shadow: var(--shadow-pop);
 }
 .ph-tip.is-flip { transform: translateX(calc(-100% - 8px)); }
 
