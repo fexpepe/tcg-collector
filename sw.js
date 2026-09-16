@@ -108,7 +108,8 @@ const SHELL_ASSETS = [
   // Módulos que saíram do shared.js (2026-09-14): dois sob demanda e um por página.
   "src/backup-import.js", "src/card-rescue.js", "src/facets.js",
   // Fichário (2026-09-16): motor das páginas de bolsos, carregado pelo set e pela Coleção.
-  "src/binder-view.js"
+  // Resumo (2026-09-16): gráficos de raridade/tipo, carregados pelo set e pela Coleção.
+  "src/binder-view.js", "src/insights.js"
 ];
 
 // Tetos por cache (FIFO): imagens ~17KB cada; chunks de set são o catálogo.

@@ -333,6 +333,8 @@
     dashDistinct: document.getElementById("dashDistinct"),
     dashSets: document.getElementById("dashSets"),
     dashValue: document.getElementById("dashValue"),
+    dashRarity: document.getElementById("dashRarity"),
+    dashType: document.getElementById("dashType"),
     dashTopList: document.getElementById("dashTopList"),
     dashDist: document.getElementById("dashDist"),
     dashRegion: document.getElementById("dashRegion"),
@@ -1008,7 +1010,20 @@
     }
   }
   function ajustaValoresHero() {
-    document.querySelectorAll(".dash-stats-head .dash-stat-money .dash-stat-val").forEach(ajustaValorHero);
+    document.querySelectorAll(".dash-stats-head .dash-stat-money .dash-stat-val, .coll-hero .dash-stat-money .dash-stat-val").forEach(ajustaValorHero);
+  }
+  // Troca o cartão de distribuição pelo <article> novo (o insights.js devolve o
+  // cartão inteiro) ou o esconde quando a distribuição não tem o que mostrar.
+  // Devolve o elemento que ficou no lugar, pra próxima rodada trocar de novo.
+  function swapInsightCard(el, html) {
+    if (!el) return el;
+    if (!html) { el.hidden = true; el.innerHTML = ""; return el; }
+    const tmp = document.createElement("div");
+    tmp.innerHTML = html;
+    const novo = tmp.firstElementChild;
+    novo.id = el.id;
+    el.replaceWith(novo);
+    return novo;
   }
   window.addEventListener("resize", shared.debounce(ajustaValoresHero, 120));
 
@@ -1036,6 +1051,13 @@
     const value = shared.collectionNetWorth(myCards, owned, prices, { gameOf, gameFilter, cardOf: (id) => cardsById.get(id) }).total;
     elements.dashValue.textContent = value > 0 ? shared.formatMoney(shared.getCurrency(), value) : "—";
     ajustaValorHero(elements.dashValue);
+    // Distribuições por raridade e por tipo de carta das cartas DISTINTAS da
+    // coleção (no filtro de jogo atual) — os mesmos cartões da página do set
+    // (src/insights.js). Cada um some quando não há o que distribuir.
+    if (window.TCGInsights) {
+      elements.dashRarity = swapInsightCard(elements.dashRarity, window.TCGInsights.rarityCard(myCards));
+      elements.dashType = swapInsightCard(elements.dashType, window.TCGInsights.typeCard(myCards, (card) => card.game || gameOf(card.id)));
+    }
 
     // Mais valiosas (top 3 por valor unitário)
     // A variante MAIS VALIOSA entre as suas (não a primeira da lista): quem tem

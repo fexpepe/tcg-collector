@@ -2730,10 +2730,11 @@ input::placeholder {
    nessa página / progresso), o "Valor total" e o "custo pra completar" — o
    cartão "Conjunto completo" ao lado já traz N de T, a % e o valor do set, e
    "Falta" É o custo pra completar.
-   Especificidade (0,3,x) de propósito: vence o `display: grid` e o raio de
-   8px do .detail-hero, o `border-radius: 0` do passe FLAT e as regras de
-   celular do hero (todas ≤ (0,2,1)). */
-.set-insights-rail .detail-hero.insight-hero {
+   Especificidade (0,2,0)+ de propósito: vence o `display: grid`, o
+   `align-items: center` e o raio de 8px do .detail-hero e o `border-radius: 0`
+   do passe FLAT (todos (0,1,0)). O seletor não amarra ao .detail-hero porque
+   a Minha Coleção usa o mesmo .insight-hero (ver .coll-hero abaixo). */
+.set-insights-rail .insight-hero {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -2779,6 +2780,30 @@ input::placeholder {
    ser o primeiro bloco depois do cabeçalho e não precisa do recuo de −6px que
    o encostava no resumo. */
 .set-insights:has(.insight-hero) { margin-top: 0; }
+
+/* Minha Coleção no MESMO trilho (2026-09-16, pedido do Fernando): cartão
+   principal = identidade (avatar + nome + @) em cima, valor de mercado no
+   meio e as ações (Selecionar / Exportar / Compartilhar) no rodapé; "Visão
+   geral" com as três contagens (sem o anel do set: coluna única); e as duas
+   distribuições que o collection.js monta com o src/insights.js. As regras
+   base de .dash-profile/.dash-stat-money trazem divisórias e respiros do
+   cartão-herói antigo — aqui saem, o gap do cartão já separa. */
+.set-insights-rail .coll-hero { gap: 12px; }
+.coll-hero .dash-profile { border: 0; padding: 0; margin: 0; }
+.coll-hero .dash-profile-name { font-size: 20px; letter-spacing: -0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.coll-hero .dash-avatar-in { width: 44px; height: 44px; font-size: 18px; }
+.coll-hero .dash-stat-money { margin: 0; padding: 0; border: 0; }
+.coll-hero .dash-stat-money .dash-stat-txt { flex: 1 1 auto; min-width: 0; }
+.coll-hero .dash-stat-val { font-size: 22px; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.coll-hero .dash-stat-label { font-size: 12px; }
+/* As ações no rodapé do cartão (margin-top auto empurra pra baixo), lado a
+   lado e quebrando linha se faltar largura. Id na frente: vence o
+   `margin-left: auto` de `#collectionDashboard .collection-toolbar-actions`. */
+#collectionDashboard .coll-hero .collection-toolbar-actions { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 8px; margin: auto 0 0; width: auto; }
+.coll-overview { grid-template-columns: minmax(0, 1fr); }
+/* O resumo antigo era full-bleed no celular (margem negativa e cartão sem
+   borda lateral); o trilho tem a calha de 16px como na página do set. */
+#collectionDashboard.collection-dashboard.coll-insights { display: block; margin: 0 0 18px; }
 
 .pokemon-hero-art {
   min-height: 160px;

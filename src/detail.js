@@ -1099,91 +1099,14 @@
   // GRUPO de raridade, distribuição por TIPO de carta e o trio conjunto /
   // lançamento / valor de mercado com um anel de progresso. Os dois gráficos
   // saem das cartas da página (não mudam com a coleção) e são montados uma
-  // vez; o terceiro é atualizado pelo updateHeaderStats/updateValueStats.
-  //
-  // Grupos de raridade: quatro degraus fixos (comum · rara · ultra · secreta)
-  // em cima do rarityRank, que já é a régua de raridade de TODOS os jogos —
-  // listar cada string (~30 no Pokémon) viraria um gráfico ilegível. A cor
-  // acompanha o DEGRAU (cinza → azul → roxo → laranja), como o Dex faz; o
-  // número em cima da barra fica na cor de texto.
-  const RARITY_GROUPS = ["common", "rare", "ultra", "secret"];
-  const RARITY_GROUP_ICONS = {
-    common: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="6"/></svg>',
-    rare: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1.1 5.9-5.3-2.9-5.3 2.9 1.1-5.9-4.3-4.1 5.9-.8z"/></svg>',
-    ultra: '<svg viewBox="0 0 24 24" width="22" height="18" fill="currentColor" aria-hidden="true"><path d="M8 4l1.9 3.9 4.3.6-3.1 3 .7 4.3L8 13.8l-3.8 2 .7-4.3-3.1-3 4.3-.6z"/><path d="M17 9l1.5 3 3.3.5-2.4 2.3.6 3.3-3-1.6-3 1.6.6-3.3-2.4-2.3 3.3-.5z"/></svg>',
-    secret: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1.1 5.9-5.3-2.9-5.3 2.9 1.1-5.9-4.3-4.1 5.9-.8z"/></svg>'
-  };
-  function rarityGroup(rarity) {
-    // Mítica (Magic) não casa com nenhuma régua do rarityRank (cai em
-    // "exótica", abaixo da comum) — e é o degrau acima da rara.
-    if (/mythic|mitica|mítica/.test(normalize(rarity))) return "ultra";
-    const rank = shared.rarityRank(rarity);
-    if (rank >= 60) return "secret";
-    if (rank >= 40) return "ultra";
-    if (rank >= 30) return "rare";
-    return "common";
-  }
-  // Tipo de carta: o mesmo agrupamento das listas de deck (cardTypeGroup), que
-  // no Magic reduz a type_line ao tipo principal. Pokémon/Treinador/Energia
-  // ganham tradução; o resto é vocabulário do jogo e sai cru.
-  function cardTypeLabel(key) {
-    const k = `cardType.${key}`;
-    const r = t(k);
-    return r === k ? key : r;
-  }
-  // Uma barra por valor, altura proporcional ao maior. Rótulo (contagem) em
-  // cima, ícone/nome embaixo. `min-height` no CSS garante que o 2 de 158 ainda
-  // apareça como uma linha, e não suma.
-  function barsHtml(itens, { icons } = {}) {
-    const max = Math.max(1, ...itens.map((i) => i.n));
-    return `<div class="insight-bars" role="img" aria-label="${escapeAttribute(itens.map((i) => `${i.label}: ${i.n}`).join(", "))}">${itens.map((i) => `
-      <div class="insight-bar-col" title="${escapeAttribute(`${i.label}: ${i.n}`)}">
-        <span class="insight-bar-n">${i.n}</span>
-        <span class="insight-bar" style="--p: ${(i.n / max).toFixed(3)}; --bar: ${i.color}"></span>
-        <span class="insight-bar-label">${icons && i.icon ? i.icon : escapeHtml(i.label)}</span>
-      </div>`).join("")}</div>`;
-  }
+  // vez pelo módulo compartilhado src/insights.js (a Minha Coleção usa os
+  // mesmos); o terceiro é atualizado pelo updateHeaderStats/updateValueStats.
   function renderInsights() {
     const box = elements.insights;
     if (!box || detailType !== "set" || !pageCards.length) return;
-    // Raridade — só grupos presentes; some com um grupo só (não distribui nada).
-    const porGrupo = new Map();
-    pageCards.forEach((c) => { const g = rarityGroup(c.rarity); porGrupo.set(g, (porGrupo.get(g) || 0) + 1); });
-    const cores = { common: "var(--insight-common)", rare: "var(--insight-rare)", ultra: "var(--insight-ultra)", secret: "var(--insight-secret)" };
-    const raridades = RARITY_GROUPS.filter((g) => porGrupo.has(g)).map((g) => ({
-      label: t(`rarity.group.${g}`), n: porGrupo.get(g), color: cores[g], icon: RARITY_GROUP_ICONS[g]
-    }));
-    const raridadeHtml = raridades.length > 1 ? `
-      <article class="insight-card">
-        <h3>${escapeHtml(t("insights.rarity"))}</h3>
-        ${barsHtml(raridades, { icons: true })}
-      </article>` : "";
-    // Tipo de carta — cores categóricas em ordem FIXA (a 1ª cor é sempre do
-    // tipo mais numeroso); mais de 6 tipos: os menores viram "Outros".
     const jogo = paginaGame();
-    const porTipo = new Map();
-    pageCards.forEach((c) => {
-      let g = shared.cardTypeGroup(jogo, c);
-      // Pokémon sem `category` no catálogo (o campo só entra em algumas
-      // impressões): quem tem nº de Pokédex é carta de Pokémon.
-      if (!g.key && c.dexId) g = { key: "Pokemon", label: "Pokemon" };
-      if (!g.key) return;
-      const atual = porTipo.get(g.key) || { n: 0, label: g.label };
-      atual.n++;
-      porTipo.set(g.key, atual);
-    });
-    let tipos = [...porTipo.entries()].map(([key, v]) => ({ key, n: v.n, label: cardTypeLabel(v.label) }))
-      .sort((a, b) => b.n - a.n);
-    if (tipos.length > 6) {
-      const resto = tipos.slice(5).reduce((s, x) => s + x.n, 0);
-      tipos = tipos.slice(0, 5).concat({ key: "other", n: resto, label: t("insights.other") });
-    }
-    tipos.forEach((x, i) => { x.color = `var(--insight-cat-${i + 1})`; });
-    const tipoHtml = tipos.length ? `
-      <article class="insight-card">
-        <h3>${escapeHtml(t("insights.cardType"))}</h3>
-        ${barsHtml(tipos)}
-      </article>` : "";
+    const raridadeHtml = window.TCGInsights.rarityCard(pageCards);
+    const tipoHtml = window.TCGInsights.typeCard(pageCards, () => jogo);
     // Conjunto / lançamento / valor + anel de progresso. Com título, como os
     // outros dois, e em SEGUNDO (logo depois do hero, que o placeSetHero põe
     // na frente): pedido do Fernando, 2026-09-16 — é o cartão que responde
