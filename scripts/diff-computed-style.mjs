@@ -15,7 +15,7 @@ const paginas = ["index.html", "login.html", "decks.html", "my-decks.html", "por
   "hub.html", "sets.html?game=pokemon", "collection.html", "faq.html", "binders.html",
   // 2026-09-14: as páginas das áreas novas do split (troca, medalhas, 404, detalhe
   // de set/pokémon) e as que nasceram neste mês (busca, conta, listas, painel).
-  "troca.html", "badges.html", "listas.html", "search.html", "account.html", "404.html", "dashboard.html",
+  "troca.html", "badges.html", "pastas.html", "search.html", "account.html", "404.html", "dashboard.html",
   "detail.html?type=set&setId=base1&game=pokemon", "detail.html?type=set&game=lorcana&setId=1",
   "detail.html?type=pokemon&name=Charizard&game=pokemon"];
 const PROPS = ["display","position","color","background-color","border-radius","border-width","border-color",

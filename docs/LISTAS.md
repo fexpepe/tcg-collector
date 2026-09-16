@@ -5,6 +5,18 @@ Plano da feature **e** registro do que foi construído. Complementa o
 [COMMUNITY-PRICES.md](COMMUNITY-PRICES.md) (fases F0–F5, cada uma entregável
 sozinha).
 
+> **2026-09-16 — Listas viraram PASTAS.** Na interface (pt/en/es), no HUB, no
+> menu e na URL (`pastas.html`, `src/pastas.js`, `src/i18n-pastas.js`; o
+> `/listas` antigo redireciona levando o `?id=`). Por dentro nada mudou de
+> nome: o store segue `tcg-collector-lists-all-v1`, ids `ls_…`, chaves i18n
+> `lists.*` e `SYNC_KEYS.lists` — renomear dado de usuário e chave em três
+> idiomas não muda nada pra quem usa. A pasta aberta ganhou a cara da Toda
+> Coleção (cartão-herói com valor e contagens + grade de tiles), com botão de
+> **Exportar**, **Compartilhar** (link único, `scope: "pasta"` no viewer `?s=`
+> da Coleção, com "salvar como pasta") e **Excluir** próprios; o editor de duas
+> colunas virou o painel **Adicionar cartas**, que abre por cima da grade. O
+> texto abaixo é o plano original e usa "lista" onde hoje se lê "pasta".
+>
 > **Estado: F0–F5 implementadas e na `main`** (originalmente na branch
 > `feat/listas`, 2026-08-12; a limpeza da UI antiga das tags veio depois, no
 > commit `fd25071`, −900 linhas). As

@@ -126,10 +126,12 @@ uma opção presente em 100% das cartas é descartada (filtro que não filtra na
 é ruído). Vale a mesma regra do card: bloco sem dado não aparece.
 
 Pessoais: `collection`, `portfolio` (visão financeira: patrimônio no tempo, uma
-linha por jogo, valor de listas/binders, vendas realizadas — ver
+linha por jogo, valor de pastas/binders, vendas realizadas — ver
 [docs/PORTFOLIO.md](docs/PORTFOLIO.md)), `wishlist`, `binders`, `sales` (vendas e trocas),
-`listas` (checklists de set ou avulsas, com export pra Liga — ver
-[docs/LISTAS.md](docs/LISTAS.md)), `my-decks` (galeria + editor), `decks`
+`pastas` (as antigas Listas, renomeadas em 2026-09-16: pedaços da coleção com
+nome, cada um com link compartilhável e export próprios, checklist de set ou
+avulsa — ver [docs/LISTAS.md](docs/LISTAS.md); `/listas` redireciona pra cá),
+`my-decks` (galeria + editor), `decks`
 (galeria pública da comunidade), `dashboard` (hub pessoal), `badges`, `backup`,
 `profile`, `settings`, `login`.
 

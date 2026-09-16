@@ -343,24 +343,25 @@
     // Decks: duas cartas empilhadas em leque (monte de deck), distinto do binder
     // (que é um álbum aberto com lombada).
     decks: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="12" height="16" rx="2"/><path d="M4.5 6.5v12a2 2 0 0 0 2 2h9"/></svg>',
-    // Listas: linhas com marcador — o oposto visual do binder/deck (que são
-    // cartas), porque a lista é justamente a visão sem imagem.
-    lists: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12"/><path d="M8 12h12"/><path d="M8 18h12"/><path d="M4 6h.01"/><path d="M4 12h.01"/><path d="M4 18h.01"/></svg>',
+    // Pastas (as antigas Listas, 2026-09-16): uma pasta com cartas dentro —
+    // a coleção fatiada em pedaços com nome, cada um com link e export próprios.
+    lists: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 11h18"/></svg>',
     // Medir centralização: a carta com as guias (uma vertical, uma horizontal).
     centering: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M5 12h14"/><path d="M12 3v18"/></svg>',
     // Troca: duas setas em sentidos opostos (dou ⇄ recebo).
     trade: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h13"/><path d="m14 4 3 3-3 3"/><path d="M20 17H7"/><path d="m10 14-3 3 3 3"/></svg>'
   };
   const soldTotal = shared.readSoldList().length;
-  // Ordem (pedido de 2026-09-12): Lista de Desejo em 2º (é o par natural da
-  // coleção — o que tenho / o que quero) e Listas logo acima de Binders. O
-  // mega-menu da Coleção no header (shared.js) segue a MESMA ordem — os dois
-  // são o mesmo "Ir para", e divergir confundiria quem decora a posição.
+  // Ordem (pedido de 2026-09-16): Toda Coleção, Pastas (as antigas Listas —
+  // a coleção fatiada, por isso logo abaixo dela) e Lista de Desejo (o que
+  // tenho / o que quero). O mega-menu da Coleção no header (shared.js) segue a
+  // MESMA ordem — os dois são o mesmo "Ir para", e divergir confundiria quem
+  // decora a posição.
   const links = [
     { href: "collection", icon: "collection", key: "nav.collectionMine", stat: tn("count.cards", counts.distinct) },
+    { href: "pastas", icon: "lists", key: "nav.lists", stat: t("dash.listsHint") },
     { href: "wishlist", icon: "wishlist", key: "nav.wishlist", stat: tn("dash.wishCount", wishTotal) },
     { href: "collection?tab=graded", icon: "graded", key: "nav.graded", stat: tn("dash.slabsCount", slabs) },
-    { href: "listas", icon: "lists", key: "nav.lists", stat: t("dash.listsHint") },
     { href: "binders", icon: "binders", key: "nav.binders", stat: "" },
     { href: "my-decks", icon: "decks", key: "nav.myDecks", stat: t("dash.decksHint") },
     { href: "sales", icon: "sales", key: "nav.sales", stat: tn("dash.salesCount", salesCount()) + (soldTotal ? ` · ${tn("dash.soldCount", soldTotal)}` : "") },

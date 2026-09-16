@@ -916,7 +916,9 @@
       if (!itens) return; // lista vazia, ou toda de outro jogo que o filtro cortou
       linhas.push({
         tipo: "lista", nome: l.name || t("lists.untitled"), cor: l.color || "var(--accent)",
-        href: `lists.html#${encodeURIComponent(l.id)}`,
+        // Abre a PASTA (a página é pastas?id=; antes apontava pra um lists.html
+        // que nunca existiu — todo clique caía em 404).
+        href: `pastas?id=${encodeURIComponent(l.id)}`,
         meta: tn("portfolio.lists.cards", itens), total, semPreco
       });
     });

@@ -1,6 +1,11 @@
 [
  {
   "d": "2026-09-16",
+  "pt": "Listas viraram Pastas, no site todo (menu, Hub, celular). Ao abrir uma pasta ela tem a mesma cara da Toda Coleção (antes \"Minha coleção\"): resumo em cima com valor de mercado e contagens, as cartas em grade embaixo, e botões próprios de Exportar (Liga, texto ou CSV), Compartilhar (um link só dela, como se fosse uma coleção à parte) e Excluir. O cadastro rápido, linha por carta, continua no painel \"Adicionar cartas\". No menu Coleção e nos atalhos do Hub, Pastas ficou em 2º, entre Toda Coleção e Lista de Desejo.",
+  "en": "Lists became Folders across the site (menu, Hub, mobile). Opening a folder now looks like the Whole collection page (formerly \"My collection\"): summary on top with market value and counts, cards in a grid below, and its own Export (Liga, text or CSV), Share (a link of its own, as if it were a separate collection) and Delete buttons. Fast logging, one line per card, lives on in the \"Add cards\" panel. In the Collection menu and the Hub shortcuts, Folders sits 2nd, between Whole collection and Wishlist."
+ },
+ {
+  "d": "2026-09-16",
   "pt": "Minha Coleção mais enxuta: a aba \"Vendas e Trocas\" saiu (a página continua no HUB e no menu Coleção), no celular o título \"Minhas Cartas · N resultados\" some pra sobrar espaço pra grade, e Novo showcase e Adicionar cartas ficaram na mesma fileira e altura dos botões de filtro e visualização. O Medir centralização saiu da aba Graded e virou atalho do HUB, embaixo de Badges.",
   "en": "A leaner My Collection: the \"Sales & Trades\" tab is gone (the page stays in the Hub and in the Collection menu), on mobile the \"My Cards · N results\" line disappears to leave room for the grid, and New showcase and Add cards now sit on the same row and height as the filter and view buttons. Measure centering left the Graded tab and became a Hub shortcut, below Badges."
  },

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title data-i18n="title.lists">Pastas - Sleevu</title>
+    <meta name="description" content="Suas pastas de cartas: cada uma é um pedaço da coleção com nome, link e export próprios. Cadastre um set inteiro rápido ou monte listas de compra.">
+    <!-- Área pessoal: fora do índice de busca (como my-decks). -->
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <link rel="preconnect" href="https://assets.tcgdex.net">
+    <link rel="preconnect" href="https://tcgplayer-cdn.tcgplayer.com">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Duas tags com media: o primeiro paint ja acerta a barra do navegador
+         pelo tema do SISTEMA. Quando a pessoa ESCOLHE um tema, o applyTheme
+         (shared.js) troca por uma tag unica sem media, que vence as duas. -->
+    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <!-- data-catalog vazio: cada pasta carrega só o catálogo do SEU jogo (e só
+         as cartas que ela usa), como no editor de decks. -->
+    <script src="src/game.js" data-catalog=""></script>
+    <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="/">Sleevu</a>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="pastas"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Galeria (sem ?id=) e a pasta aberta (com ?id=) — pastas.js alterna.
+           A pasta aberta tem a cara da Toda Coleção: cartão-herói em cima
+           (nome, valor, contagens, ações) e as cartas em grade embaixo; o
+           painel "Adicionar cartas" (linha por carta, sem imagem) abre por
+           cima da grade quando a pessoa quer cadastrar em série. -->
+      <div id="listGallery"></div>
+      <div id="listEditor" hidden></div>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <!-- Textos das pastas: fora do i18n.js pra as outras páginas não carregarem à toa. -->
+    <script defer src="src/i18n-pastas.js"></script>
+    <script defer src="src/shared.js"></script>
+    <!-- Export em texto (Liga/texto/CSV): lógica pura, testada em node — e o
+         MESMO modal da Toda Coleção e da Lista de Desejo (export-ui.js), pra
+         "exportar a pasta" ser igual a "exportar a coleção". -->
+    <script defer src="src/export-liga.js"></script>
+    <script defer src="src/export-ui.js"></script>
+    <!-- Regras de deck: só pra "criar deck desta pasta" saber em que zona cada
+         carta entra (líder, ovo, principal). Sem isto, tudo cairia no main. -->
+    <script defer src="src/deck-rules.js"></script>
+    <script defer src="src/pastas.js"></script>
+  </body>
+</html>

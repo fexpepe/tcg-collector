@@ -48,7 +48,7 @@
     return [
       { id: "carta", ok: temCarta, href: "sets" },
       { id: "csv", ok: !!st.csv, href: "backup" },
-      { id: "lista", ok: listas(), href: "listas" },
+      { id: "lista", ok: listas(), href: "pastas" },
       { id: "app", ok: instalado(st), acao: "instalar" }
     ];
   }

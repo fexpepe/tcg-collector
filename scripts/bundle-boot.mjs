@@ -35,7 +35,7 @@ function morra(mensagem) {
 
 // theme.js e game.js, nesta ordem, com o data-catalog (que varia por página)
 // preservado na tag fundida. Entre as duas tags pode haver comentário HTML
-// (listas.html e troca.html explicam ali por que o data-catalog é vazio) — ele
+// (pastas.html e troca.html explicam ali por que o data-catalog é vazio) — ele
 // é preservado, e QUALQUER outra coisa no meio faz o script parar: script de
 // terceiro entre as duas mudaria a ordem de execução sem ninguém notar.
 const PAR = /([ \t]*)<script src="(?:\.?\/)?src\/theme\.js"><\/script>([\s\S]*?)([ \t]*)<script src="(?:\.?\/)?src\/game\.js"( data-catalog="[^"]*")?><\/script>/;

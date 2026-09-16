@@ -9817,9 +9817,11 @@ select,
 .skip-link:focus { top: 8px; }
 
 /* ===========================================================================
-   LISTAS (listas.html) — ver docs/LISTAS.md
-   A tela é uma LINHA por carta, sem imagem: é o modo rápido de cadastrar. Tudo
-   aqui é medido pra caber muita linha na tela sem virar planilha ilegível.
+   PASTAS (pastas.html — as antigas Listas, 2026-09-16) — ver docs/LISTAS.md
+   A pasta aberta tem a cara da Toda Coleção (cartão-herói + grade de tiles,
+   regras lá em cima, em .dash-stats-hero/.card-tile); o painel "Adicionar
+   cartas" é uma LINHA por carta, sem imagem: é o modo rápido de cadastrar,
+   medido pra caber muita linha na tela sem virar planilha ilegível.
    =========================================================================== */
 /* Nada aqui reaproveita classe `deck-*`, e não é por gosto: o split-css do
    deploy manda todo bloco que cita `.deck…` pro styles-decks.css, que só
@@ -9959,6 +9961,59 @@ select,
   .lst-field select, .lst-field input { min-height: 40px; }
   .lst-row { grid-template-columns: minmax(0, 1fr) 58px 74px 46px; min-height: 48px; }
   .lst-entry { grid-template-columns: minmax(0, 1fr) 52px 68px 40px 112px 60px 46px; }
+}
+
+/* --- Pasta aberta: herói, painel de adicionar e grade ---------------------
+   O cartão-herói é o da Coleção; aqui só o que é da pasta: o "avatar" é a cor
+   dela (o anel de gradiente da pessoa não faz sentido numa pasta), a linha de
+   identidade traz jogo/set/tipo e a paleta, e as ações ganham o botão com
+   rótulo "Adicionar cartas" (é a ação nº 1 da tela, não pode ser só-ícone). */
+.pasta-dashboard { margin-top: 4px; }
+.pasta-avatar { background: var(--lc, var(--accent)); }
+.pasta-avatar .dash-avatar-in { color: var(--lc, var(--accent)); }
+.pasta-avatar .dash-avatar-in svg { width: 24px; height: 24px; }
+.pasta-meta { display: flex; align-items: center; gap: 8px 10px; flex-wrap: wrap; font-size: 13px; color: var(--muted); min-height: 22px; }
+.pasta-identity .lst-linked { font-size: 12.5px; }
+/* As bolinhas da paleta e o nome da carta na linha do painel herdam do
+   <button> global (min-height 42px, texto centrado): a bolinha virava um
+   ovo e o nome flutuava no meio da coluna. */
+.lst-colors .lst-color { min-height: 0; }
+.lst-row .lst-name { display: block; min-height: 0; text-align: left; }
+/* Ações: o "Adicionar" leva rótulo (ícone + texto); os outros são só-ícone
+   como na Coleção. Aberto, o botão troca pra "fechar" (aria-expanded). */
+.collection-dashboard-hero .pasta-add-btn { padding: 0 14px; }
+.collection-dashboard-hero .pasta-add-btn[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.pasta-del-btn:hover { border-color: var(--accent); color: var(--accent); }
+/* Painel de adicionar: mesma caixa do editor antigo, agora sozinho (largura
+   toda) entre o herói e a grade. Rola por dentro pra a grade não sumir. */
+.pasta-add { margin: 0 0 18px; }
+.pasta-add .lst-rows { max-height: 52vh; max-height: 52dvh; }
+.pasta-add .lst-panel-head .lst-mini { flex: none; }
+.pasta-results h2 { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.pasta-count { color: var(--muted); font-size: 13px; font-weight: 600; }
+.pasta-results .results-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+/* Tile: o rodapé é o stepper da quantidade NA PASTA (tirar · − · ×N · +), no
+   lugar dos botões de posse. Mesmo círculo .tile-btn da grade. */
+.pasta-qty { align-items: center; gap: 4px; }
+.pasta-qty-n { min-width: 34px; text-align: center; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.pasta-qty .pasta-del { margin-right: auto; }
+.pasta-qty .pasta-del:hover { border-color: var(--accent); color: var(--accent); }
+.pasta-grid .empty-state { grid-column: 1 / -1; }
+/* Carta fora do catálogo (id que não hidratou): moldura vazia no lugar da
+   imagem, pra o tile manter a altura dos vizinhos. */
+.pasta-noimg { display: block; width: 100%; aspect-ratio: 63 / 88; background: var(--panel-strong); }
+@media (max-width: 720px) {
+  /* No celular o rótulo do "Adicionar" fica (é a ação principal); os
+     só-ícone descem pra linha própria como na Coleção. A identidade (cor +
+     jogo/set + paleta) quebra em duas linhas e a paleta cabe inteira. */
+  /* (0,2,0) de propósito: a regra da Coleção (.dash-stats-hero .dash-profile,
+     flex 1 1 120px) tem o mesmo peso e vem antes — a identidade da pasta
+     (jogo/set + paleta de 8 bolinhas de 44px) precisa da linha inteira. */
+  .dash-stats-hero .pasta-identity { flex: 1 1 100%; }
+  .pasta-meta { gap: 6px 8px; }
+  .collection-dashboard-hero .pasta-actions { margin-left: 0; width: 100%; display: flex; flex-wrap: wrap; gap: 8px; }
+  .collection-dashboard-hero .pasta-add-btn { flex: 1 1 auto; justify-content: center; }
+  .pasta-add .lst-rows { max-height: 60vh; max-height: 60dvh; }
 }
 
 /* Seletor de versão inline: ocupa a largura toda da linha (grid-column: 1/-1),

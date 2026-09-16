@@ -1230,7 +1230,7 @@
     elements.folderSections.innerHTML = `
       <p class="empty-state">
         ${escapeHtml(t("tags.movedToLists"))}<br>
-        <a class="cta" href="listas">${escapeHtml(t("nav.lists"))}</a>
+        <a class="cta" href="pastas">${escapeHtml(t("nav.lists"))}</a>
       </p>`;
   }
 
@@ -2251,6 +2251,7 @@
     const allItems = share.data.items;
     const isFolder = share.data.scope === "folder"; // compartilhamento de UMA pasta
     const isTag = share.data.scope === "tag";        // lista/showcase de uma tag
+    const isPasta = share.data.scope === "pasta";    // uma PASTA (pastas.html) — a coleção fatiada
     const isSale = share.data.scope === "sale";      // lista de vendas
     const isGraded = share.data.scope === "graded";  // cartas graduadas (slabs)
     const isWish = share.data.scope === "wishlist";  // lista de desejo (q=1 por variante)
@@ -2262,7 +2263,7 @@
         ? allItems.reduce((s, it) => s + (Number(it.sp) || 0) * (it.q || 1), 0)
         : allItems.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
     const bannerMoney = (isSale || isGraded) ? shared.formatMoney(saleCur, bannerTotal) : shared.formatMoney(shared.getCurrency(), bannerTotal);
-    const kindLabel = isWish ? t("wishlist.shared.label") : isGraded ? t("graded.shared.label") : isSale ? t("sales.shared.label") : isTag ? t("tags.shared.label") : (isFolder ? t("folders.shared.label") : "");
+    const kindLabel = isWish ? t("wishlist.shared.label") : isGraded ? t("graded.shared.label") : isSale ? t("sales.shared.label") : isPasta ? t("pastas.shared.label") : isTag ? t("tags.shared.label") : (isFolder ? t("folders.shared.label") : "");
 
     // Filtro de jogo (Todos/Pokémon/Lorcana) — igual à página da coleção. Só
     // aparece quando o share tem MAIS DE UM jogo, pra quem está vendo conseguir
@@ -2283,12 +2284,12 @@
         <div class="binder-shared-info">
           ${kindLabel ? `<span class="shared-kind">${escapeHtml(kindLabel)}</span>` : ""}
           ${profileNav ? `<a class="shared-kind" href="/users/${escapeAttribute(profileNav.handle)}">@${escapeHtml(profileNav.handle)}</a>` : ""}
-          ${profileNav ? "" : `<strong>${isTag && share.data.color ? `<span class="tag-dot" style="--tag:${shared.safeColor(share.data.color)}"></span> ` : ""}${escapeHtml(share.title || t("collection.shared.title"))}</strong>`}
+          ${profileNav ? "" : `<strong>${(isTag || isPasta) && share.data.color ? `<span class="tag-dot" style="--tag:${shared.safeColor(share.data.color)}"></span> ` : ""}${escapeHtml(share.title || t("collection.shared.title"))}</strong>`}
           <span>${escapeHtml(tn("collection.shared.banner", allItems.length))} · ${escapeHtml(bannerMoney)}</span>
         </div>
         ${profileNav && profileNav.label
           ? `<button type="button" class="secondary" data-profile-nav>${escapeHtml(profileNav.label)}</button>`
-          : (isFolder || isTag ? `<button type="button" class="primary" id="sharedSaveBtn">${escapeHtml(t(isTag ? "tags.shared.save" : "folders.shared.save"))}</button>` : "")}
+          : (isFolder || isTag || isPasta ? `<button type="button" class="primary" id="sharedSaveBtn">${escapeHtml(t(isPasta ? "pastas.shared.save" : isTag ? "tags.shared.save" : "folders.shared.save"))}</button>` : "")}
       </div>`;
     sv.innerHTML = `${(profileNav && profileNav.tabsHtml) || ""}${banner}${filterHtml}<div id="sharedBody"></div>`;
 
@@ -2331,7 +2332,29 @@
           listas.addEntry(lista.id, it.id, { v: it.v, q: it.q || 1 });
         });
         alert(t("tags.shared.saved"));
-        window.location.href = `listas?id=${encodeURIComponent(lista.id)}`;
+        window.location.href = `pastas?id=${encodeURIComponent(lista.id)}`;
+      });
+    }
+
+    // "Salvar como pasta" de uma PASTA compartilhada (pastas.html): recria a
+    // pasta com as mesmas cartas, versões, quantidades e condições — AVULSA,
+    // sem tocar na coleção de quem salva (diferente da tag, que afirmava
+    // posse): a pasta de alguém é uma lista, não uma declaração do que eu
+    // tenho. O jogo só é fixado quando todas as cartas são do mesmo (senão
+    // fica mista, como as migradas de tag).
+    if (isPasta) {
+      const saveBtn = document.getElementById("sharedSaveBtn");
+      if (saveBtn) saveBtn.addEventListener("click", () => {
+        const name = share.title || t("lists.untitled");
+        const listas = shared.createListStore();
+        if (listas.atLimit()) { alert(t("lists.limit", { n: listas.LIST_LIMIT })); return; }
+        if (!window.confirm(t("pastas.shared.saveConfirm", { n: allItems.length, name }))) return;
+        const jogos = [...new Set(allItems.map((it) => it.g).filter(Boolean))];
+        const lista = listas.create({ name, color: share.data.color, linked: false, game: jogos.length === 1 ? jogos[0] : null });
+        if (!lista) { alert(t("lists.limit", { n: listas.LIST_LIMIT })); return; }
+        allItems.forEach((it) => listas.addEntry(lista.id, it.id, { v: it.v, q: it.q || 1, c: it.c }));
+        alert(t("pastas.shared.saved"));
+        window.location.href = `pastas?id=${encodeURIComponent(lista.id)}`;
       });
     }
 

@@ -2824,7 +2824,7 @@
     const exploreActive = ["pokedex", "trainers", "sets", "artists", "cards", "hub"].includes(active);
     // "Meus Decks" é página PESSOAL (entra pelo Dashboard), então acende a
     // Coleção — diferente de "Decks", que é a galeria PÚBLICA e tem item próprio.
-    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "mydecks", "listas", "troca"].includes(active);
+    const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "mydecks", "pastas", "troca"].includes(active);
 
     // `beta`: selo pequeno sobrescrito no rótulo — recurso ainda em construção
     // (pedido de 2026-08-25 pra Decks e Portfólio). "beta" é literal de
@@ -2854,14 +2854,17 @@
     // Mega-menu da Coleção: o hover/foco no item abre os MESMOS atalhos do
     // "Ir para" do Hub (dashboard.js), com os mesmos rótulos e na mesma ordem,
     // agrupados em colunas — o clique continua indo pro Hub, como sempre.
+    // Pastas (as antigas Listas) em 2º, entre Toda Coleção e Lista de Desejo
+    // (pedido de 2026-09-16): é a coleção fatiada, mora com as cartas, não
+    // com "Organizar".
     const megaCol = (headKey, links) => `<div class="nav-mega-col"><span class="nav-mega-head">${escapeHtml(t(headKey))}</span>${links}</div>`;
     const collectionMega = `
       <div class="nav-group nav-group-hover">
         <a href="dashboard"${collectionActive ? ' class="active"' : ""} aria-haspopup="true" aria-expanded="false">${escapeHtml(t("nav.collection"))}<span class="nav-caret" aria-hidden="true">▾</span></a>
         <div class="nav-dropdown nav-mega" hidden>
           <a class="nav-mega-hub${active === "dashboard" ? " active" : ""}" href="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg>${escapeHtml(t("nav.hubItem"))}<small>${escapeHtml(t("nav.hubHint"))}</small></a>
-          ${megaCol("nav.colCards", link("collection", "nav.collectionMine", "collection") + link("wishlist", "nav.wishlist", "wishlist") + link("collection?tab=graded", "nav.graded", "graded"))}
-          ${megaCol("nav.colOrganize", link("listas", "nav.lists", "listas") + link("binders", "nav.binders", "binders") + link("my-decks", "nav.myDecks", "mydecks"))}
+          ${megaCol("nav.colCards", link("collection", "nav.collectionMine", "collection") + link("pastas", "nav.lists", "pastas") + link("wishlist", "nav.wishlist", "wishlist") + link("collection?tab=graded", "nav.graded", "graded"))}
+          ${megaCol("nav.colOrganize", link("binders", "nav.binders", "binders") + link("my-decks", "nav.myDecks", "mydecks"))}
           ${megaCol("nav.colMore", link("sales", "nav.sales", "sales") + link("troca", "trade.title", "troca") + link("badges", "dash.badges", "badges"))}
         </div>
       </div>`;
@@ -6972,7 +6975,7 @@
           <span class="list-menu-check" aria-hidden="true">${marcadas.has(l.id) ? "✓" : ""}</span>
         </button>`).join("")
         : `<p class="list-menu-empty">${escapeHtml(t("lists.menuEmpty"))}</p>`}
-      <a class="list-menu-new" href="listas">+ ${escapeHtml(t("lists.new"))}</a>`;
+      <a class="list-menu-new" href="pastas">+ ${escapeHtml(t("lists.new"))}</a>`;
     document.body.appendChild(box);
     listMenuEl = box;
 
@@ -10994,13 +10997,13 @@
   // servidas pelas mesmas páginas ficam de fora: ?s= (links compartilhados de
   // coleção/pasta/tag/binder/vendas/graded) e /users/<handle> (perfil público).
   function enforceLoginGate() {
-    // "listas" e "mydecks" entraram em 2026-08-30: as duas são páginas pessoais
+    // "pastas" (na época "listas") e "mydecks" entraram em 2026-08-30: as duas são páginas pessoais
     // (estão no grupo pessoal do nav e os Termos dizem que listas exigem conta),
     // mas ficaram de fora daqui. Deslogado, a pessoa usava as duas gravando no
     // localStorage o que NUNCA sobe pra nuvem — e descobria isso ao abrir em
     // outro aparelho. A galeria pública e o viewer ?s= vivem em decks.html, que
     // segue aberta; my-decks é só o editor de quem tem conta.
-    const AUTH_PAGES = ["dashboard", "collection", "wishlist", "binders", "sales", "portfolio", "badges", "backup", "troca", "listas", "mydecks"];
+    const AUTH_PAGES = ["dashboard", "collection", "wishlist", "binders", "sales", "portfolio", "badges", "backup", "troca", "pastas", "mydecks"];
     const nav = document.querySelector(".page-nav[data-active-page]");
     const page = nav ? nav.dataset.activePage : "";
     if (!AUTH_PAGES.includes(page) || getSession()) return false;
