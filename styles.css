@@ -2554,56 +2554,14 @@ input::placeholder {
   grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
     "hero"
-    "bar"
-    "values";
+    "bar";
   align-items: start;
 }
 .detail-summary.has-hero .detail-hero { grid-area: hero; align-self: stretch; }
 .detail-summary.has-hero .completion-bar { grid-area: bar; margin: 0; }
-.detail-summary.has-hero .detail-values { grid-area: values; }
-
-/* Valores em R$ (total / gasto / a comprar): UMA fileira compacta, não três
-   cartões gigantes — o usuário quer chegar nas cartas. */
-.detail-summary.has-hero .detail-values {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin: 0;
-}
-.detail-summary.has-hero .detail-values article { padding: 10px 14px; }
-
-/* Página de SET em tela larga: os valores sobem pra LINHA DO HERO, na coluna que
-   sobrava à direita — o hero de set é logo + título + stats e não usa a largura
-   toda. Como faixa embaixo eles custavam ~55px de altura antes da grade.
-   Só no hero de SET (:has(.detail-set-art)): a página de Pokémon não mostra
-   valores (o detail.js tira o bloco).
-   As três linhas dividem a altura do hero, então os dois blocos terminam
-   alinhados. */
-@media (min-width: 1001px) {
-  .detail-summary.has-hero:has(.detail-set-art) {
-    grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
-    grid-template-areas:
-      "hero values"
-      "bar  bar";
-  }
-  .detail-summary.has-hero:has(.detail-set-art) .detail-values {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: repeat(3, minmax(0, 1fr));
-    align-self: stretch;
-  }
-  .detail-summary.has-hero:has(.detail-set-art) .detail-values article {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  /* Sem VALORES (linhas vintage, que não têm preço): coluna única de novo, senão
-     volta o mesmo buraco à direita. */
-  .detail-summary.has-hero:has(.detail-set-art):has(.detail-values[hidden]) {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "hero" "bar";
-  }
-}
-.detail-summary.has-hero .detail-values span { font-size: 20px; white-space: nowrap; }
-.detail-summary.has-hero .detail-values p { margin-top: 3px; font-size: 12px; }
+/* (Os VALORES em R$ não têm mais área aqui: o Pokémon tira o bloco no
+   detail.js e, no set, o hero inteiro — valores dentro — vira o primeiro
+   cartão do trilho de resumo; ver .insight-hero mais abaixo.) */
 
 /* Stats de cartas (marcadas / nessa página / progresso) entram compactos dentro
    do hero. No desktop ficam na 3ª coluna (à direita das infos), empilhados, com
@@ -2709,7 +2667,11 @@ input::placeholder {
 }
 .set-insights-rail::-webkit-scrollbar { display: none; }
 .insight-card {
-  flex: 0 0 340px; min-width: 0; scroll-snap-align: start;
+  /* 2026-09-16: com o hero do set virando o 4º cartão, 4 × 340 + 3 gaps não
+     cabiam nos 1385px úteis da largura máxima (sobravam 11px rolando). Base
+     de 320 com `flex-grow`: em tela larga os quatro DIVIDEM a linha por
+     igual; em tela menor ficam nos 320 e rolam, como antes. */
+  flex: 1 0 320px; min-width: 0; scroll-snap-align: start;
   background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow);
   padding: 16px 18px;
 }
@@ -2732,6 +2694,67 @@ input::placeholder {
 .insight-ring.complete .insight-ring-fill { stroke: var(--gold); }
 .insight-ring text { fill: var(--accent); font-size: 17px; font-weight: 700; }
 .insight-ring.complete text { fill: var(--gold); }
+
+/* Hero do SET como PRIMEIRO cartão do trilho (2026-09-16). O detail.js
+   (placeSetHero) move o #detailHero pra dentro do .set-insights-rail com as
+   classes .insight-card.insight-hero — mesmo contorno arredondado (14px),
+   mesma largura e mesma altura dos vizinhos (o flex estica a fileira). Vale
+   no desktop e no celular: tudo na mesma fileira que rola.
+   Dentro, em coluna: chip do logo, nome (+ nome original / contagem), e no
+   rodapé as duas cápsulas que NÃO se repetem nos outros cartões ("Já gasto" e
+   "Falta") com a barra de progresso. Somem: os stats (cartas marcadas /
+   nessa página / progresso), o "Valor total" e o "custo pra completar" — o
+   cartão "Conjunto completo" ao lado já traz N de T, a % e o valor do set, e
+   "Falta" É o custo pra completar.
+   Especificidade (0,3,x) de propósito: vence o `display: grid` e o raio de
+   8px do .detail-hero, o `border-radius: 0` do passe FLAT e as regras de
+   celular do hero (todas ≤ (0,2,1)). */
+.set-insights-rail .detail-hero.insight-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+.set-insights-rail .insight-hero .detail-set-art {
+  min-height: 0;
+  height: 104px;
+  padding: 12px;
+  border-radius: 10px;
+}
+.set-insights-rail .insight-hero .set-logo { max-height: 80px; max-width: 92%; }
+.set-insights-rail .insight-hero .set-logo-placeholder { padding-top: 0; font-size: 16px; }
+.set-insights-rail .insight-hero .detail-set-info { flex: 1 1 auto; min-width: 0; }
+.set-insights-rail .insight-hero h2 {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.set-insights-rail .insight-hero .set-original-name { margin: 2px 0 0; font-size: 13px; }
+.set-insights-rail .insight-hero .detail-set-info p { margin-top: 4px; font-size: 12px; color: var(--muted); }
+.set-insights-rail .insight-hero .detail-stats,
+.set-insights-rail .insight-hero .set-missing,
+.set-insights-rail .insight-hero .detail-values article:has(> #valueTotal) { display: none; }
+.set-insights-rail .insight-hero .detail-values {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+.set-insights-rail .insight-hero .detail-values article { padding: 8px 10px; border-radius: 10px; background: var(--panel-strong); box-shadow: none; }
+.set-insights-rail .insight-hero .detail-values span { font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.set-insights-rail .insight-hero .detail-values p { margin-top: 2px; font-size: 11px; }
+.set-insights-rail .insight-hero .completion-bar { margin: 0; height: 6px; }
+/* Com o hero no trilho o .detail-summary some (detail.js): o trilho passa a
+   ser o primeiro bloco depois do cabeçalho e não precisa do recuo de −6px que
+   o encostava no resumo. */
+.set-insights:has(.insight-hero) { margin-top: 0; }
 
 .pokemon-hero-art {
   min-height: 160px;
@@ -8595,56 +8618,20 @@ html[data-detail="set"] #detailTitle { display: none; }
   /* A gaveta da faceta da coluna DIREITA abre pra esquerda (senão sai da tela). */
   .detail-toolbar .facet-drop:nth-child(even) .facet-pop { left: auto; right: 0; }
 
-  /* Detalhe (set/carta): hero enxuto. Logo menor e nome duplicado do hero
-     some (o cabeçalho da página já mostra). */
+  /* Detalhe (Pokémon): hero enxuto, empilhado. (O hero de SET não passa mais
+     por aqui — é cartão do trilho de resumo, ver .insight-hero.) */
   .detail-hero { grid-template-columns: 1fr; gap: 10px; padding: 12px; }
-  /* Só o hero de SET tem o nome duplicado (o cabeçalho já mostra); o de Pokémon
-     traz o nº da Pokédex no h2, então fica. :has escopa pra caixa do set. */
-  .detail-hero:has(.detail-set-art) h2 { display: none; }
-  .detail-set-art { min-height: 0; }
   .set-logo { max-height: 76px; }
 
-  /* Valores (Valor total / Já gasto / A comprar): 3 caixotes empilhados viram
-     uma faixa de 3 colunas compacta. Especificidade casa a regra do has-hero. */
-  .detail-summary.has-hero .detail-values,
+  /* Valores (Valor total / Já gasto / A comprar) de artista/treinador: 3
+     caixotes empilhados viram uma faixa de 3 colunas compacta. */
   .detail-values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
   .detail-values article { padding: 11px 10px; }
   .detail-values article span { font-size: 17px; }
   .detail-values article p { font-size: 11px; margin-top: 3px; }
 
-  /* Página de SET no celular: os valores entram no HERO, à direita do logo (o
-     detail.js move o nó nesta mesma largura — ver placeValues). A faixa de
-     largura cheia custava ~90px de altura, e as cápsulas saíam DESIGUAIS: com
-     `1fr` a largura mínima é a do conteúdo, então a do meio encolhia quando
-     "Já gasto" está vazio (—) e as outras esticavam pro tamanho do número.
-     Aqui elas dividem uma coluna só: mesma largura e mesma altura (1fr). */
-  .detail-hero:has(.detail-set-art) {
-    grid-template-columns: minmax(0, 132px) minmax(0, 1fr);
-    grid-template-areas:
-      "art   values"
-      "info  info"
-      "stats stats";
-    gap: 10px 12px;
-  }
-  .detail-hero .detail-set-art { grid-area: art; }
-  .detail-hero .detail-set-info { grid-area: info; }
-  /* No celular o h2 do set some (o cabeçalho da página já mostra o nome), então
-     sem nenhum <p> o bloco fica vazio — mas ainda ocuparia linha e gap. */
-  .detail-hero .detail-set-info:not(:has(p)) { display: none; }
-  .detail-hero:has(.detail-set-art) .detail-stats { grid-area: stats; }
-  /* Sem preço (linhas vintage): sem coluna de valores, o logo ocupa tudo. */
-  .detail-hero:has(.detail-set-art):has(.detail-values[hidden]) {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "art" "info" "stats";
-  }
-  /* A fileira de stats (marcadas · nessa página · progresso) SOME no celular
-     (2026-09-14): o cartão "Conjunto completo" com o anel, logo abaixo, já diz
-     N de T e a %, e a fileira custava uma linha inteira do hero. As áreas
-     perdem a linha "stats" junto, senão sobrava o gap dela. */
-  .detail-hero:has(.detail-set-art) .detail-stats { display: none; }
-  .detail-hero:has(.detail-set-art) { grid-template-areas: "art values" "info info"; }
-  .detail-hero:has(.detail-set-art):has(.detail-values[hidden]) { grid-template-areas: "art" "info"; }
-  /* Cartões do resumo: ~86% da largura, pra ponta do seguinte aparecer. */
+  /* Cartões do resumo (o hero do set incluído): ~86% da largura, pra ponta do
+     seguinte aparecer. */
   .insight-card { flex-basis: 86%; }
   .set-insights { margin-top: 0; }
   /* Navegação do fichário: 4 setas + select cabem em 358px só encolhendo. */
@@ -8653,19 +8640,6 @@ html[data-detail="set"] #detailTitle { display: none; }
   .binder-page-pick { margin: 0 2px; padding: 0 8px 0 10px; height: 36px; }
   .binder-page-pick select { height: 34px; font-size: 14px; padding-right: 20px; }
   .binder-page { padding: 8px; gap: 6px; }
-  /* Especificidade acima de `.detail-summary.has-hero .detail-values` (0,3,0),
-     que também casa aqui — o hero é descendente do resumo. */
-  .detail-summary.has-hero .detail-hero .detail-values {
-    grid-area: values;
-    grid-template-columns: minmax(0, 1fr);
-    grid-auto-rows: 1fr;
-    gap: 6px;
-    margin: 0;
-    align-self: stretch;
-  }
-  .detail-summary.has-hero .detail-hero .detail-values article { padding: 6px 10px; }
-  .detail-summary.has-hero .detail-hero .detail-values span { font-size: 16px; }
-  .detail-summary.has-hero .detail-hero .detail-values p { font-size: 10px; margin-top: 1px; }
 }
 
 /* ── Passe FLAT (decisão de design, 2026-07): a faixa de CONTROLES — chips de

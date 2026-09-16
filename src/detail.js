@@ -394,9 +394,9 @@
         elements.detailValues.remove();
         elements.detailValues = null;
       }
-      placeValues(summary);
     }
     renderInsights();
+    placeSetHero();
     initBackLink();
     hydrateFilters();
     if (elements.sortSelect) elements.sortSelect.value = selectedSort; // padrão: maior preço
@@ -408,26 +408,32 @@
     render();
   }
 
-  // Onde moram os VALORES (R$) na página de SET, por largura de tela:
-  //   desktop -> irmãos do hero, na coluna própria à direita dele;
-  //   celular -> DENTRO do hero, à direita do logo do set.
-  // No celular a faixa de largura cheia custava ~90px de altura e as três
-  // cápsulas saíam com larguras desiguais (a do meio encolhe quando "Já gasto"
-  // está vazio). Ao lado do logo elas ficam iguais e o resumo encurta ~65px.
-  // Mover o NÓ (em vez de duplicar) mantém uma fonte só pros ids de valor.
-  // Só no set: a página de Pokémon nem tem mais os valores (ver init).
-  // Seguro porque renderHero() roda uma vez e os valores são atualizados por
-  // textContent — nada reescreve o innerHTML do hero depois daqui.
-  const VALUES_MQ = "(max-width: 600px)";
-  function placeValues(summary) {
-    if (detailType !== "set" || !elements.detailValues || !summary) return;
-    const mq = window.matchMedia(VALUES_MQ);
-    const place = () => {
-      const alvo = mq.matches ? elements.hero : summary;
-      if (alvo && elements.detailValues.parentElement !== alvo) alvo.appendChild(elements.detailValues);
-    };
-    place();
-    mq.addEventListener("change", place);
+  // Página de SET (2026-09-16): o hero (logo + nome) vira o PRIMEIRO cartão do
+  // trilho de resumo, ao lado de raridade / tipo / conjunto completo — no
+  // desktop e no celular, tudo na mesma fileira. Pedido do Fernando: a linha
+  // de cima (hero + coluna de valores à direita) repetia o que os cartões já
+  // dizem — "Valor total" é o "Valor de mercado do set", e cartas marcadas /
+  // nessa página / progresso são o "N de T" com o anel — e sobrava um slot na
+  // fileira dos cartões. O que NÃO é redundante ("Já gasto" e "Falta") entra
+  // dentro do cartão do hero, embaixo do nome, e a barra de progresso vai
+  // junto (é ela que faz o pulso quando o set fecha). Os stats e o "Valor
+  // total" seguem no DOM (os ids continuam sendo atualizados por textContent)
+  // mas escondidos pelo CSS (.insight-hero). Mover o NÓ, e não duplicar,
+  // mantém uma fonte só pros ids de valor.
+  // O .detail-summary fica vazio e some — senão sobrava a margem dele.
+  // Sem trilho (set sem cartas no catálogo local) nada muda: o hero fica onde
+  // sempre ficou.
+  function placeSetHero() {
+    if (detailType !== "set" || elements.hero.hidden) return;
+    const rail = elements.insights && !elements.insights.hidden
+      ? elements.insights.querySelector(".set-insights-rail") : null;
+    if (!rail) return;
+    elements.hero.classList.add("insight-card", "insight-hero");
+    if (elements.detailValues) elements.hero.appendChild(elements.detailValues);
+    if (elements.completionBar) elements.hero.appendChild(elements.completionBar);
+    rail.prepend(elements.hero);
+    const summary = document.querySelector(".detail-summary");
+    if (summary) summary.hidden = true;
   }
 
   // Filtros atrás de um botão (mesmo padrão da Coleção); compartilha a pref do
