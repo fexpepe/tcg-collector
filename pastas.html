@@ -53,6 +53,11 @@
     <!-- Textos das pastas: fora do i18n.js pra as outras páginas não carregarem à toa. -->
     <script defer src="src/i18n-pastas.js"></script>
     <script defer src="src/shared.js"></script>
+    <!-- Cápsulas de resumo do topo (raridade e tipo de carta): as MESMAS da
+         Minha Coleção e da página do set. O facets.js vem junto porque é dele
+         que sai o cardTypeGroup — sem ele a cápsula de tipo nem é montada. -->
+    <script defer src="src/facets.js"></script>
+    <script defer src="src/insights.js"></script>
     <!-- Export em texto (Liga/texto/CSV): lógica pura, testada em node — e o
          MESMO modal da Toda Coleção e da Lista de Desejo (export-ui.js), pra
          "exportar a pasta" ser igual a "exportar a coleção". -->

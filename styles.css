@@ -9963,12 +9963,17 @@ select,
   .lst-entry { grid-template-columns: minmax(0, 1fr) 52px 68px 40px 112px 60px 46px; }
 }
 
-/* --- Pasta aberta: herói, painel de adicionar e grade ---------------------
-   O cartão-herói é o da Coleção; aqui só o que é da pasta: o "avatar" é a cor
-   dela (o anel de gradiente da pessoa não faz sentido numa pasta), a linha de
-   identidade traz jogo/set/tipo e a paleta, e as ações ganham o botão com
-   rótulo "Adicionar cartas" (é a ação nº 1 da tela, não pode ser só-ícone). */
-.pasta-dashboard { margin-top: 4px; }
+/* --- Pasta aberta: trilho de resumo, painel de adicionar e grade ----------
+   O topo é o MESMO trilho de cápsulas da Minha Coleção (.set-insights-rail):
+   cartão principal + "Visão geral" + raridade + tipo de carta. No cartão
+   principal só muda o que é da pasta: o "avatar" é a cor dela (o anel de
+   gradiente da pessoa não faz sentido numa pasta), a linha de identidade traz
+   jogo/set/tipo e a paleta, e as ações ganham o botão com rótulo "Adicionar
+   cartas" (é a ação nº 1 da tela, não pode ser só-ícone). */
+.pasta-insights { margin-top: 4px; }
+/* As ações no rodapé do cartão (margin-top auto empurra pra baixo), como na
+   Coleção — lá a regra é a do #collectionDashboard, que não alcança aqui. */
+.pasta-hero .collection-toolbar-actions { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 8px; margin: auto 0 0; width: auto; }
 .pasta-avatar { background: var(--lc, var(--accent)); }
 .pasta-avatar .dash-avatar-in { color: var(--lc, var(--accent)); }
 .pasta-avatar .dash-avatar-in svg { width: 24px; height: 24px; }
@@ -10004,12 +10009,9 @@ select,
 .pasta-noimg { display: block; width: 100%; aspect-ratio: 63 / 88; background: var(--panel-strong); }
 @media (max-width: 720px) {
   /* No celular o rótulo do "Adicionar" fica (é a ação principal); os
-     só-ícone descem pra linha própria como na Coleção. A identidade (cor +
-     jogo/set + paleta) quebra em duas linhas e a paleta cabe inteira. */
-  /* (0,2,0) de propósito: a regra da Coleção (.dash-stats-hero .dash-profile,
-     flex 1 1 120px) tem o mesmo peso e vem antes — a identidade da pasta
-     (jogo/set + paleta de 8 bolinhas de 44px) precisa da linha inteira. */
-  .dash-stats-hero .pasta-identity { flex: 1 1 100%; }
+     só-ícone descem pra linha própria como na Coleção. A identidade já ocupa
+     a largura toda (o cartão do trilho é uma coluna), então a paleta de 8
+     bolinhas de 44px cabe inteira. */
   .pasta-meta { gap: 6px 8px; }
   .collection-dashboard-hero .pasta-actions { margin-left: 0; width: 100%; display: flex; flex-wrap: wrap; gap: 8px; }
   .collection-dashboard-hero .pasta-add-btn { flex: 1 1 auto; justify-content: center; }

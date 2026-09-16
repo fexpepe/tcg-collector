@@ -548,12 +548,15 @@
         <a href="pastas" class="serie-back">${esc(t("lists.backToLists"))}</a>
       </div>
 
-      <!-- Cartão-herói: o MESMO DOM da Toda Coleção (collection.html) — a
-           identidade da pasta (cor + jogo/set + tipo) à esquerda, o valor na
-           caixa fixa, as ações na ponta; as 3 contagens embaixo. -->
-      <section class="collection-dashboard collection-dashboard-hero pasta-dashboard" style="--lc:${escA(list.color)}">
-        <article class="dash-card dash-stats dash-stats-hero">
-          <div class="dash-stats-head">
+      <!-- Resumo da pasta: o MESMO trilho de cápsulas da Minha Coleção
+           (.set-insights-rail / .insight-card, ver styles.css). Cartão
+           principal = identidade da pasta (cor + jogo/set + tipo), valor de
+           mercado e ações; "Visão geral" = as três contagens; e, quando há o
+           que distribuir, raridade e tipo de carta (pintaInsights, pelo
+           src/insights.js — os mesmos gráficos do set e da Coleção). -->
+      <section class="collection-dashboard collection-dashboard-hero set-insights pasta-insights" style="--lc:${escA(list.color)}" aria-label="${escA(t("lists.summary"))}">
+        <div class="set-insights-rail" data-rail>
+          <article class="insight-card insight-hero coll-hero pasta-hero">
             <div class="dash-profile pasta-identity">
               <div class="dash-profile-who">
                 <span class="dash-avatar pasta-avatar" aria-hidden="true"><span class="dash-avatar-in">${IC.folder}</span></span>
@@ -586,13 +589,19 @@
               <button type="button" class="secondary icon-btn collection-share-btn" data-list-share title="${escA(t("lists.share"))}">${IC.share}<span aria-live="polite">${esc(t("lists.share"))}</span></button>
               <button type="button" class="secondary icon-btn pasta-del-btn" data-list-del title="${escA(t("lists.delete"))}">${IC.trash}<span>${esc(t("lists.delete"))}</span></button>
             </div>
-          </div>
-          <div class="dash-stats-counts">
-            ${statHtml(IC.copies, "pastaCopies", s.copies, t("stats.copies"))}
-            ${statHtml(IC.distinct, "pastaDistinct", s.distinct, t("stats.distinct"))}
-            ${statHtml(IC.sets, "pastaSets", s.sets, t("stats.setsCovered"))}
-          </div>
-        </article>
+          </article>
+          <!-- "Visão geral": as MESMAS três contagens de antes, agora na
+               cápsula da Coleção. Os ids ficam — é neles que o updateTotals
+               escreve a cada +/− sem redesenhar nada. -->
+          <article class="insight-card insight-summary coll-overview">
+            <h3>${esc(t("insights.overview"))}</h3>
+            <dl>
+              <div><dt>${esc(t("stats.copies"))}</dt><dd id="pastaCopies">${s.copies}</dd></div>
+              <div><dt>${esc(t("stats.distinct"))}</dt><dd id="pastaDistinct">${s.distinct}</dd></div>
+              <div><dt>${esc(t("stats.setsCovered"))}</dt><dd id="pastaSets">${s.sets}</dd></div>
+            </dl>
+          </article>
+        </div>
       </section>
 
       <!-- Painel "Adicionar cartas": linha por carta, sem imagem (o modo rápido
@@ -624,7 +633,45 @@
       </div>
       <img class="lst-thumb" alt="" hidden>`;
     renderSource();
+    pintaInsights();
     ajustaValorHero();
+  }
+
+  // Cartas DISTINTAS da pasta que já vieram do catálogo. Id que não hidratou
+  // fica de fora: sem a carta não dá pra dizer raridade nem tipo.
+  function cartasDaPasta() {
+    const vistas = new Set();
+    const out = [];
+    current.entries.forEach((e) => {
+      if (vistas.has(e.id)) return;
+      vistas.add(e.id);
+      const c = cat.byId[e.id];
+      if (c) out.push(c);
+    });
+    return out;
+  }
+
+  // Cápsulas de raridade e de tipo de carta no fim do trilho — as MESMAS da
+  // Coleção e da página do set (src/insights.js), que devolvem o <article>
+  // pronto (ou "" quando não há o que distribuir).
+  //
+  // Entram DEPOIS do render (o trilho precisa estar no DOM) e são refeitas
+  // quando o conjunto de cartas distintas muda. A guarda pelo TAMANHO evita o
+  // re-parse — e a reanimação das barras — a cada +1 de quantidade, que não
+  // mexe na distribuição (ela conta carta distinta, não cópia); adicionar ou
+  // remover uma carta sempre muda esse número.
+  let insightsN = -1;
+  function pintaInsights() {
+    const rail = el.editor.querySelector("[data-rail]");
+    if (!rail || !window.TCGInsights) return;
+    const cartas = cartasDaPasta();
+    if (cartas.length === insightsN && rail.querySelector("[data-insight]")) return;
+    insightsN = cartas.length;
+    rail.querySelectorAll("[data-insight]").forEach((n) => n.remove());
+    const tmp = document.createElement("div");
+    tmp.innerHTML = window.TCGInsights.rarityCard(cartas)
+      + window.TCGInsights.typeCard(cartas, (c) => c.game || current.game);
+    [...tmp.children].forEach((n) => { n.dataset.insight = "1"; rail.appendChild(n); });
   }
 
   // O valor de mercado mora numa caixa de largura FIXA no herói (a mesma da
@@ -657,6 +704,7 @@
     put("pastaSets", s.sets);
     const c = el.editor.querySelector("[data-pasta-count]");
     if (c) c.textContent = tn("lists.count", s.copies);
+    pintaInsights();
     ajustaValorHero();
   }
   // Repinta/insere/remove UM tile da grade e atualiza os totais.
@@ -964,7 +1012,7 @@
       const nova = cor.dataset.listColor;
       store.setColor(current.id, nova);
       current.color = nova;
-      el.editor.querySelectorAll(".lst-head, .pasta-dashboard").forEach((n) => n.style.setProperty("--lc", nova));
+      el.editor.querySelectorAll(".lst-head, .pasta-insights").forEach((n) => n.style.setProperty("--lc", nova));
       el.editor.querySelectorAll("[data-list-color]").forEach((b) => {
         const on = b.dataset.listColor === nova;
         b.classList.toggle("is-on", on);
