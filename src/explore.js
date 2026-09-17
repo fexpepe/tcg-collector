@@ -14,12 +14,28 @@
     resultsTitle: document.querySelector("#exploreResultsHeader h2"),
     resultCount: document.getElementById("exploreResultCount"),
     gameFilter: document.getElementById("exploreGameSelect"),
-    sortSelect: document.getElementById("exploreSortSelect")
+    sortSelect: document.getElementById("exploreSortSelect"),
+    viewToggle: document.getElementById("exploreViewToggle"),
+    filtersBtn: document.getElementById("exploreFiltersBtn"),
+    filters: document.getElementById("exploreFilters"),
+    setFilter: document.getElementById("exploreSetFilter"),
+    langFilter: document.getElementById("exploreLangFilter"),
+    rarityFilter: document.getElementById("exploreRarityFilter"),
+    priceMin: document.getElementById("explorePriceMin"),
+    priceMax: document.getElementById("explorePriceMax")
   };
 
   const SORTS = ["value-desc", "value-asc", "rarity-desc", "rarity-asc", "release", "num-asc"];
   let sort = SORTS.includes(localStorage.getItem("tcg-explore-sort")) ? localStorage.getItem("tcg-explore-sort") : "value-desc";
   let gameFilter = "all";
+  // Visualização da grade (grade/lista/compacta/fichário) — o MESMO alternador
+  // da Coleção, do /cartas e da página do set, com preferência por página.
+  let cardsView = shared.gridViewValue(localStorage.getItem("tcg-explore-view"));
+  // Fichário: o mesmo módulo das outras grades. `root` é a própria grade — é
+  // dentro dela que o binderView põe as setas, o seletor de página e a trilha.
+  const binderView = window.TCGBinderView
+    ? window.TCGBinderView.createBinderView({ root: elements.grid, grid: elements.grid, storageKey: "tcg-explore-binder-pockets" })
+    : null;
 
   // Stores por jogo + fachadas mescladas (mesmo padrão da Coleção): posse,
   // desejo e preços funcionam pra qualquer carta de qualquer jogo.
@@ -146,38 +162,130 @@
     return (a, b) => priceOf(b) - priceOf(a); // value-desc (padrão)
   }
 
+  // --- Barra de filtros (Set · Idioma · Raridade · Preço) -------------------
+  // Refinam o que está NA GRADE — o resultado da busca, ou as "mais vistas"
+  // antes dela. As opções saem dessa mesma lista: o Explorar não tem "catálogo
+  // da página" pra listar set e raridade de antemão (o catálogo dos 14 jogos
+  // só desce quando precisa), e um <select> com todos os sets seria ilegível.
+  function parsePrice(el) {
+    if (!el) return null;
+    const v = parseFloat(String(el.value || "").replace(/[^\d.,]/g, "").replace(",", "."));
+    return Number.isFinite(v) && v >= 0 ? v : null;
+  }
+  const valorDe = shared.memoValue((card) =>
+    (shared.cardValue(card, shared.defaultVariant(card), prices, shared.DEFAULT_CONDITION) || {}).value || 0);
+  const campo = (el) => (el ? el.value : "");
+  const temFiltro = () => !!(campo(elements.setFilter) || campo(elements.langFilter) || campo(elements.rarityFilter)
+    || parsePrice(elements.priceMin) != null || parsePrice(elements.priceMax) != null);
+
+  function passaNosFiltros(card) {
+    const set = campo(elements.setFilter);
+    if (set && card.set !== set) return false;
+    const idioma = campo(elements.langFilter);
+    if (idioma && shared.normalizeCardLanguage(card.language) !== idioma) return false;
+    const raridade = campo(elements.rarityFilter);
+    if (raridade && card.rarity !== raridade) return false;
+    const pMin = parsePrice(elements.priceMin), pMax = parsePrice(elements.priceMax);
+    if (pMin != null || pMax != null) {
+      const v = valorDe(card);
+      if (pMin != null && v < pMin) return false;
+      if (pMax != null && (v > pMax || v <= 0)) return false; // sem preço não entra em "até X"
+    }
+    return true;
+  }
+
+  // Reconstrói um <select> mantendo a 1ª opção ("Todos") e a seleção atual, se
+  // ela ainda existir no conjunto novo (o mesmo fillFilter da Coleção).
+  function preencheFiltro(select, valores, rotulo) {
+    if (!select) return;
+    const anterior = select.value;
+    while (select.options.length > 1) select.remove(1);
+    shared.addOptions(select, valores, rotulo);
+    select.value = valores.includes(anterior) ? anterior : "";
+  }
+  // As opções saem da lista ANTES dos filtros: escolher um set não pode apagar
+  // os outros do seletor, senão não dá pra voltar atrás.
+  function atualizaOpcoes(lista) {
+    const uniq = (arr) => Array.from(new Set(arr.filter(Boolean)));
+    preencheFiltro(elements.setFilter, uniq(lista.map((c) => c.set)).sort((a, b) => a.localeCompare(b)));
+    preencheFiltro(elements.langFilter, uniq(lista.map((c) => shared.normalizeCardLanguage(c.language))), (v) => shared.cardLanguageLabel(v));
+    preencheFiltro(elements.rarityFilter, uniq(lista.map((c) => c.rarity)).sort((a, b) => a.localeCompare(b)));
+  }
+
+  // Um tile no modo de visualização atual: o compacto muda o HTML (sem <img>),
+  // não só a classe da grade.
+  const tileDe = ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices,
+    { addMode: true, grouped: agrupaVersoes, compact: cardsView === "compact" });
+
+  // Pinta a grade. No fichário quem monta é o binderView (páginas de bolsos),
+  // então o pager entra vazio antes — é ele que limpa a grade e tira o
+  // "carregar mais", que não faz sentido em página de fichário.
+  function pintaGrade(pares, options) {
+    shared.applyGridViewClasses(elements.grid, cardsView);
+    if (cardsView === "binder" && binderView) {
+      pager.render([], () => document.createComment(""), { resetCount: true });
+      binderView.render(pares, tileDe);
+    } else {
+      pager.render(pares, tileDe, options || {});
+    }
+    if (elements.viewToggle) {
+      elements.viewToggle.querySelectorAll("[data-grid-view]").forEach((b) => {
+        b.setAttribute("aria-pressed", String(b.dataset.gridView === cardsView));
+      });
+      if (binderView) binderView.paintToggle(elements.viewToggle.querySelector('[data-grid-view="binder"]'));
+    }
+  }
+
+  // Última lista base pintada e o termo dela (ver o comentário no render).
+  let ultimaBase = { q: "", list: null };
   function render(options) {
     const searching = isSearching();
     if (!searching) {
       const showTop = topViewedReady && topViewedPairs.length >= 4;
       elements.intro.hidden = showTop;
-      elements.empty.hidden = true;
       elements.resultCount.textContent = "";
-      if (showTop) {
-        elements.resultsHeader.hidden = false;
-        if (elements.resultsTitle) elements.resultsTitle.textContent = t("home.topViewed");
-        pager.render(topViewedPairs, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes }), { resetCount: true });
-      } else {
-        elements.resultsHeader.hidden = true;
-        pager.render([], () => document.createComment(""), { resetCount: true });
+      elements.resultsHeader.hidden = !showTop;
+      if (elements.filters) elements.filters.hidden = !showTop;
+      if (!showTop) {
+        elements.empty.hidden = true;
+        pintaGrade([], { resetCount: true });
+        return;
       }
+      if (elements.resultsTitle) elements.resultsTitle.textContent = t("home.topViewed");
+      atualizaOpcoes(topViewedPairs.map((par) => par.card));
+      const visiveis = topViewedPairs.filter((par) => passaNosFiltros(par.card));
+      elements.empty.hidden = visiveis.length > 0;
+      if (!visiveis.length) elements.empty.textContent = t("empty.pokedex");
+      pintaGrade(visiveis, { resetCount: true });
       return;
     }
     elements.intro.hidden = true;
     elements.resultsHeader.hidden = false;
+    if (elements.filters) elements.filters.hidden = false;
     if (elements.resultsTitle) elements.resultsTitle.textContent = t("results.heading.cards");
     // Filtra ANTES de gerar pares carta×variante (barato mesmo com ~60k cartas).
     // options.list = resultados já resolvidos pela API da borda (apiApply):
     // vêm filtrados por jogo e casados por palavra, só entram no funil daqui.
     const q = term();
-    const matched = (options && options.list) || cards.filter((card) =>
-      shared.cardMatchesGameFilter(card, gameFilter) && matchesCardQuery(card, q));
-    const pairs = shared.cardVariantPairs(matched, { group: agrupaVersoes });
+    // A base é a lista da borda (options.list) quando ela veio, o catálogo
+    // completo quando ele chegou — e, no meio do caminho, a ÚLTIMA lista
+    // pintada pra este mesmo termo. Sem essa memória, qualquer re-render sem
+    // options (trocar a vista, mexer num filtro, ligar o "Agrupar") caía no
+    // `cards` ainda vazio e esvaziava a grade com um "nada encontrado".
+    const matched = (options && options.list)
+      || ((!catalogPronto && ultimaBase.list && ultimaBase.q === q) ? ultimaBase.list
+        : cards.filter((card) => shared.cardMatchesGameFilter(card, gameFilter) && matchesCardQuery(card, q)));
+    ultimaBase = { q, list: matched };
+    atualizaOpcoes(matched);
+    const pairs = shared.cardVariantPairs(matched.filter(passaNosFiltros), { group: agrupaVersoes });
     const cmp = sortComparator();
     pairs.sort((a, b) =>
       (Number(shared.cardHasImage(b.card)) - Number(shared.cardHasImage(a.card))) || cmp(a, b));
-    pager.render(pairs, ({ card, variant }) => shared.variantTile(card, variant, owned, wishlist, prices, { addMode: true, grouped: agrupaVersoes }), options || {});
+    pintaGrade(pairs, options || {});
     elements.empty.hidden = pairs.length > 0;
+    // "Nenhuma carta em nenhum jogo" é resposta da BUSCA; com filtro ligado o
+    // que sobrou de fora foi a barra, e a mensagem tem que dizer isso.
+    if (!pairs.length) elements.empty.textContent = t(temFiltro() && matched.length ? "empty.pokedex" : "explore.empty");
     elements.resultCount.textContent = tn("results.count", pairs.length);
   }
 
@@ -294,6 +402,60 @@
     sort = SORTS.includes(elements.sortSelect.value) ? elements.sortSelect.value : "value-desc";
     try { localStorage.setItem("tcg-explore-sort", sort); } catch (e) { /* ignora */ }
     if (isSearching()) apply();
+  });
+
+  // Visualização: grade ↔ lista é só a classe da grade; compacta e fichário
+  // reconstroem (o HTML do tile muda, e o fichário monta a grade em páginas).
+  // Clicar no fichário com ele JÁ ativo troca o nº de bolsos, como nas outras
+  // telas. resetCount: false — trocar de vista não devolve quem já rolou a
+  // grade pro começo.
+  if (elements.viewToggle) {
+    shared.applyGridViewClasses(elements.grid, cardsView);
+    elements.viewToggle.querySelectorAll("[data-grid-view]").forEach((b) => {
+      b.setAttribute("aria-pressed", String(b.dataset.gridView === cardsView));
+    });
+    if (binderView) binderView.paintToggle(elements.viewToggle.querySelector('[data-grid-view="binder"]'));
+    elements.viewToggle.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-grid-view]");
+      if (!button) return;
+      const eraCompacto = cardsView === "compact";
+      const eraBinder = cardsView === "binder";
+      const querBinder = button.dataset.gridView === "binder";
+      if (querBinder && eraBinder && binderView) binderView.cycle();
+      cardsView = shared.gridViewValue(button.dataset.gridView);
+      try { localStorage.setItem("tcg-explore-view", cardsView); } catch (e) { /* ignora */ }
+      if (eraCompacto !== (cardsView === "compact") || eraBinder || querBinder) { render({ resetCount: false }); return; }
+      shared.applyGridViewClasses(elements.grid, cardsView);
+      elements.viewToggle.querySelectorAll("[data-grid-view]").forEach((b) => {
+        b.setAttribute("aria-pressed", String(b.dataset.gridView === cardsView));
+      });
+    });
+  }
+
+  // Barra de filtros recolhível em QUALQUER largura, pelo botão da linha do
+  // título — mesmo desenho e MESMA chave de preferência da Coleção: quem gosta
+  // de ver a barra aberta lá quer ela aberta aqui.
+  if (elements.filtersBtn) {
+    let aberta = false;
+    try { aberta = localStorage.getItem("tcg-collector-filters-open") === "1"; } catch (e) { /* ignora */ }
+    const pintaFiltros = () => {
+      if (elements.filters) elements.filters.classList.toggle("is-collapsed", !aberta);
+      elements.filtersBtn.setAttribute("aria-expanded", String(aberta));
+    };
+    elements.filtersBtn.addEventListener("click", () => {
+      aberta = !aberta;
+      try { localStorage.setItem("tcg-collector-filters-open", aberta ? "1" : "0"); } catch (e) { /* ignora */ }
+      pintaFiltros();
+    });
+    pintaFiltros();
+  }
+
+  // Campos da barra: refazem a GRADE, não a busca (a lista base é a mesma).
+  [elements.setFilter, elements.langFilter, elements.rarityFilter].forEach((el) => {
+    if (el) el.addEventListener("change", () => render({ resetCount: true }));
+  });
+  [elements.priceMin, elements.priceMax].forEach((el) => {
+    if (el) el.addEventListener("input", debounce(() => render({ resetCount: true }), 250));
   });
 
   // Deep-link: /explore?q=pikachu já abre buscando (skeletons + pill do shared).
