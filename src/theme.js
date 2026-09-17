@@ -3,6 +3,61 @@
 // shared.js. Regra dos dois: preferência salva vence; sem escolha, segue o
 // sistema/navegador (como os apps nativos).
 (function () {
+  // --- localStorage à prova de navegador que BLOQUEIA armazenamento -------
+  // No Safari com "Bloquear todos os cookies" (e em vários navegadores
+  // embutidos de app), só LER `window.localStorage` já lança SecurityError —
+  // não é o setItem que falha, é o acesso à propriedade. Este arquivo e o
+  // game.js envolvem os seus acessos em try/catch, mas o shared.js tem ~150 e
+  // pelo menos um roda no corpo do módulo: a exceção matava o módulo inteiro,
+  // `window.TCGShared` nunca era definido e TODA página do site abria em
+  // branco ("Cannot destructure property ... of 'shared'"). É o que acontecia
+  // com quem recebia um link e abria nesse tipo de navegador: o site não abria,
+  // e não havia como a pessoa saber por quê.
+  //
+  // Aqui, na primeira linha do primeiro script síncrono de toda página, o
+  // acesso é testado UMA vez; se lançar, `localStorage` (e o `sessionStorage`)
+  // viram um objeto em memória com a mesma API. O site funciona inteiro — só
+  // não lembra de nada entre visitas, que é exatamente o que a pessoa pediu ao
+  // bloquear o armazenamento.
+  function memoria() {
+    var dados = Object.create(null);
+    var api = {
+      getItem: function (k) { return Object.prototype.hasOwnProperty.call(dados, String(k)) ? dados[String(k)] : null; },
+      setItem: function (k, v) { dados[String(k)] = String(v); },
+      removeItem: function (k) { delete dados[String(k)]; },
+      clear: function () { dados = Object.create(null); },
+      key: function (i) { return Object.keys(dados)[i] || null; }
+    };
+    Object.defineProperty(api, "length", { get: function () { return Object.keys(dados).length; } });
+    return api;
+  }
+  ["localStorage", "sessionStorage"].forEach(function (nome) {
+    try {
+      window[nome].getItem("__sleevu");
+      return; // funciona: nada a fazer
+    } catch (e) { /* bloqueado: cai no substituto */ }
+    try {
+      Object.defineProperty(window, nome, { configurable: true, value: memoria(), writable: false });
+    } catch (e) { /* nem redefinir dá: o try/catch de cada leitura segura o resto */ }
+  });
+
+  // --- Link colado com "&amp;" (query escapada como HTML) -----------------
+  // Alguns apps de mensagem e clientes de e-mail escapam a URL antes de
+  // entregar, e o link chega com "&amp;" no lugar de "&":
+  //   /detail?type=set&amp;name=30th+Celebration&amp;setId=cel30
+  // O navegador lê UM parâmetro (type) e os outros viram "amp;name",
+  // "amp;setId": a página abre vazia, como se o set não existisse. Desfazer
+  // isso aqui — antes de qualquer script ler parâmetro — faz o link do amigo
+  // abrir igual ao original, e ainda limpa a barra de endereço
+  // (replaceState: sem entrada nova no histórico).
+  try {
+    if (location.search.indexOf("&amp;") >= 0) {
+      var q = location.search;
+      for (var i = 0; i < 3 && q.indexOf("&amp;") >= 0; i++) q = q.replace(/&amp;/g, "&");
+      history.replaceState(history.state, "", location.pathname + q + location.hash);
+    }
+  } catch (e) { /* history bloqueado: segue com a URL como veio */ }
+
   // --- Tema: salvo > prefers-color-scheme ---------------------------------
   try {
     var saved = localStorage.getItem("tcg-collector-theme-v1");
