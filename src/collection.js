@@ -1791,7 +1791,9 @@
 
   function updateCardsStats(tileCount) {
     elements.empty.hidden = tileCount > 0;
-    elements.resultCount.textContent = tn("results.count", tileCount);
+    // O "N resultados" saiu da tela (2026-09-17); a conta continua aqui, só não
+    // tem onde aparecer — quem quiser o número de volta só repõe o <p>.
+    if (elements.resultCount) elements.resultCount.textContent = tn("results.count", tileCount);
   }
 
   function filterCards() {

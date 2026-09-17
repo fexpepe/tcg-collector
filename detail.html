@@ -130,15 +130,15 @@
            miolo é montado pelo detail.js (renderInsights). -->
       <section id="setInsights" class="set-insights" data-i18n-aria="insights.aria" aria-label="Resumo do set" hidden></section>
 
-      <!-- Linha do título, no MESMO molde da Coleção: "Cartas" + contador à
-           esquerda; na ponta direita Ordenar, Filtros e Visualização (▦/≣/☰/fichário)
-           — a MESMA ordem da Coleção e da Lista de Desejo (2026-09-17).
+      <!-- Fileira de controles da grade: Ordenar, Filtros e Visualização
+           (▦/≣/☰/fichário) na ponta direita — a MESMA ordem da Coleção e da
+           Lista de Desejo. O título "Cartas" e o "N resultados" saíram
+           (2026-09-17): o cabeçalho do set logo acima já diz de que set é a
+           grade e quantas cartas ela tem, e a faixa só gastava altura.
            A barra de filtros nasce RECOLHIDA logo abaixo (data-own-toggle: o
            shared.js não injeta o toggle automático do mobile; ver
            initCollapsibles). -->
       <section class="results-header">
-        <h2 data-i18n="results.heading.detail">Cartas</h2>
-        <p id="resultCount">0 resultados</p>
         <div class="results-actions">
           <div class="results-sort">
             <label for="sortSelect" data-i18n="sort.label">Ordenar:</label>

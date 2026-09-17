@@ -1090,7 +1090,9 @@
         url: `explore?q=${encodeURIComponent(detailName)}`,
       });
     }
-    elements.resultCount.textContent = tn("results.count", tiles.length);
+    // O "N resultados" saiu da tela (2026-09-17); o elemento some, a conta não
+    // precisa morrer junto — quem quiser o número de volta só repõe o <p>.
+    if (elements.resultCount) elements.resultCount.textContent = tn("results.count", tiles.length);
     updateHeaderStats();
   }
 

@@ -691,7 +691,6 @@
       box.innerHTML = visiveis.map(entryTileHtml).join("");
     }
     aplicaVista();
-    atualizaContagem(visiveis);
   }
 
   // Classe da vista na grade + estado dos botões. Separado do renderGrid
@@ -700,15 +699,6 @@
     shared.applyGridViewClasses(el.editor.querySelector("[data-entries]"), cardsView);
     el.editor.querySelectorAll("[data-grid-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.gridView === cardsView)));
     if (binderView) binderView.paintToggle(el.editor.querySelector('[data-grid-view="binder"]'));
-  }
-
-  // A contagem ao lado de "Cartas da pasta" conta o que está NA TELA: com
-  // filtro ligado, o total da pasta inteira ali seria mentira.
-  function atualizaContagem(visiveis) {
-    const c = el.editor.querySelector("[data-pasta-count]");
-    if (!c) return;
-    const arr = visiveis || entradasVisiveis();
-    c.textContent = tn("lists.count", arr.reduce((n, e) => n + entryQty(e), 0));
   }
 
   // Números do cartão-herói: as MESMAS três contagens da Toda Coleção (cópias,
@@ -823,10 +813,12 @@
         <p class="lst-keys">${esc(t("lists.keysHint"))}</p>
       </section>
 
-      <!-- Linha do título: contagem à esquerda; na ponta DIREITA o Filtros
-           (abre a barra logo abaixo) e a Visualização, como na Coleção. -->
+      <!-- Fileira de controles da grade: Aplicar/Criar deck à esquerda; na ponta
+           DIREITA o Filtros (abre a barra logo abaixo) e a Visualização, como na
+           Coleção. O título "Cartas da pasta" e o "N cartas" saíram
+           (2026-09-17): o nome da pasta está no cabeçalho e o número, na cápsula
+           "Visão geral" logo acima — a faixa só repetia os dois. -->
       <section class="results-header pasta-results">
-        <h2>${esc(t("lists.cardsTitle"))} <span class="pasta-count" data-pasta-count>${esc(tn("lists.count", s.copies))}</span></h2>
         <div class="results-actions">
           ${list.linked ? "" : `<button type="button" class="lst-mini" data-list-apply>${esc(t("lists.applyToCollection"))}</button>`}
           ${list.game ? `<button type="button" class="lst-mini" data-list-deck>${esc(t("lists.makeDeck"))}</button>` : ""}
@@ -916,7 +908,6 @@
     put("pastaCopies", s.copies);
     put("pastaDistinct", s.distinct);
     put("pastaSets", s.sets);
-    atualizaContagem();
     pintaResumo();
     ajustaValorHero();
   }

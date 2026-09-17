@@ -1039,11 +1039,6 @@ input::placeholder {
      à esquerda, e as ações fecham à direita. */
   .results-header > p { order: 1; }
   .results-header .new-folder-btn { order: 2; margin-right: auto; }
-  /* Coleção no celular (2026-09-16): "Minhas Cartas · N resultados" sai — a
-     aba ativa já nomeia a visão e a faixa só empurrava a grade pra baixo. Fica
-     a linha de botões (Novo showcase / Adicionar cartas à esquerda, Filtros e
-     Visualização à direita). No desktop segue como está. */
-  .results-header-cards > h2, .results-header-cards > p { display: none; }
   /* "Adicionar cartas" (aba Graded) fica só com o ícone, como o Filtros. */
   .results-actions .graded-add-btn span { display: none; }
   /* Sets: o order:1 acima (da Coleção) jogava o contador pro FIM da linha e
@@ -10011,8 +10006,6 @@ select,
 .pasta-add { margin: 0 0 18px; }
 .pasta-add .lst-rows { max-height: 52vh; max-height: 52dvh; }
 .pasta-add .lst-panel-head .lst-mini { flex: none; }
-.pasta-results h2 { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-.pasta-count { color: var(--muted); font-size: 13px; font-weight: 600; }
 /* Fileira de ações da pasta: Aplicar · Criar deck · Filtros · Visualização.
    QUEBRA linha de propósito — a regra geral do .results-header manda nowrap
    no celular, e com quatro controles em 390px o alternador (que tem
