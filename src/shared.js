@@ -2821,7 +2821,7 @@
         active = type === "set" ? "sets" : type === "artist" ? "artists" : type === "trainer" ? "trainers" : "pokedex";
       }
     }
-    const exploreActive = ["pokedex", "trainers", "sets", "artists", "cards", "hub"].includes(active);
+    const exploreActive = ["pokedex", "lore", "trainers", "sets", "artists", "cards", "hub"].includes(active);
     // "Meus Decks" é página PESSOAL (entra pelo Dashboard), então acende a
     // Coleção — diferente de "Decks", que é a galeria PÚBLICA e tem item próprio.
     const collectionActive = ["dashboard", "collection", "wishlist", "binders", "sales", "mydecks", "pastas", "troca"].includes(active);
@@ -2947,7 +2947,9 @@
   const SUBNAV_MIN = [["cards", "nav.allCards", "cards"], ["sets", "nav.sets", "sets"]];
   const SUBNAV_ARTISTS = SUBNAV_MIN.concat([["artists", "nav.artists", "artists"]]);
   const EXPLORE_SUBNAV = {
-    pokemon: [["cards", "nav.allCards", "cards"], ["sets", "nav.sets", "sets"], ["pokedex", "nav.pokedex", "pokedex"], ["trainers", "nav.trainers", "trainers"], ["artists", "nav.artists", "artists"]],
+    // "lore" (Árvore dos Lendários) entra entre a Pokédex e os Treinadores:
+    // é conteúdo de UNIVERSO, vizinho natural da Pokédex (pedido de 2026-09-17).
+    pokemon: [["cards", "nav.allCards", "cards"], ["sets", "nav.sets", "sets"], ["pokedex", "nav.pokedex", "pokedex"], ["lore", "nav.lore", "lore"], ["trainers", "nav.trainers", "trainers"], ["artists", "nav.artists", "artists"]],
     lorcana: SUBNAV_ARTISTS,
     magic: SUBNAV_ARTISTS,
     onepiece: SUBNAV_MIN,
@@ -10947,7 +10949,7 @@
   function initPageGameTitle() {
     const nav = document.querySelector(".page-nav[data-active-page]");
     if (!nav) return;
-    const GAME_TITLE_PAGES = ["pokedex", "sets", "artists", "trainers", "cards"];
+    const GAME_TITLE_PAGES = ["pokedex", "lore", "sets", "artists", "trainers", "cards"];
     if (!GAME_TITLE_PAGES.includes(nav.dataset.activePage)) return;
     const game = (window.SLEEVU && window.SLEEVU.game) || "pokemon";
     const name = window.SLEEVU && window.SLEEVU.name;
@@ -11000,7 +11002,7 @@
     const nav = document.querySelector(".page-nav[data-active-page]");
     const active = nav ? nav.dataset.activePage : "";
     // Páginas de um jogo só (explorar + detalhe da carta): seguem o jogo da sessão.
-    const GAME_PAGES = ["pokedex", "sets", "artists", "trainers", "cards", "detail"];
+    const GAME_PAGES = ["pokedex", "lore", "sets", "artists", "trainers", "cards", "detail"];
     const g = (window.SLEEVU && window.SLEEVU.game) || "";
     applyGameAccent(GAME_PAGES.includes(active) ? g : "all");
   }

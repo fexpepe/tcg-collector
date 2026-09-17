@@ -70,7 +70,7 @@ const GAMES = [
 // bloqueada no robots vira erro no Search Console.
 // /decks é a galeria PÚBLICA da comunidade e fica.
 const STATIC_URLS = [
-  "/", "/hub", "/explore", "/search", "/cards", "/pokedex", "/sets", "/artists", "/trainers",
+  "/", "/hub", "/explore", "/search", "/cards", "/pokedex", "/lore", "/sets", "/artists", "/trainers",
   "/decks",
   "/about", "/novidades", "/lancamentos", "/comparar", "/faq", "/help", "/privacy", "/terms"
 ];

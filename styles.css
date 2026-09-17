@@ -10732,3 +10732,102 @@ select,
   .set-series-count { padding: 12px 0; }
   .bdg-share { width: 36px; height: 36px; }
 }
+
+/* ── Árvore dos Lendários (lore.html) ────────────────────────────────────────
+   Fluxograma de quem criou quem no universo Pokémon. É uma <ul> ANINHADA com
+   os traços em CSS (a receita clássica de árvore: cada <li> desenha metade da
+   barra horizontal e um pedaço da vertical) — nada de biblioteca de gráfico
+   num site sem build. O traço pontilhado marca o elo que o jogo conta como
+   LENDA ("dizem que…"), não como fato. */
+.lore-legenda { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; margin: 0 0 18px; font-size: 13px; color: var(--muted); }
+.lore-leg { display: inline-flex; align-items: center; gap: 8px; }
+.lore-leg::before { content: ""; width: 26px; border-top: 2px solid var(--line); }
+.lore-leg-mito::before { border-top-style: dashed; }
+/* A dica de arrastar só faz sentido onde a árvore não cabe (ver o @media). */
+.lore-leg-dica { display: none; }
+
+.lore-sec { margin: 0 0 30px; }
+.lore-sec h2 { margin: 0 0 2px; font-size: 20px; letter-spacing: -0.2px; }
+.lore-sec-sub { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
+
+/* O trilho ROLA de lado: uma árvore de seis filhos não cabe em 390px, e
+   espremer os cartões até caber tornaria a leitura impossível. Mesmo recurso
+   do fichário e do trilho de resumo. */
+.lore-canvas {
+  overflow-x: auto; overscroll-behavior-x: contain;
+  padding: 2px 0 8px; scrollbar-width: thin;
+  /* `safe center`: centraliza enquanto a árvore CABE e volta a alinhar à
+     esquerda quando ela não cabe. Com `center` puro, o que sobra pra esquerda
+     fica inalcançável na rolagem — no celular a tela abria vazia, com o
+     primeiro cartão cortado na borda direita. */
+  display: flex; justify-content: safe center;
+}
+.lore-tree, .lore-tree ul { display: flex; justify-content: center; list-style: none; margin: 0; padding: 0; }
+.lore-tree { width: max-content; gap: 10px; }
+.lore-tree li { position: relative; display: flex; flex-direction: column; align-items: center; padding: 0 5px; }
+
+/* Descida do pai até a barra dos filhos. */
+.lore-tree ul { margin-top: 22px; }
+.lore-tree ul::before {
+  content: ""; position: absolute; top: -22px; left: 50%;
+  width: 0; height: 22px; border-left: 2px solid var(--line);
+}
+/* Cada filho: metade da barra horizontal (::before à esquerda, ::after à
+   direita) e a descida até o próprio cartão. As pontas viram cantos
+   arredondados; filho único dispensa a barra inteira. */
+.lore-tree ul > li { padding-top: 22px; }
+.lore-tree ul > li::before,
+.lore-tree ul > li::after {
+  content: ""; position: absolute; top: 0; width: 50%; height: 22px;
+  border-top: 2px solid var(--line);
+}
+.lore-tree ul > li::before { right: 50%; }
+.lore-tree ul > li::after { left: 50%; border-left: 2px solid var(--line); }
+.lore-tree ul > li:first-child::before { border: 0; }
+.lore-tree ul > li:last-child::after { border-top: 0; }
+.lore-tree ul > li:first-child::after { border-top-left-radius: 8px; }
+.lore-tree ul > li:last-child::before { border-top-right-radius: 8px; border-right: 2px solid var(--line); }
+.lore-tree ul > li:only-child::before { border: 0; }
+.lore-tree ul > li:only-child::after { border-top: 0; border-radius: 0; }
+
+/* Elo de LENDA: os mesmos traços, pontilhados. */
+.lore-tree ul > li.is-mito::before,
+.lore-tree ul > li.is-mito::after { border-style: dashed; }
+
+.lore-card {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  width: 136px; padding: 10px 9px 12px;
+  border: 1px solid var(--line); border-radius: 12px; background: var(--panel);
+  color: inherit; text-decoration: none; text-align: center;
+}
+a.lore-card:hover, a.lore-card:focus-visible { border-color: var(--accent); }
+.lore-card.is-raiz { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+/* Nó que não é Pokémon (o Ovo, "todos os Pokémon", o dragão original): sem
+   link e sem arte — moldura tracejada pra ficar claro que é conceito. */
+.lore-card.is-conceito { background: var(--panel-strong); border-style: dashed; }
+.lore-media { display: flex; align-items: center; justify-content: center; height: 66px; }
+.lore-art { width: 66px; height: 66px; object-fit: contain; }
+.lore-icon { display: inline-flex; width: 42px; height: 42px; color: var(--accent); }
+.lore-icon svg { width: 100%; height: 100%; }
+.lore-nome { font-size: 13.5px; font-weight: 800; line-height: 1.15; }
+.lore-nota { font-size: 11.5px; line-height: 1.3; color: var(--muted); }
+.lore-mito {
+  margin-top: 2px; padding: 1px 7px; border-radius: 10px;
+  background: var(--panel-strong); border: 1px dashed var(--line);
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--muted);
+}
+/* Pokémon sem carta no catálogo: o cartão fica, o link não — e a arte fica um
+   pouco mais apagada pra a diferença ser visível sem precisar clicar. */
+.lore-card.is-mudo .lore-art { opacity: 0.75; }
+
+@media (max-width: 700px) {
+  .lore-leg-dica { display: inline; }
+  .lore-sec h2 { font-size: 18px; }
+  .lore-card { width: 118px; padding: 8px 7px 10px; }
+  .lore-media { height: 54px; }
+  .lore-art { width: 54px; height: 54px; }
+  .lore-nota { font-size: 11px; }
+  /* No celular a árvore é rolada com o dedo: a calha da página não pode cortar
+     o primeiro cartão, então o trilho sangra os 16px das laterais. */
+  .lore-canvas { margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
+}

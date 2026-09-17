@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title data-i18n="title.lore">Lendários - Sleevu</title>
+    <meta name="description" content="A árvore dos lendários de Pokémon segundo os jogos: quem criou quem, de Arceus e o trio da criação ao dragão partido de Unova. Cada Pokémon leva às cartas dele.">
+    <link rel="canonical" href="https://sleevu.app/lore">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sleevu.app/lore">
+    <meta property="og:title" content="Lendários - Sleevu">
+    <meta property="og:description" content="A árvore dos lendários de Pokémon segundo os jogos: quem criou quem, de Arceus ao dragão partido de Unova.">
+    <meta property="og:image" content="https://sleevu.app/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Lendários - Sleevu">
+    <meta name="twitter:description" content="A árvore dos lendários de Pokémon segundo os jogos: quem criou quem, de Arceus ao dragão partido de Unova.">
+    <meta name="twitter:image" content="https://sleevu.app/og-image.png">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    <link rel="preconnect" href="https://raw.githubusercontent.com">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Duas tags com media: o primeiro paint ja acerta a barra do navegador
+         pelo tema do SISTEMA. Quando a pessoa ESCOLHE um tema, o applyTheme
+         (shared.js) troca por uma tag unica sem media, que vence as duas. -->
+    <meta name="theme-color" content="#e8ecf1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101218" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sleevu">
+    <script src="src/theme.js"></script>
+    <!-- Só o índice da Pokédex (poucos KB): é ele que diz quais lendários têm
+         carta no catálogo e, portanto, quais nós da árvore viram link. O
+         catálogo inteiro não é preciso — a árvore não lista cartas. -->
+    <script src="src/game.js" data-catalog="indexes:pokedex"></script>
+    <link rel="preload" href="assets/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header-inner">
+        <a class="brand" href="/">Sleevu</a>
+        <nav class="page-nav" data-i18n-aria="aria.pages" aria-label="Páginas" data-active-page="lore"></nav>
+        <div class="header-actions">
+          <select id="languageSwitcher" class="lang-select"></select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- .page-head-stack: título na 1ª linha, abas do Pokémon na 2ª — o mesmo
+           molde de Cartas, Sets, Pokédex, Treinadores e Artistas. A subnav vem
+           VAZIA (data-placeholder) e o shared.js a preenche, com a altura já
+           reservada no CSS pra página não pular. Esta tela não tem busca: a
+           árvore é curada e cabe inteira na rolagem. -->
+      <div class="page-head page-head-bar page-head-stack">
+        <div class="page-head-bar-text">
+          <h1 data-i18n="lore.title">Lendários</h1>
+          <p class="page-head-sub" data-i18n="lore.intro">A linhagem dos lendários segundo os JOGOS: quem criou quem, quem veio de onde e o que a série diz sobre cada um. Toque num Pokémon pra ver as cartas dele.</p>
+        </div>
+        <nav class="explore-subnav chip-filter" data-placeholder data-i18n-aria="nav.explore" aria-label="Explorar"></nav>
+      </div>
+
+      <!-- Legenda dos traços: o que o jogo AFIRMA vem cheio; o que ele conta
+           como lenda ("dizem que…") vem pontilhado. Sem isso a árvore venderia
+           folclore como fato. -->
+      <p class="lore-legenda">
+        <span class="lore-leg lore-leg-fato" data-i18n="lore.legendFact">Elo que o jogo afirma</span>
+        <span class="lore-leg lore-leg-mito" data-i18n="lore.legendMyth">Elo que o jogo conta como lenda</span>
+        <span class="lore-leg-dica" data-i18n="lore.scrollHint">Arraste de lado para ver a árvore inteira.</span>
+      </p>
+
+      <div id="loreRoot"></div>
+    </main>
+
+    <script defer src="src/i18n.js"></script>
+    <!-- Textos da árvore: fora do i18n.js pra as outras páginas não carregarem
+         ~100 chaves de texto corrido à toa. -->
+    <script defer src="src/i18n-lore.js"></script>
+    <script defer src="src/shared.js"></script>
+    <script defer src="src/lore.js"></script>
+  </body>
+</html>
