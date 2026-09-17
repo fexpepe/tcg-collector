@@ -307,6 +307,9 @@
   let cardsView = shared.gridViewValue(lerPref("tcg-pastas-view"));
   let filtrosAbertos = lerPref("tcg-collector-filters-open") === "1";
   let fJogo = "", fSet = "", fIdioma = "", fRaridade = "", fValor = "";
+  // Busca DENTRO da pasta (a barra da fileira do título). Não é "termo de
+  // busca no catálogo": peneira o que já está na pasta, como os filtros.
+  let termo = "";
   // "added" = a ordem em que as cartas entraram na pasta. É o padrão porque a
   // pasta costuma ser um checklist: reordenar por valor sozinha faria a carta
   // recém-adicionada sumir do lugar onde a pessoa acabou de olhar.
@@ -568,7 +571,15 @@
   // --- Filtros e ordenação da grade -----------------------------------------
   const cardOf = (entry) => (cat && cat.byId[entry.id]) || null;
   const jogoDaEntrada = (entry) => { const c = cardOf(entry); return (c && c.game) || current.game || ""; };
-  const filtrosAtivos = () => !!(fJogo || fSet || fIdioma || fRaridade || fValor);
+  const filtrosAtivos = () => !!(termo.trim() || fJogo || fSet || fIdioma || fRaridade || fValor);
+
+  // Busca dentro da pasta: nome, número e set da carta (o mesmo norm do resto
+  // do site — minúsculas e sem acento). Entrada sem carta hidratada cai no id,
+  // que é o único texto que ela tem.
+  function casaBusca(entry, card, q) {
+    if (!card) return norm(entry.id).includes(q);
+    return norm(card.name).includes(q) || norm(card.number).includes(q) || norm(card.set).includes(q);
+  }
 
   // Faixa de valor ("min-max" na moeda atual; max vazio = sem teto), a MESMA da
   // Coleção — só que sobre o valor UNITÁRIO da entrada.
@@ -580,9 +591,11 @@
   }
 
   function entradasVisiveis() {
+    const q = norm(termo.trim());
     const arr = current.entries.filter((e) => {
       const c = cardOf(e);
-      return (!fJogo || jogoDaEntrada(e) === fJogo)
+      return (!q || casaBusca(e, c, q))
+        && (!fJogo || jogoDaEntrada(e) === fJogo)
         && (!fSet || (c && c.set) === fSet)
         && (!fIdioma || shared.normalizeCardLanguage(c && c.language) === fIdioma)
         && (!fRaridade || (c && c.rarity) === fRaridade)
@@ -723,10 +736,20 @@
     const money = s.value > 0 ? shared.formatMoney(shared.getCurrency(), s.value) : "—";
     el.editor.innerHTML = `
       <div class="page-head dash-head lst-head" style="--lc:${escA(list.color)}">
-        <div>
+        <div class="lst-head-text">
           <h1><input type="text" id="lstName" class="lst-title" maxlength="40" value="${escA(listName(list))}" aria-label="${escA(t("lists.wizard.name"))}"></h1>
+          <a href="pastas" class="serie-back">${esc(t("lists.backToLists"))}</a>
         </div>
-        <a href="pastas" class="serie-back">${esc(t("lists.backToLists"))}</a>
+        <!-- Busca da pasta na ponta DIREITA da fileira do título: a mesma barra
+             (e o mesmo tamanho) da página do set. Cabe aqui porque, ao
+             contrário do set, esta linha não tem abas nem botões.
+             Sem a câmera do scanner de propósito — ela procura carta no
+             catálogo, e esta busca peneira o que já está na pasta. -->
+        <section class="page-search pasta-search">
+          <svg class="page-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+          <input type="search" id="pastaSearch" enterkeyhint="search" value="${escA(termo)}"
+                 placeholder="${escA(t("lists.searchInFolder"))}" aria-label="${escA(t("lists.searchInFolder"))}">
+        </section>
       </div>
 
       <!-- Resumo da pasta: o MESMO trilho de cápsulas da Minha Coleção
@@ -1339,9 +1362,19 @@
     }
   });
 
+  let buscaTimer = 0;
   el.editor.addEventListener("input", (ev) => {
     if (!current) return;
     if (ev.target.id === "lstName") { store.rename(current.id, ev.target.value); return; }
+    if (ev.target.id === "pastaSearch") {
+      termo = ev.target.value;
+      // Debounce curto: a grade é reconstruída inteira e uma pasta grande tem
+      // centenas de tiles com imagem. O campo não é redesenhado, então o foco
+      // e o cursor ficam onde estão.
+      clearTimeout(buscaTimer);
+      buscaTimer = setTimeout(renderGrid, 150);
+      return;
+    }
     if (ev.target.id === "lstSearch") {
       query = ev.target.value;
       if (current.set) renderSource();          // filtro local, sem debounce

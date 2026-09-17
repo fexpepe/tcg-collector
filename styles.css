@@ -3467,6 +3467,10 @@ a.preview-print:hover { background: var(--panel); }
      busca agora mora DENTRO do .page-head — o mecanismo continua o mesmo.) */
   main .page-search,
   main .page-search-label { display: none; }
+  /* Exceção: a busca DA PASTA. O initHeaderSearch move pro header a busca de
+     CATÁLOGO da página; esta peneira o que está dentro da pasta, não é movida
+     por ninguém — se caísse nesta regra, sumiria no celular e ponto. */
+  main .page-search.pasta-search { display: block; }
   /* No header ela entra NA MESMA fileira (marca | busca | menu), então a altura
      do header não muda — nenhum deslocamento quando o JS a insere. */
   /* Câmera PRIMEIRO, redonda, e a barra SAINDO dela (2026-09-14, molde da
@@ -9878,7 +9882,20 @@ select,
 .list-set-pick small { color: var(--muted); font-weight: 400; white-space: nowrap; }
 
 /* --- Editor --- */
-.lst-head { border-left: 5px solid var(--lc, var(--accent)); padding-left: 12px; }
+/* Fileira do título da pasta: nome à esquerda (com o "← Pastas" logo abaixo,
+   como na página do set) e a BUSCA DA PASTA na ponta direita, com a mesma
+   largura e a mesma altura da busca do set. Cabe na mesma linha porque, ao
+   contrário do set, esta não tem abas nem botões (pedido de 2026-09-17). */
+.lst-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px 24px; flex-wrap: wrap;
+  border-left: 5px solid var(--lc, var(--accent)); padding-left: 12px;
+}
+.lst-head-text { flex: 1 1 260px; min-width: 0; }
+.lst-head .pasta-search { flex: 0 1 432px; min-width: 0; margin: 0; }
+/* 46px, e não os 52 do campo solto: é a altura da busca na faixa do título
+   das outras telas (.page-head-bar .page-search input) — "do mesmo tamanho"
+   inclui a altura. */
+.lst-head .pasta-search input { height: 46px; }
 .lst-title { width: 100%; max-width: 460px; padding: 2px 6px; border: 1px solid transparent; background: transparent; color: inherit; font: inherit; }
 .lst-title:hover, .lst-title:focus { border-color: var(--line); background: var(--panel); }
 .lst-setname { font-weight: 700; }
