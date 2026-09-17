@@ -438,7 +438,9 @@
       elements.empty.dataset.i18nHtml = wishlist.size ? "empty.wishlistFiltered" : "empty.wishlist";
       elements.empty.innerHTML = t(elements.empty.dataset.i18nHtml);
     }
-    elements.resultCount.textContent = tn("results.count", tileCount);
+    // O "N resultados" saiu da tela (2026-09-17); a conta fica, o elemento é
+    // opcional — repor o <p> traz o número de volta.
+    if (elements.resultCount) elements.resultCount.textContent = tn("results.count", tileCount);
     elements.distinctCount.textContent = myCards.length;
     elements.setsCount.textContent = unique(myCards.map((card) => card.set)).length;
     if (elements.wishlistValue) {
