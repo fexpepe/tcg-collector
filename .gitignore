@@ -13,6 +13,10 @@ data/*/*.generated.json
 # snapshot validado de volta (carta indexada nunca some, mesmo se a TCGdex sumir).
 # Chunks por set dos outros jogos (gerados por writeGameCatalog no build)
 data/*/sets/
+# Mapa set -> página estática /set/<slug> (prerender-catalog.mjs, todo deploy).
+# Quem lê é a Function da borda (functions/detail.js), pra prévia e canonical do
+# link de set compartilhado. Derivado do catálogo: nunca versionado.
+data/set-pages/
 # Chunks de PREÇO por set (gerados pelo split-pricing.mjs em todo deploy;
 # derivados do pricing.generated + chunks — nunca versionados)
 data/pricing-chunks/

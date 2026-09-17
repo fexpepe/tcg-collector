@@ -1038,6 +1038,39 @@ function cardPageHtml(cp, ctx = {}) {
 `;
 }
 
+// ── Mapa set -> página estática (data/set-pages/<jogo>.json) ────────────────
+// Quem consome é a Function da borda (functions/detail.js): o link do APP
+// (/detail?type=set&...) é uma casca sem conteúdo — colado no WhatsApp não
+// mostra prévia nenhuma, e é `noindex`, então todo link que alguém compartilha
+// nasce sem valor de busca. Com este mapa a borda injeta título/descrição/
+// imagem do set e o <link rel="canonical"> apontando pra ESTA página estática,
+// que é a indexável. Um arquivo por jogo pra a borda ler só o que precisa.
+//
+// Formato enxuto (array, não objeto) porque isto é baixado na borda a cada
+// link compartilhado: [slug, nome, imagem, nº de cartas, lançamento].
+function escreveMapaDeSets(pages) {
+  const porJogo = new Map();
+  for (const page of pages) {
+    let mapa = porJogo.get(page.game);
+    if (!mapa) porJogo.set(page.game, (mapa = {}));
+    const img = absUrl(page.rep.setLogo || page.rep.image || "");
+    const data = page.rep.setReleaseDate || "";
+    const linha = [page.slug, page.name, img, page.cards.length, data];
+    // Uma entrada por setId do grupo: a página junta os chunks do mesmo set
+    // (edições/línguas), e o link do app carrega UM desses ids.
+    for (const id of new Set(page.cards.map((c) => c.setId).filter(Boolean))) mapa[id] = linha;
+  }
+  const dir = join("data", "set-pages");
+  if (existsSync(dir)) rmSync(dir, { recursive: true, force: true });
+  mkdirSync(dir, { recursive: true });
+  let total = 0;
+  for (const [game, mapa] of porJogo) {
+    writeFileSync(join(dir, `${game}.json`), JSON.stringify(mapa), "utf8");
+    total += Object.keys(mapa).length;
+  }
+  console.log(`prerender-catalog: mapa de sets em data/set-pages/ (${porJogo.size} jogos, ${total} ids).`);
+}
+
 async function main() {
   // Slug único GLOBAL (o diretório /set/ é plano, compartilhado pelos jogos);
   // colisão entre jogos ganha sufixo -2 — a ordem fixa de GAMES mantém estável.
@@ -1084,6 +1117,8 @@ async function main() {
     writeFileSync(join(OUT_DIR, `${page.slug}.html`), setPageHtml(page, `${ORIGIN}/set/${page.slug}`, others, "pt"), "utf8");
     writeFileSync(join(OUT_DIR, `${page.slug}-en.html`), setPageHtml(page, `${ORIGIN}/set/${page.slug}-en`, others, "en"), "utf8");
   }
+
+  escreveMapaDeSets(pages);
 
   // Cartas top: ranqueia por preço (pricing do build) + mais vistas (Supabase).
   const pricingByGame = {

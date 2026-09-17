@@ -6,6 +6,25 @@
     <title data-i18n="title.detail">Detalhe - Sleevu</title>
     <meta name="description" content="Detalhes e cartas de um Pokémon, set ou artista no Sleevu.">
     <meta name="robots" content="noindex, follow">
+    <!-- Prévia do link COLADO (WhatsApp, Discord, X…) e canonical. Esta é a
+         casca do app: sem conteúdo no HTML, o link compartilhado aparecia como
+         uma URL pelada e o set não tinha prévia nenhuma. Os valores abaixo são
+         o genérico; pra um link de SET a Function da borda (functions/detail.js)
+         troca título/descrição/imagem pelos do set e aponta a canonical pra
+         página estática /set/<slug>, que é a indexável. -->
+    <link rel="canonical" href="https://sleevu.app/sets">
+    <meta property="og:site_name" content="Sleevu">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sleevu.app/sets">
+    <meta property="og:title" content="Sleevu">
+    <meta property="og:description" content="Detalhes e cartas de um Pokémon, set ou artista no Sleevu.">
+    <meta property="og:image" content="https://sleevu.app/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sleevu">
+    <meta name="twitter:description" content="Detalhes e cartas de um Pokémon, set ou artista no Sleevu.">
+    <meta name="twitter:image" content="https://sleevu.app/og-image.png">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
     <link rel="preconnect" href="https://assets.tcgdex.net">
