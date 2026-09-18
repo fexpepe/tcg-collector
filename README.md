@@ -248,12 +248,47 @@ As fontes, da pior pra melhor (a última a escrever vence no merge):
    lista os singles no lançamento, e a TCGdex leva dias — foi assim que o
    "30th Celebration" (16/09/2026) chegou no dia, como no Collectr e no Dex,
    que montam o catálogo em cima do grupo do TCGplayer. O pin escolhe o `setId`
-   (o que a TCGdex deve usar depois, pra casar em vez de duplicar), nome, série
+   — uma APOSTA no id que a TCGdex vai usar, pra as cartas casarem em vez de
+   duplicar (quando a aposta erra, ver "Aposentadoria" abaixo) —, nome, série
    e data; ids levam o número como impresso (`cel30-001`, convenção SV/ME) e o
    mesmo numerador com denominadores diferentes (Classic Collection: "2/102" e
    "2/132") vira duas cartas. Grupo EN moderno sem set nosso nem pin sai no log
    do deploy como candidato. Roda com `--dry-run`, `--en`/`--ja`, `--set a,b`,
    `--no-import`.
+
+**Aposentadoria do set importado.** A aposta do `setId` do pin ERRA: o "30th
+Celebration" entrou em 16/09/2026 como `cel30`/`cel30cc` (modelados no
+`cel25`/`cel25cc` de 2021) e dois dias depois a TCGdex publicou o mesmo par
+como `30th`/`30th-c`. A única guarda do pin era o id EXATO, então os chunks
+dela nasceram AO LADO dos nossos — 4 coleções de 30 anos na tela de Sets onde
+existem 2. Quem resolve é o `retire-imported-sets.mjs`, em todo build, depois do
+`sync-tcgdex` e antes da TCGCSV e do merge:
+
+- **Quem é duplicata**: chunk de set importado que tem um irmão da TCGdex com
+  metade dos nomes de carta EM MÃO DUPLA (metade dos nomes de A em B *e* dos de
+  B em A — ver `lib/set-supersede.mjs`). A mão dupla é o que impede uma Classic
+  Collection de casar com o set original que ela reimprime. Nome de set e data
+  não entram na conta: a TCGdex escreve "30th Classic Collection" e o TCGplayer
+  "ME: 30th Celebration Classic Collection". Empate entre dois candidatos vira
+  aviso no log, nunca exclusão.
+- **Quem vence**: sempre a TCGdex. O id dela é o canônico (as edições PT/ZH
+  nascem com ele, o de-para do pokemontcg.io é indexado por ele) e o dado é
+  melhor (artista, tipo, estágio).
+- **Ninguém perde carta**: o de-para de `cardId` vai pro
+  `data/card-id-merges.json` (VERSIONADO — o chunk velho some nesta rodada e
+  nenhum build futuro recalcularia o par) e é carimbado no `src/shared.js`
+  (marcador `SLEEVU_ID_MERGES`, como o `apply-img-mirror`). O app migra a
+  coleção, wishlist, decks, binders, custos e preço-alvo de cada navegador uma
+  vez, e reescreve também o blob que vem da nuvem de um aparelho ainda não
+  migrado. Troca de prefixo (`cel30-001` -> `30th-001`) é uma linha; numeração
+  diferente (a Classic Collection é sequencial na TCGdex e pelo número original
+  no TCGplayer) é par a par. O `lint-catalog` conhece o arquivo: id que sumiu
+  mas tem destino vivo não é perda, é aposentadoria.
+- **O set não fica em branco**: a TCGdex publica antes da arte de parte das
+  cartas (o "30th Classic Collection" chegou com as 30 sem imagem), então a
+  imagem que só o chunk aposentado tinha viaja no mesmo arquivo e o
+  `merge-catalogs` a carimba em todo build, só onde a imagem está VAZIA — se
+  apaga sozinha quando a TCGdex publicar a dela.
 
 **Guarda do add-on-miss.** Carta que a fonte de preço tem e a TCGdex não só entra
 no set se o número segue o **padrão de numeração** do chunk (`missAllowed`):

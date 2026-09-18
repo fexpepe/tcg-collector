@@ -53,7 +53,13 @@ pelo usuário (BRL/USD/EUR). Os sets JP que a TCGdex não tem (promos S-P/SM-P/
 XY-P, eras DP/BW/XY) entram inteiros pela TCGCSV; set EN recém-lançado que a
 TCGdex ainda não publicou entra inteiro por pin (`enImport`) — decisão de
 16/09/2026, quando o 30th Celebration saiu no mundo todo sem PR na TCGdex e os
-concorrentes (Collectr, Dex) já o mostravam a partir do grupo do TCGplayer. PT
+concorrentes (Collectr, Dex) já o mostravam a partir do grupo do TCGplayer. O
+`setId` do pin é uma aposta no id que a TCGdex vai usar, e ela erra: em
+18/09/2026 o set chegou lá como `30th`/`30th-c` e ficou AO LADO do nosso
+`cel30`/`cel30cc` — 4 coleções de 30 anos onde existem 2. Desde então quem
+aposenta o duplicado é o `retire-imported-sets.mjs`, em todo build, com o
+de-para de `cardId` versionado pra ninguém perder o que marcou (ver
+"Aposentadoria do set importado" no README). PT
 e ZH continuam dependendo da TCGdex: o TCGplayer só vende EN e JP. Histórico de
 preços sem servidor: a produção é o banco. Decisão de 14/09/2026, depois da comparação com
 o TCG Collector: a tabela tinha um preço por carta (o do Normal), o preço JP

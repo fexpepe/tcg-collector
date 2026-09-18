@@ -191,6 +191,17 @@ jobs:
           node scripts/sync-tcgdex.mjs zh-tw
           node scripts/sync-tcgdex.mjs pt
 
+      # Set que entrou por pin `enImport` (TCGplayer, antes da TCGdex) e que a
+      # TCGdex já publicou com OUTRO setId: o chunk nosso é apagado e o de-para de
+      # cardId vai pro data/card-id-merges.json (versionado pelo passo "Versiona
+      # snapshot"), pra ninguém perder a carta que marcou nesse meio-tempo. Vem
+      # DEPOIS do sync-tcgdex (que traz o chunk novo) e ANTES da TCGCSV e do merge
+      # — senão o pin reimportaria o set apagado na mesma rodada. Roda em TODO
+      # build, inclusive o rápido, porque também carimba o de-para no src/shared.js
+      # (marcador SLEEVU_ID_MERGES) e isso é anterior à minificação.
+      - name: Aposenta set importado que a TCGdex já publicou (Pokémon)
+        run: node scripts/retire-imported-sets.mjs
+
       - name: Atualiza mapas de tipos e nomes de Pokémon
         if: env.RODA_SYNC == 'true'
         run: |

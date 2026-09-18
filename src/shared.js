@@ -132,6 +132,108 @@
     } catch (e) { /* storage bloqueado: ignora */ }
   })();
 
+  // ── De-para de cardId (set importado que a TCGdex publicou com outro id) ───
+  // Um set que o Sleevu importou do TCGplayer antes da TCGdex publicar entra com
+  // um setId ESCOLHIDO à mão. Quando a TCGdex chega e batiza o set de outro
+  // jeito, o id dela vence (é o canônico: as edições PT/ZH nascem com ele) e o
+  // nosso é aposentado pelo scripts/retire-imported-sets.mjs. Só que coleção,
+  // wishlist, decks, binders, vendas, custos e preço-alvo são todos indexados
+  // por cardId: sem este de-para, quem marcou "30th Celebration" nos dois dias
+  // em que o set foi cel30 simplesmente perdia as cartas (18/09/2026).
+  //
+  // A tabela é CARIMBADA em todo build a partir do data/card-id-merges.json (o
+  // marcador abaixo, mesmo padrão do apply-img-mirror) — a fonte da verdade é
+  // aquele arquivo; o valor versionado aqui é a última carimbada, pra o site
+  // servido do repo (dev) migrar igual. Tabela vazia = isto tudo é no-op.
+  //   s: setId velho -> novo (link de set compartilhado com o id velho);
+  //   p: troca só do prefixo do cardId (cel30-001 -> 30th-001), um set por linha;
+  //   c: par a par, quando a numeração também mudou (Classic Collection).
+  const ID_MERGES = {"s":{"cel30":"30th","cel30cc":"30th-c"},"p":{"cel30":"30th"},"c":{"cel30cc-99":"30th-c-019","cel30cc-100":"30th-c-020","cel30cc-101":"30th-c-021","cel30cc-106":"30th-c-024","cel30cc-106-106":"30th-c-022","cel30cc-106-160":"30th-c-023","cel30cc-108":"30th-c-025","cel30cc-11":"30th-c-004","cel30cc-11-113":"30th-c-003","cel30cc-114":"30th-c-026","cel30cc-123":"30th-c-027","cel30cc-138":"30th-c-028","cel30cc-149":"30th-c-029","cel30cc-18":"30th-c-005","cel30cc-19":"30th-c-006","cel30cc-203":"30th-c-030","cel30cc-25":"30th-c-007","cel30cc-33":"30th-c-008","cel30cc-4":"30th-c-001","cel30cc-41":"30th-c-009","cel30cc-43":"30th-c-010","cel30cc-47":"30th-c-011","cel30cc-5":"30th-c-002","cel30cc-050":"30th-c-012","cel30cc-57":"30th-c-013","cel30cc-58":"30th-c-014","cel30cc-69":"30th-c-015","cel30cc-85":"30th-c-016","cel30cc-89":"30th-c-017","cel30cc-94":"30th-c-018"}}; /* SLEEVU_ID_MERGES */
+  const ID_MERGES_KEY = "tcg-collector-id-merges-v1";
+  const ID_MERGES_PREFIXOS = Object.keys(ID_MERGES.p);
+  const TEM_ID_MERGES = ID_MERGES_PREFIXOS.length > 0 || Object.keys(ID_MERGES.c).length > 0;
+  // "cel30-", "cel30cc-": o prefixo de set de TODO id aposentado (das duas
+  // tabelas). Serve de teste de texto antes de parsear um blob guardado — sem
+  // ele a migração reescrevia blob grande à toa, e com pista incompleta deixava
+  // store de fora (o par a par da Classic Collection não começa com "cel30-").
+  const ID_MERGES_PISTAS = Array.from(new Set(ID_MERGES_PREFIXOS.concat(
+    Object.keys(ID_MERGES.c).map((id) => (id.indexOf("-") > 0 ? id.slice(0, id.indexOf("-")) : id))
+  ))).map((s) => s + "-");
+
+  // Id novo de um SET aposentado; "" quando não mudou. O link de set que alguém
+  // compartilhou nos dias em que o set tinha o id velho
+  // (detail?type=set&setId=cel30) cairia numa página vazia sem isto.
+  function mergedSetId(setId) {
+    return (setId && (ID_MERGES.s || {})[String(setId)]) || "";
+  }
+  // Id novo de uma carta aposentada; "" quando o id não mudou.
+  function mergedCardId(id) {
+    const s = String(id || "");
+    if (ID_MERGES.c[s]) return ID_MERGES.c[s];
+    const corte = s.indexOf("-");
+    if (corte > 0) {
+      const novo = ID_MERGES.p[s.slice(0, corte)];
+      if (novo) return novo + s.slice(corte);
+    }
+    return "";
+  }
+  // Reescreve EM PROFUNDIDADE todo id aposentado dentro de um valor guardado,
+  // sem saber o formato de cada store: id aparece como CHAVE de objeto (coleção,
+  // custos, timestamps do LWW, preço-alvo) e como STRING solta (lista de ids,
+  // carta de deck, casa do binder). Um id de carta é específico demais pra
+  // colidir com outro texto, então a varredura cega é segura — e é o que faz
+  // isto cobrir os 20 stores sem ter que enumerar nenhum.
+  // Devolve { v, mudou } pra quem chama só gravar o que mudou.
+  function remapIdsDeep(valor) {
+    let mudou = false;
+    const anda = (v) => {
+      if (typeof v === "string") {
+        const novo = mergedCardId(v);
+        if (novo) { mudou = true; return novo; }
+        return v;
+      }
+      if (!v || typeof v !== "object") return v;
+      if (Array.isArray(v)) return v.map(anda);
+      const out = {};
+      for (const k of Object.keys(v)) {
+        const novoK = mergedCardId(k);
+        if (novoK) mudou = true;
+        const alvo = novoK || k;
+        const filho = anda(v[k]);
+        // Id velho e novo no mesmo store (marcou nos dois): fica o que já
+        // estava no id novo — é o que a carta de verdade tem hoje.
+        out[alvo] = Object.prototype.hasOwnProperty.call(out, alvo) ? out[alvo] : filho;
+      }
+      return out;
+    };
+    return { v: anda(valor), mudou };
+  }
+  // Migração one-shot por navegador, refeita quando o build carimba regra nova
+  // (a assinatura guardada muda). Varre as chaves "tcg-" do localStorage porque
+  // store novo não pode ficar de fora por esquecimento; o teste de texto antes
+  // do JSON.parse evita reescrever blob grande à toa.
+  (function migrateMergedCardIds() {
+    if (!TEM_ID_MERGES) return;
+    try {
+      const assinatura = ID_MERGES_PREFIXOS.join(",") + "|" + Object.keys(ID_MERGES.c).length;
+      if (localStorage.getItem(ID_MERGES_KEY) === assinatura) return;
+      const chaves = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.indexOf("tcg-") === 0 && k !== ID_MERGES_KEY) chaves.push(k);
+      }
+      chaves.forEach((k) => {
+        const cru = localStorage.getItem(k);
+        if (!cru || !ID_MERGES_PISTAS.some((pista) => cru.indexOf(pista) >= 0)) return;
+        let lido;
+        try { lido = JSON.parse(cru); } catch (e) { return; }
+        const r = remapIdsDeep(lido);
+        if (r.mudou) localStorage.setItem(k, JSON.stringify(r.v));
+      });
+      localStorage.setItem(ID_MERGES_KEY, assinatura);
+    } catch (e) { /* storage bloqueado: ignora */ }
+  })();
+
   // ── PWA (instalar na tela inicial) ────────────────────────────────────────
   // Captura o prompt de instalação cedo (Android/desktop disparam beforeinstall-
   // prompt). Guardamos pra um botão próprio no menu de conta. iOS não tem o
@@ -9011,6 +9113,7 @@
     loadIndexSlice,
     fetchSetChunks,
     setIdForCard,
+    mergedSetId,
     createPager,
     debounce,
     addOptions,
@@ -9671,6 +9774,11 @@
     return { favorites: Array.from(new Set([...(arrA || []), ...(arrB || [])])), meta: aMeta || bMeta };
   }
   function mergeData(localD, remoteD) {
+    // O blob que vem da nuvem pode ter sido gravado por um aparelho que ainda
+    // não rodou a migração de id (ou de antes dela existir): sem reescrever
+    // AQUI, o id aposentado voltava do remoto a cada pull e a carta migrada
+    // virava duas. Uma passada a mais no blob que o pull já parseou.
+    if (TEM_ID_MERGES && remoteD) remoteD = remapIdsDeep(remoteD).v;
     const a = localD || {}, b = remoteD || {};
     const col = mergeCollection(a.collection, a.collectionMeta, b.collection, b.collectionMeta);
     const wl = mergeWishlist(a.wishlist, a.wishlistMeta, b.wishlist, b.wishlistMeta);

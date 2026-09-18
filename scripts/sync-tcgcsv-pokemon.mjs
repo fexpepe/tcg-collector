@@ -203,8 +203,15 @@ if (catEN && !ONLY_JA) {
 
   // ── EN: sets INTEIROS que a TCGdex ainda não tem (pins `enImport`) ──────────
   const ourIds = new Set(allOurSets.map((s) => s.id));
+  // Sets que o import criou e a TCGdex depois publicou com OUTRO setId: o chunk
+  // nosso foi APOSENTADO (retire-imported-sets.mjs) e o pin não pode ressuscitá-lo
+  // — sem esta lista o build seguinte veria "sem chunk" e importaria de novo, e a
+  // tela de Sets voltaria a ter duas entradas do mesmo set (18/09/2026).
+  const merges = await readJson(new URL("card-id-merges.json", DATA), {});
+  const aposentados = new Set((merges.sets || []).map((r) => r && r.from).filter(Boolean));
   for (const entry of importBySet.values()) {
     if (ONLY_SETS.size && !ONLY_SETS.has(entry.setId)) continue;
+    if (aposentados.has(entry.setId)) { console.log("  EN import " + entry.setId + ": aposentado (a TCGdex publicou o set com outro id) — pin ignorado"); continue; }
     // Chunk já existe (TCGdex publicou, ou um build anterior importou e o
     // snapshot versionou): o casamento normal acima já cuidou dele.
     if (ourIds.has(entry.setId)) continue;

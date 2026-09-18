@@ -24,6 +24,7 @@
 import { readFile, writeFile, readdir } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { resolveMergedId } from "./lib/set-supersede.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const BASELINE = new URL("data/catalog-baseline.json", ROOT);
@@ -153,6 +154,13 @@ async function checarEstabilidadeDeId() {
   // vale um aviso, não vale barrar o deploy.
   const assina = (c) => `${c.language || "en"}|${c.setId || ""}`;
   const numDe = (c) => String(c.number || "");
+  // De-para de id (data/card-id-merges.json, escrito pelo retire-imported-sets):
+  // set que entrou por import e que a TCGdex publicou com outro setId tem os ids
+  // APOSENTADOS de propósito, e o app migra a conta de quem marcou (ID_MERGES no
+  // shared.js). Id com destino vivo no catálogo novo não é perda — sem esta
+  // exceção a aposentadoria, que agora é automática, derrubava o deploy.
+  let merges = {};
+  try { merges = JSON.parse(await readFile(new URL("data/card-id-merges.json", ROOT), "utf8")); } catch { /* nenhum set aposentado */ }
 
   const antes = {};   // jogo -> Map(id -> assinatura), lido do HEAD
   for (const f of alvos) {
@@ -171,14 +179,19 @@ async function checarEstabilidadeDeId() {
     if (!cards || !cards.length) { warnings.push(`${jogo}: estabilidade de id não checada (catálogo novo não lido)`); continue; }
     const agora = new Map();
     for (const c of cards) if (c && c.id) agora.set(c.id, { sig: assina(c), num: numDe(c) });
-    const sumidos = [], repontados = [], renumerados = [];
+    const sumidos = [], repontados = [], renumerados = [], migrados = [];
     for (const [id, antigo] of antes[jogo]) {
       const nova = agora.get(id);
-      if (!nova) sumidos.push(id);
+      if (!nova) {
+        const alvo = resolveMergedId(id, merges);
+        if (alvo && agora.has(alvo)) migrados.push(id);
+        else sumidos.push(id);
+      }
       else if (nova.sig !== antigo.sig) repontados.push(`${id} (${antigo.sig} -> ${nova.sig})`);
       else if (nova.num !== antigo.num) renumerados.push(`${id} (nº ${antigo.num} -> ${nova.num})`);
     }
     const lista = (arr) => arr.slice(0, 10).join(", ") + (arr.length > 10 ? `, +${arr.length - 10}` : "");
+    if (migrados.length) console.log(`  estabilidade de id: ${jogo} — ${migrados.length} id(s) aposentado(s) COM de-para (a conta de quem marcou migra): ${lista(migrados)}`);
     if (sumidos.length) { achou = true; (ACEITA_ID ? warnings : errors).push(`${jogo}: ${sumidos.length} id(s) PUBLICADO(S) sumiram do catálogo — some da coleção de quem tem: ${lista(sumidos)}`); }
     if (repontados.length) { achou = true; (ACEITA_ID ? warnings : errors).push(`${jogo}: ${repontados.length} id(s) passaram a apontar pra OUTRA carta (idioma/set): ${lista(repontados)}`); }
     if (renumerados.length) warnings.push(`${jogo}: ${renumerados.length} id(s) mudaram de número (mesma carta?): ${lista(renumerados)}`);

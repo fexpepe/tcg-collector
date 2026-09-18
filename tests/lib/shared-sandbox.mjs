@@ -9,12 +9,17 @@ import vm from "node:vm";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
+// `length` + `key(i)` existem porque a migração de cardId aposentado
+// (migrateMergedCardIds, no shared.js) VARRE as chaves "tcg-" em vez de
+// enumerar store por store — store novo não pode ficar de fora por esquecimento.
 export function makeLocalStorage(seed = {}) {
   const store = { ...seed };
   return {
     getItem: (k) => (k in store ? store[k] : null),
     setItem: (k, v) => { store[k] = String(v); },
     removeItem: (k) => { delete store[k]; },
+    get length() { return Object.keys(store).length; },
+    key: (i) => Object.keys(store)[i] ?? null,
     _dump: () => ({ ...store })
   };
 }
