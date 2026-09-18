@@ -11,7 +11,13 @@
 //      sem logo, sem data e sem valor, com o nome do set em texto no lugar da
 //      arte. Rodando sempre, o formato do manifest deixa de depender do modo do
 //      build.
-//   2. ORDEM DO ESPELHO DE LOGO. O mirror-set-logos (Pokémon) e o
+//   2. SET FANTASMA. Pelo mesmo caminho do item 1, o manifest do cache pode
+//      listar um set cujo CHUNK não existe mais — é o que acontece quando o
+//      retire-imported-sets aposenta um set importado que a TCGdex publicou com
+//      outro id. A entrada órfã é um tile na tela de Sets que abre numa página
+//      vazia: foi assim que as duas coleções de 30 anos continuariam em dobro
+//      num build rápido (18/09/2026). Chunk AUSENTE = entrada REMOVIDA aqui.
+//   3. ORDEM DO ESPELHO DE LOGO. O mirror-set-logos (Pokémon) e o
 //      mirror-magic-set-logos rodam DEPOIS do sync e reescrevem os CHUNKS pro
 //      caminho local do logo — mas não o manifest. Rodando depois deles, o
 //      manifest pega o espelho local, que é o que sobrevive a um fora-do-ar da
@@ -60,19 +66,29 @@ for (const dir of DIRS) {
 
   let enriquecidas = 0;
   const semChunk = [];
+  const orfas = [];   // chunk AUSENTE: set que saiu do catálogo (ver item 2 do topo)
+  const vivas = [];
   for (const entrada of manifest.sets) {
-    if (!entrada.file) { semChunk.push(entrada.id); continue; }
-    let cartas;
+    if (!entrada.file) { semChunk.push(entrada.id); vivas.push(entrada); continue; }
+    let cru;
     try {
-      cartas = JSON.parse(await readFile(new URL(entrada.file, RAIZ), "utf8"));
-    } catch {
-      semChunk.push(entrada.id);
-      continue;
+      cru = await readFile(new URL(entrada.file, RAIZ), "utf8");
+    } catch (e) {
+      // Arquivo que NÃO EXISTE é set removido do catálogo, e a entrada morre
+      // com ele. Arquivo presente e ilegível (I/O, JSON truncado) é outra
+      // história: mantém a entrada com aviso, porque apagar um set do listão
+      // por causa de uma leitura ruim seria pior que o tile sem metadado.
+      if (e && e.code === "ENOENT") { orfas.push(entrada.id); continue; }
+      semChunk.push(entrada.id); vivas.push(entrada); continue;
     }
-    if (!Array.isArray(cartas) || !cartas.length) { semChunk.push(entrada.id); continue; }
+    let cartas;
+    try { cartas = JSON.parse(cru); } catch { semChunk.push(entrada.id); vivas.push(entrada); continue; }
+    if (!Array.isArray(cartas) || !cartas.length) { semChunk.push(entrada.id); vivas.push(entrada); continue; }
     Object.assign(entrada, setManifestMeta(cartas, pricing));
+    vivas.push(entrada);
     enriquecidas++;
   }
+  manifest.sets = vivas;
 
   // Nenhuma entrada enriquecida = os chunks não estão no disco. Seguir daria um
   // manifest sem metadado — exatamente o estado que este script existe pra
@@ -82,6 +98,7 @@ for (const dir of DIRS) {
     process.exit(1);
   }
   if (semChunk.length) avisos.push(`${dir}: ${semChunk.length} set(s) sem chunk legível (${semChunk.slice(0, 3).join(", ")}…)`);
+  if (orfas.length) console.log(`  ${dir}: ${orfas.length} entrada(s) órfã(s) fora do manifest — chunk não existe mais (${orfas.slice(0, 4).join(", ")})`);
 
   await writeFile(new URL(`${dir}manifest.generated.js`, RAIZ), `window.TCG_MANIFEST = ${JSON.stringify(manifest)};\n`, "utf8");
   console.log(`enrich-manifest: ${dir} — ${enriquecidas}/${manifest.sets.length} entradas com metadado`);

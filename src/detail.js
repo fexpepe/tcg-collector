@@ -69,13 +69,22 @@
 
   const params = new URLSearchParams(window.location.search);
   const detailType = params.get("type") || "";
+  // Link de set APOSENTADO: o set entrou pelo import com um setId escolhido à
+  // mão e a TCGdex depois publicou o mesmo set com outro (cel30 -> 30th,
+  // 18/09/2026). Quem compartilhou o link nesses dois dias cairia numa página
+  // vazia. Segue pro id novo — e o ?name= do link velho é DESCARTADO, porque o
+  // nome também pode ter mudado ("30th Celebration Classic Collection" virou
+  // "30th Classic Collection"): sem nome, resolveSetNameFromId() pega o do
+  // catálogo.
+  const setIdPedido = params.get("setId") || "";
+  const setIdAposentado = shared.mergedSetId(setIdPedido);
   // `let`: a página de SET aceita URL só com ?setId= (sem ?name=) — o nome é
   // resolvido do catálogo em resolveSetNameFromId(), assim que ele chega.
-  let detailName = params.get("name") || "";
+  let detailName = setIdAposentado ? "" : (params.get("name") || "");
   // Desambiguação da página de SET (ver scopeToEdition): o nome sozinho pode
   // casar com mais de uma edição. A lista de Sets carrega estes dois no link
   // quando precisa; ausentes, valem os padrões.
-  const detailSetId = params.get("setId") || "";
+  const detailSetId = setIdAposentado || setIdPedido;
   const detailRegion = params.get("region") || "";
   // Nome fora do ASCII imprimível (japonês, acento): na barra de endereço ele
   // aparece bonito, mas o Ctrl+C entrega a URL codificada (%E3%82%B8…). Pra
@@ -481,9 +490,17 @@
     if (detailType !== "set" || detailName || !detailSetId) return;
     const manifest = window.TCG_MANIFEST;
     const entry = manifest && Array.isArray(manifest.sets) ? manifest.sets.find((set) => set.id === detailSetId) : null;
-    if (entry) { detailName = entry.name; return; }
+    if (entry) { detailName = entry.name; pintaTituloDoSet(); return; }
     const card = Array.isArray(window.TCG_CARDS) ? window.TCG_CARDS.find((c) => c.setId === detailSetId) : null;
-    if (card) detailName = card.set;
+    if (card) { detailName = card.set; pintaTituloDoSet(); }
+  }
+  // O título é pintado no começo da página, quando `detailName` ainda pode estar
+  // VAZIO: a URL só com ?setId= resolve o nome depois de o catálogo chegar. Sem
+  // repintar aqui, o set abria com o rótulo genérico no lugar do nome — vale pros
+  // sets de nome japonês (que a lista linka por id) e pro link de set APOSENTADO,
+  // que segue pro id novo e por isso entra sem ?name=.
+  function pintaTituloDoSet() {
+    if (elements.title && detailName) elements.title.textContent = detailName;
   }
 
   // Barra de endereço LIMPA pros sets de nome não-ASCII: troca ?name=<japonês>

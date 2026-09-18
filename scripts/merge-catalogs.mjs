@@ -111,6 +111,15 @@ for (const c of [...(Array.isArray(csvNewCards) ? csvNewCards : []), ...(Array.i
   if (!c || !c.id || !c.language || !c.setId) continue;
   (newBySet[`${c.language}/${c.setId}`] = newBySet[`${c.language}/${c.setId}`] || []).push(c);
 }
+// Arte que só o chunk APOSENTADO tinha (data/card-id-merges.json, escrito pelo
+// retire-imported-sets.mjs): { <cardId novo>: url }. A TCGdex publica o set
+// antes da arte de parte das cartas — o "30th Classic Collection" chegou com as
+// 30 sem imagem, e o chunk importado que saiu tinha a do TCGplayer pra todas.
+// Sem isto a aposentadoria do duplicado deixaria o set em branco. Carimba em
+// TODO build (o sync-tcgdex reescreve o chunk a cada rodada) e se apaga sozinho
+// quando a TCGdex publicar a arte, porque só preenche imagem VAZIA.
+let mergeImgs = {};
+try { mergeImgs = (JSON.parse(await readFile(new URL("card-id-merges.json", dataDir), "utf8")) || {}).images || {}; } catch { /* nenhum set aposentado */ }
 // Preços por impressão da TCGCSV (TCGplayer, diário): { cardId: { u, v?, img? } }.
 let csvData = {};
 try { csvData = JSON.parse(await readFile(new URL("tcgcsv-prices.generated.json", dataDir), "utf8")); } catch { /* sem TCGCSV */ }
@@ -172,7 +181,7 @@ for (const lang of langs) {
       }
       // Imagem do TCGplayer (via TCGCSV ou PPT) onde a TCGdex não tem (ex.: era Mega JP).
       const pp = pptData[card.id], cp = csvData[card.id];
-      const img = (cp && cp.img) || (pp && pp.img);
+      const img = (cp && cp.img) || (pp && pp.img) || mergeImgs[card.id];
       if (img && !card.image) { card.image = img; changed = true; }
       // Coleta as imagens EN (já com o fill da PPT) por id, pra usar como fallback
       // nas cartas localizadas (PT/JA/ZH) que não têm imagem própria.
