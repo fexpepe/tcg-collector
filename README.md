@@ -173,6 +173,33 @@ Ferramentas que rodam à mão (não estão em workflow nenhum):
 | `scripts/diff-computed-style.mjs` | confere que o `split-css.mjs` não mudou nenhum estilo computado (antes × depois, em duas portas) | idem |
 | `scripts/test-d1-search.mjs` | prova a busca da borda contra um SQLite real | `node scripts/build-d1.mjs` (gera `out/d1-cards.sql`); com o dump desatualizado ele acusa falhas que não são do código |
 | `scripts/seo-meta.mjs` | codemod de `<head>` do rebrand — **destrutivo, reescreve todos os HTML** | commit limpo e revisar o diff depois |
+| `scripts/build-og-image.mjs` | regera o `og-image.png` (a imagem que aparece quando alguém compartilha um link) a partir do template `scripts/og/og-image.html` | Chrome/Chromium instalado (ou `CHROME_PATH=/caminho/do/chrome`) |
+
+### Imagem de compartilhamento (og-image)
+
+O que o WhatsApp, o X e o Facebook mostram ao colar um link do site é o
+`/og-image.png` (1200x630), apontado pelo `og:image`/`twitter:image` das 22
+páginas e pelo `scripts/seo-meta.mjs`. Duas exceções sobrescrevem essa imagem
+genérica: as páginas de set pré-renderizadas usam o logo do set
+(`prerender-catalog.mjs`) e a `detail` na borda usa a arte da carta
+(`functions/detail.js`).
+
+O PNG é **gerado**, não desenhado à mão: o conteúdo mora no
+`scripts/og/og-image.html` (HTML+CSS comum, com a Outfit e a paleta do site) e
+o `build-og-image.mjs` fotografa isso num Chrome headless. Mudar a chamada é
+editar texto e rodar o script — antes disso era um bitmap solto no repo, sem
+fonte, e por isso a arte ficou anos anunciando "Pokémon · Lorcana · One Piece ·
+Naruto" enquanto o site já tinha 13 jogos.
+
+Fora do CI de propósito: comparar bytes de renderização entre versões do
+Chromium daria falso positivo em todo bump. O PNG é versionado; regere e
+commite quando mudar.
+
+**Depois de trocar a arte:** as redes guardam a prévia pela URL DA PÁGINA, não
+pela da imagem — renomear o PNG não adianta. Force o re-scrape no
+[Sharing Debugger](https://developers.facebook.com/tools/debug/) do Facebook e
+no [Card Validator](https://cards-dev.twitter.com/validator) do X; o WhatsApp
+solta sozinho em algumas semanas.
 
 ---
 

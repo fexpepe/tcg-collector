@@ -99,3 +99,10 @@ lancamentos.ics
 # com barra acima NAO pega symlink: pro git ele e um arquivo, nao um diretorio —
 # e um link quebrado no runner mata o wrangler no stat.
 node_modules
+
+# Intermediários do gerador da imagem de compartilhamento
+# (scripts/build-og-image.mjs). Ficam ao LADO do template porque ele referencia
+# a fonte e os logos por caminho relativo — no /tmp quebrariam. Só sobrevivem
+# ao fim da execução com --keep-html.
+scripts/og/.render.html
+scripts/og/.probe.html
