@@ -256,6 +256,28 @@ escolhem a impressão da variante do tile em `v` e caem em `u` — a régua vive
 localizada (-pt/-ja) e a da carta base vale a de melhor fonte (BR > USD > EUR),
 pra mesma impressão não mostrar dois valores conforme a bandeira.
 
+**Quem manda em quê (decisão de 19/09/2026).** A pergunta volta sempre que a
+TCGCSV chega na frente num lançamento, então fica escrita: a **TCGdex é o
+CATÁLOGO** (o que a carta é) e a **TCGCSV é o PREÇO** (quanto ela vale), e o
+inglês NÃO sai da TCGdex. O motivo é medível — a TCGCSV espelha o TCGplayer,
+que não publica artista, tipo, estágio nem texto de carta:
+
+| idioma | cartas | só-TCGCSV | com artista | com tipo |
+|---|---|---|---|---|
+| EN | 21.751 | 0,5% | **95,6%** | 84,3% |
+| JA | 21.662 | **48,7%** | **48,8%** | 47,5% |
+| PT | 14.339 | 0,2% | 96,6% | 84,1% |
+
+O japonês é o experimento que já rodou: onde a TCGCSV domina, **metade do
+catálogo fica sem artista e sem tipo** — e é disso que vivem a página de
+Artistas, os filtros por tipo e a Pokédex. Trocar o EN pela TCGCSV faria o EN
+virar o JA. Some-se que o TCGplayer só vende EN e JP (sem TCGdex, PT e ZH
+deixam de existir), que a carta PT sem arte herda a imagem da EN pelo mesmo id
+base (`30th-001-pt` → `30th-001`) e que o de-para do pokemontcg.io é indexado
+por id da TCGdex. A vantagem da TCGCSV num lançamento é de **1 a 2 dias** (o
+30th Celebration saiu 16/09 e a TCGdex publicou em 17–18/09) — e essa janela é
+coberta pelo import automático abaixo, sem custar o resto.
+
 As fontes, da pior pra melhor (a última a escrever vence no merge):
 
 1. **TCGdex** — vem embutida no card (`compactTcgdexPrice`); pra muita carta EN é
@@ -264,8 +286,13 @@ As fontes, da pior pra melhor (a última a escrever vence no merge):
    vale pelo **graded** (`g`) e pelo que a TCGCSV não cobrir.
 3. **TCGCSV** (`sync-tcgcsv-pokemon.mjs`) — TCGplayer por `subTypeName`, grátis,
    **todo dia**, EN e JP. Casa set ↔ grupo pelo nome normalizado (+ pins em
-   `data/tcgcsv-set-map.json`) e **confirma pelo conteúdo** (metade dos números
-   batem, senão o set fica com a TCGdex). Em JP o código do grupo ("SV4a: …",
+   `data/tcgcsv-set-map.json`, que aceitam groupId **ou o nome do grupo**) e
+   **confirma pelo conteúdo** (metade dos números batem, senão o set fica com a
+   TCGdex). Número que não bate ainda tenta pelo **nome das cartas**
+   (`matchGroupByName`): é o que salva a **Classic Collection**, que a TCGdex
+   numera em sequência (001–030) e o TCGplayer pelo número original da carta
+   reimpressa ("Blastoise - 2/102"). Só casa nome inequívoco e **nunca**
+   sintetiza carta — o número de lá não serve de id. Em JP o código do grupo ("SV4a: …",
    "S-P Promotional Cards") é o `setId`; código sem chunk nosso = set que a TCGdex
    não tem e é **importado inteiro** (ids `<CODE>-<número impresso>-ja`, como a
    TCGdex escreve, pinados pelo chunk versionado, série pelo prefixo do código);
@@ -279,9 +306,15 @@ As fontes, da pior pra melhor (a última a escrever vence no merge):
    duplicar (quando a aposta erra, ver "Aposentadoria" abaixo) —, nome, série
    e data; ids levam o número como impresso (`cel30-001`, convenção SV/ME) e o
    mesmo numerador com denominadores diferentes (Classic Collection: "2/102" e
-   "2/132") vira duas cartas. Grupo EN moderno sem set nosso nem pin sai no log
-   do deploy como candidato. Roda com `--dry-run`, `--en`/`--ja`, `--set a,b`,
-   `--no-import`.
+   "2/132") vira duas cartas. Desde 19/09/2026 o pin é só a exceção: grupo EN de
+   era moderna ("ME: …", "SV##: …"), publicado nos últimos **90 dias**, sem set
+   nosso e com pelo menos **20 singles numerados** entra SOZINHO, com setId
+   provisório tirado do nome ("ME: Delta Reign" → `delta-reign`). O que segura
+   a mão é a aposentadoria automática (abaixo): quando a TCGdex publicar com o
+   id dela, o provisório morre e a conta de quem marcou migra. A janela de 90
+   dias é o que impede o primeiro build de importar a lista histórica inteira.
+   O que não for elegível continua saindo no log como candidato a pin. Roda com
+   `--dry-run`, `--en`/`--ja`, `--set a,b`, `--no-import`, `--no-auto`.
 
 **Aposentadoria do set importado.** A aposta do `setId` do pin ERRA: o "30th
 Celebration" entrou em 16/09/2026 como `cel30`/`cel30cc` (modelados no

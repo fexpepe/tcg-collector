@@ -28,8 +28,13 @@
 //   EN: nome normalizado (lib/tcgcsv-pokemon.mjs#setNameKeys) + pins em
 //       data/tcgcsv-set-map.json (versionado, editável) — e TODO casamento é
 //       CONFIRMADO pelo conteúdo (groupFits: metade dos números batem). Nome
-//       igual sem os números baterem = outro set, fica com o preço da TCGdex.
-//       Confirmações ficam em data/.cache/tcgcsv/set-map.json por 30 dias.
+//       igual sem os números baterem = outro set — aí ainda se tenta pelo NOME
+//       das cartas (matchGroupByName), que é o que salva a Classic Collection,
+//       numerada de um jeito aqui e de outro no TCGplayer. Confirmações ficam
+//       em data/.cache/tcgcsv/set-map.json por 30 dias. Grupo EN moderno,
+//       recente e sem set nosso entra SOZINHO como set novo (autoImportGroups)
+//       — a rede que segura isso é o retire-imported-sets, que aposenta o id
+//       provisório quando a TCGdex publicar o dela.
 //   JP: código no nome do grupo ("SV4a: …" → SV4a; "S-P Promotional Cards" →
 //       S-P) = nosso setId (a TCGdex usa os mesmos códigos). Código sem chunk
 //       nosso = set que a TCGdex não tem → importado inteiro. Código repetido
@@ -42,12 +47,14 @@
 //   node scripts/sync-tcgcsv-pokemon.mjs --en | --ja     # só um idioma
 //   node scripts/sync-tcgcsv-pokemon.mjs --set base1,swshp,SV4a   # só esses sets nossos
 //   node scripts/sync-tcgcsv-pokemon.mjs --dry-run       # não grava artefato
-//   node scripts/sync-tcgcsv-pokemon.mjs --no-import     # JP: só preço, sem sets novos
+//   node scripts/sync-tcgcsv-pokemon.mjs --no-import     # só preço, sem sets novos (EN e JP)
+//   node scripts/sync-tcgcsv-pokemon.mjs --no-auto       # EN: sem a janela de lançamento automática
 import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
 import { fetchRetry, mapLimit, sleep, normNum } from "./lib/sync-common.mjs";
 import {
   indexGroupsByName, candidateGroups, matchGroup, groupFits, jpSetCode, jpSerieOfCode, jpAliasOf, jpAmbiguousCodes, synthesizeCard,
-  enImportEntries, findImportGroup, importSetFields, importNumberFilter
+  enImportEntries, findImportGroup, importSetFields, importNumberFilter,
+  matchGroupByName, nameFits, autoImportGroups, autoImportEntry, isModernEnGroup
 } from "./lib/tcgcsv-pokemon.mjs";
 
 const argv = process.argv.slice(2);
@@ -57,8 +64,11 @@ const DRY = has("--dry-run");
 const ONLY_EN = has("--en") && !has("--ja");
 const ONLY_JA = has("--ja") && !has("--en");
 const NO_IMPORT = has("--no-import");
+const NO_AUTO = has("--no-auto") || has("--no-import");
 const ONLY_SETS = new Set((val("--set") || "").split(",").map((s) => s.trim()).filter(Boolean));
 const MAX_NEW_PER_SET = 60;      // teto defensivo do add-on-miss num set que JÁ existe
+const MIN_AUTO_SINGLES = 20;     // abaixo disso o grupo EN novo não é set (pré-venda só com selado)
+const MAX_AUTO_SETS = 2;         // teto por rodada: lançamento é evento raro, e se a régua errar o estrago é pequeno
 const CONCURRENCY = 4;           // requisições paralelas ao espelho comunitário
 const CONFIRM_TTL = 30 * 864e5;  // reconfirma um casamento EN por conteúdo a cada 30 dias
 
@@ -152,7 +162,14 @@ if (catEN && !ONLY_JA) {
     const pinned = pins.en && pins.en[set.id];
     const cached = confirmed[`en/${set.id}`];
     let candidates;
-    if (pinned) candidates = [].concat(pinned).map((id) => byId.get(id)).filter(Boolean);
+    // O pin aceita groupId (número) ou o NOME do grupo. O nome entrou porque o
+    // groupId só se descobre com a API na mão, e há set cujo NOME de set também
+    // diverge — o "30th Classic Collection" da TCGdex é "ME: 30th Celebration
+    // Classic Collection" no TCGplayer, então o casamento por nome de set nunca
+    // acha o grupo e o set ficava sem preço (19/09/2026).
+    if (pinned) candidates = [].concat(pinned)
+      .map((x) => (typeof x === "number" ? byId.get(x) : findImportGroup({ group: x }, groups)))
+      .filter(Boolean);
     else if (cached && Date.now() - (cached.t || 0) < CONFIRM_TTL) candidates = cached.g.map((id) => byId.get(id)).filter(Boolean);
     else candidates = candidateGroups(set, byName);
     if (!candidates.length) { stats.unmatchedEN.push(`${set.id} "${set.name}"`); return; }
@@ -168,7 +185,20 @@ if (catEN && !ONLY_JA) {
         prices = await api(`/${catEN.categoryId}/${g.groupId}/prices`);
       } catch (e) { console.warn(`  ${set.id}: grupo ${g.groupId} "${g.name}" erro ${e.message}`); continue; }
       await sleep(80);
-      const m = matchGroup(set.cards, products, prices, { setId: set.id, lang: "en" });
+      let m = matchGroup(set.cards, products, prices, { setId: set.id, lang: "en" });
+      // Número que não bate pode ser OUTRO set — ou a Classic Collection, que a
+      // TCGdex numera em sequência e o TCGplayer pelo número original da carta
+      // reimpressa. Antes de desistir do grupo, tenta casar pelo NOME
+      // (matchGroupByName: só nome inequívoco, e sem sintetizar carta nenhuma —
+      // o número de lá não serve de id aqui). Foi o que devolveu preço e imagem
+      // ao 30th-c e ao cel25cc, que estavam com o set inteiro em branco.
+      if (!groupFits(m)) {
+        const porNome = matchGroupByName(set.cards, products, prices);
+        if (nameFits(porNome)) {
+          console.log(`  ${set.id}: grupo ${g.groupId} "${g.name}" casou pelo NOME (${porNome.matched}/${porNome.ourCount}; por número era ${m.matched}/${m.ourCount})`);
+          m = { ...m, entries: porNome.entries, misses: [], matched: porNome.matched, ourCount: porNome.ourCount };
+        }
+      }
       // Confirmação pelo conteúdo: nome igual mas números que não batem = outro
       // set (o pin manual é a exceção — quem pinou conferiu).
       if (!pinned && !groupFits(m)) { console.log(`  ${set.id}: grupo ${g.groupId} "${g.name}" não confere (${m.matched}/${m.ourCount} números) — ignorado`); continue; }
@@ -241,13 +271,56 @@ if (catEN && !ONLY_JA) {
     console.log(`  EN import ${entry.setId} "${sib.set}": set importado inteiro do grupo ${g.groupId} "${g.name}" (${added} cartas)`);
   }
 
-  // Grupos EN modernos que não casaram com set nenhum nem têm pin: é assim que
-  // se descobre no log do deploy que um set novo apareceu no TCGplayer antes
-  // da TCGdex (candidato a pin `enImport`).
+  // ── Janela de lançamento: set EN novo entra SOZINHO ───────────────────────
+  // Grupo EN moderno, publicado na janela e sem set nosso vira set aqui mesmo,
+  // sem esperar pin à mão (ver autoImportGroups). O que segura a mão é a
+  // aposentadoria automática: se a TCGdex publicar o mesmo set com outro id, o
+  // retire-imported-sets apaga o nosso e migra a conta de quem marcou. Sem essa
+  // rede, importar sem curadoria seria irresponsável.
   const pinnedGroups = new Set([...importBySet.values()].map((e) => findImportGroup(e, groups)).filter(Boolean).map((g) => g.groupId));
+  const usados = new Set([...matchedGroupIds, ...pinnedGroups]);
+  const elegiveis = NO_AUTO ? [] : autoImportGroups(groups, { usedIds: usados, existingIds: ourIds });
+  const autoIds = new Set(elegiveis.map((e) => e.group.groupId));
+  // Teto por rodada. Set novo em inglês é evento de algumas vezes por ano: se a
+  // régua um dia deixar passar uma penca de grupos, entram 2 e o log grita, em
+  // vez de o site ganhar quinze sets de uma vez.
+  if (elegiveis.length > MAX_AUTO_SETS) {
+    console.warn(`  EN auto: ${elegiveis.length} grupos elegíveis de uma vez (teto ${MAX_AUTO_SETS}) — CONFERIR a régua: ${elegiveis.map((e) => `${e.group.groupId} "${e.group.name}"`).join(", ")}`);
+    elegiveis.length = MAX_AUTO_SETS;
+  }
+  for (const { group: g, setId } of elegiveis) {
+    if (ONLY_SETS.size && !ONLY_SETS.has(setId)) continue;
+    if (aposentados.has(setId)) continue; // já entrou e já foi aposentado
+    let products, prices;
+    try {
+      products = await api(`/${catEN.categoryId}/${g.groupId}/products`);
+      prices = await api(`/${catEN.categoryId}/${g.groupId}/prices`);
+    } catch (e) { console.warn(`  EN auto ${setId}: grupo ${g.groupId} erro ${e.message}`); continue; }
+    await sleep(80);
+    const m = matchGroup([], products, prices, { setId, lang: "en" });
+    // Grupo só com selado (pré-venda) ou com meia dúzia de singles não é set:
+    // na pré-venda o grupo existe antes de o TCGplayer listar as cartas.
+    if (m.misses.length < MIN_AUTO_SINGLES) {
+      console.log(`  EN auto ${setId}: grupo ${g.groupId} "${g.name}" com ${m.misses.length} single(s) de ${products.length} produtos — abaixo de ${MIN_AUTO_SINGLES}, fica pra amanhã`);
+      continue;
+    }
+    const entry = autoImportEntry(g, setId);
+    const sib = importSetFields(entry, g);
+    let added = 0;
+    for (const miss of m.misses.sort((a, b) => a.key.localeCompare(b.key))) {
+      const card = synthesizeCard({ product: miss.product, price: miss.price, img: miss.img, setId, lang: "en", sib, group: g, pinned: null, revNames: rev, variants: miss.variants, keepZeros: true, idExtra: miss.idExtra });
+      if (!card.name) continue;
+      newCards.push(card); added++;
+    }
+    stats.enImported++; stats.enNew += added;
+    console.log(`  EN auto ${setId} "${sib.set}": set NOVO importado sozinho do grupo ${g.groupId} "${g.name}" (${added} cartas) — a TCGdex ainda não publicou`);
+  }
+
+  // O que não entrou continua saindo no log: é assim que se descobre um set que
+  // a régua automática não pegou (nome fora do padrão de era, fora da janela).
   for (const g of groups) {
-    if (matchedGroupIds.has(g.groupId) || pinnedGroups.has(g.groupId)) continue;
-    if (/^(?:me|sv|swsh)\s*\d*(?:\.\d)?\s*[:\-–—]/i.test(String(g.name || ""))) stats.candidatesEN.push(`${g.groupId} "${g.name}" (${String(g.publishedOn || "").slice(0, 10)})`);
+    if (usados.has(g.groupId) || autoIds.has(g.groupId)) continue;
+    if (isModernEnGroup(g.name)) stats.candidatesEN.push(`${g.groupId} "${g.name}" (${String(g.publishedOn || "").slice(0, 10)})`);
   }
 }
 

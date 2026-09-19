@@ -4,6 +4,7 @@
 // travam (tests/tcgcsv-pokemon.test.mjs), já que o sync de verdade só roda no
 // deploy com a fonte viva.
 import { normNum, numDoId } from "./sync-common.mjs";
+import { cardNameKey } from "./set-supersede.mjs";
 import { compactTcgcsvPrice, chunkNumberPrefixes, missAllowed, VARIANTS, variantOfPrinting } from "./pricing.mjs";
 
 // ── Nome de set: TCGdex ↔ TCGplayer ─────────────────────────────────────────
@@ -191,6 +192,66 @@ export function splitByDenominator(products) {
   return [...by.entries()].sort((a, b) => num(a[0]) - num(b[0]) || a[0].localeCompare(b[0])).map(([den, list]) => ({ den, list }));
 }
 
+// Casamento por NOME, pra set cuja numeração NÃO bate com a do TCGplayer.
+//
+// Por que existe (19/09/2026): a Classic Collection é numerada de dois jeitos.
+// A TCGdex dá número sequencial ao set (001–030 no "30th Classic Collection",
+// CC001–CC025 no "Celebrations Classic Collection" de 2021) e o TCGplayer
+// mantém o número ORIGINAL da carta reimpressa ("Blastoise - 2/102"). Nenhum
+// número bate, o groupFits não confirma o grupo e o set inteiro ficava sem
+// preço e sem imagem — era o estado do 30th-c e do cel25cc.
+//
+// A régua é conservadora de propósito, porque preço errado numa carta é pior
+// que preço nenhum (a mesma razão que já vale pra imagem):
+//   • só casa nome INEQUÍVOCO — uma carta no chunk e um produto no grupo. As
+//     duas metades do "Darkrai & Cresselia LEGEND" ficam de fora por isso, e
+//     tudo bem: 28 de 30 com preço é melhor que 30 sem;
+//   • NUNCA sintetiza carta nova. O número do TCGplayer não serve de id aqui —
+//     usá-lo seria recriar a duplicata DENTRO do set;
+//   • quem chama só aceita o resultado se ele cobrir metade do chunk (nameFits).
+//
+// Devolve { entries, matched, ourCount } — sem misses, de propósito.
+export function matchGroupByName(chunk, products, prices) {
+  const cards = chunk || [];
+  if (!cards.length) return { entries: {}, matched: 0, ourCount: 0 };
+  const porNome = (lista, nomeDe) => {
+    const m = new Map();
+    for (const x of lista || []) {
+      const k = cardNameKey(nomeDe(x));
+      if (!k) continue;
+      if (!m.has(k)) m.set(k, []);
+      m.get(k).push(x);
+    }
+    return m;
+  };
+  const nossas = porNome(cards, (c) => c.name);
+  const deles = porNome((products || []).filter((p) => productKey(p)), (p) => cleanProductName(p.name));
+  const rowsByProduct = new Map();
+  for (const r of prices || []) {
+    if (!r || r.productId == null) continue;
+    if (!rowsByProduct.has(r.productId)) rowsByProduct.set(r.productId, []);
+    rowsByProduct.get(r.productId).push(r);
+  }
+  const entries = {};
+  let matched = 0;
+  for (const [k, minhas] of nossas) {
+    const seus = deles.get(k);
+    if (!seus || minhas.length !== 1 || seus.length !== 1) continue; // ambíguo: fica de fora
+    const prod = seus[0];
+    const compact = compactTcgcsvPrice(rowsByProduct.get(prod.productId));
+    const e = { img: `https://tcgplayer-cdn.tcgplayer.com/product/${prod.productId}_in_400x400.jpg` };
+    if (compact) Object.assign(e, compact);
+    entries[minhas[0].id] = e;
+    matched++;
+  }
+  return { entries, matched, ourCount: cards.length };
+}
+// O casamento por nome só vale se cobrir METADE do chunk — mesma régua do
+// groupFits, pra um punhado de homônimos não confirmar um grupo que não é o set.
+export function nameFits(m) {
+  return Boolean(m && m.ourCount && m.matched / m.ourCount >= 0.5);
+}
+
 // Um grupo do TCGplayer É o set nosso quando os números batem: metade das
 // nossas cartas achadas nele (ou metade das dele nas nossas, pra chunk que
 // junta galeria + set). Nome igual sozinho não basta — "Base Set" existe em
@@ -367,4 +428,62 @@ export function synthesizeCard({ product, price, img, setId, lang, sib, group, p
   };
   if (price && price.u > 0) card.price = price;
   return card;
+}
+
+// ── Janela de lançamento: set EN novo entra SOZINHO ─────────────────────────
+// O pin `enImport` resolve a janela entre o lançamento e a TCGdex publicar, mas
+// depende de alguém ler o log do deploy e escrever o pin à mão — foi o que
+// custou dois dias no "30th Celebration" (16/09/2026). Agora que a
+// aposentadoria automática existe (retire-imported-sets: se a TCGdex batizar o
+// set com outro id, o nosso é aposentado e a conta de quem marcou migra), dá
+// pra fechar o ciclo e deixar o set novo entrar sem pin.
+//
+// A elegibilidade é estreita de propósito — grupo importado por engano vira
+// set-lixo visível pra todo mundo:
+//   • nome com prefixo de era MODERNA ("ME: …", "SV09: …"): é o formato que o
+//     TCGplayer usa nos sets principais;
+//   • publicado na JANELA (90 dias): sem isso, o primeiro build importaria de
+//     uma vez toda a lista histórica de grupos que a TCGdex nunca teve —
+//     exatamente o que não queremos;
+//   • não casou com set nosso nem tem pin (quem chama já filtrou);
+//   • e, no sync, um mínimo de singles numerados (grupo só com selado não é set).
+const ERA_MODERNA = /^(?:me|sv|swsh)\s*\d*(?:\.\d)?\s*[:\-–—]/i;
+export function isModernEnGroup(name) {
+  return ERA_MODERNA.test(String(name || ""));
+}
+// setId PROVISÓRIO do grupo: slug do nome sem o código de era ("ME: Delta
+// Reign" -> "delta-reign"). É um id que ninguém escolheu a dedo, e é por isso
+// que a aposentadoria automática precisa existir antes desta função: quando a
+// TCGdex publicar com o id dela, o nosso morre e as contas migram.
+// Id que JÁ existe devolve "" — colisão quer dizer que o set já é nosso.
+export function autoImportSetId(groupName, existingIds) {
+  const slug = normalizeSetName(groupName).full.replace(/\s+/g, "-").replace(/^-+|-+$/g, "");
+  if (!slug || slug.length > 40) return "";
+  const tem = existingIds instanceof Set ? existingIds : new Set(existingIds || []);
+  return tem.has(slug) ? "" : slug;
+}
+// Grupos elegíveis à janela de lançamento. `hoje` e `janelaDias` entram por
+// parâmetro pra o teste não depender do relógio.
+//   groups: grupos do TCGplayer; usedIds: groupIds já casados ou pinados;
+//   existingIds: setIds que já temos.
+export function autoImportGroups(groups, { usedIds, existingIds, hoje = Date.now(), janelaDias = 90 } = {}) {
+  const usados = usedIds instanceof Set ? usedIds : new Set(usedIds || []);
+  const corte = hoje - janelaDias * 24 * 3600 * 1000;
+  const out = [];
+  for (const g of groups || []) {
+    if (!g || usados.has(g.groupId) || !isModernEnGroup(g.name)) continue;
+    const t = Date.parse(String(g.publishedOn || ""));
+    if (!Number.isFinite(t) || t < corte) continue;
+    const setId = autoImportSetId(g.name, existingIds);
+    if (!setId) continue;
+    out.push({ group: g, setId });
+  }
+  return out;
+}
+// O "entry" que o import automático usa no lugar do pin: mesmo formato, só que
+// o nome e a série saem do próprio nome do grupo ("ME: Delta Reign" -> nome
+// "Delta Reign", série "me") em vez de serem escolhidos à mão.
+export function autoImportEntry(group, setId) {
+  const era = String(group && group.name || "").match(/^(me|sv|swsh|sm|xy)/i);
+  return { setId, name: jpSetTitle(group && group.name), serie: era ? era[1].toLowerCase() : "", group: group && group.groupId };
 }

@@ -111,3 +111,56 @@ test("blob que vem da nuvem com id velho é reescrito antes do merge", () => {
   assert.deepEqual(Object.keys(JSON.parse(JSON.stringify(m.collection))).sort(), ["30th-001", "30th-002"]);
   assert.equal(m.collection["30th-002"].Holo.NM, 3);
 });
+
+// ── O caminho do APARELHO, de ponta a ponta ─────────────────────────────────
+// Não basta a tabela estar certa: o que importa é a carta que a pessoa marcou
+// continuar na Coleção depois que o set trocou de id. Estes dois testes fazem o
+// percurso real — localStorage do aparelho, store da coleção e o blob da nuvem.
+
+test("aparelho: o que foi marcado no id velho abre no id novo, com a mesma quantidade", () => {
+  // Estado de quem marcou cartas nos dois dias em que o set foi cel30/cel30cc.
+  const localStorage = makeLocalStorage({
+    "tcg-collector-pokemon-collection-v3": JSON.stringify({
+      "cel30-001": { Holo: { NM: 2 } },
+      "cel30-158": { Normal: { NM: 1, SP: 3 } },
+      "cel30cc-4": { Holo: { NM: 1 } }
+    }),
+    "tcg-collector-pokemon-collection-meta-v1": JSON.stringify({
+      mod: { "cel30-001": 111, "cel30-158": 222, "cel30cc-4": 333 }, del: {}
+    })
+  });
+  const sandbox = loadShared(EXPOR, { localStorage });
+  const store = sandbox.window.TCGShared.createCollectionStore("pokemon");
+
+  assert.equal(store.getQuantity("30th-001", "Holo", "NM"), 2);
+  assert.equal(store.getQuantity("30th-158", "Normal", "NM"), 1);
+  assert.equal(store.getQuantity("30th-158", "Normal", "SP"), 3);
+  assert.equal(store.getQuantity("30th-c-001", "Holo", "NM"), 1); // Charizard da Classic Collection
+  assert.equal(store.totalQuantity(), 7);                          // nada se perdeu no caminho
+  // O id velho não existe mais na conta (senão a carta apareceria duas vezes).
+  assert.equal(store.has("cel30-001"), false);
+  assert.equal(store.has("cel30cc-4"), false);
+  assert.deepEqual(JSON.parse(JSON.stringify(store.knownCardIds())).sort(), ["30th-001", "30th-158", "30th-c-001"]);
+  // O timestamp do LWW viaja junto: sem ele o sync trataria a carta como nova.
+  const meta = JSON.parse(localStorage._dump()["tcg-collector-pokemon-collection-meta-v1"]);
+  assert.equal(meta.mod["30th-001"], 111);
+  assert.equal(meta.mod["30th-c-001"], 333);
+});
+
+test("aparelho já migrado + nuvem com id velho: a carta não volta em dobro", () => {
+  // O outro aparelho ainda não abriu o site, então o blob da nuvem tem o id
+  // velho. É o caso do celular que sincroniza depois do desktop (ou vice-versa).
+  const { __test: t } = loadShared(EXPOR);
+  const local = {
+    collection: { "30th-001": { Holo: { NM: 2 } } },
+    collectionMeta: { mod: { "30th-001": 500 }, del: {} }
+  };
+  const remoto = {
+    collection: { "cel30-001": { Holo: { NM: 9 } }, "cel30-002": { Holo: { NM: 1 } } },
+    collectionMeta: { mod: { "cel30-001": 900, "cel30-002": 900 }, del: {} }
+  };
+  const m = JSON.parse(JSON.stringify(t.mergeData(local, remoto)));
+  assert.deepEqual(Object.keys(m.collection).sort(), ["30th-001", "30th-002"]);
+  assert.equal(m.collection["30th-001"].Holo.NM, 9); // o remoto é mais novo: vence pelo LWW
+  assert.equal(m.collection["30th-002"].Holo.NM, 1); // e a carta que só existia lá entrou
+});
