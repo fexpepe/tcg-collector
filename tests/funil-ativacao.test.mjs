@@ -127,6 +127,35 @@ test("a origem do cadastro é uma lista fechada e volta pra 'ui'", () => {
     "sem voltar pra 'ui' no fechar, todo cadastro seguinte seria contado como scanner");
 });
 
+test("TODO caminho declarado em ORIGENS está de fato ligado no código", () => {
+  // Declarar "csv" e "lista" sem ligar os dois faria essas cartas serem
+  // contadas como "ui" — e a tabela "ritmo por caminho" mentiria sem que
+  // nenhum teste reclamasse. Cada origem declarada tem de existir como chamada.
+  const importador = ler("src/backup-import.js");
+  const todo = shared + scan + importador;
+  const origens = /const ORIGENS = \[([^\]]+)\]/.exec(shared)[1]
+    .split(",").map((x) => x.trim().replace(/"/g, ""));
+  assert.deepEqual(origens, ["ui", "scan", "csv", "lista"]);
+  for (const via of origens) {
+    const n = todo.split(`setOrigemCadastro("${via}")`).length - 1;
+    assert.ok(n >= 1, `a origem "${via}" está declarada mas nunca é usada — as cartas dela cairiam em "ui"`);
+  }
+  // e toda origem usada tem de estar declarada
+  for (const m of todo.matchAll(/setOrigemCadastro\("([a-z]+)"\)/g)) {
+    assert.ok(origens.indexOf(m[1]) >= 0, `"${m[1]}" é usada mas não está em ORIGENS — vira "ui" calado`);
+  }
+});
+
+test("quem muda a origem devolve pra 'ui' no mesmo bloco", () => {
+  // Origem que não volta contamina todo cadastro seguinte da sessão.
+  const importador = ler("src/backup-import.js");
+  for (const [arquivo, txt] of [["scan.js", scan], ["shared.js", shared], ["backup-import.js", importador]]) {
+    const abre = (txt.match(/setOrigemCadastro\("(?:scan|csv|lista)"\)/g) || []).length;
+    const fecha = (txt.match(/setOrigemCadastro\("ui"\)/g) || []).length;
+    assert.equal(abre, fecha, `${arquivo}: ${abre} troca(s) de origem e ${fecha} volta(s) pra "ui"`);
+  }
+});
+
 test("a RPC do painel existe, é só de admin e não derruba a admin_dashboard", () => {
   const sql = ler("supabase/migrations/20260919a_funil_ativacao.sql");
   assert.match(sql, /create or replace function public\.admin_funnel\(days int default 30\)/);

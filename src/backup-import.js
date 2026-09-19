@@ -18,7 +18,7 @@
 (function () {
   const S = window.TCGShared;
   if (!S || !S._nucleo) return;
-  const { CARD_CONDITIONS, DEFAULT_CONDITION, GAME_SLUGS, cardVariants, createCollectionStore, defaultVariant, escapeHtml, gameDataDir, gameLabel, getLocale, logEvento, marcaPasso, normalize, notifyStorageFull, snapshotKeys, t, tn } = S;
+  const { CARD_CONDITIONS, DEFAULT_CONDITION, GAME_SLUGS, cardVariants, createCollectionStore, defaultVariant, escapeHtml, gameDataDir, gameLabel, getLocale, logEvento, marcaPasso, normalize, notifyStorageFull, setOrigemCadastro, snapshotKeys, t, tn } = S;
   const { SYNC_KEYS, currentGame, currentGameSlug, flushWrites, freezeWritesUntilReload, isUnsafeKey, mergeBinders, mergeCollection, mergeCosts, mergeDecks, mergeFolders, mergeGraded, mergeLists, mergeManual, mergePrices, mergeSales, mergeSold, mergeTags, mergeWishTargets, mergeWishlist, normalizeMeta, readObject } = S._nucleo;
 
   // --- Helpers PUROS de importação de CSV (Dex/TCGplayer/Collectr) ---
@@ -709,12 +709,16 @@
         agg.set(k, (agg.get(k) || 0) + m.qty);
       });
       let copies = 0;
+      // Funil: tudo o que entrar neste laço é cadastro por importação. Volta
+      // pra "ui" no fim, senão o próximo clique na tela seria contado como CSV.
+      setOrigemCadastro("csv");
       agg.forEach((target, k) => {
         const [g, id, variant, cond] = k.split("|");
         const st = stores[g] || (stores[g] = createCollectionStore(g));
         st.add(id, variant, cond, target - st.getQuantity(id, variant, cond));
         copies += target;
       });
+      setOrigemCadastro("ui");
       flushWrites();
       marcaPasso("csv");
       logEvento("import_done", { f: "csv", n: agg.size });
@@ -760,6 +764,7 @@
       if (!ids.length) { alert(t("dex.empty")); return; }
       // Dex é Pokémon: grava na coleção do jogo pokemon.
       const store = createCollectionStore("pokemon");
+      setOrigemCadastro("csv");   // funil: importação do Dex é cadastro por arquivo
       ids.forEach((id) => {
         Object.keys(agg[id]).forEach((variant) => {
           const target = agg[id][variant];
@@ -768,6 +773,7 @@
           copies += target;
         });
       });
+      setOrigemCadastro("ui");
       flushWrites(); // garante a persistência antes de navegar
       marcaPasso("csv");
       logEvento("import_done", { f: "dex", n: ids.length });

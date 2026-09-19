@@ -7234,7 +7234,9 @@
       // e Foil erra o valor da coleção, que é a mesma razão de o + agrupado abrir
       // o card em vez de adicionar. A entrada fica na lista como marcador.
       if (ficou && variant && lista && lista.linked && lista.game) {
+        setOrigemCadastro("lista");   // funil: esta carta entrou por lista vinculada
         createCollectionStore(lista.game).add(cardId, variant, DEFAULT_CONDITION, 1);
+        setOrigemCadastro("ui");
       }
       item.classList.toggle("is-on", ficou);
       const check = item.querySelector(".list-menu-check");
