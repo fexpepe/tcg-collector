@@ -59,7 +59,13 @@ concorrentes (Collectr, Dex) já o mostravam a partir do grupo do TCGplayer. O
 `cel30`/`cel30cc` — 4 coleções de 30 anos onde existem 2. Desde então quem
 aposenta o duplicado é o `retire-imported-sets.mjs`, em todo build, com o
 de-para de `cardId` versionado pra ninguém perder o que marcou (ver
-"Aposentadoria do set importado" no README). PT
+"Aposentadoria do set importado" no README). Com essa rede no lugar, em
+19/09/2026 o pin deixou de ser obrigatório: grupo EN de era moderna, dos
+últimos 90 dias e com 20+ singles entra sozinho, e o id provisório é aposentado
+quando a TCGdex publicar o dela. A régua de fonte está fixada no README ("Quem
+manda em quê"): TCGdex é o CATÁLOGO, TCGCSV é o PREÇO, e o inglês não sai da
+TCGdex — onde a TCGCSV domina (o japonês) metade das cartas fica sem artista e
+sem tipo. PT
 e ZH continuam dependendo da TCGdex: o TCGplayer só vende EN e JP. Histórico de
 preços sem servidor: a produção é o banco. Decisão de 14/09/2026, depois da comparação com
 o TCG Collector: a tabela tinha um preço por carta (o do Normal), o preço JP

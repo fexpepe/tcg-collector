@@ -282,3 +282,154 @@ test("jpAmbiguousCodes: código repetido em grupos sem chunk é ambíguo; chunk 
   assert.equal(jpAliasOf({ name: "SVP Promo" }, "SVP", { SVP: "SV-P" }), "SV-P");
   assert.equal(jpAmbiguousCodes([], { codeOf: () => null, hasChunk: () => false, alias: {} }).size, 0);
 });
+
+// ── Casamento por NOME (Classic Collection: numeração que não bate) ──────────
+// 19/09/2026: a TCGdex numera a Classic Collection em sequência (001–030 no
+// "30th Classic Collection", CC001–CC025 no de 2021) e o TCGplayer mantém o
+// número ORIGINAL da carta reimpressa. Nenhum número batia, o groupFits não
+// confirmava o grupo e o set inteiro ficava sem preço e sem imagem.
+import { matchGroupByName, nameFits } from "../scripts/lib/tcgcsv-pokemon.mjs";
+
+// O chunk é como a TCGdex publica; os produtos, como o TCGplayer vende (número
+// original, e a mecânica decorando o nome).
+const CC_CHUNK = [
+  { id: "30th-c-001", number: "001", name: "Charizard" },
+  { id: "30th-c-018", number: "018", name: "Gengar" },
+  { id: "30th-c-019", number: "019", name: "Darkrai & Cresselia LEGEND" },
+  { id: "30th-c-020", number: "020", name: "Darkrai & Cresselia LEGEND" },
+  { id: "30th-c-022", number: "022", name: "Palkia" },
+  { id: "30th-c-030", number: "030", name: "Magikarp" }
+];
+const prod = (id, nome, num) => ({ productId: id, name: nome, extendedData: [{ name: "Number", value: num }] });
+const CC_PRODUTOS = [
+  prod(901, "Charizard - 4/102", "4/102"),
+  prod(902, "Gengar (Prime) - 94/123", "94/123"),
+  prod(903, "Darkrai & Cresselia Legend (Top) - 99/113", "99/113"),
+  prod(904, "Darkrai & Cresselia Legend (Bottom) - 100/113", "100/113"),
+  prod(905, "Palkia LV.X - 106/106", "106/106"),
+  prod(906, "Magikarp - 203/203", "203/203"),
+  { productId: 907, name: "30th Celebration Classic Collection Booster Box" } // selado: sem Number, fica fora
+];
+const CC_PRECOS = [
+  { productId: 901, subTypeName: "Holofoil", marketPrice: 120 },
+  { productId: 902, subTypeName: "Holofoil", marketPrice: 40 },
+  { productId: 905, subTypeName: "Holofoil", marketPrice: 25 }
+];
+
+test("casamento por nome: número diferente não impede, mecânica no nome não atrapalha", () => {
+  const m = matchGroupByName(CC_CHUNK, CC_PRODUTOS, CC_PRECOS);
+  // "Gengar (Prime)" = "Gengar" e "Palkia LV.X" = "Palkia" (ver cardNameKey).
+  assert.equal(m.matched, 4);
+  assert.equal(m.ourCount, 6);
+  assert.ok(m.entries["30th-c-001"], "Charizard casou");
+  assert.ok(m.entries["30th-c-018"], "Gengar (Prime) casou");
+  assert.ok(m.entries["30th-c-022"], "Palkia LV.X casou");
+  assert.equal(m.entries["30th-c-001"].u, 120);
+  assert.match(m.entries["30th-c-022"].img, /901|905/);
+  // Nome REPETIDO dos dois lados (as duas metades do LEGEND) fica de fora: sem
+  // saber qual metade é qual, preço errado seria pior que preço nenhum.
+  assert.equal(m.entries["30th-c-019"], undefined);
+  assert.equal(m.entries["30th-c-020"], undefined);
+  assert.equal(nameFits(m), true); // 4/6 ≥ metade
+});
+
+test("casamento por nome NUNCA sintetiza carta (o número de lá não vira id)", () => {
+  const m = matchGroupByName(CC_CHUNK, CC_PRODUTOS, CC_PRECOS);
+  assert.equal(m.misses, undefined);
+  // Todo id devolvido é id NOSSO, do chunk — nenhum "30th-c-4" inventado do
+  // número do TCGplayer (seria recriar a duplicata dentro do próprio set).
+  const nossos = new Set(CC_CHUNK.map((c) => c.id));
+  for (const id of Object.keys(m.entries)) assert.ok(nossos.has(id), `${id} veio do chunk`);
+});
+
+test("casamento por nome descarta o grupo ERRADO (poucos homônimos não confirmam)", () => {
+  const outroSet = [
+    prod(801, "Pikachu - 001/158", "001/158"), prod(802, "Raichu - 002/158", "002/158"),
+    prod(803, "Charizard - 003/158", "003/158"), prod(804, "Exeggcute - 004/158", "004/158"),
+    prod(805, "Exeggutor - 005/158", "005/158"), prod(806, "Nidoran F - 006/158", "006/158")
+  ];
+  const m = matchGroupByName(CC_CHUNK, outroSet, []);
+  assert.equal(m.matched, 1);        // só o Charizard, que é homônimo
+  assert.equal(nameFits(m), false);  // 1/6 não confirma nada
+});
+
+test("casamento por nome não roda em set importado inteiro (não há chunk)", () => {
+  const m = matchGroupByName([], CC_PRODUTOS, CC_PRECOS);
+  assert.deepEqual(m, { entries: {}, matched: 0, ourCount: 0 });
+  assert.equal(nameFits(m), false);
+});
+
+test("pin `en` por NOME do grupo acha o grupo que o nome do set não acha", () => {
+  const grupos = [
+    { groupId: 25100, name: "ME: 30th Celebration" },
+    { groupId: 25101, name: "ME: 30th Celebration Classic Collection" }
+  ];
+  // O nome do SET ("30th Classic Collection") não casa com o do grupo; o pin sim.
+  assert.equal(candidateGroups({ id: "30th-c", name: "30th Classic Collection" }, indexGroupsByName(grupos)).length, 0);
+  assert.equal(findImportGroup({ group: "ME: 30th Celebration Classic Collection" }, grupos).groupId, 25101);
+});
+
+// ── Janela de lançamento: set EN novo entra sozinho ─────────────────────────
+// 19/09/2026: o pin `enImport` dependia de alguém ler o log do deploy e
+// escrever o pin à mão — dois dias de atraso no 30th Celebration. A régua
+// automática é estreita de propósito; estes testes travam o quão estreita.
+import { autoImportGroups, autoImportSetId, autoImportEntry, isModernEnGroup } from "../scripts/lib/tcgcsv-pokemon.mjs";
+
+const HOJE = Date.parse("2026-11-10T00:00:00Z");
+const GRUPOS = [
+  { groupId: 1, name: "ME: Delta Reign", publishedOn: "2026-11-06T00:00:00" },          // set novo: entra
+  { groupId: 2, name: "ME: 30th Celebration", publishedOn: "2026-09-16T00:00:00" },     // já é nosso: fora
+  { groupId: 3, name: "SWSH07: Evolving Skies", publishedOn: "2021-08-27T00:00:00" },   // antigo: fora
+  { groupId: 4, name: "Celebrations: Classic Collection", publishedOn: "2026-11-01T00:00:00" }, // sem era: fora
+  { groupId: 5, name: "SV10: Destined Rivals", publishedOn: "2026-10-20T00:00:00" },    // set novo: entra
+  { groupId: 6, name: "Pokemon Sealed Product", publishedOn: "2026-11-02T00:00:00" }    // sem era: fora
+];
+
+test("janela: só era moderna, só recente, só o que não é nosso", () => {
+  const r = autoImportGroups(GRUPOS, { usedIds: [2], existingIds: ["30th", "swsh7"], hoje: HOJE });
+  assert.deepEqual(r.map((x) => `${x.group.groupId}:${x.setId}`), ["1:delta-reign", "5:destined-rivals"]);
+});
+
+test("janela: grupo já casado com set nosso nunca entra de novo", () => {
+  // O groupId do set que já casou chega em usedIds — sem isso, o set entraria
+  // duas vezes (uma pelo casamento, outra pela janela).
+  const r = autoImportGroups(GRUPOS, { usedIds: [1, 2, 5], existingIds: [], hoje: HOJE });
+  assert.deepEqual(r, []);
+});
+
+test("janela: a régua de data é o que impede importar a lista histórica de uma vez", () => {
+  // Sem a janela, TODO grupo de era moderna que a TCGdex não tem viraria set no
+  // primeiro build com a automação ligada.
+  const semJanela = autoImportGroups(GRUPOS, { usedIds: [], existingIds: [], hoje: HOJE, janelaDias: 36500 });
+  assert.equal(semJanela.length, 4); // 1, 2, 3 e 5
+  const comJanela = autoImportGroups(GRUPOS, { usedIds: [], existingIds: [], hoje: HOJE });
+  assert.equal(comJanela.length, 3); // o Evolving Skies de 2021 fica fora
+  // Grupo sem data publicada não entra: não dá pra saber se é da janela.
+  assert.deepEqual(autoImportGroups([{ groupId: 9, name: "ME: Sem Data" }], { usedIds: [], existingIds: [], hoje: HOJE }), []);
+});
+
+test("setId provisório: slug do nome, e colisão com set nosso cancela", () => {
+  assert.equal(autoImportSetId("ME: Delta Reign", []), "delta-reign");
+  assert.equal(autoImportSetId("SV10: Destined Rivals", ["sv10"]), "destined-rivals");
+  // Id que já existe = o set já é nosso; importar de novo seria a duplicata.
+  assert.equal(autoImportSetId("ME: Delta Reign", ["delta-reign"]), "");
+  assert.equal(autoImportSetId("ME:", []), "");
+});
+
+test("entry automático tira o código de era do nome e herda a série", () => {
+  const e = autoImportEntry({ groupId: 1, name: "ME: Delta Reign" }, "delta-reign");
+  assert.equal(e.name, "Delta Reign");
+  assert.equal(e.serie, "me");
+  assert.equal(e.setId, "delta-reign");
+  assert.equal(importSetFields(e, { name: "ME: Delta Reign" }).setSerieName, "Mega Evolution");
+  assert.equal(autoImportEntry({ name: "SV10: Destined Rivals" }, "x").serie, "sv");
+});
+
+test("isModernEnGroup: o filtro de nome que abre a janela", () => {
+  assert.equal(isModernEnGroup("ME: 30th Celebration"), true);
+  assert.equal(isModernEnGroup("SV09: Journey Together"), true);
+  assert.equal(isModernEnGroup("SWSH12: Silver Tempest"), true);
+  assert.equal(isModernEnGroup("Celebrations: Classic Collection"), false);
+  assert.equal(isModernEnGroup("Pokemon Sealed Product"), false);
+  assert.equal(isModernEnGroup(""), false);
+});
