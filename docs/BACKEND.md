@@ -231,6 +231,43 @@ anônimo), **usuário logado** (conta) e **robô** — e é o que responde "quan
 tráfego medido é gente". Crawler que não executa JS nunca gera evento; esse só o
 Cloudflare vê.
 
+### Funil de ativação (`20260919a`)
+
+Os cinco eventos de produto da `20260830a` (`export_done`, `import_done`,
+`deck_created`, `backup_done`, `share_created`) medem **ações concluídas** — não
+medem caminho. Não respondiam "quanta gente abriu o scanner e desistiu", "quanto
+tempo leva pra cadastrar 100 cartas" nem "dos que chegaram, quantos chegaram a
+usar" — as três perguntas que tráfego de campanha obriga a responder, e cuja
+coorte não volta pra ser medida depois. Daí mais cinco:
+
+| Evento | `props` | Responde |
+|---|---|---|
+| `scan_open` | — | denominador: quantos abriram o scanner |
+| `scan_done` | `n`, `lido`, `achou`, `add`, `ms` | o funil inteiro da sessão: tentou → leu o código → achou no catálogo → virou carta |
+| `card_added` | `via`, `n`, `ms` | ritmo de cadastro por caminho (`n/ms` = cartas por minuto) |
+| `collection_first` | — | ativação: a primeira carta da vida daquele navegador |
+| `login_gate` | `p` | atrito: quem bateu no portão de login, e em qual página |
+
+**Por que são agregados, e não um evento por carta.** O `events_guard` aceita
+**60 eventos por minuto por IP** e descarta o resto com `return null` — sem erro,
+sem 4xx, sem nada. Um evento por carta (abriu/leu/achou/adicionou) estoura isso
+a partir de ~15 cartas/min, ou seja, apagaria justamente a medição de quem abre
+um booster inteiro: a pessoa que o funil existe pra enxergar. Então o scanner
+manda **um resumo ao fechar** e o cadastro manda **um resumo por rajada** (20s de
+silêncio fecham uma), com os números em `props`. São ~4 eventos/min no pior
+caso. `tests/funil-ativacao.test.mjs` trava esse orçamento contra o limite lido
+da própria migração.
+
+O `card_added` é disparado no `passouATer` do store da coleção — o gargalo por
+onde toda carta entra (scanner, busca, tile, CSV, lista) e que só dispara pra
+carta **nova**, não pra cópia a mais.
+
+No painel: aba **Produto**, alimentada pela RPC `admin_funnel(days)` — separada
+da `admin_dashboard` de propósito, porque reescrever uma função de 200 linhas
+pra somar uns campos é risco sem retorno. Enquanto a migração não for aplicada,
+a aba mostra um aviso com o nome do arquivo em vez de zeros (zero aqui se lê
+como "ninguém usa o scanner", que é o erro que a `20260830a` já documentava).
+
 **Quem entra no `/admin`**: a conta cuja linha em `profiles` tem `is_admin`. Não
 há tela pra isso — é `update profiles set is_admin = true where user_id = …` no
 SQL Editor. O trigger `profiles_admin_guard` devolve `is_admin` ao valor

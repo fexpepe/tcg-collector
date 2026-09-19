@@ -618,6 +618,16 @@
     let codigoAtual = "";
     let lote = 0;
     let ultimoTexto = ""; // texto do último OCR: a busca manual reaproveita as pistas
+    // ── Funil (item 7) ───────────────────────────────────────────────────────
+    // Contadores da SESSÃO de scanner, mandados num resumo só ao fechar. Não é
+    // um evento por leitura de propósito: o banco aceita 60 eventos/min por IP
+    // e descarta o resto calado, então medir por carta apagaria exatamente a
+    // pessoa que abre um booster inteiro — que é quem importa enxergar.
+    const funil = { n: 0, lido: 0, achou: 0, t0: Date.now() };
+    shared.logEvento("scan_open");
+    // Toda carta que entrar daqui conta como cadastro por scanner (o store não
+    // sabe de onde veio o clique). Volta pra "ui" no fechar.
+    shared.setOrigemCadastro("scan");
     const stores = { col: {}, wl: {} };
     const sessao = (window.SLEEVU && window.SLEEVU.game) || "";
 
@@ -746,6 +756,13 @@
     window.addEventListener("resize", posicionaGuia);
 
     function fechar() {
+      // Resumo da sessão: o funil inteiro (abriu -> leu -> achou -> adicionou)
+      // num evento só, com o tempo pra dar o ritmo de cadastro.
+      shared.logEvento("scan_done", {
+        n: funil.n, lido: funil.lido, achou: funil.achou, add: lote,
+        ms: Math.max(0, Date.now() - funil.t0)
+      });
+      shared.setOrigemCadastro("ui");
       if (stream) stream.getTracks().forEach((tr) => tr.stop());
       stream = null;
       wrap.remove();
@@ -897,6 +914,9 @@
     }
     function fecharFolha() { folha.hidden = true; fundo.hidden = true; }
     function entregar(codigo, achados) {
+      funil.n += 1;
+      if (codigo) funil.lido += 1;              // o OCR extraiu um código
+      if (achados.length) funil.achou += 1;     // e ele casou com o catálogo
       codigoAtual = codigo || "";
       resultados = achados;
       primario = 0;

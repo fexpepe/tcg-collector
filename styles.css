@@ -4734,6 +4734,17 @@ a.setting-open {
 .adm-axis { fill: var(--subtle); font-size: 10px; }
 .adm-bar-a { fill: var(--accent); }
 .adm-bar-b { fill: var(--subtle); opacity: 0.7; }
+/* Funil de ativação da aba Produto. Barras em HTML e não em SVG como o resto
+   do painel: cada passo tem rótulo, número e uma nota embaixo, e empilhar isso
+   num SVG custaria posicionamento manual pra não ganhar nada. A largura é
+   fração do PRIMEIRO passo (não do anterior), senão toda barra ficaria quase
+   cheia e a queda — que é a informação — sumiria. */
+.adm-funil { display: flex; flex-direction: column; gap: 12px; }
+.adm-funil-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; }
+.adm-funil-head strong { font-size: 15px; font-variant-numeric: tabular-nums; }
+.adm-funil-barra { height: 10px; border-radius: 999px; background: var(--line); overflow: hidden; margin: 4px 0 3px; }
+.adm-funil-barra span { display: block; height: 100%; border-radius: 999px; background: var(--accent); }
+.adm-funil-hint { font-size: 11px; color: var(--subtle); line-height: 1.35; }
 .adm-swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block; flex: none; }
 .adm-swatch-a { background: var(--accent); }
 .adm-swatch-b { background: var(--subtle); opacity: 0.7; }

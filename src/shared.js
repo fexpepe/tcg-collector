@@ -401,6 +401,11 @@
     const dexGame = game || ((window.SLEEVU && window.SLEEVU.game) || "pokemon");
     function passouATer(cardId) {
       if (dexGame === "pokemon") autoMarkDex(cardId);
+      // Funil: conta CARTA NOVA, não incremento de quantidade — pôr a 2ª cópia
+      // não é cadastro. Aqui, e não no `add`, porque o toggle da variante no
+      // tile é o outro caminho por onde carta entra, e os dois passam por aqui.
+      marcarCadastro();
+      marcarPrimeiraCarta();
     }
     let collection = load();
     let initialized = collection !== null;
@@ -3726,10 +3731,70 @@
   // whitelist do trigger `events_guard` (migração 20260830a): nome fora dela é
   // descartado CALADO pelo banco, então inventar um aqui mede zero sem erro
   // nenhum aparecer.
-  const EVENTOS = ["export_done", "import_done", "deck_created", "backup_done", "share_created"];
+  const EVENTOS = ["export_done", "import_done", "deck_created", "backup_done", "share_created",
+    "scan_open", "scan_done", "card_added", "collection_first", "login_gate"];
   function logEvento(nome, props) {
     if (EVENTOS.indexOf(nome) < 0) return;
     mandaEvento(nome, props);
+  }
+
+  // ── FUNIL DE ATIVAÇÃO ──────────────────────────────────────────────────────
+  // Os cinco de cima respondem "quantos terminaram tal ação". Não respondem
+  // nada sobre o CAMINHO: quanta gente abriu o scanner, quantas leituras deram
+  // código, quantas acharam carta, quantas viraram coleção — e quão rápido se
+  // cadastra. Sem isso, tráfego de UA chega e ninguém sabe ler o que ele fez;
+  // medir depois não recupera a coorte que já passou.
+  //
+  // Por que os eventos são AGREGADOS e não um por carta: o `events_guard`
+  // aceita 60 eventos por MINUTO por IP e descarta o resto CALADO. Um funil
+  // ingênuo (abriu/leu/achou/adicionou, por carta) estoura isso com 15 cartas
+  // por minuto — e apagaria justamente a medição de quem mais usa o produto,
+  // que é quem o funil existe pra enxergar. Então o scanner manda UM resumo ao
+  // fechar e o cadastro manda UM resumo por RAJADA, com os números em props:
+  // dois eventos por sessão de scanner em vez de quatro por carta.
+  const RAJADA_MS = 20000;  // silêncio que fecha uma rajada de cadastro
+  const ORIGENS = ["ui", "scan", "csv", "lista"];
+  let origemCadastro = "ui";
+  // O `add` do store é o gargalo por onde TODA carta entra, mas ele não sabe de
+  // onde veio o clique — então quem sabe avisa antes.
+  function setOrigemCadastro(via) { origemCadastro = ORIGENS.indexOf(via) >= 0 ? via : "ui"; }
+
+  let rajada = null;
+  function fecharRajada() {
+    const r = rajada;
+    rajada = null;
+    if (!r || !r.n) return;
+    clearTimeout(r.timer);
+    // n + ms = o RITMO de cadastro, que é a métrica de "100 cartas em quanto
+    // tempo" sem depender de alguém fazer exatamente 100.
+    logEvento("card_added", { via: r.via, n: r.n, ms: Math.max(0, Date.now() - r.t0) });
+  }
+  function marcarCadastro() {
+    const via = origemCadastro;
+    if (rajada && rajada.via !== via) fecharRajada();   // trocou de caminho: são duas rajadas
+    if (!rajada) rajada = { via, n: 0, t0: Date.now(), timer: null };
+    rajada.n += 1;
+    clearTimeout(rajada.timer);
+    rajada.timer = setTimeout(fecharRajada, RAJADA_MS);
+  }
+  // Fecha a rajada quando a aba some, senão o último lote — o mais interessante,
+  // porque é o que a pessoa fez antes de sair — nunca vira evento. pagehide (e
+  // não unload) porque é o que o iOS dispara; o keepalive do fetch entrega.
+  try {
+    window.addEventListener("pagehide", fecharRajada);
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") fecharRajada(); });
+  } catch (e) { /* analytics nunca quebra a página */ }
+
+  // ATIVAÇÃO: a primeira carta da vida. É a primeira pergunta de qualquer funil
+  // de UA ("dos que instalaram, quantos chegaram a usar") e não se responde com
+  // pageview. Uma vez por navegador.
+  const ATIVADO_KEY = "tcg-collector-ativado-v1";
+  function marcarPrimeiraCarta() {
+    try {
+      if (localStorage.getItem(ATIVADO_KEY)) return;
+      localStorage.setItem(ATIVADO_KEY, "1");
+    } catch (e) { return; }  // sem localStorage não dá pra garantir "uma vez só"
+    logEvento("collection_first");
   }
 
   // --- Error tracking first-party: erros de JS em produção viram eventos
@@ -4003,6 +4068,23 @@
     if (!s) return null;
     try {
       const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/admin_dashboard`, {
+        method: "POST", headers: authHeaders(s.access_token), body: JSON.stringify({ days: days || 30 })
+      });
+      if (r.status === 404) return undefined;
+      if (!r.ok) return null;
+      return await r.json();
+    } catch (e) { return null; }
+  }
+  // Funil de ativação (migração 20260919a). Mesma convenção da adminDashboard:
+  // undefined = a RPC ainda não existe no banco, pra aba avisar que a migração
+  // está pendente em vez de mostrar zeros que parecem "ninguém usa".
+  async function adminFunnel(days) {
+    let s = getSession();
+    if (!s) return null;
+    if (Date.now() - (s.ts || 0) > 50 * 60 * 1000) s = (await refreshSession()) || s;
+    if (!s) return null;
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/admin_funnel`, {
         method: "POST", headers: authHeaders(s.access_token), body: JSON.stringify({ days: days || 30 })
       });
       if (r.status === 404) return undefined;
@@ -8942,6 +9024,7 @@
     pwaInstallFlow,
     marcaPasso,
     logEvento,
+    setOrigemCadastro,
     PASSOS_KEY,
     defaultVariant,
     cardVariants,
@@ -9003,6 +9086,7 @@
     publicProfileUrl,
     analyticsSummary,
     adminDashboard,
+    adminFunnel,
     pushProfile,
     handleAvailable,
     fetchPublicProfile,
@@ -11170,6 +11254,11 @@
     if (new URLSearchParams(window.location.search).get("s")) return false;
     if (/^\/users\//.test(window.location.pathname)) return false;
     try { localStorage.setItem("tcg-login-return", window.location.pathname + window.location.search); } catch (e) { /* ignora */ }
+    // Funil: quanta gente bate no portão. Com tráfego de UA isto vira o maior
+    // ralo do produto — a pessoa clica no anúncio, cai na Coleção e leva um
+    // login na cara — e hoje ele é invisível. O keepalive do mandaEvento
+    // entrega o beacon apesar do replace() logo abaixo.
+    logEvento("login_gate", { p: page });
     window.location.replace("login");
     return true;
   }

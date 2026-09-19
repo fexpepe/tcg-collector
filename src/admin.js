@@ -352,10 +352,75 @@
       </div>`;
   }
 
+  // ── Funil de ativação (RPC admin_funnel, migração 20260919a) ──────────────
+  // As "Ações concluídas" abaixo dizem quantos TERMINARAM algo. Não dizem onde
+  // a pessoa desiste — e é a queda entre dois passos que aponta o que consertar.
+  // Cada passo é subconjunto do anterior, então a porcentagem é sempre contra o
+  // passo de cima, nunca contra o total.
+  function funilPassos(f) {
+    const sc = (f && f.scan) || {};
+    // O funil conta TENTATIVAS DE LEITURA, e começa nelas — não nas aberturas
+    // do scanner. Aberturas e tentativas não são conjuntos aninhados (uma
+    // sessão tem N leituras), então pôr as duas na mesma escada dava "428% do
+    // passo anterior" e uma barra transbordando: número que só pode confundir.
+    // As aberturas viram contexto nos cartões de cima, onde são comparáveis
+    // com pessoas e sessões.
+    const passos = [
+      ["Tentou ler uma carta", sc.tentativas || 0, "disparos da câmera"],
+      ["Leu o código", sc.leu || 0, "o OCR extraiu um código da carta"],
+      ["Achou no catálogo", sc.achou || 0, "o código casou com uma carta"],
+      ["Adicionou à coleção", sc.adicionou || 0, "virou carta na coleção"]
+    ];
+    const topo = passos[0][1] || 0;
+    const linhas = passos.map(([label, n, hint], i) => {
+      const ant = i ? passos[i - 1][1] : n;
+      const pct = ant > 0 ? Math.min(100, Math.round((n / ant) * 100)) : 0;
+      const larg = topo > 0 ? Math.min(100, Math.max(2, Math.round((n / topo) * 100))) : 0;
+      return `<div class="adm-funil-passo">
+        <div class="adm-funil-head"><span>${esc(label)}</span><strong>${esc(fmt(n))}</strong></div>
+        <div class="adm-funil-barra"><span style="width:${larg}%"></span></div>
+        <div class="adm-funil-hint">${i ? `${pct}% do passo anterior · ` : ""}${esc(hint)}</div>
+      </div>`;
+    }).join("");
+    const secas = sc.secas || 0;
+    const nota = sc.sessoes
+      ? `${fmt(sc.aberturas || 0)} aberturas do scanner por ${fmt(sc.pessoas || 0)} pessoas geraram estas ${fmt(sc.tentativas || 0)} leituras. ${fmt(secas)} de ${fmt(sc.sessoes)} sessões fecharam sem adicionar nenhuma carta (${Math.round((secas / sc.sessoes) * 100)}%).`
+      : "Nenhuma sessão de scanner no período.";
+    return `<div class="adm-funil">${linhas}</div><p class="admin-note">${esc(nota)}</p>`;
+  }
+
+  function tabFunil(f) {
+    if (f === undefined) {
+      return `<p class="adm-banner">A RPC <code>admin_funnel</code> ainda não existe no banco: aplique <code>supabase/migrations/20260919a_funil_ativacao.sql</code> no SQL Editor. <strong>Enquanto ela não for aplicada, os eventos do funil são descartados pelo banco sem erro</strong> — o painel mostraria zero e pareceria que ninguém usa o scanner.</p>`;
+    }
+    if (f === null) return `<p class="empty-state">Acesso restrito.</p>`;
+    const cad = f.cadastro || [];
+    const VIA = { ui: "Busca e tiles", scan: "Scanner", csv: "Importação CSV", lista: "Listas" };
+    const totalCartas = cad.reduce((n, x) => n + (x.cartas || 0), 0);
+    const melhorRitmo = cad.reduce((m, x) => (x.cartas_min > (m ? m.cartas_min : 0) ? x : m), null);
+    return `
+      <div class="admin-stats">
+        ${stat("Ativados", fmt(f.ativados || 0), "cadastraram a 1ª carta da vida")}
+        ${stat("Abriram o scanner", fmt((f.scan || {}).pessoas || 0), `${fmt((f.scan || {}).aberturas || 0)} aberturas`)}
+        ${stat("Cartas cadastradas", fmt(totalCartas), "cartas novas, não cópias a mais")}
+        ${stat("Ritmo do scanner", (() => { const r = cad.find((x) => x.via === "scan"); return r && r.cartas_min ? `${r.cartas_min}/min` : "—"; })(), "mediana de cartas por minuto")}
+        ${stat("Bateram no login", fmt(f.gate || 0), `${fmt(f.gate_pessoas || 0)} pessoas`)}
+      </div>
+      ${section(`Funil do scanner (${f.days} dias)`, funilPassos(f),
+        "Cada passo é subconjunto do anterior. A maior queda entre dois passos é onde o produto está perdendo a pessoa — é essa a leitura que \"ações concluídas\" não dá.")}
+      ${section("Ritmo de cadastro por caminho", table(
+        [{ t: "Caminho" }, { t: "Cartas", num: true }, { t: "Rajadas", num: true }, { t: "Pessoas", num: true }, { t: "Cartas/min", num: true }],
+        cad.map((x) => `<tr><td>${esc(VIA[x.via] || x.via)}</td><td class="num">${esc(fmt(x.cartas))}</td><td class="num">${esc(fmt(x.rajadas))}</td><td class="num">${esc(fmt(x.pessoas))}</td><td class="num">${esc(x.cartas_min == null ? "—" : String(x.cartas_min))}</td></tr>`)),
+        `Uma "rajada" é uma sequência de cadastros sem 20s de pausa. Cartas/min é a mediana entre rajadas de 5+ cartas — rajada curta é ruído, porque o tempo nela é dominado por achar a carta, não por cadastrar.${melhorRitmo && melhorRitmo.cartas_min ? ` Hoje o caminho mais rápido é "${VIA[melhorRitmo.via] || melhorRitmo.via}", com ${melhorRitmo.cartas_min} cartas/min.` : ""}`)}
+      ${section("Onde o login barrou", hbars((f.gate_paginas || []).map((x) => ({ label: pageName(x.pagina), value: x.n }))),
+        "Páginas pessoais exigem conta desde 14/07/2026. Com tráfego de campanha, este é o primeiro lugar onde a pessoa some.")}`;
+  }
+
   function tabProduto(d) {
     const o = d.overview || {}, p = d.product || [], dk = d.decks || {}, g = d.games || {};
     const ev = (n) => p.find((x) => x.name === n) || {};
     return `
+      <div id="admFunil"><p class="empty-state">Carregando funil…</p></div>
       <div class="admin-stats">
         ${Object.keys(EVENT_NAME).map((n) => stat(EVENT_NAME[n], fmt(ev(n).n || 0), ev(n).n ? `${fmt(ev(n).visitors)} visitantes · ${fmt(ev(n).users)} logados` : `nenhuma nos ${d.days}d`)).join("")}
       </div>
@@ -421,6 +486,14 @@
       ${section("Cartas por jogo", table([{ t: "Jogo" }, { t: "Usuários", num: true }, { t: "Cartas distintas", num: true }], games))}`;
   }
 
+  function pintaFunil() {
+    const alvo = document.getElementById("admFunil");
+    if (!alvo) return;
+    const v = state.cache[`f${state.days}`];
+    if (v === undefined) return;                      // ainda carregando
+    alvo.innerHTML = tabFunil(v === "pendente" ? undefined : v);
+  }
+
   // ── Orquestração ──────────────────────────────────────────────────────────
   function toolbar() {
     return `<div class="adm-toolbar">
@@ -465,7 +538,19 @@
     if (state.tab === "qualidade" && state.errors === undefined) {
       shared.errorSummary(7).then((errs) => { state.errors = errs; if (state.tab === "qualidade") render(); });
     }
+    // Funil: RPC separada da admin_dashboard, então busca sob demanda quando a
+    // aba Produto abre (e uma vez por período, com cache).
+    if (state.tab === "produto") {
+      const chave = `f${state.days}`;
+      if (state.cache[chave] === undefined) {
+        shared.adminFunnel(state.days).then((f) => {
+          state.cache[chave] = f === undefined ? "pendente" : f;
+          if (state.tab === "produto") pintaFunil();
+        });
+      }
+    }
     document.getElementById("admBody").innerHTML = (RENDER[state.tab] || tabGeral)(d);
+    if (state.tab === "produto") pintaFunil();
     document.getElementById("admNote").textContent = `Atualizado em ${new Date(d.generated_at).toLocaleString("pt-BR")} · janela de ${d.days} dias desde ${new Date(d.since).toLocaleDateString("pt-BR")}. "Gente" = pageview com JS executado, user-agent de navegador e sem webdriver; visitantes contam uuid anônimo first-party (só com consentimento de medição), logados contam a conta pelo JWT. O Cloudflare Web Analytics (painel do Cloudflare) mede o resto: país, navegador, Core Web Vitals e o tráfego que nem chega a rodar JS.`;
   }
   function syncToolbar() {
