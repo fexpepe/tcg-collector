@@ -150,8 +150,19 @@ busca que a aba *Busca* da bottom-bar abre. Um botão só, dois lugares.
 - Yu-Gi-Oh: ler o **passcode** (8 dígitos no canto inferior esquerdo) se o
   catálogo passar a guardá-lo.
 - Modo **lote**: ler e adicionar em sequência sem fechar (abrir booster).
-- Atualizar `/comparar` (hoje diz que o Sleevu não tem scanner) **depois** de
-  validar a taxa de acerto, não antes.
+- ~~Atualizar `/comparar` (hoje diz que o Sleevu não tem scanner) **depois** de
+  validar a taxa de acerto, não antes.~~ **Resolvido em 19/09/2026, por outro
+  caminho.** A regra era não vender acerto sem ter medido, e ela continua de pé
+  — mas "o Sleevu não tem scanner" não era prudência, era **falso**, e estava
+  nos três idiomas da landing de maior intenção do site (quem pesquisa
+  "alternativa ao Collectr" cai ali). A saída foi descrever o **mecanismo e o
+  limite** — "lê o código impresso na carta; carta sem código impresso
+  (vintage) ainda não" — que não depende de taxa de acerto nenhuma, e manter o
+  scanner do Collectr como o melhor na seção "Onde o Collectr é melhor", que é
+  verdade: o deles reconhece a carta em si, o nosso lê o código. Quando a fase
+  1.5 medir, o que muda é a **ênfase**, não o fato. A
+  `tests/comparar-veracidade.test.mjs` trava a classe do bug: enquanto
+  `src/scan.js` existir, a página não pode negar o scanner.
 
 ## Fase 2 — hash perceptual da arte
 
