@@ -5196,6 +5196,38 @@
   // price-history.generated.json: { d: [datas], c: { id: { s: "u"|"e"|"b", p } } }.
   // Pesado no Pokémon (~260KB gz) → baixado 1x por jogo SÓ quando um preview
   // abre (o SW guarda no DATA_CACHE; as visitas seguintes são locais).
+  // ── Eixo X por TEMPO dos gráficos de série do card ────────────────────────
+  // Uma régua só, usada pelo gráfico de preço e pelo de graded — a conta vivia
+  // duplicada nos dois, e duas cópias divergem (esse bug já custou caro no
+  // total da Coleção; ver a decisão "a borda devolve dado, não total").
+  //
+  // Por que não é a posição na lista: até 19/09/2026 os pontos eram
+  // equidistantes, o que só não mentia porque a série era uma janela diária de
+  // 60 dias. Desde que o histórico passa a envelhecer por faixas (diário 60d,
+  // semanal até 1 ano, mensal depois — scripts/lib/price-history-retention.mjs),
+  // um salto de um MÊS ocuparia a mesma largura de um de um dia: a parte antiga
+  // da linha, que é justamente o que o acervo longo existe pra mostrar, sairia
+  // com a forma errada. O gráfico de patrimônio do Portfólio já fazia por tempo.
+  //
+  // Devolve { X, pontoEmX }: X(i) é o x no viewBox do ponto i, e pontoEmX(vx) é
+  // a volta — com pontos não equidistantes o índice não sai de regra de três,
+  // então o crosshair procura o ponto mais PRÓXIMO do dedo.
+  function eixoTemporal(datas, W, P) {
+    const ms = datas.map((d) => Date.parse(d + "T00:00:00Z"));
+    const t0 = ms.length ? ms[0] : 0;
+    const span = ms.length ? ms[ms.length - 1] - t0 : 0;
+    const util = W - 2 * P;
+    // span <= 0: série de um ponto só, ou todas as datas iguais — centraliza em
+    // vez de dividir por zero.
+    const X = (i) => P + (span <= 0 ? util / 2 : ((ms[i] - t0) / span) * util);
+    const pontoEmX = (vx) => {
+      let melhor = 0, dist = Infinity;
+      for (let i = 0; i < ms.length; i++) { const d = Math.abs(X(i) - vx); if (d < dist) { dist = d; melhor = i; } }
+      return melhor;
+    };
+    return { X, pontoEmX };
+  }
+
   const priceHistoryByGame = {};
   function loadPriceHistory(game) {
     const g = normalizeGame(game);
@@ -5221,7 +5253,7 @@
     const W = 560, H = 120, P = 6;
     let mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
     if (mn === mx) { mn *= 0.95; mx = mx * 1.05 || 1; }
-    const X = (i) => P + (i / (vals.length - 1)) * (W - 2 * P);
+    const { X, pontoEmX } = eixoTemporal(pts.map((p) => p[0]), W, P);
     const Y = (v) => H - P - ((v - mn) / (mx - mn)) * (H - 2 * P);
     const line = vals.map((v, i) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
     const first = vals[0], last = vals[vals.length - 1];
@@ -5243,7 +5275,7 @@
     // Leitura ponto a ponto: mouse no desktop, dedo no celular. Os dados ficam
     // no próprio elemento (o modal é descartado ao fechar — nada vaza).
     const chart = section.querySelector(".price-history-chart");
-    if (chart) attachPriceHistoryPointer(chart, { pts, vals, cur, W, H, X, Y, fmtDay });
+    if (chart) attachPriceHistoryPointer(chart, { pts, vals, cur, W, H, X, Y, fmtDay, pontoEmX });
   }
 
   // Crosshair + tooltip do sparkline. Overlay em HTML (não dentro do SVG): o
@@ -5255,7 +5287,7 @@
   // sobre uma caixa ~22px mais alta, então a bolinha ficava abaixo da linha,
   // errando mais quanto mais baixo o ponto.
   function attachPriceHistoryPointer(chart, data) {
-    const { pts, vals, cur, W, H, X, Y, fmtDay } = data;
+    const { pts, vals, cur, W, H, X, Y, fmtDay, pontoEmX } = data;
     const plot = chart.querySelector(".price-history-plot") || chart;
     plot.insertAdjacentHTML("beforeend",
       `<div class="ph-cross" hidden></div><div class="ph-dot" hidden></div><div class="ph-tip" hidden></div>`);
@@ -5268,7 +5300,7 @@
       const r = svg.getBoundingClientRect();
       if (!r.width) return;
       const frac = Math.max(0, Math.min(1, (clientX - r.left) / r.width));
-      const i = Math.round(frac * (vals.length - 1));
+      const i = pontoEmX(frac * W);
       const leftPct = (X(i) / W) * 100;
       const topPct = (Y(vals[i]) / H) * 100;
       cross.style.left = leftPct + "%";
@@ -5478,7 +5510,12 @@
     const iMin = Math.min.apply(null, series.map((sr) => sr.pts[0].i));
     const iMax = Math.max.apply(null, series.map((sr) => sr.pts[sr.pts.length - 1].i));
     const W = 560, H = 120, P = 6;
-    const X = (i) => P + (iMax === iMin ? (W - 2 * P) / 2 : ((i - iMin) / (iMax - iMin)) * (W - 2 * P));
+    // Mesma régua do gráfico de preço. Aqui o índice é posição em `datas` e a
+    // janela vai de iMin a iMax (as séries por nota começam em dias diferentes),
+    // então a régua é montada sobre essa fatia e o índice é deslocado.
+    const fatia = datas.slice(iMin, iMax + 1);
+    const eixo = eixoTemporal(fatia, W, P);
+    const X = (i) => eixo.X(i - iMin);
     const Y = (v) => H - P - ((v - mn) / (mx - mn)) * (H - 2 * P);
     // PSA 10 na cor dourada do site (é o que a pessoa procura); as demais
     // seguem a paleta das outras séries do card.

@@ -1,10 +1,15 @@
 // Histórico de preços SEM SERVIDOR: a cada build, tira um snapshot do preço de
-// referência de cada carta e acumula numa série semanal. O "banco" é a própria
+// referência de cada carta e acumula numa série DIÁRIA que envelhece por faixas
+// (diária 60d, semanal até 1 ano, mensal depois — price-history-retention.mjs). O "banco" é a própria
 // produção — o build busca o acumulador publicado no deploy anterior, anexa o
 // ponto de hoje e re-publica (backup em data/.cache pra sobreviver a um outage).
 //
 // Saídas (por dataDir, gitignored, deployadas como estáticos):
-//   price-history.generated.json  acumulador completo (uso interno do próximo build)
+//   price-history.generated.json       JANELA RECENTE (60 pontos diários) — é o
+//                                  que o CLIENTE baixa; tamanho igual ao de sempre
+//   price-history-long.generated.json  o ACERVO com retenção por faixa: é o
+//                                  acumulador que o próximo build lê, e o ativo
+//                                  que não dá pra comprar depois
 //   price-deltas.generated.json   { from, to, c: { id: pct } } — variação % vs o
 //                                  snapshot anterior (mesma fonte), |pct| >= 1
 //   price-deltas-7d.generated.json  idem, mas contra o snapshot de ~7 DIAS atrás
@@ -25,10 +30,21 @@
 // Sem pricing local (dev), busca o de produção. Sai com sucesso se nada existir.
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { podarHistorico, podarGraded, caberEmBytes, DIAS_DIARIO, DIAS_SEMANAL, MAX_BYTES } from "./lib/price-history-retention.mjs";
 
 const PROD = "https://tcg-collector.pages.dev";
-const MAX_POINTS = 60;   // ~2 meses de snapshots diários (era 26 = 6 meses semanais)
+// O teto seco de 60 pontos (~2 meses) saiu em 19/09/2026: era uma JANELA
+// ROLANTE, então a série se repunha inteira a cada dois meses e o histórico
+// nunca virava acervo. Agora a retenção é por FAIXA (diário 60d, semanal até
+// 1 ano, mensal depois) — ver scripts/lib/price-history-retention.mjs.
 const WINDOW_7D = 7;     // dias da janela longa (aviso de queda da wishlist)
+// Pontos da JANELA publicada pro cliente. É o tamanho que o arquivo sempre teve:
+// o acervo longo cresce no -long, mas o download de quem abre um card NÃO cresce
+// junto. Hoje o navegador baixa o histórico INTEIRO do jogo pra desenhar o
+// gráfico de UMA carta — enquanto isso for verdade, engordar este arquivo pra
+// mostrar sparkline mais comprida é um mau negócio. Quando o gráfico passar a
+// pedir só a carta (borda/D1 ou chunk por set), é aqui que se muda.
+const PONTOS_JANELA = 60;
 const MIN_DELTA_PCT = 1; // abaixo disso é ruído, não entra no arquivo de deltas
 const MIN_MOVER = 1;     // valor mínimo (na moeda da fonte) pra rankear nos movers
 const MOVERS_N = 30;
@@ -37,6 +53,7 @@ const dir = (process.argv[2] || "data").replace(/\/+$/, "");
 const slug = dir.replace(/[\\/]/g, "-");
 const cacheDir = new URL("../data/.cache/", import.meta.url);
 const outHistory = new URL(`../${dir}/price-history.generated.json`, import.meta.url);
+const outHistoryLong = new URL(`../${dir}/price-history-long.generated.json`, import.meta.url);
 const outDeltas = new URL(`../${dir}/price-deltas.generated.json`, import.meta.url);
 const outDeltas7d = new URL(`../${dir}/price-deltas-7d.generated.json`, import.meta.url);
 const outMovers = new URL(`../${dir}/price-movers.generated.json`, import.meta.url);
@@ -57,13 +74,23 @@ async function loadPricing() {
   try { return JSON.parse(text.slice(start, end + 1)); } catch { return null; }
 }
 
-// Acumulador anterior: produção primeiro (deploy passado), senão o cache do runner.
-async function loadPrevious() {
+// Acumulador anterior: o ACERVO da produção primeiro, senão o cache do runner,
+// senão a janela publicada. A ordem é a migração: no 1º build depois desta
+// mudança o -long ainda não existe em produção, então o acervo nasce dos 60
+// pontos que já estavam lá em vez de começar do zero.
+async function leJsonSerie(url) {
   try {
-    const r = await fetch(`${PROD}/${dir}/price-history.generated.json`);
+    const r = await fetch(url);
     if (r.ok) { const j = await r.json(); if (j && Array.isArray(j.d) && j.c) return j; }
-  } catch { /* sem rede/404: cai no cache */ }
+  } catch { /* sem rede/404 */ }
+  return null;
+}
+async function loadPrevious() {
+  const longo = await leJsonSerie(`${PROD}/${dir}/price-history-long.generated.json`);
+  if (longo) return longo;
   try { const j = JSON.parse(await readFile(cacheFile, "utf8")); if (j && Array.isArray(j.d) && j.c) return j; } catch { /* primeira vez */ }
+  const janela = await leJsonSerie(`${PROD}/${dir}/price-history.generated.json`);
+  if (janela) return janela;
   return { v: 1, d: [], c: {} };
 }
 
@@ -102,11 +129,13 @@ Object.entries(hist.c).forEach(([id, c]) => {
   while (c.p.length < hist.d.length) c.p.push(null);
   if (c.p.every((v) => v == null)) delete hist.c[id];
 });
-// Teto de pontos: derruba os mais antigos.
-if (hist.d.length > MAX_POINTS) {
-  const drop = hist.d.length - MAX_POINTS;
-  hist.d.splice(0, drop);
-  Object.values(hist.c).forEach((c) => c.p.splice(0, drop));
+// Retenção por faixa: o passado perde RESOLUÇÃO, não deixa de existir. Roda
+// antes dos deltas de propósito — eles só olham a ponta recente, que a faixa
+// diária mantém intacta, então a poda não muda nenhum número publicado hoje.
+const podados = podarHistorico(hist, today);
+const orcamento = caberEmBytes(hist, false);
+if (orcamento.estourou) {
+  console.warn(`[price-history] ${dir}: ACERVO NO TETO — ${orcamento.removidos} ponto(s) antigos derrubados pra caber em ${(MAX_BYTES / 1048576).toFixed(0)} MiB. A série não cabe mais num arquivo só; a saída é chunk por set, não podar mais.`);
 }
 
 // Deltas: hoje vs o ponto anterior mais recente com valor (pula nulls).
@@ -203,13 +232,14 @@ const outIndex = new URL(`../${dir}/market-index.generated.json`, import.meta.ur
 // A PPT roda 3x/semana; nos outros dias o `g` vem do cache do merge e o ponto
 // repete o anterior — igual ao raw quando a fonte não mexeu no preço.
 const outGraded = new URL(`../${dir}/graded-history.generated.json`, import.meta.url);
+const outGradedLong = new URL(`../${dir}/graded-history-long.generated.json`, import.meta.url);
 const cacheGraded = new URL(`graded-history-${slug}.json`, cacheDir);
 async function loadPreviousGraded() {
-  try {
-    const r = await fetch(`${PROD}/${dir}/graded-history.generated.json`);
-    if (r.ok) { const j = await r.json(); if (j && Array.isArray(j.d) && j.c) return j; }
-  } catch { /* sem rede/404: cai no cache */ }
+  const longo = await leJsonSerie(`${PROD}/${dir}/graded-history-long.generated.json`);
+  if (longo) return longo;
   try { const j = JSON.parse(await readFile(cacheGraded, "utf8")); if (j && Array.isArray(j.d) && j.c) return j; } catch { /* primeira vez */ }
+  const janela = await leJsonSerie(`${PROD}/${dir}/graded-history.generated.json`);
+  if (janela) return janela;
   return { v: 1, d: [], c: {} };
 }
 const gh = await loadPreviousGraded();
@@ -237,19 +267,38 @@ Object.entries(gh.c).forEach(([id, c]) => {
   });
   if (!Object.keys(c).length) delete gh.c[id];
 });
-if (gh.d.length > MAX_POINTS) {
-  const drop = gh.d.length - MAX_POINTS;
-  gh.d.splice(0, drop);
-  Object.values(gh.c).forEach((c) => Object.values(c).forEach((p) => p.splice(0, drop)));
+const podadosGraded = podarGraded(gh, today);
+const orcamentoGraded = caberEmBytes(gh, true);
+if (orcamentoGraded.estourou) {
+  console.warn(`[price-history] ${dir}: acervo GRADED no teto — ${orcamentoGraded.removidos} ponto(s) derrubados.`);
 }
 
+// A janela publicada é uma FATIA do fim do acervo — os pontos mais novos, que
+// são os diários. Recorta as séries junto, senão `p` desalinha de `d`.
+function fatiaFinal(serie, n, porNota) {
+  if (serie.d.length <= n) return serie;
+  const corte = serie.d.length - n;
+  const c = {};
+  Object.entries(serie.c).forEach(([id, v]) => {
+    c[id] = porNota
+      ? Object.fromEntries(Object.entries(v).map(([nota, p]) => [nota, p.slice(corte)]))
+      : { ...v, p: v.p.slice(corte) };
+  });
+  return { ...serie, d: serie.d.slice(corte), c };
+}
+const janela = fatiaFinal(hist, PONTOS_JANELA, false);
+const janelaGraded = fatiaFinal(gh, PONTOS_JANELA, true);
+
 await mkdir(cacheDir, { recursive: true });
-await writeFile(outHistory, JSON.stringify(hist), "utf8");
-await writeFile(outGraded, JSON.stringify(gh), "utf8");
+await writeFile(outHistory, JSON.stringify(janela), "utf8");
+await writeFile(outHistoryLong, JSON.stringify(hist), "utf8");
+await writeFile(outGraded, JSON.stringify(janelaGraded), "utf8");
+await writeFile(outGradedLong, JSON.stringify(gh), "utf8");
 await writeFile(cacheGraded, JSON.stringify(gh), "utf8");
 await writeFile(cacheFile, JSON.stringify(hist), "utf8");
 await writeFile(outDeltas, JSON.stringify({ from, to: today, c: deltas }), "utf8");
 await writeFile(outDeltas7d, JSON.stringify({ from: from7d, to: today, c: deltas7d }), "utf8");
 await writeFile(outMovers, JSON.stringify({ from, to: today, up, down }), "utf8");
 await writeFile(outIndex, JSON.stringify({ v: 1, d: hist.d, i: indice, n: idxBase.length }), "utf8");
-console.log(`[price-history] ${dir}: ${tracked} cartas, ${hist.d.length} snapshot(s) (${hist.d[0]}..${today})${replacing ? " [substituiu hoje]" : ""}; deltas ${Object.keys(deltas).length} (desde ${from}), 7d ${Object.keys(deltas7d).length} (desde ${from7d}), movers +${up.length}/-${down.length}, índice ${idxBase.length} cartas -> ${indice[indice.length - 1]}, graded ${gradedTracked} cartas/${gh.d.length} snapshot(s)`);
+const alcanceDias = hist.d.length ? Math.round((Date.parse(today) - Date.parse(hist.d[0])) / 86400000) : 0;
+console.log(`[price-history] ${dir}: ${tracked} cartas, janela ${janela.d.length}p / acervo ${hist.d.length}p cobrindo ${alcanceDias}d (${hist.d[0]}..${today})${replacing ? " [substituiu hoje]" : ""}${podados ? `, -${podados} por retenção (diário ${DIAS_DIARIO}d / semanal ${DIAS_SEMANAL}d / mensal)` : ""}${podadosGraded ? `, graded -${podadosGraded}` : ""}; deltas ${Object.keys(deltas).length} (desde ${from}), 7d ${Object.keys(deltas7d).length} (desde ${from7d}), movers +${up.length}/-${down.length}, índice ${idxBase.length} cartas -> ${indice[indice.length - 1]}, graded ${gradedTracked} cartas/${gh.d.length} snapshot(s)`);
