@@ -1,0 +1,140 @@
+<!doctype html>
+<!--
+  TEMPLATE da imagem de compartilhamento (og:image / twitter:image).
+  Renderize com:  node scripts/build-og-image.mjs
+  O resultado é o /og-image.png (1200x630) da raiz, que as 22 páginas apontam.
+
+  Regras deste arquivo:
+  - Tudo aqui é 1200x630 FIXO, em px. Não é uma página do site: não tem
+    responsivo, não tem i18n, não tem JS. O que vale é como sai no screenshot.
+  - As cores são as MESMAS do styles.css (--bg, --accent, --text, --subtle,
+    --line), copiadas como literal porque o Chromium abre este HTML por file://
+    sem o styles.css. Ao mudar a paleta do site, atualize aqui também.
+  - A fonte é a Outfit auto-hospedada do próprio repo.
+  - O marcador de wordmark (o comentário dentro da div.wordmark) é substituído
+    pelo assets/brand/sleevu-wordmark.svg na geração — não cole o SVG aqui,
+    senão a marca passa a ter duas fontes e uma delas envelhece.
+  - Os NÚMEROS abaixo são os mesmos da .lp-stats da home (index.html). Ao
+    recontar o catálogo, mude nos dois lugares e regenere a imagem.
+  - A prévia aparece pequena (num feed, ~360px de largura): nada de texto
+    menor que o que está aqui, e no máximo duas linhas por bloco.
+-->
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <title>og-image — Sleevu</title>
+    <style>
+      @font-face {
+        font-family: "Outfit";
+        font-style: normal;
+        font-weight: 100 900;
+        src: url("../../assets/fonts/outfit-latin.woff2") format("woff2");
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1200px; height: 630px; overflow: hidden; }
+      body {
+        position: relative;
+        background: #101218;
+        color: #f3f5f7;
+        font-family: "Outfit", system-ui, sans-serif;
+        font-synthesis: none;
+      }
+      /* Faixa da marca no topo — a única coisa herdada da arte antiga, porque
+         é o que faz a prévia ser reconhecida como Sleevu numa timeline. */
+      .bar {
+        position: absolute; inset: 0 0 auto; height: 6px;
+        background: linear-gradient(90deg, #b91c1c, #ef4444 45%, #dc2626);
+      }
+      /* Mesmo glow do herói da home (.lp-hero::before), só maior e jogado pro
+         canto do wordmark. Dá profundidade sem competir com o texto. */
+      .glow {
+        position: absolute; left: -120px; top: -180px; width: 900px; height: 700px;
+        background: radial-gradient(closest-side, rgba(220, 38, 38, 0.2), transparent 72%);
+      }
+      main {
+        position: relative; height: 100%;
+        padding: 56px 64px 48px;
+        display: flex; flex-direction: column; justify-content: space-between;
+      }
+      .wordmark svg { display: block; width: 340px; height: auto; color: #f3f5f7; }
+      h1 {
+        margin-top: 32px; max-width: 620px;
+        font-size: 50px; font-weight: 650; line-height: 1.08; letter-spacing: -0.025em;
+      }
+      /* 600px: a coluna de logos começa em x=756 — texto mais largo passava por
+         baixo dela ("acompanhe o" desaparecia atrás do Pokémon). */
+      .sub {
+        margin-top: 18px; max-width: 600px;
+        font-size: 22px; font-weight: 400; line-height: 1.45; color: #9ba4b3;
+      }
+      /* Jogos: as MESMAS cápsulas brancas da home (.lp-games-caps) — fundo
+         branco, borda de 1px, canto reto. Os logos são arte colorida feita pra
+         fundo claro; sobre o #101218 direto, metade deles desaparece.
+         Seis de treze, e o "+7" fecha a conta sem virar mosaico ilegível.
+         A linha do "+7" tem de caber em UMA linha (a segunda batia na hairline
+         dos números): no máximo ~44 caracteres com estes 16px. */
+      .logos {
+        position: absolute; right: 64px; top: 92px;
+        display: grid; grid-template-columns: repeat(2, 184px); gap: 12px;
+      }
+      .logos div {
+        height: 84px; background: #fff; border: 1px solid #2d333f;
+        display: flex; align-items: center; justify-content: center; padding: 13px 18px;
+      }
+      .logos img { max-width: 100%; max-height: 100%; object-fit: contain; }
+      .logos-mais {
+        grid-column: 1 / -1; text-align: center;
+        margin-top: 2px; font-size: 16px; color: #8891a1;
+      }
+      /* Números: as mesmas hairlines da .lp-stats da home. São eles que contam
+         que o site cresceu — a arte antiga listava 4 jogos, hoje são 13. */
+      .stats {
+        display: grid; grid-template-columns: repeat(4, max-content); gap: 0 54px;
+        border-top: 1px solid #2d333f; border-bottom: 1px solid #2d333f;
+        padding: 20px 0; margin-top: 30px;
+      }
+      .stats strong { display: block; font-size: 32px; font-weight: 650; letter-spacing: -0.02em; }
+      .stats span { font-size: 15px; color: #8891a1; }
+      .foot { display: flex; align-items: center; gap: 16px; font-size: 19px; }
+      .pill {
+        background: #dc2626; color: #fff; font-weight: 700; font-size: 17px;
+        letter-spacing: 0.06em; padding: 7px 14px 6px; border-radius: 999px;
+      }
+      .foot-note { color: #8891a1; }
+      .url { margin-left: auto; font-size: 24px; font-weight: 600; color: #f3f5f7; }
+    </style>
+  </head>
+  <body>
+    <div class="bar"></div>
+    <div class="glow"></div>
+    <main>
+      <div class="logos">
+        <div><img src="../../assets/games/game_pokemon.webp" alt="Pokémon TCG"></div>
+        <div><img src="../../assets/games/game_lorcana.webp" alt="Disney Lorcana"></div>
+        <div><img src="../../assets/games/game_onepiece.webp" alt="One Piece Card Game"></div>
+        <div><img src="../../assets/games/game_magic.webp" alt="Magic: The Gathering"></div>
+        <div><img src="../../assets/games/game_ygo.webp" alt="Yu-Gi-Oh!"></div>
+        <div><img src="../../assets/games/game_digimon.webp" alt="Digimon Card Game"></div>
+        <span class="logos-mais">e mais 7 jogos, do Carddass de 1999 a hoje</span>
+      </div>
+      <div>
+        <div class="wordmark"><!--WORDMARK--></div>
+        <h1>Sua coleção de cartas,<br>levada a sério.</h1>
+        <p class="sub">Catalogue por variante e condição, monte decks e binders, acompanhe o valor no tempo — em todos os seus aparelhos.</p>
+      </div>
+      <div>
+        <div class="stats">
+          <div><strong>240 mil+</strong><span>cartas catalogadas</span></div>
+          <div><strong>13 jogos</strong><span>modernos e vintage</span></div>
+          <div><strong>2.200+</strong><span>sets, de 1996 a hoje</span></div>
+          <div><strong>R$ · $ · €</strong><span>preços BR, EUA e Europa</span></div>
+        </div>
+      </div>
+      <div class="foot">
+        <span class="pill">GRÁTIS</span>
+        <span class="foot-note">sem plano pago, sem limite de cartas</span>
+        <span class="url">sleevu.app</span>
+      </div>
+    </main>
+  </body>
+</html>
