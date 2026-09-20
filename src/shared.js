@@ -3173,6 +3173,9 @@
       decks: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="12" height="16" rx="2"/><path d="M4.5 6.5v12a2 2 0 0 0 2 2h9"/></svg>',
       collection: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="12" height="16" rx="2" transform="rotate(-8 10 14)"/><rect x="9" y="4" width="12" height="16" rx="2" transform="rotate(6 15 12)"/></svg>',
       portfolio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="m4 15 5-6 4 3 6-8"/></svg>',
+      // Jogos (catálogo): booster/caixinha com a carta saindo — não repete a
+      // grade do Hub nem a pilha da Coleção.
+      catalog: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M3 11h18"/><path d="M8 7V4.5A1.5 1.5 0 0 1 9.5 3h5A1.5 1.5 0 0 1 16 4.5V7"/></svg>',
       profile: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>'
     };
     // aria-current="page" (e não aria-pressed, que só vale em role=button): é o
@@ -3188,22 +3191,26 @@
     // Explorar não tem aba própria (a Busca ocupa esse papel no dedo), então
     // acende Jogos: as duas são o caminho do CATÁLOGO.
     const gamesActive = exploreActive || active === "explore";
-    // Ordem (pedido de 2026-09-20), logado: Hub · Busca · Decks · Coleção ·
-    // Portfólio. "Hub" é o dashboard (o hub PESSOAL — a aba se chamava
-    // "Coleção" e confundia com a página de cartas); "Coleção" agora é um
-    // atalho DIRETO pra Toda Coleção (collection.html), ao lado do Portfólio.
-    // A Busca subiu pra 2ª posição, no lugar de Jogos, que saiu da barra
-    // logada (a grade de jogos continua no Início e na própria Busca).
-    // Perfil saiu da barra: virou o botão no canto direito do header (ver
-    // initHeaderProfileButton) — a barra ganha o espaço de volta.
+    // Ordem (pedido de 2026-09-20), logado: Hub · Busca · Jogos · Decks ·
+    // Coleção · Portfólio. "Hub" é o dashboard (o hub PESSOAL — a aba se
+    // chamava "Coleção" e confundia com a página de cartas); "Coleção" agora
+    // é um atalho DIRETO pra Toda Coleção (collection.html), ao lado do
+    // Portfólio. A Busca subiu pra 2ª posição e Jogos ficou logo depois dela
+    // (tinha saído da barra logada no mesmo dia; voltou a pedido — é o
+    // caminho do catálogo). Perfil saiu da barra: virou o botão no canto
+    // direito do header (ver initHeaderProfileButton).
     // Deslogado não há Hub/Coleção/Portfólio: fica Jogos · Busca · Decks, com
     // a Busca na MESMA 2ª posição, pra não mudar de lugar quando a pessoa entra.
     // Busca é uma PÁGINA (search.html), não mais a paleta em popup: o popup
     // cobria a tabbar e a navegação sumia (2026-09-13).
+    // Ícones: Hub usa o mesmo desenho de grade do item "Hub" do mega-menu da
+    // Coleção (desktop); Jogos, o de cartas lado a lado — antes os dois
+    // dividiam a grade e, na mesma barra, ficariam iguais.
     const hubActive = collectionActive && active !== "collection";
     bar.innerHTML =
       (logged ? tab("dashboard", t("tabbar.hub"), "games", hubActive) : tab("hub", t("nav.games"), "games", gamesActive))
       + tab("search", t("tabbar.search"), "search", active === "search")
+      + (logged ? tab("hub", t("nav.games"), "catalog", gamesActive) : "")
       + tab("decks", t("nav.decks"), "decks", active === "decks")
       + (logged ? tab("collection", t("tabbar.collection"), "collection", active === "collection") : "")
       + (logged ? tab("portfolio", t("nav.portfolio"), "portfolio", active === "portfolio") : "");
