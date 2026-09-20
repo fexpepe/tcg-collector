@@ -57,6 +57,11 @@ jobs:
       - name: Catálogo íntegro (ids duplicados, carta quebrada)
         run: node scripts/lint-catalog.mjs
 
+      # Cobertura do catálogo versionado por idioma/era (só informa): é onde
+      # se vê, no PR, se o japonês andou ou regrediu.
+      - name: Cobertura do catálogo (informativo)
+        run: node scripts/report-catalog-coverage.mjs || echo "relatório falhou (só informativo)"
+
       # O deploy funde theme.js+game.js num boot.js só (bundle-boot.mjs). A fusão
       # depende do formato exato das duas tags no <head> das 33 páginas — mexer
       # na indentação ou pôr um script entre elas quebraria o boot do site

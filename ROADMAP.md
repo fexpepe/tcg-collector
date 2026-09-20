@@ -111,7 +111,11 @@ minhas cartas"), páginas de set/carta/deck pré-renderizadas, CSP e cabeçalhos
 segurança, analytics first-party anônimo com painel `/admin`, uptime probe,
 Turnstile no login, SMTP próprio (Resend), CI com testes e guardas de mobile.
 
-**Idiomas.** Site em pt/en/es; cartas em Todas/PT/EN/JA/ZH.
+**Idiomas.** Site em pt/en/es; cartas em Todas/PT/EN/JA/ZH. O japonês está na
+v2 do modelo de carregamento (README, "v2 — japonês"): série em toda era,
+categoria/tipo/estágio pelo irmão inglês e nome em inglês pesquisável já no
+ar; nome japonês, raridade, ilustrador e scans vintage dependem da primeira
+rodada local do `sync-bulbapedia-ja.mjs`.
 
 ---
 
@@ -224,6 +228,12 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   de-para, carta indexada nunca some, fonte fora do ar congela, e o que é nosso
   fica no nosso servidor (git, R2, D1). Idioma novo entra por essa régua, não
   por uma régua própria.
+- **Japonês (v2) enriquece, não troca de fonte.** TCGdex segue o contrato de
+  id; a TCGCSV segue trazendo os sets que ela não tem; o que falta (série,
+  categoria, nome japonês, raridade, ilustrador, scans vintage) entra por
+  `enrich-ja` só em campo vazio, com a Bulbapedia como fonte de ingestão
+  OFFLINE (cache versionado, imagem no R2, crédito no Sobre). O site oficial
+  pokemon-card.com fica de fora: sem API e sem termos que permitam copiar.
 - **Nada de backend em runtime pro preço.** Preço é puxado no build e servido
   estático: mantém o site estático, o token seguro no CI e o custo previsível.
 - **A borda devolve dado, não total.** Uma fórmula de valor só, no cliente —

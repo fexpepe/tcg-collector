@@ -227,6 +227,15 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-tcgcsv-pokemon.mjs || echo "sync-tcgcsv-pokemon falhou; o merge segue com TCGdex + PPT"
 
+      # v2 (japonês): enriquece os chunks ja com o que a TCGdex e a TCGCSV não
+      # trazem — série da era, categoria/tipo/estágio pelo irmão inglês e o
+      # cache versionado da Bulbapedia (data/ja-enrich, baixado LOCAL). Sem
+      # rede; só campo vazio. DEPOIS dos dois syncs (que reescrevem os chunks)
+      # e ANTES do merge (que os lê). Não derruba o build.
+      - name: Enriquece o catálogo japonês (série, irmão EN, Bulbapedia)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/enrich-ja.mjs || echo "enrich-ja falhou; o merge segue com os chunks como vieram"
+
       # Preços de mercado BR (MYP). NO-OP enquanto o secret MYP_API_TOKEN nao
       # existir — o script sai com sucesso e o merge segue só com a referencia
       # internacional. Quando o token chegar, o BR passa a ter prioridade no valor.
@@ -257,6 +266,12 @@ jobs:
       - name: Relatório de cobertura de preço (Pokémon)
         if: env.RODA_SYNC == 'true'
         run: node scripts/report-price-coverage.mjs || echo "relatório de cobertura falhou (só informativo)"
+
+      # Cobertura do CATÁLOGO por idioma e, no japonês, por era (imagem,
+      # artista, categoria, raridade, série, logo): a régua da v2. Só informa.
+      - name: Relatório de cobertura do catálogo (Pokémon)
+        if: env.RODA_SYNC == 'true'
+        run: node scripts/report-catalog-coverage.mjs || echo "relatório de catálogo falhou (só informativo)"
 
       # Espelha logos/símbolos de SET do Pokémon localmente (independência da
       # TCGdex; as CARTAS seguem remotas). Roda DEPOIS do merge (que reescreve os

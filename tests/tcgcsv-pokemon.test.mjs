@@ -125,6 +125,24 @@ test("jpSetCode / jpSetTitle: código no nome do grupo japonês", () => {
   assert.equal(jpSetCode("M2a: MEGA Dream ex"), "M2a");
 });
 
+test("jpSerieOfCode: toda era japonesa tem série, com o nome que a TCGdex usa onde ela tem a era", () => {
+  const s = (code) => (jpSerieOfCode(code) || {}).setSerieId;
+  // as que a TCGdex ja já cobre (mesmo id/nome dos chunks)
+  assert.deepEqual(jpSerieOfCode("SV4a"), { setSerieId: "SV", setSerieName: "ポケモンカードゲーム スカーレット&バイオレット" });
+  assert.deepEqual(jpSerieOfCode("neo1"), { setSerieId: "neo", setSerieName: "ポケモンカード★neo" });
+  assert.equal(s("PMCG3"), "PMCG"); assert.equal(s("E4"), "e"); assert.equal(s("VS1"), "VS"); assert.equal(s("web1"), "web");
+  assert.equal(s("PCG-P"), "PCG"); assert.equal(s("XY-P"), "XY"); assert.equal(s("CP6"), "XY"); assert.equal(s("SM-P"), "SM");
+  assert.equal(s("S12a"), "S"); assert.equal(s("S-P"), "S"); assert.equal(s("sC2"), "S"); assert.equal(s("sp5"), "S");
+  assert.equal(s("SVK"), "SV"); assert.equal(s("svpj"), "SV"); assert.equal(s("M6a"), "M"); assert.equal(s("MBG"), "M"); assert.equal(s("MP1"), "M");
+  // as que a TCGdex ja não tem: o id é o código da era
+  assert.equal(s("ADV-P"), "ADV"); assert.equal(s("DP-P"), "DP"); assert.equal(s("DPt-P"), "DPt"); assert.equal(s("Pt4"), "Pt"); assert.equal(s("PtM"), "Pt");
+  assert.equal(s("L3"), "L"); assert.equal(s("LL"), "L"); assert.equal(s("L-P"), "L"); assert.equal(s("BW9"), "BW"); assert.equal(s("BW"), "BW");
+  assert.equal(s("BKZ"), "BW"); assert.equal(s("HSZ"), "BW"); assert.equal(s("PLAY"), "ADV"); assert.equal(s("T"), "e"); assert.equal(s("PPP"), "DP"); assert.equal(s("WCS23"), "SV");
+  // "S" não engole SM/SV; "E" só casa E<dígito>; código desconhecido fica sem série
+  assert.notEqual(s("SM10"), "S"); assert.notEqual(s("SV1S"), "S");
+  assert.equal(jpSerieOfCode("EXTRA"), null); assert.equal(jpSerieOfCode("P"), null); assert.equal(jpSerieOfCode(""), null);
+});
+
 test("synthesizeCard: id pinado vence o derivado; sem pino o id sai do número sem zeros; set importado herda nome/data do grupo", () => {
   const product = { productId: 13, name: "Pikachu - 227/S-P", extendedData: [{ name: "Number", value: "227/S-P" }, { name: "Rarity", value: "Promo" }] };
   const group = { groupId: 9, name: "S-P Promotional Cards", publishedOn: "2020-01-01T00:00:00" };
@@ -171,7 +189,7 @@ test("jpSerieOfCode: série do set JP importado pelo prefixo do código (mais lo
   assert.equal(jpSerieOfCode("SM10").setSerieId, "SM");  // SM, não S
   assert.equal(jpSerieOfCode("S-P").setSerieId, "S");
   assert.equal(jpSerieOfCode("CP1").setSerieId, "XY");
-  assert.equal(jpSerieOfCode("BW1"), null);              // era que a TCGdex ja não cobre: sem série
+  assert.equal(jpSerieOfCode("BW1").setSerieId, "BW");   // era que a TCGdex ja não cobre: código da era (20/09/2026)
   assert.equal(jpSerieOfCode(""), null);
 });
 

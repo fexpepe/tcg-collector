@@ -42,6 +42,10 @@ test("matriz: a melhor imagem que cada fonte publica", () => {
   assert.equal(chaveDe("https://images.pokemontcg.io/mcd21/25.png", 300), "images.pokemontcg.io/mcd21/25.png@300.webp");
   assert.equal(urlEspelho("https://images.pokemontcg.io/mcd21/25.png", ["images.pokemontcg.io"], 1000), `${ESPELHO}images.pokemontcg.io/mcd21/25.png@1000.webp`);
   assert.ok(ORDEM.indexOf("images.pokemontcg.io") > ORDEM.indexOf("assets.tcgdex.net"), "pokemontcg.io depois da TCGdex no rollout");
+  // Bulbagarden Archives (vintages japoneses): thumb volta pro upload original; original fica como está.
+  assert.equal(matrizDe("https://archives.bulbagarden.net/media/upload/thumb/3/3a/OddishExpansionPack68.jpg/300px-OddishExpansionPack68.jpg"), "https://archives.bulbagarden.net/media/upload/3/3a/OddishExpansionPack68.jpg");
+  assert.equal(matrizDe("https://archives.bulbagarden.net/media/upload/3/3a/OddishExpansionPack68.jpg"), "https://archives.bulbagarden.net/media/upload/3/3a/OddishExpansionPack68.jpg");
+  assert.equal(chaveDe("https://archives.bulbagarden.net/media/upload/3/3a/OddishExpansionPack68.jpg", 300), "archives.bulbagarden.net/media/upload/3/3a/OddishExpansionPack68.jpg@300.webp");
   assert.equal(matrizDe("assets/games/game_pokemon.webp"), "");
   assert.deepEqual(LARGURAS, [300, 600, 1000]);
   assert.equal(ORDEM[0], "wsrv.nl");

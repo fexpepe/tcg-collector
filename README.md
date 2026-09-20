@@ -379,7 +379,9 @@ build (`--no-fetch`, sem rede); baixar logo novo é passo local. O nome do set e
 inglês é assunto separado, do `JA_SET_EN` no `shared.js`.
 
 Utilitários: `lint-catalog.mjs` (falha em corrupção dura — ids duplicados,
-catálogo zerado), `mirror-*-set-logos.mjs` (espelha logos de set localmente), `mirror-r2.mjs` (espelha as imagens de carta no R2, ver docs/BACKEND.md),
+catálogo zerado), `report-catalog-coverage.mjs` (cobertura por idioma e era,
+informativo), `enrich-ja.mjs` + `sync-bulbapedia-ja.mjs` (v2 japonês, ver
+"v2 — japonês"), `mirror-*-set-logos.mjs` (espelha logos de set localmente), `mirror-r2.mjs` (espelha as imagens de carta no R2, ver docs/BACKEND.md),
 `build-set-id-map.mjs` (de-para TCGdex→pokemontcg.io pras imagens EN que faltam),
 `sync-price-history.mjs` (histórico de preços sem servidor: lê o acervo — R2,
 produção e cache do runner, fica a cópia mais adiantada —, anexa o snapshot de
@@ -431,6 +433,53 @@ O que a v1 **não** cobre, de propósito (fica pro próximo passo do inglês):
 texto da carta (HP, ataques, habilidade — o sync descarta), Shadowless e
 Unlimited como impressões, e a cobertura de preço só aparece no log do deploy
 (`report-price-coverage.mjs`), não num teste.
+
+### v2 — japonês
+
+A mesma régua aplicada ao catálogo `ja` (20/09/2026). O que muda em relação ao
+inglês é a **fonte**: a TCGdex só tem ~116 dos 246 sets japoneses, e os outros
+150 entram inteiros pela TCGCSV, que não publica artista, categoria, tipo,
+estágio, nome japonês nem série. Medido antes da v2: artista 49%, categoria
+59%, série em 86% dos sets, nome em inglês 0% nos sets da TCGdex, e 34 sets
+caindo em "Outros". Três fontes fecham o buraco, nesta precedência e SÓ em
+campo vazio (`scripts/enrich-ja.mjs`, todo build completo, sem rede, depois
+dos dois syncs e antes do merge; regra pura em `scripts/lib/enrich-ja.mjs`):
+
+1. **Série pelo código do set** (`jpSerieOfCode`): a tabela cobre todas as
+   eras — onde a TCGdex tem nome canônico (PMCG, neo, e, PCG, XY, SM, S, SV,
+   M) é o dela; nas que ela não tem (ADV, DP, DPt, Pt, LEGEND, BW) o id é o
+   código da era. Decks e promos sem código de era (Battle Strength Decks,
+   PLAY, PPP, Worlds) são datados à mão na mesma tabela.
+2. **Bulbapedia** (`data/ja-enrich/<setId>.json`, cache versionado): nome
+   japonês, nome inglês, tipo, raridade, ilustrador e scan do Archives,
+   casados pelo **número** impresso. O download é passo LOCAL
+   (`scripts/sync-bulbapedia-ja.mjs`: API do MediaWiki, uma requisição por
+   segundo, resumível, `--probe` pra conferir o parser); o CI só aplica o
+   cache. Texto vai pro git; imagem vai pro R2 pelo `mirror-r2` (host
+   `archives.bulbagarden.net` nas `FONTES`). O cliente nunca toca o wiki.
+   Crédito na página Sobre (CC BY-NC-SA).
+3. **Irmão inglês**: a carta importada tem o nome em inglês do TCGplayer, que
+   é o nome da carta EN. Quando todos os homônimos EN concordam, herda
+   categoria, tipo, estágio, tipo de treinador e de energia. Artista nunca —
+   a arte japonesa pode ser outra.
+
+`nameEn` é o campo novo: o nome em inglês de toda carta japonesa (o `name`
+delas é o japonês). Entra na busca do cliente, nas palavras extras do D1 e no
+popup ("Nome em inglês"). Resultado só com os itens 1 e 3 (sem cache da
+Bulbapedia ainda): categoria 59% → 99%, série 86% → 99% dos sets, 9.287
+cartas com nome em inglês pesquisável.
+
+A régua é o `scripts/report-catalog-coverage.mjs` (CI e deploy, informativo):
+por idioma e, no japonês, por era — imagem, artista, categoria, raridade,
+nome em inglês, série, logo e quantos sets são só-TCGCSV.
+
+Fica de fora da v2 até a primeira rodada local da Bulbapedia: nome japonês e
+ilustrador dos importados, raridade dos 61 sets sem ela, scans dos 31 sets sem
+nenhuma imagem (1996–2006 e os SM*p), logos (41 de 246 curados em
+`mirror-ja-set-logos.mjs`) e nomes traduzidos (72 de 246 em `JA_SET_EN`; o
+`--names` do sync emite `_set-names.json` pra copiar de lá). Os decks
+iniciais com código ambíguo ("SV: …", "sA: …") seguem fora até ganhar apelido
+em `ja.alias` — o log do sync da TCGCSV lista quais.
 
 ---
 

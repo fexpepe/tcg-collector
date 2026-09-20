@@ -73,6 +73,17 @@ export const FONTES = {
   "images.pokemontcg.io": {
     concorrencia: 3, intervaloMs: 150,
     matriz: (u) => u.replace(/(_hires)?\.png$/, "_hires.png")
+  },
+  // Bulbagarden Archives (20/09/2026, v2 japonês): scans das cartas japonesas
+  // que nenhuma fonte com API tem — os vintages de 1996 a 2006 (PMCG, neo, VS,
+  // web, e, PCG, ~2.170 cartas). A URL entra no chunk pelo enrich-ja (cache
+  // da Bulbapedia) e o cliente só a vê atrás do espelho. Um wiki comunitário:
+  // uma requisição por vez, um segundo entre elas. A matriz é o upload
+  // original (/media/upload/x/xy/Arquivo.jpg); uma URL de thumb
+  // (/thumb/x/xy/Arquivo.jpg/300px-Arquivo.jpg) volta pro original.
+  "archives.bulbagarden.net": {
+    concorrencia: 1, intervaloMs: 1000,
+    matriz: (u) => u.replace(/\/media\/upload\/thumb\/([0-9a-f])\/([0-9a-f]{2})\/([^/]+)\/\d+px-[^/]+$/, "/media/upload/$1/$2/$3")
   }
 };
 // Ordem do rollout: vintages, Lorcana e One Piece primeiro (host único sem

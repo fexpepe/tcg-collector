@@ -256,7 +256,9 @@ export function cardRows(game, card) {
   // cima; e nunca mudar a régua das legado sem aceitar a reescrita total.
   const legado = [...unicas];
   const total = String(card.setTotal || "");
-  const fontesExtras = [num.includes("/") || !/^\d+$/.test(total) ? "" : total];
+  // nameEn (20/09/2026): o nome em inglês das cartas japonesas do Pokémon
+  // (enrich-ja), pra "boss's orders" achar a carta cujo `name` é o japonês.
+  const fontesExtras = [num.includes("/") || !/^\d+$/.test(total) ? "" : total, card.nameEn && card.nameEn !== card.name ? card.nameEn : ""];
   const extras = [];
   for (const fonte of fontesExtras) {
     for (const w of palavras(fonte)) if (!unicas.has(w)) { unicas.add(w); extras.push(w); }

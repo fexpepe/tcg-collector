@@ -308,25 +308,53 @@ export function jpAmbiguousCodes(groups, { codeOf, hasChunk, alias }) {
   return new Map([...byCode].filter(([, list]) => list.length > 1));
 }
 
-// Série de um set JP importado inteiro, pelo prefixo do código — os MESMOS
-// valores que a TCGdex grava nos chunks ja (setSerieId/setSerieName), pra o
-// set cair no grupo certo da tela de Sets. Sem isso um "M6a: 30th Celebration"
-// nascia sem série e ia parar em "Outros" (16/09/2026), longe dos irmãos M1–M6.
-// Prefixo mais longo primeiro ("SV1a" é SV, não S; "SM10" é SM). Código de era
-// que a TCGdex ja não cobre (DP, BW, L…) fica sem série de propósito: não há
-// nome canônico pra copiar.
+// Série de um set JP importado inteiro, pelo código — os MESMOS valores que a
+// TCGdex grava nos chunks ja (setSerieId/setSerieName) onde ela tem a era, pra
+// o set cair no grupo certo da tela de Sets. Sem isso um "M6a: 30th
+// Celebration" nascia sem série e ia parar em "Outros" (16/09/2026), longe dos
+// irmãos M1–M6. Até 20/09/2026 só as eras que a TCGdex ja cobre entravam, e
+// 34 sets importados (ADV-P, DP-P, Pt1–4, L3, BW…) ficavam sem série. Agora a
+// tabela cobre TODAS as eras japonesas: onde a TCGdex tem nome canônico
+// (PMCG, neo, e, PCG, XY, SM, S, SV, M) o nome é o dela; nas que ela não tem
+// (ADV, DP, Pt, LEGEND, BW) o id é o código da era, que é como a comunidade
+// e a Bulbapedia chamam. Regex, não prefixo: "S" sozinho engoliria SM/SV, e
+// "E1" não pode casar com qualquer código que comece com E.
 const JP_SERIES = [
-  ["SV", "ポケモンカードゲーム スカーレット&バイオレット"],
-  ["SM", "サン＆ムーン"],
-  ["XY", "XY"], ["CP", "XY"],
-  ["S", "剣と盾"],
-  ["M", "ポケモンカードゲーム MEGA"]
-].sort((a, b) => b[0].length - a[0].length);
+  [/^PMCG\d/, "PMCG", "ポケットモンスターカードゲーム"],
+  [/^NEO\d/, "neo", "ポケモンカード★neo"],
+  [/^VS\d/, "VS", "VS"],
+  [/^WEB\d/, "web", "web"],
+  [/^E\d$/, "e", "ポケモンカードe"],
+  [/^ADV(\d|-P)/, "ADV", "ADV"],
+  [/^PCG(\d|-P)/, "PCG", "PCG"],
+  [/^DPT(\d|-P)/, "DPt", "DPt"],
+  [/^DP(\d|-P)/, "DP", "DP"],
+  [/^PT(\d|[A-Z]$)/, "Pt", "Pt"],
+  [/^L(\d|-P|L$)/, "L", "LEGEND"],
+  [/^BW(\d|-P|$)/, "BW", "BW"],
+  // Decks e promos de era que não levam o código dela no nome (o TCGplayer
+  // batiza pelo produto): datados pelo lançamento — Battle Strength Decks e
+  // Beginning Set são BW (2011–12), PLAY promos são ADV (2003), T promos são
+  // e (2002), PPP é DP (2007), Worlds 2023 é SV, os sp/sC são Sword & Shield.
+  [/^(BKB|BKR|BKW|BKZ|CS1|HSZ)$/, "BW", "BW"],
+  [/^PLAY$/, "ADV", "ADV"],
+  [/^T$/, "e", "ポケモンカードe"],
+  [/^PPP$/, "DP", "DP"],
+  [/^WCS2[3-4]$/, "SV", "ポケモンカードゲーム スカーレット&バイオレット"],
+  [/^MP\d/, "M", "ポケモンカードゲーム MEGA"],
+  [/^(XY|CP)/, "XY", "XY"],
+  [/^SM/, "SM", "サン＆ムーン"],
+  [/^(SV|SVPJ)/, "SV", "ポケモンカードゲーム スカーレット&バイオレット"],
+  // DEPOIS de SM/SV: "sC2"/"sp1" (starters e specials da era Sword & Shield)
+  [/^S(C|P)\d/, "S", "剣と盾"],
+  [/^S(\d|-P|[A-Z]{1,3}$)/, "S", "剣と盾"],
+  [/^M(\d|-P|[A-Z]{1,3}$)/, "M", "ポケモンカードゲーム MEGA"]
+];
 export function jpSerieOfCode(code) {
   const c = String(code || "").toUpperCase();
-  const hit = JP_SERIES.find(([prefix]) => c.startsWith(prefix));
+  const hit = JP_SERIES.find(([re]) => re.test(c));
   if (!hit) return null;
-  return { setSerieId: hit[0] === "CP" ? "XY" : hit[0], setSerieName: hit[1] };
+  return { setSerieId: hit[1], setSerieName: hit[2] };
 }
 
 // ── Import de set EN inteiro (pins `enImport` em data/tcgcsv-set-map.json) ──

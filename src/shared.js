@@ -6057,6 +6057,9 @@
                 })()}
                 <div><dt>${escapeHtml(t("modal.artist"))}</dt><dd>${escapeHtml(activeCard.artist || t("card.unknownArtist"))}</dd></div>
                 <div><dt>${escapeHtml(t("modal.set"))}</dt><dd>${setLink("preview-set-link")}</dd></div>
+                ${activeCard.nameEn && activeCard.nameEn !== activeCard.name
+                  ? `<div><dt>${escapeHtml(t("modal.nameEn"))}</dt><dd>${escapeHtml(activeCard.nameEn)}</dd></div>`
+                  : ""}
                 ${activeCard.nameJp && activeCard.nameJp !== activeCard.name
                   ? `<div><dt>${escapeHtml(t("modal.nameJp"))}</dt><dd lang="ja" class="modal-name-jp">${escapeHtml(activeCard.nameJp)}</dd></div>`
                   : ""}
@@ -6737,8 +6740,10 @@
     // pelo scanner) achar a carta seja como for que o catálogo o guarde.
     // Espaço nas pontas: número e fração casam como TOKEN inteiro (" 9/94 "),
     // ver matchesCardQuery.
+    // nameEn: o nome em inglês das cartas JAPONESAS do Pokémon (enrich-ja):
+    // o `name` delas é o japonês, e "boss's orders" tem que achar a carta.
     card._haystack = " " + normalize([
-      card.name, card.nameJp, card.pokemonName, card.dexId, ...cardCodeForms(card),
+      card.name, card.nameJp, card.nameEn, card.pokemonName, card.dexId, ...cardCodeForms(card),
       card.set, card.artist, card.rarity, card.language, card.cardType, ...(card.variants || [])
     ].join(" ") + jpNameAliases(`${card.name || ""} ${card.nameJp || ""}`)) + " ";
     return card._haystack;
