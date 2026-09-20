@@ -8726,6 +8726,19 @@ html[data-detail="set"] #detailTitle { display: none; }
   .collection-tabs-select { display: block; min-height: 44px; }
   .collection-tabs-select[hidden] { display: none; }
   main:has(.collection-tabs-select) #collectionTabs { display: none; }
+  /* Portfólio (2026-09-20): título e "← Hub" somem (a tabbar já tem Hub e
+     Portfólio) e as três ações só-ícone ficam na MESMA linha do select de
+     jogo, à direita. O embrulho .pf-mobile-toolbar vem do portfolio.js
+     (initMobileToolbar); o :has é a rede de segurança — sem o JS, o
+     cabeçalho continua como está. Com um jogo só o select some e as ações
+     ficam sozinhas, encostadas à direita (margin-left: auto). */
+  main:has(.pf-mobile-toolbar) .pf-head { display: none; }
+  .pf-mobile-toolbar { display: flex; align-items: center; gap: 8px; margin: 0 0 14px; }
+  .pf-mobile-toolbar > .chip-scroll,
+  .pf-mobile-toolbar > .game-filter-select { flex: 1 1 auto; min-width: 0; margin: 0; }
+  .pf-mobile-toolbar .game-filter-select { width: 100%; margin: 0; }
+  .pf-mobile-toolbar > [hidden] { display: none; }
+  .pf-mobile-toolbar .pf-head-actions { flex: none; margin: 0 0 0 auto; }
   /* As abas de seção seguem rolando: são poucas e fixas. O perfil público
      (.prof-tabs) usa a MESMA grade, então recebe a mesma regra — sem isto, 8
      abas em 390px espremeriam pra ~40px cada e o rótulo sumiria. */

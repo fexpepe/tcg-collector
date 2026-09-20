@@ -337,8 +337,45 @@
     btn.addEventListener("click", () => { shared.setSensitive(!shared.sensitiveEnabled()); pinta(); });
   }
 
+  // CELULAR (pedido de 2026-09-20): o título "Portfólio" e o "← Hub" somem
+  // (a tabbar já tem Hub e Portfólio) e as três ações (olho, retrospectiva,
+  // exportar) vão pra MESMA linha do select de jogo, à direita dele. MOVE o
+  // .pf-head-actions (não clona: os botões têm listeners por id) pra dentro
+  // de um embrulho .pf-mobile-toolbar junto do filtro de jogo; ao alargar a
+  // tela devolve tudo ao lugar. O select-espelho do shared.js é o
+  // nextElementSibling do #gameFilter — ou do .chip-scroll que o embrulha —
+  // e tem que continuar sendo, senão o syncGameFilterSelect cria outro. Por
+  // isso o embrulho leva [filtro][select][ações], nessa ordem.
+  function initMobileToolbar() {
+    const actions = document.querySelector(".pf-head-actions");
+    const filter = document.getElementById("gameFilter");
+    if (!actions || !filter) return;
+    const casa = actions.parentElement;
+    const mq = window.matchMedia("(max-width: 600px)");
+    let bar = null;
+    const aplicar = () => {
+      if (mq.matches && !bar) {
+        const alvo = filter.parentElement.classList.contains("chip-scroll") ? filter.parentElement : filter;
+        const sel = alvo.nextElementSibling && alvo.nextElementSibling.classList.contains("game-filter-select") ? alvo.nextElementSibling : null;
+        bar = document.createElement("div");
+        bar.className = "pf-mobile-toolbar";
+        alvo.parentElement.insertBefore(bar, alvo);
+        bar.appendChild(alvo);
+        if (sel) bar.appendChild(sel);
+        bar.appendChild(actions);
+      } else if (!mq.matches && bar) {
+        casa.appendChild(actions);
+        bar.replaceWith(...bar.childNodes);
+        bar = null;
+      }
+    };
+    aplicar();
+    mq.addEventListener("change", aplicar);
+  }
+
   function bindExport() {
     bindPrivacy();
+    initMobileToolbar();
     const recap = document.getElementById("pfRecap");
     if (recap) {
       // Só oferece quando há histórico pra contar uma história (2+ pontos).
