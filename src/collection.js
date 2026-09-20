@@ -2504,34 +2504,33 @@
       return groups.slice().sort((a, b) => cardSort === "value-asc" ? gv(a) - gv(b) : gv(b) - gv(a));
     }
 
+    // Rótulos IGUAIS aos da Minha Coleção: as tags viraram "Listas"
+    // (docs/LISTAS.md) e a aba de espécie segue o filtro de jogo — "Pokémon"
+    // só no filtro Pokémon, "Personagens" nos demais e no Todos (a mesma regra
+    // do syncGameTabs()). Uma função só: a fileira de abas e o título das abas
+    // de progresso leem daqui, como na tela do dono.
+    const TAB_LABEL = {
+      collection: "nav.collection", vitrine: "collection.tab.folders", graded: "nav.graded",
+      tags: "nav.lists", artists: "collection.tab.artists", sets: "collection.tab.sets", sale: "nav.sales"
+    };
+    function tabLabel(m) {
+      if (m === "pokemon") return gFilter === "pokemon" ? t("toolbar.pokemon") : t("toolbar.characters");
+      return TAB_LABEL[m] ? t(TAB_LABEL[m]) : "";
+    }
     function tabsHtml() {
-      const tab = (m, label, on) => on ? `<button type="button" class="prof-tab${mode === m ? " is-active" : ""}" data-profile-tab="${m}">${escapeHtml(label)}</button>` : "";
-      // O seletor de ordenação sai da fileira das abas e vai pra uma linha
-      // própria, alinhado à direita. Dentro do .prof-tabs ele virava mais uma
-      // coluna da grade — e com colunas de largura IGUAL (que é o que alinha as
-      // abas de ponta a ponta) um <select> do tamanho de uma aba fica estranho
-      // e ainda rouba espaço dos rótulos.
-      const sortHtml = (mode !== "collection" && PROGRESS_MODES.indexOf(mode) < 0)
-        ? `<div class="prof-sortrow"><select class="prof-sort" data-profile-sort aria-label="${escapeAttribute(t("sort.label"))}">
-            <option value="value-desc"${cardSort === "value-desc" ? " selected" : ""}>${escapeHtml(t("sort.valueDesc"))}</option>
-            <option value="value-asc"${cardSort === "value-asc" ? " selected" : ""}>${escapeHtml(t("sort.valueAsc"))}</option>
-          </select></div>`
-        : "";
-      // Rótulos IGUAIS aos da Minha Coleção: as tags viraram "Listas"
-      // (docs/LISTAS.md) e a aba de espécie segue o filtro de jogo — "Pokémon"
-      // só no filtro Pokémon, "Personagens" nos demais e no Todos (a mesma
-      // regra do syncGameTabs()). A classe .collection-tabs entra junto: é ela
-      // que dá às abas a rolagem horizontal do celular.
+      const tab = (m, on) => on ? `<button type="button" class="prof-tab${mode === m ? " is-active" : ""}" data-profile-tab="${m}">${escapeHtml(tabLabel(m))}</button>` : "";
+      // A classe .collection-tabs entra junto: é ela que dá às abas a rolagem
+      // horizontal do celular.
       return `<div class="prof-tabs collection-tabs">
-        ${tab("collection", t("nav.collection"), true)}
-        ${tab("vitrine", t("collection.tab.folders"), hasFolders)}
-        ${tab("graded", t("nav.graded"), hasGraded)}
-        ${tab("tags", t("nav.lists"), hasTags)}
-        ${tab("pokemon", gFilter === "pokemon" ? t("toolbar.pokemon") : t("toolbar.characters"), hasPokemon)}
-        ${tab("artists", t("collection.tab.artists"), hasArtists)}
-        ${tab("sets", t("collection.tab.sets"), hasSets)}
-        ${tab("sale", t("nav.sales"), hasSales)}
-      </div>${sortHtml}`;
+        ${tab("collection", true)}
+        ${tab("vitrine", hasFolders)}
+        ${tab("graded", hasGraded)}
+        ${tab("tags", hasTags)}
+        ${tab("pokemon", hasPokemon)}
+        ${tab("artists", hasArtists)}
+        ${tab("sets", hasSets)}
+        ${tab("sale", hasSales)}
+      </div>`;
     }
 
     // Barra de filtros da aba "Toda Coleção" — MESMOS campos, MESMA ordem e
@@ -2565,34 +2564,80 @@
       </section>`;
     }
 
-    // Ações no canto do cartão-herói: as MESMAS da Minha Coleção, menos as que
-    // só o dono pode fazer (Selecionar em massa e Compartilhar). Visualização
-    // (▦/≣) nas abas de grade plana; "Filtros" só onde existe barra pra abrir.
-    // Ícone do Filtros idêntico ao do collection.html — é o mesmo botão.
-    function actionsHtml() {
-      return `<div class="collection-toolbar-actions">
-        <div class="view-toggle" role="group" aria-label="${escapeAttribute(t("toolbar.view"))}"${flatGrid() ? "" : " hidden"}>
-          <button type="button" class="view-toggle-btn" data-pf-view="grid" aria-pressed="${cardView === "grid"}" title="${escapeAttribute(t("toolbar.view"))}">▦</button>
-          <button type="button" class="view-toggle-btn" data-pf-view="list" aria-pressed="${cardView === "list"}" title="${escapeAttribute(t("toolbar.view"))}">≣</button>
-        </div>
-        <button type="button" class="secondary" data-pf-filters aria-expanded="${filtersOpen}" aria-controls="profileFilters"${mode === "collection" ? "" : " hidden"}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span>${escapeHtml(t("filters.show"))}</span></button>
-      </div>`;
+    // Ações acima da grade — o MESMO lugar da Minha Coleção (a linha
+    // .results-header-cards, na ponta direita), e não mais o canto do cartão do
+    // topo: no trilho de cartões (2026-09-20) o cartão é estreito demais pra
+    // elas. São as da Coleção menos as que só o dono pode fazer (Selecionar,
+    // Exportar, Compartilhar): Ordenar (nas abas sem barra de filtros),
+    // "Filtros" (só onde há barra pra abrir) e Visualização (▦/≣) nas abas de
+    // grade plana. Ícones idênticos aos do collection.html — é o mesmo botão.
+    function actionsRowHtml() {
+      const ordenar = (mode !== "collection" && PROGRESS_MODES.indexOf(mode) < 0)
+        ? `<div class="results-sort"><label for="pfSort">${escapeHtml(t("sort.label"))}</label><select id="pfSort" data-profile-sort>
+            <option value="value-desc"${cardSort === "value-desc" ? " selected" : ""}>${escapeHtml(t("sort.valueDesc"))}</option>
+            <option value="value-asc"${cardSort === "value-asc" ? " selected" : ""}>${escapeHtml(t("sort.valueAsc"))}</option>
+          </select></div>`
+        : "";
+      const filtros = mode === "collection"
+        ? `<button type="button" class="secondary" data-pf-filters aria-expanded="${filtersOpen}" aria-controls="profileFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span>${escapeHtml(t("filters.show"))}</span></button>`
+        : "";
+      const visual = flatGrid()
+        ? `<div class="view-toggle" role="group" aria-label="${escapeAttribute(t("toolbar.view"))}">
+            <button type="button" class="view-toggle-btn" data-pf-view="grid" aria-pressed="${cardView === "grid"}" title="${escapeAttribute(t("toolbar.view"))}">▦</button>
+            <button type="button" class="view-toggle-btn" data-pf-view="list" aria-pressed="${cardView === "list"}" title="${escapeAttribute(t("toolbar.view"))}">≣</button>
+          </div>`
+        : "";
+      if (!ordenar && !filtros && !visual) return "";
+      return `<section class="results-header results-header-cards"><div class="results-actions">${ordenar}${filtros}${visual}</div></section>`;
     }
     // Abas de GRADE PLANA (uma fileira de cartas): são as que a Visualização
     // grade/lista comanda. As de grupo (vitrine/listas) e as de progresso
     // (Personagens/Artistas/Sets) têm layout próprio e não usam o toggle.
     function flatGrid() { return mode === "collection" || mode === "graded" || mode === "sale"; }
-    // O cartão-herói é PERSISTENTE (não entra no .prof-swap), então trocar de
-    // aba não o redesenha — quem esconde/mostra as ações é isto, na mão.
-    function syncActions() {
-      const vt = sv.querySelector(".collection-toolbar-actions .view-toggle");
-      if (vt) vt.hidden = !flatGrid();
-      const fb = sv.querySelector("[data-pf-filters]");
-      if (fb) fb.hidden = mode !== "collection";
+    // Itens da coleção no filtro de jogo atual — a base do dashboard e das
+    // distribuições do trilho.
+    function dashItems() {
+      return gFilter === "all" ? col.items : col.items.filter((it) => (it.g || "pokemon") === gFilter);
+    }
+    // Uma entrada por CARTA (o payload é um item por carta+VARIANTE: quem tem a
+    // Normal e a Holo da mesma carta contaria a raridade dela duas vezes).
+    function distinctItems(items) {
+      const vistos = new Set();
+      return items.filter((it) => {
+        if (vistos.has(it.id)) return false;
+        vistos.add(it.id);
+        return true;
+      });
+    }
+    // Distribuições do trilho — os MESMOS cartões da Minha Coleção e da página
+    // do set (src/insights.js), sobre as cartas DISTINTAS do perfil.
+    // A raridade sai do próprio payload (it.r). O TIPO de carta não: o payload
+    // não carrega categoria/tipo, então ele só entra depois que o catálogo do
+    // perfil termina de baixar (ver o fim de renderPublicProfile) — e só se o
+    // catálogo trouxe TODAS as cartas, senão o gráfico mostraria uma
+    // distribuição de meia coleção como se fosse a inteira.
+    // O data-pf-insight marca os cartões que o renderInsights() troca sozinho.
+    function insightsHtml(items) {
+      if (!window.TCGInsights) return "";
+      const marca = (html) => (html ? html.replace("<article ", "<article data-pf-insight ") : "");
+      const unicas = distinctItems(items);
+      const doCatalogo = unicas.map((it) => cardsById.get(it.id)).filter(Boolean);
+      const tipo = doCatalogo.length === unicas.length
+        ? window.TCGInsights.typeCard(doCatalogo, (card) => card.game || gameOf(card.id))
+        : "";
+      return marca(window.TCGInsights.rarityCard(unicas.map((it) => ({ rarity: it.r || "" })))) + marca(tipo);
+    }
+    // Catálogo chegou: só as distribuições são refeitas (o trilho inteiro não —
+    // redesenhá-lo zeraria a rolagem horizontal dele no celular).
+    function renderInsights() {
+      const rail = sv.querySelector(".set-insights-rail");
+      if (!rail) return;
+      rail.querySelectorAll("[data-pf-insight]").forEach((el) => el.remove());
+      rail.insertAdjacentHTML("beforeend", insightsHtml(dashItems()));
     }
     // Dashboard SEMPRE da coleção (visão geral do perfil); reage ao filtro de jogo.
     function dashHtml() {
-      const items = gFilter === "all" ? col.items : col.items.filter((it) => (it.g || "pokemon") === gFilter);
+      const items = dashItems();
       // Total = cartas raw + slabs graded (igual à Minha Coleção). gv vem na moeda
       // do dono; converte pra moeda atual. Antes o graded ficava de fora (link < coleção).
       const cur = shared.getCurrency();
@@ -2600,17 +2645,18 @@
       const gradedTotal = gradedList
         .filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter)
         .reduce((s, it) => { const v = shared.convertMoney(it.gv || 0, it.cur || "BRL", cur); return s + (v == null ? (it.gv || 0) : v); }, 0);
-      return sharedDashboardHtml(items, rawTotal + gradedTotal, { name, handle: prof.handle }, { hero: true, actions: actionsHtml() });
+      return sharedDashboardHtml(items, rawTotal + gradedTotal, { name, handle: prof.handle }, { hero: true, insights: insightsHtml(items) });
     }
     function gameFilterHtml() {
       if (gamesPresent.length <= 1) return "";
       const chip = (g, label) => `<button type="button" class="chip" data-game-filter="${g}" aria-pressed="${gFilter === g}">${escapeHtml(label)}</button>`;
       // Só os jogos que ESTÃO no perfil (era GAME_SLUGS inteiro — 13 chips, a
       // maioria sem uma carta sequer), na ordem de GAME_SLUGS, e dentro da
-      // MESMA moldura da Coleção (.game-filter-panel). É o setGameFilterScope
-      // da tela do dono, escrito à mão: aqui os chips não vêm do HTML.
+      // MESMA moldura da Coleção (.game-filter-panel), CENTRADA como lá
+      // (.collection-toolbar-centered). É o setGameFilterScope da tela do dono,
+      // escrito à mão: aqui os chips não vêm do HTML.
       const lista = shared.GAME_SLUGS.filter((g) => gamesPresent.indexOf(g) >= 0);
-      return `<div class="collection-toolbar"><div id="sharedGameFilter" class="chip-filter game-filter game-filter-panel" role="group" aria-label="Jogo">
+      return `<div class="collection-toolbar collection-toolbar-centered"><div id="sharedGameFilter" class="chip-filter game-filter game-filter-panel" role="group" aria-label="Jogo">
         ${chip("all", t("filter.gameAll"))}${lista.map((g) => chip(g, gameLabelOf(g))).join("")}
       </div></div>`;
     }
@@ -2656,11 +2702,18 @@
             <p class="progress-row-meta">${escapeHtml(tn("count.cards", g.total) + " · " + fmtPct(g.pct) + "%")}</p>
           </div>
         </button>`).join("");
-      return `<div class="group-summary">
+      // MESMA linha de título da Minha Coleção: o nome da aba à esquerda e o
+      // "Ordenar:" com os chips na ponta direita (era uma .sort-row solta
+      // ABAIXO do resumo, alinhada à esquerda — a única fileira do perfil que
+      // ainda não batia com a tela do dono).
+      return `<section class="results-header">
+          <h2>${escapeHtml(tabLabel(mode))}</h2>
+          <div class="results-actions results-sort"><span>${escapeHtml(t("sort.label"))}</span><div class="chip-filter">${chip("name", "sort.name")}${chip("progress", "sort.progress")}</div></div>
+        </section>
+        <div class="group-summary">
           <div class="group-summary-row"><strong>${escapeHtml(tn("collection.summary." + mode, groups.length, { o: ownedSum, t: totalSum }))}</strong><span class="summary-pct">${overallPct}%</span></div>
           <div class="progress-bar"><span style="width:${Math.min(100, totalSum ? (ownedSum / totalSum) * 100 : 0).toFixed(1)}%"></span></div>
         </div>
-        <div class="sort-row"><span>${escapeHtml(t("sort.label"))}</span><div class="chip-filter">${chip("name", "sort.name")}${chip("progress", "sort.progress")}</div></div>
         <div class="progress-row-list">${rows}</div>`;
     }
     // Card de grupo (somente leitura): capa + nome + meta (+ estrelas/cor quando houver).
@@ -2715,10 +2768,12 @@
       const openName = (groupsFor(mode).find((x) => x.id === openId) || {}).name || "";
       return `<div class="coll-open-head"><button type="button" class="secondary coll-back-btn" data-vitrine-back>${escapeHtml(t("profile.viewCollections"))}</button><strong class="coll-open-name">${escapeHtml(openName)}</strong></div>`;
     }
-    // Tudo ABAIXO do dashboard (abas + barra de filtros + voltar + conteúdo). Trocar
-    // de aba re-renderiza SÓ isto — o dashboard fica intacto no DOM (não "pula").
+    // Tudo ABAIXO do dashboard (abas + ações + barra de filtros + voltar +
+    // conteúdo), na MESMA ordem da Minha Coleção. Trocar de aba re-renderiza SÓ
+    // isto — o dashboard fica intacto no DOM (não "pula") — e as ações, que
+    // agora moram aqui, se ajustam sozinhas à aba (era o antigo syncActions).
     function swapHtml() {
-      return `${tabsHtml()}${filterBarHtml()}${backHtml()}<div class="prof-content">${contentHtml()}</div>`;
+      return `${tabsHtml()}${actionsRowHtml()}${filterBarHtml()}${backHtml()}<div class="prof-content">${contentHtml()}</div>`;
     }
     function render() {
       shared.applyGameAccent(gFilter); // o filtro de jogo muda as cores (accent), por isso fica no topo
@@ -2737,7 +2792,6 @@
     function renderSwap() {
       const el = sv.querySelector(".prof-swap");
       if (el) el.innerHTML = swapHtml(); else render();
-      syncActions();
     }
     // Re-render PARCIAL: filtro/ordenação/visualização só trocam as cartas — não
     // reconstrói dashboard/abas/barra (mais rápido e preserva o foco nos selects).
@@ -2797,15 +2851,17 @@
     try {
       const catalog = await shared.loadOwnedAcrossGames(idsByGame);
       (catalog.cards || []).forEach((card) => { cardsById.set(card.id, card); cardGameMap.set(card.id, card.game); });
+      renderInsights(); // agora dá pra montar a distribuição por tipo de carta
     } catch (e) { /* sem catálogo: só o preview não abre */ }
   }
 
   // Mesmo dashboard da coleção, porém a partir dos itens desnormalizados do share
   // (sem catálogo). Distribuição por jogo só aparece se o share trouxe `g`
   // (shares antigos não têm — degrada sem quebrar).
-  // `opts.hero`: só o cartão-herói, de ponta a ponta, com as ações no canto —
-  // é o topo da Minha Coleção, e é o que o PERFIL PÚBLICO usa. O share anônimo
-  // (?s=) segue com os três cards: lá não há abas nem filtros, o resumo é a tela.
+  // `opts.hero`: o TRILHO de cartões da Minha Coleção (cartão de identidade +
+  // "Visão geral" + as distribuições em `opts.insights`) — é o que o PERFIL
+  // PÚBLICO usa. O share anônimo (?s=) segue com os três cards antigos: lá não
+  // há abas nem filtros, o resumo é a tela.
   function sharedDashboardHtml(items, total, profileNav, opts) {
     const copies = items.reduce((s, it) => s + (it.q || 1), 0);
     const distinct = new Set(items.map((it) => it.id)).size;
@@ -2870,29 +2926,55 @@
           ${profileNav.label ? `<button type="button" class="secondary dash-profile-nav" data-profile-nav>${escapeHtml(profileNav.label)}</button>` : ""}
         </div>`
       : "";
-    // MESMO cartão-herói da Minha Coleção (.dash-stats-hero), com o MESMO DOM
-    // do collection.html: identidade + valor de mercado + ações na linha de
-    // cima, as 3 contagens embaixo. O perfil público era "quase igual" (tinha
-    // "atualizada em" e a Pokédex a mais, e o valor numa fileira própria) —
-    // agora é a mesma cara, com a mesma regra de CSS (2026-09-10). O texto
-    // "atualizada em"/Pokédex saiu de vez: as chaves profile.updated/profile.dex
-    // foram removidas do i18n junto.
     const o = opts || {};
     const money = stat(IC.money, escapeHtml(total > 0 ? shared.formatMoney(shared.getCurrency(), total) : "—"), t("dash.value"), ' class="dash-stat-money"');
-    return `<section class="collection-dashboard${o.hero ? " collection-dashboard-hero" : ""}">
+    // PERFIL PÚBLICO: o MESMO trilho de cartões do topo da Minha Coleção
+    // (2026-09-20). Era um cartão-herói só, de ponta a ponta — o desenho que a
+    // Coleção tinha ANTES de 2026-09-16, quando ela passou pro trilho
+    // (.set-insights-rail) e as duas telas deixaram de combinar. Mesmo DOM do
+    // collection.html: identidade (avatar + nome + @) e valor de mercado no
+    // primeiro cartão, "Visão geral" com as 3 contagens no segundo, e as
+    // distribuições (raridade / tipo de carta) que o chamador monta em
+    // `opts.insights` com o src/insights.js. As ações (Visualização/Filtros)
+    // NÃO entram aqui: no trilho o cartão é estreito, e na Minha Coleção elas
+    // moram na linha logo acima da grade — o perfil faz igual (ver swapHtml).
+    if (o.hero) {
+      const conta = (rotulo, valor) => `<div><dt>${escapeHtml(rotulo)}</dt><dd>${valor}</dd></div>`;
+      return `<section class="collection-dashboard set-insights coll-insights" aria-label="${escapeAttribute(t("aria.sumCollection"))}">
+        <div class="set-insights-rail">
+          <article class="insight-card insight-hero coll-hero">
+            ${profHead}
+            ${money}
+          </article>
+          <article class="insight-card insight-summary coll-overview">
+            <h3>${escapeHtml(t("insights.overview"))}</h3>
+            <dl>
+              ${conta(t("stats.copies"), copies)}
+              ${conta(t("stats.distinct"), distinct)}
+              ${conta(t("stats.setsCovered"), sets)}
+            </dl>
+          </article>
+          ${o.insights || ""}
+        </div>
+      </section>`;
+    }
+    // Share anônimo (?s=): os três cards de sempre — cartão-herói (identidade +
+    // valor + 3 contagens), "Mais valiosas" e a distribuição por jogo. Aqui não
+    // há ações: o share é só leitura e não tem abas nem filtros pra comandar.
+    return `<section class="collection-dashboard">
       <article class="dash-card dash-stats dash-stats-hero">
-        <div class="dash-stats-head">${profHead}${money}${o.actions || ""}</div>
+        <div class="dash-stats-head">${profHead}${money}</div>
         <div class="dash-stats-counts">
           ${stat(IC.copies, copies, t("stats.copies"))}
           ${stat(IC.distinct, distinct, t("stats.distinct"))}
           ${stat(IC.sets, sets, t("stats.setsCovered"))}
         </div>
       </article>
-      ${o.hero ? "" : `<article class="dash-card dash-top">
+      <article class="dash-card dash-top">
         <h3>${escapeHtml(t("dash.topTitle"))}</h3>
         <ol class="dash-top-list">${top || `<li class="dash-empty">—</li>`}</ol>
       </article>
-      ${distHtml ? `<article class="dash-card dash-dist"><h3>${escapeHtml(t("dash.distTitle"))}</h3><div class="dash-dist-bars">${distHtml}</div></article>` : ""}`}
+      ${distHtml ? `<article class="dash-card dash-dist"><h3>${escapeHtml(t("dash.distTitle"))}</h3><div class="dash-dist-bars">${distHtml}</div></article>` : ""}
     </section>`;
   }
 })();

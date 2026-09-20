@@ -372,8 +372,8 @@ select {
    lateral e só volta com pinça. É a causa nº 1 de "o mobile desconfigurou".
    Só em ponteiro grosso pra não engordar os controles no desktop.
    O !important é DELIBERADO: sem ele, qualquer classe de área com font-size
-   menor (.setting-select: 14px, .graded-grade: 14px, .sale-cond, .deck-view-sel,
-   .prof-sort: 12px…) vence o seletor de elemento e o zoom volta — foi exatamente
+   menor (.setting-select: 14px, .graded-grade: 14px, .sale-cond,
+   .deck-view-sel…) vence o seletor de elemento e o zoom volta — foi exatamente
    o que aconteceu com todo <select> do site quando o `font: inherit` acima
    morava DEPOIS deste bloco e o desfazia. Fonte menor que 16px num campo de
    toque nunca é intencional aqui. */
@@ -1142,14 +1142,14 @@ input::placeholder {
   text-decoration: none; /* a aba-LINK (Vendas e Trocas) não pode vir sublinhada */
 }
 .prof-tab:hover { background: var(--accent-soft); }
-/* Linha própria pro seletor de ordenação (ver o comentário no collection.js:
-   dentro da grade ele viraria uma coluna do tamanho de uma aba). */
-.prof-sortrow { display: flex; justify-content: flex-end; margin: -6px 0 16px; }
-.prof-sort { width: auto; flex: 0 0 auto; border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 999px; padding: 7px 13px; font-weight: 700; font-size: 12px; cursor: pointer; }
+/* (.prof-sortrow/.prof-sort saíram em 2026-09-20: eram a linha própria e a
+   cápsula do "Ordenar" do perfil público. O seletor foi pra .results-actions,
+   na linha acima da grade — o MESMO lugar e o mesmo desenho da Minha
+   Coleção.) */
 /* Cetinha custom DENTRO da cápsula (a nativa fica colada na borda / fora do pill).
-   Vale pros filtros da coleção (.toolbar/.detail-toolbar), pro seletor de ordenação
-   do perfil público (.prof-sort) e pro <select> de origem dos Sets no celular. */
-.toolbar select, .detail-toolbar select, .prof-sort, .set-region-select select {
+   Vale pros filtros da coleção (.toolbar/.detail-toolbar) e pro <select> de
+   origem dos Sets no celular. */
+.toolbar select, .detail-toolbar select, .set-region-select select {
   -webkit-appearance: none; appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a93a3' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -2792,7 +2792,11 @@ input::placeholder {
    geral" com as três contagens (sem o anel do set: coluna única); e as duas
    distribuições que o collection.js monta com o src/insights.js. As regras
    base de .dash-profile/.dash-stat-money trazem divisórias e respiros do
-   cartão-herói antigo — aqui saem, o gap do cartão já separa. */
+   cartão-herói antigo — aqui saem, o gap do cartão já separa.
+   O PERFIL PÚBLICO usa o mesmo trilho desde 2026-09-20 (renderPublicProfile
+   monta o mesmo DOM por JS), então as regras daqui pra baixo são por CLASSE:
+   o #collectionDashboard só existe na tela do dono. Lá o cartão tem as ações
+   no rodapé; no perfil elas moram na linha acima da grade, como na Coleção. */
 .set-insights-rail .coll-hero { gap: 12px; }
 .coll-hero .dash-profile { border: 0; padding: 0; margin: 0; }
 .coll-hero .dash-profile-name { font-size: 20px; letter-spacing: -0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -2807,8 +2811,12 @@ input::placeholder {
 #collectionDashboard .coll-hero .collection-toolbar-actions { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 8px; margin: auto 0 0; width: auto; }
 .coll-overview { grid-template-columns: minmax(0, 1fr); }
 /* O resumo antigo era full-bleed no celular (margem negativa e cartão sem
-   borda lateral); o trilho tem a calha de 16px como na página do set. */
-#collectionDashboard.collection-dashboard.coll-insights { display: block; margin: 0 0 18px; }
+   borda lateral); o trilho tem a calha de 16px como na página do set.
+   Os dois seletores: o id é o da Minha Coleção (precisa dos 1,2,0 pra vencer
+   o `#collectionDashboard.collection-dashboard` do @media de 720px); a versão
+   só-classe é a do perfil público, onde não há id nenhum. */
+#collectionDashboard.collection-dashboard.coll-insights,
+.collection-dashboard.coll-insights { display: block; margin: 0 0 18px; }
 
 .pokemon-hero-art {
   min-height: 160px;
@@ -5015,22 +5023,10 @@ html[data-collector-mode] .stat-grand .collector-badge {
   font-weight: 800;
 }
 
-.sort-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.sort-row .chip {
-  min-height: 32px;
-  padding: 0 12px;
-  font-size: 13px;
-}
+/* (.sort-row saiu em 2026-09-20: era a fileira de "Ordenar:" do perfil
+   público, a única que ainda ficava solta abaixo do resumo e à esquerda. Agora
+   o perfil usa a MESMA linha de título da Minha Coleção — .results-header com
+   o .results-sort na ponta direita, que herdou este visual.) */
 
 .progress-row-list {
   display: grid;
@@ -8755,7 +8751,6 @@ select,
 .folder-section,
 .coll-card,
 .prof-tab,
-.prof-sort,
 .folder-section.is-cover-pick .card-grid,
 .folder-name-input,
 .folder-tag,
