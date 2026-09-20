@@ -121,6 +121,11 @@
     ownedByGame,
     Object.fromEntries(GAMES.map((g) => [g, wishlistByGame[g].knownCardIds()]))
   );
+  // ANTES de esperar catálogo e cotações: o layout do celular (ações na
+  // linha do select de jogo) tem que estar montado no primeiro paint — quando
+  // rodava só depois dos dados (dentro do bindExport), a tela abria com o
+  // cabeçalho antigo e "pulava" pro novo segundos depois (2026-09-20).
+  initMobileToolbar();
   Promise.all([shared.loadOwnedFast(idsOwned), shared.loadFxRates()])
     .then(([catalog]) => {
       indexaCartas(catalog.cards);
@@ -375,7 +380,6 @@
 
   function bindExport() {
     bindPrivacy();
-    initMobileToolbar();
     const recap = document.getElementById("pfRecap");
     if (recap) {
       // Só oferece quando há histórico pra contar uma história (2+ pontos).

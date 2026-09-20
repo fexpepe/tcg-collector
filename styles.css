@@ -5669,12 +5669,18 @@ a.progress-row:hover {
     padding: 5px;
     border: 1px solid var(--line);
     border-radius: 999px;
-    /* Mesmo vidro do header (--header-bg + blur): a cápsula deixa entrever o
-       conteúdo que passa por baixo, como no app da Collectr, sem inventar uma
-       cor que não existe na paleta. */
-    background: var(--header-bg);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    /* Fundo OPACO e camada própria (2026-09-20). Era o vidro do header
+       (--header-bg a 92% + backdrop-filter: blur): no Android (Chrome e
+       Samsung Internet) a cápsula "prendia" no meio da tela ao rolar pra
+       baixo e só voltava pro lugar ao rolar pro topo — bug conhecido de
+       position: fixed + backdrop-filter, que o navegador desenha na posição
+       de rolagem antiga. O blur sobre 92% de opacidade mal se via; sai. O
+       will-change/translateZ promove a barra pra uma camada do compositor,
+       que é o que mantém um fixed no lugar no rolar acelerado do celular. */
+    background: var(--surface);
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.38);
     /* Trava de segurança: nada de filho escapa da cápsula. Sem isto, a pastilha
        do item ATIVO (primeiro/último) vazava pelos cantos arredondados — e
@@ -8729,10 +8735,12 @@ html[data-detail="set"] #detailTitle { display: none; }
   /* Portfólio (2026-09-20): título e "← Hub" somem (a tabbar já tem Hub e
      Portfólio) e as três ações só-ícone ficam na MESMA linha do select de
      jogo, à direita. O embrulho .pf-mobile-toolbar vem do portfolio.js
-     (initMobileToolbar); o :has é a rede de segurança — sem o JS, o
-     cabeçalho continua como está. Com um jogo só o select some e as ações
-     ficam sozinhas, encostadas à direita (margin-left: auto). */
-  main:has(.pf-mobile-toolbar) .pf-head { display: none; }
+     (initMobileToolbar), que roda ANTES dos dados. O cabeçalho some por CSS
+     desde o primeiro paint (era :has(.pf-mobile-toolbar), e a tela abria com
+     o cabeçalho antigo até o JS montar a linha nova — a página inteira já
+     depende do JS, então não há o que preservar sem ele). Com um jogo só o
+     select some e as ações ficam sozinhas, encostadas à direita. */
+  main .page-head.pf-head { display: none; }
   .pf-mobile-toolbar { display: flex; align-items: center; gap: 8px; margin: 0 0 14px; }
   .pf-mobile-toolbar > .chip-scroll,
   .pf-mobile-toolbar > .game-filter-select { flex: 1 1 auto; min-width: 0; margin: 0; }
