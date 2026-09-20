@@ -8736,12 +8736,20 @@
     });
   }
 
+  // O link de SET DESCARTA o nome quando ele foge do ASCII imprimível (japonês,
+  // acento) e há setId: o nome codificado (%E3%82%B8…) é o que o "copiar
+  // endereço do link" entregava, e o detail.js resolve o nome pelo id
+  // (resolveSetNameFromId). Exportada porque quem MONTA o link precisa saber
+  // disso: sem o nome, quem identifica a edição na URL é o ID — e um id
+  // sozinho é ambíguo (o mesmo `30th-c` é a edição EN e a PT). Ver
+  // setDetailUrl() no app.js.
+  function setLinkDropsName(name, setId) {
+    return Boolean(setId) && /[^ -~]/.test(String(name || ""));
+  }
+
   function detailUrl(type, name, scope, game, extra) {
     const params = new URLSearchParams({ type });
-    // Set de nome fora do ASCII (japonês, acento) COM setId: o link nasce só
-    // com o id. O nome codificado (%E3%82%B8…) é o que o "copiar endereço do
-    // link" entregava; o detail.js resolve o nome pelo id (resolveSetNameFromId).
-    if (!(type === "set" && extra && extra.setId && /[^ -~]/.test(name))) params.set("name", name);
+    if (!(type === "set" && extra && setLinkDropsName(name, extra.setId))) params.set("name", name);
     if (scope) params.set("scope", scope);
     // `extra` (setId/region): desambiguação de SET. O nome não é chave única —
     // o mesmo set existe em várias línguas e há sets homônimos com ids
@@ -9190,6 +9198,7 @@
     cardLangSigla,
     cardLanguageRegion,
     pickSetEdition,
+    setLinkDropsName,
     localizedImg,
     cardImgChain,
     hoverThumb,

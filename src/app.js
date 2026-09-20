@@ -762,6 +762,9 @@
       serieId,
       serieName: shared.setSerieDisplayName(entry.serieName, entry.language) || serieDisplayName(serieId),
       languageLabel: shared.cardLangSigla(entry.language),
+      // Região de idioma DESTA edição (não a do chip): é ela que vai no link
+      // quando o link precisa dizer qual edição abrir — ver setDetailUrl.
+      langRegion: shared.cardLanguageRegion(entry.language),
       // Caminho do chunk deste set: usado pra prefetch no toque (ver createSetCard).
       chunkFile: entry.file || ""
     };
@@ -889,28 +892,50 @@
     return out;
   }
 
-  // Nomes de set que casam com mais de uma edição (setId × região) no catálogo
-  // carregado. Só nesses o link precisa carregar ?setId=/?region= — o resto
+  // Nomes — e IDS — de set que casam com mais de uma edição (setId × região) no
+  // catálogo carregado. Só nesses o link precisa carregar ?region=; o resto
   // continua com a URL limpa de sempre. Calculado uma vez, depois da carga.
   let ambiguousSetNames = new Set();
+  let ambiguousSetIds = new Set();
   function indexAmbiguousSetNames() {
     const byName = new Map();
-    const add = (name, key) => {
-      if (!name) return;
-      if (!byName.has(name)) byName.set(name, new Set());
-      byName.get(name).add(key);
+    const byId = new Map();
+    const add = (mapa, chave, key) => {
+      if (!chave) return;
+      if (!mapa.has(chave)) mapa.set(chave, new Set());
+      mapa.get(chave).add(key);
     };
-    if (manifestMode()) manifest.sets.forEach((entry) => add(entry.name, `${entry.id}|${shared.cardLanguageRegion(entry.language)}`));
-    else cards.forEach((card) => add(card.set, `${card.setId || ""}|${shared.cardLanguageRegion(card.language)}`));
-    ambiguousSetNames = new Set(Array.from(byName).filter(([, keys]) => keys.size > 1).map(([name]) => name));
+    const conta = (name, setId, language) => {
+      const regiao = shared.cardLanguageRegion(language);
+      add(byName, name, `${setId || ""}|${regiao}`);
+      add(byId, setId, regiao);
+    };
+    if (manifestMode()) manifest.sets.forEach((entry) => conta(entry.name, entry.id, entry.language));
+    else cards.forEach((card) => conta(card.set, card.setId, card.language));
+    const ambiguos = (mapa) => new Set(Array.from(mapa).filter(([, keys]) => keys.size > 1).map(([chave]) => chave));
+    ambiguousSetNames = ambiguos(byName);
+    ambiguousSetIds = ambiguos(byId);
   }
 
   function setDetailUrl(item) {
     // O setId vai SEMPRE que existe: é o que deixa o detailUrl trocar o nome
     // não-ASCII pelo id na URL. Set de nome único não muda de comportamento
     // (uma edição só, o id não filtra nada); só o ambíguo carrega a região.
-    if (!ambiguousSetNames.has(item.name)) return detailUrl("set", item.name, "", "", { setId: item.setId });
-    return detailUrl("set", item.name, "", "", { setId: item.setId, region: selectedLangRegion });
+    //
+    // E o que identifica o set na URL NEM SEMPRE é o nome: o de nome acentuado
+    // ou japonês é descartado pelo detailUrl (setLinkDropsName) e sobra o id —
+    // que a edição PT divide com a EN e a chinesa com a japonesa. Sem a região
+    // aqui, "Coleção Clássica de 30 Anos" virava `?setId=30th-c` puro e o
+    // detail abria a edição INGLESA, porque o en vem antes do pt no manifest
+    // (20/09/2026). Vale pros 38 sets PT de nome acentuado e pros chineses.
+    const peloId = shared.setLinkDropsName(item.name, item.setId);
+    const ambiguo = peloId ? ambiguousSetIds.has(item.setId) : ambiguousSetNames.has(item.name);
+    if (!ambiguo) return detailUrl("set", item.name, "", "", { setId: item.setId });
+    // A região é a DO TILE, não a do chip: nos jogos sem chips (o chip só
+    // existe no Pokémon) o selectedLangRegion fica parado em "english" e
+    // carimbaria a região errada num set japonês.
+    const region = item.langRegion || selectedLangRegion;
+    return detailUrl("set", item.name, "", "", { setId: item.setId, region });
   }
 
   function createViewItem(item) {
@@ -1206,7 +1231,8 @@
       releaseDate: sample.setReleaseDate || "",
       serieId,
       serieName: shared.setSerieDisplayName(sample.setSerieName, sample.language) || serieDisplayName(serieId),
-      languageLabel: unique(sortedCards.map((card) => shared.cardLangSigla(card.language))).join("/")
+      languageLabel: unique(sortedCards.map((card) => shared.cardLangSigla(card.language))).join("/"),
+      langRegion: shared.cardLanguageRegion(sample.language)
     };
   }
 

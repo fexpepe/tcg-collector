@@ -483,15 +483,42 @@
     }
   }
 
+  // Região de idioma que a página deve abrir quando a URL NÃO traz o nome (o
+  // id sozinho não diz qual edição é: "30th-c" é a inglesa e a portuguesa,
+  // "SV9" é a japonesa e a chinesa). Na ordem: o ?region= do link, que sabe de
+  // qual tile saiu; a língua do ?card= compartilhado (30th-c-001-pt já diz
+  // "português"); a preferência de idioma de carta. Nada disso = "" e vale a
+  // ordem do manifest, como era antes.
+  // Mesma régua do pickSetEdition (shared.js), que resolve o mesmo empate
+  // quando o link vem pelo NOME.
+  function regiaoPedida() {
+    if (detailRegion) return detailRegion;
+    const cardId = params.get("card") || "";
+    if (cardId) return shared.cardLanguageRegion(shared.cardLanguageFromId(cardId));
+    const pref = shared.getCardLang();
+    return pref && pref !== "all" ? shared.cardLanguageRegion(pref) : "";
+  }
+
   // URL só com ?setId= (sem ?name=): acha o nome no catálogo já carregado —
   // manifest (produção) ou cards.js (dev). Tudo abaixo continua chaveado pelo
   // nome, como sempre foi; só a entrada ganhou uma porta a mais.
+  //
+  // O nome sai da EDIÇÃO da região pedida, não da primeira entrada com esse id:
+  // o manifest é mesclado na ordem "en ja zh-cn zh-tw pt", então pegar a
+  // primeira abria a "Coleção Clássica de 30 Anos" como "30th Classic
+  // Collection", em inglês (20/09/2026) — e todo set chinês como o japonês
+  // irmão. Sem edição na região pedida (link PT pra um set que só existe em
+  // inglês) fica a primeira, como antes.
   function resolveSetNameFromId() {
     if (detailType !== "set" || detailName || !detailSetId) return;
+    const regiao = regiaoPedida();
+    const daRegiao = (language) => !regiao || shared.cardLanguageRegion(language) === regiao;
     const manifest = window.TCG_MANIFEST;
-    const entry = manifest && Array.isArray(manifest.sets) ? manifest.sets.find((set) => set.id === detailSetId) : null;
+    const entries = manifest && Array.isArray(manifest.sets) ? manifest.sets.filter((set) => set.id === detailSetId) : [];
+    const entry = entries.find((set) => daRegiao(set.language)) || entries[0];
     if (entry) { detailName = entry.name; pintaTituloDoSet(); return; }
-    const card = Array.isArray(window.TCG_CARDS) ? window.TCG_CARDS.find((c) => c.setId === detailSetId) : null;
+    const doSet = Array.isArray(window.TCG_CARDS) ? window.TCG_CARDS.filter((c) => c.setId === detailSetId) : [];
+    const card = doSet.find((c) => daRegiao(c.language)) || doSet[0];
     if (card) { detailName = card.set; pintaTituloDoSet(); }
   }
   // O título é pintado no começo da página, quando `detailName` ainda pode estar
@@ -516,8 +543,24 @@
       const sp = new URLSearchParams(window.location.search);
       sp.delete("name");
       sp.set("setId", id);
+      // Trocar o nome pelo id PERDE a edição quando o id é dividido (a PT usa o
+      // mesmo id da EN, a chinesa o da japonesa): a URL limpa abriria a outra
+      // língua num F5. Por isso a região vai junto — só nesses, pra URL do set
+      // de id único continuar tão curta quanto era.
+      if (idComVariasEdicoes(id)) sp.set("region", shared.cardLanguageRegion(pageCards[0].language));
       history.replaceState(history.state, "", `${window.location.pathname}?${sp.toString()}`);
     } catch (e) { /* replaceState negado (iframe/sandbox): a URL feia ainda funciona */ }
+  }
+
+  // Mais de uma edição (região de idioma) sob o mesmo setId no catálogo desta
+  // página — é quando o id sozinho não identifica o set.
+  function idComVariasEdicoes(setId) {
+    const manifest = window.TCG_MANIFEST;
+    const fonte = manifest && Array.isArray(manifest.sets)
+      ? manifest.sets.filter((set) => set.id === setId)
+      : (Array.isArray(window.TCG_CARDS) ? window.TCG_CARDS.filter((c) => c.setId === setId) : []);
+    const regioes = new Set(fonte.map((item) => shared.cardLanguageRegion(item.language)));
+    return regioes.size > 1;
   }
 
   // No modo manifest, baixa apenas os chunks de set necessários para esta página.

@@ -75,3 +75,49 @@ test("set de nome único passa intacto", () => {
   assert.equal(pick(todas, "", "").length, 120);
   assert.equal(pick([], "", "").length, 0);
 });
+
+// ── O LINK do set (detailUrl + setLinkDropsName) ────────────────────────────
+// O link é a outra metade do mesmo problema: se ele não disser qual edição
+// abrir, o pickSetEdition/resolveSetNameFromId tem que adivinhar. E o nome do
+// set nem sempre sobrevive à URL — o fora do ASCII é descartado (ver
+// detailUrl), e aí quem identifica o set é o ID, que a edição PT divide com a
+// EN e a chinesa com a japonesa. Era o bug de 20/09/2026: a "Coleção Clássica
+// de 30 Anos" saía da lista como ?setId=30th-c pelado e abria em inglês.
+function urlApi() {
+  const s = loadShared("").window.TCGShared;
+  return { detailUrl: s.detailUrl, setLinkDropsName: s.setLinkDropsName };
+}
+
+test("nome acentuado COM setId: o link descarta o nome (fica só o id)", () => {
+  const { detailUrl, setLinkDropsName } = urlApi();
+  assert.equal(setLinkDropsName("Coleção Clássica de 30 Anos", "30th-c"), true);
+  const url = detailUrl("set", "Coleção Clássica de 30 Anos", "", "pokemon", { setId: "30th-c" });
+  assert.ok(!url.includes("name="), url);
+  assert.ok(url.includes("setId=30th-c"), url);
+});
+
+test("nome japonês COM setId: mesma régua", () => {
+  const { setLinkDropsName } = urlApi();
+  assert.equal(setLinkDropsName("バトルパートナーズ", "SV9"), true);
+});
+
+test("nome ASCII: o nome fica na URL (é ele que identifica o set)", () => {
+  const { detailUrl, setLinkDropsName } = urlApi();
+  assert.equal(setLinkDropsName("Base Set", "base1"), false);
+  const url = detailUrl("set", "Base Set", "", "pokemon", { setId: "base1" });
+  assert.ok(url.includes("name=Base+Set"), url);
+});
+
+test("sem setId o nome NUNCA cai — seria um link sem nenhuma chave", () => {
+  const { detailUrl, setLinkDropsName } = urlApi();
+  assert.equal(setLinkDropsName("Coleção Clássica de 30 Anos", ""), false);
+  const url = detailUrl("set", "Coleção Clássica de 30 Anos", "", "pokemon", null);
+  assert.ok(url.includes("name="), url);
+});
+
+test("a região pedida sobrevive ao descarte do nome", () => {
+  const { detailUrl } = urlApi();
+  const url = detailUrl("set", "Coleção Clássica de 30 Anos", "", "pokemon", { setId: "30th-c", region: "portuguese" });
+  assert.ok(!url.includes("name="), url);
+  assert.ok(url.includes("region=portuguese"), url);
+});
