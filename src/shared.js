@@ -3039,6 +3039,7 @@
     });
 
     buildMobileTabbar(active, exploreActive, collectionActive);
+    initHeaderProfileButton(active);
     buildExploreSubnav(active);
   }
 
@@ -3157,8 +3158,8 @@
   // Portfólio · Perfil (account.html). Início saiu (2026-09-14): a marca no
   // header já leva pra lá, e a vaga virou o Perfil — que substitui o
   // hambúrguer no celular (preferências, conta, Sair).
-  // Coleção aponta pro dashboard (o hub PESSOAL), como no desktop — ia pra
-  // collection.html, que é só uma das visões de dentro dele.
+  // Hub aponta pro dashboard (o hub PESSOAL), como no desktop; Coleção vai
+  // direto pra collection.html (Toda Coleção), a visão mais usada de dentro dele.
   // Só aparece ≤700px (CSS); o body ganha padding-bottom pra nada ficar
   // escondido atrás dela.
   function buildMobileTabbar(active, exploreActive, collectionActive) {
@@ -3187,21 +3188,46 @@
     // Explorar não tem aba própria (a Busca ocupa esse papel no dedo), então
     // acende Jogos: as duas são o caminho do CATÁLOGO.
     const gamesActive = exploreActive || active === "explore";
-    // Ordem (2026-09-12): Coleção veio pra 2ª posição e a Busca foi pra
-    // depois de Decks — a Coleção é o destino mais frequente de quem está
-    // logado e a Busca, como nos apps de referência, fica perto do polegar
-    // direito. Deslogado a Coleção não existe e a Busca fica no mesmo lugar
-    // (depois de Decks), pra não mudar de posição quando a pessoa entra.
+    // Ordem (pedido de 2026-09-20), logado: Hub · Busca · Decks · Coleção ·
+    // Portfólio. "Hub" é o dashboard (o hub PESSOAL — a aba se chamava
+    // "Coleção" e confundia com a página de cartas); "Coleção" agora é um
+    // atalho DIRETO pra Toda Coleção (collection.html), ao lado do Portfólio.
+    // A Busca subiu pra 2ª posição, no lugar de Jogos, que saiu da barra
+    // logada (a grade de jogos continua no Início e na própria Busca).
+    // Perfil saiu da barra: virou o botão no canto direito do header (ver
+    // initHeaderProfileButton) — a barra ganha o espaço de volta.
+    // Deslogado não há Hub/Coleção/Portfólio: fica Jogos · Busca · Decks, com
+    // a Busca na MESMA 2ª posição, pra não mudar de lugar quando a pessoa entra.
     // Busca é uma PÁGINA (search.html), não mais a paleta em popup: o popup
     // cobria a tabbar e a navegação sumia (2026-09-13).
+    const hubActive = collectionActive && active !== "collection";
     bar.innerHTML =
-      (logged ? tab("dashboard", t("tabbar.collection"), "collection", collectionActive) : "")
-      + tab("hub", t("nav.games"), "games", gamesActive)
-      + tab("decks", t("nav.decks"), "decks", active === "decks")
+      (logged ? tab("dashboard", t("tabbar.hub"), "games", hubActive) : tab("hub", t("nav.games"), "games", gamesActive))
       + tab("search", t("tabbar.search"), "search", active === "search")
-      + (logged ? tab("portfolio", t("nav.portfolio"), "portfolio", active === "portfolio") : "")
-      + tab("account", t("tabbar.profile"), "profile", active === "account");
+      + tab("decks", t("nav.decks"), "decks", active === "decks")
+      + (logged ? tab("collection", t("tabbar.collection"), "collection", active === "collection") : "")
+      + (logged ? tab("portfolio", t("nav.portfolio"), "portfolio", active === "portfolio") : "");
     document.body.appendChild(bar);
+  }
+
+  // Botão de PERFIL no canto direito do header (celular, 2026-09-20): a aba
+  // Perfil saiu da tabbar e o acesso à conta/preferências (account.html)
+  // passa a ser este quadradinho no topo — onde os apps costumam pôr o
+  // avatar/engrenagem. Só aparece ≤700px (CSS .header-profile-btn); no
+  // desktop a conta continua no .header-actions. Vai no FIM do
+  // .app-header-inner, depois do drawer, então no celular a fileira fica
+  // busca (com câmera) | perfil — a marca some nessa largura (CSS).
+  function initHeaderProfileButton(active) {
+    const inner = document.querySelector(".app-header-inner");
+    if (!inner || inner.querySelector(".header-profile-btn")) return;
+    const a = document.createElement("a");
+    a.className = "header-profile-btn" + (active === "account" ? " active" : "");
+    a.href = "account";
+    a.setAttribute("aria-label", t("tabbar.profile"));
+    a.title = t("tabbar.profile");
+    if (active === "account") a.setAttribute("aria-current", "page");
+    a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>';
+    inner.appendChild(a);
   }
 
   // Menu hambúrguer no mobile: agrupa a navegação e as ações num drawer

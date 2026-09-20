@@ -5610,17 +5610,36 @@ a.progress-row:hover {
    As três medidas moram em variáveis porque o padding do body e os toasts
    precisam da MESMA conta pra nada nascer escondido atrás da cápsula. */
 .mobile-tabbar { display: none; }
+/* Botão de perfil do header: só existe no celular (≤700px, abaixo). */
+.header-profile-btn { display: none; }
 @media (max-width: 700px) {
   :root {
     --tabbar-h: 60px;      /* altura medida da cápsula: 48 + 5+5 de padding + borda */
     --tabbar-lift: max(env(safe-area-inset-bottom, 0px), 10px);
   }
   /* Sem hambúrguer no celular (2026-09-14): a tabbar já leva a toda página
-     e as preferências + conta moram na aba Perfil (account.html). A busca do
-     header fica com a largura toda. Entre 701 e 860px (tablet em pé) não há
-     tabbar, então o hambúrguer continua lá. */
+     e as preferências + conta moram na página Perfil (account.html). Entre
+     701 e 860px (tablet em pé) não há tabbar, então o hambúrguer continua lá. */
   .menu-toggle { display: none; }
-  .page-search.page-search-inheader { margin-right: 0; }
+  /* Header do celular (pedido de 2026-09-20): SEM a marca — a busca com a
+     câmera encosta no canto esquerdo e ocupa a largura, e o perfil vira um
+     quadradinho achatado no canto direito (a aba Perfil saiu da tabbar; é
+     por aqui que se chega à conta e às preferências). A marca continua no
+     rodapé e no login; entre 701 e 860px o header segue marca | busca | ☰. */
+  .app-header-inner .brand { display: none; }
+  .page-search.page-search-inheader { margin: 0 10px 0 0; }
+  .header-profile-btn {
+    position: relative;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex: none; width: 44px; height: 38px; margin-left: auto;
+    border: 1px solid var(--line); border-radius: 8px;
+    background: var(--panel); color: var(--text); text-decoration: none;
+  }
+  /* O desenho é achatado (38px, igual à barra de busca ao lado), mas o alvo
+     de toque cresce pra 46px com um pseudo invisível — regra dos 44px. */
+  .header-profile-btn::after { content: ""; position: absolute; inset: -4px 0; }
+  .header-profile-btn svg { width: 20px; height: 20px; display: block; }
+  .header-profile-btn.active { color: var(--accent-ink); border-color: var(--accent-dark); background: var(--accent-soft); }
   .mobile-tabbar {
     position: fixed; left: 10px; right: 10px; z-index: 40;
     bottom: var(--tabbar-lift);
