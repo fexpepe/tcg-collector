@@ -5645,7 +5645,11 @@ a.progress-row:hover {
   /* Coleção: o título "Coleção" e o "← Hub" saem do topo (2026-09-20) — a
      tabbar já tem Hub e Coleção, então a faixa era só repetição. */
   main .page-head.coll-head { display: none; } /* (0,3,0): vence o display: grid do .page-head-bar */
-  .page-search.page-search-inheader { margin: 0 10px 0 0; }
+  /* Mesma distância dos dois lados da barra (pedido de 2026-09-20): o gap
+     câmera › barra é 8px, então barra › perfil também — sem a margem de 10px
+     da barra somada ao gap de 12px do header, que dava 22px à direita. */
+  .app-header-inner { gap: 8px; }
+  .page-search.page-search-inheader { margin: 0; }
   .header-profile-btn {
     position: relative;
     display: inline-flex; align-items: center; justify-content: center;
