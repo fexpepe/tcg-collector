@@ -7,6 +7,7 @@
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import { writeSplitIndexes, setManifestMeta } from "./lib/sync-common.mjs";
 import { chunkNumberPrefixes, missAllowed, applyVariantPrices } from "./lib/pricing.mjs";
+import { isRetiredChunk } from "./lib/set-supersede.mjs";
 
 const langs = process.argv.slice(2).filter((arg) => !arg.startsWith("-"));
 if (!langs.length) {
@@ -191,13 +192,20 @@ for (const lang of langs) {
       await writeFile(new URL(`sets/${lang}/${chunk.file}`, dataDir), JSON.stringify(chunk.cards), "utf8");
     }
     allCards.push(...chunk.cards);
-    manifestSets.push({
+    const entrada = {
       id: chunk.setId,
       name: chunk.cards[0]?.set || chunk.setId,
       count: chunk.cards.length,
       language: lang,
       file: `data/sets/${lang}/${chunk.file}`
-    });
+    };
+    // Chunk CONGELADO (retire-imported-sets): sobra de set aposentado sem par
+    // no set da TCGdex. Entra no manifest — o id tem que resolver na coleção,
+    // no popup e na busca — mas marcado, pra tela de Sets e a contagem do
+    // catálogo não o listarem como um set a mais (era o sintoma original: 4
+    // coleções de 30 anos onde existem 2).
+    if (isRetiredChunk(chunk.cards)) entrada.retired = chunk.cards[0].retired;
+    manifestSets.push(entrada);
   }
 }
 

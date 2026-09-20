@@ -9,6 +9,7 @@
 import { readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { cardRows } from "../../functions/api/_search-sql.js";
+import { pokemontcgImageUrl, lerSetIdMap } from "./pokemontcg-image.mjs";
 
 export const RAIZ = new URL("../../", import.meta.url);
 
@@ -76,6 +77,10 @@ export async function* lerCatalogo() {
     if (!manifest || !Array.isArray(manifest.sets) || !manifest.sets.length) continue;
     const vistos = new Set();
     const cards = [];
+    // Pokémon sem `image`: a imagem que o cliente mostra é a da pokemontcg.io,
+    // montada pelo set-id-map. Vai em `reserva`, fora da linha do D1 (não é
+    // dado do banco), pro espelho de imagens (mirror-r2) copiá-la também.
+    const setIdMap = game === "pokemon" ? await lerSetIdMap(RAIZ) : null;
     for (const entrada of manifest.sets) {
       if (!entrada.file) continue;
       let cartas;
@@ -83,7 +88,12 @@ export async function* lerCatalogo() {
       for (const carta of cartas) {
         if (!carta || !carta.id || vistos.has(carta.id)) continue;
         vistos.add(carta.id);
-        cards.push(impressaoCarta(cardRows(game, carta)));
+        const projetada = impressaoCarta(cardRows(game, carta));
+        if (setIdMap && !carta.image) {
+          const reserva = pokemontcgImageUrl(carta, setIdMap, false);
+          if (reserva) projetada.reserva = reserva;
+        }
+        cards.push(projetada);
       }
     }
     if (!cards.length) continue;

@@ -5,7 +5,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  cardNameKey, chunkSimilarity, pairCards, isPrefixSwap, findSupersededImports
+  cardNameKey, chunkSimilarity, pairCards, isPrefixSwap, findSupersededImports, isRetiredChunk
 } from "../scripts/lib/set-supersede.mjs";
 
 const c = (id, number, name, extra) => Object.assign({ id, number, name }, extra || {});
@@ -93,4 +93,45 @@ test("só set IMPORTADO é aposentado, e só com um vencedor único", () => {
   assert.equal(empate.length, 1);
   assert.deepEqual(empate[0].ambiguous, ["30th", "me06"]);
   assert.equal(empate[0].to, undefined);
+});
+
+// ── Carta sem par: 2º passo pelo número, e o que sobrar congela (20/09/2026) ──
+test("2º passo pelo número: nome que a régua não previu casa quando a numeração se preservou", () => {
+  const velho = CEL30.concat([c("cel30-103", "103", "Team Rocket's Mewtwo ex", { image: "T7" })]);
+  const novo = TCGDEX30.concat([c("30th-103", "103", "Mewtwo ex")]);
+  const r = pairCards(velho, novo);
+  assert.equal(r.cards["cel30-103"], "30th-103");
+  assert.deepEqual(r.unmatched, []);
+  assert.equal(r.images["30th-103"], "T7");
+  assert.equal(isPrefixSwap(r.cards, "cel30", "30th"), true);
+  // Número já tomado por um par de nome não é reaproveitado.
+  const disputa = pairCards(CEL30.concat([c("cel30-999", "101", "Outro Pikachu")]), TCGDEX30);
+  assert.deepEqual(disputa.unmatched, ["cel30-999"]);
+});
+
+test("numeração diferente (Classic Collection): número igual seria OUTRA carta, então segue sem par", () => {
+  const velho = CEL30CC.concat([c("cel30cc-58", "58", "Umbreon Star")]);
+  const novo = TCGDEX30CC.concat([c("30th-c-058", "058", "Blastoise")]);
+  const r = pairCards(velho, novo);
+  assert.deepEqual(r.unmatched, ["cel30cc-58"]);
+  assert.equal(r.cards["cel30cc-58"], undefined);
+});
+
+test("chunk congelado (sobra de aposentadoria) não é aposentado de novo nem serve de alvo", () => {
+  const congelado = [c("cel30-200", "200", "Sobra", { retired: "30th" })];
+  assert.equal(isRetiredChunk(congelado), true);
+  assert.equal(isRetiredChunk(CEL30), false);
+  assert.equal(isRetiredChunk(CEL30.concat(congelado)), false); // metade carimbada não é chunk congelado
+  assert.equal(isRetiredChunk([]), false);
+  assert.deepEqual(findSupersededImports(
+    [{ lang: "en", setId: "cel30", cards: congelado }, { lang: "en", setId: "30th", cards: TCGDEX30 }],
+    new Set(["cel30"])
+  ), []);
+  // Como candidato: um import novo idêntico a um chunk congelado não casa com ele.
+  const congeladoGrande = TCGDEX30.map((x) => ({ ...x, id: `velho-${x.number}`, retired: "30th" }));
+  const r = findSupersededImports(
+    [{ lang: "en", setId: "cel30", cards: CEL30 }, { lang: "en", setId: "velho", cards: congeladoGrande }, { lang: "en", setId: "30th", cards: TCGDEX30 }],
+    new Set(["cel30"])
+  );
+  assert.deepEqual(r.map((x) => x.to), ["30th"]);
 });

@@ -67,7 +67,13 @@ manda em quê"): TCGdex é o CATÁLOGO, TCGCSV é o PREÇO, e o inglês não sai
 TCGdex — onde a TCGCSV domina (o japonês) metade das cartas fica sem artista e
 sem tipo. PT
 e ZH continuam dependendo da TCGdex: o TCGplayer só vende EN e JP. Histórico de
-preços sem servidor: a produção é o banco. Decisão de 14/09/2026, depois da comparação com
+preços sem servidor: o acervo vive no R2 desde 20/09/2026 (antes a produção era
+o único banco, e produção fora do ar + cache expirado recomeçava o histórico do
+zero); segue o de-para de id, então carta aposentada não perde a série. O
+conjunto — catálogo TCGdex, lançamento TCGCSV, preço por impressão, histórico
+no R2, espelho de imagem, id como contrato com de-para — está fixado no README
+como o **modelo de carregamento do Pokémon EN, v1**: é a régua pra trazer JA,
+PT e ZH. Decisão de 14/09/2026, depois da comparação com
 o TCG Collector: a tabela tinha um preço por carta (o do Normal), o preço JP
 dependia de crédito e chegava atrasado, e promos JP estavam injetadas em sets
 EN — ver "Preço do Pokémon" no README.
@@ -213,6 +219,11 @@ idiomas — e o realce dourado de 100% nos cards de set/artista.)
   documentado no cabeçalho do [src/game.js](src/game.js).
 - **Sem upload de foto por carta/slab.** Fotos existem só nos binders, e ficam
   no IndexedDB do próprio navegador.
+- **Pokémon EN é a v1 do modelo de carregamento** (20/09/2026; README, "Modelo
+  de carregamento do Pokémon EN — v1"). Id é o contrato, id que muda tem
+  de-para, carta indexada nunca some, fonte fora do ar congela, e o que é nosso
+  fica no nosso servidor (git, R2, D1). Idioma novo entra por essa régua, não
+  por uma régua própria.
 - **Nada de backend em runtime pro preço.** Preço é puxado no build e servido
   estático: mantém o site estático, o token seguro no CI e o custo previsível.
 - **A borda devolve dado, não total.** Uma fórmula de valor só, no cliente —

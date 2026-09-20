@@ -216,6 +216,7 @@ function loadPokemonSets() {
       for (const card of cards) {
         const name = card.set;
         if (!name) continue;
+        if (card.retired) continue; // chunk congelado de set aposentado: não entra na página do set
         if (!byName.has(name)) byName.set(name, []);
         byName.get(name).push(card);
       }

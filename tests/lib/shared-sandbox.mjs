@@ -24,7 +24,7 @@ export function makeLocalStorage(seed = {}) {
   };
 }
 
-export function loadShared(expose, { localStorage } = {}) {
+export function loadShared(expose, { localStorage, location, history } = {}) {
   let src = readFileSync(join(here, "..", "..", "src", "shared.js"), "utf8");
   src = src.replace("window.TCGShared = {", `${expose || ""}\nwindow.TCGShared = {`);
 
@@ -46,8 +46,10 @@ export function loadShared(expose, { localStorage } = {}) {
     document: documentStub,
     localStorage: localStorage || makeLocalStorage(),
     navigator: { language: "pt-BR", serviceWorker: undefined, onLine: true },
-    location: { pathname: "/", search: "", hash: "", origin: "http://x", hostname: "localhost", href: "http://x/" },
-    history: { replaceState: noop },
+    // `location`/`history` aceitam override: o resgate do ?card= aposentado
+    // (resgataCardIdAposentadoNaUrl) lê a URL e reescreve pelo replaceState.
+    location: location || { pathname: "/", search: "", hash: "", origin: "http://x", hostname: "localhost", href: "http://x/" },
+    history: history || { replaceState: noop },
     // fetch "offline": resolve com !ok (os caminhos de produção tratam), em vez
     // de rejeitar — rejeição de boot viraria unhandledRejection e o node:test
     // marca o ARQUIVO como falho mesmo com todos os testes passando.

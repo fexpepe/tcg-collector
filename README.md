@@ -349,6 +349,20 @@ existem 2. Quem resolve é o `retire-imported-sets.mjs`, em todo build, depois d
   imagem que só o chunk aposentado tinha viaja no mesmo arquivo e o
   `merge-catalogs` a carimba em todo build, só onde a imagem está VAZIA — se
   apaga sozinha quando a TCGdex publicar a dela.
+- **Carta sem par nunca some** (20/09/2026): o de-para tenta pelo nome e, quando
+  a numeração se preservou entre as fontes, pelo **número** (nome que a régua
+  não previu, "Team Rocket's Mewtwo ex" × "Mewtwo ex"). O que ainda sobrar fica
+  **congelado** no chunk aposentado, cada carta com `retired: <setId novo>`: o
+  merge marca a entrada do manifest, a tela de Sets, a contagem, o detalhe e o
+  pré-render a escondem, e o id segue resolvendo na coleção, no popup e na
+  busca. Antes a carta ia pro log como "id perdido" e sumia da conta — e o lint
+  travava o deploy até alguém aceitar a perda à mão.
+- **O carimbo viaja com o snapshot**: o `retire-imported-sets` injeta o de-para
+  no `src/shared.js` (`SLEEVU_ID_MERGES`) e o passo "Versiona snapshot" commita
+  o arquivo junto com `data/` — antes só o JSON voltava pro repo e o
+  `tests/id-merges.test.mjs` quebrava o CI no push seguinte. O link
+  `?card=<id velho>` também é reescrito pro novo antes de a página olhar a URL,
+  como o link de set já era.
 
 **Guarda do add-on-miss.** Carta que a fonte de preço tem e a TCGdex não só entra
 no set se o número segue o **padrão de numeração** do chunk (`missAllowed`):
@@ -367,10 +381,56 @@ inglês é assunto separado, do `JA_SET_EN` no `shared.js`.
 Utilitários: `lint-catalog.mjs` (falha em corrupção dura — ids duplicados,
 catálogo zerado), `mirror-*-set-logos.mjs` (espelha logos de set localmente), `mirror-r2.mjs` (espelha as imagens de carta no R2, ver docs/BACKEND.md),
 `build-set-id-map.mjs` (de-para TCGdex→pokemontcg.io pras imagens EN que faltam),
-`sync-price-history.mjs` (histórico de preços sem servidor: lê o acumulador do
-deploy anterior, anexa o snapshot de hoje e republica — e emite também os deltas,
-os "maiores altas e quedas" e o **índice de mercado** de cada jogo, que é o
-benchmark do gráfico do Portfólio).
+`sync-price-history.mjs` (histórico de preços sem servidor: lê o acervo — R2,
+produção e cache do runner, fica a cópia mais adiantada —, anexa o snapshot de
+hoje, republica e grava a cópia durável no R2; emite também os deltas, os
+"maiores altas e quedas" e o **índice de mercado** de cada jogo, que é o
+benchmark do gráfico do Portfólio; o acervo segue o de-para de id do
+`card-id-merges.json`, então carta aposentada não perde a série).
+
+---
+
+## Modelo de carregamento do Pokémon EN — v1
+
+Fixado em 20/09/2026 como a **v1**: é a régua contra a qual os outros idiomas
+(JA, PT, ZH) vão ser trazidos, e não se reabre sem motivo medido. Um jogo
+inteiro, ponta a ponta, em cinco camadas:
+
+| camada | quem manda | onde vive | cadência |
+|---|---|---|---|
+| **catálogo** (o que a carta é) | TCGdex, e o inglês NÃO sai dela | `data/sets/en/*.json`, versionado a cada build | diário 06:20 UTC + sexta 21:00 |
+| **lançamento** (1–2 dias antes da TCGdex) | TCGCSV, por pin `enImport` ou janela automática (era moderna, 90 dias, 20+ singles) | chunk provisório, aposentado quando a TCGdex publica | mesma rodada |
+| **preço** (quanto vale, por impressão) | TCGCSV > PPT > TCGdex; BR (MYP) por cima quando existir | `pricing.generated.js`, fatiado por set no build | diário; PPT/MYP 3×/semana |
+| **histórico** (o que não se compra depois) | `sync-price-history`: diário 60d, semanal 1 ano, mensal depois | acervo no **R2** (`_history/`), cópia estática em produção, cache do runner | 1 ponto por dia |
+| **imagem** | TCGdex; pokemontcg.io onde ela não tem scan | espelho no R2 (`img.sleevu.app`) pros hosts completos, origem atrás na cadeia | job diário 14:00 UTC |
+
+O **id é o contrato**: `<setId TCGdex>-<número impresso>` em EN, com sufixo de
+idioma nos demais. Coleção, wishlist, decks, binders, custos, histórico de
+preço, D1 e páginas pré-renderizadas são indexados por ele. Por isso as
+garantias de durabilidade são todas sobre o id:
+
+1. **Carta indexada nunca some.** `preserveMissingCards` no sync (API removeu =
+   congela), chunk versionado no git, lint que **falha o deploy** se um id
+   publicado sumir ou passar a apontar pra outra carta.
+2. **Id que muda tem de-para.** `data/card-id-merges.json` (append-only,
+   versionado) + carimbo no `shared.js` commitado junto: localStorage migra uma
+   vez por navegador, o blob do Supabase é reescrito no pull, o histórico de
+   preço muda de chave, e os links `?setId=`/`?card=` velhos são reescritos.
+   Carta sem par fica **congelada** no chunk (`retired`), fora da lista de sets
+   e viva na conta.
+3. **Fonte fora do ar congela, não esvazia.** TCGdex caiu = catálogo do build
+   anterior; TCGCSV caiu = preço do artefato anterior (cache do Actions);
+   produção fora do ar no build = acervo do R2; espelho fora do ar no build =
+   site aponta pras CDNs de origem.
+4. **O que é nosso está no nosso servidor.** Chunks, logos e de-paras no git;
+   imagens de carta e acervo de preço no R2; catálogo e preço do dia no D1
+   como projeção. O que segue remoto é só o que não vale copiar: a PokéAPI da
+   Pokédex e o fallback da pokemontcg.io das cartas que a TCGdex já tem.
+
+O que a v1 **não** cobre, de propósito (fica pro próximo passo do inglês):
+texto da carta (HP, ataques, habilidade — o sync descarta), Shadowless e
+Unlimited como impressões, e a cobertura de preço só aparece no log do deploy
+(`report-price-coverage.mjs`), não num teste.
 
 ---
 

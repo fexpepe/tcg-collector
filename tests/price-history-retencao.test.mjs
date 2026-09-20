@@ -15,7 +15,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  marcarMantidos, podarHistorico, podarGraded, DIAS_DIARIO, DIAS_SEMANAL
+  marcarMantidos, podarHistorico, podarGraded, DIAS_DIARIO, DIAS_SEMANAL,
+  migrarIdsDoHistorico, serieMaisAdiantada
 } from "../scripts/lib/price-history-retention.mjs";
 
 const DIA = 86400000;
@@ -261,4 +262,59 @@ test("teto de bytes: acumulador graded corta cada nota junto", () => {
   assert.ok(r.estourou && r.bytes <= 200 * 1024);
   assert.equal(serie.c.c0["10"].length, serie.d.length);
   assert.equal(serie.c.c0["9"].length, serie.d.length);
+});
+
+// ── Id aposentado dentro do acervo ──────────────────────────────────────────
+// O cel30 virou 30th em 18/09/2026 e a conta de quem marcou migrou; a série de
+// preço tem de mudar de chave junto, senão a carta perde o gráfico e os deltas.
+const MERGES = { prefixes: { cel30: "30th" }, cards: { "cel30cc-4": "30th-c-001" } };
+
+test("id aposentado sem série nova: a série só muda de chave", () => {
+  const serie = { v: 1, d: diario(3), c: { "cel30-001": { s: "u", p: [1, 2, 3] }, "sv01-050": { s: "u", p: [9, 9, 9] } } };
+  assert.equal(migrarIdsDoHistorico(serie, MERGES, false), 1);
+  assert.deepEqual(Object.keys(serie.c).sort(), ["30th-001", "sv01-050"]);
+  assert.deepEqual(serie.c["30th-001"], { s: "u", p: [1, 2, 3] });
+});
+
+test("id aposentado com série nova: os buracos da nova recebem os pontos da velha (mesma fonte)", () => {
+  const serie = { v: 1, d: diario(4), c: {
+    "cel30-001": { s: "u", p: [1, 2, null, null] },      // o velho parou quando o set foi aposentado
+    "30th-001": { s: "u", p: [null, null, 3, 4] },       // o novo nasceu no dia seguinte
+    "cel30cc-4": { s: "e", p: [5, 5, null, null] },      // par a par, fonte DIFERENTE da nova
+    "30th-c-001": { s: "u", p: [null, null, 7, 7] }
+  } };
+  assert.equal(migrarIdsDoHistorico(serie, MERGES, false), 2);
+  assert.deepEqual(serie.c["30th-001"], { s: "u", p: [1, 2, 3, 4] });
+  // Moedas diferentes não se misturam: a nova fica como está, a velha sai.
+  assert.deepEqual(serie.c["30th-c-001"], { s: "u", p: [null, null, 7, 7] });
+  assert.equal(serie.c["cel30-001"], undefined);
+  assert.equal(serie.c["cel30cc-4"], undefined);
+});
+
+test("graded: migra por nota, e a nota que só a velha tinha viaja inteira", () => {
+  const gh = { v: 1, d: diario(3), c: {
+    "cel30-001": { "10": [100, 110, null], "9": [50, 50, null] },
+    "30th-001": { "10": [null, null, 120] }
+  } };
+  assert.equal(migrarIdsDoHistorico(gh, MERGES, true), 1);
+  assert.deepEqual(gh.c["30th-001"], { "10": [100, 110, 120], "9": [50, 50, null] });
+});
+
+test("sem de-para (ou sem acervo) é no-op", () => {
+  const serie = { v: 1, d: diario(2), c: { "cel30-001": { s: "u", p: [1, 2] } } };
+  assert.equal(migrarIdsDoHistorico(serie, null, false), 0);
+  assert.equal(migrarIdsDoHistorico(serie, { prefixes: {}, cards: {} }, false), 0);
+  assert.equal(migrarIdsDoHistorico(null, MERGES, false), 0);
+  assert.deepEqual(Object.keys(serie.c), ["cel30-001"]);
+});
+
+test("entre cópias do acervo (R2, produção, cache) vence a mais adiantada", () => {
+  const ontem = { v: 1, d: diario(5, "2026-09-18"), c: {} };
+  const hoje = { v: 1, d: diario(6, "2026-09-19"), c: {} };
+  const hojeCurta = { v: 1, d: diario(2, "2026-09-19"), c: {} };
+  assert.equal(serieMaisAdiantada([ontem, hoje]), hoje);
+  assert.equal(serieMaisAdiantada([hoje, ontem]), hoje);
+  assert.equal(serieMaisAdiantada([hojeCurta, hoje]), hoje);   // mesma data: mais pontos
+  assert.equal(serieMaisAdiantada([null, undefined, { d: "x" }, ontem]), ontem);
+  assert.equal(serieMaisAdiantada([null, {}]), null);
 });

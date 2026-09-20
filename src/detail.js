@@ -577,7 +577,9 @@
     }
 
     if (detailType === "set") {
-      let entries = manifest.sets.filter((set) => set.name === detailName);
+      // Chunk congelado de set aposentado (`retired`) só quando o link pede o
+      // id dele — e mesmo esse link já foi mandado pro set novo (mergedSetId).
+      let entries = manifest.sets.filter((set) => set.name === detailName && (!set.retired || set.id === detailSetId));
       // O link da lista já diz QUAL edição abrir (?setId=/?region=): baixa só o
       // chunk dela. Sem isso, um nome que existe em duas línguas puxava os dois
       // chunks pra usar um. Link solto (sem os parâmetros) segue trazendo os

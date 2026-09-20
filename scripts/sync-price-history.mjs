@@ -1,8 +1,15 @@
 // Histórico de preços SEM SERVIDOR: a cada build, tira um snapshot do preço de
 // referência de cada carta e acumula numa série DIÁRIA que envelhece por faixas
-// (diária 60d, semanal até 1 ano, mensal depois — price-history-retention.mjs). O "banco" é a própria
-// produção — o build busca o acumulador publicado no deploy anterior, anexa o
-// ponto de hoje e re-publica (backup em data/.cache pra sobreviver a um outage).
+// (diária 60d, semanal até 1 ano, mensal depois — price-history-retention.mjs).
+// O "banco" era só a própria produção — o build buscava o acumulador publicado
+// no deploy anterior, anexava o ponto de hoje e re-publicava (backup em
+// data/.cache). Desde 20/09/2026 o acervo tem casa própria no R2 (o mesmo
+// bucket do espelho de imagens, chave _history/<jogo>/…): é gravado no fim de
+// todo build e lido ANTES da produção. Motivo: produção fora do ar no minuto
+// do build + cache do runner expirado (7 dias sem uso) = acumulador vazio
+// republicado por cima do acervo — o único dado do site que não se compra
+// depois. Entre as cópias (R2, produção, cache) vence a mais adiantada. Sem
+// credencial de R2 (dev, fork) tudo segue como antes.
 //
 // Saídas (por dataDir, gitignored, deployadas como estáticos):
 //   price-history.generated.json       JANELA RECENTE (60 pontos diários) — é o
@@ -30,7 +37,8 @@
 // Sem pricing local (dev), busca o de produção. Sai com sucesso se nada existir.
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
-import { podarHistorico, podarGraded, caberEmBytes, DIAS_DIARIO, DIAS_SEMANAL, MAX_BYTES } from "./lib/price-history-retention.mjs";
+import { podarHistorico, podarGraded, caberEmBytes, migrarIdsDoHistorico, serieMaisAdiantada, DIAS_DIARIO, DIAS_SEMANAL, MAX_BYTES } from "./lib/price-history-retention.mjs";
+import { clienteR2 } from "./lib/r2.mjs";
 
 const PROD = "https://tcg-collector.pages.dev";
 // O teto seco de 60 pontos (~2 meses) saiu em 19/09/2026: era uma JANELA
@@ -59,6 +67,38 @@ const outDeltas7d = new URL(`../${dir}/price-deltas-7d.generated.json`, import.m
 const outMovers = new URL(`../${dir}/price-movers.generated.json`, import.meta.url);
 const cacheFile = new URL(`price-history-${slug}.json`, cacheDir);
 
+// Acervo no R2: chave _history/<slug>/<nome>.json, no bucket do espelho de
+// imagens (R2_ACCESS_KEY_ID / R2_SECRET_ACCESS_KEY / CLOUDFLARE_ACCOUNT_ID —
+// o deploy passa os três). null sem credencial: leitura e gravação viram no-op.
+const bucketR2 = clienteR2();
+const chaveR2 = (nome) => `_history/${slug}/${nome}`;
+async function leSerieR2(nome) {
+  if (!bucketR2) return null;
+  try {
+    const r = await bucketR2.get(chaveR2(nome));
+    if (r.ok) { const j = await r.json(); if (j && Array.isArray(j.d) && j.c) return j; }
+    else if (r.status !== 404) console.warn(`[price-history] ${dir}: R2 respondeu HTTP ${r.status} ao ler ${nome}`);
+  } catch (e) { console.warn(`[price-history] ${dir}: R2 inacessível ao ler ${nome} (${e.message})`); }
+  return null;
+}
+// Nunca derruba o build: o acervo já foi publicado como estático; o R2 é a
+// cópia durável, e a rodada seguinte grava de novo.
+async function gravaSerieR2(nome, obj) {
+  if (!bucketR2) return false;
+  try {
+    const r = await bucketR2.put(chaveR2(nome), JSON.stringify(obj), { contentType: "application/json", cacheControl: "no-store" });
+    if (r.ok) return true;
+    console.warn(`[price-history] ${dir}: R2 respondeu HTTP ${r.status} ao gravar ${nome}`);
+  } catch (e) { console.warn(`[price-history] ${dir}: R2 inacessível ao gravar ${nome} (${e.message})`); }
+  return false;
+}
+
+// De-para de id aposentado (data/card-id-merges.json, escrito pelo
+// retire-imported-sets): a série muda de chave junto com a conta de quem
+// marcou. Só o Pokémon tem o arquivo; nos outros jogos é {} e não faz nada.
+let MERGES = null;
+try { MERGES = JSON.parse(await readFile(new URL("../data/card-id-merges.json", import.meta.url), "utf8")); } catch { /* sem aposentadoria */ }
+
 // Pricing atual: local (build) ou produção (dev/teste). Formato: window.TCG_PRICING = {...};
 async function loadPricing() {
   const local = new URL(`../${dir}/pricing.generated.js`, import.meta.url);
@@ -74,10 +114,11 @@ async function loadPricing() {
   try { return JSON.parse(text.slice(start, end + 1)); } catch { return null; }
 }
 
-// Acumulador anterior: o ACERVO da produção primeiro, senão o cache do runner,
-// senão a janela publicada. A ordem é a migração: no 1º build depois desta
-// mudança o -long ainda não existe em produção, então o acervo nasce dos 60
-// pontos que já estavam lá em vez de começar do zero.
+// Acumulador anterior: o ACERVO — a cópia do R2, a da produção e a do cache do
+// runner, ficando a mais ADIANTADA (serieMaisAdiantada: as três podem divergir
+// por um dia quando uma gravação falhou) — e, sem acervo nenhum, a janela
+// publicada. A janela por último é a migração: no 1º build depois do -long o
+// acervo nasce dos 60 pontos que já estavam lá em vez de começar do zero.
 async function leJsonSerie(url) {
   try {
     const r = await fetch(url);
@@ -85,13 +126,26 @@ async function leJsonSerie(url) {
   } catch { /* sem rede/404 */ }
   return null;
 }
-async function loadPrevious() {
-  const longo = await leJsonSerie(`${PROD}/${dir}/price-history-long.generated.json`);
-  if (longo) return longo;
-  try { const j = JSON.parse(await readFile(cacheFile, "utf8")); if (j && Array.isArray(j.d) && j.c) return j; } catch { /* primeira vez */ }
-  const janela = await leJsonSerie(`${PROD}/${dir}/price-history.generated.json`);
+async function leSerieCache(url) {
+  try { const j = JSON.parse(await readFile(url, "utf8")); if (j && Array.isArray(j.d) && j.c) return j; } catch { /* primeira vez */ }
+  return null;
+}
+async function loadAcervo({ nomeR2, nomeLongo, cache, nomeJanela }) {
+  const copias = [await leSerieR2(nomeR2), await leJsonSerie(`${PROD}/${dir}/${nomeLongo}`), await leSerieCache(cache)];
+  const origem = ["R2", "produção", "cache do runner"];
+  const melhor = serieMaisAdiantada(copias);
+  if (melhor) {
+    const de = origem.filter((_, i) => copias[i] === melhor).join("+");
+    const outras = copias.map((c, i) => c && c !== melhor ? `${origem[i]} ${c.d.length}p até ${c.d[c.d.length - 1]}` : "").filter(Boolean);
+    console.log(`[price-history] ${dir}: acervo ${nomeLongo} lido de ${de} (${melhor.d.length}p até ${melhor.d[melhor.d.length - 1]})${outras.length ? `; atrás: ${outras.join(", ")}` : ""}`);
+    return melhor;
+  }
+  const janela = await leJsonSerie(`${PROD}/${dir}/${nomeJanela}`);
   if (janela) return janela;
   return { v: 1, d: [], c: {} };
+}
+function loadPrevious() {
+  return loadAcervo({ nomeR2: "price-history-long.json", nomeLongo: "price-history-long.generated.json", cache: cacheFile, nomeJanela: "price-history.generated.json" });
 }
 
 // Referência: [fonte, valor] na prioridade do front (BR mediana > USD > EUR).
@@ -107,6 +161,8 @@ const pricing = await loadPricing();
 if (!pricing) { console.log(`[price-history] ${dir}: sem pricing (pulado, no-op)`); process.exit(0); }
 
 const hist = await loadPrevious();
+const migradas = migrarIdsDoHistorico(hist, MERGES, false);
+if (migradas) console.log(`[price-history] ${dir}: ${migradas} série(s) migraram pro id novo (card-id-merges)`);
 const today = new Date().toISOString().slice(0, 10);
 const replacing = hist.d.length && hist.d[hist.d.length - 1] === today; // build no mesmo dia: substitui
 if (!replacing) hist.d.push(today);
@@ -234,15 +290,12 @@ const outIndex = new URL(`../${dir}/market-index.generated.json`, import.meta.ur
 const outGraded = new URL(`../${dir}/graded-history.generated.json`, import.meta.url);
 const outGradedLong = new URL(`../${dir}/graded-history-long.generated.json`, import.meta.url);
 const cacheGraded = new URL(`graded-history-${slug}.json`, cacheDir);
-async function loadPreviousGraded() {
-  const longo = await leJsonSerie(`${PROD}/${dir}/graded-history-long.generated.json`);
-  if (longo) return longo;
-  try { const j = JSON.parse(await readFile(cacheGraded, "utf8")); if (j && Array.isArray(j.d) && j.c) return j; } catch { /* primeira vez */ }
-  const janela = await leJsonSerie(`${PROD}/${dir}/graded-history.generated.json`);
-  if (janela) return janela;
-  return { v: 1, d: [], c: {} };
+function loadPreviousGraded() {
+  return loadAcervo({ nomeR2: "graded-history-long.json", nomeLongo: "graded-history-long.generated.json", cache: cacheGraded, nomeJanela: "graded-history.generated.json" });
 }
 const gh = await loadPreviousGraded();
+const migradasGraded = migrarIdsDoHistorico(gh, MERGES, true);
+if (migradasGraded) console.log(`[price-history] ${dir}: ${migradasGraded} série(s) graded migraram pro id novo (card-id-merges)`);
 if (!(gh.d.length && gh.d[gh.d.length - 1] === today)) gh.d.push(today);
 const gIdx = gh.d.length - 1;
 let gradedTracked = 0;
@@ -300,5 +353,11 @@ await writeFile(outDeltas, JSON.stringify({ from, to: today, c: deltas }), "utf8
 await writeFile(outDeltas7d, JSON.stringify({ from: from7d, to: today, c: deltas7d }), "utf8");
 await writeFile(outMovers, JSON.stringify({ from, to: today, up, down }), "utf8");
 await writeFile(outIndex, JSON.stringify({ v: 1, d: hist.d, i: indice, n: idxBase.length }), "utf8");
+// Cópia durável do acervo no R2 (a que o próximo build lê primeiro).
+if (bucketR2) {
+  const ok = await gravaSerieR2("price-history-long.json", hist);
+  const okGraded = await gravaSerieR2("graded-history-long.json", gh);
+  console.log(`[price-history] ${dir}: acervo no R2 ${ok ? "gravado" : "NÃO gravado"}; graded ${okGraded ? "gravado" : "NÃO gravado"}`);
+}
 const alcanceDias = hist.d.length ? Math.round((Date.parse(today) - Date.parse(hist.d[0])) / 86400000) : 0;
 console.log(`[price-history] ${dir}: ${tracked} cartas, janela ${janela.d.length}p / acervo ${hist.d.length}p cobrindo ${alcanceDias}d (${hist.d[0]}..${today})${replacing ? " [substituiu hoje]" : ""}${podados ? `, -${podados} por retenção (diário ${DIAS_DIARIO}d / semanal ${DIAS_SEMANAL}d / mensal)` : ""}${podadosGraded ? `, graded -${podadosGraded}` : ""}; deltas ${Object.keys(deltas).length} (desde ${from}), 7d ${Object.keys(deltas7d).length} (desde ${from7d}), movers +${up.length}/-${down.length}, índice ${idxBase.length} cartas -> ${indice[indice.length - 1]}, graded ${gradedTracked} cartas/${gh.d.length} snapshot(s)`);

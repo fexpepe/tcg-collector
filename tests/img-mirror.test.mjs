@@ -36,7 +36,12 @@ test("matriz: a melhor imagem que cada fonte publica", () => {
   assert.equal(matrizDe(LORCAST.replace("/large/", "/normal/")), LORCAST);
   assert.equal(matrizDe(SCRY), SCRY.replace("/normal/", "/large/"));
   assert.equal(matrizDe(WSRV), "https://wsrv.nl/?url=static.wikia.nocookie.net%2Fhunterxhunter%2Fimages%2Fb%2Fbe%2FHyper_battle_part_1_card_c01.png&w=1000&output=webp");
-  assert.equal(matrizDe("https://images.pokemontcg.io/base1/4.png"), "");   // só fallback: não se espelha
+  // pokemontcg.io entrou em 20/09/2026: é a imagem principal das cartas sem scan na TCGdex.
+  assert.equal(matrizDe("https://images.pokemontcg.io/base1/4.png"), "https://images.pokemontcg.io/base1/4_hires.png");
+  assert.equal(matrizDe("https://images.pokemontcg.io/base1/4_hires.png"), "https://images.pokemontcg.io/base1/4_hires.png");
+  assert.equal(chaveDe("https://images.pokemontcg.io/mcd21/25.png", 300), "images.pokemontcg.io/mcd21/25.png@300.webp");
+  assert.equal(urlEspelho("https://images.pokemontcg.io/mcd21/25.png", ["images.pokemontcg.io"], 1000), `${ESPELHO}images.pokemontcg.io/mcd21/25.png@1000.webp`);
+  assert.ok(ORDEM.indexOf("images.pokemontcg.io") > ORDEM.indexOf("assets.tcgdex.net"), "pokemontcg.io depois da TCGdex no rollout");
   assert.equal(matrizDe("assets/games/game_pokemon.webp"), "");
   assert.deepEqual(LARGURAS, [300, 600, 1000]);
   assert.equal(ORDEM[0], "wsrv.nl");
@@ -60,7 +65,9 @@ test("URL espelhada: só host COMPLETO — igual no build e no cliente", () => {
     [WSRV_WE, ["wsrv.nl"], 300, `${ESPELHO}wsrv.nl/www.tv-tokyo.co.jp/anime/naruto2002/goods/cardimg/a%20b.jpg@300.webp`],
     ["https://wsrv.nl/?w=440&output=webp", ["wsrv.nl"], 300, ""],
     [LORCAST, [], 300, ""],
-    ["https://images.pokemontcg.io/base1/4.png", ORDEM, 300, ""],
+    // pokemontcg.io espelhada desde 20/09/2026 (imagem principal das cartas sem scan na TCGdex).
+    ["https://images.pokemontcg.io/base1/4.png", ORDEM, 300, `${ESPELHO}images.pokemontcg.io/base1/4.png@300.webp`],
+    ["https://images.pokemontcg.io/base1/4.png", ["assets.tcgdex.net"], 300, ""],
     ["assets/games/game_pokemon.webp", ORDEM, 300, ""],
     ["", ORDEM, 300, ""]
   ];

@@ -141,7 +141,7 @@
       manifest = catalog.manifest || null;
       totalCatalogCount = cards.length
         ? cards.filter((card) => langMatch(card.language)).length
-        : (catalog.manifest ? catalog.manifest.sets.filter((set) => langMatch(set.language)).reduce((sum, set) => sum + (set.count || 0), 0) : 0);
+        : (catalog.manifest ? catalog.manifest.sets.filter((set) => langMatch(set.language) && !set.retired).reduce((sum, set) => sum + (set.count || 0), 0) : 0);
       // Só com as cartas em mãos a migração acerta a variante padrão; sem elas
       // (sets/pokedex, que rodam por índice) fica pra outra página do jogo.
       if (cards.length) owned.migrateLegacy((cardId) => shared.defaultVariant(cardsById.get(cardId)));
@@ -790,8 +790,11 @@
     // já vinha só no idioma escolhido. Do manifest vêm todos, então o corte tem
     // de ser explícito.
     const porRegiao = isPokemonGame() && elements.setRegionChips;
+    // `retired`: chunk CONGELADO de set aposentado (sobra sem par, ver
+    // retire-imported-sets) — o id resolve, o set não é listado.
     return manifest.sets
-      .filter((entry) => (!porRegiao || shared.cardLanguageRegion(entry.language) === selectedLangRegion)
+      .filter((entry) => !entry.retired
+        && (!porRegiao || shared.cardLanguageRegion(entry.language) === selectedLangRegion)
         && lineScope.includes(entry.id)
         && entryMatchesQuery(entry, query))
       .map(toManifestSetItem)

@@ -83,7 +83,7 @@ export function pairCards(oldCards, newCards) {
   const a = byName(oldCards), b = byName(newCards);
   const cards = {};
   const images = {};
-  const unmatched = [];
+  let unmatched = [];
   for (const [k, list] of a) {
     const alvo = b.get(k) || [];
     list.forEach((c, i) => {
@@ -93,7 +93,50 @@ export function pairCards(oldCards, newCards) {
       if (c.image && !novo.image) images[novo.id] = c.image;
     });
   }
+  // 2º passo, pelo NÚMERO impresso — só quando a numeração se preservou entre
+  // as duas fontes (80%+ dos pares por nome têm o mesmo número): aí "mesmo
+  // número" É a mesma carta, e o nome que não casou foi decoração que o
+  // cardNameKey não previu ("Team Rocket's Mewtwo ex" × "Mewtwo ex"). Onde a
+  // numeração mudou (Classic Collection) o passo não roda: número igual seria
+  // outra carta. Uma carta sem par sumia da conta de quem a marcou
+  // (20/09/2026) — o que sobrar daqui vira chunk CONGELADO no
+  // retire-imported-sets, nunca id perdido.
+  if (unmatched.length) {
+    const velhosPorId = new Map((oldCards || []).map((c) => [c.id, c]));
+    const novosPorId = new Map((newCards || []).map((c) => [c.id, c]));
+    const pares = Object.entries(cards);
+    const preservados = pares.filter(([v, n]) => numberKey(velhosPorId.get(v)) && numberKey(velhosPorId.get(v)) === numberKey(novosPorId.get(n))).length;
+    if (pares.length && preservados / pares.length >= 0.8) {
+      const usados = new Set(Object.values(cards));
+      const livresPorNumero = new Map();
+      for (const n of newCards || []) {
+        const k = numberKey(n);
+        if (k && !usados.has(n.id) && !livresPorNumero.has(k)) livresPorNumero.set(k, n);
+      }
+      unmatched = unmatched.filter((id) => {
+        const c = velhosPorId.get(id);
+        const novo = livresPorNumero.get(numberKey(c));
+        if (!novo || usados.has(novo.id)) return true;
+        cards[id] = novo.id;
+        usados.add(novo.id);
+        if (c.image && !novo.image) images[novo.id] = c.image;
+        return false;
+      });
+    }
+  }
   return { cards, images, unmatched };
+}
+// Número impresso comparável: "001" = "1", "TG05" = "tg5"; sem o "/total".
+function numberKey(c) {
+  return String(c && c.number || "").split("/")[0].trim().toLowerCase().replace(/^([a-z]*)0+(?=\d)/, "$1");
+}
+
+// Chunk CONGELADO: o que sobrou de um set aposentado sem par no set da TCGdex.
+// Toda carta leva `retired: <setId novo>`; o merge marca a entrada do manifest
+// e o cliente esconde o set da lista, mas o id continua resolvendo — é a
+// regra do catálogo inteiro ("carta indexada nunca some") valendo também aqui.
+export function isRetiredChunk(cards) {
+  return Array.isArray(cards) && cards.length > 0 && cards.every((c) => c && c.retired);
 }
 
 // A troca é um PREFIXO puro quando todo id velho é `<from>-<resto>` e o novo é
@@ -118,8 +161,11 @@ export function findSupersededImports(chunks, importedIds, { minSimilarity = 0.5
   const out = [];
   for (const chunk of chunks || []) {
     if (!importados.has(chunk.setId)) continue;
+    // Já aposentado e congelado (o que sobrou sem par): não é candidato de
+    // nada — nem a ser aposentado de novo, nem a receber outro set.
+    if (isRetiredChunk(chunk.cards)) continue;
     const pontuados = (chunks || [])
-      .filter((o) => o.lang === chunk.lang && o.setId !== chunk.setId && !importados.has(o.setId))
+      .filter((o) => o.lang === chunk.lang && o.setId !== chunk.setId && !importados.has(o.setId) && !isRetiredChunk(o.cards))
       .map((o) => ({ o, s: chunkSimilarity(chunk.cards, o.cards) }))
       .filter((x) => x.s >= minSimilarity)
       .sort((x, y) => y.s - x.s);

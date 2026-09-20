@@ -49,6 +49,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      # Acervo do histórico de preços no R2 (scripts/sync-price-history.mjs):
+      # o mesmo bucket e as mesmas credenciais do espelho de imagens
+      # (mirror-images.yml). Sem os secrets o sync segue só com produção +
+      # cache do runner, como antes.
+      R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      R2_BUCKET: sleevu-img
     steps:
       # Actions pinadas por SHA (supply chain); o comentário marca a versão.
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -268,9 +276,12 @@ jobs:
         if: env.RODA_SYNC == 'true'
         run: node scripts/mirror-ja-set-logos.mjs --no-fetch || echo "mirror-ja-set-logos falhou; sets JP seguem com o nome no lugar do logo"
 
-      # Histórico de preços SEM servidor: busca o acumulador publicado no deploy
-      # anterior (a produção é o "banco"), anexa o snapshot de hoje e re-publica
-      # (+ deltas ▲▼ e maiores altas/quedas). Backup em data/.cache.
+      # Histórico de preços SEM servidor: busca o acervo (R2, produção e cache
+      # do runner — fica a cópia mais adiantada), anexa o snapshot de hoje,
+      # re-publica (+ deltas ▲▼ e maiores altas/quedas) e grava a cópia durável
+      # no R2. Sem o R2 o acervo só existia como estático em produção + cache
+      # de 7 dias: produção fora do ar no minuto do build + cache expirado =
+      # histórico recomeçando do zero por cima do antigo.
       - name: Snapshot de preços (histórico Pokémon)
         if: env.RODA_SYNC == 'true'
         run: node scripts/sync-price-history.mjs data
@@ -501,12 +512,21 @@ jobs:
       # Push direto, sem rebase (o workspace do build fica sujo de propósito):
       # numa race com push manual, pula — o próximo build versiona.
       # (build rápido não sincronizou nada, então não há snapshot a versionar)
+      #
+      # src/shared.js vai JUNTO: é onde o retire-imported-sets carimba o de-para
+      # de id (SLEEVU_ID_MERGES) a partir do data/card-id-merges.json. Commitar
+      # só data/ deixava o carimbo versionado atrás do JSON depois de uma
+      # aposentadoria automática, e o tests/id-merges.test.mjs (que trava os
+      # dois iguais) quebrava o CI no push seguinte até alguém recarimbar à mão.
+      # Neste ponto do build o shared.js só tem essa mudança: o espelho de
+      # imagens vai no game.js, as traduções no theme.js, e a minificação vem
+      # depois.
       - name: Versiona snapshot do catálogo
         if: env.RODA_SYNC == 'true' && github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data
+          git add data src/shared.js
           if git diff --cached --quiet; then
             echo "Catálogo sem mudanças — nada a versionar."
           else

@@ -29,8 +29,65 @@
 // vira 12 pontos, não 365. O price-history.generated.json é o maior JSON do
 // site, então a faixa diária é o que não pode crescer, e ela não cresce.
 
+import { resolveMergedId } from "./set-supersede.mjs";
+
 export const DIAS_DIARIO = 60;    // ~2 meses: a janela que os deltas 1d/7d e os movers usam
 export const DIAS_SEMANAL = 365;  // até 1 ano vira 1 ponto por semana
+
+// ── ID APOSENTADO DENTRO DO ACERVO ──────────────────────────────────────────
+// O acervo é chaveado por cardId. Quando um set importado é aposentado
+// (scripts/retire-imported-sets.mjs: cel30-001 virou 30th-001 em 18/09/2026),
+// a coleção de quem marcou migra pelo data/card-id-merges.json — mas a série
+// de preço ficava pra trás: o id velho recebia null até sumir, e o id novo
+// nascia do zero no dia em que apareceu. A carta perdia o gráfico, os deltas
+// e a parcela no índice do set. Aqui a série muda de chave junto com a conta.
+//   serie: { d: [datas], c: { id: { s, p[] } } } (raw) ou { id: { nota: [] } } (graded)
+//   merges: o JSON do data/card-id-merges.json ({ prefixes, cards })
+// Id novo SEM série: a velha é renomeada. Id novo COM série (a carta já
+// apareceu no pricing pelo id da TCGdex): os buracos da nova são preenchidos
+// com os pontos da velha — só na MESMA fonte no raw (moedas diferentes não se
+// misturam), sempre por nota no graded. Devolve quantas séries migraram.
+export function migrarIdsDoHistorico(serie, merges, porNota) {
+  const c = serie && serie.c;
+  if (!c || !merges) return 0;
+  let migradas = 0;
+  for (const velho of Object.keys(c)) {
+    const novo = resolveMergedId(velho, merges);
+    if (!novo || novo === velho) continue;
+    const de = c[velho], para = c[novo];
+    if (!para) c[novo] = de;
+    else if (porNota) {
+      for (const nota of Object.keys(de)) {
+        if (Array.isArray(para[nota])) preencherNulos(para[nota], de[nota]);
+        else para[nota] = de[nota];
+      }
+    } else if (para.s === de.s) preencherNulos(para.p, de.p);
+    delete c[velho];
+    migradas++;
+  }
+  return migradas;
+}
+function preencherNulos(alvo, fonte) {
+  for (let i = 0; i < (fonte || []).length; i++) {
+    while (alvo.length < i) alvo.push(null);
+    if (alvo[i] == null && fonte[i] != null) alvo[i] = fonte[i];
+  }
+}
+
+// Entre várias cópias do MESMO acervo (R2, produção, cache do runner), a mais
+// ADIANTADA: última data maior; empate, mais pontos. Existe porque as cópias
+// podem divergir por um dia (uma gravação que falhou) e escolher a errada
+// perderia o ponto daquele dia. null quando nenhuma serve.
+export function serieMaisAdiantada(series) {
+  let melhor = null;
+  for (const s of series || []) {
+    if (!s || !Array.isArray(s.d) || !s.c) continue;
+    if (!melhor) { melhor = s; continue; }
+    const a = s.d[s.d.length - 1] || "", b = melhor.d[melhor.d.length - 1] || "";
+    if (a > b || (a === b && s.d.length > melhor.d.length)) melhor = s;
+  }
+  return melhor;
+}
 
 // Balde de uma data dentro de cada faixa. Semana ancorada na SEGUNDA (ISO),
 // calculada em UTC porque as datas da série são "YYYY-MM-DD" sem fuso — usar

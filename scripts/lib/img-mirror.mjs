@@ -61,6 +61,18 @@ export const FONTES = {
   "cards.scryfall.io": {
     concorrencia: 2, intervaloMs: 200,
     matriz: (u) => u.replace("/normal/", "/large/")
+  },
+  // pokemontcg.io (20/09/2026): é a imagem PRINCIPAL das cartas EN/PT que a
+  // TCGdex cataloga sem scan (Trainer Kits, McDonald's, energias, metade do
+  // Celebrations — ~780 cartas) e o fallback das demais. O catálogo não guarda
+  // essa URL (o cliente a monta pelo set-id-map); o job a recebe pronta pela
+  // `reserva` do lerCatalogo (scripts/lib/pokemontcg-image.mjs) e só pra
+  // quem não tem `image` — espelhar o fallback das 21 mil cartas EN seria
+  // puxar 21 mil PNGs de um CDN comunitário por um caminho que quase nunca
+  // roda. _hires = 734×1024; a normal tem 245×342, pequena até pra grade.
+  "images.pokemontcg.io": {
+    concorrencia: 3, intervaloMs: 150,
+    matriz: (u) => u.replace(/(_hires)?\.png$/, "_hires.png")
   }
 };
 // Ordem do rollout: vintages, Lorcana e One Piece primeiro (host único sem

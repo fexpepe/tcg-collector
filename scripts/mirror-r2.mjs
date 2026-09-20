@@ -70,7 +70,9 @@ const limiteRecente = diasAtras(RECENTE_DIAS);
 for await (const { game, cards } of lerCatalogo()) {
   let n = 0;
   for (const c of cards) {
-    const u = c.linha.image;
+    // `reserva`: a pokemontcg.io das cartas EN/PT sem scan na TCGdex (ver
+    // lerCatalogo) — é a imagem principal delas no site, então se espelha.
+    const u = c.linha.image || c.reserva;
     const mapa = u && alvos.get(hostDe(u));
     if (!mapa) continue;
     const base = chaveBase(u);

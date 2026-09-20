@@ -11341,6 +11341,24 @@
   // SYNC_KEYS e afins são `const` declaradas acima (TDZ se fosse no export).
   window.TCGShared._nucleo = { SYNC_KEYS, currentGame, currentGameSlug, fetchCollectionApi, flushWrites, freezeWritesUntilReload, isUnsafeKey, mergeBinders, mergeCollection, mergeCosts, mergeDecks, mergeFolders, mergeGraded, mergeLists, mergeManual, mergePrices, mergeSales, mergeSold, mergeTags, mergeWishTargets, mergeWishlist, normalizeMeta, readObject };
 
+  // Link de carta com id APOSENTADO (?card=cel30-001, compartilhado ou salvo
+  // nos dias em que o set tinha o id velho): reescreve pro id novo ANTES de
+  // qualquer página olhar a URL — o resgate abaixo e o openFromUrl do popup
+  // leem location.search de novo. É a mesma cortesia que o link de set já
+  // tinha (mergedSetId no detail.js); sem isto o ?card= velho caía no verso
+  // cinza ou no "carta não encontrada" mesmo com a carta migrada na conta.
+  (function resgataCardIdAposentadoNaUrl() {
+    if (!TEM_ID_MERGES) return;
+    try {
+      const u = new URL(window.location.href);
+      const atual = u.searchParams.get("card");
+      const novo = atual && mergedCardId(atual);
+      if (!novo) return;
+      u.searchParams.set("card", novo);
+      history.replaceState(history.state, "", u.href);
+    } catch (e) { /* URL/history bloqueados: segue com o id velho */ }
+  })();
+
   if (rescueSharedCard()) return; // resolvendo a carta compartilhada; não monta a página
   if (enforceLoginGate()) return; // já está indo pro login; não monta a página
 

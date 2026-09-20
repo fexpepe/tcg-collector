@@ -164,3 +164,21 @@ test("aparelho já migrado + nuvem com id velho: a carta não volta em dobro", (
   assert.equal(m.collection["30th-001"].Holo.NM, 9); // o remoto é mais novo: vence pelo LWW
   assert.equal(m.collection["30th-002"].Holo.NM, 1); // e a carta que só existia lá entrou
 });
+
+test("link ?card= com id aposentado é reescrito pro id novo antes de a página olhar", () => {
+  const chamadas = [];
+  const history = { state: { x: 1 }, replaceState: (st, _t, url) => chamadas.push([st, url]) };
+  const location = { pathname: "/detail", search: "?type=set&card=cel30cc-4", hash: "", origin: "http://x", hostname: "localhost", href: "http://x/detail?type=set&card=cel30cc-4" };
+  loadShared(EXPOR, { location, history });
+  assert.equal(chamadas.length, 1);
+  assert.equal(chamadas[0][1], "http://x/detail?type=set&card=30th-c-001");
+  assert.deepEqual(chamadas[0][0], { x: 1 }); // o state da página é preservado
+});
+
+test("link ?card= com id vivo (ou sem ?card=) não mexe na URL", () => {
+  const chamadas = [];
+  const history = { replaceState: (st, _t, url) => chamadas.push(url) };
+  loadShared(EXPOR, { history, location: { pathname: "/", search: "?card=30th-001", hash: "", origin: "http://x", hostname: "localhost", href: "http://x/?card=30th-001" } });
+  loadShared(EXPOR, { history, location: { pathname: "/", search: "", hash: "", origin: "http://x", hostname: "localhost", href: "http://x/" } });
+  assert.deepEqual(chamadas, []);
+});
