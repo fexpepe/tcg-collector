@@ -3868,34 +3868,51 @@ a.preview-print:hover { background: var(--panel); }
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 18px;
 }
-.hub-tile {
+/* 2026-09-20: o tile virou a PRÓPRIA caixa branca. Antes era painel com
+   borda + 16px de padding + caixa branca com borda própria dentro — dois
+   contornos e uma moldura escura ao redor do logo. Agora a caixa branca ocupa
+   o tile inteiro (sem padding nem borda), com o MESMO tamanho externo de
+   antes (128 + 2×16 + 2 = 162px de altura) e os mesmos 14px de raio dos
+   cartões de informações do set e da coleção (.insight-card). O overflow:
+   hidden é o que recorta a caixa branca nos cantos do tile. Sem borda nem
+   sombra: a caixa branca já se destaca do fundo nos dois temas.
+   `.hub-grid .hub-tile` (0,2,0) de propósito: o passe FLAT no fim do arquivo
+   zera o raio de .hub-tile com (0,1,0) — e é ele que deixava o tile quadrado
+   mesmo com o border-radius: 16px de antes. */
+.hub-grid .hub-tile {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 16px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  overflow: hidden;
   background: var(--panel);
   color: var(--text);
   text-decoration: none;
-  transition: border-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+  transition: transform 120ms ease, box-shadow 120ms ease;
 }
 a.hub-tile:hover {
-  border-color: var(--accent-dark);
   transform: translateY(-3px);
-  box-shadow: var(--shadow);
+  /* Anel na cor de destaque no lugar da borda que mudava de cor. */
+  box-shadow: 0 0 0 2px var(--accent-dark);
 }
+/* Nos tiles VINTAGE (logo + nome + rodapé) só a caixa do logo encosta nas
+   bordas; o texto abaixo mantém o respiro dos 16px de antes. */
+.hub-tile > :not(.hub-logo-box) { margin-inline: 16px; }
+.hub-tile > :last-child:not(.hub-logo-box) { margin-bottom: 16px; }
 .hub-logo-box {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 128px;
+  height: 162px;
   padding: 20px;
   box-sizing: border-box;
-  border-radius: 12px;
+  border-radius: 0;
   background: #fff;
-  border: 1px solid var(--line);
+  border: 0;
+  flex: none;
 }
 /* O logo fica ABSOLUTO (centrado por inset 0 + margin auto) e invisível por
    opacity até o hub.js confirmar o load — não por `hidden`: display:none tira
@@ -3958,12 +3975,15 @@ a.hub-tile:hover {
 }
 .hub-tile-go { font-size: 13px; color: var(--muted); }
 .hub-tile.is-soon { opacity: 0.65; }
+/* O tile "Mais jogos em breve" não tem logo: sem a borda do tile ele sumia
+   no fundo, então volta a ter contorno (tracejado, de "vaga aberta"). */
+.hub-grid .hub-tile.is-soon { border: 1px dashed var(--line); }
 .hub-tile.is-soon .hub-logo-box { background: var(--bg); }
 .hub-tile.is-soon .hub-logo-text { color: var(--muted); }
 /* "Em breve" COM logo (ex.: NARUTO CARD GAME 2027): chip branco e sem
    esmaecer, igual aos jogos disponíveis — o badge já diz que não lançou.
    (Sem :has, cai no visual escuro de antes — degrada bem.) */
-.hub-tile.is-soon:has(.hub-logo) { opacity: 1; }
+.hub-grid .hub-tile.is-soon:has(.hub-logo) { opacity: 1; border: 0; }
 .hub-tile.is-soon:has(.hub-logo) .hub-logo-box { background: #fff; }
 /* CELULAR: a grade de auto-fill (220px) cabia UMA coluna em 350px úteis, e a
    escolha de jogo virava uma lista de 13 tiles gigantes + 11 vintage (~5.600px
@@ -3972,8 +3992,11 @@ a.hub-tile:hover {
    "Ver sets →" pode sair da linha do ano, que não cabia ao lado do selo. */
 @media (max-width: 600px) {
   .hub-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
-  .hub-tile { padding: 10px; gap: 8px; border-radius: 12px; }
-  .hub-logo-box { height: 84px; padding: 12px; border-radius: 8px; }
+  /* Mesma altura externa do tile de antes (84 + 2×10 + 2 = 106px). */
+  .hub-grid .hub-tile { gap: 8px; border-radius: 12px; }
+  .hub-tile > :not(.hub-logo-box) { margin-inline: 10px; }
+  .hub-tile > :last-child:not(.hub-logo-box) { margin-bottom: 10px; }
+  .hub-logo-box { height: 106px; padding: 12px; }
   .hub-logo { max-width: calc(100% - 20px); max-height: calc(100% - 20px); }
   .hub-logo-text { font-size: 13px; }
   .hub-tile-name { font-size: 12.5px; }
