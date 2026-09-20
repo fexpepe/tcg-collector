@@ -5627,6 +5627,9 @@ a.progress-row:hover {
      por aqui que se chega à conta e às preferências). A marca continua no
      rodapé e no login; entre 701 e 860px o header segue marca | busca | ☰. */
   .app-header-inner .brand { display: none; }
+  /* Coleção: o título "Coleção" e o "← Hub" saem do topo (2026-09-20) — a
+     tabbar já tem Hub e Coleção, então a faixa era só repetição. */
+  main .page-head.coll-head { display: none; } /* (0,3,0): vence o display: grid do .page-head-bar */
   .page-search.page-search-inheader { margin: 0 10px 0 0; }
   .header-profile-btn {
     position: relative;
@@ -7786,6 +7789,9 @@ html[data-detail="set"] #detailTitle { display: none; }
    desktop os chips cabem e mostram tudo de uma vez, então o select fica fora;
    abaixo de 600px eles trocam de lugar. */
 .game-filter-select { display: none; }
+/* Select-espelho das abas da Coleção: só existe no celular (≤600px, junto do
+   select de jogo — ver o bloco mobile). No desktop as abas seguem como abas. */
+.collection-tabs-select { display: none; }
 /* Título ↔ filtro de jogo: o .page-head tem 20px embaixo, mas a barra separa as
    próprias linhas com o gap de 10px do flex — dava 20 em cima e 10 embaixo, e a
    fileira de chips parecia solta do título. 10px nos dois lados fecha o bloco.
@@ -8675,6 +8681,32 @@ html[data-detail="set"] #detailTitle { display: none; }
      `select` global é 42px, e este aqui é o controle mais tocado da página. */
   .game-filter-select { display: block; width: 100%; min-height: 44px; margin: 0 0 12px; }
   .game-filter-select[hidden] { display: none; }
+  /* Coleção (2026-09-20): a fileira de abas (Coleção/Showcase/Graded/…) sai do
+     meio da página e vira um <select> ao lado do de jogo — os dois dividem a
+     linha MEIO A MEIO, acima dos cartões do resumo. Menos uma faixa rolando e
+     as cartas chegam antes. As abas continuam no DOM (escondidas): guardam o
+     estado e recebem o clique que o select dispara (collection.js,
+     initTabsSelect). O :has é a rede de segurança: sem o select (JS falhou),
+     as abas continuam visíveis. O .chip-scroll entra na lista porque, com
+     ponteiro fino (celular emulado no desktop), o select de jogo nasce dentro
+     dele — é ele que ocupa a metade nesse caso. */
+  /* Grid e não flex: com flex os dois selects não dividiam a linha por igual
+     (o <select> tem largura intrínseca que o flex-basis 0 não zerava). Colunas
+     auto-fit: com o select de jogo escondido (um jogo só), o das abas fica com
+     a linha inteira — item display:none não cria coluna. */
+  .collection-toolbar.has-tabs-select { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px; }
+  .collection-toolbar.has-tabs-select[hidden] { display: none; }
+  .collection-toolbar.has-tabs-select > .chip-scroll,
+  .collection-toolbar.has-tabs-select > .game-filter-select,
+  .collection-toolbar.has-tabs-select > .collection-tabs-select { min-width: 0; width: 100%; margin: 0; }
+  .collection-toolbar.has-tabs-select .chip-scroll .game-filter-select { width: 100%; margin: 0; }
+  .collection-toolbar.has-tabs-select > [hidden] { display: none; }
+  /* Um jogo só (select de jogo escondido): o embrulho .chip-scroll some junto,
+     senão sobrava meia linha vazia. */
+  .collection-toolbar.has-tabs-select > .chip-scroll:not(:has(> .game-filter-select:not([hidden]))) { display: none; }
+  .collection-tabs-select { display: block; min-height: 44px; }
+  .collection-tabs-select[hidden] { display: none; }
+  main:has(.collection-tabs-select) #collectionTabs { display: none; }
   /* As abas de seção seguem rolando: são poucas e fixas. O perfil público
      (.prof-tabs) usa a MESMA grade, então recebe a mesma regra — sem isto, 8
      abas em 390px espremeriam pra ~40px cada e o rótulo sumiria. */

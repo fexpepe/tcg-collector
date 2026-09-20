@@ -688,6 +688,7 @@
     // o CSS desbota o lado que ainda tem aba (.collection-tabs[data-scroll]) —
     // o mesmo aviso da subnav do Explorar, senão "Cartas Graded" parecia a última.
     shared.initSubnavScrollHint(elements.tabs);
+    initTabsSelect();
 
     elements.tabs.addEventListener("click", (event) => {
       const chip = event.target.closest("[data-tab]");
@@ -921,6 +922,41 @@
     track.addEventListener("scroll", updateCarousel);
     window.addEventListener("resize", updateCarousel);
     updateCarousel();
+  }
+
+  // CELULAR (2026-09-20): as abas (Coleção/Showcase/Graded/…) viram um <select>
+  // ao lado do select de jogo, na MESMA linha, acima dos cartões do resumo —
+  // a fileira de abas rolando no meio da página custava uma faixa e as cartas
+  // chegavam tarde. Mesmo molde do syncGameFilterSelect (shared.js): o select
+  // não guarda estado; ao mudar, clica na aba equivalente e as abas seguem
+  // sendo a única fonte da verdade (o CSS ≤600px só as esconde). O observer
+  // mantém as opções em dia: troca de idioma, rótulo Pokémon/Personagens
+  // (syncGameTabs), aba ativa e o `hidden` do modo compartilhado. Mora dentro
+  // da .collection-toolbar, que é quem some na tela compartilhada.
+  function initTabsSelect() {
+    const toolbar = document.querySelector(".collection-toolbar");
+    if (!toolbar || toolbar.querySelector(".collection-tabs-select")) return;
+    const sel = document.createElement("select");
+    sel.className = "collection-tabs-select";
+    sel.setAttribute("aria-label", t("aria.collectionViews"));
+    sel.addEventListener("change", () => {
+      const alvo = [...elements.tabs.querySelectorAll("[data-tab]")].find((b) => b.dataset.tab === sel.value);
+      if (alvo) alvo.click();
+    });
+    toolbar.appendChild(sel);
+    toolbar.classList.add("has-tabs-select");
+    const sync = () => {
+      const tabs = [...elements.tabs.querySelectorAll("[data-tab]")].filter((b) => !b.hidden);
+      sel.hidden = elements.tabs.hidden || tabs.length < 2;
+      sel.innerHTML = tabs.map((b) =>
+        `<option value="${escapeAttribute(b.dataset.tab)}">${escapeHtml(b.textContent.trim())}</option>`).join("");
+      const ativa = tabs.find((b) => b.getAttribute("aria-pressed") === "true");
+      sel.value = ativa ? ativa.dataset.tab : activeTab;
+    };
+    sync();
+    new MutationObserver(sync).observe(elements.tabs, {
+      childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["aria-pressed", "hidden"]
+    });
   }
 
   // Aba "Pokémon"/"Personagens" (agrupa por espécie/personagem) segue o filtro
