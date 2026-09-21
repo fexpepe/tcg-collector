@@ -2258,12 +2258,46 @@
     </article>`;
   }
 
+  // Linha COMPACTA do tile do share/perfil: o mesmo molde do tile-compact do
+  // shared.js (nome com bandeira · nº · set · variante/badge · preço), SEM
+  // imagem no DOM (o nome carrega a miniatura em data-hover-thumb).
+  function sharedTileCompact(it) {
+    const flag = shared.cardFlag(it.lang);
+    let priceHtml = "";
+    if (it.gv != null && it.gv > 0) priceHtml = `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(it.cur || "BRL", it.gv))}</p>`;
+    else if (it.sp != null && it.sp > 0) priceHtml = `<p class="tile-price sale-price-tag">${escapeHtml(shared.formatMoney(it.cur || "BRL", it.sp))}</p>`;
+    else { const val = fromBRL(it.vbrl || 0); if (val > 0) priceHtml = `<p class="tile-price">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</p>`; }
+    const variante = it.co
+      ? shared.gradedBadgeHtml({ company: it.co, grade: it.gr, pristine: it.pr })
+      : `${escapeHtml(it.v)}${it.q > 1 ? ` ×${it.q}` : ""}${it.sp > 0 && it.cond ? ` <span class="cond-badge">${escapeHtml(it.cond)}</span>` : ""}`;
+    return `<article class="card-tile shared-tile tile-compact${it.co ? " graded-tile graded-grid-tile" : ""}">
+      <button type="button" class="tile-name" data-preview-card-id="${escapeAttribute(it.id)}" data-preview-variant="${escapeAttribute(it.v)}" data-hover-thumb="${escapeAttribute(it.img || "")}">${flag}<span>${escapeHtml(it.n)}</span></button>
+      <span class="tile-c-num">${escapeHtml(it.num || "")}</span>
+      <span class="tile-c-set">${escapeHtml(it.s || "")}</span>
+      <span class="tile-c-var">${variante}</span>
+      <span class="tile-c-price">${priceHtml}</span>
+    </article>`;
+  }
+
   // Prepara o container de leitura (esconde a UI normal da coleção).
-  function prepareSharedView() {
+  // `opts.search`: mantém a BUSCA da página (o #searchInput — no celular ela já
+  // mora no header, movida pelo initHeaderSearch) pro perfil público filtrar
+  // as cartas do dono, como na tela logada. Sem ela (share ?s=), some junto.
+  function prepareSharedView(opts) {
+    const comBusca = !!(opts && opts.search);
     // .coll-head é a faixa "Coleção / ← Hub" do desktop (no celular o CSS já
     // a esconde): num perfil público ou share ela não faz sentido — o título é
     // o do dono, e o "← Hub" mandava o visitante pro hub pessoal de quem olha.
-    ["page-search", "collection-subtitle", "collection-toolbar", "collection-dashboard", "coll-head"].forEach((c) => { const el = document.querySelector("." + c); if (el) el.hidden = true; });
+    // Com busca, some só o texto (.page-head-bar-text) e a busca fica no meio
+    // da faixa, como na tela do dono.
+    ["collection-subtitle", "collection-toolbar", "collection-dashboard"].forEach((c) => { const el = document.querySelector("." + c); if (el) el.hidden = true; });
+    const head = document.querySelector(".coll-head");
+    if (head) {
+      head.hidden = !comBusca;
+      const texto = head.querySelector(".page-head-bar-text");
+      if (texto) texto.hidden = true;
+    }
+    if (!comBusca) { const busca = document.querySelector(".page-search"); if (busca) busca.hidden = true; }
     [elements.tabs, elements.groupsView, elements.cardsView, elements.dashboard, document.getElementById("collectionShareBtn"), document.getElementById("collectionExportBtn"), document.getElementById("collectionOnboarding")].forEach((el) => { if (el) el.hidden = true; });
     const sv = document.getElementById("sharedCollection");
     if (sv) { sv.hidden = false; sv.innerHTML = `<p class="empty-state">${escapeHtml(t("collection.shared.loading"))}</p>`; }
@@ -2442,7 +2476,7 @@
   // DASHBOARD fixo no topo (identidade + stats, persistente) → ABAS (Toda Coleção /
   // Coleções / Vendas) → conteúdo. Auto-contido (payload curado, tiles em string).
   async function renderPublicProfile(handle) {
-    const sv = prepareSharedView();
+    const sv = prepareSharedView({ search: true });
     if (!sv) return;
     const prof = await shared.fetchPublicProfile(handle);
     if (!prof || !prof.data) {
@@ -2475,6 +2509,10 @@
     const gamesPresent = [...new Set(col.items.map((it) => it.g || "pokemon"))];
     const GROUPED = ["vitrine", "tags", "pokemon", "artists", "sets"]; // abas de grupos
     const PROGRESS_MODES = ["pokemon", "artists", "sets"]; // grupos em linha de progresso
+    // Abas "de cartas" (as mesmas isCardsLike da Minha Coleção: Coleção,
+    // Showcase, Graded, Listas — e Vendas, que é grade plana): são as que
+    // ganham a barra de filtros e a Visualização (grade/lista/compacta/fichário).
+    const CARDS_LIKE = ["collection", "vitrine", "graded", "tags", "sale"];
     // ?t= abre direto numa aba (links "ver no perfil" de Vendas/Graded).
     const tParam = collParams.get("t");
     let mode = (hasSales && tParam === "sales") ? "sale"
@@ -2485,7 +2523,24 @@
     let cardSort = "value-desc"; // ordenação (em memória)
     // Filtros da aba "Toda Coleção" (os MESMOS da tela de Coleção): espécie,
     // set, idioma, raridade e faixa de valor. Em memória.
-    let fPokemon = "", fSet = "", fLang = "", fRarity = "", fValue = "", cardView = "grid";
+    let fPokemon = "", fSet = "", fLang = "", fRarity = "", fValue = "";
+    // Visualização (grade/lista/compacta/fichário): a MESMA chave de preferência
+    // da Minha Coleção — quem vê a sua em lista vê o perfil dos outros em lista.
+    let cardView = "grid";
+    try { cardView = shared.gridViewValue(localStorage.getItem("tcg-collection-view")); } catch (e) { /* ignora */ }
+    // Busca do topo (o #searchInput da página, o mesmo da tela do dono): filtra
+    // as cartas em TODAS as abas, como lá. O item do payload vira uma pseudo-
+    // carta (cacheada nele) pra usar a MESMA régua do site (matchesCardQuery).
+    const searchEl = document.getElementById("searchInput");
+    let query = "";
+    const pseudoCard = (it) => it._pc || (it._pc = { id: it.id, name: it.n, pokemonName: it.pk || "", dexId: it.dx || 0, number: it.num, set: it.s, artist: it.a || "", rarity: it.r || "", language: it.lang || "", variants: it.v ? [it.v] : [] });
+    const matchesQ = (it) => !query || shared.matchesCardQuery(pseudoCard(it), query);
+    // Fichário: o MESMO motor da Minha Coleção (binder-view.js) e a mesma chave
+    // de nº de bolsos. Os tiles aqui são strings; o tileOf embrulha em nó.
+    const binderView = window.TCGBinderView
+      ? window.TCGBinderView.createBinderView({ root: sv, grid: null, storageKey: "tcg-collection-binder-pockets" })
+      : null;
+    let binderQueue = []; // grades de fichário a montar depois do innerHTML ([{ key, items }])
     // Barra de filtros RECOLHÍVEL atrás do botão "Filtros" do cartão-herói —
     // mesmo desenho da Minha Coleção, e a MESMA chave de preferência (quem
     // gosta de ver os filtros abertos vê nas duas telas).
@@ -2501,10 +2556,23 @@
     // Valor por item (na moeda atual): coleção em BRL (vbrl), graded/venda já na
     // moeda do dono (gv/sp). Dentro de cada modo os itens são homogêneos.
     const itemVal = (it) => it.vbrl != null ? fromBRL(it.vbrl) : (it.gv != null ? it.gv : (it.sp || 0));
+    // Raridade/lançamento saem do payload (it.r) ou do catálogo do perfil
+    // quando ele já baixou (cardsById) — graded/venda não trazem raridade.
+    const rarityOf = (it) => it.r || ((cardsById.get(it.id) || {}).rarity || "");
+    const releaseOf = (it) => String((cardsById.get(it.id) || {}).setReleaseDate || "");
+    const gradeNumOf = (g) => { const n = parseFloat(String(g || "").replace(",", ".")); return isFinite(n) ? n : 0; };
     function sortItems(arr) {
       const c = arr.slice();
-      if (cardSort === "num-asc") c.sort((a, b) => shared.compareCardNumbers(a.num, b.num));
-      else if (cardSort === "num-desc") c.sort((a, b) => shared.compareCardNumbers(b.num, a.num));
+      const byNum = (a, b) => shared.compareCardNumbers(a.num, b.num);
+      if (cardSort === "num-asc") c.sort(byNum);
+      else if (cardSort === "num-desc") c.sort((a, b) => byNum(b, a));
+      else if (cardSort === "rarity-desc") c.sort((a, b) => shared.rarityRank(rarityOf(b)) - shared.rarityRank(rarityOf(a)) || byNum(a, b));
+      else if (cardSort === "rarity-asc") c.sort((a, b) => shared.rarityRank(rarityOf(a)) - shared.rarityRank(rarityOf(b)) || byNum(a, b));
+      else if (cardSort === "release") c.sort((a, b) => releaseOf(b).localeCompare(releaseOf(a)) || byNum(a, b));
+      else if (cardSort === "grade-desc") {
+        const val = shared.memoValue(itemVal);
+        c.sort((a, b) => gradeNumOf(b.gr) - gradeNumOf(a.gr) || val(b) - val(a));
+      }
       else {
         const val = shared.memoValue(itemVal); // 1 conversão de moeda por item, não por comparação
         c.sort((a, b) => {
@@ -2525,13 +2593,15 @@
       const v = itemVal(it);
       return (min == null || v >= min) && (max == null || v <= max);
     }
-    // Aplica os filtros da barra (só na aba Toda Coleção).
+    // Aplica a busca e os filtros da barra. Em TODAS as abas, como na Minha
+    // Coleção (lá os grupos nascem das cartas já filtradas).
     function applyColFilters(items) {
       return items.filter((it) =>
+        matchesQ(it) &&
         (!fPokemon || speciesOf(it) === fPokemon) &&
         (!fSet || it.s === fSet) &&
         (!fLang || (it.lang || "") === fLang) &&
-        (!fRarity || (it.r || "") === fRarity) &&
+        (!fRarity || rarityOf(it) === fRarity) &&
         matchesValueRange(it));
     }
     function sortGroupsByValue(groups) {
@@ -2574,7 +2644,7 @@
     // Raridade, Valor, Ordenar), recolhida atrás do botão "Filtros" do cartão-
     // herói. A Visualização (▦/≣) saiu daqui e foi pro canto do cartão, como lá.
     function filterBarHtml() {
-      if (mode !== "collection") return "";
+      if (!cardsLike()) return "";
       const pool = col.items.filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter);
       const uniq = (arr) => Array.from(new Set(arr.filter(Boolean)));
       const opts = (values, sel, fmt) => `<option value="">${escapeHtml(t("filter.all.m"))}</option>` +
@@ -2596,6 +2666,8 @@
         <div><label>${escapeHtml(t("toolbar.value"))}</label><select data-pf-filter="value">${`<option value="">${escapeHtml(t("filter.all.m"))}</option>` + faixas.map(([v, l]) => `<option value="${v}"${v === fValue ? " selected" : ""}>${escapeHtml(l)}</option>`).join("")}</select></div>
         <div class="sort-select"><label>${escapeHtml(t("sort.label"))}</label><select data-profile-sort>
           ${sortOpt("value-desc", "sort.valueDesc")}${sortOpt("value-asc", "sort.valueAsc")}${sortOpt("num-asc", "sort.numAsc")}${sortOpt("num-desc", "sort.numDesc")}
+          ${sortOpt("rarity-desc", "sort.rarityDesc")}${sortOpt("rarity-asc", "sort.rarityAsc")}${sortOpt("release", "sort.releaseDate")}
+          ${mode === "graded" ? sortOpt("grade-desc", "graded.sort.gradeDesc") : ""}
         </select></div>
       </section>`;
     }
@@ -2608,28 +2680,48 @@
     // "Filtros" (só onde há barra pra abrir) e Visualização (▦/≣) nas abas de
     // grade plana. Ícones idênticos aos do collection.html — é o mesmo botão.
     function actionsRowHtml() {
-      const ordenar = (mode !== "collection" && PROGRESS_MODES.indexOf(mode) < 0)
-        ? `<div class="results-sort"><label for="pfSort">${escapeHtml(t("sort.label"))}</label><select id="pfSort" data-profile-sort>
-            <option value="value-desc"${cardSort === "value-desc" ? " selected" : ""}>${escapeHtml(t("sort.valueDesc"))}</option>
-            <option value="value-asc"${cardSort === "value-asc" ? " selected" : ""}>${escapeHtml(t("sort.valueAsc"))}</option>
-          </select></div>`
-        : "";
-      const filtros = mode === "collection"
-        ? `<button type="button" class="secondary" data-pf-filters aria-expanded="${filtersOpen}" aria-controls="profileFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span>${escapeHtml(t("filters.show"))}</span></button>`
-        : "";
-      const visual = flatGrid()
-        ? `<div class="view-toggle" role="group" aria-label="${escapeAttribute(t("toolbar.view"))}">
-            <button type="button" class="view-toggle-btn" data-pf-view="grid" aria-pressed="${cardView === "grid"}" title="${escapeAttribute(t("toolbar.view"))}">▦</button>
-            <button type="button" class="view-toggle-btn" data-pf-view="list" aria-pressed="${cardView === "list"}" title="${escapeAttribute(t("toolbar.view"))}">≣</button>
-          </div>`
-        : "";
-      if (!ordenar && !filtros && !visual) return "";
-      return `<section class="results-header results-header-cards"><div class="results-actions">${ordenar}${filtros}${visual}</div></section>`;
+      if (!cardsLike()) return "";
+      // O Ordenar mora na barra de filtros (como na tela do dono); aqui ficam o
+      // "Filtros" e a Visualização com os MESMOS 4 modos do collection.html:
+      // grade, lista, compacta e fichário (o número no canto é o nº de bolsos).
+      const filtros = `<button type="button" class="secondary" data-pf-filters aria-expanded="${filtersOpen}" aria-controls="profileFilters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7.5 12h9M10.5 18h3"/></svg><span>${escapeHtml(t("filters.show"))}</span></button>`;
+      const btn = (v, label, inner, extra) => `<button type="button" class="view-toggle-btn${extra || ""}" data-pf-view="${v}" aria-pressed="${cardView === v}" aria-label="${escapeAttribute(label)}" title="${escapeAttribute(label)}">${inner}</button>`;
+      const visual = `<div class="view-toggle" role="group" aria-label="${escapeAttribute(t("toolbar.view"))}">
+            ${btn("grid", t("aria.viewGrid"), "▦")}
+            ${btn("list", t("aria.viewList"), "≣")}
+            ${btn("compact", t("view.compact"), "☰")}
+            ${binderView ? btn("binder", t("view.binder"), `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="3" width="14" height="18" rx="2"/><path d="M4 7.5h4M4 12h4M4 16.5h4"/></svg><span class="view-toggle-badge" data-binder-badge aria-hidden="true">9</span>`, " view-toggle-binder") : ""}
+          </div>`;
+      return `<section class="results-header results-header-cards"><div class="results-actions">${filtros}${visual}</div></section>`;
     }
-    // Abas de GRADE PLANA (uma fileira de cartas): são as que a Visualização
-    // grade/lista comanda. As de grupo (vitrine/listas) e as de progresso
-    // (Personagens/Artistas/Sets) têm layout próprio e não usam o toggle.
-    function flatGrid() { return mode === "collection" || mode === "graded" || mode === "sale"; }
+    // Abas de CARTAS (ver CARDS_LIKE): barra de filtros + Visualização. As de
+    // progresso (Personagens/Artistas/Sets) têm layout próprio.
+    function cardsLike() { return CARDS_LIKE.indexOf(mode) >= 0; }
+    // Grade de tiles na visualização atual. Grade/lista/compacta são a mesma
+    // grade com classe (applyGridViewClasses); o fichário monta páginas depois
+    // que o HTML entra no DOM (mountBinders) — aqui só fica a grade vazia.
+    function gridHtml(items, extraClass) {
+      const cls = cardView === "list" ? " is-list" : cardView === "compact" ? " is-compact" : cardView === "binder" && binderView ? " is-binder" : "";
+      if (cls === " is-binder") {
+        const key = String(binderQueue.length);
+        binderQueue.push({ key, items });
+        return `<div class="card-grid is-binder${extraClass || ""}" data-pf-binder="${key}"></div>`;
+      }
+      return `<div class="card-grid${cls}${extraClass || ""}">${items.map(tileHtml).join("")}</div>`;
+    }
+    function tileHtml(it) { return cardView === "compact" ? sharedTileCompact(it) : sharedTile(it); }
+    function mountBinders(root) {
+      const fila = binderQueue; binderQueue = [];
+      if (!binderView || !fila.length) return;
+      fila.forEach(({ key, items }) => {
+        const grid = root.querySelector(`[data-pf-binder="${key}"]`);
+        if (!grid) return;
+        binderView.render(items, (it) => { const w = document.createElement("div"); w.innerHTML = sharedTile(it); return w.firstElementChild; }, { grid });
+      });
+    }
+    function paintViewToggle() {
+      if (binderView) binderView.paintToggle(sv.querySelector('[data-pf-view="binder"]'));
+    }
     // Itens da coleção no filtro de jogo atual — a base do dashboard e das
     // distribuições do trilho.
     function dashItems() {
@@ -2683,8 +2775,12 @@
         .reduce((s, it) => { const v = shared.convertMoney(it.gv || 0, it.cur || "BRL", cur); return s + (v == null ? (it.gv || 0) : v); }, 0);
       return sharedDashboardHtml(items, rawTotal + gradedTotal, { name, handle: prof.handle }, { hero: true, insights: insightsHtml(items) });
     }
+    // Abas do perfil, na ordem da fileira (só as que têm conteúdo).
+    function tabList() {
+      return [["collection", true], ["vitrine", hasFolders], ["graded", hasGraded], ["tags", hasTags], ["pokemon", hasPokemon], ["artists", hasArtists], ["sets", hasSets], ["sale", hasSales]]
+        .filter(([, on]) => on).map(([m]) => m);
+    }
     function gameFilterHtml() {
-      if (gamesPresent.length <= 1) return "";
       const chip = (g, label) => `<button type="button" class="chip" data-game-filter="${g}" aria-pressed="${gFilter === g}">${escapeHtml(label)}</button>`;
       // Só os jogos que ESTÃO no perfil (era GAME_SLUGS inteiro — 13 chips, a
       // maioria sem uma carta sequer), na ordem de GAME_SLUGS, e dentro da
@@ -2692,19 +2788,41 @@
       // (.collection-toolbar-centered). É o setGameFilterScope da tela do dono,
       // escrito à mão: aqui os chips não vêm do HTML.
       const lista = shared.GAME_SLUGS.filter((g) => gamesPresent.indexOf(g) >= 0);
-      return `<div class="collection-toolbar collection-toolbar-centered"><div id="sharedGameFilter" class="chip-filter game-filter game-filter-panel" role="group" aria-label="Jogo">
+      const jogos = gamesPresent.length > 1
+        ? `<div id="sharedGameFilter" class="chip-filter game-filter game-filter-panel" role="group" aria-label="Jogo">
         ${chip("all", t("filter.gameAll"))}${lista.map((g) => chip(g, gameLabelOf(g))).join("")}
-      </div></div>`;
+      </div>`
+        : "";
+      // CELULAR: as abas viram um <select> ao lado do de jogo, na MESMA linha
+      // acima dos cartões do resumo — o desenho da Minha Coleção
+      // (initTabsSelect): a fileira .prof-tabs some por CSS (≤600px) e este
+      // select a espelha. Com um jogo só, o select fica com a linha inteira e
+      // no desktop a faixa some (.prof-toolbar-solo), como lá.
+      const abas = `<select class="collection-tabs-select" data-profile-tabs-select aria-label="${escapeAttribute(t("aria.collectionViews"))}">${tabList().map((m) => `<option value="${m}"${mode === m ? " selected" : ""}>${escapeHtml(tabLabel(m))}</option>`).join("")}</select>`;
+      return `<div class="collection-toolbar collection-toolbar-centered has-tabs-select${jogos ? "" : " prof-toolbar-solo"}">${jogos}${abas}</div>`;
+    }
+    function syncTabsSelect() {
+      const sel = sv.querySelector("[data-profile-tabs-select]");
+      if (sel && sel.value !== mode) sel.value = mode;
     }
     // Grupos das abas-vitrine (Coleções/Tags/Artistas/Sets): {id,name,color?,stars?,cover?,items}.
     function groupsFor(m) {
       const inG = (it) => gFilter === "all" || (it.g || "pokemon") === gFilter;
-      if (m === "vitrine") return collFolders.map((f) => ({ id: f.id, name: f.name || t("folders.untitled"), stars: f.stars || 0, cover: f.cover, items: col.items.filter((it) => it.f === f.id && inG(it)) })).filter((gp) => gp.items.length);
-      if (m === "tags") return tagDefs.map((tg) => ({ id: tg.id, name: tg.name || t("tags.untitled"), color: tg.color, items: col.items.filter((it) => (it.tg || []).indexOf(tg.id) >= 0 && inG(it)) })).filter((gp) => gp.items.length);
-      if (m === "pokemon") return [...new Set(col.items.map(speciesOf).filter(Boolean))].map((sp) => ({ id: sp, name: sp, items: col.items.filter((it) => speciesOf(it) === sp && inG(it)) })).filter((gp) => gp.items.length);
-      if (m === "artists") return [...new Set(col.items.map((it) => it.a).filter(Boolean))].sort().map((a) => ({ id: a, name: a, items: col.items.filter((it) => it.a === a && inG(it)) })).filter((gp) => gp.items.length);
-      if (m === "sets") return [...new Set(col.items.map((it) => it.s).filter(Boolean))].sort().map((s) => ({ id: s, name: s, items: col.items.filter((it) => it.s === s && inG(it)) })).filter((gp) => gp.items.length);
+      // Busca e filtros da barra valem aqui também (na Minha Coleção os grupos
+      // saem de ownedCards(), que já vem filtrado). Uma pasta que fica vazia
+      // com o filtro some da vitrine, como lá.
+      const base = applyColFilters(col.items);
+      if (m === "vitrine") return collFolders.map((f) => ({ id: f.id, name: f.name || t("folders.untitled"), stars: f.stars || 0, cover: f.cover, items: base.filter((it) => it.f === f.id && inG(it)) })).filter((gp) => gp.items.length);
+      if (m === "tags") return tagDefs.map((tg) => ({ id: tg.id, name: tg.name || t("tags.untitled"), color: tg.color, items: base.filter((it) => (it.tg || []).indexOf(tg.id) >= 0 && inG(it)) })).filter((gp) => gp.items.length);
+      if (m === "pokemon") return [...new Set(base.map(speciesOf).filter(Boolean))].map((sp) => ({ id: sp, name: sp, items: base.filter((it) => speciesOf(it) === sp && inG(it)) })).filter((gp) => gp.items.length);
+      if (m === "artists") return [...new Set(base.map((it) => it.a).filter(Boolean))].sort().map((a) => ({ id: a, name: a, items: base.filter((it) => it.a === a && inG(it)) })).filter((gp) => gp.items.length);
+      if (m === "sets") return [...new Set(base.map((it) => it.s).filter(Boolean))].sort().map((s) => ({ id: s, name: s, items: base.filter((it) => it.s === s && inG(it)) })).filter((gp) => gp.items.length);
       return [];
+    }
+    // Cartas do dono fora de qualquer showcase (o "Sem showcase" da vitrine),
+    // no filtro de jogo e nos filtros da barra.
+    function noneItems() {
+      return applyColFilters(col.items).filter((it) => !it.f && (gFilter === "all" || (it.g || "pokemon") === gFilter));
     }
     // Abas Sets/Pokémon/Artistas: MESMO visual da Coleção (linhas de progresso com
     // arte + possuídas/total + barra + %). Totais vêm do payload (setsMeta / species
@@ -2746,6 +2864,63 @@
           <div class="results-actions results-sort"><span>${escapeHtml(t("sort.label"))}</span><div class="chip-filter">${chip("name", "sort.name")}${chip("progress", "sort.progress")}</div></div>
         </section>
         <div class="progress-row-list">${rows}</div>`;
+    }
+    // Estrelas SÓ de leitura (as da tela do dono são botões que gravam).
+    const starsRo = (n) => { let h = ""; for (let i = 1; i <= 3; i++) h += `<span class="coll-star${i <= n ? " on" : ""}">★</span>`; return `<span class="coll-stars">${h}</span>`; };
+    // Card de SHOWCASE (vitrine): o MESMO card em PILHA da Minha Coleção
+    // (folderSectionHtml, is-collapsed): até 3 cartas em leque na capa, tag do
+    // jogo + contagem sobre a capa, nome + estrelas e valor embaixo — só sem as
+    // ações do dono (compartilhar / ⋯). Antes o perfil tinha um card próprio
+    // (barra de título + capa única), e as duas telas não batiam (2026-09-21).
+    // O card inteiro é um botão (abre o showcase), por isso só spans dentro.
+    function pileCard(gp) {
+      const val = gp.items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
+      let cover = gp.cover ? gp.items.find((it) => it.id === gp.cover) : null;
+      if (!cover) cover = gp.items.slice().sort((a, b) => (b.vbrl * b.q) - (a.vbrl * a.q))[0];
+      const seen = new Set();
+      const fan = [];
+      [cover, ...gp.items].forEach((it) => {
+        if (!it || seen.has(it.id) || fan.length >= 3) return;
+        seen.add(it.id);
+        fan.push(it);
+      });
+      const fanImg = (it) => shared.localizedImg(it.img, { alt: "", fallback: it.fb, loading: "lazy", thumb: true });
+      const pileHtml = fan.length
+        ? `${fan[1] ? `<span class="coll-pile-card coll-pile-l">${fanImg(fan[1])}</span>` : ""}${fan[2] ? `<span class="coll-pile-card coll-pile-r">${fanImg(fan[2])}</span>` : ""}<span class="coll-pile-card coll-pile-front">${fanImg(fan[0])}</span>`
+        : `<span class="coll-card-empty">${escapeHtml(t("folders.empty"))}</span>`;
+      const gset = new Set(gp.items.map((it) => it.g).filter(Boolean));
+      const valueHtml = val > 0 ? `<span class="cm-val">${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</span>` : "";
+      return `<button type="button" class="coll-card coll-card-ro coll-card-pile" data-vitrine-open="${escapeAttribute(gp.id)}">
+        <span class="coll-card-cover coll-pile">
+          ${pileHtml}
+          ${gset.size ? `<span class="coll-pile-tag">${folderTagHtml(gset)}</span>` : ""}
+          <span class="coll-pile-count">${CARDS_ICON}${gp.items.length}</span>
+        </span>
+        <span class="coll-card-body">
+          <span class="coll-card-title-row"><strong class="coll-card-name" title="${escapeAttribute(gp.name)}">${escapeHtml(gp.name)}</strong>${starsRo(gp.stars || 0)}</span>
+          <span class="coll-card-foot"><span class="coll-card-meta">${valueHtml}</span></span>
+        </span>
+      </button>`;
+    }
+    // Seção de showcase ABERTO (ou o "Sem showcase"): o MESMO .folder-section
+    // com cabeçalho (voltar, nome, tag do jogo, contagem · valor, estrelas) e a
+    // grade, como na tela do dono — sem renomear/capa/excluir.
+    function folderSectionRo(gp, items, opts) {
+      const isNone = !gp;
+      const val = items.reduce((s, it) => s + fromBRL(it.vbrl || 0) * (it.q || 1), 0);
+      const meta = `${items.length}${val > 0 ? `<span class="cm-val"> · ${escapeHtml(shared.formatMoney(shared.getCurrency(), val))}</span>` : ""}`;
+      const gset = new Set(items.map((it) => it.g).filter(Boolean));
+      const back = (opts && opts.back) ? `<button type="button" class="secondary coll-back-btn" data-vitrine-back>← ${escapeHtml(t("folders.back"))}</button>` : "";
+      return `<section class="folder-section${isNone ? " folder-none" : ""}">
+        <header class="folder-head">
+          ${back}
+          <span class="folder-name">${escapeHtml(isNone ? t("folders.none") : gp.name)}</span>
+          ${isNone ? "" : folderTagHtml(gset)}
+          <span class="folder-meta">${meta}</span>
+          ${isNone ? "" : `<span class="folder-actions">${starsRo(gp.stars || 0)}</span>`}
+        </header>
+        ${gridHtml(sortItems(items))}
+      </section>`;
     }
     // Card de grupo (somente leitura): capa + nome + meta (+ estrelas/cor quando houver).
     function groupCard(gp, mode) {
@@ -2860,36 +3035,42 @@
         <div class="card-grid scope-collection">${tiles || `<p class="empty-state">${escapeHtml(t("collection.noResults"))}</p>`}</div>`;
     }
     function contentHtml() {
-      const listClass = cardView === "list" ? " is-list" : "";
-      if (mode === "graded") {
-        const items = gradedList.filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter);
-        return `<div class="card-grid${listClass}">${sortItems(items).map(sharedTile).join("")}</div>`;
-      }
-      if (mode === "sale") {
-        const items = sale.items.filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter);
-        return `<div class="card-grid${listClass}">${sortItems(items).map(sharedTile).join("")}</div>`;
+      binderQueue = [];
+      const vazio = `<p class="empty-state">${escapeHtml(t("collection.noResults"))}</p>`;
+      if (mode === "graded" || mode === "sale") {
+        const src = mode === "graded" ? gradedList : sale.items;
+        const items = applyColFilters(src.filter((it) => gFilter === "all" || (it.g || "pokemon") === gFilter));
+        return items.length ? gridHtml(sortItems(items)) : vazio;
       }
       if (GROUPED.indexOf(mode) >= 0) {
         const groups = groupsFor(mode);
         if (openId) {
           const gp = groups.find((x) => x.id === openId);
           if (mode === "sets" && gp) return openSetHtml(gp);
-          return `<div class="card-grid">${sortItems(gp ? gp.items : []).map(sharedTile).join("")}</div>`;
+          // Showcase aberto: a seção com cabeçalho da tela do dono (o "voltar"
+          // mora nela — o backHtml não entra na vitrine).
+          if (mode === "vitrine") return gp ? folderSectionRo(gp, gp.items, { back: true }) : vazio;
+          return gridHtml(sortItems(gp ? gp.items : []));
         }
         if (PROGRESS_MODES.indexOf(mode) >= 0) return groupsProgressHtml(mode);
+        if (mode === "vitrine") {
+          // Vitrine: os cards em pilha + o "Sem showcase" com as cartas soltas,
+          // na MESMA ordem da Minha Coleção (as pastas, depois o bucket).
+          const soltas = noneItems();
+          const cards = groups.map(pileCard).join("");
+          if (!cards && !soltas.length) return vazio;
+          return `<div class="coll-vitrine">${cards}${soltas.length ? folderSectionRo(null, soltas) : ""}</div>`;
+        }
         return `<div class="coll-vitrine">${sortGroupsByValue(groups).map((gp) => groupCard(gp, mode)).join("")}</div>`;
       }
       const base = gFilter === "all" ? col.items : col.items.filter((it) => (it.g || "pokemon") === gFilter);
       const items = applyColFilters(base);
-      const grid = items.length
-        ? sortItems(items).map(sharedTile).join("")
-        : `<p class="empty-state">${escapeHtml(t("collection.noResults"))}</p>`;
-      return `<div class="card-grid${listClass}">${grid}</div>`;
+      return items.length ? gridHtml(sortItems(items)) : vazio;
     }
 
     // "Voltar" (dentro de um grupo aberto: coleção/tag/artista/set).
     function backHtml() {
-      const grouped = GROUPED.indexOf(mode) >= 0 && openId;
+      const grouped = GROUPED.indexOf(mode) >= 0 && openId && mode !== "vitrine";
       if (!grouped) return "";
       const openName = (groupsFor(mode).find((x) => x.id === openId) || {}).name || "";
       return `<div class="coll-open-head"><button type="button" class="secondary coll-back-btn" data-vitrine-back>${escapeHtml(t("profile.viewCollections"))}</button><strong class="coll-open-name">${escapeHtml(openName)}</strong></div>`;
@@ -2911,19 +3092,21 @@
       // esconde os chips, e o boot do shared.js só alcança as caixas que já
       // existiam no HTML — esta nasce aqui, a cada render.
       if (shared.initGameFilterSelects) shared.initGameFilterSelects(sv);
+      mountBinders(sv);
+      paintViewToggle();
       ajustaValoresHero(); // o valor tem caixa fixa no cabeçalho (mesma regra do dono)
     }
     // Troca de aba / abrir grupo / voltar: reconstrói só o bloco abaixo do dashboard
     // (abas+conteúdo), mantendo o dashboard e o filtro de jogo fixos no lugar.
     function renderSwap() {
       const el = sv.querySelector(".prof-swap");
-      if (el) el.innerHTML = swapHtml(); else render();
+      if (el) { el.innerHTML = swapHtml(); mountBinders(el); paintViewToggle(); syncTabsSelect(); } else render();
     }
     // Re-render PARCIAL: filtro/ordenação/visualização só trocam as cartas — não
     // reconstrói dashboard/abas/barra (mais rápido e preserva o foco nos selects).
     function renderContent() {
       const el = sv.querySelector(".prof-content");
-      if (el) el.innerHTML = contentHtml(); else render();
+      if (el) { el.innerHTML = contentHtml(); mountBinders(el); } else render();
     }
 
     // Delegação no container (sobrevive aos re-renders): abas, vitrine, filtro, preview.
@@ -2950,8 +3133,12 @@
       }
       const vw = event.target.closest("[data-pf-view]");
       if (vw) {
-        cardView = vw.dataset.pfView === "list" ? "list" : "grid";
+        // Fichário já ativo + clique de novo = troca o nº de bolsos (como lá).
+        if (vw.dataset.pfView === "binder" && cardView === "binder" && binderView) binderView.cycle();
+        cardView = shared.gridViewValue(vw.dataset.pfView);
+        try { localStorage.setItem("tcg-collection-view", cardView); } catch (err) { /* ignora */ }
         sv.querySelectorAll("[data-pf-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.pfView === cardView)));
+        paintViewToggle();
         renderContent(); return;
       }
       const ss = event.target.closest("[data-group-sort]");
@@ -2960,6 +3147,8 @@
       if (card) preview.open(card.dataset.previewCardId, card.dataset.previewVariant);
     });
     sv.addEventListener("change", (event) => {
+      const tabSel = event.target.closest("[data-profile-tabs-select]");
+      if (tabSel) { mode = tabSel.value; openId = null; renderSwap(); return; }
       const sortSel = event.target.closest("[data-profile-sort]");
       if (sortSel) { cardSort = sortSel.value; renderContent(); return; }
       const ff = event.target.closest("[data-pf-filter]");
@@ -2971,6 +3160,11 @@
         renderContent(); // as opções da barra não dependem dos filtros escolhidos
       }
     });
+    // Busca do topo: refaz só as cartas (as opções da barra não dependem dela).
+    if (searchEl) {
+      searchEl.value = "";
+      searchEl.addEventListener("input", debounce(() => { query = searchEl.value.trim(); renderContent(); }, 200));
+    }
     render();
 
     // Catálogo das cartas do perfil, p/ o preview abrir com o detalhe completo.

@@ -7925,6 +7925,9 @@ html[data-detail="set"] #detailTitle { display: none; }
 /* Select-espelho das abas da Coleção: só existe no celular (≤600px, junto do
    select de jogo — ver o bloco mobile). No desktop as abas seguem como abas. */
 .collection-tabs-select { display: none; }
+/* Perfil público com UM jogo só: a faixa do topo fica só com o select das abas,
+   que é coisa do celular — no desktop a faixa some (o bloco ≤600px a mostra). */
+.collection-toolbar.prof-toolbar-solo { display: none; }
 /* Título ↔ filtro de jogo: o .page-head tem 20px embaixo, mas a barra separa as
    próprias linhas com o gap de 10px do flex — dava 20 em cima e 10 embaixo, e a
    fileira de chips parecia solta do título. 10px nos dois lados fecha o bloco.
@@ -8840,6 +8843,9 @@ html[data-detail="set"] #detailTitle { display: none; }
   .collection-tabs-select { display: block; min-height: 44px; }
   .collection-tabs-select[hidden] { display: none; }
   main:has(.collection-tabs-select) #collectionTabs { display: none; }
+  /* Perfil público (2026-09-21): a mesma dupla de selects (jogo + abas) no topo,
+     e a fileira de abas (.prof-tabs) some — é a Minha Coleção vista de fora. */
+  main:has(.collection-tabs-select) .prof-swap > .prof-tabs { display: none; }
   /* Portfólio (2026-09-20): título e "← Hub" somem (a tabbar já tem Hub e
      Portfólio) e as três ações só-ícone ficam na MESMA linha do select de
      jogo, à direita. O embrulho .pf-mobile-toolbar vem do portfolio.js
