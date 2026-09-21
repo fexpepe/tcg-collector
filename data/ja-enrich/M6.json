@@ -1,0 +1,797 @@
+{
+ "page": "Storm Emeralda (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Heracross",
+   "page": "Heracross (Storm Emeralda 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Surskit",
+   "page": "Surskit (Storm Emeralda 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Masquerain",
+   "page": "Masquerain (Storm Emeralda 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Cacnea",
+   "page": "Cacnea (Storm Emeralda 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Cacturne",
+   "page": "Cacturne (Storm Emeralda 5)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "6": {
+   "en": "Combee",
+   "page": "Combee (Storm Emeralda 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Vespiquen",
+   "page": "Vespiquen (Storm Emeralda 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Wimpod",
+   "page": "Wimpod (Storm Emeralda 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Mega Golisopod",
+   "page": "Mega Golisopod ex (Storm Emeralda 9)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "10": {
+   "en": "Growlithe",
+   "page": "Growlithe (Storm Emeralda 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Arcanine",
+   "page": "Arcanine (Storm Emeralda 11)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Magmar",
+   "page": "Magmar (Storm Emeralda 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Magmortar",
+   "page": "Magmortar (Storm Emeralda 13)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Torkoal",
+   "page": "Torkoal (Storm Emeralda 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Heat Rotom",
+   "page": "Heat Rotom ex (Storm Emeralda 15)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Heatmor",
+   "page": "Heatmor (Storm Emeralda 16)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Mantine",
+   "page": "Mantine (Storm Emeralda 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Kyogre",
+   "page": "Kyogre (Storm Emeralda 18)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "19": {
+   "en": "Frillish",
+   "page": "Frillish (Storm Emeralda 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Jellicent",
+   "page": "Jellicent (Storm Emeralda 20)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi ex (Storm Emeralda 21)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "22": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Storm Emeralda 22)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Electivire",
+   "page": "Electivire (Storm Emeralda 23)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Raikou",
+   "page": "Raikou ex (Storm Emeralda 24)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "25": {
+   "en": "Thundurus",
+   "page": "Thundurus (Storm Emeralda 25)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Pincurchin",
+   "page": "Pincurchin (Storm Emeralda 26)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Wattrel",
+   "page": "Wattrel (Storm Emeralda 27)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Kilowattrel",
+   "page": "Kilowattrel (Storm Emeralda 28)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Drowzee",
+   "page": "Drowzee (Storm Emeralda 29)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Hypno",
+   "page": "Hypno (Storm Emeralda 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Giratina",
+   "page": "Giratina (Storm Emeralda 31)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "32": {
+   "en": "Golett",
+   "page": "Golett (Storm Emeralda 32)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Mega Golurk",
+   "page": "Mega Golurk ex (Storm Emeralda 33)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "34": {
+   "en": "Enamorus",
+   "page": "Enamorus (Storm Emeralda 34)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Sandshrew",
+   "page": "Sandshrew (Storm Emeralda 35)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Sandslash",
+   "page": "Sandslash (Storm Emeralda 36)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Onix",
+   "page": "Onix (Storm Emeralda 37)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Steelix",
+   "page": "Steelix (Storm Emeralda 38)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Groudon",
+   "page": "Groudon (Storm Emeralda 39)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "40": {
+   "en": "Landorus",
+   "page": "Landorus (Storm Emeralda 40)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "41": {
+   "en": "Nidoran♀",
+   "page": "Nidoran♀ (Storm Emeralda 41)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Nidorina",
+   "page": "Nidorina (Storm Emeralda 42)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Nidoqueen",
+   "page": "Nidoqueen (Storm Emeralda 43)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Spinarak",
+   "page": "Spinarak (Storm Emeralda 44)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Ariados",
+   "page": "Ariados (Storm Emeralda 45)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Sableye",
+   "page": "Sableye (Storm Emeralda 46)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Inkay",
+   "page": "Inkay (Storm Emeralda 47)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Mega Malamar",
+   "page": "Mega Malamar ex (Storm Emeralda 48)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "49": {
+   "en": "Druddigon",
+   "page": "Druddigon (Storm Emeralda 49)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Jangmo-o",
+   "page": "Jangmo-o (Storm Emeralda 50)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Hakamo-o",
+   "page": "Hakamo-o (Storm Emeralda 51)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Kommo-o",
+   "page": "Kommo-o (Storm Emeralda 52)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "53": {
+   "en": "Cyclizar",
+   "page": "Cyclizar (Storm Emeralda 53)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Azurill",
+   "page": "Azurill (Storm Emeralda 54)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Swablu",
+   "page": "Swablu (Storm Emeralda 55)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Altaria",
+   "page": "Altaria (Storm Emeralda 56)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "57": {
+   "en": "Kecleon",
+   "page": "Kecleon (Storm Emeralda 57)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Mega Rayquaza",
+   "page": "Mega Rayquaza ex (Storm Emeralda 58)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Tornadus",
+   "page": "Tornadus (Storm Emeralda 59)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Fletchling",
+   "page": "Fletchling (Storm Emeralda 60)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Fletchinder",
+   "page": "Fletchinder (Storm Emeralda 61)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Talonflame",
+   "page": "Talonflame ex (Storm Emeralda 62)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Delicious Onigiri",
+   "page": "Delicious Onigiri (Storm Emeralda 63)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "64": {
+   "en": "Adventuring Lantern",
+   "page": "Adventuring Lantern (Storm Emeralda 64)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Custom Vest",
+   "page": "Custom Vest (Storm Emeralda 65)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Mega Rayquaza Cap",
+   "page": "Mega Rayquaza Cap (Storm Emeralda 66)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Emcee's Hype",
+   "page": "Emcee's Hype (Storm Emeralda 67)",
+   "type": "Su",
+   "rarity": "C",
+   "mark": ""
+  },
+  "68": {
+   "en": "Aarune",
+   "page": "Aarune (Storm Emeralda 68)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Zinnia's Trust",
+   "page": "Zinnia's Trust (Storm Emeralda 69)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Tate & Liza's Training",
+   "page": "Tate & Liza's Training (Storm Emeralda 70)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Legendary Marine Trench",
+   "page": "Legendary Marine Trench (Storm Emeralda 71)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Legendary Marine Trench",
+   "page": "Legendary Marine Trench (Storm Emeralda 72)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "73": {
+   "en": "Legendary Summit",
+   "page": "Legendary Summit (Storm Emeralda 73)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "74": {
+   "en": "Legendary Summit",
+   "page": "Legendary Summit (Storm Emeralda 74)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "75": {
+   "en": "Legendary Lava Tube",
+   "page": "Legendary Lava Tube (Storm Emeralda 75)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "76": {
+   "en": "Legendary Lava Tube",
+   "page": "Legendary Lava Tube (Storm Emeralda 76)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Masquerain",
+   "page": "Masquerain (Storm Emeralda 77)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Growlithe",
+   "page": "Growlithe (Storm Emeralda 78)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Magmortar",
+   "page": "Magmortar (Storm Emeralda 79)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Kyogre",
+   "page": "Kyogre (Storm Emeralda 80)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Electivire",
+   "page": "Electivire (Storm Emeralda 81)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Pincurchin",
+   "page": "Pincurchin (Storm Emeralda 82)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Enamorus",
+   "page": "Enamorus (Storm Emeralda 83)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Groudon",
+   "page": "Groudon (Storm Emeralda 84)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Inkay",
+   "page": "Inkay (Storm Emeralda 85)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Azurill",
+   "page": "Azurill (Storm Emeralda 86)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Altaria",
+   "page": "Altaria (Storm Emeralda 87)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Kecleon",
+   "page": "Kecleon (Storm Emeralda 88)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Mega Golisopod",
+   "page": "Mega Golisopod ex (Storm Emeralda 89)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Heat Rotom",
+   "page": "Heat Rotom ex (Storm Emeralda 90)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi ex (Storm Emeralda 91)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Raikou",
+   "page": "Raikou ex (Storm Emeralda 92)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Mega Golurk",
+   "page": "Mega Golurk ex (Storm Emeralda 93)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Mega Malamar",
+   "page": "Mega Malamar ex (Storm Emeralda 94)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Mega Rayquaza",
+   "page": "Mega Rayquaza ex (Storm Emeralda 95)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Talonflame",
+   "page": "Talonflame ex (Storm Emeralda 96)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Adventuring Lantern",
+   "page": "Adventuring Lantern (Storm Emeralda 97)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (Storm Emeralda 98)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Custom Vest",
+   "page": "Custom Vest (Storm Emeralda 99)",
+   "type": "PT",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Emcee's Hype",
+   "page": "Emcee's Hype (Storm Emeralda 100)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Aarune",
+   "page": "Aarune (Storm Emeralda 101)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Zinnia's Trust",
+   "page": "Zinnia's Trust (Storm Emeralda 102)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Tate & Liza's Training",
+   "page": "Tate & Liza's Training (Storm Emeralda 103)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Growing",
+   "page": "Growing G Energy (Storm Emeralda 104)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Nitro",
+   "page": "Nitro R Energy (Storm Emeralda 105)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Bubbly",
+   "page": "Bubbly W Energy (Storm Emeralda 106)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Mega Golisopod",
+   "page": "Mega Golisopod ex (Storm Emeralda 107)",
+   "type": "Grass",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Raikou",
+   "page": "Raikou ex (Storm Emeralda 108)",
+   "type": "Lightning",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Mega Golurk",
+   "page": "Mega Golurk ex (Storm Emeralda 109)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Mega Rayquaza",
+   "page": "Mega Rayquaza ex (Storm Emeralda 110)",
+   "type": "Colorless",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Aarune",
+   "page": "Aarune (Storm Emeralda 111)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Zinnia's Trust",
+   "page": "Zinnia's Trust (Storm Emeralda 112)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Mega Rayquaza",
+   "page": "Mega Rayquaza ex (Storm Emeralda 113)",
+   "type": "Colorless",
+   "rarity": "MUR",
+   "mark": ""
+  }
+ }
+}

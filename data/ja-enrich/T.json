@@ -1,0 +1,174 @@
+{
+ "page": "T Promotional cards (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Flareon",
+   "page": "Flareon (T Promo 1)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Vaporeon",
+   "page": "Vaporeon (T Promo 2)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Jolteon",
+   "page": "Jolteon (T Promo 3)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (T Promo 4)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Slowbro",
+   "page": "Slowbro (T Promo 5)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Slowking",
+   "page": "Slowking (T Promo 6)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Bayleef",
+   "page": "Bayleef (T Promo 7)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Quilava",
+   "page": "Quilava (T Promo 8)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Croconaw",
+   "page": "Croconaw (T Promo 9)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Ivysaur",
+   "page": "Ivysaur (T Promo 10)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (T Promo 11)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Wartortle",
+   "page": "Wartortle (T Promo 12)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Moltres",
+   "page": "Moltres (T Promo 13)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Articuno",
+   "page": "Articuno (T Promo 14)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Zapdos",
+   "page": "Zapdos (T Promo 15)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Dratini",
+   "page": "Dratini (T Promo 16)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Dragonair",
+   "page": "Dragonair (T Promo 17)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Dragonite",
+   "page": "Dragonite (T Promo 18)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Larvitar",
+   "page": "Larvitar (T Promo 19)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Pupitar",
+   "page": "Pupitar (T Promo 20)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Tyranitar ex",
+   "page": "Tyranitar ex (T Promo 21)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Imakuni?'s Whismur",
+   "page": "Imakuni?'s Whismur (T Promo 22)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Imakuni?'s Loudred",
+   "page": "Imakuni?'s Loudred (T Promo 23)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Imakuni?'s Exploud ex",
+   "page": "Imakuni?'s Exploud ex (T Promo 24)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

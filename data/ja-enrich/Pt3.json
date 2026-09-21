@@ -1,0 +1,1077 @@
+{
+ "page": "Beat of the Frontier (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Bulbasaur",
+   "page": "Bulbasaur (Beat of the Frontier 1)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Ivysaur",
+   "page": "Ivysaur (Beat of the Frontier 2)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "3": {
+   "en": "Venusaur",
+   "page": "Venusaur (Beat of the Frontier 3)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Butterfree",
+   "page": "Butterfree FB (Beat of the Frontier 4)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "5": {
+   "en": "Paras",
+   "page": "Paras (Beat of the Frontier 5)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "6": {
+   "en": "Parasect",
+   "page": "Parasect (Beat of the Frontier 6)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "7": {
+   "en": "Pinsir",
+   "page": "Pinsir (Beat of the Frontier 7)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "8": {
+   "en": "Yanma",
+   "page": "Yanma (Beat of the Frontier 8)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "9": {
+   "en": "Yanma",
+   "page": "Yanma (Beat of the Frontier 9)",
+   "type": "Grass",
+   "rarity": "Uncommon Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Yanmega",
+   "page": "Yanmega (Beat of the Frontier 10)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "11": {
+   "en": "Surskit",
+   "page": "Surskit (Beat of the Frontier 11)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "12": {
+   "en": "Masquerain",
+   "page": "Masquerain (Beat of the Frontier 12)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "13": {
+   "en": "Shroomish",
+   "page": "Shroomish (Beat of the Frontier 13)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "14": {
+   "en": "Nincada",
+   "page": "Nincada (Beat of the Frontier 14)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "15": {
+   "en": "Ninjask",
+   "page": "Ninjask (Beat of the Frontier 15)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "16": {
+   "en": "Shedinja",
+   "page": "Shedinja (Beat of the Frontier 16)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "17": {
+   "en": "Magmar",
+   "page": "Magmar (Beat of the Frontier 17)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "18": {
+   "en": "Magmortar",
+   "page": "Magmortar (Beat of the Frontier 18)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "19": {
+   "en": "Blaziken",
+   "page": "Blaziken FB (Beat of the Frontier 19)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "20": {
+   "en": "Blaziken",
+   "page": "Blaziken FB LV.X (Beat of the Frontier 20)",
+   "type": "Fire",
+   "rarity": "Rare Holo LV.X",
+   "mark": ""
+  },
+  "21": {
+   "en": "Numel",
+   "page": "Numel (Beat of the Frontier 21)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "22": {
+   "en": "Camerupt",
+   "page": "Camerupt (Beat of the Frontier 22)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "23": {
+   "en": "Seel",
+   "page": "Seel (Beat of the Frontier 23)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "24": {
+   "en": "Dewgong",
+   "page": "Dewgong (Beat of the Frontier 24)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "25": {
+   "en": "Goldeen",
+   "page": "Goldeen (Beat of the Frontier 25)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "26": {
+   "en": "Seaking",
+   "page": "Seaking (Beat of the Frontier 26)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "27": {
+   "en": "Mudkip",
+   "page": "Mudkip (Beat of the Frontier 27)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "28": {
+   "en": "Marshtomp",
+   "page": "Marshtomp (Beat of the Frontier 28)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "29": {
+   "en": "Swampert",
+   "page": "Swampert (Beat of the Frontier 29)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "30": {
+   "en": "Wailmer",
+   "page": "Wailmer (Beat of the Frontier 30)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "31": {
+   "en": "Wailord",
+   "page": "Wailord (Beat of the Frontier 31)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "32": {
+   "en": "Feebas",
+   "page": "Feebas (Beat of the Frontier 32)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "33": {
+   "en": "Milotic",
+   "page": "Milotic (Beat of the Frontier 33)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "34": {
+   "en": "Milotic",
+   "page": "Milotic (Beat of the Frontier 34)",
+   "type": "Water",
+   "rarity": "Uncommon Holo",
+   "mark": ""
+  },
+  "35": {
+   "en": "Empoleon",
+   "page": "Empoleon FB (Beat of the Frontier 35)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "36": {
+   "en": "Plusle",
+   "page": "Plusle (Beat of the Frontier 36)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "37": {
+   "en": "Minun",
+   "page": "Minun (Beat of the Frontier 37)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "38": {
+   "en": "Electivire",
+   "page": "Electivire FB (Beat of the Frontier 38)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "39": {
+   "en": "Electivire",
+   "page": "Electivire FB LV.X (Beat of the Frontier 39)",
+   "type": "Lightning",
+   "rarity": "Rare Holo LV.X",
+   "mark": ""
+  },
+  "40": {
+   "en": "Mime Jr.",
+   "page": "Mime Jr. (Beat of the Frontier 40)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "41": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime (Beat of the Frontier 41)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "42": {
+   "en": "Meditite",
+   "page": "Meditite (Beat of the Frontier 42)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "43": {
+   "en": "Medicham",
+   "page": "Medicham (Beat of the Frontier 43)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "44": {
+   "en": "Lunatone",
+   "page": "Lunatone (Beat of the Frontier 44)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "45": {
+   "en": "Solrock",
+   "page": "Solrock (Beat of the Frontier 45)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "46": {
+   "en": "Baltoy",
+   "page": "Baltoy (Beat of the Frontier 46)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "47": {
+   "en": "Claydol",
+   "page": "Claydol (Beat of the Frontier 47)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "48": {
+   "en": "Chingling",
+   "page": "Chingling (Beat of the Frontier 48)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "49": {
+   "en": "Chimecho",
+   "page": "Chimecho (Beat of the Frontier 49)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "50": {
+   "en": "Drifblim",
+   "page": "Drifblim FB (Beat of the Frontier 50)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "51": {
+   "en": "Dusknoir",
+   "page": "Dusknoir FB (Beat of the Frontier 51)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "52": {
+   "en": "Sandshrew",
+   "page": "Sandshrew (Beat of the Frontier 52)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "53": {
+   "en": "Sandslash",
+   "page": "Sandslash (Beat of the Frontier 53)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "54": {
+   "en": "Mankey",
+   "page": "Mankey (Beat of the Frontier 54)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "55": {
+   "en": "Primeape",
+   "page": "Primeape (Beat of the Frontier 55)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "56": {
+   "en": "Rhyhorn",
+   "page": "Rhyhorn (Beat of the Frontier 56)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "57": {
+   "en": "Rhydon",
+   "page": "Rhydon (Beat of the Frontier 57)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "58": {
+   "en": "Rhyperior",
+   "page": "Rhyperior (Beat of the Frontier 58)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "59": {
+   "en": "Breloom",
+   "page": "Breloom (Beat of the Frontier 59)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "60": {
+   "en": "Relicanth",
+   "page": "Relicanth (Beat of the Frontier 60)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "61": {
+   "en": "Relicanth",
+   "page": "Relicanth (Beat of the Frontier 61)",
+   "type": "Fighting",
+   "rarity": "Uncommon Holo",
+   "mark": ""
+  },
+  "62": {
+   "en": "Murkrow",
+   "page": "Murkrow (Beat of the Frontier 62)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "63": {
+   "en": "Honchkrow",
+   "page": "Honchkrow (Beat of the Frontier 63)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "64": {
+   "en": "Absol",
+   "page": "Absol G (Beat of the Frontier 64)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "65": {
+   "en": "Absol",
+   "page": "Absol G LV.X (Beat of the Frontier 65)",
+   "type": "Darkness",
+   "rarity": "Rare Holo LV.X",
+   "mark": ""
+  },
+  "66": {
+   "en": "Skarmory",
+   "page": "Skarmory FB (Beat of the Frontier 66)",
+   "type": "Metal",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "67": {
+   "en": "Mawile",
+   "page": "Mawile (Beat of the Frontier 67)",
+   "type": "Metal",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "68": {
+   "en": "Beldum",
+   "page": "Beldum (Beat of the Frontier 68)",
+   "type": "Metal",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "69": {
+   "en": "Metang",
+   "page": "Metang (Beat of the Frontier 69)",
+   "type": "Metal",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "70": {
+   "en": "Metagross",
+   "page": "Metagross (Beat of the Frontier 70)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "71": {
+   "en": "Doduo",
+   "page": "Doduo (Beat of the Frontier 71)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "72": {
+   "en": "Dodrio",
+   "page": "Dodrio (Beat of the Frontier 72)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "73": {
+   "en": "Dragonite",
+   "page": "Dragonite FB (Beat of the Frontier 73)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "74": {
+   "en": "Whismur",
+   "page": "Whismur (Beat of the Frontier 74)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "75": {
+   "en": "Loudred",
+   "page": "Loudred (Beat of the Frontier 75)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "76": {
+   "en": "Exploud",
+   "page": "Exploud (Beat of the Frontier 76)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "77": {
+   "en": "Spinda",
+   "page": "Spinda (Beat of the Frontier 77)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "78": {
+   "en": "Rayquaza",
+   "page": "Rayquaza C (Beat of the Frontier 78)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "79": {
+   "en": "Rayquaza",
+   "page": "Rayquaza C LV.X (Beat of the Frontier 79)",
+   "type": "Colorless",
+   "rarity": "Rare Holo LV.X",
+   "mark": ""
+  },
+  "80": {
+   "en": "Staraptor",
+   "page": "Staraptor FB (Beat of the Frontier 80)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "81": {
+   "en": "Staraptor",
+   "page": "Staraptor FB LV.X (Beat of the Frontier 81)",
+   "type": "Colorless",
+   "rarity": "Rare Holo LV.X",
+   "mark": ""
+  },
+  "82": {
+   "en": "Chatot",
+   "page": "Chatot G (Beat of the Frontier 82)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "83": {
+   "en": "Gible",
+   "page": "Gible (Beat of the Frontier 83)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "84": {
+   "en": "Gabite",
+   "page": "Gabite (Beat of the Frontier 84)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "85": {
+   "en": "Garchomp",
+   "page": "Garchomp (Beat of the Frontier 85)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "86": {
+   "en": "Lickilicky",
+   "page": "Lickilicky C (Beat of the Frontier 86)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "87": {
+   "en": "Regigigas",
+   "page": "Regigigas FB (Beat of the Frontier 87)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "88": {
+   "en": "VS Seeker",
+   "page": "VS Seeker (Beat of the Frontier 88)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "89": {
+   "en": "Night Teleporter",
+   "page": "Night Teleporter (Beat of the Frontier 89)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "90": {
+   "en": "Cyrus's Initiative",
+   "page": "Cyrus's Initiative (Beat of the Frontier 90)",
+   "type": "Su",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "91": {
+   "en": "Palmer's Contribution",
+   "page": "Palmer's Contribution (Beat of the Frontier 91)",
+   "type": "Su",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "92": {
+   "en": "Cynthia's Guidance",
+   "page": "Cynthia's Guidance (Beat of the Frontier 92)",
+   "type": "Su",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "93": {
+   "en": "Champion's Room",
+   "page": "Champion's Room (Beat of the Frontier 93)",
+   "type": "St",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "94": {
+   "en": "Battle Tower",
+   "page": "Battle Tower (Beat of the Frontier 94)",
+   "type": "St",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "95": {
+   "en": "SP Energy",
+   "page": "SP Energy (Beat of the Frontier 95)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "96": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (Beat of the Frontier 96)",
+   "type": "Darkness",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "97": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (Beat of the Frontier 97)",
+   "type": "Metal",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "98": {
+   "en": "Moltres",
+   "page": "Moltres (Beat of the Frontier 98)",
+   "type": "Fire",
+   "rarity": "SuperRare Holo",
+   "mark": ""
+  },
+  "99": {
+   "en": "Articuno",
+   "page": "Articuno (Beat of the Frontier 99)",
+   "type": "Water",
+   "rarity": "SuperRare Holo",
+   "mark": ""
+  },
+  "100": {
+   "en": "Zapdos",
+   "page": "Zapdos (Beat of the Frontier 100)",
+   "type": "Lightning",
+   "rarity": "SuperRare Holo",
+   "mark": ""
+  },
+  "101": {
+   "en": "Croagunk",
+   "page": "Croagunk (Supreme Victors 101)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Doduo",
+   "page": "Doduo (Supreme Victors 102)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Drifloon",
+   "page": "Drifloon (Supreme Victors 103)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Feebas",
+   "page": "Feebas (Supreme Victors 104)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Geodude",
+   "page": "Geodude (Supreme Victors 105)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Gible",
+   "page": "Gible (Supreme Victors 106)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Goldeen",
+   "page": "Goldeen (Supreme Victors 107)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Growlithe",
+   "page": "Growlithe (Supreme Victors 108)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Kricketot",
+   "page": "Kricketot (Supreme Victors 109)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Magikarp",
+   "page": "Magikarp (Supreme Victors 110)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Magnemite",
+   "page": "Magnemite (Supreme Victors 111)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Mankey",
+   "page": "Mankey (Supreme Victors 112)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Meditite",
+   "page": "Meditite (Supreme Victors 113)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Meowth",
+   "page": "Meowth (Supreme Victors 114)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Mime Jr.",
+   "page": "Mime Jr. (Supreme Victors 115)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Mudkip",
+   "page": "Mudkip (Supreme Victors 116)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "117": {
+   "en": "Nincada",
+   "page": "Nincada (Supreme Victors 117)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "118": {
+   "en": "Pachirisu",
+   "page": "Pachirisu (Supreme Victors 118)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Paras",
+   "page": "Paras (Supreme Victors 119)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Pikachu",
+   "page": "Pikachu (Supreme Victors 120)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Piplup",
+   "page": "Piplup (Supreme Victors 121)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Rhyhorn",
+   "page": "Rhyhorn (Supreme Victors 122)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Roselia",
+   "page": "Roselia (Supreme Victors 123)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Sandshrew",
+   "page": "Sandshrew (Supreme Victors 124)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Seel",
+   "page": "Seel (Supreme Victors 125)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "126": {
+   "en": "Shinx",
+   "page": "Shinx (Supreme Victors 126)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Shroomish",
+   "page": "Shroomish (Supreme Victors 127)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Skorupi",
+   "page": "Skorupi (Supreme Victors 128)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Starly",
+   "page": "Starly (Supreme Victors 129)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Surskit",
+   "page": "Surskit (Supreme Victors 130)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Turtwig",
+   "page": "Turtwig (Supreme Victors 131)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Whismur",
+   "page": "Whismur (Supreme Victors 132)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Zubat",
+   "page": "Zubat (Supreme Victors 133)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Battle Tower",
+   "page": "Battle Tower (Supreme Victors 134)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Champion's Room",
+   "page": "Champion's Room (Supreme Victors 135)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Cynthia's Guidance",
+   "page": "Cynthia's Guidance (Supreme Victors 136)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Cyrus's Initiative",
+   "page": "Cyrus's Initiative (Supreme Victors 137)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Night Teleporter",
+   "page": "Night Teleporter (Supreme Victors 138)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Palmer's Contribution",
+   "page": "Palmer's Contribution (Supreme Victors 139)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "VS Seeker",
+   "page": "VS Seeker (Supreme Victors 140)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Absol",
+   "page": "Absol G LV.X (Supreme Victors 141)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Blaziken",
+   "page": "Blaziken FB LV.X (Supreme Victors 142)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Charizard",
+   "page": "Charizard G LV.X (Supreme Victors 143)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Electivire",
+   "page": "Electivire FB LV.X (Supreme Victors 144)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Garchomp",
+   "page": "Garchomp C LV.X (Supreme Victors 145)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Rayquaza",
+   "page": "Rayquaza C LV.X (Supreme Victors 146)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Staraptor",
+   "page": "Staraptor FB LV.X (Supreme Victors 147)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Articuno",
+   "page": "Articuno (Supreme Victors 148)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Moltres",
+   "page": "Moltres (Supreme Victors 149)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Zapdos",
+   "page": "Zapdos (Supreme Victors 150)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sh7": {
+   "en": "Milotic",
+   "page": "Milotic (Supreme Victors SH7)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sh8": {
+   "en": "Relicanth",
+   "page": "Relicanth (Supreme Victors SH8)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sh9": {
+   "en": "Yanma",
+   "page": "Yanma (Supreme Victors SH9)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

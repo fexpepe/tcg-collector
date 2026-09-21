@@ -1,0 +1,1413 @@
+{
+ "page": "Infinity Zone (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Paras",
+   "page": "Paras (Infinity Zone 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Parasect",
+   "page": "Parasect (Infinity Zone 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Carnivine",
+   "page": "Carnivine (Infinity Zone 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Pansage",
+   "page": "Pansage (Infinity Zone 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Simisage",
+   "page": "Simisage (Infinity Zone 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Rowlet",
+   "page": "Rowlet (Infinity Zone 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Dartrix",
+   "page": "Dartrix (Infinity Zone 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Decidueye",
+   "page": "Decidueye (Infinity Zone 8)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "9": {
+   "en": "Houndoom",
+   "page": "Houndoom V (Infinity Zone 9)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "10": {
+   "en": "Torchic",
+   "page": "Torchic (Infinity Zone 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Combusken",
+   "page": "Combusken (Infinity Zone 11)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Blaziken",
+   "page": "Blaziken (Infinity Zone 12)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "13": {
+   "en": "Pansear",
+   "page": "Pansear (Infinity Zone 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Simisear",
+   "page": "Simisear (Infinity Zone 14)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Galarian Darmanitan",
+   "page": "Galarian Darmanitan (Infinity Zone 15)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Suicune",
+   "page": "Suicune (Infinity Zone 16)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "17": {
+   "en": "Relicanth",
+   "page": "Relicanth (Infinity Zone 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Panpour",
+   "page": "Panpour (Infinity Zone 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Simipour",
+   "page": "Simipour (Infinity Zone 19)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Galarian Darumaka",
+   "page": "Galarian Darumaka (Infinity Zone 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Vanillite",
+   "page": "Vanillite (Infinity Zone 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Vanillish",
+   "page": "Vanillish (Infinity Zone 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Vanilluxe",
+   "page": "Vanilluxe (Infinity Zone 23)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Mareanie",
+   "page": "Mareanie (Infinity Zone 24)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Toxapex",
+   "page": "Toxapex (Infinity Zone 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Drednaw",
+   "page": "Drednaw V (Infinity Zone 26)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "27": {
+   "en": "Drednaw",
+   "page": "Drednaw VMAX (Infinity Zone 27)",
+   "type": "Water",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "28": {
+   "en": "Dracovish",
+   "page": "Dracovish (Infinity Zone 28)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "29": {
+   "en": "Arctovish",
+   "page": "Arctovish (Infinity Zone 29)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Electrike",
+   "page": "Electrike (Infinity Zone 30)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Manectric",
+   "page": "Manectric (Infinity Zone 31)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko (Infinity Zone 32)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "33": {
+   "en": "Dracozolt",
+   "page": "Dracozolt (Infinity Zone 33)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Arctozolt",
+   "page": "Arctozolt (Infinity Zone 34)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "35": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (Infinity Zone 35)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Wigglytuff",
+   "page": "Wigglytuff (Infinity Zone 36)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Gothita",
+   "page": "Gothita (Infinity Zone 37)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Gothorita",
+   "page": "Gothorita (Infinity Zone 38)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Gothitelle",
+   "page": "Gothitelle (Infinity Zone 39)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Golett",
+   "page": "Golett (Infinity Zone 40)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Golurk",
+   "page": "Golurk (Infinity Zone 41)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "42": {
+   "en": "Mimikyu",
+   "page": "Mimikyu (Infinity Zone 42)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Galarian Cursola",
+   "page": "Galarian Cursola V (Infinity Zone 43)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "44": {
+   "en": "Trapinch",
+   "page": "Trapinch (Infinity Zone 44)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Vibrava",
+   "page": "Vibrava (Infinity Zone 45)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Flygon",
+   "page": "Flygon (Infinity Zone 46)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Hippopotas",
+   "page": "Hippopotas (Infinity Zone 47)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Hippowdon",
+   "page": "Hippowdon (Infinity Zone 48)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Rhyperior",
+   "page": "Rhyperior V (Infinity Zone 49)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "50": {
+   "en": "Passimian",
+   "page": "Passimian (Infinity Zone 50)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Spinarak",
+   "page": "Spinarak (Infinity Zone 51)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Ariados",
+   "page": "Ariados (Infinity Zone 52)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Crobat",
+   "page": "Crobat V (Infinity Zone 53)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Galarian Zigzagoon",
+   "page": "Galarian Zigzagoon (Infinity Zone 54)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Galarian Linoone",
+   "page": "Galarian Linoone (Infinity Zone 55)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Galarian Obstagoon",
+   "page": "Galarian Obstagoon (Infinity Zone 56)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "57": {
+   "en": "Scraggy",
+   "page": "Scraggy (Infinity Zone 57)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Scrafty",
+   "page": "Scrafty (Infinity Zone 58)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Inkay",
+   "page": "Inkay (Infinity Zone 59)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Malamar",
+   "page": "Malamar (Infinity Zone 60)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Hoopa",
+   "page": "Hoopa (Infinity Zone 61)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "62": {
+   "en": "Nickit",
+   "page": "Nickit (Infinity Zone 62)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Thievul",
+   "page": "Thievul (Infinity Zone 63)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Eternatus",
+   "page": "Eternatus V (Infinity Zone 64)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Eternatus",
+   "page": "Eternatus VMAX (Infinity Zone 65)",
+   "type": "Darkness",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Scizor",
+   "page": "Scizor V (Infinity Zone 66)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Scizor",
+   "page": "Scizor VMAX (Infinity Zone 67)",
+   "type": "Metal",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Skarmory",
+   "page": "Skarmory (Infinity Zone 68)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "69": {
+   "en": "Klink",
+   "page": "Klink (Infinity Zone 69)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "70": {
+   "en": "Klang",
+   "page": "Klang (Infinity Zone 70)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "71": {
+   "en": "Klinklang",
+   "page": "Klinklang (Infinity Zone 71)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Cufant",
+   "page": "Cufant (Infinity Zone 72)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "73": {
+   "en": "Copperajah",
+   "page": "Copperajah (Infinity Zone 73)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "74": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (Infinity Zone 74)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "75": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (Infinity Zone 75)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "76": {
+   "en": "Teddiursa",
+   "page": "Teddiursa (Infinity Zone 76)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "77": {
+   "en": "Ursaring",
+   "page": "Ursaring (Infinity Zone 77)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "78": {
+   "en": "Skitty",
+   "page": "Skitty (Infinity Zone 78)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "79": {
+   "en": "Delcatty",
+   "page": "Delcatty (Infinity Zone 79)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "80": {
+   "en": "Salamence",
+   "page": "Salamence V (Infinity Zone 80)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Salamence",
+   "page": "Salamence VMAX (Infinity Zone 81)",
+   "type": "Colorless",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Starly",
+   "page": "Starly (Infinity Zone 82)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "83": {
+   "en": "Staravia",
+   "page": "Staravia (Infinity Zone 83)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "84": {
+   "en": "Staraptor",
+   "page": "Staraptor (Infinity Zone 84)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "85": {
+   "en": "Ducklett",
+   "page": "Ducklett (Infinity Zone 85)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "86": {
+   "en": "Swanna",
+   "page": "Swanna (Infinity Zone 86)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "87": {
+   "en": "Skwovet",
+   "page": "Skwovet (Infinity Zone 87)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "88": {
+   "en": "Greedent",
+   "page": "Greedent (Infinity Zone 88)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "89": {
+   "en": "Yell Horn",
+   "page": "Yell Horn (Infinity Zone 89)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "90": {
+   "en": "Turbo Patch",
+   "page": "Turbo Patch (Infinity Zone 90)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "91": {
+   "en": "Rare Fossil",
+   "page": "Rare Fossil (Infinity Zone 91)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "92": {
+   "en": "Cape of Toughness",
+   "page": "Cape of Toughness (Infinity Zone 92)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "93": {
+   "en": "Billowing Smoke",
+   "page": "Billowing Smoke (Infinity Zone 93)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "94": {
+   "en": "Bird Keeper",
+   "page": "Bird Keeper (Infinity Zone 94)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "95": {
+   "en": "Piers",
+   "page": "Piers (Infinity Zone 95)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "96": {
+   "en": "Rose",
+   "page": "Rose (Infinity Zone 96)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "97": {
+   "en": "Spikemuth",
+   "page": "Spikemuth (Infinity Zone 97)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "98": {
+   "en": "Rose Tower",
+   "page": "Rose Tower (Infinity Zone 98)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "99": {
+   "en": "Hiding",
+   "page": "Hiding D Energy (Infinity Zone 99)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "100": {
+   "en": "Powerful",
+   "page": "Powerful C Energy (Infinity Zone 100)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "101": {
+   "en": "Houndoom",
+   "page": "Houndoom V (Infinity Zone 101)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Drednaw",
+   "page": "Drednaw V (Infinity Zone 102)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Galarian Cursola",
+   "page": "Galarian Cursola V (Infinity Zone 103)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Rhyperior",
+   "page": "Rhyperior V (Infinity Zone 104)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Crobat",
+   "page": "Crobat V (Infinity Zone 105)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Eternatus",
+   "page": "Eternatus V (Infinity Zone 106)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Scizor",
+   "page": "Scizor V (Infinity Zone 107)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Salamence",
+   "page": "Salamence V (Infinity Zone 108)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Piers",
+   "page": "Piers (Infinity Zone 109)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Rose",
+   "page": "Rose (Infinity Zone 110)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Drednaw",
+   "page": "Drednaw VMAX (Infinity Zone 111)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Eternatus",
+   "page": "Eternatus VMAX (Infinity Zone 112)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Scizor",
+   "page": "Scizor VMAX (Infinity Zone 113)",
+   "type": "Metal",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Salamence",
+   "page": "Salamence VMAX (Infinity Zone 114)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Piers",
+   "page": "Piers (Infinity Zone 115)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Rose",
+   "page": "Rose (Infinity Zone 116)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "117": {
+   "en": "Coalossal",
+   "page": "Coalossal (Infinity Zone 117)",
+   "type": "Fighting",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "118": {
+   "en": "Turbo Patch",
+   "page": "Turbo Patch (Infinity Zone 118)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "119": {
+   "en": "Capture Energy",
+   "page": "Capture Energy (Infinity Zone 119)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "120": {
+   "en": "Skarmory",
+   "page": "Skarmory (Darkness Ablaze 120)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Aron",
+   "page": "Aron (Darkness Ablaze 121)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Lairon",
+   "page": "Lairon (Darkness Ablaze 122)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Aggron",
+   "page": "Aggron (Darkness Ablaze 123)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Escavalier",
+   "page": "Escavalier (Darkness Ablaze 124)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Klink",
+   "page": "Klink (Darkness Ablaze 125)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "126": {
+   "en": "Klang",
+   "page": "Klang (Darkness Ablaze 126)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Klinklang",
+   "page": "Klinklang (Darkness Ablaze 127)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Galarian Stunfisk",
+   "page": "Galarian Stunfisk V (Darkness Ablaze 128)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Meltan",
+   "page": "Meltan (Darkness Ablaze 129)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Melmetal",
+   "page": "Melmetal (Darkness Ablaze 130)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Cufant",
+   "page": "Cufant (Darkness Ablaze 131)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Copperajah",
+   "page": "Copperajah (Darkness Ablaze 132)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (Darkness Ablaze 133)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Tauros",
+   "page": "Tauros (Darkness Ablaze 134)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Sentret",
+   "page": "Sentret (Darkness Ablaze 135)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Furret",
+   "page": "Furret (Darkness Ablaze 136)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (Darkness Ablaze 137)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Teddiursa",
+   "page": "Teddiursa (Darkness Ablaze 138)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Ursaring",
+   "page": "Ursaring (Darkness Ablaze 139)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Lugia",
+   "page": "Lugia (Darkness Ablaze 140)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Skitty",
+   "page": "Skitty (Darkness Ablaze 141)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Delcatty",
+   "page": "Delcatty (Darkness Ablaze 142)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Salamence",
+   "page": "Salamence V (Darkness Ablaze 143)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Salamence",
+   "page": "Salamence VMAX (Darkness Ablaze 144)",
+   "type": "Rare VMAX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Starly",
+   "page": "Starly (Darkness Ablaze 145)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Staravia",
+   "page": "Staravia (Darkness Ablaze 146)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Staraptor",
+   "page": "Staraptor (Darkness Ablaze 147)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Ducklett",
+   "page": "Ducklett (Darkness Ablaze 148)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Swanna",
+   "page": "Swanna (Darkness Ablaze 149)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (Darkness Ablaze 150)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Fletchling",
+   "page": "Fletchling (Darkness Ablaze 151)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Skwovet",
+   "page": "Skwovet (Darkness Ablaze 152)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Greedent",
+   "page": "Greedent (Darkness Ablaze 153)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Rookidee",
+   "page": "Rookidee (Darkness Ablaze 154)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Corvisquire",
+   "page": "Corvisquire (Darkness Ablaze 155)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Corviknight",
+   "page": "Corviknight (Darkness Ablaze 156)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Big Parasol",
+   "page": "Big Parasol (Darkness Ablaze 157)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Billowing Smoke",
+   "page": "Billowing Smoke (Darkness Ablaze 158)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Bird Keeper",
+   "page": "Bird Keeper (Darkness Ablaze 159)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Cape of Toughness",
+   "page": "Cape of Toughness (Darkness Ablaze 160)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Familiar Bell",
+   "page": "Familiar Bell (Darkness Ablaze 161)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Glimwood Tangle",
+   "page": "Glimwood Tangle (Darkness Ablaze 162)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Kabu",
+   "page": "Kabu (Darkness Ablaze 163)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Old PC",
+   "page": "Old PC (Darkness Ablaze 164)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "165": {
+   "en": "Piers",
+   "page": "Piers (Darkness Ablaze 165)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "166": {
+   "en": "Pokémon Breeder's Nurturing",
+   "page": "Pokémon Breeder's Nurturing (Darkness Ablaze 166)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "167": {
+   "en": "Rare Fossil",
+   "page": "Rare Fossil (Darkness Ablaze 167)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "168": {
+   "en": "Rose",
+   "page": "Rose (Darkness Ablaze 168)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "169": {
+   "en": "Rose Tower",
+   "page": "Rose Tower (Darkness Ablaze 169)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "170": {
+   "en": "Spikemuth",
+   "page": "Spikemuth (Darkness Ablaze 170)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "171": {
+   "en": "Struggle Gloves",
+   "page": "Struggle Gloves (Darkness Ablaze 171)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "172": {
+   "en": "Turbo Patch",
+   "page": "Turbo Patch (Darkness Ablaze 172)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "173": {
+   "en": "Yell Horn",
+   "page": "Yell Horn (Darkness Ablaze 173)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "174": {
+   "en": "Heat",
+   "page": "Heat R Energy (Darkness Ablaze 174)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "175": {
+   "en": "Hiding",
+   "page": "Hiding D Energy (Darkness Ablaze 175)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "176": {
+   "en": "Powerful",
+   "page": "Powerful C Energy (Darkness Ablaze 176)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "177": {
+   "en": "Butterfree",
+   "page": "Butterfree V (Darkness Ablaze 177)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "178": {
+   "en": "Houndoom",
+   "page": "Houndoom V (Darkness Ablaze 178)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "179": {
+   "en": "Centiskorch",
+   "page": "Centiskorch V (Darkness Ablaze 179)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "180": {
+   "en": "Vikavolt",
+   "page": "Vikavolt V (Darkness Ablaze 180)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "181": {
+   "en": "Rhyperior",
+   "page": "Rhyperior V (Darkness Ablaze 181)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "182": {
+   "en": "Crobat",
+   "page": "Crobat V (Darkness Ablaze 182)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "183": {
+   "en": "Scizor",
+   "page": "Scizor V (Darkness Ablaze 183)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "184": {
+   "en": "Galarian Stunfisk",
+   "page": "Galarian Stunfisk V (Darkness Ablaze 184)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "185": {
+   "en": "Salamence",
+   "page": "Salamence V (Darkness Ablaze 185)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "186": {
+   "en": "Kabu",
+   "page": "Kabu (Darkness Ablaze 186)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "187": {
+   "en": "Piers",
+   "page": "Piers (Darkness Ablaze 187)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "188": {
+   "en": "Pokémon Breeder's Nurturing",
+   "page": "Pokémon Breeder's Nurturing (Darkness Ablaze 188)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "189": {
+   "en": "Rose",
+   "page": "Rose (Darkness Ablaze 189)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "190": {
+   "en": "Butterfree",
+   "page": "Butterfree VMAX (Darkness Ablaze 190)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "191": {
+   "en": "Centiskorch",
+   "page": "Centiskorch VMAX (Darkness Ablaze 191)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "192": {
+   "en": "Eternatus",
+   "page": "Eternatus VMAX (Darkness Ablaze 192)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "193": {
+   "en": "Scizor",
+   "page": "Scizor VMAX (Darkness Ablaze 193)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "194": {
+   "en": "Salamence",
+   "page": "Salamence VMAX (Darkness Ablaze 194)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "195": {
+   "en": "Pokémon Breeder's Nurturing",
+   "page": "Pokémon Breeder's Nurturing (Darkness Ablaze 195)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "196": {
+   "en": "Rose",
+   "page": "Rose (Darkness Ablaze 196)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "197": {
+   "en": "Rillaboom",
+   "page": "Rillaboom (Darkness Ablaze 197)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "198": {
+   "en": "Coalossal",
+   "page": "Coalossal (Darkness Ablaze 198)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "199": {
+   "en": "Big Parasol",
+   "page": "Big Parasol (Darkness Ablaze 199)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "200": {
+   "en": "Turbo Patch",
+   "page": "Turbo Patch (Darkness Ablaze 200)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "201": {
+   "en": "Capture Energy",
+   "page": "Capture Energy (Darkness Ablaze 201)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

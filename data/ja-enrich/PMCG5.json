@@ -1,0 +1,930 @@
+{
+ "page": "Leaders' Stadium (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Blaine's Moltres",
+   "page": "Blaine's Moltres (Gym Heroes 1)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "2": {
+   "en": "Brock's Rhydon",
+   "page": "Brock's Rhydon (Gym Heroes 2)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "3": {
+   "en": "Erika's Clefable",
+   "page": "Erika's Clefable (Gym Heroes 3)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Erika's Dragonair",
+   "page": "Erika's Dragonair (Gym Heroes 4)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "5": {
+   "en": "Erika's Vileplume",
+   "page": "Erika's Vileplume (Gym Heroes 5)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "6": {
+   "en": "Lt. Surge's Electabuzz",
+   "page": "Lt. Surge's Electabuzz (Gym Heroes 6)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "7": {
+   "en": "Lt. Surge's Fearow",
+   "page": "Lt. Surge's Fearow (Gym Heroes 7)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "8": {
+   "en": "Lt. Surge's Magneton",
+   "page": "Lt. Surge's Magneton (Gym Heroes 8)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "9": {
+   "en": "Misty's Seadra",
+   "page": "Misty's Seadra (Gym Heroes 9)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Misty's Tentacruel",
+   "page": "Misty's Tentacruel (Gym Heroes 10)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "11": {
+   "en": "Rocket's Hitmonchan",
+   "page": "Rocket's Hitmonchan (Gym Heroes 11)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "12": {
+   "en": "Rocket's Moltres",
+   "page": "Rocket's Moltres (Gym Heroes 12)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "13": {
+   "en": "Rocket's Scyther",
+   "page": "Rocket's Scyther (Gym Heroes 13)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "14": {
+   "en": "Sabrina's Gengar",
+   "page": "Sabrina's Gengar (Gym Heroes 14)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Brock",
+   "page": "Brock (Gym Heroes 15)",
+   "type": "T",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "16": {
+   "en": "Erika",
+   "page": "Erika (Gym Heroes 16)",
+   "type": "T",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "17": {
+   "en": "Lt. Surge",
+   "page": "Lt. Surge (Gym Heroes 17)",
+   "type": "T",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "18": {
+   "en": "Misty",
+   "page": "Misty (Gym Heroes 18)",
+   "type": "T",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "19": {
+   "en": "The Rocket's Trap",
+   "page": "The Rocket's Trap (Gym Heroes 19)",
+   "type": "T",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "20": {
+   "en": "Brock's Golem",
+   "page": "Brock's Golem (Gym Heroes 20)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "21": {
+   "en": "Brock's Onix",
+   "page": "Brock's Onix (Gym Heroes 21)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "22": {
+   "en": "Brock's Rhyhorn",
+   "page": "Brock's Rhyhorn (Gym Heroes 22)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "23": {
+   "en": "Brock's Sandslash",
+   "page": "Brock's Sandslash (Gym Heroes 23)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "24": {
+   "en": "Brock's Zubat",
+   "page": "Brock's Zubat (Gym Heroes 24)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "25": {
+   "en": "Erika's Clefairy",
+   "page": "Erika's Clefairy (Gym Heroes 25)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "26": {
+   "en": "Erika's Victreebel",
+   "page": "Erika's Victreebel (Gym Heroes 26)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "27": {
+   "en": "Lt. Surge's Electabuzz",
+   "page": "Lt. Surge's Electabuzz (Gym Heroes 27)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "28": {
+   "en": "Lt. Surge's Raichu",
+   "page": "Lt. Surge's Raichu (Gym Heroes 28)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "29": {
+   "en": "Misty's Cloyster",
+   "page": "Misty's Cloyster (Gym Heroes 29)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "30": {
+   "en": "Misty's Goldeen",
+   "page": "Misty's Goldeen (Gym Heroes 30)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "31": {
+   "en": "Misty's Poliwrath",
+   "page": "Misty's Poliwrath (Gym Heroes 31)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "32": {
+   "en": "Misty's Tentacool",
+   "page": "Misty's Tentacool (Gym Heroes 32)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "33": {
+   "en": "Rocket's Snorlax",
+   "page": "Rocket's Snorlax (Gym Heroes 33)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "34": {
+   "en": "Sabrina's Venomoth",
+   "page": "Sabrina's Venomoth (Gym Heroes 34)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "35": {
+   "en": "Blaine's Growlithe",
+   "page": "Blaine's Growlithe (Gym Heroes 35)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "36": {
+   "en": "Blaine's Kangaskhan",
+   "page": "Blaine's Kangaskhan (Gym Heroes 36)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "37": {
+   "en": "Blaine's Magmar",
+   "page": "Blaine's Magmar (Gym Heroes 37)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "38": {
+   "en": "Brock's Geodude",
+   "page": "Brock's Geodude (Gym Heroes 38)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "39": {
+   "en": "Brock's Golbat",
+   "page": "Brock's Golbat (Gym Heroes 39)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "40": {
+   "en": "Brock's Graveler",
+   "page": "Brock's Graveler (Gym Heroes 40)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "41": {
+   "en": "Brock's Lickitung",
+   "page": "Brock's Lickitung (Gym Heroes 41)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "42": {
+   "en": "Erika's Dratini",
+   "page": "Erika's Dratini (Gym Heroes 42)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "43": {
+   "en": "Erika's Exeggcute",
+   "page": "Erika's Exeggcute (Gym Heroes 43)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "44": {
+   "en": "Erika's Exeggutor",
+   "page": "Erika's Exeggutor (Gym Heroes 44)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "45": {
+   "en": "Erika's Gloom",
+   "page": "Erika's Gloom (Gym Heroes 45)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "46": {
+   "en": "Erika's Gloom",
+   "page": "Erika's Gloom (Gym Heroes 46)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "47": {
+   "en": "Erika's Oddish",
+   "page": "Erika's Oddish (Gym Heroes 47)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "48": {
+   "en": "Erika's Weepinbell",
+   "page": "Erika's Weepinbell (Gym Heroes 48)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "49": {
+   "en": "Erika's Weepinbell",
+   "page": "Erika's Weepinbell (Gym Heroes 49)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "50": {
+   "en": "Lt. Surge's Magnemite",
+   "page": "Lt. Surge's Magnemite (Gym Heroes 50)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "51": {
+   "en": "Lt. Surge's Raticate",
+   "page": "Lt. Surge's Raticate (Gym Heroes 51)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "52": {
+   "en": "Lt. Surge's Spearow",
+   "page": "Lt. Surge's Spearow (Gym Heroes 52)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "53": {
+   "en": "Misty's Poliwhirl",
+   "page": "Misty's Poliwhirl (Gym Heroes 53)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "54": {
+   "en": "Misty's Psyduck",
+   "page": "Misty's Psyduck (Gym Heroes 54)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "55": {
+   "en": "Misty's Seaking",
+   "page": "Misty's Seaking (Gym Heroes 55)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "56": {
+   "en": "Misty's Starmie",
+   "page": "Misty's Starmie (Gym Heroes 56)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "57": {
+   "en": "Misty's Tentacool",
+   "page": "Misty's Tentacool (Gym Heroes 57)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "58": {
+   "en": "Sabrina's Haunter",
+   "page": "Sabrina's Haunter (Gym Heroes 58)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "59": {
+   "en": "Sabrina's Jynx",
+   "page": "Sabrina's Jynx (Gym Heroes 59)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "60": {
+   "en": "Sabrina's Slowbro",
+   "page": "Sabrina's Slowbro (Gym Heroes 60)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "61": {
+   "en": "Blaine's Charmander",
+   "page": "Blaine's Charmander (Gym Heroes 61)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "62": {
+   "en": "Blaine's Growlithe",
+   "page": "Blaine's Growlithe (Gym Heroes 62)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "63": {
+   "en": "Blaine's Ponyta",
+   "page": "Blaine's Ponyta (Gym Heroes 63)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "64": {
+   "en": "Blaine's Tauros",
+   "page": "Blaine's Tauros (Gym Heroes 64)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "65": {
+   "en": "Blaine's Vulpix",
+   "page": "Blaine's Vulpix (Gym Heroes 65)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "66": {
+   "en": "Brock's Geodude",
+   "page": "Brock's Geodude (Gym Heroes 66)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "67": {
+   "en": "Brock's Mankey",
+   "page": "Brock's Mankey (Gym Heroes 67)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "68": {
+   "en": "Brock's Mankey",
+   "page": "Brock's Mankey (Gym Heroes 68)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "69": {
+   "en": "Brock's Onix",
+   "page": "Brock's Onix (Gym Heroes 69)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "70": {
+   "en": "Brock's Rhyhorn",
+   "page": "Brock's Rhyhorn (Gym Heroes 70)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "71": {
+   "en": "Brock's Sandshrew",
+   "page": "Brock's Sandshrew (Gym Heroes 71)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "72": {
+   "en": "Brock's Sandshrew",
+   "page": "Brock's Sandshrew (Gym Heroes 72)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "73": {
+   "en": "Brock's Vulpix",
+   "page": "Brock's Vulpix (Gym Heroes 73)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "74": {
+   "en": "Brock's Zubat",
+   "page": "Brock's Zubat (Gym Heroes 74)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "75": {
+   "en": "Erika's Bellsprout",
+   "page": "Erika's Bellsprout (Gym Heroes 75)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "76": {
+   "en": "Erika's Bellsprout",
+   "page": "Erika's Bellsprout (Gym Heroes 76)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "77": {
+   "en": "Erika's Exeggcute",
+   "page": "Erika's Exeggcute (Gym Heroes 77)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "78": {
+   "en": "Erika's Oddish",
+   "page": "Erika's Oddish (Gym Heroes 78)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "79": {
+   "en": "Erika's Tangela",
+   "page": "Erika's Tangela (Gym Heroes 79)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "80": {
+   "en": "Lt. Surge's Magnemite",
+   "page": "Lt. Surge's Magnemite (Gym Heroes 80)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "81": {
+   "en": "Lt. Surge's Pikachu",
+   "page": "Lt. Surge's Pikachu (Gym Heroes 81)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "82": {
+   "en": "Lt. Surge's Rattata",
+   "page": "Lt. Surge's Rattata (Gym Heroes 82)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "83": {
+   "en": "Lt. Surge's Spearow",
+   "page": "Lt. Surge's Spearow (Gym Heroes 83)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "84": {
+   "en": "Lt. Surge's Voltorb",
+   "page": "Lt. Surge's Voltorb (Gym Heroes 84)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "85": {
+   "en": "Misty's Goldeen",
+   "page": "Misty's Goldeen (Gym Heroes 85)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "86": {
+   "en": "Misty's Horsea",
+   "page": "Misty's Horsea (Gym Heroes 86)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "87": {
+   "en": "Misty's Poliwag",
+   "page": "Misty's Poliwag (Gym Heroes 87)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "88": {
+   "en": "Misty's Seel",
+   "page": "Misty's Seel (Gym Heroes 88)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "89": {
+   "en": "Misty's Shellder",
+   "page": "Misty's Shellder (Gym Heroes 89)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "90": {
+   "en": "Misty's Staryu",
+   "page": "Misty's Staryu (Gym Heroes 90)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "91": {
+   "en": "Sabrina's Abra",
+   "page": "Sabrina's Abra (Gym Heroes 91)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "92": {
+   "en": "Sabrina's Drowzee",
+   "page": "Sabrina's Drowzee (Gym Heroes 92)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "93": {
+   "en": "Sabrina's Gastly",
+   "page": "Sabrina's Gastly (Gym Heroes 93)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "94": {
+   "en": "Sabrina's Mr. Mime",
+   "page": "Sabrina's Mr. Mime (Gym Heroes 94)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "95": {
+   "en": "Sabrina's Slowpoke",
+   "page": "Sabrina's Slowpoke (Gym Heroes 95)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "96": {
+   "en": "Sabrina's Venonat",
+   "page": "Sabrina's Venonat (Gym Heroes 96)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "97": {
+   "en": "Blaine's Quiz #1",
+   "page": "Blaine's Quiz 1 (Gym Heroes 97)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "98": {
+   "en": "Brock",
+   "page": "Brock (Gym Heroes 98)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "99": {
+   "en": "Charity",
+   "page": "Charity (Gym Heroes 99)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "100": {
+   "en": "Erika",
+   "page": "Erika (Gym Heroes 100)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "101": {
+   "en": "Lt. Surge",
+   "page": "Lt. Surge (Gym Heroes 101)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "102": {
+   "en": "Misty",
+   "page": "Misty (Gym Heroes 102)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "103": {
+   "en": "No Removal Gym",
+   "page": "No Removal Gym (Gym Heroes 103)",
+   "type": "T [St]",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "104": {
+   "en": "The Rocket's Training Gym",
+   "page": "The Rocket's Training Gym (Gym Heroes 104)",
+   "type": "T [St]",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "105": {
+   "en": "Blaine's Last Resort",
+   "page": "Blaine's Last Resort (Gym Heroes 105)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "106": {
+   "en": "Brock's Training Method",
+   "page": "Brock's Training Method (Gym Heroes 106)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "107": {
+   "en": "Celadon City Gym",
+   "page": "Celadon City Gym (Gym Heroes 107)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "108": {
+   "en": "Cerulean City Gym",
+   "page": "Cerulean City Gym (Gym Heroes 108)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "109": {
+   "en": "Erika's Maids",
+   "page": "Erika's Maids (Gym Heroes 109)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "110": {
+   "en": "Erika's Perfume",
+   "page": "Erika's Perfume (Gym Heroes 110)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "111": {
+   "en": "Good Manners",
+   "page": "Good Manners (Gym Heroes 111)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "112": {
+   "en": "Lt. Surge's Treaty",
+   "page": "Lt. Surge's Treaty (Gym Heroes 112)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "113": {
+   "en": "Minion of Team Rocket",
+   "page": "Minion of Team Rocket (Gym Heroes 113)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "114": {
+   "en": "Misty's Wrath",
+   "page": "Misty's Wrath (Gym Heroes 114)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "115": {
+   "en": "Pewter City Gym",
+   "page": "Pewter City Gym (Gym Heroes 115)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "116": {
+   "en": "Recall",
+   "page": "Recall (Gym Heroes 116)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "117": {
+   "en": "Sabrina's ESP",
+   "page": "Sabrina's ESP (Gym Heroes 117)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "118": {
+   "en": "Secret Mission",
+   "page": "Secret Mission (Gym Heroes 118)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "119": {
+   "en": "Tickling Machine",
+   "page": "Tickling Machine (Gym Heroes 119)",
+   "type": "T [R]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "120": {
+   "en": "Vermilion City Gym",
+   "page": "Vermilion City Gym (Gym Heroes 120)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "121": {
+   "en": "Blaine's Gamble",
+   "page": "Blaine's Gamble (Gym Heroes 121)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "122": {
+   "en": "Energy Flow",
+   "page": "Energy Flow (Gym Heroes 122)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "123": {
+   "en": "Misty's Duel",
+   "page": "Misty's Duel (Gym Heroes 123)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "124": {
+   "en": "Narrow Gym",
+   "page": "Narrow Gym (Gym Heroes 124)",
+   "type": "T [St]",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "125": {
+   "en": "Sabrina's Gaze",
+   "page": "Sabrina's Gaze (Gym Heroes 125)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "126": {
+   "en": "Trash Exchange",
+   "page": "Trash Exchange (Gym Heroes 126)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "127": {
+   "en": "Fighting Energy",
+   "page": "Fighting Energy (Gym Heroes 127)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "128": {
+   "en": "Fire Energy",
+   "page": "Fire Energy (Gym Heroes 128)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "129": {
+   "en": "Grass Energy",
+   "page": "Grass Energy (Gym Heroes 129)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "130": {
+   "en": "Lightning Energy",
+   "page": "Lightning Energy (Gym Heroes 130)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "131": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (Gym Heroes 131)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "132": {
+   "en": "Water Energy",
+   "page": "Water Energy (Gym Heroes 132)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

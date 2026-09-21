@@ -1,0 +1,1588 @@
+{
+ "page": "Tag All Stars (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Pheromosa & Buzzwole",
+   "page": "Pheromosa & Buzzwole-GX (Tag All Stars 1)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "2": {
+   "en": "Paras",
+   "page": "Paras (Tag All Stars 2)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Parasect",
+   "page": "Parasect (Tag All Stars 3)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Hoppip",
+   "page": "Hoppip (Tag All Stars 4)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Skiploom",
+   "page": "Skiploom (Tag All Stars 5)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Jumpluff",
+   "page": "Jumpluff (Tag All Stars 6)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Shuckle",
+   "page": "Shuckle (Tag All Stars 7)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Treecko",
+   "page": "Treecko (Tag All Stars 8)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Grovyle",
+   "page": "Grovyle (Tag All Stars 9)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Sceptile",
+   "page": "Sceptile-GX (Tag All Stars 10)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "11": {
+   "en": "Shaymin",
+   "page": "Shaymin ♢ (Tag All Stars 11)",
+   "type": "Grass",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "12": {
+   "en": "Bounsweet",
+   "page": "Bounsweet (Tag All Stars 12)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Steenee",
+   "page": "Steenee (Tag All Stars 13)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Tsareena",
+   "page": "Tsareena (Tag All Stars 14)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Kartana",
+   "page": "Kartana (Tag All Stars 15)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Reshiram & Charizard",
+   "page": "Reshiram & Charizard-GX (Tag All Stars 16)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "17": {
+   "en": "Vulpix",
+   "page": "Vulpix (Tag All Stars 17)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Ninetales",
+   "page": "Ninetales (Tag All Stars 18)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Flareon",
+   "page": "Flareon (Tag All Stars 19)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Victini",
+   "page": "Victini (Tag All Stars 20)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Victini",
+   "page": "Victini ♢ (Tag All Stars 21)",
+   "type": "Fire",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "22": {
+   "en": "Volcanion",
+   "page": "Volcanion (Tag All Stars 22)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Litten",
+   "page": "Litten (Tag All Stars 23)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Torracat",
+   "page": "Torracat (Tag All Stars 24)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Incineroar",
+   "page": "Incineroar (Tag All Stars 25)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Salandit",
+   "page": "Salandit (Tag All Stars 26)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Salazzle",
+   "page": "Salazzle (Tag All Stars 27)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Blacephalon",
+   "page": "Blacephalon-GX (Tag All Stars 28)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "29": {
+   "en": "Squirtle",
+   "page": "Squirtle (Tag All Stars 29)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Wartortle",
+   "page": "Wartortle (Tag All Stars 30)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Blastoise",
+   "page": "Blastoise (Tag All Stars 31)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Alolan Vulpix",
+   "page": "Alolan Vulpix (Tag All Stars 32)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Vaporeon",
+   "page": "Vaporeon (Tag All Stars 33)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Articuno",
+   "page": "Articuno (Tag All Stars 34)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "White Kyurem",
+   "page": "White Kyurem (Tag All Stars 35)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Keldeo",
+   "page": "Keldeo-GX (Tag All Stars 36)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "37": {
+   "en": "Volcanion",
+   "page": "Volcanion ♢ (Tag All Stars 37)",
+   "type": "Water",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "38": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi (Tag All Stars 38)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi-GX (Tag All Stars 39)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "40": {
+   "en": "Tapu Fini",
+   "page": "Tapu Fini (Tag All Stars 40)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Pikachu & Zekrom",
+   "page": "Pikachu & Zekrom-GX (Tag All Stars 41)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "42": {
+   "en": "Jolteon",
+   "page": "Jolteon (Tag All Stars 42)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Zapdos",
+   "page": "Zapdos (Tag All Stars 43)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Raikou",
+   "page": "Raikou (Tag All Stars 44)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Blitzle",
+   "page": "Blitzle (Tag All Stars 45)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Zebstrika",
+   "page": "Zebstrika (Tag All Stars 46)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Stunfisk",
+   "page": "Stunfisk (Tag All Stars 47)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Dedenne",
+   "page": "Dedenne-GX (Tag All Stars 48)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "49": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko ♢ (Tag All Stars 49)",
+   "type": "Lightning",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "50": {
+   "en": "Zeraora",
+   "page": "Zeraora (Tag All Stars 50)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "51": {
+   "en": "Zeraora",
+   "page": "Zeraora-GX (Tag All Stars 51)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Mewtwo & Mew",
+   "page": "Mewtwo & Mew-GX (Tag All Stars 52)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Trevenant & Dusknoir",
+   "page": "Trevenant & Dusknoir-GX (Tag All Stars 53)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Mewtwo",
+   "page": "Mewtwo (Tag All Stars 54)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "55": {
+   "en": "Mew",
+   "page": "Mew (Tag All Stars 55)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "56": {
+   "en": "Natu",
+   "page": "Natu (Tag All Stars 56)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "57": {
+   "en": "Giratina",
+   "page": "Giratina (Tag All Stars 57)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "58": {
+   "en": "Giratina",
+   "page": "Giratina ♢ (Tag All Stars 58)",
+   "type": "Psychic",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Espurr",
+   "page": "Espurr (Tag All Stars 59)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "60": {
+   "en": "Meowstic",
+   "page": "Meowstic (Tag All Stars 60)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "61": {
+   "en": "Inkay",
+   "page": "Inkay (Tag All Stars 61)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "62": {
+   "en": "Malamar",
+   "page": "Malamar (Tag All Stars 62)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "63": {
+   "en": "Mimikyu",
+   "page": "Mimikyu (Tag All Stars 63)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "64": {
+   "en": "Marshadow",
+   "page": "Marshadow (Tag All Stars 64)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "65": {
+   "en": "Poipole",
+   "page": "Poipole (Tag All Stars 65)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "66": {
+   "en": "Naganadel",
+   "page": "Naganadel (Tag All Stars 66)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "67": {
+   "en": "Marshadow & Machamp",
+   "page": "Marshadow & Machamp-GX (Tag All Stars 67)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Tyrogue",
+   "page": "Tyrogue (Tag All Stars 68)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "69": {
+   "en": "Landorus",
+   "page": "Landorus (Tag All Stars 69)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "70": {
+   "en": "Diancie",
+   "page": "Diancie ♢ (Tag All Stars 70)",
+   "type": "Fighting",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Stakataka",
+   "page": "Stakataka (Tag All Stars 71)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "72": {
+   "en": "Greninja & Zoroark",
+   "page": "Greninja & Zoroark-GX (Tag All Stars 72)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Sneasel",
+   "page": "Sneasel (Tag All Stars 73)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "74": {
+   "en": "Weavile",
+   "page": "Weavile (Tag All Stars 74)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "75": {
+   "en": "Absol",
+   "page": "Absol (Tag All Stars 75)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "76": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Tag All Stars 76)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "77": {
+   "en": "Darkrai",
+   "page": "Darkrai ♢ (Tag All Stars 77)",
+   "type": "Darkness",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Zorua",
+   "page": "Zorua (Tag All Stars 78)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "79": {
+   "en": "Zoroark",
+   "page": "Zoroark (Tag All Stars 79)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "80": {
+   "en": "Yveltal",
+   "page": "Yveltal (Tag All Stars 80)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "81": {
+   "en": "Hoopa",
+   "page": "Hoopa (Tag All Stars 81)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "82": {
+   "en": "Incineroar",
+   "page": "Incineroar-GX (Tag All Stars 82)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Lucario & Melmetal",
+   "page": "Lucario & Melmetal-GX (Tag All Stars 83)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Alolan Diglett",
+   "page": "Alolan Diglett (Tag All Stars 84)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "85": {
+   "en": "Alolan Dugtrio",
+   "page": "Alolan Dugtrio (Tag All Stars 85)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "86": {
+   "en": "Magnemite",
+   "page": "Magnemite (Tag All Stars 86)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "87": {
+   "en": "Magneton",
+   "page": "Magneton (Tag All Stars 87)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "88": {
+   "en": "Magnezone",
+   "page": "Magnezone (Tag All Stars 88)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "89": {
+   "en": "Mawile",
+   "page": "Mawile-GX (Tag All Stars 89)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Jirachi",
+   "page": "Jirachi (Tag All Stars 90)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "91": {
+   "en": "Jirachi",
+   "page": "Jirachi ♢ (Tag All Stars 91)",
+   "type": "Metal",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Meltan",
+   "page": "Meltan (Tag All Stars 92)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "93": {
+   "en": "Melmetal",
+   "page": "Melmetal (Tag All Stars 93)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "94": {
+   "en": "Togepi & Cleffa & Igglybuff",
+   "page": "Togepi & Cleffa & Igglybuff-GX (Tag All Stars 94)",
+   "type": "Fairy",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Alolan Ninetales",
+   "page": "Alolan Ninetales-GX (Tag All Stars 95)",
+   "type": "Fairy",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Cleffa",
+   "page": "Cleffa (Tag All Stars 96)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "97": {
+   "en": "Cottonee",
+   "page": "Cottonee (Tag All Stars 97)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "98": {
+   "en": "Whimsicott",
+   "page": "Whimsicott (Tag All Stars 98)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "99": {
+   "en": "Garchomp & Giratina",
+   "page": "Garchomp & Giratina-GX (Tag All Stars 99)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Rayquaza",
+   "page": "Rayquaza-GX (Tag All Stars 100)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Ultra Necrozma",
+   "page": "Ultra Necrozma-GX (Tag All Stars 101)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Moltres & Zapdos & Articuno",
+   "page": "Moltres & Zapdos & Articuno-GX (Tag All Stars 102)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Pidgey",
+   "page": "Pidgey (Tag All Stars 103)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "104": {
+   "en": "Pidgeotto",
+   "page": "Pidgeotto (Tag All Stars 104)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "105": {
+   "en": "Meowth",
+   "page": "Meowth (Tag All Stars 105)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "106": {
+   "en": "Persian",
+   "page": "Persian (Tag All Stars 106)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "107": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (Tag All Stars 107)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "108": {
+   "en": "Ditto",
+   "page": "Ditto ♢ (Tag All Stars 108)",
+   "type": "Colorless",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Eevee",
+   "page": "Eevee (Tag All Stars 109)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "110": {
+   "en": "Porygon",
+   "page": "Porygon (Tag All Stars 110)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "111": {
+   "en": "Porygon2",
+   "page": "Porygon2 (Tag All Stars 111)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "112": {
+   "en": "Porygon-Z",
+   "page": "Porygon-Z (Tag All Stars 112)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "113": {
+   "en": "Glameow",
+   "page": "Glameow (Tag All Stars 113)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "114": {
+   "en": "Munchlax",
+   "page": "Munchlax (Tag All Stars 114)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "115": {
+   "en": "Audino",
+   "page": "Audino (Tag All Stars 115)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "116": {
+   "en": "Pikipek",
+   "page": "Pikipek (Tag All Stars 116)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "117": {
+   "en": "Trumbeak",
+   "page": "Trumbeak (Tag All Stars 117)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "118": {
+   "en": "Electropower",
+   "page": "Electropower (Tag All Stars 118)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "119": {
+   "en": "Electropower",
+   "page": "Electropower (Tag All Stars 119)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "120": {
+   "en": "Custom Catcher",
+   "page": "Custom Catcher (Tag All Stars 120)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "121": {
+   "en": "Acro Bike",
+   "page": "Acro Bike (Tag All Stars 121)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "122": {
+   "en": "Acro Bike",
+   "page": "Acro Bike (Tag All Stars 122)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "123": {
+   "en": "Electromagnetic Radar",
+   "page": "Electromagnetic Radar (Tag All Stars 123)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "124": {
+   "en": "Electromagnetic Radar",
+   "page": "Electromagnetic Radar (Tag All Stars 124)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "125": {
+   "en": "Net Ball",
+   "page": "Net Ball (Tag All Stars 125)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "126": {
+   "en": "Beast Ring",
+   "page": "Beast Ring (Tag All Stars 126)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "127": {
+   "en": "Cherish Ball",
+   "page": "Cherish Ball (Tag All Stars 127)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "128": {
+   "en": "Adventure Bag",
+   "page": "Adventure Bag (Tag All Stars 128)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "129": {
+   "en": "Pokégear 3.0",
+   "page": "Pokégear 3.0 (Tag All Stars 129)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "130": {
+   "en": "Pokégear 3.0",
+   "page": "Pokégear 3.0 (Tag All Stars 130)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "131": {
+   "en": "Pokémon Communication",
+   "page": "Pokémon Communication (Tag All Stars 131)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "132": {
+   "en": "Pokémon Communication",
+   "page": "Pokémon Communication (Tag All Stars 132)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "133": {
+   "en": "Fire Crystal",
+   "page": "Fire Crystal (Tag All Stars 133)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "134": {
+   "en": "Mysterious Treasure",
+   "page": "Mysterious Treasure (Tag All Stars 134)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "135": {
+   "en": "Mysterious Treasure",
+   "page": "Mysterious Treasure (Tag All Stars 135)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "136": {
+   "en": "Reset Stamp",
+   "page": "Reset Stamp (Tag All Stars 136)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "137": {
+   "en": "Reset Stamp",
+   "page": "Reset Stamp (Tag All Stars 137)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "138": {
+   "en": "Lost Blender",
+   "page": "Lost Blender (Tag All Stars 138)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "139": {
+   "en": "Counter Gain",
+   "page": "Counter Gain (Tag All Stars 139)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "140": {
+   "en": "Karate Belt",
+   "page": "Karate Belt (Tag All Stars 140)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "141": {
+   "en": "Spell Tag",
+   "page": "Spell Tag (Tag All Stars 141)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "142": {
+   "en": "Metal Core Barrier",
+   "page": "Metal Core Barrier (Tag All Stars 142)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "143": {
+   "en": "U-Turn Board",
+   "page": "U-Turn Board (Tag All Stars 143)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "144": {
+   "en": "Cyrus",
+   "page": "Cyrus ♢ (Tag All Stars 144)",
+   "type": "Su",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "145": {
+   "en": "Professor Elm's Lecture",
+   "page": "Professor Elm's Lecture (Tag All Stars 145)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "146": {
+   "en": "Erika's Hospitality",
+   "page": "Erika's Hospitality (Tag All Stars 146)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "147": {
+   "en": "Misty & Lorelei",
+   "page": "Misty & Lorelei (Tag All Stars 147)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "148": {
+   "en": "Diantha",
+   "page": "Diantha (Tag All Stars 148)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "149": {
+   "en": "Sightseer",
+   "page": "Sightseer (Tag All Stars 149)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "150": {
+   "en": "Faba",
+   "page": "Faba (Tag All Stars 150)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "151": {
+   "en": "Giovanni's Exile",
+   "page": "Giovanni's Exile (Tag All Stars 151)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "152": {
+   "en": "Bellelba & Brycen-Man",
+   "page": "Bellelba & Brycen-Man (Tag All Stars 152)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "153": {
+   "en": "Volkner",
+   "page": "Volkner (Tag All Stars 153)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "154": {
+   "en": "Green's Exploration",
+   "page": "Green's Exploration (Tag All Stars 154)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "155": {
+   "en": "Morty",
+   "page": "Morty (Tag All Stars 155)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "156": {
+   "en": "Mina",
+   "page": "Mina (Tag All Stars 156)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "157": {
+   "en": "Welder",
+   "page": "Welder (Tag All Stars 157)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "158": {
+   "en": "Lisia",
+   "page": "Lisia (Tag All Stars 158)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "159": {
+   "en": "Red's Challenge",
+   "page": "Red's Challenge (Tag All Stars 159)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "160": {
+   "en": "Shrine of Punishment",
+   "page": "Shrine of Punishment (Tag All Stars 160)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "161": {
+   "en": "Martial Arts Dojo",
+   "page": "Martial Arts Dojo (Tag All Stars 161)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "162": {
+   "en": "Giant Hearth",
+   "page": "Giant Hearth (Tag All Stars 162)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "163": {
+   "en": "Thunder Mountain",
+   "page": "Thunder Mountain ♢ (Tag All Stars 163)",
+   "type": "St",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "164": {
+   "en": "Mt. Coronet",
+   "page": "Mt. Coronet (Tag All Stars 164)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "165": {
+   "en": "Viridian Forest",
+   "page": "Viridian Forest (Tag All Stars 165)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "166": {
+   "en": "Heat Factory",
+   "page": "Heat Factory ♢ (Tag All Stars 166)",
+   "type": "St",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "167": {
+   "en": "Black Market",
+   "page": "Black Market ♢ (Tag All Stars 167)",
+   "type": "St",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "168": {
+   "en": "Life Forest",
+   "page": "Life Forest ♢ (Tag All Stars 168)",
+   "type": "St",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "169": {
+   "en": "Wondrous Labyrinth",
+   "page": "Wondrous Labyrinth ♢ (Tag All Stars 169)",
+   "type": "St",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "170": {
+   "en": "Super Boost Energy",
+   "page": "Super Boost Energy ♢ (Tag All Stars 170)",
+   "type": "Colorless",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "171": {
+   "en": "Triple Acceleration Energy",
+   "page": "Triple Acceleration Energy (Tag All Stars 171)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "172": {
+   "en": "Beast Energy",
+   "page": "Beast Energy ♢ (Tag All Stars 172)",
+   "type": "Colorless",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "173": {
+   "en": "Recycle Energy",
+   "page": "Recycle Energy (Tag All Stars 173)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "174": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi-GX (Tag All Stars 174)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "175": {
+   "en": "Dedenne",
+   "page": "Dedenne-GX (Tag All Stars 175)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "176": {
+   "en": "Espeon & Deoxys",
+   "page": "Espeon & Deoxys-GX (Tag All Stars 176)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "177": {
+   "en": "Espeon & Deoxys",
+   "page": "Espeon & Deoxys-GX (Tag All Stars 177)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "178": {
+   "en": "Trevenant & Dusknoir",
+   "page": "Trevenant & Dusknoir-GX (Tag All Stars 178)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "179": {
+   "en": "Trevenant & Dusknoir",
+   "page": "Trevenant & Dusknoir-GX (Tag All Stars 179)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "180": {
+   "en": "Jirachi",
+   "page": "Jirachi-GX (Tag All Stars 180)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "181": {
+   "en": "Umbreon & Darkrai",
+   "page": "Umbreon & Darkrai-GX (Tag All Stars 181)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "182": {
+   "en": "Umbreon & Darkrai",
+   "page": "Umbreon & Darkrai-GX (Tag All Stars 182)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "183": {
+   "en": "Weavile",
+   "page": "Weavile-GX (Tag All Stars 183)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "184": {
+   "en": "Melmetal",
+   "page": "Melmetal-GX (Tag All Stars 184)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "185": {
+   "en": "Togepi & Cleffa & Igglybuff",
+   "page": "Togepi & Cleffa & Igglybuff-GX (Tag All Stars 185)",
+   "type": "Fairy",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "186": {
+   "en": "Togepi & Cleffa & Igglybuff",
+   "page": "Togepi & Cleffa & Igglybuff-GX (Tag All Stars 186)",
+   "type": "Fairy",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "187": {
+   "en": "Eevee",
+   "page": "Eevee-GX (Tag All Stars 187)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "188": {
+   "en": "Eevee",
+   "page": "Eevee-GX (Tag All Stars 188)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "189": {
+   "en": "Will",
+   "page": "Will (Tag All Stars 189)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "190": {
+   "en": "Erika's Hospitality",
+   "page": "Erika's Hospitality (Tag All Stars 190)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "191": {
+   "en": "Misty & Lorelei",
+   "page": "Misty & Lorelei (Tag All Stars 191)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "192": {
+   "en": "Sightseer",
+   "page": "Sightseer (Tag All Stars 192)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "193": {
+   "en": "Blue's Tactics",
+   "page": "Blue's Tactics (Tag All Stars 193)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "194": {
+   "en": "Bellelba & Brycen-Man",
+   "page": "Bellelba & Brycen-Man (Tag All Stars 194)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "195": {
+   "en": "Hapu",
+   "page": "Hapu (Tag All Stars 195)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "196": {
+   "en": "Green's Exploration",
+   "page": "Green's Exploration (Tag All Stars 196)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "197": {
+   "en": "Roxie",
+   "page": "Roxie (Tag All Stars 197)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "198": {
+   "en": "Mina",
+   "page": "Mina (Tag All Stars 198)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "199": {
+   "en": "Clay",
+   "page": "Clay (Tag All Stars 199)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "200": {
+   "en": "Welder",
+   "page": "Welder (Tag All Stars 200)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "201": {
+   "en": "Red's Challenge",
+   "page": "Red's Challenge (Tag All Stars 201)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "202": {
+   "en": "Grass Energy",
+   "page": "Grass Energy (Tag All Stars 202)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "203": {
+   "en": "Fire Energy",
+   "page": "Fire Energy (Tag All Stars 203)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "204": {
+   "en": "Water Energy",
+   "page": "Water Energy (Tag All Stars 204)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "205": {
+   "en": "Lightning Energy",
+   "page": "Lightning Energy (Tag All Stars 205)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "206": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (Tag All Stars 206)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "207": {
+   "en": "Fighting Energy",
+   "page": "Fighting Energy (Tag All Stars 207)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "208": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (Tag All Stars 208)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "209": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (Tag All Stars 209)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "210": {
+   "en": "Fairy Energy",
+   "page": "Fairy Energy (Tag All Stars 210)",
+   "type": "Fairy",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "211": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi-GX (Tag All Stars 211)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "212": {
+   "en": "Espeon & Deoxys",
+   "page": "Espeon & Deoxys-GX (Tag All Stars 212)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "213": {
+   "en": "Trevenant & Dusknoir",
+   "page": "Trevenant & Dusknoir-GX (Tag All Stars 213)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "214": {
+   "en": "Jirachi",
+   "page": "Jirachi-GX (Tag All Stars 214)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "215": {
+   "en": "Umbreon & Darkrai",
+   "page": "Umbreon & Darkrai-GX (Tag All Stars 215)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "216": {
+   "en": "Weavile",
+   "page": "Weavile-GX (Tag All Stars 216)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "217": {
+   "en": "Melmetal",
+   "page": "Melmetal-GX (Tag All Stars 217)",
+   "type": "Metal",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "218": {
+   "en": "Togepi & Cleffa & Igglybuff",
+   "page": "Togepi & Cleffa & Igglybuff-GX (Tag All Stars 218)",
+   "type": "Fairy",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "219": {
+   "en": "Eevee",
+   "page": "Eevee-GX (Tag All Stars 219)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "220": {
+   "en": "Reshiram & Charizard",
+   "page": "Reshiram & Charizard-GX (Tag All Stars 220)",
+   "type": "Fire",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "221": {
+   "en": "Pikachu & Zekrom",
+   "page": "Pikachu & Zekrom-GX (Tag All Stars 221)",
+   "type": "Lightning",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "222": {
+   "en": "Mewtwo & Mew",
+   "page": "Mewtwo & Mew-GX (Tag All Stars 222)",
+   "type": "Psychic",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "223": {
+   "en": "Greninja & Zoroark",
+   "page": "Greninja & Zoroark-GX (Tag All Stars 223)",
+   "type": "Darkness",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "224": {
+   "en": "Lucario & Melmetal",
+   "page": "Lucario & Melmetal-GX (Tag All Stars 224)",
+   "type": "Metal",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "225": {
+   "en": "Garchomp & Giratina",
+   "page": "Garchomp & Giratina-GX (Tag All Stars 225)",
+   "type": "Dragon",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "226": {
+   "en": "Moltres & Zapdos & Articuno",
+   "page": "Moltres & Zapdos & Articuno-GX (Tag All Stars 226)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,2526 @@
+{
+ "page": "Shiny Treasure ex (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Oddish",
+   "page": "Oddish (Shiny Treasure ex 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Gloom",
+   "page": "Gloom (Shiny Treasure ex 2)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Vileplume",
+   "page": "Vileplume (Shiny Treasure ex 3)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Scyther",
+   "page": "Scyther (Shiny Treasure ex 4)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Hoppip",
+   "page": "Hoppip (Shiny Treasure ex 5)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Skiploom",
+   "page": "Skiploom (Shiny Treasure ex 6)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Jumpluff",
+   "page": "Jumpluff (Shiny Treasure ex 7)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Pineco",
+   "page": "Pineco (Shiny Treasure ex 8)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Forretress",
+   "page": "Forretress ex (Shiny Treasure ex 9)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "10": {
+   "en": "Snover",
+   "page": "Snover (Shiny Treasure ex 10)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Abomasnow",
+   "page": "Abomasnow (Shiny Treasure ex 11)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Sprigatito",
+   "page": "Sprigatito (Shiny Treasure ex 12)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Floragato",
+   "page": "Floragato (Shiny Treasure ex 13)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Meowscarada",
+   "page": "Meowscarada ex (Shiny Treasure ex 14)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "15": {
+   "en": "Smoliv",
+   "page": "Smoliv (Shiny Treasure ex 15)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Dolliv",
+   "page": "Dolliv (Shiny Treasure ex 16)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Arboliva",
+   "page": "Arboliva (Shiny Treasure ex 17)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Toedscool",
+   "page": "Toedscool (Shiny Treasure ex 18)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Toedscruel",
+   "page": "Toedscruel ex (Shiny Treasure ex 19)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "20": {
+   "en": "Capsakid",
+   "page": "Capsakid (Shiny Treasure ex 20)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Scovillain",
+   "page": "Scovillain (Shiny Treasure ex 21)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Rellor",
+   "page": "Rellor (Shiny Treasure ex 22)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Espathra",
+   "page": "Espathra ex (Shiny Treasure ex 23)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "24": {
+   "en": "Wo-Chien",
+   "page": "Wo-Chien ex (Shiny Treasure ex 24)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "25": {
+   "en": "Charmander",
+   "page": "Charmander (Shiny Treasure ex 25)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (Shiny Treasure ex 26)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Shiny Treasure ex 27)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Entei",
+   "page": "Entei (Shiny Treasure ex 28)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Oricorio",
+   "page": "Oricorio (Shiny Treasure ex 29)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Fuecoco",
+   "page": "Fuecoco (Shiny Treasure ex 30)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Crocalor",
+   "page": "Crocalor (Shiny Treasure ex 31)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Skeledirge",
+   "page": "Skeledirge ex (Shiny Treasure ex 32)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "33": {
+   "en": "Charcadet",
+   "page": "Charcadet (Shiny Treasure ex 33)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Armarouge",
+   "page": "Armarouge (Shiny Treasure ex 34)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Chi-Yu",
+   "page": "Chi-Yu ex (Shiny Treasure ex 35)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "36": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Shiny Treasure ex 36)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Slowbro",
+   "page": "Slowbro (Shiny Treasure ex 37)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Staryu",
+   "page": "Staryu (Shiny Treasure ex 38)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Starmie",
+   "page": "Starmie (Shiny Treasure ex 39)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "40": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Shiny Treasure ex 40)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Quaxly",
+   "page": "Quaxly (Shiny Treasure ex 41)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "42": {
+   "en": "Quaxwell",
+   "page": "Quaxwell (Shiny Treasure ex 42)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Quaquaval",
+   "page": "Quaquaval ex (Shiny Treasure ex 43)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "44": {
+   "en": "Wiglett",
+   "page": "Wiglett (Shiny Treasure ex 44)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Wugtrio",
+   "page": "Wugtrio (Shiny Treasure ex 45)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Finizen",
+   "page": "Finizen (Shiny Treasure ex 46)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Palafin",
+   "page": "Palafin (Shiny Treasure ex 47)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Veluza",
+   "page": "Veluza (Shiny Treasure ex 48)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "49": {
+   "en": "Dondozo",
+   "page": "Dondozo (Shiny Treasure ex 49)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "50": {
+   "en": "Tatsugiri",
+   "page": "Tatsugiri (Shiny Treasure ex 50)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "51": {
+   "en": "Frigibax",
+   "page": "Frigibax (Shiny Treasure ex 51)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "52": {
+   "en": "Arctibax",
+   "page": "Arctibax (Shiny Treasure ex 52)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "53": {
+   "en": "Baxcalibur",
+   "page": "Baxcalibur (Shiny Treasure ex 53)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "54": {
+   "en": "Chien-Pao",
+   "page": "Chien-Pao ex (Shiny Treasure ex 54)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Pikachu",
+   "page": "Pikachu (Shiny Treasure ex 55)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "56": {
+   "en": "Raichu",
+   "page": "Raichu (Shiny Treasure ex 56)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "57": {
+   "en": "Voltorb",
+   "page": "Voltorb (Shiny Treasure ex 57)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "58": {
+   "en": "Electrode",
+   "page": "Electrode (Shiny Treasure ex 58)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "59": {
+   "en": "Shinx",
+   "page": "Shinx (Shiny Treasure ex 59)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "60": {
+   "en": "Luxio",
+   "page": "Luxio (Shiny Treasure ex 60)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "61": {
+   "en": "Luxray",
+   "page": "Luxray (Shiny Treasure ex 61)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "62": {
+   "en": "Pachirisu",
+   "page": "Pachirisu (Shiny Treasure ex 62)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "63": {
+   "en": "Thundurus",
+   "page": "Thundurus (Shiny Treasure ex 63)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "64": {
+   "en": "Toxel",
+   "page": "Toxel (Shiny Treasure ex 64)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "65": {
+   "en": "Toxtricity",
+   "page": "Toxtricity (Shiny Treasure ex 65)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "66": {
+   "en": "Pawmi",
+   "page": "Pawmi (Shiny Treasure ex 66)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "67": {
+   "en": "Pawmo",
+   "page": "Pawmo (Shiny Treasure ex 67)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "68": {
+   "en": "Pawmot",
+   "page": "Pawmot (Shiny Treasure ex 68)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "69": {
+   "en": "Wattrel",
+   "page": "Wattrel (Shiny Treasure ex 69)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "70": {
+   "en": "Kilowattrel",
+   "page": "Kilowattrel (Shiny Treasure ex 70)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "71": {
+   "en": "Miraidon",
+   "page": "Miraidon ex (Shiny Treasure ex 71)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Wigglytuff",
+   "page": "Wigglytuff (Shiny Treasure ex 72)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "73": {
+   "en": "Abra",
+   "page": "Abra (Shiny Treasure ex 73)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "74": {
+   "en": "Kadabra",
+   "page": "Kadabra (Shiny Treasure ex 74)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "75": {
+   "en": "Alakazam",
+   "page": "Alakazam ex (Shiny Treasure ex 75)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Mew",
+   "page": "Mew ex (Shiny Treasure ex 76)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Cleffa",
+   "page": "Cleffa (Shiny Treasure ex 77)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "78": {
+   "en": "Natu",
+   "page": "Natu (Shiny Treasure ex 78)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "79": {
+   "en": "Xatu",
+   "page": "Xatu (Shiny Treasure ex 79)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "80": {
+   "en": "Ralts",
+   "page": "Ralts (Shiny Treasure ex 80)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "81": {
+   "en": "Kirlia",
+   "page": "Kirlia (Shiny Treasure ex 81)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "82": {
+   "en": "Gardevoir",
+   "page": "Gardevoir ex (Shiny Treasure ex 82)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Drifloon",
+   "page": "Drifloon (Shiny Treasure ex 83)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "84": {
+   "en": "Drifblim",
+   "page": "Drifblim (Shiny Treasure ex 84)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "85": {
+   "en": "Mime Jr.",
+   "page": "Mime Jr. (Shiny Treasure ex 85)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "86": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Shiny Treasure ex 86)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "87": {
+   "en": "Klefki",
+   "page": "Klefki (Shiny Treasure ex 87)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "88": {
+   "en": "Mimikyu",
+   "page": "Mimikyu (Shiny Treasure ex 88)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "89": {
+   "en": "Fidough",
+   "page": "Fidough (Shiny Treasure ex 89)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "90": {
+   "en": "Dachsbun",
+   "page": "Dachsbun (Shiny Treasure ex 90)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "91": {
+   "en": "Ceruledge",
+   "page": "Ceruledge (Shiny Treasure ex 91)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "92": {
+   "en": "Rabsca",
+   "page": "Rabsca (Shiny Treasure ex 92)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "93": {
+   "en": "Flittle",
+   "page": "Flittle (Shiny Treasure ex 93)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "94": {
+   "en": "Tinkatink",
+   "page": "Tinkatink (Shiny Treasure ex 94)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "95": {
+   "en": "Tinkatuff",
+   "page": "Tinkatuff (Shiny Treasure ex 95)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "96": {
+   "en": "Tinkaton",
+   "page": "Tinkaton (Shiny Treasure ex 96)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "97": {
+   "en": "Greavard",
+   "page": "Greavard (Shiny Treasure ex 97)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "98": {
+   "en": "Houndstone",
+   "page": "Houndstone (Shiny Treasure ex 98)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "99": {
+   "en": "Gimmighoul",
+   "page": "Gimmighoul (Shiny Treasure ex 99)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "100": {
+   "en": "Mankey",
+   "page": "Mankey (Shiny Treasure ex 100)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "101": {
+   "en": "Primeape",
+   "page": "Primeape (Shiny Treasure ex 101)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "102": {
+   "en": "Annihilape",
+   "page": "Annihilape (Shiny Treasure ex 102)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "103": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Shiny Treasure ex 103)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "104": {
+   "en": "Riolu",
+   "page": "Riolu (Shiny Treasure ex 104)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "105": {
+   "en": "Lucario",
+   "page": "Lucario (Shiny Treasure ex 105)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "106": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (Shiny Treasure ex 106)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "107": {
+   "en": "Nacli",
+   "page": "Nacli (Shiny Treasure ex 107)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "108": {
+   "en": "Naclstack",
+   "page": "Naclstack (Shiny Treasure ex 108)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "109": {
+   "en": "Garganacl",
+   "page": "Garganacl (Shiny Treasure ex 109)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "110": {
+   "en": "Glimmet",
+   "page": "Glimmet (Shiny Treasure ex 110)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "111": {
+   "en": "Glimmora",
+   "page": "Glimmora ex (Shiny Treasure ex 111)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Great Tusk",
+   "page": "Great Tusk ex (Shiny Treasure ex 112)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Ting-Lu",
+   "page": "Ting-Lu ex (Shiny Treasure ex 113)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Koraidon",
+   "page": "Koraidon ex (Shiny Treasure ex 114)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Charizard",
+   "page": "Charizard ex (Shiny Treasure ex 115)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Paldean Wooper",
+   "page": "Paldean Wooper (Shiny Treasure ex 116)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "117": {
+   "en": "Paldean Clodsire",
+   "page": "Paldean Clodsire ex (Shiny Treasure ex 117)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "118": {
+   "en": "Murkrow",
+   "page": "Murkrow (Shiny Treasure ex 118)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "119": {
+   "en": "Sneasel",
+   "page": "Sneasel (Shiny Treasure ex 119)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "120": {
+   "en": "Weavile",
+   "page": "Weavile (Shiny Treasure ex 120)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "121": {
+   "en": "Sableye",
+   "page": "Sableye (Shiny Treasure ex 121)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "122": {
+   "en": "Pawniard",
+   "page": "Pawniard (Shiny Treasure ex 122)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "123": {
+   "en": "Bisharp",
+   "page": "Bisharp (Shiny Treasure ex 123)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "124": {
+   "en": "Kingambit",
+   "page": "Kingambit (Shiny Treasure ex 124)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "125": {
+   "en": "Maschiff",
+   "page": "Maschiff (Shiny Treasure ex 125)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "126": {
+   "en": "Mabosstiff",
+   "page": "Mabosstiff (Shiny Treasure ex 126)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "127": {
+   "en": "Shroodle",
+   "page": "Shroodle (Shiny Treasure ex 127)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "128": {
+   "en": "Grafaiai",
+   "page": "Grafaiai (Shiny Treasure ex 128)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "129": {
+   "en": "Scizor",
+   "page": "Scizor (Shiny Treasure ex 129)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "130": {
+   "en": "Varoom",
+   "page": "Varoom (Shiny Treasure ex 130)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "131": {
+   "en": "Revavroom",
+   "page": "Revavroom (Shiny Treasure ex 131)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "132": {
+   "en": "Iron Treads",
+   "page": "Iron Treads ex (Shiny Treasure ex 132)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "133": {
+   "en": "Gholdengo",
+   "page": "Gholdengo (Shiny Treasure ex 133)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "134": {
+   "en": "Noibat",
+   "page": "Noibat (Shiny Treasure ex 134)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "135": {
+   "en": "Noivern",
+   "page": "Noivern ex (Shiny Treasure ex 135)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "136": {
+   "en": "Cyclizar",
+   "page": "Cyclizar (Shiny Treasure ex 136)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "137": {
+   "en": "Pidgey",
+   "page": "Pidgey (Shiny Treasure ex 137)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "138": {
+   "en": "Pidgeotto",
+   "page": "Pidgeotto (Shiny Treasure ex 138)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "139": {
+   "en": "Pidgeot",
+   "page": "Pidgeot ex (Shiny Treasure ex 139)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "140": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (Shiny Treasure ex 140)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "141": {
+   "en": "Wigglytuff",
+   "page": "Wigglytuff ex (Shiny Treasure ex 141)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "142": {
+   "en": "Doduo",
+   "page": "Doduo (Shiny Treasure ex 142)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "143": {
+   "en": "Dodrio",
+   "page": "Dodrio (Shiny Treasure ex 143)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "144": {
+   "en": "Ditto",
+   "page": "Ditto (Shiny Treasure ex 144)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "145": {
+   "en": "Snorlax",
+   "page": "Snorlax (Shiny Treasure ex 145)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "146": {
+   "en": "Wingull",
+   "page": "Wingull (Shiny Treasure ex 146)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "147": {
+   "en": "Pelipper",
+   "page": "Pelipper (Shiny Treasure ex 147)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "148": {
+   "en": "Skwovet",
+   "page": "Skwovet (Shiny Treasure ex 148)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "149": {
+   "en": "Greedent",
+   "page": "Greedent (Shiny Treasure ex 149)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "150": {
+   "en": "Lechonk",
+   "page": "Lechonk (Shiny Treasure ex 150)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "151": {
+   "en": "Oinkologne",
+   "page": "Oinkologne (Shiny Treasure ex 151)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "152": {
+   "en": "Tandemaus",
+   "page": "Tandemaus (Shiny Treasure ex 152)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "153": {
+   "en": "Maushold",
+   "page": "Maushold (Shiny Treasure ex 153)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "154": {
+   "en": "Squawkabilly",
+   "page": "Squawkabilly ex (Shiny Treasure ex 154)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "155": {
+   "en": "Flamigo",
+   "page": "Flamigo (Shiny Treasure ex 155)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "156": {
+   "en": "Electric Generator",
+   "page": "Electric Generator (Shiny Treasure ex 156)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "157": {
+   "en": "Superior Energy Retrieval",
+   "page": "Superior Energy Retrieval (Shiny Treasure ex 157)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "158": {
+   "en": "Super Rod",
+   "page": "Super Rod (Shiny Treasure ex 158)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "159": {
+   "en": "Nest Ball",
+   "page": "Nest Ball (Shiny Treasure ex 159)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "160": {
+   "en": "Nemona's Backpack",
+   "page": "Nemona's Backpack (Shiny Treasure ex 160)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "161": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Shiny Treasure ex 161)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "162": {
+   "en": "Letter of Encouragement",
+   "page": "Letter of Encouragement (Shiny Treasure ex 162)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "163": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Shiny Treasure ex 163)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "164": {
+   "en": "Rock Chestplate",
+   "page": "Rock Chestplate (Shiny Treasure ex 164)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "165": {
+   "en": "Big Air Balloon",
+   "page": "Big Air Balloon (Shiny Treasure ex 165)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "166": {
+   "en": "Rigid Band",
+   "page": "Rigid Band (Shiny Treasure ex 166)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "167": {
+   "en": "Leftovers",
+   "page": "Leftovers (Shiny Treasure ex 167)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "168": {
+   "en": "Defiance Band",
+   "page": "Defiance Band (Shiny Treasure ex 168)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "169": {
+   "en": "Bravery Charm",
+   "page": "Bravery Charm (Shiny Treasure ex 169)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "170": {
+   "en": "Technical Machine: Crisis Punch",
+   "page": "Technical Machine: Crisis Punch (Shiny Treasure ex 170)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "171": {
+   "en": "Geeta",
+   "page": "Geeta (Shiny Treasure ex 171)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "172": {
+   "en": "Clavell",
+   "page": "Clavell (Shiny Treasure ex 172)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "173": {
+   "en": "Giovanni's Charisma",
+   "page": "Giovanni's Charisma (Shiny Treasure ex 173)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "174": {
+   "en": "Iono",
+   "page": "Iono (Shiny Treasure ex 174)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "175": {
+   "en": "Clive",
+   "page": "Clive (Shiny Treasure ex 175)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "176": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Shiny Treasure ex 176)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "177": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Shiny Treasure ex 177)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "178": {
+   "en": "Paldean Student",
+   "page": "Paldean Student (Shiny Treasure ex 178)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "179": {
+   "en": "Paldean Student",
+   "page": "Paldean Student (Shiny Treasure ex 179)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "180": {
+   "en": "Arven",
+   "page": "Arven (Shiny Treasure ex 180)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "181": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (Shiny Treasure ex 181)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "182": {
+   "en": "Penny",
+   "page": "Penny (Shiny Treasure ex 182)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "183": {
+   "en": "Town Store",
+   "page": "Town Store (Shiny Treasure ex 183)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "184": {
+   "en": "Beach Court",
+   "page": "Beach Court (Shiny Treasure ex 184)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "185": {
+   "en": "Artazon",
+   "page": "Artazon (Shiny Treasure ex 185)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "186": {
+   "en": "Pokémon League Headquarters",
+   "page": "Pokémon League Headquarters (Shiny Treasure ex 186)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "187": {
+   "en": "Practice Studio",
+   "page": "Practice Studio (Shiny Treasure ex 187)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "188": {
+   "en": "Therapeutic Energy",
+   "page": "Therapeutic Energy (Shiny Treasure ex 188)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "189": {
+   "en": "Reversal Energy",
+   "page": "Reversal Energy (Shiny Treasure ex 189)",
+   "type": "Rainbow",
+   "rarity": "—",
+   "mark": ""
+  },
+  "190": {
+   "en": "Luminous Energy",
+   "page": "Luminous Energy (Shiny Treasure ex 190)",
+   "type": "Rainbow",
+   "rarity": "—",
+   "mark": ""
+  },
+  "191": {
+   "en": "Oddish",
+   "page": "Oddish (Shiny Treasure ex 191)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "192": {
+   "en": "Gloom",
+   "page": "Gloom (Shiny Treasure ex 192)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "193": {
+   "en": "Vileplume",
+   "page": "Vileplume (Shiny Treasure ex 193)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "194": {
+   "en": "Scyther",
+   "page": "Scyther (Shiny Treasure ex 194)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "195": {
+   "en": "Hoppip",
+   "page": "Hoppip (Shiny Treasure ex 195)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "196": {
+   "en": "Skiploom",
+   "page": "Skiploom (Shiny Treasure ex 196)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "197": {
+   "en": "Jumpluff",
+   "page": "Jumpluff (Shiny Treasure ex 197)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "198": {
+   "en": "Pineco",
+   "page": "Pineco (Shiny Treasure ex 198)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "199": {
+   "en": "Snover",
+   "page": "Snover (Shiny Treasure ex 199)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "200": {
+   "en": "Abomasnow",
+   "page": "Abomasnow (Shiny Treasure ex 200)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "201": {
+   "en": "Sprigatito",
+   "page": "Sprigatito (Shiny Treasure ex 201)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "202": {
+   "en": "Floragato",
+   "page": "Floragato (Shiny Treasure ex 202)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "203": {
+   "en": "Smoliv",
+   "page": "Smoliv (Shiny Treasure ex 203)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "204": {
+   "en": "Dolliv",
+   "page": "Dolliv (Shiny Treasure ex 204)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "205": {
+   "en": "Arboliva",
+   "page": "Arboliva (Shiny Treasure ex 205)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "206": {
+   "en": "Toedscool",
+   "page": "Toedscool (Shiny Treasure ex 206)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "207": {
+   "en": "Capsakid",
+   "page": "Capsakid (Shiny Treasure ex 207)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "208": {
+   "en": "Scovillain",
+   "page": "Scovillain (Shiny Treasure ex 208)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "209": {
+   "en": "Rellor",
+   "page": "Rellor (Shiny Treasure ex 209)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "210": {
+   "en": "Charmander",
+   "page": "Charmander (Shiny Treasure ex 210)",
+   "type": "Fire",
+   "rarity": "S",
+   "mark": ""
+  },
+  "211": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (Shiny Treasure ex 211)",
+   "type": "Fire",
+   "rarity": "S",
+   "mark": ""
+  },
+  "212": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Shiny Treasure ex 212)",
+   "type": "Fire",
+   "rarity": "S",
+   "mark": ""
+  },
+  "213": {
+   "en": "Entei",
+   "page": "Entei (Shiny Treasure ex 213)",
+   "type": "Fire",
+   "rarity": "S",
+   "mark": ""
+  },
+  "214": {
+   "en": "Oricorio",
+   "page": "Oricorio (Shiny Treasure ex 214)",
+   "type": "Fire",
+   "rarity": "S",
+   "mark": ""
+  },
+  "215": {
+   "en": "Fuecoco",
+   "page": "Fuecoco (Shiny Treasure ex 215)",
+   "type": "Fire",
+   "rarity": "S",
+   "mark": ""
+  },
+  "216": {
+   "en": "Crocalor",
+   "page": "Crocalor (Shiny Treasure ex 216)",
+   "type": "Fire",
+   "rarity": "S",
+   "mark": ""
+  },
+  "217": {
+   "en": "Charcadet",
+   "page": "Charcadet (Shiny Treasure ex 217)",
+   "type": "Fire",
+   "rarity": "S",
+   "mark": ""
+  },
+  "218": {
+   "en": "Armarouge",
+   "page": "Armarouge (Shiny Treasure ex 218)",
+   "type": "Fire",
+   "rarity": "S",
+   "mark": ""
+  },
+  "219": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Shiny Treasure ex 219)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "220": {
+   "en": "Slowbro",
+   "page": "Slowbro (Shiny Treasure ex 220)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "221": {
+   "en": "Staryu",
+   "page": "Staryu (Shiny Treasure ex 221)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "222": {
+   "en": "Starmie",
+   "page": "Starmie (Shiny Treasure ex 222)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "223": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Shiny Treasure ex 223)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "224": {
+   "en": "Quaxly",
+   "page": "Quaxly (Shiny Treasure ex 224)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "225": {
+   "en": "Quaxwell",
+   "page": "Quaxwell (Shiny Treasure ex 225)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "226": {
+   "en": "Wiglett",
+   "page": "Wiglett (Shiny Treasure ex 226)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "227": {
+   "en": "Wugtrio",
+   "page": "Wugtrio (Shiny Treasure ex 227)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "228": {
+   "en": "Finizen",
+   "page": "Finizen (Shiny Treasure ex 228)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "229": {
+   "en": "Palafin",
+   "page": "Palafin (Shiny Treasure ex 229)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "230": {
+   "en": "Veluza",
+   "page": "Veluza (Shiny Treasure ex 230)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "231": {
+   "en": "Dondozo",
+   "page": "Dondozo (Shiny Treasure ex 231)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "232": {
+   "en": "Tatsugiri",
+   "page": "Tatsugiri (Shiny Treasure ex 232)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "233": {
+   "en": "Frigibax",
+   "page": "Frigibax (Shiny Treasure ex 233)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "234": {
+   "en": "Arctibax",
+   "page": "Arctibax (Shiny Treasure ex 234)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "235": {
+   "en": "Baxcalibur",
+   "page": "Baxcalibur (Shiny Treasure ex 235)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "236": {
+   "en": "Pikachu",
+   "page": "Pikachu (Shiny Treasure ex 236)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "237": {
+   "en": "Raichu",
+   "page": "Raichu (Shiny Treasure ex 237)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "238": {
+   "en": "Voltorb",
+   "page": "Voltorb (Shiny Treasure ex 238)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "239": {
+   "en": "Electrode",
+   "page": "Electrode (Shiny Treasure ex 239)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "240": {
+   "en": "Shinx",
+   "page": "Shinx (Shiny Treasure ex 240)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "241": {
+   "en": "Luxio",
+   "page": "Luxio (Shiny Treasure ex 241)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "242": {
+   "en": "Luxray",
+   "page": "Luxray (Shiny Treasure ex 242)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "243": {
+   "en": "Pachirisu",
+   "page": "Pachirisu (Shiny Treasure ex 243)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "244": {
+   "en": "Thundurus",
+   "page": "Thundurus (Shiny Treasure ex 244)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "245": {
+   "en": "Toxel",
+   "page": "Toxel (Shiny Treasure ex 245)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "246": {
+   "en": "Toxtricity",
+   "page": "Toxtricity (Shiny Treasure ex 246)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "247": {
+   "en": "Pawmi",
+   "page": "Pawmi (Shiny Treasure ex 247)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "248": {
+   "en": "Pawmo",
+   "page": "Pawmo (Shiny Treasure ex 248)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "249": {
+   "en": "Pawmot",
+   "page": "Pawmot (Shiny Treasure ex 249)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "250": {
+   "en": "Wattrel",
+   "page": "Wattrel (Shiny Treasure ex 250)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "251": {
+   "en": "Kilowattrel",
+   "page": "Kilowattrel (Shiny Treasure ex 251)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "252": {
+   "en": "Wigglytuff",
+   "page": "Wigglytuff (Shiny Treasure ex 252)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "253": {
+   "en": "Abra",
+   "page": "Abra (Shiny Treasure ex 253)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "254": {
+   "en": "Kadabra",
+   "page": "Kadabra (Shiny Treasure ex 254)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "255": {
+   "en": "Cleffa",
+   "page": "Cleffa (Shiny Treasure ex 255)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "256": {
+   "en": "Natu",
+   "page": "Natu (Shiny Treasure ex 256)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "257": {
+   "en": "Xatu",
+   "page": "Xatu (Shiny Treasure ex 257)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "258": {
+   "en": "Ralts",
+   "page": "Ralts (Shiny Treasure ex 258)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "259": {
+   "en": "Kirlia",
+   "page": "Kirlia (Shiny Treasure ex 259)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "260": {
+   "en": "Drifloon",
+   "page": "Drifloon (Shiny Treasure ex 260)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "261": {
+   "en": "Drifblim",
+   "page": "Drifblim (Shiny Treasure ex 261)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "262": {
+   "en": "Mime Jr.",
+   "page": "Mime Jr. (Shiny Treasure ex 262)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "263": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Shiny Treasure ex 263)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "264": {
+   "en": "Klefki",
+   "page": "Klefki (Shiny Treasure ex 264)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "265": {
+   "en": "Mimikyu",
+   "page": "Mimikyu (Shiny Treasure ex 265)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "266": {
+   "en": "Fidough",
+   "page": "Fidough (Shiny Treasure ex 266)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "267": {
+   "en": "Dachsbun",
+   "page": "Dachsbun (Shiny Treasure ex 267)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "268": {
+   "en": "Ceruledge",
+   "page": "Ceruledge (Shiny Treasure ex 268)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "269": {
+   "en": "Rabsca",
+   "page": "Rabsca (Shiny Treasure ex 269)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "270": {
+   "en": "Flittle",
+   "page": "Flittle (Shiny Treasure ex 270)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "271": {
+   "en": "Tinkatink",
+   "page": "Tinkatink (Shiny Treasure ex 271)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "272": {
+   "en": "Tinkatuff",
+   "page": "Tinkatuff (Shiny Treasure ex 272)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "273": {
+   "en": "Tinkaton",
+   "page": "Tinkaton (Shiny Treasure ex 273)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "274": {
+   "en": "Greavard",
+   "page": "Greavard (Shiny Treasure ex 274)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "275": {
+   "en": "Houndstone",
+   "page": "Houndstone (Shiny Treasure ex 275)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "276": {
+   "en": "Mankey",
+   "page": "Mankey (Shiny Treasure ex 276)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "277": {
+   "en": "Primeape",
+   "page": "Primeape (Shiny Treasure ex 277)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "278": {
+   "en": "Annihilape",
+   "page": "Annihilape (Shiny Treasure ex 278)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "279": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Shiny Treasure ex 279)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "280": {
+   "en": "Riolu",
+   "page": "Riolu (Shiny Treasure ex 280)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "281": {
+   "en": "Lucario",
+   "page": "Lucario (Shiny Treasure ex 281)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "282": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (Shiny Treasure ex 282)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "283": {
+   "en": "Nacli",
+   "page": "Nacli (Shiny Treasure ex 283)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "284": {
+   "en": "Naclstack",
+   "page": "Naclstack (Shiny Treasure ex 284)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "285": {
+   "en": "Garganacl",
+   "page": "Garganacl (Shiny Treasure ex 285)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "286": {
+   "en": "Glimmet",
+   "page": "Glimmet (Shiny Treasure ex 286)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "287": {
+   "en": "Paldean Wooper",
+   "page": "Paldean Wooper (Shiny Treasure ex 287)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "288": {
+   "en": "Murkrow",
+   "page": "Murkrow (Shiny Treasure ex 288)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "289": {
+   "en": "Sneasel",
+   "page": "Sneasel (Shiny Treasure ex 289)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "290": {
+   "en": "Weavile",
+   "page": "Weavile (Shiny Treasure ex 290)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "291": {
+   "en": "Sableye",
+   "page": "Sableye (Shiny Treasure ex 291)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "292": {
+   "en": "Pawniard",
+   "page": "Pawniard (Shiny Treasure ex 292)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "293": {
+   "en": "Bisharp",
+   "page": "Bisharp (Shiny Treasure ex 293)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "294": {
+   "en": "Kingambit",
+   "page": "Kingambit (Shiny Treasure ex 294)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "295": {
+   "en": "Maschiff",
+   "page": "Maschiff (Shiny Treasure ex 295)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "296": {
+   "en": "Mabosstiff",
+   "page": "Mabosstiff (Shiny Treasure ex 296)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "297": {
+   "en": "Shroodle",
+   "page": "Shroodle (Shiny Treasure ex 297)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "298": {
+   "en": "Grafaiai",
+   "page": "Grafaiai (Shiny Treasure ex 298)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "299": {
+   "en": "Scizor",
+   "page": "Scizor (Shiny Treasure ex 299)",
+   "type": "Metal",
+   "rarity": "S",
+   "mark": ""
+  },
+  "300": {
+   "en": "Varoom",
+   "page": "Varoom (Shiny Treasure ex 300)",
+   "type": "Metal",
+   "rarity": "S",
+   "mark": ""
+  },
+  "301": {
+   "en": "Revavroom",
+   "page": "Revavroom (Shiny Treasure ex 301)",
+   "type": "Metal",
+   "rarity": "S",
+   "mark": ""
+  },
+  "302": {
+   "en": "Noibat",
+   "page": "Noibat (Shiny Treasure ex 302)",
+   "type": "Dragon",
+   "rarity": "S",
+   "mark": ""
+  },
+  "303": {
+   "en": "Cyclizar",
+   "page": "Cyclizar (Shiny Treasure ex 303)",
+   "type": "Dragon",
+   "rarity": "S",
+   "mark": ""
+  },
+  "304": {
+   "en": "Pidgey",
+   "page": "Pidgey (Shiny Treasure ex 304)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "305": {
+   "en": "Pidgeotto",
+   "page": "Pidgeotto (Shiny Treasure ex 305)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "306": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (Shiny Treasure ex 306)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "307": {
+   "en": "Doduo",
+   "page": "Doduo (Shiny Treasure ex 307)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "308": {
+   "en": "Dodrio",
+   "page": "Dodrio (Shiny Treasure ex 308)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "309": {
+   "en": "Ditto",
+   "page": "Ditto (Shiny Treasure ex 309)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "310": {
+   "en": "Snorlax",
+   "page": "Snorlax (Shiny Treasure ex 310)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "311": {
+   "en": "Wingull",
+   "page": "Wingull (Shiny Treasure ex 311)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "312": {
+   "en": "Pelipper",
+   "page": "Pelipper (Shiny Treasure ex 312)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "313": {
+   "en": "Skwovet",
+   "page": "Skwovet (Shiny Treasure ex 313)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "314": {
+   "en": "Greedent",
+   "page": "Greedent (Shiny Treasure ex 314)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "315": {
+   "en": "Lechonk",
+   "page": "Lechonk (Shiny Treasure ex 315)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "316": {
+   "en": "Oinkologne",
+   "page": "Oinkologne (Shiny Treasure ex 316)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "317": {
+   "en": "Tandemaus",
+   "page": "Tandemaus (Shiny Treasure ex 317)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "318": {
+   "en": "Maushold",
+   "page": "Maushold (Shiny Treasure ex 318)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "319": {
+   "en": "Flamigo",
+   "page": "Flamigo (Shiny Treasure ex 319)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "320": {
+   "en": "Forretress",
+   "page": "Forretress ex (Shiny Treasure ex 320)",
+   "type": "Grass",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "321": {
+   "en": "Meowscarada",
+   "page": "Meowscarada ex (Shiny Treasure ex 321)",
+   "type": "Grass",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "322": {
+   "en": "Toedscruel",
+   "page": "Toedscruel ex (Shiny Treasure ex 322)",
+   "type": "Grass",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "323": {
+   "en": "Espathra",
+   "page": "Espathra ex (Shiny Treasure ex 323)",
+   "type": "Grass",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "324": {
+   "en": "Skeledirge",
+   "page": "Skeledirge ex (Shiny Treasure ex 324)",
+   "type": "Fire",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "325": {
+   "en": "Quaquaval",
+   "page": "Quaquaval ex (Shiny Treasure ex 325)",
+   "type": "Water",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "326": {
+   "en": "Alakazam",
+   "page": "Alakazam ex (Shiny Treasure ex 326)",
+   "type": "Psychic",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "327": {
+   "en": "Mew",
+   "page": "Mew ex (Shiny Treasure ex 327)",
+   "type": "Psychic",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "328": {
+   "en": "Gardevoir",
+   "page": "Gardevoir ex (Shiny Treasure ex 328)",
+   "type": "Psychic",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "329": {
+   "en": "Glimmora",
+   "page": "Glimmora ex (Shiny Treasure ex 329)",
+   "type": "Fighting",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "330": {
+   "en": "Great Tusk",
+   "page": "Great Tusk ex (Shiny Treasure ex 330)",
+   "type": "Fighting",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "331": {
+   "en": "Charizard",
+   "page": "Charizard ex (Shiny Treasure ex 331)",
+   "type": "Darkness",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "332": {
+   "en": "Paldean Clodsire",
+   "page": "Paldean Clodsire ex (Shiny Treasure ex 332)",
+   "type": "Darkness",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "333": {
+   "en": "Iron Treads",
+   "page": "Iron Treads ex (Shiny Treasure ex 333)",
+   "type": "Metal",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "334": {
+   "en": "Noivern",
+   "page": "Noivern ex (Shiny Treasure ex 334)",
+   "type": "Dragon",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "335": {
+   "en": "Pidgeot",
+   "page": "Pidgeot ex (Shiny Treasure ex 335)",
+   "type": "Colorless",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "336": {
+   "en": "Wigglytuff",
+   "page": "Wigglytuff ex (Shiny Treasure ex 336)",
+   "type": "Colorless",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "337": {
+   "en": "Squawkabilly",
+   "page": "Squawkabilly ex (Shiny Treasure ex 337)",
+   "type": "Colorless",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "338": {
+   "en": "Wugtrio",
+   "page": "Wugtrio (Shiny Treasure ex 338)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "339": {
+   "en": "Palafin",
+   "page": "Palafin (Shiny Treasure ex 339)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "340": {
+   "en": "Pawmi",
+   "page": "Pawmi (Shiny Treasure ex 340)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "341": {
+   "en": "Mimikyu",
+   "page": "Mimikyu (Shiny Treasure ex 341)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "342": {
+   "en": "Judge",
+   "page": "Judge (Shiny Treasure ex 342)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "343": {
+   "en": "Nemona",
+   "page": "Nemona (Shiny Treasure ex 343)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "344": {
+   "en": "Clive",
+   "page": "Clive (Shiny Treasure ex 344)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "345": {
+   "en": "Paldean Student",
+   "page": "Paldean Student (Shiny Treasure ex 345)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "346": {
+   "en": "Paldean Student",
+   "page": "Paldean Student (Shiny Treasure ex 346)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "347": {
+   "en": "Mew",
+   "page": "Mew ex (Shiny Treasure ex 347)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "348": {
+   "en": "Gardevoir",
+   "page": "Gardevoir ex (Shiny Treasure ex 348)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "349": {
+   "en": "Charizard",
+   "page": "Charizard ex (Shiny Treasure ex 349)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "350": {
+   "en": "Iono",
+   "page": "Iono (Shiny Treasure ex 350)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "351": {
+   "en": "Nemona",
+   "page": "Nemona (Shiny Treasure ex 351)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "352": {
+   "en": "Clive",
+   "page": "Clive (Shiny Treasure ex 352)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "353": {
+   "en": "Arven",
+   "page": "Arven (Shiny Treasure ex 353)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "354": {
+   "en": "Penny",
+   "page": "Penny (Shiny Treasure ex 354)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "355": {
+   "en": "Wo-Chien",
+   "page": "Wo-Chien ex (Shiny Treasure ex 355)",
+   "type": "Grass",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "356": {
+   "en": "Chi-Yu",
+   "page": "Chi-Yu ex (Shiny Treasure ex 356)",
+   "type": "Fire",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "357": {
+   "en": "Chien-Pao",
+   "page": "Chien-Pao ex (Shiny Treasure ex 357)",
+   "type": "Water",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "358": {
+   "en": "Miraidon",
+   "page": "Miraidon ex (Shiny Treasure ex 358)",
+   "type": "Lightning",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "359": {
+   "en": "Ting-Lu",
+   "page": "Ting-Lu ex (Shiny Treasure ex 359)",
+   "type": "Fighting",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "360": {
+   "en": "Koraidon",
+   "page": "Koraidon ex (Shiny Treasure ex 360)",
+   "type": "Fighting",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

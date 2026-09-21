@@ -1,0 +1,972 @@
+{
+ "page": "Plasma Gale (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Turtwig",
+   "page": "Turtwig (Plasma Gale 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Grotle",
+   "page": "Grotle (Plasma Gale 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Torterra",
+   "page": "Torterra (Plasma Gale 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Cherubi",
+   "page": "Cherubi (Plasma Gale 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Cherrim",
+   "page": "Cherrim (Plasma Gale 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Maractus",
+   "page": "Maractus (Plasma Gale 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Foongus",
+   "page": "Foongus (Plasma Gale 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Amoonguss",
+   "page": "Amoonguss (Plasma Gale 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Chimchar",
+   "page": "Chimchar (Plasma Gale 9)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Monferno",
+   "page": "Monferno (Plasma Gale 10)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Infernape",
+   "page": "Infernape (Plasma Gale 11)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Victini",
+   "page": "Victini-EX (Plasma Gale 12)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "13": {
+   "en": "Pansear",
+   "page": "Pansear (Plasma Gale 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Simisear",
+   "page": "Simisear (Plasma Gale 14)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Heatmor",
+   "page": "Heatmor (Plasma Gale 15)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Articuno",
+   "page": "Articuno-EX (Plasma Gale 16)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "17": {
+   "en": "Lotad",
+   "page": "Lotad (Plasma Gale 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Lombre",
+   "page": "Lombre (Plasma Gale 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Ludicolo",
+   "page": "Ludicolo (Plasma Gale 19)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Manaphy",
+   "page": "Manaphy (Plasma Gale 20)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "21": {
+   "en": "Cubchoo",
+   "page": "Cubchoo (Plasma Gale 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Beartic",
+   "page": "Beartic (Plasma Gale 22)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Magnemite",
+   "page": "Magnemite (Plasma Gale 23)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Magneton",
+   "page": "Magneton (Plasma Gale 24)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Magnezone",
+   "page": "Magnezone (Plasma Gale 25)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "26": {
+   "en": "Rotom",
+   "page": "Rotom (Plasma Gale 26)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Zubat",
+   "page": "Zubat (Plasma Gale 27)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Golbat",
+   "page": "Golbat (Plasma Gale 28)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Crobat",
+   "page": "Crobat (Plasma Gale 29)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "30": {
+   "en": "Koffing",
+   "page": "Koffing (Plasma Gale 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Weezing",
+   "page": "Weezing (Plasma Gale 31)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "32": {
+   "en": "Ralts",
+   "page": "Ralts (Plasma Gale 32)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Kirlia",
+   "page": "Kirlia (Plasma Gale 33)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Gallade",
+   "page": "Gallade (Plasma Gale 34)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "35": {
+   "en": "Giratina",
+   "page": "Giratina (Plasma Gale 35)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "36": {
+   "en": "Trubbish",
+   "page": "Trubbish (Plasma Gale 36)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Garbodor",
+   "page": "Garbodor (Plasma Gale 37)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Elgyem",
+   "page": "Elgyem (Plasma Gale 38)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Beheeyem",
+   "page": "Beheeyem (Plasma Gale 39)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Phanpy",
+   "page": "Phanpy (Plasma Gale 40)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Donphan",
+   "page": "Donphan (Plasma Gale 41)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "42": {
+   "en": "Riolu",
+   "page": "Riolu (Plasma Gale 42)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Lucario",
+   "page": "Lucario (Plasma Gale 43)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Purrloin",
+   "page": "Purrloin (Plasma Gale 44)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Liepard",
+   "page": "Liepard (Plasma Gale 45)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Scraggy",
+   "page": "Scraggy (Plasma Gale 46)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Scrafty",
+   "page": "Scrafty (Plasma Gale 47)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Durant",
+   "page": "Durant (Plasma Gale 48)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Cobalion",
+   "page": "Cobalion-EX (Plasma Gale 49)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "50": {
+   "en": "Druddigon",
+   "page": "Druddigon (Plasma Gale 50)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Clefairy",
+   "page": "Clefairy (Plasma Gale 51)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Clefable",
+   "page": "Clefable (Plasma Gale 52)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Doduo",
+   "page": "Doduo (Plasma Gale 53)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Dodrio",
+   "page": "Dodrio (Plasma Gale 54)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Snorlax",
+   "page": "Snorlax (Plasma Gale 55)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "56": {
+   "en": "Togepi",
+   "page": "Togepi (Plasma Gale 56)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Togetic",
+   "page": "Togetic (Plasma Gale 57)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Togekiss",
+   "page": "Togekiss (Plasma Gale 58)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "59": {
+   "en": "Lugia",
+   "page": "Lugia-EX (Plasma Gale 59)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "60": {
+   "en": "Patrat",
+   "page": "Patrat (Plasma Gale 60)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Watchog",
+   "page": "Watchog (Plasma Gale 61)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Colress Machine",
+   "page": "Colress Machine (Plasma Gale 62)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Hypnotoxic Laser",
+   "page": "Hypnotoxic Laser (Plasma Gale 63)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Colress",
+   "page": "Colress (Plasma Gale 64)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Team Plasma Grunt",
+   "page": "Team Plasma Grunt (Plasma Gale 65)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Plasma Frigate",
+   "page": "Plasma Frigate (Plasma Gale 66)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Plasma Energy",
+   "page": "Plasma Energy (Plasma Gale 67)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Scramble Switch",
+   "page": "Scramble Switch (Plasma Gale 68)",
+   "type": "I",
+   "rarity": "R",
+   "mark": ""
+  },
+  "69": {
+   "en": "Dowsing Machine",
+   "page": "Dowsing Machine (Plasma Gale 69)",
+   "type": "I",
+   "rarity": "R",
+   "mark": ""
+  },
+  "70": {
+   "en": "Victory Piece",
+   "page": "Victory Piece (Plasma Gale 70)",
+   "type": "I",
+   "rarity": "R",
+   "mark": ""
+  },
+  "71": {
+   "en": "Victini",
+   "page": "Victini-EX (Plasma Gale 71)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Articuno",
+   "page": "Articuno-EX (Plasma Gale 72)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Cobalion",
+   "page": "Cobalion-EX (Plasma Gale 73)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Lugia",
+   "page": "Lugia-EX (Plasma Gale 74)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Colress",
+   "page": "Colress (Plasma Gale 75)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Skyla",
+   "page": "Skyla (Plasma Gale 76)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Charizard",
+   "page": "Charizard (Plasma Gale 77)",
+   "type": "Fire",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Blastoise",
+   "page": "Blastoise (Plasma Gale 78)",
+   "type": "Water",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Random Receiver",
+   "page": "Random Receiver (Plasma Gale 79)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Gurdurr",
+   "page": "Gurdurr (Plasma Storm 80)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "81": {
+   "en": "Conkeldurr",
+   "page": "Conkeldurr (Plasma Storm 81)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "82": {
+   "en": "Purrloin",
+   "page": "Purrloin (Plasma Storm 82)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "83": {
+   "en": "Purrloin",
+   "page": "Purrloin (Plasma Storm 83)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "84": {
+   "en": "Liepard",
+   "page": "Liepard (Plasma Storm 84)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "85": {
+   "en": "Scraggy",
+   "page": "Scraggy (Plasma Storm 85)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "86": {
+   "en": "Scrafty",
+   "page": "Scrafty (Plasma Storm 86)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "87": {
+   "en": "Skarmory",
+   "page": "Skarmory (Plasma Storm 87)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88": {
+   "en": "Klink",
+   "page": "Klink (Plasma Storm 88)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "89": {
+   "en": "Klang",
+   "page": "Klang (Plasma Storm 89)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Klinklang",
+   "page": "Klinklang (Plasma Storm 90)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "Durant",
+   "page": "Durant (Plasma Storm 91)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Durant",
+   "page": "Durant (Plasma Storm 92)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Cobalion",
+   "page": "Cobalion-EX (Plasma Storm 93)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Druddigon",
+   "page": "Druddigon (Plasma Storm 94)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Black Kyurem",
+   "page": "Black Kyurem-EX (Plasma Storm 95)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "White Kyurem",
+   "page": "White Kyurem-EX (Plasma Storm 96)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Clefairy",
+   "page": "Clefairy (Plasma Storm 97)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Clefable",
+   "page": "Clefable (Plasma Storm 98)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Doduo",
+   "page": "Doduo (Plasma Storm 99)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Dodrio",
+   "page": "Dodrio (Plasma Storm 100)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Snorlax",
+   "page": "Snorlax (Plasma Storm 101)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Togepi",
+   "page": "Togepi (Plasma Storm 102)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Togetic",
+   "page": "Togetic (Plasma Storm 103)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Togekiss",
+   "page": "Togekiss (Plasma Storm 104)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Whismur",
+   "page": "Whismur (Plasma Storm 105)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Loudred",
+   "page": "Loudred (Plasma Storm 106)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Exploud",
+   "page": "Exploud (Plasma Storm 107)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Lugia",
+   "page": "Lugia-EX (Plasma Storm 108)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Skitty",
+   "page": "Skitty (Plasma Storm 109)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Patrat",
+   "page": "Patrat (Plasma Storm 110)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Patrat",
+   "page": "Patrat (Plasma Storm 111)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Watchog",
+   "page": "Watchog (Plasma Storm 112)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Watchog",
+   "page": "Watchog (Plasma Storm 113)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Bouffalant",
+   "page": "Bouffalant (Plasma Storm 114)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Rufflet",
+   "page": "Rufflet (Plasma Storm 115)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Braviary",
+   "page": "Braviary (Plasma Storm 116)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "117": {
+   "en": "Bicycle",
+   "page": "Bicycle (Plasma Storm 117)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "118": {
+   "en": "Colress",
+   "page": "Colress (Plasma Storm 118)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Colress Machine",
+   "page": "Colress Machine (Plasma Storm 119)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Escape Rope",
+   "page": "Escape Rope (Plasma Storm 120)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Ether",
+   "page": "Ether (Plasma Storm 121)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Eviolite",
+   "page": "Eviolite (Plasma Storm 122)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Hypnotoxic Laser",
+   "page": "Hypnotoxic Laser (Plasma Storm 123)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Plasma Frigate",
+   "page": "Plasma Frigate (Plasma Storm 124)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Team Plasma Grunt",
+   "page": "Team Plasma Grunt (Plasma Storm 125)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "126": {
+   "en": "Virbank City Gym",
+   "page": "Virbank City Gym (Plasma Storm 126)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Plasma Energy",
+   "page": "Plasma Energy (Plasma Storm 127)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Dowsing Machine",
+   "page": "Dowsing Machine (Plasma Storm 128)",
+   "type": "Rare Ace",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Scramble Switch",
+   "page": "Scramble Switch (Plasma Storm 129)",
+   "type": "Rare Ace",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Victory Piece",
+   "page": "Victory Piece (Plasma Storm 130)",
+   "type": "Rare Ace",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Victini",
+   "page": "Victini-EX (Plasma Storm 131)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Articuno",
+   "page": "Articuno-EX (Plasma Storm 132)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Cobalion",
+   "page": "Cobalion-EX (Plasma Storm 133)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Lugia",
+   "page": "Lugia-EX (Plasma Storm 134)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Colress",
+   "page": "Colress (Plasma Storm 135)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Charizard",
+   "page": "Charizard (Plasma Storm 136)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Blastoise",
+   "page": "Blastoise (Plasma Storm 137)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Random Receiver",
+   "page": "Random Receiver (Plasma Storm 138)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

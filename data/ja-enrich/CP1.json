@@ -1,0 +1,244 @@
+{
+ "page": "Magma Gang VS Aqua Gang: Double Crisis (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Team Magma's Numel",
+   "page": "Team Magma's Numel (Double Crisis 1)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Team Magma's Camerupt",
+   "page": "Team Magma's Camerupt (Double Crisis 2)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "3": {
+   "en": "Team Aqua's Spheal",
+   "page": "Team Aqua's Spheal (Double Crisis 3)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "4": {
+   "en": "Team Aqua's Sealeo",
+   "page": "Team Aqua's Sealeo (Double Crisis 4)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "5": {
+   "en": "Team Aqua's Walrein",
+   "page": "Team Aqua's Walrein (Double Crisis 5)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "6": {
+   "en": "Team Aqua's Kyogre",
+   "page": "Team Aqua's Kyogre-EX (Double Crisis 6)",
+   "type": "Water",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "7": {
+   "en": "Team Aqua's Grimer",
+   "page": "Team Aqua's Grimer (Double Crisis 7)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "8": {
+   "en": "Team Aqua's Muk",
+   "page": "Team Aqua's Muk (Double Crisis 8)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "9": {
+   "en": "Team Aqua's Seviper",
+   "page": "Team Aqua's Seviper (Double Crisis 9)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "10": {
+   "en": "Team Magma's Baltoy",
+   "page": "Team Magma's Baltoy (Double Crisis 10)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "11": {
+   "en": "Team Magma's Claydol",
+   "page": "Team Magma's Claydol (Double Crisis 11)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "12": {
+   "en": "Team Magma's Aron",
+   "page": "Team Magma's Aron (Double Crisis 12)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "13": {
+   "en": "Team Magma's Lairon",
+   "page": "Team Magma's Lairon (Double Crisis 13)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "14": {
+   "en": "Team Magma's Aggron",
+   "page": "Team Magma's Aggron (Double Crisis 14)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Team Magma's Groudon",
+   "page": "Team Magma's Groudon-EX (Double Crisis 15)",
+   "type": "Fighting",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "16": {
+   "en": "Team Aqua's Poochyena",
+   "page": "Team Aqua's Poochyena (Double Crisis 16)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "17": {
+   "en": "Team Magma's Poochyena",
+   "page": "Team Magma's Poochyena (Double Crisis 17)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "18": {
+   "en": "Team Aqua's Mightyena",
+   "page": "Team Aqua's Mightyena (Double Crisis 18)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "19": {
+   "en": "Team Magma's Mightyena",
+   "page": "Team Magma's Mightyena (Double Crisis 19)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "20": {
+   "en": "Team Aqua's Carvanha",
+   "page": "Team Aqua's Carvanha (Double Crisis 20)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "21": {
+   "en": "Team Aqua's Sharpedo",
+   "page": "Team Aqua's Sharpedo (Double Crisis 21)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "22": {
+   "en": "Team Magma's Zangoose",
+   "page": "Team Magma's Zangoose (Double Crisis 22)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "23": {
+   "en": "Aqua Diffuser",
+   "page": "Aqua Diffuser (Double Crisis 23)",
+   "type": "I",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "24": {
+   "en": "Magma Pointer",
+   "page": "Magma Pointer (Double Crisis 24)",
+   "type": "I",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "25": {
+   "en": "Team Aqua Admin",
+   "page": "Team Aqua Admin (Double Crisis 25)",
+   "type": "Su",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "26": {
+   "en": "Team Aqua Grunt",
+   "page": "Team Aqua Grunt (Double Crisis 26)",
+   "type": "Su",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "27": {
+   "en": "Team Aqua's Great Ball",
+   "page": "Team Aqua's Great Ball (Double Crisis 27)",
+   "type": "I",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "28": {
+   "en": "Team Aqua's Secret Base",
+   "page": "Team Aqua's Secret Base (Double Crisis 28)",
+   "type": "St",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "29": {
+   "en": "Team Magma Admin",
+   "page": "Team Magma Admin (Double Crisis 29)",
+   "type": "Su",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "30": {
+   "en": "Team Magma Grunt",
+   "page": "Team Magma Grunt (Double Crisis 30)",
+   "type": "Su",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "31": {
+   "en": "Team Magma's Great Ball",
+   "page": "Team Magma's Great Ball (Double Crisis 31)",
+   "type": "I",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "32": {
+   "en": "Team Magma's Secret Base",
+   "page": "Team Magma's Secret Base (Double Crisis 32)",
+   "type": "St",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "33": {
+   "en": "Double Aqua Energy",
+   "page": "Double Aqua Energy (Double Crisis 33)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "34": {
+   "en": "Double Magma Energy",
+   "page": "Double Magma Energy (Double Crisis 34)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,1518 @@
+{
+ "page": "Shield (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Roselia",
+   "page": "Roselia (Sword 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Roserade",
+   "page": "Roserade (Sword 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Maractus",
+   "page": "Maractus (Sword 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Dhelmise",
+   "page": "Dhelmise V (Sword 4)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "5": {
+   "en": "Grookey",
+   "page": "Grookey (Sword 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Thwackey",
+   "page": "Thwackey (Sword 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Rillaboom",
+   "page": "Rillaboom (Sword 7)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "8": {
+   "en": "Salandit",
+   "page": "Salandit (Sword 8)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Salazzle",
+   "page": "Salazzle (Sword 9)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Sizzlipede",
+   "page": "Sizzlipede (Sword 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Centiskorch",
+   "page": "Centiskorch (Sword 11)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Krabby",
+   "page": "Krabby (Sword 12)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Kingler",
+   "page": "Kingler (Sword 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Lapras",
+   "page": "Lapras V (Sword 14)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "15": {
+   "en": "Lapras",
+   "page": "Lapras VMAX (Sword 15)",
+   "type": "Water",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Mantine",
+   "page": "Mantine (Sword 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Sobble",
+   "page": "Sobble (Sword 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Drizzile",
+   "page": "Drizzile (Sword 18)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Inteleon",
+   "page": "Inteleon (Sword 19)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "20": {
+   "en": "Yamper",
+   "page": "Yamper (Sword 20)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Boltund",
+   "page": "Boltund (Sword 21)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Pincurchin",
+   "page": "Pincurchin (Sword 22)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Gastly",
+   "page": "Gastly (Sword 23)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Haunter",
+   "page": "Haunter (Sword 24)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Gengar",
+   "page": "Gengar (Sword 25)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "26": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet V (Sword 26)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "27": {
+   "en": "Sinistea",
+   "page": "Sinistea (Sword 27)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Polteageist",
+   "page": "Polteageist (Sword 28)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Sudowoodo",
+   "page": "Sudowoodo (Sword 29)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Baltoy",
+   "page": "Baltoy (Sword 30)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Claydol",
+   "page": "Claydol (Sword 31)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Clobbopus",
+   "page": "Clobbopus (Sword 32)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Grapploct",
+   "page": "Grapploct (Sword 33)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Stonjourner",
+   "page": "Stonjourner V (Sword 34)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "35": {
+   "en": "Stonjourner",
+   "page": "Stonjourner VMAX (Sword 35)",
+   "type": "Fighting",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "36": {
+   "en": "Croagunk",
+   "page": "Croagunk (Sword 36)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Toxicroak",
+   "page": "Toxicroak (Sword 37)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "38": {
+   "en": "Nickit",
+   "page": "Nickit (Sword 38)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Thievul",
+   "page": "Thievul (Sword 39)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Galarian Meowth",
+   "page": "Galarian Meowth (Sword 40)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Galarian Perrserker",
+   "page": "Galarian Perrserker (Sword 41)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "42": {
+   "en": "Ferroseed",
+   "page": "Ferroseed (Sword 42)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Ferrothorn",
+   "page": "Ferrothorn (Sword 43)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Galarian Stunfisk",
+   "page": "Galarian Stunfisk (Sword 44)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Corviknight",
+   "page": "Corviknight (Sword 45)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Zacian",
+   "page": "Zacian V (Sword 46)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "47": {
+   "en": "Minccino",
+   "page": "Minccino (Sword 47)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Cinccino",
+   "page": "Cinccino (Sword 48)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Rookidee",
+   "page": "Rookidee (Sword 49)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Corvisquire",
+   "page": "Corvisquire (Sword 50)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Cramorant",
+   "page": "Cramorant V (Sword 51)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Evolution Incense",
+   "page": "Evolution Incense (Sword 52)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Hyper Potion",
+   "page": "Hyper Potion (Sword 53)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Ordinary Rod",
+   "page": "Ordinary Rod (Sword 54)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Rotom Bike",
+   "page": "Rotom Bike (Sword 55)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "56": {
+   "en": "Big Charm",
+   "page": "Big Charm (Sword 56)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Air Balloon",
+   "page": "Air Balloon (Sword 57)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Lum Berry",
+   "page": "Lum Berry (Sword 58)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Sword 59)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "60": {
+   "en": "Bede",
+   "page": "Bede (Sword 60)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Dhelmise",
+   "page": "Dhelmise V (Sword 61)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Lapras",
+   "page": "Lapras V (Sword 62)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet V (Sword 63)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Stonjourner",
+   "page": "Stonjourner V (Sword 64)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Zacian",
+   "page": "Zacian V (Sword 65)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Cramorant",
+   "page": "Cramorant V (Sword 66)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Sword 67)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Bede",
+   "page": "Bede (Sword 68)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Lapras",
+   "page": "Lapras VMAX (Sword 69)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Stonjourner",
+   "page": "Stonjourner VMAX (Sword 70)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Sword 71)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Bede",
+   "page": "Bede (Sword 72)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Zacian",
+   "page": "Zacian V (Sword 73)",
+   "type": "Metal",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Ordinary Rod",
+   "page": "Ordinary Rod (Sword 74)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Air Balloon",
+   "page": "Air Balloon (Sword 75)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Boltund",
+   "page": "Boltund (Sword & Shield 76)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "77": {
+   "en": "Pincurchin",
+   "page": "Pincurchin (Sword & Shield 77)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "78": {
+   "en": "Morpeko",
+   "page": "Morpeko (Sword & Shield 78)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "79": {
+   "en": "Morpeko",
+   "page": "Morpeko V (Sword & Shield 79)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "80": {
+   "en": "Morpeko",
+   "page": "Morpeko VMAX (Sword & Shield 80)",
+   "type": "Rare VMAX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "81": {
+   "en": "Galarian Ponyta",
+   "page": "Galarian Ponyta (Sword & Shield 81)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "82": {
+   "en": "Galarian Rapidash",
+   "page": "Galarian Rapidash (Sword & Shield 82)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "83": {
+   "en": "Gastly",
+   "page": "Gastly (Sword & Shield 83)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "84": {
+   "en": "Haunter",
+   "page": "Haunter (Sword & Shield 84)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "85": {
+   "en": "Gengar",
+   "page": "Gengar (Sword & Shield 85)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "86": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet V (Sword & Shield 86)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "87": {
+   "en": "Munna",
+   "page": "Munna (Sword & Shield 87)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88": {
+   "en": "Musharna",
+   "page": "Musharna (Sword & Shield 88)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "89": {
+   "en": "Sinistea",
+   "page": "Sinistea (Sword & Shield 89)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Polteageist",
+   "page": "Polteageist (Sword & Shield 90)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "Indeedee",
+   "page": "Indeedee V (Sword & Shield 91)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Diglett",
+   "page": "Diglett (Sword & Shield 92)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Dugtrio",
+   "page": "Dugtrio (Sword & Shield 93)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Hitmonlee",
+   "page": "Hitmonlee (Sword & Shield 94)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Hitmonchan",
+   "page": "Hitmonchan (Sword & Shield 95)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Rhyhorn",
+   "page": "Rhyhorn (Sword & Shield 96)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Rhyhorn",
+   "page": "Rhyhorn (Sword & Shield 97)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Rhydon",
+   "page": "Rhydon (Sword & Shield 98)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Rhyperior",
+   "page": "Rhyperior (Sword & Shield 99)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Sudowoodo",
+   "page": "Sudowoodo (Sword & Shield 100)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Baltoy",
+   "page": "Baltoy (Sword & Shield 101)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Baltoy",
+   "page": "Baltoy (Sword & Shield 102)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Claydol",
+   "page": "Claydol (Sword & Shield 103)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Regirock",
+   "page": "Regirock V (Sword & Shield 104)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Mudbray",
+   "page": "Mudbray (Sword & Shield 105)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Mudsdale",
+   "page": "Mudsdale (Sword & Shield 106)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Silicobra",
+   "page": "Silicobra (Sword & Shield 107)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Silicobra",
+   "page": "Silicobra (Sword & Shield 108)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Sandaconda",
+   "page": "Sandaconda (Sword & Shield 109)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Sandaconda",
+   "page": "Sandaconda (Sword & Shield 110)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Clobbopus",
+   "page": "Clobbopus (Sword & Shield 111)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Clobbopus",
+   "page": "Clobbopus (Sword & Shield 112)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Grapploct",
+   "page": "Grapploct (Sword & Shield 113)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Stonjourner",
+   "page": "Stonjourner (Sword & Shield 114)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Stonjourner",
+   "page": "Stonjourner V (Sword & Shield 115)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Stonjourner",
+   "page": "Stonjourner VMAX (Sword & Shield 116)",
+   "type": "Rare VMAX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "117": {
+   "en": "Galarian Zigzagoon",
+   "page": "Galarian Zigzagoon (Sword & Shield 117)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "118": {
+   "en": "Galarian Linoone",
+   "page": "Galarian Linoone (Sword & Shield 118)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Galarian Obstagoon",
+   "page": "Galarian Obstagoon (Sword & Shield 119)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Sableye",
+   "page": "Sableye V (Sword & Shield 120)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Skorupi",
+   "page": "Skorupi (Sword & Shield 121)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Drapion",
+   "page": "Drapion (Sword & Shield 122)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Croagunk",
+   "page": "Croagunk (Sword & Shield 123)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Toxicroak",
+   "page": "Toxicroak (Sword & Shield 124)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Nickit",
+   "page": "Nickit (Sword & Shield 125)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "126": {
+   "en": "Thievul",
+   "page": "Thievul (Sword & Shield 126)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Galarian Meowth",
+   "page": "Galarian Meowth (Sword & Shield 127)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Galarian Perrserker",
+   "page": "Galarian Perrserker (Sword & Shield 128)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Mawile",
+   "page": "Mawile (Sword & Shield 129)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Ferroseed",
+   "page": "Ferroseed (Sword & Shield 130)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Ferrothorn",
+   "page": "Ferrothorn (Sword & Shield 131)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Galarian Stunfisk",
+   "page": "Galarian Stunfisk (Sword & Shield 132)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Pawniard",
+   "page": "Pawniard (Sword & Shield 133)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Bisharp",
+   "page": "Bisharp (Sword & Shield 134)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Corviknight",
+   "page": "Corviknight (Sword & Shield 135)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Cufant",
+   "page": "Cufant (Sword & Shield 136)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Copperajah",
+   "page": "Copperajah (Sword & Shield 137)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Zacian",
+   "page": "Zacian V (Sword & Shield 138)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Zamazenta",
+   "page": "Zamazenta V (Sword & Shield 139)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Snorlax",
+   "page": "Snorlax (Sword & Shield 140)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Snorlax",
+   "page": "Snorlax V (Sword & Shield 141)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Snorlax",
+   "page": "Snorlax VMAX (Sword & Shield 142)",
+   "type": "Rare VMAX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Hoothoot",
+   "page": "Hoothoot (Sword & Shield 143)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Noctowl",
+   "page": "Noctowl (Sword & Shield 144)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Minccino",
+   "page": "Minccino (Sword & Shield 145)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Minccino",
+   "page": "Minccino (Sword & Shield 146)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Cinccino",
+   "page": "Cinccino (Sword & Shield 147)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Oranguru",
+   "page": "Oranguru (Sword & Shield 148)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Drampa",
+   "page": "Drampa (Sword & Shield 149)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Rookidee",
+   "page": "Rookidee (Sword & Shield 150)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Corvisquire",
+   "page": "Corvisquire (Sword & Shield 151)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Wooloo",
+   "page": "Wooloo (Sword & Shield 152)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Wooloo",
+   "page": "Wooloo (Sword & Shield 153)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Dubwool",
+   "page": "Dubwool (Sword & Shield 154)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Cramorant",
+   "page": "Cramorant V (Sword & Shield 155)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Air Balloon",
+   "page": "Air Balloon (Sword & Shield 156)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Bede",
+   "page": "Bede (Sword & Shield 157)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Big Charm",
+   "page": "Big Charm (Sword & Shield 158)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Crushing Hammer",
+   "page": "Crushing Hammer (Sword & Shield 159)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Energy Retrieval",
+   "page": "Energy Retrieval (Sword & Shield 160)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Energy Search",
+   "page": "Energy Search (Sword & Shield 161)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (Sword & Shield 162)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Evolution Incense",
+   "page": "Evolution Incense (Sword & Shield 163)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Great Ball",
+   "page": "Great Ball (Sword & Shield 164)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "165": {
+   "en": "Hop",
+   "page": "Hop (Sword & Shield 165)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "166": {
+   "en": "Hyper Potion",
+   "page": "Hyper Potion (Sword & Shield 166)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "167": {
+   "en": "Lucky Egg",
+   "page": "Lucky Egg (Sword & Shield 167)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "168": {
+   "en": "Lum Berry",
+   "page": "Lum Berry (Sword & Shield 168)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "169": {
+   "en": "Marnie",
+   "page": "Marnie (Sword & Shield 169)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "170": {
+   "en": "Metal Saucer",
+   "page": "Metal Saucer (Sword & Shield 170)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "171": {
+   "en": "Ordinary Rod",
+   "page": "Ordinary Rod (Sword & Shield 171)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "172": {
+   "en": "Pal Pad",
+   "page": "Pal Pad (Sword & Shield 172)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "173": {
+   "en": "Poké Kid",
+   "page": "Poké Kid (Sword & Shield 173)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "174": {
+   "en": "Pokégear 3.0",
+   "page": "Pokégear 3.0 (Sword & Shield 174)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "175": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (Sword & Shield 175)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "176": {
+   "en": "Pokémon Center Lady",
+   "page": "Pokémon Center Lady (Sword & Shield 176)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "177": {
+   "en": "Potion",
+   "page": "Potion (Sword & Shield 177)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "178": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Sword & Shield 178)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "179": {
+   "en": "Quick Ball",
+   "page": "Quick Ball (Sword & Shield 179)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "180": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Sword & Shield 180)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "181": {
+   "en": "Rotom Bike",
+   "page": "Rotom Bike (Sword & Shield 181)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "182": {
+   "en": "Sitrus Berry",
+   "page": "Sitrus Berry (Sword & Shield 182)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "183": {
+   "en": "Switch",
+   "page": "Switch (Sword & Shield 183)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "184": {
+   "en": "Team Yell Grunt",
+   "page": "Team Yell Grunt (Sword & Shield 184)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "185": {
+   "en": "Vitality Band",
+   "page": "Vitality Band (Sword & Shield 185)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "186": {
+   "en": "Aurora Energy",
+   "page": "Aurora Energy (Sword & Shield 186)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "187": {
+   "en": "Dhelmise",
+   "page": "Dhelmise V (Sword & Shield 187)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "188": {
+   "en": "Torkoal",
+   "page": "Torkoal V (Sword & Shield 188)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "189": {
+   "en": "Lapras",
+   "page": "Lapras V (Sword & Shield 189)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "190": {
+   "en": "Morpeko",
+   "page": "Morpeko V (Sword & Shield 190)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "191": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet V (Sword & Shield 191)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "192": {
+   "en": "Indeedee",
+   "page": "Indeedee V (Sword & Shield 192)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "193": {
+   "en": "Stonjourner",
+   "page": "Stonjourner V (Sword & Shield 193)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "194": {
+   "en": "Sableye",
+   "page": "Sableye V (Sword & Shield 194)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "195": {
+   "en": "Zacian",
+   "page": "Zacian V (Sword & Shield 195)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "196": {
+   "en": "Zamazenta",
+   "page": "Zamazenta V (Sword & Shield 196)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "197": {
+   "en": "Snorlax",
+   "page": "Snorlax V (Sword & Shield 197)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "198": {
+   "en": "Cramorant",
+   "page": "Cramorant V (Sword & Shield 198)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "199": {
+   "en": "Bede",
+   "page": "Bede (Sword & Shield 199)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "200": {
+   "en": "Marnie",
+   "page": "Marnie (Sword & Shield 200)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "201": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Sword & Shield 201)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "202": {
+   "en": "Team Yell Grunt",
+   "page": "Team Yell Grunt (Sword & Shield 202)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "203": {
+   "en": "Lapras",
+   "page": "Lapras VMAX (Sword & Shield 203)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "204": {
+   "en": "Morpeko",
+   "page": "Morpeko VMAX (Sword & Shield 204)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "205": {
+   "en": "Stonjourner",
+   "page": "Stonjourner VMAX (Sword & Shield 205)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "206": {
+   "en": "Snorlax",
+   "page": "Snorlax VMAX (Sword & Shield 206)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "207": {
+   "en": "Bede",
+   "page": "Bede (Sword & Shield 207)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "208": {
+   "en": "Marnie",
+   "page": "Marnie (Sword & Shield 208)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "209": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Sword & Shield 209)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "210": {
+   "en": "Team Yell Grunt",
+   "page": "Team Yell Grunt (Sword & Shield 210)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "211": {
+   "en": "Zacian",
+   "page": "Zacian V (Sword & Shield 211)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "212": {
+   "en": "Zamazenta",
+   "page": "Zamazenta V (Sword & Shield 212)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "213": {
+   "en": "Air Balloon",
+   "page": "Air Balloon (Sword & Shield 213)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "214": {
+   "en": "Metal Saucer",
+   "page": "Metal Saucer (Sword & Shield 214)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "215": {
+   "en": "Ordinary Rod",
+   "page": "Ordinary Rod (Sword & Shield 215)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "216": {
+   "en": "Quick Ball",
+   "page": "Quick Ball (Sword & Shield 216)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

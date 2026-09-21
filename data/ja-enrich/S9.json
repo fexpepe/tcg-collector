@@ -1,0 +1,1518 @@
+{
+ "page": "Star Birth (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Star Birth 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Exeggutor",
+   "page": "Exeggutor (Star Birth 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Shroomish",
+   "page": "Shroomish (Star Birth 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Breloom",
+   "page": "Breloom (Star Birth 4)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "5": {
+   "en": "Tropius",
+   "page": "Tropius (Star Birth 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Turtwig",
+   "page": "Turtwig (Star Birth 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Grotle",
+   "page": "Grotle (Star Birth 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Torterra",
+   "page": "Torterra (Star Birth 8)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "9": {
+   "en": "Burmy",
+   "page": "Burmy (Star Birth 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Wormadam",
+   "page": "Wormadam (Star Birth 10)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Mothim",
+   "page": "Mothim (Star Birth 11)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Shaymin",
+   "page": "Shaymin V (Star Birth 12)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "13": {
+   "en": "Shaymin",
+   "page": "Shaymin VSTAR (Star Birth 13)",
+   "type": "Grass",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "14": {
+   "en": "Charizard",
+   "page": "Charizard V (Star Birth 14)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "15": {
+   "en": "Charizard",
+   "page": "Charizard VSTAR (Star Birth 15)",
+   "type": "Fire",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Magmar",
+   "page": "Magmar (Star Birth 16)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Magmortar",
+   "page": "Magmortar (Star Birth 17)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Moltres",
+   "page": "Moltres (Star Birth 18)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "19": {
+   "en": "Chimchar",
+   "page": "Chimchar (Star Birth 19)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Monferno",
+   "page": "Monferno (Star Birth 20)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Infernape",
+   "page": "Infernape (Star Birth 21)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Lapras",
+   "page": "Lapras (Star Birth 22)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Corphish",
+   "page": "Corphish (Star Birth 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Crawdaunt",
+   "page": "Crawdaunt (Star Birth 24)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Piplup",
+   "page": "Piplup (Star Birth 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Prinplup",
+   "page": "Prinplup (Star Birth 26)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Empoleon",
+   "page": "Empoleon (Star Birth 27)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "28": {
+   "en": "Buizel",
+   "page": "Buizel (Star Birth 28)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Floatzel",
+   "page": "Floatzel (Star Birth 29)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Lumineon",
+   "page": "Lumineon V (Star Birth 30)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Manaphy",
+   "page": "Manaphy (Star Birth 31)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Cubchoo",
+   "page": "Cubchoo (Star Birth 32)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Beartic",
+   "page": "Beartic (Star Birth 33)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Raichu",
+   "page": "Raichu V (Star Birth 34)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "35": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Star Birth 35)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Electivire",
+   "page": "Electivire (Star Birth 36)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Shinx",
+   "page": "Shinx (Star Birth 37)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Luxio",
+   "page": "Luxio (Star Birth 38)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Luxray",
+   "page": "Luxray (Star Birth 39)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Pachirisu",
+   "page": "Pachirisu (Star Birth 40)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Clefairy",
+   "page": "Clefairy (Star Birth 41)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Clefable",
+   "page": "Clefable (Star Birth 42)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Baltoy",
+   "page": "Baltoy (Star Birth 43)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Claydol",
+   "page": "Claydol (Star Birth 44)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Duskull",
+   "page": "Duskull (Star Birth 45)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Dusclops",
+   "page": "Dusclops (Star Birth 46)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Dusknoir",
+   "page": "Dusknoir (Star Birth 47)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "48": {
+   "en": "Chimecho",
+   "page": "Chimecho (Star Birth 48)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Whimsicott",
+   "page": "Whimsicott V (Star Birth 49)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "50": {
+   "en": "Whimsicott",
+   "page": "Whimsicott VSTAR (Star Birth 50)",
+   "type": "Psychic",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "51": {
+   "en": "Sigilyph",
+   "page": "Sigilyph (Star Birth 51)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Nosepass",
+   "page": "Nosepass (Star Birth 52)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Wormadam",
+   "page": "Wormadam (Star Birth 53)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Riolu",
+   "page": "Riolu (Star Birth 54)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Lucario",
+   "page": "Lucario (Star Birth 55)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "56": {
+   "en": "Throh",
+   "page": "Throh (Star Birth 56)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Sawk",
+   "page": "Sawk (Star Birth 57)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Golett",
+   "page": "Golett (Star Birth 58)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Golurk",
+   "page": "Golurk (Star Birth 59)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Grimer",
+   "page": "Grimer (Star Birth 60)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Muk",
+   "page": "Muk (Star Birth 61)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Sneasel",
+   "page": "Sneasel (Star Birth 62)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Weavile",
+   "page": "Weavile (Star Birth 63)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Honchkrow",
+   "page": "Honchkrow V (Star Birth 64)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Star Birth 65)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "Wormadam",
+   "page": "Wormadam (Star Birth 66)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Probopass",
+   "page": "Probopass (Star Birth 67)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Heatran",
+   "page": "Heatran (Star Birth 68)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Klink",
+   "page": "Klink (Star Birth 69)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "70": {
+   "en": "Klang",
+   "page": "Klang (Star Birth 70)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "71": {
+   "en": "Klinklang",
+   "page": "Klinklang (Star Birth 71)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Flygon",
+   "page": "Flygon V (Star Birth 72)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Gible",
+   "page": "Gible (Star Birth 73)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "74": {
+   "en": "Gabite",
+   "page": "Gabite (Star Birth 74)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "75": {
+   "en": "Garchomp",
+   "page": "Garchomp (Star Birth 75)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "76": {
+   "en": "Farfetch'd",
+   "page": "Farfetch'd (Star Birth 76)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "77": {
+   "en": "Castform",
+   "page": "Castform (Star Birth 77)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "78": {
+   "en": "Starly",
+   "page": "Starly (Star Birth 78)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "79": {
+   "en": "Staravia",
+   "page": "Staravia (Star Birth 79)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "80": {
+   "en": "Staraptor",
+   "page": "Staraptor (Star Birth 80)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "81": {
+   "en": "Bidoof",
+   "page": "Bidoof (Star Birth 81)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "82": {
+   "en": "Bibarel",
+   "page": "Bibarel (Star Birth 82)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "83": {
+   "en": "Arceus",
+   "page": "Arceus V (Star Birth 83)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Arceus",
+   "page": "Arceus VSTAR (Star Birth 84)",
+   "type": "Colorless",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Minccino",
+   "page": "Minccino (Star Birth 85)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "86": {
+   "en": "Cinccino",
+   "page": "Cinccino (Star Birth 86)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "87": {
+   "en": "Tornadus",
+   "page": "Tornadus (Star Birth 87)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "88": {
+   "en": "Fresh Water Set",
+   "page": "Fresh Water Set (Star Birth 88)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "89": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Star Birth 89)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "90": {
+   "en": "Choice Belt",
+   "page": "Choice Belt (Star Birth 90)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "91": {
+   "en": "Pot Helmet",
+   "page": "Pot Helmet (Star Birth 91)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "92": {
+   "en": "Kindler",
+   "page": "Kindler (Star Birth 92)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "93": {
+   "en": "Cynthia's Ambition",
+   "page": "Cynthia's Ambition (Star Birth 93)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "94": {
+   "en": "Cheren's Care",
+   "page": "Cheren's Care (Star Birth 94)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "95": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Star Birth 95)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "96": {
+   "en": "Roseanne's Backup",
+   "page": "Roseanne's Backup (Star Birth 96)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "97": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (Star Birth 97)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "98": {
+   "en": "Collapsed Stadium",
+   "page": "Collapsed Stadium (Star Birth 98)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "99": {
+   "en": "Magma Basin",
+   "page": "Magma Basin (Star Birth 99)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "100": {
+   "en": "Double Turbo Energy",
+   "page": "Double Turbo Energy (Star Birth 100)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "101": {
+   "en": "Shaymin",
+   "page": "Shaymin V (Star Birth 101)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Charizard",
+   "page": "Charizard V (Star Birth 102)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Charizard",
+   "page": "Charizard V (Star Birth 103)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Lumineon",
+   "page": "Lumineon V (Star Birth 104)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Lumineon",
+   "page": "Lumineon V (Star Birth 105)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Raichu",
+   "page": "Raichu V (Star Birth 106)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Whimsicott",
+   "page": "Whimsicott V (Star Birth 107)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Honchkrow",
+   "page": "Honchkrow V (Star Birth 108)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Honchkrow",
+   "page": "Honchkrow V (Star Birth 109)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Flygon",
+   "page": "Flygon V (Star Birth 110)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Arceus",
+   "page": "Arceus V (Star Birth 111)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Arceus",
+   "page": "Arceus V (Star Birth 112)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Kindler",
+   "page": "Kindler (Star Birth 113)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Cynthia's Ambition",
+   "page": "Cynthia's Ambition (Star Birth 114)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Cheren's Care",
+   "page": "Cheren's Care (Star Birth 115)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Roseanne's Backup",
+   "page": "Roseanne's Backup (Star Birth 116)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "117": {
+   "en": "Shaymin",
+   "page": "Shaymin VSTAR (Star Birth 117)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "118": {
+   "en": "Charizard",
+   "page": "Charizard VSTAR (Star Birth 118)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "119": {
+   "en": "Whimsicott",
+   "page": "Whimsicott VSTAR (Star Birth 119)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "120": {
+   "en": "Arceus",
+   "page": "Arceus VSTAR (Star Birth 120)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "121": {
+   "en": "Kindler",
+   "page": "Kindler (Star Birth 121)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "122": {
+   "en": "Cynthia's Ambition",
+   "page": "Cynthia's Ambition (Star Birth 122)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "123": {
+   "en": "Cheren's Care",
+   "page": "Cheren's Care (Star Birth 123)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "124": {
+   "en": "Roseanne's Backup",
+   "page": "Roseanne's Backup (Star Birth 124)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "125": {
+   "en": "Arceus",
+   "page": "Arceus VSTAR (Star Birth 125)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "126": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Star Birth 126)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "127": {
+   "en": "Magma Basin",
+   "page": "Magma Basin (Star Birth 127)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "128": {
+   "en": "Drampa",
+   "page": "Drampa V (Brilliant Stars 128)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Acerola's Premonition",
+   "page": "Acerola's Premonition (Brilliant Stars 129)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Barry",
+   "page": "Barry (Brilliant Stars 130)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Blunder Policy",
+   "page": "Blunder Policy (Brilliant Stars 131)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (Brilliant Stars 132)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Café Master",
+   "page": "Café Master (Brilliant Stars 133)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Cheren's Care",
+   "page": "Cheren's Care (Brilliant Stars 134)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Choice Belt",
+   "page": "Choice Belt (Brilliant Stars 135)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Cleansing Gloves",
+   "page": "Cleansing Gloves (Brilliant Stars 136)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Collapsed Stadium",
+   "page": "Collapsed Stadium (Brilliant Stars 137)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Cynthia's Ambition",
+   "page": "Cynthia's Ambition (Brilliant Stars 138)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Fresh Water Set",
+   "page": "Fresh Water Set (Brilliant Stars 139)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Friends in Galar",
+   "page": "Friends in Galar (Brilliant Stars 140)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Gloria",
+   "page": "Gloria (Brilliant Stars 141)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Hunting Gloves",
+   "page": "Hunting Gloves (Brilliant Stars 142)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Kindler",
+   "page": "Kindler (Brilliant Stars 143)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Magma Basin",
+   "page": "Magma Basin (Brilliant Stars 144)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Marnie's Pride",
+   "page": "Marnie's Pride (Brilliant Stars 145)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Pot Helmet",
+   "page": "Pot Helmet (Brilliant Stars 146)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Brilliant Stars 147)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Roseanne's Backup",
+   "page": "Roseanne's Backup (Brilliant Stars 148)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Team Yell's Cheer",
+   "page": "Team Yell's Cheer (Brilliant Stars 149)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Brilliant Stars 150)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Double Turbo Energy",
+   "page": "Double Turbo Energy (Brilliant Stars 151)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Shaymin",
+   "page": "Shaymin V (Brilliant Stars 152)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Charizard",
+   "page": "Charizard V (Brilliant Stars 153)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Charizard",
+   "page": "Charizard V (Brilliant Stars 154)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Lumineon",
+   "page": "Lumineon V (Brilliant Stars 155)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Lumineon",
+   "page": "Lumineon V (Brilliant Stars 156)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Pikachu",
+   "page": "Pikachu V (Brilliant Stars 157)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Raichu",
+   "page": "Raichu V (Brilliant Stars 158)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Granbull",
+   "page": "Granbull V (Brilliant Stars 159)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Whimsicott",
+   "page": "Whimsicott V (Brilliant Stars 160)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Honchkrow",
+   "page": "Honchkrow V (Brilliant Stars 161)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Honchkrow",
+   "page": "Honchkrow V (Brilliant Stars 162)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Zamazenta",
+   "page": "Zamazenta V (Brilliant Stars 163)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Flygon",
+   "page": "Flygon V (Brilliant Stars 164)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "165": {
+   "en": "Arceus",
+   "page": "Arceus V (Brilliant Stars 165)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "166": {
+   "en": "Arceus",
+   "page": "Arceus V (Brilliant Stars 166)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "167": {
+   "en": "Barry",
+   "page": "Barry (Brilliant Stars 167)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "168": {
+   "en": "Cheren's Care",
+   "page": "Cheren's Care (Brilliant Stars 168)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "169": {
+   "en": "Cynthia's Ambition",
+   "page": "Cynthia's Ambition (Brilliant Stars 169)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "170": {
+   "en": "Kindler",
+   "page": "Kindler (Brilliant Stars 170)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "171": {
+   "en": "Marnie's Pride",
+   "page": "Marnie's Pride (Brilliant Stars 171)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "172": {
+   "en": "Roseanne's Backup",
+   "page": "Roseanne's Backup (Brilliant Stars 172)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "173": {
+   "en": "Shaymin",
+   "page": "Shaymin VSTAR (Brilliant Stars 173)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "174": {
+   "en": "Charizard",
+   "page": "Charizard VSTAR (Brilliant Stars 174)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "175": {
+   "en": "Whimsicott",
+   "page": "Whimsicott VSTAR (Brilliant Stars 175)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "176": {
+   "en": "Arceus",
+   "page": "Arceus VSTAR (Brilliant Stars 176)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "177": {
+   "en": "Cheren's Care",
+   "page": "Cheren's Care (Brilliant Stars 177)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "178": {
+   "en": "Cynthia's Ambition",
+   "page": "Cynthia's Ambition (Brilliant Stars 178)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "179": {
+   "en": "Kindler",
+   "page": "Kindler (Brilliant Stars 179)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "180": {
+   "en": "Roseanne's Backup",
+   "page": "Roseanne's Backup (Brilliant Stars 180)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "181": {
+   "en": "Galarian Articuno",
+   "page": "Galarian Articuno V (Brilliant Stars 181)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "182": {
+   "en": "Galarian Zapdos",
+   "page": "Galarian Zapdos V (Brilliant Stars 182)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "183": {
+   "en": "Galarian Moltres",
+   "page": "Galarian Moltres V (Brilliant Stars 183)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "184": {
+   "en": "Arceus",
+   "page": "Arceus VSTAR (Brilliant Stars 184)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "185": {
+   "en": "Magma Basin",
+   "page": "Magma Basin (Brilliant Stars 185)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "186": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Brilliant Stars 186)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg1": {
+   "en": "Flareon",
+   "page": "Flareon (Brilliant Stars TG1)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg2": {
+   "en": "Vaporeon",
+   "page": "Vaporeon (Brilliant Stars TG2)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg3": {
+   "en": "Octillery",
+   "page": "Octillery (Brilliant Stars TG3)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg4": {
+   "en": "Jolteon",
+   "page": "Jolteon (Brilliant Stars TG4)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg5": {
+   "en": "Zekrom",
+   "page": "Zekrom (Brilliant Stars TG5)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg6": {
+   "en": "Dusknoir",
+   "page": "Dusknoir (Brilliant Stars TG6)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg7": {
+   "en": "Dedenne",
+   "page": "Dedenne (Brilliant Stars TG7)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg8": {
+   "en": "Alcremie",
+   "page": "Alcremie (Brilliant Stars TG8)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg9": {
+   "en": "Ariados",
+   "page": "Ariados (Brilliant Stars TG9)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg10": {
+   "en": "Houndoom",
+   "page": "Houndoom (Brilliant Stars TG10)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg11": {
+   "en": "Eevee",
+   "page": "Eevee (Brilliant Stars TG11)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg12": {
+   "en": "Oranguru",
+   "page": "Oranguru (Brilliant Stars TG12)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg13": {
+   "en": "Boltund",
+   "page": "Boltund V (Brilliant Stars TG13)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg14": {
+   "en": "Sylveon",
+   "page": "Sylveon V (Brilliant Stars TG14)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg15": {
+   "en": "Sylveon",
+   "page": "Sylveon VMAX (Brilliant Stars TG15)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg16": {
+   "en": "Mimikyu",
+   "page": "Mimikyu V (Brilliant Stars TG16)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg17": {
+   "en": "Mimikyu",
+   "page": "Mimikyu VMAX (Brilliant Stars TG17)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg18": {
+   "en": "Single Strike Urshifu",
+   "page": "Single Strike Urshifu V (Brilliant Stars TG18)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg19": {
+   "en": "Single Strike Urshifu",
+   "page": "Single Strike Urshifu VMAX (Brilliant Stars TG19)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg20": {
+   "en": "Rapid Strike Urshifu",
+   "page": "Rapid Strike Urshifu V (Brilliant Stars TG20)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg21": {
+   "en": "Rapid Strike Urshifu",
+   "page": "Rapid Strike Urshifu VMAX (Brilliant Stars TG21)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg22": {
+   "en": "Umbreon",
+   "page": "Umbreon V (Brilliant Stars TG22)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg23": {
+   "en": "Umbreon",
+   "page": "Umbreon VMAX (Brilliant Stars TG23)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg24": {
+   "en": "Acerola's Premonition",
+   "page": "Acerola's Premonition (Brilliant Stars TG24)",
+   "type": "TGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg25": {
+   "en": "Café Master",
+   "page": "Café Master (Brilliant Stars TG25)",
+   "type": "TGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg26": {
+   "en": "Gloria",
+   "page": "Gloria (Brilliant Stars TG26)",
+   "type": "TGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg27": {
+   "en": "Rapid Strike Style Mustard",
+   "page": "Rapid Strike Style Mustard (Brilliant Stars TG27)",
+   "type": "TGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg28": {
+   "en": "Single Strike Style Mustard",
+   "page": "Single Strike Style Mustard (Brilliant Stars TG28)",
+   "type": "TGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg29": {
+   "en": "Single Strike Urshifu",
+   "page": "Single Strike Urshifu VMAX (Brilliant Stars TG29)",
+   "type": "TGS",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg30": {
+   "en": "Rapid Strike Urshifu",
+   "page": "Rapid Strike Urshifu VMAX (Brilliant Stars TG30)",
+   "type": "TGS",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

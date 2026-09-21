@@ -1,0 +1,930 @@
+{
+ "page": "Glory of the Rocket Gang (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Pineco",
+   "page": "Pineco (Glory of the Rocket Gang 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Shroomish",
+   "page": "Shroomish (Glory of the Rocket Gang 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Breloom",
+   "page": "Breloom (Glory of the Rocket Gang 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Mow Rotom",
+   "page": "Mow Rotom (Glory of the Rocket Gang 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Fomantis",
+   "page": "Fomantis (Glory of the Rocket Gang 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Lurantis",
+   "page": "Lurantis (Glory of the Rocket Gang 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Team Rocket's Blipbug",
+   "page": "Team Rocket's Blipbug (Glory of the Rocket Gang 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Team Rocket's Tarountula",
+   "page": "Team Rocket's Tarountula (Glory of the Rocket Gang 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Team Rocket's Spidops",
+   "page": "Team Rocket's Spidops (Glory of the Rocket Gang 9)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "10": {
+   "en": "Smoliv",
+   "page": "Smoliv (Glory of the Rocket Gang 10)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Dolliv",
+   "page": "Dolliv (Glory of the Rocket Gang 11)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Arboliva",
+   "page": "Arboliva ex (Glory of the Rocket Gang 12)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "13": {
+   "en": "Growlithe",
+   "page": "Growlithe (Glory of the Rocket Gang 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Arcanine",
+   "page": "Arcanine (Glory of the Rocket Gang 14)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Team Rocket's Moltres",
+   "page": "Team Rocket's Moltres ex (Glory of the Rocket Gang 15)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Team Rocket's Houndour",
+   "page": "Team Rocket's Houndour (Glory of the Rocket Gang 16)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Team Rocket's Houndoom",
+   "page": "Team Rocket's Houndoom (Glory of the Rocket Gang 17)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Torchic",
+   "page": "Torchic (Glory of the Rocket Gang 18)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Combusken",
+   "page": "Combusken (Glory of the Rocket Gang 19)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Blaziken",
+   "page": "Blaziken (Glory of the Rocket Gang 20)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "21": {
+   "en": "Heat Rotom",
+   "page": "Heat Rotom (Glory of the Rocket Gang 21)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Team Rocket's Articuno",
+   "page": "Team Rocket's Articuno (Glory of the Rocket Gang 22)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "23": {
+   "en": "Clamperl",
+   "page": "Clamperl (Glory of the Rocket Gang 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Huntail",
+   "page": "Huntail (Glory of the Rocket Gang 24)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Gorebyss",
+   "page": "Gorebyss (Glory of the Rocket Gang 25)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "26": {
+   "en": "Snover",
+   "page": "Snover (Glory of the Rocket Gang 26)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Abomasnow",
+   "page": "Abomasnow (Glory of the Rocket Gang 27)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Wash Rotom",
+   "page": "Wash Rotom (Glory of the Rocket Gang 28)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Arrokuda",
+   "page": "Arrokuda (Glory of the Rocket Gang 29)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Barraskewda",
+   "page": "Barraskewda (Glory of the Rocket Gang 30)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "31": {
+   "en": "Cetoddle",
+   "page": "Cetoddle (Glory of the Rocket Gang 31)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Cetitan",
+   "page": "Cetitan ex (Glory of the Rocket Gang 32)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "33": {
+   "en": "Team Rocket's Zapdos",
+   "page": "Team Rocket's Zapdos (Glory of the Rocket Gang 33)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "34": {
+   "en": "Team Rocket's Mareep",
+   "page": "Team Rocket's Mareep (Glory of the Rocket Gang 34)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Team Rocket's Flaaffy",
+   "page": "Team Rocket's Flaaffy (Glory of the Rocket Gang 35)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Team Rocket's Ampharos",
+   "page": "Team Rocket's Ampharos (Glory of the Rocket Gang 36)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Team Rocket's Drowzee",
+   "page": "Team Rocket's Drowzee (Glory of the Rocket Gang 37)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Team Rocket's Hypno",
+   "page": "Team Rocket's Hypno (Glory of the Rocket Gang 38)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Team Rocket's Mewtwo",
+   "page": "Team Rocket's Mewtwo ex (Glory of the Rocket Gang 39)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "40": {
+   "en": "Team Rocket's Wobbuffet",
+   "page": "Team Rocket's Wobbuffet (Glory of the Rocket Gang 40)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "41": {
+   "en": "Team Rocket's Chingling",
+   "page": "Team Rocket's Chingling (Glory of the Rocket Gang 41)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Team Rocket's Mimikyu",
+   "page": "Team Rocket's Mimikyu (Glory of the Rocket Gang 42)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Team Rocket's Dottler",
+   "page": "Team Rocket's Dottler (Glory of the Rocket Gang 43)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Team Rocket's Orbeetle",
+   "page": "Team Rocket's Orbeetle (Glory of the Rocket Gang 44)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Mankey",
+   "page": "Mankey (Glory of the Rocket Gang 45)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Primeape",
+   "page": "Primeape (Glory of the Rocket Gang 46)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Annihilape",
+   "page": "Annihilape (Glory of the Rocket Gang 47)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "48": {
+   "en": "Team Rocket's Larvitar",
+   "page": "Team Rocket's Larvitar (Glory of the Rocket Gang 48)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Team Rocket's Pupitar",
+   "page": "Team Rocket's Pupitar (Glory of the Rocket Gang 49)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Team Rocket's Tyranitar",
+   "page": "Team Rocket's Tyranitar (Glory of the Rocket Gang 50)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "51": {
+   "en": "Nosepass",
+   "page": "Nosepass (Glory of the Rocket Gang 51)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Probopass",
+   "page": "Probopass (Glory of the Rocket Gang 52)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Meditite",
+   "page": "Meditite (Glory of the Rocket Gang 53)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Medicham",
+   "page": "Medicham (Glory of the Rocket Gang 54)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Regirock",
+   "page": "Regirock ex (Glory of the Rocket Gang 55)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Team Rocket's Ekans",
+   "page": "Team Rocket's Ekans (Glory of the Rocket Gang 56)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Team Rocket's Arbok",
+   "page": "Team Rocket's Arbok (Glory of the Rocket Gang 57)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Team Rocket's Nidoran♀",
+   "page": "Team Rocket's Nidoran♀ (Glory of the Rocket Gang 58)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Team Rocket's Nidorina",
+   "page": "Team Rocket's Nidorina (Glory of the Rocket Gang 59)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Team Rocket's Nidoqueen",
+   "page": "Team Rocket's Nidoqueen (Glory of the Rocket Gang 60)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Team Rocket's Nidoran♂",
+   "page": "Team Rocket's Nidoran♂ (Glory of the Rocket Gang 61)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Team Rocket's Nidorino",
+   "page": "Team Rocket's Nidorino (Glory of the Rocket Gang 62)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Team Rocket's Nidoking",
+   "page": "Team Rocket's Nidoking ex (Glory of the Rocket Gang 63)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Team Rocket's Zubat",
+   "page": "Team Rocket's Zubat (Glory of the Rocket Gang 64)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Team Rocket's Golbat",
+   "page": "Team Rocket's Golbat (Glory of the Rocket Gang 65)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Team Rocket's Crobat",
+   "page": "Team Rocket's Crobat ex (Glory of the Rocket Gang 66)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Team Rocket's Grimer",
+   "page": "Team Rocket's Grimer (Glory of the Rocket Gang 67)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "68": {
+   "en": "Team Rocket's Muk",
+   "page": "Team Rocket's Muk (Glory of the Rocket Gang 68)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Team Rocket's Koffing",
+   "page": "Team Rocket's Koffing (Glory of the Rocket Gang 69)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "70": {
+   "en": "Team Rocket's Weezing",
+   "page": "Team Rocket's Weezing (Glory of the Rocket Gang 70)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Team Rocket's Murkrow",
+   "page": "Team Rocket's Murkrow (Glory of the Rocket Gang 71)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Team Rocket's Sneasel",
+   "page": "Team Rocket's Sneasel (Glory of the Rocket Gang 72)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "73": {
+   "en": "Forretress",
+   "page": "Forretress (Glory of the Rocket Gang 73)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "74": {
+   "en": "Skarmory",
+   "page": "Skarmory (Glory of the Rocket Gang 74)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "75": {
+   "en": "Zamazenta",
+   "page": "Zamazenta (Glory of the Rocket Gang 75)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "76": {
+   "en": "Team Rocket's Rattata",
+   "page": "Team Rocket's Rattata (Glory of the Rocket Gang 76)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "77": {
+   "en": "Team Rocket's Raticate",
+   "page": "Team Rocket's Raticate (Glory of the Rocket Gang 77)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "78": {
+   "en": "Team Rocket's Meowth",
+   "page": "Team Rocket's Meowth (Glory of the Rocket Gang 78)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "79": {
+   "en": "Team Rocket's Persian",
+   "page": "Team Rocket's Persian ex (Glory of the Rocket Gang 79)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (Glory of the Rocket Gang 80)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "81": {
+   "en": "Team Rocket's Porygon",
+   "page": "Team Rocket's Porygon (Glory of the Rocket Gang 81)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "82": {
+   "en": "Team Rocket's Porygon2",
+   "page": "Team Rocket's Porygon2 (Glory of the Rocket Gang 82)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "83": {
+   "en": "Team Rocket's Porygon-Z",
+   "page": "Team Rocket's Porygon-Z (Glory of the Rocket Gang 83)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "84": {
+   "en": "Taillow",
+   "page": "Taillow (Glory of the Rocket Gang 84)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "85": {
+   "en": "Swellow",
+   "page": "Swellow (Glory of the Rocket Gang 85)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "86": {
+   "en": "Squawkabilly",
+   "page": "Squawkabilly (Glory of the Rocket Gang 86)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "87": {
+   "en": "Team Rocket's Bother-Bot",
+   "page": "Team Rocket's Bother-Bot (Glory of the Rocket Gang 87)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "88": {
+   "en": "Team Rocket's Great Ball",
+   "page": "Team Rocket's Great Ball (Glory of the Rocket Gang 88)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "89": {
+   "en": "Team Rocket's Venture Bomb",
+   "page": "Team Rocket's Venture Bomb (Glory of the Rocket Gang 89)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "90": {
+   "en": "Team Rocket's Transceiver",
+   "page": "Team Rocket's Transceiver (Glory of the Rocket Gang 90)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "91": {
+   "en": "Team Rocket's Ariana",
+   "page": "Team Rocket's Ariana (Glory of the Rocket Gang 91)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "92": {
+   "en": "Team Rocket's Archer",
+   "page": "Team Rocket's Archer (Glory of the Rocket Gang 92)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "93": {
+   "en": "Team Rocket's Giovanni",
+   "page": "Team Rocket's Giovanni (Glory of the Rocket Gang 93)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "94": {
+   "en": "Team Rocket's Petrel",
+   "page": "Team Rocket's Petrel (Glory of the Rocket Gang 94)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "95": {
+   "en": "Team Rocket's Proton",
+   "page": "Team Rocket's Proton (Glory of the Rocket Gang 95)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "96": {
+   "en": "Team Rocket's Watchtower",
+   "page": "Team Rocket's Watchtower (Glory of the Rocket Gang 96)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "97": {
+   "en": "Team Rocket's Factory",
+   "page": "Team Rocket's Factory (Glory of the Rocket Gang 97)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "98": {
+   "en": "Team Rocket's Energy",
+   "page": "Team Rocket's Energy (Glory of the Rocket Gang 98)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "99": {
+   "en": "Team Rocket's Spidops",
+   "page": "Team Rocket's Spidops (Glory of the Rocket Gang 99)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Team Rocket's Houndoom",
+   "page": "Team Rocket's Houndoom (Glory of the Rocket Gang 100)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Blaziken",
+   "page": "Blaziken (Glory of the Rocket Gang 101)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Clamperl",
+   "page": "Clamperl (Glory of the Rocket Gang 102)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Team Rocket's Wobbuffet",
+   "page": "Team Rocket's Wobbuffet (Glory of the Rocket Gang 103)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Team Rocket's Orbeetle",
+   "page": "Team Rocket's Orbeetle (Glory of the Rocket Gang 104)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Team Rocket's Weezing",
+   "page": "Team Rocket's Weezing (Glory of the Rocket Gang 105)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Team Rocket's Murkrow",
+   "page": "Team Rocket's Murkrow (Glory of the Rocket Gang 106)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Zamazenta",
+   "page": "Zamazenta (Glory of the Rocket Gang 107)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Team Rocket's Raticate",
+   "page": "Team Rocket's Raticate (Glory of the Rocket Gang 108)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Team Rocket's Meowth",
+   "page": "Team Rocket's Meowth (Glory of the Rocket Gang 109)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (Glory of the Rocket Gang 110)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Arboliva",
+   "page": "Arboliva ex (Glory of the Rocket Gang 111)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Team Rocket's Moltres",
+   "page": "Team Rocket's Moltres ex (Glory of the Rocket Gang 112)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Cetitan",
+   "page": "Cetitan ex (Glory of the Rocket Gang 113)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Team Rocket's Mewtwo",
+   "page": "Team Rocket's Mewtwo ex (Glory of the Rocket Gang 114)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Regirock",
+   "page": "Regirock ex (Glory of the Rocket Gang 115)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Team Rocket's Nidoking",
+   "page": "Team Rocket's Nidoking ex (Glory of the Rocket Gang 116)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "117": {
+   "en": "Team Rocket's Crobat",
+   "page": "Team Rocket's Crobat ex (Glory of the Rocket Gang 117)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "118": {
+   "en": "Team Rocket's Persian",
+   "page": "Team Rocket's Persian ex (Glory of the Rocket Gang 118)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "119": {
+   "en": "Team Rocket's Ariana",
+   "page": "Team Rocket's Ariana (Glory of the Rocket Gang 119)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "120": {
+   "en": "Team Rocket's Archer",
+   "page": "Team Rocket's Archer (Glory of the Rocket Gang 120)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "121": {
+   "en": "Team Rocket's Giovanni",
+   "page": "Team Rocket's Giovanni (Glory of the Rocket Gang 121)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "122": {
+   "en": "Team Rocket's Petrel",
+   "page": "Team Rocket's Petrel (Glory of the Rocket Gang 122)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "123": {
+   "en": "Team Rocket's Proton",
+   "page": "Team Rocket's Proton (Glory of the Rocket Gang 123)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "124": {
+   "en": "Team Rocket's Moltres",
+   "page": "Team Rocket's Moltres ex (Glory of the Rocket Gang 124)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "125": {
+   "en": "Team Rocket's Mewtwo",
+   "page": "Team Rocket's Mewtwo ex (Glory of the Rocket Gang 125)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "126": {
+   "en": "Team Rocket's Nidoking",
+   "page": "Team Rocket's Nidoking ex (Glory of the Rocket Gang 126)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "127": {
+   "en": "Team Rocket's Crobat",
+   "page": "Team Rocket's Crobat ex (Glory of the Rocket Gang 127)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "128": {
+   "en": "Team Rocket's Ariana",
+   "page": "Team Rocket's Ariana (Glory of the Rocket Gang 128)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "129": {
+   "en": "Team Rocket's Giovanni",
+   "page": "Team Rocket's Giovanni (Glory of the Rocket Gang 129)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "130": {
+   "en": "Team Rocket's Mewtwo",
+   "page": "Team Rocket's Mewtwo ex (Glory of the Rocket Gang 130)",
+   "type": "Psychic",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "131": {
+   "en": "Team Rocket's Crobat",
+   "page": "Team Rocket's Crobat ex (Glory of the Rocket Gang 131)",
+   "type": "Darkness",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "132": {
+   "en": "Jamming Tower",
+   "page": "Jamming Tower (Glory of the Rocket Gang 132)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

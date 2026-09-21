@@ -1,0 +1,1721 @@
+{
+ "page": "Paradigm Trigger (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Oddish",
+   "page": "Oddish (Paradigm Trigger 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Gloom",
+   "page": "Gloom (Paradigm Trigger 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Bellossom",
+   "page": "Bellossom (Paradigm Trigger 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Tangela",
+   "page": "Tangela (Paradigm Trigger 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Tangrowth",
+   "page": "Tangrowth (Paradigm Trigger 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Spinarak",
+   "page": "Spinarak (Paradigm Trigger 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Ariados",
+   "page": "Ariados (Paradigm Trigger 7)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "8": {
+   "en": "Virizion",
+   "page": "Virizion (Paradigm Trigger 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Chesnaught",
+   "page": "Chesnaught V (Paradigm Trigger 9)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "10": {
+   "en": "Ponyta",
+   "page": "Ponyta (Paradigm Trigger 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Rapidash",
+   "page": "Rapidash (Paradigm Trigger 11)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Victini",
+   "page": "Victini (Paradigm Trigger 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Larvesta",
+   "page": "Larvesta (Paradigm Trigger 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Volcarona",
+   "page": "Volcarona (Paradigm Trigger 14)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Litten",
+   "page": "Litten (Paradigm Trigger 15)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Torracat",
+   "page": "Torracat (Paradigm Trigger 16)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Incineroar",
+   "page": "Incineroar (Paradigm Trigger 17)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Omastar",
+   "page": "Omastar V (Paradigm Trigger 18)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "19": {
+   "en": "Snorunt",
+   "page": "Snorunt (Paradigm Trigger 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Glalie",
+   "page": "Glalie (Paradigm Trigger 20)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Froslass",
+   "page": "Froslass (Paradigm Trigger 21)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Relicanth",
+   "page": "Relicanth (Paradigm Trigger 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Keldeo",
+   "page": "Keldeo (Paradigm Trigger 23)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Pikachu",
+   "page": "Pikachu (Paradigm Trigger 24)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Raichu",
+   "page": "Raichu (Paradigm Trigger 25)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Shinx",
+   "page": "Shinx (Paradigm Trigger 26)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Luxio",
+   "page": "Luxio (Paradigm Trigger 27)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Luxray",
+   "page": "Luxray (Paradigm Trigger 28)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Stunfisk",
+   "page": "Stunfisk (Paradigm Trigger 29)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Helioptile",
+   "page": "Helioptile (Paradigm Trigger 30)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (Paradigm Trigger 31)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Zeraora",
+   "page": "Zeraora (Paradigm Trigger 32)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Regieleki",
+   "page": "Regieleki V (Paradigm Trigger 33)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "34": {
+   "en": "Regieleki",
+   "page": "Regieleki VMAX (Paradigm Trigger 34)",
+   "type": "Lightning",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "35": {
+   "en": "Unown",
+   "page": "Unown V (Paradigm Trigger 35)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "36": {
+   "en": "Unown",
+   "page": "Unown VSTAR (Paradigm Trigger 36)",
+   "type": "Psychic",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "37": {
+   "en": "Meditite",
+   "page": "Meditite (Paradigm Trigger 37)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Medicham",
+   "page": "Medicham (Paradigm Trigger 38)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "39": {
+   "en": "Sigilyph",
+   "page": "Sigilyph (Paradigm Trigger 39)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Solosis",
+   "page": "Solosis (Paradigm Trigger 40)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Duosion",
+   "page": "Duosion (Paradigm Trigger 41)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Reuniclus",
+   "page": "Reuniclus (Paradigm Trigger 42)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "43": {
+   "en": "Elgyem",
+   "page": "Elgyem (Paradigm Trigger 43)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Beheeyem",
+   "page": "Beheeyem (Paradigm Trigger 44)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Dedenne",
+   "page": "Dedenne (Paradigm Trigger 45)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Hisuian Arcanine",
+   "page": "Hisuian Arcanine V (Paradigm Trigger 46)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "47": {
+   "en": "Baltoy",
+   "page": "Baltoy (Paradigm Trigger 47)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Claydol",
+   "page": "Claydol (Paradigm Trigger 48)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Anorith",
+   "page": "Anorith (Paradigm Trigger 49)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Armaldo",
+   "page": "Armaldo (Paradigm Trigger 50)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Terrakion",
+   "page": "Terrakion (Paradigm Trigger 51)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "52": {
+   "en": "Pancham",
+   "page": "Pancham (Paradigm Trigger 52)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Rockruff",
+   "page": "Rockruff (Paradigm Trigger 53)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Lycanroc",
+   "page": "Lycanroc (Paradigm Trigger 54)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Stonjourner",
+   "page": "Stonjourner (Paradigm Trigger 55)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "56": {
+   "en": "Skuntank",
+   "page": "Skuntank V (Paradigm Trigger 56)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Purrloin",
+   "page": "Purrloin (Paradigm Trigger 57)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Liepard",
+   "page": "Liepard (Paradigm Trigger 58)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Pangoro",
+   "page": "Pangoro (Paradigm Trigger 59)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Skrelp",
+   "page": "Skrelp (Paradigm Trigger 60)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Dragalge",
+   "page": "Dragalge (Paradigm Trigger 61)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Morpeko",
+   "page": "Morpeko (Paradigm Trigger 62)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Galarian Meowth",
+   "page": "Galarian Meowth (Paradigm Trigger 63)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "64": {
+   "en": "Galarian Perrserker",
+   "page": "Galarian Perrserker (Paradigm Trigger 64)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Aron",
+   "page": "Aron (Paradigm Trigger 65)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "Lairon",
+   "page": "Lairon (Paradigm Trigger 66)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Aggron",
+   "page": "Aggron (Paradigm Trigger 67)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "68": {
+   "en": "Cobalion",
+   "page": "Cobalion (Paradigm Trigger 68)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "69": {
+   "en": "Togedemaru",
+   "page": "Togedemaru (Paradigm Trigger 69)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "70": {
+   "en": "Dratini",
+   "page": "Dratini (Paradigm Trigger 70)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "71": {
+   "en": "Dragonair",
+   "page": "Dragonair (Paradigm Trigger 71)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Dragonite",
+   "page": "Dragonite (Paradigm Trigger 72)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "73": {
+   "en": "Noibat",
+   "page": "Noibat (Paradigm Trigger 73)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "74": {
+   "en": "Noivern",
+   "page": "Noivern (Paradigm Trigger 74)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "75": {
+   "en": "Zygarde",
+   "page": "Zygarde (Paradigm Trigger 75)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "76": {
+   "en": "Regidrago",
+   "page": "Regidrago V (Paradigm Trigger 76)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Regidrago",
+   "page": "Regidrago VSTAR (Paradigm Trigger 77)",
+   "type": "Dragon",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Tauros",
+   "page": "Tauros (Paradigm Trigger 78)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Lugia",
+   "page": "Lugia V (Paradigm Trigger 79)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Lugia",
+   "page": "Lugia VSTAR (Paradigm Trigger 80)",
+   "type": "Colorless",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Shaymin",
+   "page": "Shaymin (Paradigm Trigger 81)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "82": {
+   "en": "Archen",
+   "page": "Archen (Paradigm Trigger 82)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "83": {
+   "en": "Archeops",
+   "page": "Archeops (Paradigm Trigger 83)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "84": {
+   "en": "Rufflet",
+   "page": "Rufflet (Paradigm Trigger 84)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "85": {
+   "en": "Hisuian Braviary",
+   "page": "Hisuian Braviary (Paradigm Trigger 85)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "86": {
+   "en": "Yungoos",
+   "page": "Yungoos (Paradigm Trigger 86)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "87": {
+   "en": "Gumshoos",
+   "page": "Gumshoos (Paradigm Trigger 87)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "88": {
+   "en": "Oranguru",
+   "page": "Oranguru (Paradigm Trigger 88)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "89": {
+   "en": "Quad Stone",
+   "page": "Quad Stone (Paradigm Trigger 89)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "90": {
+   "en": "Unidentified Fossil",
+   "page": "Unidentified Fossil (Paradigm Trigger 90)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "91": {
+   "en": "Earthen Seal Stone",
+   "page": "Earthen Seal Stone (Paradigm Trigger 91)",
+   "type": "I",
+   "rarity": "R",
+   "mark": ""
+  },
+  "92": {
+   "en": "Forest Seal Stone",
+   "page": "Forest Seal Stone (Paradigm Trigger 92)",
+   "type": "I",
+   "rarity": "R",
+   "mark": ""
+  },
+  "93": {
+   "en": "Worker",
+   "page": "Worker (Paradigm Trigger 93)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "94": {
+   "en": "Brandon",
+   "page": "Brandon (Paradigm Trigger 94)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "95": {
+   "en": "Candice",
+   "page": "Candice (Paradigm Trigger 95)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "96": {
+   "en": "Lance",
+   "page": "Lance (Paradigm Trigger 96)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "97": {
+   "en": "Primordial Altar",
+   "page": "Primordial Altar (Paradigm Trigger 97)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "98": {
+   "en": "Regenerative Energy",
+   "page": "Regenerative Energy (Paradigm Trigger 98)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "99": {
+   "en": "Chesnaught",
+   "page": "Chesnaught V (Paradigm Trigger 99)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Omastar",
+   "page": "Omastar V (Paradigm Trigger 100)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Regieleki",
+   "page": "Regieleki V (Paradigm Trigger 101)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Unown",
+   "page": "Unown V (Paradigm Trigger 102)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Unown",
+   "page": "Unown V (Paradigm Trigger 103)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Hisuian Arcanine",
+   "page": "Hisuian Arcanine V (Paradigm Trigger 104)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Skuntank",
+   "page": "Skuntank V (Paradigm Trigger 105)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Skuntank",
+   "page": "Skuntank V (Paradigm Trigger 106)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Regidrago",
+   "page": "Regidrago V (Paradigm Trigger 107)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Regidrago",
+   "page": "Regidrago V (Paradigm Trigger 108)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Lugia",
+   "page": "Lugia V (Paradigm Trigger 109)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Lugia",
+   "page": "Lugia V (Paradigm Trigger 110)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Worker",
+   "page": "Worker (Paradigm Trigger 111)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Brandon",
+   "page": "Brandon (Paradigm Trigger 112)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Candice",
+   "page": "Candice (Paradigm Trigger 113)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Lance",
+   "page": "Lance (Paradigm Trigger 114)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Regieleki",
+   "page": "Regieleki VMAX (Paradigm Trigger 115)",
+   "type": "Lightning",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Unown",
+   "page": "Unown VSTAR (Paradigm Trigger 116)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "117": {
+   "en": "Regidrago",
+   "page": "Regidrago VSTAR (Paradigm Trigger 117)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "118": {
+   "en": "Lugia",
+   "page": "Lugia VSTAR (Paradigm Trigger 118)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "119": {
+   "en": "Worker",
+   "page": "Worker (Paradigm Trigger 119)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "120": {
+   "en": "Brandon",
+   "page": "Brandon (Paradigm Trigger 120)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "121": {
+   "en": "Candice",
+   "page": "Candice (Paradigm Trigger 121)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "122": {
+   "en": "Lance",
+   "page": "Lance (Paradigm Trigger 122)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "123": {
+   "en": "Lugia",
+   "page": "Lugia VSTAR (Paradigm Trigger 123)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "124": {
+   "en": "Leafy Camo Poncho",
+   "page": "Leafy Camo Poncho (Paradigm Trigger 124)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "125": {
+   "en": "Gapejaw Bog",
+   "page": "Gapejaw Bog (Paradigm Trigger 125)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "126": {
+   "en": "Cobalion",
+   "page": "Cobalion (Silver Tempest 126)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Togedemaru",
+   "page": "Togedemaru (Silver Tempest 127)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Magearna",
+   "page": "Magearna V (Silver Tempest 128)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Dratini",
+   "page": "Dratini (Silver Tempest 129)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Dragonair",
+   "page": "Dragonair (Silver Tempest 130)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Dragonite",
+   "page": "Dragonite (Silver Tempest 131)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Noibat",
+   "page": "Noibat (Silver Tempest 132)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Noivern",
+   "page": "Noivern (Silver Tempest 133)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Zygarde",
+   "page": "Zygarde (Silver Tempest 134)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Regidrago",
+   "page": "Regidrago V (Silver Tempest 135)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Regidrago",
+   "page": "Regidrago VSTAR (Silver Tempest 136)",
+   "type": "Rare VSTAR",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Smeargle",
+   "page": "Smeargle (Silver Tempest 137)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Lugia",
+   "page": "Lugia V (Silver Tempest 138)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Lugia",
+   "page": "Lugia VSTAR (Silver Tempest 139)",
+   "type": "Rare VSTAR",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh V (Silver Tempest 140)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Spinda",
+   "page": "Spinda (Silver Tempest 141)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Swablu",
+   "page": "Swablu (Silver Tempest 142)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Altaria",
+   "page": "Altaria (Silver Tempest 143)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Buneary",
+   "page": "Buneary (Silver Tempest 144)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Lopunny",
+   "page": "Lopunny (Silver Tempest 145)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Archen",
+   "page": "Archen (Silver Tempest 146)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Archeops",
+   "page": "Archeops (Silver Tempest 147)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Rufflet",
+   "page": "Rufflet (Silver Tempest 148)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Hisuian Braviary",
+   "page": "Hisuian Braviary (Silver Tempest 149)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Fletchling",
+   "page": "Fletchling (Silver Tempest 150)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Brandon",
+   "page": "Brandon (Silver Tempest 151)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Candice",
+   "page": "Candice (Silver Tempest 152)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Capturing Aroma",
+   "page": "Capturing Aroma (Silver Tempest 153)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Earthen Seal Stone",
+   "page": "Earthen Seal Stone (Silver Tempest 154)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Emergency Jelly",
+   "page": "Emergency Jelly (Silver Tempest 155)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Forest Seal Stone",
+   "page": "Forest Seal Stone (Silver Tempest 156)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Furisode Girl",
+   "page": "Furisode Girl (Silver Tempest 157)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Gym Trainer",
+   "page": "Gym Trainer (Silver Tempest 158)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Lance",
+   "page": "Lance (Silver Tempest 159)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Leafy Camo Poncho",
+   "page": "Leafy Camo Poncho (Silver Tempest 160)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Primordial Altar",
+   "page": "Primordial Altar (Silver Tempest 161)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Professor Laventon",
+   "page": "Professor Laventon (Silver Tempest 162)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Quad Stone",
+   "page": "Quad Stone (Silver Tempest 163)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Serena",
+   "page": "Serena (Silver Tempest 164)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "165": {
+   "en": "Unidentified Fossil",
+   "page": "Unidentified Fossil (Silver Tempest 165)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "166": {
+   "en": "Wallace",
+   "page": "Wallace (Silver Tempest 166)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "167": {
+   "en": "Worker",
+   "page": "Worker (Silver Tempest 167)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "168": {
+   "en": "Regenerative Energy",
+   "page": "Regenerative Energy (Silver Tempest 168)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "169": {
+   "en": "V Guard Energy",
+   "page": "V Guard Energy (Silver Tempest 169)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "170": {
+   "en": "Serperior",
+   "page": "Serperior V (Silver Tempest 170)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "171": {
+   "en": "Chesnaught",
+   "page": "Chesnaught V (Silver Tempest 171)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "172": {
+   "en": "Reshiram",
+   "page": "Reshiram V (Silver Tempest 172)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "173": {
+   "en": "Alolan Vulpix",
+   "page": "Alolan Vulpix V (Silver Tempest 173)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "174": {
+   "en": "Omastar",
+   "page": "Omastar V (Silver Tempest 174)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "175": {
+   "en": "Regieleki",
+   "page": "Regieleki V (Silver Tempest 175)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "176": {
+   "en": "Unown",
+   "page": "Unown V (Silver Tempest 176)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "177": {
+   "en": "Unown",
+   "page": "Unown V (Silver Tempest 177)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "178": {
+   "en": "Mawile",
+   "page": "Mawile V (Silver Tempest 178)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "179": {
+   "en": "Hisuian Arcanine",
+   "page": "Hisuian Arcanine V (Silver Tempest 179)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "180": {
+   "en": "Skuntank",
+   "page": "Skuntank V (Silver Tempest 180)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "181": {
+   "en": "Skuntank",
+   "page": "Skuntank V (Silver Tempest 181)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "182": {
+   "en": "Magearna",
+   "page": "Magearna V (Silver Tempest 182)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "183": {
+   "en": "Regidrago",
+   "page": "Regidrago V (Silver Tempest 183)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "184": {
+   "en": "Regidrago",
+   "page": "Regidrago V (Silver Tempest 184)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "185": {
+   "en": "Lugia",
+   "page": "Lugia V (Silver Tempest 185)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "186": {
+   "en": "Lugia",
+   "page": "Lugia V (Silver Tempest 186)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "187": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh V (Silver Tempest 187)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "188": {
+   "en": "Brandon",
+   "page": "Brandon (Silver Tempest 188)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "189": {
+   "en": "Candice",
+   "page": "Candice (Silver Tempest 189)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "190": {
+   "en": "Furisode Girl",
+   "page": "Furisode Girl (Silver Tempest 190)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "191": {
+   "en": "Gym Trainer",
+   "page": "Gym Trainer (Silver Tempest 191)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "192": {
+   "en": "Lance",
+   "page": "Lance (Silver Tempest 192)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "193": {
+   "en": "Serena",
+   "page": "Serena (Silver Tempest 193)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "194": {
+   "en": "Wallace",
+   "page": "Wallace (Silver Tempest 194)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "195": {
+   "en": "Worker",
+   "page": "Worker (Silver Tempest 195)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "196": {
+   "en": "Serperior",
+   "page": "Serperior VSTAR (Silver Tempest 196)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "197": {
+   "en": "Alolan Vulpix",
+   "page": "Alolan Vulpix VSTAR (Silver Tempest 197)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "198": {
+   "en": "Regieleki",
+   "page": "Regieleki VMAX (Silver Tempest 198)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "199": {
+   "en": "Unown",
+   "page": "Unown VSTAR (Silver Tempest 199)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "200": {
+   "en": "Mawile",
+   "page": "Mawile VSTAR (Silver Tempest 200)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "201": {
+   "en": "Regidrago",
+   "page": "Regidrago VSTAR (Silver Tempest 201)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "202": {
+   "en": "Lugia",
+   "page": "Lugia VSTAR (Silver Tempest 202)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "203": {
+   "en": "Brandon",
+   "page": "Brandon (Silver Tempest 203)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "204": {
+   "en": "Candice",
+   "page": "Candice (Silver Tempest 204)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "205": {
+   "en": "Furisode Girl",
+   "page": "Furisode Girl (Silver Tempest 205)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "206": {
+   "en": "Lance",
+   "page": "Lance (Silver Tempest 206)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "207": {
+   "en": "Serena",
+   "page": "Serena (Silver Tempest 207)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "208": {
+   "en": "Wallace",
+   "page": "Wallace (Silver Tempest 208)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "209": {
+   "en": "Worker",
+   "page": "Worker (Silver Tempest 209)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "210": {
+   "en": "Serperior",
+   "page": "Serperior VSTAR (Silver Tempest 210)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "211": {
+   "en": "Lugia",
+   "page": "Lugia VSTAR (Silver Tempest 211)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "212": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (Silver Tempest 212)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "213": {
+   "en": "Gapejaw Bog",
+   "page": "Gapejaw Bog (Silver Tempest 213)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "214": {
+   "en": "Leafy Camo Poncho",
+   "page": "Leafy Camo Poncho (Silver Tempest 214)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "215": {
+   "en": "V Guard Energy",
+   "page": "V Guard Energy (Silver Tempest 215)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg1": {
+   "en": "Braixen",
+   "page": "Braixen (Silver Tempest TG1)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg2": {
+   "en": "Milotic",
+   "page": "Milotic (Silver Tempest TG2)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg3": {
+   "en": "Flaaffy",
+   "page": "Flaaffy (Silver Tempest TG3)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg4": {
+   "en": "Jynx",
+   "page": "Jynx (Silver Tempest TG4)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg5": {
+   "en": "Gardevoir",
+   "page": "Gardevoir (Silver Tempest TG5)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg6": {
+   "en": "Malamar",
+   "page": "Malamar (Silver Tempest TG6)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg7": {
+   "en": "Rockruff",
+   "page": "Rockruff (Silver Tempest TG7)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg8": {
+   "en": "Passimian",
+   "page": "Passimian (Silver Tempest TG8)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg9": {
+   "en": "Druddigon",
+   "page": "Druddigon (Silver Tempest TG9)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg10": {
+   "en": "Smeargle",
+   "page": "Smeargle (Silver Tempest TG10)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg11": {
+   "en": "Altaria",
+   "page": "Altaria (Silver Tempest TG11)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg12": {
+   "en": "Kricketune",
+   "page": "Kricketune V (Silver Tempest TG12)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg13": {
+   "en": "Serperior",
+   "page": "Serperior V (Silver Tempest TG13)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg14": {
+   "en": "Blaziken",
+   "page": "Blaziken V (Silver Tempest TG14)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg15": {
+   "en": "Blaziken",
+   "page": "Blaziken VMAX (Silver Tempest TG15)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg16": {
+   "en": "Zeraora",
+   "page": "Zeraora V (Silver Tempest TG16)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg17": {
+   "en": "Mawile",
+   "page": "Mawile V (Silver Tempest TG17)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg18": {
+   "en": "Corviknight",
+   "page": "Corviknight V (Silver Tempest TG18)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg19": {
+   "en": "Corviknight",
+   "page": "Corviknight VMAX (Silver Tempest TG19)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg20": {
+   "en": "Rayquaza",
+   "page": "Rayquaza VMAX (Silver Tempest TG20)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg21": {
+   "en": "Duraludon",
+   "page": "Duraludon VMAX (Silver Tempest TG21)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg22": {
+   "en": "Blissey",
+   "page": "Blissey V (Silver Tempest TG22)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg23": {
+   "en": "Friends in Galar",
+   "page": "Friends in Galar (Silver Tempest TG23)",
+   "type": "TGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg24": {
+   "en": "Gordie",
+   "page": "Gordie (Silver Tempest TG24)",
+   "type": "TGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg25": {
+   "en": "Judge",
+   "page": "Judge (Silver Tempest TG25)",
+   "type": "TGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg26": {
+   "en": "Professor Burnet",
+   "page": "Professor Burnet (Silver Tempest TG26)",
+   "type": "TGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg27": {
+   "en": "Raihan",
+   "page": "Raihan (Silver Tempest TG27)",
+   "type": "TGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg28": {
+   "en": "Sordward & Shielbert",
+   "page": "Sordward & Shielbert (Silver Tempest TG28)",
+   "type": "TGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg29": {
+   "en": "Rayquaza",
+   "page": "Rayquaza VMAX (Silver Tempest TG29)",
+   "type": "TGS",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg30": {
+   "en": "Duraludon",
+   "page": "Duraludon VMAX (Silver Tempest TG30)",
+   "type": "TGS",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,783 @@
+{
+ "page": "Rocket Gang Strikes Back (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Ekans",
+   "page": "Ekans (Rocket Gang Strikes Back 1)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Zubat",
+   "page": "Zubat (Rocket Gang Strikes Back 2)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "3": {
+   "en": "Grimer",
+   "page": "Grimer (Rocket Gang Strikes Back 3)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "4": {
+   "en": "Koffing",
+   "page": "Koffing (Rocket Gang Strikes Back 4)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "5": {
+   "en": "Ledyba",
+   "page": "Ledyba (Rocket Gang Strikes Back 5)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "6": {
+   "en": "Ledian",
+   "page": "Ledian (Rocket Gang Strikes Back 6)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "7": {
+   "en": "Hoppip",
+   "page": "Hoppip (Rocket Gang Strikes Back 7)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "8": {
+   "en": "Skiploom",
+   "page": "Skiploom (Rocket Gang Strikes Back 8)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "9": {
+   "en": "Jumpluff",
+   "page": "Jumpluff (Rocket Gang Strikes Back 9)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Yanma",
+   "page": "Yanma (Rocket Gang Strikes Back 10)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "11": {
+   "en": "Treecko",
+   "page": "Treecko ☆ (Rocket Gang Strikes Back 11)",
+   "type": "Grass",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "12": {
+   "en": "Dark Arbok",
+   "page": "Dark Arbok (Rocket Gang Strikes Back 12)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "13": {
+   "en": "Dark Golbat",
+   "page": "Dark Golbat (Rocket Gang Strikes Back 13)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "14": {
+   "en": "Dark Muk",
+   "page": "Dark Muk (Rocket Gang Strikes Back 14)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "15": {
+   "en": "Dark Weezing",
+   "page": "Dark Weezing (Rocket Gang Strikes Back 15)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "16": {
+   "en": "Dark Crobat",
+   "page": "Dark Crobat (Rocket Gang Strikes Back 16)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "17": {
+   "en": "Magmar",
+   "page": "Magmar (Rocket Gang Strikes Back 17)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "18": {
+   "en": "Houndour",
+   "page": "Houndour (Rocket Gang Strikes Back 18)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "19": {
+   "en": "Magby",
+   "page": "Magby (Rocket Gang Strikes Back 19)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "20": {
+   "en": "Torchic",
+   "page": "Torchic ☆ (Rocket Gang Strikes Back 20)",
+   "type": "Fire",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "21": {
+   "en": "Dark Houndoom",
+   "page": "Dark Houndoom (Rocket Gang Strikes Back 21)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "22": {
+   "en": "Horsea",
+   "page": "Horsea (Rocket Gang Strikes Back 22)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "23": {
+   "en": "Seadra",
+   "page": "Seadra (Rocket Gang Strikes Back 23)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "24": {
+   "en": "Marill",
+   "page": "Marill (Rocket Gang Strikes Back 24)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "25": {
+   "en": "Azumarill",
+   "page": "Azumarill (Rocket Gang Strikes Back 25)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "26": {
+   "en": "Wooper",
+   "page": "Wooper (Rocket Gang Strikes Back 26)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "27": {
+   "en": "Quagsire",
+   "page": "Quagsire (Rocket Gang Strikes Back 27)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "28": {
+   "en": "Qwilfish",
+   "page": "Qwilfish (Rocket Gang Strikes Back 28)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "29": {
+   "en": "Remoraid",
+   "page": "Remoraid (Rocket Gang Strikes Back 29)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "30": {
+   "en": "Delibird",
+   "page": "Delibird (Rocket Gang Strikes Back 30)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "31": {
+   "en": "Mantine",
+   "page": "Mantine (Rocket Gang Strikes Back 31)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "32": {
+   "en": "Kingdra",
+   "page": "Kingdra (Rocket Gang Strikes Back 32)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "33": {
+   "en": "Mudkip",
+   "page": "Mudkip ☆ (Rocket Gang Strikes Back 33)",
+   "type": "Water",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "34": {
+   "en": "Dark Octillery",
+   "page": "Dark Octillery (Rocket Gang Strikes Back 34)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "35": {
+   "en": "Voltorb",
+   "page": "Voltorb (Rocket Gang Strikes Back 35)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "36": {
+   "en": "Mareep",
+   "page": "Mareep (Rocket Gang Strikes Back 36)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "37": {
+   "en": "Dark Electrode",
+   "page": "Dark Electrode (Rocket Gang Strikes Back 37)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "38": {
+   "en": "Dark Flaaffy",
+   "page": "Dark Flaaffy (Rocket Gang Strikes Back 38)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "39": {
+   "en": "Dark Ampharos",
+   "page": "Dark Ampharos (Rocket Gang Strikes Back 39)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "40": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Rocket Gang Strikes Back 40)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "41": {
+   "en": "Drowzee",
+   "page": "Drowzee (Rocket Gang Strikes Back 41)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "42": {
+   "en": "Misdreavus",
+   "page": "Misdreavus (Rocket Gang Strikes Back 42)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "43": {
+   "en": "Dark Hypno",
+   "page": "Dark Hypno (Rocket Gang Strikes Back 43)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "44": {
+   "en": "Dark Slowking",
+   "page": "Dark Slowking (Rocket Gang Strikes Back 44)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "45": {
+   "en": "Sandshrew",
+   "page": "Sandshrew (Rocket Gang Strikes Back 45)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "46": {
+   "en": "Onix",
+   "page": "Onix (Rocket Gang Strikes Back 46)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "47": {
+   "en": "Cubone",
+   "page": "Cubone (Rocket Gang Strikes Back 47)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "48": {
+   "en": "Heracross",
+   "page": "Heracross (Rocket Gang Strikes Back 48)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "49": {
+   "en": "Swinub",
+   "page": "Swinub (Rocket Gang Strikes Back 49)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "50": {
+   "en": "Piloswine",
+   "page": "Piloswine (Rocket Gang Strikes Back 50)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "51": {
+   "en": "Dark Sandslash",
+   "page": "Dark Sandslash (Rocket Gang Strikes Back 51)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "52": {
+   "en": "Dark Marowak",
+   "page": "Dark Marowak (Rocket Gang Strikes Back 52)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "53": {
+   "en": "Rattata",
+   "page": "Rattata (Rocket Gang Strikes Back 53)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "54": {
+   "en": "Sentret",
+   "page": "Sentret (Rocket Gang Strikes Back 54)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "55": {
+   "en": "Furret",
+   "page": "Furret (Rocket Gang Strikes Back 55)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "56": {
+   "en": "Togepi",
+   "page": "Togepi (Rocket Gang Strikes Back 56)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "57": {
+   "en": "Togetic",
+   "page": "Togetic (Rocket Gang Strikes Back 57)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "58": {
+   "en": "Dark Raticate",
+   "page": "Dark Raticate (Rocket Gang Strikes Back 58)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "59": {
+   "en": "Rocket's Meowth",
+   "page": "Rocket's Meowth (Rocket Gang Strikes Back 59)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "60": {
+   "en": "Rocket's Hitmonchan ex",
+   "page": "Rocket's Hitmonchan ex (Rocket Gang Strikes Back 60)",
+   "type": "Darkness",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "61": {
+   "en": "Rocket's Scyther ex",
+   "page": "Rocket's Scyther ex (Rocket Gang Strikes Back 61)",
+   "type": "Darkness",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "62": {
+   "en": "Rocket's Snorlax ex",
+   "page": "Rocket's Snorlax ex (Rocket Gang Strikes Back 62)",
+   "type": "Darkness",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "63": {
+   "en": "Rocket's Zapdos ex",
+   "page": "Rocket's Zapdos ex (Rocket Gang Strikes Back 63)",
+   "type": "Darkness",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "64": {
+   "en": "Rocket's Mewtwo ex",
+   "page": "Rocket's Mewtwo ex (Rocket Gang Strikes Back 64)",
+   "type": "Darkness",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "65": {
+   "en": "Rocket's Wobbuffet",
+   "page": "Rocket's Wobbuffet (Rocket Gang Strikes Back 65)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "66": {
+   "en": "Rocket's Scizor ex",
+   "page": "Rocket's Scizor ex (Rocket Gang Strikes Back 66)",
+   "type": "Darkness",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "67": {
+   "en": "Rocket's Sneasel ex",
+   "page": "Rocket's Sneasel ex (Rocket Gang Strikes Back 67)",
+   "type": "Darkness",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "68": {
+   "en": "Rocket's Entei ex",
+   "page": "Rocket's Entei ex (Rocket Gang Strikes Back 68)",
+   "type": "Darkness",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "69": {
+   "en": "Rocket's Suicune ex",
+   "page": "Rocket's Suicune ex (Rocket Gang Strikes Back 69)",
+   "type": "Darkness",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "70": {
+   "en": "Dark Tyranitar",
+   "page": "Dark Tyranitar (Rocket Gang Strikes Back 70)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "71": {
+   "en": "Rocket's Celebi",
+   "page": "Rocket's Celebi (Rocket Gang Strikes Back 71)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "72": {
+   "en": "Dark Steelix",
+   "page": "Dark Steelix (Rocket Gang Strikes Back 72)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "73": {
+   "en": "Pow! Hand Extension",
+   "page": "Pow! Hand Extension (Rocket Gang Strikes Back 73)",
+   "type": "T [R]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "74": {
+   "en": "Swoop! Teleporter",
+   "page": "Swoop! Teleporter (Rocket Gang Strikes Back 74)",
+   "type": "T [R]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "75": {
+   "en": "Surprise! Time Machine",
+   "page": "Surprise! Time Machine (Rocket Gang Strikes Back 75)",
+   "type": "T [R]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "76": {
+   "en": "Venture Bomb",
+   "page": "Venture Bomb (Rocket Gang Strikes Back 76)",
+   "type": "T [R]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "77": {
+   "en": "Pokémon Retriever",
+   "page": "Pokémon Retriever (Rocket Gang Strikes Back 77)",
+   "type": "T [R]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "78": {
+   "en": "Copycat",
+   "page": "Copycat (Rocket Gang Strikes Back 78)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "79": {
+   "en": "Rocket's Admin.",
+   "page": "Rocket's Admin. (Rocket Gang Strikes Back 79)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "80": {
+   "en": "Rocket's Mission",
+   "page": "Rocket's Mission (Rocket Gang Strikes Back 80)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "81": {
+   "en": "Rocket's Hideout",
+   "page": "Rocket's Hideout (Rocket Gang Strikes Back 81)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "82": {
+   "en": "Rocket's Tricky Gym",
+   "page": "Rocket's Tricky Gym (Rocket Gang Strikes Back 82)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "83": {
+   "en": "R Energy",
+   "page": "R Energy (Rocket Gang Strikes Back 83)",
+   "type": "Darkness",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "84": {
+   "en": "Dark Metal Energy",
+   "page": "Dark Metal Energy (Rocket Gang Strikes Back 84)",
+   "type": "Darkness",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "85": {
+   "en": "Here Comes Team Rocket!",
+   "page": "Here Comes Team Rocket! (Rocket Gang Strikes Back 85)",
+   "type": "T [Su]",
+   "rarity": "Rare Secret",
+   "mark": ""
+  },
+  "86": {
+   "en": "Rocket's Admin.",
+   "page": "Rocket's Admin. (EX Team Rocket Returns 86)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "87": {
+   "en": "Rocket's Hideout",
+   "page": "Rocket's Hideout (EX Team Rocket Returns 87)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88": {
+   "en": "Rocket's Mission",
+   "page": "Rocket's Mission (EX Team Rocket Returns 88)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "89": {
+   "en": "Rocket's Poké Ball",
+   "page": "Rocket's Poké Ball (EX Team Rocket Returns 89)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Rocket's Tricky Gym",
+   "page": "Rocket's Tricky Gym (EX Team Rocket Returns 90)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "Surprise! Time Machine",
+   "page": "Surprise! Time Machine (EX Team Rocket Returns 91)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Swoop! Teleporter",
+   "page": "Swoop! Teleporter (EX Team Rocket Returns 92)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Venture Bomb",
+   "page": "Venture Bomb (EX Team Rocket Returns 93)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Dark Metal Energy",
+   "page": "Dark Metal Energy (EX Team Rocket Returns 94)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "R Energy",
+   "page": "R Energy (EX Team Rocket Returns 95)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Rocket's Articuno ex",
+   "page": "Rocket's Articuno ex (EX Team Rocket Returns 96)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Rocket's Entei ex",
+   "page": "Rocket's Entei ex (EX Team Rocket Returns 97)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Rocket's Hitmonchan ex",
+   "page": "Rocket's Hitmonchan ex (EX Team Rocket Returns 98)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Rocket's Mewtwo ex",
+   "page": "Rocket's Mewtwo ex (EX Team Rocket Returns 99)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Rocket's Moltres ex",
+   "page": "Rocket's Moltres ex (EX Team Rocket Returns 100)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Rocket's Scizor ex",
+   "page": "Rocket's Scizor ex (EX Team Rocket Returns 101)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Rocket's Scyther ex",
+   "page": "Rocket's Scyther ex (EX Team Rocket Returns 102)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Rocket's Sneasel ex",
+   "page": "Rocket's Sneasel ex (EX Team Rocket Returns 103)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Rocket's Snorlax ex",
+   "page": "Rocket's Snorlax ex (EX Team Rocket Returns 104)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Rocket's Suicune ex",
+   "page": "Rocket's Suicune ex (EX Team Rocket Returns 105)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Rocket's Zapdos ex",
+   "page": "Rocket's Zapdos ex (EX Team Rocket Returns 106)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Mudkip",
+   "page": "Mudkip ☆ (EX Team Rocket Returns 107)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Torchic",
+   "page": "Torchic ☆ (EX Team Rocket Returns 108)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Treecko",
+   "page": "Treecko ☆ (EX Team Rocket Returns 109)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (EX Team Rocket Returns 110)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Here Comes Team Rocket!",
+   "page": "Here Comes Team Rocket! (EX Team Rocket Returns 111)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,1322 @@
+{
+ "page": "The Best of XY (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Oddish",
+   "page": "Oddish (The Best of XY 1)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "2": {
+   "en": "Gloom",
+   "page": "Gloom (The Best of XY 2)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "3": {
+   "en": "Vileplume",
+   "page": "Vileplume (The Best of XY 3)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Spinarak",
+   "page": "Spinarak (The Best of XY 4)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "5": {
+   "en": "Ariados",
+   "page": "Ariados (The Best of XY 5)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "6": {
+   "en": "Sceptile",
+   "page": "Sceptile-EX (The Best of XY 6)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "7": {
+   "en": "Sceptile",
+   "page": "M Sceptile-EX (The Best of XY 7)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "8": {
+   "en": "Combee",
+   "page": "Combee (The Best of XY 8)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "9": {
+   "en": "Vespiquen",
+   "page": "Vespiquen (The Best of XY 9)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Flareon",
+   "page": "Flareon (The Best of XY 10)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "11": {
+   "en": "Entei",
+   "page": "Entei (The Best of XY 11)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "12": {
+   "en": "Camerupt",
+   "page": "Camerupt-EX (The Best of XY 12)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "13": {
+   "en": "Camerupt",
+   "page": "M Camerupt-EX (The Best of XY 13)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "14": {
+   "en": "Volcanion",
+   "page": "Volcanion (The Best of XY 14)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Volcanion",
+   "page": "Volcanion-EX (The Best of XY 15)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "16": {
+   "en": "Vaporeon",
+   "page": "Vaporeon (The Best of XY 16)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "17": {
+   "en": "Articuno",
+   "page": "Articuno (The Best of XY 17)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "18": {
+   "en": "Remoraid",
+   "page": "Remoraid (The Best of XY 18)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "19": {
+   "en": "Octillery",
+   "page": "Octillery (The Best of XY 19)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "20": {
+   "en": "Glaceon",
+   "page": "Glaceon-EX (The Best of XY 20)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "21": {
+   "en": "Manaphy",
+   "page": "Manaphy-EX (The Best of XY 21)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "22": {
+   "en": "Seismitoad",
+   "page": "Seismitoad-EX (The Best of XY 22)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "23": {
+   "en": "White Kyurem",
+   "page": "White Kyurem (The Best of XY 23)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "24": {
+   "en": "Froakie",
+   "page": "Froakie (The Best of XY 24)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "25": {
+   "en": "Frogadier",
+   "page": "Frogadier (The Best of XY 25)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "26": {
+   "en": "Greninja",
+   "page": "Greninja (The Best of XY 26)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "27": {
+   "en": "Greninja",
+   "page": "Greninja (The Best of XY 27)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "28": {
+   "en": "Greninja",
+   "page": "Greninja BREAK (The Best of XY 28)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "29": {
+   "en": "Pikachu",
+   "page": "Pikachu (The Best of XY 29)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "30": {
+   "en": "Raichu",
+   "page": "Raichu (The Best of XY 30)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "31": {
+   "en": "Jolteon",
+   "page": "Jolteon (The Best of XY 31)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "32": {
+   "en": "Jolteon",
+   "page": "Jolteon-EX (The Best of XY 32)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "33": {
+   "en": "Raikou",
+   "page": "Raikou (The Best of XY 33)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "34": {
+   "en": "Manectric",
+   "page": "Manectric-EX (The Best of XY 34)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "35": {
+   "en": "Manectric",
+   "page": "M Manectric-EX (The Best of XY 35)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "36": {
+   "en": "Joltik",
+   "page": "Joltik (The Best of XY 36)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "37": {
+   "en": "Zubat",
+   "page": "Zubat (The Best of XY 37)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "38": {
+   "en": "Golbat",
+   "page": "Golbat (The Best of XY 38)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "39": {
+   "en": "Crobat",
+   "page": "Crobat (The Best of XY 39)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "40": {
+   "en": "Alakazam",
+   "page": "Alakazam-EX (The Best of XY 40)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "41": {
+   "en": "Alakazam",
+   "page": "M Alakazam-EX (The Best of XY 41)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "42": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-EX (The Best of XY 42)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "43": {
+   "en": "Mewtwo",
+   "page": "M Mewtwo-EX (The Best of XY 43)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "44": {
+   "en": "Mew",
+   "page": "Mew (The Best of XY 44)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "45": {
+   "en": "Espeon",
+   "page": "Espeon-EX (The Best of XY 45)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "46": {
+   "en": "Unown",
+   "page": "Unown (The Best of XY 46)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "47": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (The Best of XY 47)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "48": {
+   "en": "Giratina",
+   "page": "Giratina (The Best of XY 48)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "49": {
+   "en": "Trubbish",
+   "page": "Trubbish (The Best of XY 49)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "50": {
+   "en": "Garbodor",
+   "page": "Garbodor (The Best of XY 50)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "51": {
+   "en": "Litwick",
+   "page": "Litwick (The Best of XY 51)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "52": {
+   "en": "Lampent",
+   "page": "Lampent (The Best of XY 52)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "53": {
+   "en": "Phantump",
+   "page": "Phantump (The Best of XY 53)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "54": {
+   "en": "Trevenant",
+   "page": "Trevenant (The Best of XY 54)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "55": {
+   "en": "Trevenant",
+   "page": "Trevenant BREAK (The Best of XY 55)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "56": {
+   "en": "Pumpkaboo",
+   "page": "Pumpkaboo (The Best of XY 56)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "57": {
+   "en": "Hoopa",
+   "page": "Hoopa (The Best of XY 57)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "58": {
+   "en": "Hoopa",
+   "page": "Hoopa-EX (The Best of XY 58)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "59": {
+   "en": "Meditite",
+   "page": "Meditite (The Best of XY 59)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "60": {
+   "en": "Medicham",
+   "page": "Medicham (The Best of XY 60)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "61": {
+   "en": "Regirock",
+   "page": "Regirock-EX (The Best of XY 61)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "62": {
+   "en": "Lucario",
+   "page": "Lucario-EX (The Best of XY 62)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "63": {
+   "en": "Lucario",
+   "page": "M Lucario-EX (The Best of XY 63)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "64": {
+   "en": "Landorus",
+   "page": "Landorus (The Best of XY 64)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "65": {
+   "en": "Carbink",
+   "page": "Carbink (The Best of XY 65)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "66": {
+   "en": "Carbink",
+   "page": "Carbink (The Best of XY 66)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "67": {
+   "en": "Carbink",
+   "page": "Carbink BREAK (The Best of XY 67)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "68": {
+   "en": "Zygarde",
+   "page": "Zygarde (The Best of XY 68)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "69": {
+   "en": "Zygarde",
+   "page": "Zygarde-EX (The Best of XY 69)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "70": {
+   "en": "Sharpedo",
+   "page": "Sharpedo-EX (The Best of XY 70)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "71": {
+   "en": "Sharpedo",
+   "page": "M Sharpedo-EX (The Best of XY 71)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "72": {
+   "en": "Darkrai",
+   "page": "Darkrai-EX (The Best of XY 72)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "73": {
+   "en": "Zorua",
+   "page": "Zorua (The Best of XY 73)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "74": {
+   "en": "Zoroark",
+   "page": "Zoroark (The Best of XY 74)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "75": {
+   "en": "Zoroark",
+   "page": "Zoroark BREAK (The Best of XY 75)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "76": {
+   "en": "Malamar",
+   "page": "Malamar-EX (The Best of XY 76)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "77": {
+   "en": "Yveltal",
+   "page": "Yveltal (The Best of XY 77)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "78": {
+   "en": "Yveltal",
+   "page": "Yveltal (The Best of XY 78)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "79": {
+   "en": "Yveltal",
+   "page": "Yveltal-EX (The Best of XY 79)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "80": {
+   "en": "Jirachi",
+   "page": "Jirachi (The Best of XY 80)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "81": {
+   "en": "Bronzor",
+   "page": "Bronzor (The Best of XY 81)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "82": {
+   "en": "Bronzong",
+   "page": "Bronzong (The Best of XY 82)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "83": {
+   "en": "Bronzong",
+   "page": "Bronzong BREAK (The Best of XY 83)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "84": {
+   "en": "Heatran",
+   "page": "Heatran (The Best of XY 84)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "85": {
+   "en": "Cobalion",
+   "page": "Cobalion (The Best of XY 85)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "86": {
+   "en": "Genesect",
+   "page": "Genesect-EX (The Best of XY 86)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "87": {
+   "en": "Aegislash",
+   "page": "Aegislash-EX (The Best of XY 87)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "88": {
+   "en": "Magearna",
+   "page": "Magearna (The Best of XY 88)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "89": {
+   "en": "Magearna",
+   "page": "Magearna-EX (The Best of XY 89)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "90": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime (The Best of XY 90)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "91": {
+   "en": "Gardevoir",
+   "page": "Gardevoir-EX (The Best of XY 91)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "92": {
+   "en": "Gardevoir",
+   "page": "M Gardevoir-EX (The Best of XY 92)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "93": {
+   "en": "Spritzee",
+   "page": "Spritzee (The Best of XY 93)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "94": {
+   "en": "Aromatisse",
+   "page": "Aromatisse (The Best of XY 94)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "95": {
+   "en": "Xerneas",
+   "page": "Xerneas (The Best of XY 95)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "96": {
+   "en": "Xerneas",
+   "page": "Xerneas (The Best of XY 96)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "97": {
+   "en": "Xerneas",
+   "page": "Xerneas BREAK (The Best of XY 97)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "98": {
+   "en": "Giratina",
+   "page": "Giratina-EX (The Best of XY 98)",
+   "type": "Dragon",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "99": {
+   "en": "Hydreigon",
+   "page": "Hydreigon-EX (The Best of XY 99)",
+   "type": "Dragon",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "100": {
+   "en": "Eevee",
+   "page": "Eevee (The Best of XY 100)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "101": {
+   "en": "Miltank",
+   "page": "Miltank (The Best of XY 101)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "102": {
+   "en": "Lugia",
+   "page": "Lugia (The Best of XY 102)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "103": {
+   "en": "Lugia",
+   "page": "Lugia-EX (The Best of XY 103)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "104": {
+   "en": "Rayquaza",
+   "page": "Rayquaza-EX (The Best of XY 104)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "105": {
+   "en": "Rayquaza",
+   "page": "M Rayquaza-EX (The Best of XY 105)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "106": {
+   "en": "Shaymin",
+   "page": "Shaymin-EX (The Best of XY 106)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "107": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (The Best of XY 107)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "108": {
+   "en": "Special Charge",
+   "page": "Special Charge (The Best of XY 108)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "109": {
+   "en": "Target Whistle",
+   "page": "Target Whistle (The Best of XY 109)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "110": {
+   "en": "Acro Bike",
+   "page": "Acro Bike (The Best of XY 110)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "111": {
+   "en": "Dive Ball",
+   "page": "Dive Ball (The Best of XY 111)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "112": {
+   "en": "Puzzle of Time",
+   "page": "Puzzle of Time (The Best of XY 112)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "113": {
+   "en": "Trainers' Mail",
+   "page": "Trainers' Mail (The Best of XY 113)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "114": {
+   "en": "Battle Compressor",
+   "page": "Battle Compressor (The Best of XY 114)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "115": {
+   "en": "VS Seeker",
+   "page": "VS Seeker (The Best of XY 115)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "116": {
+   "en": "Max Elixir",
+   "page": "Max Elixir (The Best of XY 116)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "117": {
+   "en": "Fairy Drop",
+   "page": "Fairy Drop (The Best of XY 117)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "118": {
+   "en": "Heavy Ball",
+   "page": "Heavy Ball (The Best of XY 118)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "119": {
+   "en": "Robo Substitute",
+   "page": "Robo Substitute (The Best of XY 119)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "120": {
+   "en": "Mega Turbo",
+   "page": "Mega Turbo (The Best of XY 120)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "121": {
+   "en": "Level Ball",
+   "page": "Level Ball (The Best of XY 121)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "122": {
+   "en": "Hard Charm",
+   "page": "Hard Charm (The Best of XY 122)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "123": {
+   "en": "Focus Sash",
+   "page": "Focus Sash (The Best of XY 123)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "124": {
+   "en": "Bursting Balloon",
+   "page": "Bursting Balloon (The Best of XY 124)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "125": {
+   "en": "Muscle Band",
+   "page": "Muscle Band (The Best of XY 125)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "126": {
+   "en": "Fighting Fury Belt",
+   "page": "Fighting Fury Belt (The Best of XY 126)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "127": {
+   "en": "Power Memory",
+   "page": "Power Memory (The Best of XY 127)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "128": {
+   "en": "Gardevoir Spirit Link",
+   "page": "Gardevoir Spirit Link (The Best of XY 128)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "129": {
+   "en": "Sharpedo Spirit Link",
+   "page": "Sharpedo Spirit Link (The Best of XY 129)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "130": {
+   "en": "Sceptile Spirit Link",
+   "page": "Sceptile Spirit Link (The Best of XY 130)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "131": {
+   "en": "Camerupt Spirit Link",
+   "page": "Camerupt Spirit Link (The Best of XY 131)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "132": {
+   "en": "Alakazam Spirit Link",
+   "page": "Alakazam Spirit Link (The Best of XY 132)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "133": {
+   "en": "Mewtwo Spirit Link",
+   "page": "Mewtwo Spirit Link (The Best of XY 133)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "134": {
+   "en": "Manectric Spirit Link",
+   "page": "Manectric Spirit Link (The Best of XY 134)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "135": {
+   "en": "Lucario Spirit Link",
+   "page": "Lucario Spirit Link (The Best of XY 135)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "136": {
+   "en": "Rayquaza Spirit Link",
+   "page": "Rayquaza Spirit Link (The Best of XY 136)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "137": {
+   "en": "Brigette",
+   "page": "Brigette (The Best of XY 137)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "138": {
+   "en": "AZ",
+   "page": "AZ (The Best of XY 138)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "139": {
+   "en": "N",
+   "page": "N (The Best of XY 139)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "140": {
+   "en": "Hex Maniac",
+   "page": "Hex Maniac (The Best of XY 140)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "141": {
+   "en": "Blacksmith",
+   "page": "Blacksmith (The Best of XY 141)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "142": {
+   "en": "Karen",
+   "page": "Karen (The Best of XY 142)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "143": {
+   "en": "Xerosic",
+   "page": "Xerosic (The Best of XY 143)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "144": {
+   "en": "Korrina",
+   "page": "Korrina (The Best of XY 144)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "145": {
+   "en": "Delinquent",
+   "page": "Delinquent (The Best of XY 145)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "146": {
+   "en": "Shauna",
+   "page": "Shauna (The Best of XY 146)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "147": {
+   "en": "Teammates",
+   "page": "Teammates (The Best of XY 147)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "148": {
+   "en": "Skyla",
+   "page": "Skyla (The Best of XY 148)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "149": {
+   "en": "Professor Sycamore",
+   "page": "Professor Sycamore (The Best of XY 149)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "150": {
+   "en": "Lysandre",
+   "page": "Lysandre (The Best of XY 150)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "151": {
+   "en": "Team Flare Grunt",
+   "page": "Team Flare Grunt (The Best of XY 151)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "152": {
+   "en": "Pokémon Ranger",
+   "page": "Pokémon Ranger (The Best of XY 152)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "153": {
+   "en": "Rough Seas",
+   "page": "Rough Seas (The Best of XY 153)",
+   "type": "St",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "154": {
+   "en": "Forest of Giant Plants",
+   "page": "Forest of Giant Plants (The Best of XY 154)",
+   "type": "St",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "155": {
+   "en": "Silent Lab",
+   "page": "Silent Lab (The Best of XY 155)",
+   "type": "St",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "156": {
+   "en": "Dimension Valley",
+   "page": "Dimension Valley (The Best of XY 156)",
+   "type": "St",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "157": {
+   "en": "Scorched Earth",
+   "page": "Scorched Earth (The Best of XY 157)",
+   "type": "St",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "158": {
+   "en": "Sky Field",
+   "page": "Sky Field (The Best of XY 158)",
+   "type": "St",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "159": {
+   "en": "Parallel City",
+   "page": "Parallel City (The Best of XY 159)",
+   "type": "St",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "160": {
+   "en": "Fairy Garden",
+   "page": "Fairy Garden (The Best of XY 160)",
+   "type": "St",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "161": {
+   "en": "Reverse Valley",
+   "page": "Reverse Valley (The Best of XY 161)",
+   "type": "St",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "162": {
+   "en": "Herbal Energy",
+   "page": "Herbal Energy (The Best of XY 162)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "163": {
+   "en": "Burning Energy",
+   "page": "Burning Energy (The Best of XY 163)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "164": {
+   "en": "Splash Energy",
+   "page": "Splash Energy (The Best of XY 164)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "165": {
+   "en": "Flash Energy",
+   "page": "Flash Energy (The Best of XY 165)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "166": {
+   "en": "Mystery Energy",
+   "page": "Mystery Energy (The Best of XY 166)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "167": {
+   "en": "Strong Energy",
+   "page": "Strong Energy (The Best of XY 167)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "168": {
+   "en": "Dangerous Energy",
+   "page": "Dangerous Energy (The Best of XY 168)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "169": {
+   "en": "Shield Energy",
+   "page": "Shield Energy (The Best of XY 169)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "170": {
+   "en": "Wonder Energy",
+   "page": "Wonder Energy (The Best of XY 170)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "171": {
+   "en": "Double Dragon Energy",
+   "page": "Double Dragon Energy (The Best of XY 171)",
+   "type": "Dragon",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "172": {
+   "en": "Camerupt",
+   "page": "M Camerupt-EX (The Best of XY 172)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "173": {
+   "en": "Jolteon",
+   "page": "Jolteon-EX (The Best of XY 173)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "174": {
+   "en": "Manectric",
+   "page": "M Manectric-EX (The Best of XY 174)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "175": {
+   "en": "Regirock",
+   "page": "Regirock-EX (The Best of XY 175)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "176": {
+   "en": "Lucario",
+   "page": "M Lucario-EX (The Best of XY 176)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "177": {
+   "en": "Zygarde",
+   "page": "Zygarde-EX (The Best of XY 177)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "178": {
+   "en": "Sharpedo",
+   "page": "M Sharpedo-EX (The Best of XY 178)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "179": {
+   "en": "Aegislash",
+   "page": "Aegislash-EX (The Best of XY 179)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "180": {
+   "en": "N",
+   "page": "N (The Best of XY 180)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "181": {
+   "en": "Hex Maniac",
+   "page": "Hex Maniac (The Best of XY 181)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "182": {
+   "en": "Blacksmith",
+   "page": "Blacksmith (The Best of XY 182)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "183": {
+   "en": "Karen",
+   "page": "Karen (The Best of XY 183)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "184": {
+   "en": "Delinquent",
+   "page": "Delinquent (The Best of XY 184)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "185": {
+   "en": "Shauna",
+   "page": "Shauna (The Best of XY 185)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "186": {
+   "en": "Team Flare Grunt",
+   "page": "Team Flare Grunt (The Best of XY 186)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "187": {
+   "en": "Yveltal",
+   "page": "Yveltal-EX (The Best of XY 187)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "188": {
+   "en": "Shaymin",
+   "page": "Shaymin-EX (The Best of XY 188)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  }
+ }
+}

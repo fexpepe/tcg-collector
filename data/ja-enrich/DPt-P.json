@@ -1,0 +1,363 @@
+{
+ "page": "DPt-P Promotional cards (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Carnivine",
+   "page": "Carnivine G (DPt-P Promo 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Manaphy",
+   "page": "Manaphy (DPt-P Promo 2)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Rotom",
+   "page": "Rotom (DPt-P Promo 3)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Probopass",
+   "page": "Probopass G (DPt-P Promo 4)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Darkrai",
+   "page": "Darkrai G (DPt-P Promo 5)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Bronzong",
+   "page": "Bronzong G (DPt-P Promo 6)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Cyrus's Conspiracy",
+   "page": "Cyrus's Conspiracy (DPt-P Promo 7)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Toxicroak",
+   "page": "Toxicroak G (DPt-P Promo 8)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Squirtle",
+   "page": "Squirtle (DPt-P Promo 9)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Electrode",
+   "page": "Electrode G (DPt-P Promo 10)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Mismagius",
+   "page": "Mismagius GL LV.X (DPt-P Promo 11)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Alakazam",
+   "page": "Alakazam 4 (DPt-P Promo 12)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Team Galactic's Invention G-109 SP Radar",
+   "page": "Team Galactic's Invention G-109 SP Radar (DPt-P Promo 13)",
+   "type": "T",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Luxray",
+   "page": "Luxray GL (DPt-P Promo 14)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Lucario",
+   "page": "Lucario (DPt-P Promo 15)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Pikachu",
+   "page": "Pikachu (DPt-P Promo 16)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Drifblim",
+   "page": "Drifblim FB (DPt-P Promo 17)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Dragonite",
+   "page": "Dragonite FB (DPt-P Promo 18)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Battle Tower",
+   "page": "Battle Tower (DPt-P Promo 19)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "SP Energy",
+   "page": "SP Energy (DPt-P Promo 20)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Rainbow Energy",
+   "page": "Rainbow Energy (DPt-P Promo 21)",
+   "type": "Rainbow",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Grass Energy",
+   "page": "Grass Energy (DPt-P Promo 22)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Fire Energy",
+   "page": "Fire Energy (DPt-P Promo 23)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Water Energy",
+   "page": "Water Energy (DPt-P Promo 24)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Lightning Energy",
+   "page": "Lightning Energy (DPt-P Promo 25)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (DPt-P Promo 26)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Fighting Energy",
+   "page": "Fighting Energy (DPt-P Promo 27)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (DPt-P Promo 28)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (DPt-P Promo 29)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Bulbasaur",
+   "page": "Bulbasaur (DPt-P Promo 30)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Victory Medal",
+   "page": "Victory Medal (DPt-P Promo 31)",
+   "type": "T",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Chatot",
+   "page": "Chatot (DPt-P Promo 32)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Wonder Platinum",
+   "page": "Wonder Platinum (DPt-P Promo 33)",
+   "type": "T",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Ponyta",
+   "page": "Ponyta (DPt-P Promo 34)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Porygon-Z",
+   "page": "Porygon-Z G (DPt-P Promo 35)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Victory Medal",
+   "page": "Victory Medal (DPt-P Promo 36)",
+   "type": "T",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Beginning Door",
+   "page": "Beginning Door (DPt-P Promo 37)",
+   "type": "T",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Pichu",
+   "page": "Pichu (DPt-P Promo 38)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Mothim",
+   "page": "Mothim (DPt-P Promo 39)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "40": {
+   "en": "Arceus",
+   "page": "Arceus (DPt-P Promo 40)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Arceus",
+   "page": "Arceus (DPt-P Promo 41)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "42": {
+   "en": "Spiky-eared Pichu",
+   "page": "Spiky-eared Pichu M (DPt-P Promo 42)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Pikachu",
+   "page": "Pikachu M LV.X (DPt-P Promo 43)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Michina Temple",
+   "page": "Michina Temple (DPt-P Promo 44)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Cresselia",
+   "page": "Cresselia (DPt-P Promo 45)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Darkrai",
+   "page": "Darkrai (DPt-P Promo 46)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (DPt-P Promo 47)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Ultimate Zone",
+   "page": "Ultimate Zone (DPt-P Promo 48)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "49": {
+   "en": "Mewtwo",
+   "page": "Mewtwo (DPt-P Promo 49)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "50": {
+   "en": "Heatran",
+   "page": "Heatran (DPt-P Promo 50)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "51": {
+   "en": "Victory Medal",
+   "page": "Victory Medal (DPt-P Promo 51)",
+   "type": "T",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

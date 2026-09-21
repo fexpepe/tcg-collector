@@ -1,0 +1,440 @@
+{
+ "page": "Mystery of the Fossils (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Aerodactyl",
+   "page": "Aerodactyl (Fossil 1)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "2": {
+   "en": "Articuno",
+   "page": "Articuno (Fossil 2)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "3": {
+   "en": "Ditto",
+   "page": "Ditto (Fossil 3)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Dragonite",
+   "page": "Dragonite (Fossil 4)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "5": {
+   "en": "Gengar",
+   "page": "Gengar (Fossil 5)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "6": {
+   "en": "Haunter",
+   "page": "Haunter (Fossil 6)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "7": {
+   "en": "Hitmonlee",
+   "page": "Hitmonlee (Fossil 7)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "8": {
+   "en": "Hypno",
+   "page": "Hypno (Fossil 8)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "9": {
+   "en": "Kabutops",
+   "page": "Kabutops (Fossil 9)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Lapras",
+   "page": "Lapras (Fossil 10)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "11": {
+   "en": "Magneton",
+   "page": "Magneton (Fossil 11)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "12": {
+   "en": "Moltres",
+   "page": "Moltres (Fossil 12)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "13": {
+   "en": "Muk",
+   "page": "Muk (Fossil 13)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "14": {
+   "en": "Raichu",
+   "page": "Raichu (Fossil 14)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Zapdos",
+   "page": "Zapdos (Fossil 15)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "16": {
+   "en": "Aerodactyl",
+   "page": "Aerodactyl (Fossil 16)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "17": {
+   "en": "Articuno",
+   "page": "Articuno (Fossil 17)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "18": {
+   "en": "Ditto",
+   "page": "Ditto (Fossil 18)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "19": {
+   "en": "Dragonite",
+   "page": "Dragonite (Fossil 19)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "20": {
+   "en": "Gengar",
+   "page": "Gengar (Fossil 20)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "21": {
+   "en": "Haunter",
+   "page": "Haunter (Fossil 21)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "22": {
+   "en": "Hitmonlee",
+   "page": "Hitmonlee (Fossil 22)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "23": {
+   "en": "Hypno",
+   "page": "Hypno (Fossil 23)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "24": {
+   "en": "Kabutops",
+   "page": "Kabutops (Fossil 24)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "25": {
+   "en": "Lapras",
+   "page": "Lapras (Fossil 25)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "26": {
+   "en": "Magneton",
+   "page": "Magneton (Fossil 26)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "27": {
+   "en": "Moltres",
+   "page": "Moltres (Fossil 27)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "28": {
+   "en": "Muk",
+   "page": "Muk (Fossil 28)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "29": {
+   "en": "Raichu",
+   "page": "Raichu (Fossil 29)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "30": {
+   "en": "Zapdos",
+   "page": "Zapdos (Fossil 30)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "31": {
+   "en": "Arbok",
+   "page": "Arbok (Fossil 31)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "32": {
+   "en": "Cloyster",
+   "page": "Cloyster (Fossil 32)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "33": {
+   "en": "Gastly",
+   "page": "Gastly (Fossil 33)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "34": {
+   "en": "Golbat",
+   "page": "Golbat (Fossil 34)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "35": {
+   "en": "Golduck",
+   "page": "Golduck (Fossil 35)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "36": {
+   "en": "Golem",
+   "page": "Golem (Fossil 36)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "37": {
+   "en": "Graveler",
+   "page": "Graveler (Fossil 37)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "38": {
+   "en": "Kingler",
+   "page": "Kingler (Fossil 38)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "39": {
+   "en": "Magmar",
+   "page": "Magmar (Fossil 39)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "40": {
+   "en": "Omastar",
+   "page": "Omastar (Fossil 40)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "41": {
+   "en": "Sandslash",
+   "page": "Sandslash (Fossil 41)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "42": {
+   "en": "Seadra",
+   "page": "Seadra (Fossil 42)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "43": {
+   "en": "Slowbro",
+   "page": "Slowbro (Fossil 43)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "44": {
+   "en": "Tentacruel",
+   "page": "Tentacruel (Fossil 44)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "45": {
+   "en": "Weezing",
+   "page": "Weezing (Fossil 45)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "46": {
+   "en": "Ekans",
+   "page": "Ekans (Fossil 46)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "47": {
+   "en": "Geodude",
+   "page": "Geodude (Fossil 47)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "48": {
+   "en": "Grimer",
+   "page": "Grimer (Fossil 48)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "49": {
+   "en": "Horsea",
+   "page": "Horsea (Fossil 49)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "50": {
+   "en": "Kabuto",
+   "page": "Kabuto (Fossil 50)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "51": {
+   "en": "Krabby",
+   "page": "Krabby (Fossil 51)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "52": {
+   "en": "Omanyte",
+   "page": "Omanyte (Fossil 52)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "53": {
+   "en": "Psyduck",
+   "page": "Psyduck (Fossil 53)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "54": {
+   "en": "Shellder",
+   "page": "Shellder (Fossil 54)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "55": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Fossil 55)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "56": {
+   "en": "Tentacool",
+   "page": "Tentacool (Fossil 56)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "57": {
+   "en": "Zubat",
+   "page": "Zubat (Fossil 57)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "58": {
+   "en": "Mr. Fuji",
+   "page": "Mr. Fuji (Fossil 58)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "59": {
+   "en": "Energy Search",
+   "page": "Energy Search (Fossil 59)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "60": {
+   "en": "Gambler",
+   "page": "Gambler (Fossil 60)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "61": {
+   "en": "Recycle",
+   "page": "Recycle (Fossil 61)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "62": {
+   "en": "Mysterious Fossil",
+   "page": "Mysterious Fossil (Fossil 62)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  }
+ }
+}

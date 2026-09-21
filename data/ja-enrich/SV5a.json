@@ -1,0 +1,678 @@
+{
+ "page": "Crimson Haze (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Tangela",
+   "page": "Tangela (Crimson Haze 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Tangrowth",
+   "page": "Tangrowth (Crimson Haze 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Pinsir",
+   "page": "Pinsir (Crimson Haze 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Spinarak",
+   "page": "Spinarak (Crimson Haze 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Ariados",
+   "page": "Ariados (Crimson Haze 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Leafeon",
+   "page": "Leafeon (Crimson Haze 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Iron Leaves",
+   "page": "Iron Leaves (Crimson Haze 7)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "8": {
+   "en": "Poltchageist",
+   "page": "Poltchageist (Crimson Haze 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Sinistcha",
+   "page": "Sinistcha ex (Crimson Haze 9)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "10": {
+   "en": "Vulpix",
+   "page": "Vulpix (Crimson Haze 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Ninetales",
+   "page": "Ninetales (Crimson Haze 11)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Slugma",
+   "page": "Slugma (Crimson Haze 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Magcargo",
+   "page": "Magcargo ex (Crimson Haze 13)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "14": {
+   "en": "Torkoal",
+   "page": "Torkoal (Crimson Haze 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Chimchar",
+   "page": "Chimchar (Crimson Haze 15)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Monferno",
+   "page": "Monferno (Crimson Haze 16)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Infernape",
+   "page": "Infernape (Crimson Haze 17)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "18": {
+   "en": "Chi-Yu",
+   "page": "Chi-Yu (Crimson Haze 18)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Corphish",
+   "page": "Corphish (Crimson Haze 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Crawdaunt",
+   "page": "Crawdaunt (Crimson Haze 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Glaceon",
+   "page": "Glaceon (Crimson Haze 21)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Phione",
+   "page": "Phione (Crimson Haze 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Froakie",
+   "page": "Froakie (Crimson Haze 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Frogadier",
+   "page": "Frogadier (Crimson Haze 24)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Cramorant",
+   "page": "Cramorant (Crimson Haze 25)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Walking Wake",
+   "page": "Walking Wake (Crimson Haze 26)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "27": {
+   "en": "Zapdos",
+   "page": "Zapdos (Crimson Haze 27)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "28": {
+   "en": "Helioptile",
+   "page": "Helioptile (Crimson Haze 28)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (Crimson Haze 29)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Morpeko",
+   "page": "Morpeko (Crimson Haze 30)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "31": {
+   "en": "Tadbulb",
+   "page": "Tadbulb (Crimson Haze 31)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Bellibolt",
+   "page": "Bellibolt (Crimson Haze 32)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Iron Thorns",
+   "page": "Iron Thorns ex (Crimson Haze 33)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "34": {
+   "en": "Girafarig",
+   "page": "Girafarig (Crimson Haze 34)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Farigiraf",
+   "page": "Farigiraf (Crimson Haze 35)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Flabébé",
+   "page": "Flabébé (Crimson Haze 36)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Floette",
+   "page": "Floette (Crimson Haze 37)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Florges",
+   "page": "Florges (Crimson Haze 38)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Enamorus",
+   "page": "Enamorus (Crimson Haze 39)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "40": {
+   "en": "Scream Tail",
+   "page": "Scream Tail ex (Crimson Haze 40)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "41": {
+   "en": "Hisuian Growlithe",
+   "page": "Hisuian Growlithe (Crimson Haze 41)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Hisuian Arcanine",
+   "page": "Hisuian Arcanine (Crimson Haze 42)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "43": {
+   "en": "Nosepass",
+   "page": "Nosepass (Crimson Haze 43)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Probopass",
+   "page": "Probopass (Crimson Haze 44)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Greninja",
+   "page": "Greninja ex (Crimson Haze 45)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "46": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (Crimson Haze 46)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Ting-Lu",
+   "page": "Ting-Lu (Crimson Haze 47)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "48": {
+   "en": "Applin",
+   "page": "Applin (Crimson Haze 48)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Dipplin",
+   "page": "Dipplin (Crimson Haze 49)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Eevee",
+   "page": "Eevee (Crimson Haze 50)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Snorlax",
+   "page": "Snorlax (Crimson Haze 51)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Bloodmoon Ursaluna",
+   "page": "Bloodmoon Ursaluna ex (Crimson Haze 52)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Unfair Stamp",
+   "page": "Unfair Stamp (Crimson Haze 53)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "54": {
+   "en": "Enhanced Hammer",
+   "page": "Enhanced Hammer (Crimson Haze 54)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Hyper Aroma",
+   "page": "Hyper Aroma (Crimson Haze 55)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "56": {
+   "en": "Switch",
+   "page": "Switch (Crimson Haze 56)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (Crimson Haze 57)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Love Ball",
+   "page": "Love Ball (Crimson Haze 58)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Survival Brace",
+   "page": "Survival Brace (Crimson Haze 59)",
+   "type": "PT",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "60": {
+   "en": "Lucky Helmet",
+   "page": "Lucky Helmet (Crimson Haze 60)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Caretaker",
+   "page": "Caretaker (Crimson Haze 61)",
+   "type": "Su",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Lucian",
+   "page": "Lucian (Crimson Haze 62)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Perrin",
+   "page": "Perrin (Crimson Haze 63)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Lana's Aid",
+   "page": "Lana's Aid (Crimson Haze 64)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Community Center",
+   "page": "Community Center (Crimson Haze 65)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Boomerang Energy",
+   "page": "Boomerang Energy (Crimson Haze 66)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Pinsir",
+   "page": "Pinsir (Crimson Haze 67)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Poltchageist",
+   "page": "Poltchageist (Crimson Haze 68)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Torkoal",
+   "page": "Torkoal (Crimson Haze 69)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Infernape",
+   "page": "Infernape (Crimson Haze 70)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Phione",
+   "page": "Phione (Crimson Haze 71)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Cramorant",
+   "page": "Cramorant (Crimson Haze 72)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (Crimson Haze 73)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Enamorus",
+   "page": "Enamorus (Crimson Haze 74)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Hisuian Growlithe",
+   "page": "Hisuian Growlithe (Crimson Haze 75)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Probopass",
+   "page": "Probopass (Crimson Haze 76)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Applin",
+   "page": "Applin (Crimson Haze 77)",
+   "type": "Dragon",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Eevee",
+   "page": "Eevee (Crimson Haze 78)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Sinistcha",
+   "page": "Sinistcha ex (Crimson Haze 79)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Magcargo",
+   "page": "Magcargo ex (Crimson Haze 80)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Iron Thorns",
+   "page": "Iron Thorns ex (Crimson Haze 81)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Scream Tail",
+   "page": "Scream Tail ex (Crimson Haze 82)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Greninja",
+   "page": "Greninja ex (Crimson Haze 83)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Bloodmoon Ursaluna",
+   "page": "Bloodmoon Ursaluna ex (Crimson Haze 84)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Caretaker",
+   "page": "Caretaker (Crimson Haze 85)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Lucian",
+   "page": "Lucian (Crimson Haze 86)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Perrin",
+   "page": "Perrin (Crimson Haze 87)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Lana's Aid",
+   "page": "Lana's Aid (Crimson Haze 88)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Sinistcha",
+   "page": "Sinistcha ex (Crimson Haze 89)",
+   "type": "Grass",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Greninja",
+   "page": "Greninja ex (Crimson Haze 90)",
+   "type": "Fighting",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Bloodmoon Ursaluna",
+   "page": "Bloodmoon Ursaluna ex (Crimson Haze 91)",
+   "type": "Colorless",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Perrin",
+   "page": "Perrin (Crimson Haze 92)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Lana's Aid",
+   "page": "Lana's Aid (Crimson Haze 93)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Bloodmoon Ursaluna",
+   "page": "Bloodmoon Ursaluna ex (Crimson Haze 94)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Rescue Board",
+   "page": "Rescue Board (Crimson Haze 95)",
+   "type": "PT",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Luminous Energy",
+   "page": "Luminous Energy (Crimson Haze 96)",
+   "type": "Rainbow",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

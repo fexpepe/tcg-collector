@@ -1,0 +1,1322 @@
+{
+ "page": "The Town on No Map (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Nidoran♂",
+   "page": "Nidoran♂ (The Town on No Map 1)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Nidorino",
+   "page": "Nidorino (The Town on No Map 2)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "3": {
+   "en": "Grimer",
+   "page": "Grimer (The Town on No Map 3)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "4": {
+   "en": "Muk",
+   "page": "Muk (The Town on No Map 4)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "5": {
+   "en": "Muk",
+   "page": "Muk (The Town on No Map 5)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "6": {
+   "en": "Spinarak",
+   "page": "Spinarak (The Town on No Map 6)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "7": {
+   "en": "Spinarak",
+   "page": "Spinarak (The Town on No Map 7)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "8": {
+   "en": "Ariados",
+   "page": "Ariados (The Town on No Map 8)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "9": {
+   "en": "Ariados",
+   "page": "Ariados (The Town on No Map 9)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Hoppip",
+   "page": "Hoppip (The Town on No Map 10)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "11": {
+   "en": "Skiploom",
+   "page": "Skiploom (The Town on No Map 11)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "12": {
+   "en": "Jumpluff",
+   "page": "Jumpluff (The Town on No Map 12)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "13": {
+   "en": "Jumpluff",
+   "page": "Jumpluff (The Town on No Map 13)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "14": {
+   "en": "Growlithe",
+   "page": "Growlithe (The Town on No Map 14)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "15": {
+   "en": "Growlithe",
+   "page": "Growlithe (The Town on No Map 15)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "16": {
+   "en": "Arcanine",
+   "page": "Arcanine (The Town on No Map 16)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "17": {
+   "en": "Arcanine",
+   "page": "Arcanine (The Town on No Map 17)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "18": {
+   "en": "Houndour",
+   "page": "Houndour (The Town on No Map 18)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "19": {
+   "en": "Houndoom",
+   "page": "Houndoom (The Town on No Map 19)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "20": {
+   "en": "Psyduck",
+   "page": "Psyduck (The Town on No Map 20)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "21": {
+   "en": "Golduck",
+   "page": "Golduck (The Town on No Map 21)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "22": {
+   "en": "Goldeen",
+   "page": "Goldeen (The Town on No Map 22)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "23": {
+   "en": "Seaking",
+   "page": "Seaking (The Town on No Map 23)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "24": {
+   "en": "Marill",
+   "page": "Marill (The Town on No Map 24)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "25": {
+   "en": "Azumarill",
+   "page": "Azumarill (The Town on No Map 25)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "26": {
+   "en": "Azumarill",
+   "page": "Azumarill (The Town on No Map 26)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "27": {
+   "en": "Wooper",
+   "page": "Wooper (The Town on No Map 27)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "28": {
+   "en": "Wooper",
+   "page": "Wooper (The Town on No Map 28)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "29": {
+   "en": "Quagsire",
+   "page": "Quagsire (The Town on No Map 29)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "30": {
+   "en": "Suicune",
+   "page": "Suicune (The Town on No Map 30)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "31": {
+   "en": "Suicune",
+   "page": "Suicune (The Town on No Map 31)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "32": {
+   "en": "Magnemite",
+   "page": "Magnemite (The Town on No Map 32)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "33": {
+   "en": "Voltorb",
+   "page": "Voltorb (The Town on No Map 33)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "34": {
+   "en": "Voltorb",
+   "page": "Voltorb (The Town on No Map 34)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "35": {
+   "en": "Electrode",
+   "page": "Electrode (The Town on No Map 35)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "36": {
+   "en": "Electrode",
+   "page": "Electrode (The Town on No Map 36)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "37": {
+   "en": "Zapdos",
+   "page": "Zapdos (The Town on No Map 37)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "38": {
+   "en": "Zapdos",
+   "page": "Zapdos (The Town on No Map 38)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "39": {
+   "en": "Elekid",
+   "page": "Elekid (The Town on No Map 39)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "40": {
+   "en": "Drowzee",
+   "page": "Drowzee (The Town on No Map 40)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "41": {
+   "en": "Hypno",
+   "page": "Hypno (The Town on No Map 41)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "42": {
+   "en": "Hypno",
+   "page": "Hypno (The Town on No Map 42)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "43": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime (The Town on No Map 43)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "44": {
+   "en": "Jynx",
+   "page": "Jynx (The Town on No Map 44)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "45": {
+   "en": "Espeon",
+   "page": "Espeon (The Town on No Map 45)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "46": {
+   "en": "Espeon",
+   "page": "Espeon (The Town on No Map 46)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "47": {
+   "en": "Smoochum",
+   "page": "Smoochum (The Town on No Map 47)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "48": {
+   "en": "Nidoking",
+   "page": "Nidoking (The Town on No Map 48)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "49": {
+   "en": "Nidoking",
+   "page": "Nidoking (The Town on No Map 49)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "50": {
+   "en": "Cubone",
+   "page": "Cubone (The Town on No Map 50)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "51": {
+   "en": "Marowak",
+   "page": "Marowak (The Town on No Map 51)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "52": {
+   "en": "Hitmonchan",
+   "page": "Hitmonchan (The Town on No Map 52)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "53": {
+   "en": "Phanpy",
+   "page": "Phanpy (The Town on No Map 53)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "54": {
+   "en": "Donphan",
+   "page": "Donphan (The Town on No Map 54)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "55": {
+   "en": "Tyrogue",
+   "page": "Tyrogue (The Town on No Map 55)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "56": {
+   "en": "Hitmontop",
+   "page": "Hitmontop (The Town on No Map 56)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "57": {
+   "en": "Chansey",
+   "page": "Chansey (The Town on No Map 57)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "58": {
+   "en": "Eevee",
+   "page": "Eevee (The Town on No Map 58)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "59": {
+   "en": "Porygon",
+   "page": "Porygon (The Town on No Map 59)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "60": {
+   "en": "Togepi",
+   "page": "Togepi (The Town on No Map 60)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "61": {
+   "en": "Togetic",
+   "page": "Togetic (The Town on No Map 61)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "62": {
+   "en": "Togetic",
+   "page": "Togetic (The Town on No Map 62)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "63": {
+   "en": "Porygon2",
+   "page": "Porygon2 (The Town on No Map 63)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "64": {
+   "en": "Smeargle",
+   "page": "Smeargle (The Town on No Map 64)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "65": {
+   "en": "Blissey",
+   "page": "Blissey (The Town on No Map 65)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "66": {
+   "en": "Blissey",
+   "page": "Blissey (The Town on No Map 66)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "67": {
+   "en": "Umbreon",
+   "page": "Umbreon (The Town on No Map 67)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "68": {
+   "en": "Umbreon",
+   "page": "Umbreon (The Town on No Map 68)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "69": {
+   "en": "Houndour",
+   "page": "Houndour (The Town on No Map 69)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "70": {
+   "en": "Houndoom",
+   "page": "Houndoom (The Town on No Map 70)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "71": {
+   "en": "Houndoom",
+   "page": "Houndoom (The Town on No Map 71)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "72": {
+   "en": "Magnemite",
+   "page": "Magnemite (The Town on No Map 72)",
+   "type": "Metal",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "73": {
+   "en": "Magneton",
+   "page": "Magneton (The Town on No Map 73)",
+   "type": "Metal",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "74": {
+   "en": "Magneton",
+   "page": "Magneton (The Town on No Map 74)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "75": {
+   "en": "Weakness Guard",
+   "page": "Weakness Guard (The Town on No Map 75)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "76": {
+   "en": "Super Energy Removal 2",
+   "page": "Super Energy Removal 2 (The Town on No Map 76)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "77": {
+   "en": "Seer",
+   "page": "Seer (The Town on No Map 77)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "78": {
+   "en": "Pokémon Fan Club",
+   "page": "Pokémon Fan Club (The Town on No Map 78)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "79": {
+   "en": "Town Volunteers",
+   "page": "Town Volunteers (The Town on No Map 79)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "80": {
+   "en": "Grass Cube 01",
+   "page": "Grass Cube 01 (The Town on No Map 80)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "81": {
+   "en": "Fire Cube 01",
+   "page": "Fire Cube 01 (The Town on No Map 81)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "82": {
+   "en": "Water Cube 01",
+   "page": "Water Cube 01 (The Town on No Map 82)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "83": {
+   "en": "Lightning Cube 01",
+   "page": "Lightning Cube 01 (The Town on No Map 83)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "84": {
+   "en": "Psychic Cube 01",
+   "page": "Psychic Cube 01 (The Town on No Map 84)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "85": {
+   "en": "Fighting Cube 01",
+   "page": "Fighting Cube 01 (The Town on No Map 85)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "86": {
+   "en": "Darkness Cube 01",
+   "page": "Darkness Cube 01 (The Town on No Map 86)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "87": {
+   "en": "Metal Cube 01",
+   "page": "Metal Cube 01 (The Town on No Map 87)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "88": {
+   "en": "Pokémon Park",
+   "page": "Pokémon Park (The Town on No Map 88)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "89": {
+   "en": "Power Plant",
+   "page": "Power Plant (The Town on No Map 89)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "90": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (The Town on No Map 90)",
+   "type": "Darkness",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "91": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (The Town on No Map 91)",
+   "type": "Metal",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "92": {
+   "en": "Rainbow Energy",
+   "page": "Rainbow Energy (The Town on No Map 92)",
+   "type": "Rainbow",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "93": {
+   "en": "Mareep",
+   "page": "Mareep (Aquapolis 93)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Miltank",
+   "page": "Miltank (Aquapolis 94)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Nidoran♂",
+   "page": "Nidoran♂ (Aquapolis 96)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Oddish",
+   "page": "Oddish (Aquapolis 97)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Onix",
+   "page": "Onix (Aquapolis 98)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Paras",
+   "page": "Paras (Aquapolis 99)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Phanpy",
+   "page": "Phanpy (Aquapolis 100)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Pinsir",
+   "page": "Pinsir (Aquapolis 101)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Ponyta",
+   "page": "Ponyta (Aquapolis 102)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Psyduck",
+   "page": "Psyduck (Aquapolis 104)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Remoraid",
+   "page": "Remoraid (Aquapolis 105)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Scyther",
+   "page": "Scyther (Aquapolis 106)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Sentret",
+   "page": "Sentret (Aquapolis 107)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Aquapolis 108)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Smeargle",
+   "page": "Smeargle (Aquapolis 109)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Sneasel",
+   "page": "Sneasel (Aquapolis 110)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Spinarak",
+   "page": "Spinarak (Aquapolis 111)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Tangela",
+   "page": "Tangela (Aquapolis 112)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Tentacool",
+   "page": "Tentacool (Aquapolis 113)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Togepi",
+   "page": "Togepi (Aquapolis 114)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Voltorb",
+   "page": "Voltorb (Aquapolis 115)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Vulpix",
+   "page": "Vulpix (Aquapolis 116)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "117": {
+   "en": "Wooper",
+   "page": "Wooper (Aquapolis 117)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "118": {
+   "en": "Apricorn Forest",
+   "page": "Apricorn Forest (Aquapolis 118)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Darkness Cube 01",
+   "page": "Darkness Cube 01 (Aquapolis 119)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (Aquapolis 120)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Fighting Cube 01",
+   "page": "Fighting Cube 01 (Aquapolis 121)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Fire Cube 01",
+   "page": "Fire Cube 01 (Aquapolis 122)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Forest Guardian",
+   "page": "Forest Guardian (Aquapolis 123)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Grass Cube 01",
+   "page": "Grass Cube 01 (Aquapolis 124)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Healing Berry",
+   "page": "Healing Berry (Aquapolis 125)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "126": {
+   "en": "Juggler",
+   "page": "Juggler (Aquapolis 126)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Lightning Cube 01",
+   "page": "Lightning Cube 01 (Aquapolis 127)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Memory Berry",
+   "page": "Memory Berry (Aquapolis 128)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Metal Cube 01",
+   "page": "Metal Cube 01 (Aquapolis 129)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Pokémon Fan Club",
+   "page": "Pokémon Fan Club (Aquapolis 130)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Pokémon Park",
+   "page": "Pokémon Park (Aquapolis 131)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Psychic Cube 01",
+   "page": "Psychic Cube 01 (Aquapolis 132)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Seer",
+   "page": "Seer (Aquapolis 133)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Super Energy Removal 2",
+   "page": "Super Energy Removal 2 (Aquapolis 134)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Time Shard",
+   "page": "Time Shard (Aquapolis 135)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Town Volunteers",
+   "page": "Town Volunteers (Aquapolis 136)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Traveling Salesman",
+   "page": "Traveling Salesman (Aquapolis 137)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Undersea Ruins",
+   "page": "Undersea Ruins (Aquapolis 138)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Power Plant",
+   "page": "Power Plant (Aquapolis 139)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Water Cube 01",
+   "page": "Water Cube 01 (Aquapolis 140)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Weakness Guard",
+   "page": "Weakness Guard (Aquapolis 141)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (Aquapolis 142)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (Aquapolis 143)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Rainbow Energy",
+   "page": "Rainbow Energy (Aquapolis 144)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Boost Energy",
+   "page": "Boost Energy (Aquapolis 145)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Crystal Energy",
+   "page": "Crystal Energy (Aquapolis 146)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Warp Energy",
+   "page": "Warp Energy (Aquapolis 147)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Kingdra",
+   "page": "Kingdra (Aquapolis 148)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Lugia",
+   "page": "Lugia (Aquapolis 149)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Nidoking",
+   "page": "Nidoking (Aquapolis 150)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h1": {
+   "en": "Ampharos",
+   "page": "Ampharos (Aquapolis H1)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h2": {
+   "en": "Arcanine",
+   "page": "Arcanine (Aquapolis H2)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h3": {
+   "en": "Ariados",
+   "page": "Ariados (Aquapolis H3)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h4": {
+   "en": "Azumarill",
+   "page": "Azumarill (Aquapolis H4)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h5": {
+   "en": "Bellossom",
+   "page": "Bellossom (Aquapolis H5)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h6": {
+   "en": "Blissey",
+   "page": "Blissey (Aquapolis H6)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h7": {
+   "en": "Electrode",
+   "page": "Electrode (Aquapolis H7)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h8": {
+   "en": "Entei",
+   "page": "Entei (Aquapolis H8)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h9": {
+   "en": "Espeon",
+   "page": "Espeon (Aquapolis H9)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h10": {
+   "en": "Exeggutor",
+   "page": "Exeggutor (Aquapolis H10)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h11": {
+   "en": "Houndoom",
+   "page": "Houndoom (Aquapolis H11)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h12": {
+   "en": "Hypno",
+   "page": "Hypno (Aquapolis H12)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h13": {
+   "en": "Jumpluff",
+   "page": "Jumpluff (Aquapolis H13)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h14": {
+   "en": "Kingdra",
+   "page": "Kingdra (Aquapolis H14)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h15": {
+   "en": "Lanturn",
+   "page": "Lanturn (Aquapolis H15)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h16": {
+   "en": "Magneton",
+   "page": "Magneton (Aquapolis H16)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h17": {
+   "en": "Muk",
+   "page": "Muk (Aquapolis H17)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h18": {
+   "en": "Nidoking",
+   "page": "Nidoking (Aquapolis H18)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h19": {
+   "en": "Ninetales",
+   "page": "Ninetales (Aquapolis H19)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h20": {
+   "en": "Octillery",
+   "page": "Octillery (Aquapolis H20)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h21": {
+   "en": "Scizor",
+   "page": "Scizor (Aquapolis H21)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h22": {
+   "en": "Slowking",
+   "page": "Slowking (Aquapolis H22)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h23": {
+   "en": "Steelix",
+   "page": "Steelix (Aquapolis H23)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h24": {
+   "en": "Sudowoodo",
+   "page": "Sudowoodo (Aquapolis H24)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h25": {
+   "en": "Suicune",
+   "page": "Suicune (Aquapolis H25)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h26": {
+   "en": "Tentacruel",
+   "page": "Tentacruel (Aquapolis H26)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h27": {
+   "en": "Togetic",
+   "page": "Togetic (Aquapolis H27)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h28": {
+   "en": "Tyranitar",
+   "page": "Tyranitar (Aquapolis H28)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h29": {
+   "en": "Umbreon",
+   "page": "Umbreon (Aquapolis H29)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h30": {
+   "en": "Victreebel",
+   "page": "Victreebel (Aquapolis H30)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h31": {
+   "en": "Vileplume",
+   "page": "Vileplume (Aquapolis H31)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "h32": {
+   "en": "Zapdos",
+   "page": "Zapdos (Aquapolis H32)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "50a": {
+   "en": "Golduck",
+   "page": "Golduck (Aquapolis 50)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "50b": {
+   "en": "Golduck",
+   "page": "Golduck (Aquapolis 50)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "74a": {
+   "en": "Drowzee",
+   "page": "Drowzee (Aquapolis 74)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "74b": {
+   "en": "Drowzee",
+   "page": "Drowzee (Aquapolis 74)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95a": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime (Aquapolis 95)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95b": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime (Aquapolis 95)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103a": {
+   "en": "Porygon",
+   "page": "Porygon (Aquapolis 103)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103b": {
+   "en": "Porygon",
+   "page": "Porygon (Aquapolis 103)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,797 @@
+{
+ "page": "Expansion Pack 20th Anniversary (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Venusaur",
+   "page": "Venusaur-EX (Expansion Pack 20th 1)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "2": {
+   "en": "Venusaur",
+   "page": "M Venusaur-EX (Expansion Pack 20th 2)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "3": {
+   "en": "Caterpie",
+   "page": "Caterpie (Expansion Pack 20th 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Metapod",
+   "page": "Metapod (Expansion Pack 20th 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Weedle",
+   "page": "Weedle (Expansion Pack 20th 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Kakuna",
+   "page": "Kakuna (Expansion Pack 20th 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Beedrill",
+   "page": "Beedrill (Expansion Pack 20th 7)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "8": {
+   "en": "Tangela",
+   "page": "Tangela (Expansion Pack 20th 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Charmander",
+   "page": "Charmander (Expansion Pack 20th 9)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (Expansion Pack 20th 10)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Charizard",
+   "page": "Charizard (Expansion Pack 20th 11)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Charizard",
+   "page": "Charizard-EX (Expansion Pack 20th 12)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "13": {
+   "en": "Charizard",
+   "page": "M Charizard-EX (Expansion Pack 20th 13)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "14": {
+   "en": "Vulpix",
+   "page": "Vulpix (Expansion Pack 20th 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Ninetales",
+   "page": "Ninetales (Expansion Pack 20th 15)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "16": {
+   "en": "Ninetales",
+   "page": "Ninetales BREAK (Expansion Pack 20th 16)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "17": {
+   "en": "Growlithe",
+   "page": "Growlithe (Expansion Pack 20th 17)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Arcanine",
+   "page": "Arcanine (Expansion Pack 20th 18)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Ponyta",
+   "page": "Ponyta (Expansion Pack 20th 19)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Magmar",
+   "page": "Magmar (Expansion Pack 20th 20)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Blastoise",
+   "page": "Blastoise-EX (Expansion Pack 20th 21)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "22": {
+   "en": "Blastoise",
+   "page": "M Blastoise-EX (Expansion Pack 20th 22)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "23": {
+   "en": "Poliwag",
+   "page": "Poliwag (Expansion Pack 20th 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Poliwhirl",
+   "page": "Poliwhirl (Expansion Pack 20th 24)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Poliwrath",
+   "page": "Poliwrath (Expansion Pack 20th 25)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "26": {
+   "en": "Seel",
+   "page": "Seel (Expansion Pack 20th 26)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Dewgong",
+   "page": "Dewgong (Expansion Pack 20th 27)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Staryu",
+   "page": "Staryu (Expansion Pack 20th 28)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Starmie",
+   "page": "Starmie (Expansion Pack 20th 29)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Starmie",
+   "page": "Starmie BREAK (Expansion Pack 20th 30)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Magikarp",
+   "page": "Magikarp (Expansion Pack 20th 31)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Gyarados",
+   "page": "Gyarados (Expansion Pack 20th 32)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "33": {
+   "en": "Pikachu",
+   "page": "Pikachu (Expansion Pack 20th 33)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Raichu",
+   "page": "Raichu (Expansion Pack 20th 34)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "35": {
+   "en": "Magnemite",
+   "page": "Magnemite (Expansion Pack 20th 35)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Magneton",
+   "page": "Magneton (Expansion Pack 20th 36)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "37": {
+   "en": "Voltorb",
+   "page": "Voltorb (Expansion Pack 20th 37)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Electrode",
+   "page": "Electrode (Expansion Pack 20th 38)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Expansion Pack 20th 39)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Zapdos",
+   "page": "Zapdos (Expansion Pack 20th 40)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "41": {
+   "en": "Nidoran♂",
+   "page": "Nidoran♂ (Expansion Pack 20th 41)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Nidorino",
+   "page": "Nidorino (Expansion Pack 20th 42)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Nidoking",
+   "page": "Nidoking (Expansion Pack 20th 43)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Nidoking",
+   "page": "Nidoking BREAK (Expansion Pack 20th 44)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "45": {
+   "en": "Gastly",
+   "page": "Gastly (Expansion Pack 20th 45)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Haunter",
+   "page": "Haunter (Expansion Pack 20th 46)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Drowzee",
+   "page": "Drowzee (Expansion Pack 20th 47)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Koffing",
+   "page": "Koffing (Expansion Pack 20th 48)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Mewtwo",
+   "page": "Mewtwo (Expansion Pack 20th 49)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "50": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-EX (Expansion Pack 20th 50)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "51": {
+   "en": "Mew",
+   "page": "Mew (Expansion Pack 20th 51)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "52": {
+   "en": "Sandshrew",
+   "page": "Sandshrew (Expansion Pack 20th 52)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Diglett",
+   "page": "Diglett (Expansion Pack 20th 53)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Dugtrio",
+   "page": "Dugtrio (Expansion Pack 20th 54)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Machop",
+   "page": "Machop (Expansion Pack 20th 55)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Machoke",
+   "page": "Machoke (Expansion Pack 20th 56)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Machamp",
+   "page": "Machamp (Expansion Pack 20th 57)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "58": {
+   "en": "Machamp",
+   "page": "Machamp BREAK (Expansion Pack 20th 58)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Onix",
+   "page": "Onix (Expansion Pack 20th 59)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Hitmonchan",
+   "page": "Hitmonchan (Expansion Pack 20th 60)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "61": {
+   "en": "Clefairy",
+   "page": "Clefairy (Expansion Pack 20th 61)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "62": {
+   "en": "Pidgeot",
+   "page": "Pidgeot-EX (Expansion Pack 20th 62)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Pidgeot",
+   "page": "M Pidgeot-EX (Expansion Pack 20th 63)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Rattata",
+   "page": "Rattata (Expansion Pack 20th 64)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Raticate",
+   "page": "Raticate (Expansion Pack 20th 65)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Farfetch'd",
+   "page": "Farfetch'd (Expansion Pack 20th 66)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Doduo",
+   "page": "Doduo (Expansion Pack 20th 67)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "68": {
+   "en": "Chansey",
+   "page": "Chansey (Expansion Pack 20th 68)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "69": {
+   "en": "Porygon",
+   "page": "Porygon (Expansion Pack 20th 69)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "70": {
+   "en": "Dragonite",
+   "page": "Dragonite-EX (Expansion Pack 20th 70)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Super Potion",
+   "page": "Super Potion (Expansion Pack 20th 71)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Energy Retrieval",
+   "page": "Energy Retrieval (Expansion Pack 20th 72)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "73": {
+   "en": "Potion",
+   "page": "Potion (Expansion Pack 20th 73)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "74": {
+   "en": "Revive",
+   "page": "Revive (Expansion Pack 20th 74)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "75": {
+   "en": "Devolution Spray",
+   "page": "Devolution Spray (Expansion Pack 20th 75)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "76": {
+   "en": "Full Heal",
+   "page": "Full Heal (Expansion Pack 20th 76)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Switch",
+   "page": "Switch (Expansion Pack 20th 77)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "78": {
+   "en": "Pokédex",
+   "page": "Pokédex (Expansion Pack 20th 78)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Maintenance",
+   "page": "Maintenance (Expansion Pack 20th 79)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "80": {
+   "en": "Blastoise Spirit Link",
+   "page": "Blastoise Spirit Link (Expansion Pack 20th 80)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "81": {
+   "en": "Pidgeot Spirit Link",
+   "page": "Pidgeot Spirit Link (Expansion Pack 20th 81)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "82": {
+   "en": "Venusaur Spirit Link",
+   "page": "Venusaur Spirit Link (Expansion Pack 20th 82)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "83": {
+   "en": "Charizard Spirit Link",
+   "page": "Charizard Spirit Link (Expansion Pack 20th 83)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "84": {
+   "en": "Professor Oak's Hint",
+   "page": "Professor Oak's Hint (Expansion Pack 20th 84)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "85": {
+   "en": "Misty's Determination",
+   "page": "Misty's Determination (Expansion Pack 20th 85)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "86": {
+   "en": "Brock's Grit",
+   "page": "Brock's Grit (Expansion Pack 20th 86)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "87": {
+   "en": "Double Colorless Energy",
+   "page": "Double Colorless Energy (Expansion Pack 20th 87)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "88": {
+   "en": "Venusaur",
+   "page": "Venusaur-EX (Expansion Pack 20th 88)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Venusaur",
+   "page": "M Venusaur-EX (Expansion Pack 20th 89)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Charizard",
+   "page": "Charizard-EX (Expansion Pack 20th 90)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Charizard",
+   "page": "M Charizard-EX (Expansion Pack 20th 91)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Blastoise",
+   "page": "Blastoise-EX (Expansion Pack 20th 92)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Blastoise",
+   "page": "M Blastoise-EX (Expansion Pack 20th 93)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Pikachu",
+   "page": "Pikachu-EX (Expansion Pack 20th 94)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-EX (Expansion Pack 20th 95)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Pidgeot",
+   "page": "Pidgeot-EX (Expansion Pack 20th 96)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Pidgeot",
+   "page": "M Pidgeot-EX (Expansion Pack 20th 97)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Dragonite",
+   "page": "Dragonite-EX (Expansion Pack 20th 98)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Misty's Determination",
+   "page": "Misty's Determination (Expansion Pack 20th 99)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Brock's Grit",
+   "page": "Brock's Grit (Expansion Pack 20th 100)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Exeggutor",
+   "page": "Exeggutor (Expansion Pack 20th 101)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "102": {
+   "en": "Imakuni?'s Doduo",
+   "page": "Imakuni?'s Doduo (Expansion Pack 20th 102)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "103": {
+   "en": "Here Comes Team Rocket!",
+   "page": "Here Comes Team Rocket! (Expansion Pack 20th 103)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "104": {
+   "en": "Charizard",
+   "page": "M Charizard-EX (BASE PACK 104)",
+   "type": "SR",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Blastoise",
+   "page": "Blastoise-EX (BASE PACK 105)",
+   "type": "SR",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Blastoise",
+   "page": "M Blastoise-EX (BASE PACK 106)",
+   "type": "SR",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Pikachu",
+   "page": "Pikachu-EX (BASE PACK 107)",
+   "type": "SR",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-EX (BASE PACK 108)",
+   "type": "SR",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Pidgeot",
+   "page": "Pidgeot-EX (BASE PACK 109)",
+   "type": "SR",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Pidgeot",
+   "page": "M Pidgeot-EX (BASE PACK 110)",
+   "type": "SR",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Dragonite",
+   "page": "Dragonite-EX (BASE PACK 111)",
+   "type": "SR",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Brock's Grit",
+   "page": "Brock's Grit (BASE PACK 112)",
+   "type": "SR",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Misty's Determination",
+   "page": "Misty's Determination (BASE PACK 113)",
+   "type": "SR",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

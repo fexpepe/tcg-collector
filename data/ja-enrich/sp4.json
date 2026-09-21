@@ -1,0 +1,34 @@
+{
+ "page": "Eevee Heroes VMAX Special Set (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Flareon",
+   "page": "Flareon VMAX (VMAX Special Set 1)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "2": {
+   "en": "Vaporeon",
+   "page": "Vaporeon VMAX (VMAX Special Set 2)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "3": {
+   "en": "Jolteon",
+   "page": "Jolteon VMAX (VMAX Special Set 3)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Espeon",
+   "page": "Espeon VMAX (VMAX Special Set 4)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  }
+ }
+}

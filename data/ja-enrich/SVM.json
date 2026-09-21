@@ -1,0 +1,1231 @@
+{
+ "page": "Generations Start Decks (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Oddish",
+   "page": "Oddish (Generations Start Deck 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Gloom",
+   "page": "Gloom (Generations Start Deck 2)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Vileplume",
+   "page": "Vileplume (Generations Start Deck 3)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Generations Start Deck 4)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Exeggutor",
+   "page": "Exeggutor (Generations Start Deck 5)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Pinsir",
+   "page": "Pinsir (Generations Start Deck 6)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Petilil",
+   "page": "Petilil (Generations Start Deck 7)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Lilligant",
+   "page": "Lilligant (Generations Start Deck 8)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Foongus",
+   "page": "Foongus (Generations Start Deck 9)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Amoonguss",
+   "page": "Amoonguss ex (Generations Start Deck 10)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Durant",
+   "page": "Durant (Generations Start Deck 11)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Virizion",
+   "page": "Virizion (Generations Start Deck 12)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Nymble",
+   "page": "Nymble (Generations Start Deck 13)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Torchic",
+   "page": "Torchic (Generations Start Deck 14)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Combusken",
+   "page": "Combusken (Generations Start Deck 15)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Blaziken",
+   "page": "Blaziken ex (Generations Start Deck 16)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Torkoal",
+   "page": "Torkoal (Generations Start Deck 17)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Victini",
+   "page": "Victini (Generations Start Deck 18)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Heatmor",
+   "page": "Heatmor (Generations Start Deck 19)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Larvesta",
+   "page": "Larvesta (Generations Start Deck 20)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Volcarona",
+   "page": "Volcarona (Generations Start Deck 21)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Reshiram",
+   "page": "Reshiram ex (Generations Start Deck 22)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Fletchinder",
+   "page": "Fletchinder (Generations Start Deck 23)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Talonflame",
+   "page": "Talonflame (Generations Start Deck 24)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Litleo",
+   "page": "Litleo (Generations Start Deck 25)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Pyroar",
+   "page": "Pyroar (Generations Start Deck 26)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Generations Start Deck 27)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Slowking",
+   "page": "Slowking (Generations Start Deck 28)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Marill",
+   "page": "Marill (Generations Start Deck 29)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Azumarill",
+   "page": "Azumarill (Generations Start Deck 30)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Suicune",
+   "page": "Suicune (Generations Start Deck 31)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Wingull",
+   "page": "Wingull (Generations Start Deck 32)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Pelipper",
+   "page": "Pelipper (Generations Start Deck 33)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Snorunt",
+   "page": "Snorunt (Generations Start Deck 34)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Glalie",
+   "page": "Glalie (Generations Start Deck 35)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Regice",
+   "page": "Regice (Generations Start Deck 36)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Kyogre",
+   "page": "Kyogre ex (Generations Start Deck 37)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Pikachu",
+   "page": "Pikachu ex (Generations Start Deck 38)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Alolan Geodude",
+   "page": "Alolan Geodude (Generations Start Deck 39)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "40": {
+   "en": "Alolan Graveler",
+   "page": "Alolan Graveler (Generations Start Deck 40)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Alolan Golem",
+   "page": "Alolan Golem (Generations Start Deck 41)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "42": {
+   "en": "Voltorb",
+   "page": "Voltorb (Generations Start Deck 42)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Electrode",
+   "page": "Electrode (Generations Start Deck 43)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Zapdos",
+   "page": "Zapdos (Generations Start Deck 44)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Togedemaru",
+   "page": "Togedemaru (Generations Start Deck 45)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko ex (Generations Start Deck 46)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Alolan Marowak",
+   "page": "Alolan Marowak (Generations Start Deck 47)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Spritzee",
+   "page": "Spritzee (Generations Start Deck 48)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "49": {
+   "en": "Aromatisse",
+   "page": "Aromatisse (Generations Start Deck 49)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "50": {
+   "en": "Sylveon",
+   "page": "Sylveon (Generations Start Deck 50)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "51": {
+   "en": "Dedenne",
+   "page": "Dedenne (Generations Start Deck 51)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "52": {
+   "en": "Xerneas",
+   "page": "Xerneas ex (Generations Start Deck 52)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "53": {
+   "en": "Oricorio",
+   "page": "Oricorio (Generations Start Deck 53)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "54": {
+   "en": "Mimikyu",
+   "page": "Mimikyu ex (Generations Start Deck 54)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "55": {
+   "en": "Dhelmise",
+   "page": "Dhelmise (Generations Start Deck 55)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "56": {
+   "en": "Impidimp",
+   "page": "Impidimp (Generations Start Deck 56)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "57": {
+   "en": "Morgrem",
+   "page": "Morgrem (Generations Start Deck 57)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "58": {
+   "en": "Grimmsnarl",
+   "page": "Grimmsnarl (Generations Start Deck 58)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "59": {
+   "en": "Milcery",
+   "page": "Milcery (Generations Start Deck 59)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "60": {
+   "en": "Alcremie",
+   "page": "Alcremie ex (Generations Start Deck 60)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "61": {
+   "en": "Cubone",
+   "page": "Cubone (Generations Start Deck 61)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "62": {
+   "en": "Larvitar",
+   "page": "Larvitar (Generations Start Deck 62)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "63": {
+   "en": "Pupitar",
+   "page": "Pupitar (Generations Start Deck 63)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "64": {
+   "en": "Riolu",
+   "page": "Riolu (Generations Start Deck 64)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "65": {
+   "en": "Lucario",
+   "page": "Lucario ex (Generations Start Deck 65)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "66": {
+   "en": "Hippopotas",
+   "page": "Hippopotas (Generations Start Deck 66)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "67": {
+   "en": "Hippowdon",
+   "page": "Hippowdon (Generations Start Deck 67)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "68": {
+   "en": "Croagunk",
+   "page": "Croagunk (Generations Start Deck 68)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "69": {
+   "en": "Toxicroak",
+   "page": "Toxicroak (Generations Start Deck 69)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "70": {
+   "en": "Toedscool",
+   "page": "Toedscool (Generations Start Deck 70)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "71": {
+   "en": "Toedscruel",
+   "page": "Toedscruel (Generations Start Deck 71)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "72": {
+   "en": "Koraidon",
+   "page": "Koraidon ex (Generations Start Deck 72)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "73": {
+   "en": "Paldean Wooper",
+   "page": "Paldean Wooper (Generations Start Deck 73)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "74": {
+   "en": "Paldean Clodsire",
+   "page": "Paldean Clodsire ex (Generations Start Deck 74)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "75": {
+   "en": "Sneasel",
+   "page": "Sneasel (Generations Start Deck 75)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "76": {
+   "en": "Houndour",
+   "page": "Houndour (Generations Start Deck 76)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "77": {
+   "en": "Houndoom",
+   "page": "Houndoom (Generations Start Deck 77)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "78": {
+   "en": "Tyranitar",
+   "page": "Tyranitar ex (Generations Start Deck 78)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "79": {
+   "en": "Lokix",
+   "page": "Lokix (Generations Start Deck 79)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "80": {
+   "en": "Bombirdier",
+   "page": "Bombirdier (Generations Start Deck 80)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "81": {
+   "en": "Bronzor",
+   "page": "Bronzor (Generations Start Deck 81)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "82": {
+   "en": "Bronzong",
+   "page": "Bronzong (Generations Start Deck 82)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "83": {
+   "en": "Dialga",
+   "page": "Dialga ex (Generations Start Deck 83)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "84": {
+   "en": "Heatran",
+   "page": "Heatran (Generations Start Deck 84)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "85": {
+   "en": "Galarian Stunfisk",
+   "page": "Galarian Stunfisk (Generations Start Deck 85)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "86": {
+   "en": "Cufant",
+   "page": "Cufant (Generations Start Deck 86)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "87": {
+   "en": "Copperajah",
+   "page": "Copperajah (Generations Start Deck 87)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "88": {
+   "en": "Duraludon",
+   "page": "Duraludon (Generations Start Deck 88)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "89": {
+   "en": "Zacian",
+   "page": "Zacian ex (Generations Start Deck 89)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "90": {
+   "en": "Rattata",
+   "page": "Rattata (Generations Start Deck 90)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "91": {
+   "en": "Meowth",
+   "page": "Meowth (Generations Start Deck 91)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "92": {
+   "en": "Persian",
+   "page": "Persian (Generations Start Deck 92)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "93": {
+   "en": "Eevee",
+   "page": "Eevee (Generations Start Deck 93)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "94": {
+   "en": "Snorlax",
+   "page": "Snorlax ex (Generations Start Deck 94)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "95": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (Generations Start Deck 95)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "96": {
+   "en": "Miltank",
+   "page": "Miltank (Generations Start Deck 96)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "97": {
+   "en": "Lugia",
+   "page": "Lugia ex (Generations Start Deck 97)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "98": {
+   "en": "Zigzagoon",
+   "page": "Zigzagoon (Generations Start Deck 98)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "99": {
+   "en": "Linoone",
+   "page": "Linoone (Generations Start Deck 99)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "100": {
+   "en": "Kecleon",
+   "page": "Kecleon (Generations Start Deck 100)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "101": {
+   "en": "Tropius",
+   "page": "Tropius (Generations Start Deck 101)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "102": {
+   "en": "Buneary",
+   "page": "Buneary (Generations Start Deck 102)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "103": {
+   "en": "Lopunny",
+   "page": "Lopunny (Generations Start Deck 103)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "104": {
+   "en": "Chatot",
+   "page": "Chatot (Generations Start Deck 104)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "105": {
+   "en": "Shaymin",
+   "page": "Shaymin (Generations Start Deck 105)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "106": {
+   "en": "Audino",
+   "page": "Audino (Generations Start Deck 106)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "107": {
+   "en": "Minccino",
+   "page": "Minccino (Generations Start Deck 107)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "108": {
+   "en": "Cinccino",
+   "page": "Cinccino (Generations Start Deck 108)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "109": {
+   "en": "Fletchling",
+   "page": "Fletchling (Generations Start Deck 109)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "110": {
+   "en": "Furfrou",
+   "page": "Furfrou (Generations Start Deck 110)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "111": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (Generations Start Deck 111)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "112": {
+   "en": "Noibat",
+   "page": "Noibat (Generations Start Deck 112)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "113": {
+   "en": "Noivern",
+   "page": "Noivern ex (Generations Start Deck 113)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "114": {
+   "en": "Stufful",
+   "page": "Stufful (Generations Start Deck 114)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "115": {
+   "en": "Bewear",
+   "page": "Bewear (Generations Start Deck 115)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "116": {
+   "en": "Drampa",
+   "page": "Drampa (Generations Start Deck 116)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "117": {
+   "en": "Skwovet",
+   "page": "Skwovet (Generations Start Deck 117)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "118": {
+   "en": "Greedent",
+   "page": "Greedent (Generations Start Deck 118)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "119": {
+   "en": "Cramorant",
+   "page": "Cramorant (Generations Start Deck 119)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "120": {
+   "en": "Indeedee",
+   "page": "Indeedee (Generations Start Deck 120)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "121": {
+   "en": "Lechonk",
+   "page": "Lechonk (Generations Start Deck 121)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "122": {
+   "en": "Oinkologne",
+   "page": "Oinkologne (Generations Start Deck 122)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "123": {
+   "en": "Squawkabilly",
+   "page": "Squawkabilly (Generations Start Deck 123)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "124": {
+   "en": "Cyclizar",
+   "page": "Cyclizar (Generations Start Deck 124)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "125": {
+   "en": "Energy Retrieval",
+   "page": "Energy Retrieval (Generations Start Deck 125)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "126": {
+   "en": "Energy Sticker",
+   "page": "Energy Sticker (Generations Start Deck 126)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "127": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (Generations Start Deck 127)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "128": {
+   "en": "Energy Search",
+   "page": "Energy Search (Generations Start Deck 128)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "129": {
+   "en": "Delivery Drone",
+   "page": "Delivery Drone (Generations Start Deck 129)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "130": {
+   "en": "Potion",
+   "page": "Potion (Generations Start Deck 130)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "131": {
+   "en": "Crushing Hammer",
+   "page": "Crushing Hammer (Generations Start Deck 131)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "132": {
+   "en": "Great Ball",
+   "page": "Great Ball (Generations Start Deck 132)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "133": {
+   "en": "Nest Ball",
+   "page": "Nest Ball (Generations Start Deck 133)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "134": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Generations Start Deck 134)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "135": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Generations Start Deck 135)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "136": {
+   "en": "Switch",
+   "page": "Switch (Generations Start Deck 136)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "137": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (Generations Start Deck 137)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "138": {
+   "en": "Poké Ball",
+   "page": "Poké Ball (Generations Start Deck 138)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "139": {
+   "en": "Rigid Band",
+   "page": "Rigid Band (Generations Start Deck 139)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "140": {
+   "en": "Vitality Band",
+   "page": "Vitality Band (Generations Start Deck 140)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "141": {
+   "en": "Rocky Helmet",
+   "page": "Rocky Helmet (Generations Start Deck 141)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "142": {
+   "en": "Bravery Charm",
+   "page": "Bravery Charm (Generations Start Deck 142)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "143": {
+   "en": "Black Belt's Training",
+   "page": "Black Belt's Training (Generations Start Deck 143)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "144": {
+   "en": "Black Belt's Training",
+   "page": "Black Belt's Training (Generations Start Deck 144)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "145": {
+   "en": "Black Belt's Training",
+   "page": "Black Belt's Training (Generations Start Deck 145)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "146": {
+   "en": "Black Belt's Training",
+   "page": "Black Belt's Training (Generations Start Deck 146)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "147": {
+   "en": "Black Belt's Training",
+   "page": "Black Belt's Training (Generations Start Deck 147)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "148": {
+   "en": "Black Belt's Training",
+   "page": "Black Belt's Training (Generations Start Deck 148)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "149": {
+   "en": "Black Belt's Training",
+   "page": "Black Belt's Training (Generations Start Deck 149)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "150": {
+   "en": "Black Belt's Training",
+   "page": "Black Belt's Training (Generations Start Deck 150)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "151": {
+   "en": "Black Belt's Training",
+   "page": "Black Belt's Training (Generations Start Deck 151)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "152": {
+   "en": "Cook",
+   "page": "Cook (Generations Start Deck 152)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "153": {
+   "en": "Lucian",
+   "page": "Lucian (Generations Start Deck 153)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "154": {
+   "en": "Judge",
+   "page": "Judge (Generations Start Deck 154)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "155": {
+   "en": "Team Star Grunt",
+   "page": "Team Star Grunt (Generations Start Deck 155)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "156": {
+   "en": "Norman",
+   "page": "Norman (Generations Start Deck 156)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "157": {
+   "en": "Youngster",
+   "page": "Youngster (Generations Start Deck 157)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "158": {
+   "en": "Rika",
+   "page": "Rika (Generations Start Deck 158)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "159": {
+   "en": "Drasna",
+   "page": "Drasna (Generations Start Deck 159)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "160": {
+   "en": "Iono",
+   "page": "Iono (Generations Start Deck 160)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "161": {
+   "en": "Nemona",
+   "page": "Nemona (Generations Start Deck 161)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "162": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Generations Start Deck 162)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "163": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Generations Start Deck 163)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "164": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Generations Start Deck 164)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "165": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Generations Start Deck 165)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "166": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Generations Start Deck 166)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "167": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Generations Start Deck 167)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "168": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Generations Start Deck 168)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "169": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Generations Start Deck 169)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "170": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Generations Start Deck 170)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "171": {
+   "en": "Roark",
+   "page": "Roark (Generations Start Deck 171)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "172": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (Generations Start Deck 172)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "173": {
+   "en": "Bill's Transfer",
+   "page": "Bill's Transfer (Generations Start Deck 173)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "174": {
+   "en": "Morty's Conviction",
+   "page": "Morty's Conviction (Generations Start Deck 174)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "175": {
+   "en": "Therapeutic Energy",
+   "page": "Therapeutic Energy (Generations Start Deck 175)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

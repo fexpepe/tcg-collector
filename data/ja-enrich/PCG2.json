@@ -1,0 +1,762 @@
+{
+ "page": "Clash of the Blue Sky (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Zubat",
+   "page": "Zubat (Clash of the Blue Sky 1)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Golbat",
+   "page": "Golbat (Clash of the Blue Sky 2)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "3": {
+   "en": "Koffing",
+   "page": "Koffing (Clash of the Blue Sky 3)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "4": {
+   "en": "Weezing",
+   "page": "Weezing (Clash of the Blue Sky 4)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "5": {
+   "en": "Crobat ex",
+   "page": "Crobat ex (Clash of the Blue Sky 5)",
+   "type": "Grass",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "6": {
+   "en": "Wurmple",
+   "page": "Wurmple (Clash of the Blue Sky 6)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "7": {
+   "en": "Silcoon",
+   "page": "Silcoon (Clash of the Blue Sky 7)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "8": {
+   "en": "Beautifly",
+   "page": "Beautifly (Clash of the Blue Sky 8)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "9": {
+   "en": "Surskit",
+   "page": "Surskit (Clash of the Blue Sky 9)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "10": {
+   "en": "Masquerain",
+   "page": "Masquerain (Clash of the Blue Sky 10)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "11": {
+   "en": "Shroomish",
+   "page": "Shroomish (Clash of the Blue Sky 11)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "12": {
+   "en": "Nincada",
+   "page": "Nincada (Clash of the Blue Sky 12)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "13": {
+   "en": "Ninjask",
+   "page": "Ninjask (Clash of the Blue Sky 13)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "14": {
+   "en": "Tropius",
+   "page": "Tropius (Clash of the Blue Sky 14)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Slugma",
+   "page": "Slugma (Clash of the Blue Sky 15)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "16": {
+   "en": "Magcargo",
+   "page": "Magcargo (Clash of the Blue Sky 16)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "17": {
+   "en": "Numel",
+   "page": "Numel (Clash of the Blue Sky 17)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "18": {
+   "en": "Camerupt",
+   "page": "Camerupt (Clash of the Blue Sky 18)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "19": {
+   "en": "Goldeen",
+   "page": "Goldeen (Clash of the Blue Sky 19)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "20": {
+   "en": "Seaking",
+   "page": "Seaking (Clash of the Blue Sky 20)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "21": {
+   "en": "Staryu",
+   "page": "Staryu (Clash of the Blue Sky 21)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "22": {
+   "en": "Starmie",
+   "page": "Starmie (Clash of the Blue Sky 22)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "23": {
+   "en": "Magikarp",
+   "page": "Magikarp (Clash of the Blue Sky 23)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "24": {
+   "en": "Gyarados",
+   "page": "Gyarados (Clash of the Blue Sky 24)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "25": {
+   "en": "Lotad",
+   "page": "Lotad (Clash of the Blue Sky 25)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "26": {
+   "en": "Lombre",
+   "page": "Lombre (Clash of the Blue Sky 26)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "27": {
+   "en": "Ludicolo",
+   "page": "Ludicolo (Clash of the Blue Sky 27)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "28": {
+   "en": "Wingull",
+   "page": "Wingull (Clash of the Blue Sky 28)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "29": {
+   "en": "Pelipper",
+   "page": "Pelipper (Clash of the Blue Sky 29)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "30": {
+   "en": "Barboach",
+   "page": "Barboach (Clash of the Blue Sky 30)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "31": {
+   "en": "Corphish",
+   "page": "Corphish (Clash of the Blue Sky 31)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "32": {
+   "en": "Electrike",
+   "page": "Electrike (Clash of the Blue Sky 32)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "33": {
+   "en": "Manectric ex",
+   "page": "Manectric ex (Clash of the Blue Sky 33)",
+   "type": "Lightning",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "34": {
+   "en": "Plusle",
+   "page": "Plusle (Clash of the Blue Sky 34)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "35": {
+   "en": "Minun",
+   "page": "Minun (Clash of the Blue Sky 35)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "36": {
+   "en": "Natu",
+   "page": "Natu (Clash of the Blue Sky 36)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "37": {
+   "en": "Xatu",
+   "page": "Xatu (Clash of the Blue Sky 37)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "38": {
+   "en": "Shedinja",
+   "page": "Shedinja (Clash of the Blue Sky 38)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "39": {
+   "en": "Solrock",
+   "page": "Solrock (Clash of the Blue Sky 39)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "40": {
+   "en": "Duskull",
+   "page": "Duskull (Clash of the Blue Sky 40)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "41": {
+   "en": "Dusclops",
+   "page": "Dusclops (Clash of the Blue Sky 41)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "42": {
+   "en": "Beldum",
+   "page": "Beldum (Clash of the Blue Sky 42)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "43": {
+   "en": "Metang",
+   "page": "Metang (Clash of the Blue Sky 43)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "44": {
+   "en": "Metagross",
+   "page": "Metagross (Clash of the Blue Sky 44)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "45": {
+   "en": "Deoxys ex",
+   "page": "Deoxys ex (Clash of the Blue Sky 45)",
+   "type": "Psychic",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "46": {
+   "en": "Deoxys ex",
+   "page": "Deoxys ex (Clash of the Blue Sky 46)",
+   "type": "Psychic",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "47": {
+   "en": "Breloom",
+   "page": "Breloom (Clash of the Blue Sky 47)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "48": {
+   "en": "Makuhita",
+   "page": "Makuhita (Clash of the Blue Sky 48)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "49": {
+   "en": "Hariyama ex",
+   "page": "Hariyama ex (Clash of the Blue Sky 49)",
+   "type": "Fighting",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "50": {
+   "en": "Nosepass",
+   "page": "Nosepass (Clash of the Blue Sky 50)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "51": {
+   "en": "Lunatone",
+   "page": "Lunatone (Clash of the Blue Sky 51)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "52": {
+   "en": "Whiscash",
+   "page": "Whiscash (Clash of the Blue Sky 52)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "53": {
+   "en": "Baltoy",
+   "page": "Baltoy (Clash of the Blue Sky 53)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "54": {
+   "en": "Claydol",
+   "page": "Claydol (Clash of the Blue Sky 54)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "55": {
+   "en": "Taillow",
+   "page": "Taillow (Clash of the Blue Sky 55)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "56": {
+   "en": "Swellow",
+   "page": "Swellow (Clash of the Blue Sky 56)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "57": {
+   "en": "Slakoth",
+   "page": "Slakoth (Clash of the Blue Sky 57)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "58": {
+   "en": "Vigoroth",
+   "page": "Vigoroth (Clash of the Blue Sky 58)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "59": {
+   "en": "Slaking",
+   "page": "Slaking (Clash of the Blue Sky 59)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "60": {
+   "en": "Swablu",
+   "page": "Swablu (Clash of the Blue Sky 60)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "61": {
+   "en": "Altaria",
+   "page": "Altaria (Clash of the Blue Sky 61)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "62": {
+   "en": "Bagon",
+   "page": "Bagon (Clash of the Blue Sky 62)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "63": {
+   "en": "Shelgon",
+   "page": "Shelgon (Clash of the Blue Sky 63)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "64": {
+   "en": "Salamence ex",
+   "page": "Salamence ex (Clash of the Blue Sky 64)",
+   "type": "Colorless",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "65": {
+   "en": "Latias",
+   "page": "Latias ☆ (Clash of the Blue Sky 65)",
+   "type": "Colorless",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "66": {
+   "en": "Latios",
+   "page": "Latios ☆ (Clash of the Blue Sky 66)",
+   "type": "Colorless",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "67": {
+   "en": "Rayquaza",
+   "page": "Rayquaza ☆ (Clash of the Blue Sky 67)",
+   "type": "Colorless",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "68": {
+   "en": "Poochyena",
+   "page": "Poochyena (Clash of the Blue Sky 68)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "69": {
+   "en": "Mightyena",
+   "page": "Mightyena (Clash of the Blue Sky 69)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "70": {
+   "en": "Sableye",
+   "page": "Sableye (Clash of the Blue Sky 70)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "71": {
+   "en": "Carvanha",
+   "page": "Carvanha (Clash of the Blue Sky 71)",
+   "type": "Darkness",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "72": {
+   "en": "Sharpedo ex",
+   "page": "Sharpedo ex (Clash of the Blue Sky 72)",
+   "type": "Darkness",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "73": {
+   "en": "Crawdaunt",
+   "page": "Crawdaunt (Clash of the Blue Sky 73)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "74": {
+   "en": "Skarmory",
+   "page": "Skarmory (Clash of the Blue Sky 74)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "75": {
+   "en": "Jirachi",
+   "page": "Jirachi (Clash of the Blue Sky 75)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "76": {
+   "en": "Professor Cozmo's Discovery",
+   "page": "Professor Cozmo's Discovery (Clash of the Blue Sky 76)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "77": {
+   "en": "Crystal Shard",
+   "page": "Crystal Shard (Clash of the Blue Sky 77)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "78": {
+   "en": "Space Center",
+   "page": "Space Center (Clash of the Blue Sky 78)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "79": {
+   "en": "Meteor Falls",
+   "page": "Meteor Falls (Clash of the Blue Sky 79)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "80": {
+   "en": "Scramble Energy",
+   "page": "Scramble Energy (Clash of the Blue Sky 80)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "81": {
+   "en": "Heal Energy",
+   "page": "Heal Energy (Clash of the Blue Sky 81)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "82": {
+   "en": "Boost Energy",
+   "page": "Boost Energy (Clash of the Blue Sky 82)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "83": {
+   "en": "Zubat",
+   "page": "Zubat (EX Deoxys 83)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "84": {
+   "en": "Balloon Berry",
+   "page": "Balloon Berry (EX Deoxys 84)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "85": {
+   "en": "Crystal Shard",
+   "page": "Crystal Shard (EX Deoxys 85)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "86": {
+   "en": "Energy Charge",
+   "page": "Energy Charge (EX Deoxys 86)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "87": {
+   "en": "Lady Outing",
+   "page": "Lady Outing (EX Deoxys 87)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88": {
+   "en": "Master Ball",
+   "page": "Master Ball (EX Deoxys 88)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "89": {
+   "en": "Meteor Falls",
+   "page": "Meteor Falls (EX Deoxys 89)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Professor Cozmo's Discovery",
+   "page": "Professor Cozmo's Discovery (EX Deoxys 90)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "Space Center",
+   "page": "Space Center (EX Deoxys 91)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Strength Charm",
+   "page": "Strength Charm (EX Deoxys 92)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Boost Energy",
+   "page": "Boost Energy (EX Deoxys 93)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Heal Energy",
+   "page": "Heal Energy (EX Deoxys 94)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Scramble Energy",
+   "page": "Scramble Energy (EX Deoxys 95)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Crobat ex",
+   "page": "Crobat ex (EX Deoxys 96)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Deoxys ex",
+   "page": "Deoxys ex (EX Deoxys 97)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Deoxys ex",
+   "page": "Deoxys ex (EX Deoxys 98)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Deoxys ex",
+   "page": "Deoxys ex (EX Deoxys 99)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Hariyama ex",
+   "page": "Hariyama ex (EX Deoxys 100)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Manectric ex",
+   "page": "Manectric ex (EX Deoxys 101)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Rayquaza ex",
+   "page": "Rayquaza ex (EX Deoxys 102)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Salamence ex",
+   "page": "Salamence ex (EX Deoxys 103)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Sharpedo ex",
+   "page": "Sharpedo ex (EX Deoxys 104)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Latias",
+   "page": "Latias ☆ (EX Deoxys 105)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Latios",
+   "page": "Latios ☆ (EX Deoxys 106)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Rayquaza",
+   "page": "Rayquaza ☆ (EX Deoxys 107)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Rocket's Raikou ex",
+   "page": "Rocket's Raikou ex (EX Deoxys 108)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

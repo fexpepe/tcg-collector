@@ -1,0 +1,587 @@
+{
+ "page": "Rocket Gang (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Dark Alakazam",
+   "page": "Dark Alakazam (Team Rocket 1)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "2": {
+   "en": "Dark Arbok",
+   "page": "Dark Arbok (Team Rocket 2)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "3": {
+   "en": "Dark Blastoise",
+   "page": "Dark Blastoise (Team Rocket 3)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Dark Charizard",
+   "page": "Dark Charizard (Team Rocket 4)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "5": {
+   "en": "Dark Dragonite",
+   "page": "Dark Dragonite (Team Rocket 5)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "6": {
+   "en": "Dark Dugtrio",
+   "page": "Dark Dugtrio (Team Rocket 6)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "7": {
+   "en": "Dark Golbat",
+   "page": "Dark Golbat (Team Rocket 7)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "8": {
+   "en": "Dark Gyarados",
+   "page": "Dark Gyarados (Team Rocket 8)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "9": {
+   "en": "Dark Hypno",
+   "page": "Dark Hypno (Team Rocket 9)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Dark Machamp",
+   "page": "Dark Machamp (Team Rocket 10)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "11": {
+   "en": "Dark Magneton",
+   "page": "Dark Magneton (Team Rocket 11)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "12": {
+   "en": "Dark Slowbro",
+   "page": "Dark Slowbro (Team Rocket 12)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "13": {
+   "en": "Dark Vileplume",
+   "page": "Dark Vileplume (Team Rocket 13)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "14": {
+   "en": "Dark Weezing",
+   "page": "Dark Weezing (Team Rocket 14)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Here Comes Team Rocket!",
+   "page": "Here Comes Team Rocket! (Team Rocket 15)",
+   "type": "T",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "16": {
+   "en": "Rocket's Sneak Attack",
+   "page": "Rocket's Sneak Attack (Team Rocket 16)",
+   "type": "T",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "17": {
+   "en": "Rainbow Energy",
+   "page": "Rainbow Energy (Team Rocket 17)",
+   "type": "Rainbow",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "18": {
+   "en": "Dark Alakazam",
+   "page": "Dark Alakazam (Team Rocket 18)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "19": {
+   "en": "Dark Arbok",
+   "page": "Dark Arbok (Team Rocket 19)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "20": {
+   "en": "Dark Blastoise",
+   "page": "Dark Blastoise (Team Rocket 20)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "21": {
+   "en": "Dark Charizard",
+   "page": "Dark Charizard (Team Rocket 21)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "22": {
+   "en": "Dark Dragonite",
+   "page": "Dark Dragonite (Team Rocket 22)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "23": {
+   "en": "Dark Dugtrio",
+   "page": "Dark Dugtrio (Team Rocket 23)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "24": {
+   "en": "Dark Golbat",
+   "page": "Dark Golbat (Team Rocket 24)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "25": {
+   "en": "Dark Gyarados",
+   "page": "Dark Gyarados (Team Rocket 25)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "26": {
+   "en": "Dark Hypno",
+   "page": "Dark Hypno (Team Rocket 26)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "27": {
+   "en": "Dark Machamp",
+   "page": "Dark Machamp (Team Rocket 27)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "28": {
+   "en": "Dark Magneton",
+   "page": "Dark Magneton (Team Rocket 28)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "29": {
+   "en": "Dark Slowbro",
+   "page": "Dark Slowbro (Team Rocket 29)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "30": {
+   "en": "Dark Vileplume",
+   "page": "Dark Vileplume (Team Rocket 30)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "31": {
+   "en": "Dark Weezing",
+   "page": "Dark Weezing (Team Rocket 31)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "32": {
+   "en": "Dark Charmeleon",
+   "page": "Dark Charmeleon (Team Rocket 32)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "33": {
+   "en": "Dark Dragonair",
+   "page": "Dark Dragonair (Team Rocket 33)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "34": {
+   "en": "Dark Electrode",
+   "page": "Dark Electrode (Team Rocket 34)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "35": {
+   "en": "Dark Flareon",
+   "page": "Dark Flareon (Team Rocket 35)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "36": {
+   "en": "Dark Gloom",
+   "page": "Dark Gloom (Team Rocket 36)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "37": {
+   "en": "Dark Golduck",
+   "page": "Dark Golduck (Team Rocket 37)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "38": {
+   "en": "Dark Jolteon",
+   "page": "Dark Jolteon (Team Rocket 38)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "39": {
+   "en": "Dark Kadabra",
+   "page": "Dark Kadabra (Team Rocket 39)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "40": {
+   "en": "Dark Machoke",
+   "page": "Dark Machoke (Team Rocket 40)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "41": {
+   "en": "Dark Muk",
+   "page": "Dark Muk (Team Rocket 41)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "42": {
+   "en": "Dark Persian",
+   "page": "Dark Persian (Team Rocket 42)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "43": {
+   "en": "Dark Primeape",
+   "page": "Dark Primeape (Team Rocket 43)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "44": {
+   "en": "Dark Rapidash",
+   "page": "Dark Rapidash (Team Rocket 44)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "45": {
+   "en": "Dark Vaporeon",
+   "page": "Dark Vaporeon (Team Rocket 45)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "46": {
+   "en": "Dark Wartortle",
+   "page": "Dark Wartortle (Team Rocket 46)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "47": {
+   "en": "Magikarp",
+   "page": "Magikarp (Team Rocket 47)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "48": {
+   "en": "Porygon",
+   "page": "Porygon (Team Rocket 48)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "49": {
+   "en": "Abra",
+   "page": "Abra (Team Rocket 49)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "50": {
+   "en": "Charmander",
+   "page": "Charmander (Team Rocket 50)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "51": {
+   "en": "Dark Raticate",
+   "page": "Dark Raticate (Team Rocket 51)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "52": {
+   "en": "Diglett",
+   "page": "Diglett (Team Rocket 52)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "53": {
+   "en": "Dratini",
+   "page": "Dratini (Team Rocket 53)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "54": {
+   "en": "Drowzee",
+   "page": "Drowzee (Team Rocket 54)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "55": {
+   "en": "Eevee",
+   "page": "Eevee (Team Rocket 55)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "56": {
+   "en": "Ekans",
+   "page": "Ekans (Team Rocket 56)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "57": {
+   "en": "Grimer",
+   "page": "Grimer (Team Rocket 57)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "58": {
+   "en": "Koffing",
+   "page": "Koffing (Team Rocket 58)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "59": {
+   "en": "Machop",
+   "page": "Machop (Team Rocket 59)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "60": {
+   "en": "Magnemite",
+   "page": "Magnemite (Team Rocket 60)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "61": {
+   "en": "Mankey",
+   "page": "Mankey (Team Rocket 61)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "62": {
+   "en": "Meowth",
+   "page": "Meowth (Team Rocket 62)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "63": {
+   "en": "Oddish",
+   "page": "Oddish (Team Rocket 63)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "64": {
+   "en": "Ponyta",
+   "page": "Ponyta (Team Rocket 64)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "65": {
+   "en": "Psyduck",
+   "page": "Psyduck (Team Rocket 65)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "66": {
+   "en": "Rattata",
+   "page": "Rattata (Team Rocket 66)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "67": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Team Rocket 67)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "68": {
+   "en": "Squirtle",
+   "page": "Squirtle (Team Rocket 68)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "69": {
+   "en": "Voltorb",
+   "page": "Voltorb (Team Rocket 69)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "70": {
+   "en": "Zubat",
+   "page": "Zubat (Team Rocket 70)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "71": {
+   "en": "Here Comes Team Rocket!",
+   "page": "Here Comes Team Rocket! (Team Rocket 71)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "72": {
+   "en": "Rocket's Sneak Attack",
+   "page": "Rocket's Sneak Attack (Team Rocket 72)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "73": {
+   "en": "The Boss's Way",
+   "page": "The Boss's Way (Team Rocket 73)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "74": {
+   "en": "Challenge!",
+   "page": "Challenge! (Team Rocket 74)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "75": {
+   "en": "Digger",
+   "page": "Digger (Team Rocket 75)",
+   "type": "T [R]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "76": {
+   "en": "Imposter Oak's Revenge",
+   "page": "Imposter Oak's Revenge (Team Rocket 76)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "77": {
+   "en": "Nightly Garbage Run",
+   "page": "Nightly Garbage Run (Team Rocket 77)",
+   "type": "T [R]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "78": {
+   "en": "Goop Gas Attack",
+   "page": "Goop Gas Attack (Team Rocket 78)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "79": {
+   "en": "Sleep!",
+   "page": "Sleep! (Team Rocket 79)",
+   "type": "T [R]",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "80": {
+   "en": "Rainbow Energy",
+   "page": "Rainbow Energy (Team Rocket 80)",
+   "type": "Rainbow",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "81": {
+   "en": "Full Heal Energy",
+   "page": "Full Heal Energy (Team Rocket 81)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "82": {
+   "en": "Potion Energy",
+   "page": "Potion Energy (Team Rocket 82)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "83": {
+   "en": "Dark Raichu",
+   "page": "Dark Raichu (Team Rocket 83)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  }
+ }
+}

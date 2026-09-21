@@ -1,0 +1,825 @@
+{
+ "page": "Nihil Zero (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Spinarak",
+   "page": "Spinarak (Nihil Zero 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Ariados",
+   "page": "Ariados (Nihil Zero 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Shaymin",
+   "page": "Shaymin (Nihil Zero 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Snivy",
+   "page": "Snivy (Nihil Zero 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Servine",
+   "page": "Servine (Nihil Zero 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Serperior",
+   "page": "Serperior (Nihil Zero 6)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "7": {
+   "en": "Scatterbug",
+   "page": "Scatterbug (Nihil Zero 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Spewpa",
+   "page": "Spewpa (Nihil Zero 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Vivillon",
+   "page": "Vivillon (Nihil Zero 9)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "10": {
+   "en": "Rowlet",
+   "page": "Rowlet (Nihil Zero 10)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Dartrix",
+   "page": "Dartrix (Nihil Zero 11)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Decidueye",
+   "page": "Decidueye ex (Nihil Zero 12)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "13": {
+   "en": "Fletchinder",
+   "page": "Fletchinder (Nihil Zero 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Talonflame",
+   "page": "Talonflame (Nihil Zero 14)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Salandit",
+   "page": "Salandit (Nihil Zero 15)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Salazzle",
+   "page": "Salazzle ex (Nihil Zero 16)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "17": {
+   "en": "Turtonator",
+   "page": "Turtonator (Nihil Zero 17)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Seel",
+   "page": "Seel (Nihil Zero 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Dewgong",
+   "page": "Dewgong (Nihil Zero 19)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "20": {
+   "en": "Staryu",
+   "page": "Staryu (Nihil Zero 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Mega Starmie",
+   "page": "Mega Starmie ex (Nihil Zero 21)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "22": {
+   "en": "Amaura",
+   "page": "Amaura (Nihil Zero 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Aurorus",
+   "page": "Aurorus (Nihil Zero 23)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Volcanion",
+   "page": "Volcanion (Nihil Zero 24)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Shinx",
+   "page": "Shinx (Nihil Zero 25)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Luxio",
+   "page": "Luxio (Nihil Zero 26)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Luxray",
+   "page": "Luxray (Nihil Zero 27)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "28": {
+   "en": "Dedenne",
+   "page": "Dedenne (Nihil Zero 28)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Clefairy",
+   "page": "Clefairy (Nihil Zero 29)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Mega Clefable",
+   "page": "Mega Clefable ex (Nihil Zero 30)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Mawile",
+   "page": "Mawile (Nihil Zero 31)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Espurr",
+   "page": "Espurr (Nihil Zero 32)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Meowstic",
+   "page": "Meowstic (Nihil Zero 33)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Spritzee",
+   "page": "Spritzee (Nihil Zero 34)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Aromatisse",
+   "page": "Aromatisse (Nihil Zero 35)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Nosepass",
+   "page": "Nosepass (Nihil Zero 36)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Probopass",
+   "page": "Probopass (Nihil Zero 37)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Hippopotas",
+   "page": "Hippopotas (Nihil Zero 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Hippowdon",
+   "page": "Hippowdon (Nihil Zero 39)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Landorus",
+   "page": "Landorus (Nihil Zero 40)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "41": {
+   "en": "Binacle",
+   "page": "Binacle (Nihil Zero 41)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Barbaracle",
+   "page": "Barbaracle (Nihil Zero 42)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Tyrunt",
+   "page": "Tyrunt (Nihil Zero 43)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Tyrantrum",
+   "page": "Tyrantrum (Nihil Zero 44)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (Nihil Zero 45)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Mega Zygarde",
+   "page": "Mega Zygarde ex (Nihil Zero 46)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "47": {
+   "en": "Gastly",
+   "page": "Gastly (Nihil Zero 47)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Haunter",
+   "page": "Haunter (Nihil Zero 48)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Gengar",
+   "page": "Gengar (Nihil Zero 49)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Skorupi",
+   "page": "Skorupi (Nihil Zero 50)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Drapion",
+   "page": "Drapion (Nihil Zero 51)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Yveltal",
+   "page": "Yveltal ex (Nihil Zero 52)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Chien-Pao",
+   "page": "Chien-Pao (Nihil Zero 53)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "54": {
+   "en": "Mega Skarmory",
+   "page": "Mega Skarmory ex (Nihil Zero 54)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Honedge",
+   "page": "Honedge (Nihil Zero 55)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Doublade",
+   "page": "Doublade (Nihil Zero 56)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Aegislash",
+   "page": "Aegislash (Nihil Zero 57)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Klefki",
+   "page": "Klefki (Nihil Zero 58)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Rattata",
+   "page": "Rattata (Nihil Zero 59)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Raticate",
+   "page": "Raticate (Nihil Zero 60)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Meowth",
+   "page": "Meowth ex (Nihil Zero 61)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Snorlax",
+   "page": "Snorlax (Nihil Zero 62)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (Nihil Zero 63)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "64": {
+   "en": "Diggersby",
+   "page": "Diggersby (Nihil Zero 64)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Fletchling",
+   "page": "Fletchling (Nihil Zero 65)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "Furfrou",
+   "page": "Furfrou (Nihil Zero 66)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "67": {
+   "en": "Energy Swatter",
+   "page": "Energy Swatter (Nihil Zero 67)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Antique Jaw Fossil",
+   "page": "Antique Jaw Fossil (Nihil Zero 68)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "69": {
+   "en": "Antique Sail Fossil",
+   "page": "Antique Sail Fossil (Nihil Zero 69)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "70": {
+   "en": "Poké Pad",
+   "page": "Poké Pad (Nihil Zero 70)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Lumiose Galette",
+   "page": "Lumiose Galette (Nihil Zero 71)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Core Memory",
+   "page": "Core Memory (Nihil Zero 72)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "73": {
+   "en": "Tarragon",
+   "page": "Tarragon (Nihil Zero 73)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "74": {
+   "en": "Naveen",
+   "page": "Naveen (Nihil Zero 74)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "75": {
+   "en": "Rosa's Encouragement",
+   "page": "Rosa's Encouragement (Nihil Zero 75)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "76": {
+   "en": "Jacinthe",
+   "page": "Jacinthe (Nihil Zero 76)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Lumiose City",
+   "page": "Lumiose City (Nihil Zero 77)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "78": {
+   "en": "Growing",
+   "page": "Growing G Energy (Nihil Zero 78)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "79": {
+   "en": "Telepathic",
+   "page": "Telepathic P Energy (Nihil Zero 79)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "80": {
+   "en": "Rocky",
+   "page": "Rocky F Energy (Nihil Zero 80)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "81": {
+   "en": "Spewpa",
+   "page": "Spewpa (Nihil Zero 81)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Rowlet",
+   "page": "Rowlet (Nihil Zero 82)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Talonflame",
+   "page": "Talonflame (Nihil Zero 83)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Aurorus",
+   "page": "Aurorus (Nihil Zero 84)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Dedenne",
+   "page": "Dedenne (Nihil Zero 85)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Clefairy",
+   "page": "Clefairy (Nihil Zero 86)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Espurr",
+   "page": "Espurr (Nihil Zero 87)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Probopass",
+   "page": "Probopass (Nihil Zero 88)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Tyrunt",
+   "page": "Tyrunt (Nihil Zero 89)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Drapion",
+   "page": "Drapion (Nihil Zero 90)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Doublade",
+   "page": "Doublade (Nihil Zero 91)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Raticate",
+   "page": "Raticate (Nihil Zero 92)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Decidueye",
+   "page": "Decidueye ex (Nihil Zero 93)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Salazzle",
+   "page": "Salazzle ex (Nihil Zero 94)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Mega Starmie",
+   "page": "Mega Starmie ex (Nihil Zero 95)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Mega Clefable",
+   "page": "Mega Clefable ex (Nihil Zero 96)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Mega Zygarde",
+   "page": "Mega Zygarde ex (Nihil Zero 97)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Yveltal",
+   "page": "Yveltal ex (Nihil Zero 98)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Mega Skarmory",
+   "page": "Mega Skarmory ex (Nihil Zero 99)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Meowth",
+   "page": "Meowth ex (Nihil Zero 100)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Energy Recycler",
+   "page": "Energy Recycler (Nihil Zero 101)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Sacred Ash",
+   "page": "Sacred Ash (Nihil Zero 102)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Poké Pad",
+   "page": "Poké Pad (Nihil Zero 103)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Wondrous Patch",
+   "page": "Wondrous Patch (Nihil Zero 104)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Tarragon",
+   "page": "Tarragon (Nihil Zero 105)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Naveen",
+   "page": "Naveen (Nihil Zero 106)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Rosa's Encouragement",
+   "page": "Rosa's Encouragement (Nihil Zero 107)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Jacinthe",
+   "page": "Jacinthe (Nihil Zero 108)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Forest of Vitality",
+   "page": "Forest of Vitality (Nihil Zero 109)",
+   "type": "St",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Lumiose City",
+   "page": "Lumiose City (Nihil Zero 110)",
+   "type": "St",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Mega Starmie",
+   "page": "Mega Starmie ex (Nihil Zero 111)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Mega Clefable",
+   "page": "Mega Clefable ex (Nihil Zero 112)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Mega Zygarde",
+   "page": "Mega Zygarde ex (Nihil Zero 113)",
+   "type": "Fighting",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Meowth",
+   "page": "Meowth ex (Nihil Zero 114)",
+   "type": "Colorless",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Rosa's Encouragement",
+   "page": "Rosa's Encouragement (Nihil Zero 115)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Jacinthe",
+   "page": "Jacinthe (Nihil Zero 116)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "117": {
+   "en": "Mega Zygarde",
+   "page": "Mega Zygarde ex (Nihil Zero 117)",
+   "type": "Fighting",
+   "rarity": "MUR",
+   "mark": ""
+  }
+ }
+}

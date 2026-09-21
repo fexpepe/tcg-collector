@@ -1,0 +1,832 @@
+{
+ "page": "Abyss Eye (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Tropius",
+   "page": "Tropius (Abyss Eye 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Grubbin",
+   "page": "Grubbin (Abyss Eye 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Fomantis",
+   "page": "Fomantis (Abyss Eye 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Lurantis",
+   "page": "Lurantis ex (Abyss Eye 4)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "5": {
+   "en": "Poltchageist",
+   "page": "Poltchageist (Abyss Eye 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Sinistcha",
+   "page": "Sinistcha (Abyss Eye 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Heatran",
+   "page": "Heatran (Abyss Eye 7)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "8": {
+   "en": "Sizzlipede",
+   "page": "Sizzlipede (Abyss Eye 8)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Centiskorch",
+   "page": "Centiskorch (Abyss Eye 9)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Charcadet",
+   "page": "Charcadet (Abyss Eye 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Armarouge",
+   "page": "Armarouge (Abyss Eye 11)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Goldeen",
+   "page": "Goldeen (Abyss Eye 12)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Seaking",
+   "page": "Seaking (Abyss Eye 13)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Wailmer",
+   "page": "Wailmer (Abyss Eye 14)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Wailord",
+   "page": "Wailord ex (Abyss Eye 15)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Relicanth",
+   "page": "Relicanth (Abyss Eye 16)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "17": {
+   "en": "Popplio",
+   "page": "Popplio (Abyss Eye 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Brionne",
+   "page": "Brionne (Abyss Eye 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Primarina",
+   "page": "Primarina (Abyss Eye 19)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "20": {
+   "en": "Finizen",
+   "page": "Finizen (Abyss Eye 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Palafin",
+   "page": "Palafin (Abyss Eye 21)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Electrike",
+   "page": "Electrike (Abyss Eye 22)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Manectric",
+   "page": "Manectric (Abyss Eye 23)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Charjabug",
+   "page": "Charjabug (Abyss Eye 24)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Vikavolt",
+   "page": "Vikavolt (Abyss Eye 25)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Mega Zeraora",
+   "page": "Mega Zeraora ex (Abyss Eye 26)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "27": {
+   "en": "Miraidon",
+   "page": "Miraidon (Abyss Eye 27)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Abyss Eye 28)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Slowbro",
+   "page": "Slowbro (Abyss Eye 29)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Jynx",
+   "page": "Jynx (Abyss Eye 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Shuppet",
+   "page": "Shuppet (Abyss Eye 31)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Banette",
+   "page": "Banette (Abyss Eye 32)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Abyss Eye 33)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "34": {
+   "en": "Litwick",
+   "page": "Litwick (Abyss Eye 34)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Lampent",
+   "page": "Lampent (Abyss Eye 35)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Mega Chandelure",
+   "page": "Mega Chandelure ex (Abyss Eye 36)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "37": {
+   "en": "Dhelmise",
+   "page": "Dhelmise (Abyss Eye 37)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "38": {
+   "en": "Marshadow",
+   "page": "Marshadow (Abyss Eye 38)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Annihilape",
+   "page": "Annihilape (Abyss Eye 39)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Mankey",
+   "page": "Mankey (Abyss Eye 40)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Primeape",
+   "page": "Primeape (Abyss Eye 41)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Cranidos",
+   "page": "Cranidos (Abyss Eye 42)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Rampardos",
+   "page": "Rampardos ex (Abyss Eye 43)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "44": {
+   "en": "Drilbur",
+   "page": "Drilbur (Abyss Eye 44)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Koraidon",
+   "page": "Koraidon (Abyss Eye 45)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Mega Darkrai",
+   "page": "Mega Darkrai ex (Abyss Eye 46)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "47": {
+   "en": "Vullaby",
+   "page": "Vullaby (Abyss Eye 47)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Mandibuzz",
+   "page": "Mandibuzz (Abyss Eye 48)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Inkay",
+   "page": "Inkay (Abyss Eye 49)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Malamar",
+   "page": "Malamar (Abyss Eye 50)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Nickit",
+   "page": "Nickit (Abyss Eye 51)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Thievul",
+   "page": "Thievul (Abyss Eye 52)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Morpeko",
+   "page": "Morpeko ex (Abyss Eye 53)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Zarude",
+   "page": "Zarude (Abyss Eye 54)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Maschiff",
+   "page": "Maschiff (Abyss Eye 55)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Mabosstiff",
+   "page": "Mabosstiff (Abyss Eye 56)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Chi-Yu",
+   "page": "Chi-Yu (Abyss Eye 57)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "58": {
+   "en": "Skarmory",
+   "page": "Skarmory (Abyss Eye 58)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Shieldon",
+   "page": "Shieldon (Abyss Eye 59)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Bastiodon",
+   "page": "Bastiodon (Abyss Eye 60)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "61": {
+   "en": "Bronzor",
+   "page": "Bronzor (Abyss Eye 61)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Bronzong",
+   "page": "Bronzong (Abyss Eye 62)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Mega Excadrill",
+   "page": "Mega Excadrill ex (Abyss Eye 63)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Pikipek",
+   "page": "Pikipek (Abyss Eye 64)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Trumbeak",
+   "page": "Trumbeak (Abyss Eye 65)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "Toucannon",
+   "page": "Toucannon (Abyss Eye 66)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Type: Null",
+   "page": "Type: Null (Abyss Eye 67)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "68": {
+   "en": "Silvally",
+   "page": "Silvally (Abyss Eye 68)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "69": {
+   "en": "Bombirdier",
+   "page": "Bombirdier (Abyss Eye 69)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "70": {
+   "en": "Dark Bell",
+   "page": "Dark Bell (Abyss Eye 70)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Antique Skull Fossil",
+   "page": "Antique Skull Fossil (Abyss Eye 71)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "72": {
+   "en": "Antique Armor Fossil",
+   "page": "Antique Armor Fossil (Abyss Eye 72)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "73": {
+   "en": "Tremendous Bomb",
+   "page": "Tremendous Bomb (Abyss Eye 73)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "74": {
+   "en": "Backtrack Badge",
+   "page": "Backtrack Badge (Abyss Eye 74)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "75": {
+   "en": "Misty's Vitality",
+   "page": "Misty's Vitality (Abyss Eye 75)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "76": {
+   "en": "Gladion's Final Battle",
+   "page": "Gladion's Final Battle (Abyss Eye 76)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Rust Syndicate Grunt",
+   "page": "Rust Syndicate Grunt (Abyss Eye 77)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "78": {
+   "en": "Gwynn",
+   "page": "Gwynn (Abyss Eye 78)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Fossil Quarry",
+   "page": "Fossil Quarry (Abyss Eye 79)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "80": {
+   "en": "Voltaic",
+   "page": "Voltaic L Energy (Abyss Eye 80)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "81": {
+   "en": "Shadowy",
+   "page": "Shadowy D Energy (Abyss Eye 81)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "82": {
+   "en": "Fomantis",
+   "page": "Fomantis (Abyss Eye 82)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Armarouge",
+   "page": "Armarouge (Abyss Eye 83)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Goldeen",
+   "page": "Goldeen (Abyss Eye 84)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Primarina",
+   "page": "Primarina (Abyss Eye 85)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Manectric",
+   "page": "Manectric (Abyss Eye 86)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Slowbro",
+   "page": "Slowbro (Abyss Eye 87)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Dhelmise",
+   "page": "Dhelmise (Abyss Eye 88)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Thievul",
+   "page": "Thievul (Abyss Eye 89)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Zarude",
+   "page": "Zarude (Abyss Eye 90)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Bastiodon",
+   "page": "Bastiodon (Abyss Eye 91)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Toucannon",
+   "page": "Toucannon (Abyss Eye 92)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Silvally",
+   "page": "Silvally (Abyss Eye 93)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Lurantis",
+   "page": "Lurantis ex (Abyss Eye 94)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Wailord",
+   "page": "Wailord ex (Abyss Eye 95)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Mega Zeraora",
+   "page": "Mega Zeraora ex (Abyss Eye 96)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Mega Chandelure",
+   "page": "Mega Chandelure ex (Abyss Eye 97)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Rampardos",
+   "page": "Rampardos ex (Abyss Eye 98)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Mega Darkrai",
+   "page": "Mega Darkrai ex (Abyss Eye 99)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Morpeko",
+   "page": "Morpeko ex (Abyss Eye 100)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Mega Excadrill",
+   "page": "Mega Excadrill ex (Abyss Eye 101)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Iron Defender",
+   "page": "Iron Defender (Abyss Eye 102)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (Abyss Eye 103)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Crushing Hammer",
+   "page": "Crushing Hammer (Abyss Eye 104)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Dark Bell",
+   "page": "Dark Bell (Abyss Eye 105)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Tremendous Bomb",
+   "page": "Tremendous Bomb (Abyss Eye 106)",
+   "type": "PT",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Brave Bangle",
+   "page": "Brave Bangle (Abyss Eye 107)",
+   "type": "PT",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Misty's Vitality",
+   "page": "Misty's Vitality (Abyss Eye 108)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Gladion's Final Battle",
+   "page": "Gladion's Final Battle (Abyss Eye 109)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Rust Syndicate Grunt",
+   "page": "Rust Syndicate Grunt (Abyss Eye 110)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Gwynn",
+   "page": "Gwynn (Abyss Eye 111)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Mega Zeraora",
+   "page": "Mega Zeraora ex (Abyss Eye 112)",
+   "type": "Lightning",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Mega Chandelure",
+   "page": "Mega Chandelure ex (Abyss Eye 113)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Mega Darkrai",
+   "page": "Mega Darkrai ex (Abyss Eye 114)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Morpeko",
+   "page": "Morpeko ex (Abyss Eye 115)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Gladion's Final Battle",
+   "page": "Gladion's Final Battle (Abyss Eye 116)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "117": {
+   "en": "Gwynn",
+   "page": "Gwynn (Abyss Eye 117)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "118": {
+   "en": "Mega Darkrai",
+   "page": "Mega Darkrai ex (Abyss Eye 118)",
+   "type": "Darkness",
+   "rarity": "MUR",
+   "mark": ""
+  }
+ }
+}

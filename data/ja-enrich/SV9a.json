@@ -1,0 +1,650 @@
+{
+ "page": "Hot Wind Arena (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Ethan's Pinsir",
+   "page": "Ethan's Pinsir (Hot Wind Arena 1)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "2": {
+   "en": "Yanma",
+   "page": "Yanma (Hot Wind Arena 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Yanmega",
+   "page": "Yanmega ex (Hot Wind Arena 3)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "4": {
+   "en": "Cynthia's Roselia",
+   "page": "Cynthia's Roselia (Hot Wind Arena 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Cynthia's Roserade",
+   "page": "Cynthia's Roserade (Hot Wind Arena 5)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "6": {
+   "en": "Shaymin",
+   "page": "Shaymin (Hot Wind Arena 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Dwebble",
+   "page": "Dwebble (Hot Wind Arena 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Crustle",
+   "page": "Crustle (Hot Wind Arena 8)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "9": {
+   "en": "Applin",
+   "page": "Applin (Hot Wind Arena 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Dipplin",
+   "page": "Dipplin (Hot Wind Arena 10)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Hydrapple",
+   "page": "Hydrapple (Hot Wind Arena 11)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon (Hot Wind Arena 12)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "13": {
+   "en": "Ponyta",
+   "page": "Ponyta (Hot Wind Arena 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Rapidash",
+   "page": "Rapidash (Hot Wind Arena 14)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Ethan's Cyndaquil",
+   "page": "Ethan's Cyndaquil (Hot Wind Arena 15)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Ethan's Quilava",
+   "page": "Ethan's Quilava (Hot Wind Arena 16)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Ethan's Typhlosion",
+   "page": "Ethan's Typhlosion (Hot Wind Arena 17)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "18": {
+   "en": "Ethan's Slugma",
+   "page": "Ethan's Slugma (Hot Wind Arena 18)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Ethan's Magcargo",
+   "page": "Ethan's Magcargo (Hot Wind Arena 19)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "20": {
+   "en": "Ethan's Ho-Oh",
+   "page": "Ethan's Ho-Oh ex (Hot Wind Arena 20)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "21": {
+   "en": "Hearthflame Mask Ogerpon",
+   "page": "Hearthflame Mask Ogerpon (Hot Wind Arena 21)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Misty's Psyduck",
+   "page": "Misty's Psyduck (Hot Wind Arena 22)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Misty's Staryu",
+   "page": "Misty's Staryu (Hot Wind Arena 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Misty's Starmie",
+   "page": "Misty's Starmie (Hot Wind Arena 24)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Misty's Magikarp",
+   "page": "Misty's Magikarp (Hot Wind Arena 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Misty's Gyarados",
+   "page": "Misty's Gyarados (Hot Wind Arena 26)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "27": {
+   "en": "Misty's Lapras",
+   "page": "Misty's Lapras (Hot Wind Arena 27)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Cynthia's Feebas",
+   "page": "Cynthia's Feebas (Hot Wind Arena 28)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Cynthia's Milotic",
+   "page": "Cynthia's Milotic (Hot Wind Arena 29)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Buizel",
+   "page": "Buizel (Hot Wind Arena 30)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Floatzel",
+   "page": "Floatzel (Hot Wind Arena 31)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Dondozo",
+   "page": "Dondozo ex (Hot Wind Arena 32)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "33": {
+   "en": "Wellspring Mask Ogerpon",
+   "page": "Wellspring Mask Ogerpon (Hot Wind Arena 33)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Hot Wind Arena 34)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Electivire",
+   "page": "Electivire ex (Hot Wind Arena 35)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "36": {
+   "en": "Ethan's Pichu",
+   "page": "Ethan's Pichu (Hot Wind Arena 36)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Electrike",
+   "page": "Electrike (Hot Wind Arena 37)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Manectric",
+   "page": "Manectric (Hot Wind Arena 38)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Rotom",
+   "page": "Rotom (Hot Wind Arena 39)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Zeraora",
+   "page": "Zeraora (Hot Wind Arena 40)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "41": {
+   "en": "Ethan's Sudowoodo",
+   "page": "Ethan's Sudowoodo (Hot Wind Arena 41)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Cynthia's Gible",
+   "page": "Cynthia's Gible (Hot Wind Arena 42)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Cynthia's Gabite",
+   "page": "Cynthia's Gabite (Hot Wind Arena 43)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Cynthia's Garchomp",
+   "page": "Cynthia's Garchomp ex (Hot Wind Arena 44)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "45": {
+   "en": "Mudbray",
+   "page": "Mudbray (Hot Wind Arena 45)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Mudsdale",
+   "page": "Mudsdale (Hot Wind Arena 46)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Arven's Toedscool",
+   "page": "Arven's Toedscool (Hot Wind Arena 47)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Arven's Toedscruel",
+   "page": "Arven's Toedscruel (Hot Wind Arena 48)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Cornerstone Mask Ogerpon",
+   "page": "Cornerstone Mask Ogerpon (Hot Wind Arena 49)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Cynthia's Spiritomb",
+   "page": "Cynthia's Spiritomb (Hot Wind Arena 50)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Arven's Maschiff",
+   "page": "Arven's Maschiff (Hot Wind Arena 51)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Arven's Mabosstiff",
+   "page": "Arven's Mabosstiff ex (Hot Wind Arena 52)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Tauros",
+   "page": "Tauros (Hot Wind Arena 53)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Arven's Skwovet",
+   "page": "Arven's Skwovet (Hot Wind Arena 54)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Arven's Greedent",
+   "page": "Arven's Greedent (Hot Wind Arena 55)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "56": {
+   "en": "Sacred Ash",
+   "page": "Sacred Ash (Hot Wind Arena 56)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Arven's Sandwich",
+   "page": "Arven's Sandwich (Hot Wind Arena 57)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Switch",
+   "page": "Switch (Hot Wind Arena 58)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (Hot Wind Arena 59)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Cynthia's Power Weight",
+   "page": "Cynthia's Power Weight (Hot Wind Arena 60)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Emcee's Hype",
+   "page": "Emcee's Hype (Hot Wind Arena 61)",
+   "type": "Su",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Judge",
+   "page": "Judge (Hot Wind Arena 62)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Ethan's Adventure",
+   "page": "Ethan's Adventure (Hot Wind Arena 63)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Yanma",
+   "page": "Yanma (Hot Wind Arena 64)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Cynthia's Roserade",
+   "page": "Cynthia's Roserade (Hot Wind Arena 65)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Shaymin",
+   "page": "Shaymin (Hot Wind Arena 66)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Crustle",
+   "page": "Crustle (Hot Wind Arena 67)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Hydrapple",
+   "page": "Hydrapple (Hot Wind Arena 68)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Rapidash",
+   "page": "Rapidash (Hot Wind Arena 69)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Ethan's Typhlosion",
+   "page": "Ethan's Typhlosion (Hot Wind Arena 70)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Misty's Psyduck",
+   "page": "Misty's Psyduck (Hot Wind Arena 71)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Misty's Lapras",
+   "page": "Misty's Lapras (Hot Wind Arena 72)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Electrike",
+   "page": "Electrike (Hot Wind Arena 73)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Rotom",
+   "page": "Rotom (Hot Wind Arena 74)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Arven's Greedent",
+   "page": "Arven's Greedent (Hot Wind Arena 75)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Yanmega",
+   "page": "Yanmega ex (Hot Wind Arena 76)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Ethan's Ho-Oh",
+   "page": "Ethan's Ho-Oh ex (Hot Wind Arena 77)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Dondozo",
+   "page": "Dondozo ex (Hot Wind Arena 78)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Electivire",
+   "page": "Electivire ex (Hot Wind Arena 79)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Cynthia's Garchomp",
+   "page": "Cynthia's Garchomp ex (Hot Wind Arena 80)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Arven's Mabosstiff",
+   "page": "Arven's Mabosstiff ex (Hot Wind Arena 81)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Emcee's Hype",
+   "page": "Emcee's Hype (Hot Wind Arena 82)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Judge",
+   "page": "Judge (Hot Wind Arena 83)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Ethan's Adventure",
+   "page": "Ethan's Adventure (Hot Wind Arena 84)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Yanmega",
+   "page": "Yanmega ex (Hot Wind Arena 85)",
+   "type": "Grass",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Ethan's Ho-Oh",
+   "page": "Ethan's Ho-Oh ex (Hot Wind Arena 86)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Cynthia's Garchomp",
+   "page": "Cynthia's Garchomp ex (Hot Wind Arena 87)",
+   "type": "Fighting",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Arven's Mabosstiff",
+   "page": "Arven's Mabosstiff ex (Hot Wind Arena 88)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Ethan's Adventure",
+   "page": "Ethan's Adventure (Hot Wind Arena 89)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Ethan's Ho-Oh",
+   "page": "Ethan's Ho-Oh ex (Hot Wind Arena 90)",
+   "type": "Fire",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Cynthia's Garchomp",
+   "page": "Cynthia's Garchomp ex (Hot Wind Arena 91)",
+   "type": "Fighting",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Levincia",
+   "page": "Levincia (Hot Wind Arena 92)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

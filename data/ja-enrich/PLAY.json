@@ -1,0 +1,230 @@
+{
+ "page": "PLAY Promotional cards (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Regice ex",
+   "page": "Regice ex (PLAY Promo 1)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Regirock ex",
+   "page": "Regirock ex (PLAY Promo 2)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Registeel ex",
+   "page": "Registeel ex (PLAY Promo 3)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Plusle",
+   "page": "Plusle (PLAY Promo 4)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Minun",
+   "page": "Minun (PLAY Promo 5)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Celebi ex",
+   "page": "Celebi ex (PLAY Promo 6)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Mew ex",
+   "page": "Mew ex (PLAY Promo 7)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Pokémon Card Fan",
+   "page": "Pokémon Card Fan (PLAY Promo 8)",
+   "type": "T [Su]",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Moltres ex",
+   "page": "Moltres ex (PLAY Promo 9)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Articuno ex",
+   "page": "Articuno ex (PLAY Promo 10)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Zapdos ex",
+   "page": "Zapdos ex (PLAY Promo 11)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "_____'s Celebi",
+   "page": "'s Celebi (PLAY Promo 12)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "_____'s Mew",
+   "page": "'s Mew (PLAY Promo 13)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "_____'s Jirachi",
+   "page": "'s Jirachi (PLAY Promo 14)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Cyclone Energy",
+   "page": "Cyclone Energy (PLAY Promo 15)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Boost Energy",
+   "page": "Boost Energy (PLAY Promo 16)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Warp Energy",
+   "page": "Warp Energy (PLAY Promo 17)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Master Ball",
+   "page": "Master Ball (PLAY Promo 18)",
+   "type": "T",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "_____'s Kyogre",
+   "page": "'s Kyogre (PLAY Promo 19)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "_____'s Groudon",
+   "page": "'s Groudon (PLAY Promo 20)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "_____'s Rayquaza",
+   "page": "'s Rayquaza (PLAY Promo 21)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Vaporeon",
+   "page": "Vaporeon ☆ (PLAY Promo 22)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Jolteon",
+   "page": "Jolteon ☆ (PLAY Promo 23)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Flareon",
+   "page": "Flareon ☆ (PLAY Promo 24)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Espeon",
+   "page": "Espeon ☆ (PLAY Promo 25)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Umbreon",
+   "page": "Umbreon ☆ (PLAY Promo 26)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Kyogre ex",
+   "page": "Kyogre ex (PLAY Promo 27)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Groudon ex",
+   "page": "Groudon ex (PLAY Promo 28)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Rayquaza ex",
+   "page": "Rayquaza ex (PLAY Promo 29)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Ho-Oh ex",
+   "page": "Ho-Oh ex (PLAY Promo 30)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Lugia ex",
+   "page": "Lugia ex (PLAY Promo 31)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Jirachi ex",
+   "page": "Jirachi ex (PLAY Promo 32)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

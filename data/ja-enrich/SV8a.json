@@ -1,0 +1,1665 @@
+{
+ "page": "Terastal Fest ex (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Budew",
+   "page": "Budew (Terastal Fest ex 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Leafeon",
+   "page": "Leafeon (Terastal Fest ex 2)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Leafeon",
+   "page": "Leafeon ex (Terastal Fest ex 3)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "4": {
+   "en": "Cottonee",
+   "page": "Cottonee (Terastal Fest ex 4)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Whimsicott",
+   "page": "Whimsicott (Terastal Fest ex 5)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Grookey",
+   "page": "Grookey (Terastal Fest ex 6)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Thwackey",
+   "page": "Thwackey (Terastal Fest ex 7)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Applin",
+   "page": "Applin (Terastal Fest ex 8)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Dipplin",
+   "page": "Dipplin (Terastal Fest ex 9)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Hydrapple",
+   "page": "Hydrapple ex (Terastal Fest ex 10)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "11": {
+   "en": "Bramblin",
+   "page": "Bramblin (Terastal Fest ex 11)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Brambleghast",
+   "page": "Brambleghast (Terastal Fest ex 12)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Rellor",
+   "page": "Rellor (Terastal Fest ex 13)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Rabsca",
+   "page": "Rabsca (Terastal Fest ex 14)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Wo-Chien",
+   "page": "Wo-Chien (Terastal Fest ex 15)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Iron Leaves",
+   "page": "Iron Leaves ex (Terastal Fest ex 16)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "17": {
+   "en": "Poltchageist",
+   "page": "Poltchageist (Terastal Fest ex 17)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Sinistcha",
+   "page": "Sinistcha (Terastal Fest ex 18)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Sinistcha",
+   "page": "Sinistcha ex (Terastal Fest ex 19)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "20": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon ex (Terastal Fest ex 20)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "21": {
+   "en": "Flareon",
+   "page": "Flareon (Terastal Fest ex 21)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Flareon",
+   "page": "Flareon ex (Terastal Fest ex 22)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "23": {
+   "en": "Charcadet",
+   "page": "Charcadet (Terastal Fest ex 23)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Iron Moth",
+   "page": "Iron Moth (Terastal Fest ex 24)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Chi-Yu",
+   "page": "Chi-Yu (Terastal Fest ex 25)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Hearthflame Mask Ogerpon",
+   "page": "Hearthflame Mask Ogerpon ex (Terastal Fest ex 26)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "27": {
+   "en": "Gouging Fire",
+   "page": "Gouging Fire ex (Terastal Fest ex 27)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "28": {
+   "en": "Goldeen",
+   "page": "Goldeen (Terastal Fest ex 28)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Seaking",
+   "page": "Seaking (Terastal Fest ex 29)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Vaporeon",
+   "page": "Vaporeon (Terastal Fest ex 30)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Vaporeon",
+   "page": "Vaporeon ex (Terastal Fest ex 31)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "32": {
+   "en": "Totodile",
+   "page": "Totodile (Terastal Fest ex 32)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Croconaw",
+   "page": "Croconaw (Terastal Fest ex 33)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Feraligatr",
+   "page": "Feraligatr (Terastal Fest ex 34)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Feebas",
+   "page": "Feebas (Terastal Fest ex 35)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Milotic",
+   "page": "Milotic (Terastal Fest ex 36)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Snorunt",
+   "page": "Snorunt (Terastal Fest ex 37)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Froslass",
+   "page": "Froslass (Terastal Fest ex 38)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Garchomp",
+   "page": "Garchomp ex (Terastal Fest ex 39)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "40": {
+   "en": "Glaceon",
+   "page": "Glaceon (Terastal Fest ex 40)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Glaceon",
+   "page": "Glaceon ex (Terastal Fest ex 41)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "42": {
+   "en": "Wiglett",
+   "page": "Wiglett (Terastal Fest ex 42)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Wugtrio",
+   "page": "Wugtrio (Terastal Fest ex 43)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Finizen",
+   "page": "Finizen (Terastal Fest ex 44)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Palafin",
+   "page": "Palafin (Terastal Fest ex 45)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Palafin",
+   "page": "Palafin ex (Terastal Fest ex 46)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "47": {
+   "en": "Iron Bundle",
+   "page": "Iron Bundle (Terastal Fest ex 47)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Chien-Pao",
+   "page": "Chien-Pao (Terastal Fest ex 48)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "49": {
+   "en": "Walking Wake",
+   "page": "Walking Wake ex (Terastal Fest ex 49)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "50": {
+   "en": "Wellspring Mask Ogerpon",
+   "page": "Wellspring Mask Ogerpon ex (Terastal Fest ex 50)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "51": {
+   "en": "Jolteon",
+   "page": "Jolteon (Terastal Fest ex 51)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "52": {
+   "en": "Jolteon",
+   "page": "Jolteon ex (Terastal Fest ex 52)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Zeraora",
+   "page": "Zeraora (Terastal Fest ex 53)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "54": {
+   "en": "Iron Hands",
+   "page": "Iron Hands ex (Terastal Fest ex 54)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Iron Thorns",
+   "page": "Iron Thorns (Terastal Fest ex 55)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "56": {
+   "en": "Iron Thorns",
+   "page": "Iron Thorns ex (Terastal Fest ex 56)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Abra",
+   "page": "Abra (Terastal Fest ex 57)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "58": {
+   "en": "Kadabra",
+   "page": "Kadabra (Terastal Fest ex 58)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "59": {
+   "en": "Alakazam",
+   "page": "Alakazam (Terastal Fest ex 59)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "60": {
+   "en": "Natu",
+   "page": "Natu (Terastal Fest ex 60)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "61": {
+   "en": "Xatu",
+   "page": "Xatu (Terastal Fest ex 61)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "62": {
+   "en": "Espeon",
+   "page": "Espeon (Terastal Fest ex 62)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "63": {
+   "en": "Espeon",
+   "page": "Espeon ex (Terastal Fest ex 63)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Duskull",
+   "page": "Duskull (Terastal Fest ex 64)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "65": {
+   "en": "Dusclops",
+   "page": "Dusclops (Terastal Fest ex 65)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "66": {
+   "en": "Dusknoir",
+   "page": "Dusknoir (Terastal Fest ex 66)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "67": {
+   "en": "Swirlix",
+   "page": "Swirlix (Terastal Fest ex 67)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "68": {
+   "en": "Sylveon",
+   "page": "Sylveon (Terastal Fest ex 68)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "69": {
+   "en": "Sylveon",
+   "page": "Sylveon ex (Terastal Fest ex 69)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Ceruledge",
+   "page": "Ceruledge (Terastal Fest ex 70)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "71": {
+   "en": "Scream Tail",
+   "page": "Scream Tail (Terastal Fest ex 71)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "72": {
+   "en": "Flutter Mane",
+   "page": "Flutter Mane (Terastal Fest ex 72)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "73": {
+   "en": "Gimmighoul",
+   "page": "Gimmighoul (Terastal Fest ex 73)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "74": {
+   "en": "Iron Valiant",
+   "page": "Iron Valiant ex (Terastal Fest ex 74)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Munkidori",
+   "page": "Munkidori (Terastal Fest ex 75)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "76": {
+   "en": "Fezandipiti",
+   "page": "Fezandipiti (Terastal Fest ex 76)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "77": {
+   "en": "Iron Boulder",
+   "page": "Iron Boulder (Terastal Fest ex 77)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "78": {
+   "en": "Iron Crown",
+   "page": "Iron Crown ex (Terastal Fest ex 78)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Relicanth",
+   "page": "Relicanth (Terastal Fest ex 79)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "80": {
+   "en": "Groudon",
+   "page": "Groudon (Terastal Fest ex 80)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "81": {
+   "en": "Gible",
+   "page": "Gible (Terastal Fest ex 81)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "82": {
+   "en": "Gabite",
+   "page": "Gabite (Terastal Fest ex 82)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "83": {
+   "en": "Drilbur",
+   "page": "Drilbur (Terastal Fest ex 83)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "84": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (Terastal Fest ex 84)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "85": {
+   "en": "Bloodmoon Ursaluna",
+   "page": "Bloodmoon Ursaluna (Terastal Fest ex 85)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "86": {
+   "en": "Great Tusk",
+   "page": "Great Tusk (Terastal Fest ex 86)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "87": {
+   "en": "Slither Wing",
+   "page": "Slither Wing (Terastal Fest ex 87)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "88": {
+   "en": "Sandy Shocks",
+   "page": "Sandy Shocks ex (Terastal Fest ex 88)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Ting-Lu",
+   "page": "Ting-Lu (Terastal Fest ex 89)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "90": {
+   "en": "Okidogi",
+   "page": "Okidogi (Terastal Fest ex 90)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "91": {
+   "en": "Cornerstone Mask Ogerpon",
+   "page": "Cornerstone Mask Ogerpon ex (Terastal Fest ex 91)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Umbreon",
+   "page": "Umbreon (Terastal Fest ex 92)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "93": {
+   "en": "Umbreon",
+   "page": "Umbreon ex (Terastal Fest ex 93)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Trubbish",
+   "page": "Trubbish (Terastal Fest ex 94)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "95": {
+   "en": "Garbodor",
+   "page": "Garbodor (Terastal Fest ex 95)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "96": {
+   "en": "Zorua",
+   "page": "Zorua (Terastal Fest ex 96)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "97": {
+   "en": "Zoroark",
+   "page": "Zoroark (Terastal Fest ex 97)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "98": {
+   "en": "Morpeko",
+   "page": "Morpeko (Terastal Fest ex 98)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "99": {
+   "en": "Brute Bonnet",
+   "page": "Brute Bonnet (Terastal Fest ex 99)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "100": {
+   "en": "Roaring Moon",
+   "page": "Roaring Moon (Terastal Fest ex 100)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "101": {
+   "en": "Roaring Moon",
+   "page": "Roaring Moon ex (Terastal Fest ex 101)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Okidogi",
+   "page": "Okidogi ex (Terastal Fest ex 102)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Munkidori",
+   "page": "Munkidori ex (Terastal Fest ex 103)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Fezandipiti",
+   "page": "Fezandipiti ex (Terastal Fest ex 104)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Pecharunt",
+   "page": "Pecharunt ex (Terastal Fest ex 105)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Beldum",
+   "page": "Beldum (Terastal Fest ex 106)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "107": {
+   "en": "Metang",
+   "page": "Metang (Terastal Fest ex 107)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "108": {
+   "en": "Jirachi",
+   "page": "Jirachi (Terastal Fest ex 108)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "109": {
+   "en": "Honedge",
+   "page": "Honedge (Terastal Fest ex 109)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "110": {
+   "en": "Doublade",
+   "page": "Doublade (Terastal Fest ex 110)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "111": {
+   "en": "Aegislash",
+   "page": "Aegislash (Terastal Fest ex 111)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "112": {
+   "en": "Duraludon",
+   "page": "Duraludon (Terastal Fest ex 112)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "113": {
+   "en": "Archaludon",
+   "page": "Archaludon (Terastal Fest ex 113)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "114": {
+   "en": "Varoom",
+   "page": "Varoom (Terastal Fest ex 114)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "115": {
+   "en": "Revavroom",
+   "page": "Revavroom (Terastal Fest ex 115)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "116": {
+   "en": "Iron Treads",
+   "page": "Iron Treads (Terastal Fest ex 116)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "117": {
+   "en": "Gholdengo",
+   "page": "Gholdengo ex (Terastal Fest ex 117)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "118": {
+   "en": "Dreepy",
+   "page": "Dreepy (Terastal Fest ex 118)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "119": {
+   "en": "Drakloak",
+   "page": "Drakloak (Terastal Fest ex 119)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "120": {
+   "en": "Dragapult",
+   "page": "Dragapult ex (Terastal Fest ex 120)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "121": {
+   "en": "Tatsugiri",
+   "page": "Tatsugiri (Terastal Fest ex 121)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "122": {
+   "en": "Koraidon",
+   "page": "Koraidon (Terastal Fest ex 122)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "123": {
+   "en": "Miraidon",
+   "page": "Miraidon (Terastal Fest ex 123)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "124": {
+   "en": "Raging Bolt",
+   "page": "Raging Bolt ex (Terastal Fest ex 124)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "125": {
+   "en": "Eevee",
+   "page": "Eevee (Terastal Fest ex 125)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "126": {
+   "en": "Eevee",
+   "page": "Eevee ex (Terastal Fest ex 126)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "127": {
+   "en": "Hoothoot",
+   "page": "Hoothoot (Terastal Fest ex 127)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "128": {
+   "en": "Noctowl",
+   "page": "Noctowl (Terastal Fest ex 128)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "129": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (Terastal Fest ex 129)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "130": {
+   "en": "Dudunsparce",
+   "page": "Dudunsparce (Terastal Fest ex 130)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "131": {
+   "en": "Fan Rotom",
+   "page": "Fan Rotom (Terastal Fest ex 131)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "132": {
+   "en": "Regigigas",
+   "page": "Regigigas (Terastal Fest ex 132)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "133": {
+   "en": "Bouffalant",
+   "page": "Bouffalant (Terastal Fest ex 133)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "134": {
+   "en": "Bloodmoon Ursaluna",
+   "page": "Bloodmoon Ursaluna ex (Terastal Fest ex 134)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "135": {
+   "en": "Iron Jugulis",
+   "page": "Iron Jugulis (Terastal Fest ex 135)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "136": {
+   "en": "Terapagos",
+   "page": "Terapagos ex (Terastal Fest ex 136)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "137": {
+   "en": "Ogre's Mask",
+   "page": "Ogre's Mask (Terastal Fest ex 137)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "138": {
+   "en": "Enhanced Hammer",
+   "page": "Enhanced Hammer (Terastal Fest ex 138)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "139": {
+   "en": "Counter Catcher",
+   "page": "Counter Catcher (Terastal Fest ex 139)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "140": {
+   "en": "Glass Trumpet",
+   "page": "Glass Trumpet (Terastal Fest ex 140)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "141": {
+   "en": "Superior Energy Retrieval",
+   "page": "Superior Energy Retrieval (Terastal Fest ex 141)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "142": {
+   "en": "Max Rod",
+   "page": "Max Rod (Terastal Fest ex 142)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "143": {
+   "en": "Earthen Vessel",
+   "page": "Earthen Vessel (Terastal Fest ex 143)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "144": {
+   "en": "Techno Radar",
+   "page": "Techno Radar (Terastal Fest ex 144)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "145": {
+   "en": "Tera Orb",
+   "page": "Tera Orb (Terastal Fest ex 145)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "146": {
+   "en": "Treasure Tracker",
+   "page": "Treasure Tracker (Terastal Fest ex 146)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "147": {
+   "en": "Buddy-Buddy Poffin",
+   "page": "Buddy-Buddy Poffin (Terastal Fest ex 147)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "148": {
+   "en": "Prime Catcher",
+   "page": "Prime Catcher (Terastal Fest ex 148)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "149": {
+   "en": "Scoop Up Cyclone",
+   "page": "Scoop Up Cyclone (Terastal Fest ex 149)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "150": {
+   "en": "Bug Catching Set",
+   "page": "Bug Catching Set (Terastal Fest ex 150)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "151": {
+   "en": "Night Stretcher",
+   "page": "Night Stretcher (Terastal Fest ex 151)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "152": {
+   "en": "Sparkling Crystal",
+   "page": "Sparkling Crystal (Terastal Fest ex 152)",
+   "type": "PT",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "153": {
+   "en": "Rescue Board",
+   "page": "Rescue Board (Terastal Fest ex 153)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "154": {
+   "en": "Binding Mochi",
+   "page": "Binding Mochi (Terastal Fest ex 154)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "155": {
+   "en": "Luxurious Cape",
+   "page": "Luxurious Cape (Terastal Fest ex 155)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "156": {
+   "en": "Haban Berry",
+   "page": "Haban Berry (Terastal Fest ex 156)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "157": {
+   "en": "Ancient Booster Energy Capsule",
+   "page": "Ancient Booster Energy Capsule (Terastal Fest ex 157)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "158": {
+   "en": "Future Booster Energy Capsule",
+   "page": "Future Booster Energy Capsule (Terastal Fest ex 158)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "159": {
+   "en": "Maximum Belt",
+   "page": "Maximum Belt (Terastal Fest ex 159)",
+   "type": "PT",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "160": {
+   "en": "Technical Machine: Evolution",
+   "page": "Technical Machine: Evolution (Terastal Fest ex 160)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "161": {
+   "en": "Technical Machine: Devolution",
+   "page": "Technical Machine: Devolution (Terastal Fest ex 161)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "162": {
+   "en": "Larry's Skill",
+   "page": "Larry's Skill (Terastal Fest ex 162)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "163": {
+   "en": "Crispin",
+   "page": "Crispin (Terastal Fest ex 163)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "164": {
+   "en": "Colress's Tenacity",
+   "page": "Colress's Tenacity (Terastal Fest ex 164)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "165": {
+   "en": "Ciphermaniac's Codebreaking",
+   "page": "Ciphermaniac's Codebreaking (Terastal Fest ex 165)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "166": {
+   "en": "Janine's Secret Art",
+   "page": "Janine's Secret Art (Terastal Fest ex 166)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "167": {
+   "en": "Professor Sada's Vitality",
+   "page": "Professor Sada's Vitality (Terastal Fest ex 167)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "168": {
+   "en": "Lana's Aid",
+   "page": "Lana's Aid (Terastal Fest ex 168)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "169": {
+   "en": "Kieran",
+   "page": "Kieran (Terastal Fest ex 169)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "170": {
+   "en": "Carmine",
+   "page": "Carmine (Terastal Fest ex 170)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "171": {
+   "en": "Lacey",
+   "page": "Lacey (Terastal Fest ex 171)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "172": {
+   "en": "Explorer's Guidance",
+   "page": "Explorer's Guidance (Terastal Fest ex 172)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "173": {
+   "en": "Amarys",
+   "page": "Amarys (Terastal Fest ex 173)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "174": {
+   "en": "Friends in Paldea",
+   "page": "Friends in Paldea (Terastal Fest ex 174)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "175": {
+   "en": "Professor Turo's Scenario",
+   "page": "Professor Turo's Scenario (Terastal Fest ex 175)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "176": {
+   "en": "Briar",
+   "page": "Briar (Terastal Fest ex 176)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "177": {
+   "en": "Bianca's Devotion",
+   "page": "Bianca's Devotion (Terastal Fest ex 177)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "178": {
+   "en": "Morty's Conviction",
+   "page": "Morty's Conviction (Terastal Fest ex 178)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "179": {
+   "en": "Mela",
+   "page": "Mela (Terastal Fest ex 179)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "180": {
+   "en": "Festival Grounds",
+   "page": "Festival Grounds (Terastal Fest ex 180)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "181": {
+   "en": "Jamming Tower",
+   "page": "Jamming Tower (Terastal Fest ex 181)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "182": {
+   "en": "Area Zero Underdepths",
+   "page": "Area Zero Underdepths (Terastal Fest ex 182)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "183": {
+   "en": "Moonlit Hill",
+   "page": "Moonlit Hill (Terastal Fest ex 183)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "184": {
+   "en": "Neutralization Zone",
+   "page": "Neutralization Zone (Terastal Fest ex 184)",
+   "type": "St",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "185": {
+   "en": "Jet Energy",
+   "page": "Jet Energy (Terastal Fest ex 185)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "186": {
+   "en": "Mist Energy",
+   "page": "Mist Energy (Terastal Fest ex 186)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "187": {
+   "en": "Legacy Energy",
+   "page": "Legacy Energy (Terastal Fest ex 187)",
+   "type": "Rainbow",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "188": {
+   "en": "Larry's Skill",
+   "page": "Larry's Skill (Terastal Fest ex 188)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "189": {
+   "en": "Ortega",
+   "page": "Ortega (Terastal Fest ex 189)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "190": {
+   "en": "Brassius",
+   "page": "Brassius (Terastal Fest ex 190)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "191": {
+   "en": "Atticus",
+   "page": "Atticus (Terastal Fest ex 191)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "192": {
+   "en": "Atticus",
+   "page": "Atticus (Terastal Fest ex 192)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "193": {
+   "en": "Tyme",
+   "page": "Tyme (Terastal Fest ex 193)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "194": {
+   "en": "Amarys",
+   "page": "Amarys (Terastal Fest ex 194)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "195": {
+   "en": "Friends in Paldea",
+   "page": "Friends in Paldea (Terastal Fest ex 195)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "196": {
+   "en": "Giacomo",
+   "page": "Giacomo (Terastal Fest ex 196)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "197": {
+   "en": "Eri",
+   "page": "Eri (Terastal Fest ex 197)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "198": {
+   "en": "Mela",
+   "page": "Mela (Terastal Fest ex 198)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "199": {
+   "en": "Raifort",
+   "page": "Raifort (Terastal Fest ex 199)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "200": {
+   "en": "Leafeon",
+   "page": "Leafeon ex (Terastal Fest ex 200)",
+   "type": "Grass",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "201": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon ex (Terastal Fest ex 201)",
+   "type": "Grass",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "202": {
+   "en": "Flareon",
+   "page": "Flareon ex (Terastal Fest ex 202)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "203": {
+   "en": "Ceruledge",
+   "page": "Ceruledge ex (Terastal Fest ex 203)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "204": {
+   "en": "Hearthflame Mask Ogerpon",
+   "page": "Hearthflame Mask Ogerpon ex (Terastal Fest ex 204)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "205": {
+   "en": "Vaporeon",
+   "page": "Vaporeon ex (Terastal Fest ex 205)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "206": {
+   "en": "Glaceon",
+   "page": "Glaceon ex (Terastal Fest ex 206)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "207": {
+   "en": "Palafin",
+   "page": "Palafin ex (Terastal Fest ex 207)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "208": {
+   "en": "Wellspring Mask Ogerpon",
+   "page": "Wellspring Mask Ogerpon ex (Terastal Fest ex 208)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "209": {
+   "en": "Jolteon",
+   "page": "Jolteon ex (Terastal Fest ex 209)",
+   "type": "Lightning",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "210": {
+   "en": "Iron Hands",
+   "page": "Iron Hands ex (Terastal Fest ex 210)",
+   "type": "Lightning",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "211": {
+   "en": "Espeon",
+   "page": "Espeon ex (Terastal Fest ex 211)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "212": {
+   "en": "Sylveon",
+   "page": "Sylveon ex (Terastal Fest ex 212)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "213": {
+   "en": "Iron Valiant",
+   "page": "Iron Valiant ex (Terastal Fest ex 213)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "214": {
+   "en": "Iron Crown",
+   "page": "Iron Crown ex (Terastal Fest ex 214)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "215": {
+   "en": "Sandy Shocks",
+   "page": "Sandy Shocks ex (Terastal Fest ex 215)",
+   "type": "Fighting",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "216": {
+   "en": "Cornerstone Mask Ogerpon",
+   "page": "Cornerstone Mask Ogerpon ex (Terastal Fest ex 216)",
+   "type": "Fighting",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "217": {
+   "en": "Umbreon",
+   "page": "Umbreon ex (Terastal Fest ex 217)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "218": {
+   "en": "Roaring Moon",
+   "page": "Roaring Moon ex (Terastal Fest ex 218)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "219": {
+   "en": "Pecharunt",
+   "page": "Pecharunt ex (Terastal Fest ex 219)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "220": {
+   "en": "Gholdengo",
+   "page": "Gholdengo ex (Terastal Fest ex 220)",
+   "type": "Metal",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "221": {
+   "en": "Dragapult",
+   "page": "Dragapult ex (Terastal Fest ex 221)",
+   "type": "Dragon",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "222": {
+   "en": "Raging Bolt",
+   "page": "Raging Bolt ex (Terastal Fest ex 222)",
+   "type": "Dragon",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "223": {
+   "en": "Eevee",
+   "page": "Eevee ex (Terastal Fest ex 223)",
+   "type": "Colorless",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "224": {
+   "en": "Eevee",
+   "page": "Eevee ex (Terastal Fest ex 224)",
+   "type": "Colorless",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "225": {
+   "en": "Bloodmoon Ursaluna",
+   "page": "Bloodmoon Ursaluna ex (Terastal Fest ex 225)",
+   "type": "Colorless",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "226": {
+   "en": "Terapagos",
+   "page": "Terapagos ex (Terastal Fest ex 226)",
+   "type": "Colorless",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "227": {
+   "en": "Crispin",
+   "page": "Crispin (Terastal Fest ex 227)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "228": {
+   "en": "Janine's Secret Art",
+   "page": "Janine's Secret Art (Terastal Fest ex 228)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "229": {
+   "en": "Drayton",
+   "page": "Drayton (Terastal Fest ex 229)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "230": {
+   "en": "Kieran",
+   "page": "Kieran (Terastal Fest ex 230)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "231": {
+   "en": "Lacey",
+   "page": "Lacey (Terastal Fest ex 231)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "232": {
+   "en": "Amarys",
+   "page": "Amarys (Terastal Fest ex 232)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "233": {
+   "en": "Iron Leaves",
+   "page": "Iron Leaves ex (Terastal Fest ex 233)",
+   "type": "Grass",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "234": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon ex (Terastal Fest ex 234)",
+   "type": "Grass",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "235": {
+   "en": "Walking Wake",
+   "page": "Walking Wake ex (Terastal Fest ex 235)",
+   "type": "Water",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "236": {
+   "en": "Pikachu",
+   "page": "Pikachu ex (Terastal Fest ex 236)",
+   "type": "Lightning",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "237": {
+   "en": "Terapagos",
+   "page": "Terapagos ex (Terastal Fest ex 237)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

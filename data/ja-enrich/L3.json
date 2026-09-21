@@ -1,0 +1,720 @@
+{
+ "page": "Clash at the Summit (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Bellsprout",
+   "page": "Bellsprout (Clash at the Summit 1)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Weepinbell",
+   "page": "Weepinbell (Clash at the Summit 2)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "3": {
+   "en": "Victreebel",
+   "page": "Victreebel (Clash at the Summit 3)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Yanma",
+   "page": "Yanma (Clash at the Summit 4)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "5": {
+   "en": "Yanmega",
+   "page": "Yanmega (Clash at the Summit 5)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "6": {
+   "en": "Yanmega",
+   "page": "Yanmega (Clash at the Summit 6)",
+   "type": "Grass",
+   "rarity": "Rare Prime",
+   "mark": ""
+  },
+  "7": {
+   "en": "Celebi",
+   "page": "Celebi (Clash at the Summit 7)",
+   "type": "Grass",
+   "rarity": "Rare Prime",
+   "mark": ""
+  },
+  "8": {
+   "en": "Kricketot",
+   "page": "Kricketot (Clash at the Summit 8)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "9": {
+   "en": "Kricketune",
+   "page": "Kricketune (Clash at the Summit 9)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "10": {
+   "en": "Ponyta",
+   "page": "Ponyta (Clash at the Summit 10)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "11": {
+   "en": "Rapidash",
+   "page": "Rapidash (Clash at the Summit 11)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "12": {
+   "en": "Magby",
+   "page": "Magby (Clash at the Summit 12)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "13": {
+   "en": "Magmar",
+   "page": "Magmar (Clash at the Summit 13)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "14": {
+   "en": "Magmortar",
+   "page": "Magmortar (Clash at the Summit 14)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "15": {
+   "en": "Psyduck",
+   "page": "Psyduck (Clash at the Summit 15)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "16": {
+   "en": "Golduck",
+   "page": "Golduck (Clash at the Summit 16)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "17": {
+   "en": "Tentacool",
+   "page": "Tentacool (Clash at the Summit 17)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "18": {
+   "en": "Tentacruel",
+   "page": "Tentacruel (Clash at the Summit 18)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "19": {
+   "en": "Swinub",
+   "page": "Swinub (Clash at the Summit 19)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "20": {
+   "en": "Piloswine",
+   "page": "Piloswine (Clash at the Summit 20)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "21": {
+   "en": "Mamoswine",
+   "page": "Mamoswine (Clash at the Summit 21)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "22": {
+   "en": "Wailmer",
+   "page": "Wailmer (Clash at the Summit 22)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "23": {
+   "en": "Wailord",
+   "page": "Wailord (Clash at the Summit 23)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "24": {
+   "en": "Luvdisc",
+   "page": "Luvdisc (Clash at the Summit 24)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "25": {
+   "en": "Voltorb",
+   "page": "Voltorb (Clash at the Summit 25)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "26": {
+   "en": "Electrode",
+   "page": "Electrode (Clash at the Summit 26)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "27": {
+   "en": "Electrode",
+   "page": "Electrode (Clash at the Summit 27)",
+   "type": "Lightning",
+   "rarity": "Rare Prime",
+   "mark": ""
+  },
+  "28": {
+   "en": "Elekid",
+   "page": "Elekid (Clash at the Summit 28)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "29": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Clash at the Summit 29)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "30": {
+   "en": "Electivire",
+   "page": "Electivire (Clash at the Summit 30)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "31": {
+   "en": "Nidoran♀",
+   "page": "Nidoran♀ (Clash at the Summit 31)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "32": {
+   "en": "Nidorina",
+   "page": "Nidorina (Clash at the Summit 32)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "33": {
+   "en": "Nidoqueen",
+   "page": "Nidoqueen (Clash at the Summit 33)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "34": {
+   "en": "Nidoran♂",
+   "page": "Nidoran♂ (Clash at the Summit 34)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "35": {
+   "en": "Nidorino",
+   "page": "Nidorino (Clash at the Summit 35)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "36": {
+   "en": "Unown",
+   "page": "Unown (Clash at the Summit 36)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "37": {
+   "en": "Celebi",
+   "page": "Celebi (Clash at the Summit 37)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "38": {
+   "en": "Spoink",
+   "page": "Spoink (Clash at the Summit 38)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "39": {
+   "en": "Grumpig",
+   "page": "Grumpig (Clash at the Summit 39)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "40": {
+   "en": "Skorupi",
+   "page": "Skorupi (Clash at the Summit 40)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "41": {
+   "en": "Nidoking",
+   "page": "Nidoking (Clash at the Summit 41)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "42": {
+   "en": "Machop",
+   "page": "Machop (Clash at the Summit 42)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "43": {
+   "en": "Machoke",
+   "page": "Machoke (Clash at the Summit 43)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "44": {
+   "en": "Machamp",
+   "page": "Machamp (Clash at the Summit 44)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "45": {
+   "en": "Machamp",
+   "page": "Machamp (Clash at the Summit 45)",
+   "type": "Fighting",
+   "rarity": "Rare Prime",
+   "mark": ""
+  },
+  "46": {
+   "en": "Cubone",
+   "page": "Cubone (Clash at the Summit 46)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "47": {
+   "en": "Marowak",
+   "page": "Marowak (Clash at the Summit 47)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "48": {
+   "en": "Lunatone",
+   "page": "Lunatone (Clash at the Summit 48)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "49": {
+   "en": "Solrock",
+   "page": "Solrock (Clash at the Summit 49)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "50": {
+   "en": "Carvanha",
+   "page": "Carvanha (Clash at the Summit 50)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "51": {
+   "en": "Sharpedo",
+   "page": "Sharpedo (Clash at the Summit 51)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "52": {
+   "en": "Drapion",
+   "page": "Drapion (Clash at the Summit 52)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "53": {
+   "en": "Aron",
+   "page": "Aron (Clash at the Summit 53)",
+   "type": "Metal",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "54": {
+   "en": "Lairon",
+   "page": "Lairon (Clash at the Summit 54)",
+   "type": "Metal",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "55": {
+   "en": "Aggron",
+   "page": "Aggron (Clash at the Summit 55)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "56": {
+   "en": "Bronzor",
+   "page": "Bronzor (Clash at the Summit 56)",
+   "type": "Metal",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "57": {
+   "en": "Bronzong",
+   "page": "Bronzong (Clash at the Summit 57)",
+   "type": "Metal",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "58": {
+   "en": "Pidgey",
+   "page": "Pidgey (Clash at the Summit 58)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "59": {
+   "en": "Pidgeotto",
+   "page": "Pidgeotto (Clash at the Summit 59)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "60": {
+   "en": "Pidgeot",
+   "page": "Pidgeot (Clash at the Summit 60)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "61": {
+   "en": "Lickitung",
+   "page": "Lickitung (Clash at the Summit 61)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "62": {
+   "en": "Lickilicky",
+   "page": "Lickilicky (Clash at the Summit 62)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "63": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (Clash at the Summit 63)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "64": {
+   "en": "Ditto",
+   "page": "Ditto (Clash at the Summit 64)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "65": {
+   "en": "Porygon",
+   "page": "Porygon (Clash at the Summit 65)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "66": {
+   "en": "Porygon2",
+   "page": "Porygon2 (Clash at the Summit 66)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "67": {
+   "en": "Porygon-Z",
+   "page": "Porygon-Z (Clash at the Summit 67)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "68": {
+   "en": "Aipom",
+   "page": "Aipom (Clash at the Summit 68)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "69": {
+   "en": "Ambipom",
+   "page": "Ambipom (Clash at the Summit 69)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "70": {
+   "en": "Kyogre & Groudon",
+   "page": "Kyogre & Groudon LEGEND (Clash at the Summit 70)",
+   "type": "Water",
+   "rarity": "Rare Holo LEGEND",
+   "mark": ""
+  },
+  "71": {
+   "en": "Kyogre & Groudon",
+   "page": "Kyogre & Groudon LEGEND (Clash at the Summit 71)",
+   "type": "Water",
+   "rarity": "Rare Holo LEGEND",
+   "mark": ""
+  },
+  "72": {
+   "en": "Palkia & Dialga",
+   "page": "Palkia & Dialga LEGEND (Clash at the Summit 72)",
+   "type": "Water",
+   "rarity": "Rare Holo LEGEND",
+   "mark": ""
+  },
+  "73": {
+   "en": "Palkia & Dialga",
+   "page": "Palkia & Dialga LEGEND (Clash at the Summit 73)",
+   "type": "Water",
+   "rarity": "Rare Holo LEGEND",
+   "mark": ""
+  },
+  "74": {
+   "en": "Rayquaza & Deoxys",
+   "page": "Rayquaza & Deoxys LEGEND (Clash at the Summit 74)",
+   "type": "Colorless",
+   "rarity": "Rare Holo LEGEND",
+   "mark": ""
+  },
+  "75": {
+   "en": "Rayquaza & Deoxys",
+   "page": "Rayquaza & Deoxys LEGEND (Clash at the Summit 75)",
+   "type": "Colorless",
+   "rarity": "Rare Holo LEGEND",
+   "mark": ""
+  },
+  "76": {
+   "en": "Junk Arm",
+   "page": "Junk Arm (Clash at the Summit 76)",
+   "type": "I",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "77": {
+   "en": "Black Belt",
+   "page": "Black Belt (Clash at the Summit 77)",
+   "type": "Su",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "78": {
+   "en": "Twins",
+   "page": "Twins (Clash at the Summit 78)",
+   "type": "Su",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "79": {
+   "en": "Indigo Plateau",
+   "page": "Indigo Plateau (Clash at the Summit 79)",
+   "type": "St",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "80": {
+   "en": "Rescue Energy",
+   "page": "Rescue Energy (Clash at the Summit 80)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "81": {
+   "en": "Alph Lithograph",
+   "page": "Alph Lithograph (Clash at the Summit 81)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "82": {
+   "en": "Volbeat",
+   "page": "Volbeat (Triumphant 82)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "83": {
+   "en": "Voltorb",
+   "page": "Voltorb (Triumphant 83)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "84": {
+   "en": "Yanma",
+   "page": "Yanma (Triumphant 84)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "85": {
+   "en": "Black Belt",
+   "page": "Black Belt (Triumphant 85)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "86": {
+   "en": "Indigo Plateau",
+   "page": "Indigo Plateau (Triumphant 86)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "87": {
+   "en": "Junk Arm",
+   "page": "Junk Arm (Triumphant 87)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88": {
+   "en": "Seeker",
+   "page": "Seeker (Triumphant 88)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "89": {
+   "en": "Twins",
+   "page": "Twins (Triumphant 89)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Rescue Energy",
+   "page": "Rescue Energy (Triumphant 90)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "Absol",
+   "page": "Absol (Triumphant 91)",
+   "type": "Rare Prime",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Celebi",
+   "page": "Celebi (Triumphant 92)",
+   "type": "Rare Prime",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Electrode",
+   "page": "Electrode (Triumphant 93)",
+   "type": "Rare Prime",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Gengar",
+   "page": "Gengar (Triumphant 94)",
+   "type": "Rare Prime",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Machamp",
+   "page": "Machamp (Triumphant 95)",
+   "type": "Rare Prime",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Magnezone",
+   "page": "Magnezone (Triumphant 96)",
+   "type": "Rare Prime",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Mew",
+   "page": "Mew (Triumphant 97)",
+   "type": "Rare Prime",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Yanmega",
+   "page": "Yanmega (Triumphant 98)",
+   "type": "Rare Prime",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Darkrai & Cresselia",
+   "page": "Darkrai & Cresselia LEGEND (Triumphant 99)",
+   "type": "Rare Holo LEGEND",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Darkrai & Cresselia",
+   "page": "Darkrai & Cresselia LEGEND (Triumphant 100)",
+   "type": "Rare Holo LEGEND",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Palkia & Dialga",
+   "page": "Palkia & Dialga LEGEND (Triumphant 101)",
+   "type": "Rare Holo LEGEND",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Palkia & Dialga",
+   "page": "Palkia & Dialga LEGEND (Triumphant 102)",
+   "type": "Rare Holo LEGEND",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,293 @@
+{
+ "page": "Ultra Sun & Ultra Moon Deck Build Boxes (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Aqua Patch",
+   "page": "Aqua Patch (Deck Build Box 1)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Nest Ball",
+   "page": "Nest Ball (Deck Build Box 2)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Deck Build Box 3)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Field Blower",
+   "page": "Field Blower (Deck Build Box 4)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Deck Build Box 5)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Rescue Stretcher",
+   "page": "Rescue Stretcher (Deck Build Box 6)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Choice Band",
+   "page": "Choice Band (Deck Build Box 7)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Acerola",
+   "page": "Acerola (Deck Build Box 8)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Guzma",
+   "page": "Guzma (Deck Build Box 9)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Cynthia",
+   "page": "Cynthia (Deck Build Box 10)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Lillie",
+   "page": "Lillie (Deck Build Box 11)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Double Colorless Energy",
+   "page": "Double Colorless Energy (Deck Build Box 12)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Revitalizer",
+   "page": "Revitalizer (Deck Build Box 13)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "14": {
+   "en": "Super Rod",
+   "page": "Super Rod (Deck Build Box 14)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "15": {
+   "en": "Special Charge",
+   "page": "Special Charge (Deck Build Box 15)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "16": {
+   "en": "Dive Ball",
+   "page": "Dive Ball (Deck Build Box 16)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "17": {
+   "en": "Trainers' Mail",
+   "page": "Trainers' Mail (Deck Build Box 17)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "18": {
+   "en": "Professor's Letter",
+   "page": "Professor's Letter (Deck Build Box 18)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "19": {
+   "en": "Battle Compressor",
+   "page": "Battle Compressor (Deck Build Box 19)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "20": {
+   "en": "VS Seeker",
+   "page": "VS Seeker (Deck Build Box 20)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "21": {
+   "en": "Max Elixir",
+   "page": "Max Elixir (Deck Build Box 21)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "22": {
+   "en": "Float Stone",
+   "page": "Float Stone (Deck Build Box 22)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "23": {
+   "en": "Bursting Balloon",
+   "page": "Bursting Balloon (Deck Build Box 23)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "24": {
+   "en": "Fighting Fury Belt",
+   "page": "Fighting Fury Belt (Deck Build Box 24)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "25": {
+   "en": "Brigette",
+   "page": "Brigette (Deck Build Box 25)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "26": {
+   "en": "N",
+   "page": "N (Deck Build Box 26)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "27": {
+   "en": "Hex Maniac",
+   "page": "Hex Maniac (Deck Build Box 27)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "28": {
+   "en": "Xerosic",
+   "page": "Xerosic (Deck Build Box 28)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "29": {
+   "en": "Korrina",
+   "page": "Korrina (Deck Build Box 29)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "30": {
+   "en": "Delinquent",
+   "page": "Delinquent (Deck Build Box 30)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "31": {
+   "en": "Teammates",
+   "page": "Teammates (Deck Build Box 31)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "32": {
+   "en": "Ninja Boy",
+   "page": "Ninja Boy (Deck Build Box 32)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "33": {
+   "en": "Skyla",
+   "page": "Skyla (Deck Build Box 33)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "34": {
+   "en": "Professor Sycamore",
+   "page": "Professor Sycamore (Deck Build Box 34)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "35": {
+   "en": "Pokémon Ranger",
+   "page": "Pokémon Ranger (Deck Build Box 35)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "36": {
+   "en": "Wally",
+   "page": "Wally (Deck Build Box 36)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "37": {
+   "en": "Rough Seas",
+   "page": "Rough Seas (Deck Build Box 37)",
+   "type": "St",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "38": {
+   "en": "Forest of Giant Plants",
+   "page": "Forest of Giant Plants (Deck Build Box 38)",
+   "type": "St",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "39": {
+   "en": "Dimension Valley",
+   "page": "Dimension Valley (Deck Build Box 39)",
+   "type": "St",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "40": {
+   "en": "Sky Field",
+   "page": "Sky Field (Deck Build Box 40)",
+   "type": "St",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "41": {
+   "en": "Double Dragon Energy",
+   "page": "Double Dragon Energy (Deck Build Box 41)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "—"
+  }
+ }
+}

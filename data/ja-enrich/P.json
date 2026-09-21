@@ -1,0 +1,335 @@
+{
+ "page": "P Promotional cards (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Kecleon",
+   "page": "Kecleon (P Promo 1)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Rocket's Scizor",
+   "page": "Rocket's Scizor (P Promo 2)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Rocket's Sneasel",
+   "page": "Rocket's Sneasel (P Promo 3)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Pikachu",
+   "page": "Pikachu (P Promo 4)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Larvitar",
+   "page": "Larvitar (P Promo 5)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Celebi",
+   "page": "Celebi (P Promo 6)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Celebi",
+   "page": "Celebi (P Promo 7)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Tropical Wind",
+   "page": "Tropical Wind (P Promo 8)",
+   "type": "T",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Bill",
+   "page": "Bill (P Promo 9)",
+   "type": "T [Su]",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh (P Promo 10)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Rapidash",
+   "page": "Rapidash (P Promo 11)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Venusaur",
+   "page": "Venusaur (P Promo 12)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Blastoise",
+   "page": "Blastoise (P Promo 13)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Charizard",
+   "page": "Charizard (P Promo 14)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Meganium",
+   "page": "Meganium (P Promo 15)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Feraligatr",
+   "page": "Feraligatr (P Promo 16)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Typhlosion",
+   "page": "Typhlosion (P Promo 17)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Shining Imakuni?",
+   "page": "Shining Imakuni? (P Promo 18)",
+   "type": "T",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Pokémon Center Tokyo",
+   "page": "Pokémon Center Tokyo (P Promo 19)",
+   "type": "T",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Pokémon Center Osaka",
+   "page": "Pokémon Center Osaka (P Promo 20)",
+   "type": "T",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Pikachu",
+   "page": "Pikachu (P Promo 21)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Wooper",
+   "page": "Wooper (P Promo 22)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Tyrogue",
+   "page": "Tyrogue (P Promo 23)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Zapdos",
+   "page": "Zapdos (P Promo 24)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Umbreon",
+   "page": "Umbreon (P Promo 25)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Suicune",
+   "page": "Suicune (P Promo 26)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Touch Generation Change!",
+   "page": "Touch Generation Change! (P Promo 27)",
+   "type": "T",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Pichu Bros.",
+   "page": "Pichu Bros. (P Promo 28)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Hoppip",
+   "page": "Hoppip (P Promo 29)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Growlithe",
+   "page": "Growlithe (P Promo 30)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Lanturn",
+   "page": "Lanturn (P Promo 31)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Pichu",
+   "page": "Pichu (P Promo 32)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Mew",
+   "page": "Mew (P Promo 33)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Donphan",
+   "page": "Donphan (P Promo 34)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Togepi",
+   "page": "Togepi (P Promo 35)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Sneasel",
+   "page": "Sneasel (P Promo 36)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Scizor",
+   "page": "Scizor (P Promo 37)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Pikachu",
+   "page": "Pikachu (P Promo 38)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Crystal Energy",
+   "page": "Crystal Energy (P Promo 39)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "40": {
+   "en": "Boost Energy",
+   "page": "Boost Energy (P Promo 40)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Warp Energy",
+   "page": "Warp Energy (P Promo 41)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "42": {
+   "en": "Celebi",
+   "page": "Celebi (P Promo 42)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Entei",
+   "page": "Entei (P Promo 43)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Pikachu",
+   "page": "Pikachu (P Promo 44)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Pichu",
+   "page": "Pichu (P Promo 45)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Mewtwo",
+   "page": "Mewtwo (P Promo 46)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Lugia",
+   "page": "Lugia (P Promo 47)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

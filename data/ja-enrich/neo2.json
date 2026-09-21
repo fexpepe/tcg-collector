@@ -1,0 +1,531 @@
+{
+ "page": "Crossing the Ruins... (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Espeon",
+   "page": "Espeon (Neo Discovery 1)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "2": {
+   "en": "Forretress",
+   "page": "Forretress (Neo Discovery 2)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "3": {
+   "en": "Hitmontop",
+   "page": "Hitmontop (Neo Discovery 3)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Houndoom",
+   "page": "Houndoom (Neo Discovery 4)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "5": {
+   "en": "Houndour",
+   "page": "Houndour (Neo Discovery 5)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "6": {
+   "en": "Kabutops",
+   "page": "Kabutops (Neo Discovery 6)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "7": {
+   "en": "Magnemite",
+   "page": "Magnemite (Neo Discovery 7)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "8": {
+   "en": "Politoed",
+   "page": "Politoed (Neo Discovery 8)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "9": {
+   "en": "Poliwrath",
+   "page": "Poliwrath (Neo Discovery 9)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Scizor",
+   "page": "Scizor (Neo Discovery 10)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "11": {
+   "en": "Smeargle",
+   "page": "Smeargle (Neo Discovery 11)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "12": {
+   "en": "Tyranitar",
+   "page": "Tyranitar (Neo Discovery 12)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "13": {
+   "en": "Umbreon",
+   "page": "Umbreon (Neo Discovery 13)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "14": {
+   "en": "Unown A",
+   "page": "Unown A (Neo Discovery 14)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Ursaring",
+   "page": "Ursaring (Neo Discovery 15)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "16": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (Neo Discovery 16)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "17": {
+   "en": "Yanma",
+   "page": "Yanma (Neo Discovery 17)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "18": {
+   "en": "Beedrill",
+   "page": "Beedrill (Neo Discovery 18)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "19": {
+   "en": "Butterfree",
+   "page": "Butterfree (Neo Discovery 19)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "20": {
+   "en": "Espeon",
+   "page": "Espeon (Neo Discovery 20)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "21": {
+   "en": "Forretress",
+   "page": "Forretress (Neo Discovery 21)",
+   "type": "Metal",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "22": {
+   "en": "Hitmontop",
+   "page": "Hitmontop (Neo Discovery 22)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "23": {
+   "en": "Houndoom",
+   "page": "Houndoom (Neo Discovery 23)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "24": {
+   "en": "Houndour",
+   "page": "Houndour (Neo Discovery 24)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "25": {
+   "en": "Kabutops",
+   "page": "Kabutops (Neo Discovery 25)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "26": {
+   "en": "Magnemite",
+   "page": "Magnemite (Neo Discovery 26)",
+   "type": "Metal",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "27": {
+   "en": "Politoed",
+   "page": "Politoed (Neo Discovery 27)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "28": {
+   "en": "Poliwrath",
+   "page": "Poliwrath (Neo Discovery 28)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "29": {
+   "en": "Scizor",
+   "page": "Scizor (Neo Discovery 29)",
+   "type": "Metal",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "30": {
+   "en": "Smeargle",
+   "page": "Smeargle (Neo Discovery 30)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "31": {
+   "en": "Tyranitar",
+   "page": "Tyranitar (Neo Discovery 31)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "32": {
+   "en": "Umbreon",
+   "page": "Umbreon (Neo Discovery 32)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "33": {
+   "en": "Unown A",
+   "page": "Unown A (Neo Discovery 33)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "34": {
+   "en": "Ursaring",
+   "page": "Ursaring (Neo Discovery 34)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "35": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (Neo Discovery 35)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "36": {
+   "en": "Yanma",
+   "page": "Yanma (Neo Discovery 36)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "37": {
+   "en": "Corsola",
+   "page": "Corsola (Neo Discovery 37)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "38": {
+   "en": "Eevee",
+   "page": "Eevee (Neo Discovery 38)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "39": {
+   "en": "Houndour",
+   "page": "Houndour (Neo Discovery 39)",
+   "type": "Darkness",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "40": {
+   "en": "Igglybuff",
+   "page": "Igglybuff (Neo Discovery 40)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "41": {
+   "en": "Kakuna",
+   "page": "Kakuna (Neo Discovery 41)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "42": {
+   "en": "Metapod",
+   "page": "Metapod (Neo Discovery 42)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "43": {
+   "en": "Omastar",
+   "page": "Omastar (Neo Discovery 43)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "44": {
+   "en": "Poliwhirl",
+   "page": "Poliwhirl (Neo Discovery 44)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "45": {
+   "en": "Pupitar",
+   "page": "Pupitar (Neo Discovery 45)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "46": {
+   "en": "Scyther",
+   "page": "Scyther (Neo Discovery 46)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "47": {
+   "en": "Unown D",
+   "page": "Unown D (Neo Discovery 47)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "48": {
+   "en": "Unown F",
+   "page": "Unown F (Neo Discovery 48)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "49": {
+   "en": "Unown M",
+   "page": "Unown M (Neo Discovery 49)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "50": {
+   "en": "Unown N",
+   "page": "Unown N (Neo Discovery 50)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "51": {
+   "en": "Unown U",
+   "page": "Unown U (Neo Discovery 51)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "52": {
+   "en": "Xatu",
+   "page": "Xatu (Neo Discovery 52)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "53": {
+   "en": "Caterpie",
+   "page": "Caterpie (Neo Discovery 53)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "54": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (Neo Discovery 54)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "55": {
+   "en": "Hoppip",
+   "page": "Hoppip (Neo Discovery 55)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "56": {
+   "en": "Kabuto",
+   "page": "Kabuto (Neo Discovery 56)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "57": {
+   "en": "Larvitar",
+   "page": "Larvitar (Neo Discovery 57)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "58": {
+   "en": "Mareep",
+   "page": "Mareep (Neo Discovery 58)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "59": {
+   "en": "Natu",
+   "page": "Natu (Neo Discovery 59)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "60": {
+   "en": "Omanyte",
+   "page": "Omanyte (Neo Discovery 60)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "61": {
+   "en": "Pineco",
+   "page": "Pineco (Neo Discovery 61)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "62": {
+   "en": "Poliwag",
+   "page": "Poliwag (Neo Discovery 62)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "63": {
+   "en": "Sentret",
+   "page": "Sentret (Neo Discovery 63)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "64": {
+   "en": "Spinarak",
+   "page": "Spinarak (Neo Discovery 64)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "65": {
+   "en": "Teddiursa",
+   "page": "Teddiursa (Neo Discovery 65)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "66": {
+   "en": "Tyrogue",
+   "page": "Tyrogue (Neo Discovery 66)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "67": {
+   "en": "Unown E",
+   "page": "Unown E (Neo Discovery 67)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "68": {
+   "en": "Unown I",
+   "page": "Unown I (Neo Discovery 68)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "69": {
+   "en": "Unown O",
+   "page": "Unown O (Neo Discovery 69)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "70": {
+   "en": "Weedle",
+   "page": "Weedle (Neo Discovery 70)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "71": {
+   "en": "Wooper",
+   "page": "Wooper (Neo Discovery 71)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "72": {
+   "en": "Fossil Egg",
+   "page": "Fossil Egg (Neo Discovery 72)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "73": {
+   "en": "Hyper Devolution Spray",
+   "page": "Hyper Devolution Spray (Neo Discovery 73)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "74": {
+   "en": "Ruin Wall",
+   "page": "Ruin Wall (Neo Discovery 74)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "75": {
+   "en": "Energy Ark",
+   "page": "Energy Ark (Neo Discovery 75)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,608 @@
+{
+ "page": "Explosive Walker (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Butterfree",
+   "page": "Butterfree V (Explosive Walker 1)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "2": {
+   "en": "Butterfree",
+   "page": "Butterfree VMAX (Explosive Walker 2)",
+   "type": "Grass",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "3": {
+   "en": "Karrablast",
+   "page": "Karrablast (Explosive Walker 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Shelmet",
+   "page": "Shelmet (Explosive Walker 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Accelgor",
+   "page": "Accelgor (Explosive Walker 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Bounsweet",
+   "page": "Bounsweet (Explosive Walker 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Steenee",
+   "page": "Steenee (Explosive Walker 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Tsareena",
+   "page": "Tsareena (Explosive Walker 8)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "9": {
+   "en": "Wimpod",
+   "page": "Wimpod (Explosive Walker 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Golisopod",
+   "page": "Golisopod (Explosive Walker 10)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "11": {
+   "en": "Heatran",
+   "page": "Heatran (Explosive Walker 11)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Larvesta",
+   "page": "Larvesta (Explosive Walker 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Volcarona",
+   "page": "Volcarona (Explosive Walker 13)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Fletchinder",
+   "page": "Fletchinder (Explosive Walker 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Talonflame",
+   "page": "Talonflame (Explosive Walker 15)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Centiskorch",
+   "page": "Centiskorch V (Explosive Walker 16)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "17": {
+   "en": "Centiskorch",
+   "page": "Centiskorch VMAX (Explosive Walker 17)",
+   "type": "Fire",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "18": {
+   "en": "Galarian Mr. Mime",
+   "page": "Galarian Mr. Mime (Explosive Walker 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Galarian Mr. Rime",
+   "page": "Galarian Mr. Rime (Explosive Walker 19)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Feebas",
+   "page": "Feebas (Explosive Walker 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Milotic",
+   "page": "Milotic (Explosive Walker 21)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Cubchoo",
+   "page": "Cubchoo (Explosive Walker 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Beartic",
+   "page": "Beartic (Explosive Walker 23)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi (Explosive Walker 24)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Vikavolt",
+   "page": "Vikavolt V (Explosive Walker 25)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "26": {
+   "en": "Toxel",
+   "page": "Toxel (Explosive Walker 26)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Toxtricity",
+   "page": "Toxtricity (Explosive Walker 27)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "28": {
+   "en": "Snubbull",
+   "page": "Snubbull (Explosive Walker 28)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Granbull",
+   "page": "Granbull (Explosive Walker 29)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Gardevoir",
+   "page": "Gardevoir V (Explosive Walker 30)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Gardevoir",
+   "page": "Gardevoir VMAX (Explosive Walker 31)",
+   "type": "Psychic",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "32": {
+   "en": "Lunatone",
+   "page": "Lunatone (Explosive Walker 32)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Dedenne",
+   "page": "Dedenne (Explosive Walker 33)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Morelull",
+   "page": "Morelull (Explosive Walker 34)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Shiinotic",
+   "page": "Shiinotic (Explosive Walker 35)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Sinistea",
+   "page": "Sinistea (Explosive Walker 36)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Polteageist",
+   "page": "Polteageist (Explosive Walker 37)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "38": {
+   "en": "Diglett",
+   "page": "Diglett (Explosive Walker 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Dugtrio",
+   "page": "Dugtrio (Explosive Walker 39)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Larvitar",
+   "page": "Larvitar (Explosive Walker 40)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Pupitar",
+   "page": "Pupitar (Explosive Walker 41)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Tyranitar",
+   "page": "Tyranitar (Explosive Walker 42)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "43": {
+   "en": "Solrock",
+   "page": "Solrock (Explosive Walker 43)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Diggersby",
+   "page": "Diggersby (Explosive Walker 44)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Grapploct",
+   "page": "Grapploct V (Explosive Walker 45)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "46": {
+   "en": "Grimer",
+   "page": "Grimer (Explosive Walker 46)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Muk",
+   "page": "Muk (Explosive Walker 47)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Darkrai",
+   "page": "Darkrai (Explosive Walker 48)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "49": {
+   "en": "Purrloin",
+   "page": "Purrloin (Explosive Walker 49)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Liepard",
+   "page": "Liepard (Explosive Walker 50)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Aron",
+   "page": "Aron (Explosive Walker 51)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Lairon",
+   "page": "Lairon (Explosive Walker 52)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Aggron",
+   "page": "Aggron (Explosive Walker 53)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "54": {
+   "en": "Escavalier",
+   "page": "Escavalier (Explosive Walker 54)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Galarian Stunfisk",
+   "page": "Galarian Stunfisk V (Explosive Walker 55)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Sentret",
+   "page": "Sentret (Explosive Walker 56)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Furret",
+   "page": "Furret (Explosive Walker 57)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (Explosive Walker 58)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Fletchling",
+   "page": "Fletchling (Explosive Walker 59)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Rookidee",
+   "page": "Rookidee (Explosive Walker 60)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Corvisquire",
+   "page": "Corvisquire (Explosive Walker 61)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Corviknight",
+   "page": "Corviknight (Explosive Walker 62)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "63": {
+   "en": "Suspicious Food Tin",
+   "page": "Suspicious Food Tin (Explosive Walker 63)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Familiar Bell",
+   "page": "Familiar Bell (Explosive Walker 64)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Old PC",
+   "page": "Old PC (Explosive Walker 65)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Big Parasol",
+   "page": "Big Parasol (Explosive Walker 66)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Kabu",
+   "page": "Kabu (Explosive Walker 67)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Pokémon Breeder's Nurturing",
+   "page": "Pokémon Breeder's Nurturing (Explosive Walker 68)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Glimwood Tangle",
+   "page": "Glimwood Tangle (Explosive Walker 69)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Heat",
+   "page": "Heat R Energy (Explosive Walker 70)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Butterfree",
+   "page": "Butterfree V (Explosive Walker 71)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Centiskorch",
+   "page": "Centiskorch V (Explosive Walker 72)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Vikavolt",
+   "page": "Vikavolt V (Explosive Walker 73)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Gardevoir",
+   "page": "Gardevoir V (Explosive Walker 74)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Grapploct",
+   "page": "Grapploct V (Explosive Walker 75)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Galarian Stunfisk",
+   "page": "Galarian Stunfisk V (Explosive Walker 76)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Kabu",
+   "page": "Kabu (Explosive Walker 77)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Pokémon Breeder's Nurturing",
+   "page": "Pokémon Breeder's Nurturing (Explosive Walker 78)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Butterfree",
+   "page": "Butterfree VMAX (Explosive Walker 79)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Centiskorch",
+   "page": "Centiskorch VMAX (Explosive Walker 80)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Gardevoir",
+   "page": "Gardevoir VMAX (Explosive Walker 81)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Kabu",
+   "page": "Kabu (Explosive Walker 82)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Pokémon Breeder's Nurturing",
+   "page": "Pokémon Breeder's Nurturing (Explosive Walker 83)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Rillaboom",
+   "page": "Rillaboom (Explosive Walker 84)",
+   "type": "Grass",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Suspicious Food Tin",
+   "page": "Suspicious Food Tin (Explosive Walker 85)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Big Parasol",
+   "page": "Big Parasol (Explosive Walker 86)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

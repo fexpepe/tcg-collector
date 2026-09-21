@@ -1,0 +1,797 @@
+{
+ "page": "Darkness, and to Light... (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Dark Ampharos",
+   "page": "Dark Ampharos (Neo Destiny 1)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "2": {
+   "en": "Dark Crobat",
+   "page": "Dark Crobat (Neo Destiny 2)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "3": {
+   "en": "Dark Donphan",
+   "page": "Dark Donphan (Neo Destiny 3)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Dark Espeon",
+   "page": "Dark Espeon (Neo Destiny 4)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "5": {
+   "en": "Dark Feraligatr",
+   "page": "Dark Feraligatr (Neo Destiny 5)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "6": {
+   "en": "Dark Gengar",
+   "page": "Dark Gengar (Neo Destiny 6)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "7": {
+   "en": "Dark Houndoom",
+   "page": "Dark Houndoom (Neo Destiny 7)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "8": {
+   "en": "Dark Porygon2",
+   "page": "Dark Porygon2 (Neo Destiny 8)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "9": {
+   "en": "Dark Scizor",
+   "page": "Dark Scizor (Neo Destiny 9)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Dark Typhlosion",
+   "page": "Dark Typhlosion (Neo Destiny 10)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "11": {
+   "en": "Dark Tyranitar",
+   "page": "Dark Tyranitar (Neo Destiny 11)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "12": {
+   "en": "Light Arcanine",
+   "page": "Light Arcanine (Neo Destiny 12)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "13": {
+   "en": "Light Azumarill",
+   "page": "Light Azumarill (Neo Destiny 13)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "14": {
+   "en": "Light Dragonite",
+   "page": "Light Dragonite (Neo Destiny 14)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Light Togetic",
+   "page": "Light Togetic (Neo Destiny 15)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "16": {
+   "en": "Miracle Energy",
+   "page": "Miracle Energy (Neo Destiny 16)",
+   "type": "Rainbow",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "17": {
+   "en": "Dark Ariados",
+   "page": "Dark Ariados (Neo Destiny 17)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "18": {
+   "en": "Dark Magcargo",
+   "page": "Dark Magcargo (Neo Destiny 18)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "19": {
+   "en": "Dark Omastar",
+   "page": "Dark Omastar (Neo Destiny 19)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "20": {
+   "en": "Dark Slowking",
+   "page": "Dark Slowking (Neo Destiny 20)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "21": {
+   "en": "Dark Ursaring",
+   "page": "Dark Ursaring (Neo Destiny 21)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "22": {
+   "en": "Light Dragonair",
+   "page": "Light Dragonair (Neo Destiny 22)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "23": {
+   "en": "Light Lanturn",
+   "page": "Light Lanturn (Neo Destiny 23)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "24": {
+   "en": "Light Ledian",
+   "page": "Light Ledian (Neo Destiny 24)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "25": {
+   "en": "Light Machamp",
+   "page": "Light Machamp (Neo Destiny 25)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "26": {
+   "en": "Light Piloswine",
+   "page": "Light Piloswine (Neo Destiny 26)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "27": {
+   "en": "Unown G",
+   "page": "Unown G (Neo Destiny 27)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "28": {
+   "en": "Unown H",
+   "page": "Unown H (Neo Destiny 28)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "29": {
+   "en": "Unown W",
+   "page": "Unown W (Neo Destiny 29)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "30": {
+   "en": "Unown X",
+   "page": "Unown X (Neo Destiny 30)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "31": {
+   "en": "Chansey",
+   "page": "Chansey (Neo Destiny 31)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "32": {
+   "en": "Dark Croconaw",
+   "page": "Dark Croconaw (Neo Destiny 32)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "33": {
+   "en": "Dark Exeggutor",
+   "page": "Dark Exeggutor (Neo Destiny 33)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "34": {
+   "en": "Dark Flaaffy",
+   "page": "Dark Flaaffy (Neo Destiny 34)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "35": {
+   "en": "Dark Forretress",
+   "page": "Dark Forretress (Neo Destiny 35)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "36": {
+   "en": "Dark Haunter",
+   "page": "Dark Haunter (Neo Destiny 36)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "37": {
+   "en": "Dark Omanyte",
+   "page": "Dark Omanyte (Neo Destiny 37)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "38": {
+   "en": "Dark Pupitar",
+   "page": "Dark Pupitar (Neo Destiny 38)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "39": {
+   "en": "Dark Quilava",
+   "page": "Dark Quilava (Neo Destiny 39)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "40": {
+   "en": "Dark Wigglytuff",
+   "page": "Dark Wigglytuff (Neo Destiny 40)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "41": {
+   "en": "Heracross",
+   "page": "Heracross (Neo Destiny 41)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "42": {
+   "en": "Hitmonlee",
+   "page": "Hitmonlee (Neo Destiny 42)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "43": {
+   "en": "Houndour",
+   "page": "Houndour (Neo Destiny 43)",
+   "type": "Darkness",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "44": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (Neo Destiny 44)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "45": {
+   "en": "Light Dewgong",
+   "page": "Light Dewgong (Neo Destiny 45)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "46": {
+   "en": "Light Flareon",
+   "page": "Light Flareon (Neo Destiny 46)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "47": {
+   "en": "Light Golduck",
+   "page": "Light Golduck (Neo Destiny 47)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "48": {
+   "en": "Light Jolteon",
+   "page": "Light Jolteon (Neo Destiny 48)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "49": {
+   "en": "Light Machoke",
+   "page": "Light Machoke (Neo Destiny 49)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "50": {
+   "en": "Light Ninetales",
+   "page": "Light Ninetales (Neo Destiny 50)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "51": {
+   "en": "Light Slowbro",
+   "page": "Light Slowbro (Neo Destiny 51)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "52": {
+   "en": "Light Vaporeon",
+   "page": "Light Vaporeon (Neo Destiny 52)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "53": {
+   "en": "Light Venomoth",
+   "page": "Light Venomoth (Neo Destiny 53)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "54": {
+   "en": "Light Wigglytuff",
+   "page": "Light Wigglytuff (Neo Destiny 54)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "55": {
+   "en": "Scyther",
+   "page": "Scyther (Neo Destiny 55)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "56": {
+   "en": "Togepi",
+   "page": "Togepi (Neo Destiny 56)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "57": {
+   "en": "Unown C",
+   "page": "Unown C (Neo Destiny 57)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "58": {
+   "en": "Unown P",
+   "page": "Unown P (Neo Destiny 58)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "59": {
+   "en": "Unown Q",
+   "page": "Unown Q (Neo Destiny 59)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "60": {
+   "en": "Unown Z",
+   "page": "Unown Z (Neo Destiny 60)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "61": {
+   "en": "Cyndaquil",
+   "page": "Cyndaquil (Neo Destiny 61)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "62": {
+   "en": "Dark Octillery",
+   "page": "Dark Octillery (Neo Destiny 62)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "63": {
+   "en": "Dratini",
+   "page": "Dratini (Neo Destiny 63)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "64": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Neo Destiny 64)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "65": {
+   "en": "Gastly",
+   "page": "Gastly (Neo Destiny 65)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "66": {
+   "en": "Girafarig",
+   "page": "Girafarig (Neo Destiny 66)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "67": {
+   "en": "Gligar",
+   "page": "Gligar (Neo Destiny 67)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "68": {
+   "en": "Growlithe",
+   "page": "Growlithe (Neo Destiny 68)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "69": {
+   "en": "Hitmonchan",
+   "page": "Hitmonchan (Neo Destiny 69)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "70": {
+   "en": "Larvitar",
+   "page": "Larvitar (Neo Destiny 70)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "71": {
+   "en": "Ledyba",
+   "page": "Ledyba (Neo Destiny 71)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "72": {
+   "en": "Light Sunflora",
+   "page": "Light Sunflora (Neo Destiny 72)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "73": {
+   "en": "Machop",
+   "page": "Machop (Neo Destiny 73)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "74": {
+   "en": "Mantine",
+   "page": "Mantine (Neo Destiny 74)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "75": {
+   "en": "Mareep",
+   "page": "Mareep (Neo Destiny 75)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "76": {
+   "en": "Phanpy",
+   "page": "Phanpy (Neo Destiny 76)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "77": {
+   "en": "Pineco",
+   "page": "Pineco (Neo Destiny 77)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "78": {
+   "en": "Porygon",
+   "page": "Porygon (Neo Destiny 78)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "79": {
+   "en": "Psyduck",
+   "page": "Psyduck (Neo Destiny 79)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "80": {
+   "en": "Remoraid",
+   "page": "Remoraid (Neo Destiny 80)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "81": {
+   "en": "Seel",
+   "page": "Seel (Neo Destiny 81)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "82": {
+   "en": "Slugma",
+   "page": "Slugma (Neo Destiny 82)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "83": {
+   "en": "Sunkern",
+   "page": "Sunkern (Neo Destiny 83)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "84": {
+   "en": "Swinub",
+   "page": "Swinub (Neo Destiny 84)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "85": {
+   "en": "Totodile",
+   "page": "Totodile (Neo Destiny 85)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "86": {
+   "en": "Unown L",
+   "page": "Unown L (Neo Destiny 86)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "87": {
+   "en": "Unown S",
+   "page": "Unown S (Neo Destiny 87)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "88": {
+   "en": "Unown T",
+   "page": "Unown T (Neo Destiny 88)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "89": {
+   "en": "Unown V",
+   "page": "Unown V (Neo Destiny 89)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "90": {
+   "en": "Venonat",
+   "page": "Venonat (Neo Destiny 90)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "91": {
+   "en": "Vulpix",
+   "page": "Vulpix (Neo Destiny 91)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "92": {
+   "en": "Broken Ground Gym",
+   "page": "Broken Ground Gym (Neo Destiny 92)",
+   "type": "T [St]",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "93": {
+   "en": "EXP.ALL",
+   "page": "EXP.ALL (Neo Destiny 93)",
+   "type": "T [PT]",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "94": {
+   "en": "Impostor Professor Oak's Invention",
+   "page": "Impostor Professor Oak's Invention (Neo Destiny 94)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "95": {
+   "en": "Radio Tower",
+   "page": "Radio Tower (Neo Destiny 95)",
+   "type": "T [St]",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "96": {
+   "en": "Thought Wave Machine",
+   "page": "Thought Wave Machine (Neo Destiny 96)",
+   "type": "T [R]",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "97": {
+   "en": "Counterattack Claws",
+   "page": "Counterattack Claws (Neo Destiny 97)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "98": {
+   "en": "Energy Amplifier",
+   "page": "Energy Amplifier (Neo Destiny 98)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "99": {
+   "en": "Energy Stadium",
+   "page": "Energy Stadium (Neo Destiny 99)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "100": {
+   "en": "Lucky Stadium",
+   "page": "Lucky Stadium (Neo Destiny 100)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "101": {
+   "en": "Magnifier",
+   "page": "Magnifier (Neo Destiny 101)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "102": {
+   "en": "Pokémon Personality Test",
+   "page": "Pokémon Personality Test (Neo Destiny 102)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "103": {
+   "en": "Team Rocket's Evil Deeds",
+   "page": "Team Rocket's Evil Deeds (Neo Destiny 103)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "104": {
+   "en": "Heal Powder",
+   "page": "Heal Powder (Neo Destiny 104)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "105": {
+   "en": "Mail from Bill",
+   "page": "Mail from Bill (Neo Destiny 105)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "106": {
+   "en": "Shining Celebi",
+   "page": "Shining Celebi (Neo Destiny 106)",
+   "type": "Grass",
+   "rarity": "Shining Holo",
+   "mark": ""
+  },
+  "107": {
+   "en": "Shining Charizard",
+   "page": "Shining Charizard (Neo Destiny 107)",
+   "type": "Fire",
+   "rarity": "Shining Holo",
+   "mark": ""
+  },
+  "108": {
+   "en": "Shining Kabutops",
+   "page": "Shining Kabutops (Neo Destiny 108)",
+   "type": "Fighting",
+   "rarity": "Shining Holo",
+   "mark": ""
+  },
+  "109": {
+   "en": "Shining Mewtwo",
+   "page": "Shining Mewtwo (Neo Destiny 109)",
+   "type": "Psychic",
+   "rarity": "Shining Holo",
+   "mark": ""
+  },
+  "110": {
+   "en": "Shining Noctowl",
+   "page": "Shining Noctowl (Neo Destiny 110)",
+   "type": "Colorless",
+   "rarity": "Shining Holo",
+   "mark": ""
+  },
+  "111": {
+   "en": "Shining Raichu",
+   "page": "Shining Raichu (Neo Destiny 111)",
+   "type": "Lightning",
+   "rarity": "Shining Holo",
+   "mark": ""
+  },
+  "112": {
+   "en": "Shining Steelix",
+   "page": "Shining Steelix (Neo Destiny 112)",
+   "type": "Metal",
+   "rarity": "Shining Holo",
+   "mark": ""
+  },
+  "113": {
+   "en": "Shining Tyranitar",
+   "page": "Shining Tyranitar (Neo Destiny 113)",
+   "type": "Darkness",
+   "rarity": "Shining Holo",
+   "mark": ""
+  }
+ }
+}

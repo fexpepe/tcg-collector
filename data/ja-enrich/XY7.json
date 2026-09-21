@@ -1,0 +1,713 @@
+{
+ "page": "Bandit Ring (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Oddish",
+   "page": "Oddish (Bandit Ring 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Gloom",
+   "page": "Gloom (Bandit Ring 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Vileplume",
+   "page": "Vileplume (Bandit Ring 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Bellossom",
+   "page": "Bellossom (Bandit Ring 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Spinarak",
+   "page": "Spinarak (Bandit Ring 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Ariados",
+   "page": "Ariados (Bandit Ring 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Sceptile",
+   "page": "Sceptile-EX (Bandit Ring 7)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "8": {
+   "en": "Sceptile",
+   "page": "M Sceptile-EX (Bandit Ring 8)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "9": {
+   "en": "Combee",
+   "page": "Combee (Bandit Ring 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Vespiquen",
+   "page": "Vespiquen (Bandit Ring 10)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Vespiquen",
+   "page": "Vespiquen (Bandit Ring 11)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Virizion",
+   "page": "Virizion (Bandit Ring 12)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "13": {
+   "en": "Flareon",
+   "page": "Flareon (Bandit Ring 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Entei",
+   "page": "Entei (Bandit Ring 14)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Entei",
+   "page": "Entei (Bandit Ring 15)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "16": {
+   "en": "Larvesta",
+   "page": "Larvesta (Bandit Ring 16)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Volcarona",
+   "page": "Volcarona (Bandit Ring 17)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "18": {
+   "en": "Volcarona",
+   "page": "Volcarona (Bandit Ring 18)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Magikarp",
+   "page": "Magikarp (Bandit Ring 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Gyarados",
+   "page": "Gyarados (Bandit Ring 20)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Gyarados",
+   "page": "Gyarados (Bandit Ring 21)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Vaporeon",
+   "page": "Vaporeon (Bandit Ring 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Relicanth",
+   "page": "Relicanth (Bandit Ring 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Regice",
+   "page": "Regice (Bandit Ring 24)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Kyurem",
+   "page": "Kyurem-EX (Bandit Ring 25)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "26": {
+   "en": "Jolteon",
+   "page": "Jolteon (Bandit Ring 26)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "27": {
+   "en": "Ampharos",
+   "page": "Ampharos-EX (Bandit Ring 27)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "28": {
+   "en": "Ampharos",
+   "page": "M Ampharos-EX (Bandit Ring 28)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "29": {
+   "en": "Rotom",
+   "page": "Rotom (Bandit Ring 29)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Unown",
+   "page": "Unown (Bandit Ring 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Baltoy",
+   "page": "Baltoy (Bandit Ring 31)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Baltoy",
+   "page": "Baltoy (Bandit Ring 32)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Claydol",
+   "page": "Claydol (Bandit Ring 33)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Golett",
+   "page": "Golett (Bandit Ring 34)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Golurk",
+   "page": "Golurk (Bandit Ring 35)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Hoopa",
+   "page": "Hoopa-EX (Bandit Ring 36)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "37": {
+   "en": "Machamp",
+   "page": "Machamp-EX (Bandit Ring 37)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "38": {
+   "en": "Wooper",
+   "page": "Wooper (Bandit Ring 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Quagsire",
+   "page": "Quagsire (Bandit Ring 39)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Regirock",
+   "page": "Regirock (Bandit Ring 40)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "41": {
+   "en": "Golurk",
+   "page": "Golurk (Bandit Ring 41)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Tyranitar",
+   "page": "Tyranitar-EX (Bandit Ring 42)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "43": {
+   "en": "Tyranitar",
+   "page": "M Tyranitar-EX (Bandit Ring 43)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "44": {
+   "en": "Sableye",
+   "page": "Sableye (Bandit Ring 44)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Inkay",
+   "page": "Inkay (Bandit Ring 45)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Malamar",
+   "page": "Malamar (Bandit Ring 46)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Beldum",
+   "page": "Beldum (Bandit Ring 47)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Metang",
+   "page": "Metang (Bandit Ring 48)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Metagross",
+   "page": "Metagross (Bandit Ring 49)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "50": {
+   "en": "Metagross",
+   "page": "Metagross (Bandit Ring 50)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Registeel",
+   "page": "Registeel (Bandit Ring 51)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Ralts",
+   "page": "Ralts (Bandit Ring 52)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Kirlia",
+   "page": "Kirlia (Bandit Ring 53)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Gardevoir",
+   "page": "Gardevoir (Bandit Ring 54)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "55": {
+   "en": "Cottonee",
+   "page": "Cottonee (Bandit Ring 55)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Whimsicott",
+   "page": "Whimsicott (Bandit Ring 56)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Giratina",
+   "page": "Giratina-EX (Bandit Ring 57)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Goomy",
+   "page": "Goomy (Bandit Ring 58)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Sliggoo",
+   "page": "Sliggoo (Bandit Ring 59)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Goodra",
+   "page": "Goodra (Bandit Ring 60)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "61": {
+   "en": "Meowth",
+   "page": "Meowth (Bandit Ring 61)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Persian",
+   "page": "Persian (Bandit Ring 62)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Eevee",
+   "page": "Eevee (Bandit Ring 63)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "64": {
+   "en": "Porygon",
+   "page": "Porygon (Bandit Ring 64)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Porygon2",
+   "page": "Porygon2 (Bandit Ring 65)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "Porygon-Z",
+   "page": "Porygon-Z (Bandit Ring 66)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Porygon-Z",
+   "page": "Porygon-Z (Bandit Ring 67)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "68": {
+   "en": "Lugia",
+   "page": "Lugia-EX (Bandit Ring 68)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Eco Arm",
+   "page": "Eco Arm (Bandit Ring 69)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Paint Roller",
+   "page": "Paint Roller (Bandit Ring 70)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Level Ball",
+   "page": "Level Ball (Bandit Ring 71)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Lucky Helmet",
+   "page": "Lucky Helmet (Bandit Ring 72)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "73": {
+   "en": "Sceptile Spirit Link",
+   "page": "Sceptile Spirit Link (Bandit Ring 73)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "74": {
+   "en": "Ampharos Spirit Link",
+   "page": "Ampharos Spirit Link (Bandit Ring 74)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "75": {
+   "en": "Tyranitar Spirit Link",
+   "page": "Tyranitar Spirit Link (Bandit Ring 75)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "76": {
+   "en": "Ace Trainer",
+   "page": "Ace Trainer (Bandit Ring 76)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Hex Maniac",
+   "page": "Hex Maniac (Bandit Ring 77)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "78": {
+   "en": "Faded Town",
+   "page": "Faded Town (Bandit Ring 78)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Forest of Giant Plants",
+   "page": "Forest of Giant Plants (Bandit Ring 79)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "80": {
+   "en": "Flash Energy",
+   "page": "Flash Energy (Bandit Ring 80)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "81": {
+   "en": "Dangerous Energy",
+   "page": "Dangerous Energy (Bandit Ring 81)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "82": {
+   "en": "Sceptile",
+   "page": "Sceptile-EX (Bandit Ring 82)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Sceptile",
+   "page": "M Sceptile-EX (Bandit Ring 83)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Kyurem",
+   "page": "Kyurem-EX (Bandit Ring 84)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Ampharos",
+   "page": "Ampharos-EX (Bandit Ring 85)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Ampharos",
+   "page": "M Ampharos-EX (Bandit Ring 86)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Hoopa",
+   "page": "Hoopa-EX (Bandit Ring 87)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Machamp",
+   "page": "Machamp-EX (Bandit Ring 88)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Tyranitar",
+   "page": "Tyranitar-EX (Bandit Ring 89)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Tyranitar",
+   "page": "M Tyranitar-EX (Bandit Ring 90)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Giratina",
+   "page": "Giratina-EX (Bandit Ring 91)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Lugia",
+   "page": "Lugia-EX (Bandit Ring 92)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Primal Kyogre",
+   "page": "Primal Kyogre-EX (Bandit Ring 93)",
+   "type": "Water",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Primal Groudon",
+   "page": "Primal Groudon-EX (Bandit Ring 94)",
+   "type": "Fighting",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Rayquaza",
+   "page": "M Rayquaza-EX (Bandit Ring 95)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Energy Retrieval",
+   "page": "Energy Retrieval (Bandit Ring 96)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Trainers' Mail",
+   "page": "Trainers' Mail (Bandit Ring 97)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Rayquaza",
+   "page": "M Rayquaza-EX (Ancient Origins 98)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Energy Retrieval",
+   "page": "Energy Retrieval (Ancient Origins 99)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Trainers' Mail",
+   "page": "Trainers' Mail (Ancient Origins 100)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "75a": {
+   "en": "Hex Maniac",
+   "page": "Hex Maniac (Ancient Origins 75a)",
+   "type": "—",
+   "rarity": "Yellow A Alternate art Premium Trainer's XY Collection exclusive",
+   "mark": ""
+  }
+ }
+}

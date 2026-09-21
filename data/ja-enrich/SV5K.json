@@ -1,0 +1,1532 @@
+{
+ "page": "Wild Force (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Roselia",
+   "page": "Roselia (Wild Force 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Roserade",
+   "page": "Roserade (Wild Force 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Turtwig",
+   "page": "Turtwig (Wild Force 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Grotle",
+   "page": "Grotle (Wild Force 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Torterra",
+   "page": "Torterra ex (Wild Force 5)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "6": {
+   "en": "Shaymin",
+   "page": "Shaymin (Wild Force 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Cottonee",
+   "page": "Cottonee (Wild Force 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Whimsicott",
+   "page": "Whimsicott (Wild Force 8)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "9": {
+   "en": "Heatmor",
+   "page": "Heatmor (Wild Force 9)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Sizzlipede",
+   "page": "Sizzlipede (Wild Force 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Centiskorch",
+   "page": "Centiskorch (Wild Force 11)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Gouging Fire",
+   "page": "Gouging Fire ex (Wild Force 12)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "13": {
+   "en": "Totodile",
+   "page": "Totodile (Wild Force 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Croconaw",
+   "page": "Croconaw (Wild Force 14)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Feraligatr",
+   "page": "Feraligatr (Wild Force 15)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "16": {
+   "en": "Carvanha",
+   "page": "Carvanha (Wild Force 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Sharpedo",
+   "page": "Sharpedo (Wild Force 17)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Keldeo",
+   "page": "Keldeo (Wild Force 18)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Snom",
+   "page": "Snom (Wild Force 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Frosmoth",
+   "page": "Frosmoth (Wild Force 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Wiglett",
+   "page": "Wiglett (Wild Force 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Finizen",
+   "page": "Finizen (Wild Force 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Palafin",
+   "page": "Palafin (Wild Force 23)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Walking Wake",
+   "page": "Walking Wake ex (Wild Force 24)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "25": {
+   "en": "Wugtrio",
+   "page": "Wugtrio ex (Wild Force 25)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "26": {
+   "en": "Marill",
+   "page": "Marill (Wild Force 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Azumarill",
+   "page": "Azumarill (Wild Force 27)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Bronzor",
+   "page": "Bronzor (Wild Force 28)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Bronzong",
+   "page": "Bronzong (Wild Force 29)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Solosis",
+   "page": "Solosis (Wild Force 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Duosion",
+   "page": "Duosion (Wild Force 31)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Reuniclus",
+   "page": "Reuniclus (Wild Force 32)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Flutter Mane",
+   "page": "Flutter Mane (Wild Force 33)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "34": {
+   "en": "Relicanth",
+   "page": "Relicanth (Wild Force 34)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "35": {
+   "en": "Golett",
+   "page": "Golett (Wild Force 35)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Golurk",
+   "page": "Golurk (Wild Force 36)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Mudbray",
+   "page": "Mudbray (Wild Force 37)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Mudsdale",
+   "page": "Mudsdale (Wild Force 38)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Rolycoly",
+   "page": "Rolycoly (Wild Force 39)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Carkol",
+   "page": "Carkol (Wild Force 40)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Coalossal",
+   "page": "Coalossal (Wild Force 41)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "42": {
+   "en": "Great Tusk",
+   "page": "Great Tusk (Wild Force 42)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Ekans",
+   "page": "Ekans (Wild Force 43)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Arbok",
+   "page": "Arbok (Wild Force 44)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Gastly",
+   "page": "Gastly (Wild Force 45)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Haunter",
+   "page": "Haunter (Wild Force 46)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Gengar",
+   "page": "Gengar ex (Wild Force 47)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "48": {
+   "en": "Poochyena",
+   "page": "Poochyena (Wild Force 48)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Mightyena",
+   "page": "Mightyena (Wild Force 49)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Sableye",
+   "page": "Sableye (Wild Force 50)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Roaring Moon",
+   "page": "Roaring Moon (Wild Force 51)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "52": {
+   "en": "Koraidon",
+   "page": "Koraidon (Wild Force 52)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "53": {
+   "en": "Raging Bolt",
+   "page": "Raging Bolt ex (Wild Force 53)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Hoothoot",
+   "page": "Hoothoot (Wild Force 54)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Noctowl",
+   "page": "Noctowl (Wild Force 55)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (Wild Force 56)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Dudunsparce",
+   "page": "Dudunsparce (Wild Force 57)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "58": {
+   "en": "Chatot",
+   "page": "Chatot (Wild Force 58)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Minccino",
+   "page": "Minccino (Wild Force 59)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Cinccino",
+   "page": "Cinccino (Wild Force 60)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Boxed Order",
+   "page": "Boxed Order (Wild Force 61)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Awakening Drum",
+   "page": "Awakening Drum (Wild Force 62)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "63": {
+   "en": "Buddy-Buddy Poffin",
+   "page": "Buddy-Buddy Poffin (Wild Force 63)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Rescue Board",
+   "page": "Rescue Board (Wild Force 64)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Ancient Booster Energy Capsule",
+   "page": "Ancient Booster Energy Capsule (Wild Force 65)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Maximum Belt",
+   "page": "Maximum Belt (Wild Force 66)",
+   "type": "PT",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "67": {
+   "en": "Explorer's Guidance",
+   "page": "Explorer's Guidance (Wild Force 67)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Eri",
+   "page": "Eri (Wild Force 68)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Morty's Conviction",
+   "page": "Morty's Conviction (Wild Force 69)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Perilous Jungle",
+   "page": "Perilous Jungle (Wild Force 70)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Neo Upper Energy",
+   "page": "Neo Upper Energy (Wild Force 71)",
+   "type": "Rainbow",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "72": {
+   "en": "Grotle",
+   "page": "Grotle (Wild Force 72)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Snom",
+   "page": "Snom (Wild Force 73)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Bronzor",
+   "page": "Bronzor (Wild Force 74)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Reuniclus",
+   "page": "Reuniclus (Wild Force 75)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Flutter Mane",
+   "page": "Flutter Mane (Wild Force 76)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Relicanth",
+   "page": "Relicanth (Wild Force 77)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Mudsdale",
+   "page": "Mudsdale (Wild Force 78)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Arbok",
+   "page": "Arbok (Wild Force 79)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Gastly",
+   "page": "Gastly (Wild Force 80)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Chatot",
+   "page": "Chatot (Wild Force 81)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Minccino",
+   "page": "Minccino (Wild Force 82)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Cinccino",
+   "page": "Cinccino (Wild Force 83)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Torterra",
+   "page": "Torterra ex (Wild Force 84)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Gouging Fire",
+   "page": "Gouging Fire ex (Wild Force 85)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Walking Wake",
+   "page": "Walking Wake ex (Wild Force 86)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Wugtrio",
+   "page": "Wugtrio ex (Wild Force 87)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Gengar",
+   "page": "Gengar ex (Wild Force 88)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Raging Bolt",
+   "page": "Raging Bolt ex (Wild Force 89)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Explorer's Guidance",
+   "page": "Explorer's Guidance (Wild Force 90)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Eri",
+   "page": "Eri (Wild Force 91)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Morty's Conviction",
+   "page": "Morty's Conviction (Wild Force 92)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Gouging Fire",
+   "page": "Gouging Fire ex (Wild Force 93)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Walking Wake",
+   "page": "Walking Wake ex (Wild Force 94)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Raging Bolt",
+   "page": "Raging Bolt ex (Wild Force 95)",
+   "type": "Dragon",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Eri",
+   "page": "Eri (Wild Force 96)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Morty's Conviction",
+   "page": "Morty's Conviction (Wild Force 97)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Gouging Fire",
+   "page": "Gouging Fire ex (Wild Force 98)",
+   "type": "Fire",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Walking Wake",
+   "page": "Walking Wake ex (Wild Force 99)",
+   "type": "Water",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Raging Bolt",
+   "page": "Raging Bolt ex (Wild Force 100)",
+   "type": "Dragon",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Arbok",
+   "page": "Arbok (Temporal Forces 101)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Gastly",
+   "page": "Gastly (Temporal Forces 102)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Haunter",
+   "page": "Haunter (Temporal Forces 103)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Gengar",
+   "page": "Gengar ex (Temporal Forces 104)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Poochyena",
+   "page": "Poochyena (Temporal Forces 105)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Mightyena",
+   "page": "Mightyena (Temporal Forces 106)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Sableye",
+   "page": "Sableye (Temporal Forces 107)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Farigiraf",
+   "page": "Farigiraf ex (Temporal Forces 108)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Roaring Moon",
+   "page": "Roaring Moon (Temporal Forces 109)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Forretress",
+   "page": "Forretress (Temporal Forces 110)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Scizor",
+   "page": "Scizor ex (Temporal Forces 111)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Mawile",
+   "page": "Mawile (Temporal Forces 112)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Beldum",
+   "page": "Beldum (Temporal Forces 113)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Metang",
+   "page": "Metang (Temporal Forces 114)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Metagross",
+   "page": "Metagross (Temporal Forces 115)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Meltan",
+   "page": "Meltan (Temporal Forces 116)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "117": {
+   "en": "Melmetal",
+   "page": "Melmetal (Temporal Forces 117)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "118": {
+   "en": "Iron Treads",
+   "page": "Iron Treads (Temporal Forces 118)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Koraidon",
+   "page": "Koraidon (Temporal Forces 119)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Koraidon",
+   "page": "Koraidon ex (Temporal Forces 120)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Miraidon",
+   "page": "Miraidon (Temporal Forces 121)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Miraidon",
+   "page": "Miraidon ex (Temporal Forces 122)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Raging Bolt",
+   "page": "Raging Bolt ex (Temporal Forces 123)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Lickitung",
+   "page": "Lickitung (Temporal Forces 124)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Lickilicky",
+   "page": "Lickilicky (Temporal Forces 125)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "126": {
+   "en": "Hoothoot",
+   "page": "Hoothoot (Temporal Forces 126)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Noctowl",
+   "page": "Noctowl (Temporal Forces 127)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (Temporal Forces 128)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Dudunsparce",
+   "page": "Dudunsparce (Temporal Forces 129)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Skitty",
+   "page": "Skitty (Temporal Forces 130)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Delcatty",
+   "page": "Delcatty (Temporal Forces 131)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Chatot",
+   "page": "Chatot (Temporal Forces 132)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Pidove",
+   "page": "Pidove (Temporal Forces 133)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Tranquill",
+   "page": "Tranquill (Temporal Forces 134)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Unfezant",
+   "page": "Unfezant (Temporal Forces 135)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Minccino",
+   "page": "Minccino (Temporal Forces 136)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Cinccino",
+   "page": "Cinccino (Temporal Forces 137)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Drampa",
+   "page": "Drampa (Temporal Forces 138)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Iron Jugulis",
+   "page": "Iron Jugulis (Temporal Forces 139)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Ancient Booster Energy Capsule",
+   "page": "Ancient Booster Energy Capsule (Temporal Forces 140)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Awakening Drum",
+   "page": "Awakening Drum (Temporal Forces 141)",
+   "type": "ACE SPEC Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Bianca's Devotion",
+   "page": "Bianca's Devotion (Temporal Forces 142)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Boxed Order",
+   "page": "Boxed Order (Temporal Forces 143)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Buddy-Buddy Poffin",
+   "page": "Buddy-Buddy Poffin (Temporal Forces 144)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Ciphermaniac's Codebreaking",
+   "page": "Ciphermaniac's Codebreaking (Temporal Forces 145)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Eri",
+   "page": "Eri (Temporal Forces 146)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Explorer's Guidance",
+   "page": "Explorer's Guidance (Temporal Forces 147)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Full Metal Lab",
+   "page": "Full Metal Lab (Temporal Forces 148)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Future Booster Energy Capsule",
+   "page": "Future Booster Energy Capsule (Temporal Forces 149)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Hand Trimmer",
+   "page": "Hand Trimmer (Temporal Forces 150)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Heavy Baton",
+   "page": "Heavy Baton (Temporal Forces 151)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Hero's Cape",
+   "page": "Hero's Cape (Temporal Forces 152)",
+   "type": "ACE SPEC Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Master Ball",
+   "page": "Master Ball (Temporal Forces 153)",
+   "type": "ACE SPEC Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Maximum Belt",
+   "page": "Maximum Belt (Temporal Forces 154)",
+   "type": "ACE SPEC Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Morty's Conviction",
+   "page": "Morty's Conviction (Temporal Forces 155)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Perilous Jungle",
+   "page": "Perilous Jungle (Temporal Forces 156)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Prime Catcher",
+   "page": "Prime Catcher (Temporal Forces 157)",
+   "type": "ACE SPEC Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Reboot Pod",
+   "page": "Reboot Pod (Temporal Forces 158)",
+   "type": "ACE SPEC Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Rescue Board",
+   "page": "Rescue Board (Temporal Forces 159)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Salvatore",
+   "page": "Salvatore (Temporal Forces 160)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Mist Energy",
+   "page": "Mist Energy (Temporal Forces 161)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Neo Upper Energy",
+   "page": "Neo Upper Energy (Temporal Forces 162)",
+   "type": "ACE SPEC Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Shiftry",
+   "page": "Shiftry (Temporal Forces 163)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Grotle",
+   "page": "Grotle (Temporal Forces 164)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "165": {
+   "en": "Deerling",
+   "page": "Deerling (Temporal Forces 165)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "166": {
+   "en": "Sawsbuck",
+   "page": "Sawsbuck (Temporal Forces 166)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "167": {
+   "en": "Litten",
+   "page": "Litten (Temporal Forces 167)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "168": {
+   "en": "Snom",
+   "page": "Snom (Temporal Forces 168)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "169": {
+   "en": "Charjabug",
+   "page": "Charjabug (Temporal Forces 169)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "170": {
+   "en": "Bronzor",
+   "page": "Bronzor (Temporal Forces 170)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "171": {
+   "en": "Reuniclus",
+   "page": "Reuniclus (Temporal Forces 171)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "172": {
+   "en": "Cutiefly",
+   "page": "Cutiefly (Temporal Forces 172)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "173": {
+   "en": "Relicanth",
+   "page": "Relicanth (Temporal Forces 173)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "174": {
+   "en": "Excadrill",
+   "page": "Excadrill (Temporal Forces 174)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "175": {
+   "en": "Mudsdale",
+   "page": "Mudsdale (Temporal Forces 175)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "176": {
+   "en": "Arbok",
+   "page": "Arbok (Temporal Forces 176)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "177": {
+   "en": "Gastly",
+   "page": "Gastly (Temporal Forces 177)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "178": {
+   "en": "Metagross",
+   "page": "Metagross (Temporal Forces 178)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "179": {
+   "en": "Meltan",
+   "page": "Meltan (Temporal Forces 179)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "180": {
+   "en": "Lickitung",
+   "page": "Lickitung (Temporal Forces 180)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "181": {
+   "en": "Chatot",
+   "page": "Chatot (Temporal Forces 181)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "182": {
+   "en": "Minccino",
+   "page": "Minccino (Temporal Forces 182)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "183": {
+   "en": "Cinccino",
+   "page": "Cinccino (Temporal Forces 183)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "184": {
+   "en": "Drampa",
+   "page": "Drampa (Temporal Forces 184)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "185": {
+   "en": "Torterra",
+   "page": "Torterra ex (Temporal Forces 185)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "186": {
+   "en": "Iron Leaves",
+   "page": "Iron Leaves ex (Temporal Forces 186)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "187": {
+   "en": "Incineroar",
+   "page": "Incineroar ex (Temporal Forces 187)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "188": {
+   "en": "Gouging Fire",
+   "page": "Gouging Fire ex (Temporal Forces 188)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "189": {
+   "en": "Walking Wake",
+   "page": "Walking Wake ex (Temporal Forces 189)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "190": {
+   "en": "Wugtrio",
+   "page": "Wugtrio ex (Temporal Forces 190)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "191": {
+   "en": "Iron Crown",
+   "page": "Iron Crown ex (Temporal Forces 191)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "192": {
+   "en": "Iron Boulder",
+   "page": "Iron Boulder ex (Temporal Forces 192)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "193": {
+   "en": "Gengar",
+   "page": "Gengar ex (Temporal Forces 193)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "194": {
+   "en": "Farigiraf",
+   "page": "Farigiraf ex (Temporal Forces 194)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "195": {
+   "en": "Scizor",
+   "page": "Scizor ex (Temporal Forces 195)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "196": {
+   "en": "Raging Bolt",
+   "page": "Raging Bolt ex (Temporal Forces 196)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "197": {
+   "en": "Bianca's Devotion",
+   "page": "Bianca's Devotion (Temporal Forces 197)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "198": {
+   "en": "Ciphermaniac's Codebreaking",
+   "page": "Ciphermaniac's Codebreaking (Temporal Forces 198)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "199": {
+   "en": "Eri",
+   "page": "Eri (Temporal Forces 199)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "200": {
+   "en": "Explorer's Guidance",
+   "page": "Explorer's Guidance (Temporal Forces 200)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "201": {
+   "en": "Morty's Conviction",
+   "page": "Morty's Conviction (Temporal Forces 201)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "202": {
+   "en": "Salvatore",
+   "page": "Salvatore (Temporal Forces 202)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "203": {
+   "en": "Iron Leaves",
+   "page": "Iron Leaves ex (Temporal Forces 203)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "204": {
+   "en": "Gouging Fire",
+   "page": "Gouging Fire ex (Temporal Forces 204)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "205": {
+   "en": "Walking Wake",
+   "page": "Walking Wake ex (Temporal Forces 205)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "206": {
+   "en": "Iron Crown",
+   "page": "Iron Crown ex (Temporal Forces 206)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "207": {
+   "en": "Iron Boulder",
+   "page": "Iron Boulder ex (Temporal Forces 207)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "208": {
+   "en": "Raging Bolt",
+   "page": "Raging Bolt ex (Temporal Forces 208)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "209": {
+   "en": "Bianca's Devotion",
+   "page": "Bianca's Devotion (Temporal Forces 209)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "210": {
+   "en": "Eri",
+   "page": "Eri (Temporal Forces 210)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "211": {
+   "en": "Morty's Conviction",
+   "page": "Morty's Conviction (Temporal Forces 211)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "212": {
+   "en": "Salvatore",
+   "page": "Salvatore (Temporal Forces 212)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "213": {
+   "en": "Iron Leaves",
+   "page": "Iron Leaves ex (Temporal Forces 213)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "214": {
+   "en": "Gouging Fire",
+   "page": "Gouging Fire ex (Temporal Forces 214)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "215": {
+   "en": "Walking Wake",
+   "page": "Walking Wake ex (Temporal Forces 215)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "216": {
+   "en": "Iron Crown",
+   "page": "Iron Crown ex (Temporal Forces 216)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "217": {
+   "en": "Iron Boulder",
+   "page": "Iron Boulder ex (Temporal Forces 217)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "218": {
+   "en": "Raging Bolt",
+   "page": "Raging Bolt ex (Temporal Forces 218)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,1868 @@
+{
+ "page": "Future Flash (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Pansage",
+   "page": "Pansage (Ancient Roar 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Simisage",
+   "page": "Simisage (Ancient Roar 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Maractus",
+   "page": "Maractus (Ancient Roar 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Dwebble",
+   "page": "Dwebble (Ancient Roar 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Crustle",
+   "page": "Crustle (Ancient Roar 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Bounsweet",
+   "page": "Bounsweet (Ancient Roar 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Steenee",
+   "page": "Steenee (Ancient Roar 7)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "8": {
+   "en": "Nymble",
+   "page": "Nymble (Ancient Roar 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Nymble",
+   "page": "Nymble (Ancient Roar 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Magby",
+   "page": "Magby (Ancient Roar 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Numel",
+   "page": "Numel (Ancient Roar 11)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Camerupt",
+   "page": "Camerupt (Ancient Roar 12)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "13": {
+   "en": "Charcadet",
+   "page": "Charcadet (Ancient Roar 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Charcadet",
+   "page": "Charcadet (Ancient Roar 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Armarouge",
+   "page": "Armarouge ex (Ancient Roar 15)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Chi-Yu",
+   "page": "Chi-Yu (Ancient Roar 16)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "17": {
+   "en": "Horsea",
+   "page": "Horsea (Ancient Roar 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Seadra",
+   "page": "Seadra (Ancient Roar 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Kingdra",
+   "page": "Kingdra (Ancient Roar 19)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "20": {
+   "en": "Tsareena",
+   "page": "Tsareena ex (Ancient Roar 20)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "21": {
+   "en": "Wimpod",
+   "page": "Wimpod (Ancient Roar 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Golisopod",
+   "page": "Golisopod ex (Ancient Roar 22)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "23": {
+   "en": "Wiglett",
+   "page": "Wiglett (Ancient Roar 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Wiglett",
+   "page": "Wiglett (Ancient Roar 24)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Wugtrio",
+   "page": "Wugtrio (Ancient Roar 25)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Veluza",
+   "page": "Veluza (Ancient Roar 26)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Latios",
+   "page": "Latios (Ancient Roar 27)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "28": {
+   "en": "Woobat",
+   "page": "Woobat (Ancient Roar 28)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Swoobat",
+   "page": "Swoobat (Ancient Roar 29)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Yamask",
+   "page": "Yamask (Ancient Roar 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Cofagrigus",
+   "page": "Cofagrigus ex (Ancient Roar 31)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "32": {
+   "en": "Scream Tail",
+   "page": "Scream Tail (Ancient Roar 32)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Mienfoo",
+   "page": "Mienfoo (Ancient Roar 33)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Mienshao",
+   "page": "Mienshao (Ancient Roar 34)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Clobbopus",
+   "page": "Clobbopus (Ancient Roar 35)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Grapploct",
+   "page": "Grapploct (Ancient Roar 36)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Nacli",
+   "page": "Nacli (Ancient Roar 37)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Nacli",
+   "page": "Nacli (Ancient Roar 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Naclstack",
+   "page": "Naclstack (Ancient Roar 39)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Garganacl",
+   "page": "Garganacl (Ancient Roar 40)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "41": {
+   "en": "Slither Wing",
+   "page": "Slither Wing (Ancient Roar 41)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "42": {
+   "en": "Sandy Shocks",
+   "page": "Sandy Shocks ex (Ancient Roar 42)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "43": {
+   "en": "Ting-Lu",
+   "page": "Ting-Lu (Ancient Roar 43)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Zubat",
+   "page": "Zubat (Ancient Roar 44)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Golbat",
+   "page": "Golbat (Ancient Roar 45)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Crobat",
+   "page": "Crobat (Ancient Roar 46)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Purrloin",
+   "page": "Purrloin (Ancient Roar 47)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Liepard",
+   "page": "Liepard (Ancient Roar 48)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Trubbish",
+   "page": "Trubbish (Ancient Roar 49)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Garbodor",
+   "page": "Garbodor (Ancient Roar 50)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Morpeko",
+   "page": "Morpeko (Ancient Roar 51)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "52": {
+   "en": "Lokix",
+   "page": "Lokix (Ancient Roar 52)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "53": {
+   "en": "Brute Bonnet",
+   "page": "Brute Bonnet (Ancient Roar 53)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "54": {
+   "en": "Roaring Moon",
+   "page": "Roaring Moon ex (Ancient Roar 54)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Whismur",
+   "page": "Whismur (Ancient Roar 55)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Loudred",
+   "page": "Loudred (Ancient Roar 56)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Exploud",
+   "page": "Exploud (Ancient Roar 57)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Spinda",
+   "page": "Spinda (Ancient Roar 58)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Snorlax Doll",
+   "page": "Snorlax Doll (Ancient Roar 59)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Earthen Vessel",
+   "page": "Earthen Vessel (Ancient Roar 60)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Ancient Booster Energy Capsule",
+   "page": "Ancient Booster Energy Capsule (Ancient Roar 61)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Defiance Vest",
+   "page": "Defiance Vest (Ancient Roar 62)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Technical Machine: Devolution",
+   "page": "Technical Machine: Devolution (Ancient Roar 63)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Professor Sada's Vitality",
+   "page": "Professor Sada's Vitality (Ancient Roar 64)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Norman",
+   "page": "Norman (Ancient Roar 65)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Mela",
+   "page": "Mela (Ancient Roar 66)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Crustle",
+   "page": "Crustle (Ancient Roar 67)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Magby",
+   "page": "Magby (Ancient Roar 68)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Wimpod",
+   "page": "Wimpod (Ancient Roar 69)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Veluza",
+   "page": "Veluza (Ancient Roar 70)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Scream Tail",
+   "page": "Scream Tail (Ancient Roar 71)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Mienshao",
+   "page": "Mienshao (Ancient Roar 72)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Garganacl",
+   "page": "Garganacl (Ancient Roar 73)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Slither Wing",
+   "page": "Slither Wing (Ancient Roar 74)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Garbodor",
+   "page": "Garbodor (Ancient Roar 75)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Morpeko",
+   "page": "Morpeko (Ancient Roar 76)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Brute Bonnet",
+   "page": "Brute Bonnet (Ancient Roar 77)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Loudred",
+   "page": "Loudred (Ancient Roar 78)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Armarouge",
+   "page": "Armarouge ex (Ancient Roar 79)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Tsareena",
+   "page": "Tsareena ex (Ancient Roar 80)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Golisopod",
+   "page": "Golisopod ex (Ancient Roar 81)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Cofagrigus",
+   "page": "Cofagrigus ex (Ancient Roar 82)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Sandy Shocks",
+   "page": "Sandy Shocks ex (Ancient Roar 83)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Roaring Moon",
+   "page": "Roaring Moon ex (Ancient Roar 84)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Professor Sada's Vitality",
+   "page": "Professor Sada's Vitality (Ancient Roar 85)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Norman",
+   "page": "Norman (Ancient Roar 86)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Mela",
+   "page": "Mela (Ancient Roar 87)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Golisopod",
+   "page": "Golisopod ex (Ancient Roar 88)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Sandy Shocks",
+   "page": "Sandy Shocks ex (Ancient Roar 89)",
+   "type": "Fighting",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Roaring Moon",
+   "page": "Roaring Moon ex (Ancient Roar 90)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Professor Sada's Vitality",
+   "page": "Professor Sada's Vitality (Ancient Roar 91)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Mela",
+   "page": "Mela (Ancient Roar 92)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Roaring Moon",
+   "page": "Roaring Moon ex (Ancient Roar 93)",
+   "type": "Darkness",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Luxurious Cape",
+   "page": "Luxurious Cape (Ancient Roar 94)",
+   "type": "PT",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Basic Darkness Energy",
+   "page": "Basic Darkness Energy (Ancient Roar 95)",
+   "type": "Darkness",
+   "rarity": "UR",
+   "mark": "—"
+  },
+  "96": {
+   "en": "Mienfoo",
+   "page": "Mienfoo (Paradox Rift 96)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Mienshao",
+   "page": "Mienshao (Paradox Rift 97)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Hoopa",
+   "page": "Hoopa ex (Paradox Rift 98)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Minior",
+   "page": "Minior (Paradox Rift 99)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Toxtricity",
+   "page": "Toxtricity ex (Paradox Rift 100)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Nacli",
+   "page": "Nacli (Paradox Rift 101)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Nacli",
+   "page": "Nacli (Paradox Rift 102)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Naclstack",
+   "page": "Naclstack (Paradox Rift 103)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Garganacl",
+   "page": "Garganacl (Paradox Rift 104)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Klawf",
+   "page": "Klawf (Paradox Rift 105)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Flamigo",
+   "page": "Flamigo (Paradox Rift 106)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Slither Wing",
+   "page": "Slither Wing (Paradox Rift 107)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Sandy Shocks",
+   "page": "Sandy Shocks ex (Paradox Rift 108)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Ting-Lu",
+   "page": "Ting-Lu (Paradox Rift 109)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Zubat",
+   "page": "Zubat (Paradox Rift 110)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Golbat",
+   "page": "Golbat (Paradox Rift 111)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Crobat",
+   "page": "Crobat (Paradox Rift 112)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Absol",
+   "page": "Absol (Paradox Rift 113)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Purrloin",
+   "page": "Purrloin (Paradox Rift 114)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Liepard",
+   "page": "Liepard (Paradox Rift 115)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Trubbish",
+   "page": "Trubbish (Paradox Rift 116)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "117": {
+   "en": "Garbodor",
+   "page": "Garbodor (Paradox Rift 117)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "118": {
+   "en": "Yveltal",
+   "page": "Yveltal (Paradox Rift 118)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Nickit",
+   "page": "Nickit (Paradox Rift 119)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Thievul",
+   "page": "Thievul (Paradox Rift 120)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Morpeko",
+   "page": "Morpeko (Paradox Rift 121)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Lokix",
+   "page": "Lokix (Paradox Rift 122)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Brute Bonnet",
+   "page": "Brute Bonnet (Paradox Rift 123)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Roaring Moon",
+   "page": "Roaring Moon ex (Paradox Rift 124)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Steelix",
+   "page": "Steelix (Paradox Rift 125)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "126": {
+   "en": "Jirachi",
+   "page": "Jirachi (Paradox Rift 126)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Ferroseed",
+   "page": "Ferroseed (Paradox Rift 127)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Ferrothorn",
+   "page": "Ferrothorn (Paradox Rift 128)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Durant",
+   "page": "Durant (Paradox Rift 129)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Honedge",
+   "page": "Honedge (Paradox Rift 130)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Honedge",
+   "page": "Honedge (Paradox Rift 131)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Doublade",
+   "page": "Doublade (Paradox Rift 132)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Doublade",
+   "page": "Doublade (Paradox Rift 133)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Aegislash",
+   "page": "Aegislash (Paradox Rift 134)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Aegislash",
+   "page": "Aegislash ex (Paradox Rift 135)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Zacian",
+   "page": "Zacian (Paradox Rift 136)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Skeledirge",
+   "page": "Skeledirge ex (Paradox Rift 137)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Orthworm",
+   "page": "Orthworm (Paradox Rift 138)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Gholdengo",
+   "page": "Gholdengo ex (Paradox Rift 139)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Altaria",
+   "page": "Altaria ex (Paradox Rift 140)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Tatsugiri",
+   "page": "Tatsugiri (Paradox Rift 141)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Porygon",
+   "page": "Porygon (Paradox Rift 142)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Porygon2",
+   "page": "Porygon2 (Paradox Rift 143)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Porygon-Z",
+   "page": "Porygon-Z (Paradox Rift 144)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Aipom",
+   "page": "Aipom (Paradox Rift 145)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Ambipom",
+   "page": "Ambipom (Paradox Rift 146)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Miltank",
+   "page": "Miltank (Paradox Rift 147)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Whismur",
+   "page": "Whismur (Paradox Rift 148)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Loudred",
+   "page": "Loudred (Paradox Rift 149)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Exploud",
+   "page": "Exploud (Paradox Rift 150)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Spinda",
+   "page": "Spinda (Paradox Rift 151)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Swablu",
+   "page": "Swablu (Paradox Rift 152)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Tandemaus",
+   "page": "Tandemaus (Paradox Rift 153)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Tandemaus",
+   "page": "Tandemaus (Paradox Rift 154)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Maushold",
+   "page": "Maushold ex (Paradox Rift 155)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Bombirdier",
+   "page": "Bombirdier ex (Paradox Rift 156)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Cyclizar",
+   "page": "Cyclizar (Paradox Rift 157)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Iron Jugulis",
+   "page": "Iron Jugulis (Paradox Rift 158)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Ancient Booster Energy Capsule",
+   "page": "Ancient Booster Energy Capsule (Paradox Rift 159)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Counter Catcher",
+   "page": "Counter Catcher (Paradox Rift 160)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Cursed Duster",
+   "page": "Cursed Duster (Paradox Rift 161)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Defiance Vest",
+   "page": "Defiance Vest (Paradox Rift 162)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Earthen Vessel",
+   "page": "Earthen Vessel (Paradox Rift 163)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Future Booster Energy Capsule",
+   "page": "Future Booster Energy Capsule (Paradox Rift 164)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "165": {
+   "en": "Larry",
+   "page": "Larry (Paradox Rift 165)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "166": {
+   "en": "Luxurious Cape",
+   "page": "Luxurious Cape (Paradox Rift 166)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "167": {
+   "en": "Mela",
+   "page": "Mela (Paradox Rift 167)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "168": {
+   "en": "Norman",
+   "page": "Norman (Paradox Rift 168)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "169": {
+   "en": "Parasol Lady",
+   "page": "Parasol Lady (Paradox Rift 169)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "170": {
+   "en": "Professor Sada's Vitality",
+   "page": "Professor Sada's Vitality (Paradox Rift 170)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "171": {
+   "en": "Professor Turo's Scenario",
+   "page": "Professor Turo's Scenario (Paradox Rift 171)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "172": {
+   "en": "Rika",
+   "page": "Rika (Paradox Rift 172)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "173": {
+   "en": "Roark",
+   "page": "Roark (Paradox Rift 173)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "174": {
+   "en": "Shauntal",
+   "page": "Shauntal (Paradox Rift 174)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "175": {
+   "en": "Snorlax Doll",
+   "page": "Snorlax Doll (Paradox Rift 175)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "176": {
+   "en": "Technical Machine: Blindside",
+   "page": "Technical Machine: Blindside (Paradox Rift 176)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "177": {
+   "en": "Technical Machine: Devolution",
+   "page": "Technical Machine: Devolution (Paradox Rift 177)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "178": {
+   "en": "Technical Machine: Evolution",
+   "page": "Technical Machine: Evolution (Paradox Rift 178)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "179": {
+   "en": "Technical Machine: Turbo Energize",
+   "page": "Technical Machine: Turbo Energize (Paradox Rift 179)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "180": {
+   "en": "Techno Radar",
+   "page": "Techno Radar (Paradox Rift 180)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "181": {
+   "en": "Tulip",
+   "page": "Tulip (Paradox Rift 181)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "182": {
+   "en": "Medical Energy",
+   "page": "Medical Energy (Paradox Rift 182)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "183": {
+   "en": "Crustle",
+   "page": "Crustle (Paradox Rift 183)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "184": {
+   "en": "Dottler",
+   "page": "Dottler (Paradox Rift 184)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "185": {
+   "en": "Toedscruel",
+   "page": "Toedscruel (Paradox Rift 185)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "186": {
+   "en": "Magby",
+   "page": "Magby (Paradox Rift 186)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "187": {
+   "en": "Iron Moth",
+   "page": "Iron Moth (Paradox Rift 187)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "188": {
+   "en": "Snorunt",
+   "page": "Snorunt (Paradox Rift 188)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "189": {
+   "en": "Mantyke",
+   "page": "Mantyke (Paradox Rift 189)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "190": {
+   "en": "Vanillish",
+   "page": "Vanillish (Paradox Rift 190)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "191": {
+   "en": "Wimpod",
+   "page": "Wimpod (Paradox Rift 191)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "192": {
+   "en": "Veluza",
+   "page": "Veluza (Paradox Rift 192)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "193": {
+   "en": "Plusle",
+   "page": "Plusle (Paradox Rift 193)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "194": {
+   "en": "Minun",
+   "page": "Minun (Paradox Rift 194)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "195": {
+   "en": "Blitzle",
+   "page": "Blitzle (Paradox Rift 195)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "196": {
+   "en": "Joltik",
+   "page": "Joltik (Paradox Rift 196)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "197": {
+   "en": "Espathra",
+   "page": "Espathra (Paradox Rift 197)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "198": {
+   "en": "Gimmighoul",
+   "page": "Gimmighoul (Paradox Rift 198)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "199": {
+   "en": "Groudon",
+   "page": "Groudon (Paradox Rift 199)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "200": {
+   "en": "Mienshao",
+   "page": "Mienshao (Paradox Rift 200)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "201": {
+   "en": "Minior",
+   "page": "Minior (Paradox Rift 201)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "202": {
+   "en": "Garganacl",
+   "page": "Garganacl (Paradox Rift 202)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "203": {
+   "en": "Slither Wing",
+   "page": "Slither Wing (Paradox Rift 203)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "204": {
+   "en": "Garbodor",
+   "page": "Garbodor (Paradox Rift 204)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "205": {
+   "en": "Yveltal",
+   "page": "Yveltal (Paradox Rift 205)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "206": {
+   "en": "Morpeko",
+   "page": "Morpeko (Paradox Rift 206)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "207": {
+   "en": "Brute Bonnet",
+   "page": "Brute Bonnet (Paradox Rift 207)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "208": {
+   "en": "Steelix",
+   "page": "Steelix (Paradox Rift 208)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "209": {
+   "en": "Ferrothorn",
+   "page": "Ferrothorn (Paradox Rift 209)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "210": {
+   "en": "Aegislash",
+   "page": "Aegislash (Paradox Rift 210)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "211": {
+   "en": "Aipom",
+   "page": "Aipom (Paradox Rift 211)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "212": {
+   "en": "Loudred",
+   "page": "Loudred (Paradox Rift 212)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "213": {
+   "en": "Swablu",
+   "page": "Swablu (Paradox Rift 213)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "214": {
+   "en": "Porygon-Z",
+   "page": "Porygon-Z (Paradox Rift 214)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "215": {
+   "en": "Cyclizar",
+   "page": "Cyclizar (Paradox Rift 215)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "216": {
+   "en": "Iron Jugulis",
+   "page": "Iron Jugulis (Paradox Rift 216)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "217": {
+   "en": "Froslass",
+   "page": "Froslass ex (Paradox Rift 217)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "218": {
+   "en": "Armarouge",
+   "page": "Armarouge ex (Paradox Rift 218)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "219": {
+   "en": "Garchomp",
+   "page": "Garchomp ex (Paradox Rift 219)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "220": {
+   "en": "Tsareena",
+   "page": "Tsareena ex (Paradox Rift 220)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "221": {
+   "en": "Golisopod",
+   "page": "Golisopod ex (Paradox Rift 221)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "222": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko ex (Paradox Rift 222)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "223": {
+   "en": "Iron Hands",
+   "page": "Iron Hands ex (Paradox Rift 223)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "224": {
+   "en": "Cofagrigus",
+   "page": "Cofagrigus ex (Paradox Rift 224)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "225": {
+   "en": "Iron Valiant",
+   "page": "Iron Valiant ex (Paradox Rift 225)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "226": {
+   "en": "Hoopa",
+   "page": "Hoopa ex (Paradox Rift 226)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "227": {
+   "en": "Toxtricity",
+   "page": "Toxtricity ex (Paradox Rift 227)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "228": {
+   "en": "Sandy Shocks",
+   "page": "Sandy Shocks ex (Paradox Rift 228)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "229": {
+   "en": "Roaring Moon",
+   "page": "Roaring Moon ex (Paradox Rift 229)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "230": {
+   "en": "Aegislash",
+   "page": "Aegislash ex (Paradox Rift 230)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "231": {
+   "en": "Gholdengo",
+   "page": "Gholdengo ex (Paradox Rift 231)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "232": {
+   "en": "Altaria",
+   "page": "Altaria ex (Paradox Rift 232)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "233": {
+   "en": "Maushold",
+   "page": "Maushold ex (Paradox Rift 233)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "234": {
+   "en": "Bombirdier",
+   "page": "Bombirdier ex (Paradox Rift 234)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "235": {
+   "en": "Larry",
+   "page": "Larry (Paradox Rift 235)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "236": {
+   "en": "Mela",
+   "page": "Mela (Paradox Rift 236)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "237": {
+   "en": "Norman",
+   "page": "Norman (Paradox Rift 237)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "238": {
+   "en": "Parasol Lady",
+   "page": "Parasol Lady (Paradox Rift 238)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "239": {
+   "en": "Professor Sada's Vitality",
+   "page": "Professor Sada's Vitality (Paradox Rift 239)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "240": {
+   "en": "Professor Turo's Scenario",
+   "page": "Professor Turo's Scenario (Paradox Rift 240)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "241": {
+   "en": "Rika",
+   "page": "Rika (Paradox Rift 241)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "242": {
+   "en": "Roark",
+   "page": "Roark (Paradox Rift 242)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "243": {
+   "en": "Shauntal",
+   "page": "Shauntal (Paradox Rift 243)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "244": {
+   "en": "Tulip",
+   "page": "Tulip (Paradox Rift 244)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "245": {
+   "en": "Garchomp",
+   "page": "Garchomp ex (Paradox Rift 245)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "246": {
+   "en": "Golisopod",
+   "page": "Golisopod ex (Paradox Rift 246)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "247": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko ex (Paradox Rift 247)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "248": {
+   "en": "Iron Hands",
+   "page": "Iron Hands ex (Paradox Rift 248)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "249": {
+   "en": "Iron Valiant",
+   "page": "Iron Valiant ex (Paradox Rift 249)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "250": {
+   "en": "Sandy Shocks",
+   "page": "Sandy Shocks ex (Paradox Rift 250)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "251": {
+   "en": "Roaring Moon",
+   "page": "Roaring Moon ex (Paradox Rift 251)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "252": {
+   "en": "Gholdengo",
+   "page": "Gholdengo ex (Paradox Rift 252)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "253": {
+   "en": "Altaria",
+   "page": "Altaria ex (Paradox Rift 253)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "254": {
+   "en": "Mela",
+   "page": "Mela (Paradox Rift 254)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "255": {
+   "en": "Parasol Lady",
+   "page": "Parasol Lady (Paradox Rift 255)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "256": {
+   "en": "Professor Sada's Vitality",
+   "page": "Professor Sada's Vitality (Paradox Rift 256)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "257": {
+   "en": "Professor Turo's Scenario",
+   "page": "Professor Turo's Scenario (Paradox Rift 257)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "258": {
+   "en": "Rika",
+   "page": "Rika (Paradox Rift 258)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "259": {
+   "en": "Tulip",
+   "page": "Tulip (Paradox Rift 259)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "260": {
+   "en": "Garchomp",
+   "page": "Garchomp ex (Paradox Rift 260)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "261": {
+   "en": "Iron Valiant",
+   "page": "Iron Valiant ex (Paradox Rift 261)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "262": {
+   "en": "Roaring Moon",
+   "page": "Roaring Moon ex (Paradox Rift 262)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "263": {
+   "en": "Beach Court",
+   "page": "Beach Court (Paradox Rift 263)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "264": {
+   "en": "Counter Catcher",
+   "page": "Counter Catcher (Paradox Rift 264)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "265": {
+   "en": "Luxurious Cape",
+   "page": "Luxurious Cape (Paradox Rift 265)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "266": {
+   "en": "Reversal Energy",
+   "page": "Reversal Energy (Paradox Rift 266)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,804 @@
+{
+ "page": "Rising Fist (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Bellsprout",
+   "page": "Bellsprout (Rising Fist 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Weepinbell",
+   "page": "Weepinbell (Rising Fist 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Victreebel",
+   "page": "Victreebel (Rising Fist 3)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "4": {
+   "en": "Heracross",
+   "page": "Heracross-EX (Rising Fist 4)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "5": {
+   "en": "Heracross",
+   "page": "M Heracross-EX (Rising Fist 5)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "6": {
+   "en": "Shroomish",
+   "page": "Shroomish (Rising Fist 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Leafeon",
+   "page": "Leafeon (Rising Fist 7)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "8": {
+   "en": "Shelmet",
+   "page": "Shelmet (Rising Fist 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Accelgor",
+   "page": "Accelgor (Rising Fist 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Magmar",
+   "page": "Magmar (Rising Fist 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Magmortar",
+   "page": "Magmortar (Rising Fist 11)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Torchic",
+   "page": "Torchic (Rising Fist 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Combusken",
+   "page": "Combusken (Rising Fist 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Blaziken",
+   "page": "Blaziken (Rising Fist 14)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "15": {
+   "en": "Poliwag",
+   "page": "Poliwag (Rising Fist 15)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Poliwhirl",
+   "page": "Poliwhirl (Rising Fist 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Poliwrath",
+   "page": "Poliwrath (Rising Fist 17)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "18": {
+   "en": "Politoed",
+   "page": "Politoed (Rising Fist 18)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Glaceon",
+   "page": "Glaceon (Rising Fist 19)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Seismitoad",
+   "page": "Seismitoad-EX (Rising Fist 20)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "21": {
+   "en": "Cubchoo",
+   "page": "Cubchoo (Rising Fist 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Beartic",
+   "page": "Beartic (Rising Fist 22)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Clauncher",
+   "page": "Clauncher (Rising Fist 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Clawitzer",
+   "page": "Clawitzer (Rising Fist 24)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "25": {
+   "en": "Amaura",
+   "page": "Amaura (Rising Fist 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Aurorus",
+   "page": "Aurorus (Rising Fist 26)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Rising Fist 27)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Electivire",
+   "page": "Electivire (Rising Fist 28)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Plusle",
+   "page": "Plusle (Rising Fist 29)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Minun",
+   "page": "Minun (Rising Fist 30)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Thundurus",
+   "page": "Thundurus (Rising Fist 31)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Dedenne",
+   "page": "Dedenne (Rising Fist 32)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Drowzee",
+   "page": "Drowzee (Rising Fist 33)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Hypno",
+   "page": "Hypno (Rising Fist 34)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Jynx",
+   "page": "Jynx (Rising Fist 35)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Skorupi",
+   "page": "Skorupi (Rising Fist 36)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Gothita",
+   "page": "Gothita (Rising Fist 37)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Gothorita",
+   "page": "Gothorita (Rising Fist 38)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Gothitelle",
+   "page": "Gothitelle (Rising Fist 39)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Golett",
+   "page": "Golett (Rising Fist 40)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Golurk",
+   "page": "Golurk (Rising Fist 41)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "42": {
+   "en": "Machop",
+   "page": "Machop (Rising Fist 42)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Machoke",
+   "page": "Machoke (Rising Fist 43)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Machamp",
+   "page": "Machamp (Rising Fist 44)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "45": {
+   "en": "Hitmonlee",
+   "page": "Hitmonlee (Rising Fist 45)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Hitmonchan",
+   "page": "Hitmonchan (Rising Fist 46)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Hitmontop",
+   "page": "Hitmontop (Rising Fist 47)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Breloom",
+   "page": "Breloom (Rising Fist 48)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Makuhita",
+   "page": "Makuhita (Rising Fist 49)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Hariyama",
+   "page": "Hariyama (Rising Fist 50)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Trapinch",
+   "page": "Trapinch (Rising Fist 51)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Lucario",
+   "page": "Lucario-EX (Rising Fist 52)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Lucario",
+   "page": "M Lucario-EX (Rising Fist 53)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Mienfoo",
+   "page": "Mienfoo (Rising Fist 54)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Mienshao",
+   "page": "Mienshao (Rising Fist 55)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Landorus",
+   "page": "Landorus (Rising Fist 56)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "57": {
+   "en": "Pancham",
+   "page": "Pancham (Rising Fist 57)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Tyrunt",
+   "page": "Tyrunt (Rising Fist 58)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Tyrantrum",
+   "page": "Tyrantrum (Rising Fist 59)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (Rising Fist 60)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "61": {
+   "en": "Drapion",
+   "page": "Drapion (Rising Fist 61)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Scraggy",
+   "page": "Scraggy (Rising Fist 62)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Scrafty",
+   "page": "Scrafty (Rising Fist 63)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "64": {
+   "en": "Pangoro",
+   "page": "Pangoro (Rising Fist 64)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "65": {
+   "en": "Clefairy",
+   "page": "Clefairy (Rising Fist 65)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "Clefable",
+   "page": "Clefable (Rising Fist 66)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "67": {
+   "en": "Sylveon",
+   "page": "Sylveon (Rising Fist 67)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "68": {
+   "en": "Klefki",
+   "page": "Klefki (Rising Fist 68)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "69": {
+   "en": "Dragonite",
+   "page": "Dragonite-EX (Rising Fist 69)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Vibrava",
+   "page": "Vibrava (Rising Fist 70)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "71": {
+   "en": "Flygon",
+   "page": "Flygon (Rising Fist 71)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Noivern",
+   "page": "Noivern (Rising Fist 72)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "73": {
+   "en": "Lickitung",
+   "page": "Lickitung (Rising Fist 73)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "74": {
+   "en": "Lickilicky",
+   "page": "Lickilicky (Rising Fist 74)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "75": {
+   "en": "Eevee",
+   "page": "Eevee (Rising Fist 75)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "76": {
+   "en": "Slakoth",
+   "page": "Slakoth (Rising Fist 76)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "77": {
+   "en": "Vigoroth",
+   "page": "Vigoroth (Rising Fist 77)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "78": {
+   "en": "Slaking",
+   "page": "Slaking (Rising Fist 78)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "79": {
+   "en": "Patrat",
+   "page": "Patrat (Rising Fist 79)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "80": {
+   "en": "Watchog",
+   "page": "Watchog (Rising Fist 80)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "81": {
+   "en": "Tornadus",
+   "page": "Tornadus (Rising Fist 81)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "82": {
+   "en": "Noibat",
+   "page": "Noibat (Rising Fist 82)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "83": {
+   "en": "Tool Retriever",
+   "page": "Tool Retriever (Rising Fist 83)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "84": {
+   "en": "Maintenance",
+   "page": "Maintenance (Rising Fist 84)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "85": {
+   "en": "Jaw Fossil",
+   "page": "Jaw Fossil (Rising Fist 85)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "86": {
+   "en": "Sail Fossil",
+   "page": "Sail Fossil (Rising Fist 86)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "87": {
+   "en": "Sparkling Robe",
+   "page": "Sparkling Robe (Rising Fist 87)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "88": {
+   "en": "Focus Sash",
+   "page": "Focus Sash (Rising Fist 88)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "89": {
+   "en": "Fossil Researcher",
+   "page": "Fossil Researcher (Rising Fist 89)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "90": {
+   "en": "Korrina",
+   "page": "Korrina (Rising Fist 90)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "91": {
+   "en": "Battle Reporter",
+   "page": "Battle Reporter (Rising Fist 91)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "92": {
+   "en": "Training Center",
+   "page": "Training Center (Rising Fist 92)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "93": {
+   "en": "Fighting Stadium",
+   "page": "Fighting Stadium (Rising Fist 93)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "94": {
+   "en": "Mountain Ring",
+   "page": "Mountain Ring (Rising Fist 94)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "95": {
+   "en": "Herbal Energy",
+   "page": "Herbal Energy (Rising Fist 95)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "96": {
+   "en": "Strong Energy",
+   "page": "Strong Energy (Rising Fist 96)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "97": {
+   "en": "Heracross",
+   "page": "Heracross-EX (Rising Fist 97)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Seismitoad",
+   "page": "Seismitoad-EX (Rising Fist 98)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Lucario",
+   "page": "Lucario-EX (Rising Fist 99)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Dragonite",
+   "page": "Dragonite-EX (Rising Fist 100)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Fossil Researcher",
+   "page": "Fossil Researcher (Rising Fist 101)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Korrina",
+   "page": "Korrina (Rising Fist 102)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Battle Reporter",
+   "page": "Battle Reporter (Rising Fist 103)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Heracross",
+   "page": "M Heracross-EX (Rising Fist 104)",
+   "type": "Grass",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Lucario",
+   "page": "M Lucario-EX (Rising Fist 105)",
+   "type": "Fighting",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Seismitoad",
+   "page": "Seismitoad-EX (Furious Fists 106)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Lucario",
+   "page": "Lucario-EX (Furious Fists 107)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Dragonite",
+   "page": "Dragonite-EX (Furious Fists 108)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Battle Reporter",
+   "page": "Battle Reporter (Furious Fists 109)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Fossil Researcher",
+   "page": "Fossil Researcher (Furious Fists 110)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Korrina",
+   "page": "Korrina (Furious Fists 111)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Heracross",
+   "page": "M Heracross-EX (Furious Fists 112)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Lucario",
+   "page": "M Lucario-EX (Furious Fists 113)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "55a": {
+   "en": "Lucario",
+   "page": "M Lucario-EX (Furious Fists 55a)",
+   "type": "—",
+   "rarity": "Yellow A Alternate art Mega Powers Collection exclusive",
+   "mark": ""
+  }
+ }
+}

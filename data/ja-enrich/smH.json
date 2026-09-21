@@ -1,0 +1,923 @@
+{
+ "page": "GX Starter Decks (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Pinsir",
+   "page": "Pinsir (GX Starter Deck 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Ledyba",
+   "page": "Ledyba (GX Starter Deck 2)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Ledian",
+   "page": "Ledian (GX Starter Deck 3)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Turtwig",
+   "page": "Turtwig (GX Starter Deck 4)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Grotle",
+   "page": "Grotle (GX Starter Deck 5)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Torterra",
+   "page": "Torterra (GX Starter Deck 6)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Rowlet",
+   "page": "Rowlet (GX Starter Deck 7)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Fomantis",
+   "page": "Fomantis (GX Starter Deck 8)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Lurantis",
+   "page": "Lurantis-GX (GX Starter Deck 9)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Tapu Bulu",
+   "page": "Tapu Bulu (GX Starter Deck 10)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Charmander",
+   "page": "Charmander (GX Starter Deck 11)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (GX Starter Deck 12)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Charizard",
+   "page": "Charizard-GX (GX Starter Deck 13)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Growlithe",
+   "page": "Growlithe (GX Starter Deck 14)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Arcanine",
+   "page": "Arcanine (GX Starter Deck 15)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Heatran",
+   "page": "Heatran (GX Starter Deck 16)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Pansear",
+   "page": "Pansear (GX Starter Deck 17)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Simisear",
+   "page": "Simisear (GX Starter Deck 18)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Heatmor",
+   "page": "Heatmor (GX Starter Deck 19)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Fennekin",
+   "page": "Fennekin (GX Starter Deck 20)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Turtonator",
+   "page": "Turtonator (GX Starter Deck 21)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Horsea",
+   "page": "Horsea (GX Starter Deck 22)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Lapras",
+   "page": "Lapras-GX (GX Starter Deck 23)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Totodile",
+   "page": "Totodile (GX Starter Deck 24)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Croconaw",
+   "page": "Croconaw (GX Starter Deck 25)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Feraligatr",
+   "page": "Feraligatr (GX Starter Deck 26)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Wailmer",
+   "page": "Wailmer (GX Starter Deck 27)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Wailord",
+   "page": "Wailord (GX Starter Deck 28)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Palkia",
+   "page": "Palkia (GX Starter Deck 29)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Pyukumuku",
+   "page": "Pyukumuku (GX Starter Deck 30)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Bruxish",
+   "page": "Bruxish (GX Starter Deck 31)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Pikachu",
+   "page": "Pikachu (GX Starter Deck 32)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Raichu",
+   "page": "Raichu-GX (GX Starter Deck 33)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (GX Starter Deck 34)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Raikou",
+   "page": "Raikou (GX Starter Deck 35)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Shinx",
+   "page": "Shinx (GX Starter Deck 36)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Luxio",
+   "page": "Luxio (GX Starter Deck 37)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Luxray",
+   "page": "Luxray (GX Starter Deck 38)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Emolga",
+   "page": "Emolga (GX Starter Deck 39)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "40": {
+   "en": "Helioptile",
+   "page": "Helioptile (GX Starter Deck 40)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (GX Starter Deck 41)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "42": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-GX (GX Starter Deck 42)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (GX Starter Deck 43)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Latios",
+   "page": "Latios (GX Starter Deck 44)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Gothita",
+   "page": "Gothita (GX Starter Deck 45)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Gothorita",
+   "page": "Gothorita (GX Starter Deck 46)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Gothitelle",
+   "page": "Gothitelle (GX Starter Deck 47)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Espurr",
+   "page": "Espurr (GX Starter Deck 48)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "49": {
+   "en": "Meowstic",
+   "page": "Meowstic (GX Starter Deck 49)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "50": {
+   "en": "Inkay",
+   "page": "Inkay (GX Starter Deck 50)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "51": {
+   "en": "Mimikyu",
+   "page": "Mimikyu (GX Starter Deck 51)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "52": {
+   "en": "Cosmog",
+   "page": "Cosmog (GX Starter Deck 52)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "53": {
+   "en": "Gligar",
+   "page": "Gligar (GX Starter Deck 53)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "54": {
+   "en": "Gliscor",
+   "page": "Gliscor (GX Starter Deck 54)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "55": {
+   "en": "Nosepass",
+   "page": "Nosepass (GX Starter Deck 55)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "56": {
+   "en": "Solrock",
+   "page": "Solrock (GX Starter Deck 56)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "57": {
+   "en": "Riolu",
+   "page": "Riolu (GX Starter Deck 57)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "58": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (GX Starter Deck 58)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "59": {
+   "en": "Zygarde",
+   "page": "Zygarde (GX Starter Deck 59)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "60": {
+   "en": "Rockruff",
+   "page": "Rockruff (GX Starter Deck 60)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "61": {
+   "en": "Lycanroc",
+   "page": "Lycanroc-GX (GX Starter Deck 61)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "62": {
+   "en": "Stufful",
+   "page": "Stufful (GX Starter Deck 62)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "63": {
+   "en": "Bewear",
+   "page": "Bewear (GX Starter Deck 63)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "64": {
+   "en": "Passimian",
+   "page": "Passimian (GX Starter Deck 64)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "65": {
+   "en": "Alolan Meowth",
+   "page": "Alolan Meowth (GX Starter Deck 65)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "66": {
+   "en": "Alolan Persian",
+   "page": "Alolan Persian (GX Starter Deck 66)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "67": {
+   "en": "Murkrow",
+   "page": "Murkrow (GX Starter Deck 67)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "68": {
+   "en": "Honchkrow",
+   "page": "Honchkrow (GX Starter Deck 68)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "69": {
+   "en": "Sneasel",
+   "page": "Sneasel (GX Starter Deck 69)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "70": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (GX Starter Deck 70)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "71": {
+   "en": "Darkrai",
+   "page": "Darkrai (GX Starter Deck 71)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "72": {
+   "en": "Scraggy",
+   "page": "Scraggy (GX Starter Deck 72)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "73": {
+   "en": "Scrafty",
+   "page": "Scrafty (GX Starter Deck 73)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "74": {
+   "en": "Zorua",
+   "page": "Zorua (GX Starter Deck 74)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "75": {
+   "en": "Yveltal",
+   "page": "Yveltal-GX (GX Starter Deck 75)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "76": {
+   "en": "Alolan Diglett",
+   "page": "Alolan Diglett (GX Starter Deck 76)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "77": {
+   "en": "Alolan Dugtrio",
+   "page": "Alolan Dugtrio (GX Starter Deck 77)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "78": {
+   "en": "Magnemite",
+   "page": "Magnemite (GX Starter Deck 78)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "79": {
+   "en": "Skarmory",
+   "page": "Skarmory (GX Starter Deck 79)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "80": {
+   "en": "Beldum",
+   "page": "Beldum (GX Starter Deck 80)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "81": {
+   "en": "Metang",
+   "page": "Metang (GX Starter Deck 81)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "82": {
+   "en": "Metagross",
+   "page": "Metagross-GX (GX Starter Deck 82)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "83": {
+   "en": "Probopass",
+   "page": "Probopass (GX Starter Deck 83)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "84": {
+   "en": "Heatran",
+   "page": "Heatran (GX Starter Deck 84)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "85": {
+   "en": "Clefairy",
+   "page": "Clefairy (GX Starter Deck 85)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "86": {
+   "en": "Clefable",
+   "page": "Clefable (GX Starter Deck 86)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "87": {
+   "en": "Ralts",
+   "page": "Ralts (GX Starter Deck 87)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "88": {
+   "en": "Flabébé",
+   "page": "Flabébé (GX Starter Deck 88)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "89": {
+   "en": "Floette",
+   "page": "Floette (GX Starter Deck 89)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "90": {
+   "en": "Florges",
+   "page": "Florges (GX Starter Deck 90)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "91": {
+   "en": "Xerneas",
+   "page": "Xerneas-GX (GX Starter Deck 91)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "92": {
+   "en": "Diancie",
+   "page": "Diancie (GX Starter Deck 92)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "93": {
+   "en": "Cutiefly",
+   "page": "Cutiefly (GX Starter Deck 93)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "94": {
+   "en": "Comfey",
+   "page": "Comfey (GX Starter Deck 94)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "95": {
+   "en": "Tapu Lele",
+   "page": "Tapu Lele (GX Starter Deck 95)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "96": {
+   "en": "Lickitung",
+   "page": "Lickitung (GX Starter Deck 96)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "97": {
+   "en": "Chansey",
+   "page": "Chansey (GX Starter Deck 97)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "98": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (GX Starter Deck 98)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "99": {
+   "en": "Rayquaza",
+   "page": "Rayquaza (GX Starter Deck 99)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "100": {
+   "en": "Bouffalant",
+   "page": "Bouffalant (GX Starter Deck 100)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "101": {
+   "en": "Oranguru",
+   "page": "Oranguru (GX Starter Deck 101)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "102": {
+   "en": "Type: Null",
+   "page": "Type: Null (GX Starter Deck 102)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "103": {
+   "en": "Type: Null",
+   "page": "Type: Null (GX Starter Deck 103)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "104": {
+   "en": "Drampa",
+   "page": "Drampa (GX Starter Deck 104)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "105": {
+   "en": "Aqua Patch",
+   "page": "Aqua Patch (GX Starter Deck 105)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "106": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (GX Starter Deck 106)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "107": {
+   "en": "Potion",
+   "page": "Potion (GX Starter Deck 107)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "108": {
+   "en": "Crushing Hammer",
+   "page": "Crushing Hammer (GX Starter Deck 108)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "109": {
+   "en": "Timer Ball",
+   "page": "Timer Ball (GX Starter Deck 109)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "110": {
+   "en": "Nest Ball",
+   "page": "Nest Ball (GX Starter Deck 110)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "111": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (GX Starter Deck 111)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "112": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (GX Starter Deck 112)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "113": {
+   "en": "Switch",
+   "page": "Switch (GX Starter Deck 113)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "114": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (GX Starter Deck 114)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "115": {
+   "en": "Ilima",
+   "page": "Ilima (GX Starter Deck 115)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "116": {
+   "en": "Kiawe",
+   "page": "Kiawe (GX Starter Deck 116)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "117": {
+   "en": "Diantha",
+   "page": "Diantha (GX Starter Deck 117)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "118": {
+   "en": "Professor Kukui",
+   "page": "Professor Kukui (GX Starter Deck 118)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "119": {
+   "en": "Judge",
+   "page": "Judge (GX Starter Deck 119)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "120": {
+   "en": "Volkner",
+   "page": "Volkner (GX Starter Deck 120)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "121": {
+   "en": "Gardenia",
+   "page": "Gardenia (GX Starter Deck 121)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "122": {
+   "en": "Hau",
+   "page": "Hau (GX Starter Deck 122)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "123": {
+   "en": "Wicke",
+   "page": "Wicke (GX Starter Deck 123)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "124": {
+   "en": "Pokémon Breeder",
+   "page": "Pokémon Breeder (GX Starter Deck 124)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "125": {
+   "en": "Sophocles",
+   "page": "Sophocles (GX Starter Deck 125)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "126": {
+   "en": "Lillie",
+   "page": "Lillie (GX Starter Deck 126)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "127": {
+   "en": "Altar of the Moone",
+   "page": "Altar of the Moone (GX Starter Deck 127)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "128": {
+   "en": "Devoured Field",
+   "page": "Devoured Field (GX Starter Deck 128)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "129": {
+   "en": "Brooklet Hill",
+   "page": "Brooklet Hill (GX Starter Deck 129)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "130": {
+   "en": "Mt. Coronet",
+   "page": "Mt. Coronet (GX Starter Deck 130)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "131": {
+   "en": "Double Colorless Energy",
+   "page": "Double Colorless Energy (GX Starter Deck 131)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

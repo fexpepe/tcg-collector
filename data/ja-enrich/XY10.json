@@ -1,0 +1,909 @@
+{
+ "page": "Awakening Psychic King (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Shuckle",
+   "page": "Shuckle (Awakening Psychic King 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Burmy",
+   "page": "Burmy (Awakening Psychic King 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Wormadam",
+   "page": "Wormadam (Awakening Psychic King 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Mothim",
+   "page": "Mothim (Awakening Psychic King 4)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "5": {
+   "en": "Snivy",
+   "page": "Snivy (Awakening Psychic King 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Servine",
+   "page": "Servine (Awakening Psychic King 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Serperior",
+   "page": "Serperior (Awakening Psychic King 7)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "8": {
+   "en": "Moltres",
+   "page": "Moltres (Awakening Psychic King 8)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "9": {
+   "en": "Fennekin",
+   "page": "Fennekin (Awakening Psychic King 9)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Braixen",
+   "page": "Braixen (Awakening Psychic King 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Delphox",
+   "page": "Delphox (Awakening Psychic King 11)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Delphox",
+   "page": "Delphox BREAK (Awakening Psychic King 12)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "13": {
+   "en": "Seel",
+   "page": "Seel (Awakening Psychic King 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Dewgong",
+   "page": "Dewgong (Awakening Psychic King 14)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Omanyte",
+   "page": "Omanyte (Awakening Psychic King 15)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Omastar",
+   "page": "Omastar (Awakening Psychic King 16)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "17": {
+   "en": "Omastar",
+   "page": "Omastar BREAK (Awakening Psychic King 17)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "18": {
+   "en": "Glaceon",
+   "page": "Glaceon-EX (Awakening Psychic King 18)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "19": {
+   "en": "White Kyurem",
+   "page": "White Kyurem (Awakening Psychic King 19)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "20": {
+   "en": "Binacle",
+   "page": "Binacle (Awakening Psychic King 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Barbaracle",
+   "page": "Barbaracle (Awakening Psychic King 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Rotom",
+   "page": "Rotom (Awakening Psychic King 22)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Alakazam",
+   "page": "Alakazam-EX (Awakening Psychic King 23)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "24": {
+   "en": "Alakazam",
+   "page": "M Alakazam-EX (Awakening Psychic King 24)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "25": {
+   "en": "Koffing",
+   "page": "Koffing (Awakening Psychic King 25)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Weezing",
+   "page": "Weezing (Awakening Psychic King 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Mew",
+   "page": "Mew (Awakening Psychic King 27)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "28": {
+   "en": "Spoink",
+   "page": "Spoink (Awakening Psychic King 28)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Grumpig",
+   "page": "Grumpig (Awakening Psychic King 29)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Solosis",
+   "page": "Solosis (Awakening Psychic King 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Duosion",
+   "page": "Duosion (Awakening Psychic King 31)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Reuniclus",
+   "page": "Reuniclus (Awakening Psychic King 32)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Kabuto",
+   "page": "Kabuto (Awakening Psychic King 33)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Kabutops",
+   "page": "Kabutops (Awakening Psychic King 34)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Larvitar",
+   "page": "Larvitar (Awakening Psychic King 35)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Pupitar",
+   "page": "Pupitar (Awakening Psychic King 36)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Wormadam",
+   "page": "Wormadam (Awakening Psychic King 37)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Riolu",
+   "page": "Riolu (Awakening Psychic King 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Carbink",
+   "page": "Carbink (Awakening Psychic King 39)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Zygarde",
+   "page": "Zygarde (Awakening Psychic King 40)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "41": {
+   "en": "Zygarde",
+   "page": "Zygarde (Awakening Psychic King 41)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "42": {
+   "en": "Umbreon",
+   "page": "Umbreon-EX (Awakening Psychic King 42)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "43": {
+   "en": "Tyranitar",
+   "page": "Tyranitar (Awakening Psychic King 43)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Vullaby",
+   "page": "Vullaby (Awakening Psychic King 44)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Mandibuzz",
+   "page": "Mandibuzz (Awakening Psychic King 45)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Wormadam",
+   "page": "Wormadam (Awakening Psychic King 46)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Bronzor",
+   "page": "Bronzor (Awakening Psychic King 47)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Bronzong",
+   "page": "Bronzong (Awakening Psychic King 48)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Bronzong",
+   "page": "Bronzong BREAK (Awakening Psychic King 49)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "50": {
+   "en": "Lucario",
+   "page": "Lucario (Awakening Psychic King 50)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "51": {
+   "en": "Genesect",
+   "page": "Genesect-EX (Awakening Psychic King 51)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (Awakening Psychic King 52)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Wigglytuff",
+   "page": "Wigglytuff (Awakening Psychic King 53)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Altaria",
+   "page": "M Altaria-EX (Awakening Psychic King 54)",
+   "type": "Fairy",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Kingdra",
+   "page": "Kingdra-EX (Awakening Psychic King 55)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Aerodactyl",
+   "page": "Aerodactyl (Awakening Psychic King 56)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Snorlax",
+   "page": "Snorlax (Awakening Psychic King 57)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Lugia",
+   "page": "Lugia (Awakening Psychic King 58)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "59": {
+   "en": "Lugia",
+   "page": "Lugia BREAK (Awakening Psychic King 59)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Whismur",
+   "page": "Whismur (Awakening Psychic King 60)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Loudred",
+   "page": "Loudred (Awakening Psychic King 61)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Exploud",
+   "page": "Exploud (Awakening Psychic King 62)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Altaria",
+   "page": "Altaria-EX (Awakening Psychic King 63)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Minccino",
+   "page": "Minccino (Awakening Psychic King 64)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Cinccino",
+   "page": "Cinccino (Awakening Psychic King 65)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "Fossil Excavation Kit",
+   "page": "Fossil Excavation Kit (Awakening Psychic King 66)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Devolution Spray",
+   "page": "Devolution Spray (Awakening Psychic King 67)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Mega Catcher",
+   "page": "Mega Catcher (Awakening Psychic King 68)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Helix Fossil Omanyte",
+   "page": "Helix Fossil Omanyte (Awakening Psychic King 69)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "70": {
+   "en": "Dome Fossil Kabuto",
+   "page": "Dome Fossil Kabuto (Awakening Psychic King 70)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "71": {
+   "en": "Old Amber Aerodactyl",
+   "page": "Old Amber Aerodactyl (Awakening Psychic King 71)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "72": {
+   "en": "Energy Pouch",
+   "page": "Energy Pouch (Awakening Psychic King 72)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "73": {
+   "en": "Bent Spoon",
+   "page": "Bent Spoon (Awakening Psychic King 73)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "74": {
+   "en": "Altaria Spirit Link",
+   "page": "Altaria Spirit Link (Awakening Psychic King 74)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "75": {
+   "en": "Alakazam Spirit Link",
+   "page": "Alakazam Spirit Link (Awakening Psychic King 75)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "76": {
+   "en": "N",
+   "page": "N (Awakening Psychic King 76)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Team Rocket's Handiwork",
+   "page": "Team Rocket's Handiwork (Awakening Psychic King 77)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "78": {
+   "en": "Chaos Tower",
+   "page": "Chaos Tower (Awakening Psychic King 78)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Glaceon",
+   "page": "Glaceon-EX (Awakening Psychic King 79)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Alakazam",
+   "page": "Alakazam-EX (Awakening Psychic King 80)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Alakazam",
+   "page": "M Alakazam-EX (Awakening Psychic King 81)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Umbreon",
+   "page": "Umbreon-EX (Awakening Psychic King 82)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Genesect",
+   "page": "Genesect-EX (Awakening Psychic King 83)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Altaria",
+   "page": "M Altaria-EX (Awakening Psychic King 84)",
+   "type": "Fairy",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Kingdra",
+   "page": "Kingdra-EX (Awakening Psychic King 85)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Altaria",
+   "page": "Altaria-EX (Awakening Psychic King 86)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Team Rocket's Handiwork",
+   "page": "Team Rocket's Handiwork (Awakening Psychic King 87)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Alakazam",
+   "page": "Alakazam-EX (Awakening Psychic King 88)",
+   "type": "Psychic",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Cinccino",
+   "page": "Cinccino (Fates Collide 89)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Alakazam Spirit Link",
+   "page": "Alakazam Spirit Link (Fates Collide 90)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "Altaria Spirit Link",
+   "page": "Altaria Spirit Link (Fates Collide 91)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Audino Spirit Link",
+   "page": "Audino Spirit Link (Fates Collide 92)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Bent Spoon",
+   "page": "Bent Spoon (Fates Collide 93)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Chaos Tower",
+   "page": "Chaos Tower (Fates Collide 94)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Devolution Spray",
+   "page": "Devolution Spray (Fates Collide 95)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Dome Fossil Kabuto",
+   "page": "Dome Fossil Kabuto (Fates Collide 96)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Energy Pouch",
+   "page": "Energy Pouch (Fates Collide 97)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Energy Reset",
+   "page": "Energy Reset (Fates Collide 98)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Fairy Drop",
+   "page": "Fairy Drop (Fates Collide 99)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Fairy Garden",
+   "page": "Fairy Garden (Fates Collide 100)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Fossil Excavation Kit",
+   "page": "Fossil Excavation Kit (Fates Collide 101)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Helix Fossil Omanyte",
+   "page": "Helix Fossil Omanyte (Fates Collide 102)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Lass's Special",
+   "page": "Lass's Special (Fates Collide 103)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Mega Catcher",
+   "page": "Mega Catcher (Fates Collide 104)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "N",
+   "page": "N (Fates Collide 105)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Old Amber Aerodactyl",
+   "page": "Old Amber Aerodactyl (Fates Collide 106)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Pokémon Fan Club",
+   "page": "Pokémon Fan Club (Fates Collide 107)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Power Memory",
+   "page": "Power Memory (Fates Collide 108)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Random Receiver",
+   "page": "Random Receiver (Fates Collide 109)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Scorched Earth",
+   "page": "Scorched Earth (Fates Collide 110)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Shauna",
+   "page": "Shauna (Fates Collide 111)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Team Rocket's Handiwork",
+   "page": "Team Rocket's Handiwork (Fates Collide 112)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Fates Collide 113)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Double Colorless Energy",
+   "page": "Double Colorless Energy (Fates Collide 114)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Strong Energy",
+   "page": "Strong Energy (Fates Collide 115)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Glaceon",
+   "page": "Glaceon-EX (Fates Collide 116)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "117": {
+   "en": "Alakazam",
+   "page": "Alakazam-EX (Fates Collide 117)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "118": {
+   "en": "Alakazam",
+   "page": "M Alakazam-EX (Fates Collide 118)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Umbreon",
+   "page": "Umbreon-EX (Fates Collide 119)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Genesect",
+   "page": "Genesect-EX (Fates Collide 120)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Altaria",
+   "page": "M Altaria-EX (Fates Collide 121)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Kingdra",
+   "page": "Kingdra-EX (Fates Collide 122)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Altaria",
+   "page": "Altaria-EX (Fates Collide 123)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Team Rocket's Handiwork",
+   "page": "Team Rocket's Handiwork (Fates Collide 124)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Alakazam",
+   "page": "Alakazam-EX (Fates Collide 125)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "43a": {
+   "en": "Regirock",
+   "page": "Regirock-EX (Fates Collide 43a)",
+   "type": "—",
+   "rarity": "Yellow A Alternate art Premium Trainer's XY Collection exclusive",
+   "mark": ""
+  },
+  "54a": {
+   "en": "Zygarde",
+   "page": "Zygarde-EX (Fates Collide 54a)",
+   "type": "—",
+   "rarity": "Yellow A Alternate art Mega Powers Collection exclusive",
+   "mark": ""
+  },
+  "105a": {
+   "en": "N",
+   "page": "N (Fates Collide 105a)",
+   "type": "—",
+   "rarity": "Yellow A Alternate art Premium Trainer's XY Collection exclusive",
+   "mark": ""
+  },
+  "111a": {
+   "en": "Shauna",
+   "page": "Shauna (Fates Collide 111a)",
+   "type": "—",
+   "rarity": "Yellow A Alternate art Premium Trainer's XY Collection exclusive",
+   "mark": ""
+  }
+ }
+}

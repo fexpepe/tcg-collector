@@ -1,0 +1,286 @@
+{
+ "page": "Lost Link (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Venonat",
+   "page": "Venonat (Lost Link 1)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Venomoth",
+   "page": "Venomoth (Lost Link 2)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "3": {
+   "en": "Tangela",
+   "page": "Tangela (Lost Link 3)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "4": {
+   "en": "Tangrowth",
+   "page": "Tangrowth (Lost Link 4)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "5": {
+   "en": "Volbeat",
+   "page": "Volbeat (Lost Link 5)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "6": {
+   "en": "Illumise",
+   "page": "Illumise (Lost Link 6)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "7": {
+   "en": "Carnivine",
+   "page": "Carnivine (Lost Link 7)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "8": {
+   "en": "Relicanth",
+   "page": "Relicanth (Lost Link 8)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "9": {
+   "en": "Magnemite",
+   "page": "Magnemite (Lost Link 9)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "10": {
+   "en": "Magneton",
+   "page": "Magneton (Lost Link 10)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "11": {
+   "en": "Magnezone",
+   "page": "Magnezone (Lost Link 11)",
+   "type": "Lightning",
+   "rarity": "Rare Holo Prime",
+   "mark": ""
+  },
+  "12": {
+   "en": "Pachirisu",
+   "page": "Pachirisu (Lost Link 12)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "13": {
+   "en": "Gastly",
+   "page": "Gastly (Lost Link 13)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "14": {
+   "en": "Haunter",
+   "page": "Haunter (Lost Link 14)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "15": {
+   "en": "Gengar",
+   "page": "Gengar (Lost Link 15)",
+   "type": "Psychic",
+   "rarity": "Rare Holo Prime",
+   "mark": ""
+  },
+  "16": {
+   "en": "Mime Jr.",
+   "page": "Mime Jr. (Lost Link 16)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "17": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime (Lost Link 17)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "18": {
+   "en": "Mew",
+   "page": "Mew (Lost Link 18)",
+   "type": "Psychic",
+   "rarity": "Rare Holo Prime",
+   "mark": ""
+  },
+  "19": {
+   "en": "Seviper",
+   "page": "Seviper (Lost Link 19)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "20": {
+   "en": "Shuppet",
+   "page": "Shuppet (Lost Link 20)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "21": {
+   "en": "Banette",
+   "page": "Banette (Lost Link 21)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "22": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Lost Link 22)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "23": {
+   "en": "Diglett",
+   "page": "Diglett (Lost Link 23)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "24": {
+   "en": "Dugtrio",
+   "page": "Dugtrio (Lost Link 24)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "25": {
+   "en": "Riolu",
+   "page": "Riolu (Lost Link 25)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "26": {
+   "en": "Lucario",
+   "page": "Lucario (Lost Link 26)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "27": {
+   "en": "Absol",
+   "page": "Absol (Lost Link 27)",
+   "type": "Darkness",
+   "rarity": "Rare Holo Prime",
+   "mark": ""
+  },
+  "28": {
+   "en": "Snorlax",
+   "page": "Snorlax (Lost Link 28)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "29": {
+   "en": "Dratini",
+   "page": "Dratini (Lost Link 29)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "30": {
+   "en": "Dragonair",
+   "page": "Dragonair (Lost Link 30)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "31": {
+   "en": "Dragonite",
+   "page": "Dragonite (Lost Link 31)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "32": {
+   "en": "Swablu",
+   "page": "Swablu (Lost Link 32)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "33": {
+   "en": "Altaria",
+   "page": "Altaria (Lost Link 33)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "34": {
+   "en": "Zangoose",
+   "page": "Zangoose (Lost Link 34)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "35": {
+   "en": "Darkrai & Cresselia",
+   "page": "Darkrai & Cresselia LEGEND (Lost Link 35)",
+   "type": "Darkness",
+   "rarity": "Rare Holo LEGEND",
+   "mark": ""
+  },
+  "36": {
+   "en": "Darkrai & Cresselia",
+   "page": "Darkrai & Cresselia LEGEND (Lost Link 36)",
+   "type": "Darkness",
+   "rarity": "Rare Holo LEGEND",
+   "mark": ""
+  },
+  "37": {
+   "en": "Research Record",
+   "page": "Research Record (Lost Link 37)",
+   "type": "I",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "38": {
+   "en": "Lost Remover",
+   "page": "Lost Remover (Lost Link 38)",
+   "type": "I",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "39": {
+   "en": "Seeker",
+   "page": "Seeker (Lost Link 39)",
+   "type": "Su",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "40": {
+   "en": "Lost World",
+   "page": "Lost World (Lost Link 40)",
+   "type": "St",
+   "rarity": "Uncommon",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,5368 @@
+{
+ "page": "Start Deck 100 Battle Collection (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Erika's Oddish",
+   "page": "Erika's Oddish (Start Deck 100 Battle Collection 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Erika's Gloom",
+   "page": "Erika's Gloom (Start Deck 100 Battle Collection 2)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Erika's Vileplume",
+   "page": "Erika's Vileplume ex (Start Deck 100 Battle Collection 3)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Paras",
+   "page": "Paras (Start Deck 100 Battle Collection 4)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Parasect",
+   "page": "Parasect (Start Deck 100 Battle Collection 5)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Erika's Bellsprout",
+   "page": "Erika's Bellsprout (Start Deck 100 Battle Collection 6)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Erika's Weepinbell",
+   "page": "Erika's Weepinbell (Start Deck 100 Battle Collection 7)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Erika's Victreebel",
+   "page": "Erika's Victreebel (Start Deck 100 Battle Collection 8)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Start Deck 100 Battle Collection 9)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Start Deck 100 Battle Collection 10)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Exeggutor",
+   "page": "Exeggutor (Start Deck 100 Battle Collection 11)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Tangela",
+   "page": "Tangela (Start Deck 100 Battle Collection 12)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Tangrowth",
+   "page": "Tangrowth (Start Deck 100 Battle Collection 13)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Erika's Tangela",
+   "page": "Erika's Tangela (Start Deck 100 Battle Collection 14)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Scyther",
+   "page": "Scyther (Start Deck 100 Battle Collection 15)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Chikorita",
+   "page": "Chikorita (Start Deck 100 Battle Collection 16)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Bayleef",
+   "page": "Bayleef (Start Deck 100 Battle Collection 17)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Mega Meganium",
+   "page": "Mega Meganium ex (Start Deck 100 Battle Collection 18)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Ledyba",
+   "page": "Ledyba (Start Deck 100 Battle Collection 19)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Ledian",
+   "page": "Ledian (Start Deck 100 Battle Collection 20)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Yanma",
+   "page": "Yanma (Start Deck 100 Battle Collection 21)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Yanmega",
+   "page": "Yanmega ex (Start Deck 100 Battle Collection 22)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Shuckle",
+   "page": "Shuckle (Start Deck 100 Battle Collection 23)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Heracross",
+   "page": "Heracross (Start Deck 100 Battle Collection 24)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Celebi",
+   "page": "Celebi (Start Deck 100 Battle Collection 25)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Shroomish",
+   "page": "Shroomish (Start Deck 100 Battle Collection 26)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Shroomish",
+   "page": "Shroomish (Start Deck 100 Battle Collection 27)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Breloom",
+   "page": "Breloom (Start Deck 100 Battle Collection 28)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Breloom",
+   "page": "Breloom (Start Deck 100 Battle Collection 29)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Roselia",
+   "page": "Roselia (Start Deck 100 Battle Collection 30)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Roserade",
+   "page": "Roserade (Start Deck 100 Battle Collection 31)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Cynthia's Roselia",
+   "page": "Cynthia's Roselia (Start Deck 100 Battle Collection 32)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Cynthia's Roserade",
+   "page": "Cynthia's Roserade (Start Deck 100 Battle Collection 33)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Turtwig",
+   "page": "Turtwig (Start Deck 100 Battle Collection 34)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Grotle",
+   "page": "Grotle (Start Deck 100 Battle Collection 35)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Torterra",
+   "page": "Torterra ex (Start Deck 100 Battle Collection 36)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Leafeon",
+   "page": "Leafeon (Start Deck 100 Battle Collection 37)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Leafeon",
+   "page": "Leafeon ex (Start Deck 100 Battle Collection 38)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Shaymin",
+   "page": "Shaymin (Start Deck 100 Battle Collection 39)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "40": {
+   "en": "Snivy",
+   "page": "Snivy (Start Deck 100 Battle Collection 40)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Servine",
+   "page": "Servine (Start Deck 100 Battle Collection 41)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "42": {
+   "en": "Serperior",
+   "page": "Serperior ex (Start Deck 100 Battle Collection 42)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Cottonee",
+   "page": "Cottonee (Start Deck 100 Battle Collection 43)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Whimsicott",
+   "page": "Whimsicott ex (Start Deck 100 Battle Collection 44)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Dwebble",
+   "page": "Dwebble (Start Deck 100 Battle Collection 45)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Crustle",
+   "page": "Crustle (Start Deck 100 Battle Collection 46)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Karrablast",
+   "page": "Karrablast (Start Deck 100 Battle Collection 47)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Foongus",
+   "page": "Foongus (Start Deck 100 Battle Collection 48)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "49": {
+   "en": "Amoonguss",
+   "page": "Amoonguss (Start Deck 100 Battle Collection 49)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "50": {
+   "en": "Galvantula",
+   "page": "Galvantula (Start Deck 100 Battle Collection 50)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "51": {
+   "en": "Durant",
+   "page": "Durant (Start Deck 100 Battle Collection 51)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "52": {
+   "en": "Durant",
+   "page": "Durant ex (Start Deck 100 Battle Collection 52)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "53": {
+   "en": "Virizion",
+   "page": "Virizion (Start Deck 100 Battle Collection 53)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "54": {
+   "en": "Virizion",
+   "page": "Virizion (Start Deck 100 Battle Collection 54)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "55": {
+   "en": "Phantump",
+   "page": "Phantump (Start Deck 100 Battle Collection 55)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "56": {
+   "en": "Trevenant",
+   "page": "Trevenant (Start Deck 100 Battle Collection 56)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "57": {
+   "en": "Grubbin",
+   "page": "Grubbin (Start Deck 100 Battle Collection 57)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "58": {
+   "en": "Morelull",
+   "page": "Morelull (Start Deck 100 Battle Collection 58)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "59": {
+   "en": "Shiinotic",
+   "page": "Shiinotic (Start Deck 100 Battle Collection 59)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "60": {
+   "en": "Dhelmise",
+   "page": "Dhelmise (Start Deck 100 Battle Collection 60)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "61": {
+   "en": "Tapu Bulu",
+   "page": "Tapu Bulu (Start Deck 100 Battle Collection 61)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "62": {
+   "en": "Applin",
+   "page": "Applin (Start Deck 100 Battle Collection 62)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "63": {
+   "en": "Dipplin",
+   "page": "Dipplin (Start Deck 100 Battle Collection 63)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "64": {
+   "en": "Hydrapple",
+   "page": "Hydrapple ex (Start Deck 100 Battle Collection 64)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "65": {
+   "en": "Sprigatito",
+   "page": "Sprigatito (Start Deck 100 Battle Collection 65)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "66": {
+   "en": "Floragato",
+   "page": "Floragato (Start Deck 100 Battle Collection 66)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "67": {
+   "en": "Meowscarada",
+   "page": "Meowscarada (Start Deck 100 Battle Collection 67)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "68": {
+   "en": "Sprigatito",
+   "page": "Sprigatito ex (Start Deck 100 Battle Collection 68)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "69": {
+   "en": "Smoliv",
+   "page": "Smoliv (Start Deck 100 Battle Collection 69)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "70": {
+   "en": "Dolliv",
+   "page": "Dolliv (Start Deck 100 Battle Collection 70)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "71": {
+   "en": "Arboliva",
+   "page": "Arboliva ex (Start Deck 100 Battle Collection 71)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "72": {
+   "en": "Bramblin",
+   "page": "Bramblin (Start Deck 100 Battle Collection 72)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "73": {
+   "en": "Brambleghast",
+   "page": "Brambleghast (Start Deck 100 Battle Collection 73)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "74": {
+   "en": "Toedscool",
+   "page": "Toedscool (Start Deck 100 Battle Collection 74)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "75": {
+   "en": "Toedscruel",
+   "page": "Toedscruel (Start Deck 100 Battle Collection 75)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "76": {
+   "en": "Capsakid",
+   "page": "Capsakid (Start Deck 100 Battle Collection 76)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "77": {
+   "en": "Iron Leaves",
+   "page": "Iron Leaves ex (Start Deck 100 Battle Collection 77)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "78": {
+   "en": "Poltchageist",
+   "page": "Poltchageist (Start Deck 100 Battle Collection 78)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "79": {
+   "en": "Sinistcha",
+   "page": "Sinistcha ex (Start Deck 100 Battle Collection 79)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "80": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon (Start Deck 100 Battle Collection 80)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "81": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon (Start Deck 100 Battle Collection 81)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "82": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon ex (Start Deck 100 Battle Collection 82)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "83": {
+   "en": "Charmander",
+   "page": "Charmander (Start Deck 100 Battle Collection 83)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "84": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (Start Deck 100 Battle Collection 84)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "85": {
+   "en": "Mega Charizard Y",
+   "page": "Mega Charizard Y ex (Start Deck 100 Battle Collection 85)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "86": {
+   "en": "Ponyta",
+   "page": "Ponyta (Start Deck 100 Battle Collection 86)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "87": {
+   "en": "Ponyta",
+   "page": "Ponyta (Start Deck 100 Battle Collection 87)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "88": {
+   "en": "Rapidash",
+   "page": "Rapidash (Start Deck 100 Battle Collection 88)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "89": {
+   "en": "Rapidash",
+   "page": "Rapidash (Start Deck 100 Battle Collection 89)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "90": {
+   "en": "Rapidash",
+   "page": "Rapidash (Start Deck 100 Battle Collection 90)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "91": {
+   "en": "Magmar",
+   "page": "Magmar (Start Deck 100 Battle Collection 91)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "92": {
+   "en": "Magmortar",
+   "page": "Magmortar (Start Deck 100 Battle Collection 92)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "93": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Start Deck 100 Battle Collection 93)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "94": {
+   "en": "Flareon",
+   "page": "Flareon ex (Start Deck 100 Battle Collection 94)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "95": {
+   "en": "Slugma",
+   "page": "Slugma (Start Deck 100 Battle Collection 95)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "96": {
+   "en": "Magcargo",
+   "page": "Magcargo ex (Start Deck 100 Battle Collection 96)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "97": {
+   "en": "Houndour",
+   "page": "Houndour (Start Deck 100 Battle Collection 97)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "98": {
+   "en": "Houndoom",
+   "page": "Houndoom (Start Deck 100 Battle Collection 98)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "99": {
+   "en": "Team Rocket's Houndour",
+   "page": "Team Rocket's Houndour (Start Deck 100 Battle Collection 99)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "100": {
+   "en": "Team Rocket's Houndoom",
+   "page": "Team Rocket's Houndoom (Start Deck 100 Battle Collection 100)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "101": {
+   "en": "Torkoal",
+   "page": "Torkoal (Start Deck 100 Battle Collection 101)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "102": {
+   "en": "Castform Sunny Form",
+   "page": "Castform Sunny Form (Start Deck 100 Battle Collection 102)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "103": {
+   "en": "Chimchar",
+   "page": "Chimchar (Start Deck 100 Battle Collection 103)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "104": {
+   "en": "Monferno",
+   "page": "Monferno (Start Deck 100 Battle Collection 104)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "105": {
+   "en": "Infernape",
+   "page": "Infernape (Start Deck 100 Battle Collection 105)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "106": {
+   "en": "Victini",
+   "page": "Victini (Start Deck 100 Battle Collection 106)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "107": {
+   "en": "Victini",
+   "page": "Victini (Start Deck 100 Battle Collection 107)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "108": {
+   "en": "Tepig",
+   "page": "Tepig (Start Deck 100 Battle Collection 108)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "109": {
+   "en": "Tepig",
+   "page": "Tepig (Start Deck 100 Battle Collection 109)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "110": {
+   "en": "Pignite",
+   "page": "Pignite (Start Deck 100 Battle Collection 110)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "111": {
+   "en": "Pignite",
+   "page": "Pignite (Start Deck 100 Battle Collection 111)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "112": {
+   "en": "Emboar",
+   "page": "Emboar (Start Deck 100 Battle Collection 112)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "113": {
+   "en": "Mega Emboar",
+   "page": "Mega Emboar ex (Start Deck 100 Battle Collection 113)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "114": {
+   "en": "Pansear",
+   "page": "Pansear (Start Deck 100 Battle Collection 114)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "115": {
+   "en": "Simisear",
+   "page": "Simisear (Start Deck 100 Battle Collection 115)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "116": {
+   "en": "Darumaka",
+   "page": "Darumaka (Start Deck 100 Battle Collection 116)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "117": {
+   "en": "Darmanitan",
+   "page": "Darmanitan (Start Deck 100 Battle Collection 117)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "118": {
+   "en": "N's Darumaka",
+   "page": "N's Darumaka (Start Deck 100 Battle Collection 118)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "119": {
+   "en": "N's Darmanitan",
+   "page": "N's Darmanitan (Start Deck 100 Battle Collection 119)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "120": {
+   "en": "Heatmor",
+   "page": "Heatmor (Start Deck 100 Battle Collection 120)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "121": {
+   "en": "Larvesta",
+   "page": "Larvesta (Start Deck 100 Battle Collection 121)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "122": {
+   "en": "Volcarona",
+   "page": "Volcarona (Start Deck 100 Battle Collection 122)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "123": {
+   "en": "Volcarona",
+   "page": "Volcarona (Start Deck 100 Battle Collection 123)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "124": {
+   "en": "Volcarona",
+   "page": "Volcarona (Start Deck 100 Battle Collection 124)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "125": {
+   "en": "Reshiram",
+   "page": "Reshiram (Start Deck 100 Battle Collection 125)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "126": {
+   "en": "Reshiram",
+   "page": "Reshiram ex (Start Deck 100 Battle Collection 126)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "127": {
+   "en": "Litleo",
+   "page": "Litleo (Start Deck 100 Battle Collection 127)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "128": {
+   "en": "Pyroar",
+   "page": "Pyroar (Start Deck 100 Battle Collection 128)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "129": {
+   "en": "Volcanion",
+   "page": "Volcanion ex (Start Deck 100 Battle Collection 129)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "130": {
+   "en": "Litten",
+   "page": "Litten (Start Deck 100 Battle Collection 130)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "131": {
+   "en": "Torracat",
+   "page": "Torracat (Start Deck 100 Battle Collection 131)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "132": {
+   "en": "Incineroar",
+   "page": "Incineroar ex (Start Deck 100 Battle Collection 132)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "133": {
+   "en": "Oricorio",
+   "page": "Oricorio (Start Deck 100 Battle Collection 133)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "134": {
+   "en": "Salandit",
+   "page": "Salandit (Start Deck 100 Battle Collection 134)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "135": {
+   "en": "Salazzle",
+   "page": "Salazzle (Start Deck 100 Battle Collection 135)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "136": {
+   "en": "Turtonator",
+   "page": "Turtonator (Start Deck 100 Battle Collection 136)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "137": {
+   "en": "Scorbunny",
+   "page": "Scorbunny (Start Deck 100 Battle Collection 137)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "138": {
+   "en": "Raboot",
+   "page": "Raboot (Start Deck 100 Battle Collection 138)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "139": {
+   "en": "Cinderace",
+   "page": "Cinderace ex (Start Deck 100 Battle Collection 139)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "140": {
+   "en": "Sizzlipede",
+   "page": "Sizzlipede (Start Deck 100 Battle Collection 140)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "141": {
+   "en": "Centiskorch",
+   "page": "Centiskorch (Start Deck 100 Battle Collection 141)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "142": {
+   "en": "Fuecoco",
+   "page": "Fuecoco (Start Deck 100 Battle Collection 142)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "143": {
+   "en": "Crocalor",
+   "page": "Crocalor (Start Deck 100 Battle Collection 143)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "144": {
+   "en": "Skeledirge",
+   "page": "Skeledirge (Start Deck 100 Battle Collection 144)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "145": {
+   "en": "Charcadet",
+   "page": "Charcadet (Start Deck 100 Battle Collection 145)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "146": {
+   "en": "Armarouge",
+   "page": "Armarouge ex (Start Deck 100 Battle Collection 146)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "147": {
+   "en": "Scovillain",
+   "page": "Scovillain ex (Start Deck 100 Battle Collection 147)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "148": {
+   "en": "Hearthflame Mask Ogerpon",
+   "page": "Hearthflame Mask Ogerpon (Start Deck 100 Battle Collection 148)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "149": {
+   "en": "Hearthflame Mask Ogerpon",
+   "page": "Hearthflame Mask Ogerpon ex (Start Deck 100 Battle Collection 149)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "150": {
+   "en": "Gouging Fire",
+   "page": "Gouging Fire (Start Deck 100 Battle Collection 150)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "151": {
+   "en": "Gouging Fire",
+   "page": "Gouging Fire ex (Start Deck 100 Battle Collection 151)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "152": {
+   "en": "Horsea",
+   "page": "Horsea (Start Deck 100 Battle Collection 152)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "153": {
+   "en": "Seadra",
+   "page": "Seadra (Start Deck 100 Battle Collection 153)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "154": {
+   "en": "Kingdra",
+   "page": "Kingdra ex (Start Deck 100 Battle Collection 154)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "155": {
+   "en": "Misty's Staryu",
+   "page": "Misty's Staryu (Start Deck 100 Battle Collection 155)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "156": {
+   "en": "Misty's Starmie",
+   "page": "Misty's Starmie (Start Deck 100 Battle Collection 156)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "157": {
+   "en": "Misty's Magikarp",
+   "page": "Misty's Magikarp (Start Deck 100 Battle Collection 157)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "158": {
+   "en": "Misty's Gyarados",
+   "page": "Misty's Gyarados (Start Deck 100 Battle Collection 158)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "159": {
+   "en": "Lapras",
+   "page": "Lapras (Start Deck 100 Battle Collection 159)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "160": {
+   "en": "Misty's Lapras",
+   "page": "Misty's Lapras (Start Deck 100 Battle Collection 160)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "161": {
+   "en": "Vaporeon",
+   "page": "Vaporeon ex (Start Deck 100 Battle Collection 161)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "162": {
+   "en": "Glaceon",
+   "page": "Glaceon ex (Start Deck 100 Battle Collection 162)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "163": {
+   "en": "Articuno",
+   "page": "Articuno (Start Deck 100 Battle Collection 163)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "164": {
+   "en": "Totodile",
+   "page": "Totodile (Start Deck 100 Battle Collection 164)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "165": {
+   "en": "Totodile",
+   "page": "Totodile (Start Deck 100 Battle Collection 165)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "166": {
+   "en": "Croconaw",
+   "page": "Croconaw (Start Deck 100 Battle Collection 166)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "167": {
+   "en": "Croconaw",
+   "page": "Croconaw (Start Deck 100 Battle Collection 167)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "168": {
+   "en": "Feraligatr",
+   "page": "Feraligatr (Start Deck 100 Battle Collection 168)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "169": {
+   "en": "Mega Feraligatr",
+   "page": "Mega Feraligatr ex (Start Deck 100 Battle Collection 169)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "170": {
+   "en": "Sneasel",
+   "page": "Sneasel (Start Deck 100 Battle Collection 170)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "171": {
+   "en": "Weavile",
+   "page": "Weavile (Start Deck 100 Battle Collection 171)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "172": {
+   "en": "Mantine",
+   "page": "Mantine (Start Deck 100 Battle Collection 172)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "173": {
+   "en": "Mantine",
+   "page": "Mantine (Start Deck 100 Battle Collection 173)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "174": {
+   "en": "Suicune",
+   "page": "Suicune (Start Deck 100 Battle Collection 174)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "175": {
+   "en": "Lotad",
+   "page": "Lotad (Start Deck 100 Battle Collection 175)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "176": {
+   "en": "Lombre",
+   "page": "Lombre (Start Deck 100 Battle Collection 176)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "177": {
+   "en": "Ludicolo",
+   "page": "Ludicolo (Start Deck 100 Battle Collection 177)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "178": {
+   "en": "Carvanha",
+   "page": "Carvanha (Start Deck 100 Battle Collection 178)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "179": {
+   "en": "Sharpedo",
+   "page": "Sharpedo (Start Deck 100 Battle Collection 179)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "180": {
+   "en": "Wailmer",
+   "page": "Wailmer (Start Deck 100 Battle Collection 180)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "181": {
+   "en": "Wailord",
+   "page": "Wailord (Start Deck 100 Battle Collection 181)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "182": {
+   "en": "Corphish",
+   "page": "Corphish (Start Deck 100 Battle Collection 182)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "183": {
+   "en": "Crawdaunt",
+   "page": "Crawdaunt (Start Deck 100 Battle Collection 183)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "184": {
+   "en": "Feebas",
+   "page": "Feebas (Start Deck 100 Battle Collection 184)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "185": {
+   "en": "Milotic",
+   "page": "Milotic ex (Start Deck 100 Battle Collection 185)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "186": {
+   "en": "Snorunt",
+   "page": "Snorunt (Start Deck 100 Battle Collection 186)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "187": {
+   "en": "Glalie",
+   "page": "Glalie (Start Deck 100 Battle Collection 187)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "188": {
+   "en": "Spheal",
+   "page": "Spheal (Start Deck 100 Battle Collection 188)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "189": {
+   "en": "Sealeo",
+   "page": "Sealeo (Start Deck 100 Battle Collection 189)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "190": {
+   "en": "Walrein",
+   "page": "Walrein (Start Deck 100 Battle Collection 190)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "191": {
+   "en": "Regice",
+   "page": "Regice (Start Deck 100 Battle Collection 191)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "192": {
+   "en": "Regice",
+   "page": "Regice ex (Start Deck 100 Battle Collection 192)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "193": {
+   "en": "Buizel",
+   "page": "Buizel (Start Deck 100 Battle Collection 193)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "194": {
+   "en": "Floatzel",
+   "page": "Floatzel (Start Deck 100 Battle Collection 194)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "195": {
+   "en": "Finneon",
+   "page": "Finneon (Start Deck 100 Battle Collection 195)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "196": {
+   "en": "Lumineon",
+   "page": "Lumineon (Start Deck 100 Battle Collection 196)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "197": {
+   "en": "Ducklett",
+   "page": "Ducklett (Start Deck 100 Battle Collection 197)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "198": {
+   "en": "Swanna",
+   "page": "Swanna (Start Deck 100 Battle Collection 198)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "199": {
+   "en": "Vanillite",
+   "page": "Vanillite (Start Deck 100 Battle Collection 199)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "200": {
+   "en": "Vanillish",
+   "page": "Vanillish (Start Deck 100 Battle Collection 200)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "201": {
+   "en": "Vanilluxe",
+   "page": "Vanilluxe (Start Deck 100 Battle Collection 201)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "202": {
+   "en": "Cryogonal",
+   "page": "Cryogonal (Start Deck 100 Battle Collection 202)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "203": {
+   "en": "Kyurem",
+   "page": "Kyurem ex (Start Deck 100 Battle Collection 203)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "204": {
+   "en": "Black Kyurem",
+   "page": "Black Kyurem ex (Start Deck 100 Battle Collection 204)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "205": {
+   "en": "Keldeo",
+   "page": "Keldeo ex (Start Deck 100 Battle Collection 205)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "206": {
+   "en": "Froakie",
+   "page": "Froakie (Start Deck 100 Battle Collection 206)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "207": {
+   "en": "Frogadier",
+   "page": "Frogadier (Start Deck 100 Battle Collection 207)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "208": {
+   "en": "Greninja",
+   "page": "Greninja ex (Start Deck 100 Battle Collection 208)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "209": {
+   "en": "Crabominable",
+   "page": "Crabominable (Start Deck 100 Battle Collection 209)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "210": {
+   "en": "Cramorant",
+   "page": "Cramorant (Start Deck 100 Battle Collection 210)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "211": {
+   "en": "Quaxly",
+   "page": "Quaxly (Start Deck 100 Battle Collection 211)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "212": {
+   "en": "Quaxwell",
+   "page": "Quaxwell (Start Deck 100 Battle Collection 212)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "213": {
+   "en": "Quaquaval",
+   "page": "Quaquaval (Start Deck 100 Battle Collection 213)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "214": {
+   "en": "Finizen",
+   "page": "Finizen (Start Deck 100 Battle Collection 214)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "215": {
+   "en": "Palafin",
+   "page": "Palafin (Start Deck 100 Battle Collection 215)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "216": {
+   "en": "Palafin",
+   "page": "Palafin ex (Start Deck 100 Battle Collection 216)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "217": {
+   "en": "Cetoddle",
+   "page": "Cetoddle (Start Deck 100 Battle Collection 217)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "218": {
+   "en": "Cetitan",
+   "page": "Cetitan (Start Deck 100 Battle Collection 218)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "219": {
+   "en": "Veluza",
+   "page": "Veluza (Start Deck 100 Battle Collection 219)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "220": {
+   "en": "Dondozo",
+   "page": "Dondozo ex (Start Deck 100 Battle Collection 220)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "221": {
+   "en": "Walking Wake",
+   "page": "Walking Wake (Start Deck 100 Battle Collection 221)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "222": {
+   "en": "Walking Wake",
+   "page": "Walking Wake ex (Start Deck 100 Battle Collection 222)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "223": {
+   "en": "Wellspring Mask Ogerpon",
+   "page": "Wellspring Mask Ogerpon (Start Deck 100 Battle Collection 223)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "224": {
+   "en": "Wellspring Mask Ogerpon",
+   "page": "Wellspring Mask Ogerpon ex (Start Deck 100 Battle Collection 224)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "225": {
+   "en": "Pikachu",
+   "page": "Pikachu (Start Deck 100 Battle Collection 225)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "226": {
+   "en": "Raichu",
+   "page": "Raichu (Start Deck 100 Battle Collection 226)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "227": {
+   "en": "Pikachu",
+   "page": "Pikachu ex (Start Deck 100 Battle Collection 227)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "228": {
+   "en": "Alolan Geodude",
+   "page": "Alolan Geodude (Start Deck 100 Battle Collection 228)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "229": {
+   "en": "Alolan Graveler",
+   "page": "Alolan Graveler (Start Deck 100 Battle Collection 229)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "230": {
+   "en": "Alolan Golem",
+   "page": "Alolan Golem (Start Deck 100 Battle Collection 230)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "231": {
+   "en": "Magnemite",
+   "page": "Magnemite (Start Deck 100 Battle Collection 231)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "232": {
+   "en": "Magneton",
+   "page": "Magneton (Start Deck 100 Battle Collection 232)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "233": {
+   "en": "Voltorb",
+   "page": "Voltorb ex (Start Deck 100 Battle Collection 233)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "234": {
+   "en": "Iono's Voltorb",
+   "page": "Iono's Voltorb (Start Deck 100 Battle Collection 234)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "235": {
+   "en": "Iono's Electrode",
+   "page": "Iono's Electrode (Start Deck 100 Battle Collection 235)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "236": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Start Deck 100 Battle Collection 236)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "237": {
+   "en": "Electivire",
+   "page": "Electivire ex (Start Deck 100 Battle Collection 237)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "238": {
+   "en": "Jolteon",
+   "page": "Jolteon ex (Start Deck 100 Battle Collection 238)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "239": {
+   "en": "Zapdos",
+   "page": "Zapdos (Start Deck 100 Battle Collection 239)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "240": {
+   "en": "Zapdos",
+   "page": "Zapdos (Start Deck 100 Battle Collection 240)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "241": {
+   "en": "Ethan's Pichu",
+   "page": "Ethan's Pichu (Start Deck 100 Battle Collection 241)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "242": {
+   "en": "Electrike",
+   "page": "Electrike (Start Deck 100 Battle Collection 242)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "243": {
+   "en": "Manectric",
+   "page": "Manectric (Start Deck 100 Battle Collection 243)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "244": {
+   "en": "Shinx",
+   "page": "Shinx (Start Deck 100 Battle Collection 244)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "245": {
+   "en": "Luxio",
+   "page": "Luxio (Start Deck 100 Battle Collection 245)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "246": {
+   "en": "Luxray",
+   "page": "Luxray ex (Start Deck 100 Battle Collection 246)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "247": {
+   "en": "Pachirisu",
+   "page": "Pachirisu (Start Deck 100 Battle Collection 247)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "248": {
+   "en": "Rotom",
+   "page": "Rotom (Start Deck 100 Battle Collection 248)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "249": {
+   "en": "Blitzle",
+   "page": "Blitzle (Start Deck 100 Battle Collection 249)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "250": {
+   "en": "Blitzle",
+   "page": "Blitzle (Start Deck 100 Battle Collection 250)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "251": {
+   "en": "Zebstrika",
+   "page": "Zebstrika (Start Deck 100 Battle Collection 251)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "252": {
+   "en": "Zebstrika",
+   "page": "Zebstrika (Start Deck 100 Battle Collection 252)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "253": {
+   "en": "Emolga",
+   "page": "Emolga (Start Deck 100 Battle Collection 253)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "254": {
+   "en": "Joltik",
+   "page": "Joltik (Start Deck 100 Battle Collection 254)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "255": {
+   "en": "Galvantula",
+   "page": "Galvantula ex (Start Deck 100 Battle Collection 255)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "256": {
+   "en": "Tynamo",
+   "page": "Tynamo (Start Deck 100 Battle Collection 256)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "257": {
+   "en": "Eelektrik",
+   "page": "Eelektrik (Start Deck 100 Battle Collection 257)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "258": {
+   "en": "Thundurus",
+   "page": "Thundurus (Start Deck 100 Battle Collection 258)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "259": {
+   "en": "Zekrom",
+   "page": "Zekrom ex (Start Deck 100 Battle Collection 259)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "260": {
+   "en": "Helioptile",
+   "page": "Helioptile (Start Deck 100 Battle Collection 260)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "261": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (Start Deck 100 Battle Collection 261)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "262": {
+   "en": "Charjabug",
+   "page": "Charjabug (Start Deck 100 Battle Collection 262)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "263": {
+   "en": "Vikavolt",
+   "page": "Vikavolt (Start Deck 100 Battle Collection 263)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "264": {
+   "en": "Togedemaru",
+   "page": "Togedemaru (Start Deck 100 Battle Collection 264)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "265": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko (Start Deck 100 Battle Collection 265)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "266": {
+   "en": "Zeraora",
+   "page": "Zeraora (Start Deck 100 Battle Collection 266)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "267": {
+   "en": "Zeraora",
+   "page": "Zeraora (Start Deck 100 Battle Collection 267)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "268": {
+   "en": "Yamper",
+   "page": "Yamper (Start Deck 100 Battle Collection 268)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "269": {
+   "en": "Boltund",
+   "page": "Boltund (Start Deck 100 Battle Collection 269)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "270": {
+   "en": "Morpeko",
+   "page": "Morpeko (Start Deck 100 Battle Collection 270)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "271": {
+   "en": "Tadbulb",
+   "page": "Tadbulb (Start Deck 100 Battle Collection 271)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "272": {
+   "en": "Bellibolt",
+   "page": "Bellibolt (Start Deck 100 Battle Collection 272)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "273": {
+   "en": "Iono's Tadbulb",
+   "page": "Iono's Tadbulb (Start Deck 100 Battle Collection 273)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "274": {
+   "en": "Iono's Bellibolt",
+   "page": "Iono's Bellibolt ex (Start Deck 100 Battle Collection 274)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "275": {
+   "en": "Wattrel",
+   "page": "Wattrel (Start Deck 100 Battle Collection 275)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "276": {
+   "en": "Kilowattrel",
+   "page": "Kilowattrel (Start Deck 100 Battle Collection 276)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "277": {
+   "en": "Kilowattrel",
+   "page": "Kilowattrel (Start Deck 100 Battle Collection 277)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "278": {
+   "en": "Iono's Wattrel",
+   "page": "Iono's Wattrel (Start Deck 100 Battle Collection 278)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "279": {
+   "en": "Iono's Kilowattrel",
+   "page": "Iono's Kilowattrel (Start Deck 100 Battle Collection 279)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "280": {
+   "en": "Iron Hands",
+   "page": "Iron Hands (Start Deck 100 Battle Collection 280)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "281": {
+   "en": "Iron Thorns",
+   "page": "Iron Thorns (Start Deck 100 Battle Collection 281)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "282": {
+   "en": "Iron Thorns",
+   "page": "Iron Thorns ex (Start Deck 100 Battle Collection 282)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "283": {
+   "en": "Miraidon",
+   "page": "Miraidon (Start Deck 100 Battle Collection 283)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "284": {
+   "en": "Miraidon",
+   "page": "Miraidon ex (Start Deck 100 Battle Collection 284)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "285": {
+   "en": "Clefairy",
+   "page": "Clefairy (Start Deck 100 Battle Collection 285)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "286": {
+   "en": "Clefable",
+   "page": "Clefable (Start Deck 100 Battle Collection 286)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "287": {
+   "en": "Lillie's Clefairy",
+   "page": "Lillie's Clefairy ex (Start Deck 100 Battle Collection 287)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "288": {
+   "en": "Team Rocket's Drowzee",
+   "page": "Team Rocket's Drowzee (Start Deck 100 Battle Collection 288)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "289": {
+   "en": "Team Rocket's Hypno",
+   "page": "Team Rocket's Hypno (Start Deck 100 Battle Collection 289)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "290": {
+   "en": "Team Rocket's Mewtwo",
+   "page": "Team Rocket's Mewtwo ex (Start Deck 100 Battle Collection 290)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "291": {
+   "en": "Togepi",
+   "page": "Togepi (Start Deck 100 Battle Collection 291)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "292": {
+   "en": "Togetic",
+   "page": "Togetic (Start Deck 100 Battle Collection 292)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "293": {
+   "en": "Togekiss",
+   "page": "Togekiss (Start Deck 100 Battle Collection 293)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "294": {
+   "en": "Marill",
+   "page": "Marill (Start Deck 100 Battle Collection 294)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "295": {
+   "en": "Marill",
+   "page": "Marill (Start Deck 100 Battle Collection 295)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "296": {
+   "en": "Azumarill",
+   "page": "Azumarill (Start Deck 100 Battle Collection 296)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "297": {
+   "en": "Azumarill",
+   "page": "Azumarill ex (Start Deck 100 Battle Collection 297)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "298": {
+   "en": "Espeon",
+   "page": "Espeon ex (Start Deck 100 Battle Collection 298)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "299": {
+   "en": "Sylveon",
+   "page": "Sylveon ex (Start Deck 100 Battle Collection 299)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "300": {
+   "en": "Girafarig",
+   "page": "Girafarig (Start Deck 100 Battle Collection 300)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "301": {
+   "en": "Girafarig",
+   "page": "Girafarig (Start Deck 100 Battle Collection 301)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "302": {
+   "en": "Farigiraf",
+   "page": "Farigiraf (Start Deck 100 Battle Collection 302)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "303": {
+   "en": "Snubbull",
+   "page": "Snubbull (Start Deck 100 Battle Collection 303)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "304": {
+   "en": "Granbull",
+   "page": "Granbull (Start Deck 100 Battle Collection 304)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "305": {
+   "en": "Spoink",
+   "page": "Spoink (Start Deck 100 Battle Collection 305)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "306": {
+   "en": "Grumpig",
+   "page": "Grumpig (Start Deck 100 Battle Collection 306)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "307": {
+   "en": "Shuppet",
+   "page": "Shuppet (Start Deck 100 Battle Collection 307)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "308": {
+   "en": "Duskull",
+   "page": "Duskull (Start Deck 100 Battle Collection 308)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "309": {
+   "en": "Dusclops",
+   "page": "Dusclops (Start Deck 100 Battle Collection 309)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "310": {
+   "en": "Dusknoir",
+   "page": "Dusknoir (Start Deck 100 Battle Collection 310)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "311": {
+   "en": "Latias",
+   "page": "Latias (Start Deck 100 Battle Collection 311)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "312": {
+   "en": "Latias",
+   "page": "Latias ex (Start Deck 100 Battle Collection 312)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "313": {
+   "en": "Latios",
+   "page": "Latios (Start Deck 100 Battle Collection 313)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "314": {
+   "en": "Uxie",
+   "page": "Uxie (Start Deck 100 Battle Collection 314)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "315": {
+   "en": "Mesprit",
+   "page": "Mesprit (Start Deck 100 Battle Collection 315)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "316": {
+   "en": "Azelf",
+   "page": "Azelf (Start Deck 100 Battle Collection 316)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "317": {
+   "en": "Cresselia",
+   "page": "Cresselia (Start Deck 100 Battle Collection 317)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "318": {
+   "en": "Sigilyph",
+   "page": "Sigilyph (Start Deck 100 Battle Collection 318)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "319": {
+   "en": "Yamask",
+   "page": "Yamask (Start Deck 100 Battle Collection 319)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "320": {
+   "en": "Yamask",
+   "page": "Yamask (Start Deck 100 Battle Collection 320)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "321": {
+   "en": "Cofagrigus",
+   "page": "Cofagrigus (Start Deck 100 Battle Collection 321)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "322": {
+   "en": "Cofagrigus",
+   "page": "Cofagrigus (Start Deck 100 Battle Collection 322)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "323": {
+   "en": "Gothita",
+   "page": "Gothita (Start Deck 100 Battle Collection 323)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "324": {
+   "en": "Gothorita",
+   "page": "Gothorita (Start Deck 100 Battle Collection 324)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "325": {
+   "en": "Gothitelle",
+   "page": "Gothitelle (Start Deck 100 Battle Collection 325)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "326": {
+   "en": "Elgyem",
+   "page": "Elgyem (Start Deck 100 Battle Collection 326)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "327": {
+   "en": "Beheeyem",
+   "page": "Beheeyem (Start Deck 100 Battle Collection 327)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "328": {
+   "en": "Flabébé",
+   "page": "Flabébé (Start Deck 100 Battle Collection 328)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "329": {
+   "en": "Floette",
+   "page": "Floette (Start Deck 100 Battle Collection 329)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "330": {
+   "en": "Florges",
+   "page": "Florges (Start Deck 100 Battle Collection 330)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "331": {
+   "en": "Espurr",
+   "page": "Espurr (Start Deck 100 Battle Collection 331)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "332": {
+   "en": "Meowstic",
+   "page": "Meowstic (Start Deck 100 Battle Collection 332)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "333": {
+   "en": "Swirlix",
+   "page": "Swirlix (Start Deck 100 Battle Collection 333)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "334": {
+   "en": "Slurpuff",
+   "page": "Slurpuff (Start Deck 100 Battle Collection 334)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "335": {
+   "en": "Xerneas",
+   "page": "Xerneas (Start Deck 100 Battle Collection 335)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "336": {
+   "en": "Oricorio",
+   "page": "Oricorio (Start Deck 100 Battle Collection 336)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "337": {
+   "en": "Oricorio",
+   "page": "Oricorio (Start Deck 100 Battle Collection 337)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "338": {
+   "en": "Lillie's Cutiefly",
+   "page": "Lillie's Cutiefly (Start Deck 100 Battle Collection 338)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "339": {
+   "en": "Lillie's Ribombee",
+   "page": "Lillie's Ribombee (Start Deck 100 Battle Collection 339)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "340": {
+   "en": "Lillie's Comfey",
+   "page": "Lillie's Comfey (Start Deck 100 Battle Collection 340)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "341": {
+   "en": "Team Rocket's Mimikyu",
+   "page": "Team Rocket's Mimikyu (Start Deck 100 Battle Collection 341)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "342": {
+   "en": "Tapu Lele",
+   "page": "Tapu Lele (Start Deck 100 Battle Collection 342)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "343": {
+   "en": "Impidimp",
+   "page": "Impidimp (Start Deck 100 Battle Collection 343)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "344": {
+   "en": "Morgrem",
+   "page": "Morgrem (Start Deck 100 Battle Collection 344)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "345": {
+   "en": "Grimmsnarl",
+   "page": "Grimmsnarl (Start Deck 100 Battle Collection 345)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "346": {
+   "en": "Enamorus",
+   "page": "Enamorus (Start Deck 100 Battle Collection 346)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "347": {
+   "en": "Fidough",
+   "page": "Fidough (Start Deck 100 Battle Collection 347)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "348": {
+   "en": "Dachsbun",
+   "page": "Dachsbun ex (Start Deck 100 Battle Collection 348)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "349": {
+   "en": "Greavard",
+   "page": "Greavard (Start Deck 100 Battle Collection 349)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "350": {
+   "en": "Houndstone",
+   "page": "Houndstone (Start Deck 100 Battle Collection 350)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "351": {
+   "en": "Houndstone",
+   "page": "Houndstone ex (Start Deck 100 Battle Collection 351)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "352": {
+   "en": "Scream Tail",
+   "page": "Scream Tail (Start Deck 100 Battle Collection 352)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "353": {
+   "en": "Scream Tail",
+   "page": "Scream Tail ex (Start Deck 100 Battle Collection 353)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "354": {
+   "en": "Flutter Mane",
+   "page": "Flutter Mane (Start Deck 100 Battle Collection 354)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "355": {
+   "en": "Flutter Mane",
+   "page": "Flutter Mane (Start Deck 100 Battle Collection 355)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "356": {
+   "en": "Gimmighoul",
+   "page": "Gimmighoul (Start Deck 100 Battle Collection 356)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "357": {
+   "en": "Iron Valiant",
+   "page": "Iron Valiant (Start Deck 100 Battle Collection 357)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "358": {
+   "en": "Munkidori",
+   "page": "Munkidori (Start Deck 100 Battle Collection 358)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "359": {
+   "en": "Fezandipiti",
+   "page": "Fezandipiti (Start Deck 100 Battle Collection 359)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "360": {
+   "en": "Iron Boulder",
+   "page": "Iron Boulder (Start Deck 100 Battle Collection 360)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "361": {
+   "en": "Iron Crown",
+   "page": "Iron Crown ex (Start Deck 100 Battle Collection 361)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "362": {
+   "en": "Swinub",
+   "page": "Swinub (Start Deck 100 Battle Collection 362)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "363": {
+   "en": "Piloswine",
+   "page": "Piloswine (Start Deck 100 Battle Collection 363)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "364": {
+   "en": "Mamoswine",
+   "page": "Mamoswine ex (Start Deck 100 Battle Collection 364)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "365": {
+   "en": "Phanpy",
+   "page": "Phanpy (Start Deck 100 Battle Collection 365)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "366": {
+   "en": "Donphan",
+   "page": "Donphan (Start Deck 100 Battle Collection 366)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "367": {
+   "en": "Hitmontop",
+   "page": "Hitmontop (Start Deck 100 Battle Collection 367)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "368": {
+   "en": "Meditite",
+   "page": "Meditite (Start Deck 100 Battle Collection 368)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "369": {
+   "en": "Medicham",
+   "page": "Medicham (Start Deck 100 Battle Collection 369)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "370": {
+   "en": "Medicham",
+   "page": "Medicham ex (Start Deck 100 Battle Collection 370)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "371": {
+   "en": "Lunatone",
+   "page": "Lunatone (Start Deck 100 Battle Collection 371)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "372": {
+   "en": "Solrock",
+   "page": "Solrock (Start Deck 100 Battle Collection 372)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "373": {
+   "en": "Regirock",
+   "page": "Regirock (Start Deck 100 Battle Collection 373)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "374": {
+   "en": "Regirock",
+   "page": "Regirock ex (Start Deck 100 Battle Collection 374)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "375": {
+   "en": "Groudon",
+   "page": "Groudon (Start Deck 100 Battle Collection 375)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "376": {
+   "en": "Cynthia's Gible",
+   "page": "Cynthia's Gible (Start Deck 100 Battle Collection 376)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "377": {
+   "en": "Cynthia's Gabite",
+   "page": "Cynthia's Gabite (Start Deck 100 Battle Collection 377)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "378": {
+   "en": "Cynthia's Garchomp",
+   "page": "Cynthia's Garchomp ex (Start Deck 100 Battle Collection 378)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "379": {
+   "en": "Riolu",
+   "page": "Riolu (Start Deck 100 Battle Collection 379)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "380": {
+   "en": "Lucario",
+   "page": "Lucario ex (Start Deck 100 Battle Collection 380)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "381": {
+   "en": "Croagunk",
+   "page": "Croagunk (Start Deck 100 Battle Collection 381)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "382": {
+   "en": "Croagunk",
+   "page": "Croagunk (Start Deck 100 Battle Collection 382)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "383": {
+   "en": "Toxicroak",
+   "page": "Toxicroak (Start Deck 100 Battle Collection 383)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "384": {
+   "en": "Toxicroak",
+   "page": "Toxicroak (Start Deck 100 Battle Collection 384)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "385": {
+   "en": "Drilbur",
+   "page": "Drilbur (Start Deck 100 Battle Collection 385)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "386": {
+   "en": "Excadrill",
+   "page": "Excadrill (Start Deck 100 Battle Collection 386)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "387": {
+   "en": "Excadrill",
+   "page": "Excadrill ex (Start Deck 100 Battle Collection 387)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "388": {
+   "en": "Timburr",
+   "page": "Timburr (Start Deck 100 Battle Collection 388)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "389": {
+   "en": "Gurdurr",
+   "page": "Gurdurr (Start Deck 100 Battle Collection 389)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "390": {
+   "en": "Conkeldurr",
+   "page": "Conkeldurr (Start Deck 100 Battle Collection 390)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "391": {
+   "en": "Sawk",
+   "page": "Sawk (Start Deck 100 Battle Collection 391)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "392": {
+   "en": "Archen",
+   "page": "Archen (Start Deck 100 Battle Collection 392)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "393": {
+   "en": "Archeops",
+   "page": "Archeops (Start Deck 100 Battle Collection 393)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "394": {
+   "en": "Stunfisk",
+   "page": "Stunfisk ex (Start Deck 100 Battle Collection 394)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "395": {
+   "en": "Mienfoo",
+   "page": "Mienfoo (Start Deck 100 Battle Collection 395)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "396": {
+   "en": "Mienshao",
+   "page": "Mienshao (Start Deck 100 Battle Collection 396)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "397": {
+   "en": "Landorus",
+   "page": "Landorus (Start Deck 100 Battle Collection 397)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "398": {
+   "en": "Landorus",
+   "page": "Landorus (Start Deck 100 Battle Collection 398)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "399": {
+   "en": "Pancham",
+   "page": "Pancham (Start Deck 100 Battle Collection 399)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "400": {
+   "en": "Carbink",
+   "page": "Carbink (Start Deck 100 Battle Collection 400)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "401": {
+   "en": "Crabrawler",
+   "page": "Crabrawler (Start Deck 100 Battle Collection 401)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "402": {
+   "en": "Rockruff",
+   "page": "Rockruff (Start Deck 100 Battle Collection 402)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "403": {
+   "en": "Lycanroc",
+   "page": "Lycanroc (Start Deck 100 Battle Collection 403)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "404": {
+   "en": "Mudbray",
+   "page": "Mudbray (Start Deck 100 Battle Collection 404)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "405": {
+   "en": "Mudsdale",
+   "page": "Mudsdale (Start Deck 100 Battle Collection 405)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "406": {
+   "en": "Mudsdale",
+   "page": "Mudsdale (Start Deck 100 Battle Collection 406)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "407": {
+   "en": "Passimian",
+   "page": "Passimian (Start Deck 100 Battle Collection 407)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "408": {
+   "en": "Marshadow",
+   "page": "Marshadow (Start Deck 100 Battle Collection 408)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "409": {
+   "en": "Rolycoly",
+   "page": "Rolycoly (Start Deck 100 Battle Collection 409)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "410": {
+   "en": "Carkol",
+   "page": "Carkol (Start Deck 100 Battle Collection 410)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "411": {
+   "en": "Coalossal",
+   "page": "Coalossal (Start Deck 100 Battle Collection 411)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "412": {
+   "en": "Clobbopus",
+   "page": "Clobbopus (Start Deck 100 Battle Collection 412)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "413": {
+   "en": "Grapploct",
+   "page": "Grapploct (Start Deck 100 Battle Collection 413)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "414": {
+   "en": "Stonjourner",
+   "page": "Stonjourner (Start Deck 100 Battle Collection 414)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "415": {
+   "en": "Bloodmoon Ursaluna",
+   "page": "Bloodmoon Ursaluna (Start Deck 100 Battle Collection 415)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "416": {
+   "en": "Nacli",
+   "page": "Nacli (Start Deck 100 Battle Collection 416)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "417": {
+   "en": "Naclstack",
+   "page": "Naclstack (Start Deck 100 Battle Collection 417)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "418": {
+   "en": "Garganacl",
+   "page": "Garganacl (Start Deck 100 Battle Collection 418)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "419": {
+   "en": "Arven's Toedscool",
+   "page": "Arven's Toedscool (Start Deck 100 Battle Collection 419)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "420": {
+   "en": "Arven's Toedscruel",
+   "page": "Arven's Toedscruel (Start Deck 100 Battle Collection 420)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "421": {
+   "en": "Klawf",
+   "page": "Klawf (Start Deck 100 Battle Collection 421)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "422": {
+   "en": "Great Tusk",
+   "page": "Great Tusk (Start Deck 100 Battle Collection 422)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "423": {
+   "en": "Slither Wing",
+   "page": "Slither Wing (Start Deck 100 Battle Collection 423)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "424": {
+   "en": "Sandy Shocks",
+   "page": "Sandy Shocks (Start Deck 100 Battle Collection 424)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "425": {
+   "en": "Koraidon",
+   "page": "Koraidon ex (Start Deck 100 Battle Collection 425)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "426": {
+   "en": "Okidogi",
+   "page": "Okidogi (Start Deck 100 Battle Collection 426)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "427": {
+   "en": "Cornerstone Mask Ogerpon",
+   "page": "Cornerstone Mask Ogerpon (Start Deck 100 Battle Collection 427)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "428": {
+   "en": "Cornerstone Mask Ogerpon",
+   "page": "Cornerstone Mask Ogerpon ex (Start Deck 100 Battle Collection 428)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "429": {
+   "en": "Iron Boulder",
+   "page": "Iron Boulder ex (Start Deck 100 Battle Collection 429)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "430": {
+   "en": "Ekans",
+   "page": "Ekans (Start Deck 100 Battle Collection 430)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "431": {
+   "en": "Arbok",
+   "page": "Arbok (Start Deck 100 Battle Collection 431)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "432": {
+   "en": "Team Rocket's Nidoran♀",
+   "page": "Team Rocket's Nidoran♀ (Start Deck 100 Battle Collection 432)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "433": {
+   "en": "Team Rocket's Nidorina",
+   "page": "Team Rocket's Nidorina (Start Deck 100 Battle Collection 433)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "434": {
+   "en": "Team Rocket's Nidoqueen",
+   "page": "Team Rocket's Nidoqueen (Start Deck 100 Battle Collection 434)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "435": {
+   "en": "Team Rocket's Nidoran♂",
+   "page": "Team Rocket's Nidoran♂ (Start Deck 100 Battle Collection 435)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "436": {
+   "en": "Team Rocket's Nidorino",
+   "page": "Team Rocket's Nidorino (Start Deck 100 Battle Collection 436)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "437": {
+   "en": "Team Rocket's Nidoking",
+   "page": "Team Rocket's Nidoking ex (Start Deck 100 Battle Collection 437)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "438": {
+   "en": "Team Rocket's Zubat",
+   "page": "Team Rocket's Zubat (Start Deck 100 Battle Collection 438)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "439": {
+   "en": "Team Rocket's Golbat",
+   "page": "Team Rocket's Golbat (Start Deck 100 Battle Collection 439)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "440": {
+   "en": "Team Rocket's Crobat",
+   "page": "Team Rocket's Crobat ex (Start Deck 100 Battle Collection 440)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "441": {
+   "en": "Gastly",
+   "page": "Gastly (Start Deck 100 Battle Collection 441)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "442": {
+   "en": "Gastly",
+   "page": "Gastly (Start Deck 100 Battle Collection 442)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "443": {
+   "en": "Haunter",
+   "page": "Haunter (Start Deck 100 Battle Collection 443)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "444": {
+   "en": "Haunter",
+   "page": "Haunter (Start Deck 100 Battle Collection 444)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "445": {
+   "en": "Gengar",
+   "page": "Gengar ex (Start Deck 100 Battle Collection 445)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "446": {
+   "en": "Umbreon",
+   "page": "Umbreon ex (Start Deck 100 Battle Collection 446)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "447": {
+   "en": "Team Rocket's Murkrow",
+   "page": "Team Rocket's Murkrow (Start Deck 100 Battle Collection 447)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "448": {
+   "en": "Team Rocket's Sneasel",
+   "page": "Team Rocket's Sneasel (Start Deck 100 Battle Collection 448)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "449": {
+   "en": "Houndour",
+   "page": "Houndour (Start Deck 100 Battle Collection 449)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "450": {
+   "en": "Houndoom",
+   "page": "Houndoom (Start Deck 100 Battle Collection 450)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "451": {
+   "en": "Poochyena",
+   "page": "Poochyena (Start Deck 100 Battle Collection 451)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "452": {
+   "en": "Mightyena",
+   "page": "Mightyena (Start Deck 100 Battle Collection 452)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "453": {
+   "en": "Sableye",
+   "page": "Sableye (Start Deck 100 Battle Collection 453)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "454": {
+   "en": "Absol",
+   "page": "Absol (Start Deck 100 Battle Collection 454)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "455": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Start Deck 100 Battle Collection 455)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "456": {
+   "en": "Darkrai",
+   "page": "Darkrai ex (Start Deck 100 Battle Collection 456)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "457": {
+   "en": "N's Purrloin",
+   "page": "N's Purrloin (Start Deck 100 Battle Collection 457)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "458": {
+   "en": "Marnie's Purrloin",
+   "page": "Marnie's Purrloin (Start Deck 100 Battle Collection 458)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "459": {
+   "en": "Marnie's Liepard",
+   "page": "Marnie's Liepard (Start Deck 100 Battle Collection 459)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "460": {
+   "en": "Venipede",
+   "page": "Venipede (Start Deck 100 Battle Collection 460)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "461": {
+   "en": "Whirlipede",
+   "page": "Whirlipede (Start Deck 100 Battle Collection 461)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "462": {
+   "en": "Scolipede",
+   "page": "Scolipede (Start Deck 100 Battle Collection 462)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "463": {
+   "en": "Marnie's Scraggy",
+   "page": "Marnie's Scraggy (Start Deck 100 Battle Collection 463)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "464": {
+   "en": "Marnie's Scrafty",
+   "page": "Marnie's Scrafty (Start Deck 100 Battle Collection 464)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "465": {
+   "en": "Trubbish",
+   "page": "Trubbish (Start Deck 100 Battle Collection 465)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "466": {
+   "en": "Garbodor",
+   "page": "Garbodor (Start Deck 100 Battle Collection 466)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "467": {
+   "en": "Zorua",
+   "page": "Zorua (Start Deck 100 Battle Collection 467)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "468": {
+   "en": "Zoroark",
+   "page": "Zoroark (Start Deck 100 Battle Collection 468)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "469": {
+   "en": "N's Zorua",
+   "page": "N's Zorua (Start Deck 100 Battle Collection 469)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "470": {
+   "en": "N's Zoroark",
+   "page": "N's Zoroark ex (Start Deck 100 Battle Collection 470)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "471": {
+   "en": "Pawniard",
+   "page": "Pawniard (Start Deck 100 Battle Collection 471)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "472": {
+   "en": "Bisharp",
+   "page": "Bisharp (Start Deck 100 Battle Collection 472)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "473": {
+   "en": "Kingambit",
+   "page": "Kingambit (Start Deck 100 Battle Collection 473)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "474": {
+   "en": "Vullaby",
+   "page": "Vullaby (Start Deck 100 Battle Collection 474)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "475": {
+   "en": "Mandibuzz",
+   "page": "Mandibuzz ex (Start Deck 100 Battle Collection 475)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "476": {
+   "en": "Deino",
+   "page": "Deino (Start Deck 100 Battle Collection 476)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "477": {
+   "en": "Zweilous",
+   "page": "Zweilous (Start Deck 100 Battle Collection 477)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "478": {
+   "en": "Hydreigon",
+   "page": "Hydreigon ex (Start Deck 100 Battle Collection 478)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "479": {
+   "en": "Pangoro",
+   "page": "Pangoro (Start Deck 100 Battle Collection 479)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "480": {
+   "en": "Yveltal",
+   "page": "Yveltal (Start Deck 100 Battle Collection 480)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "481": {
+   "en": "Yveltal",
+   "page": "Yveltal (Start Deck 100 Battle Collection 481)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "482": {
+   "en": "Hoopa",
+   "page": "Hoopa (Start Deck 100 Battle Collection 482)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "483": {
+   "en": "Arven's Maschiff",
+   "page": "Arven's Maschiff (Start Deck 100 Battle Collection 483)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "484": {
+   "en": "Arven's Mabosstiff",
+   "page": "Arven's Mabosstiff ex (Start Deck 100 Battle Collection 484)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "485": {
+   "en": "Bombirdier",
+   "page": "Bombirdier (Start Deck 100 Battle Collection 485)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "486": {
+   "en": "Farigiraf",
+   "page": "Farigiraf ex (Start Deck 100 Battle Collection 486)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "487": {
+   "en": "Brute Bonnet",
+   "page": "Brute Bonnet (Start Deck 100 Battle Collection 487)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "488": {
+   "en": "Okidogi",
+   "page": "Okidogi ex (Start Deck 100 Battle Collection 488)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "489": {
+   "en": "Fezandipiti",
+   "page": "Fezandipiti ex (Start Deck 100 Battle Collection 489)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "490": {
+   "en": "Pecharunt",
+   "page": "Pecharunt (Start Deck 100 Battle Collection 490)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "491": {
+   "en": "Pecharunt",
+   "page": "Pecharunt ex (Start Deck 100 Battle Collection 491)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "492": {
+   "en": "Scizor",
+   "page": "Scizor ex (Start Deck 100 Battle Collection 492)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "493": {
+   "en": "Skarmory",
+   "page": "Skarmory (Start Deck 100 Battle Collection 493)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "494": {
+   "en": "Steven's Skarmory",
+   "page": "Steven's Skarmory (Start Deck 100 Battle Collection 494)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "495": {
+   "en": "Mawile",
+   "page": "Mawile (Start Deck 100 Battle Collection 495)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "496": {
+   "en": "Beldum",
+   "page": "Beldum (Start Deck 100 Battle Collection 496)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "497": {
+   "en": "Metang",
+   "page": "Metang (Start Deck 100 Battle Collection 497)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "498": {
+   "en": "Registeel",
+   "page": "Registeel (Start Deck 100 Battle Collection 498)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "499": {
+   "en": "Registeel",
+   "page": "Registeel ex (Start Deck 100 Battle Collection 499)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "500": {
+   "en": "Bronzor",
+   "page": "Bronzor (Start Deck 100 Battle Collection 500)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "501": {
+   "en": "Bronzong",
+   "page": "Bronzong (Start Deck 100 Battle Collection 501)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "502": {
+   "en": "Dialga",
+   "page": "Dialga (Start Deck 100 Battle Collection 502)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "503": {
+   "en": "Heatran",
+   "page": "Heatran (Start Deck 100 Battle Collection 503)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "504": {
+   "en": "Escavalier",
+   "page": "Escavalier (Start Deck 100 Battle Collection 504)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "505": {
+   "en": "Escavalier",
+   "page": "Escavalier (Start Deck 100 Battle Collection 505)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "506": {
+   "en": "Klink",
+   "page": "Klink (Start Deck 100 Battle Collection 506)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "507": {
+   "en": "Klang",
+   "page": "Klang (Start Deck 100 Battle Collection 507)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "508": {
+   "en": "Klinklang",
+   "page": "Klinklang (Start Deck 100 Battle Collection 508)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "509": {
+   "en": "Galarian Stunfisk",
+   "page": "Galarian Stunfisk (Start Deck 100 Battle Collection 509)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "510": {
+   "en": "Pawniard",
+   "page": "Pawniard (Start Deck 100 Battle Collection 510)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "511": {
+   "en": "Bisharp",
+   "page": "Bisharp (Start Deck 100 Battle Collection 511)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "512": {
+   "en": "Genesect",
+   "page": "Genesect ex (Start Deck 100 Battle Collection 512)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "513": {
+   "en": "Klefki",
+   "page": "Klefki (Start Deck 100 Battle Collection 513)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "514": {
+   "en": "Togedemaru",
+   "page": "Togedemaru ex (Start Deck 100 Battle Collection 514)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "515": {
+   "en": "Magearna",
+   "page": "Magearna (Start Deck 100 Battle Collection 515)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "516": {
+   "en": "Meltan",
+   "page": "Meltan (Start Deck 100 Battle Collection 516)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "517": {
+   "en": "Meltan",
+   "page": "Meltan (Start Deck 100 Battle Collection 517)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "518": {
+   "en": "Melmetal",
+   "page": "Melmetal (Start Deck 100 Battle Collection 518)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "519": {
+   "en": "Melmetal",
+   "page": "Melmetal ex (Start Deck 100 Battle Collection 519)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "520": {
+   "en": "Hop's Corviknight",
+   "page": "Hop's Corviknight (Start Deck 100 Battle Collection 520)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "521": {
+   "en": "Cufant",
+   "page": "Cufant (Start Deck 100 Battle Collection 521)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "522": {
+   "en": "Copperajah",
+   "page": "Copperajah (Start Deck 100 Battle Collection 522)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "523": {
+   "en": "Duraludon",
+   "page": "Duraludon (Start Deck 100 Battle Collection 523)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "524": {
+   "en": "Duraludon",
+   "page": "Duraludon (Start Deck 100 Battle Collection 524)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "525": {
+   "en": "Archaludon",
+   "page": "Archaludon (Start Deck 100 Battle Collection 525)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "526": {
+   "en": "Archaludon",
+   "page": "Archaludon ex (Start Deck 100 Battle Collection 526)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "527": {
+   "en": "Hop's Zacian",
+   "page": "Hop's Zacian ex (Start Deck 100 Battle Collection 527)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "528": {
+   "en": "Tinkatink",
+   "page": "Tinkatink (Start Deck 100 Battle Collection 528)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "529": {
+   "en": "Tinkatuff",
+   "page": "Tinkatuff (Start Deck 100 Battle Collection 529)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "530": {
+   "en": "Tinkaton",
+   "page": "Tinkaton (Start Deck 100 Battle Collection 530)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "531": {
+   "en": "Varoom",
+   "page": "Varoom (Start Deck 100 Battle Collection 531)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "532": {
+   "en": "Revavroom",
+   "page": "Revavroom (Start Deck 100 Battle Collection 532)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "533": {
+   "en": "Orthworm",
+   "page": "Orthworm ex (Start Deck 100 Battle Collection 533)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "534": {
+   "en": "Gholdengo",
+   "page": "Gholdengo (Start Deck 100 Battle Collection 534)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "535": {
+   "en": "Gholdengo",
+   "page": "Gholdengo (Start Deck 100 Battle Collection 535)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "536": {
+   "en": "Iron Crown",
+   "page": "Iron Crown (Start Deck 100 Battle Collection 536)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "537": {
+   "en": "Alolan Exeggutor",
+   "page": "Alolan Exeggutor ex (Start Deck 100 Battle Collection 537)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "538": {
+   "en": "Bagon",
+   "page": "Bagon (Start Deck 100 Battle Collection 538)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "539": {
+   "en": "Shelgon",
+   "page": "Shelgon (Start Deck 100 Battle Collection 539)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "540": {
+   "en": "Salamence",
+   "page": "Salamence ex (Start Deck 100 Battle Collection 540)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "541": {
+   "en": "Axew",
+   "page": "Axew (Start Deck 100 Battle Collection 541)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "542": {
+   "en": "Fraxure",
+   "page": "Fraxure (Start Deck 100 Battle Collection 542)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "543": {
+   "en": "Haxorus",
+   "page": "Haxorus (Start Deck 100 Battle Collection 543)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "544": {
+   "en": "Druddigon",
+   "page": "Druddigon (Start Deck 100 Battle Collection 544)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "545": {
+   "en": "N's Reshiram",
+   "page": "N's Reshiram (Start Deck 100 Battle Collection 545)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "546": {
+   "en": "Dreepy",
+   "page": "Dreepy (Start Deck 100 Battle Collection 546)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "547": {
+   "en": "Drakloak",
+   "page": "Drakloak (Start Deck 100 Battle Collection 547)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "548": {
+   "en": "Dragapult",
+   "page": "Dragapult ex (Start Deck 100 Battle Collection 548)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "549": {
+   "en": "Tatsugiri",
+   "page": "Tatsugiri (Start Deck 100 Battle Collection 549)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "550": {
+   "en": "Koraidon",
+   "page": "Koraidon (Start Deck 100 Battle Collection 550)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "551": {
+   "en": "Koraidon",
+   "page": "Koraidon ex (Start Deck 100 Battle Collection 551)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "552": {
+   "en": "Miraidon",
+   "page": "Miraidon (Start Deck 100 Battle Collection 552)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "553": {
+   "en": "Miraidon",
+   "page": "Miraidon ex (Start Deck 100 Battle Collection 553)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "554": {
+   "en": "Raging Bolt",
+   "page": "Raging Bolt ex (Start Deck 100 Battle Collection 554)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "555": {
+   "en": "Team Rocket's Rattata",
+   "page": "Team Rocket's Rattata (Start Deck 100 Battle Collection 555)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "556": {
+   "en": "Team Rocket's Raticate",
+   "page": "Team Rocket's Raticate (Start Deck 100 Battle Collection 556)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "557": {
+   "en": "Spearow",
+   "page": "Spearow (Start Deck 100 Battle Collection 557)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "558": {
+   "en": "Fearow",
+   "page": "Fearow (Start Deck 100 Battle Collection 558)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "559": {
+   "en": "Team Rocket's Meowth",
+   "page": "Team Rocket's Meowth (Start Deck 100 Battle Collection 559)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "560": {
+   "en": "Team Rocket's Persian",
+   "page": "Team Rocket's Persian ex (Start Deck 100 Battle Collection 560)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "561": {
+   "en": "Chansey",
+   "page": "Chansey (Start Deck 100 Battle Collection 561)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "562": {
+   "en": "Blissey",
+   "page": "Blissey ex (Start Deck 100 Battle Collection 562)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "563": {
+   "en": "Tauros",
+   "page": "Tauros (Start Deck 100 Battle Collection 563)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "564": {
+   "en": "Eevee",
+   "page": "Eevee (Start Deck 100 Battle Collection 564)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "565": {
+   "en": "Eevee",
+   "page": "Eevee (Start Deck 100 Battle Collection 565)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "566": {
+   "en": "Eevee",
+   "page": "Eevee ex (Start Deck 100 Battle Collection 566)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "567": {
+   "en": "Snorlax",
+   "page": "Snorlax (Start Deck 100 Battle Collection 567)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "568": {
+   "en": "Snorlax",
+   "page": "Snorlax (Start Deck 100 Battle Collection 568)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "569": {
+   "en": "Hop's Snorlax",
+   "page": "Hop's Snorlax (Start Deck 100 Battle Collection 569)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "570": {
+   "en": "Sentret",
+   "page": "Sentret (Start Deck 100 Battle Collection 570)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "571": {
+   "en": "Furret",
+   "page": "Furret (Start Deck 100 Battle Collection 571)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "572": {
+   "en": "Hoothoot",
+   "page": "Hoothoot (Start Deck 100 Battle Collection 572)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "573": {
+   "en": "Noctowl",
+   "page": "Noctowl (Start Deck 100 Battle Collection 573)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "574": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (Start Deck 100 Battle Collection 574)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "575": {
+   "en": "Dudunsparce",
+   "page": "Dudunsparce ex (Start Deck 100 Battle Collection 575)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "576": {
+   "en": "Larry's Dunsparce",
+   "page": "Larry's Dunsparce (Start Deck 100 Battle Collection 576)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "577": {
+   "en": "Larry's Dudunsparce",
+   "page": "Larry's Dudunsparce ex (Start Deck 100 Battle Collection 577)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "578": {
+   "en": "Miltank",
+   "page": "Miltank (Start Deck 100 Battle Collection 578)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "579": {
+   "en": "Taillow",
+   "page": "Taillow (Start Deck 100 Battle Collection 579)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "580": {
+   "en": "Swellow",
+   "page": "Swellow (Start Deck 100 Battle Collection 580)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "581": {
+   "en": "Slakoth",
+   "page": "Slakoth (Start Deck 100 Battle Collection 581)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "582": {
+   "en": "Vigoroth",
+   "page": "Vigoroth (Start Deck 100 Battle Collection 582)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "583": {
+   "en": "Slaking",
+   "page": "Slaking ex (Start Deck 100 Battle Collection 583)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "584": {
+   "en": "Skitty",
+   "page": "Skitty (Start Deck 100 Battle Collection 584)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "585": {
+   "en": "Skitty",
+   "page": "Skitty (Start Deck 100 Battle Collection 585)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "586": {
+   "en": "Delcatty",
+   "page": "Delcatty (Start Deck 100 Battle Collection 586)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "587": {
+   "en": "Zangoose",
+   "page": "Zangoose (Start Deck 100 Battle Collection 587)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "588": {
+   "en": "Zangoose",
+   "page": "Zangoose ex (Start Deck 100 Battle Collection 588)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "589": {
+   "en": "Tropius",
+   "page": "Tropius (Start Deck 100 Battle Collection 589)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "590": {
+   "en": "Larry's Starly",
+   "page": "Larry's Starly (Start Deck 100 Battle Collection 590)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "591": {
+   "en": "Larry's Staravia",
+   "page": "Larry's Staravia (Start Deck 100 Battle Collection 591)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "592": {
+   "en": "Larry's Staraptor",
+   "page": "Larry's Staraptor (Start Deck 100 Battle Collection 592)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "593": {
+   "en": "Buneary",
+   "page": "Buneary (Start Deck 100 Battle Collection 593)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "594": {
+   "en": "Lopunny",
+   "page": "Lopunny (Start Deck 100 Battle Collection 594)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "595": {
+   "en": "Glameow",
+   "page": "Glameow (Start Deck 100 Battle Collection 595)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "596": {
+   "en": "Purugly",
+   "page": "Purugly (Start Deck 100 Battle Collection 596)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "597": {
+   "en": "Chatot",
+   "page": "Chatot (Start Deck 100 Battle Collection 597)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "598": {
+   "en": "Pidove",
+   "page": "Pidove (Start Deck 100 Battle Collection 598)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "599": {
+   "en": "Tranquill",
+   "page": "Tranquill (Start Deck 100 Battle Collection 599)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "600": {
+   "en": "Unfezant",
+   "page": "Unfezant (Start Deck 100 Battle Collection 600)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "601": {
+   "en": "Audino",
+   "page": "Audino (Start Deck 100 Battle Collection 601)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "602": {
+   "en": "Mega Audino",
+   "page": "Mega Audino ex (Start Deck 100 Battle Collection 602)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "603": {
+   "en": "Minccino",
+   "page": "Minccino (Start Deck 100 Battle Collection 603)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "604": {
+   "en": "Cinccino",
+   "page": "Cinccino (Start Deck 100 Battle Collection 604)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "605": {
+   "en": "Bouffalant",
+   "page": "Bouffalant ex (Start Deck 100 Battle Collection 605)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "606": {
+   "en": "Rufflet",
+   "page": "Rufflet (Start Deck 100 Battle Collection 606)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "607": {
+   "en": "Braviary",
+   "page": "Braviary (Start Deck 100 Battle Collection 607)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "608": {
+   "en": "Larry's Rufflet",
+   "page": "Larry's Rufflet (Start Deck 100 Battle Collection 608)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "609": {
+   "en": "Larry's Braviary",
+   "page": "Larry's Braviary (Start Deck 100 Battle Collection 609)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "610": {
+   "en": "Tornadus",
+   "page": "Tornadus (Start Deck 100 Battle Collection 610)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "611": {
+   "en": "Furfrou",
+   "page": "Furfrou (Start Deck 100 Battle Collection 611)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "612": {
+   "en": "Furfrou",
+   "page": "Furfrou (Start Deck 100 Battle Collection 612)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "613": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (Start Deck 100 Battle Collection 613)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "614": {
+   "en": "Noibat",
+   "page": "Noibat (Start Deck 100 Battle Collection 614)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "615": {
+   "en": "Noivern",
+   "page": "Noivern (Start Deck 100 Battle Collection 615)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "616": {
+   "en": "Stufful",
+   "page": "Stufful (Start Deck 100 Battle Collection 616)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "617": {
+   "en": "Bewear",
+   "page": "Bewear (Start Deck 100 Battle Collection 617)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "618": {
+   "en": "Oranguru",
+   "page": "Oranguru (Start Deck 100 Battle Collection 618)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "619": {
+   "en": "Larry's Komala",
+   "page": "Larry's Komala (Start Deck 100 Battle Collection 619)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "620": {
+   "en": "Drampa",
+   "page": "Drampa (Start Deck 100 Battle Collection 620)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "621": {
+   "en": "Drampa",
+   "page": "Drampa (Start Deck 100 Battle Collection 621)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "622": {
+   "en": "Hop's Rookidee",
+   "page": "Hop's Rookidee (Start Deck 100 Battle Collection 622)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "623": {
+   "en": "Hop's Corvisquire",
+   "page": "Hop's Corvisquire (Start Deck 100 Battle Collection 623)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "624": {
+   "en": "Hop's Cramorant",
+   "page": "Hop's Cramorant (Start Deck 100 Battle Collection 624)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "625": {
+   "en": "Bloodmoon Ursaluna",
+   "page": "Bloodmoon Ursaluna ex (Start Deck 100 Battle Collection 625)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "626": {
+   "en": "Squawkabilly",
+   "page": "Squawkabilly (Start Deck 100 Battle Collection 626)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "627": {
+   "en": "Cyclizar",
+   "page": "Cyclizar (Start Deck 100 Battle Collection 627)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "628": {
+   "en": "Iron Jugulis",
+   "page": "Iron Jugulis (Start Deck 100 Battle Collection 628)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "629": {
+   "en": "Terapagos",
+   "page": "Terapagos (Start Deck 100 Battle Collection 629)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "630": {
+   "en": "Terapagos",
+   "page": "Terapagos ex (Start Deck 100 Battle Collection 630)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "631": {
+   "en": "Iron Defender",
+   "page": "Iron Defender (Start Deck 100 Battle Collection 631)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "632": {
+   "en": "Strange Timepiece",
+   "page": "Strange Timepiece (Start Deck 100 Battle Collection 632)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "633": {
+   "en": "Unfair Stamp",
+   "page": "Unfair Stamp (Start Deck 100 Battle Collection 633)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "634": {
+   "en": "Super Potion",
+   "page": "Super Potion (Start Deck 100 Battle Collection 634)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "635": {
+   "en": "N's PP Up",
+   "page": "N's PP Up (Start Deck 100 Battle Collection 635)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "636": {
+   "en": "Energy Retrieval",
+   "page": "Energy Retrieval (Start Deck 100 Battle Collection 636)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "637": {
+   "en": "Energy Coin",
+   "page": "Energy Coin (Start Deck 100 Battle Collection 637)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "638": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (Start Deck 100 Battle Collection 638)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "639": {
+   "en": "Energy Search",
+   "page": "Energy Search (Start Deck 100 Battle Collection 639)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "640": {
+   "en": "Energy Recycler",
+   "page": "Energy Recycler (Start Deck 100 Battle Collection 640)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "641": {
+   "en": "Ogre's Mask",
+   "page": "Ogre's Mask (Start Deck 100 Battle Collection 641)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "642": {
+   "en": "Awakening Drum",
+   "page": "Awakening Drum (Start Deck 100 Battle Collection 642)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "643": {
+   "en": "Potion",
+   "page": "Potion (Start Deck 100 Battle Collection 643)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "644": {
+   "en": "Crushing Hammer",
+   "page": "Crushing Hammer (Start Deck 100 Battle Collection 644)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "645": {
+   "en": "Deduction Kit",
+   "page": "Deduction Kit (Start Deck 100 Battle Collection 645)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "646": {
+   "en": "Scramble Switch",
+   "page": "Scramble Switch (Start Deck 100 Battle Collection 646)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "647": {
+   "en": "Dangerous Laser",
+   "page": "Dangerous Laser (Start Deck 100 Battle Collection 647)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "648": {
+   "en": "Buddy-Buddy Poffin",
+   "page": "Buddy-Buddy Poffin (Start Deck 100 Battle Collection 648)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "649": {
+   "en": "Chill Teaser Toy",
+   "page": "Chill Teaser Toy (Start Deck 100 Battle Collection 649)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "650": {
+   "en": "Hyper Aroma",
+   "page": "Hyper Aroma (Start Deck 100 Battle Collection 650)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "651": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Start Deck 100 Battle Collection 651)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "652": {
+   "en": "Premium Power Pro",
+   "page": "Premium Power Pro (Start Deck 100 Battle Collection 652)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "653": {
+   "en": "Hand Trimmer",
+   "page": "Hand Trimmer (Start Deck 100 Battle Collection 653)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "654": {
+   "en": "Fighting Gong",
+   "page": "Fighting Gong (Start Deck 100 Battle Collection 654)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "655": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Start Deck 100 Battle Collection 655)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "656": {
+   "en": "Prime Catcher",
+   "page": "Prime Catcher (Start Deck 100 Battle Collection 656)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "657": {
+   "en": "Antique Plume Fossil",
+   "page": "Antique Plume Fossil (Start Deck 100 Battle Collection 657)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "658": {
+   "en": "Precious Trolley",
+   "page": "Precious Trolley (Start Deck 100 Battle Collection 658)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "659": {
+   "en": "Arven's Sandwich",
+   "page": "Arven's Sandwich (Start Deck 100 Battle Collection 659)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "660": {
+   "en": "Pokégear 3.0",
+   "page": "Pokégear 3.0 (Start Deck 100 Battle Collection 660)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "661": {
+   "en": "Poké Vital A",
+   "page": "Poké Vital A (Start Deck 100 Battle Collection 661)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "662": {
+   "en": "Poké Pad",
+   "page": "Poké Pad (Start Deck 100 Battle Collection 662)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "663": {
+   "en": "Switch",
+   "page": "Switch (Start Deck 100 Battle Collection 663)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "664": {
+   "en": "Scoop Up Cyclone",
+   "page": "Scoop Up Cyclone (Start Deck 100 Battle Collection 664)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "665": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (Start Deck 100 Battle Collection 665)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "666": {
+   "en": "Hop's Bag",
+   "page": "Hop's Bag (Start Deck 100 Battle Collection 666)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "667": {
+   "en": "Bug Catching Set",
+   "page": "Bug Catching Set (Start Deck 100 Battle Collection 667)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "668": {
+   "en": "Repel",
+   "page": "Repel (Start Deck 100 Battle Collection 668)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "669": {
+   "en": "Poké Ball",
+   "page": "Poké Ball (Start Deck 100 Battle Collection 669)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "670": {
+   "en": "Night Stretcher",
+   "page": "Night Stretcher (Start Deck 100 Battle Collection 670)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "671": {
+   "en": "Reboot Pod",
+   "page": "Reboot Pod (Start Deck 100 Battle Collection 671)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "672": {
+   "en": "Dragon Elixir",
+   "page": "Dragon Elixir (Start Deck 100 Battle Collection 672)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "673": {
+   "en": "Team Rocket's Great Ball",
+   "page": "Team Rocket's Great Ball (Start Deck 100 Battle Collection 673)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "674": {
+   "en": "Team Rocket's Venture Bomb",
+   "page": "Team Rocket's Venture Bomb (Start Deck 100 Battle Collection 674)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "675": {
+   "en": "Team Rocket's Transceiver",
+   "page": "Team Rocket's Transceiver (Start Deck 100 Battle Collection 675)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "676": {
+   "en": "Passho Berry",
+   "page": "Passho Berry (Start Deck 100 Battle Collection 676)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "677": {
+   "en": "Payapa Berry",
+   "page": "Payapa Berry (Start Deck 100 Battle Collection 677)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "678": {
+   "en": "Occa Berry",
+   "page": "Occa Berry (Start Deck 100 Battle Collection 678)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "679": {
+   "en": "Counter Gain",
+   "page": "Counter Gain (Start Deck 100 Battle Collection 679)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "680": {
+   "en": "Sparkling Crystal",
+   "page": "Sparkling Crystal (Start Deck 100 Battle Collection 680)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "681": {
+   "en": "Binding Mochi",
+   "page": "Binding Mochi (Start Deck 100 Battle Collection 681)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "682": {
+   "en": "Cynthia's Power Weight",
+   "page": "Cynthia's Power Weight (Start Deck 100 Battle Collection 682)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "683": {
+   "en": "Powerglass",
+   "page": "Powerglass (Start Deck 100 Battle Collection 683)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "684": {
+   "en": "Deluxe Bomb",
+   "page": "Deluxe Bomb (Start Deck 100 Battle Collection 684)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "685": {
+   "en": "Colbur Berry",
+   "page": "Colbur Berry (Start Deck 100 Battle Collection 685)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "686": {
+   "en": "Haban Berry",
+   "page": "Haban Berry (Start Deck 100 Battle Collection 686)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "687": {
+   "en": "Hero's Cape",
+   "page": "Hero's Cape (Start Deck 100 Battle Collection 687)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "688": {
+   "en": "Air Balloon",
+   "page": "Air Balloon (Start Deck 100 Battle Collection 688)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "689": {
+   "en": "Brave Bangle",
+   "page": "Brave Bangle (Start Deck 100 Battle Collection 689)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "690": {
+   "en": "Hop's Choice Band",
+   "page": "Hop's Choice Band (Start Deck 100 Battle Collection 690)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "691": {
+   "en": "Maximum Belt",
+   "page": "Maximum Belt (Start Deck 100 Battle Collection 691)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "692": {
+   "en": "Lillie's Pearl",
+   "page": "Lillie's Pearl (Start Deck 100 Battle Collection 692)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "693": {
+   "en": "Babiri Berry",
+   "page": "Babiri Berry (Start Deck 100 Battle Collection 693)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "694": {
+   "en": "Iris's Fighting Spirit",
+   "page": "Iris's Fighting Spirit (Start Deck 100 Battle Collection 694)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "695": {
+   "en": "Larry's Skill",
+   "page": "Larry's Skill (Start Deck 100 Battle Collection 695)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "696": {
+   "en": "Crispin",
+   "page": "Crispin (Start Deck 100 Battle Collection 696)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "697": {
+   "en": "Acerola's Mischief",
+   "page": "Acerola's Mischief (Start Deck 100 Battle Collection 697)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "698": {
+   "en": "Ciphermaniac's Codebreaking",
+   "page": "Ciphermaniac's Codebreaking (Start Deck 100 Battle Collection 698)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "699": {
+   "en": "Janine's Secret Art",
+   "page": "Janine's Secret Art (Start Deck 100 Battle Collection 699)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "700": {
+   "en": "Waitress",
+   "page": "Waitress (Start Deck 100 Battle Collection 700)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "701": {
+   "en": "N's Plan",
+   "page": "N's Plan (Start Deck 100 Battle Collection 701)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "702": {
+   "en": "Urbain",
+   "page": "Urbain (Start Deck 100 Battle Collection 702)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "703": {
+   "en": "Drayton",
+   "page": "Drayton (Start Deck 100 Battle Collection 703)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "704": {
+   "en": "Black Belt's Training",
+   "page": "Black Belt's Training (Start Deck 100 Battle Collection 704)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "705": {
+   "en": "Xerosic's Machinations",
+   "page": "Xerosic's Machinations (Start Deck 100 Battle Collection 705)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "706": {
+   "en": "Cook",
+   "page": "Cook (Start Deck 100 Battle Collection 706)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "707": {
+   "en": "Lucian",
+   "page": "Lucian (Start Deck 100 Battle Collection 707)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "708": {
+   "en": "Surfer",
+   "page": "Surfer (Start Deck 100 Battle Collection 708)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "709": {
+   "en": "Perrin",
+   "page": "Perrin (Start Deck 100 Battle Collection 709)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "710": {
+   "en": "Clemont's Quick Wit",
+   "page": "Clemont's Quick Wit (Start Deck 100 Battle Collection 710)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "711": {
+   "en": "Judge",
+   "page": "Judge (Start Deck 100 Battle Collection 711)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "712": {
+   "en": "Lana's Aid",
+   "page": "Lana's Aid (Start Deck 100 Battle Collection 712)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "713": {
+   "en": "Kieran",
+   "page": "Kieran (Start Deck 100 Battle Collection 713)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "714": {
+   "en": "Salvatore",
+   "page": "Salvatore (Start Deck 100 Battle Collection 714)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "715": {
+   "en": "Carmine",
+   "page": "Carmine (Start Deck 100 Battle Collection 715)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "716": {
+   "en": "Lacey",
+   "page": "Lacey (Start Deck 100 Battle Collection 716)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "717": {
+   "en": "Explorer's Guidance",
+   "page": "Explorer's Guidance (Start Deck 100 Battle Collection 717)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "718": {
+   "en": "Hilda",
+   "page": "Hilda (Start Deck 100 Battle Collection 718)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "719": {
+   "en": "Drasna",
+   "page": "Drasna (Start Deck 100 Battle Collection 719)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "720": {
+   "en": "Kofu",
+   "page": "Kofu (Start Deck 100 Battle Collection 720)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "721": {
+   "en": "Hassel",
+   "page": "Hassel (Start Deck 100 Battle Collection 721)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "722": {
+   "en": "Briar",
+   "page": "Briar (Start Deck 100 Battle Collection 722)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "723": {
+   "en": "Bianca's Devotion",
+   "page": "Bianca's Devotion (Start Deck 100 Battle Collection 723)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "724": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (Start Deck 100 Battle Collection 724)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "725": {
+   "en": "Fennel",
+   "page": "Fennel (Start Deck 100 Battle Collection 725)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "726": {
+   "en": "Lt. Surge's Bargain",
+   "page": "Lt. Surge's Bargain (Start Deck 100 Battle Collection 726)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "727": {
+   "en": "Morty's Conviction",
+   "page": "Morty's Conviction (Start Deck 100 Battle Collection 727)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "728": {
+   "en": "Jasmine's Gaze",
+   "page": "Jasmine's Gaze (Start Deck 100 Battle Collection 728)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "729": {
+   "en": "Lillie's Determination",
+   "page": "Lillie's Determination (Start Deck 100 Battle Collection 729)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "730": {
+   "en": "Lisia's Appeal",
+   "page": "Lisia's Appeal (Start Deck 100 Battle Collection 730)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "731": {
+   "en": "Team Rocket's Ariana",
+   "page": "Team Rocket's Ariana (Start Deck 100 Battle Collection 731)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "732": {
+   "en": "Team Rocket's Archer",
+   "page": "Team Rocket's Archer (Start Deck 100 Battle Collection 732)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "733": {
+   "en": "Team Rocket's Giovanni",
+   "page": "Team Rocket's Giovanni (Start Deck 100 Battle Collection 733)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "734": {
+   "en": "Team Rocket's Petrel",
+   "page": "Team Rocket's Petrel (Start Deck 100 Battle Collection 734)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "735": {
+   "en": "Team Rocket's Proton",
+   "page": "Team Rocket's Proton (Start Deck 100 Battle Collection 735)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "736": {
+   "en": "Ignition Energy",
+   "page": "Ignition Energy (Start Deck 100 Battle Collection 736)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "737": {
+   "en": "Spiky Energy",
+   "page": "Spiky Energy (Start Deck 100 Battle Collection 737)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "738": {
+   "en": "Boomerang Energy",
+   "page": "Boomerang Energy (Start Deck 100 Battle Collection 738)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "739": {
+   "en": "Prism Energy",
+   "page": "Prism Energy (Start Deck 100 Battle Collection 739)",
+   "type": "Rainbow",
+   "rarity": "—",
+   "mark": ""
+  },
+  "740": {
+   "en": "Enriching Energy",
+   "page": "Enriching Energy (Start Deck 100 Battle Collection 740)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "741": {
+   "en": "Legacy Energy",
+   "page": "Legacy Energy (Start Deck 100 Battle Collection 741)",
+   "type": "Rainbow",
+   "rarity": "—",
+   "mark": ""
+  },
+  "742": {
+   "en": "Team Rocket's Energy",
+   "page": "Team Rocket's Energy (Start Deck 100 Battle Collection 742)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "743": {
+   "en": "Erika's Tangela",
+   "page": "Erika's Tangela (Start Deck 100 Battle Collection 743)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "744": {
+   "en": "Salazzle",
+   "page": "Salazzle (Start Deck 100 Battle Collection 744)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "745": {
+   "en": "Scorbunny",
+   "page": "Scorbunny (Start Deck 100 Battle Collection 745)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "746": {
+   "en": "Weavile",
+   "page": "Weavile (Start Deck 100 Battle Collection 746)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "747": {
+   "en": "Vikavolt",
+   "page": "Vikavolt (Start Deck 100 Battle Collection 747)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "748": {
+   "en": "Marill",
+   "page": "Marill (Start Deck 100 Battle Collection 748)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "749": {
+   "en": "Banette",
+   "page": "Banette (Start Deck 100 Battle Collection 749)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "750": {
+   "en": "Slurpuff",
+   "page": "Slurpuff (Start Deck 100 Battle Collection 750)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "751": {
+   "en": "Hitmontop",
+   "page": "Hitmontop (Start Deck 100 Battle Collection 751)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "752": {
+   "en": "Carbink",
+   "page": "Carbink (Start Deck 100 Battle Collection 752)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "753": {
+   "en": "Mightyena",
+   "page": "Mightyena (Start Deck 100 Battle Collection 753)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "754": {
+   "en": "Mawile",
+   "page": "Mawile (Start Deck 100 Battle Collection 754)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "755": {
+   "en": "Eevee",
+   "page": "Eevee (Start Deck 100 Battle Collection 755)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "756": {
+   "en": "Larry's Staraptor",
+   "page": "Larry's Staraptor (Start Deck 100 Battle Collection 756)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "757": {
+   "en": "Sprigatito",
+   "page": "Sprigatito ex (Start Deck 100 Battle Collection 757)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "758": {
+   "en": "Stunfisk",
+   "page": "Stunfisk ex (Start Deck 100 Battle Collection 758)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "759": {
+   "en": "Mega Audino",
+   "page": "Mega Audino ex (Start Deck 100 Battle Collection 759)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "760": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (Start Deck 100 Battle Collection 760)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "761": {
+   "en": "Mega Meganium",
+   "page": "Mega Meganium ex (Start Deck 100 Battle Collection 761)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "762": {
+   "en": "Mega Emboar",
+   "page": "Mega Emboar ex (Start Deck 100 Battle Collection 762)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "763": {
+   "en": "Mega Feraligatr",
+   "page": "Mega Feraligatr ex (Start Deck 100 Battle Collection 763)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "764": {
+   "en": "Pikachu",
+   "page": "Pikachu ex (Start Deck 100 Battle Collection 764)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "765": {
+   "en": "Lillie's Clefairy",
+   "page": "Lillie's Clefairy ex (Start Deck 100 Battle Collection 765)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "766": {
+   "en": "Mega Charizard Y",
+   "page": "Mega Charizard Y ex (Start Deck 100 Battle Collection 766)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

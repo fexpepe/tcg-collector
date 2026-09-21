@@ -1,0 +1,454 @@
+{
+ "page": "Pokémon Jungle (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Clefable",
+   "page": "Clefable (Jungle 1)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "2": {
+   "en": "Electrode",
+   "page": "Electrode (Jungle 2)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "3": {
+   "en": "Flareon",
+   "page": "Flareon (Jungle 3)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Jolteon",
+   "page": "Jolteon (Jungle 4)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "5": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (Jungle 5)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "6": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime (Jungle 6)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "7": {
+   "en": "Nidoqueen",
+   "page": "Nidoqueen (Jungle 7)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "8": {
+   "en": "Pidgeot",
+   "page": "Pidgeot (Jungle 8)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "9": {
+   "en": "Pinsir",
+   "page": "Pinsir (Jungle 9)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Scyther",
+   "page": "Scyther (Jungle 10)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "11": {
+   "en": "Snorlax",
+   "page": "Snorlax (Jungle 11)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "12": {
+   "en": "Vaporeon",
+   "page": "Vaporeon (Jungle 12)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "13": {
+   "en": "Venomoth",
+   "page": "Venomoth (Jungle 13)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "14": {
+   "en": "Victreebel",
+   "page": "Victreebel (Jungle 14)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Vileplume",
+   "page": "Vileplume (Jungle 15)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "16": {
+   "en": "Wigglytuff",
+   "page": "Wigglytuff (Jungle 16)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "17": {
+   "en": "Clefable",
+   "page": "Clefable (Jungle 17)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "18": {
+   "en": "Electrode",
+   "page": "Electrode (Jungle 18)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "19": {
+   "en": "Flareon",
+   "page": "Flareon (Jungle 19)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "20": {
+   "en": "Jolteon",
+   "page": "Jolteon (Jungle 20)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "21": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (Jungle 21)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "22": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime (Jungle 22)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "23": {
+   "en": "Nidoqueen",
+   "page": "Nidoqueen (Jungle 23)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "24": {
+   "en": "Pidgeot",
+   "page": "Pidgeot (Jungle 24)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "25": {
+   "en": "Pinsir",
+   "page": "Pinsir (Jungle 25)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "26": {
+   "en": "Scyther",
+   "page": "Scyther (Jungle 26)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "27": {
+   "en": "Snorlax",
+   "page": "Snorlax (Jungle 27)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "28": {
+   "en": "Vaporeon",
+   "page": "Vaporeon (Jungle 28)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "29": {
+   "en": "Venomoth",
+   "page": "Venomoth (Jungle 29)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "30": {
+   "en": "Victreebel",
+   "page": "Victreebel (Jungle 30)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "31": {
+   "en": "Vileplume",
+   "page": "Vileplume (Jungle 31)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "32": {
+   "en": "Wigglytuff",
+   "page": "Wigglytuff (Jungle 32)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "33": {
+   "en": "Butterfree",
+   "page": "Butterfree (Jungle 33)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "34": {
+   "en": "Dodrio",
+   "page": "Dodrio (Jungle 34)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "35": {
+   "en": "Exeggutor",
+   "page": "Exeggutor (Jungle 35)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "36": {
+   "en": "Fearow",
+   "page": "Fearow (Jungle 36)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "37": {
+   "en": "Gloom",
+   "page": "Gloom (Jungle 37)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "38": {
+   "en": "Lickitung",
+   "page": "Lickitung (Jungle 38)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "39": {
+   "en": "Marowak",
+   "page": "Marowak (Jungle 39)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "40": {
+   "en": "Nidorina",
+   "page": "Nidorina (Jungle 40)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "41": {
+   "en": "Parasect",
+   "page": "Parasect (Jungle 41)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "42": {
+   "en": "Persian",
+   "page": "Persian (Jungle 42)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "43": {
+   "en": "Primeape",
+   "page": "Primeape (Jungle 43)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "44": {
+   "en": "Rapidash",
+   "page": "Rapidash (Jungle 44)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "45": {
+   "en": "Rhydon",
+   "page": "Rhydon (Jungle 45)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "46": {
+   "en": "Seaking",
+   "page": "Seaking (Jungle 46)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "47": {
+   "en": "Tauros",
+   "page": "Tauros (Jungle 47)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "48": {
+   "en": "Weepinbell",
+   "page": "Weepinbell (Jungle 48)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "49": {
+   "en": "Bellsprout",
+   "page": "Bellsprout (Jungle 49)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "50": {
+   "en": "Cubone",
+   "page": "Cubone (Jungle 50)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "51": {
+   "en": "Eevee",
+   "page": "Eevee (Jungle 51)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "52": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Jungle 52)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "53": {
+   "en": "Goldeen",
+   "page": "Goldeen (Jungle 53)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "54": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (Jungle 54)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "55": {
+   "en": "Mankey",
+   "page": "Mankey (Jungle 55)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "56": {
+   "en": "Meowth",
+   "page": "Meowth (Jungle 56)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "57": {
+   "en": "Nidoran♀",
+   "page": "Nidoran♀ (Jungle 57)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "58": {
+   "en": "Oddish",
+   "page": "Oddish (Jungle 58)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "59": {
+   "en": "Paras",
+   "page": "Paras (Jungle 59)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "60": {
+   "en": "Pikachu",
+   "page": "Pikachu (Jungle 60)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "61": {
+   "en": "Rhyhorn",
+   "page": "Rhyhorn (Jungle 61)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "62": {
+   "en": "Spearow",
+   "page": "Spearow (Jungle 62)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "63": {
+   "en": "Venonat",
+   "page": "Venonat (Jungle 63)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "64": {
+   "en": "Poké Ball",
+   "page": "Poké Ball (Jungle 64)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,776 @@
+{
+ "page": "Wild Blaze (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Caterpie",
+   "page": "Caterpie (Wild Blaze 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Metapod",
+   "page": "Metapod (Wild Blaze 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Butterfree",
+   "page": "Butterfree (Wild Blaze 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Pineco",
+   "page": "Pineco (Wild Blaze 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Seedot",
+   "page": "Seedot (Wild Blaze 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Nuzleaf",
+   "page": "Nuzleaf (Wild Blaze 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Shiftry",
+   "page": "Shiftry (Wild Blaze 7)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "8": {
+   "en": "Roselia",
+   "page": "Roselia (Wild Blaze 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Roserade",
+   "page": "Roserade (Wild Blaze 9)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "10": {
+   "en": "Maractus",
+   "page": "Maractus (Wild Blaze 10)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Charizard",
+   "page": "Charizard-EX (Wild Blaze 11)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "12": {
+   "en": "Ponyta",
+   "page": "Ponyta (Wild Blaze 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Rapidash",
+   "page": "Rapidash (Wild Blaze 13)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Litleo",
+   "page": "Litleo (Wild Blaze 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Pyroar",
+   "page": "Pyroar (Wild Blaze 15)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "16": {
+   "en": "Qwilfish",
+   "page": "Qwilfish (Wild Blaze 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Feebas",
+   "page": "Feebas (Wild Blaze 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Milotic",
+   "page": "Milotic (Wild Blaze 18)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "19": {
+   "en": "Spheal",
+   "page": "Spheal (Wild Blaze 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Sealeo",
+   "page": "Sealeo (Wild Blaze 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Walrein",
+   "page": "Walrein (Wild Blaze 21)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Luvdisc",
+   "page": "Luvdisc (Wild Blaze 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Buizel",
+   "page": "Buizel (Wild Blaze 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Floatzel",
+   "page": "Floatzel (Wild Blaze 24)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Bergmite",
+   "page": "Bergmite (Wild Blaze 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Avalugg",
+   "page": "Avalugg (Wild Blaze 26)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Shinx",
+   "page": "Shinx (Wild Blaze 27)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Luxio",
+   "page": "Luxio (Wild Blaze 28)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Luxray",
+   "page": "Luxray (Wild Blaze 29)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Magnezone",
+   "page": "Magnezone-EX (Wild Blaze 30)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Helioptile",
+   "page": "Helioptile (Wild Blaze 31)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (Wild Blaze 32)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "33": {
+   "en": "Duskull",
+   "page": "Duskull (Wild Blaze 33)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Dusclops",
+   "page": "Dusclops (Wild Blaze 34)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Dusknoir",
+   "page": "Dusknoir (Wild Blaze 35)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "36": {
+   "en": "Toxicroak",
+   "page": "Toxicroak-EX (Wild Blaze 36)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "37": {
+   "en": "Espurr",
+   "page": "Espurr (Wild Blaze 37)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Meowstic",
+   "page": "Meowstic (Wild Blaze 38)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "39": {
+   "en": "Skrelp",
+   "page": "Skrelp (Wild Blaze 39)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Geodude",
+   "page": "Geodude (Wild Blaze 40)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Graveler",
+   "page": "Graveler (Wild Blaze 41)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Golem",
+   "page": "Golem (Wild Blaze 42)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Binacle",
+   "page": "Binacle (Wild Blaze 43)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Barbaracle",
+   "page": "Barbaracle (Wild Blaze 44)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Sneasel",
+   "page": "Sneasel (Wild Blaze 45)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Weavile",
+   "page": "Weavile (Wild Blaze 46)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Stunky",
+   "page": "Stunky (Wild Blaze 47)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Skuntank",
+   "page": "Skuntank (Wild Blaze 48)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Forretress",
+   "page": "Forretress (Wild Blaze 49)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Durant",
+   "page": "Durant (Wild Blaze 50)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Flabébé",
+   "page": "Flabébé (Wild Blaze 51)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Floette",
+   "page": "Floette (Wild Blaze 52)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Florges",
+   "page": "Florges (Wild Blaze 53)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "54": {
+   "en": "Carbink",
+   "page": "Carbink (Wild Blaze 54)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "55": {
+   "en": "Charizard",
+   "page": "M Charizard-EX (Wild Blaze 55)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Druddigon",
+   "page": "Druddigon (Wild Blaze 56)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "57": {
+   "en": "Dragalge",
+   "page": "Dragalge (Wild Blaze 57)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Goomy",
+   "page": "Goomy (Wild Blaze 58)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Sliggoo",
+   "page": "Sliggoo (Wild Blaze 59)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Goodra",
+   "page": "Goodra (Wild Blaze 60)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "61": {
+   "en": "Pidgey",
+   "page": "Pidgey (Wild Blaze 61)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Pidgeotto",
+   "page": "Pidgeotto (Wild Blaze 62)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Pidgeot",
+   "page": "Pidgeot (Wild Blaze 63)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan-EX (Wild Blaze 64)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Kangaskhan",
+   "page": "M Kangaskhan-EX (Wild Blaze 65)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Snorlax",
+   "page": "Snorlax (Wild Blaze 66)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Sentret",
+   "page": "Sentret (Wild Blaze 67)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "68": {
+   "en": "Furret",
+   "page": "Furret (Wild Blaze 68)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "69": {
+   "en": "Miltank",
+   "page": "Miltank (Wild Blaze 69)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Buneary",
+   "page": "Buneary (Wild Blaze 70)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "71": {
+   "en": "Lopunny",
+   "page": "Lopunny (Wild Blaze 71)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Trick Shovel",
+   "page": "Trick Shovel (Wild Blaze 72)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "73": {
+   "en": "Sacred Ash",
+   "page": "Sacred Ash (Wild Blaze 73)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "74": {
+   "en": "Startling Megaphone",
+   "page": "Startling Megaphone (Wild Blaze 74)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "75": {
+   "en": "Fiery Torch",
+   "page": "Fiery Torch (Wild Blaze 75)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "76": {
+   "en": "Protection Cube",
+   "page": "Protection Cube (Wild Blaze 76)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Lysandre",
+   "page": "Lysandre (Wild Blaze 77)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "78": {
+   "en": "Pokémon Center Lady",
+   "page": "Pokémon Center Lady (Wild Blaze 78)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Pokémon Fan Club",
+   "page": "Pokémon Fan Club (Wild Blaze 79)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "80": {
+   "en": "Magnetic Storm",
+   "page": "Magnetic Storm (Wild Blaze 80)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "81": {
+   "en": "Charizard",
+   "page": "Charizard-EX (Wild Blaze 81)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Magnezone",
+   "page": "Magnezone-EX (Wild Blaze 82)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Toxicroak",
+   "page": "Toxicroak-EX (Wild Blaze 83)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan-EX (Wild Blaze 84)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Lysandre",
+   "page": "Lysandre (Wild Blaze 85)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Pokémon Center Lady",
+   "page": "Pokémon Center Lady (Wild Blaze 86)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Pokémon Fan Club",
+   "page": "Pokémon Fan Club (Wild Blaze 87)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Charizard",
+   "page": "M Charizard-EX (Wild Blaze 88)",
+   "type": "Fire",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Charizard",
+   "page": "M Charizard-EX (Wild Blaze 89)",
+   "type": "Dragon",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Kangaskhan",
+   "page": "M Kangaskhan-EX (Wild Blaze 90)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Magnetic Storm",
+   "page": "Magnetic Storm (Flashfire 91)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Pal Pad",
+   "page": "Pal Pad (Flashfire 92)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Pokémon Center Lady",
+   "page": "Pokémon Center Lady (Flashfire 93)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Pokémon Fan Club",
+   "page": "Pokémon Fan Club (Flashfire 94)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Protection Cube",
+   "page": "Protection Cube (Flashfire 95)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Sacred Ash",
+   "page": "Sacred Ash (Flashfire 96)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Startling Megaphone",
+   "page": "Startling Megaphone (Flashfire 97)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Trick Shovel",
+   "page": "Trick Shovel (Flashfire 98)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Flashfire 99)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Charizard",
+   "page": "Charizard-EX (Flashfire 100)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Magnezone",
+   "page": "Magnezone-EX (Flashfire 101)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Toxicroak",
+   "page": "Toxicroak-EX (Flashfire 102)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan-EX (Flashfire 103)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Lysandre",
+   "page": "Lysandre (Flashfire 104)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Pokémon Center Lady",
+   "page": "Pokémon Center Lady (Flashfire 105)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Pokémon Fan Club",
+   "page": "Pokémon Fan Club (Flashfire 106)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Charizard",
+   "page": "M Charizard-EX (Flashfire 107)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Charizard",
+   "page": "M Charizard-EX (Flashfire 108)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Kangaskhan",
+   "page": "M Kangaskhan-EX (Flashfire 109)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88a": {
+   "en": "Blacksmith",
+   "page": "Blacksmith (Flashfire 88a)",
+   "type": "—",
+   "rarity": "Yellow A Alternate art Premium Trainer's XY Collection exclusive",
+   "mark": ""
+  }
+ }
+}

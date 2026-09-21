@@ -1,0 +1,895 @@
+{
+ "page": "V Starter Decks (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Venusaur",
+   "page": "Venusaur V (V Starter Deck 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Weedle",
+   "page": "Weedle (V Starter Deck 2)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Kakuna",
+   "page": "Kakuna (V Starter Deck 3)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Beedrill",
+   "page": "Beedrill (V Starter Deck 4)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Heracross",
+   "page": "Heracross (V Starter Deck 5)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Snover",
+   "page": "Snover (V Starter Deck 6)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Abomasnow",
+   "page": "Abomasnow (V Starter Deck 7)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Gossifleur",
+   "page": "Gossifleur (V Starter Deck 8)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Eldegoss",
+   "page": "Eldegoss (V Starter Deck 9)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Vulpix",
+   "page": "Vulpix (V Starter Deck 10)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Ninetales",
+   "page": "Ninetales (V Starter Deck 11)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Ponyta",
+   "page": "Ponyta (V Starter Deck 12)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Rapidash",
+   "page": "Rapidash (V Starter Deck 13)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Entei",
+   "page": "Entei (V Starter Deck 14)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Incineroar",
+   "page": "Incineroar V (V Starter Deck 15)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Scorbunny",
+   "page": "Scorbunny (V Starter Deck 16)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Sizzlipede",
+   "page": "Sizzlipede (V Starter Deck 17)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Centiskorch",
+   "page": "Centiskorch (V Starter Deck 18)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Krabby",
+   "page": "Krabby (V Starter Deck 19)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Wingull",
+   "page": "Wingull (V Starter Deck 20)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Pelipper",
+   "page": "Pelipper (V Starter Deck 21)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Carvanha",
+   "page": "Carvanha (V Starter Deck 22)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Sharpedo",
+   "page": "Sharpedo (V Starter Deck 23)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Wailord",
+   "page": "Wailord V (V Starter Deck 24)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Chewtle",
+   "page": "Chewtle (V Starter Deck 25)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Drednaw",
+   "page": "Drednaw (V Starter Deck 26)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Cramorant",
+   "page": "Cramorant (V Starter Deck 27)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Pikachu",
+   "page": "Pikachu V (V Starter Deck 28)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (V Starter Deck 29)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Mareep",
+   "page": "Mareep (V Starter Deck 30)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Flaaffy",
+   "page": "Flaaffy (V Starter Deck 31)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Ampharos",
+   "page": "Ampharos (V Starter Deck 32)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Helioptile",
+   "page": "Helioptile (V Starter Deck 33)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (V Starter Deck 34)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Yamper",
+   "page": "Yamper (V Starter Deck 35)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Boltund",
+   "page": "Boltund (V Starter Deck 36)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Pincurchin",
+   "page": "Pincurchin (V Starter Deck 37)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Mew",
+   "page": "Mew V (V Starter Deck 38)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Natu",
+   "page": "Natu (V Starter Deck 39)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "40": {
+   "en": "Xatu",
+   "page": "Xatu (V Starter Deck 40)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Snubbull",
+   "page": "Snubbull (V Starter Deck 41)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "42": {
+   "en": "Granbull",
+   "page": "Granbull (V Starter Deck 42)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Galarian Corsola",
+   "page": "Galarian Corsola (V Starter Deck 43)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Hatenna",
+   "page": "Hatenna (V Starter Deck 44)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Hattrem",
+   "page": "Hattrem (V Starter Deck 45)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Hatterene",
+   "page": "Hatterene (V Starter Deck 46)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Indeedee",
+   "page": "Indeedee (V Starter Deck 47)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Hitmonchan",
+   "page": "Hitmonchan (V Starter Deck 48)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "49": {
+   "en": "Groudon",
+   "page": "Groudon (V Starter Deck 49)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "50": {
+   "en": "Lucario",
+   "page": "Lucario V (V Starter Deck 50)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "51": {
+   "en": "Pancham",
+   "page": "Pancham (V Starter Deck 51)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "52": {
+   "en": "Pangoro",
+   "page": "Pangoro (V Starter Deck 52)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "53": {
+   "en": "Rockruff",
+   "page": "Rockruff (V Starter Deck 53)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "54": {
+   "en": "Lycanroc",
+   "page": "Lycanroc (V Starter Deck 54)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "55": {
+   "en": "Silicobra",
+   "page": "Silicobra (V Starter Deck 55)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "56": {
+   "en": "Sandaconda",
+   "page": "Sandaconda (V Starter Deck 56)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "57": {
+   "en": "Ekans",
+   "page": "Ekans (V Starter Deck 57)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "58": {
+   "en": "Arbok",
+   "page": "Arbok (V Starter Deck 58)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "59": {
+   "en": "Galarian Slowbro",
+   "page": "Galarian Slowbro V (V Starter Deck 59)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "60": {
+   "en": "Grimer",
+   "page": "Grimer (V Starter Deck 60)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "61": {
+   "en": "Skorupi",
+   "page": "Skorupi (V Starter Deck 61)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "62": {
+   "en": "Drapion",
+   "page": "Drapion (V Starter Deck 62)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "63": {
+   "en": "Trubbish",
+   "page": "Trubbish (V Starter Deck 63)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "64": {
+   "en": "Impidimp",
+   "page": "Impidimp (V Starter Deck 64)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "65": {
+   "en": "Morgrem",
+   "page": "Morgrem (V Starter Deck 65)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "66": {
+   "en": "Grimmsnarl",
+   "page": "Grimmsnarl (V Starter Deck 66)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "67": {
+   "en": "Mawile",
+   "page": "Mawile (V Starter Deck 67)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "68": {
+   "en": "Meltan",
+   "page": "Meltan (V Starter Deck 68)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "69": {
+   "en": "Melmetal",
+   "page": "Melmetal (V Starter Deck 69)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "70": {
+   "en": "Corviknight",
+   "page": "Corviknight (V Starter Deck 70)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "71": {
+   "en": "Cufant",
+   "page": "Cufant (V Starter Deck 71)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "72": {
+   "en": "Copperajah",
+   "page": "Copperajah (V Starter Deck 72)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "73": {
+   "en": "Duraludon",
+   "page": "Duraludon V (V Starter Deck 73)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "74": {
+   "en": "Tauros",
+   "page": "Tauros (V Starter Deck 74)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "75": {
+   "en": "Eevee",
+   "page": "Eevee V (V Starter Deck 75)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "76": {
+   "en": "Teddiursa",
+   "page": "Teddiursa (V Starter Deck 76)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "77": {
+   "en": "Ursaring",
+   "page": "Ursaring (V Starter Deck 77)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "78": {
+   "en": "Swablu",
+   "page": "Swablu (V Starter Deck 78)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "79": {
+   "en": "Altaria",
+   "page": "Altaria (V Starter Deck 79)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "80": {
+   "en": "Zangoose",
+   "page": "Zangoose (V Starter Deck 80)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "81": {
+   "en": "Rookidee",
+   "page": "Rookidee (V Starter Deck 81)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "82": {
+   "en": "Corvisquire",
+   "page": "Corvisquire (V Starter Deck 82)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "83": {
+   "en": "Wooloo",
+   "page": "Wooloo (V Starter Deck 83)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "84": {
+   "en": "Dubwool",
+   "page": "Dubwool (V Starter Deck 84)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "85": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (V Starter Deck 85)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "86": {
+   "en": "Energy Search",
+   "page": "Energy Search (V Starter Deck 86)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "87": {
+   "en": "Potion",
+   "page": "Potion (V Starter Deck 87)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "88": {
+   "en": "Quick Ball",
+   "page": "Quick Ball (V Starter Deck 88)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "89": {
+   "en": "Crushing Hammer",
+   "page": "Crushing Hammer (V Starter Deck 89)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "90": {
+   "en": "Evolution Incense",
+   "page": "Evolution Incense (V Starter Deck 90)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "91": {
+   "en": "Great Ball",
+   "page": "Great Ball (V Starter Deck 91)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "92": {
+   "en": "Capacious Bucket",
+   "page": "Capacious Bucket (V Starter Deck 92)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "93": {
+   "en": "Tool Scrapper",
+   "page": "Tool Scrapper (V Starter Deck 93)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "94": {
+   "en": "Pal Pad",
+   "page": "Pal Pad (V Starter Deck 94)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "95": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (V Starter Deck 95)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "96": {
+   "en": "Pokégear 3.0",
+   "page": "Pokégear 3.0 (V Starter Deck 96)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "97": {
+   "en": "Switch",
+   "page": "Switch (V Starter Deck 97)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "98": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (V Starter Deck 98)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "99": {
+   "en": "Metal Saucer",
+   "page": "Metal Saucer (V Starter Deck 99)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "100": {
+   "en": "Reset Stamp",
+   "page": "Reset Stamp (V Starter Deck 100)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "101": {
+   "en": "Rotom Bike",
+   "page": "Rotom Bike (V Starter Deck 101)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "102": {
+   "en": "Big Charm",
+   "page": "Big Charm (V Starter Deck 102)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "103": {
+   "en": "Vitality Band",
+   "page": "Vitality Band (V Starter Deck 103)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "104": {
+   "en": "Lucky Egg",
+   "page": "Lucky Egg (V Starter Deck 104)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "105": {
+   "en": "Air Balloon",
+   "page": "Air Balloon (V Starter Deck 105)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "106": {
+   "en": "Burning Scarf",
+   "page": "Burning Scarf (V Starter Deck 106)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "107": {
+   "en": "Team Yell Grunt",
+   "page": "Team Yell Grunt (V Starter Deck 107)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "108": {
+   "en": "Erika's Hospitality",
+   "page": "Erika's Hospitality (V Starter Deck 108)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "109": {
+   "en": "Oleana",
+   "page": "Oleana (V Starter Deck 109)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "110": {
+   "en": "Misty's Determination",
+   "page": "Misty's Determination (V Starter Deck 110)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "111": {
+   "en": "Dan",
+   "page": "Dan (V Starter Deck 111)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "112": {
+   "en": "Sabrina's Suggestion",
+   "page": "Sabrina's Suggestion (V Starter Deck 112)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "113": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (V Starter Deck 113)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "114": {
+   "en": "Bede",
+   "page": "Bede (V Starter Deck 114)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "115": {
+   "en": "Poké Kid",
+   "page": "Poké Kid (V Starter Deck 115)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "116": {
+   "en": "Pokémon Center Lady",
+   "page": "Pokémon Center Lady (V Starter Deck 116)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "117": {
+   "en": "Hop",
+   "page": "Hop (V Starter Deck 117)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "118": {
+   "en": "Bill's Analysis",
+   "page": "Bill's Analysis (V Starter Deck 118)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "119": {
+   "en": "Lt. Surge's Strategy",
+   "page": "Lt. Surge's Strategy (V Starter Deck 119)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "120": {
+   "en": "Marnie",
+   "page": "Marnie (V Starter Deck 120)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "121": {
+   "en": "Rosa",
+   "page": "Rosa (V Starter Deck 121)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "122": {
+   "en": "Welder",
+   "page": "Welder (V Starter Deck 122)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "123": {
+   "en": "Red's Challenge",
+   "page": "Red's Challenge (V Starter Deck 123)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "124": {
+   "en": "Roller Skater",
+   "page": "Roller Skater (V Starter Deck 124)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "125": {
+   "en": "Martial Arts Dojo",
+   "page": "Martial Arts Dojo (V Starter Deck 125)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "126": {
+   "en": "Turffield Stadium",
+   "page": "Turffield Stadium (V Starter Deck 126)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "127": {
+   "en": "Twin Energy",
+   "page": "Twin Energy (V Starter Deck 127)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

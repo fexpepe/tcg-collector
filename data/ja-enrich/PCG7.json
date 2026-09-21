@@ -1,0 +1,783 @@
+{
+ "page": "Holon Phantom (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Trapinch δ",
+   "page": "Trapinch δ (Holon Phantom 1)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Vibrava δ",
+   "page": "Vibrava δ (Holon Phantom 2)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "3": {
+   "en": "Flygon δ",
+   "page": "Flygon δ (Holon Phantom 3)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Mankey δ",
+   "page": "Mankey δ (Holon Phantom 4)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "5": {
+   "en": "Primeape δ",
+   "page": "Primeape δ (Holon Phantom 5)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "6": {
+   "en": "Horsea δ",
+   "page": "Horsea δ (Holon Phantom 6)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "7": {
+   "en": "Seadra δ",
+   "page": "Seadra δ (Holon Phantom 7)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "8": {
+   "en": "Gyarados",
+   "page": "Gyarados ☆ δ (Holon Phantom 8)",
+   "type": "Fire",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "9": {
+   "en": "Aerodactyl δ",
+   "page": "Aerodactyl δ (Holon Phantom 9)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "10": {
+   "en": "Latias δ",
+   "page": "Latias δ (Holon Phantom 10)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "11": {
+   "en": "Kingdra δ",
+   "page": "Kingdra δ (Holon Phantom 11)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "12": {
+   "en": "Oddish δ",
+   "page": "Oddish δ (Holon Phantom 12)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "13": {
+   "en": "Bellossom δ",
+   "page": "Bellossom δ (Holon Phantom 13)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "14": {
+   "en": "Latios δ",
+   "page": "Latios δ (Holon Phantom 14)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Rayquaza δ",
+   "page": "Rayquaza δ (Holon Phantom 15)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "16": {
+   "en": "Pidgey δ",
+   "page": "Pidgey δ (Holon Phantom 16)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "17": {
+   "en": "Pidgeotto δ",
+   "page": "Pidgeotto δ (Holon Phantom 17)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "18": {
+   "en": "Psyduck δ",
+   "page": "Psyduck δ (Holon Phantom 18)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "19": {
+   "en": "Golduck δ",
+   "page": "Golduck δ (Holon Phantom 19)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "20": {
+   "en": "Kabuto δ",
+   "page": "Kabuto δ (Holon Phantom 20)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "21": {
+   "en": "Kabutops δ",
+   "page": "Kabutops δ (Holon Phantom 21)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "22": {
+   "en": "Deoxys δ",
+   "page": "Deoxys δ (Holon Phantom 22)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "23": {
+   "en": "Pidgeot δ",
+   "page": "Pidgeot δ (Holon Phantom 23)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "24": {
+   "en": "Gyarados δ",
+   "page": "Gyarados δ (Holon Phantom 24)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "25": {
+   "en": "Gloom δ",
+   "page": "Gloom δ (Holon Phantom 25)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "26": {
+   "en": "Omanyte δ",
+   "page": "Omanyte δ (Holon Phantom 26)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "27": {
+   "en": "Omastar δ",
+   "page": "Omastar δ (Holon Phantom 27)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "28": {
+   "en": "Vileplume δ",
+   "page": "Vileplume δ (Holon Phantom 28)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "29": {
+   "en": "Exeggcute δ",
+   "page": "Exeggcute δ (Holon Phantom 29)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "30": {
+   "en": "Exeggutor δ",
+   "page": "Exeggutor δ (Holon Phantom 30)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "31": {
+   "en": "Carvanha δ",
+   "page": "Carvanha δ (Holon Phantom 31)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "32": {
+   "en": "Sharpedo δ",
+   "page": "Sharpedo δ (Holon Phantom 32)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "33": {
+   "en": "Armaldo δ",
+   "page": "Armaldo δ (Holon Phantom 33)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "34": {
+   "en": "Holon's Castform",
+   "page": "Holon's Castform (Holon Phantom 34)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "35": {
+   "en": "Deoxys δ",
+   "page": "Deoxys δ (Holon Phantom 35)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "36": {
+   "en": "Lileep δ",
+   "page": "Lileep δ (Holon Phantom 36)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "37": {
+   "en": "Deoxys δ",
+   "page": "Deoxys δ (Holon Phantom 37)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "38": {
+   "en": "Meowth δ",
+   "page": "Meowth δ (Holon Phantom 38)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "39": {
+   "en": "Persian δ",
+   "page": "Persian δ (Holon Phantom 39)",
+   "type": "Darkness",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "40": {
+   "en": "Cradily δ",
+   "page": "Cradily δ (Holon Phantom 40)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "41": {
+   "en": "Pikachu δ",
+   "page": "Pikachu δ (Holon Phantom 41)",
+   "type": "Metal",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "42": {
+   "en": "Raichu δ",
+   "page": "Raichu δ (Holon Phantom 42)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "43": {
+   "en": "Magikarp δ",
+   "page": "Magikarp δ (Holon Phantom 43)",
+   "type": "Metal",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "44": {
+   "en": "Pichu δ",
+   "page": "Pichu δ (Holon Phantom 44)",
+   "type": "Metal",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "45": {
+   "en": "Anorith δ",
+   "page": "Anorith δ (Holon Phantom 45)",
+   "type": "Metal",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "46": {
+   "en": "Chimecho δ",
+   "page": "Chimecho δ (Holon Phantom 46)",
+   "type": "Metal",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "47": {
+   "en": "Deoxys δ",
+   "page": "Deoxys δ (Holon Phantom 47)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "48": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Holon Phantom 48)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "49": {
+   "en": "Holon Fossil",
+   "page": "Holon Fossil (Holon Phantom 49)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "50": {
+   "en": "Holon Adventurer",
+   "page": "Holon Adventurer (Holon Phantom 50)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "51": {
+   "en": "Holon Lake",
+   "page": "Holon Lake (Holon Phantom 51)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "52": {
+   "en": "δ Rainbow Energy",
+   "page": "Δ Rainbow Energy (Holon Phantom 52)",
+   "type": "Rainbow",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "53": {
+   "en": "Sharpedo δ",
+   "page": "Sharpedo δ (EX Holon Phantoms 53)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "54": {
+   "en": "Vibrava δ",
+   "page": "Vibrava δ (EX Holon Phantoms 54)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "55": {
+   "en": "Whiscash",
+   "page": "Whiscash (EX Holon Phantoms 55)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "56": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (EX Holon Phantoms 56)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "57": {
+   "en": "Anorith δ",
+   "page": "Anorith δ (EX Holon Phantoms 57)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "58": {
+   "en": "Aron",
+   "page": "Aron (EX Holon Phantoms 58)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "59": {
+   "en": "Baltoy",
+   "page": "Baltoy (EX Holon Phantoms 59)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "60": {
+   "en": "Barboach",
+   "page": "Barboach (EX Holon Phantoms 60)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "61": {
+   "en": "Carvanha δ",
+   "page": "Carvanha δ (EX Holon Phantoms 61)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "62": {
+   "en": "Corphish",
+   "page": "Corphish (EX Holon Phantoms 62)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "63": {
+   "en": "Corphish",
+   "page": "Corphish (EX Holon Phantoms 63)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "64": {
+   "en": "Electrike",
+   "page": "Electrike (EX Holon Phantoms 64)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "65": {
+   "en": "Exeggcute δ",
+   "page": "Exeggcute δ (EX Holon Phantoms 65)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "66": {
+   "en": "Horsea δ",
+   "page": "Horsea δ (EX Holon Phantoms 66)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "67": {
+   "en": "Kabuto δ",
+   "page": "Kabuto δ (EX Holon Phantoms 67)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "68": {
+   "en": "Lileep δ",
+   "page": "Lileep δ (EX Holon Phantoms 68)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "69": {
+   "en": "Magikarp δ",
+   "page": "Magikarp δ (EX Holon Phantoms 69)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "70": {
+   "en": "Mankey δ",
+   "page": "Mankey δ (EX Holon Phantoms 70)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "71": {
+   "en": "Meowth δ",
+   "page": "Meowth δ (EX Holon Phantoms 71)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "72": {
+   "en": "Numel",
+   "page": "Numel (EX Holon Phantoms 72)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "73": {
+   "en": "Oddish δ",
+   "page": "Oddish δ (EX Holon Phantoms 73)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "74": {
+   "en": "Omanyte δ",
+   "page": "Omanyte δ (EX Holon Phantoms 74)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "75": {
+   "en": "Phanpy",
+   "page": "Phanpy (EX Holon Phantoms 75)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "76": {
+   "en": "Pichu δ",
+   "page": "Pichu δ (EX Holon Phantoms 76)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "77": {
+   "en": "Pidgey δ",
+   "page": "Pidgey δ (EX Holon Phantoms 77)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "78": {
+   "en": "Pikachu",
+   "page": "Pikachu (EX Holon Phantoms 78)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "79": {
+   "en": "Pikachu δ",
+   "page": "Pikachu δ (EX Holon Phantoms 79)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "80": {
+   "en": "Poochyena",
+   "page": "Poochyena (EX Holon Phantoms 80)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "81": {
+   "en": "Psyduck δ",
+   "page": "Psyduck δ (EX Holon Phantoms 81)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "82": {
+   "en": "Surskit",
+   "page": "Surskit (EX Holon Phantoms 82)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "83": {
+   "en": "Torchic",
+   "page": "Torchic (EX Holon Phantoms 83)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "84": {
+   "en": "Trapinch δ",
+   "page": "Trapinch δ (EX Holon Phantoms 84)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "85": {
+   "en": "Holon Adventurer",
+   "page": "Holon Adventurer (EX Holon Phantoms 85)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "86": {
+   "en": "Holon Fossil",
+   "page": "Holon Fossil (EX Holon Phantoms 86)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "87": {
+   "en": "Holon Lake",
+   "page": "Holon Lake (EX Holon Phantoms 87)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88": {
+   "en": "Mr. Stone's Project",
+   "page": "Mr. Stone's Project (EX Holon Phantoms 88)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "89": {
+   "en": "Professor Cozmo's Discovery",
+   "page": "Professor Cozmo's Discovery (EX Holon Phantoms 89)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (EX Holon Phantoms 90)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "Claw Fossil",
+   "page": "Claw Fossil (EX Holon Phantoms 91)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Mysterious Fossil",
+   "page": "Mysterious Fossil (EX Holon Phantoms 92)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Root Fossil",
+   "page": "Root Fossil (EX Holon Phantoms 93)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (EX Holon Phantoms 94)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (EX Holon Phantoms 95)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Multi Energy",
+   "page": "Multi Energy (EX Holon Phantoms 96)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Dark Metal Energy",
+   "page": "Dark Metal Energy (EX Holon Phantoms 97)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "δ Rainbow Energy",
+   "page": "Δ Rainbow Energy (EX Holon Phantoms 98)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Crawdaunt ex",
+   "page": "Crawdaunt ex (EX Holon Phantoms 99)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Mew ex",
+   "page": "Mew ex (EX Holon Phantoms 100)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Mightyena ex",
+   "page": "Mightyena ex (EX Holon Phantoms 101)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Gyarados",
+   "page": "Gyarados ☆ δ (EX Holon Phantoms 102)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Mewtwo",
+   "page": "Mewtwo ☆ (EX Holon Phantoms 103)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Pikachu",
+   "page": "Pikachu ☆ (EX Holon Phantoms 104)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Grass Energy",
+   "page": "Grass Energy (EX Holon Phantoms 105)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Fire Energy",
+   "page": "Fire Energy (EX Holon Phantoms 106)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Water Energy",
+   "page": "Water Energy (EX Holon Phantoms 107)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Lightning Energy",
+   "page": "Lightning Energy (EX Holon Phantoms 108)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (EX Holon Phantoms 109)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Fighting Energy",
+   "page": "Fighting Energy (EX Holon Phantoms 110)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Mew",
+   "page": "Mew (EX Holon Phantoms 111)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

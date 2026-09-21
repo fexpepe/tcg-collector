@@ -1,0 +1,1616 @@
+{
+ "page": "Ruler of the Black Flame (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Oddish",
+   "page": "Oddish (Ruler of the Black Flame 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Gloom",
+   "page": "Gloom (Ruler of the Black Flame 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Bellossom",
+   "page": "Bellossom (Ruler of the Black Flame 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Scyther",
+   "page": "Scyther (Ruler of the Black Flame 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Shuckle",
+   "page": "Shuckle (Ruler of the Black Flame 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Combee",
+   "page": "Combee (Ruler of the Black Flame 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Phantump",
+   "page": "Phantump (Ruler of the Black Flame 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Trevenant",
+   "page": "Trevenant (Ruler of the Black Flame 8)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "9": {
+   "en": "Capsakid",
+   "page": "Capsakid (Ruler of the Black Flame 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Capsakid",
+   "page": "Capsakid (Ruler of the Black Flame 10)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Scovillain",
+   "page": "Scovillain (Ruler of the Black Flame 11)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Charmander",
+   "page": "Charmander (Ruler of the Black Flame 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (Ruler of the Black Flame 13)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Vulpix",
+   "page": "Vulpix (Ruler of the Black Flame 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Ninetales",
+   "page": "Ninetales (Ruler of the Black Flame 15)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Entei",
+   "page": "Entei (Ruler of the Black Flame 16)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "17": {
+   "en": "Darumaka",
+   "page": "Darumaka (Ruler of the Black Flame 17)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Darmanitan",
+   "page": "Darmanitan (Ruler of the Black Flame 18)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Heatmor",
+   "page": "Heatmor (Ruler of the Black Flame 19)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Eiscue",
+   "page": "Eiscue ex (Ruler of the Black Flame 20)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "21": {
+   "en": "Carvanha",
+   "page": "Carvanha (Ruler of the Black Flame 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Sharpedo",
+   "page": "Sharpedo (Ruler of the Black Flame 22)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Tympole",
+   "page": "Tympole (Ruler of the Black Flame 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Palpitoad",
+   "page": "Palpitoad (Ruler of the Black Flame 24)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Seismitoad",
+   "page": "Seismitoad (Ruler of the Black Flame 25)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Cubchoo",
+   "page": "Cubchoo (Ruler of the Black Flame 26)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Beartic",
+   "page": "Beartic (Ruler of the Black Flame 27)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Cryogonal",
+   "page": "Cryogonal (Ruler of the Black Flame 28)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Finizen",
+   "page": "Finizen (Ruler of the Black Flame 29)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Finizen",
+   "page": "Finizen (Ruler of the Black Flame 30)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Palafin",
+   "page": "Palafin (Ruler of the Black Flame 31)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "32": {
+   "en": "Tyranitar",
+   "page": "Tyranitar ex (Ruler of the Black Flame 32)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "33": {
+   "en": "Tynamo",
+   "page": "Tynamo (Ruler of the Black Flame 33)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Eelektrik",
+   "page": "Eelektrik (Ruler of the Black Flame 34)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Eelektross",
+   "page": "Eelektross (Ruler of the Black Flame 35)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Thundurus",
+   "page": "Thundurus (Ruler of the Black Flame 36)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "37": {
+   "en": "Toxel",
+   "page": "Toxel (Ruler of the Black Flame 37)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Toxtricity",
+   "page": "Toxtricity (Ruler of the Black Flame 38)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "39": {
+   "en": "Tadbulb",
+   "page": "Tadbulb (Ruler of the Black Flame 39)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Tadbulb",
+   "page": "Tadbulb (Ruler of the Black Flame 40)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Bellibolt",
+   "page": "Bellibolt (Ruler of the Black Flame 41)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "42": {
+   "en": "Cleffa",
+   "page": "Cleffa (Ruler of the Black Flame 42)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Togepi",
+   "page": "Togepi (Ruler of the Black Flame 43)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Togetic",
+   "page": "Togetic (Ruler of the Black Flame 44)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Togekiss",
+   "page": "Togekiss (Ruler of the Black Flame 45)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "46": {
+   "en": "Espeon",
+   "page": "Espeon (Ruler of the Black Flame 46)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Lunatone",
+   "page": "Lunatone (Ruler of the Black Flame 47)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Solrock",
+   "page": "Solrock (Ruler of the Black Flame 48)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Baltoy",
+   "page": "Baltoy (Ruler of the Black Flame 49)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Claydol",
+   "page": "Claydol (Ruler of the Black Flame 50)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "51": {
+   "en": "Vespiquen",
+   "page": "Vespiquen ex (Ruler of the Black Flame 51)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Greavard",
+   "page": "Greavard (Ruler of the Black Flame 52)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Greavard",
+   "page": "Greavard (Ruler of the Black Flame 53)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Houndstone",
+   "page": "Houndstone (Ruler of the Black Flame 54)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Larvitar",
+   "page": "Larvitar (Ruler of the Black Flame 55)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Pupitar",
+   "page": "Pupitar (Ruler of the Black Flame 56)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Nosepass",
+   "page": "Nosepass (Ruler of the Black Flame 57)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Bonsly",
+   "page": "Bonsly (Ruler of the Black Flame 58)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Stunfisk",
+   "page": "Stunfisk (Ruler of the Black Flame 59)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Diggersby",
+   "page": "Diggersby (Ruler of the Black Flame 60)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Rockruff",
+   "page": "Rockruff (Ruler of the Black Flame 61)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Lycanroc",
+   "page": "Lycanroc (Ruler of the Black Flame 62)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Glimmet",
+   "page": "Glimmet (Ruler of the Black Flame 63)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "64": {
+   "en": "Glimmet",
+   "page": "Glimmet (Ruler of the Black Flame 64)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Glimmora",
+   "page": "Glimmora ex (Ruler of the Black Flame 65)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Charizard",
+   "page": "Charizard ex (Ruler of the Black Flame 66)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Paldean Wooper",
+   "page": "Paldean Wooper (Ruler of the Black Flame 67)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "68": {
+   "en": "Paldean Wooper",
+   "page": "Paldean Wooper (Ruler of the Black Flame 68)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "69": {
+   "en": "Paldean Clodsire",
+   "page": "Paldean Clodsire (Ruler of the Black Flame 69)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Umbreon",
+   "page": "Umbreon (Ruler of the Black Flame 70)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Houndour",
+   "page": "Houndour (Ruler of the Black Flame 71)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "72": {
+   "en": "Houndoom",
+   "page": "Houndoom (Ruler of the Black Flame 72)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "73": {
+   "en": "Absol",
+   "page": "Absol ex (Ruler of the Black Flame 73)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Darkrai",
+   "page": "Darkrai (Ruler of the Black Flame 74)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "75": {
+   "en": "Inkay",
+   "page": "Inkay (Ruler of the Black Flame 75)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "76": {
+   "en": "Malamar",
+   "page": "Malamar (Ruler of the Black Flame 76)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Scizor",
+   "page": "Scizor (Ruler of the Black Flame 77)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "78": {
+   "en": "Mawile",
+   "page": "Mawile (Ruler of the Black Flame 78)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Probopass",
+   "page": "Probopass (Ruler of the Black Flame 79)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "80": {
+   "en": "Pawniard",
+   "page": "Pawniard (Ruler of the Black Flame 80)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "81": {
+   "en": "Bisharp",
+   "page": "Bisharp (Ruler of the Black Flame 81)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "82": {
+   "en": "Kingambit",
+   "page": "Kingambit (Ruler of the Black Flame 82)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "83": {
+   "en": "Varoom",
+   "page": "Varoom (Ruler of the Black Flame 83)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "84": {
+   "en": "Varoom",
+   "page": "Varoom (Ruler of the Black Flame 84)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "85": {
+   "en": "Revavroom",
+   "page": "Revavroom ex (Ruler of the Black Flame 85)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Altaria",
+   "page": "Altaria (Ruler of the Black Flame 86)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "87": {
+   "en": "Pidgey",
+   "page": "Pidgey (Ruler of the Black Flame 87)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "88": {
+   "en": "Pidgeotto",
+   "page": "Pidgeotto (Ruler of the Black Flame 88)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "89": {
+   "en": "Pidgeot",
+   "page": "Pidgeot ex (Ruler of the Black Flame 89)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (Ruler of the Black Flame 90)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "91": {
+   "en": "Eevee",
+   "page": "Eevee (Ruler of the Black Flame 91)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "92": {
+   "en": "Zigzagoon",
+   "page": "Zigzagoon (Ruler of the Black Flame 92)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "93": {
+   "en": "Linoone",
+   "page": "Linoone (Ruler of the Black Flame 93)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "94": {
+   "en": "Swablu",
+   "page": "Swablu (Ruler of the Black Flame 94)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "95": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (Ruler of the Black Flame 95)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "96": {
+   "en": "Lechonk",
+   "page": "Lechonk (Ruler of the Black Flame 96)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "97": {
+   "en": "Lechonk",
+   "page": "Lechonk (Ruler of the Black Flame 97)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "98": {
+   "en": "Oinkologne",
+   "page": "Oinkologne (Ruler of the Black Flame 98)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "99": {
+   "en": "Flamigo",
+   "page": "Flamigo (Ruler of the Black Flame 99)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "100": {
+   "en": "Letter of Encouragement",
+   "page": "Letter of Encouragement (Ruler of the Black Flame 100)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "101": {
+   "en": "Patrol Cap",
+   "page": "Patrol Cap (Ruler of the Black Flame 101)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "102": {
+   "en": "Vengeful Punch",
+   "page": "Vengeful Punch (Ruler of the Black Flame 102)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "103": {
+   "en": "Geeta",
+   "page": "Geeta (Ruler of the Black Flame 103)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "104": {
+   "en": "Ortega",
+   "page": "Ortega (Ruler of the Black Flame 104)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "105": {
+   "en": "Poppy",
+   "page": "Poppy (Ruler of the Black Flame 105)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "106": {
+   "en": "Ryme",
+   "page": "Ryme (Ruler of the Black Flame 106)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "107": {
+   "en": "Town Store",
+   "page": "Town Store (Ruler of the Black Flame 107)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "108": {
+   "en": "Pokémon League Headquarters",
+   "page": "Pokémon League Headquarters (Ruler of the Black Flame 108)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "109": {
+   "en": "Gloom",
+   "page": "Gloom (Ruler of the Black Flame 109)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Ninetales",
+   "page": "Ninetales (Ruler of the Black Flame 110)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Palafin",
+   "page": "Palafin (Ruler of the Black Flame 111)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Bellibolt",
+   "page": "Bellibolt (Ruler of the Black Flame 112)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Cleffa",
+   "page": "Cleffa (Ruler of the Black Flame 113)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Larvitar",
+   "page": "Larvitar (Ruler of the Black Flame 114)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Houndour",
+   "page": "Houndour (Ruler of the Black Flame 115)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Scizor",
+   "page": "Scizor (Ruler of the Black Flame 116)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "117": {
+   "en": "Varoom",
+   "page": "Varoom (Ruler of the Black Flame 117)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "118": {
+   "en": "Pidgey",
+   "page": "Pidgey (Ruler of the Black Flame 118)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "119": {
+   "en": "Pidgeotto",
+   "page": "Pidgeotto (Ruler of the Black Flame 119)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "120": {
+   "en": "Lechonk",
+   "page": "Lechonk (Ruler of the Black Flame 120)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "121": {
+   "en": "Eiscue",
+   "page": "Eiscue ex (Ruler of the Black Flame 121)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "122": {
+   "en": "Tyranitar",
+   "page": "Tyranitar ex (Ruler of the Black Flame 122)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "123": {
+   "en": "Vespiquen",
+   "page": "Vespiquen ex (Ruler of the Black Flame 123)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "124": {
+   "en": "Glimmora",
+   "page": "Glimmora ex (Ruler of the Black Flame 124)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "125": {
+   "en": "Charizard",
+   "page": "Charizard ex (Ruler of the Black Flame 125)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "126": {
+   "en": "Absol",
+   "page": "Absol ex (Ruler of the Black Flame 126)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "127": {
+   "en": "Revavroom",
+   "page": "Revavroom ex (Ruler of the Black Flame 127)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "128": {
+   "en": "Pidgeot",
+   "page": "Pidgeot ex (Ruler of the Black Flame 128)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "129": {
+   "en": "Geeta",
+   "page": "Geeta (Ruler of the Black Flame 129)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "130": {
+   "en": "Ortega",
+   "page": "Ortega (Ruler of the Black Flame 130)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "131": {
+   "en": "Poppy",
+   "page": "Poppy (Ruler of the Black Flame 131)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "132": {
+   "en": "Ryme",
+   "page": "Ryme (Ruler of the Black Flame 132)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "133": {
+   "en": "Eiscue",
+   "page": "Eiscue ex (Ruler of the Black Flame 133)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "134": {
+   "en": "Charizard",
+   "page": "Charizard ex (Ruler of the Black Flame 134)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "135": {
+   "en": "Revavroom",
+   "page": "Revavroom ex (Ruler of the Black Flame 135)",
+   "type": "Metal",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "136": {
+   "en": "Pidgeot",
+   "page": "Pidgeot ex (Ruler of the Black Flame 136)",
+   "type": "Colorless",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "137": {
+   "en": "Geeta",
+   "page": "Geeta (Ruler of the Black Flame 137)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "138": {
+   "en": "Poppy",
+   "page": "Poppy (Ruler of the Black Flame 138)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "139": {
+   "en": "Charizard",
+   "page": "Charizard ex (Ruler of the Black Flame 139)",
+   "type": "Darkness",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "140": {
+   "en": "Artazon",
+   "page": "Artazon (Ruler of the Black Flame 140)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "141": {
+   "en": "Basic Fire Energy",
+   "page": "Basic Fire Energy (Ruler of the Black Flame 141)",
+   "type": "Fire",
+   "rarity": "UR",
+   "mark": "—"
+  },
+  "142": {
+   "en": "Skarmory",
+   "page": "Skarmory (Obsidian Flames 142)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Mawile",
+   "page": "Mawile (Obsidian Flames 143)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Bronzor",
+   "page": "Bronzor (Obsidian Flames 144)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Bronzong",
+   "page": "Bronzong (Obsidian Flames 145)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Probopass",
+   "page": "Probopass (Obsidian Flames 146)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Excadrill",
+   "page": "Excadrill (Obsidian Flames 147)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Pawniard",
+   "page": "Pawniard (Obsidian Flames 148)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Bisharp",
+   "page": "Bisharp (Obsidian Flames 149)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Kingambit",
+   "page": "Kingambit (Obsidian Flames 150)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Togedemaru",
+   "page": "Togedemaru (Obsidian Flames 151)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Meltan",
+   "page": "Meltan (Obsidian Flames 152)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Melmetal",
+   "page": "Melmetal ex (Obsidian Flames 153)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Varoom",
+   "page": "Varoom (Obsidian Flames 154)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Varoom",
+   "page": "Varoom (Obsidian Flames 155)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Revavroom",
+   "page": "Revavroom ex (Obsidian Flames 156)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Dratini",
+   "page": "Dratini (Obsidian Flames 157)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Dragonair",
+   "page": "Dragonair (Obsidian Flames 158)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Dragonite",
+   "page": "Dragonite ex (Obsidian Flames 159)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Altaria",
+   "page": "Altaria (Obsidian Flames 160)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Drampa",
+   "page": "Drampa (Obsidian Flames 161)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Pidgey",
+   "page": "Pidgey (Obsidian Flames 162)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Pidgeotto",
+   "page": "Pidgeotto (Obsidian Flames 163)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Pidgeot",
+   "page": "Pidgeot ex (Obsidian Flames 164)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "165": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (Obsidian Flames 165)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "166": {
+   "en": "Eevee",
+   "page": "Eevee (Obsidian Flames 166)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "167": {
+   "en": "Zigzagoon",
+   "page": "Zigzagoon (Obsidian Flames 167)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "168": {
+   "en": "Linoone",
+   "page": "Linoone (Obsidian Flames 168)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "169": {
+   "en": "Swablu",
+   "page": "Swablu (Obsidian Flames 169)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "170": {
+   "en": "Lillipup",
+   "page": "Lillipup (Obsidian Flames 170)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "171": {
+   "en": "Herdier",
+   "page": "Herdier (Obsidian Flames 171)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "172": {
+   "en": "Stoutland",
+   "page": "Stoutland (Obsidian Flames 172)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "173": {
+   "en": "Audino",
+   "page": "Audino (Obsidian Flames 173)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "174": {
+   "en": "Bouffalant",
+   "page": "Bouffalant (Obsidian Flames 174)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "175": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (Obsidian Flames 175)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "176": {
+   "en": "Yungoos",
+   "page": "Yungoos (Obsidian Flames 176)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "177": {
+   "en": "Gumshoos",
+   "page": "Gumshoos (Obsidian Flames 177)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "178": {
+   "en": "Skwovet",
+   "page": "Skwovet (Obsidian Flames 178)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "179": {
+   "en": "Greedent",
+   "page": "Greedent ex (Obsidian Flames 179)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "180": {
+   "en": "Lechonk",
+   "page": "Lechonk (Obsidian Flames 180)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "181": {
+   "en": "Lechonk",
+   "page": "Lechonk (Obsidian Flames 181)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "182": {
+   "en": "Lechonk",
+   "page": "Lechonk (Obsidian Flames 182)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "183": {
+   "en": "Oinkologne",
+   "page": "Oinkologne (Obsidian Flames 183)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "184": {
+   "en": "Oinkologne",
+   "page": "Oinkologne (Obsidian Flames 184)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "185": {
+   "en": "Flamigo",
+   "page": "Flamigo (Obsidian Flames 185)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "186": {
+   "en": "Arven",
+   "page": "Arven (Obsidian Flames 186)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "187": {
+   "en": "Brassius",
+   "page": "Brassius (Obsidian Flames 187)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "188": {
+   "en": "Geeta",
+   "page": "Geeta (Obsidian Flames 188)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "189": {
+   "en": "Letter of Encouragement",
+   "page": "Letter of Encouragement (Obsidian Flames 189)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "190": {
+   "en": "Ortega",
+   "page": "Ortega (Obsidian Flames 190)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "191": {
+   "en": "Patrol Cap",
+   "page": "Patrol Cap (Obsidian Flames 191)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "192": {
+   "en": "Pokémon League Headquarters",
+   "page": "Pokémon League Headquarters (Obsidian Flames 192)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "193": {
+   "en": "Poppy",
+   "page": "Poppy (Obsidian Flames 193)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "194": {
+   "en": "Ryme",
+   "page": "Ryme (Obsidian Flames 194)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "195": {
+   "en": "Team Star Grunt",
+   "page": "Team Star Grunt (Obsidian Flames 195)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "196": {
+   "en": "Town Store",
+   "page": "Town Store (Obsidian Flames 196)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "197": {
+   "en": "Vengeful Punch",
+   "page": "Vengeful Punch (Obsidian Flames 197)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "198": {
+   "en": "Gloom",
+   "page": "Gloom (Obsidian Flames 198)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "199": {
+   "en": "Ninetales",
+   "page": "Ninetales (Obsidian Flames 199)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "200": {
+   "en": "Palafin",
+   "page": "Palafin (Obsidian Flames 200)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "201": {
+   "en": "Bellibolt",
+   "page": "Bellibolt (Obsidian Flames 201)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "202": {
+   "en": "Cleffa",
+   "page": "Cleffa (Obsidian Flames 202)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "203": {
+   "en": "Larvitar",
+   "page": "Larvitar (Obsidian Flames 203)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "204": {
+   "en": "Houndour",
+   "page": "Houndour (Obsidian Flames 204)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "205": {
+   "en": "Scizor",
+   "page": "Scizor (Obsidian Flames 205)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "206": {
+   "en": "Varoom",
+   "page": "Varoom (Obsidian Flames 206)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "207": {
+   "en": "Pidgey",
+   "page": "Pidgey (Obsidian Flames 207)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "208": {
+   "en": "Pidgeotto",
+   "page": "Pidgeotto (Obsidian Flames 208)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "209": {
+   "en": "Lechonk",
+   "page": "Lechonk (Obsidian Flames 209)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "210": {
+   "en": "Eiscue",
+   "page": "Eiscue ex (Obsidian Flames 210)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "211": {
+   "en": "Tyranitar",
+   "page": "Tyranitar ex (Obsidian Flames 211)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "212": {
+   "en": "Vespiquen",
+   "page": "Vespiquen ex (Obsidian Flames 212)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "213": {
+   "en": "Glimmora",
+   "page": "Glimmora ex (Obsidian Flames 213)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "214": {
+   "en": "Absol",
+   "page": "Absol ex (Obsidian Flames 214)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "215": {
+   "en": "Charizard",
+   "page": "Charizard ex (Obsidian Flames 215)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "216": {
+   "en": "Revavroom",
+   "page": "Revavroom ex (Obsidian Flames 216)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "217": {
+   "en": "Pidgeot",
+   "page": "Pidgeot ex (Obsidian Flames 217)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "218": {
+   "en": "Geeta",
+   "page": "Geeta (Obsidian Flames 218)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "219": {
+   "en": "Ortega",
+   "page": "Ortega (Obsidian Flames 219)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "220": {
+   "en": "Poppy",
+   "page": "Poppy (Obsidian Flames 220)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "221": {
+   "en": "Ryme",
+   "page": "Ryme (Obsidian Flames 221)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "222": {
+   "en": "Eiscue",
+   "page": "Eiscue ex (Obsidian Flames 222)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "223": {
+   "en": "Charizard",
+   "page": "Charizard ex (Obsidian Flames 223)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "224": {
+   "en": "Revavroom",
+   "page": "Revavroom ex (Obsidian Flames 224)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "225": {
+   "en": "Pidgeot",
+   "page": "Pidgeot ex (Obsidian Flames 225)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "226": {
+   "en": "Geeta",
+   "page": "Geeta (Obsidian Flames 226)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "227": {
+   "en": "Poppy",
+   "page": "Poppy (Obsidian Flames 227)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "228": {
+   "en": "Charizard",
+   "page": "Charizard ex (Obsidian Flames 228)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "229": {
+   "en": "Artazon",
+   "page": "Artazon (Obsidian Flames 229)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "230": {
+   "en": "Basic Fire Energy",
+   "page": "Basic Fire Energy (Obsidian Flames 230)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": "—"
+  }
+ }
+}

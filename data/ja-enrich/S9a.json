@@ -1,0 +1,657 @@
+{
+ "page": "Battle Region (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Oddish",
+   "page": "Oddish (Battle Region 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Gloom",
+   "page": "Gloom (Battle Region 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Vileplume",
+   "page": "Vileplume (Battle Region 3)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "4": {
+   "en": "Scyther",
+   "page": "Scyther (Battle Region 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Heracross",
+   "page": "Heracross (Battle Region 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Roselia",
+   "page": "Roselia (Battle Region 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Roserade",
+   "page": "Roserade (Battle Region 7)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "8": {
+   "en": "Combee",
+   "page": "Combee (Battle Region 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Vespiquen",
+   "page": "Vespiquen (Battle Region 9)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "10": {
+   "en": "Virizion",
+   "page": "Virizion V (Battle Region 10)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "11": {
+   "en": "Radiant Heatran",
+   "page": "Radiant Heatran (Battle Region 11)",
+   "type": "Fire",
+   "rarity": "K",
+   "mark": ""
+  },
+  "12": {
+   "en": "Litwick",
+   "page": "Litwick (Battle Region 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Lampent",
+   "page": "Lampent (Battle Region 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Chandelure",
+   "page": "Chandelure (Battle Region 14)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "15": {
+   "en": "Litleo",
+   "page": "Litleo (Battle Region 15)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Pyroar",
+   "page": "Pyroar (Battle Region 16)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "17": {
+   "en": "Starmie",
+   "page": "Starmie V (Battle Region 17)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "18": {
+   "en": "Swinub",
+   "page": "Swinub (Battle Region 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Piloswine",
+   "page": "Piloswine (Battle Region 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Mamoswine",
+   "page": "Mamoswine (Battle Region 20)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Barboach",
+   "page": "Barboach (Battle Region 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Whiscash",
+   "page": "Whiscash (Battle Region 22)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Hisuian Basculin",
+   "page": "Hisuian Basculin (Battle Region 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Hisuian Basculegion",
+   "page": "Hisuian Basculegion (Battle Region 24)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Keldeo",
+   "page": "Keldeo (Battle Region 25)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "26": {
+   "en": "Radiant Greninja",
+   "page": "Radiant Greninja (Battle Region 26)",
+   "type": "Water",
+   "rarity": "K",
+   "mark": ""
+  },
+  "27": {
+   "en": "Jynx",
+   "page": "Jynx (Battle Region 27)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Hisuian Typhlosion",
+   "page": "Hisuian Typhlosion V (Battle Region 28)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "29": {
+   "en": "Hisuian Typhlosion",
+   "page": "Hisuian Typhlosion VSTAR (Battle Region 29)",
+   "type": "Psychic",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "30": {
+   "en": "Misdreavus",
+   "page": "Misdreavus (Battle Region 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Mismagius",
+   "page": "Mismagius (Battle Region 31)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Ralts",
+   "page": "Ralts (Battle Region 32)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Kirlia",
+   "page": "Kirlia (Battle Region 33)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Gallade",
+   "page": "Gallade (Battle Region 34)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "35": {
+   "en": "Diancie",
+   "page": "Diancie (Battle Region 35)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "36": {
+   "en": "Wyrdeer",
+   "page": "Wyrdeer (Battle Region 36)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "37": {
+   "en": "Rhyhorn",
+   "page": "Rhyhorn (Battle Region 37)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Rhydon",
+   "page": "Rhydon (Battle Region 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Rhyperior",
+   "page": "Rhyperior (Battle Region 39)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Relicanth",
+   "page": "Relicanth (Battle Region 40)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "41": {
+   "en": "Hippopotas",
+   "page": "Hippopotas (Battle Region 41)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Hippowdon",
+   "page": "Hippowdon (Battle Region 42)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Radiant Hawlucha",
+   "page": "Radiant Hawlucha (Battle Region 43)",
+   "type": "Fighting",
+   "rarity": "K",
+   "mark": ""
+  },
+  "44": {
+   "en": "Hisuian Decidueye",
+   "page": "Hisuian Decidueye V (Battle Region 44)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "45": {
+   "en": "Hisuian Decidueye",
+   "page": "Hisuian Decidueye VSTAR (Battle Region 45)",
+   "type": "Fighting",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "46": {
+   "en": "Kleavor",
+   "page": "Kleavor (Battle Region 46)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "47": {
+   "en": "Hisuian Qwilfish",
+   "page": "Hisuian Qwilfish (Battle Region 47)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Hisuian Overqwil",
+   "page": "Hisuian Overqwil (Battle Region 48)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Poochyena",
+   "page": "Poochyena (Battle Region 49)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Mightyena",
+   "page": "Mightyena (Battle Region 50)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Absol",
+   "page": "Absol (Battle Region 51)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "52": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott V (Battle Region 52)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott VSTAR (Battle Region 53)",
+   "type": "Darkness",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Garchomp",
+   "page": "Garchomp V (Battle Region 54)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Hoothoot",
+   "page": "Hoothoot (Battle Region 55)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Noctowl",
+   "page": "Noctowl (Battle Region 56)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Stantler",
+   "page": "Stantler (Battle Region 57)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Miltank",
+   "page": "Miltank (Battle Region 58)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "59": {
+   "en": "Glameow",
+   "page": "Glameow (Battle Region 59)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Purugly",
+   "page": "Purugly (Battle Region 60)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Wait and See Turbo",
+   "page": "Wait and See Turbo (Battle Region 61)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Sweet Honey",
+   "page": "Sweet Honey (Battle Region 62)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Canceling Cologne",
+   "page": "Canceling Cologne (Battle Region 63)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Cyllene",
+   "page": "Cyllene (Battle Region 64)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Roxanne",
+   "page": "Roxanne (Battle Region 65)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Kamado",
+   "page": "Kamado (Battle Region 66)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Jubilife Village",
+   "page": "Jubilife Village (Battle Region 67)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Roserade",
+   "page": "Roserade (Battle Region 68)",
+   "type": "Grass",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Chandelure",
+   "page": "Chandelure (Battle Region 69)",
+   "type": "Fire",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Wyrdeer",
+   "page": "Wyrdeer (Battle Region 70)",
+   "type": "Psychic",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Kleavor",
+   "page": "Kleavor (Battle Region 71)",
+   "type": "Fighting",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Mightyena",
+   "page": "Mightyena (Battle Region 72)",
+   "type": "Darkness",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Hoothoot",
+   "page": "Hoothoot (Battle Region 73)",
+   "type": "Colorless",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Virizion",
+   "page": "Virizion V (Battle Region 74)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Starmie",
+   "page": "Starmie V (Battle Region 75)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Hisuian Typhlosion",
+   "page": "Hisuian Typhlosion V (Battle Region 76)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Hisuian Decidueye",
+   "page": "Hisuian Decidueye V (Battle Region 77)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott V (Battle Region 78)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Garchomp",
+   "page": "Garchomp V (Battle Region 79)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Cyllene",
+   "page": "Cyllene (Battle Region 80)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Roxanne",
+   "page": "Roxanne (Battle Region 81)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Kamado",
+   "page": "Kamado (Battle Region 82)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Starmie",
+   "page": "Starmie V (Battle Region 83)",
+   "type": "Water",
+   "rarity": "CSR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Garchomp",
+   "page": "Garchomp V (Battle Region 84)",
+   "type": "Dragon",
+   "rarity": "CSR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Hisuian Typhlosion",
+   "page": "Hisuian Typhlosion VSTAR (Battle Region 85)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Hisuian Decidueye",
+   "page": "Hisuian Decidueye VSTAR (Battle Region 86)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott VSTAR (Battle Region 87)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Cyllene",
+   "page": "Cyllene (Battle Region 88)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Roxanne",
+   "page": "Roxanne (Battle Region 89)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Kamado",
+   "page": "Kamado (Battle Region 90)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott VSTAR (Battle Region 91)",
+   "type": "Darkness",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Choice Belt",
+   "page": "Choice Belt (Battle Region 92)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Jubilife Village",
+   "page": "Jubilife Village (Battle Region 93)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

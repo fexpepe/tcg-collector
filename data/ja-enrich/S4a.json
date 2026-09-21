@@ -1,0 +1,3170 @@
+{
+ "page": "Shiny Star V (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Rowlet",
+   "page": "Rowlet (Shiny Star V 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Dartrix",
+   "page": "Dartrix (Shiny Star V 2)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Decidueye",
+   "page": "Decidueye (Shiny Star V 3)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Wimpod",
+   "page": "Wimpod (Shiny Star V 4)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Golisopod",
+   "page": "Golisopod (Shiny Star V 5)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Grookey",
+   "page": "Grookey (Shiny Star V 6)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Thwackey",
+   "page": "Thwackey (Shiny Star V 7)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Rillaboom",
+   "page": "Rillaboom (Shiny Star V 8)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Rillaboom",
+   "page": "Rillaboom V (Shiny Star V 9)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "10": {
+   "en": "Rillaboom",
+   "page": "Rillaboom VMAX (Shiny Star V 10)",
+   "type": "Grass",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "11": {
+   "en": "Blipbug",
+   "page": "Blipbug (Shiny Star V 11)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Dottler",
+   "page": "Dottler (Shiny Star V 12)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Orbeetle",
+   "page": "Orbeetle (Shiny Star V 13)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Gossifleur",
+   "page": "Gossifleur (Shiny Star V 14)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Eldegoss",
+   "page": "Eldegoss (Shiny Star V 15)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Eldegoss",
+   "page": "Eldegoss V (Shiny Star V 16)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "17": {
+   "en": "Applin",
+   "page": "Applin (Shiny Star V 17)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Flapple",
+   "page": "Flapple (Shiny Star V 18)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Appletun",
+   "page": "Appletun (Shiny Star V 19)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Heatran",
+   "page": "Heatran (Shiny Star V 20)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Reshiram",
+   "page": "Reshiram (Shiny Star V 21)",
+   "type": "Fire",
+   "rarity": "A",
+   "mark": ""
+  },
+  "22": {
+   "en": "Scorbunny",
+   "page": "Scorbunny (Shiny Star V 22)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Raboot",
+   "page": "Raboot (Shiny Star V 23)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Cinderace",
+   "page": "Cinderace (Shiny Star V 24)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Sizzlipede",
+   "page": "Sizzlipede (Shiny Star V 25)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Centiskorch",
+   "page": "Centiskorch (Shiny Star V 26)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Centiskorch",
+   "page": "Centiskorch V (Shiny Star V 27)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "28": {
+   "en": "Centiskorch",
+   "page": "Centiskorch VMAX (Shiny Star V 28)",
+   "type": "Fire",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "29": {
+   "en": "Galarian Mr. Mime",
+   "page": "Galarian Mr. Mime (Shiny Star V 29)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Galarian Mr. Rime",
+   "page": "Galarian Mr. Rime (Shiny Star V 30)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Lapras",
+   "page": "Lapras V (Shiny Star V 31)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "32": {
+   "en": "Lapras",
+   "page": "Lapras VMAX (Shiny Star V 32)",
+   "type": "Water",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "33": {
+   "en": "Suicune",
+   "page": "Suicune (Shiny Star V 33)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Feebas",
+   "page": "Feebas (Shiny Star V 34)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Milotic",
+   "page": "Milotic (Shiny Star V 35)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Kyogre",
+   "page": "Kyogre (Shiny Star V 36)",
+   "type": "Water",
+   "rarity": "A",
+   "mark": ""
+  },
+  "37": {
+   "en": "Galarian Darumaka",
+   "page": "Galarian Darumaka (Shiny Star V 37)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Galarian Darmanitan",
+   "page": "Galarian Darmanitan (Shiny Star V 38)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Sobble",
+   "page": "Sobble (Shiny Star V 39)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "40": {
+   "en": "Drizzile",
+   "page": "Drizzile (Shiny Star V 40)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Inteleon",
+   "page": "Inteleon (Shiny Star V 41)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "42": {
+   "en": "Chewtle",
+   "page": "Chewtle (Shiny Star V 42)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Drednaw",
+   "page": "Drednaw (Shiny Star V 43)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Cramorant",
+   "page": "Cramorant (Shiny Star V 44)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Arrokuda",
+   "page": "Arrokuda (Shiny Star V 45)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Barraskewda",
+   "page": "Barraskewda (Shiny Star V 46)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Snom",
+   "page": "Snom (Shiny Star V 47)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Frosmoth",
+   "page": "Frosmoth (Shiny Star V 48)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "49": {
+   "en": "Eiscue",
+   "page": "Eiscue (Shiny Star V 49)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "50": {
+   "en": "Dracovish",
+   "page": "Dracovish (Shiny Star V 50)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "51": {
+   "en": "Arctovish",
+   "page": "Arctovish (Shiny Star V 51)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "52": {
+   "en": "Rotom",
+   "page": "Rotom (Shiny Star V 52)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "53": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko (Shiny Star V 53)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "54": {
+   "en": "Yamper",
+   "page": "Yamper (Shiny Star V 54)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "55": {
+   "en": "Boltund",
+   "page": "Boltund (Shiny Star V 55)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "56": {
+   "en": "Boltund",
+   "page": "Boltund V (Shiny Star V 56)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Toxel",
+   "page": "Toxel (Shiny Star V 57)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "58": {
+   "en": "Toxtricity",
+   "page": "Toxtricity (Shiny Star V 58)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "59": {
+   "en": "Toxtricity",
+   "page": "Toxtricity V (Shiny Star V 59)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Toxtricity",
+   "page": "Toxtricity VMAX (Shiny Star V 60)",
+   "type": "Lightning",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Pincurchin",
+   "page": "Pincurchin (Shiny Star V 61)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "62": {
+   "en": "Morpeko",
+   "page": "Morpeko (Shiny Star V 62)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "63": {
+   "en": "Dracozolt",
+   "page": "Dracozolt (Shiny Star V 63)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "64": {
+   "en": "Arctozolt",
+   "page": "Arctozolt (Shiny Star V 64)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "65": {
+   "en": "Clefairy",
+   "page": "Clefairy (Shiny Star V 65)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "66": {
+   "en": "Clefable",
+   "page": "Clefable (Shiny Star V 66)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "67": {
+   "en": "Galarian Ponyta",
+   "page": "Galarian Ponyta (Shiny Star V 67)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "68": {
+   "en": "Galarian Rapidash",
+   "page": "Galarian Rapidash (Shiny Star V 68)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "69": {
+   "en": "Gastly",
+   "page": "Gastly (Shiny Star V 69)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "70": {
+   "en": "Haunter",
+   "page": "Haunter (Shiny Star V 70)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "71": {
+   "en": "Gengar",
+   "page": "Gengar (Shiny Star V 71)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "72": {
+   "en": "Galarian Corsola",
+   "page": "Galarian Corsola (Shiny Star V 72)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "73": {
+   "en": "Galarian Cursola",
+   "page": "Galarian Cursola (Shiny Star V 73)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "74": {
+   "en": "Sigilyph",
+   "page": "Sigilyph (Shiny Star V 74)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "75": {
+   "en": "Dedenne",
+   "page": "Dedenne (Shiny Star V 75)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "76": {
+   "en": "Sinistea",
+   "page": "Sinistea (Shiny Star V 76)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "77": {
+   "en": "Polteageist",
+   "page": "Polteageist (Shiny Star V 77)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "78": {
+   "en": "Hatenna",
+   "page": "Hatenna (Shiny Star V 78)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "79": {
+   "en": "Hattrem",
+   "page": "Hattrem (Shiny Star V 79)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "80": {
+   "en": "Hatterene",
+   "page": "Hatterene (Shiny Star V 80)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "81": {
+   "en": "Milcery",
+   "page": "Milcery (Shiny Star V 81)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "82": {
+   "en": "Alcremie",
+   "page": "Alcremie (Shiny Star V 82)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "83": {
+   "en": "Indeedee",
+   "page": "Indeedee (Shiny Star V 83)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "84": {
+   "en": "Indeedee",
+   "page": "Indeedee V (Shiny Star V 84)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Dreepy",
+   "page": "Dreepy (Shiny Star V 85)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "86": {
+   "en": "Drakloak",
+   "page": "Drakloak (Shiny Star V 86)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "87": {
+   "en": "Dragapult",
+   "page": "Dragapult (Shiny Star V 87)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "88": {
+   "en": "Dragapult",
+   "page": "Dragapult V (Shiny Star V 88)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Dragapult",
+   "page": "Dragapult VMAX (Shiny Star V 89)",
+   "type": "Psychic",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Galarian Farfetch'd",
+   "page": "Galarian Farfetch'd (Shiny Star V 90)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "91": {
+   "en": "Galarian Sirfetch'd",
+   "page": "Galarian Sirfetch'd (Shiny Star V 91)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "92": {
+   "en": "Galarian Yamask",
+   "page": "Galarian Yamask (Shiny Star V 92)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "93": {
+   "en": "Galarian Runerigus",
+   "page": "Galarian Runerigus (Shiny Star V 93)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "94": {
+   "en": "Rolycoly",
+   "page": "Rolycoly (Shiny Star V 94)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "95": {
+   "en": "Carkol",
+   "page": "Carkol (Shiny Star V 95)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "96": {
+   "en": "Coalossal",
+   "page": "Coalossal (Shiny Star V 96)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "97": {
+   "en": "Silicobra",
+   "page": "Silicobra (Shiny Star V 97)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "98": {
+   "en": "Sandaconda",
+   "page": "Sandaconda (Shiny Star V 98)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "99": {
+   "en": "Clobbopus",
+   "page": "Clobbopus (Shiny Star V 99)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "100": {
+   "en": "Grapploct",
+   "page": "Grapploct (Shiny Star V 100)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "101": {
+   "en": "Falinks",
+   "page": "Falinks (Shiny Star V 101)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "102": {
+   "en": "Falinks",
+   "page": "Falinks V (Shiny Star V 102)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Stonjourner",
+   "page": "Stonjourner (Shiny Star V 103)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "104": {
+   "en": "Koffing",
+   "page": "Koffing (Shiny Star V 104)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "105": {
+   "en": "Galarian Weezing",
+   "page": "Galarian Weezing (Shiny Star V 105)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "106": {
+   "en": "Spinarak",
+   "page": "Spinarak (Shiny Star V 106)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "107": {
+   "en": "Ariados",
+   "page": "Ariados (Shiny Star V 107)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "108": {
+   "en": "Crobat",
+   "page": "Crobat V (Shiny Star V 108)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Crobat",
+   "page": "Crobat VMAX (Shiny Star V 109)",
+   "type": "Darkness",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Galarian Zigzagoon",
+   "page": "Galarian Zigzagoon (Shiny Star V 110)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "111": {
+   "en": "Galarian Linoone",
+   "page": "Galarian Linoone (Shiny Star V 111)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "112": {
+   "en": "Galarian Obstagoon",
+   "page": "Galarian Obstagoon (Shiny Star V 112)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "113": {
+   "en": "Croagunk",
+   "page": "Croagunk (Shiny Star V 113)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "114": {
+   "en": "Toxicroak",
+   "page": "Toxicroak (Shiny Star V 114)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "115": {
+   "en": "Trubbish",
+   "page": "Trubbish (Shiny Star V 115)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "116": {
+   "en": "Garbodor",
+   "page": "Garbodor (Shiny Star V 116)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "117": {
+   "en": "Yveltal",
+   "page": "Yveltal (Shiny Star V 117)",
+   "type": "Darkness",
+   "rarity": "A",
+   "mark": ""
+  },
+  "118": {
+   "en": "Hoopa",
+   "page": "Hoopa (Shiny Star V 118)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "119": {
+   "en": "Nickit",
+   "page": "Nickit (Shiny Star V 119)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "120": {
+   "en": "Thievul",
+   "page": "Thievul (Shiny Star V 120)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "121": {
+   "en": "Impidimp",
+   "page": "Impidimp (Shiny Star V 121)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "122": {
+   "en": "Morgrem",
+   "page": "Morgrem (Shiny Star V 122)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "123": {
+   "en": "Grimmsnarl",
+   "page": "Grimmsnarl (Shiny Star V 123)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "124": {
+   "en": "Eternatus",
+   "page": "Eternatus V (Shiny Star V 124)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "125": {
+   "en": "Eternatus",
+   "page": "Eternatus VMAX (Shiny Star V 125)",
+   "type": "Darkness",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "126": {
+   "en": "Galarian Meowth",
+   "page": "Galarian Meowth (Shiny Star V 126)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "127": {
+   "en": "Galarian Perrserker",
+   "page": "Galarian Perrserker (Shiny Star V 127)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "128": {
+   "en": "Galarian Stunfisk",
+   "page": "Galarian Stunfisk (Shiny Star V 128)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "129": {
+   "en": "Honedge",
+   "page": "Honedge (Shiny Star V 129)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "130": {
+   "en": "Doublade",
+   "page": "Doublade (Shiny Star V 130)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "131": {
+   "en": "Aegislash",
+   "page": "Aegislash (Shiny Star V 131)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "132": {
+   "en": "Corviknight",
+   "page": "Corviknight (Shiny Star V 132)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "133": {
+   "en": "Cufant",
+   "page": "Cufant (Shiny Star V 133)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "134": {
+   "en": "Copperajah",
+   "page": "Copperajah (Shiny Star V 134)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "135": {
+   "en": "Duraludon",
+   "page": "Duraludon (Shiny Star V 135)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "136": {
+   "en": "Zacian",
+   "page": "Zacian (Shiny Star V 136)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "137": {
+   "en": "Zacian",
+   "page": "Zacian V (Shiny Star V 137)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "138": {
+   "en": "Zamazenta",
+   "page": "Zamazenta (Shiny Star V 138)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "139": {
+   "en": "Zamazenta",
+   "page": "Zamazenta V (Shiny Star V 139)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "140": {
+   "en": "Ditto",
+   "page": "Ditto V (Shiny Star V 140)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "141": {
+   "en": "Ditto",
+   "page": "Ditto VMAX (Shiny Star V 141)",
+   "type": "Colorless",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "142": {
+   "en": "Minccino",
+   "page": "Minccino (Shiny Star V 142)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "143": {
+   "en": "Cinccino",
+   "page": "Cinccino (Shiny Star V 143)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "144": {
+   "en": "Ducklett",
+   "page": "Ducklett (Shiny Star V 144)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "145": {
+   "en": "Swanna",
+   "page": "Swanna (Shiny Star V 145)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "146": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (Shiny Star V 146)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "147": {
+   "en": "Oranguru",
+   "page": "Oranguru (Shiny Star V 147)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "148": {
+   "en": "Skwovet",
+   "page": "Skwovet (Shiny Star V 148)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "149": {
+   "en": "Greedent",
+   "page": "Greedent (Shiny Star V 149)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "150": {
+   "en": "Rookidee",
+   "page": "Rookidee (Shiny Star V 150)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "151": {
+   "en": "Corvisquire",
+   "page": "Corvisquire (Shiny Star V 151)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "152": {
+   "en": "Wooloo",
+   "page": "Wooloo (Shiny Star V 152)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "153": {
+   "en": "Dubwool",
+   "page": "Dubwool (Shiny Star V 153)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "154": {
+   "en": "Dubwool",
+   "page": "Dubwool V (Shiny Star V 154)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "155": {
+   "en": "Cramorant",
+   "page": "Cramorant V (Shiny Star V 155)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "156": {
+   "en": "Team Yell Towel",
+   "page": "Team Yell Towel (Shiny Star V 156)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "157": {
+   "en": "Scoop Up Net",
+   "page": "Scoop Up Net (Shiny Star V 157)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "158": {
+   "en": "Quick Ball",
+   "page": "Quick Ball (Shiny Star V 158)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "159": {
+   "en": "Evolution Incense",
+   "page": "Evolution Incense (Shiny Star V 159)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "160": {
+   "en": "Hyper Potion",
+   "page": "Hyper Potion (Shiny Star V 160)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "161": {
+   "en": "Turbo Patch",
+   "page": "Turbo Patch (Shiny Star V 161)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "162": {
+   "en": "Capacious Bucket",
+   "page": "Capacious Bucket (Shiny Star V 162)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "163": {
+   "en": "Tool Scrapper",
+   "page": "Tool Scrapper (Shiny Star V 163)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "164": {
+   "en": "Ordinary Rod",
+   "page": "Ordinary Rod (Shiny Star V 164)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "165": {
+   "en": "Rare Fossil",
+   "page": "Rare Fossil (Shiny Star V 165)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "166": {
+   "en": "Metal Saucer",
+   "page": "Metal Saucer (Shiny Star V 166)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "167": {
+   "en": "Rotom Bike",
+   "page": "Rotom Bike (Shiny Star V 167)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "168": {
+   "en": "Rusted Sword",
+   "page": "Rusted Sword (Shiny Star V 168)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "169": {
+   "en": "Rusted Shield",
+   "page": "Rusted Shield (Shiny Star V 169)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "170": {
+   "en": "Cape of Toughness",
+   "page": "Cape of Toughness (Shiny Star V 170)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "171": {
+   "en": "Air Balloon",
+   "page": "Air Balloon (Shiny Star V 171)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "172": {
+   "en": "Bird Keeper",
+   "page": "Bird Keeper (Shiny Star V 172)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "173": {
+   "en": "Piers",
+   "page": "Piers (Shiny Star V 173)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "174": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Shiny Star V 174)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "175": {
+   "en": "Ball Guy",
+   "page": "Ball Guy (Shiny Star V 175)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "176": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (Shiny Star V 176)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "177": {
+   "en": "Marnie",
+   "page": "Marnie (Shiny Star V 177)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "178": {
+   "en": "Rose",
+   "page": "Rose (Shiny Star V 178)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "179": {
+   "en": "Turffield Stadium",
+   "page": "Turffield Stadium (Shiny Star V 179)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "180": {
+   "en": "Training Court",
+   "page": "Training Court (Shiny Star V 180)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "181": {
+   "en": "Glimwood Tangle",
+   "page": "Glimwood Tangle (Shiny Star V 181)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "182": {
+   "en": "Rose Tower",
+   "page": "Rose Tower (Shiny Star V 182)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "183": {
+   "en": "Heat",
+   "page": "Heat R Energy (Shiny Star V 183)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "184": {
+   "en": "Speed",
+   "page": "Speed L Energy (Shiny Star V 184)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "185": {
+   "en": "Horror",
+   "page": "Horror P Energy (Shiny Star V 185)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "186": {
+   "en": "Hiding",
+   "page": "Hiding D Energy (Shiny Star V 186)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "187": {
+   "en": "Aurora Energy",
+   "page": "Aurora Energy (Shiny Star V 187)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "188": {
+   "en": "Capture Energy",
+   "page": "Capture Energy (Shiny Star V 188)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "189": {
+   "en": "Twin Energy",
+   "page": "Twin Energy (Shiny Star V 189)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "190": {
+   "en": "Powerful",
+   "page": "Powerful C Energy (Shiny Star V 190)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "191": {
+   "en": "Cara Liss",
+   "page": "Cara Liss (Shiny Star V 191)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "192": {
+   "en": "Gym Trainer",
+   "page": "Gym Trainer (Shiny Star V 192)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "193": {
+   "en": "Bird Keeper",
+   "page": "Bird Keeper (Shiny Star V 193)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "194": {
+   "en": "Piers",
+   "page": "Piers (Shiny Star V 194)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "195": {
+   "en": "Skyla",
+   "page": "Skyla (Shiny Star V 195)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "196": {
+   "en": "Ball Guy",
+   "page": "Ball Guy (Shiny Star V 196)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "197": {
+   "en": "Poké Kid",
+   "page": "Poké Kid (Shiny Star V 197)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "198": {
+   "en": "Marnie",
+   "page": "Marnie (Shiny Star V 198)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "199": {
+   "en": "Rose",
+   "page": "Rose (Shiny Star V 199)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "200": {
+   "en": "Rowlet",
+   "page": "Rowlet (Shiny Star V 200)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "201": {
+   "en": "Dartrix",
+   "page": "Dartrix (Shiny Star V 201)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "202": {
+   "en": "Decidueye",
+   "page": "Decidueye (Shiny Star V 202)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "203": {
+   "en": "Grookey",
+   "page": "Grookey (Shiny Star V 203)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "204": {
+   "en": "Thwackey",
+   "page": "Thwackey (Shiny Star V 204)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "205": {
+   "en": "Rillaboom",
+   "page": "Rillaboom (Shiny Star V 205)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "206": {
+   "en": "Blipbug",
+   "page": "Blipbug (Shiny Star V 206)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "207": {
+   "en": "Dottler",
+   "page": "Dottler (Shiny Star V 207)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "208": {
+   "en": "Orbeetle",
+   "page": "Orbeetle (Shiny Star V 208)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "209": {
+   "en": "Gossifleur",
+   "page": "Gossifleur (Shiny Star V 209)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "210": {
+   "en": "Eldegoss",
+   "page": "Eldegoss (Shiny Star V 210)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "211": {
+   "en": "Applin",
+   "page": "Applin (Shiny Star V 211)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "212": {
+   "en": "Flapple",
+   "page": "Flapple (Shiny Star V 212)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "213": {
+   "en": "Appletun",
+   "page": "Appletun (Shiny Star V 213)",
+   "type": "Grass",
+   "rarity": "S",
+   "mark": ""
+  },
+  "214": {
+   "en": "Scorbunny",
+   "page": "Scorbunny (Shiny Star V 214)",
+   "type": "Fire",
+   "rarity": "S",
+   "mark": ""
+  },
+  "215": {
+   "en": "Raboot",
+   "page": "Raboot (Shiny Star V 215)",
+   "type": "Fire",
+   "rarity": "S",
+   "mark": ""
+  },
+  "216": {
+   "en": "Cinderace",
+   "page": "Cinderace (Shiny Star V 216)",
+   "type": "Fire",
+   "rarity": "S",
+   "mark": ""
+  },
+  "217": {
+   "en": "Sizzlipede",
+   "page": "Sizzlipede (Shiny Star V 217)",
+   "type": "Fire",
+   "rarity": "S",
+   "mark": ""
+  },
+  "218": {
+   "en": "Centiskorch",
+   "page": "Centiskorch (Shiny Star V 218)",
+   "type": "Fire",
+   "rarity": "S",
+   "mark": ""
+  },
+  "219": {
+   "en": "Galarian Mr. Mime",
+   "page": "Galarian Mr. Mime (Shiny Star V 219)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "220": {
+   "en": "Galarian Mr. Rime",
+   "page": "Galarian Mr. Rime (Shiny Star V 220)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "221": {
+   "en": "Suicune",
+   "page": "Suicune (Shiny Star V 221)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "222": {
+   "en": "Galarian Darumaka",
+   "page": "Galarian Darumaka (Shiny Star V 222)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "223": {
+   "en": "Galarian Darmanitan",
+   "page": "Galarian Darmanitan (Shiny Star V 223)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "224": {
+   "en": "Sobble",
+   "page": "Sobble (Shiny Star V 224)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "225": {
+   "en": "Drizzile",
+   "page": "Drizzile (Shiny Star V 225)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "226": {
+   "en": "Inteleon",
+   "page": "Inteleon (Shiny Star V 226)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "227": {
+   "en": "Chewtle",
+   "page": "Chewtle (Shiny Star V 227)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "228": {
+   "en": "Drednaw",
+   "page": "Drednaw (Shiny Star V 228)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "229": {
+   "en": "Cramorant",
+   "page": "Cramorant (Shiny Star V 229)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "230": {
+   "en": "Arrokuda",
+   "page": "Arrokuda (Shiny Star V 230)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "231": {
+   "en": "Barraskewda",
+   "page": "Barraskewda (Shiny Star V 231)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "232": {
+   "en": "Snom",
+   "page": "Snom (Shiny Star V 232)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "233": {
+   "en": "Frosmoth",
+   "page": "Frosmoth (Shiny Star V 233)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "234": {
+   "en": "Eiscue",
+   "page": "Eiscue (Shiny Star V 234)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "235": {
+   "en": "Dracovish",
+   "page": "Dracovish (Shiny Star V 235)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "236": {
+   "en": "Arctovish",
+   "page": "Arctovish (Shiny Star V 236)",
+   "type": "Water",
+   "rarity": "S",
+   "mark": ""
+  },
+  "237": {
+   "en": "Rotom",
+   "page": "Rotom (Shiny Star V 237)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "238": {
+   "en": "Yamper",
+   "page": "Yamper (Shiny Star V 238)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "239": {
+   "en": "Boltund",
+   "page": "Boltund (Shiny Star V 239)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "240": {
+   "en": "Toxel",
+   "page": "Toxel (Shiny Star V 240)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "241": {
+   "en": "Toxtricity",
+   "page": "Toxtricity (Shiny Star V 241)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "242": {
+   "en": "Pincurchin",
+   "page": "Pincurchin (Shiny Star V 242)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "243": {
+   "en": "Morpeko",
+   "page": "Morpeko (Shiny Star V 243)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "244": {
+   "en": "Dracozolt",
+   "page": "Dracozolt (Shiny Star V 244)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "245": {
+   "en": "Arctozolt",
+   "page": "Arctozolt (Shiny Star V 245)",
+   "type": "Lightning",
+   "rarity": "S",
+   "mark": ""
+  },
+  "246": {
+   "en": "Galarian Ponyta",
+   "page": "Galarian Ponyta (Shiny Star V 246)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "247": {
+   "en": "Galarian Rapidash",
+   "page": "Galarian Rapidash (Shiny Star V 247)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "248": {
+   "en": "Galarian Corsola",
+   "page": "Galarian Corsola (Shiny Star V 248)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "249": {
+   "en": "Galarian Cursola",
+   "page": "Galarian Cursola (Shiny Star V 249)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "250": {
+   "en": "Dedenne",
+   "page": "Dedenne (Shiny Star V 250)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "251": {
+   "en": "Sinistea",
+   "page": "Sinistea (Shiny Star V 251)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "252": {
+   "en": "Polteageist",
+   "page": "Polteageist (Shiny Star V 252)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "253": {
+   "en": "Hatenna",
+   "page": "Hatenna (Shiny Star V 253)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "254": {
+   "en": "Hattrem",
+   "page": "Hattrem (Shiny Star V 254)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "255": {
+   "en": "Hatterene",
+   "page": "Hatterene (Shiny Star V 255)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "256": {
+   "en": "Milcery",
+   "page": "Milcery (Shiny Star V 256)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "257": {
+   "en": "Alcremie",
+   "page": "Alcremie (Shiny Star V 257)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "258": {
+   "en": "Indeedee",
+   "page": "Indeedee (Shiny Star V 258)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "259": {
+   "en": "Dreepy",
+   "page": "Dreepy (Shiny Star V 259)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "260": {
+   "en": "Drakloak",
+   "page": "Drakloak (Shiny Star V 260)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "261": {
+   "en": "Dragapult",
+   "page": "Dragapult (Shiny Star V 261)",
+   "type": "Psychic",
+   "rarity": "S",
+   "mark": ""
+  },
+  "262": {
+   "en": "Galarian Farfetch'd",
+   "page": "Galarian Farfetch'd (Shiny Star V 262)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "263": {
+   "en": "Galarian Sirfetch'd",
+   "page": "Galarian Sirfetch'd (Shiny Star V 263)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "264": {
+   "en": "Galarian Yamask",
+   "page": "Galarian Yamask (Shiny Star V 264)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "265": {
+   "en": "Galarian Runerigus",
+   "page": "Galarian Runerigus (Shiny Star V 265)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "266": {
+   "en": "Rolycoly",
+   "page": "Rolycoly (Shiny Star V 266)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "267": {
+   "en": "Carkol",
+   "page": "Carkol (Shiny Star V 267)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "268": {
+   "en": "Coalossal",
+   "page": "Coalossal (Shiny Star V 268)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "269": {
+   "en": "Silicobra",
+   "page": "Silicobra (Shiny Star V 269)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "270": {
+   "en": "Sandaconda",
+   "page": "Sandaconda (Shiny Star V 270)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "271": {
+   "en": "Clobbopus",
+   "page": "Clobbopus (Shiny Star V 271)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "272": {
+   "en": "Grapploct",
+   "page": "Grapploct (Shiny Star V 272)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "273": {
+   "en": "Falinks",
+   "page": "Falinks (Shiny Star V 273)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "274": {
+   "en": "Stonjourner",
+   "page": "Stonjourner (Shiny Star V 274)",
+   "type": "Fighting",
+   "rarity": "S",
+   "mark": ""
+  },
+  "275": {
+   "en": "Koffing",
+   "page": "Koffing (Shiny Star V 275)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "276": {
+   "en": "Galarian Weezing",
+   "page": "Galarian Weezing (Shiny Star V 276)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "277": {
+   "en": "Galarian Zigzagoon",
+   "page": "Galarian Zigzagoon (Shiny Star V 277)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "278": {
+   "en": "Galarian Linoone",
+   "page": "Galarian Linoone (Shiny Star V 278)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "279": {
+   "en": "Galarian Obstagoon",
+   "page": "Galarian Obstagoon (Shiny Star V 279)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "280": {
+   "en": "Nickit",
+   "page": "Nickit (Shiny Star V 280)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "281": {
+   "en": "Thievul",
+   "page": "Thievul (Shiny Star V 281)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "282": {
+   "en": "Impidimp",
+   "page": "Impidimp (Shiny Star V 282)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "283": {
+   "en": "Morgrem",
+   "page": "Morgrem (Shiny Star V 283)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "284": {
+   "en": "Grimmsnarl",
+   "page": "Grimmsnarl (Shiny Star V 284)",
+   "type": "Darkness",
+   "rarity": "S",
+   "mark": ""
+  },
+  "285": {
+   "en": "Galarian Meowth",
+   "page": "Galarian Meowth (Shiny Star V 285)",
+   "type": "Metal",
+   "rarity": "S",
+   "mark": ""
+  },
+  "286": {
+   "en": "Galarian Perrserker",
+   "page": "Galarian Perrserker (Shiny Star V 286)",
+   "type": "Metal",
+   "rarity": "S",
+   "mark": ""
+  },
+  "287": {
+   "en": "Galarian Stunfisk",
+   "page": "Galarian Stunfisk (Shiny Star V 287)",
+   "type": "Metal",
+   "rarity": "S",
+   "mark": ""
+  },
+  "288": {
+   "en": "Corviknight",
+   "page": "Corviknight (Shiny Star V 288)",
+   "type": "Metal",
+   "rarity": "S",
+   "mark": ""
+  },
+  "289": {
+   "en": "Cufant",
+   "page": "Cufant (Shiny Star V 289)",
+   "type": "Metal",
+   "rarity": "S",
+   "mark": ""
+  },
+  "290": {
+   "en": "Copperajah",
+   "page": "Copperajah (Shiny Star V 290)",
+   "type": "Metal",
+   "rarity": "S",
+   "mark": ""
+  },
+  "291": {
+   "en": "Duraludon",
+   "page": "Duraludon (Shiny Star V 291)",
+   "type": "Metal",
+   "rarity": "S",
+   "mark": ""
+  },
+  "292": {
+   "en": "Minccino",
+   "page": "Minccino (Shiny Star V 292)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "293": {
+   "en": "Cinccino",
+   "page": "Cinccino (Shiny Star V 293)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "294": {
+   "en": "Ducklett",
+   "page": "Ducklett (Shiny Star V 294)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "295": {
+   "en": "Swanna",
+   "page": "Swanna (Shiny Star V 295)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "296": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (Shiny Star V 296)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "297": {
+   "en": "Oranguru",
+   "page": "Oranguru (Shiny Star V 297)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "298": {
+   "en": "Skwovet",
+   "page": "Skwovet (Shiny Star V 298)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "299": {
+   "en": "Greedent",
+   "page": "Greedent (Shiny Star V 299)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "300": {
+   "en": "Rookidee",
+   "page": "Rookidee (Shiny Star V 300)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "301": {
+   "en": "Corvisquire",
+   "page": "Corvisquire (Shiny Star V 301)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "302": {
+   "en": "Wooloo",
+   "page": "Wooloo (Shiny Star V 302)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "303": {
+   "en": "Dubwool",
+   "page": "Dubwool (Shiny Star V 303)",
+   "type": "Colorless",
+   "rarity": "S",
+   "mark": ""
+  },
+  "304": {
+   "en": "Rillaboom",
+   "page": "Rillaboom V (Shiny Star V 304)",
+   "type": "Grass",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "305": {
+   "en": "Rillaboom",
+   "page": "Rillaboom VMAX (Shiny Star V 305)",
+   "type": "Grass",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "306": {
+   "en": "Eldegoss",
+   "page": "Eldegoss V (Shiny Star V 306)",
+   "type": "Grass",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "307": {
+   "en": "Charizard",
+   "page": "Charizard V (Shiny Star V 307)",
+   "type": "Fire",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "308": {
+   "en": "Charizard",
+   "page": "Charizard VMAX (Shiny Star V 308)",
+   "type": "Fire",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "309": {
+   "en": "Centiskorch",
+   "page": "Centiskorch V (Shiny Star V 309)",
+   "type": "Fire",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "310": {
+   "en": "Centiskorch",
+   "page": "Centiskorch VMAX (Shiny Star V 310)",
+   "type": "Fire",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "311": {
+   "en": "Lapras",
+   "page": "Lapras V (Shiny Star V 311)",
+   "type": "Water",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "312": {
+   "en": "Lapras",
+   "page": "Lapras VMAX (Shiny Star V 312)",
+   "type": "Water",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "313": {
+   "en": "Boltund",
+   "page": "Boltund V (Shiny Star V 313)",
+   "type": "Lightning",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "314": {
+   "en": "Toxtricity",
+   "page": "Toxtricity V (Shiny Star V 314)",
+   "type": "Lightning",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "315": {
+   "en": "Toxtricity",
+   "page": "Toxtricity VMAX (Shiny Star V 315)",
+   "type": "Lightning",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "316": {
+   "en": "Indeedee",
+   "page": "Indeedee V (Shiny Star V 316)",
+   "type": "Psychic",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "317": {
+   "en": "Dragapult",
+   "page": "Dragapult V (Shiny Star V 317)",
+   "type": "Psychic",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "318": {
+   "en": "Dragapult",
+   "page": "Dragapult VMAX (Shiny Star V 318)",
+   "type": "Psychic",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "319": {
+   "en": "Falinks",
+   "page": "Falinks V (Shiny Star V 319)",
+   "type": "Fighting",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "320": {
+   "en": "Crobat",
+   "page": "Crobat VMAX (Shiny Star V 320)",
+   "type": "Darkness",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "321": {
+   "en": "Grimmsnarl",
+   "page": "Grimmsnarl V (Shiny Star V 321)",
+   "type": "Darkness",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "322": {
+   "en": "Grimmsnarl",
+   "page": "Grimmsnarl VMAX (Shiny Star V 322)",
+   "type": "Darkness",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "323": {
+   "en": "Ditto",
+   "page": "Ditto V (Shiny Star V 323)",
+   "type": "Colorless",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "324": {
+   "en": "Ditto",
+   "page": "Ditto VMAX (Shiny Star V 324)",
+   "type": "Colorless",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "325": {
+   "en": "Dubwool",
+   "page": "Dubwool V (Shiny Star V 325)",
+   "type": "Colorless",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "326": {
+   "en": "Cramorant",
+   "page": "Cramorant V (Shiny Star V 326)",
+   "type": "Colorless",
+   "rarity": "SSR",
+   "mark": ""
+  },
+  "327": {
+   "en": "Eternatus",
+   "page": "Eternatus V (Shiny Star V 327)",
+   "type": "Darkness",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "328": {
+   "en": "Eternatus",
+   "page": "Eternatus VMAX (Shiny Star V 328)",
+   "type": "Darkness",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "329": {
+   "en": "Zacian",
+   "page": "Zacian V (Shiny Star V 329)",
+   "type": "Metal",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "330": {
+   "en": "Zamazenta",
+   "page": "Zamazenta V (Shiny Star V 330)",
+   "type": "Metal",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "sv1": {
+   "en": "Rowlet",
+   "page": "Rowlet (Shining Fates SV1)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv2": {
+   "en": "Dartrix",
+   "page": "Dartrix (Shining Fates SV2)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv3": {
+   "en": "Decidueye",
+   "page": "Decidueye (Shining Fates SV3)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv4": {
+   "en": "Grookey",
+   "page": "Grookey (Shining Fates SV4)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv5": {
+   "en": "Thwackey",
+   "page": "Thwackey (Shining Fates SV5)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv6": {
+   "en": "Rillaboom",
+   "page": "Rillaboom (Shining Fates SV6)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv7": {
+   "en": "Blipbug",
+   "page": "Blipbug (Shining Fates SV7)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv8": {
+   "en": "Dottler",
+   "page": "Dottler (Shining Fates SV8)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv9": {
+   "en": "Orbeetle",
+   "page": "Orbeetle (Shining Fates SV9)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv10": {
+   "en": "Gossifleur",
+   "page": "Gossifleur (Shining Fates SV10)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv11": {
+   "en": "Eldegoss",
+   "page": "Eldegoss (Shining Fates SV11)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv12": {
+   "en": "Applin",
+   "page": "Applin (Shining Fates SV12)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv13": {
+   "en": "Flapple",
+   "page": "Flapple (Shining Fates SV13)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv14": {
+   "en": "Appletun",
+   "page": "Appletun (Shining Fates SV14)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv15": {
+   "en": "Scorbunny",
+   "page": "Scorbunny (Shining Fates SV15)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv16": {
+   "en": "Raboot",
+   "page": "Raboot (Shining Fates SV16)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv17": {
+   "en": "Cinderace",
+   "page": "Cinderace (Shining Fates SV17)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv18": {
+   "en": "Sizzlipede",
+   "page": "Sizzlipede (Shining Fates SV18)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv19": {
+   "en": "Centiskorch",
+   "page": "Centiskorch (Shining Fates SV19)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv20": {
+   "en": "Galarian Mr. Mime",
+   "page": "Galarian Mr. Mime (Shining Fates SV20)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv21": {
+   "en": "Galarian Mr. Rime",
+   "page": "Galarian Mr. Rime (Shining Fates SV21)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv22": {
+   "en": "Suicune",
+   "page": "Suicune (Shining Fates SV22)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv23": {
+   "en": "Galarian Darumaka",
+   "page": "Galarian Darumaka (Shining Fates SV23)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv24": {
+   "en": "Galarian Darmanitan",
+   "page": "Galarian Darmanitan (Shining Fates SV24)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv25": {
+   "en": "Sobble",
+   "page": "Sobble (Shining Fates SV25)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv26": {
+   "en": "Drizzile",
+   "page": "Drizzile (Shining Fates SV26)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv27": {
+   "en": "Inteleon",
+   "page": "Inteleon (Shining Fates SV27)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv28": {
+   "en": "Chewtle",
+   "page": "Chewtle (Shining Fates SV28)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv29": {
+   "en": "Drednaw",
+   "page": "Drednaw (Shining Fates SV29)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv30": {
+   "en": "Cramorant",
+   "page": "Cramorant (Shining Fates SV30)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv31": {
+   "en": "Arrokuda",
+   "page": "Arrokuda (Shining Fates SV31)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv32": {
+   "en": "Barraskewda",
+   "page": "Barraskewda (Shining Fates SV32)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv33": {
+   "en": "Snom",
+   "page": "Snom (Shining Fates SV33)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv34": {
+   "en": "Frosmoth",
+   "page": "Frosmoth (Shining Fates SV34)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv35": {
+   "en": "Eiscue",
+   "page": "Eiscue (Shining Fates SV35)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv36": {
+   "en": "Dracovish",
+   "page": "Dracovish (Shining Fates SV36)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv37": {
+   "en": "Arctovish",
+   "page": "Arctovish (Shining Fates SV37)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv38": {
+   "en": "Rotom",
+   "page": "Rotom (Shining Fates SV38)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv39": {
+   "en": "Yamper",
+   "page": "Yamper (Shining Fates SV39)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv40": {
+   "en": "Boltund",
+   "page": "Boltund (Shining Fates SV40)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv41": {
+   "en": "Toxel",
+   "page": "Toxel (Shining Fates SV41)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv42": {
+   "en": "Toxtricity",
+   "page": "Toxtricity (Shining Fates SV42)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv43": {
+   "en": "Pincurchin",
+   "page": "Pincurchin (Shining Fates SV43)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv44": {
+   "en": "Morpeko",
+   "page": "Morpeko (Shining Fates SV44)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv45": {
+   "en": "Dracozolt",
+   "page": "Dracozolt (Shining Fates SV45)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv46": {
+   "en": "Arctozolt",
+   "page": "Arctozolt (Shining Fates SV46)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv47": {
+   "en": "Galarian Ponyta",
+   "page": "Galarian Ponyta (Shining Fates SV47)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv48": {
+   "en": "Galarian Rapidash",
+   "page": "Galarian Rapidash (Shining Fates SV48)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv49": {
+   "en": "Galarian Corsola",
+   "page": "Galarian Corsola (Shining Fates SV49)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv50": {
+   "en": "Galarian Cursola",
+   "page": "Galarian Cursola (Shining Fates SV50)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv51": {
+   "en": "Dedenne",
+   "page": "Dedenne (Shining Fates SV51)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv52": {
+   "en": "Sinistea",
+   "page": "Sinistea (Shining Fates SV52)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv53": {
+   "en": "Polteageist",
+   "page": "Polteageist (Shining Fates SV53)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv54": {
+   "en": "Hatenna",
+   "page": "Hatenna (Shining Fates SV54)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv55": {
+   "en": "Hattrem",
+   "page": "Hattrem (Shining Fates SV55)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv56": {
+   "en": "Hatterene",
+   "page": "Hatterene (Shining Fates SV56)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv57": {
+   "en": "Milcery",
+   "page": "Milcery (Shining Fates SV57)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv58": {
+   "en": "Alcremie",
+   "page": "Alcremie (Shining Fates SV58)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv59": {
+   "en": "Indeedee",
+   "page": "Indeedee (Shining Fates SV59)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv60": {
+   "en": "Dreepy",
+   "page": "Dreepy (Shining Fates SV60)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv61": {
+   "en": "Drakloak",
+   "page": "Drakloak (Shining Fates SV61)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv62": {
+   "en": "Dragapult",
+   "page": "Dragapult (Shining Fates SV62)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv63": {
+   "en": "Galarian Farfetch'd",
+   "page": "Galarian Farfetch'd (Shining Fates SV63)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv64": {
+   "en": "Galarian Sirfetch'd",
+   "page": "Galarian Sirfetch'd (Shining Fates SV64)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv65": {
+   "en": "Galarian Yamask",
+   "page": "Galarian Yamask (Shining Fates SV65)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv66": {
+   "en": "Galarian Runerigus",
+   "page": "Galarian Runerigus (Shining Fates SV66)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv67": {
+   "en": "Rolycoly",
+   "page": "Rolycoly (Shining Fates SV67)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv68": {
+   "en": "Carkol",
+   "page": "Carkol (Shining Fates SV68)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv69": {
+   "en": "Coalossal",
+   "page": "Coalossal (Shining Fates SV69)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv70": {
+   "en": "Silicobra",
+   "page": "Silicobra (Shining Fates SV70)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv71": {
+   "en": "Sandaconda",
+   "page": "Sandaconda (Shining Fates SV71)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv72": {
+   "en": "Clobbopus",
+   "page": "Clobbopus (Shining Fates SV72)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv73": {
+   "en": "Grapploct",
+   "page": "Grapploct (Shining Fates SV73)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv74": {
+   "en": "Falinks",
+   "page": "Falinks (Shining Fates SV74)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv75": {
+   "en": "Stonjourner",
+   "page": "Stonjourner (Shining Fates SV75)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv76": {
+   "en": "Koffing",
+   "page": "Koffing (Shining Fates SV76)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv77": {
+   "en": "Galarian Weezing",
+   "page": "Galarian Weezing (Shining Fates SV77)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv78": {
+   "en": "Galarian Zigzagoon",
+   "page": "Galarian Zigzagoon (Shining Fates SV78)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv79": {
+   "en": "Galarian Linoone",
+   "page": "Galarian Linoone (Shining Fates SV79)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv80": {
+   "en": "Galarian Obstagoon",
+   "page": "Galarian Obstagoon (Shining Fates SV80)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv81": {
+   "en": "Nickit",
+   "page": "Nickit (Shining Fates SV81)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv82": {
+   "en": "Thievul",
+   "page": "Thievul (Shining Fates SV82)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv83": {
+   "en": "Impidimp",
+   "page": "Impidimp (Shining Fates SV83)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv84": {
+   "en": "Morgrem",
+   "page": "Morgrem (Shining Fates SV84)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv85": {
+   "en": "Grimmsnarl",
+   "page": "Grimmsnarl (Shining Fates SV85)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv86": {
+   "en": "Galarian Meowth",
+   "page": "Galarian Meowth (Shining Fates SV86)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv87": {
+   "en": "Galarian Perrserker",
+   "page": "Galarian Perrserker (Shining Fates SV87)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv88": {
+   "en": "Galarian Stunfisk",
+   "page": "Galarian Stunfisk (Shining Fates SV88)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv89": {
+   "en": "Corviknight",
+   "page": "Corviknight (Shining Fates SV89)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv90": {
+   "en": "Cufant",
+   "page": "Cufant (Shining Fates SV90)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv91": {
+   "en": "Copperajah",
+   "page": "Copperajah (Shining Fates SV91)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv92": {
+   "en": "Duraludon",
+   "page": "Duraludon (Shining Fates SV92)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv93": {
+   "en": "Minccino",
+   "page": "Minccino (Shining Fates SV93)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv94": {
+   "en": "Cinccino",
+   "page": "Cinccino (Shining Fates SV94)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv95": {
+   "en": "Ducklett",
+   "page": "Ducklett (Shining Fates SV95)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv96": {
+   "en": "Swanna",
+   "page": "Swanna (Shining Fates SV96)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv97": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (Shining Fates SV97)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv98": {
+   "en": "Oranguru",
+   "page": "Oranguru (Shining Fates SV98)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv99": {
+   "en": "Skwovet",
+   "page": "Skwovet (Shining Fates SV99)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv100": {
+   "en": "Greedent",
+   "page": "Greedent (Shining Fates SV100)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv101": {
+   "en": "Rookidee",
+   "page": "Rookidee (Shining Fates SV101)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv102": {
+   "en": "Corvisquire",
+   "page": "Corvisquire (Shining Fates SV102)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv103": {
+   "en": "Wooloo",
+   "page": "Wooloo (Shining Fates SV103)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv104": {
+   "en": "Dubwool",
+   "page": "Dubwool (Shining Fates SV104)",
+   "type": "Rare Shiny",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv105": {
+   "en": "Rillaboom",
+   "page": "Rillaboom V (Shining Fates SV105)",
+   "type": "Rare Shiny GX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv106": {
+   "en": "Rillaboom",
+   "page": "Rillaboom VMAX (Shining Fates SV106)",
+   "type": "Rare Shiny GX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv107": {
+   "en": "Charizard",
+   "page": "Charizard VMAX (Shining Fates SV107)",
+   "type": "Rare Shiny GX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv108": {
+   "en": "Centiskorch",
+   "page": "Centiskorch V (Shining Fates SV108)",
+   "type": "Rare Shiny GX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv109": {
+   "en": "Centiskorch",
+   "page": "Centiskorch VMAX (Shining Fates SV109)",
+   "type": "Rare Shiny GX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv110": {
+   "en": "Lapras",
+   "page": "Lapras V (Shining Fates SV110)",
+   "type": "Rare Shiny GX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv111": {
+   "en": "Lapras",
+   "page": "Lapras VMAX (Shining Fates SV111)",
+   "type": "Rare Shiny GX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv112": {
+   "en": "Toxtricity",
+   "page": "Toxtricity V (Shining Fates SV112)",
+   "type": "Rare Shiny GX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv113": {
+   "en": "Toxtricity",
+   "page": "Toxtricity VMAX (Shining Fates SV113)",
+   "type": "Rare Shiny GX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv114": {
+   "en": "Indeedee",
+   "page": "Indeedee V (Shining Fates SV114)",
+   "type": "Rare Shiny GX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv115": {
+   "en": "Falinks",
+   "page": "Falinks V (Shining Fates SV115)",
+   "type": "Rare Shiny GX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv116": {
+   "en": "Grimmsnarl",
+   "page": "Grimmsnarl V (Shining Fates SV116)",
+   "type": "Rare Shiny GX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv117": {
+   "en": "Grimmsnarl",
+   "page": "Grimmsnarl VMAX (Shining Fates SV117)",
+   "type": "Rare Shiny GX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv118": {
+   "en": "Ditto",
+   "page": "Ditto V (Shining Fates SV118)",
+   "type": "Rare Shiny GX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv119": {
+   "en": "Ditto",
+   "page": "Ditto VMAX (Shining Fates SV119)",
+   "type": "Rare Shiny GX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv120": {
+   "en": "Dubwool",
+   "page": "Dubwool V (Shining Fates SV120)",
+   "type": "Rare Shiny GX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv121": {
+   "en": "Eternatus",
+   "page": "Eternatus V (Shining Fates SV121)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sv122": {
+   "en": "Eternatus",
+   "page": "Eternatus VMAX (Shining Fates SV122)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

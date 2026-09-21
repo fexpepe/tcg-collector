@@ -1,0 +1,34 @@
+{
+ "page": "Pikachu's New Friends (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Rowlet",
+   "page": "Rowlet (Pikachu's New Friends 1)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "2": {
+   "en": "Litten",
+   "page": "Litten (Pikachu's New Friends 2)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "3": {
+   "en": "Popplio",
+   "page": "Popplio (Pikachu's New Friends 3)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Pikachu",
+   "page": "Pikachu (Pikachu's New Friends 4)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  }
+ }
+}

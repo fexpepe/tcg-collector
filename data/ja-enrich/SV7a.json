@@ -1,0 +1,664 @@
+{
+ "page": "Paradise Dragona (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Paradise Dragona 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Morelull",
+   "page": "Morelull (Paradise Dragona 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Shiinotic",
+   "page": "Shiinotic (Paradise Dragona 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Dhelmise",
+   "page": "Dhelmise (Paradise Dragona 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Zarude",
+   "page": "Zarude (Paradise Dragona 5)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "6": {
+   "en": "Castform Sunny Form",
+   "page": "Castform Sunny Form (Paradise Dragona 6)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Pansear",
+   "page": "Pansear (Paradise Dragona 7)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Simisear",
+   "page": "Simisear (Paradise Dragona 8)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Gouging Fire",
+   "page": "Gouging Fire (Paradise Dragona 9)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "10": {
+   "en": "Cryogonal",
+   "page": "Cryogonal (Paradise Dragona 10)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Black Kyurem",
+   "page": "Black Kyurem ex (Paradise Dragona 11)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "12": {
+   "en": "Bruxish",
+   "page": "Bruxish (Paradise Dragona 12)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "13": {
+   "en": "Quaxly",
+   "page": "Quaxly (Paradise Dragona 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Quaxwell",
+   "page": "Quaxwell (Paradise Dragona 14)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Quaquaval",
+   "page": "Quaquaval (Paradise Dragona 15)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Cetoddle",
+   "page": "Cetoddle (Paradise Dragona 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Cetitan",
+   "page": "Cetitan (Paradise Dragona 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Smoochum",
+   "page": "Smoochum (Paradise Dragona 18)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Latias",
+   "page": "Latias ex (Paradise Dragona 19)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "20": {
+   "en": "Latios",
+   "page": "Latios (Paradise Dragona 20)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Tapu Lele",
+   "page": "Tapu Lele (Paradise Dragona 21)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Flittle",
+   "page": "Flittle (Paradise Dragona 22)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Espathra",
+   "page": "Espathra (Paradise Dragona 23)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Gimmighoul",
+   "page": "Gimmighoul (Paradise Dragona 24)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Trapinch",
+   "page": "Trapinch (Paradise Dragona 25)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Vibrava",
+   "page": "Vibrava (Paradise Dragona 26)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Flygon",
+   "page": "Flygon ex (Paradise Dragona 27)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "28": {
+   "en": "Drilbur",
+   "page": "Drilbur (Paradise Dragona 28)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Excadrill",
+   "page": "Excadrill (Paradise Dragona 29)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Landorus",
+   "page": "Landorus (Paradise Dragona 30)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "31": {
+   "en": "Passimian",
+   "page": "Passimian (Paradise Dragona 31)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Clobbopus",
+   "page": "Clobbopus (Paradise Dragona 32)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Grapploct",
+   "page": "Grapploct (Paradise Dragona 33)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Skarmory",
+   "page": "Skarmory (Paradise Dragona 34)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Klefki",
+   "page": "Klefki (Paradise Dragona 35)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Duraludon",
+   "page": "Duraludon (Paradise Dragona 36)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Archaludon",
+   "page": "Archaludon ex (Paradise Dragona 37)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "38": {
+   "en": "Gholdengo",
+   "page": "Gholdengo (Paradise Dragona 38)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Iron Crown",
+   "page": "Iron Crown (Paradise Dragona 39)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "40": {
+   "en": "Alolan Exeggutor",
+   "page": "Alolan Exeggutor ex (Paradise Dragona 40)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "41": {
+   "en": "Altaria",
+   "page": "Altaria (Paradise Dragona 41)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "42": {
+   "en": "Dialga",
+   "page": "Dialga (Paradise Dragona 42)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "43": {
+   "en": "Palkia",
+   "page": "Palkia (Paradise Dragona 43)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Turtonator",
+   "page": "Turtonator (Paradise Dragona 44)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Applin",
+   "page": "Applin (Paradise Dragona 45)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Flapple",
+   "page": "Flapple (Paradise Dragona 46)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Appletun",
+   "page": "Appletun (Paradise Dragona 47)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Swablu",
+   "page": "Swablu (Paradise Dragona 48)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Rufflet",
+   "page": "Rufflet (Paradise Dragona 49)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Braviary",
+   "page": "Braviary (Paradise Dragona 50)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Cyclizar",
+   "page": "Cyclizar ex (Paradise Dragona 51)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Energy Search Pro",
+   "page": "Energy Search Pro (Paradise Dragona 52)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "53": {
+   "en": "Call Bell",
+   "page": "Call Bell (Paradise Dragona 53)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Dusk Ball",
+   "page": "Dusk Ball (Paradise Dragona 54)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Meddling Memo",
+   "page": "Meddling Memo (Paradise Dragona 55)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "56": {
+   "en": "Megaton Blower",
+   "page": "Megaton Blower (Paradise Dragona 56)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "57": {
+   "en": "Dragon Elixir",
+   "page": "Dragon Elixir (Paradise Dragona 57)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Passho Berry",
+   "page": "Passho Berry (Paradise Dragona 58)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Counter Gain",
+   "page": "Counter Gain (Paradise Dragona 59)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Drayton",
+   "page": "Drayton (Paradise Dragona 60)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Surfer",
+   "page": "Surfer (Paradise Dragona 61)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Drasna",
+   "page": "Drasna (Paradise Dragona 62)",
+   "type": "Su",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Lisia's Appeal",
+   "page": "Lisia's Appeal (Paradise Dragona 63)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Enriching Energy",
+   "page": "Enriching Energy (Paradise Dragona 64)",
+   "type": "Colorless",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "65": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Paradise Dragona 65)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Shiinotic",
+   "page": "Shiinotic (Paradise Dragona 66)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Castform Sunny Form",
+   "page": "Castform Sunny Form (Paradise Dragona 67)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Bruxish",
+   "page": "Bruxish (Paradise Dragona 68)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Cetitan",
+   "page": "Cetitan (Paradise Dragona 69)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Latios",
+   "page": "Latios (Paradise Dragona 70)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Vibrava",
+   "page": "Vibrava (Paradise Dragona 71)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Clobbopus",
+   "page": "Clobbopus (Paradise Dragona 72)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Skarmory",
+   "page": "Skarmory (Paradise Dragona 73)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Flapple",
+   "page": "Flapple (Paradise Dragona 74)",
+   "type": "Dragon",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Appletun",
+   "page": "Appletun (Paradise Dragona 75)",
+   "type": "Dragon",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Braviary",
+   "page": "Braviary (Paradise Dragona 76)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Black Kyurem",
+   "page": "Black Kyurem ex (Paradise Dragona 77)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Latias",
+   "page": "Latias ex (Paradise Dragona 78)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Flygon",
+   "page": "Flygon ex (Paradise Dragona 79)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Archaludon",
+   "page": "Archaludon ex (Paradise Dragona 80)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Alolan Exeggutor",
+   "page": "Alolan Exeggutor ex (Paradise Dragona 81)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Cyclizar",
+   "page": "Cyclizar ex (Paradise Dragona 82)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Drayton",
+   "page": "Drayton (Paradise Dragona 83)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Surfer",
+   "page": "Surfer (Paradise Dragona 84)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Drasna",
+   "page": "Drasna (Paradise Dragona 85)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Lisia's Appeal",
+   "page": "Lisia's Appeal (Paradise Dragona 86)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Latias",
+   "page": "Latias ex (Paradise Dragona 87)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Archaludon",
+   "page": "Archaludon ex (Paradise Dragona 88)",
+   "type": "Metal",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Alolan Exeggutor",
+   "page": "Alolan Exeggutor ex (Paradise Dragona 89)",
+   "type": "Dragon",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Drayton",
+   "page": "Drayton (Paradise Dragona 90)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Lisia's Appeal",
+   "page": "Lisia's Appeal (Paradise Dragona 91)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Alolan Exeggutor",
+   "page": "Alolan Exeggutor ex (Paradise Dragona 92)",
+   "type": "Dragon",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Counter Gain",
+   "page": "Counter Gain (Paradise Dragona 93)",
+   "type": "PT",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Jet Energy",
+   "page": "Jet Energy (Paradise Dragona 94)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

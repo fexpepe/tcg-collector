@@ -1,0 +1,419 @@
+{
+ "page": "Sun & Moon Starter Set (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Pinsir",
+   "page": "Pinsir (Starter Set 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Rowlet",
+   "page": "Rowlet (Starter Set 2)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Dartrix",
+   "page": "Dartrix (Starter Set 3)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Decidueye",
+   "page": "Decidueye-GX (Starter Set 4)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Grubbin",
+   "page": "Grubbin (Starter Set 5)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Morelull",
+   "page": "Morelull (Starter Set 6)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Growlithe",
+   "page": "Growlithe (Starter Set 7)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Torkoal",
+   "page": "Torkoal (Starter Set 8)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Litten",
+   "page": "Litten (Starter Set 9)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Torracat",
+   "page": "Torracat (Starter Set 10)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Incineroar",
+   "page": "Incineroar-GX (Starter Set 11)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Popplio",
+   "page": "Popplio (Starter Set 12)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Brionne",
+   "page": "Brionne (Starter Set 13)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Primarina",
+   "page": "Primarina-GX (Starter Set 14)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Dewpider",
+   "page": "Dewpider (Starter Set 15)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Bruxish",
+   "page": "Bruxish (Starter Set 16)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Charjabug",
+   "page": "Charjabug (Starter Set 17)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Togedemaru",
+   "page": "Togedemaru (Starter Set 18)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Drowzee",
+   "page": "Drowzee (Starter Set 19)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Hypno",
+   "page": "Hypno (Starter Set 20)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Mareanie",
+   "page": "Mareanie (Starter Set 21)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Cosmog",
+   "page": "Cosmog (Starter Set 22)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Makuhita",
+   "page": "Makuhita (Starter Set 23)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Hariyama",
+   "page": "Hariyama (Starter Set 24)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Sandygast",
+   "page": "Sandygast (Starter Set 25)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Alolan Meowth",
+   "page": "Alolan Meowth (Starter Set 26)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Sandile",
+   "page": "Sandile (Starter Set 27)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Krokorok",
+   "page": "Krokorok (Starter Set 28)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Skarmory",
+   "page": "Skarmory (Starter Set 29)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Snubbull",
+   "page": "Snubbull (Starter Set 30)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Granbull",
+   "page": "Granbull (Starter Set 31)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Cutiefly",
+   "page": "Cutiefly (Starter Set 32)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (Starter Set 33)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Lillipup",
+   "page": "Lillipup (Starter Set 34)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Herdier",
+   "page": "Herdier (Starter Set 35)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Energy Retrieval",
+   "page": "Energy Retrieval (Starter Set 36)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (Starter Set 37)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Big Malasada",
+   "page": "Big Malasada (Starter Set 38)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Potion",
+   "page": "Potion (Starter Set 39)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "40": {
+   "en": "Crushing Hammer",
+   "page": "Crushing Hammer (Starter Set 40)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Great Ball",
+   "page": "Great Ball (Starter Set 41)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "42": {
+   "en": "Timer Ball",
+   "page": "Timer Ball (Starter Set 42)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Nest Ball",
+   "page": "Nest Ball (Starter Set 43)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Starter Set 44)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Starter Set 45)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Switch",
+   "page": "Switch (Starter Set 46)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (Starter Set 47)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Repel",
+   "page": "Repel (Starter Set 48)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "49": {
+   "en": "Poké Ball",
+   "page": "Poké Ball (Starter Set 49)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "50": {
+   "en": "Rotom Dex",
+   "page": "Rotom Dex (Starter Set 50)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "51": {
+   "en": "Exp. Share",
+   "page": "Exp. Share (Starter Set 51)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "52": {
+   "en": "Poison Barb",
+   "page": "Poison Barb (Starter Set 52)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "53": {
+   "en": "Ilima",
+   "page": "Ilima (Starter Set 53)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "54": {
+   "en": "Professor Kukui",
+   "page": "Professor Kukui (Starter Set 54)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "55": {
+   "en": "Team Skull Grunt",
+   "page": "Team Skull Grunt (Starter Set 55)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "56": {
+   "en": "Hau",
+   "page": "Hau (Starter Set 56)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "57": {
+   "en": "Lillie",
+   "page": "Lillie (Starter Set 57)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "58": {
+   "en": "Double Colorless Energy",
+   "page": "Double Colorless Energy (Starter Set 58)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "59": {
+   "en": "Rainbow Energy",
+   "page": "Rainbow Energy (Starter Set 59)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

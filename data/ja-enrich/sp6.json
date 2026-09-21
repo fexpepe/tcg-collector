@@ -1,0 +1,48 @@
+{
+ "page": "VSTAR Special Set (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Rotom",
+   "page": "Rotom V (VSTAR Special Set 1)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "2": {
+   "en": "Rotom",
+   "page": "Rotom VSTAR (VSTAR Special Set 2)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "3": {
+   "en": "Zacian",
+   "page": "Zacian V (VSTAR Special Set 3)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Zacian",
+   "page": "Zacian VSTAR (VSTAR Special Set 4)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "5": {
+   "en": "Zamazenta",
+   "page": "Zamazenta V (VSTAR Special Set 5)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "6": {
+   "en": "Zamazenta",
+   "page": "Zamazenta VSTAR (VSTAR Special Set 6)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  }
+ }
+}

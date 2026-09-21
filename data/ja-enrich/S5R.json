@@ -1,0 +1,1287 @@
+{
+ "page": "Rapid Strike Master (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Cacnea",
+   "page": "Cacnea (Single Strike Master 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Cacturne",
+   "page": "Cacturne (Single Strike Master 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Durant",
+   "page": "Durant (Single Strike Master 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Scatterbug",
+   "page": "Scatterbug (Single Strike Master 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Spewpa",
+   "page": "Spewpa (Single Strike Master 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Vivillon",
+   "page": "Vivillon (Single Strike Master 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Flapple",
+   "page": "Flapple V (Single Strike Master 7)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "8": {
+   "en": "Flapple",
+   "page": "Flapple VMAX (Single Strike Master 8)",
+   "type": "Grass",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "9": {
+   "en": "Entei",
+   "page": "Entei (Single Strike Master 9)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "10": {
+   "en": "Tepig",
+   "page": "Tepig (Single Strike Master 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Pignite",
+   "page": "Pignite (Single Strike Master 11)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Emboar",
+   "page": "Emboar (Single Strike Master 12)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "13": {
+   "en": "Salandit",
+   "page": "Salandit (Single Strike Master 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Salazzle",
+   "page": "Salazzle (Single Strike Master 14)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Single Strike Master 15)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Electivire",
+   "page": "Electivire (Single Strike Master 16)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "17": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko V (Single Strike Master 17)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "18": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko VMAX (Single Strike Master 18)",
+   "type": "Lightning",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "19": {
+   "en": "Yamper",
+   "page": "Yamper (Single Strike Master 19)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Boltund",
+   "page": "Boltund (Single Strike Master 20)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Galarian Slowpoke",
+   "page": "Galarian Slowpoke (Single Strike Master 21)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Spoink",
+   "page": "Spoink (Single Strike Master 22)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Grumpig",
+   "page": "Grumpig (Single Strike Master 23)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Chimecho",
+   "page": "Chimecho (Single Strike Master 24)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Espurr",
+   "page": "Espurr (Single Strike Master 25)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Meowstic",
+   "page": "Meowstic (Single Strike Master 26)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "27": {
+   "en": "Mimikyu",
+   "page": "Mimikyu V (Single Strike Master 27)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "28": {
+   "en": "Mankey",
+   "page": "Mankey (Single Strike Master 28)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Primeape",
+   "page": "Primeape (Single Strike Master 29)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Gligar",
+   "page": "Gligar (Single Strike Master 30)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Gliscor",
+   "page": "Gliscor (Single Strike Master 31)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Rolycoly",
+   "page": "Rolycoly (Single Strike Master 32)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Carkol",
+   "page": "Carkol (Single Strike Master 33)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Coalossal",
+   "page": "Coalossal (Single Strike Master 34)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "35": {
+   "en": "Stonjourner",
+   "page": "Stonjourner (Single Strike Master 35)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Single Strike Urshifu",
+   "page": "Single Strike Urshifu V (Single Strike Master 36)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "37": {
+   "en": "Single Strike Urshifu",
+   "page": "Single Strike Urshifu VMAX (Single Strike Master 37)",
+   "type": "Fighting",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "38": {
+   "en": "Zubat",
+   "page": "Zubat (Single Strike Master 38)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Golbat",
+   "page": "Golbat (Single Strike Master 39)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Crobat",
+   "page": "Crobat (Single Strike Master 40)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "41": {
+   "en": "Galarian Slowbro",
+   "page": "Galarian Slowbro (Single Strike Master 41)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "42": {
+   "en": "Murkrow",
+   "page": "Murkrow (Single Strike Master 42)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Honchkrow",
+   "page": "Honchkrow (Single Strike Master 43)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Houndour",
+   "page": "Houndour (Single Strike Master 44)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Houndoom",
+   "page": "Houndoom (Single Strike Master 45)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "46": {
+   "en": "Tyranitar",
+   "page": "Tyranitar V (Single Strike Master 46)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "47": {
+   "en": "Morpeko",
+   "page": "Morpeko (Single Strike Master 47)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Mawile",
+   "page": "Mawile (Single Strike Master 48)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Bronzor",
+   "page": "Bronzor (Single Strike Master 49)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Bronzong",
+   "page": "Bronzong (Single Strike Master 50)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "51": {
+   "en": "Honedge",
+   "page": "Honedge (Single Strike Master 51)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Doublade",
+   "page": "Doublade (Single Strike Master 52)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Aegislash",
+   "page": "Aegislash (Single Strike Master 53)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "54": {
+   "en": "Aegislash",
+   "page": "Aegislash (Single Strike Master 54)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Spearow",
+   "page": "Spearow (Single Strike Master 55)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Fearow",
+   "page": "Fearow (Single Strike Master 56)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Lickitung",
+   "page": "Lickitung (Single Strike Master 57)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Lickilicky",
+   "page": "Lickilicky (Single Strike Master 58)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Stoutland",
+   "page": "Stoutland V (Single Strike Master 59)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Drampa",
+   "page": "Drampa (Single Strike Master 60)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Escape Rope",
+   "page": "Escape Rope (Single Strike Master 61)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Urn of Vitality",
+   "page": "Urn of Vitality (Single Strike Master 62)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Camping Gear",
+   "page": "Camping Gear (Single Strike Master 63)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Single Strike Scroll of Scorn",
+   "page": "Single Strike Scroll of Scorn (Single Strike Master 64)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Exp. Share",
+   "page": "Exp. Share (Single Strike Master 65)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Bruno",
+   "page": "Bruno (Single Strike Master 66)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Phoebe",
+   "page": "Phoebe (Single Strike Master 67)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Single Strike Style Mustard",
+   "page": "Single Strike Style Mustard (Single Strike Master 68)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Tower of Darkness",
+   "page": "Tower of Darkness (Single Strike Master 69)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Single Strike Energy",
+   "page": "Single Strike Energy (Single Strike Master 70)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Flapple",
+   "page": "Flapple V (Single Strike Master 71)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko V (Single Strike Master 72)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Mimikyu",
+   "page": "Mimikyu V (Single Strike Master 73)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Single Strike Urshifu",
+   "page": "Single Strike Urshifu V (Single Strike Master 74)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Single Strike Urshifu",
+   "page": "Single Strike Urshifu V (Single Strike Master 75)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Tyranitar",
+   "page": "Tyranitar V (Single Strike Master 76)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Tyranitar",
+   "page": "Tyranitar V (Single Strike Master 77)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Stoutland",
+   "page": "Stoutland V (Single Strike Master 78)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Bruno",
+   "page": "Bruno (Single Strike Master 79)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Phoebe",
+   "page": "Phoebe (Single Strike Master 80)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Single Strike Style Mustard",
+   "page": "Single Strike Style Mustard (Single Strike Master 81)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Flapple",
+   "page": "Flapple VMAX (Single Strike Master 82)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko VMAX (Single Strike Master 83)",
+   "type": "Lightning",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Single Strike Urshifu",
+   "page": "Single Strike Urshifu VMAX (Single Strike Master 84)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Single Strike Urshifu",
+   "page": "Single Strike Urshifu VMAX (Single Strike Master 85)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Bruno",
+   "page": "Bruno (Single Strike Master 86)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Phoebe",
+   "page": "Phoebe (Single Strike Master 87)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Single Strike Style Mustard",
+   "page": "Single Strike Style Mustard (Single Strike Master 88)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Houndoom",
+   "page": "Houndoom (Single Strike Master 89)",
+   "type": "Darkness",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Exp. Share",
+   "page": "Exp. Share (Single Strike Master 90)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Single Strike Energy",
+   "page": "Single Strike Energy (Single Strike Master 91)",
+   "type": "Fighting",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Galarian Slowbro",
+   "page": "Galarian Slowbro (Battle Styles 92)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Murkrow",
+   "page": "Murkrow (Battle Styles 93)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Honchkrow",
+   "page": "Honchkrow (Battle Styles 94)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Houndour",
+   "page": "Houndour (Battle Styles 95)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Houndoom",
+   "page": "Houndoom (Battle Styles 96)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Tyranitar",
+   "page": "Tyranitar V (Battle Styles 97)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Morpeko",
+   "page": "Morpeko (Battle Styles 98)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Steelix",
+   "page": "Steelix (Battle Styles 99)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Mawile",
+   "page": "Mawile (Battle Styles 100)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Bronzor",
+   "page": "Bronzor (Battle Styles 101)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Bronzong",
+   "page": "Bronzong (Battle Styles 102)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Pawniard",
+   "page": "Pawniard (Battle Styles 103)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Bisharp",
+   "page": "Bisharp (Battle Styles 104)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Honedge",
+   "page": "Honedge (Battle Styles 105)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Doublade",
+   "page": "Doublade (Battle Styles 106)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Aegislash",
+   "page": "Aegislash (Battle Styles 107)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Aegislash",
+   "page": "Aegislash (Battle Styles 108)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Corviknight",
+   "page": "Corviknight V (Battle Styles 109)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Corviknight",
+   "page": "Corviknight VMAX (Battle Styles 110)",
+   "type": "Rare VMAX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Spearow",
+   "page": "Spearow (Battle Styles 111)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Fearow",
+   "page": "Fearow (Battle Styles 112)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Lickitung",
+   "page": "Lickitung (Battle Styles 113)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Lickilicky",
+   "page": "Lickilicky (Battle Styles 114)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Glameow",
+   "page": "Glameow (Battle Styles 115)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Purugly",
+   "page": "Purugly (Battle Styles 116)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "117": {
+   "en": "Stoutland",
+   "page": "Stoutland V (Battle Styles 117)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "118": {
+   "en": "Bouffalant",
+   "page": "Bouffalant (Battle Styles 118)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Drampa",
+   "page": "Drampa (Battle Styles 119)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Indeedee",
+   "page": "Indeedee (Battle Styles 120)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Bruno",
+   "page": "Bruno (Battle Styles 121)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Camping Gear",
+   "page": "Camping Gear (Battle Styles 122)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Cheryl",
+   "page": "Cheryl (Battle Styles 123)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Energy Recycler",
+   "page": "Energy Recycler (Battle Styles 124)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Escape Rope",
+   "page": "Escape Rope (Battle Styles 125)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "126": {
+   "en": "Exp. Share",
+   "page": "Exp. Share (Battle Styles 126)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Fan of Waves",
+   "page": "Fan of Waves (Battle Styles 127)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Korrina's Focus",
+   "page": "Korrina's Focus (Battle Styles 128)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Level Ball",
+   "page": "Level Ball (Battle Styles 129)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Phoebe",
+   "page": "Phoebe (Battle Styles 130)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Rapid Strike Scroll of Swirls",
+   "page": "Rapid Strike Scroll of Swirls (Battle Styles 131)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Rapid Strike Style Mustard",
+   "page": "Rapid Strike Style Mustard (Battle Styles 132)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Single Strike Scroll of Scorn",
+   "page": "Single Strike Scroll of Scorn (Battle Styles 133)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Single Strike Style Mustard",
+   "page": "Single Strike Style Mustard (Battle Styles 134)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Sordward & Shielbert",
+   "page": "Sordward & Shielbert (Battle Styles 135)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Tool Jammer",
+   "page": "Tool Jammer (Battle Styles 136)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Tower of Darkness",
+   "page": "Tower of Darkness (Battle Styles 137)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Tower of Waters",
+   "page": "Tower of Waters (Battle Styles 138)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Urn of Vitality",
+   "page": "Urn of Vitality (Battle Styles 139)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Rapid Strike Energy",
+   "page": "Rapid Strike Energy (Battle Styles 140)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Single Strike Energy",
+   "page": "Single Strike Energy (Battle Styles 141)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Kricketune",
+   "page": "Kricketune V (Battle Styles 142)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Flapple",
+   "page": "Flapple V (Battle Styles 143)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Victini",
+   "page": "Victini V (Battle Styles 144)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Empoleon",
+   "page": "Empoleon V (Battle Styles 145)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Empoleon",
+   "page": "Empoleon V (Battle Styles 146)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko V (Battle Styles 147)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Mimikyu",
+   "page": "Mimikyu V (Battle Styles 148)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Necrozma",
+   "page": "Necrozma V (Battle Styles 149)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Single Strike Urshifu",
+   "page": "Single Strike Urshifu V (Battle Styles 150)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Single Strike Urshifu",
+   "page": "Single Strike Urshifu V (Battle Styles 151)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Rapid Strike Urshifu",
+   "page": "Rapid Strike Urshifu V (Battle Styles 152)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Rapid Strike Urshifu",
+   "page": "Rapid Strike Urshifu V (Battle Styles 153)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Tyranitar",
+   "page": "Tyranitar V (Battle Styles 154)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Tyranitar",
+   "page": "Tyranitar V (Battle Styles 155)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Corviknight",
+   "page": "Corviknight V (Battle Styles 156)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Stoutland",
+   "page": "Stoutland V (Battle Styles 157)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Bruno",
+   "page": "Bruno (Battle Styles 158)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Cheryl",
+   "page": "Cheryl (Battle Styles 159)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Korrina's Focus",
+   "page": "Korrina's Focus (Battle Styles 160)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Phoebe",
+   "page": "Phoebe (Battle Styles 161)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Rapid Strike Style Mustard",
+   "page": "Rapid Strike Style Mustard (Battle Styles 162)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Single Strike Style Mustard",
+   "page": "Single Strike Style Mustard (Battle Styles 163)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Flapple",
+   "page": "Flapple VMAX (Battle Styles 164)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "165": {
+   "en": "Victini",
+   "page": "Victini VMAX (Battle Styles 165)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "166": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko VMAX (Battle Styles 166)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "167": {
+   "en": "Single Strike Urshifu",
+   "page": "Single Strike Urshifu VMAX (Battle Styles 167)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "168": {
+   "en": "Single Strike Urshifu",
+   "page": "Single Strike Urshifu VMAX (Battle Styles 168)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "169": {
+   "en": "Rapid Strike Urshifu",
+   "page": "Rapid Strike Urshifu VMAX (Battle Styles 169)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "170": {
+   "en": "Rapid Strike Urshifu",
+   "page": "Rapid Strike Urshifu VMAX (Battle Styles 170)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "171": {
+   "en": "Corviknight",
+   "page": "Corviknight VMAX (Battle Styles 171)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "172": {
+   "en": "Bruno",
+   "page": "Bruno (Battle Styles 172)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "173": {
+   "en": "Cheryl",
+   "page": "Cheryl (Battle Styles 173)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "174": {
+   "en": "Korrina's Focus",
+   "page": "Korrina's Focus (Battle Styles 174)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "175": {
+   "en": "Phoebe",
+   "page": "Phoebe (Battle Styles 175)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "176": {
+   "en": "Rapid Strike Style Mustard",
+   "page": "Rapid Strike Style Mustard (Battle Styles 176)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "177": {
+   "en": "Single Strike Style Mustard",
+   "page": "Single Strike Style Mustard (Battle Styles 177)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "178": {
+   "en": "Octillery",
+   "page": "Octillery (Battle Styles 178)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "179": {
+   "en": "Houndoom",
+   "page": "Houndoom (Battle Styles 179)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "180": {
+   "en": "Exp. Share",
+   "page": "Exp. Share (Battle Styles 180)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "181": {
+   "en": "Level Ball",
+   "page": "Level Ball (Battle Styles 181)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "182": {
+   "en": "Rapid Strike Energy",
+   "page": "Rapid Strike Energy (Battle Styles 182)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "183": {
+   "en": "Single Strike Energy",
+   "page": "Single Strike Energy (Battle Styles 183)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

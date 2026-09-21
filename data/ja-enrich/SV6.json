@@ -1,0 +1,1588 @@
+{
+ "page": "Transformation Mask (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Sunkern",
+   "page": "Sunkern (Transformation Mask 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Sunflora",
+   "page": "Sunflora (Transformation Mask 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Heracross",
+   "page": "Heracross (Transformation Mask 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Volbeat",
+   "page": "Volbeat (Transformation Mask 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Illumise",
+   "page": "Illumise (Transformation Mask 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Phantump",
+   "page": "Phantump (Transformation Mask 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Trevenant",
+   "page": "Trevenant (Transformation Mask 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Grookey",
+   "page": "Grookey (Transformation Mask 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Thwackey",
+   "page": "Thwackey (Transformation Mask 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Rillaboom",
+   "page": "Rillaboom (Transformation Mask 10)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Applin",
+   "page": "Applin (Transformation Mask 11)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Dipplin",
+   "page": "Dipplin (Transformation Mask 12)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "13": {
+   "en": "Poltchageist",
+   "page": "Poltchageist (Transformation Mask 13)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Sinistcha",
+   "page": "Sinistcha (Transformation Mask 14)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "15": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon (Transformation Mask 15)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "16": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon ex (Transformation Mask 16)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "17": {
+   "en": "Darumaka",
+   "page": "Darumaka (Transformation Mask 17)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Darmanitan",
+   "page": "Darmanitan (Transformation Mask 18)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Litwick",
+   "page": "Litwick (Transformation Mask 19)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Lampent",
+   "page": "Lampent (Transformation Mask 20)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Chandelure",
+   "page": "Chandelure (Transformation Mask 21)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Hearthflame Mask Ogerpon",
+   "page": "Hearthflame Mask Ogerpon ex (Transformation Mask 22)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "23": {
+   "en": "Poliwag",
+   "page": "Poliwag (Transformation Mask 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Poliwhirl",
+   "page": "Poliwhirl (Transformation Mask 24)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Poliwrath",
+   "page": "Poliwrath (Transformation Mask 25)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Goldeen",
+   "page": "Goldeen (Transformation Mask 26)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Seaking",
+   "page": "Seaking (Transformation Mask 27)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Jynx",
+   "page": "Jynx (Transformation Mask 28)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Feebas",
+   "page": "Feebas (Transformation Mask 29)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Milotic",
+   "page": "Milotic (Transformation Mask 30)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "31": {
+   "en": "Snorunt",
+   "page": "Snorunt (Transformation Mask 31)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Glalie",
+   "page": "Glalie (Transformation Mask 32)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Froslass",
+   "page": "Froslass (Transformation Mask 33)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "34": {
+   "en": "Finizen",
+   "page": "Finizen (Transformation Mask 34)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Palafin",
+   "page": "Palafin (Transformation Mask 35)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Palafin",
+   "page": "Palafin ex (Transformation Mask 36)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "37": {
+   "en": "Iron Bundle",
+   "page": "Iron Bundle (Transformation Mask 37)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "38": {
+   "en": "Wellspring Mask Ogerpon",
+   "page": "Wellspring Mask Ogerpon ex (Transformation Mask 38)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "39": {
+   "en": "Shinx",
+   "page": "Shinx (Transformation Mask 39)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Luxio",
+   "page": "Luxio (Transformation Mask 40)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Luxray",
+   "page": "Luxray ex (Transformation Mask 41)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "42": {
+   "en": "Emolga",
+   "page": "Emolga (Transformation Mask 42)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Wattrel",
+   "page": "Wattrel (Transformation Mask 43)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Kilowattrel",
+   "page": "Kilowattrel (Transformation Mask 44)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Clefairy",
+   "page": "Clefairy (Transformation Mask 45)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Clefable",
+   "page": "Clefable (Transformation Mask 46)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Abra",
+   "page": "Abra (Transformation Mask 47)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Kadabra",
+   "page": "Kadabra (Transformation Mask 48)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Alakazam",
+   "page": "Alakazam (Transformation Mask 49)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "50": {
+   "en": "Chimecho",
+   "page": "Chimecho (Transformation Mask 50)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Swirlix",
+   "page": "Swirlix (Transformation Mask 51)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Slurpuff",
+   "page": "Slurpuff (Transformation Mask 52)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Sandygast",
+   "page": "Sandygast (Transformation Mask 53)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Palossand",
+   "page": "Palossand (Transformation Mask 54)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Munkidori",
+   "page": "Munkidori (Transformation Mask 55)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "56": {
+   "en": "Fezandipiti",
+   "page": "Fezandipiti (Transformation Mask 56)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "57": {
+   "en": "Sandshrew",
+   "page": "Sandshrew (Transformation Mask 57)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Sandslash",
+   "page": "Sandslash (Transformation Mask 58)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Timburr",
+   "page": "Timburr (Transformation Mask 59)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Gurdurr",
+   "page": "Gurdurr (Transformation Mask 60)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Conkeldurr",
+   "page": "Conkeldurr (Transformation Mask 61)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Glimmet",
+   "page": "Glimmet (Transformation Mask 62)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Glimmora",
+   "page": "Glimmora (Transformation Mask 63)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Okidogi",
+   "page": "Okidogi (Transformation Mask 64)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "65": {
+   "en": "Cornerstone Mask Ogerpon",
+   "page": "Cornerstone Mask Ogerpon ex (Transformation Mask 65)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Poochyena",
+   "page": "Poochyena (Transformation Mask 66)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "67": {
+   "en": "Mightyena",
+   "page": "Mightyena (Transformation Mask 67)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Venipede",
+   "page": "Venipede (Transformation Mask 68)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "69": {
+   "en": "Whirlipede",
+   "page": "Whirlipede (Transformation Mask 69)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "70": {
+   "en": "Scolipede",
+   "page": "Scolipede (Transformation Mask 70)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Brute Bonnet",
+   "page": "Brute Bonnet (Transformation Mask 71)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Skarmory",
+   "page": "Skarmory (Transformation Mask 72)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "73": {
+   "en": "Aron",
+   "page": "Aron (Transformation Mask 73)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "74": {
+   "en": "Lairon",
+   "page": "Lairon (Transformation Mask 74)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "75": {
+   "en": "Aggron",
+   "page": "Aggron (Transformation Mask 75)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "76": {
+   "en": "Heatran",
+   "page": "Heatran (Transformation Mask 76)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "77": {
+   "en": "Varoom",
+   "page": "Varoom (Transformation Mask 77)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "78": {
+   "en": "Revavroom",
+   "page": "Revavroom (Transformation Mask 78)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Dreepy",
+   "page": "Dreepy (Transformation Mask 79)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "80": {
+   "en": "Drakloak",
+   "page": "Drakloak (Transformation Mask 80)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "81": {
+   "en": "Dragapult",
+   "page": "Dragapult ex (Transformation Mask 81)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Tatsugiri",
+   "page": "Tatsugiri (Transformation Mask 82)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "83": {
+   "en": "Farfetch'd",
+   "page": "Farfetch'd (Transformation Mask 83)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "84": {
+   "en": "Chansey",
+   "page": "Chansey (Transformation Mask 84)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "85": {
+   "en": "Blissey",
+   "page": "Blissey ex (Transformation Mask 85)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Aipom",
+   "page": "Aipom (Transformation Mask 86)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "87": {
+   "en": "Ambipom",
+   "page": "Ambipom (Transformation Mask 87)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "88": {
+   "en": "Ducklett",
+   "page": "Ducklett (Transformation Mask 88)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "89": {
+   "en": "Swanna",
+   "page": "Swanna (Transformation Mask 89)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "90": {
+   "en": "Ogre's Mask",
+   "page": "Ogre's Mask (Transformation Mask 90)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "91": {
+   "en": "Accompanying Flute",
+   "page": "Accompanying Flute (Transformation Mask 91)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "92": {
+   "en": "Secret Box",
+   "page": "Secret Box (Transformation Mask 92)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "93": {
+   "en": "Scoop Up Cyclone",
+   "page": "Scoop Up Cyclone (Transformation Mask 93)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "94": {
+   "en": "Bug Catching Set",
+   "page": "Bug Catching Set (Transformation Mask 94)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "95": {
+   "en": "Handheld Fan",
+   "page": "Handheld Fan (Transformation Mask 95)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "96": {
+   "en": "Kieran",
+   "page": "Kieran (Transformation Mask 96)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "97": {
+   "en": "Carmine",
+   "page": "Carmine (Transformation Mask 97)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "98": {
+   "en": "Hassel",
+   "page": "Hassel (Transformation Mask 98)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "99": {
+   "en": "Festival Grounds",
+   "page": "Festival Grounds (Transformation Mask 99)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "100": {
+   "en": "Jamming Tower",
+   "page": "Jamming Tower (Transformation Mask 100)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "101": {
+   "en": "Legacy Energy",
+   "page": "Legacy Energy (Transformation Mask 101)",
+   "type": "Rainbow",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "102": {
+   "en": "Sunflora",
+   "page": "Sunflora (Transformation Mask 102)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Dipplin",
+   "page": "Dipplin (Transformation Mask 103)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Froslass",
+   "page": "Froslass (Transformation Mask 104)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Wattrel",
+   "page": "Wattrel (Transformation Mask 105)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Chimecho",
+   "page": "Chimecho (Transformation Mask 106)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Munkidori",
+   "page": "Munkidori (Transformation Mask 107)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Fezandipiti",
+   "page": "Fezandipiti (Transformation Mask 108)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Timburr",
+   "page": "Timburr (Transformation Mask 109)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Okidogi",
+   "page": "Okidogi (Transformation Mask 110)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Lairon",
+   "page": "Lairon (Transformation Mask 111)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Tatsugiri",
+   "page": "Tatsugiri (Transformation Mask 112)",
+   "type": "Dragon",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Chansey",
+   "page": "Chansey (Transformation Mask 113)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon ex (Transformation Mask 114)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Hearthflame Mask Ogerpon",
+   "page": "Hearthflame Mask Ogerpon ex (Transformation Mask 115)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Palafin",
+   "page": "Palafin ex (Transformation Mask 116)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "117": {
+   "en": "Wellspring Mask Ogerpon",
+   "page": "Wellspring Mask Ogerpon ex (Transformation Mask 117)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "118": {
+   "en": "Luxray",
+   "page": "Luxray ex (Transformation Mask 118)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "119": {
+   "en": "Cornerstone Mask Ogerpon",
+   "page": "Cornerstone Mask Ogerpon ex (Transformation Mask 119)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "120": {
+   "en": "Dragapult",
+   "page": "Dragapult ex (Transformation Mask 120)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "121": {
+   "en": "Blissey",
+   "page": "Blissey ex (Transformation Mask 121)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "122": {
+   "en": "Kieran",
+   "page": "Kieran (Transformation Mask 122)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "123": {
+   "en": "Carmine",
+   "page": "Carmine (Transformation Mask 123)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "124": {
+   "en": "Hassel",
+   "page": "Hassel (Transformation Mask 124)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "125": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon ex (Transformation Mask 125)",
+   "type": "Grass",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "126": {
+   "en": "Hearthflame Mask Ogerpon",
+   "page": "Hearthflame Mask Ogerpon ex (Transformation Mask 126)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "127": {
+   "en": "Wellspring Mask Ogerpon",
+   "page": "Wellspring Mask Ogerpon ex (Transformation Mask 127)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "128": {
+   "en": "Cornerstone Mask Ogerpon",
+   "page": "Cornerstone Mask Ogerpon ex (Transformation Mask 128)",
+   "type": "Fighting",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "129": {
+   "en": "Kieran",
+   "page": "Kieran (Transformation Mask 129)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "130": {
+   "en": "Carmine",
+   "page": "Carmine (Transformation Mask 130)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "131": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon ex (Transformation Mask 131)",
+   "type": "Grass",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "132": {
+   "en": "Enhanced Hammer",
+   "page": "Enhanced Hammer (Transformation Mask 132)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "133": {
+   "en": "Buddy-Buddy Poffin",
+   "page": "Buddy-Buddy Poffin (Transformation Mask 133)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "134": {
+   "en": "Blissey",
+   "page": "Blissey ex (Twilight Masquerade 134)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Eevee",
+   "page": "Eevee (Twilight Masquerade 135)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Snorlax",
+   "page": "Snorlax (Twilight Masquerade 136)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Aipom",
+   "page": "Aipom (Twilight Masquerade 137)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Ambipom",
+   "page": "Ambipom (Twilight Masquerade 138)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Ducklett",
+   "page": "Ducklett (Twilight Masquerade 139)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Swanna",
+   "page": "Swanna (Twilight Masquerade 140)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Bloodmoon Ursaluna",
+   "page": "Bloodmoon Ursaluna ex (Twilight Masquerade 141)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Accompanying Flute",
+   "page": "Accompanying Flute (Twilight Masquerade 142)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Bug Catching Set",
+   "page": "Bug Catching Set (Twilight Masquerade 143)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Caretaker",
+   "page": "Caretaker (Twilight Masquerade 144)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Carmine",
+   "page": "Carmine (Twilight Masquerade 145)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Community Center",
+   "page": "Community Center (Twilight Masquerade 146)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Cook",
+   "page": "Cook (Twilight Masquerade 147)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Enhanced Hammer",
+   "page": "Enhanced Hammer (Twilight Masquerade 148)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Festival Grounds",
+   "page": "Festival Grounds (Twilight Masquerade 149)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Handheld Fan",
+   "page": "Handheld Fan (Twilight Masquerade 150)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Hassel",
+   "page": "Hassel (Twilight Masquerade 151)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Hyper Aroma",
+   "page": "Hyper Aroma (Twilight Masquerade 152)",
+   "type": "ACE SPEC Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Jamming Tower",
+   "page": "Jamming Tower (Twilight Masquerade 153)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Kieran",
+   "page": "Kieran (Twilight Masquerade 154)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Lana's Aid",
+   "page": "Lana's Aid (Twilight Masquerade 155)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Love Ball",
+   "page": "Love Ball (Twilight Masquerade 156)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Lucian",
+   "page": "Lucian (Twilight Masquerade 157)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Lucky Helmet",
+   "page": "Lucky Helmet (Twilight Masquerade 158)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Ogre's Mask",
+   "page": "Ogre's Mask (Twilight Masquerade 159)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Perrin",
+   "page": "Perrin (Twilight Masquerade 160)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Raifort",
+   "page": "Raifort (Twilight Masquerade 161)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Scoop Up Cyclone",
+   "page": "Scoop Up Cyclone (Twilight Masquerade 162)",
+   "type": "ACE SPEC Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Secret Box",
+   "page": "Secret Box (Twilight Masquerade 163)",
+   "type": "ACE SPEC Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Survival Brace",
+   "page": "Survival Brace (Twilight Masquerade 164)",
+   "type": "ACE SPEC Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "165": {
+   "en": "Unfair Stamp",
+   "page": "Unfair Stamp (Twilight Masquerade 165)",
+   "type": "ACE SPEC Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "166": {
+   "en": "Boomerang Energy",
+   "page": "Boomerang Energy (Twilight Masquerade 166)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "167": {
+   "en": "Legacy Energy",
+   "page": "Legacy Energy (Twilight Masquerade 167)",
+   "type": "ACE SPEC Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "168": {
+   "en": "Pinsir",
+   "page": "Pinsir (Twilight Masquerade 168)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "169": {
+   "en": "Sunflora",
+   "page": "Sunflora (Twilight Masquerade 169)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "170": {
+   "en": "Dipplin",
+   "page": "Dipplin (Twilight Masquerade 170)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "171": {
+   "en": "Poltchageist",
+   "page": "Poltchageist (Twilight Masquerade 171)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "172": {
+   "en": "Torkoal",
+   "page": "Torkoal (Twilight Masquerade 172)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "173": {
+   "en": "Infernape",
+   "page": "Infernape (Twilight Masquerade 173)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "174": {
+   "en": "Froslass",
+   "page": "Froslass (Twilight Masquerade 174)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "175": {
+   "en": "Phione",
+   "page": "Phione (Twilight Masquerade 175)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "176": {
+   "en": "Cramorant",
+   "page": "Cramorant (Twilight Masquerade 176)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "177": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (Twilight Masquerade 177)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "178": {
+   "en": "Wattrel",
+   "page": "Wattrel (Twilight Masquerade 178)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "179": {
+   "en": "Chimecho",
+   "page": "Chimecho (Twilight Masquerade 179)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "180": {
+   "en": "Enamorus",
+   "page": "Enamorus (Twilight Masquerade 180)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "181": {
+   "en": "Hisuian Growlithe",
+   "page": "Hisuian Growlithe (Twilight Masquerade 181)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "182": {
+   "en": "Probopass",
+   "page": "Probopass (Twilight Masquerade 182)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "183": {
+   "en": "Timburr",
+   "page": "Timburr (Twilight Masquerade 183)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "184": {
+   "en": "Lairon",
+   "page": "Lairon (Twilight Masquerade 184)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "185": {
+   "en": "Applin",
+   "page": "Applin (Twilight Masquerade 185)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "186": {
+   "en": "Tatsugiri",
+   "page": "Tatsugiri (Twilight Masquerade 186)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "187": {
+   "en": "Chansey",
+   "page": "Chansey (Twilight Masquerade 187)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "188": {
+   "en": "Eevee",
+   "page": "Eevee (Twilight Masquerade 188)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "189": {
+   "en": "Sinistcha",
+   "page": "Sinistcha ex (Twilight Masquerade 189)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "190": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon ex (Twilight Masquerade 190)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "191": {
+   "en": "Magcargo",
+   "page": "Magcargo ex (Twilight Masquerade 191)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "192": {
+   "en": "Hearthflame Mask Ogerpon",
+   "page": "Hearthflame Mask Ogerpon ex (Twilight Masquerade 192)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "193": {
+   "en": "Palafin",
+   "page": "Palafin ex (Twilight Masquerade 193)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "194": {
+   "en": "Wellspring Mask Ogerpon",
+   "page": "Wellspring Mask Ogerpon ex (Twilight Masquerade 194)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "195": {
+   "en": "Luxray",
+   "page": "Luxray ex (Twilight Masquerade 195)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "196": {
+   "en": "Iron Thorns",
+   "page": "Iron Thorns ex (Twilight Masquerade 196)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "197": {
+   "en": "Scream Tail",
+   "page": "Scream Tail ex (Twilight Masquerade 197)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "198": {
+   "en": "Greninja",
+   "page": "Greninja ex (Twilight Masquerade 198)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "199": {
+   "en": "Cornerstone Mask Ogerpon",
+   "page": "Cornerstone Mask Ogerpon ex (Twilight Masquerade 199)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "200": {
+   "en": "Dragapult",
+   "page": "Dragapult ex (Twilight Masquerade 200)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "201": {
+   "en": "Blissey",
+   "page": "Blissey ex (Twilight Masquerade 201)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "202": {
+   "en": "Bloodmoon Ursaluna",
+   "page": "Bloodmoon Ursaluna ex (Twilight Masquerade 202)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "203": {
+   "en": "Caretaker",
+   "page": "Caretaker (Twilight Masquerade 203)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "204": {
+   "en": "Carmine",
+   "page": "Carmine (Twilight Masquerade 204)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "205": {
+   "en": "Hassel",
+   "page": "Hassel (Twilight Masquerade 205)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "206": {
+   "en": "Kieran",
+   "page": "Kieran (Twilight Masquerade 206)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "207": {
+   "en": "Lana's Aid",
+   "page": "Lana's Aid (Twilight Masquerade 207)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "208": {
+   "en": "Lucian",
+   "page": "Lucian (Twilight Masquerade 208)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "209": {
+   "en": "Perrin",
+   "page": "Perrin (Twilight Masquerade 209)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "210": {
+   "en": "Sinistcha",
+   "page": "Sinistcha ex (Twilight Masquerade 210)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "211": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon ex (Twilight Masquerade 211)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "212": {
+   "en": "Hearthflame Mask Ogerpon",
+   "page": "Hearthflame Mask Ogerpon ex (Twilight Masquerade 212)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "213": {
+   "en": "Wellspring Mask Ogerpon",
+   "page": "Wellspring Mask Ogerpon ex (Twilight Masquerade 213)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "214": {
+   "en": "Greninja",
+   "page": "Greninja ex (Twilight Masquerade 214)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "215": {
+   "en": "Cornerstone Mask Ogerpon",
+   "page": "Cornerstone Mask Ogerpon ex (Twilight Masquerade 215)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "216": {
+   "en": "Bloodmoon Ursaluna",
+   "page": "Bloodmoon Ursaluna ex (Twilight Masquerade 216)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "217": {
+   "en": "Carmine",
+   "page": "Carmine (Twilight Masquerade 217)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "218": {
+   "en": "Kieran",
+   "page": "Kieran (Twilight Masquerade 218)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "219": {
+   "en": "Lana's Aid",
+   "page": "Lana's Aid (Twilight Masquerade 219)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "220": {
+   "en": "Perrin",
+   "page": "Perrin (Twilight Masquerade 220)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "221": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon ex (Twilight Masquerade 221)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "222": {
+   "en": "Bloodmoon Ursaluna",
+   "page": "Bloodmoon Ursaluna ex (Twilight Masquerade 222)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "223": {
+   "en": "Buddy-Buddy Poffin",
+   "page": "Buddy-Buddy Poffin (Twilight Masquerade 223)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "224": {
+   "en": "Enhanced Hammer",
+   "page": "Enhanced Hammer (Twilight Masquerade 224)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "225": {
+   "en": "Rescue Board",
+   "page": "Rescue Board (Twilight Masquerade 225)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "226": {
+   "en": "Luminous Energy",
+   "page": "Luminous Energy (Twilight Masquerade 226)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}
