@@ -26,7 +26,7 @@
 // sem acesso ao wiki. Primeiro run: --probe num set e numa carta, comparar
 // com o esperado em tests/bulbapedia.test.mjs, ajustar o parser se preciso.
 import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
-import { API, UA, LISTA_DE_EXPANSOES, parseUrl, parseSetList, parseSetLists, escolherLista, parseCardPage, parseExpansionList, normalizarNomeJa } from "./lib/bulbapedia.mjs";
+import { API, UA, LISTA_DE_EXPANSOES, parseUrl, parseSetList, parseSetLists, escolherLista, parseCardPage, parseExpansionList, normalizarNomeJa, mapaDeNomes } from "./lib/bulbapedia.mjs";
 import { numberKey } from "./lib/enrich-ja.mjs";
 import { sleep } from "./lib/sync-common.mjs";
 
@@ -94,7 +94,7 @@ const pages = (await leJson(new URL("_pages.json", OUT), {})).pages || {};
 const shared = await readFile(new URL("src/shared.js", RAIZ), "utf8");
 const m = /const JA_SET_EN = (\{[\s\S]*?\n  \});/.exec(shared);
 const JA_SET_EN = m ? new Function(`return ${m[1]}`)() : {};
-const nomesTraduzidos = new Map(Object.entries((await leJson(new URL("_set-names.json", OUT), {})).names || {}).map(([ja, en]) => [normalizarNomeJa(ja), en]));
+const nomesTraduzidos = mapaDeNomes((await leJson(new URL("_set-names.json", OUT), {})).names);
 function tituloDe(setId, chunk) {
   if (pages[setId]) return pages[setId];
   if (JA_SET_EN[setId]) return `${JA_SET_EN[setId]} (TCG)`;
@@ -124,19 +124,24 @@ for (const setId of setIds) {
     // contagem mais próxima da do chunk.
     const listas = parseSetLists(h);
     const total = chunk && chunk[0] ? Number(chunk[0].setTotal) || 0 : 0;
-    const lista = escolherLista(listas, { total, count: chunk ? chunk.length : 0 });
+    const nomes = new Map((chunk || []).map((c) => [numberKey(c.number), String((/^[\x20-\x7E]+$/.test(c.name || "") ? c.name : c.pokemonName) || "").toLowerCase()]).filter(([, n]) => n));
+    const lista = escolherLista(listas, { total, count: chunk ? chunk.length : 0, nomes });
     if (!lista) { semPagina.push(`${setId} ("${titulo}": página sem lista de cartas)`); continue; }
     cache.page = titulo;
     // Lista refeita (--force): tipo e raridade vêm de novo por cima (o 1º run
     // gravou colunas deslocadas); nome japonês e ilustrador das páginas já
     // lidas ficam; imagem que não é scan (.jpg) sai, pra ser buscada de novo.
+    // Só os números da lista NOVA ficam: o 1º run juntava todas as tabelas
+    // da página e deixou números da lista ocidental no cache.
+    const novo = {};
     for (const c of lista.cards) {
       const k = numberKey(c.number);
       if (!k) continue;
       const atual = cache.cards[k] || {};
       if (atual.image && !/\.jpe?g$/i.test(atual.image)) { delete atual.image; delete atual.semScan; }
-      cache.cards[k] = Object.assign(atual, { en: c.en, page: c.page, type: c.type, rarity: c.rarity, mark: c.mark });
+      novo[k] = Object.assign(atual, { en: c.en, page: c.page, type: c.type, rarity: c.rarity, mark: c.mark });
     }
+    cache.cards = novo;
     console.log(`${setId}: "${titulo}" — ${lista.cards.length} carta(s) na lista${listas.length > 1 ? ` (${listas.length} tabelas na página; ficou a nº ${lista.cards[0].number}…)` : ""}`);
   }
   // Páginas de carta: nome japonês, ilustrador e scan — só o que falta.

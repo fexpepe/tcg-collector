@@ -73,6 +73,40 @@ export function raridadeValida(s) {
   return /\b(common|uncommon|rare|promo|legend|classic|holo)\b/i.test(t) && t.length <= 40;
 }
 
+// O cache de um set CABE no chunk? Guarda contra página errada (título que
+// resolveu pro set ocidental homônimo ou pra outra expansão): 21/09/2026, a
+// lista de expansões deu "Steam Siege" como tradução de 爆熱の闘士, e o sync
+// leu a lista do set inglês como se fosse a japonesa — nome, raridade e
+// ilustrador de OUTRA carta entrariam por número. Duas réguas, as duas por
+// número impresso: (1) o cache COBRE o chunk — 60%+ dos números do chunk
+// estão no cache (a conta é sobre o chunk, não sobre o cache: a página de
+// um par de sets lista as duas metades, e o cache do 1º run ainda carrega
+// números de outra tabela); (2) entre as cartas casadas que têm nome
+// comparável — nome ASCII do import ou a espécie (pokemonName) —, metade ou
+// mais bate com o `en` do cache (página errada fica perto de zero; a certa,
+// perto de 100%, com folga pra decoração de nome que a régua não previu).
+// Sem nome comparável nenhum, vale só a régua 1. Devolve { cabe, motivo }.
+export function cacheCabeNoChunk(cards, bulba) {
+  const entradas = bulba && bulba.cards ? Object.keys(bulba.cards) : [];
+  if (!entradas.length || !(cards || []).length) return { cabe: false, motivo: "cache vazio" };
+  const porNumero = new Map((cards || []).map((c) => [numberKey(c.number), c]));
+  const casadas = entradas.filter((k) => porNumero.has(k));
+  const cobertura = new Set(casadas).size / porNumero.size;
+  if (cobertura < 0.6) return { cabe: false, motivo: `cache cobre só ${Math.round(cobertura * 100)}% dos números do chunk` };
+  let comparaveis = 0, batem = 0;
+  for (const k of casadas) {
+    const c = porNumero.get(k);
+    const en = String(bulba.cards[k].en || "").toLowerCase();
+    if (!en) continue;
+    const nome = isAsciiName(c.name) ? c.name : (c.nameEn || "");
+    const especie = c.category === "Pokemon" || !c.category ? String(c.pokemonName || "") : "";
+    if (nome) { comparaveis++; if (cardNameKey(nome) === cardNameKey(en) || en.includes(nome.toLowerCase())) batem++; }
+    else if (especie) { comparaveis++; if (en.includes(especie.toLowerCase())) batem++; }
+  }
+  if (comparaveis >= 5 && batem / comparaveis < 0.5) return { cabe: false, motivo: `só ${batem} de ${comparaveis} nomes batem` };
+  return { cabe: true, motivo: "" };
+}
+
 // Enriquece UMA carta ja no lugar. Devolve a lista dos campos alterados
 // (vazia = nada mudou). `bulba` é o cache do set ({ cards: { número: {…} } })
 // ou null; `enIndex` vem de buildEnIndex.

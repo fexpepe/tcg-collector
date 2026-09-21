@@ -7,7 +7,7 @@
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { buildEnIndex, enrichJaCard, classificarTipoBulba, numberKey, isAsciiName, raridadeValida } from "../scripts/lib/enrich-ja.mjs";
+import { buildEnIndex, enrichJaCard, classificarTipoBulba, numberKey, isAsciiName, raridadeValida, cacheCabeNoChunk } from "../scripts/lib/enrich-ja.mjs";
 
 const EN = [
   { id: "sv01-001", name: "Sprigatito", category: "Pokemon", types: "Grass", stage: "Basic" },
@@ -83,4 +83,23 @@ test("guarda do cache: raridade que não parece raridade e imagem que não é sc
   const c = importada({ image: "" });
   enrichJaCard(c, { enIndex: idx, bulba });
   assert.equal(c.rarity, "None"); assert.equal(c.image, ""); assert.equal(c.name, "ニャオハ"); assert.equal(c.artist, "Mizue");
+});
+
+test("cache que não cabe no chunk (página errada do wiki) é recusado; par de sets e sobras de outra tabela passam", () => {
+  const chunk = Array.from({ length: 10 }, (_, i) => ({ id: `X-${i + 1}-ja`, name: `Mon${i + 1}`, pokemonName: `Mon${i + 1}`, number: String(i + 1).padStart(3, "0"), category: "Pokemon" }));
+  const certo = { cards: Object.fromEntries(chunk.map((c, i) => [String(i + 1), { en: `Mon${i + 1} ex` }])) };
+  assert.equal(cacheCabeNoChunk(chunk, certo).cabe, true);
+  // par de sets: a página lista as duas metades (números 11–20 são da outra metade) — cobre o chunk, cabe
+  const par = { cards: Object.assign({}, certo.cards, Object.fromEntries(Array.from({ length: 10 }, (_, i) => [String(i + 11), { en: "Outro" }]))) };
+  assert.equal(cacheCabeNoChunk(chunk, par).cabe, true);
+  // página errada: mesmos números, outros nomes
+  const errado = { cards: Object.fromEntries(chunk.map((_, i) => [String(i + 1), { en: `Alien${i + 1}` }])) };
+  assert.equal(cacheCabeNoChunk(chunk, errado).cabe, false);
+  assert.match(cacheCabeNoChunk(chunk, errado).motivo, /nomes batem/);
+  // página de outro set: números que não existem no chunk
+  const fora = { cards: Object.fromEntries(Array.from({ length: 10 }, (_, i) => [String(i + 50), { en: "Z" }])) };
+  assert.equal(cacheCabeNoChunk(chunk, fora).cabe, false);
+  assert.match(cacheCabeNoChunk(chunk, fora).motivo, /cobre só/);
+  assert.equal(cacheCabeNoChunk(chunk, { cards: {} }).cabe, false);
+  assert.equal(cacheCabeNoChunk([], certo).cabe, false);
 });

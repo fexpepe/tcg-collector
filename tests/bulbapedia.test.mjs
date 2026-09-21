@@ -8,7 +8,7 @@
 // (5) thumb do Archives vira o upload original.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseSetList, parseSetLists, escolherLista, parseCardPage, parseExpansionList, normalizarNomeJa, parseUrl, imagemOriginal, text } from "../scripts/lib/bulbapedia.mjs";
+import { parseSetList, parseSetLists, escolherLista, parseCardPage, parseExpansionList, normalizarNomeJa, mapaDeNomes, parseUrl, imagemOriginal, text } from "../scripts/lib/bulbapedia.mjs";
 
 const LISTA = `
 <div class="mw-parser-output"><p>intro</p>
@@ -53,6 +53,14 @@ test("escolherLista: a japonesa pelo total do set; senão pela contagem; senão 
   assert.equal(escolherLista(listas, { total: 66, count: 66 }).cards[0].en, "Dwebble");
   assert.equal(escolherLista(listas, { total: 101, count: 101 }).cards[0].en, "Sewaddle");
   assert.equal(escolherLista(listas, { total: 0, count: 1 }).cards[0].en, "Sewaddle");   // 1 carta: a mais próxima
+  assert.equal(escolherLista(listas, { total: 999, count: 66 }), null);                   // total conhecido sem lista que case: não chuta
+  // par de sets: duas tabelas com o MESMO total — os nomes do chunk desempatam
+  const scarlet = { cards: [{ number: "001/078", en: "Sprigatito" }, { number: "002/078", en: "Floragato" }] };
+  const violet = { cards: [{ number: "001/078", en: "Fuecoco" }, { number: "002/078", en: "Crocalor" }] };
+  const nomesVioleta = new Map([["1", "fuecoco"], ["2", "crocalor"]]);
+  assert.equal(escolherLista([scarlet, violet], { total: 78, nomes: nomesVioleta }), violet);
+  assert.equal(escolherLista([scarlet, violet], { total: 78, nomes: new Map([["1", "sprigatito"]]) }), scarlet);
+  assert.equal(escolherLista([scarlet, violet], { total: 78 }), scarlet);                  // sem nomes: a primeira
   assert.equal(escolherLista(listas, {}).cards[0].en, "Basic Grass Energy");             // sem pista: a última
   assert.equal(escolherLista([listas[1]], { total: 999 }).cards[0].en, "Dwebble");        // uma só: ela
   assert.equal(escolherLista([], { total: 66 }), null);
@@ -89,11 +97,15 @@ test("lista de expansões: japonês e tradução na MESMA célula (forma real), 
     <tr><td>2</td><td>闇からの挑戦 Challenge from the Darkness</td><td>65</td><td>1997</td></tr>
     <tr><td>3</td><td><a href="/wiki/Gym_Challenge_(TCG)">Gym Challenge</a></td><td>132</td><td>1998</td></tr>
     <tr><td>4</td><td><span lang="ja">TAG TEAM GX タッグオールスターズ</span> TAG TEAM GX Tag All Stars</td><td>173</td><td>2019</td></tr></tbody></table>
+    <!-- coluna "English expansion" é o set OCIDENTAL equivalente, não a tradução: fica a da célula -->
+    <table><tbody><tr><th>Japanese name</th><th>English expansion</th></tr>
+    <tr><td><span lang="ja">レッドコレクション</span> Red Collection</td><td><a href="/wiki/Noble_Victories_(TCG)">Noble Victories</a></td></tr></tbody></table>
     <table><tbody><tr><th>Japanese release</th><th>Cards</th></tr><tr><td>2</td><td>August 2001 – July 2002</td></tr></tbody></table>`;
   assert.deepEqual(parseExpansionList(real), {
     "拡張パック": "Expansion Pack",
     "闇からの挑戦": "Challenge from the Darkness",
-    "TAG TEAM GX タッグオールスターズ": "TAG TEAM GX Tag All Stars"
+    "TAG TEAM GX タッグオールスターズ": "TAG TEAM GX Tag All Stars",
+    "レッドコレクション": "Red Collection"
   });
   // duas colunas separadas também funciona
   const duas = `<table><tbody><tr><th>Japanese name</th><th>Translated name</th><th>Release</th></tr>
@@ -101,6 +113,11 @@ test("lista de expansões: japonês e tradução na MESMA célula (forma real), 
     <tr><td>レイジングサーフ</td><td>Raging Surf</td><td>2023</td></tr></tbody></table>`;
   assert.deepEqual(parseExpansionList(duas), { "シャイニートレジャーex": "Shiny Treasure ex", "レイジングサーフ": "Raging Surf" });
   assert.equal(normalizarNomeJa("サン＆ムーン "), "サン&ムーン");
+  // pares numa linha só viram duas entradas; par desigual não entra
+  const m = mapaDeNomes({ "一撃マスター • 連撃マスター": "Single Strike Master • Rapid Strike Master", "禁断の光": "Forbidden Light", "白銀のランス • 漆黒のガイスト": "Chilling Reign" });
+  assert.equal(m.get(normalizarNomeJa("連撃マスター")), "Rapid Strike Master");
+  assert.equal(m.get(normalizarNomeJa("禁断の光")), "Forbidden Light");
+  assert.equal(m.get(normalizarNomeJa("白銀のランス")), undefined);
   assert.equal(normalizarNomeJa("TAG TEAM GX タッグオールスターズ"), "tagteamgxタッグオールスターズ");
 });
 
