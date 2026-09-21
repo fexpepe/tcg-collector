@@ -7,7 +7,7 @@
 // Roda com: node --test tests/
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { buildEnIndex, enrichJaCard, classificarTipoBulba, numberKey, isAsciiName } from "../scripts/lib/enrich-ja.mjs";
+import { buildEnIndex, enrichJaCard, classificarTipoBulba, numberKey, isAsciiName, raridadeValida } from "../scripts/lib/enrich-ja.mjs";
 
 const EN = [
   { id: "sv01-001", name: "Sprigatito", category: "Pokemon", types: "Grass", stage: "Basic" },
@@ -74,4 +74,13 @@ test("tipo da Bulbapedia -> categoria do catálogo", () => {
   assert.deepEqual(classificarTipoBulba("Special Energy"), { category: "Energy", energyType: "Special" });
   assert.deepEqual(classificarTipoBulba("Basic Energy"), { category: "Energy", energyType: "Normal" });
   assert.equal(classificarTipoBulba("???"), null); assert.equal(classificarTipoBulba(""), null);
+});
+
+test("guarda do cache: raridade que não parece raridade e imagem que não é scan não entram", () => {
+  assert.equal(raridadeValida("C"), true); assert.equal(raridadeValida("SAR"), true); assert.equal(raridadeValida("Rare Holo"), true);
+  assert.equal(raridadeValida("Promotion"), false); assert.equal(raridadeValida(""), false); assert.equal(raridadeValida("Grass"), false);
+  const bulba = { cards: { "1": { en: "Sprigatito", ja: "ニャオハ", rarity: "Promotion", artist: "Mizue", image: "https://archives.bulbagarden.net/media/upload/2/2e/Grass-attack.png" } } };
+  const c = importada({ image: "" });
+  enrichJaCard(c, { enIndex: idx, bulba });
+  assert.equal(c.rarity, "None"); assert.equal(c.image, ""); assert.equal(c.name, "ニャオハ"); assert.equal(c.artist, "Mizue");
 });

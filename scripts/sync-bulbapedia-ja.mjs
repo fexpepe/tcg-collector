@@ -26,7 +26,7 @@
 // sem acesso ao wiki. Primeiro run: --probe num set e numa carta, comparar
 // com o esperado em tests/bulbapedia.test.mjs, ajustar o parser se preciso.
 import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
-import { API, UA, LISTA_DE_EXPANSOES, parseUrl, parseSetList, parseCardPage, parseExpansionList } from "./lib/bulbapedia.mjs";
+import { API, UA, LISTA_DE_EXPANSOES, parseUrl, parseSetList, parseSetLists, escolherLista, parseCardPage, parseExpansionList } from "./lib/bulbapedia.mjs";
 import { numberKey } from "./lib/enrich-ja.mjs";
 import { sleep } from "./lib/sync-common.mjs";
 
@@ -54,8 +54,12 @@ async function html(title) {
 
 // ── probe ───────────────────────────────────────────────────────────────────
 function mostra(h) {
-  const lista = parseSetList(h);
-  if (lista.length) { console.log(`lista de set: ${lista.length} carta(s)`); console.log(JSON.stringify(lista.slice(0, 5), null, 1)); return; }
+  const listas = parseSetLists(h);
+  if (listas.length) {
+    console.log(`lista de set: ${listas.length} tabela(s) — ${listas.map((l) => `${l.cards.length} carta(s), nº ${l.cards[0].number}…${l.cards[l.cards.length - 1].number}`).join(" | ")}`);
+    console.log(JSON.stringify(parseSetList(h).slice(0, 5), null, 1));
+    return;
+  }
   console.log("página de carta:", JSON.stringify(parseCardPage(h), null, 1));
   const nomes = parseExpansionList(h);
   if (Object.keys(nomes).length) console.log(`lista de expansões: ${Object.keys(nomes).length}`, JSON.stringify(Object.entries(nomes).slice(0, 5)));
@@ -110,21 +114,33 @@ for (const setId of setIds) {
   if (!Object.keys(cache.cards).length || has("--force")) {
     const h = await html(titulo);
     if (!h) { semPagina.push(`${setId} ("${titulo}")`); continue; }
-    const lista = parseSetList(h);
-    if (!lista.length) { semPagina.push(`${setId} ("${titulo}": página sem lista de cartas)`); continue; }
+    // A página de uma expansão com par ocidental traz a lista dela E a nossa:
+    // fica a que casa com o total do set (denominador do número), senão a de
+    // contagem mais próxima da do chunk.
+    const listas = parseSetLists(h);
+    const total = chunk && chunk[0] ? Number(chunk[0].setTotal) || 0 : 0;
+    const lista = escolherLista(listas, { total, count: chunk ? chunk.length : 0 });
+    if (!lista) { semPagina.push(`${setId} ("${titulo}": página sem lista de cartas)`); continue; }
     cache.page = titulo;
-    for (const c of lista) {
+    // Lista refeita (--force): tipo e raridade vêm de novo por cima (o 1º run
+    // gravou colunas deslocadas); nome japonês e ilustrador das páginas já
+    // lidas ficam; imagem que não é scan (.jpg) sai, pra ser buscada de novo.
+    for (const c of lista.cards) {
       const k = numberKey(c.number);
       if (!k) continue;
-      cache.cards[k] = Object.assign(cache.cards[k] || {}, { en: c.en, page: c.page, type: c.type, rarity: c.rarity, mark: c.mark });
+      const atual = cache.cards[k] || {};
+      if (atual.image && !/\.jpe?g$/i.test(atual.image)) { delete atual.image; delete atual.semScan; }
+      cache.cards[k] = Object.assign(atual, { en: c.en, page: c.page, type: c.type, rarity: c.rarity, mark: c.mark });
     }
-    console.log(`${setId}: "${titulo}" — ${lista.length} carta(s) na lista`);
+    console.log(`${setId}: "${titulo}" — ${lista.cards.length} carta(s) na lista${listas.length > 1 ? ` (${listas.length} tabelas na página; ficou a nº ${lista.cards[0].number}…)` : ""}`);
   }
   // Páginas de carta: nome japonês, ilustrador e scan — só o que falta.
+  // `semScan`: a página foi lida e não tem .jpg (vintage sem scan no wiki);
+  // não se insiste a cada rodada.
   if (!has("--no-cards")) {
     let feitas = 0;
     for (const [k, c] of Object.entries(cache.cards)) {
-      if (!c.page || (c.ja && c.artist)) continue;
+      if (!c.page || (c.ja && c.artist && (c.image || c.semScan))) continue;
       if (paginasDeCarta >= LIMITE) break;
       try {
         const h = await html(c.page);
@@ -134,7 +150,7 @@ for (const setId of setIds) {
         if (p.ja) c.ja = p.ja;
         if (p.artist) c.artist = p.artist;
         if (p.rarity && !c.rarity) c.rarity = p.rarity;
-        if (p.image) c.image = p.image;
+        if (p.image) { c.image = p.image; delete c.semScan; } else c.semScan = 1;
         if (!p.ja && !p.artist) c.page = ""; // página existe mas não tem infobox de carta: não insistir
       } catch (e) { console.log(`  ${setId} #${k}: ${e.message}`); }
       if (feitas % 25 === 0) await writeFile(arquivo, JSON.stringify(cache, null, 1) + "\n", "utf8");

@@ -8,50 +8,76 @@
 // (5) thumb do Archives vira o upload original.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseSetList, parseCardPage, parseExpansionList, parseUrl, imagemOriginal, text } from "../scripts/lib/bulbapedia.mjs";
+import { parseSetList, parseSetLists, escolherLista, parseCardPage, parseExpansionList, parseUrl, imagemOriginal, text } from "../scripts/lib/bulbapedia.mjs";
 
 const LISTA = `
 <div class="mw-parser-output"><p>intro</p>
+<!-- a lista OCIDENTAL da mesma página (Noble Victories, 1/101): a célula do tipo é <th> -->
 <table class="roundy"><tbody>
-<tr><th>No.</th><th>Mark</th><th>Card name</th><th>Type</th><th>Rarity</th></tr>
-<tr><td>001/190</td><td>H</td><td><a href="/wiki/Oddish_(Shiny_Treasure_ex_1)" title="Oddish (Shiny Treasure ex 1)">Oddish</a></td>
-    <td><a href="/wiki/Grass_(TCG)" title="Grass (TCG)"><img alt="Grass" src="//archives.bulbagarden.net/media/upload/thumb/x/xy/Grass-attack.png/20px-Grass-attack.png"></a></td>
-    <td><a href="/wiki/Rarity" title="Rarity"><img alt="Common" src="//archives.bulbagarden.net/media/upload/thumb/x/xy/Rarity_Common.png/20px-Rarity_Common.png"></a></td></tr>
-<tr><td>190/190</td><td>H</td><td><a href="/wiki/Boss%27s_Orders_(Shiny_Treasure_ex_190)" title="Boss's Orders (Shiny Treasure ex 190)">Boss&#39;s Orders</a></td>
-    <td>Supporter</td><td>SR</td></tr>
-<tr><td>lixo</td><td></td><td>sem link nem número</td><td></td><td></td></tr>
+<tr><th>No.</th><th style="display:none;">Image</th><th class="unsortable">Card name</th><th class="unsortable">Type</th><th class="unsortable">Rarity</th><th style="display:none;">Promotion</th></tr>
+<tr><td>1/101</td><td style="display:none;"><img src="https://archives.bulbagarden.net/media/upload/6/6e/TCG2_A01_Bulbasaur.png"></td><td><a href="/wiki/Sewaddle_(Noble_Victories_1)" title="Sewaddle (Noble Victories 1)">Sewaddle</a></td>
+    <th align="center"><span typeof="mw:File"><a href="/wiki/Grass_Energy_(TCG)" title="Grass"><img alt="Grass" src="https://archives.bulbagarden.net/media/upload/thumb/2/2e/Grass-attack.png/20px-Grass-attack.png"></a></span></th>
+    <td><a href="/wiki/Rarity" title="Common"><img alt="Common" src="https://archives.bulbagarden.net/media/upload/thumb/8/8c/Rarity_Common.png/21px-Rarity_Common.png"></a></td><td style="display:none;">Promotion</td></tr>
+</tbody></table>
+<!-- a lista JAPONESA (Red Collection, 001/066) -->
+<table class="roundy"><tbody>
+<tr><th>No.</th><th style="display:none;">Image</th><th class="unsortable">Card name</th><th class="unsortable">Type</th><th class="unsortable">Rarity</th><th style="display:none;">Promotion</th></tr>
+<tr><td>001/066</td><td style="display:none;"><img src="https://archives.bulbagarden.net/media/upload/6/6e/TCG2_A01_Bulbasaur.png"></td><td><a href="/wiki/Dwebble_(Red_Collection_1)" class="mw-redirect" title="Dwebble (Red Collection 1)">Dwebble</a></td>
+    <th align="center"><span typeof="mw:File"><a href="/wiki/Grass_Energy_(TCG)" title="Grass"><img alt="Grass" src="https://archives.bulbagarden.net/media/upload/thumb/2/2e/Grass-attack.png/20px-Grass-attack.png"></a></span></th>
+    <td>C</td><td style="display:none;">Promotion</td></tr>
+<tr><td>066/066</td><td style="display:none;"></td><td><a href="/wiki/Boss%27s_Orders_(Red_Collection_66)" title="Boss's Orders (Red Collection 66)">Boss&#39;s Orders</a></td>
+    <th align="center">Supporter</th><td>SR</td><td style="display:none;">Promotion</td></tr>
+<tr><td>lixo</td><td></td><td>sem link nem número</td><th></th><td></td><td></td></tr>
 </tbody></table>
 <table><tbody>
 <tr><th>Rarity</th><th>Card name</th><th>No.</th></tr>
-<tr><td>UR</td><td><a href="/wiki/Basic_Grass_Energy_(Shiny_Treasure_ex_191)" title="Basic Grass Energy (Shiny Treasure ex 191)">Basic Grass Energy</a></td><td>191</td></tr>
+<tr><td>UR</td><td><a href="/wiki/Basic_Grass_Energy_(Red_Collection_67)" title="Basic Grass Energy (Red Collection 67)">Basic Grass Energy</a></td><td>067</td></tr>
 </tbody></table>
 <table><tbody><tr><th>Sem</th><th>Cabeçalho</th></tr><tr><td>x</td><td>y</td></tr></tbody></table>
 </div>`;
 
-test("lista de set: colunas pelo nome do cabeçalho, ícone vira alt, várias tabelas, linha inválida fora", () => {
-  const r = parseSetList(LISTA);
-  assert.equal(r.length, 3);
-  assert.deepEqual(r[0], { number: "001/190", en: "Oddish", page: "Oddish (Shiny Treasure ex 1)", type: "Grass", rarity: "Common", mark: "H" });
-  assert.deepEqual(r[1], { number: "190/190", en: "Boss's Orders", page: "Boss's Orders (Shiny Treasure ex 190)", type: "Supporter", rarity: "SR", mark: "H" });
-  assert.deepEqual(r[2], { number: "191", en: "Basic Grass Energy", page: "Basic Grass Energy (Shiny Treasure ex 191)", type: "", rarity: "UR", mark: "" });
-  assert.deepEqual(parseSetList("<p>sem tabela</p>"), []);
+test("lista de set: célula <th> no meio da linha, coluna oculta, ícone vira alt, várias tabelas, linha inválida fora", () => {
+  const listas = parseSetLists(LISTA);
+  assert.equal(listas.length, 3);
+  assert.deepEqual(listas[0].cards, [{ number: "1/101", en: "Sewaddle", page: "Sewaddle (Noble Victories 1)", type: "Grass", rarity: "Common", mark: "" }]);
+  assert.deepEqual(listas[1].cards[0], { number: "001/066", en: "Dwebble", page: "Dwebble (Red Collection 1)", type: "Grass", rarity: "C", mark: "" });
+  assert.deepEqual(listas[1].cards[1], { number: "066/066", en: "Boss's Orders", page: "Boss's Orders (Red Collection 66)", type: "Supporter", rarity: "SR", mark: "" });
+  assert.equal(listas[1].cards.length, 2);
+  assert.deepEqual(listas[2].cards, [{ number: "067", en: "Basic Grass Energy", page: "Basic Grass Energy (Red Collection 67)", type: "", rarity: "UR", mark: "" }]);
+  assert.equal(parseSetList(LISTA).length, 4);
+  assert.deepEqual(parseSetLists("<p>sem tabela</p>"), []);
+});
+
+test("escolherLista: a japonesa pelo total do set; senão pela contagem; senão a última", () => {
+  const listas = parseSetLists(LISTA);
+  assert.equal(escolherLista(listas, { total: 66, count: 66 }).cards[0].en, "Dwebble");
+  assert.equal(escolherLista(listas, { total: 101, count: 101 }).cards[0].en, "Sewaddle");
+  assert.equal(escolherLista(listas, { total: 0, count: 1 }).cards[0].en, "Sewaddle");   // 1 carta: a mais próxima
+  assert.equal(escolherLista(listas, {}).cards[0].en, "Basic Grass Energy");             // sem pista: a última
+  assert.equal(escolherLista([listas[1]], { total: 999 }).cards[0].en, "Dwebble");        // uma só: ela
+  assert.equal(escolherLista([], { total: 66 }), null);
 });
 
 const CARTA = `
 <div class="mw-parser-output">
 <table class="roundy"><tbody>
-<tr><th colspan="2"><b>Oddish</b> <span lang="ja">ナゾノクサ</span> <i>Nazonokusa</i></th></tr>
-<tr><td><a href="/wiki/File:OddishShinyTreasure1.jpg"><img src="//archives.bulbagarden.net/media/upload/thumb/3/3a/OddishShinyTreasure1.jpg/200px-OddishShinyTreasure1.jpg" width="200"></a></td></tr>
-<tr><th>Illus.</th><td><a href="/wiki/Sekio" title="Sekio">Sekio</a></td></tr>
-<tr><th>Rarity</th><td><a href="/wiki/Rarity" title="Rarity"><img alt="Common" src="//archives.bulbagarden.net/media/upload/thumb/x/xy/Rarity_Common.png/20px-Rarity_Common.png"></a></td></tr>
+<tr><th colspan="2"><b>Dwebble</b> <span lang="ja">イシズマイ</span> <i>Ishizumai</i></th></tr>
+<tr><td><a href="/wiki/Grass_Energy_(TCG)"><img alt="Grass" src="https://archives.bulbagarden.net/media/upload/thumb/2/2e/Grass-attack.png/25px-Grass-attack.png"></a>
+    <a href="/wiki/File:DwebbleNobleVictories6.jpg"><img src="https://archives.bulbagarden.net/media/upload/thumb/3/3c/DwebbleNobleVictories6.jpg/180px-DwebbleNobleVictories6.jpg" width="180" srcset="https://archives.bulbagarden.net/media/upload/thumb/3/3c/DwebbleNobleVictories6.jpg/360px-DwebbleNobleVictories6.jpg 2x"></a></td></tr>
+<tr><td width="100px" align="right"><b>English expansion</b></td><td><a href="/wiki/Noble_Victories_(TCG)" title="Noble Victories (TCG)">Noble Victories</a></td></tr>
+<tr><td width="100px" align="right"><b>Rarity</b></td><td><span typeof="mw:File"><a href="/wiki/Rarity" title="Common"><img alt="Common" src="https://archives.bulbagarden.net/media/upload/thumb/8/8c/Rarity_Common.png/21px-Rarity_Common.png"></a></span></td></tr>
+<tr><th>Illus.</th><td><a href="/wiki/MAHOU" title="MAHOU">MAHOU</a></td></tr>
 </tbody></table></div>`;
 
 test("página de carta: nome japonês, ilustrador, raridade e o scan ORIGINAL do Archives", () => {
   const r = parseCardPage(CARTA);
-  assert.equal(r.ja, "ナゾノクサ");
-  assert.equal(r.artist, "Sekio");
+  assert.equal(r.ja, "イシズマイ");
+  assert.equal(r.artist, "MAHOU");
   assert.equal(r.rarity, "Common");
-  assert.equal(r.image, "https://archives.bulbagarden.net/media/upload/3/3a/OddishShinyTreasure1.jpg");
+  // o scan é o 1º .jpg (o ícone de Grama vem antes e é .png); thumb vira o original
+  assert.equal(r.image, "https://archives.bulbagarden.net/media/upload/3/3c/DwebbleNobleVictories6.jpg");
+  // página só com ícones .png: sem imagem, em vez do ícone
+  assert.equal(parseCardPage('<img src="https://archives.bulbagarden.net/media/upload/thumb/2/2e/Grass-attack.png/25px-Grass-attack.png">').image, "");
   assert.deepEqual(parseCardPage("<p>nada</p>"), { ja: "", artist: "", rarity: "", image: "" });
   assert.equal(imagemOriginal("https://archives.bulbagarden.net/media/upload/3/3a/X.jpg"), "https://archives.bulbagarden.net/media/upload/3/3a/X.jpg");
 });

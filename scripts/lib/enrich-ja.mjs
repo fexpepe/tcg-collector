@@ -62,6 +62,17 @@ export function classificarTipoBulba(type) {
   return null;
 }
 
+// Raridade que PARECE raridade: sigla japonesa (C, U, R, RR, SR, SAR, ACE…) ou
+// nome ocidental ("Common", "Rare Holo", "Promo"). Guarda contra coluna
+// deslocada na lista do wiki — no 1º run (21/09/2026) veio "Promotion" em
+// todas as cartas, e isso teria virado raridade de 10 mil cartas.
+export function raridadeValida(s) {
+  const t = String(s || "").trim();
+  if (!t) return false;
+  if (/^[A-Z]{1,4}$/.test(t)) return true;
+  return /\b(common|uncommon|rare|promo|legend|classic|holo)\b/i.test(t) && t.length <= 40;
+}
+
 // Enriquece UMA carta ja no lugar. Devolve a lista dos campos alterados
 // (vazia = nada mudou). `bulba` é o cache do set ({ cards: { número: {…} } })
 // ou null; `enIndex` vem de buildEnIndex.
@@ -84,9 +95,9 @@ export function enrichJaCard(card, { enIndex, bulba } = {}) {
   if (b) {
     if (b.ja && isAsciiName(card.name)) { card.name = b.ja; mudou.push("name"); }
     preenche("nameEn", b.en);
-    preenche("rarity", b.rarity);
+    if (raridadeValida(b.rarity)) preenche("rarity", b.rarity);
     preenche("artist", b.artist);
-    preenche("image", b.image);
+    if (/\.jpe?g$/i.test(String(b.image || ""))) preenche("image", b.image);
     const t = classificarTipoBulba(b.type);
     if (t) for (const [k, v] of Object.entries(t)) preenche(k, v);
   }

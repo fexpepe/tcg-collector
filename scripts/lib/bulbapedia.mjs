@@ -10,10 +10,17 @@
 // a ordem, o parser não liga. Tudo aqui é tolerante: coluna que não existe
 // vira campo vazio, nunca erro.
 //
-// AVISO (20/09/2026): escrito sem acesso à Bulbapedia (a rede deste ambiente
-// não a alcança). A forma das tabelas e das infoboxes segue o que se conhece
-// do wiki; o `--probe` do sync existe pra conferir no primeiro run real e
-// ajustar aqui — os testes com fixture dizem o que o parser ESPERA.
+// Escrito em 20/09/2026 sem acesso à Bulbapedia e conferido em 21/09 contra
+// as páginas reais ("Red Collection (TCG)" e "Dwebble (Red Collection 1)"):
+//   - na lista de set a célula do TIPO é um <th> no meio de <td>s — lendo só
+//     <td> as colunas deslocavam (a raridade caía em tipo, e a coluna oculta
+//     "Promotion" caía em raridade). As células são lidas em ordem, qualquer
+//     tag;
+//   - a página de uma expansão japonesa que tem par ocidental traz DUAS
+//     listas (Noble Victories 1/101 e Red Collection 001/066): escolherLista
+//     fica com a que casa com o total do set (ou com a contagem do chunk);
+//   - o scan da carta é o primeiro .jpg do Archives; antes dele vêm os ícones
+//     de tipo (.png). Os testes com fixture reproduzem essa forma.
 
 export const API = "https://bulbapedia.bulbagarden.net/w/api.php";
 export const UA = "Sleevu catalog sync (+https://sleevu.app; github.com/fexpepe/tcg-collector)";
@@ -36,7 +43,8 @@ export function decode(s) {
 export function text(html) {
   return decode(String(html || "").replace(/<br\s*\/?>/gi, " ").replace(/<[^>]+>/g, "")).replace(/\s+/g, " ").trim();
 }
-const cells = (row, tag) => [...row.matchAll(new RegExp(`<${tag}\\b[^>]*>([\\s\\S]*?)<\\/${tag}>`, "gi"))].map((m) => m[1]);
+// Células em ORDEM, <td> ou <th>: a lista de set usa <th> pra célula do tipo.
+const cells = (row) => [...row.matchAll(/<(td|th)\b[^>]*>([\s\S]*?)<\/\1>/gi)].map((m) => m[2]);
 const rows = (table) => [...table.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)].map((m) => m[1]);
 // Tabelas de primeiro nível (o wiki não aninha tabela nas listas de set).
 const tables = (html) => [...String(html || "").matchAll(/<table\b[^>]*>([\s\S]*?)<\/table>/gi)].map((m) => m[1]);
@@ -65,34 +73,58 @@ function columns(headerCells) {
 }
 
 // ── Lista de set ────────────────────────────────────────────────────────────
-// Devolve as cartas de TODAS as tabelas da página que tenham cabeçalho com
-// "Card name" (e "No."): [{ number, en, page, type, rarity, mark }]. Uma
-// página de set pode ter mais de uma tabela (set + galeria + secretas).
-export function parseSetList(html) {
+// UMA lista por tabela da página que tenha cabeçalho com "Card name" e "No.":
+// [{ cards: [{ number, en, page, type, rarity, mark }] }]. A página de uma
+// expansão pode ter várias (a ocidental e a japonesa, galerias, secretas).
+export function parseSetLists(html) {
   const out = [];
   for (const t of tables(html)) {
     const rs = rows(t);
     if (!rs.length) continue;
-    const head = cells(rs[0], "th");
+    const head = cells(rs[0]);
     if (!head.length) continue;
     const col = columns(head);
     if (col.name < 0 || col.no < 0) continue;
+    const cards = [];
     for (const r of rs.slice(1)) {
-      const tds = cells(r, "td");
+      const tds = cells(r);
       if (tds.length <= Math.max(col.no, col.name)) continue;
       const number = (text(tds[col.no]).match(/[A-Za-z]*\d+[A-Za-z]?(?:\/[A-Za-z0-9-]+)?/) || [""])[0];
       const l = link(tds[col.name]);
       const en = l ? l.text : text(tds[col.name]);
       if (!number || !en) continue;
-      out.push({
+      cards.push({
         number, en, page: l ? l.page : "",
         type: col.type >= 0 && tds[col.type] != null ? iconValue(tds[col.type]) : "",
         rarity: col.rarity >= 0 && tds[col.rarity] != null ? iconValue(tds[col.rarity]) : "",
         mark: col.mark >= 0 && tds[col.mark] != null ? text(tds[col.mark]) : ""
       });
     }
+    if (cards.length) out.push({ cards });
   }
   return out;
+}
+// Todas as listas achatadas (probe e compatibilidade).
+export function parseSetList(html) {
+  return parseSetLists(html).flatMap((l) => l.cards);
+}
+// A lista que É o set: pelo denominador do número ("001/066" -> 66 = total
+// do set), senão a de contagem mais próxima da do chunk, senão a última (a
+// japonesa vem depois da ocidental na página). null sem lista nenhuma.
+export function escolherLista(listas, { total, count } = {}) {
+  const ls = (listas || []).filter((l) => l && l.cards && l.cards.length);
+  if (!ls.length) return null;
+  if (ls.length === 1) return ls[0];
+  const den = (n) => { const m = /\/\s*0*(\d+)\s*$/.exec(String(n || "")); return m ? Number(m[1]) : 0; };
+  if (Number(total) > 0) {
+    const casa = ls.map((l) => l.cards.filter((c) => den(c.number) === Number(total)).length / l.cards.length);
+    const melhor = casa.indexOf(Math.max(...casa));
+    if (casa[melhor] >= 0.5) return ls[melhor];
+  }
+  if (Number(count) > 0) {
+    return ls.slice().sort((a, b) => Math.abs(a.cards.length - count) - Math.abs(b.cards.length - count))[0];
+  }
+  return ls[ls.length - 1];
 }
 
 // ── Página de carta ─────────────────────────────────────────────────────────
@@ -107,8 +139,12 @@ export function parseCardPage(html) {
   const ja = /<[^>]+\blang="ja"[^>]*>([\s\S]*?)<\/[^>]+>/i.exec(h);
   const artist = /Illus(?:trator|\.)?\s*(?:<\/(?:th|b|strong|td|span)>)?[\s\S]{0,200}?<a\b[^>]*>([^<]+)<\/a>/i.exec(h);
   const rarity = /Rarity[\s\S]{0,300}?(?:<img\b[^>]*\balt="([^"]+)"|<a\b[^>]*\btitle="([^"]+)"[^>]*>([^<]*)<\/a>)/i.exec(h);
-  const img = /(?:https?:)?\/\/archives\.bulbagarden\.net\/media\/upload\/[^"'\s]+\.(?:jpe?g|png|webp)/i.exec(h);
-  const image = img ? imagemOriginal(img[0].startsWith("//") ? `https:${img[0]}` : img[0]) : "";
+  // Scan = o primeiro .jpg do Archives: os ícones de tipo/raridade e os
+  // símbolos de set são .png e vêm antes na página. Sem .jpg, nada — melhor
+  // sem imagem do que com o ícone de Grama (foi o que saiu no 1º run).
+  const uploads = [...h.matchAll(/(?:https?:)?\/\/archives\.bulbagarden\.net\/media\/upload\/[^"'\s]+\.(?:jpe?g|png|webp)/gi)]
+    .map((m) => imagemOriginal(m[0].startsWith("//") ? `https:${m[0]}` : m[0]));
+  const image = uploads.find((u) => /\.jpe?g$/i.test(u)) || "";
   return {
     ja: ja ? text(ja[1]) : "",
     artist: artist ? text(artist[1]) : "",
