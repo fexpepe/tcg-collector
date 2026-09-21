@@ -3350,25 +3350,84 @@ a.preview-print:hover { background: var(--panel); }
   pointer-events: none;
 }
 
-/* Ações da carta: linha com Compartilhar + Desejo e, abaixo, Marcar como
-   tenho ocupando a largura inteira. */
+/* Ações da carta (2026-09-21): em cima a linha PRINCIPAL [−] [Não tenho /
+   Tenho N] [+], no desenho do TCGCollector; embaixo a linha secundária com
+   Pastas, Lista de Desejo e o compartilhar só com o ícone. Tudo em pílula
+   (999px), como o botão "tenho" já era — os dois lados da linha principal
+   viram círculos de 46px. */
 .preview-actions {
   display: grid;
   gap: 10px;
 }
 
-.preview-actions-row {
+.preview-own-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 46px minmax(0, 1fr) 46px;
   gap: 10px;
+  align-items: stretch;
 }
 
+.preview-qty-btn {
+  width: 46px;
+  min-height: 46px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  color: var(--text);
+}
+.preview-qty-btn svg { width: 18px; height: 18px; }
+.preview-qty-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.preview-qty-btn:disabled { opacity: 0.4; cursor: default; }
+
+.preview-actions-row {
+  display: grid;
+  /* Duas pílulas de texto dividindo a largura + o círculo do compartilhar. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 46px;
+  gap: 10px;
+}
+/* Sem wishlist na página (ex.: Pastas): só Pastas + compartilhar. */
+.preview-actions-row.no-want { grid-template-columns: minmax(0, 1fr) 46px; }
+
+.preview-folders,
 .preview-share,
 .preview-want {
   gap: 8px;
   min-height: 46px;
-  border-radius: 999px;
   font-size: 15px;
+  min-width: 0;
+}
+/* Pílula com DUAS classes de propósito: o passe flat global (`.secondary
+   { border-radius: 0 }`, mais abaixo no arquivo) vencia a classe sozinha e
+   estes botões saíam quadrados ao lado do "tenho", que é pílula. */
+.preview-actions-row .secondary { border-radius: 999px; }
+.preview-folders span,
+.preview-want span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.preview-folders svg,
+.preview-want svg { flex: none; }
+
+/* Compartilhar: só o ícone, num círculo do tamanho da linha. O "Link copiado!"
+   (quando não há menu nativo de compartilhar) é um balão em cima do botão. */
+.preview-share {
+  position: relative;
+  width: 46px;
+  padding: 0;
+}
+.preview-share svg { width: 18px; height: 18px; }
+.preview-share.is-copied::after {
+  content: attr(data-copied);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: var(--shadow-pop);
+  pointer-events: none;
 }
 
 .preview-want.active {
@@ -3379,6 +3438,8 @@ a.preview-print:hover { background: var(--panel); }
 
 .preview-owned {
   min-height: 46px;
+  min-width: 0;
+  padding: 0 12px;
   border-radius: 999px;
   font-size: 15px;
 }
@@ -3725,6 +3786,19 @@ a.preview-print:hover { background: var(--panel); }
     overflow-y: visible;
   }
 
+  /* ENTRADA do popup no celular (2026-09-21): o painel sobe de baixo, bem
+     curto (220ms), só na primeira abertura (.is-entering vem do JS e cai
+     em 400ms — trocar de variante recria o painel e não deve animar de novo).
+     Anima `top` (o painel já é position: relative), NÃO transform: um
+     transform no painel viraria contêiner do X, que é position: fixed aqui,
+     e o botão pulava de lugar quando a animação acabava. */
+  .card-preview-modal.is-entering .card-preview-panel {
+    animation: preview-rise 0.22s cubic-bezier(0.2, 0.8, 0.25, 1) both;
+  }
+  .card-preview-modal.is-entering .card-preview-backdrop {
+    animation: preview-fade 0.18s ease-out both;
+  }
+
   /* O painel inteiro rola no mobile, então o botão fica fixo na viewport
      para continuar acessível enquanto o usuário desce até os detalhes. */
   .preview-close {
@@ -3756,6 +3830,19 @@ a.preview-print:hover { background: var(--panel); }
     grid-template-columns: 96px 1fr;
     gap: 12px;
   }
+}
+
+@keyframes preview-rise {
+  from { top: 40px; opacity: 0; }
+  to { top: 0; opacity: 1; }
+}
+@keyframes preview-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card-preview-modal.is-entering .card-preview-panel,
+  .card-preview-modal.is-entering .card-preview-backdrop { animation: none; }
 }
 
 /* Home / landing */
@@ -10297,6 +10384,29 @@ select,
 .list-menu-empty { margin: 6px 8px; color: var(--muted); font-size: 12.5px; }
 .list-menu-new { display: block; margin-top: 4px; padding: 8px; border-top: 1px solid var(--line); color: var(--accent-ink); font-size: 12.5px; font-weight: 700; text-decoration: none; }
 .list-menu-new:hover { background: var(--panel-strong); }
+/* Modo FOLHA (botão "Pastas" do popup do card, 2026-09-21): centralizada por
+   cima do popup, com título e fechar, e fundo escurecido — em vez de ancorada
+   no botão (o painel do card rola no celular e o popover fixo descolava). */
+.list-menu-backdrop { position: fixed; inset: 0; z-index: 64; background: rgba(0, 0, 0, 0.5); }
+.list-menu-sheet {
+  left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: min(360px, calc(100vw - 32px)); max-width: none;
+  max-height: min(70vh, 520px); max-height: min(70dvh, 520px);
+  padding: 0 6px 6px;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.58);
+}
+.list-menu-head {
+  position: sticky; top: 0; z-index: 1;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  margin: 0 -6px 6px; padding: 10px 10px 10px 16px;
+  border-bottom: 1px solid var(--line); background: var(--surface);
+}
+.list-menu-head h3 { margin: 0; font-size: 15px; }
+/* relative, não static: o X é desenhado por ::before/::after absolutos e
+   precisa do botão como referência. top/right zerados porque no celular a
+   regra do .preview-close (fixed no canto) ainda aplica os deslocamentos. */
+.list-menu-sheet .preview-close { position: relative; top: auto; right: auto; box-shadow: none; }
+.list-menu-sheet .list-menu-item { min-height: 40px; font-size: 14px; }
 
 /* Menu de VERSÕES do + agrupado: reusa a caixa do .list-menu; cada linha é
    [nome ×N +] (clicar soma 1 NM) com um − separado quando há o que tirar. */

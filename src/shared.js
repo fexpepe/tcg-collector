@@ -6001,11 +6001,16 @@
       if (!modal) {
         modal = document.createElement("div");
         modal.id = "cardPreviewModal";
-        modal.className = "card-preview-modal";
+        // is-entering: só na PRIMEIRA abertura. open() roda de novo ao trocar
+        // de variante com o popup aberto e recria o painel — sem a marca, a
+        // animação de entrada (celular, ver CSS) tocaria a cada troca.
+        modal.className = "card-preview-modal is-entering";
         document.body.appendChild(modal);
+        setTimeout(() => modal.classList.remove("is-entering"), 400);
       }
 
-      const isOwned = activeVariant ? store.variantTotal(activeCard.id, activeVariant) > 0 : store.has(activeCard.id);
+      const ownedCount = previewOwnedCount();
+      const isOwned = ownedCount > 0;
       const wantVariant = activeVariant || defaultVariant(activeCard);
       const isWanted = wishlist ? wishlist.has(activeCard.id, wantVariant) : false;
       // LINK DA PÁGINA DO SET: o nome do set aparece duas vezes no popup (o
@@ -6096,13 +6101,30 @@
               })()}` : ""}</p>
             </div>
             <div class="preview-actions">
-              <div class="preview-actions-row">
-                <button type="button" class="secondary preview-share" data-preview-share>${TILE_ICONS.share}<span>${escapeHtml(t("modal.share"))}</span></button>
-                ${wishlist ? `<button type="button" class="secondary preview-want${isWanted ? " active" : ""}" data-preview-want aria-pressed="${isWanted}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}<span>${escapeHtml(isWanted ? t("modal.wanted") : t("modal.want"))}</span></button>` : ""}
+              <!-- AÇÃO PRINCIPAL (2026-09-21): [−] [Não tenho / Tenho N] [+], no
+                   desenho do TCGCollector. O botão do meio segue sendo o
+                   liga/desliga de sempre (data-card-id); o − e o + somam/tiram
+                   UMA cópia NM da variante aberta (ou da padrão), como os +/−
+                   das linhas de versão lá embaixo — só que sem precisar rolar
+                   até elas. O texto diz a QUANTIDADE ("Tenho 3"): "Tenho na
+                   coleção" escondia quantas eram. -->
+              <div class="preview-own-row">
+                <button type="button" class="preview-qty-btn" data-preview-qty="dec" aria-label="${escapeAttribute(t("modal.removeOne"))}"${ownedCount > 0 ? "" : " disabled"}>${TILE_ICONS.minus}</button>
+                <button class="owned-toggle preview-owned" data-card-id="${escapeAttribute(activeCard.id)}"${activeVariant ? ` data-variant="${escapeAttribute(activeVariant)}"` : ""} aria-pressed="${isOwned}">
+                  ${escapeHtml(ownedLabel(ownedCount))}
+                </button>
+                <button type="button" class="preview-qty-btn" data-preview-qty="inc" aria-label="${escapeAttribute(t("modal.addOne"))}">${TILE_ICONS.plus}</button>
               </div>
-              <button class="owned-toggle preview-owned" data-card-id="${escapeAttribute(activeCard.id)}"${activeVariant ? ` data-variant="${escapeAttribute(activeVariant)}"` : ""} aria-pressed="${isOwned}">
-                ${isOwned ? t("card.inCollection") : t("card.markOwned")}
-              </button>
+              <!-- Linha SECUNDÁRIA, embaixo da principal (moraram em cima até
+                   2026-09-21): Pastas (abre o popup de "adicionar a uma pasta",
+                   o mesmo do + Pasta do tile, em modo folha centralizada),
+                   Lista de Desejo e o compartilhar só com o ícone — o texto
+                   "Compartilhar" não paga a largura que come ao lado dos outros. -->
+              <div class="preview-actions-row${wishlist ? "" : " no-want"}">
+                <button type="button" class="secondary preview-folders" data-list-card-id="${escapeAttribute(activeCard.id)}"${activeVariant ? ` data-list-variant="${escapeAttribute(activeVariant)}"` : ""} aria-haspopup="dialog">${TILE_ICONS.folder}<span>${escapeHtml(t("modal.folders"))}</span></button>
+                ${wishlist ? `<button type="button" class="secondary preview-want${isWanted ? " active" : ""}" data-preview-want aria-pressed="${isWanted}">${isWanted ? TILE_ICONS.heartFilled : TILE_ICONS.heart}<span>${escapeHtml(isWanted ? t("modal.wanted") : t("modal.want"))}</span></button>` : ""}
+                <button type="button" class="secondary preview-share" data-preview-share aria-label="${escapeAttribute(t("modal.share"))}" title="${escapeAttribute(t("modal.share"))}">${TILE_ICONS.share}<span class="sr-only">${escapeHtml(t("modal.share"))}</span></button>
+              </div>
               ${((folders && folders.list().length) || (graded && isOwned)) ? `<div class="preview-org-row">
                 ${(folders && folders.list().length) ? `<label class="preview-folder-row"><span>${escapeHtml(t("folders.assign"))}</span>
                   <select class="preview-folder" data-preview-folder>
@@ -6228,7 +6250,26 @@
       // colunas e custa pouco). Em JS e não em CSS porque <details> abre/fecha
       // por atributo — CSS não desmarca `open`.
       const det = document.querySelector("#cardPreviewModal [data-preview-details]");
-      if (det && window.matchMedia && window.matchMedia("(max-width: 720px)").matches) det.open = false;
+      if (det && window.matchMedia && window.matchMedia("(max-width: 720px)").matches) {
+        det.open = false;
+        // No CELULAR (2026-09-21) a ficha desce pra baixo dos campos de dinheiro
+        // (Paguei / Preço NM): empilhado, ela ficava entre a carta e o botão de
+        // "tenho", e era a primeira coisa a rolar pra chegar na ação. É uma
+        // mudança de DOM, não de CSS, porque a ficha mora na coluna da imagem
+        // no desktop — e open() recria tudo, então não fica estado preso.
+        const acoes = modal.querySelector(".preview-actions");
+        if (acoes && acoes.parentNode) acoes.insertAdjacentElement("afterend", det);
+      }
+    }
+
+    // Quantas cópias o botão principal representa: da VARIANTE aberta quando o
+    // popup veio de um tile de variante, senão da carta inteira.
+    function previewOwnedCount() {
+      if (!activeCard) return 0;
+      return activeVariant ? store.variantTotal(activeCard.id, activeVariant) : store.totalForCard(activeCard.id);
+    }
+    function ownedLabel(n) {
+      return n > 0 ? t("card.haveN", { n }) : t("card.notOwned");
     }
 
     function close(opts) {
@@ -6284,6 +6325,24 @@
         wishlist.toggle(activeCard.id, variant);
         refreshWishlistButton();
         onOwnedChange();
+        return;
+      }
+
+      // +/− da linha PRINCIPAL ([−] Tenho N [+]): uma cópia NM da variante
+      // aberta (ou da padrão). Mesmas regras do +/− da linha de versão: somar
+      // tira da wishlist ("comprei!"), tirar prefere a condição NM.
+      const pq = event.target.closest("#cardPreviewModal [data-preview-qty]");
+      if (pq && activeCard) {
+        const variant = activeVariant || defaultVariant(activeCard);
+        if (pq.dataset.previewQty === "inc") {
+          store.add(activeCard.id, variant, DEFAULT_CONDITION, 1);
+          if (wishlist) wishlist.remove(activeCard.id, variant);
+        } else {
+          removeOneCopy(store, activeCard.id, variant);
+        }
+        onOwnedChange();
+        refreshQuantities();
+        refreshWishlistButton();
         return;
       }
 
@@ -6346,9 +6405,11 @@
       }
       const ownedButton = modal.querySelector(".preview-owned");
       if (ownedButton) {
-        const isOwned = activeVariant ? store.variantTotal(activeCard.id, activeVariant) > 0 : store.has(activeCard.id);
-        ownedButton.setAttribute("aria-pressed", String(isOwned));
-        ownedButton.textContent = isOwned ? t("card.inCollection") : t("card.markOwned");
+        const n = previewOwnedCount();
+        ownedButton.setAttribute("aria-pressed", String(n > 0));
+        ownedButton.textContent = ownedLabel(n);
+        const dec = modal.querySelector('[data-preview-qty="dec"]');
+        if (dec) dec.disabled = n <= 0;
       }
     }
 
@@ -6379,11 +6440,13 @@
       }
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(`${text} — ${url}`).then(() => {
-          const span = document.querySelector("#cardPreviewModal .preview-share span");
-          if (!span) return;
-          const original = span.textContent;
-          span.textContent = t("modal.shareCopied");
-          setTimeout(() => { span.textContent = original; }, 1600);
+          // O botão é só o ícone (2026-09-21): o retorno "Link copiado!" é um
+          // balão em cima dele (::after lê o data-copied) por 1,6s.
+          const btn = document.querySelector("#cardPreviewModal .preview-share");
+          if (!btn) return;
+          btn.dataset.copied = t("modal.shareCopied");
+          btn.classList.add("is-copied");
+          setTimeout(() => { btn.classList.remove("is-copied"); delete btn.dataset.copied; }, 1600);
         }).catch(() => {});
       }
     }
@@ -7227,19 +7290,27 @@
   // cópias do mesmo handler — e a chance de esquecer uma.
   // ---------------------------------------------------------------------------
   let listMenuEl = null;
+  let listMenuBackdrop = null;
   function closeListMenu() {
     if (listMenuEl) { listMenuEl.remove(); listMenuEl = null; }
+    if (listMenuBackdrop) { listMenuBackdrop.remove(); listMenuBackdrop = null; }
   }
-  function openListMenu(anchor, cardId, variant) {
+  // opts.sheet: em vez de popover ancorado no botão, uma FOLHA centralizada
+  // por cima do popup do card, com título e fechar, e um fundo escurecido
+  // (2026-09-21, botão "Pastas" do card). Ancorar não servia ali: o painel do
+  // card rola no celular e o popover fixo descolava do botão.
+  function openListMenu(anchor, cardId, variant, opts) {
     closeListMenu();
+    const sheet = !!(opts && opts.sheet);
     const store = createListStore();
     const lists = store.list();
     const marcadas = new Set(store.listsWith(cardId, variant || null));
     const box = document.createElement("div");
-    box.className = "list-menu";
+    box.className = sheet ? "list-menu list-menu-sheet" : "list-menu";
     box.setAttribute("role", "dialog");
     box.setAttribute("aria-label", t("tile.addToList"));
     box.innerHTML = `
+      ${sheet ? `<div class="list-menu-head"><h3>${escapeHtml(t("tile.addToList"))}</h3><button type="button" class="preview-close list-menu-close" data-lm-close aria-label="${escapeAttribute(t("modal.close"))}">×</button></div>` : ""}
       ${lists.length ? lists.map((l) => `
         <button type="button" class="list-menu-item${marcadas.has(l.id) ? " is-on" : ""}" data-lm-toggle="${escapeAttribute(l.id)}">
           <span class="list-menu-dot" style="background:${escapeAttribute(safeColor(l.color) || "#3b6fe0")}"></span>
@@ -7248,19 +7319,32 @@
         </button>`).join("")
         : `<p class="list-menu-empty">${escapeHtml(t("lists.menuEmpty"))}</p>`}
       <a class="list-menu-new" href="pastas">+ ${escapeHtml(t("lists.new"))}</a>`;
+    if (sheet) {
+      // Fundo que fecha ao toque: fica FORA do .list-menu de propósito — o
+      // listener global fecha em clique fora, e o backdrop é "fora".
+      listMenuBackdrop = document.createElement("div");
+      listMenuBackdrop.className = "list-menu-backdrop";
+      document.body.appendChild(listMenuBackdrop);
+    }
     document.body.appendChild(box);
     listMenuEl = box;
 
-    // Ancorado no botão, preso na tela: no fim da grade o popover sairia embaixo.
-    const r = anchor.getBoundingClientRect();
-    const w = box.offsetWidth || 220;
-    box.style.left = Math.max(8, Math.min(window.innerWidth - w - 8, r.left)) + "px";
-    const abaixo = r.bottom + 6;
-    box.style.top = (abaixo + (box.offsetHeight || 200) > window.innerHeight
-      ? Math.max(8, r.top - (box.offsetHeight || 200) - 6)
-      : abaixo) + "px";
+    if (!sheet) {
+      // Ancorado no botão, preso na tela: no fim da grade o popover sairia embaixo.
+      const r = anchor.getBoundingClientRect();
+      const w = box.offsetWidth || 220;
+      box.style.left = Math.max(8, Math.min(window.innerWidth - w - 8, r.left)) + "px";
+      const abaixo = r.bottom + 6;
+      box.style.top = (abaixo + (box.offsetHeight || 200) > window.innerHeight
+        ? Math.max(8, r.top - (box.offsetHeight || 200) - 6)
+        : abaixo) + "px";
+    } else {
+      const fechar = box.querySelector("[data-lm-close]");
+      if (fechar) fechar.focus();
+    }
 
     box.addEventListener("click", (ev) => {
+      if (ev.target.closest("[data-lm-close]")) { closeListMenu(); return; }
       const item = ev.target.closest("[data-lm-toggle]");
       if (!item) return;
       const listId = item.dataset.lmToggle;
@@ -7527,13 +7611,21 @@
           closeListMenu();
           return;
         }
-        openListMenu(btn, btn.dataset.listCardId, btn.dataset.listVariant || null);
+        openListMenu(btn, btn.dataset.listCardId, btn.dataset.listVariant || null, { sheet: !!btn.closest("#cardPreviewModal") });
         if (listMenuEl) listMenuEl.dataset.anchorId = btn.dataset.listCardId + "|" + (btn.dataset.listVariant || "");
         return;
       }
       if (listMenuEl && !ev.target.closest(".list-menu")) closeListMenu();
     });
-    document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") closeListMenu(); });
+    document.addEventListener("keydown", (ev) => {
+      if (ev.key !== "Escape" || !listMenuEl) return;
+      // Folha aberta por cima do popup do card: o Esc fecha SÓ a folha. Este
+      // listener corre antes do do popup (registrado no boot do shared), então
+      // segura a propagação aqui — senão o mesmo Esc fechava os dois.
+      const folha = listMenuEl.classList.contains("list-menu-sheet");
+      closeListMenu();
+      if (folha) ev.stopImmediatePropagation();
+    });
   }
 
   // Tira UMA cópia. Prefere tirar da condição PADRÃO (NM), que é a que o +
