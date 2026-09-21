@@ -1,0 +1,804 @@
+{
+ "page": "Holon Research Tower (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Weedle",
+   "page": "Weedle (Holon Research Tower 1)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Kakuna",
+   "page": "Kakuna (Holon Research Tower 2)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "3": {
+   "en": "Zubat",
+   "page": "Zubat (Holon Research Tower 3)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "4": {
+   "en": "Golbat",
+   "page": "Golbat (Holon Research Tower 4)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "5": {
+   "en": "Koffing",
+   "page": "Koffing (Holon Research Tower 5)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "6": {
+   "en": "Weezing",
+   "page": "Weezing (Holon Research Tower 6)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "7": {
+   "en": "Ditto",
+   "page": "Ditto (Holon Research Tower 7)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "8": {
+   "en": "Volbeat",
+   "page": "Volbeat (Holon Research Tower 8)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "9": {
+   "en": "Illumise",
+   "page": "Illumise (Holon Research Tower 9)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "10": {
+   "en": "Beedrill δ",
+   "page": "Beedrill δ (Holon Research Tower 10)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "11": {
+   "en": "Crobat δ",
+   "page": "Crobat δ (Holon Research Tower 11)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "12": {
+   "en": "Ditto",
+   "page": "Ditto (Holon Research Tower 12)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "13": {
+   "en": "Larvitar δ",
+   "page": "Larvitar δ (Holon Research Tower 13)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "14": {
+   "en": "Pupitar δ",
+   "page": "Pupitar δ (Holon Research Tower 14)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "15": {
+   "en": "Sunny Castform",
+   "page": "Sunny Castform (Holon Research Tower 15)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "16": {
+   "en": "Bagon δ",
+   "page": "Bagon δ (Holon Research Tower 16)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "17": {
+   "en": "Shelgon δ",
+   "page": "Shelgon δ (Holon Research Tower 17)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "18": {
+   "en": "Flareon δ",
+   "page": "Flareon δ (Holon Research Tower 18)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "19": {
+   "en": "Mewtwo δ",
+   "page": "Mewtwo δ (Holon Research Tower 19)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "20": {
+   "en": "Tyranitar δ",
+   "page": "Tyranitar δ (Holon Research Tower 20)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "21": {
+   "en": "Salamence δ",
+   "page": "Salamence δ (Holon Research Tower 21)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "22": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Holon Research Tower 22)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "23": {
+   "en": "Staryu",
+   "page": "Staryu (Holon Research Tower 23)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "24": {
+   "en": "Ditto",
+   "page": "Ditto (Holon Research Tower 24)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "25": {
+   "en": "Slowking",
+   "page": "Slowking (Holon Research Tower 25)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "26": {
+   "en": "Rain Castform",
+   "page": "Rain Castform (Holon Research Tower 26)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "27": {
+   "en": "Snow-cloud Castform",
+   "page": "Snow-cloud Castform (Holon Research Tower 27)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "28": {
+   "en": "Kyogre",
+   "page": "Kyogre ☆ (Holon Research Tower 28)",
+   "type": "Water",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "29": {
+   "en": "Starmie δ",
+   "page": "Starmie δ (Holon Research Tower 29)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "30": {
+   "en": "Vaporeon δ",
+   "page": "Vaporeon δ (Holon Research Tower 30)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "31": {
+   "en": "Holon's Voltorb",
+   "page": "Holon's Voltorb (Holon Research Tower 31)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "32": {
+   "en": "Holon's Electrode",
+   "page": "Holon's Electrode (Holon Research Tower 32)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "33": {
+   "en": "Ditto",
+   "page": "Ditto (Holon Research Tower 33)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "34": {
+   "en": "Dratini δ",
+   "page": "Dratini δ (Holon Research Tower 34)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "35": {
+   "en": "Dragonair δ",
+   "page": "Dragonair δ (Holon Research Tower 35)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "36": {
+   "en": "Beldum δ",
+   "page": "Beldum δ (Holon Research Tower 36)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "37": {
+   "en": "Metang δ",
+   "page": "Metang δ (Holon Research Tower 37)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "38": {
+   "en": "Jolteon δ",
+   "page": "Jolteon δ (Holon Research Tower 38)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "39": {
+   "en": "Dragonite δ",
+   "page": "Dragonite δ (Holon Research Tower 39)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "40": {
+   "en": "Metagross δ",
+   "page": "Metagross δ (Holon Research Tower 40)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "41": {
+   "en": "Latias δ",
+   "page": "Latias δ (Holon Research Tower 41)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "42": {
+   "en": "Latios δ",
+   "page": "Latios δ (Holon Research Tower 42)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "43": {
+   "en": "Rayquaza δ",
+   "page": "Rayquaza δ (Holon Research Tower 43)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "44": {
+   "en": "Drowzee",
+   "page": "Drowzee (Holon Research Tower 44)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "45": {
+   "en": "Hypno",
+   "page": "Hypno (Holon Research Tower 45)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "46": {
+   "en": "Ditto",
+   "page": "Ditto (Holon Research Tower 46)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "47": {
+   "en": "Ralts",
+   "page": "Ralts (Holon Research Tower 47)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "48": {
+   "en": "Kirlia",
+   "page": "Kirlia (Holon Research Tower 48)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "49": {
+   "en": "Espeon δ",
+   "page": "Espeon δ (Holon Research Tower 49)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "50": {
+   "en": "Gardevoir δ",
+   "page": "Gardevoir δ (Holon Research Tower 50)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "51": {
+   "en": "Sandshrew",
+   "page": "Sandshrew (Holon Research Tower 51)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "52": {
+   "en": "Cubone",
+   "page": "Cubone (Holon Research Tower 52)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "53": {
+   "en": "Ditto",
+   "page": "Ditto (Holon Research Tower 53)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "54": {
+   "en": "Makuhita",
+   "page": "Makuhita (Holon Research Tower 54)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "55": {
+   "en": "Hariyama",
+   "page": "Hariyama (Holon Research Tower 55)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "56": {
+   "en": "Groudon",
+   "page": "Groudon ☆ (Holon Research Tower 56)",
+   "type": "Fighting",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "57": {
+   "en": "Sandslash δ",
+   "page": "Sandslash δ (Holon Research Tower 57)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "58": {
+   "en": "Marowak δ",
+   "page": "Marowak δ (Holon Research Tower 58)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "59": {
+   "en": "Meowth",
+   "page": "Meowth (Holon Research Tower 59)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "60": {
+   "en": "Persian",
+   "page": "Persian (Holon Research Tower 60)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "61": {
+   "en": "Ditto",
+   "page": "Ditto (Holon Research Tower 61)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "62": {
+   "en": "Porygon",
+   "page": "Porygon (Holon Research Tower 62)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "63": {
+   "en": "Porygon2",
+   "page": "Porygon2 (Holon Research Tower 63)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "64": {
+   "en": "Taillow",
+   "page": "Taillow (Holon Research Tower 64)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "65": {
+   "en": "Swellow",
+   "page": "Swellow (Holon Research Tower 65)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "66": {
+   "en": "Azurill",
+   "page": "Azurill (Holon Research Tower 66)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "67": {
+   "en": "Castform",
+   "page": "Castform (Holon Research Tower 67)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "68": {
+   "en": "Poochyena",
+   "page": "Poochyena (Holon Research Tower 68)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "69": {
+   "en": "Umbreon δ",
+   "page": "Umbreon δ (Holon Research Tower 69)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "70": {
+   "en": "Mightyena δ",
+   "page": "Mightyena δ (Holon Research Tower 70)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "71": {
+   "en": "Holon's Magnemite",
+   "page": "Holon's Magnemite (Holon Research Tower 71)",
+   "type": "Metal",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "72": {
+   "en": "Holon's Magneton",
+   "page": "Holon's Magneton (Holon Research Tower 72)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "73": {
+   "en": "Eevee δ",
+   "page": "Eevee δ (Holon Research Tower 73)",
+   "type": "Metal",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "74": {
+   "en": "Skarmory",
+   "page": "Skarmory (Holon Research Tower 74)",
+   "type": "Metal",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "75": {
+   "en": "Metagross",
+   "page": "Metagross ☆ (Holon Research Tower 75)",
+   "type": "Metal",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "76": {
+   "en": "Holon Transceiver",
+   "page": "Holon Transceiver (Holon Research Tower 76)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "77": {
+   "en": "Holon Scientist",
+   "page": "Holon Scientist (Holon Research Tower 77)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "78": {
+   "en": "Holon Researcher",
+   "page": "Holon Researcher (Holon Research Tower 78)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "79": {
+   "en": "Holon Mentor",
+   "page": "Holon Mentor (Holon Research Tower 79)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "80": {
+   "en": "Holon Farmer",
+   "page": "Holon Farmer (Holon Research Tower 80)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "81": {
+   "en": "Holon Lass",
+   "page": "Holon Lass (Holon Research Tower 81)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "82": {
+   "en": "Holon Research Tower",
+   "page": "Holon Research Tower (Holon Research Tower 82)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "83": {
+   "en": "Holon Ruins",
+   "page": "Holon Ruins (Holon Research Tower 83)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "84": {
+   "en": "Holon Energy GL",
+   "page": "Holon Energy GL (Holon Research Tower 84)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "85": {
+   "en": "Holon Energy FF",
+   "page": "Holon Energy FF (Holon Research Tower 85)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "86": {
+   "en": "Holon Energy WP",
+   "page": "Holon Energy WP (Holon Research Tower 86)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "87": {
+   "en": "Weedle",
+   "page": "Weedle (EX Delta Species 87)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88": {
+   "en": "Zubat",
+   "page": "Zubat (EX Delta Species 88)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "89": {
+   "en": "Dual Ball",
+   "page": "Dual Ball (EX Delta Species 89)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Great Ball",
+   "page": "Great Ball (EX Delta Species 90)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "Holon Farmer",
+   "page": "Holon Farmer (EX Delta Species 91)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Holon Lass",
+   "page": "Holon Lass (EX Delta Species 92)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Holon Mentor",
+   "page": "Holon Mentor (EX Delta Species 93)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Holon Research Tower",
+   "page": "Holon Research Tower (EX Delta Species 94)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Holon Researcher",
+   "page": "Holon Researcher (EX Delta Species 95)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Holon Ruins",
+   "page": "Holon Ruins (EX Delta Species 96)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Holon Scientist",
+   "page": "Holon Scientist (EX Delta Species 97)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Holon Transceiver",
+   "page": "Holon Transceiver (EX Delta Species 98)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Master Ball",
+   "page": "Master Ball (EX Delta Species 99)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Super Scoop Up",
+   "page": "Super Scoop Up (EX Delta Species 100)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Potion",
+   "page": "Potion (EX Delta Species 101)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Switch",
+   "page": "Switch (EX Delta Species 102)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (EX Delta Species 103)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Holon Energy FF",
+   "page": "Holon Energy FF (EX Delta Species 104)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Holon Energy GL",
+   "page": "Holon Energy GL (EX Delta Species 105)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Holon Energy WP",
+   "page": "Holon Energy WP (EX Delta Species 106)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (EX Delta Species 107)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Flareon ex",
+   "page": "Flareon ex (EX Delta Species 108)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Jolteon ex",
+   "page": "Jolteon ex (EX Delta Species 109)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Vaporeon ex",
+   "page": "Vaporeon ex (EX Delta Species 110)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Groudon",
+   "page": "Groudon ☆ (EX Delta Species 111)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Kyogre",
+   "page": "Kyogre ☆ (EX Delta Species 112)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Metagross",
+   "page": "Metagross ☆ (EX Delta Species 113)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Azumarill",
+   "page": "Azumarill (EX Delta Species 114)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

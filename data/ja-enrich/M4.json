@@ -1,0 +1,846 @@
+{
+ "page": "Ninja Spinner (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Weedle",
+   "page": "Weedle (Ninja Spinner 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Kakuna",
+   "page": "Kakuna (Ninja Spinner 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Beedrill",
+   "page": "Beedrill ex (Ninja Spinner 3)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "4": {
+   "en": "Carnivine",
+   "page": "Carnivine (Ninja Spinner 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Chespin",
+   "page": "Chespin (Ninja Spinner 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Quilladin",
+   "page": "Quilladin (Ninja Spinner 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Chesnaught",
+   "page": "Chesnaught (Ninja Spinner 7)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "8": {
+   "en": "Vulpix",
+   "page": "Vulpix (Ninja Spinner 8)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Ninetales",
+   "page": "Ninetales (Ninja Spinner 9)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "10": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh (Ninja Spinner 10)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Fennekin",
+   "page": "Fennekin (Ninja Spinner 11)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Braixen",
+   "page": "Braixen (Ninja Spinner 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Delphox",
+   "page": "Delphox (Ninja Spinner 13)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "14": {
+   "en": "Litleo",
+   "page": "Litleo (Ninja Spinner 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Mega Pyroar",
+   "page": "Mega Pyroar ex (Ninja Spinner 15)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Remoraid",
+   "page": "Remoraid (Ninja Spinner 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Octillery",
+   "page": "Octillery (Ninja Spinner 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Delibird",
+   "page": "Delibird (Ninja Spinner 18)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Keldeo",
+   "page": "Keldeo (Ninja Spinner 19)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Froakie",
+   "page": "Froakie (Ninja Spinner 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Frogadier",
+   "page": "Frogadier (Ninja Spinner 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Mega Greninja",
+   "page": "Mega Greninja ex (Ninja Spinner 22)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "23": {
+   "en": "Bergmite",
+   "page": "Bergmite (Ninja Spinner 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Avalugg",
+   "page": "Avalugg (Ninja Spinner 24)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Wimpod",
+   "page": "Wimpod (Ninja Spinner 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Golisopod",
+   "page": "Golisopod (Ninja Spinner 26)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Mareep",
+   "page": "Mareep (Ninja Spinner 27)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Flaaffy",
+   "page": "Flaaffy (Ninja Spinner 28)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Ampharos",
+   "page": "Ampharos (Ninja Spinner 29)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "30": {
+   "en": "Emolga",
+   "page": "Emolga (Ninja Spinner 30)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Deoxys",
+   "page": "Deoxys (Ninja Spinner 31)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Deoxys",
+   "page": "Deoxys (Ninja Spinner 32)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Deoxys",
+   "page": "Deoxys (Ninja Spinner 33)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Deoxys",
+   "page": "Deoxys (Ninja Spinner 34)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Mega Floette",
+   "page": "Mega Floette ex (Ninja Spinner 35)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "36": {
+   "en": "Espurr",
+   "page": "Espurr (Ninja Spinner 36)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Meowstic",
+   "page": "Meowstic (Ninja Spinner 37)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "38": {
+   "en": "Phantump",
+   "page": "Phantump (Ninja Spinner 38)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Trevenant",
+   "page": "Trevenant (Ninja Spinner 39)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "40": {
+   "en": "Pumpkaboo",
+   "page": "Pumpkaboo (Ninja Spinner 40)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Gourgeist",
+   "page": "Gourgeist ex (Ninja Spinner 41)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "42": {
+   "en": "Xerneas",
+   "page": "Xerneas (Ninja Spinner 42)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "43": {
+   "en": "Sudowoodo",
+   "page": "Sudowoodo (Ninja Spinner 43)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Phanpy",
+   "page": "Phanpy (Ninja Spinner 44)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Donphan",
+   "page": "Donphan (Ninja Spinner 45)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Baltoy",
+   "page": "Baltoy (Ninja Spinner 46)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Claydol",
+   "page": "Claydol (Ninja Spinner 47)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Zubat",
+   "page": "Zubat (Ninja Spinner 48)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Golbat",
+   "page": "Golbat (Ninja Spinner 49)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Crobat",
+   "page": "Crobat (Ninja Spinner 50)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Qwilfish",
+   "page": "Qwilfish (Ninja Spinner 51)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Stunky",
+   "page": "Stunky (Ninja Spinner 52)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Skuntank",
+   "page": "Skuntank (Ninja Spinner 53)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Trubbish",
+   "page": "Trubbish (Ninja Spinner 54)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Garbodor",
+   "page": "Garbodor (Ninja Spinner 55)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "56": {
+   "en": "Skrelp",
+   "page": "Skrelp (Ninja Spinner 56)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Beldum",
+   "page": "Beldum (Ninja Spinner 57)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Metang",
+   "page": "Metang (Ninja Spinner 58)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Metagross",
+   "page": "Metagross (Ninja Spinner 59)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Ferroseed",
+   "page": "Ferroseed (Ninja Spinner 60)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Ferrothorn",
+   "page": "Ferrothorn (Ninja Spinner 61)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Cobalion",
+   "page": "Cobalion ex (Ninja Spinner 62)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Mega Dragalge",
+   "page": "Mega Dragalge ex (Ninja Spinner 63)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Goomy",
+   "page": "Goomy (Ninja Spinner 64)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Sliggoo",
+   "page": "Sliggoo (Ninja Spinner 65)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "Goodra",
+   "page": "Goodra (Ninja Spinner 66)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Tauros",
+   "page": "Tauros (Ninja Spinner 67)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Patrat",
+   "page": "Patrat (Ninja Spinner 68)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "69": {
+   "en": "Watchog",
+   "page": "Watchog (Ninja Spinner 69)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "70": {
+   "en": "Minccino",
+   "page": "Minccino (Ninja Spinner 70)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "71": {
+   "en": "Cinccino",
+   "page": "Cinccino ex (Ninja Spinner 71)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Special Red Card",
+   "page": "Special Red Card (Ninja Spinner 72)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "73": {
+   "en": "Great Haul Net",
+   "page": "Great Haul Net (Ninja Spinner 73)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "74": {
+   "en": "Transformation Tome",
+   "page": "Transformation Tome (Ninja Spinner 74)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "75": {
+   "en": "AZ's Tranquility",
+   "page": "AZ's Tranquility (Ninja Spinner 75)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "76": {
+   "en": "Philippe",
+   "page": "Philippe (Ninja Spinner 76)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Roxie's Performance",
+   "page": "Roxie's Performance (Ninja Spinner 77)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "78": {
+   "en": "Emma",
+   "page": "Emma (Ninja Spinner 78)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Ange Floette",
+   "page": "Ange Floette (Ninja Spinner 79)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "80": {
+   "en": "Prism Tower",
+   "page": "Prism Tower (Ninja Spinner 80)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "81": {
+   "en": "Nitro",
+   "page": "Nitro R Energy (Ninja Spinner 81)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "82": {
+   "en": "Bubbly",
+   "page": "Bubbly W Energy (Ninja Spinner 82)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "83": {
+   "en": "Magnetic",
+   "page": "Magnetic M Energy (Ninja Spinner 83)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "84": {
+   "en": "Chespin",
+   "page": "Chespin (Ninja Spinner 84)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Fennekin",
+   "page": "Fennekin (Ninja Spinner 85)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Froakie",
+   "page": "Froakie (Ninja Spinner 86)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Frogadier",
+   "page": "Frogadier (Ninja Spinner 87)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Ampharos",
+   "page": "Ampharos (Ninja Spinner 88)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Xerneas",
+   "page": "Xerneas (Ninja Spinner 89)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Claydol",
+   "page": "Claydol (Ninja Spinner 90)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Crobat",
+   "page": "Crobat (Ninja Spinner 91)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Metang",
+   "page": "Metang (Ninja Spinner 92)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Sliggoo",
+   "page": "Sliggoo (Ninja Spinner 93)",
+   "type": "Dragon",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Tauros",
+   "page": "Tauros (Ninja Spinner 94)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Watchog",
+   "page": "Watchog (Ninja Spinner 95)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Beedrill",
+   "page": "Beedrill ex (Ninja Spinner 96)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Mega Pyroar",
+   "page": "Mega Pyroar ex (Ninja Spinner 97)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Mega Greninja",
+   "page": "Mega Greninja ex (Ninja Spinner 98)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Mega Floette",
+   "page": "Mega Floette ex (Ninja Spinner 99)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Gourgeist",
+   "page": "Gourgeist ex (Ninja Spinner 100)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Cobalion",
+   "page": "Cobalion ex (Ninja Spinner 101)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Mega Dragalge",
+   "page": "Mega Dragalge ex (Ninja Spinner 102)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Cinccino",
+   "page": "Cinccino ex (Ninja Spinner 103)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Energy Retrieval",
+   "page": "Energy Retrieval (Ninja Spinner 104)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Jumbo Ice Cream",
+   "page": "Jumbo Ice Cream (Ninja Spinner 105)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Special Red Card",
+   "page": "Special Red Card (Ninja Spinner 106)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Tool Scrapper",
+   "page": "Tool Scrapper (Ninja Spinner 107)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "108": {
+   "en": "AZ's Tranquility",
+   "page": "AZ's Tranquility (Ninja Spinner 108)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Philippe",
+   "page": "Philippe (Ninja Spinner 109)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Roxie's Performance",
+   "page": "Roxie's Performance (Ninja Spinner 110)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Emma",
+   "page": "Emma (Ninja Spinner 111)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Surfing Beach",
+   "page": "Surfing Beach (Ninja Spinner 112)",
+   "type": "St",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Prism Tower",
+   "page": "Prism Tower (Ninja Spinner 113)",
+   "type": "St",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Mega Greninja",
+   "page": "Mega Greninja ex (Ninja Spinner 114)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Mega Floette",
+   "page": "Mega Floette ex (Ninja Spinner 115)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Mega Dragalge",
+   "page": "Mega Dragalge ex (Ninja Spinner 116)",
+   "type": "Dragon",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "117": {
+   "en": "Cinccino",
+   "page": "Cinccino ex (Ninja Spinner 117)",
+   "type": "Colorless",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "118": {
+   "en": "AZ's Tranquility",
+   "page": "AZ's Tranquility (Ninja Spinner 118)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "119": {
+   "en": "Roxie's Performance",
+   "page": "Roxie's Performance (Ninja Spinner 119)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "120": {
+   "en": "Mega Greninja",
+   "page": "Mega Greninja ex (Ninja Spinner 120)",
+   "type": "Water",
+   "rarity": "MUR",
+   "mark": ""
+  }
+ }
+}

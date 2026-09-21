@@ -1,0 +1,1959 @@
+{
+ "page": "Snow Hazard (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Surskit",
+   "page": "Surskit (Snow Hazard 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Masquerain",
+   "page": "Masquerain (Snow Hazard 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Combee",
+   "page": "Combee (Snow Hazard 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Vespiquen",
+   "page": "Vespiquen (Snow Hazard 4)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "5": {
+   "en": "Snover",
+   "page": "Snover (Snow Hazard 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Abomasnow",
+   "page": "Abomasnow (Snow Hazard 6)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "7": {
+   "en": "Bounsweet",
+   "page": "Bounsweet (Snow Hazard 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Steenee",
+   "page": "Steenee (Snow Hazard 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Tsareena",
+   "page": "Tsareena (Snow Hazard 9)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "10": {
+   "en": "Bramblin",
+   "page": "Bramblin (Snow Hazard 10)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Bramblin",
+   "page": "Bramblin (Snow Hazard 11)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Brambleghast",
+   "page": "Brambleghast (Snow Hazard 12)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "13": {
+   "en": "Rellor",
+   "page": "Rellor (Snow Hazard 13)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Rellor",
+   "page": "Rellor (Snow Hazard 14)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Wo-Chien",
+   "page": "Wo-Chien ex (Snow Hazard 15)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Marill",
+   "page": "Marill (Snow Hazard 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Azumarill",
+   "page": "Azumarill (Snow Hazard 17)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Luvdisc",
+   "page": "Luvdisc (Snow Hazard 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Eiscue",
+   "page": "Eiscue (Snow Hazard 19)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Cetoddle",
+   "page": "Cetoddle (Snow Hazard 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Cetoddle",
+   "page": "Cetoddle (Snow Hazard 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Cetitan",
+   "page": "Cetitan (Snow Hazard 22)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Veluza",
+   "page": "Veluza (Snow Hazard 23)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "24": {
+   "en": "Frigibax",
+   "page": "Frigibax (Snow Hazard 24)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Frigibax",
+   "page": "Frigibax (Snow Hazard 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Arctibax",
+   "page": "Arctibax (Snow Hazard 26)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Baxcalibur",
+   "page": "Baxcalibur (Snow Hazard 27)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "28": {
+   "en": "Chien-Pao",
+   "page": "Chien-Pao ex (Snow Hazard 28)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "29": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Snow Hazard 29)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Slowking",
+   "page": "Slowking ex (Snow Hazard 30)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Gothita",
+   "page": "Gothita (Snow Hazard 31)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Gothorita",
+   "page": "Gothorita (Snow Hazard 32)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Gothitelle",
+   "page": "Gothitelle (Snow Hazard 33)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Mimikyu",
+   "page": "Mimikyu (Snow Hazard 34)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "35": {
+   "en": "Sinistea",
+   "page": "Sinistea (Snow Hazard 35)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Polteageist",
+   "page": "Polteageist (Snow Hazard 36)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Rabsca",
+   "page": "Rabsca (Snow Hazard 37)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "38": {
+   "en": "Mankey",
+   "page": "Mankey (Snow Hazard 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Primeape",
+   "page": "Primeape (Snow Hazard 39)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Annihilape",
+   "page": "Annihilape ex (Snow Hazard 40)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "41": {
+   "en": "Sudowoodo",
+   "page": "Sudowoodo (Snow Hazard 41)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "42": {
+   "en": "Glimmet",
+   "page": "Glimmet (Snow Hazard 42)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Glimmet",
+   "page": "Glimmet (Snow Hazard 43)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Glimmora",
+   "page": "Glimmora (Snow Hazard 44)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "45": {
+   "en": "Murkrow",
+   "page": "Murkrow (Snow Hazard 45)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Honchkrow",
+   "page": "Honchkrow (Snow Hazard 46)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Maschiff",
+   "page": "Maschiff (Snow Hazard 47)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Maschiff",
+   "page": "Maschiff (Snow Hazard 48)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Mabosstiff",
+   "page": "Mabosstiff (Snow Hazard 49)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Bronzor",
+   "page": "Bronzor (Snow Hazard 50)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Bronzong",
+   "page": "Bronzong (Snow Hazard 51)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Corviknight",
+   "page": "Corviknight (Snow Hazard 52)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Cufant",
+   "page": "Cufant (Snow Hazard 53)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Copperajah",
+   "page": "Copperajah ex (Snow Hazard 54)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Orthworm",
+   "page": "Orthworm (Snow Hazard 55)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "56": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (Snow Hazard 56)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Dudunsparce",
+   "page": "Dudunsparce (Snow Hazard 57)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Wingull",
+   "page": "Wingull (Snow Hazard 58)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Pelipper",
+   "page": "Pelipper (Snow Hazard 59)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Slakoth",
+   "page": "Slakoth (Snow Hazard 60)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Vigoroth",
+   "page": "Vigoroth (Snow Hazard 61)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Slaking",
+   "page": "Slaking (Snow Hazard 62)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "63": {
+   "en": "Rookidee",
+   "page": "Rookidee (Snow Hazard 63)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "64": {
+   "en": "Corvisquire",
+   "page": "Corvisquire (Snow Hazard 64)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Squawkabilly",
+   "page": "Squawkabilly ex (Snow Hazard 65)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Super Rod",
+   "page": "Super Rod (Snow Hazard 66)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Fighting Au Lait",
+   "page": "Fighting Au Lait (Snow Hazard 67)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Grusha",
+   "page": "Grusha (Snow Hazard 68)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Giacomo",
+   "page": "Giacomo (Snow Hazard 69)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Calamitous Snowy Mountain",
+   "page": "Calamitous Snowy Mountain (Snow Hazard 70)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Reversal Energy",
+   "page": "Reversal Energy (Snow Hazard 71)",
+   "type": "Rainbow",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Bramblin",
+   "page": "Bramblin (Snow Hazard 72)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Marill",
+   "page": "Marill (Snow Hazard 73)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Eiscue",
+   "page": "Eiscue (Snow Hazard 74)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Frigibax",
+   "page": "Frigibax (Snow Hazard 75)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Arctibax",
+   "page": "Arctibax (Snow Hazard 76)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Baxcalibur",
+   "page": "Baxcalibur (Snow Hazard 77)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Gothorita",
+   "page": "Gothorita (Snow Hazard 78)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Rabsca",
+   "page": "Rabsca (Snow Hazard 79)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Sudowoodo",
+   "page": "Sudowoodo (Snow Hazard 80)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Orthworm",
+   "page": "Orthworm (Snow Hazard 81)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Rookidee",
+   "page": "Rookidee (Snow Hazard 82)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Dudunsparce",
+   "page": "Dudunsparce (Snow Hazard 83)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Wo-Chien",
+   "page": "Wo-Chien ex (Snow Hazard 84)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Chien-Pao",
+   "page": "Chien-Pao ex (Snow Hazard 85)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Slowking",
+   "page": "Slowking ex (Snow Hazard 86)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Annihilape",
+   "page": "Annihilape ex (Snow Hazard 87)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Copperajah",
+   "page": "Copperajah ex (Snow Hazard 88)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Squawkabilly",
+   "page": "Squawkabilly ex (Snow Hazard 89)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Grusha",
+   "page": "Grusha (Snow Hazard 90)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Giacomo",
+   "page": "Giacomo (Snow Hazard 91)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Wo-Chien",
+   "page": "Wo-Chien ex (Snow Hazard 92)",
+   "type": "Grass",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Chien-Pao",
+   "page": "Chien-Pao ex (Snow Hazard 93)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Squawkabilly",
+   "page": "Squawkabilly ex (Snow Hazard 94)",
+   "type": "Colorless",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Grusha",
+   "page": "Grusha (Snow Hazard 95)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Giacomo",
+   "page": "Giacomo (Snow Hazard 96)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Chien-Pao",
+   "page": "Chien-Pao ex (Snow Hazard 97)",
+   "type": "Water",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Super Rod",
+   "page": "Super Rod (Snow Hazard 98)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Basic Water Energy",
+   "page": "Basic Water Energy (Snow Hazard 99)",
+   "type": "Water",
+   "rarity": "UR",
+   "mark": "—"
+  },
+  "100": {
+   "en": "Tinkatink",
+   "page": "Tinkatink (Paldea Evolved 100)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Tinkatink",
+   "page": "Tinkatink (Paldea Evolved 101)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Tinkatink",
+   "page": "Tinkatink (Paldea Evolved 102)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Tinkatuff",
+   "page": "Tinkatuff (Paldea Evolved 103)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Tinkatuff",
+   "page": "Tinkatuff (Paldea Evolved 104)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Tinkaton",
+   "page": "Tinkaton (Paldea Evolved 105)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Mankey",
+   "page": "Mankey (Paldea Evolved 106)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Primeape",
+   "page": "Primeape (Paldea Evolved 107)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Paldea Evolved 108)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Sudowoodo",
+   "page": "Sudowoodo (Paldea Evolved 109)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Larvitar",
+   "page": "Larvitar (Paldea Evolved 110)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Pupitar",
+   "page": "Pupitar (Paldea Evolved 111)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Makuhita",
+   "page": "Makuhita (Paldea Evolved 112)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Hariyama",
+   "page": "Hariyama (Paldea Evolved 113)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Croagunk",
+   "page": "Croagunk (Paldea Evolved 114)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Toxicroak",
+   "page": "Toxicroak (Paldea Evolved 115)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Rockruff",
+   "page": "Rockruff (Paldea Evolved 116)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "117": {
+   "en": "Lycanroc",
+   "page": "Lycanroc ex (Paldea Evolved 117)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "118": {
+   "en": "Passimian",
+   "page": "Passimian (Paldea Evolved 118)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Falinks",
+   "page": "Falinks (Paldea Evolved 119)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Nacli",
+   "page": "Nacli (Paldea Evolved 120)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Nacli",
+   "page": "Nacli (Paldea Evolved 121)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Naclstack",
+   "page": "Naclstack (Paldea Evolved 122)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Garganacl",
+   "page": "Garganacl (Paldea Evolved 123)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Glimmet",
+   "page": "Glimmet (Paldea Evolved 124)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Glimmet",
+   "page": "Glimmet (Paldea Evolved 125)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "126": {
+   "en": "Glimmora",
+   "page": "Glimmora (Paldea Evolved 126)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Ting-Lu",
+   "page": "Ting-Lu ex (Paldea Evolved 127)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Paldean Wooper",
+   "page": "Paldean Wooper (Paldea Evolved 128)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Paldean Wooper",
+   "page": "Paldean Wooper (Paldea Evolved 129)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Paldean Clodsire",
+   "page": "Paldean Clodsire ex (Paldea Evolved 130)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Murkrow",
+   "page": "Murkrow (Paldea Evolved 131)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Honchkrow",
+   "page": "Honchkrow (Paldea Evolved 132)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Sneasel",
+   "page": "Sneasel (Paldea Evolved 133)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Weavile",
+   "page": "Weavile (Paldea Evolved 134)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Tyranitar",
+   "page": "Tyranitar (Paldea Evolved 135)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Sableye",
+   "page": "Sableye (Paldea Evolved 136)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Seviper",
+   "page": "Seviper (Paldea Evolved 137)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Deino",
+   "page": "Deino (Paldea Evolved 138)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Zweilous",
+   "page": "Zweilous (Paldea Evolved 139)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Hydreigon",
+   "page": "Hydreigon (Paldea Evolved 140)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Maschiff",
+   "page": "Maschiff (Paldea Evolved 141)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Maschiff",
+   "page": "Maschiff (Paldea Evolved 142)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Mabosstiff",
+   "page": "Mabosstiff (Paldea Evolved 143)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Shroodle",
+   "page": "Shroodle (Paldea Evolved 144)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Shroodle",
+   "page": "Shroodle (Paldea Evolved 145)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Grafaiai",
+   "page": "Grafaiai (Paldea Evolved 146)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Bombirdier",
+   "page": "Bombirdier (Paldea Evolved 147)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Corviknight",
+   "page": "Corviknight (Paldea Evolved 148)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Cufant",
+   "page": "Cufant (Paldea Evolved 149)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Copperajah",
+   "page": "Copperajah ex (Paldea Evolved 150)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Orthworm",
+   "page": "Orthworm (Paldea Evolved 151)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Noibat",
+   "page": "Noibat (Paldea Evolved 152)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Noivern",
+   "page": "Noivern ex (Paldea Evolved 153)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Girafarig",
+   "page": "Girafarig (Paldea Evolved 154)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Farigiraf",
+   "page": "Farigiraf (Paldea Evolved 155)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (Paldea Evolved 156)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Dudunsparce",
+   "page": "Dudunsparce (Paldea Evolved 157)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Wingull",
+   "page": "Wingull (Paldea Evolved 158)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Pelipper",
+   "page": "Pelipper (Paldea Evolved 159)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Slakoth",
+   "page": "Slakoth (Paldea Evolved 160)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Vigoroth",
+   "page": "Vigoroth (Paldea Evolved 161)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Slaking",
+   "page": "Slaking (Paldea Evolved 162)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Fletchling",
+   "page": "Fletchling (Paldea Evolved 163)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Rookidee",
+   "page": "Rookidee (Paldea Evolved 164)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "165": {
+   "en": "Corvisquire",
+   "page": "Corvisquire (Paldea Evolved 165)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "166": {
+   "en": "Tandemaus",
+   "page": "Tandemaus (Paldea Evolved 166)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "167": {
+   "en": "Tandemaus",
+   "page": "Tandemaus (Paldea Evolved 167)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "168": {
+   "en": "Maushold",
+   "page": "Maushold (Paldea Evolved 168)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "169": {
+   "en": "Squawkabilly",
+   "page": "Squawkabilly ex (Paldea Evolved 169)",
+   "type": "Double Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "170": {
+   "en": "Flamigo",
+   "page": "Flamigo (Paldea Evolved 170)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "171": {
+   "en": "Artazon",
+   "page": "Artazon (Paldea Evolved 171)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "172": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (Paldea Evolved 172)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "173": {
+   "en": "Bravery Charm",
+   "page": "Bravery Charm (Paldea Evolved 173)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "174": {
+   "en": "Calamitous Snowy Mountain",
+   "page": "Calamitous Snowy Mountain (Paldea Evolved 174)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "175": {
+   "en": "Calamitous Wasteland",
+   "page": "Calamitous Wasteland (Paldea Evolved 175)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "176": {
+   "en": "Choice Belt",
+   "page": "Choice Belt (Paldea Evolved 176)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "177": {
+   "en": "Clavell",
+   "page": "Clavell (Paldea Evolved 177)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "178": {
+   "en": "Delivery Drone",
+   "page": "Delivery Drone (Paldea Evolved 178)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "179": {
+   "en": "Dendra",
+   "page": "Dendra (Paldea Evolved 179)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "180": {
+   "en": "Falkner",
+   "page": "Falkner (Paldea Evolved 180)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "181": {
+   "en": "Fighting Au Lait",
+   "page": "Fighting Au Lait (Paldea Evolved 181)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "182": {
+   "en": "Giacomo",
+   "page": "Giacomo (Paldea Evolved 182)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "183": {
+   "en": "Great Ball",
+   "page": "Great Ball (Paldea Evolved 183)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "184": {
+   "en": "Grusha",
+   "page": "Grusha (Paldea Evolved 184)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "185": {
+   "en": "Iono",
+   "page": "Iono (Paldea Evolved 185)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "186": {
+   "en": "Practice Studio",
+   "page": "Practice Studio (Paldea Evolved 186)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "187": {
+   "en": "Saguaro",
+   "page": "Saguaro (Paldea Evolved 187)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "188": {
+   "en": "Super Rod",
+   "page": "Super Rod (Paldea Evolved 188)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "189": {
+   "en": "Superior Energy Retrieval",
+   "page": "Superior Energy Retrieval (Paldea Evolved 189)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "190": {
+   "en": "Jet Energy",
+   "page": "Jet Energy (Paldea Evolved 190)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "191": {
+   "en": "Luminous Energy",
+   "page": "Luminous Energy (Paldea Evolved 191)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "192": {
+   "en": "Reversal Energy",
+   "page": "Reversal Energy (Paldea Evolved 192)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "193": {
+   "en": "Therapeutic Energy",
+   "page": "Therapeutic Energy (Paldea Evolved 193)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "194": {
+   "en": "Heracross",
+   "page": "Heracross (Paldea Evolved 194)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "195": {
+   "en": "Tropius",
+   "page": "Tropius (Paldea Evolved 195)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "196": {
+   "en": "Sprigatito",
+   "page": "Sprigatito (Paldea Evolved 196)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "197": {
+   "en": "Floragato",
+   "page": "Floragato (Paldea Evolved 197)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "198": {
+   "en": "Bramblin",
+   "page": "Bramblin (Paldea Evolved 198)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "199": {
+   "en": "Fletchinder",
+   "page": "Fletchinder (Paldea Evolved 199)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "200": {
+   "en": "Pyroar",
+   "page": "Pyroar (Paldea Evolved 200)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "201": {
+   "en": "Fuecoco",
+   "page": "Fuecoco (Paldea Evolved 201)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "202": {
+   "en": "Crocalor",
+   "page": "Crocalor (Paldea Evolved 202)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "203": {
+   "en": "Magikarp",
+   "page": "Magikarp (Paldea Evolved 203)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "204": {
+   "en": "Marill",
+   "page": "Marill (Paldea Evolved 204)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "205": {
+   "en": "Eiscue",
+   "page": "Eiscue (Paldea Evolved 205)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "206": {
+   "en": "Quaxly",
+   "page": "Quaxly (Paldea Evolved 206)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "207": {
+   "en": "Quaxwell",
+   "page": "Quaxwell (Paldea Evolved 207)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "208": {
+   "en": "Frigibax",
+   "page": "Frigibax (Paldea Evolved 208)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "209": {
+   "en": "Arctibax",
+   "page": "Arctibax (Paldea Evolved 209)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "210": {
+   "en": "Baxcalibur",
+   "page": "Baxcalibur (Paldea Evolved 210)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "211": {
+   "en": "Raichu",
+   "page": "Raichu (Paldea Evolved 211)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "212": {
+   "en": "Mismagius",
+   "page": "Mismagius (Paldea Evolved 212)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "213": {
+   "en": "Gothorita",
+   "page": "Gothorita (Paldea Evolved 213)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "214": {
+   "en": "Sandygast",
+   "page": "Sandygast (Paldea Evolved 214)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "215": {
+   "en": "Rabsca",
+   "page": "Rabsca (Paldea Evolved 215)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "216": {
+   "en": "Tinkatink",
+   "page": "Tinkatink (Paldea Evolved 216)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "217": {
+   "en": "Tinkatuff",
+   "page": "Tinkatuff (Paldea Evolved 217)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "218": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Paldea Evolved 218)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "219": {
+   "en": "Sudowoodo",
+   "page": "Sudowoodo (Paldea Evolved 219)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "220": {
+   "en": "Nacli",
+   "page": "Nacli (Paldea Evolved 220)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "221": {
+   "en": "Paldean Wooper",
+   "page": "Paldean Wooper (Paldea Evolved 221)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "222": {
+   "en": "Tyranitar",
+   "page": "Tyranitar (Paldea Evolved 222)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "223": {
+   "en": "Grafaiai",
+   "page": "Grafaiai (Paldea Evolved 223)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "224": {
+   "en": "Orthworm",
+   "page": "Orthworm (Paldea Evolved 224)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "225": {
+   "en": "Rookidee",
+   "page": "Rookidee (Paldea Evolved 225)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "226": {
+   "en": "Maushold",
+   "page": "Maushold (Paldea Evolved 226)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "227": {
+   "en": "Flamigo",
+   "page": "Flamigo (Paldea Evolved 227)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "228": {
+   "en": "Farigiraf",
+   "page": "Farigiraf (Paldea Evolved 228)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "229": {
+   "en": "Dudunsparce",
+   "page": "Dudunsparce (Paldea Evolved 229)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "230": {
+   "en": "Forretress",
+   "page": "Forretress ex (Paldea Evolved 230)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "231": {
+   "en": "Meowscarada",
+   "page": "Meowscarada ex (Paldea Evolved 231)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "232": {
+   "en": "Wo-Chien",
+   "page": "Wo-Chien ex (Paldea Evolved 232)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "233": {
+   "en": "Skeledirge",
+   "page": "Skeledirge ex (Paldea Evolved 233)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "234": {
+   "en": "Chi-Yu",
+   "page": "Chi-Yu ex (Paldea Evolved 234)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "235": {
+   "en": "Quaquaval",
+   "page": "Quaquaval ex (Paldea Evolved 235)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "236": {
+   "en": "Chien-Pao",
+   "page": "Chien-Pao ex (Paldea Evolved 236)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "237": {
+   "en": "Bellibolt",
+   "page": "Bellibolt ex (Paldea Evolved 237)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "238": {
+   "en": "Slowking",
+   "page": "Slowking ex (Paldea Evolved 238)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "239": {
+   "en": "Dedenne",
+   "page": "Dedenne ex (Paldea Evolved 239)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "240": {
+   "en": "Tinkaton",
+   "page": "Tinkaton ex (Paldea Evolved 240)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "241": {
+   "en": "Lycanroc",
+   "page": "Lycanroc ex (Paldea Evolved 241)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "242": {
+   "en": "Annihilape",
+   "page": "Annihilape ex (Paldea Evolved 242)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "243": {
+   "en": "Ting-Lu",
+   "page": "Ting-Lu ex (Paldea Evolved 243)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "244": {
+   "en": "Paldean Clodsire",
+   "page": "Paldean Clodsire ex (Paldea Evolved 244)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "245": {
+   "en": "Copperajah",
+   "page": "Copperajah ex (Paldea Evolved 245)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "246": {
+   "en": "Noivern",
+   "page": "Noivern ex (Paldea Evolved 246)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "247": {
+   "en": "Squawkabilly",
+   "page": "Squawkabilly ex (Paldea Evolved 247)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "248": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (Paldea Evolved 248)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "249": {
+   "en": "Clavell",
+   "page": "Clavell (Paldea Evolved 249)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "250": {
+   "en": "Dendra",
+   "page": "Dendra (Paldea Evolved 250)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "251": {
+   "en": "Falkner",
+   "page": "Falkner (Paldea Evolved 251)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "252": {
+   "en": "Giacomo",
+   "page": "Giacomo (Paldea Evolved 252)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "253": {
+   "en": "Grusha",
+   "page": "Grusha (Paldea Evolved 253)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "254": {
+   "en": "Iono",
+   "page": "Iono (Paldea Evolved 254)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "255": {
+   "en": "Saguaro",
+   "page": "Saguaro (Paldea Evolved 255)",
+   "type": "Ultra Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "256": {
+   "en": "Meowscarada",
+   "page": "Meowscarada ex (Paldea Evolved 256)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "257": {
+   "en": "Wo-Chien",
+   "page": "Wo-Chien ex (Paldea Evolved 257)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "258": {
+   "en": "Skeledirge",
+   "page": "Skeledirge ex (Paldea Evolved 258)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "259": {
+   "en": "Chi-Yu",
+   "page": "Chi-Yu ex (Paldea Evolved 259)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "260": {
+   "en": "Quaquaval",
+   "page": "Quaquaval ex (Paldea Evolved 260)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "261": {
+   "en": "Chien-Pao",
+   "page": "Chien-Pao ex (Paldea Evolved 261)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "262": {
+   "en": "Tinkaton",
+   "page": "Tinkaton ex (Paldea Evolved 262)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "263": {
+   "en": "Ting-Lu",
+   "page": "Ting-Lu ex (Paldea Evolved 263)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "264": {
+   "en": "Squawkabilly",
+   "page": "Squawkabilly ex (Paldea Evolved 264)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "265": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (Paldea Evolved 265)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "266": {
+   "en": "Dendra",
+   "page": "Dendra (Paldea Evolved 266)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "267": {
+   "en": "Giacomo",
+   "page": "Giacomo (Paldea Evolved 267)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "268": {
+   "en": "Grusha",
+   "page": "Grusha (Paldea Evolved 268)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "269": {
+   "en": "Iono",
+   "page": "Iono (Paldea Evolved 269)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "270": {
+   "en": "Saguaro",
+   "page": "Saguaro (Paldea Evolved 270)",
+   "type": "Special Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "271": {
+   "en": "Meowscarada",
+   "page": "Meowscarada ex (Paldea Evolved 271)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "272": {
+   "en": "Skeledirge",
+   "page": "Skeledirge ex (Paldea Evolved 272)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "273": {
+   "en": "Quaquaval",
+   "page": "Quaquaval ex (Paldea Evolved 273)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "274": {
+   "en": "Chien-Pao",
+   "page": "Chien-Pao ex (Paldea Evolved 274)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "275": {
+   "en": "Ting-Lu",
+   "page": "Ting-Lu ex (Paldea Evolved 275)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "276": {
+   "en": "Super Rod",
+   "page": "Super Rod (Paldea Evolved 276)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "277": {
+   "en": "Superior Energy Retrieval",
+   "page": "Superior Energy Retrieval (Paldea Evolved 277)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "278": {
+   "en": "Basic Grass Energy",
+   "page": "Basic Grass Energy (Paldea Evolved 278)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "279": {
+   "en": "Basic Water Energy",
+   "page": "Basic Water Energy (Paldea Evolved 279)",
+   "type": "Hyper Rare",
+   "rarity": "Promotion",
+   "mark": "—"
+  }
+ }
+}

@@ -1,0 +1,1161 @@
+{
+ "page": "Base Expansion Pack (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Koffing",
+   "page": "Koffing (Base Expansion Pack 1)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Hoppip",
+   "page": "Hoppip (Base Expansion Pack 2)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "3": {
+   "en": "Caterpie",
+   "page": "Caterpie (Base Expansion Pack 3)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "4": {
+   "en": "Ekans",
+   "page": "Ekans (Base Expansion Pack 4)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "5": {
+   "en": "Oddish",
+   "page": "Oddish (Base Expansion Pack 5)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "6": {
+   "en": "Vulpix",
+   "page": "Vulpix (Base Expansion Pack 6)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "7": {
+   "en": "Ponyta",
+   "page": "Ponyta (Base Expansion Pack 7)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "8": {
+   "en": "Poliwag",
+   "page": "Poliwag (Base Expansion Pack 8)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "9": {
+   "en": "Shellder",
+   "page": "Shellder (Base Expansion Pack 9)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "10": {
+   "en": "Krabby",
+   "page": "Krabby (Base Expansion Pack 10)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "11": {
+   "en": "Goldeen",
+   "page": "Goldeen (Base Expansion Pack 11)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "12": {
+   "en": "Magikarp",
+   "page": "Magikarp (Base Expansion Pack 12)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "13": {
+   "en": "Marill",
+   "page": "Marill (Base Expansion Pack 13)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "14": {
+   "en": "Qwilfish",
+   "page": "Qwilfish (Base Expansion Pack 14)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "15": {
+   "en": "Corsola",
+   "page": "Corsola (Base Expansion Pack 15)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "16": {
+   "en": "Pikachu",
+   "page": "Pikachu (Base Expansion Pack 16)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "17": {
+   "en": "Mareep",
+   "page": "Mareep (Base Expansion Pack 17)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "18": {
+   "en": "Abra",
+   "page": "Abra (Base Expansion Pack 18)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "19": {
+   "en": "Gastly",
+   "page": "Gastly (Base Expansion Pack 19)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "20": {
+   "en": "Diglett",
+   "page": "Diglett (Base Expansion Pack 20)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "21": {
+   "en": "Machop",
+   "page": "Machop (Base Expansion Pack 21)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "22": {
+   "en": "Geodude",
+   "page": "Geodude (Base Expansion Pack 22)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "23": {
+   "en": "Cubone",
+   "page": "Cubone (Base Expansion Pack 23)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "24": {
+   "en": "Larvitar",
+   "page": "Larvitar (Base Expansion Pack 24)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "25": {
+   "en": "Pidgey",
+   "page": "Pidgey (Base Expansion Pack 25)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "26": {
+   "en": "Rattata",
+   "page": "Rattata (Base Expansion Pack 26)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "27": {
+   "en": "Spearow",
+   "page": "Spearow (Base Expansion Pack 27)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "28": {
+   "en": "Clefairy",
+   "page": "Clefairy (Base Expansion Pack 28)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "29": {
+   "en": "Meowth",
+   "page": "Meowth (Base Expansion Pack 29)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "30": {
+   "en": "Tauros",
+   "page": "Tauros (Base Expansion Pack 30)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "31": {
+   "en": "Dratini",
+   "page": "Dratini (Base Expansion Pack 31)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "32": {
+   "en": "Houndour",
+   "page": "Houndour (Base Expansion Pack 32)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "33": {
+   "en": "Metapod",
+   "page": "Metapod (Base Expansion Pack 33)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "34": {
+   "en": "Gloom",
+   "page": "Gloom (Base Expansion Pack 34)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "35": {
+   "en": "Magmar",
+   "page": "Magmar (Base Expansion Pack 35)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "36": {
+   "en": "Poliwhirl",
+   "page": "Poliwhirl (Base Expansion Pack 36)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "37": {
+   "en": "Jynx",
+   "page": "Jynx (Base Expansion Pack 37)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "38": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Base Expansion Pack 38)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "39": {
+   "en": "Flaaffy",
+   "page": "Flaaffy (Base Expansion Pack 39)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "40": {
+   "en": "Kadabra",
+   "page": "Kadabra (Base Expansion Pack 40)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "41": {
+   "en": "Haunter",
+   "page": "Haunter (Base Expansion Pack 41)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "42": {
+   "en": "Machoke",
+   "page": "Machoke (Base Expansion Pack 42)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "43": {
+   "en": "Graveler",
+   "page": "Graveler (Base Expansion Pack 43)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "44": {
+   "en": "Hitmonlee",
+   "page": "Hitmonlee (Base Expansion Pack 44)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "45": {
+   "en": "Pupitar",
+   "page": "Pupitar (Base Expansion Pack 45)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "46": {
+   "en": "Pidgeotto",
+   "page": "Pidgeotto (Base Expansion Pack 46)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "47": {
+   "en": "Chansey",
+   "page": "Chansey (Base Expansion Pack 47)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "48": {
+   "en": "Dragonair",
+   "page": "Dragonair (Base Expansion Pack 48)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "49": {
+   "en": "Professor Elm's Training Method",
+   "page": "Professor Elm's Training Method (Base Expansion Pack 49)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "50": {
+   "en": "Energy Restore",
+   "page": "Energy Restore (Base Expansion Pack 50)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "51": {
+   "en": "Energy Charge",
+   "page": "Energy Charge (Base Expansion Pack 51)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "52": {
+   "en": "Energy Removal 2",
+   "page": "Energy Removal 2 (Base Expansion Pack 52)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "53": {
+   "en": "Professor Oak's Research",
+   "page": "Professor Oak's Research (Base Expansion Pack 53)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "54": {
+   "en": "Mary's Impulse",
+   "page": "Mary's Impulse (Base Expansion Pack 54)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "55": {
+   "en": "Super Scoop Up",
+   "page": "Super Scoop Up (Base Expansion Pack 55)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "56": {
+   "en": "Strength Charm",
+   "page": "Strength Charm (Base Expansion Pack 56)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "57": {
+   "en": "Dual Ball",
+   "page": "Dual Ball (Base Expansion Pack 57)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "58": {
+   "en": "Pokémon Nurse",
+   "page": "Pokémon Nurse (Base Expansion Pack 58)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "59": {
+   "en": "Pokémon Reversal",
+   "page": "Pokémon Reversal (Base Expansion Pack 59)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "60": {
+   "en": "Bill's Maintenance",
+   "page": "Bill's Maintenance (Base Expansion Pack 60)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "61": {
+   "en": "Master Ball",
+   "page": "Master Ball (Base Expansion Pack 61)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "62": {
+   "en": "Multi Technical Machine 01",
+   "page": "Multi Technical Machine 01 (Base Expansion Pack 62)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "63": {
+   "en": "Copycat",
+   "page": "Copycat (Base Expansion Pack 63)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "64": {
+   "en": "Warp Point",
+   "page": "Warp Point (Base Expansion Pack 64)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "65": {
+   "en": "Venusaur",
+   "page": "Venusaur (Base Expansion Pack 65)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "66": {
+   "en": "Butterfree",
+   "page": "Butterfree (Base Expansion Pack 66)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "67": {
+   "en": "Arbok",
+   "page": "Arbok (Base Expansion Pack 67)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "68": {
+   "en": "Vileplume",
+   "page": "Vileplume (Base Expansion Pack 68)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "69": {
+   "en": "Weezing",
+   "page": "Weezing (Base Expansion Pack 69)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "70": {
+   "en": "Meganium",
+   "page": "Meganium (Base Expansion Pack 70)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "71": {
+   "en": "Charizard",
+   "page": "Charizard (Base Expansion Pack 71)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "72": {
+   "en": "Ninetales",
+   "page": "Ninetales (Base Expansion Pack 72)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "73": {
+   "en": "Rapidash",
+   "page": "Rapidash (Base Expansion Pack 73)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "74": {
+   "en": "Typhlosion",
+   "page": "Typhlosion (Base Expansion Pack 74)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "75": {
+   "en": "Magby",
+   "page": "Magby (Base Expansion Pack 75)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "76": {
+   "en": "Blastoise",
+   "page": "Blastoise (Base Expansion Pack 76)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "77": {
+   "en": "Poliwrath",
+   "page": "Poliwrath (Base Expansion Pack 77)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "78": {
+   "en": "Cloyster",
+   "page": "Cloyster (Base Expansion Pack 78)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "79": {
+   "en": "Kingler",
+   "page": "Kingler (Base Expansion Pack 79)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "80": {
+   "en": "Feraligatr",
+   "page": "Feraligatr (Base Expansion Pack 80)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "81": {
+   "en": "Raichu",
+   "page": "Raichu (Base Expansion Pack 81)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "82": {
+   "en": "Pichu",
+   "page": "Pichu (Base Expansion Pack 82)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "83": {
+   "en": "Ampharos",
+   "page": "Ampharos (Base Expansion Pack 83)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "84": {
+   "en": "Alakazam",
+   "page": "Alakazam (Base Expansion Pack 84)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "85": {
+   "en": "Gengar",
+   "page": "Gengar (Base Expansion Pack 85)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "86": {
+   "en": "Mewtwo",
+   "page": "Mewtwo (Base Expansion Pack 86)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "87": {
+   "en": "Mew",
+   "page": "Mew (Base Expansion Pack 87)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "88": {
+   "en": "Dugtrio",
+   "page": "Dugtrio (Base Expansion Pack 88)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "89": {
+   "en": "Machamp",
+   "page": "Machamp (Base Expansion Pack 89)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "90": {
+   "en": "Golem",
+   "page": "Golem (Base Expansion Pack 90)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "91": {
+   "en": "Pidgeot",
+   "page": "Pidgeot (Base Expansion Pack 91)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "92": {
+   "en": "Fearow",
+   "page": "Fearow (Base Expansion Pack 92)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "93": {
+   "en": "Clefable",
+   "page": "Clefable (Base Expansion Pack 93)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "94": {
+   "en": "Dragonite",
+   "page": "Dragonite (Base Expansion Pack 94)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "95": {
+   "en": "Tyranitar",
+   "page": "Tyranitar (Base Expansion Pack 95)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "96": {
+   "en": "Skarmory",
+   "page": "Skarmory (Base Expansion Pack 96)",
+   "type": "Metal",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "97": {
+   "en": "Venusaur",
+   "page": "Venusaur (Base Expansion Pack 97)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "98": {
+   "en": "Butterfree",
+   "page": "Butterfree (Base Expansion Pack 98)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "99": {
+   "en": "Arbok",
+   "page": "Arbok (Base Expansion Pack 99)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "100": {
+   "en": "Vileplume",
+   "page": "Vileplume (Base Expansion Pack 100)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "101": {
+   "en": "Weezing",
+   "page": "Weezing (Base Expansion Pack 101)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "102": {
+   "en": "Meganium",
+   "page": "Meganium (Base Expansion Pack 102)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "103": {
+   "en": "Charizard",
+   "page": "Charizard (Base Expansion Pack 103)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "104": {
+   "en": "Ninetales",
+   "page": "Ninetales (Base Expansion Pack 104)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "105": {
+   "en": "Rapidash",
+   "page": "Rapidash (Base Expansion Pack 105)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "106": {
+   "en": "Typhlosion",
+   "page": "Typhlosion (Base Expansion Pack 106)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "107": {
+   "en": "Magby",
+   "page": "Magby (Base Expansion Pack 107)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "108": {
+   "en": "Blastoise",
+   "page": "Blastoise (Base Expansion Pack 108)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "109": {
+   "en": "Poliwrath",
+   "page": "Poliwrath (Base Expansion Pack 109)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "110": {
+   "en": "Cloyster",
+   "page": "Cloyster (Base Expansion Pack 110)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "111": {
+   "en": "Kingler",
+   "page": "Kingler (Base Expansion Pack 111)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "112": {
+   "en": "Feraligatr",
+   "page": "Feraligatr (Base Expansion Pack 112)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "113": {
+   "en": "Raichu",
+   "page": "Raichu (Base Expansion Pack 113)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "114": {
+   "en": "Pichu",
+   "page": "Pichu (Base Expansion Pack 114)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "115": {
+   "en": "Ampharos",
+   "page": "Ampharos (Base Expansion Pack 115)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "116": {
+   "en": "Alakazam",
+   "page": "Alakazam (Base Expansion Pack 116)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "117": {
+   "en": "Gengar",
+   "page": "Gengar (Base Expansion Pack 117)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "118": {
+   "en": "Mewtwo",
+   "page": "Mewtwo (Base Expansion Pack 118)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "119": {
+   "en": "Mew",
+   "page": "Mew (Base Expansion Pack 119)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "120": {
+   "en": "Dugtrio",
+   "page": "Dugtrio (Base Expansion Pack 120)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "121": {
+   "en": "Machamp",
+   "page": "Machamp (Base Expansion Pack 121)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "122": {
+   "en": "Golem",
+   "page": "Golem (Base Expansion Pack 122)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "123": {
+   "en": "Pidgeot",
+   "page": "Pidgeot (Base Expansion Pack 123)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "124": {
+   "en": "Fearow",
+   "page": "Fearow (Base Expansion Pack 124)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "125": {
+   "en": "Clefable",
+   "page": "Clefable (Base Expansion Pack 125)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "126": {
+   "en": "Dragonite",
+   "page": "Dragonite (Base Expansion Pack 126)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "127": {
+   "en": "Tyranitar",
+   "page": "Tyranitar (Base Expansion Pack 127)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "128": {
+   "en": "Skarmory",
+   "page": "Skarmory (Base Expansion Pack 128)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "129": {
+   "en": "Shellder",
+   "page": "Shellder (Expedition 129)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Spearow",
+   "page": "Spearow (Expedition 130)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Squirtle",
+   "page": "Squirtle (Expedition 131)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Squirtle",
+   "page": "Squirtle (Expedition 132)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Tauros",
+   "page": "Tauros (Expedition 133)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Totodile",
+   "page": "Totodile (Expedition 134)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Totodile",
+   "page": "Totodile (Expedition 135)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Vulpix",
+   "page": "Vulpix (Expedition 136)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Bill's Maintenance",
+   "page": "Bill's Maintenance (Expedition 137)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Copycat",
+   "page": "Copycat (Expedition 138)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Dual Ball",
+   "page": "Dual Ball (Expedition 139)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Energy Removal 2",
+   "page": "Energy Removal 2 (Expedition 140)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Energy Restore",
+   "page": "Energy Restore (Expedition 141)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Mary's Impulse",
+   "page": "Mary's Impulse (Expedition 142)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Master Ball",
+   "page": "Master Ball (Expedition 143)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Multi Technical Machine 01",
+   "page": "Multi Technical Machine 01 (Expedition 144)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Pokémon Nurse",
+   "page": "Pokémon Nurse (Expedition 145)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Pokémon Reversal",
+   "page": "Pokémon Reversal (Expedition 146)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Power Charge",
+   "page": "Power Charge (Expedition 147)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Professor Elm's Training Method",
+   "page": "Professor Elm's Training Method (Expedition 148)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Professor Oak's Research",
+   "page": "Professor Oak's Research (Expedition 149)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Strength Charm",
+   "page": "Strength Charm (Expedition 150)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Super Scoop Up",
+   "page": "Super Scoop Up (Expedition 151)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Warp Point",
+   "page": "Warp Point (Expedition 152)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Energy Search",
+   "page": "Energy Search (Expedition 153)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Full Heal",
+   "page": "Full Heal (Expedition 154)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Moo-Moo Milk",
+   "page": "Moo-Moo Milk (Expedition 155)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Potion",
+   "page": "Potion (Expedition 156)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Switch",
+   "page": "Switch (Expedition 157)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (Expedition 158)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (Expedition 159)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Fighting Energy",
+   "page": "Fighting Energy (Expedition 160)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Fire Energy",
+   "page": "Fire Energy (Expedition 161)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Grass Energy",
+   "page": "Grass Energy (Expedition 162)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Lightning Energy",
+   "page": "Lightning Energy (Expedition 163)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (Expedition 164)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "165": {
+   "en": "Water Energy",
+   "page": "Water Energy (Expedition 165)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,608 @@
+{
+ "page": "VMAX Rising (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Caterpie",
+   "page": "Caterpie (VMAX Rising 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Metapod",
+   "page": "Metapod (VMAX Rising 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Butterfree",
+   "page": "Butterfree (VMAX Rising 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Shuckle",
+   "page": "Shuckle (VMAX Rising 4)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "5": {
+   "en": "Snover",
+   "page": "Snover (VMAX Rising 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Abomasnow",
+   "page": "Abomasnow (VMAX Rising 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Grubbin",
+   "page": "Grubbin (VMAX Rising 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Rillaboom",
+   "page": "Rillaboom V (VMAX Rising 8)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "9": {
+   "en": "Rillaboom",
+   "page": "Rillaboom VMAX (VMAX Rising 9)",
+   "type": "Grass",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "10": {
+   "en": "Applin",
+   "page": "Applin (VMAX Rising 10)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Appletun",
+   "page": "Appletun (VMAX Rising 11)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Vulpix",
+   "page": "Vulpix (VMAX Rising 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Ninetales",
+   "page": "Ninetales (VMAX Rising 13)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Growlithe",
+   "page": "Growlithe (VMAX Rising 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Arcanine",
+   "page": "Arcanine (VMAX Rising 15)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Cinderace",
+   "page": "Cinderace V (VMAX Rising 16)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "17": {
+   "en": "Cinderace",
+   "page": "Cinderace VMAX (VMAX Rising 17)",
+   "type": "Fire",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "18": {
+   "en": "Galarian Mr. Mime",
+   "page": "Galarian Mr. Mime (VMAX Rising 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Galarian Mr. Rime",
+   "page": "Galarian Mr. Rime (VMAX Rising 19)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Magikarp",
+   "page": "Magikarp (VMAX Rising 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Gyarados",
+   "page": "Gyarados (VMAX Rising 21)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Inteleon",
+   "page": "Inteleon V (VMAX Rising 22)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "23": {
+   "en": "Inteleon",
+   "page": "Inteleon VMAX (VMAX Rising 23)",
+   "type": "Water",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "24": {
+   "en": "Cramorant",
+   "page": "Cramorant (VMAX Rising 24)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Arrokuda",
+   "page": "Arrokuda (VMAX Rising 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Barraskewda",
+   "page": "Barraskewda (VMAX Rising 26)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Helioptile",
+   "page": "Helioptile (VMAX Rising 27)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (VMAX Rising 28)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Charjabug",
+   "page": "Charjabug (VMAX Rising 29)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Vikavolt",
+   "page": "Vikavolt (VMAX Rising 30)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "31": {
+   "en": "Boltund",
+   "page": "Boltund V (VMAX Rising 31)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "32": {
+   "en": "Toxel",
+   "page": "Toxel (VMAX Rising 32)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Toxtricity",
+   "page": "Toxtricity (VMAX Rising 33)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Natu",
+   "page": "Natu (VMAX Rising 34)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Xatu",
+   "page": "Xatu (VMAX Rising 35)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Galarian Corsola",
+   "page": "Galarian Corsola (VMAX Rising 36)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Galarian Cursola",
+   "page": "Galarian Cursola (VMAX Rising 37)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "38": {
+   "en": "Indeedee",
+   "page": "Indeedee (VMAX Rising 38)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Dreepy",
+   "page": "Dreepy (VMAX Rising 39)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Drakloak",
+   "page": "Drakloak (VMAX Rising 40)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Dragapult",
+   "page": "Dragapult (VMAX Rising 41)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "42": {
+   "en": "Galarian Farfetch'd",
+   "page": "Galarian Farfetch'd (VMAX Rising 42)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Galarian Sirfetch'd",
+   "page": "Galarian Sirfetch'd (VMAX Rising 43)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Binacle",
+   "page": "Binacle (VMAX Rising 44)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Barbaracle",
+   "page": "Barbaracle (VMAX Rising 45)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Sandaconda",
+   "page": "Sandaconda V (VMAX Rising 46)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "47": {
+   "en": "Falinks",
+   "page": "Falinks (VMAX Rising 47)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Stunky",
+   "page": "Stunky (VMAX Rising 48)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Skuntank",
+   "page": "Skuntank (VMAX Rising 49)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Impidimp",
+   "page": "Impidimp (VMAX Rising 50)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Morgrem",
+   "page": "Morgrem (VMAX Rising 51)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Grimmsnarl",
+   "page": "Grimmsnarl (VMAX Rising 52)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "53": {
+   "en": "Bronzor",
+   "page": "Bronzor (VMAX Rising 53)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Bronzong",
+   "page": "Bronzong (VMAX Rising 54)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Honedge",
+   "page": "Honedge (VMAX Rising 55)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Doublade",
+   "page": "Doublade (VMAX Rising 56)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Aegislash",
+   "page": "Aegislash (VMAX Rising 57)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Duraludon",
+   "page": "Duraludon (VMAX Rising 58)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "59": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (VMAX Rising 59)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Diggersby",
+   "page": "Diggersby (VMAX Rising 60)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (VMAX Rising 61)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Dubwool",
+   "page": "Dubwool V (VMAX Rising 62)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Capacious Bucket",
+   "page": "Capacious Bucket (VMAX Rising 63)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Burning Scarf",
+   "page": "Burning Scarf (VMAX Rising 64)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Sonia",
+   "page": "Sonia (VMAX Rising 65)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Skyla",
+   "page": "Skyla (VMAX Rising 66)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Milo",
+   "page": "Milo (VMAX Rising 67)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Turffield Stadium",
+   "page": "Turffield Stadium (VMAX Rising 68)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Training Court",
+   "page": "Training Court (VMAX Rising 69)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Twin Energy",
+   "page": "Twin Energy (VMAX Rising 70)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Rillaboom",
+   "page": "Rillaboom V (VMAX Rising 71)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Cinderace",
+   "page": "Cinderace V (VMAX Rising 72)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Inteleon",
+   "page": "Inteleon V (VMAX Rising 73)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Boltund",
+   "page": "Boltund V (VMAX Rising 74)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Sandaconda",
+   "page": "Sandaconda V (VMAX Rising 75)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Dubwool",
+   "page": "Dubwool V (VMAX Rising 76)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Sonia",
+   "page": "Sonia (VMAX Rising 77)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Milo",
+   "page": "Milo (VMAX Rising 78)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Rillaboom",
+   "page": "Rillaboom VMAX (VMAX Rising 79)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Cinderace",
+   "page": "Cinderace VMAX (VMAX Rising 80)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Inteleon",
+   "page": "Inteleon VMAX (VMAX Rising 81)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Sonia",
+   "page": "Sonia (VMAX Rising 82)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Milo",
+   "page": "Milo (VMAX Rising 83)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Frosmoth",
+   "page": "Frosmoth (VMAX Rising 84)",
+   "type": "Water",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Big Charm",
+   "page": "Big Charm (VMAX Rising 85)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Twin Energy",
+   "page": "Twin Energy (VMAX Rising 86)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

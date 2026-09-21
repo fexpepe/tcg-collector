@@ -1,0 +1,874 @@
+{
+ "page": "Phantom Gate (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Venonat",
+   "page": "Venonat (Phantom Gate 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Venomoth",
+   "page": "Venomoth (Phantom Gate 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Yanma",
+   "page": "Yanma (Phantom Gate 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Yanmega",
+   "page": "Yanmega (Phantom Gate 4)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "5": {
+   "en": "Sewaddle",
+   "page": "Sewaddle (Phantom Gate 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Swadloon",
+   "page": "Swadloon (Phantom Gate 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Leavanny",
+   "page": "Leavanny (Phantom Gate 7)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "8": {
+   "en": "Karrablast",
+   "page": "Karrablast (Phantom Gate 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Fletchinder",
+   "page": "Fletchinder (Phantom Gate 9)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Talonflame",
+   "page": "Talonflame (Phantom Gate 10)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Litleo",
+   "page": "Litleo (Phantom Gate 11)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Pyroar",
+   "page": "Pyroar (Phantom Gate 12)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "13": {
+   "en": "Krabby",
+   "page": "Krabby (Phantom Gate 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Kingler",
+   "page": "Kingler (Phantom Gate 14)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Totodile",
+   "page": "Totodile (Phantom Gate 15)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Croconaw",
+   "page": "Croconaw (Phantom Gate 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Feraligatr",
+   "page": "Feraligatr (Phantom Gate 17)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "18": {
+   "en": "Finneon",
+   "page": "Finneon (Phantom Gate 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Lumineon",
+   "page": "Lumineon (Phantom Gate 19)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Frillish",
+   "page": "Frillish (Phantom Gate 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Jellicent",
+   "page": "Jellicent (Phantom Gate 21)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Alomomola",
+   "page": "Alomomola (Phantom Gate 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Manectric",
+   "page": "Manectric-EX (Phantom Gate 23)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "24": {
+   "en": "Manectric",
+   "page": "M Manectric-EX (Phantom Gate 24)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "25": {
+   "en": "Pachirisu",
+   "page": "Pachirisu (Phantom Gate 25)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Joltik",
+   "page": "Joltik (Phantom Gate 26)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Galvantula",
+   "page": "Galvantula (Phantom Gate 27)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Helioptile",
+   "page": "Helioptile (Phantom Gate 28)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (Phantom Gate 29)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "30": {
+   "en": "Zubat",
+   "page": "Zubat (Phantom Gate 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Golbat",
+   "page": "Golbat (Phantom Gate 31)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Crobat",
+   "page": "Crobat (Phantom Gate 32)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Gengar",
+   "page": "Gengar-EX (Phantom Gate 33)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "34": {
+   "en": "Gengar",
+   "page": "M Gengar-EX (Phantom Gate 34)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "35": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (Phantom Gate 35)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Gulpin",
+   "page": "Gulpin (Phantom Gate 36)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Swalot",
+   "page": "Swalot (Phantom Gate 37)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "38": {
+   "en": "Munna",
+   "page": "Munna (Phantom Gate 38)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Musharna",
+   "page": "Musharna (Phantom Gate 39)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Litwick",
+   "page": "Litwick (Phantom Gate 40)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Lampent",
+   "page": "Lampent (Phantom Gate 41)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Chandelure",
+   "page": "Chandelure (Phantom Gate 42)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "43": {
+   "en": "Pumpkaboo",
+   "page": "Pumpkaboo (Phantom Gate 43)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Gourgeist",
+   "page": "Gourgeist (Phantom Gate 44)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "45": {
+   "en": "Gligar",
+   "page": "Gligar (Phantom Gate 45)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Gliscor",
+   "page": "Gliscor (Phantom Gate 46)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Roggenrola",
+   "page": "Roggenrola (Phantom Gate 47)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Boldore",
+   "page": "Boldore (Phantom Gate 48)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Gigalith",
+   "page": "Gigalith (Phantom Gate 49)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "50": {
+   "en": "Murkrow",
+   "page": "Murkrow (Phantom Gate 50)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Honchkrow",
+   "page": "Honchkrow (Phantom Gate 51)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Poochyena",
+   "page": "Poochyena (Phantom Gate 52)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Mightyena",
+   "page": "Mightyena (Phantom Gate 53)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Phantom Gate 54)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Purrloin",
+   "page": "Purrloin (Phantom Gate 55)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Liepard",
+   "page": "Liepard (Phantom Gate 56)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Malamar",
+   "page": "Malamar-EX (Phantom Gate 57)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Heatran",
+   "page": "Heatran (Phantom Gate 58)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "59": {
+   "en": "Escavalier",
+   "page": "Escavalier (Phantom Gate 59)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Florges",
+   "page": "Florges-EX (Phantom Gate 60)",
+   "type": "Fairy",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Swirlix",
+   "page": "Swirlix (Phantom Gate 61)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Slurpuff",
+   "page": "Slurpuff (Phantom Gate 62)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "63": {
+   "en": "Deino",
+   "page": "Deino (Phantom Gate 63)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "64": {
+   "en": "Zweilous",
+   "page": "Zweilous (Phantom Gate 64)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Hydreigon",
+   "page": "Hydreigon (Phantom Gate 65)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "66": {
+   "en": "Spearow",
+   "page": "Spearow (Phantom Gate 66)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "67": {
+   "en": "Fearow",
+   "page": "Fearow (Phantom Gate 67)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Chansey",
+   "page": "Chansey (Phantom Gate 68)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "69": {
+   "en": "Blissey",
+   "page": "Blissey (Phantom Gate 69)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Girafarig",
+   "page": "Girafarig (Phantom Gate 70)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "71": {
+   "en": "Whismur",
+   "page": "Whismur (Phantom Gate 71)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "72": {
+   "en": "Loudred",
+   "page": "Loudred (Phantom Gate 72)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "73": {
+   "en": "Exploud",
+   "page": "Exploud (Phantom Gate 73)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "74": {
+   "en": "Regigigas",
+   "page": "Regigigas (Phantom Gate 74)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "75": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (Phantom Gate 75)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "76": {
+   "en": "Diggersby",
+   "page": "Diggersby (Phantom Gate 76)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Fletchling",
+   "page": "Fletchling (Phantom Gate 77)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "78": {
+   "en": "Target Whistle",
+   "page": "Target Whistle (Phantom Gate 78)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Battle Compressor",
+   "page": "Battle Compressor (Phantom Gate 79)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "80": {
+   "en": "Robo Substitute",
+   "page": "Robo Substitute (Phantom Gate 80)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "81": {
+   "en": "Manectric Spirit Link",
+   "page": "Manectric Spirit Link (Phantom Gate 81)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "82": {
+   "en": "Jamming Net",
+   "page": "Jamming Net (Phantom Gate 82)",
+   "type": "I",
+   "rarity": "R",
+   "mark": ""
+  },
+  "83": {
+   "en": "Head Ringer",
+   "page": "Head Ringer (Phantom Gate 83)",
+   "type": "I",
+   "rarity": "R",
+   "mark": ""
+  },
+  "84": {
+   "en": "AZ",
+   "page": "AZ (Phantom Gate 84)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "85": {
+   "en": "Xerosic",
+   "page": "Xerosic (Phantom Gate 85)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "86": {
+   "en": "Lysandre's Trump Card",
+   "page": "Lysandre's Trump Card (Phantom Gate 86)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "87": {
+   "en": "Dimension Valley",
+   "page": "Dimension Valley (Phantom Gate 87)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "88": {
+   "en": "Mystery Energy",
+   "page": "Mystery Energy (Phantom Gate 88)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "89": {
+   "en": "Manectric",
+   "page": "Manectric-EX (Phantom Gate 89)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Gengar",
+   "page": "Gengar-EX (Phantom Gate 90)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Malamar",
+   "page": "Malamar-EX (Phantom Gate 91)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Florges",
+   "page": "Florges-EX (Phantom Gate 92)",
+   "type": "Fairy",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "93": {
+   "en": "AZ",
+   "page": "AZ (Phantom Gate 93)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Xerosic",
+   "page": "Xerosic (Phantom Gate 94)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Lysandre's Trump Card",
+   "page": "Lysandre's Trump Card (Phantom Gate 95)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Manectric",
+   "page": "M Manectric-EX (Phantom Gate 96)",
+   "type": "Lightning",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Gengar",
+   "page": "M Gengar-EX (Phantom Gate 97)",
+   "type": "Psychic",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Jamming Net",
+   "page": "Jamming Net (Phantom Forces 98)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Lysandre's Trump Card",
+   "page": "Lysandre's Trump Card (Phantom Forces 99)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Manectric Spirit Link",
+   "page": "Manectric Spirit Link (Phantom Forces 100)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Professor Sycamore",
+   "page": "Professor Sycamore (Phantom Forces 101)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Robo Substitute",
+   "page": "Robo Substitute (Phantom Forces 102)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Roller Skates",
+   "page": "Roller Skates (Phantom Forces 103)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Shauna",
+   "page": "Shauna (Phantom Forces 104)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Steel Shelter",
+   "page": "Steel Shelter (Phantom Forces 105)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Target Whistle",
+   "page": "Target Whistle (Phantom Forces 106)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Tierno",
+   "page": "Tierno (Phantom Forces 107)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Trick Coin",
+   "page": "Trick Coin (Phantom Forces 108)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "VS Seeker",
+   "page": "VS Seeker (Phantom Forces 109)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Xerosic",
+   "page": "Xerosic (Phantom Forces 110)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Double Colorless Energy",
+   "page": "Double Colorless Energy (Phantom Forces 111)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Mystery Energy",
+   "page": "Mystery Energy (Phantom Forces 112)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Manectric",
+   "page": "Manectric-EX (Phantom Forces 113)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Gengar",
+   "page": "Gengar-EX (Phantom Forces 114)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Malamar",
+   "page": "Malamar-EX (Phantom Forces 115)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Florges",
+   "page": "Florges-EX (Phantom Forces 116)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "117": {
+   "en": "AZ",
+   "page": "AZ (Phantom Forces 117)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "118": {
+   "en": "Lysandre's Trump Card",
+   "page": "Lysandre's Trump Card (Phantom Forces 118)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Xerosic",
+   "page": "Xerosic (Phantom Forces 119)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Manectric",
+   "page": "M Manectric-EX (Phantom Forces 120)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Gengar",
+   "page": "M Gengar-EX (Phantom Forces 121)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Dialga",
+   "page": "Dialga-EX (Phantom Forces 122)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "24a": {
+   "en": "Manectric",
+   "page": "M Manectric-EX (Phantom Forces 24a)",
+   "type": "—",
+   "rarity": "Yellow A Alternate art Mega Powers Collection exclusive",
+   "mark": ""
+  },
+  "65a": {
+   "en": "Aegislash",
+   "page": "Aegislash-EX (Phantom Forces 65a)",
+   "type": "—",
+   "rarity": "Yellow A Alternate art Premium Trainer's XY Collection exclusive",
+   "mark": ""
+  }
+ }
+}

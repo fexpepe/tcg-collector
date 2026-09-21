@@ -1,0 +1,216 @@
+{
+ "page": "Charizard VSTAR vs Rayquaza VMAX Special Deck Set (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Charizard",
+   "page": "Charizard V (Special Deck Set 1)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Charizard",
+   "page": "Charizard VSTAR (Special Deck Set 2)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Vulpix",
+   "page": "Vulpix (Special Deck Set 3)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Ninetales",
+   "page": "Ninetales (Special Deck Set 4)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Growlithe",
+   "page": "Growlithe (Special Deck Set 5)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Arcanine",
+   "page": "Arcanine (Special Deck Set 6)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Moltres",
+   "page": "Moltres (Special Deck Set 7)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Entei",
+   "page": "Entei (Special Deck Set 8)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Mareep",
+   "page": "Mareep (Special Deck Set 9)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Flaaffy",
+   "page": "Flaaffy (Special Deck Set 10)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Thundurus",
+   "page": "Thundurus (Special Deck Set 11)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Helioptile",
+   "page": "Helioptile (Special Deck Set 12)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (Special Deck Set 13)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Zeraora",
+   "page": "Zeraora (Special Deck Set 14)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Rayquaza",
+   "page": "Rayquaza V (Special Deck Set 15)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Rayquaza",
+   "page": "Rayquaza VMAX (Special Deck Set 16)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (Special Deck Set 17)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Energy Search",
+   "page": "Energy Search (Special Deck Set 18)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Great Ball",
+   "page": "Great Ball (Special Deck Set 19)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Special Deck Set 20)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Switch",
+   "page": "Switch (Special Deck Set 21)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Level Ball",
+   "page": "Level Ball (Special Deck Set 22)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Kindler",
+   "page": "Kindler (Special Deck Set 23)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Judge",
+   "page": "Judge (Special Deck Set 24)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Barry",
+   "page": "Barry (Special Deck Set 25)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Special Deck Set 26)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Zinnia's Resolve",
+   "page": "Zinnia's Resolve (Special Deck Set 27)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (Special Deck Set 28)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Stormy Mountains",
+   "page": "Stormy Mountains (Special Deck Set 29)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Magma Basin",
+   "page": "Magma Basin (Special Deck Set 30)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

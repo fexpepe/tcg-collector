@@ -1,0 +1,2366 @@
+{
+ "page": "BW-P Promotional cards (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Pansage",
+   "page": "Pansage (BW-P Promo 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ヤナップ",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6f/PansageBWPromo11.jpg"
+  },
+  "2": {
+   "en": "Pidove",
+   "page": "Pidove (BW-P Promo 2)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "マメパト",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e3/PidoveEmergingPowers80.jpg"
+  },
+  "3": {
+   "en": "Axew",
+   "page": "Axew (BW-P Promo 3)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "キバゴ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7d/AxewBWPromo10.jpg"
+  },
+  "4": {
+   "en": "Pansage",
+   "page": "Pansage (BW-P Promo 4)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ヤナップ",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6f/PansageBWPromo11.jpg"
+  },
+  "5": {
+   "en": "Pidove",
+   "page": "Pidove (BW-P Promo 5)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "マメパト",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e3/PidoveEmergingPowers80.jpg"
+  },
+  "6": {
+   "en": "Axew",
+   "page": "Axew (BW-P Promo 6)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "キバゴ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7d/AxewBWPromo10.jpg"
+  },
+  "7": {
+   "en": "Zoroark",
+   "page": "Zoroark (BW-P Promo 7)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゾロアーク",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/00/ZoroarkNextDestinies102.jpg"
+  },
+  "8": {
+   "en": "Ducklett",
+   "page": "Ducklett (BW-P Promo 8)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "コアルヒー",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fb/DucklettBWPromo17.jpg"
+  },
+  "9": {
+   "en": "Litwick",
+   "page": "Litwick (BW-P Promo 9)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ヒトモシ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c5/LitwickBWPromo27.jpg"
+  },
+  "10": {
+   "en": "Gigalith",
+   "page": "Gigalith (BW-P Promo 10)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ギガイアス",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7c/GigalithEmergingPowers53.jpg"
+  },
+  "11": {
+   "en": "Patrat",
+   "page": "Patrat (BW-P Promo 11)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ミネズミ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/9/93/PatratEmergingPowers78.jpg"
+  },
+  "12": {
+   "en": "Professor Juniper",
+   "page": "Professor Juniper (BW-P Promo 12)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "",
+   "ja": "アララギ博士",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0d/ProfessorJuniperDarkExplorers98.jpg"
+  },
+  "13": {
+   "en": "Cheren",
+   "page": "Cheren (BW-P Promo 13)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "",
+   "ja": "チェレン",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b9/CherenDarkExplorers91.jpg"
+  },
+  "14": {
+   "en": "Fire Energy",
+   "page": "Fire Energy (BW-P Promo 14)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本炎エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/1/17/BasicFireEnergyMEEEnergy2.jpg"
+  },
+  "15": {
+   "en": "Lightning Energy",
+   "page": "Lightning Energy (BW-P Promo 15)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本雷エネルギー",
+   "artist": "Pokémon 25th Anniversary",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9b/BasicLightningEnergyMEEEnergy4.jpg"
+  },
+  "16": {
+   "en": "Fighting Energy",
+   "page": "Fighting Energy (BW-P Promo 16)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本闘エネルギー",
+   "artist": "Pokémon 25th Anniversary",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6c/BasicFightingEnergyMEEEnergy6.jpg"
+  },
+  "17": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (BW-P Promo 17)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本悪エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/2/27/BasicDarknessEnergyMEEEnergy7.jpg"
+  },
+  "18": {
+   "en": "Snivy",
+   "page": "Snivy (BW-P Promo 18)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ツタージャ",
+   "artist": "Shizurow",
+   "image": "https://archives.bulbagarden.net/media/upload/3/39/SnivyBWPromo6.jpg"
+  },
+  "19": {
+   "en": "Tepig",
+   "page": "Tepig (BW-P Promo 19)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ポカブ",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/1/14/TepigBWPromo7.jpg"
+  },
+  "20": {
+   "en": "Oshawott",
+   "page": "Oshawott (BW-P Promo 20)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ミジュマル",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/9/92/OshawottBWPromo8.jpg"
+  },
+  "21": {
+   "en": "Zorua",
+   "page": "Zorua (BW-P Promo 21)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゾロア",
+   "artist": "Tomokazu Komiya",
+   "image": "https://archives.bulbagarden.net/media/upload/6/63/ZoruaBWPromo12.jpg"
+  },
+  "22": {
+   "en": "Minccino",
+   "page": "Minccino (BW-P Promo 22)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "チラーミィ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d9/MinccinoBWPromo13.jpg"
+  },
+  "23": {
+   "en": "Pokédex",
+   "page": "Pokédex (BW-P Promo 23)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ポケモン図鑑",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/4/46/Pok%C3%A9dexEvolutions82.jpg"
+  },
+  "24": {
+   "en": "Zoroark",
+   "page": "Zoroark (BW-P Promo 24)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゾロアーク",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a0/ZoroarkBWPromo19.jpg"
+  },
+  "25": {
+   "en": "Emolga",
+   "page": "Emolga (BW-P Promo 25)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "エモンガ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "26": {
+   "en": "Druddigon",
+   "page": "Druddigon (BW-P Promo 26)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "クリムガン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "27": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (BW-P Promo 27)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ポケモンキャッチャー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a7/Pok%C3%A9monCatcherDarkExplorers111.jpg"
+  },
+  "28": {
+   "en": "Grass Energy",
+   "page": "Grass Energy (BW-P Promo 28)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本草エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/BasicGrassEnergyMEEEnergy1.jpg"
+  },
+  "29": {
+   "en": "Water Energy",
+   "page": "Water Energy (BW-P Promo 29)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本水エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/BasicWaterEnergyMEEEnergy3.jpg"
+  },
+  "30": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (BW-P Promo 30)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本超エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/BasicPsychicEnergyMEEEnergy5.jpg"
+  },
+  "31": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (BW-P Promo 31)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本鋼エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5b/BasicMetalEnergyMEEEnergy8.jpg"
+  },
+  "32": {
+   "en": "Zorua",
+   "page": "Zorua (BW-P Promo 32)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゾロア",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/8/81/ZoruaMcDonaldsCollection9.jpg"
+  },
+  "33": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (BW-P Promo 33)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本悪エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/2/27/BasicDarknessEnergyMEEEnergy7.jpg"
+  },
+  "34": {
+   "en": "Snivy",
+   "page": "Snivy (BW-P Promo 34)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ツタージャ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b3/SnivyBWPromo1.jpg"
+  },
+  "35": {
+   "en": "Tepig",
+   "page": "Tepig (BW-P Promo 35)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ポカブ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/7/70/TepigBWPromo2.jpg"
+  },
+  "36": {
+   "en": "Oshawott",
+   "page": "Oshawott (BW-P Promo 36)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ミジュマル",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/2/29/OshawottBWPromo3.jpg"
+  },
+  "37": {
+   "en": "Cobalion",
+   "page": "Cobalion (BW-P Promo 37)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "",
+   "ja": "コバルオン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e3/CobalionBWPromo37.jpg"
+  },
+  "38": {
+   "en": "Terrakion",
+   "page": "Terrakion (BW-P Promo 38)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "テラキオン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/4/42/TerrakionBWPromo38.jpg"
+  },
+  "39": {
+   "en": "Virizion",
+   "page": "Virizion (BW-P Promo 39)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ビリジオン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/05/VirizionBWPromo39.jpg"
+  },
+  "40": {
+   "en": "Throh",
+   "page": "Throh (BW-P Promo 40)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ナゲキ",
+   "artist": "match",
+   "image": "https://archives.bulbagarden.net/media/upload/4/47/ThrohEmergingPowers58.jpg"
+  },
+  "41": {
+   "en": "Sawk",
+   "page": "Sawk (BW-P Promo 41)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ダゲキ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/8/87/SawkEmergingPowers59.jpg"
+  },
+  "42": {
+   "en": "Snivy",
+   "page": "Snivy (BW-P Promo 42)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ツタージャ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b3/SnivyBWPromo1.jpg"
+  },
+  "43": {
+   "en": "Tepig",
+   "page": "Tepig (BW-P Promo 43)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ポカブ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/7/70/TepigBWPromo2.jpg"
+  },
+  "44": {
+   "en": "Oshawott",
+   "page": "Oshawott (BW-P Promo 44)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ミジュマル",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/2/29/OshawottBWPromo3.jpg"
+  },
+  "45": {
+   "en": "Klinklang",
+   "page": "Klinklang (BW-P Promo 45)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ギギギアル",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/2/27/KlinklangEmergingPowers76.jpg"
+  },
+  "46": {
+   "en": "Golurk",
+   "page": "Golurk (BW-P Promo 46)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゴルーグ",
+   "artist": "match",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "47": {
+   "en": "Landorus",
+   "page": "Landorus (BW-P Promo 47)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ランドロス",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f4/LandorusNobleVictories74.jpg"
+  },
+  "48": {
+   "en": "Darumaka",
+   "page": "Darumaka (BW-P Promo 48)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ダルマッカ",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f1/DarumakaBWPromo18.jpg"
+  },
+  "49": {
+   "en": "Scraggy",
+   "page": "Scraggy (BW-P Promo 49)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ズルッグ",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e2/ScraggyBWPromo25.jpg"
+  },
+  "50": {
+   "en": "Axew",
+   "page": "Axew (BW-P Promo 50)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "キバゴ",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3b/AxewBWPromo26.jpg"
+  },
+  "51": {
+   "en": "Reshiram",
+   "page": "Reshiram (BW-P Promo 51)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "レシラム",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0d/ReshiramBWPromo23.jpg"
+  },
+  "52": {
+   "en": "Zekrom",
+   "page": "Zekrom (BW-P Promo 52)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゼクロム",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/9/97/ZekromNextDestinies50.jpg"
+  },
+  "53": {
+   "en": "Beartic",
+   "page": "Beartic (BW-P Promo 53)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ツンベアー",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6c/BearticEmergingPowers31.jpg"
+  },
+  "54": {
+   "en": "Zebstrika",
+   "page": "Zebstrika (BW-P Promo 54)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゼブライカ",
+   "artist": "match",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e4/ZebstrikaNobleVictories36.jpg"
+  },
+  "55": {
+   "en": "Gothitelle",
+   "page": "Gothitelle (BW-P Promo 55)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゴチルゼル",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/2/26/GothitelleEmergingPowers48.jpg"
+  },
+  "56": {
+   "en": "Reuniclus",
+   "page": "Reuniclus (BW-P Promo 56)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ランクルス",
+   "artist": "Mizue",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f3/ReuniclusNobleVictories53.jpg"
+  },
+  "57": {
+   "en": "Simisage",
+   "page": "Simisage (BW-P Promo 57)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ヤナッキー",
+   "artist": "match",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bd/SimisageEmergingPowers2.jpg"
+  },
+  "58": {
+   "en": "Simisear",
+   "page": "Simisear (BW-P Promo 58)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "バオッキー",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ae/SimisearEmergingPowers19.jpg"
+  },
+  "59": {
+   "en": "Simipour",
+   "page": "Simipour (BW-P Promo 59)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ヒヤッキー",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c5/SimipourEmergingPowers23.jpg"
+  },
+  "60": {
+   "en": "Whimsicott",
+   "page": "Whimsicott (BW-P Promo 60)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "エルフーン",
+   "artist": "Mizue",
+   "image": "https://archives.bulbagarden.net/media/upload/3/30/WhimsicottEmergingPowers12.jpg"
+  },
+  "61": {
+   "en": "Petilil",
+   "page": "Petilil (BW-P Promo 61)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "チュリネ",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/1/17/PetililEmergingPowers13.jpg"
+  },
+  "62": {
+   "en": "Lilligant",
+   "page": "Lilligant (BW-P Promo 62)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ドレディア",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a6/LilligantEmergingPowers14.jpg"
+  },
+  "63": {
+   "en": "Ducklett",
+   "page": "Ducklett (BW-P Promo 63)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "コアルヒー",
+   "artist": "MAHOU",
+   "image": "https://archives.bulbagarden.net/media/upload/2/21/DucklettEmergingPowers26.jpg"
+  },
+  "64": {
+   "en": "Gothorita",
+   "page": "Gothorita (BW-P Promo 64)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゴチミル",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3a/GothoritaEmergingPowers46.jpg"
+  },
+  "65": {
+   "en": "Excadrill",
+   "page": "Excadrill (BW-P Promo 65)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ドリュウズ",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/c/ca/ExcadrillEmergingPowers57.jpg"
+  },
+  "66": {
+   "en": "Liepard",
+   "page": "Liepard (BW-P Promo 66)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "レパルダス",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/2/23/LiepardEmergingPowers65.jpg"
+  },
+  "67": {
+   "en": "Bisharp",
+   "page": "Bisharp (BW-P Promo 67)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "キリキザン",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/2/20/BisharpDarkExplorers72.jpg"
+  },
+  "68": {
+   "en": "Vullaby",
+   "page": "Vullaby (BW-P Promo 68)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "バルチャイ",
+   "artist": "sui",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ec/VullabyEmergingPowers68.jpg"
+  },
+  "69": {
+   "en": "Cinccino",
+   "page": "Cinccino (BW-P Promo 69)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "チラチーノ",
+   "artist": "Mizue",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f2/CinccinoEmergingPowers85.jpg"
+  },
+  "70": {
+   "en": "Haxorus",
+   "page": "Haxorus (BW-P Promo 70)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "オノノクス",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f9/HaxorusDarkExplorers89.jpg"
+  },
+  "71": {
+   "en": "Grass Energy",
+   "page": "Grass Energy (BW-P Promo 71)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本草エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/BasicGrassEnergyMEEEnergy1.jpg"
+  },
+  "72": {
+   "en": "Water Energy",
+   "page": "Water Energy (BW-P Promo 72)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本水エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/BasicWaterEnergyMEEEnergy3.jpg"
+  },
+  "73": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (BW-P Promo 73)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本超エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/BasicPsychicEnergyMEEEnergy5.jpg"
+  },
+  "74": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (BW-P Promo 74)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本鋼エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5b/BasicMetalEnergyMEEEnergy8.jpg"
+  },
+  "75": {
+   "en": "Snivy",
+   "page": "Snivy (BW-P Promo 75)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ツタージャ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b3/SnivyBWPromo1.jpg"
+  },
+  "76": {
+   "en": "Tepig",
+   "page": "Tepig (BW-P Promo 76)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ポカブ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/7/70/TepigBWPromo2.jpg"
+  },
+  "77": {
+   "en": "Oshawott",
+   "page": "Oshawott (BW-P Promo 77)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ミジュマル",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/2/29/OshawottBWPromo3.jpg"
+  },
+  "78": {
+   "en": "Snivy",
+   "page": "Snivy (BW-P Promo 78)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ツタージャ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b3/SnivyBWPromo1.jpg"
+  },
+  "79": {
+   "en": "Tepig",
+   "page": "Tepig (BW-P Promo 79)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ポカブ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/7/70/TepigBWPromo2.jpg"
+  },
+  "80": {
+   "en": "Oshawott",
+   "page": "Oshawott (BW-P Promo 80)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ミジュマル",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/2/29/OshawottBWPromo3.jpg"
+  },
+  "81": {
+   "en": "Emolga",
+   "page": "Emolga (BW-P Promo 81)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "エモンガ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7d/EmolgaEmergingPowers32.jpg"
+  },
+  "82": {
+   "en": "PlusPower",
+   "page": "PlusPower (BW-P Promo 82)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "",
+   "ja": "プラスパワー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e3/PlusPowerBaseSet84.jpg"
+  },
+  "83": {
+   "en": "Grass Energy",
+   "page": "Grass Energy (BW-P Promo 83)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本草エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/BasicGrassEnergyMEEEnergy1.jpg"
+  },
+  "84": {
+   "en": "Fire Energy",
+   "page": "Fire Energy (BW-P Promo 84)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本炎エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/1/17/BasicFireEnergyMEEEnergy2.jpg"
+  },
+  "85": {
+   "en": "Water Energy",
+   "page": "Water Energy (BW-P Promo 85)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本水エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/BasicWaterEnergyMEEEnergy3.jpg"
+  },
+  "86": {
+   "en": "Lightning Energy",
+   "page": "Lightning Energy (BW-P Promo 86)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本雷エネルギー",
+   "artist": "Pokémon 25th Anniversary",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9b/BasicLightningEnergyMEEEnergy4.jpg"
+  },
+  "87": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (BW-P Promo 87)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本超エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/BasicPsychicEnergyMEEEnergy5.jpg"
+  },
+  "88": {
+   "en": "Fighting Energy",
+   "page": "Fighting Energy (BW-P Promo 88)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本闘エネルギー",
+   "artist": "Pokémon 25th Anniversary",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6c/BasicFightingEnergyMEEEnergy6.jpg"
+  },
+  "89": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (BW-P Promo 89)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本悪エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/2/27/BasicDarknessEnergyMEEEnergy7.jpg"
+  },
+  "90": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (BW-P Promo 90)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本鋼エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5b/BasicMetalEnergyMEEEnergy8.jpg"
+  },
+  "91": {
+   "en": "Leavanny",
+   "page": "Leavanny (BW-P Promo 91)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ハハコモリ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c4/LeavannyEmergingPowers8.jpg"
+  },
+  "92": {
+   "en": "Swanna",
+   "page": "Swanna (BW-P Promo 92)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "スワンナ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b6/SwannaEmergingPowers27.jpg"
+  },
+  "93": {
+   "en": "Scolipede",
+   "page": "Scolipede (BW-P Promo 93)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ペンドラー",
+   "artist": "kawayoo",
+   "image": "https://archives.bulbagarden.net/media/upload/6/69/ScolipedeEmergingPowers40.jpg"
+  },
+  "94": {
+   "en": "Krookodile",
+   "page": "Krookodile (BW-P Promo 94)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ワルビアル",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/6/61/KrookodileEmergingPowers62.jpg"
+  },
+  "95": {
+   "en": "Purrloin",
+   "page": "Purrloin (BW-P Promo 95)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "チョロネコ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/8/89/PurrloinEmergingPowers64.jpg"
+  },
+  "96": {
+   "en": "Watchog",
+   "page": "Watchog (BW-P Promo 96)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ミルホッグ",
+   "artist": "MAHOU",
+   "image": "https://archives.bulbagarden.net/media/upload/9/98/WatchogEmergingPowers79.jpg"
+  },
+  "97": {
+   "en": "Eviolite",
+   "page": "Eviolite (BW-P Promo 97)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "",
+   "ja": "しんかのきせき",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/08/EvioliteNobleVictories91.jpg"
+  },
+  "98": {
+   "en": "Bianca",
+   "page": "Bianca (BW-P Promo 98)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ベル",
+   "artist": "Megumi Mizutani",
+   "image": "https://archives.bulbagarden.net/media/upload/4/47/BiancaLegendaryTreasures109.jpg"
+  },
+  "99": {
+   "en": "Grass Energy",
+   "page": "Grass Energy (BW-P Promo 99)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本草エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/BasicGrassEnergyMEEEnergy1.jpg"
+  },
+  "100": {
+   "en": "Water Energy",
+   "page": "Water Energy (BW-P Promo 100)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本水エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/BasicWaterEnergyMEEEnergy3.jpg"
+  },
+  "101": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (BW-P Promo 101)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本超エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/BasicPsychicEnergyMEEEnergy5.jpg"
+  },
+  "102": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (BW-P Promo 102)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本鋼エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5b/BasicMetalEnergyMEEEnergy8.jpg"
+  },
+  "103": {
+   "en": "Luxio",
+   "page": "Luxio (BW-P Promo 103)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ルクシオ",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f4/LuxioBWPromo34.jpg"
+  },
+  "104": {
+   "en": "Riolu",
+   "page": "Riolu (BW-P Promo 104)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "リオル",
+   "artist": "sui",
+   "image": "https://archives.bulbagarden.net/media/upload/5/57/RioluBWPromo33.jpg"
+  },
+  "105": {
+   "en": "Meowth",
+   "page": "Meowth (BW-P Promo 105)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ニャース",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/MeowthBWPromo35.jpg"
+  },
+  "106": {
+   "en": "Lucario",
+   "page": "Lucario (BW-P Promo 106)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ルカリオ",
+   "artist": "MAHOU",
+   "image": "https://archives.bulbagarden.net/media/upload/4/46/LucarioLegendaryTreasures80.jpg"
+  },
+  "107": {
+   "en": "Battle City",
+   "page": "Battle City (BW-P Promo 107)",
+   "type": "St",
+   "rarity": "—",
+   "mark": "",
+   "ja": "バトルシティ",
+   "artist": "Hideaki Hakozaki",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b9/BattleCityBWPromo39.jpg"
+  },
+  "108": {
+   "en": "Pikachu",
+   "page": "Pikachu (BW-P Promo 108)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/9/97/PikachuBWPromo54.jpg"
+  },
+  "109": {
+   "en": "Victini",
+   "page": "Victini (BW-P Promo 109)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ビクティニ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b0/VictiniNobleVictories14.jpg"
+  },
+  "110": {
+   "en": "Reshiram",
+   "page": "Reshiram (BW-P Promo 110)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "レシラム",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0d/ReshiramBWPromo23.jpg"
+  },
+  "111": {
+   "en": "Zekrom",
+   "page": "Zekrom (BW-P Promo 111)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゼクロム",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/9/97/ZekromNextDestinies50.jpg"
+  },
+  "112": {
+   "en": "Landorus",
+   "page": "Landorus (BW-P Promo 112)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ランドロス",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f4/LandorusNobleVictories74.jpg"
+  },
+  "113": {
+   "en": "Sandile",
+   "page": "Sandile (BW-P Promo 113)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "メグロコ",
+   "artist": "Hajime Kusajima",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d3/SandileDarkExplorers64.jpg"
+  },
+  "114": {
+   "en": "Krokorok",
+   "page": "Krokorok (BW-P Promo 114)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ワルビル",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5d/KrokorokDarkExplorers65.jpg"
+  },
+  "115": {
+   "en": "Umbreon",
+   "page": "Umbreon (BW-P Promo 115)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ブラッキー",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/3/37/UmbreonDarkExplorers61.jpg"
+  },
+  "116": {
+   "en": "Zorua",
+   "page": "Zorua (BW-P Promo 116)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゾロア",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a3/ZoruaDarkExplorers70.jpg"
+  },
+  "117": {
+   "en": "Lilligant",
+   "page": "Lilligant (BW-P Promo 117)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ドレディア",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ea/LilligantBWPromo49.jpg"
+  },
+  "118": {
+   "en": "Excadrill",
+   "page": "Excadrill (BW-P Promo 118)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ドリュウズ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/6/67/ExcadrillDarkExplorers57.jpg"
+  },
+  "119": {
+   "en": "Volcarona",
+   "page": "Volcarona (BW-P Promo 119)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ウルガモス",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b1/VolcaronaDarkExplorers22.jpg"
+  },
+  "120": {
+   "en": "Pikachu",
+   "page": "Pikachu (BW-P Promo 120)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "121": {
+   "en": "Haxorus",
+   "page": "Haxorus (BW-P Promo 121)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "",
+   "ja": "オノノクス",
+   "artist": "kawayoo",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3e/HaxorusBWPromo57.jpg"
+  },
+  "122": {
+   "en": "Heavy Ball",
+   "page": "Heavy Ball (BW-P Promo 122)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ヘビーボール",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e7/HeavyBallNextDestinies88.jpg"
+  },
+  "123": {
+   "en": "Ninetales",
+   "page": "Ninetales (BW-P Promo 123)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "キュウコン",
+   "artist": "Hideaki Hakozaki",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9a/NinetalesDragonsExalted19.jpg"
+  },
+  "124": {
+   "en": "Bulbasaur",
+   "page": "Bulbasaur (BW-P Promo 124)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "フシギダネ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "125": {
+   "en": "Empoleon",
+   "page": "Empoleon (BW-P Promo 125)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "エンペルト",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/9/97/EmpoleonBWPromo56.jpg"
+  },
+  "126": {
+   "en": "Elgyem",
+   "page": "Elgyem (BW-P Promo 126)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "リグレー",
+   "artist": "Mizue",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fb/ElgyemBWPromo55.jpg"
+  },
+  "127": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (BW-P Promo 127)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "プリン",
+   "artist": "MAHOU",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ec/JigglypuffBWPromo65.jpg"
+  },
+  "128": {
+   "en": "Cilan",
+   "page": "Cilan (BW-P Promo 128)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "",
+   "ja": "デント",
+   "artist": "Yusuke Ohmura",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3e/CilanNextDestinies86.jpg"
+  },
+  "129": {
+   "en": "Prism Energy",
+   "page": "Prism Energy (BW-P Promo 129)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "プリズムエネルギー",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4c/PrismEnergyNextDestinies93.jpg"
+  },
+  "130": {
+   "en": "Fire Energy",
+   "page": "Fire Energy (BW-P Promo 130)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本炎エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/1/17/BasicFireEnergyMEEEnergy2.jpg"
+  },
+  "131": {
+   "en": "Lightning Energy",
+   "page": "Lightning Energy (BW-P Promo 131)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本雷エネルギー",
+   "artist": "Pokémon 25th Anniversary",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9b/BasicLightningEnergyMEEEnergy4.jpg"
+  },
+  "132": {
+   "en": "Fighting Energy",
+   "page": "Fighting Energy (BW-P Promo 132)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本闘エネルギー",
+   "artist": "Pokémon 25th Anniversary",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6c/BasicFightingEnergyMEEEnergy6.jpg"
+  },
+  "133": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (BW-P Promo 133)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本悪エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/2/27/BasicDarknessEnergyMEEEnergy7.jpg"
+  },
+  "134": {
+   "en": "Ampharos",
+   "page": "Ampharos (BW-P Promo 134)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "デンリュウ",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a0/AmpharosBWPromo67.jpg"
+  },
+  "135": {
+   "en": "Trubbish",
+   "page": "Trubbish (BW-P Promo 135)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ヤブクロン",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f1/TrubbishPlasmaStorm63.jpg"
+  },
+  "136": {
+   "en": "Aron",
+   "page": "Aron (BW-P Promo 136)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ココドラ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "137": {
+   "en": "Braviary",
+   "page": "Braviary (BW-P Promo 137)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ウォーグル",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0a/BraviaryPlasmaStorm116.jpg"
+  },
+  "138": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (BW-P Promo 138)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ふしぎなアメ",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4a/RareCandyCelestialStorm142.jpg"
+  },
+  "139": {
+   "en": "Tool Scrapper",
+   "page": "Tool Scrapper (BW-P Promo 139)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ツールスクラッパー",
+   "artist": "Studio Bora Inc.",
+   "image": "https://archives.bulbagarden.net/media/upload/3/36/ToolScrapperChaosRising115.jpg"
+  },
+  "140": {
+   "en": "Grass Energy",
+   "page": "Grass Energy (BW-P Promo 140)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本草エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/BasicGrassEnergyMEEEnergy1.jpg"
+  },
+  "141": {
+   "en": "Water Energy",
+   "page": "Water Energy (BW-P Promo 141)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本水エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/BasicWaterEnergyMEEEnergy3.jpg"
+  },
+  "142": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (BW-P Promo 142)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本超エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/BasicPsychicEnergyMEEEnergy5.jpg"
+  },
+  "143": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (BW-P Promo 143)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本鋼エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5b/BasicMetalEnergyMEEEnergy8.jpg"
+  },
+  "144": {
+   "en": "Rayquaza",
+   "page": "Rayquaza (BW-P Promo 144)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "",
+   "ja": "レックウザ",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/3/33/RayquazaLegendaryTreasures93.jpg"
+  },
+  "145": {
+   "en": "Rayquaza",
+   "page": "Rayquaza-EX (BW-P Promo 145)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "",
+   "ja": "レックウザEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ab/RayquazaEXBWPromo145.jpg"
+  },
+  "146": {
+   "en": "Giratina",
+   "page": "Giratina-EX (BW-P Promo 146)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ギラティナEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/20/GiratinaEXBWPromo146.jpg"
+  },
+  "147": {
+   "en": "Drifblim",
+   "page": "Drifblim (BW-P Promo 147)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "フワライド",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/5/58/DrifblimDragonsExalted51.jpg"
+  },
+  "148": {
+   "en": "Altaria",
+   "page": "Altaria (BW-P Promo 148)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "",
+   "ja": "チルタリス",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d1/AltariaBoundariesCrossed152.jpg"
+  },
+  "149": {
+   "en": "Purrloin",
+   "page": "Purrloin (BW-P Promo 149)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "チョロネコ",
+   "artist": "MAHOU",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7b/PurrloinPlasmaStorm82.jpg"
+  },
+  "150": {
+   "en": "Kyurem",
+   "page": "Kyurem (BW-P Promo 150)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "",
+   "ja": "キュレム",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/b/ba/KyuremDragonVault21.jpg"
+  },
+  "151": {
+   "en": "Pikachu",
+   "page": "Pikachu (BW-P Promo 151)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "Mizue",
+   "image": "https://archives.bulbagarden.net/media/upload/6/66/PikachuBWPromo77.jpg"
+  },
+  "152": {
+   "en": "Raichu",
+   "page": "Raichu (BW-P Promo 152)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ライチュウ",
+   "artist": "Mizue",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a8/RaichuBWPromo78.jpg"
+  },
+  "153": {
+   "en": "Palace Belt",
+   "page": "Palace Belt (BW-P Promo 153)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "",
+   "ja": "殿堂ベルト",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "154": {
+   "en": "Virizion",
+   "page": "Virizion (BW-P Promo 154)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ビリジオン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8a/VirizionBWPromo70.jpg"
+  },
+  "155": {
+   "en": "Terrakion",
+   "page": "Terrakion (BW-P Promo 155)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "テラキオン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/TerrakionBWPromo71.jpg"
+  },
+  "156": {
+   "en": "Cobalion",
+   "page": "Cobalion (BW-P Promo 156)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "",
+   "ja": "コバルオン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2d/CobalionBWPromo72.jpg"
+  },
+  "157": {
+   "en": "Flygon",
+   "page": "Flygon (BW-P Promo 157)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "",
+   "ja": "フライゴン",
+   "artist": "BERUBURI",
+   "image": "https://archives.bulbagarden.net/media/upload/7/74/FlygonBoundariesCrossed99.jpg"
+  },
+  "158": {
+   "en": "Reshiram",
+   "page": "Reshiram-EX (BW-P Promo 158)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "レシラム EX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/3/33/ReshiramEXNextDestinies95.jpg"
+  },
+  "159": {
+   "en": "Zekrom",
+   "page": "Zekrom-EX (BW-P Promo 159)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゼクロムEX",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/6/66/ZekromEXNextDestinies97.jpg"
+  },
+  "160": {
+   "en": "Meloetta",
+   "page": "Meloetta (BW-P Promo 160)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "メロエッタ",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/6/66/MeloettaBWPromo68.jpg"
+  },
+  "161": {
+   "en": "Meloetta",
+   "page": "Meloetta (BW-P Promo 161)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "メロエッタ",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/3/34/MeloettaBWPromo69.jpg"
+  },
+  "162": {
+   "en": "Keldeo",
+   "page": "Keldeo (BW-P Promo 162)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ケルディオ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4b/KeldeoBWPromo60.jpg"
+  },
+  "163": {
+   "en": "Pikachu",
+   "page": "Pikachu (BW-P Promo 163)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/9/97/PikachuBWPromo54.jpg"
+  },
+  "164": {
+   "en": "Keldeo",
+   "page": "Keldeo (BW-P Promo 164)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ケルディオ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4b/KeldeoBWPromo60.jpg"
+  },
+  "165": {
+   "en": "Charmander",
+   "page": "Charmander (BW-P Promo 165)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ヒトカゲ",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6d/CharmanderBoundariesCrossed18.jpg"
+  },
+  "166": {
+   "en": "Wartortle",
+   "page": "Wartortle (BW-P Promo 166)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "カメール",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "167": {
+   "en": "Psyduck",
+   "page": "Psyduck (BW-P Promo 167)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "コダック",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8d/PsyduckBWPromo167.jpg"
+  },
+  "168": {
+   "en": "Flygon",
+   "page": "Flygon (BW-P Promo 168)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "",
+   "ja": "フライゴン",
+   "artist": "Naoyo Kimura",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "169": {
+   "en": "Escape Rope",
+   "page": "Escape Rope (BW-P Promo 169)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "",
+   "ja": "あなぬけのヒモ",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/8/83/EscapeRopeBurningShadows114.jpg"
+  },
+  "170": {
+   "en": "Hugh",
+   "page": "Hugh (BW-P Promo 170)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ヒュウ",
+   "artist": "Yusuke Ohmura",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e2/HughBoundariesCrossed130.jpg"
+  },
+  "171": {
+   "en": "Chimchar",
+   "page": "Chimchar (BW-P Promo 171)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ヒコザル",
+   "artist": "sui",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5b/ChimcharBWPromo171.jpg"
+  },
+  "172": {
+   "en": "Lampent",
+   "page": "Lampent (BW-P Promo 172)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ランプラー",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cc/LampentPlasmaStorm22.jpg"
+  },
+  "173": {
+   "en": "Electrode",
+   "page": "Electrode (BW-P Promo 173)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "マルマイン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/d/df/ElectrodeBWPromo76.jpg"
+  },
+  "174": {
+   "en": "Scraggy",
+   "page": "Scraggy (BW-P Promo 174)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ズルッグ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/7/77/ScraggyPlasmaStorm85.jpg"
+  },
+  "175": {
+   "en": "Hypnotoxic Laser",
+   "page": "Hypnotoxic Laser (BW-P Promo 175)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "",
+   "ja": "どくさいみん光線",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/HypnotoxicLaserPlasmaStorm123.jpg"
+  },
+  "176": {
+   "en": "Team Plasma Grunt",
+   "page": "Team Plasma Grunt (BW-P Promo 176)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "",
+   "ja": "プラズマ団のしたっぱ",
+   "artist": "Yusuke Ohmura",
+   "image": "https://archives.bulbagarden.net/media/upload/9/98/TeamPlasmaGruntPlasmaStorm125.jpg"
+  },
+  "177": {
+   "en": "Skarmory",
+   "page": "Skarmory (BW-P Promo 177)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "",
+   "ja": "エアームド",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/7/77/SkarmoryPlasmaStorm87.jpg"
+  },
+  "178": {
+   "en": "Bouffalant",
+   "page": "Bouffalant (BW-P Promo 178)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "バッフロン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2f/BouffalantPlasmaStorm114.jpg"
+  },
+  "179": {
+   "en": "Team Plasma Ball",
+   "page": "Team Plasma Ball (BW-P Promo 179)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "",
+   "ja": "プラズマ団のモンスターボール",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5f/TeamPlasmaBallPlasmaFreeze105.jpg"
+  },
+  "180": {
+   "en": "N",
+   "page": "N (BW-P Promo 180)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "",
+   "ja": "Ｎ",
+   "artist": "Megumi Mizutani",
+   "image": "https://archives.bulbagarden.net/media/upload/9/98/NDarkExplorers96.jpg"
+  },
+  "181": {
+   "en": "Crobat",
+   "page": "Crobat (BW-P Promo 181)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "クロバット",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e4/CrobatPlasmaStorm55.jpg"
+  },
+  "182": {
+   "en": "Leafeon",
+   "page": "Leafeon (BW-P Promo 182)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "リーフィア",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/LeafeonDarkExplorers6.jpg"
+  },
+  "183": {
+   "en": "Flareon",
+   "page": "Flareon (BW-P Promo 183)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ブースター",
+   "artist": "The Pokémon Company Art-team",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/FlareonBWPromo88.jpg"
+  },
+  "184": {
+   "en": "Vaporeon",
+   "page": "Vaporeon (BW-P Promo 184)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "シャワーズ",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/4/46/VaporeonDarkExplorers25.jpg"
+  },
+  "185": {
+   "en": "Glaceon",
+   "page": "Glaceon (BW-P Promo 185)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "グレイシア",
+   "artist": "The Pokémon Company Art-team",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e3/GlaceonBWPromo90.jpg"
+  },
+  "186": {
+   "en": "Jolteon",
+   "page": "Jolteon (BW-P Promo 186)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "サンダース",
+   "artist": "The Pokémon Company Art-team",
+   "image": "https://archives.bulbagarden.net/media/upload/8/89/JolteonBWPromo91.jpg"
+  },
+  "187": {
+   "en": "Espeon",
+   "page": "Espeon (BW-P Promo 187)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "エーフィ",
+   "artist": "Mizue",
+   "image": "https://archives.bulbagarden.net/media/upload/9/94/EspeonDarkExplorers48.jpg"
+  },
+  "188": {
+   "en": "Umbreon",
+   "page": "Umbreon (BW-P Promo 188)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ブラッキー",
+   "artist": "TOKIYA",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8b/UmbreonDarkExplorers60.jpg"
+  },
+  "189": {
+   "en": "Eevee",
+   "page": "Eevee (BW-P Promo 189)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "イーブイ",
+   "artist": "The Pokémon Company Art Team",
+   "image": "https://archives.bulbagarden.net/media/upload/8/80/EeveeBWPromo94.jpg"
+  },
+  "190": {
+   "en": "Pokémon Center",
+   "page": "Pokémon Center (BW-P Promo 190)",
+   "type": "St",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ポケモンセンター",
+   "artist": "The Pokémon Company Art-team",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6b/Pok%C3%A9monCenterBWPromo190.jpg"
+  },
+  "191": {
+   "en": "Tympole",
+   "page": "Tympole (BW-P Promo 191)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "オタマロ",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "192": {
+   "en": "Landorus",
+   "page": "Landorus (BW-P Promo 192)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ランドロス",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a4/LandorusBWPromo79.jpg"
+  },
+  "193": {
+   "en": "Bagon",
+   "page": "Bagon (BW-P Promo 193)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "",
+   "ja": "タツベイ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/5/54/BagonDragonVault6.jpg"
+  },
+  "194": {
+   "en": "Shelgon",
+   "page": "Shelgon (BW-P Promo 194)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "",
+   "ja": "コモルー",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2d/ShelgonDragonVault7.jpg"
+  },
+  "195": {
+   "en": "Salamence",
+   "page": "Salamence (BW-P Promo 195)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ボーマンダ",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/5/55/SalamencePlasmaBlast64.jpg"
+  },
+  "196": {
+   "en": "Devolution Spray",
+   "page": "Devolution Spray (BW-P Promo 196)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "",
+   "ja": "退化スプレー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0b/DevolutionSprayEvolutions76.jpg"
+  },
+  "197": {
+   "en": "Metagross",
+   "page": "Metagross (BW-P Promo 197)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "メタグロス",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4f/MetagrossBWPromo75.jpg"
+  },
+  "198": {
+   "en": "Serperior",
+   "page": "Serperior (BW-P Promo 198)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ジャローダ",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "199": {
+   "en": "Zebstrika",
+   "page": "Zebstrika (BW-P Promo 199)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゼブライカ",
+   "artist": "match",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e4/ZebstrikaNobleVictories36.jpg"
+  },
+  "200": {
+   "en": "Liepard",
+   "page": "Liepard (BW-P Promo 200)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "レパルダス",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/2/23/LiepardEmergingPowers65.jpg"
+  },
+  "201": {
+   "en": "Druddigon",
+   "page": "Druddigon (BW-P Promo 201)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "",
+   "ja": "クリムガン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ea/DruddigonBWPromo80.jpg"
+  },
+  "202": {
+   "en": "Pansage",
+   "page": "Pansage (BW-P Promo 202)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ヤナップ",
+   "artist": "Akira Komayama",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6f/PansageBWPromo11.jpg"
+  },
+  "203": {
+   "en": "Lucario",
+   "page": "Lucario (BW-P Promo 203)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ルカリオ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/0/03/LucarioBWPromo85.jpg"
+  },
+  "204": {
+   "en": "Meowth",
+   "page": "Meowth (BW-P Promo 204)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ニャース",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/MeowthBWPromo35.jpg"
+  },
+  "205": {
+   "en": "Pidove",
+   "page": "Pidove (BW-P Promo 205)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "マメパト",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e3/PidoveEmergingPowers80.jpg"
+  },
+  "206": {
+   "en": "Axew",
+   "page": "Axew (BW-P Promo 206)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "キバゴ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7d/AxewBWPromo10.jpg"
+  },
+  "207": {
+   "en": "Snorlax",
+   "page": "Snorlax (BW-P Promo 207)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "カビゴン",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/0/05/SnorlaxPlasmaStorm101.jpg"
+  },
+  "208": {
+   "en": "Porygon-Z",
+   "page": "Porygon-Z (BW-P Promo 208)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ポリゴンZ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/8/88/Porygon-ZBWPromo84.jpg"
+  },
+  "209": {
+   "en": "Genesect",
+   "page": "Genesect (BW-P Promo 209)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゲノセクト",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/f/fc/GenesectPlasmaBlast10.jpg"
+  },
+  "210": {
+   "en": "Magikarp",
+   "page": "Magikarp (BW-P Promo 210)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "コイキング",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/4/49/MagikarpLegendaryTreasures30.jpg"
+  },
+  "211": {
+   "en": "Froslass",
+   "page": "Froslass (BW-P Promo 211)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ユキメノコ",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/4/43/FroslassPlasmaBlast23.jpg"
+  },
+  "212": {
+   "en": "Machamp",
+   "page": "Machamp (BW-P Promo 212)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "カイリキー",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/4/40/MachampPlasmaBlast50.jpg"
+  },
+  "213": {
+   "en": "Eevee",
+   "page": "Eevee (BW-P Promo 213)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "イーブイ",
+   "artist": "Toyste Beach",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9f/EeveePlasmaFreeze90.jpg"
+  },
+  "214": {
+   "en": "Silver Bangle",
+   "page": "Silver Bangle (BW-P Promo 214)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "",
+   "ja": "シルバーバングル",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5c/SilverBanglePlasmaBlast88.jpg"
+  },
+  "215": {
+   "en": "Caitlin",
+   "page": "Caitlin (BW-P Promo 215)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "",
+   "ja": "カトレア",
+   "artist": "Yusuke Ohmura",
+   "image": "https://archives.bulbagarden.net/media/upload/6/69/CaitlinPlasmaBlast78.jpg"
+  },
+  "216": {
+   "en": "Black Kyurem",
+   "page": "Black Kyurem (BW-P Promo 216)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ブラックキュレム",
+   "artist": "Shin Nagasawa",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3f/BlackKyuremBWPromo58.jpg"
+  },
+  "217": {
+   "en": "White Kyurem",
+   "page": "White Kyurem (BW-P Promo 217)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ホワイトキュレム",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ea/WhiteKyuremBoundariesCrossed102.jpg"
+  },
+  "218": {
+   "en": "N",
+   "page": "N (BW-P Promo 218)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "",
+   "ja": "Ｎ",
+   "artist": "Megumi Mizutani",
+   "image": "https://archives.bulbagarden.net/media/upload/9/98/NDarkExplorers96.jpg"
+  },
+  "219": {
+   "en": "Genesect",
+   "page": "Genesect (BW-P Promo 219)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゲノセクト",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/6/65/GenesectBWPromo86.jpg"
+  },
+  "220": {
+   "en": "Mew",
+   "page": "Mew (BW-P Promo 220)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ミュウ",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ef/MewBWPromo98.jpg"
+  },
+  "221": {
+   "en": "Grass Energy",
+   "page": "Grass Energy (BW-P Promo 221)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本草エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/2/28/BasicGrassEnergyMEEEnergy1.jpg"
+  },
+  "222": {
+   "en": "Fire Energy",
+   "page": "Fire Energy (BW-P Promo 222)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本炎エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/1/17/BasicFireEnergyMEEEnergy2.jpg"
+  },
+  "223": {
+   "en": "Water Energy",
+   "page": "Water Energy (BW-P Promo 223)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本水エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/BasicWaterEnergyMEEEnergy3.jpg"
+  },
+  "224": {
+   "en": "Lightning Energy",
+   "page": "Lightning Energy (BW-P Promo 224)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本雷エネルギー",
+   "artist": "Pokémon 25th Anniversary",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9b/BasicLightningEnergyMEEEnergy4.jpg"
+  },
+  "225": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (BW-P Promo 225)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本超エネルギー",
+   "artist": "Keiji Kinebuchi",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/BasicPsychicEnergyMEEEnergy5.jpg"
+  },
+  "226": {
+   "en": "Fighting Energy",
+   "page": "Fighting Energy (BW-P Promo 226)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本闘エネルギー",
+   "artist": "Pokémon 25th Anniversary",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6c/BasicFightingEnergyMEEEnergy6.jpg"
+  },
+  "227": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (BW-P Promo 227)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本悪エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/2/27/BasicDarknessEnergyMEEEnergy7.jpg"
+  },
+  "228": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (BW-P Promo 228)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "",
+   "ja": "基本鋼エネルギー",
+   "artist": "YOSHIROTTEN",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5b/BasicMetalEnergyMEEEnergy8.jpg"
+  },
+  "229": {
+   "en": "Pikachu",
+   "page": "Pikachu (BW-P Promo 229)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/4/41/PikachuBlackWhite115.jpg"
+  },
+  "230": {
+   "en": "Tornadus",
+   "page": "Tornadus-EX (BW-P Promo 230)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "トルネロスEX",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4b/TornadusEXBWPromo96.jpg"
+  },
+  "231": {
+   "en": "Genesect",
+   "page": "Genesect (BW-P Promo 231)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゲノセクト",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6b/GenesectBWPromo101.jpg"
+  },
+  "232": {
+   "en": "Genesect",
+   "page": "Genesect (BW-P Promo 232)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゲノセクト",
+   "artist": "5ban Graphics",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6b/GenesectBWPromo101.jpg"
+  },
+  "233": {
+   "en": "Shaymin",
+   "page": "Shaymin (BW-P Promo 233)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "シェイミ",
+   "artist": "match",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "234": {
+   "en": "Victini",
+   "page": "Victini (BW-P Promo 234)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ビクティニ",
+   "artist": "Sanosuke Sakuma",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "235": {
+   "en": "Eevee",
+   "page": "Eevee (BW-P Promo 235)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "イーブイ",
+   "artist": "The Pokémon Company Art Team",
+   "image": "https://archives.bulbagarden.net/media/upload/8/80/EeveeBWPromo94.jpg"
+  },
+  "236": {
+   "en": "Emolga",
+   "page": "Emolga (BW-P Promo 236)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "エモンガ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ab/EmolgaLegendaryTreasuresRC23.jpg"
+  }
+ }
+}

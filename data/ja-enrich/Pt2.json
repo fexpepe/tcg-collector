@@ -1,0 +1,846 @@
+{
+ "page": "Bonds to the End of Time (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Weedle",
+   "page": "Weedle (Bonds to the End of Time 1)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Kakuna",
+   "page": "Kakuna (Bonds to the End of Time 2)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "3": {
+   "en": "Beedrill",
+   "page": "Beedrill (Bonds to the End of Time 3)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "4": {
+   "en": "Seedot",
+   "page": "Seedot (Bonds to the End of Time 4)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "5": {
+   "en": "Tropius",
+   "page": "Tropius (Bonds to the End of Time 5)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "6": {
+   "en": "Turtwig",
+   "page": "Turtwig GL (Bonds to the End of Time 6)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "7": {
+   "en": "Roserade",
+   "page": "Roserade GL (Bonds to the End of Time 7)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "8": {
+   "en": "Leafeon",
+   "page": "Leafeon (Bonds to the End of Time 8)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "9": {
+   "en": "Growlithe",
+   "page": "Growlithe (Bonds to the End of Time 9)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "10": {
+   "en": "Arcanine",
+   "page": "Arcanine (Bonds to the End of Time 10)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "11": {
+   "en": "Flareon",
+   "page": "Flareon (Bonds to the End of Time 11)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "12": {
+   "en": "Staryu",
+   "page": "Staryu (Bonds to the End of Time 12)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "13": {
+   "en": "Starmie",
+   "page": "Starmie (Bonds to the End of Time 13)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "14": {
+   "en": "Vaporeon",
+   "page": "Vaporeon (Bonds to the End of Time 14)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "15": {
+   "en": "Quagsire",
+   "page": "Quagsire GL (Bonds to the End of Time 15)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "16": {
+   "en": "Spheal",
+   "page": "Spheal (Bonds to the End of Time 16)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "17": {
+   "en": "Sealeo",
+   "page": "Sealeo (Bonds to the End of Time 17)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "18": {
+   "en": "Walrein",
+   "page": "Walrein (Bonds to the End of Time 18)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "19": {
+   "en": "Floatzel",
+   "page": "Floatzel GL (Bonds to the End of Time 19)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "20": {
+   "en": "Floatzel",
+   "page": "Floatzel GL LV.X (Bonds to the End of Time 20)",
+   "type": "Water",
+   "rarity": "Rare Holo LV.X",
+   "mark": ""
+  },
+  "21": {
+   "en": "Shellos",
+   "page": "Shellos (Bonds to the End of Time 21)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "22": {
+   "en": "Shellos",
+   "page": "Shellos (Bonds to the End of Time 22)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "23": {
+   "en": "Gastrodon",
+   "page": "Gastrodon (Bonds to the End of Time 23)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "24": {
+   "en": "Glaceon",
+   "page": "Glaceon (Bonds to the End of Time 24)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "25": {
+   "en": "Mamoswine",
+   "page": "Mamoswine GL (Bonds to the End of Time 25)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "26": {
+   "en": "Froslass",
+   "page": "Froslass GL (Bonds to the End of Time 26)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "27": {
+   "en": "Raichu",
+   "page": "Raichu GL (Bonds to the End of Time 27)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "28": {
+   "en": "Jolteon",
+   "page": "Jolteon (Bonds to the End of Time 28)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "29": {
+   "en": "Luxray",
+   "page": "Luxray GL (Bonds to the End of Time 29)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "30": {
+   "en": "Luxray",
+   "page": "Luxray GL LV.X (Bonds to the End of Time 30)",
+   "type": "Lightning",
+   "rarity": "Rare Holo LV.X",
+   "mark": ""
+  },
+  "31": {
+   "en": "Heat Rotom",
+   "page": "Heat Rotom (Bonds to the End of Time 31)",
+   "type": "Lightning",
+   "rarity": "Uncommon Holo",
+   "mark": ""
+  },
+  "32": {
+   "en": "Frost Rotom",
+   "page": "Frost Rotom (Bonds to the End of Time 32)",
+   "type": "Lightning",
+   "rarity": "Uncommon Holo",
+   "mark": ""
+  },
+  "33": {
+   "en": "Wash Rotom",
+   "page": "Wash Rotom (Bonds to the End of Time 33)",
+   "type": "Lightning",
+   "rarity": "Uncommon Holo",
+   "mark": ""
+  },
+  "34": {
+   "en": "Fan Rotom",
+   "page": "Fan Rotom (Bonds to the End of Time 34)",
+   "type": "Lightning",
+   "rarity": "Uncommon Holo",
+   "mark": ""
+  },
+  "35": {
+   "en": "Mow Rotom",
+   "page": "Mow Rotom (Bonds to the End of Time 35)",
+   "type": "Lightning",
+   "rarity": "Uncommon Holo",
+   "mark": ""
+  },
+  "36": {
+   "en": "Nidoran♀",
+   "page": "Nidoran♀ (Bonds to the End of Time 36)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "37": {
+   "en": "Nidorina",
+   "page": "Nidorina (Bonds to the End of Time 37)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "38": {
+   "en": "Nidoqueen",
+   "page": "Nidoqueen (Bonds to the End of Time 38)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "39": {
+   "en": "Nidoran♂",
+   "page": "Nidoran♂ (Bonds to the End of Time 39)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "40": {
+   "en": "Nidorino",
+   "page": "Nidorino (Bonds to the End of Time 40)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "41": {
+   "en": "Alakazam",
+   "page": "Alakazam 4 (Bonds to the End of Time 41)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "42": {
+   "en": "Alakazam",
+   "page": "Alakazam 4 LV.X (Bonds to the End of Time 42)",
+   "type": "Psychic",
+   "rarity": "Rare Holo LV.X",
+   "mark": ""
+  },
+  "43": {
+   "en": "Gengar",
+   "page": "Gengar GL (Bonds to the End of Time 43)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "44": {
+   "en": "Koffing",
+   "page": "Koffing (Bonds to the End of Time 44)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "45": {
+   "en": "Weezing",
+   "page": "Weezing (Bonds to the End of Time 45)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "46": {
+   "en": "Mismagius",
+   "page": "Mismagius GL (Bonds to the End of Time 46)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "47": {
+   "en": "Nidoking",
+   "page": "Nidoking (Bonds to the End of Time 47)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "48": {
+   "en": "Machamp",
+   "page": "Machamp GL (Bonds to the End of Time 48)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "49": {
+   "en": "Aerodactyl",
+   "page": "Aerodactyl GL (Bonds to the End of Time 49)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "50": {
+   "en": "Trapinch",
+   "page": "Trapinch (Bonds to the End of Time 50)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "51": {
+   "en": "Rampardos",
+   "page": "Rampardos GL (Bonds to the End of Time 51)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "52": {
+   "en": "Gastrodon",
+   "page": "Gastrodon (Bonds to the End of Time 52)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "53": {
+   "en": "Lucario",
+   "page": "Lucario GL (Bonds to the End of Time 53)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "54": {
+   "en": "Hippopotas",
+   "page": "Hippopotas (Bonds to the End of Time 54)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "55": {
+   "en": "Hippowdon",
+   "page": "Hippowdon (Bonds to the End of Time 55)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "56": {
+   "en": "Hippowdon LV.X",
+   "page": "Hippowdon LV.X (Bonds to the End of Time 56)",
+   "type": "Fighting",
+   "rarity": "Rare Holo LV.X",
+   "mark": ""
+  },
+  "57": {
+   "en": "Nuzleaf",
+   "page": "Nuzleaf (Bonds to the End of Time 57)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "58": {
+   "en": "Shiftry",
+   "page": "Shiftry (Bonds to the End of Time 58)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "59": {
+   "en": "Carvanha",
+   "page": "Carvanha (Bonds to the End of Time 59)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "60": {
+   "en": "Sharpedo",
+   "page": "Sharpedo (Bonds to the End of Time 60)",
+   "type": "Darkness",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "61": {
+   "en": "Forretress",
+   "page": "Forretress G (Bonds to the End of Time 61)",
+   "type": "Metal",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "62": {
+   "en": "Steelix",
+   "page": "Steelix GL (Bonds to the End of Time 62)",
+   "type": "Metal",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "63": {
+   "en": "Aron",
+   "page": "Aron (Bonds to the End of Time 63)",
+   "type": "Metal",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "64": {
+   "en": "Lairon",
+   "page": "Lairon (Bonds to the End of Time 64)",
+   "type": "Metal",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "65": {
+   "en": "Aggron",
+   "page": "Aggron (Bonds to the End of Time 65)",
+   "type": "Metal",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "66": {
+   "en": "Jirachi",
+   "page": "Jirachi (Bonds to the End of Time 66)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "67": {
+   "en": "Bastiodon",
+   "page": "Bastiodon GL (Bonds to the End of Time 67)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "68": {
+   "en": "Eevee",
+   "page": "Eevee (Bonds to the End of Time 68)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "69": {
+   "en": "Munchlax",
+   "page": "Munchlax (Bonds to the End of Time 69)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "70": {
+   "en": "Snorlax",
+   "page": "Snorlax (Bonds to the End of Time 70)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "71": {
+   "en": "Vibrava",
+   "page": "Vibrava (Bonds to the End of Time 71)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "72": {
+   "en": "Flygon",
+   "page": "Flygon (Bonds to the End of Time 72)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "73": {
+   "en": "Flygon LV.X",
+   "page": "Flygon LV.X (Bonds to the End of Time 73)",
+   "type": "Colorless",
+   "rarity": "Rare Holo LV.X",
+   "mark": ""
+  },
+  "74": {
+   "en": "Kecleon",
+   "page": "Kecleon (Bonds to the End of Time 74)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "75": {
+   "en": "Ambipom",
+   "page": "Ambipom G (Bonds to the End of Time 75)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "76": {
+   "en": "Team Galactic's Invention G-109 SP Radar",
+   "page": "Team Galactic's Invention G-109 SP Radar (Bonds to the End of Time 76)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "77": {
+   "en": "Team Galactic's Invention G-107 Technical Machine",
+   "page": "Team Galactic's Invention G-107 Technical Machine G (Bonds to the End of Time 77)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "78": {
+   "en": "Underground Expedition",
+   "page": "Underground Expedition (Bonds to the End of Time 78)",
+   "type": "Su",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "79": {
+   "en": "Volkner's Philosophy",
+   "page": "Volkner's Philosophy (Bonds to the End of Time 79)",
+   "type": "Su",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "80": {
+   "en": "Charon's Choice",
+   "page": "Charon's Choice (Bonds to the End of Time 80)",
+   "type": "Su",
+   "rarity": "Uncommon Holo",
+   "mark": ""
+  },
+  "81": {
+   "en": "Bebe's Search",
+   "page": "Bebe's Search (Bonds to the End of Time 81)",
+   "type": "Su",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "82": {
+   "en": "Sunyshore City Gym",
+   "page": "Sunyshore City Gym (Bonds to the End of Time 82)",
+   "type": "St",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "83": {
+   "en": "Pokémon Contest Hall",
+   "page": "Pokémon Contest Hall (Bonds to the End of Time 83)",
+   "type": "St",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "84": {
+   "en": "Upper Energy",
+   "page": "Upper Energy (Bonds to the End of Time 84)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "85": {
+   "en": "SP Energy",
+   "page": "SP Energy (Bonds to the End of Time 85)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "86": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (Bonds to the End of Time 86)",
+   "type": "Darkness",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "87": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (Bonds to the End of Time 87)",
+   "type": "Metal",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "88": {
+   "en": "Pikachu",
+   "page": "Pikachu (Bonds to the End of Time 88)",
+   "type": "Lightning",
+   "rarity": "SuperRare Holo",
+   "mark": ""
+  },
+  "89": {
+   "en": "Surfing Pikachu",
+   "page": "Surfing Pikachu (Bonds to the End of Time 89)",
+   "type": "Lightning",
+   "rarity": "SuperRare Holo",
+   "mark": ""
+  },
+  "90": {
+   "en": "Flying Pikachu",
+   "page": "Flying Pikachu (Bonds to the End of Time 90)",
+   "type": "Lightning",
+   "rarity": "SuperRare Holo",
+   "mark": ""
+  },
+  "91": {
+   "en": "Flint's Willpower",
+   "page": "Flint's Willpower (Rising Rivals 91)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Lucian's Assignment",
+   "page": "Lucian's Assignment (Rising Rivals 92)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Pokémon Contest Hall",
+   "page": "Pokémon Contest Hall (Rising Rivals 93)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Sunyshore City Gym",
+   "page": "Sunyshore City Gym (Rising Rivals 94)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Team Galactic's Invention G-107 Technical Machine",
+   "page": "Team Galactic's Invention G-107 Technical Machine G (Rising Rivals 95)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Team Galactic's Invention G-109 SP Radar",
+   "page": "Team Galactic's Invention G-109 SP Radar (Rising Rivals 96)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Underground Expedition",
+   "page": "Underground Expedition (Rising Rivals 97)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Volkner's Philosophy",
+   "page": "Volkner's Philosophy (Rising Rivals 98)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (Rising Rivals 99)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (Rising Rivals 100)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "SP Energy",
+   "page": "SP Energy (Rising Rivals 101)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Upper Energy",
+   "page": "Upper Energy (Rising Rivals 102)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Alakazam",
+   "page": "Alakazam 4 LV.X (Rising Rivals 103)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Floatzel",
+   "page": "Floatzel GL LV.X (Rising Rivals 104)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Flygon LV.X",
+   "page": "Flygon LV.X (Rising Rivals 105)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Gallade",
+   "page": "Gallade 4 LV.X (Rising Rivals 106)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Hippowdon LV.X",
+   "page": "Hippowdon LV.X (Rising Rivals 107)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Infernape",
+   "page": "Infernape 4 LV.X (Rising Rivals 108)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Luxray",
+   "page": "Luxray GL LV.X (Rising Rivals 109)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Mismagius",
+   "page": "Mismagius GL LV.X (Rising Rivals 110)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Snorlax LV.X",
+   "page": "Snorlax LV.X (Rising Rivals 111)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Pikachu",
+   "page": "Pikachu (Rising Rivals 112)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Flying Pikachu",
+   "page": "Flying Pikachu (Rising Rivals 113)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Surfing Pikachu",
+   "page": "Surfing Pikachu (Rising Rivals 114)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "rt1": {
+   "en": "Fan Rotom",
+   "page": "Fan Rotom (Rising Rivals RT1)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "rt2": {
+   "en": "Frost Rotom",
+   "page": "Frost Rotom (Rising Rivals RT2)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "rt3": {
+   "en": "Heat Rotom",
+   "page": "Heat Rotom (Rising Rivals RT3)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "rt4": {
+   "en": "Mow Rotom",
+   "page": "Mow Rotom (Rising Rivals RT4)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "rt5": {
+   "en": "Wash Rotom",
+   "page": "Wash Rotom (Rising Rivals RT5)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "rt6": {
+   "en": "Charon's Choice",
+   "page": "Charon's Choice (Rising Rivals RT6)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

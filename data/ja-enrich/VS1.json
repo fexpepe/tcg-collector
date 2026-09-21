@@ -1,0 +1,1000 @@
+{
+ "page": "Pokémon VS (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Falkner's Pidgeot",
+   "page": "Falkner's Pidgeot (VS 1)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Falkner's Fearow",
+   "page": "Falkner's Fearow (VS 2)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "3": {
+   "en": "Falkner's Farfetch'd",
+   "page": "Falkner's Farfetch'd (VS 3)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "4": {
+   "en": "Falkner's Dodrio",
+   "page": "Falkner's Dodrio (VS 4)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "5": {
+   "en": "Falkner's Togetic",
+   "page": "Falkner's Togetic (VS 5)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "6": {
+   "en": "Falkner's Delibird",
+   "page": "Falkner's Delibird (VS 6)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "7": {
+   "en": "Falkner's Skarmory",
+   "page": "Falkner's Skarmory (VS 7)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "8": {
+   "en": "Bugsy's Butterfree",
+   "page": "Bugsy's Butterfree (VS 8)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "9": {
+   "en": "Bugsy's Beedrill",
+   "page": "Bugsy's Beedrill (VS 9)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "10": {
+   "en": "Bugsy's Pinsir",
+   "page": "Bugsy's Pinsir (VS 10)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "11": {
+   "en": "Bugsy's Ledian",
+   "page": "Bugsy's Ledian (VS 11)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "12": {
+   "en": "Bugsy's Yanma",
+   "page": "Bugsy's Yanma (VS 12)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "13": {
+   "en": "Bugsy's Scizor",
+   "page": "Bugsy's Scizor (VS 13)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "14": {
+   "en": "Whitney's Clefable",
+   "page": "Whitney's Clefable (VS 14)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "15": {
+   "en": "Whitney's Wigglytuff",
+   "page": "Whitney's Wigglytuff (VS 15)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "16": {
+   "en": "Whitney's Persian",
+   "page": "Whitney's Persian (VS 16)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "17": {
+   "en": "Whitney's Lickitung",
+   "page": "Whitney's Lickitung (VS 17)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "18": {
+   "en": "Whitney's Furret",
+   "page": "Whitney's Furret (VS 18)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "19": {
+   "en": "Whitney's Miltank",
+   "page": "Whitney's Miltank (VS 19)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "20": {
+   "en": "Morty's Ninetales",
+   "page": "Morty's Ninetales (VS 20)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "21": {
+   "en": "Morty's Gengar",
+   "page": "Morty's Gengar (VS 21)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "22": {
+   "en": "Morty's Hypno",
+   "page": "Morty's Hypno (VS 22)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "23": {
+   "en": "Morty's Marowak",
+   "page": "Morty's Marowak (VS 23)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "24": {
+   "en": "Morty's Noctowl",
+   "page": "Morty's Noctowl (VS 24)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "25": {
+   "en": "Morty's Murkrow",
+   "page": "Morty's Murkrow (VS 25)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "26": {
+   "en": "Morty's Misdreavus",
+   "page": "Morty's Misdreavus (VS 26)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "27": {
+   "en": "Jasmine's Raichu",
+   "page": "Jasmine's Raichu (VS 27)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "28": {
+   "en": "Jasmine's Magneton",
+   "page": "Jasmine's Magneton (VS 28)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "29": {
+   "en": "Jasmine's Electabuzz",
+   "page": "Jasmine's Electabuzz (VS 29)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "30": {
+   "en": "Jasmine's Jolteon",
+   "page": "Jasmine's Jolteon (VS 30)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "31": {
+   "en": "Jasmine's Ampharos",
+   "page": "Jasmine's Ampharos (VS 31)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "32": {
+   "en": "Jasmine's Steelix",
+   "page": "Jasmine's Steelix (VS 32)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "33": {
+   "en": "Chuck's Primeape",
+   "page": "Chuck's Primeape (VS 33)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "34": {
+   "en": "Chuck's Poliwrath",
+   "page": "Chuck's Poliwrath (VS 34)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "35": {
+   "en": "Chuck's Rhydon",
+   "page": "Chuck's Rhydon (VS 35)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "36": {
+   "en": "Chuck's Tauros",
+   "page": "Chuck's Tauros (VS 36)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "37": {
+   "en": "Chuck's Granbull",
+   "page": "Chuck's Granbull (VS 37)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "38": {
+   "en": "Chuck's Donphan",
+   "page": "Chuck's Donphan (VS 38)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "39": {
+   "en": "Pryce's Dewgong",
+   "page": "Pryce's Dewgong (VS 39)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "40": {
+   "en": "Pryce's Cloyster",
+   "page": "Pryce's Cloyster (VS 40)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "41": {
+   "en": "Pryce's Lapras",
+   "page": "Pryce's Lapras (VS 41)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "42": {
+   "en": "Pryce's Articuno",
+   "page": "Pryce's Articuno (VS 42)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "43": {
+   "en": "Pryce's Sneasel",
+   "page": "Pryce's Sneasel (VS 43)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "44": {
+   "en": "Pryce's Piloswine",
+   "page": "Pryce's Piloswine (VS 44)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "45": {
+   "en": "Pryce's Delibird",
+   "page": "Pryce's Delibird (VS 45)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "46": {
+   "en": "Clair's Blastoise",
+   "page": "Clair's Blastoise (VS 46)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "47": {
+   "en": "Clair's Jynx",
+   "page": "Clair's Jynx (VS 47)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "48": {
+   "en": "Clair's Gyarados",
+   "page": "Clair's Gyarados (VS 48)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "49": {
+   "en": "Clair's Dragonite",
+   "page": "Clair's Dragonite (VS 49)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "50": {
+   "en": "Clair's Politoed",
+   "page": "Clair's Politoed (VS 50)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "51": {
+   "en": "Clair's Mantine",
+   "page": "Clair's Mantine (VS 51)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "52": {
+   "en": "Clair's Kingdra",
+   "page": "Clair's Kingdra (VS 52)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "53": {
+   "en": "Lt. Surge's Raichu",
+   "page": "Lt. Surge's Raichu (VS 53)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "54": {
+   "en": "Lt. Surge's Lanturn",
+   "page": "Lt. Surge's Lanturn (VS 54)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "55": {
+   "en": "Sabrina's Xatu",
+   "page": "Sabrina's Xatu (VS 55)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "56": {
+   "en": "Sabrina's Espeon",
+   "page": "Sabrina's Espeon (VS 56)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "57": {
+   "en": "Misty's Lapras",
+   "page": "Misty's Lapras (VS 57)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "58": {
+   "en": "Misty's Quagsire",
+   "page": "Misty's Quagsire (VS 58)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "59": {
+   "en": "Erika's Bellossom",
+   "page": "Erika's Bellossom (VS 59)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "60": {
+   "en": "Erika's Jumpluff",
+   "page": "Erika's Jumpluff (VS 60)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "61": {
+   "en": "Janine's Beedrill",
+   "page": "Janine's Beedrill (VS 61)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "62": {
+   "en": "Janine's Arbok",
+   "page": "Janine's Arbok (VS 62)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "63": {
+   "en": "Janine's Venomoth",
+   "page": "Janine's Venomoth (VS 63)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "64": {
+   "en": "Janine's Weezing",
+   "page": "Janine's Weezing (VS 64)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "65": {
+   "en": "Janine's Ariados",
+   "page": "Janine's Ariados (VS 65)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "66": {
+   "en": "Janine's Crobat",
+   "page": "Janine's Crobat (VS 66)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "67": {
+   "en": "Janine's Shuckle",
+   "page": "Janine's Shuckle (VS 67)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "68": {
+   "en": "Brock's Omastar",
+   "page": "Brock's Omastar (VS 68)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "69": {
+   "en": "Brock's Kabutops",
+   "page": "Brock's Kabutops (VS 69)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "70": {
+   "en": "Blaine's Typhlosion",
+   "page": "Blaine's Typhlosion (VS 70)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "71": {
+   "en": "Blaine's Magcargo",
+   "page": "Blaine's Magcargo (VS 71)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "72": {
+   "en": "Will's Slowbro",
+   "page": "Will's Slowbro (VS 72)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "73": {
+   "en": "Will's Exeggutor",
+   "page": "Will's Exeggutor (VS 73)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "74": {
+   "en": "Will's Jynx",
+   "page": "Will's Jynx (VS 74)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "75": {
+   "en": "Will's Xatu",
+   "page": "Will's Xatu (VS 75)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "76": {
+   "en": "Will's Espeon",
+   "page": "Will's Espeon (VS 76)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "77": {
+   "en": "Will's Slowking",
+   "page": "Will's Slowking (VS 77)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "78": {
+   "en": "Will's Girafarig",
+   "page": "Will's Girafarig (VS 78)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "79": {
+   "en": "Koga's Crobat",
+   "page": "Koga's Crobat (VS 79)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "80": {
+   "en": "Koga's Forretress",
+   "page": "Koga's Forretress (VS 80)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "81": {
+   "en": "Bruno's Machamp",
+   "page": "Bruno's Machamp (VS 81)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "82": {
+   "en": "Bruno's Hitmonlee",
+   "page": "Bruno's Hitmonlee (VS 82)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "83": {
+   "en": "Bruno's Hitmonchan",
+   "page": "Bruno's Hitmonchan (VS 83)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "84": {
+   "en": "Bruno's Steelix",
+   "page": "Bruno's Steelix (VS 84)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "85": {
+   "en": "Bruno's Ursaring",
+   "page": "Bruno's Ursaring (VS 85)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "86": {
+   "en": "Bruno's Hitmontop",
+   "page": "Bruno's Hitmontop (VS 86)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "87": {
+   "en": "Karen's Rapidash",
+   "page": "Karen's Rapidash (VS 87)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "88": {
+   "en": "Karen's Magmar",
+   "page": "Karen's Magmar (VS 88)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "89": {
+   "en": "Karen's Flareon",
+   "page": "Karen's Flareon (VS 89)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "90": {
+   "en": "Karen's Tyranitar",
+   "page": "Karen's Tyranitar (VS 90)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "91": {
+   "en": "Karen's Umbreon",
+   "page": "Karen's Umbreon (VS 91)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "92": {
+   "en": "Karen's Houndoom",
+   "page": "Karen's Houndoom (VS 92)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "93": {
+   "en": "Rocket's Wobbuffet",
+   "page": "Rocket's Wobbuffet (VS 93)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "94": {
+   "en": "Rocket's Raikou",
+   "page": "Rocket's Raikou (VS 94)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "95": {
+   "en": "Rocket's Entei",
+   "page": "Rocket's Entei (VS 95)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "96": {
+   "en": "Rocket's Suicune",
+   "page": "Rocket's Suicune (VS 96)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "97": {
+   "en": "Lance's Charizard",
+   "page": "Lance's Charizard (VS 97)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "98": {
+   "en": "Lance's Gyarados",
+   "page": "Lance's Gyarados (VS 98)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "99": {
+   "en": "Lance's Aerodactyl",
+   "page": "Lance's Aerodactyl (VS 99)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "100": {
+   "en": "Lance's Dragonite",
+   "page": "Lance's Dragonite (VS 100)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "101": {
+   "en": "Lance's Ampharos",
+   "page": "Lance's Ampharos (VS 101)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "102": {
+   "en": "Lance's Kingdra",
+   "page": "Lance's Kingdra (VS 102)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "103": {
+   "en": "Falkner's TM 01",
+   "page": "Falkner's TM 01 (VS 103)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "104": {
+   "en": "Falkner's TM 02",
+   "page": "Falkner's TM 02 (VS 104)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "105": {
+   "en": "Bugsy's TM 01",
+   "page": "Bugsy's TM 01 (VS 105)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "106": {
+   "en": "Bugsy's TM 02",
+   "page": "Bugsy's TM 02 (VS 106)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "107": {
+   "en": "Whitney's TM 01",
+   "page": "Whitney's TM 01 (VS 107)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "108": {
+   "en": "Whitney's TM 02",
+   "page": "Whitney's TM 02 (VS 108)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "109": {
+   "en": "Morty's TM 01",
+   "page": "Morty's TM 01 (VS 109)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "110": {
+   "en": "Morty's TM 02",
+   "page": "Morty's TM 02 (VS 110)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "111": {
+   "en": "Jasmine's TM 01",
+   "page": "Jasmine's TM 01 (VS 111)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "112": {
+   "en": "Jasmine's TM 02",
+   "page": "Jasmine's TM 02 (VS 112)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "113": {
+   "en": "Chuck's TM 01",
+   "page": "Chuck's TM 01 (VS 113)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "114": {
+   "en": "Chuck's TM 02",
+   "page": "Chuck's TM 02 (VS 114)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "115": {
+   "en": "Pryce's TM 01",
+   "page": "Pryce's TM 01 (VS 115)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "116": {
+   "en": "Pryce's TM 02",
+   "page": "Pryce's TM 02 (VS 116)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "117": {
+   "en": "Clair's TM 01",
+   "page": "Clair's TM 01 (VS 117)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "118": {
+   "en": "Clair's TM 02",
+   "page": "Clair's TM 02 (VS 118)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "119": {
+   "en": "Janine's TM 01",
+   "page": "Janine's TM 01 (VS 119)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "120": {
+   "en": "Janine's TM 02",
+   "page": "Janine's TM 02 (VS 120)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "121": {
+   "en": "Will's TM 01",
+   "page": "Will's TM 01 (VS 121)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "122": {
+   "en": "Will's TM 02",
+   "page": "Will's TM 02 (VS 122)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "123": {
+   "en": "Bruno's TM 01",
+   "page": "Bruno's TM 01 (VS 123)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "124": {
+   "en": "Bruno's TM 02",
+   "page": "Bruno's TM 02 (VS 124)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "125": {
+   "en": "Karen's TM 01",
+   "page": "Karen's TM 01 (VS 125)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "126": {
+   "en": "Karen's TM 02",
+   "page": "Karen's TM 02 (VS 126)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "127": {
+   "en": "Rocket's TM 01",
+   "page": "Rocket's TM 01 (VS 127)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "128": {
+   "en": "Lance's TM 01",
+   "page": "Lance's TM 01 (VS 128)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "129": {
+   "en": "Lance's TM 02",
+   "page": "Lance's TM 02 (VS 129)",
+   "type": "T [TM]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "130": {
+   "en": "Potion",
+   "page": "Potion (VS 130)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "131": {
+   "en": "Moo-Moo Milk",
+   "page": "Moo-Moo Milk (VS 131)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "132": {
+   "en": "Full Heal",
+   "page": "Full Heal (VS 132)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "133": {
+   "en": "Pokémon Reversal",
+   "page": "Pokémon Reversal (VS 133)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "134": {
+   "en": "Switch",
+   "page": "Switch (VS 134)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "135": {
+   "en": "Warp Point",
+   "page": "Warp Point (VS 135)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "136": {
+   "en": "Super Scoop Up",
+   "page": "Super Scoop Up (VS 136)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "137": {
+   "en": "Energy Flow",
+   "page": "Energy Flow (VS 137)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "138": {
+   "en": "Energy Charge",
+   "page": "Energy Charge (VS 138)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "139": {
+   "en": "Energy Ark",
+   "page": "Energy Ark (VS 139)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "140": {
+   "en": "Energy Restore",
+   "page": "Energy Restore (VS 140)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "141": {
+   "en": "Master Ball",
+   "page": "Master Ball (VS 141)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "142": {
+   "en": "Rocket's Tyranitar",
+   "page": "Rocket's Tyranitar (VS 142)",
+   "type": "Darkness",
+   "rarity": "Secret Rare",
+   "mark": ""
+  }
+ }
+}

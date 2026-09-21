@@ -1,0 +1,818 @@
+{
+ "page": "Inferno X (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Oddish",
+   "page": "Oddish (Inferno X 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Gloom",
+   "page": "Gloom (Inferno X 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Vileplume",
+   "page": "Vileplume (Inferno X 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Mega Heracross",
+   "page": "Mega Heracross ex (Inferno X 4)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "5": {
+   "en": "Lotad",
+   "page": "Lotad (Inferno X 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Lombre",
+   "page": "Lombre (Inferno X 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Ludicolo",
+   "page": "Ludicolo (Inferno X 7)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "8": {
+   "en": "Genesect",
+   "page": "Genesect (Inferno X 8)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "9": {
+   "en": "Nymble",
+   "page": "Nymble (Inferno X 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Lokix",
+   "page": "Lokix (Inferno X 10)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Charmander",
+   "page": "Charmander (Inferno X 11)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (Inferno X 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Mega Charizard X",
+   "page": "Mega Charizard X ex (Inferno X 13)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "14": {
+   "en": "Moltres",
+   "page": "Moltres (Inferno X 14)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Darumaka",
+   "page": "Darumaka (Inferno X 15)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Darmanitan",
+   "page": "Darmanitan (Inferno X 16)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "17": {
+   "en": "Reshiram",
+   "page": "Reshiram (Inferno X 17)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "18": {
+   "en": "Oricorio",
+   "page": "Oricorio ex (Inferno X 18)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "19": {
+   "en": "Charcadet",
+   "page": "Charcadet (Inferno X 19)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Ceruledge",
+   "page": "Ceruledge (Inferno X 20)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Seel",
+   "page": "Seel (Inferno X 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Dewgong",
+   "page": "Dewgong (Inferno X 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Swinub",
+   "page": "Swinub (Inferno X 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Piloswine",
+   "page": "Piloswine (Inferno X 24)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Mamoswine",
+   "page": "Mamoswine (Inferno X 25)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Suicune",
+   "page": "Suicune (Inferno X 26)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "27": {
+   "en": "Piplup",
+   "page": "Piplup (Inferno X 27)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Prinplup",
+   "page": "Prinplup (Inferno X 28)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Rotom",
+   "page": "Rotom ex (Inferno X 29)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "30": {
+   "en": "Yamper",
+   "page": "Yamper (Inferno X 30)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Boltund",
+   "page": "Boltund (Inferno X 31)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Pawmi",
+   "page": "Pawmi (Inferno X 32)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Pawmo",
+   "page": "Pawmo (Inferno X 33)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Pawmot",
+   "page": "Pawmot (Inferno X 34)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "35": {
+   "en": "Misdreavus",
+   "page": "Misdreavus (Inferno X 35)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Mismagius",
+   "page": "Mismagius ex (Inferno X 36)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "37": {
+   "en": "Cottonee",
+   "page": "Cottonee (Inferno X 37)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Whimsicott",
+   "page": "Whimsicott (Inferno X 38)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Zacian",
+   "page": "Zacian (Inferno X 39)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "40": {
+   "en": "Bramblin",
+   "page": "Bramblin (Inferno X 40)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Brambleghast",
+   "page": "Brambleghast (Inferno X 41)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "42": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Inferno X 42)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Gligar",
+   "page": "Gligar (Inferno X 43)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Gliscor",
+   "page": "Gliscor (Inferno X 44)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Trapinch",
+   "page": "Trapinch (Inferno X 45)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Vibrava",
+   "page": "Vibrava (Inferno X 46)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Flygon",
+   "page": "Flygon (Inferno X 47)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "48": {
+   "en": "Sneasel",
+   "page": "Sneasel (Inferno X 48)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Weavile",
+   "page": "Weavile (Inferno X 49)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Carvanha",
+   "page": "Carvanha (Inferno X 50)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Mega Sharpedo",
+   "page": "Mega Sharpedo ex (Inferno X 51)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Seviper",
+   "page": "Seviper (Inferno X 52)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Sandile",
+   "page": "Sandile (Inferno X 53)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Krokorok",
+   "page": "Krokorok (Inferno X 54)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Krookodile",
+   "page": "Krookodile (Inferno X 55)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "56": {
+   "en": "Toxel",
+   "page": "Toxel (Inferno X 56)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Toxtricity",
+   "page": "Toxtricity (Inferno X 57)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "58": {
+   "en": "Empoleon",
+   "page": "Empoleon ex (Inferno X 58)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Bronzor",
+   "page": "Bronzor (Inferno X 59)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Bronzong",
+   "page": "Bronzong (Inferno X 60)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Togedemaru",
+   "page": "Togedemaru (Inferno X 61)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Duraludon",
+   "page": "Duraludon (Inferno X 62)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Archaludon",
+   "page": "Archaludon (Inferno X 63)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (Inferno X 64)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Wigglytuff",
+   "page": "Wigglytuff (Inferno X 65)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Aipom",
+   "page": "Aipom (Inferno X 66)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "67": {
+   "en": "Ambipom",
+   "page": "Ambipom (Inferno X 67)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "68": {
+   "en": "Smeargle",
+   "page": "Smeargle (Inferno X 68)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "69": {
+   "en": "Zigzagoon",
+   "page": "Zigzagoon (Inferno X 69)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "70": {
+   "en": "Linoone",
+   "page": "Linoone (Inferno X 70)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Buneary",
+   "page": "Buneary (Inferno X 71)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "72": {
+   "en": "Mega Lopunny",
+   "page": "Mega Lopunny ex (Inferno X 72)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Jumbo Ice Cream",
+   "page": "Jumbo Ice Cream (Inferno X 73)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "74": {
+   "en": "Blowtorch",
+   "page": "Blowtorch (Inferno X 74)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "75": {
+   "en": "Sacred Charm",
+   "page": "Sacred Charm (Inferno X 75)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "76": {
+   "en": "Grimsley's Move",
+   "page": "Grimsley's Move (Inferno X 76)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Dawn",
+   "page": "Dawn (Inferno X 77)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "78": {
+   "en": "Firebreather",
+   "page": "Firebreather (Inferno X 78)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Battle Cage",
+   "page": "Battle Cage (Inferno X 79)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "80": {
+   "en": "Dizzying Valley",
+   "page": "Dizzying Valley (Inferno X 80)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "81": {
+   "en": "Ludicolo",
+   "page": "Ludicolo (Inferno X 81)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Nymble",
+   "page": "Nymble (Inferno X 82)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Charcadet",
+   "page": "Charcadet (Inferno X 83)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Dewgong",
+   "page": "Dewgong (Inferno X 84)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Piplup",
+   "page": "Piplup (Inferno X 85)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Yamper",
+   "page": "Yamper (Inferno X 86)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Zacian",
+   "page": "Zacian (Inferno X 87)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Flygon",
+   "page": "Flygon (Inferno X 88)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Toxtricity",
+   "page": "Toxtricity (Inferno X 89)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Togedemaru",
+   "page": "Togedemaru (Inferno X 90)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Wigglytuff",
+   "page": "Wigglytuff (Inferno X 91)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Ambipom",
+   "page": "Ambipom (Inferno X 92)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Mega Heracross",
+   "page": "Mega Heracross ex (Inferno X 93)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Mega Charizard X",
+   "page": "Mega Charizard X ex (Inferno X 94)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Oricorio",
+   "page": "Oricorio ex (Inferno X 95)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Rotom",
+   "page": "Rotom ex (Inferno X 96)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Mismagius",
+   "page": "Mismagius ex (Inferno X 97)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Mega Sharpedo",
+   "page": "Mega Sharpedo ex (Inferno X 98)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Empoleon",
+   "page": "Empoleon ex (Inferno X 99)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Mega Lopunny",
+   "page": "Mega Lopunny ex (Inferno X 100)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Blowtorch",
+   "page": "Blowtorch (Inferno X 101)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Switch",
+   "page": "Switch (Inferno X 102)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Sacred Charm",
+   "page": "Sacred Charm (Inferno X 103)",
+   "type": "PT",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Punk Helmet",
+   "page": "Punk Helmet (Inferno X 104)",
+   "type": "PT",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Grimsley's Move",
+   "page": "Grimsley's Move (Inferno X 105)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Dawn",
+   "page": "Dawn (Inferno X 106)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Firebreather",
+   "page": "Firebreather (Inferno X 107)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Battle Cage",
+   "page": "Battle Cage (Inferno X 108)",
+   "type": "St",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Ignition Energy",
+   "page": "Ignition Energy (Inferno X 109)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Mega Charizard X",
+   "page": "Mega Charizard X ex (Inferno X 110)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Oricorio",
+   "page": "Oricorio ex (Inferno X 111)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Rotom",
+   "page": "Rotom ex (Inferno X 112)",
+   "type": "Lightning",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Mega Sharpedo",
+   "page": "Mega Sharpedo ex (Inferno X 113)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Mega Lopunny",
+   "page": "Mega Lopunny ex (Inferno X 114)",
+   "type": "Colorless",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Dawn",
+   "page": "Dawn (Inferno X 115)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Mega Charizard X",
+   "page": "Mega Charizard X ex (Inferno X 116)",
+   "type": "Fire",
+   "rarity": "MUR",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,55 @@
+{
+ "page": "PPP Promotional cards (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Turtwig",
+   "page": "Turtwig (PPP Promo 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Chimchar",
+   "page": "Chimchar (PPP Promo 2)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Piplup",
+   "page": "Piplup (PPP Promo 3)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Manaphy",
+   "page": "Manaphy (PPP Promo 4)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Dialga",
+   "page": "Dialga (PPP Promo 5)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Palkia",
+   "page": "Palkia (PPP Promo 6)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Darkrai",
+   "page": "Darkrai (PPP Promo 7)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

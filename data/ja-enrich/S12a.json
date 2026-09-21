@@ -1,0 +1,2330 @@
+{
+ "page": "VSTAR Universe (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Paras",
+   "page": "Paras (VSTAR Universe 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Parasect",
+   "page": "Parasect (VSTAR Universe 2)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Hisuian Voltorb",
+   "page": "Hisuian Voltorb (VSTAR Universe 3)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Hisuian Electrode",
+   "page": "Hisuian Electrode (VSTAR Universe 4)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Hisuian Electrode",
+   "page": "Hisuian Electrode V (VSTAR Universe 5)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "6": {
+   "en": "Turtwig",
+   "page": "Turtwig (VSTAR Universe 6)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Grotle",
+   "page": "Grotle (VSTAR Universe 7)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Torterra",
+   "page": "Torterra (VSTAR Universe 8)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Kricketot",
+   "page": "Kricketot (VSTAR Universe 9)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Kricketune",
+   "page": "Kricketune (VSTAR Universe 10)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Leafeon",
+   "page": "Leafeon V (VSTAR Universe 11)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "12": {
+   "en": "Leafeon",
+   "page": "Leafeon VSTAR (VSTAR Universe 12)",
+   "type": "Grass",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "13": {
+   "en": "Charizard",
+   "page": "Charizard V (VSTAR Universe 13)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "14": {
+   "en": "Charizard",
+   "page": "Charizard VSTAR (VSTAR Universe 14)",
+   "type": "Fire",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "15": {
+   "en": "Radiant Charizard",
+   "page": "Radiant Charizard (VSTAR Universe 15)",
+   "type": "Fire",
+   "rarity": "K",
+   "mark": ""
+  },
+  "16": {
+   "en": "Magmar",
+   "page": "Magmar (VSTAR Universe 16)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Magmortar",
+   "page": "Magmortar (VSTAR Universe 17)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Moltres",
+   "page": "Moltres (VSTAR Universe 18)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Entei",
+   "page": "Entei V (VSTAR Universe 19)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "20": {
+   "en": "Simisear",
+   "page": "Simisear V (VSTAR Universe 20)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "21": {
+   "en": "Simisear",
+   "page": "Simisear VSTAR (VSTAR Universe 21)",
+   "type": "Fire",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "22": {
+   "en": "Oricorio",
+   "page": "Oricorio (VSTAR Universe 22)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Lapras",
+   "page": "Lapras (VSTAR Universe 23)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Suicune",
+   "page": "Suicune V (VSTAR Universe 24)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "25": {
+   "en": "Regice",
+   "page": "Regice (VSTAR Universe 25)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Lumineon",
+   "page": "Lumineon V (VSTAR Universe 26)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "27": {
+   "en": "Origin Forme Palkia",
+   "page": "Origin Forme Palkia V (VSTAR Universe 27)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "28": {
+   "en": "Origin Forme Palkia",
+   "page": "Origin Forme Palkia VSTAR (VSTAR Universe 28)",
+   "type": "Water",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "29": {
+   "en": "Manaphy",
+   "page": "Manaphy (VSTAR Universe 29)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Hisuian Basculin",
+   "page": "Hisuian Basculin (VSTAR Universe 30)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Hisuian Basculegion",
+   "page": "Hisuian Basculegion (VSTAR Universe 31)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Keldeo",
+   "page": "Keldeo (VSTAR Universe 32)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Radiant Greninja",
+   "page": "Radiant Greninja (VSTAR Universe 33)",
+   "type": "Water",
+   "rarity": "K",
+   "mark": ""
+  },
+  "34": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (VSTAR Universe 34)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Electivire",
+   "page": "Electivire (VSTAR Universe 35)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Mareep",
+   "page": "Mareep (VSTAR Universe 36)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Flaaffy",
+   "page": "Flaaffy (VSTAR Universe 37)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Raikou",
+   "page": "Raikou V (VSTAR Universe 38)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "39": {
+   "en": "Radiant Charjabug",
+   "page": "Radiant Charjabug (VSTAR Universe 39)",
+   "type": "Lightning",
+   "rarity": "K",
+   "mark": ""
+  },
+  "40": {
+   "en": "Zeraora",
+   "page": "Zeraora V (VSTAR Universe 40)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "41": {
+   "en": "Zeraora",
+   "page": "Zeraora VMAX (VSTAR Universe 41)",
+   "type": "Lightning",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "42": {
+   "en": "Zeraora",
+   "page": "Zeraora VSTAR (VSTAR Universe 42)",
+   "type": "Lightning",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "43": {
+   "en": "Toxel",
+   "page": "Toxel (VSTAR Universe 43)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Toxtricity",
+   "page": "Toxtricity (VSTAR Universe 44)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Regieleki",
+   "page": "Regieleki (VSTAR Universe 45)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Gastly",
+   "page": "Gastly (VSTAR Universe 46)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Haunter",
+   "page": "Haunter (VSTAR Universe 47)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Gengar",
+   "page": "Gengar (VSTAR Universe 48)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "49": {
+   "en": "Galarian Articuno",
+   "page": "Galarian Articuno (VSTAR Universe 49)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "50": {
+   "en": "Mewtwo",
+   "page": "Mewtwo V (VSTAR Universe 50)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "51": {
+   "en": "Mewtwo",
+   "page": "Mewtwo VSTAR (VSTAR Universe 51)",
+   "type": "Psychic",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Mew",
+   "page": "Mew (VSTAR Universe 52)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "53": {
+   "en": "Mew",
+   "page": "Mew V (VSTAR Universe 53)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Mew",
+   "page": "Mew VMAX (VSTAR Universe 54)",
+   "type": "Psychic",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Radiant Gardevoir",
+   "page": "Radiant Gardevoir (VSTAR Universe 55)",
+   "type": "Psychic",
+   "rarity": "K",
+   "mark": ""
+  },
+  "56": {
+   "en": "Lunatone",
+   "page": "Lunatone (VSTAR Universe 56)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "57": {
+   "en": "Duskull",
+   "page": "Duskull (VSTAR Universe 57)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "58": {
+   "en": "Dusclops",
+   "page": "Dusclops (VSTAR Universe 58)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "59": {
+   "en": "Dusknoir",
+   "page": "Dusknoir (VSTAR Universe 59)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "60": {
+   "en": "Deoxys",
+   "page": "Deoxys (VSTAR Universe 60)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "61": {
+   "en": "Pumpkaboo",
+   "page": "Pumpkaboo (VSTAR Universe 61)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "62": {
+   "en": "Gourgeist",
+   "page": "Gourgeist (VSTAR Universe 62)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "63": {
+   "en": "Diancie",
+   "page": "Diancie (VSTAR Universe 63)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "64": {
+   "en": "Comfey",
+   "page": "Comfey (VSTAR Universe 64)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "65": {
+   "en": "Hatterene",
+   "page": "Hatterene V (VSTAR Universe 65)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Hatterene",
+   "page": "Hatterene VMAX (VSTAR Universe 66)",
+   "type": "Psychic",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Zacian",
+   "page": "Zacian V (VSTAR Universe 67)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Enamorus",
+   "page": "Enamorus V (VSTAR Universe 68)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Hisuian Growlithe",
+   "page": "Hisuian Growlithe (VSTAR Universe 69)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "70": {
+   "en": "Hisuian Arcanine",
+   "page": "Hisuian Arcanine (VSTAR Universe 70)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "71": {
+   "en": "Machamp",
+   "page": "Machamp V (VSTAR Universe 71)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Machamp",
+   "page": "Machamp VMAX (VSTAR Universe 72)",
+   "type": "Fighting",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Galarian Zapdos",
+   "page": "Galarian Zapdos (VSTAR Universe 73)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "74": {
+   "en": "Solrock",
+   "page": "Solrock (VSTAR Universe 74)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "75": {
+   "en": "Regirock",
+   "page": "Regirock (VSTAR Universe 75)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "76": {
+   "en": "Riolu",
+   "page": "Riolu (VSTAR Universe 76)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "77": {
+   "en": "Lucario",
+   "page": "Lucario (VSTAR Universe 77)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "78": {
+   "en": "Radiant Hawlucha",
+   "page": "Radiant Hawlucha (VSTAR Universe 78)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "79": {
+   "en": "Galarian Moltres",
+   "page": "Galarian Moltres (VSTAR Universe 79)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "80": {
+   "en": "Galarian Moltres",
+   "page": "Galarian Moltres V (VSTAR Universe 80)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Poochyena",
+   "page": "Poochyena (VSTAR Universe 81)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "82": {
+   "en": "Mightyena",
+   "page": "Mightyena (VSTAR Universe 82)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "83": {
+   "en": "Absol",
+   "page": "Absol (VSTAR Universe 83)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "84": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (VSTAR Universe 84)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "85": {
+   "en": "Drapion",
+   "page": "Drapion V (VSTAR Universe 85)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott V (VSTAR Universe 86)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott VSTAR (VSTAR Universe 87)",
+   "type": "Darkness",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Purrloin",
+   "page": "Purrloin (VSTAR Universe 88)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "89": {
+   "en": "Liepard",
+   "page": "Liepard (VSTAR Universe 89)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "90": {
+   "en": "Zorua",
+   "page": "Zorua (VSTAR Universe 90)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "91": {
+   "en": "Zoroark",
+   "page": "Zoroark (VSTAR Universe 91)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "92": {
+   "en": "Nickit",
+   "page": "Nickit (VSTAR Universe 92)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "93": {
+   "en": "Thievul",
+   "page": "Thievul (VSTAR Universe 93)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "94": {
+   "en": "Magnemite",
+   "page": "Magnemite (VSTAR Universe 94)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "95": {
+   "en": "Magneton",
+   "page": "Magneton (VSTAR Universe 95)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "96": {
+   "en": "Magnezone",
+   "page": "Magnezone (VSTAR Universe 96)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "97": {
+   "en": "Registeel",
+   "page": "Registeel (VSTAR Universe 97)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "98": {
+   "en": "Bronzor",
+   "page": "Bronzor (VSTAR Universe 98)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "99": {
+   "en": "Bronzong",
+   "page": "Bronzong (VSTAR Universe 99)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "100": {
+   "en": "Origin Forme Dialga",
+   "page": "Origin Forme Dialga V (VSTAR Universe 100)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Origin Forme Dialga",
+   "page": "Origin Forme Dialga VSTAR (VSTAR Universe 101)",
+   "type": "Metal",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Genesect",
+   "page": "Genesect V (VSTAR Universe 102)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Zamazenta",
+   "page": "Zamazenta V (VSTAR Universe 103)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Altaria",
+   "page": "Altaria (VSTAR Universe 104)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "105": {
+   "en": "Latias",
+   "page": "Latias (VSTAR Universe 105)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "106": {
+   "en": "Latios",
+   "page": "Latios (VSTAR Universe 106)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "107": {
+   "en": "Rayquaza",
+   "page": "Rayquaza V (VSTAR Universe 107)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Rayquaza",
+   "page": "Rayquaza VMAX (VSTAR Universe 108)",
+   "type": "Dragon",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Garchomp",
+   "page": "Garchomp V (VSTAR Universe 109)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Giratina",
+   "page": "Giratina V (VSTAR Universe 110)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Giratina",
+   "page": "Giratina VSTAR (VSTAR Universe 111)",
+   "type": "Dragon",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Goomy",
+   "page": "Goomy (VSTAR Universe 112)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "113": {
+   "en": "Hisuian Sliggoo",
+   "page": "Hisuian Sliggoo (VSTAR Universe 113)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "114": {
+   "en": "Hisuian Goodra",
+   "page": "Hisuian Goodra (VSTAR Universe 114)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "115": {
+   "en": "Radiant Eternatus",
+   "page": "Radiant Eternatus (VSTAR Universe 115)",
+   "type": "Dragon",
+   "rarity": "K",
+   "mark": ""
+  },
+  "116": {
+   "en": "Regidrago",
+   "page": "Regidrago (VSTAR Universe 116)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "117": {
+   "en": "Ditto",
+   "page": "Ditto (VSTAR Universe 117)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "118": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (VSTAR Universe 118)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "119": {
+   "en": "Miltank",
+   "page": "Miltank (VSTAR Universe 119)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "120": {
+   "en": "Swablu",
+   "page": "Swablu (VSTAR Universe 120)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "121": {
+   "en": "Bidoof",
+   "page": "Bidoof (VSTAR Universe 121)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "122": {
+   "en": "Bibarel",
+   "page": "Bibarel (VSTAR Universe 122)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "123": {
+   "en": "Regigigas",
+   "page": "Regigigas (VSTAR Universe 123)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "124": {
+   "en": "Regigigas",
+   "page": "Regigigas V (VSTAR Universe 124)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "125": {
+   "en": "Regigigas",
+   "page": "Regigigas VSTAR (VSTAR Universe 125)",
+   "type": "Colorless",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "126": {
+   "en": "Arceus",
+   "page": "Arceus V (VSTAR Universe 126)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "127": {
+   "en": "Arceus",
+   "page": "Arceus VSTAR (VSTAR Universe 127)",
+   "type": "Colorless",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "128": {
+   "en": "Hisuian Zoroark",
+   "page": "Hisuian Zoroark V (VSTAR Universe 128)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "129": {
+   "en": "Hisuian Zoroark",
+   "page": "Hisuian Zoroark VSTAR (VSTAR Universe 129)",
+   "type": "Colorless",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "130": {
+   "en": "Oranguru",
+   "page": "Oranguru V (VSTAR Universe 130)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "131": {
+   "en": "Wyrdeer",
+   "page": "Wyrdeer V (VSTAR Universe 131)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "132": {
+   "en": "Fan of Waves",
+   "page": "Fan of Waves (VSTAR Universe 132)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "133": {
+   "en": "Gutsy Pickaxe",
+   "page": "Gutsy Pickaxe (VSTAR Universe 133)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "134": {
+   "en": "Fog Crystal",
+   "page": "Fog Crystal (VSTAR Universe 134)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "135": {
+   "en": "Dark Patch",
+   "page": "Dark Patch (VSTAR Universe 135)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "136": {
+   "en": "Damage Pump",
+   "page": "Damage Pump (VSTAR Universe 136)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "137": {
+   "en": "Trekking Shoes",
+   "page": "Trekking Shoes (VSTAR Universe 137)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "138": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (VSTAR Universe 138)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "139": {
+   "en": "Power Tablet",
+   "page": "Power Tablet (VSTAR Universe 139)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "140": {
+   "en": "Hisuian Heavy Ball",
+   "page": "Hisuian Heavy Ball (VSTAR Universe 140)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "141": {
+   "en": "Mirage Gate",
+   "page": "Mirage Gate (VSTAR Universe 141)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "142": {
+   "en": "Rescue Carrier",
+   "page": "Rescue Carrier (VSTAR Universe 142)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "143": {
+   "en": "Level Ball",
+   "page": "Level Ball (VSTAR Universe 143)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "144": {
+   "en": "Lost Vacuum",
+   "page": "Lost Vacuum (VSTAR Universe 144)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "145": {
+   "en": "Choice Belt",
+   "page": "Choice Belt (VSTAR Universe 145)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "146": {
+   "en": "Sky Seal Stone",
+   "page": "Sky Seal Stone (VSTAR Universe 146)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "147": {
+   "en": "Leafy Camo Poncho",
+   "page": "Leafy Camo Poncho (VSTAR Universe 147)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "148": {
+   "en": "Colress's Experiment",
+   "page": "Colress's Experiment (VSTAR Universe 148)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "149": {
+   "en": "Irida",
+   "page": "Irida (VSTAR Universe 149)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "150": {
+   "en": "Elesa's Sparkle",
+   "page": "Elesa's Sparkle (VSTAR Universe 150)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "151": {
+   "en": "Raihan",
+   "page": "Raihan (VSTAR Universe 151)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "152": {
+   "en": "Grant",
+   "page": "Grant (VSTAR Universe 152)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "153": {
+   "en": "Cynthia's Ambition",
+   "page": "Cynthia's Ambition (VSTAR Universe 153)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "154": {
+   "en": "Friends in Sinnoh",
+   "page": "Friends in Sinnoh (VSTAR Universe 154)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "155": {
+   "en": "Adaman",
+   "page": "Adaman (VSTAR Universe 155)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "156": {
+   "en": "Cheren's Care",
+   "page": "Cheren's Care (VSTAR Universe 156)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "157": {
+   "en": "Roxanne",
+   "page": "Roxanne (VSTAR Universe 157)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "158": {
+   "en": "Gardenia's Vigor",
+   "page": "Gardenia's Vigor (VSTAR Universe 158)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "159": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (VSTAR Universe 159)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "160": {
+   "en": "Friends in Hisui",
+   "page": "Friends in Hisui (VSTAR Universe 160)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "161": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (VSTAR Universe 161)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "162": {
+   "en": "Melony",
+   "page": "Melony (VSTAR Universe 162)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "163": {
+   "en": "Cheryl",
+   "page": "Cheryl (VSTAR Universe 163)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "164": {
+   "en": "Stormy Mountains",
+   "page": "Stormy Mountains (VSTAR Universe 164)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "165": {
+   "en": "Path to the Peak",
+   "page": "Path to the Peak (VSTAR Universe 165)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "166": {
+   "en": "Gapejaw Bog",
+   "page": "Gapejaw Bog (VSTAR Universe 166)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "167": {
+   "en": "Collapsed Stadium",
+   "page": "Collapsed Stadium (VSTAR Universe 167)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "168": {
+   "en": "Jubilife Village",
+   "page": "Jubilife Village (VSTAR Universe 168)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "169": {
+   "en": "Temple of Sinnoh",
+   "page": "Temple of Sinnoh (VSTAR Universe 169)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "170": {
+   "en": "Magma Basin",
+   "page": "Magma Basin (VSTAR Universe 170)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "171": {
+   "en": "Double Turbo Energy",
+   "page": "Double Turbo Energy (VSTAR Universe 171)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "172": {
+   "en": "Fusion Strike Energy",
+   "page": "Fusion Strike Energy (VSTAR Universe 172)",
+   "type": "Rainbow",
+   "rarity": "—",
+   "mark": ""
+  },
+  "173": {
+   "en": "Hisuian Voltorb",
+   "page": "Hisuian Voltorb (VSTAR Universe 173)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "174": {
+   "en": "Kricketune",
+   "page": "Kricketune (VSTAR Universe 174)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "175": {
+   "en": "Magmortar",
+   "page": "Magmortar (VSTAR Universe 175)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "176": {
+   "en": "Oricorio",
+   "page": "Oricorio (VSTAR Universe 176)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "177": {
+   "en": "Lapras",
+   "page": "Lapras (VSTAR Universe 177)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "178": {
+   "en": "Manaphy",
+   "page": "Manaphy (VSTAR Universe 178)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "179": {
+   "en": "Keldeo",
+   "page": "Keldeo (VSTAR Universe 179)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "180": {
+   "en": "Electivire",
+   "page": "Electivire (VSTAR Universe 180)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "181": {
+   "en": "Toxtricity",
+   "page": "Toxtricity (VSTAR Universe 181)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "182": {
+   "en": "Galarian Articuno",
+   "page": "Galarian Articuno (VSTAR Universe 182)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "183": {
+   "en": "Mew",
+   "page": "Mew (VSTAR Universe 183)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "184": {
+   "en": "Lunatone",
+   "page": "Lunatone (VSTAR Universe 184)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "185": {
+   "en": "Deoxys",
+   "page": "Deoxys (VSTAR Universe 185)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "186": {
+   "en": "Diancie",
+   "page": "Diancie (VSTAR Universe 186)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "187": {
+   "en": "Comfey",
+   "page": "Comfey (VSTAR Universe 187)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "188": {
+   "en": "Galarian Zapdos",
+   "page": "Galarian Zapdos (VSTAR Universe 188)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "189": {
+   "en": "Solrock",
+   "page": "Solrock (VSTAR Universe 189)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "190": {
+   "en": "Galarian Moltres",
+   "page": "Galarian Moltres (VSTAR Universe 190)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "191": {
+   "en": "Absol",
+   "page": "Absol (VSTAR Universe 191)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "192": {
+   "en": "Thievul",
+   "page": "Thievul (VSTAR Universe 192)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "193": {
+   "en": "Magnezone",
+   "page": "Magnezone (VSTAR Universe 193)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "194": {
+   "en": "Altaria",
+   "page": "Altaria (VSTAR Universe 194)",
+   "type": "Dragon",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "195": {
+   "en": "Latias",
+   "page": "Latias (VSTAR Universe 195)",
+   "type": "Dragon",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "196": {
+   "en": "Hisuian Goodra",
+   "page": "Hisuian Goodra (VSTAR Universe 196)",
+   "type": "Dragon",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "197": {
+   "en": "Ditto",
+   "page": "Ditto (VSTAR Universe 197)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "198": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (VSTAR Universe 198)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "199": {
+   "en": "Miltank",
+   "page": "Miltank (VSTAR Universe 199)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "200": {
+   "en": "Bibarel",
+   "page": "Bibarel (VSTAR Universe 200)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "201": {
+   "en": "Riolu",
+   "page": "Riolu (VSTAR Universe 201)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "202": {
+   "en": "Swablu",
+   "page": "Swablu (VSTAR Universe 202)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "203": {
+   "en": "Duskull",
+   "page": "Duskull (VSTAR Universe 203)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "204": {
+   "en": "Bidoof",
+   "page": "Bidoof (VSTAR Universe 204)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "205": {
+   "en": "Pikachu",
+   "page": "Pikachu (VSTAR Universe 205)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "206": {
+   "en": "Turtwig",
+   "page": "Turtwig (VSTAR Universe 206)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "207": {
+   "en": "Paras",
+   "page": "Paras (VSTAR Universe 207)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "208": {
+   "en": "Poochyena",
+   "page": "Poochyena (VSTAR Universe 208)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "209": {
+   "en": "Mareep",
+   "page": "Mareep (VSTAR Universe 209)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "210": {
+   "en": "Leafeon",
+   "page": "Leafeon VSTAR (VSTAR Universe 210)",
+   "type": "Grass",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "211": {
+   "en": "Charizard",
+   "page": "Charizard V (VSTAR Universe 211)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "212": {
+   "en": "Charizard",
+   "page": "Charizard VSTAR (VSTAR Universe 212)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "213": {
+   "en": "Entei",
+   "page": "Entei V (VSTAR Universe 213)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "214": {
+   "en": "Simisear",
+   "page": "Simisear VSTAR (VSTAR Universe 214)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "215": {
+   "en": "Suicune",
+   "page": "Suicune V (VSTAR Universe 215)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "216": {
+   "en": "Lumineon",
+   "page": "Lumineon V (VSTAR Universe 216)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "217": {
+   "en": "Glaceon",
+   "page": "Glaceon VSTAR (VSTAR Universe 217)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "218": {
+   "en": "Raikou",
+   "page": "Raikou V (VSTAR Universe 218)",
+   "type": "Lightning",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "219": {
+   "en": "Zeraora",
+   "page": "Zeraora VMAX (VSTAR Universe 219)",
+   "type": "Lightning",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "220": {
+   "en": "Zeraora",
+   "page": "Zeraora VSTAR (VSTAR Universe 220)",
+   "type": "Lightning",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "221": {
+   "en": "Mewtwo",
+   "page": "Mewtwo VSTAR (VSTAR Universe 221)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "222": {
+   "en": "Deoxys",
+   "page": "Deoxys VMAX (VSTAR Universe 222)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "223": {
+   "en": "Deoxys",
+   "page": "Deoxys VSTAR (VSTAR Universe 223)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "224": {
+   "en": "Hatterene",
+   "page": "Hatterene VMAX (VSTAR Universe 224)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "225": {
+   "en": "Zacian",
+   "page": "Zacian V (VSTAR Universe 225)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "226": {
+   "en": "Lucario",
+   "page": "Lucario VSTAR (VSTAR Universe 226)",
+   "type": "Fighting",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "227": {
+   "en": "Drapion",
+   "page": "Drapion V (VSTAR Universe 227)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "228": {
+   "en": "Darkrai",
+   "page": "Darkrai VSTAR (VSTAR Universe 228)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "229": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott V (VSTAR Universe 229)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "230": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott VSTAR (VSTAR Universe 230)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "231": {
+   "en": "Hoopa",
+   "page": "Hoopa V (VSTAR Universe 231)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "232": {
+   "en": "Zamazenta",
+   "page": "Zamazenta V (VSTAR Universe 232)",
+   "type": "Metal",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "233": {
+   "en": "Regigigas",
+   "page": "Regigigas VSTAR (VSTAR Universe 233)",
+   "type": "Colorless",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "234": {
+   "en": "Hisuian Zoroark",
+   "page": "Hisuian Zoroark VSTAR (VSTAR Universe 234)",
+   "type": "Colorless",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "235": {
+   "en": "Colress's Experiment",
+   "page": "Colress's Experiment (VSTAR Universe 235)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "236": {
+   "en": "Irida",
+   "page": "Irida (VSTAR Universe 236)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "237": {
+   "en": "Raihan",
+   "page": "Raihan (VSTAR Universe 237)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "238": {
+   "en": "Grant",
+   "page": "Grant (VSTAR Universe 238)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "239": {
+   "en": "Cynthia's Ambition",
+   "page": "Cynthia's Ambition (VSTAR Universe 239)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "240": {
+   "en": "Adaman",
+   "page": "Adaman (VSTAR Universe 240)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "241": {
+   "en": "Cheren's Care",
+   "page": "Cheren's Care (VSTAR Universe 241)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "242": {
+   "en": "Roxanne",
+   "page": "Roxanne (VSTAR Universe 242)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "243": {
+   "en": "Gardenia's Vigor",
+   "page": "Gardenia's Vigor (VSTAR Universe 243)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "244": {
+   "en": "Melony",
+   "page": "Melony (VSTAR Universe 244)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "245": {
+   "en": "Volo",
+   "page": "Volo (VSTAR Universe 245)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "246": {
+   "en": "Elesa's Sparkle",
+   "page": "Elesa's Sparkle (VSTAR Universe 246)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "247": {
+   "en": "Friends in Sinnoh",
+   "page": "Friends in Sinnoh (VSTAR Universe 247)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "248": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (VSTAR Universe 248)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "249": {
+   "en": "Friends in Hisui",
+   "page": "Friends in Hisui (VSTAR Universe 249)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "250": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (VSTAR Universe 250)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "251": {
+   "en": "Grass Energy",
+   "page": "Grass Energy (TCG)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "252": {
+   "en": "Fire Energy",
+   "page": "Fire Energy (TCG)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "253": {
+   "en": "Water Energy",
+   "page": "Water Energy (TCG)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "254": {
+   "en": "Lightning Energy",
+   "page": "Lightning Energy (TCG)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "255": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (TCG)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "256": {
+   "en": "Fighting Energy",
+   "page": "Fighting Energy (TCG)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "257": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (Basic)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "258": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (Basic)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": "—"
+  },
+  "259": {
+   "en": "Origin Forme Palkia",
+   "page": "Origin Forme Palkia VSTAR (VSTAR Universe 259)",
+   "type": "Water",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "260": {
+   "en": "Origin Forme Dialga",
+   "page": "Origin Forme Dialga VSTAR (VSTAR Universe 260)",
+   "type": "Metal",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "261": {
+   "en": "Giratina",
+   "page": "Giratina VSTAR (VSTAR Universe 261)",
+   "type": "Dragon",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "262": {
+   "en": "Arceus",
+   "page": "Arceus VSTAR (VSTAR Universe 262)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "gg1": {
+   "en": "Hisuian Voltorb",
+   "page": "Hisuian Voltorb (Crown Zenith GG1)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg2": {
+   "en": "Kricketune",
+   "page": "Kricketune (Crown Zenith GG2)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg3": {
+   "en": "Magmortar",
+   "page": "Magmortar (Crown Zenith GG3)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg4": {
+   "en": "Oricorio",
+   "page": "Oricorio (Crown Zenith GG4)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg5": {
+   "en": "Lapras",
+   "page": "Lapras (Crown Zenith GG5)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg6": {
+   "en": "Manaphy",
+   "page": "Manaphy (Crown Zenith GG6)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg7": {
+   "en": "Keldeo",
+   "page": "Keldeo (Crown Zenith GG7)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg8": {
+   "en": "Electivire",
+   "page": "Electivire (Crown Zenith GG8)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg9": {
+   "en": "Toxtricity",
+   "page": "Toxtricity (Crown Zenith GG9)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg10": {
+   "en": "Mew",
+   "page": "Mew (Crown Zenith GG10)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg11": {
+   "en": "Lunatone",
+   "page": "Lunatone (Crown Zenith GG11)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg12": {
+   "en": "Deoxys",
+   "page": "Deoxys (Crown Zenith GG12)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg13": {
+   "en": "Diancie",
+   "page": "Diancie (Crown Zenith GG13)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg14": {
+   "en": "Comfey",
+   "page": "Comfey (Crown Zenith GG14)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg15": {
+   "en": "Solrock",
+   "page": "Solrock (Crown Zenith GG15)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg16": {
+   "en": "Absol",
+   "page": "Absol (Crown Zenith GG16)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg17": {
+   "en": "Thievul",
+   "page": "Thievul (Crown Zenith GG17)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg18": {
+   "en": "Magnezone",
+   "page": "Magnezone (Crown Zenith GG18)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg19": {
+   "en": "Altaria",
+   "page": "Altaria (Crown Zenith GG19)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg20": {
+   "en": "Latias",
+   "page": "Latias (Crown Zenith GG20)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg21": {
+   "en": "Hisuian Goodra",
+   "page": "Hisuian Goodra (Crown Zenith GG21)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg22": {
+   "en": "Ditto",
+   "page": "Ditto (Crown Zenith GG22)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg23": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (Crown Zenith GG23)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg24": {
+   "en": "Miltank",
+   "page": "Miltank (Crown Zenith GG24)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg25": {
+   "en": "Bibarel",
+   "page": "Bibarel (Crown Zenith GG25)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg26": {
+   "en": "Riolu",
+   "page": "Riolu (Crown Zenith GG26)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg27": {
+   "en": "Swablu",
+   "page": "Swablu (Crown Zenith GG27)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg28": {
+   "en": "Duskull",
+   "page": "Duskull (Crown Zenith GG28)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg29": {
+   "en": "Bidoof",
+   "page": "Bidoof (Crown Zenith GG29)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg30": {
+   "en": "Pikachu",
+   "page": "Pikachu (Crown Zenith GG30)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg31": {
+   "en": "Turtwig",
+   "page": "Turtwig (Crown Zenith GG31)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg32": {
+   "en": "Paras",
+   "page": "Paras (Crown Zenith GG32)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg33": {
+   "en": "Poochyena",
+   "page": "Poochyena (Crown Zenith GG33)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg34": {
+   "en": "Mareep",
+   "page": "Mareep (Crown Zenith GG34)",
+   "type": "GGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg35": {
+   "en": "Leafeon",
+   "page": "Leafeon VSTAR (Crown Zenith GG35)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg36": {
+   "en": "Entei",
+   "page": "Entei V (Crown Zenith GG36)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg37": {
+   "en": "Simisear",
+   "page": "Simisear VSTAR (Crown Zenith GG37)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg38": {
+   "en": "Suicune",
+   "page": "Suicune V (Crown Zenith GG38)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg39": {
+   "en": "Lumineon",
+   "page": "Lumineon V (Crown Zenith GG39)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg40": {
+   "en": "Glaceon",
+   "page": "Glaceon VSTAR (Crown Zenith GG40)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg41": {
+   "en": "Raikou",
+   "page": "Raikou V (Crown Zenith GG41)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg42": {
+   "en": "Zeraora",
+   "page": "Zeraora VMAX (Crown Zenith GG42)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg43": {
+   "en": "Zeraora",
+   "page": "Zeraora VSTAR (Crown Zenith GG43)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg44": {
+   "en": "Mewtwo",
+   "page": "Mewtwo VSTAR (Crown Zenith GG44)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg45": {
+   "en": "Deoxys",
+   "page": "Deoxys VMAX (Crown Zenith GG45)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg46": {
+   "en": "Deoxys",
+   "page": "Deoxys VSTAR (Crown Zenith GG46)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg47": {
+   "en": "Hatterene",
+   "page": "Hatterene VMAX (Crown Zenith GG47)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg48": {
+   "en": "Zacian",
+   "page": "Zacian V (Crown Zenith GG48)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg49": {
+   "en": "Drapion",
+   "page": "Drapion V (Crown Zenith GG49)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg50": {
+   "en": "Darkrai",
+   "page": "Darkrai VSTAR (Crown Zenith GG50)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg51": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott V (Crown Zenith GG51)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg52": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott VSTAR (Crown Zenith GG52)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg53": {
+   "en": "Hoopa",
+   "page": "Hoopa V (Crown Zenith GG53)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg54": {
+   "en": "Zamazenta",
+   "page": "Zamazenta V (Crown Zenith GG54)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg55": {
+   "en": "Regigigas",
+   "page": "Regigigas VSTAR (Crown Zenith GG55)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg56": {
+   "en": "Hisuian Zoroark",
+   "page": "Hisuian Zoroark VSTAR (Crown Zenith GG56)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg57": {
+   "en": "Adaman",
+   "page": "Adaman (Crown Zenith GG57)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg58": {
+   "en": "Cheren's Care",
+   "page": "Cheren's Care (Crown Zenith GG58)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg59": {
+   "en": "Colress's Experiment",
+   "page": "Colress's Experiment (Crown Zenith GG59)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg60": {
+   "en": "Cynthia's Ambition",
+   "page": "Cynthia's Ambition (Crown Zenith GG60)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg61": {
+   "en": "Gardenia's Vigor",
+   "page": "Gardenia's Vigor (Crown Zenith GG61)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg62": {
+   "en": "Grant",
+   "page": "Grant (Crown Zenith GG62)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg63": {
+   "en": "Irida",
+   "page": "Irida (Crown Zenith GG63)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg64": {
+   "en": "Melony",
+   "page": "Melony (Crown Zenith GG64)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg65": {
+   "en": "Raihan",
+   "page": "Raihan (Crown Zenith GG65)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg66": {
+   "en": "Roxanne",
+   "page": "Roxanne (Crown Zenith GG66)",
+   "type": "GGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg67": {
+   "en": "Origin Forme Palkia",
+   "page": "Origin Forme Palkia VSTAR (Crown Zenith GG67)",
+   "type": "GGS",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg68": {
+   "en": "Origin Forme Dialga",
+   "page": "Origin Forme Dialga VSTAR (Crown Zenith GG68)",
+   "type": "GGS",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg69": {
+   "en": "Giratina",
+   "page": "Giratina VSTAR (Crown Zenith GG69)",
+   "type": "GGS",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "gg70": {
+   "en": "Arceus",
+   "page": "Arceus VSTAR (Crown Zenith GG70)",
+   "type": "GGS",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

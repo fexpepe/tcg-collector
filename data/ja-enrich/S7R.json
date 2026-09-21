@@ -1,0 +1,1665 @@
+{
+ "page": "Blue Sky Stream (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Suicune",
+   "page": "Suicune V (Skyscraping Perfection 1)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "2": {
+   "en": "Lotad",
+   "page": "Lotad (Skyscraping Perfection 2)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Lombre",
+   "page": "Lombre (Skyscraping Perfection 3)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Ludicolo",
+   "page": "Ludicolo (Skyscraping Perfection 4)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "5": {
+   "en": "Panpour",
+   "page": "Panpour (Skyscraping Perfection 5)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Simipour",
+   "page": "Simipour (Skyscraping Perfection 6)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Clauncher",
+   "page": "Clauncher (Skyscraping Perfection 7)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Clawitzer",
+   "page": "Clawitzer (Skyscraping Perfection 8)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Eiscue",
+   "page": "Eiscue (Skyscraping Perfection 9)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "10": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (Skyscraping Perfection 10)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Wigglytuff",
+   "page": "Wigglytuff (Skyscraping Perfection 11)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Galarian Articuno",
+   "page": "Galarian Articuno (Skyscraping Perfection 12)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "13": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (Skyscraping Perfection 13)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Sigilyph",
+   "page": "Sigilyph (Skyscraping Perfection 14)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Golurk",
+   "page": "Golurk V (Skyscraping Perfection 15)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Pumpkaboo",
+   "page": "Pumpkaboo (Skyscraping Perfection 16)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Gourgeist",
+   "page": "Gourgeist (Skyscraping Perfection 17)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Hitmonchan",
+   "page": "Hitmonchan (Skyscraping Perfection 18)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Galarian Zapdos",
+   "page": "Galarian Zapdos (Skyscraping Perfection 19)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "20": {
+   "en": "Gligar",
+   "page": "Gligar (Skyscraping Perfection 20)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Gliscor",
+   "page": "Gliscor (Skyscraping Perfection 21)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Makuhita",
+   "page": "Makuhita (Skyscraping Perfection 22)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Hariyama",
+   "page": "Hariyama (Skyscraping Perfection 23)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Lycanroc",
+   "page": "Lycanroc V (Skyscraping Perfection 24)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "25": {
+   "en": "Lycanroc",
+   "page": "Lycanroc VMAX (Skyscraping Perfection 25)",
+   "type": "Fighting",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "26": {
+   "en": "Galarian Moltres",
+   "page": "Galarian Moltres (Skyscraping Perfection 26)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "27": {
+   "en": "Absol",
+   "page": "Absol (Skyscraping Perfection 27)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Croagunk",
+   "page": "Croagunk (Skyscraping Perfection 28)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Toxicroak",
+   "page": "Toxicroak (Skyscraping Perfection 29)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Garbodor",
+   "page": "Garbodor V (Skyscraping Perfection 30)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Garbodor",
+   "page": "Garbodor VMAX (Skyscraping Perfection 31)",
+   "type": "Darkness",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "32": {
+   "en": "Nickit",
+   "page": "Nickit (Skyscraping Perfection 32)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Thievul",
+   "page": "Thievul (Skyscraping Perfection 33)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Galarian Meowth",
+   "page": "Galarian Meowth (Skyscraping Perfection 34)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Galarian Perrserker",
+   "page": "Galarian Perrserker (Skyscraping Perfection 35)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Skarmory",
+   "page": "Skarmory (Skyscraping Perfection 36)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Klefki",
+   "page": "Klefki (Skyscraping Perfection 37)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Cufant",
+   "page": "Cufant (Skyscraping Perfection 38)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Copperajah",
+   "page": "Copperajah (Skyscraping Perfection 39)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Altaria",
+   "page": "Altaria (Skyscraping Perfection 40)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "41": {
+   "en": "Dialga",
+   "page": "Dialga (Skyscraping Perfection 41)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "42": {
+   "en": "Deino",
+   "page": "Deino (Skyscraping Perfection 42)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Zweilous",
+   "page": "Zweilous (Skyscraping Perfection 43)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Hydreigon",
+   "page": "Hydreigon (Skyscraping Perfection 44)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "45": {
+   "en": "Kyurem",
+   "page": "Kyurem (Skyscraping Perfection 45)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "46": {
+   "en": "Noivern",
+   "page": "Noivern V (Skyscraping Perfection 46)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "47": {
+   "en": "Drampa",
+   "page": "Drampa (Skyscraping Perfection 47)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Duraludon",
+   "page": "Duraludon V (Skyscraping Perfection 48)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "49": {
+   "en": "Duraludon",
+   "page": "Duraludon VMAX (Skyscraping Perfection 49)",
+   "type": "Dragon",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "50": {
+   "en": "Slakoth",
+   "page": "Slakoth (Skyscraping Perfection 50)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Vigoroth",
+   "page": "Vigoroth (Skyscraping Perfection 51)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Slaking",
+   "page": "Slaking (Skyscraping Perfection 52)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "53": {
+   "en": "Swablu",
+   "page": "Swablu (Skyscraping Perfection 53)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Wooloo",
+   "page": "Wooloo (Skyscraping Perfection 54)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Dubwool",
+   "page": "Dubwool (Skyscraping Perfection 55)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Escape Rope",
+   "page": "Escape Rope (Skyscraping Perfection 56)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Evolution Incense",
+   "page": "Evolution Incense (Skyscraping Perfection 57)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Switching Cups",
+   "page": "Switching Cups (Skyscraping Perfection 58)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Rescue Carrier",
+   "page": "Rescue Carrier (Skyscraping Perfection 59)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Digging Gloves",
+   "page": "Digging Gloves (Skyscraping Perfection 60)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Single Strike Scroll of the Fanged Dragon",
+   "page": "Single Strike Scroll of the Fanged Dragon (Skyscraping Perfection 61)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Full Face Guard",
+   "page": "Full Face Guard (Skyscraping Perfection 62)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Raihan",
+   "page": "Raihan (Skyscraping Perfection 63)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Schoolgirl",
+   "page": "Schoolgirl (Skyscraping Perfection 64)",
+   "type": "Su",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Copycat",
+   "page": "Copycat (Skyscraping Perfection 65)",
+   "type": "Su",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "Crystal Cave",
+   "page": "Crystal Cave (Skyscraping Perfection 66)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Twin Energy",
+   "page": "Twin Energy (Skyscraping Perfection 67)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Suicune",
+   "page": "Suicune V (Skyscraping Perfection 68)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Golurk",
+   "page": "Golurk V (Skyscraping Perfection 69)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Golurk",
+   "page": "Golurk V (Skyscraping Perfection 70)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Lycanroc",
+   "page": "Lycanroc V (Skyscraping Perfection 71)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Garbodor",
+   "page": "Garbodor V (Skyscraping Perfection 72)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Noivern",
+   "page": "Noivern V (Skyscraping Perfection 73)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Noivern",
+   "page": "Noivern V (Skyscraping Perfection 74)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Duraludon",
+   "page": "Duraludon V (Skyscraping Perfection 75)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Duraludon",
+   "page": "Duraludon V (Skyscraping Perfection 76)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Raihan",
+   "page": "Raihan (Skyscraping Perfection 77)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Schoolgirl",
+   "page": "Schoolgirl (Skyscraping Perfection 78)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Copycat",
+   "page": "Copycat (Skyscraping Perfection 79)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Lycanroc",
+   "page": "Lycanroc VMAX (Skyscraping Perfection 80)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Garbodor",
+   "page": "Garbodor VMAX (Skyscraping Perfection 81)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Duraludon",
+   "page": "Duraludon VMAX (Skyscraping Perfection 82)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Duraludon",
+   "page": "Duraludon VMAX (Skyscraping Perfection 83)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Raihan",
+   "page": "Raihan (Skyscraping Perfection 84)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Schoolgirl",
+   "page": "Schoolgirl (Skyscraping Perfection 85)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Copycat",
+   "page": "Copycat (Skyscraping Perfection 86)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Cresselia",
+   "page": "Cresselia (Skyscraping Perfection 87)",
+   "type": "Psychic",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Full Face Guard",
+   "page": "Full Face Guard (Skyscraping Perfection 88)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Crystal Cave",
+   "page": "Crystal Cave (Skyscraping Perfection 89)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (Skyscraping Perfection 90)",
+   "type": "Metal",
+   "rarity": "UR",
+   "mark": "—"
+  },
+  "91": {
+   "en": "Lycanroc",
+   "page": "Lycanroc V (Evolving Skies 91)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Lycanroc",
+   "page": "Lycanroc VMAX (Evolving Skies 92)",
+   "type": "Rare VMAX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Galarian Moltres",
+   "page": "Galarian Moltres (Evolving Skies 93)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Umbreon",
+   "page": "Umbreon V (Evolving Skies 94)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Umbreon",
+   "page": "Umbreon VMAX (Evolving Skies 95)",
+   "type": "Rare VMAX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Nuzleaf",
+   "page": "Nuzleaf (Evolving Skies 96)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Shiftry",
+   "page": "Shiftry (Evolving Skies 97)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Scraggy",
+   "page": "Scraggy (Evolving Skies 98)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Scrafty",
+   "page": "Scrafty (Evolving Skies 99)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Garbodor",
+   "page": "Garbodor V (Evolving Skies 100)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Garbodor",
+   "page": "Garbodor VMAX (Evolving Skies 101)",
+   "type": "Rare VMAX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Zorua",
+   "page": "Zorua (Evolving Skies 102)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Zoroark",
+   "page": "Zoroark (Evolving Skies 103)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Nickit",
+   "page": "Nickit (Evolving Skies 104)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Thievul",
+   "page": "Thievul (Evolving Skies 105)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Altaria",
+   "page": "Altaria (Evolving Skies 106)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Bagon",
+   "page": "Bagon (Evolving Skies 107)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Shelgon",
+   "page": "Shelgon (Evolving Skies 108)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Salamence",
+   "page": "Salamence (Evolving Skies 109)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Rayquaza",
+   "page": "Rayquaza V (Evolving Skies 110)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Rayquaza",
+   "page": "Rayquaza VMAX (Evolving Skies 111)",
+   "type": "Rare VMAX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Dialga",
+   "page": "Dialga (Evolving Skies 112)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Deino",
+   "page": "Deino (Evolving Skies 113)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Zweilous",
+   "page": "Zweilous (Evolving Skies 114)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Hydreigon",
+   "page": "Hydreigon (Evolving Skies 115)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Kyurem",
+   "page": "Kyurem (Evolving Skies 116)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "117": {
+   "en": "Noivern",
+   "page": "Noivern V (Evolving Skies 117)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "118": {
+   "en": "Zygarde",
+   "page": "Zygarde (Evolving Skies 118)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Drampa",
+   "page": "Drampa (Evolving Skies 119)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Flapple",
+   "page": "Flapple (Evolving Skies 120)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Appletun",
+   "page": "Appletun (Evolving Skies 121)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Duraludon",
+   "page": "Duraludon V (Evolving Skies 122)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Duraludon",
+   "page": "Duraludon VMAX (Evolving Skies 123)",
+   "type": "Rare VMAX",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Regidrago",
+   "page": "Regidrago (Evolving Skies 124)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Eevee",
+   "page": "Eevee (Evolving Skies 125)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "126": {
+   "en": "Teddiursa",
+   "page": "Teddiursa (Evolving Skies 126)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Ursaring",
+   "page": "Ursaring (Evolving Skies 127)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Smeargle",
+   "page": "Smeargle (Evolving Skies 128)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Slakoth",
+   "page": "Slakoth (Evolving Skies 129)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Vigoroth",
+   "page": "Vigoroth (Evolving Skies 130)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Slaking",
+   "page": "Slaking (Evolving Skies 131)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Swablu",
+   "page": "Swablu (Evolving Skies 132)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Lillipup",
+   "page": "Lillipup (Evolving Skies 133)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Herdier",
+   "page": "Herdier (Evolving Skies 134)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Stoutland",
+   "page": "Stoutland (Evolving Skies 135)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Rufflet",
+   "page": "Rufflet (Evolving Skies 136)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Braviary",
+   "page": "Braviary (Evolving Skies 137)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Fletchling",
+   "page": "Fletchling (Evolving Skies 138)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Fletchinder",
+   "page": "Fletchinder (Evolving Skies 139)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Talonflame",
+   "page": "Talonflame (Evolving Skies 140)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Aroma Lady",
+   "page": "Aroma Lady (Evolving Skies 141)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Boost Shake",
+   "page": "Boost Shake (Evolving Skies 142)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Copycat",
+   "page": "Copycat (Evolving Skies 143)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Crystal Cave",
+   "page": "Crystal Cave (Evolving Skies 144)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Digging Gloves",
+   "page": "Digging Gloves (Evolving Skies 145)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Dream Ball",
+   "page": "Dream Ball (Evolving Skies 146)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Elemental Badge",
+   "page": "Elemental Badge (Evolving Skies 147)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Full Face Guard",
+   "page": "Full Face Guard (Evolving Skies 148)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Gordie",
+   "page": "Gordie (Evolving Skies 149)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Lucky Ice Pop",
+   "page": "Lucky Ice Pop (Evolving Skies 150)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Moon & Sun Badge",
+   "page": "Moon & Sun Badge (Evolving Skies 151)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Raihan",
+   "page": "Raihan (Evolving Skies 152)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Rapid Strike Scroll of the Flying Dragon",
+   "page": "Rapid Strike Scroll of the Flying Dragon (Evolving Skies 153)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Rescue Carrier",
+   "page": "Rescue Carrier (Evolving Skies 154)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Ribbon Badge",
+   "page": "Ribbon Badge (Evolving Skies 155)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Rubber Gloves",
+   "page": "Rubber Gloves (Evolving Skies 156)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Shopping Center",
+   "page": "Shopping Center (Evolving Skies 157)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Single Strike Scroll of the Fanged Dragon",
+   "page": "Single Strike Scroll of the Fanged Dragon (Evolving Skies 158)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Snow Leaf Badge",
+   "page": "Snow Leaf Badge (Evolving Skies 159)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Spirit Mask",
+   "page": "Spirit Mask (Evolving Skies 160)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Stormy Mountains",
+   "page": "Stormy Mountains (Evolving Skies 161)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Switching Cups",
+   "page": "Switching Cups (Evolving Skies 162)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Toy Catcher",
+   "page": "Toy Catcher (Evolving Skies 163)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Zinnia's Resolve",
+   "page": "Zinnia's Resolve (Evolving Skies 164)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "165": {
+   "en": "Treasure Energy",
+   "page": "Treasure Energy (Evolving Skies 165)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "166": {
+   "en": "Leafeon",
+   "page": "Leafeon V (Evolving Skies 166)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "167": {
+   "en": "Leafeon",
+   "page": "Leafeon V (Evolving Skies 167)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "168": {
+   "en": "Trevenant",
+   "page": "Trevenant V (Evolving Skies 168)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "169": {
+   "en": "Flareon",
+   "page": "Flareon V (Evolving Skies 169)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "170": {
+   "en": "Volcarona",
+   "page": "Volcarona V (Evolving Skies 170)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "171": {
+   "en": "Gyarados",
+   "page": "Gyarados V (Evolving Skies 171)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "172": {
+   "en": "Vaporeon",
+   "page": "Vaporeon V (Evolving Skies 172)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "173": {
+   "en": "Suicune",
+   "page": "Suicune V (Evolving Skies 173)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "174": {
+   "en": "Glaceon",
+   "page": "Glaceon V (Evolving Skies 174)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "175": {
+   "en": "Glaceon",
+   "page": "Glaceon V (Evolving Skies 175)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "176": {
+   "en": "Arctovish",
+   "page": "Arctovish V (Evolving Skies 176)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "177": {
+   "en": "Jolteon",
+   "page": "Jolteon V (Evolving Skies 177)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "178": {
+   "en": "Dracozolt",
+   "page": "Dracozolt V (Evolving Skies 178)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "179": {
+   "en": "Espeon",
+   "page": "Espeon V (Evolving Skies 179)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "180": {
+   "en": "Espeon",
+   "page": "Espeon V (Evolving Skies 180)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "181": {
+   "en": "Golurk",
+   "page": "Golurk V (Evolving Skies 181)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "182": {
+   "en": "Golurk",
+   "page": "Golurk V (Evolving Skies 182)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "183": {
+   "en": "Sylveon",
+   "page": "Sylveon V (Evolving Skies 183)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "184": {
+   "en": "Sylveon",
+   "page": "Sylveon V (Evolving Skies 184)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "185": {
+   "en": "Medicham",
+   "page": "Medicham V (Evolving Skies 185)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "186": {
+   "en": "Medicham",
+   "page": "Medicham V (Evolving Skies 186)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "187": {
+   "en": "Lycanroc",
+   "page": "Lycanroc V (Evolving Skies 187)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "188": {
+   "en": "Umbreon",
+   "page": "Umbreon V (Evolving Skies 188)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "189": {
+   "en": "Umbreon",
+   "page": "Umbreon V (Evolving Skies 189)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "190": {
+   "en": "Garbodor",
+   "page": "Garbodor V (Evolving Skies 190)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "191": {
+   "en": "Dragonite",
+   "page": "Dragonite V (Evolving Skies 191)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "192": {
+   "en": "Dragonite",
+   "page": "Dragonite V (Evolving Skies 192)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "193": {
+   "en": "Rayquaza",
+   "page": "Rayquaza V (Evolving Skies 193)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "194": {
+   "en": "Rayquaza",
+   "page": "Rayquaza V (Evolving Skies 194)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "195": {
+   "en": "Noivern",
+   "page": "Noivern V (Evolving Skies 195)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "196": {
+   "en": "Noivern",
+   "page": "Noivern V (Evolving Skies 196)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "197": {
+   "en": "Duraludon",
+   "page": "Duraludon V (Evolving Skies 197)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "198": {
+   "en": "Duraludon",
+   "page": "Duraludon V (Evolving Skies 198)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "199": {
+   "en": "Aroma Lady",
+   "page": "Aroma Lady (Evolving Skies 199)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "200": {
+   "en": "Copycat",
+   "page": "Copycat (Evolving Skies 200)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "201": {
+   "en": "Gordie",
+   "page": "Gordie (Evolving Skies 201)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "202": {
+   "en": "Raihan",
+   "page": "Raihan (Evolving Skies 202)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "203": {
+   "en": "Zinnia's Resolve",
+   "page": "Zinnia's Resolve (Evolving Skies 203)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "204": {
+   "en": "Leafeon",
+   "page": "Leafeon VMAX (Evolving Skies 204)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "205": {
+   "en": "Leafeon",
+   "page": "Leafeon VMAX (Evolving Skies 205)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "206": {
+   "en": "Trevenant",
+   "page": "Trevenant VMAX (Evolving Skies 206)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "207": {
+   "en": "Gyarados",
+   "page": "Gyarados VMAX (Evolving Skies 207)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "208": {
+   "en": "Glaceon",
+   "page": "Glaceon VMAX (Evolving Skies 208)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "209": {
+   "en": "Glaceon",
+   "page": "Glaceon VMAX (Evolving Skies 209)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "210": {
+   "en": "Dracozolt",
+   "page": "Dracozolt VMAX (Evolving Skies 210)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "211": {
+   "en": "Sylveon",
+   "page": "Sylveon VMAX (Evolving Skies 211)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "212": {
+   "en": "Sylveon",
+   "page": "Sylveon VMAX (Evolving Skies 212)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "213": {
+   "en": "Lycanroc",
+   "page": "Lycanroc VMAX (Evolving Skies 213)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "214": {
+   "en": "Umbreon",
+   "page": "Umbreon VMAX (Evolving Skies 214)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "215": {
+   "en": "Umbreon",
+   "page": "Umbreon VMAX (Evolving Skies 215)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "216": {
+   "en": "Garbodor",
+   "page": "Garbodor VMAX (Evolving Skies 216)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "217": {
+   "en": "Rayquaza",
+   "page": "Rayquaza VMAX (Evolving Skies 217)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "218": {
+   "en": "Rayquaza",
+   "page": "Rayquaza VMAX (Evolving Skies 218)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "219": {
+   "en": "Duraludon",
+   "page": "Duraludon VMAX (Evolving Skies 219)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "220": {
+   "en": "Duraludon",
+   "page": "Duraludon VMAX (Evolving Skies 220)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "221": {
+   "en": "Aroma Lady",
+   "page": "Aroma Lady (Evolving Skies 221)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "222": {
+   "en": "Copycat",
+   "page": "Copycat (Evolving Skies 222)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "223": {
+   "en": "Gordie",
+   "page": "Gordie (Evolving Skies 223)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "224": {
+   "en": "Raihan",
+   "page": "Raihan (Evolving Skies 224)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "225": {
+   "en": "Zinnia's Resolve",
+   "page": "Zinnia's Resolve (Evolving Skies 225)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "226": {
+   "en": "Froslass",
+   "page": "Froslass (Evolving Skies 226)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "227": {
+   "en": "Inteleon",
+   "page": "Inteleon (Evolving Skies 227)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "228": {
+   "en": "Cresselia",
+   "page": "Cresselia (Evolving Skies 228)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "229": {
+   "en": "Boost Shake",
+   "page": "Boost Shake (Evolving Skies 229)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "230": {
+   "en": "Crystal Cave",
+   "page": "Crystal Cave (Evolving Skies 230)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "231": {
+   "en": "Full Face Guard",
+   "page": "Full Face Guard (Evolving Skies 231)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "232": {
+   "en": "Stormy Mountains",
+   "page": "Stormy Mountains (Evolving Skies 232)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "233": {
+   "en": "Toy Catcher",
+   "page": "Toy Catcher (Evolving Skies 233)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "234": {
+   "en": "Turffield Stadium",
+   "page": "Turffield Stadium (Evolving Skies 234)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "235": {
+   "en": "Lightning Energy",
+   "page": "Lightning Energy (Evolving Skies 235)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "236": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (Evolving Skies 236)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "237": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (Evolving Skies 237)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": "—"
+  }
+ }
+}

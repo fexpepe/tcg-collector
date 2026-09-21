@@ -1,0 +1,1385 @@
+{
+ "page": "30th Celebration (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (30th Celebration 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Alolan Exeggutor",
+   "page": "Alolan Exeggutor (30th Celebration 2)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Volbeat",
+   "page": "Volbeat (30th Celebration 3)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Illumise",
+   "page": "Illumise (30th Celebration 4)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Vivillon",
+   "page": "Vivillon (30th Celebration 5)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Moltres",
+   "page": "Moltres (30th Celebration 6)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh (30th Celebration 7)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Reshiram",
+   "page": "Reshiram (30th Celebration 8)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Fuecoco",
+   "page": "Fuecoco ex (30th Celebration 9)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "10": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (30th Celebration 10)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Lapras",
+   "page": "Lapras (30th Celebration 11)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Articuno",
+   "page": "Articuno (30th Celebration 12)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Kyogre",
+   "page": "Kyogre (30th Celebration 13)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Palkia",
+   "page": "Palkia (30th Celebration 14)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Greninja",
+   "page": "Greninja ex (30th Celebration 15)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi (30th Celebration 16)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 17)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 18)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 19)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 20)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 21)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 22)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 23)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 24)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 25)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 26)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 27)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 28)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 29)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 30)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 31)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 32)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 33)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 34)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 35)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 36)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 37)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 38)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 39)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "40": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 40)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 41)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "42": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 42)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 43)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 44)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 45)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Pikachu",
+   "page": "Pikachu (M6a 46)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Pikachu",
+   "page": "Pikachu ex (30th Celebration 47)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "48": {
+   "en": "Pikachu",
+   "page": "Pikachu ex (30th Celebration 48)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "49": {
+   "en": "Zapdos",
+   "page": "Zapdos (30th Celebration 49)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "50": {
+   "en": "Zekrom",
+   "page": "Zekrom (30th Celebration 50)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "51": {
+   "en": "Toxtricity",
+   "page": "Toxtricity (30th Celebration 51)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "52": {
+   "en": "Morpeko",
+   "page": "Morpeko (30th Celebration 52)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "53": {
+   "en": "Miraidon",
+   "page": "Miraidon (30th Celebration 53)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "54": {
+   "en": "Mewtwo",
+   "page": "Mewtwo (30th Celebration 54)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "55": {
+   "en": "Mewtwo",
+   "page": "Mewtwo ex (30th Celebration 55)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Mew",
+   "page": "Mew (30th Celebration 56)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "57": {
+   "en": "Mew",
+   "page": "Mew ex (30th Celebration 57)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Espeon",
+   "page": "Espeon (30th Celebration 58)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "59": {
+   "en": "Sylveon",
+   "page": "Sylveon ex (30th Celebration 59)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Unown",
+   "page": "Unown (30th Celebration 60)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "61": {
+   "en": "Drifloon",
+   "page": "Drifloon (30th Celebration 61)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "62": {
+   "en": "Chandelure",
+   "page": "Chandelure (30th Celebration 62)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "63": {
+   "en": "Xerneas",
+   "page": "Xerneas (30th Celebration 63)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "64": {
+   "en": "Cosmog",
+   "page": "Cosmog (30th Celebration 64)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "65": {
+   "en": "Cosmoem",
+   "page": "Cosmoem (30th Celebration 65)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "66": {
+   "en": "Lunala",
+   "page": "Lunala (30th Celebration 66)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "67": {
+   "en": "Gimmighoul",
+   "page": "Gimmighoul (30th Celebration 67)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "68": {
+   "en": "Groudon",
+   "page": "Groudon (30th Celebration 68)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "69": {
+   "en": "Lucario",
+   "page": "Lucario (30th Celebration 69)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "70": {
+   "en": "Seismitoad",
+   "page": "Seismitoad (30th Celebration 70)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "71": {
+   "en": "Lycanroc",
+   "page": "Lycanroc (30th Celebration 71)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "72": {
+   "en": "Koraidon",
+   "page": "Koraidon (30th Celebration 72)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "73": {
+   "en": "Nidoran♀",
+   "page": "Nidoran♀ (30th Celebration 73)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "74": {
+   "en": "Nidorina",
+   "page": "Nidorina (30th Celebration 74)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "75": {
+   "en": "Alolan Meowth",
+   "page": "Alolan Meowth (30th Celebration 75)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "76": {
+   "en": "Gengar",
+   "page": "Gengar ex (30th Celebration 76)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Umbreon",
+   "page": "Umbreon (30th Celebration 77)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "78": {
+   "en": "Scraggy",
+   "page": "Scraggy (30th Celebration 78)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "79": {
+   "en": "Yveltal",
+   "page": "Yveltal (30th Celebration 79)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "80": {
+   "en": "Galarian Meowth",
+   "page": "Galarian Meowth (30th Celebration 80)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "81": {
+   "en": "Jirachi",
+   "page": "Jirachi ex (30th Celebration 81)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Dialga",
+   "page": "Dialga (30th Celebration 82)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "83": {
+   "en": "Ferrothorn",
+   "page": "Ferrothorn (30th Celebration 83)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "84": {
+   "en": "Solgaleo",
+   "page": "Solgaleo (30th Celebration 84)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "85": {
+   "en": "Zacian",
+   "page": "Zacian (30th Celebration 85)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "86": {
+   "en": "Zamazenta",
+   "page": "Zamazenta (30th Celebration 86)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "87": {
+   "en": "Gholdengo",
+   "page": "Gholdengo (30th Celebration 87)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "88": {
+   "en": "Salamence",
+   "page": "Salamence ex (30th Celebration 88)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Jangmo-o",
+   "page": "Jangmo-o (30th Celebration 89)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "90": {
+   "en": "Hakamo-o",
+   "page": "Hakamo-o (30th Celebration 90)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "91": {
+   "en": "Kommo-o",
+   "page": "Kommo-o (30th Celebration 91)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "92": {
+   "en": "Meowth",
+   "page": "Meowth (30th Celebration 92)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "93": {
+   "en": "Ditto",
+   "page": "Ditto (30th Celebration 93)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "94": {
+   "en": "Eevee",
+   "page": "Eevee (30th Celebration 94)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "95": {
+   "en": "Snorlax",
+   "page": "Snorlax (30th Celebration 95)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "96": {
+   "en": "Igglybuff",
+   "page": "Igglybuff (30th Celebration 96)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "97": {
+   "en": "Lugia",
+   "page": "Lugia (30th Celebration 97)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "98": {
+   "en": "Hisuian Zorua",
+   "page": "Hisuian Zorua (30th Celebration 98)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "99": {
+   "en": "Hisuian Zoroark",
+   "page": "Hisuian Zoroark (30th Celebration 99)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "100": {
+   "en": "Maushold",
+   "page": "Maushold (30th Celebration 100)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "101": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (30th Celebration 101)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "102": {
+   "en": "Poké Pad",
+   "page": "Poké Pad (30th Celebration 102)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "103": {
+   "en": "Switch",
+   "page": "Switch (30th Celebration 103)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "104": {
+   "en": "Alolan Exeggutor",
+   "page": "Alolan Exeggutor (30th Celebration 104)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Moltres",
+   "page": "Moltres (30th Celebration 105)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Lapras",
+   "page": "Lapras (30th Celebration 106)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Articuno",
+   "page": "Articuno (30th Celebration 107)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Zapdos",
+   "page": "Zapdos (30th Celebration 108)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Toxtricity",
+   "page": "Toxtricity (30th Celebration 109)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Morpeko",
+   "page": "Morpeko (30th Celebration 110)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Drifloon",
+   "page": "Drifloon (30th Celebration 111)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Chandelure",
+   "page": "Chandelure (30th Celebration 112)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Lycanroc",
+   "page": "Lycanroc (30th Celebration 113)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Nidorina",
+   "page": "Nidorina (30th Celebration 114)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Alolan Meowth",
+   "page": "Alolan Meowth (30th Celebration 115)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Scraggy",
+   "page": "Scraggy (30th Celebration 116)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "117": {
+   "en": "Galarian Meowth",
+   "page": "Galarian Meowth (30th Celebration 117)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "118": {
+   "en": "Gholdengo",
+   "page": "Gholdengo (30th Celebration 118)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "119": {
+   "en": "Kommo-o",
+   "page": "Kommo-o (30th Celebration 119)",
+   "type": "Dragon",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "120": {
+   "en": "Meowth",
+   "page": "Meowth (30th Celebration 120)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "121": {
+   "en": "Ditto",
+   "page": "Ditto (30th Celebration 121)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "122": {
+   "en": "Hisuian Zorua",
+   "page": "Hisuian Zorua (30th Celebration 122)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "123": {
+   "en": "Maushold",
+   "page": "Maushold (30th Celebration 123)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "124": {
+   "en": "Fuecoco",
+   "page": "Fuecoco ex (30th Celebration 124)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "125": {
+   "en": "Greninja",
+   "page": "Greninja ex (30th Celebration 125)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "126": {
+   "en": "Pikachu",
+   "page": "Pikachu ex (30th Celebration 126)",
+   "type": "Lightning",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "127": {
+   "en": "Pikachu",
+   "page": "Pikachu ex (30th Celebration 127)",
+   "type": "Lightning",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "128": {
+   "en": "Mewtwo",
+   "page": "Mewtwo ex (30th Celebration 128)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "129": {
+   "en": "Mew",
+   "page": "Mew ex (30th Celebration 129)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "130": {
+   "en": "Sylveon",
+   "page": "Sylveon ex (30th Celebration 130)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "131": {
+   "en": "Gengar",
+   "page": "Gengar ex (30th Celebration 131)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "132": {
+   "en": "Jirachi",
+   "page": "Jirachi ex (30th Celebration 132)",
+   "type": "Metal",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "133": {
+   "en": "Salamence",
+   "page": "Salamence ex (30th Celebration 133)",
+   "type": "Dragon",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "134": {
+   "en": "Mewtwo",
+   "page": "Mewtwo ex (30th Celebration 134)",
+   "type": "Psychic",
+   "rarity": "FUR",
+   "mark": ""
+  },
+  "135": {
+   "en": "Mew",
+   "page": "Mew ex (30th Celebration 135)",
+   "type": "Psychic",
+   "rarity": "FUR",
+   "mark": ""
+  },
+  "136": {
+   "en": "Pikachu",
+   "page": "Pikachu (30th Celebration 136)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "137": {
+   "en": "Charizard",
+   "page": "Charizard (30th Celebration 137)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "138": {
+   "en": "Misty",
+   "page": "Misty (30th Celebration 138)",
+   "type": "T",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "139": {
+   "en": "Erika's Jigglypuff",
+   "page": "Erika's Jigglypuff (30th Celebration 139)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "140": {
+   "en": "Sneasel",
+   "page": "Sneasel (30th Celebration 140)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "141": {
+   "en": "Shining Celebi",
+   "page": "Shining Celebi (30th Celebration 141)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "142": {
+   "en": "Lugia",
+   "page": "Lugia (30th Celebration 142)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "143": {
+   "en": "Delcatty",
+   "page": "Delcatty (30th Celebration 143)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "144": {
+   "en": "Dark Tyranitar",
+   "page": "Dark Tyranitar (30th Celebration 144)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "145": {
+   "en": "Scizor ex",
+   "page": "Scizor ex (30th Celebration 145)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "146": {
+   "en": "Metagross δ",
+   "page": "Metagross δ (30th Celebration 146)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "147": {
+   "en": "Palkia LV.X",
+   "page": "Palkia LV.X (30th Celebration 147)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "148": {
+   "en": "Uxie",
+   "page": "Uxie (30th Celebration 148)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "149": {
+   "en": "Crobat",
+   "page": "Crobat G (30th Celebration 149)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "150": {
+   "en": "Gengar",
+   "page": "Gengar (30th Celebration 150)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "151": {
+   "en": "Darkrai & Cresselia",
+   "page": "Darkrai & Cresselia LEGEND (30th Celebration 151)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "152": {
+   "en": "Darkrai & Cresselia",
+   "page": "Darkrai & Cresselia LEGEND (30th Celebration 152)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "153": {
+   "en": "N",
+   "page": "N (30th Celebration 153)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "154": {
+   "en": "Rayquaza",
+   "page": "Rayquaza-EX (30th Celebration 154)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "155": {
+   "en": "Genesect",
+   "page": "Genesect-EX (30th Celebration 155)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "156": {
+   "en": "Gardevoir",
+   "page": "M Gardevoir-EX (30th Celebration 156)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "157": {
+   "en": "Greninja",
+   "page": "Greninja BREAK (30th Celebration 157)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "158": {
+   "en": "Solgaleo",
+   "page": "Solgaleo-GX (30th Celebration 158)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "159": {
+   "en": "Buzzwole",
+   "page": "Buzzwole-GX (30th Celebration 159)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "160": {
+   "en": "Pikachu & Zekrom",
+   "page": "Pikachu & Zekrom-GX (30th Celebration 160)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "161": {
+   "en": "Zacian",
+   "page": "Zacian V (30th Celebration 161)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "162": {
+   "en": "Raikou",
+   "page": "Raikou (30th Celebration 162)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "163": {
+   "en": "Mew",
+   "page": "Mew VMAX (30th Celebration 163)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "164": {
+   "en": "Arceus",
+   "page": "Arceus VSTAR (30th Celebration 164)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "165": {
+   "en": "Magikarp",
+   "page": "Magikarp (30th Celebration 165)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "166": {
+   "en": "Mew",
+   "page": "Mew ex (30th Celebration 166)",
+   "type": "FUR",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "167": {
+   "en": "Pikachu",
+   "page": "Pikachu (30th Celebration 167)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "168": {
+   "en": "Charizard",
+   "page": "Charizard (30th Celebration 168)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "169": {
+   "en": "Misty",
+   "page": "Misty (30th Celebration 169)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "170": {
+   "en": "Erika's Jigglypuff",
+   "page": "Erika's Jigglypuff (30th Celebration 170)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "171": {
+   "en": "Sneasel",
+   "page": "Sneasel (30th Celebration 171)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "172": {
+   "en": "Shining Celebi",
+   "page": "Shining Celebi (30th Celebration 172)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "173": {
+   "en": "Lugia",
+   "page": "Lugia (30th Celebration 173)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "174": {
+   "en": "Delcatty",
+   "page": "Delcatty (30th Celebration 174)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "175": {
+   "en": "Dark Tyranitar",
+   "page": "Dark Tyranitar (30th Celebration 175)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "176": {
+   "en": "Scizor ex",
+   "page": "Scizor ex (30th Celebration 176)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "177": {
+   "en": "Metagross δ",
+   "page": "Metagross δ (30th Celebration 177)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "178": {
+   "en": "Palkia LV.X",
+   "page": "Palkia LV.X (30th Celebration 178)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "179": {
+   "en": "Uxie",
+   "page": "Uxie (30th Celebration 179)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "180": {
+   "en": "Crobat",
+   "page": "Crobat G (30th Celebration 180)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "181": {
+   "en": "Gengar",
+   "page": "Gengar (30th Celebration 181)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "182": {
+   "en": "Darkrai & Cresselia",
+   "page": "Darkrai & Cresselia LEGEND (30th Celebration 182)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "183": {
+   "en": "Darkrai & Cresselia",
+   "page": "Darkrai & Cresselia LEGEND (30th Celebration 183)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "184": {
+   "en": "N",
+   "page": "N (30th Celebration 184)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "185": {
+   "en": "Rayquaza",
+   "page": "Rayquaza-EX (30th Celebration 185)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "186": {
+   "en": "Genesect",
+   "page": "Genesect-EX (30th Celebration 186)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "187": {
+   "en": "Gardevoir",
+   "page": "M Gardevoir-EX (30th Celebration 187)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "188": {
+   "en": "Greninja",
+   "page": "Greninja BREAK (30th Celebration 188)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": "—"
+  },
+  "189": {
+   "en": "Solgaleo",
+   "page": "Solgaleo-GX (30th Celebration 189)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "190": {
+   "en": "Buzzwole",
+   "page": "Buzzwole-GX (30th Celebration 190)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "191": {
+   "en": "Pikachu & Zekrom",
+   "page": "Pikachu & Zekrom-GX (30th Celebration 191)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "192": {
+   "en": "Zacian",
+   "page": "Zacian V (30th Celebration 192)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "193": {
+   "en": "Raikou",
+   "page": "Raikou (30th Celebration 193)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "194": {
+   "en": "Mew",
+   "page": "Mew VMAX (30th Celebration 194)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "195": {
+   "en": "Arceus",
+   "page": "Arceus VSTAR (30th Celebration 195)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "196": {
+   "en": "Magikarp",
+   "page": "Magikarp (30th Celebration 196)",
+   "type": "—",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "203": {
+   "en": "Magikarp",
+   "page": "Magikarp (Paldea Evolved 203)",
+   "type": "Illustration Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

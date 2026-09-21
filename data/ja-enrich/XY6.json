@@ -1,0 +1,790 @@
+{
+ "page": "Emerald Break (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Emerald Break 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Exeggutor",
+   "page": "Exeggutor (Emerald Break 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Wurmple",
+   "page": "Wurmple (Emerald Break 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Silcoon",
+   "page": "Silcoon (Emerald Break 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Beautifly",
+   "page": "Beautifly (Emerald Break 5)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "6": {
+   "en": "Cascoon",
+   "page": "Cascoon (Emerald Break 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Dustox",
+   "page": "Dustox (Emerald Break 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Dustox",
+   "page": "Dustox (Emerald Break 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Nincada",
+   "page": "Nincada (Emerald Break 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Ninjask",
+   "page": "Ninjask (Emerald Break 10)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Shedinja",
+   "page": "Shedinja (Emerald Break 11)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Tropius",
+   "page": "Tropius (Emerald Break 12)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Fletchinder",
+   "page": "Fletchinder (Emerald Break 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Talonflame",
+   "page": "Talonflame (Emerald Break 14)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Articuno",
+   "page": "Articuno (Emerald Break 15)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Articuno",
+   "page": "Articuno (Emerald Break 16)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "17": {
+   "en": "Wingull",
+   "page": "Wingull (Emerald Break 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Pelipper",
+   "page": "Pelipper (Emerald Break 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Voltorb",
+   "page": "Voltorb (Emerald Break 19)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Electrode",
+   "page": "Electrode (Emerald Break 20)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Zapdos",
+   "page": "Zapdos (Emerald Break 21)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Thundurus",
+   "page": "Thundurus-EX (Emerald Break 22)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "23": {
+   "en": "Natu",
+   "page": "Natu (Emerald Break 23)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Natu",
+   "page": "Natu (Emerald Break 24)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Xatu",
+   "page": "Xatu (Emerald Break 25)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Shuppet",
+   "page": "Shuppet (Emerald Break 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Banette",
+   "page": "Banette (Emerald Break 27)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Banette",
+   "page": "Banette (Emerald Break 28)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Deoxys",
+   "page": "Deoxys (Emerald Break 29)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "30": {
+   "en": "Gallade",
+   "page": "Gallade-EX (Emerald Break 30)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Gallade",
+   "page": "M Gallade-EX (Emerald Break 31)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "32": {
+   "en": "Gligar",
+   "page": "Gligar (Emerald Break 32)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Gliscor",
+   "page": "Gliscor (Emerald Break 33)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Absol",
+   "page": "Absol (Emerald Break 34)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "35": {
+   "en": "Jirachi",
+   "page": "Jirachi (Emerald Break 35)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "36": {
+   "en": "Togepi",
+   "page": "Togepi (Emerald Break 36)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Togetic",
+   "page": "Togetic (Emerald Break 37)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Togekiss",
+   "page": "Togekiss (Emerald Break 38)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Togekiss",
+   "page": "Togekiss (Emerald Break 39)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "40": {
+   "en": "Dratini",
+   "page": "Dratini (Emerald Break 40)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Dragonair",
+   "page": "Dragonair (Emerald Break 41)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Dragonite",
+   "page": "Dragonite (Emerald Break 42)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Dragonite",
+   "page": "Dragonite (Emerald Break 43)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Altaria",
+   "page": "Altaria (Emerald Break 44)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Bagon",
+   "page": "Bagon (Emerald Break 45)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Shelgon",
+   "page": "Shelgon (Emerald Break 46)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Salamence",
+   "page": "Salamence (Emerald Break 47)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "48": {
+   "en": "Latios",
+   "page": "Latios-EX (Emerald Break 48)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "49": {
+   "en": "Latios",
+   "page": "M Latios-EX (Emerald Break 49)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "50": {
+   "en": "Hydreigon",
+   "page": "Hydreigon-EX (Emerald Break 50)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "51": {
+   "en": "Reshiram",
+   "page": "Reshiram (Emerald Break 51)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "52": {
+   "en": "Spearow",
+   "page": "Spearow (Emerald Break 52)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Fearow",
+   "page": "Fearow (Emerald Break 53)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (Emerald Break 54)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Skarmory",
+   "page": "Skarmory (Emerald Break 55)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Taillow",
+   "page": "Taillow (Emerald Break 56)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Swellow",
+   "page": "Swellow (Emerald Break 57)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Swellow",
+   "page": "Swellow (Emerald Break 58)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "59": {
+   "en": "Swablu",
+   "page": "Swablu (Emerald Break 59)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Altaria",
+   "page": "Altaria (Emerald Break 60)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Rayquaza",
+   "page": "Rayquaza-EX (Emerald Break 61)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Rayquaza",
+   "page": "M Rayquaza-EX (Emerald Break 62)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Shaymin",
+   "page": "Shaymin-EX (Emerald Break 63)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Pidove",
+   "page": "Pidove (Emerald Break 64)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Tranquill",
+   "page": "Tranquill (Emerald Break 65)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "Unfezant",
+   "page": "Unfezant (Emerald Break 66)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Unfezant",
+   "page": "Unfezant (Emerald Break 67)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Fletchling",
+   "page": "Fletchling (Emerald Break 68)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "69": {
+   "en": "Revive",
+   "page": "Revive (Emerald Break 69)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Trainers' Mail",
+   "page": "Trainers' Mail (Emerald Break 70)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Mega Turbo",
+   "page": "Mega Turbo (Emerald Break 71)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Wide Lens",
+   "page": "Wide Lens (Emerald Break 72)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "73": {
+   "en": "Gallade Spirit Link",
+   "page": "Gallade Spirit Link (Emerald Break 73)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "74": {
+   "en": "Latios Spirit Link",
+   "page": "Latios Spirit Link (Emerald Break 74)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "75": {
+   "en": "Winona",
+   "page": "Winona (Emerald Break 75)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "76": {
+   "en": "Wally",
+   "page": "Wally (Emerald Break 76)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Sky Field",
+   "page": "Sky Field (Emerald Break 77)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "78": {
+   "en": "Double Dragon Energy",
+   "page": "Double Dragon Energy (Emerald Break 78)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Thundurus",
+   "page": "Thundurus-EX (Emerald Break 79)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Gallade",
+   "page": "Gallade-EX (Emerald Break 80)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Gallade",
+   "page": "M Gallade-EX (Emerald Break 81)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Latios",
+   "page": "Latios-EX (Emerald Break 82)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Latios",
+   "page": "M Latios-EX (Emerald Break 83)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Hydreigon",
+   "page": "Hydreigon-EX (Emerald Break 84)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Rayquaza",
+   "page": "Rayquaza-EX (Emerald Break 85)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Rayquaza",
+   "page": "M Rayquaza-EX (Emerald Break 86)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Shaymin",
+   "page": "Shaymin-EX (Emerald Break 87)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Winona",
+   "page": "Winona (Emerald Break 88)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Wally",
+   "page": "Wally (Emerald Break 89)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (Emerald Break 90)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "91": {
+   "en": "VS Seeker",
+   "page": "VS Seeker (Emerald Break 91)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Trainers' Mail",
+   "page": "Trainers' Mail (Roaring Skies 92)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Roaring Skies 93)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Wally",
+   "page": "Wally (Roaring Skies 94)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Wide Lens",
+   "page": "Wide Lens (Roaring Skies 95)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Winona",
+   "page": "Winona (Roaring Skies 96)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Double Dragon Energy",
+   "page": "Double Dragon Energy (Roaring Skies 97)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Thundurus",
+   "page": "Thundurus-EX (Roaring Skies 98)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Gallade",
+   "page": "Gallade-EX (Roaring Skies 99)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Gallade",
+   "page": "M Gallade-EX (Roaring Skies 100)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Latios",
+   "page": "Latios-EX (Roaring Skies 101)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Latios",
+   "page": "M Latios-EX (Roaring Skies 102)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Hydreigon",
+   "page": "Hydreigon-EX (Roaring Skies 103)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Rayquaza",
+   "page": "Rayquaza-EX (Roaring Skies 104)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Rayquaza",
+   "page": "M Rayquaza-EX (Roaring Skies 105)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Shaymin",
+   "page": "Shaymin-EX (Roaring Skies 106)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Wally",
+   "page": "Wally (Roaring Skies 107)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Winona",
+   "page": "Winona (Roaring Skies 108)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (Roaring Skies 109)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "VS Seeker",
+   "page": "VS Seeker (Roaring Skies 110)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "77a": {
+   "en": "Shaymin",
+   "page": "Shaymin-EX (Roaring Skies 77a)",
+   "type": "—",
+   "rarity": "Yellow A Alternate art Premium Trainer's XY Collection exclusive",
+   "mark": ""
+  },
+  "92a": {
+   "en": "Trainers' Mail",
+   "page": "Trainers' Mail (Roaring Skies 92a)",
+   "type": "—",
+   "rarity": "Non Holo Yellow A Alternate art Battle Arena Decks: Black Kyurem vs. White Kyurem exclusive",
+   "mark": ""
+  }
+ }
+}

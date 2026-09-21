@@ -1,0 +1,181 @@
+{
+ "page": "Great Detective Pikachu (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Bulbasaur",
+   "page": "Bulbasaur (Great Detective Pikachu 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Bulbasaur",
+   "page": "Bulbasaur (Great Detective Pikachu 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Ludicolo",
+   "page": "Ludicolo (Great Detective Pikachu 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Morelull",
+   "page": "Morelull (Great Detective Pikachu 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Charmander",
+   "page": "Charmander (Great Detective Pikachu 5)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Charizard",
+   "page": "Charizard (Great Detective Pikachu 6)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Charizard",
+   "page": "Charizard-GX (Great Detective Pikachu 7)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "8": {
+   "en": "Arcanine",
+   "page": "Arcanine (Great Detective Pikachu 8)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Psyduck",
+   "page": "Psyduck (Great Detective Pikachu 9)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Psyduck",
+   "page": "Psyduck (Great Detective Pikachu 10)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Magikarp",
+   "page": "Magikarp (Great Detective Pikachu 11)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Greninja",
+   "page": "Greninja (Great Detective Pikachu 12)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "13": {
+   "en": "Greninja",
+   "page": "Greninja-GX (Great Detective Pikachu 13)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "14": {
+   "en": "Detective Pikachu",
+   "page": "Detective Pikachu (Great Detective Pikachu 14)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime (Great Detective Pikachu 15)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Mewtwo",
+   "page": "Mewtwo (Great Detective Pikachu 16)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "17": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-GX (Great Detective Pikachu 17)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "18": {
+   "en": "Machamp",
+   "page": "Machamp (Great Detective Pikachu 18)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (Great Detective Pikachu 19)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Snubbull",
+   "page": "Snubbull (Great Detective Pikachu 20)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Snubbull",
+   "page": "Snubbull (Great Detective Pikachu 21)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Lickitung",
+   "page": "Lickitung (Great Detective Pikachu 22)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Ditto",
+   "page": "Ditto (Great Detective Pikachu 23)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Slaking",
+   "page": "Slaking (Great Detective Pikachu 24)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Lt. Yoshida",
+   "page": "Lt. Yoshida (Great Detective Pikachu 25)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  }
+ }
+}

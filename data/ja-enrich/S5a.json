@@ -1,0 +1,678 @@
+{
+ "page": "Peerless Fighters (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Weedle",
+   "page": "Weedle (Peerless Fighters 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Kakuna",
+   "page": "Kakuna (Peerless Fighters 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Beedrill",
+   "page": "Beedrill (Peerless Fighters 3)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "4": {
+   "en": "Heracross",
+   "page": "Heracross (Peerless Fighters 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Petilil",
+   "page": "Petilil (Peerless Fighters 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Lilligant",
+   "page": "Lilligant (Peerless Fighters 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Blaziken",
+   "page": "Blaziken V (Peerless Fighters 7)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "8": {
+   "en": "Blaziken",
+   "page": "Blaziken VMAX (Peerless Fighters 8)",
+   "type": "Fire",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "9": {
+   "en": "Larvesta",
+   "page": "Larvesta (Peerless Fighters 9)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Volcarona",
+   "page": "Volcarona (Peerless Fighters 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Tentacool",
+   "page": "Tentacool (Peerless Fighters 11)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Tentacruel",
+   "page": "Tentacruel (Peerless Fighters 12)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "13": {
+   "en": "Delibird",
+   "page": "Delibird (Peerless Fighters 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Carvanha",
+   "page": "Carvanha (Peerless Fighters 14)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Sharpedo",
+   "page": "Sharpedo (Peerless Fighters 15)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Sobble",
+   "page": "Sobble (Peerless Fighters 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Drizzile",
+   "page": "Drizzile (Peerless Fighters 17)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Inteleon",
+   "page": "Inteleon (Peerless Fighters 18)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "19": {
+   "en": "Rapid Strike Urshifu",
+   "page": "Rapid Strike Urshifu (Peerless Fighters 19)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "20": {
+   "en": "Chinchou",
+   "page": "Chinchou (Peerless Fighters 20)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Lanturn",
+   "page": "Lanturn (Peerless Fighters 21)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Thundurus",
+   "page": "Thundurus (Peerless Fighters 22)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "23": {
+   "en": "Dracozolt",
+   "page": "Dracozolt V (Peerless Fighters 23)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "24": {
+   "en": "Dracozolt",
+   "page": "Dracozolt VMAX (Peerless Fighters 24)",
+   "type": "Lightning",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "25": {
+   "en": "Galarian Articuno",
+   "page": "Galarian Articuno V (Peerless Fighters 25)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "26": {
+   "en": "Woobat",
+   "page": "Woobat (Peerless Fighters 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Swoobat",
+   "page": "Swoobat (Peerless Fighters 27)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Swirlix",
+   "page": "Swirlix (Peerless Fighters 28)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Slurpuff",
+   "page": "Slurpuff (Peerless Fighters 29)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Hatenna",
+   "page": "Hatenna (Peerless Fighters 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Hattrem",
+   "page": "Hattrem (Peerless Fighters 31)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Hatterene",
+   "page": "Hatterene (Peerless Fighters 32)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "33": {
+   "en": "Diglett",
+   "page": "Diglett (Peerless Fighters 33)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Dugtrio",
+   "page": "Dugtrio (Peerless Fighters 34)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Galarian Farfetch'd",
+   "page": "Galarian Farfetch'd (Peerless Fighters 35)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Galarian Sirfetch'd",
+   "page": "Galarian Sirfetch'd (Peerless Fighters 36)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Galarian Zapdos",
+   "page": "Galarian Zapdos V (Peerless Fighters 37)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "38": {
+   "en": "Roggenrola",
+   "page": "Roggenrola (Peerless Fighters 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Boldore",
+   "page": "Boldore (Peerless Fighters 39)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Gigalith",
+   "page": "Gigalith (Peerless Fighters 40)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "41": {
+   "en": "Galarian Yamask",
+   "page": "Galarian Yamask (Peerless Fighters 41)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Galarian Runerigus",
+   "page": "Galarian Runerigus (Peerless Fighters 42)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "43": {
+   "en": "Passimian",
+   "page": "Passimian (Peerless Fighters 43)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Kubfu",
+   "page": "Kubfu (Peerless Fighters 44)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Galarian Moltres",
+   "page": "Galarian Moltres V (Peerless Fighters 45)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "46": {
+   "en": "Galarian Slowking",
+   "page": "Galarian Slowking V (Peerless Fighters 46)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "47": {
+   "en": "Galarian Slowking",
+   "page": "Galarian Slowking VMAX (Peerless Fighters 47)",
+   "type": "Darkness",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "48": {
+   "en": "Seviper",
+   "page": "Seviper (Peerless Fighters 48)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Peerless Fighters 49)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Venipede",
+   "page": "Venipede (Peerless Fighters 50)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Whirlipede",
+   "page": "Whirlipede (Peerless Fighters 51)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Scolipede",
+   "page": "Scolipede (Peerless Fighters 52)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Scraggy",
+   "page": "Scraggy (Peerless Fighters 53)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Scrafty",
+   "page": "Scrafty (Peerless Fighters 54)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Single Strike Urshifu",
+   "page": "Single Strike Urshifu (Peerless Fighters 55)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "56": {
+   "en": "Zangoose",
+   "page": "Zangoose (Peerless Fighters 56)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Shaymin",
+   "page": "Shaymin (Peerless Fighters 57)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "58": {
+   "en": "Lillipup",
+   "page": "Lillipup (Peerless Fighters 58)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Herdier",
+   "page": "Herdier (Peerless Fighters 59)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Stoutland",
+   "page": "Stoutland (Peerless Fighters 60)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Rufflet",
+   "page": "Rufflet (Peerless Fighters 61)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Braviary",
+   "page": "Braviary (Peerless Fighters 62)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Welcoming Lantern",
+   "page": "Welcoming Lantern (Peerless Fighters 63)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Echoing Horn",
+   "page": "Echoing Horn (Peerless Fighters 64)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Galarian Chestplate",
+   "page": "Galarian Chestplate (Peerless Fighters 65)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Karen's Conviction",
+   "page": "Karen's Conviction (Peerless Fighters 66)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Klara",
+   "page": "Klara (Peerless Fighters 67)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Avery",
+   "page": "Avery (Peerless Fighters 68)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Brawly",
+   "page": "Brawly (Peerless Fighters 69)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Dyna Tree Hill",
+   "page": "Dyna Tree Hill (Peerless Fighters 70)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Blaziken",
+   "page": "Blaziken V (Peerless Fighters 71)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Dracozolt",
+   "page": "Dracozolt V (Peerless Fighters 72)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Galarian Articuno",
+   "page": "Galarian Articuno V (Peerless Fighters 73)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Galarian Articuno",
+   "page": "Galarian Articuno V (Peerless Fighters 74)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Galarian Zapdos",
+   "page": "Galarian Zapdos V (Peerless Fighters 75)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Galarian Zapdos",
+   "page": "Galarian Zapdos V (Peerless Fighters 76)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Galarian Moltres",
+   "page": "Galarian Moltres V (Peerless Fighters 77)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Galarian Moltres",
+   "page": "Galarian Moltres V (Peerless Fighters 78)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Galarian Slowking",
+   "page": "Galarian Slowking V (Peerless Fighters 79)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Galarian Slowking",
+   "page": "Galarian Slowking V (Peerless Fighters 80)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Karen's Conviction",
+   "page": "Karen's Conviction (Peerless Fighters 81)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Klara",
+   "page": "Klara (Peerless Fighters 82)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Avery",
+   "page": "Avery (Peerless Fighters 83)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Brawly",
+   "page": "Brawly (Peerless Fighters 84)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Blaziken",
+   "page": "Blaziken VMAX (Peerless Fighters 85)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Blaziken",
+   "page": "Blaziken VMAX (Peerless Fighters 86)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Dracozolt",
+   "page": "Dracozolt VMAX (Peerless Fighters 87)",
+   "type": "Lightning",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Galarian Slowking",
+   "page": "Galarian Slowking VMAX (Peerless Fighters 88)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Karen's Conviction",
+   "page": "Karen's Conviction (Peerless Fighters 89)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Klara",
+   "page": "Klara (Peerless Fighters 90)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Avery",
+   "page": "Avery (Peerless Fighters 91)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Brawly",
+   "page": "Brawly (Peerless Fighters 92)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Snorlax",
+   "page": "Snorlax (Peerless Fighters 93)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Fan of Waves",
+   "page": "Fan of Waves (Peerless Fighters 94)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Urn of Vitality",
+   "page": "Urn of Vitality (Peerless Fighters 95)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Fighting Energy",
+   "page": "Fighting Energy (Peerless Fighters 96)",
+   "type": "Fighting",
+   "rarity": "UR",
+   "mark": "—"
+  }
+ }
+}

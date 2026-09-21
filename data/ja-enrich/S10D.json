@@ -1,0 +1,1728 @@
+{
+ "page": "Time Gazer (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Yanma",
+   "page": "Yanma (Time Gazer 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Yanmega",
+   "page": "Yanmega (Time Gazer 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Leafeon",
+   "page": "Leafeon (Time Gazer 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Shaymin",
+   "page": "Shaymin (Time Gazer 4)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "5": {
+   "en": "Petilil",
+   "page": "Petilil (Time Gazer 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Hisuian Lilligant",
+   "page": "Hisuian Lilligant (Time Gazer 6)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "7": {
+   "en": "Hisuian Lilligant",
+   "page": "Hisuian Lilligant V (Time Gazer 7)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "8": {
+   "en": "Hisuian Lilligant",
+   "page": "Hisuian Lilligant VSTAR (Time Gazer 8)",
+   "type": "Grass",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "9": {
+   "en": "Cyndaquil",
+   "page": "Cyndaquil (Time Gazer 9)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Quilava",
+   "page": "Quilava (Time Gazer 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Poliwag",
+   "page": "Poliwag (Time Gazer 11)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Poliwhirl",
+   "page": "Poliwhirl (Time Gazer 12)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Politoed",
+   "page": "Politoed (Time Gazer 13)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Mantine",
+   "page": "Mantine (Time Gazer 14)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Oshawott",
+   "page": "Oshawott (Time Gazer 15)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Dewott",
+   "page": "Dewott (Time Gazer 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Ducklett",
+   "page": "Ducklett (Time Gazer 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Swanna",
+   "page": "Swanna (Time Gazer 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Electrike",
+   "page": "Electrike (Time Gazer 19)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Manectric",
+   "page": "Manectric (Time Gazer 20)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Luxray",
+   "page": "Luxray V (Time Gazer 21)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "22": {
+   "en": "Regieleki",
+   "page": "Regieleki (Time Gazer 22)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Hisuian Typhlosion",
+   "page": "Hisuian Typhlosion (Time Gazer 23)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "24": {
+   "en": "Mawile",
+   "page": "Mawile (Time Gazer 24)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Jirachi",
+   "page": "Jirachi V (Time Gazer 25)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "26": {
+   "en": "Drifloon",
+   "page": "Drifloon (Time Gazer 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Drifblim",
+   "page": "Drifblim (Time Gazer 27)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Cresselia",
+   "page": "Cresselia (Time Gazer 28)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "29": {
+   "en": "Hisuian Growlithe",
+   "page": "Hisuian Growlithe (Time Gazer 29)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Hisuian Arcanine",
+   "page": "Hisuian Arcanine (Time Gazer 30)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "31": {
+   "en": "Poliwrath",
+   "page": "Poliwrath (Time Gazer 31)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Machamp",
+   "page": "Machamp V (Time Gazer 32)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "33": {
+   "en": "Machamp",
+   "page": "Machamp VMAX (Time Gazer 33)",
+   "type": "Fighting",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "34": {
+   "en": "Sudowoodo",
+   "page": "Sudowoodo (Time Gazer 34)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Cranidos",
+   "page": "Cranidos (Time Gazer 35)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Rampardos",
+   "page": "Rampardos (Time Gazer 36)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "37": {
+   "en": "Mienfoo",
+   "page": "Mienfoo (Time Gazer 37)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Mienshao",
+   "page": "Mienshao (Time Gazer 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Spinarak",
+   "page": "Spinarak (Time Gazer 39)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Ariados",
+   "page": "Ariados (Time Gazer 40)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "41": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott (Time Gazer 41)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "42": {
+   "en": "Nickit",
+   "page": "Nickit (Time Gazer 42)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Thievul",
+   "page": "Thievul (Time Gazer 43)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Magnemite",
+   "page": "Magnemite (Time Gazer 44)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Magneton",
+   "page": "Magneton (Time Gazer 45)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Magnezone",
+   "page": "Magnezone (Time Gazer 46)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "47": {
+   "en": "Registeel",
+   "page": "Registeel (Time Gazer 47)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Origin Forme Dialga",
+   "page": "Origin Forme Dialga V (Time Gazer 48)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "49": {
+   "en": "Origin Forme Dialga",
+   "page": "Origin Forme Dialga VSTAR (Time Gazer 49)",
+   "type": "Metal",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "50": {
+   "en": "Pawniard",
+   "page": "Pawniard (Time Gazer 50)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Bisharp",
+   "page": "Bisharp (Time Gazer 51)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Eevee",
+   "page": "Eevee (Time Gazer 52)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Chatot",
+   "page": "Chatot (Time Gazer 53)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Regigigas",
+   "page": "Regigigas (Time Gazer 54)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "55": {
+   "en": "Rufflet",
+   "page": "Rufflet (Time Gazer 55)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Hisuian Braviary",
+   "page": "Hisuian Braviary (Time Gazer 56)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Skwovet",
+   "page": "Skwovet (Time Gazer 57)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Greedent",
+   "page": "Greedent (Time Gazer 58)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Wyrdeer",
+   "page": "Wyrdeer V (Time Gazer 59)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Switch Cart",
+   "page": "Switch Cart (Time Gazer 60)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Trekking Shoes",
+   "page": "Trekking Shoes (Time Gazer 61)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Unidentified Fossil",
+   "page": "Unidentified Fossil (Time Gazer 62)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Feather Ball",
+   "page": "Feather Ball (Time Gazer 63)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Adaman",
+   "page": "Adaman (Time Gazer 64)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "65": {
+   "en": "Gardenia's Vigor",
+   "page": "Gardenia's Vigor (Time Gazer 65)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Zisu",
+   "page": "Zisu (Time Gazer 66)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Gapejaw Bog",
+   "page": "Gapejaw Bog (Time Gazer 67)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Hisuian Lilligant",
+   "page": "Hisuian Lilligant V (Time Gazer 68)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Hisuian Lilligant",
+   "page": "Hisuian Lilligant V (Time Gazer 69)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Luxray",
+   "page": "Luxray V (Time Gazer 70)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Jirachi",
+   "page": "Jirachi V (Time Gazer 71)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Machamp",
+   "page": "Machamp V (Time Gazer 72)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Machamp",
+   "page": "Machamp V (Time Gazer 73)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Origin Forme Dialga",
+   "page": "Origin Forme Dialga V (Time Gazer 74)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Origin Forme Dialga",
+   "page": "Origin Forme Dialga V (Time Gazer 75)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Wyrdeer",
+   "page": "Wyrdeer V (Time Gazer 76)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Adaman",
+   "page": "Adaman (Time Gazer 77)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Gardenia's Vigor",
+   "page": "Gardenia's Vigor (Time Gazer 78)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Zisu",
+   "page": "Zisu (Time Gazer 79)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Hisuian Lilligant",
+   "page": "Hisuian Lilligant VSTAR (Time Gazer 80)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Machamp",
+   "page": "Machamp VMAX (Time Gazer 81)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Origin Forme Dialga",
+   "page": "Origin Forme Dialga VSTAR (Time Gazer 82)",
+   "type": "Metal",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Adaman",
+   "page": "Adaman (Time Gazer 83)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Gardenia's Vigor",
+   "page": "Gardenia's Vigor (Time Gazer 84)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Zisu",
+   "page": "Zisu (Time Gazer 85)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Origin Forme Dialga",
+   "page": "Origin Forme Dialga VSTAR (Time Gazer 86)",
+   "type": "Metal",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Trekking Shoes",
+   "page": "Trekking Shoes (Time Gazer 87)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Path to the Peak",
+   "page": "Path to the Peak (Time Gazer 88)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Hisuian Qwilfish",
+   "page": "Hisuian Qwilfish (Astral Radiance 89)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Hisuian Overqwil",
+   "page": "Hisuian Overqwil (Astral Radiance 90)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "Hisuian Overqwil",
+   "page": "Hisuian Overqwil (Astral Radiance 91)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Hisuian Sneasel",
+   "page": "Hisuian Sneasel (Astral Radiance 92)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Hisuian Sneasler",
+   "page": "Hisuian Sneasler (Astral Radiance 93)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Hisuian Sneasler",
+   "page": "Hisuian Sneasler V (Astral Radiance 94)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Poochyena",
+   "page": "Poochyena (Astral Radiance 95)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Mightyena",
+   "page": "Mightyena (Astral Radiance 96)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Absol",
+   "page": "Absol (Astral Radiance 97)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Darkrai",
+   "page": "Darkrai V (Astral Radiance 98)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Darkrai",
+   "page": "Darkrai VSTAR (Astral Radiance 99)",
+   "type": "Rare VSTAR",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott (Astral Radiance 100)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott V (Astral Radiance 101)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott VSTAR (Astral Radiance 102)",
+   "type": "Rare VSTAR",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Nickit",
+   "page": "Nickit (Astral Radiance 103)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Thievul",
+   "page": "Thievul (Astral Radiance 104)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Magnemite",
+   "page": "Magnemite (Astral Radiance 105)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Magneton",
+   "page": "Magneton (Astral Radiance 106)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Magnezone",
+   "page": "Magnezone (Astral Radiance 107)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Registeel",
+   "page": "Registeel (Astral Radiance 108)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Shieldon",
+   "page": "Shieldon (Astral Radiance 109)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Bastiodon",
+   "page": "Bastiodon (Astral Radiance 110)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Bronzor",
+   "page": "Bronzor (Astral Radiance 111)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Bronzong",
+   "page": "Bronzong (Astral Radiance 112)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Origin Forme Dialga",
+   "page": "Origin Forme Dialga V (Astral Radiance 113)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Origin Forme Dialga",
+   "page": "Origin Forme Dialga VSTAR (Astral Radiance 114)",
+   "type": "Rare VSTAR",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Pawniard",
+   "page": "Pawniard (Astral Radiance 115)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Bisharp",
+   "page": "Bisharp (Astral Radiance 116)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "117": {
+   "en": "Garchomp",
+   "page": "Garchomp V (Astral Radiance 117)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "118": {
+   "en": "Regidrago",
+   "page": "Regidrago (Astral Radiance 118)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Eevee",
+   "page": "Eevee (Astral Radiance 119)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Hoothoot",
+   "page": "Hoothoot (Astral Radiance 120)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Noctowl",
+   "page": "Noctowl (Astral Radiance 121)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Teddiursa",
+   "page": "Teddiursa (Astral Radiance 122)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Ursaring",
+   "page": "Ursaring (Astral Radiance 123)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Ursaluna",
+   "page": "Ursaluna (Astral Radiance 124)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Stantler",
+   "page": "Stantler (Astral Radiance 125)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "126": {
+   "en": "Miltank",
+   "page": "Miltank (Astral Radiance 126)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Glameow",
+   "page": "Glameow (Astral Radiance 127)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Purugly",
+   "page": "Purugly (Astral Radiance 128)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Chatot",
+   "page": "Chatot (Astral Radiance 129)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Regigigas",
+   "page": "Regigigas (Astral Radiance 130)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Rufflet",
+   "page": "Rufflet (Astral Radiance 131)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Hisuian Braviary",
+   "page": "Hisuian Braviary (Astral Radiance 132)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Oranguru",
+   "page": "Oranguru V (Astral Radiance 133)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Wyrdeer",
+   "page": "Wyrdeer V (Astral Radiance 134)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Adaman",
+   "page": "Adaman (Astral Radiance 135)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Canceling Cologne",
+   "page": "Canceling Cologne (Astral Radiance 136)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Choy",
+   "page": "Choy (Astral Radiance 137)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Cyllene",
+   "page": "Cyllene (Astral Radiance 138)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Dark Patch",
+   "page": "Dark Patch (Astral Radiance 139)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Energy Loto",
+   "page": "Energy Loto (Astral Radiance 140)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Feather Ball",
+   "page": "Feather Ball (Astral Radiance 141)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Gapejaw Bog",
+   "page": "Gapejaw Bog (Astral Radiance 142)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Gardenia's Vigor",
+   "page": "Gardenia's Vigor (Astral Radiance 143)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Grant",
+   "page": "Grant (Astral Radiance 144)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Gutsy Pickaxe",
+   "page": "Gutsy Pickaxe (Astral Radiance 145)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Hisuian Heavy Ball",
+   "page": "Hisuian Heavy Ball (Astral Radiance 146)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Irida",
+   "page": "Irida (Astral Radiance 147)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Jubilife Village",
+   "page": "Jubilife Village (Astral Radiance 148)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Kamado",
+   "page": "Kamado (Astral Radiance 149)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Roxanne",
+   "page": "Roxanne (Astral Radiance 150)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Spicy Seasoned Curry",
+   "page": "Spicy Seasoned Curry (Astral Radiance 151)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Supereffective Glasses",
+   "page": "Supereffective Glasses (Astral Radiance 152)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Sweet Honey",
+   "page": "Sweet Honey (Astral Radiance 153)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Switch Cart",
+   "page": "Switch Cart (Astral Radiance 154)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Temple of Sinnoh",
+   "page": "Temple of Sinnoh (Astral Radiance 155)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Trekking Shoes",
+   "page": "Trekking Shoes (Astral Radiance 156)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Unidentified Fossil",
+   "page": "Unidentified Fossil (Astral Radiance 157)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Wait and See Turbo",
+   "page": "Wait and See Turbo (Astral Radiance 158)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Zisu",
+   "page": "Zisu (Astral Radiance 159)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Beedrill",
+   "page": "Beedrill V (Astral Radiance 160)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Beedrill",
+   "page": "Beedrill V (Astral Radiance 161)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Hisuian Lilligant",
+   "page": "Hisuian Lilligant V (Astral Radiance 162)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Hisuian Lilligant",
+   "page": "Hisuian Lilligant V (Astral Radiance 163)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Virizion",
+   "page": "Virizion V (Astral Radiance 164)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "165": {
+   "en": "Heatran",
+   "page": "Heatran V (Astral Radiance 165)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "166": {
+   "en": "Starmie",
+   "page": "Starmie V (Astral Radiance 166)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "167": {
+   "en": "Origin Forme Palkia",
+   "page": "Origin Forme Palkia V (Astral Radiance 167)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "168": {
+   "en": "Luxray",
+   "page": "Luxray V (Astral Radiance 168)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "169": {
+   "en": "Hisuian Typhlosion",
+   "page": "Hisuian Typhlosion V (Astral Radiance 169)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "170": {
+   "en": "Jirachi",
+   "page": "Jirachi V (Astral Radiance 170)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "171": {
+   "en": "Machamp",
+   "page": "Machamp V (Astral Radiance 171)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "172": {
+   "en": "Machamp",
+   "page": "Machamp V (Astral Radiance 172)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "173": {
+   "en": "Hisuian Decidueye",
+   "page": "Hisuian Decidueye V (Astral Radiance 173)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "174": {
+   "en": "Hisuian Sneasler",
+   "page": "Hisuian Sneasler V (Astral Radiance 174)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "175": {
+   "en": "Hisuian Sneasler",
+   "page": "Hisuian Sneasler V (Astral Radiance 175)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "176": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott V (Astral Radiance 176)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "177": {
+   "en": "Origin Forme Dialga",
+   "page": "Origin Forme Dialga V (Astral Radiance 177)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "178": {
+   "en": "Garchomp",
+   "page": "Garchomp V (Astral Radiance 178)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "179": {
+   "en": "Oranguru",
+   "page": "Oranguru V (Astral Radiance 179)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "180": {
+   "en": "Wyrdeer",
+   "page": "Wyrdeer V (Astral Radiance 180)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "181": {
+   "en": "Adaman",
+   "page": "Adaman (Astral Radiance 181)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "182": {
+   "en": "Choy",
+   "page": "Choy (Astral Radiance 182)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "183": {
+   "en": "Cyllene",
+   "page": "Cyllene (Astral Radiance 183)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "184": {
+   "en": "Gardenia's Vigor",
+   "page": "Gardenia's Vigor (Astral Radiance 184)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "185": {
+   "en": "Grant",
+   "page": "Grant (Astral Radiance 185)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "186": {
+   "en": "Irida",
+   "page": "Irida (Astral Radiance 186)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "187": {
+   "en": "Kamado",
+   "page": "Kamado (Astral Radiance 187)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "188": {
+   "en": "Roxanne",
+   "page": "Roxanne (Astral Radiance 188)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "189": {
+   "en": "Zisu",
+   "page": "Zisu (Astral Radiance 189)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "190": {
+   "en": "Hisuian Lilligant",
+   "page": "Hisuian Lilligant VSTAR (Astral Radiance 190)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "191": {
+   "en": "Heatran",
+   "page": "Heatran VMAX (Astral Radiance 191)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "192": {
+   "en": "Origin Forme Palkia",
+   "page": "Origin Forme Palkia VSTAR (Astral Radiance 192)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "193": {
+   "en": "Hisuian Typhlosion",
+   "page": "Hisuian Typhlosion VSTAR (Astral Radiance 193)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "194": {
+   "en": "Machamp",
+   "page": "Machamp VMAX (Astral Radiance 194)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "195": {
+   "en": "Hisuian Decidueye",
+   "page": "Hisuian Decidueye VSTAR (Astral Radiance 195)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "196": {
+   "en": "Kleavor",
+   "page": "Kleavor VSTAR (Astral Radiance 196)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "197": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott VSTAR (Astral Radiance 197)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "198": {
+   "en": "Origin Forme Dialga",
+   "page": "Origin Forme Dialga VSTAR (Astral Radiance 198)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "199": {
+   "en": "Adaman",
+   "page": "Adaman (Astral Radiance 199)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "200": {
+   "en": "Choy",
+   "page": "Choy (Astral Radiance 200)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "201": {
+   "en": "Cyllene",
+   "page": "Cyllene (Astral Radiance 201)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "202": {
+   "en": "Gardenia's Vigor",
+   "page": "Gardenia's Vigor (Astral Radiance 202)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "203": {
+   "en": "Grant",
+   "page": "Grant (Astral Radiance 203)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "204": {
+   "en": "Irida",
+   "page": "Irida (Astral Radiance 204)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "205": {
+   "en": "Kamado",
+   "page": "Kamado (Astral Radiance 205)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "206": {
+   "en": "Roxanne",
+   "page": "Roxanne (Astral Radiance 206)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "207": {
+   "en": "Zisu",
+   "page": "Zisu (Astral Radiance 207)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "208": {
+   "en": "Origin Forme Palkia",
+   "page": "Origin Forme Palkia VSTAR (Astral Radiance 208)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "209": {
+   "en": "Hisuian Samurott",
+   "page": "Hisuian Samurott VSTAR (Astral Radiance 209)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "210": {
+   "en": "Origin Forme Dialga",
+   "page": "Origin Forme Dialga VSTAR (Astral Radiance 210)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "211": {
+   "en": "Choice Belt",
+   "page": "Choice Belt (Astral Radiance 211)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "212": {
+   "en": "Jubilife Village",
+   "page": "Jubilife Village (Astral Radiance 212)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "213": {
+   "en": "Path to the Peak",
+   "page": "Path to the Peak (Astral Radiance 213)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "214": {
+   "en": "Temple of Sinnoh",
+   "page": "Temple of Sinnoh (Astral Radiance 214)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "215": {
+   "en": "Trekking Shoes",
+   "page": "Trekking Shoes (Astral Radiance 215)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "216": {
+   "en": "Double Turbo Energy",
+   "page": "Double Turbo Energy (Astral Radiance 216)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg1": {
+   "en": "Abomasnow",
+   "page": "Abomasnow (Astral Radiance TG1)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg2": {
+   "en": "Flapple",
+   "page": "Flapple (Astral Radiance TG2)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg3": {
+   "en": "Kingdra",
+   "page": "Kingdra (Astral Radiance TG3)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg4": {
+   "en": "Frosmoth",
+   "page": "Frosmoth (Astral Radiance TG4)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg5": {
+   "en": "Gardevoir",
+   "page": "Gardevoir (Astral Radiance TG5)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg6": {
+   "en": "Wyrdeer",
+   "page": "Wyrdeer (Astral Radiance TG6)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg7": {
+   "en": "Falinks",
+   "page": "Falinks (Astral Radiance TG7)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg8": {
+   "en": "Kleavor",
+   "page": "Kleavor (Astral Radiance TG8)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg9": {
+   "en": "Mightyena",
+   "page": "Mightyena (Astral Radiance TG9)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg10": {
+   "en": "Galarian Obstagoon",
+   "page": "Galarian Obstagoon (Astral Radiance TG10)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg11": {
+   "en": "Bronzong",
+   "page": "Bronzong (Astral Radiance TG11)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg12": {
+   "en": "Hoothoot",
+   "page": "Hoothoot (Astral Radiance TG12)",
+   "type": "TGH",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg13": {
+   "en": "Starmie",
+   "page": "Starmie V (Astral Radiance TG13)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg14": {
+   "en": "Ice Rider Calyrex",
+   "page": "Ice Rider Calyrex V (Astral Radiance TG14)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg15": {
+   "en": "Ice Rider Calyrex",
+   "page": "Ice Rider Calyrex VMAX (Astral Radiance TG15)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg16": {
+   "en": "Galarian Articuno",
+   "page": "Galarian Articuno V (Astral Radiance TG16)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg17": {
+   "en": "Shadow Rider Calyrex",
+   "page": "Shadow Rider Calyrex V (Astral Radiance TG17)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg18": {
+   "en": "Shadow Rider Calyrex",
+   "page": "Shadow Rider Calyrex VMAX (Astral Radiance TG18)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg19": {
+   "en": "Galarian Zapdos",
+   "page": "Galarian Zapdos V (Astral Radiance TG19)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg20": {
+   "en": "Galarian Moltres",
+   "page": "Galarian Moltres V (Astral Radiance TG20)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg21": {
+   "en": "Zacian",
+   "page": "Zacian V (Astral Radiance TG21)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg22": {
+   "en": "Zamazenta",
+   "page": "Zamazenta V (Astral Radiance TG22)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg23": {
+   "en": "Garchomp",
+   "page": "Garchomp V (Astral Radiance TG23)",
+   "type": "TGV",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg24": {
+   "en": "Allister",
+   "page": "Allister (Astral Radiance TG24)",
+   "type": "TGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg25": {
+   "en": "Bea",
+   "page": "Bea (Astral Radiance TG25)",
+   "type": "TGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg26": {
+   "en": "Melony",
+   "page": "Melony (Astral Radiance TG26)",
+   "type": "TGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg27": {
+   "en": "Milo",
+   "page": "Milo (Astral Radiance TG27)",
+   "type": "TGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg28": {
+   "en": "Piers",
+   "page": "Piers (Astral Radiance TG28)",
+   "type": "TGU",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg29": {
+   "en": "Ice Rider Calyrex",
+   "page": "Ice Rider Calyrex VMAX (Astral Radiance TG29)",
+   "type": "TGS",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "tg30": {
+   "en": "Shadow Rider Calyrex",
+   "page": "Shadow Rider Calyrex VMAX (Astral Radiance TG30)",
+   "type": "TGS",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

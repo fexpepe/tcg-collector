@@ -1,0 +1,650 @@
+{
+ "page": "Mega Symphonia (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Bulbasaur",
+   "page": "Bulbasaur (Mega Brave 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Ivysaur",
+   "page": "Ivysaur (Mega Brave 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Mega Venusaur",
+   "page": "Mega Venusaur ex (Mega Brave 3)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "4": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Mega Brave 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Exeggutor",
+   "page": "Exeggutor (Mega Brave 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Celebi",
+   "page": "Celebi (Mega Brave 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Seedot",
+   "page": "Seedot (Mega Brave 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Nuzleaf",
+   "page": "Nuzleaf (Mega Brave 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Shiftry",
+   "page": "Shiftry (Mega Brave 9)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "10": {
+   "en": "Vulpix",
+   "page": "Vulpix (Mega Brave 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Ninetales",
+   "page": "Ninetales (Mega Brave 11)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Numel",
+   "page": "Numel (Mega Brave 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Mega Camerupt",
+   "page": "Mega Camerupt ex (Mega Brave 13)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "14": {
+   "en": "Volcanion",
+   "page": "Volcanion (Mega Brave 14)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Scorbunny",
+   "page": "Scorbunny (Mega Brave 15)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Raboot",
+   "page": "Raboot (Mega Brave 16)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Cinderace",
+   "page": "Cinderace (Mega Brave 17)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "18": {
+   "en": "Corphish",
+   "page": "Corphish (Mega Brave 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Gimmighoul",
+   "page": "Gimmighoul (Mega Brave 19)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Sandshrew",
+   "page": "Sandshrew (Mega Brave 20)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Sandslash",
+   "page": "Sandslash (Mega Brave 21)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Onix",
+   "page": "Onix (Mega Brave 22)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Tyrogue",
+   "page": "Tyrogue (Mega Brave 23)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Makuhita",
+   "page": "Makuhita (Mega Brave 24)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Hariyama",
+   "page": "Hariyama (Mega Brave 25)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "26": {
+   "en": "Lunatone",
+   "page": "Lunatone (Mega Brave 26)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "27": {
+   "en": "Solrock",
+   "page": "Solrock (Mega Brave 27)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Riolu",
+   "page": "Riolu (Mega Brave 28)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Mega Lucario",
+   "page": "Mega Lucario ex (Mega Brave 29)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "30": {
+   "en": "Croagunk",
+   "page": "Croagunk (Mega Brave 30)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Toxicroak",
+   "page": "Toxicroak (Mega Brave 31)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Marshadow",
+   "page": "Marshadow (Mega Brave 32)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Stonjourner",
+   "page": "Stonjourner (Mega Brave 33)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Nacli",
+   "page": "Nacli (Mega Brave 34)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Naclstack",
+   "page": "Naclstack (Mega Brave 35)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Garganacl",
+   "page": "Garganacl (Mega Brave 36)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Crawdaunt",
+   "page": "Crawdaunt (Mega Brave 37)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "38": {
+   "en": "Mega Absol",
+   "page": "Mega Absol ex (Mega Brave 38)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "39": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Mega Brave 39)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Yveltal",
+   "page": "Yveltal (Mega Brave 40)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "41": {
+   "en": "Nickit",
+   "page": "Nickit (Mega Brave 41)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Thievul",
+   "page": "Thievul (Mega Brave 42)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Shroodle",
+   "page": "Shroodle (Mega Brave 43)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Grafaiai",
+   "page": "Grafaiai (Mega Brave 44)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Steelix",
+   "page": "Steelix (Mega Brave 45)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "46": {
+   "en": "Mega Mawile",
+   "page": "Mega Mawile ex (Mega Brave 46)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "47": {
+   "en": "Dialga",
+   "page": "Dialga (Mega Brave 47)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "48": {
+   "en": "Tinkatink",
+   "page": "Tinkatink (Mega Brave 48)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Tinkatuff",
+   "page": "Tinkatuff (Mega Brave 49)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Tinkaton",
+   "page": "Tinkaton (Mega Brave 50)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Gholdengo",
+   "page": "Gholdengo (Mega Brave 51)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Spearow",
+   "page": "Spearow (Mega Brave 52)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Fearow",
+   "page": "Fearow (Mega Brave 53)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Miltank",
+   "page": "Miltank (Mega Brave 54)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Yungoos",
+   "page": "Yungoos (Mega Brave 55)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Gumshoos",
+   "page": "Gumshoos (Mega Brave 56)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Iron Defender",
+   "page": "Iron Defender (Mega Brave 57)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Premium Power Pro",
+   "page": "Premium Power Pro (Mega Brave 58)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Fighting Gong",
+   "page": "Fighting Gong (Mega Brave 59)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Repel",
+   "page": "Repel (Mega Brave 60)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Lt. Surge's Bargain",
+   "page": "Lt. Surge's Bargain (Mega Brave 61)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Lillie's Determination",
+   "page": "Lillie's Determination (Mega Brave 62)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Risky Ruins",
+   "page": "Risky Ruins (Mega Brave 63)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Bulbasaur",
+   "page": "Bulbasaur (Mega Brave 64)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Ivysaur",
+   "page": "Ivysaur (Mega Brave 65)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Exeggutor",
+   "page": "Exeggutor (Mega Brave 66)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Vulpix",
+   "page": "Vulpix (Mega Brave 67)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Riolu",
+   "page": "Riolu (Mega Brave 68)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Marshadow",
+   "page": "Marshadow (Mega Brave 69)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Garganacl",
+   "page": "Garganacl (Mega Brave 70)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Mega Brave 71)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Shroodle",
+   "page": "Shroodle (Mega Brave 72)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Steelix",
+   "page": "Steelix (Mega Brave 73)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Spearow",
+   "page": "Spearow (Mega Brave 74)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Gumshoos",
+   "page": "Gumshoos (Mega Brave 75)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Mega Venusaur",
+   "page": "Mega Venusaur ex (Mega Brave 76)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Mega Camerupt",
+   "page": "Mega Camerupt ex (Mega Brave 77)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Mega Lucario",
+   "page": "Mega Lucario ex (Mega Brave 78)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Mega Absol",
+   "page": "Mega Absol ex (Mega Brave 79)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Mega Mawile",
+   "page": "Mega Mawile ex (Mega Brave 80)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Premium Power Pro",
+   "page": "Premium Power Pro (Mega Brave 81)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Fighting Gong",
+   "page": "Fighting Gong (Mega Brave 82)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Night Stretcher",
+   "page": "Night Stretcher (Mega Brave 83)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Air Balloon",
+   "page": "Air Balloon (Mega Brave 84)",
+   "type": "PT",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Lt. Surge's Bargain",
+   "page": "Lt. Surge's Bargain (Mega Brave 85)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Lillie's Determination",
+   "page": "Lillie's Determination (Mega Brave 86)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Mega Venusaur",
+   "page": "Mega Venusaur ex (Mega Brave 87)",
+   "type": "Grass",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Mega Lucario",
+   "page": "Mega Lucario ex (Mega Brave 88)",
+   "type": "Fighting",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Mega Absol",
+   "page": "Mega Absol ex (Mega Brave 89)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Lt. Surge's Bargain",
+   "page": "Lt. Surge's Bargain (Mega Brave 90)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Lillie's Determination",
+   "page": "Lillie's Determination (Mega Brave 91)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Mega Lucario",
+   "page": "Mega Lucario ex (Mega Brave 92)",
+   "type": "Fighting",
+   "rarity": "MUR",
+   "mark": ""
+  }
+ }
+}

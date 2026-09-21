@@ -1,0 +1,930 @@
+{
+ "page": "Battle Partners (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Caterpie",
+   "page": "Caterpie (Battle Partners 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Metapod",
+   "page": "Metapod (Battle Partners 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Butterfree",
+   "page": "Butterfree (Battle Partners 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Paras",
+   "page": "Paras (Battle Partners 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Parasect",
+   "page": "Parasect (Battle Partners 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Maractus",
+   "page": "Maractus (Battle Partners 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Karrablast",
+   "page": "Karrablast (Battle Partners 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Shelmet",
+   "page": "Shelmet (Battle Partners 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Accelgor",
+   "page": "Accelgor (Battle Partners 9)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "10": {
+   "en": "Sprigatito",
+   "page": "Sprigatito (Battle Partners 10)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Floragato",
+   "page": "Floragato (Battle Partners 11)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Meowscarada",
+   "page": "Meowscarada (Battle Partners 12)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "13": {
+   "en": "Magmar",
+   "page": "Magmar (Battle Partners 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Magmortar",
+   "page": "Magmortar (Battle Partners 14)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "15": {
+   "en": "N's Darumaka",
+   "page": "N's Darumaka (Battle Partners 15)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "N's Darmanitan",
+   "page": "N's Darmanitan (Battle Partners 16)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "17": {
+   "en": "Volcanion",
+   "page": "Volcanion ex (Battle Partners 17)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "18": {
+   "en": "Articuno",
+   "page": "Articuno (Battle Partners 18)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Remoraid",
+   "page": "Remoraid (Battle Partners 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Octillery",
+   "page": "Octillery (Battle Partners 20)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Lotad",
+   "page": "Lotad (Battle Partners 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Lombre",
+   "page": "Lombre (Battle Partners 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Ludicolo",
+   "page": "Ludicolo (Battle Partners 23)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Wailmer",
+   "page": "Wailmer (Battle Partners 24)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Wailord",
+   "page": "Wailord (Battle Partners 25)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "26": {
+   "en": "Iono's Voltorb",
+   "page": "Iono's Voltorb (Battle Partners 26)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Iono's Electrode",
+   "page": "Iono's Electrode (Battle Partners 27)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "N's Joltik",
+   "page": "N's Joltik (Battle Partners 28)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Iono's Tadbulb",
+   "page": "Iono's Tadbulb (Battle Partners 29)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Iono's Bellibolt",
+   "page": "Iono's Bellibolt ex (Battle Partners 30)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Iono's Wattrel",
+   "page": "Iono's Wattrel (Battle Partners 31)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Iono's Kilowattrel",
+   "page": "Iono's Kilowattrel (Battle Partners 32)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "33": {
+   "en": "Lillie's Clefairy",
+   "page": "Lillie's Clefairy ex (Battle Partners 33)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "34": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime (Battle Partners 34)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Shuppet",
+   "page": "Shuppet (Battle Partners 35)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Banette",
+   "page": "Banette (Battle Partners 36)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Beldum",
+   "page": "Beldum (Battle Partners 37)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Metang",
+   "page": "Metang (Battle Partners 38)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Metagross",
+   "page": "Metagross (Battle Partners 39)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "N's Sigilyph",
+   "page": "N's Sigilyph (Battle Partners 40)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Lillie's Cutiefly",
+   "page": "Lillie's Cutiefly (Battle Partners 41)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Lillie's Ribombee",
+   "page": "Lillie's Ribombee (Battle Partners 42)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Lillie's Comfey",
+   "page": "Lillie's Comfey (Battle Partners 43)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Swinub",
+   "page": "Swinub (Battle Partners 44)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Piloswine",
+   "page": "Piloswine (Battle Partners 45)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Mamoswine",
+   "page": "Mamoswine ex (Battle Partners 46)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "47": {
+   "en": "Larvitar",
+   "page": "Larvitar (Battle Partners 47)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Pupitar",
+   "page": "Pupitar (Battle Partners 48)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Regirock",
+   "page": "Regirock (Battle Partners 49)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Pancham",
+   "page": "Pancham (Battle Partners 50)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Rockruff",
+   "page": "Rockruff (Battle Partners 51)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Lycanroc",
+   "page": "Lycanroc (Battle Partners 52)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "53": {
+   "en": "Hop's Silicobra",
+   "page": "Hop's Silicobra (Battle Partners 53)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Hop's Sandaconda",
+   "page": "Hop's Sandaconda (Battle Partners 54)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Klawf",
+   "page": "Klawf (Battle Partners 55)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "56": {
+   "en": "Koffing",
+   "page": "Koffing (Battle Partners 56)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Weezing",
+   "page": "Weezing (Battle Partners 57)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Tyranitar",
+   "page": "Tyranitar (Battle Partners 58)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "59": {
+   "en": "N's Purrloin",
+   "page": "N's Purrloin (Battle Partners 59)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "N's Zorua",
+   "page": "N's Zorua (Battle Partners 60)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "N's Zoroark",
+   "page": "N's Zoroark ex (Battle Partners 61)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Pangoro",
+   "page": "Pangoro (Battle Partners 62)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Escavalier",
+   "page": "Escavalier (Battle Partners 63)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "N's Klink",
+   "page": "N's Klink (Battle Partners 64)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "N's Klang",
+   "page": "N's Klang (Battle Partners 65)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "N's Klinklang",
+   "page": "N's Klinklang (Battle Partners 66)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Magearna",
+   "page": "Magearna (Battle Partners 67)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "68": {
+   "en": "Hop's Corviknight",
+   "page": "Hop's Corviknight (Battle Partners 68)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Hop's Zacian",
+   "page": "Hop's Zacian ex (Battle Partners 69)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Bagon",
+   "page": "Bagon (Battle Partners 70)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "71": {
+   "en": "Shelgon",
+   "page": "Shelgon (Battle Partners 71)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "72": {
+   "en": "Salamence",
+   "page": "Salamence ex (Battle Partners 72)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Druddigon",
+   "page": "Druddigon (Battle Partners 73)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "74": {
+   "en": "N's Reshiram",
+   "page": "N's Reshiram (Battle Partners 74)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "75": {
+   "en": "Hop's Snorlax",
+   "page": "Hop's Snorlax (Battle Partners 75)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "76": {
+   "en": "Sentret",
+   "page": "Sentret (Battle Partners 76)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "77": {
+   "en": "Furret",
+   "page": "Furret (Battle Partners 77)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "78": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (Battle Partners 78)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "79": {
+   "en": "Dudunsparce",
+   "page": "Dudunsparce ex (Battle Partners 79)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Noibat",
+   "page": "Noibat (Battle Partners 80)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "81": {
+   "en": "Noivern",
+   "page": "Noivern (Battle Partners 81)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "82": {
+   "en": "Komala",
+   "page": "Komala (Battle Partners 82)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "83": {
+   "en": "Hop's Rookidee",
+   "page": "Hop's Rookidee (Battle Partners 83)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "84": {
+   "en": "Hop's Corvisquire",
+   "page": "Hop's Corvisquire (Battle Partners 84)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "85": {
+   "en": "Hop's Wooloo",
+   "page": "Hop's Wooloo (Battle Partners 85)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "86": {
+   "en": "Hop's Dubwool",
+   "page": "Hop's Dubwool (Battle Partners 86)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "87": {
+   "en": "Hop's Cramorant",
+   "page": "Hop's Cramorant (Battle Partners 87)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "88": {
+   "en": "Super Potion",
+   "page": "Super Potion (Battle Partners 88)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "89": {
+   "en": "N's PP Up",
+   "page": "N's PP Up (Battle Partners 89)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "90": {
+   "en": "Redeemable Ticket",
+   "page": "Redeemable Ticket (Battle Partners 90)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "91": {
+   "en": "Hop's Bag",
+   "page": "Hop's Bag (Battle Partners 91)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "92": {
+   "en": "Hop's Choice Band",
+   "page": "Hop's Choice Band (Battle Partners 92)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "93": {
+   "en": "Lillie's Pearl",
+   "page": "Lillie's Pearl (Battle Partners 93)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "94": {
+   "en": "Iris's Fighting Spirit",
+   "page": "Iris's Fighting Spirit (Battle Partners 94)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "95": {
+   "en": "Ruffian",
+   "page": "Ruffian (Battle Partners 95)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "96": {
+   "en": "Brock's Scouting",
+   "page": "Brock's Scouting (Battle Partners 96)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "97": {
+   "en": "N's Castle",
+   "page": "N's Castle (Battle Partners 97)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "98": {
+   "en": "Levincia",
+   "page": "Levincia (Battle Partners 98)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "99": {
+   "en": "Postwick",
+   "page": "Postwick (Battle Partners 99)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "100": {
+   "en": "Spiky Energy",
+   "page": "Spiky Energy (Battle Partners 100)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "101": {
+   "en": "Maractus",
+   "page": "Maractus (Battle Partners 101)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Articuno",
+   "page": "Articuno (Battle Partners 102)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Wailord",
+   "page": "Wailord (Battle Partners 103)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Iono's Kilowattrel",
+   "page": "Iono's Kilowattrel (Battle Partners 104)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Lillie's Ribombee",
+   "page": "Lillie's Ribombee (Battle Partners 105)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Swinub",
+   "page": "Swinub (Battle Partners 106)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Lycanroc",
+   "page": "Lycanroc (Battle Partners 107)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "108": {
+   "en": "N's Zorua",
+   "page": "N's Zorua (Battle Partners 108)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "109": {
+   "en": "N's Reshiram",
+   "page": "N's Reshiram (Battle Partners 109)",
+   "type": "Dragon",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Furret",
+   "page": "Furret (Battle Partners 110)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Noibat",
+   "page": "Noibat (Battle Partners 111)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Hop's Wooloo",
+   "page": "Hop's Wooloo (Battle Partners 112)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Volcanion",
+   "page": "Volcanion ex (Battle Partners 113)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Iono's Bellibolt",
+   "page": "Iono's Bellibolt ex (Battle Partners 114)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Lillie's Clefairy",
+   "page": "Lillie's Clefairy ex (Battle Partners 115)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Mamoswine",
+   "page": "Mamoswine ex (Battle Partners 116)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "117": {
+   "en": "N's Zoroark",
+   "page": "N's Zoroark ex (Battle Partners 117)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "118": {
+   "en": "Hop's Zacian",
+   "page": "Hop's Zacian ex (Battle Partners 118)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "119": {
+   "en": "Salamence",
+   "page": "Salamence ex (Battle Partners 119)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "120": {
+   "en": "Dudunsparce",
+   "page": "Dudunsparce ex (Battle Partners 120)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "121": {
+   "en": "Iris's Fighting Spirit",
+   "page": "Iris's Fighting Spirit (Battle Partners 121)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "122": {
+   "en": "Ruffian",
+   "page": "Ruffian (Battle Partners 122)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "123": {
+   "en": "Brock's Scouting",
+   "page": "Brock's Scouting (Battle Partners 123)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "124": {
+   "en": "Volcanion",
+   "page": "Volcanion ex (Battle Partners 124)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "125": {
+   "en": "Iono's Bellibolt",
+   "page": "Iono's Bellibolt ex (Battle Partners 125)",
+   "type": "Lightning",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "126": {
+   "en": "Lillie's Clefairy",
+   "page": "Lillie's Clefairy ex (Battle Partners 126)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "127": {
+   "en": "N's Zoroark",
+   "page": "N's Zoroark ex (Battle Partners 127)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "128": {
+   "en": "Hop's Zacian",
+   "page": "Hop's Zacian ex (Battle Partners 128)",
+   "type": "Metal",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "129": {
+   "en": "Salamence",
+   "page": "Salamence ex (Battle Partners 129)",
+   "type": "Dragon",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "130": {
+   "en": "Iono's Bellibolt",
+   "page": "Iono's Bellibolt ex (Battle Partners 130)",
+   "type": "Lightning",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "131": {
+   "en": "N's Zoroark",
+   "page": "N's Zoroark ex (Battle Partners 131)",
+   "type": "Darkness",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "132": {
+   "en": "Spiky Energy",
+   "page": "Spiky Energy (Battle Partners 132)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

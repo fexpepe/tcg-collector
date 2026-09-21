@@ -1,0 +1,1161 @@
+{
+ "page": "Blue Shock (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Pinsir",
+   "page": "Pinsir (Blue Shock 1)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "2": {
+   "en": "Cacnea",
+   "page": "Cacnea (Blue Shock 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Pansage",
+   "page": "Pansage (Blue Shock 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Simisage",
+   "page": "Simisage (Blue Shock 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Chespin",
+   "page": "Chespin (Blue Shock 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Scatterbug",
+   "page": "Scatterbug (Blue Shock 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Spewpa",
+   "page": "Spewpa (Blue Shock 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Vivillon",
+   "page": "Vivillon (Blue Shock 8)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "9": {
+   "en": "Cyndaquil",
+   "page": "Cyndaquil (Blue Shock 9)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Quilava",
+   "page": "Quilava (Blue Shock 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Typhlosion",
+   "page": "Typhlosion (Blue Shock 11)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Remoraid",
+   "page": "Remoraid (Blue Shock 12)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Octillery",
+   "page": "Octillery (Blue Shock 13)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "14": {
+   "en": "Glalie",
+   "page": "Glalie-EX (Blue Shock 14)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "15": {
+   "en": "Glalie",
+   "page": "M Glalie-EX (Blue Shock 15)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Panpour",
+   "page": "Panpour (Blue Shock 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Simipour",
+   "page": "Simipour (Blue Shock 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Vanillite",
+   "page": "Vanillite (Blue Shock 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Vanillish",
+   "page": "Vanillish (Blue Shock 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Vanilluxe",
+   "page": "Vanilluxe (Blue Shock 20)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Magnemite",
+   "page": "Magnemite (Blue Shock 21)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Gastly",
+   "page": "Gastly (Blue Shock 22)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Haunter",
+   "page": "Haunter (Blue Shock 23)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Gengar",
+   "page": "Gengar (Blue Shock 24)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "25": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-EX (Blue Shock 25)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "26": {
+   "en": "Mewtwo",
+   "page": "M Mewtwo-EX (Blue Shock 26)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "27": {
+   "en": "Woobat",
+   "page": "Woobat (Blue Shock 27)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Swoobat",
+   "page": "Swoobat (Blue Shock 28)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Elgyem",
+   "page": "Elgyem (Blue Shock 29)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Beheeyem",
+   "page": "Beheeyem (Blue Shock 30)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "31": {
+   "en": "Sandshrew",
+   "page": "Sandshrew (Blue Shock 31)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Sandslash",
+   "page": "Sandslash (Blue Shock 32)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Meloetta",
+   "page": "Meloetta (Blue Shock 33)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "34": {
+   "en": "Cacturne",
+   "page": "Cacturne (Blue Shock 34)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Zorua",
+   "page": "Zorua (Blue Shock 35)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Zoroark",
+   "page": "Zoroark (Blue Shock 36)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "37": {
+   "en": "Zoroark",
+   "page": "Zoroark BREAK (Blue Shock 37)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "38": {
+   "en": "Snubbull",
+   "page": "Snubbull (Blue Shock 38)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Granbull",
+   "page": "Granbull (Blue Shock 39)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Flabébé",
+   "page": "Flabébé (Blue Shock 40)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Floette",
+   "page": "Floette (Blue Shock 41)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Florges",
+   "page": "Florges (Blue Shock 42)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Florges",
+   "page": "Florges BREAK (Blue Shock 43)",
+   "type": "Fairy",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "44": {
+   "en": "Xerneas",
+   "page": "Xerneas (Blue Shock 44)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "45": {
+   "en": "Axew",
+   "page": "Axew (Blue Shock 45)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Fraxure",
+   "page": "Fraxure (Blue Shock 46)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Haxorus",
+   "page": "Haxorus (Blue Shock 47)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "48": {
+   "en": "Doduo",
+   "page": "Doduo (Blue Shock 48)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Hoothoot",
+   "page": "Hoothoot (Blue Shock 49)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Noctowl",
+   "page": "Noctowl (Blue Shock 50)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Teddiursa",
+   "page": "Teddiursa (Blue Shock 51)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Ursaring",
+   "page": "Ursaring (Blue Shock 52)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Smeargle",
+   "page": "Smeargle (Blue Shock 53)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Float Stone",
+   "page": "Float Stone (Blue Shock 54)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Glalie Spirit Link",
+   "page": "Glalie Spirit Link (Blue Shock 55)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "56": {
+   "en": "Mewtwo Spirit Link",
+   "page": "Mewtwo Spirit Link (Blue Shock 56)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Brigette",
+   "page": "Brigette (Blue Shock 57)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Parallel City",
+   "page": "Parallel City (Blue Shock 58)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Rainbow Energy",
+   "page": "Rainbow Energy (Blue Shock 59)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Glalie",
+   "page": "Glalie-EX (Blue Shock 60)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Glalie",
+   "page": "M Glalie-EX (Blue Shock 61)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-EX (Blue Shock 62)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Mewtwo",
+   "page": "M Mewtwo-EX (Blue Shock 63)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Brigette",
+   "page": "Brigette (Blue Shock 64)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-EX (Blue Shock 65)",
+   "type": "Psychic",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Mismagius",
+   "page": "Mismagius (BREAKthrough 66)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "67": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (BREAKthrough 67)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "68": {
+   "en": "Ralts",
+   "page": "Ralts (BREAKthrough 68)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "69": {
+   "en": "Kirlia",
+   "page": "Kirlia (BREAKthrough 69)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "70": {
+   "en": "Cresselia",
+   "page": "Cresselia (BREAKthrough 70)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "71": {
+   "en": "Woobat",
+   "page": "Woobat (BREAKthrough 71)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "72": {
+   "en": "Swoobat",
+   "page": "Swoobat (BREAKthrough 72)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "73": {
+   "en": "Elgyem",
+   "page": "Elgyem (BREAKthrough 73)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "74": {
+   "en": "Beheeyem",
+   "page": "Beheeyem (BREAKthrough 74)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "75": {
+   "en": "Sandshrew",
+   "page": "Sandshrew (BREAKthrough 75)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "76": {
+   "en": "Sandslash",
+   "page": "Sandslash (BREAKthrough 76)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "77": {
+   "en": "Cubone",
+   "page": "Cubone (BREAKthrough 77)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "78": {
+   "en": "Marowak",
+   "page": "Marowak (BREAKthrough 78)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "79": {
+   "en": "Marowak",
+   "page": "Marowak BREAK (BREAKthrough 79)",
+   "type": "Rare BREAK",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "80": {
+   "en": "Swinub",
+   "page": "Swinub (BREAKthrough 80)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "81": {
+   "en": "Piloswine",
+   "page": "Piloswine (BREAKthrough 81)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "82": {
+   "en": "Mamoswine",
+   "page": "Mamoswine (BREAKthrough 82)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "83": {
+   "en": "Hippopotas",
+   "page": "Hippopotas (BREAKthrough 83)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "84": {
+   "en": "Gallade",
+   "page": "Gallade (BREAKthrough 84)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "85": {
+   "en": "Meloetta",
+   "page": "Meloetta (BREAKthrough 85)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "86": {
+   "en": "Pancham",
+   "page": "Pancham (BREAKthrough 86)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "87": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (BREAKthrough 87)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88": {
+   "en": "Cacturne",
+   "page": "Cacturne (BREAKthrough 88)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "89": {
+   "en": "Zorua",
+   "page": "Zorua (BREAKthrough 89)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Zorua",
+   "page": "Zorua (BREAKthrough 90)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "Zoroark",
+   "page": "Zoroark (BREAKthrough 91)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Zoroark",
+   "page": "Zoroark BREAK (BREAKthrough 92)",
+   "type": "Rare BREAK",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Inkay",
+   "page": "Inkay (BREAKthrough 93)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Yveltal",
+   "page": "Yveltal (BREAKthrough 94)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Bronzor",
+   "page": "Bronzor (BREAKthrough 95)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Bronzong",
+   "page": "Bronzong (BREAKthrough 96)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime (BREAKthrough 97)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Snubbull",
+   "page": "Snubbull (BREAKthrough 98)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Granbull",
+   "page": "Granbull (BREAKthrough 99)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Ralts",
+   "page": "Ralts (BREAKthrough 100)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Flabébé",
+   "page": "Flabébé (BREAKthrough 101)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Floette",
+   "page": "Floette (BREAKthrough 102)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Florges",
+   "page": "Florges (BREAKthrough 103)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Florges",
+   "page": "Florges BREAK (BREAKthrough 104)",
+   "type": "Rare BREAK",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Spritzee",
+   "page": "Spritzee (BREAKthrough 105)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Aromatisse",
+   "page": "Aromatisse (BREAKthrough 106)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Xerneas",
+   "page": "Xerneas (BREAKthrough 107)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Axew",
+   "page": "Axew (BREAKthrough 108)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Axew",
+   "page": "Axew (BREAKthrough 109)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Fraxure",
+   "page": "Fraxure (BREAKthrough 110)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Haxorus",
+   "page": "Haxorus (BREAKthrough 111)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Noivern",
+   "page": "Noivern (BREAKthrough 112)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Noivern",
+   "page": "Noivern BREAK (BREAKthrough 113)",
+   "type": "Rare BREAK",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Meowth",
+   "page": "Meowth (BREAKthrough 114)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Doduo",
+   "page": "Doduo (BREAKthrough 115)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Doduo",
+   "page": "Doduo (BREAKthrough 116)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "117": {
+   "en": "Dodrio",
+   "page": "Dodrio (BREAKthrough 117)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "118": {
+   "en": "Snorlax",
+   "page": "Snorlax (BREAKthrough 118)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Hoothoot",
+   "page": "Hoothoot (BREAKthrough 119)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Noctowl",
+   "page": "Noctowl (BREAKthrough 120)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Teddiursa",
+   "page": "Teddiursa (BREAKthrough 121)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Ursaring",
+   "page": "Ursaring (BREAKthrough 122)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Smeargle",
+   "page": "Smeargle (BREAKthrough 123)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Swablu",
+   "page": "Swablu (BREAKthrough 124)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Starly",
+   "page": "Starly (BREAKthrough 125)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "126": {
+   "en": "Staravia",
+   "page": "Staravia (BREAKthrough 126)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Staraptor",
+   "page": "Staraptor (BREAKthrough 127)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Chatot",
+   "page": "Chatot (BREAKthrough 128)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Rufflet",
+   "page": "Rufflet (BREAKthrough 129)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Braviary",
+   "page": "Braviary (BREAKthrough 130)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Noibat",
+   "page": "Noibat (BREAKthrough 131)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Noibat",
+   "page": "Noibat (BREAKthrough 132)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Assault Vest",
+   "page": "Assault Vest (BREAKthrough 133)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Brigette",
+   "page": "Brigette (BREAKthrough 134)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Buddy-Buddy Rescue",
+   "page": "Buddy-Buddy Rescue (BREAKthrough 135)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Fisherman",
+   "page": "Fisherman (BREAKthrough 136)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Float Stone",
+   "page": "Float Stone (BREAKthrough 137)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Giovanni's Scheme",
+   "page": "Giovanni's Scheme (BREAKthrough 138)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Glalie Spirit Link",
+   "page": "Glalie Spirit Link (BREAKthrough 139)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Heavy Ball",
+   "page": "Heavy Ball (BREAKthrough 140)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Heavy Boots",
+   "page": "Heavy Boots (BREAKthrough 141)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Houndoom Spirit Link",
+   "page": "Houndoom Spirit Link (BREAKthrough 142)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Judge",
+   "page": "Judge (BREAKthrough 143)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Mewtwo Spirit Link",
+   "page": "Mewtwo Spirit Link (BREAKthrough 144)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Parallel City",
+   "page": "Parallel City (BREAKthrough 145)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Professor's Letter",
+   "page": "Professor's Letter (BREAKthrough 146)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Reserved Ticket",
+   "page": "Reserved Ticket (BREAKthrough 147)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Skyla",
+   "page": "Skyla (BREAKthrough 148)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Super Rod",
+   "page": "Super Rod (BREAKthrough 149)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Town Map",
+   "page": "Town Map (BREAKthrough 150)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Burning Energy",
+   "page": "Burning Energy (BREAKthrough 151)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Rainbow Energy",
+   "page": "Rainbow Energy (BREAKthrough 152)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Houndoom",
+   "page": "Houndoom-EX (BREAKthrough 153)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Houndoom",
+   "page": "M Houndoom-EX (BREAKthrough 154)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Glalie",
+   "page": "Glalie-EX (BREAKthrough 155)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Glalie",
+   "page": "M Glalie-EX (BREAKthrough 156)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-EX (BREAKthrough 157)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-EX (BREAKthrough 158)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Mewtwo",
+   "page": "M Mewtwo-EX (BREAKthrough 159)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Mewtwo",
+   "page": "M Mewtwo-EX (BREAKthrough 160)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Brigette",
+   "page": "Brigette (BREAKthrough 161)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Giovanni's Scheme",
+   "page": "Giovanni's Scheme (BREAKthrough 162)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-EX (BREAKthrough 163)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-EX (BREAKthrough 164)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146a": {
+   "en": "Professor's Letter",
+   "page": "Professor's Letter (BREAKthrough 146a)",
+   "type": "—",
+   "rarity": "Non Holo Yellow A Alternate art Battle Arena Deck—Mega Blastoise exclusive",
+   "mark": ""
+  }
+ }
+}

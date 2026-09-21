@@ -1,0 +1,1910 @@
+{
+ "page": "Alter Genesis (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Sunkern",
+   "page": "Sunkern (Alter Genesis 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Sunflora",
+   "page": "Sunflora (Alter Genesis 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Lileep",
+   "page": "Lileep (Alter Genesis 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Cradily",
+   "page": "Cradily (Alter Genesis 4)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "5": {
+   "en": "Kricketot",
+   "page": "Kricketot (Alter Genesis 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Kricketune",
+   "page": "Kricketune (Alter Genesis 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Rowlet",
+   "page": "Rowlet (Alter Genesis 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Rowlet",
+   "page": "Rowlet (Alter Genesis 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Dartrix",
+   "page": "Dartrix (Alter Genesis 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Decidueye",
+   "page": "Decidueye (Alter Genesis 10)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "11": {
+   "en": "Buzzwole",
+   "page": "Buzzwole (Alter Genesis 11)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Larvesta",
+   "page": "Larvesta (Alter Genesis 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Volcarona",
+   "page": "Volcarona-GX (Alter Genesis 13)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "14": {
+   "en": "Litleo",
+   "page": "Litleo (Alter Genesis 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Pyroar",
+   "page": "Pyroar (Alter Genesis 15)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Alolan Vulpix",
+   "page": "Alolan Vulpix (Alter Genesis 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Snorunt",
+   "page": "Snorunt (Alter Genesis 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Glalie",
+   "page": "Glalie (Alter Genesis 18)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Spheal",
+   "page": "Spheal (Alter Genesis 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Spheal",
+   "page": "Spheal (Alter Genesis 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Sealeo",
+   "page": "Sealeo (Alter Genesis 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Walrein",
+   "page": "Walrein (Alter Genesis 22)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Ducklett",
+   "page": "Ducklett (Alter Genesis 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Swanna",
+   "page": "Swanna (Alter Genesis 24)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Black Kyurem",
+   "page": "Black Kyurem (Alter Genesis 25)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "26": {
+   "en": "Chinchou",
+   "page": "Chinchou (Alter Genesis 26)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Lanturn",
+   "page": "Lanturn (Alter Genesis 27)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Togedemaru",
+   "page": "Togedemaru (Alter Genesis 28)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Woobat",
+   "page": "Woobat (Alter Genesis 29)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Swoobat",
+   "page": "Swoobat (Alter Genesis 30)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "31": {
+   "en": "Golett",
+   "page": "Golett (Alter Genesis 31)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Golurk",
+   "page": "Golurk (Alter Genesis 32)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Skrelp",
+   "page": "Skrelp (Alter Genesis 33)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Dragalge",
+   "page": "Dragalge (Alter Genesis 34)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Oricorio",
+   "page": "Oricorio-GX (Alter Genesis 35)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "36": {
+   "en": "Cosmog",
+   "page": "Cosmog (Alter Genesis 36)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Cosmog",
+   "page": "Cosmog (Alter Genesis 37)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Cosmoem",
+   "page": "Cosmoem (Alter Genesis 38)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Lunala",
+   "page": "Lunala (Alter Genesis 39)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "40": {
+   "en": "Nosepass",
+   "page": "Nosepass (Alter Genesis 40)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Trapinch",
+   "page": "Trapinch (Alter Genesis 41)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Trapinch",
+   "page": "Trapinch (Alter Genesis 42)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Vibrava",
+   "page": "Vibrava (Alter Genesis 43)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Flygon",
+   "page": "Flygon-GX (Alter Genesis 44)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "45": {
+   "en": "Anorith",
+   "page": "Anorith (Alter Genesis 45)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Armaldo",
+   "page": "Armaldo (Alter Genesis 46)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Rockruff",
+   "page": "Rockruff (Alter Genesis 47)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Lycanroc",
+   "page": "Lycanroc (Alter Genesis 48)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "49": {
+   "en": "Sandygast",
+   "page": "Sandygast (Alter Genesis 49)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Palossand",
+   "page": "Palossand (Alter Genesis 50)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Alolan Sandshrew",
+   "page": "Alolan Sandshrew (Alter Genesis 51)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Alolan Sandslash",
+   "page": "Alolan Sandslash (Alter Genesis 52)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Mawile",
+   "page": "Mawile (Alter Genesis 53)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Probopass",
+   "page": "Probopass (Alter Genesis 54)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Solgaleo",
+   "page": "Solgaleo (Alter Genesis 55)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "56": {
+   "en": "Alolan Ninetales",
+   "page": "Alolan Ninetales (Alter Genesis 56)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "57": {
+   "en": "Azurill",
+   "page": "Azurill (Alter Genesis 57)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Flabébé",
+   "page": "Flabébé (Alter Genesis 58)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Flabébé",
+   "page": "Flabébé (Alter Genesis 59)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Floette",
+   "page": "Floette (Alter Genesis 60)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Florges",
+   "page": "Florges (Alter Genesis 61)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "62": {
+   "en": "Swirlix",
+   "page": "Swirlix (Alter Genesis 62)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Slurpuff",
+   "page": "Slurpuff (Alter Genesis 63)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Sylveon",
+   "page": "Sylveon (Alter Genesis 64)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Arceus & Dialga & Palkia",
+   "page": "Arceus & Dialga & Palkia-GX (Alter Genesis 65)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Naganadel & Guzzlord",
+   "page": "Naganadel & Guzzlord-GX (Alter Genesis 66)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Drampa",
+   "page": "Drampa (Alter Genesis 67)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Jangmo-o",
+   "page": "Jangmo-o (Alter Genesis 68)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "69": {
+   "en": "Jangmo-o",
+   "page": "Jangmo-o (Alter Genesis 69)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "70": {
+   "en": "Hakamo-o",
+   "page": "Hakamo-o (Alter Genesis 70)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "71": {
+   "en": "Kommo-o",
+   "page": "Kommo-o (Alter Genesis 71)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "72": {
+   "en": "Ultra Necrozma",
+   "page": "Ultra Necrozma (Alter Genesis 72)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "73": {
+   "en": "Mega Lopunny & Jigglypuff",
+   "page": "Mega Lopunny & Jigglypuff-GX (Alter Genesis 73)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Eevee",
+   "page": "Eevee (Alter Genesis 74)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "75": {
+   "en": "Aipom",
+   "page": "Aipom (Alter Genesis 75)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "76": {
+   "en": "Ambipom",
+   "page": "Ambipom (Alter Genesis 76)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Teddiursa",
+   "page": "Teddiursa (Alter Genesis 77)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "78": {
+   "en": "Ursaring",
+   "page": "Ursaring (Alter Genesis 78)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Rufflet",
+   "page": "Rufflet (Alter Genesis 79)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "80": {
+   "en": "Braviary",
+   "page": "Braviary (Alter Genesis 80)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "81": {
+   "en": "Helioptile",
+   "page": "Helioptile (Alter Genesis 81)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "82": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (Alter Genesis 82)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "83": {
+   "en": "Tag Call",
+   "page": "Tag Call (Alter Genesis 83)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "84": {
+   "en": "Unidentified Fossil",
+   "page": "Unidentified Fossil (Alter Genesis 84)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "85": {
+   "en": "Island Challenge Amulet",
+   "page": "Island Challenge Amulet (Alter Genesis 85)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "86": {
+   "en": "Beastite",
+   "page": "Beastite (Alter Genesis 86)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "87": {
+   "en": "Guzma & Hala",
+   "page": "Guzma & Hala (Alter Genesis 87)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "88": {
+   "en": "Cynthia & Caitlin",
+   "page": "Cynthia & Caitlin (Alter Genesis 88)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "89": {
+   "en": "Mallow & Lana",
+   "page": "Mallow & Lana (Alter Genesis 89)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "90": {
+   "en": "Red & Blue",
+   "page": "Red & Blue (Alter Genesis 90)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "91": {
+   "en": "Chaotic Swell",
+   "page": "Chaotic Swell (Alter Genesis 91)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "92": {
+   "en": "Cherish Ball",
+   "page": "Cherish Ball (Alter Genesis 92)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Adventure Bag",
+   "page": "Adventure Bag (Alter Genesis 93)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Pokémon Communication",
+   "page": "Pokémon Communication (Alter Genesis 94)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Professor Elm's Lecture",
+   "page": "Professor Elm's Lecture (Alter Genesis 95)",
+   "type": "Su",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Volcarona",
+   "page": "Volcarona-GX (Alter Genesis 96)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Oricorio",
+   "page": "Oricorio-GX (Alter Genesis 97)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Flygon",
+   "page": "Flygon-GX (Alter Genesis 98)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Arceus & Dialga & Palkia",
+   "page": "Arceus & Dialga & Palkia-GX (Alter Genesis 99)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Arceus & Dialga & Palkia",
+   "page": "Arceus & Dialga & Palkia-GX (Alter Genesis 100)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Naganadel & Guzzlord",
+   "page": "Naganadel & Guzzlord-GX (Alter Genesis 101)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Naganadel & Guzzlord",
+   "page": "Naganadel & Guzzlord-GX (Alter Genesis 102)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Mega Lopunny & Jigglypuff",
+   "page": "Mega Lopunny & Jigglypuff-GX (Alter Genesis 103)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Mega Lopunny & Jigglypuff",
+   "page": "Mega Lopunny & Jigglypuff-GX (Alter Genesis 104)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Guzma & Hala",
+   "page": "Guzma & Hala (Alter Genesis 105)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Cynthia & Caitlin",
+   "page": "Cynthia & Caitlin (Alter Genesis 106)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Mallow & Lana",
+   "page": "Mallow & Lana (Alter Genesis 107)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Red & Blue",
+   "page": "Red & Blue (Alter Genesis 108)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Volcarona",
+   "page": "Volcarona-GX (Alter Genesis 109)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Oricorio",
+   "page": "Oricorio-GX (Alter Genesis 110)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Flygon",
+   "page": "Flygon-GX (Alter Genesis 111)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Arceus & Dialga & Palkia",
+   "page": "Arceus & Dialga & Palkia-GX (Alter Genesis 112)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Naganadel & Guzzlord",
+   "page": "Naganadel & Guzzlord-GX (Alter Genesis 113)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Mega Lopunny & Jigglypuff",
+   "page": "Mega Lopunny & Jigglypuff-GX (Alter Genesis 114)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Tag Call",
+   "page": "Tag Call (Alter Genesis 115)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Island Challenge Amulet",
+   "page": "Island Challenge Amulet (Alter Genesis 116)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "117": {
+   "en": "Giant Hearth",
+   "page": "Giant Hearth (Alter Genesis 117)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "118": {
+   "en": "Throh",
+   "page": "Throh (Cosmic Eclipse 118)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Pancham",
+   "page": "Pancham (Cosmic Eclipse 119)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Pangoro",
+   "page": "Pangoro (Cosmic Eclipse 120)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Crabrawler",
+   "page": "Crabrawler (Cosmic Eclipse 121)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Crabominable",
+   "page": "Crabominable (Cosmic Eclipse 122)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Rockruff",
+   "page": "Rockruff (Cosmic Eclipse 123)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Lycanroc",
+   "page": "Lycanroc (Cosmic Eclipse 124)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Passimian",
+   "page": "Passimian (Cosmic Eclipse 125)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "126": {
+   "en": "Sandygast",
+   "page": "Sandygast (Cosmic Eclipse 126)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Palossand",
+   "page": "Palossand (Cosmic Eclipse 127)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Alolan Meowth",
+   "page": "Alolan Meowth (Cosmic Eclipse 128)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Alolan Persian",
+   "page": "Alolan Persian-GX (Cosmic Eclipse 129)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Alolan Grimer",
+   "page": "Alolan Grimer (Cosmic Eclipse 130)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Alolan Muk",
+   "page": "Alolan Muk (Cosmic Eclipse 131)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Carvanha",
+   "page": "Carvanha (Cosmic Eclipse 132)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Absol",
+   "page": "Absol (Cosmic Eclipse 133)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Pawniard",
+   "page": "Pawniard (Cosmic Eclipse 134)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Bisharp",
+   "page": "Bisharp (Cosmic Eclipse 135)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Guzzlord",
+   "page": "Guzzlord (Cosmic Eclipse 136)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Alolan Sandshrew",
+   "page": "Alolan Sandshrew (Cosmic Eclipse 137)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Alolan Sandslash",
+   "page": "Alolan Sandslash (Cosmic Eclipse 138)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Steelix",
+   "page": "Steelix (Cosmic Eclipse 139)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Mawile",
+   "page": "Mawile (Cosmic Eclipse 140)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Probopass",
+   "page": "Probopass (Cosmic Eclipse 141)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Solgaleo",
+   "page": "Solgaleo (Cosmic Eclipse 142)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Togepi & Cleffa & Igglybuff",
+   "page": "Togepi & Cleffa & Igglybuff-GX (Cosmic Eclipse 143)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Clefairy",
+   "page": "Clefairy (Cosmic Eclipse 144)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Alolan Ninetales",
+   "page": "Alolan Ninetales (Cosmic Eclipse 145)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Azurill",
+   "page": "Azurill (Cosmic Eclipse 146)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Cottonee",
+   "page": "Cottonee (Cosmic Eclipse 147)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Whimsicott",
+   "page": "Whimsicott (Cosmic Eclipse 148)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Flabébé",
+   "page": "Flabébé (Cosmic Eclipse 149)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Flabébé",
+   "page": "Flabébé (Cosmic Eclipse 150)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Floette",
+   "page": "Floette (Cosmic Eclipse 151)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Florges",
+   "page": "Florges (Cosmic Eclipse 152)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Swirlix",
+   "page": "Swirlix (Cosmic Eclipse 153)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Slurpuff",
+   "page": "Slurpuff (Cosmic Eclipse 154)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Sylveon",
+   "page": "Sylveon (Cosmic Eclipse 155)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Arceus & Dialga & Palkia",
+   "page": "Arceus & Dialga & Palkia-GX (Cosmic Eclipse 156)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Reshiram & Zekrom",
+   "page": "Reshiram & Zekrom-GX (Cosmic Eclipse 157)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Naganadel & Guzzlord",
+   "page": "Naganadel & Guzzlord-GX (Cosmic Eclipse 158)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Drampa",
+   "page": "Drampa (Cosmic Eclipse 159)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Jangmo-o",
+   "page": "Jangmo-o (Cosmic Eclipse 160)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Jangmo-o",
+   "page": "Jangmo-o (Cosmic Eclipse 161)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Hakamo-o",
+   "page": "Hakamo-o (Cosmic Eclipse 162)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Kommo-o",
+   "page": "Kommo-o (Cosmic Eclipse 163)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Ultra Necrozma",
+   "page": "Ultra Necrozma (Cosmic Eclipse 164)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "165": {
+   "en": "Mega Lopunny & Jigglypuff",
+   "page": "Mega Lopunny & Jigglypuff-GX (Cosmic Eclipse 165)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "166": {
+   "en": "Eevee",
+   "page": "Eevee (Cosmic Eclipse 166)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "167": {
+   "en": "Eevee",
+   "page": "Eevee (Cosmic Eclipse 167)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "168": {
+   "en": "Igglybuff",
+   "page": "Igglybuff (Cosmic Eclipse 168)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "169": {
+   "en": "Aipom",
+   "page": "Aipom (Cosmic Eclipse 169)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "170": {
+   "en": "Ambipom",
+   "page": "Ambipom (Cosmic Eclipse 170)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "171": {
+   "en": "Teddiursa",
+   "page": "Teddiursa (Cosmic Eclipse 171)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "172": {
+   "en": "Ursaring",
+   "page": "Ursaring (Cosmic Eclipse 172)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "173": {
+   "en": "Zangoose",
+   "page": "Zangoose (Cosmic Eclipse 173)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "174": {
+   "en": "Lillipup",
+   "page": "Lillipup (Cosmic Eclipse 174)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "175": {
+   "en": "Herdier",
+   "page": "Herdier (Cosmic Eclipse 175)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "176": {
+   "en": "Stoutland",
+   "page": "Stoutland (Cosmic Eclipse 176)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "177": {
+   "en": "Rufflet",
+   "page": "Rufflet (Cosmic Eclipse 177)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "178": {
+   "en": "Braviary",
+   "page": "Braviary (Cosmic Eclipse 178)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "179": {
+   "en": "Helioptile",
+   "page": "Helioptile (Cosmic Eclipse 179)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "180": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (Cosmic Eclipse 180)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "181": {
+   "en": "Stufful",
+   "page": "Stufful (Cosmic Eclipse 181)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "182": {
+   "en": "Bewear",
+   "page": "Bewear (Cosmic Eclipse 182)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "183": {
+   "en": "Type: Null",
+   "page": "Type: Null (Cosmic Eclipse 183)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "184": {
+   "en": "Silvally",
+   "page": "Silvally-GX (Cosmic Eclipse 184)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "185": {
+   "en": "Beastite",
+   "page": "Beastite (Cosmic Eclipse 185)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "186": {
+   "en": "Bellelba & Brycen-Man",
+   "page": "Bellelba & Brycen-Man (Cosmic Eclipse 186)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "187": {
+   "en": "Chaotic Swell",
+   "page": "Chaotic Swell (Cosmic Eclipse 187)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "188": {
+   "en": "Clay",
+   "page": "Clay (Cosmic Eclipse 188)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "189": {
+   "en": "Cynthia & Caitlin",
+   "page": "Cynthia & Caitlin (Cosmic Eclipse 189)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "190": {
+   "en": "Dragonium Z: Dragon Claw",
+   "page": "Dragonium Z: Dragon Claw (Cosmic Eclipse 190)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "191": {
+   "en": "Erika",
+   "page": "Erika (Cosmic Eclipse 191)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "192": {
+   "en": "Great Catcher",
+   "page": "Great Catcher (Cosmic Eclipse 192)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "193": {
+   "en": "Guzma & Hala",
+   "page": "Guzma & Hala (Cosmic Eclipse 193)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "194": {
+   "en": "Island Challenge Amulet",
+   "page": "Island Challenge Amulet (Cosmic Eclipse 194)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "195": {
+   "en": "Lana's Fishing Rod",
+   "page": "Lana's Fishing Rod (Cosmic Eclipse 195)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "196": {
+   "en": "Lillie's Full Force",
+   "page": "Lillie's Full Force (Cosmic Eclipse 196)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "197": {
+   "en": "Lillie's Poké Doll",
+   "page": "Lillie's Poké Doll (Cosmic Eclipse 197)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "198": {
+   "en": "Mallow & Lana",
+   "page": "Mallow & Lana (Cosmic Eclipse 198)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "199": {
+   "en": "Misty & Lorelei",
+   "page": "Misty & Lorelei (Cosmic Eclipse 199)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "200": {
+   "en": "N's Resolve",
+   "page": "N's Resolve (Cosmic Eclipse 200)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "201": {
+   "en": "Professor Oak's Setup",
+   "page": "Professor Oak's Setup (Cosmic Eclipse 201)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "202": {
+   "en": "Red & Blue",
+   "page": "Red & Blue (Cosmic Eclipse 202)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "203": {
+   "en": "Roller Skater",
+   "page": "Roller Skater (Cosmic Eclipse 203)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "204": {
+   "en": "Rosa",
+   "page": "Rosa (Cosmic Eclipse 204)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "205": {
+   "en": "Roxie",
+   "page": "Roxie (Cosmic Eclipse 205)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "206": {
+   "en": "Tag Call",
+   "page": "Tag Call (Cosmic Eclipse 206)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "207": {
+   "en": "Unidentified Fossil",
+   "page": "Unidentified Fossil (Cosmic Eclipse 207)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "208": {
+   "en": "Will",
+   "page": "Will (Cosmic Eclipse 208)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "209": {
+   "en": "Draw Energy",
+   "page": "Draw Energy (Cosmic Eclipse 209)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "210": {
+   "en": "Venusaur & Snivy",
+   "page": "Venusaur & Snivy-GX (Cosmic Eclipse 210)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "211": {
+   "en": "Vileplume",
+   "page": "Vileplume-GX (Cosmic Eclipse 211)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "212": {
+   "en": "Charizard & Braixen",
+   "page": "Charizard & Braixen-GX (Cosmic Eclipse 212)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "213": {
+   "en": "Volcarona",
+   "page": "Volcarona-GX (Cosmic Eclipse 213)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "214": {
+   "en": "Blastoise & Piplup",
+   "page": "Blastoise & Piplup-GX (Cosmic Eclipse 214)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "215": {
+   "en": "Blastoise & Piplup",
+   "page": "Blastoise & Piplup-GX (Cosmic Eclipse 215)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "216": {
+   "en": "Solgaleo & Lunala",
+   "page": "Solgaleo & Lunala-GX (Cosmic Eclipse 216)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "217": {
+   "en": "Oricorio",
+   "page": "Oricorio-GX (Cosmic Eclipse 217)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "218": {
+   "en": "Flygon",
+   "page": "Flygon-GX (Cosmic Eclipse 218)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "219": {
+   "en": "Alolan Persian",
+   "page": "Alolan Persian-GX (Cosmic Eclipse 219)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "220": {
+   "en": "Arceus & Dialga & Palkia",
+   "page": "Arceus & Dialga & Palkia-GX (Cosmic Eclipse 220)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "221": {
+   "en": "Arceus & Dialga & Palkia",
+   "page": "Arceus & Dialga & Palkia-GX (Cosmic Eclipse 221)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "222": {
+   "en": "Reshiram & Zekrom",
+   "page": "Reshiram & Zekrom-GX (Cosmic Eclipse 222)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "223": {
+   "en": "Naganadel & Guzzlord",
+   "page": "Naganadel & Guzzlord-GX (Cosmic Eclipse 223)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "224": {
+   "en": "Naganadel & Guzzlord",
+   "page": "Naganadel & Guzzlord-GX (Cosmic Eclipse 224)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "225": {
+   "en": "Mega Lopunny & Jigglypuff",
+   "page": "Mega Lopunny & Jigglypuff-GX (Cosmic Eclipse 225)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "226": {
+   "en": "Mega Lopunny & Jigglypuff",
+   "page": "Mega Lopunny & Jigglypuff-GX (Cosmic Eclipse 226)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "227": {
+   "en": "Silvally",
+   "page": "Silvally-GX (Cosmic Eclipse 227)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "228": {
+   "en": "Cynthia & Caitlin",
+   "page": "Cynthia & Caitlin (Cosmic Eclipse 228)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "229": {
+   "en": "Guzma & Hala",
+   "page": "Guzma & Hala (Cosmic Eclipse 229)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "230": {
+   "en": "Lillie's Full Force",
+   "page": "Lillie's Full Force (Cosmic Eclipse 230)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "231": {
+   "en": "Mallow & Lana",
+   "page": "Mallow & Lana (Cosmic Eclipse 231)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "232": {
+   "en": "N's Resolve",
+   "page": "N's Resolve (Cosmic Eclipse 232)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "233": {
+   "en": "Professor Oak's Setup",
+   "page": "Professor Oak's Setup (Cosmic Eclipse 233)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "234": {
+   "en": "Red & Blue",
+   "page": "Red & Blue (Cosmic Eclipse 234)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "235": {
+   "en": "Roller Skater",
+   "page": "Roller Skater (Cosmic Eclipse 235)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "236": {
+   "en": "Rosa",
+   "page": "Rosa (Cosmic Eclipse 236)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "237": {
+   "en": "Torkoal",
+   "page": "Torkoal (Cosmic Eclipse 237)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "238": {
+   "en": "Weavile",
+   "page": "Weavile (Cosmic Eclipse 238)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "239": {
+   "en": "Piplup",
+   "page": "Piplup (Cosmic Eclipse 239)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "240": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi (Cosmic Eclipse 240)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "241": {
+   "en": "Pikachu",
+   "page": "Pikachu (Cosmic Eclipse 241)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "242": {
+   "en": "Magnemite",
+   "page": "Magnemite (Cosmic Eclipse 242)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "243": {
+   "en": "Koffing",
+   "page": "Koffing (Cosmic Eclipse 243)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "244": {
+   "en": "Gallade",
+   "page": "Gallade (Cosmic Eclipse 244)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "245": {
+   "en": "Mimikyu",
+   "page": "Mimikyu (Cosmic Eclipse 245)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "246": {
+   "en": "Excadrill",
+   "page": "Excadrill (Cosmic Eclipse 246)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "247": {
+   "en": "Steelix",
+   "page": "Steelix (Cosmic Eclipse 247)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "248": {
+   "en": "Stoutland",
+   "page": "Stoutland (Cosmic Eclipse 248)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "249": {
+   "en": "Venusaur & Snivy",
+   "page": "Venusaur & Snivy-GX (Cosmic Eclipse 249)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "250": {
+   "en": "Vileplume",
+   "page": "Vileplume-GX (Cosmic Eclipse 250)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "251": {
+   "en": "Charizard & Braixen",
+   "page": "Charizard & Braixen-GX (Cosmic Eclipse 251)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "252": {
+   "en": "Volcarona",
+   "page": "Volcarona-GX (Cosmic Eclipse 252)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "253": {
+   "en": "Blastoise & Piplup",
+   "page": "Blastoise & Piplup-GX (Cosmic Eclipse 253)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "254": {
+   "en": "Solgaleo & Lunala",
+   "page": "Solgaleo & Lunala-GX (Cosmic Eclipse 254)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "255": {
+   "en": "Oricorio",
+   "page": "Oricorio-GX (Cosmic Eclipse 255)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "256": {
+   "en": "Flygon",
+   "page": "Flygon-GX (Cosmic Eclipse 256)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "257": {
+   "en": "Alolan Persian",
+   "page": "Alolan Persian-GX (Cosmic Eclipse 257)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "258": {
+   "en": "Arceus & Dialga & Palkia",
+   "page": "Arceus & Dialga & Palkia-GX (Cosmic Eclipse 258)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "259": {
+   "en": "Reshiram & Zekrom",
+   "page": "Reshiram & Zekrom-GX (Cosmic Eclipse 259)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "260": {
+   "en": "Naganadel & Guzzlord",
+   "page": "Naganadel & Guzzlord-GX (Cosmic Eclipse 260)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "261": {
+   "en": "Mega Lopunny & Jigglypuff",
+   "page": "Mega Lopunny & Jigglypuff-GX (Cosmic Eclipse 261)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "262": {
+   "en": "Silvally",
+   "page": "Silvally-GX (Cosmic Eclipse 262)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "263": {
+   "en": "Giant Hearth",
+   "page": "Giant Hearth (Cosmic Eclipse 263)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "264": {
+   "en": "Great Catcher",
+   "page": "Great Catcher (Cosmic Eclipse 264)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "265": {
+   "en": "Island Challenge Amulet",
+   "page": "Island Challenge Amulet (Cosmic Eclipse 265)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "266": {
+   "en": "Lana's Fishing Rod",
+   "page": "Lana's Fishing Rod (Cosmic Eclipse 266)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "267": {
+   "en": "Lillie's Poké Doll",
+   "page": "Lillie's Poké Doll (Cosmic Eclipse 267)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "268": {
+   "en": "Martial Arts Dojo",
+   "page": "Martial Arts Dojo (Cosmic Eclipse 268)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "269": {
+   "en": "Power Plant",
+   "page": "Power Plant (Cosmic Eclipse 269)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "270": {
+   "en": "Tag Call",
+   "page": "Tag Call (Cosmic Eclipse 270)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "271": {
+   "en": "Draw Energy",
+   "page": "Draw Energy (Cosmic Eclipse 271)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143a": {
+   "en": "Togepi & Cleffa & Igglybuff",
+   "page": "Togepi & Cleffa & Igglybuff-GX (Cosmic Eclipse 143)",
+   "type": "—",
+   "rarity": "Yellow A Alternate art Small but Mighty Premium Collection exclusive",
+   "mark": ""
+  }
+ }
+}

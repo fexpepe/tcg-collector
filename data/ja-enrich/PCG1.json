@@ -1,0 +1,818 @@
+{
+ "page": "Flight of Legends (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Caterpie",
+   "page": "Caterpie (Flight of Legends 1)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Metapod",
+   "page": "Metapod (Flight of Legends 2)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "3": {
+   "en": "Butterfree",
+   "page": "Butterfree (Flight of Legends 3)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Weedle",
+   "page": "Weedle (Flight of Legends 4)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "5": {
+   "en": "Kakuna",
+   "page": "Kakuna (Flight of Legends 5)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "6": {
+   "en": "Beedrill",
+   "page": "Beedrill (Flight of Legends 6)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "7": {
+   "en": "Nidoran♀",
+   "page": "Nidoran♀ (Flight of Legends 7)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "8": {
+   "en": "Nidorina",
+   "page": "Nidorina (Flight of Legends 8)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "9": {
+   "en": "Nidoran♂",
+   "page": "Nidoran♂ (Flight of Legends 9)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "10": {
+   "en": "Nidorino",
+   "page": "Nidorino (Flight of Legends 10)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "11": {
+   "en": "Paras",
+   "page": "Paras (Flight of Legends 11)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "12": {
+   "en": "Parasect",
+   "page": "Parasect (Flight of Legends 12)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "13": {
+   "en": "Venonat",
+   "page": "Venonat (Flight of Legends 13)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "14": {
+   "en": "Venomoth",
+   "page": "Venomoth (Flight of Legends 14)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "15": {
+   "en": "Bellsprout",
+   "page": "Bellsprout (Flight of Legends 15)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "16": {
+   "en": "Weepinbell",
+   "page": "Weepinbell (Flight of Legends 16)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "17": {
+   "en": "Victreebel",
+   "page": "Victreebel (Flight of Legends 17)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "18": {
+   "en": "Tangela",
+   "page": "Tangela (Flight of Legends 18)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "19": {
+   "en": "Scyther",
+   "page": "Scyther (Flight of Legends 19)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "20": {
+   "en": "Growlithe",
+   "page": "Growlithe (Flight of Legends 20)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "21": {
+   "en": "Arcanine",
+   "page": "Arcanine (Flight of Legends 21)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "22": {
+   "en": "Ponyta",
+   "page": "Ponyta (Flight of Legends 22)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "23": {
+   "en": "Rapidash",
+   "page": "Rapidash (Flight of Legends 23)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "24": {
+   "en": "Moltres ex",
+   "page": "Moltres ex (Flight of Legends 24)",
+   "type": "Fire",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "25": {
+   "en": "Poliwag",
+   "page": "Poliwag (Flight of Legends 25)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "26": {
+   "en": "Poliwhirl",
+   "page": "Poliwhirl (Flight of Legends 26)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "27": {
+   "en": "Poliwrath",
+   "page": "Poliwrath (Flight of Legends 27)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "28": {
+   "en": "Seel",
+   "page": "Seel (Flight of Legends 28)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "29": {
+   "en": "Dewgong",
+   "page": "Dewgong (Flight of Legends 29)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "30": {
+   "en": "Shellder",
+   "page": "Shellder (Flight of Legends 30)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "31": {
+   "en": "Cloyster",
+   "page": "Cloyster (Flight of Legends 31)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "32": {
+   "en": "Krabby",
+   "page": "Krabby (Flight of Legends 32)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "33": {
+   "en": "Kingler",
+   "page": "Kingler (Flight of Legends 33)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "34": {
+   "en": "Magikarp",
+   "page": "Magikarp (Flight of Legends 34)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "35": {
+   "en": "Gyarados ex",
+   "page": "Gyarados ex (Flight of Legends 35)",
+   "type": "Water",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "36": {
+   "en": "Articuno ex",
+   "page": "Articuno ex (Flight of Legends 36)",
+   "type": "Water",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "37": {
+   "en": "Pikachu",
+   "page": "Pikachu (Flight of Legends 37)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "38": {
+   "en": "Raichu",
+   "page": "Raichu (Flight of Legends 38)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "39": {
+   "en": "Magnemite",
+   "page": "Magnemite (Flight of Legends 39)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "40": {
+   "en": "Magneton",
+   "page": "Magneton (Flight of Legends 40)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "41": {
+   "en": "Voltorb",
+   "page": "Voltorb (Flight of Legends 41)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "42": {
+   "en": "Electrode ex",
+   "page": "Electrode ex (Flight of Legends 42)",
+   "type": "Lightning",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "43": {
+   "en": "Zapdos ex",
+   "page": "Zapdos ex (Flight of Legends 43)",
+   "type": "Lightning",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "44": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Flight of Legends 44)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "45": {
+   "en": "Slowbro",
+   "page": "Slowbro (Flight of Legends 45)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "46": {
+   "en": "Gastly",
+   "page": "Gastly (Flight of Legends 46)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "47": {
+   "en": "Haunter",
+   "page": "Haunter (Flight of Legends 47)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "48": {
+   "en": "Gengar ex",
+   "page": "Gengar ex (Flight of Legends 48)",
+   "type": "Psychic",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "49": {
+   "en": "Drowzee",
+   "page": "Drowzee (Flight of Legends 49)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "50": {
+   "en": "Hypno",
+   "page": "Hypno (Flight of Legends 50)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "51": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Flight of Legends 51)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "52": {
+   "en": "Exeggutor",
+   "page": "Exeggutor (Flight of Legends 52)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "53": {
+   "en": "Mr. Mime ex",
+   "page": "Mr. Mime ex (Flight of Legends 53)",
+   "type": "Psychic",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "54": {
+   "en": "Mr. Mime ex",
+   "page": "Mr. Mime ex (Flight of Legends 54)",
+   "type": "Psychic",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "55": {
+   "en": "Nidoqueen",
+   "page": "Nidoqueen (Flight of Legends 55)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "56": {
+   "en": "Nidoking",
+   "page": "Nidoking (Flight of Legends 56)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "57": {
+   "en": "Diglett",
+   "page": "Diglett (Flight of Legends 57)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "58": {
+   "en": "Dugtrio",
+   "page": "Dugtrio (Flight of Legends 58)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "59": {
+   "en": "Mankey",
+   "page": "Mankey (Flight of Legends 59)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "60": {
+   "en": "Primeape",
+   "page": "Primeape (Flight of Legends 60)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "61": {
+   "en": "Onix",
+   "page": "Onix (Flight of Legends 61)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "62": {
+   "en": "Cubone",
+   "page": "Cubone (Flight of Legends 62)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "63": {
+   "en": "Marowak",
+   "page": "Marowak (Flight of Legends 63)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "64": {
+   "en": "Pidgeot",
+   "page": "Pidgeot (Flight of Legends 64)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "65": {
+   "en": "Clefairy",
+   "page": "Clefairy (Flight of Legends 65)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "66": {
+   "en": "Clefable ex",
+   "page": "Clefable ex (Flight of Legends 66)",
+   "type": "Colorless",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "67": {
+   "en": "Farfetch'd",
+   "page": "Farfetch'd (Flight of Legends 67)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "68": {
+   "en": "Lickitung",
+   "page": "Lickitung (Flight of Legends 68)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "69": {
+   "en": "Chansey",
+   "page": "Chansey (Flight of Legends 69)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "70": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (Flight of Legends 70)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "71": {
+   "en": "Tauros",
+   "page": "Tauros (Flight of Legends 71)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "72": {
+   "en": "Ditto",
+   "page": "Ditto (Flight of Legends 72)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "73": {
+   "en": "Porygon",
+   "page": "Porygon (Flight of Legends 73)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "74": {
+   "en": "Snorlax",
+   "page": "Snorlax (Flight of Legends 74)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "75": {
+   "en": "Great Ball",
+   "page": "Great Ball (Flight of Legends 75)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "76": {
+   "en": "VS Seeker",
+   "page": "VS Seeker (Flight of Legends 76)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "77": {
+   "en": "PokéDex HANDY909",
+   "page": "PokéDex HANDY909 (Flight of Legends 77)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "78": {
+   "en": "Professor Oak's Research",
+   "page": "Professor Oak's Research (Flight of Legends 78)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "79": {
+   "en": "Celio's Network",
+   "page": "Celio's Network (Flight of Legends 79)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "80": {
+   "en": "Bill's Maintenance",
+   "page": "Bill's Maintenance (Flight of Legends 80)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "81": {
+   "en": "EXP. ALL",
+   "page": "EXP. ALL (Flight of Legends 81)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "82": {
+   "en": "Mt. Moon",
+   "page": "Mt. Moon (Flight of Legends 82)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "83": {
+   "en": "Squirtle",
+   "page": "Squirtle (EX FireRed & LeafGreen 83)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "84": {
+   "en": "Venonat",
+   "page": "Venonat (EX FireRed & LeafGreen 84)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "85": {
+   "en": "Voltorb",
+   "page": "Voltorb (EX FireRed & LeafGreen 85)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "86": {
+   "en": "Weedle",
+   "page": "Weedle (EX FireRed & LeafGreen 86)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "87": {
+   "en": "Bill's Maintenance",
+   "page": "Bill's Maintenance (EX FireRed & LeafGreen 87)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88": {
+   "en": "Celio's Network",
+   "page": "Celio's Network (EX FireRed & LeafGreen 88)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "89": {
+   "en": "Energy Removal 2",
+   "page": "Energy Removal 2 (EX FireRed & LeafGreen 89)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (EX FireRed & LeafGreen 90)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "EXP.ALL",
+   "page": "EXP.ALL (EX FireRed & LeafGreen 91)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Great Ball",
+   "page": "Great Ball (EX FireRed & LeafGreen 92)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Life Herb",
+   "page": "Life Herb (EX FireRed & LeafGreen 93)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Mt. Moon",
+   "page": "Mt. Moon (EX FireRed & LeafGreen 94)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Poké Ball",
+   "page": "Poké Ball (EX FireRed & LeafGreen 95)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "PokéDex HANDY909",
+   "page": "PokéDex HANDY909 (EX FireRed & LeafGreen 96)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Pokémon Reversal",
+   "page": "Pokémon Reversal (EX FireRed & LeafGreen 97)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Prof. Oak's Research",
+   "page": "Prof. Oak's Research (EX FireRed & LeafGreen 98)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Super Scoop Up",
+   "page": "Super Scoop Up (EX FireRed & LeafGreen 99)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "VS Seeker",
+   "page": "VS Seeker (EX FireRed & LeafGreen 100)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Potion",
+   "page": "Potion (EX FireRed & LeafGreen 101)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Switch",
+   "page": "Switch (EX FireRed & LeafGreen 102)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Multi Energy",
+   "page": "Multi Energy (EX FireRed & LeafGreen 103)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Blastoise ex",
+   "page": "Blastoise ex (EX FireRed & LeafGreen 104)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Charizard ex",
+   "page": "Charizard ex (EX FireRed & LeafGreen 105)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Clefable ex",
+   "page": "Clefable ex (EX FireRed & LeafGreen 106)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Electrode ex",
+   "page": "Electrode ex (EX FireRed & LeafGreen 107)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Gengar ex",
+   "page": "Gengar ex (EX FireRed & LeafGreen 108)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Gyarados ex",
+   "page": "Gyarados ex (EX FireRed & LeafGreen 109)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Mr. Mime ex",
+   "page": "Mr. Mime ex (EX FireRed & LeafGreen 110)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Mr. Mime ex",
+   "page": "Mr. Mime ex (EX FireRed & LeafGreen 111)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Venusaur ex",
+   "page": "Venusaur ex (EX FireRed & LeafGreen 112)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Charmander",
+   "page": "Charmander (EX FireRed & LeafGreen 113)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Articuno ex",
+   "page": "Articuno ex (EX FireRed & LeafGreen 114)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Moltres ex",
+   "page": "Moltres ex (EX FireRed & LeafGreen 115)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Zapdos ex",
+   "page": "Zapdos ex (EX FireRed & LeafGreen 116)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

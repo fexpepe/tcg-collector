@@ -1,0 +1,923 @@
+{
+ "page": "Premium Champion Pack (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Beedrill",
+   "page": "Beedrill-EX (Premium Champion Pack 1)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "2": {
+   "en": "Beedrill",
+   "page": "M Beedrill-EX (Premium Champion Pack 2)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "3": {
+   "en": "Pinsir",
+   "page": "Pinsir (Premium Champion Pack 3)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Spinarak",
+   "page": "Spinarak (Premium Champion Pack 4)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "5": {
+   "en": "Ariados",
+   "page": "Ariados (Premium Champion Pack 5)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "6": {
+   "en": "Sceptile",
+   "page": "Sceptile-EX (Premium Champion Pack 6)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "7": {
+   "en": "Sceptile",
+   "page": "M Sceptile-EX (Premium Champion Pack 7)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "8": {
+   "en": "Nincada",
+   "page": "Nincada (Premium Champion Pack 8)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "9": {
+   "en": "Shedinja",
+   "page": "Shedinja (Premium Champion Pack 9)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Combee",
+   "page": "Combee (Premium Champion Pack 10)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "11": {
+   "en": "Vespiquen",
+   "page": "Vespiquen (Premium Champion Pack 11)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "12": {
+   "en": "Chespin",
+   "page": "Chespin (Premium Champion Pack 12)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "13": {
+   "en": "Quilladin",
+   "page": "Quilladin (Premium Champion Pack 13)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "14": {
+   "en": "Chesnaught",
+   "page": "Chesnaught (Premium Champion Pack 14)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Chesnaught",
+   "page": "Chesnaught BREAK (Premium Champion Pack 15)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "16": {
+   "en": "Entei",
+   "page": "Entei (Premium Champion Pack 16)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "17": {
+   "en": "Fennekin",
+   "page": "Fennekin (Premium Champion Pack 17)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "18": {
+   "en": "Braixen",
+   "page": "Braixen (Premium Champion Pack 18)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "19": {
+   "en": "Delphox",
+   "page": "Delphox (Premium Champion Pack 19)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "20": {
+   "en": "Litleo",
+   "page": "Litleo (Premium Champion Pack 20)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "21": {
+   "en": "Pyroar",
+   "page": "Pyroar (Premium Champion Pack 21)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "22": {
+   "en": "Pyroar",
+   "page": "Pyroar (Premium Champion Pack 22)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "23": {
+   "en": "Articuno",
+   "page": "Articuno (Premium Champion Pack 23)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "24": {
+   "en": "Remoraid",
+   "page": "Remoraid (Premium Champion Pack 24)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "25": {
+   "en": "Octillery",
+   "page": "Octillery (Premium Champion Pack 25)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "26": {
+   "en": "Mudkip",
+   "page": "Mudkip (Premium Champion Pack 26)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "27": {
+   "en": "Marshtomp",
+   "page": "Marshtomp (Premium Champion Pack 27)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "28": {
+   "en": "Swampert",
+   "page": "Swampert (Premium Champion Pack 28)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "29": {
+   "en": "Regice",
+   "page": "Regice (Premium Champion Pack 29)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "30": {
+   "en": "Seismitoad",
+   "page": "Seismitoad-EX (Premium Champion Pack 30)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "31": {
+   "en": "Cubchoo",
+   "page": "Cubchoo (Premium Champion Pack 31)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "32": {
+   "en": "Beartic",
+   "page": "Beartic (Premium Champion Pack 32)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "33": {
+   "en": "Froakie",
+   "page": "Froakie (Premium Champion Pack 33)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "34": {
+   "en": "Frogadier",
+   "page": "Frogadier (Premium Champion Pack 34)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "35": {
+   "en": "Greninja",
+   "page": "Greninja (Premium Champion Pack 35)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "36": {
+   "en": "Pikachu",
+   "page": "Pikachu (Premium Champion Pack 36)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "37": {
+   "en": "Raichu",
+   "page": "Raichu (Premium Champion Pack 37)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "38": {
+   "en": "Magnemite",
+   "page": "Magnemite (Premium Champion Pack 38)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "39": {
+   "en": "Magneton",
+   "page": "Magneton (Premium Champion Pack 39)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "40": {
+   "en": "Magnezone",
+   "page": "Magnezone (Premium Champion Pack 40)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "41": {
+   "en": "Zapdos",
+   "page": "Zapdos (Premium Champion Pack 41)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "42": {
+   "en": "Manectric",
+   "page": "Manectric-EX (Premium Champion Pack 42)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "43": {
+   "en": "Manectric",
+   "page": "M Manectric-EX (Premium Champion Pack 43)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "44": {
+   "en": "Joltik",
+   "page": "Joltik (Premium Champion Pack 44)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "45": {
+   "en": "Zubat",
+   "page": "Zubat (Premium Champion Pack 45)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "46": {
+   "en": "Golbat",
+   "page": "Golbat (Premium Champion Pack 46)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "47": {
+   "en": "Crobat",
+   "page": "Crobat (Premium Champion Pack 47)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "48": {
+   "en": "Gengar",
+   "page": "Gengar-EX (Premium Champion Pack 48)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "49": {
+   "en": "Gengar",
+   "page": "M Gengar-EX (Premium Champion Pack 49)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "50": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-EX (Premium Champion Pack 50)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "51": {
+   "en": "Mewtwo",
+   "page": "M Mewtwo-EX (Premium Champion Pack 51)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "52": {
+   "en": "Mewtwo",
+   "page": "M Mewtwo-EX (Premium Champion Pack 52)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "53": {
+   "en": "Unown",
+   "page": "Unown (Premium Champion Pack 53)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "54": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (Premium Champion Pack 54)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "55": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet BREAK (Premium Champion Pack 55)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "56": {
+   "en": "Deoxys",
+   "page": "Deoxys (Premium Champion Pack 56)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "57": {
+   "en": "Litwick",
+   "page": "Litwick (Premium Champion Pack 57)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "58": {
+   "en": "Lampent",
+   "page": "Lampent (Premium Champion Pack 58)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "59": {
+   "en": "Chandelure",
+   "page": "Chandelure (Premium Champion Pack 59)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "60": {
+   "en": "Phantump",
+   "page": "Phantump (Premium Champion Pack 60)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "61": {
+   "en": "Trevenant",
+   "page": "Trevenant (Premium Champion Pack 61)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "62": {
+   "en": "Pumpkaboo",
+   "page": "Pumpkaboo (Premium Champion Pack 62)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "63": {
+   "en": "Gourgeist",
+   "page": "Gourgeist (Premium Champion Pack 63)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "64": {
+   "en": "Hoopa",
+   "page": "Hoopa-EX (Premium Champion Pack 64)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "65": {
+   "en": "Machop",
+   "page": "Machop (Premium Champion Pack 65)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "66": {
+   "en": "Machoke",
+   "page": "Machoke (Premium Champion Pack 66)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "67": {
+   "en": "Machamp",
+   "page": "Machamp (Premium Champion Pack 67)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "68": {
+   "en": "Cubone",
+   "page": "Cubone (Premium Champion Pack 68)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "69": {
+   "en": "Marowak",
+   "page": "Marowak (Premium Champion Pack 69)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "70": {
+   "en": "Meditite",
+   "page": "Meditite (Premium Champion Pack 70)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "71": {
+   "en": "Medicham",
+   "page": "Medicham (Premium Champion Pack 71)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "72": {
+   "en": "Groudon",
+   "page": "Groudon-EX (Premium Champion Pack 72)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "73": {
+   "en": "Primal Groudon",
+   "page": "Primal Groudon-EX (Premium Champion Pack 73)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "74": {
+   "en": "Lucario",
+   "page": "Lucario-EX (Premium Champion Pack 74)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "75": {
+   "en": "Lucario",
+   "page": "M Lucario-EX (Premium Champion Pack 75)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "76": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (Premium Champion Pack 76)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "77": {
+   "en": "Absol",
+   "page": "Absol (Premium Champion Pack 77)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "78": {
+   "en": "Yveltal",
+   "page": "Yveltal (Premium Champion Pack 78)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "79": {
+   "en": "Yveltal",
+   "page": "Yveltal-EX (Premium Champion Pack 79)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "80": {
+   "en": "Bronzor",
+   "page": "Bronzor (Premium Champion Pack 80)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "81": {
+   "en": "Bronzong",
+   "page": "Bronzong (Premium Champion Pack 81)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "82": {
+   "en": "Heatran",
+   "page": "Heatran (Premium Champion Pack 82)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "83": {
+   "en": "Togepi",
+   "page": "Togepi (Premium Champion Pack 83)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "84": {
+   "en": "Togetic",
+   "page": "Togetic (Premium Champion Pack 84)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "85": {
+   "en": "Togekiss",
+   "page": "Togekiss (Premium Champion Pack 85)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "86": {
+   "en": "Florges",
+   "page": "Florges-EX (Premium Champion Pack 86)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "87": {
+   "en": "Spritzee",
+   "page": "Spritzee (Premium Champion Pack 87)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "88": {
+   "en": "Aromatisse",
+   "page": "Aromatisse (Premium Champion Pack 88)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "89": {
+   "en": "Xerneas",
+   "page": "Xerneas (Premium Champion Pack 89)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "90": {
+   "en": "Xerneas",
+   "page": "Xerneas-EX (Premium Champion Pack 90)",
+   "type": "Fairy",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "91": {
+   "en": "Giratina",
+   "page": "Giratina-EX (Premium Champion Pack 91)",
+   "type": "Dragon",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "92": {
+   "en": "Noivern",
+   "page": "Noivern (Premium Champion Pack 92)",
+   "type": "Dragon",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "93": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan-EX (Premium Champion Pack 93)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "94": {
+   "en": "Kangaskhan",
+   "page": "M Kangaskhan-EX (Premium Champion Pack 94)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "95": {
+   "en": "Miltank",
+   "page": "Miltank (Premium Champion Pack 95)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "96": {
+   "en": "Rayquaza",
+   "page": "Rayquaza-EX (Premium Champion Pack 96)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "97": {
+   "en": "Rayquaza",
+   "page": "M Rayquaza-EX (Premium Champion Pack 97)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "98": {
+   "en": "Shaymin",
+   "page": "Shaymin-EX (Premium Champion Pack 98)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "99": {
+   "en": "Noibat",
+   "page": "Noibat (Premium Champion Pack 99)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "100": {
+   "en": "Escape Rope",
+   "page": "Escape Rope (Premium Champion Pack 100)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "101": {
+   "en": "Enhanced Hammer",
+   "page": "Enhanced Hammer (Premium Champion Pack 101)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "102": {
+   "en": "Trainers' Mail",
+   "page": "Trainers' Mail (Premium Champion Pack 102)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "103": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Premium Champion Pack 103)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "104": {
+   "en": "Battle Compressor",
+   "page": "Battle Compressor (Premium Champion Pack 104)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "105": {
+   "en": "VS Seeker",
+   "page": "VS Seeker (Premium Champion Pack 105)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "106": {
+   "en": "Startling Megaphone",
+   "page": "Startling Megaphone (Premium Champion Pack 106)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "107": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Premium Champion Pack 107)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "108": {
+   "en": "Red Card",
+   "page": "Red Card (Premium Champion Pack 108)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "109": {
+   "en": "Float Stone",
+   "page": "Float Stone (Premium Champion Pack 109)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "110": {
+   "en": "Groudon Spirit Link",
+   "page": "Groudon Spirit Link (Premium Champion Pack 110)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "111": {
+   "en": "Gengar Spirit Link",
+   "page": "Gengar Spirit Link (Premium Champion Pack 111)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "112": {
+   "en": "Sceptile Spirit Link",
+   "page": "Sceptile Spirit Link (Premium Champion Pack 112)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "113": {
+   "en": "Beedrill Spirit Link",
+   "page": "Beedrill Spirit Link (Premium Champion Pack 113)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "114": {
+   "en": "Mewtwo Spirit Link",
+   "page": "Mewtwo Spirit Link (Premium Champion Pack 114)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "115": {
+   "en": "Manectric Spirit Link",
+   "page": "Manectric Spirit Link (Premium Champion Pack 115)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "116": {
+   "en": "Rayquaza Spirit Link",
+   "page": "Rayquaza Spirit Link (Premium Champion Pack 116)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "117": {
+   "en": "Head Ringer",
+   "page": "Head Ringer (Premium Champion Pack 117)",
+   "type": "I",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "118": {
+   "en": "Brigette",
+   "page": "Brigette (Premium Champion Pack 118)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "119": {
+   "en": "Xerosic",
+   "page": "Xerosic (Premium Champion Pack 119)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "120": {
+   "en": "Korrina",
+   "page": "Korrina (Premium Champion Pack 120)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "121": {
+   "en": "Giovanni's Scheme",
+   "page": "Giovanni's Scheme (Premium Champion Pack 121)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "122": {
+   "en": "Shauna",
+   "page": "Shauna (Premium Champion Pack 122)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "123": {
+   "en": "Teammates",
+   "page": "Teammates (Premium Champion Pack 123)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "124": {
+   "en": "Professor Sycamore",
+   "page": "Professor Sycamore (Premium Champion Pack 124)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "125": {
+   "en": "Lysandre",
+   "page": "Lysandre (Premium Champion Pack 125)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "126": {
+   "en": "Team Flare Grunt",
+   "page": "Team Flare Grunt (Premium Champion Pack 126)",
+   "type": "Su",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "127": {
+   "en": "Forest of Giant Plants",
+   "page": "Forest of Giant Plants (Premium Champion Pack 127)",
+   "type": "St",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "128": {
+   "en": "Dimension Valley",
+   "page": "Dimension Valley (Premium Champion Pack 128)",
+   "type": "St",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "129": {
+   "en": "Sky Field",
+   "page": "Sky Field (Premium Champion Pack 129)",
+   "type": "St",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "130": {
+   "en": "Fighting Stadium",
+   "page": "Fighting Stadium (Premium Champion Pack 130)",
+   "type": "St",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "131": {
+   "en": "Double Colorless Energy",
+   "page": "Double Colorless Energy (Premium Champion Pack 131)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  }
+ }
+}

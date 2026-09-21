@@ -1,0 +1,664 @@
+{
+ "page": "Legendary Heartbeat (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Weedle",
+   "page": "Weedle (Legendary Heartbeat 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Kakuna",
+   "page": "Kakuna (Legendary Heartbeat 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Beedrill",
+   "page": "Beedrill (Legendary Heartbeat 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Legendary Heartbeat 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Exeggutor",
+   "page": "Exeggutor (Legendary Heartbeat 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Yanma",
+   "page": "Yanma (Legendary Heartbeat 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Yanmega",
+   "page": "Yanmega (Legendary Heartbeat 7)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "8": {
+   "en": "Pineco",
+   "page": "Pineco (Legendary Heartbeat 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Celebi",
+   "page": "Celebi (Legendary Heartbeat 9)",
+   "type": "Grass",
+   "rarity": "A",
+   "mark": ""
+  },
+  "10": {
+   "en": "Shaymin",
+   "page": "Shaymin (Legendary Heartbeat 10)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "11": {
+   "en": "Genesect",
+   "page": "Genesect (Legendary Heartbeat 11)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Dhelmise",
+   "page": "Dhelmise (Legendary Heartbeat 12)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Zarude",
+   "page": "Zarude V (Legendary Heartbeat 13)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "14": {
+   "en": "Ampharos",
+   "page": "Ampharos V (Legendary Heartbeat 14)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "15": {
+   "en": "Raikou",
+   "page": "Raikou (Legendary Heartbeat 15)",
+   "type": "Lightning",
+   "rarity": "A",
+   "mark": ""
+  },
+  "16": {
+   "en": "Electrike",
+   "page": "Electrike (Legendary Heartbeat 16)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Manectric",
+   "page": "Manectric (Legendary Heartbeat 17)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Joltik",
+   "page": "Joltik (Legendary Heartbeat 18)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Galvantula",
+   "page": "Galvantula (Legendary Heartbeat 19)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Zekrom",
+   "page": "Zekrom (Legendary Heartbeat 20)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "21": {
+   "en": "Zeraora",
+   "page": "Zeraora (Legendary Heartbeat 21)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Pincurchin",
+   "page": "Pincurchin (Legendary Heartbeat 22)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Clefairy",
+   "page": "Clefairy (Legendary Heartbeat 23)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Clefable",
+   "page": "Clefable (Legendary Heartbeat 24)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Girafarig",
+   "page": "Girafarig (Legendary Heartbeat 25)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Shuppet",
+   "page": "Shuppet (Legendary Heartbeat 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Banette",
+   "page": "Banette (Legendary Heartbeat 27)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Dedenne",
+   "page": "Dedenne (Legendary Heartbeat 28)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Xerneas",
+   "page": "Xerneas (Legendary Heartbeat 29)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "30": {
+   "en": "Diancie",
+   "page": "Diancie (Legendary Heartbeat 30)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "31": {
+   "en": "Alcremie",
+   "page": "Alcremie V (Legendary Heartbeat 31)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "32": {
+   "en": "Alcremie",
+   "page": "Alcremie VMAX (Legendary Heartbeat 32)",
+   "type": "Psychic",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "33": {
+   "en": "Zacian",
+   "page": "Zacian (Legendary Heartbeat 33)",
+   "type": "Psychic",
+   "rarity": "A",
+   "mark": ""
+  },
+  "34": {
+   "en": "Wooper",
+   "page": "Wooper (Legendary Heartbeat 34)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Quagsire",
+   "page": "Quagsire (Legendary Heartbeat 35)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Shuckle",
+   "page": "Shuckle (Legendary Heartbeat 36)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Regirock",
+   "page": "Regirock (Legendary Heartbeat 37)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "38": {
+   "en": "Riolu",
+   "page": "Riolu (Legendary Heartbeat 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Zygarde",
+   "page": "Zygarde (Legendary Heartbeat 39)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "40": {
+   "en": "Rockruff",
+   "page": "Rockruff (Legendary Heartbeat 40)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Lycanroc",
+   "page": "Lycanroc (Legendary Heartbeat 41)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "42": {
+   "en": "Coalossal",
+   "page": "Coalossal V (Legendary Heartbeat 42)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "43": {
+   "en": "Coalossal",
+   "page": "Coalossal VMAX (Legendary Heartbeat 43)",
+   "type": "Fighting",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "44": {
+   "en": "Zamazenta",
+   "page": "Zamazenta (Legendary Heartbeat 44)",
+   "type": "Fighting",
+   "rarity": "A",
+   "mark": ""
+  },
+  "45": {
+   "en": "Forretress",
+   "page": "Forretress (Legendary Heartbeat 45)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Steelix",
+   "page": "Steelix V (Legendary Heartbeat 46)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "47": {
+   "en": "Beldum",
+   "page": "Beldum (Legendary Heartbeat 47)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Metang",
+   "page": "Metang (Legendary Heartbeat 48)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Metagross",
+   "page": "Metagross (Legendary Heartbeat 49)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Jirachi",
+   "page": "Jirachi (Legendary Heartbeat 50)",
+   "type": "Metal",
+   "rarity": "A",
+   "mark": ""
+  },
+  "51": {
+   "en": "Lucario",
+   "page": "Lucario (Legendary Heartbeat 51)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Dialga",
+   "page": "Dialga (Legendary Heartbeat 52)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "53": {
+   "en": "Galarian Stunfisk",
+   "page": "Galarian Stunfisk (Legendary Heartbeat 53)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Magearna",
+   "page": "Magearna (Legendary Heartbeat 54)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "55": {
+   "en": "Lugia",
+   "page": "Lugia (Legendary Heartbeat 55)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "56": {
+   "en": "Rayquaza",
+   "page": "Rayquaza (Legendary Heartbeat 56)",
+   "type": "Colorless",
+   "rarity": "A",
+   "mark": ""
+  },
+  "57": {
+   "en": "Chatot",
+   "page": "Chatot (Legendary Heartbeat 57)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Togekiss",
+   "page": "Togekiss V (Legendary Heartbeat 58)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Togekiss",
+   "page": "Togekiss VMAX (Legendary Heartbeat 59)",
+   "type": "Colorless",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Tornadus",
+   "page": "Tornadus (Legendary Heartbeat 60)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "61": {
+   "en": "Pikipek",
+   "page": "Pikipek (Legendary Heartbeat 61)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Trumbeak",
+   "page": "Trumbeak (Legendary Heartbeat 62)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Toucannon",
+   "page": "Toucannon (Legendary Heartbeat 63)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Great Ball",
+   "page": "Great Ball (Legendary Heartbeat 64)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Switch",
+   "page": "Switch (Legendary Heartbeat 65)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (Legendary Heartbeat 66)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Moomoo Cheese",
+   "page": "Moomoo Cheese (Legendary Heartbeat 67)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Hero's Medal",
+   "page": "Hero's Medal (Legendary Heartbeat 68)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Rocky Helmet",
+   "page": "Rocky Helmet (Legendary Heartbeat 69)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Beauty",
+   "page": "Beauty (Legendary Heartbeat 70)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Allister",
+   "page": "Allister (Legendary Heartbeat 71)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Opal",
+   "page": "Opal (Legendary Heartbeat 72)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "73": {
+   "en": "Marnie",
+   "page": "Marnie (Legendary Heartbeat 73)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "74": {
+   "en": "Aromatic",
+   "page": "Aromatic G Energy (Legendary Heartbeat 74)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "75": {
+   "en": "Stone",
+   "page": "Stone F Energy (Legendary Heartbeat 75)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "76": {
+   "en": "Twin Energy",
+   "page": "Twin Energy (Legendary Heartbeat 76)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Zarude",
+   "page": "Zarude V (Legendary Heartbeat 77)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Ampharos",
+   "page": "Ampharos V (Legendary Heartbeat 78)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Alcremie",
+   "page": "Alcremie V (Legendary Heartbeat 79)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Coalossal",
+   "page": "Coalossal V (Legendary Heartbeat 80)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Steelix",
+   "page": "Steelix V (Legendary Heartbeat 81)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Togekiss",
+   "page": "Togekiss V (Legendary Heartbeat 82)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Beauty",
+   "page": "Beauty (Legendary Heartbeat 83)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Allister",
+   "page": "Allister (Legendary Heartbeat 84)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Opal",
+   "page": "Opal (Legendary Heartbeat 85)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Alcremie",
+   "page": "Alcremie VMAX (Legendary Heartbeat 86)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Coalossal",
+   "page": "Coalossal VMAX (Legendary Heartbeat 87)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Togekiss",
+   "page": "Togekiss VMAX (Legendary Heartbeat 88)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Beauty",
+   "page": "Beauty (Legendary Heartbeat 89)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Allister",
+   "page": "Allister (Legendary Heartbeat 90)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Opal",
+   "page": "Opal (Legendary Heartbeat 91)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Oranguru",
+   "page": "Oranguru (Legendary Heartbeat 92)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Hero's Medal",
+   "page": "Hero's Medal (Legendary Heartbeat 93)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Cape of Toughness",
+   "page": "Cape of Toughness (Legendary Heartbeat 94)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

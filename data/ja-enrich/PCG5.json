@@ -1,0 +1,657 @@
+{
+ "page": "Mirage Forest (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Bellsprout",
+   "page": "Bellsprout (Mirage Forest 1)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Weepinbell",
+   "page": "Weepinbell (Mirage Forest 2)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "3": {
+   "en": "Victreebel",
+   "page": "Victreebel (Mirage Forest 3)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Grimer",
+   "page": "Grimer (Mirage Forest 4)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "5": {
+   "en": "Muk",
+   "page": "Muk (Mirage Forest 5)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "6": {
+   "en": "Tangela",
+   "page": "Tangela (Mirage Forest 6)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "7": {
+   "en": "Pinsir",
+   "page": "Pinsir (Mirage Forest 7)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "8": {
+   "en": "Wurmple",
+   "page": "Wurmple (Mirage Forest 8)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "9": {
+   "en": "Cascoon",
+   "page": "Cascoon (Mirage Forest 9)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "10": {
+   "en": "Dustox ex",
+   "page": "Dustox ex (Mirage Forest 10)",
+   "type": "Grass",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "11": {
+   "en": "Seedot",
+   "page": "Seedot (Mirage Forest 11)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "12": {
+   "en": "Roselia",
+   "page": "Roselia (Mirage Forest 12)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "13": {
+   "en": "Lileep",
+   "page": "Lileep (Mirage Forest 13)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "14": {
+   "en": "Cradily",
+   "page": "Cradily (Mirage Forest 14)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Growlithe",
+   "page": "Growlithe (Mirage Forest 15)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "16": {
+   "en": "Arcanine ex",
+   "page": "Arcanine ex (Mirage Forest 16)",
+   "type": "Fire",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "17": {
+   "en": "Magmar",
+   "page": "Magmar (Mirage Forest 17)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "18": {
+   "en": "Magby",
+   "page": "Magby (Mirage Forest 18)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "19": {
+   "en": "Torkoal",
+   "page": "Torkoal (Mirage Forest 19)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "20": {
+   "en": "Tentacool",
+   "page": "Tentacool (Mirage Forest 20)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "21": {
+   "en": "Tentacruel",
+   "page": "Tentacruel (Mirage Forest 21)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "22": {
+   "en": "Lapras",
+   "page": "Lapras (Mirage Forest 22)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "23": {
+   "en": "Omanyte",
+   "page": "Omanyte (Mirage Forest 23)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "24": {
+   "en": "Omastar",
+   "page": "Omastar (Mirage Forest 24)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "25": {
+   "en": "Wailmer",
+   "page": "Wailmer (Mirage Forest 25)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "26": {
+   "en": "Wailord",
+   "page": "Wailord (Mirage Forest 26)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "27": {
+   "en": "Spheal",
+   "page": "Spheal (Mirage Forest 27)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "28": {
+   "en": "Sealeo",
+   "page": "Sealeo (Mirage Forest 28)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "29": {
+   "en": "Walrein ex",
+   "page": "Walrein ex (Mirage Forest 29)",
+   "type": "Water",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "30": {
+   "en": "Clamperl",
+   "page": "Clamperl (Mirage Forest 30)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "31": {
+   "en": "Huntail",
+   "page": "Huntail (Mirage Forest 31)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "32": {
+   "en": "Gorebyss",
+   "page": "Gorebyss (Mirage Forest 32)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "33": {
+   "en": "Regice",
+   "page": "Regice ☆ (Mirage Forest 33)",
+   "type": "Water",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "34": {
+   "en": "Magnemite",
+   "page": "Magnemite (Mirage Forest 34)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "35": {
+   "en": "Magneton",
+   "page": "Magneton (Mirage Forest 35)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "36": {
+   "en": "Chinchou",
+   "page": "Chinchou (Mirage Forest 36)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "37": {
+   "en": "Lanturn",
+   "page": "Lanturn (Mirage Forest 37)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "38": {
+   "en": "Gastly",
+   "page": "Gastly (Mirage Forest 38)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "39": {
+   "en": "Haunter",
+   "page": "Haunter (Mirage Forest 39)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "40": {
+   "en": "Gengar",
+   "page": "Gengar (Mirage Forest 40)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "41": {
+   "en": "Mew ex",
+   "page": "Mew ex (Mirage Forest 41)",
+   "type": "Psychic",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "42": {
+   "en": "Misdreavus",
+   "page": "Misdreavus (Mirage Forest 42)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "43": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (Mirage Forest 43)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "44": {
+   "en": "Girafarig",
+   "page": "Girafarig (Mirage Forest 44)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "45": {
+   "en": "Lunatone",
+   "page": "Lunatone (Mirage Forest 45)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "46": {
+   "en": "Wynaut",
+   "page": "Wynaut (Mirage Forest 46)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "47": {
+   "en": "Machop",
+   "page": "Machop (Mirage Forest 47)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "48": {
+   "en": "Machoke",
+   "page": "Machoke (Mirage Forest 48)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "49": {
+   "en": "Machamp",
+   "page": "Machamp (Mirage Forest 49)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "50": {
+   "en": "Geodude",
+   "page": "Geodude (Mirage Forest 50)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "51": {
+   "en": "Graveler",
+   "page": "Graveler (Mirage Forest 51)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "52": {
+   "en": "Golem",
+   "page": "Golem (Mirage Forest 52)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "53": {
+   "en": "Kabuto",
+   "page": "Kabuto (Mirage Forest 53)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "54": {
+   "en": "Kabutops",
+   "page": "Kabutops (Mirage Forest 54)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "55": {
+   "en": "Trapinch",
+   "page": "Trapinch (Mirage Forest 55)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "56": {
+   "en": "Solrock",
+   "page": "Solrock (Mirage Forest 56)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "57": {
+   "en": "Anorith",
+   "page": "Anorith (Mirage Forest 57)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "58": {
+   "en": "Armaldo ex",
+   "page": "Armaldo ex (Mirage Forest 58)",
+   "type": "Fighting",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "59": {
+   "en": "Regirock",
+   "page": "Regirock ☆ (Mirage Forest 59)",
+   "type": "Fighting",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "60": {
+   "en": "Aerodactyl",
+   "page": "Aerodactyl (Mirage Forest 60)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "61": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (Mirage Forest 61)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "62": {
+   "en": "Skitty",
+   "page": "Skitty (Mirage Forest 62)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "63": {
+   "en": "Delcatty",
+   "page": "Delcatty (Mirage Forest 63)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "64": {
+   "en": "Spinda",
+   "page": "Spinda (Mirage Forest 64)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "65": {
+   "en": "Vibrava",
+   "page": "Vibrava (Mirage Forest 65)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "66": {
+   "en": "Flygon ex",
+   "page": "Flygon ex (Mirage Forest 66)",
+   "type": "Colorless",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "67": {
+   "en": "Swablu",
+   "page": "Swablu (Mirage Forest 67)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "68": {
+   "en": "Altaria ex",
+   "page": "Altaria ex (Mirage Forest 68)",
+   "type": "Colorless",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "69": {
+   "en": "Kecleon",
+   "page": "Kecleon (Mirage Forest 69)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "70": {
+   "en": "Nuzleaf",
+   "page": "Nuzleaf (Mirage Forest 70)",
+   "type": "Darkness",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "71": {
+   "en": "Shiftry",
+   "page": "Shiftry (Mirage Forest 71)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "72": {
+   "en": "Absol",
+   "page": "Absol (Mirage Forest 72)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "73": {
+   "en": "Aron",
+   "page": "Aron (Mirage Forest 73)",
+   "type": "Metal",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "74": {
+   "en": "Lairon",
+   "page": "Lairon (Mirage Forest 74)",
+   "type": "Metal",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "75": {
+   "en": "Aggron",
+   "page": "Aggron (Mirage Forest 75)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "76": {
+   "en": "Registeel",
+   "page": "Registeel ☆ (Mirage Forest 76)",
+   "type": "Metal",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "77": {
+   "en": "Claw Fossil",
+   "page": "Claw Fossil (Mirage Forest 77)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "78": {
+   "en": "Mysterious Fossil",
+   "page": "Mysterious Fossil (Mirage Forest 78)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "79": {
+   "en": "Root Fossil",
+   "page": "Root Fossil (Mirage Forest 79)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "80": {
+   "en": "Fieldworker",
+   "page": "Fieldworker (Mirage Forest 80)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "81": {
+   "en": "Strange Cave",
+   "page": "Strange Cave (Mirage Forest 81)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "82": {
+   "en": "Full Flame",
+   "page": "Full Flame (Mirage Forest 82)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "83": {
+   "en": "Giant Stump",
+   "page": "Giant Stump (Mirage Forest 83)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "84": {
+   "en": "Cursed Stone",
+   "page": "Cursed Stone (Mirage Forest 84)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "85": {
+   "en": "Power Tree",
+   "page": "Power Tree (Mirage Forest 85)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "86": {
+   "en": "React Energy",
+   "page": "React Energy (Mirage Forest 86)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "87": {
+   "en": "Flygon ex",
+   "page": "Flygon ex (EX Legend Maker 87)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88": {
+   "en": "Mew ex",
+   "page": "Mew ex (EX Legend Maker 88)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "89": {
+   "en": "Walrein ex",
+   "page": "Walrein ex (EX Legend Maker 89)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Regice",
+   "page": "Regice ☆ (EX Legend Maker 90)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "Regirock",
+   "page": "Regirock ☆ (EX Legend Maker 91)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Registeel",
+   "page": "Registeel ☆ (EX Legend Maker 92)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Pikachu δ",
+   "page": "Pikachu δ (EX Legend Maker 93)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

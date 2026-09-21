@@ -1,0 +1,636 @@
+{
+ "page": "ADV-P Promotional cards (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Kyogre ex",
+   "page": "Kyogre ex (ADV-P Promo 1)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "カイオーガ ex",
+   "artist": "Hiromichi Sugiyama",
+   "image": "https://archives.bulbagarden.net/media/upload/4/42/KyogreexNintendoPromo1.jpg"
+  },
+  "2": {
+   "en": "Groudon ex",
+   "page": "Groudon ex (ADV-P Promo 2)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "グラードン ex",
+   "artist": "Kazuo Yazawa",
+   "image": "https://archives.bulbagarden.net/media/upload/2/21/GroudonexNintendoPromo2.jpg"
+  },
+  "3": {
+   "en": "Treecko",
+   "page": "Treecko (ADV-P Promo 3)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "キモリ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/9/93/TreeckoEXRubySapphire76.jpg"
+  },
+  "4": {
+   "en": "Torchic",
+   "page": "Torchic (ADV-P Promo 4)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "アチャモ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/2/26/TorchicEXRubySapphire73.jpg"
+  },
+  "5": {
+   "en": "Mudkip",
+   "page": "Mudkip (ADV-P Promo 5)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ミズゴロウ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1d/MudkipNintendoPromo10.jpg"
+  },
+  "6": {
+   "en": "Latias",
+   "page": "Latias (ADV-P Promo 6)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ラティアス",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/LatiasNintendoPromo14.jpg"
+  },
+  "7": {
+   "en": "Latios",
+   "page": "Latios (ADV-P Promo 7)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ラティオス",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/8/81/LatiosNintendoPromo15.jpg"
+  },
+  "8": {
+   "en": "Grovyle",
+   "page": "Grovyle (ADV-P Promo 8)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ジュプトル",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a5/GrovyleNintendoPromo4.jpg"
+  },
+  "9": {
+   "en": "Combusken",
+   "page": "Combusken (ADV-P Promo 9)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ワカシャモ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f2/CombuskenEXRubySapphire27.jpg"
+  },
+  "10": {
+   "en": "Marshtomp",
+   "page": "Marshtomp (ADV-P Promo 10)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ヌマクロー",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/9/92/MarshtompNintendoPromo11.jpg"
+  },
+  "11": {
+   "en": "Kyogre ex",
+   "page": "Kyogre ex (ADV-P Promo 11)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "カイオーガ ex",
+   "artist": "Hiromichi Sugiyama",
+   "image": "https://archives.bulbagarden.net/media/upload/4/42/KyogreexNintendoPromo1.jpg"
+  },
+  "12": {
+   "en": "Groudon ex",
+   "page": "Groudon ex (ADV-P Promo 12)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "グラードン ex",
+   "artist": "Kazuo Yazawa",
+   "image": "https://archives.bulbagarden.net/media/upload/2/21/GroudonexNintendoPromo2.jpg"
+  },
+  "13": {
+   "en": "Armaldo ex",
+   "page": "Armaldo ex (ADV-P Promo 13)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "アーマルド ex",
+   "artist": "Hikaru Koike",
+   "image": "https://archives.bulbagarden.net/media/upload/6/65/Armaldoex16POPSeries1.jpg"
+  },
+  "14": {
+   "en": "Jirachi",
+   "page": "Jirachi (ADV-P Promo 14)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ジラーチ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2d/JirachiNintendoPromo21.jpg"
+  },
+  "15": {
+   "en": "Treecko",
+   "page": "Treecko (ADV-P Promo 15)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "キモリ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/3/32/TreeckoNintendoPromo16.jpg"
+  },
+  "16": {
+   "en": "Treecko",
+   "page": "Treecko (ADV-P Promo 16)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "キモリ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/3/32/TreeckoNintendoPromo16.jpg"
+  },
+  "17": {
+   "en": "Torchic",
+   "page": "Torchic (ADV-P Promo 17)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "アチャモ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/c/ce/TorchicNintendoPromo17.jpg"
+  },
+  "18": {
+   "en": "Torchic",
+   "page": "Torchic (ADV-P Promo 18)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "アチャモ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/c/ce/TorchicNintendoPromo17.jpg"
+  },
+  "19": {
+   "en": "Mudkip",
+   "page": "Mudkip (ADV-P Promo 19)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ミズゴロウ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/5/53/MudkipNintendoPromo18.jpg"
+  },
+  "20": {
+   "en": "Mudkip",
+   "page": "Mudkip (ADV-P Promo 20)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ミズゴロウ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/5/53/MudkipNintendoPromo18.jpg"
+  },
+  "21": {
+   "en": "Ludicolo",
+   "page": "Ludicolo (ADV-P Promo 21)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ルンパッパ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7d/LudicoloNintendoPromo20.jpg"
+  },
+  "22": {
+   "en": "Ludicolo",
+   "page": "Ludicolo (ADV-P Promo 22)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ルンパッパ",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7d/LudicoloNintendoPromo20.jpg"
+  },
+  "23": {
+   "en": "Pikachu",
+   "page": "Pikachu (ADV-P Promo 23)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a9/PikachuEXTeamMagmavsTeamAqua43.jpg"
+  },
+  "24": {
+   "en": "Pikachu",
+   "page": "Pikachu (ADV-P Promo 24)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a9/PikachuEXTeamMagmavsTeamAqua43.jpg"
+  },
+  "25": {
+   "en": "Jirachi",
+   "page": "Jirachi (ADV-P Promo 25)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ジラーチ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/b/bb/JirachiEXTeamMagmavsTeamAqua97.jpg"
+  },
+  "26": {
+   "en": "Groudon",
+   "page": "Groudon (ADV-P Promo 26)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "グラードン",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/6/65/GroudonEXHiddenLegends102.jpg"
+  },
+  "27": {
+   "en": "Groudon",
+   "page": "Groudon (ADV-P Promo 27)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "グラードン",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/6/65/GroudonEXHiddenLegends102.jpg"
+  },
+  "28": {
+   "en": "Meowth",
+   "page": "Meowth (ADV-P Promo 28)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ニャース",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c9/MeowthNintendoPromo13.jpg"
+  },
+  "29": {
+   "en": "Meowth",
+   "page": "Meowth (ADV-P Promo 29)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ニャース",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c9/MeowthNintendoPromo13.jpg"
+  },
+  "30": {
+   "en": "Whismur",
+   "page": "Whismur (ADV-P Promo 30)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゴニョニョ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2b/WhismurNintendoPromo19.jpg"
+  },
+  "31": {
+   "en": "Whismur",
+   "page": "Whismur (ADV-P Promo 31)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゴニョニョ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2b/WhismurNintendoPromo19.jpg"
+  },
+  "32": {
+   "en": "Flygon",
+   "page": "Flygon (ADV-P Promo 32)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "フライゴン",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5e/FlygonNintendoPromo25.jpg"
+  },
+  "33": {
+   "en": "Flygon",
+   "page": "Flygon (ADV-P Promo 33)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "フライゴン",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5e/FlygonNintendoPromo25.jpg"
+  },
+  "34": {
+   "en": "Absol",
+   "page": "Absol (ADV-P Promo 34)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "アブソル",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d1/AbsolEXTeamMagmavsTeamAqua96.jpg"
+  },
+  "35": {
+   "en": "Absol",
+   "page": "Absol (ADV-P Promo 35)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "アブソル",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d1/AbsolEXTeamMagmavsTeamAqua96.jpg"
+  },
+  "36": {
+   "en": "Ash's Treecko",
+   "page": "Ash's Treecko (ADV-P Promo 36)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "サトシのキモリ",
+   "artist": "edit",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "37": {
+   "en": "May's Torchic",
+   "page": "May's Torchic (ADV-P Promo 37)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ハルカのアチャモ",
+   "artist": "edit",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "38": {
+   "en": "Brock's Mudkip",
+   "page": "Brock's Mudkip (ADV-P Promo 38)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "タケシのミズゴロウ",
+   "artist": "edit",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "39": {
+   "en": "Butler's Kirlia",
+   "page": "Butler's Kirlia (ADV-P Promo 39)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "バトラーのキルリア",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "40": {
+   "en": "Forina's Absol",
+   "page": "Forina's Absol (ADV-P Promo 40)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ファウンスのアブソル",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/TCG_Card_Back_Japanese.jpg"
+  },
+  "41": {
+   "en": "Chimecho",
+   "page": "Chimecho (ADV-P Promo 41)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "チリーン",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1d/ChimechoNintendoPromo24.jpg"
+  },
+  "42": {
+   "en": "Multi Energy",
+   "page": "Multi Energy (ADV-P Promo 42)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "マルチエネルギー",
+   "artist": "Takumi Akabane",
+   "image": "https://archives.bulbagarden.net/media/upload/7/77/MultiEnergyMysteriousTreasures118.jpg"
+  },
+  "43": {
+   "en": "Oran Berry",
+   "page": "Oran Berry (ADV-P Promo 43)",
+   "type": "T [PT]",
+   "rarity": "—",
+   "mark": "",
+   "ja": "オレンのみ",
+   "artist": "Kazuo Yazawa",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c8/OranBerryEXRubySapphire85.jpg"
+  },
+  "44": {
+   "en": "Metang",
+   "page": "Metang (ADV-P Promo 44)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "",
+   "ja": "メタング",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b7/MetangEXHiddenLegends21.jpg"
+  },
+  "45": {
+   "en": "Beldum",
+   "page": "Beldum (ADV-P Promo 45)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ダンバル",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/7/77/BeldumEXHiddenLegends29.jpg"
+  },
+  "46": {
+   "en": "Sceptile",
+   "page": "Sceptile (ADV-P Promo 46)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ジュカイン",
+   "artist": "Hiromichi Sugiyama",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4a/Sceptile4POPSeries1.jpg"
+  },
+  "47": {
+   "en": "Blaziken",
+   "page": "Blaziken (ADV-P Promo 47)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "バシャーモ",
+   "artist": "Hiromichi Sugiyama",
+   "image": "https://archives.bulbagarden.net/media/upload/e/ef/BlazikenEXHolonPhantoms20.jpg"
+  },
+  "48": {
+   "en": "Swampert",
+   "page": "Swampert (ADV-P Promo 48)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ラグラージ",
+   "artist": "Hiromichi Sugiyama",
+   "image": "https://archives.bulbagarden.net/media/upload/0/05/Swampert5POPSeries1.jpg"
+  },
+  "49": {
+   "en": "Plusle",
+   "page": "Plusle (ADV-P Promo 49)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "プラスル",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e1/PlusleEXHiddenLegends69.jpg"
+  },
+  "50": {
+   "en": "Minun",
+   "page": "Minun (ADV-P Promo 50)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "マイナン",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b5/MinunEXHiddenLegends67.jpg"
+  },
+  "51": {
+   "en": "Bulbasaur",
+   "page": "Bulbasaur (ADV-P Promo 51)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "",
+   "ja": "フシギダネ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/7/73/BulbasaurEXTeamMagmavsTeamAqua39.jpg"
+  },
+  "52": {
+   "en": "Charmander",
+   "page": "Charmander (ADV-P Promo 52)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ヒトカゲ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/1/18/CharmanderEXFireRedLeafGreen113.jpg"
+  },
+  "53": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (ADV-P Promo 53)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "リザード",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c1/CharmeleonEXDragon99.jpg"
+  },
+  "54": {
+   "en": "Charizard",
+   "page": "Charizard (ADV-P Promo 54)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "",
+   "ja": "リザードン",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6f/CharizardEXPowerKeepers6.jpg"
+  },
+  "55": {
+   "en": "Squirtle",
+   "page": "Squirtle (ADV-P Promo 55)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ゼニガメ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/0/08/SquirtleEXTeamMagmavsTeamAqua46.jpg"
+  },
+  "56": {
+   "en": "Psyduck",
+   "page": "Psyduck (ADV-P Promo 56)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "",
+   "ja": "コダック",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/e/eb/PsyduckEXTeamMagmavsTeamAqua44.jpg"
+  },
+  "57": {
+   "en": "Pikachu",
+   "page": "Pikachu (ADV-P Promo 57)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a9/PikachuEXTeamMagmavsTeamAqua43.jpg"
+  },
+  "58": {
+   "en": "Raichu",
+   "page": "Raichu (ADV-P Promo 58)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ライチュウ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/8/80/RaichuEXTeamMagmavsTeamAqua13.jpg"
+  },
+  "59": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (ADV-P Promo 59)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ヤドン",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/5/55/SlowpokeEXTeamMagmavsTeamAqua45.jpg"
+  },
+  "60": {
+   "en": "Cubone",
+   "page": "Cubone (ADV-P Promo 60)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "",
+   "ja": "カラカラ",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cd/CuboneEXTeamMagmavsTeamAqua40.jpg"
+  },
+  "61": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (ADV-P Promo 61)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "プリン",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/JigglypuffEXTeamMagmavsTeamAqua41.jpg"
+  },
+  "62": {
+   "en": "Meowth",
+   "page": "Meowth (ADV-P Promo 62)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "",
+   "ja": "ニャース",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c9/MeowthNintendoPromo13.jpg"
+  },
+  "63": {
+   "en": "Metang",
+   "page": "Metang (ADV-P Promo 63)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "",
+   "ja": "メタング",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b7/MetangEXHiddenLegends21.jpg"
+  }
+ }
+}

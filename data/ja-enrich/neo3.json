@@ -1,0 +1,468 @@
+{
+ "page": "Awakening Legends (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Ampharos",
+   "page": "Ampharos (Neo Revelation 1)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "2": {
+   "en": "Blissey",
+   "page": "Blissey (Neo Revelation 2)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "3": {
+   "en": "Celebi",
+   "page": "Celebi (Neo Revelation 3)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Crobat",
+   "page": "Crobat (Neo Revelation 4)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "5": {
+   "en": "Delibird",
+   "page": "Delibird (Neo Revelation 5)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "6": {
+   "en": "Entei",
+   "page": "Entei (Neo Revelation 6)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "7": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh (Neo Revelation 7)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "8": {
+   "en": "Houndoom",
+   "page": "Houndoom (Neo Revelation 8)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "9": {
+   "en": "Jumpluff",
+   "page": "Jumpluff (Neo Revelation 9)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Magneton",
+   "page": "Magneton (Neo Revelation 10)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "11": {
+   "en": "Misdreavus",
+   "page": "Misdreavus (Neo Revelation 11)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "12": {
+   "en": "Porygon2",
+   "page": "Porygon2 (Neo Revelation 12)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "13": {
+   "en": "Raikou",
+   "page": "Raikou (Neo Revelation 13)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "14": {
+   "en": "Suicune",
+   "page": "Suicune (Neo Revelation 14)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Aerodactyl",
+   "page": "Aerodactyl (Neo Revelation 15)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "16": {
+   "en": "Celebi",
+   "page": "Celebi (Neo Revelation 16)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "17": {
+   "en": "Entei",
+   "page": "Entei (Neo Revelation 17)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "18": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh (Neo Revelation 18)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "19": {
+   "en": "Kingdra",
+   "page": "Kingdra (Neo Revelation 19)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "20": {
+   "en": "Lugia",
+   "page": "Lugia (Neo Revelation 20)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "21": {
+   "en": "Raichu",
+   "page": "Raichu (Neo Revelation 21)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "22": {
+   "en": "Raikou",
+   "page": "Raikou (Neo Revelation 22)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "23": {
+   "en": "Skarmory",
+   "page": "Skarmory (Neo Revelation 23)",
+   "type": "Metal",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "24": {
+   "en": "Sneasel",
+   "page": "Sneasel (Neo Revelation 24)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "25": {
+   "en": "Starmie",
+   "page": "Starmie (Neo Revelation 25)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "26": {
+   "en": "Sudowoodo",
+   "page": "Sudowoodo (Neo Revelation 26)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "27": {
+   "en": "Suicune",
+   "page": "Suicune (Neo Revelation 27)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "28": {
+   "en": "Flaaffy",
+   "page": "Flaaffy (Neo Revelation 28)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "29": {
+   "en": "Golbat",
+   "page": "Golbat (Neo Revelation 29)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "30": {
+   "en": "Graveler",
+   "page": "Graveler (Neo Revelation 30)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "31": {
+   "en": "Jynx",
+   "page": "Jynx (Neo Revelation 31)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "32": {
+   "en": "Lanturn",
+   "page": "Lanturn (Neo Revelation 32)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "33": {
+   "en": "Magcargo",
+   "page": "Magcargo (Neo Revelation 33)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "34": {
+   "en": "Octillery",
+   "page": "Octillery (Neo Revelation 34)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "35": {
+   "en": "Parasect",
+   "page": "Parasect (Neo Revelation 35)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "36": {
+   "en": "Piloswine",
+   "page": "Piloswine (Neo Revelation 36)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "37": {
+   "en": "Seaking",
+   "page": "Seaking (Neo Revelation 37)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "38": {
+   "en": "Stantler",
+   "page": "Stantler (Neo Revelation 38)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "39": {
+   "en": "Unown B",
+   "page": "Unown B (Neo Revelation 39)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "40": {
+   "en": "Unown Y",
+   "page": "Unown Y (Neo Revelation 40)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "41": {
+   "en": "Aipom",
+   "page": "Aipom (Neo Revelation 41)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "42": {
+   "en": "Chinchou",
+   "page": "Chinchou (Neo Revelation 42)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "43": {
+   "en": "Farfetch'd",
+   "page": "Farfetch'd (Neo Revelation 43)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "44": {
+   "en": "Geodude",
+   "page": "Geodude (Neo Revelation 44)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "45": {
+   "en": "Goldeen",
+   "page": "Goldeen (Neo Revelation 45)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "46": {
+   "en": "Murkrow",
+   "page": "Murkrow (Neo Revelation 46)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "47": {
+   "en": "Paras",
+   "page": "Paras (Neo Revelation 47)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "48": {
+   "en": "Quagsire",
+   "page": "Quagsire (Neo Revelation 48)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "49": {
+   "en": "Qwilfish",
+   "page": "Qwilfish (Neo Revelation 49)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "50": {
+   "en": "Remoraid",
+   "page": "Remoraid (Neo Revelation 50)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "51": {
+   "en": "Shuckle",
+   "page": "Shuckle (Neo Revelation 51)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "52": {
+   "en": "Skiploom",
+   "page": "Skiploom (Neo Revelation 52)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "53": {
+   "en": "Slugma",
+   "page": "Slugma (Neo Revelation 53)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "54": {
+   "en": "Smoochum",
+   "page": "Smoochum (Neo Revelation 54)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "55": {
+   "en": "Snubbull",
+   "page": "Snubbull (Neo Revelation 55)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "56": {
+   "en": "Staryu",
+   "page": "Staryu (Neo Revelation 56)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "57": {
+   "en": "Swinub",
+   "page": "Swinub (Neo Revelation 57)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "58": {
+   "en": "Unown K",
+   "page": "Unown K (Neo Revelation 58)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "59": {
+   "en": "Zubat",
+   "page": "Zubat (Neo Revelation 59)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "60": {
+   "en": "Balloon Berry",
+   "page": "Balloon Berry (Neo Revelation 60)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "61": {
+   "en": "Healing Field",
+   "page": "Healing Field (Neo Revelation 61)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "62": {
+   "en": "Pokémon Breeder Fields",
+   "page": "Pokémon Breeder Fields (Neo Revelation 62)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "63": {
+   "en": "Rocket's Hideout",
+   "page": "Rocket's Hideout (Neo Revelation 63)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "64": {
+   "en": "Old Rod",
+   "page": "Old Rod (Neo Revelation 64)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "65": {
+   "en": "Shining Gyarados",
+   "page": "Shining Gyarados (Neo Revelation 65)",
+   "type": "Water",
+   "rarity": "Shining Holo",
+   "mark": ""
+  },
+  "66": {
+   "en": "Shining Magikarp",
+   "page": "Shining Magikarp (Neo Revelation 66)",
+   "type": "Water",
+   "rarity": "Shining Holo",
+   "mark": ""
+  }
+ }
+}

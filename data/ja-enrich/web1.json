@@ -1,0 +1,342 @@
+{
+ "page": "Pokémon Web (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Ivysaur",
+   "page": "Ivysaur (Pokémon Web 1)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Nidoran♂",
+   "page": "Nidoran♂ (Pokémon Web 2)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "3": {
+   "en": "Venonat",
+   "page": "Venonat (Pokémon Web 3)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "4": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Pokémon Web 4)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "5": {
+   "en": "Tangela",
+   "page": "Tangela (Pokémon Web 5)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "6": {
+   "en": "Growlithe",
+   "page": "Growlithe (Pokémon Web 6)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "7": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (Pokémon Web 7)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "8": {
+   "en": "Vulpix",
+   "page": "Vulpix (Pokémon Web 8)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "9": {
+   "en": "Wartortle",
+   "page": "Wartortle (Pokémon Web 9)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "10": {
+   "en": "Marill",
+   "page": "Marill (Pokémon Web 10)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "11": {
+   "en": "Voltorb",
+   "page": "Voltorb (Pokémon Web 11)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "12": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Promotional Card P11)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "13": {
+   "en": "Diglett",
+   "page": "Diglett (Pokémon Web 13)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "14": {
+   "en": "Hitmonlee",
+   "page": "Hitmonlee (Pokémon Web 14)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "15": {
+   "en": "Bill's Teleporter",
+   "page": "Bill's Teleporter (Pokémon Web 15)",
+   "type": "T [Su]",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "16": {
+   "en": "New Pokédex",
+   "page": "New Pokédex (Pokémon Web 16)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "17": {
+   "en": "Dark Ivysaur",
+   "page": "Dark Ivysaur (Pokémon Web 17)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "18": {
+   "en": "Nidorino",
+   "page": "Nidorino (Pokémon Web 18)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "19": {
+   "en": "Venomoth",
+   "page": "Venomoth (Pokémon Web 19)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "20": {
+   "en": "Exeggutor",
+   "page": "Exeggutor (Pokémon Web 20)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "21": {
+   "en": "Dark Weezing",
+   "page": "Dark Weezing (Pokémon Web 21)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "22": {
+   "en": "Dark Charmeleon",
+   "page": "Dark Charmeleon (Pokémon Web 22)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "23": {
+   "en": "Arcanine",
+   "page": "Arcanine (Pokémon Web 23)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "24": {
+   "en": "Dark Wartortle",
+   "page": "Dark Wartortle (Pokémon Web 24)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "25": {
+   "en": "Surfing Pikachu",
+   "page": "Surfing Pikachu (Pokémon Web 25)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "26": {
+   "en": "Electrode",
+   "page": "Electrode (Pokémon Web 26)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "27": {
+   "en": "Dark Kadabra",
+   "page": "Dark Kadabra (Pokémon Web 27)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "28": {
+   "en": "Dark Slowbro",
+   "page": "Dark Slowbro (Pokémon Web 28)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "29": {
+   "en": "Dugtrio",
+   "page": "Dugtrio (Pokémon Web 29)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "30": {
+   "en": "Max Revive",
+   "page": "Max Revive (Pokémon Web 30)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "31": {
+   "en": "Hyper Devolution Spray",
+   "page": "Hyper Devolution Spray (Pokémon Web 31)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "32": {
+   "en": "Pokémon Retransfer",
+   "page": "Pokémon Retransfer (Pokémon Web 32)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "33": {
+   "en": "Nidoking",
+   "page": "Nidoking (Pokémon Web 33)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "34": {
+   "en": "Ninetales",
+   "page": "Ninetales (Pokémon Web 34)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "35": {
+   "en": "Magikarp",
+   "page": "Magikarp (Pokémon Web 35)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "36": {
+   "en": "Raichu",
+   "page": "Raichu (Pokémon Web 36)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "37": {
+   "en": "Dark Alakazam",
+   "page": "Dark Alakazam (Pokémon Web 37)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "38": {
+   "en": "Dragonite",
+   "page": "Dragonite (Pokémon Web 38)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "39": {
+   "en": "Team Rocket's Meowth",
+   "page": "Team Rocket's Meowth (Pokémon Web 39)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "40": {
+   "en": "Rocket's Sneak Attack",
+   "page": "Rocket's Sneak Attack (Pokémon Web 40)",
+   "type": "T [Su]",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "41": {
+   "en": "Dark Venusaur",
+   "page": "Dark Venusaur (Pokémon Web 41)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "42": {
+   "en": "Dark Charizard",
+   "page": "Dark Charizard (Pokémon Web 42)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "43": {
+   "en": "Moltres",
+   "page": "Moltres (Pokémon Web 43)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "44": {
+   "en": "Dark Blastoise",
+   "page": "Dark Blastoise (Pokémon Web 44)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "45": {
+   "en": "Articuno",
+   "page": "Articuno (Pokémon Web 45)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "46": {
+   "en": "Zapdos",
+   "page": "Zapdos (Pokémon Web 46)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "47": {
+   "en": "Gengar",
+   "page": "Gengar (Pokémon Web 47)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "48": {
+   "en": "Machamp",
+   "page": "Machamp (Pokémon Web 48)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  }
+ }
+}

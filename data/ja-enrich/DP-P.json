@@ -1,0 +1,895 @@
+{
+ "page": "DP-P Promotional cards (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Riolu",
+   "page": "Riolu (DP-P Promo 1)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Lucario",
+   "page": "Lucario (DP-P Promo 2)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Manaphy",
+   "page": "Manaphy (DP-P Promo 3)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Lucario LV.X",
+   "page": "Lucario LV.X (DP-P Promo 4)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Turtwig",
+   "page": "Turtwig (DP-P Promo 5)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Cherubi",
+   "page": "Cherubi (DP-P Promo 6)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Chimchar",
+   "page": "Chimchar (DP-P Promo 7)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Piplup",
+   "page": "Piplup (DP-P Promo 8)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Buizel",
+   "page": "Buizel (DP-P Promo 9)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Shinx",
+   "page": "Shinx (DP-P Promo 10)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Pachirisu",
+   "page": "Pachirisu (DP-P Promo 11)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Drifloon",
+   "page": "Drifloon (DP-P Promo 12)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Starly",
+   "page": "Starly (DP-P Promo 13)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Bidoof",
+   "page": "Bidoof (DP-P Promo 14)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Buneary",
+   "page": "Buneary (DP-P Promo 15)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Chatot",
+   "page": "Chatot (DP-P Promo 16)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Turtwig",
+   "page": "Turtwig (DP-P Promo 17)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Chimchar",
+   "page": "Chimchar (DP-P Promo 18)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Piplup",
+   "page": "Piplup (DP-P Promo 19)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Pachirisu",
+   "page": "Pachirisu (DP-P Promo 20)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Mime Jr.",
+   "page": "Mime Jr. (DP-P Promo 21)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Staravia",
+   "page": "Staravia (DP-P Promo 22)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Buneary",
+   "page": "Buneary (DP-P Promo 23)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Glameow",
+   "page": "Glameow (DP-P Promo 24)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Pikachu",
+   "page": "Pikachu (DP-P Promo 25)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Gible",
+   "page": "Gible (DP-P Promo 26)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Turtwig",
+   "page": "Turtwig (DP-P Promo 27)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Chimchar",
+   "page": "Chimchar (DP-P Promo 28)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Piplup",
+   "page": "Piplup (DP-P Promo 29)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Palkia",
+   "page": "Palkia (DP-P Promo 30)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Drifblim",
+   "page": "Drifblim (DP-P Promo 31)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Croagunk",
+   "page": "Croagunk (DP-P Promo 32)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Dialga",
+   "page": "Dialga (DP-P Promo 33)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Grotle",
+   "page": "Grotle (DP-P Promo 34)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Cherrim",
+   "page": "Cherrim (DP-P Promo 35)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Carnivine",
+   "page": "Carnivine (DP-P Promo 36)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Monferno",
+   "page": "Monferno (DP-P Promo 37)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Prinplup",
+   "page": "Prinplup (DP-P Promo 38)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Palkia",
+   "page": "Palkia (DP-P Promo 39)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "40": {
+   "en": "Luxio",
+   "page": "Luxio (DP-P Promo 40)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Croagunk",
+   "page": "Croagunk (DP-P Promo 41)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "42": {
+   "en": "Dialga",
+   "page": "Dialga (DP-P Promo 42)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Happiny",
+   "page": "Happiny (DP-P Promo 43)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Aipom",
+   "page": "Aipom (DP-P Promo 44)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Staravia",
+   "page": "Staravia (DP-P Promo 45)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Darkrai",
+   "page": "Darkrai (DP-P Promo 46)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Cherrim",
+   "page": "Cherrim (DP-P Promo 47)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Pikachu",
+   "page": "Pikachu (DP-P Promo 48)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "49": {
+   "en": "Luxio",
+   "page": "Luxio (DP-P Promo 49)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "50": {
+   "en": "Toxicroak",
+   "page": "Toxicroak (DP-P Promo 50)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "51": {
+   "en": "Lopunny",
+   "page": "Lopunny (DP-P Promo 51)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "52": {
+   "en": "Grotle",
+   "page": "Grotle (DP-P Promo 52)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "53": {
+   "en": "Monferno",
+   "page": "Monferno (DP-P Promo 53)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "54": {
+   "en": "Prinplup",
+   "page": "Prinplup (DP-P Promo 54)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "55": {
+   "en": "Plusle",
+   "page": "Plusle (DP-P Promo 55)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "56": {
+   "en": "Minun",
+   "page": "Minun (DP-P Promo 56)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "57": {
+   "en": "Pikachu",
+   "page": "Pikachu (DP-P Promo 57)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "58": {
+   "en": "Garchomp LV.X",
+   "page": "Garchomp LV.X (DP-P Promo 58)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "59": {
+   "en": "Burmy",
+   "page": "Burmy (DP-P Promo 59)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "60": {
+   "en": "Shellos",
+   "page": "Shellos (DP-P Promo 60)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "61": {
+   "en": "Shinx",
+   "page": "Shinx (DP-P Promo 61)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "62": {
+   "en": "Murkrow",
+   "page": "Murkrow (DP-P Promo 62)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "63": {
+   "en": "Eevee",
+   "page": "Eevee (DP-P Promo 63)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "64": {
+   "en": "Magmar",
+   "page": "Magmar (DP-P Promo 64)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "65": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (DP-P Promo 65)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "66": {
+   "en": "Riolu",
+   "page": "Riolu (DP-P Promo 66)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "67": {
+   "en": "Eevee",
+   "page": "Eevee (DP-P Promo 67)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "68": {
+   "en": "Cresselia",
+   "page": "Cresselia (DP-P Promo 68)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "69": {
+   "en": "Leafeon",
+   "page": "Leafeon (DP-P Promo 69)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "70": {
+   "en": "Glaceon",
+   "page": "Glaceon (DP-P Promo 70)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "71": {
+   "en": "Infernape LV.X",
+   "page": "Infernape LV.X (DP-P Promo 71)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "72": {
+   "en": "Turtwig",
+   "page": "Turtwig (DP-P Promo 72)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "73": {
+   "en": "Chimchar",
+   "page": "Chimchar (DP-P Promo 73)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "74": {
+   "en": "Piplup",
+   "page": "Piplup (DP-P Promo 74)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "75": {
+   "en": "Porygon-Z LV.X",
+   "page": "Porygon-Z LV.X (DP-P Promo 75)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "76": {
+   "en": "Torterra LV.X",
+   "page": "Torterra LV.X (DP-P Promo 76)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "77": {
+   "en": "Bronzong",
+   "page": "Bronzong (DP-P Promo 77)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "78": {
+   "en": "Empoleon LV.X",
+   "page": "Empoleon LV.X (DP-P Promo 78)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "79": {
+   "en": "Mothim",
+   "page": "Mothim (DP-P Promo 79)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "80": {
+   "en": "Burmy",
+   "page": "Burmy (DP-P Promo 80)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "81": {
+   "en": "Combee",
+   "page": "Combee (DP-P Promo 81)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "82": {
+   "en": "Yanmega",
+   "page": "Yanmega (DP-P Promo 82)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "83": {
+   "en": "Heatran",
+   "page": "Heatran (DP-P Promo 83)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "84": {
+   "en": "Shellos",
+   "page": "Shellos (DP-P Promo 84)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "85": {
+   "en": "Phione",
+   "page": "Phione (DP-P Promo 85)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "86": {
+   "en": "Luxray",
+   "page": "Luxray (DP-P Promo 86)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "87": {
+   "en": "Chingling",
+   "page": "Chingling (DP-P Promo 87)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "88": {
+   "en": "Riolu",
+   "page": "Riolu (DP-P Promo 88)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "89": {
+   "en": "Stunky",
+   "page": "Stunky (DP-P Promo 89)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "90": {
+   "en": "Probopass",
+   "page": "Probopass (DP-P Promo 90)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "91": {
+   "en": "Munchlax",
+   "page": "Munchlax (DP-P Promo 91)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "92": {
+   "en": "Heatran LV.X",
+   "page": "Heatran LV.X (DP-P Promo 92)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "93": {
+   "en": "Magnezone",
+   "page": "Magnezone (DP-P Promo 93)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "94": {
+   "en": "Dusknoir",
+   "page": "Dusknoir (DP-P Promo 94)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "95": {
+   "en": "Pikachu",
+   "page": "Pikachu (DP-P Promo 95)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "96": {
+   "en": "Lucario",
+   "page": "Lucario (DP-P Promo 96)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "97": {
+   "en": "Gible",
+   "page": "Gible (DP-P Promo 97)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "98": {
+   "en": "Pikachu",
+   "page": "Pikachu (DP-P Promo 98)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "99": {
+   "en": "Pikachu",
+   "page": "Pikachu (DP-P Promo 99)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "100": {
+   "en": "Pikachu",
+   "page": "Pikachu (DP-P Promo 100)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "101": {
+   "en": "Pikachu",
+   "page": "Pikachu (DP-P Promo 101)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "102": {
+   "en": "Pikachu",
+   "page": "Pikachu (DP-P Promo 102)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "103": {
+   "en": "Gabite",
+   "page": "Gabite (DP-P Promo 103)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "104": {
+   "en": "Garchomp",
+   "page": "Garchomp (DP-P Promo 104)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "105": {
+   "en": "Palkia LV.X",
+   "page": "Palkia LV.X (DP-P Promo 105)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "106": {
+   "en": "Porygon-Z",
+   "page": "Porygon-Z (DP-P Promo 106)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "107": {
+   "en": "Dialga LV.X",
+   "page": "Dialga LV.X (DP-P Promo 107)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "108": {
+   "en": "Gliscor",
+   "page": "Gliscor (DP-P Promo 108)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "109": {
+   "en": "Real World's Giratina",
+   "page": "Real World's Giratina (DP-P Promo 109)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "110": {
+   "en": "Magnemite",
+   "page": "Magnemite (DP-P Promo 110)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "111": {
+   "en": "Regigigas",
+   "page": "Regigigas (DP-P Promo 111)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "112": {
+   "en": "Pichu",
+   "page": "Pichu (DP-P Promo 112)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "113": {
+   "en": "Pikachu",
+   "page": "Pikachu (DP-P Promo 113)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "114": {
+   "en": "Raichu",
+   "page": "Raichu (DP-P Promo 114)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "115": {
+   "en": "Buneary",
+   "page": "Buneary (DP-P Promo 115)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "116": {
+   "en": "Lopunny",
+   "page": "Lopunny (DP-P Promo 116)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "117": {
+   "en": "Turtwig",
+   "page": "Turtwig (DP-P Promo 117)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "118": {
+   "en": "Chimchar",
+   "page": "Chimchar (DP-P Promo 118)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "119": {
+   "en": "Piplup",
+   "page": "Piplup (DP-P Promo 119)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "120": {
+   "en": "Buizel",
+   "page": "Buizel (DP-P Promo 120)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "121": {
+   "en": "Pachirisu",
+   "page": "Pachirisu (DP-P Promo 121)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "122": {
+   "en": "Croagunk",
+   "page": "Croagunk (DP-P Promo 122)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "123": {
+   "en": "Drapion LV.X",
+   "page": "Drapion LV.X (DP-P Promo 123)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "124": {
+   "en": "Charmander",
+   "page": "Charmander (DP-P Promo 124)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "125": {
+   "en": "Munchlax",
+   "page": "Munchlax (DP-P Promo 125)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "126": {
+   "en": "Snorlax",
+   "page": "Snorlax (DP-P Promo 126)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "127": {
+   "en": "Snorlax LV.X",
+   "page": "Snorlax LV.X (DP-P Promo 127)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

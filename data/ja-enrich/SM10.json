@@ -1,0 +1,1672 @@
+{
+ "page": "Double Blaze (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Oddish",
+   "page": "Oddish (Double Blaze 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Oddish",
+   "page": "Oddish (Double Blaze 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Gloom",
+   "page": "Gloom (Double Blaze 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Vileplume",
+   "page": "Vileplume (Double Blaze 4)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "5": {
+   "en": "Venonat",
+   "page": "Venonat (Double Blaze 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Venomoth",
+   "page": "Venomoth (Double Blaze 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Reshiram & Charizard",
+   "page": "Reshiram & Charizard-GX (Double Blaze 7)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "8": {
+   "en": "Growlithe",
+   "page": "Growlithe (Double Blaze 8)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Arcanine",
+   "page": "Arcanine (Double Blaze 9)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "10": {
+   "en": "Darumaka",
+   "page": "Darumaka (Double Blaze 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Darmanitan",
+   "page": "Darmanitan (Double Blaze 11)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Volcanion",
+   "page": "Volcanion (Double Blaze 12)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "13": {
+   "en": "Litten",
+   "page": "Litten (Double Blaze 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Litten",
+   "page": "Litten (Double Blaze 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Torracat",
+   "page": "Torracat (Double Blaze 15)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Incineroar",
+   "page": "Incineroar (Double Blaze 16)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "17": {
+   "en": "Salandit",
+   "page": "Salandit (Double Blaze 17)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Salazzle",
+   "page": "Salazzle (Double Blaze 18)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Blacephalon",
+   "page": "Blacephalon (Double Blaze 19)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Poliwag",
+   "page": "Poliwag (Double Blaze 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Poliwag",
+   "page": "Poliwag (Double Blaze 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Poliwhirl",
+   "page": "Poliwhirl (Double Blaze 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Poliwrath",
+   "page": "Poliwrath (Double Blaze 23)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Seel",
+   "page": "Seel (Double Blaze 24)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Dewgong",
+   "page": "Dewgong (Double Blaze 25)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Krabby",
+   "page": "Krabby (Double Blaze 26)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Kingler",
+   "page": "Kingler (Double Blaze 27)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Stunfisk",
+   "page": "Stunfisk (Double Blaze 28)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Muk & Alolan Muk",
+   "page": "Muk & Alolan Muk-GX (Double Blaze 29)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "30": {
+   "en": "Gastly",
+   "page": "Gastly (Double Blaze 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Gastly",
+   "page": "Gastly (Double Blaze 31)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Haunter",
+   "page": "Haunter (Double Blaze 32)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Gengar",
+   "page": "Gengar (Double Blaze 33)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Koffing",
+   "page": "Koffing (Double Blaze 34)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Weezing",
+   "page": "Weezing (Double Blaze 35)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Mewtwo",
+   "page": "Mewtwo (Double Blaze 36)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "37": {
+   "en": "Mew",
+   "page": "Mew (Double Blaze 37)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "38": {
+   "en": "Misdreavus",
+   "page": "Misdreavus (Double Blaze 38)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Mismagius",
+   "page": "Mismagius (Double Blaze 39)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Espurr",
+   "page": "Espurr (Double Blaze 40)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Meowstic",
+   "page": "Meowstic (Double Blaze 41)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "42": {
+   "en": "Marshadow & Machamp",
+   "page": "Marshadow & Machamp-GX (Double Blaze 42)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "43": {
+   "en": "Diglett",
+   "page": "Diglett (Double Blaze 43)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Dugtrio",
+   "page": "Dugtrio (Double Blaze 44)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Cubone",
+   "page": "Cubone (Double Blaze 45)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Marowak",
+   "page": "Marowak (Double Blaze 46)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Rhyhorn",
+   "page": "Rhyhorn (Double Blaze 47)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Rhyhorn",
+   "page": "Rhyhorn (Double Blaze 48)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Rhydon",
+   "page": "Rhydon (Double Blaze 49)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Rhyperior",
+   "page": "Rhyperior (Double Blaze 50)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Tyrogue",
+   "page": "Tyrogue (Double Blaze 51)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Landorus",
+   "page": "Landorus (Double Blaze 52)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "53": {
+   "en": "Crabrawler",
+   "page": "Crabrawler (Double Blaze 53)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Crabominable",
+   "page": "Crabominable (Double Blaze 54)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Murkrow",
+   "page": "Murkrow (Double Blaze 55)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Honchkrow",
+   "page": "Honchkrow-GX (Double Blaze 56)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Double Blaze 57)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "58": {
+   "en": "Sandile",
+   "page": "Sandile (Double Blaze 58)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Sandile",
+   "page": "Sandile (Double Blaze 59)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Krokorok",
+   "page": "Krokorok (Double Blaze 60)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Krookodile",
+   "page": "Krookodile (Double Blaze 61)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (Double Blaze 62)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Wigglytuff",
+   "page": "Wigglytuff (Double Blaze 63)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Cleffa",
+   "page": "Cleffa (Double Blaze 64)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Cottonee",
+   "page": "Cottonee (Double Blaze 65)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "Whimsicott",
+   "page": "Whimsicott-GX (Double Blaze 66)",
+   "type": "Fairy",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Meowth",
+   "page": "Meowth (Double Blaze 67)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "68": {
+   "en": "Persian",
+   "page": "Persian (Double Blaze 68)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Persian",
+   "page": "Persian-GX (Double Blaze 69)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Doduo",
+   "page": "Doduo (Double Blaze 70)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "71": {
+   "en": "Dodrio",
+   "page": "Dodrio (Double Blaze 71)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "72": {
+   "en": "Porygon",
+   "page": "Porygon (Double Blaze 72)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "73": {
+   "en": "Porygon",
+   "page": "Porygon (Double Blaze 73)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "74": {
+   "en": "Porygon2",
+   "page": "Porygon2 (Double Blaze 74)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "75": {
+   "en": "Porygon-Z",
+   "page": "Porygon-Z (Double Blaze 75)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "76": {
+   "en": "Snorlax",
+   "page": "Snorlax (Double Blaze 76)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "77": {
+   "en": "Happiny",
+   "page": "Happiny (Double Blaze 77)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "78": {
+   "en": "Chatot",
+   "page": "Chatot (Double Blaze 78)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "79": {
+   "en": "Escape Rope",
+   "page": "Escape Rope (Double Blaze 79)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "80": {
+   "en": "Chip-Chip Ice Axe",
+   "page": "Chip-Chip Ice Axe (Double Blaze 80)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "81": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Double Blaze 81)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "82": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Double Blaze 82)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "83": {
+   "en": "Fire Crystal",
+   "page": "Fire Crystal (Double Blaze 83)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "84": {
+   "en": "Dusk Stone",
+   "page": "Dusk Stone (Double Blaze 84)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "85": {
+   "en": "Giovanni's Exile",
+   "page": "Giovanni's Exile (Double Blaze 85)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "86": {
+   "en": "Pokémon Fan Club",
+   "page": "Pokémon Fan Club (Double Blaze 86)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "87": {
+   "en": "Welder",
+   "page": "Welder (Double Blaze 87)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "88": {
+   "en": "Red's Challenge",
+   "page": "Red's Challenge (Double Blaze 88)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "89": {
+   "en": "Martial Arts Dojo",
+   "page": "Martial Arts Dojo (Double Blaze 89)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "90": {
+   "en": "Dust Island",
+   "page": "Dust Island (Double Blaze 90)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "91": {
+   "en": "Triple Acceleration Energy",
+   "page": "Triple Acceleration Energy (Double Blaze 91)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "92": {
+   "en": "Fiery Flint",
+   "page": "Fiery Flint (Double Blaze 92)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Rescue Stretcher",
+   "page": "Rescue Stretcher (Double Blaze 93)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Kiawe",
+   "page": "Kiawe (Double Blaze 94)",
+   "type": "Su",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Cynthia",
+   "page": "Cynthia (Double Blaze 95)",
+   "type": "Su",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Reshiram & Charizard",
+   "page": "Reshiram & Charizard-GX (Double Blaze 96)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Reshiram & Charizard",
+   "page": "Reshiram & Charizard-GX (Double Blaze 97)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Muk & Alolan Muk",
+   "page": "Muk & Alolan Muk-GX (Double Blaze 98)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Muk & Alolan Muk",
+   "page": "Muk & Alolan Muk-GX (Double Blaze 99)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Marshadow & Machamp",
+   "page": "Marshadow & Machamp-GX (Double Blaze 100)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Marshadow & Machamp",
+   "page": "Marshadow & Machamp-GX (Double Blaze 101)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Honchkrow",
+   "page": "Honchkrow-GX (Double Blaze 102)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Whimsicott",
+   "page": "Whimsicott-GX (Double Blaze 103)",
+   "type": "Fairy",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Persian",
+   "page": "Persian-GX (Double Blaze 104)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Giovanni's Exile",
+   "page": "Giovanni's Exile (Double Blaze 105)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Welder",
+   "page": "Welder (Double Blaze 106)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Red's Challenge",
+   "page": "Red's Challenge (Double Blaze 107)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Reshiram & Charizard",
+   "page": "Reshiram & Charizard-GX (Double Blaze 108)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Muk & Alolan Muk",
+   "page": "Muk & Alolan Muk-GX (Double Blaze 109)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Marshadow & Machamp",
+   "page": "Marshadow & Machamp-GX (Double Blaze 110)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Honchkrow",
+   "page": "Honchkrow-GX (Double Blaze 111)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Whimsicott",
+   "page": "Whimsicott-GX (Double Blaze 112)",
+   "type": "Fairy",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Persian",
+   "page": "Persian-GX (Double Blaze 113)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Fire Crystal",
+   "page": "Fire Crystal (Double Blaze 114)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Shrine of Punishment",
+   "page": "Shrine of Punishment (Double Blaze 115)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Triple Acceleration Energy",
+   "page": "Triple Acceleration Energy (Double Blaze 116)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "117": {
+   "en": "Greninja",
+   "page": "Greninja (Unbroken Bonds 117)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "118": {
+   "en": "Inkay",
+   "page": "Inkay (Unbroken Bonds 118)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Malamar",
+   "page": "Malamar (Unbroken Bonds 119)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Lucario & Melmetal",
+   "page": "Lucario & Melmetal-GX (Unbroken Bonds 120)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Alolan Diglett",
+   "page": "Alolan Diglett (Unbroken Bonds 121)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Alolan Dugtrio",
+   "page": "Alolan Dugtrio (Unbroken Bonds 122)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Aron",
+   "page": "Aron (Unbroken Bonds 123)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Lairon",
+   "page": "Lairon (Unbroken Bonds 124)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Aggron",
+   "page": "Aggron (Unbroken Bonds 125)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "126": {
+   "en": "Lucario",
+   "page": "Lucario (Unbroken Bonds 126)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Genesect",
+   "page": "Genesect (Unbroken Bonds 127)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Meltan",
+   "page": "Meltan (Unbroken Bonds 128)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Melmetal",
+   "page": "Melmetal (Unbroken Bonds 129)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Gardevoir & Sylveon",
+   "page": "Gardevoir & Sylveon-GX (Unbroken Bonds 130)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Cleffa",
+   "page": "Cleffa (Unbroken Bonds 131)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Clefairy",
+   "page": "Clefairy (Unbroken Bonds 132)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Clefable",
+   "page": "Clefable (Unbroken Bonds 133)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (Unbroken Bonds 134)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Wigglytuff",
+   "page": "Wigglytuff (Unbroken Bonds 135)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Togepi",
+   "page": "Togepi (Unbroken Bonds 136)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Togetic",
+   "page": "Togetic (Unbroken Bonds 137)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Togekiss",
+   "page": "Togekiss (Unbroken Bonds 138)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Cottonee",
+   "page": "Cottonee (Unbroken Bonds 139)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Whimsicott",
+   "page": "Whimsicott-GX (Unbroken Bonds 140)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Spritzee",
+   "page": "Spritzee (Unbroken Bonds 141)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Aromatisse",
+   "page": "Aromatisse (Unbroken Bonds 142)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Rattata",
+   "page": "Rattata (Unbroken Bonds 143)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Raticate",
+   "page": "Raticate (Unbroken Bonds 144)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Spearow",
+   "page": "Spearow (Unbroken Bonds 145)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Fearow",
+   "page": "Fearow (Unbroken Bonds 146)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Meowth",
+   "page": "Meowth (Unbroken Bonds 147)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Persian",
+   "page": "Persian (Unbroken Bonds 148)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Persian",
+   "page": "Persian-GX (Unbroken Bonds 149)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Doduo",
+   "page": "Doduo (Unbroken Bonds 150)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Dodrio",
+   "page": "Dodrio (Unbroken Bonds 151)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Lickitung",
+   "page": "Lickitung (Unbroken Bonds 152)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Lickilicky",
+   "page": "Lickilicky (Unbroken Bonds 153)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Porygon",
+   "page": "Porygon (Unbroken Bonds 154)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Porygon",
+   "page": "Porygon (Unbroken Bonds 155)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Porygon2",
+   "page": "Porygon2 (Unbroken Bonds 156)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Porygon-Z",
+   "page": "Porygon-Z (Unbroken Bonds 157)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Snorlax",
+   "page": "Snorlax (Unbroken Bonds 158)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Glameow",
+   "page": "Glameow (Unbroken Bonds 159)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Purugly",
+   "page": "Purugly (Unbroken Bonds 160)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Happiny",
+   "page": "Happiny (Unbroken Bonds 161)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Chatot",
+   "page": "Chatot (Unbroken Bonds 162)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Celesteela",
+   "page": "Celesteela-GX (Unbroken Bonds 163)",
+   "type": "Ultra-Rare Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Beast Bringer",
+   "page": "Beast Bringer (Unbroken Bonds 164)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "165": {
+   "en": "Chip-Chip Ice Axe",
+   "page": "Chip-Chip Ice Axe (Unbroken Bonds 165)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "166": {
+   "en": "Devolution Spray Z",
+   "page": "Devolution Spray Z (Unbroken Bonds 166)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "167": {
+   "en": "Dusk Stone",
+   "page": "Dusk Stone (Unbroken Bonds 167)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "168": {
+   "en": "Dust Island",
+   "page": "Dust Island (Unbroken Bonds 168)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "169": {
+   "en": "Electromagnetic Radar",
+   "page": "Electromagnetic Radar (Unbroken Bonds 169)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "170": {
+   "en": "Energy Spinner",
+   "page": "Energy Spinner (Unbroken Bonds 170)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "171": {
+   "en": "Fairy Charm Ability",
+   "page": "Fairy Charm Ability (Unbroken Bonds 171)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "172": {
+   "en": "Fairy Charm",
+   "page": "Fairy Charm L (Unbroken Bonds 172)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "173": {
+   "en": "Fire Crystal",
+   "page": "Fire Crystal (Unbroken Bonds 173)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "174": {
+   "en": "Giovanni's Exile",
+   "page": "Giovanni's Exile (Unbroken Bonds 174)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "175": {
+   "en": "Green's Exploration",
+   "page": "Green's Exploration (Unbroken Bonds 175)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "176": {
+   "en": "Janine",
+   "page": "Janine (Unbroken Bonds 176)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "177": {
+   "en": "Koga's Trap",
+   "page": "Koga's Trap (Unbroken Bonds 177)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "178": {
+   "en": "Lt. Surge's Strategy",
+   "page": "Lt. Surge's Strategy (Unbroken Bonds 178)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "179": {
+   "en": "Martial Arts Dojo",
+   "page": "Martial Arts Dojo (Unbroken Bonds 179)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "180": {
+   "en": "Metal Core Barrier",
+   "page": "Metal Core Barrier (Unbroken Bonds 180)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "181": {
+   "en": "Molayne",
+   "page": "Molayne (Unbroken Bonds 181)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "182": {
+   "en": "Pokégear 3.0",
+   "page": "Pokégear 3.0 (Unbroken Bonds 182)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "183": {
+   "en": "Power Plant",
+   "page": "Power Plant (Unbroken Bonds 183)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "184": {
+   "en": "Red's Challenge",
+   "page": "Red's Challenge (Unbroken Bonds 184)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "185": {
+   "en": "Samson Oak",
+   "page": "Samson Oak (Unbroken Bonds 185)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "186": {
+   "en": "Stealthy Hood",
+   "page": "Stealthy Hood (Unbroken Bonds 186)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "187": {
+   "en": "Surprise Box",
+   "page": "Surprise Box (Unbroken Bonds 187)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "188": {
+   "en": "Ultra Forest Kartenvoy",
+   "page": "Ultra Forest Kartenvoy (Unbroken Bonds 188)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "189": {
+   "en": "Welder",
+   "page": "Welder (Unbroken Bonds 189)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "190": {
+   "en": "Triple Acceleration Energy",
+   "page": "Triple Acceleration Energy (Unbroken Bonds 190)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "191": {
+   "en": "Pheromosa & Buzzwole",
+   "page": "Pheromosa & Buzzwole-GX (Unbroken Bonds 191)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "192": {
+   "en": "Pheromosa & Buzzwole",
+   "page": "Pheromosa & Buzzwole-GX (Unbroken Bonds 192)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "193": {
+   "en": "Venomoth",
+   "page": "Venomoth-GX (Unbroken Bonds 193)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "194": {
+   "en": "Reshiram & Charizard",
+   "page": "Reshiram & Charizard-GX (Unbroken Bonds 194)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "195": {
+   "en": "Dedenne",
+   "page": "Dedenne-GX (Unbroken Bonds 195)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "196": {
+   "en": "Muk & Alolan Muk",
+   "page": "Muk & Alolan Muk-GX (Unbroken Bonds 196)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "197": {
+   "en": "Muk & Alolan Muk",
+   "page": "Muk & Alolan Muk-GX (Unbroken Bonds 197)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "198": {
+   "en": "Marshadow & Machamp",
+   "page": "Marshadow & Machamp-GX (Unbroken Bonds 198)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "199": {
+   "en": "Marshadow & Machamp",
+   "page": "Marshadow & Machamp-GX (Unbroken Bonds 199)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "200": {
+   "en": "Greninja & Zoroark",
+   "page": "Greninja & Zoroark-GX (Unbroken Bonds 200)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "201": {
+   "en": "Greninja & Zoroark",
+   "page": "Greninja & Zoroark-GX (Unbroken Bonds 201)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "202": {
+   "en": "Honchkrow",
+   "page": "Honchkrow-GX (Unbroken Bonds 202)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "203": {
+   "en": "Lucario & Melmetal",
+   "page": "Lucario & Melmetal-GX (Unbroken Bonds 203)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "204": {
+   "en": "Gardevoir & Sylveon",
+   "page": "Gardevoir & Sylveon-GX (Unbroken Bonds 204)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "205": {
+   "en": "Gardevoir & Sylveon",
+   "page": "Gardevoir & Sylveon-GX (Unbroken Bonds 205)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "206": {
+   "en": "Whimsicott",
+   "page": "Whimsicott-GX (Unbroken Bonds 206)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "207": {
+   "en": "Persian",
+   "page": "Persian-GX (Unbroken Bonds 207)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "208": {
+   "en": "Celesteela",
+   "page": "Celesteela-GX (Unbroken Bonds 208)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "209": {
+   "en": "Green's Exploration",
+   "page": "Green's Exploration (Unbroken Bonds 209)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "210": {
+   "en": "Janine",
+   "page": "Janine (Unbroken Bonds 210)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "211": {
+   "en": "Koga's Trap",
+   "page": "Koga's Trap (Unbroken Bonds 211)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "212": {
+   "en": "Molayne",
+   "page": "Molayne (Unbroken Bonds 212)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "213": {
+   "en": "Red's Challenge",
+   "page": "Red's Challenge (Unbroken Bonds 213)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "214": {
+   "en": "Welder",
+   "page": "Welder (Unbroken Bonds 214)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "215": {
+   "en": "Pheromosa & Buzzwole",
+   "page": "Pheromosa & Buzzwole-GX (Unbroken Bonds 215)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "216": {
+   "en": "Venomoth",
+   "page": "Venomoth-GX (Unbroken Bonds 216)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "217": {
+   "en": "Reshiram & Charizard",
+   "page": "Reshiram & Charizard-GX (Unbroken Bonds 217)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "218": {
+   "en": "Blastoise",
+   "page": "Blastoise-GX (Unbroken Bonds 218)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "219": {
+   "en": "Dedenne",
+   "page": "Dedenne-GX (Unbroken Bonds 219)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "220": {
+   "en": "Muk & Alolan Muk",
+   "page": "Muk & Alolan Muk-GX (Unbroken Bonds 220)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "221": {
+   "en": "Marshadow & Machamp",
+   "page": "Marshadow & Machamp-GX (Unbroken Bonds 221)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "222": {
+   "en": "Greninja & Zoroark",
+   "page": "Greninja & Zoroark-GX (Unbroken Bonds 222)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "223": {
+   "en": "Honchkrow",
+   "page": "Honchkrow-GX (Unbroken Bonds 223)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "224": {
+   "en": "Lucario & Melmetal",
+   "page": "Lucario & Melmetal-GX (Unbroken Bonds 224)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "225": {
+   "en": "Gardevoir & Sylveon",
+   "page": "Gardevoir & Sylveon-GX (Unbroken Bonds 225)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "226": {
+   "en": "Whimsicott",
+   "page": "Whimsicott-GX (Unbroken Bonds 226)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "227": {
+   "en": "Persian",
+   "page": "Persian-GX (Unbroken Bonds 227)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "228": {
+   "en": "Celesteela",
+   "page": "Celesteela-GX (Unbroken Bonds 228)",
+   "type": "Rare Rainbow",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "229": {
+   "en": "Beast Bringer",
+   "page": "Beast Bringer (Unbroken Bonds 229)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "230": {
+   "en": "Electromagnetic Radar",
+   "page": "Electromagnetic Radar (Unbroken Bonds 230)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "231": {
+   "en": "Fire Crystal",
+   "page": "Fire Crystal (Unbroken Bonds 231)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "232": {
+   "en": "Metal Core Barrier",
+   "page": "Metal Core Barrier (Unbroken Bonds 232)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "233": {
+   "en": "Pokégear 3.0",
+   "page": "Pokégear 3.0 (Unbroken Bonds 233)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "234": {
+   "en": "Triple Acceleration Energy",
+   "page": "Triple Acceleration Energy (Unbroken Bonds 234)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "182a": {
+   "en": "Pokégear 3.0",
+   "page": "Pokégear 3.0 (Unbroken Bonds 182a)",
+   "type": "—",
+   "rarity": "Reverse Holo Yellow A Alternate art Unified Minds Season League Cup Staff promo",
+   "mark": ""
+  },
+  "182b": {
+   "en": "Pokégear 3.0",
+   "page": "Pokégear 3.0 (Unbroken Bonds 182b)",
+   "type": "—",
+   "rarity": "Yellow A Alternate art Trainer's Toolkit exclusive",
+   "mark": ""
+  },
+  "189a": {
+   "en": "Welder",
+   "page": "Welder (Unbroken Bonds 189a)",
+   "type": "—",
+   "rarity": "Reverse Holo Yellow A Alternate art Cosmic Eclipse Season Regional Championships Staff promo",
+   "mark": ""
+  },
+  "195a": {
+   "en": "Dedenne",
+   "page": "Dedenne-GX (Unbroken Bonds 195a)",
+   "type": "—",
+   "rarity": "Yellow A Alternate art Trainer's Toolkit exclusive",
+   "mark": ""
+  }
+ }
+}

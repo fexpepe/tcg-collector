@@ -1,0 +1,223 @@
+{
+ "page": "Trainer Battle Decks (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Psyduck",
+   "page": "Psyduck (Trainer Battle Deck 1)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Horsea",
+   "page": "Horsea (Trainer Battle Deck 2)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Staryu",
+   "page": "Staryu (Trainer Battle Deck 3)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Starmie",
+   "page": "Starmie-GX (Trainer Battle Deck 4)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Magikarp",
+   "page": "Magikarp (Trainer Battle Deck 5)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Gyarados",
+   "page": "Gyarados (Trainer Battle Deck 6)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Lapras",
+   "page": "Lapras (Trainer Battle Deck 7)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Geodude",
+   "page": "Geodude (Trainer Battle Deck 8)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Graveler",
+   "page": "Graveler (Trainer Battle Deck 9)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Golem",
+   "page": "Golem (Trainer Battle Deck 10)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Onix",
+   "page": "Onix-GX (Trainer Battle Deck 11)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Cubone",
+   "page": "Cubone (Trainer Battle Deck 12)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Rhyhorn",
+   "page": "Rhyhorn (Trainer Battle Deck 13)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Rhydon",
+   "page": "Rhydon (Trainer Battle Deck 14)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Sudowoodo",
+   "page": "Sudowoodo (Trainer Battle Deck 15)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Acro Bike",
+   "page": "Acro Bike (Trainer Battle Deck 16)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Nest Ball",
+   "page": "Nest Ball (Trainer Battle Deck 17)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Trainer Battle Deck 18)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Switch",
+   "page": "Switch (Trainer Battle Deck 19)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (Trainer Battle Deck 20)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Misty's Water Command",
+   "page": "Misty's Water Command (Trainer Battle Deck 21)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Misty's Determination",
+   "page": "Misty's Determination (Trainer Battle Deck 22)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Cynthia",
+   "page": "Cynthia (Trainer Battle Deck 23)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Brock's Grit",
+   "page": "Brock's Grit (Trainer Battle Deck 24)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Brock's Training",
+   "page": "Brock's Training (Trainer Battle Deck 25)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Hau",
+   "page": "Hau (Trainer Battle Deck 26)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Pokémon Center Lady",
+   "page": "Pokémon Center Lady (Trainer Battle Deck 27)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Lillie",
+   "page": "Lillie (Trainer Battle Deck 28)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Misty's Cerulean City Gym",
+   "page": "Misty's Cerulean City Gym (Trainer Battle Deck 29)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Brock's Pewter City Gym",
+   "page": "Brock's Pewter City Gym (Trainer Battle Deck 30)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Double Colorless Energy",
+   "page": "Double Colorless Energy (Trainer Battle Deck 31)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  }
+ }
+}

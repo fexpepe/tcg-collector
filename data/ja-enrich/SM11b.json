@@ -1,0 +1,531 @@
+{
+ "page": "Dream League (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Oddish",
+   "page": "Oddish (Dream League 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Gloom",
+   "page": "Gloom (Dream League 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Vileplume",
+   "page": "Vileplume-GX (Dream League 3)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "4": {
+   "en": "Slugma",
+   "page": "Slugma (Dream League 4)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Magcargo",
+   "page": "Magcargo (Dream League 5)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Torkoal",
+   "page": "Torkoal (Dream League 6)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Sneasel",
+   "page": "Sneasel (Dream League 7)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Weavile",
+   "page": "Weavile (Dream League 8)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "9": {
+   "en": "Piplup",
+   "page": "Piplup (Dream League 9)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Prinplup",
+   "page": "Prinplup (Dream League 10)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Empoleon",
+   "page": "Empoleon (Dream League 11)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Tympole",
+   "page": "Tympole (Dream League 12)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi (Dream League 13)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "14": {
+   "en": "Dewpider",
+   "page": "Dewpider (Dream League 14)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Araquanid",
+   "page": "Araquanid (Dream League 15)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Pikachu",
+   "page": "Pikachu (Dream League 16)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Raichu",
+   "page": "Raichu (Dream League 17)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Magnemite",
+   "page": "Magnemite (Dream League 18)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Magneton",
+   "page": "Magneton (Dream League 19)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "20": {
+   "en": "Solgaleo & Lunala",
+   "page": "Solgaleo & Lunala-GX (Dream League 20)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "21": {
+   "en": "Koffing",
+   "page": "Koffing (Dream League 21)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Weezing",
+   "page": "Weezing (Dream League 22)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Natu",
+   "page": "Natu (Dream League 23)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Xatu",
+   "page": "Xatu (Dream League 24)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Ralts",
+   "page": "Ralts (Dream League 25)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Kirlia",
+   "page": "Kirlia (Dream League 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Gallade",
+   "page": "Gallade (Dream League 27)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "28": {
+   "en": "Mimikyu",
+   "page": "Mimikyu (Dream League 28)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Onix",
+   "page": "Onix (Dream League 29)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Drilbur",
+   "page": "Drilbur (Dream League 30)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Excadrill",
+   "page": "Excadrill (Dream League 31)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "32": {
+   "en": "Palpitoad",
+   "page": "Palpitoad (Dream League 32)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Seismitoad",
+   "page": "Seismitoad (Dream League 33)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Steelix",
+   "page": "Steelix (Dream League 34)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "35": {
+   "en": "Clefairy",
+   "page": "Clefairy (Dream League 35)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Reshiram & Zekrom",
+   "page": "Reshiram & Zekrom-GX (Dream League 36)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "37": {
+   "en": "Lillipup",
+   "page": "Lillipup (Dream League 37)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Herdier",
+   "page": "Herdier (Dream League 38)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Stoutland",
+   "page": "Stoutland (Dream League 39)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "40": {
+   "en": "Type: Null",
+   "page": "Type: Null (Dream League 40)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Silvally",
+   "page": "Silvally-GX (Dream League 41)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "42": {
+   "en": "Lana's Fishing Rod",
+   "page": "Lana's Fishing Rod (Dream League 42)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Lillie's Poké Doll",
+   "page": "Lillie's Poké Doll (Dream League 43)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Will",
+   "page": "Will (Dream League 44)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "N's Resolve",
+   "page": "N's Resolve (Dream League 45)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Roxie",
+   "page": "Roxie (Dream League 46)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Rosa",
+   "page": "Rosa (Dream League 47)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "48": {
+   "en": "Clay",
+   "page": "Clay (Dream League 48)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Lillie's Full Force",
+   "page": "Lillie's Full Force (Dream League 49)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Torkoal",
+   "page": "Torkoal (Dream League 50)",
+   "type": "Fire",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "51": {
+   "en": "Weavile",
+   "page": "Weavile (Dream League 51)",
+   "type": "Water",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Piplup",
+   "page": "Piplup (Dream League 52)",
+   "type": "Water",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "53": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi (Dream League 53)",
+   "type": "Water",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Pikachu",
+   "page": "Pikachu (Dream League 54)",
+   "type": "Lightning",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Magnemite",
+   "page": "Magnemite (Dream League 55)",
+   "type": "Lightning",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Koffing",
+   "page": "Koffing (Dream League 56)",
+   "type": "Psychic",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Gallade",
+   "page": "Gallade (Dream League 57)",
+   "type": "Psychic",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Mimikyu",
+   "page": "Mimikyu (Dream League 58)",
+   "type": "Psychic",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Excadrill",
+   "page": "Excadrill (Dream League 59)",
+   "type": "Fighting",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Steelix",
+   "page": "Steelix (Dream League 60)",
+   "type": "Metal",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Stoutland",
+   "page": "Stoutland (Dream League 61)",
+   "type": "Colorless",
+   "rarity": "CHR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Vileplume",
+   "page": "Vileplume-GX (Dream League 62)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "63": {
+   "en": "Solgaleo & Lunala",
+   "page": "Solgaleo & Lunala-GX (Dream League 63)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Reshiram & Zekrom",
+   "page": "Reshiram & Zekrom-GX (Dream League 64)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Silvally",
+   "page": "Silvally-GX (Dream League 65)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "66": {
+   "en": "N's Resolve",
+   "page": "N's Resolve (Dream League 66)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Rosa",
+   "page": "Rosa (Dream League 67)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Lillie's Full Force",
+   "page": "Lillie's Full Force (Dream League 68)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Vileplume",
+   "page": "Vileplume-GX (Dream League 69)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Solgaleo & Lunala",
+   "page": "Solgaleo & Lunala-GX (Dream League 70)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Reshiram & Zekrom",
+   "page": "Reshiram & Zekrom-GX (Dream League 71)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Silvally",
+   "page": "Silvally-GX (Dream League 72)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Lana's Fishing Rod",
+   "page": "Lana's Fishing Rod (Dream League 73)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Lillie's Poké Doll",
+   "page": "Lillie's Poké Doll (Dream League 74)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Power Plant",
+   "page": "Power Plant (Dream League 75)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

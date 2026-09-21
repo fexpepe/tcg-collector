@@ -1,0 +1,314 @@
+{
+ "page": "25th Anniversary Collection (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Pikachu",
+   "page": "Pikachu (25th Anniversary Collection 1)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Mew",
+   "page": "Mew (25th Anniversary Collection 2)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (25th Anniversary Collection 3)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh (25th Anniversary Collection 4)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Lugia",
+   "page": "Lugia (25th Anniversary Collection 5)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Groudon",
+   "page": "Groudon (25th Anniversary Collection 6)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Kyogre",
+   "page": "Kyogre (25th Anniversary Collection 7)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Dialga",
+   "page": "Dialga (25th Anniversary Collection 8)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Palkia",
+   "page": "Palkia (25th Anniversary Collection 9)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Reshiram",
+   "page": "Reshiram (25th Anniversary Collection 10)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Zekrom",
+   "page": "Zekrom (25th Anniversary Collection 11)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Xerneas",
+   "page": "Xerneas (25th Anniversary Collection 12)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Yveltal",
+   "page": "Yveltal (25th Anniversary Collection 13)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Cosmog",
+   "page": "Cosmog (25th Anniversary Collection 14)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Cosmoem",
+   "page": "Cosmoem (25th Anniversary Collection 15)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Solgaleo",
+   "page": "Solgaleo (25th Anniversary Collection 16)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Lunala",
+   "page": "Lunala (25th Anniversary Collection 17)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Zacian",
+   "page": "Zacian V (25th Anniversary Collection 18)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "19": {
+   "en": "Zamazenta",
+   "page": "Zamazenta V (25th Anniversary Collection 19)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "20": {
+   "en": "Pikachu",
+   "page": "Pikachu V (25th Anniversary Collection 20)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "21": {
+   "en": "Surfing Pikachu",
+   "page": "Surfing Pikachu V (25th Anniversary Collection 21)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "22": {
+   "en": "Surfing Pikachu",
+   "page": "Surfing Pikachu VMAX (25th Anniversary Collection 22)",
+   "type": "Lightning",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "23": {
+   "en": "Flying Pikachu",
+   "page": "Flying Pikachu V (25th Anniversary Collection 23)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "24": {
+   "en": "Flying Pikachu",
+   "page": "Flying Pikachu VMAX (25th Anniversary Collection 24)",
+   "type": "Lightning",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "25": {
+   "en": "Pikachu",
+   "page": "Pikachu V-UNION (25th Anniversary Collection 25)",
+   "type": "Lightning",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "26": {
+   "en": "Pikachu",
+   "page": "Pikachu V-UNION (25th Anniversary Collection 26)",
+   "type": "Lightning",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "27": {
+   "en": "Pikachu",
+   "page": "Pikachu V-UNION (25th Anniversary Collection 27)",
+   "type": "Lightning",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "28": {
+   "en": "Pikachu",
+   "page": "Pikachu V-UNION (25th Anniversary Collection 28)",
+   "type": "Lightning",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "29": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (25th Anniversary Collection 29)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "30": {
+   "en": "Mew",
+   "page": "Mew (25th Anniversary Collection 30)",
+   "type": "Psychic",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "54": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-EX (Classic Collection)",
+   "type": "Rare Classic",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "60": {
+   "en": "Tapu Lele",
+   "page": "Tapu Lele-GX (Classic Collection)",
+   "type": "Rare Classic",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "66": {
+   "en": "Shining Magikarp",
+   "page": "Shining Magikarp (Classic Collection)",
+   "type": "Rare Classic",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "73": {
+   "en": "Imposter Professor Oak",
+   "page": "Imposter Professor Oak (Classic Collection)",
+   "type": "Rare Classic",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "76": {
+   "en": "Rayquaza",
+   "page": "M Rayquaza-EX (Classic Collection)",
+   "type": "Rare Classic",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "86": {
+   "en": "Rocket's Admin.",
+   "page": "Rocket's Admin. (Classic Collection)",
+   "type": "Rare Classic",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88": {
+   "en": "Mew ex",
+   "page": "Mew ex (Classic Collection)",
+   "type": "Rare Classic",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Gardevoir ex δ",
+   "page": "Gardevoir ex δ (Classic Collection)",
+   "type": "Rare Classic",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Xerneas",
+   "page": "Xerneas-EX (Classic Collection)",
+   "type": "Rare Classic",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Donphan",
+   "page": "Donphan (Classic Collection)",
+   "type": "Rare Classic",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Luxray",
+   "page": "Luxray GL LV.X (Classic Collection)",
+   "type": "Rare Classic",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Reshiram",
+   "page": "Reshiram (Classic Collection)",
+   "type": "Rare Classic",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Zekrom",
+   "page": "Zekrom (Classic Collection)",
+   "type": "Rare Classic",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Garchomp",
+   "page": "Garchomp C LV.X (Classic Collection)",
+   "type": "Rare Classic",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

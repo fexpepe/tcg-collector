@@ -1,0 +1,937 @@
+{
+ "page": "Galactic's Conquest (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Wurmple",
+   "page": "Wurmple (Galactic's Conquest 1)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Silcoon",
+   "page": "Silcoon (Galactic's Conquest 2)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "3": {
+   "en": "Beautifly",
+   "page": "Beautifly (Galactic's Conquest 3)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "4": {
+   "en": "Cascoon",
+   "page": "Cascoon (Galactic's Conquest 4)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "5": {
+   "en": "Lotad",
+   "page": "Lotad (Galactic's Conquest 5)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "6": {
+   "en": "Lotad",
+   "page": "Lotad (Galactic's Conquest 6)",
+   "type": "Grass",
+   "rarity": "Common Holo",
+   "mark": ""
+  },
+  "7": {
+   "en": "Lombre",
+   "page": "Lombre (Galactic's Conquest 7)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "8": {
+   "en": "Ludicolo",
+   "page": "Ludicolo (Galactic's Conquest 8)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "9": {
+   "en": "Cacnea",
+   "page": "Cacnea (Galactic's Conquest 9)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "10": {
+   "en": "Cacturne",
+   "page": "Cacturne (Galactic's Conquest 10)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "11": {
+   "en": "Kricketot",
+   "page": "Kricketot (Galactic's Conquest 11)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "12": {
+   "en": "Kricketune",
+   "page": "Kricketune (Galactic's Conquest 12)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "13": {
+   "en": "Carnivine",
+   "page": "Carnivine (Galactic's Conquest 13)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "14": {
+   "en": "Shaymin",
+   "page": "Shaymin (Galactic's Conquest 14)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Shaymin LV.X",
+   "page": "Shaymin LV.X (Galactic's Conquest 15)",
+   "type": "Grass",
+   "rarity": "Rare Holo LV.X",
+   "mark": ""
+  },
+  "16": {
+   "en": "Vulpix",
+   "page": "Vulpix (Galactic's Conquest 16)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "17": {
+   "en": "Vulpix",
+   "page": "Vulpix (Galactic's Conquest 17)",
+   "type": "Fire",
+   "rarity": "Common Holo",
+   "mark": ""
+  },
+  "18": {
+   "en": "Ninetales",
+   "page": "Ninetales (Galactic's Conquest 18)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "19": {
+   "en": "Houndoom",
+   "page": "Houndoom G (Galactic's Conquest 19)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "20": {
+   "en": "Torchic",
+   "page": "Torchic (Galactic's Conquest 20)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "21": {
+   "en": "Combusken",
+   "page": "Combusken (Galactic's Conquest 21)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "22": {
+   "en": "Blaziken",
+   "page": "Blaziken (Galactic's Conquest 22)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "23": {
+   "en": "Squirtle",
+   "page": "Squirtle (Galactic's Conquest 23)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "24": {
+   "en": "Wartortle",
+   "page": "Wartortle (Galactic's Conquest 24)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "25": {
+   "en": "Blastoise",
+   "page": "Blastoise (Galactic's Conquest 25)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "26": {
+   "en": "Psyduck",
+   "page": "Psyduck (Galactic's Conquest 26)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "27": {
+   "en": "Golduck",
+   "page": "Golduck (Galactic's Conquest 27)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "28": {
+   "en": "Gyarados",
+   "page": "Gyarados G (Galactic's Conquest 28)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "29": {
+   "en": "Remoraid",
+   "page": "Remoraid (Galactic's Conquest 29)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "30": {
+   "en": "Octillery",
+   "page": "Octillery (Galactic's Conquest 30)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "31": {
+   "en": "Luvdisc",
+   "page": "Luvdisc (Galactic's Conquest 31)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "32": {
+   "en": "Palkia",
+   "page": "Palkia G (Galactic's Conquest 32)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "33": {
+   "en": "Palkia",
+   "page": "Palkia G LV.X (Galactic's Conquest 33)",
+   "type": "Water",
+   "rarity": "Rare Holo LV.X",
+   "mark": ""
+  },
+  "34": {
+   "en": "Mareep",
+   "page": "Mareep (Galactic's Conquest 34)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "35": {
+   "en": "Flaaffy",
+   "page": "Flaaffy (Galactic's Conquest 35)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "36": {
+   "en": "Ampharos",
+   "page": "Ampharos (Galactic's Conquest 36)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "37": {
+   "en": "Electrike",
+   "page": "Electrike (Galactic's Conquest 37)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "38": {
+   "en": "Manectric",
+   "page": "Manectric (Galactic's Conquest 38)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "39": {
+   "en": "Grimer",
+   "page": "Grimer (Galactic's Conquest 39)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "40": {
+   "en": "Muk",
+   "page": "Muk (Galactic's Conquest 40)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "41": {
+   "en": "Crobat",
+   "page": "Crobat G (Galactic's Conquest 41)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "42": {
+   "en": "Dustox",
+   "page": "Dustox (Galactic's Conquest 42)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "43": {
+   "en": "Ralts",
+   "page": "Ralts (Galactic's Conquest 43)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "44": {
+   "en": "Kirlia",
+   "page": "Kirlia (Galactic's Conquest 44)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "45": {
+   "en": "Gardevoir",
+   "page": "Gardevoir (Galactic's Conquest 45)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "46": {
+   "en": "Seviper",
+   "page": "Seviper (Galactic's Conquest 46)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "47": {
+   "en": "Shuppet",
+   "page": "Shuppet (Galactic's Conquest 47)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "48": {
+   "en": "Banette",
+   "page": "Banette (Galactic's Conquest 48)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "49": {
+   "en": "Skuntank",
+   "page": "Skuntank G (Galactic's Conquest 49)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "50": {
+   "en": "Toxicroak",
+   "page": "Toxicroak G (Galactic's Conquest 50)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "51": {
+   "en": "Giratina",
+   "page": "Giratina (Galactic's Conquest 51)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "52": {
+   "en": "Giratina LV.X",
+   "page": "Giratina LV.X (Galactic's Conquest 52)",
+   "type": "Psychic",
+   "rarity": "Rare Holo LV.X",
+   "mark": ""
+  },
+  "53": {
+   "en": "Diglett",
+   "page": "Diglett (Galactic's Conquest 53)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "54": {
+   "en": "Dugtrio",
+   "page": "Dugtrio (Galactic's Conquest 54)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "55": {
+   "en": "Cranidos",
+   "page": "Cranidos (Galactic's Conquest 55)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "56": {
+   "en": "Rampardos",
+   "page": "Rampardos (Galactic's Conquest 56)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "57": {
+   "en": "Poochyena",
+   "page": "Poochyena (Galactic's Conquest 57)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "58": {
+   "en": "Mightyena",
+   "page": "Mightyena (Galactic's Conquest 58)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "59": {
+   "en": "Honchkrow",
+   "page": "Honchkrow G (Galactic's Conquest 59)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "60": {
+   "en": "Drapion LV.X",
+   "page": "Drapion LV.X (Galactic's Conquest 60)",
+   "type": "Darkness",
+   "rarity": "Rare Holo LV.X",
+   "mark": ""
+  },
+  "61": {
+   "en": "Weavile",
+   "page": "Weavile G (Galactic's Conquest 61)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "62": {
+   "en": "Shieldon",
+   "page": "Shieldon (Galactic's Conquest 62)",
+   "type": "Metal",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "63": {
+   "en": "Bastiodon",
+   "page": "Bastiodon (Galactic's Conquest 63)",
+   "type": "Metal",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "64": {
+   "en": "Bronzong",
+   "page": "Bronzong G (Galactic's Conquest 64)",
+   "type": "Metal",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "65": {
+   "en": "Dialga",
+   "page": "Dialga G (Galactic's Conquest 65)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "66": {
+   "en": "Dialga",
+   "page": "Dialga G LV.X (Galactic's Conquest 66)",
+   "type": "Metal",
+   "rarity": "Rare Holo LV.X",
+   "mark": ""
+  },
+  "67": {
+   "en": "Lickitung",
+   "page": "Lickitung (Galactic's Conquest 67)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "68": {
+   "en": "Lickilicky",
+   "page": "Lickilicky (Galactic's Conquest 68)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "69": {
+   "en": "Happiny",
+   "page": "Happiny (Galactic's Conquest 69)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "70": {
+   "en": "Chansey",
+   "page": "Chansey (Galactic's Conquest 70)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "71": {
+   "en": "Blissey",
+   "page": "Blissey (Galactic's Conquest 71)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "72": {
+   "en": "Slakoth",
+   "page": "Slakoth (Galactic's Conquest 72)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "73": {
+   "en": "Vigoroth",
+   "page": "Vigoroth (Galactic's Conquest 73)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "74": {
+   "en": "Slaking",
+   "page": "Slaking (Galactic's Conquest 74)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "75": {
+   "en": "Skitty",
+   "page": "Skitty (Galactic's Conquest 75)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "76": {
+   "en": "Delcatty",
+   "page": "Delcatty (Galactic's Conquest 76)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "77": {
+   "en": "Swablu",
+   "page": "Swablu (Galactic's Conquest 77)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "78": {
+   "en": "Swablu",
+   "page": "Swablu (Galactic's Conquest 78)",
+   "type": "Colorless",
+   "rarity": "Common Holo",
+   "mark": ""
+  },
+  "79": {
+   "en": "Altaria",
+   "page": "Altaria (Galactic's Conquest 79)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "80": {
+   "en": "Zangoose",
+   "page": "Zangoose (Galactic's Conquest 80)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "81": {
+   "en": "Purugly",
+   "page": "Purugly G (Galactic's Conquest 81)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "82": {
+   "en": "Team Galactic's Invention G-103 Power Spray",
+   "page": "Team Galactic's Invention G-103 Power Spray (Galactic's Conquest 82)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "83": {
+   "en": "Team Galactic's Invention G-105 Poké Turn",
+   "page": "Team Galactic's Invention G-105 Poké Turn (Galactic's Conquest 83)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "84": {
+   "en": "Level Max",
+   "page": "Level Max (Galactic's Conquest 84)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "85": {
+   "en": "Skull Fossil",
+   "page": "Skull Fossil (Galactic's Conquest 85)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "86": {
+   "en": "Armor Fossil",
+   "page": "Armor Fossil (Galactic's Conquest 86)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "87": {
+   "en": "Memory Berry",
+   "page": "Memory Berry (Galactic's Conquest 87)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "88": {
+   "en": "Team Galactic's Invention G-101 Energy Gain",
+   "page": "Team Galactic's Invention G-101 Energy Gain (Galactic's Conquest 88)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "89": {
+   "en": "Cyrus's Conspiracy",
+   "page": "Cyrus's Conspiracy (Galactic's Conquest 89)",
+   "type": "Su",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "90": {
+   "en": "Looker's Investigation",
+   "page": "Looker's Investigation (Galactic's Conquest 90)",
+   "type": "Su",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "91": {
+   "en": "Galactic HQ",
+   "page": "Galactic HQ (Galactic's Conquest 91)",
+   "type": "St",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "92": {
+   "en": "Broken Time-Space",
+   "page": "Broken Time-Space (Galactic's Conquest 92)",
+   "type": "St",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "93": {
+   "en": "Rainbow Energy",
+   "page": "Rainbow Energy (Galactic's Conquest 93)",
+   "type": "Rainbow",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "94": {
+   "en": "Scyther",
+   "page": "Scyther (Galactic's Conquest 94)",
+   "type": "Grass",
+   "rarity": "SuperRare Holo",
+   "mark": ""
+  },
+  "95": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Galactic's Conquest 95)",
+   "type": "Lightning",
+   "rarity": "SuperRare Holo",
+   "mark": ""
+  },
+  "96": {
+   "en": "Hitmonchan",
+   "page": "Hitmonchan (Galactic's Conquest 96)",
+   "type": "Fighting",
+   "rarity": "SuperRare Holo",
+   "mark": ""
+  },
+  "97": {
+   "en": "Swablu",
+   "page": "Swablu (Platinum 97)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Tauros",
+   "page": "Tauros (Platinum 98)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Torchic",
+   "page": "Torchic (Platinum 99)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Torkoal",
+   "page": "Torkoal (Platinum 100)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Turtwig",
+   "page": "Turtwig (Platinum 101)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Vulpix",
+   "page": "Vulpix (Platinum 102)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Wurmple",
+   "page": "Wurmple (Platinum 103)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Broken Time-Space",
+   "page": "Broken Time-Space (Platinum 104)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Cyrus's Conspiracy",
+   "page": "Cyrus's Conspiracy (Platinum 105)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Galactic HQ",
+   "page": "Galactic HQ (Platinum 106)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Level Max",
+   "page": "Level Max (Platinum 107)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Life Herb",
+   "page": "Life Herb (Platinum 108)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Looker's Investigation",
+   "page": "Looker's Investigation (Platinum 109)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Memory Berry",
+   "page": "Memory Berry (Platinum 110)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Miasma Valley",
+   "page": "Miasma Valley (Platinum 111)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "PlusPower",
+   "page": "PlusPower (Platinum 112)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Poké Ball",
+   "page": "Poké Ball (Platinum 113)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Pokédex HANDY910is",
+   "page": "Pokédex HANDY910is (Platinum 114)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Pokémon Rescue",
+   "page": "Pokémon Rescue (Platinum 115)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Team Galactic's Invention G-101 Energy Gain",
+   "page": "Team Galactic's Invention G-101 Energy Gain (Platinum 116)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "117": {
+   "en": "Team Galactic's Invention G-103 Power Spray",
+   "page": "Team Galactic's Invention G-103 Power Spray (Platinum 117)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "118": {
+   "en": "Team Galactic's Invention G-105 Poké Turn",
+   "page": "Team Galactic's Invention G-105 Poké Turn (Platinum 118)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Armor Fossil",
+   "page": "Armor Fossil (Platinum 119)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Skull Fossil",
+   "page": "Skull Fossil (Platinum 120)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Rainbow Energy",
+   "page": "Rainbow Energy (Platinum 121)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Dialga",
+   "page": "Dialga G LV.X (Platinum 122)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Drapion LV.X",
+   "page": "Drapion LV.X (Platinum 123)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Giratina LV.X",
+   "page": "Giratina LV.X (Platinum 124)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Palkia",
+   "page": "Palkia G LV.X (Platinum 125)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "126": {
+   "en": "Shaymin LV.X",
+   "page": "Shaymin LV.X (Platinum 126)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Shaymin LV.X",
+   "page": "Shaymin LV.X (Platinum 127)",
+   "type": "Rare Holo LV.X",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Platinum 128)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Hitmonchan",
+   "page": "Hitmonchan (Platinum 129)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Scyther",
+   "page": "Scyther (Platinum 130)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sh4": {
+   "en": "Lotad",
+   "page": "Lotad (Platinum SH4)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sh5": {
+   "en": "Swablu",
+   "page": "Swablu (Platinum SH5)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "sh6": {
+   "en": "Vulpix",
+   "page": "Vulpix (Platinum SH6)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

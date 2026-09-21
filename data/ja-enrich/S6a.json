@@ -1,0 +1,713 @@
+{
+ "page": "Eevee Heroes (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Pinsir",
+   "page": "Pinsir (Eevee Heroes 1)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "2": {
+   "en": "Leafeon",
+   "page": "Leafeon V (Eevee Heroes 2)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "3": {
+   "en": "Leafeon",
+   "page": "Leafeon VMAX (Eevee Heroes 3)",
+   "type": "Grass",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "4": {
+   "en": "Sewaddle",
+   "page": "Sewaddle (Eevee Heroes 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Swadloon",
+   "page": "Swadloon (Eevee Heroes 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Leavanny",
+   "page": "Leavanny (Eevee Heroes 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Dewpider",
+   "page": "Dewpider (Eevee Heroes 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Araquanid",
+   "page": "Araquanid (Eevee Heroes 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Gossifleur",
+   "page": "Gossifleur (Eevee Heroes 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Eldegoss",
+   "page": "Eldegoss (Eevee Heroes 10)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "11": {
+   "en": "Flareon",
+   "page": "Flareon V (Eevee Heroes 11)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "12": {
+   "en": "Slugma",
+   "page": "Slugma (Eevee Heroes 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Magcargo",
+   "page": "Magcargo (Eevee Heroes 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Entei",
+   "page": "Entei (Eevee Heroes 14)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "15": {
+   "en": "Vaporeon",
+   "page": "Vaporeon V (Eevee Heroes 15)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Marill",
+   "page": "Marill (Eevee Heroes 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Azumarill",
+   "page": "Azumarill (Eevee Heroes 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Mantine",
+   "page": "Mantine (Eevee Heroes 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Mudkip",
+   "page": "Mudkip (Eevee Heroes 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Marshtomp",
+   "page": "Marshtomp (Eevee Heroes 20)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Swampert",
+   "page": "Swampert (Eevee Heroes 21)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Feebas",
+   "page": "Feebas (Eevee Heroes 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Milotic",
+   "page": "Milotic (Eevee Heroes 23)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Glaceon",
+   "page": "Glaceon V (Eevee Heroes 24)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "25": {
+   "en": "Glaceon",
+   "page": "Glaceon VMAX (Eevee Heroes 25)",
+   "type": "Water",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "26": {
+   "en": "Pikachu",
+   "page": "Pikachu (Eevee Heroes 26)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Raichu",
+   "page": "Raichu (Eevee Heroes 27)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "28": {
+   "en": "Voltorb",
+   "page": "Voltorb (Eevee Heroes 28)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Electrode",
+   "page": "Electrode (Eevee Heroes 29)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Jolteon",
+   "page": "Jolteon V (Eevee Heroes 30)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Rotom",
+   "page": "Rotom (Eevee Heroes 31)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Tynamo",
+   "page": "Tynamo (Eevee Heroes 32)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Eelektrik",
+   "page": "Eelektrik (Eevee Heroes 33)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Eelektross",
+   "page": "Eelektross (Eevee Heroes 34)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Espeon",
+   "page": "Espeon V (Eevee Heroes 35)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "36": {
+   "en": "Mawile",
+   "page": "Mawile (Eevee Heroes 36)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Flabébé",
+   "page": "Flabébé (Eevee Heroes 37)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Floette",
+   "page": "Floette (Eevee Heroes 38)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Florges",
+   "page": "Florges (Eevee Heroes 39)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "40": {
+   "en": "Sylveon",
+   "page": "Sylveon V (Eevee Heroes 40)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "41": {
+   "en": "Sylveon",
+   "page": "Sylveon VMAX (Eevee Heroes 41)",
+   "type": "Psychic",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "42": {
+   "en": "Sandygast",
+   "page": "Sandygast (Eevee Heroes 42)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Palossand",
+   "page": "Palossand (Eevee Heroes 43)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Marshadow",
+   "page": "Marshadow (Eevee Heroes 44)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "45": {
+   "en": "Indeedee",
+   "page": "Indeedee (Eevee Heroes 45)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Pancham",
+   "page": "Pancham (Eevee Heroes 46)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Umbreon",
+   "page": "Umbreon V (Eevee Heroes 47)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "48": {
+   "en": "Umbreon",
+   "page": "Umbreon VMAX (Eevee Heroes 48)",
+   "type": "Darkness",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "49": {
+   "en": "Zorua",
+   "page": "Zorua (Eevee Heroes 49)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Zoroark",
+   "page": "Zoroark (Eevee Heroes 50)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "51": {
+   "en": "Pangoro",
+   "page": "Pangoro (Eevee Heroes 51)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Impidimp",
+   "page": "Impidimp (Eevee Heroes 52)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Morgrem",
+   "page": "Morgrem (Eevee Heroes 53)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Grimmsnarl",
+   "page": "Grimmsnarl (Eevee Heroes 54)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "55": {
+   "en": "Meowth",
+   "page": "Meowth (Eevee Heroes 55)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Persian",
+   "page": "Persian (Eevee Heroes 56)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (Eevee Heroes 57)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Eevee",
+   "page": "Eevee (Eevee Heroes 58)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Smeargle",
+   "page": "Smeargle (Eevee Heroes 59)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Boost Shake",
+   "page": "Boost Shake (Eevee Heroes 60)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Dream Ball",
+   "page": "Dream Ball (Eevee Heroes 61)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Elemental Badge",
+   "page": "Elemental Badge (Eevee Heroes 62)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Snow Leaf Badge",
+   "page": "Snow Leaf Badge (Eevee Heroes 63)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Moon & Sun Badge",
+   "page": "Moon & Sun Badge (Eevee Heroes 64)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Ribbon Badge",
+   "page": "Ribbon Badge (Eevee Heroes 65)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Aroma Lady",
+   "page": "Aroma Lady (Eevee Heroes 66)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Gordie",
+   "page": "Gordie (Eevee Heroes 67)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Shopping Center",
+   "page": "Shopping Center (Eevee Heroes 68)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Treasure Energy",
+   "page": "Treasure Energy (Eevee Heroes 69)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Leafeon",
+   "page": "Leafeon V (Eevee Heroes 70)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Leafeon",
+   "page": "Leafeon V (Eevee Heroes 71)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Flareon",
+   "page": "Flareon V (Eevee Heroes 72)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Flareon",
+   "page": "Flareon V (Eevee Heroes 73)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Vaporeon",
+   "page": "Vaporeon V (Eevee Heroes 74)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Vaporeon",
+   "page": "Vaporeon V (Eevee Heroes 75)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Glaceon",
+   "page": "Glaceon V (Eevee Heroes 76)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Glaceon",
+   "page": "Glaceon V (Eevee Heroes 77)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Jolteon",
+   "page": "Jolteon V (Eevee Heroes 78)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Jolteon",
+   "page": "Jolteon V (Eevee Heroes 79)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Espeon",
+   "page": "Espeon V (Eevee Heroes 80)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Espeon",
+   "page": "Espeon V (Eevee Heroes 81)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Sylveon",
+   "page": "Sylveon V (Eevee Heroes 82)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Sylveon",
+   "page": "Sylveon V (Eevee Heroes 83)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Umbreon",
+   "page": "Umbreon V (Eevee Heroes 84)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Umbreon",
+   "page": "Umbreon V (Eevee Heroes 85)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Aroma Lady",
+   "page": "Aroma Lady (Eevee Heroes 86)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Gordie",
+   "page": "Gordie (Eevee Heroes 87)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Leafeon",
+   "page": "Leafeon VMAX (Eevee Heroes 88)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Leafeon",
+   "page": "Leafeon VMAX (Eevee Heroes 89)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Glaceon",
+   "page": "Glaceon VMAX (Eevee Heroes 90)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Glaceon",
+   "page": "Glaceon VMAX (Eevee Heroes 91)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Sylveon",
+   "page": "Sylveon VMAX (Eevee Heroes 92)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Sylveon",
+   "page": "Sylveon VMAX (Eevee Heroes 93)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Umbreon",
+   "page": "Umbreon VMAX (Eevee Heroes 94)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Umbreon",
+   "page": "Umbreon VMAX (Eevee Heroes 95)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Aroma Lady",
+   "page": "Aroma Lady (Eevee Heroes 96)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Gordie",
+   "page": "Gordie (Eevee Heroes 97)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Inteleon",
+   "page": "Inteleon (Eevee Heroes 98)",
+   "type": "Water",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Boost Shake",
+   "page": "Boost Shake (Eevee Heroes 99)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Turffield Stadium",
+   "page": "Turffield Stadium (Eevee Heroes 100)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (Eevee Heroes 101)",
+   "type": "Darkness",
+   "rarity": "UR",
+   "mark": "—"
+  }
+ }
+}

@@ -1,0 +1,727 @@
+{
+ "page": "Triplet Beat (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Tropius",
+   "page": "Tropius (Triplet Beat 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Foongus",
+   "page": "Foongus (Triplet Beat 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Amoonguss",
+   "page": "Amoonguss (Triplet Beat 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Sprigatito",
+   "page": "Sprigatito (Triplet Beat 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Sprigatito",
+   "page": "Sprigatito (Triplet Beat 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Floragato",
+   "page": "Floragato (Triplet Beat 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Meowscarada",
+   "page": "Meowscarada ex (Triplet Beat 7)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "8": {
+   "en": "Nymble",
+   "page": "Nymble (Triplet Beat 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Nymble",
+   "page": "Nymble (Triplet Beat 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Lokix",
+   "page": "Lokix (Triplet Beat 10)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "11": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Triplet Beat 11)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Larvesta",
+   "page": "Larvesta (Triplet Beat 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Volcarona",
+   "page": "Volcarona (Triplet Beat 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Litleo",
+   "page": "Litleo (Triplet Beat 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Pyroar",
+   "page": "Pyroar (Triplet Beat 15)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Oricorio",
+   "page": "Oricorio (Triplet Beat 16)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "17": {
+   "en": "Fuecoco",
+   "page": "Fuecoco (Triplet Beat 17)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Fuecoco",
+   "page": "Fuecoco (Triplet Beat 18)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Crocalor",
+   "page": "Crocalor (Triplet Beat 19)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Skeledirge",
+   "page": "Skeledirge ex (Triplet Beat 20)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "21": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Triplet Beat 21)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Magikarp",
+   "page": "Magikarp (Triplet Beat 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Gyarados",
+   "page": "Gyarados (Triplet Beat 23)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "24": {
+   "en": "Delibird",
+   "page": "Delibird (Triplet Beat 24)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Buizel",
+   "page": "Buizel (Triplet Beat 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Floatzel",
+   "page": "Floatzel (Triplet Beat 26)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Quaxly",
+   "page": "Quaxly (Triplet Beat 27)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Quaxly",
+   "page": "Quaxly (Triplet Beat 28)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Quaxwell",
+   "page": "Quaxwell (Triplet Beat 29)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Quaquaval",
+   "page": "Quaquaval ex (Triplet Beat 30)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Wattrel",
+   "page": "Wattrel (Triplet Beat 31)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Wattrel",
+   "page": "Wattrel (Triplet Beat 32)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Kilowattrel",
+   "page": "Kilowattrel (Triplet Beat 33)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Misdreavus",
+   "page": "Misdreavus (Triplet Beat 34)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Mismagius",
+   "page": "Mismagius (Triplet Beat 35)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Spoink",
+   "page": "Spoink (Triplet Beat 36)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Grumpig",
+   "page": "Grumpig (Triplet Beat 37)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "38": {
+   "en": "Dedenne",
+   "page": "Dedenne ex (Triplet Beat 38)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "39": {
+   "en": "Oranguru",
+   "page": "Oranguru (Triplet Beat 39)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Tinkatink",
+   "page": "Tinkatink (Triplet Beat 40)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Tinkatink",
+   "page": "Tinkatink (Triplet Beat 41)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Tinkatuff",
+   "page": "Tinkatuff (Triplet Beat 42)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Tinkaton",
+   "page": "Tinkaton (Triplet Beat 43)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Diglett",
+   "page": "Diglett (Triplet Beat 44)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Dugtrio",
+   "page": "Dugtrio (Triplet Beat 45)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Triplet Beat 46)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Makuhita",
+   "page": "Makuhita (Triplet Beat 47)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Hariyama",
+   "page": "Hariyama (Triplet Beat 48)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "49": {
+   "en": "Rockruff",
+   "page": "Rockruff (Triplet Beat 49)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Lycanroc",
+   "page": "Lycanroc ex (Triplet Beat 50)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "51": {
+   "en": "Falinks",
+   "page": "Falinks (Triplet Beat 51)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Paldean Wooper",
+   "page": "Paldean Wooper (Triplet Beat 52)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Paldean Wooper",
+   "page": "Paldean Wooper (Triplet Beat 53)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Paldean Clodsire",
+   "page": "Paldean Clodsire ex (Triplet Beat 54)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Sableye",
+   "page": "Sableye (Triplet Beat 55)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "56": {
+   "en": "Seviper",
+   "page": "Seviper (Triplet Beat 56)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Deino",
+   "page": "Deino (Triplet Beat 57)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Zweilous",
+   "page": "Zweilous (Triplet Beat 58)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Hydreigon",
+   "page": "Hydreigon (Triplet Beat 59)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "60": {
+   "en": "Salandit",
+   "page": "Salandit (Triplet Beat 60)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Salazzle",
+   "page": "Salazzle (Triplet Beat 61)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Yungoos",
+   "page": "Yungoos (Triplet Beat 62)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Gumshoos",
+   "page": "Gumshoos (Triplet Beat 63)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Superior Energy Retrieval",
+   "page": "Superior Energy Retrieval (Triplet Beat 64)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Great Ball",
+   "page": "Great Ball (Triplet Beat 65)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Dendra",
+   "page": "Dendra (Triplet Beat 66)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Clavell",
+   "page": "Clavell (Triplet Beat 67)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Falkner",
+   "page": "Falkner (Triplet Beat 68)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (Triplet Beat 69)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "70": {
+   "en": "Artazon",
+   "page": "Artazon (Triplet Beat 70)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Practice Studio",
+   "page": "Practice Studio (Triplet Beat 71)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Jet Energy",
+   "page": "Jet Energy (Triplet Beat 72)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "73": {
+   "en": "Luminous Energy",
+   "page": "Luminous Energy (Triplet Beat 73)",
+   "type": "Rainbow",
+   "rarity": "U",
+   "mark": ""
+  },
+  "74": {
+   "en": "Tropius",
+   "page": "Tropius (Triplet Beat 74)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Sprigatito",
+   "page": "Sprigatito (Triplet Beat 75)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Floragato",
+   "page": "Floragato (Triplet Beat 76)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Pyroar",
+   "page": "Pyroar (Triplet Beat 77)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Fuecoco",
+   "page": "Fuecoco (Triplet Beat 78)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Crocalor",
+   "page": "Crocalor (Triplet Beat 79)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Magikarp",
+   "page": "Magikarp (Triplet Beat 80)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Quaxly",
+   "page": "Quaxly (Triplet Beat 81)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Quaxwell",
+   "page": "Quaxwell (Triplet Beat 82)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Mismagius",
+   "page": "Mismagius (Triplet Beat 83)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Triplet Beat 84)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Paldean Wooper",
+   "page": "Paldean Wooper (Triplet Beat 85)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Meowscarada",
+   "page": "Meowscarada ex (Triplet Beat 86)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Skeledirge",
+   "page": "Skeledirge ex (Triplet Beat 87)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Quaquaval",
+   "page": "Quaquaval ex (Triplet Beat 88)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Dedenne",
+   "page": "Dedenne ex (Triplet Beat 89)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Lycanroc",
+   "page": "Lycanroc ex (Triplet Beat 90)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Paldean Clodsire",
+   "page": "Paldean Clodsire ex (Triplet Beat 91)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Dendra",
+   "page": "Dendra (Triplet Beat 92)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Clavell",
+   "page": "Clavell (Triplet Beat 93)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Falkner",
+   "page": "Falkner (Triplet Beat 94)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (Triplet Beat 95)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Meowscarada",
+   "page": "Meowscarada ex (Triplet Beat 96)",
+   "type": "Grass",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Skeledirge",
+   "page": "Skeledirge ex (Triplet Beat 97)",
+   "type": "Fire",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Quaquaval",
+   "page": "Quaquaval ex (Triplet Beat 98)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Dendra",
+   "page": "Dendra (Triplet Beat 99)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (Triplet Beat 100)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Meowscarada",
+   "page": "Meowscarada ex (Triplet Beat 101)",
+   "type": "Grass",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Skeledirge",
+   "page": "Skeledirge ex (Triplet Beat 102)",
+   "type": "Fire",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Quaquaval",
+   "page": "Quaquaval ex (Triplet Beat 103)",
+   "type": "Water",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,825 @@
+{
+ "page": "Golden Sky, Silvery Ocean (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Oddish",
+   "page": "Oddish (Golden Sky, Silvery Ocean 1)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Gloom",
+   "page": "Gloom (Golden Sky, Silvery Ocean 2)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "3": {
+   "en": "Scyther",
+   "page": "Scyther (Golden Sky, Silvery Ocean 3)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "4": {
+   "en": "Meganium",
+   "page": "Meganium (Golden Sky, Silvery Ocean 4)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "5": {
+   "en": "Spinarak",
+   "page": "Spinarak (Golden Sky, Silvery Ocean 5)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "6": {
+   "en": "Ariados",
+   "page": "Ariados (Golden Sky, Silvery Ocean 6)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "7": {
+   "en": "Bellossom",
+   "page": "Bellossom (Golden Sky, Silvery Ocean 7)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "8": {
+   "en": "Sunkern",
+   "page": "Sunkern (Golden Sky, Silvery Ocean 8)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "9": {
+   "en": "Sunflora",
+   "page": "Sunflora (Golden Sky, Silvery Ocean 9)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Yanma",
+   "page": "Yanma (Golden Sky, Silvery Ocean 10)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "11": {
+   "en": "Pineco",
+   "page": "Pineco (Golden Sky, Silvery Ocean 11)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "12": {
+   "en": "Shuckle",
+   "page": "Shuckle (Golden Sky, Silvery Ocean 12)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "13": {
+   "en": "Flareon",
+   "page": "Flareon (Golden Sky, Silvery Ocean 13)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "14": {
+   "en": "Typhlosion",
+   "page": "Typhlosion (Golden Sky, Silvery Ocean 14)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Slugma",
+   "page": "Slugma (Golden Sky, Silvery Ocean 15)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "16": {
+   "en": "Magcargo",
+   "page": "Magcargo (Golden Sky, Silvery Ocean 16)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "17": {
+   "en": "Houndour",
+   "page": "Houndour (Golden Sky, Silvery Ocean 17)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "18": {
+   "en": "Houndoom",
+   "page": "Houndoom (Golden Sky, Silvery Ocean 18)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "19": {
+   "en": "Entei",
+   "page": "Entei ☆ (Golden Sky, Silvery Ocean 19)",
+   "type": "Fire",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "20": {
+   "en": "Ho-Oh ex",
+   "page": "Ho-Oh ex (Golden Sky, Silvery Ocean 20)",
+   "type": "Fire",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "21": {
+   "en": "Poliwag",
+   "page": "Poliwag (Golden Sky, Silvery Ocean 21)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "22": {
+   "en": "Poliwhirl",
+   "page": "Poliwhirl (Golden Sky, Silvery Ocean 22)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "23": {
+   "en": "Slowbro",
+   "page": "Slowbro (Golden Sky, Silvery Ocean 23)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "24": {
+   "en": "Jynx",
+   "page": "Jynx (Golden Sky, Silvery Ocean 24)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "25": {
+   "en": "Vaporeon",
+   "page": "Vaporeon (Golden Sky, Silvery Ocean 25)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "26": {
+   "en": "Feraligatr",
+   "page": "Feraligatr (Golden Sky, Silvery Ocean 26)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "27": {
+   "en": "Politoed ex",
+   "page": "Politoed ex (Golden Sky, Silvery Ocean 27)",
+   "type": "Water",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "28": {
+   "en": "Corsola",
+   "page": "Corsola (Golden Sky, Silvery Ocean 28)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "29": {
+   "en": "Remoraid",
+   "page": "Remoraid (Golden Sky, Silvery Ocean 29)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "30": {
+   "en": "Octillery",
+   "page": "Octillery (Golden Sky, Silvery Ocean 30)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "31": {
+   "en": "Smoochum",
+   "page": "Smoochum (Golden Sky, Silvery Ocean 31)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "32": {
+   "en": "Suicune",
+   "page": "Suicune ☆ (Golden Sky, Silvery Ocean 32)",
+   "type": "Water",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "33": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Golden Sky, Silvery Ocean 33)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "34": {
+   "en": "Jolteon",
+   "page": "Jolteon (Golden Sky, Silvery Ocean 34)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "35": {
+   "en": "Mareep",
+   "page": "Mareep (Golden Sky, Silvery Ocean 35)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "36": {
+   "en": "Flaaffy",
+   "page": "Flaaffy (Golden Sky, Silvery Ocean 36)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "37": {
+   "en": "Ampharos",
+   "page": "Ampharos (Golden Sky, Silvery Ocean 37)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "38": {
+   "en": "Elekid",
+   "page": "Elekid (Golden Sky, Silvery Ocean 38)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "39": {
+   "en": "Raikou",
+   "page": "Raikou ☆ (Golden Sky, Silvery Ocean 39)",
+   "type": "Lightning",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "40": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Golden Sky, Silvery Ocean 40)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "41": {
+   "en": "Espeon ex",
+   "page": "Espeon ex (Golden Sky, Silvery Ocean 41)",
+   "type": "Psychic",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "42": {
+   "en": "Slowking",
+   "page": "Slowking (Golden Sky, Silvery Ocean 42)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "43": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 43)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "44": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 44)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "45": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 45)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "46": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 46)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "47": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 47)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "48": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 48)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "49": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 49)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "50": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 50)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "51": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 51)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "52": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 52)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "53": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 53)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "54": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 54)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "55": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 55)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "56": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 56)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "57": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 57)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "58": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 58)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "59": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 59)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "60": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 60)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "61": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 61)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "62": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 62)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "63": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 63)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "64": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 64)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "65": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 65)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "66": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 66)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "67": {
+   "en": "Unown",
+   "page": "Unown (Golden Sky, Silvery Ocean 67)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "68": {
+   "en": "Poliwrath",
+   "page": "Poliwrath (Golden Sky, Silvery Ocean 68)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "69": {
+   "en": "Onix",
+   "page": "Onix (Golden Sky, Silvery Ocean 69)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "70": {
+   "en": "Hitmonlee",
+   "page": "Hitmonlee (Golden Sky, Silvery Ocean 70)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "71": {
+   "en": "Hitmonchan",
+   "page": "Hitmonchan (Golden Sky, Silvery Ocean 71)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "72": {
+   "en": "Sudowoodo",
+   "page": "Sudowoodo (Golden Sky, Silvery Ocean 72)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "73": {
+   "en": "Gligar",
+   "page": "Gligar (Golden Sky, Silvery Ocean 73)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "74": {
+   "en": "Tyrogue",
+   "page": "Tyrogue (Golden Sky, Silvery Ocean 74)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "75": {
+   "en": "Hitmontop",
+   "page": "Hitmontop (Golden Sky, Silvery Ocean 75)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "76": {
+   "en": "Larvitar",
+   "page": "Larvitar (Golden Sky, Silvery Ocean 76)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "77": {
+   "en": "Pupitar",
+   "page": "Pupitar (Golden Sky, Silvery Ocean 77)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "78": {
+   "en": "Chansey",
+   "page": "Chansey (Golden Sky, Silvery Ocean 78)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "79": {
+   "en": "Eevee",
+   "page": "Eevee (Golden Sky, Silvery Ocean 79)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "80": {
+   "en": "Porygon",
+   "page": "Porygon (Golden Sky, Silvery Ocean 80)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "81": {
+   "en": "Cleffa",
+   "page": "Cleffa (Golden Sky, Silvery Ocean 81)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "82": {
+   "en": "Aipom",
+   "page": "Aipom (Golden Sky, Silvery Ocean 82)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "83": {
+   "en": "Teddiursa",
+   "page": "Teddiursa (Golden Sky, Silvery Ocean 83)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "84": {
+   "en": "Ursaring",
+   "page": "Ursaring (Golden Sky, Silvery Ocean 84)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "85": {
+   "en": "Porygon2",
+   "page": "Porygon2 (Golden Sky, Silvery Ocean 85)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "86": {
+   "en": "Stantler",
+   "page": "Stantler (Golden Sky, Silvery Ocean 86)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "87": {
+   "en": "Smeargle",
+   "page": "Smeargle (Golden Sky, Silvery Ocean 87)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "88": {
+   "en": "Miltank",
+   "page": "Miltank (Golden Sky, Silvery Ocean 88)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "89": {
+   "en": "Blissey ex",
+   "page": "Blissey ex (Golden Sky, Silvery Ocean 89)",
+   "type": "Colorless",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "90": {
+   "en": "Lugia ex",
+   "page": "Lugia ex (Golden Sky, Silvery Ocean 90)",
+   "type": "Colorless",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "91": {
+   "en": "Umbreon ex",
+   "page": "Umbreon ex (Golden Sky, Silvery Ocean 91)",
+   "type": "Darkness",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "92": {
+   "en": "Murkrow",
+   "page": "Murkrow (Golden Sky, Silvery Ocean 92)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "93": {
+   "en": "Tyranitar ex",
+   "page": "Tyranitar ex (Golden Sky, Silvery Ocean 93)",
+   "type": "Darkness",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "94": {
+   "en": "Forretress",
+   "page": "Forretress (Golden Sky, Silvery Ocean 94)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "95": {
+   "en": "Steelix ex",
+   "page": "Steelix ex (Golden Sky, Silvery Ocean 95)",
+   "type": "Metal",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "96": {
+   "en": "Scizor ex",
+   "page": "Scizor ex (Golden Sky, Silvery Ocean 96)",
+   "type": "Metal",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "97": {
+   "en": "Professor Elm's Training Method",
+   "page": "Professor Elm's Training Method (Golden Sky, Silvery Ocean 97)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "98": {
+   "en": "Mary's Request",
+   "page": "Mary's Request (Golden Sky, Silvery Ocean 98)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "99": {
+   "en": "Solid Rage",
+   "page": "Solid Rage (Golden Sky, Silvery Ocean 99)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "100": {
+   "en": "Sitrus Berry",
+   "page": "Sitrus Berry (Golden Sky, Silvery Ocean 100)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "101": {
+   "en": "Energy Root",
+   "page": "Energy Root (Golden Sky, Silvery Ocean 101)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "102": {
+   "en": "Curse Powder",
+   "page": "Curse Powder (Golden Sky, Silvery Ocean 102)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "103": {
+   "en": "Fluffy Berry",
+   "page": "Fluffy Berry (Golden Sky, Silvery Ocean 103)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "104": {
+   "en": "Protective Orb",
+   "page": "Protective Orb (Golden Sky, Silvery Ocean 104)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "105": {
+   "en": "Cyclone Energy",
+   "page": "Cyclone Energy (Golden Sky, Silvery Ocean 105)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "106": {
+   "en": "Warp Energy",
+   "page": "Warp Energy (Golden Sky, Silvery Ocean 106)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "107": {
+   "en": "Politoed ex",
+   "page": "Politoed ex (EX Unseen Forces 107)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Scizor ex",
+   "page": "Scizor ex (EX Unseen Forces 108)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Steelix ex",
+   "page": "Steelix ex (EX Unseen Forces 109)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Typhlosion ex",
+   "page": "Typhlosion ex (EX Unseen Forces 110)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Tyranitar ex",
+   "page": "Tyranitar ex (EX Unseen Forces 111)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Umbreon ex",
+   "page": "Umbreon ex (EX Unseen Forces 112)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Entei",
+   "page": "Entei ☆ (EX Unseen Forces 113)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Raikou",
+   "page": "Raikou ☆ (EX Unseen Forces 114)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Suicune",
+   "page": "Suicune ☆ (EX Unseen Forces 115)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Rocket's Persian ex",
+   "page": "Rocket's Persian ex (EX Unseen Forces 116)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "117": {
+   "en": "Celebi ex",
+   "page": "Celebi ex (EX Unseen Forces 117)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

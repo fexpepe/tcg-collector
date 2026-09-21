@@ -1,0 +1,706 @@
+{
+ "page": "Miracle Crystal (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Bulbasaur",
+   "page": "Bulbasaur (Miracle Crystal 1)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "2": {
+   "en": "Ivysaur",
+   "page": "Ivysaur (Miracle Crystal 2)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "3": {
+   "en": "Venusaur",
+   "page": "Venusaur (Miracle Crystal 3)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Celebi",
+   "page": "Celebi ☆ (Miracle Crystal 4)",
+   "type": "Grass",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "5": {
+   "en": "Treecko",
+   "page": "Treecko (Miracle Crystal 5)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "6": {
+   "en": "Grovyle",
+   "page": "Grovyle (Miracle Crystal 6)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "7": {
+   "en": "Seedot",
+   "page": "Seedot (Miracle Crystal 7)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "8": {
+   "en": "Gulpin",
+   "page": "Gulpin (Miracle Crystal 8)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "9": {
+   "en": "Swalot",
+   "page": "Swalot (Miracle Crystal 9)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Cacnea",
+   "page": "Cacnea (Miracle Crystal 10)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "11": {
+   "en": "Charmander",
+   "page": "Charmander (Miracle Crystal 11)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "12": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (Miracle Crystal 12)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "13": {
+   "en": "Torchic",
+   "page": "Torchic (Miracle Crystal 13)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "14": {
+   "en": "Ludicolo δ",
+   "page": "Ludicolo δ (Miracle Crystal 14)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Numel",
+   "page": "Numel (Miracle Crystal 15)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "16": {
+   "en": "Camerupt",
+   "page": "Camerupt (Miracle Crystal 16)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "17": {
+   "en": "Kingler δ",
+   "page": "Kingler δ (Miracle Crystal 17)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "18": {
+   "en": "Squirtle",
+   "page": "Squirtle (Miracle Crystal 18)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "19": {
+   "en": "Wartortle",
+   "page": "Wartortle (Miracle Crystal 19)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "20": {
+   "en": "Krabby",
+   "page": "Krabby (Miracle Crystal 20)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "21": {
+   "en": "Mudkip",
+   "page": "Mudkip (Miracle Crystal 21)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "22": {
+   "en": "Marshtomp",
+   "page": "Marshtomp (Miracle Crystal 22)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "23": {
+   "en": "Swampert ex",
+   "page": "Swampert ex (Miracle Crystal 23)",
+   "type": "Water",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "24": {
+   "en": "Lotad",
+   "page": "Lotad (Miracle Crystal 24)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "25": {
+   "en": "Lombre",
+   "page": "Lombre (Miracle Crystal 25)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "26": {
+   "en": "Wingull",
+   "page": "Wingull (Miracle Crystal 26)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "27": {
+   "en": "Luvdisc",
+   "page": "Luvdisc (Miracle Crystal 27)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "28": {
+   "en": "Fearow δ",
+   "page": "Fearow δ (Miracle Crystal 28)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "29": {
+   "en": "Pelipper δ",
+   "page": "Pelipper δ (Miracle Crystal 29)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "30": {
+   "en": "Electrike",
+   "page": "Electrike (Miracle Crystal 30)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "31": {
+   "en": "Manectric",
+   "page": "Manectric (Miracle Crystal 31)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "32": {
+   "en": "Charizard δ",
+   "page": "Charizard δ (Miracle Crystal 32)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "33": {
+   "en": "Alakazam",
+   "page": "Alakazam ☆ (Miracle Crystal 33)",
+   "type": "Psychic",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "34": {
+   "en": "Sceptile ex δ",
+   "page": "Sceptile ex δ (Miracle Crystal 34)",
+   "type": "Psychic",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "35": {
+   "en": "Spoink",
+   "page": "Spoink (Miracle Crystal 35)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "36": {
+   "en": "Grumpig",
+   "page": "Grumpig (Miracle Crystal 36)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "37": {
+   "en": "Shuppet",
+   "page": "Shuppet (Miracle Crystal 37)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "38": {
+   "en": "Banette",
+   "page": "Banette (Miracle Crystal 38)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "39": {
+   "en": "Duskull",
+   "page": "Duskull (Miracle Crystal 39)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "40": {
+   "en": "Dusclops",
+   "page": "Dusclops (Miracle Crystal 40)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "41": {
+   "en": "Jirachi ex",
+   "page": "Jirachi ex (Miracle Crystal 41)",
+   "type": "Psychic",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "42": {
+   "en": "Diglett",
+   "page": "Diglett (Miracle Crystal 42)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "43": {
+   "en": "Dugtrio",
+   "page": "Dugtrio (Miracle Crystal 43)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "44": {
+   "en": "Combusken",
+   "page": "Combusken (Miracle Crystal 44)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "45": {
+   "en": "Blaziken ex",
+   "page": "Blaziken ex (Miracle Crystal 45)",
+   "type": "Fighting",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "46": {
+   "en": "Meditite",
+   "page": "Meditite (Miracle Crystal 46)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "47": {
+   "en": "Medicham",
+   "page": "Medicham (Miracle Crystal 47)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "48": {
+   "en": "Cacturne δ",
+   "page": "Cacturne δ (Miracle Crystal 48)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "49": {
+   "en": "Blastoise δ",
+   "page": "Blastoise δ (Miracle Crystal 49)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "50": {
+   "en": "Spearow",
+   "page": "Spearow (Miracle Crystal 50)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "51": {
+   "en": "Jigglypuff",
+   "page": "Jigglypuff (Miracle Crystal 51)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "52": {
+   "en": "Wigglytuff",
+   "page": "Wigglytuff (Miracle Crystal 52)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "53": {
+   "en": "Tauros",
+   "page": "Tauros (Miracle Crystal 53)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "54": {
+   "en": "Igglybuff",
+   "page": "Igglybuff (Miracle Crystal 54)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "55": {
+   "en": "Whismur",
+   "page": "Whismur (Miracle Crystal 55)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "56": {
+   "en": "Loudred",
+   "page": "Loudred (Miracle Crystal 56)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "57": {
+   "en": "Exploud ex",
+   "page": "Exploud ex (Miracle Crystal 57)",
+   "type": "Colorless",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "58": {
+   "en": "Skitty",
+   "page": "Skitty (Miracle Crystal 58)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "59": {
+   "en": "Delcatty ex",
+   "page": "Delcatty ex (Miracle Crystal 59)",
+   "type": "Colorless",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "60": {
+   "en": "Nuzleaf",
+   "page": "Nuzleaf (Miracle Crystal 60)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "61": {
+   "en": "Shiftry ex",
+   "page": "Shiftry ex (Miracle Crystal 61)",
+   "type": "Darkness",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "62": {
+   "en": "Sableye",
+   "page": "Sableye (Miracle Crystal 62)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "63": {
+   "en": "Mawile",
+   "page": "Mawile (Miracle Crystal 63)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "64": {
+   "en": "Aron",
+   "page": "Aron (Miracle Crystal 64)",
+   "type": "Metal",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "65": {
+   "en": "Lairon",
+   "page": "Lairon (Miracle Crystal 65)",
+   "type": "Metal",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "66": {
+   "en": "Aggron ex",
+   "page": "Aggron ex (Miracle Crystal 66)",
+   "type": "Metal",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "67": {
+   "en": "Windstorm",
+   "page": "Windstorm (Miracle Crystal 67)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "68": {
+   "en": "Castaway",
+   "page": "Castaway (Miracle Crystal 68)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "69": {
+   "en": "Memory Berry",
+   "page": "Memory Berry (Miracle Crystal 69)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "70": {
+   "en": "Mysterious Shard",
+   "page": "Mysterious Shard (Miracle Crystal 70)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "71": {
+   "en": "Crystal Shard",
+   "page": "Crystal Shard (Miracle Crystal 71)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "72": {
+   "en": "Cessation Crystal",
+   "page": "Cessation Crystal (Miracle Crystal 72)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "73": {
+   "en": "Crystal Beach",
+   "page": "Crystal Beach (Miracle Crystal 73)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "74": {
+   "en": "Holon Circle",
+   "page": "Holon Circle (Miracle Crystal 74)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "75": {
+   "en": "Double Rainbow Energy",
+   "page": "Double Rainbow Energy (Miracle Crystal 75)",
+   "type": "Rainbow",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "76": {
+   "en": "Crystal Shard",
+   "page": "Crystal Shard (EX Crystal Guardians 76)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "77": {
+   "en": "Double Full Heal",
+   "page": "Double Full Heal (EX Crystal Guardians 77)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "78": {
+   "en": "Dual Ball",
+   "page": "Dual Ball (EX Crystal Guardians 78)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "79": {
+   "en": "Holon Circle",
+   "page": "Holon Circle (EX Crystal Guardians 79)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "80": {
+   "en": "Memory Berry",
+   "page": "Memory Berry (EX Crystal Guardians 80)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "81": {
+   "en": "Mysterious Shard",
+   "page": "Mysterious Shard (EX Crystal Guardians 81)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "82": {
+   "en": "Poké Ball",
+   "page": "Poké Ball (EX Crystal Guardians 82)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "83": {
+   "en": "PokéNav",
+   "page": "PokéNav (EX Crystal Guardians 83)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "84": {
+   "en": "Warp Point",
+   "page": "Warp Point (EX Crystal Guardians 84)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "85": {
+   "en": "Windstorm",
+   "page": "Windstorm (EX Crystal Guardians 85)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "86": {
+   "en": "Energy Search",
+   "page": "Energy Search (EX Crystal Guardians 86)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "87": {
+   "en": "Potion",
+   "page": "Potion (EX Crystal Guardians 87)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88": {
+   "en": "Double Rainbow Energy",
+   "page": "Double Rainbow Energy (EX Crystal Guardians 88)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "89": {
+   "en": "Aggron ex",
+   "page": "Aggron ex (EX Crystal Guardians 89)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Blaziken ex",
+   "page": "Blaziken ex (EX Crystal Guardians 90)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "Delcatty ex",
+   "page": "Delcatty ex (EX Crystal Guardians 91)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Exploud ex",
+   "page": "Exploud ex (EX Crystal Guardians 92)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Groudon ex",
+   "page": "Groudon ex (EX Crystal Guardians 93)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Jirachi ex",
+   "page": "Jirachi ex (EX Crystal Guardians 94)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Kyogre ex",
+   "page": "Kyogre ex (EX Crystal Guardians 95)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Sceptile ex δ",
+   "page": "Sceptile ex δ (EX Crystal Guardians 96)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Shiftry ex",
+   "page": "Shiftry ex (EX Crystal Guardians 97)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Swampert ex",
+   "page": "Swampert ex (EX Crystal Guardians 98)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Alakazam",
+   "page": "Alakazam ☆ (EX Crystal Guardians 99)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Celebi",
+   "page": "Celebi ☆ (EX Crystal Guardians 100)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

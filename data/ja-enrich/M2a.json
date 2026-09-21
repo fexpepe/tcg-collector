@@ -1,0 +1,1756 @@
+{
+ "page": "MEGA Dream ex (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Ethan's Pinsir",
+   "page": "Ethan's Pinsir (MEGA Dream ex 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Yanma",
+   "page": "Yanma (MEGA Dream ex 2)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Yanmega",
+   "page": "Yanmega ex (MEGA Dream ex 3)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "4": {
+   "en": "Wurmple",
+   "page": "Wurmple (MEGA Dream ex 4)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Silcoon",
+   "page": "Silcoon (MEGA Dream ex 5)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Beautifly",
+   "page": "Beautifly (MEGA Dream ex 6)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Cascoon",
+   "page": "Cascoon (MEGA Dream ex 7)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Dustox",
+   "page": "Dustox (MEGA Dream ex 8)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Cynthia's Roselia",
+   "page": "Cynthia's Roselia (MEGA Dream ex 9)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Cynthia's Roserade",
+   "page": "Cynthia's Roserade (MEGA Dream ex 10)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Budew",
+   "page": "Budew (MEGA Dream ex 11)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Shaymin",
+   "page": "Shaymin (MEGA Dream ex 12)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Dwebble",
+   "page": "Dwebble (MEGA Dream ex 13)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Crustle",
+   "page": "Crustle (MEGA Dream ex 14)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Team Rocket's Tarountula",
+   "page": "Team Rocket's Tarountula (MEGA Dream ex 15)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Team Rocket's Spidops",
+   "page": "Team Rocket's Spidops (MEGA Dream ex 16)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon ex (MEGA Dream ex 17)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "18": {
+   "en": "Ethan's Slugma",
+   "page": "Ethan's Slugma (MEGA Dream ex 18)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Ethan's Magcargo",
+   "page": "Ethan's Magcargo (MEGA Dream ex 19)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Entei",
+   "page": "Entei (MEGA Dream ex 20)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Ethan's Ho-Oh",
+   "page": "Ethan's Ho-Oh ex (MEGA Dream ex 21)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "22": {
+   "en": "Numel",
+   "page": "Numel (MEGA Dream ex 22)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Camerupt",
+   "page": "Camerupt (MEGA Dream ex 23)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Tepig",
+   "page": "Tepig (MEGA Dream ex 24)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Pignite",
+   "page": "Pignite (MEGA Dream ex 25)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Emboar",
+   "page": "Emboar (MEGA Dream ex 26)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "N's Darumaka",
+   "page": "N's Darumaka (MEGA Dream ex 27)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "N's Darmanitan",
+   "page": "N's Darmanitan (MEGA Dream ex 28)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Reshiram",
+   "page": "Reshiram ex (MEGA Dream ex 29)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "30": {
+   "en": "Charcadet",
+   "page": "Charcadet (MEGA Dream ex 30)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Ceruledge",
+   "page": "Ceruledge ex (MEGA Dream ex 31)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "32": {
+   "en": "Psyduck",
+   "page": "Psyduck (MEGA Dream ex 32)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Golduck",
+   "page": "Golduck (MEGA Dream ex 33)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Team Rocket's Articuno",
+   "page": "Team Rocket's Articuno (MEGA Dream ex 34)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Snorunt",
+   "page": "Snorunt (MEGA Dream ex 35)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Mega Froslass",
+   "page": "Mega Froslass ex (MEGA Dream ex 36)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "37": {
+   "en": "N's Vanillite",
+   "page": "N's Vanillite (MEGA Dream ex 37)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "N's Vanillish",
+   "page": "N's Vanillish (MEGA Dream ex 38)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "N's Vanilluxe",
+   "page": "N's Vanilluxe (MEGA Dream ex 39)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "40": {
+   "en": "Snom",
+   "page": "Snom (MEGA Dream ex 40)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Frosmoth",
+   "page": "Frosmoth (MEGA Dream ex 41)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "42": {
+   "en": "Glastrier",
+   "page": "Glastrier (MEGA Dream ex 42)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Chien-Pao",
+   "page": "Chien-Pao (MEGA Dream ex 43)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Pikachu",
+   "page": "Pikachu ex (MEGA Dream ex 44)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "45": {
+   "en": "Magnemite",
+   "page": "Magnemite (MEGA Dream ex 45)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Magneton",
+   "page": "Magneton (MEGA Dream ex 46)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Tynamo",
+   "page": "Tynamo (MEGA Dream ex 47)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Eelektrik",
+   "page": "Eelektrik (MEGA Dream ex 48)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "49": {
+   "en": "Mega Eelektross",
+   "page": "Mega Eelektross ex (MEGA Dream ex 49)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "50": {
+   "en": "Stunfisk",
+   "page": "Stunfisk (MEGA Dream ex 50)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "51": {
+   "en": "Zekrom",
+   "page": "Zekrom ex (MEGA Dream ex 51)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Helioptile",
+   "page": "Helioptile (MEGA Dream ex 52)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "53": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (MEGA Dream ex 53)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "54": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko (MEGA Dream ex 54)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "55": {
+   "en": "Zeraora",
+   "page": "Zeraora (MEGA Dream ex 55)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "56": {
+   "en": "Iono's Tadbulb",
+   "page": "Iono's Tadbulb (MEGA Dream ex 56)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "57": {
+   "en": "Iono's Bellibolt",
+   "page": "Iono's Bellibolt ex (MEGA Dream ex 57)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Iono's Wattrel",
+   "page": "Iono's Wattrel (MEGA Dream ex 58)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "59": {
+   "en": "Iono's Kilowattrel",
+   "page": "Iono's Kilowattrel (MEGA Dream ex 59)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "60": {
+   "en": "Lillie's Clefairy",
+   "page": "Lillie's Clefairy ex (MEGA Dream ex 60)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Team Rocket's Exeggcute",
+   "page": "Team Rocket's Exeggcute (MEGA Dream ex 61)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "62": {
+   "en": "Team Rocket's Exeggutor",
+   "page": "Team Rocket's Exeggutor (MEGA Dream ex 62)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "63": {
+   "en": "Team Rocket's Mewtwo",
+   "page": "Team Rocket's Mewtwo ex (MEGA Dream ex 63)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Togepi",
+   "page": "Togepi (MEGA Dream ex 64)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "65": {
+   "en": "Togetic",
+   "page": "Togetic (MEGA Dream ex 65)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "66": {
+   "en": "Togekiss",
+   "page": "Togekiss (MEGA Dream ex 66)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "67": {
+   "en": "Misdreavus",
+   "page": "Misdreavus (MEGA Dream ex 67)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "68": {
+   "en": "Mismagius",
+   "page": "Mismagius (MEGA Dream ex 68)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "69": {
+   "en": "Ralts",
+   "page": "Ralts (MEGA Dream ex 69)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "70": {
+   "en": "Kirlia",
+   "page": "Kirlia (MEGA Dream ex 70)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "71": {
+   "en": "Mega Gardevoir",
+   "page": "Mega Gardevoir ex (MEGA Dream ex 71)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Duskull",
+   "page": "Duskull (MEGA Dream ex 72)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "73": {
+   "en": "Dusclops",
+   "page": "Dusclops (MEGA Dream ex 73)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "74": {
+   "en": "Dusknoir",
+   "page": "Dusknoir (MEGA Dream ex 74)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "75": {
+   "en": "Latias",
+   "page": "Latias ex (MEGA Dream ex 75)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Rotom",
+   "page": "Rotom (MEGA Dream ex 76)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "77": {
+   "en": "Hop's Phantump",
+   "page": "Hop's Phantump (MEGA Dream ex 77)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "78": {
+   "en": "Hop's Trevenant",
+   "page": "Hop's Trevenant (MEGA Dream ex 78)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "79": {
+   "en": "Team Rocket's Mimikyu",
+   "page": "Team Rocket's Mimikyu (MEGA Dream ex 79)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "80": {
+   "en": "Spectrier",
+   "page": "Spectrier (MEGA Dream ex 80)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "81": {
+   "en": "Munkidori",
+   "page": "Munkidori (MEGA Dream ex 81)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "82": {
+   "en": "Team Rocket's Diglett",
+   "page": "Team Rocket's Diglett (MEGA Dream ex 82)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "83": {
+   "en": "Team Rocket's Dugtrio",
+   "page": "Team Rocket's Dugtrio (MEGA Dream ex 83)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "84": {
+   "en": "Meditite",
+   "page": "Meditite (MEGA Dream ex 84)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "85": {
+   "en": "Medicham",
+   "page": "Medicham (MEGA Dream ex 85)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "86": {
+   "en": "Lunatone",
+   "page": "Lunatone (MEGA Dream ex 86)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "87": {
+   "en": "Solrock",
+   "page": "Solrock (MEGA Dream ex 87)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "88": {
+   "en": "Cynthia's Gible",
+   "page": "Cynthia's Gible (MEGA Dream ex 88)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "89": {
+   "en": "Cynthia's Gabite",
+   "page": "Cynthia's Gabite (MEGA Dream ex 89)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "90": {
+   "en": "Cynthia's Garchomp",
+   "page": "Cynthia's Garchomp ex (MEGA Dream ex 90)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Riolu",
+   "page": "Riolu (MEGA Dream ex 91)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "92": {
+   "en": "Mega Lucario",
+   "page": "Mega Lucario ex (MEGA Dream ex 92)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Pancham",
+   "page": "Pancham (MEGA Dream ex 93)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "94": {
+   "en": "Mega Hawlucha",
+   "page": "Mega Hawlucha ex (MEGA Dream ex 94)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Rolycoly",
+   "page": "Rolycoly (MEGA Dream ex 95)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "96": {
+   "en": "Carkol",
+   "page": "Carkol (MEGA Dream ex 96)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "97": {
+   "en": "Coalossal",
+   "page": "Coalossal (MEGA Dream ex 97)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "98": {
+   "en": "Okidogi",
+   "page": "Okidogi (MEGA Dream ex 98)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "99": {
+   "en": "Team Rocket's Zubat",
+   "page": "Team Rocket's Zubat (MEGA Dream ex 99)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "100": {
+   "en": "Team Rocket's Golbat",
+   "page": "Team Rocket's Golbat (MEGA Dream ex 100)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "101": {
+   "en": "Team Rocket's Crobat",
+   "page": "Team Rocket's Crobat ex (MEGA Dream ex 101)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "102": {
+   "en": "Team Rocket's Murkrow",
+   "page": "Team Rocket's Murkrow (MEGA Dream ex 102)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "103": {
+   "en": "Team Rocket's Honchkrow",
+   "page": "Team Rocket's Honchkrow (MEGA Dream ex 103)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "104": {
+   "en": "Team Rocket's Sneasel",
+   "page": "Team Rocket's Sneasel (MEGA Dream ex 104)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "105": {
+   "en": "Galarian Zigzagoon",
+   "page": "Galarian Zigzagoon (MEGA Dream ex 105)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "106": {
+   "en": "Galarian Linoone",
+   "page": "Galarian Linoone (MEGA Dream ex 106)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "107": {
+   "en": "Galarian Obstagoon",
+   "page": "Galarian Obstagoon (MEGA Dream ex 107)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "108": {
+   "en": "Cynthia's Spiritomb",
+   "page": "Cynthia's Spiritomb (MEGA Dream ex 108)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "109": {
+   "en": "Scraggy",
+   "page": "Scraggy (MEGA Dream ex 109)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "110": {
+   "en": "Mega Scrafty",
+   "page": "Mega Scrafty ex (MEGA Dream ex 110)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "111": {
+   "en": "N's Zorua",
+   "page": "N's Zorua (MEGA Dream ex 111)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "112": {
+   "en": "N's Zoroark",
+   "page": "N's Zoroark ex (MEGA Dream ex 112)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Pangoro",
+   "page": "Pangoro (MEGA Dream ex 113)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "114": {
+   "en": "Fezandipiti",
+   "page": "Fezandipiti ex (MEGA Dream ex 114)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Pecharunt",
+   "page": "Pecharunt (MEGA Dream ex 115)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "116": {
+   "en": "Pawniard",
+   "page": "Pawniard (MEGA Dream ex 116)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "117": {
+   "en": "Bisharp",
+   "page": "Bisharp (MEGA Dream ex 117)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "118": {
+   "en": "Kingambit",
+   "page": "Kingambit (MEGA Dream ex 118)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "119": {
+   "en": "Genesect",
+   "page": "Genesect ex (MEGA Dream ex 119)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "120": {
+   "en": "Magearna",
+   "page": "Magearna (MEGA Dream ex 120)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "121": {
+   "en": "Duraludon",
+   "page": "Duraludon (MEGA Dream ex 121)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "122": {
+   "en": "Archaludon",
+   "page": "Archaludon ex (MEGA Dream ex 122)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "123": {
+   "en": "Hop's Zacian",
+   "page": "Hop's Zacian ex (MEGA Dream ex 123)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "124": {
+   "en": "Dratini",
+   "page": "Dratini (MEGA Dream ex 124)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "125": {
+   "en": "Dragonair",
+   "page": "Dragonair (MEGA Dream ex 125)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "126": {
+   "en": "Mega Dragonite",
+   "page": "Mega Dragonite ex (MEGA Dream ex 126)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "127": {
+   "en": "Rayquaza",
+   "page": "Rayquaza (MEGA Dream ex 127)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "128": {
+   "en": "N's Reshiram",
+   "page": "N's Reshiram (MEGA Dream ex 128)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "129": {
+   "en": "N's Zekrom",
+   "page": "N's Zekrom (MEGA Dream ex 129)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "130": {
+   "en": "Noibat",
+   "page": "Noibat (MEGA Dream ex 130)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "131": {
+   "en": "Noivern",
+   "page": "Noivern (MEGA Dream ex 131)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "132": {
+   "en": "Dreepy",
+   "page": "Dreepy (MEGA Dream ex 132)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "133": {
+   "en": "Drakloak",
+   "page": "Drakloak (MEGA Dream ex 133)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "134": {
+   "en": "Dragapult",
+   "page": "Dragapult ex (MEGA Dream ex 134)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "135": {
+   "en": "Tatsugiri",
+   "page": "Tatsugiri (MEGA Dream ex 135)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "136": {
+   "en": "Hop's Snorlax",
+   "page": "Hop's Snorlax (MEGA Dream ex 136)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "137": {
+   "en": "Hoothoot",
+   "page": "Hoothoot (MEGA Dream ex 137)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "138": {
+   "en": "Noctowl",
+   "page": "Noctowl (MEGA Dream ex 138)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "139": {
+   "en": "Fan Rotom",
+   "page": "Fan Rotom (MEGA Dream ex 139)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "140": {
+   "en": "Bouffalant",
+   "page": "Bouffalant (MEGA Dream ex 140)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "141": {
+   "en": "Hop's Wooloo",
+   "page": "Hop's Wooloo (MEGA Dream ex 141)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "142": {
+   "en": "Hop's Dubwool",
+   "page": "Hop's Dubwool (MEGA Dream ex 142)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "143": {
+   "en": "Hop's Cramorant",
+   "page": "Hop's Cramorant (MEGA Dream ex 143)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "144": {
+   "en": "Terapagos",
+   "page": "Terapagos (MEGA Dream ex 144)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "145": {
+   "en": "Terapagos",
+   "page": "Terapagos ex (MEGA Dream ex 145)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "146": {
+   "en": "N's PP Up",
+   "page": "N's PP Up (MEGA Dream ex 146)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "147": {
+   "en": "Energy Recycler",
+   "page": "Energy Recycler (MEGA Dream ex 147)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "148": {
+   "en": "Enhanced Hammer",
+   "page": "Enhanced Hammer (MEGA Dream ex 148)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "149": {
+   "en": "Glass Trumpet",
+   "page": "Glass Trumpet (MEGA Dream ex 149)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "150": {
+   "en": "Sacred Ash",
+   "page": "Sacred Ash (MEGA Dream ex 150)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "151": {
+   "en": "Tool Scrapper",
+   "page": "Tool Scrapper (MEGA Dream ex 151)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "152": {
+   "en": "Tera Orb",
+   "page": "Tera Orb (MEGA Dream ex 152)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "153": {
+   "en": "Buddy-Buddy Poffin",
+   "page": "Buddy-Buddy Poffin (MEGA Dream ex 153)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "154": {
+   "en": "Premium Power Pro",
+   "page": "Premium Power Pro (MEGA Dream ex 154)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "155": {
+   "en": "Fighting Gong",
+   "page": "Fighting Gong (MEGA Dream ex 155)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "156": {
+   "en": "Hop's Bag",
+   "page": "Hop's Bag (MEGA Dream ex 156)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "157": {
+   "en": "Bug Catching Set",
+   "page": "Bug Catching Set (MEGA Dream ex 157)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "158": {
+   "en": "Mega Signal",
+   "page": "Mega Signal (MEGA Dream ex 158)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "159": {
+   "en": "Night Stretcher",
+   "page": "Night Stretcher (MEGA Dream ex 159)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "160": {
+   "en": "Team Rocket's Transceiver",
+   "page": "Team Rocket's Transceiver (MEGA Dream ex 160)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "161": {
+   "en": "Counter Gain",
+   "page": "Counter Gain (MEGA Dream ex 161)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "162": {
+   "en": "Cynthia's Power Weight",
+   "page": "Cynthia's Power Weight (MEGA Dream ex 162)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "163": {
+   "en": "Light Ball",
+   "page": "Light Ball (MEGA Dream ex 163)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "164": {
+   "en": "Thick Scale",
+   "page": "Thick Scale (MEGA Dream ex 164)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "165": {
+   "en": "Air Balloon",
+   "page": "Air Balloon (MEGA Dream ex 165)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "166": {
+   "en": "Brave Bangle",
+   "page": "Brave Bangle (MEGA Dream ex 166)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "167": {
+   "en": "Hop's Choice Band",
+   "page": "Hop's Choice Band (MEGA Dream ex 167)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "168": {
+   "en": "Iris's Fighting Spirit",
+   "page": "Iris's Fighting Spirit (MEGA Dream ex 168)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "169": {
+   "en": "Acerola's Mischief",
+   "page": "Acerola's Mischief (MEGA Dream ex 169)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "170": {
+   "en": "Canari",
+   "page": "Canari (MEGA Dream ex 170)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "171": {
+   "en": "Surfer",
+   "page": "Surfer (MEGA Dream ex 171)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "172": {
+   "en": "Hilda",
+   "page": "Hilda (MEGA Dream ex 172)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "173": {
+   "en": "Anthea & Concordia",
+   "page": "Anthea & Concordia (MEGA Dream ex 173)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "174": {
+   "en": "Ethan's Adventure",
+   "page": "Ethan's Adventure (MEGA Dream ex 174)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "175": {
+   "en": "Lillie's Determination",
+   "page": "Lillie's Determination (MEGA Dream ex 175)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "176": {
+   "en": "Team Rocket's Ariana",
+   "page": "Team Rocket's Ariana (MEGA Dream ex 176)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "177": {
+   "en": "Team Rocket's Archer",
+   "page": "Team Rocket's Archer (MEGA Dream ex 177)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "178": {
+   "en": "Team Rocket's Giovanni",
+   "page": "Team Rocket's Giovanni (MEGA Dream ex 178)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "179": {
+   "en": "Team Rocket's Petrel",
+   "page": "Team Rocket's Petrel (MEGA Dream ex 179)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "180": {
+   "en": "Team Rocket's Proton",
+   "page": "Team Rocket's Proton (MEGA Dream ex 180)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "181": {
+   "en": "N's Castle",
+   "page": "N's Castle (MEGA Dream ex 181)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "182": {
+   "en": "Forest of Vitality",
+   "page": "Forest of Vitality (MEGA Dream ex 182)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "183": {
+   "en": "Gravity Mountain",
+   "page": "Gravity Mountain (MEGA Dream ex 183)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "184": {
+   "en": "Area Zero Underdepths",
+   "page": "Area Zero Underdepths (MEGA Dream ex 184)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "185": {
+   "en": "Levincia",
+   "page": "Levincia (MEGA Dream ex 185)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "186": {
+   "en": "Postwick",
+   "page": "Postwick (MEGA Dream ex 186)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "187": {
+   "en": "Mystery Garden",
+   "page": "Mystery Garden (MEGA Dream ex 187)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "188": {
+   "en": "Nighttime Mine",
+   "page": "Nighttime Mine (MEGA Dream ex 188)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "189": {
+   "en": "Team Rocket's Watchtower",
+   "page": "Team Rocket's Watchtower (MEGA Dream ex 189)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "190": {
+   "en": "Team Rocket's Factory",
+   "page": "Team Rocket's Factory (MEGA Dream ex 190)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "191": {
+   "en": "Ignition Energy",
+   "page": "Ignition Energy (MEGA Dream ex 191)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "192": {
+   "en": "Prism Energy",
+   "page": "Prism Energy (MEGA Dream ex 192)",
+   "type": "Rainbow",
+   "rarity": "—",
+   "mark": ""
+  },
+  "193": {
+   "en": "Team Rocket's Energy",
+   "page": "Team Rocket's Energy (MEGA Dream ex 193)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "194": {
+   "en": "Beautifly",
+   "page": "Beautifly (MEGA Dream ex 194)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "195": {
+   "en": "Dustox",
+   "page": "Dustox (MEGA Dream ex 195)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "196": {
+   "en": "Budew",
+   "page": "Budew (MEGA Dream ex 196)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "197": {
+   "en": "Ethan's Magcargo",
+   "page": "Ethan's Magcargo (MEGA Dream ex 197)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "198": {
+   "en": "Numel",
+   "page": "Numel (MEGA Dream ex 198)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "199": {
+   "en": "Psyduck",
+   "page": "Psyduck (MEGA Dream ex 199)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "200": {
+   "en": "Snorunt",
+   "page": "Snorunt (MEGA Dream ex 200)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "201": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (MEGA Dream ex 201)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "202": {
+   "en": "Misdreavus",
+   "page": "Misdreavus (MEGA Dream ex 202)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "203": {
+   "en": "Togekiss",
+   "page": "Togekiss (MEGA Dream ex 203)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "204": {
+   "en": "Hop's Trevenant",
+   "page": "Hop's Trevenant (MEGA Dream ex 204)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "205": {
+   "en": "Team Rocket's Mimikyu",
+   "page": "Team Rocket's Mimikyu (MEGA Dream ex 205)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "206": {
+   "en": "Team Rocket's Dugtrio",
+   "page": "Team Rocket's Dugtrio (MEGA Dream ex 206)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "207": {
+   "en": "Medicham",
+   "page": "Medicham (MEGA Dream ex 207)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "208": {
+   "en": "Cynthia's Spiritomb",
+   "page": "Cynthia's Spiritomb (MEGA Dream ex 208)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "209": {
+   "en": "Galarian Obstagoon",
+   "page": "Galarian Obstagoon (MEGA Dream ex 209)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "210": {
+   "en": "N's Zekrom",
+   "page": "N's Zekrom (MEGA Dream ex 210)",
+   "type": "Dragon",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "211": {
+   "en": "Dreepy",
+   "page": "Dreepy (MEGA Dream ex 211)",
+   "type": "Dragon",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "212": {
+   "en": "Drakloak",
+   "page": "Drakloak (MEGA Dream ex 212)",
+   "type": "Dragon",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "213": {
+   "en": "Fan Rotom",
+   "page": "Fan Rotom (MEGA Dream ex 213)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "214": {
+   "en": "N's PP Up",
+   "page": "N's PP Up (MEGA Dream ex 214)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "215": {
+   "en": "Glass Trumpet",
+   "page": "Glass Trumpet (MEGA Dream ex 215)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "216": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (MEGA Dream ex 216)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "217": {
+   "en": "Team Rocket's Transceiver",
+   "page": "Team Rocket's Transceiver (MEGA Dream ex 217)",
+   "type": "I",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "218": {
+   "en": "Counter Gain",
+   "page": "Counter Gain (MEGA Dream ex 218)",
+   "type": "PT",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "219": {
+   "en": "Canari",
+   "page": "Canari (MEGA Dream ex 219)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "220": {
+   "en": "Black Belt's Training",
+   "page": "Black Belt's Training (MEGA Dream ex 220)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "221": {
+   "en": "Anthea & Concordia",
+   "page": "Anthea & Concordia (MEGA Dream ex 221)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "222": {
+   "en": "Jamming Tower",
+   "page": "Jamming Tower (MEGA Dream ex 222)",
+   "type": "St",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "223": {
+   "en": "Mega Charizard X",
+   "page": "Mega Charizard X ex (MEGA Dream ex 223)",
+   "type": "Fire",
+   "rarity": "MA",
+   "mark": ""
+  },
+  "224": {
+   "en": "Mega Froslass",
+   "page": "Mega Froslass ex (MEGA Dream ex 224)",
+   "type": "Water",
+   "rarity": "MA",
+   "mark": ""
+  },
+  "225": {
+   "en": "Mega Eelektross",
+   "page": "Mega Eelektross ex (MEGA Dream ex 225)",
+   "type": "Lightning",
+   "rarity": "MA",
+   "mark": ""
+  },
+  "226": {
+   "en": "Mega Gardevoir",
+   "page": "Mega Gardevoir ex (MEGA Dream ex 226)",
+   "type": "Psychic",
+   "rarity": "MA",
+   "mark": ""
+  },
+  "227": {
+   "en": "Mega Diancie",
+   "page": "Mega Diancie ex (MEGA Dream ex 227)",
+   "type": "Psychic",
+   "rarity": "MA",
+   "mark": ""
+  },
+  "228": {
+   "en": "Mega Lucario",
+   "page": "Mega Lucario ex (MEGA Dream ex 228)",
+   "type": "Fighting",
+   "rarity": "MA",
+   "mark": ""
+  },
+  "229": {
+   "en": "Mega Hawlucha",
+   "page": "Mega Hawlucha ex (MEGA Dream ex 229)",
+   "type": "Fighting",
+   "rarity": "MA",
+   "mark": ""
+  },
+  "230": {
+   "en": "Mega Gengar",
+   "page": "Mega Gengar ex (MEGA Dream ex 230)",
+   "type": "Darkness",
+   "rarity": "MA",
+   "mark": ""
+  },
+  "231": {
+   "en": "Mega Scrafty",
+   "page": "Mega Scrafty ex (MEGA Dream ex 231)",
+   "type": "Darkness",
+   "rarity": "MA",
+   "mark": ""
+  },
+  "232": {
+   "en": "Mega Dragonite",
+   "page": "Mega Dragonite ex (MEGA Dream ex 232)",
+   "type": "Dragon",
+   "rarity": "MA",
+   "mark": ""
+  },
+  "233": {
+   "en": "Mega Froslass",
+   "page": "Mega Froslass ex (MEGA Dream ex 233)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "234": {
+   "en": "Pikachu",
+   "page": "Pikachu ex (MEGA Dream ex 234)",
+   "type": "Lightning",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "235": {
+   "en": "Mega Eelektross",
+   "page": "Mega Eelektross ex (MEGA Dream ex 235)",
+   "type": "Lightning",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "236": {
+   "en": "Iono's Bellibolt",
+   "page": "Iono's Bellibolt ex (MEGA Dream ex 236)",
+   "type": "Lightning",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "237": {
+   "en": "Team Rocket's Mewtwo",
+   "page": "Team Rocket's Mewtwo ex (MEGA Dream ex 237)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "238": {
+   "en": "Mega Diancie",
+   "page": "Mega Diancie ex (MEGA Dream ex 238)",
+   "type": "Psychic",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "239": {
+   "en": "Mega Hawlucha",
+   "page": "Mega Hawlucha ex (MEGA Dream ex 239)",
+   "type": "Fighting",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "240": {
+   "en": "Mega Gengar",
+   "page": "Mega Gengar ex (MEGA Dream ex 240)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "241": {
+   "en": "Mega Scrafty",
+   "page": "Mega Scrafty ex (MEGA Dream ex 241)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "242": {
+   "en": "N's Zoroark",
+   "page": "N's Zoroark ex (MEGA Dream ex 242)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "243": {
+   "en": "Marnie's Grimmsnarl",
+   "page": "Marnie's Grimmsnarl ex (MEGA Dream ex 243)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "244": {
+   "en": "Fezandipiti",
+   "page": "Fezandipiti ex (MEGA Dream ex 244)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "245": {
+   "en": "Steven's Metagross",
+   "page": "Steven's Metagross ex (MEGA Dream ex 245)",
+   "type": "Metal",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "246": {
+   "en": "Mega Dragonite",
+   "page": "Mega Dragonite ex (MEGA Dream ex 246)",
+   "type": "Dragon",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "247": {
+   "en": "Iris's Fighting Spirit",
+   "page": "Iris's Fighting Spirit (MEGA Dream ex 247)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "248": {
+   "en": "Canari",
+   "page": "Canari (MEGA Dream ex 248)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "249": {
+   "en": "Surfer",
+   "page": "Surfer (MEGA Dream ex 249)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "250": {
+   "en": "Mega Dragonite",
+   "page": "Mega Dragonite ex (MEGA Dream ex 250)",
+   "type": "Dragon",
+   "rarity": "MUR",
+   "mark": ""
+  }
+ }
+}

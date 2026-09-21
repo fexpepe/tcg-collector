@@ -1,0 +1,930 @@
+{
+ "page": "Challenge from the Darkness (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Blaine's Arcanine",
+   "page": "Blaine's Arcanine (Gym Challenge 1)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "2": {
+   "en": "Blaine's Charizard",
+   "page": "Blaine's Charizard (Gym Challenge 2)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "3": {
+   "en": "Brock's Ninetales",
+   "page": "Brock's Ninetales (Gym Challenge 3)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Erika's Venusaur",
+   "page": "Erika's Venusaur (Gym Challenge 4)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "5": {
+   "en": "Giovanni's Gyarados",
+   "page": "Giovanni's Gyarados (Gym Challenge 5)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "6": {
+   "en": "Giovanni's Machamp",
+   "page": "Giovanni's Machamp (Gym Challenge 6)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "7": {
+   "en": "Giovanni's Nidoking",
+   "page": "Giovanni's Nidoking (Gym Challenge 7)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "8": {
+   "en": "Giovanni's Persian",
+   "page": "Giovanni's Persian (Gym Challenge 8)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "9": {
+   "en": "Koga's Beedrill",
+   "page": "Koga's Beedrill (Gym Challenge 9)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Koga's Ditto",
+   "page": "Koga's Ditto (Gym Challenge 10)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "11": {
+   "en": "Lt. Surge's Raichu",
+   "page": "Lt. Surge's Raichu (Gym Challenge 11)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "12": {
+   "en": "Misty's Golduck",
+   "page": "Misty's Golduck (Gym Challenge 12)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "13": {
+   "en": "Misty's Gyarados",
+   "page": "Misty's Gyarados (Gym Challenge 13)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "14": {
+   "en": "Rocket's Mewtwo",
+   "page": "Rocket's Mewtwo (Gym Challenge 14)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Rocket's Zapdos",
+   "page": "Rocket's Zapdos (Gym Challenge 15)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "16": {
+   "en": "Sabrina's Alakazam",
+   "page": "Sabrina's Alakazam (Gym Challenge 16)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "17": {
+   "en": "Blaine",
+   "page": "Blaine (Gym Challenge 17)",
+   "type": "T",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "18": {
+   "en": "Giovanni",
+   "page": "Giovanni (Gym Challenge 18)",
+   "type": "T",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "19": {
+   "en": "Koga",
+   "page": "Koga (Gym Challenge 19)",
+   "type": "T",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "20": {
+   "en": "Sabrina",
+   "page": "Sabrina (Gym Challenge 20)",
+   "type": "T",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "21": {
+   "en": "Blaine's Ninetales",
+   "page": "Blaine's Ninetales (Gym Challenge 21)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "22": {
+   "en": "Brock's Dugtrio",
+   "page": "Brock's Dugtrio (Gym Challenge 22)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "23": {
+   "en": "Giovanni's Nidoqueen",
+   "page": "Giovanni's Nidoqueen (Gym Challenge 23)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "24": {
+   "en": "Giovanni's Pinsir",
+   "page": "Giovanni's Pinsir (Gym Challenge 24)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "25": {
+   "en": "Koga's Arbok",
+   "page": "Koga's Arbok (Gym Challenge 25)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "26": {
+   "en": "Koga's Muk",
+   "page": "Koga's Muk (Gym Challenge 26)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "27": {
+   "en": "Koga's Pidgeotto",
+   "page": "Koga's Pidgeotto (Gym Challenge 27)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "28": {
+   "en": "Lt. Surge's Jolteon",
+   "page": "Lt. Surge's Jolteon (Gym Challenge 28)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "29": {
+   "en": "Sabrina's Gengar",
+   "page": "Sabrina's Gengar (Gym Challenge 29)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "30": {
+   "en": "Sabrina's Golduck",
+   "page": "Sabrina's Golduck (Gym Challenge 30)",
+   "type": "Water",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "31": {
+   "en": "Blaine's Charmeleon",
+   "page": "Blaine's Charmeleon (Gym Challenge 31)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "32": {
+   "en": "Blaine's Dodrio",
+   "page": "Blaine's Dodrio (Gym Challenge 32)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "33": {
+   "en": "Blaine's Rapidash",
+   "page": "Blaine's Rapidash (Gym Challenge 33)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "34": {
+   "en": "Brock's Graveler",
+   "page": "Brock's Graveler (Gym Challenge 34)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "35": {
+   "en": "Brock's Primeape",
+   "page": "Brock's Primeape (Gym Challenge 35)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "36": {
+   "en": "Brock's Sandslash",
+   "page": "Brock's Sandslash (Gym Challenge 36)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "37": {
+   "en": "Brock's Vulpix",
+   "page": "Brock's Vulpix (Gym Challenge 37)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "38": {
+   "en": "Erika's Bellsprout",
+   "page": "Erika's Bellsprout (Gym Challenge 38)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "39": {
+   "en": "Erika's Bulbasaur",
+   "page": "Erika's Bulbasaur (Gym Challenge 39)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "40": {
+   "en": "Erika's Clefairy",
+   "page": "Erika's Clefairy (Gym Challenge 40)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "41": {
+   "en": "Erika's Ivysaur",
+   "page": "Erika's Ivysaur (Gym Challenge 41)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "42": {
+   "en": "Giovanni's Machoke",
+   "page": "Giovanni's Machoke (Gym Challenge 42)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "43": {
+   "en": "Giovanni's Meowth",
+   "page": "Giovanni's Meowth (Gym Challenge 43)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "44": {
+   "en": "Giovanni's Nidorina",
+   "page": "Giovanni's Nidorina (Gym Challenge 44)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "45": {
+   "en": "Giovanni's Nidorino",
+   "page": "Giovanni's Nidorino (Gym Challenge 45)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "46": {
+   "en": "Koga's Golbat",
+   "page": "Koga's Golbat (Gym Challenge 46)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "47": {
+   "en": "Koga's Kakuna",
+   "page": "Koga's Kakuna (Gym Challenge 47)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "48": {
+   "en": "Koga's Koffing",
+   "page": "Koga's Koffing (Gym Challenge 48)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "49": {
+   "en": "Koga's Pidgey",
+   "page": "Koga's Pidgey (Gym Challenge 49)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "50": {
+   "en": "Koga's Weezing",
+   "page": "Koga's Weezing (Gym Challenge 50)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "51": {
+   "en": "Lt. Surge's Eevee",
+   "page": "Lt. Surge's Eevee (Gym Challenge 51)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "52": {
+   "en": "Lt. Surge's Electrode",
+   "page": "Lt. Surge's Electrode (Gym Challenge 52)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "53": {
+   "en": "Lt. Surge's Raticate",
+   "page": "Lt. Surge's Raticate (Gym Challenge 53)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "54": {
+   "en": "Misty's Dewgong",
+   "page": "Misty's Dewgong (Gym Challenge 54)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "55": {
+   "en": "Sabrina's Haunter",
+   "page": "Sabrina's Haunter (Gym Challenge 55)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "56": {
+   "en": "Sabrina's Hypno",
+   "page": "Sabrina's Hypno (Gym Challenge 56)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "57": {
+   "en": "Sabrina's Jynx",
+   "page": "Sabrina's Jynx (Gym Challenge 57)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "58": {
+   "en": "Sabrina's Kadabra",
+   "page": "Sabrina's Kadabra (Gym Challenge 58)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "59": {
+   "en": "Sabrina's Mr. Mime",
+   "page": "Sabrina's Mr. Mime (Gym Challenge 59)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "60": {
+   "en": "Blaine's Charmander",
+   "page": "Blaine's Charmander (Gym Challenge 60)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "61": {
+   "en": "Blaine's Doduo",
+   "page": "Blaine's Doduo (Gym Challenge 61)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "62": {
+   "en": "Blaine's Growlithe",
+   "page": "Blaine's Growlithe (Gym Challenge 62)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "63": {
+   "en": "Blaine's Mankey",
+   "page": "Blaine's Mankey (Gym Challenge 63)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "64": {
+   "en": "Blaine's Ponyta",
+   "page": "Blaine's Ponyta (Gym Challenge 64)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "65": {
+   "en": "Blaine's Rhyhorn",
+   "page": "Blaine's Rhyhorn (Gym Challenge 65)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "66": {
+   "en": "Blaine's Vulpix",
+   "page": "Blaine's Vulpix (Gym Challenge 66)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "67": {
+   "en": "Brock's Diglett",
+   "page": "Brock's Diglett (Gym Challenge 67)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "68": {
+   "en": "Brock's Geodude",
+   "page": "Brock's Geodude (Gym Challenge 68)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "69": {
+   "en": "Erika's Jigglypuff",
+   "page": "Erika's Jigglypuff (Gym Challenge 69)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "70": {
+   "en": "Erika's Oddish",
+   "page": "Erika's Oddish (Gym Challenge 70)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "71": {
+   "en": "Erika's Paras",
+   "page": "Erika's Paras (Gym Challenge 71)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "72": {
+   "en": "Giovanni's Machop",
+   "page": "Giovanni's Machop (Gym Challenge 72)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "73": {
+   "en": "Giovanni's Magikarp",
+   "page": "Giovanni's Magikarp (Gym Challenge 73)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "74": {
+   "en": "Giovanni's Meowth",
+   "page": "Giovanni's Meowth (Gym Challenge 74)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "75": {
+   "en": "Giovanni's Nidoran♀",
+   "page": "Giovanni's Nidoran♀ (Gym Challenge 75)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "76": {
+   "en": "Giovanni's Nidoran♂",
+   "page": "Giovanni's Nidoran♂ (Gym Challenge 76)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "77": {
+   "en": "Koga's Ekans",
+   "page": "Koga's Ekans (Gym Challenge 77)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "78": {
+   "en": "Koga's Grimer",
+   "page": "Koga's Grimer (Gym Challenge 78)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "79": {
+   "en": "Koga's Koffing",
+   "page": "Koga's Koffing (Gym Challenge 79)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "80": {
+   "en": "Koga's Pidgey",
+   "page": "Koga's Pidgey (Gym Challenge 80)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "81": {
+   "en": "Koga's Tangela",
+   "page": "Koga's Tangela (Gym Challenge 81)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "82": {
+   "en": "Koga's Weedle",
+   "page": "Koga's Weedle (Gym Challenge 82)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "83": {
+   "en": "Koga's Zubat",
+   "page": "Koga's Zubat (Gym Challenge 83)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "84": {
+   "en": "Lt. Surge's Pikachu",
+   "page": "Lt. Surge's Pikachu (Gym Challenge 84)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "85": {
+   "en": "Lt. Surge's Rattata",
+   "page": "Lt. Surge's Rattata (Gym Challenge 85)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "86": {
+   "en": "Lt. Surge's Voltorb",
+   "page": "Lt. Surge's Voltorb (Gym Challenge 86)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "87": {
+   "en": "Misty's Horsea",
+   "page": "Misty's Horsea (Gym Challenge 87)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "88": {
+   "en": "Misty's Magikarp",
+   "page": "Misty's Magikarp (Gym Challenge 88)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "89": {
+   "en": "Misty's Poliwag",
+   "page": "Misty's Poliwag (Gym Challenge 89)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "90": {
+   "en": "Misty's Psyduck",
+   "page": "Misty's Psyduck (Gym Challenge 90)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "91": {
+   "en": "Misty's Seel",
+   "page": "Misty's Seel (Gym Challenge 91)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "92": {
+   "en": "Misty's Staryu",
+   "page": "Misty's Staryu (Gym Challenge 92)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "93": {
+   "en": "Sabrina's Abra",
+   "page": "Sabrina's Abra (Gym Challenge 93)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "94": {
+   "en": "Sabrina's Abra",
+   "page": "Sabrina's Abra (Gym Challenge 94)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "95": {
+   "en": "Sabrina's Drowzee",
+   "page": "Sabrina's Drowzee (Gym Challenge 95)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "96": {
+   "en": "Sabrina's Gastly",
+   "page": "Sabrina's Gastly (Gym Challenge 96)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "97": {
+   "en": "Sabrina's Gastly",
+   "page": "Sabrina's Gastly (Gym Challenge 97)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "98": {
+   "en": "Sabrina's Porygon",
+   "page": "Sabrina's Porygon (Gym Challenge 98)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "99": {
+   "en": "Sabrina's Psyduck",
+   "page": "Sabrina's Psyduck (Gym Challenge 99)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "100": {
+   "en": "Blaine",
+   "page": "Blaine (Gym Challenge 100)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "101": {
+   "en": "Brock's Protection",
+   "page": "Brock's Protection (Gym Challenge 101)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "102": {
+   "en": "Chaos Gym",
+   "page": "Chaos Gym (Gym Challenge 102)",
+   "type": "T [St]",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "103": {
+   "en": "Erika's Kindness",
+   "page": "Erika's Kindness (Gym Challenge 103)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "104": {
+   "en": "Giovanni",
+   "page": "Giovanni (Gym Challenge 104)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "105": {
+   "en": "Giovanni's Last Resort",
+   "page": "Giovanni's Last Resort (Gym Challenge 105)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "106": {
+   "en": "Koga",
+   "page": "Koga (Gym Challenge 106)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "107": {
+   "en": "Lt. Surge's Secret Plan",
+   "page": "Lt. Surge's Secret Plan (Gym Challenge 107)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "108": {
+   "en": "Misty's Wish",
+   "page": "Misty's Wish (Gym Challenge 108)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "109": {
+   "en": "Resistance Gym",
+   "page": "Resistance Gym (Gym Challenge 109)",
+   "type": "T [St]",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "110": {
+   "en": "Sabrina",
+   "page": "Sabrina (Gym Challenge 110)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "111": {
+   "en": "Blaine's Quiz #2",
+   "page": "Blaine's Quiz 2 (Gym Challenge 111)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "112": {
+   "en": "Blaine's Quiz #3",
+   "page": "Blaine's Quiz 3 (Gym Challenge 112)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "113": {
+   "en": "Cinnabar City Gym",
+   "page": "Cinnabar City Gym (Gym Challenge 113)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "114": {
+   "en": "Fuchsia City Gym",
+   "page": "Fuchsia City Gym (Gym Challenge 114)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "115": {
+   "en": "Koga's Ninja Trick",
+   "page": "Koga's Ninja Trick (Gym Challenge 115)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "116": {
+   "en": "Master Ball",
+   "page": "Master Ball (Gym Challenge 116)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "117": {
+   "en": "Max Revive",
+   "page": "Max Revive (Gym Challenge 117)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "118": {
+   "en": "Misty's Tears",
+   "page": "Misty's Tears (Gym Challenge 118)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "119": {
+   "en": "Rocket's Minefield Gym",
+   "page": "Rocket's Minefield Gym (Gym Challenge 119)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "120": {
+   "en": "Rocket's Secret Experiment",
+   "page": "Rocket's Secret Experiment (Gym Challenge 120)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "121": {
+   "en": "Sabrina's Psychic Control",
+   "page": "Sabrina's Psychic Control (Gym Challenge 121)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "122": {
+   "en": "Saffron City Gym",
+   "page": "Saffron City Gym (Gym Challenge 122)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "123": {
+   "en": "Viridian City Gym",
+   "page": "Viridian City Gym (Gym Challenge 123)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "124": {
+   "en": "Fervor",
+   "page": "Fervor (Gym Challenge 124)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "125": {
+   "en": "Transparent Walls",
+   "page": "Transparent Walls (Gym Challenge 125)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "126": {
+   "en": "Warp Point",
+   "page": "Warp Point (Gym Challenge 126)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "127": {
+   "en": "Fighting Energy",
+   "page": "Fighting Energy (Gym Challenge 127)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "128": {
+   "en": "Fire Energy",
+   "page": "Fire Energy (Gym Challenge 128)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "129": {
+   "en": "Grass Energy",
+   "page": "Grass Energy (Gym Challenge 129)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "130": {
+   "en": "Lightning Energy",
+   "page": "Lightning Energy (Gym Challenge 130)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "131": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (Gym Challenge 131)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "132": {
+   "en": "Water Energy",
+   "page": "Water Energy (Gym Challenge 132)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

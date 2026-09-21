@@ -1,0 +1,713 @@
+{
+ "page": "Offense and Defense of the Furthest Ends (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Snorlax δ",
+   "page": "Snorlax δ (Offense and Defense of the Furthest Ends 1)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "2": {
+   "en": "Dratini δ",
+   "page": "Dratini δ (Offense and Defense of the Furthest Ends 2)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "3": {
+   "en": "Dragonair δ",
+   "page": "Dragonair δ (Offense and Defense of the Furthest Ends 3)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "4": {
+   "en": "Dragonite ex δ",
+   "page": "Dragonite ex δ (Offense and Defense of the Furthest Ends 4)",
+   "type": "Grass",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "5": {
+   "en": "Wooper δ",
+   "page": "Wooper δ (Offense and Defense of the Furthest Ends 5)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "6": {
+   "en": "Quagsire δ",
+   "page": "Quagsire δ (Offense and Defense of the Furthest Ends 6)",
+   "type": "Grass",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "7": {
+   "en": "Ekans δ",
+   "page": "Ekans δ (Offense and Defense of the Furthest Ends 7)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "8": {
+   "en": "Arbok δ",
+   "page": "Arbok δ (Offense and Defense of the Furthest Ends 8)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "9": {
+   "en": "Heracross δ",
+   "page": "Heracross δ (Offense and Defense of the Furthest Ends 9)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Taillow δ",
+   "page": "Taillow δ (Offense and Defense of the Furthest Ends 10)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "11": {
+   "en": "Swellow δ",
+   "page": "Swellow δ (Offense and Defense of the Furthest Ends 11)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "12": {
+   "en": "Feebas δ",
+   "page": "Feebas δ (Offense and Defense of the Furthest Ends 12)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "13": {
+   "en": "Milotic δ",
+   "page": "Milotic δ (Offense and Defense of the Furthest Ends 13)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "14": {
+   "en": "Latias ex δ",
+   "page": "Latias ex δ (Offense and Defense of the Furthest Ends 14)",
+   "type": "Fire",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "15": {
+   "en": "Mew",
+   "page": "Mew ☆ δ (Offense and Defense of the Furthest Ends 15)",
+   "type": "Water",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "16": {
+   "en": "Togepi δ",
+   "page": "Togepi δ (Offense and Defense of the Furthest Ends 16)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "17": {
+   "en": "Togetic δ",
+   "page": "Togetic δ (Offense and Defense of the Furthest Ends 17)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "18": {
+   "en": "Swablu δ",
+   "page": "Swablu δ (Offense and Defense of the Furthest Ends 18)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "19": {
+   "en": "Altaria ex δ",
+   "page": "Altaria ex δ (Offense and Defense of the Furthest Ends 19)",
+   "type": "Water",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "20": {
+   "en": "Bagon δ",
+   "page": "Bagon δ (Offense and Defense of the Furthest Ends 20)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "21": {
+   "en": "Shelgon δ",
+   "page": "Shelgon δ (Offense and Defense of the Furthest Ends 21)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "22": {
+   "en": "Salamence ex δ",
+   "page": "Salamence ex δ (Offense and Defense of the Furthest Ends 22)",
+   "type": "Water",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "23": {
+   "en": "Latios ex δ",
+   "page": "Latios ex δ (Offense and Defense of the Furthest Ends 23)",
+   "type": "Water",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "24": {
+   "en": "Totodile δ",
+   "page": "Totodile δ (Offense and Defense of the Furthest Ends 24)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "25": {
+   "en": "Croconaw δ",
+   "page": "Croconaw δ (Offense and Defense of the Furthest Ends 25)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "26": {
+   "en": "Feraligatr δ",
+   "page": "Feraligatr δ (Offense and Defense of the Furthest Ends 26)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "27": {
+   "en": "Mantine δ",
+   "page": "Mantine δ (Offense and Defense of the Furthest Ends 27)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "28": {
+   "en": "Rayquaza ex δ",
+   "page": "Rayquaza ex δ (Offense and Defense of the Furthest Ends 28)",
+   "type": "Lightning",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "29": {
+   "en": "Vulpix δ",
+   "page": "Vulpix δ (Offense and Defense of the Furthest Ends 29)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "30": {
+   "en": "Ninetales δ",
+   "page": "Ninetales δ (Offense and Defense of the Furthest Ends 30)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "31": {
+   "en": "Lickitung δ",
+   "page": "Lickitung δ (Offense and Defense of the Furthest Ends 31)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "32": {
+   "en": "Cyndaquil δ",
+   "page": "Cyndaquil δ (Offense and Defense of the Furthest Ends 32)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "33": {
+   "en": "Quilava δ",
+   "page": "Quilava δ (Offense and Defense of the Furthest Ends 33)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "34": {
+   "en": "Typhlosion δ",
+   "page": "Typhlosion δ (Offense and Defense of the Furthest Ends 34)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "35": {
+   "en": "Trapinch δ",
+   "page": "Trapinch δ (Offense and Defense of the Furthest Ends 35)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "36": {
+   "en": "Vibrava δ",
+   "page": "Vibrava δ (Offense and Defense of the Furthest Ends 36)",
+   "type": "Psychic",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "37": {
+   "en": "Flygon ex δ",
+   "page": "Flygon ex δ (Offense and Defense of the Furthest Ends 37)",
+   "type": "Psychic",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "38": {
+   "en": "Shellder δ",
+   "page": "Shellder δ (Offense and Defense of the Furthest Ends 38)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "39": {
+   "en": "Cloyster δ",
+   "page": "Cloyster δ (Offense and Defense of the Furthest Ends 39)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "40": {
+   "en": "Horsea δ",
+   "page": "Horsea δ (Offense and Defense of the Furthest Ends 40)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "41": {
+   "en": "Seadra δ",
+   "page": "Seadra δ (Offense and Defense of the Furthest Ends 41)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "42": {
+   "en": "Pinsir δ",
+   "page": "Pinsir δ (Offense and Defense of the Furthest Ends 42)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "43": {
+   "en": "Chikorita δ",
+   "page": "Chikorita δ (Offense and Defense of the Furthest Ends 43)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "44": {
+   "en": "Bayleef δ",
+   "page": "Bayleef δ (Offense and Defense of the Furthest Ends 44)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "45": {
+   "en": "Meganium δ",
+   "page": "Meganium δ (Offense and Defense of the Furthest Ends 45)",
+   "type": "Fighting",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "46": {
+   "en": "Kingdra ex δ",
+   "page": "Kingdra ex δ (Offense and Defense of the Furthest Ends 46)",
+   "type": "Fighting",
+   "rarity": "Rare Holo ex",
+   "mark": ""
+  },
+  "47": {
+   "en": "Seel δ",
+   "page": "Seel δ (Offense and Defense of the Furthest Ends 47)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "48": {
+   "en": "Dewgong δ",
+   "page": "Dewgong δ (Offense and Defense of the Furthest Ends 48)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "49": {
+   "en": "Mareep δ",
+   "page": "Mareep δ (Offense and Defense of the Furthest Ends 49)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "50": {
+   "en": "Flaaffy δ",
+   "page": "Flaaffy δ (Offense and Defense of the Furthest Ends 50)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "51": {
+   "en": "Ampharos δ",
+   "page": "Ampharos δ (Offense and Defense of the Furthest Ends 51)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "52": {
+   "en": "Charizard",
+   "page": "Charizard ☆ δ (Offense and Defense of the Furthest Ends 52)",
+   "type": "Darkness",
+   "rarity": "ShinyRare Holo",
+   "mark": ""
+  },
+  "53": {
+   "en": "Nidoran♂ δ",
+   "page": "Nidoran♂ δ (Offense and Defense of the Furthest Ends 53)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "54": {
+   "en": "Nidorino δ",
+   "page": "Nidorino δ (Offense and Defense of the Furthest Ends 54)",
+   "type": "Darkness",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "55": {
+   "en": "Nidoking δ",
+   "page": "Nidoking δ (Offense and Defense of the Furthest Ends 55)",
+   "type": "Darkness",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "56": {
+   "en": "Natu δ",
+   "page": "Natu δ (Offense and Defense of the Furthest Ends 56)",
+   "type": "Darkness",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "57": {
+   "en": "Xatu δ",
+   "page": "Xatu δ (Offense and Defense of the Furthest Ends 57)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "58": {
+   "en": "Nidoran♀ δ",
+   "page": "Nidoran♀ δ (Offense and Defense of the Furthest Ends 58)",
+   "type": "Metal",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "59": {
+   "en": "Nidorina δ",
+   "page": "Nidorina δ (Offense and Defense of the Furthest Ends 59)",
+   "type": "Metal",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "60": {
+   "en": "Nidoqueen δ",
+   "page": "Nidoqueen δ (Offense and Defense of the Furthest Ends 60)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "61": {
+   "en": "Ledyba δ",
+   "page": "Ledyba δ (Offense and Defense of the Furthest Ends 61)",
+   "type": "Metal",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "62": {
+   "en": "Ledian δ",
+   "page": "Ledian δ (Offense and Defense of the Furthest Ends 62)",
+   "type": "Metal",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "63": {
+   "en": "Tropius δ",
+   "page": "Tropius δ (Offense and Defense of the Furthest Ends 63)",
+   "type": "Metal",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "64": {
+   "en": "Old Rod",
+   "page": "Old Rod (Offense and Defense of the Furthest Ends 64)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "65": {
+   "en": "Island Hermit",
+   "page": "Island Hermit (Offense and Defense of the Furthest Ends 65)",
+   "type": "T [Su]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "66": {
+   "en": "Strength Charm",
+   "page": "Strength Charm (Offense and Defense of the Furthest Ends 66)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "67": {
+   "en": "Holon Legacy",
+   "page": "Holon Legacy (Offense and Defense of the Furthest Ends 67)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "68": {
+   "en": "Scramble Energy",
+   "page": "Scramble Energy (Offense and Defense of the Furthest Ends 68)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "69": {
+   "en": "Trapinch δ",
+   "page": "Trapinch δ (EX Dragon Frontiers 69)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "70": {
+   "en": "Vulpix δ",
+   "page": "Vulpix δ (EX Dragon Frontiers 70)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "71": {
+   "en": "Wooper δ",
+   "page": "Wooper δ (EX Dragon Frontiers 71)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "72": {
+   "en": "Buffer Piece",
+   "page": "Buffer Piece (EX Dragon Frontiers 72)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "73": {
+   "en": "Copycat",
+   "page": "Copycat (EX Dragon Frontiers 73)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "74": {
+   "en": "Holon Legacy",
+   "page": "Holon Legacy (EX Dragon Frontiers 74)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "75": {
+   "en": "Holon Mentor",
+   "page": "Holon Mentor (EX Dragon Frontiers 75)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "76": {
+   "en": "Island Hermit",
+   "page": "Island Hermit (EX Dragon Frontiers 76)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "77": {
+   "en": "Mr. Stone's Project",
+   "page": "Mr. Stone's Project (EX Dragon Frontiers 77)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "78": {
+   "en": "Old Rod",
+   "page": "Old Rod (EX Dragon Frontiers 78)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "79": {
+   "en": "Professor Elm's Training Method",
+   "page": "Professor Elm's Training Method (EX Dragon Frontiers 79)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "80": {
+   "en": "Professor Oak's Research",
+   "page": "Professor Oak's Research (EX Dragon Frontiers 80)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "81": {
+   "en": "Strength Charm",
+   "page": "Strength Charm (EX Dragon Frontiers 81)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "82": {
+   "en": "TV Reporter",
+   "page": "TV Reporter (EX Dragon Frontiers 82)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "83": {
+   "en": "Switch",
+   "page": "Switch (EX Dragon Frontiers 83)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "84": {
+   "en": "Holon Energy FF",
+   "page": "Holon Energy FF (EX Dragon Frontiers 84)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "85": {
+   "en": "Holon Energy GL",
+   "page": "Holon Energy GL (EX Dragon Frontiers 85)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "86": {
+   "en": "Holon Energy WP",
+   "page": "Holon Energy WP (EX Dragon Frontiers 86)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "87": {
+   "en": "Boost Energy",
+   "page": "Boost Energy (EX Dragon Frontiers 87)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88": {
+   "en": "δ Rainbow Energy",
+   "page": "Δ Rainbow Energy (EX Dragon Frontiers 88)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "89": {
+   "en": "Scramble Energy",
+   "page": "Scramble Energy (EX Dragon Frontiers 89)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Altaria ex δ",
+   "page": "Altaria ex δ (EX Dragon Frontiers 90)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "Dragonite ex δ",
+   "page": "Dragonite ex δ (EX Dragon Frontiers 91)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Flygon ex δ",
+   "page": "Flygon ex δ (EX Dragon Frontiers 92)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Gardevoir ex δ",
+   "page": "Gardevoir ex δ (EX Dragon Frontiers 93)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Kingdra ex δ",
+   "page": "Kingdra ex δ (EX Dragon Frontiers 94)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Latias ex δ",
+   "page": "Latias ex δ (EX Dragon Frontiers 95)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Latios ex δ",
+   "page": "Latios ex δ (EX Dragon Frontiers 96)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Rayquaza ex δ",
+   "page": "Rayquaza ex δ (EX Dragon Frontiers 97)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Salamence ex δ",
+   "page": "Salamence ex δ (EX Dragon Frontiers 98)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Tyranitar ex δ",
+   "page": "Tyranitar ex δ (EX Dragon Frontiers 99)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Charizard",
+   "page": "Charizard ☆ δ (EX Dragon Frontiers 100)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Mew",
+   "page": "Mew ☆ δ (EX Dragon Frontiers 101)",
+   "type": "Rare Holo ☆",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

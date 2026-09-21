@@ -1,0 +1,741 @@
+{
+ "page": "Megalo Cannon (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Surskit",
+   "page": "Surskit (Megalo Cannon 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Masquerain",
+   "page": "Masquerain (Megalo Cannon 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Lileep",
+   "page": "Lileep (Megalo Cannon 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Cradily",
+   "page": "Cradily (Megalo Cannon 4)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "5": {
+   "en": "Tropius",
+   "page": "Tropius (Megalo Cannon 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Karrablast",
+   "page": "Karrablast (Megalo Cannon 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Shelmet",
+   "page": "Shelmet (Megalo Cannon 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Accelgor",
+   "page": "Accelgor (Megalo Cannon 8)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "9": {
+   "en": "Virizion",
+   "page": "Virizion-EX (Megalo Cannon 9)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "10": {
+   "en": "Genesect",
+   "page": "Genesect-EX (Megalo Cannon 10)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "11": {
+   "en": "Larvesta",
+   "page": "Larvesta (Megalo Cannon 11)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Volcarona",
+   "page": "Volcarona (Megalo Cannon 12)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "13": {
+   "en": "Lapras",
+   "page": "Lapras (Megalo Cannon 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Remoraid",
+   "page": "Remoraid (Megalo Cannon 14)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Octillery",
+   "page": "Octillery (Megalo Cannon 15)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Snorunt",
+   "page": "Snorunt (Megalo Cannon 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Glalie",
+   "page": "Glalie (Megalo Cannon 17)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Relicanth",
+   "page": "Relicanth (Megalo Cannon 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Snover",
+   "page": "Snover (Megalo Cannon 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Abomasnow",
+   "page": "Abomasnow (Megalo Cannon 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Tirtouga",
+   "page": "Tirtouga (Megalo Cannon 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Carracosta",
+   "page": "Carracosta (Megalo Cannon 22)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Tynamo",
+   "page": "Tynamo (Megalo Cannon 23)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Eelektrik",
+   "page": "Eelektrik (Megalo Cannon 24)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Eelektross",
+   "page": "Eelektross (Megalo Cannon 25)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "26": {
+   "en": "Drifloon",
+   "page": "Drifloon (Megalo Cannon 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Drifblim",
+   "page": "Drifblim (Megalo Cannon 27)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Uxie",
+   "page": "Uxie (Megalo Cannon 28)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Mesprit",
+   "page": "Mesprit (Megalo Cannon 29)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "30": {
+   "en": "Azelf",
+   "page": "Azelf (Megalo Cannon 30)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "31": {
+   "en": "Munna",
+   "page": "Munna (Megalo Cannon 31)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Musharna",
+   "page": "Musharna (Megalo Cannon 32)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Sigilyph",
+   "page": "Sigilyph (Megalo Cannon 33)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "34": {
+   "en": "Solosis",
+   "page": "Solosis (Megalo Cannon 34)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Duosion",
+   "page": "Duosion (Megalo Cannon 35)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Reuniclus",
+   "page": "Reuniclus (Megalo Cannon 36)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Golett",
+   "page": "Golett (Megalo Cannon 37)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Golurk",
+   "page": "Golurk (Megalo Cannon 38)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "39": {
+   "en": "Machop",
+   "page": "Machop (Megalo Cannon 39)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Machoke",
+   "page": "Machoke (Megalo Cannon 40)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Machamp",
+   "page": "Machamp (Megalo Cannon 41)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "42": {
+   "en": "Throh",
+   "page": "Throh (Megalo Cannon 42)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Sawk",
+   "page": "Sawk (Megalo Cannon 43)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Archen",
+   "page": "Archen (Megalo Cannon 44)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Archeops",
+   "page": "Archeops (Megalo Cannon 45)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "46": {
+   "en": "Houndour",
+   "page": "Houndour (Megalo Cannon 46)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Houndoom",
+   "page": "Houndoom (Megalo Cannon 47)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "48": {
+   "en": "Aron",
+   "page": "Aron (Megalo Cannon 48)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Lairon",
+   "page": "Lairon (Megalo Cannon 49)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Aggron",
+   "page": "Aggron (Megalo Cannon 50)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Jirachi",
+   "page": "Jirachi-EX (Megalo Cannon 51)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "52": {
+   "en": "Escavalier",
+   "page": "Escavalier (Megalo Cannon 52)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Dialga",
+   "page": "Dialga-EX (Megalo Cannon 53)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "54": {
+   "en": "Palkia",
+   "page": "Palkia-EX (Megalo Cannon 54)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "55": {
+   "en": "Axew",
+   "page": "Axew (Megalo Cannon 55)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Fraxure",
+   "page": "Fraxure (Megalo Cannon 56)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Haxorus",
+   "page": "Haxorus (Megalo Cannon 57)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "58": {
+   "en": "Druddigon",
+   "page": "Druddigon (Megalo Cannon 58)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Porygon",
+   "page": "Porygon (Megalo Cannon 59)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Porygon2",
+   "page": "Porygon2 (Megalo Cannon 60)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Porygon-Z",
+   "page": "Porygon-Z (Megalo Cannon 61)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "62": {
+   "en": "Teddiursa",
+   "page": "Teddiursa (Megalo Cannon 62)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Ursaring",
+   "page": "Ursaring (Megalo Cannon 63)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "64": {
+   "en": "Chatot",
+   "page": "Chatot (Megalo Cannon 64)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Root Fossil Lileep",
+   "page": "Root Fossil Lileep (Megalo Cannon 65)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Plume Fossil",
+   "page": "Plume Fossil (Megalo Cannon 66)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Cover Fossil",
+   "page": "Cover Fossil (Megalo Cannon 67)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Silver Bangle",
+   "page": "Silver Bangle (Megalo Cannon 68)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Silver Mirror",
+   "page": "Silver Mirror (Megalo Cannon 69)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Reversal Trigger",
+   "page": "Reversal Trigger (Megalo Cannon 70)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Iris",
+   "page": "Iris (Megalo Cannon 71)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Caitlin",
+   "page": "Caitlin (Megalo Cannon 72)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "73": {
+   "en": "Scoop Up Cyclone",
+   "page": "Scoop Up Cyclone (Megalo Cannon 73)",
+   "type": "I",
+   "rarity": "R",
+   "mark": ""
+  },
+  "74": {
+   "en": "G Scope",
+   "page": "G Scope (Megalo Cannon 74)",
+   "type": "I",
+   "rarity": "R",
+   "mark": ""
+  },
+  "75": {
+   "en": "G Booster",
+   "page": "G Booster (Megalo Cannon 75)",
+   "type": "I",
+   "rarity": "R",
+   "mark": ""
+  },
+  "76": {
+   "en": "Plasma Energy",
+   "page": "Plasma Energy (Megalo Cannon 76)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Virizion",
+   "page": "Virizion-EX (Megalo Cannon 77)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Genesect",
+   "page": "Genesect-EX (Megalo Cannon 78)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Jirachi",
+   "page": "Jirachi-EX (Megalo Cannon 79)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Dialga",
+   "page": "Dialga-EX (Megalo Cannon 80)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Palkia",
+   "page": "Palkia-EX (Megalo Cannon 81)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Iris",
+   "page": "Iris (Megalo Cannon 82)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Megalo Cannon 83)",
+   "type": "Grass",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Virizion",
+   "page": "Virizion (Megalo Cannon 84)",
+   "type": "Grass",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Dusknoir",
+   "page": "Dusknoir (Megalo Cannon 85)",
+   "type": "Psychic",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Megalo Cannon 86)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Root Fossil Lileep",
+   "page": "Root Fossil Lileep (Plasma Blast 87)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88": {
+   "en": "Silver Bangle",
+   "page": "Silver Bangle (Plasma Blast 88)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "89": {
+   "en": "Silver Mirror",
+   "page": "Silver Mirror (Plasma Blast 89)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Plasma Blast 90)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "Plasma Energy",
+   "page": "Plasma Energy (Plasma Blast 91)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "G Booster",
+   "page": "G Booster (Plasma Blast 92)",
+   "type": "Rare Ace",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "G Scope",
+   "page": "G Scope (Plasma Blast 93)",
+   "type": "Rare Ace",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Master Ball",
+   "page": "Master Ball (Plasma Blast 94)",
+   "type": "Rare Ace",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Scoop Up Cyclone",
+   "page": "Scoop Up Cyclone (Plasma Blast 95)",
+   "type": "Rare Ace",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Virizion",
+   "page": "Virizion-EX (Plasma Blast 96)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Genesect",
+   "page": "Genesect-EX (Plasma Blast 97)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Jirachi",
+   "page": "Jirachi-EX (Plasma Blast 98)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Dialga",
+   "page": "Dialga-EX (Plasma Blast 99)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Palkia",
+   "page": "Palkia-EX (Plasma Blast 100)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Iris",
+   "page": "Iris (Plasma Blast 101)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Plasma Blast 102)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Virizion",
+   "page": "Virizion (Plasma Blast 103)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Dusknoir",
+   "page": "Dusknoir (Plasma Blast 104)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Plasma Blast 105)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

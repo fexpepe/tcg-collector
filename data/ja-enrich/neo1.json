@@ -1,0 +1,783 @@
+{
+ "page": "Gold, Silver, to a New World... (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Ampharos",
+   "page": "Ampharos (Neo Genesis 1)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "2": {
+   "en": "Azumarill",
+   "page": "Azumarill (Neo Genesis 2)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "3": {
+   "en": "Bellossom",
+   "page": "Bellossom (Neo Genesis 3)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "4": {
+   "en": "Feraligatr",
+   "page": "Feraligatr (Neo Genesis 4)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "5": {
+   "en": "Feraligatr",
+   "page": "Feraligatr (Neo Genesis 5)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "6": {
+   "en": "Heracross",
+   "page": "Heracross (Neo Genesis 6)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "7": {
+   "en": "Jumpluff",
+   "page": "Jumpluff (Neo Genesis 7)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "8": {
+   "en": "Kingdra",
+   "page": "Kingdra (Neo Genesis 8)",
+   "type": "Water",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "9": {
+   "en": "Lugia",
+   "page": "Lugia (Neo Genesis 9)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "10": {
+   "en": "Meganium",
+   "page": "Meganium (Neo Genesis 10)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "11": {
+   "en": "Meganium",
+   "page": "Meganium (Neo Genesis 11)",
+   "type": "Grass",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "12": {
+   "en": "Pichu",
+   "page": "Pichu (Neo Genesis 12)",
+   "type": "Lightning",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "13": {
+   "en": "Skarmory",
+   "page": "Skarmory (Neo Genesis 13)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "14": {
+   "en": "Slowking",
+   "page": "Slowking (Neo Genesis 14)",
+   "type": "Psychic",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "15": {
+   "en": "Steelix",
+   "page": "Steelix (Neo Genesis 15)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "16": {
+   "en": "Togetic",
+   "page": "Togetic (Neo Genesis 16)",
+   "type": "Colorless",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "17": {
+   "en": "Typhlosion",
+   "page": "Typhlosion (Neo Genesis 17)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "18": {
+   "en": "Typhlosion",
+   "page": "Typhlosion (Neo Genesis 18)",
+   "type": "Fire",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "19": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (Neo Genesis 19)",
+   "type": "Metal",
+   "rarity": "Rare Holo",
+   "mark": ""
+  },
+  "20": {
+   "en": "Cleffa",
+   "page": "Cleffa (Neo Genesis 20)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "21": {
+   "en": "Donphan",
+   "page": "Donphan (Neo Genesis 21)",
+   "type": "Fighting",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "22": {
+   "en": "Elekid",
+   "page": "Elekid (Neo Genesis 22)",
+   "type": "Lightning",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "23": {
+   "en": "Magby",
+   "page": "Magby (Neo Genesis 23)",
+   "type": "Fire",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "24": {
+   "en": "Murkrow",
+   "page": "Murkrow (Neo Genesis 24)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "25": {
+   "en": "Sneasel",
+   "page": "Sneasel (Neo Genesis 25)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "26": {
+   "en": "Aipom",
+   "page": "Aipom (Neo Genesis 26)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "27": {
+   "en": "Ariados",
+   "page": "Ariados (Neo Genesis 27)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "28": {
+   "en": "Bayleef",
+   "page": "Bayleef (Neo Genesis 28)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "29": {
+   "en": "Bayleef",
+   "page": "Bayleef (Neo Genesis 29)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "30": {
+   "en": "Clefairy",
+   "page": "Clefairy (Neo Genesis 30)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "31": {
+   "en": "Croconaw",
+   "page": "Croconaw (Neo Genesis 31)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "32": {
+   "en": "Croconaw",
+   "page": "Croconaw (Neo Genesis 32)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "33": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (Neo Genesis 33)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "34": {
+   "en": "Flaaffy",
+   "page": "Flaaffy (Neo Genesis 34)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "35": {
+   "en": "Furret",
+   "page": "Furret (Neo Genesis 35)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "36": {
+   "en": "Gloom",
+   "page": "Gloom (Neo Genesis 36)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "37": {
+   "en": "Granbull",
+   "page": "Granbull (Neo Genesis 37)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "38": {
+   "en": "Lanturn",
+   "page": "Lanturn (Neo Genesis 38)",
+   "type": "Lightning",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "39": {
+   "en": "Ledian",
+   "page": "Ledian (Neo Genesis 39)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "40": {
+   "en": "Magmar",
+   "page": "Magmar (Neo Genesis 40)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "41": {
+   "en": "Miltank",
+   "page": "Miltank (Neo Genesis 41)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "42": {
+   "en": "Noctowl",
+   "page": "Noctowl (Neo Genesis 42)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "43": {
+   "en": "Phanpy",
+   "page": "Phanpy (Neo Genesis 43)",
+   "type": "Fighting",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "44": {
+   "en": "Piloswine",
+   "page": "Piloswine (Neo Genesis 44)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "45": {
+   "en": "Quagsire",
+   "page": "Quagsire (Neo Genesis 45)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "46": {
+   "en": "Quilava",
+   "page": "Quilava (Neo Genesis 46)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "47": {
+   "en": "Quilava",
+   "page": "Quilava (Neo Genesis 47)",
+   "type": "Fire",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "48": {
+   "en": "Seadra",
+   "page": "Seadra (Neo Genesis 48)",
+   "type": "Water",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "49": {
+   "en": "Skiploom",
+   "page": "Skiploom (Neo Genesis 49)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "50": {
+   "en": "Sunflora",
+   "page": "Sunflora (Neo Genesis 50)",
+   "type": "Grass",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "51": {
+   "en": "Togepi",
+   "page": "Togepi (Neo Genesis 51)",
+   "type": "Colorless",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "52": {
+   "en": "Xatu",
+   "page": "Xatu (Neo Genesis 52)",
+   "type": "Psychic",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "53": {
+   "en": "Chikorita",
+   "page": "Chikorita (Neo Genesis 53)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "54": {
+   "en": "Chikorita",
+   "page": "Chikorita (Neo Genesis 54)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "55": {
+   "en": "Chinchou",
+   "page": "Chinchou (Neo Genesis 55)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "56": {
+   "en": "Cyndaquil",
+   "page": "Cyndaquil (Neo Genesis 56)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "57": {
+   "en": "Cyndaquil",
+   "page": "Cyndaquil (Neo Genesis 57)",
+   "type": "Fire",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "58": {
+   "en": "Girafarig",
+   "page": "Girafarig (Neo Genesis 58)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "59": {
+   "en": "Gligar",
+   "page": "Gligar (Neo Genesis 59)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "60": {
+   "en": "Hoothoot",
+   "page": "Hoothoot (Neo Genesis 60)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "61": {
+   "en": "Hoppip",
+   "page": "Hoppip (Neo Genesis 61)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "62": {
+   "en": "Horsea",
+   "page": "Horsea (Neo Genesis 62)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "63": {
+   "en": "Ledyba",
+   "page": "Ledyba (Neo Genesis 63)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "64": {
+   "en": "Mantine",
+   "page": "Mantine (Neo Genesis 64)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "65": {
+   "en": "Mareep",
+   "page": "Mareep (Neo Genesis 65)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "66": {
+   "en": "Marill",
+   "page": "Marill (Neo Genesis 66)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "67": {
+   "en": "Natu",
+   "page": "Natu (Neo Genesis 67)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "68": {
+   "en": "Oddish",
+   "page": "Oddish (Neo Genesis 68)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "69": {
+   "en": "Onix",
+   "page": "Onix (Neo Genesis 69)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "70": {
+   "en": "Pikachu",
+   "page": "Pikachu (Neo Genesis 70)",
+   "type": "Lightning",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "71": {
+   "en": "Sentret",
+   "page": "Sentret (Neo Genesis 71)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "72": {
+   "en": "Shuckle",
+   "page": "Shuckle (Neo Genesis 72)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "73": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Neo Genesis 73)",
+   "type": "Psychic",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "74": {
+   "en": "Snubbull",
+   "page": "Snubbull (Neo Genesis 74)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "75": {
+   "en": "Spinarak",
+   "page": "Spinarak (Neo Genesis 75)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "76": {
+   "en": "Stantler",
+   "page": "Stantler (Neo Genesis 76)",
+   "type": "Colorless",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "77": {
+   "en": "Sudowoodo",
+   "page": "Sudowoodo (Neo Genesis 77)",
+   "type": "Fighting",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "78": {
+   "en": "Sunkern",
+   "page": "Sunkern (Neo Genesis 78)",
+   "type": "Grass",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "79": {
+   "en": "Swinub",
+   "page": "Swinub (Neo Genesis 79)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "80": {
+   "en": "Totodile",
+   "page": "Totodile (Neo Genesis 80)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "81": {
+   "en": "Totodile",
+   "page": "Totodile (Neo Genesis 81)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "82": {
+   "en": "Wooper",
+   "page": "Wooper (Neo Genesis 82)",
+   "type": "Water",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "83": {
+   "en": "Arcade Game",
+   "page": "Arcade Game (Neo Genesis 83)",
+   "type": "T [GC]",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "84": {
+   "en": "Ecogym",
+   "page": "Ecogym (Neo Genesis 84)",
+   "type": "T [St]",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "85": {
+   "en": "Energy Charge",
+   "page": "Energy Charge (Neo Genesis 85)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "86": {
+   "en": "Focus Band",
+   "page": "Focus Band (Neo Genesis 86)",
+   "type": "T [PT]",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "87": {
+   "en": "Mary",
+   "page": "Mary (Neo Genesis 87)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "88": {
+   "en": "PokéGear",
+   "page": "PokéGear (Neo Genesis 88)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "89": {
+   "en": "Super Energy Retrieval",
+   "page": "Super Energy Retrieval (Neo Genesis 89)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "90": {
+   "en": "Time Capsule",
+   "page": "Time Capsule (Neo Genesis 90)",
+   "type": "T",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "91": {
+   "en": "Bill's Teleporter",
+   "page": "Bill's Teleporter (Neo Genesis 91)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "92": {
+   "en": "Card-Flip Game",
+   "page": "Card-Flip Game (Neo Genesis 92)",
+   "type": "T [GC]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "93": {
+   "en": "Gold Berry",
+   "page": "Gold Berry (Neo Genesis 93)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "94": {
+   "en": "Miracle Berry",
+   "page": "Miracle Berry (Neo Genesis 94)",
+   "type": "T [PT]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "95": {
+   "en": "New Pokédex",
+   "page": "New Pokédex (Neo Genesis 95)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "96": {
+   "en": "Professor Elm",
+   "page": "Professor Elm (Neo Genesis 96)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "97": {
+   "en": "Sprout Tower",
+   "page": "Sprout Tower (Neo Genesis 97)",
+   "type": "T [St]",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "98": {
+   "en": "Super Scoop Up",
+   "page": "Super Scoop Up (Neo Genesis 98)",
+   "type": "T",
+   "rarity": "Uncommon",
+   "mark": ""
+  },
+  "99": {
+   "en": "Berry",
+   "page": "Berry (Neo Genesis 99)",
+   "type": "T [PT]",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "100": {
+   "en": "Double Gust",
+   "page": "Double Gust (Neo Genesis 100)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "101": {
+   "en": "Moo-Moo Milk",
+   "page": "Moo-Moo Milk (Neo Genesis 101)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "102": {
+   "en": "Pokémon March",
+   "page": "Pokémon March (Neo Genesis 102)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "103": {
+   "en": "Super Rod",
+   "page": "Super Rod (Neo Genesis 103)",
+   "type": "T",
+   "rarity": "Common",
+   "mark": ""
+  },
+  "104": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (Neo Genesis 104)",
+   "type": "Darkness",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "105": {
+   "en": "Recycle Energy",
+   "page": "Recycle Energy (Neo Genesis 105)",
+   "type": "Colorless",
+   "rarity": "Rare",
+   "mark": ""
+  },
+  "106": {
+   "en": "Fighting Energy",
+   "page": "Fighting Energy (TCG)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "107": {
+   "en": "Fire Energy",
+   "page": "Fire Energy (TCG)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "108": {
+   "en": "Grass Energy",
+   "page": "Grass Energy (TCG)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "109": {
+   "en": "Lightning Energy",
+   "page": "Lightning Energy (TCG)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "110": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (TCG)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "111": {
+   "en": "Water Energy",
+   "page": "Water Energy (TCG)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

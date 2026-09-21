@@ -1,0 +1,650 @@
+{
+ "page": "Raging Surf (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Froslass",
+   "page": "Froslass ex (Raging Surf 1)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "2": {
+   "en": "Lapras",
+   "page": "Lapras (Raging Surf 2)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Remoraid",
+   "page": "Remoraid (Raging Surf 3)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Octillery",
+   "page": "Octillery (Raging Surf 4)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Snorunt",
+   "page": "Snorunt (Raging Surf 5)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Garchomp",
+   "page": "Garchomp ex (Raging Surf 6)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "7": {
+   "en": "Mantyke",
+   "page": "Mantyke (Raging Surf 7)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Palkia",
+   "page": "Palkia (Raging Surf 8)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "9": {
+   "en": "Wimpod",
+   "page": "Wimpod (Raging Surf 9)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Golisopod",
+   "page": "Golisopod (Raging Surf 10)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "11": {
+   "en": "Dondozo",
+   "page": "Dondozo (Raging Surf 11)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Chinchou",
+   "page": "Chinchou (Raging Surf 12)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Lanturn",
+   "page": "Lanturn (Raging Surf 13)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Plusle",
+   "page": "Plusle (Raging Surf 14)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Minun",
+   "page": "Minun (Raging Surf 15)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Joltik",
+   "page": "Joltik (Raging Surf 16)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Galvantula",
+   "page": "Galvantula (Raging Surf 17)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Zekrom",
+   "page": "Zekrom (Raging Surf 18)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "19": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko ex (Raging Surf 19)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "20": {
+   "en": "Gimmighoul",
+   "page": "Gimmighoul (Raging Surf 20)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Gimmighoul",
+   "page": "Gimmighoul (Raging Surf 21)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Gligar",
+   "page": "Gligar (Raging Surf 22)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Gliscor",
+   "page": "Gliscor (Raging Surf 23)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Phanpy",
+   "page": "Phanpy (Raging Surf 24)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Donphan",
+   "page": "Donphan (Raging Surf 25)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Groudon",
+   "page": "Groudon (Raging Surf 26)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "27": {
+   "en": "Gible",
+   "page": "Gible (Raging Surf 27)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Gabite",
+   "page": "Gabite (Raging Surf 28)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Hoopa",
+   "page": "Hoopa ex (Raging Surf 29)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "30": {
+   "en": "Minior",
+   "page": "Minior (Raging Surf 30)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "31": {
+   "en": "Klawf",
+   "page": "Klawf (Raging Surf 31)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Flamigo",
+   "page": "Flamigo (Raging Surf 32)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Gastly",
+   "page": "Gastly (Raging Surf 33)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Haunter",
+   "page": "Haunter (Raging Surf 34)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Gengar",
+   "page": "Gengar (Raging Surf 35)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Absol",
+   "page": "Absol (Raging Surf 36)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Scraggy",
+   "page": "Scraggy (Raging Surf 37)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Scrafty",
+   "page": "Scrafty (Raging Surf 38)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Yveltal",
+   "page": "Yveltal (Raging Surf 39)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "40": {
+   "en": "Nickit",
+   "page": "Nickit (Raging Surf 40)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Thievul",
+   "page": "Thievul (Raging Surf 41)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "42": {
+   "en": "Jirachi",
+   "page": "Jirachi (Raging Surf 42)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Ferroseed",
+   "page": "Ferroseed (Raging Surf 43)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Ferrothorn",
+   "page": "Ferrothorn (Raging Surf 44)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Honedge",
+   "page": "Honedge (Raging Surf 45)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Doublade",
+   "page": "Doublade (Raging Surf 46)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Aegislash",
+   "page": "Aegislash (Raging Surf 47)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "48": {
+   "en": "Zacian",
+   "page": "Zacian (Raging Surf 48)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "49": {
+   "en": "Orthworm",
+   "page": "Orthworm (Raging Surf 49)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Gholdengo",
+   "page": "Gholdengo ex (Raging Surf 50)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "51": {
+   "en": "Bombirdier",
+   "page": "Bombirdier ex (Raging Surf 51)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Cyclizar",
+   "page": "Cyclizar (Raging Surf 52)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Raging Surf 53)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Switch",
+   "page": "Switch (Raging Surf 54)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Luxurious Cape",
+   "page": "Luxurious Cape (Raging Surf 55)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "56": {
+   "en": "Technical Machine: Turbo Energize",
+   "page": "Technical Machine: Turbo Energize (Raging Surf 56)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Technical Machine: Blindside",
+   "page": "Technical Machine: Blindside (Raging Surf 57)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Larry",
+   "page": "Larry (Raging Surf 58)",
+   "type": "Su",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Shauntal",
+   "page": "Shauntal (Raging Surf 59)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Rika",
+   "page": "Rika (Raging Surf 60)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Parasol Lady",
+   "page": "Parasol Lady (Raging Surf 61)",
+   "type": "Su",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Medical Energy",
+   "page": "Medical Energy (Raging Surf 62)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Snorunt",
+   "page": "Snorunt (Raging Surf 63)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Mantyke",
+   "page": "Mantyke (Raging Surf 64)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Plusle",
+   "page": "Plusle (Raging Surf 65)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Minun",
+   "page": "Minun (Raging Surf 66)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Joltik",
+   "page": "Joltik (Raging Surf 67)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Gimmighoul",
+   "page": "Gimmighoul (Raging Surf 68)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Groudon",
+   "page": "Groudon (Raging Surf 69)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Minior",
+   "page": "Minior (Raging Surf 70)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "71": {
+   "en": "Yveltal",
+   "page": "Yveltal (Raging Surf 71)",
+   "type": "Darkness",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Ferrothorn",
+   "page": "Ferrothorn (Raging Surf 72)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Aegislash",
+   "page": "Aegislash (Raging Surf 73)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Cyclizar",
+   "page": "Cyclizar (Raging Surf 74)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Froslass",
+   "page": "Froslass ex (Raging Surf 75)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Garchomp",
+   "page": "Garchomp ex (Raging Surf 76)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko ex (Raging Surf 77)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Hoopa",
+   "page": "Hoopa ex (Raging Surf 78)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Gholdengo",
+   "page": "Gholdengo ex (Raging Surf 79)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Bombirdier",
+   "page": "Bombirdier ex (Raging Surf 80)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Larry",
+   "page": "Larry (Raging Surf 81)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Shauntal",
+   "page": "Shauntal (Raging Surf 82)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Rika",
+   "page": "Rika (Raging Surf 83)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Parasol Lady",
+   "page": "Parasol Lady (Raging Surf 84)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Garchomp",
+   "page": "Garchomp ex (Raging Surf 85)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko ex (Raging Surf 86)",
+   "type": "Lightning",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Gholdengo",
+   "page": "Gholdengo ex (Raging Surf 87)",
+   "type": "Metal",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Rika",
+   "page": "Rika (Raging Surf 88)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Parasol Lady",
+   "page": "Parasol Lady (Raging Surf 89)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Garchomp",
+   "page": "Garchomp ex (Raging Surf 90)",
+   "type": "Water",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Beach Court",
+   "page": "Beach Court (Raging Surf 91)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Reversal Energy",
+   "page": "Reversal Energy (Raging Surf 92)",
+   "type": "Rainbow",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

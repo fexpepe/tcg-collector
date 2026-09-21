@@ -1,0 +1,818 @@
+{
+ "page": "Fever-Burst Fighter (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Seedot",
+   "page": "Seedot (Fever-Burst Fighter 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Nuzleaf",
+   "page": "Nuzleaf (Fever-Burst Fighter 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Shiftry",
+   "page": "Shiftry (Fever-Burst Fighter 3)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "4": {
+   "en": "Foongus",
+   "page": "Foongus (Fever-Burst Fighter 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Amoonguss",
+   "page": "Amoonguss (Fever-Burst Fighter 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Ponyta",
+   "page": "Ponyta (Fever-Burst Fighter 6)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Rapidash",
+   "page": "Rapidash (Fever-Burst Fighter 7)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Litleo",
+   "page": "Litleo (Fever-Burst Fighter 8)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Pyroar",
+   "page": "Pyroar (Fever-Burst Fighter 9)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "10": {
+   "en": "Pyroar",
+   "page": "Pyroar BREAK (Fever-Burst Fighter 10)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "11": {
+   "en": "Volcanion",
+   "page": "Volcanion (Fever-Burst Fighter 11)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Volcanion",
+   "page": "Volcanion-EX (Fever-Burst Fighter 12)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "13": {
+   "en": "Shellos",
+   "page": "Shellos (Fever-Burst Fighter 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Gastrodon",
+   "page": "Gastrodon (Fever-Burst Fighter 14)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Oshawott",
+   "page": "Oshawott (Fever-Burst Fighter 15)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Dewott",
+   "page": "Dewott (Fever-Burst Fighter 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Samurott",
+   "page": "Samurott (Fever-Burst Fighter 17)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Clauncher",
+   "page": "Clauncher (Fever-Burst Fighter 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Clawitzer",
+   "page": "Clawitzer (Fever-Burst Fighter 19)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Clawitzer",
+   "page": "Clawitzer BREAK (Fever-Burst Fighter 20)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "21": {
+   "en": "Joltik",
+   "page": "Joltik (Fever-Burst Fighter 21)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Galvantula",
+   "page": "Galvantula (Fever-Burst Fighter 22)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Drifloon",
+   "page": "Drifloon (Fever-Burst Fighter 23)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Drifblim",
+   "page": "Drifblim (Fever-Burst Fighter 24)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Litwick",
+   "page": "Litwick (Fever-Burst Fighter 25)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Lampent",
+   "page": "Lampent (Fever-Burst Fighter 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Chandelure",
+   "page": "Chandelure (Fever-Burst Fighter 27)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "28": {
+   "en": "Nosepass",
+   "page": "Nosepass (Fever-Burst Fighter 28)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Probopass",
+   "page": "Probopass (Fever-Burst Fighter 29)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Croagunk",
+   "page": "Croagunk (Fever-Burst Fighter 30)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Toxicroak",
+   "page": "Toxicroak (Fever-Burst Fighter 31)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Steelix",
+   "page": "Steelix-EX (Fever-Burst Fighter 32)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "33": {
+   "en": "Steelix",
+   "page": "M Steelix-EX (Fever-Burst Fighter 33)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "34": {
+   "en": "Shieldon",
+   "page": "Shieldon (Fever-Burst Fighter 34)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Bastiodon",
+   "page": "Bastiodon (Fever-Burst Fighter 35)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Klink",
+   "page": "Klink (Fever-Burst Fighter 36)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Klang",
+   "page": "Klang (Fever-Burst Fighter 37)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Klinklang",
+   "page": "Klinklang (Fever-Burst Fighter 38)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "39": {
+   "en": "Cobalion",
+   "page": "Cobalion (Fever-Burst Fighter 39)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Klefki",
+   "page": "Klefki (Fever-Burst Fighter 40)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Xerneas",
+   "page": "Xerneas (Fever-Burst Fighter 41)",
+   "type": "Fairy",
+   "rarity": "R",
+   "mark": ""
+  },
+  "42": {
+   "en": "Xerneas",
+   "page": "Xerneas BREAK (Fever-Burst Fighter 42)",
+   "type": "Fairy",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "43": {
+   "en": "Druddigon",
+   "page": "Druddigon (Fever-Burst Fighter 43)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Aipom",
+   "page": "Aipom (Fever-Burst Fighter 44)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Ambipom",
+   "page": "Ambipom (Fever-Burst Fighter 45)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Fletchling",
+   "page": "Fletchling (Fever-Burst Fighter 46)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Fletchinder",
+   "page": "Fletchinder (Fever-Burst Fighter 47)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Talonflame",
+   "page": "Talonflame (Fever-Burst Fighter 48)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Armor Fossil Shieldon",
+   "page": "Armor Fossil Shieldon (Fever-Burst Fighter 49)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Special Charge",
+   "page": "Special Charge (Fever-Burst Fighter 50)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Greedy Dice",
+   "page": "Greedy Dice (Fever-Burst Fighter 51)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Steelix Spirit Link",
+   "page": "Steelix Spirit Link (Fever-Burst Fighter 52)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Ninja Boy",
+   "page": "Ninja Boy (Fever-Burst Fighter 53)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Pokémon Ranger",
+   "page": "Pokémon Ranger (Fever-Burst Fighter 54)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Volcanion",
+   "page": "Volcanion-EX (Fever-Burst Fighter 55)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Steelix",
+   "page": "Steelix-EX (Fever-Burst Fighter 56)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "57": {
+   "en": "Steelix",
+   "page": "M Steelix-EX (Fever-Burst Fighter 57)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Pokémon Ranger",
+   "page": "Pokémon Ranger (Fever-Burst Fighter 58)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Volcanion",
+   "page": "Volcanion-EX (Fever-Burst Fighter 59)",
+   "type": "Fire",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Sneasel",
+   "page": "Sneasel (Steam Siege 60)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "61": {
+   "en": "Weavile",
+   "page": "Weavile (Steam Siege 61)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "62": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Steam Siege 62)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "63": {
+   "en": "Pawniard",
+   "page": "Pawniard (Steam Siege 63)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "64": {
+   "en": "Bisharp",
+   "page": "Bisharp (Steam Siege 64)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "65": {
+   "en": "Yveltal",
+   "page": "Yveltal (Steam Siege 65)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "66": {
+   "en": "Yveltal",
+   "page": "Yveltal BREAK (Steam Siege 66)",
+   "type": "Rare BREAK",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "67": {
+   "en": "Steelix",
+   "page": "Steelix-EX (Steam Siege 67)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "68": {
+   "en": "Steelix",
+   "page": "M Steelix-EX (Steam Siege 68)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "69": {
+   "en": "Shieldon",
+   "page": "Shieldon (Steam Siege 69)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "70": {
+   "en": "Bastiodon",
+   "page": "Bastiodon (Steam Siege 70)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "71": {
+   "en": "Klink",
+   "page": "Klink (Steam Siege 71)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "72": {
+   "en": "Klang",
+   "page": "Klang (Steam Siege 72)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "73": {
+   "en": "Klinklang",
+   "page": "Klinklang (Steam Siege 73)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "74": {
+   "en": "Cobalion",
+   "page": "Cobalion (Steam Siege 74)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "75": {
+   "en": "Magearna",
+   "page": "Magearna-EX (Steam Siege 75)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "76": {
+   "en": "Marill",
+   "page": "Marill (Steam Siege 76)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "77": {
+   "en": "Azumarill",
+   "page": "Azumarill (Steam Siege 77)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "78": {
+   "en": "Gardevoir",
+   "page": "Gardevoir-EX (Steam Siege 78)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "79": {
+   "en": "Gardevoir",
+   "page": "M Gardevoir-EX (Steam Siege 79)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "80": {
+   "en": "Klefki",
+   "page": "Klefki (Steam Siege 80)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "81": {
+   "en": "Xerneas",
+   "page": "Xerneas (Steam Siege 81)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "82": {
+   "en": "Xerneas",
+   "page": "Xerneas BREAK (Steam Siege 82)",
+   "type": "Rare BREAK",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "83": {
+   "en": "Druddigon",
+   "page": "Druddigon (Steam Siege 83)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "84": {
+   "en": "Deino",
+   "page": "Deino (Steam Siege 84)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "85": {
+   "en": "Zweilous",
+   "page": "Zweilous (Steam Siege 85)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "86": {
+   "en": "Hydreigon",
+   "page": "Hydreigon (Steam Siege 86)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "87": {
+   "en": "Hydreigon",
+   "page": "Hydreigon BREAK (Steam Siege 87)",
+   "type": "Rare BREAK",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88": {
+   "en": "Meowth",
+   "page": "Meowth (Steam Siege 88)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "89": {
+   "en": "Persian",
+   "page": "Persian (Steam Siege 89)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Aipom",
+   "page": "Aipom (Steam Siege 90)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "Ambipom",
+   "page": "Ambipom (Steam Siege 91)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Rufflet",
+   "page": "Rufflet (Steam Siege 92)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Braviary",
+   "page": "Braviary (Steam Siege 93)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Fletchling",
+   "page": "Fletchling (Steam Siege 94)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Fletchinder",
+   "page": "Fletchinder (Steam Siege 95)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Talonflame",
+   "page": "Talonflame (Steam Siege 96)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (Steam Siege 97)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Armor Fossil Shieldon",
+   "page": "Armor Fossil Shieldon (Steam Siege 98)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Captivating Poké Puff",
+   "page": "Captivating Poké Puff (Steam Siege 99)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Claw Fossil Anorith",
+   "page": "Claw Fossil Anorith (Steam Siege 100)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Gardevoir Spirit Link",
+   "page": "Gardevoir Spirit Link (Steam Siege 101)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Greedy Dice",
+   "page": "Greedy Dice (Steam Siege 102)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Ninja Boy",
+   "page": "Ninja Boy (Steam Siege 103)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Pokémon Ranger",
+   "page": "Pokémon Ranger (Steam Siege 104)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Special Charge",
+   "page": "Special Charge (Steam Siege 105)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Steelix Spirit Link",
+   "page": "Steelix Spirit Link (Steam Siege 106)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Volcanion",
+   "page": "Volcanion-EX (Steam Siege 107)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Steelix",
+   "page": "Steelix-EX (Steam Siege 108)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Steelix",
+   "page": "M Steelix-EX (Steam Siege 109)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Magearna",
+   "page": "Magearna-EX (Steam Siege 110)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Gardevoir",
+   "page": "Gardevoir-EX (Steam Siege 111)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Gardevoir",
+   "page": "M Gardevoir-EX (Steam Siege 112)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Pokémon Ranger",
+   "page": "Pokémon Ranger (Steam Siege 113)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Professor Sycamore",
+   "page": "Professor Sycamore (Steam Siege 114)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Volcanion",
+   "page": "Volcanion-EX (Steam Siege 115)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Gardevoir",
+   "page": "Gardevoir-EX (Steam Siege 116)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

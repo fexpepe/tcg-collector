@@ -1,0 +1,1154 @@
+{
+ "page": "Tidal Storm (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Tangela",
+   "page": "Tangela (Gaia Volcano 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Tangrowth",
+   "page": "Tangrowth (Gaia Volcano 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Treecko",
+   "page": "Treecko (Gaia Volcano 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Grovyle",
+   "page": "Grovyle (Gaia Volcano 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Sceptile",
+   "page": "Sceptile (Gaia Volcano 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Sceptile",
+   "page": "Sceptile (Gaia Volcano 6)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "7": {
+   "en": "Shroomish",
+   "page": "Shroomish (Gaia Volcano 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Breloom",
+   "page": "Breloom (Gaia Volcano 8)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "9": {
+   "en": "Volbeat",
+   "page": "Volbeat (Gaia Volcano 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Illumise",
+   "page": "Illumise (Gaia Volcano 10)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Trevenant",
+   "page": "Trevenant-EX (Gaia Volcano 11)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "12": {
+   "en": "Vulpix",
+   "page": "Vulpix (Gaia Volcano 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Ninetales",
+   "page": "Ninetales (Gaia Volcano 13)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Slugma",
+   "page": "Slugma (Gaia Volcano 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Magcargo",
+   "page": "Magcargo (Gaia Volcano 15)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Magcargo",
+   "page": "Magcargo (Gaia Volcano 16)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "17": {
+   "en": "Torchic",
+   "page": "Torchic (Gaia Volcano 17)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Torchic",
+   "page": "Torchic (Gaia Volcano 18)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Combusken",
+   "page": "Combusken (Gaia Volcano 19)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Blaziken",
+   "page": "Blaziken (Gaia Volcano 20)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "21": {
+   "en": "Camerupt",
+   "page": "Camerupt-EX (Gaia Volcano 21)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "22": {
+   "en": "Electrike",
+   "page": "Electrike (Gaia Volcano 22)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Electrike",
+   "page": "Electrike (Gaia Volcano 23)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Manectric",
+   "page": "Manectric (Gaia Volcano 24)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "25": {
+   "en": "Nidoran♀",
+   "page": "Nidoran♀ (Gaia Volcano 25)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Nidorina",
+   "page": "Nidorina (Gaia Volcano 26)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Nidoqueen",
+   "page": "Nidoqueen (Gaia Volcano 27)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Nidoqueen",
+   "page": "Nidoqueen (Gaia Volcano 28)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Rhyhorn",
+   "page": "Rhyhorn (Gaia Volcano 29)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Rhydon",
+   "page": "Rhydon (Gaia Volcano 30)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Rhyperior",
+   "page": "Rhyperior (Gaia Volcano 31)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Rhyperior",
+   "page": "Rhyperior (Gaia Volcano 32)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "33": {
+   "en": "Nosepass",
+   "page": "Nosepass (Gaia Volcano 33)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Meditite",
+   "page": "Meditite (Gaia Volcano 34)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Medicham",
+   "page": "Medicham (Gaia Volcano 35)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "36": {
+   "en": "Medicham",
+   "page": "Medicham (Gaia Volcano 36)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Trapinch",
+   "page": "Trapinch (Gaia Volcano 37)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Solrock",
+   "page": "Solrock (Gaia Volcano 38)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Groudon",
+   "page": "Groudon-EX (Gaia Volcano 39)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "40": {
+   "en": "Primal Groudon",
+   "page": "Primal Groudon-EX (Gaia Volcano 40)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "41": {
+   "en": "Hippopotas",
+   "page": "Hippopotas (Gaia Volcano 41)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Hippowdon",
+   "page": "Hippowdon (Gaia Volcano 42)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "43": {
+   "en": "Drilbur",
+   "page": "Drilbur (Gaia Volcano 43)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Diggersby",
+   "page": "Diggersby (Gaia Volcano 44)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Aggron",
+   "page": "Aggron-EX (Gaia Volcano 45)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "46": {
+   "en": "Aggron",
+   "page": "M Aggron-EX (Gaia Volcano 46)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "47": {
+   "en": "Probopass",
+   "page": "Probopass (Gaia Volcano 47)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Excadrill",
+   "page": "Excadrill (Gaia Volcano 48)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Excadrill",
+   "page": "Excadrill (Gaia Volcano 49)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "50": {
+   "en": "Honedge",
+   "page": "Honedge (Gaia Volcano 50)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Doublade",
+   "page": "Doublade (Gaia Volcano 51)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Aegislash",
+   "page": "Aegislash (Gaia Volcano 52)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "53": {
+   "en": "Vibrava",
+   "page": "Vibrava (Gaia Volcano 53)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Flygon",
+   "page": "Flygon (Gaia Volcano 54)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "55": {
+   "en": "Zigzagoon",
+   "page": "Zigzagoon (Gaia Volcano 55)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Linoone",
+   "page": "Linoone (Gaia Volcano 56)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Bouffalant",
+   "page": "Bouffalant (Gaia Volcano 57)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (Gaia Volcano 58)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (Gaia Volcano 59)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Acro Bike",
+   "page": "Acro Bike (Gaia Volcano 60)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Gaia Volcano 61)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Repeat Ball",
+   "page": "Repeat Ball (Gaia Volcano 62)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Weakness Policy",
+   "page": "Weakness Policy (Gaia Volcano 63)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Groudon Spirit Link",
+   "page": "Groudon Spirit Link (Gaia Volcano 64)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Aggron Spirit Link",
+   "page": "Aggron Spirit Link (Gaia Volcano 65)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Teammates",
+   "page": "Teammates (Gaia Volcano 66)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Maxie's Hidden Ball Trick",
+   "page": "Maxie's Hidden Ball Trick (Gaia Volcano 67)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Shrine of Memories",
+   "page": "Shrine of Memories (Gaia Volcano 68)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Scorched Earth",
+   "page": "Scorched Earth (Gaia Volcano 69)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Shield Energy",
+   "page": "Shield Energy (Gaia Volcano 70)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Trevenant",
+   "page": "Trevenant-EX (Gaia Volcano 71)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "72": {
+   "en": "Camerupt",
+   "page": "Camerupt-EX (Gaia Volcano 72)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Groudon",
+   "page": "Groudon-EX (Gaia Volcano 73)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Primal Groudon",
+   "page": "Primal Groudon-EX (Gaia Volcano 74)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Aggron",
+   "page": "Aggron-EX (Gaia Volcano 75)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Aggron",
+   "page": "M Aggron-EX (Gaia Volcano 76)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Teammates",
+   "page": "Teammates (Gaia Volcano 77)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Maxie's Hidden Ball Trick",
+   "page": "Maxie's Hidden Ball Trick (Gaia Volcano 78)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Switch",
+   "page": "Switch (Gaia Volcano 79)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Weakness Policy",
+   "page": "Weakness Policy (Gaia Volcano 80)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Medicham",
+   "page": "Medicham (Primal Clash 81)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "82": {
+   "en": "Trapinch",
+   "page": "Trapinch (Primal Clash 82)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "83": {
+   "en": "Solrock",
+   "page": "Solrock (Primal Clash 83)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "84": {
+   "en": "Groudon",
+   "page": "Groudon (Primal Clash 84)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "85": {
+   "en": "Groudon",
+   "page": "Groudon-EX (Primal Clash 85)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "86": {
+   "en": "Primal Groudon",
+   "page": "Primal Groudon-EX (Primal Clash 86)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "87": {
+   "en": "Hippopotas",
+   "page": "Hippopotas (Primal Clash 87)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "88": {
+   "en": "Hippowdon",
+   "page": "Hippowdon (Primal Clash 88)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "89": {
+   "en": "Drilbur",
+   "page": "Drilbur (Primal Clash 89)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "90": {
+   "en": "Diggersby",
+   "page": "Diggersby (Primal Clash 90)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "91": {
+   "en": "Sharpedo",
+   "page": "Sharpedo-EX (Primal Clash 91)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "92": {
+   "en": "Crawdaunt",
+   "page": "Crawdaunt (Primal Clash 92)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "93": {
+   "en": "Aggron",
+   "page": "Aggron-EX (Primal Clash 93)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "94": {
+   "en": "Aggron",
+   "page": "M Aggron-EX (Primal Clash 94)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "95": {
+   "en": "Probopass",
+   "page": "Probopass (Primal Clash 95)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "96": {
+   "en": "Excadrill",
+   "page": "Excadrill (Primal Clash 96)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "97": {
+   "en": "Excadrill",
+   "page": "Excadrill (Primal Clash 97)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "98": {
+   "en": "Honedge",
+   "page": "Honedge (Primal Clash 98)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "99": {
+   "en": "Doublade",
+   "page": "Doublade (Primal Clash 99)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "100": {
+   "en": "Aegislash",
+   "page": "Aegislash (Primal Clash 100)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "101": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime (Primal Clash 101)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "102": {
+   "en": "Marill",
+   "page": "Marill (Primal Clash 102)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "103": {
+   "en": "Azumarill",
+   "page": "Azumarill (Primal Clash 103)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "104": {
+   "en": "Azumarill",
+   "page": "Azumarill (Primal Clash 104)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "105": {
+   "en": "Gardevoir",
+   "page": "Gardevoir-EX (Primal Clash 105)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "106": {
+   "en": "Gardevoir",
+   "page": "M Gardevoir-EX (Primal Clash 106)",
+   "type": "Rare Holo ex",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "107": {
+   "en": "Kingdra",
+   "page": "Kingdra (Primal Clash 107)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "108": {
+   "en": "Kingdra",
+   "page": "Kingdra (Primal Clash 108)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "109": {
+   "en": "Vibrava",
+   "page": "Vibrava (Primal Clash 109)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "110": {
+   "en": "Flygon",
+   "page": "Flygon (Primal Clash 110)",
+   "type": "Rare Holo",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "111": {
+   "en": "Zigzagoon",
+   "page": "Zigzagoon (Primal Clash 111)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "112": {
+   "en": "Linoone",
+   "page": "Linoone (Primal Clash 112)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "113": {
+   "en": "Skitty",
+   "page": "Skitty (Primal Clash 113)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "114": {
+   "en": "Delcatty",
+   "page": "Delcatty (Primal Clash 114)",
+   "type": "Rare",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "115": {
+   "en": "Spinda",
+   "page": "Spinda (Primal Clash 115)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "116": {
+   "en": "Bidoof",
+   "page": "Bidoof (Primal Clash 116)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "117": {
+   "en": "Bidoof",
+   "page": "Bidoof (Primal Clash 117)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "118": {
+   "en": "Bibarel",
+   "page": "Bibarel (Primal Clash 118)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "119": {
+   "en": "Bouffalant",
+   "page": "Bouffalant (Primal Clash 119)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "120": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (Primal Clash 120)",
+   "type": "Common",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "121": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (Primal Clash 121)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "122": {
+   "en": "Acro Bike",
+   "page": "Acro Bike (Primal Clash 122)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "123": {
+   "en": "Aggron Spirit Link",
+   "page": "Aggron Spirit Link (Primal Clash 123)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "124": {
+   "en": "Archie's Ace in the Hole",
+   "page": "Archie's Ace in the Hole (Primal Clash 124)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "125": {
+   "en": "Dive Ball",
+   "page": "Dive Ball (Primal Clash 125)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "126": {
+   "en": "Energy Retrieval",
+   "page": "Energy Retrieval (Primal Clash 126)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "127": {
+   "en": "Escape Rope",
+   "page": "Escape Rope (Primal Clash 127)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "128": {
+   "en": "Exp. Share",
+   "page": "Exp. Share (Primal Clash 128)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "129": {
+   "en": "Fresh Water Set",
+   "page": "Fresh Water Set (Primal Clash 129)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "130": {
+   "en": "Gardevoir Spirit Link",
+   "page": "Gardevoir Spirit Link (Primal Clash 130)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "131": {
+   "en": "Groudon Spirit Link",
+   "page": "Groudon Spirit Link (Primal Clash 131)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "132": {
+   "en": "Kyogre Spirit Link",
+   "page": "Kyogre Spirit Link (Primal Clash 132)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "133": {
+   "en": "Maxie's Hidden Ball Trick",
+   "page": "Maxie's Hidden Ball Trick (Primal Clash 133)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "134": {
+   "en": "Professor Birch's Observations",
+   "page": "Professor Birch's Observations (Primal Clash 134)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "135": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Primal Clash 135)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "136": {
+   "en": "Repeat Ball",
+   "page": "Repeat Ball (Primal Clash 136)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "137": {
+   "en": "Rough Seas",
+   "page": "Rough Seas (Primal Clash 137)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "138": {
+   "en": "Scorched Earth",
+   "page": "Scorched Earth (Primal Clash 138)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "139": {
+   "en": "Shrine of Memories",
+   "page": "Shrine of Memories (Primal Clash 139)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "140": {
+   "en": "Silent Lab",
+   "page": "Silent Lab (Primal Clash 140)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "141": {
+   "en": "Teammates",
+   "page": "Teammates (Primal Clash 141)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "142": {
+   "en": "Weakness Policy",
+   "page": "Weakness Policy (Primal Clash 142)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "143": {
+   "en": "Shield Energy",
+   "page": "Shield Energy (Primal Clash 143)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "144": {
+   "en": "Wonder Energy",
+   "page": "Wonder Energy (Primal Clash 144)",
+   "type": "Uncommon",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "145": {
+   "en": "Trevenant",
+   "page": "Trevenant-EX (Primal Clash 145)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "146": {
+   "en": "Camerupt",
+   "page": "Camerupt-EX (Primal Clash 146)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "147": {
+   "en": "Wailord",
+   "page": "Wailord-EX (Primal Clash 147)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "148": {
+   "en": "Kyogre",
+   "page": "Kyogre-EX (Primal Clash 148)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "149": {
+   "en": "Primal Kyogre",
+   "page": "Primal Kyogre-EX (Primal Clash 149)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "150": {
+   "en": "Groudon",
+   "page": "Groudon-EX (Primal Clash 150)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "151": {
+   "en": "Primal Groudon",
+   "page": "Primal Groudon-EX (Primal Clash 151)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "152": {
+   "en": "Sharpedo",
+   "page": "Sharpedo-EX (Primal Clash 152)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "153": {
+   "en": "Aggron",
+   "page": "Aggron-EX (Primal Clash 153)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "154": {
+   "en": "Aggron",
+   "page": "M Aggron-EX (Primal Clash 154)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "155": {
+   "en": "Gardevoir",
+   "page": "Gardevoir-EX (Primal Clash 155)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "156": {
+   "en": "Gardevoir",
+   "page": "M Gardevoir-EX (Primal Clash 156)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "157": {
+   "en": "Archie's Ace in the Hole",
+   "page": "Archie's Ace in the Hole (Primal Clash 157)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "158": {
+   "en": "Maxie's Hidden Ball Trick",
+   "page": "Maxie's Hidden Ball Trick (Primal Clash 158)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "159": {
+   "en": "Professor Birch's Observations",
+   "page": "Professor Birch's Observations (Primal Clash 159)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "160": {
+   "en": "Teammates",
+   "page": "Teammates (Primal Clash 160)",
+   "type": "Rare Ultra",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "161": {
+   "en": "Dive Ball",
+   "page": "Dive Ball (Primal Clash 161)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "162": {
+   "en": "Enhanced Hammer",
+   "page": "Enhanced Hammer (Primal Clash 162)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "163": {
+   "en": "Switch",
+   "page": "Switch (Primal Clash 163)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  },
+  "164": {
+   "en": "Weakness Policy",
+   "page": "Weakness Policy (Primal Clash 164)",
+   "type": "Rare Secret",
+   "rarity": "Promotion",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,972 @@
+{
+ "page": "Super Electric Breaker (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Super Electric Breaker 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Exeggutor",
+   "page": "Exeggutor (Super Electric Breaker 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Durant",
+   "page": "Durant ex (Super Electric Breaker 3)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "4": {
+   "en": "Scatterbug",
+   "page": "Scatterbug (Super Electric Breaker 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Spewpa",
+   "page": "Spewpa (Super Electric Breaker 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Vivillon",
+   "page": "Vivillon (Super Electric Breaker 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Capsakid",
+   "page": "Capsakid (Super Electric Breaker 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Rellor",
+   "page": "Rellor (Super Electric Breaker 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Rabsca",
+   "page": "Rabsca (Super Electric Breaker 9)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "10": {
+   "en": "Wo-Chien",
+   "page": "Wo-Chien (Super Electric Breaker 10)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Super Electric Breaker 11)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "12": {
+   "en": "Victini",
+   "page": "Victini (Super Electric Breaker 12)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "13": {
+   "en": "Larvesta",
+   "page": "Larvesta (Super Electric Breaker 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Volcarona",
+   "page": "Volcarona (Super Electric Breaker 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Sizzlipede",
+   "page": "Sizzlipede (Super Electric Breaker 15)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Centiskorch",
+   "page": "Centiskorch (Super Electric Breaker 16)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Fuecoco",
+   "page": "Fuecoco (Super Electric Breaker 17)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Crocalor",
+   "page": "Crocalor (Super Electric Breaker 18)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Skeledirge",
+   "page": "Skeledirge (Super Electric Breaker 19)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "20": {
+   "en": "Charcadet",
+   "page": "Charcadet (Super Electric Breaker 20)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Armarouge",
+   "page": "Armarouge (Super Electric Breaker 21)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Ceruledge",
+   "page": "Ceruledge (Super Electric Breaker 22)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Scovillain",
+   "page": "Scovillain ex (Super Electric Breaker 23)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "24": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Super Electric Breaker 24)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Feebas",
+   "page": "Feebas (Super Electric Breaker 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Milotic",
+   "page": "Milotic ex (Super Electric Breaker 26)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "27": {
+   "en": "Spheal",
+   "page": "Spheal (Super Electric Breaker 27)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Sealeo",
+   "page": "Sealeo (Super Electric Breaker 28)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Walrein",
+   "page": "Walrein (Super Electric Breaker 29)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Shellos",
+   "page": "Shellos (Super Electric Breaker 30)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Iron Bundle",
+   "page": "Iron Bundle (Super Electric Breaker 31)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Chien-Pao",
+   "page": "Chien-Pao (Super Electric Breaker 32)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "33": {
+   "en": "Pikachu",
+   "page": "Pikachu ex (Super Electric Breaker 33)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "34": {
+   "en": "Magnemite",
+   "page": "Magnemite (Super Electric Breaker 34)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Magneton",
+   "page": "Magneton (Super Electric Breaker 35)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Magnezone",
+   "page": "Magnezone (Super Electric Breaker 36)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Rotom",
+   "page": "Rotom (Super Electric Breaker 37)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Blitzle",
+   "page": "Blitzle (Super Electric Breaker 38)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Zebstrika",
+   "page": "Zebstrika (Super Electric Breaker 39)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Stunfisk",
+   "page": "Stunfisk (Super Electric Breaker 40)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko (Super Electric Breaker 41)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "42": {
+   "en": "Wattrel",
+   "page": "Wattrel (Super Electric Breaker 42)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Kilowattrel",
+   "page": "Kilowattrel (Super Electric Breaker 43)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Miraidon",
+   "page": "Miraidon (Super Electric Breaker 44)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Togepi",
+   "page": "Togepi (Super Electric Breaker 45)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Togetic",
+   "page": "Togetic (Super Electric Breaker 46)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Togekiss",
+   "page": "Togekiss (Super Electric Breaker 47)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "48": {
+   "en": "Uxie",
+   "page": "Uxie (Super Electric Breaker 48)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Mesprit",
+   "page": "Mesprit (Super Electric Breaker 49)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Azelf",
+   "page": "Azelf (Super Electric Breaker 50)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Yamask",
+   "page": "Yamask (Super Electric Breaker 51)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Cofagrigus",
+   "page": "Cofagrigus (Super Electric Breaker 52)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "53": {
+   "en": "Espurr",
+   "page": "Espurr (Super Electric Breaker 53)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Meowstic",
+   "page": "Meowstic (Super Electric Breaker 54)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Dedenne",
+   "page": "Dedenne (Super Electric Breaker 55)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Sandygast",
+   "page": "Sandygast (Super Electric Breaker 56)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Palossand",
+   "page": "Palossand ex (Super Electric Breaker 57)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Indeedee",
+   "page": "Indeedee (Super Electric Breaker 58)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Flutter Mane",
+   "page": "Flutter Mane (Super Electric Breaker 59)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Mankey",
+   "page": "Mankey (Super Electric Breaker 60)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Primeape",
+   "page": "Primeape (Super Electric Breaker 61)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Annihilape",
+   "page": "Annihilape (Super Electric Breaker 62)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Paldean Tauros",
+   "page": "Paldean Tauros (Super Electric Breaker 63)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Phanpy",
+   "page": "Phanpy (Super Electric Breaker 64)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Donphan",
+   "page": "Donphan (Super Electric Breaker 65)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "Gastrodon",
+   "page": "Gastrodon (Super Electric Breaker 66)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "67": {
+   "en": "Glimmet",
+   "page": "Glimmet (Super Electric Breaker 67)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "68": {
+   "en": "Glimmora",
+   "page": "Glimmora (Super Electric Breaker 68)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "69": {
+   "en": "Koraidon",
+   "page": "Koraidon (Super Electric Breaker 69)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Deino",
+   "page": "Deino (Super Electric Breaker 70)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "71": {
+   "en": "Zweilous",
+   "page": "Zweilous (Super Electric Breaker 71)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "72": {
+   "en": "Hydreigon",
+   "page": "Hydreigon ex (Super Electric Breaker 72)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Shroodle",
+   "page": "Shroodle (Super Electric Breaker 73)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "74": {
+   "en": "Grafaiai",
+   "page": "Grafaiai (Super Electric Breaker 74)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "75": {
+   "en": "Pecharunt",
+   "page": "Pecharunt (Super Electric Breaker 75)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "76": {
+   "en": "Alolan Diglett",
+   "page": "Alolan Diglett (Super Electric Breaker 76)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "77": {
+   "en": "Alolan Dugtrio",
+   "page": "Alolan Dugtrio (Super Electric Breaker 77)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "78": {
+   "en": "Bronzor",
+   "page": "Bronzor (Super Electric Breaker 78)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "79": {
+   "en": "Bronzong",
+   "page": "Bronzong (Super Electric Breaker 79)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "80": {
+   "en": "Eternatus",
+   "page": "Eternatus (Super Electric Breaker 80)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "81": {
+   "en": "Tatsugiri",
+   "page": "Tatsugiri ex (Super Electric Breaker 81)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Slakoth",
+   "page": "Slakoth (Super Electric Breaker 82)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "83": {
+   "en": "Vigoroth",
+   "page": "Vigoroth (Super Electric Breaker 83)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "84": {
+   "en": "Slaking",
+   "page": "Slaking ex (Super Electric Breaker 84)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Zangoose",
+   "page": "Zangoose (Super Electric Breaker 85)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "86": {
+   "en": "Kecleon",
+   "page": "Kecleon (Super Electric Breaker 86)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "87": {
+   "en": "Bouffalant",
+   "page": "Bouffalant (Super Electric Breaker 87)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "88": {
+   "en": "Helioptile",
+   "page": "Helioptile (Super Electric Breaker 88)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "89": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (Super Electric Breaker 89)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "90": {
+   "en": "Oranguru",
+   "page": "Oranguru (Super Electric Breaker 90)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "91": {
+   "en": "Tandemaus",
+   "page": "Tandemaus (Super Electric Breaker 91)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "92": {
+   "en": "Maushold",
+   "page": "Maushold (Super Electric Breaker 92)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "93": {
+   "en": "Terapagos",
+   "page": "Terapagos (Super Electric Breaker 93)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "94": {
+   "en": "Deduction Kit",
+   "page": "Deduction Kit (Super Electric Breaker 94)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "95": {
+   "en": "Scramble Switch",
+   "page": "Scramble Switch (Super Electric Breaker 95)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "96": {
+   "en": "Chill Teaser Toy",
+   "page": "Chill Teaser Toy (Super Electric Breaker 96)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "97": {
+   "en": "Miracle Headset",
+   "page": "Miracle Headset (Super Electric Breaker 97)",
+   "type": "I",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "98": {
+   "en": "Amulet of Hope",
+   "page": "Amulet of Hope (Super Electric Breaker 98)",
+   "type": "PT",
+   "rarity": "ACE",
+   "mark": ""
+  },
+  "99": {
+   "en": "Colbur Berry",
+   "page": "Colbur Berry (Super Electric Breaker 99)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "100": {
+   "en": "Babiri Berry",
+   "page": "Babiri Berry (Super Electric Breaker 100)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "101": {
+   "en": "Technical Machine: Fluorite",
+   "page": "Technical Machine: Fluorite (Super Electric Breaker 101)",
+   "type": "PT",
+   "rarity": "U",
+   "mark": ""
+  },
+  "102": {
+   "en": "Cyrano",
+   "page": "Cyrano (Super Electric Breaker 102)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "103": {
+   "en": "Clemont's Quick Wit",
+   "page": "Clemont's Quick Wit (Super Electric Breaker 103)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "104": {
+   "en": "Jasmine's Gaze",
+   "page": "Jasmine's Gaze (Super Electric Breaker 104)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "105": {
+   "en": "Lively Stadium",
+   "page": "Lively Stadium (Super Electric Breaker 105)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "106": {
+   "en": "Gravity Mountain",
+   "page": "Gravity Mountain (Super Electric Breaker 106)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "107": {
+   "en": "Vivillon",
+   "page": "Vivillon (Super Electric Breaker 107)",
+   "type": "Grass",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Larvesta",
+   "page": "Larvesta (Super Electric Breaker 108)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Ceruledge",
+   "page": "Ceruledge (Super Electric Breaker 109)",
+   "type": "Fire",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Feebas",
+   "page": "Feebas (Super Electric Breaker 110)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Spheal",
+   "page": "Spheal (Super Electric Breaker 111)",
+   "type": "Water",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Magneton",
+   "page": "Magneton (Super Electric Breaker 112)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Stunfisk",
+   "page": "Stunfisk (Super Electric Breaker 113)",
+   "type": "Lightning",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Mesprit",
+   "page": "Mesprit (Super Electric Breaker 114)",
+   "type": "Psychic",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Phanpy",
+   "page": "Phanpy (Super Electric Breaker 115)",
+   "type": "Fighting",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Alolan Dugtrio",
+   "page": "Alolan Dugtrio (Super Electric Breaker 116)",
+   "type": "Metal",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "117": {
+   "en": "Slakoth",
+   "page": "Slakoth (Super Electric Breaker 117)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "118": {
+   "en": "Kecleon",
+   "page": "Kecleon (Super Electric Breaker 118)",
+   "type": "Colorless",
+   "rarity": "AR",
+   "mark": ""
+  },
+  "119": {
+   "en": "Durant",
+   "page": "Durant ex (Super Electric Breaker 119)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "120": {
+   "en": "Scovillain",
+   "page": "Scovillain ex (Super Electric Breaker 120)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "121": {
+   "en": "Milotic",
+   "page": "Milotic ex (Super Electric Breaker 121)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "122": {
+   "en": "Pikachu",
+   "page": "Pikachu ex (Super Electric Breaker 122)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "123": {
+   "en": "Palossand",
+   "page": "Palossand ex (Super Electric Breaker 123)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "124": {
+   "en": "Hydreigon",
+   "page": "Hydreigon ex (Super Electric Breaker 124)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "125": {
+   "en": "Tatsugiri",
+   "page": "Tatsugiri ex (Super Electric Breaker 125)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "126": {
+   "en": "Slaking",
+   "page": "Slaking ex (Super Electric Breaker 126)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "127": {
+   "en": "Cyrano",
+   "page": "Cyrano (Super Electric Breaker 127)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "128": {
+   "en": "Clemont's Quick Wit",
+   "page": "Clemont's Quick Wit (Super Electric Breaker 128)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "129": {
+   "en": "Jasmine's Gaze",
+   "page": "Jasmine's Gaze (Super Electric Breaker 129)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "130": {
+   "en": "Durant",
+   "page": "Durant ex (Super Electric Breaker 130)",
+   "type": "Grass",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "131": {
+   "en": "Milotic",
+   "page": "Milotic ex (Super Electric Breaker 131)",
+   "type": "Water",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "132": {
+   "en": "Pikachu",
+   "page": "Pikachu ex (Super Electric Breaker 132)",
+   "type": "Lightning",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "133": {
+   "en": "Hydreigon",
+   "page": "Hydreigon ex (Super Electric Breaker 133)",
+   "type": "Darkness",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "134": {
+   "en": "Clemont's Quick Wit",
+   "page": "Clemont's Quick Wit (Super Electric Breaker 134)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "135": {
+   "en": "Jasmine's Gaze",
+   "page": "Jasmine's Gaze (Super Electric Breaker 135)",
+   "type": "Su",
+   "rarity": "SAR",
+   "mark": ""
+  },
+  "136": {
+   "en": "Pikachu",
+   "page": "Pikachu ex (Super Electric Breaker 136)",
+   "type": "Lightning",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "137": {
+   "en": "Night Stretcher",
+   "page": "Night Stretcher (Super Electric Breaker 137)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "138": {
+   "en": "Gravity Mountain",
+   "page": "Gravity Mountain (Super Electric Breaker 138)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}
