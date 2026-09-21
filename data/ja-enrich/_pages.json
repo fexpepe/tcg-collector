@@ -1,4 +1,14 @@
 {
  "_": "Título da página da Bulbapedia de cada set JAPONÊS (setId -> título), só onde a regra automática do scripts/sync-bulbapedia-ja.mjs erra. A regra: JA_SET_EN[setId] + ' (TCG)' (o nome traduzido do shared.js), senão o nome do set do chunk quando é ASCII (os importados da TCGCSV trazem o título do TCGplayer, que costuma ser o mesmo do wiki) + ' (TCG)'. Set que não resolve aparece no log do sync pra ganhar entrada aqui. Os arquivos <setId>.json ao lado são o cache versionado da ingestão (sem eles o enrich-ja só faz série e irmão inglês).",
- "pages": {}
+ "pages": {
+  "S-P": "S-P Promotional cards (TCG)",
+  "SM-P": "SM-P Promotional cards (TCG)",
+  "XY-P": "XY-P Promotional cards (TCG)",
+  "L-P": "L-P Promotional cards (TCG)",
+  "SV-P": "SV-P Promotional cards (TCG)",
+  "svpj": "SV-P Promotional cards (TCG)",
+  "S10b": "Pokémon GO (TCG)",
+  "CP3": "PokéKyun Collection (TCG)",
+  "CP2": "Legendary Shine Collection (TCG)"
+ }
 }

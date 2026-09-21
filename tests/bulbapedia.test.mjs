@@ -8,7 +8,7 @@
 // (5) thumb do Archives vira o upload original.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseSetList, parseSetLists, escolherLista, parseCardPage, parseExpansionList, parseUrl, imagemOriginal, text } from "../scripts/lib/bulbapedia.mjs";
+import { parseSetList, parseSetLists, escolherLista, parseCardPage, parseExpansionList, normalizarNomeJa, parseUrl, imagemOriginal, text } from "../scripts/lib/bulbapedia.mjs";
 
 const LISTA = `
 <div class="mw-parser-output"><p>intro</p>
@@ -82,11 +82,26 @@ test("página de carta: nome japonês, ilustrador, raridade e o scan ORIGINAL do
   assert.equal(imagemOriginal("https://archives.bulbagarden.net/media/upload/3/3a/X.jpg"), "https://archives.bulbagarden.net/media/upload/3/3a/X.jpg");
 });
 
-test("lista de expansões: nome japonês -> nome traduzido", () => {
-  const html = `<table><tbody><tr><th>Japanese name</th><th>Translated name</th><th>Release</th></tr>
+test("lista de expansões: japonês e tradução na MESMA célula (forma real), ou em duas colunas", () => {
+  // forma real do wiki: uma célula "Japanese name" com o span lang="ja" e a tradução ao lado
+  const real = `<table><tbody><tr><th>Set</th><th>Japanese name</th><th>Cards</th><th>Release date</th></tr>
+    <tr><td>1</td><td><span lang="ja">拡張パック</span> Expansion Pack</td><td>102</td><td>October 20, 1996</td></tr>
+    <tr><td>2</td><td>闇からの挑戦 Challenge from the Darkness</td><td>65</td><td>1997</td></tr>
+    <tr><td>3</td><td><a href="/wiki/Gym_Challenge_(TCG)">Gym Challenge</a></td><td>132</td><td>1998</td></tr>
+    <tr><td>4</td><td><span lang="ja">TAG TEAM GX タッグオールスターズ</span> TAG TEAM GX Tag All Stars</td><td>173</td><td>2019</td></tr></tbody></table>
+    <table><tbody><tr><th>Japanese release</th><th>Cards</th></tr><tr><td>2</td><td>August 2001 – July 2002</td></tr></tbody></table>`;
+  assert.deepEqual(parseExpansionList(real), {
+    "拡張パック": "Expansion Pack",
+    "闇からの挑戦": "Challenge from the Darkness",
+    "TAG TEAM GX タッグオールスターズ": "TAG TEAM GX Tag All Stars"
+  });
+  // duas colunas separadas também funciona
+  const duas = `<table><tbody><tr><th>Japanese name</th><th>Translated name</th><th>Release</th></tr>
     <tr><td><span lang="ja">シャイニートレジャーex</span></td><td><a href="/wiki/Shiny_Treasure_ex_(TCG)">Shiny Treasure ex</a></td><td>2023</td></tr>
     <tr><td>レイジングサーフ</td><td>Raging Surf</td><td>2023</td></tr></tbody></table>`;
-  assert.deepEqual(parseExpansionList(html), { "シャイニートレジャーex": "Shiny Treasure ex", "レイジングサーフ": "Raging Surf" });
+  assert.deepEqual(parseExpansionList(duas), { "シャイニートレジャーex": "Shiny Treasure ex", "レイジングサーフ": "Raging Surf" });
+  assert.equal(normalizarNomeJa("サン＆ムーン "), "サン&ムーン");
+  assert.equal(normalizarNomeJa("TAG TEAM GX タッグオールスターズ"), "tagteamgxタッグオールスターズ");
 });
 
 test("utilitários: URL da API e texto sem tags", () => {
