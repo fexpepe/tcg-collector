@@ -14,7 +14,7 @@
 //   node scripts/enrich-ja.mjs             # aplica e grava
 //   node scripts/enrich-ja.mjs --dry-run   # só conta
 import { readdir, readFile, writeFile } from "node:fs/promises";
-import { buildEnIndex, enrichJaCard } from "./lib/enrich-ja.mjs";
+import { buildEnIndex, enrichJaCard, cacheCabeNoChunk } from "./lib/enrich-ja.mjs";
 
 const RAIZ = new URL("../", import.meta.url);
 const SETS = new URL("data/sets/", RAIZ);
@@ -42,9 +42,15 @@ const enIndex = buildEnIndex(en.flatMap((c) => c.cards));
 
 let comCache = 0, chunksMudados = 0, cartasMudadas = 0;
 const porCampo = {};
+const recusados = [];
 for (const chunk of ja) {
-  const bulba = await leJson(new URL(`${chunk.setId}.json`, CACHE), null);
-  if (bulba && bulba.cards) comCache++;
+  let bulba = await leJson(new URL(`${chunk.setId}.json`, CACHE), null);
+  if (bulba && bulba.cards) {
+    // Cache que não cabe no chunk (página errada no wiki) NÃO entra.
+    const fit = cacheCabeNoChunk(chunk.cards, bulba);
+    if (!fit.cabe) { recusados.push(`${chunk.setId} (${fit.motivo})`); bulba = null; }
+    else comCache++;
+  }
   let mudouChunk = false;
   for (const card of chunk.cards) {
     const campos = enrichJaCard(card, { enIndex, bulba });
@@ -58,5 +64,6 @@ for (const chunk of ja) {
   }
 }
 const resumo = Object.entries(porCampo).sort((a, b) => b[1] - a[1]).map(([f, n]) => `${f} ${n}`).join(", ");
+if (recusados.length) console.warn(`enrich-ja: cache RECUSADO em ${recusados.length} set(s) — página do wiki não é a do set: ${recusados.join("; ")}`);
 console.log(`enrich-ja: ${ja.length} sets ja (${comCache} com cache da Bulbapedia), ${en.length} sets en no índice · `
   + `${cartasMudadas} carta(s) em ${chunksMudados} chunk(s) ${DRY ? "mudariam" : "enriquecidas"}${resumo ? ` — ${resumo}` : ""}`);

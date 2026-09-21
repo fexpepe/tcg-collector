@@ -111,15 +111,32 @@ export function parseSetList(html) {
 // A lista que É o set: pelo denominador do número ("001/066" -> 66 = total
 // do set), senão a de contagem mais próxima da do chunk, senão a última (a
 // japonesa vem depois da ocidental na página). null sem lista nenhuma.
-export function escolherLista(listas, { total, count } = {}) {
+// `nomes`: Map número comparável -> nome comparável do chunk (espécie ou nome
+// ASCII, minúsculo). Desempata listas com o MESMO total — a página de um par
+// de sets (Scarlet ex / Violet ex, Black/White Collection) tem uma tabela por
+// metade, as duas com 001/078: sem os nomes, as duas metades recebiam a
+// primeira tabela e a segunda entrava com as cartas da irmã.
+export function escolherLista(listas, { total, count, nomes } = {}) {
   const ls = (listas || []).filter((l) => l && l.cards && l.cards.length);
   if (!ls.length) return null;
   if (ls.length === 1) return ls[0];
   const den = (n) => { const m = /\/\s*0*(\d+)\s*$/.exec(String(n || "")); return m ? Number(m[1]) : 0; };
+  const numKey = (n) => String(n || "").split("/")[0].trim().toLowerCase().replace(/^([a-z]*)0+(?=\d)/, "$1");
+  const concordancia = (l) => {
+    if (!nomes || !nomes.size) return 0;
+    let n = 0;
+    for (const c of l.cards) { const alvo = nomes.get(numKey(c.number)); if (alvo && String(c.en || "").toLowerCase().includes(alvo)) n++; }
+    return n;
+  };
   if (Number(total) > 0) {
     const casa = ls.map((l) => l.cards.filter((c) => den(c.number) === Number(total)).length / l.cards.length);
-    const melhor = casa.indexOf(Math.max(...casa));
-    if (casa[melhor] >= 0.5) return ls[melhor];
+    const candidatas = ls.map((l, i) => [l, casa[i]]).filter(([, r]) => r >= 0.5).map(([l]) => l);
+    if (candidatas.length === 1) return candidatas[0];
+    if (candidatas.length > 1) return candidatas.slice().sort((a, b) => concordancia(b) - concordancia(a))[0];
+    // Total conhecido e NENHUMA lista com ele: a página não é deste set (título
+    // errado, ou o set ocidental homônimo). Chutar pela contagem aqui gravaria
+    // nome, raridade e ilustrador de OUTRO set por número — melhor sem lista.
+    return null;
   }
   if (Number(count) > 0) {
     return ls.slice().sort((a, b) => Math.abs(a.cards.length - count) - Math.abs(b.cards.length - count))[0];
@@ -170,6 +187,20 @@ const JP_CHARS = /[぀-ヿ一-鿿]/;
 export function normalizarNomeJa(s) {
   return String(s || "").normalize("NFKC").replace(/\s+/g, "").replace(/[＆]/g, "&").toLowerCase();
 }
+// Mapa nome japonês NORMALIZADO -> tradução, a partir do _set-names.json. A
+// lista do wiki junta os sets em PAR numa linha só ("一撃マスター • 連撃マスター"
+// -> "Single Strike Master • Rapid Strike Master"): o par é aberto e cada
+// metade vira uma entrada, quando os dois lados têm o mesmo número de partes.
+export function mapaDeNomes(names) {
+  const m = new Map();
+  const partes = (s) => String(s || "").split(/\s*[•・]\s*/).map((x) => x.trim()).filter(Boolean);
+  for (const [ja, en] of Object.entries(names || {})) {
+    const js = partes(ja), es = partes(en);
+    if (js.length > 1 && js.length === es.length) js.forEach((j, i) => { if (!m.has(normalizarNomeJa(j))) m.set(normalizarNomeJa(j), es[i]); });
+    else if (js.length === 1 && es.length === 1 && !m.has(normalizarNomeJa(ja))) m.set(normalizarNomeJa(ja), en);
+  }
+  return m;
+}
 export function parseExpansionList(html) {
   const out = {};
   for (const t of tables(html)) {
@@ -178,7 +209,12 @@ export function parseExpansionList(html) {
     const h = cells(rs[0]).map((c) => text(c).toLowerCase());
     const ja = h.findIndex((x) => /japanese/.test(x));
     if (ja < 0) continue;
-    const en = h.findIndex((x, i) => i !== ja && /translated|english/.test(x));
+    // Só uma coluna "Translated" separada conta como tradução. "English
+    // expansion/name" é OUTRA coisa — o set ocidental equivalente ("Base Set"
+    // pra 拡張パック), e foi o que o 2º run gravou; o JA_SET_EN e o título da
+    // página do wiki usam a tradução ("Expansion Pack"), que fica na mesma
+    // célula do nome japonês.
+    const en = h.findIndex((x, i) => i !== ja && /translated/.test(x));
     for (const r of rs.slice(1)) {
       const tds = cells(r);
       if (tds.length <= ja) continue;
