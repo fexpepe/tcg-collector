@@ -15,8 +15,12 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
-const ROOT = new URL("..", import.meta.url).pathname;
+// fileURLToPath, não .pathname: no Windows, .pathname dá "/D:/…/TCG%20Collector/"
+// (espaço codificado, barra na frente da letra do disco) e o readFileSync não
+// acha nada — o arquivo inteiro falhava na máquina do Fernando (21/09/2026).
+const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const read = (f) => readFileSync(`${ROOT}${f}`, "utf8");
 
 // Mesma técnica do scripts/check.mjs: o i18n-docs.js mescla em TCG_MESSAGES.
