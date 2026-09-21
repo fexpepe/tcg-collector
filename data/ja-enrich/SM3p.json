@@ -1,0 +1,580 @@
+{
+ "page": "Shining Legends (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Bulbasaur",
+   "page": "Bulbasaur (Shining Legends 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Ivysaur",
+   "page": "Ivysaur (Shining Legends 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Venusaur",
+   "page": "Venusaur (Shining Legends 3)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "4": {
+   "en": "Shining Celebi",
+   "page": "Shining Celebi (Shining Legends 4)",
+   "type": "Grass",
+   "rarity": "Shining",
+   "mark": ""
+  },
+  "5": {
+   "en": "Shroomish",
+   "page": "Shroomish (Shining Legends 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Breloom",
+   "page": "Breloom (Shining Legends 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Carnivine",
+   "page": "Carnivine (Shining Legends 7)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "8": {
+   "en": "Shaymin",
+   "page": "Shaymin (Shining Legends 8)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "9": {
+   "en": "Virizion",
+   "page": "Virizion (Shining Legends 9)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "10": {
+   "en": "Shining Genesect",
+   "page": "Shining Genesect (Shining Legends 10)",
+   "type": "Grass",
+   "rarity": "Shining",
+   "mark": ""
+  },
+  "11": {
+   "en": "Entei",
+   "page": "Entei-GX (Shining Legends 11)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "12": {
+   "en": "Torkoal",
+   "page": "Torkoal (Shining Legends 12)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "13": {
+   "en": "Larvesta",
+   "page": "Larvesta (Shining Legends 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Volcarona",
+   "page": "Volcarona (Shining Legends 14)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Reshiram",
+   "page": "Reshiram (Shining Legends 15)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "16": {
+   "en": "Litten",
+   "page": "Litten (Shining Legends 16)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Torracat",
+   "page": "Torracat (Shining Legends 17)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Incineroar",
+   "page": "Incineroar (Shining Legends 18)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Totodile",
+   "page": "Totodile (Shining Legends 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Croconaw",
+   "page": "Croconaw (Shining Legends 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Feraligatr",
+   "page": "Feraligatr (Shining Legends 21)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Qwilfish",
+   "page": "Qwilfish (Shining Legends 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Buizel",
+   "page": "Buizel (Shining Legends 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Floatzel",
+   "page": "Floatzel (Shining Legends 24)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Palkia",
+   "page": "Palkia (Shining Legends 25)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "26": {
+   "en": "Manaphy",
+   "page": "Manaphy (Shining Legends 26)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "27": {
+   "en": "Keldeo",
+   "page": "Keldeo (Shining Legends 27)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "28": {
+   "en": "Shining Volcanion",
+   "page": "Shining Volcanion (Shining Legends 28)",
+   "type": "Water",
+   "rarity": "Shining",
+   "mark": ""
+  },
+  "29": {
+   "en": "Pikachu",
+   "page": "Pikachu (Shining Legends 29)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Raichu",
+   "page": "Raichu-GX (Shining Legends 30)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Voltorb",
+   "page": "Voltorb (Shining Legends 31)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Electrode",
+   "page": "Electrode (Shining Legends 32)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Raikou",
+   "page": "Raikou (Shining Legends 33)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "34": {
+   "en": "Plusle",
+   "page": "Plusle (Shining Legends 34)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Minun",
+   "page": "Minun (Shining Legends 35)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Zekrom",
+   "page": "Zekrom (Shining Legends 36)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "37": {
+   "en": "Ekans",
+   "page": "Ekans (Shining Legends 37)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Arbok",
+   "page": "Arbok (Shining Legends 38)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Jynx",
+   "page": "Jynx (Shining Legends 39)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-GX (Shining Legends 40)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "41": {
+   "en": "Shining Mew",
+   "page": "Shining Mew (Shining Legends 41)",
+   "type": "Psychic",
+   "rarity": "Shining",
+   "mark": ""
+  },
+  "42": {
+   "en": "Latios",
+   "page": "Latios (Shining Legends 42)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "43": {
+   "en": "Shining Jirachi",
+   "page": "Shining Jirachi (Shining Legends 43)",
+   "type": "Psychic",
+   "rarity": "Shining",
+   "mark": ""
+  },
+  "44": {
+   "en": "Golett",
+   "page": "Golett (Shining Legends 44)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "45": {
+   "en": "Golurk",
+   "page": "Golurk (Shining Legends 45)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Marshadow",
+   "page": "Marshadow (Shining Legends 46)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "47": {
+   "en": "Stunfisk",
+   "page": "Stunfisk (Shining Legends 47)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Spiritomb",
+   "page": "Spiritomb (Shining Legends 48)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Purrloin",
+   "page": "Purrloin (Shining Legends 49)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Liepard",
+   "page": "Liepard (Shining Legends 50)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Scraggy",
+   "page": "Scraggy (Shining Legends 51)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Scrafty",
+   "page": "Scrafty (Shining Legends 52)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Zorua",
+   "page": "Zorua (Shining Legends 53)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Zoroark",
+   "page": "Zoroark-GX (Shining Legends 54)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Yveltal",
+   "page": "Yveltal (Shining Legends 55)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "56": {
+   "en": "Hoopa",
+   "page": "Hoopa (Shining Legends 56)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "57": {
+   "en": "Shining Rayquaza",
+   "page": "Shining Rayquaza (Shining Legends 57)",
+   "type": "Dragon",
+   "rarity": "Shining",
+   "mark": ""
+  },
+  "58": {
+   "en": "Shining Lugia",
+   "page": "Shining Lugia (Shining Legends 58)",
+   "type": "Colorless",
+   "rarity": "Shining",
+   "mark": ""
+  },
+  "59": {
+   "en": "Shining Arceus",
+   "page": "Shining Arceus (Shining Legends 59)",
+   "type": "Colorless",
+   "rarity": "Shining",
+   "mark": ""
+  },
+  "60": {
+   "en": "Energy Retrieval",
+   "page": "Energy Retrieval (Shining Legends 60)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Great Ball",
+   "page": "Great Ball (Shining Legends 61)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Super Scoop Up",
+   "page": "Super Scoop Up (Shining Legends 62)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "63": {
+   "en": "Damage Mover",
+   "page": "Damage Mover (Shining Legends 63)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Shining Legends 64)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Switch",
+   "page": "Switch (Shining Legends 65)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (Shining Legends 66)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Hau",
+   "page": "Hau (Shining Legends 67)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Pokémon Breeder",
+   "page": "Pokémon Breeder (Shining Legends 68)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Sophocles",
+   "page": "Sophocles (Shining Legends 69)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Lillie",
+   "page": "Lillie (Shining Legends 70)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Double Colorless Energy",
+   "page": "Double Colorless Energy (Shining Legends 71)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Warp Energy",
+   "page": "Warp Energy (Shining Legends 72)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "73": {
+   "en": "Entei",
+   "page": "Entei-GX (Shining Legends 73)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Raichu",
+   "page": "Raichu-GX (Shining Legends 74)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-GX (Shining Legends 75)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Zoroark",
+   "page": "Zoroark-GX (Shining Legends 76)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Pokémon Breeder",
+   "page": "Pokémon Breeder (Shining Legends 77)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Entei",
+   "page": "Entei-GX (Shining Legends 78)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Raichu",
+   "page": "Raichu-GX (Shining Legends 79)",
+   "type": "Lightning",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-GX (Shining Legends 80)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Zoroark",
+   "page": "Zoroark-GX (Shining Legends 81)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-GX (Shining Legends 82)",
+   "type": "Psychic",
+   "rarity": "Shining",
+   "mark": ""
+  }
+ }
+}

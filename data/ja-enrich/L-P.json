@@ -1,0 +1,559 @@
+{
+ "page": "L-P Promotional cards (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Meganium",
+   "page": "Meganium (L-P Promo 1)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Feraligatr",
+   "page": "Feraligatr (L-P Promo 2)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Typhlosion",
+   "page": "Typhlosion (L-P Promo 3)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Gyarados",
+   "page": "Gyarados (L-P Promo 4)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Chikorita",
+   "page": "Chikorita (L-P Promo 5)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Cyndaquil",
+   "page": "Cyndaquil (L-P Promo 6)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Totodile",
+   "page": "Totodile (L-P Promo 7)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Mareep",
+   "page": "Mareep (L-P Promo 8)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Phanpy",
+   "page": "Phanpy (L-P Promo 9)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Teddiursa",
+   "page": "Teddiursa (L-P Promo 10)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Grass Energy",
+   "page": "Grass Energy (L-P Promo 11)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Fire Energy",
+   "page": "Fire Energy (L-P Promo 12)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Water Energy",
+   "page": "Water Energy (L-P Promo 13)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Lightning Energy",
+   "page": "Lightning Energy (L-P Promo 14)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Psychic Energy",
+   "page": "Psychic Energy (L-P Promo 15)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Fighting Energy",
+   "page": "Fighting Energy (L-P Promo 16)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Darkness Energy",
+   "page": "Darkness Energy (L-P Promo 17)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Metal Energy",
+   "page": "Metal Energy (L-P Promo 18)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Pikachu",
+   "page": "Pikachu (L-P Promo 19)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Cresselia",
+   "page": "Cresselia (L-P Promo 20)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Darkrai",
+   "page": "Darkrai (L-P Promo 21)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Sentret",
+   "page": "Sentret (L-P Promo 22)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Professor Elm's Training Method",
+   "page": "Professor Elm's Training Method (L-P Promo 23)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Copycat",
+   "page": "Copycat (L-P Promo 24)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Hoothoot",
+   "page": "Hoothoot (L-P Promo 25)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Noctowl",
+   "page": "Noctowl (L-P Promo 26)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Victory Medal",
+   "page": "Victory Medal (L-P Promo 27)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (L-P Promo 28)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Slowbro",
+   "page": "Slowbro (L-P Promo 29)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Slowking",
+   "page": "Slowking (L-P Promo 30)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Victory Medal",
+   "page": "Victory Medal (L-P Promo 31)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Victory Medal",
+   "page": "Victory Medal (L-P Promo 32)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Victory Medal",
+   "page": "Victory Medal (L-P Promo 33)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Chikorita",
+   "page": "Chikorita (L-P Promo 34)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Cyndaquil",
+   "page": "Cyndaquil (L-P Promo 35)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Totodile",
+   "page": "Totodile (L-P Promo 36)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Mareep",
+   "page": "Mareep (L-P Promo 37)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Phanpy",
+   "page": "Phanpy (L-P Promo 38)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Teddiursa",
+   "page": "Teddiursa (L-P Promo 39)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "40": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (L-P Promo 40)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Victory Medal",
+   "page": "Victory Medal (L-P Promo 41)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "42": {
+   "en": "Victory Medal",
+   "page": "Victory Medal (L-P Promo 42)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Victory Medal",
+   "page": "Victory Medal (L-P Promo 43)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Raichu",
+   "page": "Raichu (L-P Promo 44)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Latias",
+   "page": "Latias (L-P Promo 45)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Latios",
+   "page": "Latios (L-P Promo 46)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Lugia",
+   "page": "Lugia (L-P Promo 47)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh (L-P Promo 48)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "49": {
+   "en": "Scyther",
+   "page": "Scyther (L-P Promo 49)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "50": {
+   "en": "Houndour",
+   "page": "Houndour (L-P Promo 50)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "51": {
+   "en": "Legend Box",
+   "page": "Legend Box (L-P Promo 51)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "52": {
+   "en": "Burned Tower",
+   "page": "Burned Tower (L-P Promo 52)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "53": {
+   "en": "Espeon",
+   "page": "Espeon (L-P Promo 53)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "54": {
+   "en": "Umbreon",
+   "page": "Umbreon (L-P Promo 54)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "55": {
+   "en": "Master's Scroll",
+   "page": "Master's Scroll (L-P Promo 55)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "56": {
+   "en": "Zangoose",
+   "page": "Zangoose (L-P Promo 56)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "57": {
+   "en": "Lost Remover",
+   "page": "Lost Remover (L-P Promo 57)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "58": {
+   "en": "Lapras",
+   "page": "Lapras (L-P Promo 58)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "59": {
+   "en": "Entei",
+   "page": "Entei (L-P Promo 59)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "60": {
+   "en": "Suicune",
+   "page": "Suicune (L-P Promo 60)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "61": {
+   "en": "Raikou",
+   "page": "Raikou (L-P Promo 61)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "62": {
+   "en": "Entei",
+   "page": "Entei (L-P Promo 62)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "63": {
+   "en": "Suicune",
+   "page": "Suicune (L-P Promo 63)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "64": {
+   "en": "Raikou",
+   "page": "Raikou (L-P Promo 64)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "65": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh (L-P Promo 65)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "66": {
+   "en": "Lugia",
+   "page": "Lugia (L-P Promo 66)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "67": {
+   "en": "Shuckle",
+   "page": "Shuckle (L-P Promo 67)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "68": {
+   "en": "Master's Key",
+   "page": "Master's Key (L-P Promo 68)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "69": {
+   "en": "Electabuzz",
+   "page": "Electabuzz (L-P Promo 69)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "70": {
+   "en": "Indigo Plateau",
+   "page": "Indigo Plateau (L-P Promo 70)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "71": {
+   "en": "Kyogre",
+   "page": "Kyogre (L-P Promo 71)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "72": {
+   "en": "Groudon",
+   "page": "Groudon (L-P Promo 72)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "73": {
+   "en": "Palkia",
+   "page": "Palkia (L-P Promo 73)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "74": {
+   "en": "Dialga",
+   "page": "Dialga (L-P Promo 74)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "75": {
+   "en": "Rayquaza",
+   "page": "Rayquaza (L-P Promo 75)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "76": {
+   "en": "Deoxys",
+   "page": "Deoxys (L-P Promo 76)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "77": {
+   "en": "Porygon",
+   "page": "Porygon (L-P Promo 77)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "78": {
+   "en": "Porygon2",
+   "page": "Porygon2 (L-P Promo 78)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "79": {
+   "en": "Shopping Pikachu",
+   "page": "Shopping Pikachu (L-P Promo 79)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,2043 @@
+{
+ "page": "SV-P Promotional cards (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Pikachu",
+   "page": "Pikachu (SV-P Promo 1)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Spidops",
+   "page": "Spidops (SV-P Promo 2)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Arcanine",
+   "page": "Arcanine (SV-P Promo 3)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Dondozo",
+   "page": "Dondozo (SV-P Promo 4)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Miraidon",
+   "page": "Miraidon (SV-P Promo 5)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Espathra",
+   "page": "Espathra (SV-P Promo 6)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Koraidon",
+   "page": "Koraidon (SV-P Promo 7)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Oinkologne",
+   "page": "Oinkologne (SV-P Promo 8)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Cyclizar",
+   "page": "Cyclizar ex (SV-P Promo 9)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Poké Ball",
+   "page": "Poké Ball (SV-P Promo 10)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Switch",
+   "page": "Switch (SV-P Promo 11)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Nemona",
+   "page": "Nemona (SV-P Promo 12)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Rotom",
+   "page": "Rotom (SV-P Promo 13)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Crushing Hammer",
+   "page": "Crushing Hammer (SV-P Promo 14)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Nest Ball",
+   "page": "Nest Ball (SV-P Promo 15)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (SV-P Promo 16)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Switch",
+   "page": "Switch (SV-P Promo 17)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Exp. Share",
+   "page": "Exp. Share (SV-P Promo 18)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Vitality Band",
+   "page": "Vitality Band (SV-P Promo 19)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Jacq",
+   "page": "Jacq (SV-P Promo 20)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (SV-P Promo 21)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (SV-P Promo 22)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Smoliv",
+   "page": "Smoliv (SV-P Promo 23)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Growlithe",
+   "page": "Growlithe (SV-P Promo 24)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Flaaffy",
+   "page": "Flaaffy (SV-P Promo 25)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Houndstone",
+   "page": "Houndstone (SV-P Promo 26)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Klawf",
+   "page": "Klawf ex (SV-P Promo 27)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Varoom",
+   "page": "Varoom (SV-P Promo 28)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Brassius",
+   "page": "Brassius (SV-P Promo 29)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Arven",
+   "page": "Arven (SV-P Promo 30)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Eevee",
+   "page": "Eevee (SV-P Promo 31)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Eevee",
+   "page": "Eevee (SV-P Promo 32)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Eevee",
+   "page": "Eevee (SV-P Promo 33)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (SV-P Promo 34)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Pawmi",
+   "page": "Pawmi (SV-P Promo 35)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Charcadet",
+   "page": "Charcadet (SV-P Promo 36)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Basic Grass Energy",
+   "page": "Basic Grass Energy (SV-P Promo 37)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "38": {
+   "en": "Basic Fire Energy",
+   "page": "Basic Fire Energy (SV-P Promo 38)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "39": {
+   "en": "Basic Water Energy",
+   "page": "Basic Water Energy (SV-P Promo 39)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "40": {
+   "en": "Basic Lightning Energy",
+   "page": "Basic Lightning Energy (SV-P Promo 40)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "41": {
+   "en": "Basic Psychic Energy",
+   "page": "Basic Psychic Energy (SV-P Promo 41)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "42": {
+   "en": "Basic Fighting Energy",
+   "page": "Basic Fighting Energy (SV-P Promo 42)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "43": {
+   "en": "Basic Darkness Energy",
+   "page": "Basic Darkness Energy (SV-P Promo 43)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "44": {
+   "en": "Basic Metal Energy",
+   "page": "Basic Metal Energy (SV-P Promo 44)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "45": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (SV-P Promo 45)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Nemona",
+   "page": "Nemona (SV-P Promo 46)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Nemona",
+   "page": "Nemona (SV-P Promo 47)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Miraidon",
+   "page": "Miraidon (SV-P Promo 48)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "49": {
+   "en": "Koraidon",
+   "page": "Koraidon (SV-P Promo 49)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "50": {
+   "en": "Pineco",
+   "page": "Pineco (SV-P Promo 50)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "51": {
+   "en": "Arctibax",
+   "page": "Arctibax (SV-P Promo 51)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "52": {
+   "en": "Bellibolt",
+   "page": "Bellibolt (SV-P Promo 52)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "53": {
+   "en": "Sinistea",
+   "page": "Sinistea (SV-P Promo 53)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "54": {
+   "en": "Barboach",
+   "page": "Barboach (SV-P Promo 54)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "55": {
+   "en": "Mabosstiff",
+   "page": "Mabosstiff ex (SV-P Promo 55)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "56": {
+   "en": "Atticus",
+   "page": "Atticus (SV-P Promo 56)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "57": {
+   "en": "Penny",
+   "page": "Penny (SV-P Promo 57)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "58": {
+   "en": "Cetitan",
+   "page": "Cetitan (SV-P Promo 58)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "59": {
+   "en": "Bulbasaur",
+   "page": "Bulbasaur (SV-P Promo 59)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "60": {
+   "en": "Charmander",
+   "page": "Charmander (SV-P Promo 60)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "61": {
+   "en": "Squirtle",
+   "page": "Squirtle (SV-P Promo 61)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "62": {
+   "en": "Eevee",
+   "page": "Eevee (SV-P Promo 62)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "63": {
+   "en": "Vaporeon",
+   "page": "Vaporeon (SV-P Promo 63)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "64": {
+   "en": "Jolteon",
+   "page": "Jolteon (SV-P Promo 64)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "65": {
+   "en": "Flareon",
+   "page": "Flareon (SV-P Promo 65)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "66": {
+   "en": "Espeon",
+   "page": "Espeon (SV-P Promo 66)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "67": {
+   "en": "Umbreon",
+   "page": "Umbreon (SV-P Promo 67)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "68": {
+   "en": "Leafeon",
+   "page": "Leafeon (SV-P Promo 68)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "69": {
+   "en": "Glaceon",
+   "page": "Glaceon (SV-P Promo 69)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "70": {
+   "en": "Sylveon",
+   "page": "Sylveon (SV-P Promo 70)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "71": {
+   "en": "Rowlet",
+   "page": "Rowlet (SV-P Promo 71)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "72": {
+   "en": "Charcadet",
+   "page": "Charcadet (SV-P Promo 72)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "73": {
+   "en": "Froakie",
+   "page": "Froakie (SV-P Promo 73)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "74": {
+   "en": "Pikachu",
+   "page": "Pikachu (SV-P Promo 74)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "75": {
+   "en": "Clefairy",
+   "page": "Clefairy (SV-P Promo 75)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "76": {
+   "en": "Riolu",
+   "page": "Riolu (SV-P Promo 76)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "77": {
+   "en": "Houndour",
+   "page": "Houndour (SV-P Promo 77)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "78": {
+   "en": "Meltan",
+   "page": "Meltan (SV-P Promo 78)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "79": {
+   "en": "Basic Grass Energy",
+   "page": "Basic Grass Energy (SV-P Promo 79)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "80": {
+   "en": "Basic Fire Energy",
+   "page": "Basic Fire Energy (SV-P Promo 80)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "81": {
+   "en": "Basic Water Energy",
+   "page": "Basic Water Energy (SV-P Promo 81)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "82": {
+   "en": "Basic Lightning Energy",
+   "page": "Basic Lightning Energy (SV-P Promo 82)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "83": {
+   "en": "Basic Psychic Energy",
+   "page": "Basic Psychic Energy (SV-P Promo 83)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "84": {
+   "en": "Basic Fighting Energy",
+   "page": "Basic Fighting Energy (SV-P Promo 84)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "85": {
+   "en": "Basic Darkness Energy",
+   "page": "Basic Darkness Energy (SV-P Promo 85)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "86": {
+   "en": "Basic Metal Energy",
+   "page": "Basic Metal Energy (SV-P Promo 86)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "87": {
+   "en": "Shroodle",
+   "page": "Shroodle (SV-P Promo 87)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "88": {
+   "en": "Grafaiai",
+   "page": "Grafaiai ex (SV-P Promo 88)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "89": {
+   "en": "Scovillain",
+   "page": "Scovillain ex (SV-P Promo 89)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "90": {
+   "en": "Carvanha",
+   "page": "Carvanha (SV-P Promo 90)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "91": {
+   "en": "Toxel",
+   "page": "Toxel (SV-P Promo 91)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "92": {
+   "en": "Cleffa",
+   "page": "Cleffa (SV-P Promo 92)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "93": {
+   "en": "Pupitar",
+   "page": "Pupitar (SV-P Promo 93)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "94": {
+   "en": "Revavroom",
+   "page": "Revavroom (SV-P Promo 94)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "95": {
+   "en": "Moonlit Hill",
+   "page": "Moonlit Hill (SV-P Promo 95)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "96": {
+   "en": "Grusha",
+   "page": "Grusha (SV-P Promo 96)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "97": {
+   "en": "Cyclizar",
+   "page": "Cyclizar (SV-P Promo 97)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "98": {
+   "en": "Detective Pikachu",
+   "page": "Detective Pikachu (SV-P Promo 98)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "99": {
+   "en": "Gimmighoul",
+   "page": "Gimmighoul (SV-P Promo 99)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "100": {
+   "en": "Basic Grass Energy",
+   "page": "Basic Grass Energy (SV-P Promo 100)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "101": {
+   "en": "Basic Fire Energy",
+   "page": "Basic Fire Energy (SV-P Promo 101)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "102": {
+   "en": "Basic Water Energy",
+   "page": "Basic Water Energy (SV-P Promo 102)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "103": {
+   "en": "Basic Lightning Energy",
+   "page": "Basic Lightning Energy (SV-P Promo 103)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "104": {
+   "en": "Basic Psychic Energy",
+   "page": "Basic Psychic Energy (SV-P Promo 104)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "105": {
+   "en": "Basic Fighting Energy",
+   "page": "Basic Fighting Energy (SV-P Promo 105)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "106": {
+   "en": "Basic Darkness Energy",
+   "page": "Basic Darkness Energy (SV-P Promo 106)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "107": {
+   "en": "Basic Metal Energy",
+   "page": "Basic Metal Energy (SV-P Promo 107)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "108": {
+   "en": "Zapdos",
+   "page": "Zapdos ex (SV-P Promo 108)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "109": {
+   "en": "Defiance Band",
+   "page": "Defiance Band (SV-P Promo 109)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "110": {
+   "en": "Celebratory Fanfare",
+   "page": "Celebratory Fanfare (SV-P Promo 110)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "111": {
+   "en": "Pansear",
+   "page": "Pansear (SV-P Promo 111)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "112": {
+   "en": "Horsea",
+   "page": "Horsea (SV-P Promo 112)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "113": {
+   "en": "Yamask",
+   "page": "Yamask (SV-P Promo 113)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "114": {
+   "en": "Tinkaton",
+   "page": "Tinkaton (SV-P Promo 114)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "115": {
+   "en": "Garganacl",
+   "page": "Garganacl ex (SV-P Promo 115)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "116": {
+   "en": "Porygon2",
+   "page": "Porygon2 (SV-P Promo 116)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "117": {
+   "en": "Raifort",
+   "page": "Raifort (SV-P Promo 117)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "118": {
+   "en": "Poppy",
+   "page": "Poppy (SV-P Promo 118)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "119": {
+   "en": "Latias",
+   "page": "Latias (SV-P Promo 119)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "120": {
+   "en": "Pikachu",
+   "page": "Pikachu (SV-P Promo 120)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "121": {
+   "en": "Wooper",
+   "page": "Wooper (SV-P Promo 121)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "122": {
+   "en": "Quagsire",
+   "page": "Quagsire (SV-P Promo 122)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "123": {
+   "en": "Klefki",
+   "page": "Klefki (SV-P Promo 123)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "124": {
+   "en": "Flamigo",
+   "page": "Flamigo ex (SV-P Promo 124)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "125": {
+   "en": "Nest Ball",
+   "page": "Nest Ball (SV-P Promo 125)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "126": {
+   "en": "Switch",
+   "page": "Switch (SV-P Promo 126)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "127": {
+   "en": "Tyme",
+   "page": "Tyme (SV-P Promo 127)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "128": {
+   "en": "Rika",
+   "page": "Rika (SV-P Promo 128)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "129": {
+   "en": "Pachirisu",
+   "page": "Pachirisu (SV-P Promo 129)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "130": {
+   "en": "Raihan",
+   "page": "Raihan (SV-P Promo 130)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "131": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (SV-P Promo 131)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "132": {
+   "en": "Garbodor",
+   "page": "Garbodor (SV-P Promo 132)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "133": {
+   "en": "Tapu Lele",
+   "page": "Tapu Lele-GX (SV-P Promo 133)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "134": {
+   "en": "Dragonite",
+   "page": "Dragonite-EX (SV-P Promo 134)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "135": {
+   "en": "Trainers' Mail",
+   "page": "Trainers' Mail (SV-P Promo 135)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "136": {
+   "en": "Battle Compressor",
+   "page": "Battle Compressor (SV-P Promo 136)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "137": {
+   "en": "VS Seeker",
+   "page": "VS Seeker (SV-P Promo 137)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "138": {
+   "en": "Float Stone",
+   "page": "Float Stone (SV-P Promo 138)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "139": {
+   "en": "Wally",
+   "page": "Wally (SV-P Promo 139)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "140": {
+   "en": "Silent Lab",
+   "page": "Silent Lab (SV-P Promo 140)",
+   "type": "St",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "141": {
+   "en": "Sky Field",
+   "page": "Sky Field (SV-P Promo 141)",
+   "type": "St",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "142": {
+   "en": "Double Dragon Energy",
+   "page": "Double Dragon Energy (SV-P Promo 142)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "143": {
+   "en": "Energy Sticker",
+   "page": "Energy Sticker (SV-P Promo 143)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "144": {
+   "en": "Grabber",
+   "page": "Grabber (SV-P Promo 144)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "145": {
+   "en": "Bravery Charm",
+   "page": "Bravery Charm (SV-P Promo 145)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "146": {
+   "en": "Technical Machine: Evolution",
+   "page": "Technical Machine: Evolution (SV-P Promo 146)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "147": {
+   "en": "Morty's Conviction",
+   "page": "Morty's Conviction (SV-P Promo 147)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "148": {
+   "en": "Teal Mask Ogerpon",
+   "page": "Teal Mask Ogerpon (SV-P Promo 148)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "149": {
+   "en": "Ogre's Mask",
+   "page": "Ogre's Mask (SV-P Promo 149)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "150": {
+   "en": "Buddy-Buddy Poffin",
+   "page": "Buddy-Buddy Poffin (SV-P Promo 150)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "151": {
+   "en": "Miraidon",
+   "page": "Miraidon (SV-P Promo 151)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "152": {
+   "en": "Koraidon",
+   "page": "Koraidon (SV-P Promo 152)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "153": {
+   "en": "Nemona",
+   "page": "Nemona (SV-P Promo 153)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "154": {
+   "en": "Nemona",
+   "page": "Nemona (SV-P Promo 154)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "155": {
+   "en": "Kilowattrel",
+   "page": "Kilowattrel ex (SV-P Promo 155)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "156": {
+   "en": "Mimikyu",
+   "page": "Mimikyu (SV-P Promo 156)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "157": {
+   "en": "Scraggy",
+   "page": "Scraggy (SV-P Promo 157)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "158": {
+   "en": "Scrafty",
+   "page": "Scrafty (SV-P Promo 158)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "159": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (SV-P Promo 159)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "160": {
+   "en": "Roto-Stick",
+   "page": "Roto-Stick (SV-P Promo 160)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "161": {
+   "en": "Iono",
+   "page": "Iono (SV-P Promo 161)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "162": {
+   "en": "Zarude",
+   "page": "Zarude (SV-P Promo 162)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "163": {
+   "en": "Yanma",
+   "page": "Yanma (SV-P Promo 163)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "164": {
+   "en": "Yanmega",
+   "page": "Yanmega (SV-P Promo 164)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "165": {
+   "en": "Veluza",
+   "page": "Veluza ex (SV-P Promo 165)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "166": {
+   "en": "Ditto",
+   "page": "Ditto (SV-P Promo 166)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "167": {
+   "en": "Super Rod",
+   "page": "Super Rod (SV-P Promo 167)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "168": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (SV-P Promo 168)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "169": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (SV-P Promo 169)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "170": {
+   "en": "Billy & O'Nare",
+   "page": "Billy & O'Nare (SV-P Promo 170)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "171": {
+   "en": "Carmine",
+   "page": "Carmine (SV-P Promo 171)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "172": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (SV-P Promo 172)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "173": {
+   "en": "Noctowl",
+   "page": "Noctowl (SV-P Promo 173)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "174": {
+   "en": "Celebratory Fanfare",
+   "page": "Celebratory Fanfare (SV-P Promo 174)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "175": {
+   "en": "Basic Grass Energy",
+   "page": "Basic Grass Energy (SV-P Promo 175)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "176": {
+   "en": "Basic Fire Energy",
+   "page": "Basic Fire Energy (SV-P Promo 176)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "177": {
+   "en": "Basic Water Energy",
+   "page": "Basic Water Energy (SV-P Promo 177)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "178": {
+   "en": "Basic Lightning Energy",
+   "page": "Basic Lightning Energy (SV-P Promo 178)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "179": {
+   "en": "Basic Psychic Energy",
+   "page": "Basic Psychic Energy (SV-P Promo 179)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "180": {
+   "en": "Basic Fighting Energy",
+   "page": "Basic Fighting Energy (SV-P Promo 180)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "181": {
+   "en": "Basic Darkness Energy",
+   "page": "Basic Darkness Energy (SV-P Promo 181)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "182": {
+   "en": "Basic Metal Energy",
+   "page": "Basic Metal Energy (SV-P Promo 182)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "183": {
+   "en": "Alolan Exeggutor",
+   "page": "Alolan Exeggutor ex (SV-P Promo 183)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "184": {
+   "en": "Rabsca",
+   "page": "Rabsca ex (SV-P Promo 184)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "185": {
+   "en": "Iron Bundle",
+   "page": "Iron Bundle (SV-P Promo 185)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "186": {
+   "en": "Hippopotas",
+   "page": "Hippopotas (SV-P Promo 186)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "187": {
+   "en": "Hippowdon",
+   "page": "Hippowdon (SV-P Promo 187)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "188": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (SV-P Promo 188)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "189": {
+   "en": "TM Machine",
+   "page": "TM Machine (SV-P Promo 189)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "190": {
+   "en": "Jet Energy",
+   "page": "Jet Energy (SV-P Promo 190)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "191": {
+   "en": "Crispin",
+   "page": "Crispin (SV-P Promo 191)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "192": {
+   "en": "Meowth",
+   "page": "Meowth (SV-P Promo 192)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "193": {
+   "en": "Paldean Wooper",
+   "page": "Paldean Wooper (SV-P Promo 193)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "194": {
+   "en": "Suicune",
+   "page": "Suicune (SV-P Promo 194)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "195": {
+   "en": "Duraludon",
+   "page": "Duraludon (SV-P Promo 195)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "196": {
+   "en": "Eevee",
+   "page": "Eevee (SV-P Promo 196)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "197": {
+   "en": "Pikachu",
+   "page": "Pikachu (SV-P Promo 197)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "198": {
+   "en": "Eevee",
+   "page": "Eevee (SV-P Promo 198)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "199": {
+   "en": "Lillie's Comfey",
+   "page": "Lillie's Comfey (SV-P Promo 199)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "200": {
+   "en": "N's Zorua",
+   "page": "N's Zorua (SV-P Promo 200)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "201": {
+   "en": "Tatsugiri",
+   "page": "Tatsugiri (SV-P Promo 201)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "202": {
+   "en": "Basic Grass Energy",
+   "page": "Basic Grass Energy (SV-P Promo 202)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "203": {
+   "en": "Basic Fire Energy",
+   "page": "Basic Fire Energy (SV-P Promo 203)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "204": {
+   "en": "Basic Water Energy",
+   "page": "Basic Water Energy (SV-P Promo 204)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "205": {
+   "en": "Basic Lightning Energy",
+   "page": "Basic Lightning Energy (SV-P Promo 205)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "206": {
+   "en": "Basic Psychic Energy",
+   "page": "Basic Psychic Energy (SV-P Promo 206)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "207": {
+   "en": "Basic Fighting Energy",
+   "page": "Basic Fighting Energy (SV-P Promo 207)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "208": {
+   "en": "Basic Darkness Energy",
+   "page": "Basic Darkness Energy (SV-P Promo 208)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "209": {
+   "en": "Basic Metal Energy",
+   "page": "Basic Metal Energy (SV-P Promo 209)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "210": {
+   "en": "Scizor",
+   "page": "Scizor ex (SV-P Promo 210)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "211": {
+   "en": "Enhanced Hammer",
+   "page": "Enhanced Hammer (SV-P Promo 211)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "212": {
+   "en": "Zebstrika",
+   "page": "Zebstrika (SV-P Promo 212)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "213": {
+   "en": "Sprigatito",
+   "page": "Sprigatito (SV-P Promo 213)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "214": {
+   "en": "Fuecoco",
+   "page": "Fuecoco (SV-P Promo 214)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "215": {
+   "en": "Quaxly",
+   "page": "Quaxly (SV-P Promo 215)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "216": {
+   "en": "Pikachu",
+   "page": "Pikachu (SV-P Promo 216)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "217": {
+   "en": "Pawmi",
+   "page": "Pawmi (SV-P Promo 217)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "218": {
+   "en": "Pikachu",
+   "page": "Pikachu (SV-P Promo 218)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "219": {
+   "en": "Irida",
+   "page": "Irida (SV-P Promo 219)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "220": {
+   "en": "Girafarig",
+   "page": "Girafarig (SV-P Promo 220)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "221": {
+   "en": "Garbodor",
+   "page": "Garbodor (SV-P Promo 221)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "222": {
+   "en": "Crobat",
+   "page": "Crobat V (SV-P Promo 222)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "223": {
+   "en": "Trainers' Mail",
+   "page": "Trainers' Mail (SV-P Promo 223)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "224": {
+   "en": "Computer Search",
+   "page": "Computer Search (SV-P Promo 224)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "225": {
+   "en": "Battle Compressor",
+   "page": "Battle Compressor (SV-P Promo 225)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "226": {
+   "en": "VS Seeker",
+   "page": "VS Seeker (SV-P Promo 226)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "227": {
+   "en": "Float Stone",
+   "page": "Float Stone (SV-P Promo 227)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "228": {
+   "en": "Muscle Band",
+   "page": "Muscle Band (SV-P Promo 228)",
+   "type": "I",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "229": {
+   "en": "Pokémon Ranger",
+   "page": "Pokémon Ranger (SV-P Promo 229)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "230": {
+   "en": "Silent Lab",
+   "page": "Silent Lab (SV-P Promo 230)",
+   "type": "St",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "231": {
+   "en": "Double Dragon Energy",
+   "page": "Double Dragon Energy (SV-P Promo 231)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "232": {
+   "en": "Iono's Wattrel",
+   "page": "Iono's Wattrel (SV-P Promo 232)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "233": {
+   "en": "Hop's Pincurchin",
+   "page": "Hop's Pincurchin ex (SV-P Promo 233)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "234": {
+   "en": "Drifloon",
+   "page": "Drifloon (SV-P Promo 234)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "235": {
+   "en": "Drifblim",
+   "page": "Drifblim (SV-P Promo 235)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "236": {
+   "en": "Tatsugiri",
+   "page": "Tatsugiri (SV-P Promo 236)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "237": {
+   "en": "Buddy-Buddy Poffin",
+   "page": "Buddy-Buddy Poffin (SV-P Promo 237)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "238": {
+   "en": "Arven",
+   "page": "Arven (SV-P Promo 238)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "239": {
+   "en": "Pokémon Center Lady",
+   "page": "Pokémon Center Lady (SV-P Promo 239)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "240": {
+   "en": "Drayton",
+   "page": "Drayton (SV-P Promo 240)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "241": {
+   "en": "Feraligatr",
+   "page": "Feraligatr (SV-P Promo 241)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "242": {
+   "en": "Pikachu",
+   "page": "Pikachu (SV-P Promo 242)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "243": {
+   "en": "Toxtricity",
+   "page": "Toxtricity ex (SV-P Promo 243)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "244": {
+   "en": "Buddy-Buddy Poffin",
+   "page": "Buddy-Buddy Poffin (SV-P Promo 244)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "245": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (SV-P Promo 245)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "246": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (SV-P Promo 246)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "247": {
+   "en": "Pokégear 3.0",
+   "page": "Pokégear 3.0 (SV-P Promo 247)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "248": {
+   "en": "Switch",
+   "page": "Switch (SV-P Promo 248)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "249": {
+   "en": "Black Belt's Training",
+   "page": "Black Belt's Training (SV-P Promo 249)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "250": {
+   "en": "Pokémon Center Lady",
+   "page": "Pokémon Center Lady (SV-P Promo 250)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "251": {
+   "en": "Lively Stadium",
+   "page": "Lively Stadium (SV-P Promo 251)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "252": {
+   "en": "Nemona",
+   "page": "Nemona (SV-P Promo 252)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "253": {
+   "en": "Nemona",
+   "page": "Nemona (SV-P Promo 253)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "254": {
+   "en": "Ethan's Ho-Oh",
+   "page": "Ethan's Ho-Oh ex (SV-P Promo 254)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "255": {
+   "en": "Cynthia's Garchomp",
+   "page": "Cynthia's Garchomp ex (SV-P Promo 255)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "256": {
+   "en": "Arven's Mabosstiff",
+   "page": "Arven's Mabosstiff ex (SV-P Promo 256)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "257": {
+   "en": "Iono's Tadbulb",
+   "page": "Iono's Tadbulb (SV-P Promo 257)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "258": {
+   "en": "Bloodmoon Ursaluna",
+   "page": "Bloodmoon Ursaluna ex (SV-P Promo 258)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "259": {
+   "en": "Team Rocket's Meowth",
+   "page": "Team Rocket's Meowth (SV-P Promo 259)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "260": {
+   "en": "Tohoku's Pikachu",
+   "page": "Tohoku's Pikachu (SV-P Promo 260)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "261": {
+   "en": "Hiroshima's Pikachu",
+   "page": "Hiroshima's Pikachu (SV-P Promo 261)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "262": {
+   "en": "Psyduck",
+   "page": "Psyduck (SV-P Promo 262)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "263": {
+   "en": "Golduck",
+   "page": "Golduck (SV-P Promo 263)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "264": {
+   "en": "Flutter Mane",
+   "page": "Flutter Mane (SV-P Promo 264)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "265": {
+   "en": "Team Rocket's Kangaskhan",
+   "page": "Team Rocket's Kangaskhan ex (SV-P Promo 265)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "266": {
+   "en": "Night Stretcher",
+   "page": "Night Stretcher (SV-P Promo 266)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "267": {
+   "en": "Team Rocket's Hypnotizer",
+   "page": "Team Rocket's Hypnotizer (SV-P Promo 267)",
+   "type": "PT",
+   "rarity": "—",
+   "mark": ""
+  },
+  "268": {
+   "en": "Kieran",
+   "page": "Kieran (SV-P Promo 268)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "269": {
+   "en": "Iris's Fighting Spirit",
+   "page": "Iris's Fighting Spirit (SV-P Promo 269)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "270": {
+   "en": "Team Rocket's Giovanni",
+   "page": "Team Rocket's Giovanni (SV-P Promo 270)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "271": {
+   "en": "Victini",
+   "page": "Victini (SV-P Promo 271)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "272": {
+   "en": "Energy Search",
+   "page": "Energy Search (SV-P Promo 272)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "273": {
+   "en": "Potion",
+   "page": "Potion (SV-P Promo 273)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "274": {
+   "en": "Crushing Hammer",
+   "page": "Crushing Hammer (SV-P Promo 274)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "275": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (SV-P Promo 275)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "276": {
+   "en": "Switch",
+   "page": "Switch (SV-P Promo 276)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "277": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (SV-P Promo 277)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "278": {
+   "en": "Boss's Orders",
+   "page": "Boss's Orders (SV-P Promo 278)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "279": {
+   "en": "Cheren",
+   "page": "Cheren (SV-P Promo 279)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "280": {
+   "en": "Basic Grass Energy",
+   "page": "Basic Grass Energy (SV-P Promo 280)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "281": {
+   "en": "Basic Fire Energy",
+   "page": "Basic Fire Energy (SV-P Promo 281)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "282": {
+   "en": "Basic Water Energy",
+   "page": "Basic Water Energy (SV-P Promo 282)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "283": {
+   "en": "Basic Lightning Energy",
+   "page": "Basic Lightning Energy (SV-P Promo 283)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "284": {
+   "en": "Basic Psychic Energy",
+   "page": "Basic Psychic Energy (SV-P Promo 284)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "285": {
+   "en": "Basic Fighting Energy",
+   "page": "Basic Fighting Energy (SV-P Promo 285)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "286": {
+   "en": "Basic Darkness Energy",
+   "page": "Basic Darkness Energy (SV-P Promo 286)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "287": {
+   "en": "Basic Metal Energy",
+   "page": "Basic Metal Energy (SV-P Promo 287)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": "—"
+  },
+  "288": {
+   "en": "Victini",
+   "page": "Victini (SV-P Promo 288)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "289": {
+   "en": "Fukuoka's Pikachu",
+   "page": "Fukuoka's Pikachu (SV-P Promo 289)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "290": {
+   "en": "Roxanne",
+   "page": "Roxanne (SV-P Promo 290)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "291": {
+   "en": "Pikachu",
+   "page": "Pikachu (SV-P Promo 291)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

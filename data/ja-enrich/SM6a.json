@@ -1,0 +1,468 @@
+{
+ "page": "Dragon Majesty (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Charmander",
+   "page": "Charmander (Dragon Storm 1)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (Dragon Storm 2)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Charizard",
+   "page": "Charizard (Dragon Storm 3)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "4": {
+   "en": "Victini",
+   "page": "Victini ♢ (Dragon Storm 4)",
+   "type": "Fire",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "5": {
+   "en": "Darumaka",
+   "page": "Darumaka (Dragon Storm 5)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Darmanitan",
+   "page": "Darmanitan (Dragon Storm 6)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Heatmor",
+   "page": "Heatmor (Dragon Storm 7)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Reshiram",
+   "page": "Reshiram-GX (Dragon Storm 8)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "9": {
+   "en": "Salandit",
+   "page": "Salandit (Dragon Storm 9)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Salazzle",
+   "page": "Salazzle (Dragon Storm 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Horsea",
+   "page": "Horsea (Dragon Storm 11)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Horsea",
+   "page": "Horsea (Dragon Storm 12)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Seadra",
+   "page": "Seadra (Dragon Storm 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Kingdra",
+   "page": "Kingdra-GX (Dragon Storm 14)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "15": {
+   "en": "Magikarp",
+   "page": "Magikarp (Dragon Storm 15)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Gyarados",
+   "page": "Gyarados (Dragon Storm 16)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "17": {
+   "en": "Lapras",
+   "page": "Lapras (Dragon Storm 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Wooper",
+   "page": "Wooper (Dragon Storm 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Quagsire",
+   "page": "Quagsire (Dragon Storm 19)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Corsola",
+   "page": "Corsola (Dragon Storm 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Feebas",
+   "page": "Feebas (Dragon Storm 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Milotic",
+   "page": "Milotic (Dragon Storm 22)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Wishiwashi",
+   "page": "Wishiwashi (Dragon Storm 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Trapinch",
+   "page": "Trapinch (Dragon Storm 24)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Dratini",
+   "page": "Dratini (Dragon Storm 25)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Dratini",
+   "page": "Dratini (Dragon Storm 26)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Dragonair",
+   "page": "Dragonair (Dragon Storm 27)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Dragonite",
+   "page": "Dragonite-GX (Dragon Storm 28)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "29": {
+   "en": "Vibrava",
+   "page": "Vibrava (Dragon Storm 29)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Flygon",
+   "page": "Flygon (Dragon Storm 30)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "31": {
+   "en": "Altaria",
+   "page": "Altaria (Dragon Storm 31)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "32": {
+   "en": "Druddigon",
+   "page": "Druddigon (Dragon Storm 32)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Zekrom",
+   "page": "Zekrom (Dragon Storm 33)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "34": {
+   "en": "Kyurem",
+   "page": "Kyurem (Dragon Storm 34)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "35": {
+   "en": "White Kyurem",
+   "page": "White Kyurem-GX (Dragon Storm 35)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "36": {
+   "en": "Zygarde",
+   "page": "Zygarde (Dragon Storm 36)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "37": {
+   "en": "Turtonator",
+   "page": "Turtonator (Dragon Storm 37)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "38": {
+   "en": "Drampa",
+   "page": "Drampa (Dragon Storm 38)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Jangmo-o",
+   "page": "Jangmo-o (Dragon Storm 39)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Hakamo-o",
+   "page": "Hakamo-o (Dragon Storm 40)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Kommo-o",
+   "page": "Kommo-o (Dragon Storm 41)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "42": {
+   "en": "Swablu",
+   "page": "Swablu (Dragon Storm 42)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Aqua Patch",
+   "page": "Aqua Patch (Dragon Storm 43)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Switch Raft",
+   "page": "Switch Raft (Dragon Storm 44)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Fiery Flint",
+   "page": "Fiery Flint (Dragon Storm 45)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Dragon Talon",
+   "page": "Dragon Talon (Dragon Storm 46)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Kiawe",
+   "page": "Kiawe (Dragon Storm 47)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Blaine's Last Stand",
+   "page": "Blaine's Last Stand (Dragon Storm 48)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "49": {
+   "en": "Zinnia",
+   "page": "Zinnia (Dragon Storm 49)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Lance",
+   "page": "Lance ♢ (Dragon Storm 50)",
+   "type": "Su",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "51": {
+   "en": "Wela Volcano Park",
+   "page": "Wela Volcano Park (Dragon Storm 51)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Devoured Field",
+   "page": "Devoured Field (Dragon Storm 52)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Brooklet Hill",
+   "page": "Brooklet Hill (Dragon Storm 53)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Reshiram",
+   "page": "Reshiram-GX (Dragon Storm 54)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Kingdra",
+   "page": "Kingdra-GX (Dragon Storm 55)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Dragonite",
+   "page": "Dragonite-GX (Dragon Storm 56)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "57": {
+   "en": "White Kyurem",
+   "page": "White Kyurem-GX (Dragon Storm 57)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Blaine's Last Stand",
+   "page": "Blaine's Last Stand (Dragon Storm 58)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "59": {
+   "en": "Zinnia",
+   "page": "Zinnia (Dragon Storm 59)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Reshiram",
+   "page": "Reshiram-GX (Dragon Storm 60)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Kingdra",
+   "page": "Kingdra-GX (Dragon Storm 61)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Dragonite",
+   "page": "Dragonite-GX (Dragon Storm 62)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "63": {
+   "en": "White Kyurem",
+   "page": "White Kyurem-GX (Dragon Storm 63)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "64": {
+   "en": "Switch Raft",
+   "page": "Switch Raft (Dragon Storm 64)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Fiery Flint",
+   "page": "Fiery Flint (Dragon Storm 65)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "66": {
+   "en": "Dragon Talon",
+   "page": "Dragon Talon (Dragon Storm 66)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

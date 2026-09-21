@@ -1,0 +1,2092 @@
+{
+ "page": "XY-P Promotional cards (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Pikachu",
+   "page": "Pikachu (XY-P Promo 1)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "2": {
+   "en": "Raichu",
+   "page": "Raichu (XY-P Promo 2)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "3": {
+   "en": "Energy Retrieval",
+   "page": "Energy Retrieval (XY-P Promo 3)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "4": {
+   "en": "Energy Switch",
+   "page": "Energy Switch (XY-P Promo 4)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "5": {
+   "en": "Super Scoop Up",
+   "page": "Super Scoop Up (XY-P Promo 5)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "6": {
+   "en": "Pal Pad",
+   "page": "Pal Pad (XY-P Promo 6)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "7": {
+   "en": "Full Heal",
+   "page": "Full Heal (XY-P Promo 7)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "8": {
+   "en": "Noibat",
+   "page": "Noibat (XY-P Promo 8)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "9": {
+   "en": "Noivern",
+   "page": "Noivern (XY-P Promo 9)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "10": {
+   "en": "Garchomp",
+   "page": "Garchomp-EX (XY-P Promo 10)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Skiddo",
+   "page": "Skiddo (XY-P Promo 11)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Honedge",
+   "page": "Honedge (XY-P Promo 12)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "13": {
+   "en": "Dedenne",
+   "page": "Dedenne (XY-P Promo 13)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "14": {
+   "en": "Clefairy",
+   "page": "Clefairy (XY-P Promo 14)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "15": {
+   "en": "Pancham",
+   "page": "Pancham (XY-P Promo 15)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "16": {
+   "en": "Helioptile",
+   "page": "Helioptile (XY-P Promo 16)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "17": {
+   "en": "Gogoat",
+   "page": "Gogoat (XY-P Promo 17)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "18": {
+   "en": "Talonflame",
+   "page": "Talonflame (XY-P Promo 18)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Muscle Band",
+   "page": "Muscle Band (XY-P Promo 19)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Scatterbug",
+   "page": "Scatterbug (XY-P Promo 20)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "21": {
+   "en": "Greninja",
+   "page": "Greninja-EX (XY-P Promo 21)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "22": {
+   "en": "Trevenant",
+   "page": "Trevenant (XY-P Promo 22)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "23": {
+   "en": "Diglett",
+   "page": "Diglett (XY-P Promo 23)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "24": {
+   "en": "Doublade",
+   "page": "Doublade (XY-P Promo 24)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "25": {
+   "en": "Slurpuff",
+   "page": "Slurpuff (XY-P Promo 25)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "26": {
+   "en": "Goomy",
+   "page": "Goomy (XY-P Promo 26)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "27": {
+   "en": "Hand Scope",
+   "page": "Hand Scope (XY-P Promo 27)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "28": {
+   "en": "Professor Sycamore",
+   "page": "Professor Sycamore (XY-P Promo 28)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "29": {
+   "en": "Chesnaught",
+   "page": "Chesnaught-EX (XY-P Promo 29)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "30": {
+   "en": "Charizard",
+   "page": "Charizard-EX (XY-P Promo 30)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "31": {
+   "en": "Goodra",
+   "page": "Goodra (XY-P Promo 31)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "32": {
+   "en": "Fiery Torch",
+   "page": "Fiery Torch (XY-P Promo 32)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "33": {
+   "en": "Pyroar",
+   "page": "Pyroar (XY-P Promo 33)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "34": {
+   "en": "Chespin",
+   "page": "Chespin (XY-P Promo 34)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "35": {
+   "en": "Fennekin",
+   "page": "Fennekin (XY-P Promo 35)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "36": {
+   "en": "Froakie",
+   "page": "Froakie (XY-P Promo 36)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "37": {
+   "en": "Darkrai",
+   "page": "Darkrai (XY-P Promo 37)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Hawlucha",
+   "page": "Hawlucha-EX (XY-P Promo 38)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "39": {
+   "en": "Shiftry",
+   "page": "Shiftry (XY-P Promo 39)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "40": {
+   "en": "Spheal",
+   "page": "Spheal (XY-P Promo 40)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "41": {
+   "en": "Meowstic",
+   "page": "Meowstic (XY-P Promo 41)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "42": {
+   "en": "Skrelp",
+   "page": "Skrelp (XY-P Promo 42)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "43": {
+   "en": "Tyrunt",
+   "page": "Tyrunt (XY-P Promo 43)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "44": {
+   "en": "Krookodile",
+   "page": "Krookodile-EX (XY-P Promo 44)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "45": {
+   "en": "Sliggoo",
+   "page": "Sliggoo (XY-P Promo 45)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "46": {
+   "en": "Enhanced Hammer",
+   "page": "Enhanced Hammer (XY-P Promo 46)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "47": {
+   "en": "Trick Coin",
+   "page": "Trick Coin (XY-P Promo 47)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "48": {
+   "en": "Delphox",
+   "page": "Delphox-EX (XY-P Promo 48)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "49": {
+   "en": "Binacle",
+   "page": "Binacle (XY-P Promo 49)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "50": {
+   "en": "Team Japan's Pikachu",
+   "page": "Team Japan's Pikachu (XY-P Promo 50)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "51": {
+   "en": "Xerneas",
+   "page": "Xerneas (XY-P Promo 51)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "52": {
+   "en": "Yveltal",
+   "page": "Yveltal (XY-P Promo 52)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "53": {
+   "en": "Diancie",
+   "page": "Diancie (XY-P Promo 53)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "54": {
+   "en": "Diancie",
+   "page": "Diancie (XY-P Promo 54)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "55": {
+   "en": "Gengar Spirit Link",
+   "page": "Gengar Spirit Link (XY-P Promo 55)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "56": {
+   "en": "PokéTV's AD Pikachu",
+   "page": "PokéTV's AD Pikachu (XY-P Promo 56)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "57": {
+   "en": "Klefki",
+   "page": "Klefki (XY-P Promo 57)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "58": {
+   "en": "Carbink",
+   "page": "Carbink (XY-P Promo 58)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "59": {
+   "en": "Pangoro",
+   "page": "Pangoro (XY-P Promo 59)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "60": {
+   "en": "Landorus",
+   "page": "Landorus (XY-P Promo 60)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "61": {
+   "en": "Chespin",
+   "page": "Chespin (XY-P Promo 61)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "62": {
+   "en": "Fennekin",
+   "page": "Fennekin (XY-P Promo 62)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "63": {
+   "en": "Froakie",
+   "page": "Froakie (XY-P Promo 63)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "64": {
+   "en": "Pikachu",
+   "page": "Pikachu (XY-P Promo 64)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "65": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (XY-P Promo 65)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "66": {
+   "en": "Lucario",
+   "page": "Lucario-EX (XY-P Promo 66)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "67": {
+   "en": "Machamp",
+   "page": "Machamp (XY-P Promo 67)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "68": {
+   "en": "Pikachu",
+   "page": "Pikachu (XY-P Promo 68)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "69": {
+   "en": "Pikachu",
+   "page": "Pikachu (XY-P Promo 69)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "70": {
+   "en": "Pikachu",
+   "page": "Pikachu (XY-P Promo 70)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "71": {
+   "en": "Chesnaught",
+   "page": "Chesnaught (XY-P Promo 71)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "72": {
+   "en": "Delphox",
+   "page": "Delphox (XY-P Promo 72)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "73": {
+   "en": "Greninja",
+   "page": "Greninja (XY-P Promo 73)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "74": {
+   "en": "Venusaur",
+   "page": "Venusaur-EX (XY-P Promo 74)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "75": {
+   "en": "Charizard",
+   "page": "Charizard-EX (XY-P Promo 75)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "76": {
+   "en": "Blastoise",
+   "page": "Blastoise-EX (XY-P Promo 76)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "77": {
+   "en": "Ditto",
+   "page": "Ditto (XY-P Promo 77)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "78": {
+   "en": "Dedenne",
+   "page": "Dedenne (XY-P Promo 78)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "79": {
+   "en": "Gengar",
+   "page": "M Gengar-EX (XY-P Promo 79)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "80": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (XY-P Promo 80)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "81": {
+   "en": "Litleo",
+   "page": "Litleo (XY-P Promo 81)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "82": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (XY-P Promo 82)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "83": {
+   "en": "Zubat",
+   "page": "Zubat (XY-P Promo 83)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "84": {
+   "en": "Gallade",
+   "page": "Gallade-EX (XY-P Promo 84)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "85": {
+   "en": "Swirlix",
+   "page": "Swirlix (XY-P Promo 85)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "86": {
+   "en": "Zweilous",
+   "page": "Zweilous (XY-P Promo 86)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "87": {
+   "en": "Blissey",
+   "page": "Blissey (XY-P Promo 87)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "88": {
+   "en": "Healing Scarf",
+   "page": "Healing Scarf (XY-P Promo 88)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "89": {
+   "en": "Trevor",
+   "page": "Trevor (XY-P Promo 89)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "90": {
+   "en": "Pikachu",
+   "page": "Pikachu (XY-P Promo 90)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "91": {
+   "en": "Sylveon",
+   "page": "Sylveon (XY-P Promo 91)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "92": {
+   "en": "Diancie",
+   "page": "Diancie-EX (XY-P Promo 92)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "93": {
+   "en": "Diancie",
+   "page": "M Diancie-EX (XY-P Promo 93)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "94": {
+   "en": "Warm Pikachu",
+   "page": "Warm Pikachu (XY-P Promo 94)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "95": {
+   "en": "Warm Pikachu",
+   "page": "Warm Pikachu (XY-P Promo 95)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "96": {
+   "en": "Warm Pikachu",
+   "page": "Warm Pikachu (XY-P Promo 96)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "97": {
+   "en": "Warm Pikachu",
+   "page": "Warm Pikachu (XY-P Promo 97)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "98": {
+   "en": "Mega Tokyo's Pikachu",
+   "page": "Mega Tokyo's Pikachu (XY-P Promo 98)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "99": {
+   "en": "Cosplay Pikachu",
+   "page": "Cosplay Pikachu (XY-P Promo 99)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "100": {
+   "en": "Rayquaza",
+   "page": "Rayquaza (XY-P Promo 100)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "101": {
+   "en": "Metagross",
+   "page": "Metagross-EX (XY-P Promo 101)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "102": {
+   "en": "Metagross",
+   "page": "M Metagross-EX (XY-P Promo 102)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "103": {
+   "en": "Torchic",
+   "page": "Torchic (XY-P Promo 103)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "104": {
+   "en": "Regirock",
+   "page": "Regirock (XY-P Promo 104)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "105": {
+   "en": "Inkay",
+   "page": "Inkay (XY-P Promo 105)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "106": {
+   "en": "Meowth",
+   "page": "Meowth (XY-P Promo 106)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "107": {
+   "en": "Treecko",
+   "page": "Treecko (XY-P Promo 107)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "108": {
+   "en": "Torchic",
+   "page": "Torchic (XY-P Promo 108)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "109": {
+   "en": "Mudkip",
+   "page": "Mudkip (XY-P Promo 109)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "110": {
+   "en": "Vulpix",
+   "page": "Vulpix (XY-P Promo 110)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "111": {
+   "en": "Lanturn",
+   "page": "Lanturn (XY-P Promo 111)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "112": {
+   "en": "Tynamo",
+   "page": "Tynamo (XY-P Promo 112)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "113": {
+   "en": "Rhydon",
+   "page": "Rhydon (XY-P Promo 113)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "114": {
+   "en": "Flygon",
+   "page": "Flygon-EX (XY-P Promo 114)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "115": {
+   "en": "Fearow",
+   "page": "Fearow (XY-P Promo 115)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "116": {
+   "en": "Swablu",
+   "page": "Swablu (XY-P Promo 116)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "117": {
+   "en": "Energy Recycler",
+   "page": "Energy Recycler (XY-P Promo 117)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "118": {
+   "en": "Acro Bike",
+   "page": "Acro Bike (XY-P Promo 118)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "119": {
+   "en": "Team Aqua Grunt",
+   "page": "Team Aqua Grunt (XY-P Promo 119)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "120": {
+   "en": "Team Magma Grunt",
+   "page": "Team Magma Grunt (XY-P Promo 120)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "121": {
+   "en": "Steven",
+   "page": "Steven (XY-P Promo 121)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "122": {
+   "en": "Rayquaza",
+   "page": "Rayquaza-EX (XY-P Promo 122)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "123": {
+   "en": "Rayquaza",
+   "page": "Rayquaza-EX (XY-P Promo 123)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "124": {
+   "en": "Salamence",
+   "page": "Salamence (XY-P Promo 124)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "125": {
+   "en": "Muscle Band",
+   "page": "Muscle Band (XY-P Promo 125)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "126": {
+   "en": "Rayquaza Spirit Link",
+   "page": "Rayquaza Spirit Link (XY-P Promo 126)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "127": {
+   "en": "Blaziken",
+   "page": "Blaziken-EX (XY-P Promo 127)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "128": {
+   "en": "Wurmple",
+   "page": "Wurmple (XY-P Promo 128)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "129": {
+   "en": "Jirachi",
+   "page": "Jirachi (XY-P Promo 129)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "130": {
+   "en": "Malamar",
+   "page": "Malamar (XY-P Promo 130)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "131": {
+   "en": "Ralts",
+   "page": "Ralts (XY-P Promo 131)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "132": {
+   "en": "Dragonair",
+   "page": "Dragonair (XY-P Promo 132)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "133": {
+   "en": "Tyrantrum",
+   "page": "Tyrantrum-EX (XY-P Promo 133)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "134": {
+   "en": "Taillow",
+   "page": "Taillow (XY-P Promo 134)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "135": {
+   "en": "Heavy Boots",
+   "page": "Heavy Boots (XY-P Promo 135)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "136": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (XY-P Promo 136)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "137": {
+   "en": "Swampert",
+   "page": "Swampert-EX (XY-P Promo 137)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "138": {
+   "en": "Blaziken",
+   "page": "M Blaziken-EX (XY-P Promo 138)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "139": {
+   "en": "All-Night Party",
+   "page": "All-Night Party (XY-P Promo 139)",
+   "type": "St",
+   "rarity": "—",
+   "mark": ""
+  },
+  "140": {
+   "en": "Umbreon",
+   "page": "Umbreon (XY-P Promo 140)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "141": {
+   "en": "Sylveon",
+   "page": "Sylveon (XY-P Promo 141)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "142": {
+   "en": "Celebi",
+   "page": "Celebi (XY-P Promo 142)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "143": {
+   "en": "Kyogre",
+   "page": "Kyogre (XY-P Promo 143)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "144": {
+   "en": "Groudon",
+   "page": "Groudon (XY-P Promo 144)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "145": {
+   "en": "Latias",
+   "page": "Latias (XY-P Promo 145)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "146": {
+   "en": "Latios",
+   "page": "Latios (XY-P Promo 146)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "147": {
+   "en": "Sableye",
+   "page": "Sableye (XY-P Promo 147)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "148": {
+   "en": "Chespin",
+   "page": "Chespin (XY-P Promo 148)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "149": {
+   "en": "Snorlax",
+   "page": "Snorlax (XY-P Promo 149)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "150": {
+   "en": "Pretend Magikarp Pikachu",
+   "page": "Pretend Magikarp Pikachu (XY-P Promo 150)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "151": {
+   "en": "Pretend Gyarados Pikachu",
+   "page": "Pretend Gyarados Pikachu (XY-P Promo 151)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "152": {
+   "en": "Kyogre",
+   "page": "Kyogre-EX (XY-P Promo 152)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "153": {
+   "en": "Groudon",
+   "page": "Groudon-EX (XY-P Promo 153)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "154": {
+   "en": "Pikachu",
+   "page": "Pikachu (XY-P Promo 154)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "155": {
+   "en": "Hoopa",
+   "page": "Hoopa (XY-P Promo 155)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "156": {
+   "en": "Pikachu",
+   "page": "Pikachu (XY-P Promo 156)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "157": {
+   "en": "Hoopa",
+   "page": "Hoopa (XY-P Promo 157)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "158": {
+   "en": "Rayquaza",
+   "page": "Rayquaza-EX (XY-P Promo 158)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "159": {
+   "en": "Hippopotas",
+   "page": "Hippopotas (XY-P Promo 159)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "160": {
+   "en": "Regigigas",
+   "page": "Regigigas (XY-P Promo 160)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "161": {
+   "en": "Reshiram",
+   "page": "Reshiram (XY-P Promo 161)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "162": {
+   "en": "Altaria",
+   "page": "Altaria (XY-P Promo 162)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "163": {
+   "en": "Sceptile",
+   "page": "Sceptile-EX (XY-P Promo 163)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "164": {
+   "en": "Skyla",
+   "page": "Skyla (XY-P Promo 164)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "165": {
+   "en": "Vivillon",
+   "page": "Vivillon (XY-P Promo 165)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "166": {
+   "en": "Pansear",
+   "page": "Pansear (XY-P Promo 166)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "167": {
+   "en": "Froakie",
+   "page": "Froakie (XY-P Promo 167)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "168": {
+   "en": "Aurorus",
+   "page": "Aurorus-EX (XY-P Promo 168)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "169": {
+   "en": "Marowak",
+   "page": "Marowak (XY-P Promo 169)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "170": {
+   "en": "Gastly",
+   "page": "Gastly (XY-P Promo 170)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "171": {
+   "en": "Floette",
+   "page": "Floette (XY-P Promo 171)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "172": {
+   "en": "Energy Reset",
+   "page": "Energy Reset (XY-P Promo 172)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "173": {
+   "en": "Hex Maniac",
+   "page": "Hex Maniac (XY-P Promo 173)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "174": {
+   "en": "Latios",
+   "page": "Latios (XY-P Promo 174)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "175": {
+   "en": "Pikachu",
+   "page": "Pikachu (XY-P Promo 175)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "176": {
+   "en": "Mewtwo",
+   "page": "Mewtwo (XY-P Promo 176)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "177": {
+   "en": "Kyogre",
+   "page": "Kyogre (XY-P Promo 177)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "178": {
+   "en": "Shinx",
+   "page": "Shinx (XY-P Promo 178)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "179": {
+   "en": "Luxio",
+   "page": "Luxio (XY-P Promo 179)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "180": {
+   "en": "Luxray",
+   "page": "Luxray (XY-P Promo 180)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "181": {
+   "en": "Luxray",
+   "page": "Luxray BREAK (XY-P Promo 181)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "182": {
+   "en": "Aerodactyl",
+   "page": "Aerodactyl-EX (XY-P Promo 182)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "183": {
+   "en": "Aerodactyl",
+   "page": "M Aerodactyl-EX (XY-P Promo 183)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "184": {
+   "en": "Groudon",
+   "page": "Groudon (XY-P Promo 184)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "185": {
+   "en": "Mawile",
+   "page": "Mawile-EX (XY-P Promo 185)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "186": {
+   "en": "Mawile",
+   "page": "M Mawile-EX (XY-P Promo 186)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "187": {
+   "en": "Aerodactyl Spirit Link",
+   "page": "Aerodactyl Spirit Link (XY-P Promo 187)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "188": {
+   "en": "Mawile Spirit Link",
+   "page": "Mawile Spirit Link (XY-P Promo 188)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "189": {
+   "en": "Beheeyem",
+   "page": "Beheeyem BREAK (XY-P Promo 189)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "190": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-EX (XY-P Promo 190)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "191": {
+   "en": "Mewtwo",
+   "page": "Mewtwo-EX (XY-P Promo 191)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "192": {
+   "en": "Leafeon",
+   "page": "Leafeon-EX (XY-P Promo 192)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "193": {
+   "en": "Ninetales",
+   "page": "Ninetales-EX (XY-P Promo 193)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "194": {
+   "en": "Vaporeon",
+   "page": "Vaporeon-EX (XY-P Promo 194)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "195": {
+   "en": "Jolteon",
+   "page": "Jolteon-EX (XY-P Promo 195)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "196": {
+   "en": "Meowstic",
+   "page": "Meowstic-EX (XY-P Promo 196)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "197": {
+   "en": "Golem",
+   "page": "Golem-EX (XY-P Promo 197)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "198": {
+   "en": "Revitalizer",
+   "page": "Revitalizer (XY-P Promo 198)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "199": {
+   "en": "Olympia",
+   "page": "Olympia (XY-P Promo 199)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "200": {
+   "en": "Clemont",
+   "page": "Clemont (XY-P Promo 200)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "201": {
+   "en": "Evosoda",
+   "page": "Evosoda (XY-P Promo 201)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "202": {
+   "en": "Mewtwo",
+   "page": "Mewtwo (XY-P Promo 202)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "203": {
+   "en": "Poncho-wearing Pikachu",
+   "page": "Poncho-wearing Pikachu (XY-P Promo 203)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "204": {
+   "en": "Mega Tokyo's Pikachu",
+   "page": "Mega Tokyo's Pikachu (XY-P Promo 204)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "205": {
+   "en": "Suicune",
+   "page": "Suicune (XY-P Promo 205)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "206": {
+   "en": "Pikachu",
+   "page": "Pikachu (XY-P Promo 206)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "207": {
+   "en": "Poncho-wearing Pikachu",
+   "page": "Poncho-wearing Pikachu (XY-P Promo 207)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "208": {
+   "en": "Poncho-wearing Pikachu",
+   "page": "Poncho-wearing Pikachu (XY-P Promo 208)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "209": {
+   "en": "Greninja",
+   "page": "Greninja (XY-P Promo 209)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "210": {
+   "en": "Rainbow Energy",
+   "page": "Rainbow Energy (XY-P Promo 210)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "211": {
+   "en": "Eco Arm",
+   "page": "Eco Arm (XY-P Promo 211)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "212": {
+   "en": "Shaymin",
+   "page": "Shaymin-EX (XY-P Promo 212)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "213": {
+   "en": "Charizard",
+   "page": "Charizard-EX (XY-P Promo 213)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "214": {
+   "en": "Lucario",
+   "page": "Lucario (XY-P Promo 214)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "215": {
+   "en": "Rayquaza",
+   "page": "Rayquaza (XY-P Promo 215)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "216": {
+   "en": "Noctowl",
+   "page": "Noctowl BREAK (XY-P Promo 216)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "217": {
+   "en": "Mandibuzz",
+   "page": "Mandibuzz BREAK (XY-P Promo 217)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "218": {
+   "en": "Ash-Greninja",
+   "page": "Ash-Greninja-EX (XY-P Promo 218)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "219": {
+   "en": "Azelf",
+   "page": "Azelf (XY-P Promo 219)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "220": {
+   "en": "Assault Vest",
+   "page": "Assault Vest (XY-P Promo 220)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "221": {
+   "en": "Okuge-sama and Maiko-han Pikachu",
+   "page": "Okuge-sama and Maiko-han Pikachu (XY-P Promo 221)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "222": {
+   "en": "Chikorita",
+   "page": "Chikorita (XY-P Promo 222)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "223": {
+   "en": "Cyndaquil",
+   "page": "Cyndaquil (XY-P Promo 223)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "224": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh (XY-P Promo 224)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "225": {
+   "en": "Ho-Oh",
+   "page": "Ho-Oh BREAK (XY-P Promo 225)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "226": {
+   "en": "Totodile",
+   "page": "Totodile (XY-P Promo 226)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "227": {
+   "en": "Smeargle",
+   "page": "Smeargle (XY-P Promo 227)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "228": {
+   "en": "Lugia",
+   "page": "Lugia (XY-P Promo 228)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "229": {
+   "en": "Alakazam Spirit Link",
+   "page": "Alakazam Spirit Link (XY-P Promo 229)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "230": {
+   "en": "Poncho-wearing Pikachu",
+   "page": "Poncho-wearing Pikachu (XY-P Promo 230)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "231": {
+   "en": "Poncho-wearing Pikachu",
+   "page": "Poncho-wearing Pikachu (XY-P Promo 231)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "232": {
+   "en": "Rayquaza",
+   "page": "Rayquaza (XY-P Promo 232)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "233": {
+   "en": "Venusaur",
+   "page": "Venusaur-EX (XY-P Promo 233)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "234": {
+   "en": "Blastoise",
+   "page": "Blastoise-EX (XY-P Promo 234)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "235": {
+   "en": "Jirachi",
+   "page": "Jirachi (XY-P Promo 235)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "236": {
+   "en": "Burmy",
+   "page": "Burmy (XY-P Promo 236)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "237": {
+   "en": "Braixen",
+   "page": "Braixen (XY-P Promo 237)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "238": {
+   "en": "Talonflame",
+   "page": "Talonflame BREAK (XY-P Promo 238)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "239": {
+   "en": "Black Kyurem",
+   "page": "Black Kyurem (XY-P Promo 239)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "240": {
+   "en": "Weezing",
+   "page": "Weezing (XY-P Promo 240)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "241": {
+   "en": "Larvitar",
+   "page": "Larvitar (XY-P Promo 241)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "242": {
+   "en": "Bronzor",
+   "page": "Bronzor (XY-P Promo 242)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "243": {
+   "en": "Captivating Poké Puff",
+   "page": "Captivating Poké Puff (XY-P Promo 243)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "244": {
+   "en": "Max Elixir",
+   "page": "Max Elixir (XY-P Promo 244)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "245": {
+   "en": "Garchomp",
+   "page": "Garchomp-EX (XY-P Promo 245)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "246": {
+   "en": "Professor Sycamore",
+   "page": "Professor Sycamore (XY-P Promo 246)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "247": {
+   "en": "Pikachu Libre",
+   "page": "Pikachu Libre (XY-P Promo 247)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "248": {
+   "en": "Victini",
+   "page": "Victini (XY-P Promo 248)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "249": {
+   "en": "Volcanion",
+   "page": "Volcanion (XY-P Promo 249)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "250": {
+   "en": "Meowth",
+   "page": "Meowth (XY-P Promo 250)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "251": {
+   "en": "Zygarde",
+   "page": "Zygarde (XY-P Promo 251)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "252": {
+   "en": "Zygarde",
+   "page": "Zygarde (XY-P Promo 252)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "253": {
+   "en": "Salamence",
+   "page": "Salamence-EX (XY-P Promo 253)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "254": {
+   "en": "Salamence",
+   "page": "Salamence-EX (XY-P Promo 254)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "255": {
+   "en": "Trevor",
+   "page": "Trevor (XY-P Promo 255)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "256": {
+   "en": "Karen",
+   "page": "Karen (XY-P Promo 256)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "257": {
+   "en": "Salamence",
+   "page": "M Salamence-EX (XY-P Promo 257)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "258": {
+   "en": "Salamence Spirit Link",
+   "page": "Salamence Spirit Link (XY-P Promo 258)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "259": {
+   "en": "Pikachu",
+   "page": "Pikachu (XY-P Promo 259)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "260": {
+   "en": "Pancham",
+   "page": "Pancham (XY-P Promo 260)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "261": {
+   "en": "Snorlax",
+   "page": "Snorlax (XY-P Promo 261)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "262": {
+   "en": "Slowbro",
+   "page": "Slowbro-EX (XY-P Promo 262)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "263": {
+   "en": "Slowbro",
+   "page": "M Slowbro-EX (XY-P Promo 263)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "264": {
+   "en": "Surfing Pikachu",
+   "page": "Surfing Pikachu (XY-P Promo 264)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "265": {
+   "en": "Slowbro Spirit Link",
+   "page": "Slowbro Spirit Link (XY-P Promo 265)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "266": {
+   "en": "Volcanion",
+   "page": "Volcanion (XY-P Promo 266)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "267": {
+   "en": "Arcanine",
+   "page": "Arcanine BREAK (XY-P Promo 267)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "268": {
+   "en": "Magearna",
+   "page": "Magearna (XY-P Promo 268)",
+   "type": "Metal",
+   "rarity": "—",
+   "mark": ""
+  },
+  "269": {
+   "en": "Ampharos",
+   "page": "Ampharos (XY-P Promo 269)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "270": {
+   "en": "Gallade",
+   "page": "Gallade (XY-P Promo 270)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "271": {
+   "en": "Diancie",
+   "page": "Diancie (XY-P Promo 271)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  },
+  "272": {
+   "en": "Rayquaza",
+   "page": "M Rayquaza-EX (XY-P Promo 272)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "273": {
+   "en": "Lopunny",
+   "page": "Lopunny (XY-P Promo 273)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "274": {
+   "en": "Poncho-wearing Pikachu",
+   "page": "Poncho-wearing Pikachu (XY-P Promo 274)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "275": {
+   "en": "Poncho-wearing Pikachu",
+   "page": "Poncho-wearing Pikachu (XY-P Promo 275)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "276": {
+   "en": "Charizard",
+   "page": "Charizard-EX (XY-P Promo 276)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "277": {
+   "en": "Giovanni's Scheme",
+   "page": "Giovanni's Scheme (XY-P Promo 277)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "278": {
+   "en": "Here Comes Team Rocket!",
+   "page": "Here Comes Team Rocket! (XY-P Promo 278)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "279": {
+   "en": "Pikachu",
+   "page": "Pikachu (XY-P Promo 279)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "280": {
+   "en": "Charizard",
+   "page": "Charizard (XY-P Promo 280)",
+   "type": "Fire",
+   "rarity": "—",
+   "mark": ""
+  },
+  "281": {
+   "en": "Pikachu",
+   "page": "Pikachu (XY-P Promo 281)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "282": {
+   "en": "Trade Please!",
+   "page": "Trade Please! (XY-P Promo 282)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "283": {
+   "en": "Yanmega",
+   "page": "Yanmega (XY-P Promo 283)",
+   "type": "Grass",
+   "rarity": "—",
+   "mark": ""
+  },
+  "284": {
+   "en": "Giratina",
+   "page": "Giratina (XY-P Promo 284)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "285": {
+   "en": "Trevenant",
+   "page": "Trevenant (XY-P Promo 285)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "286": {
+   "en": "Machamp",
+   "page": "Machamp-EX (XY-P Promo 286)",
+   "type": "Fighting",
+   "rarity": "—",
+   "mark": ""
+  },
+  "287": {
+   "en": "Tyranitar",
+   "page": "Tyranitar (XY-P Promo 287)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "288": {
+   "en": "Dragalge",
+   "page": "Dragalge (XY-P Promo 288)",
+   "type": "Dragon",
+   "rarity": "—",
+   "mark": ""
+  },
+  "289": {
+   "en": "Lass's Special",
+   "page": "Lass's Special (XY-P Promo 289)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "290": {
+   "en": "Ash-Greninja",
+   "page": "Ash-Greninja-EX (XY-P Promo 290)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "291": {
+   "en": "Altaria",
+   "page": "Altaria (XY-P Promo 291)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "292": {
+   "en": "Flying Pikachu",
+   "page": "Flying Pikachu (XY-P Promo 292)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "293": {
+   "en": "Mario Pikachu",
+   "page": "Mario Pikachu (XY-P Promo 293)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "294": {
+   "en": "Mario Pikachu",
+   "page": "Mario Pikachu (XY-P Promo 294)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "295": {
+   "en": "Luigi Pikachu",
+   "page": "Luigi Pikachu (XY-P Promo 295)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "296": {
+   "en": "Luigi Pikachu",
+   "page": "Luigi Pikachu (XY-P Promo 296)",
+   "type": "Lightning",
+   "rarity": "—",
+   "mark": ""
+  },
+  "297": {
+   "en": "Suzukisan",
+   "page": "Suzukisan (XY-P Promo 297)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "298": {
+   "en": "Sachiko",
+   "page": "M Sachiko-EX (XY-P Promo 298)",
+   "type": "Fairy",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

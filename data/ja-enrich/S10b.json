@@ -1,0 +1,657 @@
+{
+ "page": "Pokémon GO (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Bulbasaur",
+   "page": "Bulbasaur (Pokémon GO 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Ivysaur",
+   "page": "Ivysaur (Pokémon GO 2)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "3": {
+   "en": "Venusaur",
+   "page": "Venusaur (Pokémon GO 3)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "4": {
+   "en": "Radiant Venusaur",
+   "page": "Radiant Venusaur (Pokémon GO 4)",
+   "type": "Grass",
+   "rarity": "K",
+   "mark": ""
+  },
+  "5": {
+   "en": "Alolan Exeggutor",
+   "page": "Alolan Exeggutor V (Pokémon GO 5)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "6": {
+   "en": "Spinarak",
+   "page": "Spinarak (Pokémon GO 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Ariados",
+   "page": "Ariados (Pokémon GO 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Charmander",
+   "page": "Charmander (Pokémon GO 8)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (Pokémon GO 9)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "10": {
+   "en": "Charizard",
+   "page": "Charizard (Pokémon GO 10)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "11": {
+   "en": "Radiant Charizard",
+   "page": "Radiant Charizard (Pokémon GO 11)",
+   "type": "Fire",
+   "rarity": "K",
+   "mark": ""
+  },
+  "12": {
+   "en": "Moltres",
+   "page": "Moltres (Pokémon GO 12)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "13": {
+   "en": "Numel",
+   "page": "Numel (Pokémon GO 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Camerupt",
+   "page": "Camerupt (Pokémon GO 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Squirtle",
+   "page": "Squirtle (Pokémon GO 15)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Wartortle",
+   "page": "Wartortle (Pokémon GO 16)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "17": {
+   "en": "Blastoise",
+   "page": "Blastoise (Pokémon GO 17)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "18": {
+   "en": "Radiant Blastoise",
+   "page": "Radiant Blastoise (Pokémon GO 18)",
+   "type": "Water",
+   "rarity": "K",
+   "mark": ""
+  },
+  "19": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Pokémon GO 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Slowbro",
+   "page": "Slowbro (Pokémon GO 20)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "21": {
+   "en": "Magikarp",
+   "page": "Magikarp (Pokémon GO 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Gyarados",
+   "page": "Gyarados (Pokémon GO 22)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "23": {
+   "en": "Lapras",
+   "page": "Lapras (Pokémon GO 23)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "24": {
+   "en": "Articuno",
+   "page": "Articuno (Pokémon GO 24)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "25": {
+   "en": "Wimpod",
+   "page": "Wimpod (Pokémon GO 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Golisopod",
+   "page": "Golisopod (Pokémon GO 26)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "27": {
+   "en": "Pikachu",
+   "page": "Pikachu (Pokémon GO 27)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Pikachu",
+   "page": "Pikachu (Pokémon GO 28)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "29": {
+   "en": "Zapdos",
+   "page": "Zapdos (Pokémon GO 29)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "30": {
+   "en": "Mewtwo",
+   "page": "Mewtwo V (Pokémon GO 30)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "31": {
+   "en": "Mewtwo",
+   "page": "Mewtwo VSTAR (Pokémon GO 31)",
+   "type": "Psychic",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "32": {
+   "en": "Natu",
+   "page": "Natu (Pokémon GO 32)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Xatu",
+   "page": "Xatu (Pokémon GO 33)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Lunatone",
+   "page": "Lunatone (Pokémon GO 34)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Sylveon",
+   "page": "Sylveon (Pokémon GO 35)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "36": {
+   "en": "Onix",
+   "page": "Onix (Pokémon GO 36)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Larvitar",
+   "page": "Larvitar (Pokémon GO 37)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Pupitar",
+   "page": "Pupitar (Pokémon GO 38)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "39": {
+   "en": "Solrock",
+   "page": "Solrock (Pokémon GO 39)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Conkeldurr",
+   "page": "Conkeldurr V (Pokémon GO 40)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "41": {
+   "en": "Alolan Rattata",
+   "page": "Alolan Rattata (Pokémon GO 41)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Alolan Raticate",
+   "page": "Alolan Raticate (Pokémon GO 42)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Tyranitar",
+   "page": "Tyranitar (Pokémon GO 43)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "44": {
+   "en": "Steelix",
+   "page": "Steelix (Pokémon GO 44)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Meltan",
+   "page": "Meltan (Pokémon GO 45)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Melmetal",
+   "page": "Melmetal (Pokémon GO 46)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "47": {
+   "en": "Melmetal",
+   "page": "Melmetal V (Pokémon GO 47)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "48": {
+   "en": "Melmetal",
+   "page": "Melmetal VMAX (Pokémon GO 48)",
+   "type": "Metal",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "49": {
+   "en": "Dragonite",
+   "page": "Dragonite V (Pokémon GO 49)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "50": {
+   "en": "Dragonite",
+   "page": "Dragonite VSTAR (Pokémon GO 50)",
+   "type": "Dragon",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "51": {
+   "en": "Chansey",
+   "page": "Chansey (Pokémon GO 51)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Blissey",
+   "page": "Blissey (Pokémon GO 52)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "53": {
+   "en": "Ditto",
+   "page": "Ditto (Pokémon GO 53)",
+   "type": "Colorless",
+   "rarity": "—",
+   "mark": ""
+  },
+  "54": {
+   "en": "Eevee",
+   "page": "Eevee (Pokémon GO 54)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Radiant Eevee",
+   "page": "Radiant Eevee (Pokémon GO 55)",
+   "type": "Colorless",
+   "rarity": "K",
+   "mark": ""
+  },
+  "56": {
+   "en": "Snorlax",
+   "page": "Snorlax (Pokémon GO 56)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "57": {
+   "en": "Aipom",
+   "page": "Aipom (Pokémon GO 57)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Ambipom",
+   "page": "Ambipom (Pokémon GO 58)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Slaking",
+   "page": "Slaking V (Pokémon GO 59)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Bidoof",
+   "page": "Bidoof (Pokémon GO 60)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "61": {
+   "en": "Bibarel",
+   "page": "Bibarel (Pokémon GO 61)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "62": {
+   "en": "Pidove",
+   "page": "Pidove (Pokémon GO 62)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Tranquill",
+   "page": "Tranquill (Pokémon GO 63)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "64": {
+   "en": "Unfezant",
+   "page": "Unfezant (Pokémon GO 64)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "65": {
+   "en": "Egg Incubator",
+   "page": "Egg Incubator (Pokémon GO 65)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Pokémon GO 66)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "67": {
+   "en": "Lure Module",
+   "page": "Lure Module (Pokémon GO 67)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "68": {
+   "en": "Candela",
+   "page": "Candela (Pokémon GO 68)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "69": {
+   "en": "Spark",
+   "page": "Spark (Pokémon GO 69)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "70": {
+   "en": "Blanche",
+   "page": "Blanche (Pokémon GO 70)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "PokéStop",
+   "page": "PokéStop (Pokémon GO 71)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Alolan Exeggutor",
+   "page": "Alolan Exeggutor V (Pokémon GO 5)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Mewtwo",
+   "page": "Mewtwo V (Pokémon GO 30)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "74": {
+   "en": "Mewtwo",
+   "page": "Mewtwo V (Pokémon GO 74)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "75": {
+   "en": "Conkeldurr",
+   "page": "Conkeldurr V (Pokémon GO 40)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "76": {
+   "en": "Conkeldurr",
+   "page": "Conkeldurr V (Pokémon GO 40)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "77": {
+   "en": "Melmetal",
+   "page": "Melmetal V (Pokémon GO 47)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "78": {
+   "en": "Dragonite",
+   "page": "Dragonite V (Pokémon GO 49)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "79": {
+   "en": "Slaking",
+   "page": "Slaking V (Pokémon GO 59)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "80": {
+   "en": "Candela",
+   "page": "Candela (Pokémon GO 80)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "81": {
+   "en": "Spark",
+   "page": "Spark (Pokémon GO 81)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "82": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Pokémon GO 82)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "83": {
+   "en": "Blanche",
+   "page": "Blanche (Pokémon GO 83)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "84": {
+   "en": "Mewtwo",
+   "page": "Mewtwo VSTAR (Pokémon GO 31)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "85": {
+   "en": "Melmetal",
+   "page": "Melmetal VMAX (Pokémon GO 48)",
+   "type": "Metal",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Dragonite",
+   "page": "Dragonite VSTAR (Pokémon GO 50)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Candela",
+   "page": "Candela (Pokémon GO 80)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "88": {
+   "en": "Spark",
+   "page": "Spark (Pokémon GO 81)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "89": {
+   "en": "Professor's Research",
+   "page": "Professor's Research (Pokémon GO 82)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Blanche",
+   "page": "Blanche (Pokémon GO 83)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "91": {
+   "en": "Mewtwo",
+   "page": "Mewtwo VSTAR (Pokémon GO 31)",
+   "type": "Psychic",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Egg Incubator",
+   "page": "Egg Incubator (Pokémon GO 65)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Lure Module",
+   "page": "Lure Module (Pokémon GO 93)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

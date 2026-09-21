@@ -1,0 +1,195 @@
+{
+ "page": "Legendary Shine Collection (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Chespin",
+   "page": "Chespin (Legendary Shine Collection 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Reshiram",
+   "page": "Reshiram (Legendary Shine Collection 2)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "3": {
+   "en": "Fennekin",
+   "page": "Fennekin (Legendary Shine Collection 3)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Braixen",
+   "page": "Braixen (Legendary Shine Collection 4)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "5": {
+   "en": "Palkia",
+   "page": "Palkia (Legendary Shine Collection 5)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "6": {
+   "en": "Froakie",
+   "page": "Froakie (Legendary Shine Collection 6)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Frogadier",
+   "page": "Frogadier (Legendary Shine Collection 7)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "8": {
+   "en": "Pikachu",
+   "page": "Pikachu-EX (Legendary Shine Collection 8)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "9": {
+   "en": "Zekrom",
+   "page": "Zekrom (Legendary Shine Collection 9)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "10": {
+   "en": "Dedenne",
+   "page": "Dedenne (Legendary Shine Collection 10)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (Legendary Shine Collection 11)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Hoopa",
+   "page": "Hoopa-EX (Legendary Shine Collection 12)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "13": {
+   "en": "Hippopotas",
+   "page": "Hippopotas (Legendary Shine Collection 13)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Pancham",
+   "page": "Pancham (Legendary Shine Collection 14)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (Legendary Shine Collection 15)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Inkay",
+   "page": "Inkay (Legendary Shine Collection 16)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Dialga",
+   "page": "Dialga (Legendary Shine Collection 17)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "18": {
+   "en": "Latias",
+   "page": "Latias (Legendary Shine Collection 18)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "19": {
+   "en": "Latios",
+   "page": "Latios (Legendary Shine Collection 19)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "20": {
+   "en": "Black Kyurem",
+   "page": "Black Kyurem (Legendary Shine Collection 20)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "21": {
+   "en": "White Kyurem",
+   "page": "White Kyurem (Legendary Shine Collection 21)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Meowth",
+   "page": "Meowth (Legendary Shine Collection 22)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Regigigas",
+   "page": "Regigigas (Legendary Shine Collection 23)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "24": {
+   "en": "Arceus",
+   "page": "Arceus (Legendary Shine Collection 24)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "25": {
+   "en": "Rufflet",
+   "page": "Rufflet (Legendary Shine Collection 25)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Braviary",
+   "page": "Braviary (Legendary Shine Collection 26)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Noibat",
+   "page": "Noibat (Legendary Shine Collection 27)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  }
+ }
+}

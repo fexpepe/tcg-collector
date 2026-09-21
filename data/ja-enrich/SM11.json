@@ -1,0 +1,811 @@
+{
+ "page": "Unified Minds (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Yanma",
+   "page": "Yanma (Miracle Twin 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Yanmega",
+   "page": "Yanmega (Miracle Twin 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Celebi",
+   "page": "Celebi (Miracle Twin 3)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "4": {
+   "en": "Shroomish",
+   "page": "Shroomish (Miracle Twin 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Sewaddle",
+   "page": "Sewaddle (Miracle Twin 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Sewaddle",
+   "page": "Sewaddle (Miracle Twin 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Swadloon",
+   "page": "Swadloon (Miracle Twin 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Leavanny",
+   "page": "Leavanny (Miracle Twin 8)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "9": {
+   "en": "Foongus",
+   "page": "Foongus (Miracle Twin 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Amoonguss",
+   "page": "Amoonguss (Miracle Twin 10)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Slowpoke & Psyduck",
+   "page": "Slowpoke & Psyduck-GX (Miracle Twin 11)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "12": {
+   "en": "Lapras",
+   "page": "Lapras (Miracle Twin 12)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "13": {
+   "en": "Finneon",
+   "page": "Finneon (Miracle Twin 13)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Lumineon",
+   "page": "Lumineon (Miracle Twin 14)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Basculin",
+   "page": "Basculin (Miracle Twin 15)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Tirtouga",
+   "page": "Tirtouga (Miracle Twin 16)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Carracosta",
+   "page": "Carracosta (Miracle Twin 17)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Dewpider",
+   "page": "Dewpider (Miracle Twin 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Araquanid",
+   "page": "Araquanid (Miracle Twin 19)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "20": {
+   "en": "Wimpod",
+   "page": "Wimpod (Miracle Twin 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Golisopod",
+   "page": "Golisopod (Miracle Twin 21)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "22": {
+   "en": "Joltik",
+   "page": "Joltik (Miracle Twin 22)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Galvantula",
+   "page": "Galvantula (Miracle Twin 23)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Tynamo",
+   "page": "Tynamo (Miracle Twin 24)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Tynamo",
+   "page": "Tynamo (Miracle Twin 25)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Eelektrik",
+   "page": "Eelektrik (Miracle Twin 26)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Eelektross",
+   "page": "Eelektross (Miracle Twin 27)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "28": {
+   "en": "Tapu Koko",
+   "page": "Tapu Koko (Miracle Twin 28)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "29": {
+   "en": "Mewtwo & Mew",
+   "page": "Mewtwo & Mew-GX (Miracle Twin 29)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "30": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Miracle Twin 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Exeggutor",
+   "page": "Exeggutor (Miracle Twin 31)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Jynx",
+   "page": "Jynx (Miracle Twin 32)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Wynaut",
+   "page": "Wynaut (Miracle Twin 33)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Latios",
+   "page": "Latios-GX (Miracle Twin 34)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "35": {
+   "en": "Skorupi",
+   "page": "Skorupi (Miracle Twin 35)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Elgyem",
+   "page": "Elgyem (Miracle Twin 36)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Beheeyem",
+   "page": "Beheeyem (Miracle Twin 37)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "38": {
+   "en": "Honedge",
+   "page": "Honedge (Miracle Twin 38)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Honedge",
+   "page": "Honedge (Miracle Twin 39)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Doublade",
+   "page": "Doublade (Miracle Twin 40)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Aegislash",
+   "page": "Aegislash (Miracle Twin 41)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "42": {
+   "en": "Necrozma",
+   "page": "Necrozma (Miracle Twin 42)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "43": {
+   "en": "Onix",
+   "page": "Onix (Miracle Twin 43)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Steelix",
+   "page": "Steelix (Miracle Twin 44)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Aerodactyl",
+   "page": "Aerodactyl-GX (Miracle Twin 45)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "46": {
+   "en": "Heracross",
+   "page": "Heracross (Miracle Twin 46)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Breloom",
+   "page": "Breloom (Miracle Twin 47)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "48": {
+   "en": "Relicanth",
+   "page": "Relicanth (Miracle Twin 48)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Drilbur",
+   "page": "Drilbur (Miracle Twin 49)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Excadrill",
+   "page": "Excadrill (Miracle Twin 50)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Archen",
+   "page": "Archen (Miracle Twin 51)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Archeops",
+   "page": "Archeops (Miracle Twin 52)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "53": {
+   "en": "Terrakion",
+   "page": "Terrakion (Miracle Twin 53)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "54": {
+   "en": "Mega Sableye & Tyranitar",
+   "page": "Mega Sableye & Tyranitar-GX (Miracle Twin 54)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "55": {
+   "en": "Sableye",
+   "page": "Sableye (Miracle Twin 55)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "56": {
+   "en": "Drapion",
+   "page": "Drapion (Miracle Twin 56)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Purrloin",
+   "page": "Purrloin (Miracle Twin 57)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Liepard",
+   "page": "Liepard (Miracle Twin 58)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Scraggy",
+   "page": "Scraggy (Miracle Twin 59)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Scrafty",
+   "page": "Scrafty (Miracle Twin 60)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Yveltal",
+   "page": "Yveltal (Miracle Twin 61)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "62": {
+   "en": "Cottonee",
+   "page": "Cottonee (Miracle Twin 62)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Whimsicott",
+   "page": "Whimsicott (Miracle Twin 63)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Dedenne",
+   "page": "Dedenne (Miracle Twin 64)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Dratini",
+   "page": "Dratini (Miracle Twin 65)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "Dratini",
+   "page": "Dratini (Miracle Twin 66)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "67": {
+   "en": "Dragonair",
+   "page": "Dragonair (Miracle Twin 67)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "68": {
+   "en": "Dragonite",
+   "page": "Dragonite (Miracle Twin 68)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "69": {
+   "en": "Dragonite",
+   "page": "Dragonite-GX (Miracle Twin 69)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Noibat",
+   "page": "Noibat (Miracle Twin 70)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "71": {
+   "en": "Noivern",
+   "page": "Noivern (Miracle Twin 71)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Tauros",
+   "page": "Tauros (Miracle Twin 72)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "73": {
+   "en": "Slakoth",
+   "page": "Slakoth (Miracle Twin 73)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "74": {
+   "en": "Slakoth",
+   "page": "Slakoth (Miracle Twin 74)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "75": {
+   "en": "Vigoroth",
+   "page": "Vigoroth (Miracle Twin 75)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "76": {
+   "en": "Slaking",
+   "page": "Slaking (Miracle Twin 76)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "77": {
+   "en": "Yungoos",
+   "page": "Yungoos (Miracle Twin 77)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "78": {
+   "en": "Gumshoos",
+   "page": "Gumshoos (Miracle Twin 78)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Oranguru",
+   "page": "Oranguru (Miracle Twin 79)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "80": {
+   "en": "Komala",
+   "page": "Komala (Miracle Twin 80)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "81": {
+   "en": "Great Potion",
+   "page": "Great Potion (Miracle Twin 81)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "82": {
+   "en": "Stadium Nav",
+   "page": "Stadium Nav (Miracle Twin 82)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "83": {
+   "en": "Unidentified Fossil",
+   "page": "Unidentified Fossil (Miracle Twin 83)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "84": {
+   "en": "Giant Bomb",
+   "page": "Giant Bomb (Miracle Twin 84)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "85": {
+   "en": "Misty's Favor",
+   "page": "Misty's Favor (Miracle Twin 85)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "86": {
+   "en": "Channeler",
+   "page": "Channeler (Miracle Twin 86)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "87": {
+   "en": "Blue's Tactics",
+   "page": "Blue's Tactics (Miracle Twin 87)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "88": {
+   "en": "Slumbering Forest",
+   "page": "Slumbering Forest (Miracle Twin 88)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "89": {
+   "en": "Pokémon Research Lab",
+   "page": "Pokémon Research Lab (Miracle Twin 89)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "90": {
+   "en": "Weakness Guard Energy",
+   "page": "Weakness Guard Energy (Miracle Twin 90)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "91": {
+   "en": "Pal Pad",
+   "page": "Pal Pad (Miracle Twin 91)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "92": {
+   "en": "Pokégear 3.0",
+   "page": "Pokégear 3.0 (Miracle Twin 92)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Mysterious Treasure",
+   "page": "Mysterious Treasure (Miracle Twin 93)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Sightseer",
+   "page": "Sightseer (Miracle Twin 94)",
+   "type": "Su",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Slowpoke & Psyduck",
+   "page": "Slowpoke & Psyduck-GX (Miracle Twin 95)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Slowpoke & Psyduck",
+   "page": "Slowpoke & Psyduck-GX (Miracle Twin 96)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Mewtwo & Mew",
+   "page": "Mewtwo & Mew-GX (Miracle Twin 97)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Mewtwo & Mew",
+   "page": "Mewtwo & Mew-GX (Miracle Twin 98)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Latios",
+   "page": "Latios-GX (Miracle Twin 99)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Aerodactyl",
+   "page": "Aerodactyl-GX (Miracle Twin 100)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Mega Sableye & Tyranitar",
+   "page": "Mega Sableye & Tyranitar-GX (Miracle Twin 101)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Mega Sableye & Tyranitar",
+   "page": "Mega Sableye & Tyranitar-GX (Miracle Twin 102)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Dragonite",
+   "page": "Dragonite-GX (Miracle Twin 103)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Misty's Favor",
+   "page": "Misty's Favor (Miracle Twin 104)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Channeler",
+   "page": "Channeler (Miracle Twin 105)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Blue's Tactics",
+   "page": "Blue's Tactics (Miracle Twin 106)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Slowpoke & Psyduck",
+   "page": "Slowpoke & Psyduck-GX (Miracle Twin 107)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Mewtwo & Mew",
+   "page": "Mewtwo & Mew-GX (Miracle Twin 108)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Latios",
+   "page": "Latios-GX (Miracle Twin 109)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Aerodactyl",
+   "page": "Aerodactyl-GX (Miracle Twin 110)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Mega Sableye & Tyranitar",
+   "page": "Mega Sableye & Tyranitar-GX (Miracle Twin 111)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Dragonite",
+   "page": "Dragonite-GX (Miracle Twin 112)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Cherish Ball",
+   "page": "Cherish Ball (Miracle Twin 113)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Giant Bomb",
+   "page": "Giant Bomb (Miracle Twin 114)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Weakness Guard Energy",
+   "page": "Weakness Guard Energy (Miracle Twin 115)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}
