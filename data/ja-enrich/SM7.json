@@ -1,0 +1,790 @@
+{
+ "page": "Celestial Storm (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Treecko",
+   "page": "Treecko (Sky-Splitting Charisma 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Treecko",
+   "page": "Treecko (Sky-Splitting Charisma 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Grovyle",
+   "page": "Grovyle (Sky-Splitting Charisma 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Sceptile",
+   "page": "Sceptile (Sky-Splitting Charisma 4)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "5": {
+   "en": "Seedot",
+   "page": "Seedot (Sky-Splitting Charisma 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Seedot",
+   "page": "Seedot (Sky-Splitting Charisma 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Nuzleaf",
+   "page": "Nuzleaf (Sky-Splitting Charisma 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Shiftry",
+   "page": "Shiftry-GX (Sky-Splitting Charisma 8)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "9": {
+   "en": "Surskit",
+   "page": "Surskit (Sky-Splitting Charisma 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Masquerain",
+   "page": "Masquerain (Sky-Splitting Charisma 10)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Volbeat",
+   "page": "Volbeat (Sky-Splitting Charisma 11)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Illumise",
+   "page": "Illumise (Sky-Splitting Charisma 12)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Tropius",
+   "page": "Tropius (Sky-Splitting Charisma 13)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Dhelmise",
+   "page": "Dhelmise (Sky-Splitting Charisma 14)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "15": {
+   "en": "Torchic",
+   "page": "Torchic (Sky-Splitting Charisma 15)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Torchic",
+   "page": "Torchic (Sky-Splitting Charisma 16)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Combusken",
+   "page": "Combusken (Sky-Splitting Charisma 17)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Blaziken",
+   "page": "Blaziken-GX (Sky-Splitting Charisma 18)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "19": {
+   "en": "Torkoal",
+   "page": "Torkoal (Sky-Splitting Charisma 19)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Oricorio",
+   "page": "Oricorio (Sky-Splitting Charisma 20)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Mudkip",
+   "page": "Mudkip (Sky-Splitting Charisma 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Mudkip",
+   "page": "Mudkip (Sky-Splitting Charisma 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Marshtomp",
+   "page": "Marshtomp (Sky-Splitting Charisma 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Swampert",
+   "page": "Swampert (Sky-Splitting Charisma 24)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "25": {
+   "en": "Wailmer",
+   "page": "Wailmer (Sky-Splitting Charisma 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Wailord",
+   "page": "Wailord (Sky-Splitting Charisma 26)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Clamperl",
+   "page": "Clamperl (Sky-Splitting Charisma 27)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Huntail",
+   "page": "Huntail (Sky-Splitting Charisma 28)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "29": {
+   "en": "Gorebyss",
+   "page": "Gorebyss (Sky-Splitting Charisma 29)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Luvdisc",
+   "page": "Luvdisc (Sky-Splitting Charisma 30)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Regice",
+   "page": "Regice (Sky-Splitting Charisma 31)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Kyogre",
+   "page": "Kyogre (Sky-Splitting Charisma 32)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "33": {
+   "en": "Electrike",
+   "page": "Electrike (Sky-Splitting Charisma 33)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Manectric",
+   "page": "Manectric (Sky-Splitting Charisma 34)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "35": {
+   "en": "Plusle",
+   "page": "Plusle (Sky-Splitting Charisma 35)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Minun",
+   "page": "Minun (Sky-Splitting Charisma 36)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Oricorio",
+   "page": "Oricorio (Sky-Splitting Charisma 37)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "38": {
+   "en": "Spoink",
+   "page": "Spoink (Sky-Splitting Charisma 38)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Grumpig",
+   "page": "Grumpig (Sky-Splitting Charisma 39)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Shuppet",
+   "page": "Shuppet (Sky-Splitting Charisma 40)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Banette",
+   "page": "Banette (Sky-Splitting Charisma 41)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "42": {
+   "en": "Deoxys",
+   "page": "Deoxys (Sky-Splitting Charisma 42)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "43": {
+   "en": "Deoxys",
+   "page": "Deoxys (Sky-Splitting Charisma 43)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Deoxys",
+   "page": "Deoxys (Sky-Splitting Charisma 44)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Meditite",
+   "page": "Meditite (Sky-Splitting Charisma 45)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Medicham",
+   "page": "Medicham (Sky-Splitting Charisma 46)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "47": {
+   "en": "Baltoy",
+   "page": "Baltoy (Sky-Splitting Charisma 47)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Claydol",
+   "page": "Claydol (Sky-Splitting Charisma 48)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Regirock",
+   "page": "Regirock (Sky-Splitting Charisma 49)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Groudon",
+   "page": "Groudon (Sky-Splitting Charisma 50)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "51": {
+   "en": "Minior",
+   "page": "Minior (Sky-Splitting Charisma 51)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Beldum",
+   "page": "Beldum (Sky-Splitting Charisma 52)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Beldum",
+   "page": "Beldum (Sky-Splitting Charisma 53)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Metang",
+   "page": "Metang (Sky-Splitting Charisma 54)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Metagross",
+   "page": "Metagross (Sky-Splitting Charisma 55)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "56": {
+   "en": "Registeel",
+   "page": "Registeel (Sky-Splitting Charisma 56)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Jirachi",
+   "page": "Jirachi ♢ (Sky-Splitting Charisma 57)",
+   "type": "Metal",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "58": {
+   "en": "Celesteela",
+   "page": "Celesteela (Sky-Splitting Charisma 58)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "59": {
+   "en": "Kartana",
+   "page": "Kartana (Sky-Splitting Charisma 59)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Stakataka",
+   "page": "Stakataka-GX (Sky-Splitting Charisma 60)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Altaria",
+   "page": "Altaria-GX (Sky-Splitting Charisma 61)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "62": {
+   "en": "Bagon",
+   "page": "Bagon (Sky-Splitting Charisma 62)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Bagon",
+   "page": "Bagon (Sky-Splitting Charisma 63)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "64": {
+   "en": "Shelgon",
+   "page": "Shelgon (Sky-Splitting Charisma 64)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Salamence",
+   "page": "Salamence (Sky-Splitting Charisma 65)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "66": {
+   "en": "Latias",
+   "page": "Latias ♢ (Sky-Splitting Charisma 66)",
+   "type": "Dragon",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Latios",
+   "page": "Latios ♢ (Sky-Splitting Charisma 67)",
+   "type": "Dragon",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "68": {
+   "en": "Rayquaza",
+   "page": "Rayquaza-GX (Sky-Splitting Charisma 68)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "69": {
+   "en": "Wingull",
+   "page": "Wingull (Sky-Splitting Charisma 69)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "70": {
+   "en": "Pelipper",
+   "page": "Pelipper (Sky-Splitting Charisma 70)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "71": {
+   "en": "Whismur",
+   "page": "Whismur (Sky-Splitting Charisma 71)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "72": {
+   "en": "Whismur",
+   "page": "Whismur (Sky-Splitting Charisma 72)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "73": {
+   "en": "Loudred",
+   "page": "Loudred (Sky-Splitting Charisma 73)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "74": {
+   "en": "Exploud",
+   "page": "Exploud (Sky-Splitting Charisma 74)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "75": {
+   "en": "Skitty",
+   "page": "Skitty (Sky-Splitting Charisma 75)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "76": {
+   "en": "Delcatty",
+   "page": "Delcatty (Sky-Splitting Charisma 76)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "77": {
+   "en": "Swablu",
+   "page": "Swablu (Sky-Splitting Charisma 77)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "78": {
+   "en": "Kecleon",
+   "page": "Kecleon (Sky-Splitting Charisma 78)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Last Chance Potion",
+   "page": "Last Chance Potion (Sky-Splitting Charisma 79)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "80": {
+   "en": "Acro Bike",
+   "page": "Acro Bike (Sky-Splitting Charisma 80)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "81": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Sky-Splitting Charisma 81)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "82": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Sky-Splitting Charisma 82)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "83": {
+   "en": "Switch",
+   "page": "Switch (Sky-Splitting Charisma 83)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "84": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (Sky-Splitting Charisma 84)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "85": {
+   "en": "Rainbow Brush",
+   "page": "Rainbow Brush (Sky-Splitting Charisma 85)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "86": {
+   "en": "Choice Band",
+   "page": "Choice Band (Sky-Splitting Charisma 86)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "87": {
+   "en": "Hustle Belt",
+   "page": "Hustle Belt (Sky-Splitting Charisma 87)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "88": {
+   "en": "Steven's Resolve",
+   "page": "Steven's Resolve (Sky-Splitting Charisma 88)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "89": {
+   "en": "Fisherman",
+   "page": "Fisherman (Sky-Splitting Charisma 89)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "90": {
+   "en": "Hau",
+   "page": "Hau (Sky-Splitting Charisma 90)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "91": {
+   "en": "Tate & Liza",
+   "page": "Tate & Liza (Sky-Splitting Charisma 91)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "92": {
+   "en": "Lillie",
+   "page": "Lillie (Sky-Splitting Charisma 92)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "93": {
+   "en": "Lisia",
+   "page": "Lisia (Sky-Splitting Charisma 93)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "94": {
+   "en": "Shrine of Punishment",
+   "page": "Shrine of Punishment (Sky-Splitting Charisma 94)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "95": {
+   "en": "Sky Pillar",
+   "page": "Sky Pillar (Sky-Splitting Charisma 95)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "96": {
+   "en": "Double Colorless Energy",
+   "page": "Double Colorless Energy (Sky-Splitting Charisma 96)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "97": {
+   "en": "Shiftry",
+   "page": "Shiftry-GX (Sky-Splitting Charisma 97)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Blaziken",
+   "page": "Blaziken-GX (Sky-Splitting Charisma 98)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Stakataka",
+   "page": "Stakataka-GX (Sky-Splitting Charisma 99)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Altaria",
+   "page": "Altaria-GX (Sky-Splitting Charisma 100)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Rayquaza",
+   "page": "Rayquaza-GX (Sky-Splitting Charisma 101)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Steven's Resolve",
+   "page": "Steven's Resolve (Sky-Splitting Charisma 102)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Tate & Liza",
+   "page": "Tate & Liza (Sky-Splitting Charisma 103)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Lisia",
+   "page": "Lisia (Sky-Splitting Charisma 104)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Shiftry",
+   "page": "Shiftry-GX (Sky-Splitting Charisma 105)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Blaziken",
+   "page": "Blaziken-GX (Sky-Splitting Charisma 106)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Stakataka",
+   "page": "Stakataka-GX (Sky-Splitting Charisma 107)",
+   "type": "Metal",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Altaria",
+   "page": "Altaria-GX (Sky-Splitting Charisma 108)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Rayquaza",
+   "page": "Rayquaza-GX (Sky-Splitting Charisma 109)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Acro Bike",
+   "page": "Acro Bike (Sky-Splitting Charisma 110)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Rainbow Brush",
+   "page": "Rainbow Brush (Sky-Splitting Charisma 111)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Hustle Belt",
+   "page": "Hustle Belt (Sky-Splitting Charisma 112)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

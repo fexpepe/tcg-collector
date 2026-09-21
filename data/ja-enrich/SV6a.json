@@ -1,0 +1,69 @@
+{
+ "page": "Shrouded Fable (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "10": {
+   "en": "Horsea",
+   "page": "Horsea (Shrouded Fable 10)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "11": {
+   "en": "Seadra",
+   "page": "Seadra (Shrouded Fable 11)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "12": {
+   "en": "Kingdra",
+   "page": "Kingdra ex (Shrouded Fable 12)",
+   "type": "Water",
+   "rarity": "—",
+   "mark": ""
+  },
+  "19": {
+   "en": "Dusclops",
+   "page": "Dusclops (Shrouded Fable 19)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "20": {
+   "en": "Dusknoir",
+   "page": "Dusknoir (Shrouded Fable 20)",
+   "type": "Psychic",
+   "rarity": "—",
+   "mark": ""
+  },
+  "38": {
+   "en": "Fezandipiti",
+   "page": "Fezandipiti ex (Shrouded Fable 38)",
+   "type": "Darkness",
+   "rarity": "—",
+   "mark": ""
+  },
+  "57": {
+   "en": "Colress's Tenacity",
+   "page": "Colress's Tenacity (Shrouded Fable 57)",
+   "type": "Su",
+   "rarity": "—",
+   "mark": ""
+  },
+  "61": {
+   "en": "Night Stretcher",
+   "page": "Night Stretcher (Shrouded Fable 61)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  },
+  "63": {
+   "en": "Powerglass",
+   "page": "Powerglass (Shrouded Fable 63)",
+   "type": "I",
+   "rarity": "—",
+   "mark": ""
+  }
+ }
+}

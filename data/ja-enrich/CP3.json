@@ -1,0 +1,230 @@
+{
+ "page": "PokéKyun Collection (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Chikorita",
+   "page": "Chikorita (PokéKyun Collection 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Shroomish",
+   "page": "Shroomish (PokéKyun Collection 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Charmander",
+   "page": "Charmander (PokéKyun Collection 3)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (PokéKyun Collection 4)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Charizard",
+   "page": "Charizard (PokéKyun Collection 5)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Flareon",
+   "page": "Flareon-EX (PokéKyun Collection 6)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "7": {
+   "en": "Flareon",
+   "page": "Flareon-EX (PokéKyun Collection 7)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "8": {
+   "en": "Snorunt",
+   "page": "Snorunt (PokéKyun Collection 8)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Froslass",
+   "page": "Froslass (PokéKyun Collection 9)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "10": {
+   "en": "Pikachu",
+   "page": "Pikachu (PokéKyun Collection 10)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "11": {
+   "en": "Raichu",
+   "page": "Raichu (PokéKyun Collection 11)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Dedenne",
+   "page": "Dedenne (PokéKyun Collection 12)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "13": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (PokéKyun Collection 13)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Gulpin",
+   "page": "Gulpin (PokéKyun Collection 14)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Jirachi",
+   "page": "Jirachi (PokéKyun Collection 15)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Espurr",
+   "page": "Espurr (PokéKyun Collection 16)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Meowstic",
+   "page": "Meowstic (PokéKyun Collection 17)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Yveltal",
+   "page": "Yveltal (PokéKyun Collection 18)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "19": {
+   "en": "Gardevoir",
+   "page": "Gardevoir-EX (PokéKyun Collection 19)",
+   "type": "Fairy",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "20": {
+   "en": "Gardevoir",
+   "page": "M Gardevoir-EX (PokéKyun Collection 20)",
+   "type": "Fairy",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "21": {
+   "en": "Flabébé",
+   "page": "Flabébé (PokéKyun Collection 21)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Floette",
+   "page": "Floette (PokéKyun Collection 22)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Swirlix",
+   "page": "Swirlix (PokéKyun Collection 23)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Slurpuff",
+   "page": "Slurpuff (PokéKyun Collection 24)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Sylveon",
+   "page": "Sylveon-EX (PokéKyun Collection 25)",
+   "type": "Fairy",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "26": {
+   "en": "Sylveon",
+   "page": "Sylveon-EX (PokéKyun Collection 26)",
+   "type": "Fairy",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "27": {
+   "en": "Diancie",
+   "page": "Diancie (PokéKyun Collection 27)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "28": {
+   "en": "Swablu",
+   "page": "Swablu (PokéKyun Collection 28)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Altaria",
+   "page": "Altaria (PokéKyun Collection 29)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Fletchling",
+   "page": "Fletchling (PokéKyun Collection 30)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Floral Crown",
+   "page": "Floral Crown (PokéKyun Collection 31)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Wally",
+   "page": "Wally (PokéKyun Collection 32)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  }
+ }
+}

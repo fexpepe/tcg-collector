@@ -1,0 +1,776 @@
+{
+ "page": "Forbidden Light (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Forbidden Light 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Alolan Exeggutor",
+   "page": "Alolan Exeggutor (Forbidden Light 2)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "3": {
+   "en": "Scatterbug",
+   "page": "Scatterbug (Forbidden Light 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Scatterbug",
+   "page": "Scatterbug (Forbidden Light 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Spewpa",
+   "page": "Spewpa (Forbidden Light 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Vivillon",
+   "page": "Vivillon (Forbidden Light 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Skiddo",
+   "page": "Skiddo (Forbidden Light 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Gogoat",
+   "page": "Gogoat (Forbidden Light 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Pheromosa",
+   "page": "Pheromosa (Forbidden Light 9)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "10": {
+   "en": "Alolan Marowak",
+   "page": "Alolan Marowak (Forbidden Light 10)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "11": {
+   "en": "Fennekin",
+   "page": "Fennekin (Forbidden Light 11)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Fennekin",
+   "page": "Fennekin (Forbidden Light 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Braixen",
+   "page": "Braixen (Forbidden Light 13)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "14": {
+   "en": "Delphox",
+   "page": "Delphox (Forbidden Light 14)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "15": {
+   "en": "Litleo",
+   "page": "Litleo (Forbidden Light 15)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "16": {
+   "en": "Pyroar",
+   "page": "Pyroar (Forbidden Light 16)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "17": {
+   "en": "Froakie",
+   "page": "Froakie (Forbidden Light 17)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Froakie",
+   "page": "Froakie (Forbidden Light 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Frogadier",
+   "page": "Frogadier (Forbidden Light 19)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "20": {
+   "en": "Greninja",
+   "page": "Greninja-GX (Forbidden Light 20)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "21": {
+   "en": "Clauncher",
+   "page": "Clauncher (Forbidden Light 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Clawitzer",
+   "page": "Clawitzer (Forbidden Light 22)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "23": {
+   "en": "Amaura",
+   "page": "Amaura (Forbidden Light 23)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "24": {
+   "en": "Aurorus",
+   "page": "Aurorus (Forbidden Light 24)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "25": {
+   "en": "Bergmite",
+   "page": "Bergmite (Forbidden Light 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Avalugg",
+   "page": "Avalugg (Forbidden Light 26)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "27": {
+   "en": "Volcanion",
+   "page": "Volcanion ♢ (Forbidden Light 27)",
+   "type": "Water",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "28": {
+   "en": "Helioptile",
+   "page": "Helioptile (Forbidden Light 28)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (Forbidden Light 29)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Espurr",
+   "page": "Espurr (Forbidden Light 30)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Meowstic",
+   "page": "Meowstic (Forbidden Light 31)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "32": {
+   "en": "Honedge",
+   "page": "Honedge (Forbidden Light 32)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Honedge",
+   "page": "Honedge (Forbidden Light 33)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Doublade",
+   "page": "Doublade (Forbidden Light 34)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Aegislash",
+   "page": "Aegislash (Forbidden Light 35)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Inkay",
+   "page": "Inkay (Forbidden Light 36)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Malamar",
+   "page": "Malamar (Forbidden Light 37)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "38": {
+   "en": "Skrelp",
+   "page": "Skrelp (Forbidden Light 38)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Dragalge",
+   "page": "Dragalge (Forbidden Light 39)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "40": {
+   "en": "Hoopa",
+   "page": "Hoopa (Forbidden Light 40)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Cubone",
+   "page": "Cubone (Forbidden Light 41)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Pancham",
+   "page": "Pancham (Forbidden Light 42)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Binacle",
+   "page": "Binacle (Forbidden Light 43)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Barbaracle",
+   "page": "Barbaracle (Forbidden Light 44)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Tyrunt",
+   "page": "Tyrunt (Forbidden Light 45)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "46": {
+   "en": "Tyrantrum",
+   "page": "Tyrantrum (Forbidden Light 46)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "47": {
+   "en": "Hawlucha",
+   "page": "Hawlucha (Forbidden Light 47)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Zygarde",
+   "page": "Zygarde (Forbidden Light 48)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "49": {
+   "en": "Zygarde",
+   "page": "Zygarde (Forbidden Light 49)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Zygarde",
+   "page": "Zygarde-GX (Forbidden Light 50)",
+   "type": "Fighting",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "51": {
+   "en": "Diancie",
+   "page": "Diancie ♢ (Forbidden Light 51)",
+   "type": "Fighting",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "52": {
+   "en": "Rockruff",
+   "page": "Rockruff (Forbidden Light 52)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Lycanroc",
+   "page": "Lycanroc (Forbidden Light 53)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "54": {
+   "en": "Pangoro",
+   "page": "Pangoro (Forbidden Light 54)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Yveltal",
+   "page": "Yveltal-GX (Forbidden Light 55)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "56": {
+   "en": "Guzzlord",
+   "page": "Guzzlord (Forbidden Light 56)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "57": {
+   "en": "Flabébé",
+   "page": "Flabébé (Forbidden Light 57)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Flabébé",
+   "page": "Flabébé (Forbidden Light 58)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "59": {
+   "en": "Floette",
+   "page": "Floette (Forbidden Light 59)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Florges",
+   "page": "Florges (Forbidden Light 60)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Sylveon",
+   "page": "Sylveon (Forbidden Light 61)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Dedenne",
+   "page": "Dedenne (Forbidden Light 62)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Klefki",
+   "page": "Klefki (Forbidden Light 63)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "64": {
+   "en": "Xerneas",
+   "page": "Xerneas-GX (Forbidden Light 64)",
+   "type": "Fairy",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "65": {
+   "en": "Goomy",
+   "page": "Goomy (Forbidden Light 65)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "Goomy",
+   "page": "Goomy (Forbidden Light 66)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "67": {
+   "en": "Sliggoo",
+   "page": "Sliggoo (Forbidden Light 67)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "68": {
+   "en": "Goodra",
+   "page": "Goodra (Forbidden Light 68)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "69": {
+   "en": "Ultra Necrozma",
+   "page": "Ultra Necrozma-GX (Forbidden Light 69)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Eevee",
+   "page": "Eevee (Forbidden Light 70)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "71": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (Forbidden Light 71)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "72": {
+   "en": "Diggersby",
+   "page": "Diggersby (Forbidden Light 72)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "73": {
+   "en": "Furfrou",
+   "page": "Furfrou (Forbidden Light 73)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "74": {
+   "en": "Noibat",
+   "page": "Noibat (Forbidden Light 74)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "75": {
+   "en": "Noivern",
+   "page": "Noivern (Forbidden Light 75)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "76": {
+   "en": "Eneporter",
+   "page": "Eneporter (Forbidden Light 76)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Fossil Excavation Map",
+   "page": "Fossil Excavation Map (Forbidden Light 77)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "78": {
+   "en": "Unidentified Fossil",
+   "page": "Unidentified Fossil (Forbidden Light 78)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "79": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Forbidden Light 79)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "80": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Forbidden Light 80)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "81": {
+   "en": "Switch",
+   "page": "Switch (Forbidden Light 81)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "82": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (Forbidden Light 82)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "83": {
+   "en": "Mysterious Treasure",
+   "page": "Mysterious Treasure (Forbidden Light 83)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "84": {
+   "en": "Choice Band",
+   "page": "Choice Band (Forbidden Light 84)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "85": {
+   "en": "Lady",
+   "page": "Lady (Forbidden Light 85)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "86": {
+   "en": "Diantha",
+   "page": "Diantha (Forbidden Light 86)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "87": {
+   "en": "Judge",
+   "page": "Judge (Forbidden Light 87)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "88": {
+   "en": "Hau",
+   "page": "Hau (Forbidden Light 88)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "89": {
+   "en": "Lysandre",
+   "page": "Lysandre ♢ (Forbidden Light 89)",
+   "type": "Su",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "90": {
+   "en": "Bonnie",
+   "page": "Bonnie (Forbidden Light 90)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "91": {
+   "en": "Lillie",
+   "page": "Lillie (Forbidden Light 91)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "92": {
+   "en": "Lysandre Labs",
+   "page": "Lysandre Labs (Forbidden Light 92)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "93": {
+   "en": "Double Colorless Energy",
+   "page": "Double Colorless Energy (Forbidden Light 93)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "94": {
+   "en": "Unit Energy",
+   "page": "Unit Energy FDY (Forbidden Light 94)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "95": {
+   "en": "Greninja",
+   "page": "Greninja-GX (Forbidden Light 95)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Zygarde",
+   "page": "Zygarde-GX (Forbidden Light 96)",
+   "type": "Fighting",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Yveltal",
+   "page": "Yveltal-GX (Forbidden Light 97)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Xerneas",
+   "page": "Xerneas-GX (Forbidden Light 98)",
+   "type": "Fairy",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Ultra Necrozma",
+   "page": "Ultra Necrozma-GX (Forbidden Light 99)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Lady",
+   "page": "Lady (Forbidden Light 100)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Diantha",
+   "page": "Diantha (Forbidden Light 101)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Bonnie",
+   "page": "Bonnie (Forbidden Light 102)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Greninja",
+   "page": "Greninja-GX (Forbidden Light 103)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Zygarde",
+   "page": "Zygarde-GX (Forbidden Light 104)",
+   "type": "Fighting",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Yveltal",
+   "page": "Yveltal-GX (Forbidden Light 105)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Xerneas",
+   "page": "Xerneas-GX (Forbidden Light 106)",
+   "type": "Fairy",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Ultra Necrozma",
+   "page": "Ultra Necrozma-GX (Forbidden Light 107)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Eneporter",
+   "page": "Eneporter (Forbidden Light 108)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Mysterious Treasure",
+   "page": "Mysterious Treasure (Forbidden Light 109)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Unit Energy",
+   "page": "Unit Energy FDY (Forbidden Light 110)",
+   "type": "Colorless",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

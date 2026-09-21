@@ -1,0 +1,832 @@
+{
+ "page": "Team Up (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Celebi & Venusaur",
+   "page": "Celebi & Venusaur-GX (Tag Bolt 1)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "2": {
+   "en": "Weedle",
+   "page": "Weedle (Tag Bolt 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Weedle",
+   "page": "Weedle (Tag Bolt 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Kakuna",
+   "page": "Kakuna (Tag Bolt 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Beedrill",
+   "page": "Beedrill (Tag Bolt 5)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "6": {
+   "en": "Paras",
+   "page": "Paras (Tag Bolt 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Parasect",
+   "page": "Parasect (Tag Bolt 7)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "8": {
+   "en": "Exeggcute",
+   "page": "Exeggcute (Tag Bolt 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Pinsir",
+   "page": "Pinsir (Tag Bolt 9)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "10": {
+   "en": "Charmander",
+   "page": "Charmander (Tag Bolt 10)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Charmander",
+   "page": "Charmander (Tag Bolt 11)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "12": {
+   "en": "Charmeleon",
+   "page": "Charmeleon (Tag Bolt 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Charizard",
+   "page": "Charizard (Tag Bolt 13)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "14": {
+   "en": "Vulpix",
+   "page": "Vulpix (Tag Bolt 14)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Ninetales",
+   "page": "Ninetales (Tag Bolt 15)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "16": {
+   "en": "Ponyta",
+   "page": "Ponyta (Tag Bolt 16)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Rapidash",
+   "page": "Rapidash (Tag Bolt 17)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Moltres",
+   "page": "Moltres (Tag Bolt 18)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "19": {
+   "en": "Magikarp & Wailord",
+   "page": "Magikarp & Wailord-GX (Tag Bolt 19)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "20": {
+   "en": "Squirtle",
+   "page": "Squirtle (Tag Bolt 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Squirtle",
+   "page": "Squirtle (Tag Bolt 21)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "22": {
+   "en": "Wartortle",
+   "page": "Wartortle (Tag Bolt 22)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "23": {
+   "en": "Blastoise",
+   "page": "Blastoise (Tag Bolt 23)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "24": {
+   "en": "Psyduck",
+   "page": "Psyduck (Tag Bolt 24)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Golduck",
+   "page": "Golduck (Tag Bolt 25)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "26": {
+   "en": "Staryu",
+   "page": "Staryu (Tag Bolt 26)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Magikarp",
+   "page": "Magikarp (Tag Bolt 27)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Gyarados",
+   "page": "Gyarados (Tag Bolt 28)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "29": {
+   "en": "Lapras",
+   "page": "Lapras (Tag Bolt 29)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Articuno",
+   "page": "Articuno (Tag Bolt 30)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "31": {
+   "en": "Pikachu & Zekrom",
+   "page": "Pikachu & Zekrom-GX (Tag Bolt 31)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "32": {
+   "en": "Alolan Geodude",
+   "page": "Alolan Geodude (Tag Bolt 32)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Alolan Geodude",
+   "page": "Alolan Geodude (Tag Bolt 33)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Alolan Graveler",
+   "page": "Alolan Graveler (Tag Bolt 34)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Alolan Golem",
+   "page": "Alolan Golem (Tag Bolt 35)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "36": {
+   "en": "Voltorb",
+   "page": "Voltorb (Tag Bolt 36)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Electrode",
+   "page": "Electrode (Tag Bolt 37)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "38": {
+   "en": "Gengar & Mimikyu",
+   "page": "Gengar & Mimikyu-GX (Tag Bolt 38)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "39": {
+   "en": "Nidoran♀",
+   "page": "Nidoran♀ (Tag Bolt 39)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Nidorina",
+   "page": "Nidorina (Tag Bolt 40)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "41": {
+   "en": "Nidoqueen",
+   "page": "Nidoqueen (Tag Bolt 41)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "42": {
+   "en": "Nidoran♂",
+   "page": "Nidoran♂ (Tag Bolt 42)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "43": {
+   "en": "Nidorino",
+   "page": "Nidorino (Tag Bolt 43)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Nidoking",
+   "page": "Nidoking (Tag Bolt 44)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Tentacool",
+   "page": "Tentacool (Tag Bolt 45)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Tentacruel",
+   "page": "Tentacruel (Tag Bolt 46)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Grimer",
+   "page": "Grimer (Tag Bolt 47)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Muk",
+   "page": "Muk (Tag Bolt 48)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Starmie",
+   "page": "Starmie (Tag Bolt 49)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "50": {
+   "en": "Mr. Mime",
+   "page": "Mr. Mime (Tag Bolt 50)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Jynx",
+   "page": "Jynx (Tag Bolt 51)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "52": {
+   "en": "Mankey",
+   "page": "Mankey (Tag Bolt 52)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Primeape",
+   "page": "Primeape (Tag Bolt 53)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "54": {
+   "en": "Hitmonlee",
+   "page": "Hitmonlee (Tag Bolt 54)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Hitmonchan",
+   "page": "Hitmonchan (Tag Bolt 55)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Omanyte",
+   "page": "Omanyte (Tag Bolt 56)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "57": {
+   "en": "Omastar",
+   "page": "Omastar (Tag Bolt 57)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "58": {
+   "en": "Kabuto",
+   "page": "Kabuto (Tag Bolt 58)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Kabutops",
+   "page": "Kabutops (Tag Bolt 59)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "60": {
+   "en": "Latias & Latios",
+   "page": "Latias & Latios-GX (Tag Bolt 60)",
+   "type": "Dragon",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "61": {
+   "en": "Alolan Exeggutor",
+   "page": "Alolan Exeggutor (Tag Bolt 61)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "62": {
+   "en": "Dratini",
+   "page": "Dratini (Tag Bolt 62)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Dratini",
+   "page": "Dratini (Tag Bolt 63)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "64": {
+   "en": "Dragonair",
+   "page": "Dragonair (Tag Bolt 64)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Dragonite",
+   "page": "Dragonite (Tag Bolt 65)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "66": {
+   "en": "Eevee & Snorlax",
+   "page": "Eevee & Snorlax-GX (Tag Bolt 66)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Pidgey",
+   "page": "Pidgey (Tag Bolt 67)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "68": {
+   "en": "Pidgey",
+   "page": "Pidgey (Tag Bolt 68)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "69": {
+   "en": "Pidgeotto",
+   "page": "Pidgeotto (Tag Bolt 69)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "70": {
+   "en": "Pidgeot",
+   "page": "Pidgeot (Tag Bolt 70)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Meowth",
+   "page": "Meowth (Tag Bolt 71)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "72": {
+   "en": "Persian",
+   "page": "Persian (Tag Bolt 72)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "73": {
+   "en": "Farfetch'd",
+   "page": "Farfetch'd (Tag Bolt 73)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "74": {
+   "en": "Kangaskhan",
+   "page": "Kangaskhan (Tag Bolt 74)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "75": {
+   "en": "Tauros",
+   "page": "Tauros (Tag Bolt 75)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "76": {
+   "en": "Aerodactyl",
+   "page": "Aerodactyl (Tag Bolt 76)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Escape Rope",
+   "page": "Escape Rope (Tag Bolt 77)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "78": {
+   "en": "Judge Whistle",
+   "page": "Judge Whistle (Tag Bolt 78)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Unidentified Fossil",
+   "page": "Unidentified Fossil (Tag Bolt 79)",
+   "type": "I",
+   "rarity": "C",
+   "mark": ""
+  },
+  "80": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Tag Bolt 80)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "81": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Tag Bolt 81)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "82": {
+   "en": "Pokémon Communication",
+   "page": "Pokémon Communication (Tag Bolt 82)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "83": {
+   "en": "Buff Padding",
+   "page": "Buff Padding (Tag Bolt 83)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "84": {
+   "en": "Erika's Hospitality",
+   "page": "Erika's Hospitality (Tag Bolt 84)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "85": {
+   "en": "Judge",
+   "page": "Judge (Tag Bolt 85)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "86": {
+   "en": "Cynthia",
+   "page": "Cynthia (Tag Bolt 86)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "87": {
+   "en": "Brock's Grit",
+   "page": "Brock's Grit (Tag Bolt 87)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "88": {
+   "en": "Sabrina's Suggestion",
+   "page": "Sabrina's Suggestion (Tag Bolt 88)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "89": {
+   "en": "Bill's Analysis",
+   "page": "Bill's Analysis (Tag Bolt 89)",
+   "type": "Su",
+   "rarity": "R",
+   "mark": ""
+  },
+  "90": {
+   "en": "Lavender Town",
+   "page": "Lavender Town (Tag Bolt 90)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "91": {
+   "en": "Viridian Forest",
+   "page": "Viridian Forest (Tag Bolt 91)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "92": {
+   "en": "Aqua Patch",
+   "page": "Aqua Patch (Tag Bolt 92)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Field Blower",
+   "page": "Field Blower (Tag Bolt 93)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Choice Band",
+   "page": "Choice Band (Tag Bolt 94)",
+   "type": "I",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "95": {
+   "en": "Volkner",
+   "page": "Volkner (Tag Bolt 95)",
+   "type": "Su",
+   "rarity": "TR",
+   "mark": ""
+  },
+  "96": {
+   "en": "Celebi & Venusaur",
+   "page": "Celebi & Venusaur-GX (Tag Bolt 96)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Celebi & Venusaur",
+   "page": "Celebi & Venusaur-GX (Tag Bolt 97)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Magikarp & Wailord",
+   "page": "Magikarp & Wailord-GX (Tag Bolt 98)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Magikarp & Wailord",
+   "page": "Magikarp & Wailord-GX (Tag Bolt 99)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Pikachu & Zekrom",
+   "page": "Pikachu & Zekrom-GX (Tag Bolt 100)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Pikachu & Zekrom",
+   "page": "Pikachu & Zekrom-GX (Tag Bolt 101)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Gengar & Mimikyu",
+   "page": "Gengar & Mimikyu-GX (Tag Bolt 102)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Gengar & Mimikyu",
+   "page": "Gengar & Mimikyu-GX (Tag Bolt 103)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Latias & Latios",
+   "page": "Latias & Latios-GX (Tag Bolt 104)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Latias & Latios",
+   "page": "Latias & Latios-GX (Tag Bolt 105)",
+   "type": "Dragon",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Eevee & Snorlax",
+   "page": "Eevee & Snorlax-GX (Tag Bolt 106)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Erika's Hospitality",
+   "page": "Erika's Hospitality (Tag Bolt 107)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Brock's Grit",
+   "page": "Brock's Grit (Tag Bolt 108)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Sabrina's Suggestion",
+   "page": "Sabrina's Suggestion (Tag Bolt 109)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Celebi & Venusaur",
+   "page": "Celebi & Venusaur-GX (Tag Bolt 110)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Magikarp & Wailord",
+   "page": "Magikarp & Wailord-GX (Tag Bolt 111)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Pikachu & Zekrom",
+   "page": "Pikachu & Zekrom-GX (Tag Bolt 112)",
+   "type": "Lightning",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Gengar & Mimikyu",
+   "page": "Gengar & Mimikyu-GX (Tag Bolt 113)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Latias & Latios",
+   "page": "Latias & Latios-GX (Tag Bolt 114)",
+   "type": "Dragon",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Eevee & Snorlax",
+   "page": "Eevee & Snorlax-GX (Tag Bolt 115)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Pokémon Communication",
+   "page": "Pokémon Communication (Tag Bolt 116)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "117": {
+   "en": "Judge Whistle",
+   "page": "Judge Whistle (Tag Bolt 117)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "118": {
+   "en": "Brooklet Hill",
+   "page": "Brooklet Hill (Tag Bolt 118)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

@@ -1,0 +1,783 @@
+{
+ "page": "Lost Thunder (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Scyther",
+   "page": "Scyther (Super-Burst Impact 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Chikorita",
+   "page": "Chikorita (Super-Burst Impact 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Chikorita",
+   "page": "Chikorita (Super-Burst Impact 3)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "4": {
+   "en": "Bayleef",
+   "page": "Bayleef (Super-Burst Impact 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Meganium",
+   "page": "Meganium (Super-Burst Impact 5)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "6": {
+   "en": "Spinarak",
+   "page": "Spinarak (Super-Burst Impact 6)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "7": {
+   "en": "Ariados",
+   "page": "Ariados (Super-Burst Impact 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Hoppip",
+   "page": "Hoppip (Super-Burst Impact 8)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "9": {
+   "en": "Hoppip",
+   "page": "Hoppip (Super-Burst Impact 9)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "10": {
+   "en": "Skiploom",
+   "page": "Skiploom (Super-Burst Impact 10)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Jumpluff",
+   "page": "Jumpluff (Super-Burst Impact 11)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "12": {
+   "en": "Pineco",
+   "page": "Pineco (Super-Burst Impact 12)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Shuckle",
+   "page": "Shuckle-GX (Super-Burst Impact 13)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "14": {
+   "en": "Heracross",
+   "page": "Heracross (Super-Burst Impact 14)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "15": {
+   "en": "Celebi",
+   "page": "Celebi ♢ (Super-Burst Impact 15)",
+   "type": "Grass",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Cyndaquil",
+   "page": "Cyndaquil (Super-Burst Impact 16)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Cyndaquil",
+   "page": "Cyndaquil (Super-Burst Impact 17)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "18": {
+   "en": "Quilava",
+   "page": "Quilava (Super-Burst Impact 18)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Typhlosion",
+   "page": "Typhlosion (Super-Burst Impact 19)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "20": {
+   "en": "Houndour",
+   "page": "Houndour (Super-Burst Impact 20)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Houndoom",
+   "page": "Houndoom (Super-Burst Impact 21)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Entei",
+   "page": "Entei (Super-Burst Impact 22)",
+   "type": "Fire",
+   "rarity": "R",
+   "mark": ""
+  },
+  "23": {
+   "en": "Blacephalon",
+   "page": "Blacephalon-GX (Super-Burst Impact 23)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "24": {
+   "en": "Slowpoke",
+   "page": "Slowpoke (Super-Burst Impact 24)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "25": {
+   "en": "Slowking",
+   "page": "Slowking (Super-Burst Impact 25)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Delibird",
+   "page": "Delibird (Super-Burst Impact 26)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "27": {
+   "en": "Mantine",
+   "page": "Mantine (Super-Burst Impact 27)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Suicune",
+   "page": "Suicune-GX (Super-Burst Impact 28)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "29": {
+   "en": "Mareanie",
+   "page": "Mareanie (Super-Burst Impact 29)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "30": {
+   "en": "Toxapex",
+   "page": "Toxapex (Super-Burst Impact 30)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "31": {
+   "en": "Chinchou",
+   "page": "Chinchou (Super-Burst Impact 31)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Lanturn",
+   "page": "Lanturn (Super-Burst Impact 32)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "33": {
+   "en": "Mareep",
+   "page": "Mareep (Super-Burst Impact 33)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "34": {
+   "en": "Mareep",
+   "page": "Mareep (Super-Burst Impact 34)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "35": {
+   "en": "Flaaffy",
+   "page": "Flaaffy (Super-Burst Impact 35)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "36": {
+   "en": "Ampharos",
+   "page": "Ampharos (Super-Burst Impact 36)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "37": {
+   "en": "Raikou",
+   "page": "Raikou (Super-Burst Impact 37)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "38": {
+   "en": "Natu",
+   "page": "Natu (Super-Burst Impact 38)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Xatu",
+   "page": "Xatu (Super-Burst Impact 39)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "40": {
+   "en": "Espeon",
+   "page": "Espeon (Super-Burst Impact 40)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "41": {
+   "en": "Unown",
+   "page": "Unown (Super-Burst Impact 41)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "42": {
+   "en": "Unown",
+   "page": "Unown (Super-Burst Impact 42)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Unown",
+   "page": "Unown (Super-Burst Impact 43)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "44": {
+   "en": "Wobbuffet",
+   "page": "Wobbuffet (Super-Burst Impact 44)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Girafarig",
+   "page": "Girafarig (Super-Burst Impact 45)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "46": {
+   "en": "Nihilego",
+   "page": "Nihilego (Super-Burst Impact 46)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "47": {
+   "en": "Poipole",
+   "page": "Poipole (Super-Burst Impact 47)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Naganadel",
+   "page": "Naganadel (Super-Burst Impact 48)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "49": {
+   "en": "Sudowoodo",
+   "page": "Sudowoodo (Super-Burst Impact 49)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Phanpy",
+   "page": "Phanpy (Super-Burst Impact 50)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "51": {
+   "en": "Donphan",
+   "page": "Donphan (Super-Burst Impact 51)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "52": {
+   "en": "Hitmontop",
+   "page": "Hitmontop (Super-Burst Impact 52)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Larvitar",
+   "page": "Larvitar (Super-Burst Impact 53)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Larvitar",
+   "page": "Larvitar (Super-Burst Impact 54)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "55": {
+   "en": "Pupitar",
+   "page": "Pupitar (Super-Burst Impact 55)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Alolan Meowth",
+   "page": "Alolan Meowth (Super-Burst Impact 56)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "57": {
+   "en": "Alolan Persian",
+   "page": "Alolan Persian (Super-Burst Impact 57)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "58": {
+   "en": "Umbreon",
+   "page": "Umbreon (Super-Burst Impact 58)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Tyranitar",
+   "page": "Tyranitar-GX (Super-Burst Impact 59)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "60": {
+   "en": "Forretress",
+   "page": "Forretress (Super-Burst Impact 60)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Scizor",
+   "page": "Scizor (Super-Burst Impact 61)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "62": {
+   "en": "Marill",
+   "page": "Marill (Super-Burst Impact 62)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Azumarill",
+   "page": "Azumarill (Super-Burst Impact 63)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "64": {
+   "en": "Snubbull",
+   "page": "Snubbull (Super-Burst Impact 64)",
+   "type": "Fairy",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Granbull",
+   "page": "Granbull (Super-Burst Impact 65)",
+   "type": "Fairy",
+   "rarity": "U",
+   "mark": ""
+  },
+  "66": {
+   "en": "Chansey",
+   "page": "Chansey (Super-Burst Impact 66)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "67": {
+   "en": "Blissey",
+   "page": "Blissey (Super-Burst Impact 67)",
+   "type": "Colorless",
+   "rarity": "R",
+   "mark": ""
+  },
+  "68": {
+   "en": "Eevee",
+   "page": "Eevee (Super-Burst Impact 68)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "69": {
+   "en": "Stantler",
+   "page": "Stantler (Super-Burst Impact 69)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "70": {
+   "en": "Smeargle",
+   "page": "Smeargle (Super-Burst Impact 70)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "71": {
+   "en": "Miltank",
+   "page": "Miltank (Super-Burst Impact 71)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "72": {
+   "en": "Lugia",
+   "page": "Lugia-GX (Super-Burst Impact 72)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "73": {
+   "en": "Pikipek",
+   "page": "Pikipek (Super-Burst Impact 73)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "74": {
+   "en": "Pikipek",
+   "page": "Pikipek (Super-Burst Impact 74)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "75": {
+   "en": "Trumbeak",
+   "page": "Trumbeak (Super-Burst Impact 75)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "76": {
+   "en": "Toucannon",
+   "page": "Toucannon (Super-Burst Impact 76)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "77": {
+   "en": "Wait and See Hammer",
+   "page": "Wait and See Hammer (Super-Burst Impact 77)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "78": {
+   "en": "Ultra Ball",
+   "page": "Ultra Ball (Super-Burst Impact 78)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Rare Candy",
+   "page": "Rare Candy (Super-Burst Impact 79)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "80": {
+   "en": "Switch",
+   "page": "Switch (Super-Burst Impact 80)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "81": {
+   "en": "Pokémon Catcher",
+   "page": "Pokémon Catcher (Super-Burst Impact 81)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "82": {
+   "en": "Moomoo Milk",
+   "page": "Moomoo Milk (Super-Burst Impact 82)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "83": {
+   "en": "Lost Blender",
+   "page": "Lost Blender (Super-Burst Impact 83)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "84": {
+   "en": "Choice Band",
+   "page": "Choice Band (Super-Burst Impact 84)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "85": {
+   "en": "Choice Helmet",
+   "page": "Choice Helmet (Super-Burst Impact 85)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "86": {
+   "en": "Fairy Charm",
+   "page": "Fairy Charm G (Super-Burst Impact 86)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "87": {
+   "en": "Whitney",
+   "page": "Whitney (Super-Burst Impact 87)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "88": {
+   "en": "Professor Elm's Lecture",
+   "page": "Professor Elm's Lecture (Super-Burst Impact 88)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "89": {
+   "en": "Faba",
+   "page": "Faba (Super-Burst Impact 89)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "90": {
+   "en": "Hau",
+   "page": "Hau (Super-Burst Impact 90)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "91": {
+   "en": "Lillie",
+   "page": "Lillie (Super-Burst Impact 91)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "92": {
+   "en": "Lusamine",
+   "page": "Lusamine ♢ (Super-Burst Impact 92)",
+   "type": "Su",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "93": {
+   "en": "Heat Factory",
+   "page": "Heat Factory ♢ (Super-Burst Impact 93)",
+   "type": "St",
+   "rarity": "PR",
+   "mark": ""
+  },
+  "94": {
+   "en": "Double Colorless Energy",
+   "page": "Double Colorless Energy (Super-Burst Impact 94)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "95": {
+   "en": "Memory Energy",
+   "page": "Memory Energy (Super-Burst Impact 95)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "96": {
+   "en": "Shuckle",
+   "page": "Shuckle-GX (Super-Burst Impact 96)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "97": {
+   "en": "Blacephalon",
+   "page": "Blacephalon-GX (Super-Burst Impact 97)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "98": {
+   "en": "Suicune",
+   "page": "Suicune-GX (Super-Burst Impact 98)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "99": {
+   "en": "Tyranitar",
+   "page": "Tyranitar-GX (Super-Burst Impact 99)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "100": {
+   "en": "Lugia",
+   "page": "Lugia-GX (Super-Burst Impact 100)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "101": {
+   "en": "Whitney",
+   "page": "Whitney (Super-Burst Impact 101)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Professor Elm's Lecture",
+   "page": "Professor Elm's Lecture (Super-Burst Impact 102)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Faba",
+   "page": "Faba (Super-Burst Impact 103)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Shuckle",
+   "page": "Shuckle-GX (Super-Burst Impact 104)",
+   "type": "Grass",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Blacephalon",
+   "page": "Blacephalon-GX (Super-Burst Impact 105)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Suicune",
+   "page": "Suicune-GX (Super-Burst Impact 106)",
+   "type": "Water",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Tyranitar",
+   "page": "Tyranitar-GX (Super-Burst Impact 107)",
+   "type": "Darkness",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Lugia",
+   "page": "Lugia-GX (Super-Burst Impact 108)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Wait and See Hammer",
+   "page": "Wait and See Hammer (Super-Burst Impact 109)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Lost Blender",
+   "page": "Lost Blender (Super-Burst Impact 110)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Choice Helmet",
+   "page": "Choice Helmet (Super-Burst Impact 111)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  }
+ }
+}

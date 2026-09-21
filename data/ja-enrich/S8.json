@@ -1,0 +1,909 @@
+{
+ "page": "Fusion Strike (TCG)",
+ "at": "2026-09-21",
+ "cards": {
+  "1": {
+   "en": "Caterpie",
+   "page": "Caterpie (Fusion Arts 1)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "2": {
+   "en": "Metapod",
+   "page": "Metapod (Fusion Arts 2)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "3": {
+   "en": "Butterfree",
+   "page": "Butterfree (Fusion Arts 3)",
+   "type": "Grass",
+   "rarity": "R",
+   "mark": ""
+  },
+  "4": {
+   "en": "Shroomish",
+   "page": "Shroomish (Fusion Arts 4)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "5": {
+   "en": "Breloom",
+   "page": "Breloom (Fusion Arts 5)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "6": {
+   "en": "Maractus",
+   "page": "Maractus (Fusion Arts 6)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "7": {
+   "en": "Shelmet",
+   "page": "Shelmet (Fusion Arts 7)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "8": {
+   "en": "Accelgor",
+   "page": "Accelgor (Fusion Arts 8)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "9": {
+   "en": "Virizion",
+   "page": "Virizion (Fusion Arts 9)",
+   "type": "Grass",
+   "rarity": "U",
+   "mark": ""
+  },
+  "10": {
+   "en": "Grubbin",
+   "page": "Grubbin (Fusion Arts 10)",
+   "type": "Grass",
+   "rarity": "C",
+   "mark": ""
+  },
+  "11": {
+   "en": "Tsareena",
+   "page": "Tsareena V (Fusion Arts 11)",
+   "type": "Grass",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "12": {
+   "en": "Growlithe",
+   "page": "Growlithe (Fusion Arts 12)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "13": {
+   "en": "Arcanine",
+   "page": "Arcanine (Fusion Arts 13)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "14": {
+   "en": "Chandelure",
+   "page": "Chandelure V (Fusion Arts 14)",
+   "type": "Fire",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "15": {
+   "en": "Chandelure",
+   "page": "Chandelure VMAX (Fusion Arts 15)",
+   "type": "Fire",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "16": {
+   "en": "Heatmor",
+   "page": "Heatmor (Fusion Arts 16)",
+   "type": "Fire",
+   "rarity": "C",
+   "mark": ""
+  },
+  "17": {
+   "en": "Oricorio",
+   "page": "Oricorio (Fusion Arts 17)",
+   "type": "Fire",
+   "rarity": "U",
+   "mark": ""
+  },
+  "18": {
+   "en": "Staryu",
+   "page": "Staryu (Fusion Arts 18)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "19": {
+   "en": "Starmie",
+   "page": "Starmie (Fusion Arts 19)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "20": {
+   "en": "Totodile",
+   "page": "Totodile (Fusion Arts 20)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "21": {
+   "en": "Croconaw",
+   "page": "Croconaw (Fusion Arts 21)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "22": {
+   "en": "Feraligatr",
+   "page": "Feraligatr (Fusion Arts 22)",
+   "type": "Water",
+   "rarity": "R",
+   "mark": ""
+  },
+  "23": {
+   "en": "Clamperl",
+   "page": "Clamperl (Fusion Arts 23)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "24": {
+   "en": "Huntail",
+   "page": "Huntail (Fusion Arts 24)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "25": {
+   "en": "Gorebyss",
+   "page": "Gorebyss (Fusion Arts 25)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "26": {
+   "en": "Crabominable",
+   "page": "Crabominable V (Fusion Arts 26)",
+   "type": "Water",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "27": {
+   "en": "Pyukumuku",
+   "page": "Pyukumuku (Fusion Arts 27)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "28": {
+   "en": "Snom",
+   "page": "Snom (Fusion Arts 28)",
+   "type": "Water",
+   "rarity": "C",
+   "mark": ""
+  },
+  "29": {
+   "en": "Frosmoth",
+   "page": "Frosmoth (Fusion Arts 29)",
+   "type": "Water",
+   "rarity": "U",
+   "mark": ""
+  },
+  "30": {
+   "en": "Helioptile",
+   "page": "Helioptile (Fusion Arts 30)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "31": {
+   "en": "Heliolisk",
+   "page": "Heliolisk (Fusion Arts 31)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "32": {
+   "en": "Charjabug",
+   "page": "Charjabug (Fusion Arts 32)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "33": {
+   "en": "Vikavolt",
+   "page": "Vikavolt (Fusion Arts 33)",
+   "type": "Lightning",
+   "rarity": "U",
+   "mark": ""
+  },
+  "34": {
+   "en": "Boltund",
+   "page": "Boltund V (Fusion Arts 34)",
+   "type": "Lightning",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "35": {
+   "en": "Boltund",
+   "page": "Boltund VMAX (Fusion Arts 35)",
+   "type": "Lightning",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "36": {
+   "en": "Toxel",
+   "page": "Toxel (Fusion Arts 36)",
+   "type": "Lightning",
+   "rarity": "C",
+   "mark": ""
+  },
+  "37": {
+   "en": "Toxtricity",
+   "page": "Toxtricity (Fusion Arts 37)",
+   "type": "Lightning",
+   "rarity": "R",
+   "mark": ""
+  },
+  "38": {
+   "en": "Jynx",
+   "page": "Jynx (Fusion Arts 38)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "39": {
+   "en": "Mew",
+   "page": "Mew V (Fusion Arts 39)",
+   "type": "Psychic",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "40": {
+   "en": "Mew",
+   "page": "Mew VMAX (Fusion Arts 40)",
+   "type": "Psychic",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "41": {
+   "en": "Snubbull",
+   "page": "Snubbull (Fusion Arts 41)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "42": {
+   "en": "Granbull",
+   "page": "Granbull (Fusion Arts 42)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "43": {
+   "en": "Galarian Corsola",
+   "page": "Galarian Corsola (Fusion Arts 43)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "44": {
+   "en": "Galarian Cursola",
+   "page": "Galarian Cursola (Fusion Arts 44)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "45": {
+   "en": "Deoxys",
+   "page": "Deoxys (Fusion Arts 45)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "46": {
+   "en": "Munna",
+   "page": "Munna (Fusion Arts 46)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "47": {
+   "en": "Musharna",
+   "page": "Musharna (Fusion Arts 47)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "48": {
+   "en": "Meloetta",
+   "page": "Meloetta (Fusion Arts 48)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "49": {
+   "en": "Dreepy",
+   "page": "Dreepy (Fusion Arts 49)",
+   "type": "Psychic",
+   "rarity": "C",
+   "mark": ""
+  },
+  "50": {
+   "en": "Drakloak",
+   "page": "Drakloak (Fusion Arts 50)",
+   "type": "Psychic",
+   "rarity": "U",
+   "mark": ""
+  },
+  "51": {
+   "en": "Dragapult",
+   "page": "Dragapult (Fusion Arts 51)",
+   "type": "Psychic",
+   "rarity": "R",
+   "mark": ""
+  },
+  "52": {
+   "en": "Geodude",
+   "page": "Geodude (Fusion Arts 52)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "53": {
+   "en": "Graveler",
+   "page": "Graveler (Fusion Arts 53)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "54": {
+   "en": "Golem",
+   "page": "Golem (Fusion Arts 54)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "55": {
+   "en": "Onix",
+   "page": "Onix (Fusion Arts 55)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "56": {
+   "en": "Steelix",
+   "page": "Steelix (Fusion Arts 56)",
+   "type": "Fighting",
+   "rarity": "R",
+   "mark": ""
+  },
+  "57": {
+   "en": "Drilbur",
+   "page": "Drilbur (Fusion Arts 57)",
+   "type": "Fighting",
+   "rarity": "C",
+   "mark": ""
+  },
+  "58": {
+   "en": "Falinks",
+   "page": "Falinks (Fusion Arts 58)",
+   "type": "Fighting",
+   "rarity": "U",
+   "mark": ""
+  },
+  "59": {
+   "en": "Galarian Zigzagoon",
+   "page": "Galarian Zigzagoon (Fusion Arts 59)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "60": {
+   "en": "Galarian Linoone",
+   "page": "Galarian Linoone (Fusion Arts 60)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "61": {
+   "en": "Galarian Obstagoon",
+   "page": "Galarian Obstagoon (Fusion Arts 61)",
+   "type": "Darkness",
+   "rarity": "R",
+   "mark": ""
+  },
+  "62": {
+   "en": "Trubbish",
+   "page": "Trubbish (Fusion Arts 62)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "63": {
+   "en": "Garbodor",
+   "page": "Garbodor (Fusion Arts 63)",
+   "type": "Darkness",
+   "rarity": "U",
+   "mark": ""
+  },
+  "64": {
+   "en": "Vullaby",
+   "page": "Vullaby (Fusion Arts 64)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "65": {
+   "en": "Mandibuzz",
+   "page": "Mandibuzz (Fusion Arts 65)",
+   "type": "Darkness",
+   "rarity": "C",
+   "mark": ""
+  },
+  "66": {
+   "en": "Hoopa",
+   "page": "Hoopa V (Fusion Arts 66)",
+   "type": "Darkness",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "67": {
+   "en": "Excadrill",
+   "page": "Excadrill (Fusion Arts 67)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "68": {
+   "en": "Durant",
+   "page": "Durant (Fusion Arts 68)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "69": {
+   "en": "Genesect",
+   "page": "Genesect V (Fusion Arts 69)",
+   "type": "Metal",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "70": {
+   "en": "Togedemaru",
+   "page": "Togedemaru (Fusion Arts 70)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "71": {
+   "en": "Meltan",
+   "page": "Meltan (Fusion Arts 71)",
+   "type": "Metal",
+   "rarity": "C",
+   "mark": ""
+  },
+  "72": {
+   "en": "Melmetal",
+   "page": "Melmetal (Fusion Arts 72)",
+   "type": "Metal",
+   "rarity": "R",
+   "mark": ""
+  },
+  "73": {
+   "en": "Corviknight",
+   "page": "Corviknight (Fusion Arts 73)",
+   "type": "Metal",
+   "rarity": "U",
+   "mark": ""
+  },
+  "74": {
+   "en": "Latias",
+   "page": "Latias (Fusion Arts 74)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "75": {
+   "en": "Latios",
+   "page": "Latios (Fusion Arts 75)",
+   "type": "Dragon",
+   "rarity": "R",
+   "mark": ""
+  },
+  "76": {
+   "en": "Goomy",
+   "page": "Goomy (Fusion Arts 76)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "77": {
+   "en": "Sliggoo",
+   "page": "Sliggoo (Fusion Arts 77)",
+   "type": "Dragon",
+   "rarity": "C",
+   "mark": ""
+  },
+  "78": {
+   "en": "Goodra",
+   "page": "Goodra (Fusion Arts 78)",
+   "type": "Dragon",
+   "rarity": "U",
+   "mark": ""
+  },
+  "79": {
+   "en": "Dunsparce",
+   "page": "Dunsparce (Fusion Arts 79)",
+   "type": "Colorless",
+   "rarity": "U",
+   "mark": ""
+  },
+  "80": {
+   "en": "Smeargle",
+   "page": "Smeargle (Fusion Arts 80)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "81": {
+   "en": "Skitty",
+   "page": "Skitty (Fusion Arts 81)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "82": {
+   "en": "Delcatty",
+   "page": "Delcatty (Fusion Arts 82)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "83": {
+   "en": "Bunnelby",
+   "page": "Bunnelby (Fusion Arts 83)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "84": {
+   "en": "Diggersby",
+   "page": "Diggersby (Fusion Arts 84)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "85": {
+   "en": "Greedent",
+   "page": "Greedent V (Fusion Arts 85)",
+   "type": "Colorless",
+   "rarity": "RR",
+   "mark": ""
+  },
+  "86": {
+   "en": "Greedent",
+   "page": "Greedent VMAX (Fusion Arts 86)",
+   "type": "Colorless",
+   "rarity": "RRR",
+   "mark": ""
+  },
+  "87": {
+   "en": "Rookidee",
+   "page": "Rookidee (Fusion Arts 87)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "88": {
+   "en": "Corvisquire",
+   "page": "Corvisquire (Fusion Arts 88)",
+   "type": "Colorless",
+   "rarity": "C",
+   "mark": ""
+  },
+  "89": {
+   "en": "Crossceiver",
+   "page": "Crossceiver (Fusion Arts 89)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "90": {
+   "en": "Cross Switcher",
+   "page": "Cross Switcher (Fusion Arts 90)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "91": {
+   "en": "Battle VIP Pass",
+   "page": "Battle VIP Pass (Fusion Arts 91)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "92": {
+   "en": "Power Tablet",
+   "page": "Power Tablet (Fusion Arts 92)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "93": {
+   "en": "Spongy Gloves",
+   "page": "Spongy Gloves (Fusion Arts 93)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "94": {
+   "en": "Farewell Bell",
+   "page": "Farewell Bell (Fusion Arts 94)",
+   "type": "I",
+   "rarity": "U",
+   "mark": ""
+  },
+  "95": {
+   "en": "Sidney",
+   "page": "Sidney (Fusion Arts 95)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "96": {
+   "en": "Elesa's Sparkle",
+   "page": "Elesa's Sparkle (Fusion Arts 96)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "97": {
+   "en": "Dancer",
+   "page": "Dancer (Fusion Arts 97)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "98": {
+   "en": "Chili & Cilan & Cress",
+   "page": "Chili & Cilan & Cress (Fusion Arts 98)",
+   "type": "Su",
+   "rarity": "U",
+   "mark": ""
+  },
+  "99": {
+   "en": "Skaters' Park",
+   "page": "Skaters' Park (Fusion Arts 99)",
+   "type": "St",
+   "rarity": "U",
+   "mark": ""
+  },
+  "100": {
+   "en": "Fusion Strike Energy",
+   "page": "Fusion Strike Energy (Fusion Arts 100)",
+   "type": "Rainbow",
+   "rarity": "U",
+   "mark": ""
+  },
+  "101": {
+   "en": "Tsareena",
+   "page": "Tsareena V (Fusion Arts 101)",
+   "type": "Grass",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "102": {
+   "en": "Chandelure",
+   "page": "Chandelure V (Fusion Arts 102)",
+   "type": "Fire",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "103": {
+   "en": "Crabominable",
+   "page": "Crabominable V (Fusion Arts 103)",
+   "type": "Water",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "104": {
+   "en": "Boltund",
+   "page": "Boltund V (Fusion Arts 104)",
+   "type": "Lightning",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "105": {
+   "en": "Mew",
+   "page": "Mew V (Fusion Arts 105)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "106": {
+   "en": "Mew",
+   "page": "Mew V (Fusion Arts 106)",
+   "type": "Psychic",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "107": {
+   "en": "Hoopa",
+   "page": "Hoopa V (Fusion Arts 107)",
+   "type": "Darkness",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "108": {
+   "en": "Genesect",
+   "page": "Genesect V (Fusion Arts 108)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "109": {
+   "en": "Genesect",
+   "page": "Genesect V (Fusion Arts 109)",
+   "type": "Metal",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "110": {
+   "en": "Greedent",
+   "page": "Greedent V (Fusion Arts 110)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "111": {
+   "en": "Greedent",
+   "page": "Greedent V (Fusion Arts 111)",
+   "type": "Colorless",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "112": {
+   "en": "Sidney",
+   "page": "Sidney (Fusion Arts 112)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "113": {
+   "en": "Elesa's Sparkle",
+   "page": "Elesa's Sparkle (Fusion Arts 113)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "114": {
+   "en": "Dancer",
+   "page": "Dancer (Fusion Arts 114)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "115": {
+   "en": "Chili & Cilan & Cress",
+   "page": "Chili & Cilan & Cress (Fusion Arts 115)",
+   "type": "Su",
+   "rarity": "SR",
+   "mark": ""
+  },
+  "116": {
+   "en": "Chandelure",
+   "page": "Chandelure VMAX (Fusion Arts 116)",
+   "type": "Fire",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "117": {
+   "en": "Boltund",
+   "page": "Boltund VMAX (Fusion Arts 117)",
+   "type": "Lightning",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "118": {
+   "en": "Mew",
+   "page": "Mew VMAX (Fusion Arts 118)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "119": {
+   "en": "Mew",
+   "page": "Mew VMAX (Fusion Arts 119)",
+   "type": "Psychic",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "120": {
+   "en": "Greedent",
+   "page": "Greedent VMAX (Fusion Arts 120)",
+   "type": "Colorless",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "121": {
+   "en": "Sidney",
+   "page": "Sidney (Fusion Arts 121)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "122": {
+   "en": "Elesa's Sparkle",
+   "page": "Elesa's Sparkle (Fusion Arts 122)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "123": {
+   "en": "Dancer",
+   "page": "Dancer (Fusion Arts 123)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "124": {
+   "en": "Chili & Cilan & Cress",
+   "page": "Chili & Cilan & Cress (Fusion Arts 124)",
+   "type": "Su",
+   "rarity": "HR",
+   "mark": ""
+  },
+  "125": {
+   "en": "Flaaffy",
+   "page": "Flaaffy (Fusion Arts 125)",
+   "type": "Lightning",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "126": {
+   "en": "Power Tablet",
+   "page": "Power Tablet (Fusion Arts 126)",
+   "type": "I",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "127": {
+   "en": "Training Court",
+   "page": "Training Court (Fusion Arts 127)",
+   "type": "St",
+   "rarity": "UR",
+   "mark": ""
+  },
+  "128": {
+   "en": "Grass Energy",
+   "page": "Grass Energy (Fusion Arts 128)",
+   "type": "Grass",
+   "rarity": "UR",
+   "mark": "—"
+  },
+  "129": {
+   "en": "Fire Energy",
+   "page": "Fire Energy (Fusion Arts 129)",
+   "type": "Fire",
+   "rarity": "UR",
+   "mark": "—"
+  }
+ }
+}
