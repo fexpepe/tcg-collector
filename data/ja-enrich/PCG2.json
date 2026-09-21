@@ -7,574 +7,820 @@
    "page": "Zubat (Clash of the Blue Sky 1)",
    "type": "Grass",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ズバット",
+   "artist": "Sachiko Adachi",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7d/ZubatEXDeoxys83.jpg"
   },
   "2": {
    "en": "Golbat",
    "page": "Golbat (Clash of the Blue Sky 2)",
    "type": "Grass",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ゴルバット",
+   "artist": "Sachiko Adachi",
+   "image": "https://archives.bulbagarden.net/media/upload/3/38/GolbatEXDeoxys31.jpg"
   },
   "3": {
    "en": "Koffing",
    "page": "Koffing (Clash of the Blue Sky 3)",
    "type": "Grass",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ドガース",
+   "artist": "Hisao Nakamura",
+   "image": "https://archives.bulbagarden.net/media/upload/f/ff/KoffingEXDeoxys62.jpg"
   },
   "4": {
    "en": "Weezing",
    "page": "Weezing (Clash of the Blue Sky 4)",
    "type": "Grass",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "マタドガス",
+   "artist": "Hisao Nakamura",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b9/WeezingEXDeoxys51.jpg"
   },
   "5": {
    "en": "Crobat ex",
    "page": "Crobat ex (Clash of the Blue Sky 5)",
    "type": "Grass",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "クロバットex",
+   "artist": "Ryo Ueda",
+   "semScan": 1
   },
   "6": {
    "en": "Wurmple",
    "page": "Wurmple (Clash of the Blue Sky 6)",
    "type": "Grass",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ケムッソ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4e/WurmpleEXDeoxys82.jpg"
   },
   "7": {
    "en": "Silcoon",
    "page": "Silcoon (Clash of the Blue Sky 7)",
    "type": "Grass",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "カラサリス",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/9/91/SilcoonEXDeoxys46.jpg"
   },
   "8": {
    "en": "Beautifly",
    "page": "Beautifly (Clash of the Blue Sky 8)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "アゲハント",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3f/BeautiflyEXDeoxys2.jpg"
   },
   "9": {
    "en": "Surskit",
    "page": "Surskit (Clash of the Blue Sky 9)",
    "type": "Grass",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "アメタマ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2a/SurskitEXDeoxys78.jpg"
   },
   "10": {
    "en": "Masquerain",
    "page": "Masquerain (Clash of the Blue Sky 10)",
    "type": "Grass",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "アメモース",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/9/95/MasquerainEXDeoxys39.jpg"
   },
   "11": {
    "en": "Shroomish",
    "page": "Shroomish (Clash of the Blue Sky 11)",
    "type": "Grass",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "キノココ",
+   "artist": "Kanako Eo",
+   "image": "https://archives.bulbagarden.net/media/upload/6/64/ShroomishEXDeoxys72.jpg"
   },
   "12": {
    "en": "Nincada",
    "page": "Nincada (Clash of the Blue Sky 12)",
    "type": "Grass",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ツチニン",
+   "artist": "Yukiko Baba",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cf/NincadaEXDeoxys67.jpg"
   },
   "13": {
    "en": "Ninjask",
    "page": "Ninjask (Clash of the Blue Sky 13)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "テッカニン",
+   "artist": "Katsura Tabata",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4c/NinjaskEXDeoxys13.jpg"
   },
   "14": {
    "en": "Tropius",
    "page": "Tropius (Clash of the Blue Sky 14)",
    "type": "Grass",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "トロピウス",
+   "artist": "Miki Tanaka",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f5/TropiusEXDeoxys27.jpg"
   },
   "15": {
    "en": "Slugma",
    "page": "Slugma (Clash of the Blue Sky 15)",
    "type": "Fire",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "マグマッグ",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/5/55/SlugmaEXDeoxys75.jpg"
   },
   "16": {
    "en": "Magcargo",
    "page": "Magcargo (Clash of the Blue Sky 16)",
    "type": "Fire",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "マグカルゴ",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/3/34/MagcargoEXDeoxys20.jpg"
   },
   "17": {
    "en": "Numel",
    "page": "Numel (Clash of the Blue Sky 17)",
    "type": "Fire",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ドンメル",
+   "artist": "Tomokazu Komiya",
+   "image": "https://archives.bulbagarden.net/media/upload/0/02/NumelEXDeoxys68.jpg"
   },
   "18": {
    "en": "Camerupt",
    "page": "Camerupt (Clash of the Blue Sky 18)",
    "type": "Fire",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "バクーダ",
+   "artist": "Tomokazu Komiya",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e4/CameruptEXDeoxys4.jpg"
   },
   "19": {
    "en": "Goldeen",
    "page": "Goldeen (Clash of the Blue Sky 19)",
    "type": "Water",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "トサキント",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c7/GoldeenEXDeoxys61.jpg"
   },
   "20": {
    "en": "Seaking",
    "page": "Seaking (Clash of the Blue Sky 20)",
    "type": "Water",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "アズマオウ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7a/SeakingEXDeoxys24.jpg"
   },
   "21": {
    "en": "Staryu",
    "page": "Staryu (Clash of the Blue Sky 21)",
    "type": "Water",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒトデマン",
+   "artist": "Yukiko Baba",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0e/StaryuEXDeoxys77.jpg"
   },
   "22": {
    "en": "Starmie",
    "page": "Starmie (Clash of the Blue Sky 22)",
    "type": "Water",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "スターミー",
+   "artist": "Yukiko Baba",
+   "image": "https://archives.bulbagarden.net/media/upload/4/49/StarmieEXDeoxys48.jpg"
   },
   "23": {
    "en": "Magikarp",
    "page": "Magikarp (Clash of the Blue Sky 23)",
    "type": "Water",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "コイキング",
+   "artist": "Hisao Nakamura",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f8/MagikarpEXDeoxys64.jpg"
   },
   "24": {
    "en": "Gyarados",
    "page": "Gyarados (Clash of the Blue Sky 24)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ギャラドス",
+   "artist": "Hisao Nakamura",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e4/GyaradosEXDeoxys8.jpg"
   },
   "25": {
    "en": "Lotad",
    "page": "Lotad (Clash of the Blue Sky 25)",
    "type": "Water",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ハスボー",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d8/LotadEXDeoxys35.jpg"
   },
   "26": {
    "en": "Lombre",
    "page": "Lombre (Clash of the Blue Sky 26)",
    "type": "Water",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "ハスブレロ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d0/LombreEXDeoxys33.jpg"
   },
   "27": {
    "en": "Ludicolo",
    "page": "Ludicolo (Clash of the Blue Sky 27)",
    "type": "Water",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ルンパッパ",
+   "artist": "Atsuko Nishida",
+   "image": "https://archives.bulbagarden.net/media/upload/5/59/LudicoloEXDeoxys10.jpg"
   },
   "28": {
    "en": "Wingull",
    "page": "Wingull (Clash of the Blue Sky 28)",
    "type": "Water",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "キャモメ",
+   "artist": "Tomokazu Komiya",
+   "image": "https://archives.bulbagarden.net/media/upload/5/55/WingullEXDeoxys81.jpg"
   },
   "29": {
    "en": "Pelipper",
    "page": "Pelipper (Clash of the Blue Sky 29)",
    "type": "Water",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "ペリッパー",
+   "artist": "Tomokazu Komiya",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1e/PelipperEXDeoxys21.jpg"
   },
   "30": {
    "en": "Barboach",
    "page": "Barboach (Clash of the Blue Sky 30)",
    "type": "Water",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ドジョッチ",
+   "artist": "Miki Tanaka",
+   "image": "https://archives.bulbagarden.net/media/upload/0/00/BarboachEXDeoxys54.jpg"
   },
   "31": {
    "en": "Corphish",
    "page": "Corphish (Clash of the Blue Sky 31)",
    "type": "Water",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ヘイガニ",
+   "artist": "Takao Unno",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b2/CorphishEXDeoxys57.jpg"
   },
   "32": {
    "en": "Electrike",
    "page": "Electrike (Clash of the Blue Sky 32)",
    "type": "Lightning",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ラクライ",
+   "artist": "Hiroki Fuchino",
+   "image": "https://archives.bulbagarden.net/media/upload/1/12/DeoxysEXDeoxys60.jpg"
   },
   "33": {
    "en": "Manectric ex",
    "page": "Manectric ex (Clash of the Blue Sky 33)",
    "type": "Lightning",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "ライボルトex",
+   "artist": "Hikaru Koike",
+   "image": "https://archives.bulbagarden.net/media/upload/1/15/ManectricexEXDeoxys101.jpg"
   },
   "34": {
    "en": "Plusle",
    "page": "Plusle (Clash of the Blue Sky 34)",
    "type": "Lightning",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "プラスル",
+   "artist": "Hajime Kusajima",
+   "image": "https://archives.bulbagarden.net/media/upload/9/97/PlusleEXDeoxys44.jpg"
   },
   "35": {
    "en": "Minun",
    "page": "Minun (Clash of the Blue Sky 35)",
    "type": "Lightning",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "マイナン",
+   "artist": "Hajime Kusajima",
+   "image": "https://archives.bulbagarden.net/media/upload/a/af/MinunEXDeoxys41.jpg"
   },
   "36": {
    "en": "Natu",
    "page": "Natu (Clash of the Blue Sky 36)",
    "type": "Psychic",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ネイティ",
+   "artist": "Yuka Morii",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d5/NatuEXDeoxys66.jpg"
   },
   "37": {
    "en": "Xatu",
    "page": "Xatu (Clash of the Blue Sky 37)",
    "type": "Psychic",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "ネイティオ",
+   "artist": "Yuka Morii",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6b/XatuEXDeoxys29.jpg"
   },
   "38": {
    "en": "Shedinja",
    "page": "Shedinja (Clash of the Blue Sky 38)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ヌケニン",
+   "artist": "Yukiko Baba",
+   "image": "https://archives.bulbagarden.net/media/upload/4/49/ShedinjaEXDeoxys14.jpg"
   },
   "39": {
    "en": "Solrock",
    "page": "Solrock (Clash of the Blue Sky 39)",
    "type": "Psychic",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "ソルロック",
+   "artist": "Kyoko Umemoto",
+   "image": "https://archives.bulbagarden.net/media/upload/d/d7/SolrockEXDeoxys47.jpg"
   },
   "40": {
    "en": "Duskull",
    "page": "Duskull (Clash of the Blue Sky 40)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ヨマワル",
+   "artist": "Tomoko Wakai",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7c/DuskullEXDeoxys58.jpg"
   },
   "41": {
    "en": "Dusclops",
    "page": "Dusclops (Clash of the Blue Sky 41)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "サマヨール",
+   "artist": "Tomoko Wakai",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c1/DusclopsEXDeoxys7.jpg"
   },
   "42": {
    "en": "Beldum",
    "page": "Beldum (Clash of the Blue Sky 42)",
    "type": "Psychic",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ダンバル",
+   "artist": "Hisao Nakamura",
+   "image": "https://archives.bulbagarden.net/media/upload/0/04/BeldumEXDeoxys55.jpg"
   },
   "43": {
    "en": "Metang",
    "page": "Metang (Clash of the Blue Sky 43)",
    "type": "Psychic",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "メタング",
+   "artist": "Hisao Nakamura",
+   "image": "https://archives.bulbagarden.net/media/upload/5/56/MetangEXDeoxys40.jpg"
   },
   "44": {
    "en": "Metagross",
    "page": "Metagross (Clash of the Blue Sky 44)",
    "type": "Psychic",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "メタグロス",
+   "artist": "Hisao Nakamura",
+   "image": "https://archives.bulbagarden.net/media/upload/6/63/MetagrossEXDeoxys11.jpg"
   },
   "45": {
    "en": "Deoxys ex",
    "page": "Deoxys ex (Clash of the Blue Sky 45)",
    "type": "Psychic",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "デオキシスex",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e0/DeoxysexEXDeoxys98.jpg"
   },
   "46": {
    "en": "Deoxys ex",
    "page": "Deoxys ex (Clash of the Blue Sky 46)",
    "type": "Psychic",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "デオキシスex",
+   "artist": "Mitsuhiro Arita",
+   "semScan": 1
   },
   "47": {
    "en": "Breloom",
    "page": "Breloom (Clash of the Blue Sky 47)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "キノガッサ",
+   "artist": "Hajime Kusajima",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1f/BreloomEXDeoxys3.jpg"
   },
   "48": {
    "en": "Makuhita",
    "page": "Makuhita (Clash of the Blue Sky 48)",
    "type": "Fighting",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "マクノシタ",
+   "artist": "Asuka Iwashita",
+   "image": "https://archives.bulbagarden.net/media/upload/3/38/MakuhitaEXDeoxys65.jpg"
   },
   "49": {
    "en": "Hariyama ex",
    "page": "Hariyama ex (Clash of the Blue Sky 49)",
    "type": "Fighting",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "ハリテヤマex",
+   "artist": "Ryo Ueda",
+   "semScan": 1
   },
   "50": {
    "en": "Nosepass",
    "page": "Nosepass (Clash of the Blue Sky 50)",
    "type": "Fighting",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "ノズパス",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9d/NosepassEXDeoxys42.jpg"
   },
   "51": {
    "en": "Lunatone",
    "page": "Lunatone (Clash of the Blue Sky 51)",
    "type": "Fighting",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "ルナトーン",
+   "artist": "Kyoko Umemoto",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1a/LunatoneEXDeoxys36.jpg"
   },
   "52": {
    "en": "Whiscash",
    "page": "Whiscash (Clash of the Blue Sky 52)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ナマズン",
+   "artist": "Miki Tanaka",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a9/WhiscashEXDeoxys28.jpg"
   },
   "53": {
    "en": "Baltoy",
    "page": "Baltoy (Clash of the Blue Sky 53)",
    "type": "Fighting",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤジロン",
+   "artist": "Kenkichi Toyama",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ad/BaltoyEXDeoxys53.jpg"
   },
   "54": {
    "en": "Claydol",
    "page": "Claydol (Clash of the Blue Sky 54)",
    "type": "Fighting",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ネンドール",
+   "artist": "Hajime Kusajima",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6a/ClaydolEXDeoxys5.jpg"
   },
   "55": {
    "en": "Taillow",
    "page": "Taillow (Clash of the Blue Sky 55)",
    "type": "Colorless",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "スバメ",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/9/9a/TaillowEXDeoxys80.jpg"
   },
   "56": {
    "en": "Swellow",
    "page": "Swellow (Clash of the Blue Sky 56)",
    "type": "Colorless",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "オオスバメ",
+   "artist": "Midori Harada",
+   "image": "https://archives.bulbagarden.net/media/upload/8/82/SwellowEXDeoxys49.jpg"
   },
   "57": {
    "en": "Slakoth",
    "page": "Slakoth (Clash of the Blue Sky 57)",
    "type": "Colorless",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ナマケロ",
+   "artist": "Takao Unno",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0b/SlakothEXDeoxys73.jpg"
   },
   "58": {
    "en": "Vigoroth",
    "page": "Vigoroth (Clash of the Blue Sky 58)",
    "type": "Colorless",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤルキモノ",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/8/83/VigorothEXDeoxys50.jpg"
   },
   "59": {
    "en": "Slaking",
    "page": "Slaking (Clash of the Blue Sky 59)",
    "type": "Colorless",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ケッキング",
+   "artist": "Mitsuhiro Arita",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a3/SlakingEXDeoxys15.jpg"
   },
   "60": {
    "en": "Swablu",
    "page": "Swablu (Clash of the Blue Sky 60)",
    "type": "Colorless",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "チルット",
+   "artist": "Kyoko Umemoto",
+   "image": "https://archives.bulbagarden.net/media/upload/8/84/SwabluEXDeoxys79.jpg"
   },
   "61": {
    "en": "Altaria",
    "page": "Altaria (Clash of the Blue Sky 61)",
    "type": "Colorless",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "チルタリス",
+   "artist": "Kyoko Umemoto",
+   "image": "https://archives.bulbagarden.net/media/upload/0/06/AltariaEXDeoxys1.jpg"
   },
   "62": {
    "en": "Bagon",
    "page": "Bagon (Clash of the Blue Sky 62)",
    "type": "Colorless",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "タツベイ",
+   "artist": "Takao Unno",
+   "image": "https://archives.bulbagarden.net/media/upload/c/c3/BagonEXDeoxys52.jpg"
   },
   "63": {
    "en": "Shelgon",
    "page": "Shelgon (Clash of the Blue Sky 63)",
    "type": "Colorless",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "コモルー",
+   "artist": "Aya Kusube",
+   "image": "https://archives.bulbagarden.net/media/upload/b/b3/ShelgonEXDeoxys45.jpg"
   },
   "64": {
    "en": "Salamence ex",
    "page": "Salamence ex (Clash of the Blue Sky 64)",
    "type": "Colorless",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "ボーマンダex",
+   "artist": "Hikaru Koike",
+   "image": "https://archives.bulbagarden.net/media/upload/0/0a/SalamenceexEXDeoxys103.jpg"
   },
   "65": {
    "en": "Latias",
    "page": "Latias ☆ (Clash of the Blue Sky 65)",
    "type": "Colorless",
    "rarity": "ShinyRare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ラティアス☆",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/7/7c/LatiasEXDeoxys105.jpg"
   },
   "66": {
    "en": "Latios",
    "page": "Latios ☆ (Clash of the Blue Sky 66)",
    "type": "Colorless",
    "rarity": "ShinyRare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ラティオス☆",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/3/3b/LatiosEXDeoxys106.jpg"
   },
   "67": {
    "en": "Rayquaza",
    "page": "Rayquaza ☆ (Clash of the Blue Sky 67)",
    "type": "Colorless",
    "rarity": "ShinyRare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "レックウザ☆",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/7/76/RayquazaEXDeoxys107.jpg"
   },
   "68": {
    "en": "Poochyena",
    "page": "Poochyena (Clash of the Blue Sky 68)",
    "type": "Darkness",
    "rarity": "Common",
-   "mark": ""
+   "mark": "",
+   "ja": "ポチエナ",
+   "artist": "Aimi Tomita",
+   "image": "https://archives.bulbagarden.net/media/upload/1/1c/PoochyenaEXDeoxys70.jpg"
   },
   "69": {
    "en": "Mightyena",
    "page": "Mightyena (Clash of the Blue Sky 69)",
    "type": "Darkness",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "グラエナ",
+   "artist": "Naoyo Kimura",
+   "image": "https://archives.bulbagarden.net/media/upload/2/2e/MightyenaEXDeoxys12.jpg"
   },
   "70": {
    "en": "Sableye",
    "page": "Sableye (Clash of the Blue Sky 70)",
    "type": "Darkness",
    "rarity": "Rare",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤミラミ",
+   "artist": "Aya Kusube",
+   "image": "https://archives.bulbagarden.net/media/upload/c/cb/SableyeEXDeoxys23.jpg"
   },
   "71": {
    "en": "Carvanha",
    "page": "Carvanha (Clash of the Blue Sky 71)",
    "type": "Darkness",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "キバニア",
+   "artist": "Tomokazu Komiya",
+   "image": "https://archives.bulbagarden.net/media/upload/e/e9/CarvanhaEXDeoxys56.jpg"
   },
   "72": {
    "en": "Sharpedo ex",
    "page": "Sharpedo ex (Clash of the Blue Sky 72)",
    "type": "Darkness",
    "rarity": "Rare Holo ex",
-   "mark": ""
+   "mark": "",
+   "ja": "サメハダーex",
+   "artist": "Hikaru Koike",
+   "semScan": 1
   },
   "73": {
    "en": "Crawdaunt",
    "page": "Crawdaunt (Clash of the Blue Sky 73)",
    "type": "Darkness",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "シザリガー",
+   "artist": "Tomoko Wakai",
+   "image": "https://archives.bulbagarden.net/media/upload/5/54/CrawdauntEXDeoxys6.jpg"
   },
   "74": {
    "en": "Skarmory",
    "page": "Skarmory (Clash of the Blue Sky 74)",
    "type": "Metal",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "エアームド",
+   "artist": "Kouki Saitou",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f2/SkarmoryEXDeoxys26.jpg"
   },
   "75": {
    "en": "Jirachi",
    "page": "Jirachi (Clash of the Blue Sky 75)",
    "type": "Metal",
    "rarity": "Rare Holo",
-   "mark": ""
+   "mark": "",
+   "ja": "ジラーチ",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/7/71/JirachiEXDeoxys9.jpg"
   },
   "76": {
    "en": "Professor Cozmo's Discovery",
    "page": "Professor Cozmo's Discovery (Clash of the Blue Sky 76)",
    "type": "T [Su]",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ソライシはかせの発見",
+   "artist": "Ken Sugimori",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a7/ProfessorCozmoDiscoveryEXDeoxys90.jpg"
   },
   "77": {
    "en": "Crystal Shard",
    "page": "Crystal Shard (Clash of the Blue Sky 77)",
    "type": "T [PT]",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "水晶のかけら",
+   "artist": "Jungo Suzuki",
+   "image": "https://archives.bulbagarden.net/media/upload/5/57/CrystalShardEXDeoxys85.jpg"
   },
   "78": {
    "en": "Space Center",
    "page": "Space Center (Clash of the Blue Sky 78)",
    "type": "T [St]",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "宇宙センター",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/9/97/SpaceCenterEXDeoxys91.jpg"
   },
   "79": {
    "en": "Meteor Falls",
    "page": "Meteor Falls (Clash of the Blue Sky 79)",
    "type": "T [St]",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "流星の滝",
+   "artist": "Ryo Ueda",
+   "image": "https://archives.bulbagarden.net/media/upload/7/77/MeteorFallsEXDeoxys89.jpg"
   },
   "80": {
    "en": "Scramble Energy",
    "page": "Scramble Energy (Clash of the Blue Sky 80)",
    "type": "Colorless",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "スクランブルエネルギー",
+   "artist": "Takumi Akabane",
+   "image": "https://archives.bulbagarden.net/media/upload/7/72/ScrambleEnergyEXDeoxys95.jpg"
   },
   "81": {
    "en": "Heal Energy",
    "page": "Heal Energy (Clash of the Blue Sky 81)",
    "type": "Colorless",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒーリングエネルギー",
+   "artist": "Takumi Akabane",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8b/HealEnergyEXDeoxys94.jpg"
   },
   "82": {
    "en": "Boost Energy",
    "page": "Boost Energy (Clash of the Blue Sky 82)",
    "type": "Colorless",
    "rarity": "Uncommon",
-   "mark": ""
+   "mark": "",
+   "ja": "ブーストエネルギー",
+   "artist": "Kai Ishikawa",
+   "image": "https://archives.bulbagarden.net/media/upload/a/a7/BoostEnergyPPromo40.jpg"
   }
  }
 }

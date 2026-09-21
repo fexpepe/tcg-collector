@@ -57,7 +57,10 @@
    "page": "Flareon-EX (PokéKyun Collection 6)",
    "type": "Fire",
    "rarity": "RR",
-   "mark": ""
+   "mark": "",
+   "ja": "ブースターEX",
+   "artist": "kirisAki",
+   "image": "https://archives.bulbagarden.net/media/upload/5/5e/FlareonEXGenerationsRC28.jpg"
   },
   "7": {
    "en": "Flareon",
@@ -284,14 +287,20 @@
    "page": "Altaria (PokéKyun Collection 29)",
    "type": "Colorless",
    "rarity": "U",
-   "mark": ""
+   "mark": "",
+   "ja": "チルタリス",
+   "artist": "Naoki Saito",
+   "image": "https://archives.bulbagarden.net/media/upload/8/89/AltariaXYPromo291.jpg"
   },
   "30": {
    "en": "Fletchling",
    "page": "Fletchling (PokéKyun Collection 30)",
    "type": "Colorless",
    "rarity": "C",
-   "mark": ""
+   "mark": "",
+   "ja": "ヤヤコマ",
+   "artist": "Aya Kusube",
+   "image": "https://archives.bulbagarden.net/media/upload/f/f2/FletchlingGenerationsRC25.jpg"
   },
   "31": {
    "en": "Floral Crown",

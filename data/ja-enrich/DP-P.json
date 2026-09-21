@@ -227,7 +227,10 @@
    "page": "Buneary (DP-P Promo 23)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ミミロル",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/4/4b/BunearyDiamondPearl73.jpg"
   },
   "24": {
    "en": "Glameow",
@@ -264,7 +267,10 @@
    "page": "Turtwig (DP-P Promo 27)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ナエトル",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/6/6f/TurtwigDPPromo1.jpg"
   },
   "28": {
    "en": "Chimchar",
@@ -331,7 +337,10 @@
    "page": "Grotle (DP-P Promo 34)",
    "type": "Grass",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ハヤシガメ",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/8/8b/GrotleDPPromo34.jpg"
   },
   "35": {
    "en": "Cherrim",
@@ -558,7 +567,10 @@
    "page": "Pikachu (DP-P Promo 57)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ピカチュウ",
+   "artist": "Sumiyoshi Kizuki",
+   "image": "https://archives.bulbagarden.net/media/upload/9/96/PikachuDPPromo16.jpg"
   },
   "58": {
    "en": "Garchomp LV.X",
@@ -635,7 +647,10 @@
    "page": "Electabuzz (DP-P Promo 65)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "エレブー",
+   "artist": "Masakazu Fukuda",
+   "image": "https://archives.bulbagarden.net/media/upload/9/90/ElectabuzzSecretWonders87.jpg"
   },
   "66": {
    "en": "Riolu",
@@ -652,7 +667,10 @@
    "page": "Eevee (DP-P Promo 67)",
    "type": "Colorless",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "イーブイ",
+   "artist": "Kagemaru Himeno",
+   "image": "https://archives.bulbagarden.net/media/upload/9/98/EeveeMajesticDawn63.jpg"
   },
   "68": {
    "en": "Cresselia",
@@ -709,7 +727,10 @@
    "page": "Chimchar (DP-P Promo 73)",
    "type": "Fire",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "ヒコザル",
+   "artist": "Daisuke Ito",
+   "image": "https://archives.bulbagarden.net/media/upload/a/ac/ChimcharMajesticDawn56.jpg"
   },
   "74": {
    "en": "Piplup",
@@ -836,7 +857,10 @@
    "page": "Luxray (DP-P Promo 86)",
    "type": "Lightning",
    "rarity": "—",
-   "mark": ""
+   "mark": "",
+   "ja": "レントラー",
+   "artist": "Ken Sugimori",
+   "semScan": 1
   },
   "87": {
    "en": "Chingling",
