@@ -157,23 +157,39 @@ export function imagemOriginal(u) {
 }
 
 // ── Lista de expansões ──────────────────────────────────────────────────────
-// { <nome japonês>: <nome traduzido> } das tabelas que têm "Japanese" e
-// "Translated" (ou "English") no cabeçalho — é a coluna que o JA_SET_EN do
-// shared.js copia verbatim.
+// { <nome japonês>: <nome traduzido> }. No wiki real (conferido em
+// 21/09/2026) o nome japonês e a tradução vêm na MESMA célula da coluna
+// "Japanese name" — `<span lang="ja">拡張パック</span> Expansion Pack` —, e
+// não em duas colunas; lendo duas colunas o 1º run gravou "拡張パック
+// Expansion Pack" como chave E valor, além de linhas de outras tabelas que
+// também têm "Japanese" no cabeçalho (datas, contagens). Regra: o japonês é o
+// trecho lang="ja" (ou o prefixo não-ASCII da célula), a tradução é o que
+// sobra na célula — ou a coluna "Translated" quando ela existe separada. Só
+// entra par com japonês de verdade de um lado e latim do outro.
+const JP_CHARS = /[぀-ヿ一-鿿]/;
+export function normalizarNomeJa(s) {
+  return String(s || "").normalize("NFKC").replace(/\s+/g, "").replace(/[＆]/g, "&").toLowerCase();
+}
 export function parseExpansionList(html) {
   const out = {};
   for (const t of tables(html)) {
     const rs = rows(t);
     if (!rs.length) continue;
-    const h = cells(rs[0], "th").map((c) => text(c).toLowerCase());
+    const h = cells(rs[0]).map((c) => text(c).toLowerCase());
     const ja = h.findIndex((x) => /japanese/.test(x));
-    const en = h.findIndex((x) => /translated|english/.test(x));
-    if (ja < 0 || en < 0) continue;
+    if (ja < 0) continue;
+    const en = h.findIndex((x, i) => i !== ja && /translated|english/.test(x));
     for (const r of rs.slice(1)) {
-      const tds = cells(r, "td");
-      if (tds.length <= Math.max(ja, en)) continue;
-      const nomeJa = text(tds[ja]), nomeEn = text(tds[en]);
-      if (nomeJa && nomeEn && !out[nomeJa]) out[nomeJa] = nomeEn;
+      const tds = cells(r);
+      if (tds.length <= ja) continue;
+      const cel = tds[ja];
+      const todo = text(cel);
+      const span = /<[^>]+\blang="ja"[^>]*>([\s\S]*?)<\/[^>]+>/i.exec(cel);
+      let nomeJa = span ? text(span[1]) : (todo.match(/^[^\x00-\x7F]+(?:[^\x00-\x7F\s]|\s(?=[^\x00-\x7F]))*/) || [""])[0].trim();
+      let nomeEn = en >= 0 && tds[en] != null ? text(tds[en]) : "";
+      if (!nomeEn && nomeJa) nomeEn = todo.replace(nomeJa, "").trim();
+      if (!nomeJa || !nomeEn || !JP_CHARS.test(nomeJa) || JP_CHARS.test(nomeEn)) continue;
+      if (!out[nomeJa]) out[nomeJa] = nomeEn;
     }
   }
   return out;

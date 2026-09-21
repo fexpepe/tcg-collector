@@ -26,7 +26,7 @@
 // sem acesso ao wiki. Primeiro run: --probe num set e numa carta, comparar
 // com o esperado em tests/bulbapedia.test.mjs, ajustar o parser se preciso.
 import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
-import { API, UA, LISTA_DE_EXPANSOES, parseUrl, parseSetList, parseSetLists, escolherLista, parseCardPage, parseExpansionList } from "./lib/bulbapedia.mjs";
+import { API, UA, LISTA_DE_EXPANSOES, parseUrl, parseSetList, parseSetLists, escolherLista, parseCardPage, parseExpansionList, normalizarNomeJa } from "./lib/bulbapedia.mjs";
 import { numberKey } from "./lib/enrich-ja.mjs";
 import { sleep } from "./lib/sync-common.mjs";
 
@@ -87,15 +87,20 @@ let setIds = pedidos;
 if (has("--all")) setIds = (await readdir(CHUNKS)).filter((f) => f.endsWith(".json")).map((f) => f.replace(/\.json$/, "")).sort();
 if (!setIds.length) { console.log("nada pedido: use --set A,B ou --all (ou --names / --probe)."); process.exit(0); }
 
-// Título da página: _pages.json > JA_SET_EN (shared.js) + " (TCG)" > nome do chunk se ASCII + " (TCG)".
+// Título da página: _pages.json > JA_SET_EN (shared.js) + " (TCG)" > nome
+// traduzido da lista de expansões (_set-names.json, casado pelo nome japonês
+// do chunk) + " (TCG)" > nome do chunk se ASCII + " (TCG)".
 const pages = (await leJson(new URL("_pages.json", OUT), {})).pages || {};
 const shared = await readFile(new URL("src/shared.js", RAIZ), "utf8");
 const m = /const JA_SET_EN = (\{[\s\S]*?\n  \});/.exec(shared);
 const JA_SET_EN = m ? new Function(`return ${m[1]}`)() : {};
+const nomesTraduzidos = new Map(Object.entries((await leJson(new URL("_set-names.json", OUT), {})).names || {}).map(([ja, en]) => [normalizarNomeJa(ja), en]));
 function tituloDe(setId, chunk) {
   if (pages[setId]) return pages[setId];
   if (JA_SET_EN[setId]) return `${JA_SET_EN[setId]} (TCG)`;
   const nome = chunk && chunk[0] && chunk[0].set;
+  const traduzido = nome && nomesTraduzidos.get(normalizarNomeJa(nome));
+  if (traduzido) return `${traduzido} (TCG)`;
   if (nome && /^[\x20-\x7E]+$/.test(nome)) return `${nome} (TCG)`;
   return "";
 }
